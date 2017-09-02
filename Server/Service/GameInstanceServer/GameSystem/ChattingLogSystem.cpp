@@ -29,10 +29,10 @@
 #include "GameInstance/GameInstanceEntity.h"
 
 
-SF_MEMORYPOOL_IMPLEMENT(BR::ConspiracyGameInstanceServer::ChattingLogSystem);
+SF_MEMORYPOOL_IMPLEMENT(SF::ConspiracyGameInstanceServer::ChattingLogSystem);
 
 
-namespace BR {
+namespace SF {
 namespace ConspiracyGameInstanceServer {
 
 
@@ -76,7 +76,7 @@ namespace ConspiracyGameInstanceServer {
 	
 	
 }; // ConspiracyGameInstanceServer
-}; // namespace BR
+}; // namespace SF
 
 
 

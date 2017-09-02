@@ -13,7 +13,7 @@
 
 #include "SFTypedefs.h"
 
-namespace BR {
+namespace SF {
 namespace GameServer {
 
 	enum UserSystemComponentIDs
@@ -25,7 +25,7 @@ namespace GameServer {
 	};
 
 }; // namespace GameServer
-}; // namespace BR
+}; // namespace SF
 
 
 

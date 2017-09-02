@@ -15,7 +15,7 @@
 #include "ServerSystem/Transaction.h"
 #include "Container/SFArray.h"
 #include "Types/BrBaseTypes.h"
-#include "Common/GameConst.h"
+#include "GameConst.h"
 
 
 
@@ -25,14 +25,14 @@ namespace Svr {
 namespace MatchingUtil
 {
 
-	PlayerRole GetPlayerRoleFromQueueComponentID(UINT componentID);
-	UINT GetPartyMemberCountFromQueueComponentID(UINT componentID);
-	Result GetQueueComponentIDMinMax(UINT matchingMemberCount, UINT& minComponentID, UINT& maxComponentID);
-	UINT GetQueueCount(UINT matchingMemberCount);
+	PlayerRole GetPlayerRoleFromQueueComponentID(uint componentID);
+	uint GetPartyMemberCountFromQueueComponentID(uint componentID);
+	Result GetQueueComponentIDMinMax(uint matchingMemberCount, uint& minComponentID, uint& maxComponentID);
+	uint GetQueueCount(uint matchingMemberCount);
 
-	UINT GetQueueComponentID(UINT matchingMemberCount, UINT partyMemberCount, PlayerRole playerRole);
+	uint GetQueueComponentID(uint matchingMemberCount, uint partyMemberCount, PlayerRole playerRole);
 
-	UINT GetComponentIDFromClusterID(ClusterID clusterID);
+	uint GetComponentIDFromClusterID(ClusterID clusterID);
 
 }
 } // namespace Svr 

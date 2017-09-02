@@ -15,7 +15,7 @@
 #include "Util/TimeUtil.h"
 #include "ServerLog/SvrLog.h"
 #include "Thread/Thread.h"
-#include "ServerSystem/SvrConstDefault.h"
+#include "SvrConst.h"
 #include "ServerSystem/SimpleEntity.h"
 #include "ServerSystem/MessageRoute.h"
 #include "ServerSystem/Transaction.h"
@@ -36,7 +36,7 @@ namespace Svr {
 	//		: Entity with low transaction load
 	//
 
-	SimpleEntity::SimpleEntity( UINT uiTransQueueSize, UINT TransResQueueSize )
+	SimpleEntity::SimpleEntity( uint uiTransQueueSize, uint TransResQueueSize )
 		: Entity( uiTransQueueSize, TransResQueueSize )
 		, m_pCurTran(nullptr)
 	{
@@ -184,7 +184,7 @@ namespace Svr {
 		return hr;
 	}
 
-	UINT SimpleEntity::GetActiveTransactionCount()
+	uint SimpleEntity::GetActiveTransactionCount()
 	{
 		return m_pCurTran != nullptr ? 1 : 0;
 	}

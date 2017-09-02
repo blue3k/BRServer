@@ -15,7 +15,7 @@
 #include "Util/TimeUtil.h"
 #include "ServerLog/SvrLog.h"
 #include "Thread/Thread.h"
-#include "ServerSystem/SvrConstDefault.h"
+#include "SvrConst.h"
 #include "ServerSystem/SvrConst.h"
 #include "ServerSystem/ServerEntity.h"
 #include "ServerSystem/Transaction.h"
@@ -23,7 +23,7 @@
 #include "ServerSystem/ServerEntity/GenericServerEntity.h"
 #include "ServerSystem/Transaction/ServerTransactionGeneric.h"
 
-#include "Protocol/Policy/GameServerIPolicy.h"
+#include "Protocol/Policy/GameServerNetPolicy.h"
 
 
 

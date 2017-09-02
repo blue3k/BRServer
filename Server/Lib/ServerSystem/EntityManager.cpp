@@ -107,7 +107,7 @@ namespace Svr {
 		svrChk( pEntity->InitializeEntity( entityID ) );
 
 		// Disable ServiceMessage handler
-		//if( entityID.GetFacultyID() == (UINT)EntityFaculty::Service )
+		//if( entityID.GetFacultyID() == (uint)EntityFaculty::Service )
 		//{
 		//	ClusteredServiceEntity* pClusterService = dynamic_cast<ClusteredServiceEntity*>(pEntity);
 		//	if( pClusterService != nullptr )
@@ -129,7 +129,7 @@ namespace Svr {
 	{
 		switch (pEntity->GetEntityID().GetEntityLID())
 		{
-		case (UINT)EntityFaculty::Service:
+		case (uint)EntityFaculty::Service:
 			++m_NumberOfServices;
 			break;
 		}
@@ -211,7 +211,7 @@ namespace Svr {
 	{
 		switch (pEntity->GetEntityID().GetEntityLID())
 		{
-		case (UINT)EntityFaculty::Service:
+		case (uint)EntityFaculty::Service:
 			--m_NumberOfServices;
 			break;
 		}
@@ -220,7 +220,7 @@ namespace Svr {
 
 
 	// Initialize TaskManager
-	Result EntityManager::InitializeManager(UINT uiNumGroup)
+	Result EntityManager::InitializeManager(uint uiNumGroup)
 	{
 		Result hr = ResultCode::SUCCESS;
 		PerformanceCounterInstance* counterInstance = nullptr;

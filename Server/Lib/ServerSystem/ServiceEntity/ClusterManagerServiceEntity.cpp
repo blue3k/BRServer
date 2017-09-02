@@ -76,7 +76,7 @@ namespace Svr {
 
 		svrChk(ReplicaClusterServiceEntity::InitializeEntity(newEntityID) );
 
-		svrChk( m_ClusterIDMap.insert( (UINT)GetClusterID(), this ) );
+		svrChk( m_ClusterIDMap.insert( (uint)GetClusterID(), this ) );
 
 		svrChk(StartInitializeTransaction() );
 
@@ -112,7 +112,7 @@ namespace Svr {
 		Result hr = ResultCode::SUCCESS;
 		ClusterIDMap::iterator iterMap;
 
-		hr = m_ClusterIDMap.find((UINT)clusterID, iterMap );
+		hr = m_ClusterIDMap.find((uint)clusterID, iterMap );
 		if( (hr) )
 			pServiceEntity = *iterMap;
 
@@ -128,7 +128,7 @@ namespace Svr {
 
 		svrChkPtr( pServiceEntity );
 
-		svrChk( m_ClusterIDMap.insert((UINT)pServiceEntity->GetClusterID(), pServiceEntity ) );
+		svrChk( m_ClusterIDMap.insert((uint)pServiceEntity->GetClusterID(), pServiceEntity ) );
 
 		pServiceEntity = nullptr;
 
@@ -165,7 +165,7 @@ namespace Svr {
 			svrMem( pServiceEntity = new WatcherClusteredServiceEntity( clusterType, clusterID, ClusterMembership::StatusWatcher ) );
 			break;
 		default:
-			svrErr(ResultCode::E_SVR_INVALID_CLUSTERTYPE);
+			svrErr(ResultCode::SVR_INVALID_CLUSTERTYPE);
 			break;
 		}
 

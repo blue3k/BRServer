@@ -92,8 +92,8 @@ namespace SF
 				RouteContext m_RouteContext;
 				uint16_t m_RouteHopCount;
 				PlayerID m_DestPlayerID;
-				GameInsUID m_GameInsUID;
-				PlayerRole m_RequestedRole;
+				uint64_t m_GameInsUID;
+				uint8_t m_RequestedRole;
 			public:
 				PlayerGameMatchedS2CEvt()
 					{}
@@ -107,8 +107,8 @@ namespace SF
 				const RouteContext& GetRouteContext() const	{ return m_RouteContext; };
 				const uint16_t& GetRouteHopCount() const	{ return m_RouteHopCount; };
 				const PlayerID& GetDestPlayerID() const	{ return m_DestPlayerID; };
-				const GameInsUID& GetGameInsUID() const	{ return m_GameInsUID; };
-				const PlayerRole& GetRequestedRole() const	{ return m_RequestedRole; };
+				const uint64_t& GetGameInsUID() const	{ return m_GameInsUID; };
+				const uint8_t& GetRequestedRole() const	{ return m_RequestedRole; };
 
 				static Result TraceOut(MessageData* pMsg);
 
@@ -116,7 +116,7 @@ namespace SF
 				static Result ParseMessageTo( MessageData* pIMsg, VariableMapBuilder& variableBuilder );
 				static Result ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageData* pIMsg, MessageBase* &pMsgBase );
 
-				static MessageData* Create( IMemoryManager& memoryManager, const RouteContext &InRouteContext, const uint16_t &InRouteHopCount, const PlayerID &InDestPlayerID, const GameInsUID &InGameInsUID, const PlayerRole &InRequestedRole );
+				static MessageData* Create( IMemoryManager& memoryManager, const RouteContext &InRouteContext, const uint16_t &InRouteHopCount, const PlayerID &InDestPlayerID, const uint64_t &InGameInsUID, const uint8_t &InRequestedRole );
 
 				Result OverrideRouteContextDestination( EntityUID to );
 

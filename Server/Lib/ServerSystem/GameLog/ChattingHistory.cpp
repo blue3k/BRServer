@@ -14,7 +14,7 @@
 #include "Common/MemoryStream.h"
 #include "ServerSystem/SvrTrace.h"
 #include "ServerSystem/GameLog/ChattingHistory.h"
-#include "Common/GameConst.h"
+#include "GameConst.h"
 
 
 
@@ -54,7 +54,7 @@ namespace Svr {
 
 		itemBuffer = NewLogItemBuffer<GameLogChatMessage>( sizeof(GameLogChatMessage) + messageBufferSize );
 		svrMem( itemBuffer );
-		chatLog = new(itemBuffer) GameLogChatMessage(timeStamp,(UINT)messageBufferSize);
+		chatLog = new(itemBuffer) GameLogChatMessage(timeStamp,(uint)messageBufferSize);
 		svrMem( chatLog );
 
 		svrChk( chatLog->SetChatMessage( player, playerStatus, type, message ) );

@@ -51,7 +51,7 @@ namespace DB {
 		case CR_SERVER_GONE_ERROR:
 		case CR_SERVER_LOST:
 		case CR_COMMANDS_OUT_OF_SYNC:
-			return ResultCode::E_DB_CONNECTION_LOST;
+			return ResultCode::DB_CONNECTION_LOST;
 		case CR_OUT_OF_MEMORY:
 			return ResultCode::OUT_OF_MEMORY;
 		};
@@ -188,7 +188,7 @@ namespace DB {
 	Result SessionMYSQL::SendQuery( Query *pQuery )
 	{
 		Result hr = ResultCode::SUCCESS;
-		QueryMYSQL* pMyQuery = BR_DYNAMIC_CAST(QueryMYSQL*,pQuery);
+		QueryMYSQL* pMyQuery = static_cast<QueryMYSQL*>(pQuery);
 		StatementMYSQL *pStatement = nullptr;
 
 		dbChkPtr(pMyQuery);
@@ -216,7 +216,7 @@ namespace DB {
 		dbChk( pStatement->Bind( pMyQuery ) );
 
 		hr = pStatement->Execute();
-		if (hr == Result(ResultCode::E_DB_CONNECTION_LOST)) goto Proc_End;
+		if (hr == Result(ResultCode::DB_CONNECTION_LOST)) goto Proc_End;
 		dbChk(hr);
 
 		dbChk( pStatement->PatcResults( pMyQuery ) );
@@ -236,7 +236,7 @@ namespace DB {
 				defTrace( Trace::TRC_ERROR, "Query failed hr:0x{0:X8}", hr );
 			}
 
-			if( hr == ((Result)ResultCode::E_DB_CONNECTION_LOST))
+			if( hr == ((Result)ResultCode::DB_CONNECTION_LOST))
 			{
 				defTrace( Trace::TRC_WARN, "DB connection is lost, recovering the connection... " );
 				Result hrTem = OpenSession();
@@ -280,7 +280,7 @@ namespace DB {
 			m_pMyDataSource->GetServerPort(), 
 			NULL, CLIENT_MULTI_STATEMENTS) == nullptr) 
 		{
-			dbErr(ResultCode::E_DB_CONNECTION_FAILED);
+			dbErr(ResultCode::DB_CONNECTION_FAILED);
 		}
 
 
@@ -370,7 +370,7 @@ namespace DB {
 		if ( rc )
 		{
 			dbErr(MYSQL_ToResult(mysql_stmt_errno(m_Stmt)) );
-			//dbErr(ResultCode::E_DB_STATEMENT_PREPARE_FAILED);
+			//dbErr(ResultCode::DB_STATEMENT_PREPARE_FAILED);
 		}
 
 	Proc_End:
@@ -404,7 +404,7 @@ namespace DB {
 		{
 			dbChkPtr( m_pParameter = pMyQuery->BuildParameter() );
 			int rc = mysql_stmt_bind_param(m_Stmt, m_pParameter);
-			if( rc != 0 ) dbErr(MYSQL_ToResult(mysql_stmt_errno(m_Stmt)) );//dbErr(ResultCode::E_DB_PARAMETER_BIND_FAILED);
+			if( rc != 0 ) dbErr(MYSQL_ToResult(mysql_stmt_errno(m_Stmt)) );//dbErr(ResultCode::DB_PARAMETER_BIND_FAILED);
 		}
 
 	Proc_End:
@@ -470,7 +470,7 @@ namespace DB {
 					if(outParamCount != num_fields )
 					{
 						dbTrace( Trace::TRC_ERROR, "Database output count is mismatched. Query: {0}, {2} is specified, {1} is expected", pMyQuery->GetQueryString(), num_fields, (pMyQuery->GetParameterCount() - pMyQuery->GetInputParameterCount()));
-						dbErr(ResultCode::E_DB_RESULT_COUNT_MISMATCH);
+						dbErr(ResultCode::DB_RESULT_COUNT_MISMATCH);
 					}
 					outParamCount = 0;
 				}
@@ -480,7 +480,7 @@ namespace DB {
 					if( pMyQuery->GetResultCount() != num_fields )
 					{
 						dbTrace( Trace::TRC_ERROR, "Database result column count is mismatched. Query: {0}, {2} is specified, {1} is expected", pMyQuery->GetQueryString(), num_fields, pMyQuery->GetResultCount() );
-						dbErr(ResultCode::E_DB_RESULT_COUNT_MISMATCH);
+						dbErr(ResultCode::DB_RESULT_COUNT_MISMATCH);
 					}
 				}
 
@@ -503,14 +503,14 @@ namespace DB {
 							fields[i].type
 							);
 						
-						dbErr(ResultCode::E_DB_RESULT_FIELDTYPE_MISMATCH);
+						dbErr(ResultCode::DB_RESULT_FIELDTYPE_MISMATCH);
 
 					}
 					//pResults[i].buffer_type = fields[i].type;
 				}
 
 				rc = mysql_stmt_bind_result(m_Stmt, pResults);
-				if( rc != 0 ) dbErr(ResultCode::E_DB_RESULT_PATCH_FAILED);
+				if( rc != 0 ) dbErr(ResultCode::DB_RESULT_PATCH_FAILED);
 
 				do {
 					pMyQuery->PrepareResultColumn();
@@ -522,11 +522,11 @@ namespace DB {
 			else
 			{
 				rc = mysql_stmt_store_result(m_Stmt);
-				if( rc != 0 ) dbErr(ResultCode::E_DB_RESULT_PATCH_FAILED);
+				if( rc != 0 ) dbErr(ResultCode::DB_RESULT_PATCH_FAILED);
 			}
 
 			rc = mysql_stmt_free_result(m_Stmt);
-			if( rc != 0 ) dbErr(ResultCode::E_DB_RESULT_PATCH_FAILED);
+			if( rc != 0 ) dbErr(ResultCode::DB_RESULT_PATCH_FAILED);
 
 			resultStatus = mysql_stmt_next_result(m_Stmt);
 		}

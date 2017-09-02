@@ -18,10 +18,10 @@ Result ClusteredServiceEntity::GetService( ServiceType* &pService )
 	ServerServiceInformation* pServiceInfo = nullptr;
 
 	if( GetMasterUID() == 0 )
-		return ResultCode::E_SVR_CLUSTER_NOMASTER;
+		return ResultCode::SVR_CLUSTER_NOMASTER;
 
 	if (!FindService(GetMasterUID(), pServiceInfo))
-		return ResultCode::E_SVR_SERVICE_FAILED;
+		return ResultCode::SVR_SERVICE_FAILED;
 
 	pService = pServiceInfo->GetService<ServiceType>();
 

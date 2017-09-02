@@ -46,7 +46,7 @@ namespace SF
 
 		}; // Result EntityServerService::RegisterEntityCmd( const TransactionID &InTransactionID, const EntityID &InLocalEntID, const char* InEntName )
 		// Cmd: Find Entity
-		Result EntityServerService::UnregisterEntityCmd( const TransactionID &InTransactionID, const EntityUID &InEntUID )
+		Result EntityServerService::UnregisterEntityCmd( const TransactionID &InTransactionID, const uint64_t &InEntUID )
 		{
  			Result hr;
 
@@ -56,7 +56,7 @@ namespace SF
 
 			return hr;
 
-		}; // Result EntityServerService::UnregisterEntityCmd( const TransactionID &InTransactionID, const EntityUID &InEntUID )
+		}; // Result EntityServerService::UnregisterEntityCmd( const TransactionID &InTransactionID, const uint64_t &InEntUID )
 		// Cmd: Find Entity
 		Result EntityServerService::FindEntityCmd( const TransactionID &InTransactionID, const EntityID &InLocalEntID )
 		{

@@ -18,10 +18,10 @@
 #include "ServerSystem/GameSystem.h"
 #include "ServerSystem/GameLog/GameLog.h"
 #include "Container/SFArray.h"
-#include "Common/GameConst.h"
+#include "GameConst.h"
 #include "GameSystemComponentIDs.h"
 
-namespace BR {
+namespace SF {
 namespace ConspiracyGameInstanceServer {
 
 	class GameInstanceEntity;
@@ -66,10 +66,10 @@ namespace ConspiracyGameInstanceServer {
 		// Add log items
 		Result AddGameStateChange(TimeStampSec timeStamp, GameStateID gameState );
 
-		Result AddGameVote( TimeStampSec timeStamp, GameVoteType type, UINT voterCount );
+		Result AddGameVote( TimeStampSec timeStamp, GameVoteType type, uint voterCount );
 		Result UpdateGameVote( PlayerID voter, PlayerID voted );
 
-		Result AddGameVoteResult(TimeStampSec timeStamp, UINT numRankers, const PlayerID* ranker );
+		Result AddGameVoteResult(TimeStampSec timeStamp, uint numRankers, const PlayerID* ranker );
 
 		Result AddGamePlayerKilled(TimeStampSec timeStamp, PlayerKilledReason reason, PlayerID killedPlayerID );
 
@@ -80,7 +80,7 @@ namespace ConspiracyGameInstanceServer {
 
 
 }; // namespace ConspiracyGameInstanceServer
-}; // namespace BR
+}; // namespace SF
 
 
 

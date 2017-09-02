@@ -144,7 +144,7 @@ namespace SF
 				RouteContext m_RouteContext;
 				TransactionID m_TransactionID;
 				uint16_t m_RouteHopCount;
-				EntityUID m_Sender;
+				uint64_t m_Sender;
 				NetClass m_SenderNetClass;
 				NetAddress m_SenderAddress;
 				ClusterID m_ClusterID;
@@ -163,7 +163,7 @@ namespace SF
 				const RouteContext& GetRouteContext() const	{ return m_RouteContext; };
 				const TransactionID& GetTransactionID() const	{ return m_TransactionID; };
 				const uint16_t& GetRouteHopCount() const	{ return m_RouteHopCount; };
-				const EntityUID& GetSender() const	{ return m_Sender; };
+				const uint64_t& GetSender() const	{ return m_Sender; };
 				const NetClass& GetSenderNetClass() const	{ return m_SenderNetClass; };
 				const NetAddress& GetSenderAddress() const	{ return m_SenderAddress; };
 				const ClusterID& GetClusterID() const	{ return m_ClusterID; };
@@ -176,7 +176,7 @@ namespace SF
 				static Result ParseMessageTo( MessageData* pIMsg, VariableMapBuilder& variableBuilder );
 				static Result ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageData* pIMsg, MessageBase* &pMsgBase );
 
-				static MessageData* Create( IMemoryManager& memoryManager, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const uint16_t &InRouteHopCount, const EntityUID &InSender, const NetClass &InSenderNetClass, const NetAddress &InSenderAddress, const ClusterID &InClusterID, const ClusterType &InClusterType, const ClusterMembership &InClusterMembership );
+				static MessageData* Create( IMemoryManager& memoryManager, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const uint16_t &InRouteHopCount, const uint64_t &InSender, const NetClass &InSenderNetClass, const NetAddress &InSenderAddress, const ClusterID &InClusterID, const ClusterType &InClusterType, const ClusterMembership &InClusterMembership );
 
 				Result OverrideRouteContextDestination( EntityUID to );
 
@@ -256,7 +256,7 @@ namespace SF
 			private:
 				RouteContext m_RouteContext;
 				uint16_t m_RouteHopCount;
-				EntityUID m_JoinedServiceUID;
+				uint64_t m_JoinedServiceUID;
 				NetClass m_JoinedServiceNetClass;
 				NetAddress m_JoinedServiceAddress;
 				ClusterID m_ClusterID;
@@ -274,7 +274,7 @@ namespace SF
 
 				const RouteContext& GetRouteContext() const	{ return m_RouteContext; };
 				const uint16_t& GetRouteHopCount() const	{ return m_RouteHopCount; };
-				const EntityUID& GetJoinedServiceUID() const	{ return m_JoinedServiceUID; };
+				const uint64_t& GetJoinedServiceUID() const	{ return m_JoinedServiceUID; };
 				const NetClass& GetJoinedServiceNetClass() const	{ return m_JoinedServiceNetClass; };
 				const NetAddress& GetJoinedServiceAddress() const	{ return m_JoinedServiceAddress; };
 				const ClusterID& GetClusterID() const	{ return m_ClusterID; };
@@ -287,7 +287,7 @@ namespace SF
 				static Result ParseMessageTo( MessageData* pIMsg, VariableMapBuilder& variableBuilder );
 				static Result ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageData* pIMsg, MessageBase* &pMsgBase );
 
-				static MessageData* Create( IMemoryManager& memoryManager, const RouteContext &InRouteContext, const uint16_t &InRouteHopCount, const EntityUID &InJoinedServiceUID, const NetClass &InJoinedServiceNetClass, const NetAddress &InJoinedServiceAddress, const ClusterID &InClusterID, const ClusterType &InClusterType, const ClusterMembership &InJoinedServiceMembership );
+				static MessageData* Create( IMemoryManager& memoryManager, const RouteContext &InRouteContext, const uint16_t &InRouteHopCount, const uint64_t &InJoinedServiceUID, const NetClass &InJoinedServiceNetClass, const NetAddress &InJoinedServiceAddress, const ClusterID &InClusterID, const ClusterType &InClusterType, const ClusterMembership &InJoinedServiceMembership );
 
 				Result OverrideRouteContextDestination( EntityUID to );
 
@@ -469,9 +469,9 @@ namespace SF
 			private:
 				RouteContext m_RouteContext;
 				uint16_t m_RouteHopCount;
-				EntityUID m_Sender;
+				uint64_t m_Sender;
 				ClusterID m_ClusterID;
-				EntityUID m_MasterUID;
+				uint64_t m_MasterUID;
 			public:
 				ClusterMasterAssignedS2CEvt()
 					{}
@@ -484,9 +484,9 @@ namespace SF
 
 				const RouteContext& GetRouteContext() const	{ return m_RouteContext; };
 				const uint16_t& GetRouteHopCount() const	{ return m_RouteHopCount; };
-				const EntityUID& GetSender() const	{ return m_Sender; };
+				const uint64_t& GetSender() const	{ return m_Sender; };
 				const ClusterID& GetClusterID() const	{ return m_ClusterID; };
-				const EntityUID& GetMasterUID() const	{ return m_MasterUID; };
+				const uint64_t& GetMasterUID() const	{ return m_MasterUID; };
 
 				static Result TraceOut(MessageData* pMsg);
 
@@ -494,7 +494,7 @@ namespace SF
 				static Result ParseMessageTo( MessageData* pIMsg, VariableMapBuilder& variableBuilder );
 				static Result ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageData* pIMsg, MessageBase* &pMsgBase );
 
-				static MessageData* Create( IMemoryManager& memoryManager, const RouteContext &InRouteContext, const uint16_t &InRouteHopCount, const EntityUID &InSender, const ClusterID &InClusterID, const EntityUID &InMasterUID );
+				static MessageData* Create( IMemoryManager& memoryManager, const RouteContext &InRouteContext, const uint16_t &InRouteHopCount, const uint64_t &InSender, const ClusterID &InClusterID, const uint64_t &InMasterUID );
 
 				Result OverrideRouteContextDestination( EntityUID to );
 
@@ -524,7 +524,7 @@ namespace SF
 				RouteContext m_RouteContext;
 				uint16_t m_RouteHopCount;
 				ClusterID m_ClusterID;
-				EntityUID m_VoteToUID;
+				uint64_t m_VoteToUID;
 				uint64_t m_VotedUpTime;
 			public:
 				ClusterMasterVoteC2SEvt()
@@ -539,7 +539,7 @@ namespace SF
 				const RouteContext& GetRouteContext() const	{ return m_RouteContext; };
 				const uint16_t& GetRouteHopCount() const	{ return m_RouteHopCount; };
 				const ClusterID& GetClusterID() const	{ return m_ClusterID; };
-				const EntityUID& GetVoteToUID() const	{ return m_VoteToUID; };
+				const uint64_t& GetVoteToUID() const	{ return m_VoteToUID; };
 				const uint64_t& GetVotedUpTime() const	{ return m_VotedUpTime; };
 
 				static Result TraceOut(MessageData* pMsg);
@@ -548,7 +548,7 @@ namespace SF
 				static Result ParseMessageTo( MessageData* pIMsg, VariableMapBuilder& variableBuilder );
 				static Result ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageData* pIMsg, MessageBase* &pMsgBase );
 
-				static MessageData* Create( IMemoryManager& memoryManager, const RouteContext &InRouteContext, const uint16_t &InRouteHopCount, const ClusterID &InClusterID, const EntityUID &InVoteToUID, const uint64_t &InVotedUpTime );
+				static MessageData* Create( IMemoryManager& memoryManager, const RouteContext &InRouteContext, const uint16_t &InRouteHopCount, const ClusterID &InClusterID, const uint64_t &InVoteToUID, const uint64_t &InVotedUpTime );
 
 				Result OverrideRouteContextDestination( EntityUID to );
 
@@ -576,7 +576,7 @@ namespace SF
 			private:
 				RouteContext m_RouteContext;
 				uint16_t m_RouteHopCount;
-				EntityUID m_Sender;
+				uint64_t m_Sender;
 				ClusterID m_ClusterID;
 				ServiceStatus m_MemberStatus;
 			public:
@@ -591,7 +591,7 @@ namespace SF
 
 				const RouteContext& GetRouteContext() const	{ return m_RouteContext; };
 				const uint16_t& GetRouteHopCount() const	{ return m_RouteHopCount; };
-				const EntityUID& GetSender() const	{ return m_Sender; };
+				const uint64_t& GetSender() const	{ return m_Sender; };
 				const ClusterID& GetClusterID() const	{ return m_ClusterID; };
 				const ServiceStatus& GetMemberStatus() const	{ return m_MemberStatus; };
 
@@ -601,7 +601,7 @@ namespace SF
 				static Result ParseMessageTo( MessageData* pIMsg, VariableMapBuilder& variableBuilder );
 				static Result ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageData* pIMsg, MessageBase* &pMsgBase );
 
-				static MessageData* Create( IMemoryManager& memoryManager, const RouteContext &InRouteContext, const uint16_t &InRouteHopCount, const EntityUID &InSender, const ClusterID &InClusterID, const ServiceStatus &InMemberStatus );
+				static MessageData* Create( IMemoryManager& memoryManager, const RouteContext &InRouteContext, const uint16_t &InRouteHopCount, const uint64_t &InSender, const ClusterID &InClusterID, const ServiceStatus &InMemberStatus );
 
 				Result OverrideRouteContextDestination( EntityUID to );
 
@@ -629,7 +629,7 @@ namespace SF
 			private:
 				RouteContext m_RouteContext;
 				uint16_t m_RouteHopCount;
-				EntityUID m_Sender;
+				uint64_t m_Sender;
 				ClusterID m_ClusterID;
 				uint32_t m_Workload;
 			public:
@@ -644,7 +644,7 @@ namespace SF
 
 				const RouteContext& GetRouteContext() const	{ return m_RouteContext; };
 				const uint16_t& GetRouteHopCount() const	{ return m_RouteHopCount; };
-				const EntityUID& GetSender() const	{ return m_Sender; };
+				const uint64_t& GetSender() const	{ return m_Sender; };
 				const ClusterID& GetClusterID() const	{ return m_ClusterID; };
 				const uint32_t& GetWorkload() const	{ return m_Workload; };
 
@@ -654,7 +654,7 @@ namespace SF
 				static Result ParseMessageTo( MessageData* pIMsg, VariableMapBuilder& variableBuilder );
 				static Result ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageData* pIMsg, MessageBase* &pMsgBase );
 
-				static MessageData* Create( IMemoryManager& memoryManager, const RouteContext &InRouteContext, const uint16_t &InRouteHopCount, const EntityUID &InSender, const ClusterID &InClusterID, const uint32_t &InWorkload );
+				static MessageData* Create( IMemoryManager& memoryManager, const RouteContext &InRouteContext, const uint16_t &InRouteHopCount, const uint64_t &InSender, const ClusterID &InClusterID, const uint32_t &InWorkload );
 
 				Result OverrideRouteContextDestination( EntityUID to );
 
@@ -785,7 +785,7 @@ namespace SF
 				RouteContext m_RouteContext;
 				uint16_t m_RouteHopCount;
 				PlayerID m_PlayerID;
-				EntityUID m_PlayerUID;
+				uint64_t m_PlayerUID;
 			public:
 				GamePlayerEntityCreatedC2SEvt()
 					{}
@@ -799,7 +799,7 @@ namespace SF
 				const RouteContext& GetRouteContext() const	{ return m_RouteContext; };
 				const uint16_t& GetRouteHopCount() const	{ return m_RouteHopCount; };
 				const PlayerID& GetPlayerID() const	{ return m_PlayerID; };
-				const EntityUID& GetPlayerUID() const	{ return m_PlayerUID; };
+				const uint64_t& GetPlayerUID() const	{ return m_PlayerUID; };
 
 				static Result TraceOut(MessageData* pMsg);
 
@@ -807,7 +807,7 @@ namespace SF
 				static Result ParseMessageTo( MessageData* pIMsg, VariableMapBuilder& variableBuilder );
 				static Result ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageData* pIMsg, MessageBase* &pMsgBase );
 
-				static MessageData* Create( IMemoryManager& memoryManager, const RouteContext &InRouteContext, const uint16_t &InRouteHopCount, const PlayerID &InPlayerID, const EntityUID &InPlayerUID );
+				static MessageData* Create( IMemoryManager& memoryManager, const RouteContext &InRouteContext, const uint16_t &InRouteHopCount, const PlayerID &InPlayerID, const uint64_t &InPlayerUID );
 
 				Result OverrideRouteContextDestination( EntityUID to );
 
@@ -836,7 +836,7 @@ namespace SF
 				RouteContext m_RouteContext;
 				uint16_t m_RouteHopCount;
 				PlayerID m_PlayerID;
-				EntityUID m_PlayerUID;
+				uint64_t m_PlayerUID;
 			public:
 				GamePlayerEntityDeletedC2SEvt()
 					{}
@@ -850,7 +850,7 @@ namespace SF
 				const RouteContext& GetRouteContext() const	{ return m_RouteContext; };
 				const uint16_t& GetRouteHopCount() const	{ return m_RouteHopCount; };
 				const PlayerID& GetPlayerID() const	{ return m_PlayerID; };
-				const EntityUID& GetPlayerUID() const	{ return m_PlayerUID; };
+				const uint64_t& GetPlayerUID() const	{ return m_PlayerUID; };
 
 				static Result TraceOut(MessageData* pMsg);
 
@@ -858,7 +858,7 @@ namespace SF
 				static Result ParseMessageTo( MessageData* pIMsg, VariableMapBuilder& variableBuilder );
 				static Result ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageData* pIMsg, MessageBase* &pMsgBase );
 
-				static MessageData* Create( IMemoryManager& memoryManager, const RouteContext &InRouteContext, const uint16_t &InRouteHopCount, const PlayerID &InPlayerID, const EntityUID &InPlayerUID );
+				static MessageData* Create( IMemoryManager& memoryManager, const RouteContext &InRouteContext, const uint16_t &InRouteHopCount, const PlayerID &InPlayerID, const uint64_t &InPlayerUID );
 
 				Result OverrideRouteContextDestination( EntityUID to );
 

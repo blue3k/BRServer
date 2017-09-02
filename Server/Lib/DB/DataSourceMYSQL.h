@@ -32,14 +32,14 @@ namespace DB {
 		std::string m_ServerIP;
 
 		// server port
-		UINT m_Port;
+		uint m_Port;
 
 	public:
 		DataSourceMYSQL();
 		virtual ~DataSourceMYSQL() { CloseDBSource(); }
 
 		const std::string& GetServerIP()			{ return m_ServerIP; }
-		UINT GetServerPort()						{ return m_Port; }
+		uint GetServerPort()						{ return m_Port; }
 
 		// initialize DB source
 		virtual Result	InitializeDBSource( const std::string& strConnectionString, const std::string& strDBName, const std::string& strUserID, const std::string& strPassword );

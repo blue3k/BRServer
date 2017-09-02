@@ -20,13 +20,13 @@
 
 
 
-namespace BR {
+namespace SF {
 namespace Net {
 	class ServerMUDP;
 }};
 
 
-namespace BR {
+namespace SF {
 namespace SharedModuleServer
 {
 
@@ -133,7 +133,7 @@ namespace SharedModuleServer
 
 
 }; // namespace SharedModuleServer
-}; // namespace BR
+}; // namespace SF
 
 
 

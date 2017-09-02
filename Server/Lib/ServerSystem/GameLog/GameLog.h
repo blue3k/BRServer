@@ -15,7 +15,7 @@
 #include "Common/ClassUtil.h"
 #include "Memory/SFMemory.h"
 #include "Types/BrGameTypes.h"
-#include "Common/GameConst.h"
+#include "GameConst.h"
 #include "Common/CircularQueue.h"
 #include "Common/MemoryStream.h"
 #include "Types/BrSvrTypes.h"
@@ -80,7 +80,7 @@ namespace Svr {
 		virtual void TerminateLog();
 
 		// Get log binary
-		Result GetGameLogBinary( OutputMemoryStream& stream, UINT startIndex, UINT count );
+		Result GetGameLogBinary( OutputMemoryStream& stream, uint startIndex, uint count );
 
 	};
 

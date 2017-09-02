@@ -15,7 +15,7 @@
 #include "Util/TimeUtil.h"
 #include "ServerLog/SvrLog.h"
 #include "Thread/Thread.h"
-#include "ServerSystem/SvrConstDefault.h"
+#include "SvrConst.h"
 #include "ServerSystem/MasterEntity.h"
 #include "ServerSystem/MessageRoute.h"
 #include "ServerSystem/Transaction.h"
@@ -44,7 +44,7 @@ namespace Svr
 	//
 
 
-	MasterEntity::MasterEntity( UINT uiTransQueueSize, UINT TransResQueueSize )
+	MasterEntity::MasterEntity( uint uiTransQueueSize, uint TransResQueueSize )
 		: Entity( uiTransQueueSize, TransResQueueSize )
 		, m_uiMaxActiveTransaction(1024)
 		, m_pExclusiveTransaction(nullptr)
@@ -60,7 +60,7 @@ namespace Svr
 	}
 
 	// change maximum active transaction
-	void MasterEntity::SetMaxActiveTransaction( UINT uiMaxActiveTransaction )
+	void MasterEntity::SetMaxActiveTransaction( uint uiMaxActiveTransaction )
 	{
 		if( uiMaxActiveTransaction < 1 ) uiMaxActiveTransaction = 1;// atleast one can processe
 
@@ -410,9 +410,9 @@ namespace Svr
 		return hr;
 	}
 
-	UINT MasterEntity::GetActiveTransactionCount()
+	uint MasterEntity::GetActiveTransactionCount()
 	{
-		return (UINT)m_activeTrans.GetItemCount() + (m_pExclusiveTransaction == nullptr ? 0 : 1);
+		return (uint)m_activeTrans.GetItemCount() + (m_pExclusiveTransaction == nullptr ? 0 : 1);
 	}
 
 }; // namespace Svr

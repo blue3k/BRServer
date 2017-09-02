@@ -69,7 +69,7 @@ namespace SF {
 			EntityUID GetInstanceEntityUID()							{ return m_InstanceEntityUID; }
 			//CounterListNode& GetListNode()							{ return m_ListNode; }
 
-			//UINT GetNumCounter()										{ return (UINT)m_Counters.GetSize(); }
+			//uint GetNumCounter()										{ return (uint)m_Counters.GetSize(); }
 			Array<PerformanceCounter*>& GetCounters()					{ return m_Counters; }
 
 			// Register this instance to client

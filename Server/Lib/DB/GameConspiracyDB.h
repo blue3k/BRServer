@@ -51,13 +51,13 @@ namespace DB {
 		//	Game DB Interface
 		//
 
-		Result CreatePlayerInfoCmd(TransactionID Sender, UINT shardID, const PlayerID &playerID, INT initialStamina);
+		Result CreatePlayerInfoCmd(TransactionID Sender, uint shardID, const PlayerID &playerID, INT initialStamina);
 
 		// Query player info
-		Result GetPlayerInfoCmd(TransactionID Sender, UINT shardID, const PlayerID &playerID);
+		Result GetPlayerInfoCmd(TransactionID Sender, uint shardID, const PlayerID &playerID);
 
 		// Save player info
-		Result SetPlayerInfoCmd(TransactionID Sender, UINT shardID, const PlayerID &playerID,
+		Result SetPlayerInfoCmd(TransactionID Sender, uint shardID, const PlayerID &playerID,
 																				SHORT	Level,
 																				int64_t	Exp,
 																				int64_t	GameMoney,
@@ -74,7 +74,7 @@ namespace DB {
 																				);
 
 
-		Result SavePurchaseInfoToDB(TransactionID Sender, UINT shardID, const PlayerID &playerID,
+		Result SavePurchaseInfoToDB(TransactionID Sender, uint shardID, const PlayerID &playerID,
 																				SHORT	Level,
 																				int64_t	Exp,
 																				int64_t	GameMoney,
@@ -87,14 +87,14 @@ namespace DB {
 			TimeStampSec	LatestTickTime
 																				);
 
-		Result CheckPurchaseID(TransactionID Sender, UINT shardID, const Array<uint8_t>& purchaseID);
+		Result CheckPurchaseID(TransactionID Sender, uint shardID, const Array<uint8_t>& purchaseID);
 
 		// Nick name
-		Result SetNickName(TransactionID Sender, UINT shardID, PlayerID playerID, const char* nickName);
-		Result GetNickName(TransactionID Sender, UINT shardID, PlayerID playerID);
+		Result SetNickName(TransactionID Sender, uint shardID, PlayerID playerID, const char* nickName);
+		Result GetNickName(TransactionID Sender, uint shardID, PlayerID playerID);
 
 		// Save player info
-		Result UpdateGameEndCmd(TransactionID Sender, UINT shardID, const PlayerID &playerID,
+		Result UpdateGameEndCmd(TransactionID Sender, uint shardID, const PlayerID &playerID,
 																				SHORT	Level,
 																				int64_t	Exp,
 																				int64_t	GameMoney,
@@ -107,7 +107,7 @@ namespace DB {
 																				);
 		
 		// Save player info
-		Result UpdateJoinGameCmd(TransactionID Sender, UINT shardID, const PlayerID &playerID,
+		Result UpdateJoinGameCmd(TransactionID Sender, uint shardID, const PlayerID &playerID,
 																				int64_t	Gem,
 																				SHORT	Stamina,
 																				SHORT	PlayerState,
@@ -116,7 +116,7 @@ namespace DB {
 																				);
 
 		// Save player info
-		Result UpdateTickStatusCmd(TransactionID Sender, UINT shardID, const PlayerID &playerID,
+		Result UpdateTickStatusCmd(TransactionID Sender, uint shardID, const PlayerID &playerID,
 																				int64_t	Gem,
 																				SHORT	Stamina,
 																				SHORT	PlayerState,
@@ -125,32 +125,32 @@ namespace DB {
 																				);
 
 		// Save player info
-		Result GetPlayerStatusCmd(TransactionID Sender, UINT shardID, const PlayerID &playerID);
+		Result GetPlayerStatusCmd(TransactionID Sender, uint shardID, const PlayerID &playerID);
 
-		Result GetPlayerQuickInfoCmd(TransactionID Sender, UINT shardID, PlayerID playerID);
+		Result GetPlayerQuickInfoCmd(TransactionID Sender, uint shardID, PlayerID playerID);
 
-		Result GetFriendQuickInfoCmd(TransactionID Sender, UINT shardID, PlayerID playerID);
-		Result GetFriendQuickInfoWithNickCmd(TransactionID Sender, UINT shardID, PlayerID playerID);
+		Result GetFriendQuickInfoCmd(TransactionID Sender, uint shardID, PlayerID playerID);
+		Result GetFriendQuickInfoWithNickCmd(TransactionID Sender, uint shardID, PlayerID playerID);
 
-		Result GetFriendSlotStatus(TransactionID Sender, UINT shardID, PlayerID playerID);
+		Result GetFriendSlotStatus(TransactionID Sender, uint shardID, PlayerID playerID);
 
 
 		// Friend list
-		Result AddFriend(TransactionID Sender, UINT shardID, PlayerID accountID, PlayerID FriendUID, UINT friendShardID, FacebookUID FriendFacebookUID);
-		Result RemoveFriend(TransactionID Sender, UINT shardID, PlayerID accountID, PlayerID FriendUID);
-		Result GetFriendList(TransactionID Sender, UINT shardID, PlayerID accountID);
-		Result UpdateFriendStaminaTime(TransactionID Sender, UINT shardID, PlayerID accountID, PlayerID FriendUID, TimeStampSec timeStamp);
+		Result AddFriend(TransactionID Sender, uint shardID, PlayerID accountID, PlayerID FriendUID, uint friendShardID, FacebookUID FriendFacebookUID);
+		Result RemoveFriend(TransactionID Sender, uint shardID, PlayerID accountID, PlayerID FriendUID);
+		Result GetFriendList(TransactionID Sender, uint shardID, PlayerID accountID);
+		Result UpdateFriendStaminaTime(TransactionID Sender, uint shardID, PlayerID accountID, PlayerID FriendUID, TimeStampSec timeStamp);
 
 
 		// Notifications
-		Result Notification_Add(TransactionID Sender, UINT shardID, PlayerID ToUserID, bool isCollapsable, NotificationType messageID, int64_t messageParam0, int64_t messageParam1, const char* messageText, TimeStampSec timeStamp);
-		Result Notification_GetList(TransactionID Sender, UINT shardID, PlayerID UserID);
-		Result Notification_Remove(TransactionID Sender, UINT shardID, PlayerID userID, int32_t notificationID);
-		Result Notification_RemoveByMessageID(TransactionID Sender, UINT shardID, PlayerID UserID, int16_t messageID);
-		Result Notification_SetRead(TransactionID Sender, UINT shardID, PlayerID userID, int32_t notificationID);
+		Result Notification_Add(TransactionID Sender, uint shardID, PlayerID ToUserID, bool isCollapsable, NotificationType messageID, int64_t messageParam0, int64_t messageParam1, const char* messageText, TimeStampSec timeStamp);
+		Result Notification_GetList(TransactionID Sender, uint shardID, PlayerID UserID);
+		Result Notification_Remove(TransactionID Sender, uint shardID, PlayerID userID, int32_t notificationID);
+		Result Notification_RemoveByMessageID(TransactionID Sender, uint shardID, PlayerID UserID, int16_t messageID);
+		Result Notification_SetRead(TransactionID Sender, uint shardID, PlayerID userID, int32_t notificationID);
 
-		Result SetComplitionState(TransactionID Sender, UINT shardID, PlayerID userID, const char* complitionState);
-		Result GetComplitionState(TransactionID Sender, UINT shardID, PlayerID userID);
+		Result SetComplitionState(TransactionID Sender, uint shardID, PlayerID userID, const char* complitionState);
+		Result GetComplitionState(TransactionID Sender, uint shardID, PlayerID userID);
 	};
 
 } // namespace DB

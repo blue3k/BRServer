@@ -42,7 +42,7 @@ namespace Svr
 		Result ServicePrepare();
 
 		// Run service main function
-		Result ServiceRun(BR::Svr::BrServer *pSvrInstance );
+		Result ServiceRun(SF::Svr::BrServer *pSvrInstance );
 	};
 
 

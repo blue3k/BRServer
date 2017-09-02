@@ -17,15 +17,15 @@
 #include "Net/NetServerUDP.h"
 #include "Util/TimeUtil.h"
 #include "Types/BrBaseTypes.h"
-#include "ResultCode/SFResultCodeCommon.h"
+#include "ResultCode/SFResultCodeLibrary.h"
 #include "ResultCode/SFResultCodeGame.h"
 
 
 #include "ConspiracyGameInstanceSvrConst.h"
 #include "ConspiracyGameInstanceServerClass.h"
 
-#include "Protocol/Policy/GameServerIPolicy.h"
-#include "Protocol/Policy/GameIPolicy.h"
+#include "Protocol/Policy/GameServerNetPolicy.h"
+#include "Protocol/Policy/GameNetPolicy.h"
 
 
 #include "GamePlayer.h"
@@ -40,7 +40,7 @@ SF_MEMORYPOOL_IMPLEMENT(BR::ConspiracyGameInstanceServer::GamePlayer);
 
 
 
-namespace BR {
+namespace SF {
 namespace ConspiracyGameInstanceServer {
 
 
@@ -151,6 +151,6 @@ namespace ConspiracyGameInstanceServer {
 
 
 }; // ConspiracyGameInstanceServer
-}; // namespace BR
+}; // namespace SF
 
 

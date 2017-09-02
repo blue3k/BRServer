@@ -17,6 +17,8 @@
 
 namespace conspiracy
 {
+	using namespace SF;
+
  	class BotTalkTbl
 	{
  	public:
@@ -57,9 +59,9 @@ namespace conspiracy
 
 
 		// declare member function
-		static BR::Result LoadTable( const std::list<BotTalkTblItem>& rowList );
+		static Result LoadTable( const std::list<BotTalkTblItem>& rowList );
 
-		static BR::Result FindItem( const int& Key, BotTalkTblItem*& pRow);
+		static Result FindItem( const int& Key, BotTalkTblItem*& pRow);
 	}; // class BotTalkTbl
 }; // namespace conspiracy
 

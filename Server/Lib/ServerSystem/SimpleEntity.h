@@ -38,7 +38,7 @@ namespace Svr {
 		SharedPointerT<Transaction> m_pCurTran;
 
 	public:
-		SimpleEntity( UINT uiTransQueueSize = 16, UINT TransResQueueSize = 16 );
+		SimpleEntity( uint uiTransQueueSize = 16, uint TransResQueueSize = 16 );
 		virtual ~SimpleEntity();
 
 		// clear transaction
@@ -53,7 +53,7 @@ namespace Svr {
 
 		virtual Result ProcessTransactionResult(Transaction *pCurTran, TransactionResult *pTransRes) override;
 
-		virtual UINT GetActiveTransactionCount() override;
+		virtual uint GetActiveTransactionCount() override;
 	};
 
 #include "SimpleEntity.inl"

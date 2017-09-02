@@ -24,12 +24,12 @@ namespace SF
 {
 
 	LibComponentTrace::LibComponentTrace()
-		: Component((UINT)ComponentID)
+		: Component((uint)ComponentID)
 	{
 	}
 
 	LibComponentTrace::LibComponentTrace(const char* modulePath, const char* moduleName, const char* traceCfgPath)
-		: Component((UINT)ComponentID)
+		: Component((uint)ComponentID)
 	{
 		if (modulePath != nullptr)
 			Util::SetModulePath(modulePath, moduleName);

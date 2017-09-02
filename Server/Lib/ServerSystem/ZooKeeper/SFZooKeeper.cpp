@@ -11,8 +11,12 @@
 
 #include "stdafx.h"
 #include "ZooKeeper/SFZooKeeper.h"
+#include "zookeeper.h"
 
 
+
+static_assert(SF::ZOOKEEPER_STAT_BUFFER_SIZE >= sizeof(Stat), "We need enough stat buffer size");
+static_assert(SF::ZOOKEEPER_CLIENTID_BUFFER_SIZE >= sizeof(clientid_t), "We need enough stat buffer size");
 
 
 namespace SF
@@ -63,7 +67,7 @@ namespace SF
 		auto pTask = (StatTask*)data;
 		TaskOperator().StartWorking(pTask);
 		pTask->Result = ZooKeeper::ToResult(rc);
-		pTask->ResultStat = *stat;
+		*pTask->ResultStat = *stat;
 		TaskOperator().Finished(pTask);
 		SharedReferenceDec(static_cast<SharedObject*>(pTask));
 	}
@@ -103,7 +107,7 @@ namespace SF
 		{
 			pTask->ResultStrings[iStr] = strings->data[iStr];
 		}
-		pTask->ResultStat = *stat;
+		*pTask->ResultStat = *stat;
 		TaskOperator().Finished(pTask);
 		SharedReferenceDec(static_cast<SharedObject*>(pTask));
 	}
@@ -143,13 +147,20 @@ namespace SF
 		, m_ZKHandle(nullptr)
 		, m_State(0)
 		, m_ZKWatcher(memoryManager)
+		, m_LogLevel(ZOO_LOG_LEVEL_WARN)
 	{
-		memset(&m_ClientID, 0, sizeof(m_ClientID));
+		m_ClientID = (clientid_t*)ClientIDBuffer;
+		memset(m_ClientID, 0, sizeof(clientid_t));
 	}
 
 	ZooKeeper::~ZooKeeper()
 	{
 		Close();
+	}
+
+	bool ZooKeeper::IsConnected() const
+	{
+		return m_ZKWatcher.GetState() == ZOO_CONNECTED_STATE;
 	}
 
 	void ZooKeeper::Close()
@@ -163,16 +174,16 @@ namespace SF
 	{
 		Close();
 
-		zoo_set_debug_level(m_LogLevel);
+		zoo_set_debug_level((ZooLogLevel)m_LogLevel);
 
-		clientid_t* previousClientID = m_ClientID.client_id != 0 ? &m_ClientID : nullptr;
+		clientid_t* previousClientID = m_ClientID->client_id != 0 ? m_ClientID : nullptr;
 		m_ZKHandle = zookeeper_init(connectionString, ZooKeeperWatcher::ZKWatcherCB, 10000, previousClientID, &m_ZKWatcher, 0);
 		if (m_ZKHandle == nullptr)
 		{
 			return ResultCode::UNEXPECTED;
 		}
 
-		m_ClientID = *zoo_client_id(m_ZKHandle);
+		*m_ClientID = *zoo_client_id(m_ZKHandle);
 
 		return ResultCode::SUCCESS;
 	}

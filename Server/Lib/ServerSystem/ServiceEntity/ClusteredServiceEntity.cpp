@@ -27,10 +27,10 @@
 #include "ServerSystem/SvrTrace.h"
 #include "Task/ServerTaskEvent.h"
 
-#include "Protocol/Policy/ClusterServerNetPolicy.h"
+#include "Protocol/Policy/ClusterServerNetNetPolicy.h"
 
 
-SF_MEMORYPOOL_IMPLEMENT(BR::Svr::ClusteredServiceEntity::ServiceTableItem);
+SF_MEMORYPOOL_IMPLEMENT(SF::Svr::ClusteredServiceEntity::ServiceTableItem);
 
 namespace SF {
 namespace Svr {
@@ -235,7 +235,7 @@ namespace Svr {
 	//
 
 	// Change workload
-	Result ClusteredServiceEntity::SetWorkload( UINT workload )
+	Result ClusteredServiceEntity::SetWorkload( uint workload )
 	{
 		Result hr = ResultCode::SUCCESS;
 		ServerServiceInformation *pServiceInfo = nullptr;
@@ -497,7 +497,7 @@ namespace Svr {
 		// broadcast new master assignment
 		ForEach( [&](ServerServiceInformation *pService) 
 		{
-			pService->GetConnection()->GetPolicy<Policy::ISvrPolicyClusterServer>()->ClusterMasterAssignedS2CEvt( RouteContext( GetEntityUID(), pService->GetEntityUID() ), 0, GetEntityUID(), GetClusterID(), entityUID );
+			pService->GetConnection()->GetPolicy<Policy::NetSvrPolicyClusterServer>()->ClusterMasterAssignedS2CEvt( RouteContext( GetEntityUID(), pService->GetEntityUID() ), 0, GetEntityUID(), GetClusterID(), entityUID );
 		});
 
 
@@ -518,7 +518,7 @@ namespace Svr {
 		//// broadcast new master assignment
 		//ForEach( [&](ServerServiceInformation *pService) 
 		//{
-		//	pService->GetConnection()->GetPolicy<Policy::ISvrPolicyClusterServer>()->ClusterMasterAssignedS2CEvt( RouteContext( GetEntityUID(), pService->GetEntityUID() ),1, GetClusterID(), entityUID );
+		//	pService->GetConnection()->GetPolicy<Policy::NetSvrPolicyClusterServer>()->ClusterMasterAssignedS2CEvt( RouteContext( GetEntityUID(), pService->GetEntityUID() ),1, GetClusterID(), entityUID );
 		//});
 
 	//Proc_End:
@@ -822,16 +822,16 @@ namespace Svr {
 	}
 
 	// Hash the key value
-	UINT ShardedClusterServiceEntity::KeyHash( uint64_t key )
+	uint ShardedClusterServiceEntity::KeyHash( uint64_t key )
 	{
-		return (UINT)std::hash<uint64_t>()(key);
+		return (uint)std::hash<uint64_t>()(key);
 	}
 
 	// Get Service shard by key
 	Result ShardedClusterServiceEntity::GetShard( uint64_t key, ServerServiceInformation* &pService )
 	{
 		Result hr = ResultCode::SUCCESS;
-		UINT hashedKey = KeyHash(key);
+		uint hashedKey = KeyHash(key);
 		INT serviceIndex = -1;
 		StaticArray<ServerServiceInformation*,50> services;
 
@@ -940,7 +940,7 @@ namespace Svr {
 		{
 			auto itService = m_ServiceList.begin();
 			if (!itService.IsValid())
-				return ResultCode::E_SVR_SERVICE_FAILED;
+				return ResultCode::SVR_SERVICE_FAILED;
 			m_pCurrentQueryService = converter(&*itService);
 		}
 
@@ -955,7 +955,7 @@ namespace Svr {
 			{
 				auto itService = m_ServiceList.begin();
 				if (!itService.IsValid())
-					return ResultCode::E_SVR_SERVICE_FAILED;
+					return ResultCode::SVR_SERVICE_FAILED;
 				pTblItem = converter(&*itService);
 			}
 
@@ -1002,7 +1002,7 @@ namespace Svr {
 		{
 			m_WorkloadCheckTimer.SetTimer( DurationMS(Const::WORKLOAD_UPDATE_TIME) );
 
-			SetWorkload( (UINT)m_LocalWorkload.load(std::memory_order_relaxed) );
+			SetWorkload( (uint)m_LocalWorkload.load(std::memory_order_relaxed) );
 		}
 
 	Proc_End:

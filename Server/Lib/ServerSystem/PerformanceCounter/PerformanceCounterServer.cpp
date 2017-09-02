@@ -73,7 +73,7 @@ namespace Svr {
 	{
 		PacketInfo packetInfo;
 		auto numItems = m_NewDeleteQueue.GetEnqueCount();
-		for (UINT iItem = 0; iItem < numItems&& (m_NewDeleteQueue.Dequeue(packetInfo)); iItem++)
+		for (uint iItem = 0; iItem < numItems&& (m_NewDeleteQueue.Dequeue(packetInfo)); iItem++)
 		{
 			if (packetInfo.pMessage->GetMessageHeader()->msgID.IDSeq.MsgID == Message::Monitoring::PerformanceCounterNewC2SEvt::MID.IDSeq.MsgID)
 			{
@@ -95,7 +95,7 @@ namespace Svr {
 	{
 		PacketInfo packetInfo;
 		auto numItems = m_UpdateQueue.GetEnqueCount();
-		for (UINT iItem = 0; iItem < numItems&& (m_UpdateQueue.Dequeue(packetInfo)); iItem++)
+		for (uint iItem = 0; iItem < numItems&& (m_UpdateQueue.Dequeue(packetInfo)); iItem++)
 		{
 			if (packetInfo.pMessage->GetMessageHeader()->msgID.IDSeq.MsgID == Message::Monitoring::PerformanceCounterUpdateC2SEvt::MID.IDSeq.MsgID)
 			{
@@ -139,7 +139,7 @@ namespace Svr {
 		}
 	}
 
-	Result PerformanceCounterServer::Initialize(const char* serverAddress, UINT port)
+	Result PerformanceCounterServer::Initialize(const char* serverAddress, uint port)
 	{
 		Result hr = ResultCode::SUCCESS;
 		NetAddress localAddr;
@@ -199,24 +199,24 @@ namespace Svr {
 		return ResultCode::SUCCESS;
 	}
 
-	UINT PerformanceCounterServer::GetInstanceCount()
+	uint PerformanceCounterServer::GetInstanceCount()
 	{
 		if (stm_pInstance == nullptr)
 			return 0;
 
-		return (UINT)stm_pInstance->m_InstanceMap.GetItemCount();
+		return (uint)stm_pInstance->m_InstanceMap.GetItemCount();
 	}
 
-	UINT PerformanceCounterServer::GetInstanceList(UINT startIndex, Array<SharedPointerT<PerformanceCounterInstance>>& instanceList)
+	uint PerformanceCounterServer::GetInstanceList(uint startIndex, Array<SharedPointerT<PerformanceCounterInstance>>& instanceList)
 	{
 		//Result hr = ResultCode::SUCCESS;
-		UINT numInstances = 0;
+		uint numInstances = 0;
 		if (stm_pInstance == nullptr)
 			return numInstances;
 
 		auto& instanceMap = stm_pInstance->m_InstanceMap;
 
-		instanceMap.ForeachOrder(0, (UINT)instanceMap.GetItemCount(), [&instanceMap,&instanceList](const uint64_t& key, const SharedPointerT<PerformanceCounterInstance>& value)
+		instanceMap.ForeachOrder(0, (uint)instanceMap.GetItemCount(), [&instanceMap,&instanceList](const uint64_t& key, const SharedPointerT<PerformanceCounterInstance>& value)
 		{
 			auto timeSince = Util::TimeSince(value->GetUpdatedTime());
 			if (timeSince <= DurationMS(0) || timeSince > DurationMS(TIMER_TIMOUT))
@@ -232,13 +232,13 @@ namespace Svr {
 
 	//Proc_End:
 
-		return (UINT)instanceList.GetSize();
+		return (uint)instanceList.GetSize();
 	}
 /*
-	UINT PerformanceCounterServer::GetInstanceList(UINT startIndex, UINT bufferSize, PerformanceCounterInstance** pInstanceBuffer)
+	uint PerformanceCounterServer::GetInstanceList(uint startIndex, uint bufferSize, PerformanceCounterInstance** pInstanceBuffer)
 	{
 		Result hr = ResultCode::SUCCESS;
-		UINT numInstances = 0;
+		uint numInstances = 0;
 		if (stm_pInstance == nullptr)
 			return numInstances;
 
@@ -247,7 +247,7 @@ namespace Svr {
 
 		auto& instanceMap = stm_pInstance->m_InstanceMap;
 
-		instanceMap.ForeachOrder(0, (UINT)instanceMap.GetItemCount(), [bufferSize, &pInstanceBuffer, &numInstances](const uint64_t& key, const SharedPointerT<PerformanceCounterInstance>& value)
+		instanceMap.ForeachOrder(0, (uint)instanceMap.GetItemCount(), [bufferSize, &pInstanceBuffer, &numInstances](const uint64_t& key, const SharedPointerT<PerformanceCounterInstance>& value)
 		{
 			pInstanceBuffer[numInstances++] = (PerformanceCounterInstance*)const_cast<SharedPointerT<PerformanceCounterInstance>&>(value);
 
@@ -350,7 +350,7 @@ namespace Svr {
 
 		{
 			auto& counters = messageClass.GetNewCounters();
-			for (UINT iCounter = 0; iCounter < counters.GetSize(); iCounter++)
+			for (uint iCounter = 0; iCounter < counters.GetSize(); iCounter++)
 			{
 				auto dataType = (PerformanceCounter::DataTypes)counters[iCounter].DateType;
 				switch (dataType)
@@ -389,7 +389,7 @@ namespace Svr {
 
 		{
 			auto& instances = messageClass.GetFreeInstances();
-			for (UINT iInstance = 0; iInstance < instances.GetSize(); iInstance++)
+			for (uint iInstance = 0; iInstance < instances.GetSize(); iInstance++)
 			{
 				SharedPointerT<PerformanceCounterInstance> pInstance;
 				if (!(m_InstanceMap.Remove(instances[iInstance].UID, pInstance)))
@@ -436,7 +436,7 @@ namespace Svr {
 		{
 			auto& counters = pInstance->GetCounters();
 			auto& conterValues = messageClass.GetCounterValues();
-			for (UINT iCounter = 0; iCounter < conterValues.GetSize(); iCounter++)
+			for (uint iCounter = 0; iCounter < conterValues.GetSize(); iCounter++)
 			{
 				// NOTE: assume that is LSB
 				counters[iCounter]->CopyFrom(sizeof conterValues[iCounter], (uint8_t*)&conterValues[iCounter]);

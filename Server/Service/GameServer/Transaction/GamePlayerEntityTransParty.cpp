@@ -13,7 +13,7 @@
 #include "GameServer.h"
 #include "GameServerClass.h"
 
-#include "ResultCode/SFResultCodeCommon.h"
+#include "ResultCode/SFResultCodeLibrary.h"
 #include "ResultCode/SFResultCodeGame.h"
 #include "ResultCode/SFResultCodeLogin.h"
 #include "Memory/MemoryPool.h"
@@ -30,15 +30,15 @@
 #include "ServerSystem/ServiceEntity/Game/GameClusterServiceEntity.h"
 
 #include "Protocol/Message/GameInstanceMsgClass.h"
-#include "Protocol/Policy/GameInstanceIPolicy.h"
+#include "Protocol/Policy/GameInstanceNetPolicy.h"
 
 #include "Protocol/Message/GamePartyManagerMsgClass.h"
-#include "Protocol/Policy/GamePartyManagerIPolicy.h"
+#include "Protocol/Policy/GamePartyManagerNetPolicy.h"
 
 #include "Protocol/Message/GameServerMsgClass.h"
-#include "Protocol/Policy/GameServerIPolicy.h"
+#include "Protocol/Policy/GameServerNetPolicy.h"
 #include "Protocol/Message/GamePartyMsgClass.h"
-#include "Protocol/Policy/GamePartyIPolicy.h"
+#include "Protocol/Policy/GamePartyNetPolicy.h"
 
 #include "GamePlayerEntityTransParty.h"
 #include "GameInstance/GamePlayerEntity.h"
@@ -75,7 +75,7 @@ SF_MEMORYPOOL_IMPLEMENT(BR::GameServer::PlayerTransPartyQuickChatMessageS2CEvt);
 
 
 
-namespace BR {
+namespace SF {
 namespace GameServer {
 
 
@@ -263,7 +263,7 @@ namespace GameServer {
 		svrChk( super::StartTransaction() );
 
 		if( GetMyOwner()->GetMatchingTicket() != 0 )
-			svrErr(ResultCode::E_SVR_ALREADY_INQUEUE);
+			svrErr(ResultCode::SVR_ALREADY_INQUEUE);
 
 		GetMyOwner()->SetMatchingTicket( GetMatchingQueueTicket() );
 
@@ -286,7 +286,7 @@ namespace GameServer {
 		svrChk( super::StartTransaction() );
 
 		if( GetMyOwner()->GetMatchingTicket() != GetMatchingTicket() )
-			svrErr(ResultCode::E_SVR_INVALID_QUEUEITEM);
+			svrErr(ResultCode::SVR_INVALID_QUEUEITEM);
 
 		GetMyOwner()->SetMatchingTicket( 0 );
 
@@ -307,7 +307,7 @@ namespace GameServer {
 		svrChk( super::StartTransaction() );
 
 		if( GetMatchingQueueTicket() != GetMyOwner()->GetMatchingTicket() )
-			svrErr(ResultCode::E_SVR_INVALID_QUEUEITEM);
+			svrErr(ResultCode::SVR_INVALID_QUEUEITEM);
 
 		GetMyOwner()->SetMatchingTicket( 0 );
 
@@ -358,7 +358,7 @@ namespace GameServer {
 
 		// Can't do any party operations while you are in matching queue
 		if( GetMyOwner()->GetMatchingTicket() != 0 )
-			svrErrClose(ResultCode::E_SVR_ALREADY_INQUEUE);
+			svrErrClose(ResultCode::SVR_ALREADY_INQUEUE);
 
 		if( GetMyOwner()->GetGameInsUID() != 0 )
 			svrErrClose(ResultCode::E_GAME_ALREADY_IN_GAME);
@@ -438,7 +438,7 @@ namespace GameServer {
 
 		// Can't do any party operations while you are in matching queue
 		if( GetMyOwner()->GetMatchingTicket() != 0 )
-			svrErrClose(ResultCode::E_SVR_ALREADY_INQUEUE);
+			svrErrClose(ResultCode::SVR_ALREADY_INQUEUE);
 
 		if( GetMyOwner()->GetPartyUID() != 0 )
 			svrErr(ResultCode::E_GAME_ALREADY_IN_PARTY);
@@ -446,7 +446,7 @@ namespace GameServer {
 		// Need stamina to join a party
 		if (config != nullptr)
 		{
-			//svrErr(ResultCode::E_INVALID_STATE);
+			//svrErr(ResultCode::INVALID_STATE);
 			GetMyOwner()->UpdateGamePlayer();
 			if (GetMyOwner()->GetComponent<UserGamePlayerInfoSystem>()->GetStamina() < config->StaminaForGame)
 				svrErrClose(ResultCode::E_GAME_NOTENOUGH_RESOURCE);
@@ -522,7 +522,7 @@ namespace GameServer {
 		Svr::MessageResult *pMsgRes = (Svr::MessageResult*)pRes;
 		Message::GameParty::LeavePartyRes res;
 
-		if (pRes->GetResult() == Result(ResultCode::E_SVR_INVALID_ENTITYUID))
+		if (pRes->GetResult() == Result(ResultCode::SVR_INVALID_ENTITYUID))
 		{
 			GetMyOwner()->SetPartyUID(0);
 			GetMyOwner()->UpdateDBSync();
@@ -554,7 +554,7 @@ namespace GameServer {
 
 		// Can't do any party operations while you are in matching queue
 		if( GetMyOwner()->GetMatchingTicket() != 0 )
-			svrErrClose(ResultCode::E_SVR_ALREADY_INQUEUE);
+			svrErrClose(ResultCode::SVR_ALREADY_INQUEUE);
 
 		if( GetMyOwner()->GetPartyUID() == PartyUID(0) )
 			svrErr(ResultCode::E_GAME_INVALID_PARTYID);
@@ -634,7 +634,7 @@ namespace GameServer {
 
 		// Can't do any party operations while you are in matching queue
 		if( GetMyOwner()->GetMatchingTicket() != 0 )
-			svrErrClose(ResultCode::E_SVR_ALREADY_INQUEUE);
+			svrErrClose(ResultCode::SVR_ALREADY_INQUEUE);
 
 		if( GetMyOwner()->GetPartyUID() != GetPartyUID() )
 			svrErr(ResultCode::E_GAME_INVALID_PARTYID);
@@ -728,7 +728,7 @@ namespace GameServer {
 
 		// Can't do any party operations while you are in matching queue
 		if( GetMyOwner()->GetMatchingTicket() != 0 )
-			svrErrClose(ResultCode::E_SVR_ALREADY_INQUEUE);
+			svrErrClose(ResultCode::SVR_ALREADY_INQUEUE);
 
 		if( GetMyOwner()->GetPartyUID() == PartyUID(0) )
 			svrErr(ResultCode::E_GAME_INVALID_PARTYID);
@@ -889,5 +889,5 @@ namespace GameServer {
 
 
 };// namespace GameServer 
-};// namespace BR 
+};// namespace SF 
 

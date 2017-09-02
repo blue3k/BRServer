@@ -13,7 +13,7 @@
 #include "GameServer.h"
 #include "GameServerClass.h"
 
-#include "ResultCode/SFResultCodeCommon.h"
+#include "ResultCode/SFResultCodeLibrary.h"
 #include "ResultCode/SFResultCodeGame.h"
 #include "ResultCode/SFResultCodeLogin.h"
 #include "Memory/MemoryPool.h"
@@ -26,9 +26,9 @@
 #include "ServerSystem/ServiceEntity/Game/GameClusterServiceEntity.h"
 
 #include "Protocol/Message/GameServerMsgClass.h"
-#include "Protocol/Policy/GameServerIPolicy.h"
+#include "Protocol/Policy/GameServerNetPolicy.h"
 #include "Protocol/Message/GameInstanceMsgClass.h"
-#include "Protocol/Policy/GameInstanceIPolicy.h"
+#include "Protocol/Policy/GameInstanceNetPolicy.h"
 
 #include "GamePlayerEntityTransFriend.h"
 #include "GameInstance/GamePlayerEntity.h"
@@ -60,7 +60,7 @@ SF_MEMORYPOOL_IMPLEMENT(BR::GameServer::PlayerTransGiveStamina);
 
 
 	
-namespace BR {
+namespace SF {
 namespace GameServer {
 
 
@@ -403,7 +403,7 @@ namespace GameServer {
 	Result PlayerTransFriendAcceptedS2S::StartTransaction()
 	{
 		Result hr = ResultCode::SUCCESS;
-		Policy::ISvrPolicyGame *pPolicy = nullptr;
+		Policy::NetSvrPolicyGame *pPolicy = nullptr;
 
 		svrChk( super::StartTransaction() );
 
@@ -419,7 +419,7 @@ namespace GameServer {
 		}
 		svrChk(hr);
 
-		svrChkPtr(pPolicy = GetPolicy<Policy::ISvrPolicyGame>());
+		svrChkPtr(pPolicy = GetPolicy<Policy::NetSvrPolicyGame>());
 		svrChk(pPolicy->FriendRequestAcceptedS2CEvt(GetAccepter()));
 
 	Proc_End:
@@ -841,7 +841,7 @@ namespace GameServer {
 
 		pFriend = GetMyOwner()->GetComponent<UserFriendSystem>()->GetFriend(GetTargetPlayer());
 		if( pFriend == nullptr )
-			svrErrClose(ResultCode::E_SVR_PLAYER_NOT_FOUND);
+			svrErrClose(ResultCode::SVR_PLAYER_NOT_FOUND);
 
 		//svrChk( pPlayerInfoSystem->GainStamina( -1 ) );
 
@@ -937,5 +937,5 @@ namespace GameServer {
 
 
 };// namespace GameServer 
-};// namespace BR 
+};// namespace SF 
 

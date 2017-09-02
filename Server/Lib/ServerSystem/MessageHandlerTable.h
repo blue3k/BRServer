@@ -56,7 +56,7 @@ namespace Svr {
 
 	public:
 		// Hash table mapping Item
-		typedef DoubleLinkedList<uint>::Node TableItemType;
+		typedef OrderedLinkedList<uint>::Node TableItemType;
 		TableItemType TableNode;
 
 		// MessageID for key
@@ -97,12 +97,14 @@ namespace Svr {
 										> HandlerTableType;
 	private:
 		HandlerTableType m_HandlerTable;
+		MemoryPool* m_MemoryPool = nullptr;
 
 	public:
 		
 		MessageHandlerTable( IMemoryManager &allocator )
 			: m_Allocator(allocator)
 		{
+			m_MemoryPool = m_Allocator.GetMemoryPoolBySize(sizeof(TableItem));
 		}
 
 		virtual ~MessageHandlerTable()
@@ -112,8 +114,18 @@ namespace Svr {
 			while( itItem.IsValid() )
 			{
 				TableItem *pTableItem = *itItem;
+				if (pTableItem == nullptr) continue;
+
 				m_HandlerTable.erase( itItem );
-				if( pTableItem ) m_Allocator.Free( pTableItem );
+
+				if (m_MemoryPool != nullptr)
+				{
+					m_MemoryPool->Free(pTableItem, "MessageHandlerTable");
+				}
+				else
+				{
+					IMemoryManager::Delete(pTableItem);
+				}
 			}
 		}
 
@@ -135,11 +147,17 @@ namespace Svr {
 				return hr;
 			}
 
-			void* pPtr = m_Allocator.Alloc(sizeof(TableItem));
-			if(pPtr == nullptr)
-				return ResultCode::OUT_OF_MEMORY;
-
-			TableItem *pNewItem = new(pPtr) TableItem( MessageClassType::MID, newHandler, fileName, lineNumber);
+			TableItem *pNewItem = nullptr;
+			if (m_MemoryPool != nullptr)
+			{
+				auto pPtr = m_MemoryPool->Alloc("MessageHandlerTable");
+				pNewItem = new(pPtr) TableItem(MessageClassType::MID, newHandler, fileName, lineNumber);
+			}
+			else
+			{
+				pNewItem = new(m_Allocator) TableItem(MessageClassType::MID, newHandler, fileName, lineNumber);
+			}
+			
 			if( pNewItem == nullptr )
 				return ResultCode::OUT_OF_MEMORY;
 
@@ -165,7 +183,7 @@ namespace Svr {
 			MessageHandlerType handler;
 
 			hr = GetHandler(pMsg->GetMessageHeader()->msgID,handler);
-			if( !(hr) ) return ResultCode::E_SVR_NO_MESSAGE_HANDLER;
+			if( !(hr) ) return ResultCode::SVR_NO_MESSAGE_HANDLER;
 
 			return handler( pMsg );
 		}
@@ -176,7 +194,7 @@ namespace Svr {
 			MessageHandlerType handler;
 
 			hr = GetHandler(msgID,handler);
-			if( !(hr) ) return ResultCode::E_SVR_NO_RESULT_HANDLER;
+			if( !(hr) ) return ResultCode::SVR_NO_RESULT_HANDLER;
 
 			return handler( pRes );
 		}
@@ -188,7 +206,7 @@ namespace Svr {
 			MessageHandlerType handler;
 
 			hr = GetHandler(pMsg->GetMessageHeader()->msgID,handler);
-			if( !(hr) ) return ResultCode::E_SVR_NO_MESSAGE_HANDLER;
+			if( !(hr) ) return ResultCode::SVR_NO_MESSAGE_HANDLER;
 
 			return handler( pCon, pMsg, param1 );
 		}
@@ -200,7 +218,7 @@ namespace Svr {
 			MessageHandlerType handler;
 
 			hr = GetHandler(pMsg->GetMessageHeader()->msgID,handler);
-			if( !(hr) ) return ResultCode::E_SVR_NO_MESSAGE_HANDLER;
+			if( !(hr) ) return ResultCode::SVR_NO_MESSAGE_HANDLER;
 
 			return handler( pMsg, param1, param2 );
 		}
@@ -210,10 +228,10 @@ namespace Svr {
 	};
 
 
-	#define	BR_ENTITY_MESSAGE(MessageType) RegisterMessageHandler<MessageType>( __FILE__, __LINE__, [&]( Net::Connection* pConn, Message::MessageData* &pMsgData, ::BR::Svr::Transaction* &pNewTrans)->Result 
+	#define	BR_ENTITY_MESSAGE(MessageType) RegisterMessageHandler<MessageType>( __FILE__, __LINE__, [&]( Net::Connection* pConn, Message::MessageData* &pMsgData, SF::Svr::Transaction* &pNewTrans)->Result 
 
 	#define BR_TRANS_MESSAGE(MessageType,MessageHandlerImpl) \
-		RegisterMessageHandler<MessageType>( __FILE__, __LINE__, [&](::BR::Svr::TransactionResult* pRes)->Result MessageHandlerImpl );
+		RegisterMessageHandler<MessageType>( __FILE__, __LINE__, [&](::SF::Svr::TransactionResult* pRes)->Result MessageHandlerImpl );
 
 
 	typedef std::function<Result(Net::Connection *, Message::MessageData* &, Transaction* &)>	EntityMessageHandlerItem;

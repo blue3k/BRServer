@@ -10,13 +10,13 @@
 
 
 #include "stdafx.h"
-#include "ResultCode/SFResultCodeCommon.h"
+#include "ResultCode/SFResultCodeLibrary.h"
 #include "ResultCode/SFResultCodeGame.h"
 #include "Memory/MemoryPool.h"
 #include "Types/BrSvrTypes.h"
 
 #include "Protocol/Message/PartyMatchingQueueMsgClass.h"
-#include "Protocol/Policy/PartyMatchingQueueIPolicy.h"
+#include "Protocol/Policy/PartyMatchingQueueNetPolicy.h"
 
 #include "ServerSystem/BrServerUtil.h"
 #include "ServerSystem/SvrTrace.h"
@@ -30,16 +30,16 @@
 #include "ServerSystem/ServerService/PartyMatchingQueueService.h"
 
 
-SF_MEMORYPOOL_IMPLEMENT(BR::Svr::RegisterPartyMatchingTrans);
-SF_MEMORYPOOL_IMPLEMENT(BR::Svr::RegisterPlayerMatchingTrans);
-SF_MEMORYPOOL_IMPLEMENT(BR::Svr::UpdateMatchingEntityUIDTrans);
-SF_MEMORYPOOL_IMPLEMENT(BR::Svr::UnregisterMatchingTrans);
+SF_MEMORYPOOL_IMPLEMENT(SF::Svr::RegisterPartyMatchingTrans);
+SF_MEMORYPOOL_IMPLEMENT(SF::Svr::RegisterPlayerMatchingTrans);
+SF_MEMORYPOOL_IMPLEMENT(SF::Svr::UpdateMatchingEntityUIDTrans);
+SF_MEMORYPOOL_IMPLEMENT(SF::Svr::UnregisterMatchingTrans);
 
-SF_MEMORYPOOL_IMPLEMENT(BR::Svr::ReserveItemTrans);
-SF_MEMORYPOOL_IMPLEMENT(BR::Svr::MatchingQueueReserveItemsTrans);
-SF_MEMORYPOOL_IMPLEMENT(BR::Svr::CancelReservationTrans);
-SF_MEMORYPOOL_IMPLEMENT(BR::Svr::DequeueItemTrans);
-SF_MEMORYPOOL_IMPLEMENT(BR::Svr::MatchingQueueTransMatchingItemError);
+SF_MEMORYPOOL_IMPLEMENT(SF::Svr::ReserveItemTrans);
+SF_MEMORYPOOL_IMPLEMENT(SF::Svr::MatchingQueueReserveItemsTrans);
+SF_MEMORYPOOL_IMPLEMENT(SF::Svr::CancelReservationTrans);
+SF_MEMORYPOOL_IMPLEMENT(SF::Svr::DequeueItemTrans);
+SF_MEMORYPOOL_IMPLEMENT(SF::Svr::MatchingQueueTransMatchingItemError);
 
 
 namespace SF {
@@ -57,7 +57,7 @@ namespace Svr {
 
 		svrChk( super::StartTransaction() );
 
-		svrChk(GetMyOwner()->Enqueue(GetRouteContext().GetFrom(), 0, (UINT)GetPlayers().GetSize(), GetPlayers().data(), m_MatchingTicket));
+		svrChk(GetMyOwner()->Enqueue(GetRouteContext().GetFrom(), 0, (uint)GetPlayers().GetSize(), GetPlayers().data(), m_MatchingTicket));
 
 	Proc_End:
 
@@ -145,9 +145,9 @@ namespace Svr {
 
 		svrChk(super::StartTransaction());
 
-		for (UINT iItem = 0; iItem < GetNumberOfItemsToReserve(); iItem++)
+		for (uint iItem = 0; iItem < GetNumberOfItemsToReserve(); iItem++)
 		{
-			UINT numPlayersInTheTicket;
+			uint numPlayersInTheTicket;
 			MatchingQueueTicket matchingTicket;
 
 			hr = GetMyOwner()->ReserveItem(GetRouteContext().GetFrom(), numPlayersInTheTicket, matchingTicket);
@@ -158,7 +158,7 @@ namespace Svr {
 			m_MatchingTicket.push_back(matchingTicket);
 		}
 
-		hr = m_NumPlayersInTheTicket.GetSize() == 0 ? Result(ResultCode::E_SVR_NOITEM_INQUEUE) : Result(ResultCode::SUCCESS);
+		hr = m_NumPlayersInTheTicket.GetSize() == 0 ? Result(ResultCode::SVR_NOITEM_INQUEUE) : Result(ResultCode::SUCCESS);
 
 	Proc_End:
 
@@ -201,11 +201,11 @@ namespace Svr {
 		svrChk(GetServerComponent<ServerEntityManager>()->GetServerEntity( m_matchingQueueItem.RegisterUID.GetServerID(), pServerEntity ));
 
 		if( m_matchingQueueItem.NumPlayers == 0 )
-			svrErrClose(ResultCode::E_SVR_INVALID_QUEUEITEM);
+			svrErrClose(ResultCode::SVR_INVALID_QUEUEITEM);
 
 		if( m_matchingQueueItem.NumPlayers > 1 || m_matchingQueueItem.Players[0].PlayerUID != m_matchingQueueItem.RegisterUID ) // This should be a party
 		{
-			pServerEntity->GetPolicy<Policy::ISvrPolicyPartyMatchingQueue>()->PartyMatchingItemDequeuedS2CEvt( 
+			pServerEntity->GetPolicy<Policy::NetSvrPolicyPartyMatchingQueue>()->PartyMatchingItemDequeuedS2CEvt( 
 				RouteContext(GetOwnerEntityUID(),m_matchingQueueItem.RegisterUID), 0,
 				GetMatchingTicket() );
 		}
@@ -214,7 +214,7 @@ namespace Svr {
 			// This should be the player case
 			Assert( m_matchingQueueItem.Players[0].PlayerUID == m_matchingQueueItem.RegisterUID );
 
-			pServerEntity->GetPolicy<Policy::ISvrPolicyPartyMatchingQueue>()->PlayerMatchingItemDequeuedS2CEvt( 
+			pServerEntity->GetPolicy<Policy::NetSvrPolicyPartyMatchingQueue>()->PlayerMatchingItemDequeuedS2CEvt( 
 				RouteContext(GetOwnerEntityUID(),m_matchingQueueItem.RegisterUID), 0,
 				GetMatchingTicket() );
 		}
@@ -244,11 +244,11 @@ namespace Svr {
 		svrChk(GetServerComponent<ServerEntityManager>()->GetServerEntity(matchingQueueItem.RegisterUID.GetServerID(), pServerEntity));
 
 		if (matchingQueueItem.NumPlayers == 0)
-			svrErrClose(ResultCode::E_SVR_INVALID_QUEUEITEM);
+			svrErrClose(ResultCode::SVR_INVALID_QUEUEITEM);
 
 		if (matchingQueueItem.NumPlayers > 1 || matchingQueueItem.Players[0].PlayerUID != matchingQueueItem.RegisterUID) // This should be a party
 		{
-			pServerEntity->GetPolicy<Policy::ISvrPolicyPartyMatchingQueue>()->PartyMatchingItemDequeuedS2CEvt(
+			pServerEntity->GetPolicy<Policy::NetSvrPolicyPartyMatchingQueue>()->PartyMatchingItemDequeuedS2CEvt(
 				RouteContext(GetOwnerEntityUID(), matchingQueueItem.RegisterUID), 0,
 				GetMatchingTicket());
 		}
@@ -257,7 +257,7 @@ namespace Svr {
 			// This should be the player case
 			Assert(matchingQueueItem.Players[0].PlayerUID == matchingQueueItem.RegisterUID);
 
-			pServerEntity->GetPolicy<Policy::ISvrPolicyPartyMatchingQueue>()->PlayerMatchingItemDequeuedS2CEvt(
+			pServerEntity->GetPolicy<Policy::NetSvrPolicyPartyMatchingQueue>()->PlayerMatchingItemDequeuedS2CEvt(
 				RouteContext(GetOwnerEntityUID(), matchingQueueItem.RegisterUID), 0,
 				GetMatchingTicket());
 		}

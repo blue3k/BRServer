@@ -224,7 +224,7 @@ namespace SF
 				variableBuilder.SetVariable("RouteContext", parser.GetRouteContext());
 				variableBuilder.SetVariable("TransactionID", parser.GetTransactionID());
 				variableBuilder.SetVariable("Result", parser.GetResult());
-				variableBuilder.SetVariable("MemberList", (int)parser.GetMemberList().GetItemCount(), parser.GetMemberList().data());
+				variableBuilder.SetVariable("MemberList", (int)parser.GetMemberList().GetItemCount(), (const ServiceInformation*)parser.GetMemberList().data());
 
 
 			Proc_End:
@@ -365,7 +365,7 @@ namespace SF
 				protocolChk( Protocol::StreamParamCopy( &m_RouteContext, pCur, iMsgSize, sizeof(RouteContext) ) );
 				protocolChk( Protocol::StreamParamCopy( &m_TransactionID, pCur, iMsgSize, sizeof(TransactionID) ) );
 				protocolChk( Protocol::StreamParamCopy( &m_RouteHopCount, pCur, iMsgSize, sizeof(uint16_t) ) );
-				protocolChk( Protocol::StreamParamCopy( &m_Sender, pCur, iMsgSize, sizeof(EntityUID) ) );
+				protocolChk( Protocol::StreamParamCopy( &m_Sender, pCur, iMsgSize, sizeof(uint64_t) ) );
 				protocolChk( Protocol::StreamParamCopy( &m_SenderNetClass, pCur, iMsgSize, sizeof(NetClass) ) );
 				protocolChk( Protocol::StreamParamCopy( &m_SenderAddress, pCur, iMsgSize, sizeof(NetAddress) ) );
 				protocolChk( Protocol::StreamParamCopy( &m_ClusterID, pCur, iMsgSize, sizeof(ClusterID) ) );
@@ -416,7 +416,7 @@ namespace SF
 
 			}; // Result JoinClusterCmd::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageData* pIMsg, MessageBase* &pMessageBase )
 
-			MessageData* JoinClusterCmd::Create( IMemoryManager& memoryManager, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const uint16_t &InRouteHopCount, const EntityUID &InSender, const NetClass &InSenderNetClass, const NetAddress &InSenderAddress, const ClusterID &InClusterID, const ClusterType &InClusterType, const ClusterMembership &InClusterMembership )
+			MessageData* JoinClusterCmd::Create( IMemoryManager& memoryManager, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const uint16_t &InRouteHopCount, const uint64_t &InSender, const NetClass &InSenderNetClass, const NetAddress &InSenderAddress, const ClusterID &InClusterID, const ClusterType &InClusterType, const ClusterMembership &InClusterMembership )
 			{
  				MessageData *pNewMsg = nullptr;
 				Result hr;
@@ -427,7 +427,7 @@ namespace SF
 					+ sizeof(RouteContext)
 					+ sizeof(TransactionID)
 					+ sizeof(uint16_t)
-					+ sizeof(EntityUID)
+					+ sizeof(uint64_t)
 					+ sizeof(NetClass)
 					+ sizeof(NetAddress)
 					+ sizeof(ClusterID)
@@ -442,7 +442,7 @@ namespace SF
 				Protocol::PackParamCopy( pMsgData, &InRouteContext, sizeof(RouteContext));
 				Protocol::PackParamCopy( pMsgData, &InTransactionID, sizeof(TransactionID));
 				Protocol::PackParamCopy( pMsgData, &InRouteHopCount, sizeof(uint16_t));
-				Protocol::PackParamCopy( pMsgData, &InSender, sizeof(EntityUID));
+				Protocol::PackParamCopy( pMsgData, &InSender, sizeof(uint64_t));
 				Protocol::PackParamCopy( pMsgData, &InSenderNetClass, sizeof(NetClass));
 				Protocol::PackParamCopy( pMsgData, &InSenderAddress, sizeof(NetAddress));
 				Protocol::PackParamCopy( pMsgData, &InClusterID, sizeof(ClusterID));
@@ -459,7 +459,7 @@ namespace SF
 				}
 				return pNewMsg;
 
-			}; // MessageData* JoinClusterCmd::Create( IMemoryManager& memoryManager, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const uint16_t &InRouteHopCount, const EntityUID &InSender, const NetClass &InSenderNetClass, const NetAddress &InSenderAddress, const ClusterID &InClusterID, const ClusterType &InClusterType, const ClusterMembership &InClusterMembership )
+			}; // MessageData* JoinClusterCmd::Create( IMemoryManager& memoryManager, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const uint16_t &InRouteHopCount, const uint64_t &InSender, const NetClass &InSenderNetClass, const NetAddress &InSenderAddress, const ClusterID &InClusterID, const ClusterType &InClusterType, const ClusterMembership &InClusterMembership )
 
 			Result JoinClusterCmd::OverrideRouteContextDestination( EntityUID to )
 			{
@@ -566,7 +566,7 @@ namespace SF
 				variableBuilder.SetVariable("RouteContext", parser.GetRouteContext());
 				variableBuilder.SetVariable("TransactionID", parser.GetTransactionID());
 				variableBuilder.SetVariable("Result", parser.GetResult());
-				variableBuilder.SetVariable("MemberList", (int)parser.GetMemberList().GetItemCount(), parser.GetMemberList().data());
+				variableBuilder.SetVariable("MemberList", (int)parser.GetMemberList().GetItemCount(), (const ServiceInformation*)parser.GetMemberList().data());
 
 
 			Proc_End:
@@ -706,7 +706,7 @@ namespace SF
 
 				protocolChk( Protocol::StreamParamCopy( &m_RouteContext, pCur, iMsgSize, sizeof(RouteContext) ) );
 				protocolChk( Protocol::StreamParamCopy( &m_RouteHopCount, pCur, iMsgSize, sizeof(uint16_t) ) );
-				protocolChk( Protocol::StreamParamCopy( &m_JoinedServiceUID, pCur, iMsgSize, sizeof(EntityUID) ) );
+				protocolChk( Protocol::StreamParamCopy( &m_JoinedServiceUID, pCur, iMsgSize, sizeof(uint64_t) ) );
 				protocolChk( Protocol::StreamParamCopy( &m_JoinedServiceNetClass, pCur, iMsgSize, sizeof(NetClass) ) );
 				protocolChk( Protocol::StreamParamCopy( &m_JoinedServiceAddress, pCur, iMsgSize, sizeof(NetAddress) ) );
 				protocolChk( Protocol::StreamParamCopy( &m_ClusterID, pCur, iMsgSize, sizeof(ClusterID) ) );
@@ -756,7 +756,7 @@ namespace SF
 
 			}; // Result NewServerServiceJoinedC2SEvt::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageData* pIMsg, MessageBase* &pMessageBase )
 
-			MessageData* NewServerServiceJoinedC2SEvt::Create( IMemoryManager& memoryManager, const RouteContext &InRouteContext, const uint16_t &InRouteHopCount, const EntityUID &InJoinedServiceUID, const NetClass &InJoinedServiceNetClass, const NetAddress &InJoinedServiceAddress, const ClusterID &InClusterID, const ClusterType &InClusterType, const ClusterMembership &InJoinedServiceMembership )
+			MessageData* NewServerServiceJoinedC2SEvt::Create( IMemoryManager& memoryManager, const RouteContext &InRouteContext, const uint16_t &InRouteHopCount, const uint64_t &InJoinedServiceUID, const NetClass &InJoinedServiceNetClass, const NetAddress &InJoinedServiceAddress, const ClusterID &InClusterID, const ClusterType &InClusterType, const ClusterMembership &InJoinedServiceMembership )
 			{
  				MessageData *pNewMsg = nullptr;
 				Result hr;
@@ -766,7 +766,7 @@ namespace SF
 				unsigned __uiMessageSize = (unsigned)(sizeof(MessageHeader) 
 					+ sizeof(RouteContext)
 					+ sizeof(uint16_t)
-					+ sizeof(EntityUID)
+					+ sizeof(uint64_t)
 					+ sizeof(NetClass)
 					+ sizeof(NetAddress)
 					+ sizeof(ClusterID)
@@ -780,7 +780,7 @@ namespace SF
 
 				Protocol::PackParamCopy( pMsgData, &InRouteContext, sizeof(RouteContext));
 				Protocol::PackParamCopy( pMsgData, &InRouteHopCount, sizeof(uint16_t));
-				Protocol::PackParamCopy( pMsgData, &InJoinedServiceUID, sizeof(EntityUID));
+				Protocol::PackParamCopy( pMsgData, &InJoinedServiceUID, sizeof(uint64_t));
 				Protocol::PackParamCopy( pMsgData, &InJoinedServiceNetClass, sizeof(NetClass));
 				Protocol::PackParamCopy( pMsgData, &InJoinedServiceAddress, sizeof(NetAddress));
 				Protocol::PackParamCopy( pMsgData, &InClusterID, sizeof(ClusterID));
@@ -797,7 +797,7 @@ namespace SF
 				}
 				return pNewMsg;
 
-			}; // MessageData* NewServerServiceJoinedC2SEvt::Create( IMemoryManager& memoryManager, const RouteContext &InRouteContext, const uint16_t &InRouteHopCount, const EntityUID &InJoinedServiceUID, const NetClass &InJoinedServiceNetClass, const NetAddress &InJoinedServiceAddress, const ClusterID &InClusterID, const ClusterType &InClusterType, const ClusterMembership &InJoinedServiceMembership )
+			}; // MessageData* NewServerServiceJoinedC2SEvt::Create( IMemoryManager& memoryManager, const RouteContext &InRouteContext, const uint16_t &InRouteHopCount, const uint64_t &InJoinedServiceUID, const NetClass &InJoinedServiceNetClass, const NetAddress &InJoinedServiceAddress, const ClusterID &InClusterID, const ClusterType &InClusterType, const ClusterMembership &InJoinedServiceMembership )
 
 			Result NewServerServiceJoinedC2SEvt::OverrideRouteContextDestination( EntityUID to )
 			{
@@ -906,7 +906,7 @@ namespace SF
 				variableBuilder.SetVariable("RouteHopCount", parser.GetRouteHopCount());
 				variableBuilder.SetVariable("ClusterID", parser.GetClusterID());
 				variableBuilder.SetVariable("ClusterType", (int)parser.GetClusterType());
-				variableBuilder.SetVariable("MemberList", (int)parser.GetMemberList().GetItemCount(), parser.GetMemberList().data());
+				variableBuilder.SetVariable("MemberList", (int)parser.GetMemberList().GetItemCount(), (const ServiceInformation*)parser.GetMemberList().data());
 
 
 			Proc_End:
@@ -1358,9 +1358,9 @@ namespace SF
 
 				protocolChk( Protocol::StreamParamCopy( &m_RouteContext, pCur, iMsgSize, sizeof(RouteContext) ) );
 				protocolChk( Protocol::StreamParamCopy( &m_RouteHopCount, pCur, iMsgSize, sizeof(uint16_t) ) );
-				protocolChk( Protocol::StreamParamCopy( &m_Sender, pCur, iMsgSize, sizeof(EntityUID) ) );
+				protocolChk( Protocol::StreamParamCopy( &m_Sender, pCur, iMsgSize, sizeof(uint64_t) ) );
 				protocolChk( Protocol::StreamParamCopy( &m_ClusterID, pCur, iMsgSize, sizeof(ClusterID) ) );
-				protocolChk( Protocol::StreamParamCopy( &m_MasterUID, pCur, iMsgSize, sizeof(EntityUID) ) );
+				protocolChk( Protocol::StreamParamCopy( &m_MasterUID, pCur, iMsgSize, sizeof(uint64_t) ) );
 
 
 			Proc_End:
@@ -1402,7 +1402,7 @@ namespace SF
 
 			}; // Result ClusterMasterAssignedS2CEvt::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageData* pIMsg, MessageBase* &pMessageBase )
 
-			MessageData* ClusterMasterAssignedS2CEvt::Create( IMemoryManager& memoryManager, const RouteContext &InRouteContext, const uint16_t &InRouteHopCount, const EntityUID &InSender, const ClusterID &InClusterID, const EntityUID &InMasterUID )
+			MessageData* ClusterMasterAssignedS2CEvt::Create( IMemoryManager& memoryManager, const RouteContext &InRouteContext, const uint16_t &InRouteHopCount, const uint64_t &InSender, const ClusterID &InClusterID, const uint64_t &InMasterUID )
 			{
  				MessageData *pNewMsg = nullptr;
 				Result hr;
@@ -1412,9 +1412,9 @@ namespace SF
 				unsigned __uiMessageSize = (unsigned)(sizeof(MessageHeader) 
 					+ sizeof(RouteContext)
 					+ sizeof(uint16_t)
-					+ sizeof(EntityUID)
+					+ sizeof(uint64_t)
 					+ sizeof(ClusterID)
-					+ sizeof(EntityUID));
+					+ sizeof(uint64_t));
 
 
 				protocolMem( pNewMsg = MessageData::NewMessage( memoryManager, ClusterServer::ClusterMasterAssignedS2CEvt::MID, __uiMessageSize ) );
@@ -1423,9 +1423,9 @@ namespace SF
 
 				Protocol::PackParamCopy( pMsgData, &InRouteContext, sizeof(RouteContext));
 				Protocol::PackParamCopy( pMsgData, &InRouteHopCount, sizeof(uint16_t));
-				Protocol::PackParamCopy( pMsgData, &InSender, sizeof(EntityUID));
+				Protocol::PackParamCopy( pMsgData, &InSender, sizeof(uint64_t));
 				Protocol::PackParamCopy( pMsgData, &InClusterID, sizeof(ClusterID));
-				Protocol::PackParamCopy( pMsgData, &InMasterUID, sizeof(EntityUID));
+				Protocol::PackParamCopy( pMsgData, &InMasterUID, sizeof(uint64_t));
 
 
 			Proc_End:
@@ -1437,7 +1437,7 @@ namespace SF
 				}
 				return pNewMsg;
 
-			}; // MessageData* ClusterMasterAssignedS2CEvt::Create( IMemoryManager& memoryManager, const RouteContext &InRouteContext, const uint16_t &InRouteHopCount, const EntityUID &InSender, const ClusterID &InClusterID, const EntityUID &InMasterUID )
+			}; // MessageData* ClusterMasterAssignedS2CEvt::Create( IMemoryManager& memoryManager, const RouteContext &InRouteContext, const uint16_t &InRouteHopCount, const uint64_t &InSender, const ClusterID &InClusterID, const uint64_t &InMasterUID )
 
 			Result ClusterMasterAssignedS2CEvt::OverrideRouteContextDestination( EntityUID to )
 			{
@@ -1521,7 +1521,7 @@ namespace SF
 				protocolChk( Protocol::StreamParamCopy( &m_RouteContext, pCur, iMsgSize, sizeof(RouteContext) ) );
 				protocolChk( Protocol::StreamParamCopy( &m_RouteHopCount, pCur, iMsgSize, sizeof(uint16_t) ) );
 				protocolChk( Protocol::StreamParamCopy( &m_ClusterID, pCur, iMsgSize, sizeof(ClusterID) ) );
-				protocolChk( Protocol::StreamParamCopy( &m_VoteToUID, pCur, iMsgSize, sizeof(EntityUID) ) );
+				protocolChk( Protocol::StreamParamCopy( &m_VoteToUID, pCur, iMsgSize, sizeof(uint64_t) ) );
 				protocolChk( Protocol::StreamParamCopy( &m_VotedUpTime, pCur, iMsgSize, sizeof(uint64_t) ) );
 
 
@@ -1564,7 +1564,7 @@ namespace SF
 
 			}; // Result ClusterMasterVoteC2SEvt::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageData* pIMsg, MessageBase* &pMessageBase )
 
-			MessageData* ClusterMasterVoteC2SEvt::Create( IMemoryManager& memoryManager, const RouteContext &InRouteContext, const uint16_t &InRouteHopCount, const ClusterID &InClusterID, const EntityUID &InVoteToUID, const uint64_t &InVotedUpTime )
+			MessageData* ClusterMasterVoteC2SEvt::Create( IMemoryManager& memoryManager, const RouteContext &InRouteContext, const uint16_t &InRouteHopCount, const ClusterID &InClusterID, const uint64_t &InVoteToUID, const uint64_t &InVotedUpTime )
 			{
  				MessageData *pNewMsg = nullptr;
 				Result hr;
@@ -1575,7 +1575,7 @@ namespace SF
 					+ sizeof(RouteContext)
 					+ sizeof(uint16_t)
 					+ sizeof(ClusterID)
-					+ sizeof(EntityUID)
+					+ sizeof(uint64_t)
 					+ sizeof(uint64_t));
 
 
@@ -1586,7 +1586,7 @@ namespace SF
 				Protocol::PackParamCopy( pMsgData, &InRouteContext, sizeof(RouteContext));
 				Protocol::PackParamCopy( pMsgData, &InRouteHopCount, sizeof(uint16_t));
 				Protocol::PackParamCopy( pMsgData, &InClusterID, sizeof(ClusterID));
-				Protocol::PackParamCopy( pMsgData, &InVoteToUID, sizeof(EntityUID));
+				Protocol::PackParamCopy( pMsgData, &InVoteToUID, sizeof(uint64_t));
 				Protocol::PackParamCopy( pMsgData, &InVotedUpTime, sizeof(uint64_t));
 
 
@@ -1599,7 +1599,7 @@ namespace SF
 				}
 				return pNewMsg;
 
-			}; // MessageData* ClusterMasterVoteC2SEvt::Create( IMemoryManager& memoryManager, const RouteContext &InRouteContext, const uint16_t &InRouteHopCount, const ClusterID &InClusterID, const EntityUID &InVoteToUID, const uint64_t &InVotedUpTime )
+			}; // MessageData* ClusterMasterVoteC2SEvt::Create( IMemoryManager& memoryManager, const RouteContext &InRouteContext, const uint16_t &InRouteHopCount, const ClusterID &InClusterID, const uint64_t &InVoteToUID, const uint64_t &InVotedUpTime )
 
 			Result ClusterMasterVoteC2SEvt::OverrideRouteContextDestination( EntityUID to )
 			{
@@ -1682,7 +1682,7 @@ namespace SF
 
 				protocolChk( Protocol::StreamParamCopy( &m_RouteContext, pCur, iMsgSize, sizeof(RouteContext) ) );
 				protocolChk( Protocol::StreamParamCopy( &m_RouteHopCount, pCur, iMsgSize, sizeof(uint16_t) ) );
-				protocolChk( Protocol::StreamParamCopy( &m_Sender, pCur, iMsgSize, sizeof(EntityUID) ) );
+				protocolChk( Protocol::StreamParamCopy( &m_Sender, pCur, iMsgSize, sizeof(uint64_t) ) );
 				protocolChk( Protocol::StreamParamCopy( &m_ClusterID, pCur, iMsgSize, sizeof(ClusterID) ) );
 				protocolChk( Protocol::StreamParamCopy( &m_MemberStatus, pCur, iMsgSize, sizeof(ServiceStatus) ) );
 
@@ -1726,7 +1726,7 @@ namespace SF
 
 			}; // Result ClusterUpdateStatusC2SEvt::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageData* pIMsg, MessageBase* &pMessageBase )
 
-			MessageData* ClusterUpdateStatusC2SEvt::Create( IMemoryManager& memoryManager, const RouteContext &InRouteContext, const uint16_t &InRouteHopCount, const EntityUID &InSender, const ClusterID &InClusterID, const ServiceStatus &InMemberStatus )
+			MessageData* ClusterUpdateStatusC2SEvt::Create( IMemoryManager& memoryManager, const RouteContext &InRouteContext, const uint16_t &InRouteHopCount, const uint64_t &InSender, const ClusterID &InClusterID, const ServiceStatus &InMemberStatus )
 			{
  				MessageData *pNewMsg = nullptr;
 				Result hr;
@@ -1736,7 +1736,7 @@ namespace SF
 				unsigned __uiMessageSize = (unsigned)(sizeof(MessageHeader) 
 					+ sizeof(RouteContext)
 					+ sizeof(uint16_t)
-					+ sizeof(EntityUID)
+					+ sizeof(uint64_t)
 					+ sizeof(ClusterID)
 					+ sizeof(ServiceStatus));
 
@@ -1747,7 +1747,7 @@ namespace SF
 
 				Protocol::PackParamCopy( pMsgData, &InRouteContext, sizeof(RouteContext));
 				Protocol::PackParamCopy( pMsgData, &InRouteHopCount, sizeof(uint16_t));
-				Protocol::PackParamCopy( pMsgData, &InSender, sizeof(EntityUID));
+				Protocol::PackParamCopy( pMsgData, &InSender, sizeof(uint64_t));
 				Protocol::PackParamCopy( pMsgData, &InClusterID, sizeof(ClusterID));
 				Protocol::PackParamCopy( pMsgData, &InMemberStatus, sizeof(ServiceStatus));
 
@@ -1761,7 +1761,7 @@ namespace SF
 				}
 				return pNewMsg;
 
-			}; // MessageData* ClusterUpdateStatusC2SEvt::Create( IMemoryManager& memoryManager, const RouteContext &InRouteContext, const uint16_t &InRouteHopCount, const EntityUID &InSender, const ClusterID &InClusterID, const ServiceStatus &InMemberStatus )
+			}; // MessageData* ClusterUpdateStatusC2SEvt::Create( IMemoryManager& memoryManager, const RouteContext &InRouteContext, const uint16_t &InRouteHopCount, const uint64_t &InSender, const ClusterID &InClusterID, const ServiceStatus &InMemberStatus )
 
 			Result ClusterUpdateStatusC2SEvt::OverrideRouteContextDestination( EntityUID to )
 			{
@@ -1844,7 +1844,7 @@ namespace SF
 
 				protocolChk( Protocol::StreamParamCopy( &m_RouteContext, pCur, iMsgSize, sizeof(RouteContext) ) );
 				protocolChk( Protocol::StreamParamCopy( &m_RouteHopCount, pCur, iMsgSize, sizeof(uint16_t) ) );
-				protocolChk( Protocol::StreamParamCopy( &m_Sender, pCur, iMsgSize, sizeof(EntityUID) ) );
+				protocolChk( Protocol::StreamParamCopy( &m_Sender, pCur, iMsgSize, sizeof(uint64_t) ) );
 				protocolChk( Protocol::StreamParamCopy( &m_ClusterID, pCur, iMsgSize, sizeof(ClusterID) ) );
 				protocolChk( Protocol::StreamParamCopy( &m_Workload, pCur, iMsgSize, sizeof(uint32_t) ) );
 
@@ -1888,7 +1888,7 @@ namespace SF
 
 			}; // Result ClusterUpdateWorkloadC2SEvt::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageData* pIMsg, MessageBase* &pMessageBase )
 
-			MessageData* ClusterUpdateWorkloadC2SEvt::Create( IMemoryManager& memoryManager, const RouteContext &InRouteContext, const uint16_t &InRouteHopCount, const EntityUID &InSender, const ClusterID &InClusterID, const uint32_t &InWorkload )
+			MessageData* ClusterUpdateWorkloadC2SEvt::Create( IMemoryManager& memoryManager, const RouteContext &InRouteContext, const uint16_t &InRouteHopCount, const uint64_t &InSender, const ClusterID &InClusterID, const uint32_t &InWorkload )
 			{
  				MessageData *pNewMsg = nullptr;
 				Result hr;
@@ -1898,7 +1898,7 @@ namespace SF
 				unsigned __uiMessageSize = (unsigned)(sizeof(MessageHeader) 
 					+ sizeof(RouteContext)
 					+ sizeof(uint16_t)
-					+ sizeof(EntityUID)
+					+ sizeof(uint64_t)
 					+ sizeof(ClusterID)
 					+ sizeof(uint32_t));
 
@@ -1909,7 +1909,7 @@ namespace SF
 
 				Protocol::PackParamCopy( pMsgData, &InRouteContext, sizeof(RouteContext));
 				Protocol::PackParamCopy( pMsgData, &InRouteHopCount, sizeof(uint16_t));
-				Protocol::PackParamCopy( pMsgData, &InSender, sizeof(EntityUID));
+				Protocol::PackParamCopy( pMsgData, &InSender, sizeof(uint64_t));
 				Protocol::PackParamCopy( pMsgData, &InClusterID, sizeof(ClusterID));
 				Protocol::PackParamCopy( pMsgData, &InWorkload, sizeof(uint32_t));
 
@@ -1923,7 +1923,7 @@ namespace SF
 				}
 				return pNewMsg;
 
-			}; // MessageData* ClusterUpdateWorkloadC2SEvt::Create( IMemoryManager& memoryManager, const RouteContext &InRouteContext, const uint16_t &InRouteHopCount, const EntityUID &InSender, const ClusterID &InClusterID, const uint32_t &InWorkload )
+			}; // MessageData* ClusterUpdateWorkloadC2SEvt::Create( IMemoryManager& memoryManager, const RouteContext &InRouteContext, const uint16_t &InRouteHopCount, const uint64_t &InSender, const ClusterID &InClusterID, const uint32_t &InWorkload )
 
 			Result ClusterUpdateWorkloadC2SEvt::OverrideRouteContextDestination( EntityUID to )
 			{
@@ -2323,7 +2323,7 @@ namespace SF
 				protocolChk( Protocol::StreamParamCopy( &m_RouteContext, pCur, iMsgSize, sizeof(RouteContext) ) );
 				protocolChk( Protocol::StreamParamCopy( &m_RouteHopCount, pCur, iMsgSize, sizeof(uint16_t) ) );
 				protocolChk( Protocol::StreamParamCopy( &m_PlayerID, pCur, iMsgSize, sizeof(PlayerID) ) );
-				protocolChk( Protocol::StreamParamCopy( &m_PlayerUID, pCur, iMsgSize, sizeof(EntityUID) ) );
+				protocolChk( Protocol::StreamParamCopy( &m_PlayerUID, pCur, iMsgSize, sizeof(uint64_t) ) );
 
 
 			Proc_End:
@@ -2364,7 +2364,7 @@ namespace SF
 
 			}; // Result GamePlayerEntityCreatedC2SEvt::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageData* pIMsg, MessageBase* &pMessageBase )
 
-			MessageData* GamePlayerEntityCreatedC2SEvt::Create( IMemoryManager& memoryManager, const RouteContext &InRouteContext, const uint16_t &InRouteHopCount, const PlayerID &InPlayerID, const EntityUID &InPlayerUID )
+			MessageData* GamePlayerEntityCreatedC2SEvt::Create( IMemoryManager& memoryManager, const RouteContext &InRouteContext, const uint16_t &InRouteHopCount, const PlayerID &InPlayerID, const uint64_t &InPlayerUID )
 			{
  				MessageData *pNewMsg = nullptr;
 				Result hr;
@@ -2375,7 +2375,7 @@ namespace SF
 					+ sizeof(RouteContext)
 					+ sizeof(uint16_t)
 					+ sizeof(PlayerID)
-					+ sizeof(EntityUID));
+					+ sizeof(uint64_t));
 
 
 				protocolMem( pNewMsg = MessageData::NewMessage( memoryManager, ClusterServer::GamePlayerEntityCreatedC2SEvt::MID, __uiMessageSize ) );
@@ -2385,7 +2385,7 @@ namespace SF
 				Protocol::PackParamCopy( pMsgData, &InRouteContext, sizeof(RouteContext));
 				Protocol::PackParamCopy( pMsgData, &InRouteHopCount, sizeof(uint16_t));
 				Protocol::PackParamCopy( pMsgData, &InPlayerID, sizeof(PlayerID));
-				Protocol::PackParamCopy( pMsgData, &InPlayerUID, sizeof(EntityUID));
+				Protocol::PackParamCopy( pMsgData, &InPlayerUID, sizeof(uint64_t));
 
 
 			Proc_End:
@@ -2397,7 +2397,7 @@ namespace SF
 				}
 				return pNewMsg;
 
-			}; // MessageData* GamePlayerEntityCreatedC2SEvt::Create( IMemoryManager& memoryManager, const RouteContext &InRouteContext, const uint16_t &InRouteHopCount, const PlayerID &InPlayerID, const EntityUID &InPlayerUID )
+			}; // MessageData* GamePlayerEntityCreatedC2SEvt::Create( IMemoryManager& memoryManager, const RouteContext &InRouteContext, const uint16_t &InRouteHopCount, const PlayerID &InPlayerID, const uint64_t &InPlayerUID )
 
 			Result GamePlayerEntityCreatedC2SEvt::OverrideRouteContextDestination( EntityUID to )
 			{
@@ -2481,7 +2481,7 @@ namespace SF
 				protocolChk( Protocol::StreamParamCopy( &m_RouteContext, pCur, iMsgSize, sizeof(RouteContext) ) );
 				protocolChk( Protocol::StreamParamCopy( &m_RouteHopCount, pCur, iMsgSize, sizeof(uint16_t) ) );
 				protocolChk( Protocol::StreamParamCopy( &m_PlayerID, pCur, iMsgSize, sizeof(PlayerID) ) );
-				protocolChk( Protocol::StreamParamCopy( &m_PlayerUID, pCur, iMsgSize, sizeof(EntityUID) ) );
+				protocolChk( Protocol::StreamParamCopy( &m_PlayerUID, pCur, iMsgSize, sizeof(uint64_t) ) );
 
 
 			Proc_End:
@@ -2522,7 +2522,7 @@ namespace SF
 
 			}; // Result GamePlayerEntityDeletedC2SEvt::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageData* pIMsg, MessageBase* &pMessageBase )
 
-			MessageData* GamePlayerEntityDeletedC2SEvt::Create( IMemoryManager& memoryManager, const RouteContext &InRouteContext, const uint16_t &InRouteHopCount, const PlayerID &InPlayerID, const EntityUID &InPlayerUID )
+			MessageData* GamePlayerEntityDeletedC2SEvt::Create( IMemoryManager& memoryManager, const RouteContext &InRouteContext, const uint16_t &InRouteHopCount, const PlayerID &InPlayerID, const uint64_t &InPlayerUID )
 			{
  				MessageData *pNewMsg = nullptr;
 				Result hr;
@@ -2533,7 +2533,7 @@ namespace SF
 					+ sizeof(RouteContext)
 					+ sizeof(uint16_t)
 					+ sizeof(PlayerID)
-					+ sizeof(EntityUID));
+					+ sizeof(uint64_t));
 
 
 				protocolMem( pNewMsg = MessageData::NewMessage( memoryManager, ClusterServer::GamePlayerEntityDeletedC2SEvt::MID, __uiMessageSize ) );
@@ -2543,7 +2543,7 @@ namespace SF
 				Protocol::PackParamCopy( pMsgData, &InRouteContext, sizeof(RouteContext));
 				Protocol::PackParamCopy( pMsgData, &InRouteHopCount, sizeof(uint16_t));
 				Protocol::PackParamCopy( pMsgData, &InPlayerID, sizeof(PlayerID));
-				Protocol::PackParamCopy( pMsgData, &InPlayerUID, sizeof(EntityUID));
+				Protocol::PackParamCopy( pMsgData, &InPlayerUID, sizeof(uint64_t));
 
 
 			Proc_End:
@@ -2555,7 +2555,7 @@ namespace SF
 				}
 				return pNewMsg;
 
-			}; // MessageData* GamePlayerEntityDeletedC2SEvt::Create( IMemoryManager& memoryManager, const RouteContext &InRouteContext, const uint16_t &InRouteHopCount, const PlayerID &InPlayerID, const EntityUID &InPlayerUID )
+			}; // MessageData* GamePlayerEntityDeletedC2SEvt::Create( IMemoryManager& memoryManager, const RouteContext &InRouteContext, const uint16_t &InRouteHopCount, const PlayerID &InPlayerID, const uint64_t &InPlayerUID )
 
 			Result GamePlayerEntityDeletedC2SEvt::OverrideRouteContextDestination( EntityUID to )
 			{

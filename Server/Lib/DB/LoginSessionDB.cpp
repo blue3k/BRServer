@@ -57,7 +57,7 @@ namespace DB {
 
 		dbMem( pQuery = new QueryRegisterAuthTicketCmd );
 
-		pQuery->SetPartitioningKey((UINT)playerID);
+		pQuery->SetPartitioningKey((uint)playerID);
 
 		pQuery->PlayerID = playerID;
 		pQuery->AuthTicket = authTicket;
@@ -87,7 +87,7 @@ namespace DB {
 
 		dbMem(pQuery = new QueryReplaceLoginSessionCmd);
 
-		pQuery->SetPartitioningKey((UINT)playerID);
+		pQuery->SetPartitioningKey((uint)playerID);
 
 		pQuery->PlayerID = playerID;
 		pQuery->OldAuthTicket = oldAuthTicket;
@@ -117,7 +117,7 @@ namespace DB {
 
 		dbMem( pQuery = new QueryDeleteLoginSessionCmd );
 
-		pQuery->SetPartitioningKey((UINT)playerID);
+		pQuery->SetPartitioningKey((uint)playerID);
 
 
 		pQuery->PlayerID = playerID;
@@ -145,7 +145,7 @@ namespace DB {
 
 		dbMem( pQuery = new QueryConnectedToGameServerCmd );
 
-		pQuery->SetPartitioningKey((UINT)playerID);
+		pQuery->SetPartitioningKey((uint)playerID);
 
 		pQuery->PlayerID = playerID;
 		pQuery->AuthTicket = authTicket;
@@ -175,7 +175,7 @@ namespace DB {
 
 		dbMem(pQuery = new QueryValidateGameServerSessionCmd);
 
-		pQuery->SetPartitioningKey((UINT)playerID);
+		pQuery->SetPartitioningKey((uint)playerID);
 
 		pQuery->PlayerID = playerID;
 		pQuery->AuthTicket = authTicket;
@@ -203,7 +203,7 @@ namespace DB {
 
 		dbMem( pQuery = new QueryGameServerHeartBitCmd );
 
-		pQuery->SetPartitioningKey((UINT)playerID);
+		pQuery->SetPartitioningKey((uint)playerID);
 
 		pQuery->PlayerID = playerID;
 		pQuery->AuthTicket = authTicket;

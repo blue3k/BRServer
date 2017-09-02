@@ -18,14 +18,14 @@
 #include "Memory/MemoryPool.h"
 #include "ServerSystem/Entity.h"
 #include "ServerSystem/GameSystem.h"
-#include "Common/GameConst.h"
+#include "GameConst.h"
 #include "Types/BrGameTypes.h"
 #include "GameSystem/UserSystemComponentIDs.h"
 #include "GameSvrConst.h"
 
 
 
-namespace BR {
+namespace SF {
 namespace Net {
 	class Connection;
 };
@@ -37,7 +37,7 @@ namespace Policy {
 
 
 
-namespace BR {
+namespace SF {
 namespace GameServer {
 
 
@@ -70,7 +70,7 @@ namespace GameServer {
 	private:
 
 		// Player connection
-		BRCLASS_ATTRIBUTE_READONLY(Policy::ISvrPolicyGame*,ISvrGamePolicy);
+		BRCLASS_ATTRIBUTE_READONLY(Policy::NetSvrPolicyGame*,ISvrGamePolicy);
 
 		// Player state
 		BRCLASS_ATTRIBUTE(PlayerState,PlayerState);
@@ -81,7 +81,7 @@ namespace GameServer {
 		mutable ServerFriendInformation m_PlayerInformation;
 
 		BRCLASS_ATTRIBUTE(PartyUID,PartyUID);
-		BRCLASS_ATTRIBUTE(UINT, ShardID);
+		BRCLASS_ATTRIBUTE(uint, ShardID);
 
 		BRCLASS_ATTRIBUTE_READONLY(TimeStampMS, MatchingStartTime);
 		BRCLASS_ATTRIBUTE_READONLY(MatchingQueueTicket,MatchingTicket);
@@ -209,4 +209,4 @@ namespace GameServer {
 #include "GamePlayerEntity.inl"
 
 }; // namespace GameServer
-}; // namespace BR
+}; // namespace SF

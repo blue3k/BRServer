@@ -13,7 +13,7 @@
 
 #include "SFTypedefs.h"
 
-namespace BR {
+namespace SF {
 namespace ConspiracyGameInstanceServer {
 
 	enum GameSystemComponentIDs
@@ -26,7 +26,7 @@ namespace ConspiracyGameInstanceServer {
 	};
 
 }; // namespace ConspiracyGameInstanceServer
-}; // namespace BR
+}; // namespace SF
 
 
 

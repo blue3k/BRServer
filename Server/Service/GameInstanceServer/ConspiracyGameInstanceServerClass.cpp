@@ -32,12 +32,12 @@
 #include "ServerSystem/ServerEntity/EntityServerEntity.h"
 
 
-#include "Protocol/Policy/EntityServerIPolicy.h"
+#include "Protocol/Policy/EntityServerNetPolicy.h"
 
-#include "Protocol/Policy/EntityServerIPolicy.h"
-#include "Protocol/Policy/GameServerIPolicy.h"
-#include "Protocol/Policy/GameInstanceIPolicy.h"
-#include "Protocol/Policy/GameMasterServerIPolicy.h"
+#include "Protocol/Policy/EntityServerNetPolicy.h"
+#include "Protocol/Policy/GameServerNetPolicy.h"
+#include "Protocol/Policy/GameInstanceNetPolicy.h"
+#include "Protocol/Policy/GameMasterServerNetPolicy.h"
 
 #include "Net/NetServer.h"
 #include "ServerSystem/EntityManager.h"
@@ -58,7 +58,7 @@
 
 
 
-namespace BR {
+namespace SF {
 namespace ConspiracyGameInstanceServer {
 
 	
@@ -70,7 +70,7 @@ namespace ConspiracyGameInstanceServer {
 
 
 	GameInstanceServer::GameInstanceServer()
-		:BrServer(BR::NetClass::Game)
+		:BrServer(NetClass::Game)
 		,m_pGameClusterCfg(nullptr)
 	{
 	}
@@ -259,7 +259,7 @@ namespace ConspiracyGameInstanceServer {
 
 
 }; // namespace ConspiracyGameInstanceServer
-}; // namespace BR
+}; // namespace SF
 
 
 

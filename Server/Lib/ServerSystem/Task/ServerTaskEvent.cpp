@@ -59,12 +59,12 @@ namespace SF {
 		EventData.pConnectionEvent = (Net::ConnectionEvent*)DataBuffer;
 	}
 
-	ServerTaskEvent::ServerTaskEvent(TickTask* pTickTask, WeakPointerT<Net::Connection>&& pConn, Message::MessageData* pMsg)
+	ServerTaskEvent::ServerTaskEvent(TickTask* pTickTask, WeakPointerT<Net::Connection>&& pConn, SharedPointerT<Message::MessageData>& pMsg)
 		: EventType(EventTypes::PACKET_MESSAGE_EVENT)
 	{
 		TaskPtr.FromSharedObject(pTickTask);
 		EventData.MessageEvent.pConn = std::forward<WeakPointerT<Net::Connection>>(pConn);
-		EventData.MessageEvent.pMessage = pMsg;
+		EventData.MessageEvent.pMessage = std::forward<SharedPointerT<Message::MessageData>&>(pMsg);
 	}
 
 	ServerTaskEvent::ServerTaskEvent(EventTypes eventType, TickTask* pTickTask, WeakPointerT<Net::Connection>&& pConn) // send buffer message

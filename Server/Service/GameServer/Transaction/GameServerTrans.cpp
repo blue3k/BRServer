@@ -21,7 +21,7 @@
 #include "Memory/MemoryPool.h"
 #include "Types/BrBaseTypes.h"
 #include "Protocol/Message/GameMsgClass.h"
-#include "Protocol/Policy/GameIPolicy.h"
+#include "Protocol/Policy/GameNetPolicy.h"
 
 #include "ServerSystem/ServiceEntity/ClusterManagerServiceEntity.h"
 #include "ServerSystem/ServiceEntity/MatchingQueueServiceEntity.h"
@@ -36,7 +36,7 @@
 SF_MEMORYPOOL_IMPLEMENT(BR::GameServer::GameServerStartProcess);
 
 
-namespace BR {
+namespace SF {
 namespace GameServer {
 
 
@@ -137,5 +137,5 @@ namespace GameServer {
 
 
 };// namespace GameServer 
-};// namespace BR 
+};// namespace SF 
 

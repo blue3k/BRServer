@@ -24,60 +24,59 @@ namespace Const {
 	//
 	//	Category : Server system
 	//
-	extern INT		TRANSACTION_TIMEOUT;
-	extern INT		SVRMAINENTITY_RESPROC_MAX;
-	extern INT		PLUGIN_ENTITYID_BASE;
+#if defined(DEBUG)
+	constexpr DurationMS		TRANSACTION_TIMEOUT = DurationMS(1000 * 60);
+#else
+	constexpr DurationMS		TRANSACTION_TIMEOUT = DurationMS(1000 * 30);
+#endif
+	constexpr int		ENTITY_SIMPLE_TRANS_QUEUE = 4;
+	constexpr int		ENTITY_SIMPLE_TRANSRES_QUEUE = 8;
+
+	constexpr int		ENTITY_GAME_TRANS_QUEUE = 2048;
+	constexpr int		ENTITY_GAME_TRANSRES_QUEUE = 2048;
+
+	constexpr int		ENTITY_REMOTE_TRANS_QUEUE = 1024;
+	constexpr int		ENTITY_REMOTE_TRANSRES_QUEUE = 1024;
+
+	constexpr DurationMS		LOGIN_SESSION_EXPIRE_TIME = DurationMS(60 * 60 * 2); // 2 min
+
+	constexpr int		MAX_NAME = 64;
+	constexpr int		MAX_RANKING_LIST = 20;
 
 
+	constexpr int		ENTITY_GAMEMANAGER_THREAD = 8;
 
-	enum {
+	constexpr int		SERVER_TRANS_QUEUE = 1024;
+	constexpr int		SERVER_TRANSRES_QUEUE = 1024;
 
-		ENTITY_GAME_TRANS_QUEUE = 2048,
-		ENTITY_GAME_TRANSRES_QUEUE = 2048,
+	constexpr DurationMS		WORKLOAD_UPDATE_TIME = DurationMS(1500); // 1.5 sec
 
-		ENTITY_REMOTE_TRANS_QUEUE = 1024,
-		ENTITY_REMOTE_TRANSRES_QUEUE = 1024,
+	constexpr DurationMS		MATCHING_QUEUE_RESERVATION_TIMEOUT = DurationMS(120 * 1000); // 2min
 
-		LOGIN_SESSION_EXPIRE_TIME = 60 * 60 * 2, // 2 min
+	// EntityServerEntity queue size
+	constexpr int		ENTITY_ENTITY_TRANS_QUEUE = 2048;
+	constexpr int		ENTITY_ENTITY_TRANSRES_QUEUE = 2048;
 
-		MAX_NAME = 64,
-		MAX_RANKING_LIST = 20,
+	constexpr DurationMS		REMOTE_CONNECTION_RETRY = DurationMS(5 * 1000);
+	constexpr DurationMS		REMOTE_CONNECTION_RETRY_MAX = DurationMS(5 * 60 * 1000);
 
-		ENTITY_GAMEMANAGER_THREAD = 8,
+	constexpr DurationMS		SIMPLEUSER_TICKTASK_intERVAL = DurationMS(60 * 1000);
+	constexpr DurationMS		PARALLEL_TRANSACTION_MANAGER_TICKTASK_intERVAL = DurationMS(1000);
 
-		SERVER_TRANS_QUEUE = 1024,
-		SERVER_TRANSRES_QUEUE = 1024,
-
-		WORKLOAD_UPDATE_TIME = 1500, // 1.5 sec
-
-		MATCHING_QUEUE_RESERVATION_TIMEOUT = 120 * 1000, // 2min
-
-		// EntityServerEntity queue size
-		ENTITY_ENTITY_TRANS_QUEUE = 2048,
-		ENTITY_ENTITY_TRANSRES_QUEUE = 2048,
-
-		REMOTE_CONNECTION_RETRY = 5 * 1000,
-		REMOTE_CONNECTION_RETRY_MAX = 5 * 60 * 1000,
-
-
-		SIMPLEUSER_TICKTASK_INTERVAL = 60 * 1000,
-		PARALLEL_TRANSACTION_MANAGER_TICKTASK_INTERVAL = 1000,
-
-		PARTY_TICKTASK_INTERVAL = 2 * 60 * 1000,
+	constexpr DurationMS		PARTY_TICKTASK_intERVAL = DurationMS(2 * 60 * 1000);
 
 		// Wait time for login sequences
 #ifdef DEBUG
-		LOGIN_TIME_WAIT_PLAYER_JOIN = 1 * 60 * 1000,
+	constexpr DurationMS		LOGIN_TIME_WAIT_PLAYER_JOIN = DurationMS(1 * 60 * 1000);
 #else
-		LOGIN_TIME_WAIT_PLAYER_JOIN = 2 * 60 * 1000,  // This is DB maximum, see spRegisterAuthTicket
+	constexpr DurationMS		LOGIN_TIME_WAIT_PLAYER_JOIN = DurationMS(2 * 60 * 1000);  // This is DB maximum, see spRegisterAuthTicket
 #endif
 
-		GAMEINSTANCE_TICK_TIME = 3 * 1000,
-		GAMEINSTANCE_EMPTYINSTANCE_KILL_TIMEOUT = 60 * 1000,
+	constexpr DurationMS		GAMEINSTANCE_TICK_TIME = DurationMS(3 * 1000);
+	constexpr DurationMS		GAMEINSTANCE_EMPTYINSTANCE_KILL_TIMEOUT = DurationMS(60 * 1000);
 
 
-		TIME_INTERVAL_RANKING_UPDATE = 10 * 1000,
-	};
+	constexpr DurationMS		TIME_intERVAL_RANKING_UPDATE = DurationMS(10 * 1000);
 
 
 	constexpr int64_t RANKING_DB_MAX_REQUEST = 1000;

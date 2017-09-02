@@ -25,9 +25,9 @@ GameInsUID GameInstanceEntity::GetInstanceUID()
 
 
 // Get player count at this zone
-UINT GameInstanceEntity::GetNumPlayer()
+uint GameInstanceEntity::GetNumPlayer()
 {
-	return (UINT)m_GamePlayerByUID.GetItemCount();
+	return (uint)m_GamePlayerByUID.GetItemCount();
 }
 
 
@@ -76,7 +76,7 @@ UINT GameInstanceEntity::GetNumPlayer()
 //}
 //
 //// foreach game player with Game policy
-//inline Result GameInstanceEntity::ForeachPlayerSvrGameInstance(std::function<Result(GamePlayer* pPlayer, Policy::ISvrPolicyGameInstance *pPolicy)> func)
+//inline Result GameInstanceEntity::ForeachPlayerSvrGameInstance(std::function<Result(GamePlayer* pPlayer, Policy::NetSvrPolicyGameInstance *pPolicy)> func)
 //{
 //	m_GamePlayerByUID.ForeachOrder(0, GameConst::MAX_GAMEPLAYER, [&](const PlayerID& playerID, GamePlayer* pGamePlayer)-> bool
 //	{
@@ -86,7 +86,7 @@ UINT GameInstanceEntity::GetNumPlayer()
 //		if (pGamePlayer->GetPlayerState() == PlayerState::None)
 //			return true;
 //
-//		Policy::ISvrPolicyGameInstance *pPolicy = pGamePlayer->GetPolicy<Policy::ISvrPolicyGameInstance>();
+//		Policy::NetSvrPolicyGameInstance *pPolicy = pGamePlayer->GetPolicy<Policy::NetSvrPolicyGameInstance>();
 //		if (pPolicy)
 //		{
 //			Result hrRes = func(pGamePlayer, pPolicy);

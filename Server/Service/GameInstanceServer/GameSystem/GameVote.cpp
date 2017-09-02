@@ -23,9 +23,9 @@
 #include "ServerSystem/BrServerUtil.h"
 #include "ConspiracyGameInstanceSvrConst.h"
 
-#include "Protocol/Policy/GameInstanceIPolicy.h"
+#include "Protocol/Policy/GameInstanceNetPolicy.h"
 #include "ConspiracyGameInstanceServerClass.h"
-#include "Protocol/Policy/GameIPolicy.h"
+#include "Protocol/Policy/GameNetPolicy.h"
 
 #include "GameSystem/GameVote.h"
 #include "GameSystem/GamePlaySystem.h"
@@ -35,7 +35,7 @@
 
 
 
-namespace BR {
+namespace SF {
 namespace ConspiracyGameInstanceServer {
 
 
@@ -91,7 +91,7 @@ namespace ConspiracyGameInstanceServer {
 			GamePlayer *pPreviousVoteTarget = nullptr;
 			if( (GetOwner().FindPlayer( pVoter->GetVote(), pPreviousVoteTarget )) )
 			{
-				UINT numVoted = pPreviousVoteTarget->GetVoted();
+				uint numVoted = pPreviousVoteTarget->GetVoted();
 				Assert(numVoted>0);
 				if( numVoted > 0 )
 				{
@@ -136,8 +136,8 @@ namespace ConspiracyGameInstanceServer {
 
 	void GameVote::VoteRandomTarget( GamePlayer* pVoter, Array<GamePlayer*>& voteTargets )
 	{
-		UINT randTarget = (UINT)(Util::Random.Rand() % voteTargets.GetSize());
-		if( voteTargets[randTarget] == pVoter ) randTarget = (UINT)((randTarget+1) % voteTargets.GetSize());
+		uint randTarget = (uint)(Util::Random.Rand() % voteTargets.GetSize());
+		if( voteTargets[randTarget] == pVoter ) randTarget = (uint)((randTarget+1) % voteTargets.GetSize());
 		
 		Result voteRes = GetOwner().GetComponent<GameStateSystem>()->Vote( pVoter, voteTargets[randTarget] );
 		if( !(voteRes) )
@@ -156,7 +156,7 @@ namespace ConspiracyGameInstanceServer {
 		return m_VoteRankers[index];
 	}
 
-	void GameVoteSuspect::SetVoteRanker( PlayerID playerID, UINT rate )
+	void GameVoteSuspect::SetVoteRanker( PlayerID playerID, uint rate )
 	{
 		for( int index = 0; index < (int)countof(m_VoteRankers); index++ )
 		{
@@ -198,7 +198,7 @@ namespace ConspiracyGameInstanceServer {
 		SetVoteRanker( pVoteTarget->GetPlayerID(), pVoteTarget->GetVoted() );
 
 		// broadcast vote result
-		GetOwner().ForeachPlayerSvrGameInstance( [&]( GamePlayer* pPlayer, Policy::ISvrPolicyGameInstance *pPolicy )->Result {
+		GetOwner().ForeachPlayerSvrGameInstance( [&]( GamePlayer* pPlayer, Policy::NetSvrPolicyGameInstance *pPolicy )->Result {
 			if( pPlayer->GetPlayerEntityUID() != 0 )
 				pPolicy->VotedS2CEvt( RouteContext(GetOwner().GetEntityUID(),pPlayer->GetPlayerEntityUID()), pVoter->GetPlayerID(), pVoteTarget->GetPlayerID()  );
 
@@ -210,7 +210,7 @@ namespace ConspiracyGameInstanceServer {
 		return hr;
 	}
 
-	UINT GameVoteSuspect::GatherVoteTarget(Array<GamePlayer*>& voteTargets)
+	uint GameVoteSuspect::GatherVoteTarget(Array<GamePlayer*>& voteTargets)
 	{
 		voteTargets.Clear();
 		GetOwner().ForeachPlayer( [&](GamePlayer* pPlayer) -> Result {
@@ -221,7 +221,7 @@ namespace ConspiracyGameInstanceServer {
 			return ResultCode::SUCCESS;
 		});
 
-		return (UINT)voteTargets.GetSize();
+		return (uint)voteTargets.GetSize();
 	}
 	
 	// Make all AI(left players and sleepers) be voted
@@ -357,7 +357,7 @@ namespace ConspiracyGameInstanceServer {
 		}
 
 		// broadcast vote result
-		GetOwner().ForeachPlayerSvrGameInstance( [&]( GamePlayer* pPlayer, Policy::ISvrPolicyGameInstance *pPolicy )->Result {
+		GetOwner().ForeachPlayerSvrGameInstance( [&]( GamePlayer* pPlayer, Policy::NetSvrPolicyGameInstance *pPolicy )->Result {
 			if( pPlayer->GetPlayerEntityUID() != 0 )
 				pPolicy->VotedS2CEvt( RouteContext(GetOwner().GetEntityUID(),pPlayer->GetPlayerEntityUID()), pVoter->GetPlayerID(), pVoteTarget->GetPlayerID()  );
 			return ResultCode::SUCCESS;
@@ -368,18 +368,18 @@ namespace ConspiracyGameInstanceServer {
 		return hr;
 	}
 	
-	UINT GameVoteHanging::GatherVoteTarget(Array<GamePlayer*>& voteTargets)
+	uint GameVoteHanging::GatherVoteTarget(Array<GamePlayer*>& voteTargets)
 	{
 		GamePlaySystem& gamePlaySystem = GetGamePlaySystem();
 
-		for(UINT iSuspect = 0; iSuspect < gamePlaySystem.GetNumberOfSuspects(); iSuspect++ )
+		for(uint iSuspect = 0; iSuspect < gamePlaySystem.GetNumberOfSuspects(); iSuspect++ )
 		{
 			GamePlayer *pFound = nullptr;
 			GetOwner().FindPlayer( gamePlaySystem.GetSuspect(iSuspect), pFound );
 			voteTargets.push_back( pFound );
 		}
 
-		return (UINT)voteTargets.GetSize();
+		return (uint)voteTargets.GetSize();
 	}
 	
 	// Make all AI(left players and sleepers) be voted
@@ -454,7 +454,7 @@ namespace ConspiracyGameInstanceServer {
 	// Vote for night
 	//
 
-	GameVoteNight::GameVoteNight(GameInstanceEntity* Owner,UINT votingFlags)
+	GameVoteNight::GameVoteNight(GameInstanceEntity* Owner,uint votingFlags)
 		:GameVote(Owner)
 		, m_VotingFlags(votingFlags)
 		, m_SeersChoice(0)
@@ -515,7 +515,7 @@ namespace ConspiracyGameInstanceServer {
 
 			pSeersChoice->SetRevealedBySeer(true);
 
-			auto pPolicy = pSeers->GetPolicy<Policy::ISvrPolicyGameInstance>();
+			auto pPolicy = pSeers->GetPolicy<Policy::NetSvrPolicyGameInstance>();
 			if (pSeers->GetPlayerEntityUID() != 0 && pPolicy != nullptr)
 				pPolicy->PlayerRevealedS2CEvt(RouteContext(GetOwner().GetEntityUID(), pSeers->GetPlayerEntityUID()), pSeersChoice->GetPlayerID(), pSeersChoice->GetRole(), PlayerRevealedReason::SeersChoice);
 
@@ -545,7 +545,7 @@ namespace ConspiracyGameInstanceServer {
 		svrChk(GameVote::Vote(pVoter,pVoteTarget) );
 
 		// broadcast vote result
-		GetOwner().ForeachPlayerSvrGameInstance([&](GamePlayer* pPlayer, Policy::ISvrPolicyGameInstance *pPolicy)->Result {
+		GetOwner().ForeachPlayerSvrGameInstance([&](GamePlayer* pPlayer, Policy::NetSvrPolicyGameInstance *pPolicy)->Result {
 			if (pPlayer->GetPlayerEntityUID() != 0
 				&& pPlayer->GetRole() == PlayerRole::Werewolf
 				&& pPlayer->GetPlayerID() != pVoter->GetPlayerID())
@@ -600,7 +600,7 @@ namespace ConspiracyGameInstanceServer {
 		return !m_IsInVoting;
 	}
 
-	UINT GameVoteNight::GatherVoteTarget(Array<GamePlayer*>& voteTargets)
+	uint GameVoteNight::GatherVoteTarget(Array<GamePlayer*>& voteTargets)
 	{
 		voteTargets.Clear();
 		GetOwner().ForeachPlayer( [&](GamePlayer* pPlayer) -> Result {
@@ -611,10 +611,10 @@ namespace ConspiracyGameInstanceServer {
 			return ResultCode::SUCCESS;
 		});
 
-		return (UINT)voteTargets.GetSize();
+		return (uint)voteTargets.GetSize();
 	}
 
-	UINT GameVoteNight::GatherVoteTargetForHunting(Array<GamePlayer*>& voteTargets)
+	uint GameVoteNight::GatherVoteTargetForHunting(Array<GamePlayer*>& voteTargets)
 	{
 		voteTargets.Clear();
 
@@ -628,10 +628,10 @@ namespace ConspiracyGameInstanceServer {
 			return ResultCode::SUCCESS;
 		});
 
-		return (UINT)voteTargets.GetSize();
+		return (uint)voteTargets.GetSize();
 	}
 
-	UINT GameVoteNight::GatherVoteTargetForSeer(Array<GamePlayer*>& voteTargets)
+	uint GameVoteNight::GatherVoteTargetForSeer(Array<GamePlayer*>& voteTargets)
 	{
 		voteTargets.Clear();
 
@@ -646,7 +646,7 @@ namespace ConspiracyGameInstanceServer {
 			return ResultCode::SUCCESS;
 		});
 
-		return (UINT)voteTargets.GetSize();
+		return (uint)voteTargets.GetSize();
 	}
 
 	// Make all AI(left players and sleepers) be voted
@@ -758,6 +758,6 @@ namespace ConspiracyGameInstanceServer {
 
 
 }; // namespace ConspiracyGameInstanceServer
-}; // namespace BR
+}; // namespace SF
 
 

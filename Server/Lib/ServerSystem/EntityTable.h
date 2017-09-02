@@ -17,9 +17,9 @@
 
 #include "ServerSystem/SvrTrace.h"
 #include "ServerSystem/Entity.h"
-#include "Common/HashTable2.h"
-#include "Common/Indexing.h"
-#include "Common/UniqueEntityIDGenerator.h"
+#include "Container/HashTable2.h"
+#include "Container/Indexing.h"
+#include "Util/UniqueEntityIDGenerator.h"
 #include "Object/SharedPointer.h"
 
 
@@ -42,11 +42,11 @@ namespace Svr {
 	// Entity manager class
 	//
 
-	class EntityTable : public Hash::HashTable2< UINT, SharedPointerT<Entity> >
+	class EntityTable : public HashTable2< uint, SharedPointerT<Entity> >
 	{
 	public:
 
-		typedef Hash::HashTable2< UINT, SharedPointerT<Entity> > super;
+		typedef HashTable2< uint, SharedPointerT<Entity> > super;
 
 	private:
 		// ID generator

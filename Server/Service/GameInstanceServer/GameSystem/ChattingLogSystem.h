@@ -18,10 +18,10 @@
 #include "ServerSystem/GameSystem.h"
 #include "ServerSystem/GameLog/ChattingHistory.h"
 #include "Container/SFArray.h"
-#include "Common/GameConst.h"
+#include "GameConst.h"
 #include "GameSystemComponentIDs.h"
 
-namespace BR {
+namespace SF {
 namespace ConspiracyGameInstanceServer {
 
 	class GameInstanceEntity;
@@ -60,7 +60,7 @@ namespace ConspiracyGameInstanceServer {
 
 
 }; // ConspiracyGameInstanceServer
-}; // namespace BR
+}; // namespace SF
 
 
 

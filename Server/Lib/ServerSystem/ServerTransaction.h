@@ -43,8 +43,8 @@ namespace Svr {
 	//
 
 	// This transaction will work on server entity by default. Call SetWorkOnServerEntity to change it
-	template< class OwnerEntityType, class MessageClass, class MemoryPoolClass, size_t MessageHandlerBufferSize = sizeof(Svr::TransactionMessageHandlerType)*2 >
-	class ServerEntityMessageTransaction : public TransactionT<OwnerEntityType,MemoryPoolClass,MessageHandlerBufferSize>, public MessageClass
+	template< class OwnerEntityType, class MessageClass, class MemoryPoolClass >
+	class ServerEntityMessageTransaction : public TransactionT<OwnerEntityType,MemoryPoolClass>, public MessageClass
 	{
 	public:
 		typedef TransactionT<OwnerEntityType, MemoryPoolClass, MessageHandlerBufferSize> superTrans;
@@ -54,8 +54,8 @@ namespace Svr {
 		bool				m_WorkOnServerEntity;
 
 	public:
-		ServerEntityMessageTransaction( Message::MessageData* &pIMsg )
-			:superTrans( TransactionID() )
+		ServerEntityMessageTransaction(IMemoryManager& memoryManager, Message::MessageData* &pIMsg )
+			:superTrans( memoryManager, TransactionID() )
 			,MessageClass( pIMsg )
 			,m_WorkOnServerEntity(true)
 		{
@@ -166,15 +166,15 @@ namespace Svr {
 	// Message transaction template
 	//
 
-	template< class OwnerEntityType, class MessageClass, class MemoryPoolClass, size_t MessageHandlerBufferSize = sizeof(Svr::TransactionMessageHandlerType)*2 >
-	class ClusterEntityMessageTransaction : public ServerEntityMessageTransaction<OwnerEntityType,MessageClass,MemoryPoolClass,MessageHandlerBufferSize>
+	template< class OwnerEntityType, class MessageClass, class MemoryPoolClass >
+	class ClusterEntityMessageTransaction : public ServerEntityMessageTransaction<OwnerEntityType,MessageClass,MemoryPoolClass>
 	{
 	private:
 		typedef ServerEntityMessageTransaction<OwnerEntityType, MessageClass, MemoryPoolClass, MessageHandlerBufferSize> super;
 
 	public:
-		ClusterEntityMessageTransaction( Message::MessageData* &pIMsg )
-			:super( pIMsg )
+		ClusterEntityMessageTransaction(IMemoryManager& memMgr, Message::MessageData* &pIMsg )
+			:super( memMgr, pIMsg )
 		{
 			super::m_WorkOnServerEntity = false;
 		}
@@ -204,10 +204,10 @@ namespace Svr {
 			if( pConn == nullptr )
 			{
 				svrTrace( Trace::TRC_ERROR, "Failed routing a message({0}) for {1}", super::GetMessage()->GetMessageHeader()->msgID, typeid(*pMyOwner).name() );
-				svrErr(ResultCode::E_SVR_CLUSTER_NOTREADY);
+				svrErr(ResultCode::SVR_CLUSTER_NOTREADY);
 			}
 
-			if (pConn->GetConnectionState() != Net::Connection::STATE_CONNECTED)
+			if (pConn->GetConnectionState() != Net::ConnectionState::CONNECTED)
 				goto Proc_End;
 
 			MessageClass::OverrideRouteInformation( pService->GetEntityUID(), super::GetRouteHopCount() + 1 );

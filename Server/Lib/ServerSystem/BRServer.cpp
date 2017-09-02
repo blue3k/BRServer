@@ -277,7 +277,7 @@ Proc_End:
 		}
 
 		svrChk( GetComponent<EntityManager>()->AddEntity( 
-			EntityID( EntityFaculty::Service,(UINT)ClusterID::ClusterManager ), 
+			EntityID( EntityFaculty::Service,(uint)ClusterID::ClusterManager ), 
 			GetComponent<ClusterManagerServiceEntity>() ) );
 
 	Proc_End:

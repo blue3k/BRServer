@@ -92,7 +92,7 @@ namespace conspiracy
 	ShopTbl::ShopItemIDTable *ShopTbl::m_ShopItemIDTable = nullptr;
 	ShopTbl::ShopItemIDTable *ShopTbl::m_ShopItemIDTablePrev = nullptr;
 
-	BR::Result ShopTbl::LoadTable( const std::list<ShopItem>& rowList )
+	Result ShopTbl::LoadTable( const std::list<ShopItem>& rowList )
 	{
  		auto pNewShopItemIDTable = new ShopItemIDTable;
 
@@ -110,20 +110,20 @@ namespace conspiracy
 		}
 		m_ShopItemIDTablePrev = m_ShopItemIDTable;
 		m_ShopItemIDTable = pNewShopItemIDTable;
-		return BR::ResultCode::SUCCESS;
+		return ResultCode::SUCCESS;
 	}
 
 
-	BR::Result ShopTbl::FindItem( const int& Key, ShopItem*& pRow)
+	Result ShopTbl::FindItem( const int& Key, ShopItem*& pRow)
 	{
  		auto itr = m_ShopItemIDTable->find(Key);
 		if (itr == m_ShopItemIDTable->end())
 		{
  			// write error log
-			return BR::ResultCode::FAIL;
+			return ResultCode::FAIL;
 		}
 		pRow = itr->second;
-		return BR::ResultCode::SUCCESS;
+		return ResultCode::SUCCESS;
 	}
 
 }; // namespace conspiracy

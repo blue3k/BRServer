@@ -54,14 +54,14 @@ void GameSystem<OwnerEntity,SystemClass>::ClearModifiedInfo()
 
 // set modified quest
 template< class OwnerEntity, class SystemClass >
-void GameSystem<OwnerEntity,SystemClass>::SetModified( UINT uiID )
+void GameSystem<OwnerEntity,SystemClass>::SetModified( uint uiID )
 {
 	m_ModifiedIDs.insert( uiID );
 }
 
 
 template< class OwnerEntity, class SystemClass >
-bool GameSystem<OwnerEntity,SystemClass>::IsModified( UINT uiID )
+bool GameSystem<OwnerEntity,SystemClass>::IsModified( uint uiID )
 {
 	return m_ModifiedIDs.find( uiID ) != m_ModifiedIDs.end();
 }
@@ -70,7 +70,7 @@ bool GameSystem<OwnerEntity,SystemClass>::IsModified( UINT uiID )
 
 // Get Modified mission clear
 template< class OwnerEntity, class SystemClass >
-std::unordered_set<UINT>& GameSystem<OwnerEntity,SystemClass>::GetModifiedList()
+std::unordered_set<uint>& GameSystem<OwnerEntity,SystemClass>::GetModifiedList()
 {
 	return m_ModifiedIDs;
 }

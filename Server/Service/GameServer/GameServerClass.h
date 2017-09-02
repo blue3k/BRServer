@@ -20,13 +20,13 @@
 
 
 
-namespace BR {
+namespace SF {
 namespace Net {
 	class ServerMUDP;
 }};
 
 
-namespace BR {
+namespace SF {
 
 	namespace Svr {
 		class ServerEntity;
@@ -55,7 +55,7 @@ namespace GameServer
 
 		// game config preset
 		int m_TableVersion;
-		UINT					m_PresetGameConfigID;
+		uint					m_PresetGameConfigID;
 		BRCLASS_ATTRIBUTE_READONLY_PTR(GameConfigType*,PresetGameConfig);
 
 		//BRCLASS_ATTRIBUTE_READONLY(NetAddress, PublicNetAddressIPv4);
@@ -74,7 +74,7 @@ namespace GameServer
 
 		
 		// Update game config
-		Result UpdateGameConfig(UINT configPresetID);
+		Result UpdateGameConfig(uint configPresetID);
 
 		///////////////////////////////////////////////////////////////////////////////////
 		//
@@ -162,7 +162,7 @@ namespace GameServer
 
 
 }; // namespace GameServer
-}; // namespace BR
+}; // namespace SF
 
 
 

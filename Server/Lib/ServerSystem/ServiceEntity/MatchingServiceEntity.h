@@ -25,7 +25,7 @@
 #include "ServerSystem/ServerServiceBase.h"
 #include "ServerSystem/MessageRoute.h"
 #include "Common/HashTable.h"
-#include "Common/Indexing.h"
+#include "Container/Indexing.h"
 
 #include "ServerSystem/ServiceEntity/EntityInformation.h"
 #include "ServerSystem/ServiceEntity/ClusteredServiceEntity.h"
@@ -51,7 +51,7 @@ namespace Svr {
 
 		enum { 
 			MIN_TRANSACTIONS			= 1,
-			//MAX_NUMBER_OF_KEYS		= ((UINT)ClusterID::MatchingQueue_Game_11 - (UINT)ClusterID::MatchingQueue_Game_1) + 1,
+			//MAX_NUMBER_OF_KEYS		= ((uint)ClusterID::MatchingQueue_Game_11 - (uint)ClusterID::MatchingQueue_Game_1) + 1,
 
 			TIME_START_MATCHING			= 5*1000,
 			TIME_REMATCHING_ONFAIL		= 2*1000,
@@ -71,7 +71,7 @@ namespace Svr {
 		// Reserved item type
 		struct ReservedMatchingItem {
 			MatchingQueueTicket			MatchingTicket;
-			UINT						MemberCount;
+			uint						MemberCount;
 			PlayerRole                  RequestedRole;
 
 			ReservedMatchingItem(void* ptr)
@@ -113,7 +113,7 @@ namespace Svr {
 
 			virtual void ResetForMatch() {}
 			virtual Result Dequeue(Array<ReservedMatchingItem>& items) = 0;
-			virtual UINT GetEnqueueCount() = 0;
+			virtual uint GetEnqueueCount() = 0;
 		};
 
 		// single query wraper
@@ -128,7 +128,7 @@ namespace Svr {
 			MatchingQueue_Single(PageQueue<ReservedMatchingItem>* pQueuePtr);
 
 			virtual Result Dequeue(Array<ReservedMatchingItem>& items) override;
-			virtual UINT GetEnqueueCount() override;
+			virtual uint GetEnqueueCount() override;
 		};
 
 		// Multiple queue with matching count balance
@@ -139,7 +139,7 @@ namespace Svr {
 			struct QueueItem
 			{
 				PageQueue<ReservedMatchingItem>* pQueue;
-				UINT                             MaxAllowPerMatch;
+				uint                             MaxAllowPerMatch;
 				PlayerRole                       RequestRole;
 
 
@@ -161,17 +161,17 @@ namespace Svr {
 
 		private:
 			StaticArray<QueueItem, MAX_QUEUE_COUNT> m_pQueuePtr;
-			UINT m_StartQueueIndex;
+			uint m_StartQueueIndex;
 
 		public:
 
 			MatchingQueue_Multiple();
 
-			Result AddQueue(PageQueue<ReservedMatchingItem>* pQueuePtr, UINT maxPerMatch, PlayerRole requestRole);
+			Result AddQueue(PageQueue<ReservedMatchingItem>* pQueuePtr, uint maxPerMatch, PlayerRole requestRole);
 
 			virtual void ResetForMatch() override;
 			virtual Result Dequeue(Array<ReservedMatchingItem>& items) override;
-			virtual UINT GetEnqueueCount() override;
+			virtual uint GetEnqueueCount() override;
 		};
 
 
@@ -179,7 +179,7 @@ namespace Svr {
 			MatchingQueueTicket			MatchingTicket;
 			EntityUID					RegisterEntityUID;
 			PlayerRole                  RequestedRole;
-			UINT						MemberCount;
+			uint						MemberCount;
 			MatchingPlayerInformation	Players[MAX_NUM_PLAYER];
 
 			MatchingItem(void* ptr = nullptr)
@@ -198,15 +198,15 @@ namespace Svr {
 	private:
 
 		// Matching target member count
-		BRCLASS_ATTRIBUTE_READONLY(UINT, TargetMatchingMemberCount);
-		BRCLASS_ATTRIBUTE_READONLY(UINT, MaxMatchingQueue);
+		BRCLASS_ATTRIBUTE_READONLY(uint, TargetMatchingMemberCount);
+		BRCLASS_ATTRIBUTE_READONLY(uint, MaxMatchingQueue);
 
 		BRCLASS_ATTRIBUTE_READONLY(bool, IsUseBot);
 
 		TimeStampMS m_WaitingBotMatchingStart;
 
 		// Reservation state
-		UINT m_ReservationStartFrom;
+		uint m_ReservationStartFrom;
 
 		WeakPointerT<Entity> m_pQueueEntity;
 		StaticArray<MatchingQueueInterface*, MAX_QUEUE_COUNT> m_MatchingReserevedQueues;
@@ -216,12 +216,12 @@ namespace Svr {
 		PerformanceCounterTickPerSec<int64_t> m_MatchedCount;
 
 	protected:
-		Result GetMatchingPatterTable(UINT targetMatchingMemberCount, UINT& numTableEntries, const UINT* &pTable);
+		Result GetMatchingPatterTable(uint targetMatchingMemberCount, uint& numTableEntries, const uint* &pTable);
 
 		Result UpdateMatching();
 		Result UpdateBotMatching();
 
-		UINT GetGrabbedPlayerCount(Array<ReservedMatchingItem>& grabbedItems);
+		uint GetGrabbedPlayerCount(Array<ReservedMatchingItem>& grabbedItems);
 
 	public:
 
@@ -229,7 +229,7 @@ namespace Svr {
 		~MatchingServiceEntity();
 
 		// We are not going to use hashed key
-		virtual UINT KeyHash( uint64_t key ) { return (UINT)key; }
+		virtual uint KeyHash( uint64_t key ) { return (uint)key; }
 
 		
 		//////////////////////////////////////////////////////////////////////////
@@ -253,7 +253,7 @@ namespace Svr {
 	class MatchingWatcherServiceEntity : public RingClusterServiceEntity, public IServerComponent
 	{
 	public:
-		MatchingWatcherServiceEntity( ClusterID clusterID, UINT componentID );
+		MatchingWatcherServiceEntity( ClusterID clusterID, uint componentID );
 		~MatchingWatcherServiceEntity();
 	};
 
@@ -280,27 +280,27 @@ namespace Svr {
 		INT m_ReservedItemQueueTransaction[MAX_QUEUE_COUNT];
 
 		// target queue member count
-		UINT m_MatchingMemberCount;
+		uint m_MatchingMemberCount;
 
 		// Target enqueue member count
-		UINT m_MinQueueCount;
-		UINT m_MaxQueueCount;
+		uint m_MinQueueCount;
+		uint m_MaxQueueCount;
 
 
 
 	public:
-		MatchingServiceQueueEntity(UINT matchingMemberCount, UINT minQueueCount, UINT maxQueueCount);
+		MatchingServiceQueueEntity(uint matchingMemberCount, uint minQueueCount, uint maxQueueCount);
 		~MatchingServiceQueueEntity();
 
 		MemoryAllocator& GetAllocator() { return STDAllocator::GetInstance(); }
 
-		UINT GetMinQueueCount()															{ return m_MinQueueCount; }
-		UINT GetMaxQueueCount()															{ return m_MaxQueueCount; }
-		PageQueue<MatchingServiceEntity::ReservedMatchingItem>& GetReservedItemQueue(UINT iMemberCount, PlayerRole requestRole);
+		uint GetMinQueueCount()															{ return m_MinQueueCount; }
+		uint GetMaxQueueCount()															{ return m_MaxQueueCount; }
+		PageQueue<MatchingServiceEntity::ReservedMatchingItem>& GetReservedItemQueue(uint iMemberCount, PlayerRole requestRole);
 
-		void TransactionStartedForQueue(UINT iMemberCount)								{ m_ReservedItemQueueTransaction[iMemberCount]++; }
-		void TransactionClosedForQueue(UINT iMemberCount)								{ m_ReservedItemQueueTransaction[iMemberCount]--; if (m_ReservedItemQueueTransaction[iMemberCount] < 0) m_ReservedItemQueueTransaction[iMemberCount] = 0; }
-		INT GetTransactionStartedForQueue(UINT iMemberCount)							{ return m_ReservedItemQueueTransaction[iMemberCount]; }
+		void TransactionStartedForQueue(uint iMemberCount)								{ m_ReservedItemQueueTransaction[iMemberCount]++; }
+		void TransactionClosedForQueue(uint iMemberCount)								{ m_ReservedItemQueueTransaction[iMemberCount]--; if (m_ReservedItemQueueTransaction[iMemberCount] < 0) m_ReservedItemQueueTransaction[iMemberCount] = 0; }
+		INT GetTransactionStartedForQueue(uint iMemberCount)							{ return m_ReservedItemQueueTransaction[iMemberCount]; }
 
 		virtual Result InitializeEntity(EntityID newEntityID) override;
 

@@ -16,12 +16,20 @@
 #include "Container/CircularPageQueue.h"
 #include "Task/Task.h"
 
-#include "zookeeper.h"
-
+struct ACL_vector;
+struct String_vector;
+struct Stat;
+typedef struct _zhandle zhandle_t;
+typedef struct clientid clientid_t;
+typedef struct zoo_op_result zoo_op_result_t;
+typedef struct zoo_op zoo_op_t;
 
 
 namespace SF
 {
+	constexpr size_t ZOOKEEPER_STAT_BUFFER_SIZE = 128;
+	constexpr size_t ZOOKEEPER_CLIENTID_BUFFER_SIZE = 32;
+
 
 	///////////////////////////////////////////////////////////////////////////////////
 	//
@@ -93,12 +101,15 @@ namespace SF
 		{
 		public:
 			DynamicArray<String> ResultStrings;
-			struct Stat ResultStat;
+			uint8_t ResultStatBuffer[ZOOKEEPER_STAT_BUFFER_SIZE];
+			Stat* ResultStat;
+
 
 			StringsStatTask(IMemoryManager& memoryManager)
 				: ResultStrings(memoryManager)
 			{
-				memset(&ResultStat, 0, sizeof(ResultStat));
+				ResultStat = (Stat*)ResultStatBuffer;
+				memset(ResultStatBuffer, 0, sizeof(ResultStatBuffer));
 			}
 		};
 
@@ -106,11 +117,13 @@ namespace SF
 		class StatTask : public ZooKeeperTask
 		{
 		public:
-			struct Stat ResultStat;
+			uint8_t ResultStatBuffer[ZOOKEEPER_STAT_BUFFER_SIZE];
+			Stat *ResultStat;
 
 			StatTask()
 			{
-				memset(&ResultStat, 0, sizeof(ResultStat));
+				ResultStat = (Stat*)ResultStatBuffer;
+				memset(ResultStatBuffer, 0, sizeof(ResultStatBuffer));
 			}
 		};
 
@@ -148,12 +161,12 @@ namespace SF
 
 		static void ZKWatcherCB(zhandle_t *zkHandle, int type, int state, const char *path, void*v);
 		static void ZKWatcherCBComlition(int rc, const void *data);
-		static void ZKWatcherCBStatComlition(int rc, const struct Stat *stat, const void *data);
-		static void ZKWatcherCBDataComlition(int rc, const char *value, int value_len, const struct Stat *stat, const void *data);
-		static void ZKWatcherCBStringsComlition(int rc, const struct String_vector *strings, const void *data);
-		static void ZKWatcherCBStringsStatComlition(int rc, const struct String_vector *strings, const struct Stat *stat, const void *data);
+		static void ZKWatcherCBStatComlition(int rc, const Stat *stat, const void *data);
+		static void ZKWatcherCBDataComlition(int rc, const char *value, int value_len, const Stat *stat, const void *data);
+		static void ZKWatcherCBStringsComlition(int rc, const String_vector *strings, const void *data);
+		static void ZKWatcherCBStringsStatComlition(int rc, const String_vector *strings, const Stat *stat, const void *data);
 		static void ZKWatcherCBStringComlition(int rc, const char *value, const void *data);
-		static void ZKWatcherCBACLComlition(int rc, struct ACL_vector *acl, struct Stat *stat, const void *data);
+		static void ZKWatcherCBACLComlition(int rc, struct ACL_vector *acl, Stat *stat, const void *data);
 
 		friend class ZooKeeper;
 
@@ -200,13 +213,14 @@ namespace SF
 		std::atomic<int> m_State;
 
 		// ZooKeeper client id
-		clientid_t m_ClientID;
+		uint8_t ClientIDBuffer[ZOOKEEPER_STAT_BUFFER_SIZE];
+		clientid_t* m_ClientID;
 
 		// Watcher for main Zookeeper connection
 		ZooKeeperWatcher m_ZKWatcher;
 
 		// Zookeeper log level
-		ZooLogLevel m_LogLevel = ZOO_LOG_LEVEL_WARN;
+		uint32_t m_LogLevel;
 
 	public:
 
@@ -223,7 +237,7 @@ namespace SF
 		ZooKeeperWatcher& GetWatcher() { return m_ZKWatcher; }
 
 		// check connection status
-		bool IsConnected() const { return m_ZKWatcher.GetState() == ZOO_CONNECTED_STATE; }
+		bool IsConnected() const;
 		int GetState() const { return m_ZKWatcher.GetState(); }
 
 		// Close

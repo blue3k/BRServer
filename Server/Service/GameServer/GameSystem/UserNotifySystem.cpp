@@ -16,7 +16,7 @@
 #include "Util/TimeUtil.h"
 #include "Common/BrRandom.h"
 #include "ResultCode/SFResultCodeSvr.h"
-#include "ResultCode/SFResultCodeCommon.h"
+#include "ResultCode/SFResultCodeLibrary.h"
 #include "ResultCode/SFResultCodeGame.h"
 
 #include "ServerSystem/SvrConst.h"
@@ -24,9 +24,9 @@
 #include "ServerSystem/BrServerUtil.h"
 #include "GameSvrConst.h"
 
-#include "Protocol/Policy/GameInstanceIPolicy.h"
+#include "Protocol/Policy/GameInstanceNetPolicy.h"
 #include "GameServerClass.h"
-#include "Protocol/Policy/GameIPolicy.h"
+#include "Protocol/Policy/GameNetPolicy.h"
 
 #include "GameSystem/UserNotifySystem.h"
 #include "GameSystem/UserGamePlayerInfoSystem.h"
@@ -38,7 +38,7 @@
 SF_MEMORYPOOL_IMPLEMENT(BR::GameServer::UserNotifySystem);
 
 
-namespace BR {
+namespace SF {
 namespace GameServer {
 
 
@@ -85,7 +85,7 @@ namespace GameServer {
 	}
 
 	// Get Notification information
-	UserNotifySystem::Notification* UserNotifySystem::GetNotification( UINT notificationID )
+	UserNotifySystem::Notification* UserNotifySystem::GetNotification( uint notificationID )
 	{
 		for( unsigned int index = 0; index < m_Notifications.GetSize(); index++ )
 		{
@@ -97,7 +97,7 @@ namespace GameServer {
 	}
 
 	// Find
-	INT UserNotifySystem::FindNotification( UINT notificationID )
+	INT UserNotifySystem::FindNotification( uint notificationID )
 	{
 		for( int index = 0; index < (INT)m_Notifications.GetSize(); index++ )
 		{
@@ -117,7 +117,7 @@ namespace GameServer {
 		return m_Notifications.Append( 1, &info );
 	}
 
-	Result UserNotifySystem::AddNotification( UINT NotificationID, NotificationType MessageID, int64_t MessageParam0, int64_t MessageParam1, const char* MessageText, uint8_t IsRead, int64_t timeStamp )
+	Result UserNotifySystem::AddNotification( uint NotificationID, NotificationType MessageID, int64_t MessageParam0, int64_t MessageParam1, const char* MessageText, uint8_t IsRead, int64_t timeStamp )
 	{
 		if( MessageText == nullptr)
 			return ResultCode::INVALID_ARG;
@@ -138,7 +138,7 @@ namespace GameServer {
 
 
 	// Remove a Notification
-	Result UserNotifySystem::RemoveNotification( UINT notificationID )
+	Result UserNotifySystem::RemoveNotification( uint notificationID )
 	{
 		INT index = FindNotification(notificationID);
 		if( index < 0 )
@@ -161,7 +161,7 @@ namespace GameServer {
 	}
 
 }; // namespace GameServer
-}; // namespace BR
+}; // namespace SF
 
 
 

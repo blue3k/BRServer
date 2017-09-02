@@ -21,7 +21,7 @@
 #include "ServerSystem/ServerComponent.h"
 #include "ServerSystem/ServerServiceBase.h"
 #include "Common/HashTable.h"
-#include "Common/Indexing.h"
+#include "Container/Indexing.h"
 
 #include "ServerSystem/ServiceEntity/EntityInformation.h"
 #include "ServerSystem/ServiceEntity/ClusteredServiceEntity.h"
@@ -47,7 +47,7 @@ namespace Svr {
 		enum { ComponentID = ServerComponentID_ClusterManagerService };
 
 		// Server Entity table
-		typedef Hash::HashTable<	UINT, ClusteredServiceEntity*
+		typedef Hash::HashTable<	uint, ClusteredServiceEntity*
 									> 
 				ClusterIDMap;
 

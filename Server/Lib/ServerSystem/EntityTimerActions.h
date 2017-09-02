@@ -35,7 +35,7 @@ namespace Svr {
 
 		void SetNextTickTime(SharedPointerT<Transaction>& pTrans);
 
-		virtual bool UpdateTick() override;
+		virtual bool OnTimerTick() override;
 
 		virtual const char* GetDebugString() override;
 	};

@@ -36,12 +36,12 @@
 #include "ServerSystem/ServerEntity/EntityServerEntity.h"
 
 
-#include "Protocol/Policy/EntityServerIPolicy.h"
+#include "Protocol/Policy/EntityServerNetPolicy.h"
 
-#include "Protocol/Policy/EntityServerIPolicy.h"
-#include "Protocol/Policy/GameServerIPolicy.h"
-#include "Protocol/Policy/GameInstanceIPolicy.h"
-#include "Protocol/Policy/GameMasterServerIPolicy.h"
+#include "Protocol/Policy/EntityServerNetPolicy.h"
+#include "Protocol/Policy/GameServerNetPolicy.h"
+#include "Protocol/Policy/GameInstanceNetPolicy.h"
+#include "Protocol/Policy/GameMasterServerNetPolicy.h"
 
 #include "Net/NetServerPeer.h"
 #include "Net/NetServer.h"
@@ -62,7 +62,7 @@
 
 
 
-namespace BR {
+namespace SF {
 namespace SharedModuleServer {
 
 
@@ -232,7 +232,7 @@ namespace SharedModuleServer {
 
 
 }; // namespace SharedModuleServer
-}; // namespace BR
+}; // namespace SF
 
 
 

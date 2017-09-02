@@ -86,7 +86,7 @@ GlobalUID::GlobalUID( const GlobalUID& src )
 #pragma GCC diagnostic ignored "-Wconversion"
 #endif
 
-GlobalUID::GlobalUID( UINT serverID, uint32_t time, uint32_t id )
+GlobalUID::GlobalUID( uint serverID, uint32_t time, uint32_t id )
 	: Time(time), SvrID(serverID), ID(id)
 {
 	Assert( serverID < 256 );
@@ -181,7 +181,7 @@ MatchingQueueItem::MatchingQueueItem( const MatchingQueueItem& src )
 	memcpy( Players, src.Players, sizeof(MatchingPlayerInformation)*NumPlayers );
 }
 
-MatchingQueueItem::MatchingQueueItem( EntityUID registerUID, PlayerID registerID, UINT numPlayer, const MatchingPlayerInformation* playerInformations )
+MatchingQueueItem::MatchingQueueItem( EntityUID registerUID, PlayerID registerID, uint numPlayer, const MatchingPlayerInformation* playerInformations )
 	: RegisterUID(registerUID)
 	, RegisterID(registerID)
 	, NumPlayers(std::max((uint32_t)MAX_NUM_PLAYER, numPlayer))
@@ -197,7 +197,7 @@ MatchingQueueItem::MatchingQueueItem( int initValue )
 	memset( Players, 0, sizeof(Players) );
 }
 
-Result MatchingQueueItem::SetQueueItem( EntityUID registerUID, PlayerID registerID, UINT numPlayer, const MatchingPlayerInformation* playerInformations )
+Result MatchingQueueItem::SetQueueItem( EntityUID registerUID, PlayerID registerID, uint numPlayer, const MatchingPlayerInformation* playerInformations )
 {
 	Assert(playerInformations);
 	if( playerInformations == nullptr) 

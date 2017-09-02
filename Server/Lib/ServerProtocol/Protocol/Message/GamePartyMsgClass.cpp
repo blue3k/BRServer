@@ -196,7 +196,7 @@ namespace SF
 				variableBuilder.SetVariable("TransactionID", parser.GetTransactionID());
 				variableBuilder.SetVariable("Result", parser.GetResult());
 				variableBuilder.SetVariable("PartyLeaderID", parser.GetPartyLeaderID());
-				variableBuilder.SetVariable("ChatHistoryData", (int)parser.GetChatHistoryData().GetItemCount(), parser.GetChatHistoryData().data());
+				variableBuilder.SetVariable("ChatHistoryData", (int)parser.GetChatHistoryData().GetItemCount(), (const uint8_t*)parser.GetChatHistoryData().data());
 
 
 			Proc_End:

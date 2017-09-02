@@ -122,7 +122,7 @@ namespace Trace {
 
 	private:
 		// Trace mode Mask 
-		UINT			m_uiTraceMask;
+		uint			m_uiTraceMask;
 
 		// Name of trace module
 		char*			m_szName;
@@ -156,13 +156,13 @@ namespace Trace {
 
 		static TraceModule** GetModules();
 
-		inline bool CheckTrace( UINT trcMask );
-		inline UINT GetTraceMask();
+		inline bool CheckTrace( uint trcMask );
+		inline uint GetTraceMask();
 		inline const char *GetName();
 		inline const char *GetNameTag();
 
 		// Trace print out
-		void* TraceReserveWriteBuffer( UINT trcInputMask, char*& stringBuffer, INT &buffLen );
+		void* TraceReserveWriteBuffer( uint trcInputMask, char*& stringBuffer, INT &buffLen );
 		void TraceSendWriteBuffer( void* pWriteBuffer, INT buffLen );
 	};
 
@@ -205,7 +205,7 @@ namespace Trace {
 //  Declare trace module
 //
 #define DECLARE_TRACE_MODULE(trcMod) \
-	BR::Trace::TraceModule trcMod##TraceModule(#trcMod,#trcMod":");  \
+	SF::Trace::TraceModule trcMod##TraceModule(#trcMod,#trcMod":");  \
 														\
 
 
@@ -250,7 +250,7 @@ namespace Trace {
 	#define TrcErrReturn(trcMod, errval) \
 	do {\
 		TRACE_OUT(trcMod, Trace::TRC_ERROR, "{0}({1}): {2}",     \
-			__FILE__, __LINE__, (BR::Result)errval ); \
+			__FILE__, __LINE__, (SF::Result)errval ); \
 		return errval;\
 	} while(0);
 

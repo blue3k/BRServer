@@ -15,7 +15,7 @@
 #include "ServerSystem/SvrTrace.h"
 #include "Util/TimeUtil.h"
 #include "Types/BrBaseTypes.h"
-#include "ResultCode/SFResultCodeCommon.h"
+#include "ResultCode/SFResultCodeLibrary.h"
 #include "ResultCode/SFResultCodeGame.h"
 #include "Net/Message.h"
 

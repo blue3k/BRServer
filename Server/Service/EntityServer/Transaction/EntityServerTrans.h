@@ -16,11 +16,11 @@
 #include "Memory/MemoryPool.h"
 #include "Types/BrBaseTypes.h"
 #include "Protocol/Message/GameMsgClass.h"
-#include "Protocol/Policy/GameIPolicy.h"
+#include "Protocol/Policy/GameNetPolicy.h"
 #include "EntityServerClass.h"
 
 
-namespace BR {
+namespace SF {
 namespace EntityServer {
 
 	
@@ -39,7 +39,7 @@ namespace EntityServer {
 		StartingStep m_Step;
 
 		// wait count for entity servers
-		UINT m_WaitCount;
+		uint m_WaitCount;
 
 	public:
 		EntityServerStartProcess();
@@ -61,5 +61,5 @@ namespace EntityServer {
 
 
 };// namespace EntityServer 
-};// namespace BR 
+};// namespace SF 
 

@@ -16,7 +16,7 @@
 #include "Util/TimeUtil.h"
 #include "Common/HashTable.h"
 #include "Memory/MemoryPool.h"
-#include "Common/GameConst.h"
+#include "GameConst.h"
 #include "Common/ClassUtil.h"
 #include "Types/BrGameTypes.h"
 #include "ServerSystem/Entity.h"
@@ -70,7 +70,7 @@ namespace Svr {
 	private:
 
 		// Player connection
-		BRCLASS_ATTRIBUTE_READONLY(Policy::ISvrPolicyGame*,ISvrGamePolicy);
+		BRCLASS_ATTRIBUTE_READONLY(Policy::NetSvrPolicyGame*,ISvrGamePolicy);
 
 		// Player state
 		BRCLASS_ATTRIBUTE(PlayerState,PlayerState);
@@ -80,7 +80,7 @@ namespace Svr {
 
 		mutable PlayerInformation m_PlayerInformation;
 
-		BRCLASS_ATTRIBUTE(UINT, ShardID);
+		BRCLASS_ATTRIBUTE(uint, ShardID);
 
 		BRCLASS_ATTRIBUTE(DurationMS, PlayerAutoLogout);
 

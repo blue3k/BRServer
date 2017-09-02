@@ -17,11 +17,11 @@
 #include "Common/ClassUtil.h"
 #include "ServerSystem/GameSystem.h"
 #include "Common/MemoryBufferUtil.h"
-#include "Common/GameConst.h"
+#include "GameConst.h"
 #include "UserSystemComponentIDs.h"
 
 
-namespace BR {
+namespace SF {
 namespace GameServer {
 
 	class GamePlayerEntity;
@@ -50,7 +50,7 @@ namespace GameServer {
 
 		//	FriendInfo() : ShardID(0) {}
 		//	FriendInfo(const FriendInfo& src) : FriendInformation(src), ShardID(src.ShardID) {}
-		//	FriendInfo(AccountID playerID, INT shardID, BR::FacebookUID fbUID, const char* nickName, UINT level, UINT weeklyWin, UINT weeklyLose, uint8_t isPlayingGame, uint64_t lastActiveTime, uint64_t LastStaminaSent)
+		//	FriendInfo(AccountID playerID, INT shardID, BR::FacebookUID fbUID, const char* nickName, uint level, uint weeklyWin, uint weeklyLose, uint8_t isPlayingGame, uint64_t lastActiveTime, uint64_t LastStaminaSent)
 		//		: FriendInformation(playerID, fbUID, nickName, level, weeklyWin, weeklyLose, isPlayingGame, lastActiveTime, LastStaminaSent)
 		//		, ShardID(shardID)
 		//	{
@@ -105,7 +105,7 @@ namespace GameServer {
 		// Change friend nick name
 		Result SetFriendName( PlayerID friendID, const char* strNewName );
 
-		UINT GetMaxFriendSlot();
+		uint GetMaxFriendSlot();
 		bool CanAddFriend();
 
 		// Add a friend
@@ -114,15 +114,15 @@ namespace GameServer {
 		// Remove a friend
 		Result RemoveFriend( PlayerID friendID ); 
 
-		UINT GetNumberOfFriends();
+		uint GetNumberOfFriends();
 
 		// iterate all friend list
-		Result ForeachFriends(UINT start, UINT maxCount, std::function<Result(const ServerFriendInformation&)> functor);
+		Result ForeachFriends(uint start, uint maxCount, std::function<Result(const ServerFriendInformation&)> functor);
 	};
 
 
 }; // namespace GameServer
-}; // namespace BR
+}; // namespace SF
 
 
 

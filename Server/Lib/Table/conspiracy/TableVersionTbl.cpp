@@ -17,11 +17,12 @@
 
 namespace conspiracy
 {
+	using namespace SF;
  
 	TableVersionTbl::TableVersionTable *TableVersionTbl::m_TableVersionTable = nullptr;
 	TableVersionTbl::TableVersionTable *TableVersionTbl::m_TableVersionTablePrev = nullptr;
 
-	BR::Result TableVersionTbl::LoadTable( const std::list<TableVersionItem>& rowList )
+	Result TableVersionTbl::LoadTable( const std::list<TableVersionItem>& rowList )
 	{
  		auto pNewTableVersionTable = new TableVersionTable;
 
@@ -39,20 +40,20 @@ namespace conspiracy
 		}
 		m_TableVersionTablePrev = m_TableVersionTable;
 		m_TableVersionTable = pNewTableVersionTable;
-		return BR::ResultCode::SUCCESS;
+		return ResultCode::SUCCESS;
 	}
 
 
-	BR::Result TableVersionTbl::FindItem( const int& Key, TableVersionItem*& pRow)
+	Result TableVersionTbl::FindItem( const int& Key, TableVersionItem*& pRow)
 	{
  		auto itr = m_TableVersionTable->find(Key);
 		if (itr == m_TableVersionTable->end())
 		{
  			// write error log
-			return BR::ResultCode::FAIL;
+			return ResultCode::FAIL;
 		}
 		pRow = itr->second;
-		return BR::ResultCode::SUCCESS;
+		return ResultCode::SUCCESS;
 	}
 
 }; // namespace conspiracy

@@ -18,7 +18,7 @@
 
 
 
-namespace BR {
+namespace SF {
 namespace ConspiracyGameInstanceServer {
 
 	class GameInstanceEntity;
@@ -50,7 +50,7 @@ namespace ConspiracyGameInstanceServer {
 
 
 		// Add new Entity
-		//virtual Result CreateGameInstance(GameInsUID &gameUID, UINT numBot, UINT maxPlayer) override;
+		//virtual Result CreateGameInstance(GameInsUID &gameUID, uint numBot, uint maxPlayer) override;
 
 		// Called when a game instance is deleted
 		//virtual Result FreeGameInstance(GameInsUID gameUID) override;
@@ -61,7 +61,7 @@ namespace ConspiracyGameInstanceServer {
 
 
 }; // namespace ConspiracyGameInstanceServer
-}; // namespace BR
+}; // namespace SF
 
 
 

@@ -18,10 +18,10 @@
 #include "ServerSystem/GameSystem.h"
 #include "GameSystem/GameVote.h"
 #include "Container/SFArray.h"
-#include "Common/GameConst.h"
+#include "GameConst.h"
 #include "GameSystemComponentIDs.h"
 
-namespace BR {
+namespace SF {
 namespace ConspiracyGameInstanceServer {
 
 	class GameInstanceEntity;
@@ -112,13 +112,13 @@ namespace ConspiracyGameInstanceServer {
 
 		// Game state
 		BRCLASS_ATTRIBUTE_READONLY(GameStateID,CurrentGameState);
-		BRCLASS_ATTRIBUTE_READONLY(UINT,CurrentGameStateIndex);
+		BRCLASS_ATTRIBUTE_READONLY(uint,CurrentGameStateIndex);
 		GamePlayState* m_GamePlayStates[(int)GameStateID::Max];
 
-		BRCLASS_ATTRIBUTE_READONLY(UINT,CurrentDay);
+		BRCLASS_ATTRIBUTE_READONLY(uint,CurrentDay);
 
 		// number of player who voted to game advance
-		BRCLASS_ATTRIBUTE_READONLY(UINT,GameAdvanceVoted);
+		BRCLASS_ATTRIBUTE_READONLY(uint,GameAdvanceVoted);
 
 		BRCLASS_ATTRIBUTE_READONLY(bool,IsInStateChanging);
 
@@ -167,7 +167,7 @@ namespace ConspiracyGameInstanceServer {
 	
 	inline GamePlayState* GameStateSystem::GetCurrentGamePlayState()
 	{
-		return m_GamePlayStates[(UINT)m_CurrentGameState];
+		return m_GamePlayStates[(uint)m_CurrentGameState];
 	}
 
 	inline GameStateID GameStateSystem::GetCurrentGameState()
@@ -181,7 +181,7 @@ namespace ConspiracyGameInstanceServer {
 	}
 
 }; // namespace ConspiracyGameInstanceServer
-}; // namespace BR
+}; // namespace SF
 
 
 

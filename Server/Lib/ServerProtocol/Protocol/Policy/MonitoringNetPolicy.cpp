@@ -44,7 +44,7 @@ namespace SF
 
 		}; // Result NetPolicyMonitoring::GetInstanceListCmd( const TransactionID &InTransactionID )
 		// Cmd: Remove a player to ranking
-		Result NetPolicyMonitoring::RequestCounterValuesCmd( const TransactionID &InTransactionID, const EntityUID &InInstanceUID )
+		Result NetPolicyMonitoring::RequestCounterValuesCmd( const TransactionID &InTransactionID, const uint64_t &InInstanceUID )
 		{
  			Result hr;
 
@@ -60,9 +60,9 @@ namespace SF
 
 			return hr;
 
-		}; // Result NetPolicyMonitoring::RequestCounterValuesCmd( const TransactionID &InTransactionID, const EntityUID &InInstanceUID )
+		}; // Result NetPolicyMonitoring::RequestCounterValuesCmd( const TransactionID &InTransactionID, const uint64_t &InInstanceUID )
 		// C2S: Counter instance is created
-		Result NetPolicyMonitoring::PerformanceCounterNewC2SEvt( const char* InInstanceName, const EntityUID &InInstanceUID, const Array<PerformanceCounterInfo>& InNewCounters )
+		Result NetPolicyMonitoring::PerformanceCounterNewC2SEvt( const char* InInstanceName, const uint64_t &InInstanceUID, const Array<PerformanceCounterInfo>& InNewCounters )
 		{
  			Result hr;
 
@@ -78,9 +78,9 @@ namespace SF
 
 			return hr;
 
-		}; // Result NetPolicyMonitoring::PerformanceCounterNewC2SEvt( const char* InInstanceName, const EntityUID &InInstanceUID, const Array<PerformanceCounterInfo>& InNewCounters )
+		}; // Result NetPolicyMonitoring::PerformanceCounterNewC2SEvt( const char* InInstanceName, const uint64_t &InInstanceUID, const Array<PerformanceCounterInfo>& InNewCounters )
 		// C2S: Counter instance is deleted
-		Result NetPolicyMonitoring::PerformanceCounterFreeC2SEvt( const Array<EntityUID>& InFreeInstances )
+		Result NetPolicyMonitoring::PerformanceCounterFreeC2SEvt( const Array<uint64_t>& InFreeInstances )
 		{
  			Result hr;
 
@@ -96,9 +96,9 @@ namespace SF
 
 			return hr;
 
-		}; // Result NetPolicyMonitoring::PerformanceCounterFreeC2SEvt( const Array<EntityUID>& InFreeInstances )
+		}; // Result NetPolicyMonitoring::PerformanceCounterFreeC2SEvt( const Array<uint64_t>& InFreeInstances )
 		// C2S: Counter update broadcast
-		Result NetPolicyMonitoring::PerformanceCounterUpdateC2SEvt( const EntityUID &InInstanceUID, const Array<uint64_t>& InCounterValues )
+		Result NetPolicyMonitoring::PerformanceCounterUpdateC2SEvt( const uint64_t &InInstanceUID, const Array<uint64_t>& InCounterValues )
 		{
  			Result hr;
 
@@ -114,7 +114,7 @@ namespace SF
 
 			return hr;
 
-		}; // Result NetPolicyMonitoring::PerformanceCounterUpdateC2SEvt( const EntityUID &InInstanceUID, const Array<uint64_t>& InCounterValues )
+		}; // Result NetPolicyMonitoring::PerformanceCounterUpdateC2SEvt( const uint64_t &InInstanceUID, const Array<uint64_t>& InCounterValues )
 
 
 		// Cmd: Add a player to ranking
@@ -136,7 +136,7 @@ namespace SF
 
 		}; // Result NetSvrPolicyMonitoring::GetInstanceListRes( const TransactionID &InTransactionID, const Result &InResult, const Array<PerformanceCounterInstanceInfo>& InCounterInstances, const uint32_t &InTotalInstanceCount )
 		// Cmd: Remove a player to ranking
-		Result NetSvrPolicyMonitoring::RequestCounterValuesRes( const TransactionID &InTransactionID, const Result &InResult, const EntityUID &InInstanceUID, const Array<uint64_t>& InCounterValues )
+		Result NetSvrPolicyMonitoring::RequestCounterValuesRes( const TransactionID &InTransactionID, const Result &InResult, const uint64_t &InInstanceUID, const Array<uint64_t>& InCounterValues )
 		{
  			Result hr;
 
@@ -152,9 +152,9 @@ namespace SF
 
 			return hr;
 
-		}; // Result NetSvrPolicyMonitoring::RequestCounterValuesRes( const TransactionID &InTransactionID, const Result &InResult, const EntityUID &InInstanceUID, const Array<uint64_t>& InCounterValues )
+		}; // Result NetSvrPolicyMonitoring::RequestCounterValuesRes( const TransactionID &InTransactionID, const Result &InResult, const uint64_t &InInstanceUID, const Array<uint64_t>& InCounterValues )
 		// S2C: Request from server
-		Result NetSvrPolicyMonitoring::PerformanceCounterUpdateCounterInfoS2CEvt( const EntityUID &InInstanceUID )
+		Result NetSvrPolicyMonitoring::PerformanceCounterUpdateCounterInfoS2CEvt( const uint64_t &InInstanceUID )
 		{
  			Result hr;
 
@@ -170,7 +170,7 @@ namespace SF
 
 			return hr;
 
-		}; // Result NetSvrPolicyMonitoring::PerformanceCounterUpdateCounterInfoS2CEvt( const EntityUID &InInstanceUID )
+		}; // Result NetSvrPolicyMonitoring::PerformanceCounterUpdateCounterInfoS2CEvt( const uint64_t &InInstanceUID )
 
 
 	}; // namespace Policy

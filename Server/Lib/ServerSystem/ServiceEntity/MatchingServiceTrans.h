@@ -16,10 +16,10 @@
 #include "Memory/MemoryPool.h"
 #include "Container/SFArray.h"
 #include "Types/BrBaseTypes.h"
-#include "Common/GameConst.h"
+#include "GameConst.h"
 #include "Net/Message.h"
 #include "Protocol/Message/ClusterServerMsgClass.h"
-#include "Protocol/Policy/ClusterServerIPolicy.h"
+#include "Protocol/Policy/ClusterServerNetPolicy.h"
 #include "ServerSystem/MessageRoute.h"
 #include "ServerSystem/ServiceEntity/MatchingServiceEntity.h"
 #include "ServerSystem/ServerTransaction.h"
@@ -30,10 +30,10 @@ namespace Svr {
 
 	
 
-	class MatchingTransGrabPlayer : public TransactionT<MatchingServiceQueueEntity, MatchingTransGrabPlayer, sizeof(TransactionMessageHandlerType) * 2>
+	class MatchingTransGrabPlayer : public TransactionT<MatchingServiceQueueEntity, MatchingTransGrabPlayer>
 	{
 	public:
-		typedef TransactionT<MatchingServiceQueueEntity, MatchingTransGrabPlayer, sizeof(TransactionMessageHandlerType) * 2> super;
+		typedef TransactionT<MatchingServiceQueueEntity, MatchingTransGrabPlayer> super;
 
 	private:
 
@@ -51,19 +51,19 @@ namespace Svr {
 		typedef MatchingServiceEntity::ReservedMatchingItem ReservedMatchingItem;
 
 		// Target enqueue member count
-		UINT m_MinQueueCount;
-		UINT m_MaxQueueCount;
+		uint m_MinQueueCount;
+		uint m_MaxQueueCount;
 
 		// target queue member count
-		UINT m_TargetQueueMemberCount;
-		UINT m_TargetQueueComponentID;
-		UINT m_MatchingMemberCount;
+		uint m_TargetQueueMemberCount;
+		uint m_TargetQueueComponentID;
+		uint m_MatchingMemberCount;
 		PlayerRole m_RequestRole;
 
 		//LONG m_RequestedTime;
 
 	public:
-		MatchingTransGrabPlayer(UINT matchingMemberCount, UINT targetQueueMemberCount, PlayerRole playerRole, UINT minQueueCount, UINT maxQueueCount);
+		MatchingTransGrabPlayer(IMemoryManager& memoryManager, uint matchingMemberCount, uint targetQueueMemberCount, PlayerRole playerRole, uint minQueueCount, uint maxQueueCount);
 		virtual ~MatchingTransGrabPlayer() {}
 
 		////////////////////////////////////////////////////////////
@@ -71,7 +71,7 @@ namespace Svr {
 		Result OnTimer(TransactionResult* pRes);
 
 		Result ProcessGrabbing();
-		Result ReserveItem(UINT grabCount);
+		Result ReserveItem(uint grabCount);
 		Result RequestDeleteItem(MatchingQueueTicket ticket);
 		Result OnReserveItem(TransactionResult* pRes);
 
@@ -88,12 +88,12 @@ namespace Svr {
 	//private:
 
 	//	// target queue member count
-	//	UINT m_TargetQueueMemberCount;
-	//	UINT m_MatchingMemberCount;
+	//	uint m_TargetQueueMemberCount;
+	//	uint m_MatchingMemberCount;
 
 
 	//public:
-	//	MatchingTransCancelPlayer(UINT matchingMemberCount, UINT targetQueueMemberCount);
+	//	MatchingTransCancelPlayer(uint matchingMemberCount, uint targetQueueMemberCount);
 	//	virtual ~MatchingTransCancelPlayer() {}
 
 	//	////////////////////////////////////////////////////////////
@@ -113,10 +113,10 @@ namespace Svr {
 
 
 
-	class MatchingTransProcessMatchedItems : public TransactionT<MasterEntity, MatchingTransProcessMatchedItems, sizeof(TransactionMessageHandlerType) * 7>
+	class MatchingTransProcessMatchedItems : public TransactionT<MasterEntity, MatchingTransProcessMatchedItems>
 	{
 	public:
-		typedef TransactionT<MasterEntity, MatchingTransProcessMatchedItems, sizeof(TransactionMessageHandlerType) * 7> super;
+		typedef TransactionT<MasterEntity, MatchingTransProcessMatchedItems> super;
 
 	private:
 
@@ -127,14 +127,14 @@ namespace Svr {
 
 
 		// Target matching member count
-		BRCLASS_ATTRIBUTE(UINT, TargetMatchingMemberCount);
+		uint m_TargetMatchingMemberCount;
 
 		// Current total member count
-		BRCLASS_ATTRIBUTE(UINT, MatchedItemCount);
+		uint m_MatchedItemCount;
 
 		INT m_PendingDequeueItem;
 
-		UINT m_DequeuedTotalMembers;
+		uint m_DequeuedTotalMembers;
 
 		typedef MatchingServiceEntity::MatchingItem MatchingItem;
 		typedef MatchingServiceEntity::ReservedMatchingItem ReservedMatchingItem;
@@ -142,8 +142,13 @@ namespace Svr {
 		StaticArray<MatchingItem, MAX_MATCHING_ITEM> m_MatchedItems;
 
 	public:
-		MatchingTransProcessMatchedItems(UINT targetMatchingMemberCount, const Array<ReservedMatchingItem>& matchedItems);
+		MatchingTransProcessMatchedItems(IMemoryManager& memoryManager, uint targetMatchingMemberCount, const Array<ReservedMatchingItem>& matchedItems);
 		virtual ~MatchingTransProcessMatchedItems() {}
+
+		uint GetTargetMatchingMemberCount() { return m_TargetMatchingMemberCount; }
+
+		uint GetMatchedItemCount() { return m_MatchedItemCount; }
+
 
 		////////////////////////////////////////////////////////////
 		// Event handlers

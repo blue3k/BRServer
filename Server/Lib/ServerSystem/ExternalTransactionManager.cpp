@@ -16,7 +16,7 @@
 #include "ResultCode/SFResultCodeNet.h"
 #include "ServerLog/SvrLog.h"
 #include "Thread/Thread.h"
-#include "ServerSystem/SvrConstDefault.h"
+#include "SvrConst.h"
 #include "ServerSystem/Entity.h"
 #include "ServerSystem/MessageRoute.h"
 #include "ServerSystem/ExternalTransactionManager.h"
@@ -89,20 +89,20 @@ namespace Svr
 		switch (code)
 		{
 		case CURLE_OK:							return ResultCode::SUCCESS;
-		case CURLE_UNSUPPORTED_PROTOCOL:		return ResultCode::E_SVR_CURL_UNSUPPORTED_PROTOCOL;
-		case CURLE_FAILED_INIT:					return ResultCode::E_SVR_CURL_FAILED_INIT;
-		case CURLE_URL_MALFORMAT:				return ResultCode::E_SVR_CURL_URL_MALFORMAT;
-		case CURLE_NOT_BUILT_IN:				return ResultCode::E_SVR_CURL_NOT_BUILT_IN;
-		case CURLE_COULDNT_RESOLVE_PROXY:		return ResultCode::E_SVR_CURL_COULDNT_RESOLVE_PROXY;
-		case CURLE_COULDNT_RESOLVE_HOST:		return ResultCode::E_SVR_CURL_COULDNT_RESOLVE_HOST;
-		case CURLE_COULDNT_CONNECT:				return ResultCode::E_SVR_CURL_COULDNT_CONNECT;
-		case CURLE_HTTP_POST_ERROR:				return ResultCode::E_SVR_CURL_HTTP_POST_ERROR;
-		case CURLE_SSL_ENGINE_NOTFOUND:			return ResultCode::E_SVR_CURL_SSL_ENGINE_NOTFOUND;
-		case CURLE_SSL_ENGINE_SETFAILED:		return ResultCode::E_SVR_CURL_SSL_ENGINE_SETFAILED;
-		case CURLE_SEND_ERROR:					return ResultCode::E_SVR_CURL_SEND_ERROR;
-		case CURLE_RECV_ERROR:					return ResultCode::E_SVR_CURL_RECV_ERROR;
-		case CURLE_USE_SSL_FAILED:				return ResultCode::E_SVR_CURL_USE_SSL_FAILED;
-		case CURLE_NO_CONNECTION_AVAILABLE:		return ResultCode::E_SVR_CURL_NO_CONNECTION_AVAILABLE;
+		case CURLE_UNSUPPORTED_PROTOCOL:		return ResultCode::SVR_CURL_UNSUPPORTED_PROTOCOL;
+		case CURLE_FAILED_INIT:					return ResultCode::SVR_CURL_FAILED_INIT;
+		case CURLE_URL_MALFORMAT:				return ResultCode::SVR_CURL_URL_MALFORMAT;
+		case CURLE_NOT_BUILT_IN:				return ResultCode::SVR_CURL_NOT_BUILT_IN;
+		case CURLE_COULDNT_RESOLVE_PROXY:		return ResultCode::SVR_CURL_COULDNT_RESOLVE_PROXY;
+		case CURLE_COULDNT_RESOLVE_HOST:		return ResultCode::SVR_CURL_COULDNT_RESOLVE_HOST;
+		case CURLE_COULDNT_CONNECT:				return ResultCode::SVR_CURL_COULDNT_CONNECT;
+		case CURLE_HTTP_POST_ERROR:				return ResultCode::SVR_CURL_HTTP_POST_ERROR;
+		case CURLE_SSL_ENGINE_NOTFOUND:			return ResultCode::SVR_CURL_SSL_ENGINE_NOTFOUND;
+		case CURLE_SSL_ENGINE_SETFAILED:		return ResultCode::SVR_CURL_SSL_ENGINE_SETFAILED;
+		case CURLE_SEND_ERROR:					return ResultCode::SVR_CURL_SEND_ERROR;
+		case CURLE_RECV_ERROR:					return ResultCode::SVR_CURL_RECV_ERROR;
+		case CURLE_USE_SSL_FAILED:				return ResultCode::SVR_CURL_USE_SSL_FAILED;
+		case CURLE_NO_CONNECTION_AVAILABLE:		return ResultCode::SVR_CURL_NO_CONNECTION_AVAILABLE;
 		default:
 			return ResultCode::UNEXPECTED;
 		};

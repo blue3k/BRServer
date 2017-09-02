@@ -18,7 +18,7 @@
 
 
 
-namespace BR {
+namespace SF {
 namespace GameServer {
 
 	class GameServer;
@@ -63,7 +63,7 @@ namespace GameServer {
 		virtual void RegisterCounter() override;
 
 		// Initialize TaskManager
-		virtual Result InitializeManager( UINT uiNumGroup );
+		virtual Result InitializeManager( uint uiNumGroup );
 
 		// Terminate TaskManager
 		virtual Result TerminateManager();
@@ -73,7 +73,7 @@ namespace GameServer {
 
 
 }; // namespace GameServer
-}; // namespace BR
+}; // namespace SF
 
 
 

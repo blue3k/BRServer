@@ -32,7 +32,7 @@
 
 #include "ServerSystem/ServiceEntity/MatchingServiceUtil.h"
 
-SF_MEMORYPOOL_IMPLEMENT(BR::Svr::MatchingQueueServiceEntity::QueueItem);
+SF_MEMORYPOOL_IMPLEMENT(SF::Svr::MatchingQueueServiceEntity::QueueItem);
 
 
 namespace SF {
@@ -145,7 +145,7 @@ namespace Svr {
 		if( m_WorkloadUpdateTimer.CheckTimer() )
 		{
 			m_WorkloadUpdateTimer.SetTimer(DurationMS(Const::WORKLOAD_UPDATE_TIME));
-			SetWorkload( (UINT)m_ItemCounter );
+			SetWorkload( (uint)m_ItemCounter );
 		}
 
 		m_QueuedItemCount = m_ItemIDTable.GetItemCount();
@@ -164,8 +164,8 @@ namespace Svr {
 		Result hr = ResultCode::SUCCESS;
 		
 		// if any old reserved item is found remove it
-		UINT numItems = (UINT)m_ReservedQueue.GetEnqueCount();
-		for( UINT iItems = 0; iItems < numItems; iItems++ )
+		uint numItems = (uint)m_ReservedQueue.GetEnqueCount();
+		for( uint iItems = 0; iItems < numItems; iItems++ )
 		{
 			QueueItem *pItem = nullptr;
 
@@ -288,20 +288,20 @@ namespace Svr {
 	{
 		Result hr = ResultCode::SUCCESS;
 		ServerEntity* pServerEntity = nullptr;
-		Policy::ISvrPolicyPartyMatchingQueue* pPolicyMatchingQueueSvr = nullptr;
+		Policy::NetSvrPolicyPartyMatchingQueue* pPolicyMatchingQueueSvr = nullptr;
 
 		if (pItem == nullptr)
 			return ResultCode::INVALID_ARG;
 
 		if ((pItem->NumPlayers != 0 && !pItem->PendingCancel) || pItem->ReservedTime == TimeStampMS::min())
 		{
-			hr = ResultCode::E_INVALID_STATE;
+			hr = ResultCode::INVALID_STATE;
 			goto Proc_End;
 		}
 
 		// If delete is required by canceling
 		svrChk((GetServerComponent<ServerEntityManager>()->GetServerEntity(pItem->RegisterUID.GetServerID(), pServerEntity)));
-		pPolicyMatchingQueueSvr = pServerEntity->GetPolicy<Policy::ISvrPolicyPartyMatchingQueue>();
+		pPolicyMatchingQueueSvr = pServerEntity->GetPolicy<Policy::NetSvrPolicyPartyMatchingQueue>();
 		svrChkPtr(pPolicyMatchingQueueSvr);
 
 		if (pItem->NumPlayers > 1)
@@ -333,7 +333,7 @@ namespace Svr {
 	//
 
 	// Add new Entity
-	Result MatchingQueueServiceEntity::Enqueue( EntityUID registerUID, PlayerID registerID, UINT numPlayer, const MatchingPlayerInformation* players, MatchingQueueTicket& ticket )
+	Result MatchingQueueServiceEntity::Enqueue( EntityUID registerUID, PlayerID registerID, uint numPlayer, const MatchingPlayerInformation* players, MatchingQueueTicket& ticket )
 	{
 		Result hr = ResultCode::SUCCESS;
 		QueueItem *pNewItem = nullptr;
@@ -383,7 +383,7 @@ namespace Svr {
 		}
 
 		pPlayers = pItem->Players;
-		for (UINT player = 0; player < pItem->NumPlayers; player++, pPlayers++)
+		for (uint player = 0; player < pItem->NumPlayers; player++, pPlayers++)
 		{
 			if( pPlayers->PlayerUID == UIDFrom )
 			{
@@ -404,12 +404,12 @@ namespace Svr {
 
 		if (!(m_ItemIDTable.Find(ticket.QueueItemID, pItem)))
 		{
-			return ResultCode::E_SVR_INVALID_QUEUEITEM;
+			return ResultCode::SVR_INVALID_QUEUEITEM;
 		}
 
 		// already canceled
 		if (pItem->NumPlayers == 0)
-			return ResultCode::E_SVR_QUEUEITEM_CANCELED;
+			return ResultCode::SVR_QUEUEITEM_CANCELED;
 
 		if (pItem->Reserver != 0)
 		{
@@ -430,7 +430,7 @@ namespace Svr {
 	}
 
 	// Reserve a item int the queue from the top
-	Result MatchingQueueServiceEntity::ReserveItem( EntityUID reserverUID, UINT &numPlayersInItem, MatchingQueueTicket& ticket )
+	Result MatchingQueueServiceEntity::ReserveItem( EntityUID reserverUID, uint &numPlayersInItem, MatchingQueueTicket& ticket )
 	{
 		Result hr = ResultCode::SUCCESS;
 		QueueItem *pItem = nullptr;
@@ -441,7 +441,7 @@ namespace Svr {
 				hr = m_MainQueue.Dequeue( pItem );
 				if(!( hr ))
 				{
-					hr = ResultCode::E_SVR_NOITEM_INQUEUE;
+					hr = ResultCode::SVR_NOITEM_INQUEUE;
 					goto Proc_End;
 				}
 			}
@@ -505,7 +505,7 @@ namespace Svr {
 		// If canceled
 		if( pItem->NumPlayers == 0 )
 		{
-			svrErr(ResultCode::E_SVR_QUEUEITEM_CANCELED);
+			svrErr(ResultCode::SVR_QUEUEITEM_CANCELED);
 		}
 
 		item = *pItem;
@@ -541,7 +541,7 @@ namespace Svr {
 	//
 
 
-	MatchingQueueWatcherServiceEntity::MatchingQueueWatcherServiceEntity( ClusterID clusterID, UINT componentID )
+	MatchingQueueWatcherServiceEntity::MatchingQueueWatcherServiceEntity( ClusterID clusterID, uint componentID )
 		:RingClusterServiceEntity(clusterID, ClusterMembership::StatusWatcher)
 		,IServerComponent(componentID)
 	{

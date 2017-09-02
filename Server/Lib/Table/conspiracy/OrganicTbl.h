@@ -17,6 +17,8 @@
 
 namespace conspiracy
 {
+	using namespace SF;
+
  	class OrganicTbl
 	{
  	public:
@@ -81,9 +83,9 @@ namespace conspiracy
 
 
 		// declare member function
-		static BR::Result LoadTable( const std::list<OrganicItem>& rowList );
+		static Result LoadTable( const std::list<OrganicItem>& rowList );
 
-		static BR::Result FindItem( const unsigned int& Key, OrganicItem*& pRow);
+		static Result FindItem( const unsigned int& Key, OrganicItem*& pRow);
 	}; // class OrganicTbl
 }; // namespace conspiracy
 

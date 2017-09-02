@@ -16,10 +16,10 @@
 #include "Memory/MemoryPool.h"
 #include "Container/SFArray.h"
 #include "Types/BrBaseTypes.h"
-#include "Common/GameConst.h"
+#include "GameConst.h"
 #include "Net/Message.h"
 #include "Protocol/Message/GamePartyManagerMsgClass.h"
-#include "Protocol/Policy/GamePartyManagerIPolicy.h"
+#include "Protocol/Policy/GamePartyManagerNetPolicy.h"
 #include "ServerSystem/MessageRoute.h"
 #include "ServerSystem/ServiceEntity/GamePartyManagerServiceEntity.h"
 #include "ServerSystem/ServerTransaction.h"
@@ -44,7 +44,7 @@ namespace Svr {
 		// Start Transaction
 		virtual Result StartTransaction();
 
-		Policy::ISvrPolicyGamePartyManager* GetPolicy()	{ return ServerEntityMessageTransaction::GetPolicy<Policy::ISvrPolicyGamePartyManager>(); }
+		Policy::NetSvrPolicyGamePartyManager* GetPolicy()	{ return ServerEntityMessageTransaction::GetPolicy<Policy::NetSvrPolicyGamePartyManager>(); }
 
 		BR_SVR_MSGTRANS_CLOSE(CreatePartyRes, RouteContext(m_PartyUID,GetRouteContext().GetFrom()));
 	};

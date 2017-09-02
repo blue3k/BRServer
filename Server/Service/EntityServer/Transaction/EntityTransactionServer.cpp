@@ -16,7 +16,7 @@
 #include "Memory/MemoryPool.h"
 
 #include "Protocol/Message/EntityServerMsgClass.h"
-#include "Protocol/Policy/EntityServerIPolicy.h"
+#include "Protocol/Policy/EntityServerNetPolicy.h"
 #include "ServerSystem/BrServer.h"
 #include "ServerSystem/ServerEntity.h"
 #include "ServerSystem/ServerEntityManager.h"
@@ -25,9 +25,9 @@
 
 //#include "ServerEntity/GameServerEntity.h"
 
-#include "Protocol/Policy/EntityServerIPolicy.h"
-#include "Protocol/Policy/GameServerIPolicy.h"
-#include "Protocol/Policy/GameMasterServerIPolicy.h"
+#include "Protocol/Policy/EntityServerNetPolicy.h"
+#include "Protocol/Policy/GameServerNetPolicy.h"
+#include "Protocol/Policy/GameMasterServerNetPolicy.h"
 
 #include "EntityTransactionServer.h"
 #include "EntityTransactionUser.h"
@@ -37,7 +37,7 @@
 //SF_MEMORYPOOL_IMPLEMENT(BR::EntityServer::TransServerStarted);
 SF_MEMORYPOOL_IMPLEMENT(BR::EntityServer::TransGenericServerStarted);
 
-namespace BR {
+namespace SF {
 namespace EntityServer {
 
 
@@ -66,5 +66,5 @@ namespace EntityServer {
 
 
 };// namespace EntityServer 
-};// namespace BR 
+};// namespace SF 
 

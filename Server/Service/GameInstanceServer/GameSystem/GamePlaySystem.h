@@ -17,10 +17,10 @@
 #include "Common/ClassUtil.h"
 #include "ServerSystem/GameSystem.h"
 #include "Container/SFArray.h"
-#include "Common/GameConst.h"
+#include "GameConst.h"
 #include "GameSystemComponentIDs.h"
 
-namespace BR {
+namespace SF {
 namespace ConspiracyGameInstanceServer {
 
 	class GameInstanceEntity;
@@ -53,8 +53,8 @@ namespace ConspiracyGameInstanceServer {
 		typedef Svr::GameSystem<GameInstanceEntity, GamePlaySystem> super;
 
 		// Count cache
-		BRCLASS_ATTRIBUTE_READONLY(UINT,NumWereWolf);
-		BRCLASS_ATTRIBUTE_READONLY(UINT,NumVillager);
+		BRCLASS_ATTRIBUTE_READONLY(uint,NumWereWolf);
+		BRCLASS_ATTRIBUTE_READONLY(uint,NumVillager);
 
 		// suspects list
 		PlayerID m_Suspects[2];
@@ -86,7 +86,7 @@ namespace ConspiracyGameInstanceServer {
 
 		// Get suspect list
 		PlayerID GetSuspect( int index );
-		UINT GetNumberOfSuspects();
+		uint GetNumberOfSuspects();
 		bool IsSuspect( PlayerID playerID );
 
 		const Array<GamePlayer*>& GetWerewolves();
@@ -131,7 +131,7 @@ namespace ConspiracyGameInstanceServer {
 #include "GamePlaySystem.inl"
 
 }; // namespace ConspiracyGameInstanceServer
-}; // namespace BR
+}; // namespace SF
 
 
 

@@ -10,12 +10,12 @@
 
 
 #include "stdafx.h"
-#include "ResultCode/SFResultCodeCommon.h"
+#include "ResultCode/SFResultCodeLibrary.h"
 #include "ResultCode/SFResultCodeGame.h"
 #include "ResultCode/SFResultCodeLogin.h"
 #include "Memory/MemoryPool.h"
 #include "Types/BrBaseTypes.h"
-#include "Common/GameConst.h"
+#include "GameConst.h"
 #include "Util/TimeUtil.h"
 
 #include "ServerSystem/BrServerUtil.h"
@@ -30,9 +30,9 @@
 
 
 #include "Protocol/Message/LoginServerMsgClass.h"
-#include "Protocol/Policy/LoginServerIPolicy.h"
+#include "Protocol/Policy/LoginServerNetPolicy.h"
 #include "Protocol/Message/GameServerMsgClass.h"
-#include "Protocol/Policy/GameServerIPolicy.h"
+#include "Protocol/Policy/GameServerNetPolicy.h"
 
 #include "ServerSystem/ServiceEntity/Login/LoginPlayerEntityTrans.h"
 #include "ServerSystem/ServiceEntity/Login/LoginPlayerEntity.h"
@@ -45,19 +45,19 @@
 #include "DB/LoginSessionQuery.h"
 
 
-SF_MEMORYPOOL_IMPLEMENT(BR::Svr::LoginPlayerTransLogin);
+SF_MEMORYPOOL_IMPLEMENT(SF::Svr::LoginPlayerTransLogin);
 
-SF_MEMORYPOOL_IMPLEMENT(BR::Svr::LoginPlayerTransLoginByFacebook);
-SF_MEMORYPOOL_IMPLEMENT(BR::Svr::LoginPlayerTransCreateRandomUser);
+SF_MEMORYPOOL_IMPLEMENT(SF::Svr::LoginPlayerTransLoginByFacebook);
+SF_MEMORYPOOL_IMPLEMENT(SF::Svr::LoginPlayerTransCreateRandomUser);
 
-SF_MEMORYPOOL_IMPLEMENT(BR::Svr::LoginPlayerTransCloseInstance);
+SF_MEMORYPOOL_IMPLEMENT(SF::Svr::LoginPlayerTransCloseInstance);
 
-SF_MEMORYPOOL_IMPLEMENT(BR::Svr::LoginPlayerJoinedToGameServerTrans);
-SF_MEMORYPOOL_IMPLEMENT(BR::Svr::LoginPlayerKickPlayerTrans);
+SF_MEMORYPOOL_IMPLEMENT(SF::Svr::LoginPlayerJoinedToGameServerTrans);
+SF_MEMORYPOOL_IMPLEMENT(SF::Svr::LoginPlayerKickPlayerTrans);
 
-SF_MEMORYPOOL_IMPLEMENT(BR::Svr::RankingUpdateScoreTrans);
-SF_MEMORYPOOL_IMPLEMENT(BR::Svr::LoginUserDataTestTrans);
-SF_MEMORYPOOL_IMPLEMENT(BR::Svr::LoginUserDebugPrintALLRankingTrans);
+SF_MEMORYPOOL_IMPLEMENT(SF::Svr::RankingUpdateScoreTrans);
+SF_MEMORYPOOL_IMPLEMENT(SF::Svr::LoginUserDataTestTrans);
+SF_MEMORYPOOL_IMPLEMENT(SF::Svr::LoginUserDebugPrintALLRankingTrans);
 
 
 	
@@ -90,7 +90,7 @@ namespace Svr {
 	template<class MessageClass, class TransactionClass>
 	Result LoginPlayerTransLoginBase<MessageClass, TransactionClass>::OnGenericError(Svr::TransactionResult* &pRes)
 	{
-		if (pRes->GetResult() == Result(ResultCode::E_INVALID_PLAYERID) || pRes->GetResult() == Result(ResultCode::E_SVR_INVALID_ENTITYUID))
+		if (pRes->GetResult() == Result(ResultCode::E_INVALID_PLAYERID) || pRes->GetResult() == Result(ResultCode::SVR_INVALID_ENTITYUID))
 		{
 			if (super::GetMyOwner()->GetPlayerID() != 0 && m_CreateRequestCount == 0)
 			{
@@ -172,7 +172,7 @@ namespace Svr {
 		{
 			Svr::ClusteredServiceEntity *pServiceEntity = nullptr;
 			// To accomodate login only services, allow login without game server
-			if (!Svr::GetServerComponent<Svr::ClusterManagerServiceEntity>()->GetClusterServiceEntity((ClusterID)((UINT)ClusterID::Game + (UINT)super::GetGameID()), pServiceEntity)
+			if (!Svr::GetServerComponent<Svr::ClusterManagerServiceEntity>()->GetClusterServiceEntity((ClusterID)((uint)ClusterID::Game + (uint)super::GetGameID()), pServiceEntity)
 				|| pServiceEntity->GetNumberOfNonWatcherServices() == 0)
 			{
 				// Login is succeeded, but there is no game cluster for the game or no available game service
@@ -213,7 +213,7 @@ namespace Svr {
 		Svr::ServerServiceInformation *pService = nullptr;
 
 		// Find new game server for this player
-		svrChk( Svr::GetServerComponent<Svr::ClusterManagerServiceEntity>()->GetClusterServiceEntity( (ClusterID)((UINT)ClusterID::Game + (UINT)super::GetGameID()), pServiceEntity ) );
+		svrChk( Svr::GetServerComponent<Svr::ClusterManagerServiceEntity>()->GetClusterServiceEntity( (ClusterID)((uint)ClusterID::Game + (uint)super::GetGameID()), pServiceEntity ) );
 		hr = pServiceEntity->FindRandomService( pService );
 		if (!(hr))
 		{
@@ -240,7 +240,7 @@ namespace Svr {
 		Svr::MessageResult *pMsgRes = (Svr::MessageResult*)pRes;
 		Message::GameServer::RegisterPlayerToJoinGameServerRes res;
 
-		if( pRes->GetResult() == Result(ResultCode::E_INVALID_PLAYERID) || pRes->GetResult() == Result(ResultCode::E_SVR_INVALID_ENTITYUID))
+		if( pRes->GetResult() == Result(ResultCode::E_INVALID_PLAYERID) || pRes->GetResult() == Result(ResultCode::SVR_INVALID_ENTITYUID))
 		{
 			if (super::GetMyOwner()->GetPlayerID() == 0)
 			{

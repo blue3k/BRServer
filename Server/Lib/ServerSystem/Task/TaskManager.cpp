@@ -243,7 +243,7 @@ namespace SF {
 
 			if (!(tickTask->OnEventTask(pEvtTask)))
 			{
-				defTrace(Trace::TRC_ERROR, "ServerTaskEvent is failed, Evt:{0}", (UINT)pEvtTask.EventType.load(std::memory_order_relaxed))
+				defTrace(Trace::TRC_ERROR, "ServerTaskEvent is failed, Evt:{0}", (uint)pEvtTask.EventType.load(std::memory_order_relaxed))
 			}
 
 			m_TimeScheduler.Reschedul(threadID, tickTask->GetTimerAction());
@@ -339,7 +339,7 @@ namespace SF {
 
 
 	// Initialize TaskManager
-	Result TaskManager::InitializeManager( UINT uiNumGroup )
+	Result TaskManager::InitializeManager( uint uiNumGroup )
 	{
 		SetWorkGroupCount( uiNumGroup );
 

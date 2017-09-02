@@ -22,13 +22,13 @@
 #include "ServerSystem/ServerComponent.h"
 #include "ServerSystem/ServerServiceBase.h"
 #include "Common/HashTable.h"
-#include "Common/Indexing.h"
+#include "Container/Indexing.h"
 
 #include "ServerSystem/ServiceEntity/EntityInformation.h"
 #include "ServerSystem/ServiceEntity/Game/GameClusterServiceEntity.h"
 
 
-namespace BR {
+namespace SF {
 	namespace Svr {
 		namespace Config {
 			class PublicNetSocket;
@@ -36,7 +36,7 @@ namespace BR {
 	}
 }
 
-namespace BR {
+namespace SF {
 namespace GameServer {
 
 	class Entity;
@@ -68,7 +68,7 @@ namespace GameServer {
 
 
 }; // namespace Svr
-}; // namespace BR
+}; // namespace SF
 
 
 

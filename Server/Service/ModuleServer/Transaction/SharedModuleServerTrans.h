@@ -16,11 +16,11 @@
 #include "Memory/MemoryPool.h"
 #include "Types/BrBaseTypes.h"
 #include "Protocol/Message/GameMsgClass.h"
-#include "Protocol/Policy/GameIPolicy.h"
+#include "Protocol/Policy/GameNetPolicy.h"
 #include "SharedModuleServerClass.h"
 
 
-namespace BR {
+namespace SF {
 namespace SharedModuleServer {
 
 	
@@ -60,5 +60,5 @@ namespace SharedModuleServer {
 
 
 };// namespace SharedModuleServer 
-};// namespace BR 
+};// namespace SF 
 

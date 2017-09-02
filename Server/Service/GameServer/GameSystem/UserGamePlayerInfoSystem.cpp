@@ -24,9 +24,9 @@
 #include "ServerSystem/BrServerUtil.h"
 #include "GameSvrConst.h"
 
-#include "Protocol/Policy/GameInstanceIPolicy.h"
+#include "Protocol/Policy/GameInstanceNetPolicy.h"
 #include "GameServerClass.h"
-#include "Protocol/Policy/GameIPolicy.h"
+#include "Protocol/Policy/GameNetPolicy.h"
 
 #include "GameSystem/UserGamePlayerInfoSystem.h"
 #include "GameInstance/GamePlayerEntity.h"
@@ -42,7 +42,7 @@
 SF_MEMORYPOOL_IMPLEMENT(BR::GameServer::UserGamePlayerInfoSystem);
 
 
-namespace BR {
+namespace SF {
 namespace GameServer {
 
 
@@ -245,7 +245,7 @@ namespace GameServer {
 	}
 
 
-	Result UserGamePlayerInfoSystem::SetLevel( UINT newLevel )
+	Result UserGamePlayerInfoSystem::SetLevel( uint newLevel )
 	{
 		Result hr = ResultCode::SUCCESS;
 		conspiracy::LevelTbl::LevelItem *pLevelInfo = nullptr;
@@ -400,7 +400,7 @@ namespace GameServer {
 		return hr;
 	}
 
-	UINT UserGamePlayerInfoSystem::GetFriendSlot()
+	uint UserGamePlayerInfoSystem::GetFriendSlot()
 	{
 		return m_DefaultFriendSlot + m_AddedFriendSlot;
 	}
@@ -540,7 +540,7 @@ namespace GameServer {
 	}
 
 }; // namespace GameServer
-}; // namespace BR
+}; // namespace SF
 
 
 

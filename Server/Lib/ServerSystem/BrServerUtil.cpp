@@ -38,7 +38,7 @@ namespace Svr {
 		return g_EntityTable.Find(entityID, entity);
 	}
 
-	UINT GetServerUID()
+	uint GetServerUID()
 	{
 		return Svr::BrServer::GetInstance()->GetServerUID();
 	}

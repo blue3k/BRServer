@@ -58,7 +58,7 @@ namespace Svr {
 
 		BRCLASS_ATTRIBUTE_READONLY(CountingTypes, CountingType);
 
-		std::atomic<UINT> m_SyncSerial;
+		std::atomic<uint> m_SyncSerial;
 
 	protected:
 
@@ -71,12 +71,12 @@ namespace Svr {
 
 		void SetCounterName(const char* strName);
 		const char* GetCounterName()						{ return m_CounterName; }
-		UINT GetSyncSerial()								{ return m_SyncSerial.load(std::memory_order_relaxed); }
+		uint GetSyncSerial()								{ return m_SyncSerial.load(std::memory_order_relaxed); }
 
 		virtual int64_t GetRawValue() = 0;
 
-		virtual Result CopyTo(UINT bufferSize, uint8_t* pBuffer) { return ResultCode::SUCCESS; }
-		virtual Result CopyFrom(UINT bufferSize, uint8_t* pBuffer) { return ResultCode::SUCCESS; }
+		virtual Result CopyTo(uint bufferSize, uint8_t* pBuffer) { return ResultCode::SUCCESS; }
+		virtual Result CopyFrom(uint bufferSize, uint8_t* pBuffer) { return ResultCode::SUCCESS; }
 
 	};
 
@@ -126,7 +126,7 @@ namespace Svr {
 
 
 
-		virtual Result CopyTo(UINT bufferSize, uint8_t* pBuffer) override
+		virtual Result CopyTo(uint bufferSize, uint8_t* pBuffer) override
 		{
 			Assert(bufferSize >= sizeof(DataType));
 			if (bufferSize < sizeof(DataType))
@@ -139,7 +139,7 @@ namespace Svr {
 			return ResultCode::SUCCESS;
 		}
 
-		virtual Result CopyFrom(UINT bufferSize, uint8_t* pBuffer) override
+		virtual Result CopyFrom(uint bufferSize, uint8_t* pBuffer) override
 		{
 			Assert(bufferSize >= sizeof(DataType));
 			if (bufferSize < sizeof(DataType))
@@ -238,7 +238,7 @@ namespace Svr {
 			return *this;
 		}
 
-		virtual Result CopyTo(UINT bufferSize, uint8_t* pBuffer) override
+		virtual Result CopyTo(uint bufferSize, uint8_t* pBuffer) override
 		{
 			auto timeSince = Util::TimeSince(m_TickCountStartTime);
 			if (m_TickCountStartTime == TimeStampMS::min() || timeSince > DurationMS(1000))
@@ -294,7 +294,7 @@ namespace Svr {
 		}
 
 
-		virtual Result CopyTo(UINT bufferSize, uint8_t* pBuffer) override
+		virtual Result CopyTo(uint bufferSize, uint8_t* pBuffer) override
 		{
 			auto timeSince = Util::TimeSince(m_TickCountStartTime);
 			if (m_TickCountStartTime == TimeStampMS::min() || timeSince > DurationMS(1000))

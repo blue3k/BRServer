@@ -12,7 +12,7 @@
 #pragma once
 
 #include "SFTypedefs.h"
-#include "ResultCode/SFResultCodeCommon.h"
+#include "ResultCode/SFResultCodeLibrary.h"
 #include "Net/Message.h"
 
 
@@ -32,14 +32,14 @@ namespace Svr {
 	{
 	private:
 		// Step tick, Count of ProcessStep called
-		UINT m_uiStepTick;
+		uint m_uiStepTick;
 
 	public:
 		TransactionStep() : m_uiStepTick(0)			{}
 		virtual ~TransactionStep()	{}
 
 		// Get step tick
-		inline UINT GetStepTick()			{ return m_uiStepTick; }
+		inline uint GetStepTick()			{ return m_uiStepTick; }
 		// increase step tick
 		inline void NextStep()				{ m_uiStepTick++; }
 
@@ -81,7 +81,7 @@ namespace Svr {
 	{
 	private:
 		// Current step
-		UINT m_CurStep;
+		uint m_CurStep;
 
 		// Transaction steps
 		TransactionStep*	m_Steps[iMaxStep];
@@ -103,7 +103,7 @@ namespace Svr {
 		}
 
 		// Assign step
-		Result AssignStep( UINT iStep, TransactionStep *pStep )
+		Result AssignStep( uint iStep, TransactionStep *pStep )
 		{
 			if( iStep >= iMaxStep )
 			{

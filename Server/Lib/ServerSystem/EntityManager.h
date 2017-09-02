@@ -12,7 +12,6 @@
 #pragma once
 
 #include "SFTypedefs.h"
-#include "Common/ClassUtil.h"
 
 #include "ServerSystem/Entity.h"
 #include "Task/TaskManager.h"
@@ -73,7 +72,7 @@ namespace Svr {
 		virtual void RegisterCounter() {}
 
 		// Initialize TaskManager
-		virtual Result InitializeManager(UINT uiNumGroup = 2) override;
+		virtual Result InitializeManager(uint uiNumGroup = 2) override;
 
 		// Terminate TaskManager
 		virtual Result TerminateManager() override;

@@ -55,7 +55,7 @@ namespace DB {
 		dbChkPtr(pQueryManager);
 
 		hr = pSession->SendQuery(pQuery);
-		if( hr == ((Result)ResultCode::E_DB_CONNECTION_LOST) )
+		if( hr == ((Result)ResultCode::DB_CONNECTION_LOST) )
 		{
 			// Give one more chance, because the session will try to reconnect
 			hr = pSession->SendQuery(pQuery);

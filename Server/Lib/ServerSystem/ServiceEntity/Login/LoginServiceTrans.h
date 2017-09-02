@@ -16,10 +16,10 @@
 #include "Memory/MemoryPool.h"
 #include "Container/SFArray.h"
 #include "Types/BrBaseTypes.h"
-#include "Common/GameConst.h"
+#include "GameConst.h"
 #include "Net/Message.h"
 #include "Protocol/Message/ClusterServerMsgClass.h"
-#include "Protocol/Policy/ClusterServerIPolicy.h"
+#include "Protocol/Policy/ClusterServerNetPolicy.h"
 #include "ServerSystem/MessageRoute.h"
 #include "ServerSystem/ServiceEntity/Login/LoginServiceEntity.h"
 #include "ServerSystem/ServerTransaction.h"
@@ -30,10 +30,10 @@ namespace Svr {
 
 	
 	
-	class LoginPartyTrans : public TransactionT<LoginServiceEntity, LoginPartyTrans, sizeof(TransactionMessageHandlerType)*7>
+	class LoginPartyTrans : public TransactionT<LoginServiceEntity, LoginPartyTrans>
 	{
 	public:
-		typedef TransactionT<LoginServiceEntity, LoginPartyTrans, sizeof(TransactionMessageHandlerType) * 7> super;
+		typedef TransactionT<LoginServiceEntity, LoginPartyTrans> super;
 
 	private:
 
@@ -45,7 +45,7 @@ namespace Svr {
 		};
 
 	public:
-		LoginPartyTrans(UINT startMemberCount, UINT targetMemberCount);
+		LoginPartyTrans(IMemoryManager& memoryManager, uint startMemberCount, uint targetMemberCount);
 		virtual ~LoginPartyTrans() {}
 
 		// Start Transaction

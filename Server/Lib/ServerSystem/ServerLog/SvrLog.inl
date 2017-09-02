@@ -18,16 +18,16 @@ namespace Trace {
 	// Trace Log Module
 	//
 
-	bool TraceModule::CheckTrace( UINT trcMask )
+	bool TraceModule::CheckTrace( uint trcMask )
 	{
-		UINT uiTrace = m_uiTraceMask&trcMask;
+		uint uiTrace = m_uiTraceMask&trcMask;
 		if( uiTrace == 0 ) 
 			return false;
 
 		return true;
 	}
 
-	UINT TraceModule::GetTraceMask()
+	uint TraceModule::GetTraceMask()
 	{
 		return m_uiTraceMask;
 	}

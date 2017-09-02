@@ -24,7 +24,7 @@
 #include "ServerSystem/ServerServiceBase.h"
 #include "ServerSystem/MessageRoute.h"
 #include "Common/HashTable.h"
-#include "Common/Indexing.h"
+#include "Container/Indexing.h"
 
 #include "ServerSystem/ServiceEntity/EntityInformation.h"
 #include "ServerSystem/ServiceEntity/ClusteredServiceEntity.h"
@@ -65,7 +65,7 @@ namespace Svr {
 
 
 		// Currently processing number of members
-		UINT m_CurrentProcessingNumberofMember;
+		uint m_CurrentProcessingNumberofMember;
 
 		Util::TimeStampTimer m_RankingCheckTimer;
 
@@ -78,7 +78,7 @@ namespace Svr {
 		~RankingServiceEntity();
 
 		// We are not going to use hashed key
-		virtual UINT KeyHash( uint64_t key ) { return (UINT)key; }
+		virtual uint KeyHash( uint64_t key ) { return (uint)key; }
 
 
 		//////////////////////////////////////////////////////////////////////////
@@ -125,7 +125,7 @@ namespace Svr {
 
 	public:
 
-		RankingWatcherServiceEntity( ClusterID clusterID, UINT componentID );
+		RankingWatcherServiceEntity( ClusterID clusterID, uint componentID );
 		~RankingWatcherServiceEntity();
 	};
 

@@ -23,9 +23,9 @@
 #include "ServerSystem/BrServerUtil.h"
 #include "ConspiracyGameInstanceSvrConst.h"
 
-#include "Protocol/Policy/GameInstanceIPolicy.h"
+#include "Protocol/Policy/GameInstanceNetPolicy.h"
 #include "ConspiracyGameInstanceServerClass.h"
-#include "Protocol/Policy/GameIPolicy.h"
+#include "Protocol/Policy/GameNetPolicy.h"
 
 #include "GameSystem/GamePlaySystem.h"
 #include "GameSystem/GameStateSystem.h"
@@ -37,7 +37,7 @@
 SF_MEMORYPOOL_IMPLEMENT(BR::ConspiracyGameInstanceServer::GamePlaySystem);
 
 
-namespace BR {
+namespace SF {
 namespace ConspiracyGameInstanceServer {
 
 
@@ -180,7 +180,7 @@ namespace ConspiracyGameInstanceServer {
 			// skip errnous player
 			if (iSlot >= GameConst::MAX_GAMEPLAYER)
 			{
-				svrTrace(Trace::TRC_WARN, "Failed to find requested role, player:{0}, requested:{1}", pPlayer->GetPlayerID(), (UINT)pPlayer->GetRequestedRole());
+				svrTrace(Trace::TRC_WARN, "Failed to find requested role, player:{0}, requested:{1}", pPlayer->GetPlayerID(), (uint)pPlayer->GetRequestedRole());
 				return ResultCode::SUCCESS;
 			}
 
@@ -219,7 +219,7 @@ namespace ConspiracyGameInstanceServer {
 		});
 
 
-		GetOwner().ForeachPlayerSvrGameInstance( [&]( GamePlayer* pPlayer, Policy::ISvrPolicyGameInstance *pPolicy )->Result {
+		GetOwner().ForeachPlayerSvrGameInstance( [&]( GamePlayer* pPlayer, Policy::NetSvrPolicyGameInstance *pPolicy )->Result {
 			if( pPlayer->GetPlayerEntityUID() != 0 )
 				pPolicy->RoleAssignedS2CEvt( RouteContext( GetOwner().GetEntityUID(), pPlayer->GetPlayerEntityUID()), pPlayer->GetRole() );
 			return ResultCode::SUCCESS;
@@ -227,15 +227,15 @@ namespace ConspiracyGameInstanceServer {
 
 
 		// notify other's role
-		for( UINT iwolf = 0; iwolf < m_Werewolves.GetSize(); iwolf++ )
+		for( uint iwolf = 0; iwolf < m_Werewolves.GetSize(); iwolf++ )
 		{
-			for( UINT iother = 0; iother < m_Werewolves.GetSize(); iother++ )
+			for( uint iother = 0; iother < m_Werewolves.GetSize(); iother++ )
 			{
 				if( iwolf == iother ) continue;
 
 				if( m_Werewolves[iwolf] != nullptr && m_Werewolves[iother] != nullptr )
 				{
-					auto pPolicy = m_Werewolves[iwolf]->GetPolicy<Policy::ISvrPolicyGameInstance>();
+					auto pPolicy = m_Werewolves[iwolf]->GetPolicy<Policy::NetSvrPolicyGameInstance>();
 					if (m_Werewolves[iwolf]->GetPlayerEntityUID() != 0 && pPolicy != nullptr)
 					{
 						pPolicy->PlayerRevealedS2CEvt(RouteContext(GetOwner().GetEntityUID(), m_Werewolves[iwolf]->GetPlayerEntityUID()), m_Werewolves[iother]->GetPlayerID(), m_Werewolves[iother]->GetRole(), PlayerRevealedReason::Werewolf);
@@ -470,7 +470,7 @@ namespace ConspiracyGameInstanceServer {
 
 		GetOwner().OnPlayerGetOutOfGame( pPlayerToKill );
 
-		GetOwner().ForeachPlayerSvrGameInstance( [&]( GamePlayer* pPlayer, Policy::ISvrPolicyGameInstance *pPolicy )->Result {
+		GetOwner().ForeachPlayerSvrGameInstance( [&]( GamePlayer* pPlayer, Policy::NetSvrPolicyGameInstance *pPolicy )->Result {
 			if( pPlayer->GetPlayerEntityUID() != 0 )
 				pPolicy->PlayerKilledS2CEvt( RouteContext( GetOwner().GetEntityUID(), pPlayer->GetPlayerEntityUID()), pPlayerToKill->GetPlayerID(), reason);
 			return ResultCode::SUCCESS;
@@ -541,7 +541,7 @@ namespace ConspiracyGameInstanceServer {
 		};
 
 
-		GetOwner().ForeachPlayerSvrGameInstance([&](GamePlayer* pPlayer, Policy::ISvrPolicyGameInstance *pPolicy)->Result {
+		GetOwner().ForeachPlayerSvrGameInstance([&](GamePlayer* pPlayer, Policy::NetSvrPolicyGameInstance *pPolicy)->Result {
 			if (pPlayer->GetPlayerEntityUID() != 0)
 				pPolicy->GamePlayerRevivedS2CEvt(RouteContext(GetOwner().GetEntityUID(), pPlayer->GetPlayerEntityUID()), pPlayerToRevive->GetPlayerID());
 			return ResultCode::SUCCESS;
@@ -761,7 +761,7 @@ namespace ConspiracyGameInstanceServer {
 
 
 }; // namespace ConspiracyGameInstanceServer
-}; // namespace BR
+}; // namespace SF
 
 
 

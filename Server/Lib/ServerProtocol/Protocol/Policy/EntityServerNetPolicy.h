@@ -32,7 +32,7 @@ namespace SF
 			// Cmd: Register entity
 			Result RegisterEntityCmd( const TransactionID &InTransactionID, const EntityID &InLocalEntID, const char* InEntName );
 			// Cmd: Find Entity
-			Result UnregisterEntityCmd( const TransactionID &InTransactionID, const EntityUID &InEntUID );
+			Result UnregisterEntityCmd( const TransactionID &InTransactionID, const uint64_t &InEntUID );
 			// Cmd: Find Entity
 			Result FindEntityCmd( const TransactionID &InTransactionID, const EntityID &InLocalEntID );
 
@@ -49,11 +49,11 @@ namespace SF
 			{}
 
 			// Cmd: Register entity
-			Result RegisterEntityRes( const TransactionID &InTransactionID, const Result &InResult, const EntityUID &InEntUID );
+			Result RegisterEntityRes( const TransactionID &InTransactionID, const Result &InResult, const uint64_t &InEntUID );
 			// Cmd: Find Entity
 			Result UnregisterEntityRes( const TransactionID &InTransactionID, const Result &InResult );
 			// Cmd: Find Entity
-			Result FindEntityRes( const TransactionID &InTransactionID, const Result &InResult, const EntityUID &InEntUID );
+			Result FindEntityRes( const TransactionID &InTransactionID, const Result &InResult, const uint64_t &InEntUID );
 
 		}; // class NetSvrPolicyEntityServer
 

@@ -92,7 +92,7 @@ namespace SF
 			private:
 				TransactionID m_TransactionID;
 				Result m_Result;
-				EntityUID m_EntUID;
+				uint64_t m_EntUID;
 			public:
 				RegisterEntityRes()
 					{}
@@ -105,7 +105,7 @@ namespace SF
 
 				const TransactionID& GetTransactionID() const	{ return m_TransactionID; };
 				const Result& GetResult() const	{ return m_Result; };
-				const EntityUID& GetEntUID() const	{ return m_EntUID; };
+				const uint64_t& GetEntUID() const	{ return m_EntUID; };
 
 				static Result TraceOut(MessageData* pMsg);
 
@@ -113,7 +113,7 @@ namespace SF
 				static Result ParseMessageTo( MessageData* pIMsg, VariableMapBuilder& variableBuilder );
 				static Result ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageData* pIMsg, MessageBase* &pMsgBase );
 
-				static MessageData* Create( IMemoryManager& memoryManager, const TransactionID &InTransactionID, const Result &InResult, const EntityUID &InEntUID );
+				static MessageData* Create( IMemoryManager& memoryManager, const TransactionID &InTransactionID, const Result &InResult, const uint64_t &InEntUID );
 
 			}; // class RegisterEntityRes : public MessageBase
 
@@ -138,7 +138,7 @@ namespace SF
 				uint64_t GetSender() { return 0; }
 			private:
 				TransactionID m_TransactionID;
-				EntityUID m_EntUID;
+				uint64_t m_EntUID;
 			public:
 				UnregisterEntityCmd()
 					{}
@@ -150,7 +150,7 @@ namespace SF
 					MessageUsage GetMessageUsage() { return MessageUsage_None; }
 
 				const TransactionID& GetTransactionID() const	{ return m_TransactionID; };
-				const EntityUID& GetEntUID() const	{ return m_EntUID; };
+				const uint64_t& GetEntUID() const	{ return m_EntUID; };
 
 				static Result TraceOut(MessageData* pMsg);
 
@@ -158,7 +158,7 @@ namespace SF
 				static Result ParseMessageTo( MessageData* pIMsg, VariableMapBuilder& variableBuilder );
 				static Result ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageData* pIMsg, MessageBase* &pMsgBase );
 
-				static MessageData* Create( IMemoryManager& memoryManager, const TransactionID &InTransactionID, const EntityUID &InEntUID );
+				static MessageData* Create( IMemoryManager& memoryManager, const TransactionID &InTransactionID, const uint64_t &InEntUID );
 
 			}; // class UnregisterEntityCmd : public MessageBase
 
@@ -272,7 +272,7 @@ namespace SF
 			private:
 				TransactionID m_TransactionID;
 				Result m_Result;
-				EntityUID m_EntUID;
+				uint64_t m_EntUID;
 			public:
 				FindEntityRes()
 					{}
@@ -285,7 +285,7 @@ namespace SF
 
 				const TransactionID& GetTransactionID() const	{ return m_TransactionID; };
 				const Result& GetResult() const	{ return m_Result; };
-				const EntityUID& GetEntUID() const	{ return m_EntUID; };
+				const uint64_t& GetEntUID() const	{ return m_EntUID; };
 
 				static Result TraceOut(MessageData* pMsg);
 
@@ -293,7 +293,7 @@ namespace SF
 				static Result ParseMessageTo( MessageData* pIMsg, VariableMapBuilder& variableBuilder );
 				static Result ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageData* pIMsg, MessageBase* &pMsgBase );
 
-				static MessageData* Create( IMemoryManager& memoryManager, const TransactionID &InTransactionID, const Result &InResult, const EntityUID &InEntUID );
+				static MessageData* Create( IMemoryManager& memoryManager, const TransactionID &InTransactionID, const Result &InResult, const uint64_t &InEntUID );
 
 			}; // class FindEntityRes : public MessageBase
 

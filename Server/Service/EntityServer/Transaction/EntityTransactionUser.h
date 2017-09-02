@@ -16,11 +16,11 @@
 #include "Memory/MemoryPool.h"
 
 #include "Protocol/Message/EntityServerMsgClass.h"
-#include "Protocol/Policy/EntityServerIPolicy.h"
+#include "Protocol/Policy/EntityServerNetPolicy.h"
 
 
 
-namespace BR {
+namespace SF {
 namespace EntityServer {
 
 
@@ -33,7 +33,7 @@ namespace EntityServer {
 
 
 	//// Register User Entity
-	//class TransRegisterUserEntity : public Svr::MessageTransaction< Svr::ServerEntity, Policy::ISvrPolicyEntityServer, Message::EntityServer::RegisterUserEntityCmd, TransRegisterUserEntity>
+	//class TransRegisterUserEntity : public Svr::MessageTransaction< Svr::ServerEntity, Policy::NetSvrPolicyEntityServer, Message::EntityServer::RegisterUserEntityCmd, TransRegisterUserEntity>
 	//{
 	//private:
 	//	// Authentication 
@@ -54,7 +54,7 @@ namespace EntityServer {
 
 
 	//// Unregister User Entity
-	//class TransUnregisterUserEntity : public Svr::MessageTransaction< Svr::ServerEntity, Policy::ISvrPolicyEntityServer, Message::EntityServer::UnregisterUserEntityCmd, TransUnregisterUserEntity>
+	//class TransUnregisterUserEntity : public Svr::MessageTransaction< Svr::ServerEntity, Policy::NetSvrPolicyEntityServer, Message::EntityServer::UnregisterUserEntityCmd, TransUnregisterUserEntity>
 	//{
 	//private:
 
@@ -73,7 +73,7 @@ namespace EntityServer {
 	//
 
 	//// Unregister User Entity
-	//class TransUpdateUserEntity : public Svr::MessageTransaction< Svr::ServerEntity, Policy::ISvrPolicyEntityServer, Message::EntityServer::UpdateUserEntityCmd, TransUpdateUserEntity>
+	//class TransUpdateUserEntity : public Svr::MessageTransaction< Svr::ServerEntity, Policy::NetSvrPolicyEntityServer, Message::EntityServer::UpdateUserEntityCmd, TransUpdateUserEntity>
 	//{
 	//private:
 
@@ -92,7 +92,7 @@ namespace EntityServer {
 
 
 	//// Find User Entity
-	//class TransFindUserEntity : public Svr::MessageTransaction< Svr::ServerEntity, Policy::ISvrPolicyEntityServer, Message::EntityServer::FindUserEntityCmd, TransFindUserEntity>
+	//class TransFindUserEntity : public Svr::MessageTransaction< Svr::ServerEntity, Policy::NetSvrPolicyEntityServer, Message::EntityServer::FindUserEntityCmd, TransFindUserEntity>
 	//{
 	//private:
 	//	// UID for find User
@@ -115,5 +115,5 @@ namespace EntityServer {
 
 
 };// namespace EntityServer 
-};// namespace BR 
+};// namespace SF 
 

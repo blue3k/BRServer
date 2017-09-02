@@ -45,7 +45,7 @@ namespace SF {
 		typedef SortedMap<UINT64, SharedPointerT<TickTask>>	TaskList;
 
 		const int TICK_UPDATE_TIME = 20;
-		const UINT MAX_TASK_RETRY = 30 * 1000 / TICK_UPDATE_TIME; // retry for 30 sec
+		const uint MAX_TASK_RETRY = 30 * 1000 / TICK_UPDATE_TIME; // retry for 30 sec
 
 	private:
 		// TaskManager that include this group
@@ -72,7 +72,7 @@ namespace SF {
 		// task list for update
 		TaskList				m_TaskList;
 
-		TimeScheduler			m_TimeScheduler;
+		TimerScheduler			m_TimeScheduler;
 
 	private:
 
@@ -100,7 +100,7 @@ namespace SF {
 		inline void SetBaseLoopInterval(DurationMS dwLoopInterval );
 		inline DurationMS GetBaseLoopInterval();
 
-		TimeScheduler& GetTimeScheduler()											{ return m_TimeScheduler; }
+		TimerScheduler& GetTimeScheduler()											{ return m_TimeScheduler; }
 
 		// Add event task
 		Result AddEventTask(ServerTaskEvent&& pEvtTask);
@@ -155,7 +155,7 @@ namespace SF {
 		inline size_t GetWorkGroupCount();
 
 		// Initialize TaskManager
-		virtual Result InitializeManager( UINT uiNumGroup = 2 );
+		virtual Result InitializeManager( uint uiNumGroup = 2 );
 
 		// Terminate TaskManager
 		virtual Result TerminateManager();

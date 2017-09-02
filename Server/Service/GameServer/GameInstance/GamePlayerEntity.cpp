@@ -19,7 +19,7 @@
 #include "Net/NetServerUDP.h"
 #include "Util/TimeUtil.h"
 #include "Types/BrBaseTypes.h"
-#include "ResultCode/SFResultCodeCommon.h"
+#include "ResultCode/SFResultCodeLibrary.h"
 #include "ResultCode/SFResultCodeGame.h"
 
 
@@ -27,8 +27,8 @@
 #include "GameServerClass.h"
 
 
-#include "Protocol/Policy/GameServerIPolicy.h"
-#include "Protocol/Policy/GameIPolicy.h"
+#include "Protocol/Policy/GameServerNetPolicy.h"
+#include "Protocol/Policy/GameNetPolicy.h"
 #include "Protocol/Message/GameMsgClass.h"
 
 #include "Transaction/GamePlayerEntityTrans.h"
@@ -52,7 +52,7 @@ SF_MEMORYPOOL_IMPLEMENT(BR::BR::GameServer::GamePlayerEntity);
 
 
 
-namespace BR {
+namespace SF {
 namespace GameServer {
 
 
@@ -187,7 +187,7 @@ namespace GameServer {
 
 		if (GetConnection() != nullptr)
 		{
-			svrChkPtr(m_ISvrGamePolicy = GetConnection()->GetPolicy<Policy::ISvrPolicyGame>());
+			svrChkPtr(m_ISvrGamePolicy = GetConnection()->GetPolicy<Policy::NetSvrPolicyGame>());
 		}
 
 	Proc_End:
@@ -550,6 +550,6 @@ namespace GameServer {
 
 
 }; // namespace GameServer
-}; // namespace BR
+}; // namespace SF
 
 

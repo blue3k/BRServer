@@ -56,7 +56,7 @@ namespace SF
 
 	Result ToString(char*& pBuff, INT& iBuffLen, const ClusterID& Data, int Option)
 	{
-		return ToString(pBuff, iBuffLen, (UINT)Data, Option);
+		return ToString(pBuff, iBuffLen, (uint)Data, Option);
 	}
 
 
@@ -86,17 +86,17 @@ namespace SF
 
 	Result ToString(char*& pBuff, INT& iBuffLen, const ClusterType& Data, int Option)
 	{
-		return ToString(pBuff, iBuffLen, (UINT)Data, Option);
+		return ToString(pBuff, iBuffLen, (uint)Data, Option);
 	}
 
 	Result ToString(char*& pBuff, INT& iBuffLen, const ClusterMembership& Data, int Option)
 	{
-		return ToString(pBuff, iBuffLen, (UINT)Data, Option);
+		return ToString(pBuff, iBuffLen, (uint)Data, Option);
 	}
 
 	Result ToString(char*& pBuff, INT& iBuffLen, const ServiceStatus& Data, int Option)
 	{
-		return ToString(pBuff, iBuffLen, (UINT)Data, Option);
+		return ToString(pBuff, iBuffLen, (uint)Data, Option);
 	}
 
 
@@ -129,7 +129,7 @@ namespace SF
 		if (!(StrUtil::StringCpyEx(pBuff, iBuffLen, ":C")))
 			return ResultCode::FAIL;
 
-		if (!(ToString(pBuff, iBuffLen, (UINT)Data.ServerClass, Option)))
+		if (!(ToString(pBuff, iBuffLen, (uint)Data.ServerClass, Option)))
 			return ResultCode::FAIL;
 
 		if (!(StrUtil::StringCpyEx(pBuff, iBuffLen, ":M")))

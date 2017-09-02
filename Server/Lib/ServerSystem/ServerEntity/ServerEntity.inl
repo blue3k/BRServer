@@ -30,7 +30,7 @@ bool ServerEntity::IsInitialConnection()
 inline Net::Connection* ServerEntity::GetConnection()
 {
 	Net::Connection* pConn = (Net::Connection*)m_pConnLocal;
-	auto result = (pConn == nullptr || pConn->GetConnectionState() == Net::Connection::STATE_DISCONNECTED) ? (Net::Connection*)m_pConnRemote : pConn;
+	auto result = (pConn == nullptr || pConn->GetConnectionState() == Net::ConnectionState::DISCONNECTED) ? (Net::Connection*)m_pConnRemote : pConn;
 
 	// if there is no active connection then return anyone no null
 	if (result == nullptr)
@@ -59,11 +59,11 @@ ServerEntity::ServerEntityClass ServerEntity::GetRemoteClass() const
 {
 	auto pConn = *m_pConnLocal;
 	if (pConn)
-		return pConn->GetConnectionInfo().RemoteClass;
+		return pConn->GetRemoteInfo().PeerClass;
 
 	pConn = *m_pConnRemote;
 	if (pConn)
-		return pConn->GetConnectionInfo().RemoteClass;
+		return pConn->GetRemoteInfo().PeerClass;
 
 	return NetClass::Unknown;
 }

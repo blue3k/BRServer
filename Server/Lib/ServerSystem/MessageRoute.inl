@@ -12,7 +12,7 @@
 
 #include "stdafx.h"
 #include "SFTypedefs.h"
-#include "ResultCode/SFResultCodeCommon.h"
+#include "ResultCode/SFResultCodeLibrary.h"
 #include "ServerSystem/MessageRoute.h"
 
 

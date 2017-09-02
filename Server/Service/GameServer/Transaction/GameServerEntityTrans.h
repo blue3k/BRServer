@@ -16,12 +16,12 @@
 #include "Memory/MemoryPool.h"
 #include "Types/BrBaseTypes.h"
 #include "Protocol/Message/GameServerMsgClass.h"
-#include "Protocol/Policy/GameServerIPolicy.h"
+#include "Protocol/Policy/GameServerNetPolicy.h"
 #include "GameServerClass.h"
 #include "GameInstance/GameClusterServiceEntity.h"
 #include "GameInstance/GamePlayerEntity.h"
 
-namespace BR {
+namespace SF {
 namespace GameServer {
 
 
@@ -35,7 +35,7 @@ namespace GameServer {
 	private:
 		const char* m_PublicAddress;
 		const char* m_PublicAddressIPV6;
-		UINT m_Port;
+		uint m_Port;
 		EntityUID m_PlayerUID;
 
 	public:
@@ -48,7 +48,7 @@ namespace GameServer {
 		// Start Transaction
 		virtual Result StartTransaction() override;
 
-		Policy::ISvrPolicyGameServer* GetPolicy() { return super::template GetPolicy<Policy::ISvrPolicyGameServer>(); }
+		Policy::NetSvrPolicyGameServer* GetPolicy() { return super::template GetPolicy<Policy::NetSvrPolicyGameServer>(); }
 
 		BR_SVR_MSGTRANS_CLOSE_ARGS(RegisterPlayerToJoinGameServerRes, RouteContext(m_PlayerUID, super::GetRouteContext().GetFrom()), m_PublicAddress, m_PublicAddressIPV6, m_Port);
 	};
@@ -59,5 +59,5 @@ namespace GameServer {
 
 
 };// namespace GameServer 
-};// namespace BR 
+};// namespace SF 
 

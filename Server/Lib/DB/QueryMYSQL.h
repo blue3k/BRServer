@@ -15,7 +15,6 @@
 #include "Memory/MemoryPool.h"
 #include "DB/DBTrace.h"
 #include "DB/Query.h"
-#include "Common/ClassUtil.h"
 
 #include <my_global.h>
 #include <mysql.h>

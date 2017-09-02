@@ -16,13 +16,12 @@
 #include "ResultCode/SFResultCodeDB.h"
 #include "Net/NetDef.h"
 #include "DB/DBClusterManager.h"
-//#include "ServerSystem/PlugIn.h"
 #include "Types/BrSvrTypes.h"
 #include "ServerSystem/MasterEntity.h"
 #include "Task/TaskManager.h"
-#include "ServerSystem/MasterEntity.h"
-#include "ServerSystem/SvrConfig.h"
-#include "ServerSystem/ServerComponentCarrier.h"
+#include "MasterEntity.h"
+#include "ServerComponentCarrier.h"
+#include "ServerConfig/SFServerConfig.h"
 
 
 namespace SF {
@@ -94,7 +93,7 @@ namespace Svr {
 		NetClass					m_NetClass;
 
 		// Server config
-		const Config::GenericServer	*m_pMyConfig;
+		const ServerConfig::GenericServer	*m_pMyConfig;
 
 		// Server execution time stamp
 		TimeStampSec					m_ServerUpUTCTIme;
@@ -126,14 +125,14 @@ namespace Svr {
 		inline void SetLoopbackServerEntity( ServerEntity* pLoopback );
 
 		// Set server UID
-		inline void SetServerUID( UINT uiUID );
-		//inline void SetClusterID( UINT uiUID );
+		inline void SetServerUID( uint uiUID );
+		//inline void SetClusterID( uint uiUID );
 
 		// Set main server instance
 		static void SetInstance( BrServer *pServerInstance );
 
 		// Set my config 
-		inline void SetMyConfig( const Config::GenericServer* pMyConfig );
+		inline void SetMyConfig( const ServerConfig::GenericServer* pMyConfig );
 
 		// Create entity manager
 		virtual EntityManager* CreateEntityManager();
@@ -179,8 +178,8 @@ namespace Svr {
 		inline ServerEntity* GetLoopbackServerEntity();
 
 		// Get Server UID
-		inline UINT GetServerUID();
-		//inline UINT GetClusterID();
+		inline uint GetServerUID();
+		//inline uint GetClusterID();
 		
 		// Get Server start up time, UTC
 		inline TimeStampSec GetServerUpTime();
@@ -189,7 +188,7 @@ namespace Svr {
 		static inline BrServer* GetInstance();
 
 		// Get config
-		inline const Config::GenericServer* GetMyConfig();
+		inline const ServerConfig::GenericServer* GetMyConfig();
 
 		// Get/Set Public network enable status
 		inline bool IsNetPublicEnabled();
@@ -200,7 +199,7 @@ namespace Svr {
 		inline Net::ServerPeerTCP* GetNetPrivate()								{ return m_pNetPrivate; }
 
 		template<class DBManagerType>
-		Result AddDBCluster(Svr::Config::DBCluster *pDBClusterCfg);
+		Result AddDBCluster(ServerConfig::DBCluster *pDBClusterCfg);
 
 		//////////////////////////////////////////////////////////////////////////
 		//

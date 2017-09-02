@@ -31,7 +31,7 @@
 
 
 
-namespace BR {
+namespace SF {
 namespace ConspiracyGameInstanceServer {
 
 
@@ -56,7 +56,7 @@ namespace ConspiracyGameInstanceServer {
 
 
 	//// Create new game instance
-	//Result GameInstanceManagerServiceEntity::CreateGameInstance( GameInsUID &gameUID, UINT numBot, UINT maxPlayer )
+	//Result GameInstanceManagerServiceEntity::CreateGameInstance( GameInsUID &gameUID, uint numBot, uint maxPlayer )
 	//{
 	//	Result hr = ResultCode::SUCCESS;
 	//	 GameInstanceEntity* pGameInstance = nullptr;
@@ -113,7 +113,7 @@ namespace ConspiracyGameInstanceServer {
 	}
 
 }; // namespace ConspiracyGameInstanceServer
-}; // namespace BR
+}; // namespace SF
 
 
 

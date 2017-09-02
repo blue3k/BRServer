@@ -144,7 +144,7 @@ namespace SF
 
 				protocolChk( Protocol::StreamParamCopy( &m_TransactionID, pCur, iMsgSize, sizeof(TransactionID) ) );
 				protocolChk( Protocol::StreamParamCopy( &m_Result, pCur, iMsgSize, sizeof(Result) ) );
-				protocolChk( Protocol::StreamParamCopy( &m_EntUID, pCur, iMsgSize, sizeof(EntityUID) ) );
+				protocolChk( Protocol::StreamParamCopy( &m_EntUID, pCur, iMsgSize, sizeof(uint64_t) ) );
 
 
 			Proc_End:
@@ -184,7 +184,7 @@ namespace SF
 
 			}; // Result RegisterEntityRes::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageData* pIMsg, MessageBase* &pMessageBase )
 
-			MessageData* RegisterEntityRes::Create( IMemoryManager& memoryManager, const TransactionID &InTransactionID, const Result &InResult, const EntityUID &InEntUID )
+			MessageData* RegisterEntityRes::Create( IMemoryManager& memoryManager, const TransactionID &InTransactionID, const Result &InResult, const uint64_t &InEntUID )
 			{
  				MessageData *pNewMsg = nullptr;
 				Result hr;
@@ -194,7 +194,7 @@ namespace SF
 				unsigned __uiMessageSize = (unsigned)(sizeof(MessageHeader) 
 					+ sizeof(TransactionID)
 					+ sizeof(Result)
-					+ sizeof(EntityUID));
+					+ sizeof(uint64_t));
 
 
 				protocolMem( pNewMsg = MessageData::NewMessage( memoryManager, EntityServer::RegisterEntityRes::MID, __uiMessageSize ) );
@@ -203,7 +203,7 @@ namespace SF
 
 				Protocol::PackParamCopy( pMsgData, &InTransactionID, sizeof(TransactionID));
 				Protocol::PackParamCopy( pMsgData, &InResult, sizeof(Result));
-				Protocol::PackParamCopy( pMsgData, &InEntUID, sizeof(EntityUID));
+				Protocol::PackParamCopy( pMsgData, &InEntUID, sizeof(uint64_t));
 
 
 			Proc_End:
@@ -215,7 +215,7 @@ namespace SF
 				}
 				return pNewMsg;
 
-			}; // MessageData* RegisterEntityRes::Create( IMemoryManager& memoryManager, const TransactionID &InTransactionID, const Result &InResult, const EntityUID &InEntUID )
+			}; // MessageData* RegisterEntityRes::Create( IMemoryManager& memoryManager, const TransactionID &InTransactionID, const Result &InResult, const uint64_t &InEntUID )
 
 
 
@@ -243,7 +243,7 @@ namespace SF
 				pCur = pIMsg->GetMessageData();
 
 				protocolChk( Protocol::StreamParamCopy( &m_TransactionID, pCur, iMsgSize, sizeof(TransactionID) ) );
-				protocolChk( Protocol::StreamParamCopy( &m_EntUID, pCur, iMsgSize, sizeof(EntityUID) ) );
+				protocolChk( Protocol::StreamParamCopy( &m_EntUID, pCur, iMsgSize, sizeof(uint64_t) ) );
 
 
 			Proc_End:
@@ -282,7 +282,7 @@ namespace SF
 
 			}; // Result UnregisterEntityCmd::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageData* pIMsg, MessageBase* &pMessageBase )
 
-			MessageData* UnregisterEntityCmd::Create( IMemoryManager& memoryManager, const TransactionID &InTransactionID, const EntityUID &InEntUID )
+			MessageData* UnregisterEntityCmd::Create( IMemoryManager& memoryManager, const TransactionID &InTransactionID, const uint64_t &InEntUID )
 			{
  				MessageData *pNewMsg = nullptr;
 				Result hr;
@@ -291,7 +291,7 @@ namespace SF
 
 				unsigned __uiMessageSize = (unsigned)(sizeof(MessageHeader) 
 					+ sizeof(TransactionID)
-					+ sizeof(EntityUID));
+					+ sizeof(uint64_t));
 
 
 				protocolMem( pNewMsg = MessageData::NewMessage( memoryManager, EntityServer::UnregisterEntityCmd::MID, __uiMessageSize ) );
@@ -299,7 +299,7 @@ namespace SF
 				pMsgData = pNewMsg->GetMessageData();
 
 				Protocol::PackParamCopy( pMsgData, &InTransactionID, sizeof(TransactionID));
-				Protocol::PackParamCopy( pMsgData, &InEntUID, sizeof(EntityUID));
+				Protocol::PackParamCopy( pMsgData, &InEntUID, sizeof(uint64_t));
 
 
 			Proc_End:
@@ -311,7 +311,7 @@ namespace SF
 				}
 				return pNewMsg;
 
-			}; // MessageData* UnregisterEntityCmd::Create( IMemoryManager& memoryManager, const TransactionID &InTransactionID, const EntityUID &InEntUID )
+			}; // MessageData* UnregisterEntityCmd::Create( IMemoryManager& memoryManager, const TransactionID &InTransactionID, const uint64_t &InEntUID )
 
 
 
@@ -530,7 +530,7 @@ namespace SF
 
 				protocolChk( Protocol::StreamParamCopy( &m_TransactionID, pCur, iMsgSize, sizeof(TransactionID) ) );
 				protocolChk( Protocol::StreamParamCopy( &m_Result, pCur, iMsgSize, sizeof(Result) ) );
-				protocolChk( Protocol::StreamParamCopy( &m_EntUID, pCur, iMsgSize, sizeof(EntityUID) ) );
+				protocolChk( Protocol::StreamParamCopy( &m_EntUID, pCur, iMsgSize, sizeof(uint64_t) ) );
 
 
 			Proc_End:
@@ -570,7 +570,7 @@ namespace SF
 
 			}; // Result FindEntityRes::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageData* pIMsg, MessageBase* &pMessageBase )
 
-			MessageData* FindEntityRes::Create( IMemoryManager& memoryManager, const TransactionID &InTransactionID, const Result &InResult, const EntityUID &InEntUID )
+			MessageData* FindEntityRes::Create( IMemoryManager& memoryManager, const TransactionID &InTransactionID, const Result &InResult, const uint64_t &InEntUID )
 			{
  				MessageData *pNewMsg = nullptr;
 				Result hr;
@@ -580,7 +580,7 @@ namespace SF
 				unsigned __uiMessageSize = (unsigned)(sizeof(MessageHeader) 
 					+ sizeof(TransactionID)
 					+ sizeof(Result)
-					+ sizeof(EntityUID));
+					+ sizeof(uint64_t));
 
 
 				protocolMem( pNewMsg = MessageData::NewMessage( memoryManager, EntityServer::FindEntityRes::MID, __uiMessageSize ) );
@@ -589,7 +589,7 @@ namespace SF
 
 				Protocol::PackParamCopy( pMsgData, &InTransactionID, sizeof(TransactionID));
 				Protocol::PackParamCopy( pMsgData, &InResult, sizeof(Result));
-				Protocol::PackParamCopy( pMsgData, &InEntUID, sizeof(EntityUID));
+				Protocol::PackParamCopy( pMsgData, &InEntUID, sizeof(uint64_t));
 
 
 			Proc_End:
@@ -601,7 +601,7 @@ namespace SF
 				}
 				return pNewMsg;
 
-			}; // MessageData* FindEntityRes::Create( IMemoryManager& memoryManager, const TransactionID &InTransactionID, const Result &InResult, const EntityUID &InEntUID )
+			}; // MessageData* FindEntityRes::Create( IMemoryManager& memoryManager, const TransactionID &InTransactionID, const Result &InResult, const uint64_t &InEntUID )
 
 
 

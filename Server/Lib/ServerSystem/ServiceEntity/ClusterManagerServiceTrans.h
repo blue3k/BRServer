@@ -16,10 +16,10 @@
 #include "Memory/MemoryPool.h"
 #include "Container/SFArray.h"
 #include "Types/BrBaseTypes.h"
-#include "Common/GameConst.h"
+#include "GameConst.h"
 #include "Net/Message.h"
 #include "Protocol/Message/ClusterServerMsgClass.h"
-#include "Protocol/Policy/ClusterServerIPolicy.h"
+#include "Protocol/Policy/ClusterServerNetPolicy.h"
 #include "ServerSystem/MessageRoute.h"
 #include "ServerSystem/ServiceEntity/ClusteredServiceEntity.h"
 #include "ServerSystem/ServiceEntity/ClusterManagerServiceEntity.h"
@@ -63,7 +63,7 @@ namespace Svr {
 	//	Result OnClusterDataSync(TransactionResult* pRes);
 
 	//	// Add other services to me
-	//	Result AddOtherServicesToMe( UINT numServices, const ServiceInformation *pServiceInformations );
+	//	Result AddOtherServicesToMe( uint numServices, const ServiceInformation *pServiceInformations );
 
 	//	virtual Result OnCloseTransaction( Result hrRes ) override;
 
@@ -93,7 +93,7 @@ namespace Svr {
 		// Start Transaction
 		virtual Result StartTransaction();
 
-		Policy::ISvrPolicyClusterServer* GetPolicy()	{ return ServerEntityMessageTransaction::GetPolicy<Policy::ISvrPolicyClusterServer>(); }
+		Policy::NetSvrPolicyClusterServer* GetPolicy()	{ return ServerEntityMessageTransaction::GetPolicy<Policy::NetSvrPolicyClusterServer>(); }
 
 		BR_SVR_MSGTRANS_CLOSE_ARGS(GetClusterMemberListRes,GetRouteContext().GetSwaped(), m_MemberList);
 	};
@@ -114,7 +114,7 @@ namespace Svr {
 		// Start Transaction
 		virtual Result StartTransaction();
 
-		Policy::ISvrPolicyClusterServer* GetPolicy()	{ return ServerEntityMessageTransaction::GetPolicy<Policy::ISvrPolicyClusterServer>(); }
+		Policy::NetSvrPolicyClusterServer* GetPolicy()	{ return ServerEntityMessageTransaction::GetPolicy<Policy::NetSvrPolicyClusterServer>(); }
 
 		BR_SVR_MSGTRANS_CLOSE_ARGS(JoinClusterRes,GetRouteContext().GetSwaped(), m_MemberList);
 	};
@@ -135,7 +135,7 @@ namespace Svr {
 		// Start Transaction
 		virtual Result StartTransaction();
 
-		Policy::ISvrPolicyClusterServer* GetPolicy()	{ return ServerEntityMessageTransaction::GetPolicy<Policy::ISvrPolicyClusterServer>(); }
+		Policy::NetSvrPolicyClusterServer* GetPolicy()	{ return ServerEntityMessageTransaction::GetPolicy<Policy::NetSvrPolicyClusterServer>(); }
 
 		BR_SVR_MSGTRANS_CLOSE_ARGS(JoinClusterRes,GetRouteContext().GetSwaped(), m_MemberList);
 	};

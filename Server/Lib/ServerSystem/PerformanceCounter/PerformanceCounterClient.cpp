@@ -82,13 +82,13 @@ namespace Svr {
 
 		StaticArray<PerformanceCounterInfo, 100> counterInfos;
 		auto& counters = newInstance->GetCounters();
-		for (UINT iCounter = 0; iCounter < counters.GetSize(); iCounter++)
+		for (uint iCounter = 0; iCounter < counters.GetSize(); iCounter++)
 		{
 			auto counter = counters[iCounter];
 			PerformanceCounterInfo info;
 			memset(&info, 0, sizeof info);
 			StrUtil::StringCpy(info.CounterName, counter->GetCounterName());
-			info.DateType = (UINT)counter->GetDataType();
+			info.DateType = (uint)counter->GetDataType();
 			if (!(counterInfos.push_back(info)))
 				break;
 		}
@@ -107,7 +107,7 @@ namespace Svr {
 	void PerformanceCounterClient::UpdateNewInstance(ULONG newCount)
 	{
 		SharedPointerT<PerformanceCounterInstance> newInstance;
-		for (UINT iItem = 0; iItem < newCount && (m_NewInstanceQueue.Dequeue(newInstance)); iItem++)
+		for (uint iItem = 0; iItem < newCount && (m_NewInstanceQueue.Dequeue(newInstance)); iItem++)
 		{
 			if (newInstance == nullptr)
 				continue;
@@ -136,7 +136,7 @@ namespace Svr {
 		auto freeCount = m_FreeInstanceQueue.GetEnqueCount();
 
 		StaticArray<EntityUID, 10> freeList;
-		for (UINT iItem = 0; iItem < freeCount && (m_FreeInstanceQueue.Dequeue(freeInfo)); iItem++)
+		for (uint iItem = 0; iItem < freeCount && (m_FreeInstanceQueue.Dequeue(freeInfo)); iItem++)
 		{
 			Assert(freeInfo.pInstance);
 			if (freeInfo.pInstance == nullptr)
@@ -188,7 +188,7 @@ namespace Svr {
 			return;
 
 		m_CounterInstanceMap.CommitChanges();
-		m_CounterInstanceMap.ForeachOrder(0, (UINT)m_CounterInstanceMap.GetItemCount(), [&](const intptr_t& key, const WeakPointerT<PerformanceCounterInstance>& value)
+		m_CounterInstanceMap.ForeachOrder(0, (uint)m_CounterInstanceMap.GetItemCount(), [&](const intptr_t& key, const WeakPointerT<PerformanceCounterInstance>& value)
 		{
 			//auto pNode = (PerformanceCounterInstance::CounterListNode*)*itCounter;
 			//if (pNode == nullptr)
@@ -204,10 +204,10 @@ namespace Svr {
 
 			StaticArray<uint64_t, 100> counterValues;
 			auto& counters = pInstance->GetCounters();
-			for (UINT iCounter = 0; iCounter < counters.GetSize(); iCounter++)
+			for (uint iCounter = 0; iCounter < counters.GetSize(); iCounter++)
 			{
 				uint64_t value = 0;
-				if (!(counters[iCounter]->CopyTo((UINT)sizeof(value), (uint8_t*)&value)))
+				if (!(counters[iCounter]->CopyTo((uint)sizeof(value), (uint8_t*)&value)))
 				{
 					Assert(false);
 					break;
@@ -251,7 +251,7 @@ namespace Svr {
 		}
 	}
 
-	Result PerformanceCounterClient::Initialize(UINT serverID, const NetAddress& serverAddress)
+	Result PerformanceCounterClient::Initialize(uint serverID, const NetAddress& serverAddress)
 	{
 		Result hr = ResultCode::SUCCESS;
 		NetAddress localAddress;

@@ -110,7 +110,7 @@ inline Transaction::State Transaction::GetState()
 // Update heart bit time, ms
 inline TimeStampMS Transaction::UpdateHeartBitTime()
 {
-	m_tHeartBitTimeout = Util::Time.GetTimeMs() + DurationMS(Const::TRANSACTION_TIMEOUT);
+	m_tHeartBitTimeout = Util::Time.GetTimeMs() + Const::TRANSACTION_TIMEOUT;
 	return m_tHeartBitTimeout;
 }
 
@@ -118,7 +118,7 @@ inline TimeStampMS Transaction::UpdateHeartBitTime()
 inline Result Transaction::CheckHeartBitTimeout()
 {
 	if ((INT)(GetHeartBitTimeout() - Util::Time.GetTimeMs()).count() < 0)
-		return ResultCode::E_SVR_TRANSACTION_TIMEOUT;
+		return ResultCode::SVR_TRANSACTION_TIMEOUT;
 
 	return ResultCode::SUCCESS;
 }
@@ -156,12 +156,12 @@ inline bool Transaction::IsTimerWorking()
 }
 
 // Get expected result ID
-UINT Transaction::GetExpectedResultID()
+uint Transaction::GetExpectedResultID()
 {
 	return m_uiExpectedResultID;
 }
 
-void Transaction::SetExpectedResultID( UINT uiExpectedResult )
+void Transaction::SetExpectedResultID( uint uiExpectedResult )
 {
 	m_uiExpectedResultID = uiExpectedResult;
 }

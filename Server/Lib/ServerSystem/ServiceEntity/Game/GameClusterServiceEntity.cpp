@@ -29,7 +29,7 @@
 #include "ServerSystem/ServiceEntity/Game/GameClusterServiceTrans.h"
 
 
-SF_MEMORYPOOL_IMPLEMENT(BR::Svr::GameClusterServiceEntity::PlayerTableItem);
+SF_MEMORYPOOL_IMPLEMENT(SF::Svr::GameClusterServiceEntity::PlayerTableItem);
 
 
 namespace SF {
@@ -93,7 +93,7 @@ namespace Svr {
 
 		if( (SignedCounterType)m_NumberOfPlayerOnThisServer > 0 )
 		{
-			SetWorkload((UINT)m_NumberOfPlayerOnThisServer);
+			SetWorkload((uint)m_NumberOfPlayerOnThisServer);
 		}
 
 	Proc_End:
@@ -112,7 +112,7 @@ namespace Svr {
 		svrChkPtr( pGameServerEntity );
 		if( entityUID.GetServerID() != pGameServerEntity->GetServerID() )
 		{
-			svrErr(ResultCode::E_SVR_INVALID_SERVERID);
+			svrErr(ResultCode::SVR_INVALID_SERVERID);
 		}
 
 		if( (m_PlayerIDMap.find( playerID, itPlayer )) )
@@ -217,7 +217,7 @@ namespace Svr {
 
 		if( !(m_PlayerIDMap.find( playerID, itPlayer )) )
 		{
-			return ResultCode::E_SVR_PLAYER_NOT_FOUND;
+			return ResultCode::SVR_PLAYER_NOT_FOUND;
 		}
 
 		// Check validity
@@ -232,7 +232,7 @@ namespace Svr {
 
 			Util::SafeDelete( pPlayerInfo );
 
-			return ResultCode::E_SVR_PLAYER_NOT_FOUND;
+			return ResultCode::SVR_PLAYER_NOT_FOUND;
 		}
 
 		playerUID = itPlayer->GetEntityUID();

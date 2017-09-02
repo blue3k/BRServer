@@ -19,14 +19,14 @@
 #include "ServerSystem/Entity.h"
 #include "ServerSystem/GameSystem.h"
 #include "ServerSystem/ServiceEntity/Game/GameInstancePlayer.h"
-#include "Common/GameConst.h"
+#include "GameConst.h"
 #include "Types/BrGameTypes.h"
 
 #include "ConspiracyGameInstanceSvrConst.h"
 #include "ServerSystem/PlayerEntityInformation.h"
 
 
-namespace BR {
+namespace SF {
 namespace Net {
 	class Connection;
 };
@@ -41,7 +41,7 @@ namespace Policy {
 
 
 
-namespace BR {
+namespace SF {
 namespace ConspiracyGameInstanceServer {
 
 
@@ -75,8 +75,8 @@ namespace ConspiracyGameInstanceServer {
 
 
 		// Player index in game
-		BRCLASS_ATTRIBUTE(UINT,Index);
-		BRCLASS_ATTRIBUTE(UINT,Character);
+		BRCLASS_ATTRIBUTE(uint,Index);
+		BRCLASS_ATTRIBUTE(uint,Character);
 
 		// Player state
 		BRCLASS_ATTRIBUTE(PlayerState,PlayerState);
@@ -88,7 +88,7 @@ namespace ConspiracyGameInstanceServer {
 		BRCLASS_ATTRIBUTE(bool,VotedGameAdvance);
 
 		// Revealed other
-		BRCLASS_ATTRIBUTE(UINT, ReviveCount);
+		BRCLASS_ATTRIBUTE(uint, ReviveCount);
 
 		//////////////////////////////////////////////////////////////////////////////////////////////////
 		//
@@ -98,9 +98,9 @@ namespace ConspiracyGameInstanceServer {
 		// 
 		BRCLASS_ATTRIBUTE(PlayerRole, RequestedRole);
 		BRCLASS_ATTRIBUTE(PlayerRole, Role);
-		BRCLASS_ATTRIBUTE(UINT,Gender);
+		BRCLASS_ATTRIBUTE(uint,Gender);
 
-		BRCLASS_ATTRIBUTE(UINT,Voted);
+		BRCLASS_ATTRIBUTE(uint,Voted);
 		BRCLASS_ATTRIBUTE(PlayerID,Vote);
 
 
@@ -138,4 +138,4 @@ namespace ConspiracyGameInstanceServer {
 #include "GamePlayer.inl"
 
 }; // ConspiracyGameInstanceServer
-}; // namespace BR
+}; // namespace SF

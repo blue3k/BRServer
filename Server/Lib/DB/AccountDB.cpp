@@ -12,8 +12,8 @@
 #include "stdafx.h"
 #include "SFTypedefs.h"
 #include "String/StrUtil.h"
-#include "DB/AccountDB.h"
 
+#include "DB/AccountDB.h"
 #include "DB/AccountQuery.h"
 
 

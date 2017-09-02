@@ -17,12 +17,12 @@
 #include "ServerSystem/Transaction/ServerTransactionGeneric.h"
 
 #include "Protocol/Message/EntityServerMsgClass.h"
-#include "Protocol/Policy/EntityServerIPolicy.h"
+#include "Protocol/Policy/EntityServerNetPolicy.h"
 #include "Protocol/Message/ServerMsgClass.h"
-#include "Protocol/Policy/ServerIPolicy.h"
+#include "Protocol/Policy/ServerNetPolicy.h"
 
 
-namespace BR {
+namespace SF {
 namespace EntityServer {
 
 
@@ -32,10 +32,10 @@ namespace EntityServer {
 	//
 
 	//// Server started
-	//class TransServerStarted : public Svr::ServerStartedTrans< Svr::ServerEntity, Policy::ISvrPolicyEntityServer, Message::Server::ServerConnectedC2SEvt, TransServerStarted>
+	//class TransServerStarted : public Svr::ServerStartedTrans< Svr::ServerEntity, Policy::NetSvrPolicyEntityServer, Message::Server::ServerConnectedC2SEvt, TransServerStarted>
 	//{
 	//private:
-	//	typedef Svr::ServerStartedTrans< Svr::ServerEntity, Policy::ISvrPolicyEntityServer, Message::Server::ServerConnectedC2SEvt, TransServerStarted> super;
+	//	typedef Svr::ServerStartedTrans< Svr::ServerEntity, Policy::NetSvrPolicyEntityServer, Message::Server::ServerConnectedC2SEvt, TransServerStarted> super;
 
 	//public:
 	//	TransServerStarted( Message::MessageData* &pIMsg ) : ServerStartedTrans(pIMsg) {}
@@ -53,7 +53,7 @@ namespace EntityServer {
 	//
 
 	// Server started
-	class TransGenericServerStarted : public Svr::ServerStartedTrans< Svr::ServerEntity, Policy::ISvrPolicyEntityServer, Message::Server::ServerConnectedC2SEvt, TransGenericServerStarted>
+	class TransGenericServerStarted : public Svr::ServerStartedTrans< Svr::ServerEntity, Policy::NetSvrPolicyEntityServer, Message::Server::ServerConnectedC2SEvt, TransGenericServerStarted>
 	{
 	private:
 
@@ -65,5 +65,5 @@ namespace EntityServer {
 
 
 };// namespace EntityServer 
-};// namespace BR 
+};// namespace SF 
 

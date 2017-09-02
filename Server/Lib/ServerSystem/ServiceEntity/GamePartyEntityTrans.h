@@ -16,14 +16,14 @@
 #include "Memory/MemoryPool.h"
 #include "Container/SFArray.h"
 #include "Types/BrBaseTypes.h"
-#include "Common/GameConst.h"
+#include "GameConst.h"
 #include "Common/MemoryStream.h"
 #include "Protocol/Message/GameMsgClass.h"
-#include "Protocol/Policy/GameIPolicy.h"
+#include "Protocol/Policy/GameNetPolicy.h"
 #include "Protocol/Message/GameServerMsgClass.h"
-#include "Protocol/Policy/GameServerIPolicy.h"
+#include "Protocol/Policy/GameServerNetPolicy.h"
 #include "Protocol/Message/GamePartyMsgClass.h"
-#include "Protocol/Policy/GamePartyIPolicy.h"
+#include "Protocol/Policy/GamePartyNetPolicy.h"
 
 #include "Protocol/Message/PartyMatchingQueueMsgClass.h"
 #include "Protocol/Message/PartyMatchingMsgClass.h"
@@ -67,10 +67,10 @@ namespace Svr {
 
 
 
-	class PartyTransJoinParty : public GamePartyMessageTransaction< Policy::ISvrPolicyGameParty, Message::GameParty::JoinPartyCmd, PartyTransJoinParty, 1>
+	class PartyTransJoinParty : public GamePartyMessageTransaction< Policy::NetSvrPolicyGameParty, Message::GameParty::JoinPartyCmd, PartyTransJoinParty, 1>
 	{
 	public:
-		typedef GamePartyMessageTransaction< Policy::ISvrPolicyGameParty, Message::GameParty::JoinPartyCmd, PartyTransJoinParty, 1> super;
+		typedef GamePartyMessageTransaction< Policy::NetSvrPolicyGameParty, Message::GameParty::JoinPartyCmd, PartyTransJoinParty, 1> super;
 
 	private:
 		PlayerID m_LeaderID;
@@ -87,10 +87,10 @@ namespace Svr {
 	};
 	
 
-	class PartyTransLeaveParty : public GamePartyMessageTransaction< Policy::ISvrPolicyGameParty, Message::GameParty::LeavePartyCmd, PartyTransLeaveParty, 1>
+	class PartyTransLeaveParty : public GamePartyMessageTransaction< Policy::NetSvrPolicyGameParty, Message::GameParty::LeavePartyCmd, PartyTransLeaveParty, 1>
 	{
 	public:
-		typedef GamePartyMessageTransaction< Policy::ISvrPolicyGameParty, Message::GameParty::LeavePartyCmd, PartyTransLeaveParty, 1> super;
+		typedef GamePartyMessageTransaction< Policy::NetSvrPolicyGameParty, Message::GameParty::LeavePartyCmd, PartyTransLeaveParty, 1> super;
 
 	private:
 
@@ -106,10 +106,10 @@ namespace Svr {
 
 	
 
-	class PartyTransKickPlayer : public GamePartyMessageTransaction< Policy::ISvrPolicyGameParty, Message::GameParty::KickPlayerCmd, PartyTransKickPlayer, 1>
+	class PartyTransKickPlayer : public GamePartyMessageTransaction< Policy::NetSvrPolicyGameParty, Message::GameParty::KickPlayerCmd, PartyTransKickPlayer, 1>
 	{
 	public:
-		typedef GamePartyMessageTransaction< Policy::ISvrPolicyGameParty, Message::GameParty::KickPlayerCmd, PartyTransKickPlayer, 1> super;
+		typedef GamePartyMessageTransaction< Policy::NetSvrPolicyGameParty, Message::GameParty::KickPlayerCmd, PartyTransKickPlayer, 1> super;
 
 	private:
 
@@ -125,10 +125,10 @@ namespace Svr {
 	
 	
 
-	class PartyTransChatMessage : public GamePartyMessageTransaction< Policy::ISvrPolicyGameParty, Message::GameParty::ChatMessageC2SEvt, PartyTransChatMessage, 1>
+	class PartyTransChatMessage : public GamePartyMessageTransaction< Policy::NetSvrPolicyGameParty, Message::GameParty::ChatMessageC2SEvt, PartyTransChatMessage, 1>
 	{
 	public:
-		typedef GamePartyMessageTransaction< Policy::ISvrPolicyGameParty, Message::GameParty::ChatMessageC2SEvt, PartyTransChatMessage, 1> super;
+		typedef GamePartyMessageTransaction< Policy::NetSvrPolicyGameParty, Message::GameParty::ChatMessageC2SEvt, PartyTransChatMessage, 1> super;
 
 	private:
 
@@ -141,10 +141,10 @@ namespace Svr {
 	};
 
 	
-	class PartyTransQuickChatMessage : public GamePartyMessageTransaction< Policy::ISvrPolicyGameParty, Message::GameParty::QuickChatMessageC2SEvt, PartyTransQuickChatMessage, 1>
+	class PartyTransQuickChatMessage : public GamePartyMessageTransaction< Policy::NetSvrPolicyGameParty, Message::GameParty::QuickChatMessageC2SEvt, PartyTransQuickChatMessage, 1>
 	{
 	public:
-		typedef GamePartyMessageTransaction< Policy::ISvrPolicyGameParty, Message::GameParty::QuickChatMessageC2SEvt, PartyTransQuickChatMessage, 1> super;
+		typedef GamePartyMessageTransaction< Policy::NetSvrPolicyGameParty, Message::GameParty::QuickChatMessageC2SEvt, PartyTransQuickChatMessage, 1> super;
 
 	private:
 
@@ -158,10 +158,10 @@ namespace Svr {
 
 
 	// Player voted event
-	class PartyTransStartGameMatchCmd : public Svr::GamePartyMessageTransaction< Policy::ISvrPolicyGameParty, Message::GameParty::StartGameMatchCmd, PartyTransStartGameMatchCmd, sizeof(TransactionMessageHandlerType)*2>
+	class PartyTransStartGameMatchCmd : public Svr::GamePartyMessageTransaction< Policy::NetSvrPolicyGameParty, Message::GameParty::StartGameMatchCmd, PartyTransStartGameMatchCmd, sizeof(TransactionMessageHandlerType)*2>
 	{
 	public:
-		typedef Svr::GamePartyMessageTransaction< Policy::ISvrPolicyGameParty, Message::GameParty::StartGameMatchCmd, PartyTransStartGameMatchCmd, sizeof(TransactionMessageHandlerType) * 2> super;
+		typedef Svr::GamePartyMessageTransaction< Policy::NetSvrPolicyGameParty, Message::GameParty::StartGameMatchCmd, PartyTransStartGameMatchCmd, sizeof(TransactionMessageHandlerType) * 2> super;
 
 	public:
 		PartyTransStartGameMatchCmd( Message::MessageData* &pIMsg );//  :GamePartyMessageTransaction( pIMsg ) {}
@@ -178,10 +178,10 @@ namespace Svr {
 
 
 	// Player voted event
-	class PartyTransCancelGameMatchCmd : public Svr::GamePartyMessageTransaction< Policy::ISvrPolicyGameParty, Message::GameParty::CancelGameMatchCmd, PartyTransCancelGameMatchCmd, sizeof(TransactionMessageHandlerType)*2>
+	class PartyTransCancelGameMatchCmd : public Svr::GamePartyMessageTransaction< Policy::NetSvrPolicyGameParty, Message::GameParty::CancelGameMatchCmd, PartyTransCancelGameMatchCmd, sizeof(TransactionMessageHandlerType)*2>
 	{
 	public:
-		typedef Svr::GamePartyMessageTransaction< Policy::ISvrPolicyGameParty, Message::GameParty::CancelGameMatchCmd, PartyTransCancelGameMatchCmd, sizeof(TransactionMessageHandlerType) * 2> super;
+		typedef Svr::GamePartyMessageTransaction< Policy::NetSvrPolicyGameParty, Message::GameParty::CancelGameMatchCmd, PartyTransCancelGameMatchCmd, sizeof(TransactionMessageHandlerType) * 2> super;
 
 	public:
 		PartyTransCancelGameMatchCmd( Message::MessageData* &pIMsg );//  :GamePartyMessageTransaction( pIMsg ) {}

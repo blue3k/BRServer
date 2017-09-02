@@ -55,7 +55,7 @@ namespace SF {
 			Net::ConnectionEvent *pConnectionEvent;
 			struct {
 				WeakPointerT<Net::Connection> pConn;
-				Message::MessageData* pMessage;
+				SharedPointerT<Message::MessageData> pMessage;
 			} MessageEvent;
 			Svr::TransactionResult* pTransResultEvent;
 
@@ -72,7 +72,7 @@ namespace SF {
 		ServerTaskEvent(ServerTaskEvent&& src);
 		ServerTaskEvent(TickTask* pTickTask); // poke ticking
 		ServerTaskEvent(TickTask* pTickTask, const Net::ConnectionEvent& connectionEvent);
-		ServerTaskEvent(TickTask* pTickTask, WeakPointerT<Net::Connection>&& pConn, Message::MessageData* pMsg);
+		ServerTaskEvent(TickTask* pTickTask, WeakPointerT<Net::Connection>&& pConn, SharedPointerT<Message::MessageData>& pMsg);
 		ServerTaskEvent(EventTypes eventType, TickTask* pTickTask, WeakPointerT<Net::Connection>&& pConn); // send buffer message
 		ServerTaskEvent(TickTask* pTickTask, Svr::TransactionResult* pTransRes);
 		~ServerTaskEvent();

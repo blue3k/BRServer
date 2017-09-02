@@ -14,7 +14,7 @@
 #include "String/FixedString32.h"
 #include "String/SFString.h"
 #include "Container/CircularPageQueue.h"
-#include "Thread/Task.h"
+#include "Task/Task.h"
 
 #include "ZooKeeper/SFZooKeeper.h"
 
@@ -24,12 +24,6 @@ typedef struct _xmlNode xmlNode;
 
 namespace SF
 {
-	enum class DBClusterType
-	{
-		Normal,
-		Sharding,
-	};
-
 
 	template<class EnumType>
 	class Enum

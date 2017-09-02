@@ -10,15 +10,15 @@
 
 
 #include "stdafx.h"
-#include "ResultCode/SFResultCodeCommon.h"
+#include "ResultCode/SFResultCodeLibrary.h"
 #include "ResultCode/SFResultCodeGame.h"
 #include "Memory/MemoryPool.h"
 #include "Types/BrBaseTypes.h"
-#include "Common/GameConst.h"
+#include "GameConst.h"
 
 #include "Protocol/Message/GameInstanceManagerMsgClass.h"
 #include "Protocol/Message/GameMsgClass.h"
-#include "Protocol/Policy/GameIPolicy.h"
+#include "Protocol/Policy/GameNetPolicy.h"
 
 
 #include "ServerSystem/BrServerUtil.h"
@@ -28,8 +28,9 @@
 #include "ServerSystem/EntityManager.h"
 #include "ServerSystem/ServiceEntity/Game/GameInstanceServiceTrans.h"
 #include "ServerSystem/ServiceEntity/Game/GameInstanceServiceEntity.h"
+#include "GameInstanceServiceTrans.h"
 
-SF_MEMORYPOOL_IMPLEMENT(BR::Svr::GameInstanceTrans);
+SF_MEMORYPOOL_IMPLEMENT(SF::Svr::GameInstanceTrans);
 
 
 
@@ -38,8 +39,8 @@ namespace Svr {
 
 
 
-	GameInstanceTrans::GameInstanceTrans(UINT startMemberCount, UINT targetMemberCount)
-		: TransactionT( TransactionID() )
+	GameInstanceTrans::GameInstanceTrans(IMemoryManager& memoryManager, uint startMemberCount, uint targetMemberCount)
+		: TransactionT(memoryManager, TransactionID() )
 	{
 		//SetPrintTrace(false);
 

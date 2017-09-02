@@ -10,7 +10,7 @@
 
 
 #include "stdafx.h"
-#include "ResultCode/SFResultCodeCommon.h"
+#include "ResultCode/SFResultCodeLibrary.h"
 #include "ResultCode/SFResultCodeGame.h"
 #include "ResultCode/SFResultCodeLogin.h"
 #include "Memory/MemoryPool.h"
@@ -27,9 +27,9 @@
 
 
 
-//SF_MEMORYPOOL_IMPLEMENT(BR::Svr::GameServerTransRegisterPlayerToJoinGameServer);
-SF_MEMORYPOOL_IMPLEMENT(BR::Svr::GameServerTransGamePlayerEntityCreatedS2CEvt);
-SF_MEMORYPOOL_IMPLEMENT(BR::Svr::GameServerTransGamePlayerEntityDeletedS2CEvt);
+//SF_MEMORYPOOL_IMPLEMENT(SF::Svr::GameServerTransRegisterPlayerToJoinGameServer);
+SF_MEMORYPOOL_IMPLEMENT(SF::Svr::GameServerTransGamePlayerEntityCreatedS2CEvt);
+SF_MEMORYPOOL_IMPLEMENT(SF::Svr::GameServerTransGamePlayerEntityDeletedS2CEvt);
 
 
 namespace SF {
@@ -86,7 +86,7 @@ namespace Svr {
 	//	}
 
 	//	if ((Svr::GetServerComponent<Svr::EntityManager>()->FindEntity(GetRouteContext().GetTo(), pEntity))
-	//		&& pEntity->GetEntityID().GetFacultyID() == (UINT)EntityFaculty::User)
+	//		&& pEntity->GetEntityID().GetFacultyID() == (uint)EntityFaculty::User)
 	//	{
 	//		svrChkPtr(pPlayerEntity = BR_DYNAMIC_CAST(GamePlayerEntity*, (Svr::Entity*)pEntity));
 

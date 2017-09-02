@@ -21,7 +21,7 @@
 #include "Memory/MemoryPool.h"
 #include "Types/BrBaseTypes.h"
 #include "Protocol/Message/GameMsgClass.h"
-#include "Protocol/Policy/GameIPolicy.h"
+#include "Protocol/Policy/GameNetPolicy.h"
 
 #include "ServerSystem/ServiceEntity/ClusterManagerServiceEntity.h"
 
@@ -31,7 +31,7 @@
 SF_MEMORYPOOL_IMPLEMENT(BR::SharedModuleServer::SharedModuleServerStartProcess);
 
 
-namespace BR {
+namespace SF {
 namespace SharedModuleServer {
 
 
@@ -91,7 +91,7 @@ namespace SharedModuleServer {
 	Result SharedModuleServerStartProcess::InitializeServices()
 	{
 		Result hr = ResultCode::SUCCESS;
-		//UINT componentID = 0;
+		//uint componentID = 0;
 		
 		svrChk( Svr::GetServerComponent<Svr::ClusterManagerServiceEntity>()->InitializeNotInitializedClusterEntities() );
 
@@ -134,5 +134,5 @@ namespace SharedModuleServer {
 
 
 };// namespace SharedModuleServer 
-};// namespace BR 
+};// namespace SF 
 

@@ -18,14 +18,14 @@
 #include "GameInstance/GameInstanceEntity.h"
 
 
-namespace BR {
+namespace SF {
 namespace Net {
 	class IConnection;
 	class Connection;
 }};
 
 
-namespace BR {
+namespace SF {
 namespace ConspiracyGameInstanceServer {
 
 	class GamePlayer;
@@ -87,7 +87,7 @@ namespace ConspiracyGameInstanceServer {
 
 			if(GetMyServer()->GetServerUID() != MessageClass::GetRouteContext().GetTo().GetServerID())
 			{
-				svrErr( ResultCode::E_SVR_INVALID_SERVERID );
+				svrErr( ResultCode::SVR_INVALID_SERVERID );
 			}
 
 			hr = FindEntity(MessageClass::GetRouteContext().GetTo().GetEntityID(), pEntity);

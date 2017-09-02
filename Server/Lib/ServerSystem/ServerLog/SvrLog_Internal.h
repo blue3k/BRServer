@@ -58,10 +58,10 @@ namespace Trace {
 	// Trace Output Module
 	//
 
-	class TraceOutModule : public BR::Thread, public SharedObject
+	class TraceOutModule : public SF::Thread, public SharedObject
 	{
 	public:
-		typedef BR::SpinBufferMT<TraceBufferItem,512> TraceBufferType;
+		typedef SF::SpinBufferMT<TraceBufferItem,512> TraceBufferType;
 
 	private:
 
@@ -169,7 +169,7 @@ namespace Trace {
 		void TraceOut( uint trcOutMask, char * szOutput, size_t outputStringLen);
 
 		//// Trace print data to Spin Buffer
-		//void TracePush( UINT trcInputMask, const char *strTrace, const char* traceName);
+		//void TracePush( uint trcInputMask, const char *strTrace, const char* traceName);
 
 		// two-way version
 		TraceBufferType::BLOCK* TraceReserveWriteBuffer(uint trcInputMask, const char* traceName, char*& stringBuffer, int &buffLen );

@@ -31,7 +31,7 @@ namespace SF
 
 
 	
-    GameLogChatMessage::GameLogChatMessage(TimeStampSec timeStamp, UINT messageBufferSize)
+    GameLogChatMessage::GameLogChatMessage(TimeStampSec timeStamp, uint messageBufferSize)
         : GameLogItem(GameLogType::ChatMessage, timeStamp, sizeof(GameLogChatMessage)+messageBufferSize)
 		,MessageBufferSize((decltype(MessageBufferSize))messageBufferSize)
     {
@@ -66,8 +66,8 @@ namespace SF
     }
 
 	
-    GameLogVote::GameLogVote(TimeStampSec timeStamp, UINT numVoter)
-		: GameLogItem(GameLogType::Vote,timeStamp,sizeof(GameLogVote) + sizeof(VoteInfo)*std::min((UINT)GameConst::MAX_GAMEPLAYER,numVoter-1))
+    GameLogVote::GameLogVote(TimeStampSec timeStamp, uint numVoter)
+		: GameLogItem(GameLogType::Vote,timeStamp,sizeof(GameLogVote) + sizeof(VoteInfo)*std::min((uint)GameConst::MAX_GAMEPLAYER,numVoter-1))
 		,NumberOfVoter((decltype(NumberOfVoter))numVoter)
     {
 		Assert(numVoter <= GameConst::MAX_GAMEPLAYER);
@@ -109,13 +109,13 @@ namespace SF
 
 
 	
-    GameLogVoteResult::GameLogVoteResult(TimeStampSec timeStamp, UINT numRankers)
-		: GameLogItem(GameLogType::VoteResult,timeStamp,sizeof(GameLogVoteResult) + sizeof(PlayerID)*std::min((UINT)GameConst::MAX_GAMEPLAYER,numRankers-1))
+    GameLogVoteResult::GameLogVoteResult(TimeStampSec timeStamp, uint numRankers)
+		: GameLogItem(GameLogType::VoteResult,timeStamp,sizeof(GameLogVoteResult) + sizeof(PlayerID)*std::min((uint)GameConst::MAX_GAMEPLAYER,numRankers-1))
 		, NumberOfRanker(numRankers)
     {
     }
 
-    void GameLogVoteResult::SetVotedRankers(UINT numRankers, const PlayerID* ranker)
+    void GameLogVoteResult::SetVotedRankers(uint numRankers, const PlayerID* ranker)
     {
 		Assert( NumberOfRanker == numRankers );
 		if( NumberOfRanker < numRankers )

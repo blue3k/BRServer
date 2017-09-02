@@ -24,7 +24,7 @@ namespace SF {
 	public:
 
 		enum {
-			ComponentID = (UINT)LibCompoentIDs::Trace
+			ComponentID = (uint)LibCompoentIDs::Trace
 		};
 
 	private:

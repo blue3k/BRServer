@@ -92,16 +92,16 @@ namespace Google {
 			reason = std::forward<std::string>(reasonValue.asString());
 			if (reason == "authError")
 			{
-				hr = ResultCode::E_SVR_INVALID_EXTERNAL_AUTH;
+				hr = ResultCode::SVR_INVALID_EXTERNAL_AUTH;
 			}
 			else
 			{
-				hr = ResultCode::E_SVR_INVALID_PURCHASE_INFO;
+				hr = ResultCode::SVR_INVALID_PURCHASE_INFO;
 			}
 			goto Proc_End;
 		}
 
-		hr = ResultCode::E_SVR_INVALID_PURCHASE_INFO;
+		hr = ResultCode::SVR_INVALID_PURCHASE_INFO;
 
 	Proc_End:
 
@@ -250,7 +250,7 @@ namespace Google {
 			}
 
 			if (purchaseState == 1)
-				return ResultCode::E_SVR_PURCHASE_CANCELED;
+				return ResultCode::SVR_PURCHASE_CANCELED;
 		}
 
 
@@ -258,7 +258,7 @@ namespace Google {
 
 		if (!(hr))
 		{
-			if (hr == ((Result)ResultCode::E_SVR_INVALID_EXTERNAL_AUTH))
+			if (hr == ((Result)ResultCode::SVR_INVALID_EXTERNAL_AUTH))
 			{
 				// silently ignore it
 				//svrTrace(Trace::TRC_ERROR, "Invalid auth: hr:{0}, {1}, token:{2}", ArgHex32<uint32_t>(hr), (const char*)m_ResultBuffer.data(), authChar);

@@ -21,7 +21,7 @@
 #include "Memory/MemoryPool.h"
 #include "Types/BrBaseTypes.h"
 #include "Protocol/Message/GameMsgClass.h"
-#include "Protocol/Policy/GameIPolicy.h"
+#include "Protocol/Policy/GameNetPolicy.h"
 
 #include "ServerSystem/ServiceEntity/ClusterManagerServiceEntity.h"
 
@@ -36,7 +36,7 @@ SF_MEMORYPOOL_IMPLEMENT(BR::GameServer::GameServerTransRegisterPlayerToJoinGameS
 SF_MEMORYPOOL_IMPLEMENT(BR::GameServer::GameServerTransRegisterPlayerToJoinGameServer<BR::GameServer::GamePlayerEntity>);
 
 
-namespace BR {
+namespace SF {
 namespace GameServer {
 
 
@@ -88,7 +88,7 @@ namespace GameServer {
 		}
 
 		if( (Svr::GetServerComponent<Svr::EntityManager>()->FindEntity(super::GetRouteContext().GetTo(), pEntity ))
-			&& pEntity->GetEntityID().GetFacultyID() == (UINT)EntityFaculty::User )
+			&& pEntity->GetEntityID().GetFacultyID() == (uint)EntityFaculty::User )
 		{
 			svrChkPtr( pPlayerEntity = BR_DYNAMIC_CAST(GamePlayerEntity*,(Svr::Entity*)pEntity) );
 
@@ -153,5 +153,5 @@ namespace GameServer {
 
 
 };// namespace GameServer 
-};// namespace BR 
+};// namespace SF 
 

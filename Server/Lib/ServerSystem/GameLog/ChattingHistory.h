@@ -15,7 +15,7 @@
 #include "Common/ClassUtil.h"
 #include "Memory/SFMemory.h"
 #include "Types/BrGameTypes.h"
-#include "Common/GameConst.h"
+#include "GameConst.h"
 #include "Common/CircularQueue.h"
 #include "Common/Binary.h"
 #include "Types/BrSvrTypes.h"
@@ -61,7 +61,7 @@ namespace Svr {
 		virtual Result AddChattingLog(TimeStampSec timeStamp, PlayerID player, uint8_t playerStatus, ChatType type, const char* message );
 
 		//// Get chatting binary
-		//Result GetChattingBinary( OutputMemoryStream& stream, UINT startIndex, UINT count );
+		//Result GetChattingBinary( OutputMemoryStream& stream, uint startIndex, uint count );
 
 		// 
 	};

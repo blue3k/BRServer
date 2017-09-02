@@ -15,12 +15,12 @@
 #include "ServerSystem/SvrTrace.h"
 #include "Util/TimeUtil.h"
 #include "Types/BrBaseTypes.h"
-#include "ResultCode/SFResultCodeCommon.h"
+#include "ResultCode/SFResultCodeLibrary.h"
 #include "ResultCode/SFResultCodeGame.h"
 #include "Net/Message.h"
 
-#include "Protocol/Policy/GameServerIPolicy.h"
-#include "Protocol/Policy/GamePartyIPolicy.h"
+#include "Protocol/Policy/GameServerNetPolicy.h"
+#include "Protocol/Policy/GamePartyNetPolicy.h"
 
 #include "ServerSystem/MessageRoute.h"
 #include "ServerSystem/ServiceEntity/GamePartyEntity.h"
@@ -28,8 +28,8 @@
 #include "ServerSystem/ServiceEntity/GamePartyEntityTrans.h"
 
 
-SF_MEMORYPOOL_IMPLEMENT(BR::Svr::PartyPlayer);
-SF_MEMORYPOOL_IMPLEMENT(BR::Svr::GamePartyEntity);
+SF_MEMORYPOOL_IMPLEMENT(SF::Svr::PartyPlayer);
+SF_MEMORYPOOL_IMPLEMENT(SF::Svr::GamePartyEntity);
 
 
 namespace SF {
@@ -156,7 +156,7 @@ namespace Svr {
 		return ResultCode::SUCCESS;
 	}
 
-	Result GamePartyEntity::ForeachPlayerSvrGameParty( std::function<Result(PartyPlayer* pPlayer, Policy::ISvrPolicyGameParty *pPolicy)> func )
+	Result GamePartyEntity::ForeachPlayerSvrGameParty( std::function<Result(PartyPlayer* pPlayer, Policy::NetSvrPolicyGameParty *pPolicy)> func )
 	{
 		for( auto itPlayer = m_PartyPlayerByUID.begin(); itPlayer != m_PartyPlayerByUID.end(); ++ itPlayer )
 		{
@@ -164,7 +164,7 @@ namespace Svr {
 			if( pPartyPlayer == nullptr )
 				continue;
 
-			Policy::ISvrPolicyGameParty *pPolicy = pPartyPlayer->GetPolicy<Policy::ISvrPolicyGameParty>();
+			Policy::NetSvrPolicyGameParty *pPolicy = pPartyPlayer->GetPolicy<Policy::NetSvrPolicyGameParty>();
 			if( pPolicy )
 			{
 				Result hrRes = func( pPartyPlayer, pPolicy );
@@ -195,10 +195,10 @@ namespace Svr {
 		
 		if( !bIsSilent )
 		{
-			Policy::ISvrPolicyGameParty* pJoindPolicy = pPlayer->GetPolicy<Policy::ISvrPolicyGameParty>();
+			Policy::NetSvrPolicyGameParty* pJoindPolicy = pPlayer->GetPolicy<Policy::NetSvrPolicyGameParty>();
 			svrChkPtr(pJoindPolicy);
 
-			ForeachPlayerSvrGameParty( [&]( PartyPlayer* pOtherPlayer, Policy::ISvrPolicyGameParty *pOtherPolicy )->Result {
+			ForeachPlayerSvrGameParty( [&]( PartyPlayer* pOtherPlayer, Policy::NetSvrPolicyGameParty *pOtherPolicy )->Result {
 				if( pPlayer != pOtherPlayer )
 				{
 					// Send others to joined
@@ -235,7 +235,7 @@ namespace Svr {
 
 		if( !bIsSilent )
 		{
-			ForeachPlayerSvrGameParty( [&]( PartyPlayer* pOtherPlayer, Policy::ISvrPolicyGameParty *pPolicy )->Result {
+			ForeachPlayerSvrGameParty( [&]( PartyPlayer* pOtherPlayer, Policy::NetSvrPolicyGameParty *pPolicy )->Result {
 				pPolicy->PlayerLeftS2CEvt( pOtherPlayer->GetRouteContext(GetEntityUID()), pPlayer->GetPlayerID() );
 				return ResultCode::SUCCESS;
 			});
@@ -267,7 +267,7 @@ namespace Svr {
 
 			if( !bIsSilent )
 			{
-				ForeachPlayerSvrGameParty( [&]( PartyPlayer* pOtherPlayer, Policy::ISvrPolicyGameParty *pPolicy )->Result {
+				ForeachPlayerSvrGameParty( [&]( PartyPlayer* pOtherPlayer, Policy::NetSvrPolicyGameParty *pPolicy )->Result {
 					pPolicy->PartyLeaderChangedS2CEvt( pOtherPlayer->GetRouteContext(GetEntityUID()), m_LeaderID );
 					return ResultCode::SUCCESS;
 				});
@@ -314,7 +314,7 @@ namespace Svr {
 
 		if( !(m_PartyPlayerByUID.find( pltID, itPlayer )) )
 		{
-			return ResultCode::E_SVR_PLAYER_NOT_FOUND;
+			return ResultCode::SVR_PLAYER_NOT_FOUND;
 		}
 
 		pPartyPlayer = *itPlayer;

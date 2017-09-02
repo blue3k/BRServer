@@ -40,7 +40,7 @@ ServerEntity* BrServer::GetLoopbackServerEntity()
 }
 
 // Set server UID
-void BrServer::SetServerUID( UINT uiUID )
+void BrServer::SetServerUID( uint uiUID )
 {
 	m_uiUID = uiUID;
 }
@@ -52,7 +52,7 @@ TimeStampSec BrServer::GetServerUpTime()
 }
 
 // Set my config 
-void BrServer::SetMyConfig( const Config::GenericServer* pMyConfig )
+void BrServer::SetMyConfig( const ServerConfig::GenericServer* pMyConfig )
 {
 	m_pMyConfig = pMyConfig;
 }
@@ -65,7 +65,7 @@ NetClass BrServer::GetNetClass()
 }
 
 // Get config
-const Config::GenericServer* BrServer::GetMyConfig()
+const ServerConfig::GenericServer* BrServer::GetMyConfig()
 {
 	return m_pMyConfig;
 }
@@ -83,7 +83,7 @@ bool BrServer::EnableNetPublic( bool bIsEnable )
 }
 
 // Get Server UID
-UINT BrServer::GetServerUID()
+uint BrServer::GetServerUID()
 {
 	return m_uiUID;
 }
@@ -113,7 +113,7 @@ componentType* GetServerComponent()
 }
 
 template<class componentType>
-componentType* GetServerComponent(UINT componentID)
+componentType* GetServerComponent(uint componentID)
 {
 	Assert( BrServer::GetInstance() );
 	return BrServer::GetInstance()->GetComponent<componentType>(componentID);
@@ -138,7 +138,7 @@ ServerEntity* GetLoopbackServerEntity()
 
 
 template<class DBManagerType>
-Result BrServer::AddDBCluster(Svr::Config::DBCluster *pDBClusterCfg)
+Result BrServer::AddDBCluster(ServerConfig::DBCluster *pDBClusterCfg)
 {
 	Result hr = ResultCode::SUCCESS;
 	DB::DBClusterManager* pDBManager = nullptr;
@@ -156,7 +156,7 @@ Result BrServer::AddDBCluster(Svr::Config::DBCluster *pDBClusterCfg)
 	auto itInstnace = DBinstances.find(pDBClusterCfg->DBInstanceName);
 
 	if (itInstnace == DBinstances.end())
-		return ResultCode::E_DB_INVALID_CONFIG;
+		return ResultCode::DB_INVALID_CONFIG;
 
 	auto instanceInfo = itInstnace->second;
 

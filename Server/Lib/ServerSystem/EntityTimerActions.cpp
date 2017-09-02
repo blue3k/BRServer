@@ -19,7 +19,7 @@
 #include "ServerSystem/Transaction.h"
 
 
-SF_MEMORYPOOL_IMPLEMENT(BR::Svr::TimerActionTransaction);
+SF_MEMORYPOOL_IMPLEMENT(SF::Svr::TimerActionTransaction);
 
 
 namespace SF {
@@ -47,7 +47,7 @@ namespace Svr {
 		TimerAction::SetNextTickTime(nextTick);
 	}
 
-	bool TimerActionTransaction::UpdateTick()
+	bool TimerActionTransaction::OnTimerTick()
 	{
 		SharedPointerT<Transaction> pTransPtr;
 		Transaction* pTrans;

@@ -20,8 +20,8 @@
 #include "ConspiracyGameInstanceServerClass.h"
 
 
-#include "Protocol/Policy/EntityServerIPolicy.h"
-#include "Protocol/Policy/GameServerIPolicy.h"
+#include "Protocol/Policy/EntityServerNetPolicy.h"
+#include "Protocol/Policy/GameServerNetPolicy.h"
 
 #include "Protocol/Message/GameMsgClass.h"
 #include "ConspiracyGameInstanceServerClass.h"
@@ -31,7 +31,7 @@
 #include "Transaction/GameInstanceTransPlayer.h"
 
 
-namespace BR {
+namespace SF {
 namespace ConspiracyGameInstanceServer {
 
 	
@@ -67,6 +67,6 @@ namespace ConspiracyGameInstanceServer {
 
 
 } // ConspiracyGameInstanceServer
-} // namespace BR
+} // namespace SF
 
 

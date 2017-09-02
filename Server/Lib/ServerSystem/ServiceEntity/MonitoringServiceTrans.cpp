@@ -10,15 +10,15 @@
 
 
 #include "stdafx.h"
-#include "ResultCode/SFResultCodeCommon.h"
+#include "ResultCode/SFResultCodeLibrary.h"
 #include "ResultCode/SFResultCodeGame.h"
 #include "Memory/MemoryPool.h"
 #include "Types/BrBaseTypes.h"
-#include "Common/GameConst.h"
+#include "GameConst.h"
 
 #include "Protocol/Message/GameInstanceManagerMsgClass.h"
 #include "Protocol/Message/MonitoringMsgClass.h"
-#include "Protocol/Policy/MonitoringIPolicy.h"
+#include "Protocol/Policy/MonitoringNetPolicy.h"
 
 
 #include "ServerSystem/BrServerUtil.h"
@@ -33,8 +33,8 @@
 #include "ServerSystem/PerformanceCounter/PerformanceCounterServer.h"
 
 
-SF_MEMORYPOOL_IMPLEMENT(BR::Svr::MonitoringTransGetInstanceList);
-SF_MEMORYPOOL_IMPLEMENT(BR::Svr::MonitoringTransRequestCounterValues);
+SF_MEMORYPOOL_IMPLEMENT(SF::Svr::MonitoringTransGetInstanceList);
+SF_MEMORYPOOL_IMPLEMENT(SF::Svr::MonitoringTransRequestCounterValues);
 
 
 
@@ -56,7 +56,7 @@ namespace Svr {
 
 		m_TotalCounterInstance = PerformanceCounterServer::GetInstanceList(0, instanceList);
 
-		for (UINT iInstance = 0; iInstance < instanceList.GetSize(); iInstance++)
+		for (uint iInstance = 0; iInstance < instanceList.GetSize(); iInstance++)
 		{
 			auto pInstance = instanceList[iInstance];
 			if (pInstance == nullptr)
@@ -82,7 +82,7 @@ namespace Svr {
 	Result MonitoringTransRequestCounterValues::StartTransaction()
 	{
 		Result hr = ResultCode::SUCCESS;
-		UINT bufferSize = (UINT)m_CounterValues.GetAllocatedSize();
+		uint bufferSize = (uint)m_CounterValues.GetAllocatedSize();
 		svrChk(super::StartTransaction());
 
 		//svrChk(PerformanceCounterServer::GetCounter(GetInstanceUID(), bufferSize, m_CounterValues.data()));

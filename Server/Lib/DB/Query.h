@@ -58,8 +58,8 @@ namespace DB {
 		FORCEINLINE void SetSession(Session* pSes)				{ m_pSession = pSes; }
 
 		// Sharding ID
-		FORCEINLINE UINT GetPartitioningKey()					{ return m_PartitioningKey; }
-		FORCEINLINE void SetPartitioningKey( UINT key )			{ m_PartitioningKey = key; }
+		FORCEINLINE uint GetPartitioningKey()					{ return m_PartitioningKey; }
+		FORCEINLINE void SetPartitioningKey( uint key )			{ m_PartitioningKey = key; }
 
 		virtual bool GetHasRowSetResult()			{ return false; }
 
@@ -69,7 +69,7 @@ namespace DB {
 		DBClusterManager *m_pQueryManager;
 		Session*	m_pSession;
 		// DB shard partitioning key
-		UINT		m_PartitioningKey;
+		uint		m_PartitioningKey;
 
 		TimeStampMS	m_RequestedTime;
 	};

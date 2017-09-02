@@ -15,7 +15,7 @@
 #include "SFTypedefs.h"
 
 
-namespace BR {
+namespace SF {
 namespace EntityServer {
 namespace Const {
 
@@ -61,5 +61,5 @@ namespace Const {
 
 } // namespace Const
 } // namespace Svr
-} // namespace BR
+} // namespace SF
 

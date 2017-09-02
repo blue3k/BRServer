@@ -15,14 +15,13 @@ OUTPUT_CPP_SERVERSYSTEM_PATH=../../Server/Lib/ServerSystem/ServerService
 
 PROTO_BUILD_PARAM_CPP=+outCPP=$(OUTPUT_CPP_PATH) +pch=stdafx.h +LogFuncPrefix=protocolTrace\( +gen=MessageClassBuilder  +gen=MessageParsingMapBuilder  +gen=MessageDebugBuilder 
 PROTO_BUILD_PARAM_CPP_POLICY=+outCPP=../../Server/Lib/ServerProtocol/Protocol/Policy +pch=stdafx.h +LogFuncPrefix=protocolTrace\( +gen=MessageNetPolicyBuilder
-PROTO_BUILD_PARAM_CPP_SERVERSYSTEM=+outCPP=../../Server/Lib/ServerSystem/ServerService +pch=stdafx.h +LogFuncPrefix=protocolTrace\( +gen=MessageServerServiceBuilder
+PROTO_BUILD_PARAM_CPP_SERVERSERVICE=+outCPP=../../Server/Lib/ServerProtocol/Protocol/ServerService +pch=stdafx.h +LogFuncPrefix=protocolTrace\( +gen=MessageServerServiceBuilder
 
 
 SOURCES=ProtocolClusterServer.xml \
 	ProtocolEntityServer.xml \
 	ProtocolGameInstance.xml \
 	ProtocolGameInstanceManager.xml \
-	ProtocolGameMasterServer.xml \
 	ProtocolGameParty.xml \
 	ProtocolGamePartyManager.xml \
 	ProtocolGameServer.xml \
@@ -40,7 +39,7 @@ TARGET_FILES=$(SOURCES_POSTFIXED:%=$(OUTPUT_PATH)/%)
 $(OUTPUT_PATH)/%.h: %.xml $(PROTO_BUILD)
 	$(PROTO_BUILD) $(PROTO_BUILD_PARAM_CPP) +in=$<
 	$(PROTO_BUILD) $(PROTO_BUILD_PARAM_CPP_POLICY) +in=$<
-	$(PROTO_BUILD) $(PROTO_BUILD_PARAM_CPP_SERVERSYSTEM) +in=$<
+	$(PROTO_BUILD) $(PROTO_BUILD_PARAM_CPP_SERVERSERVICE) +in=$<
  
 
 build: $(SOURCES) $(TARGET_FILES) 

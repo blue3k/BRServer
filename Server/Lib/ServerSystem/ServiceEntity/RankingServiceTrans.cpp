@@ -10,17 +10,17 @@
 
 
 #include "stdafx.h"
-#include "ResultCode/SFResultCodeCommon.h"
+#include "ResultCode/SFResultCodeLibrary.h"
 #include "ResultCode/SFResultCodeGame.h"
 #include "Memory/MemoryPool.h"
 #include "Types/BrBaseTypes.h"
-#include "Common/GameConst.h"
+#include "GameConst.h"
 #include "Common/BrRandom.h"
 #include "Common/File/BRFile.h"
 
 #include "Protocol/Message/GameInstanceManagerMsgClass.h"
 #include "Protocol/Message/RankingServerMsgClass.h"
-#include "Protocol/Policy/RankingServerIPolicy.h"
+#include "Protocol/Policy/RankingServerNetPolicy.h"
 
 
 #include "ServerSystem/BrServerUtil.h"
@@ -36,9 +36,9 @@
 
 #include "DB/RankingDB.h"
 
-SF_MEMORYPOOL_IMPLEMENT(BR::Svr::RankingServerAddPlayerTrans);
-SF_MEMORYPOOL_IMPLEMENT(BR::Svr::RankingServerUpdatePlayerScoreTrans);
-SF_MEMORYPOOL_IMPLEMENT(BR::Svr::RankingServerDebugPrintALLRankingTrans);
+SF_MEMORYPOOL_IMPLEMENT(SF::Svr::RankingServerAddPlayerTrans);
+SF_MEMORYPOOL_IMPLEMENT(SF::Svr::RankingServerUpdatePlayerScoreTrans);
+SF_MEMORYPOOL_IMPLEMENT(SF::Svr::RankingServerDebugPrintALLRankingTrans);
 
 
 

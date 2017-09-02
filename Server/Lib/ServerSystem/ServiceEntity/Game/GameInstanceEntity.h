@@ -14,9 +14,9 @@
 #include "SFTypedefs.h"
 #include "Common/ClassUtil.h"
 #include "Types/BrBaseTypes.h"
-#include "Common/Indexing.h"
+#include "Container/Indexing.h"
 #include "Common/HashTable.h"
-#include "Common/BrComponent.h"
+#include "Component/BrComponent.h"
 
 #include "ServerSystem/MessageRoute.h"
 #include "ServerSystem/Entity.h"
@@ -28,8 +28,8 @@
 //#include "ConspiracyGameInstanceSvrConst.h"
 #include "ServerSystem/ServiceEntity/Game/GameInstancePlayer.h"
 
-#include "Protocol/Policy/GameServerIPolicy.h"
-#include "Protocol/Policy/GameInstanceIPolicy.h"
+#include "Protocol/Policy/GameServerNetPolicy.h"
+#include "Protocol/Policy/GameInstanceNetPolicy.h"
 
 //#include "Table/conspiracy/GameConfigTbl.h"
 //#include "Table/conspiracy/BotTalkTbl.h"
@@ -98,13 +98,13 @@ namespace Svr
 		BRCLASS_ATTRIBUTE(PlayerID,LeaderUID);
 
 		// Max player
-		BRCLASS_ATTRIBUTE_READONLY(UINT,MaxPlayer);
+		BRCLASS_ATTRIBUTE_READONLY(uint,MaxPlayer);
 
 		// Total joined player since game instance is created
-		BRCLASS_ATTRIBUTE(UINT, TotalJoinedPlayer);
+		BRCLASS_ATTRIBUTE(uint, TotalJoinedPlayer);
 
 		// Number of bot
-		BRCLASS_ATTRIBUTE(UINT, NumBot);
+		BRCLASS_ATTRIBUTE(uint, NumBot);
 
 		BRCLASS_ATTRIBUTE(DurationMS, EmptyInstanceKillTimeOut);
 
@@ -137,7 +137,7 @@ namespace Svr
 		inline GameInsUID GetInstanceUID();
 
 		// Get player count at this game
-		inline UINT GetNumPlayer();
+		inline uint GetNumPlayer();
 
 		//conspiracy::BotTalkTbl::BotTalkTblItem *GetBotTalkTbl() { return m_pBotTalk; }
 
@@ -151,7 +151,7 @@ namespace Svr
 		//Result InitializeSystem();
 
 		//// Update game config
-		//Result UpdateGameConfig(UINT configPresetID);
+		//Result UpdateGameConfig(uint configPresetID);
 
 
 	protected:
@@ -179,7 +179,7 @@ namespace Svr
 
 		//Result ForeachPlayerGameServer( std::function<Result(GamePlayer* pPlayer, Policy::IPolicyGameServer *pPolicy)> func );
 
-		//Result ForeachPlayerSvrGameInstance( std::function<Result(GamePlayer* pPlayer, Policy::ISvrPolicyGameInstance *pPolicy)> func );
+		//Result ForeachPlayerSvrGameInstance( std::function<Result(GamePlayer* pPlayer, Policy::NetSvrPolicyGameInstance *pPolicy)> func );
 
 
 
@@ -189,7 +189,7 @@ namespace Svr
 		//
 
 		// Initialize entity to proceed new connection
-		virtual Result InitializeGameEntity(UINT numBot, UINT maxPlayer);
+		virtual Result InitializeGameEntity(uint numBot, uint maxPlayer);
 
 
 		////////////////////////////////////////////////////////////
@@ -228,7 +228,7 @@ namespace Svr
 
 		virtual Result CreatePlayerInstance(const PlayerInformation& playerInfo, GameInstancePlayer* &pPlayer);
 
-		//Result GetPlayerIndex( PlayerID playerID, UINT &playerIndex );
+		//Result GetPlayerIndex( PlayerID playerID, uint &playerIndex );
 		//Result GetPlayerByIndex( INT playerIndex, GamePlayer* &pGamePlayer );
 
 		// Register new player to join

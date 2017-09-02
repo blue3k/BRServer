@@ -28,7 +28,7 @@
 #include "ServerSystem/ServerEntity/GenericServerEntity.h"
 #include "ServerEntity/EntityServerEntity.h"
 
-#include "Protocol/Policy/GameServerIPolicy.h"
+#include "Protocol/Policy/GameServerNetPolicy.h"
 #include "Transaction/EntityTransactionServer.h"
 #include "Transaction/EntityTransactionUser.h"
 
@@ -36,7 +36,7 @@
 #define PATH_DATABASE "../../../Data"
 
 
-namespace BR {
+namespace SF {
 namespace EntityServer {
 
 
@@ -256,7 +256,7 @@ namespace EntityServer {
 
 
 }; // namespace EntityServer
-}; // namespace BR
+}; // namespace SF
 
 
 

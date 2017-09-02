@@ -193,7 +193,7 @@ namespace GameTable {
 		found = Svr::Config::GetConfig().DBInstances.find(tableDB->DBInstanceName);
 		if (found == Svr::Config::GetConfig().DBInstances.end())
 		{
-			defErr(ResultCode::E_DB_INVALID_CONFIG);
+			defErr(ResultCode::DB_INVALID_CONFIG);
 		}
 
 		{

@@ -134,7 +134,7 @@ namespace SF
 				uint64_t GetSender() { return 0; }
 			private:
 				TransactionID m_TransactionID;
-				EntityUID m_InstanceUID;
+				uint64_t m_InstanceUID;
 			public:
 				RequestCounterValuesCmd()
 					{}
@@ -146,7 +146,7 @@ namespace SF
 					MessageUsage GetMessageUsage() { return MessageUsage_None; }
 
 				const TransactionID& GetTransactionID() const	{ return m_TransactionID; };
-				const EntityUID& GetInstanceUID() const	{ return m_InstanceUID; };
+				const uint64_t& GetInstanceUID() const	{ return m_InstanceUID; };
 
 				static Result TraceOut(MessageData* pMsg);
 
@@ -154,7 +154,7 @@ namespace SF
 				static Result ParseMessageTo( MessageData* pIMsg, VariableMapBuilder& variableBuilder );
 				static Result ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageData* pIMsg, MessageBase* &pMsgBase );
 
-				static MessageData* Create( IMemoryManager& memoryManager, const TransactionID &InTransactionID, const EntityUID &InInstanceUID );
+				static MessageData* Create( IMemoryManager& memoryManager, const TransactionID &InTransactionID, const uint64_t &InInstanceUID );
 
 			}; // class RequestCounterValuesCmd : public MessageBase
 
@@ -179,7 +179,7 @@ namespace SF
 			private:
 				TransactionID m_TransactionID;
 				Result m_Result;
-				EntityUID m_InstanceUID;
+				uint64_t m_InstanceUID;
 				LinkedArray<uint64_t> m_CounterValues;
 			public:
 				RequestCounterValuesRes()
@@ -193,7 +193,7 @@ namespace SF
 
 				const TransactionID& GetTransactionID() const	{ return m_TransactionID; };
 				const Result& GetResult() const	{ return m_Result; };
-				const EntityUID& GetInstanceUID() const	{ return m_InstanceUID; };
+				const uint64_t& GetInstanceUID() const	{ return m_InstanceUID; };
 				const Array<uint64_t>& GetCounterValues() const	{ return m_CounterValues; };
 
 				static Result TraceOut(MessageData* pMsg);
@@ -202,7 +202,7 @@ namespace SF
 				static Result ParseMessageTo( MessageData* pIMsg, VariableMapBuilder& variableBuilder );
 				static Result ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageData* pIMsg, MessageBase* &pMsgBase );
 
-				static MessageData* Create( IMemoryManager& memoryManager, const TransactionID &InTransactionID, const Result &InResult, const EntityUID &InInstanceUID, const Array<uint64_t>& InCounterValues );
+				static MessageData* Create( IMemoryManager& memoryManager, const TransactionID &InTransactionID, const Result &InResult, const uint64_t &InInstanceUID, const Array<uint64_t>& InCounterValues );
 
 			}; // class RequestCounterValuesRes : public MessageBase
 
@@ -228,7 +228,7 @@ namespace SF
 				uint64_t GetSender() { return 0; }
 			private:
 				const char* m_InstanceName;
-				EntityUID m_InstanceUID;
+				uint64_t m_InstanceUID;
 				LinkedArray<PerformanceCounterInfo> m_NewCounters;
 			public:
 				PerformanceCounterNewC2SEvt()
@@ -243,7 +243,7 @@ namespace SF
 					MessageUsage GetMessageUsage() { return MessageUsage_None; }
 
 				const char* GetInstanceName() const	{ return m_InstanceName; };
-				const EntityUID& GetInstanceUID() const	{ return m_InstanceUID; };
+				const uint64_t& GetInstanceUID() const	{ return m_InstanceUID; };
 				const Array<PerformanceCounterInfo>& GetNewCounters() const	{ return m_NewCounters; };
 
 				static Result TraceOut(MessageData* pMsg);
@@ -252,7 +252,7 @@ namespace SF
 				static Result ParseMessageTo( MessageData* pIMsg, VariableMapBuilder& variableBuilder );
 				static Result ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageData* pIMsg, MessageBase* &pMsgBase );
 
-				static MessageData* Create( IMemoryManager& memoryManager, const char* InInstanceName, const EntityUID &InInstanceUID, const Array<PerformanceCounterInfo>& InNewCounters );
+				static MessageData* Create( IMemoryManager& memoryManager, const char* InInstanceName, const uint64_t &InInstanceUID, const Array<PerformanceCounterInfo>& InNewCounters );
 
 			}; // class PerformanceCounterNewC2SEvt : public MessageBase
 
@@ -277,7 +277,7 @@ namespace SF
 				uint32_t GetRouteHopCount() { return 0; }
 				uint64_t GetSender() { return 0; }
 			private:
-				LinkedArray<EntityUID> m_FreeInstances;
+				LinkedArray<uint64_t> m_FreeInstances;
 			public:
 				PerformanceCounterFreeC2SEvt()
 					{}
@@ -288,7 +288,7 @@ namespace SF
 
 					MessageUsage GetMessageUsage() { return MessageUsage_None; }
 
-				const Array<EntityUID>& GetFreeInstances() const	{ return m_FreeInstances; };
+				const Array<uint64_t>& GetFreeInstances() const	{ return m_FreeInstances; };
 
 				static Result TraceOut(MessageData* pMsg);
 
@@ -296,7 +296,7 @@ namespace SF
 				static Result ParseMessageTo( MessageData* pIMsg, VariableMapBuilder& variableBuilder );
 				static Result ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageData* pIMsg, MessageBase* &pMsgBase );
 
-				static MessageData* Create( IMemoryManager& memoryManager, const Array<EntityUID>& InFreeInstances );
+				static MessageData* Create( IMemoryManager& memoryManager, const Array<uint64_t>& InFreeInstances );
 
 			}; // class PerformanceCounterFreeC2SEvt : public MessageBase
 
@@ -321,7 +321,7 @@ namespace SF
 				uint32_t GetRouteHopCount() { return 0; }
 				uint64_t GetSender() { return 0; }
 			private:
-				EntityUID m_InstanceUID;
+				uint64_t m_InstanceUID;
 				LinkedArray<uint64_t> m_CounterValues;
 			public:
 				PerformanceCounterUpdateC2SEvt()
@@ -333,7 +333,7 @@ namespace SF
 
 					MessageUsage GetMessageUsage() { return MessageUsage_None; }
 
-				const EntityUID& GetInstanceUID() const	{ return m_InstanceUID; };
+				const uint64_t& GetInstanceUID() const	{ return m_InstanceUID; };
 				const Array<uint64_t>& GetCounterValues() const	{ return m_CounterValues; };
 
 				static Result TraceOut(MessageData* pMsg);
@@ -342,7 +342,7 @@ namespace SF
 				static Result ParseMessageTo( MessageData* pIMsg, VariableMapBuilder& variableBuilder );
 				static Result ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageData* pIMsg, MessageBase* &pMsgBase );
 
-				static MessageData* Create( IMemoryManager& memoryManager, const EntityUID &InInstanceUID, const Array<uint64_t>& InCounterValues );
+				static MessageData* Create( IMemoryManager& memoryManager, const uint64_t &InInstanceUID, const Array<uint64_t>& InCounterValues );
 
 			}; // class PerformanceCounterUpdateC2SEvt : public MessageBase
 
@@ -367,7 +367,7 @@ namespace SF
 				uint32_t GetRouteHopCount() { return 0; }
 				uint64_t GetSender() { return 0; }
 			private:
-				EntityUID m_InstanceUID;
+				uint64_t m_InstanceUID;
 			public:
 				PerformanceCounterUpdateCounterInfoS2CEvt()
 					{}
@@ -378,7 +378,7 @@ namespace SF
 
 					MessageUsage GetMessageUsage() { return MessageUsage_None; }
 
-				const EntityUID& GetInstanceUID() const	{ return m_InstanceUID; };
+				const uint64_t& GetInstanceUID() const	{ return m_InstanceUID; };
 
 				static Result TraceOut(MessageData* pMsg);
 
@@ -386,7 +386,7 @@ namespace SF
 				static Result ParseMessageTo( MessageData* pIMsg, VariableMapBuilder& variableBuilder );
 				static Result ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageData* pIMsg, MessageBase* &pMsgBase );
 
-				static MessageData* Create( IMemoryManager& memoryManager, const EntityUID &InInstanceUID );
+				static MessageData* Create( IMemoryManager& memoryManager, const uint64_t &InInstanceUID );
 
 			}; // class PerformanceCounterUpdateCounterInfoS2CEvt : public MessageBase
 

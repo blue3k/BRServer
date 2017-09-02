@@ -191,7 +191,7 @@ namespace Svr {
 
 
 		// Change workload
-		Result SetWorkload( UINT workload );
+		Result SetWorkload( uint workload );
 
 		// Change service status
 		Result SetServiceStatus( ServiceStatus newStatus );
@@ -334,7 +334,7 @@ namespace Svr {
 	private:
 
 		// This will be to hash modulation number if it assigned.
-		BRCLASS_ATTRIBUTE(UINT,HashMod);
+		BRCLASS_ATTRIBUTE(uint,HashMod);
 
 	public:
 
@@ -342,7 +342,7 @@ namespace Svr {
 		ShardedClusterServiceEntity( ClusterID clusterID, ClusterMembership initialMembership = ClusterMembership::StatusWatcher, ServerEntity* pServerEntity = nullptr );
 
 		// Hash the key value
-		virtual UINT KeyHash( uint64_t key );
+		virtual uint KeyHash( uint64_t key );
 
 		// Get Service shard by key
 		virtual Result GetShard( uint64_t key, ServerServiceInformation* &pService );

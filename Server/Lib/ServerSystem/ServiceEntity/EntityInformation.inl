@@ -41,9 +41,9 @@ const char* EntityInformation::GetName() const
 	return m_Name;
 }
 
-void EntityInformation::SetName( const char* strName )
+void EntityInformation::SetName(IMemoryManager& memMgr, const char* strName )
 {
-	StrUtil::StringDup( m_Name, strName );
+	StrUtil::StringDup(memMgr, m_Name, strName );
 }
 
 
@@ -60,7 +60,7 @@ inline Net::Connection* ServerServiceInformation::GetConnection() const
 inline bool ServerServiceInformation::IsServiceAvailable() const
 {
 	Assert(m_ServerEntity);
-	return m_ServerEntity->GetConnection() && m_ServerEntity->GetConnection()->GetConnectionState() == Net::Connection::STATE_CONNECTED;
+	return m_ServerEntity->GetConnection() && m_ServerEntity->GetConnection()->GetConnectionState() == Net::ConnectionState::CONNECTED;
 }
 
 

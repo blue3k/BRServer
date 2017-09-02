@@ -16,7 +16,7 @@
 #include "ServerLog/SvrLog.h"
 #include "Thread/Thread.h"
 #include "Memory/SFMemory.h"
-#include "Common/GameConst.h"
+#include "GameConst.h"
 #include "Net/NetDef.h"
 #include "Net/NetServerUDP.h"
 #include "ServerSystem/Entity.h"

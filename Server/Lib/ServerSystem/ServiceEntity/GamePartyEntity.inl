@@ -16,12 +16,12 @@
 //
 
 // Party ID query
-BR::PartyID GamePartyEntity::GetPartyID()
+PartyID GamePartyEntity::GetPartyID()
 {
 	return GetEntityID();
 }
 
-BR::PartyUID GamePartyEntity::GetPartyUID()
+PartyUID GamePartyEntity::GetPartyUID()
 {
 	return GetEntityUID();
 }
@@ -29,9 +29,9 @@ BR::PartyUID GamePartyEntity::GetPartyUID()
 
 
 // Get player count in this party
-UINT GamePartyEntity::GetNumPlayer()
+uint GamePartyEntity::GetNumPlayer()
 {
-	return (UINT)m_PartyPlayerByUID.size();
+	return (uint)m_PartyPlayerByUID.size();
 }
 
 

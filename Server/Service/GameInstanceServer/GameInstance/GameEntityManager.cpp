@@ -25,7 +25,7 @@
 
 
 
-namespace BR {
+namespace SF {
 namespace ConspiracyGameInstanceServer {
 
 
@@ -71,7 +71,7 @@ namespace ConspiracyGameInstanceServer {
 
 		switch (pEntity->GetEntityID().GetFacultyID())
 		{
-		case (UINT)EntityFaculty::User:
+		case (uint)EntityFaculty::User:
 			++m_NumberOfPlayers;
 			break;
 		}
@@ -83,7 +83,7 @@ namespace ConspiracyGameInstanceServer {
 
 		switch (pEntity->GetEntityID().GetFacultyID())
 		{
-		case (UINT)EntityFaculty::User:
+		case (uint)EntityFaculty::User:
 			--m_NumberOfPlayers;
 			break;
 		}
@@ -105,7 +105,7 @@ namespace ConspiracyGameInstanceServer {
 	}
 
 	// Initialize TaskManager
-	Result GameEntityManager::InitializeManager( UINT uiNumGroup )
+	Result GameEntityManager::InitializeManager( uint uiNumGroup )
 	{
 		Result hr = ResultCode::SUCCESS;
 
@@ -133,7 +133,7 @@ namespace ConspiracyGameInstanceServer {
 
 
 }; // namespace GameServer
-}; // namespace BR
+}; // namespace SF
 
 
 

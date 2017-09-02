@@ -12,7 +12,7 @@
 
 #include "stdafx.h"
 #include "SFTypedefs.h"
-#include "ResultCode/SFResultCodeCommon.h"
+#include "ResultCode/SFResultCodeLibrary.h"
 #include "SvrLoopbackConnection.h"
 #include "ServerSystem/ServerEntity.h"
 
@@ -31,7 +31,7 @@ namespace Svr {
 		:m_pServerEntity(pServerEntity)
 	{
 		m_ConnectInfo.SetRemoteInfo(netClass, pServerEntity->GetServerID());
-		SetConnectionState(IConnection::STATE_CONNECTED);
+		SetConnectionState(IConnectionState::CONNECTED);
 	}
 
 	LoopbackConnection::~LoopbackConnection()
@@ -43,7 +43,7 @@ namespace Svr {
 	{
 		Result hr = ResultCode::SUCCESS;
 		Message::MessageHeader* pMsgHeader = nullptr;
-		UINT uiPolicy = 0;
+		uint uiPolicy = 0;
 
 		svrChkPtr( pMsg );
 
@@ -53,7 +53,7 @@ namespace Svr {
 		pMsgHeader = pMsg->GetMessageHeader();
 		uiPolicy = pMsgHeader->msgID.IDs.Policy;
 		if( uiPolicy == 0 
-			|| uiPolicy >= BR::PROTOCOLID_NETMAX ) // invalid policy
+			|| uiPolicy >= PROTOCOLID_NETMAX ) // invalid policy
 		{
 			svrErr( ResultCode::E_NET_BADPACKET_NOTEXPECTED );
 		}

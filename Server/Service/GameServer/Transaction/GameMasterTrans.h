@@ -16,7 +16,7 @@
 #include "Memory/MemoryPool.h"
 #include "Types/BrBaseTypes.h"
 #include "Protocol/Message/GameServerMsgClass.h"
-#include "Protocol/Policy/GameServerIPolicy.h"
+#include "Protocol/Policy/GameServerNetPolicy.h"
 
 #include "ServerSystem/MessageRoute.h"
 
@@ -25,10 +25,10 @@
 //#include "ServerEntity/GameMasterServerEntity.h"
 
 
-namespace BR {
+namespace SF {
 namespace GameServer {
 
 
 };// namespace GameServer 
-};// namespace BR 
+};// namespace SF 
 

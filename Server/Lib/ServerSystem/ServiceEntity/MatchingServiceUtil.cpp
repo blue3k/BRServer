@@ -10,7 +10,7 @@
 
 
 #include "stdafx.h"
-#include "ResultCode/SFResultCodeCommon.h"
+#include "ResultCode/SFResultCodeLibrary.h"
 #include "ResultCode/SFResultCodeGame.h"
 #include "Memory/MemoryPool.h"
 #include "Types/BrSvrTypes.h"
@@ -24,7 +24,7 @@ namespace SF {
 namespace Svr {
 namespace MatchingUtil {
 
-	PlayerRole GetPlayerRoleFromQueueComponentID(UINT componentID)
+	PlayerRole GetPlayerRoleFromQueueComponentID(uint componentID)
 	{
 		switch (componentID)
 		{
@@ -49,7 +49,7 @@ namespace MatchingUtil {
 	}
 
 
-	UINT GetPartyMemberCountFromQueueComponentID(UINT componentID)
+	uint GetPartyMemberCountFromQueueComponentID(uint componentID)
 	{
 		switch (componentID)
 		{
@@ -72,7 +72,7 @@ namespace MatchingUtil {
 			return 1;
 		}
 	}
-	Result GetQueueComponentIDMinMax(UINT matchingMemberCount, UINT& minComponentID, UINT& maxComponentID)
+	Result GetQueueComponentIDMinMax(uint matchingMemberCount, uint& minComponentID, uint& maxComponentID)
 	{
 		switch (matchingMemberCount)
 		{
@@ -94,31 +94,31 @@ namespace MatchingUtil {
 		return ResultCode::SUCCESS;
 	}
 
-	UINT GetQueueCount(UINT matchingMemberCount)
+	uint GetQueueCount(uint matchingMemberCount)
 	{
-		UINT minComponentID, maxComponentID;
+		uint minComponentID, maxComponentID;
 
 		if (!(GetQueueComponentIDMinMax(matchingMemberCount, minComponentID, maxComponentID)))
 		{
 			Assert(false);
-			return (UINT)0;
+			return (uint)0;
 		}
 
 		return maxComponentID - minComponentID + 1;
 	}
 
 
-	UINT GetQueueComponentID(UINT matchingMemberCount, UINT partyMemberCount, PlayerRole playerRole)
+	uint GetQueueComponentID(uint matchingMemberCount, uint partyMemberCount, PlayerRole playerRole)
 	{
-		UINT minComponentID, maxComponentID;
+		uint minComponentID, maxComponentID;
 
 		if (!(GetQueueComponentIDMinMax(matchingMemberCount, minComponentID, maxComponentID)))
 		{
 			Assert(false);
-			return (UINT)-1;
+			return (uint)-1;
 		}
 
-		UINT componentID = minComponentID;
+		uint componentID = minComponentID;
 
 
 		switch (playerRole)
@@ -145,7 +145,7 @@ namespace MatchingUtil {
 	}
 
 
-	UINT GetComponentIDFromClusterID(ClusterID clusterID)
+	uint GetComponentIDFromClusterID(ClusterID clusterID)
 	{
 		switch (clusterID)
 		{

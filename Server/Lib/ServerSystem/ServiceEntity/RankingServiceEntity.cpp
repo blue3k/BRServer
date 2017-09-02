@@ -16,7 +16,7 @@
 #include "ServerLog/SvrLog.h"
 #include "Thread/Thread.h"
 #include "Memory/SFMemory.h"
-#include "Common/GameConst.h"
+#include "GameConst.h"
 #include "Common/BrRandom.h"
 #include "Net/NetDef.h"
 #include "ServerSystem/Entity.h"
@@ -219,7 +219,7 @@ namespace Svr {
 	//
 
 
-	RankingWatcherServiceEntity::RankingWatcherServiceEntity( ClusterID clusterID, UINT componentID )
+	RankingWatcherServiceEntity::RankingWatcherServiceEntity( ClusterID clusterID, uint componentID )
 		: ReplicaClusterServiceEntity(clusterID, ClusterMembership::StatusWatcher)
 		, IServerComponent(componentID)
 	{

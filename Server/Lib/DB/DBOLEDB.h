@@ -91,7 +91,7 @@ namespace DB {
 
 	// define query class
 	#define BRDB_DEFINE_QUERYCLASS(Policy,QueryClass) \
-		class QueryClass##Cmd : public CCommand<CAccessor<QueryClass>>, public Query, public BR::MemoryPoolObject<##QueryClass##Cmd>	\
+		class QueryClass##Cmd : public CCommand<CAccessor<QueryClass>>, public Query, public MemoryPoolObject<##QueryClass##Cmd>	\
 		{																			\
 		public :																	\
 			QueryClass##Cmd() : Query( Message::MessageID(Message::MSGTYPE_COMMAND, Message::MSGTYPE_RELIABLE, false, Policy, MCODE_##QueryClass## ), false ) { }		\
@@ -100,7 +100,7 @@ namespace DB {
 
 	// define rowset query class
 	#define BRDB_DEFINE_ROWSETQUERYCLASS(Policy,QueryClass,QueryClassRowset) \
-		class QueryClass##Cmd : public CCommand<CAccessor<QueryClass>>, public Query, public BR::MemoryPoolObject<QueryClass##Cmd>	\
+		class QueryClass##Cmd : public CCommand<CAccessor<QueryClass>>, public Query, public MemoryPoolObject<QueryClass##Cmd>	\
 		{																			\
 		public :																	\
 			std::list<QueryClassRowset>	m_RowsetResult;							\
@@ -111,7 +111,7 @@ namespace DB {
 
 	// execute
 	#define BRDB_DEFINE_QUERY_IMPL(QueryClass)										\
-				SF_MEMORYPOOL_IMPLEMENT(BR::BR::DB::##QueryClass##Cmd);					\
+				SF_MEMORYPOOL_IMPLEMENT(SF::DB::##QueryClass##Cmd);					\
 
 
 

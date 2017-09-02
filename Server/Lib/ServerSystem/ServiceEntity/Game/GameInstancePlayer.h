@@ -16,7 +16,7 @@
 #include "Util/TimeUtil.h"
 #include "Common/HashTable.h"
 #include "Memory/MemoryPool.h"
-#include "Common/GameConst.h"
+#include "GameConst.h"
 #include "Types/BrGameTypes.h"
 
 #include "ServerSystem/Entity.h"
@@ -67,8 +67,8 @@ namespace Svr {
 		BRCLASS_ATTRIBUTE(bool, IsBot);
 
 		//// Player index in game
-		//BRCLASS_ATTRIBUTE(UINT,Index);
-		//BRCLASS_ATTRIBUTE(UINT,Character);
+		//BRCLASS_ATTRIBUTE(uint,Index);
+		//BRCLASS_ATTRIBUTE(uint,Character);
 
 
 		//// Player state
@@ -81,7 +81,7 @@ namespace Svr {
 		//BRCLASS_ATTRIBUTE(bool,VotedGameAdvance);
 
 		//// Revealed other
-		//BRCLASS_ATTRIBUTE(UINT, ReviveCount);
+		//BRCLASS_ATTRIBUTE(uint, ReviveCount);
 
 		//////////////////////////////////////////////////////////////////////////////////////////////////
 		//
@@ -91,9 +91,9 @@ namespace Svr {
 		// 
 		//BRCLASS_ATTRIBUTE(PlayerRole, RequestedRole);
 		//BRCLASS_ATTRIBUTE(PlayerRole, Role);
-		//BRCLASS_ATTRIBUTE(UINT,Gender);
+		//BRCLASS_ATTRIBUTE(uint,Gender);
 
-		//BRCLASS_ATTRIBUTE(UINT,Voted);
+		//BRCLASS_ATTRIBUTE(uint,Voted);
 		//BRCLASS_ATTRIBUTE(PlayerID,Vote);
 
 

@@ -222,8 +222,8 @@ namespace DB {
 
 	// execute
 	#define BRDB_DEFINE_QUERY_IMPL(QueryClass)										\
-				const BR::Message::MessageID BR::DB::QueryClass##Cmd::MID = Message::MessageID(Message::MSGTYPE_COMMAND, Message::MSGTYPE_RELIABLE, false, DB::QueryClass##Cmd::MESSAGE_POLICY, MCODE_##QueryClass ); \
-				SF_MEMORYPOOL_IMPLEMENT(BR::DB::QueryClass##Cmd);					\
+				const SF::Message::MessageID SF::DB::QueryClass##Cmd::MID = Message::MessageID(Message::MSGTYPE_COMMAND, Message::MSGTYPE_RELIABLE, false, DB::QueryClass##Cmd::MESSAGE_POLICY, MCODE_##QueryClass ); \
+				SF_MEMORYPOOL_IMPLEMENT(SF::DB::QueryClass##Cmd);					\
 
 
 

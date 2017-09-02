@@ -66,7 +66,7 @@ namespace SF
 				variableBuilder.SetVariable("RouteContext", parser.GetRouteContext());
 				variableBuilder.SetVariable("TransactionID", parser.GetTransactionID());
 				variableBuilder.SetVariable("RouteHopCount", parser.GetRouteHopCount());
-				variableBuilder.SetVariable("Players", (int)parser.GetPlayers().GetItemCount(), parser.GetPlayers().data());
+				variableBuilder.SetVariable("Players", (int)parser.GetPlayers().GetItemCount(), (const MatchingPlayerInformation*)parser.GetPlayers().data());
 
 
 			Proc_End:
@@ -681,7 +681,7 @@ namespace SF
 				protocolChk( Protocol::StreamParamCopy( &m_TransactionID, pCur, iMsgSize, sizeof(TransactionID) ) );
 				protocolChk( Protocol::StreamParamCopy( &m_RouteHopCount, pCur, iMsgSize, sizeof(uint16_t) ) );
 				protocolChk( Protocol::StreamParamCopy( &m_MatchingTicket, pCur, iMsgSize, sizeof(MatchingQueueTicket) ) );
-				protocolChk( Protocol::StreamParamCopy( &m_PreviousUID, pCur, iMsgSize, sizeof(EntityUID) ) );
+				protocolChk( Protocol::StreamParamCopy( &m_PreviousUID, pCur, iMsgSize, sizeof(uint64_t) ) );
 
 
 			Proc_End:
@@ -723,7 +723,7 @@ namespace SF
 
 			}; // Result UpdateMatchingEntityUIDCmd::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageData* pIMsg, MessageBase* &pMessageBase )
 
-			MessageData* UpdateMatchingEntityUIDCmd::Create( IMemoryManager& memoryManager, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const uint16_t &InRouteHopCount, const MatchingQueueTicket &InMatchingTicket, const EntityUID &InPreviousUID )
+			MessageData* UpdateMatchingEntityUIDCmd::Create( IMemoryManager& memoryManager, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const uint16_t &InRouteHopCount, const MatchingQueueTicket &InMatchingTicket, const uint64_t &InPreviousUID )
 			{
  				MessageData *pNewMsg = nullptr;
 				Result hr;
@@ -735,7 +735,7 @@ namespace SF
 					+ sizeof(TransactionID)
 					+ sizeof(uint16_t)
 					+ sizeof(MatchingQueueTicket)
-					+ sizeof(EntityUID));
+					+ sizeof(uint64_t));
 
 
 				protocolMem( pNewMsg = MessageData::NewMessage( memoryManager, PartyMatchingQueue::UpdateMatchingEntityUIDCmd::MID, __uiMessageSize ) );
@@ -746,7 +746,7 @@ namespace SF
 				Protocol::PackParamCopy( pMsgData, &InTransactionID, sizeof(TransactionID));
 				Protocol::PackParamCopy( pMsgData, &InRouteHopCount, sizeof(uint16_t));
 				Protocol::PackParamCopy( pMsgData, &InMatchingTicket, sizeof(MatchingQueueTicket));
-				Protocol::PackParamCopy( pMsgData, &InPreviousUID, sizeof(EntityUID));
+				Protocol::PackParamCopy( pMsgData, &InPreviousUID, sizeof(uint64_t));
 
 
 			Proc_End:
@@ -758,7 +758,7 @@ namespace SF
 				}
 				return pNewMsg;
 
-			}; // MessageData* UpdateMatchingEntityUIDCmd::Create( IMemoryManager& memoryManager, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const uint16_t &InRouteHopCount, const MatchingQueueTicket &InMatchingTicket, const EntityUID &InPreviousUID )
+			}; // MessageData* UpdateMatchingEntityUIDCmd::Create( IMemoryManager& memoryManager, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const uint16_t &InRouteHopCount, const MatchingQueueTicket &InMatchingTicket, const uint64_t &InPreviousUID )
 
 			Result UpdateMatchingEntityUIDCmd::OverrideRouteContextDestination( EntityUID to )
 			{
@@ -1305,7 +1305,7 @@ namespace SF
 
 				protocolChk( Protocol::StreamParamCopy( &m_RouteContext, pCur, iMsgSize, sizeof(RouteContext) ) );
 				protocolChk( Protocol::StreamParamCopy( &m_RouteHopCount, pCur, iMsgSize, sizeof(uint16_t) ) );
-				protocolChk( Protocol::StreamParamCopy( &m_DestPartyUID, pCur, iMsgSize, sizeof(PartyUID) ) );
+				protocolChk( Protocol::StreamParamCopy( &m_DestPartyUID, pCur, iMsgSize, sizeof(uint64_t) ) );
 				protocolChk( Protocol::StreamParamCopy( &m_MatchingTicket, pCur, iMsgSize, sizeof(MatchingQueueTicket) ) );
 
 
@@ -1347,7 +1347,7 @@ namespace SF
 
 			}; // Result PartyMatchingCanceledS2CEvt::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageData* pIMsg, MessageBase* &pMessageBase )
 
-			MessageData* PartyMatchingCanceledS2CEvt::Create( IMemoryManager& memoryManager, const RouteContext &InRouteContext, const uint16_t &InRouteHopCount, const PartyUID &InDestPartyUID, const MatchingQueueTicket &InMatchingTicket )
+			MessageData* PartyMatchingCanceledS2CEvt::Create( IMemoryManager& memoryManager, const RouteContext &InRouteContext, const uint16_t &InRouteHopCount, const uint64_t &InDestPartyUID, const MatchingQueueTicket &InMatchingTicket )
 			{
  				MessageData *pNewMsg = nullptr;
 				Result hr;
@@ -1357,7 +1357,7 @@ namespace SF
 				unsigned __uiMessageSize = (unsigned)(sizeof(MessageHeader) 
 					+ sizeof(RouteContext)
 					+ sizeof(uint16_t)
-					+ sizeof(PartyUID)
+					+ sizeof(uint64_t)
 					+ sizeof(MatchingQueueTicket));
 
 
@@ -1367,7 +1367,7 @@ namespace SF
 
 				Protocol::PackParamCopy( pMsgData, &InRouteContext, sizeof(RouteContext));
 				Protocol::PackParamCopy( pMsgData, &InRouteHopCount, sizeof(uint16_t));
-				Protocol::PackParamCopy( pMsgData, &InDestPartyUID, sizeof(PartyUID));
+				Protocol::PackParamCopy( pMsgData, &InDestPartyUID, sizeof(uint64_t));
 				Protocol::PackParamCopy( pMsgData, &InMatchingTicket, sizeof(MatchingQueueTicket));
 
 
@@ -1380,7 +1380,7 @@ namespace SF
 				}
 				return pNewMsg;
 
-			}; // MessageData* PartyMatchingCanceledS2CEvt::Create( IMemoryManager& memoryManager, const RouteContext &InRouteContext, const uint16_t &InRouteHopCount, const PartyUID &InDestPartyUID, const MatchingQueueTicket &InMatchingTicket )
+			}; // MessageData* PartyMatchingCanceledS2CEvt::Create( IMemoryManager& memoryManager, const RouteContext &InRouteContext, const uint16_t &InRouteHopCount, const uint64_t &InDestPartyUID, const MatchingQueueTicket &InMatchingTicket )
 
 			Result PartyMatchingCanceledS2CEvt::OverrideRouteContextDestination( EntityUID to )
 			{
@@ -2432,8 +2432,8 @@ namespace SF
 				variableBuilder.SetVariable("RouteContext", parser.GetRouteContext());
 				variableBuilder.SetVariable("TransactionID", parser.GetTransactionID());
 				variableBuilder.SetVariable("Result", parser.GetResult());
-				variableBuilder.SetVariable("NumberOfPlayersInTheItem", (int)parser.GetNumberOfPlayersInTheItem().GetItemCount(), parser.GetNumberOfPlayersInTheItem().data());
-				variableBuilder.SetVariable("MatchingTicket", (int)parser.GetMatchingTicket().GetItemCount(), parser.GetMatchingTicket().data());
+				variableBuilder.SetVariable("NumberOfPlayersInTheItem", (int)parser.GetNumberOfPlayersInTheItem().GetItemCount(), (const uint32_t*)parser.GetNumberOfPlayersInTheItem().data());
+				variableBuilder.SetVariable("MatchingTicket", (int)parser.GetMatchingTicket().GetItemCount(), (const MatchingQueueTicket*)parser.GetMatchingTicket().data());
 
 
 			Proc_End:
@@ -2914,7 +2914,7 @@ namespace SF
 				variableBuilder.SetVariable("RouteContext", parser.GetRouteContext());
 				variableBuilder.SetVariable("TransactionID", parser.GetTransactionID());
 				variableBuilder.SetVariable("RouteHopCount", parser.GetRouteHopCount());
-				variableBuilder.SetVariable("TicketToCancel", (int)parser.GetTicketToCancel().GetItemCount(), parser.GetTicketToCancel().data());
+				variableBuilder.SetVariable("TicketToCancel", (int)parser.GetTicketToCancel().GetItemCount(), (const MatchingQueueTicket*)parser.GetTicketToCancel().data());
 
 
 			Proc_End:
@@ -3367,7 +3367,7 @@ namespace SF
 				protocolChk( Protocol::StreamParamCopy( &m_TransactionID, pCur, iMsgSize, sizeof(TransactionID) ) );
 				protocolChk( Protocol::StreamParamCopy( &m_Result, pCur, iMsgSize, sizeof(Result) ) );
 				protocolChk( Protocol::StreamParamCopy( &m_MatchingTicket, pCur, iMsgSize, sizeof(MatchingQueueTicket) ) );
-				protocolChk( Protocol::StreamParamCopy( &m_RegisterUID, pCur, iMsgSize, sizeof(EntityUID) ) );
+				protocolChk( Protocol::StreamParamCopy( &m_RegisterUID, pCur, iMsgSize, sizeof(uint64_t) ) );
 				protocolChk( Protocol::StreamParamCopy( &m_RegisterID, pCur, iMsgSize, sizeof(PlayerID) ) );
 				protocolChk( Protocol::StreamParamCopy( &numberofPlayers, pCur, iMsgSize, sizeof(uint16_t) ) );
 				protocolChk( Protocol::StreamParamLnk( pPlayers, pCur, iMsgSize, sizeof(MatchingPlayerInformation)*numberofPlayers ) );
@@ -3394,7 +3394,7 @@ namespace SF
 				variableBuilder.SetVariable("MatchingTicket", parser.GetMatchingTicket());
 				variableBuilder.SetVariable("RegisterUID", parser.GetRegisterUID());
 				variableBuilder.SetVariable("RegisterID", parser.GetRegisterID());
-				variableBuilder.SetVariable("Players", (int)parser.GetPlayers().GetItemCount(), parser.GetPlayers().data());
+				variableBuilder.SetVariable("Players", (int)parser.GetPlayers().GetItemCount(), (const MatchingPlayerInformation*)parser.GetPlayers().data());
 
 
 			Proc_End:
@@ -3415,7 +3415,7 @@ namespace SF
 
 			}; // Result DequeueItemRes::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageData* pIMsg, MessageBase* &pMessageBase )
 
-			MessageData* DequeueItemRes::Create( IMemoryManager& memoryManager, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const Result &InResult, const MatchingQueueTicket &InMatchingTicket, const EntityUID &InRegisterUID, const PlayerID &InRegisterID, const Array<MatchingPlayerInformation>& InPlayers )
+			MessageData* DequeueItemRes::Create( IMemoryManager& memoryManager, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const Result &InResult, const MatchingQueueTicket &InMatchingTicket, const uint64_t &InRegisterUID, const PlayerID &InRegisterID, const Array<MatchingPlayerInformation>& InPlayers )
 			{
  				MessageData *pNewMsg = nullptr;
 				Result hr;
@@ -3427,7 +3427,7 @@ namespace SF
 					+ sizeof(TransactionID)
 					+ sizeof(Result)
 					+ sizeof(MatchingQueueTicket)
-					+ sizeof(EntityUID)
+					+ sizeof(uint64_t)
 					+ sizeof(PlayerID)
 					+ sizeof(MatchingPlayerInformation)*InPlayers.GetItemCount() + sizeof(uint16_t));
 
@@ -3441,7 +3441,7 @@ namespace SF
 				Protocol::PackParamCopy( pMsgData, &InTransactionID, sizeof(TransactionID));
 				Protocol::PackParamCopy( pMsgData, &InResult, sizeof(Result));
 				Protocol::PackParamCopy( pMsgData, &InMatchingTicket, sizeof(MatchingQueueTicket));
-				Protocol::PackParamCopy( pMsgData, &InRegisterUID, sizeof(EntityUID));
+				Protocol::PackParamCopy( pMsgData, &InRegisterUID, sizeof(uint64_t));
 				Protocol::PackParamCopy( pMsgData, &InRegisterID, sizeof(PlayerID));
 				Protocol::PackParamCopy( pMsgData, &numberOfInPlayers, sizeof(uint16_t)); 
 				Protocol::PackParamCopy( pMsgData, InPlayers.data(), (INT)(sizeof(MatchingPlayerInformation)*InPlayers.GetItemCount())); 
@@ -3456,7 +3456,7 @@ namespace SF
 				}
 				return pNewMsg;
 
-			}; // MessageData* DequeueItemRes::Create( IMemoryManager& memoryManager, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const Result &InResult, const MatchingQueueTicket &InMatchingTicket, const EntityUID &InRegisterUID, const PlayerID &InRegisterID, const Array<MatchingPlayerInformation>& InPlayers )
+			}; // MessageData* DequeueItemRes::Create( IMemoryManager& memoryManager, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const Result &InResult, const MatchingQueueTicket &InMatchingTicket, const uint64_t &InRegisterUID, const PlayerID &InRegisterID, const Array<MatchingPlayerInformation>& InPlayers )
 
 			Result DequeueItemRes::OverrideRouteContextDestination( EntityUID to )
 			{

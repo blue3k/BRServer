@@ -128,7 +128,7 @@ namespace SF {
 		m_pTickTask = nullptr;
 	}
 
-	bool TickTaskTimerAction::UpdateTick()
+	bool TickTaskTimerAction::OnTimerTick()
 	{
 		TickTask* pTickTask = m_pTickTask;
 

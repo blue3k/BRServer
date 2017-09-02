@@ -17,6 +17,7 @@
 
 namespace conspiracy
 {
+	using namespace SF;
  
 	// EItemEffect structure defition
 	OrganicTbl::EItemEffect::EnumMap OrganicTbl::EItemEffect::m_Map;
@@ -95,7 +96,7 @@ namespace conspiracy
 	OrganicTbl::ItemEffectTable *OrganicTbl::m_ItemEffectTable = nullptr;
 	OrganicTbl::ItemEffectTable *OrganicTbl::m_ItemEffectTablePrev = nullptr;
 
-	BR::Result OrganicTbl::LoadTable( const std::list<OrganicItem>& rowList )
+	Result OrganicTbl::LoadTable( const std::list<OrganicItem>& rowList )
 	{
  		auto pNewItemEffectTable = new ItemEffectTable;
 
@@ -113,20 +114,20 @@ namespace conspiracy
 		}
 		m_ItemEffectTablePrev = m_ItemEffectTable;
 		m_ItemEffectTable = pNewItemEffectTable;
-		return BR::ResultCode::SUCCESS;
+		return ResultCode::SUCCESS;
 	}
 
 
-	BR::Result OrganicTbl::FindItem( const unsigned int& Key, OrganicItem*& pRow)
+	Result OrganicTbl::FindItem( const unsigned int& Key, OrganicItem*& pRow)
 	{
  		auto itr = m_ItemEffectTable->find(Key);
 		if (itr == m_ItemEffectTable->end())
 		{
  			// write error log
-			return BR::ResultCode::FAIL;
+			return ResultCode::FAIL;
 		}
 		pRow = itr->second;
-		return BR::ResultCode::SUCCESS;
+		return ResultCode::SUCCESS;
 	}
 
 }; // namespace conspiracy

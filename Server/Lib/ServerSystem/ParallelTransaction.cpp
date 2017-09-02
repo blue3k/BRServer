@@ -16,7 +16,7 @@
 #include "ResultCode/SFResultCodeNet.h"
 #include "ServerLog/SvrLog.h"
 #include "Thread/Thread.h"
-#include "ServerSystem/SvrConstDefault.h"
+#include "SvrConst.h"
 #include "ServerSystem/Entity.h"
 #include "ServerSystem/MessageRoute.h"
 #include "ServerSystem/ParallelTransaction.h"

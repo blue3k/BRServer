@@ -22,7 +22,7 @@
 #include "ServerSystem/ServerComponent.h"
 #include "ServerSystem/ServerServiceBase.h"
 #include "Common/HashTable.h"
-#include "Common/Indexing.h"
+#include "Container/Indexing.h"
 
 #include "ServerSystem/ServiceEntity/EntityInformation.h"
 

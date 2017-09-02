@@ -13,7 +13,7 @@
 #include "GameServer.h"
 #include "GameServerClass.h"
 
-#include "ResultCode/SFResultCodeCommon.h"
+#include "ResultCode/SFResultCodeLibrary.h"
 #include "ResultCode/SFResultCodeGame.h"
 #include "ResultCode/SFResultCodeLogin.h"
 #include "Memory/MemoryPool.h"
@@ -31,12 +31,12 @@
 #include "Protocol/Message/PartyMatchingQueueMsgClass.h"
 
 #include "Protocol/Message/GamePartyMsgClass.h"
-#include "Protocol/Policy/GamePartyIPolicy.h"
+#include "Protocol/Policy/GamePartyNetPolicy.h"
 
 #include "Protocol/Message/GameServerMsgClass.h"
-#include "Protocol/Policy/GameServerIPolicy.h"
+#include "Protocol/Policy/GameServerNetPolicy.h"
 #include "Protocol/Message/GameInstanceMsgClass.h"
-#include "Protocol/Policy/GameInstanceIPolicy.h"
+#include "Protocol/Policy/GameInstanceNetPolicy.h"
 
 #include "GamePlayerEntityTransClose.h"
 #include "GameInstance/GamePlayerEntity.h"
@@ -61,7 +61,7 @@ SF_MEMORYPOOL_IMPLEMENT(BR::GameServer::PlayerTransCloseInstance);
 
 
 	
-namespace BR {
+namespace SF {
 namespace GameServer {
 
 
@@ -253,5 +253,5 @@ namespace GameServer {
 
 
 };// namespace GameServer 
-};// namespace BR 
+};// namespace SF 
 

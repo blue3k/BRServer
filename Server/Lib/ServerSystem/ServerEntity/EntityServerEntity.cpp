@@ -16,7 +16,7 @@
 #include "ServerLog/SvrLog.h"
 #include "Thread/Thread.h"
 
-#include "ServerSystem/SvrConstDefault.h"
+#include "SvrConst.h"
 #include "ServerSystem/SvrConst.h"
 #include "ServerSystem/ServerEntity.h"
 #include "ServerSystem/Transaction.h"
@@ -30,11 +30,11 @@
 #include "ServerSystem/ServiceEntity/ClusterManagerServiceEntity.h"
 #include "ServerSystem/Transaction/ServerTransactionGeneric.h"
 
-#include "Protocol/Policy/EntityServerIPolicy.h"
-#include "Protocol/Policy/ServerIPolicy.h"
+#include "Protocol/Policy/EntityServerNetPolicy.h"
+#include "Protocol/Policy/ServerNetPolicy.h"
 
 #include "Protocol/Message/ServerMsgClass.h"
-#include "Protocol/Policy/ServerIPolicy.h"
+#include "Protocol/Policy/ServerNetPolicy.h"
 
 
 namespace SF {
@@ -47,7 +47,7 @@ namespace Svr
 	//
 
 
-	EntityServerEntity::EntityServerEntity( UINT uiTransQueueSize, UINT TransResQueueSize )
+	EntityServerEntity::EntityServerEntity( uint uiTransQueueSize, uint TransResQueueSize )
 		:ServerEntity(	uiTransQueueSize > 64 ? uiTransQueueSize : Const::ENTITY_ENTITY_TRANS_QUEUE, 
 						TransResQueueSize > 64 ? TransResQueueSize : Const::ENTITY_ENTITY_TRANSRES_QUEUE )
 	{
@@ -75,13 +75,13 @@ namespace Svr
 
 
 	// Process Connection event
-	Result EntityServerEntity::ProcessConnectionEvent( const BR::Net::ConnectionEvent& conEvent )
+	Result EntityServerEntity::ProcessConnectionEvent( const Net::ConnectionEvent& conEvent )
 	{
 		Result hr = ResultCode::SUCCESS;
 
 		switch( conEvent.EventType )
 		{
-		case BR::Net::ConnectionEvent::EVT_CONNECTION_RESULT:
+		case Net::ConnectionEvent::EVT_CONNECTION_RESULT:
 			if( (conEvent.hr) // && IsInitialConnection()
 				&& GetPolicy<Policy::IPolicyEntityServer>() )
 			{
@@ -89,9 +89,9 @@ namespace Svr
 				svrChk( BrServer::GetInstance()->GetComponent<Svr::ServerEntityManager>()->UpdateEntityManagerServerEntity( this ) );
 			}
 			break;
-		case BR::Net::ConnectionEvent::EVT_DISCONNECTED:
+		case Net::ConnectionEvent::EVT_DISCONNECTED:
 			break;
-		case BR::Net::ConnectionEvent::EVT_STATE_CHANGE:
+		case Net::ConnectionEvent::EVT_STATE_CHANGE:
 			break;
 		default:
 			break;

@@ -15,9 +15,9 @@
 #include "Net/NetDef.h"
 #include "SFAssert.h"
 #include "Types/BrSvrTypes.h"
-#include "ServerSystem/SvrConfig.h"
+#include "ServerConfig/SFServerConfig.h"
 #include "ServerSystem/ServerEntity.h"
-#include "Common/SynchronizationTrait.h"
+#include "Container/ContainerTrait.h"
 
 
 namespace SF {

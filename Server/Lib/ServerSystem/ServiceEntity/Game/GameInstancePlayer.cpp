@@ -14,12 +14,12 @@
 #include "Net/NetServerUDP.h"
 #include "Util/TimeUtil.h"
 #include "Types/BrBaseTypes.h"
-#include "ResultCode/SFResultCodeCommon.h"
+#include "ResultCode/SFResultCodeLibrary.h"
 #include "ResultCode/SFResultCodeGame.h"
 
 
-#include "Protocol/Policy/GameServerIPolicy.h"
-#include "Protocol/Policy/GameIPolicy.h"
+#include "Protocol/Policy/GameServerNetPolicy.h"
+#include "Protocol/Policy/GameNetPolicy.h"
 
 
 #include "ServerSystem/SvrConst.h"

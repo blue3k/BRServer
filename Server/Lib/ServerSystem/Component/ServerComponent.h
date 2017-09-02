@@ -37,7 +37,7 @@ namespace Svr {
 	class IServerComponent : public Component
 	{
 	public:
-		IServerComponent( UINT id ) : Component(id)
+		IServerComponent( uint id ) : Component(id)
 		{
 		}
 
@@ -55,7 +55,7 @@ namespace Svr {
 	class IServerServiceComponent : public IServerComponent
 	{
 	public:
-		IServerServiceComponent( UINT id ) : IServerComponent(id)
+		IServerServiceComponent( uint id ) : IServerComponent(id)
 		{
 		}
 

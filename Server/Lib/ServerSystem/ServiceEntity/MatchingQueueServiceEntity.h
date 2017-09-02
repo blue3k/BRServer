@@ -23,8 +23,8 @@
 #include "ServerSystem/ServerComponent.h"
 #include "ServerSystem/ServerServiceBase.h"
 #include "ServerSystem/MessageRoute.h"
-#include "Common/HashTable2.h"
-#include "Common/Indexing.h"
+#include "Container/HashTable2.h"
+#include "Container/Indexing.h"
 
 #include "ServerSystem/ServiceEntity/EntityInformation.h"
 #include "ServerSystem/ServiceEntity/ClusteredServiceEntity.h"
@@ -148,7 +148,7 @@ namespace Svr {
 		//
 
 		// Add new Entity
-		Result Enqueue( EntityUID registerUID, PlayerID registerID, UINT numPlayer, const MatchingPlayerInformation* players, MatchingQueueTicket& ticket );
+		Result Enqueue( EntityUID registerUID, PlayerID registerID, uint numPlayer, const MatchingPlayerInformation* players, MatchingQueueTicket& ticket );
 
 		// Update ticket 
 		Result UpdateTicket( const MatchingQueueTicket& ticket, const EntityUID& UIDFrom, const EntityUID& UIDTo );
@@ -157,7 +157,7 @@ namespace Svr {
 		Result CancelTicket( const MatchingQueueTicket& ticket );
 
 		// Reserve a item in the queue from the top
-		Result ReserveItem( EntityUID reserverUID, UINT &numPlayersInItem, MatchingQueueTicket& ticket );
+		Result ReserveItem( EntityUID reserverUID, uint &numPlayersInItem, MatchingQueueTicket& ticket );
 
 		// Cancel a reservation
 		Result CancelReservation(const MatchingQueueTicket& ticket );
@@ -184,7 +184,7 @@ namespace Svr {
 
 	public:
 
-		MatchingQueueWatcherServiceEntity( ClusterID clusterID, UINT componentID );
+		MatchingQueueWatcherServiceEntity( ClusterID clusterID, uint componentID );
 		~MatchingQueueWatcherServiceEntity();
 
 	};

@@ -10,7 +10,8 @@
 ////////////////////////////////////////////////////////////////////////////////
 
 
-#include "SFEngineToolPCH.h"
+#include "stdafx.h"
+
 #include "SFEnum.h"
 #include "String/FixedString32.h"
 

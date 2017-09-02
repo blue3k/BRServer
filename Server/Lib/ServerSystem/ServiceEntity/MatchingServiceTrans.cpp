@@ -10,17 +10,17 @@
 
 
 #include "stdafx.h"
-#include "ResultCode/SFResultCodeCommon.h"
+#include "ResultCode/SFResultCodeLibrary.h"
 #include "ResultCode/SFResultCodeGame.h"
 #include "Memory/MemoryPool.h"
 #include "Types/BrBaseTypes.h"
-#include "Common/GameConst.h"
+#include "GameConst.h"
 
-#include "Protocol/Policy/GameInstanceIPolicy.h"
+#include "Protocol/Policy/GameInstanceNetPolicy.h"
 #include "Protocol/Message/GameInstanceManagerMsgClass.h"
 #include "Protocol/Message/PartyMatchingQueueMsgClass.h"
-#include "Protocol/Policy/PartyMatchingQueueIPolicy.h"
-#include "Protocol/Policy/PartyMatchingIPolicy.h"
+#include "Protocol/Policy/PartyMatchingQueueNetPolicy.h"
+#include "Protocol/Policy/PartyMatchingNetPolicy.h"
 
 #include "ServerSystem/BrServerUtil.h"
 #include "ServerSystem/SvrTrace.h"
@@ -37,9 +37,9 @@
 #include "ServerSystem/ServerService/GameInstanceManagerService.h"
 
 
-SF_MEMORYPOOL_IMPLEMENT(BR::Svr::MatchingTransGrabPlayer);
-SF_MEMORYPOOL_IMPLEMENT(BR::Svr::MatchingTransProcessMatchedItems);
-//SF_MEMORYPOOL_IMPLEMENT(BR::Svr::MatchingPartyTrans);
+SF_MEMORYPOOL_IMPLEMENT(SF::Svr::MatchingTransGrabPlayer);
+SF_MEMORYPOOL_IMPLEMENT(SF::Svr::MatchingTransProcessMatchedItems);
+//SF_MEMORYPOOL_IMPLEMENT(SF::Svr::MatchingPartyTrans);
 
 
 
@@ -52,8 +52,8 @@ namespace Svr {
 	//
 	//
 
-	MatchingTransGrabPlayer::MatchingTransGrabPlayer(UINT matchingMemberCount, UINT targetQueueMemberCount, PlayerRole playerRole, UINT minQueueCount, UINT maxQueueCount)
-		: super(TransactionID())
+	MatchingTransGrabPlayer::MatchingTransGrabPlayer(IMemoryManager& memoryManager, uint matchingMemberCount, uint targetQueueMemberCount, PlayerRole playerRole, uint minQueueCount, uint maxQueueCount)
+		: super(memoryManager, TransactionID())
 		, m_MinQueueCount(minQueueCount)
 		, m_MaxQueueCount(maxQueueCount)
 		, m_TargetQueueMemberCount(targetQueueMemberCount)
@@ -83,14 +83,14 @@ namespace Svr {
 	Result MatchingTransGrabPlayer::ProcessGrabbing()
 	{
 		Result hr = ResultCode::SUCCESS;
-		UINT itemsInQueue = 0;
+		uint itemsInQueue = 0;
 
 		if (itemsInQueue < m_MinQueueCount)
 		{
-			auto grabCount = std::min(m_MaxQueueCount - m_MinQueueCount, (UINT)GRAB_MAX);
+			auto grabCount = std::min(m_MaxQueueCount - m_MinQueueCount, (uint)GRAB_MAX);
 
 			hr = ReserveItem(grabCount);
-			if (hr == Result(ResultCode::E_SVR_NOITEM_INQUEUE) || hr == Result(ResultCode::E_SVR_CLUSTER_NOTREADY))
+			if (hr == Result(ResultCode::SVR_NOITEM_INQUEUE) || hr == Result(ResultCode::SVR_CLUSTER_NOTREADY))
 			{
 				goto Proc_End;
 			}
@@ -118,7 +118,7 @@ namespace Svr {
 		return ResultCode::SUCCESS;
 	}
 
-	Result MatchingTransGrabPlayer::ReserveItem(UINT grabCount)
+	Result MatchingTransGrabPlayer::ReserveItem(uint grabCount)
 	{
 		Result hr = ResultCode::SUCCESS;
 		ServerServiceInformation *pService = nullptr;
@@ -128,7 +128,7 @@ namespace Svr {
 
 		if (!(pServiceEntity->GetService(pService)))
 		{
-			return ResultCode::E_SVR_CLUSTER_NOTREADY;
+			return ResultCode::SVR_CLUSTER_NOTREADY;
 		}
 
 		// NOTE: Workload bug, just try to grab
@@ -139,7 +139,7 @@ namespace Svr {
 		}
 		//else
 		//{
-		//	return ResultCode::E_SVR_NOITEM_INQUEUE;
+		//	return ResultCode::SVR_NOITEM_INQUEUE;
 		//}
 
 	Proc_End:
@@ -201,7 +201,7 @@ namespace Svr {
 
 			svrTrace(Svr::TRC_MATCHING, "{2} items are cached, Matching:{0}, MatchingQueueCompo:{1}, Count:{2}", m_MatchingMemberCount, m_TargetQueueComponentID, numItems);
 
-			for (UINT iItem = 0; iItem < numItems; iItem++)
+			for (uint iItem = 0; iItem < numItems; iItem++)
 			{
 				ReservedMatchingItem newItem;
 
@@ -270,8 +270,8 @@ namespace Svr {
 	//
 	//
 
-	MatchingTransProcessMatchedItems::MatchingTransProcessMatchedItems(UINT targetMatchingMemberCount, const Array<ReservedMatchingItem>& matchedItems)
-		: TransactionT(TransactionID())
+	MatchingTransProcessMatchedItems::MatchingTransProcessMatchedItems(IMemoryManager& memoryManager, uint targetMatchingMemberCount, const Array<ReservedMatchingItem>& matchedItems)
+		: TransactionT(memoryManager, TransactionID())
 		, m_TargetMatchingMemberCount(targetMatchingMemberCount)
 	{
 		Assert(m_TargetMatchingMemberCount > 0);
@@ -279,7 +279,7 @@ namespace Svr {
 
 		SetPrintTrace(false);
 
-		for (UINT iItem = 0; iItem < matchedItems.GetSize(); iItem++)
+		for (uint iItem = 0; iItem < matchedItems.GetSize(); iItem++)
 		{
 			MatchingItem item;
 			item.MatchingTicket = matchedItems[iItem].MatchingTicket;
@@ -326,15 +326,15 @@ namespace Svr {
 
 			AssertRel(msgRes.GetPlayers().GetSize() <= MAX_NUM_PLAYER);
 
-			for (UINT iItem = 0; iItem < m_MatchedItems.GetSize(); iItem++)
+			for (uint iItem = 0; iItem < m_MatchedItems.GetSize(); iItem++)
 			{
 				if (m_MatchedItems[iItem].MatchingTicket != msgRes.GetMatchingTicket())
 					continue;
 
-				m_DequeuedTotalMembers += (UINT)msgRes.GetPlayers().GetSize();
-				m_MatchedItems[iItem].MemberCount = (UINT)msgRes.GetPlayers().GetSize();
+				m_DequeuedTotalMembers += (uint)msgRes.GetPlayers().GetSize();
+				m_MatchedItems[iItem].MemberCount = (uint)msgRes.GetPlayers().GetSize();
 				memcpy(m_MatchedItems[iItem].Players, msgRes.GetPlayers().data(), sizeof(MatchingPlayerInformation)*msgRes.GetPlayers().GetSize());
-				for (UINT iPlayer = 0; iPlayer < m_MatchedItems[iItem].MemberCount; iPlayer++)
+				for (uint iPlayer = 0; iPlayer < m_MatchedItems[iItem].MemberCount; iPlayer++)
 				{
 					m_MatchedItems[iItem].Players[iPlayer].RequestedRole = m_MatchedItems[iItem].RequestedRole;
 				}
@@ -398,7 +398,7 @@ namespace Svr {
 		Result hr = ResultCode::SUCCESS;
 		Message::GameInstanceManager::CreateGameRes msgRes;
 		GameInsUID gameUID;
-		UINT notifiedPlayerCount = 0;
+		uint notifiedPlayerCount = 0;
 
 
 		svrChk(pRes->GetResult());
@@ -415,7 +415,7 @@ namespace Svr {
 
 			ServerEntity *pServerEntity = nullptr;
 			bool notifiedToRegister = false;
-			for (UINT member = 0; member < reservedMember.MemberCount; member++)
+			for (uint member = 0; member < reservedMember.MemberCount; member++)
 			{
 				if (reservedMember.Players[member].PlayerUID == reservedMember.RegisterEntityUID) notifiedToRegister = true;
 
@@ -427,7 +427,7 @@ namespace Svr {
 				}
 
 				notifiedPlayerCount++;
-				pServerEntity->GetPolicy<Policy::ISvrPolicyPartyMatching>()->PlayerGameMatchedS2CEvt(
+				pServerEntity->GetPolicy<Policy::NetSvrPolicyPartyMatching>()->PlayerGameMatchedS2CEvt(
 					RouteContext(GetOwnerEntityUID(), reservedMember.Players[member].PlayerUID), 0,
 					reservedMember.Players[member].PlayerID, gameUID, reservedMember.RequestedRole);
 			}
@@ -443,7 +443,7 @@ namespace Svr {
 				}
 
 				notifiedPlayerCount++;
-				pServerEntity->GetPolicy<Policy::ISvrPolicyPartyMatching>()->PartyGameMatchedS2CEvt(
+				pServerEntity->GetPolicy<Policy::NetSvrPolicyPartyMatching>()->PartyGameMatchedS2CEvt(
 					RouteContext(GetOwnerEntityUID(), reservedMember.RegisterEntityUID), 0);
 			}
 		}

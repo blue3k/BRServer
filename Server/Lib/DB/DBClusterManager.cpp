@@ -43,7 +43,7 @@ namespace DB {
 	}
 
 	// Initialize DBClusterManager
-	Result DBClusterManager::InitializeDBCluster( UINT partitioningCount )
+	Result DBClusterManager::InitializeDBCluster( uint partitioningCount )
 	{
 		Result hr = ResultCode::SUCCESS;
 
@@ -68,7 +68,7 @@ namespace DB {
 
 		// Create DB sources
 		m_ShardingBucket.Reserve(m_PartitioningCount);
-		for( UINT part =0; part < m_PartitioningCount; part++)
+		for( uint part =0; part < m_PartitioningCount; part++)
 		{
 			DataSource *pDBSource = nullptr;
 			dbChk( Factory::GetInstance().CreateDataSource(pDBSource) );
@@ -130,7 +130,7 @@ namespace DB {
 		return hr;
 	}
 
-	Result	DBClusterManager::AddDBSource( UINT partitioningID, const std::string& strInstanceName, const std::string& strConnectionString, const std::string& strDBName, const std::string& strUserID, const std::string& strPassword )
+	Result	DBClusterManager::AddDBSource( uint partitioningID, const std::string& strInstanceName, const std::string& strConnectionString, const std::string& strDBName, const std::string& strUserID, const std::string& strPassword )
 	{
 		Result	hr = ResultCode::SUCCESS;
 		DataSource *pDBSource = nullptr;
@@ -144,7 +144,7 @@ namespace DB {
 		else password = m_Password;
 
 		if (userID.length() == 0 || password.length() == 0)
-			dbErr(ResultCode::E_DB_INVALID_CONFIG);
+			dbErr(ResultCode::DB_INVALID_CONFIG);
 
 		while (m_ShardingBucket.size() <= partitioningID)
 		{
@@ -180,14 +180,14 @@ namespace DB {
 
 
 	// select db source by partitioning key
-	Result DBClusterManager::SelectDBByKey(UINT partitioningKey, DataSource* &pDataSource)
+	Result DBClusterManager::SelectDBByKey(uint partitioningKey, DataSource* &pDataSource)
 	{
 		Result hr = ResultCode::SUCCESS;
 
 		pDataSource = nullptr;
 		
 		// modulate by partitioning size
-		UINT partition = (uint)(partitioningKey % m_ShardingBucket.GetSize());
+		uint partition = (uint)(partitioningKey % m_ShardingBucket.GetSize());
 
 		dbChkPtr( pDataSource = m_ShardingBucket[partition] );
 
@@ -220,7 +220,7 @@ Proc_End:
 
 			if (Util::TimeSince(pQuery->GetRequestedTime()) > DurationMS(DB::MAX_QUERY_TIMEOUT))
 			{
-				pQuery->SetResult(ResultCode::E_SVR_TIMEOUT);
+				pQuery->SetResult(ResultCode::SVR_TIMEOUT);
 				RouteResult(pQuery);
 				continue;
 			}

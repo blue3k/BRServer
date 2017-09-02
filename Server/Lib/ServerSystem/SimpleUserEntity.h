@@ -40,7 +40,7 @@ namespace Svr {
 	private:
 		// Connection to remote
 		SharedPointerT<Net::Connection>	m_pConnection;
-		BR::CriticalSection m_ConnectionLock;
+		CriticalSection m_ConnectionLock;
 
 				// Account ID
 		AccountID		m_AccountID;

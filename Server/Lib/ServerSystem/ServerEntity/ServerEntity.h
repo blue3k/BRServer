@@ -80,7 +80,7 @@ namespace Svr {
 
 
 	public:
-		ServerEntity( UINT uiTransQueueSize = Const::SERVER_TRANS_QUEUE , UINT TransResQueueSize = Const::SERVER_TRANS_QUEUE );
+		ServerEntity( uint uiTransQueueSize = Const::SERVER_TRANS_QUEUE , uint TransResQueueSize = Const::SERVER_TRANS_QUEUE );
 		virtual ~ServerEntity();
 
 		bool GetReceivedServerStatus() { return m_ReceivedServerStatus; }
@@ -145,7 +145,7 @@ namespace Svr {
 		//////////////////////////////////////////////////////////////////////////////////////////////
 		// Overriding IConnectionEventHandler
 		virtual void OnConnectionEvent(SF::Net::Connection* pConn, const SF::Net::ConnectionEvent& evt) override;
-		virtual Result OnRecvMessage(SF::Net::Connection* pConn, SF::Message::MessageData* pMsg) override;
+		virtual Result OnRecvMessage(SF::Net::Connection* pConn, SharedPointerT<Message::MessageData>& pMsg) override;
 		virtual Result OnNetSyncMessage(SF::Net::Connection* pConn) override;
 		virtual Result OnNetSendReadyMessage(SF::Net::Connection* pConn) override;
 

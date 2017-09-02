@@ -16,7 +16,7 @@
 #include "ResultCode/SFResultCodeNet.h"
 #include "ServerLog/SvrLog.h"
 #include "Thread/Thread.h"
-#include "ServerSystem/SvrConstDefault.h"
+#include "ServerSystem/SvrConst.h"
 #include "ServerSystem/Entity.h"
 #include "ServerSystem/MessageRoute.h"
 #include "ServerSystem/ExternalTransaction.h"
@@ -26,9 +26,9 @@
 #include "zlib.h"
 
 
-SF_MEMORYPOOL_IMPLEMENT(BR::Svr::GCMHttpExternalTransaction);
-SF_MEMORYPOOL_IMPLEMENT(BR::Svr::ExternalTransactionGoogleAndroidReceiptCheck);
-SF_MEMORYPOOL_IMPLEMENT(BR::Svr::ExternalTransactionIOSRecepitCheck);
+SF_MEMORYPOOL_IMPLEMENT(SF::Svr::GCMHttpExternalTransaction);
+SF_MEMORYPOOL_IMPLEMENT(SF::Svr::ExternalTransactionGoogleAndroidReceiptCheck);
+SF_MEMORYPOOL_IMPLEMENT(SF::Svr::ExternalTransactionIOSRecepitCheck);
 
 
 namespace SF {
@@ -258,7 +258,7 @@ Proc_End:
 		svrChk(ParallelTransaction::StartTransaction());
 
 		hrTem = m_DevAPI.CheckReceipt(m_strPackageName, m_strProductID, m_strPurchaseToken);
-		if (hrTem == ((Result)ResultCode::E_SVR_INVALID_EXTERNAL_AUTH))
+		if (hrTem == ((Result)ResultCode::SVR_INVALID_EXTERNAL_AUTH))
 		{
 			ExternalTransactionManager* pExtMgr = nullptr;
 
@@ -348,21 +348,21 @@ Proc_End:
 		case 0:
 			return ResultCode::SUCCESS;
 		case 21000:				reason = "The App Store could not read the JSON object you provided."; 
-			hr = ResultCode::E_SVR_INVALID_PURCHASE_INFO; break;
+			hr = ResultCode::SVR_INVALID_PURCHASE_INFO; break;
 		case 21002:				reason = "The data in the receipt-data property was malformed or missing."; 
-			hr = ResultCode::E_SVR_INVALID_PURCHASE_INFO; break;
+			hr = ResultCode::SVR_INVALID_PURCHASE_INFO; break;
 		case 21003:				reason = "The receipt could not be authenticated.";
-			hr = ResultCode::E_SVR_INVALID_EXTERNAL_AUTH; break;
+			hr = ResultCode::SVR_INVALID_EXTERNAL_AUTH; break;
 		case 21004:				reason = "The shared secret you provided does not match the shared secret on file for your account.";
-			hr = ResultCode::E_SVR_INVALID_PURCHASE_INFO; break;
+			hr = ResultCode::SVR_INVALID_PURCHASE_INFO; break;
 		case 21005:				reason = "The receipt server is not currently available.";
-			hr = ResultCode::E_SVR_EXTERNAL_SERVER_UNAVALIABLE; break;
+			hr = ResultCode::SVR_EXTERNAL_SERVER_UNAVALIABLE; break;
 		case 21006:				reason = "This receipt is valid but the subscription has expired. When this status code is returned to your server, the receipt data is also decoded and returned as part of the response.";
-			hr = ResultCode::E_SVR_PURCHASE_CANCELED; break;
+			hr = ResultCode::SVR_PURCHASE_CANCELED; break;
 		case 21007:				reason = "This receipt is from the test environment, but it was sent to the production environment for verification. Send it to the test environment instead.";
-			hr = ResultCode::E_SVR_INVALID_PURCHASE_MODE; break;
+			hr = ResultCode::SVR_INVALID_PURCHASE_MODE; break;
 		case 21008:				reason = "This receipt is from the production environment, but it was sent to the test environment for verification. Send it to the production environment instead.";
-			hr = ResultCode::E_SVR_INVALID_PURCHASE_MODE; break;
+			hr = ResultCode::SVR_INVALID_PURCHASE_MODE; break;
 		default:				reason = "Unknown error code";
 			hr = ResultCode::UNEXPECTED; break;
 		}
@@ -429,7 +429,7 @@ Proc_End:
 			auto value = root.get("status", "");
 			if (value.isNull() || value.isInt() == false)
 			{
-				svrErr(ResultCode::E_SVR_INVALID_PURCHASE_INFO);
+				svrErr(ResultCode::SVR_INVALID_PURCHASE_INFO);
 			}
 
 			status = value.asInt();
@@ -438,25 +438,25 @@ Proc_End:
 			receiptInfo = root.get("receipt", "Invalid");
 			if (receiptInfo.isNull() || receiptInfo.isObject() == false)
 			{
-				svrErr(ResultCode::E_SVR_INVALID_PURCHASE_FORMAT);
+				svrErr(ResultCode::SVR_INVALID_PURCHASE_FORMAT);
 			}
 
 			value = receiptInfo.get("bundle_id", "Invalid");
 			if (value.isNull() || value.isString() == false)
 			{
-				svrErr(ResultCode::E_SVR_INVALID_PURCHASE_FORMAT);
+				svrErr(ResultCode::SVR_INVALID_PURCHASE_FORMAT);
 			}
 			bundleID = std::forward<std::string>(value.asString());
 
 			if (bundleID != m_strPackageName)
 			{
-				svrErr(ResultCode::E_SVR_INVALID_PURCHASE_INFO);
+				svrErr(ResultCode::SVR_INVALID_PURCHASE_INFO);
 			}
 
 			inAppPurchases = receiptInfo.get("in_app", "");
 			if (inAppPurchases.isNull() || inAppPurchases.isArray() == false)
 			{
-				svrErr(ResultCode::E_SVR_INVALID_PURCHASE_FORMAT);
+				svrErr(ResultCode::SVR_INVALID_PURCHASE_FORMAT);
 			}
 
 			for (auto itPurchase = inAppPurchases.begin(); itPurchase != inAppPurchases.end(); ++itPurchase)
@@ -470,14 +470,14 @@ Proc_End:
 				value = purchase.get("product_id", "Invalid");
 				if (value.isNull() || value.isString() == false)
 				{
-					svrErr(ResultCode::E_SVR_INVALID_PURCHASE_FORMAT);
+					svrErr(ResultCode::SVR_INVALID_PURCHASE_FORMAT);
 				}
 				product_id = std::forward<std::string>(value.asString());
 
 				value = purchase.get("original_transaction_id", "Invalid");
 				if (value.isNull() || value.isString() == false)
 				{
-					svrErr(ResultCode::E_SVR_INVALID_PURCHASE_FORMAT);
+					svrErr(ResultCode::SVR_INVALID_PURCHASE_FORMAT);
 				}
 				original_transaction_id = std::forward<std::string>(value.asString());
 
@@ -487,7 +487,7 @@ Proc_End:
 				}
 			}
 
-			svrErr(ResultCode::E_SVR_INVALID_PURCHASE_INFO);
+			svrErr(ResultCode::SVR_INVALID_PURCHASE_INFO);
 		}
 
 
@@ -510,7 +510,7 @@ Proc_End:
 
 
 		hr = VerifyReceipt();
-		if (hr == Result(ResultCode::E_SVR_INVALID_PURCHASE_MODE))
+		if (hr == Result(ResultCode::SVR_INVALID_PURCHASE_MODE))
 		{
 			svrTrace(Trace::TRC_INFO, "IOS receipt query failed with invalid environment retrying with test mode");
 			// try with sand box url

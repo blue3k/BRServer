@@ -53,7 +53,7 @@ namespace SF {
 		UINT32		m_TaskID;
 
 		// task retry count
-		UINT		m_RetryCount;
+		uint		m_RetryCount;
 
 		// Task tick interval(maximum)
 		DurationMS		m_TickInterval;
@@ -94,7 +94,7 @@ namespace SF {
 
 
 		// retry count
-		inline UINT GetRetryCount() const										{ return m_RetryCount;  }
+		inline uint GetRetryCount() const										{ return m_RetryCount;  }
 		inline void ResetRetryCount()											{ m_RetryCount = 0; }
 		inline void IncRetryCount()												{ m_RetryCount++; }
 
@@ -129,7 +129,7 @@ namespace SF {
 
 		void DisposeWeakPointer();
 
-		virtual bool UpdateTick() override;
+		virtual bool OnTimerTick() override;
 
 		virtual const char* GetDebugString() override;
 	};
@@ -140,13 +140,10 @@ namespace SF {
 
 
 	extern template class SharedPointerT<TickTask>;
+	template<> inline SharedPointerT<TickTask> DefaultValue<SharedPointerT<TickTask>>() { return SharedPointerT<TickTask>(); }
 
 
 }; // namespace SF
 
-namespace SF
-{
-	template<> inline SharedPointerT<BR::TickTask> DefaultValue<SharedPointerT<BR::TickTask>>() { return SharedPointerT<BR::TickTask>(); }
-}
 
 

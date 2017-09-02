@@ -13,7 +13,7 @@
 #include "GameServer.h"
 #include "GameServerClass.h"
 
-#include "ResultCode/SFResultCodeCommon.h"
+#include "ResultCode/SFResultCodeLibrary.h"
 #include "ResultCode/SFResultCodeGame.h"
 #include "ResultCode/SFResultCodeLogin.h"
 #include "Memory/MemoryPool.h"
@@ -35,12 +35,12 @@
 #include "Protocol/Message/PartyMatchingQueueMsgClass.h"
 
 #include "Protocol/Message/GamePartyMsgClass.h"
-#include "Protocol/Policy/GamePartyIPolicy.h"
+#include "Protocol/Policy/GamePartyNetPolicy.h"
 #include "Protocol/Message/GamePartyManagerMsgClass.h"
-#include "Protocol/Policy/GamePartyManagerIPolicy.h"
+#include "Protocol/Policy/GamePartyManagerNetPolicy.h"
 
 #include "Protocol/Message/GameInstanceMsgClass.h"
-#include "Protocol/Policy/GameInstanceIPolicy.h"
+#include "Protocol/Policy/GameInstanceNetPolicy.h"
 
 #include "GamePlayerEntityTrans.h"
 #include "GamePlayerEntityTransClose.h"
@@ -102,7 +102,7 @@ SF_MEMORYPOOL_IMPLEMENT(BR::GameServer::PlayerTransGamePlayerRevivedS2SEvt);
 SF_MEMORYPOOL_IMPLEMENT(BR::GameServer::PlayerTransGamePlayerResetRank);
 
 
-namespace BR {
+namespace SF {
 namespace GameServer {
 
 
@@ -156,7 +156,7 @@ namespace GameServer {
 		// We don't need to do it here
 		if( joinRes.GetIsNewJoin() && GetMyServer()->GetPresetGameConfig() != nullptr )
 		{
-			//svrErr(ResultCode::E_INVALID_STATE);
+			//svrErr(ResultCode::INVALID_STATE);
 			GetMyOwner()->UpdateGamePlayer();
 			GetMyOwner()->GetComponent<UserGamePlayerInfoSystem>()->GainStamina( -GetMyServer()->GetPresetGameConfig()->StaminaForGame );
 		}
@@ -214,7 +214,7 @@ namespace GameServer {
 		svrChk( super::StartTransaction() );
 
 		if( GetMyOwner()->GetMatchingTicket() != 0 )
-			svrErr(ResultCode::E_SVR_ALREADY_INQUEUE);
+			svrErr(ResultCode::SVR_ALREADY_INQUEUE);
 
 		m_GameInsID = 0;
 		m_TimeStamp = 0;
@@ -300,7 +300,7 @@ namespace GameServer {
 
 		GetMyOwner()->AddGameTransactionLog(TransLogCategory::Game, -1, 0, GetMyOwner()->GetGameInsUID().UID);
 
-		if (pRes->GetResult() == Result(ResultCode::E_SVR_INVALID_ENTITYUID))
+		if (pRes->GetResult() == Result(ResultCode::SVR_INVALID_ENTITYUID))
 		{
 
 			GetMyOwner()->SetGameInsUID(0);
@@ -1046,7 +1046,7 @@ namespace GameServer {
 		if (GetMyOwner()->GetMatchingTicket() != 0)
 		{
 			if( Util::TimeSince(GetMyOwner()->GetMatchingStartTime()) < DurationMS(GameConst::MATCHING_TIMEOUT) )
-				svrErrClose(ResultCode::E_SVR_ALREADY_INQUEUE);
+				svrErrClose(ResultCode::SVR_ALREADY_INQUEUE);
 
 			// clear timeouted tickets
 			GetMyOwner()->SetMatchingTicket(0);
@@ -1140,11 +1140,11 @@ namespace GameServer {
 
 		switch((int32_t)pRes->GetResult() )
 		{
-		case ResultCode::E_SVR_RESERVED_QUEUEITEM:
-			svrErrClose(ResultCode::E_SVR_RESERVED_QUEUEITEM);
+		case ResultCode::SVR_RESERVED_QUEUEITEM:
+			svrErrClose(ResultCode::SVR_RESERVED_QUEUEITEM);
 			break;
-		case ResultCode::E_SVR_QUEUEITEM_CANCELED:
-		case ResultCode::E_SVR_INVALID_QUEUEITEM:
+		case ResultCode::SVR_QUEUEITEM_CANCELED:
+		case ResultCode::SVR_INVALID_QUEUEITEM:
 			GetMyOwner()->SetMatchingTicket( 0 );
 			break;
 		default:
@@ -1174,7 +1174,7 @@ namespace GameServer {
 
 		if( GetMyOwner()->GetMatchingTicket() == 0 )
 		{
-			svrErrClose(ResultCode::E_SVR_INVALID_QUEUEITEM);
+			svrErrClose(ResultCode::SVR_INVALID_QUEUEITEM);
 		}
 
 		if( GetMyOwner()->GetPartyUID().UID == 0 )
@@ -1218,7 +1218,7 @@ namespace GameServer {
 
 		if( GetMyOwner()->GetMatchingTicket() != GetMatchingTicket() )
 		{
-			svrErr(ResultCode::E_SVR_INVALID_QUEUEITEM);
+			svrErr(ResultCode::SVR_INVALID_QUEUEITEM);
 		}
 
 		GetMyOwner()->SetMatchingTicket(0);
@@ -1242,7 +1242,7 @@ namespace GameServer {
 		
 		if( GetMyOwner()->GetMatchingTicket() != GetMatchingTicket() )
 		{
-			svrErrClose(ResultCode::E_SVR_INVALID_QUEUEITEM);
+			svrErrClose(ResultCode::SVR_INVALID_QUEUEITEM);
 		}
 
 		GetMyOwner()->SetMatchingTicket(0);
@@ -1337,7 +1337,7 @@ namespace GameServer {
 
 		if (insUID == 0)
 		{
-			svrErr(ResultCode::E_SVR_INVALID_ENTITYUID);
+			svrErr(ResultCode::SVR_INVALID_ENTITYUID);
 		}
 
 		svrChkPtr(pPolicy = Svr::GetServerComponent<Svr::ServerEntityManager>()->GetServerPolicy<Policy::IPolicyGameInstance>(insUID.GetServerID()));
@@ -1502,7 +1502,7 @@ namespace GameServer {
 
 		if (insUID == 0)
 		{
-			svrErr(ResultCode::E_SVR_INVALID_ENTITYUID);
+			svrErr(ResultCode::SVR_INVALID_ENTITYUID);
 		}
 
 		svrChkPtr(pPolicy = Svr::GetServerComponent<Svr::ServerEntityManager>()->GetServerPolicy<Policy::IPolicyGameInstance>(insUID.GetServerID()));
@@ -1528,11 +1528,11 @@ namespace GameServer {
 		svrChkClose(pRes->GetResult());
 		svrChk(res.ParseMessage(pMsgRes->GetMessage()));
 
-		for (UINT iPlayer = 0; iPlayer < res.GetRevealedPlayerID().GetSize(); iPlayer++)
+		for (uint iPlayer = 0; iPlayer < res.GetRevealedPlayerID().GetSize(); iPlayer++)
 		{
 			m_RevealedPlayerID.push_back(res.GetRevealedPlayerID()[iPlayer]);
 		}
-		for (UINT iPlayer = 0; iPlayer < res.GetRevealedRole().GetSize(); iPlayer++)
+		for (uint iPlayer = 0; iPlayer < res.GetRevealedRole().GetSize(); iPlayer++)
 		{
 			m_RevealedPlayerRole.push_back(res.GetRevealedRole()[iPlayer]);
 		}
@@ -1605,7 +1605,7 @@ namespace GameServer {
 
 		if (insUID == 0)
 		{
-			svrErr(ResultCode::E_SVR_INVALID_ENTITYUID);
+			svrErr(ResultCode::SVR_INVALID_ENTITYUID);
 		}
 
 		svrChkPtr(pPolicy = Svr::GetServerComponent<Svr::ServerEntityManager>()->GetServerPolicy<Policy::IPolicyGameInstance>(insUID.GetServerID()));
@@ -1714,7 +1714,7 @@ namespace GameServer {
 
 		if (GetMyOwner()->GetGameInsUID() != 0)
 		{
-			svrErrClose(ResultCode::E_SVR_INVALID_PLAYER_STATE);
+			svrErrClose(ResultCode::SVR_INVALID_PLAYER_STATE);
 		}
 
 		svrChkPtr(pPlayerInfoSystem = GetMyOwner()->GetComponent<UserGamePlayerInfoSystem>());
@@ -1739,5 +1739,5 @@ namespace GameServer {
 
 
 };// namespace GameServer 
-};// namespace BR 
+};// namespace SF 
 

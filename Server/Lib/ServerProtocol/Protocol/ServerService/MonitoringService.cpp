@@ -46,7 +46,7 @@ namespace SF
 
 		}; // Result MonitoringService::GetInstanceListCmd( const TransactionID &InTransactionID )
 		// Cmd: Remove a player to ranking
-		Result MonitoringService::RequestCounterValuesCmd( const TransactionID &InTransactionID, const EntityUID &InInstanceUID )
+		Result MonitoringService::RequestCounterValuesCmd( const TransactionID &InTransactionID, const uint64_t &InInstanceUID )
 		{
  			Result hr;
 
@@ -56,9 +56,9 @@ namespace SF
 
 			return hr;
 
-		}; // Result MonitoringService::RequestCounterValuesCmd( const TransactionID &InTransactionID, const EntityUID &InInstanceUID )
+		}; // Result MonitoringService::RequestCounterValuesCmd( const TransactionID &InTransactionID, const uint64_t &InInstanceUID )
 		// C2S: Counter instance is created
-		Result MonitoringService::PerformanceCounterNewC2SEvt( const char* InInstanceName, const EntityUID &InInstanceUID, const Array<PerformanceCounterInfo>& InNewCounters )
+		Result MonitoringService::PerformanceCounterNewC2SEvt( const char* InInstanceName, const uint64_t &InInstanceUID, const Array<PerformanceCounterInfo>& InNewCounters )
 		{
  			Result hr;
 
@@ -68,9 +68,9 @@ namespace SF
 
 			return hr;
 
-		}; // Result MonitoringService::PerformanceCounterNewC2SEvt( const char* InInstanceName, const EntityUID &InInstanceUID, const Array<PerformanceCounterInfo>& InNewCounters )
+		}; // Result MonitoringService::PerformanceCounterNewC2SEvt( const char* InInstanceName, const uint64_t &InInstanceUID, const Array<PerformanceCounterInfo>& InNewCounters )
 		// C2S: Counter instance is deleted
-		Result MonitoringService::PerformanceCounterFreeC2SEvt( const Array<EntityUID>& InFreeInstances )
+		Result MonitoringService::PerformanceCounterFreeC2SEvt( const Array<uint64_t>& InFreeInstances )
 		{
  			Result hr;
 
@@ -80,9 +80,9 @@ namespace SF
 
 			return hr;
 
-		}; // Result MonitoringService::PerformanceCounterFreeC2SEvt( const Array<EntityUID>& InFreeInstances )
+		}; // Result MonitoringService::PerformanceCounterFreeC2SEvt( const Array<uint64_t>& InFreeInstances )
 		// C2S: Counter update broadcast
-		Result MonitoringService::PerformanceCounterUpdateC2SEvt( const EntityUID &InInstanceUID, const Array<uint64_t>& InCounterValues )
+		Result MonitoringService::PerformanceCounterUpdateC2SEvt( const uint64_t &InInstanceUID, const Array<uint64_t>& InCounterValues )
 		{
  			Result hr;
 
@@ -92,7 +92,7 @@ namespace SF
 
 			return hr;
 
-		}; // Result MonitoringService::PerformanceCounterUpdateC2SEvt( const EntityUID &InInstanceUID, const Array<uint64_t>& InCounterValues )
+		}; // Result MonitoringService::PerformanceCounterUpdateC2SEvt( const uint64_t &InInstanceUID, const Array<uint64_t>& InCounterValues )
 
 
 	}; // namespace Svr

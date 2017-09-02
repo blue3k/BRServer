@@ -17,11 +17,11 @@
 #include "Common/ClassUtil.h"
 #include "ServerSystem/GameSystem.h"
 #include "Common/MemoryBufferUtil.h"
-#include "Common/GameConst.h"
+#include "GameConst.h"
 #include "UserSystemComponentIDs.h"
 
 
-namespace BR {
+namespace SF {
 namespace GameServer {
 
 	class GamePlayerEntity;
@@ -44,7 +44,7 @@ namespace GameServer {
 
 		struct Notification
 		{
-			UINT NotificationID;
+			uint NotificationID;
 			NotificationType MessageID;
 			int64_t MessageParam0;
 			int64_t MessageParam1;
@@ -88,20 +88,20 @@ namespace GameServer {
 		void ClearNotificationList();
 
 		// Get Notification
-		Notification* GetNotification( UINT notificationID );
+		Notification* GetNotification( uint notificationID );
 
 		// FInd
-		INT FindNotification( UINT notificationID );
+		INT FindNotification( uint notificationID );
 
 		// Add a Notification
 		Result AddNotification( const Notification& info );
-		Result AddNotification( UINT NotificationID, NotificationType MessageID, int64_t MessageParam0, int64_t MessageParam1, const char* MessageText, uint8_t IsRead, int64_t timeStamp );
+		Result AddNotification( uint NotificationID, NotificationType MessageID, int64_t MessageParam0, int64_t MessageParam1, const char* MessageText, uint8_t IsRead, int64_t timeStamp );
 
 		// Remove a Notification
-		Result RemoveNotification( UINT notificationID ); 
+		Result RemoveNotification( uint notificationID ); 
 
 		//// Read Notification
-		//Result ReadNotification( UINT notificationID ); 
+		//Result ReadNotification( uint notificationID ); 
 
 		// iterate all Notification list
 		Result ForeachNotification( std::function<Result(const Notification&)> functor );
@@ -109,7 +109,7 @@ namespace GameServer {
 
 
 }; // namespace GameServer
-}; // namespace BR
+}; // namespace SF
 
 
 

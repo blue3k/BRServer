@@ -17,9 +17,9 @@
 #include "Types/BrBaseTypes.h"
 #include "Common/MemoryStream.h"
 #include "Protocol/Message/GameMsgClass.h"
-#include "Protocol/Policy/GameIPolicy.h"
+#include "Protocol/Policy/GameNetPolicy.h"
 #include "Protocol/Message/GameInstanceMsgClass.h"
-#include "Protocol/Policy/GameInstanceIPolicy.h"
+#include "Protocol/Policy/GameInstanceNetPolicy.h"
 
 #include "ServerSystem/MessageRoute.h"
 #include "ServerSystem/ServerTransaction.h"
@@ -31,7 +31,7 @@
 #include "Net/Message.h"
 
 
-namespace BR {
+namespace SF {
 namespace ConspiracyGameInstanceServer {
 
 
@@ -51,10 +51,10 @@ namespace ConspiracyGameInstanceServer {
 	};
 
 
-	class GameEntityTransJoinGame : public RoutedGamePlayerMessageTransaction< GameInstanceEntity, Policy::ISvrPolicyGameInstance, Message::GameInstance::JoinGameCmd, GameEntityTransJoinGame>
+	class GameEntityTransJoinGame : public RoutedGamePlayerMessageTransaction< GameInstanceEntity, Policy::NetSvrPolicyGameInstance, Message::GameInstance::JoinGameCmd, GameEntityTransJoinGame>
 	{
 	public:
-		typedef RoutedGamePlayerMessageTransaction< GameInstanceEntity, Policy::ISvrPolicyGameInstance, Message::GameInstance::JoinGameCmd, GameEntityTransJoinGame> super;
+		typedef RoutedGamePlayerMessageTransaction< GameInstanceEntity, Policy::NetSvrPolicyGameInstance, Message::GameInstance::JoinGameCmd, GameEntityTransJoinGame> super;
 
 	private:
 
@@ -65,8 +65,8 @@ namespace ConspiracyGameInstanceServer {
 		UINT8 m_Day;
 		PlayerRole m_Role;
 		bool m_Dead, m_bIsFirstJoin;
-		UINT m_PlayerIndex;
-		UINT m_PlayerCharacter;
+		uint m_PlayerIndex;
+		uint m_PlayerCharacter;
 
 		StaticOutputMemoryStream<GameConst::MAX_CHATLOG_BUFFER> m_ChatHistoryBuffer;
 		StaticOutputMemoryStream<GameConst::MAX_GAMELOG_BUFFER> m_GameLogBuffer;
@@ -105,10 +105,10 @@ namespace ConspiracyGameInstanceServer {
 	};
 
 
-	class GameEntityTransLeaveGame : public RoutedGamePlayerMessageTransaction< GameInstanceEntity, Policy::ISvrPolicyGameInstance, Message::GameInstance::LeaveGameCmd, GameEntityTransLeaveGame>
+	class GameEntityTransLeaveGame : public RoutedGamePlayerMessageTransaction< GameInstanceEntity, Policy::NetSvrPolicyGameInstance, Message::GameInstance::LeaveGameCmd, GameEntityTransLeaveGame>
 	{
 	public:
-		typedef RoutedGamePlayerMessageTransaction< GameInstanceEntity, Policy::ISvrPolicyGameInstance, Message::GameInstance::LeaveGameCmd, GameEntityTransLeaveGame> super;
+		typedef RoutedGamePlayerMessageTransaction< GameInstanceEntity, Policy::NetSvrPolicyGameInstance, Message::GameInstance::LeaveGameCmd, GameEntityTransLeaveGame> super;
 
 	private:
 
@@ -122,10 +122,10 @@ namespace ConspiracyGameInstanceServer {
 		BR_SVR_MSGTRANS_CLOSE(LeaveGameRes, GetRouteContext().GetSwaped());
 	};
 
-	class GameEntityTransKickPlayer : public RoutedGamePlayerMessageTransaction< GameInstanceEntity, Policy::ISvrPolicyGameInstance, Message::GameInstance::KickPlayerCmd, GameEntityTransKickPlayer>
+	class GameEntityTransKickPlayer : public RoutedGamePlayerMessageTransaction< GameInstanceEntity, Policy::NetSvrPolicyGameInstance, Message::GameInstance::KickPlayerCmd, GameEntityTransKickPlayer>
 	{
 	public:
-		typedef RoutedGamePlayerMessageTransaction< GameInstanceEntity, Policy::ISvrPolicyGameInstance, Message::GameInstance::KickPlayerCmd, GameEntityTransKickPlayer> super;
+		typedef RoutedGamePlayerMessageTransaction< GameInstanceEntity, Policy::NetSvrPolicyGameInstance, Message::GameInstance::KickPlayerCmd, GameEntityTransKickPlayer> super;
 
 	private:
 
@@ -141,10 +141,10 @@ namespace ConspiracyGameInstanceServer {
 
 	
 
-	class GameEntityTransAssignRole : public RoutedGamePlayerMessageTransaction< GameInstanceEntity, Policy::ISvrPolicyGameInstance, Message::GameInstance::AssignRoleCmd, GameEntityTransAssignRole>
+	class GameEntityTransAssignRole : public RoutedGamePlayerMessageTransaction< GameInstanceEntity, Policy::NetSvrPolicyGameInstance, Message::GameInstance::AssignRoleCmd, GameEntityTransAssignRole>
 	{
 	public:
-		typedef RoutedGamePlayerMessageTransaction< GameInstanceEntity, Policy::ISvrPolicyGameInstance, Message::GameInstance::AssignRoleCmd, GameEntityTransAssignRole> super;
+		typedef RoutedGamePlayerMessageTransaction< GameInstanceEntity, Policy::NetSvrPolicyGameInstance, Message::GameInstance::AssignRoleCmd, GameEntityTransAssignRole> super;
 
 	private:
 
@@ -159,10 +159,10 @@ namespace ConspiracyGameInstanceServer {
 	};
 
 
-	class GameEntityTransChatMessage : public RoutedGamePlayerMessageTransaction< GameInstanceEntity, Policy::ISvrPolicyGameInstance, Message::GameInstance::ChatMessageC2SEvt, GameEntityTransChatMessage>
+	class GameEntityTransChatMessage : public RoutedGamePlayerMessageTransaction< GameInstanceEntity, Policy::NetSvrPolicyGameInstance, Message::GameInstance::ChatMessageC2SEvt, GameEntityTransChatMessage>
 	{
 	public:
-		typedef RoutedGamePlayerMessageTransaction< GameInstanceEntity, Policy::ISvrPolicyGameInstance, Message::GameInstance::ChatMessageC2SEvt, GameEntityTransChatMessage> super;
+		typedef RoutedGamePlayerMessageTransaction< GameInstanceEntity, Policy::NetSvrPolicyGameInstance, Message::GameInstance::ChatMessageC2SEvt, GameEntityTransChatMessage> super;
 
 	private:
 
@@ -176,10 +176,10 @@ namespace ConspiracyGameInstanceServer {
 	};
 
 
-	class GameEntityTransVoteGameAdvance : public RoutedGamePlayerMessageTransaction< GameInstanceEntity, Policy::ISvrPolicyGameInstance, Message::GameInstance::VoteGameAdvanceCmd, GameEntityTransVoteGameAdvance>
+	class GameEntityTransVoteGameAdvance : public RoutedGamePlayerMessageTransaction< GameInstanceEntity, Policy::NetSvrPolicyGameInstance, Message::GameInstance::VoteGameAdvanceCmd, GameEntityTransVoteGameAdvance>
 	{
 	public:
-		typedef RoutedGamePlayerMessageTransaction< GameInstanceEntity, Policy::ISvrPolicyGameInstance, Message::GameInstance::VoteGameAdvanceCmd, GameEntityTransVoteGameAdvance> super;
+		typedef RoutedGamePlayerMessageTransaction< GameInstanceEntity, Policy::NetSvrPolicyGameInstance, Message::GameInstance::VoteGameAdvanceCmd, GameEntityTransVoteGameAdvance> super;
 
 	private:
 
@@ -195,10 +195,10 @@ namespace ConspiracyGameInstanceServer {
 
 
 
-	class GameEntityTransVote : public RoutedGamePlayerMessageTransaction< GameInstanceEntity, Policy::ISvrPolicyGameInstance, Message::GameInstance::VoteCmd, GameEntityTransVote>
+	class GameEntityTransVote : public RoutedGamePlayerMessageTransaction< GameInstanceEntity, Policy::NetSvrPolicyGameInstance, Message::GameInstance::VoteCmd, GameEntityTransVote>
 	{
 	public:
-		typedef RoutedGamePlayerMessageTransaction< GameInstanceEntity, Policy::ISvrPolicyGameInstance, Message::GameInstance::VoteCmd, GameEntityTransVote> super;
+		typedef RoutedGamePlayerMessageTransaction< GameInstanceEntity, Policy::NetSvrPolicyGameInstance, Message::GameInstance::VoteCmd, GameEntityTransVote> super;
 
 	private:
 
@@ -212,10 +212,10 @@ namespace ConspiracyGameInstanceServer {
 		BR_SVR_MSGTRANS_CLOSE(VoteRes, GetRouteContext().GetSwaped());
 	};
 
-	class GameEntityTransAdvanceGame : public RoutedGamePlayerMessageTransaction< GameInstanceEntity, Policy::ISvrPolicyGameInstance, Message::GameInstance::AdvanceGameCmd, GameEntityTransAdvanceGame>
+	class GameEntityTransAdvanceGame : public RoutedGamePlayerMessageTransaction< GameInstanceEntity, Policy::NetSvrPolicyGameInstance, Message::GameInstance::AdvanceGameCmd, GameEntityTransAdvanceGame>
 	{
 	public:
-		typedef RoutedGamePlayerMessageTransaction< GameInstanceEntity, Policy::ISvrPolicyGameInstance, Message::GameInstance::AdvanceGameCmd, GameEntityTransAdvanceGame> super;
+		typedef RoutedGamePlayerMessageTransaction< GameInstanceEntity, Policy::NetSvrPolicyGameInstance, Message::GameInstance::AdvanceGameCmd, GameEntityTransAdvanceGame> super;
 
 	private:
 
@@ -231,13 +231,13 @@ namespace ConspiracyGameInstanceServer {
 	
 
 
-	class GameEntityTransGamePlayAgain : public RoutedGamePlayerMessageTransaction< GameInstanceEntity, Policy::ISvrPolicyGameInstance, Message::GameInstance::GamePlayAgainCmd, GameEntityTransGamePlayAgain>
+	class GameEntityTransGamePlayAgain : public RoutedGamePlayerMessageTransaction< GameInstanceEntity, Policy::NetSvrPolicyGameInstance, Message::GameInstance::GamePlayAgainCmd, GameEntityTransGamePlayAgain>
 	{
 	public:
-		typedef RoutedGamePlayerMessageTransaction< GameInstanceEntity, Policy::ISvrPolicyGameInstance, Message::GameInstance::GamePlayAgainCmd, GameEntityTransGamePlayAgain> super;
+		typedef RoutedGamePlayerMessageTransaction< GameInstanceEntity, Policy::NetSvrPolicyGameInstance, Message::GameInstance::GamePlayAgainCmd, GameEntityTransGamePlayAgain> super;
 
 	private:
-		UINT m_MemberCount;
+		uint m_MemberCount;
 
 	public:
 		GameEntityTransGamePlayAgain(Message::MessageData* &pIMsg) :RoutedGamePlayerMessageTransaction(pIMsg) {}
@@ -251,10 +251,10 @@ namespace ConspiracyGameInstanceServer {
 
 
 
-	class GameEntityTransGameRevealPlayer : public RoutedGamePlayerMessageTransaction< GameInstanceEntity, Policy::ISvrPolicyGameInstance, Message::GameInstance::GameRevealPlayerCmd, GameEntityTransGameRevealPlayer>
+	class GameEntityTransGameRevealPlayer : public RoutedGamePlayerMessageTransaction< GameInstanceEntity, Policy::NetSvrPolicyGameInstance, Message::GameInstance::GameRevealPlayerCmd, GameEntityTransGameRevealPlayer>
 	{
 	public:
-		typedef RoutedGamePlayerMessageTransaction< GameInstanceEntity, Policy::ISvrPolicyGameInstance, Message::GameInstance::GameRevealPlayerCmd, GameEntityTransGameRevealPlayer> super;
+		typedef RoutedGamePlayerMessageTransaction< GameInstanceEntity, Policy::NetSvrPolicyGameInstance, Message::GameInstance::GameRevealPlayerCmd, GameEntityTransGameRevealPlayer> super;
 
 	private:
 		StaticArray<PlayerID, 4> m_RevealedPlayerID;
@@ -272,10 +272,10 @@ namespace ConspiracyGameInstanceServer {
 
 
 
-	class GameEntityTransGamePlayerRevive : public RoutedGamePlayerMessageTransaction< GameInstanceEntity, Policy::ISvrPolicyGameInstance, Message::GameInstance::GamePlayerReviveCmd, GameEntityTransGamePlayerRevive>
+	class GameEntityTransGamePlayerRevive : public RoutedGamePlayerMessageTransaction< GameInstanceEntity, Policy::NetSvrPolicyGameInstance, Message::GameInstance::GamePlayerReviveCmd, GameEntityTransGamePlayerRevive>
 	{
 	public:
-		typedef RoutedGamePlayerMessageTransaction< GameInstanceEntity, Policy::ISvrPolicyGameInstance, Message::GameInstance::GamePlayerReviveCmd, GameEntityTransGamePlayerRevive> super;
+		typedef RoutedGamePlayerMessageTransaction< GameInstanceEntity, Policy::NetSvrPolicyGameInstance, Message::GameInstance::GamePlayerReviveCmd, GameEntityTransGamePlayerRevive> super;
 
 	private:
 
@@ -294,5 +294,5 @@ namespace ConspiracyGameInstanceServer {
 		
 
 };// namespace ConspiracyGameInstanceServer 
-};// namespace BR 
+};// namespace SF 
 

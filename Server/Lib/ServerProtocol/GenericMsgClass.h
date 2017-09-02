@@ -43,11 +43,11 @@ namespace Message {
 
 			virtual Result ParseMessage( MessageData* pIMsg );
 
-		}; // class FailResultS2CEvt : public BR::Net::MessageBase
+		}; // class FailResultS2CEvt : public SF::Net::MessageBase
 
 	
 }; // namespace Message
-}; // namespace BR
+}; // namespace SF
 
 
 

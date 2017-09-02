@@ -19,7 +19,7 @@
 #include "ServerSystem/Entity.h"
 #include "ServerSystem/MessageRoute.h"
 #include "ServerSystem/SimpleUserEntity.h"
-#include "Common/GameConst.h"
+#include "GameConst.h"
 #include "Types/BrGameTypes.h"
 #include "Common/GlobalUIDGenerator.h"
 
@@ -57,7 +57,7 @@ namespace Svr {
 
 		BRCLASS_ATTRIBUTE(FacebookUID,FacebookUID);
 		BRCLASS_ATTRIBUTE(AuthTicket,AuthTicket);
-		BRCLASS_ATTRIBUTE(UINT,ShardID);
+		BRCLASS_ATTRIBUTE(uint,ShardID);
 		BRCLASS_ATTRIBUTE(bool, IsTicketOwner);
 
 		char m_UserName[GameConst::MAX_NAME];

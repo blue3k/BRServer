@@ -40,9 +40,6 @@
     <None Include="$(MSBuildThisFileDirectory)ServiceEntity\Game\GamePlayerEntity.inl" />
     <None Include="$(MSBuildThisFileDirectory)SimpleEntity.inl" />
     <None Include="$(MSBuildThisFileDirectory)SimpleUserEntity.inl" />
-    <None Include="$(MSBuildThisFileDirectory)SvrConfig.inl">
-      <ExcludedFromBuild>true</ExcludedFromBuild>
-    </None>
     <None Include="$(MSBuildThisFileDirectory)Task\ServerTask.inl" />
     <None Include="$(MSBuildThisFileDirectory)Task\ServerTaskEvent.inl" />
     <None Include="$(MSBuildThisFileDirectory)Task\TaskManager.inl" />
@@ -80,6 +77,10 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)PlayerEntityInformation.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)ServerComponent.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)ServerComponentCarrier.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)ServerConfig\SFEnum.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)ServerConfig\SFServerConfig.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)ServerConfig\SFServerConfigXML.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)ServerConfig\SFServerConfigZooKeeper.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)ServerEntity.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)ServerEntityManager.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)ServerEntity\EntityServerEntity.h" />
@@ -142,15 +143,7 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)stdafx.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)String\SvrToString.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)String\ToStringSvr.h" />
-    <ClInclude Include="$(MSBuildThisFileDirectory)SvrConfig.h">
-      <ExcludedFromBuild>true</ExcludedFromBuild>
-    </ClInclude>
-    <ClInclude Include="$(MSBuildThisFileDirectory)SvrConst.h">
-      <ExcludedFromBuild>true</ExcludedFromBuild>
-    </ClInclude>
-    <ClInclude Include="$(MSBuildThisFileDirectory)SvrConstDefault.h">
-      <ExcludedFromBuild>true</ExcludedFromBuild>
-    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)SvrConst.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)SvrLoopbackConnection.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)SvrPolicyID.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Task\ServerTask.h" />
@@ -163,6 +156,7 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)Types\BrBaseTypes.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Types\BrGameTypes.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Types\BrSvrTypes.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)Util\UniqueEntityIDGenerator.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)ZooKeeper\SFZooKeeper.h" />
   </ItemGroup>
   <ItemGroup>
@@ -188,6 +182,10 @@
     <ClCompile Include="$(MSBuildThisFileDirectory)PerformanceCounter\PerformanceCounterServer.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)PlayerEntityInformation.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)ServerComponent.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)ServerConfig\GameIDEnum.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)ServerConfig\SFServerConfig.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)ServerConfig\SFServerConfigXML.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)ServerConfig\SFServerConfigZooKeeper.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)ServerEntity.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)ServerEntityManager.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)ServerEntity\EntityServerEntity.cpp" />
@@ -244,12 +242,6 @@
     <ClCompile Include="$(MSBuildThisFileDirectory)SimpleEntity.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)SimpleUserEntity.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)String\ToStringSvr.cpp" />
-    <ClCompile Include="$(MSBuildThisFileDirectory)SvrConfig.cpp">
-      <ExcludedFromBuild>true</ExcludedFromBuild>
-    </ClCompile>
-    <ClCompile Include="$(MSBuildThisFileDirectory)SvrConst.cpp">
-      <ExcludedFromBuild>true</ExcludedFromBuild>
-    </ClCompile>
     <ClCompile Include="$(MSBuildThisFileDirectory)SvrLoopbackConnection.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)Task\ServerTask.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)Task\ServerTaskEvent.cpp" />
@@ -257,6 +249,7 @@
     <ClCompile Include="$(MSBuildThisFileDirectory)Transaction.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)Transaction\ServerTransactionGeneric.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)Types\BrGameTypes.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)Util\UniqueEntityIDGenerator.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)ZooKeeper\SFZooKeeper.cpp" />
   </ItemGroup>
   <ItemGroup>

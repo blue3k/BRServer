@@ -17,10 +17,10 @@ inline PlayerID GamePlaySystem::GetSuspect( int index )
 	return m_Suspects[index];
 }
 
-inline UINT GamePlaySystem::GetNumberOfSuspects()
+inline uint GamePlaySystem::GetNumberOfSuspects()
 {
-	UINT numSuspect = 0;
-	for( UINT iSuspect = 0; iSuspect < countof(m_Suspects); iSuspect++ )
+	uint numSuspect = 0;
+	for( uint iSuspect = 0; iSuspect < countof(m_Suspects); iSuspect++ )
 	{
 		if( m_Suspects[iSuspect] != 0 ) 
 			numSuspect++;

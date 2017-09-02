@@ -16,7 +16,7 @@
 #include "ServerSystem/ServerService/ServerService.h"
 
 
-SF_MEMORYPOOL_IMPLEMENT(BR::Svr::UserEntityInformation);
+SF_MEMORYPOOL_IMPLEMENT(SF::Svr::UserEntityInformation);
 
 
 namespace SF {
@@ -82,7 +82,7 @@ namespace Svr {
 			GetWorkload() );
 	}
 
-	void ServerServiceInformation::ValidateServiceInstance(UINT serviceID)
+	void ServerServiceInformation::ValidateServiceInstance(uint serviceID)
 	{
 		AssertRel(m_ServiceBase->GetPolicyID() == serviceID);
 	}

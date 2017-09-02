@@ -16,7 +16,7 @@
 #include "ServerLog/SvrLog.h"
 #include "Thread/Thread.h"
 #include "Util/Utility.h"
-#include "ServerSystem/SvrConstDefault.h"
+#include "SvrConst.h"
 #include "ServerSystem/SimpleUserEntity.h"
 #include "ServerSystem/Transaction.h"
 #include "ServerSystem/BrServer.h"
@@ -174,13 +174,13 @@ namespace Svr
 			if (!(GetMessageHandlerTable()->HandleMessage<Svr::Transaction*&>(GetConnection(), pIMsg, pNewTrans)))
 			{
 				svrTrace(Trace::TRC_ERROR, "Failed to handle remote message Entity:{0}:{1}, MsgID:{2}", typeid(*this).name(), GetEntityID(), pMsgHdr->msgID);
-				svrErr(ResultCode::E_SVR_NOTEXPECTED_MESSAGE);
+				svrErr(ResultCode::SVR_NOTEXPECTED_MESSAGE);
 			}
 			break;
 		}
 		default:
 			svrTrace(Trace::TRC_ERROR, "Not Processed Remote message Entity:{0}:{1}, MsgID:{2}", typeid(*this).name(), GetEntityID(), pMsgHdr->msgID);
-			svrErr(ResultCode::E_SVR_NOTEXPECTED_MESSAGE);
+			svrErr(ResultCode::SVR_NOTEXPECTED_MESSAGE);
 			break;
 		};
 
@@ -262,7 +262,7 @@ namespace Svr
 			}
 
 
-			if (pConn->GetConnectionState() != Net::Connection::STATE_DISCONNECTED)
+			if (pConn->GetConnectionState() != Net::ConnectionState::DISCONNECTED)
 			{
 				// Process message
 				loopCount = pConn->GetRecvMessageCount();

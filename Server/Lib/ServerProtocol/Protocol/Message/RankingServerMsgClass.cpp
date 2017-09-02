@@ -957,7 +957,7 @@ namespace SF
 				variableBuilder.SetVariable("RouteContext", parser.GetRouteContext());
 				variableBuilder.SetVariable("TransactionID", parser.GetTransactionID());
 				variableBuilder.SetVariable("Result", parser.GetResult());
-				variableBuilder.SetVariable("Ranking", (int)parser.GetRanking().GetItemCount(), parser.GetRanking().data());
+				variableBuilder.SetVariable("Ranking", (int)parser.GetRanking().GetItemCount(), (const TotalRankingPlayerInformation*)parser.GetRanking().data());
 
 
 			Proc_End:
@@ -1223,7 +1223,7 @@ namespace SF
 				variableBuilder.SetVariable("RouteContext", parser.GetRouteContext());
 				variableBuilder.SetVariable("TransactionID", parser.GetTransactionID());
 				variableBuilder.SetVariable("Result", parser.GetResult());
-				variableBuilder.SetVariable("Ranking", (int)parser.GetRanking().GetItemCount(), parser.GetRanking().data());
+				variableBuilder.SetVariable("Ranking", (int)parser.GetRanking().GetItemCount(), (const TotalRankingPlayerInformation*)parser.GetRanking().data());
 
 
 			Proc_End:

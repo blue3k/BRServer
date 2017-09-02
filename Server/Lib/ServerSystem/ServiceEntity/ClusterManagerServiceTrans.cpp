@@ -10,14 +10,14 @@
 
 
 #include "stdafx.h"
-#include "ResultCode/SFResultCodeCommon.h"
+#include "ResultCode/SFResultCodeLibrary.h"
 #include "ResultCode/SFResultCodeGame.h"
 #include "ResultCode/SFResultCodeLogin.h"
 #include "Memory/MemoryPool.h"
 #include "Types/BrSvrTypes.h"
 
 #include "Protocol/Message/ClusterServerMsgClass.h"
-#include "Protocol/Policy/ClusterServerIPolicy.h"
+#include "Protocol/Policy/ClusterServerNetPolicy.h"
 
 #include "ServerSystem/ServerService/ClusterServerService.h"
 
@@ -30,11 +30,11 @@
 #include "ServerSystem/ServiceEntity/ClusterManagerServiceEntity.h"
 
 
-//SF_MEMORYPOOL_IMPLEMENT(BR::Svr::ClusterManagerInitializationTrans);
-SF_MEMORYPOOL_IMPLEMENT(BR::Svr::ClusterGetMemberListTrans);
-SF_MEMORYPOOL_IMPLEMENT(BR::Svr::JoinClusterTrans);
-SF_MEMORYPOOL_IMPLEMENT(BR::Svr::JoinClusterTransForEntityServer);
-SF_MEMORYPOOL_IMPLEMENT(BR::Svr::SyncClusterServiceTrans);
+//SF_MEMORYPOOL_IMPLEMENT(SF::Svr::ClusterManagerInitializationTrans);
+SF_MEMORYPOOL_IMPLEMENT(SF::Svr::ClusterGetMemberListTrans);
+SF_MEMORYPOOL_IMPLEMENT(SF::Svr::JoinClusterTrans);
+SF_MEMORYPOOL_IMPLEMENT(SF::Svr::JoinClusterTransForEntityServer);
+SF_MEMORYPOOL_IMPLEMENT(SF::Svr::SyncClusterServiceTrans);
 
 
 
@@ -105,7 +105,7 @@ namespace Svr {
 			}
 			else
 			{
-				svrErrClose(ResultCode::E_SVR_INVALID_SERVERID);
+				svrErrClose(ResultCode::SVR_INVALID_SERVERID);
 			}
 		}
 
@@ -250,13 +250,13 @@ namespace Svr {
 		if( !(GetMyOwner()->GetClusterServiceEntity( GetClusterID(), pServiceEntity )) )
 		{
 			svrTrace(Svr::TRC_CLUSTER, "Ignoring unregistered cluster service sync: ClusterID:{0}", GetClusterID() );
-			//svrErr(ResultCode::E_SVR_INVALID_CLUSTERID);
+			//svrErr(ResultCode::SVR_INVALID_CLUSTERID);
 			goto Proc_End;
 		}
 
 		bAddStatusWatcher = pServiceEntity->GetClusterMembership() != ClusterMembership::StatusWatcher;
 
-		for( UINT iMember = 0; iMember < GetMemberList().GetSize(); iMember++ )
+		for( uint iMember = 0; iMember < GetMemberList().GetSize(); iMember++ )
 		{
 			const ServiceInformation& serviceInfo = GetMemberList()[iMember];
 			

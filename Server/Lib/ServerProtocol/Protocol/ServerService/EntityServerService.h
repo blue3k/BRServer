@@ -35,7 +35,7 @@ namespace SF
 			// Cmd: Register entity
 			Result RegisterEntityCmd( const TransactionID &InTransactionID, const EntityID &InLocalEntID, const char* InEntName );
 			// Cmd: Find Entity
-			Result UnregisterEntityCmd( const TransactionID &InTransactionID, const EntityUID &InEntUID );
+			Result UnregisterEntityCmd( const TransactionID &InTransactionID, const uint64_t &InEntUID );
 			// Cmd: Find Entity
 			Result FindEntityCmd( const TransactionID &InTransactionID, const EntityID &InLocalEntID );
 

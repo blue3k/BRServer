@@ -18,16 +18,16 @@
 #include "Net/NetServerUDP.h"
 #include "Util/TimeUtil.h"
 #include "Types/BrBaseTypes.h"
-#include "ResultCode/SFResultCodeCommon.h"
+#include "ResultCode/SFResultCodeLibrary.h"
 #include "ResultCode/SFResultCodeGame.h"
 
-#include "Protocol/Policy/GameServerIPolicy.h"
-#include "Protocol/Policy/GameIPolicy.h"
+#include "Protocol/Policy/GameServerNetPolicy.h"
+#include "Protocol/Policy/GameNetPolicy.h"
 #include "Protocol/Message/GameMsgClass.h"
 
-#include "Protocol/Policy/LoginIPolicy.h"
+#include "Protocol/Policy/LoginNetPolicy.h"
 #include "Protocol/Message/LoginMsgClass.h"
-#include "Protocol/Policy/LoginServerIPolicy.h"
+#include "Protocol/Policy/LoginServerNetPolicy.h"
 #include "Protocol/Message/LoginServerMsgClass.h"
 
 
@@ -36,7 +36,7 @@
 
 
 
-SF_MEMORYPOOL_IMPLEMENT(BR::BR::Svr::LoginPlayerEntity);
+SF_MEMORYPOOL_IMPLEMENT(SF::Svr::LoginPlayerEntity);
 
 
 
@@ -101,7 +101,7 @@ namespace Svr {
 
 		svrChk( super::SetConnection(std::forward<SharedPointerT<Net::Connection>>(pCon)) );
 
-		svrChk( GetConnection()->CreatePolicy( Policy::ISvrPolicyGame::ID_POLICY ) );
+		svrChk( GetConnection()->CreatePolicy( Policy::NetSvrPolicyGame::ID_POLICY ) );
 
 		pCon = nullptr;
 

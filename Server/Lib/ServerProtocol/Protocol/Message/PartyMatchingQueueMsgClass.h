@@ -247,7 +247,7 @@ namespace SF
 				TransactionID m_TransactionID;
 				uint16_t m_RouteHopCount;
 				MatchingQueueTicket m_MatchingTicket;
-				EntityUID m_PreviousUID;
+				uint64_t m_PreviousUID;
 			public:
 				UpdateMatchingEntityUIDCmd()
 					{}
@@ -262,7 +262,7 @@ namespace SF
 				const TransactionID& GetTransactionID() const	{ return m_TransactionID; };
 				const uint16_t& GetRouteHopCount() const	{ return m_RouteHopCount; };
 				const MatchingQueueTicket& GetMatchingTicket() const	{ return m_MatchingTicket; };
-				const EntityUID& GetPreviousUID() const	{ return m_PreviousUID; };
+				const uint64_t& GetPreviousUID() const	{ return m_PreviousUID; };
 
 				static Result TraceOut(MessageData* pMsg);
 
@@ -270,7 +270,7 @@ namespace SF
 				static Result ParseMessageTo( MessageData* pIMsg, VariableMapBuilder& variableBuilder );
 				static Result ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageData* pIMsg, MessageBase* &pMsgBase );
 
-				static MessageData* Create( IMemoryManager& memoryManager, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const uint16_t &InRouteHopCount, const MatchingQueueTicket &InMatchingTicket, const EntityUID &InPreviousUID );
+				static MessageData* Create( IMemoryManager& memoryManager, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const uint16_t &InRouteHopCount, const MatchingQueueTicket &InMatchingTicket, const uint64_t &InPreviousUID );
 
 				Result OverrideRouteContextDestination( EntityUID to );
 
@@ -448,7 +448,7 @@ namespace SF
 			private:
 				RouteContext m_RouteContext;
 				uint16_t m_RouteHopCount;
-				PartyUID m_DestPartyUID;
+				uint64_t m_DestPartyUID;
 				MatchingQueueTicket m_MatchingTicket;
 			public:
 				PartyMatchingCanceledS2CEvt()
@@ -462,7 +462,7 @@ namespace SF
 
 				const RouteContext& GetRouteContext() const	{ return m_RouteContext; };
 				const uint16_t& GetRouteHopCount() const	{ return m_RouteHopCount; };
-				const PartyUID& GetDestPartyUID() const	{ return m_DestPartyUID; };
+				const uint64_t& GetDestPartyUID() const	{ return m_DestPartyUID; };
 				const MatchingQueueTicket& GetMatchingTicket() const	{ return m_MatchingTicket; };
 
 				static Result TraceOut(MessageData* pMsg);
@@ -471,7 +471,7 @@ namespace SF
 				static Result ParseMessageTo( MessageData* pIMsg, VariableMapBuilder& variableBuilder );
 				static Result ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageData* pIMsg, MessageBase* &pMsgBase );
 
-				static MessageData* Create( IMemoryManager& memoryManager, const RouteContext &InRouteContext, const uint16_t &InRouteHopCount, const PartyUID &InDestPartyUID, const MatchingQueueTicket &InMatchingTicket );
+				static MessageData* Create( IMemoryManager& memoryManager, const RouteContext &InRouteContext, const uint16_t &InRouteHopCount, const uint64_t &InDestPartyUID, const MatchingQueueTicket &InMatchingTicket );
 
 				Result OverrideRouteContextDestination( EntityUID to );
 
@@ -1110,7 +1110,7 @@ namespace SF
 				TransactionID m_TransactionID;
 				Result m_Result;
 				MatchingQueueTicket m_MatchingTicket;
-				EntityUID m_RegisterUID;
+				uint64_t m_RegisterUID;
 				PlayerID m_RegisterID;
 				LinkedArray<MatchingPlayerInformation> m_Players;
 			public:
@@ -1127,7 +1127,7 @@ namespace SF
 				const TransactionID& GetTransactionID() const	{ return m_TransactionID; };
 				const Result& GetResult() const	{ return m_Result; };
 				const MatchingQueueTicket& GetMatchingTicket() const	{ return m_MatchingTicket; };
-				const EntityUID& GetRegisterUID() const	{ return m_RegisterUID; };
+				const uint64_t& GetRegisterUID() const	{ return m_RegisterUID; };
 				const PlayerID& GetRegisterID() const	{ return m_RegisterID; };
 				const Array<MatchingPlayerInformation>& GetPlayers() const	{ return m_Players; };
 
@@ -1137,7 +1137,7 @@ namespace SF
 				static Result ParseMessageTo( MessageData* pIMsg, VariableMapBuilder& variableBuilder );
 				static Result ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageData* pIMsg, MessageBase* &pMsgBase );
 
-				static MessageData* Create( IMemoryManager& memoryManager, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const Result &InResult, const MatchingQueueTicket &InMatchingTicket, const EntityUID &InRegisterUID, const PlayerID &InRegisterID, const Array<MatchingPlayerInformation>& InPlayers );
+				static MessageData* Create( IMemoryManager& memoryManager, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const Result &InResult, const MatchingQueueTicket &InMatchingTicket, const uint64_t &InRegisterUID, const PlayerID &InRegisterID, const Array<MatchingPlayerInformation>& InPlayers );
 
 				Result OverrideRouteContextDestination( EntityUID to );
 

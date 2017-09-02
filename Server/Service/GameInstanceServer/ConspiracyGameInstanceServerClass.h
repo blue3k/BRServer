@@ -18,7 +18,7 @@
 #include "Common/ClassUtil.h"
 
 
-//namespace BR {
+//namespace SF {
 //namespace Policy {
 //		interface IPolicyEntityServer;
 //		interface IPolicyGameMasterServer;
@@ -27,13 +27,13 @@
 //}};
 //
 
-namespace BR {
+namespace SF {
 namespace Net {
 	class ServerMUDP;
 }};
 
 
-namespace BR {
+namespace SF {
 namespace ConspiracyGameInstanceServer
 {
 
@@ -128,7 +128,7 @@ namespace ConspiracyGameInstanceServer
 
 
 }; // namespace ConspiracyGameInstanceServer
-}; // namespace BR
+}; // namespace SF
 
 
 

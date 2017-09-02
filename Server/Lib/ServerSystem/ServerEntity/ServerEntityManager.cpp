@@ -15,8 +15,8 @@
 #include "Util/TimeUtil.h"
 #include "ServerLog/SvrLog.h"
 #include "Thread/Thread.h"
-#include "ResultCode/SFResultCodeCommon.h"
-#include "ServerSystem/SvrConstDefault.h"
+#include "ResultCode/SFResultCodeLibrary.h"
+#include "SvrConst.h"
 #include "ServerSystem/ServerEntityManager.h"
 #include "ServerSystem/Transaction.h"
 //#include "ServerSystem/PlugIn.h"
@@ -181,7 +181,7 @@ namespace Svr
 		svrChkPtr( pServerEntity );
 
 		if (netClass < NetClass::Unknown
-			|| netClass >= BR::NetClass::Max)
+			|| netClass >= NetClass::Max)
 		{
 			return ResultCode::INVALID_ARG;
 		}
@@ -214,7 +214,7 @@ namespace Svr
 		MutexScopeLock localLock(m_ServerTableLock);
 
 		if (netClass < NetClass::Unknown
-			|| netClass >= BR::NetClass::Max)
+			|| netClass >= NetClass::Max)
 		{
 			return ResultCode::INVALID_ARG;
 		}

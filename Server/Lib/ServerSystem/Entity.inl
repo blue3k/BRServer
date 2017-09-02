@@ -79,7 +79,7 @@ PageQueue<Transaction*>& Entity::GetTransactionQueue()
 }
 //
 //// Get transaction result queue
-//BR::PageQueue<TransactionResult*>& Entity::GetTransactionResQueue()
+//SF::PageQueue<TransactionResult*>& Entity::GetTransactionResQueue()
 //{
 //	return m_transactionResQueue;
 //}

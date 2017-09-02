@@ -252,7 +252,7 @@ namespace SF
 			private:
 				RouteContext m_RouteContext;
 				AccountID m_SenderID;
-				PlayerRole m_Role;
+				uint8_t m_Role;
 				const char* m_SenderName;
 				const char* m_ChatMessage;
 			public:
@@ -271,7 +271,7 @@ namespace SF
 
 				const RouteContext& GetRouteContext() const	{ return m_RouteContext; };
 				const AccountID& GetSenderID() const	{ return m_SenderID; };
-				const PlayerRole& GetRole() const	{ return m_Role; };
+				const uint8_t& GetRole() const	{ return m_Role; };
 				const char* GetSenderName() const	{ return m_SenderName; };
 				const char* GetChatMessage() const	{ return m_ChatMessage; };
 
@@ -281,7 +281,7 @@ namespace SF
 				static Result ParseMessageTo( MessageData* pIMsg, VariableMapBuilder& variableBuilder );
 				static Result ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageData* pIMsg, MessageBase* &pMsgBase );
 
-				static MessageData* Create( IMemoryManager& memoryManager, const RouteContext &InRouteContext, const AccountID &InSenderID, const PlayerRole &InRole, const char* InSenderName, const char* InChatMessage );
+				static MessageData* Create( IMemoryManager& memoryManager, const RouteContext &InRouteContext, const AccountID &InSenderID, const uint8_t &InRole, const char* InSenderName, const char* InChatMessage );
 
 				Result OverrideRouteContextDestination( EntityUID to );
 
@@ -570,7 +570,7 @@ namespace SF
 				PlayerID m_DestPlayerID;
 				PlayerID m_InviterID;
 				const char* m_InviterName;
-				EntityUID m_PartyUID;
+				uint64_t m_PartyUID;
 			public:
 				NotifyPartyInviteC2SEvt()
 				:m_InviterName(nullptr)
@@ -587,7 +587,7 @@ namespace SF
 				const PlayerID& GetDestPlayerID() const	{ return m_DestPlayerID; };
 				const PlayerID& GetInviterID() const	{ return m_InviterID; };
 				const char* GetInviterName() const	{ return m_InviterName; };
-				const EntityUID& GetPartyUID() const	{ return m_PartyUID; };
+				const uint64_t& GetPartyUID() const	{ return m_PartyUID; };
 
 				static Result TraceOut(MessageData* pMsg);
 
@@ -595,7 +595,7 @@ namespace SF
 				static Result ParseMessageTo( MessageData* pIMsg, VariableMapBuilder& variableBuilder );
 				static Result ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageData* pIMsg, MessageBase* &pMsgBase );
 
-				static MessageData* Create( IMemoryManager& memoryManager, const RouteContext &InRouteContext, const PlayerID &InDestPlayerID, const PlayerID &InInviterID, const char* InInviterName, const EntityUID &InPartyUID );
+				static MessageData* Create( IMemoryManager& memoryManager, const RouteContext &InRouteContext, const PlayerID &InDestPlayerID, const PlayerID &InInviterID, const char* InInviterName, const uint64_t &InPartyUID );
 
 				Result OverrideRouteContextDestination( EntityUID to );
 

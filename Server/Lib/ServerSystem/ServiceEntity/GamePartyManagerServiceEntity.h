@@ -24,7 +24,7 @@
 #include "ServerSystem/ServerServiceBase.h"
 #include "ServerSystem/MessageRoute.h"
 #include "Common/HashTable.h"
-#include "Common/Indexing.h"
+#include "Container/Indexing.h"
 
 #include "ServerSystem/ServiceEntity/EntityInformation.h"
 #include "ServerSystem/ServiceEntity/ClusteredServiceEntity.h"

@@ -16,13 +16,13 @@
 #include "Memory/MemoryPool.h"
 #include "Container/SFArray.h"
 #include "Types/BrBaseTypes.h"
-#include "Common/GameConst.h"
+#include "GameConst.h"
 #include "Protocol/Message/GameMsgClass.h"
-#include "Protocol/Policy/GameIPolicy.h"
+#include "Protocol/Policy/GameNetPolicy.h"
 #include "Protocol/Message/GameServerMsgClass.h"
-#include "Protocol/Policy/GameServerIPolicy.h"
+#include "Protocol/Policy/GameServerNetPolicy.h"
 #include "Protocol/Message/GameInstanceMsgClass.h"
-#include "Protocol/Policy/GameInstanceIPolicy.h"
+#include "Protocol/Policy/GameInstanceNetPolicy.h"
 
 #include "ServerSystem/MessageRoute.h"
 
@@ -34,7 +34,7 @@
 //#include "PlayerInfoManager.h"
 
 
-namespace BR {
+namespace SF {
 namespace GameServer {
 
 
@@ -69,5 +69,5 @@ namespace GameServer {
 
 
 } // namespace GameServer 
-} // namespace BR 
+} // namespace SF 
 

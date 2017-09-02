@@ -25,7 +25,7 @@
 #include "ServerSystem/ServerServiceBase.h"
 #include "ServerSystem/MessageRoute.h"
 #include "Common/HashTable.h"
-#include "Common/Indexing.h"
+#include "Container/Indexing.h"
 
 #include "ServerSystem/ServiceEntity/EntityInformation.h"
 #include "ServerSystem/ServiceEntity/ClusteredServiceEntity.h"
@@ -79,7 +79,7 @@ namespace Svr {
 		~LoginServiceEntity();
 
 		// We are not going to use hashed key
-		virtual UINT KeyHash( uint64_t key ) { return (UINT)key; }
+		virtual uint KeyHash( uint64_t key ) { return (uint)key; }
 		
 
 		//////////////////////////////////////////////////////////////////////////

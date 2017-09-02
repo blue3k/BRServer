@@ -193,8 +193,8 @@ namespace SF
 				protocolChk( Protocol::StreamParamCopy( &m_RouteContext, pCur, iMsgSize, sizeof(RouteContext) ) );
 				protocolChk( Protocol::StreamParamCopy( &m_RouteHopCount, pCur, iMsgSize, sizeof(uint16_t) ) );
 				protocolChk( Protocol::StreamParamCopy( &m_DestPlayerID, pCur, iMsgSize, sizeof(PlayerID) ) );
-				protocolChk( Protocol::StreamParamCopy( &m_GameInsUID, pCur, iMsgSize, sizeof(GameInsUID) ) );
-				protocolChk( Protocol::StreamParamCopy( &m_RequestedRole, pCur, iMsgSize, sizeof(PlayerRole) ) );
+				protocolChk( Protocol::StreamParamCopy( &m_GameInsUID, pCur, iMsgSize, sizeof(uint64_t) ) );
+				protocolChk( Protocol::StreamParamCopy( &m_RequestedRole, pCur, iMsgSize, sizeof(uint8_t) ) );
 
 
 			Proc_End:
@@ -236,7 +236,7 @@ namespace SF
 
 			}; // Result PlayerGameMatchedS2CEvt::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageData* pIMsg, MessageBase* &pMessageBase )
 
-			MessageData* PlayerGameMatchedS2CEvt::Create( IMemoryManager& memoryManager, const RouteContext &InRouteContext, const uint16_t &InRouteHopCount, const PlayerID &InDestPlayerID, const GameInsUID &InGameInsUID, const PlayerRole &InRequestedRole )
+			MessageData* PlayerGameMatchedS2CEvt::Create( IMemoryManager& memoryManager, const RouteContext &InRouteContext, const uint16_t &InRouteHopCount, const PlayerID &InDestPlayerID, const uint64_t &InGameInsUID, const uint8_t &InRequestedRole )
 			{
  				MessageData *pNewMsg = nullptr;
 				Result hr;
@@ -247,8 +247,8 @@ namespace SF
 					+ sizeof(RouteContext)
 					+ sizeof(uint16_t)
 					+ sizeof(PlayerID)
-					+ sizeof(GameInsUID)
-					+ sizeof(PlayerRole));
+					+ sizeof(uint64_t)
+					+ sizeof(uint8_t));
 
 
 				protocolMem( pNewMsg = MessageData::NewMessage( memoryManager, PartyMatching::PlayerGameMatchedS2CEvt::MID, __uiMessageSize ) );
@@ -258,8 +258,8 @@ namespace SF
 				Protocol::PackParamCopy( pMsgData, &InRouteContext, sizeof(RouteContext));
 				Protocol::PackParamCopy( pMsgData, &InRouteHopCount, sizeof(uint16_t));
 				Protocol::PackParamCopy( pMsgData, &InDestPlayerID, sizeof(PlayerID));
-				Protocol::PackParamCopy( pMsgData, &InGameInsUID, sizeof(GameInsUID));
-				Protocol::PackParamCopy( pMsgData, &InRequestedRole, sizeof(PlayerRole));
+				Protocol::PackParamCopy( pMsgData, &InGameInsUID, sizeof(uint64_t));
+				Protocol::PackParamCopy( pMsgData, &InRequestedRole, sizeof(uint8_t));
 
 
 			Proc_End:
@@ -271,7 +271,7 @@ namespace SF
 				}
 				return pNewMsg;
 
-			}; // MessageData* PlayerGameMatchedS2CEvt::Create( IMemoryManager& memoryManager, const RouteContext &InRouteContext, const uint16_t &InRouteHopCount, const PlayerID &InDestPlayerID, const GameInsUID &InGameInsUID, const PlayerRole &InRequestedRole )
+			}; // MessageData* PlayerGameMatchedS2CEvt::Create( IMemoryManager& memoryManager, const RouteContext &InRouteContext, const uint16_t &InRouteHopCount, const PlayerID &InDestPlayerID, const uint64_t &InGameInsUID, const uint8_t &InRequestedRole )
 
 			Result PlayerGameMatchedS2CEvt::OverrideRouteContextDestination( EntityUID to )
 			{

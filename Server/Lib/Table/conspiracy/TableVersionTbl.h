@@ -17,6 +17,8 @@
 
 namespace conspiracy
 {
+	using namespace SF;
+
  	class TableVersionTbl
 	{
  	public:
@@ -36,9 +38,9 @@ namespace conspiracy
 
 
 		// declare member function
-		static BR::Result LoadTable( const std::list<TableVersionItem>& rowList );
+		static Result LoadTable( const std::list<TableVersionItem>& rowList );
 
-		static BR::Result FindItem( const int& Key, TableVersionItem*& pRow);
+		static Result FindItem( const int& Key, TableVersionItem*& pRow);
 	}; // class TableVersionTbl
 }; // namespace conspiracy
 

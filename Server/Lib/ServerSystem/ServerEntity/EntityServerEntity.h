@@ -49,7 +49,7 @@ namespace Svr
 
 
 	public:
-		EntityServerEntity( UINT uiTransQueueSize = 0, UINT TransResQueueSize = 0);
+		EntityServerEntity( uint uiTransQueueSize = 0, uint TransResQueueSize = 0);
 		virtual ~EntityServerEntity();
 
 
@@ -59,7 +59,7 @@ namespace Svr
 
 
 		// Process Connection event
-		virtual Result ProcessConnectionEvent( const BR::Net::ConnectionEvent& conEvent );
+		virtual Result ProcessConnectionEvent( const Net::ConnectionEvent& conEvent );
 	};
 
 

@@ -24,14 +24,14 @@
 
 #include "Net/NetDef.h"
 
-#include "ServerSystem/SvrConst.h"
 #include "ServerSystem/SvrTrace.h"
 #include "Types/BrSvrTypes.h"
-#include "ServerSystem/MessageHandlerTable.h"
+#include "MessageHandlerTable.h"
 #include "Protocol/Message/ServerMsgClass.h"
 #include "Task/TimerSchedulerAction.h"
 #include "Net/Connection.h"
-#include "ServerSystem/BrServerUtil.h"
+#include "BrServerUtil.h"
+#include "SvrConst.h"
 
 namespace SF {
 	class TimerAction;
@@ -419,7 +419,7 @@ namespace Svr {
 	typedef std::function<Result(TransactionResult* pRes)> TransactionMessageHandlerType;
 
 	// Message transaction template
-	template< class OwnerType, class MemoryPoolClass, size_t MessageHandlerCount = 2 >
+	template< class OwnerType, class MemoryPoolClass >
 	class TransactionT : public Transaction, public MemoryPoolObject<MemoryPoolClass>
 	{
 	public:
@@ -427,17 +427,13 @@ namespace Svr {
 
 	private:
 
-		// static allocation buffer
-		StaticArray<MessageHandlerCount>	m_MessageHandlerBuffer;
-
 		// Message handler table
 		MessageHandlerTable<TransactionMessageHandlerType>		m_Handlers;
 
 	public:
 		TransactionT(IMemoryManager& memMgr, TransactionID transID )
 			:Transaction(memMgr, transID )
-			, m_MessageHandlerBuffer(memMgr)
-			,m_Handlers(m_StaticAllocator)
+			,m_Handlers(memMgr)
 		{
 			BR_TRANS_MESSAGE(Message::Server::GenericFailureRes, { return OnGenericError(pRes); });
 		}
@@ -474,7 +470,7 @@ namespace Svr {
 
 			if( !(hr) )
 			{
-				if( hr == Result(ResultCode::E_SVR_NO_RESULT_HANDLER))
+				if( hr == Result(ResultCode::SVR_NO_RESULT_HANDLER))
 				{
 					svrTrace( Trace::TRC_ERROR, "Transaction has no result handler : Result MessageID:{0}, {1}", pRes->GetMsgID(), typeid(*this).name() );
 				}
@@ -525,16 +521,16 @@ namespace Svr {
 
 
 	// Message transaction template
-	template< class OwnerType, class PolicyClass, class MessageClass, class MemoryPoolClass, size_t MessageHandlerBufferSize = sizeof(TransactionMessageHandlerType)*2 >
-	class MessageTransaction : public TransactionT<OwnerType,MemoryPoolClass,MessageHandlerBufferSize>, public MessageClass
+	template< class OwnerType, class PolicyClass, class MessageClass, class MemoryPoolClass >
+	class MessageTransaction : public TransactionT<OwnerType,MemoryPoolClass>, public MessageClass
 	{
 	protected:
 		// Policy
 		SharedPointerT<Net::Connection> m_pConn;
 
 	public:
-		MessageTransaction( Message::MessageData* &pIMsg )
-			: TransactionT<OwnerType, MemoryPoolClass, MessageHandlerBufferSize>( TransactionID() )
+		MessageTransaction(IMemoryManager& memoryManager, Message::MessageData* &pIMsg )
+			: TransactionT<OwnerType, MemoryPoolClass>(memoryManager, TransactionID() )
 			, MessageClass( pIMsg )
 		{
 		}
@@ -615,12 +611,12 @@ namespace Svr {
 
 
 	// User event routing transaction, result policy will be routed to user
-	template< class OwnerEntityType, class PolicyType, class MessageClass, class TransactionType, size_t MessageHandlerBufferSize = sizeof(TransactionMessageHandlerType)*2 >
-	class UserTransactionS2SEvt : public MessageTransaction<OwnerEntityType,PolicyType, MessageClass, TransactionType, MessageHandlerBufferSize>
+	template< class OwnerEntityType, class PolicyType, class MessageClass, class TransactionType >
+	class UserTransactionS2SEvt : public MessageTransaction<OwnerEntityType,PolicyType, MessageClass, TransactionType>
 	{
 	protected:
-		UserTransactionS2SEvt( Message::MessageData* &pIMsg )
-			:MessageTransaction<OwnerEntityType, PolicyType, MessageClass, TransactionType, MessageHandlerBufferSize>(pIMsg )
+		UserTransactionS2SEvt(IMemoryManager& memMgr, Message::MessageData* &pIMsg )
+			:MessageTransaction<OwnerEntityType, PolicyType, MessageClass, TransactionType>(memMgr, pIMsg )
 		{
 		}
 
@@ -638,10 +634,10 @@ namespace Svr {
 			hr = MessageTransaction<OwnerEntityType, PolicyType, MessageClass, TransactionType, MessageHandlerBufferSize>::ParseMessage();
 			svrChk(hr);
 
-			if(MessageClass::GetRouteContext().GetTo().GetServerID() != ::BR::Svr::GetMyServerID() )
+			if(MessageClass::GetRouteContext().GetTo().GetServerID() != Svr::GetMyServerID() )
 			{
 				svrTrace( Trace::TRC_ERROR, "Invalid ServerID {0} MsgID:{0}", typeid(*this).name(), MessageClass::GetMessage()->GetMessageHeader()->msgID );
-				svrErr(ResultCode::E_SVR_INVALID_SERVERID);
+				svrErr(ResultCode::SVR_INVALID_SERVERID);
 			}
 
 			svrChk(FindEntity(MessageClass::GetRouteContext().GetTo().GetEntityID(), pFound));
@@ -666,15 +662,15 @@ namespace Svr {
 
 
 	// User S2S command routing transaction, result policy will be routed to server
-	template< class OwnerEntityType, class PolicyType, class MessageClass, class TransactionType, size_t MessageHandlerBufferSize = sizeof(TransactionMessageHandlerType)*2 >
-	class UserTransactionS2SCmd : public MessageTransaction<OwnerEntityType,PolicyType, MessageClass, TransactionType, MessageHandlerBufferSize>
+	template< class OwnerEntityType, class PolicyType, class MessageClass, class TransactionType >
+	class UserTransactionS2SCmd : public MessageTransaction<OwnerEntityType,PolicyType, MessageClass, TransactionType>
 	{
 	private:
-		typedef MessageTransaction<OwnerEntityType, PolicyType, MessageClass, TransactionType, MessageHandlerBufferSize> superTrans;
+		typedef MessageTransaction<OwnerEntityType, PolicyType, MessageClass, TransactionType> superTrans;
 
 	protected:
-		UserTransactionS2SCmd( Message::MessageData* &pIMsg )
-			: MessageTransaction<OwnerEntityType, PolicyType, MessageClass, TransactionType, MessageHandlerBufferSize>(pIMsg )
+		UserTransactionS2SCmd(IMemoryManager& memMgr, Message::MessageData* &pIMsg )
+			: MessageTransaction<OwnerEntityType, PolicyType, MessageClass, TransactionType>(memMgr, pIMsg )
 		{
 		}
 
@@ -693,7 +689,7 @@ namespace Svr {
 			if (!(FindEntity(MessageClass::GetRouteContext().GetTo().GetEntityID(), entity)))
 			{
 				// Can't find target player entity, maybe logged out?
-				hr = ResultCode::E_SVR_INVALID_ENTITYUID;
+				hr = ResultCode::SVR_INVALID_ENTITYUID;
 				goto Proc_End;
 			}
 

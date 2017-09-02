@@ -27,7 +27,7 @@
 
 
 
-namespace BR {
+namespace SF {
 namespace GameServer {
 
 
@@ -89,7 +89,7 @@ namespace GameServer {
 
 		switch (pEntity->GetEntityID().GetFacultyID())
 		{
-		case (UINT)EntityFaculty::User:
+		case (uint)EntityFaculty::User:
 			++m_NumberOfPlayers;
 			break;
 		}
@@ -101,7 +101,7 @@ namespace GameServer {
 
 		switch (pEntity->GetEntityID().GetFacultyID())
 		{
-		case (UINT)EntityFaculty::User:
+		case (uint)EntityFaculty::User:
 			--m_NumberOfPlayers;
 			break;
 		}
@@ -123,7 +123,7 @@ namespace GameServer {
 	}
 
 	// Initialize TaskManager
-	Result GameEntityManager::InitializeManager( UINT uiNumGroup )
+	Result GameEntityManager::InitializeManager( uint uiNumGroup )
 	{
 		Result hr = ResultCode::SUCCESS;
 
@@ -151,7 +151,7 @@ namespace GameServer {
 
 
 }; // namespace GameServer
-}; // namespace BR
+}; // namespace SF
 
 
 

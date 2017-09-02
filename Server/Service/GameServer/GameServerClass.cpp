@@ -31,12 +31,12 @@
 #include "ServerSystem/ServerEntity/EntityServerEntity.h"
 #include "ServerSystem/ServerEntity/GenericServerEntity.h"
 
-#include "Protocol/Policy/EntityServerIPolicy.h"
+#include "Protocol/Policy/EntityServerNetPolicy.h"
 
-#include "Protocol/Policy/EntityServerIPolicy.h"
-#include "Protocol/Policy/GameServerIPolicy.h"
-#include "Protocol/Policy/GameInstanceIPolicy.h"
-#include "Protocol/Policy/GameMasterServerIPolicy.h"
+#include "Protocol/Policy/EntityServerNetPolicy.h"
+#include "Protocol/Policy/GameServerNetPolicy.h"
+#include "Protocol/Policy/GameInstanceNetPolicy.h"
+#include "Protocol/Policy/GameMasterServerNetPolicy.h"
 
 #include "Net/NetServerPeer.h"
 #include "Net/NetServer.h"
@@ -60,7 +60,7 @@
 
 
 
-namespace BR {
+namespace SF {
 namespace GameServer {
 
 
@@ -97,7 +97,7 @@ namespace GameServer {
 	}
 	
 	// Update game config
-	Result GameServer::UpdateGameConfig(UINT configPresetID)
+	Result GameServer::UpdateGameConfig(uint configPresetID)
 	{
 		Result hr = ResultCode::SUCCESS;
 
@@ -188,7 +188,7 @@ namespace GameServer {
 	{
 		Result hr = ResultCode::SUCCESS;
 		Svr::GameClusterServiceEntity *pGameService = nullptr;
-		UINT componentID = 0;
+		uint componentID = 0;
 		SockFamily privateNetSockFamily;
 
 		svrChk(Svr::BrServer::InitializeNetPrivate() );
@@ -407,7 +407,7 @@ namespace GameServer {
 
 
 }; // namespace GameServer
-}; // namespace BR
+}; // namespace SF
 
 
 

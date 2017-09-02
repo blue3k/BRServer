@@ -22,13 +22,13 @@
 #include "ServerSystem/ServiceEntity/ClusterManagerServiceEntity.h"
 
 #include "Protocol/Message/ServerMsgClass.h"
-#include "Protocol/Policy/ServerNetPolicy.h"
+#include "Protocol/Policy/ServerNetNetPolicy.h"
 #include "Protocol/Message/ClusterServerMsgClass.h"
-#include "Protocol/Policy/ClusterServerNetPolicy.h"
+#include "Protocol/Policy/ClusterServerNetNetPolicy.h"
 
 
-SF_MEMORYPOOL_IMPLEMENT(BR::Svr::GenericServerStartedTrans);
-SF_MEMORYPOOL_IMPLEMENT(BR::Svr::EntityServerStartedTrans);
+SF_MEMORYPOOL_IMPLEMENT(SF::Svr::GenericServerStartedTrans);
+SF_MEMORYPOOL_IMPLEMENT(SF::Svr::EntityServerStartedTrans);
 
 
 namespace SF {
@@ -60,7 +60,7 @@ namespace Svr {
 
 
 		// Update service information with master's one
-		for( UINT iMember = 0; iMember < msgRes.GetMemberList().GetSize(); iMember++ )
+		for( uint iMember = 0; iMember < msgRes.GetMemberList().GetSize(); iMember++ )
 		{
 			const ServiceInformation *pCurrentService = &msgRes.GetMemberList()[iMember];
 			Svr::ServerServiceInformation *pService = nullptr;
@@ -88,7 +88,7 @@ namespace Svr {
 	{
 		Result hr = ResultCode::SUCCESS;
 		Svr::ServerServiceInformation *pService = nullptr;
-		const BR::ServiceInformation &serviceInfo = GetClusterManagerServiceInformation();
+		const ServiceInformation &serviceInfo = GetClusterManagerServiceInformation();
 		Svr::ClusterManagerServiceEntity *pClusterManagerEntity = nullptr;
 
 		svrChk( super::StartTransaction() );

@@ -195,7 +195,7 @@ namespace Trace {
 
 
 
-	void* TraceModule::TraceReserveWriteBuffer( UINT trcInputMask, char*& stringBuffer, INT &buffLen )
+	void* TraceModule::TraceReserveWriteBuffer( uint trcInputMask, char*& stringBuffer, INT &buffLen )
 	{
 		if( TraceOutModule::GetInstance() == 0 )
 			return nullptr;
@@ -443,7 +443,7 @@ namespace Trace {
 				if (uiOutputMask != 0)
 				{
 					// if already file created then skip
-					if (m_tLogFileHour[iFile] == (UINT)m_tCurTimeTM.tm_hour)
+					if (m_tLogFileHour[iFile] == (uint)m_tCurTimeTM.tm_hour)
 						continue;
 
 					// build name
@@ -652,7 +652,7 @@ namespace Trace {
 
 
 	//// Trace print data to Spin Buffer
-	//void TraceOutModule::TracePush( UINT trcInputMask, const char *strTrace, const char* traceName )
+	//void TraceOutModule::TracePush( uint trcInputMask, const char *strTrace, const char* traceName )
 	//{
 	//	// if not thread mode then print directly
 	//	if(!GetIsRunning())

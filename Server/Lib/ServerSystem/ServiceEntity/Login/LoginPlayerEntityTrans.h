@@ -20,9 +20,9 @@
 #include "Net/Message.h"
 
 #include "Protocol/Message/LoginMsgClass.h"
-#include "Protocol/Policy/LoginIPolicy.h"
+#include "Protocol/Policy/LoginNetPolicy.h"
 #include "Protocol/Message/LoginServerMsgClass.h"
-#include "Protocol/Policy/LoginServerIPolicy.h"
+#include "Protocol/Policy/LoginServerNetPolicy.h"
 
 #include "ServerSystem/MessageRoute.h"
 #include "ServerSystem/ServerEntity.h"
@@ -37,19 +37,19 @@ namespace Svr {
 
 
 	template<class MessageClass, class TransactionClass>
-	class LoginPlayerTransLoginBase : public Svr::MessageTransaction< LoginPlayerEntity, Policy::ISvrPolicyLogin, MessageClass, TransactionClass, sizeof(Svr::TransactionMessageHandlerType)*6 >
+	class LoginPlayerTransLoginBase : public Svr::MessageTransaction< LoginPlayerEntity, Policy::NetSvrPolicyLogin, MessageClass, TransactionClass, sizeof(Svr::TransactionMessageHandlerType)*6 >
 	{
 	private:
-		typedef Svr::MessageTransaction< LoginPlayerEntity, Policy::ISvrPolicyLogin, MessageClass, TransactionClass, sizeof(Svr::TransactionMessageHandlerType) * 6 > super;
+		typedef Svr::MessageTransaction< LoginPlayerEntity, Policy::NetSvrPolicyLogin, MessageClass, TransactionClass, sizeof(Svr::TransactionMessageHandlerType) * 6 > super;
 
 	protected:
 
 		NetAddress m_GameServerAddr;
 		NetAddress m_GameServerAddrIPV4;
-		//UINT m_RegisterTryCount;
+		//uint m_RegisterTryCount;
 		EntityUID m_GameEntityUID;
 
-		UINT m_CreateRequestCount;
+		uint m_CreateRequestCount;
 
 		char m_UserID[128];
 
@@ -177,10 +177,10 @@ namespace Svr {
 	// Login Server service
 	//
 
-	class LoginPlayerKickPlayerTrans : public Svr::UserTransactionS2SCmd< LoginPlayerEntity, Policy::ISvrPolicyLoginServer, Message::LoginServer::KickPlayerCmd, LoginPlayerKickPlayerTrans, sizeof(Svr::TransactionMessageHandlerType)*1>
+	class LoginPlayerKickPlayerTrans : public Svr::UserTransactionS2SCmd< LoginPlayerEntity, Policy::NetSvrPolicyLoginServer, Message::LoginServer::KickPlayerCmd, LoginPlayerKickPlayerTrans, sizeof(Svr::TransactionMessageHandlerType)*1>
 	{
 	public:
-		typedef Svr::UserTransactionS2SCmd< LoginPlayerEntity, Policy::ISvrPolicyLoginServer, Message::LoginServer::KickPlayerCmd, LoginPlayerKickPlayerTrans, sizeof(Svr::TransactionMessageHandlerType) * 1> super;
+		typedef Svr::UserTransactionS2SCmd< LoginPlayerEntity, Policy::NetSvrPolicyLoginServer, Message::LoginServer::KickPlayerCmd, LoginPlayerKickPlayerTrans, sizeof(Svr::TransactionMessageHandlerType) * 1> super;
 
 	public:
 
@@ -196,10 +196,10 @@ namespace Svr {
 	};
 
 
-	class LoginPlayerJoinedToGameServerTrans : public Svr::UserTransactionS2SCmd< LoginPlayerEntity, Policy::ISvrPolicyLoginServer, Message::LoginServer::PlayerJoinedToGameServerCmd, LoginPlayerJoinedToGameServerTrans, sizeof(Svr::TransactionMessageHandlerType)*1>
+	class LoginPlayerJoinedToGameServerTrans : public Svr::UserTransactionS2SCmd< LoginPlayerEntity, Policy::NetSvrPolicyLoginServer, Message::LoginServer::PlayerJoinedToGameServerCmd, LoginPlayerJoinedToGameServerTrans, sizeof(Svr::TransactionMessageHandlerType)*1>
 	{
 	public:
-		typedef Svr::UserTransactionS2SCmd< LoginPlayerEntity, Policy::ISvrPolicyLoginServer, Message::LoginServer::PlayerJoinedToGameServerCmd, LoginPlayerJoinedToGameServerTrans, sizeof(Svr::TransactionMessageHandlerType) * 1> super;
+		typedef Svr::UserTransactionS2SCmd< LoginPlayerEntity, Policy::NetSvrPolicyLoginServer, Message::LoginServer::PlayerJoinedToGameServerCmd, LoginPlayerJoinedToGameServerTrans, sizeof(Svr::TransactionMessageHandlerType) * 1> super;
 
 	private:
 		GameInsUID m_GameUID;
@@ -229,10 +229,10 @@ namespace Svr {
 	// Ranking handling
 	//
 
-	class RankingUpdateScoreTrans : public Svr::MessageTransaction< LoginPlayerEntity, Policy::ISvrPolicyLogin, Message::Login::UpdateMyScoreCmd, RankingUpdateScoreTrans, sizeof(Svr::TransactionMessageHandlerType) * 1 >
+	class RankingUpdateScoreTrans : public Svr::MessageTransaction< LoginPlayerEntity, Policy::NetSvrPolicyLogin, Message::Login::UpdateMyScoreCmd, RankingUpdateScoreTrans, sizeof(Svr::TransactionMessageHandlerType) * 1 >
 	{
 	public:
-		typedef Svr::MessageTransaction< LoginPlayerEntity, Policy::ISvrPolicyLogin, Message::Login::UpdateMyScoreCmd, RankingUpdateScoreTrans, sizeof(Svr::TransactionMessageHandlerType) * 1 > super;
+		typedef Svr::MessageTransaction< LoginPlayerEntity, Policy::NetSvrPolicyLogin, Message::Login::UpdateMyScoreCmd, RankingUpdateScoreTrans, sizeof(Svr::TransactionMessageHandlerType) * 1 > super;
 
 	private:
 
@@ -257,10 +257,10 @@ namespace Svr {
 	// Ranking handling
 	//
 
-	class LoginUserDataTestTrans : public Svr::MessageTransaction< LoginPlayerEntity, Policy::ISvrPolicyLogin, Message::Login::DataTestCmd, LoginUserDataTestTrans, 1 >
+	class LoginUserDataTestTrans : public Svr::MessageTransaction< LoginPlayerEntity, Policy::NetSvrPolicyLogin, Message::Login::DataTestCmd, LoginUserDataTestTrans, 1 >
 	{
 	public:
-		typedef Svr::MessageTransaction< LoginPlayerEntity, Policy::ISvrPolicyLogin, Message::Login::DataTestCmd, LoginUserDataTestTrans, 1 > super;
+		typedef Svr::MessageTransaction< LoginPlayerEntity, Policy::NetSvrPolicyLogin, Message::Login::DataTestCmd, LoginUserDataTestTrans, 1 > super;
 
 	private:
 
@@ -278,10 +278,10 @@ namespace Svr {
 		BR_IMPLEMENT_USERMSGTRANS_CLOSE_ARGS(DataTestRes, m_Data);
 	};
 
-	class LoginUserDebugPrintALLRankingTrans : public Svr::MessageTransaction< LoginPlayerEntity, Policy::ISvrPolicyLogin, Message::Login::DebugPrintALLRankingCmd, LoginUserDebugPrintALLRankingTrans, sizeof(Svr::TransactionMessageHandlerType) * 1 >
+	class LoginUserDebugPrintALLRankingTrans : public Svr::MessageTransaction< LoginPlayerEntity, Policy::NetSvrPolicyLogin, Message::Login::DebugPrintALLRankingCmd, LoginUserDebugPrintALLRankingTrans, sizeof(Svr::TransactionMessageHandlerType) * 1 >
 	{
 	public:
-		typedef Svr::MessageTransaction< LoginPlayerEntity, Policy::ISvrPolicyLogin, Message::Login::DebugPrintALLRankingCmd, LoginUserDebugPrintALLRankingTrans, sizeof(Svr::TransactionMessageHandlerType) * 1 > super;
+		typedef Svr::MessageTransaction< LoginPlayerEntity, Policy::NetSvrPolicyLogin, Message::Login::DebugPrintALLRankingCmd, LoginUserDebugPrintALLRankingTrans, sizeof(Svr::TransactionMessageHandlerType) * 1 > super;
 
 	private:
 

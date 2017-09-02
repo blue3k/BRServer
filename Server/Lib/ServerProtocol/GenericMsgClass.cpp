@@ -47,7 +47,7 @@ namespace Message {
 
 			return hr;
 
-		}; // Result MsgFailResultS2CEvt::ParseMessage( BR::Net::MessageData* pIMsg )
+		}; // Result MsgFailResultS2CEvt::ParseMessage( SF::Net::MessageData* pIMsg )
 
 		void FailResultS2CEvt::OutputMessage(const char* Prefix)
 		{
@@ -58,6 +58,6 @@ namespace Message {
 
 
 }; // namespace Message
-}; // namespace BR
+}; // namespace SF
 
 

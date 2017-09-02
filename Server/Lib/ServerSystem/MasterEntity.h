@@ -40,7 +40,7 @@ namespace Svr {
 		uint							m_uiMaxActiveTransaction;
 
 		// Transaction manager
-		TimeScheduler					m_activeTransactionScheduler;
+		TimerScheduler					m_activeTransactionScheduler;
 		TransactionList					m_activeTrans;
 		SharedPointerT<Transaction>		m_pExclusiveTransaction;
 

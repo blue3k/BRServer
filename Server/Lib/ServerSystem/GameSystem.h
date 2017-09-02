@@ -15,7 +15,7 @@
 
 #include "SFTypedefs.h"
 #include "Memory/MemoryPool.h"
-#include "Common/BrComponent.h"
+#include "Component/BrComponent.h"
 
 
 namespace SF {
@@ -28,7 +28,7 @@ namespace Svr {
 	//
 
 	template< class OwnerEntity, class SystemClass >
-	class GameSystem : public Component, public BR::MemoryPoolObject<SystemClass>
+	class GameSystem : public Component, public MemoryPoolObject<SystemClass>
 	{
 	public:
 
@@ -37,7 +37,7 @@ namespace Svr {
 		OwnerEntity&			m_OwnerEntity;
 
 		// Modified IDs
-		std::unordered_set<UINT>	m_ModifiedIDs;
+		std::unordered_set<uint>	m_ModifiedIDs;
 
 	protected:
 
@@ -60,12 +60,12 @@ namespace Svr {
 		inline void ClearModifiedInfo();
 
 		// set modified quest
-		inline void SetModified( UINT uiID );
+		inline void SetModified( uint uiID );
 
-		inline bool IsModified( UINT uiID );
+		inline bool IsModified( uint uiID );
 
 		// Get Modified mission clear
-		std::unordered_set<UINT>& GetModifiedList();
+		std::unordered_set<uint>& GetModifiedList();
 
 		// Initialize server component
 		virtual Result InitializeComponent() { ClearModifiedInfo(); return Component::InitializeComponent(); }

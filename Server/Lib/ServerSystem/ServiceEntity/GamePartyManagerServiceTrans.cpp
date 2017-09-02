@@ -10,7 +10,7 @@
 
 
 #include "stdafx.h"
-#include "ResultCode/SFResultCodeCommon.h"
+#include "ResultCode/SFResultCodeLibrary.h"
 #include "ResultCode/SFResultCodeGame.h"
 #include "Memory/MemoryPool.h"
 #include "Types/BrSvrTypes.h"
@@ -26,8 +26,8 @@
 
 
 
-SF_MEMORYPOOL_IMPLEMENT(BR::Svr::PartyManagerTransCreateParty);
-SF_MEMORYPOOL_IMPLEMENT(BR::Svr::PartyManagerTransPartyDeleted);
+SF_MEMORYPOOL_IMPLEMENT(SF::Svr::PartyManagerTransCreateParty);
+SF_MEMORYPOOL_IMPLEMENT(SF::Svr::PartyManagerTransPartyDeleted);
 
 
 namespace SF {

@@ -16,7 +16,7 @@
 #include "Util/TimeUtil.h"
 #include "Common/BrRandom.h"
 #include "ResultCode/SFResultCodeSvr.h"
-#include "ResultCode/SFResultCodeCommon.h"
+#include "ResultCode/SFResultCodeLibrary.h"
 #include "ResultCode/SFResultCodeGame.h"
 
 #include "ServerSystem/SvrConst.h"
@@ -24,9 +24,9 @@
 #include "ServerSystem/BrServerUtil.h"
 #include "GameSvrConst.h"
 
-#include "Protocol/Policy/GameInstanceIPolicy.h"
+#include "Protocol/Policy/GameInstanceNetPolicy.h"
 #include "GameServerClass.h"
-#include "Protocol/Policy/GameIPolicy.h"
+#include "Protocol/Policy/GameNetPolicy.h"
 
 #include "GameSystem/UserFriendSystem.h"
 #include "GameSystem/UserGamePlayerInfoSystem.h"
@@ -39,7 +39,7 @@
 SF_MEMORYPOOL_IMPLEMENT(BR::GameServer::UserFriendSystem);
 
 
-namespace BR {
+namespace SF {
 namespace GameServer {
 
 
@@ -119,7 +119,7 @@ namespace GameServer {
 	}
 
 
-	UINT UserFriendSystem::GetMaxFriendSlot()
+	uint UserFriendSystem::GetMaxFriendSlot()
 	{
 		return GetOwner().GetComponent<UserGamePlayerInfoSystem>()->GetFriendSlot();
 	}
@@ -153,12 +153,12 @@ namespace GameServer {
 		return m_Friends.Remove( pFriend );
 	}
 
-	UINT UserFriendSystem::GetNumberOfFriends()
+	uint UserFriendSystem::GetNumberOfFriends()
 	{
-		return (UINT)m_Friends.GetSize();
+		return (uint)m_Friends.GetSize();
 	}
 
-	Result UserFriendSystem::ForeachFriends(UINT start, UINT maxCount, std::function<Result(const ServerFriendInformation&)> functor)
+	Result UserFriendSystem::ForeachFriends(uint start, uint maxCount, std::function<Result(const ServerFriendInformation&)> functor)
 	{
 		for (unsigned int index = start; index < m_Friends.GetSize() && index < maxCount; index++)
 		{
@@ -171,7 +171,7 @@ namespace GameServer {
 	}
 
 }; // namespace GameServer
-}; // namespace BR
+}; // namespace SF
 
 
 

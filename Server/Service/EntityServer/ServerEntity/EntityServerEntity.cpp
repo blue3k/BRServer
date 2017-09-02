@@ -15,7 +15,7 @@
 #include "Util/TimeUtil.h"
 #include "ServerLog/SvrLog.h"
 #include "Thread/Thread.h"
-#include "ServerSystem/SvrConstDefault.h"
+#include "SvrConst.h"
 #include "ServerSystem/ServerEntity.h"
 #include "ServerSystem/Transaction.h"
 //#include "ServerSystem/PlugIn.h"
@@ -24,13 +24,13 @@
 #include "EntityServerEntity.h"
 #include "EntitySvrConst.h"
 
-#include "Protocol/Policy/LoginServerIPolicy.h"
+#include "Protocol/Policy/LoginServerNetPolicy.h"
 #include "Transaction/EntityTransactionServer.h"
 #include "Transaction/EntityTransactionUser.h"
 
 
 
-namespace BR {
+namespace SF {
 namespace EntityServer {
 	
 	///////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -67,7 +67,7 @@ namespace EntityServer {
 			// Add all expected cluster service objects
 			for( ClusterID clusterID = ClusterID::ClusterManager; clusterID < ClusterID::Max; clusterID++ )
 			{
-				EntityUID expectedUID( GetServerID(), EntityID(EntityFaculty::Service,(UINT)clusterID) );
+				EntityUID expectedUID( GetServerID(), EntityID(EntityFaculty::Service,(uint)clusterID) );
 				if (!(pClusterManager->GetClusterServiceEntity(clusterID, pServiceEntity)))
 					continue;
 
@@ -90,7 +90,7 @@ namespace EntityServer {
 
 
 }; // namespace EntityServer
-}; // namespace BR
+}; // namespace SF
 
 
 

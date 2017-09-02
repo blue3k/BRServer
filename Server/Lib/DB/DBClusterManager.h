@@ -65,13 +65,13 @@ namespace DB {
 		uint GetPartitioningCount() const { return m_PartitioningCount; }
 
 		// Initialize DB
-		Result InitializeDBCluster( UINT partitioningCount );
+		Result InitializeDBCluster( uint partitioningCount );
 
 		// Terminate DB module and close connections
 		void TerminateDB();
 
 		// Add DB source
-		Result	AddDBSource( UINT partitioningID, const std::string& strInstanceName, const std::string& strConnectionString, const std::string& strDBName, const std::string& strUserID = "", const std::string& strPassword = "" ); 
+		Result	AddDBSource( uint partitioningID, const std::string& strInstanceName, const std::string& strConnectionString, const std::string& strDBName, const std::string& strUserID = "", const std::string& strPassword = "" ); 
 
 	protected:
 
@@ -97,7 +97,7 @@ namespace DB {
 	private:
 
 		// select db source by partitioning key
-		Result SelectDBByKey(UINT partitioningKey, DataSource* &pDataSource);
+		Result SelectDBByKey(uint partitioningKey, DataSource* &pDataSource);
 		Result RequestShardList();
 
 		// Update query worker status

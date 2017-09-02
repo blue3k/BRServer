@@ -114,7 +114,7 @@ namespace Svr {
 
 
 		// Game Cluster ID
-		static ClusterID GetGameClusterID( GameID gameID ) { return (ClusterID)((UINT)ClusterID::Game + (UINT)gameID); }
+		static ClusterID GetGameClusterID( GameID gameID ) { return (ClusterID)((uint)ClusterID::Game + (uint)gameID); }
 
 
 		Config::PublicNetSocket* GetPublicNetConfig() { return m_PublicNetSocket; }

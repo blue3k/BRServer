@@ -32,13 +32,13 @@ namespace SF
 			// Cmd: Add a player to ranking
 			Result GetInstanceListCmd( const TransactionID &InTransactionID );
 			// Cmd: Remove a player to ranking
-			Result RequestCounterValuesCmd( const TransactionID &InTransactionID, const EntityUID &InInstanceUID );
+			Result RequestCounterValuesCmd( const TransactionID &InTransactionID, const uint64_t &InInstanceUID );
 			// C2S: Counter instance is created
-			Result PerformanceCounterNewC2SEvt( const char* InInstanceName, const EntityUID &InInstanceUID, const Array<PerformanceCounterInfo>& InNewCounters );
+			Result PerformanceCounterNewC2SEvt( const char* InInstanceName, const uint64_t &InInstanceUID, const Array<PerformanceCounterInfo>& InNewCounters );
 			// C2S: Counter instance is deleted
-			Result PerformanceCounterFreeC2SEvt( const Array<EntityUID>& InFreeInstances );
+			Result PerformanceCounterFreeC2SEvt( const Array<uint64_t>& InFreeInstances );
 			// C2S: Counter update broadcast
-			Result PerformanceCounterUpdateC2SEvt( const EntityUID &InInstanceUID, const Array<uint64_t>& InCounterValues );
+			Result PerformanceCounterUpdateC2SEvt( const uint64_t &InInstanceUID, const Array<uint64_t>& InCounterValues );
 
 		}; // class NetPolicyMonitoring 
 
@@ -55,9 +55,9 @@ namespace SF
 			// Cmd: Add a player to ranking
 			Result GetInstanceListRes( const TransactionID &InTransactionID, const Result &InResult, const Array<PerformanceCounterInstanceInfo>& InCounterInstances, const uint32_t &InTotalInstanceCount );
 			// Cmd: Remove a player to ranking
-			Result RequestCounterValuesRes( const TransactionID &InTransactionID, const Result &InResult, const EntityUID &InInstanceUID, const Array<uint64_t>& InCounterValues );
+			Result RequestCounterValuesRes( const TransactionID &InTransactionID, const Result &InResult, const uint64_t &InInstanceUID, const Array<uint64_t>& InCounterValues );
 			// S2C: Request from server
-			Result PerformanceCounterUpdateCounterInfoS2CEvt( const EntityUID &InInstanceUID );
+			Result PerformanceCounterUpdateCounterInfoS2CEvt( const uint64_t &InInstanceUID );
 
 		}; // class NetSvrPolicyMonitoring
 

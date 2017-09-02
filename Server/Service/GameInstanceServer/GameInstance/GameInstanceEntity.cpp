@@ -15,7 +15,7 @@
 #include "ServerSystem/SvrTrace.h"
 #include "Util/TimeUtil.h"
 #include "Types/BrBaseTypes.h"
-#include "ResultCode/SFResultCodeCommon.h"
+#include "ResultCode/SFResultCodeLibrary.h"
 #include "ResultCode/SFResultCodeGame.h"
 #include "Net/Message.h"
 #include "Common/BrRandom.h"
@@ -26,8 +26,8 @@
 #include "ConspiracyGameInstanceSvrConst.h"
 #include "ConspiracyGameInstanceServerClass.h"
 
-//#include "Protocol/Policy/GameIPolicy.h"
-#include "Protocol/Policy/GameMasterServerIPolicy.h"
+//#include "Protocol/Policy/GameNetPolicy.h"
+#include "Protocol/Policy/GameMasterServerNetPolicy.h"
 
 #include "GameInstanceEntity.h"
 
@@ -51,7 +51,7 @@
 SF_MEMORYPOOL_IMPLEMENT(BR::ConspiracyGameInstanceServer::GameInstanceEntity);
 
 
-namespace BR {
+namespace SF {
 namespace ConspiracyGameInstanceServer {
 
 
@@ -211,7 +211,7 @@ namespace ConspiracyGameInstanceServer {
 	//
 
 	// Initialize entity to proceed new connection
-	Result GameInstanceEntity::InitializeGameEntity(UINT numBot, UINT maxPlayer)
+	Result GameInstanceEntity::InitializeGameEntity(uint numBot, uint maxPlayer)
 	{
 		Result hr = ResultCode::SUCCESS;
 		GamePlayer *pPlayer = nullptr;
@@ -222,8 +222,8 @@ namespace ConspiracyGameInstanceServer {
 		// randomize player character
 		for (INT character = 0; character < GameConst::MAX_GAMEPLAYER; character++)
 		{
-			UINT player = (UINT)Util::Random.Rand() % maxPlayer;
-			for (UINT iPlayer = 0; iPlayer < maxPlayer; iPlayer++)
+			uint player = (uint)Util::Random.Rand() % maxPlayer;
+			for (uint iPlayer = 0; iPlayer < maxPlayer; iPlayer++)
 			{
 				if (m_PlayerCharacter[player] == 0xFF)
 				{
@@ -257,7 +257,7 @@ namespace ConspiracyGameInstanceServer {
 	//	Game Player
 	//
 
-	Result GameInstanceEntity::GetPlayerIndex( PlayerID playerID, UINT &playerIndex )
+	Result GameInstanceEntity::GetPlayerIndex( PlayerID playerID, uint &playerIndex )
 	{
 		GamePlayer* pGamePlayer = nullptr;
 
@@ -293,7 +293,7 @@ namespace ConspiracyGameInstanceServer {
 		Result hr = ResultCode::SUCCESS;
 		//GamePlayer* pFound = nullptr;
 		GamePlayer* pPlayer = nullptr;
-		UINT playerIndex;
+		uint playerIndex;
 
 
 		pPlayer = (GamePlayer*)pInsPlayer;
@@ -322,8 +322,8 @@ namespace ConspiracyGameInstanceServer {
 
 
 		// search empty player index from start
-		playerIndex = (UINT)Util::Random.Rand() % GetMaxPlayer();
-		for( UINT search = 0; search < GetMaxPlayer(); search++ )
+		playerIndex = (uint)Util::Random.Rand() % GetMaxPlayer();
+		for( uint search = 0; search < GetMaxPlayer(); search++ )
 		{
 			if( m_PlayerByIndex[playerIndex] == nullptr )
 			{
@@ -381,6 +381,6 @@ namespace ConspiracyGameInstanceServer {
 	}
 
 }; // ConspiracyGameInstanceServer
-}; // namespace BR
+}; // namespace SF
 
 

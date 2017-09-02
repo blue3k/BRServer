@@ -18,7 +18,7 @@
 
 
 
-namespace BR {
+namespace SF {
 namespace EntityServer {
 
 
@@ -88,7 +88,7 @@ namespace EntityServer {
 #include "EntityServerClass.inl"
 
 } // namespace EntityServer
-} // namespace BR
+} // namespace SF
 
 
 

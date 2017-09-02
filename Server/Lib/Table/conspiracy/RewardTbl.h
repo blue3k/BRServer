@@ -17,6 +17,8 @@
 
 namespace conspiracy
 {
+	using namespace SF;
+
  	class RewardTbl
 	{
  	public:
@@ -78,9 +80,9 @@ namespace conspiracy
 
 
 		// declare member function
-		static BR::Result LoadTable( const std::list<RewardItem>& rowList );
+		static Result LoadTable( const std::list<RewardItem>& rowList );
 
-		static BR::Result FindItem( const unsigned int& Key, RewardItem*& pRow);
+		static Result FindItem( const unsigned int& Key, RewardItem*& pRow);
 	}; // class RewardTbl
 }; // namespace conspiracy
 

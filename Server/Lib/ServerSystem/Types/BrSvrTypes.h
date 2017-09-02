@@ -195,7 +195,7 @@ namespace SF {
 
 		inline GlobalUID();
 		inline GlobalUID( const GlobalUID& src );
-		inline GlobalUID( UINT serverID, uint32_t time, uint32_t id );
+		inline GlobalUID( uint serverID, uint32_t time, uint32_t id );
 		inline GlobalUID( uint64_t initValue );
 
 		inline GlobalUID& operator = ( const GlobalUID& src );
@@ -238,10 +238,10 @@ namespace SF {
 
 		inline MatchingQueueItem();
 		inline MatchingQueueItem( const MatchingQueueItem& src );
-		inline MatchingQueueItem( EntityUID RegisterUID, PlayerID RegisterID, UINT numPlayer, const MatchingPlayerInformation* playerInformations );
+		inline MatchingQueueItem( EntityUID RegisterUID, PlayerID RegisterID, uint numPlayer, const MatchingPlayerInformation* playerInformations );
 		inline MatchingQueueItem( int initValue );
 
-		inline Result SetQueueItem( EntityUID RegisterUID, PlayerID RegisterID, UINT numPlayer, const MatchingPlayerInformation* playerInformations );
+		inline Result SetQueueItem( EntityUID RegisterUID, PlayerID RegisterID, uint numPlayer, const MatchingPlayerInformation* playerInformations );
 
 		inline MatchingQueueItem& operator = ( const MatchingQueueItem& src );
 

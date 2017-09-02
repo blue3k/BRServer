@@ -13,12 +13,12 @@
 #include "GameServer.h"
 #include "GameServerClass.h"
 
-#include "ResultCode/SFResultCodeCommon.h"
+#include "ResultCode/SFResultCodeLibrary.h"
 #include "ResultCode/SFResultCodeGame.h"
 #include "ResultCode/SFResultCodeLogin.h"
 #include "Memory/MemoryPool.h"
 #include "Types/BrBaseTypes.h"
-#include "Common/GameConst.h"
+#include "GameConst.h"
 
 #include "Net/NetServerUDP.h"
 
@@ -31,17 +31,17 @@
 #include "ServerSystem/ExternalTransaction.h"
 #include "ServerSystem/ExternalTransactionManager.h"
 
-#include "Protocol/Policy/LoginServerIPolicy.h"
+#include "Protocol/Policy/LoginServerNetPolicy.h"
 #include "Protocol/Message/LoginServerMsgClass.h"
 
 #include "Protocol/Message/GameServerMsgClass.h"
-#include "Protocol/Policy/GameServerIPolicy.h"
+#include "Protocol/Policy/GameServerNetPolicy.h"
 #include "Protocol/Message/GameInstanceMsgClass.h"
-#include "Protocol/Policy/GameInstanceIPolicy.h"
+#include "Protocol/Policy/GameInstanceNetPolicy.h"
 #include "Protocol/Message/GamePartyMsgClass.h"
-#include "Protocol/Policy/GamePartyIPolicy.h"
+#include "Protocol/Policy/GamePartyNetPolicy.h"
 #include "Protocol/Message/PartyMatchingQueueMsgClass.h"
-#include "Protocol/Policy/PartyMatchingQueueIPolicy.h"
+#include "Protocol/Policy/PartyMatchingQueueNetPolicy.h"
 
 #include "GamePlayerEntityTrans.h"
 #include "GameInstance/GamePlayerEntity.h"
@@ -101,7 +101,7 @@ SF_MEMORYPOOL_IMPLEMENT(BR::GameServer::PlayerTransSetConfigPreset);
 SF_MEMORYPOOL_IMPLEMENT(BR::GameServer::PlayerTransGainGameResource);
 
 	
-namespace BR {
+namespace SF {
 namespace GameServer {
 
 
@@ -284,7 +284,7 @@ namespace GameServer {
 		// succeeded to query
 		if( pDBRes->Result < 0 )
 		{
-			svrErr(ResultCode::E_SVR_INVALID_PLAYER_GAMEDB);
+			svrErr(ResultCode::SVR_INVALID_PLAYER_GAMEDB);
 		}
 
 		svrAssert( pDBRes->m_RowsetResult.size() >= 1 );
@@ -1010,7 +1010,7 @@ namespace GameServer {
 	Result PlayerTransNotifyS2S::StartTransaction()
 	{
 		Result hr = ResultCode::SUCCESS;
-		Policy::ISvrPolicyGame *pPolicy = nullptr;
+		Policy::NetSvrPolicyGame *pPolicy = nullptr;
 
 		svrChk( super::StartTransaction() );
 
@@ -1018,7 +1018,7 @@ namespace GameServer {
 			svrErr(ResultCode::E_GAME_INVALID_PLAYER);
 
 		svrChk( GetMyOwner()->GetComponent<UserNotifySystem>()->AddNotification(GetNotificationID(), (NotificationType)GetMessageID(), GetMessageParam0(), GetMessageParam1(), GetMessageText(), 0, GetTimeStamp() ) );
-		svrChkPtr(pPolicy = GetPolicy<Policy::ISvrPolicyGame>());
+		svrChkPtr(pPolicy = GetPolicy<Policy::NetSvrPolicyGame>());
 		svrChk(pPolicy->NotifyS2CEvt(GetNotificationID(), GetMessageID(), GetMessageParam0(), GetMessageParam1(), GetMessageText(), 0, GetTimeStamp()));
 
 	Proc_End:
@@ -1130,7 +1130,7 @@ namespace GameServer {
 		svrChk(pRes->GetResult());
 
 		if( pDBRes->UserID == 0 )
-			svrErrClose(ResultCode::E_SVR_PLAYER_NOT_FOUND);
+			svrErrClose(ResultCode::SVR_PLAYER_NOT_FOUND);
 
 		m_Player.PlayerID = pDBRes->UserID;
 		m_Player.FBUID = pDBRes->FacebookUID;
@@ -1154,7 +1154,7 @@ namespace GameServer {
 		svrChk(pRes->GetResult());
 
 		if (pDBRes->Result < 0)
-			svrErrClose(ResultCode::E_SVR_PLAYER_NOT_FOUND);
+			svrErrClose(ResultCode::SVR_PLAYER_NOT_FOUND);
 
 		StrUtil::StringCpy( m_Player.NickName, pDBRes->NickName );
 
@@ -1202,10 +1202,10 @@ namespace GameServer {
 		svrChk(pRes->GetResult());
 
 		if (pDBRes->PlayerID == 0)
-			svrErrClose(ResultCode::E_SVR_PLAYER_NOT_FOUND);
+			svrErrClose(ResultCode::SVR_PLAYER_NOT_FOUND);
 
 		if (pDBRes->Result != 0)
-			svrErrClose(ResultCode::E_SVR_PLAYER_NOT_FOUND);
+			svrErrClose(ResultCode::SVR_PLAYER_NOT_FOUND);
 
 		m_Player.PlayerID = pDBRes->PlayerID;
 		m_Player.FBUID = pDBRes->FacebookUID;
@@ -1229,7 +1229,7 @@ namespace GameServer {
 		svrChk(pRes->GetResult());
 
 		if (pDBRes->Result < 0)
-			svrErrClose(ResultCode::E_SVR_PLAYER_NOT_FOUND);
+			svrErrClose(ResultCode::SVR_PLAYER_NOT_FOUND);
 
 		StrUtil::StringCpy( m_Player.NickName, pDBRes->NickName );
 
@@ -1270,7 +1270,7 @@ namespace GameServer {
 	Result PlayerTransRequestPlayerStatusUpdate::OnPlayerShardIDRes(Svr::TransactionResult* &pRes)
 	{
 		Result hr = ResultCode::SUCCESS;
-		//Policy::ISvrPolicyGame *pPolicy = nullptr;
+		//Policy::NetSvrPolicyGame *pPolicy = nullptr;
 		auto *pDBRes = (DB::QueryGetPlayerShardIDCmd*)pRes;
 
 		m_PlayerStatusQueryCount--;
@@ -1291,14 +1291,14 @@ namespace GameServer {
 	Result PlayerTransRequestPlayerStatusUpdate::OnPlayerStatusUpdateRes( Svr::TransactionResult* &pRes )
 	{
 		Result hr = ResultCode::SUCCESS;
-		Policy::ISvrPolicyGame *pPolicy = nullptr;
+		Policy::NetSvrPolicyGame *pPolicy = nullptr;
 		DB::QueryGetPlayerStatusCmd *pDBRes = (DB::QueryGetPlayerStatusCmd*)pRes;
 
 		m_PlayerStatusQueryCount--;
 
 		svrChk(pRes->GetResult());
 
-		svrChkPtr(pPolicy = GetPolicy<Policy::ISvrPolicyGame>());
+		svrChkPtr(pPolicy = GetPolicy<Policy::NetSvrPolicyGame>());
 		svrChk(pPolicy->NotifyPlayerStatusUpdatedS2CEvt(pDBRes->PlayerID, pDBRes->LatestActiveTime, pDBRes->PlayerState != 0 ? 1 : 0));
 
 	Proc_End:
@@ -1316,18 +1316,18 @@ namespace GameServer {
 		//Svr::ServerEntity *pServerEntity = nullptr;
 		EntityUID playerUID;
 		//Policy::IPolicyGameServer* pTargetPolicy = nullptr;
-		Policy::ISvrPolicyGame *pPolicy = nullptr;
+		Policy::NetSvrPolicyGame *pPolicy = nullptr;
 		auto& targetPlayerID = GetTargetPlayerID();
-		UINT uiRequestMax = Util::Min((UINT)targetPlayerID.GetSize(), (UINT)20);
+		uint uiRequestMax = Util::Min((uint)targetPlayerID.GetSize(), (uint)20);
 
 		m_PlayerStatusQueryCount = 0;
 
 		svrChk( super::StartTransaction() );
 		
-		svrChkPtr(pPolicy = GetPolicy<Policy::ISvrPolicyGame>());
+		svrChkPtr(pPolicy = GetPolicy<Policy::NetSvrPolicyGame>());
 
 
-		for( UINT iPlayer = 0; iPlayer < uiRequestMax; iPlayer++ )
+		for( uint iPlayer = 0; iPlayer < uiRequestMax; iPlayer++ )
 		{
 			if( ( Svr::GetServerComponent<Svr::GameClusterServiceEntity>()->FindPlayer( targetPlayerID[iPlayer], playerUID )) )
 			{
@@ -1394,11 +1394,11 @@ namespace GameServer {
 	Result PlayerTransNotifyPlayerStatusUpdatedS2S::StartTransaction()
 	{
 		Result hr = ResultCode::SUCCESS;
-		Policy::ISvrPolicyGame *pPolicy = nullptr;
+		Policy::NetSvrPolicyGame *pPolicy = nullptr;
 
 		svrChk( super::StartTransaction() );
 
-		svrChkPtr(pPolicy = GetPolicy<Policy::ISvrPolicyGame>());
+		svrChkPtr(pPolicy = GetPolicy<Policy::NetSvrPolicyGame>());
 		svrChk( pPolicy->NotifyPlayerStatusUpdatedS2CEvt( GetDestPlayerID(), GetLatestActiveTime(), GetIsInGame() ) );
 
 	Proc_End:
@@ -1575,12 +1575,12 @@ namespace GameServer {
 		svrChkClose(pRes->GetResult());
 
 		if (pCheckRes->GetDeveloperPayload().length() == 0)
-			svrErrClose(ResultCode::E_SVR_INVALID_PURCHASE_INFO);
+			svrErrClose(ResultCode::SVR_INVALID_PURCHASE_INFO);
 
-		svrChkCloseErr(ResultCode::E_SVR_INVALID_PURCHASE_INFO, Util::Base64URLDecode(pCheckRes->GetDeveloperPayload().length(), (const uint8_t*)pCheckRes->GetDeveloperPayload().c_str(), purchaseID));
+		svrChkCloseErr(ResultCode::SVR_INVALID_PURCHASE_INFO, Util::Base64URLDecode(pCheckRes->GetDeveloperPayload().length(), (const uint8_t*)pCheckRes->GetDeveloperPayload().c_str(), purchaseID));
 
 		if (purchaseID.GetSize() != SHA256_DIGEST_LENGTH)
-			svrErrClose(ResultCode::E_SVR_INVALID_PURCHASE_INFO);
+			svrErrClose(ResultCode::SVR_INVALID_PURCHASE_INFO);
 
 		svrChkPtr(pPlayerInfoSystem = GetMyOwner()->GetComponent<UserGamePlayerInfoSystem>());
 
@@ -1610,7 +1610,7 @@ namespace GameServer {
 
 		if (pCheckRes->GetPurchaseTransactionID().GetSize() == 0
 			|| StrUtil::StringCmp((const char*)pCheckRes->GetPurchaseTransactionID().data(), (INT)pCheckRes->GetPurchaseTransactionID().GetSize(), GetPurchaseTransactionID(), -1) != 0)
-			svrErrClose(ResultCode::E_SVR_INVALID_PURCHASE_INFO);
+			svrErrClose(ResultCode::SVR_INVALID_PURCHASE_INFO);
 
 
 		svrChkPtr(pPlayerInfoSystem = GetMyOwner()->GetComponent<UserGamePlayerInfoSystem>());
@@ -1640,7 +1640,7 @@ namespace GameServer {
 
 		if (pDBRes->Result < 0)
 		{
-			svrErrClose(ResultCode::E_SVR_INVALID_PURCHASE_DUPLICATED);
+			svrErrClose(ResultCode::SVR_INVALID_PURCHASE_DUPLICATED);
 		}
 
 
@@ -1670,7 +1670,7 @@ namespace GameServer {
 
 		if (GetPurchaseTransactionID() == nullptr || GetPurchaseTransactionID()[0] == '\0')
 		{
-			svrErrClose(ResultCode::E_SVR_INVALID_PURCHASE_INFO);
+			svrErrClose(ResultCode::SVR_INVALID_PURCHASE_INFO);
 		}
 
 		if( !( conspiracy::ShopTbl::FindItem( GetShopItemID(), m_pShopItem ) ) )
@@ -1707,7 +1707,7 @@ namespace GameServer {
 			{
 				if (GetPurchaseToken().GetSize() == 0)
 				{
-					svrErrClose(ResultCode::E_SVR_INVALID_PURCHASE_INFO);
+					svrErrClose(ResultCode::SVR_INVALID_PURCHASE_INFO);
 				}
 
 				svrChk(pExtMgr->IOSCheckReceipt(GetTransID(), GetPackageName(), m_pShopItem->iOSItemID, GetPurchaseTransactionID(), GetPurchaseToken()));
@@ -1833,5 +1833,5 @@ namespace GameServer {
 
 
 };// namespace GameServer 
-};// namespace BR 
+};// namespace SF 
 

@@ -71,7 +71,7 @@ Proc_End:
 
 // Get log binary
 template<size_t MaxBufferSize, size_t MaxLog>
-Result GameLog<MaxBufferSize,MaxLog>::GetGameLogBinary( OutputMemoryStream& stream, UINT startIndex, UINT count )
+Result GameLog<MaxBufferSize,MaxLog>::GetGameLogBinary( OutputMemoryStream& stream, uint startIndex, uint count )
 {
 	Result hr = ResultCode::SUCCESS;
 

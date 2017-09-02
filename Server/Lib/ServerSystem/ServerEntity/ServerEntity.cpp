@@ -17,7 +17,7 @@
 #include "Thread/Thread.h"
 #include "Net/NetServerPeer.h"
 #include "Net/NetServerPeerTCP.h"
-#include "ServerSystem/SvrConstDefault.h"
+#include "ServerSystem/SvrConst.h"
 #include "ServerSystem/ServerEntity.h"
 #include "ServerSystem/Transaction.h"
 //#include "ServerSystem/PlugIn.h"
@@ -31,7 +31,7 @@
 
 #include "ServerSystem/ServerEntity/EntityServerEntity.h"
 #include "ServerSystem/ServiceEntity/ClusterManagerServiceEntity.h"
-#include "Protocol/Policy/ServerIPolicy.h"
+#include "Protocol/Policy/ServerNetPolicy.h"
 
 
 namespace SF {
@@ -43,7 +43,7 @@ namespace Svr {
 	//
 
 
-	ServerEntity::ServerEntity( UINT uiTransQueueSize, UINT TransResQueueSize )
+	ServerEntity::ServerEntity( uint uiTransQueueSize, uint TransResQueueSize )
 		: MasterEntity( uiTransQueueSize, TransResQueueSize)
 		, m_ServerID(0)
 		, m_bIsInitialConnect(true)
@@ -198,7 +198,7 @@ namespace Svr {
 		if (routeContext.GetTo() != 0)
 		{
 			if(pMsg->GetMessageHeader()->msgID.IDs.Type == Message::MSGTYPE_COMMAND)
-				pCon->GetPolicy<Policy::ISvrPolicyServer>()->GenericFailureRes(routeContext.GetSwaped(), transID, ResultCode::E_SVR_INVALID_ENTITYUID);
+				pCon->GetPolicy<Policy::NetSvrPolicyServer>()->GenericFailureRes(routeContext.GetSwaped(), transID, ResultCode::SVR_INVALID_ENTITYUID);
 
 			Util::SafeRelease(pMsg);
 			return ResultCode::SUCCESS_FALSE;
@@ -283,7 +283,7 @@ namespace Svr {
 			ProcessConnectionEvent(conEvent);
 		}
 
-		if (pConn->GetConnectionState() != Net::Connection::STATE_DISCONNECTED)
+		if (pConn->GetConnectionState() != Net::ConnectionState::DISCONNECTED)
 		{
 			// Process message
 			loopCount = pConn->GetRecvMessageCount();
@@ -328,7 +328,7 @@ namespace Svr {
 		pConn = (Net::Connection*)(Net::Connection*)m_pConnLocal;
 		if (pConn != nullptr)
 		{
-			if (pConn->GetConnectionState() == Net::Connection::STATE_DISCONNECTED)
+			if (pConn->GetConnectionState() == Net::ConnectionState::DISCONNECTED)
 			{
 				if (m_LocalConnectionRetryTime != TimeStampMS::min())
 				{
@@ -351,11 +351,11 @@ namespace Svr {
 						auto connectionInfo = pConn->GetConnectionInfo();
 						if (GetPrivateNetAddress().usPort != 0)
 						{
-							svrChk(pConn->GetNet()->Connect(pConn, (UINT)connectionInfo.RemoteID, connectionInfo.RemoteClass, GetPrivateNetAddress()));
+							svrChk(pConn->GetNet()->Connect(pConn, (uint)connectionInfo.RemoteID, connectionInfo.RemoteClass, GetPrivateNetAddress()));
 						}
 						else
 						{
-							svrChk(pConn->GetNet()->Connect(pConn, (UINT)connectionInfo.RemoteID, connectionInfo.RemoteClass, connectionInfo.Remote));
+							svrChk(pConn->GetNet()->Connect(pConn, (uint)connectionInfo.RemoteID, connectionInfo.RemoteClass, connectionInfo.Remote));
 						}
 					}
 				}
@@ -366,7 +366,7 @@ namespace Svr {
 			}
 			else
 			{
-				if(pConn->GetConnectionState() == Net::Connection::STATE_CONNECTED)
+				if(pConn->GetConnectionState() == Net::ConnectionState::CONNECTED)
 					m_LocalConnectionRetryWait = DurationMS(Svr::Const::REMOTE_CONNECTION_RETRY);
 
 				m_LocalConnectionRetryTime = TimeStampMS::min();
@@ -406,10 +406,10 @@ namespace Svr {
 		ProcessConnectionEvent(evt);
 	}
 
-	Result ServerEntity::OnRecvMessage(Net::Connection* pConn, Message::MessageData* pMsg)
+	Result ServerEntity::OnRecvMessage(Net::Connection* pConn, SharedPointerT<Message::MessageData>& pMsg)
 	{
 		if (GetTaskManager() == nullptr)
-			return ResultCode::E_INVALID_STATE;
+			return ResultCode::INVALID_STATE;
 
 		return GetTaskManager()->AddEventTask(GetTaskGroupID(), ServerTaskEvent(this, WeakPointerT<Net::Connection>(pConn), pMsg));
 	}
@@ -417,7 +417,7 @@ namespace Svr {
 	Result ServerEntity::OnNetSyncMessage(Net::Connection* pConn)
 	{
 		if (GetTaskManager() == nullptr)
-			return ResultCode::E_INVALID_STATE;
+			return ResultCode::INVALID_STATE;
 
 		return GetTaskManager()->AddEventTask(GetTaskGroupID(), ServerTaskEvent(ServerTaskEvent::EventTypes::PACKET_MESSAGE_SYNC_EVENT, this, WeakPointerT<Net::Connection>(pConn)));
 	}
@@ -425,7 +425,7 @@ namespace Svr {
 	Result ServerEntity::OnNetSendReadyMessage(Net::Connection* pConn)
 	{
 		if (GetTaskManager() == nullptr)
-			return ResultCode::E_INVALID_STATE;
+			return ResultCode::INVALID_STATE;
 
 		return GetTaskManager()->AddEventTask(GetTaskGroupID(), ServerTaskEvent(ServerTaskEvent::EventTypes::PACKET_MESSAGE_SEND_EVENT, this, WeakPointerT<Net::Connection>(pConn)));
 	}

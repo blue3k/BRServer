@@ -24,7 +24,7 @@ namespace SF
 
 		ServerFriendInformation() : ShardID(0) {}
 		ServerFriendInformation(const ServerFriendInformation& src) : FriendInformation(src), ShardID(src.ShardID) {}
-		ServerFriendInformation(AccountID playerID, int32_t shardID, FacebookUID fbUID, const char* nickName, UINT level, UINT weeklyWin, UINT weeklyLose, BYTE isPlayingGame, uint64_t lastActiveTime, uint64_t LastStaminaSent)
+		ServerFriendInformation(AccountID playerID, int32_t shardID, FacebookUID fbUID, const char* nickName, uint level, uint weeklyWin, uint weeklyLose, BYTE isPlayingGame, uint64_t lastActiveTime, uint64_t LastStaminaSent)
 			: FriendInformation(playerID, fbUID, nickName, level, weeklyWin, weeklyLose, isPlayingGame, lastActiveTime, LastStaminaSent)
 			, ShardID(shardID)
 		{
@@ -73,7 +73,7 @@ namespace SF
 		uint16_t MessageBufferSize;
         char MessageText[1];
 
-        GameLogChatMessage(TimeStampSec timeStamp, UINT messageBufferSize);
+        GameLogChatMessage(TimeStampSec timeStamp, uint messageBufferSize);
         
         Result SetChatMessage( PlayerID player, uint8_t playerStatus, ChatType type, const char* message);
     };

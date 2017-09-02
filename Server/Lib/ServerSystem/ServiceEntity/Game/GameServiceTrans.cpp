@@ -10,15 +10,15 @@
 
 
 #include "stdafx.h"
-#include "ResultCode/SFResultCodeCommon.h"
+#include "ResultCode/SFResultCodeLibrary.h"
 #include "ResultCode/SFResultCodeGame.h"
 #include "Memory/MemoryPool.h"
 #include "Types/BrBaseTypes.h"
-#include "Common/GameConst.h"
+#include "GameConst.h"
 
 #include "Protocol/Message/GameInstanceManagerMsgClass.h"
 #include "Protocol/Message/GameMsgClass.h"
-#include "Protocol/Policy/GameIPolicy.h"
+#include "Protocol/Policy/GameNetPolicy.h"
 
 
 #include "ServerSystem/BrServerUtil.h"
@@ -29,7 +29,7 @@
 #include "ServerSystem/ServiceEntity/Game/GameServiceTrans.h"
 #include "ServerSystem/ServiceEntity/Game/GameServiceEntity.h"
 
-SF_MEMORYPOOL_IMPLEMENT(BR::Svr::GamePartyTrans);
+SF_MEMORYPOOL_IMPLEMENT(SF::Svr::GamePartyTrans);
 
 
 
@@ -38,8 +38,8 @@ namespace Svr {
 
 
 
-	GamePartyTrans::GamePartyTrans(UINT startMemberCount, UINT targetMemberCount)
-		: TransactionT( TransactionID() )
+	GamePartyTrans::GamePartyTrans(IMemoryManager& memoryManager, uint startMemberCount, uint targetMemberCount)
+		: TransactionT( memoryManager, TransactionID() )
 	{
 		//BR_TRANS_MESSAGE( TimerResult, { return OnTimer(pRes); });
 		//BR_TRANS_MESSAGE( Message::PartyGameQueue::ReserveItemRes,			{ return OnReserveItem(pRes); });

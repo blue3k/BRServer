@@ -10,14 +10,14 @@
 
 
 #include "stdafx.h"
-#include "ResultCode/SFResultCodeCommon.h"
+#include "ResultCode/SFResultCodeLibrary.h"
 #include "ResultCode/SFResultCodeGame.h"
 #include "ResultCode/SFResultCodeLogin.h"
 #include "Memory/MemoryPool.h"
 #include "Types/BrSvrTypes.h"
 
 #include "Protocol/Message/ClusterServerMsgClass.h"
-#include "Protocol/Policy/ClusterServerIPolicy.h"
+#include "Protocol/Policy/ClusterServerNetPolicy.h"
 
 #include "ServerSystem/ServerService/ClusterServerService.h"
 
@@ -30,15 +30,15 @@
 #include "ServerSystem/ServiceEntity/ClusterManagerServiceEntity.h"
 
 
-SF_MEMORYPOOL_IMPLEMENT(BR::Svr::ClusterInitializationTrans);
-SF_MEMORYPOOL_IMPLEMENT(BR::Svr::RequestDataSyncTrans);
-SF_MEMORYPOOL_IMPLEMENT(BR::Svr::ClusterMasterAssignedTrans);
-SF_MEMORYPOOL_IMPLEMENT(BR::Svr::ClusterMasterVoteTrans);
-SF_MEMORYPOOL_IMPLEMENT(BR::Svr::ClusterUpdateStatusTrans);
-SF_MEMORYPOOL_IMPLEMENT(BR::Svr::ClusterUpdateWorkloadTrans);
-SF_MEMORYPOOL_IMPLEMENT(BR::Svr::GetLowestWorkloadClusterMemberTrans);
-SF_MEMORYPOOL_IMPLEMENT(BR::Svr::ClusterNewServerServiceJoinedC2SEvtTrans);
-SF_MEMORYPOOL_IMPLEMENT(BR::Svr::ClusterNewServerServiceJoinedC2SEvtEntityTrans);
+SF_MEMORYPOOL_IMPLEMENT(SF::Svr::ClusterInitializationTrans);
+SF_MEMORYPOOL_IMPLEMENT(SF::Svr::RequestDataSyncTrans);
+SF_MEMORYPOOL_IMPLEMENT(SF::Svr::ClusterMasterAssignedTrans);
+SF_MEMORYPOOL_IMPLEMENT(SF::Svr::ClusterMasterVoteTrans);
+SF_MEMORYPOOL_IMPLEMENT(SF::Svr::ClusterUpdateStatusTrans);
+SF_MEMORYPOOL_IMPLEMENT(SF::Svr::ClusterUpdateWorkloadTrans);
+SF_MEMORYPOOL_IMPLEMENT(SF::Svr::GetLowestWorkloadClusterMemberTrans);
+SF_MEMORYPOOL_IMPLEMENT(SF::Svr::ClusterNewServerServiceJoinedC2SEvtTrans);
+SF_MEMORYPOOL_IMPLEMENT(SF::Svr::ClusterNewServerServiceJoinedC2SEvtEntityTrans);
 
 
 
@@ -47,8 +47,8 @@ namespace Svr {
 
 
 
-	ClusterInitializationTrans::ClusterInitializationTrans()
-		: TransactionT( TransactionID() )
+	ClusterInitializationTrans::ClusterInitializationTrans(IMemoryManager& memoryManager)
+		: TransactionT(memoryManager, TransactionID() )
 	{
 		BR_TRANS_MESSAGE( TimerResult, { return OnTimer(pRes); });
 		//BR_TRANS_MESSAGE( Message::ClusterServer::GetClusterMemberListRes,	{ return OnGetClusterMemberList(pRes); });
@@ -75,7 +75,7 @@ namespace Svr {
 	{
 		Result hr = ResultCode::SUCCESS;
 
-		svrTrace(Svr::TRC_CLUSTER, "Cluster OnTimer Entity:{0}, ClusterID:{1},Type:{2},Membership:{3}, Step:{4}", GetOwnerEntityUID(), GetMyOwner()->GetClusterID(), GetMyOwner()->GetClusterType(), GetMyOwner()->GetClusterMembership(), (UINT)m_Step);
+		svrTrace(Svr::TRC_CLUSTER, "Cluster OnTimer Entity:{0}, ClusterID:{1},Type:{2},Membership:{3}, Step:{4}", GetOwnerEntityUID(), GetMyOwner()->GetClusterID(), GetMyOwner()->GetClusterType(), GetMyOwner()->GetClusterMembership(), (uint)m_Step);
 
 		switch( m_Step )
 		{
@@ -184,7 +184,7 @@ namespace Svr {
 		svrTrace( Svr::TRC_CLUSTER, "Cluster Joined Entity:{0}, ClusterID:{1},Type:{2},Membership:{3}", GetOwnerEntityUID(), GetMyOwner()->GetClusterID(), GetMyOwner()->GetClusterType(), GetMyOwner()->GetClusterMembership() );
 
 		// Fill my cluster status
-		svrChk( AddOtherServicesToMe((UINT)msgRes.GetMemberList().GetSize(), msgRes.GetMemberList().data()) );
+		svrChk( AddOtherServicesToMe((uint)msgRes.GetMemberList().GetSize(), msgRes.GetMemberList().data()) );
 
 		// 4. Request full data if replica
 		if( !(RequestDataSync()) )
@@ -254,13 +254,13 @@ namespace Svr {
 	}
 
 	// Add other services to me
-	Result ClusterInitializationTrans::AddOtherServicesToMe( UINT numServices, const ServiceInformation *pServiceInformations )
+	Result ClusterInitializationTrans::AddOtherServicesToMe( uint numServices, const ServiceInformation *pServiceInformations )
 	{
 		Result hr = ResultCode::SUCCESS;
 		bool bAddStatusWatcher = GetMyOwner()->GetClusterMembership() != ClusterMembership::StatusWatcher;
 
 		ServerEntityManager *pServerEntityManager = GetServerComponent<ServerEntityManager>();
-		for( UINT iMember = 0; iMember < numServices; iMember++ )
+		for( uint iMember = 0; iMember < numServices; iMember++ )
 		{
 			ServerEntity *pServerEntity = nullptr;
 			ServerServiceInformation *pService = nullptr;
@@ -375,8 +375,8 @@ namespace Svr {
 	{
 		Result hr = ResultCode::SUCCESS;
 		ServerServiceInformation *pVotedService = nullptr;
-		UINT uiExpectedVoterCount = 0, uiTotalVoted = 0;
-		UINT uiMaxVotedCount = 0;
+		uint uiExpectedVoterCount = 0, uiTotalVoted = 0;
+		uint uiMaxVotedCount = 0;
 		EntityUID maxEntity(0);
 
 		svrChk( super::StartTransaction() );
@@ -547,7 +547,7 @@ namespace Svr {
 		});
 
 		if (pLowestService == nullptr)
-			svrErrClose(ResultCode::E_SVR_CLUSTER_NOTREADY);
+			svrErrClose(ResultCode::SVR_CLUSTER_NOTREADY);
 
 		pLowestService->GetServiceInformation(m_LowestMemberInfo);
 

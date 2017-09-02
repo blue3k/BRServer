@@ -46,7 +46,7 @@ namespace Svr {
 		BrServer *g_pSvrInstance = nullptr;
 
 		// state change wait time
-		const UINT g_uiStateWaitTime = 10; // 10 min
+		const uint g_uiStateWaitTime = 10; // 10 min
 
 
 
@@ -492,7 +492,7 @@ namespace Svr {
 			if( g_pSvrInstance == NULL )
 			{
 				svrTrace( Trace::TRC_ERROR, "Invalid ServerInstance" );
-				ReportServiceStatus( SERVICE_STOPPED, ResultCode::E_SVR_SERVICE_FAILED, 0 );
+				ReportServiceStatus( SERVICE_STOPPED, ResultCode::SVR_SERVICE_FAILED, 0 );
 				trcErr( ResultCode::UNEXPECTED );
 			}
 
@@ -599,7 +599,7 @@ namespace Svr {
 
 			if( !(hr) )
 			{
-				ReportServiceStatus( SERVICE_STOPPED, ResultCode::E_SVR_SERVICE_FAILED, 0 );
+				ReportServiceStatus( SERVICE_STOPPED, ResultCode::SVR_SERVICE_FAILED, 0 );
 			}
 		}
 

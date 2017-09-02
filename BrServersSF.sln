@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.25420.1
+# Visual Studio 15
+VisualStudioVersion = 15.0.26730.10
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Lib", "Lib", "{6C29CCE4-32A6-409C-87E1-3F76DF945F99}"
 EndProject
@@ -29,8 +29,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Linux", "Linux", "{975F85D6
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Win", "Win", "{7E178A11-31C7-47EB-B7A8-47EF8EFCD03D}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Net.Linux", "Server\Lib\Net\Net.Linux.vcxproj", "{D314D4F8-43B8-4DDF-9CA1-C93523500357}"
-EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "DB.Linux", "Server\Lib\DB\DB.Linux.vcxproj", "{DCD16AE2-7D41-483C-9D5A-40CBDB468637}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ServerProtocol.Linux", "Server\Lib\ServerProtocol\ServerProtocol.Linux.vcxproj", "{86F1B613-6E76-4348-8B34-D878CA7D7944}"
@@ -55,7 +53,6 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ConspiracyGameInstanceServe
 		{5A9DEDC7-B6B5-4B99-948E-8ADB1DB34EE7} = {5A9DEDC7-B6B5-4B99-948E-8ADB1DB34EE7}
 		{6BCDE9D6-8AAE-4138-88CC-F97B6BF1C1F9} = {6BCDE9D6-8AAE-4138-88CC-F97B6BF1C1F9}
 		{DCD16AE2-7D41-483C-9D5A-40CBDB468637} = {DCD16AE2-7D41-483C-9D5A-40CBDB468637}
-		{D314D4F8-43B8-4DDF-9CA1-C93523500357} = {D314D4F8-43B8-4DDF-9CA1-C93523500357}
 	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ModuleServer", "Server\Service\ModuleServer\ModuleServer.vcxitems", "{03B0209D-8646-48DF-A5E7-8B90C48E61E5}"
@@ -98,7 +95,6 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ConspiracyGameServer.Linux"
 		{5A9DEDC7-B6B5-4B99-948E-8ADB1DB34EE7} = {5A9DEDC7-B6B5-4B99-948E-8ADB1DB34EE7}
 		{6BCDE9D6-8AAE-4138-88CC-F97B6BF1C1F9} = {6BCDE9D6-8AAE-4138-88CC-F97B6BF1C1F9}
 		{DCD16AE2-7D41-483C-9D5A-40CBDB468637} = {DCD16AE2-7D41-483C-9D5A-40CBDB468637}
-		{D314D4F8-43B8-4DDF-9CA1-C93523500357} = {D314D4F8-43B8-4DDF-9CA1-C93523500357}
 	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "EntityServer.Linux", "Server\Service\EntityServer\EntityServer.Linux.vcxproj", "{DA1446B0-4CB6-49CE-96B7-F28FE215E9A4}"
@@ -117,23 +113,14 @@ Global
 		Server\Lib\DB\DB.vcxitems*{44d18223-fcdb-4525-bdd1-ef8bb2af8b3d}*SharedItemsImports = 4
 		Server\Lib\ServerSystem\ServerSystem.vcxitems*{4e37f891-0d4d-4929-9026-8383be8e7426}*SharedItemsImports = 9
 		Server\Service\EntityServer\EntityServer.vcxitems*{4ebbbb99-1840-4b1a-b9c5-aa2f910836d7}*SharedItemsImports = 4
-		Server\Service\GameInstanceServer\ConspiracyGameInstanceServer.vcxitems*{5991cb78-ea3c-45ec-90cf-a1a88c547193}*SharedItemsImports = 4
-		Server\Lib\Table\Table.vcxitems*{5a9dedc7-b6b5-4b99-948e-8adb1db34ee7}*SharedItemsImports = 4
-		Server\Lib\ServerSystem\ServerSystem.vcxitems*{6bcde9d6-8aae-4138-88cc-f97b6bf1c1f9}*SharedItemsImports = 4
 		Server\Lib\ServerProtocol\ServerProtocol.vcxitems*{7035ea94-3335-4fd7-a3e3-28f80ccbabbf}*SharedItemsImports = 4
 		Server\Service\GameServer\ConspiracyGameServer.vcxitems*{74ded5ce-18e1-47dc-8b6d-d1a441c21930}*SharedItemsImports = 9
 		Server\Service\GameInstanceServer\ConspiracyGameInstanceServer.vcxitems*{85d506dc-f0be-45a8-9d2e-899b4dd1d05f}*SharedItemsImports = 4
-		Server\Lib\Protocol\Protocol.vcxitems*{86f1b613-6e76-4348-8b34-d878ca7d7944}*SharedItemsImports = 4
 		Server\Service\GameServer\ConspiracyGameServer.vcxitems*{90a3ce16-19a4-4380-bba1-878b4880f7d2}*SharedItemsImports = 4
 		Server\Lib\ServerSystem\ServerSystem.vcxitems*{9bad071f-8327-4270-a882-5113d650e6d3}*SharedItemsImports = 4
 		Server\Service\EntityServer\EntityServer.vcxitems*{bcd5e4bd-08ea-4714-adef-92adb69108e4}*SharedItemsImports = 9
 		Server\Lib\ServerProtocol\ServerProtocol.vcxitems*{bebe8b4e-f75b-4330-8762-139debf3841c}*SharedItemsImports = 9
-		Server\Lib\Net\Net.vcxitems*{d314d4f8-43b8-4ddf-9ca1-c93523500357}*SharedItemsImports = 4
 		Server\Lib\DB\DB.vcxitems*{d3448f9f-6af6-42fc-b387-3077995b850c}*SharedItemsImports = 9
-		Server\Service\EntityServer\EntityServer.vcxitems*{da1446b0-4cb6-49ce-96b7-f28fe215e9a4}*SharedItemsImports = 4
-		Server\Lib\DB\DB.vcxitems*{dcd16ae2-7d41-483c-9d5a-40cbdb468637}*SharedItemsImports = 4
-		Server\Service\GameServer\ConspiracyGameServer.vcxitems*{f132a822-a7a3-4a67-9f09-ef4d24b09d7a}*SharedItemsImports = 4
-		Server\Service\ModuleServer\ModuleServer.vcxitems*{f401e580-07fc-4355-b6ad-d4e7dc849959}*SharedItemsImports = 4
 		Server\Service\ModuleServer\ModuleServer.vcxitems*{f5ec3733-e13a-4b4a-a3c5-abd750723b9b}*SharedItemsImports = 4
 		Server\Lib\Table\Table.vcxitems*{fe22dd74-b69a-4d34-9c20-ed51d14cd077}*SharedItemsImports = 4
 	EndGlobalSection
@@ -184,18 +171,6 @@ Global
 		{FE22DD74-B69A-4D34-9C20-ED51D14CD077}.Release|x64.Build.0 = Release|x64
 		{FE22DD74-B69A-4D34-9C20-ED51D14CD077}.Release|x86.ActiveCfg = Release|Win32
 		{FE22DD74-B69A-4D34-9C20-ED51D14CD077}.Release|x86.Build.0 = Release|Win32
-		{D314D4F8-43B8-4DDF-9CA1-C93523500357}.Debug|Any CPU.ActiveCfg = Debug|x86
-		{D314D4F8-43B8-4DDF-9CA1-C93523500357}.Debug|ARM.ActiveCfg = Debug|ARM
-		{D314D4F8-43B8-4DDF-9CA1-C93523500357}.Debug|ARM.Build.0 = Debug|ARM
-		{D314D4F8-43B8-4DDF-9CA1-C93523500357}.Debug|x64.ActiveCfg = Debug|x64
-		{D314D4F8-43B8-4DDF-9CA1-C93523500357}.Debug|x64.Build.0 = Debug|x64
-		{D314D4F8-43B8-4DDF-9CA1-C93523500357}.Debug|x86.ActiveCfg = Debug|x86
-		{D314D4F8-43B8-4DDF-9CA1-C93523500357}.Release|Any CPU.ActiveCfg = Release|x86
-		{D314D4F8-43B8-4DDF-9CA1-C93523500357}.Release|ARM.ActiveCfg = Release|ARM
-		{D314D4F8-43B8-4DDF-9CA1-C93523500357}.Release|ARM.Build.0 = Release|ARM
-		{D314D4F8-43B8-4DDF-9CA1-C93523500357}.Release|x64.ActiveCfg = Release|x64
-		{D314D4F8-43B8-4DDF-9CA1-C93523500357}.Release|x64.Build.0 = Release|x64
-		{D314D4F8-43B8-4DDF-9CA1-C93523500357}.Release|x86.ActiveCfg = Release|x86
 		{DCD16AE2-7D41-483C-9D5A-40CBDB468637}.Debug|Any CPU.ActiveCfg = Debug|x86
 		{DCD16AE2-7D41-483C-9D5A-40CBDB468637}.Debug|ARM.ActiveCfg = Debug|ARM
 		{DCD16AE2-7D41-483C-9D5A-40CBDB468637}.Debug|ARM.Build.0 = Debug|ARM
@@ -358,7 +333,6 @@ Global
 		{15602EED-6F76-4F5B-B883-5F8383A8F070} = {6C29CCE4-32A6-409C-87E1-3F76DF945F99}
 		{975F85D6-244E-4E76-8740-90C8ED003674} = {6C29CCE4-32A6-409C-87E1-3F76DF945F99}
 		{7E178A11-31C7-47EB-B7A8-47EF8EFCD03D} = {6C29CCE4-32A6-409C-87E1-3F76DF945F99}
-		{D314D4F8-43B8-4DDF-9CA1-C93523500357} = {975F85D6-244E-4E76-8740-90C8ED003674}
 		{DCD16AE2-7D41-483C-9D5A-40CBDB468637} = {975F85D6-244E-4E76-8740-90C8ED003674}
 		{86F1B613-6E76-4348-8B34-D878CA7D7944} = {975F85D6-244E-4E76-8740-90C8ED003674}
 		{6BCDE9D6-8AAE-4138-88CC-F97B6BF1C1F9} = {975F85D6-244E-4E76-8740-90C8ED003674}

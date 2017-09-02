@@ -16,9 +16,9 @@
 #include "Memory/MemoryPool.h"
 #include "Common/ClassUtil.h"
 #include "Container/SFArray.h"
-#include "Common/GameConst.h"
+#include "GameConst.h"
 
-namespace BR {
+namespace SF {
 namespace ConspiracyGameInstanceServer {
 
 	class GameInstanceEntity;
@@ -88,11 +88,11 @@ namespace ConspiracyGameInstanceServer {
 
 		// suspects list
 		PlayerID m_VoteRankers[2];
-		UINT m_VoteRates[2];
+		uint m_VoteRates[2];
 
 		// Gather vote targets
 		// returns count of members who need to be voted
-		UINT GatherVoteTarget(Array<GamePlayer*>& voteTargets);
+		uint GatherVoteTarget(Array<GamePlayer*>& voteTargets);
 
 	public:
 		GameVoteSuspect(GameInstanceEntity* Owner)
@@ -102,7 +102,7 @@ namespace ConspiracyGameInstanceServer {
 
 		// set suspect with rate
 		PlayerID GetVoteRanker( int index );
-		void SetVoteRanker( PlayerID playerID, UINT rate );
+		void SetVoteRanker( PlayerID playerID, uint rate );
 
 		// Iniciate vote
 		virtual Result IniciateVote() override;
@@ -125,9 +125,9 @@ namespace ConspiracyGameInstanceServer {
 		bool m_IsInVoting;
 
 		PlayerID m_PlayerToHang;
-		UINT m_TopRate;
+		uint m_TopRate;
 
-		UINT GatherVoteTarget(Array<GamePlayer*>& voteTargets);
+		uint GatherVoteTarget(Array<GamePlayer*>& voteTargets);
 
 	public:
 		GameVoteHanging(GameInstanceEntity* Owner)
@@ -164,11 +164,11 @@ namespace ConspiracyGameInstanceServer {
 			MEDIUM			= 0x8,
 		};
 
-		UINT m_VotingFlags;
+		uint m_VotingFlags;
 
-		UINT GatherVoteTarget(Array<GamePlayer*>& voteTargets);
-		UINT GatherVoteTargetForHunting(Array<GamePlayer*>& voteTargets);
-		UINT GatherVoteTargetForSeer(Array<GamePlayer*>& voteTargets);
+		uint GatherVoteTarget(Array<GamePlayer*>& voteTargets);
+		uint GatherVoteTargetForHunting(Array<GamePlayer*>& voteTargets);
+		uint GatherVoteTargetForSeer(Array<GamePlayer*>& voteTargets);
 
 	private:
 
@@ -176,13 +176,13 @@ namespace ConspiracyGameInstanceServer {
 		BRCLASS_ATTRIBUTE(PlayerID,BodyGuardsChoice);
 
 		BRCLASS_ATTRIBUTE_READONLY(PlayerID,PlayerToKill);
-		UINT m_TopRate;
+		uint m_TopRate;
 
 		bool m_IsInVoting;
 
 
 	public:
-		GameVoteNight(GameInstanceEntity* Owner,UINT votingFlags);
+		GameVoteNight(GameInstanceEntity* Owner,uint votingFlags);
 		virtual ~GameVoteNight() {}
 
 		FORCEINLINE bool IsFlagSet( VoteFlags flag )	{ return (m_VotingFlags&flag) != 0; }
@@ -204,7 +204,7 @@ namespace ConspiracyGameInstanceServer {
 
 
 }; // namespace ConspiracyGameInstanceServer
-}; // namespace BR
+}; // namespace SF
 
 
 

@@ -15,7 +15,7 @@
 #include "GameServer.h"
 #include "GameServerClass.h"
 
-using namespace BR;
+using namespace SF;
 
 
 #if WINDOWS

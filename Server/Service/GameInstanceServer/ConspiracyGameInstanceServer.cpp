@@ -14,7 +14,7 @@
 #include "GameServer.h"
 #include "ConspiracyGameInstanceServerClass.h"
 
-using namespace BR;
+using namespace SF;
 
 
 
@@ -47,9 +47,9 @@ int main(int numArg, const char* argc[])
 
 
 	Result hr = ResultCode::SUCCESS;
-	SharedPointerT<BR::ConspiracyGameInstanceServer::GameInstanceServer> pServerInstance;
+	SharedPointerT<ConspiracyGameInstanceServer::GameInstanceServer> pServerInstance;
 
-	svrChk(BR::Svr::Service::ServicePrepare());
+	svrChk(Svr::Service::ServicePrepare());
 
 	svrChk(LibComponentManager::GetInstance().AddComponent<LibComponentDefault>());
 	svrChk(LibComponentManager::GetInstance().AddComponent<LibComponentTrace>());
@@ -59,9 +59,9 @@ int main(int numArg, const char* argc[])
 	svrChk(LibComponentManager::GetInstance().InitializeComponents());
 
 
-	pServerInstance = SharedPointerT<BR::ConspiracyGameInstanceServer::GameInstanceServer>(new BR::ConspiracyGameInstanceServer::GameInstanceServer );
+	pServerInstance = SharedPointerT<ConspiracyGameInstanceServer::GameInstanceServer>(new ConspiracyGameInstanceServer::GameInstanceServer );
 
-	svrChk(BR::Svr::Service::ServiceRun((BR::ConspiracyGameInstanceServer::GameInstanceServer*)pServerInstance));
+	svrChk(Svr::Service::ServiceRun((ConspiracyGameInstanceServer::GameInstanceServer*)pServerInstance));
 
 
 Proc_End:
@@ -70,7 +70,7 @@ Proc_End:
 	{
 		pServerInstance->TerminateEntity();
 		pServerInstance->OnRemovedFromTaskManager(nullptr);
-		pServerInstance = SharedPointerT<BR::ConspiracyGameInstanceServer::GameInstanceServer>();
+		pServerInstance = SharedPointerT<ConspiracyGameInstanceServer::GameInstanceServer>();
 	}
 
 	LibComponentManager::GetInstance().TerminateComponents();

@@ -58,6 +58,10 @@ namespace Svr{
 		typedef std::function<Result(Net::Connection *, Message::MessageData* &, Transaction* &)>	MessageHandlerType;
 
 	private:
+
+		MemoryManager m_MemoryManager;
+
+
 		// Entity state
 		EntityState		m_State;
 
@@ -74,10 +78,9 @@ namespace Svr{
 		// Entity transaction queue
 		PageQueue<Transaction*>			m_transactionQueue;
 
-		StaticAllocator< sizeof(Svr::EntityMessageHandlerItem) * 30 > m_Allocator;
-
 		// Message handler table
 		MessageHandlerTable<MessageHandlerType>	m_HandlerTable;
+
 
 
 	protected:
@@ -93,7 +96,7 @@ namespace Svr{
 		Result _ClearEntity();
 
 	public:
-		Entity( UINT uiTransQueueSize, UINT TransResQueueSize );
+		Entity( uint uiTransQueueSize, uint TransResQueueSize );
 		virtual ~Entity();
 
 		// Get Entity State
@@ -145,7 +148,7 @@ namespace Svr{
 
 		// Register message handler helper
 		template< class MessageClassType >
-		Result RegisterMessageHandler(const char* fileName, UINT lineNumber, MessageHandlerType newHandler )
+		Result RegisterMessageHandler(const char* fileName, uint lineNumber, MessageHandlerType newHandler )
 		{
 			//AssertRel(m_pHandlerTable);
 			return m_HandlerTable.Register<MessageClassType>(fileName, lineNumber, newHandler );
@@ -168,7 +171,7 @@ namespace Svr{
 
 		virtual Result FindActiveTransaction(const TransactionID& transID, Transaction* &pTransaction) = 0;
 
-		virtual UINT GetActiveTransactionCount() = 0;
+		virtual uint GetActiveTransactionCount() = 0;
 
 		// Pending new transaction job
 		virtual Result PendingTransaction(ThreadID thisThreadID, Transaction* &pTrans);

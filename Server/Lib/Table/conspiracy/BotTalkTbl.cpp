@@ -17,11 +17,12 @@
 
 namespace conspiracy
 {
+	using namespace SF;
  
 	BotTalkTbl::ItemIDTable *BotTalkTbl::m_ItemIDTable = nullptr;
 	BotTalkTbl::ItemIDTable *BotTalkTbl::m_ItemIDTablePrev = nullptr;
 
-	BR::Result BotTalkTbl::LoadTable( const std::list<BotTalkTblItem>& rowList )
+	Result BotTalkTbl::LoadTable( const std::list<BotTalkTblItem>& rowList )
 	{
  		auto pNewItemIDTable = new ItemIDTable;
 
@@ -39,20 +40,20 @@ namespace conspiracy
 		}
 		m_ItemIDTablePrev = m_ItemIDTable;
 		m_ItemIDTable = pNewItemIDTable;
-		return BR::ResultCode::SUCCESS;
+		return ResultCode::SUCCESS;
 	}
 
 
-	BR::Result BotTalkTbl::FindItem( const int& Key, BotTalkTblItem*& pRow)
+	Result BotTalkTbl::FindItem( const int& Key, BotTalkTblItem*& pRow)
 	{
  		auto itr = m_ItemIDTable->find(Key);
 		if (itr == m_ItemIDTable->end())
 		{
  			// write error log
-			return BR::ResultCode::FAIL;
+			return ResultCode::FAIL;
 		}
 		pRow = itr->second;
-		return BR::ResultCode::SUCCESS;
+		return ResultCode::SUCCESS;
 	}
 
 }; // namespace conspiracy

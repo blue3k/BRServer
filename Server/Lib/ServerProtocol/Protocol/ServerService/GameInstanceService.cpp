@@ -47,7 +47,7 @@ namespace SF
 
 		}; // Result GameInstanceService::DeleteGameC2SEvt( const EntityID &InSenderEntityID )
 		// Cmd: Join Game
-		Result GameInstanceService::JoinGameCmd( const TransactionID &InTransactionID, const PlayerInformation &InPlayer, const AuthTicket &InTicket, const PlayerRole &InRequestedRole )
+		Result GameInstanceService::JoinGameCmd( const TransactionID &InTransactionID, const PlayerInformation &InPlayer, const AuthTicket &InTicket, const uint8_t &InRequestedRole )
 		{
  			Result hr;
 
@@ -58,7 +58,7 @@ namespace SF
 
 			return hr;
 
-		}; // Result GameInstanceService::JoinGameCmd( const TransactionID &InTransactionID, const PlayerInformation &InPlayer, const AuthTicket &InTicket, const PlayerRole &InRequestedRole )
+		}; // Result GameInstanceService::JoinGameCmd( const TransactionID &InTransactionID, const PlayerInformation &InPlayer, const AuthTicket &InTicket, const uint8_t &InRequestedRole )
 		// C2S: Change configue preset
 		Result GameInstanceService::SetConfigPresetC2SEvt( const EntityID &InSenderEntityID, const uint32_t &InPresetID )
 		{
@@ -112,7 +112,7 @@ namespace SF
 
 		}; // Result GameInstanceService::AssignRoleCmd( const TransactionID &InTransactionID, const PlayerID &InPlayerID )
 		// C2S: Chatting message
-		Result GameInstanceService::ChatMessageC2SEvt( const EntityID &InSenderEntityID, const PlayerID &InPlayerID, const PlayerRole &InRole, const char* InChatMessage )
+		Result GameInstanceService::ChatMessageC2SEvt( const EntityID &InSenderEntityID, const PlayerID &InPlayerID, const uint8_t &InRole, const char* InChatMessage )
 		{
  			Result hr;
 
@@ -123,7 +123,7 @@ namespace SF
 
 			return hr;
 
-		}; // Result GameInstanceService::ChatMessageC2SEvt( const EntityID &InSenderEntityID, const PlayerID &InPlayerID, const PlayerRole &InRole, const char* InChatMessage )
+		}; // Result GameInstanceService::ChatMessageC2SEvt( const EntityID &InSenderEntityID, const PlayerID &InPlayerID, const uint8_t &InRole, const char* InChatMessage )
 		// Cmd: Advance game
 		Result GameInstanceService::AdvanceGameCmd( const TransactionID &InTransactionID, const PlayerID &InPlayerID )
 		{
@@ -164,7 +164,7 @@ namespace SF
 
 		}; // Result GameInstanceService::VoteCmd( const TransactionID &InTransactionID, const PlayerID &InPlayerID, const PlayerID &InVoteTarget, const uint32_t &InActionSerial )
 		// Cmd: Play again with the current players
-		Result GameInstanceService::GamePlayAgainCmd( const TransactionID &InTransactionID, const PlayerID &InLeadPlayer, const PartyUID &InPartyUID )
+		Result GameInstanceService::GamePlayAgainCmd( const TransactionID &InTransactionID, const PlayerID &InLeadPlayer, const uint64_t &InPartyUID )
 		{
  			Result hr;
 
@@ -175,7 +175,7 @@ namespace SF
 
 			return hr;
 
-		}; // Result GameInstanceService::GamePlayAgainCmd( const TransactionID &InTransactionID, const PlayerID &InLeadPlayer, const PartyUID &InPartyUID )
+		}; // Result GameInstanceService::GamePlayAgainCmd( const TransactionID &InTransactionID, const PlayerID &InLeadPlayer, const uint64_t &InPartyUID )
 		// Cmd: Player. revive himself
 		Result GameInstanceService::GameRevealPlayerCmd( const TransactionID &InTransactionID, const PlayerID &InPlayerID, const Array<PlayerID>& InTargetPlayerID )
 		{

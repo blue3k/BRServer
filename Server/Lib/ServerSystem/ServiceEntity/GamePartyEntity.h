@@ -19,11 +19,11 @@
 #include "ServerSystem/Entity.h"
 #include "ServerSystem/BrServer.h"
 #include "ServerSystem/GameSystem.h"
-#include "Common/BrComponent.h"
+#include "Component/BrComponent.h"
 #include "ServerSystem/ServerEntity.h"
 #include "ServerSystem/GameLog/ChattingHistory.h"
 
-#include "Common/Indexing.h"
+#include "Container/Indexing.h"
 #include "Container/StaticHashTable.h"
 
 #include "ServerSystem/PlayerEntityInformation.h"
@@ -121,7 +121,7 @@ namespace Svr {
 		inline PartyUID GetPartyUID();
 
 		// Get player count at this game
-		inline UINT GetNumPlayer();
+		inline uint GetNumPlayer();
 
 	public:
 
@@ -141,7 +141,7 @@ namespace Svr {
 		Result ForeachPlayer( std::function<Result(PartyPlayer* pPlayer)> func );
 
 		Result ForeachPlayerGameServer( std::function<Result(PartyPlayer* pPlayer, Policy::IPolicyGameServer *pPolicy)> func );
-		Result ForeachPlayerSvrGameParty( std::function<Result(PartyPlayer* pPlayer, Policy::ISvrPolicyGameParty *pPolicy)> func );
+		Result ForeachPlayerSvrGameParty( std::function<Result(PartyPlayer* pPlayer, Policy::NetSvrPolicyGameParty *pPolicy)> func );
 
 
 

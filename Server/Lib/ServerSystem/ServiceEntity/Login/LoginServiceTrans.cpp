@@ -10,15 +10,15 @@
 
 
 #include "stdafx.h"
-#include "ResultCode/SFResultCodeCommon.h"
+#include "ResultCode/SFResultCodeLibrary.h"
 #include "ResultCode/SFResultCodeGame.h"
 #include "Memory/MemoryPool.h"
 #include "Types/BrBaseTypes.h"
-#include "Common/GameConst.h"
+#include "GameConst.h"
 
 #include "Protocol/Message/GameInstanceManagerMsgClass.h"
 #include "Protocol/Message/LoginMsgClass.h"
-#include "Protocol/Policy/LoginIPolicy.h"
+#include "Protocol/Policy/LoginNetPolicy.h"
 
 
 #include "ServerSystem/BrServerUtil.h"
@@ -29,7 +29,7 @@
 #include "ServerSystem/ServiceEntity/Login/LoginServiceTrans.h"
 #include "ServerSystem/ServiceEntity/Login/LoginServiceEntity.h"
 
-SF_MEMORYPOOL_IMPLEMENT(BR::Svr::LoginPartyTrans);
+SF_MEMORYPOOL_IMPLEMENT(SF::Svr::LoginPartyTrans);
 
 
 
@@ -38,8 +38,8 @@ namespace Svr {
 
 
 
-	LoginPartyTrans::LoginPartyTrans(UINT startMemberCount, UINT targetMemberCount)
-		: TransactionT( TransactionID() )
+	LoginPartyTrans::LoginPartyTrans(IMemoryManager& memoryManager, uint startMemberCount, uint targetMemberCount)
+		: TransactionT( memoryManager, TransactionID() )
 	{
 		//SetPrintTrace(false);
 

@@ -33,7 +33,7 @@
 
 
 
-namespace BR {
+namespace SF {
 namespace GameServer {
 
 
@@ -57,7 +57,7 @@ namespace GameServer {
 
 
 }; // namespace Svr {
-}; // namespace BR {
+}; // namespace SF {
 
 
 

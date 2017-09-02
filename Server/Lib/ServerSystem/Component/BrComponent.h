@@ -157,7 +157,7 @@ namespace SF {
 		template< class ComponentType >
 		ComponentType* RemoveComponent()
 		{
-			UINT iComponent = ComponentType::ComponentID;
+			uint iComponent = ComponentType::ComponentID;
 			if (iComponent >= (MaxComponentID + 1) || iComponent < 0)
 				return nullptr;
 
@@ -311,7 +311,7 @@ namespace SF {
 		template< class ComponentType >
 		ComponentType* GetComponent()
 		{
-			UINT ID = ComponentType::ComponentID;
+			uint ID = ComponentType::ComponentID;
 			if( ID >= (MaxComponentID+1) || ID < 0 )
 				return nullptr;
 
@@ -325,7 +325,7 @@ namespace SF {
 		template< class ComponentType >
 		const ComponentType* GetComponent() const
 		{
-			UINT ID = ComponentType::ComponentID;
+			uint ID = ComponentType::ComponentID;
 			if( ID >= (MaxComponentID+1) || ID < 0 )
 				return nullptr;
 

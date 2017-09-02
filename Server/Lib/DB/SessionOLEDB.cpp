@@ -37,14 +37,14 @@ namespace DB {
 	template< class CmdClass >
 	Result SendQueryT(CSession& session, CmdClass& cmd)
 	{
-		dbTrace( BR::DB::TRC_QUERYSTR, "Query {0}", cmd.GetQueryString() );
+		dbTrace( SF::DB::TRC_QUERYSTR, "Query {0}", cmd.GetQueryString() );
 		Result hr = cmd.Open(session, cmd.GetQueryString(), NULL, NULL, DBGUID_DBSQL, false);
 
-		if( hr == DB_E_CANNOTCONNECT ) hr = ResultCode::E_DB_CONNECTION_FAILED;
+		if( hr == DB_E_CANNOTCONNECT ) hr = ResultCode::DB_CONNECTION_FAILED;
 		cmd.SetResult(hr);
 
 		if( !(hr) ) {
-			BR::DB::ReportError( hr, typeid(cmd).name() );
+			SF::DB::ReportError( hr, typeid(cmd).name() );
 		}
 
 		cmd.Close();
@@ -56,7 +56,7 @@ namespace DB {
 	template< class CmdClass >
 	Result SendQueryRowsetT(CSession& session, CmdClass& cmd)
 	{
-		dbTrace( BR::DB::TRC_QUERYSTR, "Query {0}", cmd.GetQueryString() );
+		dbTrace( SF::DB::TRC_QUERYSTR, "Query {0}", cmd.GetQueryString() );
 		Result hr = cmd.Open(session, cmd.GetQueryString(), NULL, NULL, DBGUID_DEFAULT, true);
 		if( !(hr) ) {
 			return ResultCode::FAIL;
@@ -66,7 +66,7 @@ namespace DB {
 			cmd.m_RowsetResult.push_back(cmd);	
 		}
 		
-		if( hr == DB_E_CANNOTCONNECT ) hr = ResultCode::E_DB_CONNECTION_FAILED;
+		if( hr == DB_E_CANNOTCONNECT ) hr = ResultCode::DB_CONNECTION_FAILED;
 		cmd.SetResult(hr);
 
 		if( !(hr) ) {

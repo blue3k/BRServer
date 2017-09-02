@@ -17,6 +17,8 @@
 
 namespace conspiracy
 {
+	using namespace SF;
+
  	class LevelTbl
 	{
  	public:
@@ -37,9 +39,9 @@ namespace conspiracy
 
 
 		// declare member function
-		static BR::Result LoadTable( const std::list<LevelItem>& rowList );
+		static Result LoadTable( const std::list<LevelItem>& rowList );
 
-		static BR::Result FindItem( const int& Key, LevelItem*& pRow);
+		static Result FindItem( const int& Key, LevelItem*& pRow);
 	}; // class LevelTbl
 }; // namespace conspiracy
 

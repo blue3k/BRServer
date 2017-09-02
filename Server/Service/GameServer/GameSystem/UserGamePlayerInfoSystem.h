@@ -18,14 +18,14 @@
 #include "Common/ClassUtil.h"
 #include "ServerSystem/GameSystem.h"
 #include "Common/MemoryBufferUtil.h"
-#include "Common/GameConst.h"
+#include "GameConst.h"
 #include "UserSystemComponentIDs.h"
 #include "Table/conspiracy/LevelTbl.h"
 #include "Table/conspiracy/ShopTbl.h"
 #include "Table/conspiracy/OrganicTbl.h"
 
 
-namespace BR {
+namespace SF {
 namespace GameServer {
 
 	class GamePlayerEntity;
@@ -110,7 +110,7 @@ namespace GameServer {
 		Result CheckCost(conspiracy::OrganicTbl::OrganicItem *pCostItem);
 		Result ApplyCost(conspiracy::OrganicTbl::OrganicItem *pCostItem, TransLogCategory logCategory, const char* message);
 
-		Result SetLevel( UINT newLevel );
+		Result SetLevel( uint newLevel );
 
 		Result GainExp( uint64_t expGain );
 
@@ -123,7 +123,7 @@ namespace GameServer {
 
 		// Add Friend slot, negative will reduce the friend slot
 		Result GainFriendSlot( INT numSlot );
-		UINT GetFriendSlot();
+		uint GetFriendSlot();
 
 		// gain game money
 		Result GainGameMoney( int64_t numValue );
@@ -147,7 +147,7 @@ namespace GameServer {
 
 
 }; // namespace GameServer
-}; // namespace BR
+}; // namespace SF
 
 
 

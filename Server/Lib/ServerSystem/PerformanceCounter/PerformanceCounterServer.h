@@ -110,13 +110,13 @@ namespace Svr {
 
 		public:
 
-			static Result Initialize(const char* serverAddress, UINT port);
+			static Result Initialize(const char* serverAddress, uint port);
 			static Result Initialize(const NetAddress& serverAddress);
 			static Result Terminate();
 
-			static UINT GetInstanceCount();
-			static UINT GetInstanceList(UINT startIndex, Array<SharedPointerT<PerformanceCounterInstance>>& instanceList);
-			//static UINT GetInstanceList(UINT startIndex, UINT bufferSize, EntityUID pInstanceBuffer);
+			static uint GetInstanceCount();
+			static uint GetInstanceList(uint startIndex, Array<SharedPointerT<PerformanceCounterInstance>>& instanceList);
+			//static uint GetInstanceList(uint startIndex, uint bufferSize, EntityUID pInstanceBuffer);
 			static Result GetInstance(uint64_t instanceUID, SharedPointerT<PerformanceCounterInstance>& pInstance);
 			static Result GetInstance(EntityUID instanceUID, SharedPointerT<PerformanceCounterInstance>& pInstance);
 

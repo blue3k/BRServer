@@ -63,7 +63,7 @@ namespace SF {
 
 			MessageHandler m_MessageHandler;
 
-			UINT m_ServerID;
+			uint m_ServerID;
 
 			struct FreeInfo
 			{
@@ -118,7 +118,7 @@ namespace SF {
 
 		public:
 
-			static Result Initialize(UINT serverID, const NetAddress& serverAddress);
+			static Result Initialize(uint serverID, const NetAddress& serverAddress);
 			static Result Terminate();
 
 			static PerformanceCounterInstance* GetDefaultCounterInstance();

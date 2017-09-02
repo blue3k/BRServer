@@ -15,7 +15,7 @@
 #include "SFTypedefs.h"
 
 
-namespace BR {
+namespace SF {
 namespace ConspiracyGameInstanceServer {
 namespace Const {
 
@@ -62,5 +62,5 @@ namespace Const {
 
 }; // namespace Const
 }; // namespace ConspiracyGameInstanceServer
-}; // namespace BR
+}; // namespace SF
 

@@ -17,7 +17,7 @@
 #include "Util/TimeUtil.h"
 #include "ResultCode/SFResultCodeSvr.h"
 #include "ResultCode/SFResultCodeSystem.h"
-#include "ResultCode/SFResultCodeCommon.h"
+#include "ResultCode/SFResultCodeLibrary.h"
 #include "ServerSystem/SvrTrace.h"
 
 #include "curl/curl.h"
@@ -114,7 +114,7 @@ namespace Google {
 		StaticArray<uint8_t, 128> digest;
 		int sslResult = TRUE;
 		uint8_t sign_buffer[512];
-		UINT sign_len = (UINT)countof(sign_buffer);
+		uint sign_len = (uint)countof(sign_buffer);
 
 		const char header[] = "{\"alg\":\"RS256\",\"typ\":\"JWT\"}";
 		const char bodyFormat[] =
@@ -157,7 +157,7 @@ namespace Google {
 		svrChk(Util::SHA256Hash(requestString.GetSize(), requestString.data(), digest));
 
 		// RSA sign
-		sslResult = RSA_sign(NID_sha256, digest.data(), (UINT)digest.GetSize(), sign_buffer, &sign_len, pkey);
+		sslResult = RSA_sign(NID_sha256, digest.data(), (uint)digest.GetSize(), sign_buffer, &sign_len, pkey);
 		if (sslResult == FALSE)
 		{
 			svrErr(ResultCode::UNEXPECTED);

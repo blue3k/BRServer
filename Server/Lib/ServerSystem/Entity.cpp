@@ -17,7 +17,7 @@
 #include "Thread/Thread.h"
 #include "ResultCode/SFResultCodeSvr.h"
 #include "ResultCode/SFResultCodeSystem.h"
-#include "ServerSystem/SvrConstDefault.h"
+#include "SvrConst.h"
 #include "ServerSystem/Entity.h"
 #include "ServerSystem/MessageRoute.h"
 #include "ServerSystem/Transaction.h"
@@ -30,7 +30,7 @@
 #include "ServerSystem/EntityTable.h"
 #include "Net/Message.h"
 
-#include "Protocol/Policy/ServerIPolicy.h"
+#include "Protocol/Policy/ServerNetPolicy.h"
 
 
 
@@ -47,14 +47,14 @@ namespace SF {
 	//	Entity base class
 	//
 
-	Entity::Entity( UINT uiTransQueueSize, UINT TransResQueueSize )
-		: m_State(EntityState::FREE)
+	Entity::Entity( uint uiTransQueueSize, uint TransResQueueSize )
+		: m_MemoryManager("EntityHeap", GetSystemMemoryManager())
+		, m_State(EntityState::FREE)
 		, m_EntityUID(0)
 		, m_ulCreateTime(TimeStampMS::min())
 		, m_lTransIdx(0)
-		, m_transactionQueue(uiTransQueueSize)
-		, m_Allocator(STDAllocator::GetInstance())
-		, m_HandlerTable(m_Allocator)
+		, m_transactionQueue(m_MemoryManager, uiTransQueueSize)
+		, m_HandlerTable(m_MemoryManager)
 	{
 
 		//// create message handler table
@@ -220,7 +220,7 @@ namespace SF {
 				{
 					assert(false);
 					svrTrace(Trace::TRC_ERROR, "No message handler {0}:{1}, MsgID:{2}", typeid(*this).name(), GetEntityUID(), pMsgHdr->msgID);
-					svrErr(ResultCode::E_SVR_NO_MESSAGE_HANDLER);
+					svrErr(ResultCode::SVR_NO_MESSAGE_HANDLER);
 				}
 
 				svrChk(handler(pCon, pMsg, pNewTrans));
@@ -229,7 +229,7 @@ namespace SF {
 		}
 		default:
 			svrTrace(Trace::TRC_ERROR, "Not Processed Remote message Entity:{0}:{1}, MsgID:{2}", typeid(*this).name(), GetEntityUID(), pMsgHdr->msgID);
-			svrErr(ResultCode::E_SVR_NOTEXPECTED_MESSAGE);
+			svrErr(ResultCode::SVR_NOTEXPECTED_MESSAGE);
 			break;
 		};
 
@@ -292,7 +292,7 @@ namespace SF {
 				svrTrace(Trace::TRC_ERROR, "Transaction initialization is failed {0} Entity:{1}, MsgID:{2}", typeid(*this).name(), GetEntityUID(), pMsgHdr->msgID);
 				if (pMsgHdr->msgID.IDs.Type == Message::MSGTYPE_COMMAND)
 				{
-					pCon->GetPolicy<Policy::ISvrPolicyServer>()->GenericFailureRes(pNewTrans->GetMessageRouteContext().GetSwaped(), pNewTrans->GetParentTransID(), hr);
+					pCon->GetPolicy<Policy::NetSvrPolicyServer>()->GenericFailureRes(pNewTrans->GetMessageRouteContext().GetSwaped(), pNewTrans->GetParentTransID(), hr);
 				}
 			}
 
@@ -437,7 +437,7 @@ namespace SF {
 			else if (pTrans->GetState() == Transaction::STATE_WAITSTART)
 			{
 				Assert(0);
-				pTrans->CloseTransaction(ResultCode::E_SVR_INVALID_TRANSITION);
+				pTrans->CloseTransaction(ResultCode::SVR_INVALID_TRANSITION);
 			}
 			break;
 		case Transaction::STATE_STARTED:
@@ -460,7 +460,7 @@ namespace SF {
 						GetEntityUID());
 				}
 				if (!pTrans->IsClosed())
-					pTrans->CloseTransaction(ResultCode::E_SVR_TIMEOUT);
+					pTrans->CloseTransaction(ResultCode::SVR_TIMEOUT);
 			}
 			break;
 		default:

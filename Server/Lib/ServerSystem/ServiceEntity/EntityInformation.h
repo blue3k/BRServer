@@ -56,7 +56,7 @@ namespace Svr {
 
 		// Entity Name
 		inline const char* GetName() const;
-		inline void SetName( const char* strName );
+		inline void SetName( IMemoryManager& memMgr, const char* strName );
 
 	};
 
@@ -156,7 +156,7 @@ namespace Svr {
 			return (ServiceType*)m_ServiceBase;
 		}
 
-		void ValidateServiceInstance(UINT serviceID);
+		void ValidateServiceInstance(uint serviceID);
 
 		// check whether this service is available or not
 		bool IsServiceAvailable() const;

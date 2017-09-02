@@ -15,7 +15,7 @@
 #include "Net/Message.h"
 #include "Net/Connection.h"
 #include "Protocol/SvrProtocol.h"
-#include "Protocol/Policy/GameMasterServerNetPolicy.h"
+#include "Protocol/Policy/GameMasterServerNetNetPolicy.h"
 #include "Protocol/Message/GameMasterServerMsgClass.h"
 #include "ProtocolTrace.h"
 

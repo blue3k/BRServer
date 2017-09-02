@@ -19,7 +19,7 @@
 #include "ServerSystem/ServerEntity/EntityServerEntity.h"
 
 
-namespace BR {
+namespace SF {
 namespace EntityServer {
 
 
@@ -42,7 +42,7 @@ namespace EntityServer {
 
 
 } // namespace EntityServer
-} // namespace BR
+} // namespace SF
 
 
 

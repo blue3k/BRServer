@@ -15,8 +15,8 @@
 
 #include "SFTypedefs.h"
 #include "Common/OrderedLinkedList.h"
-#include "Common/HashTable2.h"
-#include "Common/Indexing.h"
+#include "Container/HashTable2.h"
+#include "Container/Indexing.h"
 #include "Common/SystemSynchronization.h"
 #include "Net/NetDef.h"
 #include "Net/NetServerPeer.h"
@@ -63,7 +63,7 @@ namespace Svr
 		// Server ID map
 		ServerIDMap				m_ServerIDMap;
 
-		BR::CriticalSection			m_ServerTableLock;
+		CriticalSection			m_ServerTableLock;
 
 	private:
 		Result AddServerEntity(NetClass netClass, ServerEntity* pServerEntity);

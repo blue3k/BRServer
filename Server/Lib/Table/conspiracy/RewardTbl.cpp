@@ -17,6 +17,7 @@
 
 namespace conspiracy
 {
+	using namespace SF;
  
 	// ERole structure defition
 	RewardTbl::ERole::EnumMap RewardTbl::ERole::m_Map;
@@ -92,7 +93,7 @@ namespace conspiracy
 	RewardTbl::RoleTable *RewardTbl::m_RoleTable = nullptr;
 	RewardTbl::RoleTable *RewardTbl::m_RoleTablePrev = nullptr;
 
-	BR::Result RewardTbl::LoadTable( const std::list<RewardItem>& rowList )
+	Result RewardTbl::LoadTable( const std::list<RewardItem>& rowList )
 	{
  		auto pNewRoleTable = new RoleTable;
 
@@ -110,20 +111,20 @@ namespace conspiracy
 		}
 		m_RoleTablePrev = m_RoleTable;
 		m_RoleTable = pNewRoleTable;
-		return BR::ResultCode::SUCCESS;
+		return ResultCode::SUCCESS;
 	}
 
 
-	BR::Result RewardTbl::FindItem( const unsigned int& Key, RewardItem*& pRow)
+	Result RewardTbl::FindItem( const unsigned int& Key, RewardItem*& pRow)
 	{
  		auto itr = m_RoleTable->find(Key);
 		if (itr == m_RoleTable->end())
 		{
  			// write error log
-			return BR::ResultCode::FAIL;
+			return ResultCode::FAIL;
 		}
 		pRow = itr->second;
-		return BR::ResultCode::SUCCESS;
+		return ResultCode::SUCCESS;
 	}
 
 }; // namespace conspiracy

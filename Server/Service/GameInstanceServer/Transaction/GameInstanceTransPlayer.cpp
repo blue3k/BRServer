@@ -13,18 +13,18 @@
 #include "GameServer.h"
 #include "ConspiracyGameInstanceServerClass.h"
 
-#include "ResultCode/SFResultCodeCommon.h"
+#include "ResultCode/SFResultCodeLibrary.h"
 #include "ResultCode/SFResultCodeGame.h"
 #include "Memory/MemoryPool.h"
 #include "Types/BrBaseTypes.h"
 #include "Common/BrRandom.h"
-#include "Common/GameConst.h"
+#include "GameConst.h"
 
 #include "ServerSystem/BrServer.h"
 #include "ServerSystem/BrServerUtil.h"
 #include "ServerSystem/SvrTrace.h"
 #include "Protocol/Message/GameServerMsgClass.h"
-#include "Protocol/Policy/GameServerIPolicy.h"
+#include "Protocol/Policy/GameServerNetPolicy.h"
 
 
 #include "GameInstanceTransPlayer.h"
@@ -53,7 +53,7 @@ SF_MEMORYPOOL_IMPLEMENT(BR::ConspiracyGameInstanceServer::GameEntityTransGameRev
 SF_MEMORYPOOL_IMPLEMENT(BR::ConspiracyGameInstanceServer::GameEntityTransGamePlayerRevive);
 
 
-namespace BR {
+namespace SF {
 namespace ConspiracyGameInstanceServer {
 
 
@@ -93,7 +93,7 @@ namespace ConspiracyGameInstanceServer {
 	{
 		Result hr = ResultCode::SUCCESS;
 		GamePlayer *pMyPlayer = nullptr;
-		Policy::ISvrPolicyGameInstance *pMyPolicy = nullptr;
+		Policy::NetSvrPolicyGameInstance *pMyPolicy = nullptr;
 		Svr::GameInstancePlayer* pNewInsPlayer = nullptr;
 		auto pGameStateSystem = GetMyOwner()->GetComponent<GameStateSystem>();
 
@@ -146,7 +146,7 @@ namespace ConspiracyGameInstanceServer {
 		// Earlier close so that the player can get JoinGameRes first
 		CloseTransaction( hr );
 
-		pMyPolicy = pMyPlayer->GetPolicy<Policy::ISvrPolicyGameInstance>();
+		pMyPolicy = pMyPlayer->GetPolicy<Policy::NetSvrPolicyGameInstance>();
 		// Send all other player to me
 		if (pMyPolicy != nullptr)
 		{
@@ -160,7 +160,7 @@ namespace ConspiracyGameInstanceServer {
 		}
 
 		// Send my info to others
-		GetMyOwner()->ForeachPlayerSvrGameInstance( [&]( GamePlayer* pPlayer, Policy::ISvrPolicyGameInstance *pPolicy )->Result {
+		GetMyOwner()->ForeachPlayerSvrGameInstance( [&]( GamePlayer* pPlayer, Policy::NetSvrPolicyGameInstance *pPolicy )->Result {
 			if( pMyPlayer != pPlayer )
 			{
 				PlayerRole myRoleToOther = GetMyOwner()->GetComponent<GamePlaySystem>()->GetRevealedRole( pPlayer, pMyPlayer );
@@ -219,18 +219,18 @@ namespace ConspiracyGameInstanceServer {
 
 		if( GetPlayerToKick() == (PlayerID)(-1) )
 		{
-			svrChk( GetMyOwner()->ForeachPlayerSvrGameInstance( [&]( GamePlayer* pPlayer, Policy::ISvrPolicyGameInstance *pPolicy )->Result {
+			svrChk( GetMyOwner()->ForeachPlayerSvrGameInstance( [&]( GamePlayer* pPlayer, Policy::NetSvrPolicyGameInstance *pPolicy )->Result {
 				pPolicy->PlayerKickedS2CEvt( RouteContext( GetOwnerEntityUID(), pPlayer->GetPlayerEntityUID()), pPlayer->GetPlayerID()  );
 				return GetMyOwner()->LeavePlayer( pPlayer->GetPlayerID() );
 			}) );
 		}
 		else
 		{
-			Policy::ISvrPolicyGameInstance *pPolicy = nullptr;
+			Policy::NetSvrPolicyGameInstance *pPolicy = nullptr;
 			GamePlayer *pPlayerToKick = nullptr;
 
 			svrChk( GetMyOwner()->FindPlayer( GetPlayerToKick(), pPlayerToKick ) );
-			pPolicy = pPlayerToKick->GetPolicy<Policy::ISvrPolicyGameInstance>();
+			pPolicy = pPlayerToKick->GetPolicy<Policy::NetSvrPolicyGameInstance>();
 			if (pPolicy != nullptr)
 				pPolicy->PlayerKickedS2CEvt( RouteContext( GetOwnerEntityUID(), pPlayerToKick->GetPlayerEntityUID()), pPlayerToKick->GetPlayerID()  );
 			svrChk( GetMyOwner()->LeavePlayer( pPlayerToKick->GetPlayerID() ) );
@@ -400,7 +400,7 @@ namespace ConspiracyGameInstanceServer {
 
 		svrChk(super::StartTransaction());
 
-		GetMyOwner()->ForeachPlayerSvrGameInstance([&](GamePlayer* pPlayer, Policy::ISvrPolicyGameInstance *pPolicy)->Result
+		GetMyOwner()->ForeachPlayerSvrGameInstance([&](GamePlayer* pPlayer, Policy::NetSvrPolicyGameInstance *pPolicy)->Result
 		{
 			if (pPlayer->GetPlayerEntityUID() == 0)
 				return ResultCode::SUCCESS;
@@ -443,7 +443,7 @@ namespace ConspiracyGameInstanceServer {
 			svrErrClose(ResultCode::E_GAME_INVALID_PLAYER_STATE);
 
 		numReveal = std::min((size_t)GameConst::MAX_PLAYER_REVEAL, GetTargetPlayerID().GetSize());
-		for (UINT iTargetPlayer = 0; iTargetPlayer < numReveal; iTargetPlayer++)
+		for (uint iTargetPlayer = 0; iTargetPlayer < numReveal; iTargetPlayer++)
 		{
 			svrChk(GetMyOwner()->FindPlayer(GetTargetPlayerID()[iTargetPlayer], pTargetPlayer));
 
@@ -496,5 +496,5 @@ namespace ConspiracyGameInstanceServer {
 
 
 };// namespace ConspiracyGameInstanceServer 
-};// namespace BR 
+};// namespace SF 
 

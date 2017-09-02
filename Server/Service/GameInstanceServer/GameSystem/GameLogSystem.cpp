@@ -31,7 +31,7 @@
 SF_MEMORYPOOL_IMPLEMENT(BR::ConspiracyGameInstanceServer::GameLogSystem);
 
 
-namespace BR {
+namespace SF {
 namespace ConspiracyGameInstanceServer {
 
 
@@ -106,7 +106,7 @@ namespace ConspiracyGameInstanceServer {
 		return hr;
 	}
 
-	Result GameLogSystem::AddGameVote( TimeStampSec timeStamp, GameVoteType type, UINT voterCount )
+	Result GameLogSystem::AddGameVote( TimeStampSec timeStamp, GameVoteType type, uint voterCount )
 	{
 		Result hr = ResultCode::SUCCESS;
 		GameLogVote *logItem;
@@ -152,7 +152,7 @@ namespace ConspiracyGameInstanceServer {
 		return hr;
 	}
 
-	Result GameLogSystem::AddGameVoteResult(TimeStampSec timeStamp, UINT numRankers, const PlayerID* ranker )
+	Result GameLogSystem::AddGameVoteResult(TimeStampSec timeStamp, uint numRankers, const PlayerID* ranker )
 	{
 		Result hr = ResultCode::SUCCESS;
 		GameLogVoteResult *logItem;
@@ -229,7 +229,7 @@ namespace ConspiracyGameInstanceServer {
 
 	
 }; // namespace ConspiracyGameInstanceServer
-}; // namespace BR
+}; // namespace SF
 
 
 

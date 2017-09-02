@@ -15,7 +15,7 @@
 #include "ServerSystem/SvrTrace.h"
 #include "Util/TimeUtil.h"
 #include "Types/BrBaseTypes.h"
-#include "ResultCode/SFResultCodeCommon.h"
+#include "ResultCode/SFResultCodeLibrary.h"
 #include "ResultCode/SFResultCodeGame.h"
 #include "Net/Message.h"
 #include "Common/BrRandom.h"
@@ -26,8 +26,8 @@
 //#include "ConspiracyGameInstanceSvrConst.h"
 //#include "ConspiracyGameInstanceServerClass.h"
 
-//#include "Protocol/Policy/GameIPolicy.h"
-#include "Protocol/Policy/GameMasterServerIPolicy.h"
+//#include "Protocol/Policy/GameNetPolicy.h"
+#include "Protocol/Policy/GameMasterServerNetPolicy.h"
 
 //#include "GameInstanceEntity.h"
 
@@ -224,7 +224,7 @@ namespace Svr {
 	//
 
 	// Initialize entity to proceed new connection
-	Result GameInstanceEntity::InitializeGameEntity(UINT numBot, UINT maxPlayer)
+	Result GameInstanceEntity::InitializeGameEntity(uint numBot, uint maxPlayer)
 	{
 		Result hr = ResultCode::SUCCESS;
 		GameInstancePlayer *pPlayer = nullptr;
@@ -252,7 +252,7 @@ namespace Svr {
 
 
 		// add fake bot player
-		for (UINT iBot = 0; iBot < m_NumBot; iBot++)
+		for (uint iBot = 0; iBot < m_NumBot; iBot++)
 		{
 			PlayerInformation playerInfo;
 			playerInfo.PlayerID = iBot + 1;
@@ -292,7 +292,7 @@ namespace Svr {
 	{
 		Result hr = ResultCode::SUCCESS;
 		GameInstancePlayer* pFound = nullptr;
-//		UINT playerIndex;
+//		uint playerIndex;
 
 		svrChkPtr( pPlayer );
 		if ((m_GamePlayerByUID.Find(pPlayer->GetPlayerID(), pFound)))
@@ -355,7 +355,7 @@ namespace Svr {
 	{
 		m_GamePlayerByUID.ForeachOrder(0, GameConst::MAX_GAMEPLAYER, [&](const PlayerID& playerID, GameInstancePlayer* pPlayer)-> bool
 		{
-			auto pPolicy = pPlayer->GetPolicy<Policy::ISvrPolicyGameInstance>();
+			auto pPolicy = pPlayer->GetPolicy<Policy::NetSvrPolicyGameInstance>();
 			if (pPolicy != nullptr && pPlayer->GetPlayerEntityUID() != 0)
 				pPolicy->PlayerKickedS2CEvt(RouteContext(GetEntityUID(), pPlayer->GetPlayerEntityUID()), pPlayer->GetPlayerID());
 
@@ -378,7 +378,7 @@ namespace Svr {
 
 		if (!(m_GamePlayerByUID.Find(pltID, pGamePlayer)))
 		{
-			return ResultCode::E_SVR_PLAYER_NOT_FOUND;
+			return ResultCode::SVR_PLAYER_NOT_FOUND;
 		}
 
 	//Proc_End:

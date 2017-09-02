@@ -23,8 +23,8 @@
 #include "Common/SvrPolicyID.h"
 
 
-SF_MEMORYPOOL_IMPLEMENT(BR::Svr::MessageResult);
-SF_MEMORYPOOL_IMPLEMENT(BR::Svr::TimerResult);
+SF_MEMORYPOOL_IMPLEMENT(SF::Svr::MessageResult);
+SF_MEMORYPOOL_IMPLEMENT(SF::Svr::TimerResult);
 
 
 namespace SF {
@@ -107,7 +107,7 @@ namespace SF {
 		Result hr = ResultCode::SUCCESS;
 
 		if( GetState() != Transaction::STATE_WAITSTART )
-			svrErr( ResultCode::E_SVR_TRANSACTION_INVALID_STATE );
+			svrErr( ResultCode::SVR_TRANSACTION_INVALID_STATE );
 
 		m_TransactionStartTime = Util::Time.GetTimeMs();
 

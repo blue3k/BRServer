@@ -16,12 +16,12 @@
 #include "Memory/MemoryPool.h"
 #include "Container/SFArray.h"
 #include "Types/BrBaseTypes.h"
-#include "Common/GameConst.h"
+#include "GameConst.h"
 #include "Net/Message.h"
 #include "Protocol/Message/ClusterServerMsgClass.h"
-#include "Protocol/Policy/ClusterServerIPolicy.h"
+#include "Protocol/Policy/ClusterServerNetPolicy.h"
 #include "Protocol/Message/GameServerMsgClass.h"
-#include "Protocol/Policy/GameServerIPolicy.h"
+#include "Protocol/Policy/GameServerNetPolicy.h"
 #include "ServerSystem/MessageRoute.h"
 #include "ServerSystem/ServiceEntity/Game/GameClusterServiceEntity.h"
 #include "ServerSystem/ServerTransaction.h"
@@ -39,7 +39,7 @@ namespace Svr {
 	//private:
 	//	const char* m_PublicAddress;
 	//	const char* m_PublicAddressIPV6;
-	//	UINT m_Port;
+	//	uint m_Port;
 	//	EntityUID m_PlayerUID;
 
 	//public:
@@ -52,7 +52,7 @@ namespace Svr {
 	//	// Start Transaction
 	//	virtual Result StartTransaction() override;
 
-	//	Policy::ISvrPolicyGameServer* GetPolicy() { return super::GetPolicy<Policy::ISvrPolicyGameServer>(); }
+	//	Policy::NetSvrPolicyGameServer* GetPolicy() { return super::GetPolicy<Policy::NetSvrPolicyGameServer>(); }
 
 	//	BR_SVR_MSGTRANS_CLOSE_ARGS(RegisterPlayerToJoinGameServerRes, RouteContext(m_PlayerUID, GetRouteContext().GetFrom()), m_PublicAddress, m_PublicAddressIPV6, m_Port);
 	//};

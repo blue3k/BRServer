@@ -16,10 +16,10 @@
 #include "Memory/MemoryPool.h"
 #include "Container/SFArray.h"
 #include "Types/BrBaseTypes.h"
-#include "Common/GameConst.h"
+#include "GameConst.h"
 #include "Net/Message.h"
 #include "Protocol/Message/ClusterServerMsgClass.h"
-#include "Protocol/Policy/ClusterServerIPolicy.h"
+#include "Protocol/Policy/ClusterServerNetPolicy.h"
 #include "ServerSystem/MessageRoute.h"
 #include "ServerSystem/ServiceEntity/ClusteredServiceEntity.h"
 #include "ServerSystem/ServiceEntity/ClusterManagerServiceEntity.h"
@@ -32,10 +32,10 @@ namespace Svr {
 
 
 
-	class ClusterInitializationTrans : public TransactionT<ClusteredServiceEntity, ClusterInitializationTrans, sizeof(TransactionMessageHandlerType)*5>
+	class ClusterInitializationTrans : public TransactionT<ClusteredServiceEntity, ClusterInitializationTrans>
 	{
 	public:
-		typedef TransactionT<ClusteredServiceEntity, ClusterInitializationTrans, sizeof(TransactionMessageHandlerType) * 5> super;
+		typedef TransactionT<ClusteredServiceEntity, ClusterInitializationTrans> super;
 
 	private:
 		enum Step {
@@ -50,7 +50,7 @@ namespace Svr {
 		Result m_hr;
 
 	public:
-		ClusterInitializationTrans();
+		ClusterInitializationTrans(IMemoryManager& memoryManager);
 		virtual ~ClusterInitializationTrans();
 
 		//virtual void Dispose() override;
@@ -71,7 +71,7 @@ namespace Svr {
 		Result OnClusterDataSync(TransactionResult* pRes);
 
 		// Add other services to me
-		Result AddOtherServicesToMe( UINT numServices, const ServiceInformation *pServiceInformations );
+		Result AddOtherServicesToMe( uint numServices, const ServiceInformation *pServiceInformations );
 
 		virtual Result OnCloseTransaction( Result hrRes ) override;
 
@@ -104,7 +104,7 @@ namespace Svr {
 		// Start Transaction
 		virtual Result StartTransaction();
 
-		Policy::ISvrPolicyClusterServer* GetPolicy()	{ return ServerEntityMessageTransaction::GetPolicy<Policy::ISvrPolicyClusterServer>(); }
+		Policy::NetSvrPolicyClusterServer* GetPolicy()	{ return ServerEntityMessageTransaction::GetPolicy<Policy::NetSvrPolicyClusterServer>(); }
 
 		BR_SVR_MSGTRANS_CLOSE(RequestDataSyncRes,GetRouteContext().GetSwaped());
 	};
@@ -196,7 +196,7 @@ namespace Svr {
 		// Start Transaction
 		virtual Result StartTransaction();
 
-		Policy::ISvrPolicyClusterServer* GetPolicy() { return ServerEntityMessageTransaction::GetPolicy<Policy::ISvrPolicyClusterServer>(); }
+		Policy::NetSvrPolicyClusterServer* GetPolicy() { return ServerEntityMessageTransaction::GetPolicy<Policy::NetSvrPolicyClusterServer>(); }
 
 		BR_SVR_MSGTRANS_CLOSE_ARGS(GetLowestWorkloadClusterMemberRes, GetRouteContext().GetSwaped(), m_LowestMemberInfo);
 	};
