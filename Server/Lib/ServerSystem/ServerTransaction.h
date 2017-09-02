@@ -23,7 +23,7 @@
 
 #include "ServerSystem/SvrConst.h"
 #include "ServerSystem/SvrTrace.h"
-#include "Types/SvrTypes.h"
+#include "Types/BrSvrTypes.h"
 
 
 #include "ServerSystem/Transaction.h"
@@ -31,7 +31,7 @@
 
 
 
-namespace BR {
+namespace SF {
 namespace Svr {
 
 	class Entity;
@@ -397,7 +397,7 @@ namespace Svr {
 #include "ServerTransaction.inl"
 
 }; // namespace Svr
-}; // namespace BR
+}; // namespace SF
 
 
 

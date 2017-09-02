@@ -32,7 +32,7 @@ SF_MEMORYPOOL_IMPLEMENT(BR::Svr::GameInstanceTransCreateGame);
 SF_MEMORYPOOL_IMPLEMENT(BR::Svr::GameInstanceTransGameDeleted);
 
 
-namespace BR {
+namespace SF {
 namespace Svr {
 
 
@@ -84,5 +84,5 @@ namespace Svr {
 
 
 };// namespace Svr 
-};// namespace BR 
+};// namespace SF 
 

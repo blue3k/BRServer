@@ -17,7 +17,7 @@
 #include "Common/ClassUtil.h"
 #include "ServerSystem/GameSystem.h"
 #include "ServerSystem/GameLog/ChattingHistory.h"
-#include "Common/ArrayUtil.h"
+#include "Container/SFArray.h"
 #include "Common/GameConst.h"
 #include "GameSystemComponentIDs.h"
 

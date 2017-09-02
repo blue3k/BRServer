@@ -20,7 +20,7 @@
 
 
 
-namespace BR
+namespace SF
 {
 
 	LibComponentTrace::LibComponentTrace()
@@ -75,6 +75,6 @@ namespace BR
 	}
 
 
-};	// namespace BR
+};	// namespace SF
 
 

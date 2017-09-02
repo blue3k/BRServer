@@ -19,7 +19,7 @@
 
 
 
-namespace BR {
+namespace SF {
 
 	template class SharedPointerT < Svr::PerformanceCounterInstance >;
 	template class WeakPointerT < Svr::PerformanceCounterInstance >;
@@ -81,6 +81,6 @@ namespace Svr {
 
 
 };	// Svr
-};	// namespace BR
+};	// namespace SF
 
 

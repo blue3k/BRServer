@@ -17,7 +17,7 @@
 #include "Net/NetDef.h"
 #include "DB/DBClusterManager.h"
 //#include "ServerSystem/PlugIn.h"
-#include "Types/SvrTypes.h"
+#include "Types/BrSvrTypes.h"
 #include "ServerSystem/MasterEntity.h"
 #include "Task/TaskManager.h"
 #include "ServerSystem/MasterEntity.h"
@@ -25,7 +25,7 @@
 #include "ServerSystem/ServerComponentCarrier.h"
 
 
-namespace BR {
+namespace SF {
 namespace Svr { 
 namespace Config { 
 
@@ -33,7 +33,7 @@ namespace Config {
 }}}
 
 
-namespace BR {
+namespace SF {
 namespace Net {
 	class ServerPeer;
 	class ServerPeerTCP;
@@ -41,14 +41,14 @@ namespace Net {
 };
 
 
-namespace BR {
+namespace SF {
 	namespace DB {
 		class DBClusterManager;
 	}
 };
 
 
-namespace BR {
+namespace SF {
 namespace Svr {
 
 	class ServerEntityManager;
@@ -288,7 +288,7 @@ namespace Svr {
 
 #include "BrServer.inl"
 
-}; // namespace BR
+}; // namespace SF
 }; // namespace Svr
 
 

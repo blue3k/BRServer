@@ -26,14 +26,14 @@
 
 #include "ServerSystem/SvrConst.h"
 #include "ServerSystem/SvrTrace.h"
-#include "Types/SvrTypes.h"
+#include "Types/BrSvrTypes.h"
 #include "ServerSystem/MessageHandlerTable.h"
 #include "Protocol/Message/ServerMsgClass.h"
-#include "Task/TimeSchedulerAction.h"
+#include "Task/TimerSchedulerAction.h"
 #include "Net/Connection.h"
 #include "ServerSystem/BrServerUtil.h"
 
-namespace BR {
+namespace SF {
 	class TimerAction;
 	
 namespace Svr {
@@ -419,7 +419,7 @@ namespace Svr {
 	typedef std::function<Result(TransactionResult* pRes)> TransactionMessageHandlerType;
 
 	// Message transaction template
-	template< class OwnerType, class MemoryPoolClass, size_t MessageHandlerBufferSize = sizeof(TransactionMessageHandlerType)*2 >
+	template< class OwnerType, class MemoryPoolClass, size_t MessageHandlerCount = 2 >
 	class TransactionT : public Transaction, public MemoryPoolObject<MemoryPoolClass>
 	{
 	public:
@@ -428,15 +428,15 @@ namespace Svr {
 	private:
 
 		// static allocation buffer
-		StaticAllocator<MessageHandlerBufferSize>	m_StaticAllocator;
+		StaticArray<MessageHandlerCount>	m_MessageHandlerBuffer;
 
 		// Message handler table
 		MessageHandlerTable<TransactionMessageHandlerType>		m_Handlers;
 
 	public:
-		TransactionT( TransactionID transID )
-			:Transaction( transID )
-			,m_StaticAllocator(STDAllocator::GetInstance())
+		TransactionT(IMemoryManager& memMgr, TransactionID transID )
+			:Transaction(memMgr, transID )
+			, m_MessageHandlerBuffer(memMgr)
 			,m_Handlers(m_StaticAllocator)
 		{
 			BR_TRANS_MESSAGE(Message::Server::GenericFailureRes, { return OnGenericError(pRes); });
@@ -736,7 +736,7 @@ extern template class PageQueue<Svr::TransactionResult*>;
 extern template class SharedPointerT < Svr::Transaction >;
 extern template class WeakPointerT < Svr::Transaction >;
 
-}; // namespace BR
+}; // namespace SF
 
 
 

@@ -18,7 +18,7 @@
 
 
 
-namespace BR
+namespace SF
 {
 
 	
@@ -149,6 +149,6 @@ namespace BR
         Winner = winner;
     }
 
-};	// namespace BR
+};	// namespace SF
 
 

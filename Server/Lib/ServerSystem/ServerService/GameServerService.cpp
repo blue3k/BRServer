@@ -1,6 +1,6 @@
 ﻿////////////////////////////////////////////////////////////////////////////////
 // 
-// CopyRight (c) 2013 The Braves
+// CopyRight (c) 2016 StormForge
 // 
 // Author : Generated
 // 
@@ -12,7 +12,6 @@
 #include "stdafx.h"
 #include "SFTypedefs.h"
 #include "Protocol/Protocol.h"
-#include "Types/BrBaseTypes.h"
 #include "ServerSystem/ServerEntity.h"
 #include "ServerSystem/BrServer.h"
 #include "ServerSystem/BrServerUtil.h"
@@ -22,7 +21,7 @@
 
 
 
-namespace BR
+namespace SF
 {
  	namespace Svr
 	{
@@ -154,6 +153,6 @@ namespace BR
 
 
 	}; // namespace Svr
-}; // namespace BR
+}; // namespace SF
 
 

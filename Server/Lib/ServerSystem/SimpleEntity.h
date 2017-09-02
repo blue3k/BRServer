@@ -18,11 +18,11 @@
 #include "Net/NetDef.h"
 #include "Task/ServerTask.h"
 #include "Container/PageQueue.h"
-#include "Types/SvrTypes.h"
+#include "Types/BrSvrTypes.h"
 #include "ServerSystem/Entity.h"
 
 
-namespace BR {
+namespace SF {
 namespace Svr {
 
 
@@ -60,7 +60,7 @@ namespace Svr {
 
 
 }; // namespace Svr
-}; // namespace BR
+}; // namespace SF
 
 
 

@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- edited with XMLSpy v2008 sp1 (http://www.altova.com) by abc (abc) -->
-<Protocols xmlns="http://www.TheBraves.com/XMLProtocol" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.TheBraves.com/XMLProtocol ProtocolDef.xsd">
+<Protocols xmlns="http://www.StormForge.com/XMLProtocol" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.StormForge.com/XMLProtocol ../../StormForge/Engine/Data/Protocol/ProtocolDef.xsd">
 	<ProtocolGroup Name="GamePartyManager" GenParameterRouteContext="true" GenParameterRouteHopCount="true" IsMobile="false" IsServer="true" Desc="Game Party manager service Protocol">
 		<!-- ============================  Server Generic  ============================================ -->
 
-	<Command Name="CreateParty" Reliable="true" Crypto="No" Trace="DBG1" Desc="Create a party instance">
+	<Command Name="CreateParty" Reliable="true" Crypto="No" Trace="Debug1" Desc="Create a party instance">
 		<Cmd>
       <Params Type="PlayerInformation" Name="Creator"/>
     </Cmd>
@@ -12,7 +12,7 @@
 		</Res>
 	</Command>
 
-    <C2SEvent Name="PartyDeleted" Reliable="true" Crypto="No" Trace="DBG1" Desc="Party instance notify of deletion">
+    <C2SEvent Name="PartyDeleted" Reliable="true" Crypto="No" Trace="Debug1" Desc="Party instance notify of deletion">
     </C2SEvent>
 
     <!-- =============================  ======================================= -->

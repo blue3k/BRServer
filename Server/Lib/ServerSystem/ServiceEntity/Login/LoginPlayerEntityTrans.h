@@ -15,7 +15,7 @@
 #include "ServerSystem/Transaction.h"
 #include "Memory/MemoryPool.h"
 #include "Common/Memento.h"
-#include "Common/ArrayUtil.h"
+#include "Container/SFArray.h"
 #include "Types/BrBaseTypes.h"
 #include "Net/Message.h"
 
@@ -32,7 +32,7 @@
 
 
 
-namespace BR {
+namespace SF {
 namespace Svr {
 
 
@@ -302,5 +302,5 @@ namespace Svr {
 
 
 } // namespace Svr 
-} // namespace BR 
+} // namespace SF 
 

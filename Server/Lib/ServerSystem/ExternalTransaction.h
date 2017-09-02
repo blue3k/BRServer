@@ -21,7 +21,7 @@
 #include "Net/NetDef.h"
 #include "ServerSystem/SimpleEntity.h"
 #include "ServerSystem/Transaction.h"
-#include "Types/SvrTypes.h"
+#include "Types/BrSvrTypes.h"
 #include "ServerSystem/ServerComponent.h"
 #include "ServerSystem/ParallelTransaction.h"
 #include "Common/MemoryBufferUtil.h"
@@ -34,7 +34,7 @@
 
 
 
-namespace BR {
+namespace SF {
 
 	namespace Message {
 		class MessageData;
@@ -205,7 +205,7 @@ namespace Svr{
 
 
 }; // namespace Svr
-}; // namespace BR
+}; // namespace SF
 
 
 

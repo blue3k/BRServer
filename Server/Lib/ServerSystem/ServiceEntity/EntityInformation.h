@@ -19,7 +19,7 @@
 //#include "ServerSystem/ServerService/ServerService.h"
 
 
-namespace BR {
+namespace SF {
 namespace Svr {
 
 	class ServerServiceBase;
@@ -200,7 +200,7 @@ namespace Svr {
 #include "EntityInformation.inl"
 
 } // namespace Svr
-} // namespace BR
+} // namespace SF
 
 
 

@@ -31,7 +31,7 @@
 
 #include "ServerSystem/PerformanceCounter/PerformanceCounter.h"
 
-namespace BR {
+namespace SF {
 namespace Svr {
 
 	class Entity;
@@ -112,7 +112,7 @@ namespace Svr {
 
 
 }; // namespace Svr
-}; // namespace BR
+}; // namespace SF
 
 
 

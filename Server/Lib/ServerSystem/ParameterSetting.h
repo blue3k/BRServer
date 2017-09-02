@@ -16,7 +16,7 @@
 #include "Common/StringKey.h"
 
 
-namespace BR {
+namespace SF {
 
 
 	class ParameterSetting

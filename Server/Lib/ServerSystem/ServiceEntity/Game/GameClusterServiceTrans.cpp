@@ -32,7 +32,7 @@ SF_MEMORYPOOL_IMPLEMENT(BR::Svr::GameServerTransGamePlayerEntityCreatedS2CEvt);
 SF_MEMORYPOOL_IMPLEMENT(BR::Svr::GameServerTransGamePlayerEntityDeletedS2CEvt);
 
 
-namespace BR {
+namespace SF {
 namespace Svr {
 
 
@@ -175,5 +175,5 @@ namespace Svr {
 
 
 };// namespace Svr 
-};// namespace BR 
+};// namespace SF 
 

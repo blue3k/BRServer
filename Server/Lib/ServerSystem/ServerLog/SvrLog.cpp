@@ -34,7 +34,7 @@ DECLARE_TRACE_MODULE(def)
 
 
 
-namespace BR {
+namespace SF {
 namespace Trace {
 
 	enum {
@@ -797,5 +797,5 @@ namespace Trace {
 
 
 };	// namespace Trace
-} // namespace BR
+} // namespace SF
 

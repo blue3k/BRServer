@@ -17,7 +17,7 @@
 
 
 
-namespace BR {
+namespace SF {
 namespace Svr {
 
 	//template<> PerformanceCounter::DataTypes PerformanceCounterRaw<int32_t>::GetDataType() { return DataTypes::Int32; }
@@ -75,6 +75,6 @@ namespace Svr {
 
 
 };	// Svr
-};	// namespace BR
+};	// namespace SF
 
 

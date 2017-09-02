@@ -18,7 +18,20 @@
 #include "Types/BrGameTypes.h"
 
 
-namespace BR {
+namespace SF {
+
+
+	//////////////////////////////////////////////////////////////////////////////////
+	//
+	//	Entity State
+	//
+	enum class EntityState
+	{
+		FREE,
+		WORKING,
+		CLOSING,
+	};
+
 
 #pragma pack(push)
 #pragma pack(4)
@@ -115,69 +128,6 @@ namespace BR {
 	}
 
 
-	///////////////////////////////////////////////////////////////////////////////////////////////////////
-	//
-	//	Transaction ID
-	//
-
-	union TransactionID
-	{
-		struct {
-			EntityID	EntID;
-			uint32_t		TransID;
-		} Components;
-		uint64_t ID;
-
-		inline TransactionID();
-		inline TransactionID( const TransactionID& transID );
-		inline TransactionID( EntityID entityID, uint32_t transID );
-		inline TransactionID( Context context );
-
-		inline bool IsValid() const;
-
-		EntityID GetEntityID() const { return Components.EntID; }
-		uint32_t GetTransactionIndex() const { return Components.TransID; }
-
-		inline TransactionID& operator = ( const TransactionID& transID );
-
-		inline bool operator != (const TransactionID& src) const;
-		inline bool operator == ( const TransactionID& src ) const;
-
-	};
-
-	
-
-
-	///////////////////////////////////////////////////////////////////////////////////////////////////////
-	//
-	//	Server Route context
-	//
-
-	union RouteContext
-	{
-		struct {
-			EntityUID	From;
-			EntityUID	To;
-		} Components;
-		uint64_t ContextValue[2];
-
-		inline RouteContext();
-		inline RouteContext( const RouteContext& routeContext );
-		inline RouteContext( EntityUID InFromID, EntityUID InToID );
-		inline RouteContext( int initValue );
-
-		EntityUID GetFrom() const { return Components.From; }
-		EntityUID GetTo() const { return Components.To; }
-
-		inline RouteContext& operator = ( const RouteContext& src );
-
-		inline bool operator == ( const RouteContext& routeContext ) const;
-
-		// Get swaped context( From <==> To )
-		inline RouteContext GetSwaped() const;
-
-	};
-
 	// Clustering model
 	enum class ClusterType : uint32_t
 	{
@@ -258,46 +208,6 @@ namespace BR {
 #endif
 	};
 
-
-	// Unique ID in single machine
-	union LocalUID
-	{
-		struct {
-			uint32_t		Time;
-			uint32_t		ID;
-		};
-		uint64_t			UID;
-
-		inline LocalUID();
-		inline LocalUID( const LocalUID& src );
-		inline LocalUID( uint32_t time, uint32_t id );
-		inline LocalUID( uint64_t initValue );
-
-		inline LocalUID& operator = ( const LocalUID& src );
-
-		inline bool operator == ( const LocalUID& op ) const;
-		inline bool operator != ( const LocalUID& op ) const;
-#if !defined(SWIG)
-		inline operator uint64_t () const;
-#endif
-	};
-
-	// Matching queue player information
-	struct MatchingQueueTicket
-	{
-		EntityUID		QueueUID;
-		LocalUID		QueueItemID;
-
-		inline MatchingQueueTicket();
-		inline MatchingQueueTicket( const MatchingQueueTicket& src );
-		inline MatchingQueueTicket( EntityUID queueUID, LocalUID itemID );
-		inline MatchingQueueTicket( int initValue );
-
-		inline MatchingQueueTicket& operator = ( const MatchingQueueTicket& src );
-
-		inline bool operator == ( const MatchingQueueTicket& op ) const;
-		inline bool operator != ( const MatchingQueueTicket& op ) const;
-	};
 
 	// Matching queue player information
 	struct MatchingPlayerInformation

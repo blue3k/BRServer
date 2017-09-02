@@ -15,9 +15,9 @@
 #include "Memory/MemoryPool.h"
 #include "Object/SharedObject.h"
 #include "Object/SharedPointer.h"
-#include "Task/TimeScheduler.h"
+#include "Task/TimerScheduler.h"
 
-namespace BR {
+namespace SF {
 
 
 	class TaskManager;
@@ -142,7 +142,7 @@ namespace BR {
 	extern template class SharedPointerT<TickTask>;
 
 
-}; // namespace BR
+}; // namespace SF
 
 namespace SF
 {

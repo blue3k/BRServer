@@ -34,7 +34,7 @@
 
 
 
-namespace BR {
+namespace SF {
 
 	template class SharedPointerT<Svr::Entity>;
 	template class WeakPointerT<Svr::Entity>;
@@ -543,7 +543,7 @@ namespace BR {
 
 
 }; // namespace Svr
-}; // namespace BR
+}; // namespace SF
 
 
 

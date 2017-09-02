@@ -1,20 +1,31 @@
 #
-PROTO_BUILD=./../StormForge/Bin/SFProtocolCompiler.exe
+PROTO_BUILD=../../StormForge/Bin/SFProtocolCompiler.exe
+
 
 OUTPUT_PATH=../../Server/Lib/ServerProtocol/Message
+OUTPUT_SHARPCPP_PATH=../../Src/SFEngineDLL/Sharp
 OUTPUT_SHARP_PATH=../../Src/SFEngineDLL/Sharp
-OUTPUT_CPP_PATH=../../Src/SFEngineDLL/Sharp
+OUTPUT_CPP_PATH=$(OUTPUT_PATH)
+
+
+OUTPUT_PATH=../../Server/Lib/ServerProtocol/Protocol/Message
+OUTPUT_CPP_PATH=$(OUTPUT_PATH)
+OUTPUT_CPP_SERVERSYSTEM_PATH=../../Server/Lib/ServerSystem/ServerService
+
+
+PROTO_BUILD_PARAM_CPP=+outCPP=$(OUTPUT_CPP_PATH) +pch=stdafx.h +LogFuncPrefix=protocolTrace\( +gen=MessageClassBuilder  +gen=MessageParsingMapBuilder  +gen=MessageDebugBuilder 
+PROTO_BUILD_PARAM_CPP_POLICY=+outCPP=../../Server/Lib/ServerProtocol/Protocol/Policy +pch=stdafx.h +LogFuncPrefix=protocolTrace\( +gen=MessageNetPolicyBuilder
+PROTO_BUILD_PARAM_CPP_SERVERSYSTEM=+outCPP=../../Server/Lib/ServerSystem/ServerService +pch=stdafx.h +LogFuncPrefix=protocolTrace\( +gen=MessageServerServiceBuilder
+
 
 SOURCES=ProtocolClusterServer.xml \
 	ProtocolEntityServer.xml \
-	ProtocolGame.xml \
 	ProtocolGameInstance.xml \
 	ProtocolGameInstanceManager.xml \
 	ProtocolGameMasterServer.xml \
 	ProtocolGameParty.xml \
 	ProtocolGamePartyManager.xml \
 	ProtocolGameServer.xml \
-	ProtocolLogin.xml \
 	ProtocolLoginServer.xml \
 	ProtocolMonitoring.xml \
 	ProtocolPartyMatching.xml \
@@ -27,12 +38,12 @@ SOURCES_POSTFIXED=$(SOURCES:.xml=.h)
 TARGET_FILES=$(SOURCES_POSTFIXED:%=$(OUTPUT_PATH)/%)
 
 $(OUTPUT_PATH)/%.h: %.xml $(PROTO_BUILD)
-	$(PROTO_BUILD) -dir:../../Src/ServerProtocol/Protocol/ $<
+	$(PROTO_BUILD) $(PROTO_BUILD_PARAM_CPP) +in=$<
+	$(PROTO_BUILD) $(PROTO_BUILD_PARAM_CPP_POLICY) +in=$<
+	$(PROTO_BUILD) $(PROTO_BUILD_PARAM_CPP_SERVERSYSTEM) +in=$<
  
 
 build: $(SOURCES) $(TARGET_FILES) 
-	cp -u ../../Src/ServerProtocol/Protocol/CSharp/*.cs $(OUTPUT_SHARP_PATH)
-	cp -u ../../Src/ServerProtocol/Protocol/CSharp/*.cpp $(OUTPUT_CPP_PATH)
 	@echo Done
 
 

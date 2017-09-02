@@ -26,7 +26,7 @@
 
 
 
-namespace BR {
+namespace SF {
 namespace Net {
 	class Connection;
 };
@@ -38,7 +38,7 @@ namespace Policy {
 
 
 
-namespace BR {
+namespace SF {
 namespace Svr {
 
 
@@ -140,5 +140,5 @@ namespace Svr {
 
 
 }; // namespace Svr
-}; // namespace BR
+}; // namespace SF
 

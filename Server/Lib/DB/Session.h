@@ -17,7 +17,7 @@
 #include "SFAssert.h"
 #include "Container/StackPool.h"
 
-namespace BR {
+namespace SF {
 namespace DB {
 
 	class Query;
@@ -62,4 +62,4 @@ namespace DB {
 	};
 
 } // namespace DB
-} // namespace BR
+} // namespace SF

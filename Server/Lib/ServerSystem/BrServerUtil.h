@@ -17,7 +17,7 @@
 #include "Object/SharedPointer.h"
 
 
-namespace BR {
+namespace SF {
 namespace Svr
 {
 	class Entity;
@@ -45,7 +45,7 @@ namespace Svr
 
 
 }; // namespace SvrUtil
-}; // namespace BR
+}; // namespace SF
 
 
 

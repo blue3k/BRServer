@@ -16,7 +16,7 @@
 #include "Memory/MemoryPool.h"
 #include "Common/ClassUtil.h"
 #include "ServerSystem/GameSystem.h"
-#include "Common/ArrayUtil.h"
+#include "Container/SFArray.h"
 #include "Common/GameConst.h"
 #include "GameSystemComponentIDs.h"
 

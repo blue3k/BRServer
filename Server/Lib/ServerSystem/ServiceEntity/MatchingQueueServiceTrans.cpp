@@ -42,7 +42,7 @@ SF_MEMORYPOOL_IMPLEMENT(BR::Svr::DequeueItemTrans);
 SF_MEMORYPOOL_IMPLEMENT(BR::Svr::MatchingQueueTransMatchingItemError);
 
 
-namespace BR {
+namespace SF {
 namespace Svr {
 
 
@@ -274,5 +274,5 @@ namespace Svr {
 	
 
 };// namespace Svr 
-};// namespace BR 
+};// namespace SF 
 

@@ -19,7 +19,7 @@
 #include "Task/ServerTask.h"
 #include "Container/PageQueue.h"
 #include "Types/BrSvrTypes.h"
-#include "Types/SvrTypes.h"
+#include "Types/BrSvrTypes.h"
 #include "Object/SharedPointer.h"
 #include "ServerSystem/Transaction.h"
 
@@ -34,7 +34,7 @@ namespace SF {
 	};
 }
 
-namespace BR {
+namespace SF {
 
 	namespace Svr {
 		template<class MessageHandlerType>
@@ -195,7 +195,7 @@ namespace Svr{
 extern template class SharedPointerT<Svr::Entity>;
 extern template class WeakPointerT<Svr::Entity>;
 
-}; // namespace BR
+}; // namespace SF
 
 
 

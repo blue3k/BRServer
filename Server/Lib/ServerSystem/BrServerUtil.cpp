@@ -10,7 +10,7 @@
 
 #include "stdafx.h"
 #include "ServerSystem/Transaction.h"
-#include "Types/SvrTypes.h"
+#include "Types/BrSvrTypes.h"
 #include "Task/TaskManager.h"
 #include "ServerSystem/Entity.h"
 #include "ServerSystem/EntityTable.h"
@@ -19,7 +19,7 @@
 #include "ServerSystem/BrServerUtil.h"
 
 
-namespace BR {
+namespace SF {
 namespace Svr {
 
 

@@ -16,12 +16,12 @@
 #include "String/StrUtil.h"
 #include "Task/ServerTask.h"
 #include "Task/TaskManager.h"
-#include "Task/TimeScheduler.h"
+#include "Task/TimerScheduler.h"
 #include "Util/TimeUtil.h"
 
 
 
-namespace BR {
+namespace SF {
 
 	template class SharedPointerT<TickTask>;
 
@@ -159,5 +159,5 @@ namespace BR {
 
 
 
-}; // namespace BR
+}; // namespace SF
 

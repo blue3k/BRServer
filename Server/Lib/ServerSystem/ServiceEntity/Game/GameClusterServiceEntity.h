@@ -27,7 +27,7 @@
 #include "ServerSystem/ServiceEntity/ClusteredServiceEntity.h"
 
 
-namespace BR {
+namespace SF {
 namespace Svr {
 
 	class Entity;
@@ -140,7 +140,7 @@ namespace Svr {
 
 
 }; // namespace Svr
-}; // namespace BR
+}; // namespace SF
 
 
 

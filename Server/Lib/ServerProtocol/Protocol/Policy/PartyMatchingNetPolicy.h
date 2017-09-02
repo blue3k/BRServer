@@ -1,0 +1,56 @@
+﻿////////////////////////////////////////////////////////////////////////////////
+// 
+// CopyRight (c) 2013 The Braves
+// 
+// Author : Generated
+// 
+// Description : PartyMatching Message debug definitions
+// 
+////////////////////////////////////////////////////////////////////////////////
+
+#pragma once
+
+#include "SFTypedefs.h"
+#include "Protocol/Protocol.h"
+#include "Net/NetDef.h"
+
+
+
+namespace SF
+{
+ 	namespace Policy
+	{
+ 		class NetPolicyPartyMatching 
+		{
+ 			private:
+				Net::Connection* m_pConnection;
+			public:
+			// Constructor
+			NetPolicyPartyMatching ( Net::Connection* pConn ) : m_pConnection(pConn)
+			{}
+
+
+		}; // class NetPolicyPartyMatching 
+
+
+		class NetSvrPolicyPartyMatching
+		{
+ 			private:
+				Net::Connection* m_pConnection;
+			public:
+			// Constructor
+			NetSvrPolicyPartyMatching ( Net::Connection* pConn ) : m_pConnection(pConn)
+			{}
+
+			// S2C: 
+			Result PartyGameMatchedS2CEvt( const RouteContext &InRouteContext, const uint16_t &InRouteHopCount );
+			// S2C: 
+			Result PlayerGameMatchedS2CEvt( const RouteContext &InRouteContext, const uint16_t &InRouteHopCount, const PlayerID &InDestPlayerID, const GameInsUID &InGameInsUID, const PlayerRole &InRequestedRole );
+
+		}; // class NetSvrPolicyPartyMatching
+
+
+	}; // namespace Policy
+}; // namespace SF
+
+

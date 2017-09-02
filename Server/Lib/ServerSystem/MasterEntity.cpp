@@ -29,7 +29,7 @@
 
 
 
-namespace BR {
+namespace SF {
 
 	template class SharedPointerT<Svr::MasterEntity>;
 
@@ -416,7 +416,7 @@ namespace Svr
 	}
 
 }; // namespace Svr
-}; // namespace BR
+}; // namespace SF
 
 
 

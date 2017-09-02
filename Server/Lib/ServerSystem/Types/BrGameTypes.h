@@ -15,7 +15,7 @@
 #include "Types/BrBaseTypes.h"
 #include "GameConst.h"
 
-namespace BR
+namespace SF
 {
 
 	struct ServerFriendInformation : public FriendInformation
@@ -48,118 +48,8 @@ namespace BR
 		Max
     };
 
-	
-	// Ranking type
-	enum class RankingType : uint8_t
-	{
-		World,
-		//Friend,
-	};
 
 
-	// Player Role
-	enum class PlayerRole : uint8_t
-	{
-		None,
-		Villager,
-		Werewolf,
-		Seer,
-
-		Medium,
-		//Possessed,
-		//Bodyguard,
-		//Owlman,
-		//Freemason,
-		//Werehamster,
-		//Mythomaniac,
-		//Hunter,
-		//Wizard,
-		//Sorceress,
-		//Prostitute,
-		//Chosen,
-		//AngelOfVillagers,
-		//AngelOfWolves,
-		//Paladin,
-		//Sorcerer,
-		//Condemned,
-		//Redeemed,
-		//Devil,
-	};
-
-
-	// Game flow state for Lupus in Tabula
-	enum class GameStateID : uint8_t
-	{
-		None,
-		FreeDebate,
-		//FirstNightVote,
-		//SecondNightVote,
-		NightVote,
-		//Mythomaniac,
-		MorningDebate,
-		VoteForSuspects,
-		DefenceOfSuspects,
-		VoteForHanging,
-		End,
-		Max,
-	};
-	
-	// Game Winner
-	enum class GameWinner : uint8_t
-	{
-		None,
-		Werewolf,
-		Villager,
-		WereHamster,
-		Max
-	};
-	
-	// 
-	enum class PlayerKilledReason : uint8_t
-	{
-		Unknown,
-		BlockedByBodyguard,
-		ByWerewolf,
-		ByHanging,
-	};
-	
-	// 
-	enum class PlayerRevealedReason : uint8_t
-	{
-		None,
-		Werewolf,
-		SeersChoice,
-		Medium,
-		GameEnd,
-	};
-
-    enum class ChatType : uint8_t
-    {
-        Normal,         // Normal chat message
-        Whisper,        // Whisper
-        Info,           // Information
-        System,         // System
-        Role,           // Role chat in game
-    };
-
-	// Game log type
-	enum class GameLogType : uint16_t
-	{
-		ChatMessage,            // Chatting message
-        GameStateChange,        // Role chat in game
-        Vote,                   // Vote
-        VoteResult,             // Vote result
-        PlayerKilled,           // Player killed
-        GameEnd,                // Game End
-	};
-
-	enum class GameVoteType : uint16_t
-    {
-        Suspect,
-        Hanging,
-        Hunting,
-		Max
-    };
 
 
 #pragma pack(push)

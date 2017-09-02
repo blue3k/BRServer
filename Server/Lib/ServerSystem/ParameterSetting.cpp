@@ -20,7 +20,7 @@
 #include "ServerSystem/ParameterSetting.h"
 
 
-namespace BR
+namespace SF
 {
 
 	int ParameterSetting::m_BufferUsedOffset = 0;
@@ -187,6 +187,6 @@ namespace BR
 	}
 
 
-};	// namespace BR
+};	// namespace SF
 
 

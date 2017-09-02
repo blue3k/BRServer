@@ -18,7 +18,7 @@
 #include "ServerSystem/Entity.h"
 
 
-namespace BR {
+namespace SF {
 namespace Svr {
 
 
@@ -93,7 +93,7 @@ namespace Svr {
 
 	extern template class SharedPointerT<Svr::MasterEntity>;
 
-}; // namespace BR
+}; // namespace SF
 
 
 

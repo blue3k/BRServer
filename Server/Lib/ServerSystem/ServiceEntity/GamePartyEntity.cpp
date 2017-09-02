@@ -32,7 +32,7 @@ SF_MEMORYPOOL_IMPLEMENT(BR::Svr::PartyPlayer);
 SF_MEMORYPOOL_IMPLEMENT(BR::Svr::GamePartyEntity);
 
 
-namespace BR {
+namespace SF {
 namespace Svr {
 
 
@@ -368,6 +368,6 @@ namespace Svr {
 
 
 }; // namespace Svr
-}; // namespace BR
+}; // namespace SF
 
 

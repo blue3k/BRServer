@@ -25,7 +25,7 @@
 
 
 
-namespace BR {
+namespace SF {
 namespace Net {
 	class Connection;
 };
@@ -37,7 +37,7 @@ namespace Policy {
 
 
 
-namespace BR {
+namespace SF {
 namespace Svr {
 
 
@@ -206,4 +206,4 @@ namespace Svr {
 #include "GamePlayerEntity.inl"
 
 }; // namespace GameServer
-}; // namespace BR
+}; // namespace SF

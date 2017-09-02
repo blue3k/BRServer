@@ -7,7 +7,6 @@
 
 #include "SFTypedefs.h"
 
-using namespace SF;
 
 
 #include "ResultCode/SFResultCodeSvr.h"

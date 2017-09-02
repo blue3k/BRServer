@@ -358,19 +358,10 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)ServerService\GameServerService.h">
       <Filter>ServerService\Game</Filter>
     </ClInclude>
-    <ClInclude Include="$(MSBuildThisFileDirectory)Types\SvrTypes.h">
-      <Filter>Types</Filter>
-    </ClInclude>
     <ClInclude Include="$(MSBuildThisFileDirectory)ServerLog\SvrTrace.h">
       <Filter>ServerLog</Filter>
     </ClInclude>
     <ClInclude Include="$(MSBuildThisFileDirectory)Task\TaskManager.h">
-      <Filter>Task</Filter>
-    </ClInclude>
-    <ClInclude Include="$(MSBuildThisFileDirectory)Task\TimeScheduler.h">
-      <Filter>Task</Filter>
-    </ClInclude>
-    <ClInclude Include="$(MSBuildThisFileDirectory)Task\TimeSchedulerAction.h">
       <Filter>Task</Filter>
     </ClInclude>
     <ClInclude Include="$(MSBuildThisFileDirectory)String\ToStringSvr.h">
@@ -740,16 +731,10 @@
     <ClCompile Include="$(MSBuildThisFileDirectory)ServerService\GameServerService.cpp">
       <Filter>ServerService\Game</Filter>
     </ClCompile>
-    <ClCompile Include="$(MSBuildThisFileDirectory)Types\SvrTypes.cpp">
-      <Filter>Types</Filter>
-    </ClCompile>
     <ClCompile Include="$(MSBuildThisFileDirectory)ServerLog\SvrTrace.cpp">
       <Filter>ServerLog</Filter>
     </ClCompile>
     <ClCompile Include="$(MSBuildThisFileDirectory)Task\TaskManager.cpp">
-      <Filter>Task</Filter>
-    </ClCompile>
-    <ClCompile Include="$(MSBuildThisFileDirectory)Task\TimeScheduler.cpp">
       <Filter>Task</Filter>
     </ClCompile>
     <ClCompile Include="$(MSBuildThisFileDirectory)String\ToStringSvr.cpp">

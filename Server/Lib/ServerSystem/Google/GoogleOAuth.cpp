@@ -33,7 +33,7 @@
 #include "ServerSystem/Google/GoogleOAuth.h"
 
 
-namespace BR {
+namespace SF {
 namespace Svr {
 namespace Google {
 
@@ -353,5 +353,5 @@ namespace Google {
 
 }; // namespace Google
 }; // namespace Svr
-}; // namespace BR
+}; // namespace SF
 

@@ -42,7 +42,7 @@ SF_MEMORYPOOL_IMPLEMENT(BR::Svr::ClusterNewServerServiceJoinedC2SEvtEntityTrans)
 
 
 
-namespace BR {
+namespace SF {
 namespace Svr {
 
 
@@ -656,5 +656,5 @@ namespace Svr {
 
 
 };// namespace GameServer 
-};// namespace BR 
+};// namespace SF 
 

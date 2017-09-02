@@ -32,7 +32,7 @@
 
 SF_MEMORYPOOL_IMPLEMENT(BR::Svr::ClusteredServiceEntity::ServiceTableItem);
 
-namespace BR {
+namespace SF {
 namespace Svr {
 
 
@@ -1012,7 +1012,7 @@ namespace Svr {
 
 
 }; // namespace Svr
-}; // namespace BR
+}; // namespace SF
 
 
 

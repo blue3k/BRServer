@@ -20,7 +20,7 @@
 #include "Net/NetUtil.h"
 #include "ServerSystem/ParameterSetting.h"
 
-namespace BR {
+namespace SF {
 namespace Svr {
 
 
@@ -660,7 +660,7 @@ namespace Svr {
 	};
 
 
-}; // namespace BR {
+}; // namespace SF {
 }; // namespace Svr {
 
 

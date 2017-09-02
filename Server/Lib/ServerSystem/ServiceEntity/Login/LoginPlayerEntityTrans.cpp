@@ -61,7 +61,7 @@ SF_MEMORYPOOL_IMPLEMENT(BR::Svr::LoginUserDebugPrintALLRankingTrans);
 
 
 	
-namespace BR {
+namespace SF {
 namespace Svr {
 
 
@@ -1036,5 +1036,5 @@ namespace Svr {
 
 
 };// namespace Svr 
-};// namespace BR 
+};// namespace SF 
 

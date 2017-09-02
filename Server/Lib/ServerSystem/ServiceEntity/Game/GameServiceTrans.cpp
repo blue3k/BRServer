@@ -33,7 +33,7 @@ SF_MEMORYPOOL_IMPLEMENT(BR::Svr::GamePartyTrans);
 
 
 
-namespace BR {
+namespace SF {
 namespace Svr {
 
 
@@ -69,5 +69,5 @@ namespace Svr {
 	
 
 };// namespace Svr 
-};// namespace BR 
+};// namespace SF 
 

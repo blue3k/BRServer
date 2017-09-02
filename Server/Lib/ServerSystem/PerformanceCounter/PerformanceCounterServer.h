@@ -22,7 +22,7 @@
 #include "ServerSystem/PerformanceCounter/PerformanceCounterInstance.h"
 
 
-namespace BR {
+namespace SF {
 namespace Svr {
 
 
@@ -131,7 +131,7 @@ namespace Svr {
 		};
 
 
-}; // namespace BR
+}; // namespace SF
 }; // namespace Svr
 
 

@@ -31,7 +31,7 @@ SF_MEMORYPOOL_IMPLEMENT(BR::Svr::ExternalTransactionGoogleAndroidReceiptCheck);
 SF_MEMORYPOOL_IMPLEMENT(BR::Svr::ExternalTransactionIOSRecepitCheck);
 
 
-namespace BR {
+namespace SF {
 namespace Svr
 {
 
@@ -532,7 +532,7 @@ Proc_End:
 
 
 }; // namespace Svr
-}; // namespace BR
+}; // namespace SF
 
 
 

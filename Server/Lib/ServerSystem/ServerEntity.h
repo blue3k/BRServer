@@ -24,7 +24,7 @@
 
 
 
-namespace BR {
+namespace SF {
 namespace Svr {
 
 	class Transaction;
@@ -160,7 +160,7 @@ namespace Svr {
 
 
 }; // namespace Svr
-}; // namespace BR
+}; // namespace SF
 
 
 

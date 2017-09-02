@@ -27,7 +27,7 @@ SF_MEMORYPOOL_IMPLEMENT(BR::Svr::MessageResult);
 SF_MEMORYPOOL_IMPLEMENT(BR::Svr::TimerResult);
 
 
-namespace BR {
+namespace SF {
 
 	template class PageQueue<Svr::Transaction*>;
 	template class PageQueue<Svr::TransactionResult*>;
@@ -376,7 +376,7 @@ namespace BR {
 
 
 }; // namespace Svr
-}; // namespace BR
+}; // namespace SF
 
 
 

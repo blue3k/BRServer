@@ -1,0 +1,4650 @@
+﻿////////////////////////////////////////////////////////////////////////////////
+// 
+// CopyRight (c) 2016 StormForge
+// 
+// Author : Generated
+// 
+// Description : GameInstance Message parser implementations
+// 
+////////////////////////////////////////////////////////////////////////////////
+
+
+#include "stdafx.h"
+#include "Protocol/Protocol.h"
+#include "String/ToString.h"
+#include "Net/NetToString.h"
+#include "Container/SFArray.h"
+#include "Protocol/ProtocolHelper.h"
+#include "Protocol/Message/GameInstanceMsgClass.h"
+#include "Protocol/SvrProtocol.h"
+
+
+
+namespace SF
+{
+ 	namespace Message
+	{
+ 		namespace GameInstance
+		{
+ 			// C2S: Game instance deletion
+			const MessageID DeleteGameC2SEvt::MID = MessageID(MSGTYPE_EVENT, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_GAMEINSTANCE, 0);
+			Result DeleteGameC2SEvt::ParseMessage( MessageData* pIMsg )
+			{
+ 				Result hr;
+
+				int iMsgSize;
+				uint8_t* pCur;
+
+				protocolChkPtr(pIMsg);
+
+				iMsgSize = (unsigned)pIMsg->GetMessageSize() - sizeof(MessageHeader);
+				pCur = pIMsg->GetMessageData();
+
+				protocolChk( Protocol::StreamParamCopy( &m_RouteContext, pCur, iMsgSize, sizeof(RouteContext) ) );
+
+
+			Proc_End:
+
+				return hr;
+
+			}; // Result DeleteGameC2SEvt::ParseMessage( MessageData* pIMsg )
+
+			Result DeleteGameC2SEvt::ParseMessageTo( MessageData* pIMsg, VariableMapBuilder& variableBuilder )
+			{
+ 				Result hr;
+
+
+				DeleteGameC2SEvt parser;
+				protocolChk(parser.ParseMessage(pIMsg));
+
+				variableBuilder.SetVariable("RouteContext", parser.GetRouteContext());
+
+
+			Proc_End:
+
+				return hr;
+
+			}; // Result DeleteGameC2SEvt::ParseMessageTo( MessageData* pIMsg, VariableMapBuilder& variableBuilder )
+
+			Result DeleteGameC2SEvt::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageData* pIMsg, MessageBase* &pMessageBase )
+			{
+ 				Result hr;
+
+				protocolMem(pMessageBase = new(memoryManager) DeleteGameC2SEvt(pIMsg));
+				protocolChk(pMessageBase->ParseMsg());
+
+			Proc_End:
+				return hr;
+
+			}; // Result DeleteGameC2SEvt::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageData* pIMsg, MessageBase* &pMessageBase )
+
+			MessageData* DeleteGameC2SEvt::Create( IMemoryManager& memoryManager, const RouteContext &InRouteContext )
+			{
+ 				MessageData *pNewMsg = nullptr;
+				Result hr;
+
+				uint8_t *pMsgData = nullptr;
+
+				unsigned __uiMessageSize = (unsigned)(sizeof(MessageHeader) 
+					+ sizeof(RouteContext));
+
+
+				protocolMem( pNewMsg = MessageData::NewMessage( memoryManager, GameInstance::DeleteGameC2SEvt::MID, __uiMessageSize ) );
+
+				pMsgData = pNewMsg->GetMessageData();
+
+				Protocol::PackParamCopy( pMsgData, &InRouteContext, sizeof(RouteContext));
+
+
+			Proc_End:
+
+				if(!hr)
+				{
+ 					if(pNewMsg != nullptr) GetSystemMemoryManager().Delete(pNewMsg);
+					pNewMsg = nullptr;
+				}
+				return pNewMsg;
+
+			}; // MessageData* DeleteGameC2SEvt::Create( IMemoryManager& memoryManager, const RouteContext &InRouteContext )
+
+			Result DeleteGameC2SEvt::OverrideRouteContextDestination( EntityUID to )
+			{
+ 				Result hr;
+
+				int iMsgSize;
+				uint8_t* pCur;
+				MessageData* pIMsg = GetMessage();
+				RouteContext routeContext;
+
+				protocolChkPtr(pIMsg);
+
+				iMsgSize = (unsigned)pIMsg->GetMessageSize() - sizeof(MessageHeader);
+				pCur = pIMsg->GetMessageData();
+
+				Assert( iMsgSize >= (INT)sizeof(RouteContext) );
+				memcpy( &routeContext, pCur, sizeof(RouteContext) );
+				routeContext.Components.To = to;
+				memcpy( pCur, &routeContext, sizeof(RouteContext) );
+
+
+			Proc_End:
+
+				return hr;
+
+			}; // Result DeleteGameC2SEvt::OverrideRouteContextDestination( EntityUID to )
+
+
+			Result DeleteGameC2SEvt::TraceOut(MessageData* pMsg)
+			{
+ 				DeleteGameC2SEvt parser;
+				parser.ParseMessage(pMsg);
+				protocolTrace( Debug1, "DeleteGame:{0}:{1} , RouteContext:{2}",
+						pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, parser.GetRouteContext()); 
+				return ResultCode::SUCCESS;
+			}; // Result DeleteGameC2SEvt::TraceOut(MessageData* pMsg)
+
+			// Cmd: Join Game
+			const MessageID JoinGameCmd::MID = MessageID(MSGTYPE_COMMAND, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_GAMEINSTANCE, 1);
+			Result JoinGameCmd::ParseMessage( MessageData* pIMsg )
+			{
+ 				Result hr;
+
+				int iMsgSize;
+				uint8_t* pCur;
+
+				protocolChkPtr(pIMsg);
+
+				iMsgSize = (unsigned)pIMsg->GetMessageSize() - sizeof(MessageHeader);
+				pCur = pIMsg->GetMessageData();
+
+				protocolChk( Protocol::StreamParamCopy( &m_RouteContext, pCur, iMsgSize, sizeof(RouteContext) ) );
+				protocolChk( Protocol::StreamParamCopy( &m_TransactionID, pCur, iMsgSize, sizeof(TransactionID) ) );
+				protocolChk( Protocol::StreamParamCopy( &m_Player, pCur, iMsgSize, sizeof(PlayerInformation) ) );
+				protocolChk( Protocol::StreamParamCopy( &m_Ticket, pCur, iMsgSize, sizeof(AuthTicket) ) );
+				protocolChk( Protocol::StreamParamCopy( &m_RequestedRole, pCur, iMsgSize, sizeof(PlayerRole) ) );
+
+
+			Proc_End:
+
+				return hr;
+
+			}; // Result JoinGameCmd::ParseMessage( MessageData* pIMsg )
+
+			Result JoinGameCmd::ParseMessageTo( MessageData* pIMsg, VariableMapBuilder& variableBuilder )
+			{
+ 				Result hr;
+
+
+				JoinGameCmd parser;
+				protocolChk(parser.ParseMessage(pIMsg));
+
+				variableBuilder.SetVariable("RouteContext", parser.GetRouteContext());
+				variableBuilder.SetVariable("TransactionID", parser.GetTransactionID());
+				variableBuilder.SetVariable("Player", parser.GetPlayer());
+				variableBuilder.SetVariable("Ticket", parser.GetTicket());
+				variableBuilder.SetVariable("RequestedRole", (int)parser.GetRequestedRole());
+
+
+			Proc_End:
+
+				return hr;
+
+			}; // Result JoinGameCmd::ParseMessageTo( MessageData* pIMsg, VariableMapBuilder& variableBuilder )
+
+			Result JoinGameCmd::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageData* pIMsg, MessageBase* &pMessageBase )
+			{
+ 				Result hr;
+
+				protocolMem(pMessageBase = new(memoryManager) JoinGameCmd(pIMsg));
+				protocolChk(pMessageBase->ParseMsg());
+
+			Proc_End:
+				return hr;
+
+			}; // Result JoinGameCmd::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageData* pIMsg, MessageBase* &pMessageBase )
+
+			MessageData* JoinGameCmd::Create( IMemoryManager& memoryManager, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const PlayerInformation &InPlayer, const AuthTicket &InTicket, const PlayerRole &InRequestedRole )
+			{
+ 				MessageData *pNewMsg = nullptr;
+				Result hr;
+
+				uint8_t *pMsgData = nullptr;
+
+				unsigned __uiMessageSize = (unsigned)(sizeof(MessageHeader) 
+					+ sizeof(RouteContext)
+					+ sizeof(TransactionID)
+					+ sizeof(PlayerInformation)
+					+ sizeof(AuthTicket)
+					+ sizeof(PlayerRole));
+
+
+				protocolMem( pNewMsg = MessageData::NewMessage( memoryManager, GameInstance::JoinGameCmd::MID, __uiMessageSize ) );
+
+				pMsgData = pNewMsg->GetMessageData();
+
+				Protocol::PackParamCopy( pMsgData, &InRouteContext, sizeof(RouteContext));
+				Protocol::PackParamCopy( pMsgData, &InTransactionID, sizeof(TransactionID));
+				Protocol::PackParamCopy( pMsgData, &InPlayer, sizeof(PlayerInformation));
+				Protocol::PackParamCopy( pMsgData, &InTicket, sizeof(AuthTicket));
+				Protocol::PackParamCopy( pMsgData, &InRequestedRole, sizeof(PlayerRole));
+
+
+			Proc_End:
+
+				if(!hr)
+				{
+ 					if(pNewMsg != nullptr) GetSystemMemoryManager().Delete(pNewMsg);
+					pNewMsg = nullptr;
+				}
+				return pNewMsg;
+
+			}; // MessageData* JoinGameCmd::Create( IMemoryManager& memoryManager, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const PlayerInformation &InPlayer, const AuthTicket &InTicket, const PlayerRole &InRequestedRole )
+
+			Result JoinGameCmd::OverrideRouteContextDestination( EntityUID to )
+			{
+ 				Result hr;
+
+				int iMsgSize;
+				uint8_t* pCur;
+				MessageData* pIMsg = GetMessage();
+				RouteContext routeContext;
+
+				protocolChkPtr(pIMsg);
+
+				iMsgSize = (unsigned)pIMsg->GetMessageSize() - sizeof(MessageHeader);
+				pCur = pIMsg->GetMessageData();
+
+				Assert( iMsgSize >= (INT)sizeof(RouteContext) );
+				memcpy( &routeContext, pCur, sizeof(RouteContext) );
+				routeContext.Components.To = to;
+				memcpy( pCur, &routeContext, sizeof(RouteContext) );
+
+
+			Proc_End:
+
+				return hr;
+
+			}; // Result JoinGameCmd::OverrideRouteContextDestination( EntityUID to )
+
+
+			Result JoinGameCmd::TraceOut(MessageData* pMsg)
+			{
+ 				JoinGameCmd parser;
+				parser.ParseMessage(pMsg);
+				protocolTrace( Debug1, "JoinGame:{0}:{1} , RouteContext:{2}, TransactionID:{3}, Player:{4}, Ticket:{5}, RequestedRole:{6}",
+						pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, parser.GetRouteContext(), parser.GetTransactionID(), parser.GetPlayer(), parser.GetTicket(), (int)parser.GetRequestedRole()); 
+				return ResultCode::SUCCESS;
+			}; // Result JoinGameCmd::TraceOut(MessageData* pMsg)
+
+			const MessageID JoinGameRes::MID = MessageID(MSGTYPE_RESULT, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_GAMEINSTANCE, 1);
+			Result JoinGameRes::ParseMessage( MessageData* pIMsg )
+			{
+ 				Result hr;
+
+				int iMsgSize;
+				uint8_t* pCur;
+				uint16_t numberofChatHistoryData = 0; uint8_t* pChatHistoryData = nullptr;
+				uint16_t numberofGameLogData = 0; uint8_t* pGameLogData = nullptr;
+
+				protocolChkPtr(pIMsg);
+
+				iMsgSize = (unsigned)pIMsg->GetMessageSize() - sizeof(MessageHeader);
+				pCur = pIMsg->GetMessageData();
+
+				protocolChk( Protocol::StreamParamCopy( &m_RouteContext, pCur, iMsgSize, sizeof(RouteContext) ) );
+				protocolChk( Protocol::StreamParamCopy( &m_TransactionID, pCur, iMsgSize, sizeof(TransactionID) ) );
+				protocolChk( Protocol::StreamParamCopy( &m_Result, pCur, iMsgSize, sizeof(Result) ) );
+				protocolChk( Protocol::StreamParamCopy( &m_GameInsSvr, pCur, iMsgSize, sizeof(NetAddress) ) );
+				protocolChk( Protocol::StreamParamCopy( &m_TimeStamp, pCur, iMsgSize, sizeof(uint32_t) ) );
+				protocolChk( Protocol::StreamParamCopy( &m_GameState, pCur, iMsgSize, sizeof(GameStateID) ) );
+				protocolChk( Protocol::StreamParamCopy( &m_Day, pCur, iMsgSize, sizeof(uint8_t) ) );
+				protocolChk( Protocol::StreamParamCopy( &m_MaxPlayer, pCur, iMsgSize, sizeof(uint8_t) ) );
+				protocolChk( Protocol::StreamParamCopy( &m_PlayerIndex, pCur, iMsgSize, sizeof(uint8_t) ) );
+				protocolChk( Protocol::StreamParamCopy( &m_PlayerCharacter, pCur, iMsgSize, sizeof(uint8_t) ) );
+				protocolChk( Protocol::StreamParamCopy( &m_Role, pCur, iMsgSize, sizeof(PlayerRole) ) );
+				protocolChk( Protocol::StreamParamCopy( &m_Dead, pCur, iMsgSize, sizeof(uint8_t) ) );
+				protocolChk( Protocol::StreamParamCopy( &m_IsNewJoin, pCur, iMsgSize, sizeof(uint8_t) ) );
+				protocolChk( Protocol::StreamParamCopy( &numberofChatHistoryData, pCur, iMsgSize, sizeof(uint16_t) ) );
+				protocolChk( Protocol::StreamParamLnk( pChatHistoryData, pCur, iMsgSize, sizeof(uint8_t)*numberofChatHistoryData ) );
+				m_ChatHistoryData.SetLinkedBuffer(numberofChatHistoryData, numberofChatHistoryData, pChatHistoryData);
+				protocolChk( Protocol::StreamParamCopy( &numberofGameLogData, pCur, iMsgSize, sizeof(uint16_t) ) );
+				protocolChk( Protocol::StreamParamLnk( pGameLogData, pCur, iMsgSize, sizeof(uint8_t)*numberofGameLogData ) );
+				m_GameLogData.SetLinkedBuffer(numberofGameLogData, numberofGameLogData, pGameLogData);
+
+
+			Proc_End:
+
+				return hr;
+
+			}; // Result JoinGameRes::ParseMessage( MessageData* pIMsg )
+
+			Result JoinGameRes::ParseMessageTo( MessageData* pIMsg, VariableMapBuilder& variableBuilder )
+			{
+ 				Result hr;
+
+
+				JoinGameRes parser;
+				protocolChk(parser.ParseMessage(pIMsg));
+
+				variableBuilder.SetVariable("RouteContext", parser.GetRouteContext());
+				variableBuilder.SetVariable("TransactionID", parser.GetTransactionID());
+				variableBuilder.SetVariable("Result", parser.GetResult());
+				variableBuilder.SetVariable("GameInsSvr", parser.GetGameInsSvr());
+				variableBuilder.SetVariable("TimeStamp", parser.GetTimeStamp());
+				variableBuilder.SetVariable("GameState", (int)parser.GetGameState());
+				variableBuilder.SetVariable("Day", parser.GetDay());
+				variableBuilder.SetVariable("MaxPlayer", parser.GetMaxPlayer());
+				variableBuilder.SetVariable("PlayerIndex", parser.GetPlayerIndex());
+				variableBuilder.SetVariable("PlayerCharacter", parser.GetPlayerCharacter());
+				variableBuilder.SetVariable("Role", (int)parser.GetRole());
+				variableBuilder.SetVariable("Dead", parser.GetDead());
+				variableBuilder.SetVariable("IsNewJoin", parser.GetIsNewJoin());
+				variableBuilder.SetVariable("ChatHistoryData", (int)parser.GetChatHistoryData().GetItemCount(), parser.GetChatHistoryData().data());
+				variableBuilder.SetVariable("GameLogData", (int)parser.GetGameLogData().GetItemCount(), parser.GetGameLogData().data());
+
+
+			Proc_End:
+
+				return hr;
+
+			}; // Result JoinGameRes::ParseMessageTo( MessageData* pIMsg, VariableMapBuilder& variableBuilder )
+
+			Result JoinGameRes::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageData* pIMsg, MessageBase* &pMessageBase )
+			{
+ 				Result hr;
+
+				protocolMem(pMessageBase = new(memoryManager) JoinGameRes(pIMsg));
+				protocolChk(pMessageBase->ParseMsg());
+
+			Proc_End:
+				return hr;
+
+			}; // Result JoinGameRes::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageData* pIMsg, MessageBase* &pMessageBase )
+
+			MessageData* JoinGameRes::Create( IMemoryManager& memoryManager, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const Result &InResult, const NetAddress &InGameInsSvr, const uint32_t &InTimeStamp, const GameStateID &InGameState, const uint8_t &InDay, const uint8_t &InMaxPlayer, const uint8_t &InPlayerIndex, const uint8_t &InPlayerCharacter, const PlayerRole &InRole, const uint8_t &InDead, const uint8_t &InIsNewJoin, const Array<uint8_t>& InChatHistoryData, const Array<uint8_t>& InGameLogData )
+			{
+ 				MessageData *pNewMsg = nullptr;
+				Result hr;
+
+				uint8_t *pMsgData = nullptr;
+
+				unsigned __uiMessageSize = (unsigned)(sizeof(MessageHeader) 
+					+ sizeof(RouteContext)
+					+ sizeof(TransactionID)
+					+ sizeof(Result)
+					+ sizeof(NetAddress)
+					+ sizeof(uint32_t)
+					+ sizeof(GameStateID)
+					+ sizeof(uint8_t)
+					+ sizeof(uint8_t)
+					+ sizeof(uint8_t)
+					+ sizeof(uint8_t)
+					+ sizeof(PlayerRole)
+					+ sizeof(uint8_t)
+					+ sizeof(uint8_t)
+					+ sizeof(uint8_t)*InChatHistoryData.GetItemCount() + sizeof(uint16_t)
+					+ sizeof(uint8_t)*InGameLogData.GetItemCount() + sizeof(uint16_t));
+
+
+				uint16_t numberOfInChatHistoryData = (uint16_t)InChatHistoryData.GetItemCount(); 
+				uint16_t numberOfInGameLogData = (uint16_t)InGameLogData.GetItemCount(); 
+				protocolMem( pNewMsg = MessageData::NewMessage( memoryManager, GameInstance::JoinGameRes::MID, __uiMessageSize ) );
+
+				pMsgData = pNewMsg->GetMessageData();
+
+				Protocol::PackParamCopy( pMsgData, &InRouteContext, sizeof(RouteContext));
+				Protocol::PackParamCopy( pMsgData, &InTransactionID, sizeof(TransactionID));
+				Protocol::PackParamCopy( pMsgData, &InResult, sizeof(Result));
+				Protocol::PackParamCopy( pMsgData, &InGameInsSvr, sizeof(NetAddress));
+				Protocol::PackParamCopy( pMsgData, &InTimeStamp, sizeof(uint32_t));
+				Protocol::PackParamCopy( pMsgData, &InGameState, sizeof(GameStateID));
+				Protocol::PackParamCopy( pMsgData, &InDay, sizeof(uint8_t));
+				Protocol::PackParamCopy( pMsgData, &InMaxPlayer, sizeof(uint8_t));
+				Protocol::PackParamCopy( pMsgData, &InPlayerIndex, sizeof(uint8_t));
+				Protocol::PackParamCopy( pMsgData, &InPlayerCharacter, sizeof(uint8_t));
+				Protocol::PackParamCopy( pMsgData, &InRole, sizeof(PlayerRole));
+				Protocol::PackParamCopy( pMsgData, &InDead, sizeof(uint8_t));
+				Protocol::PackParamCopy( pMsgData, &InIsNewJoin, sizeof(uint8_t));
+				Protocol::PackParamCopy( pMsgData, &numberOfInChatHistoryData, sizeof(uint16_t)); 
+				Protocol::PackParamCopy( pMsgData, InChatHistoryData.data(), (INT)(sizeof(uint8_t)*InChatHistoryData.GetItemCount())); 
+				Protocol::PackParamCopy( pMsgData, &numberOfInGameLogData, sizeof(uint16_t)); 
+				Protocol::PackParamCopy( pMsgData, InGameLogData.data(), (INT)(sizeof(uint8_t)*InGameLogData.GetItemCount())); 
+
+
+			Proc_End:
+
+				if(!hr)
+				{
+ 					if(pNewMsg != nullptr) GetSystemMemoryManager().Delete(pNewMsg);
+					pNewMsg = nullptr;
+				}
+				return pNewMsg;
+
+			}; // MessageData* JoinGameRes::Create( IMemoryManager& memoryManager, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const Result &InResult, const NetAddress &InGameInsSvr, const uint32_t &InTimeStamp, const GameStateID &InGameState, const uint8_t &InDay, const uint8_t &InMaxPlayer, const uint8_t &InPlayerIndex, const uint8_t &InPlayerCharacter, const PlayerRole &InRole, const uint8_t &InDead, const uint8_t &InIsNewJoin, const Array<uint8_t>& InChatHistoryData, const Array<uint8_t>& InGameLogData )
+
+			Result JoinGameRes::OverrideRouteContextDestination( EntityUID to )
+			{
+ 				Result hr;
+
+				int iMsgSize;
+				uint8_t* pCur;
+				MessageData* pIMsg = GetMessage();
+				RouteContext routeContext;
+
+				protocolChkPtr(pIMsg);
+
+				iMsgSize = (unsigned)pIMsg->GetMessageSize() - sizeof(MessageHeader);
+				pCur = pIMsg->GetMessageData();
+
+				Assert( iMsgSize >= (INT)sizeof(RouteContext) );
+				memcpy( &routeContext, pCur, sizeof(RouteContext) );
+				routeContext.Components.To = to;
+				memcpy( pCur, &routeContext, sizeof(RouteContext) );
+
+
+			Proc_End:
+
+				return hr;
+
+			}; // Result JoinGameRes::OverrideRouteContextDestination( EntityUID to )
+
+
+			Result JoinGameRes::TraceOut(MessageData* pMsg)
+			{
+ 				JoinGameRes parser;
+				parser.ParseMessage(pMsg);
+				protocolTrace( Debug1, "JoinGame:{0}:{1} , RouteContext:{2}, TransactionID:{3}, Result:{4:X8}, GameInsSvr:{5}, TimeStamp:{6}, GameState:{7}, Day:{8}, MaxPlayer:{9}, PlayerIndex:{10}, PlayerCharacter:{11}, Role:{12}, Dead:{13}, IsNewJoin:{14}, ChatHistoryData:{15,30}, GameLogData:{16,30}",
+						pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, parser.GetRouteContext(), parser.GetTransactionID(), parser.GetResult(), parser.GetGameInsSvr(), parser.GetTimeStamp(), (int)parser.GetGameState(), parser.GetDay(), parser.GetMaxPlayer(), parser.GetPlayerIndex(), parser.GetPlayerCharacter(), (int)parser.GetRole(), parser.GetDead(), parser.GetIsNewJoin(), parser.GetChatHistoryData(), parser.GetGameLogData()); 
+				return ResultCode::SUCCESS;
+			}; // Result JoinGameRes::TraceOut(MessageData* pMsg)
+
+			// S2C: Player Joined
+			const MessageID PlayerJoinedS2CEvt::MID = MessageID(MSGTYPE_EVENT, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_GAMEINSTANCE, 2);
+			Result PlayerJoinedS2CEvt::ParseMessage( MessageData* pIMsg )
+			{
+ 				Result hr;
+
+				int iMsgSize;
+				uint8_t* pCur;
+
+				protocolChkPtr(pIMsg);
+
+				iMsgSize = (unsigned)pIMsg->GetMessageSize() - sizeof(MessageHeader);
+				pCur = pIMsg->GetMessageData();
+
+				protocolChk( Protocol::StreamParamCopy( &m_RouteContext, pCur, iMsgSize, sizeof(RouteContext) ) );
+				protocolChk( Protocol::StreamParamCopy( &m_JoinedPlayer, pCur, iMsgSize, sizeof(PlayerInformation) ) );
+				protocolChk( Protocol::StreamParamCopy( &m_JoinedPlayerRole, pCur, iMsgSize, sizeof(PlayerRole) ) );
+				protocolChk( Protocol::StreamParamCopy( &m_JoinedPlayerDead, pCur, iMsgSize, sizeof(uint8_t) ) );
+				protocolChk( Protocol::StreamParamCopy( &m_JoinedPlayerIndex, pCur, iMsgSize, sizeof(uint8_t) ) );
+				protocolChk( Protocol::StreamParamCopy( &m_JoinedPlayerCharacter, pCur, iMsgSize, sizeof(uint8_t) ) );
+
+
+			Proc_End:
+
+				return hr;
+
+			}; // Result PlayerJoinedS2CEvt::ParseMessage( MessageData* pIMsg )
+
+			Result PlayerJoinedS2CEvt::ParseMessageTo( MessageData* pIMsg, VariableMapBuilder& variableBuilder )
+			{
+ 				Result hr;
+
+
+				PlayerJoinedS2CEvt parser;
+				protocolChk(parser.ParseMessage(pIMsg));
+
+				variableBuilder.SetVariable("RouteContext", parser.GetRouteContext());
+				variableBuilder.SetVariable("JoinedPlayer", parser.GetJoinedPlayer());
+				variableBuilder.SetVariable("JoinedPlayerRole", (int)parser.GetJoinedPlayerRole());
+				variableBuilder.SetVariable("JoinedPlayerDead", parser.GetJoinedPlayerDead());
+				variableBuilder.SetVariable("JoinedPlayerIndex", parser.GetJoinedPlayerIndex());
+				variableBuilder.SetVariable("JoinedPlayerCharacter", parser.GetJoinedPlayerCharacter());
+
+
+			Proc_End:
+
+				return hr;
+
+			}; // Result PlayerJoinedS2CEvt::ParseMessageTo( MessageData* pIMsg, VariableMapBuilder& variableBuilder )
+
+			Result PlayerJoinedS2CEvt::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageData* pIMsg, MessageBase* &pMessageBase )
+			{
+ 				Result hr;
+
+				protocolMem(pMessageBase = new(memoryManager) PlayerJoinedS2CEvt(pIMsg));
+				protocolChk(pMessageBase->ParseMsg());
+
+			Proc_End:
+				return hr;
+
+			}; // Result PlayerJoinedS2CEvt::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageData* pIMsg, MessageBase* &pMessageBase )
+
+			MessageData* PlayerJoinedS2CEvt::Create( IMemoryManager& memoryManager, const RouteContext &InRouteContext, const PlayerInformation &InJoinedPlayer, const PlayerRole &InJoinedPlayerRole, const uint8_t &InJoinedPlayerDead, const uint8_t &InJoinedPlayerIndex, const uint8_t &InJoinedPlayerCharacter )
+			{
+ 				MessageData *pNewMsg = nullptr;
+				Result hr;
+
+				uint8_t *pMsgData = nullptr;
+
+				unsigned __uiMessageSize = (unsigned)(sizeof(MessageHeader) 
+					+ sizeof(RouteContext)
+					+ sizeof(PlayerInformation)
+					+ sizeof(PlayerRole)
+					+ sizeof(uint8_t)
+					+ sizeof(uint8_t)
+					+ sizeof(uint8_t));
+
+
+				protocolMem( pNewMsg = MessageData::NewMessage( memoryManager, GameInstance::PlayerJoinedS2CEvt::MID, __uiMessageSize ) );
+
+				pMsgData = pNewMsg->GetMessageData();
+
+				Protocol::PackParamCopy( pMsgData, &InRouteContext, sizeof(RouteContext));
+				Protocol::PackParamCopy( pMsgData, &InJoinedPlayer, sizeof(PlayerInformation));
+				Protocol::PackParamCopy( pMsgData, &InJoinedPlayerRole, sizeof(PlayerRole));
+				Protocol::PackParamCopy( pMsgData, &InJoinedPlayerDead, sizeof(uint8_t));
+				Protocol::PackParamCopy( pMsgData, &InJoinedPlayerIndex, sizeof(uint8_t));
+				Protocol::PackParamCopy( pMsgData, &InJoinedPlayerCharacter, sizeof(uint8_t));
+
+
+			Proc_End:
+
+				if(!hr)
+				{
+ 					if(pNewMsg != nullptr) GetSystemMemoryManager().Delete(pNewMsg);
+					pNewMsg = nullptr;
+				}
+				return pNewMsg;
+
+			}; // MessageData* PlayerJoinedS2CEvt::Create( IMemoryManager& memoryManager, const RouteContext &InRouteContext, const PlayerInformation &InJoinedPlayer, const PlayerRole &InJoinedPlayerRole, const uint8_t &InJoinedPlayerDead, const uint8_t &InJoinedPlayerIndex, const uint8_t &InJoinedPlayerCharacter )
+
+			Result PlayerJoinedS2CEvt::OverrideRouteContextDestination( EntityUID to )
+			{
+ 				Result hr;
+
+				int iMsgSize;
+				uint8_t* pCur;
+				MessageData* pIMsg = GetMessage();
+				RouteContext routeContext;
+
+				protocolChkPtr(pIMsg);
+
+				iMsgSize = (unsigned)pIMsg->GetMessageSize() - sizeof(MessageHeader);
+				pCur = pIMsg->GetMessageData();
+
+				Assert( iMsgSize >= (INT)sizeof(RouteContext) );
+				memcpy( &routeContext, pCur, sizeof(RouteContext) );
+				routeContext.Components.To = to;
+				memcpy( pCur, &routeContext, sizeof(RouteContext) );
+
+
+			Proc_End:
+
+				return hr;
+
+			}; // Result PlayerJoinedS2CEvt::OverrideRouteContextDestination( EntityUID to )
+
+
+			Result PlayerJoinedS2CEvt::TraceOut(MessageData* pMsg)
+			{
+ 				PlayerJoinedS2CEvt parser;
+				parser.ParseMessage(pMsg);
+				protocolTrace( Debug1, "PlayerJoined:{0}:{1} , RouteContext:{2}, JoinedPlayer:{3}, JoinedPlayerRole:{4}, JoinedPlayerDead:{5}, JoinedPlayerIndex:{6}, JoinedPlayerCharacter:{7}",
+						pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, parser.GetRouteContext(), parser.GetJoinedPlayer(), (int)parser.GetJoinedPlayerRole(), parser.GetJoinedPlayerDead(), parser.GetJoinedPlayerIndex(), parser.GetJoinedPlayerCharacter()); 
+				return ResultCode::SUCCESS;
+			}; // Result PlayerJoinedS2CEvt::TraceOut(MessageData* pMsg)
+
+			// C2S: Change configue preset
+			const MessageID SetConfigPresetC2SEvt::MID = MessageID(MSGTYPE_EVENT, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_GAMEINSTANCE, 3);
+			Result SetConfigPresetC2SEvt::ParseMessage( MessageData* pIMsg )
+			{
+ 				Result hr;
+
+				int iMsgSize;
+				uint8_t* pCur;
+
+				protocolChkPtr(pIMsg);
+
+				iMsgSize = (unsigned)pIMsg->GetMessageSize() - sizeof(MessageHeader);
+				pCur = pIMsg->GetMessageData();
+
+				protocolChk( Protocol::StreamParamCopy( &m_RouteContext, pCur, iMsgSize, sizeof(RouteContext) ) );
+				protocolChk( Protocol::StreamParamCopy( &m_PresetID, pCur, iMsgSize, sizeof(uint32_t) ) );
+
+
+			Proc_End:
+
+				return hr;
+
+			}; // Result SetConfigPresetC2SEvt::ParseMessage( MessageData* pIMsg )
+
+			Result SetConfigPresetC2SEvt::ParseMessageTo( MessageData* pIMsg, VariableMapBuilder& variableBuilder )
+			{
+ 				Result hr;
+
+
+				SetConfigPresetC2SEvt parser;
+				protocolChk(parser.ParseMessage(pIMsg));
+
+				variableBuilder.SetVariable("RouteContext", parser.GetRouteContext());
+				variableBuilder.SetVariable("PresetID", parser.GetPresetID());
+
+
+			Proc_End:
+
+				return hr;
+
+			}; // Result SetConfigPresetC2SEvt::ParseMessageTo( MessageData* pIMsg, VariableMapBuilder& variableBuilder )
+
+			Result SetConfigPresetC2SEvt::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageData* pIMsg, MessageBase* &pMessageBase )
+			{
+ 				Result hr;
+
+				protocolMem(pMessageBase = new(memoryManager) SetConfigPresetC2SEvt(pIMsg));
+				protocolChk(pMessageBase->ParseMsg());
+
+			Proc_End:
+				return hr;
+
+			}; // Result SetConfigPresetC2SEvt::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageData* pIMsg, MessageBase* &pMessageBase )
+
+			MessageData* SetConfigPresetC2SEvt::Create( IMemoryManager& memoryManager, const RouteContext &InRouteContext, const uint32_t &InPresetID )
+			{
+ 				MessageData *pNewMsg = nullptr;
+				Result hr;
+
+				uint8_t *pMsgData = nullptr;
+
+				unsigned __uiMessageSize = (unsigned)(sizeof(MessageHeader) 
+					+ sizeof(RouteContext)
+					+ sizeof(uint32_t));
+
+
+				protocolMem( pNewMsg = MessageData::NewMessage( memoryManager, GameInstance::SetConfigPresetC2SEvt::MID, __uiMessageSize ) );
+
+				pMsgData = pNewMsg->GetMessageData();
+
+				Protocol::PackParamCopy( pMsgData, &InRouteContext, sizeof(RouteContext));
+				Protocol::PackParamCopy( pMsgData, &InPresetID, sizeof(uint32_t));
+
+
+			Proc_End:
+
+				if(!hr)
+				{
+ 					if(pNewMsg != nullptr) GetSystemMemoryManager().Delete(pNewMsg);
+					pNewMsg = nullptr;
+				}
+				return pNewMsg;
+
+			}; // MessageData* SetConfigPresetC2SEvt::Create( IMemoryManager& memoryManager, const RouteContext &InRouteContext, const uint32_t &InPresetID )
+
+			Result SetConfigPresetC2SEvt::OverrideRouteContextDestination( EntityUID to )
+			{
+ 				Result hr;
+
+				int iMsgSize;
+				uint8_t* pCur;
+				MessageData* pIMsg = GetMessage();
+				RouteContext routeContext;
+
+				protocolChkPtr(pIMsg);
+
+				iMsgSize = (unsigned)pIMsg->GetMessageSize() - sizeof(MessageHeader);
+				pCur = pIMsg->GetMessageData();
+
+				Assert( iMsgSize >= (INT)sizeof(RouteContext) );
+				memcpy( &routeContext, pCur, sizeof(RouteContext) );
+				routeContext.Components.To = to;
+				memcpy( pCur, &routeContext, sizeof(RouteContext) );
+
+
+			Proc_End:
+
+				return hr;
+
+			}; // Result SetConfigPresetC2SEvt::OverrideRouteContextDestination( EntityUID to )
+
+
+			Result SetConfigPresetC2SEvt::TraceOut(MessageData* pMsg)
+			{
+ 				SetConfigPresetC2SEvt parser;
+				parser.ParseMessage(pMsg);
+				protocolTrace( Debug1, "SetConfigPreset:{0}:{1} , RouteContext:{2}, PresetID:{3}",
+						pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, parser.GetRouteContext(), parser.GetPresetID()); 
+				return ResultCode::SUCCESS;
+			}; // Result SetConfigPresetC2SEvt::TraceOut(MessageData* pMsg)
+
+			// Cmd: Leave Game
+			const MessageID LeaveGameCmd::MID = MessageID(MSGTYPE_COMMAND, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_GAMEINSTANCE, 4);
+			Result LeaveGameCmd::ParseMessage( MessageData* pIMsg )
+			{
+ 				Result hr;
+
+				int iMsgSize;
+				uint8_t* pCur;
+
+				protocolChkPtr(pIMsg);
+
+				iMsgSize = (unsigned)pIMsg->GetMessageSize() - sizeof(MessageHeader);
+				pCur = pIMsg->GetMessageData();
+
+				protocolChk( Protocol::StreamParamCopy( &m_RouteContext, pCur, iMsgSize, sizeof(RouteContext) ) );
+				protocolChk( Protocol::StreamParamCopy( &m_TransactionID, pCur, iMsgSize, sizeof(TransactionID) ) );
+				protocolChk( Protocol::StreamParamCopy( &m_PlayerID, pCur, iMsgSize, sizeof(PlayerID) ) );
+
+
+			Proc_End:
+
+				return hr;
+
+			}; // Result LeaveGameCmd::ParseMessage( MessageData* pIMsg )
+
+			Result LeaveGameCmd::ParseMessageTo( MessageData* pIMsg, VariableMapBuilder& variableBuilder )
+			{
+ 				Result hr;
+
+
+				LeaveGameCmd parser;
+				protocolChk(parser.ParseMessage(pIMsg));
+
+				variableBuilder.SetVariable("RouteContext", parser.GetRouteContext());
+				variableBuilder.SetVariable("TransactionID", parser.GetTransactionID());
+				variableBuilder.SetVariable("PlayerID", parser.GetPlayerID());
+
+
+			Proc_End:
+
+				return hr;
+
+			}; // Result LeaveGameCmd::ParseMessageTo( MessageData* pIMsg, VariableMapBuilder& variableBuilder )
+
+			Result LeaveGameCmd::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageData* pIMsg, MessageBase* &pMessageBase )
+			{
+ 				Result hr;
+
+				protocolMem(pMessageBase = new(memoryManager) LeaveGameCmd(pIMsg));
+				protocolChk(pMessageBase->ParseMsg());
+
+			Proc_End:
+				return hr;
+
+			}; // Result LeaveGameCmd::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageData* pIMsg, MessageBase* &pMessageBase )
+
+			MessageData* LeaveGameCmd::Create( IMemoryManager& memoryManager, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const PlayerID &InPlayerID )
+			{
+ 				MessageData *pNewMsg = nullptr;
+				Result hr;
+
+				uint8_t *pMsgData = nullptr;
+
+				unsigned __uiMessageSize = (unsigned)(sizeof(MessageHeader) 
+					+ sizeof(RouteContext)
+					+ sizeof(TransactionID)
+					+ sizeof(PlayerID));
+
+
+				protocolMem( pNewMsg = MessageData::NewMessage( memoryManager, GameInstance::LeaveGameCmd::MID, __uiMessageSize ) );
+
+				pMsgData = pNewMsg->GetMessageData();
+
+				Protocol::PackParamCopy( pMsgData, &InRouteContext, sizeof(RouteContext));
+				Protocol::PackParamCopy( pMsgData, &InTransactionID, sizeof(TransactionID));
+				Protocol::PackParamCopy( pMsgData, &InPlayerID, sizeof(PlayerID));
+
+
+			Proc_End:
+
+				if(!hr)
+				{
+ 					if(pNewMsg != nullptr) GetSystemMemoryManager().Delete(pNewMsg);
+					pNewMsg = nullptr;
+				}
+				return pNewMsg;
+
+			}; // MessageData* LeaveGameCmd::Create( IMemoryManager& memoryManager, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const PlayerID &InPlayerID )
+
+			Result LeaveGameCmd::OverrideRouteContextDestination( EntityUID to )
+			{
+ 				Result hr;
+
+				int iMsgSize;
+				uint8_t* pCur;
+				MessageData* pIMsg = GetMessage();
+				RouteContext routeContext;
+
+				protocolChkPtr(pIMsg);
+
+				iMsgSize = (unsigned)pIMsg->GetMessageSize() - sizeof(MessageHeader);
+				pCur = pIMsg->GetMessageData();
+
+				Assert( iMsgSize >= (INT)sizeof(RouteContext) );
+				memcpy( &routeContext, pCur, sizeof(RouteContext) );
+				routeContext.Components.To = to;
+				memcpy( pCur, &routeContext, sizeof(RouteContext) );
+
+
+			Proc_End:
+
+				return hr;
+
+			}; // Result LeaveGameCmd::OverrideRouteContextDestination( EntityUID to )
+
+
+			Result LeaveGameCmd::TraceOut(MessageData* pMsg)
+			{
+ 				LeaveGameCmd parser;
+				parser.ParseMessage(pMsg);
+				protocolTrace( Debug1, "LeaveGame:{0}:{1} , RouteContext:{2}, TransactionID:{3}, PlayerID:{4}",
+						pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, parser.GetRouteContext(), parser.GetTransactionID(), parser.GetPlayerID()); 
+				return ResultCode::SUCCESS;
+			}; // Result LeaveGameCmd::TraceOut(MessageData* pMsg)
+
+			const MessageID LeaveGameRes::MID = MessageID(MSGTYPE_RESULT, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_GAMEINSTANCE, 4);
+			Result LeaveGameRes::ParseMessage( MessageData* pIMsg )
+			{
+ 				Result hr;
+
+				int iMsgSize;
+				uint8_t* pCur;
+
+				protocolChkPtr(pIMsg);
+
+				iMsgSize = (unsigned)pIMsg->GetMessageSize() - sizeof(MessageHeader);
+				pCur = pIMsg->GetMessageData();
+
+				protocolChk( Protocol::StreamParamCopy( &m_RouteContext, pCur, iMsgSize, sizeof(RouteContext) ) );
+				protocolChk( Protocol::StreamParamCopy( &m_TransactionID, pCur, iMsgSize, sizeof(TransactionID) ) );
+				protocolChk( Protocol::StreamParamCopy( &m_Result, pCur, iMsgSize, sizeof(Result) ) );
+
+
+			Proc_End:
+
+				return hr;
+
+			}; // Result LeaveGameRes::ParseMessage( MessageData* pIMsg )
+
+			Result LeaveGameRes::ParseMessageTo( MessageData* pIMsg, VariableMapBuilder& variableBuilder )
+			{
+ 				Result hr;
+
+
+				LeaveGameRes parser;
+				protocolChk(parser.ParseMessage(pIMsg));
+
+				variableBuilder.SetVariable("RouteContext", parser.GetRouteContext());
+				variableBuilder.SetVariable("TransactionID", parser.GetTransactionID());
+				variableBuilder.SetVariable("Result", parser.GetResult());
+
+
+			Proc_End:
+
+				return hr;
+
+			}; // Result LeaveGameRes::ParseMessageTo( MessageData* pIMsg, VariableMapBuilder& variableBuilder )
+
+			Result LeaveGameRes::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageData* pIMsg, MessageBase* &pMessageBase )
+			{
+ 				Result hr;
+
+				protocolMem(pMessageBase = new(memoryManager) LeaveGameRes(pIMsg));
+				protocolChk(pMessageBase->ParseMsg());
+
+			Proc_End:
+				return hr;
+
+			}; // Result LeaveGameRes::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageData* pIMsg, MessageBase* &pMessageBase )
+
+			MessageData* LeaveGameRes::Create( IMemoryManager& memoryManager, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const Result &InResult )
+			{
+ 				MessageData *pNewMsg = nullptr;
+				Result hr;
+
+				uint8_t *pMsgData = nullptr;
+
+				unsigned __uiMessageSize = (unsigned)(sizeof(MessageHeader) 
+					+ sizeof(RouteContext)
+					+ sizeof(TransactionID)
+					+ sizeof(Result));
+
+
+				protocolMem( pNewMsg = MessageData::NewMessage( memoryManager, GameInstance::LeaveGameRes::MID, __uiMessageSize ) );
+
+				pMsgData = pNewMsg->GetMessageData();
+
+				Protocol::PackParamCopy( pMsgData, &InRouteContext, sizeof(RouteContext));
+				Protocol::PackParamCopy( pMsgData, &InTransactionID, sizeof(TransactionID));
+				Protocol::PackParamCopy( pMsgData, &InResult, sizeof(Result));
+
+
+			Proc_End:
+
+				if(!hr)
+				{
+ 					if(pNewMsg != nullptr) GetSystemMemoryManager().Delete(pNewMsg);
+					pNewMsg = nullptr;
+				}
+				return pNewMsg;
+
+			}; // MessageData* LeaveGameRes::Create( IMemoryManager& memoryManager, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const Result &InResult )
+
+			Result LeaveGameRes::OverrideRouteContextDestination( EntityUID to )
+			{
+ 				Result hr;
+
+				int iMsgSize;
+				uint8_t* pCur;
+				MessageData* pIMsg = GetMessage();
+				RouteContext routeContext;
+
+				protocolChkPtr(pIMsg);
+
+				iMsgSize = (unsigned)pIMsg->GetMessageSize() - sizeof(MessageHeader);
+				pCur = pIMsg->GetMessageData();
+
+				Assert( iMsgSize >= (INT)sizeof(RouteContext) );
+				memcpy( &routeContext, pCur, sizeof(RouteContext) );
+				routeContext.Components.To = to;
+				memcpy( pCur, &routeContext, sizeof(RouteContext) );
+
+
+			Proc_End:
+
+				return hr;
+
+			}; // Result LeaveGameRes::OverrideRouteContextDestination( EntityUID to )
+
+
+			Result LeaveGameRes::TraceOut(MessageData* pMsg)
+			{
+ 				LeaveGameRes parser;
+				parser.ParseMessage(pMsg);
+				protocolTrace( Debug1, "LeaveGame:{0}:{1} , RouteContext:{2}, TransactionID:{3}, Result:{4:X8}",
+						pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, parser.GetRouteContext(), parser.GetTransactionID(), parser.GetResult()); 
+				return ResultCode::SUCCESS;
+			}; // Result LeaveGameRes::TraceOut(MessageData* pMsg)
+
+			// S2C: Player left
+			const MessageID PlayerLeftS2CEvt::MID = MessageID(MSGTYPE_EVENT, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_GAMEINSTANCE, 5);
+			Result PlayerLeftS2CEvt::ParseMessage( MessageData* pIMsg )
+			{
+ 				Result hr;
+
+				int iMsgSize;
+				uint8_t* pCur;
+
+				protocolChkPtr(pIMsg);
+
+				iMsgSize = (unsigned)pIMsg->GetMessageSize() - sizeof(MessageHeader);
+				pCur = pIMsg->GetMessageData();
+
+				protocolChk( Protocol::StreamParamCopy( &m_RouteContext, pCur, iMsgSize, sizeof(RouteContext) ) );
+				protocolChk( Protocol::StreamParamCopy( &m_LeftPlayerID, pCur, iMsgSize, sizeof(PlayerID) ) );
+
+
+			Proc_End:
+
+				return hr;
+
+			}; // Result PlayerLeftS2CEvt::ParseMessage( MessageData* pIMsg )
+
+			Result PlayerLeftS2CEvt::ParseMessageTo( MessageData* pIMsg, VariableMapBuilder& variableBuilder )
+			{
+ 				Result hr;
+
+
+				PlayerLeftS2CEvt parser;
+				protocolChk(parser.ParseMessage(pIMsg));
+
+				variableBuilder.SetVariable("RouteContext", parser.GetRouteContext());
+				variableBuilder.SetVariable("LeftPlayerID", parser.GetLeftPlayerID());
+
+
+			Proc_End:
+
+				return hr;
+
+			}; // Result PlayerLeftS2CEvt::ParseMessageTo( MessageData* pIMsg, VariableMapBuilder& variableBuilder )
+
+			Result PlayerLeftS2CEvt::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageData* pIMsg, MessageBase* &pMessageBase )
+			{
+ 				Result hr;
+
+				protocolMem(pMessageBase = new(memoryManager) PlayerLeftS2CEvt(pIMsg));
+				protocolChk(pMessageBase->ParseMsg());
+
+			Proc_End:
+				return hr;
+
+			}; // Result PlayerLeftS2CEvt::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageData* pIMsg, MessageBase* &pMessageBase )
+
+			MessageData* PlayerLeftS2CEvt::Create( IMemoryManager& memoryManager, const RouteContext &InRouteContext, const PlayerID &InLeftPlayerID )
+			{
+ 				MessageData *pNewMsg = nullptr;
+				Result hr;
+
+				uint8_t *pMsgData = nullptr;
+
+				unsigned __uiMessageSize = (unsigned)(sizeof(MessageHeader) 
+					+ sizeof(RouteContext)
+					+ sizeof(PlayerID));
+
+
+				protocolMem( pNewMsg = MessageData::NewMessage( memoryManager, GameInstance::PlayerLeftS2CEvt::MID, __uiMessageSize ) );
+
+				pMsgData = pNewMsg->GetMessageData();
+
+				Protocol::PackParamCopy( pMsgData, &InRouteContext, sizeof(RouteContext));
+				Protocol::PackParamCopy( pMsgData, &InLeftPlayerID, sizeof(PlayerID));
+
+
+			Proc_End:
+
+				if(!hr)
+				{
+ 					if(pNewMsg != nullptr) GetSystemMemoryManager().Delete(pNewMsg);
+					pNewMsg = nullptr;
+				}
+				return pNewMsg;
+
+			}; // MessageData* PlayerLeftS2CEvt::Create( IMemoryManager& memoryManager, const RouteContext &InRouteContext, const PlayerID &InLeftPlayerID )
+
+			Result PlayerLeftS2CEvt::OverrideRouteContextDestination( EntityUID to )
+			{
+ 				Result hr;
+
+				int iMsgSize;
+				uint8_t* pCur;
+				MessageData* pIMsg = GetMessage();
+				RouteContext routeContext;
+
+				protocolChkPtr(pIMsg);
+
+				iMsgSize = (unsigned)pIMsg->GetMessageSize() - sizeof(MessageHeader);
+				pCur = pIMsg->GetMessageData();
+
+				Assert( iMsgSize >= (INT)sizeof(RouteContext) );
+				memcpy( &routeContext, pCur, sizeof(RouteContext) );
+				routeContext.Components.To = to;
+				memcpy( pCur, &routeContext, sizeof(RouteContext) );
+
+
+			Proc_End:
+
+				return hr;
+
+			}; // Result PlayerLeftS2CEvt::OverrideRouteContextDestination( EntityUID to )
+
+
+			Result PlayerLeftS2CEvt::TraceOut(MessageData* pMsg)
+			{
+ 				PlayerLeftS2CEvt parser;
+				parser.ParseMessage(pMsg);
+				protocolTrace( Debug1, "PlayerLeft:{0}:{1} , RouteContext:{2}, LeftPlayerID:{3}",
+						pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, parser.GetRouteContext(), parser.GetLeftPlayerID()); 
+				return ResultCode::SUCCESS;
+			}; // Result PlayerLeftS2CEvt::TraceOut(MessageData* pMsg)
+
+			// Cmd: Kick player
+			const MessageID KickPlayerCmd::MID = MessageID(MSGTYPE_COMMAND, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_GAMEINSTANCE, 6);
+			Result KickPlayerCmd::ParseMessage( MessageData* pIMsg )
+			{
+ 				Result hr;
+
+				int iMsgSize;
+				uint8_t* pCur;
+
+				protocolChkPtr(pIMsg);
+
+				iMsgSize = (unsigned)pIMsg->GetMessageSize() - sizeof(MessageHeader);
+				pCur = pIMsg->GetMessageData();
+
+				protocolChk( Protocol::StreamParamCopy( &m_RouteContext, pCur, iMsgSize, sizeof(RouteContext) ) );
+				protocolChk( Protocol::StreamParamCopy( &m_TransactionID, pCur, iMsgSize, sizeof(TransactionID) ) );
+				protocolChk( Protocol::StreamParamCopy( &m_PlayerID, pCur, iMsgSize, sizeof(PlayerID) ) );
+				protocolChk( Protocol::StreamParamCopy( &m_PlayerToKick, pCur, iMsgSize, sizeof(PlayerID) ) );
+
+
+			Proc_End:
+
+				return hr;
+
+			}; // Result KickPlayerCmd::ParseMessage( MessageData* pIMsg )
+
+			Result KickPlayerCmd::ParseMessageTo( MessageData* pIMsg, VariableMapBuilder& variableBuilder )
+			{
+ 				Result hr;
+
+
+				KickPlayerCmd parser;
+				protocolChk(parser.ParseMessage(pIMsg));
+
+				variableBuilder.SetVariable("RouteContext", parser.GetRouteContext());
+				variableBuilder.SetVariable("TransactionID", parser.GetTransactionID());
+				variableBuilder.SetVariable("PlayerID", parser.GetPlayerID());
+				variableBuilder.SetVariable("PlayerToKick", parser.GetPlayerToKick());
+
+
+			Proc_End:
+
+				return hr;
+
+			}; // Result KickPlayerCmd::ParseMessageTo( MessageData* pIMsg, VariableMapBuilder& variableBuilder )
+
+			Result KickPlayerCmd::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageData* pIMsg, MessageBase* &pMessageBase )
+			{
+ 				Result hr;
+
+				protocolMem(pMessageBase = new(memoryManager) KickPlayerCmd(pIMsg));
+				protocolChk(pMessageBase->ParseMsg());
+
+			Proc_End:
+				return hr;
+
+			}; // Result KickPlayerCmd::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageData* pIMsg, MessageBase* &pMessageBase )
+
+			MessageData* KickPlayerCmd::Create( IMemoryManager& memoryManager, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const PlayerID &InPlayerID, const PlayerID &InPlayerToKick )
+			{
+ 				MessageData *pNewMsg = nullptr;
+				Result hr;
+
+				uint8_t *pMsgData = nullptr;
+
+				unsigned __uiMessageSize = (unsigned)(sizeof(MessageHeader) 
+					+ sizeof(RouteContext)
+					+ sizeof(TransactionID)
+					+ sizeof(PlayerID)
+					+ sizeof(PlayerID));
+
+
+				protocolMem( pNewMsg = MessageData::NewMessage( memoryManager, GameInstance::KickPlayerCmd::MID, __uiMessageSize ) );
+
+				pMsgData = pNewMsg->GetMessageData();
+
+				Protocol::PackParamCopy( pMsgData, &InRouteContext, sizeof(RouteContext));
+				Protocol::PackParamCopy( pMsgData, &InTransactionID, sizeof(TransactionID));
+				Protocol::PackParamCopy( pMsgData, &InPlayerID, sizeof(PlayerID));
+				Protocol::PackParamCopy( pMsgData, &InPlayerToKick, sizeof(PlayerID));
+
+
+			Proc_End:
+
+				if(!hr)
+				{
+ 					if(pNewMsg != nullptr) GetSystemMemoryManager().Delete(pNewMsg);
+					pNewMsg = nullptr;
+				}
+				return pNewMsg;
+
+			}; // MessageData* KickPlayerCmd::Create( IMemoryManager& memoryManager, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const PlayerID &InPlayerID, const PlayerID &InPlayerToKick )
+
+			Result KickPlayerCmd::OverrideRouteContextDestination( EntityUID to )
+			{
+ 				Result hr;
+
+				int iMsgSize;
+				uint8_t* pCur;
+				MessageData* pIMsg = GetMessage();
+				RouteContext routeContext;
+
+				protocolChkPtr(pIMsg);
+
+				iMsgSize = (unsigned)pIMsg->GetMessageSize() - sizeof(MessageHeader);
+				pCur = pIMsg->GetMessageData();
+
+				Assert( iMsgSize >= (INT)sizeof(RouteContext) );
+				memcpy( &routeContext, pCur, sizeof(RouteContext) );
+				routeContext.Components.To = to;
+				memcpy( pCur, &routeContext, sizeof(RouteContext) );
+
+
+			Proc_End:
+
+				return hr;
+
+			}; // Result KickPlayerCmd::OverrideRouteContextDestination( EntityUID to )
+
+
+			Result KickPlayerCmd::TraceOut(MessageData* pMsg)
+			{
+ 				KickPlayerCmd parser;
+				parser.ParseMessage(pMsg);
+				protocolTrace( Debug1, "KickPlayer:{0}:{1} , RouteContext:{2}, TransactionID:{3}, PlayerID:{4}, PlayerToKick:{5}",
+						pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, parser.GetRouteContext(), parser.GetTransactionID(), parser.GetPlayerID(), parser.GetPlayerToKick()); 
+				return ResultCode::SUCCESS;
+			}; // Result KickPlayerCmd::TraceOut(MessageData* pMsg)
+
+			const MessageID KickPlayerRes::MID = MessageID(MSGTYPE_RESULT, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_GAMEINSTANCE, 6);
+			Result KickPlayerRes::ParseMessage( MessageData* pIMsg )
+			{
+ 				Result hr;
+
+				int iMsgSize;
+				uint8_t* pCur;
+
+				protocolChkPtr(pIMsg);
+
+				iMsgSize = (unsigned)pIMsg->GetMessageSize() - sizeof(MessageHeader);
+				pCur = pIMsg->GetMessageData();
+
+				protocolChk( Protocol::StreamParamCopy( &m_RouteContext, pCur, iMsgSize, sizeof(RouteContext) ) );
+				protocolChk( Protocol::StreamParamCopy( &m_TransactionID, pCur, iMsgSize, sizeof(TransactionID) ) );
+				protocolChk( Protocol::StreamParamCopy( &m_Result, pCur, iMsgSize, sizeof(Result) ) );
+
+
+			Proc_End:
+
+				return hr;
+
+			}; // Result KickPlayerRes::ParseMessage( MessageData* pIMsg )
+
+			Result KickPlayerRes::ParseMessageTo( MessageData* pIMsg, VariableMapBuilder& variableBuilder )
+			{
+ 				Result hr;
+
+
+				KickPlayerRes parser;
+				protocolChk(parser.ParseMessage(pIMsg));
+
+				variableBuilder.SetVariable("RouteContext", parser.GetRouteContext());
+				variableBuilder.SetVariable("TransactionID", parser.GetTransactionID());
+				variableBuilder.SetVariable("Result", parser.GetResult());
+
+
+			Proc_End:
+
+				return hr;
+
+			}; // Result KickPlayerRes::ParseMessageTo( MessageData* pIMsg, VariableMapBuilder& variableBuilder )
+
+			Result KickPlayerRes::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageData* pIMsg, MessageBase* &pMessageBase )
+			{
+ 				Result hr;
+
+				protocolMem(pMessageBase = new(memoryManager) KickPlayerRes(pIMsg));
+				protocolChk(pMessageBase->ParseMsg());
+
+			Proc_End:
+				return hr;
+
+			}; // Result KickPlayerRes::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageData* pIMsg, MessageBase* &pMessageBase )
+
+			MessageData* KickPlayerRes::Create( IMemoryManager& memoryManager, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const Result &InResult )
+			{
+ 				MessageData *pNewMsg = nullptr;
+				Result hr;
+
+				uint8_t *pMsgData = nullptr;
+
+				unsigned __uiMessageSize = (unsigned)(sizeof(MessageHeader) 
+					+ sizeof(RouteContext)
+					+ sizeof(TransactionID)
+					+ sizeof(Result));
+
+
+				protocolMem( pNewMsg = MessageData::NewMessage( memoryManager, GameInstance::KickPlayerRes::MID, __uiMessageSize ) );
+
+				pMsgData = pNewMsg->GetMessageData();
+
+				Protocol::PackParamCopy( pMsgData, &InRouteContext, sizeof(RouteContext));
+				Protocol::PackParamCopy( pMsgData, &InTransactionID, sizeof(TransactionID));
+				Protocol::PackParamCopy( pMsgData, &InResult, sizeof(Result));
+
+
+			Proc_End:
+
+				if(!hr)
+				{
+ 					if(pNewMsg != nullptr) GetSystemMemoryManager().Delete(pNewMsg);
+					pNewMsg = nullptr;
+				}
+				return pNewMsg;
+
+			}; // MessageData* KickPlayerRes::Create( IMemoryManager& memoryManager, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const Result &InResult )
+
+			Result KickPlayerRes::OverrideRouteContextDestination( EntityUID to )
+			{
+ 				Result hr;
+
+				int iMsgSize;
+				uint8_t* pCur;
+				MessageData* pIMsg = GetMessage();
+				RouteContext routeContext;
+
+				protocolChkPtr(pIMsg);
+
+				iMsgSize = (unsigned)pIMsg->GetMessageSize() - sizeof(MessageHeader);
+				pCur = pIMsg->GetMessageData();
+
+				Assert( iMsgSize >= (INT)sizeof(RouteContext) );
+				memcpy( &routeContext, pCur, sizeof(RouteContext) );
+				routeContext.Components.To = to;
+				memcpy( pCur, &routeContext, sizeof(RouteContext) );
+
+
+			Proc_End:
+
+				return hr;
+
+			}; // Result KickPlayerRes::OverrideRouteContextDestination( EntityUID to )
+
+
+			Result KickPlayerRes::TraceOut(MessageData* pMsg)
+			{
+ 				KickPlayerRes parser;
+				parser.ParseMessage(pMsg);
+				protocolTrace( Debug1, "KickPlayer:{0}:{1} , RouteContext:{2}, TransactionID:{3}, Result:{4:X8}",
+						pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, parser.GetRouteContext(), parser.GetTransactionID(), parser.GetResult()); 
+				return ResultCode::SUCCESS;
+			}; // Result KickPlayerRes::TraceOut(MessageData* pMsg)
+
+			// S2C: Player kicked
+			const MessageID PlayerKickedS2CEvt::MID = MessageID(MSGTYPE_EVENT, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_GAMEINSTANCE, 7);
+			Result PlayerKickedS2CEvt::ParseMessage( MessageData* pIMsg )
+			{
+ 				Result hr;
+
+				int iMsgSize;
+				uint8_t* pCur;
+
+				protocolChkPtr(pIMsg);
+
+				iMsgSize = (unsigned)pIMsg->GetMessageSize() - sizeof(MessageHeader);
+				pCur = pIMsg->GetMessageData();
+
+				protocolChk( Protocol::StreamParamCopy( &m_RouteContext, pCur, iMsgSize, sizeof(RouteContext) ) );
+				protocolChk( Protocol::StreamParamCopy( &m_KickedPlayerID, pCur, iMsgSize, sizeof(PlayerID) ) );
+
+
+			Proc_End:
+
+				return hr;
+
+			}; // Result PlayerKickedS2CEvt::ParseMessage( MessageData* pIMsg )
+
+			Result PlayerKickedS2CEvt::ParseMessageTo( MessageData* pIMsg, VariableMapBuilder& variableBuilder )
+			{
+ 				Result hr;
+
+
+				PlayerKickedS2CEvt parser;
+				protocolChk(parser.ParseMessage(pIMsg));
+
+				variableBuilder.SetVariable("RouteContext", parser.GetRouteContext());
+				variableBuilder.SetVariable("KickedPlayerID", parser.GetKickedPlayerID());
+
+
+			Proc_End:
+
+				return hr;
+
+			}; // Result PlayerKickedS2CEvt::ParseMessageTo( MessageData* pIMsg, VariableMapBuilder& variableBuilder )
+
+			Result PlayerKickedS2CEvt::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageData* pIMsg, MessageBase* &pMessageBase )
+			{
+ 				Result hr;
+
+				protocolMem(pMessageBase = new(memoryManager) PlayerKickedS2CEvt(pIMsg));
+				protocolChk(pMessageBase->ParseMsg());
+
+			Proc_End:
+				return hr;
+
+			}; // Result PlayerKickedS2CEvt::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageData* pIMsg, MessageBase* &pMessageBase )
+
+			MessageData* PlayerKickedS2CEvt::Create( IMemoryManager& memoryManager, const RouteContext &InRouteContext, const PlayerID &InKickedPlayerID )
+			{
+ 				MessageData *pNewMsg = nullptr;
+				Result hr;
+
+				uint8_t *pMsgData = nullptr;
+
+				unsigned __uiMessageSize = (unsigned)(sizeof(MessageHeader) 
+					+ sizeof(RouteContext)
+					+ sizeof(PlayerID));
+
+
+				protocolMem( pNewMsg = MessageData::NewMessage( memoryManager, GameInstance::PlayerKickedS2CEvt::MID, __uiMessageSize ) );
+
+				pMsgData = pNewMsg->GetMessageData();
+
+				Protocol::PackParamCopy( pMsgData, &InRouteContext, sizeof(RouteContext));
+				Protocol::PackParamCopy( pMsgData, &InKickedPlayerID, sizeof(PlayerID));
+
+
+			Proc_End:
+
+				if(!hr)
+				{
+ 					if(pNewMsg != nullptr) GetSystemMemoryManager().Delete(pNewMsg);
+					pNewMsg = nullptr;
+				}
+				return pNewMsg;
+
+			}; // MessageData* PlayerKickedS2CEvt::Create( IMemoryManager& memoryManager, const RouteContext &InRouteContext, const PlayerID &InKickedPlayerID )
+
+			Result PlayerKickedS2CEvt::OverrideRouteContextDestination( EntityUID to )
+			{
+ 				Result hr;
+
+				int iMsgSize;
+				uint8_t* pCur;
+				MessageData* pIMsg = GetMessage();
+				RouteContext routeContext;
+
+				protocolChkPtr(pIMsg);
+
+				iMsgSize = (unsigned)pIMsg->GetMessageSize() - sizeof(MessageHeader);
+				pCur = pIMsg->GetMessageData();
+
+				Assert( iMsgSize >= (INT)sizeof(RouteContext) );
+				memcpy( &routeContext, pCur, sizeof(RouteContext) );
+				routeContext.Components.To = to;
+				memcpy( pCur, &routeContext, sizeof(RouteContext) );
+
+
+			Proc_End:
+
+				return hr;
+
+			}; // Result PlayerKickedS2CEvt::OverrideRouteContextDestination( EntityUID to )
+
+
+			Result PlayerKickedS2CEvt::TraceOut(MessageData* pMsg)
+			{
+ 				PlayerKickedS2CEvt parser;
+				parser.ParseMessage(pMsg);
+				protocolTrace( Debug1, "PlayerKicked:{0}:{1} , RouteContext:{2}, KickedPlayerID:{3}",
+						pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, parser.GetRouteContext(), parser.GetKickedPlayerID()); 
+				return ResultCode::SUCCESS;
+			}; // Result PlayerKickedS2CEvt::TraceOut(MessageData* pMsg)
+
+			// Cmd: Assign role
+			const MessageID AssignRoleCmd::MID = MessageID(MSGTYPE_COMMAND, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_GAMEINSTANCE, 8);
+			Result AssignRoleCmd::ParseMessage( MessageData* pIMsg )
+			{
+ 				Result hr;
+
+				int iMsgSize;
+				uint8_t* pCur;
+
+				protocolChkPtr(pIMsg);
+
+				iMsgSize = (unsigned)pIMsg->GetMessageSize() - sizeof(MessageHeader);
+				pCur = pIMsg->GetMessageData();
+
+				protocolChk( Protocol::StreamParamCopy( &m_RouteContext, pCur, iMsgSize, sizeof(RouteContext) ) );
+				protocolChk( Protocol::StreamParamCopy( &m_TransactionID, pCur, iMsgSize, sizeof(TransactionID) ) );
+				protocolChk( Protocol::StreamParamCopy( &m_PlayerID, pCur, iMsgSize, sizeof(PlayerID) ) );
+
+
+			Proc_End:
+
+				return hr;
+
+			}; // Result AssignRoleCmd::ParseMessage( MessageData* pIMsg )
+
+			Result AssignRoleCmd::ParseMessageTo( MessageData* pIMsg, VariableMapBuilder& variableBuilder )
+			{
+ 				Result hr;
+
+
+				AssignRoleCmd parser;
+				protocolChk(parser.ParseMessage(pIMsg));
+
+				variableBuilder.SetVariable("RouteContext", parser.GetRouteContext());
+				variableBuilder.SetVariable("TransactionID", parser.GetTransactionID());
+				variableBuilder.SetVariable("PlayerID", parser.GetPlayerID());
+
+
+			Proc_End:
+
+				return hr;
+
+			}; // Result AssignRoleCmd::ParseMessageTo( MessageData* pIMsg, VariableMapBuilder& variableBuilder )
+
+			Result AssignRoleCmd::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageData* pIMsg, MessageBase* &pMessageBase )
+			{
+ 				Result hr;
+
+				protocolMem(pMessageBase = new(memoryManager) AssignRoleCmd(pIMsg));
+				protocolChk(pMessageBase->ParseMsg());
+
+			Proc_End:
+				return hr;
+
+			}; // Result AssignRoleCmd::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageData* pIMsg, MessageBase* &pMessageBase )
+
+			MessageData* AssignRoleCmd::Create( IMemoryManager& memoryManager, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const PlayerID &InPlayerID )
+			{
+ 				MessageData *pNewMsg = nullptr;
+				Result hr;
+
+				uint8_t *pMsgData = nullptr;
+
+				unsigned __uiMessageSize = (unsigned)(sizeof(MessageHeader) 
+					+ sizeof(RouteContext)
+					+ sizeof(TransactionID)
+					+ sizeof(PlayerID));
+
+
+				protocolMem( pNewMsg = MessageData::NewMessage( memoryManager, GameInstance::AssignRoleCmd::MID, __uiMessageSize ) );
+
+				pMsgData = pNewMsg->GetMessageData();
+
+				Protocol::PackParamCopy( pMsgData, &InRouteContext, sizeof(RouteContext));
+				Protocol::PackParamCopy( pMsgData, &InTransactionID, sizeof(TransactionID));
+				Protocol::PackParamCopy( pMsgData, &InPlayerID, sizeof(PlayerID));
+
+
+			Proc_End:
+
+				if(!hr)
+				{
+ 					if(pNewMsg != nullptr) GetSystemMemoryManager().Delete(pNewMsg);
+					pNewMsg = nullptr;
+				}
+				return pNewMsg;
+
+			}; // MessageData* AssignRoleCmd::Create( IMemoryManager& memoryManager, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const PlayerID &InPlayerID )
+
+			Result AssignRoleCmd::OverrideRouteContextDestination( EntityUID to )
+			{
+ 				Result hr;
+
+				int iMsgSize;
+				uint8_t* pCur;
+				MessageData* pIMsg = GetMessage();
+				RouteContext routeContext;
+
+				protocolChkPtr(pIMsg);
+
+				iMsgSize = (unsigned)pIMsg->GetMessageSize() - sizeof(MessageHeader);
+				pCur = pIMsg->GetMessageData();
+
+				Assert( iMsgSize >= (INT)sizeof(RouteContext) );
+				memcpy( &routeContext, pCur, sizeof(RouteContext) );
+				routeContext.Components.To = to;
+				memcpy( pCur, &routeContext, sizeof(RouteContext) );
+
+
+			Proc_End:
+
+				return hr;
+
+			}; // Result AssignRoleCmd::OverrideRouteContextDestination( EntityUID to )
+
+
+			Result AssignRoleCmd::TraceOut(MessageData* pMsg)
+			{
+ 				AssignRoleCmd parser;
+				parser.ParseMessage(pMsg);
+				protocolTrace( Debug1, "AssignRole:{0}:{1} , RouteContext:{2}, TransactionID:{3}, PlayerID:{4}",
+						pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, parser.GetRouteContext(), parser.GetTransactionID(), parser.GetPlayerID()); 
+				return ResultCode::SUCCESS;
+			}; // Result AssignRoleCmd::TraceOut(MessageData* pMsg)
+
+			const MessageID AssignRoleRes::MID = MessageID(MSGTYPE_RESULT, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_GAMEINSTANCE, 8);
+			Result AssignRoleRes::ParseMessage( MessageData* pIMsg )
+			{
+ 				Result hr;
+
+				int iMsgSize;
+				uint8_t* pCur;
+
+				protocolChkPtr(pIMsg);
+
+				iMsgSize = (unsigned)pIMsg->GetMessageSize() - sizeof(MessageHeader);
+				pCur = pIMsg->GetMessageData();
+
+				protocolChk( Protocol::StreamParamCopy( &m_RouteContext, pCur, iMsgSize, sizeof(RouteContext) ) );
+				protocolChk( Protocol::StreamParamCopy( &m_TransactionID, pCur, iMsgSize, sizeof(TransactionID) ) );
+				protocolChk( Protocol::StreamParamCopy( &m_Result, pCur, iMsgSize, sizeof(Result) ) );
+
+
+			Proc_End:
+
+				return hr;
+
+			}; // Result AssignRoleRes::ParseMessage( MessageData* pIMsg )
+
+			Result AssignRoleRes::ParseMessageTo( MessageData* pIMsg, VariableMapBuilder& variableBuilder )
+			{
+ 				Result hr;
+
+
+				AssignRoleRes parser;
+				protocolChk(parser.ParseMessage(pIMsg));
+
+				variableBuilder.SetVariable("RouteContext", parser.GetRouteContext());
+				variableBuilder.SetVariable("TransactionID", parser.GetTransactionID());
+				variableBuilder.SetVariable("Result", parser.GetResult());
+
+
+			Proc_End:
+
+				return hr;
+
+			}; // Result AssignRoleRes::ParseMessageTo( MessageData* pIMsg, VariableMapBuilder& variableBuilder )
+
+			Result AssignRoleRes::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageData* pIMsg, MessageBase* &pMessageBase )
+			{
+ 				Result hr;
+
+				protocolMem(pMessageBase = new(memoryManager) AssignRoleRes(pIMsg));
+				protocolChk(pMessageBase->ParseMsg());
+
+			Proc_End:
+				return hr;
+
+			}; // Result AssignRoleRes::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageData* pIMsg, MessageBase* &pMessageBase )
+
+			MessageData* AssignRoleRes::Create( IMemoryManager& memoryManager, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const Result &InResult )
+			{
+ 				MessageData *pNewMsg = nullptr;
+				Result hr;
+
+				uint8_t *pMsgData = nullptr;
+
+				unsigned __uiMessageSize = (unsigned)(sizeof(MessageHeader) 
+					+ sizeof(RouteContext)
+					+ sizeof(TransactionID)
+					+ sizeof(Result));
+
+
+				protocolMem( pNewMsg = MessageData::NewMessage( memoryManager, GameInstance::AssignRoleRes::MID, __uiMessageSize ) );
+
+				pMsgData = pNewMsg->GetMessageData();
+
+				Protocol::PackParamCopy( pMsgData, &InRouteContext, sizeof(RouteContext));
+				Protocol::PackParamCopy( pMsgData, &InTransactionID, sizeof(TransactionID));
+				Protocol::PackParamCopy( pMsgData, &InResult, sizeof(Result));
+
+
+			Proc_End:
+
+				if(!hr)
+				{
+ 					if(pNewMsg != nullptr) GetSystemMemoryManager().Delete(pNewMsg);
+					pNewMsg = nullptr;
+				}
+				return pNewMsg;
+
+			}; // MessageData* AssignRoleRes::Create( IMemoryManager& memoryManager, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const Result &InResult )
+
+			Result AssignRoleRes::OverrideRouteContextDestination( EntityUID to )
+			{
+ 				Result hr;
+
+				int iMsgSize;
+				uint8_t* pCur;
+				MessageData* pIMsg = GetMessage();
+				RouteContext routeContext;
+
+				protocolChkPtr(pIMsg);
+
+				iMsgSize = (unsigned)pIMsg->GetMessageSize() - sizeof(MessageHeader);
+				pCur = pIMsg->GetMessageData();
+
+				Assert( iMsgSize >= (INT)sizeof(RouteContext) );
+				memcpy( &routeContext, pCur, sizeof(RouteContext) );
+				routeContext.Components.To = to;
+				memcpy( pCur, &routeContext, sizeof(RouteContext) );
+
+
+			Proc_End:
+
+				return hr;
+
+			}; // Result AssignRoleRes::OverrideRouteContextDestination( EntityUID to )
+
+
+			Result AssignRoleRes::TraceOut(MessageData* pMsg)
+			{
+ 				AssignRoleRes parser;
+				parser.ParseMessage(pMsg);
+				protocolTrace( Debug1, "AssignRole:{0}:{1} , RouteContext:{2}, TransactionID:{3}, Result:{4:X8}",
+						pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, parser.GetRouteContext(), parser.GetTransactionID(), parser.GetResult()); 
+				return ResultCode::SUCCESS;
+			}; // Result AssignRoleRes::TraceOut(MessageData* pMsg)
+
+			// S2C: Assign role
+			const MessageID RoleAssignedS2CEvt::MID = MessageID(MSGTYPE_EVENT, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_GAMEINSTANCE, 9);
+			Result RoleAssignedS2CEvt::ParseMessage( MessageData* pIMsg )
+			{
+ 				Result hr;
+
+				int iMsgSize;
+				uint8_t* pCur;
+
+				protocolChkPtr(pIMsg);
+
+				iMsgSize = (unsigned)pIMsg->GetMessageSize() - sizeof(MessageHeader);
+				pCur = pIMsg->GetMessageData();
+
+				protocolChk( Protocol::StreamParamCopy( &m_RouteContext, pCur, iMsgSize, sizeof(RouteContext) ) );
+				protocolChk( Protocol::StreamParamCopy( &m_Role, pCur, iMsgSize, sizeof(PlayerRole) ) );
+
+
+			Proc_End:
+
+				return hr;
+
+			}; // Result RoleAssignedS2CEvt::ParseMessage( MessageData* pIMsg )
+
+			Result RoleAssignedS2CEvt::ParseMessageTo( MessageData* pIMsg, VariableMapBuilder& variableBuilder )
+			{
+ 				Result hr;
+
+
+				RoleAssignedS2CEvt parser;
+				protocolChk(parser.ParseMessage(pIMsg));
+
+				variableBuilder.SetVariable("RouteContext", parser.GetRouteContext());
+				variableBuilder.SetVariable("Role", (int)parser.GetRole());
+
+
+			Proc_End:
+
+				return hr;
+
+			}; // Result RoleAssignedS2CEvt::ParseMessageTo( MessageData* pIMsg, VariableMapBuilder& variableBuilder )
+
+			Result RoleAssignedS2CEvt::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageData* pIMsg, MessageBase* &pMessageBase )
+			{
+ 				Result hr;
+
+				protocolMem(pMessageBase = new(memoryManager) RoleAssignedS2CEvt(pIMsg));
+				protocolChk(pMessageBase->ParseMsg());
+
+			Proc_End:
+				return hr;
+
+			}; // Result RoleAssignedS2CEvt::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageData* pIMsg, MessageBase* &pMessageBase )
+
+			MessageData* RoleAssignedS2CEvt::Create( IMemoryManager& memoryManager, const RouteContext &InRouteContext, const PlayerRole &InRole )
+			{
+ 				MessageData *pNewMsg = nullptr;
+				Result hr;
+
+				uint8_t *pMsgData = nullptr;
+
+				unsigned __uiMessageSize = (unsigned)(sizeof(MessageHeader) 
+					+ sizeof(RouteContext)
+					+ sizeof(PlayerRole));
+
+
+				protocolMem( pNewMsg = MessageData::NewMessage( memoryManager, GameInstance::RoleAssignedS2CEvt::MID, __uiMessageSize ) );
+
+				pMsgData = pNewMsg->GetMessageData();
+
+				Protocol::PackParamCopy( pMsgData, &InRouteContext, sizeof(RouteContext));
+				Protocol::PackParamCopy( pMsgData, &InRole, sizeof(PlayerRole));
+
+
+			Proc_End:
+
+				if(!hr)
+				{
+ 					if(pNewMsg != nullptr) GetSystemMemoryManager().Delete(pNewMsg);
+					pNewMsg = nullptr;
+				}
+				return pNewMsg;
+
+			}; // MessageData* RoleAssignedS2CEvt::Create( IMemoryManager& memoryManager, const RouteContext &InRouteContext, const PlayerRole &InRole )
+
+			Result RoleAssignedS2CEvt::OverrideRouteContextDestination( EntityUID to )
+			{
+ 				Result hr;
+
+				int iMsgSize;
+				uint8_t* pCur;
+				MessageData* pIMsg = GetMessage();
+				RouteContext routeContext;
+
+				protocolChkPtr(pIMsg);
+
+				iMsgSize = (unsigned)pIMsg->GetMessageSize() - sizeof(MessageHeader);
+				pCur = pIMsg->GetMessageData();
+
+				Assert( iMsgSize >= (INT)sizeof(RouteContext) );
+				memcpy( &routeContext, pCur, sizeof(RouteContext) );
+				routeContext.Components.To = to;
+				memcpy( pCur, &routeContext, sizeof(RouteContext) );
+
+
+			Proc_End:
+
+				return hr;
+
+			}; // Result RoleAssignedS2CEvt::OverrideRouteContextDestination( EntityUID to )
+
+
+			Result RoleAssignedS2CEvt::TraceOut(MessageData* pMsg)
+			{
+ 				RoleAssignedS2CEvt parser;
+				parser.ParseMessage(pMsg);
+				protocolTrace( Debug1, "RoleAssigned:{0}:{1} , RouteContext:{2}, Role:{3}",
+						pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, parser.GetRouteContext(), (int)parser.GetRole()); 
+				return ResultCode::SUCCESS;
+			}; // Result RoleAssignedS2CEvt::TraceOut(MessageData* pMsg)
+
+			// C2S: Chatting message
+			const MessageID ChatMessageC2SEvt::MID = MessageID(MSGTYPE_EVENT, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_GAMEINSTANCE, 10);
+			Result ChatMessageC2SEvt::ParseMessage( MessageData* pIMsg )
+			{
+ 				Result hr;
+
+				int iMsgSize;
+				uint8_t* pCur;
+				uint16_t uiSizeOfChatMessage = 0;
+
+				protocolChkPtr(pIMsg);
+
+				iMsgSize = (unsigned)pIMsg->GetMessageSize() - sizeof(MessageHeader);
+				pCur = pIMsg->GetMessageData();
+
+				protocolChk( Protocol::StreamParamCopy( &m_RouteContext, pCur, iMsgSize, sizeof(RouteContext) ) );
+				protocolChk( Protocol::StreamParamCopy( &m_PlayerID, pCur, iMsgSize, sizeof(PlayerID) ) );
+				protocolChk( Protocol::StreamParamCopy( &m_Role, pCur, iMsgSize, sizeof(PlayerRole) ) );
+				protocolChk( Protocol::StreamParamCopy( &uiSizeOfChatMessage, pCur, iMsgSize, sizeof(uint16_t) ) );
+				protocolChk( Protocol::StreamParamLnk( m_ChatMessage, pCur, iMsgSize, sizeof(char)*uiSizeOfChatMessage ) );
+
+
+			Proc_End:
+
+				return hr;
+
+			}; // Result ChatMessageC2SEvt::ParseMessage( MessageData* pIMsg )
+
+			Result ChatMessageC2SEvt::ParseMessageTo( MessageData* pIMsg, VariableMapBuilder& variableBuilder )
+			{
+ 				Result hr;
+
+
+				ChatMessageC2SEvt parser;
+				protocolChk(parser.ParseMessage(pIMsg));
+
+				variableBuilder.SetVariable("RouteContext", parser.GetRouteContext());
+				variableBuilder.SetVariable("PlayerID", parser.GetPlayerID());
+				variableBuilder.SetVariable("Role", (int)parser.GetRole());
+				variableBuilder.SetVariable("ChatMessage", parser.GetChatMessage());
+
+
+			Proc_End:
+
+				return hr;
+
+			}; // Result ChatMessageC2SEvt::ParseMessageTo( MessageData* pIMsg, VariableMapBuilder& variableBuilder )
+
+			Result ChatMessageC2SEvt::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageData* pIMsg, MessageBase* &pMessageBase )
+			{
+ 				Result hr;
+
+				protocolMem(pMessageBase = new(memoryManager) ChatMessageC2SEvt(pIMsg));
+				protocolChk(pMessageBase->ParseMsg());
+
+			Proc_End:
+				return hr;
+
+			}; // Result ChatMessageC2SEvt::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageData* pIMsg, MessageBase* &pMessageBase )
+
+			MessageData* ChatMessageC2SEvt::Create( IMemoryManager& memoryManager, const RouteContext &InRouteContext, const PlayerID &InPlayerID, const PlayerRole &InRole, const char* InChatMessage )
+			{
+ 				MessageData *pNewMsg = nullptr;
+				Result hr;
+
+				uint8_t *pMsgData = nullptr;
+
+				uint16_t __uiInChatMessageLength = InChatMessage ? (uint16_t)(strlen(InChatMessage)+1) : 1;
+				unsigned __uiMessageSize = (unsigned)(sizeof(MessageHeader) +  + sizeof(uint16_t) + __uiInChatMessageLength 
+					+ sizeof(RouteContext)
+					+ sizeof(PlayerID)
+					+ sizeof(PlayerRole));
+
+
+				protocolMem( pNewMsg = MessageData::NewMessage( memoryManager, GameInstance::ChatMessageC2SEvt::MID, __uiMessageSize ) );
+
+				pMsgData = pNewMsg->GetMessageData();
+
+				Protocol::PackParamCopy( pMsgData, &InRouteContext, sizeof(RouteContext));
+				Protocol::PackParamCopy( pMsgData, &InPlayerID, sizeof(PlayerID));
+				Protocol::PackParamCopy( pMsgData, &InRole, sizeof(PlayerRole));
+				Protocol::PackParamCopy( pMsgData, &__uiInChatMessageLength, sizeof(uint16_t) );
+				Protocol::PackParamCopy( pMsgData, InChatMessage ? InChatMessage : "", __uiInChatMessageLength );
+
+
+			Proc_End:
+
+				if(!hr)
+				{
+ 					if(pNewMsg != nullptr) GetSystemMemoryManager().Delete(pNewMsg);
+					pNewMsg = nullptr;
+				}
+				return pNewMsg;
+
+			}; // MessageData* ChatMessageC2SEvt::Create( IMemoryManager& memoryManager, const RouteContext &InRouteContext, const PlayerID &InPlayerID, const PlayerRole &InRole, const char* InChatMessage )
+
+			Result ChatMessageC2SEvt::OverrideRouteContextDestination( EntityUID to )
+			{
+ 				Result hr;
+
+				int iMsgSize;
+				uint8_t* pCur;
+				MessageData* pIMsg = GetMessage();
+				RouteContext routeContext;
+
+				protocolChkPtr(pIMsg);
+
+				iMsgSize = (unsigned)pIMsg->GetMessageSize() - sizeof(MessageHeader);
+				pCur = pIMsg->GetMessageData();
+
+				Assert( iMsgSize >= (INT)sizeof(RouteContext) );
+				memcpy( &routeContext, pCur, sizeof(RouteContext) );
+				routeContext.Components.To = to;
+				memcpy( pCur, &routeContext, sizeof(RouteContext) );
+
+
+			Proc_End:
+
+				return hr;
+
+			}; // Result ChatMessageC2SEvt::OverrideRouteContextDestination( EntityUID to )
+
+
+			Result ChatMessageC2SEvt::TraceOut(MessageData* pMsg)
+			{
+ 				ChatMessageC2SEvt parser;
+				parser.ParseMessage(pMsg);
+				protocolTrace( Debug1, "ChatMessage:{0}:{1} , RouteContext:{2}, PlayerID:{3}, Role:{4}, ChatMessage:{5,60}",
+						pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, parser.GetRouteContext(), parser.GetPlayerID(), (int)parser.GetRole(), parser.GetChatMessage()); 
+				return ResultCode::SUCCESS;
+			}; // Result ChatMessageC2SEvt::TraceOut(MessageData* pMsg)
+
+			// Cmd: Advance game
+			const MessageID AdvanceGameCmd::MID = MessageID(MSGTYPE_COMMAND, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_GAMEINSTANCE, 11);
+			Result AdvanceGameCmd::ParseMessage( MessageData* pIMsg )
+			{
+ 				Result hr;
+
+				int iMsgSize;
+				uint8_t* pCur;
+
+				protocolChkPtr(pIMsg);
+
+				iMsgSize = (unsigned)pIMsg->GetMessageSize() - sizeof(MessageHeader);
+				pCur = pIMsg->GetMessageData();
+
+				protocolChk( Protocol::StreamParamCopy( &m_RouteContext, pCur, iMsgSize, sizeof(RouteContext) ) );
+				protocolChk( Protocol::StreamParamCopy( &m_TransactionID, pCur, iMsgSize, sizeof(TransactionID) ) );
+				protocolChk( Protocol::StreamParamCopy( &m_PlayerID, pCur, iMsgSize, sizeof(PlayerID) ) );
+
+
+			Proc_End:
+
+				return hr;
+
+			}; // Result AdvanceGameCmd::ParseMessage( MessageData* pIMsg )
+
+			Result AdvanceGameCmd::ParseMessageTo( MessageData* pIMsg, VariableMapBuilder& variableBuilder )
+			{
+ 				Result hr;
+
+
+				AdvanceGameCmd parser;
+				protocolChk(parser.ParseMessage(pIMsg));
+
+				variableBuilder.SetVariable("RouteContext", parser.GetRouteContext());
+				variableBuilder.SetVariable("TransactionID", parser.GetTransactionID());
+				variableBuilder.SetVariable("PlayerID", parser.GetPlayerID());
+
+
+			Proc_End:
+
+				return hr;
+
+			}; // Result AdvanceGameCmd::ParseMessageTo( MessageData* pIMsg, VariableMapBuilder& variableBuilder )
+
+			Result AdvanceGameCmd::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageData* pIMsg, MessageBase* &pMessageBase )
+			{
+ 				Result hr;
+
+				protocolMem(pMessageBase = new(memoryManager) AdvanceGameCmd(pIMsg));
+				protocolChk(pMessageBase->ParseMsg());
+
+			Proc_End:
+				return hr;
+
+			}; // Result AdvanceGameCmd::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageData* pIMsg, MessageBase* &pMessageBase )
+
+			MessageData* AdvanceGameCmd::Create( IMemoryManager& memoryManager, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const PlayerID &InPlayerID )
+			{
+ 				MessageData *pNewMsg = nullptr;
+				Result hr;
+
+				uint8_t *pMsgData = nullptr;
+
+				unsigned __uiMessageSize = (unsigned)(sizeof(MessageHeader) 
+					+ sizeof(RouteContext)
+					+ sizeof(TransactionID)
+					+ sizeof(PlayerID));
+
+
+				protocolMem( pNewMsg = MessageData::NewMessage( memoryManager, GameInstance::AdvanceGameCmd::MID, __uiMessageSize ) );
+
+				pMsgData = pNewMsg->GetMessageData();
+
+				Protocol::PackParamCopy( pMsgData, &InRouteContext, sizeof(RouteContext));
+				Protocol::PackParamCopy( pMsgData, &InTransactionID, sizeof(TransactionID));
+				Protocol::PackParamCopy( pMsgData, &InPlayerID, sizeof(PlayerID));
+
+
+			Proc_End:
+
+				if(!hr)
+				{
+ 					if(pNewMsg != nullptr) GetSystemMemoryManager().Delete(pNewMsg);
+					pNewMsg = nullptr;
+				}
+				return pNewMsg;
+
+			}; // MessageData* AdvanceGameCmd::Create( IMemoryManager& memoryManager, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const PlayerID &InPlayerID )
+
+			Result AdvanceGameCmd::OverrideRouteContextDestination( EntityUID to )
+			{
+ 				Result hr;
+
+				int iMsgSize;
+				uint8_t* pCur;
+				MessageData* pIMsg = GetMessage();
+				RouteContext routeContext;
+
+				protocolChkPtr(pIMsg);
+
+				iMsgSize = (unsigned)pIMsg->GetMessageSize() - sizeof(MessageHeader);
+				pCur = pIMsg->GetMessageData();
+
+				Assert( iMsgSize >= (INT)sizeof(RouteContext) );
+				memcpy( &routeContext, pCur, sizeof(RouteContext) );
+				routeContext.Components.To = to;
+				memcpy( pCur, &routeContext, sizeof(RouteContext) );
+
+
+			Proc_End:
+
+				return hr;
+
+			}; // Result AdvanceGameCmd::OverrideRouteContextDestination( EntityUID to )
+
+
+			Result AdvanceGameCmd::TraceOut(MessageData* pMsg)
+			{
+ 				AdvanceGameCmd parser;
+				parser.ParseMessage(pMsg);
+				protocolTrace( Debug1, "AdvanceGame:{0}:{1} , RouteContext:{2}, TransactionID:{3}, PlayerID:{4}",
+						pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, parser.GetRouteContext(), parser.GetTransactionID(), parser.GetPlayerID()); 
+				return ResultCode::SUCCESS;
+			}; // Result AdvanceGameCmd::TraceOut(MessageData* pMsg)
+
+			const MessageID AdvanceGameRes::MID = MessageID(MSGTYPE_RESULT, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_GAMEINSTANCE, 11);
+			Result AdvanceGameRes::ParseMessage( MessageData* pIMsg )
+			{
+ 				Result hr;
+
+				int iMsgSize;
+				uint8_t* pCur;
+
+				protocolChkPtr(pIMsg);
+
+				iMsgSize = (unsigned)pIMsg->GetMessageSize() - sizeof(MessageHeader);
+				pCur = pIMsg->GetMessageData();
+
+				protocolChk( Protocol::StreamParamCopy( &m_RouteContext, pCur, iMsgSize, sizeof(RouteContext) ) );
+				protocolChk( Protocol::StreamParamCopy( &m_TransactionID, pCur, iMsgSize, sizeof(TransactionID) ) );
+				protocolChk( Protocol::StreamParamCopy( &m_Result, pCur, iMsgSize, sizeof(Result) ) );
+
+
+			Proc_End:
+
+				return hr;
+
+			}; // Result AdvanceGameRes::ParseMessage( MessageData* pIMsg )
+
+			Result AdvanceGameRes::ParseMessageTo( MessageData* pIMsg, VariableMapBuilder& variableBuilder )
+			{
+ 				Result hr;
+
+
+				AdvanceGameRes parser;
+				protocolChk(parser.ParseMessage(pIMsg));
+
+				variableBuilder.SetVariable("RouteContext", parser.GetRouteContext());
+				variableBuilder.SetVariable("TransactionID", parser.GetTransactionID());
+				variableBuilder.SetVariable("Result", parser.GetResult());
+
+
+			Proc_End:
+
+				return hr;
+
+			}; // Result AdvanceGameRes::ParseMessageTo( MessageData* pIMsg, VariableMapBuilder& variableBuilder )
+
+			Result AdvanceGameRes::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageData* pIMsg, MessageBase* &pMessageBase )
+			{
+ 				Result hr;
+
+				protocolMem(pMessageBase = new(memoryManager) AdvanceGameRes(pIMsg));
+				protocolChk(pMessageBase->ParseMsg());
+
+			Proc_End:
+				return hr;
+
+			}; // Result AdvanceGameRes::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageData* pIMsg, MessageBase* &pMessageBase )
+
+			MessageData* AdvanceGameRes::Create( IMemoryManager& memoryManager, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const Result &InResult )
+			{
+ 				MessageData *pNewMsg = nullptr;
+				Result hr;
+
+				uint8_t *pMsgData = nullptr;
+
+				unsigned __uiMessageSize = (unsigned)(sizeof(MessageHeader) 
+					+ sizeof(RouteContext)
+					+ sizeof(TransactionID)
+					+ sizeof(Result));
+
+
+				protocolMem( pNewMsg = MessageData::NewMessage( memoryManager, GameInstance::AdvanceGameRes::MID, __uiMessageSize ) );
+
+				pMsgData = pNewMsg->GetMessageData();
+
+				Protocol::PackParamCopy( pMsgData, &InRouteContext, sizeof(RouteContext));
+				Protocol::PackParamCopy( pMsgData, &InTransactionID, sizeof(TransactionID));
+				Protocol::PackParamCopy( pMsgData, &InResult, sizeof(Result));
+
+
+			Proc_End:
+
+				if(!hr)
+				{
+ 					if(pNewMsg != nullptr) GetSystemMemoryManager().Delete(pNewMsg);
+					pNewMsg = nullptr;
+				}
+				return pNewMsg;
+
+			}; // MessageData* AdvanceGameRes::Create( IMemoryManager& memoryManager, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const Result &InResult )
+
+			Result AdvanceGameRes::OverrideRouteContextDestination( EntityUID to )
+			{
+ 				Result hr;
+
+				int iMsgSize;
+				uint8_t* pCur;
+				MessageData* pIMsg = GetMessage();
+				RouteContext routeContext;
+
+				protocolChkPtr(pIMsg);
+
+				iMsgSize = (unsigned)pIMsg->GetMessageSize() - sizeof(MessageHeader);
+				pCur = pIMsg->GetMessageData();
+
+				Assert( iMsgSize >= (INT)sizeof(RouteContext) );
+				memcpy( &routeContext, pCur, sizeof(RouteContext) );
+				routeContext.Components.To = to;
+				memcpy( pCur, &routeContext, sizeof(RouteContext) );
+
+
+			Proc_End:
+
+				return hr;
+
+			}; // Result AdvanceGameRes::OverrideRouteContextDestination( EntityUID to )
+
+
+			Result AdvanceGameRes::TraceOut(MessageData* pMsg)
+			{
+ 				AdvanceGameRes parser;
+				parser.ParseMessage(pMsg);
+				protocolTrace( Debug1, "AdvanceGame:{0}:{1} , RouteContext:{2}, TransactionID:{3}, Result:{4:X8}",
+						pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, parser.GetRouteContext(), parser.GetTransactionID(), parser.GetResult()); 
+				return ResultCode::SUCCESS;
+			}; // Result AdvanceGameRes::TraceOut(MessageData* pMsg)
+
+			// S2C: The game state is advanced
+			const MessageID GameAdvancedS2CEvt::MID = MessageID(MSGTYPE_EVENT, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_GAMEINSTANCE, 12);
+			Result GameAdvancedS2CEvt::ParseMessage( MessageData* pIMsg )
+			{
+ 				Result hr;
+
+				int iMsgSize;
+				uint8_t* pCur;
+
+				protocolChkPtr(pIMsg);
+
+				iMsgSize = (unsigned)pIMsg->GetMessageSize() - sizeof(MessageHeader);
+				pCur = pIMsg->GetMessageData();
+
+				protocolChk( Protocol::StreamParamCopy( &m_RouteContext, pCur, iMsgSize, sizeof(RouteContext) ) );
+				protocolChk( Protocol::StreamParamCopy( &m_TimeStamp, pCur, iMsgSize, sizeof(uint32_t) ) );
+				protocolChk( Protocol::StreamParamCopy( &m_GameState, pCur, iMsgSize, sizeof(GameStateID) ) );
+				protocolChk( Protocol::StreamParamCopy( &m_Day, pCur, iMsgSize, sizeof(uint8_t) ) );
+
+
+			Proc_End:
+
+				return hr;
+
+			}; // Result GameAdvancedS2CEvt::ParseMessage( MessageData* pIMsg )
+
+			Result GameAdvancedS2CEvt::ParseMessageTo( MessageData* pIMsg, VariableMapBuilder& variableBuilder )
+			{
+ 				Result hr;
+
+
+				GameAdvancedS2CEvt parser;
+				protocolChk(parser.ParseMessage(pIMsg));
+
+				variableBuilder.SetVariable("RouteContext", parser.GetRouteContext());
+				variableBuilder.SetVariable("TimeStamp", parser.GetTimeStamp());
+				variableBuilder.SetVariable("GameState", (int)parser.GetGameState());
+				variableBuilder.SetVariable("Day", parser.GetDay());
+
+
+			Proc_End:
+
+				return hr;
+
+			}; // Result GameAdvancedS2CEvt::ParseMessageTo( MessageData* pIMsg, VariableMapBuilder& variableBuilder )
+
+			Result GameAdvancedS2CEvt::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageData* pIMsg, MessageBase* &pMessageBase )
+			{
+ 				Result hr;
+
+				protocolMem(pMessageBase = new(memoryManager) GameAdvancedS2CEvt(pIMsg));
+				protocolChk(pMessageBase->ParseMsg());
+
+			Proc_End:
+				return hr;
+
+			}; // Result GameAdvancedS2CEvt::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageData* pIMsg, MessageBase* &pMessageBase )
+
+			MessageData* GameAdvancedS2CEvt::Create( IMemoryManager& memoryManager, const RouteContext &InRouteContext, const uint32_t &InTimeStamp, const GameStateID &InGameState, const uint8_t &InDay )
+			{
+ 				MessageData *pNewMsg = nullptr;
+				Result hr;
+
+				uint8_t *pMsgData = nullptr;
+
+				unsigned __uiMessageSize = (unsigned)(sizeof(MessageHeader) 
+					+ sizeof(RouteContext)
+					+ sizeof(uint32_t)
+					+ sizeof(GameStateID)
+					+ sizeof(uint8_t));
+
+
+				protocolMem( pNewMsg = MessageData::NewMessage( memoryManager, GameInstance::GameAdvancedS2CEvt::MID, __uiMessageSize ) );
+
+				pMsgData = pNewMsg->GetMessageData();
+
+				Protocol::PackParamCopy( pMsgData, &InRouteContext, sizeof(RouteContext));
+				Protocol::PackParamCopy( pMsgData, &InTimeStamp, sizeof(uint32_t));
+				Protocol::PackParamCopy( pMsgData, &InGameState, sizeof(GameStateID));
+				Protocol::PackParamCopy( pMsgData, &InDay, sizeof(uint8_t));
+
+
+			Proc_End:
+
+				if(!hr)
+				{
+ 					if(pNewMsg != nullptr) GetSystemMemoryManager().Delete(pNewMsg);
+					pNewMsg = nullptr;
+				}
+				return pNewMsg;
+
+			}; // MessageData* GameAdvancedS2CEvt::Create( IMemoryManager& memoryManager, const RouteContext &InRouteContext, const uint32_t &InTimeStamp, const GameStateID &InGameState, const uint8_t &InDay )
+
+			Result GameAdvancedS2CEvt::OverrideRouteContextDestination( EntityUID to )
+			{
+ 				Result hr;
+
+				int iMsgSize;
+				uint8_t* pCur;
+				MessageData* pIMsg = GetMessage();
+				RouteContext routeContext;
+
+				protocolChkPtr(pIMsg);
+
+				iMsgSize = (unsigned)pIMsg->GetMessageSize() - sizeof(MessageHeader);
+				pCur = pIMsg->GetMessageData();
+
+				Assert( iMsgSize >= (INT)sizeof(RouteContext) );
+				memcpy( &routeContext, pCur, sizeof(RouteContext) );
+				routeContext.Components.To = to;
+				memcpy( pCur, &routeContext, sizeof(RouteContext) );
+
+
+			Proc_End:
+
+				return hr;
+
+			}; // Result GameAdvancedS2CEvt::OverrideRouteContextDestination( EntityUID to )
+
+
+			Result GameAdvancedS2CEvt::TraceOut(MessageData* pMsg)
+			{
+ 				GameAdvancedS2CEvt parser;
+				parser.ParseMessage(pMsg);
+				protocolTrace( Debug1, "GameAdvanced:{0}:{1} , RouteContext:{2}, TimeStamp:{3}, GameState:{4}, Day:{5}",
+						pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, parser.GetRouteContext(), parser.GetTimeStamp(), (int)parser.GetGameState(), parser.GetDay()); 
+				return ResultCode::SUCCESS;
+			}; // Result GameAdvancedS2CEvt::TraceOut(MessageData* pMsg)
+
+			// S2C: Game is ended
+			const MessageID GameEndedS2CEvt::MID = MessageID(MSGTYPE_EVENT, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_GAMEINSTANCE, 13);
+			Result GameEndedS2CEvt::ParseMessage( MessageData* pIMsg )
+			{
+ 				Result hr;
+
+				int iMsgSize;
+				uint8_t* pCur;
+
+				protocolChkPtr(pIMsg);
+
+				iMsgSize = (unsigned)pIMsg->GetMessageSize() - sizeof(MessageHeader);
+				pCur = pIMsg->GetMessageData();
+
+				protocolChk( Protocol::StreamParamCopy( &m_RouteContext, pCur, iMsgSize, sizeof(RouteContext) ) );
+				protocolChk( Protocol::StreamParamCopy( &m_Winner, pCur, iMsgSize, sizeof(GameWinner) ) );
+				protocolChk( Protocol::StreamParamCopy( &m_GainedExp, pCur, iMsgSize, sizeof(uint32_t) ) );
+				protocolChk( Protocol::StreamParamCopy( &m_GainedGameMoney, pCur, iMsgSize, sizeof(uint32_t) ) );
+				protocolChk( Protocol::StreamParamCopy( &m_PlayedRole, pCur, iMsgSize, sizeof(PlayerRole) ) );
+				protocolChk( Protocol::StreamParamCopy( &m_IsWon, pCur, iMsgSize, sizeof(uint8_t) ) );
+
+
+			Proc_End:
+
+				return hr;
+
+			}; // Result GameEndedS2CEvt::ParseMessage( MessageData* pIMsg )
+
+			Result GameEndedS2CEvt::ParseMessageTo( MessageData* pIMsg, VariableMapBuilder& variableBuilder )
+			{
+ 				Result hr;
+
+
+				GameEndedS2CEvt parser;
+				protocolChk(parser.ParseMessage(pIMsg));
+
+				variableBuilder.SetVariable("RouteContext", parser.GetRouteContext());
+				variableBuilder.SetVariable("Winner", (int)parser.GetWinner());
+				variableBuilder.SetVariable("GainedExp", parser.GetGainedExp());
+				variableBuilder.SetVariable("GainedGameMoney", parser.GetGainedGameMoney());
+				variableBuilder.SetVariable("PlayedRole", (int)parser.GetPlayedRole());
+				variableBuilder.SetVariable("IsWon", parser.GetIsWon());
+
+
+			Proc_End:
+
+				return hr;
+
+			}; // Result GameEndedS2CEvt::ParseMessageTo( MessageData* pIMsg, VariableMapBuilder& variableBuilder )
+
+			Result GameEndedS2CEvt::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageData* pIMsg, MessageBase* &pMessageBase )
+			{
+ 				Result hr;
+
+				protocolMem(pMessageBase = new(memoryManager) GameEndedS2CEvt(pIMsg));
+				protocolChk(pMessageBase->ParseMsg());
+
+			Proc_End:
+				return hr;
+
+			}; // Result GameEndedS2CEvt::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageData* pIMsg, MessageBase* &pMessageBase )
+
+			MessageData* GameEndedS2CEvt::Create( IMemoryManager& memoryManager, const RouteContext &InRouteContext, const GameWinner &InWinner, const uint32_t &InGainedExp, const uint32_t &InGainedGameMoney, const PlayerRole &InPlayedRole, const uint8_t &InIsWon )
+			{
+ 				MessageData *pNewMsg = nullptr;
+				Result hr;
+
+				uint8_t *pMsgData = nullptr;
+
+				unsigned __uiMessageSize = (unsigned)(sizeof(MessageHeader) 
+					+ sizeof(RouteContext)
+					+ sizeof(GameWinner)
+					+ sizeof(uint32_t)
+					+ sizeof(uint32_t)
+					+ sizeof(PlayerRole)
+					+ sizeof(uint8_t));
+
+
+				protocolMem( pNewMsg = MessageData::NewMessage( memoryManager, GameInstance::GameEndedS2CEvt::MID, __uiMessageSize ) );
+
+				pMsgData = pNewMsg->GetMessageData();
+
+				Protocol::PackParamCopy( pMsgData, &InRouteContext, sizeof(RouteContext));
+				Protocol::PackParamCopy( pMsgData, &InWinner, sizeof(GameWinner));
+				Protocol::PackParamCopy( pMsgData, &InGainedExp, sizeof(uint32_t));
+				Protocol::PackParamCopy( pMsgData, &InGainedGameMoney, sizeof(uint32_t));
+				Protocol::PackParamCopy( pMsgData, &InPlayedRole, sizeof(PlayerRole));
+				Protocol::PackParamCopy( pMsgData, &InIsWon, sizeof(uint8_t));
+
+
+			Proc_End:
+
+				if(!hr)
+				{
+ 					if(pNewMsg != nullptr) GetSystemMemoryManager().Delete(pNewMsg);
+					pNewMsg = nullptr;
+				}
+				return pNewMsg;
+
+			}; // MessageData* GameEndedS2CEvt::Create( IMemoryManager& memoryManager, const RouteContext &InRouteContext, const GameWinner &InWinner, const uint32_t &InGainedExp, const uint32_t &InGainedGameMoney, const PlayerRole &InPlayedRole, const uint8_t &InIsWon )
+
+			Result GameEndedS2CEvt::OverrideRouteContextDestination( EntityUID to )
+			{
+ 				Result hr;
+
+				int iMsgSize;
+				uint8_t* pCur;
+				MessageData* pIMsg = GetMessage();
+				RouteContext routeContext;
+
+				protocolChkPtr(pIMsg);
+
+				iMsgSize = (unsigned)pIMsg->GetMessageSize() - sizeof(MessageHeader);
+				pCur = pIMsg->GetMessageData();
+
+				Assert( iMsgSize >= (INT)sizeof(RouteContext) );
+				memcpy( &routeContext, pCur, sizeof(RouteContext) );
+				routeContext.Components.To = to;
+				memcpy( pCur, &routeContext, sizeof(RouteContext) );
+
+
+			Proc_End:
+
+				return hr;
+
+			}; // Result GameEndedS2CEvt::OverrideRouteContextDestination( EntityUID to )
+
+
+			Result GameEndedS2CEvt::TraceOut(MessageData* pMsg)
+			{
+ 				GameEndedS2CEvt parser;
+				parser.ParseMessage(pMsg);
+				protocolTrace( Debug1, "GameEnded:{0}:{1} , RouteContext:{2}, Winner:{3}, GainedExp:{4}, GainedGameMoney:{5}, PlayedRole:{6}, IsWon:{7}",
+						pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, parser.GetRouteContext(), (int)parser.GetWinner(), parser.GetGainedExp(), parser.GetGainedGameMoney(), (int)parser.GetPlayedRole(), parser.GetIsWon()); 
+				return ResultCode::SUCCESS;
+			}; // Result GameEndedS2CEvt::TraceOut(MessageData* pMsg)
+
+			// Cmd: *Vote game advance
+			const MessageID VoteGameAdvanceCmd::MID = MessageID(MSGTYPE_COMMAND, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_GAMEINSTANCE, 14);
+			Result VoteGameAdvanceCmd::ParseMessage( MessageData* pIMsg )
+			{
+ 				Result hr;
+
+				int iMsgSize;
+				uint8_t* pCur;
+
+				protocolChkPtr(pIMsg);
+
+				iMsgSize = (unsigned)pIMsg->GetMessageSize() - sizeof(MessageHeader);
+				pCur = pIMsg->GetMessageData();
+
+				protocolChk( Protocol::StreamParamCopy( &m_RouteContext, pCur, iMsgSize, sizeof(RouteContext) ) );
+				protocolChk( Protocol::StreamParamCopy( &m_TransactionID, pCur, iMsgSize, sizeof(TransactionID) ) );
+				protocolChk( Protocol::StreamParamCopy( &m_PlayerID, pCur, iMsgSize, sizeof(PlayerID) ) );
+
+
+			Proc_End:
+
+				return hr;
+
+			}; // Result VoteGameAdvanceCmd::ParseMessage( MessageData* pIMsg )
+
+			Result VoteGameAdvanceCmd::ParseMessageTo( MessageData* pIMsg, VariableMapBuilder& variableBuilder )
+			{
+ 				Result hr;
+
+
+				VoteGameAdvanceCmd parser;
+				protocolChk(parser.ParseMessage(pIMsg));
+
+				variableBuilder.SetVariable("RouteContext", parser.GetRouteContext());
+				variableBuilder.SetVariable("TransactionID", parser.GetTransactionID());
+				variableBuilder.SetVariable("PlayerID", parser.GetPlayerID());
+
+
+			Proc_End:
+
+				return hr;
+
+			}; // Result VoteGameAdvanceCmd::ParseMessageTo( MessageData* pIMsg, VariableMapBuilder& variableBuilder )
+
+			Result VoteGameAdvanceCmd::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageData* pIMsg, MessageBase* &pMessageBase )
+			{
+ 				Result hr;
+
+				protocolMem(pMessageBase = new(memoryManager) VoteGameAdvanceCmd(pIMsg));
+				protocolChk(pMessageBase->ParseMsg());
+
+			Proc_End:
+				return hr;
+
+			}; // Result VoteGameAdvanceCmd::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageData* pIMsg, MessageBase* &pMessageBase )
+
+			MessageData* VoteGameAdvanceCmd::Create( IMemoryManager& memoryManager, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const PlayerID &InPlayerID )
+			{
+ 				MessageData *pNewMsg = nullptr;
+				Result hr;
+
+				uint8_t *pMsgData = nullptr;
+
+				unsigned __uiMessageSize = (unsigned)(sizeof(MessageHeader) 
+					+ sizeof(RouteContext)
+					+ sizeof(TransactionID)
+					+ sizeof(PlayerID));
+
+
+				protocolMem( pNewMsg = MessageData::NewMessage( memoryManager, GameInstance::VoteGameAdvanceCmd::MID, __uiMessageSize ) );
+
+				pMsgData = pNewMsg->GetMessageData();
+
+				Protocol::PackParamCopy( pMsgData, &InRouteContext, sizeof(RouteContext));
+				Protocol::PackParamCopy( pMsgData, &InTransactionID, sizeof(TransactionID));
+				Protocol::PackParamCopy( pMsgData, &InPlayerID, sizeof(PlayerID));
+
+
+			Proc_End:
+
+				if(!hr)
+				{
+ 					if(pNewMsg != nullptr) GetSystemMemoryManager().Delete(pNewMsg);
+					pNewMsg = nullptr;
+				}
+				return pNewMsg;
+
+			}; // MessageData* VoteGameAdvanceCmd::Create( IMemoryManager& memoryManager, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const PlayerID &InPlayerID )
+
+			Result VoteGameAdvanceCmd::OverrideRouteContextDestination( EntityUID to )
+			{
+ 				Result hr;
+
+				int iMsgSize;
+				uint8_t* pCur;
+				MessageData* pIMsg = GetMessage();
+				RouteContext routeContext;
+
+				protocolChkPtr(pIMsg);
+
+				iMsgSize = (unsigned)pIMsg->GetMessageSize() - sizeof(MessageHeader);
+				pCur = pIMsg->GetMessageData();
+
+				Assert( iMsgSize >= (INT)sizeof(RouteContext) );
+				memcpy( &routeContext, pCur, sizeof(RouteContext) );
+				routeContext.Components.To = to;
+				memcpy( pCur, &routeContext, sizeof(RouteContext) );
+
+
+			Proc_End:
+
+				return hr;
+
+			}; // Result VoteGameAdvanceCmd::OverrideRouteContextDestination( EntityUID to )
+
+
+			Result VoteGameAdvanceCmd::TraceOut(MessageData* pMsg)
+			{
+ 				VoteGameAdvanceCmd parser;
+				parser.ParseMessage(pMsg);
+				protocolTrace( Debug1, "VoteGameAdvance:{0}:{1} , RouteContext:{2}, TransactionID:{3}, PlayerID:{4}",
+						pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, parser.GetRouteContext(), parser.GetTransactionID(), parser.GetPlayerID()); 
+				return ResultCode::SUCCESS;
+			}; // Result VoteGameAdvanceCmd::TraceOut(MessageData* pMsg)
+
+			const MessageID VoteGameAdvanceRes::MID = MessageID(MSGTYPE_RESULT, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_GAMEINSTANCE, 14);
+			Result VoteGameAdvanceRes::ParseMessage( MessageData* pIMsg )
+			{
+ 				Result hr;
+
+				int iMsgSize;
+				uint8_t* pCur;
+
+				protocolChkPtr(pIMsg);
+
+				iMsgSize = (unsigned)pIMsg->GetMessageSize() - sizeof(MessageHeader);
+				pCur = pIMsg->GetMessageData();
+
+				protocolChk( Protocol::StreamParamCopy( &m_RouteContext, pCur, iMsgSize, sizeof(RouteContext) ) );
+				protocolChk( Protocol::StreamParamCopy( &m_TransactionID, pCur, iMsgSize, sizeof(TransactionID) ) );
+				protocolChk( Protocol::StreamParamCopy( &m_Result, pCur, iMsgSize, sizeof(Result) ) );
+
+
+			Proc_End:
+
+				return hr;
+
+			}; // Result VoteGameAdvanceRes::ParseMessage( MessageData* pIMsg )
+
+			Result VoteGameAdvanceRes::ParseMessageTo( MessageData* pIMsg, VariableMapBuilder& variableBuilder )
+			{
+ 				Result hr;
+
+
+				VoteGameAdvanceRes parser;
+				protocolChk(parser.ParseMessage(pIMsg));
+
+				variableBuilder.SetVariable("RouteContext", parser.GetRouteContext());
+				variableBuilder.SetVariable("TransactionID", parser.GetTransactionID());
+				variableBuilder.SetVariable("Result", parser.GetResult());
+
+
+			Proc_End:
+
+				return hr;
+
+			}; // Result VoteGameAdvanceRes::ParseMessageTo( MessageData* pIMsg, VariableMapBuilder& variableBuilder )
+
+			Result VoteGameAdvanceRes::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageData* pIMsg, MessageBase* &pMessageBase )
+			{
+ 				Result hr;
+
+				protocolMem(pMessageBase = new(memoryManager) VoteGameAdvanceRes(pIMsg));
+				protocolChk(pMessageBase->ParseMsg());
+
+			Proc_End:
+				return hr;
+
+			}; // Result VoteGameAdvanceRes::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageData* pIMsg, MessageBase* &pMessageBase )
+
+			MessageData* VoteGameAdvanceRes::Create( IMemoryManager& memoryManager, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const Result &InResult )
+			{
+ 				MessageData *pNewMsg = nullptr;
+				Result hr;
+
+				uint8_t *pMsgData = nullptr;
+
+				unsigned __uiMessageSize = (unsigned)(sizeof(MessageHeader) 
+					+ sizeof(RouteContext)
+					+ sizeof(TransactionID)
+					+ sizeof(Result));
+
+
+				protocolMem( pNewMsg = MessageData::NewMessage( memoryManager, GameInstance::VoteGameAdvanceRes::MID, __uiMessageSize ) );
+
+				pMsgData = pNewMsg->GetMessageData();
+
+				Protocol::PackParamCopy( pMsgData, &InRouteContext, sizeof(RouteContext));
+				Protocol::PackParamCopy( pMsgData, &InTransactionID, sizeof(TransactionID));
+				Protocol::PackParamCopy( pMsgData, &InResult, sizeof(Result));
+
+
+			Proc_End:
+
+				if(!hr)
+				{
+ 					if(pNewMsg != nullptr) GetSystemMemoryManager().Delete(pNewMsg);
+					pNewMsg = nullptr;
+				}
+				return pNewMsg;
+
+			}; // MessageData* VoteGameAdvanceRes::Create( IMemoryManager& memoryManager, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const Result &InResult )
+
+			Result VoteGameAdvanceRes::OverrideRouteContextDestination( EntityUID to )
+			{
+ 				Result hr;
+
+				int iMsgSize;
+				uint8_t* pCur;
+				MessageData* pIMsg = GetMessage();
+				RouteContext routeContext;
+
+				protocolChkPtr(pIMsg);
+
+				iMsgSize = (unsigned)pIMsg->GetMessageSize() - sizeof(MessageHeader);
+				pCur = pIMsg->GetMessageData();
+
+				Assert( iMsgSize >= (INT)sizeof(RouteContext) );
+				memcpy( &routeContext, pCur, sizeof(RouteContext) );
+				routeContext.Components.To = to;
+				memcpy( pCur, &routeContext, sizeof(RouteContext) );
+
+
+			Proc_End:
+
+				return hr;
+
+			}; // Result VoteGameAdvanceRes::OverrideRouteContextDestination( EntityUID to )
+
+
+			Result VoteGameAdvanceRes::TraceOut(MessageData* pMsg)
+			{
+ 				VoteGameAdvanceRes parser;
+				parser.ParseMessage(pMsg);
+				protocolTrace( Debug1, "VoteGameAdvance:{0}:{1} , RouteContext:{2}, TransactionID:{3}, Result:{4:X8}",
+						pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, parser.GetRouteContext(), parser.GetTransactionID(), parser.GetResult()); 
+				return ResultCode::SUCCESS;
+			}; // Result VoteGameAdvanceRes::TraceOut(MessageData* pMsg)
+
+			// S2C: *GameAdvance is Voted
+			const MessageID GameAdvanceVotedS2CEvt::MID = MessageID(MSGTYPE_EVENT, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_GAMEINSTANCE, 15);
+			Result GameAdvanceVotedS2CEvt::ParseMessage( MessageData* pIMsg )
+			{
+ 				Result hr;
+
+				int iMsgSize;
+				uint8_t* pCur;
+
+				protocolChkPtr(pIMsg);
+
+				iMsgSize = (unsigned)pIMsg->GetMessageSize() - sizeof(MessageHeader);
+				pCur = pIMsg->GetMessageData();
+
+				protocolChk( Protocol::StreamParamCopy( &m_RouteContext, pCur, iMsgSize, sizeof(RouteContext) ) );
+				protocolChk( Protocol::StreamParamCopy( &m_Voter, pCur, iMsgSize, sizeof(PlayerID) ) );
+
+
+			Proc_End:
+
+				return hr;
+
+			}; // Result GameAdvanceVotedS2CEvt::ParseMessage( MessageData* pIMsg )
+
+			Result GameAdvanceVotedS2CEvt::ParseMessageTo( MessageData* pIMsg, VariableMapBuilder& variableBuilder )
+			{
+ 				Result hr;
+
+
+				GameAdvanceVotedS2CEvt parser;
+				protocolChk(parser.ParseMessage(pIMsg));
+
+				variableBuilder.SetVariable("RouteContext", parser.GetRouteContext());
+				variableBuilder.SetVariable("Voter", parser.GetVoter());
+
+
+			Proc_End:
+
+				return hr;
+
+			}; // Result GameAdvanceVotedS2CEvt::ParseMessageTo( MessageData* pIMsg, VariableMapBuilder& variableBuilder )
+
+			Result GameAdvanceVotedS2CEvt::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageData* pIMsg, MessageBase* &pMessageBase )
+			{
+ 				Result hr;
+
+				protocolMem(pMessageBase = new(memoryManager) GameAdvanceVotedS2CEvt(pIMsg));
+				protocolChk(pMessageBase->ParseMsg());
+
+			Proc_End:
+				return hr;
+
+			}; // Result GameAdvanceVotedS2CEvt::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageData* pIMsg, MessageBase* &pMessageBase )
+
+			MessageData* GameAdvanceVotedS2CEvt::Create( IMemoryManager& memoryManager, const RouteContext &InRouteContext, const PlayerID &InVoter )
+			{
+ 				MessageData *pNewMsg = nullptr;
+				Result hr;
+
+				uint8_t *pMsgData = nullptr;
+
+				unsigned __uiMessageSize = (unsigned)(sizeof(MessageHeader) 
+					+ sizeof(RouteContext)
+					+ sizeof(PlayerID));
+
+
+				protocolMem( pNewMsg = MessageData::NewMessage( memoryManager, GameInstance::GameAdvanceVotedS2CEvt::MID, __uiMessageSize ) );
+
+				pMsgData = pNewMsg->GetMessageData();
+
+				Protocol::PackParamCopy( pMsgData, &InRouteContext, sizeof(RouteContext));
+				Protocol::PackParamCopy( pMsgData, &InVoter, sizeof(PlayerID));
+
+
+			Proc_End:
+
+				if(!hr)
+				{
+ 					if(pNewMsg != nullptr) GetSystemMemoryManager().Delete(pNewMsg);
+					pNewMsg = nullptr;
+				}
+				return pNewMsg;
+
+			}; // MessageData* GameAdvanceVotedS2CEvt::Create( IMemoryManager& memoryManager, const RouteContext &InRouteContext, const PlayerID &InVoter )
+
+			Result GameAdvanceVotedS2CEvt::OverrideRouteContextDestination( EntityUID to )
+			{
+ 				Result hr;
+
+				int iMsgSize;
+				uint8_t* pCur;
+				MessageData* pIMsg = GetMessage();
+				RouteContext routeContext;
+
+				protocolChkPtr(pIMsg);
+
+				iMsgSize = (unsigned)pIMsg->GetMessageSize() - sizeof(MessageHeader);
+				pCur = pIMsg->GetMessageData();
+
+				Assert( iMsgSize >= (INT)sizeof(RouteContext) );
+				memcpy( &routeContext, pCur, sizeof(RouteContext) );
+				routeContext.Components.To = to;
+				memcpy( pCur, &routeContext, sizeof(RouteContext) );
+
+
+			Proc_End:
+
+				return hr;
+
+			}; // Result GameAdvanceVotedS2CEvt::OverrideRouteContextDestination( EntityUID to )
+
+
+			Result GameAdvanceVotedS2CEvt::TraceOut(MessageData* pMsg)
+			{
+ 				GameAdvanceVotedS2CEvt parser;
+				parser.ParseMessage(pMsg);
+				protocolTrace( Debug1, "GameAdvanceVoted:{0}:{1} , RouteContext:{2}, Voter:{3}",
+						pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, parser.GetRouteContext(), parser.GetVoter()); 
+				return ResultCode::SUCCESS;
+			}; // Result GameAdvanceVotedS2CEvt::TraceOut(MessageData* pMsg)
+
+			// Cmd: Assign role
+			const MessageID VoteCmd::MID = MessageID(MSGTYPE_COMMAND, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_GAMEINSTANCE, 16);
+			Result VoteCmd::ParseMessage( MessageData* pIMsg )
+			{
+ 				Result hr;
+
+				int iMsgSize;
+				uint8_t* pCur;
+
+				protocolChkPtr(pIMsg);
+
+				iMsgSize = (unsigned)pIMsg->GetMessageSize() - sizeof(MessageHeader);
+				pCur = pIMsg->GetMessageData();
+
+				protocolChk( Protocol::StreamParamCopy( &m_RouteContext, pCur, iMsgSize, sizeof(RouteContext) ) );
+				protocolChk( Protocol::StreamParamCopy( &m_TransactionID, pCur, iMsgSize, sizeof(TransactionID) ) );
+				protocolChk( Protocol::StreamParamCopy( &m_PlayerID, pCur, iMsgSize, sizeof(PlayerID) ) );
+				protocolChk( Protocol::StreamParamCopy( &m_VoteTarget, pCur, iMsgSize, sizeof(PlayerID) ) );
+				protocolChk( Protocol::StreamParamCopy( &m_ActionSerial, pCur, iMsgSize, sizeof(uint32_t) ) );
+
+
+			Proc_End:
+
+				return hr;
+
+			}; // Result VoteCmd::ParseMessage( MessageData* pIMsg )
+
+			Result VoteCmd::ParseMessageTo( MessageData* pIMsg, VariableMapBuilder& variableBuilder )
+			{
+ 				Result hr;
+
+
+				VoteCmd parser;
+				protocolChk(parser.ParseMessage(pIMsg));
+
+				variableBuilder.SetVariable("RouteContext", parser.GetRouteContext());
+				variableBuilder.SetVariable("TransactionID", parser.GetTransactionID());
+				variableBuilder.SetVariable("PlayerID", parser.GetPlayerID());
+				variableBuilder.SetVariable("VoteTarget", parser.GetVoteTarget());
+				variableBuilder.SetVariable("ActionSerial", parser.GetActionSerial());
+
+
+			Proc_End:
+
+				return hr;
+
+			}; // Result VoteCmd::ParseMessageTo( MessageData* pIMsg, VariableMapBuilder& variableBuilder )
+
+			Result VoteCmd::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageData* pIMsg, MessageBase* &pMessageBase )
+			{
+ 				Result hr;
+
+				protocolMem(pMessageBase = new(memoryManager) VoteCmd(pIMsg));
+				protocolChk(pMessageBase->ParseMsg());
+
+			Proc_End:
+				return hr;
+
+			}; // Result VoteCmd::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageData* pIMsg, MessageBase* &pMessageBase )
+
+			MessageData* VoteCmd::Create( IMemoryManager& memoryManager, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const PlayerID &InPlayerID, const PlayerID &InVoteTarget, const uint32_t &InActionSerial )
+			{
+ 				MessageData *pNewMsg = nullptr;
+				Result hr;
+
+				uint8_t *pMsgData = nullptr;
+
+				unsigned __uiMessageSize = (unsigned)(sizeof(MessageHeader) 
+					+ sizeof(RouteContext)
+					+ sizeof(TransactionID)
+					+ sizeof(PlayerID)
+					+ sizeof(PlayerID)
+					+ sizeof(uint32_t));
+
+
+				protocolMem( pNewMsg = MessageData::NewMessage( memoryManager, GameInstance::VoteCmd::MID, __uiMessageSize ) );
+
+				pMsgData = pNewMsg->GetMessageData();
+
+				Protocol::PackParamCopy( pMsgData, &InRouteContext, sizeof(RouteContext));
+				Protocol::PackParamCopy( pMsgData, &InTransactionID, sizeof(TransactionID));
+				Protocol::PackParamCopy( pMsgData, &InPlayerID, sizeof(PlayerID));
+				Protocol::PackParamCopy( pMsgData, &InVoteTarget, sizeof(PlayerID));
+				Protocol::PackParamCopy( pMsgData, &InActionSerial, sizeof(uint32_t));
+
+
+			Proc_End:
+
+				if(!hr)
+				{
+ 					if(pNewMsg != nullptr) GetSystemMemoryManager().Delete(pNewMsg);
+					pNewMsg = nullptr;
+				}
+				return pNewMsg;
+
+			}; // MessageData* VoteCmd::Create( IMemoryManager& memoryManager, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const PlayerID &InPlayerID, const PlayerID &InVoteTarget, const uint32_t &InActionSerial )
+
+			Result VoteCmd::OverrideRouteContextDestination( EntityUID to )
+			{
+ 				Result hr;
+
+				int iMsgSize;
+				uint8_t* pCur;
+				MessageData* pIMsg = GetMessage();
+				RouteContext routeContext;
+
+				protocolChkPtr(pIMsg);
+
+				iMsgSize = (unsigned)pIMsg->GetMessageSize() - sizeof(MessageHeader);
+				pCur = pIMsg->GetMessageData();
+
+				Assert( iMsgSize >= (INT)sizeof(RouteContext) );
+				memcpy( &routeContext, pCur, sizeof(RouteContext) );
+				routeContext.Components.To = to;
+				memcpy( pCur, &routeContext, sizeof(RouteContext) );
+
+
+			Proc_End:
+
+				return hr;
+
+			}; // Result VoteCmd::OverrideRouteContextDestination( EntityUID to )
+
+
+			Result VoteCmd::TraceOut(MessageData* pMsg)
+			{
+ 				VoteCmd parser;
+				parser.ParseMessage(pMsg);
+				protocolTrace( Debug1, "Vote:{0}:{1} , RouteContext:{2}, TransactionID:{3}, PlayerID:{4}, VoteTarget:{5}, ActionSerial:{6}",
+						pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, parser.GetRouteContext(), parser.GetTransactionID(), parser.GetPlayerID(), parser.GetVoteTarget(), parser.GetActionSerial()); 
+				return ResultCode::SUCCESS;
+			}; // Result VoteCmd::TraceOut(MessageData* pMsg)
+
+			const MessageID VoteRes::MID = MessageID(MSGTYPE_RESULT, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_GAMEINSTANCE, 16);
+			Result VoteRes::ParseMessage( MessageData* pIMsg )
+			{
+ 				Result hr;
+
+				int iMsgSize;
+				uint8_t* pCur;
+
+				protocolChkPtr(pIMsg);
+
+				iMsgSize = (unsigned)pIMsg->GetMessageSize() - sizeof(MessageHeader);
+				pCur = pIMsg->GetMessageData();
+
+				protocolChk( Protocol::StreamParamCopy( &m_RouteContext, pCur, iMsgSize, sizeof(RouteContext) ) );
+				protocolChk( Protocol::StreamParamCopy( &m_TransactionID, pCur, iMsgSize, sizeof(TransactionID) ) );
+				protocolChk( Protocol::StreamParamCopy( &m_Result, pCur, iMsgSize, sizeof(Result) ) );
+
+
+			Proc_End:
+
+				return hr;
+
+			}; // Result VoteRes::ParseMessage( MessageData* pIMsg )
+
+			Result VoteRes::ParseMessageTo( MessageData* pIMsg, VariableMapBuilder& variableBuilder )
+			{
+ 				Result hr;
+
+
+				VoteRes parser;
+				protocolChk(parser.ParseMessage(pIMsg));
+
+				variableBuilder.SetVariable("RouteContext", parser.GetRouteContext());
+				variableBuilder.SetVariable("TransactionID", parser.GetTransactionID());
+				variableBuilder.SetVariable("Result", parser.GetResult());
+
+
+			Proc_End:
+
+				return hr;
+
+			}; // Result VoteRes::ParseMessageTo( MessageData* pIMsg, VariableMapBuilder& variableBuilder )
+
+			Result VoteRes::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageData* pIMsg, MessageBase* &pMessageBase )
+			{
+ 				Result hr;
+
+				protocolMem(pMessageBase = new(memoryManager) VoteRes(pIMsg));
+				protocolChk(pMessageBase->ParseMsg());
+
+			Proc_End:
+				return hr;
+
+			}; // Result VoteRes::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageData* pIMsg, MessageBase* &pMessageBase )
+
+			MessageData* VoteRes::Create( IMemoryManager& memoryManager, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const Result &InResult )
+			{
+ 				MessageData *pNewMsg = nullptr;
+				Result hr;
+
+				uint8_t *pMsgData = nullptr;
+
+				unsigned __uiMessageSize = (unsigned)(sizeof(MessageHeader) 
+					+ sizeof(RouteContext)
+					+ sizeof(TransactionID)
+					+ sizeof(Result));
+
+
+				protocolMem( pNewMsg = MessageData::NewMessage( memoryManager, GameInstance::VoteRes::MID, __uiMessageSize ) );
+
+				pMsgData = pNewMsg->GetMessageData();
+
+				Protocol::PackParamCopy( pMsgData, &InRouteContext, sizeof(RouteContext));
+				Protocol::PackParamCopy( pMsgData, &InTransactionID, sizeof(TransactionID));
+				Protocol::PackParamCopy( pMsgData, &InResult, sizeof(Result));
+
+
+			Proc_End:
+
+				if(!hr)
+				{
+ 					if(pNewMsg != nullptr) GetSystemMemoryManager().Delete(pNewMsg);
+					pNewMsg = nullptr;
+				}
+				return pNewMsg;
+
+			}; // MessageData* VoteRes::Create( IMemoryManager& memoryManager, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const Result &InResult )
+
+			Result VoteRes::OverrideRouteContextDestination( EntityUID to )
+			{
+ 				Result hr;
+
+				int iMsgSize;
+				uint8_t* pCur;
+				MessageData* pIMsg = GetMessage();
+				RouteContext routeContext;
+
+				protocolChkPtr(pIMsg);
+
+				iMsgSize = (unsigned)pIMsg->GetMessageSize() - sizeof(MessageHeader);
+				pCur = pIMsg->GetMessageData();
+
+				Assert( iMsgSize >= (INT)sizeof(RouteContext) );
+				memcpy( &routeContext, pCur, sizeof(RouteContext) );
+				routeContext.Components.To = to;
+				memcpy( pCur, &routeContext, sizeof(RouteContext) );
+
+
+			Proc_End:
+
+				return hr;
+
+			}; // Result VoteRes::OverrideRouteContextDestination( EntityUID to )
+
+
+			Result VoteRes::TraceOut(MessageData* pMsg)
+			{
+ 				VoteRes parser;
+				parser.ParseMessage(pMsg);
+				protocolTrace( Debug1, "Vote:{0}:{1} , RouteContext:{2}, TransactionID:{3}, Result:{4:X8}",
+						pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, parser.GetRouteContext(), parser.GetTransactionID(), parser.GetResult()); 
+				return ResultCode::SUCCESS;
+			}; // Result VoteRes::TraceOut(MessageData* pMsg)
+
+			// S2C: Player Voted
+			const MessageID VotedS2CEvt::MID = MessageID(MSGTYPE_EVENT, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_GAMEINSTANCE, 17);
+			Result VotedS2CEvt::ParseMessage( MessageData* pIMsg )
+			{
+ 				Result hr;
+
+				int iMsgSize;
+				uint8_t* pCur;
+
+				protocolChkPtr(pIMsg);
+
+				iMsgSize = (unsigned)pIMsg->GetMessageSize() - sizeof(MessageHeader);
+				pCur = pIMsg->GetMessageData();
+
+				protocolChk( Protocol::StreamParamCopy( &m_RouteContext, pCur, iMsgSize, sizeof(RouteContext) ) );
+				protocolChk( Protocol::StreamParamCopy( &m_Voter, pCur, iMsgSize, sizeof(PlayerID) ) );
+				protocolChk( Protocol::StreamParamCopy( &m_VotedTarget, pCur, iMsgSize, sizeof(PlayerID) ) );
+
+
+			Proc_End:
+
+				return hr;
+
+			}; // Result VotedS2CEvt::ParseMessage( MessageData* pIMsg )
+
+			Result VotedS2CEvt::ParseMessageTo( MessageData* pIMsg, VariableMapBuilder& variableBuilder )
+			{
+ 				Result hr;
+
+
+				VotedS2CEvt parser;
+				protocolChk(parser.ParseMessage(pIMsg));
+
+				variableBuilder.SetVariable("RouteContext", parser.GetRouteContext());
+				variableBuilder.SetVariable("Voter", parser.GetVoter());
+				variableBuilder.SetVariable("VotedTarget", parser.GetVotedTarget());
+
+
+			Proc_End:
+
+				return hr;
+
+			}; // Result VotedS2CEvt::ParseMessageTo( MessageData* pIMsg, VariableMapBuilder& variableBuilder )
+
+			Result VotedS2CEvt::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageData* pIMsg, MessageBase* &pMessageBase )
+			{
+ 				Result hr;
+
+				protocolMem(pMessageBase = new(memoryManager) VotedS2CEvt(pIMsg));
+				protocolChk(pMessageBase->ParseMsg());
+
+			Proc_End:
+				return hr;
+
+			}; // Result VotedS2CEvt::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageData* pIMsg, MessageBase* &pMessageBase )
+
+			MessageData* VotedS2CEvt::Create( IMemoryManager& memoryManager, const RouteContext &InRouteContext, const PlayerID &InVoter, const PlayerID &InVotedTarget )
+			{
+ 				MessageData *pNewMsg = nullptr;
+				Result hr;
+
+				uint8_t *pMsgData = nullptr;
+
+				unsigned __uiMessageSize = (unsigned)(sizeof(MessageHeader) 
+					+ sizeof(RouteContext)
+					+ sizeof(PlayerID)
+					+ sizeof(PlayerID));
+
+
+				protocolMem( pNewMsg = MessageData::NewMessage( memoryManager, GameInstance::VotedS2CEvt::MID, __uiMessageSize ) );
+
+				pMsgData = pNewMsg->GetMessageData();
+
+				Protocol::PackParamCopy( pMsgData, &InRouteContext, sizeof(RouteContext));
+				Protocol::PackParamCopy( pMsgData, &InVoter, sizeof(PlayerID));
+				Protocol::PackParamCopy( pMsgData, &InVotedTarget, sizeof(PlayerID));
+
+
+			Proc_End:
+
+				if(!hr)
+				{
+ 					if(pNewMsg != nullptr) GetSystemMemoryManager().Delete(pNewMsg);
+					pNewMsg = nullptr;
+				}
+				return pNewMsg;
+
+			}; // MessageData* VotedS2CEvt::Create( IMemoryManager& memoryManager, const RouteContext &InRouteContext, const PlayerID &InVoter, const PlayerID &InVotedTarget )
+
+			Result VotedS2CEvt::OverrideRouteContextDestination( EntityUID to )
+			{
+ 				Result hr;
+
+				int iMsgSize;
+				uint8_t* pCur;
+				MessageData* pIMsg = GetMessage();
+				RouteContext routeContext;
+
+				protocolChkPtr(pIMsg);
+
+				iMsgSize = (unsigned)pIMsg->GetMessageSize() - sizeof(MessageHeader);
+				pCur = pIMsg->GetMessageData();
+
+				Assert( iMsgSize >= (INT)sizeof(RouteContext) );
+				memcpy( &routeContext, pCur, sizeof(RouteContext) );
+				routeContext.Components.To = to;
+				memcpy( pCur, &routeContext, sizeof(RouteContext) );
+
+
+			Proc_End:
+
+				return hr;
+
+			}; // Result VotedS2CEvt::OverrideRouteContextDestination( EntityUID to )
+
+
+			Result VotedS2CEvt::TraceOut(MessageData* pMsg)
+			{
+ 				VotedS2CEvt parser;
+				parser.ParseMessage(pMsg);
+				protocolTrace( Debug1, "Voted:{0}:{1} , RouteContext:{2}, Voter:{3}, VotedTarget:{4}",
+						pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, parser.GetRouteContext(), parser.GetVoter(), parser.GetVotedTarget()); 
+				return ResultCode::SUCCESS;
+			}; // Result VotedS2CEvt::TraceOut(MessageData* pMsg)
+
+			// S2C: Player Voted
+			const MessageID VoteEndS2CEvt::MID = MessageID(MSGTYPE_EVENT, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_GAMEINSTANCE, 18);
+			Result VoteEndS2CEvt::ParseMessage( MessageData* pIMsg )
+			{
+ 				Result hr;
+
+				int iMsgSize;
+				uint8_t* pCur;
+				uint16_t numberofVoted = 0; PlayerID* pVoted = nullptr;
+
+				protocolChkPtr(pIMsg);
+
+				iMsgSize = (unsigned)pIMsg->GetMessageSize() - sizeof(MessageHeader);
+				pCur = pIMsg->GetMessageData();
+
+				protocolChk( Protocol::StreamParamCopy( &m_RouteContext, pCur, iMsgSize, sizeof(RouteContext) ) );
+				protocolChk( Protocol::StreamParamCopy( &numberofVoted, pCur, iMsgSize, sizeof(uint16_t) ) );
+				protocolChk( Protocol::StreamParamLnk( pVoted, pCur, iMsgSize, sizeof(PlayerID)*numberofVoted ) );
+				m_Voted.SetLinkedBuffer(numberofVoted, numberofVoted, pVoted);
+
+
+			Proc_End:
+
+				return hr;
+
+			}; // Result VoteEndS2CEvt::ParseMessage( MessageData* pIMsg )
+
+			Result VoteEndS2CEvt::ParseMessageTo( MessageData* pIMsg, VariableMapBuilder& variableBuilder )
+			{
+ 				Result hr;
+
+
+				VoteEndS2CEvt parser;
+				protocolChk(parser.ParseMessage(pIMsg));
+
+				variableBuilder.SetVariable("RouteContext", parser.GetRouteContext());
+				variableBuilder.SetVariable("Voted", (int)parser.GetVoted().GetItemCount(), parser.GetVoted().data());
+
+
+			Proc_End:
+
+				return hr;
+
+			}; // Result VoteEndS2CEvt::ParseMessageTo( MessageData* pIMsg, VariableMapBuilder& variableBuilder )
+
+			Result VoteEndS2CEvt::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageData* pIMsg, MessageBase* &pMessageBase )
+			{
+ 				Result hr;
+
+				protocolMem(pMessageBase = new(memoryManager) VoteEndS2CEvt(pIMsg));
+				protocolChk(pMessageBase->ParseMsg());
+
+			Proc_End:
+				return hr;
+
+			}; // Result VoteEndS2CEvt::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageData* pIMsg, MessageBase* &pMessageBase )
+
+			MessageData* VoteEndS2CEvt::Create( IMemoryManager& memoryManager, const RouteContext &InRouteContext, const Array<PlayerID>& InVoted )
+			{
+ 				MessageData *pNewMsg = nullptr;
+				Result hr;
+
+				uint8_t *pMsgData = nullptr;
+
+				unsigned __uiMessageSize = (unsigned)(sizeof(MessageHeader) 
+					+ sizeof(RouteContext)
+					+ sizeof(PlayerID)*InVoted.GetItemCount() + sizeof(uint16_t));
+
+
+				uint16_t numberOfInVoted = (uint16_t)InVoted.GetItemCount(); 
+				protocolMem( pNewMsg = MessageData::NewMessage( memoryManager, GameInstance::VoteEndS2CEvt::MID, __uiMessageSize ) );
+
+				pMsgData = pNewMsg->GetMessageData();
+
+				Protocol::PackParamCopy( pMsgData, &InRouteContext, sizeof(RouteContext));
+				Protocol::PackParamCopy( pMsgData, &numberOfInVoted, sizeof(uint16_t)); 
+				Protocol::PackParamCopy( pMsgData, InVoted.data(), (INT)(sizeof(PlayerID)*InVoted.GetItemCount())); 
+
+
+			Proc_End:
+
+				if(!hr)
+				{
+ 					if(pNewMsg != nullptr) GetSystemMemoryManager().Delete(pNewMsg);
+					pNewMsg = nullptr;
+				}
+				return pNewMsg;
+
+			}; // MessageData* VoteEndS2CEvt::Create( IMemoryManager& memoryManager, const RouteContext &InRouteContext, const Array<PlayerID>& InVoted )
+
+			Result VoteEndS2CEvt::OverrideRouteContextDestination( EntityUID to )
+			{
+ 				Result hr;
+
+				int iMsgSize;
+				uint8_t* pCur;
+				MessageData* pIMsg = GetMessage();
+				RouteContext routeContext;
+
+				protocolChkPtr(pIMsg);
+
+				iMsgSize = (unsigned)pIMsg->GetMessageSize() - sizeof(MessageHeader);
+				pCur = pIMsg->GetMessageData();
+
+				Assert( iMsgSize >= (INT)sizeof(RouteContext) );
+				memcpy( &routeContext, pCur, sizeof(RouteContext) );
+				routeContext.Components.To = to;
+				memcpy( pCur, &routeContext, sizeof(RouteContext) );
+
+
+			Proc_End:
+
+				return hr;
+
+			}; // Result VoteEndS2CEvt::OverrideRouteContextDestination( EntityUID to )
+
+
+			Result VoteEndS2CEvt::TraceOut(MessageData* pMsg)
+			{
+ 				VoteEndS2CEvt parser;
+				parser.ParseMessage(pMsg);
+				protocolTrace( Debug1, "VoteEnd:{0}:{1} , RouteContext:{2}, Voted:{3,30}",
+						pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, parser.GetRouteContext(), parser.GetVoted()); 
+				return ResultCode::SUCCESS;
+			}; // Result VoteEndS2CEvt::TraceOut(MessageData* pMsg)
+
+			// S2C: Player Voted
+			const MessageID PlayerRevealedS2CEvt::MID = MessageID(MSGTYPE_EVENT, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_GAMEINSTANCE, 19);
+			Result PlayerRevealedS2CEvt::ParseMessage( MessageData* pIMsg )
+			{
+ 				Result hr;
+
+				int iMsgSize;
+				uint8_t* pCur;
+
+				protocolChkPtr(pIMsg);
+
+				iMsgSize = (unsigned)pIMsg->GetMessageSize() - sizeof(MessageHeader);
+				pCur = pIMsg->GetMessageData();
+
+				protocolChk( Protocol::StreamParamCopy( &m_RouteContext, pCur, iMsgSize, sizeof(RouteContext) ) );
+				protocolChk( Protocol::StreamParamCopy( &m_RevealedPlayerID, pCur, iMsgSize, sizeof(PlayerID) ) );
+				protocolChk( Protocol::StreamParamCopy( &m_Role, pCur, iMsgSize, sizeof(PlayerRole) ) );
+				protocolChk( Protocol::StreamParamCopy( &m_Reason, pCur, iMsgSize, sizeof(PlayerRevealedReason) ) );
+
+
+			Proc_End:
+
+				return hr;
+
+			}; // Result PlayerRevealedS2CEvt::ParseMessage( MessageData* pIMsg )
+
+			Result PlayerRevealedS2CEvt::ParseMessageTo( MessageData* pIMsg, VariableMapBuilder& variableBuilder )
+			{
+ 				Result hr;
+
+
+				PlayerRevealedS2CEvt parser;
+				protocolChk(parser.ParseMessage(pIMsg));
+
+				variableBuilder.SetVariable("RouteContext", parser.GetRouteContext());
+				variableBuilder.SetVariable("RevealedPlayerID", parser.GetRevealedPlayerID());
+				variableBuilder.SetVariable("Role", (int)parser.GetRole());
+				variableBuilder.SetVariable("Reason", (int)parser.GetReason());
+
+
+			Proc_End:
+
+				return hr;
+
+			}; // Result PlayerRevealedS2CEvt::ParseMessageTo( MessageData* pIMsg, VariableMapBuilder& variableBuilder )
+
+			Result PlayerRevealedS2CEvt::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageData* pIMsg, MessageBase* &pMessageBase )
+			{
+ 				Result hr;
+
+				protocolMem(pMessageBase = new(memoryManager) PlayerRevealedS2CEvt(pIMsg));
+				protocolChk(pMessageBase->ParseMsg());
+
+			Proc_End:
+				return hr;
+
+			}; // Result PlayerRevealedS2CEvt::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageData* pIMsg, MessageBase* &pMessageBase )
+
+			MessageData* PlayerRevealedS2CEvt::Create( IMemoryManager& memoryManager, const RouteContext &InRouteContext, const PlayerID &InRevealedPlayerID, const PlayerRole &InRole, const PlayerRevealedReason &InReason )
+			{
+ 				MessageData *pNewMsg = nullptr;
+				Result hr;
+
+				uint8_t *pMsgData = nullptr;
+
+				unsigned __uiMessageSize = (unsigned)(sizeof(MessageHeader) 
+					+ sizeof(RouteContext)
+					+ sizeof(PlayerID)
+					+ sizeof(PlayerRole)
+					+ sizeof(PlayerRevealedReason));
+
+
+				protocolMem( pNewMsg = MessageData::NewMessage( memoryManager, GameInstance::PlayerRevealedS2CEvt::MID, __uiMessageSize ) );
+
+				pMsgData = pNewMsg->GetMessageData();
+
+				Protocol::PackParamCopy( pMsgData, &InRouteContext, sizeof(RouteContext));
+				Protocol::PackParamCopy( pMsgData, &InRevealedPlayerID, sizeof(PlayerID));
+				Protocol::PackParamCopy( pMsgData, &InRole, sizeof(PlayerRole));
+				Protocol::PackParamCopy( pMsgData, &InReason, sizeof(PlayerRevealedReason));
+
+
+			Proc_End:
+
+				if(!hr)
+				{
+ 					if(pNewMsg != nullptr) GetSystemMemoryManager().Delete(pNewMsg);
+					pNewMsg = nullptr;
+				}
+				return pNewMsg;
+
+			}; // MessageData* PlayerRevealedS2CEvt::Create( IMemoryManager& memoryManager, const RouteContext &InRouteContext, const PlayerID &InRevealedPlayerID, const PlayerRole &InRole, const PlayerRevealedReason &InReason )
+
+			Result PlayerRevealedS2CEvt::OverrideRouteContextDestination( EntityUID to )
+			{
+ 				Result hr;
+
+				int iMsgSize;
+				uint8_t* pCur;
+				MessageData* pIMsg = GetMessage();
+				RouteContext routeContext;
+
+				protocolChkPtr(pIMsg);
+
+				iMsgSize = (unsigned)pIMsg->GetMessageSize() - sizeof(MessageHeader);
+				pCur = pIMsg->GetMessageData();
+
+				Assert( iMsgSize >= (INT)sizeof(RouteContext) );
+				memcpy( &routeContext, pCur, sizeof(RouteContext) );
+				routeContext.Components.To = to;
+				memcpy( pCur, &routeContext, sizeof(RouteContext) );
+
+
+			Proc_End:
+
+				return hr;
+
+			}; // Result PlayerRevealedS2CEvt::OverrideRouteContextDestination( EntityUID to )
+
+
+			Result PlayerRevealedS2CEvt::TraceOut(MessageData* pMsg)
+			{
+ 				PlayerRevealedS2CEvt parser;
+				parser.ParseMessage(pMsg);
+				protocolTrace( Debug1, "PlayerRevealed:{0}:{1} , RouteContext:{2}, RevealedPlayerID:{3}, Role:{4}, Reason:{5}",
+						pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, parser.GetRouteContext(), parser.GetRevealedPlayerID(), (int)parser.GetRole(), (int)parser.GetReason()); 
+				return ResultCode::SUCCESS;
+			}; // Result PlayerRevealedS2CEvt::TraceOut(MessageData* pMsg)
+
+			// S2C: Player Killed
+			const MessageID PlayerKilledS2CEvt::MID = MessageID(MSGTYPE_EVENT, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_GAMEINSTANCE, 20);
+			Result PlayerKilledS2CEvt::ParseMessage( MessageData* pIMsg )
+			{
+ 				Result hr;
+
+				int iMsgSize;
+				uint8_t* pCur;
+
+				protocolChkPtr(pIMsg);
+
+				iMsgSize = (unsigned)pIMsg->GetMessageSize() - sizeof(MessageHeader);
+				pCur = pIMsg->GetMessageData();
+
+				protocolChk( Protocol::StreamParamCopy( &m_RouteContext, pCur, iMsgSize, sizeof(RouteContext) ) );
+				protocolChk( Protocol::StreamParamCopy( &m_KilledPlayer, pCur, iMsgSize, sizeof(PlayerID) ) );
+				protocolChk( Protocol::StreamParamCopy( &m_Reason, pCur, iMsgSize, sizeof(PlayerKilledReason) ) );
+
+
+			Proc_End:
+
+				return hr;
+
+			}; // Result PlayerKilledS2CEvt::ParseMessage( MessageData* pIMsg )
+
+			Result PlayerKilledS2CEvt::ParseMessageTo( MessageData* pIMsg, VariableMapBuilder& variableBuilder )
+			{
+ 				Result hr;
+
+
+				PlayerKilledS2CEvt parser;
+				protocolChk(parser.ParseMessage(pIMsg));
+
+				variableBuilder.SetVariable("RouteContext", parser.GetRouteContext());
+				variableBuilder.SetVariable("KilledPlayer", parser.GetKilledPlayer());
+				variableBuilder.SetVariable("Reason", (int)parser.GetReason());
+
+
+			Proc_End:
+
+				return hr;
+
+			}; // Result PlayerKilledS2CEvt::ParseMessageTo( MessageData* pIMsg, VariableMapBuilder& variableBuilder )
+
+			Result PlayerKilledS2CEvt::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageData* pIMsg, MessageBase* &pMessageBase )
+			{
+ 				Result hr;
+
+				protocolMem(pMessageBase = new(memoryManager) PlayerKilledS2CEvt(pIMsg));
+				protocolChk(pMessageBase->ParseMsg());
+
+			Proc_End:
+				return hr;
+
+			}; // Result PlayerKilledS2CEvt::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageData* pIMsg, MessageBase* &pMessageBase )
+
+			MessageData* PlayerKilledS2CEvt::Create( IMemoryManager& memoryManager, const RouteContext &InRouteContext, const PlayerID &InKilledPlayer, const PlayerKilledReason &InReason )
+			{
+ 				MessageData *pNewMsg = nullptr;
+				Result hr;
+
+				uint8_t *pMsgData = nullptr;
+
+				unsigned __uiMessageSize = (unsigned)(sizeof(MessageHeader) 
+					+ sizeof(RouteContext)
+					+ sizeof(PlayerID)
+					+ sizeof(PlayerKilledReason));
+
+
+				protocolMem( pNewMsg = MessageData::NewMessage( memoryManager, GameInstance::PlayerKilledS2CEvt::MID, __uiMessageSize ) );
+
+				pMsgData = pNewMsg->GetMessageData();
+
+				Protocol::PackParamCopy( pMsgData, &InRouteContext, sizeof(RouteContext));
+				Protocol::PackParamCopy( pMsgData, &InKilledPlayer, sizeof(PlayerID));
+				Protocol::PackParamCopy( pMsgData, &InReason, sizeof(PlayerKilledReason));
+
+
+			Proc_End:
+
+				if(!hr)
+				{
+ 					if(pNewMsg != nullptr) GetSystemMemoryManager().Delete(pNewMsg);
+					pNewMsg = nullptr;
+				}
+				return pNewMsg;
+
+			}; // MessageData* PlayerKilledS2CEvt::Create( IMemoryManager& memoryManager, const RouteContext &InRouteContext, const PlayerID &InKilledPlayer, const PlayerKilledReason &InReason )
+
+			Result PlayerKilledS2CEvt::OverrideRouteContextDestination( EntityUID to )
+			{
+ 				Result hr;
+
+				int iMsgSize;
+				uint8_t* pCur;
+				MessageData* pIMsg = GetMessage();
+				RouteContext routeContext;
+
+				protocolChkPtr(pIMsg);
+
+				iMsgSize = (unsigned)pIMsg->GetMessageSize() - sizeof(MessageHeader);
+				pCur = pIMsg->GetMessageData();
+
+				Assert( iMsgSize >= (INT)sizeof(RouteContext) );
+				memcpy( &routeContext, pCur, sizeof(RouteContext) );
+				routeContext.Components.To = to;
+				memcpy( pCur, &routeContext, sizeof(RouteContext) );
+
+
+			Proc_End:
+
+				return hr;
+
+			}; // Result PlayerKilledS2CEvt::OverrideRouteContextDestination( EntityUID to )
+
+
+			Result PlayerKilledS2CEvt::TraceOut(MessageData* pMsg)
+			{
+ 				PlayerKilledS2CEvt parser;
+				parser.ParseMessage(pMsg);
+				protocolTrace( Debug1, "PlayerKilled:{0}:{1} , RouteContext:{2}, KilledPlayer:{3}, Reason:{4}",
+						pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, parser.GetRouteContext(), parser.GetKilledPlayer(), (int)parser.GetReason()); 
+				return ResultCode::SUCCESS;
+			}; // Result PlayerKilledS2CEvt::TraceOut(MessageData* pMsg)
+
+			// Cmd: Play again with the current players
+			const MessageID GamePlayAgainCmd::MID = MessageID(MSGTYPE_COMMAND, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_GAMEINSTANCE, 21);
+			Result GamePlayAgainCmd::ParseMessage( MessageData* pIMsg )
+			{
+ 				Result hr;
+
+				int iMsgSize;
+				uint8_t* pCur;
+
+				protocolChkPtr(pIMsg);
+
+				iMsgSize = (unsigned)pIMsg->GetMessageSize() - sizeof(MessageHeader);
+				pCur = pIMsg->GetMessageData();
+
+				protocolChk( Protocol::StreamParamCopy( &m_RouteContext, pCur, iMsgSize, sizeof(RouteContext) ) );
+				protocolChk( Protocol::StreamParamCopy( &m_TransactionID, pCur, iMsgSize, sizeof(TransactionID) ) );
+				protocolChk( Protocol::StreamParamCopy( &m_LeadPlayer, pCur, iMsgSize, sizeof(PlayerID) ) );
+				protocolChk( Protocol::StreamParamCopy( &m_PartyUID, pCur, iMsgSize, sizeof(PartyUID) ) );
+
+
+			Proc_End:
+
+				return hr;
+
+			}; // Result GamePlayAgainCmd::ParseMessage( MessageData* pIMsg )
+
+			Result GamePlayAgainCmd::ParseMessageTo( MessageData* pIMsg, VariableMapBuilder& variableBuilder )
+			{
+ 				Result hr;
+
+
+				GamePlayAgainCmd parser;
+				protocolChk(parser.ParseMessage(pIMsg));
+
+				variableBuilder.SetVariable("RouteContext", parser.GetRouteContext());
+				variableBuilder.SetVariable("TransactionID", parser.GetTransactionID());
+				variableBuilder.SetVariable("LeadPlayer", parser.GetLeadPlayer());
+				variableBuilder.SetVariable("PartyUID", parser.GetPartyUID());
+
+
+			Proc_End:
+
+				return hr;
+
+			}; // Result GamePlayAgainCmd::ParseMessageTo( MessageData* pIMsg, VariableMapBuilder& variableBuilder )
+
+			Result GamePlayAgainCmd::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageData* pIMsg, MessageBase* &pMessageBase )
+			{
+ 				Result hr;
+
+				protocolMem(pMessageBase = new(memoryManager) GamePlayAgainCmd(pIMsg));
+				protocolChk(pMessageBase->ParseMsg());
+
+			Proc_End:
+				return hr;
+
+			}; // Result GamePlayAgainCmd::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageData* pIMsg, MessageBase* &pMessageBase )
+
+			MessageData* GamePlayAgainCmd::Create( IMemoryManager& memoryManager, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const PlayerID &InLeadPlayer, const PartyUID &InPartyUID )
+			{
+ 				MessageData *pNewMsg = nullptr;
+				Result hr;
+
+				uint8_t *pMsgData = nullptr;
+
+				unsigned __uiMessageSize = (unsigned)(sizeof(MessageHeader) 
+					+ sizeof(RouteContext)
+					+ sizeof(TransactionID)
+					+ sizeof(PlayerID)
+					+ sizeof(PartyUID));
+
+
+				protocolMem( pNewMsg = MessageData::NewMessage( memoryManager, GameInstance::GamePlayAgainCmd::MID, __uiMessageSize ) );
+
+				pMsgData = pNewMsg->GetMessageData();
+
+				Protocol::PackParamCopy( pMsgData, &InRouteContext, sizeof(RouteContext));
+				Protocol::PackParamCopy( pMsgData, &InTransactionID, sizeof(TransactionID));
+				Protocol::PackParamCopy( pMsgData, &InLeadPlayer, sizeof(PlayerID));
+				Protocol::PackParamCopy( pMsgData, &InPartyUID, sizeof(PartyUID));
+
+
+			Proc_End:
+
+				if(!hr)
+				{
+ 					if(pNewMsg != nullptr) GetSystemMemoryManager().Delete(pNewMsg);
+					pNewMsg = nullptr;
+				}
+				return pNewMsg;
+
+			}; // MessageData* GamePlayAgainCmd::Create( IMemoryManager& memoryManager, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const PlayerID &InLeadPlayer, const PartyUID &InPartyUID )
+
+			Result GamePlayAgainCmd::OverrideRouteContextDestination( EntityUID to )
+			{
+ 				Result hr;
+
+				int iMsgSize;
+				uint8_t* pCur;
+				MessageData* pIMsg = GetMessage();
+				RouteContext routeContext;
+
+				protocolChkPtr(pIMsg);
+
+				iMsgSize = (unsigned)pIMsg->GetMessageSize() - sizeof(MessageHeader);
+				pCur = pIMsg->GetMessageData();
+
+				Assert( iMsgSize >= (INT)sizeof(RouteContext) );
+				memcpy( &routeContext, pCur, sizeof(RouteContext) );
+				routeContext.Components.To = to;
+				memcpy( pCur, &routeContext, sizeof(RouteContext) );
+
+
+			Proc_End:
+
+				return hr;
+
+			}; // Result GamePlayAgainCmd::OverrideRouteContextDestination( EntityUID to )
+
+
+			Result GamePlayAgainCmd::TraceOut(MessageData* pMsg)
+			{
+ 				GamePlayAgainCmd parser;
+				parser.ParseMessage(pMsg);
+				protocolTrace( Debug1, "GamePlayAgain:{0}:{1} , RouteContext:{2}, TransactionID:{3}, LeadPlayer:{4}, PartyUID:{5}",
+						pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, parser.GetRouteContext(), parser.GetTransactionID(), parser.GetLeadPlayer(), parser.GetPartyUID()); 
+				return ResultCode::SUCCESS;
+			}; // Result GamePlayAgainCmd::TraceOut(MessageData* pMsg)
+
+			const MessageID GamePlayAgainRes::MID = MessageID(MSGTYPE_RESULT, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_GAMEINSTANCE, 21);
+			Result GamePlayAgainRes::ParseMessage( MessageData* pIMsg )
+			{
+ 				Result hr;
+
+				int iMsgSize;
+				uint8_t* pCur;
+
+				protocolChkPtr(pIMsg);
+
+				iMsgSize = (unsigned)pIMsg->GetMessageSize() - sizeof(MessageHeader);
+				pCur = pIMsg->GetMessageData();
+
+				protocolChk( Protocol::StreamParamCopy( &m_RouteContext, pCur, iMsgSize, sizeof(RouteContext) ) );
+				protocolChk( Protocol::StreamParamCopy( &m_TransactionID, pCur, iMsgSize, sizeof(TransactionID) ) );
+				protocolChk( Protocol::StreamParamCopy( &m_Result, pCur, iMsgSize, sizeof(Result) ) );
+				protocolChk( Protocol::StreamParamCopy( &m_ReplayMemberCount, pCur, iMsgSize, sizeof(uint32_t) ) );
+
+
+			Proc_End:
+
+				return hr;
+
+			}; // Result GamePlayAgainRes::ParseMessage( MessageData* pIMsg )
+
+			Result GamePlayAgainRes::ParseMessageTo( MessageData* pIMsg, VariableMapBuilder& variableBuilder )
+			{
+ 				Result hr;
+
+
+				GamePlayAgainRes parser;
+				protocolChk(parser.ParseMessage(pIMsg));
+
+				variableBuilder.SetVariable("RouteContext", parser.GetRouteContext());
+				variableBuilder.SetVariable("TransactionID", parser.GetTransactionID());
+				variableBuilder.SetVariable("Result", parser.GetResult());
+				variableBuilder.SetVariable("ReplayMemberCount", parser.GetReplayMemberCount());
+
+
+			Proc_End:
+
+				return hr;
+
+			}; // Result GamePlayAgainRes::ParseMessageTo( MessageData* pIMsg, VariableMapBuilder& variableBuilder )
+
+			Result GamePlayAgainRes::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageData* pIMsg, MessageBase* &pMessageBase )
+			{
+ 				Result hr;
+
+				protocolMem(pMessageBase = new(memoryManager) GamePlayAgainRes(pIMsg));
+				protocolChk(pMessageBase->ParseMsg());
+
+			Proc_End:
+				return hr;
+
+			}; // Result GamePlayAgainRes::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageData* pIMsg, MessageBase* &pMessageBase )
+
+			MessageData* GamePlayAgainRes::Create( IMemoryManager& memoryManager, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const Result &InResult, const uint32_t &InReplayMemberCount )
+			{
+ 				MessageData *pNewMsg = nullptr;
+				Result hr;
+
+				uint8_t *pMsgData = nullptr;
+
+				unsigned __uiMessageSize = (unsigned)(sizeof(MessageHeader) 
+					+ sizeof(RouteContext)
+					+ sizeof(TransactionID)
+					+ sizeof(Result)
+					+ sizeof(uint32_t));
+
+
+				protocolMem( pNewMsg = MessageData::NewMessage( memoryManager, GameInstance::GamePlayAgainRes::MID, __uiMessageSize ) );
+
+				pMsgData = pNewMsg->GetMessageData();
+
+				Protocol::PackParamCopy( pMsgData, &InRouteContext, sizeof(RouteContext));
+				Protocol::PackParamCopy( pMsgData, &InTransactionID, sizeof(TransactionID));
+				Protocol::PackParamCopy( pMsgData, &InResult, sizeof(Result));
+				Protocol::PackParamCopy( pMsgData, &InReplayMemberCount, sizeof(uint32_t));
+
+
+			Proc_End:
+
+				if(!hr)
+				{
+ 					if(pNewMsg != nullptr) GetSystemMemoryManager().Delete(pNewMsg);
+					pNewMsg = nullptr;
+				}
+				return pNewMsg;
+
+			}; // MessageData* GamePlayAgainRes::Create( IMemoryManager& memoryManager, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const Result &InResult, const uint32_t &InReplayMemberCount )
+
+			Result GamePlayAgainRes::OverrideRouteContextDestination( EntityUID to )
+			{
+ 				Result hr;
+
+				int iMsgSize;
+				uint8_t* pCur;
+				MessageData* pIMsg = GetMessage();
+				RouteContext routeContext;
+
+				protocolChkPtr(pIMsg);
+
+				iMsgSize = (unsigned)pIMsg->GetMessageSize() - sizeof(MessageHeader);
+				pCur = pIMsg->GetMessageData();
+
+				Assert( iMsgSize >= (INT)sizeof(RouteContext) );
+				memcpy( &routeContext, pCur, sizeof(RouteContext) );
+				routeContext.Components.To = to;
+				memcpy( pCur, &routeContext, sizeof(RouteContext) );
+
+
+			Proc_End:
+
+				return hr;
+
+			}; // Result GamePlayAgainRes::OverrideRouteContextDestination( EntityUID to )
+
+
+			Result GamePlayAgainRes::TraceOut(MessageData* pMsg)
+			{
+ 				GamePlayAgainRes parser;
+				parser.ParseMessage(pMsg);
+				protocolTrace( Debug1, "GamePlayAgain:{0}:{1} , RouteContext:{2}, TransactionID:{3}, Result:{4:X8}, ReplayMemberCount:{5}",
+						pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, parser.GetRouteContext(), parser.GetTransactionID(), parser.GetResult(), parser.GetReplayMemberCount()); 
+				return ResultCode::SUCCESS;
+			}; // Result GamePlayAgainRes::TraceOut(MessageData* pMsg)
+
+			// S2C: Somebody pressed play again. Only one of PartyUID and GameInsUID can have a value
+			const MessageID GamePlayAgainS2CEvt::MID = MessageID(MSGTYPE_EVENT, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_GAMEINSTANCE, 22);
+			Result GamePlayAgainS2CEvt::ParseMessage( MessageData* pIMsg )
+			{
+ 				Result hr;
+
+				int iMsgSize;
+				uint8_t* pCur;
+
+				protocolChkPtr(pIMsg);
+
+				iMsgSize = (unsigned)pIMsg->GetMessageSize() - sizeof(MessageHeader);
+				pCur = pIMsg->GetMessageData();
+
+				protocolChk( Protocol::StreamParamCopy( &m_RouteContext, pCur, iMsgSize, sizeof(RouteContext) ) );
+				protocolChk( Protocol::StreamParamCopy( &m_TargetPlayer, pCur, iMsgSize, sizeof(PlayerID) ) );
+				protocolChk( Protocol::StreamParamCopy( &m_PartyUID, pCur, iMsgSize, sizeof(PartyUID) ) );
+				protocolChk( Protocol::StreamParamCopy( &m_LeadPlayer, pCur, iMsgSize, sizeof(PlayerID) ) );
+
+
+			Proc_End:
+
+				return hr;
+
+			}; // Result GamePlayAgainS2CEvt::ParseMessage( MessageData* pIMsg )
+
+			Result GamePlayAgainS2CEvt::ParseMessageTo( MessageData* pIMsg, VariableMapBuilder& variableBuilder )
+			{
+ 				Result hr;
+
+
+				GamePlayAgainS2CEvt parser;
+				protocolChk(parser.ParseMessage(pIMsg));
+
+				variableBuilder.SetVariable("RouteContext", parser.GetRouteContext());
+				variableBuilder.SetVariable("TargetPlayer", parser.GetTargetPlayer());
+				variableBuilder.SetVariable("PartyUID", parser.GetPartyUID());
+				variableBuilder.SetVariable("LeadPlayer", parser.GetLeadPlayer());
+
+
+			Proc_End:
+
+				return hr;
+
+			}; // Result GamePlayAgainS2CEvt::ParseMessageTo( MessageData* pIMsg, VariableMapBuilder& variableBuilder )
+
+			Result GamePlayAgainS2CEvt::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageData* pIMsg, MessageBase* &pMessageBase )
+			{
+ 				Result hr;
+
+				protocolMem(pMessageBase = new(memoryManager) GamePlayAgainS2CEvt(pIMsg));
+				protocolChk(pMessageBase->ParseMsg());
+
+			Proc_End:
+				return hr;
+
+			}; // Result GamePlayAgainS2CEvt::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageData* pIMsg, MessageBase* &pMessageBase )
+
+			MessageData* GamePlayAgainS2CEvt::Create( IMemoryManager& memoryManager, const RouteContext &InRouteContext, const PlayerID &InTargetPlayer, const PartyUID &InPartyUID, const PlayerID &InLeadPlayer )
+			{
+ 				MessageData *pNewMsg = nullptr;
+				Result hr;
+
+				uint8_t *pMsgData = nullptr;
+
+				unsigned __uiMessageSize = (unsigned)(sizeof(MessageHeader) 
+					+ sizeof(RouteContext)
+					+ sizeof(PlayerID)
+					+ sizeof(PartyUID)
+					+ sizeof(PlayerID));
+
+
+				protocolMem( pNewMsg = MessageData::NewMessage( memoryManager, GameInstance::GamePlayAgainS2CEvt::MID, __uiMessageSize ) );
+
+				pMsgData = pNewMsg->GetMessageData();
+
+				Protocol::PackParamCopy( pMsgData, &InRouteContext, sizeof(RouteContext));
+				Protocol::PackParamCopy( pMsgData, &InTargetPlayer, sizeof(PlayerID));
+				Protocol::PackParamCopy( pMsgData, &InPartyUID, sizeof(PartyUID));
+				Protocol::PackParamCopy( pMsgData, &InLeadPlayer, sizeof(PlayerID));
+
+
+			Proc_End:
+
+				if(!hr)
+				{
+ 					if(pNewMsg != nullptr) GetSystemMemoryManager().Delete(pNewMsg);
+					pNewMsg = nullptr;
+				}
+				return pNewMsg;
+
+			}; // MessageData* GamePlayAgainS2CEvt::Create( IMemoryManager& memoryManager, const RouteContext &InRouteContext, const PlayerID &InTargetPlayer, const PartyUID &InPartyUID, const PlayerID &InLeadPlayer )
+
+			Result GamePlayAgainS2CEvt::OverrideRouteContextDestination( EntityUID to )
+			{
+ 				Result hr;
+
+				int iMsgSize;
+				uint8_t* pCur;
+				MessageData* pIMsg = GetMessage();
+				RouteContext routeContext;
+
+				protocolChkPtr(pIMsg);
+
+				iMsgSize = (unsigned)pIMsg->GetMessageSize() - sizeof(MessageHeader);
+				pCur = pIMsg->GetMessageData();
+
+				Assert( iMsgSize >= (INT)sizeof(RouteContext) );
+				memcpy( &routeContext, pCur, sizeof(RouteContext) );
+				routeContext.Components.To = to;
+				memcpy( pCur, &routeContext, sizeof(RouteContext) );
+
+
+			Proc_End:
+
+				return hr;
+
+			}; // Result GamePlayAgainS2CEvt::OverrideRouteContextDestination( EntityUID to )
+
+
+			Result GamePlayAgainS2CEvt::TraceOut(MessageData* pMsg)
+			{
+ 				GamePlayAgainS2CEvt parser;
+				parser.ParseMessage(pMsg);
+				protocolTrace( Debug1, "GamePlayAgain:{0}:{1} , RouteContext:{2}, TargetPlayer:{3}, PartyUID:{4}, LeadPlayer:{5}",
+						pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, parser.GetRouteContext(), parser.GetTargetPlayer(), parser.GetPartyUID(), parser.GetLeadPlayer()); 
+				return ResultCode::SUCCESS;
+			}; // Result GamePlayAgainS2CEvt::TraceOut(MessageData* pMsg)
+
+			// Cmd: Player. revive himself
+			const MessageID GameRevealPlayerCmd::MID = MessageID(MSGTYPE_COMMAND, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_GAMEINSTANCE, 23);
+			Result GameRevealPlayerCmd::ParseMessage( MessageData* pIMsg )
+			{
+ 				Result hr;
+
+				int iMsgSize;
+				uint8_t* pCur;
+				uint16_t numberofTargetPlayerID = 0; PlayerID* pTargetPlayerID = nullptr;
+
+				protocolChkPtr(pIMsg);
+
+				iMsgSize = (unsigned)pIMsg->GetMessageSize() - sizeof(MessageHeader);
+				pCur = pIMsg->GetMessageData();
+
+				protocolChk( Protocol::StreamParamCopy( &m_RouteContext, pCur, iMsgSize, sizeof(RouteContext) ) );
+				protocolChk( Protocol::StreamParamCopy( &m_TransactionID, pCur, iMsgSize, sizeof(TransactionID) ) );
+				protocolChk( Protocol::StreamParamCopy( &m_PlayerID, pCur, iMsgSize, sizeof(PlayerID) ) );
+				protocolChk( Protocol::StreamParamCopy( &numberofTargetPlayerID, pCur, iMsgSize, sizeof(uint16_t) ) );
+				protocolChk( Protocol::StreamParamLnk( pTargetPlayerID, pCur, iMsgSize, sizeof(PlayerID)*numberofTargetPlayerID ) );
+				m_TargetPlayerID.SetLinkedBuffer(numberofTargetPlayerID, numberofTargetPlayerID, pTargetPlayerID);
+
+
+			Proc_End:
+
+				return hr;
+
+			}; // Result GameRevealPlayerCmd::ParseMessage( MessageData* pIMsg )
+
+			Result GameRevealPlayerCmd::ParseMessageTo( MessageData* pIMsg, VariableMapBuilder& variableBuilder )
+			{
+ 				Result hr;
+
+
+				GameRevealPlayerCmd parser;
+				protocolChk(parser.ParseMessage(pIMsg));
+
+				variableBuilder.SetVariable("RouteContext", parser.GetRouteContext());
+				variableBuilder.SetVariable("TransactionID", parser.GetTransactionID());
+				variableBuilder.SetVariable("PlayerID", parser.GetPlayerID());
+				variableBuilder.SetVariable("TargetPlayerID", (int)parser.GetTargetPlayerID().GetItemCount(), parser.GetTargetPlayerID().data());
+
+
+			Proc_End:
+
+				return hr;
+
+			}; // Result GameRevealPlayerCmd::ParseMessageTo( MessageData* pIMsg, VariableMapBuilder& variableBuilder )
+
+			Result GameRevealPlayerCmd::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageData* pIMsg, MessageBase* &pMessageBase )
+			{
+ 				Result hr;
+
+				protocolMem(pMessageBase = new(memoryManager) GameRevealPlayerCmd(pIMsg));
+				protocolChk(pMessageBase->ParseMsg());
+
+			Proc_End:
+				return hr;
+
+			}; // Result GameRevealPlayerCmd::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageData* pIMsg, MessageBase* &pMessageBase )
+
+			MessageData* GameRevealPlayerCmd::Create( IMemoryManager& memoryManager, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const PlayerID &InPlayerID, const Array<PlayerID>& InTargetPlayerID )
+			{
+ 				MessageData *pNewMsg = nullptr;
+				Result hr;
+
+				uint8_t *pMsgData = nullptr;
+
+				unsigned __uiMessageSize = (unsigned)(sizeof(MessageHeader) 
+					+ sizeof(RouteContext)
+					+ sizeof(TransactionID)
+					+ sizeof(PlayerID)
+					+ sizeof(PlayerID)*InTargetPlayerID.GetItemCount() + sizeof(uint16_t));
+
+
+				uint16_t numberOfInTargetPlayerID = (uint16_t)InTargetPlayerID.GetItemCount(); 
+				protocolMem( pNewMsg = MessageData::NewMessage( memoryManager, GameInstance::GameRevealPlayerCmd::MID, __uiMessageSize ) );
+
+				pMsgData = pNewMsg->GetMessageData();
+
+				Protocol::PackParamCopy( pMsgData, &InRouteContext, sizeof(RouteContext));
+				Protocol::PackParamCopy( pMsgData, &InTransactionID, sizeof(TransactionID));
+				Protocol::PackParamCopy( pMsgData, &InPlayerID, sizeof(PlayerID));
+				Protocol::PackParamCopy( pMsgData, &numberOfInTargetPlayerID, sizeof(uint16_t)); 
+				Protocol::PackParamCopy( pMsgData, InTargetPlayerID.data(), (INT)(sizeof(PlayerID)*InTargetPlayerID.GetItemCount())); 
+
+
+			Proc_End:
+
+				if(!hr)
+				{
+ 					if(pNewMsg != nullptr) GetSystemMemoryManager().Delete(pNewMsg);
+					pNewMsg = nullptr;
+				}
+				return pNewMsg;
+
+			}; // MessageData* GameRevealPlayerCmd::Create( IMemoryManager& memoryManager, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const PlayerID &InPlayerID, const Array<PlayerID>& InTargetPlayerID )
+
+			Result GameRevealPlayerCmd::OverrideRouteContextDestination( EntityUID to )
+			{
+ 				Result hr;
+
+				int iMsgSize;
+				uint8_t* pCur;
+				MessageData* pIMsg = GetMessage();
+				RouteContext routeContext;
+
+				protocolChkPtr(pIMsg);
+
+				iMsgSize = (unsigned)pIMsg->GetMessageSize() - sizeof(MessageHeader);
+				pCur = pIMsg->GetMessageData();
+
+				Assert( iMsgSize >= (INT)sizeof(RouteContext) );
+				memcpy( &routeContext, pCur, sizeof(RouteContext) );
+				routeContext.Components.To = to;
+				memcpy( pCur, &routeContext, sizeof(RouteContext) );
+
+
+			Proc_End:
+
+				return hr;
+
+			}; // Result GameRevealPlayerCmd::OverrideRouteContextDestination( EntityUID to )
+
+
+			Result GameRevealPlayerCmd::TraceOut(MessageData* pMsg)
+			{
+ 				GameRevealPlayerCmd parser;
+				parser.ParseMessage(pMsg);
+				protocolTrace( Debug1, "GameRevealPlayer:{0}:{1} , RouteContext:{2}, TransactionID:{3}, PlayerID:{4}, TargetPlayerID:{5,30}",
+						pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, parser.GetRouteContext(), parser.GetTransactionID(), parser.GetPlayerID(), parser.GetTargetPlayerID()); 
+				return ResultCode::SUCCESS;
+			}; // Result GameRevealPlayerCmd::TraceOut(MessageData* pMsg)
+
+			const MessageID GameRevealPlayerRes::MID = MessageID(MSGTYPE_RESULT, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_GAMEINSTANCE, 23);
+			Result GameRevealPlayerRes::ParseMessage( MessageData* pIMsg )
+			{
+ 				Result hr;
+
+				int iMsgSize;
+				uint8_t* pCur;
+				uint16_t numberofRevealedPlayerID = 0; PlayerID* pRevealedPlayerID = nullptr;
+				uint16_t numberofRevealedRole = 0; PlayerRole* pRevealedRole = nullptr;
+
+				protocolChkPtr(pIMsg);
+
+				iMsgSize = (unsigned)pIMsg->GetMessageSize() - sizeof(MessageHeader);
+				pCur = pIMsg->GetMessageData();
+
+				protocolChk( Protocol::StreamParamCopy( &m_RouteContext, pCur, iMsgSize, sizeof(RouteContext) ) );
+				protocolChk( Protocol::StreamParamCopy( &m_TransactionID, pCur, iMsgSize, sizeof(TransactionID) ) );
+				protocolChk( Protocol::StreamParamCopy( &m_Result, pCur, iMsgSize, sizeof(Result) ) );
+				protocolChk( Protocol::StreamParamCopy( &numberofRevealedPlayerID, pCur, iMsgSize, sizeof(uint16_t) ) );
+				protocolChk( Protocol::StreamParamLnk( pRevealedPlayerID, pCur, iMsgSize, sizeof(PlayerID)*numberofRevealedPlayerID ) );
+				m_RevealedPlayerID.SetLinkedBuffer(numberofRevealedPlayerID, numberofRevealedPlayerID, pRevealedPlayerID);
+				protocolChk( Protocol::StreamParamCopy( &numberofRevealedRole, pCur, iMsgSize, sizeof(uint16_t) ) );
+				protocolChk( Protocol::StreamParamLnk( pRevealedRole, pCur, iMsgSize, sizeof(PlayerRole)*numberofRevealedRole ) );
+				m_RevealedRole.SetLinkedBuffer(numberofRevealedRole, numberofRevealedRole, pRevealedRole);
+
+
+			Proc_End:
+
+				return hr;
+
+			}; // Result GameRevealPlayerRes::ParseMessage( MessageData* pIMsg )
+
+			Result GameRevealPlayerRes::ParseMessageTo( MessageData* pIMsg, VariableMapBuilder& variableBuilder )
+			{
+ 				Result hr;
+
+
+				GameRevealPlayerRes parser;
+				protocolChk(parser.ParseMessage(pIMsg));
+
+				variableBuilder.SetVariable("RouteContext", parser.GetRouteContext());
+				variableBuilder.SetVariable("TransactionID", parser.GetTransactionID());
+				variableBuilder.SetVariable("Result", parser.GetResult());
+				variableBuilder.SetVariable("RevealedPlayerID", (int)parser.GetRevealedPlayerID().GetItemCount(), parser.GetRevealedPlayerID().data());
+				variableBuilder.SetVariable("RevealedRole", (int)parser.GetRevealedRole().GetItemCount(), parser.GetRevealedRole().data());
+
+
+			Proc_End:
+
+				return hr;
+
+			}; // Result GameRevealPlayerRes::ParseMessageTo( MessageData* pIMsg, VariableMapBuilder& variableBuilder )
+
+			Result GameRevealPlayerRes::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageData* pIMsg, MessageBase* &pMessageBase )
+			{
+ 				Result hr;
+
+				protocolMem(pMessageBase = new(memoryManager) GameRevealPlayerRes(pIMsg));
+				protocolChk(pMessageBase->ParseMsg());
+
+			Proc_End:
+				return hr;
+
+			}; // Result GameRevealPlayerRes::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageData* pIMsg, MessageBase* &pMessageBase )
+
+			MessageData* GameRevealPlayerRes::Create( IMemoryManager& memoryManager, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const Result &InResult, const Array<PlayerID>& InRevealedPlayerID, const Array<PlayerRole>& InRevealedRole )
+			{
+ 				MessageData *pNewMsg = nullptr;
+				Result hr;
+
+				uint8_t *pMsgData = nullptr;
+
+				unsigned __uiMessageSize = (unsigned)(sizeof(MessageHeader) 
+					+ sizeof(RouteContext)
+					+ sizeof(TransactionID)
+					+ sizeof(Result)
+					+ sizeof(PlayerID)*InRevealedPlayerID.GetItemCount() + sizeof(uint16_t)
+					+ sizeof(PlayerRole)*InRevealedRole.GetItemCount() + sizeof(uint16_t));
+
+
+				uint16_t numberOfInRevealedPlayerID = (uint16_t)InRevealedPlayerID.GetItemCount(); 
+				uint16_t numberOfInRevealedRole = (uint16_t)InRevealedRole.GetItemCount(); 
+				protocolMem( pNewMsg = MessageData::NewMessage( memoryManager, GameInstance::GameRevealPlayerRes::MID, __uiMessageSize ) );
+
+				pMsgData = pNewMsg->GetMessageData();
+
+				Protocol::PackParamCopy( pMsgData, &InRouteContext, sizeof(RouteContext));
+				Protocol::PackParamCopy( pMsgData, &InTransactionID, sizeof(TransactionID));
+				Protocol::PackParamCopy( pMsgData, &InResult, sizeof(Result));
+				Protocol::PackParamCopy( pMsgData, &numberOfInRevealedPlayerID, sizeof(uint16_t)); 
+				Protocol::PackParamCopy( pMsgData, InRevealedPlayerID.data(), (INT)(sizeof(PlayerID)*InRevealedPlayerID.GetItemCount())); 
+				Protocol::PackParamCopy( pMsgData, &numberOfInRevealedRole, sizeof(uint16_t)); 
+				Protocol::PackParamCopy( pMsgData, InRevealedRole.data(), (INT)(sizeof(PlayerRole)*InRevealedRole.GetItemCount())); 
+
+
+			Proc_End:
+
+				if(!hr)
+				{
+ 					if(pNewMsg != nullptr) GetSystemMemoryManager().Delete(pNewMsg);
+					pNewMsg = nullptr;
+				}
+				return pNewMsg;
+
+			}; // MessageData* GameRevealPlayerRes::Create( IMemoryManager& memoryManager, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const Result &InResult, const Array<PlayerID>& InRevealedPlayerID, const Array<PlayerRole>& InRevealedRole )
+
+			Result GameRevealPlayerRes::OverrideRouteContextDestination( EntityUID to )
+			{
+ 				Result hr;
+
+				int iMsgSize;
+				uint8_t* pCur;
+				MessageData* pIMsg = GetMessage();
+				RouteContext routeContext;
+
+				protocolChkPtr(pIMsg);
+
+				iMsgSize = (unsigned)pIMsg->GetMessageSize() - sizeof(MessageHeader);
+				pCur = pIMsg->GetMessageData();
+
+				Assert( iMsgSize >= (INT)sizeof(RouteContext) );
+				memcpy( &routeContext, pCur, sizeof(RouteContext) );
+				routeContext.Components.To = to;
+				memcpy( pCur, &routeContext, sizeof(RouteContext) );
+
+
+			Proc_End:
+
+				return hr;
+
+			}; // Result GameRevealPlayerRes::OverrideRouteContextDestination( EntityUID to )
+
+
+			Result GameRevealPlayerRes::TraceOut(MessageData* pMsg)
+			{
+ 				GameRevealPlayerRes parser;
+				parser.ParseMessage(pMsg);
+				protocolTrace( Debug1, "GameRevealPlayer:{0}:{1} , RouteContext:{2}, TransactionID:{3}, Result:{4:X8}, RevealedPlayerID:{5,30}, RevealedRole:{6,30}",
+						pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, parser.GetRouteContext(), parser.GetTransactionID(), parser.GetResult(), parser.GetRevealedPlayerID(), parser.GetRevealedRole()); 
+				return ResultCode::SUCCESS;
+			}; // Result GameRevealPlayerRes::TraceOut(MessageData* pMsg)
+
+			// Cmd: Player. revive himself
+			const MessageID GamePlayerReviveCmd::MID = MessageID(MSGTYPE_COMMAND, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_GAMEINSTANCE, 24);
+			Result GamePlayerReviveCmd::ParseMessage( MessageData* pIMsg )
+			{
+ 				Result hr;
+
+				int iMsgSize;
+				uint8_t* pCur;
+
+				protocolChkPtr(pIMsg);
+
+				iMsgSize = (unsigned)pIMsg->GetMessageSize() - sizeof(MessageHeader);
+				pCur = pIMsg->GetMessageData();
+
+				protocolChk( Protocol::StreamParamCopy( &m_RouteContext, pCur, iMsgSize, sizeof(RouteContext) ) );
+				protocolChk( Protocol::StreamParamCopy( &m_TransactionID, pCur, iMsgSize, sizeof(TransactionID) ) );
+				protocolChk( Protocol::StreamParamCopy( &m_PlayerID, pCur, iMsgSize, sizeof(PlayerID) ) );
+
+
+			Proc_End:
+
+				return hr;
+
+			}; // Result GamePlayerReviveCmd::ParseMessage( MessageData* pIMsg )
+
+			Result GamePlayerReviveCmd::ParseMessageTo( MessageData* pIMsg, VariableMapBuilder& variableBuilder )
+			{
+ 				Result hr;
+
+
+				GamePlayerReviveCmd parser;
+				protocolChk(parser.ParseMessage(pIMsg));
+
+				variableBuilder.SetVariable("RouteContext", parser.GetRouteContext());
+				variableBuilder.SetVariable("TransactionID", parser.GetTransactionID());
+				variableBuilder.SetVariable("PlayerID", parser.GetPlayerID());
+
+
+			Proc_End:
+
+				return hr;
+
+			}; // Result GamePlayerReviveCmd::ParseMessageTo( MessageData* pIMsg, VariableMapBuilder& variableBuilder )
+
+			Result GamePlayerReviveCmd::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageData* pIMsg, MessageBase* &pMessageBase )
+			{
+ 				Result hr;
+
+				protocolMem(pMessageBase = new(memoryManager) GamePlayerReviveCmd(pIMsg));
+				protocolChk(pMessageBase->ParseMsg());
+
+			Proc_End:
+				return hr;
+
+			}; // Result GamePlayerReviveCmd::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageData* pIMsg, MessageBase* &pMessageBase )
+
+			MessageData* GamePlayerReviveCmd::Create( IMemoryManager& memoryManager, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const PlayerID &InPlayerID )
+			{
+ 				MessageData *pNewMsg = nullptr;
+				Result hr;
+
+				uint8_t *pMsgData = nullptr;
+
+				unsigned __uiMessageSize = (unsigned)(sizeof(MessageHeader) 
+					+ sizeof(RouteContext)
+					+ sizeof(TransactionID)
+					+ sizeof(PlayerID));
+
+
+				protocolMem( pNewMsg = MessageData::NewMessage( memoryManager, GameInstance::GamePlayerReviveCmd::MID, __uiMessageSize ) );
+
+				pMsgData = pNewMsg->GetMessageData();
+
+				Protocol::PackParamCopy( pMsgData, &InRouteContext, sizeof(RouteContext));
+				Protocol::PackParamCopy( pMsgData, &InTransactionID, sizeof(TransactionID));
+				Protocol::PackParamCopy( pMsgData, &InPlayerID, sizeof(PlayerID));
+
+
+			Proc_End:
+
+				if(!hr)
+				{
+ 					if(pNewMsg != nullptr) GetSystemMemoryManager().Delete(pNewMsg);
+					pNewMsg = nullptr;
+				}
+				return pNewMsg;
+
+			}; // MessageData* GamePlayerReviveCmd::Create( IMemoryManager& memoryManager, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const PlayerID &InPlayerID )
+
+			Result GamePlayerReviveCmd::OverrideRouteContextDestination( EntityUID to )
+			{
+ 				Result hr;
+
+				int iMsgSize;
+				uint8_t* pCur;
+				MessageData* pIMsg = GetMessage();
+				RouteContext routeContext;
+
+				protocolChkPtr(pIMsg);
+
+				iMsgSize = (unsigned)pIMsg->GetMessageSize() - sizeof(MessageHeader);
+				pCur = pIMsg->GetMessageData();
+
+				Assert( iMsgSize >= (INT)sizeof(RouteContext) );
+				memcpy( &routeContext, pCur, sizeof(RouteContext) );
+				routeContext.Components.To = to;
+				memcpy( pCur, &routeContext, sizeof(RouteContext) );
+
+
+			Proc_End:
+
+				return hr;
+
+			}; // Result GamePlayerReviveCmd::OverrideRouteContextDestination( EntityUID to )
+
+
+			Result GamePlayerReviveCmd::TraceOut(MessageData* pMsg)
+			{
+ 				GamePlayerReviveCmd parser;
+				parser.ParseMessage(pMsg);
+				protocolTrace( Debug1, "GamePlayerRevive:{0}:{1} , RouteContext:{2}, TransactionID:{3}, PlayerID:{4}",
+						pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, parser.GetRouteContext(), parser.GetTransactionID(), parser.GetPlayerID()); 
+				return ResultCode::SUCCESS;
+			}; // Result GamePlayerReviveCmd::TraceOut(MessageData* pMsg)
+
+			const MessageID GamePlayerReviveRes::MID = MessageID(MSGTYPE_RESULT, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_GAMEINSTANCE, 24);
+			Result GamePlayerReviveRes::ParseMessage( MessageData* pIMsg )
+			{
+ 				Result hr;
+
+				int iMsgSize;
+				uint8_t* pCur;
+
+				protocolChkPtr(pIMsg);
+
+				iMsgSize = (unsigned)pIMsg->GetMessageSize() - sizeof(MessageHeader);
+				pCur = pIMsg->GetMessageData();
+
+				protocolChk( Protocol::StreamParamCopy( &m_RouteContext, pCur, iMsgSize, sizeof(RouteContext) ) );
+				protocolChk( Protocol::StreamParamCopy( &m_TransactionID, pCur, iMsgSize, sizeof(TransactionID) ) );
+				protocolChk( Protocol::StreamParamCopy( &m_Result, pCur, iMsgSize, sizeof(Result) ) );
+
+
+			Proc_End:
+
+				return hr;
+
+			}; // Result GamePlayerReviveRes::ParseMessage( MessageData* pIMsg )
+
+			Result GamePlayerReviveRes::ParseMessageTo( MessageData* pIMsg, VariableMapBuilder& variableBuilder )
+			{
+ 				Result hr;
+
+
+				GamePlayerReviveRes parser;
+				protocolChk(parser.ParseMessage(pIMsg));
+
+				variableBuilder.SetVariable("RouteContext", parser.GetRouteContext());
+				variableBuilder.SetVariable("TransactionID", parser.GetTransactionID());
+				variableBuilder.SetVariable("Result", parser.GetResult());
+
+
+			Proc_End:
+
+				return hr;
+
+			}; // Result GamePlayerReviveRes::ParseMessageTo( MessageData* pIMsg, VariableMapBuilder& variableBuilder )
+
+			Result GamePlayerReviveRes::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageData* pIMsg, MessageBase* &pMessageBase )
+			{
+ 				Result hr;
+
+				protocolMem(pMessageBase = new(memoryManager) GamePlayerReviveRes(pIMsg));
+				protocolChk(pMessageBase->ParseMsg());
+
+			Proc_End:
+				return hr;
+
+			}; // Result GamePlayerReviveRes::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageData* pIMsg, MessageBase* &pMessageBase )
+
+			MessageData* GamePlayerReviveRes::Create( IMemoryManager& memoryManager, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const Result &InResult )
+			{
+ 				MessageData *pNewMsg = nullptr;
+				Result hr;
+
+				uint8_t *pMsgData = nullptr;
+
+				unsigned __uiMessageSize = (unsigned)(sizeof(MessageHeader) 
+					+ sizeof(RouteContext)
+					+ sizeof(TransactionID)
+					+ sizeof(Result));
+
+
+				protocolMem( pNewMsg = MessageData::NewMessage( memoryManager, GameInstance::GamePlayerReviveRes::MID, __uiMessageSize ) );
+
+				pMsgData = pNewMsg->GetMessageData();
+
+				Protocol::PackParamCopy( pMsgData, &InRouteContext, sizeof(RouteContext));
+				Protocol::PackParamCopy( pMsgData, &InTransactionID, sizeof(TransactionID));
+				Protocol::PackParamCopy( pMsgData, &InResult, sizeof(Result));
+
+
+			Proc_End:
+
+				if(!hr)
+				{
+ 					if(pNewMsg != nullptr) GetSystemMemoryManager().Delete(pNewMsg);
+					pNewMsg = nullptr;
+				}
+				return pNewMsg;
+
+			}; // MessageData* GamePlayerReviveRes::Create( IMemoryManager& memoryManager, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const Result &InResult )
+
+			Result GamePlayerReviveRes::OverrideRouteContextDestination( EntityUID to )
+			{
+ 				Result hr;
+
+				int iMsgSize;
+				uint8_t* pCur;
+				MessageData* pIMsg = GetMessage();
+				RouteContext routeContext;
+
+				protocolChkPtr(pIMsg);
+
+				iMsgSize = (unsigned)pIMsg->GetMessageSize() - sizeof(MessageHeader);
+				pCur = pIMsg->GetMessageData();
+
+				Assert( iMsgSize >= (INT)sizeof(RouteContext) );
+				memcpy( &routeContext, pCur, sizeof(RouteContext) );
+				routeContext.Components.To = to;
+				memcpy( pCur, &routeContext, sizeof(RouteContext) );
+
+
+			Proc_End:
+
+				return hr;
+
+			}; // Result GamePlayerReviveRes::OverrideRouteContextDestination( EntityUID to )
+
+
+			Result GamePlayerReviveRes::TraceOut(MessageData* pMsg)
+			{
+ 				GamePlayerReviveRes parser;
+				parser.ParseMessage(pMsg);
+				protocolTrace( Debug1, "GamePlayerRevive:{0}:{1} , RouteContext:{2}, TransactionID:{3}, Result:{4:X8}",
+						pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, parser.GetRouteContext(), parser.GetTransactionID(), parser.GetResult()); 
+				return ResultCode::SUCCESS;
+			}; // Result GamePlayerReviveRes::TraceOut(MessageData* pMsg)
+
+			// S2C: Player is revived
+			const MessageID GamePlayerRevivedS2CEvt::MID = MessageID(MSGTYPE_EVENT, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_GAMEINSTANCE, 25);
+			Result GamePlayerRevivedS2CEvt::ParseMessage( MessageData* pIMsg )
+			{
+ 				Result hr;
+
+				int iMsgSize;
+				uint8_t* pCur;
+
+				protocolChkPtr(pIMsg);
+
+				iMsgSize = (unsigned)pIMsg->GetMessageSize() - sizeof(MessageHeader);
+				pCur = pIMsg->GetMessageData();
+
+				protocolChk( Protocol::StreamParamCopy( &m_RouteContext, pCur, iMsgSize, sizeof(RouteContext) ) );
+				protocolChk( Protocol::StreamParamCopy( &m_RevivedPlayerID, pCur, iMsgSize, sizeof(PlayerID) ) );
+
+
+			Proc_End:
+
+				return hr;
+
+			}; // Result GamePlayerRevivedS2CEvt::ParseMessage( MessageData* pIMsg )
+
+			Result GamePlayerRevivedS2CEvt::ParseMessageTo( MessageData* pIMsg, VariableMapBuilder& variableBuilder )
+			{
+ 				Result hr;
+
+
+				GamePlayerRevivedS2CEvt parser;
+				protocolChk(parser.ParseMessage(pIMsg));
+
+				variableBuilder.SetVariable("RouteContext", parser.GetRouteContext());
+				variableBuilder.SetVariable("RevivedPlayerID", parser.GetRevivedPlayerID());
+
+
+			Proc_End:
+
+				return hr;
+
+			}; // Result GamePlayerRevivedS2CEvt::ParseMessageTo( MessageData* pIMsg, VariableMapBuilder& variableBuilder )
+
+			Result GamePlayerRevivedS2CEvt::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageData* pIMsg, MessageBase* &pMessageBase )
+			{
+ 				Result hr;
+
+				protocolMem(pMessageBase = new(memoryManager) GamePlayerRevivedS2CEvt(pIMsg));
+				protocolChk(pMessageBase->ParseMsg());
+
+			Proc_End:
+				return hr;
+
+			}; // Result GamePlayerRevivedS2CEvt::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageData* pIMsg, MessageBase* &pMessageBase )
+
+			MessageData* GamePlayerRevivedS2CEvt::Create( IMemoryManager& memoryManager, const RouteContext &InRouteContext, const PlayerID &InRevivedPlayerID )
+			{
+ 				MessageData *pNewMsg = nullptr;
+				Result hr;
+
+				uint8_t *pMsgData = nullptr;
+
+				unsigned __uiMessageSize = (unsigned)(sizeof(MessageHeader) 
+					+ sizeof(RouteContext)
+					+ sizeof(PlayerID));
+
+
+				protocolMem( pNewMsg = MessageData::NewMessage( memoryManager, GameInstance::GamePlayerRevivedS2CEvt::MID, __uiMessageSize ) );
+
+				pMsgData = pNewMsg->GetMessageData();
+
+				Protocol::PackParamCopy( pMsgData, &InRouteContext, sizeof(RouteContext));
+				Protocol::PackParamCopy( pMsgData, &InRevivedPlayerID, sizeof(PlayerID));
+
+
+			Proc_End:
+
+				if(!hr)
+				{
+ 					if(pNewMsg != nullptr) GetSystemMemoryManager().Delete(pNewMsg);
+					pNewMsg = nullptr;
+				}
+				return pNewMsg;
+
+			}; // MessageData* GamePlayerRevivedS2CEvt::Create( IMemoryManager& memoryManager, const RouteContext &InRouteContext, const PlayerID &InRevivedPlayerID )
+
+			Result GamePlayerRevivedS2CEvt::OverrideRouteContextDestination( EntityUID to )
+			{
+ 				Result hr;
+
+				int iMsgSize;
+				uint8_t* pCur;
+				MessageData* pIMsg = GetMessage();
+				RouteContext routeContext;
+
+				protocolChkPtr(pIMsg);
+
+				iMsgSize = (unsigned)pIMsg->GetMessageSize() - sizeof(MessageHeader);
+				pCur = pIMsg->GetMessageData();
+
+				Assert( iMsgSize >= (INT)sizeof(RouteContext) );
+				memcpy( &routeContext, pCur, sizeof(RouteContext) );
+				routeContext.Components.To = to;
+				memcpy( pCur, &routeContext, sizeof(RouteContext) );
+
+
+			Proc_End:
+
+				return hr;
+
+			}; // Result GamePlayerRevivedS2CEvt::OverrideRouteContextDestination( EntityUID to )
+
+
+			Result GamePlayerRevivedS2CEvt::TraceOut(MessageData* pMsg)
+			{
+ 				GamePlayerRevivedS2CEvt parser;
+				parser.ParseMessage(pMsg);
+				protocolTrace( Debug1, "GamePlayerRevived:{0}:{1} , RouteContext:{2}, RevivedPlayerID:{3}",
+						pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, parser.GetRouteContext(), parser.GetRevivedPlayerID()); 
+				return ResultCode::SUCCESS;
+			}; // Result GamePlayerRevivedS2CEvt::TraceOut(MessageData* pMsg)
+
+
+
+		}; // namespace GameInstance
+	}; // namespace Message
+}; // namespace SF
+
+

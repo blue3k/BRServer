@@ -35,7 +35,7 @@
 SF_MEMORYPOOL_IMPLEMENT(BR::Svr::MatchingQueueServiceEntity::QueueItem);
 
 
-namespace BR {
+namespace SF {
 namespace Svr {
 
 
@@ -555,7 +555,7 @@ namespace Svr {
 
 
 }; // namespace Svr {
-}; // namespace BR {
+}; // namespace SF {
 
 
 

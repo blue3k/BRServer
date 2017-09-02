@@ -25,7 +25,7 @@
 #include "Factory.h"
 
 
-namespace BR {
+namespace SF {
 namespace DB {
 
 	// Constructor
@@ -132,4 +132,4 @@ namespace DB {
 	
 
 } // namespace DB
-} // namespace BR
+} // namespace SF

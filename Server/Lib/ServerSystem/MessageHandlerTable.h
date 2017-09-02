@@ -15,7 +15,7 @@
 #include "Net/NetDef.h"
 #include "SFAssert.h"
 #include "Container/StaticHashTable.h"
-#include "Types/SvrTypes.h"
+#include "Types/BrSvrTypes.h"
 #include "Container/ContainerTrait.h"
 
 
@@ -31,7 +31,7 @@ namespace SF {
 	};
 }
 
-namespace BR {
+namespace SF {
 
 namespace Svr {
 
@@ -222,7 +222,7 @@ namespace Svr {
 
 
 }; // namespace Svr
-}; // namespace BR
+}; // namespace SF
 
 
 

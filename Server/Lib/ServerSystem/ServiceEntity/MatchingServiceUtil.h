@@ -13,14 +13,14 @@
 
 #include "SFTypedefs.h"
 #include "ServerSystem/Transaction.h"
-#include "Common/ArrayUtil.h"
+#include "Container/SFArray.h"
 #include "Types/BrBaseTypes.h"
 #include "Common/GameConst.h"
 
 
 
 
-namespace BR {
+namespace SF {
 namespace Svr {
 namespace MatchingUtil
 {
@@ -36,5 +36,5 @@ namespace MatchingUtil
 
 }
 } // namespace Svr 
-} // namespace BR 
+} // namespace SF 
 

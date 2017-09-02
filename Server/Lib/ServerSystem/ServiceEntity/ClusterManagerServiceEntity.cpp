@@ -32,7 +32,7 @@
 #include "ServerSystem/ServerService/ClusterServerService.h"
 
 
-namespace BR {
+namespace SF {
 namespace Svr {
 
 
@@ -267,7 +267,7 @@ namespace Svr {
 	}
 	
 }; // namespace Svr {
-}; // namespace BR {
+}; // namespace SF {
 
 
 

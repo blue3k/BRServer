@@ -13,7 +13,7 @@
 
 #include "String/StrUtil.h"
 #include "Common/ClassUtil.h"
-#include "Common/ArrayUtil.h"
+#include "Container/SFArray.h"
 #include "Object/SharedPointer.h"
 #include "Common/StaticDoubleLinkedList.h"
 #include "ServerSystem/PerformanceCounter/PerformanceCounter.h"
@@ -21,7 +21,7 @@
 
 
 
-namespace BR {
+namespace SF {
 	namespace Svr {
 
 
@@ -87,7 +87,7 @@ namespace BR {
 	extern template class SharedPointerT < Svr::PerformanceCounterInstance >;
 	extern template class WeakPointerT < Svr::PerformanceCounterInstance >;
 
-}; // namespace BR
+}; // namespace SF
 
 
 

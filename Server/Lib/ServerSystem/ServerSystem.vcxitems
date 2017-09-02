@@ -156,8 +156,6 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)Task\ServerTask.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Task\ServerTaskEvent.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Task\TaskManager.h" />
-    <ClInclude Include="$(MSBuildThisFileDirectory)Task\TimeScheduler.h" />
-    <ClInclude Include="$(MSBuildThisFileDirectory)Task\TimeSchedulerAction.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Transaction.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)TransactionSteper.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)TransactionUtil.h" />
@@ -165,7 +163,6 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)Types\BrBaseTypes.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Types\BrGameTypes.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Types\BrSvrTypes.h" />
-    <ClInclude Include="$(MSBuildThisFileDirectory)Types\SvrTypes.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)ZooKeeper\SFZooKeeper.h" />
   </ItemGroup>
   <ItemGroup>
@@ -257,11 +254,9 @@
     <ClCompile Include="$(MSBuildThisFileDirectory)Task\ServerTask.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)Task\ServerTaskEvent.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)Task\TaskManager.cpp" />
-    <ClCompile Include="$(MSBuildThisFileDirectory)Task\TimeScheduler.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)Transaction.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)Transaction\ServerTransactionGeneric.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)Types\BrGameTypes.cpp" />
-    <ClCompile Include="$(MSBuildThisFileDirectory)Types\SvrTypes.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)ZooKeeper\SFZooKeeper.cpp" />
   </ItemGroup>
   <ItemGroup>

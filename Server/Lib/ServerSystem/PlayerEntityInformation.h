@@ -26,7 +26,7 @@
 
 
 
-namespace BR {
+namespace SF {
 namespace Svr {
 
 	class ServerEntity;
@@ -81,5 +81,5 @@ namespace Svr {
 #include "PlayerEntityInformation.inl"
 
 }; // namespace Svr
-}; // namespace BR
+}; // namespace SF
 

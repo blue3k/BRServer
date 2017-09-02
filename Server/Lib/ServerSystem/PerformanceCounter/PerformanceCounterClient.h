@@ -21,7 +21,7 @@
 
 
 
-namespace BR {
+namespace SF {
 
 	namespace Net{
 		class RawUDP;
@@ -131,7 +131,7 @@ namespace BR {
 		};
 
 
-	}; // namespace BR
+	}; // namespace SF
 }; // namespace Svr
 
 

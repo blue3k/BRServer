@@ -14,11 +14,11 @@
 #include "SFTypedefs.h"
 #include "openssl/crypto.h"
 #include "Common/SystemSynchronization.h"
-#include "Common/ArrayUtil.h"
+#include "Container/SFArray.h"
 
 
 
-namespace BR {
+namespace SF {
 namespace Svr {
 namespace Google {
 
@@ -60,5 +60,5 @@ namespace Google {
 
 }; // namespace Google
 }; // namespace Svr
-}; // namespace BR
+}; // namespace SF
 

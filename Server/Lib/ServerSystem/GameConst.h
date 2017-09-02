@@ -10,7 +10,7 @@
 
 #pragma once
 
-namespace BR {
+namespace SF {
 namespace GameConst {
 
 	namespace Chat
@@ -54,6 +54,6 @@ namespace GameConst {
 
 
 };// namespace Const
-};// namespace BR
+};// namespace SF
 
 

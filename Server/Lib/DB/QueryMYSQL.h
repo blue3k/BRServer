@@ -22,7 +22,7 @@
 #include <mysqld_error.h>
 
 
-namespace BR {
+namespace SF {
 namespace DB {
 
 
@@ -74,4 +74,4 @@ namespace DB {
 
 
 } // namespace DB
-} // namespace BR
+} // namespace SF

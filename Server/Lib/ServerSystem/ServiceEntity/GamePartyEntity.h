@@ -28,14 +28,14 @@
 
 #include "ServerSystem/PlayerEntityInformation.h"
 
-namespace BR {
+namespace SF {
 namespace Policy {
 	class IPolicyGameServer;
 	class ISvrPolicyGameParty;
 };
 };
 
-namespace BR {
+namespace SF {
 namespace Svr {
 
 
@@ -176,4 +176,4 @@ namespace Svr {
 #include "GamePartyEntity.inl"
 
 }; // namespace Svr
-}; // namespace BR
+}; // namespace SF

@@ -15,7 +15,7 @@
 #include "Memory/MemoryPool.h"
 #include "DB/Factory.h"
 
-#include "Types/SvrTypes.h"
+#include "Types/BrSvrTypes.h"
 #include "ServerSystem/Transaction.h"
 #include "SvrPolicyID.h"
 #include "Net/Message.h"
@@ -24,7 +24,7 @@
 
 
 
-namespace BR {
+namespace SF {
 namespace DB {
 
 	class Session;
@@ -84,7 +84,7 @@ namespace DB {
 
 	
 } // namespace DB
-} // namespace BR
+} // namespace SF
 
 
 #ifdef BRDB_USE_OLEDB

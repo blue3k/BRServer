@@ -15,7 +15,7 @@
 #include "Types/BrGameTypes.h"
 #include "Memory/MemoryPool.h"
 #include "Common/ClassUtil.h"
-#include "Common/ArrayUtil.h"
+#include "Container/SFArray.h"
 #include "Common/GameConst.h"
 
 namespace BR {

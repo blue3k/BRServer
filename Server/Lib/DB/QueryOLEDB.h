@@ -16,7 +16,7 @@
 #include "DB/dbTrace.h"
 #include "Query.h"
 
-#include "Types/SvrTypes.h"
+#include "Types/BrSvrTypes.h"
 #include "ServerSystem/Transaction.h"
 #include "Common/SvrPolicyID.h"
 #include "Net/Message.h"
@@ -25,7 +25,7 @@
 #include <atldbcli.h>
 
 
-namespace BR {
+namespace SF {
 namespace DB {
 
 
@@ -40,4 +40,4 @@ namespace DB {
 	//
 
 } // namespace DB
-} // namespace BR
+} // namespace SF

@@ -34,7 +34,7 @@
 
 
 
-namespace BR {
+namespace SF {
 namespace Svr {
 
 
@@ -86,6 +86,6 @@ namespace Svr {
 
 
 }; // ConspiracyGameInstanceServer
-}; // namespace BR
+}; // namespace SF
 
 

@@ -22,11 +22,11 @@
 #include "ServerLog/SvrLog.h"
 #include "Container/Indexing.h"
 #include "Container/HashTable.h"
-#include "Task/TimeScheduler.h"
+#include "Task/TimerScheduler.h"
 
 
 
-namespace BR {
+namespace SF {
 
 
 	class TaskManager;
@@ -178,5 +178,5 @@ namespace BR {
 
 
 
-}; // namespace BR
+}; // namespace SF
 

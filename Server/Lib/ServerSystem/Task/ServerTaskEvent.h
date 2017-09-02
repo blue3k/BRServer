@@ -17,7 +17,7 @@
 #include "Net/NetDef.h"
 #include "Task/ServerTask.h"
 
-namespace BR {
+namespace SF {
 
 
 	class TaskManager;
@@ -92,5 +92,5 @@ namespace BR {
 #include "ServerTaskEvent.inl"
 
 
-}; // namespace BR
+}; // namespace SF
 

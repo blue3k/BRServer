@@ -12,7 +12,6 @@
 #pragma once
 
 #include "ServerLog/SvrLog.h"
-#include "Protocol/ProtocolToString.h"
 #include "Net/NetToString.h"
 
 
@@ -20,7 +19,9 @@ namespace Trace
 {
 	namespace Protocol {
 		enum TraceChannels {
-			//TRC_		=	Trace::TRC_DBG1,
+			Debug		=	SF::Trace::TRC_DBG1,
+			Debug1 = SF::Trace::TRC_DBG2,
+			Debug2 = SF::Trace::TRC_DBG3,
 			//TRC_		=	Trace::TRC_DBG2,
 			//TRC_		=	Trace::TRC_DBG3,
 			//TRC_		=	Trace::TRC_DBG4,
@@ -42,16 +43,9 @@ namespace Trace
 
 DEFINE_TRACE_MODULE(protocol)
 
-#define protocolErr(e)			TrcErrJmp(protocol,e,hr)
-#define protocolChk(e)			{ do{ Result hRes = e; if( !(hRes) ) TrcErrJmp(protocol,hRes,hr); } while(0); }
-#define protocolMem(a)			{ if( (a) == NULL ) TrcErrJmp(protocol,ResultCode::OUT_OF_MEMORY,hr); }
-#define protocolChkPtr(a)		{ if( (a) == NULL ) TrcErrJmp(protocol,ResultCode::INVALID_POINTER,hr); }
 
-#define protocolAssert(e)			trcAssert(e)
-#define protocolAssertExp(e,expr)	trcAssertExp(e,expr)
-//#define protocolTrace(x)				protocolTraceOut x
 #define protocolTrace(lModeMask,szfmt, ...)				TRACE_OUT(protocol,lModeMask,szfmt,__VA_ARGS__)
 
-#define protocolErrSilent(e)		trcErrSilent(e)
+
 
 

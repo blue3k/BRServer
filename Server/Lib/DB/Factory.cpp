@@ -27,7 +27,7 @@
 	#error "DB type must be specified"
 #endif
 
-namespace BR {
+namespace SF {
 namespace DB {
 
 
@@ -53,5 +53,5 @@ namespace DB {
 	}
 
 } // namespace DB
-} // namespace BR
+} // namespace SF
 

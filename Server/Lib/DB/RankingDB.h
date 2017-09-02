@@ -14,15 +14,14 @@
 
 #include "SFTypedefs.h"
 #include "Types/BrSvrTypes.h"
-#include "Common/BrCommonTypes.h"
+#include "Types/BrGameTypes.h"
 #include "DB/DBClusterManager.h"
-#include "Common/SvrPolicyID.h"
 #include "ServerSystem/ServerComponent.h"
 
 #include "DB/RankingDBQuery.h"
 
 
-namespace BR {
+namespace SF {
 namespace DB {
 
 
@@ -67,4 +66,4 @@ namespace DB {
 
 
 } // namespace DB
-} // namespace BR
+} // namespace SF

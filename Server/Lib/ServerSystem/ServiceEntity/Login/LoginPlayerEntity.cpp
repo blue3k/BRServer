@@ -41,7 +41,7 @@ SF_MEMORYPOOL_IMPLEMENT(BR::BR::Svr::LoginPlayerEntity);
 
 
 
-namespace BR {
+namespace SF {
 namespace Svr {
 
 	GlobalUIDGenerator LoginPlayerEntity::stm_AuthTicketGenerator;
@@ -207,6 +207,6 @@ namespace Svr {
 
 
 }; // namespace Svr
-}; // namespace BR
+}; // namespace SF
 
 

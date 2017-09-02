@@ -18,13 +18,13 @@
 #include "Common/GameConst.h"
 #include "Common/CircularQueue.h"
 #include "Common/MemoryStream.h"
-#include "Types/SvrTypes.h"
+#include "Types/BrSvrTypes.h"
 
 
 
 
 
-namespace BR {
+namespace SF {
 namespace Svr {
 
 
@@ -87,7 +87,7 @@ namespace Svr {
 
 #include "GameLog.inl"
 
-}; // namespace BR
+}; // namespace SF
 }; // namespace Svr
 
 
