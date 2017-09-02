@@ -16,7 +16,7 @@
 #include "DB/Factory.h"
 
 #include "Types/BrSvrTypes.h"
-#include "ServerSystem/Transaction.h"
+#include "Transaction/Transaction.h"
 #include "SvrPolicyID.h"
 #include "Net/Message.h"
 

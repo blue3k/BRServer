@@ -12,7 +12,7 @@
 
 #include "Protocol/Protocol.h"
 #include "Net/Message.h"
-#include "Container/VariableMapBuilder.h"
+#include "Protocol/SvrProtocol.h"
 
 
 
@@ -59,7 +59,6 @@ namespace SF
 				static Result TraceOut(MessageData* pMsg);
 
 				virtual Result ParseMessage( MessageData* pIMsg );
-				static Result ParseMessageTo( MessageData* pIMsg, VariableMapBuilder& variableBuilder );
 				static Result ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageData* pIMsg, MessageBase* &pMsgBase );
 
 				static MessageData* Create( IMemoryManager& memoryManager, const RouteContext &InRouteContext, const uint16_t &InRouteHopCount );
@@ -113,7 +112,6 @@ namespace SF
 				static Result TraceOut(MessageData* pMsg);
 
 				virtual Result ParseMessage( MessageData* pIMsg );
-				static Result ParseMessageTo( MessageData* pIMsg, VariableMapBuilder& variableBuilder );
 				static Result ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageData* pIMsg, MessageBase* &pMsgBase );
 
 				static MessageData* Create( IMemoryManager& memoryManager, const RouteContext &InRouteContext, const uint16_t &InRouteHopCount, const PlayerID &InDestPlayerID, const uint64_t &InGameInsUID, const uint8_t &InRequestedRole );

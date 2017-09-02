@@ -11,10 +11,10 @@
 
 
 #include "stdafx.h"
-#include "ServerSystem/SvrConst.h"
-#include "ServerSystem/SvrTrace.h"
+#include "SvrConst.h"
+#include "SvrTrace.h"
 #include "Util/TimeUtil.h"
-#include "Types/BrBaseTypes.h"
+#include "Types/SFEngineTypedefs.h"
 #include "ResultCode/SFResultCodeLibrary.h"
 #include "ResultCode/SFResultCodeGame.h"
 #include "Net/Message.h"
@@ -22,7 +22,7 @@
 #include "Protocol/Policy/GameServerNetPolicy.h"
 #include "Protocol/Policy/GamePartyNetPolicy.h"
 
-#include "ServerSystem/MessageRoute.h"
+#include "Transaction/MessageRoute.h"
 #include "ServerSystem/ServiceEntity/GamePartyEntity.h"
 
 #include "ServerSystem/ServiceEntity/GamePartyEntityTrans.h"
@@ -145,7 +145,7 @@ namespace Svr {
 			if( pPartyPlayer == nullptr )
 				continue;
 
-			Policy::IPolicyGameServer *pPolicy = pPartyPlayer->GetPolicy<Policy::IPolicyGameServer>();
+			Policy::IPolicyGameServer *pPolicy = pPartyPlayer->GetInterface<Policy::IPolicyGameServer>();
 			if( pPolicy )
 			{
 				Result hrRes = func( pPartyPlayer, pPolicy );
@@ -164,7 +164,7 @@ namespace Svr {
 			if( pPartyPlayer == nullptr )
 				continue;
 
-			Policy::NetSvrPolicyGameParty *pPolicy = pPartyPlayer->GetPolicy<Policy::NetSvrPolicyGameParty>();
+			Policy::NetSvrPolicyGameParty *pPolicy = pPartyPlayer->GetInterface<Policy::NetSvrPolicyGameParty>();
 			if( pPolicy )
 			{
 				Result hrRes = func( pPartyPlayer, pPolicy );
@@ -195,7 +195,7 @@ namespace Svr {
 		
 		if( !bIsSilent )
 		{
-			Policy::NetSvrPolicyGameParty* pJoindPolicy = pPlayer->GetPolicy<Policy::NetSvrPolicyGameParty>();
+			Policy::NetSvrPolicyGameParty* pJoindPolicy = pPlayer->GetInterface<Policy::NetSvrPolicyGameParty>();
 			svrChkPtr(pJoindPolicy);
 
 			ForeachPlayerSvrGameParty( [&]( PartyPlayer* pOtherPlayer, Policy::NetSvrPolicyGameParty *pOtherPolicy )->Result {

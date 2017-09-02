@@ -12,15 +12,15 @@
 #pragma once
 
 #include "SFTypedefs.h"
-#include "ServerSystem/Transaction.h"
+#include "Transaction/Transaction.h"
 #include "Memory/MemoryPool.h"
 #include "Container/SFArray.h"
-#include "Types/BrBaseTypes.h"
+#include "Types/SFEngineTypedefs.h"
 #include "GameConst.h"
 #include "Net/Message.h"
 #include "Protocol/Message/GameInstanceManagerMsgClass.h"
 #include "Protocol/Policy/GameInstanceManagerNetPolicy.h"
-#include "ServerSystem/MessageRoute.h"
+#include "Transaction/MessageRoute.h"
 #include "ServerSystem/ServiceEntity/Game/GameInstanceManagerServiceEntity.h"
 #include "ServerSystem/ServerTransaction.h"
 
@@ -44,7 +44,7 @@ namespace Svr {
 		// Start Transaction
 		virtual Result StartTransaction();
 
-		Policy::NetSvrPolicyGameInstanceManager* GetPolicy()	{ return ServerEntityMessageTransaction::GetPolicy<Policy::NetSvrPolicyGameInstanceManager>(); }
+		Policy::NetSvrPolicyGameInstanceManager* GetInterface()	{ return ServerEntityMessageTransaction::GetInterface<Policy::NetSvrPolicyGameInstanceManager>(); }
 
 		BR_SVR_MSGTRANS_CLOSE(CreateGameRes, RouteContext(m_GameInsUID,GetRouteContext().GetFrom()));
 	};

@@ -16,12 +16,12 @@
 #include "ServerLog/SvrLog.h"
 #include "Thread/Thread.h"
 #include "Net/NetDef.h"
-#include "ServerSystem/Entity.h"
-#include "ServerSystem/ServerComponent.h"
-#include "ServerSystem/ServerServiceBase.h"
+#include "Entity/Entity.h"
+#include "Component/ServerComponent.h"
+#include "ServerService/ServerServiceBase.h"
 #include "ServerSystem/ServiceEntity/ServiceEntity.h"
-#include "ServerSystem/ServerEntityManager.h"
-#include "ServerSystem/SvrTrace.h"
+#include "ServerEntity/ServerEntityManager.h"
+#include "SvrTrace.h"
 #include "Task/ServerTaskEvent.h"
 
 

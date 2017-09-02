@@ -12,10 +12,9 @@
 
 #include "SFTypedefs.h"
 #include "Protocol/Protocol.h"
-#include "ServerSystem/ServerServiceBase.h"
+#include "ServerService/ServerServiceBase.h"
 #include "Net/NetDef.h"
-#include "Net/NetPolicy.h"
-#include "Protocol/Policy/PartyMatchingQueueIPolicy.h"
+#include "Protocol/Policy/PartyMatchingQueueNetPolicy.h"
 
 
 
@@ -25,10 +24,7 @@ namespace SF
 	{
  		class PartyMatchingQueueService : public ServerServiceBase
 		{
- 			private:
-				Policy::IPolicyPartyMatchingQueue* GetPolicyPartyMatchingQueue() { return GetPolicy<Policy::IPolicyPartyMatchingQueue>(); }
-			public:
-				enum { ID_SERVICEPOLICY = Policy::IPolicyPartyMatchingQueue::ID_POLICY };
+ 			public:
 			// Constructor
 			PartyMatchingQueueService ( ServerServiceInformation* pService );
 

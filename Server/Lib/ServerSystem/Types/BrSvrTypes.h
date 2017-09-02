@@ -14,7 +14,7 @@
 #include "SFTypedefs.h"
 #include "SFAssert.h"
 #include "String/StrUtil.h"
-#include "Types/BrBaseTypes.h"
+#include "Types/SFEngineTypedefs.h"
 #include "Types/BrGameTypes.h"
 
 

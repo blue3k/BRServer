@@ -12,12 +12,12 @@
 #include "stdafx.h"
 #include "SFTypedefs.h"
 #include "Protocol/Protocol.h"
-#include "ServerSystem/ServerEntity.h"
-#include "ServerSystem/BrServer.h"
-#include "ServerSystem/BrServerUtil.h"
-#include "ServerSystem/ServiceEntity/EntityInformation.h"
-#include "ServerSystem/ServerService/GameServerService.h"
-#include "ServerSystem/SvrTrace.h"
+#include "ServerEntity/ServerEntity.h"
+#include "Server/BrServer.h"
+#include "Server/BrServerUtil.h"
+#include "Entity/EntityInformation.h"
+#include "Protocol/ServerService/GameServerService.h"
+#include "SvrTrace.h"
 
 
 
@@ -26,10 +26,8 @@ namespace SF
  	namespace Svr
 	{
  		GameServerService::GameServerService( ServerServiceInformation* pService)
-			: ServerServiceBase(pService, Policy::IPolicyGameServer::ID_POLICY)
+			: ServerServiceBase(pService)
 		{
-			static_assert((UINT)Policy::IPolicyGameServer::ID_POLICY == (UINT)ID_SERVICEPOLICY,"Invalid Policy ID for a Servicebase ");
-			Assert(GetPolicyGameServer());
 		}
 
 
@@ -39,7 +37,7 @@ namespace SF
  			Result hr;
 
 			RouteContext InRouteContext( EntityUID(GetMyServerID(),InTransactionID.GetEntityID()), GetServiceEntityUID() );
-			svrChk(GetPolicyGameServer()->RegisterPlayerToJoinGameServerCmd( InRouteContext, InTransactionID, InPlayerID, InTicket, InFBUserID, InShardID ) );
+			svrChk(Policy::NetPolicyGameServer(GetConnection()).RegisterPlayerToJoinGameServerCmd( InRouteContext, InTransactionID, InPlayerID, InTicket, InFBUserID, InShardID ) );
 
 		Proc_End:
 
@@ -52,7 +50,7 @@ namespace SF
  			Result hr;
 
 			RouteContext InRouteContext( EntityUID(GetMyServerID(),InTransactionID.GetEntityID()), GetServiceEntityUID() );
-			svrChk(GetPolicyGameServer()->RegisterPlayerToJoinGameServerOnPlayerEntityCmd( InRouteContext, InTransactionID, InPlayerID, InTicket, InFBUserID ) );
+			svrChk(Policy::NetPolicyGameServer(GetConnection()).RegisterPlayerToJoinGameServerOnPlayerEntityCmd( InRouteContext, InTransactionID, InPlayerID, InTicket, InFBUserID ) );
 
 		Proc_End:
 
@@ -65,7 +63,7 @@ namespace SF
  			Result hr;
 
 			RouteContext InRouteContext( EntityUID(GetMyServerID(),InSenderEntityID), GetServiceEntityUID() );
-			svrChk(GetPolicyGameServer()->ChatMessageC2SEvt( InRouteContext, InSenderID, InRole, InSenderName, InChatMessage ) );
+			svrChk(Policy::NetPolicyGameServer(GetConnection()).ChatMessageC2SEvt( InRouteContext, InSenderID, InRole, InSenderName, InChatMessage ) );
 
 		Proc_End:
 
@@ -78,7 +76,7 @@ namespace SF
  			Result hr;
 
 			RouteContext InRouteContext( EntityUID(GetMyServerID(),InSenderEntityID), GetServiceEntityUID() );
-			svrChk(GetPolicyGameServer()->NotifyC2SEvt( InRouteContext, InDestPlayerID, InNotificationID, InMessageID, InMessageParam0, InMessageParam1, InMessageText, InTimeStamp ) );
+			svrChk(Policy::NetPolicyGameServer(GetConnection()).NotifyC2SEvt( InRouteContext, InDestPlayerID, InNotificationID, InMessageID, InMessageParam0, InMessageParam1, InMessageText, InTimeStamp ) );
 
 		Proc_End:
 
@@ -91,7 +89,7 @@ namespace SF
  			Result hr;
 
 			RouteContext InRouteContext( EntityUID(GetMyServerID(),InSenderEntityID), GetServiceEntityUID() );
-			svrChk(GetPolicyGameServer()->FriendAcceptedC2SEvt( InRouteContext, InDestPlayerID, InAccepter ) );
+			svrChk(Policy::NetPolicyGameServer(GetConnection()).FriendAcceptedC2SEvt( InRouteContext, InDestPlayerID, InAccepter ) );
 
 		Proc_End:
 
@@ -104,7 +102,7 @@ namespace SF
  			Result hr;
 
 			RouteContext InRouteContext( EntityUID(GetMyServerID(),InSenderEntityID), GetServiceEntityUID() );
-			svrChk(GetPolicyGameServer()->FriendRemovedC2SEvt( InRouteContext, InDestPlayerID, InRemoverID ) );
+			svrChk(Policy::NetPolicyGameServer(GetConnection()).FriendRemovedC2SEvt( InRouteContext, InDestPlayerID, InRemoverID ) );
 
 		Proc_End:
 
@@ -117,7 +115,7 @@ namespace SF
  			Result hr;
 
 			RouteContext InRouteContext( EntityUID(GetMyServerID(),InSenderEntityID), GetServiceEntityUID() );
-			svrChk(GetPolicyGameServer()->RequestPlayerStatusUpdateC2SEvt( InRouteContext, InDestPlayerID, InRequesterID ) );
+			svrChk(Policy::NetPolicyGameServer(GetConnection()).RequestPlayerStatusUpdateC2SEvt( InRouteContext, InDestPlayerID, InRequesterID ) );
 
 		Proc_End:
 
@@ -130,7 +128,7 @@ namespace SF
  			Result hr;
 
 			RouteContext InRouteContext( EntityUID(GetMyServerID(),InSenderEntityID), GetServiceEntityUID() );
-			svrChk(GetPolicyGameServer()->NotifyPlayerStatusUpdatedC2SEvt( InRouteContext, InDestPlayerID, InLatestActiveTime, InIsInGame ) );
+			svrChk(Policy::NetPolicyGameServer(GetConnection()).NotifyPlayerStatusUpdatedC2SEvt( InRouteContext, InDestPlayerID, InLatestActiveTime, InIsInGame ) );
 
 		Proc_End:
 
@@ -143,7 +141,7 @@ namespace SF
  			Result hr;
 
 			RouteContext InRouteContext( EntityUID(GetMyServerID(),InSenderEntityID), GetServiceEntityUID() );
-			svrChk(GetPolicyGameServer()->NotifyPartyInviteC2SEvt( InRouteContext, InDestPlayerID, InInviterID, InInviterName, InPartyUID ) );
+			svrChk(Policy::NetPolicyGameServer(GetConnection()).NotifyPartyInviteC2SEvt( InRouteContext, InDestPlayerID, InInviterID, InInviterName, InPartyUID ) );
 
 		Proc_End:
 

@@ -11,17 +11,17 @@
 
 #include "stdafx.h"
 #include "EntityServer.h"
-#include "ServerSystem/SvrTrace.h"
+#include "SvrTrace.h"
 #include "EntityServerClass.h"
 #include "Memory/MemoryPool.h"
 
 #include "Protocol/Message/EntityServerMsgClass.h"
 #include "Protocol/Policy/EntityServerNetPolicy.h"
-#include "ServerSystem/BrServer.h"
-#include "ServerSystem/ServerEntity.h"
-#include "ServerSystem/ServerEntityManager.h"
-#include "ServerSystem/EntityManager.h"
-#include "ServerSystem/ServiceEntity/ClusterManagerServiceEntity.h"
+#include "Server/BrServer.h"
+#include "ServerEntity/ServerEntity.h"
+#include "ServerEntity/ServerEntityManager.h"
+#include "Entity/EntityManager.h"
+#include "ServiceEntity/ClusterManagerServiceEntity.h"
 
 //#include "ServerEntity/GameServerEntity.h"
 

@@ -73,8 +73,6 @@
     <ClCompile Include="$(MSBuildThisFileDirectory)Session.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)SessionMYSQL.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)SessionOLEDB.cpp" />
-    <ClCompile Include="$(MSBuildThisFileDirectory)ShardCoordinatorDBQuery.cpp">
-      <ShowIncludes>true</ShowIncludes>
-    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)ShardCoordinatorDBQuery.cpp" />
   </ItemGroup>
 </Project>

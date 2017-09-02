@@ -205,10 +205,10 @@ namespace DB {
 		pQuery->Stamina = Stamina;
 		pQuery->AddedFriendSlot = AddedFriendSlot;
 
-		if (purchaseID.GetSize() > sizeof(pQuery->PurchaseID))
+		if (purchaseID.size() > sizeof(pQuery->PurchaseID))
 			dbErr(ResultCode::INVALID_ARG);
 		memset(pQuery->PurchaseID, 0, sizeof(pQuery->PurchaseID));
-		memcpy(pQuery->PurchaseID, purchaseID.data(), purchaseID.GetSize());
+		memcpy(pQuery->PurchaseID, purchaseID.data(), purchaseID.size());
 
 		dbChk(StrUtil::StringCpy(pQuery->PurchasePlatform, purchasePlatform));
 		dbChk(StrUtil::StringCpy(pQuery->PurchaseToken, purchaseToken));
@@ -240,10 +240,10 @@ namespace DB {
 
 		pQuery->SetTransaction(Sender);
 
-		if (purchaseID.GetSize() > sizeof(pQuery->PurchaseID))
+		if (purchaseID.size() > sizeof(pQuery->PurchaseID))
 			dbErr(ResultCode::INVALID_ARG);
 		memset(pQuery->PurchaseID, 0, sizeof(pQuery->PurchaseID));
-		memcpy(pQuery->PurchaseID, purchaseID.data(), purchaseID.GetSize());
+		memcpy(pQuery->PurchaseID, purchaseID.data(), purchaseID.size());
 
 		pQuery->Result = 0;
 

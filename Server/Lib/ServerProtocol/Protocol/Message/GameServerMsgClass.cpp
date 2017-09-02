@@ -54,27 +54,6 @@ namespace SF
 
 			}; // Result RegisterPlayerToJoinGameServerCmd::ParseMessage( MessageData* pIMsg )
 
-			Result RegisterPlayerToJoinGameServerCmd::ParseMessageTo( MessageData* pIMsg, VariableMapBuilder& variableBuilder )
-			{
- 				Result hr;
-
-
-				RegisterPlayerToJoinGameServerCmd parser;
-				protocolChk(parser.ParseMessage(pIMsg));
-
-				variableBuilder.SetVariable("RouteContext", parser.GetRouteContext());
-				variableBuilder.SetVariable("TransactionID", parser.GetTransactionID());
-				variableBuilder.SetVariable("PlayerID", parser.GetPlayerID());
-				variableBuilder.SetVariable("Ticket", parser.GetTicket());
-				variableBuilder.SetVariable("FBUserID", parser.GetFBUserID());
-				variableBuilder.SetVariable("ShardID", parser.GetShardID());
-
-
-			Proc_End:
-
-				return hr;
-
-			}; // Result RegisterPlayerToJoinGameServerCmd::ParseMessageTo( MessageData* pIMsg, VariableMapBuilder& variableBuilder )
 
 			Result RegisterPlayerToJoinGameServerCmd::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageData* pIMsg, MessageBase* &pMessageBase )
 			{
@@ -194,27 +173,6 @@ namespace SF
 
 			}; // Result RegisterPlayerToJoinGameServerRes::ParseMessage( MessageData* pIMsg )
 
-			Result RegisterPlayerToJoinGameServerRes::ParseMessageTo( MessageData* pIMsg, VariableMapBuilder& variableBuilder )
-			{
- 				Result hr;
-
-
-				RegisterPlayerToJoinGameServerRes parser;
-				protocolChk(parser.ParseMessage(pIMsg));
-
-				variableBuilder.SetVariable("RouteContext", parser.GetRouteContext());
-				variableBuilder.SetVariable("TransactionID", parser.GetTransactionID());
-				variableBuilder.SetVariable("Result", parser.GetResult());
-				variableBuilder.SetVariable("PublicAddress", parser.GetPublicAddress());
-				variableBuilder.SetVariable("PublicAddressV6", parser.GetPublicAddressV6());
-				variableBuilder.SetVariable("Port", parser.GetPort());
-
-
-			Proc_End:
-
-				return hr;
-
-			}; // Result RegisterPlayerToJoinGameServerRes::ParseMessageTo( MessageData* pIMsg, VariableMapBuilder& variableBuilder )
 
 			Result RegisterPlayerToJoinGameServerRes::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageData* pIMsg, MessageBase* &pMessageBase )
 			{
@@ -332,26 +290,6 @@ namespace SF
 
 			}; // Result RegisterPlayerToJoinGameServerOnPlayerEntityCmd::ParseMessage( MessageData* pIMsg )
 
-			Result RegisterPlayerToJoinGameServerOnPlayerEntityCmd::ParseMessageTo( MessageData* pIMsg, VariableMapBuilder& variableBuilder )
-			{
- 				Result hr;
-
-
-				RegisterPlayerToJoinGameServerOnPlayerEntityCmd parser;
-				protocolChk(parser.ParseMessage(pIMsg));
-
-				variableBuilder.SetVariable("RouteContext", parser.GetRouteContext());
-				variableBuilder.SetVariable("TransactionID", parser.GetTransactionID());
-				variableBuilder.SetVariable("PlayerID", parser.GetPlayerID());
-				variableBuilder.SetVariable("Ticket", parser.GetTicket());
-				variableBuilder.SetVariable("FBUserID", parser.GetFBUserID());
-
-
-			Proc_End:
-
-				return hr;
-
-			}; // Result RegisterPlayerToJoinGameServerOnPlayerEntityCmd::ParseMessageTo( MessageData* pIMsg, VariableMapBuilder& variableBuilder )
 
 			Result RegisterPlayerToJoinGameServerOnPlayerEntityCmd::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageData* pIMsg, MessageBase* &pMessageBase )
 			{
@@ -462,24 +400,6 @@ namespace SF
 
 			}; // Result RegisterPlayerToJoinGameServerOnPlayerEntityRes::ParseMessage( MessageData* pIMsg )
 
-			Result RegisterPlayerToJoinGameServerOnPlayerEntityRes::ParseMessageTo( MessageData* pIMsg, VariableMapBuilder& variableBuilder )
-			{
- 				Result hr;
-
-
-				RegisterPlayerToJoinGameServerOnPlayerEntityRes parser;
-				protocolChk(parser.ParseMessage(pIMsg));
-
-				variableBuilder.SetVariable("RouteContext", parser.GetRouteContext());
-				variableBuilder.SetVariable("TransactionID", parser.GetTransactionID());
-				variableBuilder.SetVariable("Result", parser.GetResult());
-
-
-			Proc_End:
-
-				return hr;
-
-			}; // Result RegisterPlayerToJoinGameServerOnPlayerEntityRes::ParseMessageTo( MessageData* pIMsg, VariableMapBuilder& variableBuilder )
 
 			Result RegisterPlayerToJoinGameServerOnPlayerEntityRes::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageData* pIMsg, MessageBase* &pMessageBase )
 			{
@@ -593,26 +513,6 @@ namespace SF
 
 			}; // Result ChatMessageC2SEvt::ParseMessage( MessageData* pIMsg )
 
-			Result ChatMessageC2SEvt::ParseMessageTo( MessageData* pIMsg, VariableMapBuilder& variableBuilder )
-			{
- 				Result hr;
-
-
-				ChatMessageC2SEvt parser;
-				protocolChk(parser.ParseMessage(pIMsg));
-
-				variableBuilder.SetVariable("RouteContext", parser.GetRouteContext());
-				variableBuilder.SetVariable("SenderID", parser.GetSenderID());
-				variableBuilder.SetVariable("Role", (int)parser.GetRole());
-				variableBuilder.SetVariable("SenderName", parser.GetSenderName());
-				variableBuilder.SetVariable("ChatMessage", parser.GetChatMessage());
-
-
-			Proc_End:
-
-				return hr;
-
-			}; // Result ChatMessageC2SEvt::ParseMessageTo( MessageData* pIMsg, VariableMapBuilder& variableBuilder )
 
 			Result ChatMessageC2SEvt::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageData* pIMsg, MessageBase* &pMessageBase )
 			{
@@ -733,29 +633,6 @@ namespace SF
 
 			}; // Result NotifyC2SEvt::ParseMessage( MessageData* pIMsg )
 
-			Result NotifyC2SEvt::ParseMessageTo( MessageData* pIMsg, VariableMapBuilder& variableBuilder )
-			{
- 				Result hr;
-
-
-				NotifyC2SEvt parser;
-				protocolChk(parser.ParseMessage(pIMsg));
-
-				variableBuilder.SetVariable("RouteContext", parser.GetRouteContext());
-				variableBuilder.SetVariable("DestPlayerID", parser.GetDestPlayerID());
-				variableBuilder.SetVariable("NotificationID", parser.GetNotificationID());
-				variableBuilder.SetVariable("MessageID", parser.GetMessageID());
-				variableBuilder.SetVariable("MessageParam0", parser.GetMessageParam0());
-				variableBuilder.SetVariable("MessageParam1", parser.GetMessageParam1());
-				variableBuilder.SetVariable("MessageText", parser.GetMessageText());
-				variableBuilder.SetVariable("TimeStamp", parser.GetTimeStamp());
-
-
-			Proc_End:
-
-				return hr;
-
-			}; // Result NotifyC2SEvt::ParseMessageTo( MessageData* pIMsg, VariableMapBuilder& variableBuilder )
 
 			Result NotifyC2SEvt::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageData* pIMsg, MessageBase* &pMessageBase )
 			{
@@ -874,24 +751,6 @@ namespace SF
 
 			}; // Result FriendAcceptedC2SEvt::ParseMessage( MessageData* pIMsg )
 
-			Result FriendAcceptedC2SEvt::ParseMessageTo( MessageData* pIMsg, VariableMapBuilder& variableBuilder )
-			{
- 				Result hr;
-
-
-				FriendAcceptedC2SEvt parser;
-				protocolChk(parser.ParseMessage(pIMsg));
-
-				variableBuilder.SetVariable("RouteContext", parser.GetRouteContext());
-				variableBuilder.SetVariable("DestPlayerID", parser.GetDestPlayerID());
-				variableBuilder.SetVariable("Accepter", parser.GetAccepter());
-
-
-			Proc_End:
-
-				return hr;
-
-			}; // Result FriendAcceptedC2SEvt::ParseMessageTo( MessageData* pIMsg, VariableMapBuilder& variableBuilder )
 
 			Result FriendAcceptedC2SEvt::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageData* pIMsg, MessageBase* &pMessageBase )
 			{
@@ -999,24 +858,6 @@ namespace SF
 
 			}; // Result FriendRemovedC2SEvt::ParseMessage( MessageData* pIMsg )
 
-			Result FriendRemovedC2SEvt::ParseMessageTo( MessageData* pIMsg, VariableMapBuilder& variableBuilder )
-			{
- 				Result hr;
-
-
-				FriendRemovedC2SEvt parser;
-				protocolChk(parser.ParseMessage(pIMsg));
-
-				variableBuilder.SetVariable("RouteContext", parser.GetRouteContext());
-				variableBuilder.SetVariable("DestPlayerID", parser.GetDestPlayerID());
-				variableBuilder.SetVariable("RemoverID", parser.GetRemoverID());
-
-
-			Proc_End:
-
-				return hr;
-
-			}; // Result FriendRemovedC2SEvt::ParseMessageTo( MessageData* pIMsg, VariableMapBuilder& variableBuilder )
 
 			Result FriendRemovedC2SEvt::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageData* pIMsg, MessageBase* &pMessageBase )
 			{
@@ -1124,24 +965,6 @@ namespace SF
 
 			}; // Result RequestPlayerStatusUpdateC2SEvt::ParseMessage( MessageData* pIMsg )
 
-			Result RequestPlayerStatusUpdateC2SEvt::ParseMessageTo( MessageData* pIMsg, VariableMapBuilder& variableBuilder )
-			{
- 				Result hr;
-
-
-				RequestPlayerStatusUpdateC2SEvt parser;
-				protocolChk(parser.ParseMessage(pIMsg));
-
-				variableBuilder.SetVariable("RouteContext", parser.GetRouteContext());
-				variableBuilder.SetVariable("DestPlayerID", parser.GetDestPlayerID());
-				variableBuilder.SetVariable("RequesterID", parser.GetRequesterID());
-
-
-			Proc_End:
-
-				return hr;
-
-			}; // Result RequestPlayerStatusUpdateC2SEvt::ParseMessageTo( MessageData* pIMsg, VariableMapBuilder& variableBuilder )
 
 			Result RequestPlayerStatusUpdateC2SEvt::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageData* pIMsg, MessageBase* &pMessageBase )
 			{
@@ -1250,25 +1073,6 @@ namespace SF
 
 			}; // Result NotifyPlayerStatusUpdatedC2SEvt::ParseMessage( MessageData* pIMsg )
 
-			Result NotifyPlayerStatusUpdatedC2SEvt::ParseMessageTo( MessageData* pIMsg, VariableMapBuilder& variableBuilder )
-			{
- 				Result hr;
-
-
-				NotifyPlayerStatusUpdatedC2SEvt parser;
-				protocolChk(parser.ParseMessage(pIMsg));
-
-				variableBuilder.SetVariable("RouteContext", parser.GetRouteContext());
-				variableBuilder.SetVariable("DestPlayerID", parser.GetDestPlayerID());
-				variableBuilder.SetVariable("LatestActiveTime", parser.GetLatestActiveTime());
-				variableBuilder.SetVariable("IsInGame", parser.GetIsInGame());
-
-
-			Proc_End:
-
-				return hr;
-
-			}; // Result NotifyPlayerStatusUpdatedC2SEvt::ParseMessageTo( MessageData* pIMsg, VariableMapBuilder& variableBuilder )
 
 			Result NotifyPlayerStatusUpdatedC2SEvt::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageData* pIMsg, MessageBase* &pMessageBase )
 			{
@@ -1382,26 +1186,6 @@ namespace SF
 
 			}; // Result NotifyPartyInviteC2SEvt::ParseMessage( MessageData* pIMsg )
 
-			Result NotifyPartyInviteC2SEvt::ParseMessageTo( MessageData* pIMsg, VariableMapBuilder& variableBuilder )
-			{
- 				Result hr;
-
-
-				NotifyPartyInviteC2SEvt parser;
-				protocolChk(parser.ParseMessage(pIMsg));
-
-				variableBuilder.SetVariable("RouteContext", parser.GetRouteContext());
-				variableBuilder.SetVariable("DestPlayerID", parser.GetDestPlayerID());
-				variableBuilder.SetVariable("InviterID", parser.GetInviterID());
-				variableBuilder.SetVariable("InviterName", parser.GetInviterName());
-				variableBuilder.SetVariable("PartyUID", parser.GetPartyUID());
-
-
-			Proc_End:
-
-				return hr;
-
-			}; // Result NotifyPartyInviteC2SEvt::ParseMessageTo( MessageData* pIMsg, VariableMapBuilder& variableBuilder )
 
 			Result NotifyPartyInviteC2SEvt::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageData* pIMsg, MessageBase* &pMessageBase )
 			{

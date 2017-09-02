@@ -16,13 +16,13 @@
 #include "ResultCode/SFResultCodeLibrary.h"
 #include "ResultCode/SFResultCodeGame.h"
 #include "Memory/MemoryPool.h"
-#include "Types/BrBaseTypes.h"
+#include "Types/SFEngineTypedefs.h"
 #include "Common/BrRandom.h"
 #include "GameConst.h"
 
-#include "ServerSystem/BrServer.h"
-#include "ServerSystem/BrServerUtil.h"
-#include "ServerSystem/SvrTrace.h"
+#include "Server/BrServer.h"
+#include "Server/BrServerUtil.h"
+#include "SvrTrace.h"
 #include "Protocol/Message/GameServerMsgClass.h"
 #include "Protocol/Policy/GameServerNetPolicy.h"
 
@@ -35,7 +35,7 @@
 #include "GameSystem/ChattingLogSystem.h"
 #include "GameSystem/GameLogSystem.h"
 
-#include "ServerSystem/EntityManager.h"
+#include "Entity/EntityManager.h"
 
 
 
@@ -146,7 +146,7 @@ namespace ConspiracyGameInstanceServer {
 		// Earlier close so that the player can get JoinGameRes first
 		CloseTransaction( hr );
 
-		pMyPolicy = pMyPlayer->GetPolicy<Policy::NetSvrPolicyGameInstance>();
+		pMyPolicy = pMyPlayer->GetInterface<Policy::NetSvrPolicyGameInstance>();
 		// Send all other player to me
 		if (pMyPolicy != nullptr)
 		{
@@ -230,7 +230,7 @@ namespace ConspiracyGameInstanceServer {
 			GamePlayer *pPlayerToKick = nullptr;
 
 			svrChk( GetMyOwner()->FindPlayer( GetPlayerToKick(), pPlayerToKick ) );
-			pPolicy = pPlayerToKick->GetPolicy<Policy::NetSvrPolicyGameInstance>();
+			pPolicy = pPlayerToKick->GetInterface<Policy::NetSvrPolicyGameInstance>();
 			if (pPolicy != nullptr)
 				pPolicy->PlayerKickedS2CEvt( RouteContext( GetOwnerEntityUID(), pPlayerToKick->GetPlayerEntityUID()), pPlayerToKick->GetPlayerID()  );
 			svrChk( GetMyOwner()->LeavePlayer( pPlayerToKick->GetPlayerID() ) );

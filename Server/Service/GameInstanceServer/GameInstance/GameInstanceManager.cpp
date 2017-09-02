@@ -11,11 +11,11 @@
 
 
 #include "stdafx.h"
-#include "ServerSystem/SvrConst.h"
-#include "ServerSystem/SvrTrace.h"
-#include "ServerSystem/EntityManager.h"
+#include "SvrConst.h"
+#include "SvrTrace.h"
+#include "Entity/EntityManager.h"
 #include "Util/TimeUtil.h"
-#include "Types/BrBaseTypes.h"
+#include "Types/SFEngineTypedefs.h"
 
 
 #include "ConspiracyGameInstanceSvrConst.h"

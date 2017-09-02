@@ -55,7 +55,7 @@ namespace DB {
 		dbChkPtr(pQueryManager);
 
 		hr = pSession->SendQuery(pQuery);
-		if( hr == ((Result)ResultCode::DB_CONNECTION_LOST) )
+		if( hr == ResultCode::DB_CONNECTION_LOST )
 		{
 			// Give one more chance, because the session will try to reconnect
 			hr = pSession->SendQuery(pQuery);
@@ -65,7 +65,7 @@ namespace DB {
 		// This will be run only if the query is succeeded
 		// We need to handle exceptions so that transaction can handle errors
 		hr = pQueryManager->RouteResult(pQuery);
-		if (!hr && hr != Result(ResultCode::E_INVALID_ENTITY)) // Ignore entity not found error
+		if (!hr && hr != ResultCode::INVALID_ENTITY) // Ignore entity not found error
 		{
 			dbErr(hr);
 		}

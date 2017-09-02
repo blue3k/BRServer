@@ -12,10 +12,9 @@
 
 #include "SFTypedefs.h"
 #include "Protocol/Protocol.h"
-#include "ServerSystem/ServerServiceBase.h"
+#include "ServerService/ServerServiceBase.h"
 #include "Net/NetDef.h"
-#include "Net/NetPolicy.h"
-#include "Protocol/Policy/GamePartyIPolicy.h"
+#include "Protocol/Policy/GamePartyNetPolicy.h"
 
 
 
@@ -25,10 +24,7 @@ namespace SF
 	{
  		class GamePartyService : public ServerServiceBase
 		{
- 			private:
-				Policy::IPolicyGameParty* GetPolicyGameParty() { return GetPolicy<Policy::IPolicyGameParty>(); }
-			public:
-				enum { ID_SERVICEPOLICY = Policy::IPolicyGameParty::ID_POLICY };
+ 			public:
 			// Constructor
 			GamePartyService ( ServerServiceInformation* pService );
 

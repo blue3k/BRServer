@@ -26,18 +26,14 @@ namespace SF
 		///////////////////////////////////////////////////////////////
 		// GameInstanceManager message parser mapping
 
-		extern std::unordered_map<uint32_t,HandleParseMessageTo> MessageParseToVariableMap;
 		extern std::unordered_map<uint32_t,HandleParseMessageToMessageBase> MessageParseToMessageBaseMap;
 
 		void RegisterParserGameInstanceManager()
 		{
  			// Cmd: Create a game instance
-			MessageParseToVariableMap.insert(std::make_pair(Message::GameInstanceManager::CreateGameCmd::MID.IDSeq.MsgID,&Message::GameInstanceManager::CreateGameCmd::ParseMessageTo));
 			MessageParseToMessageBaseMap.insert(std::make_pair(Message::GameInstanceManager::CreateGameCmd::MID.IDSeq.MsgID,&Message::GameInstanceManager::CreateGameCmd::ParseMessageToMessageBase));
-			MessageParseToVariableMap.insert(std::make_pair(Message::GameInstanceManager::CreateGameRes::MID.IDSeq.MsgID,&Message::GameInstanceManager::CreateGameRes::ParseMessageTo));
 			MessageParseToMessageBaseMap.insert(std::make_pair(Message::GameInstanceManager::CreateGameRes::MID.IDSeq.MsgID,&Message::GameInstanceManager::CreateGameRes::ParseMessageToMessageBase));
 			// C2S: Game instance notify of deletion
-			MessageParseToVariableMap.insert(std::make_pair(Message::GameInstanceManager::GameDeletedC2SEvt::MID.IDSeq.MsgID,&Message::GameInstanceManager::GameDeletedC2SEvt::ParseMessageTo));
 			MessageParseToMessageBaseMap.insert(std::make_pair(Message::GameInstanceManager::GameDeletedC2SEvt::MID.IDSeq.MsgID,&Message::GameInstanceManager::GameDeletedC2SEvt::ParseMessageToMessageBase));
 		}; // void RegisterParserGameInstanceManager()
 

@@ -20,8 +20,8 @@
 #include "DB/Factory.h"
 #include "DB/Session.h"
 #include "DB/ShardCoordinatorDBQuery.h"
-#include "ServerSystem/BrServer.h"
-#include "ServerSystem/EntityTable.h"
+#include "Server/BrServer.h"
+#include "Entity/EntityTable.h"
 
 namespace SF {
 namespace DB {
@@ -35,6 +35,8 @@ namespace DB {
 	std::atomic<LONG> QueryWorkerManager::stm_InitializationCount(0);
 	
 	QueryWorkerManager::QueryWorkerManager()
+		: m_MemoryManager("QueryWorkerManager", GetSystemMemoryManager())
+		, m_PendingQueries(m_MemoryManager)
 	{
 		// create QueryWorkers
 		for (int i = 0; i< Const::QUERYWORKER_MAX; i++)
@@ -48,6 +50,7 @@ namespace DB {
 	QueryWorkerManager::~QueryWorkerManager()
 	{
 		StopWorkers();
+		m_PendingQueries.ClearQueue();
 	}
 
 	void QueryWorkerManager::StopWorkers()

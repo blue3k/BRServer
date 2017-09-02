@@ -21,13 +21,13 @@
 
 #include "ServerSystem/ServerService/ClusterServerService.h"
 
-#include "ServerSystem/BrServerUtil.h"
-#include "ServerSystem/SvrTrace.h"
-#include "ServerSystem/BrServer.h"
-#include "ServerSystem/ServerEntityManager.h"
-#include "ServerSystem/EntityManager.h"
+#include "Server/BrServerUtil.h"
+#include "SvrTrace.h"
+#include "Server/BrServer.h"
+#include "ServerEntity/ServerEntityManager.h"
+#include "Entity/EntityManager.h"
 #include "ServerSystem/ServiceEntity/ClusterServiceTrans.h"
-#include "ServerSystem/ServiceEntity/ClusterManagerServiceEntity.h"
+#include "ServiceEntity/ClusterManagerServiceEntity.h"
 
 
 SF_MEMORYPOOL_IMPLEMENT(SF::Svr::ClusterInitializationTrans);
@@ -150,7 +150,7 @@ namespace Svr {
 		svrTrace( Svr::TRC_CLUSTER, "Cluster memberlist query Entity:{0}, ClusterID:{1},Type:{2},Membership:{3}", GetOwnerEntityUID(), GetMyOwner()->GetClusterID(), GetMyOwner()->GetClusterType(), GetMyOwner()->GetClusterMembership() );
 
 		// 2. Get service entity list in the cluster
-		svrChk(pMasterServerEntity->GetPolicy<Policy::IPolicyClusterServer>()->JoinClusterCmd( RouteContext(GetOwnerEntityUID(),clusterManagerMasterUID), GetTransID(), 0,
+		svrChk(pMasterServerEntity->GetInterface<Policy::IPolicyClusterServer>()->JoinClusterCmd( RouteContext(GetOwnerEntityUID(),clusterManagerMasterUID), GetTransID(), 0,
 			GetOwnerEntityUID(), netPrivate->GetNetClass(), netPrivate->GetLocalAddress(),
 			GetMyOwner()->GetClusterID(), GetMyOwner()->GetClusterType(), membership));
 
@@ -223,7 +223,7 @@ namespace Svr {
 			m_Step = Step_RequestDataSync;
 			svrChk( GetServerComponent<ServerEntityManager>()->GetServerEntity( m_currentMaster.UID.GetServerID(), pServerEntity ) );
 
-			svrChk( pServerEntity->GetPolicy<Policy::IPolicyClusterServer>()->RequestDataSyncCmd( RouteContext(GetMyOwner()->GetEntityUID(), m_currentMaster.UID), GetTransID(), 0,
+			svrChk( pServerEntity->GetInterface<Policy::IPolicyClusterServer>()->RequestDataSyncCmd( RouteContext(GetMyOwner()->GetEntityUID(), m_currentMaster.UID), GetTransID(), 0,
 				GetMyOwner()->GetClusterID() ) );
 		}
 

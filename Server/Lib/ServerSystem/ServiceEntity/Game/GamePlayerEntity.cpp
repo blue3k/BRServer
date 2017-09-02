@@ -11,14 +11,14 @@
 
 
 #include "stdafx.h"
-#include "ServerSystem/SvrConst.h"
-#include "ServerSystem/SvrTrace.h"
-#include "ServerSystem/BrServerUtil.h"
+#include "SvrConst.h"
+#include "SvrTrace.h"
+#include "Server/BrServerUtil.h"
 #include "Task/ServerTaskEvent.h"
 #include "ServerSystem/ExternalTransactionManager.h"
 #include "Net/NetServerUDP.h"
 #include "Util/TimeUtil.h"
-#include "Types/BrBaseTypes.h"
+#include "Types/SFEngineTypedefs.h"
 #include "ResultCode/SFResultCodeLibrary.h"
 #include "ResultCode/SFResultCodeGame.h"
 
@@ -26,7 +26,7 @@
 #include "Protocol/Policy/GameNetPolicy.h"
 #include "Protocol/Message/GameMsgClass.h"
 
-#include "ServerSystem/ServiceEntity/Game/GamePlayerEntity.h"
+#include "ServiceEntity/Game/GamePlayerEntity.h"
 
 #include "DB/GameConspiracyDB.h"
 #include "DB/GameTransactionDB.h"
@@ -111,7 +111,7 @@ namespace Svr {
 
 		if (GetConnection() != nullptr)
 		{
-			svrChkPtr(m_ISvrGamePolicy = GetConnection()->GetPolicy<Policy::NetSvrPolicyGame>());
+			svrChkPtr(m_ISvrGamePolicy = GetConnection()->GetInterface<Policy::NetSvrPolicyGame>());
 		}
 
 	Proc_End:

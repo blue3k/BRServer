@@ -13,7 +13,7 @@
 #include "stdafx.h"
 #include "SFTypedefs.h"
 #include "EntityInformation.h"
-#include "ServerSystem/ServerService/ServerService.h"
+#include "ServerService/ServerService.h"
 
 
 SF_MEMORYPOOL_IMPLEMENT(SF::Svr::UserEntityInformation);

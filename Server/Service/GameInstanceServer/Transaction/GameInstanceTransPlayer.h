@@ -12,16 +12,16 @@
 #pragma once
 
 #include "SFTypedefs.h"
-#include "ServerSystem/Transaction.h"
+#include "Transaction/Transaction.h"
 #include "Memory/MemoryPool.h"
-#include "Types/BrBaseTypes.h"
+#include "Types/SFEngineTypedefs.h"
 #include "Common/MemoryStream.h"
 #include "Protocol/Message/GameMsgClass.h"
 #include "Protocol/Policy/GameNetPolicy.h"
 #include "Protocol/Message/GameInstanceMsgClass.h"
 #include "Protocol/Policy/GameInstanceNetPolicy.h"
 
-#include "ServerSystem/MessageRoute.h"
+#include "Transaction/MessageRoute.h"
 #include "ServerSystem/ServerTransaction.h"
 
 #include "ConspiracyGameInstanceServerClass.h"
@@ -82,7 +82,7 @@ namespace ConspiracyGameInstanceServer {
 		virtual Result OnCloseTransaction(Result hrRes) override
 		{
 			Result hr = ResultCode::SUCCESS; 
-			auto pPolicy = GetPolicy(); 
+			auto pPolicy = GetInterface(); 
 			if (pPolicy != nullptr) {
 				
 				svrChk(pPolicy->JoinGameRes(RouteContext(m_GameInsUID, GetRouteContext().GetFrom()), super::GetTransactionID(), hrRes,

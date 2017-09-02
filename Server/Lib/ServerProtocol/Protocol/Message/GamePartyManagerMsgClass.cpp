@@ -52,25 +52,6 @@ namespace SF
 
 			}; // Result CreatePartyCmd::ParseMessage( MessageData* pIMsg )
 
-			Result CreatePartyCmd::ParseMessageTo( MessageData* pIMsg, VariableMapBuilder& variableBuilder )
-			{
- 				Result hr;
-
-
-				CreatePartyCmd parser;
-				protocolChk(parser.ParseMessage(pIMsg));
-
-				variableBuilder.SetVariable("RouteContext", parser.GetRouteContext());
-				variableBuilder.SetVariable("TransactionID", parser.GetTransactionID());
-				variableBuilder.SetVariable("RouteHopCount", parser.GetRouteHopCount());
-				variableBuilder.SetVariable("Creator", parser.GetCreator());
-
-
-			Proc_End:
-
-				return hr;
-
-			}; // Result CreatePartyCmd::ParseMessageTo( MessageData* pIMsg, VariableMapBuilder& variableBuilder )
 
 			Result CreatePartyCmd::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageData* pIMsg, MessageBase* &pMessageBase )
 			{
@@ -165,9 +146,9 @@ namespace SF
 				memcpy( pCur, &routeContext, sizeof(RouteContext) );
 				pCur += sizeof(RouteContext); iMsgSize -= sizeof(RouteContext);
 				pCur += sizeof(TransactionID); iMsgSize -= sizeof(TransactionID);
-				Assert( iMsgSize >= (INT)sizeof(uint16) );
-				*(uint16*)pCur = hopCount;
-				pCur += sizeof(uint16); iMsgSize -= sizeof(uint16);
+				Assert( iMsgSize >= (INT)sizeof(uint16_t) );
+				*(uint16_t*)pCur = hopCount;
+				pCur += sizeof(uint16_t); iMsgSize -= sizeof(uint16_t);
 
 
 			Proc_End:
@@ -209,24 +190,6 @@ namespace SF
 
 			}; // Result CreatePartyRes::ParseMessage( MessageData* pIMsg )
 
-			Result CreatePartyRes::ParseMessageTo( MessageData* pIMsg, VariableMapBuilder& variableBuilder )
-			{
- 				Result hr;
-
-
-				CreatePartyRes parser;
-				protocolChk(parser.ParseMessage(pIMsg));
-
-				variableBuilder.SetVariable("RouteContext", parser.GetRouteContext());
-				variableBuilder.SetVariable("TransactionID", parser.GetTransactionID());
-				variableBuilder.SetVariable("Result", parser.GetResult());
-
-
-			Proc_End:
-
-				return hr;
-
-			}; // Result CreatePartyRes::ParseMessageTo( MessageData* pIMsg, VariableMapBuilder& variableBuilder )
 
 			Result CreatePartyRes::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageData* pIMsg, MessageBase* &pMessageBase )
 			{
@@ -361,23 +324,6 @@ namespace SF
 
 			}; // Result PartyDeletedC2SEvt::ParseMessage( MessageData* pIMsg )
 
-			Result PartyDeletedC2SEvt::ParseMessageTo( MessageData* pIMsg, VariableMapBuilder& variableBuilder )
-			{
- 				Result hr;
-
-
-				PartyDeletedC2SEvt parser;
-				protocolChk(parser.ParseMessage(pIMsg));
-
-				variableBuilder.SetVariable("RouteContext", parser.GetRouteContext());
-				variableBuilder.SetVariable("RouteHopCount", parser.GetRouteHopCount());
-
-
-			Proc_End:
-
-				return hr;
-
-			}; // Result PartyDeletedC2SEvt::ParseMessageTo( MessageData* pIMsg, VariableMapBuilder& variableBuilder )
 
 			Result PartyDeletedC2SEvt::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageData* pIMsg, MessageBase* &pMessageBase )
 			{
@@ -467,9 +413,9 @@ namespace SF
 				routeContext.Components.To = to;
 				memcpy( pCur, &routeContext, sizeof(RouteContext) );
 				pCur += sizeof(RouteContext); iMsgSize -= sizeof(RouteContext);
-				Assert( iMsgSize >= (INT)sizeof(uint16) );
-				*(uint16*)pCur = hopCount;
-				pCur += sizeof(uint16); iMsgSize -= sizeof(uint16);
+				Assert( iMsgSize >= (INT)sizeof(uint16_t) );
+				*(uint16_t*)pCur = hopCount;
+				pCur += sizeof(uint16_t); iMsgSize -= sizeof(uint16_t);
 
 
 			Proc_End:

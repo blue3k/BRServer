@@ -17,7 +17,7 @@
 #include "Types/BrSvrTypes.h"
 #include "Container/SFArray.h"
 #include "Types/BrGameTypes.h"
-#include "ServerSystem/ServerComponent.h"
+#include "Component/ServerComponent.h"
 
 namespace SF {
 namespace DB {

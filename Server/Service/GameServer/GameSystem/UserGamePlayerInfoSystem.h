@@ -16,7 +16,7 @@
 #include "Memory/MemoryPool.h"
 #include "Common/Memento.h"
 #include "Common/ClassUtil.h"
-#include "ServerSystem/GameSystem.h"
+#include "ServiceEntity/Game/GameSystem.h"
 #include "Common/MemoryBufferUtil.h"
 #include "GameConst.h"
 #include "UserSystemComponentIDs.h"

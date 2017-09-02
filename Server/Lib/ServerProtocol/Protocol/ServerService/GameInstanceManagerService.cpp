@@ -12,12 +12,12 @@
 #include "stdafx.h"
 #include "SFTypedefs.h"
 #include "Protocol/Protocol.h"
-#include "ServerSystem/ServerEntity.h"
-#include "ServerSystem/BrServer.h"
-#include "ServerSystem/BrServerUtil.h"
-#include "ServerSystem/ServiceEntity/EntityInformation.h"
-#include "ServerSystem/ServerService/GameInstanceManagerService.h"
-#include "ServerSystem/SvrTrace.h"
+#include "ServerEntity/ServerEntity.h"
+#include "Server/BrServer.h"
+#include "Server/BrServerUtil.h"
+#include "Entity/EntityInformation.h"
+#include "Protocol/ServerService/GameInstanceManagerService.h"
+#include "SvrTrace.h"
 
 
 
@@ -26,10 +26,8 @@ namespace SF
  	namespace Svr
 	{
  		GameInstanceManagerService::GameInstanceManagerService( ServerServiceInformation* pService)
-			: ServerServiceBase(pService, Policy::IPolicyGameInstanceManager::ID_POLICY)
+			: ServerServiceBase(pService)
 		{
-			static_assert((UINT)Policy::IPolicyGameInstanceManager::ID_POLICY == (UINT)ID_SERVICEPOLICY,"Invalid Policy ID for a Servicebase ");
-			Assert(GetPolicyGameInstanceManager());
 		}
 
 
@@ -39,7 +37,7 @@ namespace SF
  			Result hr;
 
 			RouteContext InRouteContext( EntityUID(GetMyServerID(),InTransactionID.GetEntityID()), GetServiceEntityUID() );
-			svrChk(GetPolicyGameInstanceManager()->CreateGameCmd( InRouteContext, InTransactionID, InRouteHopCount, InNumberOfBotPlayer, InMaxPlayer ) );
+			svrChk(Policy::NetPolicyGameInstanceManager(GetConnection()).CreateGameCmd( InRouteContext, InTransactionID, InRouteHopCount, InNumberOfBotPlayer, InMaxPlayer ) );
 
 		Proc_End:
 
@@ -52,7 +50,7 @@ namespace SF
  			Result hr;
 
 			RouteContext InRouteContext( EntityUID(GetMyServerID(),InSenderEntityID), GetServiceEntityUID() );
-			svrChk(GetPolicyGameInstanceManager()->GameDeletedC2SEvt( InRouteContext, InRouteHopCount ) );
+			svrChk(Policy::NetPolicyGameInstanceManager(GetConnection()).GameDeletedC2SEvt( InRouteContext, InRouteHopCount ) );
 
 		Proc_End:
 

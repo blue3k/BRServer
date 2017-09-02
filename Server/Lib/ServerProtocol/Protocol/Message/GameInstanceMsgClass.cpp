@@ -49,22 +49,6 @@ namespace SF
 
 			}; // Result DeleteGameC2SEvt::ParseMessage( MessageData* pIMsg )
 
-			Result DeleteGameC2SEvt::ParseMessageTo( MessageData* pIMsg, VariableMapBuilder& variableBuilder )
-			{
- 				Result hr;
-
-
-				DeleteGameC2SEvt parser;
-				protocolChk(parser.ParseMessage(pIMsg));
-
-				variableBuilder.SetVariable("RouteContext", parser.GetRouteContext());
-
-
-			Proc_End:
-
-				return hr;
-
-			}; // Result DeleteGameC2SEvt::ParseMessageTo( MessageData* pIMsg, VariableMapBuilder& variableBuilder )
 
 			Result DeleteGameC2SEvt::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageData* pIMsg, MessageBase* &pMessageBase )
 			{
@@ -170,26 +154,6 @@ namespace SF
 
 			}; // Result JoinGameCmd::ParseMessage( MessageData* pIMsg )
 
-			Result JoinGameCmd::ParseMessageTo( MessageData* pIMsg, VariableMapBuilder& variableBuilder )
-			{
- 				Result hr;
-
-
-				JoinGameCmd parser;
-				protocolChk(parser.ParseMessage(pIMsg));
-
-				variableBuilder.SetVariable("RouteContext", parser.GetRouteContext());
-				variableBuilder.SetVariable("TransactionID", parser.GetTransactionID());
-				variableBuilder.SetVariable("Player", parser.GetPlayer());
-				variableBuilder.SetVariable("Ticket", parser.GetTicket());
-				variableBuilder.SetVariable("RequestedRole", (int)parser.GetRequestedRole());
-
-
-			Proc_End:
-
-				return hr;
-
-			}; // Result JoinGameCmd::ParseMessageTo( MessageData* pIMsg, VariableMapBuilder& variableBuilder )
 
 			Result JoinGameCmd::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageData* pIMsg, MessageBase* &pMessageBase )
 			{
@@ -318,36 +282,6 @@ namespace SF
 
 			}; // Result JoinGameRes::ParseMessage( MessageData* pIMsg )
 
-			Result JoinGameRes::ParseMessageTo( MessageData* pIMsg, VariableMapBuilder& variableBuilder )
-			{
- 				Result hr;
-
-
-				JoinGameRes parser;
-				protocolChk(parser.ParseMessage(pIMsg));
-
-				variableBuilder.SetVariable("RouteContext", parser.GetRouteContext());
-				variableBuilder.SetVariable("TransactionID", parser.GetTransactionID());
-				variableBuilder.SetVariable("Result", parser.GetResult());
-				variableBuilder.SetVariable("GameInsSvr", parser.GetGameInsSvr());
-				variableBuilder.SetVariable("TimeStamp", parser.GetTimeStamp());
-				variableBuilder.SetVariable("GameState", (int)parser.GetGameState());
-				variableBuilder.SetVariable("Day", parser.GetDay());
-				variableBuilder.SetVariable("MaxPlayer", parser.GetMaxPlayer());
-				variableBuilder.SetVariable("PlayerIndex", parser.GetPlayerIndex());
-				variableBuilder.SetVariable("PlayerCharacter", parser.GetPlayerCharacter());
-				variableBuilder.SetVariable("Role", (int)parser.GetRole());
-				variableBuilder.SetVariable("Dead", parser.GetDead());
-				variableBuilder.SetVariable("IsNewJoin", parser.GetIsNewJoin());
-				variableBuilder.SetVariable("ChatHistoryData", (int)parser.GetChatHistoryData().GetItemCount(), (const uint8_t*)parser.GetChatHistoryData().data());
-				variableBuilder.SetVariable("GameLogData", (int)parser.GetGameLogData().GetItemCount(), (const uint8_t*)parser.GetGameLogData().data());
-
-
-			Proc_End:
-
-				return hr;
-
-			}; // Result JoinGameRes::ParseMessageTo( MessageData* pIMsg, VariableMapBuilder& variableBuilder )
 
 			Result JoinGameRes::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageData* pIMsg, MessageBase* &pMessageBase )
 			{
@@ -382,12 +316,12 @@ namespace SF
 					+ sizeof(uint8_t)
 					+ sizeof(uint8_t)
 					+ sizeof(uint8_t)
-					+ sizeof(uint8_t)*InChatHistoryData.GetItemCount() + sizeof(uint16_t)
-					+ sizeof(uint8_t)*InGameLogData.GetItemCount() + sizeof(uint16_t));
+					+ sizeof(uint8_t)*InChatHistoryData.size() + sizeof(uint16_t)
+					+ sizeof(uint8_t)*InGameLogData.size() + sizeof(uint16_t));
 
 
-				uint16_t numberOfInChatHistoryData = (uint16_t)InChatHistoryData.GetItemCount(); 
-				uint16_t numberOfInGameLogData = (uint16_t)InGameLogData.GetItemCount(); 
+				uint16_t numberOfInChatHistoryData = (uint16_t)InChatHistoryData.size(); 
+				uint16_t numberOfInGameLogData = (uint16_t)InGameLogData.size(); 
 				protocolMem( pNewMsg = MessageData::NewMessage( memoryManager, GameInstance::JoinGameRes::MID, __uiMessageSize ) );
 
 				pMsgData = pNewMsg->GetMessageData();
@@ -406,9 +340,9 @@ namespace SF
 				Protocol::PackParamCopy( pMsgData, &InDead, sizeof(uint8_t));
 				Protocol::PackParamCopy( pMsgData, &InIsNewJoin, sizeof(uint8_t));
 				Protocol::PackParamCopy( pMsgData, &numberOfInChatHistoryData, sizeof(uint16_t)); 
-				Protocol::PackParamCopy( pMsgData, InChatHistoryData.data(), (INT)(sizeof(uint8_t)*InChatHistoryData.GetItemCount())); 
+				Protocol::PackParamCopy( pMsgData, InChatHistoryData.data(), (INT)(sizeof(uint8_t)*InChatHistoryData.size())); 
 				Protocol::PackParamCopy( pMsgData, &numberOfInGameLogData, sizeof(uint16_t)); 
-				Protocol::PackParamCopy( pMsgData, InGameLogData.data(), (INT)(sizeof(uint8_t)*InGameLogData.GetItemCount())); 
+				Protocol::PackParamCopy( pMsgData, InGameLogData.data(), (INT)(sizeof(uint8_t)*InGameLogData.size())); 
 
 
 			Proc_End:
@@ -486,27 +420,6 @@ namespace SF
 
 			}; // Result PlayerJoinedS2CEvt::ParseMessage( MessageData* pIMsg )
 
-			Result PlayerJoinedS2CEvt::ParseMessageTo( MessageData* pIMsg, VariableMapBuilder& variableBuilder )
-			{
- 				Result hr;
-
-
-				PlayerJoinedS2CEvt parser;
-				protocolChk(parser.ParseMessage(pIMsg));
-
-				variableBuilder.SetVariable("RouteContext", parser.GetRouteContext());
-				variableBuilder.SetVariable("JoinedPlayer", parser.GetJoinedPlayer());
-				variableBuilder.SetVariable("JoinedPlayerRole", (int)parser.GetJoinedPlayerRole());
-				variableBuilder.SetVariable("JoinedPlayerDead", parser.GetJoinedPlayerDead());
-				variableBuilder.SetVariable("JoinedPlayerIndex", parser.GetJoinedPlayerIndex());
-				variableBuilder.SetVariable("JoinedPlayerCharacter", parser.GetJoinedPlayerCharacter());
-
-
-			Proc_End:
-
-				return hr;
-
-			}; // Result PlayerJoinedS2CEvt::ParseMessageTo( MessageData* pIMsg, VariableMapBuilder& variableBuilder )
 
 			Result PlayerJoinedS2CEvt::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageData* pIMsg, MessageBase* &pMessageBase )
 			{
@@ -619,23 +532,6 @@ namespace SF
 
 			}; // Result SetConfigPresetC2SEvt::ParseMessage( MessageData* pIMsg )
 
-			Result SetConfigPresetC2SEvt::ParseMessageTo( MessageData* pIMsg, VariableMapBuilder& variableBuilder )
-			{
- 				Result hr;
-
-
-				SetConfigPresetC2SEvt parser;
-				protocolChk(parser.ParseMessage(pIMsg));
-
-				variableBuilder.SetVariable("RouteContext", parser.GetRouteContext());
-				variableBuilder.SetVariable("PresetID", parser.GetPresetID());
-
-
-			Proc_End:
-
-				return hr;
-
-			}; // Result SetConfigPresetC2SEvt::ParseMessageTo( MessageData* pIMsg, VariableMapBuilder& variableBuilder )
 
 			Result SetConfigPresetC2SEvt::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageData* pIMsg, MessageBase* &pMessageBase )
 			{
@@ -741,24 +637,6 @@ namespace SF
 
 			}; // Result LeaveGameCmd::ParseMessage( MessageData* pIMsg )
 
-			Result LeaveGameCmd::ParseMessageTo( MessageData* pIMsg, VariableMapBuilder& variableBuilder )
-			{
- 				Result hr;
-
-
-				LeaveGameCmd parser;
-				protocolChk(parser.ParseMessage(pIMsg));
-
-				variableBuilder.SetVariable("RouteContext", parser.GetRouteContext());
-				variableBuilder.SetVariable("TransactionID", parser.GetTransactionID());
-				variableBuilder.SetVariable("PlayerID", parser.GetPlayerID());
-
-
-			Proc_End:
-
-				return hr;
-
-			}; // Result LeaveGameCmd::ParseMessageTo( MessageData* pIMsg, VariableMapBuilder& variableBuilder )
 
 			Result LeaveGameCmd::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageData* pIMsg, MessageBase* &pMessageBase )
 			{
@@ -865,24 +743,6 @@ namespace SF
 
 			}; // Result LeaveGameRes::ParseMessage( MessageData* pIMsg )
 
-			Result LeaveGameRes::ParseMessageTo( MessageData* pIMsg, VariableMapBuilder& variableBuilder )
-			{
- 				Result hr;
-
-
-				LeaveGameRes parser;
-				protocolChk(parser.ParseMessage(pIMsg));
-
-				variableBuilder.SetVariable("RouteContext", parser.GetRouteContext());
-				variableBuilder.SetVariable("TransactionID", parser.GetTransactionID());
-				variableBuilder.SetVariable("Result", parser.GetResult());
-
-
-			Proc_End:
-
-				return hr;
-
-			}; // Result LeaveGameRes::ParseMessageTo( MessageData* pIMsg, VariableMapBuilder& variableBuilder )
 
 			Result LeaveGameRes::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageData* pIMsg, MessageBase* &pMessageBase )
 			{
@@ -989,23 +849,6 @@ namespace SF
 
 			}; // Result PlayerLeftS2CEvt::ParseMessage( MessageData* pIMsg )
 
-			Result PlayerLeftS2CEvt::ParseMessageTo( MessageData* pIMsg, VariableMapBuilder& variableBuilder )
-			{
- 				Result hr;
-
-
-				PlayerLeftS2CEvt parser;
-				protocolChk(parser.ParseMessage(pIMsg));
-
-				variableBuilder.SetVariable("RouteContext", parser.GetRouteContext());
-				variableBuilder.SetVariable("LeftPlayerID", parser.GetLeftPlayerID());
-
-
-			Proc_End:
-
-				return hr;
-
-			}; // Result PlayerLeftS2CEvt::ParseMessageTo( MessageData* pIMsg, VariableMapBuilder& variableBuilder )
 
 			Result PlayerLeftS2CEvt::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageData* pIMsg, MessageBase* &pMessageBase )
 			{
@@ -1112,25 +955,6 @@ namespace SF
 
 			}; // Result KickPlayerCmd::ParseMessage( MessageData* pIMsg )
 
-			Result KickPlayerCmd::ParseMessageTo( MessageData* pIMsg, VariableMapBuilder& variableBuilder )
-			{
- 				Result hr;
-
-
-				KickPlayerCmd parser;
-				protocolChk(parser.ParseMessage(pIMsg));
-
-				variableBuilder.SetVariable("RouteContext", parser.GetRouteContext());
-				variableBuilder.SetVariable("TransactionID", parser.GetTransactionID());
-				variableBuilder.SetVariable("PlayerID", parser.GetPlayerID());
-				variableBuilder.SetVariable("PlayerToKick", parser.GetPlayerToKick());
-
-
-			Proc_End:
-
-				return hr;
-
-			}; // Result KickPlayerCmd::ParseMessageTo( MessageData* pIMsg, VariableMapBuilder& variableBuilder )
 
 			Result KickPlayerCmd::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageData* pIMsg, MessageBase* &pMessageBase )
 			{
@@ -1239,24 +1063,6 @@ namespace SF
 
 			}; // Result KickPlayerRes::ParseMessage( MessageData* pIMsg )
 
-			Result KickPlayerRes::ParseMessageTo( MessageData* pIMsg, VariableMapBuilder& variableBuilder )
-			{
- 				Result hr;
-
-
-				KickPlayerRes parser;
-				protocolChk(parser.ParseMessage(pIMsg));
-
-				variableBuilder.SetVariable("RouteContext", parser.GetRouteContext());
-				variableBuilder.SetVariable("TransactionID", parser.GetTransactionID());
-				variableBuilder.SetVariable("Result", parser.GetResult());
-
-
-			Proc_End:
-
-				return hr;
-
-			}; // Result KickPlayerRes::ParseMessageTo( MessageData* pIMsg, VariableMapBuilder& variableBuilder )
 
 			Result KickPlayerRes::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageData* pIMsg, MessageBase* &pMessageBase )
 			{
@@ -1363,23 +1169,6 @@ namespace SF
 
 			}; // Result PlayerKickedS2CEvt::ParseMessage( MessageData* pIMsg )
 
-			Result PlayerKickedS2CEvt::ParseMessageTo( MessageData* pIMsg, VariableMapBuilder& variableBuilder )
-			{
- 				Result hr;
-
-
-				PlayerKickedS2CEvt parser;
-				protocolChk(parser.ParseMessage(pIMsg));
-
-				variableBuilder.SetVariable("RouteContext", parser.GetRouteContext());
-				variableBuilder.SetVariable("KickedPlayerID", parser.GetKickedPlayerID());
-
-
-			Proc_End:
-
-				return hr;
-
-			}; // Result PlayerKickedS2CEvt::ParseMessageTo( MessageData* pIMsg, VariableMapBuilder& variableBuilder )
 
 			Result PlayerKickedS2CEvt::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageData* pIMsg, MessageBase* &pMessageBase )
 			{
@@ -1485,24 +1274,6 @@ namespace SF
 
 			}; // Result AssignRoleCmd::ParseMessage( MessageData* pIMsg )
 
-			Result AssignRoleCmd::ParseMessageTo( MessageData* pIMsg, VariableMapBuilder& variableBuilder )
-			{
- 				Result hr;
-
-
-				AssignRoleCmd parser;
-				protocolChk(parser.ParseMessage(pIMsg));
-
-				variableBuilder.SetVariable("RouteContext", parser.GetRouteContext());
-				variableBuilder.SetVariable("TransactionID", parser.GetTransactionID());
-				variableBuilder.SetVariable("PlayerID", parser.GetPlayerID());
-
-
-			Proc_End:
-
-				return hr;
-
-			}; // Result AssignRoleCmd::ParseMessageTo( MessageData* pIMsg, VariableMapBuilder& variableBuilder )
 
 			Result AssignRoleCmd::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageData* pIMsg, MessageBase* &pMessageBase )
 			{
@@ -1609,24 +1380,6 @@ namespace SF
 
 			}; // Result AssignRoleRes::ParseMessage( MessageData* pIMsg )
 
-			Result AssignRoleRes::ParseMessageTo( MessageData* pIMsg, VariableMapBuilder& variableBuilder )
-			{
- 				Result hr;
-
-
-				AssignRoleRes parser;
-				protocolChk(parser.ParseMessage(pIMsg));
-
-				variableBuilder.SetVariable("RouteContext", parser.GetRouteContext());
-				variableBuilder.SetVariable("TransactionID", parser.GetTransactionID());
-				variableBuilder.SetVariable("Result", parser.GetResult());
-
-
-			Proc_End:
-
-				return hr;
-
-			}; // Result AssignRoleRes::ParseMessageTo( MessageData* pIMsg, VariableMapBuilder& variableBuilder )
 
 			Result AssignRoleRes::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageData* pIMsg, MessageBase* &pMessageBase )
 			{
@@ -1733,23 +1486,6 @@ namespace SF
 
 			}; // Result RoleAssignedS2CEvt::ParseMessage( MessageData* pIMsg )
 
-			Result RoleAssignedS2CEvt::ParseMessageTo( MessageData* pIMsg, VariableMapBuilder& variableBuilder )
-			{
- 				Result hr;
-
-
-				RoleAssignedS2CEvt parser;
-				protocolChk(parser.ParseMessage(pIMsg));
-
-				variableBuilder.SetVariable("RouteContext", parser.GetRouteContext());
-				variableBuilder.SetVariable("Role", (int)parser.GetRole());
-
-
-			Proc_End:
-
-				return hr;
-
-			}; // Result RoleAssignedS2CEvt::ParseMessageTo( MessageData* pIMsg, VariableMapBuilder& variableBuilder )
 
 			Result RoleAssignedS2CEvt::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageData* pIMsg, MessageBase* &pMessageBase )
 			{
@@ -1858,25 +1594,6 @@ namespace SF
 
 			}; // Result ChatMessageC2SEvt::ParseMessage( MessageData* pIMsg )
 
-			Result ChatMessageC2SEvt::ParseMessageTo( MessageData* pIMsg, VariableMapBuilder& variableBuilder )
-			{
- 				Result hr;
-
-
-				ChatMessageC2SEvt parser;
-				protocolChk(parser.ParseMessage(pIMsg));
-
-				variableBuilder.SetVariable("RouteContext", parser.GetRouteContext());
-				variableBuilder.SetVariable("PlayerID", parser.GetPlayerID());
-				variableBuilder.SetVariable("Role", (int)parser.GetRole());
-				variableBuilder.SetVariable("ChatMessage", parser.GetChatMessage());
-
-
-			Proc_End:
-
-				return hr;
-
-			}; // Result ChatMessageC2SEvt::ParseMessageTo( MessageData* pIMsg, VariableMapBuilder& variableBuilder )
 
 			Result ChatMessageC2SEvt::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageData* pIMsg, MessageBase* &pMessageBase )
 			{
@@ -1987,24 +1704,6 @@ namespace SF
 
 			}; // Result AdvanceGameCmd::ParseMessage( MessageData* pIMsg )
 
-			Result AdvanceGameCmd::ParseMessageTo( MessageData* pIMsg, VariableMapBuilder& variableBuilder )
-			{
- 				Result hr;
-
-
-				AdvanceGameCmd parser;
-				protocolChk(parser.ParseMessage(pIMsg));
-
-				variableBuilder.SetVariable("RouteContext", parser.GetRouteContext());
-				variableBuilder.SetVariable("TransactionID", parser.GetTransactionID());
-				variableBuilder.SetVariable("PlayerID", parser.GetPlayerID());
-
-
-			Proc_End:
-
-				return hr;
-
-			}; // Result AdvanceGameCmd::ParseMessageTo( MessageData* pIMsg, VariableMapBuilder& variableBuilder )
 
 			Result AdvanceGameCmd::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageData* pIMsg, MessageBase* &pMessageBase )
 			{
@@ -2111,24 +1810,6 @@ namespace SF
 
 			}; // Result AdvanceGameRes::ParseMessage( MessageData* pIMsg )
 
-			Result AdvanceGameRes::ParseMessageTo( MessageData* pIMsg, VariableMapBuilder& variableBuilder )
-			{
- 				Result hr;
-
-
-				AdvanceGameRes parser;
-				protocolChk(parser.ParseMessage(pIMsg));
-
-				variableBuilder.SetVariable("RouteContext", parser.GetRouteContext());
-				variableBuilder.SetVariable("TransactionID", parser.GetTransactionID());
-				variableBuilder.SetVariable("Result", parser.GetResult());
-
-
-			Proc_End:
-
-				return hr;
-
-			}; // Result AdvanceGameRes::ParseMessageTo( MessageData* pIMsg, VariableMapBuilder& variableBuilder )
 
 			Result AdvanceGameRes::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageData* pIMsg, MessageBase* &pMessageBase )
 			{
@@ -2237,25 +1918,6 @@ namespace SF
 
 			}; // Result GameAdvancedS2CEvt::ParseMessage( MessageData* pIMsg )
 
-			Result GameAdvancedS2CEvt::ParseMessageTo( MessageData* pIMsg, VariableMapBuilder& variableBuilder )
-			{
- 				Result hr;
-
-
-				GameAdvancedS2CEvt parser;
-				protocolChk(parser.ParseMessage(pIMsg));
-
-				variableBuilder.SetVariable("RouteContext", parser.GetRouteContext());
-				variableBuilder.SetVariable("TimeStamp", parser.GetTimeStamp());
-				variableBuilder.SetVariable("GameState", (int)parser.GetGameState());
-				variableBuilder.SetVariable("Day", parser.GetDay());
-
-
-			Proc_End:
-
-				return hr;
-
-			}; // Result GameAdvancedS2CEvt::ParseMessageTo( MessageData* pIMsg, VariableMapBuilder& variableBuilder )
 
 			Result GameAdvancedS2CEvt::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageData* pIMsg, MessageBase* &pMessageBase )
 			{
@@ -2368,27 +2030,6 @@ namespace SF
 
 			}; // Result GameEndedS2CEvt::ParseMessage( MessageData* pIMsg )
 
-			Result GameEndedS2CEvt::ParseMessageTo( MessageData* pIMsg, VariableMapBuilder& variableBuilder )
-			{
- 				Result hr;
-
-
-				GameEndedS2CEvt parser;
-				protocolChk(parser.ParseMessage(pIMsg));
-
-				variableBuilder.SetVariable("RouteContext", parser.GetRouteContext());
-				variableBuilder.SetVariable("Winner", (int)parser.GetWinner());
-				variableBuilder.SetVariable("GainedExp", parser.GetGainedExp());
-				variableBuilder.SetVariable("GainedGameMoney", parser.GetGainedGameMoney());
-				variableBuilder.SetVariable("PlayedRole", (int)parser.GetPlayedRole());
-				variableBuilder.SetVariable("IsWon", parser.GetIsWon());
-
-
-			Proc_End:
-
-				return hr;
-
-			}; // Result GameEndedS2CEvt::ParseMessageTo( MessageData* pIMsg, VariableMapBuilder& variableBuilder )
 
 			Result GameEndedS2CEvt::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageData* pIMsg, MessageBase* &pMessageBase )
 			{
@@ -2502,24 +2143,6 @@ namespace SF
 
 			}; // Result VoteGameAdvanceCmd::ParseMessage( MessageData* pIMsg )
 
-			Result VoteGameAdvanceCmd::ParseMessageTo( MessageData* pIMsg, VariableMapBuilder& variableBuilder )
-			{
- 				Result hr;
-
-
-				VoteGameAdvanceCmd parser;
-				protocolChk(parser.ParseMessage(pIMsg));
-
-				variableBuilder.SetVariable("RouteContext", parser.GetRouteContext());
-				variableBuilder.SetVariable("TransactionID", parser.GetTransactionID());
-				variableBuilder.SetVariable("PlayerID", parser.GetPlayerID());
-
-
-			Proc_End:
-
-				return hr;
-
-			}; // Result VoteGameAdvanceCmd::ParseMessageTo( MessageData* pIMsg, VariableMapBuilder& variableBuilder )
 
 			Result VoteGameAdvanceCmd::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageData* pIMsg, MessageBase* &pMessageBase )
 			{
@@ -2626,24 +2249,6 @@ namespace SF
 
 			}; // Result VoteGameAdvanceRes::ParseMessage( MessageData* pIMsg )
 
-			Result VoteGameAdvanceRes::ParseMessageTo( MessageData* pIMsg, VariableMapBuilder& variableBuilder )
-			{
- 				Result hr;
-
-
-				VoteGameAdvanceRes parser;
-				protocolChk(parser.ParseMessage(pIMsg));
-
-				variableBuilder.SetVariable("RouteContext", parser.GetRouteContext());
-				variableBuilder.SetVariable("TransactionID", parser.GetTransactionID());
-				variableBuilder.SetVariable("Result", parser.GetResult());
-
-
-			Proc_End:
-
-				return hr;
-
-			}; // Result VoteGameAdvanceRes::ParseMessageTo( MessageData* pIMsg, VariableMapBuilder& variableBuilder )
 
 			Result VoteGameAdvanceRes::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageData* pIMsg, MessageBase* &pMessageBase )
 			{
@@ -2750,23 +2355,6 @@ namespace SF
 
 			}; // Result GameAdvanceVotedS2CEvt::ParseMessage( MessageData* pIMsg )
 
-			Result GameAdvanceVotedS2CEvt::ParseMessageTo( MessageData* pIMsg, VariableMapBuilder& variableBuilder )
-			{
- 				Result hr;
-
-
-				GameAdvanceVotedS2CEvt parser;
-				protocolChk(parser.ParseMessage(pIMsg));
-
-				variableBuilder.SetVariable("RouteContext", parser.GetRouteContext());
-				variableBuilder.SetVariable("Voter", parser.GetVoter());
-
-
-			Proc_End:
-
-				return hr;
-
-			}; // Result GameAdvanceVotedS2CEvt::ParseMessageTo( MessageData* pIMsg, VariableMapBuilder& variableBuilder )
 
 			Result GameAdvanceVotedS2CEvt::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageData* pIMsg, MessageBase* &pMessageBase )
 			{
@@ -2874,26 +2462,6 @@ namespace SF
 
 			}; // Result VoteCmd::ParseMessage( MessageData* pIMsg )
 
-			Result VoteCmd::ParseMessageTo( MessageData* pIMsg, VariableMapBuilder& variableBuilder )
-			{
- 				Result hr;
-
-
-				VoteCmd parser;
-				protocolChk(parser.ParseMessage(pIMsg));
-
-				variableBuilder.SetVariable("RouteContext", parser.GetRouteContext());
-				variableBuilder.SetVariable("TransactionID", parser.GetTransactionID());
-				variableBuilder.SetVariable("PlayerID", parser.GetPlayerID());
-				variableBuilder.SetVariable("VoteTarget", parser.GetVoteTarget());
-				variableBuilder.SetVariable("ActionSerial", parser.GetActionSerial());
-
-
-			Proc_End:
-
-				return hr;
-
-			}; // Result VoteCmd::ParseMessageTo( MessageData* pIMsg, VariableMapBuilder& variableBuilder )
 
 			Result VoteCmd::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageData* pIMsg, MessageBase* &pMessageBase )
 			{
@@ -3004,24 +2572,6 @@ namespace SF
 
 			}; // Result VoteRes::ParseMessage( MessageData* pIMsg )
 
-			Result VoteRes::ParseMessageTo( MessageData* pIMsg, VariableMapBuilder& variableBuilder )
-			{
- 				Result hr;
-
-
-				VoteRes parser;
-				protocolChk(parser.ParseMessage(pIMsg));
-
-				variableBuilder.SetVariable("RouteContext", parser.GetRouteContext());
-				variableBuilder.SetVariable("TransactionID", parser.GetTransactionID());
-				variableBuilder.SetVariable("Result", parser.GetResult());
-
-
-			Proc_End:
-
-				return hr;
-
-			}; // Result VoteRes::ParseMessageTo( MessageData* pIMsg, VariableMapBuilder& variableBuilder )
 
 			Result VoteRes::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageData* pIMsg, MessageBase* &pMessageBase )
 			{
@@ -3129,24 +2679,6 @@ namespace SF
 
 			}; // Result VotedS2CEvt::ParseMessage( MessageData* pIMsg )
 
-			Result VotedS2CEvt::ParseMessageTo( MessageData* pIMsg, VariableMapBuilder& variableBuilder )
-			{
- 				Result hr;
-
-
-				VotedS2CEvt parser;
-				protocolChk(parser.ParseMessage(pIMsg));
-
-				variableBuilder.SetVariable("RouteContext", parser.GetRouteContext());
-				variableBuilder.SetVariable("Voter", parser.GetVoter());
-				variableBuilder.SetVariable("VotedTarget", parser.GetVotedTarget());
-
-
-			Proc_End:
-
-				return hr;
-
-			}; // Result VotedS2CEvt::ParseMessageTo( MessageData* pIMsg, VariableMapBuilder& variableBuilder )
 
 			Result VotedS2CEvt::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageData* pIMsg, MessageBase* &pMessageBase )
 			{
@@ -3256,23 +2788,6 @@ namespace SF
 
 			}; // Result VoteEndS2CEvt::ParseMessage( MessageData* pIMsg )
 
-			Result VoteEndS2CEvt::ParseMessageTo( MessageData* pIMsg, VariableMapBuilder& variableBuilder )
-			{
- 				Result hr;
-
-
-				VoteEndS2CEvt parser;
-				protocolChk(parser.ParseMessage(pIMsg));
-
-				variableBuilder.SetVariable("RouteContext", parser.GetRouteContext());
-				variableBuilder.SetVariable("Voted", (int)parser.GetVoted().GetItemCount(), (const PlayerID*)parser.GetVoted().data());
-
-
-			Proc_End:
-
-				return hr;
-
-			}; // Result VoteEndS2CEvt::ParseMessageTo( MessageData* pIMsg, VariableMapBuilder& variableBuilder )
 
 			Result VoteEndS2CEvt::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageData* pIMsg, MessageBase* &pMessageBase )
 			{
@@ -3295,17 +2810,17 @@ namespace SF
 
 				unsigned __uiMessageSize = (unsigned)(sizeof(MessageHeader) 
 					+ sizeof(RouteContext)
-					+ sizeof(PlayerID)*InVoted.GetItemCount() + sizeof(uint16_t));
+					+ sizeof(PlayerID)*InVoted.size() + sizeof(uint16_t));
 
 
-				uint16_t numberOfInVoted = (uint16_t)InVoted.GetItemCount(); 
+				uint16_t numberOfInVoted = (uint16_t)InVoted.size(); 
 				protocolMem( pNewMsg = MessageData::NewMessage( memoryManager, GameInstance::VoteEndS2CEvt::MID, __uiMessageSize ) );
 
 				pMsgData = pNewMsg->GetMessageData();
 
 				Protocol::PackParamCopy( pMsgData, &InRouteContext, sizeof(RouteContext));
 				Protocol::PackParamCopy( pMsgData, &numberOfInVoted, sizeof(uint16_t)); 
-				Protocol::PackParamCopy( pMsgData, InVoted.data(), (INT)(sizeof(PlayerID)*InVoted.GetItemCount())); 
+				Protocol::PackParamCopy( pMsgData, InVoted.data(), (INT)(sizeof(PlayerID)*InVoted.size())); 
 
 
 			Proc_End:
@@ -3381,25 +2896,6 @@ namespace SF
 
 			}; // Result PlayerRevealedS2CEvt::ParseMessage( MessageData* pIMsg )
 
-			Result PlayerRevealedS2CEvt::ParseMessageTo( MessageData* pIMsg, VariableMapBuilder& variableBuilder )
-			{
- 				Result hr;
-
-
-				PlayerRevealedS2CEvt parser;
-				protocolChk(parser.ParseMessage(pIMsg));
-
-				variableBuilder.SetVariable("RouteContext", parser.GetRouteContext());
-				variableBuilder.SetVariable("RevealedPlayerID", parser.GetRevealedPlayerID());
-				variableBuilder.SetVariable("Role", (int)parser.GetRole());
-				variableBuilder.SetVariable("Reason", (int)parser.GetReason());
-
-
-			Proc_End:
-
-				return hr;
-
-			}; // Result PlayerRevealedS2CEvt::ParseMessageTo( MessageData* pIMsg, VariableMapBuilder& variableBuilder )
 
 			Result PlayerRevealedS2CEvt::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageData* pIMsg, MessageBase* &pMessageBase )
 			{
@@ -3509,24 +3005,6 @@ namespace SF
 
 			}; // Result PlayerKilledS2CEvt::ParseMessage( MessageData* pIMsg )
 
-			Result PlayerKilledS2CEvt::ParseMessageTo( MessageData* pIMsg, VariableMapBuilder& variableBuilder )
-			{
- 				Result hr;
-
-
-				PlayerKilledS2CEvt parser;
-				protocolChk(parser.ParseMessage(pIMsg));
-
-				variableBuilder.SetVariable("RouteContext", parser.GetRouteContext());
-				variableBuilder.SetVariable("KilledPlayer", parser.GetKilledPlayer());
-				variableBuilder.SetVariable("Reason", (int)parser.GetReason());
-
-
-			Proc_End:
-
-				return hr;
-
-			}; // Result PlayerKilledS2CEvt::ParseMessageTo( MessageData* pIMsg, VariableMapBuilder& variableBuilder )
 
 			Result PlayerKilledS2CEvt::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageData* pIMsg, MessageBase* &pMessageBase )
 			{
@@ -3635,25 +3113,6 @@ namespace SF
 
 			}; // Result GamePlayAgainCmd::ParseMessage( MessageData* pIMsg )
 
-			Result GamePlayAgainCmd::ParseMessageTo( MessageData* pIMsg, VariableMapBuilder& variableBuilder )
-			{
- 				Result hr;
-
-
-				GamePlayAgainCmd parser;
-				protocolChk(parser.ParseMessage(pIMsg));
-
-				variableBuilder.SetVariable("RouteContext", parser.GetRouteContext());
-				variableBuilder.SetVariable("TransactionID", parser.GetTransactionID());
-				variableBuilder.SetVariable("LeadPlayer", parser.GetLeadPlayer());
-				variableBuilder.SetVariable("PartyUID", parser.GetPartyUID());
-
-
-			Proc_End:
-
-				return hr;
-
-			}; // Result GamePlayAgainCmd::ParseMessageTo( MessageData* pIMsg, VariableMapBuilder& variableBuilder )
 
 			Result GamePlayAgainCmd::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageData* pIMsg, MessageBase* &pMessageBase )
 			{
@@ -3763,25 +3222,6 @@ namespace SF
 
 			}; // Result GamePlayAgainRes::ParseMessage( MessageData* pIMsg )
 
-			Result GamePlayAgainRes::ParseMessageTo( MessageData* pIMsg, VariableMapBuilder& variableBuilder )
-			{
- 				Result hr;
-
-
-				GamePlayAgainRes parser;
-				protocolChk(parser.ParseMessage(pIMsg));
-
-				variableBuilder.SetVariable("RouteContext", parser.GetRouteContext());
-				variableBuilder.SetVariable("TransactionID", parser.GetTransactionID());
-				variableBuilder.SetVariable("Result", parser.GetResult());
-				variableBuilder.SetVariable("ReplayMemberCount", parser.GetReplayMemberCount());
-
-
-			Proc_End:
-
-				return hr;
-
-			}; // Result GamePlayAgainRes::ParseMessageTo( MessageData* pIMsg, VariableMapBuilder& variableBuilder )
 
 			Result GamePlayAgainRes::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageData* pIMsg, MessageBase* &pMessageBase )
 			{
@@ -3892,25 +3332,6 @@ namespace SF
 
 			}; // Result GamePlayAgainS2CEvt::ParseMessage( MessageData* pIMsg )
 
-			Result GamePlayAgainS2CEvt::ParseMessageTo( MessageData* pIMsg, VariableMapBuilder& variableBuilder )
-			{
- 				Result hr;
-
-
-				GamePlayAgainS2CEvt parser;
-				protocolChk(parser.ParseMessage(pIMsg));
-
-				variableBuilder.SetVariable("RouteContext", parser.GetRouteContext());
-				variableBuilder.SetVariable("TargetPlayer", parser.GetTargetPlayer());
-				variableBuilder.SetVariable("PartyUID", parser.GetPartyUID());
-				variableBuilder.SetVariable("LeadPlayer", parser.GetLeadPlayer());
-
-
-			Proc_End:
-
-				return hr;
-
-			}; // Result GamePlayAgainS2CEvt::ParseMessageTo( MessageData* pIMsg, VariableMapBuilder& variableBuilder )
 
 			Result GamePlayAgainS2CEvt::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageData* pIMsg, MessageBase* &pMessageBase )
 			{
@@ -4024,25 +3445,6 @@ namespace SF
 
 			}; // Result GameRevealPlayerCmd::ParseMessage( MessageData* pIMsg )
 
-			Result GameRevealPlayerCmd::ParseMessageTo( MessageData* pIMsg, VariableMapBuilder& variableBuilder )
-			{
- 				Result hr;
-
-
-				GameRevealPlayerCmd parser;
-				protocolChk(parser.ParseMessage(pIMsg));
-
-				variableBuilder.SetVariable("RouteContext", parser.GetRouteContext());
-				variableBuilder.SetVariable("TransactionID", parser.GetTransactionID());
-				variableBuilder.SetVariable("PlayerID", parser.GetPlayerID());
-				variableBuilder.SetVariable("TargetPlayerID", (int)parser.GetTargetPlayerID().GetItemCount(), (const PlayerID*)parser.GetTargetPlayerID().data());
-
-
-			Proc_End:
-
-				return hr;
-
-			}; // Result GameRevealPlayerCmd::ParseMessageTo( MessageData* pIMsg, VariableMapBuilder& variableBuilder )
 
 			Result GameRevealPlayerCmd::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageData* pIMsg, MessageBase* &pMessageBase )
 			{
@@ -4067,10 +3469,10 @@ namespace SF
 					+ sizeof(RouteContext)
 					+ sizeof(TransactionID)
 					+ sizeof(PlayerID)
-					+ sizeof(PlayerID)*InTargetPlayerID.GetItemCount() + sizeof(uint16_t));
+					+ sizeof(PlayerID)*InTargetPlayerID.size() + sizeof(uint16_t));
 
 
-				uint16_t numberOfInTargetPlayerID = (uint16_t)InTargetPlayerID.GetItemCount(); 
+				uint16_t numberOfInTargetPlayerID = (uint16_t)InTargetPlayerID.size(); 
 				protocolMem( pNewMsg = MessageData::NewMessage( memoryManager, GameInstance::GameRevealPlayerCmd::MID, __uiMessageSize ) );
 
 				pMsgData = pNewMsg->GetMessageData();
@@ -4079,7 +3481,7 @@ namespace SF
 				Protocol::PackParamCopy( pMsgData, &InTransactionID, sizeof(TransactionID));
 				Protocol::PackParamCopy( pMsgData, &InPlayerID, sizeof(PlayerID));
 				Protocol::PackParamCopy( pMsgData, &numberOfInTargetPlayerID, sizeof(uint16_t)); 
-				Protocol::PackParamCopy( pMsgData, InTargetPlayerID.data(), (INT)(sizeof(PlayerID)*InTargetPlayerID.GetItemCount())); 
+				Protocol::PackParamCopy( pMsgData, InTargetPlayerID.data(), (INT)(sizeof(PlayerID)*InTargetPlayerID.size())); 
 
 
 			Proc_End:
@@ -4161,26 +3563,6 @@ namespace SF
 
 			}; // Result GameRevealPlayerRes::ParseMessage( MessageData* pIMsg )
 
-			Result GameRevealPlayerRes::ParseMessageTo( MessageData* pIMsg, VariableMapBuilder& variableBuilder )
-			{
- 				Result hr;
-
-
-				GameRevealPlayerRes parser;
-				protocolChk(parser.ParseMessage(pIMsg));
-
-				variableBuilder.SetVariable("RouteContext", parser.GetRouteContext());
-				variableBuilder.SetVariable("TransactionID", parser.GetTransactionID());
-				variableBuilder.SetVariable("Result", parser.GetResult());
-				variableBuilder.SetVariable("RevealedPlayerID", (int)parser.GetRevealedPlayerID().GetItemCount(), (const PlayerID*)parser.GetRevealedPlayerID().data());
-				variableBuilder.SetVariable("RevealedRole", (int)parser.GetRevealedRole().GetItemCount(), (const uint8_t*)parser.GetRevealedRole().data());
-
-
-			Proc_End:
-
-				return hr;
-
-			}; // Result GameRevealPlayerRes::ParseMessageTo( MessageData* pIMsg, VariableMapBuilder& variableBuilder )
 
 			Result GameRevealPlayerRes::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageData* pIMsg, MessageBase* &pMessageBase )
 			{
@@ -4205,12 +3587,12 @@ namespace SF
 					+ sizeof(RouteContext)
 					+ sizeof(TransactionID)
 					+ sizeof(Result)
-					+ sizeof(PlayerID)*InRevealedPlayerID.GetItemCount() + sizeof(uint16_t)
-					+ sizeof(uint8_t)*InRevealedRole.GetItemCount() + sizeof(uint16_t));
+					+ sizeof(PlayerID)*InRevealedPlayerID.size() + sizeof(uint16_t)
+					+ sizeof(uint8_t)*InRevealedRole.size() + sizeof(uint16_t));
 
 
-				uint16_t numberOfInRevealedPlayerID = (uint16_t)InRevealedPlayerID.GetItemCount(); 
-				uint16_t numberOfInRevealedRole = (uint16_t)InRevealedRole.GetItemCount(); 
+				uint16_t numberOfInRevealedPlayerID = (uint16_t)InRevealedPlayerID.size(); 
+				uint16_t numberOfInRevealedRole = (uint16_t)InRevealedRole.size(); 
 				protocolMem( pNewMsg = MessageData::NewMessage( memoryManager, GameInstance::GameRevealPlayerRes::MID, __uiMessageSize ) );
 
 				pMsgData = pNewMsg->GetMessageData();
@@ -4219,9 +3601,9 @@ namespace SF
 				Protocol::PackParamCopy( pMsgData, &InTransactionID, sizeof(TransactionID));
 				Protocol::PackParamCopy( pMsgData, &InResult, sizeof(Result));
 				Protocol::PackParamCopy( pMsgData, &numberOfInRevealedPlayerID, sizeof(uint16_t)); 
-				Protocol::PackParamCopy( pMsgData, InRevealedPlayerID.data(), (INT)(sizeof(PlayerID)*InRevealedPlayerID.GetItemCount())); 
+				Protocol::PackParamCopy( pMsgData, InRevealedPlayerID.data(), (INT)(sizeof(PlayerID)*InRevealedPlayerID.size())); 
 				Protocol::PackParamCopy( pMsgData, &numberOfInRevealedRole, sizeof(uint16_t)); 
-				Protocol::PackParamCopy( pMsgData, InRevealedRole.data(), (INT)(sizeof(uint8_t)*InRevealedRole.GetItemCount())); 
+				Protocol::PackParamCopy( pMsgData, InRevealedRole.data(), (INT)(sizeof(uint8_t)*InRevealedRole.size())); 
 
 
 			Proc_End:
@@ -4296,24 +3678,6 @@ namespace SF
 
 			}; // Result GamePlayerReviveCmd::ParseMessage( MessageData* pIMsg )
 
-			Result GamePlayerReviveCmd::ParseMessageTo( MessageData* pIMsg, VariableMapBuilder& variableBuilder )
-			{
- 				Result hr;
-
-
-				GamePlayerReviveCmd parser;
-				protocolChk(parser.ParseMessage(pIMsg));
-
-				variableBuilder.SetVariable("RouteContext", parser.GetRouteContext());
-				variableBuilder.SetVariable("TransactionID", parser.GetTransactionID());
-				variableBuilder.SetVariable("PlayerID", parser.GetPlayerID());
-
-
-			Proc_End:
-
-				return hr;
-
-			}; // Result GamePlayerReviveCmd::ParseMessageTo( MessageData* pIMsg, VariableMapBuilder& variableBuilder )
 
 			Result GamePlayerReviveCmd::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageData* pIMsg, MessageBase* &pMessageBase )
 			{
@@ -4420,24 +3784,6 @@ namespace SF
 
 			}; // Result GamePlayerReviveRes::ParseMessage( MessageData* pIMsg )
 
-			Result GamePlayerReviveRes::ParseMessageTo( MessageData* pIMsg, VariableMapBuilder& variableBuilder )
-			{
- 				Result hr;
-
-
-				GamePlayerReviveRes parser;
-				protocolChk(parser.ParseMessage(pIMsg));
-
-				variableBuilder.SetVariable("RouteContext", parser.GetRouteContext());
-				variableBuilder.SetVariable("TransactionID", parser.GetTransactionID());
-				variableBuilder.SetVariable("Result", parser.GetResult());
-
-
-			Proc_End:
-
-				return hr;
-
-			}; // Result GamePlayerReviveRes::ParseMessageTo( MessageData* pIMsg, VariableMapBuilder& variableBuilder )
 
 			Result GamePlayerReviveRes::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageData* pIMsg, MessageBase* &pMessageBase )
 			{
@@ -4544,23 +3890,6 @@ namespace SF
 
 			}; // Result GamePlayerRevivedS2CEvt::ParseMessage( MessageData* pIMsg )
 
-			Result GamePlayerRevivedS2CEvt::ParseMessageTo( MessageData* pIMsg, VariableMapBuilder& variableBuilder )
-			{
- 				Result hr;
-
-
-				GamePlayerRevivedS2CEvt parser;
-				protocolChk(parser.ParseMessage(pIMsg));
-
-				variableBuilder.SetVariable("RouteContext", parser.GetRouteContext());
-				variableBuilder.SetVariable("RevivedPlayerID", parser.GetRevivedPlayerID());
-
-
-			Proc_End:
-
-				return hr;
-
-			}; // Result GamePlayerRevivedS2CEvt::ParseMessageTo( MessageData* pIMsg, VariableMapBuilder& variableBuilder )
 
 			Result GamePlayerRevivedS2CEvt::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageData* pIMsg, MessageBase* &pMessageBase )
 			{

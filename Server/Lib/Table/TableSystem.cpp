@@ -11,7 +11,6 @@
 
 #include "stdafx.h"
 #include "SFTypedefs.h"
-#include "Common/BrXML.h"
 #include "ServerLog/SvrLog.h"
 #include "ResultCode/SFResultCodeSvr.h"
 #include "ResultCode/SFResultCodeDB.h"
@@ -26,7 +25,7 @@
 #include "conspiracy/ShopTbl.h"
 #include "conspiracy/GameConfigTbl.h"
 #include "conspiracy/OrganicTbl.h"
-#include "ServerSystem/SvrConfig.h"
+#include "ServerConfig/SFServerConfig.h"
 #include "TableQueries.h"
 
 

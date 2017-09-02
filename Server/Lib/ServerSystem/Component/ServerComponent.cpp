@@ -16,9 +16,9 @@
 #include "ServerLog/SvrLog.h"
 #include "Thread/Thread.h"
 #include "Net/NetDef.h"
-#include "ServerSystem/Entity.h"
-#include "ServerSystem/ServerComponent.h"
-#include "ServerSystem/SvrTrace.h"
+#include "Entity/Entity.h"
+#include "Component/ServerComponent.h"
+#include "SvrTrace.h"
 
 
 namespace SF {

@@ -12,13 +12,13 @@
 
 #include "stdafx.h"
 #include "Util/TimeUtil.h"
-#include "ServerSystem/SvrConst.h"
-#include "ServerSystem/BrServer.h"
-#include "ServerSystem/SvrTrace.h"
+#include "SvrConst.h"
+#include "Server/BrServer.h"
+#include "SvrTrace.h"
 #include "ServerSystem/SvrConfig.h"
-#include "ServerSystem/ServerEntityManager.h"
+#include "ServerEntity/ServerEntityManager.h"
 //#include "ServerSystem/ServiceEntity/EntityManagerServiceEntity.h"
-#include "ServerSystem/ServiceEntity/ClusterManagerServiceEntity.h"
+#include "ServiceEntity/ClusterManagerServiceEntity.h"
 #include "ServerSystem/ServiceEntity/Game/GameClusterServiceEntity.h"
 
 #include "ServerSystem/ServiceEntity/MatchingQueueServiceEntity.h"
@@ -27,8 +27,8 @@
 
 #include "Table/TableSystem.h"
 
-#include "ServerSystem/ServerEntity/EntityServerEntity.h"
-#include "ServerSystem/ServerEntity/GenericServerEntity.h"
+#include "ServerEntity/EntityServerEntity.h"
+#include "ServerEntity/GenericServerEntity.h"
 
 
 #include "Protocol/Policy/EntityServerNetPolicy.h"
@@ -41,7 +41,7 @@
 #include "Net/NetServerPeer.h"
 #include "Net/NetServer.h"
 #include "Net/NetServerUDP.h"
-#include "ServerSystem/EntityManager.h"
+#include "Entity/EntityManager.h"
 
 
 #include "SharedModuleSvrConst.h"

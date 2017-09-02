@@ -11,19 +11,19 @@
 
 
 #include "stdafx.h"
-#include "ServerSystem/SvrConst.h"
-#include "ServerSystem/SvrTrace.h"
+#include "SvrConst.h"
+#include "SvrTrace.h"
 #include "Util/TimeUtil.h"
-#include "Types/BrBaseTypes.h"
+#include "Types/SFEngineTypedefs.h"
 
-#include "ServerSystem/BrServer.h"
-#include "ServerSystem/BrServerUtil.h"
-#include "ServerSystem/EntityTable.h"
-#include "ServerSystem/EntityManager.h"
-#include "ServerSystem/ServiceEntity/ClusteredServiceEntity.h"
-#include "ServerSystem/PerformanceCounter/PerformanceCounterClient.h"
-#include "ServerSystem/ServiceEntity/Login/LoginPlayerEntity.h"
-#include "ServerSystem/ServiceEntity/Game/GamePlayerEntity.h"
+#include "Server/BrServer.h"
+#include "Server/BrServerUtil.h"
+#include "Entity/EntityTable.h"
+#include "Entity/EntityManager.h"
+#include "ServiceEntity/ClusteredServiceEntity.h"
+#include "PerformanceCounter/PerformanceCounterClient.h"
+#include "ServiceEntity/Login/LoginPlayerEntity.h"
+#include "ServiceEntity/Game/GamePlayerEntity.h"
 
 
 namespace SF {

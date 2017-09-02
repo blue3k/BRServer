@@ -19,9 +19,9 @@
 #include "GameConst.h"
 #include "Types/BrGameTypes.h"
 
-#include "ServerSystem/Entity.h"
-#include "ServerSystem/GameSystem.h"
-#include "ServerSystem/PlayerEntityInformation.h"
+#include "Entity/Entity.h"
+#include "ServiceEntity/Game/GameSystem.h"
+#include "Entity/PlayerEntityInformation.h"
 
 
 namespace SF {

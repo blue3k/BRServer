@@ -15,8 +15,8 @@
 
 #include "SFTypedefs.h"
 
-#include "ServerSystem/SvrTrace.h"
-#include "ServerSystem/Entity.h"
+#include "SvrTrace.h"
+#include "Entity/Entity.h"
 #include "Container/HashTable2.h"
 #include "Container/Indexing.h"
 #include "Util/UniqueEntityIDGenerator.h"
@@ -79,8 +79,6 @@ namespace Svr {
 		Result RouteTransactionResult( TransactionResult* &pRes );
 	};
 
-
-#include "EntityTable.inl"
 
 
 }; // namespace Svr

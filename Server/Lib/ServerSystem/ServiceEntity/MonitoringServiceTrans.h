@@ -12,15 +12,15 @@
 #pragma once
 
 #include "SFTypedefs.h"
-#include "ServerSystem/Transaction.h"
+#include "Transaction/Transaction.h"
 #include "Memory/MemoryPool.h"
 #include "Container/SFArray.h"
-#include "Types/BrBaseTypes.h"
+#include "Types/SFEngineTypedefs.h"
 #include "GameConst.h"
 #include "Net/Message.h"
 #include "Protocol/Message/MonitoringMsgClass.h"
 #include "Protocol/Policy/MonitoringNetPolicy.h"
-#include "ServerSystem/MessageRoute.h"
+#include "Transaction/MessageRoute.h"
 #include "ServerSystem/ServiceEntity/MonitoringServiceEntity.h"
 #include "ServerSystem/ServerTransaction.h"
 
@@ -46,7 +46,7 @@ namespace Svr {
 		// Start Transaction
 		virtual Result StartTransaction();
 
-		Policy::NetSvrPolicyMonitoring* GetPolicy()	{ return ServerEntityMessageTransaction::GetPolicy<Policy::NetSvrPolicyMonitoring>(); }
+		Policy::NetSvrPolicyMonitoring* GetInterface()	{ return ServerEntityMessageTransaction::GetInterface<Policy::NetSvrPolicyMonitoring>(); }
 
 		BR_IMPLEMENT_MSGTRANS_CLOSE_ARGS(GetInstanceListRes, m_InstanceList, m_TotalCounterInstance);
 	};
@@ -68,7 +68,7 @@ namespace Svr {
 		// Start Transaction
 		virtual Result StartTransaction();
 
-		Policy::NetSvrPolicyMonitoring* GetPolicy()	{ return ServerEntityMessageTransaction::GetPolicy<Policy::NetSvrPolicyMonitoring>(); }
+		Policy::NetSvrPolicyMonitoring* GetInterface()	{ return ServerEntityMessageTransaction::GetInterface<Policy::NetSvrPolicyMonitoring>(); }
 
 		BR_IMPLEMENT_MSGTRANS_CLOSE_ARGS(RequestCounterValuesRes, GetInstanceUID(), m_CounterValues);
 	};

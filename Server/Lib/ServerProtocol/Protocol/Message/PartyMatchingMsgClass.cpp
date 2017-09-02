@@ -50,23 +50,6 @@ namespace SF
 
 			}; // Result PartyGameMatchedS2CEvt::ParseMessage( MessageData* pIMsg )
 
-			Result PartyGameMatchedS2CEvt::ParseMessageTo( MessageData* pIMsg, VariableMapBuilder& variableBuilder )
-			{
- 				Result hr;
-
-
-				PartyGameMatchedS2CEvt parser;
-				protocolChk(parser.ParseMessage(pIMsg));
-
-				variableBuilder.SetVariable("RouteContext", parser.GetRouteContext());
-				variableBuilder.SetVariable("RouteHopCount", parser.GetRouteHopCount());
-
-
-			Proc_End:
-
-				return hr;
-
-			}; // Result PartyGameMatchedS2CEvt::ParseMessageTo( MessageData* pIMsg, VariableMapBuilder& variableBuilder )
 
 			Result PartyGameMatchedS2CEvt::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageData* pIMsg, MessageBase* &pMessageBase )
 			{
@@ -156,9 +139,9 @@ namespace SF
 				routeContext.Components.To = to;
 				memcpy( pCur, &routeContext, sizeof(RouteContext) );
 				pCur += sizeof(RouteContext); iMsgSize -= sizeof(RouteContext);
-				Assert( iMsgSize >= (INT)sizeof(uint16) );
-				*(uint16*)pCur = hopCount;
-				pCur += sizeof(uint16); iMsgSize -= sizeof(uint16);
+				Assert( iMsgSize >= (INT)sizeof(uint16_t) );
+				*(uint16_t*)pCur = hopCount;
+				pCur += sizeof(uint16_t); iMsgSize -= sizeof(uint16_t);
 
 
 			Proc_End:
@@ -203,26 +186,6 @@ namespace SF
 
 			}; // Result PlayerGameMatchedS2CEvt::ParseMessage( MessageData* pIMsg )
 
-			Result PlayerGameMatchedS2CEvt::ParseMessageTo( MessageData* pIMsg, VariableMapBuilder& variableBuilder )
-			{
- 				Result hr;
-
-
-				PlayerGameMatchedS2CEvt parser;
-				protocolChk(parser.ParseMessage(pIMsg));
-
-				variableBuilder.SetVariable("RouteContext", parser.GetRouteContext());
-				variableBuilder.SetVariable("RouteHopCount", parser.GetRouteHopCount());
-				variableBuilder.SetVariable("DestPlayerID", parser.GetDestPlayerID());
-				variableBuilder.SetVariable("GameInsUID", parser.GetGameInsUID());
-				variableBuilder.SetVariable("RequestedRole", (int)parser.GetRequestedRole());
-
-
-			Proc_End:
-
-				return hr;
-
-			}; // Result PlayerGameMatchedS2CEvt::ParseMessageTo( MessageData* pIMsg, VariableMapBuilder& variableBuilder )
 
 			Result PlayerGameMatchedS2CEvt::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageData* pIMsg, MessageBase* &pMessageBase )
 			{
@@ -318,9 +281,9 @@ namespace SF
 				routeContext.Components.To = to;
 				memcpy( pCur, &routeContext, sizeof(RouteContext) );
 				pCur += sizeof(RouteContext); iMsgSize -= sizeof(RouteContext);
-				Assert( iMsgSize >= (INT)sizeof(uint16) );
-				*(uint16*)pCur = hopCount;
-				pCur += sizeof(uint16); iMsgSize -= sizeof(uint16);
+				Assert( iMsgSize >= (INT)sizeof(uint16_t) );
+				*(uint16_t*)pCur = hopCount;
+				pCur += sizeof(uint16_t); iMsgSize -= sizeof(uint16_t);
 
 
 			Proc_End:

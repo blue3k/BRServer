@@ -12,10 +12,9 @@
 
 #include "SFTypedefs.h"
 #include "Protocol/Protocol.h"
-#include "ServerSystem/ServerServiceBase.h"
+#include "ServerService/ServerServiceBase.h"
 #include "Net/NetDef.h"
-#include "Net/NetPolicy.h"
-#include "Protocol/Policy/GameInstanceManagerIPolicy.h"
+#include "Protocol/Policy/GameInstanceManagerNetPolicy.h"
 
 
 
@@ -25,10 +24,7 @@ namespace SF
 	{
  		class GameInstanceManagerService : public ServerServiceBase
 		{
- 			private:
-				Policy::IPolicyGameInstanceManager* GetPolicyGameInstanceManager() { return GetPolicy<Policy::IPolicyGameInstanceManager>(); }
-			public:
-				enum { ID_SERVICEPOLICY = Policy::IPolicyGameInstanceManager::ID_POLICY };
+ 			public:
 			// Constructor
 			GameInstanceManagerService ( ServerServiceInformation* pService );
 

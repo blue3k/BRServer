@@ -10,8 +10,8 @@
 
 
 #include "stdafx.h"
-#include "ServerSystem/SvrTrace.h"
-#include "ServerSystem/PerformanceCounter/PerformanceCounter.h"
+#include "SvrTrace.h"
+#include "PerformanceCounter/PerformanceCounter.h"
 
 
 

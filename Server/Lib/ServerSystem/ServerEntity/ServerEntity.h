@@ -19,8 +19,8 @@
 #include "Net/NetDef.h"
 #include "Net/NetUtil.h"
 #include "Net/Connection.h"
-#include "ServerSystem/MasterEntity.h"
-#include "ServerSystem/SvrConst.h"
+#include "Entity/MasterEntity.h"
+#include "SvrConst.h"
 
 
 
@@ -104,7 +104,7 @@ namespace Svr {
 		void GetConnectionShared(SharedPointerT<SF::Net::Connection>& outConn);
 
 		template< class PolicyType >
-		PolicyType* GetPolicy();
+		PolicyType* GetInterface();
 
 		// Get/Set Class Name
 		inline ServerEntityClass GetRemoteClass() const;

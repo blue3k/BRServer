@@ -17,18 +17,18 @@
 #include "Thread/Thread.h"
 #include "Memory/SFMemory.h"
 #include "Net/NetDef.h"
-#include "ServerSystem/Entity.h"
-#include "ServerSystem/ServerComponent.h"
-#include "ServerSystem/ServerServiceBase.h"
-#include "ServerSystem/ServerEntity.h"
-#include "ServerSystem/EntityManager.h"
+#include "Entity/Entity.h"
+#include "Component/ServerComponent.h"
+#include "ServerService/ServerServiceBase.h"
+#include "ServerEntity/ServerEntity.h"
+#include "Entity/EntityManager.h"
 #include "ServerSystem/ServiceEntity/Game/GameInstanceManagerServiceEntity.h"
 #include "ServerSystem/ServiceEntity/Game/GameInstanceManagerServiceTrans.h"
-#include "ServerSystem/SvrTrace.h"
-#include "ServerSystem/SvrConst.h"
+#include "SvrTrace.h"
+#include "SvrConst.h"
 
 #include "Protocol/Message/GameInstanceManagerMsgClass.h"
-#include "ServerSystem/PerformanceCounter/PerformanceCounterClient.h"
+#include "PerformanceCounter/PerformanceCounterClient.h"
 
 
 

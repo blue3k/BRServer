@@ -12,9 +12,9 @@
 #pragma once
 
 #include "SFTypedefs.h"
-#include "ServerSystem/Transaction.h"
+#include "Transaction/Transaction.h"
 #include "Memory/MemoryPool.h"
-#include "ServerSystem/Transaction/ServerTransactionGeneric.h"
+#include "Transaction/ServerTransactionGeneric.h"
 
 #include "Protocol/Message/EntityServerMsgClass.h"
 #include "Protocol/Policy/EntityServerNetPolicy.h"

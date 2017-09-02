@@ -16,15 +16,15 @@
 #include "SFTypedefs.h"
 #include "Memory/SFMemory.h"
 #include "Types/BrSvrTypes.h"
-#include "ServerSystem/Entity.h"
-#include "ServerSystem/ServerComponent.h"
-#include "ServerSystem/ServerServiceBase.h"
+#include "Entity/Entity.h"
+#include "Component/ServerComponent.h"
+#include "ServerService/ServerServiceBase.h"
 #include "Container/HashTable2.h"
 #include "Container/Indexing.h"
 #include "Container/StaticHashTable.h"
 
 #include "ServerSystem/ServiceEntity/EntityInformation.h"
-#include "ServerSystem/ServiceEntity/ClusteredServiceEntity.h"
+#include "ServiceEntity/ClusteredServiceEntity.h"
 
 
 namespace SF {

@@ -12,12 +12,12 @@
 #include "stdafx.h"
 
 #include "Net/NetRawUDP.h"
-#include "ServerSystem/SvrTrace.h"
-#include "ServerSystem/BrServerUtil.h"
-#include "ServerSystem/EntityTable.h"
-#include "ServerSystem/EntityManager.h"
+#include "SvrTrace.h"
+#include "Server/BrServerUtil.h"
+#include "Entity/EntityTable.h"
+#include "Entity/EntityManager.h"
 #include "Protocol/Message/MonitoringMsgClass.h"
-#include "ServerSystem/PerformanceCounter/PerformanceCounterClient.h"
+#include "PerformanceCounter/PerformanceCounterClient.h"
 
 
 

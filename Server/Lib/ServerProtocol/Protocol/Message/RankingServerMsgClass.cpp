@@ -52,25 +52,6 @@ namespace SF
 
 			}; // Result AddPlayerCmd::ParseMessage( MessageData* pIMsg )
 
-			Result AddPlayerCmd::ParseMessageTo( MessageData* pIMsg, VariableMapBuilder& variableBuilder )
-			{
- 				Result hr;
-
-
-				AddPlayerCmd parser;
-				protocolChk(parser.ParseMessage(pIMsg));
-
-				variableBuilder.SetVariable("RouteContext", parser.GetRouteContext());
-				variableBuilder.SetVariable("TransactionID", parser.GetTransactionID());
-				variableBuilder.SetVariable("PlayerInfo", parser.GetPlayerInfo());
-				variableBuilder.SetVariable("RankingScore", parser.GetRankingScore());
-
-
-			Proc_End:
-
-				return hr;
-
-			}; // Result AddPlayerCmd::ParseMessageTo( MessageData* pIMsg, VariableMapBuilder& variableBuilder )
 
 			Result AddPlayerCmd::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageData* pIMsg, MessageBase* &pMessageBase )
 			{
@@ -180,25 +161,6 @@ namespace SF
 
 			}; // Result AddPlayerRes::ParseMessage( MessageData* pIMsg )
 
-			Result AddPlayerRes::ParseMessageTo( MessageData* pIMsg, VariableMapBuilder& variableBuilder )
-			{
- 				Result hr;
-
-
-				AddPlayerRes parser;
-				protocolChk(parser.ParseMessage(pIMsg));
-
-				variableBuilder.SetVariable("RouteContext", parser.GetRouteContext());
-				variableBuilder.SetVariable("TransactionID", parser.GetTransactionID());
-				variableBuilder.SetVariable("Result", parser.GetResult());
-				variableBuilder.SetVariable("Ranking", parser.GetRanking());
-
-
-			Proc_End:
-
-				return hr;
-
-			}; // Result AddPlayerRes::ParseMessageTo( MessageData* pIMsg, VariableMapBuilder& variableBuilder )
 
 			Result AddPlayerRes::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageData* pIMsg, MessageBase* &pMessageBase )
 			{
@@ -308,24 +270,6 @@ namespace SF
 
 			}; // Result RemovePlayerCmd::ParseMessage( MessageData* pIMsg )
 
-			Result RemovePlayerCmd::ParseMessageTo( MessageData* pIMsg, VariableMapBuilder& variableBuilder )
-			{
- 				Result hr;
-
-
-				RemovePlayerCmd parser;
-				protocolChk(parser.ParseMessage(pIMsg));
-
-				variableBuilder.SetVariable("RouteContext", parser.GetRouteContext());
-				variableBuilder.SetVariable("TransactionID", parser.GetTransactionID());
-				variableBuilder.SetVariable("PlayerID", parser.GetPlayerID());
-
-
-			Proc_End:
-
-				return hr;
-
-			}; // Result RemovePlayerCmd::ParseMessageTo( MessageData* pIMsg, VariableMapBuilder& variableBuilder )
 
 			Result RemovePlayerCmd::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageData* pIMsg, MessageBase* &pMessageBase )
 			{
@@ -432,24 +376,6 @@ namespace SF
 
 			}; // Result RemovePlayerRes::ParseMessage( MessageData* pIMsg )
 
-			Result RemovePlayerRes::ParseMessageTo( MessageData* pIMsg, VariableMapBuilder& variableBuilder )
-			{
- 				Result hr;
-
-
-				RemovePlayerRes parser;
-				protocolChk(parser.ParseMessage(pIMsg));
-
-				variableBuilder.SetVariable("RouteContext", parser.GetRouteContext());
-				variableBuilder.SetVariable("TransactionID", parser.GetTransactionID());
-				variableBuilder.SetVariable("Result", parser.GetResult());
-
-
-			Proc_End:
-
-				return hr;
-
-			}; // Result RemovePlayerRes::ParseMessageTo( MessageData* pIMsg, VariableMapBuilder& variableBuilder )
 
 			Result RemovePlayerRes::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageData* pIMsg, MessageBase* &pMessageBase )
 			{
@@ -557,24 +483,6 @@ namespace SF
 
 			}; // Result GetPlayerRankingCmd::ParseMessage( MessageData* pIMsg )
 
-			Result GetPlayerRankingCmd::ParseMessageTo( MessageData* pIMsg, VariableMapBuilder& variableBuilder )
-			{
- 				Result hr;
-
-
-				GetPlayerRankingCmd parser;
-				protocolChk(parser.ParseMessage(pIMsg));
-
-				variableBuilder.SetVariable("RouteContext", parser.GetRouteContext());
-				variableBuilder.SetVariable("TransactionID", parser.GetTransactionID());
-				variableBuilder.SetVariable("PlayerID", parser.GetPlayerID());
-
-
-			Proc_End:
-
-				return hr;
-
-			}; // Result GetPlayerRankingCmd::ParseMessageTo( MessageData* pIMsg, VariableMapBuilder& variableBuilder )
 
 			Result GetPlayerRankingCmd::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageData* pIMsg, MessageBase* &pMessageBase )
 			{
@@ -682,25 +590,6 @@ namespace SF
 
 			}; // Result GetPlayerRankingRes::ParseMessage( MessageData* pIMsg )
 
-			Result GetPlayerRankingRes::ParseMessageTo( MessageData* pIMsg, VariableMapBuilder& variableBuilder )
-			{
- 				Result hr;
-
-
-				GetPlayerRankingRes parser;
-				protocolChk(parser.ParseMessage(pIMsg));
-
-				variableBuilder.SetVariable("RouteContext", parser.GetRouteContext());
-				variableBuilder.SetVariable("TransactionID", parser.GetTransactionID());
-				variableBuilder.SetVariable("Result", parser.GetResult());
-				variableBuilder.SetVariable("Ranking", parser.GetRanking());
-
-
-			Proc_End:
-
-				return hr;
-
-			}; // Result GetPlayerRankingRes::ParseMessageTo( MessageData* pIMsg, VariableMapBuilder& variableBuilder )
 
 			Result GetPlayerRankingRes::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageData* pIMsg, MessageBase* &pMessageBase )
 			{
@@ -812,26 +701,6 @@ namespace SF
 
 			}; // Result UpdatePlayerScoreCmd::ParseMessage( MessageData* pIMsg )
 
-			Result UpdatePlayerScoreCmd::ParseMessageTo( MessageData* pIMsg, VariableMapBuilder& variableBuilder )
-			{
- 				Result hr;
-
-
-				UpdatePlayerScoreCmd parser;
-				protocolChk(parser.ParseMessage(pIMsg));
-
-				variableBuilder.SetVariable("RouteContext", parser.GetRouteContext());
-				variableBuilder.SetVariable("TransactionID", parser.GetTransactionID());
-				variableBuilder.SetVariable("RankingScore", parser.GetRankingScore());
-				variableBuilder.SetVariable("PlayerInfo", parser.GetPlayerInfo());
-				variableBuilder.SetVariable("Count", parser.GetCount());
-
-
-			Proc_End:
-
-				return hr;
-
-			}; // Result UpdatePlayerScoreCmd::ParseMessageTo( MessageData* pIMsg, VariableMapBuilder& variableBuilder )
 
 			Result UpdatePlayerScoreCmd::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageData* pIMsg, MessageBase* &pMessageBase )
 			{
@@ -946,25 +815,6 @@ namespace SF
 
 			}; // Result UpdatePlayerScoreRes::ParseMessage( MessageData* pIMsg )
 
-			Result UpdatePlayerScoreRes::ParseMessageTo( MessageData* pIMsg, VariableMapBuilder& variableBuilder )
-			{
- 				Result hr;
-
-
-				UpdatePlayerScoreRes parser;
-				protocolChk(parser.ParseMessage(pIMsg));
-
-				variableBuilder.SetVariable("RouteContext", parser.GetRouteContext());
-				variableBuilder.SetVariable("TransactionID", parser.GetTransactionID());
-				variableBuilder.SetVariable("Result", parser.GetResult());
-				variableBuilder.SetVariable("Ranking", (int)parser.GetRanking().GetItemCount(), (const TotalRankingPlayerInformation*)parser.GetRanking().data());
-
-
-			Proc_End:
-
-				return hr;
-
-			}; // Result UpdatePlayerScoreRes::ParseMessageTo( MessageData* pIMsg, VariableMapBuilder& variableBuilder )
 
 			Result UpdatePlayerScoreRes::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageData* pIMsg, MessageBase* &pMessageBase )
 			{
@@ -989,10 +839,10 @@ namespace SF
 					+ sizeof(RouteContext)
 					+ sizeof(TransactionID)
 					+ sizeof(Result)
-					+ sizeof(TotalRankingPlayerInformation)*InRanking.GetItemCount() + sizeof(uint16_t));
+					+ sizeof(TotalRankingPlayerInformation)*InRanking.size() + sizeof(uint16_t));
 
 
-				uint16_t numberOfInRanking = (uint16_t)InRanking.GetItemCount(); 
+				uint16_t numberOfInRanking = (uint16_t)InRanking.size(); 
 				protocolMem( pNewMsg = MessageData::NewMessage( memoryManager, RankingServer::UpdatePlayerScoreRes::MID, __uiMessageSize ) );
 
 				pMsgData = pNewMsg->GetMessageData();
@@ -1001,7 +851,7 @@ namespace SF
 				Protocol::PackParamCopy( pMsgData, &InTransactionID, sizeof(TransactionID));
 				Protocol::PackParamCopy( pMsgData, &InResult, sizeof(Result));
 				Protocol::PackParamCopy( pMsgData, &numberOfInRanking, sizeof(uint16_t)); 
-				Protocol::PackParamCopy( pMsgData, InRanking.data(), (INT)(sizeof(TotalRankingPlayerInformation)*InRanking.GetItemCount())); 
+				Protocol::PackParamCopy( pMsgData, InRanking.data(), (INT)(sizeof(TotalRankingPlayerInformation)*InRanking.size())); 
 
 
 			Proc_End:
@@ -1078,26 +928,6 @@ namespace SF
 
 			}; // Result GetRankingCmd::ParseMessage( MessageData* pIMsg )
 
-			Result GetRankingCmd::ParseMessageTo( MessageData* pIMsg, VariableMapBuilder& variableBuilder )
-			{
- 				Result hr;
-
-
-				GetRankingCmd parser;
-				protocolChk(parser.ParseMessage(pIMsg));
-
-				variableBuilder.SetVariable("RouteContext", parser.GetRouteContext());
-				variableBuilder.SetVariable("TransactionID", parser.GetTransactionID());
-				variableBuilder.SetVariable("RankingType", (int)parser.GetRankingType());
-				variableBuilder.SetVariable("BaseRanking", parser.GetBaseRanking());
-				variableBuilder.SetVariable("Count", parser.GetCount());
-
-
-			Proc_End:
-
-				return hr;
-
-			}; // Result GetRankingCmd::ParseMessageTo( MessageData* pIMsg, VariableMapBuilder& variableBuilder )
 
 			Result GetRankingCmd::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageData* pIMsg, MessageBase* &pMessageBase )
 			{
@@ -1212,25 +1042,6 @@ namespace SF
 
 			}; // Result GetRankingRes::ParseMessage( MessageData* pIMsg )
 
-			Result GetRankingRes::ParseMessageTo( MessageData* pIMsg, VariableMapBuilder& variableBuilder )
-			{
- 				Result hr;
-
-
-				GetRankingRes parser;
-				protocolChk(parser.ParseMessage(pIMsg));
-
-				variableBuilder.SetVariable("RouteContext", parser.GetRouteContext());
-				variableBuilder.SetVariable("TransactionID", parser.GetTransactionID());
-				variableBuilder.SetVariable("Result", parser.GetResult());
-				variableBuilder.SetVariable("Ranking", (int)parser.GetRanking().GetItemCount(), (const TotalRankingPlayerInformation*)parser.GetRanking().data());
-
-
-			Proc_End:
-
-				return hr;
-
-			}; // Result GetRankingRes::ParseMessageTo( MessageData* pIMsg, VariableMapBuilder& variableBuilder )
 
 			Result GetRankingRes::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageData* pIMsg, MessageBase* &pMessageBase )
 			{
@@ -1255,10 +1066,10 @@ namespace SF
 					+ sizeof(RouteContext)
 					+ sizeof(TransactionID)
 					+ sizeof(Result)
-					+ sizeof(TotalRankingPlayerInformation)*InRanking.GetItemCount() + sizeof(uint16_t));
+					+ sizeof(TotalRankingPlayerInformation)*InRanking.size() + sizeof(uint16_t));
 
 
-				uint16_t numberOfInRanking = (uint16_t)InRanking.GetItemCount(); 
+				uint16_t numberOfInRanking = (uint16_t)InRanking.size(); 
 				protocolMem( pNewMsg = MessageData::NewMessage( memoryManager, RankingServer::GetRankingRes::MID, __uiMessageSize ) );
 
 				pMsgData = pNewMsg->GetMessageData();
@@ -1267,7 +1078,7 @@ namespace SF
 				Protocol::PackParamCopy( pMsgData, &InTransactionID, sizeof(TransactionID));
 				Protocol::PackParamCopy( pMsgData, &InResult, sizeof(Result));
 				Protocol::PackParamCopy( pMsgData, &numberOfInRanking, sizeof(uint16_t)); 
-				Protocol::PackParamCopy( pMsgData, InRanking.data(), (INT)(sizeof(TotalRankingPlayerInformation)*InRanking.GetItemCount())); 
+				Protocol::PackParamCopy( pMsgData, InRanking.data(), (INT)(sizeof(TotalRankingPlayerInformation)*InRanking.size())); 
 
 
 			Proc_End:
@@ -1344,24 +1155,6 @@ namespace SF
 
 			}; // Result DebugPrintALLRankingCmd::ParseMessage( MessageData* pIMsg )
 
-			Result DebugPrintALLRankingCmd::ParseMessageTo( MessageData* pIMsg, VariableMapBuilder& variableBuilder )
-			{
- 				Result hr;
-
-
-				DebugPrintALLRankingCmd parser;
-				protocolChk(parser.ParseMessage(pIMsg));
-
-				variableBuilder.SetVariable("RouteContext", parser.GetRouteContext());
-				variableBuilder.SetVariable("TransactionID", parser.GetTransactionID());
-				variableBuilder.SetVariable("FileName", parser.GetFileName());
-
-
-			Proc_End:
-
-				return hr;
-
-			}; // Result DebugPrintALLRankingCmd::ParseMessageTo( MessageData* pIMsg, VariableMapBuilder& variableBuilder )
 
 			Result DebugPrintALLRankingCmd::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageData* pIMsg, MessageBase* &pMessageBase )
 			{
@@ -1469,24 +1262,6 @@ namespace SF
 
 			}; // Result DebugPrintALLRankingRes::ParseMessage( MessageData* pIMsg )
 
-			Result DebugPrintALLRankingRes::ParseMessageTo( MessageData* pIMsg, VariableMapBuilder& variableBuilder )
-			{
- 				Result hr;
-
-
-				DebugPrintALLRankingRes parser;
-				protocolChk(parser.ParseMessage(pIMsg));
-
-				variableBuilder.SetVariable("RouteContext", parser.GetRouteContext());
-				variableBuilder.SetVariable("TransactionID", parser.GetTransactionID());
-				variableBuilder.SetVariable("Result", parser.GetResult());
-
-
-			Proc_End:
-
-				return hr;
-
-			}; // Result DebugPrintALLRankingRes::ParseMessageTo( MessageData* pIMsg, VariableMapBuilder& variableBuilder )
 
 			Result DebugPrintALLRankingRes::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageData* pIMsg, MessageBase* &pMessageBase )
 			{

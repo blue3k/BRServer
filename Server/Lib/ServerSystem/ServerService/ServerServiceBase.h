@@ -14,7 +14,7 @@
 
 
 #include "SFTypedefs.h"
-#include "ServerSystem/ServiceEntity/EntityInformation.h"
+#include "Entity/EntityInformation.h"
 
 
 namespace SF {
@@ -34,29 +34,25 @@ namespace Svr {
 	protected:
 
 		ServerServiceInformation* m_ServerServiceInformation;
-		uint m_ProtocolID;
 
 	public:
-		ServerServiceBase( ServerServiceInformation* pService, uint policyID )
+		ServerServiceBase( ServerServiceInformation* pService )
 			:m_ServerServiceInformation(pService)
-			, m_ProtocolID(policyID)
 		{
 			Assert(m_ServerServiceInformation);
 		}
 
 		ServerServiceInformation* GetServerServiceInformation() { return m_ServerServiceInformation; }
-		uint GetProtocolID() { return m_ProtocolID; }
 
-		EntityUID GetServiceEntityUID()
-		{
-			return m_ServerServiceInformation->GetEntityUID();
-		}
+		EntityUID GetServiceEntityUID() { return m_ServerServiceInformation->GetEntityUID(); }
+
+		FORCEINLINE Net::Connection* GetConnection() { return m_ServerServiceInformation->GetConnection(); }
 
 		// Get Policy
-		template< class PolicyType >
-		FORCEINLINE PolicyType* GetPolicy() const
+		template< class InterfaceType >
+		FORCEINLINE InterfaceType GetInterface() const
 		{
-			return m_ServerServiceInformation->GetPolicy<PolicyType>();
+			return m_ServerServiceInformation->GetInterface<InterfaceType>();
 		}
 
 	};

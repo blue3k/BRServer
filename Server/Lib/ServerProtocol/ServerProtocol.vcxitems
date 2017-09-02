@@ -29,9 +29,6 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)Protocol\Message\GameInstanceMsgClass.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Protocol\Message\GameInstanceMsgDebug.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Protocol\Message\GameInstanceMsgParsing.h" />
-    <ClInclude Include="$(MSBuildThisFileDirectory)Protocol\Message\GameMasterServerMsgClass.h" />
-    <ClInclude Include="$(MSBuildThisFileDirectory)Protocol\Message\GameMasterServerMsgDebug.h" />
-    <ClInclude Include="$(MSBuildThisFileDirectory)Protocol\Message\GameMasterServerMsgParsing.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Protocol\Message\GamePartyManagerMsgClass.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Protocol\Message\GamePartyManagerMsgDebug.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Protocol\Message\GamePartyManagerMsgParsing.h" />
@@ -77,7 +74,6 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)Protocol\Policy\EntityServerNetPolicy.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Protocol\Policy\GameInstanceManagerNetPolicy.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Protocol\Policy\GameInstanceNetPolicy.h" />
-    <ClInclude Include="$(MSBuildThisFileDirectory)Protocol\Policy\GameMasterServerNetPolicy.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Protocol\Policy\GamePartyManagerNetPolicy.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Protocol\Policy\GamePartyNetPolicy.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Protocol\Policy\GameServerNetPolicy.h" />
@@ -118,9 +114,6 @@
     <ClCompile Include="$(MSBuildThisFileDirectory)Protocol\Message\GameInstanceMsgClass.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)Protocol\Message\GameInstanceMsgDebug.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)Protocol\Message\GameInstanceMsgParsing.cpp" />
-    <ClCompile Include="$(MSBuildThisFileDirectory)Protocol\Message\GameMasterServerMsgClass.cpp" />
-    <ClCompile Include="$(MSBuildThisFileDirectory)Protocol\Message\GameMasterServerMsgDebug.cpp" />
-    <ClCompile Include="$(MSBuildThisFileDirectory)Protocol\Message\GameMasterServerMsgParsing.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)Protocol\Message\GamePartyManagerMsgClass.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)Protocol\Message\GamePartyManagerMsgDebug.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)Protocol\Message\GamePartyManagerMsgParsing.cpp" />
@@ -152,7 +145,6 @@
     <ClCompile Include="$(MSBuildThisFileDirectory)Protocol\Policy\EntityServerNetPolicy.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)Protocol\Policy\GameInstanceManagerNetPolicy.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)Protocol\Policy\GameInstanceNetPolicy.cpp" />
-    <ClCompile Include="$(MSBuildThisFileDirectory)Protocol\Policy\GameMasterServerNetPolicy.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)Protocol\Policy\GamePartyManagerNetPolicy.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)Protocol\Policy\GamePartyNetPolicy.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)Protocol\Policy\GameServerNetPolicy.cpp" />

@@ -15,11 +15,11 @@
 #include "String/StrUtil.h"
 #include "ServerLog/SvrLog.h"
 #include "Thread/Thread.h"
-#include "ServerSystem/SvrTrace.h"
-#include "ServerSystem/Entity.h"
-#include "ServerSystem/MessageRoute.h"
-#include "ServerSystem/Transaction.h"
-#include "ServerSystem/BrServer.h"
+#include "SvrTrace.h"
+#include "Entity/Entity.h"
+#include "Transaction/MessageRoute.h"
+#include "Transaction/Transaction.h"
+#include "Server/BrServer.h"
 #include "Common/SvrPolicyID.h"
 
 

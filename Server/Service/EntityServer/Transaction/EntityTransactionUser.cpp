@@ -11,7 +11,7 @@
 
 #include "stdafx.h"
 #include "EntityServer.h"
-#include "ServerSystem/SvrTrace.h"
+#include "SvrTrace.h"
 #include "EntityServerClass.h"
 #include "Memory/MemoryPool.h"
 
@@ -19,7 +19,7 @@
 #include "Protocol/Policy/EntityServerNetPolicy.h"
 
 
-#include "ServerSystem/ServerEntity.h"
+#include "ServerEntity/ServerEntity.h"
 //#include "ServerEntity/GameServerEntity.h"
 
 #include "Protocol/Policy/EntityServerNetPolicy.h"
@@ -88,9 +88,9 @@ namespace EntityServer {
 //		if( IsClosed() )
 //			return ResultCode::SUCCESS;
 //
-//		svrChkPtr( GetPolicy() );
+//		svrChkPtr( GetInterface() );
 //
-//		svrChk( GetPolicy()->RegisterUserEntityRes( GetContext(), hrRes, GetMyOwner()->GetEntityUID(), m_AuthTicket ) );
+//		svrChk( GetInterface()->RegisterUserEntityRes( GetContext(), hrRes, GetMyOwner()->GetEntityUID(), m_AuthTicket ) );
 //
 //Proc_End:
 //
@@ -141,9 +141,9 @@ namespace EntityServer {
 //		if( IsClosed() )
 //			return ResultCode::SUCCESS;
 //
-//		svrChkPtr( GetPolicy() );
+//		svrChkPtr( GetInterface() );
 //
-//		svrChk( GetPolicy()->UnregisterUserEntityRes( GetContext(), hrRes ) );
+//		svrChk( GetInterface()->UnregisterUserEntityRes( GetContext(), hrRes ) );
 //
 //Proc_End:
 //
@@ -193,9 +193,9 @@ namespace EntityServer {
 //		if( IsClosed() )
 //			return ResultCode::SUCCESS;
 //
-//		svrChkPtr( GetPolicy() );
+//		svrChkPtr( GetInterface() );
 //
-//		svrChk( GetPolicy()->UpdateUserEntityRes( GetContext(), hrRes ) );
+//		svrChk( GetInterface()->UpdateUserEntityRes( GetContext(), hrRes ) );
 //
 //	Proc_End:
 //
@@ -250,9 +250,9 @@ namespace EntityServer {
 //		if( IsClosed() )
 //			return ResultCode::SUCCESS;
 //
-//		svrChkPtr( GetPolicy() );
+//		svrChkPtr( GetInterface() );
 //
-//		svrChk( GetPolicy()->FindUserEntityRes( GetContext(), hrRes, m_EntUID, m_AuthTicket ) );
+//		svrChk( GetInterface()->FindUserEntityRes( GetContext(), hrRes, m_EntUID, m_AuthTicket ) );
 //
 //Proc_End:
 //

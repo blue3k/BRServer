@@ -16,11 +16,11 @@
 #include "ServerLog/SvrLog.h"
 #include "Thread/Thread.h"
 #include "SvrConst.h"
-#include "ServerSystem/SimpleEntity.h"
-#include "ServerSystem/MessageRoute.h"
-#include "ServerSystem/Transaction.h"
+#include "Entity/SimpleEntity.h"
+#include "Transaction/MessageRoute.h"
+#include "Transaction/Transaction.h"
 //#include "ServerSystem/PlugIn.h"
-#include "ServerSystem/SvrTrace.h"
+#include "SvrTrace.h"
 #include "Net/Message.h"
 
 

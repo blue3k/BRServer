@@ -24,13 +24,13 @@
 
 #include "Net/NetDef.h"
 
-#include "ServerSystem/SvrTrace.h"
+#include "SvrTrace.h"
 #include "Types/BrSvrTypes.h"
 #include "MessageHandlerTable.h"
 #include "Protocol/Message/ServerMsgClass.h"
 #include "Task/TimerSchedulerAction.h"
 #include "Net/Connection.h"
-#include "BrServerUtil.h"
+#include "Server/BrServerUtil.h"
 #include "SvrConst.h"
 
 namespace SF {
@@ -579,7 +579,7 @@ namespace Svr {
 		{
 		}
 		
-		virtual PolicyClass* GetPolicy()
+		virtual PolicyClass* GetInterface()
 		{
 			if (TransactionT<OwnerType, MemoryPoolClass, MessageHandlerBufferSize>::GetOwnerEntity() == nullptr)
 				return nullptr;
@@ -588,13 +588,13 @@ namespace Svr {
 
 			if (m_pConn != nullptr)
 			{
-				return m_pConn->GetPolicy<PolicyClass>();
+				return m_pConn->GetInterface<PolicyClass>();
 			}
 			return nullptr;
 		}
 
 		template< class PolicyType >
-		PolicyType* GetPolicy()
+		PolicyType* GetInterface()
 		{
 			if (TransactionT<OwnerType, MemoryPoolClass, MessageHandlerBufferSize>::GetOwnerEntity() == nullptr)
 				return nullptr;
@@ -603,7 +603,7 @@ namespace Svr {
 
 			if (m_pConn != nullptr)
 			{
-				return m_pConn->GetPolicy<PolicyType>();
+				return m_pConn->GetInterface<PolicyType>();
 			}
 			return nullptr;
 		}
@@ -646,7 +646,7 @@ namespace Svr {
 
 			//if( pOwnerEntity->GetConnection() != nullptr )
 			//{
-			//	svrChkPtr( pOwnerEntity->GetConnection()->GetPolicy<PolicyType>() );
+			//	svrChkPtr( pOwnerEntity->GetConnection()->GetInterface<PolicyType>() );
 			//}
 
 
@@ -707,12 +707,12 @@ namespace Svr {
 			return hr;
 		}
 
-		virtual PolicyType* GetPolicy() override
+		virtual PolicyType* GetInterface() override
 		{
 			auto pConn = Transaction::GetServerEntityConnection(superTrans::GetServerEntity());
 			if (pConn != nullptr)
 			{
-				return pConn->template GetPolicy<PolicyType>();
+				return pConn->template GetInterface<PolicyType>();
 			}
 			return nullptr;
 		}

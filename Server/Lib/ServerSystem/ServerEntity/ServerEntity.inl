@@ -42,7 +42,7 @@ inline Net::Connection* ServerEntity::GetConnection()
 }
 
 template< class PolicyType >
-PolicyType* ServerEntity::GetPolicy()
+PolicyType* ServerEntity::GetInterface()
 {
 	Net::Connection* pConn = GetConnection();
 	if (pConn == nullptr)
@@ -50,7 +50,7 @@ PolicyType* ServerEntity::GetPolicy()
 		return nullptr;
 	}
 
-	return pConn->GetPolicy<PolicyType>();
+	return pConn->GetInterface<PolicyType>();
 }
 
 

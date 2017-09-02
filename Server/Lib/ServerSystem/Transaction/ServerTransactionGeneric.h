@@ -14,9 +14,9 @@
 #include "SFTypedefs.h"
 #include "Memory/MemoryPool.h"
 
-#include "ServerSystem/ServerEntity.h"
-#include "ServerSystem/Transaction.h"
-#include "ServerSystem/ServerEntityManager.h"
+#include "ServerEntity/ServerEntity.h"
+#include "Transaction/Transaction.h"
+#include "ServerEntity/ServerEntityManager.h"
 
 #include "Protocol/Message/ServerMsgClass.h"
 #include "Protocol/Policy/ServerNetNetPolicy.h"

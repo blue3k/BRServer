@@ -12,7 +12,7 @@
 
 #include "Protocol/Protocol.h"
 #include "Net/Message.h"
-#include "Container/VariableMapBuilder.h"
+#include "Protocol/SvrProtocol.h"
 
 
 
@@ -63,7 +63,6 @@ namespace SF
 				static Result TraceOut(MessageData* pMsg);
 
 				virtual Result ParseMessage( MessageData* pIMsg );
-				static Result ParseMessageTo( MessageData* pIMsg, VariableMapBuilder& variableBuilder );
 				static Result ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageData* pIMsg, MessageBase* &pMsgBase );
 
 				static MessageData* Create( IMemoryManager& memoryManager, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const PlayerID &InInviterID, const PlayerInformation &InInvitedPlayer );
@@ -114,7 +113,6 @@ namespace SF
 				static Result TraceOut(MessageData* pMsg);
 
 				virtual Result ParseMessage( MessageData* pIMsg );
-				static Result ParseMessageTo( MessageData* pIMsg, VariableMapBuilder& variableBuilder );
 				static Result ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageData* pIMsg, MessageBase* &pMsgBase );
 
 				static MessageData* Create( IMemoryManager& memoryManager, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const Result &InResult, const PlayerID &InPartyLeaderID, const Array<uint8_t>& InChatHistoryData );
@@ -161,7 +159,6 @@ namespace SF
 				static Result TraceOut(MessageData* pMsg);
 
 				virtual Result ParseMessage( MessageData* pIMsg );
-				static Result ParseMessageTo( MessageData* pIMsg, VariableMapBuilder& variableBuilder );
 				static Result ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageData* pIMsg, MessageBase* &pMsgBase );
 
 				static MessageData* Create( IMemoryManager& memoryManager, const RouteContext &InRouteContext, const PlayerInformation &InJoinedPlayer );
@@ -208,7 +205,6 @@ namespace SF
 				static Result TraceOut(MessageData* pMsg);
 
 				virtual Result ParseMessage( MessageData* pIMsg );
-				static Result ParseMessageTo( MessageData* pIMsg, VariableMapBuilder& variableBuilder );
 				static Result ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageData* pIMsg, MessageBase* &pMsgBase );
 
 				static MessageData* Create( IMemoryManager& memoryManager, const RouteContext &InRouteContext, const PlayerID &InNewLeaderID );
@@ -255,7 +251,6 @@ namespace SF
 				static Result TraceOut(MessageData* pMsg);
 
 				virtual Result ParseMessage( MessageData* pIMsg );
-				static Result ParseMessageTo( MessageData* pIMsg, VariableMapBuilder& variableBuilder );
 				static Result ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageData* pIMsg, MessageBase* &pMsgBase );
 
 				static MessageData* Create( IMemoryManager& memoryManager, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const PlayerID &InPlayerID );
@@ -302,7 +297,6 @@ namespace SF
 				static Result TraceOut(MessageData* pMsg);
 
 				virtual Result ParseMessage( MessageData* pIMsg );
-				static Result ParseMessageTo( MessageData* pIMsg, VariableMapBuilder& variableBuilder );
 				static Result ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageData* pIMsg, MessageBase* &pMsgBase );
 
 				static MessageData* Create( IMemoryManager& memoryManager, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const Result &InResult );
@@ -349,7 +343,6 @@ namespace SF
 				static Result TraceOut(MessageData* pMsg);
 
 				virtual Result ParseMessage( MessageData* pIMsg );
-				static Result ParseMessageTo( MessageData* pIMsg, VariableMapBuilder& variableBuilder );
 				static Result ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageData* pIMsg, MessageBase* &pMsgBase );
 
 				static MessageData* Create( IMemoryManager& memoryManager, const RouteContext &InRouteContext, const PlayerID &InLeftPlayerID );
@@ -398,7 +391,6 @@ namespace SF
 				static Result TraceOut(MessageData* pMsg);
 
 				virtual Result ParseMessage( MessageData* pIMsg );
-				static Result ParseMessageTo( MessageData* pIMsg, VariableMapBuilder& variableBuilder );
 				static Result ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageData* pIMsg, MessageBase* &pMsgBase );
 
 				static MessageData* Create( IMemoryManager& memoryManager, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const PlayerID &InPlayerID, const PlayerID &InPlayerToKick );
@@ -445,7 +437,6 @@ namespace SF
 				static Result TraceOut(MessageData* pMsg);
 
 				virtual Result ParseMessage( MessageData* pIMsg );
-				static Result ParseMessageTo( MessageData* pIMsg, VariableMapBuilder& variableBuilder );
 				static Result ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageData* pIMsg, MessageBase* &pMsgBase );
 
 				static MessageData* Create( IMemoryManager& memoryManager, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const Result &InResult );
@@ -492,7 +483,6 @@ namespace SF
 				static Result TraceOut(MessageData* pMsg);
 
 				virtual Result ParseMessage( MessageData* pIMsg );
-				static Result ParseMessageTo( MessageData* pIMsg, VariableMapBuilder& variableBuilder );
 				static Result ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageData* pIMsg, MessageBase* &pMsgBase );
 
 				static MessageData* Create( IMemoryManager& memoryManager, const RouteContext &InRouteContext, const PlayerID &InKickedPlayerID );
@@ -542,7 +532,6 @@ namespace SF
 				static Result TraceOut(MessageData* pMsg);
 
 				virtual Result ParseMessage( MessageData* pIMsg );
-				static Result ParseMessageTo( MessageData* pIMsg, VariableMapBuilder& variableBuilder );
 				static Result ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageData* pIMsg, MessageBase* &pMsgBase );
 
 				static MessageData* Create( IMemoryManager& memoryManager, const RouteContext &InRouteContext, const PlayerID &InPlayerID, const char* InChatMessage );
@@ -597,7 +586,6 @@ namespace SF
 				static Result TraceOut(MessageData* pMsg);
 
 				virtual Result ParseMessage( MessageData* pIMsg );
-				static Result ParseMessageTo( MessageData* pIMsg, VariableMapBuilder& variableBuilder );
 				static Result ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageData* pIMsg, MessageBase* &pMsgBase );
 
 				static MessageData* Create( IMemoryManager& memoryManager, const RouteContext &InRouteContext, const PlayerID &InSenderID, const char* InSenderName, const char* InChatMessage );
@@ -645,7 +633,6 @@ namespace SF
 				static Result TraceOut(MessageData* pMsg);
 
 				virtual Result ParseMessage( MessageData* pIMsg );
-				static Result ParseMessageTo( MessageData* pIMsg, VariableMapBuilder& variableBuilder );
 				static Result ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageData* pIMsg, MessageBase* &pMsgBase );
 
 				static MessageData* Create( IMemoryManager& memoryManager, const RouteContext &InRouteContext, const PlayerID &InPlayerID, const uint32_t &InQuickChatID );
@@ -694,7 +681,6 @@ namespace SF
 				static Result TraceOut(MessageData* pMsg);
 
 				virtual Result ParseMessage( MessageData* pIMsg );
-				static Result ParseMessageTo( MessageData* pIMsg, VariableMapBuilder& variableBuilder );
 				static Result ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageData* pIMsg, MessageBase* &pMsgBase );
 
 				static MessageData* Create( IMemoryManager& memoryManager, const RouteContext &InRouteContext, const PlayerID &InSenderID, const uint32_t &InQuickChatID );
@@ -743,7 +729,6 @@ namespace SF
 				static Result TraceOut(MessageData* pMsg);
 
 				virtual Result ParseMessage( MessageData* pIMsg );
-				static Result ParseMessageTo( MessageData* pIMsg, VariableMapBuilder& variableBuilder );
 				static Result ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageData* pIMsg, MessageBase* &pMsgBase );
 
 				static MessageData* Create( IMemoryManager& memoryManager, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const PlayerID &InPlayerID, const uint32_t &InMaxGamePlayers );
@@ -790,7 +775,6 @@ namespace SF
 				static Result TraceOut(MessageData* pMsg);
 
 				virtual Result ParseMessage( MessageData* pIMsg );
-				static Result ParseMessageTo( MessageData* pIMsg, VariableMapBuilder& variableBuilder );
 				static Result ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageData* pIMsg, MessageBase* &pMsgBase );
 
 				static MessageData* Create( IMemoryManager& memoryManager, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const Result &InResult );
@@ -837,7 +821,6 @@ namespace SF
 				static Result TraceOut(MessageData* pMsg);
 
 				virtual Result ParseMessage( MessageData* pIMsg );
-				static Result ParseMessageTo( MessageData* pIMsg, VariableMapBuilder& variableBuilder );
 				static Result ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageData* pIMsg, MessageBase* &pMsgBase );
 
 				static MessageData* Create( IMemoryManager& memoryManager, const RouteContext &InRouteContext, const MatchingQueueTicket &InMatchingQueueTicket );
@@ -884,7 +867,6 @@ namespace SF
 				static Result TraceOut(MessageData* pMsg);
 
 				virtual Result ParseMessage( MessageData* pIMsg );
-				static Result ParseMessageTo( MessageData* pIMsg, VariableMapBuilder& variableBuilder );
 				static Result ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageData* pIMsg, MessageBase* &pMsgBase );
 
 				static MessageData* Create( IMemoryManager& memoryManager, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const PlayerID &InPlayerID );
@@ -931,7 +913,6 @@ namespace SF
 				static Result TraceOut(MessageData* pMsg);
 
 				virtual Result ParseMessage( MessageData* pIMsg );
-				static Result ParseMessageTo( MessageData* pIMsg, VariableMapBuilder& variableBuilder );
 				static Result ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageData* pIMsg, MessageBase* &pMsgBase );
 
 				static MessageData* Create( IMemoryManager& memoryManager, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const Result &InResult );
@@ -978,7 +959,6 @@ namespace SF
 				static Result TraceOut(MessageData* pMsg);
 
 				virtual Result ParseMessage( MessageData* pIMsg );
-				static Result ParseMessageTo( MessageData* pIMsg, VariableMapBuilder& variableBuilder );
 				static Result ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageData* pIMsg, MessageBase* &pMsgBase );
 
 				static MessageData* Create( IMemoryManager& memoryManager, const RouteContext &InRouteContext, const MatchingQueueTicket &InMatchingQueueTicket );
@@ -1025,7 +1005,6 @@ namespace SF
 				static Result TraceOut(MessageData* pMsg);
 
 				virtual Result ParseMessage( MessageData* pIMsg );
-				static Result ParseMessageTo( MessageData* pIMsg, VariableMapBuilder& variableBuilder );
 				static Result ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageData* pIMsg, MessageBase* &pMsgBase );
 
 				static MessageData* Create( IMemoryManager& memoryManager, const RouteContext &InRouteContext, const MatchingQueueTicket &InMatchingTicket );

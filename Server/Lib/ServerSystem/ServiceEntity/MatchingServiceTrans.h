@@ -12,15 +12,15 @@
 #pragma once
 
 #include "SFTypedefs.h"
-#include "ServerSystem/Transaction.h"
+#include "Transaction/Transaction.h"
 #include "Memory/MemoryPool.h"
 #include "Container/SFArray.h"
-#include "Types/BrBaseTypes.h"
+#include "Types/SFEngineTypedefs.h"
 #include "GameConst.h"
 #include "Net/Message.h"
 #include "Protocol/Message/ClusterServerMsgClass.h"
 #include "Protocol/Policy/ClusterServerNetPolicy.h"
-#include "ServerSystem/MessageRoute.h"
+#include "Transaction/MessageRoute.h"
 #include "ServerSystem/ServiceEntity/MatchingServiceEntity.h"
 #include "ServerSystem/ServerTransaction.h"
 

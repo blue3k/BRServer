@@ -52,25 +52,6 @@ namespace SF
 
 			}; // Result GetClusterMemberListCmd::ParseMessage( MessageData* pIMsg )
 
-			Result GetClusterMemberListCmd::ParseMessageTo( MessageData* pIMsg, VariableMapBuilder& variableBuilder )
-			{
- 				Result hr;
-
-
-				GetClusterMemberListCmd parser;
-				protocolChk(parser.ParseMessage(pIMsg));
-
-				variableBuilder.SetVariable("RouteContext", parser.GetRouteContext());
-				variableBuilder.SetVariable("TransactionID", parser.GetTransactionID());
-				variableBuilder.SetVariable("RouteHopCount", parser.GetRouteHopCount());
-				variableBuilder.SetVariable("ClusterID", parser.GetClusterID());
-
-
-			Proc_End:
-
-				return hr;
-
-			}; // Result GetClusterMemberListCmd::ParseMessageTo( MessageData* pIMsg, VariableMapBuilder& variableBuilder )
 
 			Result GetClusterMemberListCmd::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageData* pIMsg, MessageBase* &pMessageBase )
 			{
@@ -165,9 +146,9 @@ namespace SF
 				memcpy( pCur, &routeContext, sizeof(RouteContext) );
 				pCur += sizeof(RouteContext); iMsgSize -= sizeof(RouteContext);
 				pCur += sizeof(TransactionID); iMsgSize -= sizeof(TransactionID);
-				Assert( iMsgSize >= (INT)sizeof(uint16) );
-				*(uint16*)pCur = hopCount;
-				pCur += sizeof(uint16); iMsgSize -= sizeof(uint16);
+				Assert( iMsgSize >= (INT)sizeof(uint16_t) );
+				*(uint16_t*)pCur = hopCount;
+				pCur += sizeof(uint16_t); iMsgSize -= sizeof(uint16_t);
 
 
 			Proc_End:
@@ -213,25 +194,6 @@ namespace SF
 
 			}; // Result GetClusterMemberListRes::ParseMessage( MessageData* pIMsg )
 
-			Result GetClusterMemberListRes::ParseMessageTo( MessageData* pIMsg, VariableMapBuilder& variableBuilder )
-			{
- 				Result hr;
-
-
-				GetClusterMemberListRes parser;
-				protocolChk(parser.ParseMessage(pIMsg));
-
-				variableBuilder.SetVariable("RouteContext", parser.GetRouteContext());
-				variableBuilder.SetVariable("TransactionID", parser.GetTransactionID());
-				variableBuilder.SetVariable("Result", parser.GetResult());
-				variableBuilder.SetVariable("MemberList", (int)parser.GetMemberList().GetItemCount(), (const ServiceInformation*)parser.GetMemberList().data());
-
-
-			Proc_End:
-
-				return hr;
-
-			}; // Result GetClusterMemberListRes::ParseMessageTo( MessageData* pIMsg, VariableMapBuilder& variableBuilder )
 
 			Result GetClusterMemberListRes::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageData* pIMsg, MessageBase* &pMessageBase )
 			{
@@ -256,10 +218,10 @@ namespace SF
 					+ sizeof(RouteContext)
 					+ sizeof(TransactionID)
 					+ sizeof(Result)
-					+ sizeof(ServiceInformation)*InMemberList.GetItemCount() + sizeof(uint16_t));
+					+ sizeof(ServiceInformation)*InMemberList.size() + sizeof(uint16_t));
 
 
-				uint16_t numberOfInMemberList = (uint16_t)InMemberList.GetItemCount(); 
+				uint16_t numberOfInMemberList = (uint16_t)InMemberList.size(); 
 				protocolMem( pNewMsg = MessageData::NewMessage( memoryManager, ClusterServer::GetClusterMemberListRes::MID, __uiMessageSize ) );
 
 				pMsgData = pNewMsg->GetMessageData();
@@ -268,7 +230,7 @@ namespace SF
 				Protocol::PackParamCopy( pMsgData, &InTransactionID, sizeof(TransactionID));
 				Protocol::PackParamCopy( pMsgData, &InResult, sizeof(Result));
 				Protocol::PackParamCopy( pMsgData, &numberOfInMemberList, sizeof(uint16_t)); 
-				Protocol::PackParamCopy( pMsgData, InMemberList.data(), (INT)(sizeof(ServiceInformation)*InMemberList.GetItemCount())); 
+				Protocol::PackParamCopy( pMsgData, InMemberList.data(), (INT)(sizeof(ServiceInformation)*InMemberList.size())); 
 
 
 			Proc_End:
@@ -330,7 +292,7 @@ namespace SF
 				pCur += sizeof(TransactionID); iMsgSize -= sizeof(TransactionID);
 				pCur += sizeof(Result); iMsgSize -= sizeof(Result);
 				pCur += sizeof(uint16_t); iMsgSize -= sizeof(uint16_t);
-				pCur += sizeof(ServiceInformation)*m_MemberList.GetItemCount(); iMsgSize -= (INT)(sizeof(ServiceInformation)*m_MemberList.GetSize());
+				pCur += sizeof(ServiceInformation)*m_MemberList.size(); iMsgSize -= (INT)(sizeof(ServiceInformation)*m_MemberList.size());
 
 
 			Proc_End:
@@ -379,30 +341,6 @@ namespace SF
 
 			}; // Result JoinClusterCmd::ParseMessage( MessageData* pIMsg )
 
-			Result JoinClusterCmd::ParseMessageTo( MessageData* pIMsg, VariableMapBuilder& variableBuilder )
-			{
- 				Result hr;
-
-
-				JoinClusterCmd parser;
-				protocolChk(parser.ParseMessage(pIMsg));
-
-				variableBuilder.SetVariable("RouteContext", parser.GetRouteContext());
-				variableBuilder.SetVariable("TransactionID", parser.GetTransactionID());
-				variableBuilder.SetVariable("RouteHopCount", parser.GetRouteHopCount());
-				variableBuilder.SetVariable("Sender", parser.GetSender());
-				variableBuilder.SetVariable("SenderNetClass", parser.GetSenderNetClass());
-				variableBuilder.SetVariable("SenderAddress", parser.GetSenderAddress());
-				variableBuilder.SetVariable("ClusterID", parser.GetClusterID());
-				variableBuilder.SetVariable("ClusterType", (int)parser.GetClusterType());
-				variableBuilder.SetVariable("ClusterMembership", (int)parser.GetClusterMembership());
-
-
-			Proc_End:
-
-				return hr;
-
-			}; // Result JoinClusterCmd::ParseMessageTo( MessageData* pIMsg, VariableMapBuilder& variableBuilder )
 
 			Result JoinClusterCmd::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageData* pIMsg, MessageBase* &pMessageBase )
 			{
@@ -507,9 +445,9 @@ namespace SF
 				memcpy( pCur, &routeContext, sizeof(RouteContext) );
 				pCur += sizeof(RouteContext); iMsgSize -= sizeof(RouteContext);
 				pCur += sizeof(TransactionID); iMsgSize -= sizeof(TransactionID);
-				Assert( iMsgSize >= (INT)sizeof(uint16) );
-				*(uint16*)pCur = hopCount;
-				pCur += sizeof(uint16); iMsgSize -= sizeof(uint16);
+				Assert( iMsgSize >= (INT)sizeof(uint16_t) );
+				*(uint16_t*)pCur = hopCount;
+				pCur += sizeof(uint16_t); iMsgSize -= sizeof(uint16_t);
 
 
 			Proc_End:
@@ -555,25 +493,6 @@ namespace SF
 
 			}; // Result JoinClusterRes::ParseMessage( MessageData* pIMsg )
 
-			Result JoinClusterRes::ParseMessageTo( MessageData* pIMsg, VariableMapBuilder& variableBuilder )
-			{
- 				Result hr;
-
-
-				JoinClusterRes parser;
-				protocolChk(parser.ParseMessage(pIMsg));
-
-				variableBuilder.SetVariable("RouteContext", parser.GetRouteContext());
-				variableBuilder.SetVariable("TransactionID", parser.GetTransactionID());
-				variableBuilder.SetVariable("Result", parser.GetResult());
-				variableBuilder.SetVariable("MemberList", (int)parser.GetMemberList().GetItemCount(), (const ServiceInformation*)parser.GetMemberList().data());
-
-
-			Proc_End:
-
-				return hr;
-
-			}; // Result JoinClusterRes::ParseMessageTo( MessageData* pIMsg, VariableMapBuilder& variableBuilder )
 
 			Result JoinClusterRes::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageData* pIMsg, MessageBase* &pMessageBase )
 			{
@@ -598,10 +517,10 @@ namespace SF
 					+ sizeof(RouteContext)
 					+ sizeof(TransactionID)
 					+ sizeof(Result)
-					+ sizeof(ServiceInformation)*InMemberList.GetItemCount() + sizeof(uint16_t));
+					+ sizeof(ServiceInformation)*InMemberList.size() + sizeof(uint16_t));
 
 
-				uint16_t numberOfInMemberList = (uint16_t)InMemberList.GetItemCount(); 
+				uint16_t numberOfInMemberList = (uint16_t)InMemberList.size(); 
 				protocolMem( pNewMsg = MessageData::NewMessage( memoryManager, ClusterServer::JoinClusterRes::MID, __uiMessageSize ) );
 
 				pMsgData = pNewMsg->GetMessageData();
@@ -610,7 +529,7 @@ namespace SF
 				Protocol::PackParamCopy( pMsgData, &InTransactionID, sizeof(TransactionID));
 				Protocol::PackParamCopy( pMsgData, &InResult, sizeof(Result));
 				Protocol::PackParamCopy( pMsgData, &numberOfInMemberList, sizeof(uint16_t)); 
-				Protocol::PackParamCopy( pMsgData, InMemberList.data(), (INT)(sizeof(ServiceInformation)*InMemberList.GetItemCount())); 
+				Protocol::PackParamCopy( pMsgData, InMemberList.data(), (INT)(sizeof(ServiceInformation)*InMemberList.size())); 
 
 
 			Proc_End:
@@ -672,7 +591,7 @@ namespace SF
 				pCur += sizeof(TransactionID); iMsgSize -= sizeof(TransactionID);
 				pCur += sizeof(Result); iMsgSize -= sizeof(Result);
 				pCur += sizeof(uint16_t); iMsgSize -= sizeof(uint16_t);
-				pCur += sizeof(ServiceInformation)*m_MemberList.GetItemCount(); iMsgSize -= (INT)(sizeof(ServiceInformation)*m_MemberList.GetSize());
+				pCur += sizeof(ServiceInformation)*m_MemberList.size(); iMsgSize -= (INT)(sizeof(ServiceInformation)*m_MemberList.size());
 
 
 			Proc_End:
@@ -720,29 +639,6 @@ namespace SF
 
 			}; // Result NewServerServiceJoinedC2SEvt::ParseMessage( MessageData* pIMsg )
 
-			Result NewServerServiceJoinedC2SEvt::ParseMessageTo( MessageData* pIMsg, VariableMapBuilder& variableBuilder )
-			{
- 				Result hr;
-
-
-				NewServerServiceJoinedC2SEvt parser;
-				protocolChk(parser.ParseMessage(pIMsg));
-
-				variableBuilder.SetVariable("RouteContext", parser.GetRouteContext());
-				variableBuilder.SetVariable("RouteHopCount", parser.GetRouteHopCount());
-				variableBuilder.SetVariable("JoinedServiceUID", parser.GetJoinedServiceUID());
-				variableBuilder.SetVariable("JoinedServiceNetClass", parser.GetJoinedServiceNetClass());
-				variableBuilder.SetVariable("JoinedServiceAddress", parser.GetJoinedServiceAddress());
-				variableBuilder.SetVariable("ClusterID", parser.GetClusterID());
-				variableBuilder.SetVariable("ClusterType", (int)parser.GetClusterType());
-				variableBuilder.SetVariable("JoinedServiceMembership", (int)parser.GetJoinedServiceMembership());
-
-
-			Proc_End:
-
-				return hr;
-
-			}; // Result NewServerServiceJoinedC2SEvt::ParseMessageTo( MessageData* pIMsg, VariableMapBuilder& variableBuilder )
 
 			Result NewServerServiceJoinedC2SEvt::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageData* pIMsg, MessageBase* &pMessageBase )
 			{
@@ -844,9 +740,9 @@ namespace SF
 				routeContext.Components.To = to;
 				memcpy( pCur, &routeContext, sizeof(RouteContext) );
 				pCur += sizeof(RouteContext); iMsgSize -= sizeof(RouteContext);
-				Assert( iMsgSize >= (INT)sizeof(uint16) );
-				*(uint16*)pCur = hopCount;
-				pCur += sizeof(uint16); iMsgSize -= sizeof(uint16);
+				Assert( iMsgSize >= (INT)sizeof(uint16_t) );
+				*(uint16_t*)pCur = hopCount;
+				pCur += sizeof(uint16_t); iMsgSize -= sizeof(uint16_t);
 
 
 			Proc_End:
@@ -894,26 +790,6 @@ namespace SF
 
 			}; // Result SyncClusterServiceC2SEvt::ParseMessage( MessageData* pIMsg )
 
-			Result SyncClusterServiceC2SEvt::ParseMessageTo( MessageData* pIMsg, VariableMapBuilder& variableBuilder )
-			{
- 				Result hr;
-
-
-				SyncClusterServiceC2SEvt parser;
-				protocolChk(parser.ParseMessage(pIMsg));
-
-				variableBuilder.SetVariable("RouteContext", parser.GetRouteContext());
-				variableBuilder.SetVariable("RouteHopCount", parser.GetRouteHopCount());
-				variableBuilder.SetVariable("ClusterID", parser.GetClusterID());
-				variableBuilder.SetVariable("ClusterType", (int)parser.GetClusterType());
-				variableBuilder.SetVariable("MemberList", (int)parser.GetMemberList().GetItemCount(), (const ServiceInformation*)parser.GetMemberList().data());
-
-
-			Proc_End:
-
-				return hr;
-
-			}; // Result SyncClusterServiceC2SEvt::ParseMessageTo( MessageData* pIMsg, VariableMapBuilder& variableBuilder )
 
 			Result SyncClusterServiceC2SEvt::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageData* pIMsg, MessageBase* &pMessageBase )
 			{
@@ -939,10 +815,10 @@ namespace SF
 					+ sizeof(uint16_t)
 					+ sizeof(ClusterID)
 					+ sizeof(ClusterType)
-					+ sizeof(ServiceInformation)*InMemberList.GetItemCount() + sizeof(uint16_t));
+					+ sizeof(ServiceInformation)*InMemberList.size() + sizeof(uint16_t));
 
 
-				uint16_t numberOfInMemberList = (uint16_t)InMemberList.GetItemCount(); 
+				uint16_t numberOfInMemberList = (uint16_t)InMemberList.size(); 
 				protocolMem( pNewMsg = MessageData::NewMessage( memoryManager, ClusterServer::SyncClusterServiceC2SEvt::MID, __uiMessageSize ) );
 
 				pMsgData = pNewMsg->GetMessageData();
@@ -952,7 +828,7 @@ namespace SF
 				Protocol::PackParamCopy( pMsgData, &InClusterID, sizeof(ClusterID));
 				Protocol::PackParamCopy( pMsgData, &InClusterType, sizeof(ClusterType));
 				Protocol::PackParamCopy( pMsgData, &numberOfInMemberList, sizeof(uint16_t)); 
-				Protocol::PackParamCopy( pMsgData, InMemberList.data(), (INT)(sizeof(ServiceInformation)*InMemberList.GetItemCount())); 
+				Protocol::PackParamCopy( pMsgData, InMemberList.data(), (INT)(sizeof(ServiceInformation)*InMemberList.size())); 
 
 
 			Proc_End:
@@ -1011,9 +887,9 @@ namespace SF
 				routeContext.Components.To = to;
 				memcpy( pCur, &routeContext, sizeof(RouteContext) );
 				pCur += sizeof(RouteContext); iMsgSize -= sizeof(RouteContext);
-				Assert( iMsgSize >= (INT)sizeof(uint16) );
-				*(uint16*)pCur = hopCount;
-				pCur += sizeof(uint16); iMsgSize -= sizeof(uint16);
+				Assert( iMsgSize >= (INT)sizeof(uint16_t) );
+				*(uint16_t*)pCur = hopCount;
+				pCur += sizeof(uint16_t); iMsgSize -= sizeof(uint16_t);
 
 
 			Proc_End:
@@ -1057,25 +933,6 @@ namespace SF
 
 			}; // Result RequestDataSyncCmd::ParseMessage( MessageData* pIMsg )
 
-			Result RequestDataSyncCmd::ParseMessageTo( MessageData* pIMsg, VariableMapBuilder& variableBuilder )
-			{
- 				Result hr;
-
-
-				RequestDataSyncCmd parser;
-				protocolChk(parser.ParseMessage(pIMsg));
-
-				variableBuilder.SetVariable("RouteContext", parser.GetRouteContext());
-				variableBuilder.SetVariable("TransactionID", parser.GetTransactionID());
-				variableBuilder.SetVariable("RouteHopCount", parser.GetRouteHopCount());
-				variableBuilder.SetVariable("ClusterID", parser.GetClusterID());
-
-
-			Proc_End:
-
-				return hr;
-
-			}; // Result RequestDataSyncCmd::ParseMessageTo( MessageData* pIMsg, VariableMapBuilder& variableBuilder )
 
 			Result RequestDataSyncCmd::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageData* pIMsg, MessageBase* &pMessageBase )
 			{
@@ -1170,9 +1027,9 @@ namespace SF
 				memcpy( pCur, &routeContext, sizeof(RouteContext) );
 				pCur += sizeof(RouteContext); iMsgSize -= sizeof(RouteContext);
 				pCur += sizeof(TransactionID); iMsgSize -= sizeof(TransactionID);
-				Assert( iMsgSize >= (INT)sizeof(uint16) );
-				*(uint16*)pCur = hopCount;
-				pCur += sizeof(uint16); iMsgSize -= sizeof(uint16);
+				Assert( iMsgSize >= (INT)sizeof(uint16_t) );
+				*(uint16_t*)pCur = hopCount;
+				pCur += sizeof(uint16_t); iMsgSize -= sizeof(uint16_t);
 
 
 			Proc_End:
@@ -1214,24 +1071,6 @@ namespace SF
 
 			}; // Result RequestDataSyncRes::ParseMessage( MessageData* pIMsg )
 
-			Result RequestDataSyncRes::ParseMessageTo( MessageData* pIMsg, VariableMapBuilder& variableBuilder )
-			{
- 				Result hr;
-
-
-				RequestDataSyncRes parser;
-				protocolChk(parser.ParseMessage(pIMsg));
-
-				variableBuilder.SetVariable("RouteContext", parser.GetRouteContext());
-				variableBuilder.SetVariable("TransactionID", parser.GetTransactionID());
-				variableBuilder.SetVariable("Result", parser.GetResult());
-
-
-			Proc_End:
-
-				return hr;
-
-			}; // Result RequestDataSyncRes::ParseMessageTo( MessageData* pIMsg, VariableMapBuilder& variableBuilder )
 
 			Result RequestDataSyncRes::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageData* pIMsg, MessageBase* &pMessageBase )
 			{
@@ -1369,26 +1208,6 @@ namespace SF
 
 			}; // Result ClusterMasterAssignedS2CEvt::ParseMessage( MessageData* pIMsg )
 
-			Result ClusterMasterAssignedS2CEvt::ParseMessageTo( MessageData* pIMsg, VariableMapBuilder& variableBuilder )
-			{
- 				Result hr;
-
-
-				ClusterMasterAssignedS2CEvt parser;
-				protocolChk(parser.ParseMessage(pIMsg));
-
-				variableBuilder.SetVariable("RouteContext", parser.GetRouteContext());
-				variableBuilder.SetVariable("RouteHopCount", parser.GetRouteHopCount());
-				variableBuilder.SetVariable("Sender", parser.GetSender());
-				variableBuilder.SetVariable("ClusterID", parser.GetClusterID());
-				variableBuilder.SetVariable("MasterUID", parser.GetMasterUID());
-
-
-			Proc_End:
-
-				return hr;
-
-			}; // Result ClusterMasterAssignedS2CEvt::ParseMessageTo( MessageData* pIMsg, VariableMapBuilder& variableBuilder )
 
 			Result ClusterMasterAssignedS2CEvt::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageData* pIMsg, MessageBase* &pMessageBase )
 			{
@@ -1484,9 +1303,9 @@ namespace SF
 				routeContext.Components.To = to;
 				memcpy( pCur, &routeContext, sizeof(RouteContext) );
 				pCur += sizeof(RouteContext); iMsgSize -= sizeof(RouteContext);
-				Assert( iMsgSize >= (INT)sizeof(uint16) );
-				*(uint16*)pCur = hopCount;
-				pCur += sizeof(uint16); iMsgSize -= sizeof(uint16);
+				Assert( iMsgSize >= (INT)sizeof(uint16_t) );
+				*(uint16_t*)pCur = hopCount;
+				pCur += sizeof(uint16_t); iMsgSize -= sizeof(uint16_t);
 
 
 			Proc_End:
@@ -1531,26 +1350,6 @@ namespace SF
 
 			}; // Result ClusterMasterVoteC2SEvt::ParseMessage( MessageData* pIMsg )
 
-			Result ClusterMasterVoteC2SEvt::ParseMessageTo( MessageData* pIMsg, VariableMapBuilder& variableBuilder )
-			{
- 				Result hr;
-
-
-				ClusterMasterVoteC2SEvt parser;
-				protocolChk(parser.ParseMessage(pIMsg));
-
-				variableBuilder.SetVariable("RouteContext", parser.GetRouteContext());
-				variableBuilder.SetVariable("RouteHopCount", parser.GetRouteHopCount());
-				variableBuilder.SetVariable("ClusterID", parser.GetClusterID());
-				variableBuilder.SetVariable("VoteToUID", parser.GetVoteToUID());
-				variableBuilder.SetVariable("VotedUpTime", parser.GetVotedUpTime());
-
-
-			Proc_End:
-
-				return hr;
-
-			}; // Result ClusterMasterVoteC2SEvt::ParseMessageTo( MessageData* pIMsg, VariableMapBuilder& variableBuilder )
 
 			Result ClusterMasterVoteC2SEvt::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageData* pIMsg, MessageBase* &pMessageBase )
 			{
@@ -1646,9 +1445,9 @@ namespace SF
 				routeContext.Components.To = to;
 				memcpy( pCur, &routeContext, sizeof(RouteContext) );
 				pCur += sizeof(RouteContext); iMsgSize -= sizeof(RouteContext);
-				Assert( iMsgSize >= (INT)sizeof(uint16) );
-				*(uint16*)pCur = hopCount;
-				pCur += sizeof(uint16); iMsgSize -= sizeof(uint16);
+				Assert( iMsgSize >= (INT)sizeof(uint16_t) );
+				*(uint16_t*)pCur = hopCount;
+				pCur += sizeof(uint16_t); iMsgSize -= sizeof(uint16_t);
 
 
 			Proc_End:
@@ -1693,26 +1492,6 @@ namespace SF
 
 			}; // Result ClusterUpdateStatusC2SEvt::ParseMessage( MessageData* pIMsg )
 
-			Result ClusterUpdateStatusC2SEvt::ParseMessageTo( MessageData* pIMsg, VariableMapBuilder& variableBuilder )
-			{
- 				Result hr;
-
-
-				ClusterUpdateStatusC2SEvt parser;
-				protocolChk(parser.ParseMessage(pIMsg));
-
-				variableBuilder.SetVariable("RouteContext", parser.GetRouteContext());
-				variableBuilder.SetVariable("RouteHopCount", parser.GetRouteHopCount());
-				variableBuilder.SetVariable("Sender", parser.GetSender());
-				variableBuilder.SetVariable("ClusterID", parser.GetClusterID());
-				variableBuilder.SetVariable("MemberStatus", (int)parser.GetMemberStatus());
-
-
-			Proc_End:
-
-				return hr;
-
-			}; // Result ClusterUpdateStatusC2SEvt::ParseMessageTo( MessageData* pIMsg, VariableMapBuilder& variableBuilder )
 
 			Result ClusterUpdateStatusC2SEvt::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageData* pIMsg, MessageBase* &pMessageBase )
 			{
@@ -1808,9 +1587,9 @@ namespace SF
 				routeContext.Components.To = to;
 				memcpy( pCur, &routeContext, sizeof(RouteContext) );
 				pCur += sizeof(RouteContext); iMsgSize -= sizeof(RouteContext);
-				Assert( iMsgSize >= (INT)sizeof(uint16) );
-				*(uint16*)pCur = hopCount;
-				pCur += sizeof(uint16); iMsgSize -= sizeof(uint16);
+				Assert( iMsgSize >= (INT)sizeof(uint16_t) );
+				*(uint16_t*)pCur = hopCount;
+				pCur += sizeof(uint16_t); iMsgSize -= sizeof(uint16_t);
 
 
 			Proc_End:
@@ -1855,26 +1634,6 @@ namespace SF
 
 			}; // Result ClusterUpdateWorkloadC2SEvt::ParseMessage( MessageData* pIMsg )
 
-			Result ClusterUpdateWorkloadC2SEvt::ParseMessageTo( MessageData* pIMsg, VariableMapBuilder& variableBuilder )
-			{
- 				Result hr;
-
-
-				ClusterUpdateWorkloadC2SEvt parser;
-				protocolChk(parser.ParseMessage(pIMsg));
-
-				variableBuilder.SetVariable("RouteContext", parser.GetRouteContext());
-				variableBuilder.SetVariable("RouteHopCount", parser.GetRouteHopCount());
-				variableBuilder.SetVariable("Sender", parser.GetSender());
-				variableBuilder.SetVariable("ClusterID", parser.GetClusterID());
-				variableBuilder.SetVariable("Workload", parser.GetWorkload());
-
-
-			Proc_End:
-
-				return hr;
-
-			}; // Result ClusterUpdateWorkloadC2SEvt::ParseMessageTo( MessageData* pIMsg, VariableMapBuilder& variableBuilder )
 
 			Result ClusterUpdateWorkloadC2SEvt::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageData* pIMsg, MessageBase* &pMessageBase )
 			{
@@ -1970,9 +1729,9 @@ namespace SF
 				routeContext.Components.To = to;
 				memcpy( pCur, &routeContext, sizeof(RouteContext) );
 				pCur += sizeof(RouteContext); iMsgSize -= sizeof(RouteContext);
-				Assert( iMsgSize >= (INT)sizeof(uint16) );
-				*(uint16*)pCur = hopCount;
-				pCur += sizeof(uint16); iMsgSize -= sizeof(uint16);
+				Assert( iMsgSize >= (INT)sizeof(uint16_t) );
+				*(uint16_t*)pCur = hopCount;
+				pCur += sizeof(uint16_t); iMsgSize -= sizeof(uint16_t);
 
 
 			Proc_End:
@@ -2016,25 +1775,6 @@ namespace SF
 
 			}; // Result GetLowestWorkloadClusterMemberCmd::ParseMessage( MessageData* pIMsg )
 
-			Result GetLowestWorkloadClusterMemberCmd::ParseMessageTo( MessageData* pIMsg, VariableMapBuilder& variableBuilder )
-			{
- 				Result hr;
-
-
-				GetLowestWorkloadClusterMemberCmd parser;
-				protocolChk(parser.ParseMessage(pIMsg));
-
-				variableBuilder.SetVariable("RouteContext", parser.GetRouteContext());
-				variableBuilder.SetVariable("TransactionID", parser.GetTransactionID());
-				variableBuilder.SetVariable("RouteHopCount", parser.GetRouteHopCount());
-				variableBuilder.SetVariable("ClusterID", parser.GetClusterID());
-
-
-			Proc_End:
-
-				return hr;
-
-			}; // Result GetLowestWorkloadClusterMemberCmd::ParseMessageTo( MessageData* pIMsg, VariableMapBuilder& variableBuilder )
 
 			Result GetLowestWorkloadClusterMemberCmd::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageData* pIMsg, MessageBase* &pMessageBase )
 			{
@@ -2129,9 +1869,9 @@ namespace SF
 				memcpy( pCur, &routeContext, sizeof(RouteContext) );
 				pCur += sizeof(RouteContext); iMsgSize -= sizeof(RouteContext);
 				pCur += sizeof(TransactionID); iMsgSize -= sizeof(TransactionID);
-				Assert( iMsgSize >= (INT)sizeof(uint16) );
-				*(uint16*)pCur = hopCount;
-				pCur += sizeof(uint16); iMsgSize -= sizeof(uint16);
+				Assert( iMsgSize >= (INT)sizeof(uint16_t) );
+				*(uint16_t*)pCur = hopCount;
+				pCur += sizeof(uint16_t); iMsgSize -= sizeof(uint16_t);
 
 
 			Proc_End:
@@ -2174,25 +1914,6 @@ namespace SF
 
 			}; // Result GetLowestWorkloadClusterMemberRes::ParseMessage( MessageData* pIMsg )
 
-			Result GetLowestWorkloadClusterMemberRes::ParseMessageTo( MessageData* pIMsg, VariableMapBuilder& variableBuilder )
-			{
- 				Result hr;
-
-
-				GetLowestWorkloadClusterMemberRes parser;
-				protocolChk(parser.ParseMessage(pIMsg));
-
-				variableBuilder.SetVariable("RouteContext", parser.GetRouteContext());
-				variableBuilder.SetVariable("TransactionID", parser.GetTransactionID());
-				variableBuilder.SetVariable("Result", parser.GetResult());
-				variableBuilder.SetVariable("Member", parser.GetMember());
-
-
-			Proc_End:
-
-				return hr;
-
-			}; // Result GetLowestWorkloadClusterMemberRes::ParseMessageTo( MessageData* pIMsg, VariableMapBuilder& variableBuilder )
 
 			Result GetLowestWorkloadClusterMemberRes::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageData* pIMsg, MessageBase* &pMessageBase )
 			{
@@ -2332,25 +2053,6 @@ namespace SF
 
 			}; // Result GamePlayerEntityCreatedC2SEvt::ParseMessage( MessageData* pIMsg )
 
-			Result GamePlayerEntityCreatedC2SEvt::ParseMessageTo( MessageData* pIMsg, VariableMapBuilder& variableBuilder )
-			{
- 				Result hr;
-
-
-				GamePlayerEntityCreatedC2SEvt parser;
-				protocolChk(parser.ParseMessage(pIMsg));
-
-				variableBuilder.SetVariable("RouteContext", parser.GetRouteContext());
-				variableBuilder.SetVariable("RouteHopCount", parser.GetRouteHopCount());
-				variableBuilder.SetVariable("PlayerID", parser.GetPlayerID());
-				variableBuilder.SetVariable("PlayerUID", parser.GetPlayerUID());
-
-
-			Proc_End:
-
-				return hr;
-
-			}; // Result GamePlayerEntityCreatedC2SEvt::ParseMessageTo( MessageData* pIMsg, VariableMapBuilder& variableBuilder )
 
 			Result GamePlayerEntityCreatedC2SEvt::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageData* pIMsg, MessageBase* &pMessageBase )
 			{
@@ -2444,9 +2146,9 @@ namespace SF
 				routeContext.Components.To = to;
 				memcpy( pCur, &routeContext, sizeof(RouteContext) );
 				pCur += sizeof(RouteContext); iMsgSize -= sizeof(RouteContext);
-				Assert( iMsgSize >= (INT)sizeof(uint16) );
-				*(uint16*)pCur = hopCount;
-				pCur += sizeof(uint16); iMsgSize -= sizeof(uint16);
+				Assert( iMsgSize >= (INT)sizeof(uint16_t) );
+				*(uint16_t*)pCur = hopCount;
+				pCur += sizeof(uint16_t); iMsgSize -= sizeof(uint16_t);
 
 
 			Proc_End:
@@ -2490,25 +2192,6 @@ namespace SF
 
 			}; // Result GamePlayerEntityDeletedC2SEvt::ParseMessage( MessageData* pIMsg )
 
-			Result GamePlayerEntityDeletedC2SEvt::ParseMessageTo( MessageData* pIMsg, VariableMapBuilder& variableBuilder )
-			{
- 				Result hr;
-
-
-				GamePlayerEntityDeletedC2SEvt parser;
-				protocolChk(parser.ParseMessage(pIMsg));
-
-				variableBuilder.SetVariable("RouteContext", parser.GetRouteContext());
-				variableBuilder.SetVariable("RouteHopCount", parser.GetRouteHopCount());
-				variableBuilder.SetVariable("PlayerID", parser.GetPlayerID());
-				variableBuilder.SetVariable("PlayerUID", parser.GetPlayerUID());
-
-
-			Proc_End:
-
-				return hr;
-
-			}; // Result GamePlayerEntityDeletedC2SEvt::ParseMessageTo( MessageData* pIMsg, VariableMapBuilder& variableBuilder )
 
 			Result GamePlayerEntityDeletedC2SEvt::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageData* pIMsg, MessageBase* &pMessageBase )
 			{
@@ -2602,9 +2285,9 @@ namespace SF
 				routeContext.Components.To = to;
 				memcpy( pCur, &routeContext, sizeof(RouteContext) );
 				pCur += sizeof(RouteContext); iMsgSize -= sizeof(RouteContext);
-				Assert( iMsgSize >= (INT)sizeof(uint16) );
-				*(uint16*)pCur = hopCount;
-				pCur += sizeof(uint16); iMsgSize -= sizeof(uint16);
+				Assert( iMsgSize >= (INT)sizeof(uint16_t) );
+				*(uint16_t*)pCur = hopCount;
+				pCur += sizeof(uint16_t); iMsgSize -= sizeof(uint16_t);
 
 
 			Proc_End:

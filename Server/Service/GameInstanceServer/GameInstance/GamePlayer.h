@@ -16,14 +16,14 @@
 #include "Util/TimeUtil.h"
 #include "Common/HashTable.h"
 #include "Memory/MemoryPool.h"
-#include "ServerSystem/Entity.h"
-#include "ServerSystem/GameSystem.h"
+#include "Entity/Entity.h"
+#include "ServiceEntity/Game/GameSystem.h"
 #include "ServerSystem/ServiceEntity/Game/GameInstancePlayer.h"
 #include "GameConst.h"
 #include "Types/BrGameTypes.h"
 
 #include "ConspiracyGameInstanceSvrConst.h"
-#include "ServerSystem/PlayerEntityInformation.h"
+#include "Entity/PlayerEntityInformation.h"
 
 
 namespace SF {

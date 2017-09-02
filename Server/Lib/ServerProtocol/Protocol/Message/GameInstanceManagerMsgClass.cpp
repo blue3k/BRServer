@@ -53,26 +53,6 @@ namespace SF
 
 			}; // Result CreateGameCmd::ParseMessage( MessageData* pIMsg )
 
-			Result CreateGameCmd::ParseMessageTo( MessageData* pIMsg, VariableMapBuilder& variableBuilder )
-			{
- 				Result hr;
-
-
-				CreateGameCmd parser;
-				protocolChk(parser.ParseMessage(pIMsg));
-
-				variableBuilder.SetVariable("RouteContext", parser.GetRouteContext());
-				variableBuilder.SetVariable("TransactionID", parser.GetTransactionID());
-				variableBuilder.SetVariable("RouteHopCount", parser.GetRouteHopCount());
-				variableBuilder.SetVariable("NumberOfBotPlayer", parser.GetNumberOfBotPlayer());
-				variableBuilder.SetVariable("MaxPlayer", parser.GetMaxPlayer());
-
-
-			Proc_End:
-
-				return hr;
-
-			}; // Result CreateGameCmd::ParseMessageTo( MessageData* pIMsg, VariableMapBuilder& variableBuilder )
 
 			Result CreateGameCmd::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageData* pIMsg, MessageBase* &pMessageBase )
 			{
@@ -169,9 +149,9 @@ namespace SF
 				memcpy( pCur, &routeContext, sizeof(RouteContext) );
 				pCur += sizeof(RouteContext); iMsgSize -= sizeof(RouteContext);
 				pCur += sizeof(TransactionID); iMsgSize -= sizeof(TransactionID);
-				Assert( iMsgSize >= (INT)sizeof(uint16) );
-				*(uint16*)pCur = hopCount;
-				pCur += sizeof(uint16); iMsgSize -= sizeof(uint16);
+				Assert( iMsgSize >= (INT)sizeof(uint16_t) );
+				*(uint16_t*)pCur = hopCount;
+				pCur += sizeof(uint16_t); iMsgSize -= sizeof(uint16_t);
 
 
 			Proc_End:
@@ -213,24 +193,6 @@ namespace SF
 
 			}; // Result CreateGameRes::ParseMessage( MessageData* pIMsg )
 
-			Result CreateGameRes::ParseMessageTo( MessageData* pIMsg, VariableMapBuilder& variableBuilder )
-			{
- 				Result hr;
-
-
-				CreateGameRes parser;
-				protocolChk(parser.ParseMessage(pIMsg));
-
-				variableBuilder.SetVariable("RouteContext", parser.GetRouteContext());
-				variableBuilder.SetVariable("TransactionID", parser.GetTransactionID());
-				variableBuilder.SetVariable("Result", parser.GetResult());
-
-
-			Proc_End:
-
-				return hr;
-
-			}; // Result CreateGameRes::ParseMessageTo( MessageData* pIMsg, VariableMapBuilder& variableBuilder )
 
 			Result CreateGameRes::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageData* pIMsg, MessageBase* &pMessageBase )
 			{
@@ -365,23 +327,6 @@ namespace SF
 
 			}; // Result GameDeletedC2SEvt::ParseMessage( MessageData* pIMsg )
 
-			Result GameDeletedC2SEvt::ParseMessageTo( MessageData* pIMsg, VariableMapBuilder& variableBuilder )
-			{
- 				Result hr;
-
-
-				GameDeletedC2SEvt parser;
-				protocolChk(parser.ParseMessage(pIMsg));
-
-				variableBuilder.SetVariable("RouteContext", parser.GetRouteContext());
-				variableBuilder.SetVariable("RouteHopCount", parser.GetRouteHopCount());
-
-
-			Proc_End:
-
-				return hr;
-
-			}; // Result GameDeletedC2SEvt::ParseMessageTo( MessageData* pIMsg, VariableMapBuilder& variableBuilder )
 
 			Result GameDeletedC2SEvt::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageData* pIMsg, MessageBase* &pMessageBase )
 			{
@@ -471,9 +416,9 @@ namespace SF
 				routeContext.Components.To = to;
 				memcpy( pCur, &routeContext, sizeof(RouteContext) );
 				pCur += sizeof(RouteContext); iMsgSize -= sizeof(RouteContext);
-				Assert( iMsgSize >= (INT)sizeof(uint16) );
-				*(uint16*)pCur = hopCount;
-				pCur += sizeof(uint16); iMsgSize -= sizeof(uint16);
+				Assert( iMsgSize >= (INT)sizeof(uint16_t) );
+				*(uint16_t*)pCur = hopCount;
+				pCur += sizeof(uint16_t); iMsgSize -= sizeof(uint16_t);
 
 
 			Proc_End:

@@ -53,24 +53,6 @@ namespace SF
 
 			}; // Result RegisterEntityCmd::ParseMessage( MessageData* pIMsg )
 
-			Result RegisterEntityCmd::ParseMessageTo( MessageData* pIMsg, VariableMapBuilder& variableBuilder )
-			{
- 				Result hr;
-
-
-				RegisterEntityCmd parser;
-				protocolChk(parser.ParseMessage(pIMsg));
-
-				variableBuilder.SetVariable("TransactionID", parser.GetTransactionID());
-				variableBuilder.SetVariable("LocalEntID", parser.GetLocalEntID());
-				variableBuilder.SetVariable("EntName", parser.GetEntName());
-
-
-			Proc_End:
-
-				return hr;
-
-			}; // Result RegisterEntityCmd::ParseMessageTo( MessageData* pIMsg, VariableMapBuilder& variableBuilder )
 
 			Result RegisterEntityCmd::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageData* pIMsg, MessageBase* &pMessageBase )
 			{
@@ -153,24 +135,6 @@ namespace SF
 
 			}; // Result RegisterEntityRes::ParseMessage( MessageData* pIMsg )
 
-			Result RegisterEntityRes::ParseMessageTo( MessageData* pIMsg, VariableMapBuilder& variableBuilder )
-			{
- 				Result hr;
-
-
-				RegisterEntityRes parser;
-				protocolChk(parser.ParseMessage(pIMsg));
-
-				variableBuilder.SetVariable("TransactionID", parser.GetTransactionID());
-				variableBuilder.SetVariable("Result", parser.GetResult());
-				variableBuilder.SetVariable("EntUID", parser.GetEntUID());
-
-
-			Proc_End:
-
-				return hr;
-
-			}; // Result RegisterEntityRes::ParseMessageTo( MessageData* pIMsg, VariableMapBuilder& variableBuilder )
 
 			Result RegisterEntityRes::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageData* pIMsg, MessageBase* &pMessageBase )
 			{
@@ -252,23 +216,6 @@ namespace SF
 
 			}; // Result UnregisterEntityCmd::ParseMessage( MessageData* pIMsg )
 
-			Result UnregisterEntityCmd::ParseMessageTo( MessageData* pIMsg, VariableMapBuilder& variableBuilder )
-			{
- 				Result hr;
-
-
-				UnregisterEntityCmd parser;
-				protocolChk(parser.ParseMessage(pIMsg));
-
-				variableBuilder.SetVariable("TransactionID", parser.GetTransactionID());
-				variableBuilder.SetVariable("EntUID", parser.GetEntUID());
-
-
-			Proc_End:
-
-				return hr;
-
-			}; // Result UnregisterEntityCmd::ParseMessageTo( MessageData* pIMsg, VariableMapBuilder& variableBuilder )
 
 			Result UnregisterEntityCmd::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageData* pIMsg, MessageBase* &pMessageBase )
 			{
@@ -347,23 +294,6 @@ namespace SF
 
 			}; // Result UnregisterEntityRes::ParseMessage( MessageData* pIMsg )
 
-			Result UnregisterEntityRes::ParseMessageTo( MessageData* pIMsg, VariableMapBuilder& variableBuilder )
-			{
- 				Result hr;
-
-
-				UnregisterEntityRes parser;
-				protocolChk(parser.ParseMessage(pIMsg));
-
-				variableBuilder.SetVariable("TransactionID", parser.GetTransactionID());
-				variableBuilder.SetVariable("Result", parser.GetResult());
-
-
-			Proc_End:
-
-				return hr;
-
-			}; // Result UnregisterEntityRes::ParseMessageTo( MessageData* pIMsg, VariableMapBuilder& variableBuilder )
 
 			Result UnregisterEntityRes::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageData* pIMsg, MessageBase* &pMessageBase )
 			{
@@ -443,23 +373,6 @@ namespace SF
 
 			}; // Result FindEntityCmd::ParseMessage( MessageData* pIMsg )
 
-			Result FindEntityCmd::ParseMessageTo( MessageData* pIMsg, VariableMapBuilder& variableBuilder )
-			{
- 				Result hr;
-
-
-				FindEntityCmd parser;
-				protocolChk(parser.ParseMessage(pIMsg));
-
-				variableBuilder.SetVariable("TransactionID", parser.GetTransactionID());
-				variableBuilder.SetVariable("LocalEntID", parser.GetLocalEntID());
-
-
-			Proc_End:
-
-				return hr;
-
-			}; // Result FindEntityCmd::ParseMessageTo( MessageData* pIMsg, VariableMapBuilder& variableBuilder )
 
 			Result FindEntityCmd::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageData* pIMsg, MessageBase* &pMessageBase )
 			{
@@ -539,24 +452,6 @@ namespace SF
 
 			}; // Result FindEntityRes::ParseMessage( MessageData* pIMsg )
 
-			Result FindEntityRes::ParseMessageTo( MessageData* pIMsg, VariableMapBuilder& variableBuilder )
-			{
- 				Result hr;
-
-
-				FindEntityRes parser;
-				protocolChk(parser.ParseMessage(pIMsg));
-
-				variableBuilder.SetVariable("TransactionID", parser.GetTransactionID());
-				variableBuilder.SetVariable("Result", parser.GetResult());
-				variableBuilder.SetVariable("EntUID", parser.GetEntUID());
-
-
-			Proc_End:
-
-				return hr;
-
-			}; // Result FindEntityRes::ParseMessageTo( MessageData* pIMsg, VariableMapBuilder& variableBuilder )
 
 			Result FindEntityRes::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageData* pIMsg, MessageBase* &pMessageBase )
 			{

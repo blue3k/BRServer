@@ -15,7 +15,7 @@
 
 #include "SFTypedefs.h"
 #include "Types/BrSvrTypes.h"
-#include "ServerSystem/Entity.h"
+#include "Entity/Entity.h"
 
 
 namespace SF {

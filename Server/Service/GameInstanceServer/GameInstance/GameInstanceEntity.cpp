@@ -11,17 +11,17 @@
 
 
 #include "stdafx.h"
-#include "ServerSystem/SvrConst.h"
-#include "ServerSystem/SvrTrace.h"
+#include "SvrConst.h"
+#include "SvrTrace.h"
 #include "Util/TimeUtil.h"
-#include "Types/BrBaseTypes.h"
+#include "Types/SFEngineTypedefs.h"
 #include "ResultCode/SFResultCodeLibrary.h"
 #include "ResultCode/SFResultCodeGame.h"
 #include "Net/Message.h"
 #include "Common/BrRandom.h"
 
-#include "ServerSystem/BrServer.h"
-#include "ServerSystem/EntityManager.h"
+#include "Server/BrServer.h"
+#include "Entity/EntityManager.h"
 
 #include "ConspiracyGameInstanceSvrConst.h"
 #include "ConspiracyGameInstanceServerClass.h"

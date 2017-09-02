@@ -17,7 +17,7 @@
 #include "Query.h"
 
 #include "Types/BrSvrTypes.h"
-#include "ServerSystem/Transaction.h"
+#include "Transaction/Transaction.h"
 #include "Common/SvrPolicyID.h"
 #include "Net/Message.h"
 

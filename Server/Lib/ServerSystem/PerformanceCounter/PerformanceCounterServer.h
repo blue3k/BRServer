@@ -13,13 +13,13 @@
 
 #include "String/StrUtil.h"
 #include "Common/ClassUtil.h"
-#include "Types/BrBaseTypes.h"
+#include "Types/SFEngineTypedefs.h"
 #include "Thread/Thread.h"
 #include "Container/PageQueue.h"
 #include "Container/DualSortedMap.h"
 #include "Net/NetRawUDP.h"
-#include "ServerSystem/MessageRoute.h"
-#include "ServerSystem/PerformanceCounter/PerformanceCounterInstance.h"
+#include "Transaction/MessageRoute.h"
+#include "PerformanceCounter/PerformanceCounterInstance.h"
 
 
 namespace SF {

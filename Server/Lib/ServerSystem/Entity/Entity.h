@@ -21,7 +21,7 @@
 #include "Types/BrSvrTypes.h"
 #include "Types/BrSvrTypes.h"
 #include "Object/SharedPointer.h"
-#include "ServerSystem/Transaction.h"
+#include "Transaction/Transaction.h"
 
 
 namespace SF {
@@ -197,6 +197,8 @@ namespace Svr{
 
 extern template class SharedPointerT<Svr::Entity>;
 extern template class WeakPointerT<Svr::Entity>;
+
+template<> inline SharedPointerT<Svr::Entity> DefaultValue<SharedPointerT<Svr::Entity>>() { return SharedPointerT<Svr::Entity>(); }
 
 }; // namespace SF
 

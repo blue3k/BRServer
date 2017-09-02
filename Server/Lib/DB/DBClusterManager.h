@@ -11,7 +11,7 @@
 
 #pragma once
 	
-#include "Types/BrBaseTypes.h"
+#include "Types/SFEngineTypedefs.h"
 #include "Thread/Thread.h"
 #include "Util/TimeUtil.h"
 #include "Container/PageQueue.h"
@@ -34,6 +34,8 @@ namespace DB {
 	{
 	public:
 
+		MemoryManager m_MemoryManager;
+
 		// Shard partitioning count
 		uint m_PartitioningCount = 0;
 
@@ -44,8 +46,8 @@ namespace DB {
 		StaticArray<DataSource*,sizeof(DataSource*)*DB::Const::DEFAULT_SHARDING_BUCKETS>		m_ShardingBucket;
 
 		// same cluster will share same IP/Password
-		std::string m_UserID;
-		std::string m_Password;
+		std::string m_UserID = "";
+		std::string m_Password = "";
 
 		// Pending Query Queue
 		PageQueue<Query*>	m_PendingQueries;
@@ -55,7 +57,7 @@ namespace DB {
 		Util::TimeStampTimer m_GetShardListLockTimer;
 
 		// flag for disconnected check
-		bool				m_bIsDisconnected;
+		bool				m_bIsDisconnected = true;
 
 	public:
 		// constructor / destructor

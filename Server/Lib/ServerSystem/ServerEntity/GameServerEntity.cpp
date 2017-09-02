@@ -16,12 +16,12 @@
 #include "ServerLog/SvrLog.h"
 #include "Thread/Thread.h"
 #include "SvrConst.h"
-#include "ServerSystem/SvrConst.h"
-#include "ServerSystem/ServerEntity.h"
-#include "ServerSystem/Transaction.h"
-#include "ServerSystem/SvrTrace.h"
+#include "SvrConst.h"
+#include "ServerEntity/ServerEntity.h"
+#include "Transaction/Transaction.h"
+#include "SvrTrace.h"
 #include "ServerSystem/ServerEntity/GameServerEntity.h"
-#include "ServerSystem/Transaction/ServerTransactionGeneric.h"
+#include "Transaction/ServerTransactionGeneric.h"
 
 #include "Protocol/Policy/GameServerNetPolicy.h"
 

@@ -19,9 +19,9 @@
 #include "ResultCode/SFResultCodeSvr.h"
 #include "ResultCode/SFResultCodeGame.h"
 
-#include "ServerSystem/SvrConst.h"
-#include "ServerSystem/SvrTrace.h"
-#include "ServerSystem/BrServerUtil.h"
+#include "SvrConst.h"
+#include "SvrTrace.h"
+#include "Server/BrServerUtil.h"
 #include "GameSvrConst.h"
 
 #include "Protocol/Policy/GameInstanceNetPolicy.h"

@@ -18,16 +18,16 @@
 #include "ResultCode/SFResultCodeSvr.h"
 #include "ResultCode/SFResultCodeSystem.h"
 #include "SvrConst.h"
-#include "ServerSystem/Entity.h"
-#include "ServerSystem/MessageRoute.h"
-#include "ServerSystem/Transaction.h"
+#include "Entity/Entity.h"
+#include "Transaction/MessageRoute.h"
+#include "Transaction/Transaction.h"
 //#include "ServerSystem/PlugIn.h"
-#include "ServerSystem/SvrTrace.h"
+#include "SvrTrace.h"
 #include "Task/ServerTaskEvent.h"
-#include "ServerSystem/EntityTimerActions.h"
-#include "ServerSystem/BrServer.h"
-#include "ServerSystem/BrServerUtil.h"
-#include "ServerSystem/EntityTable.h"
+#include "Entity/EntityTimerActions.h"
+#include "Server/BrServer.h"
+#include "Server/BrServerUtil.h"
+#include "Entity/EntityTable.h"
 #include "Net/Message.h"
 
 #include "Protocol/Policy/ServerNetPolicy.h"
@@ -292,7 +292,7 @@ namespace SF {
 				svrTrace(Trace::TRC_ERROR, "Transaction initialization is failed {0} Entity:{1}, MsgID:{2}", typeid(*this).name(), GetEntityUID(), pMsgHdr->msgID);
 				if (pMsgHdr->msgID.IDs.Type == Message::MSGTYPE_COMMAND)
 				{
-					pCon->GetPolicy<Policy::NetSvrPolicyServer>()->GenericFailureRes(pNewTrans->GetMessageRouteContext().GetSwaped(), pNewTrans->GetParentTransID(), hr);
+					pCon->GetInterface<Policy::NetSvrPolicyServer>()->GenericFailureRes(pNewTrans->GetMessageRouteContext().GetSwaped(), pNewTrans->GetParentTransID(), hr);
 				}
 			}
 

@@ -9,14 +9,14 @@
 ////////////////////////////////////////////////////////////////////////////////
 
 #include "stdafx.h"
-#include "ServerSystem/Transaction.h"
+#include "Transaction/Transaction.h"
 #include "Types/BrSvrTypes.h"
 #include "Task/TaskManager.h"
-#include "ServerSystem/Entity.h"
-#include "ServerSystem/EntityTable.h"
+#include "Entity/Entity.h"
+#include "Entity/EntityTable.h"
 #include "ServerSystem/SvrConfig.h"
-#include "ServerSystem/BrServer.h"
-#include "ServerSystem/BrServerUtil.h"
+#include "Server/BrServer.h"
+#include "Server/BrServerUtil.h"
 
 
 namespace SF {

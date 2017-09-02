@@ -13,7 +13,7 @@
 #include "ResultCode/SFResultCodeLibrary.h"
 #include "ResultCode/SFResultCodeGame.h"
 #include "Memory/MemoryPool.h"
-#include "Types/BrBaseTypes.h"
+#include "Types/SFEngineTypedefs.h"
 #include "GameConst.h"
 
 #include "Protocol/Policy/GameInstanceNetPolicy.h"
@@ -22,11 +22,11 @@
 #include "Protocol/Policy/PartyMatchingQueueNetPolicy.h"
 #include "Protocol/Policy/PartyMatchingNetPolicy.h"
 
-#include "ServerSystem/BrServerUtil.h"
-#include "ServerSystem/SvrTrace.h"
-#include "ServerSystem/BrServer.h"
-#include "ServerSystem/ServerEntityManager.h"
-#include "ServerSystem/EntityManager.h"
+#include "Server/BrServerUtil.h"
+#include "SvrTrace.h"
+#include "Server/BrServer.h"
+#include "ServerEntity/ServerEntityManager.h"
+#include "Entity/EntityManager.h"
 #include "ServerSystem/ServiceEntity/MatchingServiceUtil.h"
 #include "ServerSystem/ServiceEntity/MatchingServiceTrans.h"
 #include "ServerSystem/ServiceEntity/MatchingServiceEntity.h"
@@ -170,7 +170,7 @@ namespace Svr {
 		svrChk(GetServerComponent<ServerEntityManager>()->GetServerEntity(ticket.QueueUID.GetServerID(), pServerEntity));
 
 		// 2. Get service entity list in the cluster
-		svrChk(pServerEntity->GetPolicy<Policy::IPolicyPartyMatchingQueue>()->MatchingItemErrorC2SEvt(RouteContext(GetMyOwner()->GetEntityUID(), ticket.QueueUID), 0, ticket));
+		svrChk(pServerEntity->GetInterface<Policy::IPolicyPartyMatchingQueue>()->MatchingItemErrorC2SEvt(RouteContext(GetMyOwner()->GetEntityUID(), ticket.QueueUID), 0, ticket));
 
 	Proc_End:
 
@@ -303,7 +303,7 @@ namespace Svr {
 		svrChk(GetServerComponent<ServerEntityManager>()->GetServerEntity(ticket.QueueUID.GetServerID(), pServerEntity));
 
 		// 2. Get service entity list in the cluster
-		svrChk(pServerEntity->GetPolicy<Policy::IPolicyPartyMatchingQueue>()->DequeueItemCmd(RouteContext(GetMyOwner()->GetEntityUID(), ticket.QueueUID), GetTransID(), 0, ticket));
+		svrChk(pServerEntity->GetInterface<Policy::IPolicyPartyMatchingQueue>()->DequeueItemCmd(RouteContext(GetMyOwner()->GetEntityUID(), ticket.QueueUID), GetTransID(), 0, ticket));
 
 		m_PendingDequeueItem++;
 
@@ -427,7 +427,7 @@ namespace Svr {
 				}
 
 				notifiedPlayerCount++;
-				pServerEntity->GetPolicy<Policy::NetSvrPolicyPartyMatching>()->PlayerGameMatchedS2CEvt(
+				pServerEntity->GetInterface<Policy::NetSvrPolicyPartyMatching>()->PlayerGameMatchedS2CEvt(
 					RouteContext(GetOwnerEntityUID(), reservedMember.Players[member].PlayerUID), 0,
 					reservedMember.Players[member].PlayerID, gameUID, reservedMember.RequestedRole);
 			}
@@ -443,7 +443,7 @@ namespace Svr {
 				}
 
 				notifiedPlayerCount++;
-				pServerEntity->GetPolicy<Policy::NetSvrPolicyPartyMatching>()->PartyGameMatchedS2CEvt(
+				pServerEntity->GetInterface<Policy::NetSvrPolicyPartyMatching>()->PartyGameMatchedS2CEvt(
 					RouteContext(GetOwnerEntityUID(), reservedMember.RegisterEntityUID), 0);
 			}
 		}
@@ -457,7 +457,7 @@ namespace Svr {
 			ServerEntity *pServerEntity = nullptr;
 			if ((GetServerComponent<ServerEntityManager>()->GetServerEntity(gameUID.GetServerID(), pServerEntity)))
 			{
-				auto pPolicy = pServerEntity->GetPolicy<Policy::IPolicyGameInstance>();
+				auto pPolicy = pServerEntity->GetInterface<Policy::IPolicyGameInstance>();
 				if (pPolicy != nullptr)
 					pPolicy->DeleteGameC2SEvt(RouteContext(GetOwnerEntityUID(), gameUID));
 			}

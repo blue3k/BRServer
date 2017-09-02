@@ -19,7 +19,7 @@
 #include "Task/ServerTask.h"
 #include "Container/PageQueue.h"
 #include "Types/BrSvrTypes.h"
-#include "ServerSystem/Entity.h"
+#include "Entity/Entity.h"
 
 
 namespace SF {
@@ -56,7 +56,6 @@ namespace Svr {
 		virtual uint GetActiveTransactionCount() override;
 	};
 
-#include "SimpleEntity.inl"
 
 
 }; // namespace Svr

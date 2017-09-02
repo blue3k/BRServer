@@ -12,17 +12,16 @@
 #pragma once
 
 #include "SFTypedefs.h"
-#include "Common/ClassUtil.h"
-#include "Types/BrBaseTypes.h"
+#include "Types/SFEngineTypedefs.h"
 
-#include "ServerSystem/MessageRoute.h"
-#include "ServerSystem/Entity.h"
-#include "ServerSystem/BrServer.h"
-#include "ServerSystem/GameSystem.h"
+#include "Transaction/MessageRoute.h"
+#include "Entity/Entity.h"
+#include "Server/BrServer.h"
+#include "ServiceEntity/Game/GameSystem.h"
 #include "Component/BrComponent.h"
 
 
-#include "ServerSystem/SvrConst.h"
+#include "SvrConst.h"
 
 
 
@@ -74,7 +73,7 @@ namespace Svr {
 
 		// Query policy from game server entity
 		template< class PolicyType >
-		PolicyType* GetPolicy();
+		PolicyType* GetInterface();
 
 	};
 

@@ -15,10 +15,10 @@
 
 #include "SFTypedefs.h"
 #include "Thread/Thread.h"
-#include "Common/SystemSynchronization.h"
+#include "Thread/SystemSynchronization.h"
 #include "Net/NetDef.h"
 #include "Net/Connection.h"
-#include "ServerSystem/SimpleEntity.h"
+#include "Entity/SimpleEntity.h"
 
 
 namespace SF {

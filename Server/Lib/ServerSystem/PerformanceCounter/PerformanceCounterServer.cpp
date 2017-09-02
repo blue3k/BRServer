@@ -11,10 +11,10 @@
 
 #include "stdafx.h"
 #include "Util/TimeUtil.h"
-#include "ServerSystem/SvrTrace.h"
+#include "SvrTrace.h"
 #include "Net/NetRawUDP.h"
 #include "Protocol/Message/MonitoringMsgClass.h"
-#include "ServerSystem/PerformanceCounter/PerformanceCounter.h"
+#include "PerformanceCounter/PerformanceCounter.h"
 #include "ServerSystem/PerformanceCounter/PerformanceCounterServer.h"
 
 

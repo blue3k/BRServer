@@ -13,20 +13,20 @@
 
 #include "SFTypedefs.h"
 #include "Common/ClassUtil.h"
-#include "Types/BrBaseTypes.h"
+#include "Types/SFEngineTypedefs.h"
 
-#include "ServerSystem/MessageRoute.h"
-#include "ServerSystem/Entity.h"
-#include "ServerSystem/BrServer.h"
-#include "ServerSystem/GameSystem.h"
+#include "Transaction/MessageRoute.h"
+#include "Entity/Entity.h"
+#include "Server/BrServer.h"
+#include "ServiceEntity/Game/GameSystem.h"
 #include "Component/BrComponent.h"
-#include "ServerSystem/ServerEntity.h"
+#include "ServerEntity/ServerEntity.h"
 #include "ServerSystem/GameLog/ChattingHistory.h"
 
 #include "Container/Indexing.h"
 #include "Container/StaticHashTable.h"
 
-#include "ServerSystem/PlayerEntityInformation.h"
+#include "Entity/PlayerEntityInformation.h"
 
 namespace SF {
 namespace Policy {

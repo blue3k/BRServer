@@ -16,7 +16,7 @@
 #include "SFAssert.h"
 #include "Types/BrSvrTypes.h"
 #include "ServerConfig/SFServerConfig.h"
-#include "ServerSystem/ServerEntity.h"
+#include "ServerEntity/ServerEntity.h"
 #include "Container/ContainerTrait.h"
 
 

@@ -12,7 +12,7 @@
 
 #include "Protocol/Protocol.h"
 #include "Net/Message.h"
-#include "Container/VariableMapBuilder.h"
+#include "Protocol/SvrProtocol.h"
 
 
 
@@ -58,7 +58,6 @@ namespace SF
 				static Result TraceOut(MessageData* pMsg);
 
 				virtual Result ParseMessage( MessageData* pIMsg );
-				static Result ParseMessageTo( MessageData* pIMsg, VariableMapBuilder& variableBuilder );
 				static Result ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageData* pIMsg, MessageBase* &pMsgBase );
 
 				static MessageData* Create( IMemoryManager& memoryManager, const TransactionID &InTransactionID );
@@ -106,7 +105,6 @@ namespace SF
 				static Result TraceOut(MessageData* pMsg);
 
 				virtual Result ParseMessage( MessageData* pIMsg );
-				static Result ParseMessageTo( MessageData* pIMsg, VariableMapBuilder& variableBuilder );
 				static Result ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageData* pIMsg, MessageBase* &pMsgBase );
 
 				static MessageData* Create( IMemoryManager& memoryManager, const TransactionID &InTransactionID, const Result &InResult, const Array<PerformanceCounterInstanceInfo>& InCounterInstances, const uint32_t &InTotalInstanceCount );
@@ -151,7 +149,6 @@ namespace SF
 				static Result TraceOut(MessageData* pMsg);
 
 				virtual Result ParseMessage( MessageData* pIMsg );
-				static Result ParseMessageTo( MessageData* pIMsg, VariableMapBuilder& variableBuilder );
 				static Result ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageData* pIMsg, MessageBase* &pMsgBase );
 
 				static MessageData* Create( IMemoryManager& memoryManager, const TransactionID &InTransactionID, const uint64_t &InInstanceUID );
@@ -199,7 +196,6 @@ namespace SF
 				static Result TraceOut(MessageData* pMsg);
 
 				virtual Result ParseMessage( MessageData* pIMsg );
-				static Result ParseMessageTo( MessageData* pIMsg, VariableMapBuilder& variableBuilder );
 				static Result ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageData* pIMsg, MessageBase* &pMsgBase );
 
 				static MessageData* Create( IMemoryManager& memoryManager, const TransactionID &InTransactionID, const Result &InResult, const uint64_t &InInstanceUID, const Array<uint64_t>& InCounterValues );
@@ -249,7 +245,6 @@ namespace SF
 				static Result TraceOut(MessageData* pMsg);
 
 				virtual Result ParseMessage( MessageData* pIMsg );
-				static Result ParseMessageTo( MessageData* pIMsg, VariableMapBuilder& variableBuilder );
 				static Result ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageData* pIMsg, MessageBase* &pMsgBase );
 
 				static MessageData* Create( IMemoryManager& memoryManager, const char* InInstanceName, const uint64_t &InInstanceUID, const Array<PerformanceCounterInfo>& InNewCounters );
@@ -293,7 +288,6 @@ namespace SF
 				static Result TraceOut(MessageData* pMsg);
 
 				virtual Result ParseMessage( MessageData* pIMsg );
-				static Result ParseMessageTo( MessageData* pIMsg, VariableMapBuilder& variableBuilder );
 				static Result ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageData* pIMsg, MessageBase* &pMsgBase );
 
 				static MessageData* Create( IMemoryManager& memoryManager, const Array<uint64_t>& InFreeInstances );
@@ -339,7 +333,6 @@ namespace SF
 				static Result TraceOut(MessageData* pMsg);
 
 				virtual Result ParseMessage( MessageData* pIMsg );
-				static Result ParseMessageTo( MessageData* pIMsg, VariableMapBuilder& variableBuilder );
 				static Result ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageData* pIMsg, MessageBase* &pMsgBase );
 
 				static MessageData* Create( IMemoryManager& memoryManager, const uint64_t &InInstanceUID, const Array<uint64_t>& InCounterValues );
@@ -383,7 +376,6 @@ namespace SF
 				static Result TraceOut(MessageData* pMsg);
 
 				virtual Result ParseMessage( MessageData* pIMsg );
-				static Result ParseMessageTo( MessageData* pIMsg, VariableMapBuilder& variableBuilder );
 				static Result ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageData* pIMsg, MessageBase* &pMsgBase );
 
 				static MessageData* Create( IMemoryManager& memoryManager, const uint64_t &InInstanceUID );

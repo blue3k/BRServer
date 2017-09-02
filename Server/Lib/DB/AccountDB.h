@@ -16,7 +16,7 @@
 #include "Types/BrSvrTypes.h"
 #include "DB/DBClusterManager.h"
 #include "SvrPolicyID.h"
-#include "ServerSystem/ServerComponent.h"
+#include "Component/ServerComponent.h"
 
 
 namespace SF {

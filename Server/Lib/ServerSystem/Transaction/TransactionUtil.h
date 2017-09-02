@@ -31,7 +31,7 @@ namespace SF {
 		Result hr = ResultCode::SUCCESS;\
 		if( IsClosed() )\
 			return ResultCode::SUCCESS;\
-		auto pPolicy = GetPolicy();\
+		auto pPolicy = GetInterface();\
 		if( pPolicy != nullptr ) {\
 			svrChk( pPolicy->MessageName( hrRes ) );\
 				}\
@@ -48,7 +48,7 @@ namespace SF {
 		Result hr = ResultCode::SUCCESS;\
 		if( IsClosed() )\
 			return ResultCode::SUCCESS;\
-		auto pPolicy = GetPolicy();\
+		auto pPolicy = GetInterface();\
 		if( pPolicy != nullptr ) {\
 			svrChk( pPolicy->MessageName( hrRes, ##__VA_ARGS__ ) );\
 				}\
@@ -63,7 +63,7 @@ namespace SF {
 	virtual Result OnCloseTransaction( Result hrRes )\
 		{\
 		Result hr = ResultCode::SUCCESS;\
-		auto pPolicy = GetPolicy();\
+		auto pPolicy = GetInterface();\
 		if( pPolicy != nullptr ) {\
 			svrChk( pPolicy->MessageName( GetTransactionID(), hrRes ) );\
 				}\
@@ -78,7 +78,7 @@ namespace SF {
 	virtual Result OnCloseTransaction( Result hrRes )\
 		{\
 		Result hr = ResultCode::SUCCESS;\
-		auto pPolicy = GetPolicy();\
+		auto pPolicy = GetInterface();\
 		if( pPolicy != nullptr ) {\
 			svrChk( pPolicy->MessageName( GetTransactionID(), hrRes, ##__VA_ARGS__ ) );\
 				}\
@@ -94,7 +94,7 @@ namespace SF {
 	virtual Result OnCloseTransaction( Result hrRes )\
 		{\
 		Result hr = ResultCode::SUCCESS;\
-		auto pPolicy = GetPolicy();\
+		auto pPolicy = GetInterface();\
 		if( pPolicy != nullptr ) {\
 			svrChk( pPolicy->MessageName( routeContext, GetTransactionID(), hrRes ) );\
 				}\
@@ -108,7 +108,7 @@ namespace SF {
 	virtual Result OnCloseTransaction( Result hrRes ) override\
 		{\
 		Result hr = ResultCode::SUCCESS;\
-		auto pPolicy = GetPolicy();\
+		auto pPolicy = GetInterface();\
 		if( pPolicy != nullptr ) {\
 			svrChk( pPolicy->MessageName( routeContext, super::GetTransactionID(), hrRes, ##__VA_ARGS__ ) );\
 				}\
@@ -123,7 +123,7 @@ namespace SF {
 	virtual Result OnCloseTransaction( Result hrRes )\
 		{\
 		Result hr = ResultCode::SUCCESS;\
-		auto pPolicy = GetPolicy();\
+		auto pPolicy = GetInterface();\
 		if( pPolicy != nullptr ) {\
 			svrChk( pPolicy->MessageName() );\
 				}\
@@ -138,7 +138,7 @@ namespace SF {
 	virtual Result OnCloseTransaction( Result hrRes )\
 		{\
 		Result hr = ResultCode::SUCCESS;\
-		auto pPolicy = GetPolicy();\
+		auto pPolicy = GetInterface();\
 		if( pPolicy != nullptr ) {\
 			svrChk( pPolicy->MessageName( __VA_ARGS__ ) );\
 		}\

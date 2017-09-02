@@ -18,9 +18,9 @@
 #include "ResultCode/SFResultCodeSvr.h"
 #include "ResultCode/SFResultCodeGame.h"
 
-#include "ServerSystem/SvrConst.h"
-#include "ServerSystem/SvrTrace.h"
-#include "ServerSystem/BrServerUtil.h"
+#include "SvrConst.h"
+#include "SvrTrace.h"
+#include "Server/BrServerUtil.h"
 #include "ConspiracyGameInstanceSvrConst.h"
 
 #include "Protocol/Policy/GameInstanceNetPolicy.h"
@@ -298,7 +298,7 @@ namespace ConspiracyGameInstanceServer {
 			//	svrChk( GetOwner().FindPlayer( m_vote.GetSeersChoice(), pSeersChoice ) );
 
 			//	pSeersChoice->SetRevealedBySeer(true);
-			//	auto pPolicy = pSeers->GetPolicy<Policy::NetSvrPolicyGameInstance>();
+			//	auto pPolicy = pSeers->GetInterface<Policy::NetSvrPolicyGameInstance>();
 			//	if( pSeers->GetPlayerEntityUID() != 0 pPolicy != nullptr)
 			//		pPolicy->PlayerRevealedS2CEvt( RouteContext( GetOwner().GetEntityUID(), pSeers->GetPlayerEntityUID()), pSeersChoice->GetPlayerID(), pSeersChoice->GetRole(), PlayerRevealedReason::SeersChoice );
 			//}

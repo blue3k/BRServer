@@ -50,23 +50,6 @@ namespace SF
 
 			}; // Result GenericFailureCmd::ParseMessage( MessageData* pIMsg )
 
-			Result GenericFailureCmd::ParseMessageTo( MessageData* pIMsg, VariableMapBuilder& variableBuilder )
-			{
- 				Result hr;
-
-
-				GenericFailureCmd parser;
-				protocolChk(parser.ParseMessage(pIMsg));
-
-				variableBuilder.SetVariable("RouteContext", parser.GetRouteContext());
-				variableBuilder.SetVariable("TransactionID", parser.GetTransactionID());
-
-
-			Proc_End:
-
-				return hr;
-
-			}; // Result GenericFailureCmd::ParseMessageTo( MessageData* pIMsg, VariableMapBuilder& variableBuilder )
 
 			Result GenericFailureCmd::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageData* pIMsg, MessageBase* &pMessageBase )
 			{
@@ -171,24 +154,6 @@ namespace SF
 
 			}; // Result GenericFailureRes::ParseMessage( MessageData* pIMsg )
 
-			Result GenericFailureRes::ParseMessageTo( MessageData* pIMsg, VariableMapBuilder& variableBuilder )
-			{
- 				Result hr;
-
-
-				GenericFailureRes parser;
-				protocolChk(parser.ParseMessage(pIMsg));
-
-				variableBuilder.SetVariable("RouteContext", parser.GetRouteContext());
-				variableBuilder.SetVariable("TransactionID", parser.GetTransactionID());
-				variableBuilder.SetVariable("Result", parser.GetResult());
-
-
-			Proc_End:
-
-				return hr;
-
-			}; // Result GenericFailureRes::ParseMessageTo( MessageData* pIMsg, VariableMapBuilder& variableBuilder )
 
 			Result GenericFailureRes::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageData* pIMsg, MessageBase* &pMessageBase )
 			{
@@ -297,25 +262,6 @@ namespace SF
 
 			}; // Result ServerConnectedC2SEvt::ParseMessage( MessageData* pIMsg )
 
-			Result ServerConnectedC2SEvt::ParseMessageTo( MessageData* pIMsg, VariableMapBuilder& variableBuilder )
-			{
- 				Result hr;
-
-
-				ServerConnectedC2SEvt parser;
-				protocolChk(parser.ParseMessage(pIMsg));
-
-				variableBuilder.SetVariable("RouteContext", parser.GetRouteContext());
-				variableBuilder.SetVariable("ClusterManagerServiceInformation", parser.GetClusterManagerServiceInformation());
-				variableBuilder.SetVariable("StartUpTime", parser.GetStartUpTime());
-				variableBuilder.SetVariable("PrivateAddress", parser.GetPrivateAddress());
-
-
-			Proc_End:
-
-				return hr;
-
-			}; // Result ServerConnectedC2SEvt::ParseMessageTo( MessageData* pIMsg, VariableMapBuilder& variableBuilder )
 
 			Result ServerConnectedC2SEvt::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageData* pIMsg, MessageBase* &pMessageBase )
 			{

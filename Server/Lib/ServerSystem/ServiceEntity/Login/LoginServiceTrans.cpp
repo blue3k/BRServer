@@ -13,7 +13,7 @@
 #include "ResultCode/SFResultCodeLibrary.h"
 #include "ResultCode/SFResultCodeGame.h"
 #include "Memory/MemoryPool.h"
-#include "Types/BrBaseTypes.h"
+#include "Types/SFEngineTypedefs.h"
 #include "GameConst.h"
 
 #include "Protocol/Message/GameInstanceManagerMsgClass.h"
@@ -21,11 +21,11 @@
 #include "Protocol/Policy/LoginNetPolicy.h"
 
 
-#include "ServerSystem/BrServerUtil.h"
-#include "ServerSystem/SvrTrace.h"
-#include "ServerSystem/BrServer.h"
-#include "ServerSystem/ServerEntityManager.h"
-#include "ServerSystem/EntityManager.h"
+#include "Server/BrServerUtil.h"
+#include "SvrTrace.h"
+#include "Server/BrServer.h"
+#include "ServerEntity/ServerEntityManager.h"
+#include "Entity/EntityManager.h"
 #include "ServerSystem/ServiceEntity/Login/LoginServiceTrans.h"
 #include "ServerSystem/ServiceEntity/Login/LoginServiceEntity.h"
 

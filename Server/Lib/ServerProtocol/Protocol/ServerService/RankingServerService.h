@@ -12,10 +12,9 @@
 
 #include "SFTypedefs.h"
 #include "Protocol/Protocol.h"
-#include "ServerSystem/ServerServiceBase.h"
+#include "ServerService/ServerServiceBase.h"
 #include "Net/NetDef.h"
-#include "Net/NetPolicy.h"
-#include "Protocol/Policy/RankingServerIPolicy.h"
+#include "Protocol/Policy/RankingServerNetPolicy.h"
 
 
 
@@ -25,10 +24,7 @@ namespace SF
 	{
  		class RankingServerService : public ServerServiceBase
 		{
- 			private:
-				Policy::IPolicyRankingServer* GetPolicyRankingServer() { return GetPolicy<Policy::IPolicyRankingServer>(); }
-			public:
-				enum { ID_SERVICEPOLICY = Policy::IPolicyRankingServer::ID_POLICY };
+ 			public:
 			// Constructor
 			RankingServerService ( ServerServiceInformation* pService );
 

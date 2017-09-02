@@ -16,15 +16,15 @@
 #include "ServerLog/SvrLog.h"
 #include "Thread/Thread.h"
 #include "Net/NetDef.h"
-#include "ServerSystem/Entity.h"
-#include "ServerSystem/ServerComponent.h"
-#include "ServerSystem/ServerServiceBase.h"
-#include "ServerSystem/ServerEntity.h"
-#include "ServerSystem/ServerEntityManager.h"
-#include "ServerSystem/ServiceEntity/ClusteredServiceEntity.h"
+#include "Entity/Entity.h"
+#include "Component/ServerComponent.h"
+#include "ServerService/ServerServiceBase.h"
+#include "ServerEntity/ServerEntity.h"
+#include "ServerEntity/ServerEntityManager.h"
+#include "ServiceEntity/ClusteredServiceEntity.h"
 #include "ServerSystem/ServiceEntity/ClusterServiceTrans.h"
 #include "ServerSystem/ServerService/ClusterServerService.h"
-#include "ServerSystem/SvrTrace.h"
+#include "SvrTrace.h"
 #include "Task/ServerTaskEvent.h"
 
 #include "Protocol/Policy/ClusterServerNetNetPolicy.h"
@@ -497,7 +497,7 @@ namespace Svr {
 		// broadcast new master assignment
 		ForEach( [&](ServerServiceInformation *pService) 
 		{
-			pService->GetConnection()->GetPolicy<Policy::NetSvrPolicyClusterServer>()->ClusterMasterAssignedS2CEvt( RouteContext( GetEntityUID(), pService->GetEntityUID() ), 0, GetEntityUID(), GetClusterID(), entityUID );
+			pService->GetConnection()->GetInterface<Policy::NetSvrPolicyClusterServer>()->ClusterMasterAssignedS2CEvt( RouteContext( GetEntityUID(), pService->GetEntityUID() ), 0, GetEntityUID(), GetClusterID(), entityUID );
 		});
 
 
@@ -518,7 +518,7 @@ namespace Svr {
 		//// broadcast new master assignment
 		//ForEach( [&](ServerServiceInformation *pService) 
 		//{
-		//	pService->GetConnection()->GetPolicy<Policy::NetSvrPolicyClusterServer>()->ClusterMasterAssignedS2CEvt( RouteContext( GetEntityUID(), pService->GetEntityUID() ),1, GetClusterID(), entityUID );
+		//	pService->GetConnection()->GetInterface<Policy::NetSvrPolicyClusterServer>()->ClusterMasterAssignedS2CEvt( RouteContext( GetEntityUID(), pService->GetEntityUID() ),1, GetClusterID(), entityUID );
 		//});
 
 	//Proc_End:

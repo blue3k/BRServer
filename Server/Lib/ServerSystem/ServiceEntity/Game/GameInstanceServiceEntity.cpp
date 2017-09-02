@@ -18,14 +18,14 @@
 #include "Memory/SFMemory.h"
 #include "GameConst.h"
 #include "Net/NetDef.h"
-#include "ServerSystem/Entity.h"
-#include "ServerSystem/ServerComponent.h"
-#include "ServerSystem/ServerServiceBase.h"
-#include "ServerSystem/ServerEntity.h"
+#include "Entity/Entity.h"
+#include "Component/ServerComponent.h"
+#include "ServerService/ServerServiceBase.h"
+#include "ServerEntity/ServerEntity.h"
 #include "ServerSystem/ServiceEntity/Game/GameInstanceServiceEntity.h"
 #include "ServerSystem/ServiceEntity/RankingServiceTrans.h"
-#include "ServerSystem/SvrTrace.h"
-#include "ServerSystem/SvrConst.h"
+#include "SvrTrace.h"
+#include "SvrConst.h"
 
 
 

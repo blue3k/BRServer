@@ -55,25 +55,6 @@ namespace SF
 
 			}; // Result RegisterPartyMatchingCmd::ParseMessage( MessageData* pIMsg )
 
-			Result RegisterPartyMatchingCmd::ParseMessageTo( MessageData* pIMsg, VariableMapBuilder& variableBuilder )
-			{
- 				Result hr;
-
-
-				RegisterPartyMatchingCmd parser;
-				protocolChk(parser.ParseMessage(pIMsg));
-
-				variableBuilder.SetVariable("RouteContext", parser.GetRouteContext());
-				variableBuilder.SetVariable("TransactionID", parser.GetTransactionID());
-				variableBuilder.SetVariable("RouteHopCount", parser.GetRouteHopCount());
-				variableBuilder.SetVariable("Players", (int)parser.GetPlayers().GetItemCount(), (const MatchingPlayerInformation*)parser.GetPlayers().data());
-
-
-			Proc_End:
-
-				return hr;
-
-			}; // Result RegisterPartyMatchingCmd::ParseMessageTo( MessageData* pIMsg, VariableMapBuilder& variableBuilder )
 
 			Result RegisterPartyMatchingCmd::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageData* pIMsg, MessageBase* &pMessageBase )
 			{
@@ -98,10 +79,10 @@ namespace SF
 					+ sizeof(RouteContext)
 					+ sizeof(TransactionID)
 					+ sizeof(uint16_t)
-					+ sizeof(MatchingPlayerInformation)*InPlayers.GetItemCount() + sizeof(uint16_t));
+					+ sizeof(MatchingPlayerInformation)*InPlayers.size() + sizeof(uint16_t));
 
 
-				uint16_t numberOfInPlayers = (uint16_t)InPlayers.GetItemCount(); 
+				uint16_t numberOfInPlayers = (uint16_t)InPlayers.size(); 
 				protocolMem( pNewMsg = MessageData::NewMessage( memoryManager, PartyMatchingQueue::RegisterPartyMatchingCmd::MID, __uiMessageSize ) );
 
 				pMsgData = pNewMsg->GetMessageData();
@@ -110,7 +91,7 @@ namespace SF
 				Protocol::PackParamCopy( pMsgData, &InTransactionID, sizeof(TransactionID));
 				Protocol::PackParamCopy( pMsgData, &InRouteHopCount, sizeof(uint16_t));
 				Protocol::PackParamCopy( pMsgData, &numberOfInPlayers, sizeof(uint16_t)); 
-				Protocol::PackParamCopy( pMsgData, InPlayers.data(), (INT)(sizeof(MatchingPlayerInformation)*InPlayers.GetItemCount())); 
+				Protocol::PackParamCopy( pMsgData, InPlayers.data(), (INT)(sizeof(MatchingPlayerInformation)*InPlayers.size())); 
 
 
 			Proc_End:
@@ -170,9 +151,9 @@ namespace SF
 				memcpy( pCur, &routeContext, sizeof(RouteContext) );
 				pCur += sizeof(RouteContext); iMsgSize -= sizeof(RouteContext);
 				pCur += sizeof(TransactionID); iMsgSize -= sizeof(TransactionID);
-				Assert( iMsgSize >= (INT)sizeof(uint16) );
-				*(uint16*)pCur = hopCount;
-				pCur += sizeof(uint16); iMsgSize -= sizeof(uint16);
+				Assert( iMsgSize >= (INT)sizeof(uint16_t) );
+				*(uint16_t*)pCur = hopCount;
+				pCur += sizeof(uint16_t); iMsgSize -= sizeof(uint16_t);
 
 
 			Proc_End:
@@ -215,25 +196,6 @@ namespace SF
 
 			}; // Result RegisterPartyMatchingRes::ParseMessage( MessageData* pIMsg )
 
-			Result RegisterPartyMatchingRes::ParseMessageTo( MessageData* pIMsg, VariableMapBuilder& variableBuilder )
-			{
- 				Result hr;
-
-
-				RegisterPartyMatchingRes parser;
-				protocolChk(parser.ParseMessage(pIMsg));
-
-				variableBuilder.SetVariable("RouteContext", parser.GetRouteContext());
-				variableBuilder.SetVariable("TransactionID", parser.GetTransactionID());
-				variableBuilder.SetVariable("Result", parser.GetResult());
-				variableBuilder.SetVariable("MatchingTicket", parser.GetMatchingTicket());
-
-
-			Proc_End:
-
-				return hr;
-
-			}; // Result RegisterPartyMatchingRes::ParseMessageTo( MessageData* pIMsg, VariableMapBuilder& variableBuilder )
 
 			Result RegisterPartyMatchingRes::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageData* pIMsg, MessageBase* &pMessageBase )
 			{
@@ -373,25 +335,6 @@ namespace SF
 
 			}; // Result RegisterPlayerMatchingCmd::ParseMessage( MessageData* pIMsg )
 
-			Result RegisterPlayerMatchingCmd::ParseMessageTo( MessageData* pIMsg, VariableMapBuilder& variableBuilder )
-			{
- 				Result hr;
-
-
-				RegisterPlayerMatchingCmd parser;
-				protocolChk(parser.ParseMessage(pIMsg));
-
-				variableBuilder.SetVariable("RouteContext", parser.GetRouteContext());
-				variableBuilder.SetVariable("TransactionID", parser.GetTransactionID());
-				variableBuilder.SetVariable("RouteHopCount", parser.GetRouteHopCount());
-				variableBuilder.SetVariable("PlayerID", parser.GetPlayerID());
-
-
-			Proc_End:
-
-				return hr;
-
-			}; // Result RegisterPlayerMatchingCmd::ParseMessageTo( MessageData* pIMsg, VariableMapBuilder& variableBuilder )
 
 			Result RegisterPlayerMatchingCmd::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageData* pIMsg, MessageBase* &pMessageBase )
 			{
@@ -486,9 +429,9 @@ namespace SF
 				memcpy( pCur, &routeContext, sizeof(RouteContext) );
 				pCur += sizeof(RouteContext); iMsgSize -= sizeof(RouteContext);
 				pCur += sizeof(TransactionID); iMsgSize -= sizeof(TransactionID);
-				Assert( iMsgSize >= (INT)sizeof(uint16) );
-				*(uint16*)pCur = hopCount;
-				pCur += sizeof(uint16); iMsgSize -= sizeof(uint16);
+				Assert( iMsgSize >= (INT)sizeof(uint16_t) );
+				*(uint16_t*)pCur = hopCount;
+				pCur += sizeof(uint16_t); iMsgSize -= sizeof(uint16_t);
 
 
 			Proc_End:
@@ -531,25 +474,6 @@ namespace SF
 
 			}; // Result RegisterPlayerMatchingRes::ParseMessage( MessageData* pIMsg )
 
-			Result RegisterPlayerMatchingRes::ParseMessageTo( MessageData* pIMsg, VariableMapBuilder& variableBuilder )
-			{
- 				Result hr;
-
-
-				RegisterPlayerMatchingRes parser;
-				protocolChk(parser.ParseMessage(pIMsg));
-
-				variableBuilder.SetVariable("RouteContext", parser.GetRouteContext());
-				variableBuilder.SetVariable("TransactionID", parser.GetTransactionID());
-				variableBuilder.SetVariable("Result", parser.GetResult());
-				variableBuilder.SetVariable("MatchingTicket", parser.GetMatchingTicket());
-
-
-			Proc_End:
-
-				return hr;
-
-			}; // Result RegisterPlayerMatchingRes::ParseMessageTo( MessageData* pIMsg, VariableMapBuilder& variableBuilder )
 
 			Result RegisterPlayerMatchingRes::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageData* pIMsg, MessageBase* &pMessageBase )
 			{
@@ -690,26 +614,6 @@ namespace SF
 
 			}; // Result UpdateMatchingEntityUIDCmd::ParseMessage( MessageData* pIMsg )
 
-			Result UpdateMatchingEntityUIDCmd::ParseMessageTo( MessageData* pIMsg, VariableMapBuilder& variableBuilder )
-			{
- 				Result hr;
-
-
-				UpdateMatchingEntityUIDCmd parser;
-				protocolChk(parser.ParseMessage(pIMsg));
-
-				variableBuilder.SetVariable("RouteContext", parser.GetRouteContext());
-				variableBuilder.SetVariable("TransactionID", parser.GetTransactionID());
-				variableBuilder.SetVariable("RouteHopCount", parser.GetRouteHopCount());
-				variableBuilder.SetVariable("MatchingTicket", parser.GetMatchingTicket());
-				variableBuilder.SetVariable("PreviousUID", parser.GetPreviousUID());
-
-
-			Proc_End:
-
-				return hr;
-
-			}; // Result UpdateMatchingEntityUIDCmd::ParseMessageTo( MessageData* pIMsg, VariableMapBuilder& variableBuilder )
 
 			Result UpdateMatchingEntityUIDCmd::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageData* pIMsg, MessageBase* &pMessageBase )
 			{
@@ -806,9 +710,9 @@ namespace SF
 				memcpy( pCur, &routeContext, sizeof(RouteContext) );
 				pCur += sizeof(RouteContext); iMsgSize -= sizeof(RouteContext);
 				pCur += sizeof(TransactionID); iMsgSize -= sizeof(TransactionID);
-				Assert( iMsgSize >= (INT)sizeof(uint16) );
-				*(uint16*)pCur = hopCount;
-				pCur += sizeof(uint16); iMsgSize -= sizeof(uint16);
+				Assert( iMsgSize >= (INT)sizeof(uint16_t) );
+				*(uint16_t*)pCur = hopCount;
+				pCur += sizeof(uint16_t); iMsgSize -= sizeof(uint16_t);
 
 
 			Proc_End:
@@ -850,24 +754,6 @@ namespace SF
 
 			}; // Result UpdateMatchingEntityUIDRes::ParseMessage( MessageData* pIMsg )
 
-			Result UpdateMatchingEntityUIDRes::ParseMessageTo( MessageData* pIMsg, VariableMapBuilder& variableBuilder )
-			{
- 				Result hr;
-
-
-				UpdateMatchingEntityUIDRes parser;
-				protocolChk(parser.ParseMessage(pIMsg));
-
-				variableBuilder.SetVariable("RouteContext", parser.GetRouteContext());
-				variableBuilder.SetVariable("TransactionID", parser.GetTransactionID());
-				variableBuilder.SetVariable("Result", parser.GetResult());
-
-
-			Proc_End:
-
-				return hr;
-
-			}; // Result UpdateMatchingEntityUIDRes::ParseMessageTo( MessageData* pIMsg, VariableMapBuilder& variableBuilder )
 
 			Result UpdateMatchingEntityUIDRes::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageData* pIMsg, MessageBase* &pMessageBase )
 			{
@@ -1004,25 +890,6 @@ namespace SF
 
 			}; // Result UnregisterMatchingCmd::ParseMessage( MessageData* pIMsg )
 
-			Result UnregisterMatchingCmd::ParseMessageTo( MessageData* pIMsg, VariableMapBuilder& variableBuilder )
-			{
- 				Result hr;
-
-
-				UnregisterMatchingCmd parser;
-				protocolChk(parser.ParseMessage(pIMsg));
-
-				variableBuilder.SetVariable("RouteContext", parser.GetRouteContext());
-				variableBuilder.SetVariable("TransactionID", parser.GetTransactionID());
-				variableBuilder.SetVariable("RouteHopCount", parser.GetRouteHopCount());
-				variableBuilder.SetVariable("MatchingTicket", parser.GetMatchingTicket());
-
-
-			Proc_End:
-
-				return hr;
-
-			}; // Result UnregisterMatchingCmd::ParseMessageTo( MessageData* pIMsg, VariableMapBuilder& variableBuilder )
 
 			Result UnregisterMatchingCmd::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageData* pIMsg, MessageBase* &pMessageBase )
 			{
@@ -1117,9 +984,9 @@ namespace SF
 				memcpy( pCur, &routeContext, sizeof(RouteContext) );
 				pCur += sizeof(RouteContext); iMsgSize -= sizeof(RouteContext);
 				pCur += sizeof(TransactionID); iMsgSize -= sizeof(TransactionID);
-				Assert( iMsgSize >= (INT)sizeof(uint16) );
-				*(uint16*)pCur = hopCount;
-				pCur += sizeof(uint16); iMsgSize -= sizeof(uint16);
+				Assert( iMsgSize >= (INT)sizeof(uint16_t) );
+				*(uint16_t*)pCur = hopCount;
+				pCur += sizeof(uint16_t); iMsgSize -= sizeof(uint16_t);
 
 
 			Proc_End:
@@ -1161,24 +1028,6 @@ namespace SF
 
 			}; // Result UnregisterMatchingRes::ParseMessage( MessageData* pIMsg )
 
-			Result UnregisterMatchingRes::ParseMessageTo( MessageData* pIMsg, VariableMapBuilder& variableBuilder )
-			{
- 				Result hr;
-
-
-				UnregisterMatchingRes parser;
-				protocolChk(parser.ParseMessage(pIMsg));
-
-				variableBuilder.SetVariable("RouteContext", parser.GetRouteContext());
-				variableBuilder.SetVariable("TransactionID", parser.GetTransactionID());
-				variableBuilder.SetVariable("Result", parser.GetResult());
-
-
-			Proc_End:
-
-				return hr;
-
-			}; // Result UnregisterMatchingRes::ParseMessageTo( MessageData* pIMsg, VariableMapBuilder& variableBuilder )
 
 			Result UnregisterMatchingRes::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageData* pIMsg, MessageBase* &pMessageBase )
 			{
@@ -1315,25 +1164,6 @@ namespace SF
 
 			}; // Result PartyMatchingCanceledS2CEvt::ParseMessage( MessageData* pIMsg )
 
-			Result PartyMatchingCanceledS2CEvt::ParseMessageTo( MessageData* pIMsg, VariableMapBuilder& variableBuilder )
-			{
- 				Result hr;
-
-
-				PartyMatchingCanceledS2CEvt parser;
-				protocolChk(parser.ParseMessage(pIMsg));
-
-				variableBuilder.SetVariable("RouteContext", parser.GetRouteContext());
-				variableBuilder.SetVariable("RouteHopCount", parser.GetRouteHopCount());
-				variableBuilder.SetVariable("DestPartyUID", parser.GetDestPartyUID());
-				variableBuilder.SetVariable("MatchingTicket", parser.GetMatchingTicket());
-
-
-			Proc_End:
-
-				return hr;
-
-			}; // Result PartyMatchingCanceledS2CEvt::ParseMessageTo( MessageData* pIMsg, VariableMapBuilder& variableBuilder )
 
 			Result PartyMatchingCanceledS2CEvt::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageData* pIMsg, MessageBase* &pMessageBase )
 			{
@@ -1427,9 +1257,9 @@ namespace SF
 				routeContext.Components.To = to;
 				memcpy( pCur, &routeContext, sizeof(RouteContext) );
 				pCur += sizeof(RouteContext); iMsgSize -= sizeof(RouteContext);
-				Assert( iMsgSize >= (INT)sizeof(uint16) );
-				*(uint16*)pCur = hopCount;
-				pCur += sizeof(uint16); iMsgSize -= sizeof(uint16);
+				Assert( iMsgSize >= (INT)sizeof(uint16_t) );
+				*(uint16_t*)pCur = hopCount;
+				pCur += sizeof(uint16_t); iMsgSize -= sizeof(uint16_t);
 
 
 			Proc_End:
@@ -1473,25 +1303,6 @@ namespace SF
 
 			}; // Result PlayerMatchingCanceledS2CEvt::ParseMessage( MessageData* pIMsg )
 
-			Result PlayerMatchingCanceledS2CEvt::ParseMessageTo( MessageData* pIMsg, VariableMapBuilder& variableBuilder )
-			{
- 				Result hr;
-
-
-				PlayerMatchingCanceledS2CEvt parser;
-				protocolChk(parser.ParseMessage(pIMsg));
-
-				variableBuilder.SetVariable("RouteContext", parser.GetRouteContext());
-				variableBuilder.SetVariable("RouteHopCount", parser.GetRouteHopCount());
-				variableBuilder.SetVariable("DestPlayerID", parser.GetDestPlayerID());
-				variableBuilder.SetVariable("MatchingTicket", parser.GetMatchingTicket());
-
-
-			Proc_End:
-
-				return hr;
-
-			}; // Result PlayerMatchingCanceledS2CEvt::ParseMessageTo( MessageData* pIMsg, VariableMapBuilder& variableBuilder )
 
 			Result PlayerMatchingCanceledS2CEvt::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageData* pIMsg, MessageBase* &pMessageBase )
 			{
@@ -1585,9 +1396,9 @@ namespace SF
 				routeContext.Components.To = to;
 				memcpy( pCur, &routeContext, sizeof(RouteContext) );
 				pCur += sizeof(RouteContext); iMsgSize -= sizeof(RouteContext);
-				Assert( iMsgSize >= (INT)sizeof(uint16) );
-				*(uint16*)pCur = hopCount;
-				pCur += sizeof(uint16); iMsgSize -= sizeof(uint16);
+				Assert( iMsgSize >= (INT)sizeof(uint16_t) );
+				*(uint16_t*)pCur = hopCount;
+				pCur += sizeof(uint16_t); iMsgSize -= sizeof(uint16_t);
 
 
 			Proc_End:
@@ -1630,24 +1441,6 @@ namespace SF
 
 			}; // Result PartyMatchingItemDequeuedS2CEvt::ParseMessage( MessageData* pIMsg )
 
-			Result PartyMatchingItemDequeuedS2CEvt::ParseMessageTo( MessageData* pIMsg, VariableMapBuilder& variableBuilder )
-			{
- 				Result hr;
-
-
-				PartyMatchingItemDequeuedS2CEvt parser;
-				protocolChk(parser.ParseMessage(pIMsg));
-
-				variableBuilder.SetVariable("RouteContext", parser.GetRouteContext());
-				variableBuilder.SetVariable("RouteHopCount", parser.GetRouteHopCount());
-				variableBuilder.SetVariable("MatchingTicket", parser.GetMatchingTicket());
-
-
-			Proc_End:
-
-				return hr;
-
-			}; // Result PartyMatchingItemDequeuedS2CEvt::ParseMessageTo( MessageData* pIMsg, VariableMapBuilder& variableBuilder )
 
 			Result PartyMatchingItemDequeuedS2CEvt::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageData* pIMsg, MessageBase* &pMessageBase )
 			{
@@ -1739,9 +1532,9 @@ namespace SF
 				routeContext.Components.To = to;
 				memcpy( pCur, &routeContext, sizeof(RouteContext) );
 				pCur += sizeof(RouteContext); iMsgSize -= sizeof(RouteContext);
-				Assert( iMsgSize >= (INT)sizeof(uint16) );
-				*(uint16*)pCur = hopCount;
-				pCur += sizeof(uint16); iMsgSize -= sizeof(uint16);
+				Assert( iMsgSize >= (INT)sizeof(uint16_t) );
+				*(uint16_t*)pCur = hopCount;
+				pCur += sizeof(uint16_t); iMsgSize -= sizeof(uint16_t);
 
 
 			Proc_End:
@@ -1784,24 +1577,6 @@ namespace SF
 
 			}; // Result PlayerMatchingItemDequeuedS2CEvt::ParseMessage( MessageData* pIMsg )
 
-			Result PlayerMatchingItemDequeuedS2CEvt::ParseMessageTo( MessageData* pIMsg, VariableMapBuilder& variableBuilder )
-			{
- 				Result hr;
-
-
-				PlayerMatchingItemDequeuedS2CEvt parser;
-				protocolChk(parser.ParseMessage(pIMsg));
-
-				variableBuilder.SetVariable("RouteContext", parser.GetRouteContext());
-				variableBuilder.SetVariable("RouteHopCount", parser.GetRouteHopCount());
-				variableBuilder.SetVariable("MatchingTicket", parser.GetMatchingTicket());
-
-
-			Proc_End:
-
-				return hr;
-
-			}; // Result PlayerMatchingItemDequeuedS2CEvt::ParseMessageTo( MessageData* pIMsg, VariableMapBuilder& variableBuilder )
 
 			Result PlayerMatchingItemDequeuedS2CEvt::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageData* pIMsg, MessageBase* &pMessageBase )
 			{
@@ -1893,9 +1668,9 @@ namespace SF
 				routeContext.Components.To = to;
 				memcpy( pCur, &routeContext, sizeof(RouteContext) );
 				pCur += sizeof(RouteContext); iMsgSize -= sizeof(RouteContext);
-				Assert( iMsgSize >= (INT)sizeof(uint16) );
-				*(uint16*)pCur = hopCount;
-				pCur += sizeof(uint16); iMsgSize -= sizeof(uint16);
+				Assert( iMsgSize >= (INT)sizeof(uint16_t) );
+				*(uint16_t*)pCur = hopCount;
+				pCur += sizeof(uint16_t); iMsgSize -= sizeof(uint16_t);
 
 
 			Proc_End:
@@ -1938,24 +1713,6 @@ namespace SF
 
 			}; // Result ReserveItemCmd::ParseMessage( MessageData* pIMsg )
 
-			Result ReserveItemCmd::ParseMessageTo( MessageData* pIMsg, VariableMapBuilder& variableBuilder )
-			{
- 				Result hr;
-
-
-				ReserveItemCmd parser;
-				protocolChk(parser.ParseMessage(pIMsg));
-
-				variableBuilder.SetVariable("RouteContext", parser.GetRouteContext());
-				variableBuilder.SetVariable("TransactionID", parser.GetTransactionID());
-				variableBuilder.SetVariable("RouteHopCount", parser.GetRouteHopCount());
-
-
-			Proc_End:
-
-				return hr;
-
-			}; // Result ReserveItemCmd::ParseMessageTo( MessageData* pIMsg, VariableMapBuilder& variableBuilder )
 
 			Result ReserveItemCmd::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageData* pIMsg, MessageBase* &pMessageBase )
 			{
@@ -2048,9 +1805,9 @@ namespace SF
 				memcpy( pCur, &routeContext, sizeof(RouteContext) );
 				pCur += sizeof(RouteContext); iMsgSize -= sizeof(RouteContext);
 				pCur += sizeof(TransactionID); iMsgSize -= sizeof(TransactionID);
-				Assert( iMsgSize >= (INT)sizeof(uint16) );
-				*(uint16*)pCur = hopCount;
-				pCur += sizeof(uint16); iMsgSize -= sizeof(uint16);
+				Assert( iMsgSize >= (INT)sizeof(uint16_t) );
+				*(uint16_t*)pCur = hopCount;
+				pCur += sizeof(uint16_t); iMsgSize -= sizeof(uint16_t);
 
 
 			Proc_End:
@@ -2094,26 +1851,6 @@ namespace SF
 
 			}; // Result ReserveItemRes::ParseMessage( MessageData* pIMsg )
 
-			Result ReserveItemRes::ParseMessageTo( MessageData* pIMsg, VariableMapBuilder& variableBuilder )
-			{
- 				Result hr;
-
-
-				ReserveItemRes parser;
-				protocolChk(parser.ParseMessage(pIMsg));
-
-				variableBuilder.SetVariable("RouteContext", parser.GetRouteContext());
-				variableBuilder.SetVariable("TransactionID", parser.GetTransactionID());
-				variableBuilder.SetVariable("Result", parser.GetResult());
-				variableBuilder.SetVariable("NumberOfPlayersInTheItem", parser.GetNumberOfPlayersInTheItem());
-				variableBuilder.SetVariable("MatchingTicket", parser.GetMatchingTicket());
-
-
-			Proc_End:
-
-				return hr;
-
-			}; // Result ReserveItemRes::ParseMessageTo( MessageData* pIMsg, VariableMapBuilder& variableBuilder )
 
 			Result ReserveItemRes::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageData* pIMsg, MessageBase* &pMessageBase )
 			{
@@ -2211,7 +1948,7 @@ namespace SF
 				pCur += sizeof(RouteContext); iMsgSize -= sizeof(RouteContext);
 				pCur += sizeof(TransactionID); iMsgSize -= sizeof(TransactionID);
 				pCur += sizeof(Result); iMsgSize -= sizeof(Result);
-				pCur += sizeof(uint32); iMsgSize -= sizeof(uint32);
+				pCur += sizeof(uint32_t); iMsgSize -= sizeof(uint32_t);
 				pCur += sizeof(MatchingQueueTicket); iMsgSize -= sizeof(MatchingQueueTicket);
 
 
@@ -2256,25 +1993,6 @@ namespace SF
 
 			}; // Result ReserveItemsCmd::ParseMessage( MessageData* pIMsg )
 
-			Result ReserveItemsCmd::ParseMessageTo( MessageData* pIMsg, VariableMapBuilder& variableBuilder )
-			{
- 				Result hr;
-
-
-				ReserveItemsCmd parser;
-				protocolChk(parser.ParseMessage(pIMsg));
-
-				variableBuilder.SetVariable("RouteContext", parser.GetRouteContext());
-				variableBuilder.SetVariable("TransactionID", parser.GetTransactionID());
-				variableBuilder.SetVariable("RouteHopCount", parser.GetRouteHopCount());
-				variableBuilder.SetVariable("NumberOfItemsToReserve", parser.GetNumberOfItemsToReserve());
-
-
-			Proc_End:
-
-				return hr;
-
-			}; // Result ReserveItemsCmd::ParseMessageTo( MessageData* pIMsg, VariableMapBuilder& variableBuilder )
 
 			Result ReserveItemsCmd::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageData* pIMsg, MessageBase* &pMessageBase )
 			{
@@ -2369,9 +2087,9 @@ namespace SF
 				memcpy( pCur, &routeContext, sizeof(RouteContext) );
 				pCur += sizeof(RouteContext); iMsgSize -= sizeof(RouteContext);
 				pCur += sizeof(TransactionID); iMsgSize -= sizeof(TransactionID);
-				Assert( iMsgSize >= (INT)sizeof(uint16) );
-				*(uint16*)pCur = hopCount;
-				pCur += sizeof(uint16); iMsgSize -= sizeof(uint16);
+				Assert( iMsgSize >= (INT)sizeof(uint16_t) );
+				*(uint16_t*)pCur = hopCount;
+				pCur += sizeof(uint16_t); iMsgSize -= sizeof(uint16_t);
 
 
 			Proc_End:
@@ -2421,26 +2139,6 @@ namespace SF
 
 			}; // Result ReserveItemsRes::ParseMessage( MessageData* pIMsg )
 
-			Result ReserveItemsRes::ParseMessageTo( MessageData* pIMsg, VariableMapBuilder& variableBuilder )
-			{
- 				Result hr;
-
-
-				ReserveItemsRes parser;
-				protocolChk(parser.ParseMessage(pIMsg));
-
-				variableBuilder.SetVariable("RouteContext", parser.GetRouteContext());
-				variableBuilder.SetVariable("TransactionID", parser.GetTransactionID());
-				variableBuilder.SetVariable("Result", parser.GetResult());
-				variableBuilder.SetVariable("NumberOfPlayersInTheItem", (int)parser.GetNumberOfPlayersInTheItem().GetItemCount(), (const uint32_t*)parser.GetNumberOfPlayersInTheItem().data());
-				variableBuilder.SetVariable("MatchingTicket", (int)parser.GetMatchingTicket().GetItemCount(), (const MatchingQueueTicket*)parser.GetMatchingTicket().data());
-
-
-			Proc_End:
-
-				return hr;
-
-			}; // Result ReserveItemsRes::ParseMessageTo( MessageData* pIMsg, VariableMapBuilder& variableBuilder )
 
 			Result ReserveItemsRes::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageData* pIMsg, MessageBase* &pMessageBase )
 			{
@@ -2465,12 +2163,12 @@ namespace SF
 					+ sizeof(RouteContext)
 					+ sizeof(TransactionID)
 					+ sizeof(Result)
-					+ sizeof(uint32_t)*InNumberOfPlayersInTheItem.GetItemCount() + sizeof(uint16_t)
-					+ sizeof(MatchingQueueTicket)*InMatchingTicket.GetItemCount() + sizeof(uint16_t));
+					+ sizeof(uint32_t)*InNumberOfPlayersInTheItem.size() + sizeof(uint16_t)
+					+ sizeof(MatchingQueueTicket)*InMatchingTicket.size() + sizeof(uint16_t));
 
 
-				uint16_t numberOfInNumberOfPlayersInTheItem = (uint16_t)InNumberOfPlayersInTheItem.GetItemCount(); 
-				uint16_t numberOfInMatchingTicket = (uint16_t)InMatchingTicket.GetItemCount(); 
+				uint16_t numberOfInNumberOfPlayersInTheItem = (uint16_t)InNumberOfPlayersInTheItem.size(); 
+				uint16_t numberOfInMatchingTicket = (uint16_t)InMatchingTicket.size(); 
 				protocolMem( pNewMsg = MessageData::NewMessage( memoryManager, PartyMatchingQueue::ReserveItemsRes::MID, __uiMessageSize ) );
 
 				pMsgData = pNewMsg->GetMessageData();
@@ -2479,9 +2177,9 @@ namespace SF
 				Protocol::PackParamCopy( pMsgData, &InTransactionID, sizeof(TransactionID));
 				Protocol::PackParamCopy( pMsgData, &InResult, sizeof(Result));
 				Protocol::PackParamCopy( pMsgData, &numberOfInNumberOfPlayersInTheItem, sizeof(uint16_t)); 
-				Protocol::PackParamCopy( pMsgData, InNumberOfPlayersInTheItem.data(), (INT)(sizeof(uint32_t)*InNumberOfPlayersInTheItem.GetItemCount())); 
+				Protocol::PackParamCopy( pMsgData, InNumberOfPlayersInTheItem.data(), (INT)(sizeof(uint32_t)*InNumberOfPlayersInTheItem.size())); 
 				Protocol::PackParamCopy( pMsgData, &numberOfInMatchingTicket, sizeof(uint16_t)); 
-				Protocol::PackParamCopy( pMsgData, InMatchingTicket.data(), (INT)(sizeof(MatchingQueueTicket)*InMatchingTicket.GetItemCount())); 
+				Protocol::PackParamCopy( pMsgData, InMatchingTicket.data(), (INT)(sizeof(MatchingQueueTicket)*InMatchingTicket.size())); 
 
 
 			Proc_End:
@@ -2543,9 +2241,9 @@ namespace SF
 				pCur += sizeof(TransactionID); iMsgSize -= sizeof(TransactionID);
 				pCur += sizeof(Result); iMsgSize -= sizeof(Result);
 				pCur += sizeof(uint16_t); iMsgSize -= sizeof(uint16_t);
-				pCur += sizeof(uint32_t)*m_NumberOfPlayersInTheItem.GetItemCount(); iMsgSize -= (INT)(sizeof(uint32_t)*m_NumberOfPlayersInTheItem.GetSize());
+				pCur += sizeof(uint32_t)*m_NumberOfPlayersInTheItem.size(); iMsgSize -= (INT)(sizeof(uint32_t)*m_NumberOfPlayersInTheItem.size());
 				pCur += sizeof(uint16_t); iMsgSize -= sizeof(uint16_t);
-				pCur += sizeof(MatchingQueueTicket)*m_MatchingTicket.GetItemCount(); iMsgSize -= (INT)(sizeof(MatchingQueueTicket)*m_MatchingTicket.GetSize());
+				pCur += sizeof(MatchingQueueTicket)*m_MatchingTicket.size(); iMsgSize -= (INT)(sizeof(MatchingQueueTicket)*m_MatchingTicket.size());
 
 
 			Proc_End:
@@ -2589,25 +2287,6 @@ namespace SF
 
 			}; // Result CancelReservationCmd::ParseMessage( MessageData* pIMsg )
 
-			Result CancelReservationCmd::ParseMessageTo( MessageData* pIMsg, VariableMapBuilder& variableBuilder )
-			{
- 				Result hr;
-
-
-				CancelReservationCmd parser;
-				protocolChk(parser.ParseMessage(pIMsg));
-
-				variableBuilder.SetVariable("RouteContext", parser.GetRouteContext());
-				variableBuilder.SetVariable("TransactionID", parser.GetTransactionID());
-				variableBuilder.SetVariable("RouteHopCount", parser.GetRouteHopCount());
-				variableBuilder.SetVariable("TicketToCancel", parser.GetTicketToCancel());
-
-
-			Proc_End:
-
-				return hr;
-
-			}; // Result CancelReservationCmd::ParseMessageTo( MessageData* pIMsg, VariableMapBuilder& variableBuilder )
 
 			Result CancelReservationCmd::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageData* pIMsg, MessageBase* &pMessageBase )
 			{
@@ -2702,9 +2381,9 @@ namespace SF
 				memcpy( pCur, &routeContext, sizeof(RouteContext) );
 				pCur += sizeof(RouteContext); iMsgSize -= sizeof(RouteContext);
 				pCur += sizeof(TransactionID); iMsgSize -= sizeof(TransactionID);
-				Assert( iMsgSize >= (INT)sizeof(uint16) );
-				*(uint16*)pCur = hopCount;
-				pCur += sizeof(uint16); iMsgSize -= sizeof(uint16);
+				Assert( iMsgSize >= (INT)sizeof(uint16_t) );
+				*(uint16_t*)pCur = hopCount;
+				pCur += sizeof(uint16_t); iMsgSize -= sizeof(uint16_t);
 
 
 			Proc_End:
@@ -2746,24 +2425,6 @@ namespace SF
 
 			}; // Result CancelReservationRes::ParseMessage( MessageData* pIMsg )
 
-			Result CancelReservationRes::ParseMessageTo( MessageData* pIMsg, VariableMapBuilder& variableBuilder )
-			{
- 				Result hr;
-
-
-				CancelReservationRes parser;
-				protocolChk(parser.ParseMessage(pIMsg));
-
-				variableBuilder.SetVariable("RouteContext", parser.GetRouteContext());
-				variableBuilder.SetVariable("TransactionID", parser.GetTransactionID());
-				variableBuilder.SetVariable("Result", parser.GetResult());
-
-
-			Proc_End:
-
-				return hr;
-
-			}; // Result CancelReservationRes::ParseMessageTo( MessageData* pIMsg, VariableMapBuilder& variableBuilder )
 
 			Result CancelReservationRes::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageData* pIMsg, MessageBase* &pMessageBase )
 			{
@@ -2903,25 +2564,6 @@ namespace SF
 
 			}; // Result CancelReservationsCmd::ParseMessage( MessageData* pIMsg )
 
-			Result CancelReservationsCmd::ParseMessageTo( MessageData* pIMsg, VariableMapBuilder& variableBuilder )
-			{
- 				Result hr;
-
-
-				CancelReservationsCmd parser;
-				protocolChk(parser.ParseMessage(pIMsg));
-
-				variableBuilder.SetVariable("RouteContext", parser.GetRouteContext());
-				variableBuilder.SetVariable("TransactionID", parser.GetTransactionID());
-				variableBuilder.SetVariable("RouteHopCount", parser.GetRouteHopCount());
-				variableBuilder.SetVariable("TicketToCancel", (int)parser.GetTicketToCancel().GetItemCount(), (const MatchingQueueTicket*)parser.GetTicketToCancel().data());
-
-
-			Proc_End:
-
-				return hr;
-
-			}; // Result CancelReservationsCmd::ParseMessageTo( MessageData* pIMsg, VariableMapBuilder& variableBuilder )
 
 			Result CancelReservationsCmd::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageData* pIMsg, MessageBase* &pMessageBase )
 			{
@@ -2946,10 +2588,10 @@ namespace SF
 					+ sizeof(RouteContext)
 					+ sizeof(TransactionID)
 					+ sizeof(uint16_t)
-					+ sizeof(MatchingQueueTicket)*InTicketToCancel.GetItemCount() + sizeof(uint16_t));
+					+ sizeof(MatchingQueueTicket)*InTicketToCancel.size() + sizeof(uint16_t));
 
 
-				uint16_t numberOfInTicketToCancel = (uint16_t)InTicketToCancel.GetItemCount(); 
+				uint16_t numberOfInTicketToCancel = (uint16_t)InTicketToCancel.size(); 
 				protocolMem( pNewMsg = MessageData::NewMessage( memoryManager, PartyMatchingQueue::CancelReservationsCmd::MID, __uiMessageSize ) );
 
 				pMsgData = pNewMsg->GetMessageData();
@@ -2958,7 +2600,7 @@ namespace SF
 				Protocol::PackParamCopy( pMsgData, &InTransactionID, sizeof(TransactionID));
 				Protocol::PackParamCopy( pMsgData, &InRouteHopCount, sizeof(uint16_t));
 				Protocol::PackParamCopy( pMsgData, &numberOfInTicketToCancel, sizeof(uint16_t)); 
-				Protocol::PackParamCopy( pMsgData, InTicketToCancel.data(), (INT)(sizeof(MatchingQueueTicket)*InTicketToCancel.GetItemCount())); 
+				Protocol::PackParamCopy( pMsgData, InTicketToCancel.data(), (INT)(sizeof(MatchingQueueTicket)*InTicketToCancel.size())); 
 
 
 			Proc_End:
@@ -3018,9 +2660,9 @@ namespace SF
 				memcpy( pCur, &routeContext, sizeof(RouteContext) );
 				pCur += sizeof(RouteContext); iMsgSize -= sizeof(RouteContext);
 				pCur += sizeof(TransactionID); iMsgSize -= sizeof(TransactionID);
-				Assert( iMsgSize >= (INT)sizeof(uint16) );
-				*(uint16*)pCur = hopCount;
-				pCur += sizeof(uint16); iMsgSize -= sizeof(uint16);
+				Assert( iMsgSize >= (INT)sizeof(uint16_t) );
+				*(uint16_t*)pCur = hopCount;
+				pCur += sizeof(uint16_t); iMsgSize -= sizeof(uint16_t);
 
 
 			Proc_End:
@@ -3062,24 +2704,6 @@ namespace SF
 
 			}; // Result CancelReservationsRes::ParseMessage( MessageData* pIMsg )
 
-			Result CancelReservationsRes::ParseMessageTo( MessageData* pIMsg, VariableMapBuilder& variableBuilder )
-			{
- 				Result hr;
-
-
-				CancelReservationsRes parser;
-				protocolChk(parser.ParseMessage(pIMsg));
-
-				variableBuilder.SetVariable("RouteContext", parser.GetRouteContext());
-				variableBuilder.SetVariable("TransactionID", parser.GetTransactionID());
-				variableBuilder.SetVariable("Result", parser.GetResult());
-
-
-			Proc_End:
-
-				return hr;
-
-			}; // Result CancelReservationsRes::ParseMessageTo( MessageData* pIMsg, VariableMapBuilder& variableBuilder )
 
 			Result CancelReservationsRes::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageData* pIMsg, MessageBase* &pMessageBase )
 			{
@@ -3216,25 +2840,6 @@ namespace SF
 
 			}; // Result DequeueItemCmd::ParseMessage( MessageData* pIMsg )
 
-			Result DequeueItemCmd::ParseMessageTo( MessageData* pIMsg, VariableMapBuilder& variableBuilder )
-			{
- 				Result hr;
-
-
-				DequeueItemCmd parser;
-				protocolChk(parser.ParseMessage(pIMsg));
-
-				variableBuilder.SetVariable("RouteContext", parser.GetRouteContext());
-				variableBuilder.SetVariable("TransactionID", parser.GetTransactionID());
-				variableBuilder.SetVariable("RouteHopCount", parser.GetRouteHopCount());
-				variableBuilder.SetVariable("MatchingTicket", parser.GetMatchingTicket());
-
-
-			Proc_End:
-
-				return hr;
-
-			}; // Result DequeueItemCmd::ParseMessageTo( MessageData* pIMsg, VariableMapBuilder& variableBuilder )
 
 			Result DequeueItemCmd::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageData* pIMsg, MessageBase* &pMessageBase )
 			{
@@ -3329,9 +2934,9 @@ namespace SF
 				memcpy( pCur, &routeContext, sizeof(RouteContext) );
 				pCur += sizeof(RouteContext); iMsgSize -= sizeof(RouteContext);
 				pCur += sizeof(TransactionID); iMsgSize -= sizeof(TransactionID);
-				Assert( iMsgSize >= (INT)sizeof(uint16) );
-				*(uint16*)pCur = hopCount;
-				pCur += sizeof(uint16); iMsgSize -= sizeof(uint16);
+				Assert( iMsgSize >= (INT)sizeof(uint16_t) );
+				*(uint16_t*)pCur = hopCount;
+				pCur += sizeof(uint16_t); iMsgSize -= sizeof(uint16_t);
 
 
 			Proc_End:
@@ -3380,28 +2985,6 @@ namespace SF
 
 			}; // Result DequeueItemRes::ParseMessage( MessageData* pIMsg )
 
-			Result DequeueItemRes::ParseMessageTo( MessageData* pIMsg, VariableMapBuilder& variableBuilder )
-			{
- 				Result hr;
-
-
-				DequeueItemRes parser;
-				protocolChk(parser.ParseMessage(pIMsg));
-
-				variableBuilder.SetVariable("RouteContext", parser.GetRouteContext());
-				variableBuilder.SetVariable("TransactionID", parser.GetTransactionID());
-				variableBuilder.SetVariable("Result", parser.GetResult());
-				variableBuilder.SetVariable("MatchingTicket", parser.GetMatchingTicket());
-				variableBuilder.SetVariable("RegisterUID", parser.GetRegisterUID());
-				variableBuilder.SetVariable("RegisterID", parser.GetRegisterID());
-				variableBuilder.SetVariable("Players", (int)parser.GetPlayers().GetItemCount(), (const MatchingPlayerInformation*)parser.GetPlayers().data());
-
-
-			Proc_End:
-
-				return hr;
-
-			}; // Result DequeueItemRes::ParseMessageTo( MessageData* pIMsg, VariableMapBuilder& variableBuilder )
 
 			Result DequeueItemRes::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageData* pIMsg, MessageBase* &pMessageBase )
 			{
@@ -3429,10 +3012,10 @@ namespace SF
 					+ sizeof(MatchingQueueTicket)
 					+ sizeof(uint64_t)
 					+ sizeof(PlayerID)
-					+ sizeof(MatchingPlayerInformation)*InPlayers.GetItemCount() + sizeof(uint16_t));
+					+ sizeof(MatchingPlayerInformation)*InPlayers.size() + sizeof(uint16_t));
 
 
-				uint16_t numberOfInPlayers = (uint16_t)InPlayers.GetItemCount(); 
+				uint16_t numberOfInPlayers = (uint16_t)InPlayers.size(); 
 				protocolMem( pNewMsg = MessageData::NewMessage( memoryManager, PartyMatchingQueue::DequeueItemRes::MID, __uiMessageSize ) );
 
 				pMsgData = pNewMsg->GetMessageData();
@@ -3444,7 +3027,7 @@ namespace SF
 				Protocol::PackParamCopy( pMsgData, &InRegisterUID, sizeof(uint64_t));
 				Protocol::PackParamCopy( pMsgData, &InRegisterID, sizeof(PlayerID));
 				Protocol::PackParamCopy( pMsgData, &numberOfInPlayers, sizeof(uint16_t)); 
-				Protocol::PackParamCopy( pMsgData, InPlayers.data(), (INT)(sizeof(MatchingPlayerInformation)*InPlayers.GetItemCount())); 
+				Protocol::PackParamCopy( pMsgData, InPlayers.data(), (INT)(sizeof(MatchingPlayerInformation)*InPlayers.size())); 
 
 
 			Proc_End:
@@ -3506,10 +3089,10 @@ namespace SF
 				pCur += sizeof(TransactionID); iMsgSize -= sizeof(TransactionID);
 				pCur += sizeof(Result); iMsgSize -= sizeof(Result);
 				pCur += sizeof(MatchingQueueTicket); iMsgSize -= sizeof(MatchingQueueTicket);
-				pCur += sizeof(EntityUID); iMsgSize -= sizeof(EntityUID);
+				pCur += sizeof(uint64_t); iMsgSize -= sizeof(uint64_t);
 				pCur += sizeof(PlayerID); iMsgSize -= sizeof(PlayerID);
 				pCur += sizeof(uint16_t); iMsgSize -= sizeof(uint16_t);
-				pCur += sizeof(MatchingPlayerInformation)*m_Players.GetItemCount(); iMsgSize -= (INT)(sizeof(MatchingPlayerInformation)*m_Players.GetSize());
+				pCur += sizeof(MatchingPlayerInformation)*m_Players.size(); iMsgSize -= (INT)(sizeof(MatchingPlayerInformation)*m_Players.size());
 
 
 			Proc_End:
@@ -3552,24 +3135,6 @@ namespace SF
 
 			}; // Result MatchingItemErrorC2SEvt::ParseMessage( MessageData* pIMsg )
 
-			Result MatchingItemErrorC2SEvt::ParseMessageTo( MessageData* pIMsg, VariableMapBuilder& variableBuilder )
-			{
- 				Result hr;
-
-
-				MatchingItemErrorC2SEvt parser;
-				protocolChk(parser.ParseMessage(pIMsg));
-
-				variableBuilder.SetVariable("RouteContext", parser.GetRouteContext());
-				variableBuilder.SetVariable("RouteHopCount", parser.GetRouteHopCount());
-				variableBuilder.SetVariable("MatchingTicket", parser.GetMatchingTicket());
-
-
-			Proc_End:
-
-				return hr;
-
-			}; // Result MatchingItemErrorC2SEvt::ParseMessageTo( MessageData* pIMsg, VariableMapBuilder& variableBuilder )
 
 			Result MatchingItemErrorC2SEvt::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageData* pIMsg, MessageBase* &pMessageBase )
 			{
@@ -3661,9 +3226,9 @@ namespace SF
 				routeContext.Components.To = to;
 				memcpy( pCur, &routeContext, sizeof(RouteContext) );
 				pCur += sizeof(RouteContext); iMsgSize -= sizeof(RouteContext);
-				Assert( iMsgSize >= (INT)sizeof(uint16) );
-				*(uint16*)pCur = hopCount;
-				pCur += sizeof(uint16); iMsgSize -= sizeof(uint16);
+				Assert( iMsgSize >= (INT)sizeof(uint16_t) );
+				*(uint16_t*)pCur = hopCount;
+				pCur += sizeof(uint16_t); iMsgSize -= sizeof(uint16_t);
 
 
 			Proc_End:

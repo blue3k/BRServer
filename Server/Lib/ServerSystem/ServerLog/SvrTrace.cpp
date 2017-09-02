@@ -11,7 +11,7 @@
 
 
 #include "stdafx.h"
-#include "ServerSystem/SvrTrace.h"
+#include "SvrTrace.h"
 
 
 DECLARE_TRACE_MODULE(svr)

@@ -17,13 +17,13 @@
 #include "ResultCode/SFResultCodeGame.h"
 #include "ResultCode/SFResultCodeLogin.h"
 #include "Memory/MemoryPool.h"
-#include "Types/BrBaseTypes.h"
+#include "Types/SFEngineTypedefs.h"
 
 #include "GameServerClass.h"
-#include "ServerSystem/BrServerUtil.h"
-#include "ServerSystem/SvrTrace.h"
-#include "ServerSystem/BrServer.h"
-#include "ServerSystem/ServerEntityManager.h"
+#include "Server/BrServerUtil.h"
+#include "SvrTrace.h"
+#include "Server/BrServer.h"
+#include "ServerEntity/ServerEntityManager.h"
 
 #include "ServerSystem/ServiceEntity/GamePartyManagerServiceEntity.h"
 #include "ServerSystem/ServerService/GamePartyManagerService.h"
@@ -155,7 +155,7 @@ namespace GameServer {
 			Svr::ServerEntity *pServerEntity = nullptr;
 
 			svrChk(Svr::GetServerComponent<Svr::ServerEntityManager>()->GetServerEntity(GetMyOwner()->GetPartyUID().GetServerID(), pServerEntity));
-			svrChkPtr(pPolicy = pServerEntity->GetPolicy<Policy::IPolicyGameParty>());
+			svrChkPtr(pPolicy = pServerEntity->GetInterface<Policy::IPolicyGameParty>());
 
 			svrChk(pPolicy->LeavePartyCmd(RouteContext(GetOwnerEntityUID(), GetMyOwner()->GetPartyUID()), GetTransID(), GetMyOwner()->GetPlayerID()) );
 
@@ -267,7 +267,7 @@ namespace GameServer {
 
 		GetMyOwner()->SetMatchingTicket( GetMatchingQueueTicket() );
 
-		GetPolicy()->GameMatchingStartedS2CEvt();
+		GetInterface()->GameMatchingStartedS2CEvt();
 
 	Proc_End:
 
@@ -311,7 +311,7 @@ namespace GameServer {
 
 		GetMyOwner()->SetMatchingTicket( 0 );
 
-		GetPolicy()->GameMatchingCanceledS2CEvt();
+		GetInterface()->GameMatchingCanceledS2CEvt();
 
 	Proc_End:
 
@@ -454,7 +454,7 @@ namespace GameServer {
 
 		svrChk( Svr::GetServerComponent<Svr::ServerEntityManager>()->GetServerEntity( GetPartyUID().GetServerID(), pServerEntity ) );
 
-		svrChkPtr( pPolicy = pServerEntity->GetPolicy<Policy::IPolicyGameParty>() );
+		svrChkPtr( pPolicy = pServerEntity->GetInterface<Policy::IPolicyGameParty>() );
 
 		svrChk( pPolicy->JoinPartyCmd(RouteContext(GetOwnerEntityUID(), GetPartyUID()), GetTransID(),
 			GetInviterID(), GetMyOwner()->GetPlayerInformation() ) );
@@ -478,7 +478,7 @@ namespace GameServer {
 		if( GetMyOwner()->GetPartyUID() != GetRouteContext().GetFrom())
 			svrErrClose(ResultCode::E_GAME_INVALID_PARTYID);
 
-		svrChk( GetPolicy()->PartyPlayerJoinedS2CEvt( GetRouteContext().GetFrom(), GetJoinedPlayer() ) );
+		svrChk( GetInterface()->PartyPlayerJoinedS2CEvt( GetRouteContext().GetFrom(), GetJoinedPlayer() ) );
 	
 	Proc_End:
 
@@ -498,7 +498,7 @@ namespace GameServer {
 		if( GetMyOwner()->GetPartyUID() != GetRouteContext().GetFrom())
 			svrErrClose(ResultCode::E_GAME_INVALID_PARTYID);
 
-		svrChk( GetPolicy()->PartyLeaderChangedS2CEvt( GetRouteContext().GetFrom(), GetNewLeaderID() ) );
+		svrChk( GetInterface()->PartyLeaderChangedS2CEvt( GetRouteContext().GetFrom(), GetNewLeaderID() ) );
 	
 	Proc_End:
 
@@ -560,7 +560,7 @@ namespace GameServer {
 			svrErr(ResultCode::E_GAME_INVALID_PARTYID);
 
 		svrChk( Svr::GetServerComponent<Svr::ServerEntityManager>()->GetServerEntity( GetPartyUID().GetServerID(), pServerEntity ) );
-		svrChkPtr( pPolicy = pServerEntity->GetPolicy<Policy::IPolicyGameParty>() );
+		svrChkPtr( pPolicy = pServerEntity->GetInterface<Policy::IPolicyGameParty>() );
 
 		svrChk( pPolicy->LeavePartyCmd( RouteContext(GetOwnerEntityUID(),GetMyOwner()->GetPartyUID()), GetTransID(),
 			GetMyOwner()->GetPlayerID() ) );
@@ -585,8 +585,8 @@ namespace GameServer {
 		if( GetMyOwner()->GetPartyUID() != GetRouteContext().GetFrom())
 			svrErrClose(ResultCode::E_GAME_INVALID_PARTYID);
 
-		svrChkPtr(GetPolicy());
-		svrChk( GetPolicy()->PartyPlayerLeftS2CEvt( GetRouteContext().GetFrom(), GetLeftPlayerID() ) );
+		svrChkPtr(GetInterface());
+		svrChk( GetInterface()->PartyPlayerLeftS2CEvt( GetRouteContext().GetFrom(), GetLeftPlayerID() ) );
 	
 	Proc_End:
 
@@ -640,7 +640,7 @@ namespace GameServer {
 			svrErr(ResultCode::E_GAME_INVALID_PARTYID);
 
 		svrChk( Svr::GetServerComponent<Svr::ServerEntityManager>()->GetServerEntity( GetPartyUID().GetServerID(), pServerEntity ) );
-		svrChkPtr( pPolicy = pServerEntity->GetPolicy<Policy::IPolicyGameParty>() );
+		svrChkPtr( pPolicy = pServerEntity->GetInterface<Policy::IPolicyGameParty>() );
 
 		svrChk( pPolicy->KickPlayerCmd( RouteContext(GetOwnerEntityUID(),GetPartyUID()), GetTransID(),
 			GetMyOwner()->GetPlayerID(), GetPlayerToKick() ) );
@@ -665,7 +665,7 @@ namespace GameServer {
 		if( GetMyOwner()->GetPartyUID() != GetRouteContext().GetFrom())
 			svrErrClose(ResultCode::E_GAME_INVALID_PARTYID);
 
-		svrChk( GetPolicy()->PartyPlayerKickedS2CEvt( GetRouteContext().GetFrom(), GetKickedPlayerID() ) );
+		svrChk( GetInterface()->PartyPlayerKickedS2CEvt( GetRouteContext().GetFrom(), GetKickedPlayerID() ) );
 
 		if( GetKickedPlayerID() == GetMyOwner()->GetPlayerID() )
 		{
@@ -702,7 +702,7 @@ namespace GameServer {
 	//	if( (Svr::GetServerComponent<Svr::GameClusterServiceEntity>()->FindPlayer( GetInviteTargetID(), playerUID )) )
 	//	{
 	//		svrChk( Svr::GetServerComponent<Svr::ServerEntityManager>()->GetServerEntity( playerUID.SvrID, pServerEntity ) );
-	//		pTargetPolicy = pServerEntity->GetPolicy<Policy::IPolicyGameServer>();
+	//		pTargetPolicy = pServerEntity->GetInterface<Policy::IPolicyGameServer>();
 
 	//		svrChk( pTargetPolicy->NotifyC2SEvt( RouteContext(GetOwnerEntityUID(),playerUID), 
 	//			GetInviteTargetID(), pMsgRes->NotificationID, NotificationType::PartyRequest, GetMyOwner()->GetPlayerID(), GetMyOwner()->GetPartyUID(), GetMyOwner()->GetNickName() ) );
@@ -739,7 +739,7 @@ namespace GameServer {
 		if( (Svr::GetServerComponent<Svr::GameClusterServiceEntity>()->FindPlayer( GetInviteTargetID(), playerUID )) )
 		{
 			svrChk( Svr::GetServerComponent<Svr::ServerEntityManager>()->GetServerEntity( playerUID.GetServerID(), pServerEntity ) );
-			svrChkPtr(pTargetPolicy = pServerEntity->GetPolicy<Policy::IPolicyGameServer>());
+			svrChkPtr(pTargetPolicy = pServerEntity->GetInterface<Policy::IPolicyGameServer>());
 
 			svrChk( pTargetPolicy->NotifyPartyInviteC2SEvt( RouteContext(GetOwnerEntityUID(),playerUID), 
 				GetInviteTargetID(), GetMyOwner()->GetPlayerID(), GetMyOwner()->GetNickName(), GetMyOwner()->GetPartyUID() ) );
@@ -772,7 +772,7 @@ namespace GameServer {
 		if( GetMyOwner()->GetPartyUID() != 0 )
 			svrErrClose(ResultCode::E_GAME_INVALID_PARTYID);
 
-		GetPolicy()->PartyInviteRequestedS2CEvt( GetInviterID(), GetInviterName(), GetPartyUID() );
+		GetInterface()->PartyInviteRequestedS2CEvt( GetInviterID(), GetInviterName(), GetPartyUID() );
 	
 	Proc_End:
 
@@ -802,7 +802,7 @@ namespace GameServer {
 			svrErr(ResultCode::E_GAME_INVALID_PARTYID);
 
 		svrChk( Svr::GetServerComponent<Svr::ServerEntityManager>()->GetServerEntity( GetMyOwner()->GetPartyUID().GetServerID(), pServerEntity ) );
-		svrChkPtr( pPolicy = pServerEntity->GetPolicy<Policy::IPolicyGameParty>() );
+		svrChkPtr( pPolicy = pServerEntity->GetInterface<Policy::IPolicyGameParty>() );
 
 		svrChk( pPolicy->ChatMessageC2SEvt( RouteContext(GetOwnerEntityUID(),GetMyOwner()->GetPartyUID()), 
 			GetMyOwner()->GetPlayerID(), GetChatMessage() ) );
@@ -825,7 +825,7 @@ namespace GameServer {
 
 		svrChk( super::StartTransaction() );
 
-		svrChk( GetPolicy()->PartyChatMessageS2CEvt( GetSenderID(), GetSenderName(), GetChatMessage() ) );
+		svrChk( GetInterface()->PartyChatMessageS2CEvt( GetSenderID(), GetSenderName(), GetChatMessage() ) );
 
 	Proc_End:
 
@@ -858,7 +858,7 @@ namespace GameServer {
 			svrErr(ResultCode::E_GAME_INVALID_PARTYID);
 
 		svrChk( Svr::GetServerComponent<Svr::ServerEntityManager>()->GetServerEntity( GetMyOwner()->GetPartyUID().GetServerID(), pServerEntity ) );
-		svrChkPtr( pPolicy = pServerEntity->GetPolicy<Policy::IPolicyGameParty>() );
+		svrChkPtr( pPolicy = pServerEntity->GetInterface<Policy::IPolicyGameParty>() );
 
 		svrChk( pPolicy->QuickChatMessageC2SEvt( RouteContext(GetOwnerEntityUID(),GetMyOwner()->GetPartyUID()), 
 			GetMyOwner()->GetPlayerID(), GetQuickChatID() ) );
@@ -878,7 +878,7 @@ namespace GameServer {
 
 		svrChk( super::StartTransaction() );
 
-		svrChk( GetPolicy()->PartyQuickChatMessageS2CEvt( GetSenderID(), GetQuickChatID() ) );
+		svrChk( GetInterface()->PartyQuickChatMessageS2CEvt( GetSenderID(), GetQuickChatID() ) );
 
 	Proc_End:
 

@@ -19,9 +19,9 @@
 #include "GameConst.h"
 #include "Common/ClassUtil.h"
 #include "Types/BrGameTypes.h"
-#include "ServerSystem/Entity.h"
-#include "ServerSystem/GameSystem.h"
-#include "ServerSystem/SimpleUserEntity.h"
+#include "Entity/Entity.h"
+#include "ServiceEntity/Game/GameSystem.h"
+#include "Entity/SimpleUserEntity.h"
 
 
 

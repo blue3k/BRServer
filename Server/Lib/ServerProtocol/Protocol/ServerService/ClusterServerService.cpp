@@ -12,11 +12,11 @@
 #include "stdafx.h"
 #include "SFTypedefs.h"
 #include "Protocol/Protocol.h"
-#include "ServerSystem/ServerEntity.h"
-#include "ServerSystem/BrServer.h"
-#include "ServerSystem/BrServerUtil.h"
-#include "ServerSystem/ServiceEntity/EntityInformation.h"
-#include "ServerService/ClusterServerService.h"
+#include "ServerEntity/ServerEntity.h"
+#include "Server/BrServer.h"
+#include "Server/BrServerUtil.h"
+#include "Entity/EntityInformation.h"
+#include "Protocol/ServerService/ClusterServerService.h"
 #include "SvrTrace.h"
 
 
@@ -26,10 +26,8 @@ namespace SF
  	namespace Svr
 	{
  		ClusterServerService::ClusterServerService( ServerServiceInformation* pService)
-			: ServerServiceBase(pService, Policy::IPolicyClusterServer::ID_POLICY)
+			: ServerServiceBase(pService)
 		{
-			static_assert((UINT)Policy::IPolicyClusterServer::ID_POLICY == (UINT)ID_SERVICEPOLICY,"Invalid Policy ID for a Servicebase ");
-			Assert(GetPolicyClusterServer());
 		}
 
 
@@ -39,7 +37,7 @@ namespace SF
  			Result hr;
 
 			RouteContext InRouteContext( EntityUID(GetMyServerID(),InTransactionID.GetEntityID()), GetServiceEntityUID() );
-			svrChk(GetPolicyClusterServer()->GetClusterMemberListCmd( InRouteContext, InTransactionID, InRouteHopCount, InClusterID ) );
+			svrChk(Policy::NetPolicyClusterServer(GetConnection()).GetClusterMemberListCmd( InRouteContext, InTransactionID, InRouteHopCount, InClusterID ) );
 
 		Proc_End:
 
@@ -52,7 +50,7 @@ namespace SF
  			Result hr;
 
 			RouteContext InRouteContext( EntityUID(GetMyServerID(),InTransactionID.GetEntityID()), GetServiceEntityUID() );
-			svrChk(GetPolicyClusterServer()->JoinClusterCmd( InRouteContext, InTransactionID, InRouteHopCount, InSender, InSenderNetClass, InSenderAddress, InClusterID, InClusterType, InClusterMembership ) );
+			svrChk(Policy::NetPolicyClusterServer(GetConnection()).JoinClusterCmd( InRouteContext, InTransactionID, InRouteHopCount, InSender, InSenderNetClass, InSenderAddress, InClusterID, InClusterType, InClusterMembership ) );
 
 		Proc_End:
 
@@ -65,7 +63,7 @@ namespace SF
  			Result hr;
 
 			RouteContext InRouteContext( EntityUID(GetMyServerID(),InSenderEntityID), GetServiceEntityUID() );
-			svrChk(GetPolicyClusterServer()->NewServerServiceJoinedC2SEvt( InRouteContext, InRouteHopCount, InJoinedServiceUID, InJoinedServiceNetClass, InJoinedServiceAddress, InClusterID, InClusterType, InJoinedServiceMembership ) );
+			svrChk(Policy::NetPolicyClusterServer(GetConnection()).NewServerServiceJoinedC2SEvt( InRouteContext, InRouteHopCount, InJoinedServiceUID, InJoinedServiceNetClass, InJoinedServiceAddress, InClusterID, InClusterType, InJoinedServiceMembership ) );
 
 		Proc_End:
 
@@ -78,7 +76,7 @@ namespace SF
  			Result hr;
 
 			RouteContext InRouteContext( EntityUID(GetMyServerID(),InSenderEntityID), GetServiceEntityUID() );
-			svrChk(GetPolicyClusterServer()->SyncClusterServiceC2SEvt( InRouteContext, InRouteHopCount, InClusterID, InClusterType, InMemberList ) );
+			svrChk(Policy::NetPolicyClusterServer(GetConnection()).SyncClusterServiceC2SEvt( InRouteContext, InRouteHopCount, InClusterID, InClusterType, InMemberList ) );
 
 		Proc_End:
 
@@ -91,7 +89,7 @@ namespace SF
  			Result hr;
 
 			RouteContext InRouteContext( EntityUID(GetMyServerID(),InTransactionID.GetEntityID()), GetServiceEntityUID() );
-			svrChk(GetPolicyClusterServer()->RequestDataSyncCmd( InRouteContext, InTransactionID, InRouteHopCount, InClusterID ) );
+			svrChk(Policy::NetPolicyClusterServer(GetConnection()).RequestDataSyncCmd( InRouteContext, InTransactionID, InRouteHopCount, InClusterID ) );
 
 		Proc_End:
 
@@ -104,7 +102,7 @@ namespace SF
  			Result hr;
 
 			RouteContext InRouteContext( EntityUID(GetMyServerID(),InSenderEntityID), GetServiceEntityUID() );
-			svrChk(GetPolicyClusterServer()->ClusterMasterVoteC2SEvt( InRouteContext, InRouteHopCount, InClusterID, InVoteToUID, InVotedUpTime ) );
+			svrChk(Policy::NetPolicyClusterServer(GetConnection()).ClusterMasterVoteC2SEvt( InRouteContext, InRouteHopCount, InClusterID, InVoteToUID, InVotedUpTime ) );
 
 		Proc_End:
 
@@ -117,7 +115,7 @@ namespace SF
  			Result hr;
 
 			RouteContext InRouteContext( EntityUID(GetMyServerID(),InSenderEntityID), GetServiceEntityUID() );
-			svrChk(GetPolicyClusterServer()->ClusterUpdateStatusC2SEvt( InRouteContext, InRouteHopCount, InSender, InClusterID, InMemberStatus ) );
+			svrChk(Policy::NetPolicyClusterServer(GetConnection()).ClusterUpdateStatusC2SEvt( InRouteContext, InRouteHopCount, InSender, InClusterID, InMemberStatus ) );
 
 		Proc_End:
 
@@ -130,7 +128,7 @@ namespace SF
  			Result hr;
 
 			RouteContext InRouteContext( EntityUID(GetMyServerID(),InSenderEntityID), GetServiceEntityUID() );
-			svrChk(GetPolicyClusterServer()->ClusterUpdateWorkloadC2SEvt( InRouteContext, InRouteHopCount, InSender, InClusterID, InWorkload ) );
+			svrChk(Policy::NetPolicyClusterServer(GetConnection()).ClusterUpdateWorkloadC2SEvt( InRouteContext, InRouteHopCount, InSender, InClusterID, InWorkload ) );
 
 		Proc_End:
 
@@ -143,7 +141,7 @@ namespace SF
  			Result hr;
 
 			RouteContext InRouteContext( EntityUID(GetMyServerID(),InTransactionID.GetEntityID()), GetServiceEntityUID() );
-			svrChk(GetPolicyClusterServer()->GetLowestWorkloadClusterMemberCmd( InRouteContext, InTransactionID, InRouteHopCount, InClusterID ) );
+			svrChk(Policy::NetPolicyClusterServer(GetConnection()).GetLowestWorkloadClusterMemberCmd( InRouteContext, InTransactionID, InRouteHopCount, InClusterID ) );
 
 		Proc_End:
 
@@ -156,7 +154,7 @@ namespace SF
  			Result hr;
 
 			RouteContext InRouteContext( EntityUID(GetMyServerID(),InSenderEntityID), GetServiceEntityUID() );
-			svrChk(GetPolicyClusterServer()->GamePlayerEntityCreatedC2SEvt( InRouteContext, InRouteHopCount, InPlayerID, InPlayerUID ) );
+			svrChk(Policy::NetPolicyClusterServer(GetConnection()).GamePlayerEntityCreatedC2SEvt( InRouteContext, InRouteHopCount, InPlayerID, InPlayerUID ) );
 
 		Proc_End:
 
@@ -169,7 +167,7 @@ namespace SF
  			Result hr;
 
 			RouteContext InRouteContext( EntityUID(GetMyServerID(),InSenderEntityID), GetServiceEntityUID() );
-			svrChk(GetPolicyClusterServer()->GamePlayerEntityDeletedC2SEvt( InRouteContext, InRouteHopCount, InPlayerID, InPlayerUID ) );
+			svrChk(Policy::NetPolicyClusterServer(GetConnection()).GamePlayerEntityDeletedC2SEvt( InRouteContext, InRouteHopCount, InPlayerID, InPlayerUID ) );
 
 		Proc_End:
 

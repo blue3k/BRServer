@@ -14,7 +14,7 @@
 #include "SFTypedefs.h"
 #include "Common/ClassUtil.h"
 
-#include "ServerSystem/EntityManager.h"
+#include "Entity/EntityManager.h"
 
 
 

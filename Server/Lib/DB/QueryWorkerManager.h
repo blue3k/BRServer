@@ -11,12 +11,11 @@
 
 #pragma once
 	
-#include "Types/BrBaseTypes.h"
+#include "Types/SFEngineTypedefs.h"
 #include "Thread/Thread.h"
-#include "Common/ClassUtil.h"
 #include "Util/TimeUtil.h"
 #include "Container/PageQueue.h"
-#include "Common/SystemSynchronization.h"
+#include "Thread/SystemSynchronization.h"
 #include "DBConst.h"
 #include "DB/DataSource.h"
 
@@ -41,10 +40,11 @@ namespace DB {
 
 	private:
 
-		static std::atomic<LONG>	stm_InitializationCount;
+		MemoryManager m_MemoryManager;
+
+		static std::atomic<long>	stm_InitializationCount;
 
 		CriticalSection		m_QueryQueueLock;
-		//SF::Semaphore			m_QueryCounter;
 
 		// DB Query Worker class
 		WorkerList			m_QueryWorker;

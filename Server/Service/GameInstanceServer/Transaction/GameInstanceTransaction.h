@@ -14,7 +14,7 @@
 
 
 #include "SFTypedefs.h"
-#include "ServerSystem/Transaction.h"
+#include "Transaction/Transaction.h"
 #include "GameInstance/GameInstanceEntity.h"
 
 
@@ -120,19 +120,19 @@ namespace ConspiracyGameInstanceServer {
 			return pSvrEnt;
 		}
 
-		PolicyClass* GetPolicy()
+		PolicyClass* GetInterface()
 		{
-			return GetPolicy<PolicyClass>();
+			return GetInterface<PolicyClass>();
 		}
 
 
 		template< class PolicyType >
-		PolicyType* GetPolicy()
+		PolicyType* GetInterface()
 		{
 			SharedPointerT<Net::Connection> pConn;
 			super::GetServerEntity()->GetConnectionShared(pConn);
 			if (pConn != nullptr)
-				return pConn->GetPolicy<PolicyType>();
+				return pConn->GetInterface<PolicyType>();
 			return nullptr;
 		}
 

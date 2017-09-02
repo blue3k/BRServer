@@ -12,17 +12,17 @@
 #pragma once
 
 #include "SFTypedefs.h"
-#include "ServerSystem/Transaction.h"
+#include "Transaction/Transaction.h"
 #include "Memory/MemoryPool.h"
 #include "Container/SFArray.h"
-#include "Types/BrBaseTypes.h"
+#include "Types/SFEngineTypedefs.h"
 #include "GameConst.h"
 #include "Net/Message.h"
 #include "Protocol/Message/ClusterServerMsgClass.h"
 #include "Protocol/Policy/ClusterServerNetPolicy.h"
 #include "Protocol/Message/GameServerMsgClass.h"
 #include "Protocol/Policy/GameServerNetPolicy.h"
-#include "ServerSystem/MessageRoute.h"
+#include "Transaction/MessageRoute.h"
 #include "ServerSystem/ServiceEntity/Game/GameClusterServiceEntity.h"
 #include "ServerSystem/ServerTransaction.h"
 
@@ -52,7 +52,7 @@ namespace Svr {
 	//	// Start Transaction
 	//	virtual Result StartTransaction() override;
 
-	//	Policy::NetSvrPolicyGameServer* GetPolicy() { return super::GetPolicy<Policy::NetSvrPolicyGameServer>(); }
+	//	Policy::NetSvrPolicyGameServer* GetInterface() { return super::GetInterface<Policy::NetSvrPolicyGameServer>(); }
 
 	//	BR_SVR_MSGTRANS_CLOSE_ARGS(RegisterPlayerToJoinGameServerRes, RouteContext(m_PlayerUID, GetRouteContext().GetFrom()), m_PublicAddress, m_PublicAddressIPV6, m_Port);
 	//};

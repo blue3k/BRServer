@@ -18,17 +18,17 @@
 #include "Memory/SFMemory.h"
 #include "Net/NetDef.h"
 
-#include "ServerSystem/Entity.h"
-#include "ServerSystem/ServerComponent.h"
-#include "ServerSystem/ServerServiceBase.h"
-#include "ServerSystem/ServerEntity.h"
+#include "Entity/Entity.h"
+#include "Component/ServerComponent.h"
+#include "ServerService/ServerServiceBase.h"
+#include "ServerEntity/ServerEntity.h"
 #include "ServerSystem/ServiceEntity/MatchingQueueServiceEntity.h"
 #include "ServerSystem/ServiceEntity/MatchingQueueServiceTrans.h"
-#include "ServerSystem/SvrTrace.h"
-#include "ServerSystem/SvrConst.h"
-#include "ServerSystem/ServerEntityManager.h"
+#include "SvrTrace.h"
+#include "SvrConst.h"
+#include "ServerEntity/ServerEntityManager.h"
 
-#include "ServerSystem/PerformanceCounter/PerformanceCounterClient.h"
+#include "PerformanceCounter/PerformanceCounterClient.h"
 
 #include "ServerSystem/ServiceEntity/MatchingServiceUtil.h"
 
@@ -301,7 +301,7 @@ namespace Svr {
 
 		// If delete is required by canceling
 		svrChk((GetServerComponent<ServerEntityManager>()->GetServerEntity(pItem->RegisterUID.GetServerID(), pServerEntity)));
-		pPolicyMatchingQueueSvr = pServerEntity->GetPolicy<Policy::NetSvrPolicyPartyMatchingQueue>();
+		pPolicyMatchingQueueSvr = pServerEntity->GetInterface<Policy::NetSvrPolicyPartyMatchingQueue>();
 		svrChkPtr(pPolicyMatchingQueueSvr);
 
 		if (pItem->NumPlayers > 1)

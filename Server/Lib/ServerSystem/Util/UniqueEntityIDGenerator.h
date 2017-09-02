@@ -17,7 +17,7 @@
 #include "Container/StackPool.h"
 #include "Thread/Synchronization.h"
 #include "Memory/MemoryPool.h"
-#include "Types/BrBaseTypes.h"
+#include "Types/SFEngineTypedefs.h"
 
 
 namespace SF {

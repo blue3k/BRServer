@@ -11,16 +11,16 @@
 
 
 #include "stdafx.h"
-#include "ServerSystem/SvrConst.h"
-#include "ServerSystem/SvrTrace.h"
+#include "SvrConst.h"
+#include "SvrTrace.h"
 #include "Util/TimeUtil.h"
-#include "Types/BrBaseTypes.h"
+#include "Types/SFEngineTypedefs.h"
 #include "ResultCode/SFResultCodeLibrary.h"
 #include "ResultCode/SFResultCodeGame.h"
 #include "Net/Message.h"
 
-#include "ServerSystem/ServerEntity.h"
-#include "ServerSystem/PlayerEntityInformation.h"
+#include "ServerEntity/ServerEntity.h"
+#include "Entity/PlayerEntityInformation.h"
 
 
 namespace SF {

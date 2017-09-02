@@ -15,22 +15,23 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="$(MSBuildThisFileDirectory)Component\ServerComponent.inl" />
-    <None Include="$(MSBuildThisFileDirectory)EntityTable.inl" />
+    <None Include="$(MSBuildThisFileDirectory)Entity\Entity.inl" />
+    <None Include="$(MSBuildThisFileDirectory)Entity\EntityInformation.inl" />
+    <None Include="$(MSBuildThisFileDirectory)Entity\MasterEntity.inl" />
+    <None Include="$(MSBuildThisFileDirectory)Entity\PlayerEntityInformation.inl" />
+    <None Include="$(MSBuildThisFileDirectory)Entity\SimpleUserEntity.inl" />
     <None Include="$(MSBuildThisFileDirectory)ExternalTransactionManager.inl" />
     <None Include="$(MSBuildThisFileDirectory)GameLog\GameLog.inl" />
     <None Include="$(MSBuildThisFileDirectory)makefile.mak" />
     <None Include="$(MSBuildThisFileDirectory)MessageRoute.inl" />
     <None Include="$(MSBuildThisFileDirectory)PerformanceCounter\PerformanceCounter.inl" />
     <None Include="$(MSBuildThisFileDirectory)PerformanceCounter\PerformanceCounterInstance.inl" />
-    <None Include="$(MSBuildThisFileDirectory)PlayerEntityInformation.inl" />
     <None Include="$(MSBuildThisFileDirectory)ServerEntity\ServerEntity.inl" />
-    <None Include="$(MSBuildThisFileDirectory)ServerEntity\ServerTransaction.inl" />
     <None Include="$(MSBuildThisFileDirectory)ServerLog\SvrLog.inl" />
     <None Include="$(MSBuildThisFileDirectory)ServerLog\SvrLog_Internal.inl" />
     <None Include="$(MSBuildThisFileDirectory)Server\BrServer.inl" />
     <None Include="$(MSBuildThisFileDirectory)Server\BrServerUtil.inl" />
     <None Include="$(MSBuildThisFileDirectory)ServiceEntity\ClusteredServiceEntity.inl" />
-    <None Include="$(MSBuildThisFileDirectory)ServiceEntity\EntityInformation.inl" />
     <None Include="$(MSBuildThisFileDirectory)ServiceEntity\GamePartyEntity.inl" />
     <None Include="$(MSBuildThisFileDirectory)ServiceEntity\Game\GameInstanceEntity.inl" />
     <None Include="$(MSBuildThisFileDirectory)ServiceEntity\Game\GameInstancePlayer.inl" />
@@ -39,8 +40,8 @@
     <None Include="$(MSBuildThisFileDirectory)Task\ServerTask.inl" />
     <None Include="$(MSBuildThisFileDirectory)Task\ServerTaskEvent.inl" />
     <None Include="$(MSBuildThisFileDirectory)Task\TaskManager.inl" />
-    <None Include="$(MSBuildThisFileDirectory)Transaction.inl" />
-    <None Include="$(MSBuildThisFileDirectory)Types\BrBaseTypes.inl" />
+    <None Include="$(MSBuildThisFileDirectory)Transaction\MessageRoute.inl" />
+    <None Include="$(MSBuildThisFileDirectory)Transaction\Transaction.inl" />
     <None Include="$(MSBuildThisFileDirectory)Types\BrGameTypes.inl" />
     <None Include="$(MSBuildThisFileDirectory)Types\BrSvrTypes.inl" />
   </ItemGroup>
@@ -48,8 +49,15 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)Component\BrComponent.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Component\ServerComponent.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Component\ServerComponentCarrier.h" />
-    <ClInclude Include="$(MSBuildThisFileDirectory)EntityManager.h" />
-    <ClInclude Include="$(MSBuildThisFileDirectory)EntityTable.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)Entity\Entity.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)Entity\EntityInformation.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)Entity\EntityManager.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)Entity\EntityTable.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)Entity\EntityTimerActions.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)Entity\MasterEntity.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)Entity\PlayerEntityInformation.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)Entity\SimpleEntity.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)Entity\SimpleUserEntity.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)ExternalTransaction.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)ExternalTransactionManager.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)GameConst.h" />
@@ -65,12 +73,10 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)PerformanceCounter\PerformanceCounterClient.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)PerformanceCounter\PerformanceCounterInstance.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)PerformanceCounter\PerformanceCounterServer.h" />
-    <ClInclude Include="$(MSBuildThisFileDirectory)PlayerEntityInformation.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)ServerConfig\SFEnum.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)ServerConfig\SFServerConfig.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)ServerConfig\SFServerConfigXML.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)ServerConfig\SFServerConfigZooKeeper.h" />
-    <ClInclude Include="$(MSBuildThisFileDirectory)ServerEntity\EntityServerEntity.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)ServerEntity\GameServerEntity.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)ServerEntity\GenericServerEntity.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)ServerEntity\ServerEntity.h" />
@@ -88,7 +94,6 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)ServiceEntity\ClusterManagerServiceEntity.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)ServiceEntity\ClusterManagerServiceTrans.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)ServiceEntity\ClusterServiceTrans.h" />
-    <ClInclude Include="$(MSBuildThisFileDirectory)ServiceEntity\EntityInformation.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)ServiceEntity\GamePartyEntity.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)ServiceEntity\GamePartyEntityTrans.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)ServiceEntity\GamePartyManagerServiceEntity.h" />
@@ -124,16 +129,16 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)String\SvrToString.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)String\ToStringSvr.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)SvrConst.h" />
-    <ClInclude Include="$(MSBuildThisFileDirectory)SvrLoopbackConnection.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)SvrPolicyID.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Task\ServerTask.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Task\ServerTaskEvent.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Task\TaskManager.h" />
-    <ClInclude Include="$(MSBuildThisFileDirectory)Transaction.h" />
-    <ClInclude Include="$(MSBuildThisFileDirectory)TransactionSteper.h" />
-    <ClInclude Include="$(MSBuildThisFileDirectory)TransactionUtil.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)Transaction\MessageHandlerTable.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)Transaction\MessageRoute.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Transaction\ServerTransactionGeneric.h" />
-    <ClInclude Include="$(MSBuildThisFileDirectory)Types\BrBaseTypes.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)Transaction\Transaction.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)Transaction\TransactionSteper.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)Transaction\TransactionUtil.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Types\BrGameTypes.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Types\BrSvrTypes.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Util\UniqueEntityIDGenerator.h" />
@@ -141,8 +146,15 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="$(MSBuildThisFileDirectory)Component\ServerComponent.cpp" />
-    <ClCompile Include="$(MSBuildThisFileDirectory)EntityManager.cpp" />
-    <ClCompile Include="$(MSBuildThisFileDirectory)EntityTable.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)Entity\Entity.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)Entity\EntityInformation.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)Entity\EntityManager.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)Entity\EntityTable.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)Entity\EntityTimerActions.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)Entity\MasterEntity.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)Entity\PlayerEntityInformation.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)Entity\SimpleEntity.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)Entity\SimpleUserEntity.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)ExternalTransaction.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)ExternalTransactionManager.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)GameLog\ChattingHistory.cpp" />
@@ -154,12 +166,10 @@
     <ClCompile Include="$(MSBuildThisFileDirectory)PerformanceCounter\PerformanceCounterClient.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)PerformanceCounter\PerformanceCounterInstance.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)PerformanceCounter\PerformanceCounterServer.cpp" />
-    <ClCompile Include="$(MSBuildThisFileDirectory)PlayerEntityInformation.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)ServerConfig\GameIDEnum.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)ServerConfig\SFServerConfig.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)ServerConfig\SFServerConfigXML.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)ServerConfig\SFServerConfigZooKeeper.cpp" />
-    <ClCompile Include="$(MSBuildThisFileDirectory)ServerEntity\EntityServerEntity.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)ServerEntity\GameServerEntity.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)ServerEntity\GenericServerEntity.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)ServerEntity\ServerEntity.cpp" />
@@ -175,7 +185,6 @@
     <ClCompile Include="$(MSBuildThisFileDirectory)ServiceEntity\ClusterManagerServiceEntity.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)ServiceEntity\ClusterManagerServiceTrans.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)ServiceEntity\ClusterServiceTrans.cpp" />
-    <ClCompile Include="$(MSBuildThisFileDirectory)ServiceEntity\EntityInformation.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)ServiceEntity\GamePartyEntity.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)ServiceEntity\GamePartyEntityTrans.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)ServiceEntity\GamePartyManagerServiceEntity.cpp" />
@@ -206,12 +215,11 @@
     <ClCompile Include="$(MSBuildThisFileDirectory)ServiceEntity\RankingServiceTrans.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)ServiceEntity\ServiceEntity.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)String\ToStringSvr.cpp" />
-    <ClCompile Include="$(MSBuildThisFileDirectory)SvrLoopbackConnection.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)Task\ServerTask.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)Task\ServerTaskEvent.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)Task\TaskManager.cpp" />
-    <ClCompile Include="$(MSBuildThisFileDirectory)Transaction.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)Transaction\ServerTransactionGeneric.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)Transaction\Transaction.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)Types\BrGameTypes.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)Util\UniqueEntityIDGenerator.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)ZooKeeper\SFZooKeeper.cpp" />

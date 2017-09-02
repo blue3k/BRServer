@@ -12,12 +12,12 @@
 #include "stdafx.h"
 #include "SFTypedefs.h"
 #include "Protocol/Protocol.h"
-#include "ServerSystem/ServerEntity.h"
-#include "ServerSystem/BrServer.h"
-#include "ServerSystem/BrServerUtil.h"
-#include "ServerSystem/ServiceEntity/EntityInformation.h"
-#include "ServerSystem/ServerService/GameInstanceService.h"
-#include "ServerSystem/SvrTrace.h"
+#include "ServerEntity/ServerEntity.h"
+#include "Server/BrServer.h"
+#include "Server/BrServerUtil.h"
+#include "Entity/EntityInformation.h"
+#include "Protocol/ServerService/GameInstanceService.h"
+#include "SvrTrace.h"
 
 
 
@@ -26,10 +26,8 @@ namespace SF
  	namespace Svr
 	{
  		GameInstanceService::GameInstanceService( ServerServiceInformation* pService)
-			: ServerServiceBase(pService, Policy::IPolicyGameInstance::ID_POLICY)
+			: ServerServiceBase(pService)
 		{
-			static_assert((UINT)Policy::IPolicyGameInstance::ID_POLICY == (UINT)ID_SERVICEPOLICY,"Invalid Policy ID for a Servicebase ");
-			Assert(GetPolicyGameInstance());
 		}
 
 
@@ -39,7 +37,7 @@ namespace SF
  			Result hr;
 
 			RouteContext InRouteContext( EntityUID(GetMyServerID(),InSenderEntityID), GetServiceEntityUID() );
-			svrChk(GetPolicyGameInstance()->DeleteGameC2SEvt( InRouteContext ) );
+			svrChk(Policy::NetPolicyGameInstance(GetConnection()).DeleteGameC2SEvt( InRouteContext ) );
 
 		Proc_End:
 
@@ -52,7 +50,7 @@ namespace SF
  			Result hr;
 
 			RouteContext InRouteContext( EntityUID(GetMyServerID(),InTransactionID.GetEntityID()), GetServiceEntityUID() );
-			svrChk(GetPolicyGameInstance()->JoinGameCmd( InRouteContext, InTransactionID, InPlayer, InTicket, InRequestedRole ) );
+			svrChk(Policy::NetPolicyGameInstance(GetConnection()).JoinGameCmd( InRouteContext, InTransactionID, InPlayer, InTicket, InRequestedRole ) );
 
 		Proc_End:
 
@@ -65,7 +63,7 @@ namespace SF
  			Result hr;
 
 			RouteContext InRouteContext( EntityUID(GetMyServerID(),InSenderEntityID), GetServiceEntityUID() );
-			svrChk(GetPolicyGameInstance()->SetConfigPresetC2SEvt( InRouteContext, InPresetID ) );
+			svrChk(Policy::NetPolicyGameInstance(GetConnection()).SetConfigPresetC2SEvt( InRouteContext, InPresetID ) );
 
 		Proc_End:
 
@@ -78,7 +76,7 @@ namespace SF
  			Result hr;
 
 			RouteContext InRouteContext( EntityUID(GetMyServerID(),InTransactionID.GetEntityID()), GetServiceEntityUID() );
-			svrChk(GetPolicyGameInstance()->LeaveGameCmd( InRouteContext, InTransactionID, InPlayerID ) );
+			svrChk(Policy::NetPolicyGameInstance(GetConnection()).LeaveGameCmd( InRouteContext, InTransactionID, InPlayerID ) );
 
 		Proc_End:
 
@@ -91,7 +89,7 @@ namespace SF
  			Result hr;
 
 			RouteContext InRouteContext( EntityUID(GetMyServerID(),InTransactionID.GetEntityID()), GetServiceEntityUID() );
-			svrChk(GetPolicyGameInstance()->KickPlayerCmd( InRouteContext, InTransactionID, InPlayerID, InPlayerToKick ) );
+			svrChk(Policy::NetPolicyGameInstance(GetConnection()).KickPlayerCmd( InRouteContext, InTransactionID, InPlayerID, InPlayerToKick ) );
 
 		Proc_End:
 
@@ -104,7 +102,7 @@ namespace SF
  			Result hr;
 
 			RouteContext InRouteContext( EntityUID(GetMyServerID(),InTransactionID.GetEntityID()), GetServiceEntityUID() );
-			svrChk(GetPolicyGameInstance()->AssignRoleCmd( InRouteContext, InTransactionID, InPlayerID ) );
+			svrChk(Policy::NetPolicyGameInstance(GetConnection()).AssignRoleCmd( InRouteContext, InTransactionID, InPlayerID ) );
 
 		Proc_End:
 
@@ -117,7 +115,7 @@ namespace SF
  			Result hr;
 
 			RouteContext InRouteContext( EntityUID(GetMyServerID(),InSenderEntityID), GetServiceEntityUID() );
-			svrChk(GetPolicyGameInstance()->ChatMessageC2SEvt( InRouteContext, InPlayerID, InRole, InChatMessage ) );
+			svrChk(Policy::NetPolicyGameInstance(GetConnection()).ChatMessageC2SEvt( InRouteContext, InPlayerID, InRole, InChatMessage ) );
 
 		Proc_End:
 
@@ -130,7 +128,7 @@ namespace SF
  			Result hr;
 
 			RouteContext InRouteContext( EntityUID(GetMyServerID(),InTransactionID.GetEntityID()), GetServiceEntityUID() );
-			svrChk(GetPolicyGameInstance()->AdvanceGameCmd( InRouteContext, InTransactionID, InPlayerID ) );
+			svrChk(Policy::NetPolicyGameInstance(GetConnection()).AdvanceGameCmd( InRouteContext, InTransactionID, InPlayerID ) );
 
 		Proc_End:
 
@@ -143,7 +141,7 @@ namespace SF
  			Result hr;
 
 			RouteContext InRouteContext( EntityUID(GetMyServerID(),InTransactionID.GetEntityID()), GetServiceEntityUID() );
-			svrChk(GetPolicyGameInstance()->VoteGameAdvanceCmd( InRouteContext, InTransactionID, InPlayerID ) );
+			svrChk(Policy::NetPolicyGameInstance(GetConnection()).VoteGameAdvanceCmd( InRouteContext, InTransactionID, InPlayerID ) );
 
 		Proc_End:
 
@@ -156,7 +154,7 @@ namespace SF
  			Result hr;
 
 			RouteContext InRouteContext( EntityUID(GetMyServerID(),InTransactionID.GetEntityID()), GetServiceEntityUID() );
-			svrChk(GetPolicyGameInstance()->VoteCmd( InRouteContext, InTransactionID, InPlayerID, InVoteTarget, InActionSerial ) );
+			svrChk(Policy::NetPolicyGameInstance(GetConnection()).VoteCmd( InRouteContext, InTransactionID, InPlayerID, InVoteTarget, InActionSerial ) );
 
 		Proc_End:
 
@@ -169,7 +167,7 @@ namespace SF
  			Result hr;
 
 			RouteContext InRouteContext( EntityUID(GetMyServerID(),InTransactionID.GetEntityID()), GetServiceEntityUID() );
-			svrChk(GetPolicyGameInstance()->GamePlayAgainCmd( InRouteContext, InTransactionID, InLeadPlayer, InPartyUID ) );
+			svrChk(Policy::NetPolicyGameInstance(GetConnection()).GamePlayAgainCmd( InRouteContext, InTransactionID, InLeadPlayer, InPartyUID ) );
 
 		Proc_End:
 
@@ -182,7 +180,7 @@ namespace SF
  			Result hr;
 
 			RouteContext InRouteContext( EntityUID(GetMyServerID(),InTransactionID.GetEntityID()), GetServiceEntityUID() );
-			svrChk(GetPolicyGameInstance()->GameRevealPlayerCmd( InRouteContext, InTransactionID, InPlayerID, InTargetPlayerID ) );
+			svrChk(Policy::NetPolicyGameInstance(GetConnection()).GameRevealPlayerCmd( InRouteContext, InTransactionID, InPlayerID, InTargetPlayerID ) );
 
 		Proc_End:
 
@@ -195,7 +193,7 @@ namespace SF
  			Result hr;
 
 			RouteContext InRouteContext( EntityUID(GetMyServerID(),InTransactionID.GetEntityID()), GetServiceEntityUID() );
-			svrChk(GetPolicyGameInstance()->GamePlayerReviveCmd( InRouteContext, InTransactionID, InPlayerID ) );
+			svrChk(Policy::NetPolicyGameInstance(GetConnection()).GamePlayerReviveCmd( InRouteContext, InTransactionID, InPlayerID ) );
 
 		Proc_End:
 

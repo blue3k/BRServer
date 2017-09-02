@@ -12,12 +12,12 @@
 #include "stdafx.h"
 #include "SFTypedefs.h"
 #include "Protocol/Protocol.h"
-#include "ServerSystem/ServerEntity.h"
-#include "ServerSystem/BrServer.h"
-#include "ServerSystem/BrServerUtil.h"
-#include "ServerSystem/ServiceEntity/EntityInformation.h"
-#include "ServerSystem/ServerService/PartyMatchingQueueService.h"
-#include "ServerSystem/SvrTrace.h"
+#include "ServerEntity/ServerEntity.h"
+#include "Server/BrServer.h"
+#include "Server/BrServerUtil.h"
+#include "Entity/EntityInformation.h"
+#include "Protocol/ServerService/PartyMatchingQueueService.h"
+#include "SvrTrace.h"
 
 
 
@@ -26,10 +26,8 @@ namespace SF
  	namespace Svr
 	{
  		PartyMatchingQueueService::PartyMatchingQueueService( ServerServiceInformation* pService)
-			: ServerServiceBase(pService, Policy::IPolicyPartyMatchingQueue::ID_POLICY)
+			: ServerServiceBase(pService)
 		{
-			static_assert((UINT)Policy::IPolicyPartyMatchingQueue::ID_POLICY == (UINT)ID_SERVICEPOLICY,"Invalid Policy ID for a Servicebase ");
-			Assert(GetPolicyPartyMatchingQueue());
 		}
 
 
@@ -39,7 +37,7 @@ namespace SF
  			Result hr;
 
 			RouteContext InRouteContext( EntityUID(GetMyServerID(),InTransactionID.GetEntityID()), GetServiceEntityUID() );
-			svrChk(GetPolicyPartyMatchingQueue()->RegisterPartyMatchingCmd( InRouteContext, InTransactionID, InRouteHopCount, InPlayers ) );
+			svrChk(Policy::NetPolicyPartyMatchingQueue(GetConnection()).RegisterPartyMatchingCmd( InRouteContext, InTransactionID, InRouteHopCount, InPlayers ) );
 
 		Proc_End:
 
@@ -52,7 +50,7 @@ namespace SF
  			Result hr;
 
 			RouteContext InRouteContext( EntityUID(GetMyServerID(),InTransactionID.GetEntityID()), GetServiceEntityUID() );
-			svrChk(GetPolicyPartyMatchingQueue()->RegisterPlayerMatchingCmd( InRouteContext, InTransactionID, InRouteHopCount, InPlayerID ) );
+			svrChk(Policy::NetPolicyPartyMatchingQueue(GetConnection()).RegisterPlayerMatchingCmd( InRouteContext, InTransactionID, InRouteHopCount, InPlayerID ) );
 
 		Proc_End:
 
@@ -65,7 +63,7 @@ namespace SF
  			Result hr;
 
 			RouteContext InRouteContext( EntityUID(GetMyServerID(),InTransactionID.GetEntityID()), GetServiceEntityUID() );
-			svrChk(GetPolicyPartyMatchingQueue()->UpdateMatchingEntityUIDCmd( InRouteContext, InTransactionID, InRouteHopCount, InMatchingTicket, InPreviousUID ) );
+			svrChk(Policy::NetPolicyPartyMatchingQueue(GetConnection()).UpdateMatchingEntityUIDCmd( InRouteContext, InTransactionID, InRouteHopCount, InMatchingTicket, InPreviousUID ) );
 
 		Proc_End:
 
@@ -78,7 +76,7 @@ namespace SF
  			Result hr;
 
 			RouteContext InRouteContext( EntityUID(GetMyServerID(),InTransactionID.GetEntityID()), GetServiceEntityUID() );
-			svrChk(GetPolicyPartyMatchingQueue()->UnregisterMatchingCmd( InRouteContext, InTransactionID, InRouteHopCount, InMatchingTicket ) );
+			svrChk(Policy::NetPolicyPartyMatchingQueue(GetConnection()).UnregisterMatchingCmd( InRouteContext, InTransactionID, InRouteHopCount, InMatchingTicket ) );
 
 		Proc_End:
 
@@ -91,7 +89,7 @@ namespace SF
  			Result hr;
 
 			RouteContext InRouteContext( EntityUID(GetMyServerID(),InTransactionID.GetEntityID()), GetServiceEntityUID() );
-			svrChk(GetPolicyPartyMatchingQueue()->ReserveItemCmd( InRouteContext, InTransactionID, InRouteHopCount ) );
+			svrChk(Policy::NetPolicyPartyMatchingQueue(GetConnection()).ReserveItemCmd( InRouteContext, InTransactionID, InRouteHopCount ) );
 
 		Proc_End:
 
@@ -104,7 +102,7 @@ namespace SF
  			Result hr;
 
 			RouteContext InRouteContext( EntityUID(GetMyServerID(),InTransactionID.GetEntityID()), GetServiceEntityUID() );
-			svrChk(GetPolicyPartyMatchingQueue()->ReserveItemsCmd( InRouteContext, InTransactionID, InRouteHopCount, InNumberOfItemsToReserve ) );
+			svrChk(Policy::NetPolicyPartyMatchingQueue(GetConnection()).ReserveItemsCmd( InRouteContext, InTransactionID, InRouteHopCount, InNumberOfItemsToReserve ) );
 
 		Proc_End:
 
@@ -117,7 +115,7 @@ namespace SF
  			Result hr;
 
 			RouteContext InRouteContext( EntityUID(GetMyServerID(),InTransactionID.GetEntityID()), GetServiceEntityUID() );
-			svrChk(GetPolicyPartyMatchingQueue()->CancelReservationCmd( InRouteContext, InTransactionID, InRouteHopCount, InTicketToCancel ) );
+			svrChk(Policy::NetPolicyPartyMatchingQueue(GetConnection()).CancelReservationCmd( InRouteContext, InTransactionID, InRouteHopCount, InTicketToCancel ) );
 
 		Proc_End:
 
@@ -130,7 +128,7 @@ namespace SF
  			Result hr;
 
 			RouteContext InRouteContext( EntityUID(GetMyServerID(),InTransactionID.GetEntityID()), GetServiceEntityUID() );
-			svrChk(GetPolicyPartyMatchingQueue()->CancelReservationsCmd( InRouteContext, InTransactionID, InRouteHopCount, InTicketToCancel ) );
+			svrChk(Policy::NetPolicyPartyMatchingQueue(GetConnection()).CancelReservationsCmd( InRouteContext, InTransactionID, InRouteHopCount, InTicketToCancel ) );
 
 		Proc_End:
 
@@ -143,7 +141,7 @@ namespace SF
  			Result hr;
 
 			RouteContext InRouteContext( EntityUID(GetMyServerID(),InTransactionID.GetEntityID()), GetServiceEntityUID() );
-			svrChk(GetPolicyPartyMatchingQueue()->DequeueItemCmd( InRouteContext, InTransactionID, InRouteHopCount, InMatchingTicket ) );
+			svrChk(Policy::NetPolicyPartyMatchingQueue(GetConnection()).DequeueItemCmd( InRouteContext, InTransactionID, InRouteHopCount, InMatchingTicket ) );
 
 		Proc_End:
 
@@ -156,7 +154,7 @@ namespace SF
  			Result hr;
 
 			RouteContext InRouteContext( EntityUID(GetMyServerID(),InSenderEntityID), GetServiceEntityUID() );
-			svrChk(GetPolicyPartyMatchingQueue()->MatchingItemErrorC2SEvt( InRouteContext, InRouteHopCount, InMatchingTicket ) );
+			svrChk(Policy::NetPolicyPartyMatchingQueue(GetConnection()).MatchingItemErrorC2SEvt( InRouteContext, InRouteHopCount, InMatchingTicket ) );
 
 		Proc_End:
 

@@ -49,22 +49,6 @@ namespace SF
 
 			}; // Result GetInstanceListCmd::ParseMessage( MessageData* pIMsg )
 
-			Result GetInstanceListCmd::ParseMessageTo( MessageData* pIMsg, VariableMapBuilder& variableBuilder )
-			{
- 				Result hr;
-
-
-				GetInstanceListCmd parser;
-				protocolChk(parser.ParseMessage(pIMsg));
-
-				variableBuilder.SetVariable("TransactionID", parser.GetTransactionID());
-
-
-			Proc_End:
-
-				return hr;
-
-			}; // Result GetInstanceListCmd::ParseMessageTo( MessageData* pIMsg, VariableMapBuilder& variableBuilder )
 
 			Result GetInstanceListCmd::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageData* pIMsg, MessageBase* &pMessageBase )
 			{
@@ -146,25 +130,6 @@ namespace SF
 
 			}; // Result GetInstanceListRes::ParseMessage( MessageData* pIMsg )
 
-			Result GetInstanceListRes::ParseMessageTo( MessageData* pIMsg, VariableMapBuilder& variableBuilder )
-			{
- 				Result hr;
-
-
-				GetInstanceListRes parser;
-				protocolChk(parser.ParseMessage(pIMsg));
-
-				variableBuilder.SetVariable("TransactionID", parser.GetTransactionID());
-				variableBuilder.SetVariable("Result", parser.GetResult());
-				variableBuilder.SetVariable("CounterInstances", (int)parser.GetCounterInstances().GetItemCount(), (const PerformanceCounterInstanceInfo*)parser.GetCounterInstances().data());
-				variableBuilder.SetVariable("TotalInstanceCount", parser.GetTotalInstanceCount());
-
-
-			Proc_End:
-
-				return hr;
-
-			}; // Result GetInstanceListRes::ParseMessageTo( MessageData* pIMsg, VariableMapBuilder& variableBuilder )
 
 			Result GetInstanceListRes::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageData* pIMsg, MessageBase* &pMessageBase )
 			{
@@ -188,11 +153,11 @@ namespace SF
 				unsigned __uiMessageSize = (unsigned)(sizeof(MessageHeader) 
 					+ sizeof(TransactionID)
 					+ sizeof(Result)
-					+ sizeof(PerformanceCounterInstanceInfo)*InCounterInstances.GetItemCount() + sizeof(uint16_t)
+					+ sizeof(PerformanceCounterInstanceInfo)*InCounterInstances.size() + sizeof(uint16_t)
 					+ sizeof(uint32_t));
 
 
-				uint16_t numberOfInCounterInstances = (uint16_t)InCounterInstances.GetItemCount(); 
+				uint16_t numberOfInCounterInstances = (uint16_t)InCounterInstances.size(); 
 				protocolMem( pNewMsg = MessageData::NewMessage( memoryManager, Monitoring::GetInstanceListRes::MID, __uiMessageSize ) );
 
 				pMsgData = pNewMsg->GetMessageData();
@@ -200,7 +165,7 @@ namespace SF
 				Protocol::PackParamCopy( pMsgData, &InTransactionID, sizeof(TransactionID));
 				Protocol::PackParamCopy( pMsgData, &InResult, sizeof(Result));
 				Protocol::PackParamCopy( pMsgData, &numberOfInCounterInstances, sizeof(uint16_t)); 
-				Protocol::PackParamCopy( pMsgData, InCounterInstances.data(), (INT)(sizeof(PerformanceCounterInstanceInfo)*InCounterInstances.GetItemCount())); 
+				Protocol::PackParamCopy( pMsgData, InCounterInstances.data(), (INT)(sizeof(PerformanceCounterInstanceInfo)*InCounterInstances.size())); 
 				Protocol::PackParamCopy( pMsgData, &InTotalInstanceCount, sizeof(uint32_t));
 
 
@@ -250,23 +215,6 @@ namespace SF
 
 			}; // Result RequestCounterValuesCmd::ParseMessage( MessageData* pIMsg )
 
-			Result RequestCounterValuesCmd::ParseMessageTo( MessageData* pIMsg, VariableMapBuilder& variableBuilder )
-			{
- 				Result hr;
-
-
-				RequestCounterValuesCmd parser;
-				protocolChk(parser.ParseMessage(pIMsg));
-
-				variableBuilder.SetVariable("TransactionID", parser.GetTransactionID());
-				variableBuilder.SetVariable("InstanceUID", parser.GetInstanceUID());
-
-
-			Proc_End:
-
-				return hr;
-
-			}; // Result RequestCounterValuesCmd::ParseMessageTo( MessageData* pIMsg, VariableMapBuilder& variableBuilder )
 
 			Result RequestCounterValuesCmd::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageData* pIMsg, MessageBase* &pMessageBase )
 			{
@@ -350,25 +298,6 @@ namespace SF
 
 			}; // Result RequestCounterValuesRes::ParseMessage( MessageData* pIMsg )
 
-			Result RequestCounterValuesRes::ParseMessageTo( MessageData* pIMsg, VariableMapBuilder& variableBuilder )
-			{
- 				Result hr;
-
-
-				RequestCounterValuesRes parser;
-				protocolChk(parser.ParseMessage(pIMsg));
-
-				variableBuilder.SetVariable("TransactionID", parser.GetTransactionID());
-				variableBuilder.SetVariable("Result", parser.GetResult());
-				variableBuilder.SetVariable("InstanceUID", parser.GetInstanceUID());
-				variableBuilder.SetVariable("CounterValues", (int)parser.GetCounterValues().GetItemCount(), (const uint64_t*)parser.GetCounterValues().data());
-
-
-			Proc_End:
-
-				return hr;
-
-			}; // Result RequestCounterValuesRes::ParseMessageTo( MessageData* pIMsg, VariableMapBuilder& variableBuilder )
 
 			Result RequestCounterValuesRes::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageData* pIMsg, MessageBase* &pMessageBase )
 			{
@@ -393,10 +322,10 @@ namespace SF
 					+ sizeof(TransactionID)
 					+ sizeof(Result)
 					+ sizeof(uint64_t)
-					+ sizeof(uint64_t)*InCounterValues.GetItemCount() + sizeof(uint16_t));
+					+ sizeof(uint64_t)*InCounterValues.size() + sizeof(uint16_t));
 
 
-				uint16_t numberOfInCounterValues = (uint16_t)InCounterValues.GetItemCount(); 
+				uint16_t numberOfInCounterValues = (uint16_t)InCounterValues.size(); 
 				protocolMem( pNewMsg = MessageData::NewMessage( memoryManager, Monitoring::RequestCounterValuesRes::MID, __uiMessageSize ) );
 
 				pMsgData = pNewMsg->GetMessageData();
@@ -405,7 +334,7 @@ namespace SF
 				Protocol::PackParamCopy( pMsgData, &InResult, sizeof(Result));
 				Protocol::PackParamCopy( pMsgData, &InInstanceUID, sizeof(uint64_t));
 				Protocol::PackParamCopy( pMsgData, &numberOfInCounterValues, sizeof(uint16_t)); 
-				Protocol::PackParamCopy( pMsgData, InCounterValues.data(), (INT)(sizeof(uint64_t)*InCounterValues.GetItemCount())); 
+				Protocol::PackParamCopy( pMsgData, InCounterValues.data(), (INT)(sizeof(uint64_t)*InCounterValues.size())); 
 
 
 			Proc_End:
@@ -460,24 +389,6 @@ namespace SF
 
 			}; // Result PerformanceCounterNewC2SEvt::ParseMessage( MessageData* pIMsg )
 
-			Result PerformanceCounterNewC2SEvt::ParseMessageTo( MessageData* pIMsg, VariableMapBuilder& variableBuilder )
-			{
- 				Result hr;
-
-
-				PerformanceCounterNewC2SEvt parser;
-				protocolChk(parser.ParseMessage(pIMsg));
-
-				variableBuilder.SetVariable("InstanceName", parser.GetInstanceName());
-				variableBuilder.SetVariable("InstanceUID", parser.GetInstanceUID());
-				variableBuilder.SetVariable("NewCounters", (int)parser.GetNewCounters().GetItemCount(), (const PerformanceCounterInfo*)parser.GetNewCounters().data());
-
-
-			Proc_End:
-
-				return hr;
-
-			}; // Result PerformanceCounterNewC2SEvt::ParseMessageTo( MessageData* pIMsg, VariableMapBuilder& variableBuilder )
 
 			Result PerformanceCounterNewC2SEvt::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageData* pIMsg, MessageBase* &pMessageBase )
 			{
@@ -501,10 +412,10 @@ namespace SF
 				uint16_t __uiInInstanceNameLength = InInstanceName ? (uint16_t)(strlen(InInstanceName)+1) : 1;
 				unsigned __uiMessageSize = (unsigned)(sizeof(MessageHeader) +  + sizeof(uint16_t) + __uiInInstanceNameLength 
 					+ sizeof(uint64_t)
-					+ sizeof(PerformanceCounterInfo)*InNewCounters.GetItemCount() + sizeof(uint16_t));
+					+ sizeof(PerformanceCounterInfo)*InNewCounters.size() + sizeof(uint16_t));
 
 
-				uint16_t numberOfInNewCounters = (uint16_t)InNewCounters.GetItemCount(); 
+				uint16_t numberOfInNewCounters = (uint16_t)InNewCounters.size(); 
 				protocolMem( pNewMsg = MessageData::NewMessage( memoryManager, Monitoring::PerformanceCounterNewC2SEvt::MID, __uiMessageSize ) );
 
 				pMsgData = pNewMsg->GetMessageData();
@@ -513,7 +424,7 @@ namespace SF
 				Protocol::PackParamCopy( pMsgData, InInstanceName ? InInstanceName : "", __uiInInstanceNameLength );
 				Protocol::PackParamCopy( pMsgData, &InInstanceUID, sizeof(uint64_t));
 				Protocol::PackParamCopy( pMsgData, &numberOfInNewCounters, sizeof(uint16_t)); 
-				Protocol::PackParamCopy( pMsgData, InNewCounters.data(), (INT)(sizeof(PerformanceCounterInfo)*InNewCounters.GetItemCount())); 
+				Protocol::PackParamCopy( pMsgData, InNewCounters.data(), (INT)(sizeof(PerformanceCounterInfo)*InNewCounters.size())); 
 
 
 			Proc_End:
@@ -564,22 +475,6 @@ namespace SF
 
 			}; // Result PerformanceCounterFreeC2SEvt::ParseMessage( MessageData* pIMsg )
 
-			Result PerformanceCounterFreeC2SEvt::ParseMessageTo( MessageData* pIMsg, VariableMapBuilder& variableBuilder )
-			{
- 				Result hr;
-
-
-				PerformanceCounterFreeC2SEvt parser;
-				protocolChk(parser.ParseMessage(pIMsg));
-
-				variableBuilder.SetVariable("FreeInstances", (int)parser.GetFreeInstances().GetItemCount(), (const uint64_t*)parser.GetFreeInstances().data());
-
-
-			Proc_End:
-
-				return hr;
-
-			}; // Result PerformanceCounterFreeC2SEvt::ParseMessageTo( MessageData* pIMsg, VariableMapBuilder& variableBuilder )
 
 			Result PerformanceCounterFreeC2SEvt::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageData* pIMsg, MessageBase* &pMessageBase )
 			{
@@ -601,16 +496,16 @@ namespace SF
 				uint8_t *pMsgData = nullptr;
 
 				unsigned __uiMessageSize = (unsigned)(sizeof(MessageHeader) 
-					+ sizeof(uint64_t)*InFreeInstances.GetItemCount() + sizeof(uint16_t));
+					+ sizeof(uint64_t)*InFreeInstances.size() + sizeof(uint16_t));
 
 
-				uint16_t numberOfInFreeInstances = (uint16_t)InFreeInstances.GetItemCount(); 
+				uint16_t numberOfInFreeInstances = (uint16_t)InFreeInstances.size(); 
 				protocolMem( pNewMsg = MessageData::NewMessage( memoryManager, Monitoring::PerformanceCounterFreeC2SEvt::MID, __uiMessageSize ) );
 
 				pMsgData = pNewMsg->GetMessageData();
 
 				Protocol::PackParamCopy( pMsgData, &numberOfInFreeInstances, sizeof(uint16_t)); 
-				Protocol::PackParamCopy( pMsgData, InFreeInstances.data(), (INT)(sizeof(uint64_t)*InFreeInstances.GetItemCount())); 
+				Protocol::PackParamCopy( pMsgData, InFreeInstances.data(), (INT)(sizeof(uint64_t)*InFreeInstances.size())); 
 
 
 			Proc_End:
@@ -662,23 +557,6 @@ namespace SF
 
 			}; // Result PerformanceCounterUpdateC2SEvt::ParseMessage( MessageData* pIMsg )
 
-			Result PerformanceCounterUpdateC2SEvt::ParseMessageTo( MessageData* pIMsg, VariableMapBuilder& variableBuilder )
-			{
- 				Result hr;
-
-
-				PerformanceCounterUpdateC2SEvt parser;
-				protocolChk(parser.ParseMessage(pIMsg));
-
-				variableBuilder.SetVariable("InstanceUID", parser.GetInstanceUID());
-				variableBuilder.SetVariable("CounterValues", (int)parser.GetCounterValues().GetItemCount(), (const uint64_t*)parser.GetCounterValues().data());
-
-
-			Proc_End:
-
-				return hr;
-
-			}; // Result PerformanceCounterUpdateC2SEvt::ParseMessageTo( MessageData* pIMsg, VariableMapBuilder& variableBuilder )
 
 			Result PerformanceCounterUpdateC2SEvt::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageData* pIMsg, MessageBase* &pMessageBase )
 			{
@@ -701,17 +579,17 @@ namespace SF
 
 				unsigned __uiMessageSize = (unsigned)(sizeof(MessageHeader) 
 					+ sizeof(uint64_t)
-					+ sizeof(uint64_t)*InCounterValues.GetItemCount() + sizeof(uint16_t));
+					+ sizeof(uint64_t)*InCounterValues.size() + sizeof(uint16_t));
 
 
-				uint16_t numberOfInCounterValues = (uint16_t)InCounterValues.GetItemCount(); 
+				uint16_t numberOfInCounterValues = (uint16_t)InCounterValues.size(); 
 				protocolMem( pNewMsg = MessageData::NewMessage( memoryManager, Monitoring::PerformanceCounterUpdateC2SEvt::MID, __uiMessageSize ) );
 
 				pMsgData = pNewMsg->GetMessageData();
 
 				Protocol::PackParamCopy( pMsgData, &InInstanceUID, sizeof(uint64_t));
 				Protocol::PackParamCopy( pMsgData, &numberOfInCounterValues, sizeof(uint16_t)); 
-				Protocol::PackParamCopy( pMsgData, InCounterValues.data(), (INT)(sizeof(uint64_t)*InCounterValues.GetItemCount())); 
+				Protocol::PackParamCopy( pMsgData, InCounterValues.data(), (INT)(sizeof(uint64_t)*InCounterValues.size())); 
 
 
 			Proc_End:
@@ -759,22 +637,6 @@ namespace SF
 
 			}; // Result PerformanceCounterUpdateCounterInfoS2CEvt::ParseMessage( MessageData* pIMsg )
 
-			Result PerformanceCounterUpdateCounterInfoS2CEvt::ParseMessageTo( MessageData* pIMsg, VariableMapBuilder& variableBuilder )
-			{
- 				Result hr;
-
-
-				PerformanceCounterUpdateCounterInfoS2CEvt parser;
-				protocolChk(parser.ParseMessage(pIMsg));
-
-				variableBuilder.SetVariable("InstanceUID", parser.GetInstanceUID());
-
-
-			Proc_End:
-
-				return hr;
-
-			}; // Result PerformanceCounterUpdateCounterInfoS2CEvt::ParseMessageTo( MessageData* pIMsg, VariableMapBuilder& variableBuilder )
 
 			Result PerformanceCounterUpdateCounterInfoS2CEvt::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageData* pIMsg, MessageBase* &pMessageBase )
 			{

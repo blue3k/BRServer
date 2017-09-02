@@ -13,11 +13,11 @@
 
 #include "SFTypedefs.h"
 
-#include "ServerSystem/Entity.h"
+#include "Entity/Entity.h"
 #include "Task/TaskManager.h"
-#include "ServerSystem/ServerComponent.h"
-#include "ServerSystem/PerformanceCounter/PerformanceCounter.h"
-#include "ServerSystem/PerformanceCounter/PerformanceCounterInstance.h"
+#include "Component/ServerComponent.h"
+#include "PerformanceCounter/PerformanceCounter.h"
+#include "PerformanceCounter/PerformanceCounterInstance.h"
 
 
 

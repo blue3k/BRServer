@@ -14,15 +14,15 @@
 #include "ResultCode/SFResultCodeGame.h"
 #include "ResultCode/SFResultCodeLogin.h"
 #include "Memory/MemoryPool.h"
-#include "Types/BrBaseTypes.h"
+#include "Types/SFEngineTypedefs.h"
 #include "GameConst.h"
 #include "Util/TimeUtil.h"
 
-#include "ServerSystem/BrServerUtil.h"
-#include "ServerSystem/SvrTrace.h"
-#include "ServerSystem/ServerEntityManager.h"
-#include "ServerSystem/EntityManager.h"
-#include "ServerSystem/ServiceEntity/ClusterManagerServiceEntity.h"
+#include "Server/BrServerUtil.h"
+#include "SvrTrace.h"
+#include "ServerEntity/ServerEntityManager.h"
+#include "Entity/EntityManager.h"
+#include "ServiceEntity/ClusterManagerServiceEntity.h"
 
 #include "ServerSystem/ServerService/RankingServerService.h"
 #include "ServerSystem/ServerService/GameServerService.h"
@@ -35,9 +35,9 @@
 #include "Protocol/Policy/GameServerNetPolicy.h"
 
 #include "ServerSystem/ServiceEntity/Login/LoginPlayerEntityTrans.h"
-#include "ServerSystem/ServiceEntity/Login/LoginPlayerEntity.h"
+#include "ServiceEntity/Login/LoginPlayerEntity.h"
 
-#include "ServerSystem/BrServer.h"
+#include "Server/BrServer.h"
 
 #include "DB/AccountDB.h"
 #include "DB/AccountQuery.h"

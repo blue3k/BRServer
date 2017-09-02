@@ -12,10 +12,9 @@
 
 #include "SFTypedefs.h"
 #include "Protocol/Protocol.h"
-#include "ServerSystem/ServerServiceBase.h"
+#include "ServerService/ServerServiceBase.h"
 #include "Net/NetDef.h"
-#include "Net/NetPolicy.h"
-#include "Protocol/Policy/EntityServerIPolicy.h"
+#include "Protocol/Policy/EntityServerNetPolicy.h"
 
 
 
@@ -25,10 +24,7 @@ namespace SF
 	{
  		class EntityServerService : public ServerServiceBase
 		{
- 			private:
-				Policy::IPolicyEntityServer* GetPolicyEntityServer() { return GetPolicy<Policy::IPolicyEntityServer>(); }
-			public:
-				enum { ID_SERVICEPOLICY = Policy::IPolicyEntityServer::ID_POLICY };
+ 			public:
 			// Constructor
 			EntityServerService ( ServerServiceInformation* pService );
 

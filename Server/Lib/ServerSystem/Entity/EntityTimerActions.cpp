@@ -14,9 +14,9 @@
 #include "stdafx.h"
 #include "Thread/Thread.h"
 #include "String/StrUtil.h"
-#include "ServerSystem/EntityTimerActions.h"
-#include "ServerSystem/Entity.h"
-#include "ServerSystem/Transaction.h"
+#include "Entity/EntityTimerActions.h"
+#include "Entity/Entity.h"
+#include "Transaction/Transaction.h"
 
 
 SF_MEMORYPOOL_IMPLEMENT(SF::Svr::TimerActionTransaction);

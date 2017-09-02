@@ -19,8 +19,8 @@
 #include "Types/BrSvrTypes.h"
 #include "GameConst.h"
 
-#include "ServerSystem/BrServerUtil.h"
-#include "ServerSystem/SvrTrace.h"
+#include "Server/BrServerUtil.h"
+#include "SvrTrace.h"
 #include "Protocol/Message/GameServerMsgClass.h"
 #include "Protocol/Policy/GameServerNetPolicy.h"
 #include "Protocol/Message/GamePartyMsgClass.h"
@@ -39,10 +39,10 @@
 #include "ServerSystem/ServiceEntity/Game/GameInstanceManagerServiceEntity.h"
 #include "ServerSystem/ServerService/GameInstanceManagerService.h"
 
-#include "ServerSystem/BrServer.h"
+#include "Server/BrServer.h"
 
-#include "ServerSystem/EntityManager.h"
-#include "ServerSystem/ServerEntityManager.h"
+#include "Entity/EntityManager.h"
+#include "ServerEntity/ServerEntityManager.h"
 #include "ServerSystem/ServiceEntity/GamePartyEntity.h"
 #include "ServerSystem/ServiceEntity/GamePartyEntityTrans.h"
 
@@ -115,7 +115,7 @@ namespace Svr {
 			svrChk( GetMyOwner()->FindPlayer( GetInvitedPlayer().PlayerID, pPlayer ) );
 			svrChk( pPlayer->SetServerEntity( GetServerEntity<Svr::ServerEntity>(), GetRouteContext().GetFrom()) );
 
-			pPolicy = pPlayer->GetPolicy<Policy::NetSvrPolicyGameParty>();
+			pPolicy = pPlayer->GetInterface<Policy::NetSvrPolicyGameParty>();
 
 			// Send others to joined
 			GetMyOwner()->ForeachPlayer( [&]( PartyPlayer* pOtherPlayer )->Result {
@@ -307,7 +307,7 @@ namespace Svr {
 		GetMyOwner()->ForeachPlayer( [&]( PartyPlayer* pPlayer )->Result {
 			if( pPlayer->GetServerEntity() == nullptr ) return ResultCode::SUCCESS;
 
-			Policy::NetSvrPolicyPartyMatching *pPolicy = pPlayer->GetServerEntity()->GetPolicy<Policy::NetSvrPolicyPartyMatching>();
+			Policy::NetSvrPolicyPartyMatching *pPolicy = pPlayer->GetServerEntity()->GetInterface<Policy::NetSvrPolicyPartyMatching>();
 			if( pPolicy == nullptr ) return ResultCode::SUCCESS;
 
 			pPolicy->PlayerGameMatchedS2CEvt( RouteContext(GetOwnerEntityUID(), pPlayer->GetPlayerEntityUID()), 0, pPlayer->GetPlayerID(), gameUID, PlayerRole::None );
@@ -443,7 +443,7 @@ namespace Svr {
 
 		svrChk( Svr::GetServerComponent<Svr::ServerEntityManager>()->GetServerEntity( GetMyOwner()->GetMatchingTicket().QueueUID.GetServerID(), pServer ) );
 
-		svrChk( pServer->GetPolicy<Policy::IPolicyPartyMatchingQueue>()->UnregisterMatchingCmd( RouteContext(GetOwnerEntityUID(), GetMyOwner()->GetMatchingTicket().QueueUID), GetTransID(), 0,
+		svrChk( pServer->GetInterface<Policy::IPolicyPartyMatchingQueue>()->UnregisterMatchingCmd( RouteContext(GetOwnerEntityUID(), GetMyOwner()->GetMatchingTicket().QueueUID), GetTransID(), 0,
 			GetMyOwner()->GetMatchingTicket() ) );
 
 		

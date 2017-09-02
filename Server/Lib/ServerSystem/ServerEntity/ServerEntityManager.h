@@ -14,16 +14,16 @@
 
 
 #include "SFTypedefs.h"
-#include "Common/OrderedLinkedList.h"
+#include "Container/OrderedLinkedList.h"
 #include "Container/HashTable2.h"
 #include "Container/Indexing.h"
-#include "Common/SystemSynchronization.h"
+#include "Thread/SystemSynchronization.h"
 #include "Net/NetDef.h"
 #include "Net/NetServerPeer.h"
 #include "Net/NetServerPeerTCP.h"
 #include "Task/TaskManager.h"
-#include "ServerSystem/ServerEntity.h"
-#include "ServerSystem/ServerComponent.h"
+#include "ServerEntity/ServerEntity.h"
+#include "Component/ServerComponent.h"
 
 
 
@@ -99,7 +99,7 @@ namespace Svr
 			if( !(GetServerEntity(svrID, pServerEntity)) )
 				return nullptr;
 
-			return pServerEntity->GetPolicy<PolicyType>();
+			return pServerEntity->GetInterface<PolicyType>();
 		}
 	};
 

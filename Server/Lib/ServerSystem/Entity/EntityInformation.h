@@ -14,9 +14,9 @@
 
 #include "SFTypedefs.h"
 #include "Memory/MemoryPool.h"
-#include "ServerSystem/BrServer.h"
-#include "ServerSystem/ServerEntity.h"
-//#include "ServerSystem/ServerService/ServerService.h"
+#include "Server/BrServer.h"
+#include "ServerEntity/ServerEntity.h"
+//#include "ServerService/ServerService.h"
 
 
 namespace SF {
@@ -128,10 +128,10 @@ namespace Svr {
 		void GetServiceInformation( ServiceInformation & serviceInformation );
 
 		// Get Policy
-		template< class PolicyType >
-		FORCEINLINE PolicyType* GetPolicy() const
+		template< class InterfaceType >
+		FORCEINLINE InterfaceType GetInterface() const
 		{
-			return GetConnection()->GetPolicy<PolicyType>();
+			return InterfaceType(GetConnection());
 		}
 
 		// Setup route context from input transaction to the service entity

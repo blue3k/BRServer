@@ -17,18 +17,18 @@
 #include "Thread/Thread.h"
 
 #include "SvrConst.h"
-#include "ServerSystem/SvrConst.h"
-#include "ServerSystem/ServerEntity.h"
-#include "ServerSystem/Transaction.h"
+#include "SvrConst.h"
+#include "ServerEntity/ServerEntity.h"
+#include "Transaction/Transaction.h"
 //#include "ServerSystem/PlugIn.h"
-#include "ServerSystem/SvrTrace.h"
+#include "SvrTrace.h"
 #include "ServerSystem/BrServer.h"
 #include "ServerSystem/ServerEntityManager.h"
 
 
 #include "ServerSystem/ServerEntity/EntityServerEntity.h"
 #include "ServerSystem/ServiceEntity/ClusterManagerServiceEntity.h"
-#include "ServerSystem/Transaction/ServerTransactionGeneric.h"
+#include "Transaction/ServerTransactionGeneric.h"
 
 #include "Protocol/Policy/EntityServerNetPolicy.h"
 #include "Protocol/Policy/ServerNetPolicy.h"

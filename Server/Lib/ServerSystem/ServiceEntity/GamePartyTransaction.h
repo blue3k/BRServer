@@ -14,7 +14,7 @@
 
 
 #include "SFTypedefs.h"
-#include "ServerSystem/Transaction.h"
+#include "Transaction/Transaction.h"
 #include "ServerSystem/ServiceEntity/GamePartyEntity.h"
 #include "ServerSystem/ServerTransaction.h"
 
@@ -45,9 +45,9 @@ namespace Svr {
 			super::m_WorkOnServerEntity = false;
 		}
 		
-		PolicyClassType* GetPolicy()
+		PolicyClassType* GetInterface()
 		{
-			return super::GetServerEntity()->GetConnection()->template GetPolicy<PolicyClassType>();
+			return super::GetServerEntity()->GetConnection()->template GetInterface<PolicyClassType>();
 		}
 
 		Result GetMyPlayer( PartyPlayer* &pPlayer )

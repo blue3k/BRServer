@@ -15,7 +15,7 @@
 #include "Types/BrGameTypes.h"
 #include "Memory/MemoryPool.h"
 #include "Common/ClassUtil.h"
-#include "ServerSystem/GameSystem.h"
+#include "ServiceEntity/Game/GameSystem.h"
 #include "GameSystem/GameVote.h"
 #include "Container/SFArray.h"
 #include "GameConst.h"

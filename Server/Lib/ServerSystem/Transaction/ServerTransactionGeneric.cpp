@@ -13,13 +13,13 @@
 
 #include "Memory/MemoryPool.h"
 
-#include "ServerSystem/SvrTrace.h"
-#include "ServerSystem/ServerEntity.h"
-#include "ServerSystem/Transaction/ServerTransactionGeneric.h"
-#include "ServerSystem/ServerEntityManager.h"
+#include "SvrTrace.h"
+#include "ServerEntity/ServerEntity.h"
+#include "Transaction/ServerTransactionGeneric.h"
+#include "ServerEntity/ServerEntityManager.h"
 
-#include "ServerSystem/ServerEntity/EntityServerEntity.h"
-#include "ServerSystem/ServiceEntity/ClusterManagerServiceEntity.h"
+#include "ServerEntity/EntityServerEntity.h"
+#include "ServiceEntity/ClusterManagerServiceEntity.h"
 
 #include "Protocol/Message/ServerMsgClass.h"
 #include "Protocol/Policy/ServerNetNetPolicy.h"
@@ -103,7 +103,7 @@ namespace Svr {
 		// If we got connected to the master, request member list so that we can get dynamically added cluster manager informations
 		if( serviceInfo.Membership == ClusterMembership::Master )
 		{
-			svrChk( GetMyOwner()->GetPolicy<Policy::IPolicyClusterServer>()->GetClusterMemberListCmd( RouteContext(GetOwnerEntityUID(),serviceInfo.UID), GetTransID(), 0, pService->GetClusterID() ) );
+			svrChk( GetMyOwner()->GetInterface<Policy::IPolicyClusterServer>()->GetClusterMemberListCmd( RouteContext(GetOwnerEntityUID(),serviceInfo.UID), GetTransID(), 0, pService->GetClusterID() ) );
 		}
 		else
 			CloseTransaction(hr);

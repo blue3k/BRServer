@@ -13,8 +13,8 @@
 
 #include "SFTypedefs.h"
 #include "Task/TimerScheduler.h"
-#include "ServerSystem/Entity.h"
-#include "ServerSystem/Transaction.h"
+#include "Entity/Entity.h"
+#include "Transaction/Transaction.h"
 #include "Memory/MemoryPool.h"
 
 namespace SF {

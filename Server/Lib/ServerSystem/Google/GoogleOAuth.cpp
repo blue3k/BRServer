@@ -18,7 +18,7 @@
 #include "ResultCode/SFResultCodeSvr.h"
 #include "ResultCode/SFResultCodeSystem.h"
 #include "ResultCode/SFResultCodeLibrary.h"
-#include "ServerSystem/SvrTrace.h"
+#include "SvrTrace.h"
 
 #include "curl/curl.h"
 #include "json/json.h"

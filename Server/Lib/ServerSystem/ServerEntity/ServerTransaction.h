@@ -21,13 +21,13 @@
 #include "Net/Message.h"
 #include "Types/BrSvrTypes.h"
 
-#include "ServerSystem/SvrConst.h"
-#include "ServerSystem/SvrTrace.h"
+#include "SvrConst.h"
+#include "SvrTrace.h"
 #include "Types/BrSvrTypes.h"
 
 
-#include "ServerSystem/Transaction.h"
-#include "ServerSystem/ServiceEntity/ClusteredServiceEntity.h"
+#include "Transaction/Transaction.h"
+#include "ServiceEntity/ClusteredServiceEntity.h"
 
 
 
@@ -142,12 +142,12 @@ namespace Svr {
 		}
 
 		template< class PolicyType >
-		PolicyType* GetPolicy()
+		PolicyType* GetInterface()
 		{
 			SharedPointerT<Net::Connection> pConn;
 			superTrans::GetServerEntity()->GetConnectionShared(pConn);
 			if (pConn != nullptr)
-				return pConn->GetPolicy<PolicyType>();
+				return pConn->GetInterface<PolicyType>();
 			else
 				return nullptr;
 		}
@@ -392,9 +392,6 @@ namespace Svr {
 
 
 
-
-
-#include "ServerTransaction.inl"
 
 }; // namespace Svr
 }; // namespace SF

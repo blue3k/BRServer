@@ -15,10 +15,10 @@
 #include "String/StrUtil.h"
 #include "ServerLog/SvrLog.h"
 #include "Thread/Thread.h"
-#include "ServerSystem/EntityTable.h"
-#include "ServerSystem/SvrTrace.h"
+#include "Entity/EntityTable.h"
+#include "SvrTrace.h"
 #include "Net/NetDef.h"
-#include "ServerSystem/Transaction.h"
+#include "Transaction/Transaction.h"
 
 
 namespace SF {
@@ -96,7 +96,7 @@ namespace Svr {
 
 			if (!Find(pRes->GetTransID().GetEntityID(), pEntity))
 			{
-				hr = ResultCode::E_INVALID_ENTITY;
+				hr = ResultCode::INVALID_ENTITY;
 				goto Proc_End;
 			}
 

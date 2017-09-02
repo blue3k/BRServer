@@ -17,12 +17,12 @@
 #include "ResultCode/SFResultCodeGame.h"
 #include "ResultCode/SFResultCodeLogin.h"
 #include "Memory/MemoryPool.h"
-#include "Types/BrBaseTypes.h"
+#include "Types/SFEngineTypedefs.h"
 
 #include "GameServerClass.h"
-#include "ServerSystem/BrServerUtil.h"
-#include "ServerSystem/SvrTrace.h"
-#include "ServerSystem/ServerEntityManager.h"
+#include "Server/BrServerUtil.h"
+#include "SvrTrace.h"
+#include "ServerEntity/ServerEntityManager.h"
 
 #include "ServerSystem/ServerService/PartyMatchingQueueService.h"
 #include "ServerSystem/ServiceEntity/MatchingQueueServiceEntity.h"
@@ -43,7 +43,7 @@
 
 //#include "PlayerInfoManager.h"
 //#include "GameInstance/GamePlayer.h"
-#include "ServerSystem/BrServer.h"
+#include "Server/BrServer.h"
 
 #include "GameInstance/GameEntityManager.h"
 

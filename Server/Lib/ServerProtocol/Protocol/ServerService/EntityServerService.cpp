@@ -12,12 +12,12 @@
 #include "stdafx.h"
 #include "SFTypedefs.h"
 #include "Protocol/Protocol.h"
-#include "ServerSystem/ServerEntity.h"
-#include "ServerSystem/BrServer.h"
-#include "ServerSystem/BrServerUtil.h"
-#include "ServerSystem/ServiceEntity/EntityInformation.h"
-#include "ServerSystem/ServerService/EntityServerService.h"
-#include "ServerSystem/SvrTrace.h"
+#include "ServerEntity/ServerEntity.h"
+#include "Server/BrServer.h"
+#include "Server/BrServerUtil.h"
+#include "Entity/EntityInformation.h"
+#include "Protocol/ServerService/EntityServerService.h"
+#include "SvrTrace.h"
 
 
 
@@ -26,10 +26,8 @@ namespace SF
  	namespace Svr
 	{
  		EntityServerService::EntityServerService( ServerServiceInformation* pService)
-			: ServerServiceBase(pService, Policy::IPolicyEntityServer::ID_POLICY)
+			: ServerServiceBase(pService)
 		{
-			static_assert((UINT)Policy::IPolicyEntityServer::ID_POLICY == (UINT)ID_SERVICEPOLICY,"Invalid Policy ID for a Servicebase ");
-			Assert(GetPolicyEntityServer());
 		}
 
 
@@ -38,7 +36,7 @@ namespace SF
 		{
  			Result hr;
 
-			 svrChk(GetPolicyEntityServer()->RegisterEntityCmd( InTransactionID, InLocalEntID, InEntName ) );
+			 svrChk(Policy::NetPolicyEntityServer(GetConnection()).RegisterEntityCmd( InTransactionID, InLocalEntID, InEntName ) );
 
 		Proc_End:
 
@@ -50,7 +48,7 @@ namespace SF
 		{
  			Result hr;
 
-			 svrChk(GetPolicyEntityServer()->UnregisterEntityCmd( InTransactionID, InEntUID ) );
+			 svrChk(Policy::NetPolicyEntityServer(GetConnection()).UnregisterEntityCmd( InTransactionID, InEntUID ) );
 
 		Proc_End:
 
@@ -62,7 +60,7 @@ namespace SF
 		{
  			Result hr;
 
-			 svrChk(GetPolicyEntityServer()->FindEntityCmd( InTransactionID, InLocalEntID ) );
+			 svrChk(Policy::NetPolicyEntityServer(GetConnection()).FindEntityCmd( InTransactionID, InLocalEntID ) );
 
 		Proc_End:
 

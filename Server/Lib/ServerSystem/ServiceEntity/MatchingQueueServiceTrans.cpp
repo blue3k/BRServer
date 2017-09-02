@@ -18,11 +18,11 @@
 #include "Protocol/Message/PartyMatchingQueueMsgClass.h"
 #include "Protocol/Policy/PartyMatchingQueueNetPolicy.h"
 
-#include "ServerSystem/BrServerUtil.h"
-#include "ServerSystem/SvrTrace.h"
-#include "ServerSystem/BrServer.h"
-#include "ServerSystem/ServerEntityManager.h"
-#include "ServerSystem/EntityManager.h"
+#include "Server/BrServerUtil.h"
+#include "SvrTrace.h"
+#include "Server/BrServer.h"
+#include "ServerEntity/ServerEntityManager.h"
+#include "Entity/EntityManager.h"
 #include "ServerSystem/ServiceEntity/MatchingQueueServiceTrans.h"
 #include "ServerSystem/ServiceEntity/MatchingServiceEntity.h"
 #include "ServerSystem/ServiceEntity/MatchingQueueServiceEntity.h"
@@ -205,7 +205,7 @@ namespace Svr {
 
 		if( m_matchingQueueItem.NumPlayers > 1 || m_matchingQueueItem.Players[0].PlayerUID != m_matchingQueueItem.RegisterUID ) // This should be a party
 		{
-			pServerEntity->GetPolicy<Policy::NetSvrPolicyPartyMatchingQueue>()->PartyMatchingItemDequeuedS2CEvt( 
+			pServerEntity->GetInterface<Policy::NetSvrPolicyPartyMatchingQueue>()->PartyMatchingItemDequeuedS2CEvt( 
 				RouteContext(GetOwnerEntityUID(),m_matchingQueueItem.RegisterUID), 0,
 				GetMatchingTicket() );
 		}
@@ -214,7 +214,7 @@ namespace Svr {
 			// This should be the player case
 			Assert( m_matchingQueueItem.Players[0].PlayerUID == m_matchingQueueItem.RegisterUID );
 
-			pServerEntity->GetPolicy<Policy::NetSvrPolicyPartyMatchingQueue>()->PlayerMatchingItemDequeuedS2CEvt( 
+			pServerEntity->GetInterface<Policy::NetSvrPolicyPartyMatchingQueue>()->PlayerMatchingItemDequeuedS2CEvt( 
 				RouteContext(GetOwnerEntityUID(),m_matchingQueueItem.RegisterUID), 0,
 				GetMatchingTicket() );
 		}
@@ -248,7 +248,7 @@ namespace Svr {
 
 		if (matchingQueueItem.NumPlayers > 1 || matchingQueueItem.Players[0].PlayerUID != matchingQueueItem.RegisterUID) // This should be a party
 		{
-			pServerEntity->GetPolicy<Policy::NetSvrPolicyPartyMatchingQueue>()->PartyMatchingItemDequeuedS2CEvt(
+			pServerEntity->GetInterface<Policy::NetSvrPolicyPartyMatchingQueue>()->PartyMatchingItemDequeuedS2CEvt(
 				RouteContext(GetOwnerEntityUID(), matchingQueueItem.RegisterUID), 0,
 				GetMatchingTicket());
 		}
@@ -257,7 +257,7 @@ namespace Svr {
 			// This should be the player case
 			Assert(matchingQueueItem.Players[0].PlayerUID == matchingQueueItem.RegisterUID);
 
-			pServerEntity->GetPolicy<Policy::NetSvrPolicyPartyMatchingQueue>()->PlayerMatchingItemDequeuedS2CEvt(
+			pServerEntity->GetInterface<Policy::NetSvrPolicyPartyMatchingQueue>()->PlayerMatchingItemDequeuedS2CEvt(
 				RouteContext(GetOwnerEntityUID(), matchingQueueItem.RegisterUID), 0,
 				GetMatchingTicket());
 		}

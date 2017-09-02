@@ -8,7 +8,7 @@
 #include "Common/DefaultLibComponent.h"
 #include "Memory/MemoryPool.h"
 #include "ServerSystem/BrService.h"
-#include "ServerSystem/SvrTrace.h"
+#include "SvrTrace.h"
 #include "ServerSystem/ParameterSetting.h"
 
 #include "EntityServer.h"

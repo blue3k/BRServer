@@ -17,10 +17,10 @@
 #include "Net/NetDef.h"
 #include "DB/DBClusterManager.h"
 #include "Types/BrSvrTypes.h"
-#include "ServerSystem/MasterEntity.h"
+#include "Entity/MasterEntity.h"
+#include "ServerEntity/ServerEntity.h"
 #include "Task/TaskManager.h"
-#include "MasterEntity.h"
-#include "ServerComponentCarrier.h"
+#include "Component/ServerComponentCarrier.h"
 #include "ServerConfig/SFServerConfig.h"
 
 

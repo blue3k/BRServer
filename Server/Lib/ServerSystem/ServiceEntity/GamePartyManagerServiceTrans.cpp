@@ -15,11 +15,11 @@
 #include "Memory/MemoryPool.h"
 #include "Types/BrSvrTypes.h"
 
-#include "ServerSystem/BrServerUtil.h"
-#include "ServerSystem/SvrTrace.h"
-#include "ServerSystem/BrServer.h"
-#include "ServerSystem/ServerEntityManager.h"
-#include "ServerSystem/EntityManager.h"
+#include "Server/BrServerUtil.h"
+#include "SvrTrace.h"
+#include "Server/BrServer.h"
+#include "ServerEntity/ServerEntityManager.h"
+#include "Entity/EntityManager.h"
 #include "ServerSystem/ServiceEntity/GamePartyManagerServiceTrans.h"
 #include "ServerSystem/ServiceEntity/GamePartyManagerServiceEntity.h"
 

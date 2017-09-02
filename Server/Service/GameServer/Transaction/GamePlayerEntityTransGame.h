@@ -12,10 +12,10 @@
 #pragma once
 
 #include "SFTypedefs.h"
-#include "ServerSystem/Transaction.h"
+#include "Transaction/Transaction.h"
 #include "Memory/MemoryPool.h"
 #include "Container/SFArray.h"
-#include "Types/BrBaseTypes.h"
+#include "Types/SFEngineTypedefs.h"
 #include "GameConst.h"
 #include "Net/Message.h"
 
@@ -26,7 +26,7 @@
 #include "Protocol/Message/PartyMatchingQueueMsgClass.h"
 #include "Protocol/Policy/PartyMatchingQueueNetPolicy.h"
 
-#include "ServerSystem/MessageRoute.h"
+#include "Transaction/MessageRoute.h"
 
 #include "GameServerClass.h"
 #include "GameInstance/GamePlayerEntity.h"

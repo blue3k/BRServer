@@ -16,7 +16,7 @@
 #include "Types/BrSvrTypes.h"
 #include "Types/BrGameTypes.h"
 #include "DB/DBClusterManager.h"
-#include "ServerSystem/ServerComponent.h"
+#include "Component/ServerComponent.h"
 
 #include "DB/RankingDBQuery.h"
 

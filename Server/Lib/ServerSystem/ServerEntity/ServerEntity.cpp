@@ -17,20 +17,20 @@
 #include "Thread/Thread.h"
 #include "Net/NetServerPeer.h"
 #include "Net/NetServerPeerTCP.h"
-#include "ServerSystem/SvrConst.h"
-#include "ServerSystem/ServerEntity.h"
-#include "ServerSystem/Transaction.h"
+#include "SvrConst.h"
+#include "ServerEntity/ServerEntity.h"
+#include "Transaction/Transaction.h"
 //#include "ServerSystem/PlugIn.h"
-#include "ServerSystem/BrServer.h"
-#include "ServerSystem/SvrTrace.h"
-#include "ServerSystem/SvrConst.h"
+#include "Server/BrServer.h"
+#include "SvrTrace.h"
+#include "SvrConst.h"
 #include "Task/ServerTaskEvent.h"
-#include "ServerSystem/EntityTable.h"
-#include "ServerSystem/BrServerUtil.h"
-#include "ServerSystem/EntityManager.h"
+#include "Entity/EntityTable.h"
+#include "Server/BrServerUtil.h"
+#include "Entity/EntityManager.h"
 
-#include "ServerSystem/ServerEntity/EntityServerEntity.h"
-#include "ServerSystem/ServiceEntity/ClusterManagerServiceEntity.h"
+#include "ServerEntity/EntityServerEntity.h"
+#include "ServiceEntity/ClusterManagerServiceEntity.h"
 #include "Protocol/Policy/ServerNetPolicy.h"
 
 
@@ -198,7 +198,7 @@ namespace Svr {
 		if (routeContext.GetTo() != 0)
 		{
 			if(pMsg->GetMessageHeader()->msgID.IDs.Type == Message::MSGTYPE_COMMAND)
-				pCon->GetPolicy<Policy::NetSvrPolicyServer>()->GenericFailureRes(routeContext.GetSwaped(), transID, ResultCode::SVR_INVALID_ENTITYUID);
+				pCon->GetInterface<Policy::NetSvrPolicyServer>()->GenericFailureRes(routeContext.GetSwaped(), transID, ResultCode::SVR_INVALID_ENTITYUID);
 
 			Util::SafeRelease(pMsg);
 			return ResultCode::SUCCESS_FALSE;
@@ -226,7 +226,7 @@ namespace Svr {
 
 				svrTrace( Svr::TRC_DBGSVR, "Sending Server Connected to Entity Server from:{0}", myConfig->Name.c_str() );
 
-				Policy::IPolicyServer *pPolicy = GetConnection()->GetPolicy<Policy::IPolicyServer>();
+				Policy::IPolicyServer *pPolicy = GetConnection()->GetInterface<Policy::IPolicyServer>();
 				svrChkPtr(pPolicy);
 				const ServerServiceInformation* pServerServiceInfo = Svr::BrServer::GetInstance()->GetComponent<ClusterManagerServiceEntity>()->GetMyServiceInfo();
 				ServiceInformation serviceInformation( pServerServiceInfo->GetEntityUID(), 

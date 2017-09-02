@@ -16,7 +16,7 @@
 #include "Types/BrSvrTypes.h"
 
 #include "ServerSystem/ServiceEntity/MatchingServiceUtil.h"
-#include "ServerSystem/ServerComponent.h"
+#include "Component/ServerComponent.h"
 
 
 

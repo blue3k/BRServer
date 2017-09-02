@@ -14,7 +14,7 @@
 #include "SFTypedefs.h"
 #include "ServerSystem/ServerTransaction.h"
 #include "Memory/MemoryPool.h"
-#include "Types/BrBaseTypes.h"
+#include "Types/SFEngineTypedefs.h"
 #include "Protocol/Message/GameServerMsgClass.h"
 #include "Protocol/Policy/GameServerNetPolicy.h"
 #include "GameServerClass.h"
@@ -48,7 +48,7 @@ namespace GameServer {
 		// Start Transaction
 		virtual Result StartTransaction() override;
 
-		Policy::NetSvrPolicyGameServer* GetPolicy() { return super::template GetPolicy<Policy::NetSvrPolicyGameServer>(); }
+		Policy::NetSvrPolicyGameServer* GetInterface() { return super::template GetInterface<Policy::NetSvrPolicyGameServer>(); }
 
 		BR_SVR_MSGTRANS_CLOSE_ARGS(RegisterPlayerToJoinGameServerRes, RouteContext(m_PlayerUID, super::GetRouteContext().GetFrom()), m_PublicAddress, m_PublicAddressIPV6, m_Port);
 	};

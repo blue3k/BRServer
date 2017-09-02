@@ -18,9 +18,9 @@
 #include "Memory/SFMemory.h"
 #include "Util/TimeUtil.h"
 #include "Types/BrSvrTypes.h"
-#include "ServerSystem/Entity.h"
-#include "ServerSystem/ServerComponent.h"
-#include "ServerSystem/ServerServiceBase.h"
+#include "Entity/Entity.h"
+#include "Component/ServerComponent.h"
+#include "ServerService/ServerServiceBase.h"
 #include "Common/HashTable.h"
 #include "Container/Indexing.h"
 

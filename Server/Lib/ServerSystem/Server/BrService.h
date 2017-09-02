@@ -17,7 +17,7 @@
 #include "SFAssert.h"
 #include "Util/Utility.h"
 #include "String/StrUtil.h"
-#include "ServerSystem/BrServer.h"
+#include "Server/BrServer.h"
 
 
 

@@ -12,17 +12,17 @@
 #pragma once
 
 #include "SFTypedefs.h"
-#include "ServerSystem/Transaction.h"
+#include "Transaction/Transaction.h"
 #include "Memory/MemoryPool.h"
 #include "Container/SFArray.h"
-#include "Types/BrBaseTypes.h"
+#include "Types/SFEngineTypedefs.h"
 #include "GameConst.h"
 #include "Net/Message.h"
 #include "Protocol/Message/ClusterServerMsgClass.h"
 #include "Protocol/Policy/ClusterServerNetPolicy.h"
 #include "Protocol/Message/RankingServerMsgClass.h"
 #include "Protocol/Policy/RankingServerNetPolicy.h"
-#include "ServerSystem/MessageRoute.h"
+#include "Transaction/MessageRoute.h"
 #include "ServerSystem/ServiceEntity/RankingServiceEntity.h"
 #include "ServerSystem/ServerTransaction.h"
 
@@ -68,7 +68,7 @@ namespace Svr {
 		// Start Transaction
 		virtual Result StartTransaction();
 
-		Policy::NetSvrPolicyRankingServer* GetPolicy() { return ServerEntityMessageTransaction::GetPolicy<Policy::NetSvrPolicyRankingServer>(); }
+		Policy::NetSvrPolicyRankingServer* GetInterface() { return ServerEntityMessageTransaction::GetInterface<Policy::NetSvrPolicyRankingServer>(); }
 		BR_SVR_MSGTRANS_CLOSE_ARGS(UpdatePlayerScoreRes, GetRouteContext().GetSwaped(), m_RankingList);
 	};
 
@@ -88,7 +88,7 @@ namespace Svr {
 		// Start Transaction
 		virtual Result StartTransaction();
 
-		Policy::NetSvrPolicyRankingServer* GetPolicy() { return ServerEntityMessageTransaction::GetPolicy<Policy::NetSvrPolicyRankingServer>(); }
+		Policy::NetSvrPolicyRankingServer* GetInterface() { return ServerEntityMessageTransaction::GetInterface<Policy::NetSvrPolicyRankingServer>(); }
 		BR_SVR_MSGTRANS_CLOSE(DebugPrintALLRankingRes, GetRouteContext().GetSwaped());
 	};
 

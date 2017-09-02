@@ -16,7 +16,7 @@
 #include "SFTypedefs.h"
 #include "Thread/Thread.h"
 #include "Net/NetDef.h"
-#include "ServerSystem/ServerEntity.h"
+#include "ServerEntity/ServerEntity.h"
 
 
 

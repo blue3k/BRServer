@@ -12,10 +12,9 @@
 
 #include "SFTypedefs.h"
 #include "Protocol/Protocol.h"
-#include "ServerSystem/ServerServiceBase.h"
+#include "ServerService/ServerServiceBase.h"
 #include "Net/NetDef.h"
-#include "Net/NetPolicy.h"
-#include "Protocol/Policy/ClusterServerIPolicy.h"
+#include "Protocol/Policy/ClusterServerNetPolicy.h"
 
 
 
@@ -25,10 +24,7 @@ namespace SF
 	{
  		class ClusterServerService : public ServerServiceBase
 		{
- 			private:
-				Policy::IPolicyClusterServer* GetPolicyClusterServer() { return GetPolicy<Policy::IPolicyClusterServer>(); }
-			public:
-				enum { ID_SERVICEPOLICY = Policy::IPolicyClusterServer::ID_POLICY };
+ 			public:
 			// Constructor
 			ClusterServerService ( ServerServiceInformation* pService );
 

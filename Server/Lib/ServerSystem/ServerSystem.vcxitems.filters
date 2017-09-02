@@ -25,9 +25,6 @@
     <Filter Include="ServerService\Matching">
       <UniqueIdentifier>{37d134f0-3797-4295-83f1-966be7e528fe}</UniqueIdentifier>
     </Filter>
-    <Filter Include="ServerService\Entity">
-      <UniqueIdentifier>{f42ef6b9-b4cf-4f70-bea9-b5198b13dfc0}</UniqueIdentifier>
-    </Filter>
     <Filter Include="ServerService\Monitoring">
       <UniqueIdentifier>{8bcc09d8-acb4-4080-9775-d4727398427a}</UniqueIdentifier>
     </Filter>
@@ -183,18 +180,6 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)ServiceEntity\MatchingServiceUtil.h">
       <Filter>ServerService\Matching</Filter>
     </ClInclude>
-    <ClInclude Include="$(MSBuildThisFileDirectory)ServiceEntity\EntityInformation.h">
-      <Filter>ServerService\Entity</Filter>
-    </ClInclude>
-    <ClInclude Include="$(MSBuildThisFileDirectory)EntityManager.h">
-      <Filter>ServerService\Entity</Filter>
-    </ClInclude>
-    <ClInclude Include="$(MSBuildThisFileDirectory)ServerEntity\EntityServerEntity.h">
-      <Filter>ServerService\Entity</Filter>
-    </ClInclude>
-    <ClInclude Include="$(MSBuildThisFileDirectory)EntityTable.h">
-      <Filter>ServerService\Entity</Filter>
-    </ClInclude>
     <ClInclude Include="$(MSBuildThisFileDirectory)GameLog\ChattingHistory.h">
       <Filter>ServerService\Game</Filter>
     </ClInclude>
@@ -216,26 +201,11 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)PerformanceCounter\PerformanceCounterServer.h">
       <Filter>ServerService\Performance</Filter>
     </ClInclude>
-    <ClInclude Include="$(MSBuildThisFileDirectory)Transaction.h">
-      <Filter>Entity</Filter>
-    </ClInclude>
-    <ClInclude Include="$(MSBuildThisFileDirectory)TransactionSteper.h">
-      <Filter>Entity</Filter>
-    </ClInclude>
-    <ClInclude Include="$(MSBuildThisFileDirectory)TransactionUtil.h">
-      <Filter>Entity</Filter>
-    </ClInclude>
-    <ClInclude Include="$(MSBuildThisFileDirectory)PlayerEntityInformation.h">
-      <Filter>ServerService\Entity</Filter>
-    </ClInclude>
     <ClInclude Include="$(MSBuildThisFileDirectory)ServiceEntity\RankingServiceTrans.h">
       <Filter>ServerService\Ranking</Filter>
     </ClInclude>
     <ClInclude Include="$(MSBuildThisFileDirectory)ServiceEntity\RankingServiceEntity.h">
       <Filter>ServerService\Ranking</Filter>
-    </ClInclude>
-    <ClInclude Include="$(MSBuildThisFileDirectory)SvrLoopbackConnection.h">
-      <Filter>Entity</Filter>
     </ClInclude>
     <ClInclude Include="$(MSBuildThisFileDirectory)Google\GoogleAndroidDeveloperAPI.h">
       <Filter>ServerService\Google</Filter>
@@ -264,9 +234,6 @@
     </ClInclude>
     <ClInclude Include="$(MSBuildThisFileDirectory)String\SvrToString.h">
       <Filter>String</Filter>
-    </ClInclude>
-    <ClInclude Include="$(MSBuildThisFileDirectory)Types\BrBaseTypes.h">
-      <Filter>Types</Filter>
     </ClInclude>
     <ClInclude Include="$(MSBuildThisFileDirectory)GameLog\GameLog.h">
       <Filter>GameLog</Filter>
@@ -351,6 +318,48 @@
     <ClInclude Include="C:\work\BRServerSF\Server\Lib\ServerSystem\Server\BrServerUtil.h">
       <Filter>Server</Filter>
     </ClInclude>
+    <ClInclude Include="C:\work\BRServerSF\Server\Lib\ServerSystem\Entity\EntityTimerActions.h">
+      <Filter>Entity</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\work\BRServerSF\Server\Lib\ServerSystem\Entity\MasterEntity.h">
+      <Filter>Entity</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\work\BRServerSF\Server\Lib\ServerSystem\Entity\PlayerEntityInformation.h">
+      <Filter>Entity</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\work\BRServerSF\Server\Lib\ServerSystem\Entity\SimpleEntity.h">
+      <Filter>Entity</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\work\BRServerSF\Server\Lib\ServerSystem\Entity\SimpleUserEntity.h">
+      <Filter>Entity</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\work\BRServerSF\Server\Lib\ServerSystem\Entity\Entity.h">
+      <Filter>Entity</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\work\BRServerSF\Server\Lib\ServerSystem\Entity\EntityManager.h">
+      <Filter>Entity</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\work\BRServerSF\Server\Lib\ServerSystem\Entity\EntityTable.h">
+      <Filter>Entity</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\work\BRServerSF\Server\Lib\ServerSystem\Transaction\MessageRoute.h">
+      <Filter>Transaction</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\work\BRServerSF\Server\Lib\ServerSystem\Transaction\MessageHandlerTable.h">
+      <Filter>Transaction</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\work\BRServerSF\Server\Lib\ServerSystem\Transaction\Transaction.h">
+      <Filter>Transaction</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\work\BRServerSF\Server\Lib\ServerSystem\Transaction\TransactionSteper.h">
+      <Filter>Transaction</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\work\BRServerSF\Server\Lib\ServerSystem\Transaction\TransactionUtil.h">
+      <Filter>Transaction</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\work\BRServerSF\Server\Lib\ServerSystem\Entity\EntityInformation.h">
+      <Filter>Entity</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="$(MSBuildThisFileDirectory)makefile.mak" />
@@ -373,32 +382,17 @@
     <None Include="$(MSBuildThisFileDirectory)ServiceEntity\GamePartyEntity.inl">
       <Filter>ServerService\Party</Filter>
     </None>
-    <None Include="$(MSBuildThisFileDirectory)ServiceEntity\EntityInformation.inl">
-      <Filter>ServerService\Entity</Filter>
-    </None>
-    <None Include="$(MSBuildThisFileDirectory)EntityTable.inl">
-      <Filter>ServerService\Entity</Filter>
-    </None>
     <None Include="$(MSBuildThisFileDirectory)PerformanceCounter\PerformanceCounter.inl">
       <Filter>ServerService\Performance</Filter>
     </None>
     <None Include="$(MSBuildThisFileDirectory)PerformanceCounter\PerformanceCounterInstance.inl">
       <Filter>ServerService\Performance</Filter>
     </None>
-    <None Include="$(MSBuildThisFileDirectory)Transaction.inl">
-      <Filter>Entity</Filter>
-    </None>
-    <None Include="$(MSBuildThisFileDirectory)PlayerEntityInformation.inl">
-      <Filter>ServerService\Entity</Filter>
-    </None>
     <None Include="$(MSBuildThisFileDirectory)ServerLog\SvrLog.inl">
       <Filter>ServerLog</Filter>
     </None>
     <None Include="$(MSBuildThisFileDirectory)ServerLog\SvrLog_Internal.inl">
       <Filter>ServerLog</Filter>
-    </None>
-    <None Include="$(MSBuildThisFileDirectory)Types\BrBaseTypes.inl">
-      <Filter>Types</Filter>
     </None>
     <None Include="$(MSBuildThisFileDirectory)GameLog\GameLog.inl">
       <Filter>GameLog</Filter>
@@ -424,9 +418,6 @@
     <None Include="C:\work\BRServerSF\Server\Lib\ServerSystem\Component\ServerComponent.inl">
       <Filter>Component</Filter>
     </None>
-    <None Include="C:\work\BRServerSF\Server\Lib\ServerSystem\ServerEntity\ServerTransaction.inl">
-      <Filter>ServerEntity</Filter>
-    </None>
     <None Include="C:\work\BRServerSF\Server\Lib\ServerSystem\ServiceEntity\Game\GameSystem.inl">
       <Filter>ServerService\Game</Filter>
     </None>
@@ -435,6 +426,27 @@
     </None>
     <None Include="C:\work\BRServerSF\Server\Lib\ServerSystem\Server\BrServer.inl">
       <Filter>Server</Filter>
+    </None>
+    <None Include="C:\work\BRServerSF\Server\Lib\ServerSystem\Entity\MasterEntity.inl">
+      <Filter>Entity</Filter>
+    </None>
+    <None Include="C:\work\BRServerSF\Server\Lib\ServerSystem\Entity\PlayerEntityInformation.inl">
+      <Filter>Entity</Filter>
+    </None>
+    <None Include="C:\work\BRServerSF\Server\Lib\ServerSystem\Entity\SimpleUserEntity.inl">
+      <Filter>Entity</Filter>
+    </None>
+    <None Include="C:\work\BRServerSF\Server\Lib\ServerSystem\Entity\Entity.inl">
+      <Filter>Entity</Filter>
+    </None>
+    <None Include="C:\work\BRServerSF\Server\Lib\ServerSystem\Transaction\MessageRoute.inl">
+      <Filter>Transaction</Filter>
+    </None>
+    <None Include="C:\work\BRServerSF\Server\Lib\ServerSystem\Transaction\Transaction.inl">
+      <Filter>Transaction</Filter>
+    </None>
+    <None Include="C:\work\BRServerSF\Server\Lib\ServerSystem\Entity\EntityInformation.inl">
+      <Filter>Entity</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>
@@ -531,18 +543,6 @@
     <ClCompile Include="$(MSBuildThisFileDirectory)ServiceEntity\MatchingServiceUtil.cpp">
       <Filter>ServerService\Matching</Filter>
     </ClCompile>
-    <ClCompile Include="$(MSBuildThisFileDirectory)ServiceEntity\EntityInformation.cpp">
-      <Filter>ServerService\Entity</Filter>
-    </ClCompile>
-    <ClCompile Include="$(MSBuildThisFileDirectory)EntityManager.cpp">
-      <Filter>ServerService\Entity</Filter>
-    </ClCompile>
-    <ClCompile Include="$(MSBuildThisFileDirectory)ServerEntity\EntityServerEntity.cpp">
-      <Filter>ServerService\Entity</Filter>
-    </ClCompile>
-    <ClCompile Include="$(MSBuildThisFileDirectory)EntityTable.cpp">
-      <Filter>ServerService\Entity</Filter>
-    </ClCompile>
     <ClCompile Include="$(MSBuildThisFileDirectory)GameLog\ChattingHistory.cpp">
       <Filter>ServerService\Game</Filter>
     </ClCompile>
@@ -564,20 +564,11 @@
     <ClCompile Include="$(MSBuildThisFileDirectory)PerformanceCounter\PerformanceCounterServer.cpp">
       <Filter>ServerService\Performance</Filter>
     </ClCompile>
-    <ClCompile Include="$(MSBuildThisFileDirectory)Transaction.cpp">
-      <Filter>Entity</Filter>
-    </ClCompile>
-    <ClCompile Include="$(MSBuildThisFileDirectory)PlayerEntityInformation.cpp">
-      <Filter>ServerService\Entity</Filter>
-    </ClCompile>
     <ClCompile Include="$(MSBuildThisFileDirectory)ServiceEntity\RankingServiceEntity.cpp">
       <Filter>ServerService\Ranking</Filter>
     </ClCompile>
     <ClCompile Include="$(MSBuildThisFileDirectory)ServiceEntity\RankingServiceTrans.cpp">
       <Filter>ServerService\Ranking</Filter>
-    </ClCompile>
-    <ClCompile Include="$(MSBuildThisFileDirectory)SvrLoopbackConnection.cpp">
-      <Filter>Entity</Filter>
     </ClCompile>
     <ClCompile Include="$(MSBuildThisFileDirectory)Google\GoogleAndroidDeveloperAPI.cpp">
       <Filter>ServerService\Google</Filter>
@@ -662,6 +653,36 @@
     </ClCompile>
     <ClCompile Include="C:\work\BRServerSF\Server\Lib\ServerSystem\Server\BrServerUtil.cpp">
       <Filter>Server</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\work\BRServerSF\Server\Lib\ServerSystem\Entity\MasterEntity.cpp">
+      <Filter>Entity</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\work\BRServerSF\Server\Lib\ServerSystem\Entity\PlayerEntityInformation.cpp">
+      <Filter>Entity</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\work\BRServerSF\Server\Lib\ServerSystem\Entity\SimpleEntity.cpp">
+      <Filter>Entity</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\work\BRServerSF\Server\Lib\ServerSystem\Entity\SimpleUserEntity.cpp">
+      <Filter>Entity</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\work\BRServerSF\Server\Lib\ServerSystem\Entity\Entity.cpp">
+      <Filter>Entity</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\work\BRServerSF\Server\Lib\ServerSystem\Entity\EntityManager.cpp">
+      <Filter>Entity</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\work\BRServerSF\Server\Lib\ServerSystem\Entity\EntityTable.cpp">
+      <Filter>Entity</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\work\BRServerSF\Server\Lib\ServerSystem\Entity\EntityTimerActions.cpp">
+      <Filter>Entity</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\work\BRServerSF\Server\Lib\ServerSystem\Transaction\Transaction.cpp">
+      <Filter>Transaction</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\work\BRServerSF\Server\Lib\ServerSystem\Entity\EntityInformation.cpp">
+      <Filter>Entity</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

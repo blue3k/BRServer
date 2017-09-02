@@ -12,12 +12,12 @@
 #include "stdafx.h"
 #include "SFTypedefs.h"
 #include "Protocol/Protocol.h"
-#include "ServerSystem/ServerEntity.h"
-#include "ServerSystem/BrServer.h"
-#include "ServerSystem/BrServerUtil.h"
-#include "ServerSystem/ServiceEntity/EntityInformation.h"
-#include "ServerSystem/ServerService/RankingServerService.h"
-#include "ServerSystem/SvrTrace.h"
+#include "ServerEntity/ServerEntity.h"
+#include "Server/BrServer.h"
+#include "Server/BrServerUtil.h"
+#include "Entity/EntityInformation.h"
+#include "Protocol/ServerService/RankingServerService.h"
+#include "SvrTrace.h"
 
 
 
@@ -26,10 +26,8 @@ namespace SF
  	namespace Svr
 	{
  		RankingServerService::RankingServerService( ServerServiceInformation* pService)
-			: ServerServiceBase(pService, Policy::IPolicyRankingServer::ID_POLICY)
+			: ServerServiceBase(pService)
 		{
-			static_assert((UINT)Policy::IPolicyRankingServer::ID_POLICY == (UINT)ID_SERVICEPOLICY,"Invalid Policy ID for a Servicebase ");
-			Assert(GetPolicyRankingServer());
 		}
 
 
@@ -39,7 +37,7 @@ namespace SF
  			Result hr;
 
 			RouteContext InRouteContext( EntityUID(GetMyServerID(),InTransactionID.GetEntityID()), GetServiceEntityUID() );
-			svrChk(GetPolicyRankingServer()->AddPlayerCmd( InRouteContext, InTransactionID, InPlayerInfo, InRankingScore ) );
+			svrChk(Policy::NetPolicyRankingServer(GetConnection()).AddPlayerCmd( InRouteContext, InTransactionID, InPlayerInfo, InRankingScore ) );
 
 		Proc_End:
 
@@ -52,7 +50,7 @@ namespace SF
  			Result hr;
 
 			RouteContext InRouteContext( EntityUID(GetMyServerID(),InTransactionID.GetEntityID()), GetServiceEntityUID() );
-			svrChk(GetPolicyRankingServer()->RemovePlayerCmd( InRouteContext, InTransactionID, InPlayerID ) );
+			svrChk(Policy::NetPolicyRankingServer(GetConnection()).RemovePlayerCmd( InRouteContext, InTransactionID, InPlayerID ) );
 
 		Proc_End:
 
@@ -65,7 +63,7 @@ namespace SF
  			Result hr;
 
 			RouteContext InRouteContext( EntityUID(GetMyServerID(),InTransactionID.GetEntityID()), GetServiceEntityUID() );
-			svrChk(GetPolicyRankingServer()->GetPlayerRankingCmd( InRouteContext, InTransactionID, InPlayerID ) );
+			svrChk(Policy::NetPolicyRankingServer(GetConnection()).GetPlayerRankingCmd( InRouteContext, InTransactionID, InPlayerID ) );
 
 		Proc_End:
 
@@ -78,7 +76,7 @@ namespace SF
  			Result hr;
 
 			RouteContext InRouteContext( EntityUID(GetMyServerID(),InTransactionID.GetEntityID()), GetServiceEntityUID() );
-			svrChk(GetPolicyRankingServer()->UpdatePlayerScoreCmd( InRouteContext, InTransactionID, InRankingScore, InPlayerInfo, InCount ) );
+			svrChk(Policy::NetPolicyRankingServer(GetConnection()).UpdatePlayerScoreCmd( InRouteContext, InTransactionID, InRankingScore, InPlayerInfo, InCount ) );
 
 		Proc_End:
 
@@ -91,7 +89,7 @@ namespace SF
  			Result hr;
 
 			RouteContext InRouteContext( EntityUID(GetMyServerID(),InTransactionID.GetEntityID()), GetServiceEntityUID() );
-			svrChk(GetPolicyRankingServer()->GetRankingCmd( InRouteContext, InTransactionID, InRankingType, InBaseRanking, InCount ) );
+			svrChk(Policy::NetPolicyRankingServer(GetConnection()).GetRankingCmd( InRouteContext, InTransactionID, InRankingType, InBaseRanking, InCount ) );
 
 		Proc_End:
 
@@ -104,7 +102,7 @@ namespace SF
  			Result hr;
 
 			RouteContext InRouteContext( EntityUID(GetMyServerID(),InTransactionID.GetEntityID()), GetServiceEntityUID() );
-			svrChk(GetPolicyRankingServer()->DebugPrintALLRankingCmd( InRouteContext, InTransactionID, InFileName ) );
+			svrChk(Policy::NetPolicyRankingServer(GetConnection()).DebugPrintALLRankingCmd( InRouteContext, InTransactionID, InFileName ) );
 
 		Proc_End:
 

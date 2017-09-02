@@ -11,12 +11,12 @@
 
 
 #include "stdafx.h"
-#include "ServerSystem/SvrConst.h"
-#include "ServerSystem/SvrTrace.h"
-#include "ServerSystem/BrServerUtil.h"
+#include "SvrConst.h"
+#include "SvrTrace.h"
+#include "Server/BrServerUtil.h"
 #include "Net/NetServerUDP.h"
 #include "Util/TimeUtil.h"
-#include "Types/BrBaseTypes.h"
+#include "Types/SFEngineTypedefs.h"
 #include "ResultCode/SFResultCodeLibrary.h"
 #include "ResultCode/SFResultCodeGame.h"
 

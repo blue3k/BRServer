@@ -13,15 +13,15 @@
 
 #include "SFTypedefs.h"
 #include "Common/ClassUtil.h"
-#include "Types/BrBaseTypes.h"
+#include "Types/SFEngineTypedefs.h"
 #include "Container/Indexing.h"
 #include "Common/HashTable.h"
 #include "Component/BrComponent.h"
 
-#include "ServerSystem/MessageRoute.h"
-#include "ServerSystem/Entity.h"
-#include "ServerSystem/BrServer.h"
-#include "ServerSystem/GameSystem.h"
+#include "Transaction/MessageRoute.h"
+#include "Entity/Entity.h"
+#include "Server/BrServer.h"
+#include "ServiceEntity/Game/GameSystem.h"
 #include "ServerSystem/GameLog/ChattingHistory.h"
 //#include "GameSystem/GameSystemComponentIDs.h"
 //

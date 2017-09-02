@@ -31,7 +31,7 @@ namespace SF {
 	//	TickTask class -  interface for task operation
 	//
 
-	class TickTask : public SF::SharedObject
+	class TickTask : public SharedObject
 	{
 	public:
 

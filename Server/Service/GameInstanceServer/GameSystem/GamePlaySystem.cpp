@@ -18,9 +18,9 @@
 #include "ResultCode/SFResultCodeSvr.h"
 #include "ResultCode/SFResultCodeGame.h"
 
-#include "ServerSystem/SvrConst.h"
-#include "ServerSystem/SvrTrace.h"
-#include "ServerSystem/BrServerUtil.h"
+#include "SvrConst.h"
+#include "SvrTrace.h"
+#include "Server/BrServerUtil.h"
 #include "ConspiracyGameInstanceSvrConst.h"
 
 #include "Protocol/Policy/GameInstanceNetPolicy.h"
@@ -235,7 +235,7 @@ namespace ConspiracyGameInstanceServer {
 
 				if( m_Werewolves[iwolf] != nullptr && m_Werewolves[iother] != nullptr )
 				{
-					auto pPolicy = m_Werewolves[iwolf]->GetPolicy<Policy::NetSvrPolicyGameInstance>();
+					auto pPolicy = m_Werewolves[iwolf]->GetInterface<Policy::NetSvrPolicyGameInstance>();
 					if (m_Werewolves[iwolf]->GetPlayerEntityUID() != 0 && pPolicy != nullptr)
 					{
 						pPolicy->PlayerRevealedS2CEvt(RouteContext(GetOwner().GetEntityUID(), m_Werewolves[iwolf]->GetPlayerEntityUID()), m_Werewolves[iother]->GetPlayerID(), m_Werewolves[iother]->GetRole(), PlayerRevealedReason::Werewolf);

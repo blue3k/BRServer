@@ -19,17 +19,17 @@
 #include "Types/BrSvrTypes.h"
 #include "Container/PageQueue.h"
 #include "Common/LocalUIDGenerator.h"
-#include "ServerSystem/Entity.h"
-#include "ServerSystem/ServerComponent.h"
-#include "ServerSystem/ServerServiceBase.h"
-#include "ServerSystem/MessageRoute.h"
+#include "Entity/Entity.h"
+#include "Component/ServerComponent.h"
+#include "ServerService/ServerServiceBase.h"
+#include "Transaction/MessageRoute.h"
 #include "Container/HashTable2.h"
 #include "Container/Indexing.h"
 
 #include "ServerSystem/ServiceEntity/EntityInformation.h"
-#include "ServerSystem/ServiceEntity/ClusteredServiceEntity.h"
+#include "ServiceEntity/ClusteredServiceEntity.h"
 
-#include "ServerSystem/PerformanceCounter/PerformanceCounter.h"
+#include "PerformanceCounter/PerformanceCounter.h"
 
 
 

@@ -13,7 +13,7 @@
 
 #include "SFTypedefs.h"
 #include "openssl/crypto.h"
-#include "Common/SystemSynchronization.h"
+#include "Thread/SystemSynchronization.h"
 #include "Container/SFArray.h"
 
 

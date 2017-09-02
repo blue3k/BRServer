@@ -11,9 +11,9 @@
 
 #include "stdafx.h"
 #include "String/StrFormat.h"
-#include "ServerSystem/SvrTrace.h"
-#include "ServerSystem/PerformanceCounter/PerformanceCounterInstance.h"
-#include "ServerSystem/PerformanceCounter/PerformanceCounterClient.h"
+#include "SvrTrace.h"
+#include "PerformanceCounter/PerformanceCounterInstance.h"
+#include "PerformanceCounter/PerformanceCounterClient.h"
 
 
 

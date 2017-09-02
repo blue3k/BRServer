@@ -11,17 +11,17 @@
 
 
 #include "stdafx.h"
-#include "ServerSystem/SvrConst.h"
-#include "ServerSystem/SvrTrace.h"
+#include "SvrConst.h"
+#include "SvrTrace.h"
 #include "Util/TimeUtil.h"
-#include "Types/BrBaseTypes.h"
+#include "Types/SFEngineTypedefs.h"
 #include "ResultCode/SFResultCodeLibrary.h"
 #include "ResultCode/SFResultCodeGame.h"
 #include "Net/Message.h"
 #include "Common/BrRandom.h"
 
-#include "ServerSystem/BrServer.h"
-#include "ServerSystem/EntityManager.h"
+#include "Server/BrServer.h"
+#include "Entity/EntityManager.h"
 
 //#include "ConspiracyGameInstanceSvrConst.h"
 //#include "ConspiracyGameInstanceServerClass.h"
@@ -31,7 +31,7 @@
 
 //#include "GameInstanceEntity.h"
 
-#include "ServerSystem/BrServer.h"
+#include "Server/BrServer.h"
 #include "ServerSystem/ServiceEntity/Game/GameInstancePlayer.h"
 #include "ServerSystem/ServerService/GameInstanceManagerService.h"
 #include "ServerSystem/ServiceEntity/Game/GameInstanceEntity.h"
@@ -355,7 +355,7 @@ namespace Svr {
 	{
 		m_GamePlayerByUID.ForeachOrder(0, GameConst::MAX_GAMEPLAYER, [&](const PlayerID& playerID, GameInstancePlayer* pPlayer)-> bool
 		{
-			auto pPolicy = pPlayer->GetPolicy<Policy::NetSvrPolicyGameInstance>();
+			auto pPolicy = pPlayer->GetInterface<Policy::NetSvrPolicyGameInstance>();
 			if (pPolicy != nullptr && pPlayer->GetPlayerEntityUID() != 0)
 				pPolicy->PlayerKickedS2CEvt(RouteContext(GetEntityUID(), pPlayer->GetPlayerEntityUID()), pPlayer->GetPlayerID());
 

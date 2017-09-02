@@ -12,16 +12,16 @@
 #pragma once
 
 #include "SFTypedefs.h"
-#include "ServerSystem/Transaction.h"
+#include "Transaction/Transaction.h"
 #include "Memory/MemoryPool.h"
 #include "Container/SFArray.h"
-#include "Types/BrBaseTypes.h"
+#include "Types/SFEngineTypedefs.h"
 #include "GameConst.h"
 #include "Net/Message.h"
 #include "Protocol/Message/PartyMatchingQueueMsgClass.h"
 #include "Protocol/Policy/PartyMatchingQueueNetPolicy.h"
-#include "ServerSystem/MessageRoute.h"
-#include "ServerSystem/ServiceEntity/ClusteredServiceEntity.h"
+#include "Transaction/MessageRoute.h"
+#include "ServiceEntity/ClusteredServiceEntity.h"
 #include "ServerSystem/ServiceEntity/MatchingQueueServiceEntity.h"
 #include "ServerSystem/ServerTransaction.h"
 
@@ -45,7 +45,7 @@ namespace Svr {
 		// Start Transaction
 		virtual Result StartTransaction();
 
-		Policy::NetSvrPolicyPartyMatchingQueue* GetPolicy()	{ return ServerEntityMessageTransaction::GetPolicy<Policy::NetSvrPolicyPartyMatchingQueue>(); }
+		Policy::NetSvrPolicyPartyMatchingQueue* GetInterface()	{ return ServerEntityMessageTransaction::GetInterface<Policy::NetSvrPolicyPartyMatchingQueue>(); }
 
 		BR_SVR_MSGTRANS_CLOSE_ARGS(RegisterPartyMatchingRes, GetRouteContext().GetSwaped(), m_MatchingTicket);
 	};
@@ -66,7 +66,7 @@ namespace Svr {
 		// Start Transaction
 		virtual Result StartTransaction();
 
-		Policy::NetSvrPolicyPartyMatchingQueue* GetPolicy()	{ return ServerEntityMessageTransaction::GetPolicy<Policy::NetSvrPolicyPartyMatchingQueue>(); }
+		Policy::NetSvrPolicyPartyMatchingQueue* GetInterface()	{ return ServerEntityMessageTransaction::GetInterface<Policy::NetSvrPolicyPartyMatchingQueue>(); }
 
 		BR_SVR_MSGTRANS_CLOSE_ARGS(RegisterPlayerMatchingRes, GetRouteContext().GetSwaped(), m_MatchingTicket);
 	};
@@ -86,7 +86,7 @@ namespace Svr {
 		// Start Transaction
 		virtual Result StartTransaction();
 
-		Policy::NetSvrPolicyPartyMatchingQueue* GetPolicy()	{ return ServerEntityMessageTransaction::GetPolicy<Policy::NetSvrPolicyPartyMatchingQueue>(); }
+		Policy::NetSvrPolicyPartyMatchingQueue* GetInterface()	{ return ServerEntityMessageTransaction::GetInterface<Policy::NetSvrPolicyPartyMatchingQueue>(); }
 
 		BR_SVR_MSGTRANS_CLOSE(UpdateMatchingEntityUIDRes, GetRouteContext().GetSwaped());
 	};
@@ -107,7 +107,7 @@ namespace Svr {
 		// Start Transaction
 		virtual Result StartTransaction();
 
-		Policy::NetSvrPolicyPartyMatchingQueue* GetPolicy()	{ return ServerEntityMessageTransaction::GetPolicy<Policy::NetSvrPolicyPartyMatchingQueue>(); }
+		Policy::NetSvrPolicyPartyMatchingQueue* GetInterface()	{ return ServerEntityMessageTransaction::GetInterface<Policy::NetSvrPolicyPartyMatchingQueue>(); }
 
 		BR_SVR_MSGTRANS_CLOSE(UnregisterMatchingRes, GetRouteContext().GetSwaped());
 	};
@@ -131,7 +131,7 @@ namespace Svr {
 		// Start Transaction
 		virtual Result StartTransaction();
 
-		Policy::NetSvrPolicyPartyMatchingQueue* GetPolicy()	{ return ServerEntityMessageTransaction::GetPolicy<Policy::NetSvrPolicyPartyMatchingQueue>(); }
+		Policy::NetSvrPolicyPartyMatchingQueue* GetInterface()	{ return ServerEntityMessageTransaction::GetInterface<Policy::NetSvrPolicyPartyMatchingQueue>(); }
 
 		BR_SVR_MSGTRANS_CLOSE_ARGS(ReserveItemRes, GetRouteContext().GetSwaped(), m_NumPlayersInTheTicket, m_MatchingTicket);
 	};
@@ -154,7 +154,7 @@ namespace Svr {
 		// Start Transaction
 		virtual Result StartTransaction();
 
-		Policy::NetSvrPolicyPartyMatchingQueue* GetPolicy()	{ return ServerEntityMessageTransaction::GetPolicy<Policy::NetSvrPolicyPartyMatchingQueue>(); }
+		Policy::NetSvrPolicyPartyMatchingQueue* GetInterface()	{ return ServerEntityMessageTransaction::GetInterface<Policy::NetSvrPolicyPartyMatchingQueue>(); }
 
 		BR_SVR_MSGTRANS_CLOSE_ARGS(ReserveItemsRes, GetRouteContext().GetSwaped(), m_NumPlayersInTheTicket, m_MatchingTicket);
 	};
@@ -175,7 +175,7 @@ namespace Svr {
 		// Start Transaction
 		virtual Result StartTransaction();
 
-		Policy::NetSvrPolicyPartyMatchingQueue* GetPolicy()	{ return ServerEntityMessageTransaction::GetPolicy<Policy::NetSvrPolicyPartyMatchingQueue>(); }
+		Policy::NetSvrPolicyPartyMatchingQueue* GetInterface()	{ return ServerEntityMessageTransaction::GetInterface<Policy::NetSvrPolicyPartyMatchingQueue>(); }
 
 		BR_SVR_MSGTRANS_CLOSE(CancelReservationRes, GetRouteContext().GetSwaped());
 	};
@@ -196,7 +196,7 @@ namespace Svr {
 		// Start Transaction
 		virtual Result StartTransaction();
 
-		Policy::NetSvrPolicyPartyMatchingQueue* GetPolicy()	{ return ServerEntityMessageTransaction::GetPolicy<Policy::NetSvrPolicyPartyMatchingQueue>(); }
+		Policy::NetSvrPolicyPartyMatchingQueue* GetInterface()	{ return ServerEntityMessageTransaction::GetInterface<Policy::NetSvrPolicyPartyMatchingQueue>(); }
 
 		BR_SVR_MSGTRANS_CLOSE_ARGS(DequeueItemRes, GetRouteContext().GetSwaped(), GetMatchingTicket(), m_matchingQueueItem.RegisterUID, m_matchingQueueItem.RegisterID, LinkedArray<MatchingPlayerInformation>((uint)countof(m_matchingQueueItem.Players), m_matchingQueueItem.NumPlayers, m_matchingQueueItem.Players));
 	};

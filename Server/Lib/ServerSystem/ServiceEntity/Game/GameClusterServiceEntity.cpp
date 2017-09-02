@@ -16,14 +16,14 @@
 #include "ServerLog/SvrLog.h"
 #include "Thread/Thread.h"
 #include "Net/NetDef.h"
-#include "ServerSystem/Entity.h"
-#include "ServerSystem/ServerComponent.h"
-#include "ServerSystem/ServerServiceBase.h"
-#include "ServerSystem/ServerEntity.h"
+#include "Entity/Entity.h"
+#include "Component/ServerComponent.h"
+#include "ServerService/ServerServiceBase.h"
+#include "ServerEntity/ServerEntity.h"
 #include "ServerSystem/ServiceEntity/Game/GameClusterServiceEntity.h"
 #include "ServerSystem/ServerService/ClusterServerService.h"
-#include "ServerSystem/SvrTrace.h"
-#include "ServerSystem/BrServerUtil.h"
+#include "SvrTrace.h"
+#include "Server/BrServerUtil.h"
 
 #include "Protocol/Message/LoginServerMsgClass.h"
 #include "ServerSystem/ServiceEntity/Game/GameClusterServiceTrans.h"
@@ -180,7 +180,7 @@ namespace Svr {
 		svrChk( m_PlayerIDMap.erase(playerID) );
 
 		if (pPlayerInfo->GetEntityUID() != playerEntityUID)
-			svrErr(ResultCode::E_INVALID_ENTITY);
+			svrErr(ResultCode::INVALID_ENTITY);
 
 		// replicate delete from my server
 		if( pPlayerInfo && pPlayerInfo->GetEntityUID().GetServerID() == GetMyServerID() )

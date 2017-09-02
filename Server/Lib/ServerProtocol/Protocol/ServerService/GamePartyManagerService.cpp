@@ -12,12 +12,12 @@
 #include "stdafx.h"
 #include "SFTypedefs.h"
 #include "Protocol/Protocol.h"
-#include "ServerSystem/ServerEntity.h"
-#include "ServerSystem/BrServer.h"
-#include "ServerSystem/BrServerUtil.h"
-#include "ServerSystem/ServiceEntity/EntityInformation.h"
-#include "ServerSystem/ServerService/GamePartyManagerService.h"
-#include "ServerSystem/SvrTrace.h"
+#include "ServerEntity/ServerEntity.h"
+#include "Server/BrServer.h"
+#include "Server/BrServerUtil.h"
+#include "Entity/EntityInformation.h"
+#include "Protocol/ServerService/GamePartyManagerService.h"
+#include "SvrTrace.h"
 
 
 
@@ -26,10 +26,8 @@ namespace SF
  	namespace Svr
 	{
  		GamePartyManagerService::GamePartyManagerService( ServerServiceInformation* pService)
-			: ServerServiceBase(pService, Policy::IPolicyGamePartyManager::ID_POLICY)
+			: ServerServiceBase(pService)
 		{
-			static_assert((UINT)Policy::IPolicyGamePartyManager::ID_POLICY == (UINT)ID_SERVICEPOLICY,"Invalid Policy ID for a Servicebase ");
-			Assert(GetPolicyGamePartyManager());
 		}
 
 
@@ -39,7 +37,7 @@ namespace SF
  			Result hr;
 
 			RouteContext InRouteContext( EntityUID(GetMyServerID(),InTransactionID.GetEntityID()), GetServiceEntityUID() );
-			svrChk(GetPolicyGamePartyManager()->CreatePartyCmd( InRouteContext, InTransactionID, InRouteHopCount, InCreator ) );
+			svrChk(Policy::NetPolicyGamePartyManager(GetConnection()).CreatePartyCmd( InRouteContext, InTransactionID, InRouteHopCount, InCreator ) );
 
 		Proc_End:
 
@@ -52,7 +50,7 @@ namespace SF
  			Result hr;
 
 			RouteContext InRouteContext( EntityUID(GetMyServerID(),InSenderEntityID), GetServiceEntityUID() );
-			svrChk(GetPolicyGamePartyManager()->PartyDeletedC2SEvt( InRouteContext, InRouteHopCount ) );
+			svrChk(Policy::NetPolicyGamePartyManager(GetConnection()).PartyDeletedC2SEvt( InRouteContext, InRouteHopCount ) );
 
 		Proc_End:
 

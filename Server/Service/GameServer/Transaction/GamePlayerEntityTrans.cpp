@@ -17,16 +17,16 @@
 #include "ResultCode/SFResultCodeGame.h"
 #include "ResultCode/SFResultCodeLogin.h"
 #include "Memory/MemoryPool.h"
-#include "Types/BrBaseTypes.h"
+#include "Types/SFEngineTypedefs.h"
 #include "GameConst.h"
 
 #include "Net/NetServerUDP.h"
 
 #include "GameServerClass.h"
-#include "ServerSystem/BrServerUtil.h"
-#include "ServerSystem/SvrTrace.h"
-#include "ServerSystem/ServerEntityManager.h"
-#include "ServerSystem/ServiceEntity/ClusterManagerServiceEntity.h"
+#include "Server/BrServerUtil.h"
+#include "SvrTrace.h"
+#include "ServerEntity/ServerEntityManager.h"
+#include "ServiceEntity/ClusterManagerServiceEntity.h"
 #include "ServerSystem/ServiceEntity/Game/GameClusterServiceEntity.h"
 #include "ServerSystem/ExternalTransaction.h"
 #include "ServerSystem/ExternalTransactionManager.h"
@@ -46,7 +46,7 @@
 #include "GamePlayerEntityTrans.h"
 #include "GameInstance/GamePlayerEntity.h"
 
-#include "ServerSystem/BrServer.h"
+#include "Server/BrServer.h"
 
 #include "GameInstance/GameEntityManager.h"
 
@@ -798,7 +798,7 @@ namespace GameServer {
 		for( ; itNotification != pDBRes->m_RowsetResult.end(); ++itNotification )
 		{
 			svrChk( pNotifySystem->AddNotification(itNotification->NotificationID, (NotificationType)itNotification->MessageID, itNotification->MessageParam0, itNotification->MessageParam1, itNotification->MessageText, itNotification->IsRead, itNotification->TimeStamp) );
-			GetPolicy()->NotifyS2CEvt(itNotification->NotificationID, (NotificationType)itNotification->MessageID, itNotification->MessageParam0, itNotification->MessageParam1, itNotification->MessageText, itNotification->IsRead, itNotification->TimeStamp );
+			GetInterface()->NotifyS2CEvt(itNotification->NotificationID, (NotificationType)itNotification->MessageID, itNotification->MessageParam0, itNotification->MessageParam1, itNotification->MessageText, itNotification->IsRead, itNotification->TimeStamp );
 		}
 
 
@@ -1018,7 +1018,7 @@ namespace GameServer {
 			svrErr(ResultCode::E_GAME_INVALID_PLAYER);
 
 		svrChk( GetMyOwner()->GetComponent<UserNotifySystem>()->AddNotification(GetNotificationID(), (NotificationType)GetMessageID(), GetMessageParam0(), GetMessageParam1(), GetMessageText(), 0, GetTimeStamp() ) );
-		svrChkPtr(pPolicy = GetPolicy<Policy::NetSvrPolicyGame>());
+		svrChkPtr(pPolicy = GetInterface<Policy::NetSvrPolicyGame>());
 		svrChk(pPolicy->NotifyS2CEvt(GetNotificationID(), GetMessageID(), GetMessageParam0(), GetMessageParam1(), GetMessageText(), 0, GetTimeStamp()));
 
 	Proc_End:
@@ -1298,7 +1298,7 @@ namespace GameServer {
 
 		svrChk(pRes->GetResult());
 
-		svrChkPtr(pPolicy = GetPolicy<Policy::NetSvrPolicyGame>());
+		svrChkPtr(pPolicy = GetInterface<Policy::NetSvrPolicyGame>());
 		svrChk(pPolicy->NotifyPlayerStatusUpdatedS2CEvt(pDBRes->PlayerID, pDBRes->LatestActiveTime, pDBRes->PlayerState != 0 ? 1 : 0));
 
 	Proc_End:
@@ -1324,7 +1324,7 @@ namespace GameServer {
 
 		svrChk( super::StartTransaction() );
 		
-		svrChkPtr(pPolicy = GetPolicy<Policy::NetSvrPolicyGame>());
+		svrChkPtr(pPolicy = GetInterface<Policy::NetSvrPolicyGame>());
 
 
 		for( uint iPlayer = 0; iPlayer < uiRequestMax; iPlayer++ )
@@ -1377,7 +1377,7 @@ namespace GameServer {
 		playerUID = GetRouteContext().GetFrom();
 
 		svrChk( Svr::GetServerComponent<Svr::ServerEntityManager>()->GetServerEntity( playerUID.GetServerID(), pServerEntity ) );
-		svrChkPtr(pTargetPolicy = pServerEntity->GetPolicy<Policy::IPolicyGameServer>());
+		svrChkPtr(pTargetPolicy = pServerEntity->GetInterface<Policy::IPolicyGameServer>());
 
 		bInGame = GetMyOwner()->GetGameInsUID() != 0 || GetMyOwner()->GetPartyUID() != 0;
 
@@ -1398,7 +1398,7 @@ namespace GameServer {
 
 		svrChk( super::StartTransaction() );
 
-		svrChkPtr(pPolicy = GetPolicy<Policy::NetSvrPolicyGame>());
+		svrChkPtr(pPolicy = GetInterface<Policy::NetSvrPolicyGame>());
 		svrChk( pPolicy->NotifyPlayerStatusUpdatedS2CEvt( GetDestPlayerID(), GetLatestActiveTime(), GetIsInGame() ) );
 
 	Proc_End:

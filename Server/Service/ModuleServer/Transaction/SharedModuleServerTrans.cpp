@@ -13,17 +13,17 @@
 #include "GameServer.h"
 #include "Net/NetServerUDP.h"
 #include "ServerSystem/BrService.h"
-#include "ServerSystem/SvrTrace.h"
-#include "ServerSystem/EntityManager.h"
-#include "ServerSystem/ServerEntityManager.h"
-#include "ServerSystem/MessageRoute.h"
+#include "SvrTrace.h"
+#include "Entity/EntityManager.h"
+#include "ServerEntity/ServerEntityManager.h"
+#include "Transaction/MessageRoute.h"
 #include "SharedModuleServerClass.h"
 #include "Memory/MemoryPool.h"
-#include "Types/BrBaseTypes.h"
+#include "Types/SFEngineTypedefs.h"
 #include "Protocol/Message/GameMsgClass.h"
 #include "Protocol/Policy/GameNetPolicy.h"
 
-#include "ServerSystem/ServiceEntity/ClusterManagerServiceEntity.h"
+#include "ServiceEntity/ClusterManagerServiceEntity.h"
 
 #include "SharedModuleServerTrans.h"
 

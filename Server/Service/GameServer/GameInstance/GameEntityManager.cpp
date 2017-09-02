@@ -12,10 +12,10 @@
 
 #include "stdafx.h"
 #include "Util/TimeUtil.h"
-#include "Types/BrBaseTypes.h"
-#include "ServerSystem/SvrConst.h"
-#include "ServerSystem/SvrTrace.h"
-#include "ServerSystem/PerformanceCounter/PerformanceCounterClient.h"
+#include "Types/SFEngineTypedefs.h"
+#include "SvrConst.h"
+#include "SvrTrace.h"
+#include "PerformanceCounter/PerformanceCounterClient.h"
 
 
 #include "GameSvrConst.h"

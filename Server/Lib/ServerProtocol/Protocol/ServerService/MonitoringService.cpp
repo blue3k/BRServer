@@ -12,12 +12,12 @@
 #include "stdafx.h"
 #include "SFTypedefs.h"
 #include "Protocol/Protocol.h"
-#include "ServerSystem/ServerEntity.h"
-#include "ServerSystem/BrServer.h"
-#include "ServerSystem/BrServerUtil.h"
-#include "ServerSystem/ServiceEntity/EntityInformation.h"
-#include "ServerSystem/ServerService/MonitoringService.h"
-#include "ServerSystem/SvrTrace.h"
+#include "ServerEntity/ServerEntity.h"
+#include "Server/BrServer.h"
+#include "Server/BrServerUtil.h"
+#include "Entity/EntityInformation.h"
+#include "Protocol/ServerService/MonitoringService.h"
+#include "SvrTrace.h"
 
 
 
@@ -26,10 +26,8 @@ namespace SF
  	namespace Svr
 	{
  		MonitoringService::MonitoringService( ServerServiceInformation* pService)
-			: ServerServiceBase(pService, Policy::IPolicyMonitoring::ID_POLICY)
+			: ServerServiceBase(pService)
 		{
-			static_assert((UINT)Policy::IPolicyMonitoring::ID_POLICY == (UINT)ID_SERVICEPOLICY,"Invalid Policy ID for a Servicebase ");
-			Assert(GetPolicyMonitoring());
 		}
 
 
@@ -38,7 +36,7 @@ namespace SF
 		{
  			Result hr;
 
-			 svrChk(GetPolicyMonitoring()->GetInstanceListCmd( InTransactionID ) );
+			 svrChk(Policy::NetPolicyMonitoring(GetConnection()).GetInstanceListCmd( InTransactionID ) );
 
 		Proc_End:
 
@@ -50,7 +48,7 @@ namespace SF
 		{
  			Result hr;
 
-			 svrChk(GetPolicyMonitoring()->RequestCounterValuesCmd( InTransactionID, InInstanceUID ) );
+			 svrChk(Policy::NetPolicyMonitoring(GetConnection()).RequestCounterValuesCmd( InTransactionID, InInstanceUID ) );
 
 		Proc_End:
 
@@ -62,7 +60,7 @@ namespace SF
 		{
  			Result hr;
 
-			 svrChk(GetPolicyMonitoring()->PerformanceCounterNewC2SEvt( InInstanceName, InInstanceUID, InNewCounters ) );
+			 svrChk(Policy::NetPolicyMonitoring(GetConnection()).PerformanceCounterNewC2SEvt( InInstanceName, InInstanceUID, InNewCounters ) );
 
 		Proc_End:
 
@@ -74,7 +72,7 @@ namespace SF
 		{
  			Result hr;
 
-			 svrChk(GetPolicyMonitoring()->PerformanceCounterFreeC2SEvt( InFreeInstances ) );
+			 svrChk(Policy::NetPolicyMonitoring(GetConnection()).PerformanceCounterFreeC2SEvt( InFreeInstances ) );
 
 		Proc_End:
 
@@ -86,7 +84,7 @@ namespace SF
 		{
  			Result hr;
 
-			 svrChk(GetPolicyMonitoring()->PerformanceCounterUpdateC2SEvt( InInstanceUID, InCounterValues ) );
+			 svrChk(Policy::NetPolicyMonitoring(GetConnection()).PerformanceCounterUpdateC2SEvt( InInstanceUID, InCounterValues ) );
 
 		Proc_End:
 

@@ -16,7 +16,7 @@
 #include "Util/Utility.h"
 #include "Util/TimeUtil.h"
 #include "ResultCode/SFResultCodeSvr.h"
-#include "ServerSystem/SvrTrace.h"
+#include "SvrTrace.h"
 
 #include "curl/curl.h"
 #include "json/json.h"

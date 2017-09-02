@@ -21,9 +21,9 @@
 #include "DB/Session.h"
 #include "DB/ShardCoordinatorDBQuery.h"
 #include "DB/QueryWorkerManager.h"
-#include "ServerSystem/BrServer.h"
-#include "ServerSystem/EntityTable.h"
-#include "ServerSystem/BrServerUtil.h"
+#include "Server/BrServer.h"
+#include "Entity/EntityTable.h"
+#include "Server/BrServerUtil.h"
 
 namespace SF {
 namespace DB {
@@ -34,6 +34,10 @@ namespace DB {
 	//
 	
 	DBClusterManager::DBClusterManager()
+		: m_MemoryManager("DBClusterManager", GetSystemMemoryManager())
+		, m_ShardingBucket(m_MemoryManager)
+		, m_PendingQueries(m_MemoryManager)
+		, m_ResultQueries(m_MemoryManager)
 	{
 	}
 
@@ -53,7 +57,7 @@ namespace DB {
 
 
 		// Clear if something is remain
-		if (m_ShardingBucket.GetSize() > 0)
+		if (m_ShardingBucket.size() > 0)
 		{
 			m_ShardingBucket.Foreach([](DataSource* dataSource) -> Result {
 				if (dataSource != nullptr)
@@ -187,7 +191,7 @@ namespace DB {
 		pDataSource = nullptr;
 		
 		// modulate by partitioning size
-		uint partition = (uint)(partitioningKey % m_ShardingBucket.GetSize());
+		uint partition = (uint)(partitioningKey % m_ShardingBucket.size());
 
 		dbChkPtr( pDataSource = m_ShardingBucket[partition] );
 
@@ -415,7 +419,7 @@ Proc_End:
 			if (!(hr))
 			{
 				dbTrace(TRC_ROUTING, "Failed to route a message hr:{0} msgID:{1}, target entityID:{2}, query:{3}", hr, msgID, entityID, queryName);
-				hr = ResultCode::E_INVALID_ENTITY;
+				hr = ResultCode::INVALID_ENTITY;
 				goto Proc_End;
 			}
 		}
@@ -455,7 +459,7 @@ Proc_End:
 
 		if (!pDBSource->GetOpened())
 		{
-			dbErr(ResultCode::E_NOT_INITIALIZED);
+			dbErr(ResultCode::NOT_INITIALIZED);
 		}
 
 		// Get Session
