@@ -17,7 +17,7 @@
 #include "Thread/Thread.h"
 #include "Net/NetDef.h"
 #include "ServerEntity/ServerEntity.h"
-#include "ServerSystem/MessageRoute.h"
+#include "Transaction/MessageRoute.h"
 
 
 namespace SF {

@@ -57,7 +57,7 @@ namespace Svr {
 		return Entity::ClearEntity();
 	}
 
-	Result SimpleEntity::FindActiveTransaction(const TransactionID& transID, Transaction* &pTransaction)
+	Result SimpleEntity::FindActiveTransaction(const TransactionID& transID, TransactionPtr &pTransaction)
 	{
 		if (m_pCurTran != nullptr && m_pCurTran->GetTransID() == transID)
 		{
@@ -129,7 +129,7 @@ namespace Svr {
 	}
 
 
-	Result SimpleEntity::ProcessTransactionResult(Transaction *pCurTran, TransactionResult* &pTranRes)
+	Result SimpleEntity::ProcessTransactionResult(TransactionPtr &pCurTran, TransactionResult* &pTranRes)
 	{
 		Result hr = ResultCode::SUCCESS;
 		Result hrTem = ResultCode::SUCCESS;

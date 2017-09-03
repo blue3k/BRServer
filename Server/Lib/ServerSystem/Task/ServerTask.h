@@ -39,6 +39,8 @@ namespace SF {
 
 	private:
 
+		MemoryManager m_MemoryManager;
+
 		// Work load for
 		SysUInt		m_TaskLoad;
 
@@ -50,7 +52,7 @@ namespace SF {
 		TaskWorker	*m_pTaskWorker;
 
 		// TickTask UID
-		UINT32		m_TaskID;
+		uint32_t		m_TaskID;
 
 		// task retry count
 		uint		m_RetryCount;
@@ -67,9 +69,11 @@ namespace SF {
 		TickTask();
 		virtual ~TickTask();
 
+		IMemoryManager& GetMemoryManager() { return m_MemoryManager; }
+
 		// Get TickTask ID
-		inline UINT32 GetTaskID() const;
-		void SetTaskID(UINT32 uiTaskID);
+		inline uint32_t GetTaskID() const;
+		void SetTaskID(uint32_t uiTaskID);
 
 		// Get TickTask group
 		inline SysUInt GetTaskGroupID() const;

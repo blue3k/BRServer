@@ -59,13 +59,13 @@ namespace Svr {
 		// clear transaction
 		virtual Result ClearEntity() override;
 
-		virtual Result FindActiveTransaction(const TransactionID& transID, Transaction* &pTransaction) override;
+		virtual Result FindActiveTransaction(const TransactionID& transID, TransactionPtr &pTransaction) override;
 
 		// Update entity process
 		// Run the task
 		virtual Result TickUpdate(TimerAction *pAction = nullptr) override;
 
-		virtual Result ProcessTransactionResult(Transaction *pCurTran, TransactionResult* &pTransRes) override;
+		virtual Result ProcessTransactionResult(TransactionPtr &pCurTran, TransactionResult* &pTransRes) override;
 
 		virtual uint GetActiveTransactionCount() override;
 

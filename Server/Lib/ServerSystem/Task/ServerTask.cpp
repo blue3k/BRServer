@@ -34,7 +34,8 @@ namespace SF {
 
 	// Constructor
 	TickTask::TickTask()
-		: m_TaskLoad(1)
+		: m_MemoryManager("TickTask", GetSystemMemoryManager())
+		, m_TaskLoad(1)
 		, m_TaskGroupIdx(0)
 		, m_pTaskManager(nullptr)
 		, m_pTaskWorker(nullptr)
@@ -53,7 +54,7 @@ namespace SF {
 	}
 
 
-	void TickTask::SetTaskID(UINT32 uiTaskID)
+	void TickTask::SetTaskID(uint32_t uiTaskID)
 	{
 		Assert(uiTaskID != 0);
 		m_TaskID = uiTaskID;

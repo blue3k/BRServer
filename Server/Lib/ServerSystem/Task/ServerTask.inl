@@ -19,7 +19,7 @@
 
 
 // Get TickTask ID
-UINT32 TickTask::GetTaskID() const
+uint32_t TickTask::GetTaskID() const
 {
 	return m_TaskID;
 }

@@ -337,7 +337,7 @@ namespace Svr
 	{
 		Result hr = ResultCode::SUCCESS;
 
-		Transaction *pCurTran = nullptr;
+		TransactionPtr pCurTran;
 		MessageDataPtr pMsg;
 		Net::ConnectionUDPBase* pConn = nullptr;
 		auto pMyConn = GetConnection();

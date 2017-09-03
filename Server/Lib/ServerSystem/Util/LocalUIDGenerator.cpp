@@ -25,7 +25,7 @@ namespace SF {
 
 		uid.Time = Util::Time.GetRawUTCSec().time_since_epoch().count();
 		// we are going to use only 32 least significant bit, This should be enough while less than 4G IDs are generated for a sec.
-		uid.ID = (UINT32)m_CounterForID.fetch_add(1, std::memory_order_relaxed) + 1;
+		uid.ID = (uint32_t)m_CounterForID.fetch_add(1, std::memory_order_relaxed) + 1;
 
 		return uid;
 	}

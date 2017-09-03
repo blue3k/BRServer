@@ -48,13 +48,13 @@ namespace SF {
 	//
 
 	Entity::Entity( uint uiTransQueueSize, uint TransResQueueSize )
-		: m_MemoryManager("EntityHeap", GetSystemMemoryManager())
+		: TickTask()
 		, m_State(EntityState::FREE)
 		, m_EntityUID(0)
 		, m_ulCreateTime(TimeStampMS::min())
 		, m_lTransIdx(0)
-		, m_transactionQueue(m_MemoryManager, uiTransQueueSize)
-		, m_HandlerTable(m_MemoryManager)
+		, m_transactionQueue(GetMemoryManager(), uiTransQueueSize)
+		, m_HandlerTable(GetMemoryManager())
 	{
 
 	}
@@ -313,7 +313,7 @@ namespace SF {
 		MessageResult *pMsgRes = nullptr;
 		TransactionResult *pTransRes = nullptr;
 		auto pMySvr = BrServer::GetInstance();
-		Transaction *pTransaction = nullptr;
+		TransactionPtr pTransaction;
 
 		svrChkPtr(pMySvr);
 		svrMem( pMsgRes = new(GetMemoryManager()) MessageResult );

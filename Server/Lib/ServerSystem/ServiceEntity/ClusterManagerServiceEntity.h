@@ -47,7 +47,7 @@ namespace Svr {
 		enum { ComponentID = ServerComponentID_ClusterManagerService };
 
 		// Server Entity table
-		typedef Hash::HashTable<	uint, ClusteredServiceEntity*
+		typedef HashTable<	uint, ClusteredServiceEntity*
 									> 
 				ClusterIDMap;
 

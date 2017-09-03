@@ -35,7 +35,7 @@ namespace SF {
 
 	struct ServerTaskEvent
 	{
-		enum class EventTypes : UINT32
+		enum class EventTypes : uint32_t
 		{
 			NONE,
 			POKE_TICK_EVENT,

@@ -43,6 +43,7 @@ namespace SF {
 		, m_PendingAddTask(GetSystemMemoryManager(), iQueuePageSize)
 		, m_PendingRemoveTask(GetSystemMemoryManager(), iQueuePageSize)
 		, m_TaskList(GetSystemMemoryManager())
+		, m_TimeScheduler(GetSystemMemoryManager())
 	{
 	}
 

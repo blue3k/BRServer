@@ -48,7 +48,7 @@ namespace SF
 		if (!(StrUtil::StringCpyEx(pBuff, iBuffLen, ":")))
 			return ResultCode::FAIL;
 
-		if (!(_IToA((UINT32)Data.GetTransactionIndex(), pBuff, iBuffLen, 10, -1)))
+		if (!(_IToA((uint32_t)Data.GetTransactionIndex(), pBuff, iBuffLen, 10, -1)))
 			return ResultCode::FAIL;
 
 		return ResultCode::SUCCESS;
@@ -104,13 +104,13 @@ namespace SF
 	Result ToString(char*& pBuff, INT& iBuffLen, const LocalUID& Data, int Option)
 	{
 		unused(Option);
-		if (!(_IToA((UINT32)Data.Time, pBuff, iBuffLen, 10, -1)))
+		if (!(_IToA((uint32_t)Data.Time, pBuff, iBuffLen, 10, -1)))
 			return ResultCode::FAIL;
 
 		if (!(StrUtil::StringCpyEx(pBuff, iBuffLen, ":")))
 			return ResultCode::FAIL;
 
-		if (!(_IToA((UINT32)Data.ID, pBuff, iBuffLen, 10, -1)))
+		if (!(_IToA((uint32_t)Data.ID, pBuff, iBuffLen, 10, -1)))
 			return ResultCode::FAIL;
 
 		return ResultCode::SUCCESS;

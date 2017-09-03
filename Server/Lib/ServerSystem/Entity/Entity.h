@@ -59,7 +59,6 @@ namespace Svr{
 
 	private:
 
-		MemoryManager m_MemoryManager;
 
 
 		// Entity state
@@ -98,8 +97,6 @@ namespace Svr{
 	public:
 		Entity( uint uiTransQueueSize, uint TransResQueueSize );
 		virtual ~Entity();
-
-		IMemoryManager& GetMemoryManager() { return m_MemoryManager; }
 
 		// Get Entity State
 		EntityState GetEntityState() { return m_State; }
@@ -171,7 +168,7 @@ namespace Svr{
 		//	Transaction handling
 		//
 
-		virtual Result FindActiveTransaction(const TransactionID& transID, Transaction* &pTransaction) = 0;
+		virtual Result FindActiveTransaction(const TransactionID& transID, TransactionPtr &pTransaction) = 0;
 
 		virtual uint GetActiveTransactionCount() = 0;
 
@@ -182,7 +179,7 @@ namespace Svr{
 		// Pending transaction result
 		virtual Result PendingTransactionResult( TransactionResult* &pTransRes );
 
-		virtual Result ProcessTransactionResult(Transaction *pCurTran, TransactionResult* &pTransRes) = 0;
+		virtual Result ProcessTransactionResult(TransactionPtr &pCurTran, TransactionResult* &pTransRes) = 0;
 
 
 	};

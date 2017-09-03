@@ -45,12 +45,11 @@ namespace Svr {
 
 	ServerEntity::ServerEntity( uint uiTransQueueSize, uint TransResQueueSize )
 		: MasterEntity( uiTransQueueSize, TransResQueueSize)
+		, m_RecvMessageQueue(GetMemoryManager())
 		, m_ServerID(0)
 		, m_bIsInitialConnect(true)
 		, m_ReceivedServerStatus(false)
 		, m_ServerUpTime(TimeStampSec::min())
-		, m_pConnRemote(nullptr)
-		, m_pConnLocal(nullptr)
 		, m_LocalConnectionRetryWait(Svr::Const::REMOTE_CONNECTION_RETRY)
 	{
 	}
@@ -72,11 +71,9 @@ namespace Svr {
 
 		pConn->SetEventHandler(this);
 
-		svrChk(pConn->CreatePolicy(PROTOCOLID_SERVER));
-		svrChk(pConn->CreatePolicy(PROTOCOLID_SVR_SERVER));
-
-		if (m_ServerID == 0 && pConn->GetConnectionInfo().RemoteID != 0)
-			m_ServerID = (ServerID)pConn->GetConnectionInfo().RemoteID;
+		// Server instance uses serverid as peerID
+		if (m_ServerID == 0 && pConn->GetRemoteInfo().PeerID != 0)
+			m_ServerID = (ServerID)pConn->GetRemoteInfo().PeerID;
 
 		if(pConn->GetNet() != nullptr)
 			pConn->GetNet()->TakeOverConnection((Net::Connection*)pConn);
@@ -427,7 +424,7 @@ namespace Svr {
 
 	Result ServerEntity::OnEventTask(const ServerTaskEvent& eventTask)
 	{
-		Transaction *pCurTran = nullptr;
+		TransactionPtr pCurTran;
 		MessageDataPtr pMsg;
 		SharedPointerT<Net::Connection> pMyConn;
 

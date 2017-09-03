@@ -50,7 +50,7 @@ namespace Svr {
 	bool TimerActionTransaction::OnTimerTick()
 	{
 		SharedPointerT<Transaction> pTransPtr;
-		Transaction* pTrans;
+		TransactionPtr pTrans;
 		m_pTrans.GetSharedPointer(pTransPtr);
 
 		ClearTime();

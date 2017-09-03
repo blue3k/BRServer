@@ -124,7 +124,7 @@ namespace Svr
 		return Entity::ClearEntity();
 	}
 
-	Result MasterEntity::FindActiveTransaction(const TransactionID& transID, Transaction* &pTransaction)
+	Result MasterEntity::FindActiveTransaction(const TransactionID& transID, TransactionPtr &pTransaction)
 	{
 		if (m_pExclusiveTransaction != nullptr && m_pExclusiveTransaction->GetTransID() == transID)
 		{
@@ -153,10 +153,9 @@ namespace Svr
 	Result MasterEntity::TickUpdate(TimerAction *pAction)
 	{
 		Result hr = ResultCode::SUCCESS;
-		Transaction* pNewTran = nullptr;
+		TransactionPtr pNewTran;
 		ThreadID currentThreadID = ThisThread::GetThreadID();
 		TimeStampMS nextTick = TimeStampMS::max();
-		TransactionPtr curTrans;
 
 		if (m_activeTransactionScheduler.GetWorkingThreadID() == ThreadID())
 		{
@@ -200,31 +199,29 @@ namespace Svr
 			pNewTran->SetTransID( transID );
 
 
-			curTrans = pNewTran;
-			pNewTran = nullptr;
 
-			ProcessTransaction(curTrans);
+			ProcessTransaction(pNewTran);
 
-			if (curTrans == nullptr)
+			if (pNewTran == nullptr)
 			{
 				continue;
 			}
 
-			if (curTrans->IsExclusive())
+			if (pNewTran->IsExclusive())
 			{
-				m_pExclusiveTransaction = curTrans;
+				m_pExclusiveTransaction = pNewTran;
 			}
 			else
 			{
-				svrChk(m_activeTrans.Insert(curTrans->GetTransID().GetTransactionIndex(), curTrans));
+				svrChk(m_activeTrans.Insert(pNewTran->GetTransID().GetTransactionIndex(), pNewTran));
 			}
 
-			auto timerAction = new TimerActionTransaction(curTrans);
-			curTrans->SetTimerAction(timerAction);
-			timerAction->SetNextTickTime(curTrans);
+			auto timerAction = new TimerActionTransaction(pNewTran);
+			pNewTran->SetTimerAction(timerAction);
+			timerAction->SetNextTickTime(pNewTran);
 			svrChk(m_activeTransactionScheduler.AddTimerAction(currentThreadID, timerAction));
 
-			curTrans = nullptr;
+			pNewTran = nullptr;
 		}
 
 		ValidateTransactionCount();
@@ -274,13 +271,13 @@ namespace Svr
 
 	Proc_End:
 
-		if(curTrans != nullptr)
-			ReleaseTransaction(curTrans);
+		if(pNewTran != nullptr)
+			ReleaseTransaction(pNewTran);
 
 		return hr;
 	}
 	
-	Result MasterEntity::ProcessTransactionResult(Transaction *pCurTran, TransactionResult* &pTransRes)
+	Result MasterEntity::ProcessTransactionResult(TransactionPtr &pCurTran, TransactionResult* &pTransRes)
 	{
 		Result hr = ResultCode::SUCCESS;
 		Result hrTem = ResultCode::SUCCESS;
@@ -356,7 +353,7 @@ namespace Svr
 	Result MasterEntity::OnEventTask(const ServerTaskEvent& eventTask)
 	{
 		Result hr = ResultCode::SUCCESS;
-		Transaction *pCurTran = nullptr;
+		TransactionPtr pCurTran;
 		SharedPointerT<Net::Connection> pMyConn;
 
 		switch (eventTask.EventType)

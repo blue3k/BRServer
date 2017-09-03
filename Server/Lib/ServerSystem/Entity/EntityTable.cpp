@@ -104,7 +104,7 @@ namespace Svr {
 
 		Proc_End:
 
-			Util::SafeRelease(pRes);
+			Util::SafeDelete(pRes);
 
 			return hr;
 		}
