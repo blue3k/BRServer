@@ -84,7 +84,7 @@ namespace GameServer {
 
 		if( super::GetPlayerID() == 0 )
 		{
-			svrErr(ResultCode::E_INVALID_PLAYERID);
+			svrErr(ResultCode::INVALID_PLAYERID);
 		}
 
 		if( (Svr::GetServerComponent<Svr::EntityManager>()->FindEntity(super::GetRouteContext().GetTo(), pEntity ))
@@ -95,7 +95,7 @@ namespace GameServer {
 			// If a login server has invalid login session information from the DB. the player ID will not be match
 			if( pPlayerEntity->GetPlayerID() != super::GetPlayerID() )
 			{
-				super::CloseTransaction(ResultCode::E_INVALID_PLAYERID);
+				super::CloseTransaction(ResultCode::INVALID_PLAYERID);
 				goto Proc_End;
 			}
 

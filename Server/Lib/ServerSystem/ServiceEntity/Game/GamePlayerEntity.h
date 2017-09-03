@@ -56,7 +56,7 @@ namespace Svr {
 	//	Game Instance entity class
 	//
 
-	class GamePlayerEntity : public SimpleUserEntity, public MemoryPoolObject<GamePlayerEntity>
+	class GamePlayerEntity : public SimpleUserEntity
 	{
 	public:
 

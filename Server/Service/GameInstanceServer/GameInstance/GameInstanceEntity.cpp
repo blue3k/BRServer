@@ -74,18 +74,18 @@ namespace ConspiracyGameInstanceServer {
 
 		////////////////////////////////////////////////////////////////////////////////////////////////////
 		// To game instance
-		BR_ENTITY_MESSAGE(Message::GameInstance::DeleteGameC2SEvt) { svrMemReturn(pNewTrans = new GameEntityTransDeleteGame(pMsgData)); return ResultCode::SUCCESS; } );
-		BR_ENTITY_MESSAGE(Message::GameInstance::JoinGameCmd) { svrMemReturn(pNewTrans = new GameEntityTransJoinGame(pMsgData)); return ResultCode::SUCCESS; } );
-		BR_ENTITY_MESSAGE(Message::GameInstance::LeaveGameCmd) { svrMemReturn(pNewTrans = new GameEntityTransLeaveGame(pMsgData)); return ResultCode::SUCCESS; } );
-		BR_ENTITY_MESSAGE(Message::GameInstance::KickPlayerCmd) { svrMemReturn(pNewTrans = new GameEntityTransKickPlayer(pMsgData)); return ResultCode::SUCCESS; } );
-		BR_ENTITY_MESSAGE(Message::GameInstance::AssignRoleCmd) { svrMemReturn(pNewTrans = new GameEntityTransAssignRole(pMsgData)); return ResultCode::SUCCESS; } );
-		BR_ENTITY_MESSAGE(Message::GameInstance::ChatMessageC2SEvt) { svrMemReturn(pNewTrans = new GameEntityTransChatMessage(pMsgData)); return ResultCode::SUCCESS; } );
-		BR_ENTITY_MESSAGE(Message::GameInstance::VoteGameAdvanceCmd) { svrMemReturn(pNewTrans = new GameEntityTransVoteGameAdvance(pMsgData)); return ResultCode::SUCCESS; } );
-		BR_ENTITY_MESSAGE(Message::GameInstance::VoteCmd) { svrMemReturn(pNewTrans = new GameEntityTransVote(pMsgData)); return ResultCode::SUCCESS; } );
-		BR_ENTITY_MESSAGE(Message::GameInstance::AdvanceGameCmd) { svrMemReturn(pNewTrans = new GameEntityTransAdvanceGame(pMsgData)); return ResultCode::SUCCESS; } );
-		BR_ENTITY_MESSAGE(Message::GameInstance::GamePlayAgainCmd) { svrMemReturn(pNewTrans = new GameEntityTransGamePlayAgain(pMsgData)); return ResultCode::SUCCESS; } );
-		BR_ENTITY_MESSAGE(Message::GameInstance::GameRevealPlayerCmd) { svrMemReturn(pNewTrans = new GameEntityTransGameRevealPlayer(pMsgData)); return ResultCode::SUCCESS; } );
-		BR_ENTITY_MESSAGE(Message::GameInstance::GamePlayerReviveCmd) { svrMemReturn(pNewTrans = new GameEntityTransGamePlayerRevive(pMsgData)); return ResultCode::SUCCESS; } );
+		BR_ENTITY_MESSAGE(Message::GameInstance::DeleteGameC2SEvt)				{ svrMemReturn(pNewTrans = new(GetMemoryManager()) GameEntityTransDeleteGame(pMsgData)); return ResultCode::SUCCESS; } );
+		BR_ENTITY_MESSAGE(Message::GameInstance::JoinGameCmd)					{ svrMemReturn(pNewTrans = new(GetMemoryManager()) GameEntityTransJoinGame(pMsgData)); return ResultCode::SUCCESS; } );
+		BR_ENTITY_MESSAGE(Message::GameInstance::LeaveGameCmd)					{ svrMemReturn(pNewTrans = new(GetMemoryManager()) GameEntityTransLeaveGame(pMsgData)); return ResultCode::SUCCESS; } );
+		BR_ENTITY_MESSAGE(Message::GameInstance::KickPlayerCmd)					{ svrMemReturn(pNewTrans = new(GetMemoryManager()) GameEntityTransKickPlayer(pMsgData)); return ResultCode::SUCCESS; } );
+		BR_ENTITY_MESSAGE(Message::GameInstance::AssignRoleCmd)					{ svrMemReturn(pNewTrans = new(GetMemoryManager()) GameEntityTransAssignRole(pMsgData)); return ResultCode::SUCCESS; } );
+		BR_ENTITY_MESSAGE(Message::GameInstance::ChatMessageC2SEvt)				{ svrMemReturn(pNewTrans = new(GetMemoryManager()) GameEntityTransChatMessage(pMsgData)); return ResultCode::SUCCESS; } );
+		BR_ENTITY_MESSAGE(Message::GameInstance::VoteGameAdvanceCmd)			{ svrMemReturn(pNewTrans = new(GetMemoryManager()) GameEntityTransVoteGameAdvance(pMsgData)); return ResultCode::SUCCESS; } );
+		BR_ENTITY_MESSAGE(Message::GameInstance::VoteCmd)						{ svrMemReturn(pNewTrans = new(GetMemoryManager()) GameEntityTransVote(pMsgData)); return ResultCode::SUCCESS; } );
+		BR_ENTITY_MESSAGE(Message::GameInstance::AdvanceGameCmd)				{ svrMemReturn(pNewTrans = new(GetMemoryManager()) GameEntityTransAdvanceGame(pMsgData)); return ResultCode::SUCCESS; } );
+		BR_ENTITY_MESSAGE(Message::GameInstance::GamePlayAgainCmd)				{ svrMemReturn(pNewTrans = new(GetMemoryManager()) GameEntityTransGamePlayAgain(pMsgData)); return ResultCode::SUCCESS; } );
+		BR_ENTITY_MESSAGE(Message::GameInstance::GameRevealPlayerCmd)			{ svrMemReturn(pNewTrans = new(GetMemoryManager()) GameEntityTransGameRevealPlayer(pMsgData)); return ResultCode::SUCCESS; } );
+		BR_ENTITY_MESSAGE(Message::GameInstance::GamePlayerReviveCmd)			{ svrMemReturn(pNewTrans = new(GetMemoryManager()) GameEntityTransGamePlayerRevive(pMsgData)); return ResultCode::SUCCESS; } );
 	}
 
 	GameInstanceEntity::~GameInstanceEntity()
@@ -262,7 +262,7 @@ namespace ConspiracyGameInstanceServer {
 		GamePlayer* pGamePlayer = nullptr;
 
 		if( !(FindPlayer( playerID, pGamePlayer )) )
-			return ResultCode::E_INVALID_PLAYERID;
+			return ResultCode::INVALID_PLAYERID;
 
 		playerIndex = pGamePlayer->GetIndex();
 		return ResultCode::SUCCESS;
@@ -271,7 +271,7 @@ namespace ConspiracyGameInstanceServer {
 	Result GameInstanceEntity::GetPlayerByIndex( INT playerIndex, GamePlayer* &pGamePlayer )
 	{
 		if( playerIndex < 0 || playerIndex >= (INT)GetMaxPlayer() )
-			return ResultCode::E_INVALID_PLAYERID;
+			return ResultCode::INVALID_PLAYERID;
 
 		pGamePlayer = m_PlayerByIndex[playerIndex];
 
@@ -281,7 +281,7 @@ namespace ConspiracyGameInstanceServer {
 
 	Result GameInstanceEntity::CreatePlayerInstance(const PlayerInformation& playerInfo, Svr::GameInstancePlayer* &pPlayer)
 	{
-		pPlayer = new GamePlayer(this, playerInfo);
+		pPlayer = new(GetMemoryManager()) GamePlayer(this, playerInfo);
 
 		return pPlayer != nullptr ? ResultCode::SUCCESS : ResultCode::OUT_OF_MEMORY;
 	}

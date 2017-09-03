@@ -66,7 +66,7 @@ namespace ConspiracyGameInstanceServer {
 		Ghost,		// dead
 	};
 
-	class GamePlayer : public Svr::GameInstancePlayer, public MemoryPoolObject<GamePlayer>
+	class GamePlayer : public Svr::GameInstancePlayer
 	{
 	public:
 		typedef Svr::GameInstancePlayer super;

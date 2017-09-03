@@ -51,7 +51,7 @@ namespace Svr {
 	public:
 
 		// Queue item
-		struct QueueItem : public MatchingQueueItem, public MemoryPoolObject<QueueItem>
+		struct QueueItem : public MatchingQueueItem
 		{
 			// Queue Item ID
 			LocalUID		QueueItemID;

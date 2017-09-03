@@ -64,12 +64,12 @@ namespace Svr {
 		// public network
 		svrChkPtr(m_PublicNetSocket);
 
-		svrMem(m_pNetPublic = new Net::ServerMUDP(BrServer::GetInstance()->GetServerUID(), NetClass::Game));
+		svrMem(m_pNetPublic = new(GetMemoryManager()) Net::ServerMUDP(BrServer::GetInstance()->GetServerUID(), NetClass::Game));
 		svrChk(m_pNetPublic->HostOpen(NetClass::Game, m_PublicNetSocket->IPV6.c_str(), m_PublicNetSocket->Port));
 
 
 		// Register game cluster as a slave
-		svrMem(pGameService = new Svr::GameClusterServiceEntity(m_GameID, m_PublicNetSocket, ClusterMembership::Slave));
+		svrMem(pGameService = new(GetMemoryManager()) Svr::GameClusterServiceEntity(m_GameID, m_PublicNetSocket, ClusterMembership::Slave));
 		svrChk(GetServerComponent<Svr::EntityManager>()->AddEntity(EntityFaculty::Service, pGameService));
 		svrChk(GetServerComponent<Svr::ClusterManagerServiceEntity>()->AddClusterServiceEntity(pGameService));
 		svrChk(AddServerComponent(pGameService));

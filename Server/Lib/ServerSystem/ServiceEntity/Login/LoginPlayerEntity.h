@@ -21,7 +21,7 @@
 #include "Entity/SimpleUserEntity.h"
 #include "GameConst.h"
 #include "Types/BrGameTypes.h"
-#include "Common/GlobalUIDGenerator.h"
+#include "Util/GlobalUIDGenerator.h"
 
 
 
@@ -48,7 +48,7 @@ namespace Svr {
 	//	Game Instance entity class
 	//
 
-	class LoginPlayerEntity : public SimpleUserEntity, public MemoryPoolObject<LoginPlayerEntity>
+	class LoginPlayerEntity : public SimpleUserEntity
 	{
 	public:
 

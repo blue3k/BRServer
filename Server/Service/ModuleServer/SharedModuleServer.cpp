@@ -46,9 +46,9 @@ int main(int numArg, const char* argc[])
 
 
 	Result hr = ResultCode::SUCCESS;
-	SharedPointerT<BR::SharedModuleServer::SharedModuleServer> pServerInstance;
+	SharedPointerT<SharedModuleServer::SharedModuleServer> pServerInstance;
 
-	svrChk(BR::Svr::Service::ServicePrepare());
+	svrChk(Svr::Service::ServicePrepare());
 
 	svrChk(LibComponentManager::GetInstance().AddComponent<LibComponentDefault>());
 	svrChk(LibComponentManager::GetInstance().AddComponent<LibComponentTrace>());
@@ -58,10 +58,10 @@ int main(int numArg, const char* argc[])
 	svrChk(LibComponentManager::GetInstance().InitializeComponents());
 
 
-	pServerInstance = SharedPointerT<BR::SharedModuleServer::SharedModuleServer>(new BR::SharedModuleServer::SharedModuleServer );
+	pServerInstance = SharedPointerT<SharedModuleServer::SharedModuleServer>(new(GetSystemMemoryManager()) SharedModuleServer::SharedModuleServer );
 
 
-	svrChk(BR::Svr::Service::ServiceRun((BR::SharedModuleServer::SharedModuleServer*)pServerInstance));
+	svrChk(Svr::Service::ServiceRun((SharedModuleServer::SharedModuleServer*)pServerInstance));
 
 
 Proc_End:
@@ -71,7 +71,7 @@ Proc_End:
 	{
 		pServerInstance->TerminateEntity();
 		pServerInstance->OnRemovedFromTaskManager(nullptr);
-		pServerInstance = SharedPointerT<BR::SharedModuleServer::SharedModuleServer>();
+		pServerInstance = SharedPointerT<SharedModuleServer::SharedModuleServer>();
 	}
 
 	LibComponentManager::GetInstance().TerminateComponents();

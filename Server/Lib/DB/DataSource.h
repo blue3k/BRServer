@@ -35,6 +35,8 @@ namespace DB {
 
 	protected:
 
+		IMemoryManager& m_MemoryManager;
+
 		// service connection string
 		String			m_strConnectionString;
 		// DB Name
@@ -51,8 +53,13 @@ namespace DB {
 		StackPool			m_SessionPool;
 
 	public:
-		DataSource(): m_Opened(false) {}
+		DataSource(IMemoryManager& memMgr)
+			: m_MemoryManager(memMgr)
+			, m_Opened(false)
+		{}
 		virtual ~DataSource() {}
+
+		IMemoryManager& GetMemoryManager() { return m_MemoryManager; }
 
 		bool GetOpened() { return m_Opened; }
 

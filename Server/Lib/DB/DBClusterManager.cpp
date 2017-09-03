@@ -63,7 +63,7 @@ namespace DB {
 				if (dataSource != nullptr)
 				{
 					dataSource->CloseDBSource();
-					delete dataSource;
+					IMemoryManager::Delete(dataSource);
 				}
 				return ResultCode::SUCCESS;
 			});
@@ -75,7 +75,7 @@ namespace DB {
 		for( uint part =0; part < m_PartitioningCount; part++)
 		{
 			DataSource *pDBSource = nullptr;
-			dbChk( Factory::GetInstance().CreateDataSource(pDBSource) );
+			dbChk( Factory::GetInstance().CreateDataSource(GetMemoryManager(), pDBSource) );
 			dbChk( m_ShardingBucket.push_back( pDBSource ) );
 		}
 
@@ -95,7 +95,7 @@ namespace DB {
 			if (dataSource != nullptr)
 			{
 				dataSource->CloseDBSource();
-				delete dataSource;
+				IMemoryManager::Delete(dataSource);
 			}
 			return ResultCode::SUCCESS;
 		});
@@ -119,7 +119,7 @@ namespace DB {
 			return ResultCode::SUCCESS_FALSE;
 		}
 
-		auto pQuery = new QueryGetShardListCmd();
+		auto pQuery = new(GetMemoryManager()) QueryGetShardListCmd();
 
 		pQuery->SetPartitioningKey(0);
 		pQuery->SetTransaction(TransactionID());
@@ -162,7 +162,7 @@ namespace DB {
 
 		if (pDBSource == nullptr)
 		{
-			dbChk(Factory::GetInstance().CreateDataSource(pDBSource));
+			dbChk(Factory::GetInstance().CreateDataSource(GetMemoryManager(), pDBSource));
 			m_ShardingBucket[partitioningID] = pDBSource;
 		}
 

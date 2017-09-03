@@ -90,7 +90,7 @@ namespace Svr {
 	template<class MessageClass, class TransactionClass>
 	Result LoginPlayerTransLoginBase<MessageClass, TransactionClass>::OnGenericError(Svr::TransactionResult* &pRes)
 	{
-		if (pRes->GetResult() == Result(ResultCode::E_INVALID_PLAYERID) || pRes->GetResult() == Result(ResultCode::SVR_INVALID_ENTITYUID))
+		if (pRes->GetResult() == Result(ResultCode::INVALID_PLAYERID) || pRes->GetResult() == Result(ResultCode::SVR_INVALID_ENTITYUID))
 		{
 			if (super::GetMyOwner()->GetPlayerID() != 0 && m_CreateRequestCount == 0)
 			{
@@ -240,7 +240,7 @@ namespace Svr {
 		Svr::MessageResult *pMsgRes = (Svr::MessageResult*)pRes;
 		Message::GameServer::RegisterPlayerToJoinGameServerRes res;
 
-		if( pRes->GetResult() == Result(ResultCode::E_INVALID_PLAYERID) || pRes->GetResult() == Result(ResultCode::SVR_INVALID_ENTITYUID))
+		if( pRes->GetResult() == Result(ResultCode::INVALID_PLAYERID) || pRes->GetResult() == Result(ResultCode::SVR_INVALID_ENTITYUID))
 		{
 			if (super::GetMyOwner()->GetPlayerID() == 0)
 			{
@@ -615,8 +615,8 @@ namespace Svr {
 
 
 
-	LoginPlayerTransCloseInstance::LoginPlayerTransCloseInstance()
-		: TransactionT( TransactionID() )
+	LoginPlayerTransCloseInstance::LoginPlayerTransCloseInstance(IMemoryManager& memMgr)
+		: TransactionT( memMgr, TransactionID() )
 	{
 		SetExclusive(true);
 		BR_TRANS_MESSAGE( DB::QueryDeleteLoginSessionCmd, { return OnDeleteLoginSessionRes(pRes); });
@@ -724,7 +724,7 @@ namespace Svr {
 		svrChk(ResultCode::NOT_IMPLEMENTED);
 		//if( GetMyOwner()->GetAccountID() != 0 || GetMyOwner()->GetAccountID() != GetPlayerID() )
 		//{
-		//	svrErrClose(ResultCode::E_INVALID_PLAYERID);
+		//	svrErrClose(ResultCode::INVALID_PLAYERID);
 		//}
 
 		//if( GetMyOwner()->GetAuthTicket() != 0 || GetMyOwner()->GetAuthTicket() != GetAuthTicket() )
@@ -818,7 +818,7 @@ namespace Svr {
 
 		if( GetMyOwner()->GetAccountID() == 0 || GetMyOwner()->GetAccountID() != GetPlayerID() )
 		{
-			svrErrClose(ResultCode::E_INVALID_PLAYERID);
+			svrErrClose(ResultCode::INVALID_PLAYERID);
 		}
 
 		if( GetMyOwner()->GetAuthTicket() == 0 || GetMyOwner()->GetAuthTicket() != GetAuthTicket() )
@@ -900,7 +900,7 @@ namespace Svr {
 
 		if (GetMyOwner()->GetAccountID() == 0)
 		{
-			svrErrClose(ResultCode::E_INVALID_PLAYERID);
+			svrErrClose(ResultCode::INVALID_PLAYERID);
 		}
 
 		m_RankingList.Clear();

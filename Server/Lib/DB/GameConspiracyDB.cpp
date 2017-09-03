@@ -54,7 +54,7 @@ namespace DB {
 		QueryCreatePlayerInfoCmd *pQuery = nullptr;
 		QueryGetPlayerInfoData *pRawSet = nullptr;
 
-		dbMem(pQuery = new QueryCreatePlayerInfoCmd);
+		dbMem(pQuery = new(GetMemoryManager()) QueryCreatePlayerInfoCmd);
 
 		pQuery->SetPartitioningKey(shardID);
 
@@ -72,8 +72,7 @@ namespace DB {
 
 	Proc_End:
 
-		if( !(hr) )
-			Util::SafeRelease( pQuery );
+		IMemoryManager::Delete(pQuery);
 
 		return hr;
 	}
@@ -84,7 +83,7 @@ namespace DB {
 		QueryGetPlayerInfoCmd *pQuery = nullptr;
 		QueryGetPlayerInfoData *pRawSet = nullptr;
 
-		dbMem(pQuery = new QueryGetPlayerInfoCmd);
+		dbMem(pQuery = new(GetMemoryManager()) QueryGetPlayerInfoCmd);
 
 		pQuery->SetPartitioningKey(shardID);
 
@@ -101,8 +100,7 @@ namespace DB {
 
 	Proc_End:
 
-		if (!(hr))
-			Util::SafeRelease(pQuery);
+		IMemoryManager::Delete(pQuery);
 
 		return hr;
 	}
@@ -129,7 +127,7 @@ namespace DB {
 		QuerySetPlayerInfoCmd *pQuery = nullptr;
 		QuerySetPlayerInfoData *pDataSet = nullptr;
 
-		dbMem( pQuery = new QuerySetPlayerInfoCmd );
+		dbMem( pQuery = new(GetMemoryManager()) QuerySetPlayerInfoCmd );
 
 		pQuery->SetPartitioningKey(shardID);
 
@@ -169,8 +167,7 @@ namespace DB {
 
 	Proc_End:
 
-		if( !(hr) )
-			Util::SafeRelease( pQuery );
+		IMemoryManager::Delete(pQuery);
 
 		return hr;
 	}
@@ -191,7 +188,7 @@ namespace DB {
 		Result hr = ResultCode::SUCCESS;
 		QuerySavePurchaseInfoToDBCmd *pQuery = nullptr;
 
-		dbMem(pQuery = new QuerySavePurchaseInfoToDBCmd);
+		dbMem(pQuery = new(GetMemoryManager()) QuerySavePurchaseInfoToDBCmd);
 
 		pQuery->SetPartitioningKey(shardID);
 
@@ -223,8 +220,7 @@ namespace DB {
 
 	Proc_End:
 
-		if( !(hr) )
-			Util::SafeRelease( pQuery );
+		IMemoryManager::Delete(pQuery);
 
 		return hr;
 	}
@@ -234,7 +230,7 @@ namespace DB {
 		Result hr = ResultCode::SUCCESS;
 		QueryCheckPurchaseIDCmd *pQuery = nullptr;
 
-		dbMem(pQuery = new QueryCheckPurchaseIDCmd);
+		dbMem(pQuery = new(GetMemoryManager()) QueryCheckPurchaseIDCmd);
 
 		pQuery->SetPartitioningKey(shardID);
 
@@ -253,8 +249,7 @@ namespace DB {
 
 	Proc_End:
 
-		if (!(hr))
-			Util::SafeRelease(pQuery);
+		IMemoryManager::Delete(pQuery);
 
 		return hr;
 	}
@@ -264,7 +259,7 @@ namespace DB {
 		Result hr = ResultCode::SUCCESS;
 		QuerySetNickNameCmd *pQuery = nullptr;
 
-		dbMem(pQuery = new QuerySetNickNameCmd);
+		dbMem(pQuery = new(GetMemoryManager()) QuerySetNickNameCmd);
 
 		pQuery->SetPartitioningKey(shardID);
 
@@ -280,8 +275,7 @@ namespace DB {
 
 	Proc_End:
 
-		if (!(hr))
-			Util::SafeRelease(pQuery);
+		IMemoryManager::Delete(pQuery);
 
 		return hr;
 	}
@@ -292,7 +286,7 @@ namespace DB {
 		Result hr = ResultCode::SUCCESS;
 		QueryGetNickNameCmd *pQuery = nullptr;
 
-		dbMem(pQuery = new QueryGetNickNameCmd);
+		dbMem(pQuery = new(GetMemoryManager()) QueryGetNickNameCmd);
 
 		pQuery->SetPartitioningKey(shardID);
 
@@ -307,8 +301,7 @@ namespace DB {
 
 	Proc_End:
 
-		if (!(hr))
-			Util::SafeRelease(pQuery);
+		IMemoryManager::Delete(pQuery);
 
 		return hr;
 	}
@@ -330,7 +323,7 @@ namespace DB {
 		Result hr = ResultCode::SUCCESS;
 		QueryUpdateGameEndCmd *pQuery = nullptr;
 
-		dbMem( pQuery = new QueryUpdateGameEndCmd );
+		dbMem( pQuery = new(GetMemoryManager()) QueryUpdateGameEndCmd );
 
 		pQuery->SetPartitioningKey(shardID);
 
@@ -362,8 +355,7 @@ namespace DB {
 
 	Proc_End:
 
-		if( !(hr) )
-			Util::SafeRelease( pQuery );
+		IMemoryManager::Delete(pQuery);
 
 		return hr;
 	}
@@ -381,7 +373,7 @@ namespace DB {
 		Result hr = ResultCode::SUCCESS;
 		QueryUpdateJoinGameCmd *pQuery = nullptr;
 
-		dbMem( pQuery = new QueryUpdateJoinGameCmd );
+		dbMem( pQuery = new(GetMemoryManager()) QueryUpdateJoinGameCmd );
 
 		pQuery->SetPartitioningKey(shardID);
 
@@ -402,8 +394,7 @@ namespace DB {
 
 	Proc_End:
 
-		if( !(hr) )
-			Util::SafeRelease( pQuery );
+		IMemoryManager::Delete(pQuery);
 
 		return hr;
 	}
@@ -421,7 +412,7 @@ namespace DB {
 		Result hr = ResultCode::SUCCESS;
 		QueryUpdateTickStatusCmd *pQuery = nullptr;
 
-		dbMem( pQuery = new QueryUpdateTickStatusCmd );
+		dbMem( pQuery = new(GetMemoryManager()) QueryUpdateTickStatusCmd );
 
 		pQuery->SetPartitioningKey(shardID);
 
@@ -441,8 +432,7 @@ namespace DB {
 
 	Proc_End:
 
-		if( !(hr) )
-			Util::SafeRelease( pQuery );
+		IMemoryManager::Delete(pQuery);
 
 		return hr;
 	}
@@ -454,7 +444,7 @@ namespace DB {
 		Result hr = ResultCode::SUCCESS;
 		QueryGetPlayerStatusCmd *pQuery = nullptr;
 
-		dbMem( pQuery = new QueryGetPlayerStatusCmd );
+		dbMem( pQuery = new(GetMemoryManager()) QueryGetPlayerStatusCmd );
 
 		pQuery->SetPartitioningKey(shardID);
 
@@ -469,8 +459,7 @@ namespace DB {
 
 	Proc_End:
 
-		if( !(hr) )
-			Util::SafeRelease( pQuery );
+		IMemoryManager::Delete(pQuery);
 
 		return hr;
 	}
@@ -483,7 +472,7 @@ namespace DB {
 		Result hr = ResultCode::SUCCESS;
 		QueryGetPlayerQuickInfoCmd *pQuery = nullptr;
 
-		dbMem( pQuery = new QueryGetPlayerQuickInfoCmd );
+		dbMem( pQuery = new(GetMemoryManager()) QueryGetPlayerQuickInfoCmd );
 
 		pQuery->SetPartitioningKey(shardID);
 
@@ -500,8 +489,7 @@ namespace DB {
 
 	Proc_End:
 
-		if( !(hr) )
-			Util::SafeRelease( pQuery );
+		IMemoryManager::Delete(pQuery);
 
 		return hr;
 	}
@@ -514,7 +502,7 @@ namespace DB {
 		Result hr = ResultCode::SUCCESS;
 		QueryGetFriendQuickInfoCmd *pQuery = nullptr;
 
-		dbMem(pQuery = new QueryGetFriendQuickInfoCmd);
+		dbMem(pQuery = new(GetMemoryManager()) QueryGetFriendQuickInfoCmd);
 
 		pQuery->SetPartitioningKey(shardID);
 
@@ -533,8 +521,7 @@ namespace DB {
 
 	Proc_End:
 
-		if (!(hr))
-			Util::SafeRelease(pQuery);
+		IMemoryManager::Delete(pQuery);
 
 		return hr;
 	}
@@ -546,7 +533,7 @@ namespace DB {
 		Result hr = ResultCode::SUCCESS;
 		QueryGetFriendQuickInfoWithNickCmd *pQuery = nullptr;
 
-		dbMem(pQuery = new QueryGetFriendQuickInfoWithNickCmd);
+		dbMem(pQuery = new(GetMemoryManager()) QueryGetFriendQuickInfoWithNickCmd);
 
 		pQuery->SetPartitioningKey(shardID);
 
@@ -566,8 +553,7 @@ namespace DB {
 
 	Proc_End:
 
-		if (!(hr))
-			Util::SafeRelease(pQuery);
+		IMemoryManager::Delete(pQuery);
 
 		return hr;
 	}
@@ -580,7 +566,7 @@ namespace DB {
 		Result hr = ResultCode::SUCCESS;
 		QueryGetFriendSlotStatusCmd *pQuery = nullptr;
 
-		dbMem(pQuery = new QueryGetFriendSlotStatusCmd);
+		dbMem(pQuery = new(GetMemoryManager()) QueryGetFriendSlotStatusCmd);
 
 		pQuery->SetPartitioningKey(shardID);
 
@@ -597,8 +583,7 @@ namespace DB {
 
 	Proc_End:
 
-		if (!(hr))
-			Util::SafeRelease(pQuery);
+		IMemoryManager::Delete(pQuery);
 
 		return hr;
 	}
@@ -608,7 +593,7 @@ namespace DB {
 		Result hr = ResultCode::SUCCESS;
 		QueryAddFriendCmd *pQuery = nullptr;
 
-		dbMem(pQuery = new QueryAddFriendCmd);
+		dbMem(pQuery = new(GetMemoryManager()) QueryAddFriendCmd);
 
 		pQuery->SetPartitioningKey(shardID);
 
@@ -625,8 +610,7 @@ namespace DB {
 
 	Proc_End:
 
-		if (!(hr))
-			Util::SafeRelease(pQuery);
+		IMemoryManager::Delete(pQuery);
 
 		return hr;
 	}
@@ -636,7 +620,7 @@ namespace DB {
 		Result hr = ResultCode::SUCCESS;
 		QueryRemoveFriendCmd *pQuery = nullptr;
 
-		dbMem(pQuery = new QueryRemoveFriendCmd);
+		dbMem(pQuery = new(GetMemoryManager()) QueryRemoveFriendCmd);
 
 		pQuery->SetPartitioningKey(shardID);
 
@@ -651,8 +635,7 @@ namespace DB {
 
 	Proc_End:
 
-		if (!(hr))
-			Util::SafeRelease(pQuery);
+		IMemoryManager::Delete(pQuery);
 
 		return hr;
 	}
@@ -662,7 +645,7 @@ namespace DB {
 		Result hr = ResultCode::SUCCESS;
 		QueryGetFriendListCmd *pQuery = nullptr;
 
-		dbMem(pQuery = new QueryGetFriendListCmd);
+		dbMem(pQuery = new(GetMemoryManager()) QueryGetFriendListCmd);
 
 		pQuery->SetPartitioningKey(shardID);
 
@@ -675,8 +658,7 @@ namespace DB {
 
 	Proc_End:
 
-		if (!(hr))
-			Util::SafeRelease(pQuery);
+		IMemoryManager::Delete(pQuery);
 
 		return hr;
 	}
@@ -686,7 +668,7 @@ namespace DB {
 		Result hr = ResultCode::SUCCESS;
 		QueryUpdateFriendStaminaTimeCmd *pQuery = nullptr;
 
-		dbMem(pQuery = new QueryUpdateFriendStaminaTimeCmd);
+		dbMem(pQuery = new(GetMemoryManager()) QueryUpdateFriendStaminaTimeCmd);
 
 		pQuery->SetPartitioningKey(shardID);
 
@@ -702,8 +684,7 @@ namespace DB {
 
 	Proc_End:
 
-		if (!(hr))
-			Util::SafeRelease(pQuery);
+		IMemoryManager::Delete(pQuery);
 
 		return hr;
 	}
@@ -715,7 +696,7 @@ namespace DB {
 		Result hr = ResultCode::SUCCESS;
 		QueryNotification_AddCmd *pQuery = nullptr;
 
-		dbMem(pQuery = new QueryNotification_AddCmd);
+		dbMem(pQuery = new(GetMemoryManager()) QueryNotification_AddCmd);
 
 		pQuery->SetPartitioningKey(shardID);
 
@@ -736,8 +717,7 @@ namespace DB {
 
 	Proc_End:
 
-		if (!(hr))
-			Util::SafeRelease(pQuery);
+		IMemoryManager::Delete(pQuery);
 
 		return hr;
 	}
@@ -748,7 +728,7 @@ namespace DB {
 		QueryNotification_GetListCmd *pQuery = nullptr;
 		QueryNotification_GetListSet *pSet = nullptr;
 
-		dbMem(pQuery = new QueryNotification_GetListCmd);
+		dbMem(pQuery = new(GetMemoryManager()) QueryNotification_GetListCmd);
 
 		pQuery->SetPartitioningKey(shardID);
 
@@ -766,8 +746,7 @@ namespace DB {
 
 	Proc_End:
 
-		if (!(hr))
-			Util::SafeRelease(pQuery);
+		IMemoryManager::Delete(pQuery);
 
 		return hr;
 	}
@@ -777,7 +756,7 @@ namespace DB {
 		Result hr = ResultCode::SUCCESS;
 		QueryNotification_RemoveCmd *pQuery = nullptr;
 
-		dbMem(pQuery = new QueryNotification_RemoveCmd);
+		dbMem(pQuery = new(GetMemoryManager()) QueryNotification_RemoveCmd);
 
 		pQuery->SetPartitioningKey(shardID);
 
@@ -794,8 +773,7 @@ namespace DB {
 
 	Proc_End:
 
-		if (!(hr))
-			Util::SafeRelease(pQuery);
+		IMemoryManager::Delete(pQuery);
 
 		return hr;
 	}
@@ -805,7 +783,7 @@ namespace DB {
 		Result hr = ResultCode::SUCCESS;
 		QueryNotification_RemoveByMessageIDCmd *pQuery = nullptr;
 
-		dbMem(pQuery = new QueryNotification_RemoveByMessageIDCmd);
+		dbMem(pQuery = new(GetMemoryManager()) QueryNotification_RemoveByMessageIDCmd);
 
 		pQuery->SetPartitioningKey(shardID);
 
@@ -821,8 +799,7 @@ namespace DB {
 
 	Proc_End:
 
-		if (!(hr))
-			Util::SafeRelease(pQuery);
+		IMemoryManager::Delete(pQuery);
 
 		return hr;
 	}
@@ -832,7 +809,7 @@ namespace DB {
 		Result hr = ResultCode::SUCCESS;
 		QueryNotification_SetReadCmd *pQuery = nullptr;
 
-		dbMem(pQuery = new QueryNotification_SetReadCmd);
+		dbMem(pQuery = new(GetMemoryManager()) QueryNotification_SetReadCmd);
 
 		pQuery->SetPartitioningKey(shardID);
 
@@ -849,8 +826,7 @@ namespace DB {
 
 	Proc_End:
 
-		if (!(hr))
-			Util::SafeRelease(pQuery);
+		IMemoryManager::Delete(pQuery);
 
 		return hr;
 	}
@@ -860,7 +836,7 @@ namespace DB {
 		Result hr = ResultCode::SUCCESS;
 		QuerySetComplitionStateCmd *pQuery = nullptr;
 
-		dbMem(pQuery = new QuerySetComplitionStateCmd);
+		dbMem(pQuery = new(GetMemoryManager()) QuerySetComplitionStateCmd);
 
 		pQuery->SetPartitioningKey(shardID);
 
@@ -877,8 +853,7 @@ namespace DB {
 
 	Proc_End:
 
-		if (!(hr))
-			Util::SafeRelease(pQuery);
+		IMemoryManager::Delete(pQuery);
 
 		return hr;
 	}
@@ -888,7 +863,7 @@ namespace DB {
 		Result hr = ResultCode::SUCCESS;
 		QueryGetComplitionStateCmd *pQuery = nullptr;
 
-		dbMem(pQuery = new QueryGetComplitionStateCmd);
+		dbMem(pQuery = new(GetMemoryManager()) QueryGetComplitionStateCmd);
 
 		pQuery->SetPartitioningKey(shardID);
 
@@ -905,8 +880,7 @@ namespace DB {
 
 	Proc_End:
 
-		if (!(hr))
-			Util::SafeRelease(pQuery);
+		IMemoryManager::Delete(pQuery);
 
 		return hr;
 	}

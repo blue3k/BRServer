@@ -12,6 +12,7 @@
 #include "stdafx.h"
 #include "SFTypedefs.h"
 #include "ShopTbl.h"
+#include "Memory/SFMemory.h"
 
 
 
@@ -94,19 +95,19 @@ namespace conspiracy
 
 	Result ShopTbl::LoadTable( const std::list<ShopItem>& rowList )
 	{
- 		auto pNewShopItemIDTable = new ShopItemIDTable;
+ 		auto pNewShopItemIDTable = new(GetSystemMemoryManager()) ShopItemIDTable;
 
 		for( auto rowItem : rowList )
 		{
- 			auto* pShopItem = new ShopTbl::ShopItem;
+ 			auto* pShopItem = new(GetSystemMemoryManager()) ShopTbl::ShopItem;
 			*pShopItem = rowItem;
 			pNewShopItemIDTable->insert(std::make_pair(pShopItem->ShopItemID, pShopItem));
 		}
 
 		if (m_ShopItemIDTablePrev != nullptr)
 		{
- 			for( auto itItem : *m_ShopItemIDTablePrev) { delete itItem.second; } ;
-			delete m_ShopItemIDTablePrev;
+ 			for( auto itItem : *m_ShopItemIDTablePrev) { IMemoryManager::Delete(itItem.second); } ;
+			IMemoryManager::Delete(m_ShopItemIDTablePrev);
 		}
 		m_ShopItemIDTablePrev = m_ShopItemIDTable;
 		m_ShopItemIDTable = pNewShopItemIDTable;

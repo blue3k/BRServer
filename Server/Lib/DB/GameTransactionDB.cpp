@@ -54,7 +54,7 @@ namespace DB {
 		Result hr = ResultCode::SUCCESS;
 		QueryAddGameLogCmd *pQuery = nullptr;
 
-		dbMem(pQuery = new QueryAddGameLogCmd);
+		dbMem(pQuery = new(GetMemoryManager()) QueryAddGameLogCmd);
 
 		pQuery->SetPartitioningKey(shardID);
 
@@ -74,8 +74,7 @@ namespace DB {
 
 	Proc_End:
 
-		if( !(hr) )
-			Util::SafeRelease( pQuery );
+		IMemoryManager::Delete(pQuery);
 
 		return hr;
 	}

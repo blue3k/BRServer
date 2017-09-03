@@ -52,7 +52,7 @@ namespace Svr {
 
 		svrChk(ServerEntity::InitializeEntity( newEntityID ) );
 
-		BR_ENTITY_MESSAGE(Message::Server::ServerConnectedC2SEvt) { svrMemReturn(pNewTrans = new Svr::GenericServerStartedTrans(pMsgData)); return ResultCode::SUCCESS; } );
+		BR_ENTITY_MESSAGE(Message::Server::ServerConnectedC2SEvt) { svrMemReturn(pNewTrans = new(GetMemoryManager()) Svr::GenericServerStartedTrans(pMsgData)); return ResultCode::SUCCESS; } );
 
 	Proc_End:
 

@@ -28,7 +28,7 @@ namespace Svr {
 	//
 
 	template< class OwnerEntity, class SystemClass >
-	class GameSystem : public Component, public MemoryPoolObject<SystemClass>
+	class GameSystem : public Component
 	{
 	public:
 

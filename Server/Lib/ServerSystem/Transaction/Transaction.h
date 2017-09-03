@@ -16,7 +16,6 @@
 #include "SFTypedefs.h"
 #include "Util/TimeUtil.h"
 #include "ResultCode/SFResultCodeSvr.h"
-#include "Memory/MemoryPool.h"
 #include "Object/SharedObject.h"
 #include "Object/SharedPointer.h"
 #include "Container/PageQueue.h"
@@ -324,7 +323,7 @@ namespace Svr {
 	//	Timer result class
 	//
 
-	class TimerResult : public TransactionResult, public MemoryPoolObject<TimerResult>
+	class TimerResult : public TransactionResult
 	{
 	public:
 		const static SF::Message::MessageID MID;
@@ -344,7 +343,7 @@ namespace Svr {
 	//	Message result base class
 	//
 
-	class MessageResult : public TransactionResult, public MemoryPoolObject<MessageResult>
+	class MessageResult : public TransactionResult
 	{
 	private:
 		// Message that result require
@@ -390,16 +389,7 @@ namespace Svr {
 		// flush transaction result
 		virtual Result FlushTransaction() override;
 	};
-	
-	
-	template< class TransactionType >
-	class SubTransactionWitResultMemoryPooled : public SubTransaction, public TransactionResult, public MemoryPoolObject<TransactionType>
-	{
-	public:
-		SubTransactionWitResultMemoryPooled( TransactionID parentTransID , SF::Message::MessageID MsgID )
-			:SubTransactionWitResult( parentTransID, MsgID )
-		{}
-	};
+
 	
 
 
@@ -407,8 +397,8 @@ namespace Svr {
 	typedef std::function<Result(TransactionResult* pRes)> TransactionMessageHandlerType;
 
 	// Message transaction template
-	template< class OwnerType, class MemoryPoolClass >
-	class TransactionT : public Transaction, public MemoryPoolObject<MemoryPoolClass>
+	template< class OwnerType >
+	class TransactionT : public Transaction
 	{
 	public:
 		typedef TransactionMessageHandlerType MessageHandlerType;
@@ -420,8 +410,8 @@ namespace Svr {
 
 	public:
 		TransactionT(IMemoryManager& memMgr, TransactionID transID )
-			:Transaction(memMgr, transID )
-			,m_Handlers(memMgr)
+			: Transaction(memMgr, transID )
+			, m_Handlers(memMgr)
 		{
 			BR_TRANS_MESSAGE(Message::Server::GenericFailureRes, { return OnGenericError(pRes); });
 		}
@@ -487,11 +477,6 @@ namespace Svr {
 			return hr; 
 		}
 
-		//// implementation of release
-		//virtual void Release()
-		//{
-		//	delete this;
-		//}
 
 		// Get owner instance
 		OwnerType* GetMyOwner()
@@ -509,8 +494,8 @@ namespace Svr {
 
 
 	// Message transaction template
-	template< class OwnerType, class PolicyClass, class MessageClass, class MemoryPoolClass >
-	class MessageTransaction : public TransactionT<OwnerType,MemoryPoolClass>, public MessageClass
+	template< class OwnerType, class MessageClass >
+	class MessageTransaction : public TransactionT<OwnerType>, public MessageClass
 	{
 	protected:
 		// Policy
@@ -518,7 +503,7 @@ namespace Svr {
 
 	public:
 		MessageTransaction(IMemoryManager& memoryManager, MessageDataPtr &pIMsg )
-			: TransactionT<OwnerType, MemoryPoolClass>(memoryManager, TransactionID() )
+			: TransactionT<OwnerType>(memoryManager, TransactionID() )
 			, MessageClass( pIMsg )
 		{
 		}
@@ -532,11 +517,11 @@ namespace Svr {
 				{
 					if(MessageClass::HasTransactionID)
 					{
-						TransactionT<OwnerType, MemoryPoolClass, MessageHandlerBufferSize>::SetParentTransID(MessageClass::GetTransactionID());
+						TransactionT<OwnerType>::SetParentTransID(MessageClass::GetTransactionID());
 					}
 					else if(MessageClass::HasRouteContext)
 					{
-						TransactionT<OwnerType, MemoryPoolClass, MessageHandlerBufferSize>::SetMessageRouteContext(MessageClass::GetRouteContext());
+						TransactionT<OwnerType>::SetMessageRouteContext(MessageClass::GetRouteContext());
 					}
 				}
 			}
@@ -556,7 +541,7 @@ namespace Svr {
 			//pOwnerEntity = dynamic_cast<OwnerType*>(pOwner);
 
 
-			hr = TransactionT<OwnerType, MemoryPoolClass, MessageHandlerBufferSize>::InitializeTransaction(pOwner);
+			hr = TransactionT<OwnerType>::InitializeTransaction(pOwner);
 			svrChk(hr);
 
 		Proc_End:
@@ -567,44 +552,30 @@ namespace Svr {
 		{
 		}
 		
-		virtual PolicyClass* GetInterface()
+		virtual Net::Connection* GetConnection()
 		{
-			if (TransactionT<OwnerType, MemoryPoolClass, MessageHandlerBufferSize>::GetOwnerEntity() == nullptr)
+			if (TransactionT<OwnerType>::GetOwnerEntity() == nullptr)
 				return nullptr;
 
-			TransactionT<OwnerType, MemoryPoolClass, MessageHandlerBufferSize>::GetMyOwner()->GetConnectionShared(m_pConn);
+			TransactionT<OwnerType>::GetMyOwner()->GetConnectionShared(m_pConn);
 
 			if (m_pConn != nullptr)
 			{
-				return m_pConn->GetInterface<PolicyClass>();
+				return *m_pConn;
 			}
 			return nullptr;
 		}
 
-		template< class PolicyType >
-		PolicyType* GetInterface()
-		{
-			if (TransactionT<OwnerType, MemoryPoolClass, MessageHandlerBufferSize>::GetOwnerEntity() == nullptr)
-				return nullptr;
-
-			TransactionT<OwnerType, MemoryPoolClass, MessageHandlerBufferSize>::GetMyOwner()->GetConnectionShared(m_pConn);
-
-			if (m_pConn != nullptr)
-			{
-				return m_pConn->GetInterface<PolicyType>();
-			}
-			return nullptr;
-		}
 	};
 
 
 	// User event routing transaction, result policy will be routed to user
-	template< class OwnerEntityType, class PolicyType, class MessageClass, class TransactionType >
-	class UserTransactionS2SEvt : public MessageTransaction<OwnerEntityType,PolicyType, MessageClass, TransactionType>
+	template< class OwnerEntityType, class MessageClass >
+	class UserTransactionS2SEvt : public MessageTransaction<OwnerEntityType, MessageClass>
 	{
 	protected:
 		UserTransactionS2SEvt(IMemoryManager& memMgr, MessageDataPtr &pIMsg )
-			:MessageTransaction<OwnerEntityType, PolicyType, MessageClass, TransactionType>(memMgr, pIMsg )
+			:MessageTransaction<OwnerEntityType, MessageClass>(memMgr, pIMsg )
 		{
 		}
 
@@ -650,15 +621,15 @@ namespace Svr {
 
 
 	// User S2S command routing transaction, result policy will be routed to server
-	template< class OwnerEntityType, class PolicyType, class MessageClass, class TransactionType >
-	class UserTransactionS2SCmd : public MessageTransaction<OwnerEntityType,PolicyType, MessageClass, TransactionType>
+	template< class OwnerEntityType, class MessageClass>
+	class UserTransactionS2SCmd : public MessageTransaction<OwnerEntityType, MessageClass>
 	{
 	private:
-		typedef MessageTransaction<OwnerEntityType, PolicyType, MessageClass, TransactionType> superTrans;
+		typedef MessageTransaction<OwnerEntityType, MessageClass> superTrans;
 
 	protected:
 		UserTransactionS2SCmd(IMemoryManager& memMgr, MessageDataPtr &pIMsg )
-			: MessageTransaction<OwnerEntityType, PolicyType, MessageClass, TransactionType>(memMgr, pIMsg )
+			: MessageTransaction<OwnerEntityType, MessageClass>(memMgr, pIMsg )
 		{
 		}
 
@@ -693,16 +664,6 @@ namespace Svr {
 		Proc_End:
 
 			return hr;
-		}
-
-		virtual PolicyType* GetInterface() override
-		{
-			auto pConn = Transaction::GetServerEntityConnection(superTrans::GetServerEntity());
-			if (pConn != nullptr)
-			{
-				return pConn->template GetInterface<PolicyType>();
-			}
-			return nullptr;
 		}
 
 	};

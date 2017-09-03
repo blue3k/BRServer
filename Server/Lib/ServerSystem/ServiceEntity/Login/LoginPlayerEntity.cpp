@@ -132,14 +132,14 @@ namespace Svr {
 	Result LoginPlayerEntity::RegisterMessageHandlers()
 	{
 		BR_ENTITY_MESSAGE(Message::Login::HeartBitC2SEvt)					{ pNewTrans = nullptr; HeartBit(); return ResultCode::SUCCESS; } );
-		BR_ENTITY_MESSAGE(Message::Login::LoginCmd)							{ pNewTrans = new LoginPlayerTransLogin(pMsgData); return ResultCode::SUCCESS; } );
-		BR_ENTITY_MESSAGE(Message::Login::LoginByFacebookCmd)				{ pNewTrans = new LoginPlayerTransLoginByFacebook(pMsgData); return ResultCode::SUCCESS; } );
-		BR_ENTITY_MESSAGE(Message::Login::CreateRandomUserCmd)				{ pNewTrans = new LoginPlayerTransCreateRandomUser(pMsgData); return ResultCode::SUCCESS; } );
-		BR_ENTITY_MESSAGE(Message::LoginServer::PlayerJoinedToGameServerCmd){ pNewTrans = new LoginPlayerJoinedToGameServerTrans(pMsgData); return ResultCode::SUCCESS; } );
+		BR_ENTITY_MESSAGE(Message::Login::LoginCmd)							{ pNewTrans = new(GetMemoryManager()) LoginPlayerTransLogin(pMsgData); return ResultCode::SUCCESS; } );
+		BR_ENTITY_MESSAGE(Message::Login::LoginByFacebookCmd)				{ pNewTrans = new(GetMemoryManager()) LoginPlayerTransLoginByFacebook(pMsgData); return ResultCode::SUCCESS; } );
+		BR_ENTITY_MESSAGE(Message::Login::CreateRandomUserCmd)				{ pNewTrans = new(GetMemoryManager()) LoginPlayerTransCreateRandomUser(pMsgData); return ResultCode::SUCCESS; } );
+		BR_ENTITY_MESSAGE(Message::LoginServer::PlayerJoinedToGameServerCmd){ pNewTrans = new(GetMemoryManager()) LoginPlayerJoinedToGameServerTrans(pMsgData); return ResultCode::SUCCESS; } );
 
-		BR_ENTITY_MESSAGE(Message::Login::UpdateMyScoreCmd)					{ pNewTrans = new RankingUpdateScoreTrans(pMsgData); return ResultCode::SUCCESS; } );
-		BR_ENTITY_MESSAGE(Message::Login::DataTestCmd)						{ pNewTrans = new LoginUserDataTestTrans(pMsgData); return ResultCode::SUCCESS; } );
-		BR_ENTITY_MESSAGE(Message::Login::DebugPrintALLRankingCmd)			{ pNewTrans = new LoginUserDebugPrintALLRankingTrans(pMsgData); return ResultCode::SUCCESS; } );
+		BR_ENTITY_MESSAGE(Message::Login::UpdateMyScoreCmd)					{ pNewTrans = new(GetMemoryManager()) RankingUpdateScoreTrans(pMsgData); return ResultCode::SUCCESS; } );
+		BR_ENTITY_MESSAGE(Message::Login::DataTestCmd)						{ pNewTrans = new(GetMemoryManager()) LoginUserDataTestTrans(pMsgData); return ResultCode::SUCCESS; } );
+		BR_ENTITY_MESSAGE(Message::Login::DebugPrintALLRankingCmd)			{ pNewTrans = new(GetMemoryManager()) LoginUserDebugPrintALLRankingTrans(pMsgData); return ResultCode::SUCCESS; } );
 		return ResultCode::SUCCESS;
 	}
 
@@ -191,11 +191,11 @@ namespace Svr {
 	Result LoginPlayerEntity::PendingCloseTransaction()
 	{
 		Result hr = ResultCode::SUCCESS;
-		Svr::Transaction *trans = nullptr;
+		TransactionPtr trans;
 
-		svrMem( trans = new LoginPlayerTransCloseInstance );
+		svrMem( trans = new(GetMemoryManager()) LoginPlayerTransCloseInstance(GetMemoryManager()) );
 		svrChk( trans->InitializeTransaction(this) );
-		svrChk(this->PendingTransaction(GetTaskWorker()->GetThreadID(), trans));
+		svrChk(PendingTransaction(GetTaskWorker()->GetThreadID(), trans));
 
 	Proc_End:
 

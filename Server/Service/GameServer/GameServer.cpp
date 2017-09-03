@@ -59,9 +59,9 @@ int main(int numArg, const char* argc[])
 	svrChk(LibComponentManager::GetInstance().InitializeComponents());
 
 
-	pServerInstance = SharedPointerT<BR::GameServer::GameServer>(new BR::GameServer::GameServer);
+	pServerInstance = SharedPointerT<GameServer::GameServer>(new(GetSystemMemoryManager()) GameServer::GameServer);
 
-	svrChk(BR::Svr::Service::ServiceRun((BR::GameServer::GameServer*)pServerInstance));
+	svrChk(Svr::Service::ServiceRun((GameServer::GameServer*)pServerInstance));
 
 
 Proc_End:
@@ -70,7 +70,7 @@ Proc_End:
 	{
 		pServerInstance->TerminateEntity();
 		pServerInstance->OnRemovedFromTaskManager(nullptr);
-		pServerInstance = SharedPointerT<BR::GameServer::GameServer>();
+		pServerInstance = SharedPointerT<GameServer::GameServer>();
 	}
 
 

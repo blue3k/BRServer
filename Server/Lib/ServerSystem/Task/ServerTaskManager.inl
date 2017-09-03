@@ -57,7 +57,7 @@ DurationMS TaskWorker::GetBaseLoopInterval()
 
 
 
-size_t TaskManager::GetWorkGroupCount()
+size_t TickTaskManager::GetWorkGroupCount()
 {
 	return m_TaskGroups.size();
 }

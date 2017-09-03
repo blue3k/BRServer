@@ -59,12 +59,12 @@ namespace EntityServer {
 	
 	Svr::EntityManager* EntityServer::CreateEntityManager()
 	{
-		return new Svr::EntityManager;
+		return new(GetMemoryManager()) Svr::EntityManager;
 	}
 
 	Svr::ServerEntity* EntityServer::CreateLoopbackEntity()
 	{
-		return new Svr::EntityServerEntity;
+		return new(GetMemoryManager()) Svr::EntityServerEntity;
 	}
 
 	//////////////////////////////////////////////////////////////////////////
@@ -180,7 +180,7 @@ namespace EntityServer {
 		// push Startup transaction
 		{
 			Svr::Transaction * pProcess = nullptr;
-			svrMem( pProcess = new EntityServerStartProcess );
+			svrMem( pProcess = new(GetMemoryManager()) EntityServerStartProcess );
 			svrChk( pProcess->InitializeTransaction(this) );
 			svrChk( PendingTransaction(ThisThread::GetThreadID(), pProcess) );
 		}
@@ -218,17 +218,17 @@ namespace EntityServer {
 	{
 		switch( netClass )
 		{
-		//case BR::NetClass::Game:
-		//	pServerEntity = new GameServerEntity();
+		//case NetClass::Game:
+		//	pServerEntity = new(GetMemoryManager()) GameServerEntity();
 		//	break;
-		//case BR::NetClass::Login:
-		//	pServerEntity = new LoginServerEntity();
+		//case NetClass::Login:
+		//	pServerEntity = new(GetMemoryManager()) LoginServerEntity();
 		//	break;
-		case BR::NetClass::Entity:
-			pServerEntity = new EntityServerEntity();
+		case NetClass::Entity:
+			pServerEntity = new(GetMemoryManager()) EntityServerEntity();
 			break;
 		default:
-			pServerEntity = new Svr::GenericServerEntity();
+			pServerEntity = new(GetMemoryManager()) Svr::GenericServerEntity();
 			break;
 		};
 

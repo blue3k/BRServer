@@ -12,6 +12,7 @@
 #include "stdafx.h"
 #include "SFTypedefs.h"
 #include "LevelTbl.h"
+#include "Memory/SFMemory.h"
 
 
 
@@ -24,19 +25,19 @@ namespace conspiracy
 
 	Result LevelTbl::LoadTable( const std::list<LevelItem>& rowList )
 	{
- 		auto pNewLevelTable = new LevelTable;
+ 		auto pNewLevelTable = new(GetSystemMemoryManager()) LevelTable;
 
 		for( auto rowItem : rowList )
 		{
- 			auto* pLevelItem = new LevelTbl::LevelItem;
+ 			auto* pLevelItem = new(GetSystemMemoryManager()) LevelTbl::LevelItem;
 			*pLevelItem = rowItem;
 			pNewLevelTable->insert(std::make_pair(pLevelItem->Level, pLevelItem));
 		}
 
 		if (m_LevelTablePrev != nullptr)
 		{
- 			for( auto itItem : *m_LevelTablePrev) { delete itItem.second; } ;
-			delete m_LevelTablePrev;
+ 			for( auto itItem : *m_LevelTablePrev) { IMemoryManager::Delete(itItem.second); } ;
+			IMemoryManager::Delete(m_LevelTablePrev);
 		}
 		m_LevelTablePrev = m_LevelTable;
 		m_LevelTable = pNewLevelTable;

@@ -59,7 +59,7 @@ int main(int numArg, const char* argc[])
 	svrChk(LibComponentManager::GetInstance().InitializeComponents());
 
 
-	pServerInstance = SharedPointerT<ConspiracyGameInstanceServer::GameInstanceServer>(new ConspiracyGameInstanceServer::GameInstanceServer );
+	pServerInstance = SharedPointerT<ConspiracyGameInstanceServer::GameInstanceServer>(new(GetMemoryManager()) ConspiracyGameInstanceServer::GameInstanceServer );
 
 	svrChk(Svr::Service::ServiceRun((ConspiracyGameInstanceServer::GameInstanceServer*)pServerInstance));
 

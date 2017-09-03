@@ -49,7 +49,7 @@ namespace Svr {
 			MASTER_CHECK_TIME = 3000,
 		};
 
-		class ServiceTableItem : public ServerServiceInformation, public MemoryPoolObject<ServiceTableItem>
+		class ServiceTableItem : public ServerServiceInformation
 		{
 		public:
 			// Hash table mapping Item

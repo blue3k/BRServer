@@ -282,7 +282,7 @@ namespace Svr {
 
 	Result GameInstanceEntity::CreatePlayerInstance(const PlayerInformation& playerInfo, GameInstancePlayer* &pPlayer)
 	{
-		pPlayer = new GameInstancePlayer(this, playerInfo);
+		pPlayer = new(GetMemoryManager()) GameInstancePlayer(this, playerInfo);
 
 		return pPlayer != nullptr ? ResultCode::SUCCESS : ResultCode::OUT_OF_MEMORY;
 	}

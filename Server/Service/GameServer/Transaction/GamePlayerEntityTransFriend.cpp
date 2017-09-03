@@ -183,7 +183,7 @@ namespace GameServer {
 
 		pDBRes = (DB::QueryGetPlayerShardIDCmd*)pRes;
 		if (pDBRes->Result < 0)
-			svrErr(ResultCode::E_INVALID_PLAYERID);
+			svrErr(ResultCode::INVALID_PLAYERID);
 
 		m_NewFriend.ShardID = pDBRes->ShardID;
 
@@ -206,7 +206,7 @@ namespace GameServer {
 		svrChk(pRes->GetResult());
 
 		if (pDBRes->Result < 0)
-			svrErr(ResultCode::E_INVALID_PLAYERID);
+			svrErr(ResultCode::INVALID_PLAYERID);
 
 		svrChkPtr(GetMyServer()->GetPresetGameConfig());
 
@@ -297,7 +297,7 @@ namespace GameServer {
 		svrChk(pRes->GetResult());
 
 		if (pDBRes->Result < 0 )
-			svrErr(ResultCode::E_INVALID_PLAYERID);
+			svrErr(ResultCode::INVALID_PLAYERID);
 
 		svrChkPtr(pFriend = GetMyOwner()->GetComponent<UserFriendSystem>()->GetFriend(pDBRes->PlayerID));
 		StrUtil::StringCpy(pFriend->NickName, pDBRes->GameNick);
@@ -327,7 +327,7 @@ namespace GameServer {
 
 		auto *pDBRes = (DB::QueryGetNickNamesCmd*)pRes;
 		if( pDBRes->Result < 0 || pDBRes->m_RowsetResult.size() == 0 )
-			svrErrClose(ResultCode::E_INVALID_PLAYERID);
+			svrErrClose(ResultCode::INVALID_PLAYERID);
 
 		{
 			auto& result = pDBRes->m_RowsetResult.begin();
@@ -409,7 +409,7 @@ namespace GameServer {
 
 		if( GetMyOwner()->GetPlayerID() != GetDestPlayerID() )
 		{
-			svrErr( ResultCode::E_INVALID_PLAYERID );
+			svrErr( ResultCode::INVALID_PLAYERID );
 		}
 
 		hr = GetMyOwner()->GetComponent<UserFriendSystem>()->AddFriend( GetAccepter() );
@@ -471,7 +471,7 @@ namespace GameServer {
 
 		pFriendInfo = GetMyOwner()->GetComponent<UserFriendSystem>()->GetFriend(GetFriendID());
 		if (pFriendInfo == nullptr)
-			svrErrClose(ResultCode::E_INVALID_PLAYERID);
+			svrErrClose(ResultCode::INVALID_PLAYERID);
 
 		// Find player and notify to remove
 		if( (Svr::GetServerComponent<Svr::GameClusterServiceEntity>()->FindPlayer( GetFriendID(), playerUID )) )
@@ -509,7 +509,7 @@ namespace GameServer {
 
 		if( GetMyOwner()->GetPlayerID() != GetDestPlayerID() )
 		{
-			svrErr( ResultCode::E_INVALID_PLAYERID );
+			svrErr( ResultCode::INVALID_PLAYERID );
 		}
 
 		svrChk( GetMyOwner()->GetComponent<UserFriendSystem>()->RemoveFriend( GetRemoverID() ) );
@@ -601,7 +601,7 @@ namespace GameServer {
 		}
 		else
 		{
-			svrErr(ResultCode::E_INVALID_PLAYERID);
+			svrErr(ResultCode::INVALID_PLAYERID);
 		}
 
 	Proc_End:
@@ -641,7 +641,7 @@ namespace GameServer {
 		}
 		else
 		{
-			svrErr(ResultCode::E_INVALID_PLAYERID);
+			svrErr(ResultCode::INVALID_PLAYERID);
 		}
 
 	Proc_End:
@@ -914,7 +914,7 @@ namespace GameServer {
 	//	svrChk( super::StartTransaction() );
 
 	//	if( GetMyOwner()->GetPlayerID() != GetDestPlayerID() )
-	//		svrErrClose(ResultCode::E_INVALID_PLAYERID);
+	//		svrErrClose(ResultCode::INVALID_PLAYERID);
 
 	//	svrChkPtr( pPlayerInfoSystem = GetMyOwner()->GetComponent<UserGamePlayerInfoSystem>() );
 

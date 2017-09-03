@@ -135,7 +135,7 @@ namespace Svr {
 			if( GetMyOwner()->GetMatchingTicket() != 0 )
 				svrErrClose(ResultCode::SVR_ALREADY_INQUEUE);
 
-			svrMem( pPlayer = new PartyPlayer( GetInvitedPlayer() ) );
+			svrMem( pPlayer = new(GetMemoryManager()) PartyPlayer( GetInvitedPlayer() ) );
 			svrChk( pPlayer->SetServerEntity( GetServerEntity<ServerEntity>(), GetRouteContext().GetFrom()) );
 			svrChk( GetMyOwner()->JoinPlayer( pPlayer, false ) );
 		}

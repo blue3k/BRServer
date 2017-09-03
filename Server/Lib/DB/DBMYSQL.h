@@ -195,7 +195,7 @@ namespace DB {
 
 	// define query class
 	#define BRDB_DEFINE_QUERYCLASS(Policy,QueryClass) \
-		class QueryClass##Cmd : public QueryClass, public MemoryPoolObject<QueryClass##Cmd>	\
+		class QueryClass##Cmd : public QueryClass	\
 		{																			\
 		public :																	\
 			enum { MESSAGE_POLICY = Policy };										\
@@ -206,7 +206,7 @@ namespace DB {
 
 	// define rowset query class
 	#define BRDB_DEFINE_ROWSETQUERYCLASS(Policy,QueryClass,QueryClassRowset) \
-		class QueryClass##Cmd : public QueryClass, public MemoryPoolObject<QueryClass##Cmd>	\
+		class QueryClass##Cmd : public QueryClass	\
 		{																			\
 		public :																	\
 			enum { MESSAGE_POLICY = Policy };										\
@@ -223,7 +223,6 @@ namespace DB {
 	// execute
 	#define BRDB_DEFINE_QUERY_IMPL(QueryClass)										\
 				const SF::Message::MessageID SF::DB::QueryClass##Cmd::MID = Message::MessageID(Message::MSGTYPE_COMMAND, Message::MSGTYPE_RELIABLE, false, DB::QueryClass##Cmd::MESSAGE_POLICY, MCODE_##QueryClass ); \
-				SF_MEMORYPOOL_IMPLEMENT(SF::DB::QueryClass##Cmd);					\
 
 
 

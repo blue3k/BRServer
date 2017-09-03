@@ -57,7 +57,7 @@ namespace GameServer {
 		case ClusterID::Game_Conspiracy:
 		{
 			assert(faculty == EntityFaculty::User);
-			pEntity = new GamePlayerEntity;
+			pEntity = new(GetMemoryManager()) GamePlayerEntity;
 			return pEntity != nullptr ? ResultCode::SUCCESS : ResultCode::OUT_OF_MEMORY;
 		}
 		default:
@@ -72,7 +72,7 @@ namespace GameServer {
 	//{
 	//	Result hr = ResultCode::SUCCESS;
 
-	//	svrChkPtr( pGamePlayer = new GamePlayerEntity );
+	//	svrChkPtr( pGamePlayer = new(GetMemoryManager()) GamePlayerEntity );
 
 	//	svrChk(AddEntity(EntityFaculty::User, pGamePlayer));
 
@@ -122,7 +122,7 @@ namespace GameServer {
 		return;
 	}
 
-	// Initialize TaskManager
+	// Initialize TickTaskManager
 	Result GameEntityManager::InitializeManager( uint uiNumGroup )
 	{
 		Result hr = ResultCode::SUCCESS;
@@ -135,7 +135,7 @@ namespace GameServer {
 	}
 
 
-	// Terminate TaskManager
+	// Terminate TickTaskManager
 	Result GameEntityManager::TerminateManager()
 	{
 		Result hr = ResultCode::SUCCESS;

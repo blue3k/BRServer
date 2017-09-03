@@ -43,8 +43,8 @@ namespace Svr {
 	{
 		SetTickInterval(DurationMS(10000));
 
-		BR_ENTITY_MESSAGE(Message::Monitoring::GetInstanceListCmd) { svrMemReturn(pNewTrans = new MonitoringTransGetInstanceList(pMsgData)); return ResultCode::SUCCESS; } );
-		BR_ENTITY_MESSAGE(Message::Monitoring::RequestCounterValuesCmd) { svrMemReturn(pNewTrans = new MonitoringTransRequestCounterValues(pMsgData)); return ResultCode::SUCCESS; } );
+		BR_ENTITY_MESSAGE(Message::Monitoring::GetInstanceListCmd)		{ svrMemReturn(pNewTrans = new(GetMemoryManager()) MonitoringTransGetInstanceList(pMsgData)); return ResultCode::SUCCESS; } );
+		BR_ENTITY_MESSAGE(Message::Monitoring::RequestCounterValuesCmd) { svrMemReturn(pNewTrans = new(GetMemoryManager()) MonitoringTransRequestCounterValues(pMsgData)); return ResultCode::SUCCESS; } );
 	}
 
 	MonitoringServiceEntity::~MonitoringServiceEntity()
@@ -93,8 +93,8 @@ namespace Svr {
 
 		ServiceEntity::RegisterServiceMessageHandler(pServerEntity);
 
-		pServerEntity->BR_ENTITY_MESSAGE(Message::Monitoring::GetInstanceListCmd)				{ svrMemReturn(pNewTrans = new MonitoringTransGetInstanceList(pMsgData)); return ResultCode::SUCCESS; } );
-		pServerEntity->BR_ENTITY_MESSAGE(Message::Monitoring::RequestCounterValuesCmd)			{ svrMemReturn(pNewTrans = new MonitoringTransRequestCounterValues(pMsgData)); return ResultCode::SUCCESS; } );
+		pServerEntity->BR_ENTITY_MESSAGE(Message::Monitoring::GetInstanceListCmd)				{ svrMemReturn(pNewTrans = new(GetMemoryManager()) MonitoringTransGetInstanceList(pMsgData)); return ResultCode::SUCCESS; } );
+		pServerEntity->BR_ENTITY_MESSAGE(Message::Monitoring::RequestCounterValuesCmd)			{ svrMemReturn(pNewTrans = new(GetMemoryManager()) MonitoringTransRequestCounterValues(pMsgData)); return ResultCode::SUCCESS; } );
 
 		return ResultCode::SUCCESS;
 	}

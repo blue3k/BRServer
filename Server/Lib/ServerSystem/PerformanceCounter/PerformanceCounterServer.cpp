@@ -160,10 +160,10 @@ namespace Svr {
 	{
 		Result hr = ResultCode::SUCCESS;
 		NetAddress localAddress;
-		auto pRawUDP = new Net::RawUDP();
+		auto pRawUDP = new(GetSystemMemoryManager()) Net::RawUDP();
 		svrChkPtr(pRawUDP);
 
-		stm_pInstance = new PerformanceCounterServer();
+		stm_pInstance = new(GetSystemMemoryManager()) PerformanceCounterServer();
 
 		svrChk(pRawUDP->InitializeNet(serverAddress, &stm_pInstance->m_MessageHandler));
 
@@ -193,7 +193,7 @@ namespace Svr {
 
 		stm_pInstance->Stop(true);
 
-		delete stm_pInstance;
+		IMemoryManager::Delete(stm_pInstance);
 		stm_pInstance = nullptr;
 
 		return ResultCode::SUCCESS;
@@ -302,7 +302,6 @@ namespace Svr {
 
 	Proc_End:
 
-		Util::SafeRelease(pMsg);
 
 		return hr;
 	}
@@ -316,7 +315,6 @@ namespace Svr {
 
 	Proc_End:
 
-		Util::SafeRelease(pMsg);
 
 		return hr;
 	}
@@ -330,9 +328,9 @@ namespace Svr {
 		svrChk(messageClass.ParseMsg());
 
 		// remove if exist
-		m_InstanceMap.Remove(messageClass.GetInstanceUID().UID, pInstance);
+		m_InstanceMap.Remove(messageClass.GetInstanceUID(), pInstance);
 
-		pInstance = SharedPointerT<PerformanceCounterInstance>(new PerformanceCounterInstance(messageClass.GetInstanceName(), messageClass.GetInstanceUID()));
+		pInstance = SharedPointerT<PerformanceCounterInstance>(new(GetSystemMemoryManager()) PerformanceCounterInstance(messageClass.GetInstanceName(), messageClass.GetInstanceUID()));
 		if (!(m_InstanceMap.Insert(pInstance->GetInstanceEntityUID().UID, pInstance)))
 		{
 			if (!(m_InstanceMap.FindInWriteTree(pInstance->GetInstanceEntityUID().UID, pInstance)))
@@ -350,22 +348,22 @@ namespace Svr {
 
 		{
 			auto& counters = messageClass.GetNewCounters();
-			for (uint iCounter = 0; iCounter < counters.GetSize(); iCounter++)
+			for (uint iCounter = 0; iCounter < counters.size(); iCounter++)
 			{
 				auto dataType = (PerformanceCounter::DataTypes)counters[iCounter].DateType;
 				switch (dataType)
 				{
 				case PerformanceCounter::DataTypes::Int32:
-					pInstance->AddCounter(new PerformanceCounterRaw<int32_t>(counters[iCounter].CounterName));
+					pInstance->AddCounter(new(GetSystemMemoryManager()) PerformanceCounterRaw<int32_t>(counters[iCounter].CounterName));
 					break;
 				case PerformanceCounter::DataTypes::UInt32:
-					pInstance->AddCounter(new PerformanceCounterRaw<uint32_t>(counters[iCounter].CounterName));
+					pInstance->AddCounter(new(GetSystemMemoryManager()) PerformanceCounterRaw<uint32_t>(counters[iCounter].CounterName));
 					break;
 				case PerformanceCounter::DataTypes::Int64:
-					pInstance->AddCounter(new PerformanceCounterRaw<int64_t>(counters[iCounter].CounterName));
+					pInstance->AddCounter(new(GetSystemMemoryManager()) PerformanceCounterRaw<int64_t>(counters[iCounter].CounterName));
 					break;
 				case PerformanceCounter::DataTypes::UInt64:
-					pInstance->AddCounter(new PerformanceCounterRaw<uint64_t>(counters[iCounter].CounterName));
+					pInstance->AddCounter(new(GetSystemMemoryManager()) PerformanceCounterRaw<uint64_t>(counters[iCounter].CounterName));
 					break;
 				default:
 					svrTrace(Trace::TRC_ERROR, "PerforamnceCounter:{0}, Invalid counter type:{1}", pInstance->GetInstanceEntityUID(), counters[iCounter].DateType);
@@ -389,10 +387,10 @@ namespace Svr {
 
 		{
 			auto& instances = messageClass.GetFreeInstances();
-			for (uint iInstance = 0; iInstance < instances.GetSize(); iInstance++)
+			for (uint iInstance = 0; iInstance < instances.size(); iInstance++)
 			{
 				SharedPointerT<PerformanceCounterInstance> pInstance;
-				if (!(m_InstanceMap.Remove(instances[iInstance].UID, pInstance)))
+				if (!(m_InstanceMap.Remove(instances[iInstance], pInstance)))
 				{
 					svrTrace(Trace::TRC_ERROR, "PerforamnceCounter:{0}, Failed to remove", instances[iInstance]);
 				}
@@ -412,13 +410,13 @@ namespace Svr {
 
 		svrChk(messageClass.ParseMsg());
 
-		if (!(m_InstanceMap.Find(messageClass.GetInstanceUID().UID, pInstance))
-			|| pInstance->GetCounters().GetSize() != messageClass.GetCounterValues().GetSize())
+		if (!(m_InstanceMap.Find(messageClass.GetInstanceUID(), pInstance))
+			|| pInstance->GetCounters().size() != messageClass.GetCounterValues().size())
 		{
 			if (m_RawUDP != nullptr)
 			{
-				MessageDataPtr pMsgSend = nullptr;
-				if (!(Message::Monitoring::PerformanceCounterUpdateCounterInfoS2CEvt::BuildIMsg(pMsgSend, messageClass.GetInstanceUID())))
+				MessageDataPtr pMsgSend = Message::Monitoring::PerformanceCounterUpdateCounterInfoS2CEvt::Create((GetSystemMemoryManager()), messageClass.GetInstanceUID());
+				if (pMsgSend == nullptr)
 				{
 					svrTrace(Trace::TRC_ERROR, "Failed to generate performance counter update request packet");
 				}
@@ -436,7 +434,7 @@ namespace Svr {
 		{
 			auto& counters = pInstance->GetCounters();
 			auto& conterValues = messageClass.GetCounterValues();
-			for (uint iCounter = 0; iCounter < conterValues.GetSize(); iCounter++)
+			for (uint iCounter = 0; iCounter < conterValues.size(); iCounter++)
 			{
 				// NOTE: assume that is LSB
 				counters[iCounter]->CopyFrom(sizeof conterValues[iCounter], (uint8_t*)&conterValues[iCounter]);

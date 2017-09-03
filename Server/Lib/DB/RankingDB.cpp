@@ -55,7 +55,7 @@ namespace DB {
 		QueryGetTotalRankingCmd *pQuery = nullptr;
 		QueryGetTotalRankingSet *pSet = nullptr;
 
-		dbMem( pQuery = new QueryGetTotalRankingCmd );
+		dbMem( pQuery = new(GetMemoryManager()) QueryGetTotalRankingCmd );
 
 
 		pSet = pQuery;
@@ -71,7 +71,7 @@ namespace DB {
 
 	Proc_End:
 
-		delete pQuery;
+		IMemoryManager::Delete(pQuery);
 
 		return hr;
 	}
@@ -83,7 +83,7 @@ namespace DB {
 		Result hr = ResultCode::SUCCESS;
 		QueryUpdateRankingScoreCmd *pQuery = nullptr;
 
-		dbMem(pQuery = new QueryUpdateRankingScoreCmd);
+		dbMem(pQuery = new(GetMemoryManager()) QueryUpdateRankingScoreCmd);
 
 		pQuery->PlayerID = playerID;
 		pQuery->FBUID = fBUID;
@@ -98,8 +98,7 @@ namespace DB {
 
 	Proc_End:
 
-		if (!(hr))
-			Util::SafeRelease(pQuery);
+		IMemoryManager::Delete(pQuery);
 
 		return hr;
 	}
@@ -110,7 +109,7 @@ namespace DB {
 		Result hr = ResultCode::SUCCESS;
 		QueryGetRankersCmd *pQuery = nullptr;
 
-		dbMem(pQuery = new QueryGetRankersCmd);
+		dbMem(pQuery = new(GetMemoryManager()) QueryGetRankersCmd);
 
 		pQuery->BaseIndex = baseIndex;
 		pQuery->RequestCount = requestCount;
@@ -120,7 +119,10 @@ namespace DB {
 	Proc_End:
 
 		if (!(hr))
-			Util::SafeRelease(pQuery);
+		{
+			IMemoryManager::Delete(pQuery);
+			pQuery = nullptr;
+		}
 
 		return pQuery;
 	}

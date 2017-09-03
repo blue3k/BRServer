@@ -54,7 +54,7 @@ namespace ConspiracyGameInstanceServer {
 		case ClusterID::GameInstanceManager:
 		{
 			assert(faculty == EntityFaculty::GameInstance);
-			pEntity = new GameInstanceEntity;
+			pEntity = new(GetMemoryManager()) GameInstanceEntity;
 			return pEntity != nullptr ? ResultCode::SUCCESS : ResultCode::OUT_OF_MEMORY;
 		}
 		default:
@@ -104,7 +104,7 @@ namespace ConspiracyGameInstanceServer {
 		return;
 	}
 
-	// Initialize TaskManager
+	// Initialize TickTaskManager
 	Result GameEntityManager::InitializeManager( uint uiNumGroup )
 	{
 		Result hr = ResultCode::SUCCESS;
@@ -117,7 +117,7 @@ namespace ConspiracyGameInstanceServer {
 	}
 
 
-	// Terminate TaskManager
+	// Terminate TickTaskManager
 	Result GameEntityManager::TerminateManager()
 	{
 		Result hr = ResultCode::SUCCESS;

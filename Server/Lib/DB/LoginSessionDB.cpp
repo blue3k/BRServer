@@ -55,7 +55,7 @@ namespace DB {
 		Result hr = ResultCode::SUCCESS;
 		QueryRegisterAuthTicketCmd *pQuery = nullptr;
 
-		dbMem( pQuery = new QueryRegisterAuthTicketCmd );
+		dbMem( pQuery = new(GetMemoryManager()) QueryRegisterAuthTicketCmd );
 
 		pQuery->SetPartitioningKey((uint)playerID);
 
@@ -73,8 +73,7 @@ namespace DB {
 
 	Proc_End:
 
-		if( !(hr) )
-			Util::SafeRelease( pQuery );
+		IMemoryManager::Delete(pQuery);
 
 		return hr;
 	}
@@ -85,7 +84,7 @@ namespace DB {
 		Result hr = ResultCode::SUCCESS;
 		QueryReplaceLoginSessionCmd *pQuery = nullptr;
 
-		dbMem(pQuery = new QueryReplaceLoginSessionCmd);
+		dbMem(pQuery = new(GetMemoryManager()) QueryReplaceLoginSessionCmd);
 
 		pQuery->SetPartitioningKey((uint)playerID);
 
@@ -102,8 +101,7 @@ namespace DB {
 
 	Proc_End:
 
-		if( !(hr) )
-			Util::SafeRelease( pQuery );
+		IMemoryManager::Delete(pQuery);
 
 		return hr;
 	}
@@ -115,7 +113,7 @@ namespace DB {
 		Result hr = ResultCode::SUCCESS;
 		QueryDeleteLoginSessionCmd *pQuery = nullptr;
 
-		dbMem( pQuery = new QueryDeleteLoginSessionCmd );
+		dbMem( pQuery = new(GetMemoryManager()) QueryDeleteLoginSessionCmd );
 
 		pQuery->SetPartitioningKey((uint)playerID);
 
@@ -131,8 +129,7 @@ namespace DB {
 
 	Proc_End:
 
-		if( !(hr) )
-			Util::SafeRelease( pQuery );
+		IMemoryManager::Delete(pQuery);
 
 		return hr;
 	}
@@ -143,7 +140,7 @@ namespace DB {
 		Result hr = ResultCode::SUCCESS;
 		QueryConnectedToGameServerCmd *pQuery = nullptr;
 
-		dbMem( pQuery = new QueryConnectedToGameServerCmd );
+		dbMem( pQuery = new(GetMemoryManager()) QueryConnectedToGameServerCmd );
 
 		pQuery->SetPartitioningKey((uint)playerID);
 
@@ -160,8 +157,7 @@ namespace DB {
 
 	Proc_End:
 
-		if( !(hr) )
-			Util::SafeRelease( pQuery );
+		IMemoryManager::Delete(pQuery);
 
 		return hr;
 	}
@@ -173,7 +169,7 @@ namespace DB {
 		Result hr = ResultCode::SUCCESS;
 		QueryValidateGameServerSessionCmd *pQuery = nullptr;
 
-		dbMem(pQuery = new QueryValidateGameServerSessionCmd);
+		dbMem(pQuery = new(GetMemoryManager()) QueryValidateGameServerSessionCmd);
 
 		pQuery->SetPartitioningKey((uint)playerID);
 
@@ -189,8 +185,7 @@ namespace DB {
 
 	Proc_End:
 
-		if( !(hr) )
-			Util::SafeRelease( pQuery );
+		IMemoryManager::Delete(pQuery);
 
 		return hr;
 	}
@@ -201,7 +196,7 @@ namespace DB {
 		Result hr = ResultCode::SUCCESS;
 		QueryGameServerHeartBitCmd *pQuery = nullptr;
 
-		dbMem( pQuery = new QueryGameServerHeartBitCmd );
+		dbMem( pQuery = new(GetMemoryManager()) QueryGameServerHeartBitCmd );
 
 		pQuery->SetPartitioningKey((uint)playerID);
 
@@ -217,8 +212,7 @@ namespace DB {
 
 	Proc_End:
 
-		if( !(hr) )
-			Util::SafeRelease( pQuery );
+		IMemoryManager::Delete(pQuery);
 
 		return hr;
 	}

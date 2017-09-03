@@ -20,7 +20,7 @@
 namespace SF {
 
 
-	class TaskManager;
+	class TickTaskManager;
 	class TaskWorker;
 	struct ServerTaskEvent;
 	class TimerAction;
@@ -46,7 +46,7 @@ namespace SF {
 		SysUInt		m_TaskGroupIdx;
 
 		// TickTask manager pointer
-		TaskManager	*m_pTaskManager;
+		TickTaskManager	*m_pTaskManager;
 		TaskWorker	*m_pTaskWorker;
 
 		// TickTask UID
@@ -76,8 +76,8 @@ namespace SF {
 		inline void SetTaskGroupID( SysUInt uiTaskGroupIdx );
 
 		// Get TickTask group
-		TaskManager* GetTaskManager();
-		void SetTaskManager( TaskManager *pManager );
+		TickTaskManager* GetTaskManager();
+		void SetTaskManager( TickTaskManager *pManager );
 
 		TaskWorker* GetTaskWorker();
 

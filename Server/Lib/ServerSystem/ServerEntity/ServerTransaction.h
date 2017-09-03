@@ -43,11 +43,11 @@ namespace Svr {
 	//
 
 	// This transaction will work on server entity by default. Call SetWorkOnServerEntity to change it
-	template< class OwnerEntityType, class MessageClass, class MemoryPoolClass >
-	class ServerEntityMessageTransaction : public TransactionT<OwnerEntityType,MemoryPoolClass>, public MessageClass
+	template< class OwnerEntityType, class MessageClass >
+	class ServerEntityMessageTransaction : public TransactionT<OwnerEntityType>, public MessageClass
 	{
 	public:
-		typedef TransactionT<OwnerEntityType, MemoryPoolClass, MessageHandlerBufferSize> superTrans;
+		typedef TransactionT<OwnerEntityType> superTrans;
 
 	protected:
 		// Select which entity will work
@@ -94,6 +94,15 @@ namespace Svr {
 		// route function call
 		ServerEntity* GetServerEntity() { return superTrans::GetServerEntity(); }
 
+		Net::Connection* GetConnection()
+		{
+			auto serverEntity = GetServerEntity();
+			if (serverEntity != nullptr)
+			{
+				return serverEntity->GetConnection();
+			}
+			return nullptr;
+		}
 
 		// Initialize Transaction
 		virtual Result InitializeTransaction( Svr::Entity* pOwner )
@@ -140,7 +149,7 @@ namespace Svr {
 			Assert(pSvrEnt);
 			return pSvrEnt;
 		}
-
+/*
 		template< class PolicyType >
 		PolicyType* GetInterface()
 		{
@@ -151,7 +160,7 @@ namespace Svr {
 			else
 				return nullptr;
 		}
-
+*/
 		FORCEINLINE OwnerEntityType* GetMyOwner()
 		{
 			Assert(superTrans::GetOwnerEntity() );
@@ -166,11 +175,11 @@ namespace Svr {
 	// Message transaction template
 	//
 
-	template< class OwnerEntityType, class MessageClass, class MemoryPoolClass >
-	class ClusterEntityMessageTransaction : public ServerEntityMessageTransaction<OwnerEntityType,MessageClass,MemoryPoolClass>
+	template< class OwnerEntityType, class MessageClass >
+	class ClusterEntityMessageTransaction : public ServerEntityMessageTransaction<OwnerEntityType,MessageClass>
 	{
 	private:
-		typedef ServerEntityMessageTransaction<OwnerEntityType, MessageClass, MemoryPoolClass, MessageHandlerBufferSize> super;
+		typedef ServerEntityMessageTransaction<OwnerEntityType, MessageClass> super;
 
 	public:
 		ClusterEntityMessageTransaction(IMemoryManager& memMgr, MessageDataPtr &pIMsg )

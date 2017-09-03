@@ -41,7 +41,7 @@ namespace DB {
 		// create QueryWorkers
 		for (int i = 0; i< Const::QUERYWORKER_MAX; i++)
 		{
-			QueryWorker* pQueryWorker = new QueryWorker(this);
+			QueryWorker* pQueryWorker = new(GetMemoryManager()) QueryWorker(this);
 			pQueryWorker->Start();
 			m_QueryWorker.push_back(pQueryWorker);
 		}
@@ -59,7 +59,7 @@ namespace DB {
 		{
 			QueryWorker* pWorker = *itWorker;
 			pWorker->Stop(true);
-			delete pWorker;
+			IMemoryManager::Delete(pWorker);
 		}
 		m_QueryWorker.clear();
 	}
@@ -72,7 +72,7 @@ namespace DB {
 		auto initCount = stm_InitializationCount.fetch_add(1, std::memory_order_relaxed);
 		if (initCount == 0 && stm_pInstance == nullptr)
 		{
-			stm_pInstance = new QueryWorkerManager;
+			stm_pInstance = new(GetSystemMemoryManager()) QueryWorkerManager;
 		}
 
 
@@ -87,7 +87,7 @@ namespace DB {
 		if (initCount <= 0 && stm_pInstance != nullptr)
 		{
 			stm_pInstance->StopWorkers();
-			delete stm_pInstance;
+			IMemoryManager::Delete(stm_pInstance);
 			stm_pInstance = nullptr;
 		}
 	}

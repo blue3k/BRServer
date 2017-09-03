@@ -150,13 +150,13 @@ namespace Svr {
 	
 
 	// Close zone instance
-	class LoginPlayerTransCloseInstance : public Svr::TransactionT<LoginPlayerEntity, LoginPlayerTransCloseInstance,sizeof(Svr::TransactionMessageHandlerType)*2>
+	class LoginPlayerTransCloseInstance : public Svr::TransactionT<LoginPlayerEntity, LoginPlayerTransCloseInstance>
 	{
 	public:
-		typedef Svr::TransactionT<LoginPlayerEntity, LoginPlayerTransCloseInstance, sizeof(Svr::TransactionMessageHandlerType) * 2> super;
+		typedef Svr::TransactionT<LoginPlayerEntity, LoginPlayerTransCloseInstance> super;
 
 	public:
-		LoginPlayerTransCloseInstance();
+		LoginPlayerTransCloseInstance(IMemoryManager& memMgr);
 		virtual ~LoginPlayerTransCloseInstance() {}
 
 		Result OnDeleteLoginSessionRes( Svr::TransactionResult* &pRes );

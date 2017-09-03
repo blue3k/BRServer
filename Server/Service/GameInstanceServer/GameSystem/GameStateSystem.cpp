@@ -568,7 +568,7 @@ namespace ConspiracyGameInstanceServer {
 
 			// kill the top vote ranker
 			if( m_vote.GetPlayerToHang() == 0 )
-				return ResultCode::E_INVALID_PLAYERID;
+				return ResultCode::INVALID_PLAYERID;
 
 			svrChk( GetOwner().GetComponent<GameLogSystem>()->AddGamePlayerKilled( Util::Time.GetTimeUTCSec(), PlayerKilledReason::ByHanging, m_vote.GetPlayerToHang() ) );
 
@@ -763,17 +763,17 @@ namespace ConspiracyGameInstanceServer {
 		,m_GameAdvanceVoted(0)
 	{
 		memset( m_GamePlayStates, 0, sizeof(m_GamePlayStates) );
-		m_GamePlayStates[(uint)GameStateID::None] = new GamePlayState_None(&GetOwner());
-		m_GamePlayStates[(uint)GameStateID::FreeDebate] = new GamePlayState_FirstFreeDebate(&GetOwner());
-		//m_GamePlayStates[(uint)GameStateID::FirstNightVote] = new GamePlayState_Night(&GetOwner(), GameStateID::FirstNightVote, GameVoteNight::FREEMASON | GameVoteNight::OWLMAN);
-		//m_GamePlayStates[(uint)GameStateID::SecondNightVote] = new GamePlayState_Night(&GetOwner(), GameStateID::SecondNightVote, GameVoteNight::BODYGUARD | GameVoteNight::OWLMAN | GameVoteNight::MEDIUM );
-		m_GamePlayStates[(uint)GameStateID::NightVote] = new GamePlayState_Night(&GetOwner(), GameStateID::NightVote, GameVoteNight::BODYGUARD | GameVoteNight::OWLMAN | GameVoteNight::MEDIUM );
-		//m_GamePlayStates[(uint)GameStateID::Mythomaniac] = new GamePlayState_Mythomaniac(&GetOwner());
-		m_GamePlayStates[(uint)GameStateID::MorningDebate] = new GamePlayState_MorningDebate(&GetOwner());
-		m_GamePlayStates[(uint)GameStateID::VoteForSuspects] = new GamePlayState_VoteForSuspects(&GetOwner());
-		m_GamePlayStates[(uint)GameStateID::DefenceOfSuspects] = new GamePlayState_DefenceOfSuspects(&GetOwner());
-		m_GamePlayStates[(uint)GameStateID::VoteForHanging] = new GamePlayState_VoteForHanging(&GetOwner());
-		m_GamePlayStates[(uint)GameStateID::End] = new GamePlayState_End(&GetOwner());
+		m_GamePlayStates[(uint)GameStateID::None] = new(GetMemoryManager()) GamePlayState_None(&GetOwner());
+		m_GamePlayStates[(uint)GameStateID::FreeDebate] = new(GetMemoryManager()) GamePlayState_FirstFreeDebate(&GetOwner());
+		//m_GamePlayStates[(uint)GameStateID::FirstNightVote] = new(GetMemoryManager()) GamePlayState_Night(&GetOwner(), GameStateID::FirstNightVote, GameVoteNight::FREEMASON | GameVoteNight::OWLMAN);
+		//m_GamePlayStates[(uint)GameStateID::SecondNightVote] = new(GetMemoryManager()) GamePlayState_Night(&GetOwner(), GameStateID::SecondNightVote, GameVoteNight::BODYGUARD | GameVoteNight::OWLMAN | GameVoteNight::MEDIUM );
+		m_GamePlayStates[(uint)GameStateID::NightVote] = new(GetMemoryManager()) GamePlayState_Night(&GetOwner(), GameStateID::NightVote, GameVoteNight::BODYGUARD | GameVoteNight::OWLMAN | GameVoteNight::MEDIUM );
+		//m_GamePlayStates[(uint)GameStateID::Mythomaniac] = new(GetMemoryManager()) GamePlayState_Mythomaniac(&GetOwner());
+		m_GamePlayStates[(uint)GameStateID::MorningDebate] = new(GetMemoryManager()) GamePlayState_MorningDebate(&GetOwner());
+		m_GamePlayStates[(uint)GameStateID::VoteForSuspects] = new(GetMemoryManager()) GamePlayState_VoteForSuspects(&GetOwner());
+		m_GamePlayStates[(uint)GameStateID::DefenceOfSuspects] = new(GetMemoryManager()) GamePlayState_DefenceOfSuspects(&GetOwner());
+		m_GamePlayStates[(uint)GameStateID::VoteForHanging] = new(GetMemoryManager()) GamePlayState_VoteForHanging(&GetOwner());
+		m_GamePlayStates[(uint)GameStateID::End] = new(GetMemoryManager()) GamePlayState_End(&GetOwner());
 
 	}
 

@@ -12,6 +12,7 @@
 #include "stdafx.h"
 #include "SFTypedefs.h"
 #include "OrganicTbl.h"
+#include "Memory/SFMemory.h"
 
 
 
@@ -98,19 +99,19 @@ namespace conspiracy
 
 	Result OrganicTbl::LoadTable( const std::list<OrganicItem>& rowList )
 	{
- 		auto pNewItemEffectTable = new ItemEffectTable;
+ 		auto pNewItemEffectTable = new(GetSystemMemoryManager()) ItemEffectTable;
 
 		for( auto rowItem : rowList )
 		{
- 			auto* pOrganicItem = new OrganicTbl::OrganicItem;
+ 			auto* pOrganicItem = new(GetSystemMemoryManager()) OrganicTbl::OrganicItem;
 			*pOrganicItem = rowItem;
 			pNewItemEffectTable->insert(std::make_pair(pOrganicItem->ItemEffect, pOrganicItem));
 		}
 
 		if (m_ItemEffectTablePrev != nullptr)
 		{
- 			for( auto itItem : *m_ItemEffectTablePrev) { delete itItem.second; } ;
-			delete m_ItemEffectTablePrev;
+ 			for( auto itItem : *m_ItemEffectTablePrev) { IMemoryManager::Delete(itItem.second); } ;
+			IMemoryManager::Delete(m_ItemEffectTablePrev);
 		}
 		m_ItemEffectTablePrev = m_ItemEffectTable;
 		m_ItemEffectTable = pNewItemEffectTable;

@@ -12,6 +12,7 @@
 #include "stdafx.h"
 #include "SFTypedefs.h"
 #include "RewardTbl.h"
+#include "Memory/SFMemory.h"
 
 
 
@@ -95,19 +96,19 @@ namespace conspiracy
 
 	Result RewardTbl::LoadTable( const std::list<RewardItem>& rowList )
 	{
- 		auto pNewRoleTable = new RoleTable;
+ 		auto pNewRoleTable = new(GetSystemMemoryManager()) RoleTable;
 
 		for( auto rowItem : rowList )
 		{
- 			auto* pRewardItem = new RewardTbl::RewardItem;
+ 			auto* pRewardItem = new(GetSystemMemoryManager()) RewardTbl::RewardItem;
 			*pRewardItem = rowItem;
 			pNewRoleTable->insert(std::make_pair(pRewardItem->Role, pRewardItem));
 		}
 
 		if (m_RoleTablePrev != nullptr)
 		{
- 			for( auto itItem : *m_RoleTablePrev) { delete itItem.second; } ;
-			delete m_RoleTablePrev;
+ 			for( auto itItem : *m_RoleTablePrev) { IMemoryManager::Delete(itItem.second); } ;
+			IMemoryManager::Delete(m_RoleTablePrev);
 		}
 		m_RoleTablePrev = m_RoleTable;
 		m_RoleTable = pNewRoleTable;

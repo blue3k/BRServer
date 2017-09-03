@@ -75,18 +75,18 @@ namespace DB {
 	}
 
 	// initialize DB source
-	Result	FactoryMYSQL::CreateDataSource( DataSource* &pDBSource )
+	Result	FactoryMYSQL::CreateDataSource(IMemoryManager& memMgr, DataSource* &pDBSource )
 	{
-		if( (pDBSource = new DataSourceMYSQL) != nullptr )
+		if( (pDBSource = new(memMgr) DataSourceMYSQL(memMgr)) != nullptr )
 			return ResultCode::SUCCESS;
 
 		return ResultCode::OUT_OF_MEMORY;
 	}
 
 	// close DB source
-	Result	FactoryMYSQL::CreateSession( DataSource* pDBSource, Session* &pSession )
+	Result	FactoryMYSQL::CreateSession(IMemoryManager& memMgr, DataSource* pDBSource, Session* &pSession )
 	{
-		if( (pSession = new SessionMYSQL((DataSourceMYSQL*)pDBSource)) != nullptr)
+		if( (pSession = new(memMgr) SessionMYSQL(memMgr, (DataSourceMYSQL*)pDBSource)) != nullptr)
 			return ResultCode::SUCCESS;
 
 		return ResultCode::OUT_OF_MEMORY;

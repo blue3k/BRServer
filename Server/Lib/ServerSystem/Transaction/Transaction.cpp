@@ -24,8 +24,6 @@
 
 
 
-SF_MEMORYPOOL_IMPLEMENT(SF::Svr::MessageResult);
-SF_MEMORYPOOL_IMPLEMENT(SF::Svr::TimerResult);
 
 
 namespace SF {
@@ -261,10 +259,6 @@ namespace SF {
 		return hr;
 	}
 
-	void SubTransactionWitResult::Release()
-	{
-		SharedPointer(this);
-	}
 
 
 	///////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -291,10 +285,6 @@ namespace SF {
 	{
 	}
 
-	void TransactionResult::Release()
-	{
-		delete this;
-	}
 
 
 	
@@ -316,11 +306,6 @@ namespace SF {
 	{
 	}
 
-	// Release method ovride
-	void TimerResult::Release()
-	{
-		delete this;
-	}
 
 
 	///////////////////////////////////////////////////////////////////////////////////////////////////////

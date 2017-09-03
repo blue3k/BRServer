@@ -421,7 +421,7 @@ namespace Svr {
 		m_WaitingBotMatchingStart = TimeStampMS::min();
 
 
-		newQueueEntity = new MatchingServiceQueueEntity(m_TargetMatchingMemberCount, MIN_ITEM_RESERVATION, MAX_ITEM_RESERVATION);
+		newQueueEntity = new(GetMemoryManager()) MatchingServiceQueueEntity(m_TargetMatchingMemberCount, MIN_ITEM_RESERVATION, MAX_ITEM_RESERVATION);
 		svrChkPtr(newQueueEntity);
 
 		// TODO: Map queues
@@ -430,7 +430,7 @@ namespace Svr {
 		{
 			if (iQueue == 1)
 			{
-				auto queueInterface = new MatchingQueue_Multiple();
+				auto queueInterface = new(GetMemoryManager()) MatchingQueue_Multiple();
 				queueInterface->AddQueue(&newQueueEntity->GetReservedItemQueue(iQueue, PlayerRole::None), MAX_NUM_PLAYER, PlayerRole::None);
 				if (m_TargetMatchingMemberCount == 4)
 				{
@@ -448,7 +448,7 @@ namespace Svr {
 			else
 			{
 				PageQueue<ReservedMatchingItem>* queue = &newQueueEntity->GetReservedItemQueue(iQueue, PlayerRole::None);
-				svrChk(m_MatchingReserevedQueues.push_back(new MatchingQueue_Single(queue)));
+				svrChk(m_MatchingReserevedQueues.push_back(new(GetMemoryManager()) MatchingQueue_Single(queue)));
 			}
 			
 
@@ -611,7 +611,7 @@ namespace Svr {
 		m_WaitingBotMatchingStart = TimeStampMS::min();
 
 		++m_MatchedCount;
-		pTrans = new MatchingTransProcessMatchedItems(targetMatchingMemberCount, grabbedItems);
+		pTrans = new(GetMemoryManager()) MatchingTransProcessMatchedItems(targetMatchingMemberCount, grabbedItems);
 		svrMem(pTrans);
 		svrChk(PendingTransaction(GetTaskWorker()->GetThreadID(), pTrans));
 
@@ -670,7 +670,7 @@ namespace Svr {
 		if (grabbedPlayerCount > 0)
 		{
 			++m_MatchedCount;
-			pTrans = new MatchingTransProcessMatchedItems(targetMatchingMemberCount, grabbedItems);
+			pTrans = new(GetMemoryManager()) MatchingTransProcessMatchedItems(targetMatchingMemberCount, grabbedItems);
 			svrMem(pTrans);
 			svrChk(PendingTransaction(GetTaskWorker()->GetThreadID(), pTrans));
 		}
@@ -818,7 +818,7 @@ namespace Svr {
 				{
 					auto playerRole = MatchingUtil::GetPlayerRoleFromQueueComponentID(compoID);
 					auto targetMemberCount = MatchingUtil::GetPartyMemberCountFromQueueComponentID(compoID);
-					Transaction *pTrans = new MatchingTransGrabPlayer(m_MatchingMemberCount, targetMemberCount, playerRole, m_MinQueueCount, m_MaxQueueCount);
+					Transaction *pTrans = new(GetMemoryManager()) MatchingTransGrabPlayer(m_MatchingMemberCount, targetMemberCount, playerRole, m_MinQueueCount, m_MaxQueueCount);
 					svrMem(pTrans);
 					svrChk(PendingTransaction(GetTaskWorker()->GetThreadID(), pTrans));
 				}

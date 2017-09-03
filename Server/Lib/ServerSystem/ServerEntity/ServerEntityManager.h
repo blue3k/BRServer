@@ -21,7 +21,7 @@
 #include "Net/NetDef.h"
 #include "Net/NetServerPeer.h"
 #include "Net/NetServerPeerTCP.h"
-#include "Task/TaskManager.h"
+#include "Task/ServerTaskManager.h"
 #include "ServerEntity/ServerEntity.h"
 #include "Component/ServerComponent.h"
 
@@ -38,7 +38,7 @@ namespace Svr
 	//		- Will use with server type
 	//
 
-	class ServerEntityManager : public TaskManager, public IServerComponent
+	class ServerEntityManager : public TickTaskManager, public IServerComponent
 	{
 	public:
 		enum { ComponentID = ServerComponentID_ServerEntityManager };
@@ -126,7 +126,7 @@ namespace Svr
 
 		svrTrace( Svr::TRC_ENTITY, "Registering Server {0} SvrID:{1}, {2}", typeid(ServerEntityType).name(), serverID, netAddress);
 
-		svrMem( pNewServerEntity = new ServerEntityType );
+		svrMem( pNewServerEntity = new(GetMemoryManager()) ServerEntityType );
 
 		svrChk( BrServer::GetInstance()->GetNetPrivate()->RegisterServerConnection( serverID, netClass, netAddress, pConnection ) );
 

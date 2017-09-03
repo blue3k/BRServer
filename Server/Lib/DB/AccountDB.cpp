@@ -55,7 +55,7 @@ namespace DB {
 		Result hr = ResultCode::SUCCESS;
 		QueryFacebookCreateUserCmd *pQuery = nullptr;
 
-		dbMem( pQuery = new QueryFacebookCreateUserCmd );
+		dbMem( pQuery = new(GetMemoryManager()) QueryFacebookCreateUserCmd );
 
 		pQuery->FBUserID = facebookUID;
 		dbChk(StrUtil::StringCpy(pQuery->EMail, EMail));
@@ -71,8 +71,7 @@ namespace DB {
 
 	Proc_End:
 
-		if( !(hr) )
-			Util::SafeRelease( pQuery );
+		IMemoryManager::Delete(pQuery);
 
 		return hr;
 	}
@@ -82,7 +81,7 @@ namespace DB {
 		Result hr = ResultCode::SUCCESS;
 		QueryFacebookLoginCmd *pQuery = nullptr;
 
-		dbMem( pQuery = new QueryFacebookLoginCmd );
+		dbMem( pQuery = new(GetMemoryManager()) QueryFacebookLoginCmd );
 
 		pQuery->FBUserID = facebookUID;
 		pQuery->AccountID = 0;
@@ -99,8 +98,7 @@ namespace DB {
 
 	Proc_End:
 
-		if( !(hr) )
-			Util::SafeRelease( pQuery );
+		IMemoryManager::Delete(pQuery);
 
 		return hr;
 	}
@@ -111,7 +109,7 @@ namespace DB {
 		Result hr = ResultCode::SUCCESS;
 		QueryCreateUserCmd *pQuery = nullptr;
 
-		dbMem( pQuery = new QueryCreateUserCmd );
+		dbMem( pQuery = new(GetMemoryManager()) QueryCreateUserCmd );
 
 		dbChk(StrUtil::StringCpy(pQuery->UserName, UserName));
 		dbChk(StrUtil::StringCpy(pQuery->Password, Password));
@@ -124,8 +122,7 @@ namespace DB {
 
 	Proc_End:
 
-		if( !(hr) )
-			Util::SafeRelease( pQuery );
+		IMemoryManager::Delete(pQuery);
 
 		return hr;
 	}
@@ -135,7 +132,7 @@ namespace DB {
 		Result hr = ResultCode::SUCCESS;
 		QueryLoginCmd *pQuery = nullptr;
 
-		dbMem( pQuery = new QueryLoginCmd );
+		dbMem( pQuery = new(GetMemoryManager()) QueryLoginCmd );
 
 		dbChk(StrUtil::StringCpy(pQuery->UserName, UserName));
 		dbChk(StrUtil::StringCpy(pQuery->Password, Password));
@@ -151,8 +148,7 @@ namespace DB {
 
 	Proc_End:
 
-		if( !(hr) )
-			Util::SafeRelease( pQuery );
+		IMemoryManager::Delete(pQuery);
 
 		return hr;
 	}
@@ -162,7 +158,7 @@ namespace DB {
 		Result hr = ResultCode::SUCCESS;
 		QueryLogoutCmd *pQuery = nullptr;
 
-		dbMem( pQuery = new QueryLogoutCmd );
+		dbMem( pQuery = new(GetMemoryManager()) QueryLogoutCmd );
 
 		pQuery->SetTransaction( Sender );
 
@@ -171,8 +167,7 @@ namespace DB {
 
 	Proc_End:
 
-		if( !(hr) )
-			Util::SafeRelease( pQuery );
+		IMemoryManager::Delete(pQuery);
 
 		return hr;
 	}
@@ -183,7 +178,7 @@ namespace DB {
 		Result hr = ResultCode::SUCCESS;
 		QueryCreateRandomUserCmd *pQuery = nullptr;
 
-		dbMem(pQuery = new QueryCreateRandomUserCmd);
+		dbMem(pQuery = new(GetMemoryManager()) QueryCreateRandomUserCmd);
 
 		dbChk(StrUtil::StringCpy(pQuery->UserName, userName));
 		dbChk(StrUtil::StringCpy(pQuery->CellPhone, cellPhone));
@@ -199,8 +194,7 @@ namespace DB {
 
 	Proc_End:
 
-		if( !(hr) )
-			Util::SafeRelease( pQuery );
+		IMemoryManager::Delete(pQuery);
 
 		return hr;
 	}
@@ -210,7 +204,7 @@ namespace DB {
 		Result hr = ResultCode::SUCCESS;
 		QueryUserListCmd *pQuery = nullptr;
 
-		dbMem( pQuery = new QueryUserListCmd );
+		dbMem( pQuery = new(GetMemoryManager()) QueryUserListCmd );
 
 		pQuery->SetTransaction( Sender );
 
@@ -219,8 +213,7 @@ namespace DB {
 
 	Proc_End:
 
-		if( !(hr) )
-			Util::SafeRelease( pQuery );
+		IMemoryManager::Delete(pQuery);
 
 		return hr;
 	}
@@ -232,7 +225,7 @@ namespace DB {
 
 		dbChkPtr( strGCMKeys );
 
-		dbMem( pQuery = new QueryUpdateGCMKeysCmd );
+		dbMem( pQuery = new(GetMemoryManager()) QueryUpdateGCMKeysCmd );
 
 		pQuery->SetTransaction( Sender );
 		pQuery->UserUID = accountID;
@@ -244,8 +237,7 @@ namespace DB {
 
 	Proc_End:
 
-		if( !(hr) )
-			Util::SafeRelease( pQuery );
+		IMemoryManager::Delete(pQuery);
 
 		return hr;
 	}
@@ -258,7 +250,7 @@ namespace DB {
 
 		dbChkPtr(strEMail);
 
-		dbMem(pQuery = new QueryUpdateUserContactInfoCmd);
+		dbMem(pQuery = new(GetMemoryManager()) QueryUpdateUserContactInfoCmd);
 
 		pQuery->SetTransaction( Sender );
 		pQuery->UserUID = accountID;
@@ -271,8 +263,7 @@ namespace DB {
 
 	Proc_End:
 
-		if( !(hr) )
-			Util::SafeRelease( pQuery );
+		IMemoryManager::Delete(pQuery);
 
 		return hr;
 	}
@@ -283,7 +274,7 @@ namespace DB {
 		Result hr = ResultCode::SUCCESS;
 		QueryFindPlayerByEMailCmd *pQuery = nullptr;
 
-		dbMem( pQuery = new QueryFindPlayerByEMailCmd );
+		dbMem( pQuery = new(GetMemoryManager()) QueryFindPlayerByEMailCmd );
 
 		pQuery->SetTransaction( Sender );
 		dbChk( StrUtil::StringCpy( pQuery->EMail, email ) );
@@ -300,8 +291,7 @@ namespace DB {
 
 	Proc_End:
 
-		if( !(hr) )
-			Util::SafeRelease( pQuery );
+		IMemoryManager::Delete(pQuery);
 
 		return hr;
 	}
@@ -311,7 +301,7 @@ namespace DB {
 		Result hr = ResultCode::SUCCESS;
 		QueryFindPlayerByPlayerIDCmd *pQuery = nullptr;
 
-		dbMem(pQuery = new QueryFindPlayerByPlayerIDCmd);
+		dbMem(pQuery = new(GetMemoryManager()) QueryFindPlayerByPlayerIDCmd);
 
 		pQuery->SetTransaction(Sender);
 
@@ -327,8 +317,7 @@ namespace DB {
 
 	Proc_End:
 
-		if (!(hr))
-			Util::SafeRelease(pQuery);
+		IMemoryManager::Delete(pQuery);
 
 		return hr;
 	}
@@ -340,7 +329,7 @@ namespace DB {
 		Result hr = ResultCode::SUCCESS;
 		QueryGetPlayerShardIDCmd *pQuery = nullptr;
 
-		dbMem(pQuery = new QueryGetPlayerShardIDCmd);
+		dbMem(pQuery = new(GetMemoryManager()) QueryGetPlayerShardIDCmd);
 
 		pQuery->SetTransaction( Sender );
 
@@ -354,8 +343,7 @@ namespace DB {
 
 	Proc_End:
 
-		if( !(hr) )
-			Util::SafeRelease( pQuery );
+		IMemoryManager::Delete(pQuery);
 
 		return hr;
 	}

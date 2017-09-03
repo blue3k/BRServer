@@ -40,6 +40,7 @@ namespace Svr {
 	// Constructor/Destructor
 	EntityManager::EntityManager()
 		: IServerComponent(ComponentID)
+		, m_MemoryManager("EntityManager", GetSystemMemoryManager())
 		, m_NumberOfServices("NumberOfService")
 		, m_NumberOfTotalEntities("TotalEntities")
 	{
@@ -55,10 +56,10 @@ namespace Svr {
 		switch (clusterID)
 		{
 		case ClusterID::Login:
-			pEntity = new LoginPlayerEntity;
+			pEntity = new(GetMemoryManager()) LoginPlayerEntity;
 			break;
 		case ClusterID::Game:
-			pEntity = new GamePlayerEntity;
+			pEntity = new(GetMemoryManager()) GamePlayerEntity;
 			break;
 		default:
 			return ResultCode::INVALID_ARG;
@@ -219,13 +220,13 @@ namespace Svr {
 	}
 
 
-	// Initialize TaskManager
+	// Initialize TickTaskManager
 	Result EntityManager::InitializeManager(uint uiNumGroup)
 	{
 		Result hr = ResultCode::SUCCESS;
 		PerformanceCounterInstance* counterInstance = nullptr;
 
-		svrChk(TaskManager::InitializeManager(uiNumGroup));
+		svrChk(TickTaskManager::InitializeManager(uiNumGroup));
 
 		//m_PerformanceCounterInstance = SharedPointerT < PerformanceCounterInstance >(new PerformanceCounterInstance("EntityManager", entityUID));
 		counterInstance = PerformanceCounterClient::GetDefaultCounterInstance();
@@ -243,7 +244,7 @@ namespace Svr {
 	}
 
 
-	// Terminate TaskManager
+	// Terminate TickTaskManager
 	Result EntityManager::TerminateManager()
 	{
 		Result hr = ResultCode::SUCCESS;
@@ -254,7 +255,7 @@ namespace Svr {
 		//	m_PerformanceCounterInstance = SharedPointerT < PerformanceCounterInstance >();
 		//}
 
-		svrChk(TaskManager::TerminateManager());
+		svrChk(TickTaskManager::TerminateManager());
 
 	Proc_End:
 

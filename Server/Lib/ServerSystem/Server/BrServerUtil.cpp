@@ -11,7 +11,7 @@
 #include "stdafx.h"
 #include "Transaction/Transaction.h"
 #include "Types/BrSvrTypes.h"
-#include "Task/TaskManager.h"
+#include "Task/ServerTaskManager.h"
 #include "Entity/Entity.h"
 #include "Entity/EntityTable.h"
 #include "ServerSystem/SvrConfig.h"

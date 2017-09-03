@@ -82,7 +82,7 @@ namespace Svr {
 
 	//	if (GetPlayerID() == 0)
 	//	{
-	//		svrErr(ResultCode::E_INVALID_PLAYERID);
+	//		svrErr(ResultCode::INVALID_PLAYERID);
 	//	}
 
 	//	if ((Svr::GetServerComponent<Svr::EntityManager>()->FindEntity(GetRouteContext().GetTo(), pEntity))
@@ -93,7 +93,7 @@ namespace Svr {
 	//		// If a login server has invalid login session information from the DB. the player ID will not be match
 	//		if (pPlayerEntity->GetPlayerID() != GetPlayerID())
 	//		{
-	//			svrErrClose(ResultCode::E_INVALID_PLAYERID);
+	//			svrErrClose(ResultCode::INVALID_PLAYERID);
 	//		}
 
 	//		svrTrace(Svr::TRC_ENTITY, "Reinitialize Player Entity UID:{0}", GetPlayerID());

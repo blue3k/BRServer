@@ -33,7 +33,7 @@ namespace SF {
 	public:
 
 		// Item for stack pool
-		struct Item : public StackPool::Item, public MemoryPoolObject<Item>
+		struct Item : public StackPool::Item
 		{
 			UINT UID;
 

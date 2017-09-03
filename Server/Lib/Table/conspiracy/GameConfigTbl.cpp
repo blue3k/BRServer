@@ -12,6 +12,7 @@
 #include "stdafx.h"
 #include "SFTypedefs.h"
 #include "GameConfigTbl.h"
+#include "Memory/SFMemory.h"
 
 
 
@@ -25,19 +26,19 @@ namespace conspiracy
 
 	Result GameConfigTbl::LoadTable( const std::list<GameConfigItem>& rowList )
 	{
- 		auto pNewPresetIDTable = new PresetIDTable;
+ 		auto pNewPresetIDTable = new(GetSystemMemoryManager()) PresetIDTable;
 
 		for( auto rowItem : rowList )
 		{
- 			auto* pGameConfigItem = new GameConfigTbl::GameConfigItem;
+ 			auto* pGameConfigItem = new(GetSystemMemoryManager()) GameConfigTbl::GameConfigItem;
 			*pGameConfigItem = rowItem;
 			pNewPresetIDTable->insert(std::make_pair(pGameConfigItem->PresetID, pGameConfigItem));
 		}
 
 		if (m_PresetIDTablePrev != nullptr)
 		{
- 			for( auto itItem : *m_PresetIDTablePrev) { delete itItem.second; } ;
-			delete m_PresetIDTablePrev;
+ 			for( auto itItem : *m_PresetIDTablePrev) { IMemoryManager::Delete(itItem.second); } ;
+			IMemoryManager::Delete(m_PresetIDTablePrev);
 		}
 		m_PresetIDTablePrev = m_PresetIDTable;
 		m_PresetIDTable = pNewPresetIDTable;

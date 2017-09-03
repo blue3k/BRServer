@@ -43,9 +43,9 @@ namespace Svr {
 	RankingServiceEntity::RankingServiceEntity(ClusterID clusterID, ClusterMembership initialMembership)
 		:FreeReplicaClusterServiceEntity(clusterID, initialMembership)
 	{
-		BR_ENTITY_MESSAGE(Message::RankingServer::AddPlayerCmd) { svrMemReturn(pNewTrans = new RankingServerAddPlayerTrans(pMsgData)); return ResultCode::SUCCESS; } );
-		BR_ENTITY_MESSAGE(Message::RankingServer::UpdatePlayerScoreCmd) { svrMemReturn(pNewTrans = new RankingServerUpdatePlayerScoreTrans(pMsgData)); return ResultCode::SUCCESS; } );
-		BR_ENTITY_MESSAGE(Message::RankingServer::DebugPrintALLRankingCmd) { svrMemReturn(pNewTrans = new RankingServerDebugPrintALLRankingTrans(pMsgData)); return ResultCode::SUCCESS; } );
+		BR_ENTITY_MESSAGE(Message::RankingServer::AddPlayerCmd)					{ svrMemReturn(pNewTrans = new(GetMemoryManager()) RankingServerAddPlayerTrans(pMsgData)); return ResultCode::SUCCESS; } );
+		BR_ENTITY_MESSAGE(Message::RankingServer::UpdatePlayerScoreCmd)			{ svrMemReturn(pNewTrans = new(GetMemoryManager()) RankingServerUpdatePlayerScoreTrans(pMsgData)); return ResultCode::SUCCESS; } );
+		BR_ENTITY_MESSAGE(Message::RankingServer::DebugPrintALLRankingCmd)		{ svrMemReturn(pNewTrans = new(GetMemoryManager()) RankingServerDebugPrintALLRankingTrans(pMsgData)); return ResultCode::SUCCESS; } );
 	}
 
 	RankingServiceEntity::~RankingServiceEntity()
@@ -162,7 +162,7 @@ namespace Svr {
 
 			// not yet ranked
 			// TODO: we need to use more generalied player information description
-			pPlayerRankInformation = new TotalRankingPlayerInformation(0, 0, player.PlayerID, player.FBUID, player.NickName, player.Level, (int32_t)score, (int32_t)(score >> 32));
+			pPlayerRankInformation = new(GetMemoryManager()) TotalRankingPlayerInformation(0, 0, player.PlayerID, player.FBUID, player.NickName, player.Level, (int32_t)score, (int32_t)(score >> 32));
 			svrChk(m_PlayerMap.Insert(player.PlayerID, pPlayerRankInformation));
 			m_PlayerMap.CommitChanges();
 

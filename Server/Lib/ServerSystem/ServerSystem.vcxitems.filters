@@ -238,9 +238,6 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)ServerLog\SvrTrace.h">
       <Filter>ServerLog</Filter>
     </ClInclude>
-    <ClInclude Include="$(MSBuildThisFileDirectory)Task\TaskManager.h">
-      <Filter>Task</Filter>
-    </ClInclude>
     <ClInclude Include="$(MSBuildThisFileDirectory)String\ToStringSvr.h">
       <Filter>String</Filter>
     </ClInclude>
@@ -348,6 +345,12 @@
     <ClInclude Include="C:\work\BRServerSF\Server\Lib\ServerSystem\Util\LocalUIDGenerator.h">
       <Filter>Util</Filter>
     </ClInclude>
+    <ClInclude Include="C:\work\BRServerSF\Server\Lib\ServerSystem\Task\ServerTaskManager.h">
+      <Filter>Task</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\work\BRServerSF\Server\Lib\ServerSystem\Util\GlobalUIDGenerator.h">
+      <Filter>Util</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="$(MSBuildThisFileDirectory)makefile.mak" />
@@ -384,9 +387,6 @@
     </None>
     <None Include="$(MSBuildThisFileDirectory)GameLog\GameLog.inl">
       <Filter>GameLog</Filter>
-    </None>
-    <None Include="$(MSBuildThisFileDirectory)Task\TaskManager.inl">
-      <Filter>Task</Filter>
     </None>
     <None Include="$(MSBuildThisFileDirectory)Types\BrSvrTypes.inl">
       <Filter>Types</Filter>
@@ -435,6 +435,9 @@
     </None>
     <None Include="C:\work\BRServerSF\Server\Lib\ServerSystem\Entity\EntityInformation.inl">
       <Filter>Entity</Filter>
+    </None>
+    <None Include="C:\work\BRServerSF\Server\Lib\ServerSystem\Task\ServerTaskManager.inl">
+      <Filter>Task</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>
@@ -582,9 +585,6 @@
     <ClCompile Include="$(MSBuildThisFileDirectory)ServerLog\SvrTrace.cpp">
       <Filter>ServerLog</Filter>
     </ClCompile>
-    <ClCompile Include="$(MSBuildThisFileDirectory)Task\TaskManager.cpp">
-      <Filter>Task</Filter>
-    </ClCompile>
     <ClCompile Include="$(MSBuildThisFileDirectory)String\ToStringSvr.cpp">
       <Filter>String</Filter>
     </ClCompile>
@@ -661,6 +661,12 @@
       <Filter>Entity</Filter>
     </ClCompile>
     <ClCompile Include="C:\work\BRServerSF\Server\Lib\ServerSystem\Util\LocalUIDGenerator.cpp">
+      <Filter>Util</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\work\BRServerSF\Server\Lib\ServerSystem\Task\ServerTaskManager.cpp">
+      <Filter>Task</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\work\BRServerSF\Server\Lib\ServerSystem\Util\GlobalUIDGenerator.cpp">
       <Filter>Util</Filter>
     </ClCompile>
   </ItemGroup>

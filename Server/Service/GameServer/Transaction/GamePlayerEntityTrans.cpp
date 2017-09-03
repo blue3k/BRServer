@@ -29,7 +29,7 @@
 #include "ServiceEntity/ClusterManagerServiceEntity.h"
 #include "ServerSystem/ServiceEntity/Game/GameClusterServiceEntity.h"
 #include "ServerSystem/ExternalTransaction.h"
-#include "ServerSystem/ExternalTransactionManager.h"
+#include "Transaction/ExternalTransactionManager.h"
 
 #include "Protocol/Policy/LoginServerNetPolicy.h"
 #include "Protocol/Message/LoginServerMsgClass.h"
@@ -1051,7 +1051,7 @@ namespace GameServer {
 		svrChk(pRes->GetResult());
 
 		if (pDBRes->Result < 0)
-			svrErrClose(ResultCode::E_INVALID_PLAYERID);
+			svrErrClose(ResultCode::INVALID_PLAYERID);
 
 		GetMyOwner()->AddGameTransactionLogT(TransLogCategory::Account, 0, 0, 0, "From {0} to {1}", GetMyOwner()->GetNickName(), GetNickName());
 

@@ -60,10 +60,10 @@ namespace Const {
 	constexpr DurationMS		REMOTE_CONNECTION_RETRY = DurationMS(5 * 1000);
 	constexpr DurationMS		REMOTE_CONNECTION_RETRY_MAX = DurationMS(5 * 60 * 1000);
 
-	constexpr DurationMS		SIMPLEUSER_TICKTASK_intERVAL = DurationMS(60 * 1000);
+	constexpr DurationMS		SIMPLEUSER_TICKTASK_INTERVAL = DurationMS(60 * 1000);
 	constexpr DurationMS		PARALLEL_TRANSACTION_MANAGER_TICKTASK_intERVAL = DurationMS(1000);
 
-	constexpr DurationMS		PARTY_TICKTASK_intERVAL = DurationMS(2 * 60 * 1000);
+	constexpr DurationMS		PARTY_TICKTASK_INTERVAL = DurationMS(2 * 60 * 1000);
 
 		// Wait time for login sequences
 #ifdef DEBUG
@@ -76,7 +76,7 @@ namespace Const {
 	constexpr DurationMS		GAMEINSTANCE_EMPTYINSTANCE_KILL_TIMEOUT = DurationMS(60 * 1000);
 
 
-	constexpr DurationMS		TIME_intERVAL_RANKING_UPDATE = DurationMS(10 * 1000);
+	constexpr DurationMS		TIME_INTERVAL_RANKING_UPDATE = DurationMS(10 * 1000);
 
 
 	constexpr int64_t RANKING_DB_MAX_REQUEST = 1000;

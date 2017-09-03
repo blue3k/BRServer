@@ -160,7 +160,7 @@ Result BrServer::AddDBCluster(ServerConfig::DBCluster *pDBClusterCfg)
 
 	auto instanceInfo = itInstnace->second;
 
-	svrMem( pDB = new DBManagerType );
+	svrMem( pDB = new(GetMemoryManager()) DBManagerType );
 	pDBManager = reinterpret_cast<DB::DBClusterManager*>(pDB);
 	svrChk( pDBManager->InitializeDBCluster( 1 ) );
 

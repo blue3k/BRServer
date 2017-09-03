@@ -69,7 +69,7 @@ namespace GameTable {
 
 			if (m_pDataSource == nullptr)
 			{
-				defChk(DB::Factory::GetInstance().CreateDataSource(m_pDataSource));
+				defChk(DB::Factory::GetInstance().CreateDataSource(GetSystemMemoryManager(), m_pDataSource));
 			}
 
 			defChk(m_pDataSource->InitializeDBSource(strConnectionString, strDBName, strUserID, strPassword));
@@ -86,7 +86,7 @@ namespace GameTable {
 			if (m_pDataSource != nullptr)
 			{
 				m_pDataSource->CloseDBSource();
-				delete m_pDataSource;
+				IMemoryManager::Delete(m_pDataSource);
 			}
 
 		//Proc_End:
@@ -107,7 +107,7 @@ namespace GameTable {
 
 			defChk(pSession->OpenSession());
 
-			defChkPtr(pTblQuery = new TableQueryType());
+			defChkPtr(pTblQuery = new(GetSystemMemoryManager()) TableQueryType());
 			pTblQuery->Dummy = 0;
 			defChk(pSession->SendQuery(pTblQuery));
 
@@ -133,7 +133,7 @@ namespace GameTable {
 
 			defChk(pSession->OpenSession());
 
-			defChkPtr(pTblQuery = new DB::QueryTableVersionTblCmd);
+			defChkPtr(pTblQuery = new(GetSystemMemoryManager()) DB::QueryTableVersionTblCmd);
 			pTblQuery->TableVersion = 0;
 			defChk(pSession->SendQuery(pTblQuery));
 

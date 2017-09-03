@@ -14,7 +14,7 @@
 #include "SFTypedefs.h"
 
 #include "Entity/Entity.h"
-#include "Task/TaskManager.h"
+#include "Task/ServerTaskManager.h"
 #include "Component/ServerComponent.h"
 #include "PerformanceCounter/PerformanceCounter.h"
 #include "PerformanceCounter/PerformanceCounterInstance.h"
@@ -30,7 +30,7 @@ namespace Svr {
 	//	GameUser Entity manager
 	//
 
-	class EntityManager : public TaskManager, public IServerComponent
+	class EntityManager : public TickTaskManager, public IServerComponent
 	{
 	public:
 
@@ -38,7 +38,8 @@ namespace Svr {
 
 	private:
 
-		//SharedPointerT < PerformanceCounterInstance > m_PerformanceCounterInstance;
+		MemoryManager m_MemoryManager;
+
 		PerformanceCounterRaw < uint64_t > m_NumberOfServices;
 		PerformanceCounterRaw < uint64_t > m_NumberOfTotalEntities;
 
@@ -47,6 +48,7 @@ namespace Svr {
 		EntityManager();
 		virtual ~EntityManager();
 
+		IMemoryManager& GetMemoryManager() { return m_MemoryManager; }
 
 		////////////////////////////////////////////////////////////////////////////
 		//
@@ -71,10 +73,10 @@ namespace Svr {
 
 		virtual void RegisterCounter() {}
 
-		// Initialize TaskManager
+		// Initialize TickTaskManager
 		virtual Result InitializeManager(uint uiNumGroup = 2) override;
 
-		// Terminate TaskManager
+		// Terminate TickTaskManager
 		virtual Result TerminateManager() override;
 
 

@@ -20,7 +20,7 @@
 namespace SF {
 
 
-	class TaskManager;
+	class TickTaskManager;
 
 	namespace Svr {
 		class TransactionResult;

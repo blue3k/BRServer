@@ -58,18 +58,18 @@ namespace DB {
 	}
 
 	// initialize DB source
-	Result	FactoryOLEDB::CreateDataSource( DataSource* &pDBSource )
+	Result	FactoryOLEDB::CreateDataSource(IMemoryManager& memMgr, DataSource* &pDBSource )
 	{
-		if( pDBSource = new DataSourceOLEDB )
+		if( pDBSource = new DataSourceOLEDB(memMgr))
 			return ResultCode::SUCCESS;
 
 		return ResultCode::OUT_OF_MEMORY;
 	}
 
 	// close DB source
-	Result	FactoryOLEDB::CreateSession( DataSource* pDBSource, Session* &pSession )
+	Result	FactoryOLEDB::CreateSession(IMemoryManager& memMgr, DataSource* pDBSource, Session* &pSession )
 	{
-		if( pSession = new SessionOLEDB(pDBSource) )
+		if( pSession = new SessionOLEDB(memMgr, pDBSource) )
 			return ResultCode::SUCCESS;
 
 		return ResultCode::OUT_OF_MEMORY;

@@ -156,7 +156,7 @@ namespace Svr
 		if( pPrevNode->Key != 0 && pPrevListNode->pServerEntity == pServerEntity )
 			return ResultCode::SUCCESS_FALSE;
 
-		svrMem( pNewListNode = new ServerUpTimeListNodeItem );
+		svrMem( pNewListNode = new(GetMemoryManager()) ServerUpTimeListNodeItem );
 		memset( pNewListNode, 0, sizeof(ServerUpTimeListNodeItem) );
 
 		pNewListNode->pServerEntity = pServerEntity;

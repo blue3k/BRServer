@@ -78,7 +78,7 @@ namespace Svr {
 		// public network
 		svrChkPtr(m_PublicNetSocket);
 
-		svrMem(m_pNetPublic = new Net::ServerMUDP(BrServer::GetInstance()->GetServerUID(), NetClass::Login));
+		svrMem(m_pNetPublic = new(GetMemoryManager()) Net::ServerMUDP(BrServer::GetInstance()->GetServerUID(), NetClass::Login));
 		svrChk(m_pNetPublic->HostOpen(NetClass::Login, m_PublicNetSocket->IPV6.c_str(), m_PublicNetSocket->Port));
 
 		// Account DB
@@ -169,7 +169,7 @@ namespace Svr {
 				svrChkPtr(pConn);
 				svrChkPtr(GetServerComponent<Svr::EntityManager>());
 
-				svrMem(pLoginPlayerEntity = new LoginPlayerEntity);
+				svrMem(pLoginPlayerEntity = new(GetMemoryManager()) LoginPlayerEntity);
 
 				svrChk(GetServerComponent<EntityManager>()->AddEntity(EntityFaculty::User, pLoginPlayerEntity));
 

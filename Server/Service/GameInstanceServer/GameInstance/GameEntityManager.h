@@ -62,10 +62,10 @@ namespace ConspiracyGameInstanceServer {
 
 		virtual void RegisterCounter() override;
 
-		// Initialize TaskManager
+		// Initialize TickTaskManager
 		virtual Result InitializeManager( uint uiNumGroup );
 
-		// Terminate TaskManager
+		// Terminate TickTaskManager
 		virtual Result TerminateManager();
 
 	};

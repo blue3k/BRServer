@@ -83,12 +83,12 @@ namespace ConspiracyGameInstanceServer {
 
 	Svr::EntityManager* GameInstanceServer::CreateEntityManager()
 	{
-		return new GameEntityManager;
+		return new(GetMemoryManager()) GameEntityManager;
 	}
 
 	Svr::ServerEntity* GameInstanceServer::CreateLoopbackEntity()
 	{
-		return new Svr::GenericServerEntity;
+		return new(GetMemoryManager()) Svr::GenericServerEntity;
 	}
 
 
@@ -191,7 +191,7 @@ namespace ConspiracyGameInstanceServer {
 
 		{
 		GameInstanceManagerServiceEntity *pGameInstanceManager = nullptr;
-		svrMem( pGameInstanceManager = new GameInstanceManagerServiceEntity(ClusterID::GameInstanceManager, ClusterMembership::Slave) );
+		svrMem( pGameInstanceManager = new(GetMemoryManager()) GameInstanceManagerServiceEntity(ClusterID::GameInstanceManager, ClusterMembership::Slave) );
 		svrChk( GetMyServer()->GetComponent<Svr::EntityManager>()->AddEntity( EntityFaculty::Service, pGameInstanceManager ) );
 		svrChk( GetMyServer()->GetComponent<Svr::ClusterManagerServiceEntity>()->AddClusterServiceEntity( pGameInstanceManager ) );
 		svrChk( AddComponent(pGameInstanceManager) );
@@ -201,7 +201,7 @@ namespace ConspiracyGameInstanceServer {
 		// push Startup transaction
 		{
 			Svr::Transaction * pProcess = nullptr;
-			svrMem( pProcess = new GameInstanceServerStartProcess );
+			svrMem( pProcess = new(GetMemoryManager()) GameInstanceServerStartProcess );
 			svrChk( pProcess->InitializeTransaction(this) );
 			svrChk(PendingTransaction(ThisThread::GetThreadID(), pProcess));
 		}
@@ -236,10 +236,10 @@ namespace ConspiracyGameInstanceServer {
 		switch( netClass )
 		{
 		case BR::NetClass::Entity:
-			pServerEntity = new Svr::EntityServerEntity();
+			pServerEntity = new(GetMemoryManager()) Svr::EntityServerEntity();
 			break;
 		default:
-			pServerEntity = new Svr::GenericServerEntity();
+			pServerEntity = new(GetMemoryManager()) Svr::GenericServerEntity();
 			break;
 		};
 

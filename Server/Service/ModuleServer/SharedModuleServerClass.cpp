@@ -83,7 +83,7 @@ namespace SharedModuleServer {
 
 	Svr::ServerEntity* SharedModuleServer::CreateLoopbackEntity()
 	{
-		return new Svr::ServerEntity;
+		return new(GetMemoryManager()) Svr::ServerEntity;
 	}
 
 
@@ -199,7 +199,7 @@ namespace SharedModuleServer {
 		// push Startup transaction
 		{
 			Svr::Transaction * pProcess = nullptr;
-			svrMem( pProcess = new SharedModuleServerStartProcess );
+			svrMem( pProcess = new(GetMemoryManager()) SharedModuleServerStartProcess );
 			svrChk( pProcess->InitializeTransaction(this) );
 			svrChk( PendingTransaction(ThisThread::GetThreadID(), pProcess) );
 		}
@@ -228,15 +228,15 @@ namespace SharedModuleServer {
 
 
 	// create remote entity by class
-	Result SharedModuleServer::CreateServerEntity( BR::NetClass netClass, Svr::ServerEntity* &pServerEntity )
+	Result SharedModuleServer::CreateServerEntity( NetClass netClass, Svr::ServerEntity* &pServerEntity )
 	{
 		switch( netClass )
 		{
-		case BR::NetClass::Entity:
-			pServerEntity = new Svr::EntityServerEntity();
+		case NetClass::Entity:
+			pServerEntity = new(GetMemoryManager()) Svr::EntityServerEntity();
 			break;
 		default:
-			pServerEntity = new Svr::GenericServerEntity();
+			pServerEntity = new(GetMemoryManager()) Svr::GenericServerEntity();
 			break;
 		};
 

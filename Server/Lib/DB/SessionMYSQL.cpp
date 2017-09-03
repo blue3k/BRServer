@@ -65,7 +65,8 @@ namespace DB {
 	//	Statement pool class
 	//
 
-	StatementPoolMYSQL::StatementPoolMYSQL()
+	StatementPoolMYSQL::StatementPoolMYSQL(IMemoryManager& memoryManager)
+		: m_MemoryManager(memoryManager)
 	{
 	}
 
@@ -83,10 +84,10 @@ namespace DB {
 			pPool->for_each( []( StackPool::Item *pItem )
 			{
 				PoolItem *pStmtItem = (PoolItem*)pItem;
-				delete pStmtItem;
+				IMemoryManager::Delete(pStmtItem);
 			});
 			pPool->Clear();
-			delete pPool;
+			IMemoryManager::Delete(pPool);
 		}
 
 		m_StatementPoolMap.clear();
@@ -100,7 +101,7 @@ namespace DB {
 		auto itFound = m_StatementPoolMap.find((intptr_t)queryString);
 		if( itFound == m_StatementPoolMap.end() )
 		{
-			return new StatementMYSQL(queryString);
+			return new(GetMemoryManager()) StatementMYSQL(queryString);
 		}
 
 		StackPool* pPool = itFound->second;
@@ -110,7 +111,7 @@ namespace DB {
 			return (StatementMYSQL*)pFreeItem;
 		}
 
-		return new StatementMYSQL(queryString);
+		return new(GetMemoryManager()) StatementMYSQL(queryString);
 	}
 
 	// free statement
@@ -130,7 +131,7 @@ namespace DB {
 		itFound = m_StatementPoolMap.find(key);
 		if( itFound == m_StatementPoolMap.end() )
 		{
-			pPool = new StackPool;
+			pPool = new(GetMemoryManager()) StackPool;
 
 			if( m_StatementPoolMap.insert( std::make_pair(key,pPool) ).second == false )
 				dbErr(ResultCode::UNEXPECTED);
@@ -158,11 +159,12 @@ namespace DB {
 	//
 
 	// constructor / destructor
-	SessionMYSQL::SessionMYSQL(DataSourceMYSQL *pDataSource)
+	SessionMYSQL::SessionMYSQL(IMemoryManager& memMgr, DataSourceMYSQL *pDataSource)
 		:Session(pDataSource)
-		,m_pMyDataSource(pDataSource)
-		,m_mySQL(nullptr)
-		,m_Synced(0)
+		, m_pMyDataSource(pDataSource)
+		, m_mySQL(nullptr)
+		, m_Synced(0)
+		, m_StatementPool(memMgr)
 	{
 	}
 

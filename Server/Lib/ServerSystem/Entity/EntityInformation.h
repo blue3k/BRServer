@@ -166,7 +166,7 @@ namespace Svr {
 	//	User Entity Information class
 	//
 
-	class UserEntityInformation : public EntityInformation, public MemoryPoolObject<UserEntityInformation>
+	class UserEntityInformation : public EntityInformation
 	{
 	private:
 		// User entity information

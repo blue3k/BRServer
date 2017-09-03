@@ -358,7 +358,7 @@ namespace ConspiracyGameInstanceServer {
 		GamePlayer *pVoteTarget = nullptr;
 
 		if( GetVoteTarget() == 0 )
-			svrErrClose(ResultCode::E_INVALID_PLAYERID);
+			svrErrClose(ResultCode::INVALID_PLAYERID);
 
 		svrChk( super::StartTransaction() );
 

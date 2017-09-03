@@ -12,6 +12,7 @@
 #include "stdafx.h"
 #include "SFTypedefs.h"
 #include "BotTalkTbl.h"
+#include "Memory/SFMemory.h"
 
 
 
@@ -24,19 +25,19 @@ namespace conspiracy
 
 	Result BotTalkTbl::LoadTable( const std::list<BotTalkTblItem>& rowList )
 	{
- 		auto pNewItemIDTable = new ItemIDTable;
+ 		auto pNewItemIDTable = new(GetSystemMemoryManager()) ItemIDTable;
 
 		for( auto rowItem : rowList )
 		{
- 			auto* pBotTalkTblItem = new BotTalkTbl::BotTalkTblItem;
+ 			auto* pBotTalkTblItem = new(GetSystemMemoryManager()) BotTalkTbl::BotTalkTblItem;
 			*pBotTalkTblItem = rowItem;
 			pNewItemIDTable->insert(std::make_pair(pBotTalkTblItem->ItemID, pBotTalkTblItem));
 		}
 
 		if (m_ItemIDTablePrev != nullptr)
 		{
- 			for( auto itItem : *m_ItemIDTablePrev) { delete itItem.second; } ;
-			delete m_ItemIDTablePrev;
+ 			for( auto itItem : *m_ItemIDTablePrev) { IMemoryManager::Delete(itItem.second); } ;
+			IMemoryManager::Delete(m_ItemIDTablePrev);
 		}
 		m_ItemIDTablePrev = m_ItemIDTable;
 		m_ItemIDTable = pNewItemIDTable;

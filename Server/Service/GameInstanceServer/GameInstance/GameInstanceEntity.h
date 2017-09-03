@@ -68,7 +68,7 @@ namespace ConspiracyGameInstanceServer
 	//	Game Instance entity class
 	//
 
-	class GameInstanceEntity : public Svr::GameInstanceEntity, public MemoryPoolObject<GameInstanceEntity>, public ComponentCarrier<GameSystemComponentID_Max>
+	class GameInstanceEntity : public Svr::GameInstanceEntity, public ComponentCarrier<GameSystemComponentID_Max>
 	{
 	public:
 

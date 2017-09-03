@@ -44,7 +44,7 @@ namespace Svr {
 	//	Party player class
 	//
 
-	class PartyPlayer : public PlayerEntityInformation, public MemoryPoolObject<PartyPlayer>
+	class PartyPlayer : public PlayerEntityInformation
 	{
 	public:
 		// Hash table mapping Item
@@ -71,7 +71,7 @@ namespace Svr {
 	//	Game Party entity class
 	//
 
-	class GamePartyEntity : public Svr::MasterEntity, public MemoryPoolObject<GamePartyEntity>
+	class GamePartyEntity : public Svr::MasterEntity
 	{
 	public:
 

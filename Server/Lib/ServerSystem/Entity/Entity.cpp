@@ -57,8 +57,6 @@ namespace SF {
 		, m_HandlerTable(m_MemoryManager)
 	{
 
-		//// create message handler table
-		//m_pHandlerTable = new MessageHandlerTable<MessageHandlerType>(m_Allocator);
 	}
 
 	Entity::~Entity()
@@ -318,7 +316,7 @@ namespace SF {
 		Transaction *pTransaction = nullptr;
 
 		svrChkPtr(pMySvr);
-		svrMem( pMsgRes = new MessageResult );
+		svrMem( pMsgRes = new(GetMemoryManager()) MessageResult );
 		svrChk( pMsgRes->SetMessage( pMsg ) );
 		pMsg = nullptr;
 
@@ -442,7 +440,7 @@ namespace SF {
 			if (pTrans->CheckTimer())
 			{
 				TransactionResult *pTranRes = nullptr;
-				svrMem(pTranRes = new TimerResult);
+				svrMem(pTranRes = new(GetMemoryManager()) TimerResult);
 				pTrans->UpdateHeartBitTime();
 				pTrans->RecordTransactionHistory(pTranRes);
 				pTrans->ProcessTransaction(pTranRes);
@@ -518,7 +516,7 @@ namespace SF {
 		if (GetTickInterval() > 0)
 		{
 			if (m_TimerAction == nullptr)
-				m_TimerAction = new TickTaskTimerAction(this);
+				m_TimerAction = new(GetMemoryManager()) TickTaskTimerAction(this);
 
 			m_TimerAction->SetNextTickTime(Util::Time.GetTimeMs() + GetTickInterval());
 			pWorker->GetTimeScheduler().AddTimerAction(m_TimerAction);

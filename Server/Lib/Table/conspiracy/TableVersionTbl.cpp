@@ -12,6 +12,7 @@
 #include "stdafx.h"
 #include "SFTypedefs.h"
 #include "TableVersionTbl.h"
+#include "Memory/SFMemory.h"
 
 
 
@@ -24,19 +25,19 @@ namespace conspiracy
 
 	Result TableVersionTbl::LoadTable( const std::list<TableVersionItem>& rowList )
 	{
- 		auto pNewTableVersionTable = new TableVersionTable;
+ 		auto pNewTableVersionTable = new(GetSystemMemoryManager()) TableVersionTable;
 
 		for( auto rowItem : rowList )
 		{
- 			auto* pTableVersionItem = new TableVersionTbl::TableVersionItem;
+ 			auto* pTableVersionItem = new(GetSystemMemoryManager()) TableVersionTbl::TableVersionItem;
 			*pTableVersionItem = rowItem;
 			pNewTableVersionTable->insert(std::make_pair(pTableVersionItem->TableVersion, pTableVersionItem));
 		}
 
 		if (m_TableVersionTablePrev != nullptr)
 		{
- 			for( auto itItem : *m_TableVersionTablePrev) { delete itItem.second; } ;
-			delete m_TableVersionTablePrev;
+ 			for( auto itItem : *m_TableVersionTablePrev) { IMemoryManager::Delete(itItem.second); } ;
+			IMemoryManager::Delete(m_TableVersionTablePrev);
 		}
 		m_TableVersionTablePrev = m_TableVersionTable;
 		m_TableVersionTable = pNewTableVersionTable;

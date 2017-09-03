@@ -46,10 +46,10 @@ namespace Svr {
 		, IServerComponent(ComponentID)
 		, m_PublicNetSocket(publicNetSocket)
 	{
-		//BR_ENTITY_MESSAGE(Message::GameServer::RegisterPlayerToJoinGameServerCmd) { svrMemReturn(pNewTrans = new GameServerTransRegisterPlayerToJoinGameServer(pMsgData)); return ResultCode::SUCCESS; } );
+		//BR_ENTITY_MESSAGE(Message::GameServer::RegisterPlayerToJoinGameServerCmd) { svrMemReturn(pNewTrans = new(GetMemoryManager()) GameServerTransRegisterPlayerToJoinGameServer(pMsgData)); return ResultCode::SUCCESS; } );
 
-		BR_ENTITY_MESSAGE(Message::ClusterServer::GamePlayerEntityCreatedC2SEvt) { svrMemReturn(pNewTrans = new GameServerTransGamePlayerEntityCreatedS2CEvt(pMsgData)); return ResultCode::SUCCESS; } );
-		BR_ENTITY_MESSAGE(Message::ClusterServer::GamePlayerEntityDeletedC2SEvt) { svrMemReturn(pNewTrans = new GameServerTransGamePlayerEntityDeletedS2CEvt(pMsgData)); return ResultCode::SUCCESS; } );
+		BR_ENTITY_MESSAGE(Message::ClusterServer::GamePlayerEntityCreatedC2SEvt) { svrMemReturn(pNewTrans = new(GetMemoryManager()) GameServerTransGamePlayerEntityCreatedS2CEvt(pMsgData)); return ResultCode::SUCCESS; } );
+		BR_ENTITY_MESSAGE(Message::ClusterServer::GamePlayerEntityDeletedC2SEvt) { svrMemReturn(pNewTrans = new(GetMemoryManager()) GameServerTransGamePlayerEntityDeletedS2CEvt(pMsgData)); return ResultCode::SUCCESS; } );
 	}
 
 	GameClusterServiceEntity::~GameClusterServiceEntity()
@@ -76,8 +76,8 @@ namespace Svr {
 
 		svrChk(FreeReplicaClusterServiceEntity::RegisterServiceMessageHandler( pServerEntity ) );
 
-		pServerEntity->BR_ENTITY_MESSAGE(Message::ClusterServer::GamePlayerEntityCreatedC2SEvt)				{ svrMemReturn(pNewTrans = new GameServerTransGamePlayerEntityCreatedS2CEvt(pMsgData)); return ResultCode::SUCCESS; } );
-		pServerEntity->BR_ENTITY_MESSAGE(Message::ClusterServer::GamePlayerEntityDeletedC2SEvt)				{ svrMemReturn(pNewTrans = new GameServerTransGamePlayerEntityDeletedS2CEvt(pMsgData)); return ResultCode::SUCCESS; } );
+		pServerEntity->BR_ENTITY_MESSAGE(Message::ClusterServer::GamePlayerEntityCreatedC2SEvt)				{ svrMemReturn(pNewTrans = new(GetMemoryManager()) GameServerTransGamePlayerEntityCreatedS2CEvt(pMsgData)); return ResultCode::SUCCESS; } );
+		pServerEntity->BR_ENTITY_MESSAGE(Message::ClusterServer::GamePlayerEntityDeletedC2SEvt)				{ svrMemReturn(pNewTrans = new(GetMemoryManager()) GameServerTransGamePlayerEntityDeletedS2CEvt(pMsgData)); return ResultCode::SUCCESS; } );
 
 
 	Proc_End:
@@ -108,7 +108,7 @@ namespace Svr {
 		PlayerTableItem *pNewPlayerInfo = nullptr;
 		PlayerIDMapIterator itPlayer;
 
-		if( playerID == 0 || entityUID == 0 ) svrErr(ResultCode::E_INVALID_PLAYERID);
+		if( playerID == 0 || entityUID == 0 ) svrErr(ResultCode::INVALID_PLAYERID);
 		svrChkPtr( pGameServerEntity );
 		if( entityUID.GetServerID() != pGameServerEntity->GetServerID() )
 		{
@@ -122,7 +122,7 @@ namespace Svr {
 			goto Proc_End;
 		}
 
-		svrMem( pNewPlayerInfo = new PlayerTableItem( playerID, entityUID, pGameServerEntity ) );
+		svrMem( pNewPlayerInfo = new(GetMemoryManager()) PlayerTableItem( playerID, entityUID, pGameServerEntity ) );
 
 		svrChk( m_PlayerIDMap.insert(pNewPlayerInfo->GetPlayerID(), pNewPlayerInfo ) );
 
@@ -139,7 +139,7 @@ namespace Svr {
 	{
 		Result hr = ResultCode::SUCCESS;
 
-		if( playerID == 0 || entityUID == 0 ) svrErr(ResultCode::E_INVALID_PLAYERID);
+		if( playerID == 0 || entityUID == 0 ) svrErr(ResultCode::INVALID_PLAYERID);
 
 		svrChk( CreatePlayer( playerID, entityUID, GetLoopbackServerEntity() ) );
 
@@ -172,7 +172,7 @@ namespace Svr {
 
 		if( !(m_PlayerIDMap.find( playerID, itPlayer )) )
 		{
-			return ResultCode::E_INVALID_PLAYERID;
+			return ResultCode::INVALID_PLAYERID;
 		}
 
 		pPlayerInfo = itPlayer;

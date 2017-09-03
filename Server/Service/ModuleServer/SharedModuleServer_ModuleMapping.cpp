@@ -74,7 +74,7 @@ namespace SharedModuleServer {
 		Svr::ClusteredServiceEntity *pServiceEntityTest = nullptr;
 		ServiceEntityType* pServiceEntity = nullptr;
 
-		svrMem(pServiceEntity = new ServiceEntityType(constructorArgs...));
+		svrMem(pServiceEntity = new(GetMemoryManager()) ServiceEntityType(constructorArgs...));
 
 		if( (GetComponent<Svr::ClusterManagerServiceEntity>()->GetClusterServiceEntity( pServiceEntity->GetClusterID(), pServiceEntityTest )) )
 		{
@@ -89,7 +89,7 @@ namespace SharedModuleServer {
 			{
 				svrTrace(Trace::TRC_ERROR, "Duplicated cluster entity {0} EntityUID:{1}, while adding {2} EntityUID:{3}", typeid(*pServiceEntityTest).name(), pServiceEntityTest->GetEntityUID(), typeid(*pServiceEntity).name(), pServiceEntity->GetEntityUID());
 			}
-			delete pServiceEntity;
+			IMemoryManager::Delete(pServiceEntity);
 			goto Proc_End;
 		}
 
@@ -119,27 +119,27 @@ namespace SharedModuleServer {
 		switch(clusterID)
 		{
 		case ClusterID::Monitoring:
-			svrChk(GetComponent<Svr::EntityManager>()->AddEntity(EntityFaculty::Service, new Svr::MonitoringServiceEntity));
+			svrChk(GetComponent<Svr::EntityManager>()->AddEntity(EntityFaculty::Service, new(GetMemoryManager()) Svr::MonitoringServiceEntity));
 			break;
 
 		case ClusterID::Login:
 		{
 			auto pLogin = (Svr::Config::ModuleLogin*)module;
-			svrChk(GetComponent<Svr::EntityManager>()->AddEntity(EntityFaculty::Service, new Svr::LoginServiceEntity(pLogin->NetPublic)));
+			svrChk(GetComponent<Svr::EntityManager>()->AddEntity(EntityFaculty::Service, new(GetMemoryManager()) Svr::LoginServiceEntity(pLogin->NetPublic)));
 			break;
 		}
 
 		case ClusterID::Game:
 		{
 			auto pGame = (Svr::Config::ModuleGame*)module;
-			svrChk(GetComponent<Svr::EntityManager>()->AddEntity(EntityFaculty::Service, new Svr::GameServiceEntity(GetGameID(), pGame->NetPublic)));
+			svrChk(GetComponent<Svr::EntityManager>()->AddEntity(EntityFaculty::Service, new(GetMemoryManager()) Svr::GameServiceEntity(GetGameID(), pGame->NetPublic)));
 			svrChk(AddServiceEntityComponent<Svr::GameInstanceManagerWatcherServiceEntity>(GetGameID()));
 			break;
 		}
 
 		case ClusterID::Ranking:
 		{
-			Svr::ClusteredServiceEntity* pServiceEntity = new Svr::RankingServiceEntity(ClusterID::Ranking, ClusterMembership::Master);
+			Svr::ClusteredServiceEntity* pServiceEntity = new(GetMemoryManager()) Svr::RankingServiceEntity(ClusterID::Ranking, ClusterMembership::Master);
 			svrChk(GetComponent<Svr::EntityManager>()->AddEntity(EntityFaculty::Service, pServiceEntity));
 			svrChk(GetComponent<Svr::ClusterManagerServiceEntity>()->AddClusterServiceEntity(pServiceEntity));
 			break;

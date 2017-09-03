@@ -19,7 +19,7 @@
 #include "Types/BrSvrTypes.h"
 #include "Entity/MasterEntity.h"
 #include "ServerEntity/ServerEntity.h"
-#include "Task/TaskManager.h"
+#include "Task/ServerTaskManager.h"
 #include "Component/ServerComponentCarrier.h"
 #include "ServerConfig/SFServerConfig.h"
 
@@ -77,6 +77,7 @@ namespace Svr {
 		// Entity by ID map 
 
 	private:
+
 		// Server state
 		ServerState		m_State;
 

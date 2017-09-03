@@ -63,11 +63,14 @@ namespace SF {
 
 	private:
 
+		IMemoryManager& m_MemoryManager;
+
 		// component array
 		Component* m_Components[MaxComponentID+1];
 
 	public:
-		ComponentCarrier()
+		ComponentCarrier(IMemoryManager& memoryManager)
+			: m_MemoryManager(memoryManager)
 		{
 			memset( m_Components, 0, sizeof(Component*)*(MaxComponentID+1) );
 		}
@@ -78,9 +81,11 @@ namespace SF {
 			{
 				if (m_Components[iComponent] != nullptr)
 					m_Components[iComponent]->TerminateComponent();
-				//Util::SafeDelete( m_Components[iComponent] );
+				IMemoryManager::Delete( m_Components[iComponent] );
 			}
 		}
+
+		IMemoryManager& GetMemoryManager() { return m_MemoryManager; }
 
 		// Clear components
 		virtual void ClearComponents()
@@ -180,14 +185,14 @@ namespace SF {
 				return ResultCode::SUCCESS_FALSE;
 			}
 
-			ComponentType* newComponent = new ComponentType;
+			ComponentType* newComponent = new(GetMemoryManager()) ComponentType;
 			if( newComponent == nullptr )
 				return ResultCode::OUT_OF_MEMORY;
 
 			Result hr = AddComponent(newComponent);
 			if( !(hr) )
 			{
-				delete newComponent;
+				IMemoryManager::Delete(newComponent);
 			}
 
 			return hr;
@@ -202,14 +207,14 @@ namespace SF {
 				return ResultCode::SUCCESS_FALSE;
 			}
 
-			ComponentType* newComponent = new ComponentType(p0);
+			ComponentType* newComponent = new(GetMemoryManager()) ComponentType(p0);
 			if( newComponent == nullptr )
 				return ResultCode::OUT_OF_MEMORY;
 
 			Result hr = AddComponent(newComponent);
 			if( !(hr) )
 			{
-				delete newComponent;
+				IMemoryManager::Delete(newComponent);
 			}
 
 			return hr;
@@ -224,14 +229,14 @@ namespace SF {
 				return ResultCode::SUCCESS_FALSE;
 			}
 
-			ComponentType* newComponent = new ComponentType(p0,p1);
+			ComponentType* newComponent = new(GetMemoryManager()) ComponentType(p0,p1);
 			if( newComponent == nullptr )
 				return ResultCode::OUT_OF_MEMORY;
 
 			Result hr = AddComponent(newComponent);
 			if( !(hr) )
 			{
-				delete newComponent;
+				IMemoryManager::Delete(newComponent);
 			}
 
 			return hr;
@@ -246,14 +251,14 @@ namespace SF {
 				return ResultCode::SUCCESS_FALSE;
 			}
 
-			ComponentType* newComponent = new ComponentType(p0, p1, p2);
+			ComponentType* newComponent = new(GetMemoryManager()) ComponentType(p0, p1, p2);
 			if (newComponent == nullptr)
 				return ResultCode::OUT_OF_MEMORY;
 
 			Result hr = AddComponent(newComponent);
 			if (!(hr))
 			{
-				delete newComponent;
+				IMemoryManager::Delete(newComponent);
 			}
 
 			return hr;

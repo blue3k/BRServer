@@ -29,7 +29,7 @@
 namespace SF {
 
 
-	class TaskManager;
+	class TickTaskManager;
 	struct ServerTaskEvent;
 
 
@@ -48,8 +48,8 @@ namespace SF {
 		const uint MAX_TASK_RETRY = 30 * 1000 / TICK_UPDATE_TIME; // retry for 30 sec
 
 	private:
-		// TaskManager that include this group
-		TaskManager*			m_pTaskManager;
+		// TickTaskManager that include this group
+		TickTaskManager*			m_pTaskManager;
 
 		// Load for 
 		SysUInt		m_GroupWorkLoad;
@@ -86,7 +86,7 @@ namespace SF {
 
 		// Constructor/Destructor
 		//	iQueuePageSize : Add/Remove queue size
-		TaskWorker( TaskManager* pTaskManager, int iQueuePageSize = -1 );
+		TaskWorker( TickTaskManager* pTaskManager, int iQueuePageSize = -1 );
 		virtual ~TaskWorker();
 
 		// Get/Set Group Idx
@@ -123,7 +123,7 @@ namespace SF {
 	//	TickTask Manager base class -  interface for task manager
 	//
 
-	class TaskManager
+	class TickTaskManager
 	{
 	public:
 
@@ -147,17 +147,17 @@ namespace SF {
 
 	public:
 		// Constructor/Destructor
-		TaskManager();
-		virtual ~TaskManager();
+		TickTaskManager();
+		virtual ~TickTaskManager();
 
 		// Get/Set Working group count
 		Result SetWorkGroupCount( size_t WorkGroupCount );
 		inline size_t GetWorkGroupCount();
 
-		// Initialize TaskManager
+		// Initialize TickTaskManager
 		virtual Result InitializeManager( uint uiNumGroup = 2 );
 
-		// Terminate TaskManager
+		// Terminate TickTaskManager
 		virtual Result TerminateManager();
 
 		// Add event task
@@ -174,7 +174,7 @@ namespace SF {
 
 
 
-#include "TaskManager.inl"
+#include "ServerTaskManager.inl"
 
 
 

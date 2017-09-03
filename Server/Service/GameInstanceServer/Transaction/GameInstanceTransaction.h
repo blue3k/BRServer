@@ -106,11 +106,6 @@ namespace ConspiracyGameInstanceServer {
 		}
 
 
-		virtual void Release()
-		{
-			delete this;
-		}
-
 		template< class ServerEntityType >
 		ServerEntityType *GetServerEntity()
 		{

@@ -60,10 +60,10 @@ namespace DB {
 		virtual void ReportError( void* DBContext, Result hr, const char* className ) = 0;
 
 		// initialize DB source
-		virtual Result	CreateDataSource( DataSource* &pDBSource ) = 0;
+		virtual Result	CreateDataSource(IMemoryManager& memMgr, DataSource* &pDBSource ) = 0;
 
 		// close DB source
-		virtual Result	CreateSession( DataSource* pDBSource, Session* &pSession ) = 0;
+		virtual Result	CreateSession(IMemoryManager& memMgr, DataSource* pDBSource, Session* &pSession ) = 0;
 
 	};
 

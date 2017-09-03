@@ -16,7 +16,7 @@
 #include "ResultCode/SFResultCodeSvr.h"
 #include "Thread/Thread.h"
 #include "Util/TimeUtil.h"
-#include "Task/TaskManager.h"
+#include "Task/ServerTaskManager.h"
 //#include "Common/SvrConst.h"
 #include "Task/ServerTaskEvent.h"
 //#include "Task/EntityTimerActions.h"
@@ -33,7 +33,7 @@ namespace SF {
 
 
 	// Constructor/Destructor
-	TaskWorker::TaskWorker( TaskManager* pTaskManager, int iQueuePageSize )
+	TaskWorker::TaskWorker( TickTaskManager* pTaskManager, int iQueuePageSize )
 		: m_pTaskManager(pTaskManager)
 		, m_GroupWorkLoad(0)
 		, m_GroupWorkLoadDiff(0)
@@ -175,8 +175,6 @@ namespace SF {
 					m_TimeScheduler.RemoveTimerAction(GetThreadID(), pTask->GetTimerAction());
 					pTask->OnRemovedFromTaskManager(this);
 					pTask->SetTaskGroupID(0);
-
-					//delete pTask;
 				}
 				else
 				{
@@ -299,22 +297,22 @@ namespace SF {
 
 
 
-	SyncCounter	TaskManager::stm_GroupIDGen;
+	SyncCounter	TickTaskManager::stm_GroupIDGen;
 
 
 	// Constructor/Destructor
-	TaskManager::TaskManager()
+	TickTaskManager::TickTaskManager()
 		: m_TaskGroups(GetSystemMemoryManager())
 	{
 	}
 
-	TaskManager::~TaskManager()
+	TickTaskManager::~TickTaskManager()
 	{
 		TerminateManager();
 	}
 
 	// Get/Set Working group count
-	Result TaskManager::SetWorkGroupCount( size_t WorkGroupCount )
+	Result TickTaskManager::SetWorkGroupCount( size_t WorkGroupCount )
 	{
 		Result hr = ResultCode::SUCCESS;
 
@@ -326,7 +324,7 @@ namespace SF {
 		{
 			TaskWorker *pGroup = nullptr;
 
-			defMem( pGroup = new TaskWorker(this) );
+			defMem( pGroup = new(GetSystemMemoryManager()) TaskWorker(this) );
 
 			pGroup->SetGroupID(iGroup + 1);
 			m_TaskGroups.push_back(pGroup);
@@ -338,8 +336,8 @@ namespace SF {
 	}
 
 
-	// Initialize TaskManager
-	Result TaskManager::InitializeManager( uint uiNumGroup )
+	// Initialize TickTaskManager
+	Result TickTaskManager::InitializeManager( uint uiNumGroup )
 	{
 		SetWorkGroupCount( uiNumGroup );
 
@@ -352,15 +350,15 @@ namespace SF {
 		return ResultCode::SUCCESS;
 	}
 
-	// Terminate TaskManager
-	Result TaskManager::TerminateManager()
+	// Terminate TickTaskManager
+	Result TickTaskManager::TerminateManager()
 	{
 
 		m_TaskGroups.Foreach([](TaskWorker *pTaskWorker)
 		{
 			if (pTaskWorker->GetThreadID() != ThreadID())
 				pTaskWorker->Stop(true);
-			delete pTaskWorker;
+			IMemoryManager::Delete(pTaskWorker);
 			return ResultCode::SUCCESS;
 		});
 
@@ -371,7 +369,7 @@ namespace SF {
 
 
 	// Add event task
-	Result TaskManager::AddEventTask(SysUInt groupID, ServerTaskEvent&& pEvtTask)
+	Result TickTaskManager::AddEventTask(SysUInt groupID, ServerTaskEvent&& pEvtTask)
 	{
 		Result hr = ResultCode::SUCCESS;
 
@@ -388,7 +386,7 @@ namespace SF {
 	}
 
 	// Add TickTask
-	Result TaskManager::AddTickTask( TickTask* pTask )
+	Result TickTaskManager::AddTickTask( TickTask* pTask )
 	{
 		Result hr = ResultCode::SUCCESS;
 		SysUInt BestGroupLoad = (SysUInt)-1;
@@ -425,7 +423,7 @@ namespace SF {
 	}
 
 	// Remove TickTask
-	Result TaskManager::RemoveTickTask( TickTask *pTask )
+	Result TickTaskManager::RemoveTickTask( TickTask *pTask )
 	{
 		Result hr = ResultCode::SUCCESS;
 		SysUInt groupID;

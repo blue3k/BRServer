@@ -39,7 +39,7 @@
     <None Include="$(MSBuildThisFileDirectory)ServiceEntity\Game\GameSystem.inl" />
     <None Include="$(MSBuildThisFileDirectory)Task\ServerTask.inl" />
     <None Include="$(MSBuildThisFileDirectory)Task\ServerTaskEvent.inl" />
-    <None Include="$(MSBuildThisFileDirectory)Task\TaskManager.inl" />
+    <None Include="$(MSBuildThisFileDirectory)Task\ServerTaskManager.inl" />
     <None Include="$(MSBuildThisFileDirectory)Transaction\MessageRoute.inl" />
     <None Include="$(MSBuildThisFileDirectory)Transaction\Transaction.inl" />
     <None Include="$(MSBuildThisFileDirectory)Types\BrGameTypes.inl" />
@@ -128,7 +128,7 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)SvrPolicyID.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Task\ServerTask.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Task\ServerTaskEvent.h" />
-    <ClInclude Include="$(MSBuildThisFileDirectory)Task\TaskManager.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)Task\ServerTaskManager.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Transaction\MessageHandlerTable.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Transaction\MessageRoute.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Transaction\ServerTransactionGeneric.h" />
@@ -137,6 +137,7 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)Transaction\TransactionUtil.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Types\BrGameTypes.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Types\BrSvrTypes.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)Util\GlobalUIDGenerator.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Util\LocalUIDGenerator.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Util\UniqueEntityIDGenerator.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)ZooKeeper\SFZooKeeper.h" />
@@ -210,10 +211,11 @@
     <ClCompile Include="$(MSBuildThisFileDirectory)String\ToStringSvr.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)Task\ServerTask.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)Task\ServerTaskEvent.cpp" />
-    <ClCompile Include="$(MSBuildThisFileDirectory)Task\TaskManager.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)Task\ServerTaskManager.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)Transaction\ServerTransactionGeneric.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)Transaction\Transaction.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)Types\BrGameTypes.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)Util\GlobalUIDGenerator.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)Util\LocalUIDGenerator.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)Util\UniqueEntityIDGenerator.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)ZooKeeper\SFZooKeeper.cpp" />

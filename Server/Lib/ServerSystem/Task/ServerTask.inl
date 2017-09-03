@@ -38,12 +38,12 @@ void TickTask::SetTaskGroupID( SysUInt uiTaskGroupIdx )
 
 
 // Get TickTask group
-inline TaskManager* TickTask::GetTaskManager()
+inline TickTaskManager* TickTask::GetTaskManager()
 {
 	return m_pTaskManager;
 }
 
-inline void TickTask::SetTaskManager(TaskManager *pManager)
+inline void TickTask::SetTaskManager(TickTaskManager *pManager)
 {
 	Assert(m_pTaskManager == nullptr);
 	m_pTaskManager = pManager;

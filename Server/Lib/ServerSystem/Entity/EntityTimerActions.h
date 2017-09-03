@@ -23,7 +23,7 @@ namespace Svr {
 	class Entity;
 	class Transaction;
 
-	class TimerActionTransaction : public TimerAction, public MemoryPoolObject<TimerActionTransaction>
+	class TimerActionTransaction : public TimerAction
 	{
 	private:
 

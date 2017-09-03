@@ -44,18 +44,16 @@ namespace Svr {
 
 
 	// Close zone instance
-	class PartyTransCloseInstance : public Transaction , public MemoryPoolObject<PartyTransCloseInstance>
+	class PartyTransCloseInstance : public Transaction 
 	{
 	private:
 
 	public:
-		PartyTransCloseInstance() : Svr::Transaction( TransactionID() ) { SetExclusive(true); }
+		PartyTransCloseInstance(IMemoryManager& memMgr) : Svr::Transaction( memMgr, TransactionID() ) { SetExclusive(true); }
 		virtual ~PartyTransCloseInstance() {}
 
 		// Start Transaction
 		virtual Result StartTransaction();
-
-		void Release() { delete this; }
 	};
 
 
@@ -67,17 +65,17 @@ namespace Svr {
 
 
 
-	class PartyTransJoinParty : public GamePartyMessageTransaction< Policy::NetSvrPolicyGameParty, Message::GameParty::JoinPartyCmd, PartyTransJoinParty, 1>
+	class PartyTransJoinParty : public GamePartyMessageTransaction< Policy::NetSvrPolicyGameParty, Message::GameParty::JoinPartyCmd, PartyTransJoinParty>
 	{
 	public:
-		typedef GamePartyMessageTransaction< Policy::NetSvrPolicyGameParty, Message::GameParty::JoinPartyCmd, PartyTransJoinParty, 1> super;
+		typedef GamePartyMessageTransaction< Policy::NetSvrPolicyGameParty, Message::GameParty::JoinPartyCmd, PartyTransJoinParty> super;
 
 	private:
 		PlayerID m_LeaderID;
 		StaticOutputMemoryStream<GameConst::MAX_CHATLOG_BUFFER> m_MessageBuffer;
 
 	public:
-		PartyTransJoinParty( MessageDataPtr &pIMsg ) : GamePartyMessageTransaction( pIMsg ) {}
+		PartyTransJoinParty( IMessageManager& memMgr, MessageDataPtr &pIMsg ) : GamePartyMessageTransaction( memMgr, pIMsg ) {}
 		virtual ~PartyTransJoinParty() {}
 
 		// Start Transaction

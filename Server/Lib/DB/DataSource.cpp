@@ -45,7 +45,7 @@ namespace DB {
 		do{
 			pItem = m_SessionPool.Pop();
 			
-			delete (Session*)pItem;
+			IMemoryManager::Delete((Session*)pItem);
 		} while( pItem != nullptr );
 
 		m_Opened = false;
@@ -65,7 +65,7 @@ namespace DB {
 		auto pItem = m_SessionPool.Pop();
 		if( pItem == nullptr )
 		{
-			dbChk( Factory::GetInstance().CreateSession(this,pSession) );
+			dbChk( Factory::GetInstance().CreateSession(GetMemoryManager(), this,pSession) );
 		}
 		else
 		{

@@ -27,27 +27,27 @@ namespace Svr {
 	class PartyPlayer;
 
 	// Message transaction template
-	template< class PolicyClass, class MessageClass, class MemoryPoolClass, size_t MessageHandlerBufferSize = sizeof(Svr::TransactionMessageHandlerType)*2 >
-	class GamePartyMessageTransaction : public ServerEntityMessageTransaction<GamePartyEntity, MessageClass, MemoryPoolClass,MessageHandlerBufferSize>
+	template< class PolicyClass, class MessageClass, class MemoryPoolClass >
+	class GamePartyMessageTransaction : public ServerEntityMessageTransaction<GamePartyEntity, MessageClass, MemoryPoolClass>
 	{
 	private:
-		typedef ServerEntityMessageTransaction<GamePartyEntity, MessageClass, MemoryPoolClass, MessageHandlerBufferSize> super;
+		typedef ServerEntityMessageTransaction<GamePartyEntity, MessageClass, MemoryPoolClass> super;
 		typedef PolicyClass PolicyClassType;
 	protected:
 		// Player Player ID
 		PlayerID	m_PlayerID;
 
 	public:
-		GamePartyMessageTransaction( MessageDataPtr &pIMsg )
-			:super( pIMsg )
+		GamePartyMessageTransaction( IMemoryManager& memMgr, MessageDataPtr &pIMsg )
+			:super( memMgr, pIMsg )
 			,m_PlayerID(0)
 		{
 			super::m_WorkOnServerEntity = false;
 		}
 		
-		PolicyClassType* GetInterface()
+		Net::Connection* GetConnection()
 		{
-			return super::GetServerEntity()->GetConnection()->template GetInterface<PolicyClassType>();
+			return super::GetServerEntity()->GetConnection();
 		}
 
 		Result GetMyPlayer( PartyPlayer* &pPlayer )

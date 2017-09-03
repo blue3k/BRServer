@@ -47,9 +47,9 @@ int main(int numArg, const char* argc[])
 
 
 	Result hr = ResultCode::SUCCESS;
-	SharedPointerT<BR::EntityServer::EntityServer> pServerInstance;
+	SharedPointerT<EntityServer::EntityServer> pServerInstance;
 
-	svrChk(BR::Svr::Service::ServicePrepare());
+	svrChk(Svr::Service::ServicePrepare());
 
 	svrChk(LibComponentManager::GetInstance().AddComponent<LibComponentDefault>());
 	svrChk(LibComponentManager::GetInstance().AddComponent<LibComponentTrace>());
@@ -59,10 +59,10 @@ int main(int numArg, const char* argc[])
 	svrChk(LibComponentManager::GetInstance().InitializeComponents());
 
 
-	pServerInstance = SharedPointerT<BR::EntityServer::EntityServer>(new BR::EntityServer::EntityServer);
+	pServerInstance = new(GetSystemMemoryManager()) EntityServer::EntityServer;
 
 
-	svrChk(BR::Svr::Service::ServiceRun((BR::EntityServer::EntityServer*)pServerInstance));
+	svrChk(Svr::Service::ServiceRun((EntityServer::EntityServer*)pServerInstance));
 
 
 Proc_End:
@@ -71,7 +71,7 @@ Proc_End:
 	{
 		pServerInstance->TerminateEntity();
 		pServerInstance->OnRemovedFromTaskManager(nullptr);
-		pServerInstance = SharedPointerT<BR::EntityServer::EntityServer>();
+		pServerInstance = SharedPointerT<EntityServer::EntityServer>();
 	}
 
 	LibComponentManager::GetInstance().TerminateComponents();

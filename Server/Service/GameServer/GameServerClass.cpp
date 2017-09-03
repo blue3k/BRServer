@@ -88,12 +88,12 @@ namespace GameServer {
 	
 	Svr::EntityManager* GameServer::CreateEntityManager()
 	{
-		return new GameEntityManager;
+		return new(GetMemoryManager()) GameEntityManager;
 	}
 	
 	Svr::ServerEntity* GameServer::CreateLoopbackEntity()
 	{
-		return new Svr::GameServerEntity;
+		return new(GetMemoryManager()) Svr::GameServerEntity;
 	}
 	
 	// Update game config
@@ -212,7 +212,7 @@ namespace GameServer {
 		{
 			// Register game conspiracy cluster as a slave
 			auto pMySvr = (const Svr::Config::PublicServer*)GetMyConfig();
-			svrMem(pGameService = new GameClusterServiceEntity(GetGameClusterInfo()->GetGameID(), pMySvr->NetPublic, ClusterMembership::Slave));
+			svrMem(pGameService = new(GetMemoryManager()) GameClusterServiceEntity(GetGameClusterInfo()->GetGameID(), pMySvr->NetPublic, ClusterMembership::Slave));
 			svrChk(GetComponent<Svr::EntityManager>()->AddEntity(EntityFaculty::Service, pGameService));
 			svrChk(GetComponent<Svr::ClusterManagerServiceEntity>()->AddClusterServiceEntity(pGameService));
 			AddComponent(pGameService);
@@ -236,7 +236,7 @@ namespace GameServer {
 		// push Startup transaction
 		{
 			Svr::Transaction * pProcess = nullptr;
-			svrMem( pProcess = new GameServerStartProcess );
+			svrMem( pProcess = new(GetMemoryManager()) GameServerStartProcess );
 			svrChk( pProcess->InitializeTransaction(this) );
 			svrChk( PendingTransaction(ThisThread::GetThreadID(),pProcess) );
 		}
@@ -256,7 +256,7 @@ namespace GameServer {
 			Svr::MatchingQueueWatcherServiceEntity *pQueueWatcherEntity = nullptr;
 
 			// Local watchers
-			svrMem( pQueueWatcherEntity = new Svr::MatchingQueueWatcherServiceEntity(matchingQueueClusterID, componentID) );
+			svrMem( pQueueWatcherEntity = new(GetMemoryManager()) Svr::MatchingQueueWatcherServiceEntity(matchingQueueClusterID, componentID) );
 			svrChk( GetComponent<Svr::EntityManager>()->AddEntity( EntityFaculty::Service, pQueueWatcherEntity ) );
 			svrChk( GetComponent<Svr::ClusterManagerServiceEntity>()->AddClusterServiceEntity( pQueueWatcherEntity ) );
 			svrChk( AddComponent(pQueueWatcherEntity) );
@@ -271,7 +271,7 @@ namespace GameServer {
 			Svr::MatchingWatcherServiceEntity *pWatcherEntity = nullptr;
 
 			// Local watchers
-			svrMem( pWatcherEntity = new Svr::MatchingWatcherServiceEntity(matchingQueueClusterID, componentID) );
+			svrMem( pWatcherEntity = new(GetMemoryManager()) Svr::MatchingWatcherServiceEntity(matchingQueueClusterID, componentID) );
 			svrChk( GetComponent<Svr::EntityManager>()->AddEntity( EntityFaculty::Service, pWatcherEntity ) );
 			svrChk( GetComponent<Svr::ClusterManagerServiceEntity>()->AddClusterServiceEntity( pWatcherEntity ) );
 			svrChk( AddComponent(pWatcherEntity) );
@@ -282,7 +282,7 @@ namespace GameServer {
 		{
 		Svr::GameInstanceManagerWatcherServiceEntity *pGameInstanceManagerWatcher = nullptr;
 		// Local slave entity manager service
-		svrMem( pGameInstanceManagerWatcher = new Svr::GameInstanceManagerWatcherServiceEntity(GetGameClusterInfo()->GetGameID()) );
+		svrMem( pGameInstanceManagerWatcher = new(GetMemoryManager()) Svr::GameInstanceManagerWatcherServiceEntity(GetGameClusterInfo()->GetGameID()) );
 		svrChk( GetComponent<Svr::EntityManager>()->AddEntity( EntityFaculty::Service, pGameInstanceManagerWatcher ) );
 		svrChk( GetComponent<Svr::ClusterManagerServiceEntity>()->AddClusterServiceEntity( pGameInstanceManagerWatcher ) );
 		AddComponent(pGameInstanceManagerWatcher);
@@ -291,7 +291,7 @@ namespace GameServer {
 		{
 		Svr::GamePartyManagerWatcherServiceEntity *pGamePartyManagerWatcher = nullptr;
 		// Local slave entity manager service
-		svrMem( pGamePartyManagerWatcher = new Svr::GamePartyManagerWatcherServiceEntity() );
+		svrMem( pGamePartyManagerWatcher = new(GetMemoryManager()) Svr::GamePartyManagerWatcherServiceEntity() );
 		svrChk( GetComponent<Svr::EntityManager>()->AddEntity( EntityFaculty::Service, pGamePartyManagerWatcher ) );
 		svrChk( GetComponent<Svr::ClusterManagerServiceEntity>()->AddClusterServiceEntity( pGamePartyManagerWatcher ) );
 		AddComponent(pGamePartyManagerWatcher);
@@ -329,7 +329,7 @@ namespace GameServer {
 		svrChkPtr(GetGameConfig());
 		svrChkPtr(GetGameConfig()->NetPublic);
 
-		svrMem(m_pNetPublic = new BR::Net::ServerMUDP(GetMyConfig()->UID, GetNetClass()));
+		svrMem(m_pNetPublic = new(GetMemoryManager()) Net::ServerMUDP(GetMyConfig()->UID, GetNetClass()));
 
 		svrChk( m_pNetPublic->HostOpen( GetNetClass(), GetGameConfig()->NetPublic->ListenIP.c_str(), GetGameConfig()->NetPublic->Port ) );
 
@@ -357,7 +357,7 @@ namespace GameServer {
 
 		svrChk( m_pNetPublic->HostClose() );
 
-		delete m_pNetPublic;
+		IMemoryManager::Delete(m_pNetPublic);
 
 	Proc_End:
 
@@ -377,15 +377,15 @@ namespace GameServer {
 
 
 	// create remote entity by class
-	Result GameServer::CreateServerEntity( BR::NetClass netClass, Svr::ServerEntity* &pServerEntity )
+	Result GameServer::CreateServerEntity( NetClass netClass, Svr::ServerEntity* &pServerEntity )
 	{
 		switch( netClass )
 		{
-		case BR::NetClass::Entity:
-			pServerEntity = new Svr::EntityServerEntity();
+		case NetClass::Entity:
+			pServerEntity = new(GetMemoryManager()) Svr::EntityServerEntity();
 			break;
 		default:
-			pServerEntity = new Svr::GenericServerEntity();
+			pServerEntity = new(GetMemoryManager()) Svr::GenericServerEntity();
 			break;
 		};
 

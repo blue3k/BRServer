@@ -56,7 +56,7 @@ namespace GameServer {
 	//	Game Instance entity class
 	//
 
-	class GamePlayerEntity : public Svr::SimpleUserEntity, public ComponentCarrier<UserSystemComponentID_Max>, public MemoryPoolObject<GamePlayerEntity>
+	class GamePlayerEntity : public Svr::SimpleUserEntity, public ComponentCarrier<UserSystemComponentID_Max>
 	{
 	public:
 

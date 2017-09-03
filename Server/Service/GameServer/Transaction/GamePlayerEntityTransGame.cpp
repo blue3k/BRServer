@@ -230,7 +230,7 @@ namespace GameServer {
 			svrErr(ResultCode::E_INVALID_TICKET);
 
 		if( GetMyOwner()->GetPlayerID() != GetPlayerID() )
-			svrErr(ResultCode::E_INVALID_PLAYERID);
+			svrErr(ResultCode::INVALID_PLAYERID);
 
 		if( GetMyOwner()->GetGameInsUID() != 0 && GetMyOwner()->GetGameInsUID() != GetInsUID() )
 			svrErr(ResultCode::E_GAME_ALREADY_IN_GAME);
@@ -343,7 +343,7 @@ namespace GameServer {
 			svrErr(ResultCode::E_INVALID_TICKET);
 
 		if( GetMyOwner()->GetPlayerID() != GetPlayerID() )
-			svrErr(ResultCode::E_INVALID_PLAYERID);
+			svrErr(ResultCode::INVALID_PLAYERID);
 
 		insUID = GetMyOwner()->GetGameInsUID();
 		if( insUID.UID == 0 )
@@ -426,7 +426,7 @@ namespace GameServer {
 		//	svrErr(ResultCode::E_INVALID_TICKET);
 
 		if( GetMyOwner()->GetPlayerID() != GetPlayerID() )
-			svrErr(ResultCode::E_INVALID_PLAYERID);
+			svrErr(ResultCode::INVALID_PLAYERID);
 
 		insUID = GetMyOwner()->GetGameInsUID();
 		if( insUID.UID == 0 )
@@ -508,7 +508,7 @@ namespace GameServer {
 		//	svrErr(ResultCode::E_INVALID_TICKET);
 
 		//if( GetMyOwner()->GetPlayerID() != GetPlayerID() )
-		//	svrErr(ResultCode::E_INVALID_PLAYERID);
+		//	svrErr(ResultCode::INVALID_PLAYERID);
 
 		insUID = GetMyOwner()->GetGameInsUID();
 		if( insUID.UID == 0 )
@@ -565,7 +565,7 @@ namespace GameServer {
 		//	svrErr(ResultCode::E_INVALID_TICKET);
 
 		//if( GetMyOwner()->GetPlayerID() != GetPlayerID() )
-		//	svrErr(ResultCode::E_INVALID_PLAYERID);
+		//	svrErr(ResultCode::INVALID_PLAYERID);
 		
 		insUID = GetMyOwner()->GetGameInsUID();
 		if( insUID.UID == 0 )
@@ -643,7 +643,7 @@ namespace GameServer {
 			svrErr(ResultCode::E_INVALID_TICKET);
 
 		if( GetMyOwner()->GetPlayerID() != GetPlayerID() )
-			svrErr(ResultCode::E_INVALID_PLAYERID);
+			svrErr(ResultCode::INVALID_PLAYERID);
 
 		insUID = GetMyOwner()->GetGameInsUID();
 		if( insUID.UID == 0 )
@@ -719,7 +719,7 @@ namespace GameServer {
 			svrErr(ResultCode::E_INVALID_TICKET);
 
 		if( GetMyOwner()->GetPlayerID() != GetPlayerID() )
-			svrErr(ResultCode::E_INVALID_PLAYERID);
+			svrErr(ResultCode::INVALID_PLAYERID);
 
 		insUID = GetMyOwner()->GetGameInsUID();
 		if( insUID.UID == 0 )
@@ -818,7 +818,7 @@ namespace GameServer {
 			svrErr(ResultCode::E_INVALID_TICKET);
 
 		if( GetMyOwner()->GetPlayerID() != GetPlayerID() )
-			svrErr(ResultCode::E_INVALID_PLAYERID);
+			svrErr(ResultCode::INVALID_PLAYERID);
 
 		insUID = GetMyOwner()->GetGameInsUID();
 		if( insUID.UID == 0 )
@@ -1038,7 +1038,7 @@ namespace GameServer {
 		//	svrErr(ResultCode::E_INVALID_TICKET);
 
 		//if( GetMyOwner()->GetPlayerID() != GetPlayerID() )
-		//	svrErr(ResultCode::E_INVALID_PLAYERID);
+		//	svrErr(ResultCode::INVALID_PLAYERID);
 
 		if( GetMyOwner()->GetGameInsUID() != 0 )
 			svrErrClose(ResultCode::E_GAME_ALREADY_IN_GAME);
@@ -1447,7 +1447,7 @@ namespace GameServer {
 		svrChk(super::StartTransaction());
 
 		if (GetTargetPlayer() != GetMyOwner()->GetPlayerID())
-			svrErr(ResultCode::E_INVALID_PLAYERID);
+			svrErr(ResultCode::INVALID_PLAYERID);
 
 		GetMyOwner()->SetGameInsUID(0);
 

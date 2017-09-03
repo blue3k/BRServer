@@ -254,10 +254,10 @@ namespace Svr {
 	{
 		Result hr = ResultCode::SUCCESS;
 		NetAddress localAddress;
-		auto pRawUDP = new Net::RawUDP();
+		auto pRawUDP = new(GetSystemMemoryManager()) Net::RawUDP();
 		svrChkPtr(pRawUDP);
 
-		stm_pInstance = new PerformanceCounterClient();
+		stm_pInstance = new(GetSystemMemoryManager()) PerformanceCounterClient();
 
 		Net::Addr2SockAddr(serverAddress, stm_pInstance->m_RemoteSockAddress);
 		stm_pInstance->m_RemoteAddress = serverAddress;
@@ -295,7 +295,7 @@ namespace Svr {
 
 		stm_pInstance->Stop(true);
 
-		delete stm_pInstance;
+		IMemoryManager::Delete(stm_pInstance);
 		stm_pInstance = nullptr;
 
 		return ResultCode::SUCCESS;
@@ -311,7 +311,7 @@ namespace Svr {
 		if (stm_pInstance->m_DefaultCounter == nullptr)
 		{
 			auto entityUID = EntityUID(stm_pInstance->m_ServerID, entityTable.GenEntityID(EntityFaculty::Service));
-			stm_pInstance->m_DefaultCounter = SharedPointerT<PerformanceCounterInstance>(new PerformanceCounterInstance(Util::GetServiceName(), entityUID));
+			stm_pInstance->m_DefaultCounter = SharedPointerT<PerformanceCounterInstance>(new(GetSystemMemoryManager()) PerformanceCounterInstance(Util::GetServiceName(), entityUID));
 			stm_pInstance->m_DefaultCounter->RegisterToClient();
 		}
 

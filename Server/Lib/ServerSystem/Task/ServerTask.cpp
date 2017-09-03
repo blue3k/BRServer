@@ -15,7 +15,7 @@
 #include "Thread/Thread.h"
 #include "String/StrUtil.h"
 #include "Task/ServerTask.h"
-#include "Task/TaskManager.h"
+#include "Task/ServerTaskManager.h"
 #include "Task/TimerScheduler.h"
 #include "Util/TimeUtil.h"
 
@@ -42,7 +42,7 @@ namespace SF {
 		, m_RetryCount(0)
 		, m_TickInterval(DEFAULT_TICKTASK_INTERVAL) // default task tick interval is 1sec
 	{
-		m_TimerAction = new TickTaskTimerAction(this);
+		m_TimerAction = new(GetMemoryManager()) TickTaskTimerAction(this);
 	}
 
 	TickTask::~TickTask()

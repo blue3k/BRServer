@@ -135,6 +135,8 @@ namespace ConspiracyGameInstanceServer {
 		GameStateSystem( GameInstanceEntity* pEntity );
 		~GameStateSystem();
 
+		IMemoryManager& GetMemoryManager() { return GetOwner().GetMemoryManager(); }
+
 		GameStateID GetCurrentGameState() { return m_CurrentGameState; }
 
 		uint GetCurrentDay() { return m_CurrentDay; }

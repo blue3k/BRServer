@@ -34,7 +34,7 @@
 #include "DB/Factory.h"
 #include "Table/TableSystem.h"
 
-#include "ServerSystem/ExternalTransactionManager.h"
+#include "Transaction/ExternalTransactionManager.h"
 
 
 namespace SF{
@@ -255,7 +255,7 @@ Proc_End:
 		pLoopbackEntity->SetEntityUID( EntityUID(GetServerUID(),EntityID(EntityFaculty::Server,0) ) );
 		pLoopbackEntity->SetServerID(GetServerUID());
 		pLoopbackEntity->SetServerUpTime( GetServerUpTime() );
-		svrMem( pConn = new Svr::LoopbackConnection( GetNetClass(), pLoopbackEntity) );
+		svrMem( pConn = new(GetMemoryManager()) Svr::LoopbackConnection( GetNetClass(), pLoopbackEntity) );
 		pLoopbackEntity->SetLocalConnection((Net::Connection*)pConn);
 		pConn = nullptr;
 
@@ -513,7 +513,7 @@ Proc_End:
 		}
 
 		// Create private network and open it
-		svrMem( m_pNetPrivate = new Net::ServerPeerTCP(GetMyConfig()->UID, GetNetClass()) );
+		svrMem( m_pNetPrivate = new(GetMemoryManager()) Net::ServerPeerTCP(GetMyConfig()->UID, GetNetClass()) );
 		svrChkPtr(GetMyConfig()->NetPrivate);
 		svrChk( m_pNetPrivate->HostOpen( GetNetClass(), GetMyConfig()->NetPrivate->IP.c_str(), GetMyConfig()->NetPrivate->Port ) );
 
@@ -569,12 +569,12 @@ Proc_End:
 
 	EntityManager* BrServer::CreateEntityManager()
 	{
-		return new EntityManager;
+		return new(GetMemoryManager()) EntityManager;
 	}
 
 	ServerEntity* BrServer::CreateLoopbackEntity()
 	{
-		return new ServerEntity( Const::SERVER_TRANS_QUEUE, Const::SERVER_TRANSRES_QUEUE );
+		return new(GetMemoryManager()) ServerEntity( Const::SERVER_TRANS_QUEUE, Const::SERVER_TRANSRES_QUEUE );
 	}
 
 	// Initialize private Network

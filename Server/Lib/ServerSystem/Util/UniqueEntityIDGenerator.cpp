@@ -29,21 +29,21 @@ namespace SF {
 	}
 
 	// Generate New ID
-	UINT UniqueEntityIDGenerator::NewID()
+	uint UniqueEntityIDGenerator::NewID()
 	{
-		UINT uiNewID = 0;
+		uint uiNewID = 0;
 		Item *pItem = (Item*)m_FreeIDs.Pop();
 
 		if( pItem )
 		{
 			uiNewID = pItem->UID;
-			delete pItem;
+			IMemoryManager::Delete(pItem);
 		}
 		else
 		{
 			do {
 				// gen a new ID
-				uiNewID = (UINT)m_CounterForID.fetch_add(1, std::memory_order_relaxed);
+				uiNewID = (uint)m_CounterForID.fetch_add(1, std::memory_order_relaxed);
 			} while( !IsFreeID(uiNewID) );
 
 			// maximum entityID bit, This case shouldn't be happened
@@ -57,9 +57,9 @@ namespace SF {
 	}
 
 	// Free Generated ID
-	bool UniqueEntityIDGenerator::FreeID( UINT uiID )
+	bool UniqueEntityIDGenerator::FreeID( uint uiID )
 	{
-		UINT index = uiID >> IDMASK_SHIFT;
+		uint index = uiID >> IDMASK_SHIFT;
 
 		AssertRel(index < IDMASK_MAXINDEX);
 		if (index >= IDMASK_MAXINDEX)
@@ -77,7 +77,7 @@ namespace SF {
 			return false;
 		}
 
-		Item *pItem = new Item;
+		Item *pItem = new(GetSystemMemoryManager()) Item;
 
 		pItem->UID = uiID;
 
@@ -94,7 +94,7 @@ namespace SF {
 		m_FreeIDs.for_each( [](StackPool::Item *pItem) 
 		{
 			Item* pMyItem = (Item*)pItem;
-			delete pMyItem;
+			IMemoryManager::Delete(pMyItem);
 		});
 		m_FreeIDs.Clear();
 		m_CounterForID = 0;
@@ -102,7 +102,7 @@ namespace SF {
 	}
 
 	// Reserve ID
-	Result UniqueEntityIDGenerator::ReserveID( UINT idToReserve )
+	Result UniqueEntityIDGenerator::ReserveID( uint idToReserve )
 	{
 		if( !IsFreeID(idToReserve) )
 			return ResultCode::FAIL;
@@ -112,23 +112,23 @@ namespace SF {
 	}
 
 	// Check ID integrety
-	bool UniqueEntityIDGenerator::IsFreeID( UINT id )
+	bool UniqueEntityIDGenerator::IsFreeID( uint id )
 	{
-		UINT index = id >> IDMASK_SHIFT;
-		UINT bit = id & IDMASK_BITMASK;
+		uint index = id >> IDMASK_SHIFT;
+		uint bit = id & IDMASK_BITMASK;
 
 		AssertRel( index < IDMASK_MAXINDEX );
 
 		// bit must be 0
-		return (m_IDMask[index].load(std::memory_order_relaxed) & ((UINT64)1 << bit)) == 0;
+		return (m_IDMask[index].load(std::memory_order_relaxed) & ((uint64_t)1 << bit)) == 0;
 	}
 
 	// Mark as free id
-	void UniqueEntityIDGenerator::MarkAsFree( UINT id )
+	void UniqueEntityIDGenerator::MarkAsFree( uint id )
 	{
-		UINT index = id >> IDMASK_SHIFT;
-		UINT bit = id & IDMASK_BITMASK;
-		UINT64 bitMask = (UINT64)1<<bit;
+		uint index = id >> IDMASK_SHIFT;
+		uint bit = id & IDMASK_BITMASK;
+		uint64_t bitMask = (uint64_t)1<<bit;
 
 		AssertRel( index < IDMASK_MAXINDEX );
 		AssertRel( (m_IDMask[index].load(std::memory_order_relaxed) & bitMask) != 0 );
@@ -139,11 +139,11 @@ namespace SF {
 	}
 
 	// Mark as using id
-	void UniqueEntityIDGenerator::MarkAsUsing( UINT id )
+	void UniqueEntityIDGenerator::MarkAsUsing( uint id )
 	{
-		UINT index = id >> IDMASK_SHIFT;
-		UINT bit = id & IDMASK_BITMASK;
-		UINT64 bitMask = (UINT64)1<<bit;
+		uint index = id >> IDMASK_SHIFT;
+		uint bit = id & IDMASK_BITMASK;
+		uint64_t bitMask = (uint64_t)1<<bit;
 
 		AssertRel( index < IDMASK_MAXINDEX );
 		AssertRel((m_IDMask[index].load(std::memory_order_relaxed) & bitMask) == 0);
