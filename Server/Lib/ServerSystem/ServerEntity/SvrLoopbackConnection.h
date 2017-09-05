@@ -13,7 +13,7 @@
 #pragma once
 
 #include "SFTypedefs.h"
-#include "ServerSystem/BrServer.h"
+#include "Server/BrServer.h"
 #include "Memory/MemoryPool.h"
 
 #include "Net/LoopbackConnection.h"
@@ -36,6 +36,7 @@ namespace Svr
 	class LoopbackConnection : public Net::LoopbackConnection
 	{
 	private:
+
 		// local remote entity that linked with this connection
 		Svr::ServerEntity*		m_pServerEntity;
 
@@ -43,10 +44,10 @@ namespace Svr
 		LoopbackConnection(NetClass netClass, Svr::ServerEntity* pServerEntity);
 		~LoopbackConnection();
 
-		virtual Result SendRaw(Message::MessageData* &pMsg) override { unused(pMsg);  return ResultCode::FAIL; }
+		virtual Result SendRaw(MessageDataPtr &pMsg) override { unused(pMsg);  return ResultCode::FAIL; }
 
 		// Send message to connected entity
-		virtual Result Send( Message::MessageData* &pMsg ) override;
+		virtual Result Send( MessageDataPtr &pMsg ) override;
 
 	};
 

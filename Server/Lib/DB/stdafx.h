@@ -7,6 +7,12 @@
 
 #include "SFTypedefs.h"
 
+#include "Types/BrSvrTypes.h"
+#include "Types/BrGameTypes.h"
+#include "String/ToString.h"
+#include "String/ToStringBase.h"
+#include "String/ToStringEngineTypes.h"
+
 
 #if !ANDROID
 #include <mysql.h>

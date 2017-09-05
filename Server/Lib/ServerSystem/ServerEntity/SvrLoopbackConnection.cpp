@@ -13,8 +13,9 @@
 #include "stdafx.h"
 #include "SFTypedefs.h"
 #include "ResultCode/SFResultCodeLibrary.h"
+#include "ResultCode/SFResultCodeNet.h"
 #include "SvrLoopbackConnection.h"
-#include "ServerSystem/ServerEntity.h"
+#include "ServerEntity/ServerEntity.h"
 
 
 
@@ -28,10 +29,10 @@ namespace Svr {
 	//
 
 	LoopbackConnection::LoopbackConnection( NetClass netClass, Svr::ServerEntity* pServerEntity )
-		:m_pServerEntity(pServerEntity)
+		: m_pServerEntity(pServerEntity)
 	{
-		m_ConnectInfo.SetRemoteInfo(netClass, pServerEntity->GetServerID());
-		SetConnectionState(IConnectionState::CONNECTED);
+		SetRemoteInfo(netClass, pServerEntity->GetServerID());
+		SetConnectionState(Net::ConnectionState::CONNECTED);
 	}
 
 	LoopbackConnection::~LoopbackConnection()
@@ -39,24 +40,13 @@ namespace Svr {
 	}
 
 	// Send message to connected entity
-	Result LoopbackConnection::Send( Message::MessageData* &pMsg )
+	Result LoopbackConnection::Send( MessageDataPtr &pMsg )
 	{
 		Result hr = ResultCode::SUCCESS;
-		Message::MessageHeader* pMsgHeader = nullptr;
-		uint uiPolicy = 0;
 
 		svrChkPtr( pMsg );
 
-
-		Net::Connection::PrintDebugMessage( "LoopbackMsg:", pMsg );
-
-		pMsgHeader = pMsg->GetMessageHeader();
-		uiPolicy = pMsgHeader->msgID.IDs.Policy;
-		if( uiPolicy == 0 
-			|| uiPolicy >= PROTOCOLID_NETMAX ) // invalid policy
-		{
-			svrErr( ResultCode::E_NET_BADPACKET_NOTEXPECTED );
-		}
+		Protocol::PrintDebugMessage("LoopBackSend", pMsg);
 
 		svrChkPtr( m_pServerEntity );
 		if (m_pServerEntity->GetTaskWorker() != nullptr && m_pServerEntity->GetTaskWorker()->GetThreadID() != ThisThread::GetThreadID())
@@ -72,8 +62,6 @@ namespace Svr {
 
 	Proc_End:
 
-		if( !(hr) )
-			Util::SafeRelease( pMsg );
 
 		return hr;
 	}

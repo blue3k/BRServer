@@ -144,7 +144,7 @@ namespace Svr {
 			{
 				// Same category can be called multiple times. let's just ignore silently
 				//auto pConflictedHandler = *itHandler;
-				//svrTrace(Trace::TRC_ERROR, "Duplicated handler msgID:{0}, org:{1}:{2}", MessageClassType::MID, pConflictedHandler->GetFileName(), pConflictedHandler->GetFileLine())
+				//svrTrace(Error, "Duplicated handler msgID:{0}, org:{1}:{2}", MessageClassType::MID, pConflictedHandler->GetFileName(), pConflictedHandler->GetFileLine())
 				//Assert(false);
 				return hr;
 			}
@@ -230,7 +230,7 @@ namespace Svr {
 	};
 
 
-	#define	BR_ENTITY_MESSAGE(MessageType) RegisterMessageHandler<MessageType>( __FILE__, __LINE__, [&]( Net::Connection* pConn, MessageDataPtr &pMsgData, SF::Svr::Transaction* &pNewTrans)->Result 
+	#define	BR_ENTITY_MESSAGE(MessageType) RegisterMessageHandler<MessageType>( __FILE__, __LINE__, [&]( Net::Connection* pConn, MessageDataPtr &pMsgData, SF::TransactionPtr &pNewTrans)->Result 
 
 	#define BR_TRANS_MESSAGE(MessageType,MessageHandlerImpl) \
 		RegisterMessageHandler<MessageType>( __FILE__, __LINE__, [&](::SF::Svr::TransactionResult* pRes)->Result MessageHandlerImpl );

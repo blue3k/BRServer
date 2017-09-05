@@ -15,8 +15,8 @@
 #include "Memory/MemoryPool.h"
 #include "Types/SFEngineTypedefs.h"
 #include "GameConst.h"
-#include "Common/BrRandom.h"
-#include "Common/File/BRFile.h"
+#include "Util/SFRandom.h"
+#include "IO/SFFile.h"
 
 #include "Protocol/Message/GameInstanceManagerMsgClass.h"
 #include "Protocol/Message/RankingServerMsgClass.h"
@@ -32,7 +32,7 @@
 #include "ServerSystem/ServiceEntity/RankingServiceEntity.h"
 #include "ServerSystem/ServiceEntity/Game/GameInstanceManagerServiceEntity.h"
 
-#include "ServerSystem/ServerService/GameInstanceManagerService.h"
+#include "Protocol/ServerService/GameInstanceManagerService.h"
 
 #include "DB/RankingDB.h"
 
@@ -47,8 +47,8 @@ namespace Svr {
 
 
 
-	RankingServerAddPlayerTrans::RankingServerAddPlayerTrans(MessageDataPtr &pIMsg)
-		: ServerEntityMessageTransaction(pIMsg)
+	RankingServerAddPlayerTrans::RankingServerAddPlayerTrans(IMemoryManager& memMgr, MessageDataPtr &pIMsg)
+		: ServerEntityMessageTransaction(memMgr, pIMsg)
 	{
 	}
 
@@ -71,8 +71,9 @@ namespace Svr {
 
 
 
-	RankingServerUpdatePlayerScoreTrans::RankingServerUpdatePlayerScoreTrans(MessageDataPtr &pIMsg)
-		: super(pIMsg)
+	RankingServerUpdatePlayerScoreTrans::RankingServerUpdatePlayerScoreTrans(IMemoryManager& memMgr, MessageDataPtr &pIMsg)
+		: super(memMgr, pIMsg)
+		, m_RankingList(memMgr)
 	{
 	}
 
@@ -102,10 +103,10 @@ namespace Svr {
 		m_RankingList.Clear();
 		svrChk(GetMyOwner()->GetRankingList(rankingBase, rankCount, m_RankingList));
 
-		if (m_RankingList.GetSize() == 0)
+		if (m_RankingList.size() == 0)
 			goto Proc_End;
 
-		for (unsigned iRank = 0; iRank < m_RankingList.GetSize(); iRank++)
+		for (unsigned iRank = 0; iRank < m_RankingList.size(); iRank++)
 		{
 			auto& rankInfo = m_RankingList[iRank];
 			if (rankInfo.PlayerID == GetPlayerInfo().PlayerID)
@@ -116,16 +117,16 @@ namespace Svr {
 			}
 		}
 		// Remove one if the player isn't in the list
-		if ((int)m_RankingList.GetSize() >= rankCount)
+		if ((int)m_RankingList.size() >= rankCount)
 		{
-			m_RankingList.RemoveAt((int)m_RankingList.GetSize() - 1);
+			m_RankingList.RemoveAt((int)m_RankingList.size() - 1);
 		}
 
 
 		// Insert player where it need to be
 		added = false;
 
-		if (m_RankingList.GetSize() > 0)
+		if (m_RankingList.size() > 0)
 			currentRanking = m_RankingList[0].Ranking;
 		else
 			currentRanking = 0;
@@ -136,25 +137,25 @@ namespace Svr {
 		myRankingKey.PlayerID = static_cast<uint32_t>(GetPlayerInfo().PlayerID);
 		myRankingKey.Score = static_cast<decltype(myRankingKey.Score)>(GetRankingScore());
 
-		for (unsigned iRank = 0; iRank < m_RankingList.GetSize(); iRank++, currentRanking++)
+		for (unsigned iRank = 0; iRank < m_RankingList.size(); iRank++, currentRanking++)
 		{
 			RankingServiceEntity::RankingKey rankingKey;
 			auto& rankInfo = m_RankingList[iRank];
 			rankInfo.Ranking = currentRanking;
 
 			rankingKey.PlayerID = static_cast<uint32_t>(rankInfo.PlayerID);
-			rankingKey.Score = static_cast<decltype(rankingKey.Score)>(rankInfo.GetLongScore());
+			rankingKey.Score = static_cast<decltype(rankingKey.Score)>(rankInfo.GetScore());
 
 			if (added || rankingKey.RankingKeyValue > myRankingKey.RankingKeyValue)
 				continue;
 
 			added = true;
-			m_RankingList.Insert(iRank, TotalRankingPlayerInformation(0, currentRanking, GetPlayerInfo().PlayerID, GetPlayerInfo().FBUID, GetPlayerInfo().NickName, GetPlayerInfo().Level, (int32_t)GetRankingScore(), (int32_t)(GetRankingScore() >> 32)));
+			m_RankingList.insert(iRank, TotalRankingPlayerInformation(0, currentRanking, GetPlayerInfo().PlayerID, GetPlayerInfo().FBUID, GetPlayerInfo().NickName, GetPlayerInfo().Level, (int32_t)GetRankingScore(), (int32_t)(GetRankingScore() >> 32)));
 		}
 
 		if (!added)
 		{
-			m_RankingList.Add(TotalRankingPlayerInformation(0, currentRanking, GetPlayerInfo().PlayerID, GetPlayerInfo().FBUID, GetPlayerInfo().NickName, GetPlayerInfo().Level, (int32_t)GetRankingScore(), (int32_t)(GetRankingScore() >> 32)));
+			m_RankingList.push_back(TotalRankingPlayerInformation(0, currentRanking, GetPlayerInfo().PlayerID, GetPlayerInfo().FBUID, GetPlayerInfo().NickName, GetPlayerInfo().Level, (int32_t)GetRankingScore(), (int32_t)(GetRankingScore() >> 32)));
 		}
 
 
@@ -168,8 +169,9 @@ namespace Svr {
 
 
 
-	RankingServerDebugPrintALLRankingTrans::RankingServerDebugPrintALLRankingTrans(MessageDataPtr &pIMsg)
-		: super(pIMsg)
+	RankingServerDebugPrintALLRankingTrans::RankingServerDebugPrintALLRankingTrans(IMemoryManager& memMgr, MessageDataPtr &pIMsg)
+		: super(memMgr, pIMsg)
+		, m_RankingList(memMgr)
 	{
 	}
 
@@ -180,7 +182,7 @@ namespace Svr {
 
 		// parameter from client
 		auto fileName = GetFileName();
-		IO::File fileStream;
+		File fileStream;
 		char szBuff[1024];
 		TimeStampSec nowTime;
 		time_t time;
@@ -203,9 +205,9 @@ namespace Svr {
 		nowTimeTM = *gmtime(&time);
 
 		snprintf(strFileName, MAX_PATH, "%s..\\log\\%s[%d_%04d_%02d_%02d]_%s_log.txt",
-			Util::GetModulePathA(), Util::GetServiceNameA(), nowTimeTM.tm_year + 1900, nowTimeTM.tm_mon + 1, nowTimeTM.tm_mday, nowTimeTM.tm_hour, fileName);
+			Util::GetModulePath(), Util::GetServiceName(), nowTimeTM.tm_year + 1900, nowTimeTM.tm_mon + 1, nowTimeTM.tm_mday, nowTimeTM.tm_hour, fileName);
 
-		fileStream.Open(strFileName, IO::File::OpenMode::Append, IO::File::SharingMode::Exclusive);
+		fileStream.Open(strFileName, File::OpenMode::Append, File::SharingMode::Exclusive);
 
 		//uint32_t		RankingID;
 		//uint32_t		Ranking;
@@ -223,11 +225,11 @@ namespace Svr {
 		// write header..
 		fileStream.Write((byte*) szBuff, dwStrLen, szWritlen);
 
-		for (unsigned i = 0; i < m_RankingList.GetSize(); i++)
+		for (unsigned i = 0; i < m_RankingList.size(); i++)
 		{
 			TotalRankingPlayerInformation& rankInfo = m_RankingList[i];
 			snprintf(szBuff, MAX_PATH, "%d, %llu, %llu, %llu, %s, %d\n", 
-				rankInfo.Ranking, rankInfo.GetLongScore(), rankInfo.PlayerID, rankInfo.FBUID, rankInfo.NickName, rankInfo.Level);
+				rankInfo.Ranking, rankInfo.GetScore(), rankInfo.PlayerID, rankInfo.FBUID, rankInfo.NickName, rankInfo.Level);
 			dwStrLen = (DWORD)strlen(szBuff);
 			fileStream.Write((byte*)szBuff, dwStrLen, szWritlen);
 		}

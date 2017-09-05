@@ -43,7 +43,7 @@ namespace Svr
 	public:
 		enum { ComponentID = ServerComponentID_ServerEntityManager };
 
-		typedef Hash::HashTable2<ServerID, ServerEntity* > ServerIDMap;
+		typedef HashTable2<ServerID, ServerEntity* > ServerIDMap;
 
 		typedef OrderedLinkedList<uint64_t> ServerUpTimeList;
 
@@ -56,6 +56,8 @@ namespace Svr
 
 
 	private:
+
+		MemoryManager m_MemoryManager;
 
 		// Server ID map for entity manager server
 		ServerUpTimeList		m_EntityManagerServerUpTimeMap;
@@ -73,6 +75,8 @@ namespace Svr
 		// Constructor/Destructor
 		ServerEntityManager();
 		virtual ~ServerEntityManager();
+
+		IMemoryManager& GetMemoryManager() { return m_MemoryManager; }
 
 		// Register server
 		template<class ServerEntityType>
@@ -111,7 +115,7 @@ namespace Svr
 	{
 		Result hr = ResultCode::SUCCESS;
 		ServerEntityType *pNewServerEntity = nullptr;
-		Net::ConnectionPtr pConnection = nullptr;
+		Net::ConnectionPtr pConnection;
 
 		MutexScopeLock localLock(m_ServerTableLock);
 
@@ -124,7 +128,7 @@ namespace Svr
 			return hr;
 		}
 
-		svrTrace( Svr::TRC_ENTITY, "Registering Server {0} SvrID:{1}, {2}", typeid(ServerEntityType).name(), serverID, netAddress);
+		svrTrace( SVR_ENTITY, "Registering Server {0} SvrID:{1}, {2}", typeid(ServerEntityType).name(), serverID, netAddress);
 
 		svrMem( pNewServerEntity = new(GetMemoryManager()) ServerEntityType );
 

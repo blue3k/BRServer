@@ -61,7 +61,7 @@ namespace SF
 				const PlayerID& GetInviterID() const	{ return m_InviterID; };
 				const PlayerInformation& GetInvitedPlayer() const	{ return m_InvitedPlayer; };
 
-				static Result TraceOut(MessageDataPtr& pMsg);
+				static Result TraceOut(const char* prefix, MessageDataPtr& pMsg);
 
 				virtual Result ParseMessage( MessageData* pIMsg );
 				static Result ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageDataPtr& pIMsg, MessageBase* &pMsgBase );
@@ -111,7 +111,7 @@ namespace SF
 				const PlayerID& GetPartyLeaderID() const	{ return m_PartyLeaderID; };
 				const Array<uint8_t>& GetChatHistoryData() const	{ return m_ChatHistoryData; };
 
-				static Result TraceOut(MessageDataPtr& pMsg);
+				static Result TraceOut(const char* prefix, MessageDataPtr& pMsg);
 
 				virtual Result ParseMessage( MessageData* pIMsg );
 				static Result ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageDataPtr& pIMsg, MessageBase* &pMsgBase );
@@ -157,7 +157,7 @@ namespace SF
 				const RouteContext& GetRouteContext() const	{ return m_RouteContext; };
 				const PlayerInformation& GetJoinedPlayer() const	{ return m_JoinedPlayer; };
 
-				static Result TraceOut(MessageDataPtr& pMsg);
+				static Result TraceOut(const char* prefix, MessageDataPtr& pMsg);
 
 				virtual Result ParseMessage( MessageData* pIMsg );
 				static Result ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageDataPtr& pIMsg, MessageBase* &pMsgBase );
@@ -203,7 +203,7 @@ namespace SF
 				const RouteContext& GetRouteContext() const	{ return m_RouteContext; };
 				const PlayerID& GetNewLeaderID() const	{ return m_NewLeaderID; };
 
-				static Result TraceOut(MessageDataPtr& pMsg);
+				static Result TraceOut(const char* prefix, MessageDataPtr& pMsg);
 
 				virtual Result ParseMessage( MessageData* pIMsg );
 				static Result ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageDataPtr& pIMsg, MessageBase* &pMsgBase );
@@ -249,7 +249,7 @@ namespace SF
 				const TransactionID& GetTransactionID() const	{ return m_TransactionID; };
 				const PlayerID& GetPlayerID() const	{ return m_PlayerID; };
 
-				static Result TraceOut(MessageDataPtr& pMsg);
+				static Result TraceOut(const char* prefix, MessageDataPtr& pMsg);
 
 				virtual Result ParseMessage( MessageData* pIMsg );
 				static Result ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageDataPtr& pIMsg, MessageBase* &pMsgBase );
@@ -295,7 +295,7 @@ namespace SF
 				const TransactionID& GetTransactionID() const	{ return m_TransactionID; };
 				const Result& GetResult() const	{ return m_Result; };
 
-				static Result TraceOut(MessageDataPtr& pMsg);
+				static Result TraceOut(const char* prefix, MessageDataPtr& pMsg);
 
 				virtual Result ParseMessage( MessageData* pIMsg );
 				static Result ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageDataPtr& pIMsg, MessageBase* &pMsgBase );
@@ -341,7 +341,7 @@ namespace SF
 				const RouteContext& GetRouteContext() const	{ return m_RouteContext; };
 				const PlayerID& GetLeftPlayerID() const	{ return m_LeftPlayerID; };
 
-				static Result TraceOut(MessageDataPtr& pMsg);
+				static Result TraceOut(const char* prefix, MessageDataPtr& pMsg);
 
 				virtual Result ParseMessage( MessageData* pIMsg );
 				static Result ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageDataPtr& pIMsg, MessageBase* &pMsgBase );
@@ -389,7 +389,7 @@ namespace SF
 				const PlayerID& GetPlayerID() const	{ return m_PlayerID; };
 				const PlayerID& GetPlayerToKick() const	{ return m_PlayerToKick; };
 
-				static Result TraceOut(MessageDataPtr& pMsg);
+				static Result TraceOut(const char* prefix, MessageDataPtr& pMsg);
 
 				virtual Result ParseMessage( MessageData* pIMsg );
 				static Result ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageDataPtr& pIMsg, MessageBase* &pMsgBase );
@@ -435,7 +435,7 @@ namespace SF
 				const TransactionID& GetTransactionID() const	{ return m_TransactionID; };
 				const Result& GetResult() const	{ return m_Result; };
 
-				static Result TraceOut(MessageDataPtr& pMsg);
+				static Result TraceOut(const char* prefix, MessageDataPtr& pMsg);
 
 				virtual Result ParseMessage( MessageData* pIMsg );
 				static Result ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageDataPtr& pIMsg, MessageBase* &pMsgBase );
@@ -481,7 +481,7 @@ namespace SF
 				const RouteContext& GetRouteContext() const	{ return m_RouteContext; };
 				const PlayerID& GetKickedPlayerID() const	{ return m_KickedPlayerID; };
 
-				static Result TraceOut(MessageDataPtr& pMsg);
+				static Result TraceOut(const char* prefix, MessageDataPtr& pMsg);
 
 				virtual Result ParseMessage( MessageData* pIMsg );
 				static Result ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageDataPtr& pIMsg, MessageBase* &pMsgBase );
@@ -530,7 +530,7 @@ namespace SF
 				const PlayerID& GetPlayerID() const	{ return m_PlayerID; };
 				const char* GetChatMessage() const	{ return m_ChatMessage; };
 
-				static Result TraceOut(MessageDataPtr& pMsg);
+				static Result TraceOut(const char* prefix, MessageDataPtr& pMsg);
 
 				virtual Result ParseMessage( MessageData* pIMsg );
 				static Result ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageDataPtr& pIMsg, MessageBase* &pMsgBase );
@@ -584,7 +584,7 @@ namespace SF
 				const char* GetSenderName() const	{ return m_SenderName; };
 				const char* GetChatMessage() const	{ return m_ChatMessage; };
 
-				static Result TraceOut(MessageDataPtr& pMsg);
+				static Result TraceOut(const char* prefix, MessageDataPtr& pMsg);
 
 				virtual Result ParseMessage( MessageData* pIMsg );
 				static Result ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageDataPtr& pIMsg, MessageBase* &pMsgBase );
@@ -631,7 +631,7 @@ namespace SF
 				const PlayerID& GetPlayerID() const	{ return m_PlayerID; };
 				const uint32_t& GetQuickChatID() const	{ return m_QuickChatID; };
 
-				static Result TraceOut(MessageDataPtr& pMsg);
+				static Result TraceOut(const char* prefix, MessageDataPtr& pMsg);
 
 				virtual Result ParseMessage( MessageData* pIMsg );
 				static Result ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageDataPtr& pIMsg, MessageBase* &pMsgBase );
@@ -679,7 +679,7 @@ namespace SF
 				const PlayerID& GetSenderID() const	{ return m_SenderID; };
 				const uint32_t& GetQuickChatID() const	{ return m_QuickChatID; };
 
-				static Result TraceOut(MessageDataPtr& pMsg);
+				static Result TraceOut(const char* prefix, MessageDataPtr& pMsg);
 
 				virtual Result ParseMessage( MessageData* pIMsg );
 				static Result ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageDataPtr& pIMsg, MessageBase* &pMsgBase );
@@ -727,7 +727,7 @@ namespace SF
 				const PlayerID& GetPlayerID() const	{ return m_PlayerID; };
 				const uint32_t& GetMaxGamePlayers() const	{ return m_MaxGamePlayers; };
 
-				static Result TraceOut(MessageDataPtr& pMsg);
+				static Result TraceOut(const char* prefix, MessageDataPtr& pMsg);
 
 				virtual Result ParseMessage( MessageData* pIMsg );
 				static Result ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageDataPtr& pIMsg, MessageBase* &pMsgBase );
@@ -773,7 +773,7 @@ namespace SF
 				const TransactionID& GetTransactionID() const	{ return m_TransactionID; };
 				const Result& GetResult() const	{ return m_Result; };
 
-				static Result TraceOut(MessageDataPtr& pMsg);
+				static Result TraceOut(const char* prefix, MessageDataPtr& pMsg);
 
 				virtual Result ParseMessage( MessageData* pIMsg );
 				static Result ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageDataPtr& pIMsg, MessageBase* &pMsgBase );
@@ -819,7 +819,7 @@ namespace SF
 				const RouteContext& GetRouteContext() const	{ return m_RouteContext; };
 				const MatchingQueueTicket& GetMatchingQueueTicket() const	{ return m_MatchingQueueTicket; };
 
-				static Result TraceOut(MessageDataPtr& pMsg);
+				static Result TraceOut(const char* prefix, MessageDataPtr& pMsg);
 
 				virtual Result ParseMessage( MessageData* pIMsg );
 				static Result ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageDataPtr& pIMsg, MessageBase* &pMsgBase );
@@ -865,7 +865,7 @@ namespace SF
 				const TransactionID& GetTransactionID() const	{ return m_TransactionID; };
 				const PlayerID& GetPlayerID() const	{ return m_PlayerID; };
 
-				static Result TraceOut(MessageDataPtr& pMsg);
+				static Result TraceOut(const char* prefix, MessageDataPtr& pMsg);
 
 				virtual Result ParseMessage( MessageData* pIMsg );
 				static Result ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageDataPtr& pIMsg, MessageBase* &pMsgBase );
@@ -911,7 +911,7 @@ namespace SF
 				const TransactionID& GetTransactionID() const	{ return m_TransactionID; };
 				const Result& GetResult() const	{ return m_Result; };
 
-				static Result TraceOut(MessageDataPtr& pMsg);
+				static Result TraceOut(const char* prefix, MessageDataPtr& pMsg);
 
 				virtual Result ParseMessage( MessageData* pIMsg );
 				static Result ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageDataPtr& pIMsg, MessageBase* &pMsgBase );
@@ -957,7 +957,7 @@ namespace SF
 				const RouteContext& GetRouteContext() const	{ return m_RouteContext; };
 				const MatchingQueueTicket& GetMatchingQueueTicket() const	{ return m_MatchingQueueTicket; };
 
-				static Result TraceOut(MessageDataPtr& pMsg);
+				static Result TraceOut(const char* prefix, MessageDataPtr& pMsg);
 
 				virtual Result ParseMessage( MessageData* pIMsg );
 				static Result ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageDataPtr& pIMsg, MessageBase* &pMsgBase );
@@ -1003,7 +1003,7 @@ namespace SF
 				const RouteContext& GetRouteContext() const	{ return m_RouteContext; };
 				const MatchingQueueTicket& GetMatchingTicket() const	{ return m_MatchingTicket; };
 
-				static Result TraceOut(MessageDataPtr& pMsg);
+				static Result TraceOut(const char* prefix, MessageDataPtr& pMsg);
 
 				virtual Result ParseMessage( MessageData* pIMsg );
 				static Result ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageDataPtr& pIMsg, MessageBase* &pMsgBase );

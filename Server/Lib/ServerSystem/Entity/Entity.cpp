@@ -124,7 +124,7 @@ namespace SF {
 		if (m_transactionQueue.GetEnqueCount() > 0)
 		{
 			if (m_transactionQueue.GetEnqueCount() > 1)
-				svrTrace(Svr::TRC_TRANSACTION, "Trans Not closed Ent:{0}, {1} Trans remain", typeid(*this).name(), m_transactionQueue.GetEnqueCount());
+				svrTrace(SVR_TRANSACTION, "Trans Not closed Ent:{0}, {1} Trans remain", typeid(*this).name(), m_transactionQueue.GetEnqueCount());
 
 			while (m_transactionQueue.GetEnqueCount() > 0)
 			{
@@ -217,7 +217,7 @@ namespace SF {
 				if (!(hr))
 				{
 					assert(false);
-					svrTrace(Trace::TRC_ERROR, "No message handler {0}:{1}, MsgID:{2}", typeid(*this).name(), GetEntityUID(), pMsgHdr->msgID);
+					svrTrace(Error, "No message handler {0}:{1}, MsgID:{2}", typeid(*this).name(), GetEntityUID(), pMsgHdr->msgID);
 					svrErr(ResultCode::SVR_NO_MESSAGE_HANDLER);
 				}
 
@@ -226,7 +226,7 @@ namespace SF {
 			break;
 		}
 		default:
-			svrTrace(Trace::TRC_ERROR, "Not Processed Remote message Entity:{0}:{1}, MsgID:{2}", typeid(*this).name(), GetEntityUID(), pMsgHdr->msgID);
+			svrTrace(Error, "Not Processed Remote message Entity:{0}:{1}, MsgID:{2}", typeid(*this).name(), GetEntityUID(), pMsgHdr->msgID);
 			svrErr(ResultCode::SVR_NOTEXPECTED_MESSAGE);
 			break;
 		};
@@ -287,7 +287,7 @@ namespace SF {
 		{
 			if (!(hr))
 			{
-				svrTrace(Trace::TRC_ERROR, "Transaction initialization is failed {0} Entity:{1}, MsgID:{2}", typeid(*this).name(), GetEntityUID(), pMsgHdr->msgID);
+				svrTrace(Error, "Transaction initialization is failed {0} Entity:{1}, MsgID:{2}", typeid(*this).name(), GetEntityUID(), pMsgHdr->msgID);
 				if (pMsgHdr->msgID.IDs.Type == Message::MSGTYPE_COMMAND)
 				{
 					Policy::NetSvrPolicyServer(pCon).GenericFailureRes(pNewTrans->GetMessageRouteContext().GetSwaped(), pNewTrans->GetParentTransID(), hr);
@@ -296,7 +296,7 @@ namespace SF {
 
 			if (!pNewTrans->IsClosed() && pNewTrans->GetOwnerEntity() != nullptr)
 			{
-				svrTrace(Trace::TRC_ERROR, "Transaction isn't closed Transaction:{0}, MsgID:{1}", typeid(*pNewTrans).name(), pMsgHdr->msgID);
+				svrTrace(Error, "Transaction isn't closed Transaction:{0}, MsgID:{1}", typeid(*pNewTrans).name(), pMsgHdr->msgID);
 				pNewTrans->CloseTransaction(hr);
 			}
 
@@ -324,7 +324,7 @@ namespace SF {
 
 		if (pTransRes->GetTransID().GetEntityID() != GetEntityID())
 		{
-			svrTrace(Trace::TRC_WARN, "Invalid message result routing Entity:{0}, msgID:{1} to Entity:{2}", GetEntityID(), pMsgRes->GetMsgID(), pTransRes->GetTransID().GetEntityID());
+			svrTrace(Warning, "Invalid message result routing Entity:{0}, msgID:{1} to Entity:{2}", GetEntityID(), pMsgRes->GetMsgID(), pTransRes->GetTransID().GetEntityID());
 			goto Proc_End;
 		}
 		//assert(pTransRes->GetTransID().GetEntityID() == GetEntityID());
@@ -333,7 +333,7 @@ namespace SF {
 		{
 			if (!(FindActiveTransaction(pTransRes->GetTransID(), pTransaction)))
 			{
-				svrTrace(Svr::TRC_TRANSACTION, "Transaction result for TID:{0} is failed to route. msgid:{1}", pTransRes->GetTransID(), pMsgRes->GetMsgID());
+				svrTrace(SVR_TRANSACTION, "Transaction result for TID:{0} is failed to route. msgid:{1}", pTransRes->GetTransID(), pMsgRes->GetMsgID());
 				goto Proc_End;// svrErr(ResultCode::FAIL);
 			}
 			svrChk(ProcessTransactionResult(pTransaction, pTransRes));
@@ -423,7 +423,7 @@ namespace SF {
 		case Transaction::STATE_WAITSTART:
 			if (pTrans->IsPrintTrace())
 			{
-				svrTrace(Svr::TRC_DBGTRANS, "Trans Start TID:{0}:{1}, Entity:{2}", pTrans->GetTransID(), typeid(*pTrans).name(), GetEntityUID());
+				svrTrace(SVR_DBGTRANS, "Trans Start TID:{0}:{1}, Entity:{2}", pTrans->GetTransID(), typeid(*pTrans).name(), GetEntityUID());
 			}
 			if (!(pTrans->StartTransaction()))// make transaction start
 			{
@@ -450,7 +450,7 @@ namespace SF {
 			{
 				if (pTrans->IsPrintTrace())
 				{
-					svrTrace(Svr::TRC_TRANSACTION, "Trans Timeout TID:{0}:{1}, Entity:{2}",
+					svrTrace(SVR_TRANSACTION, "Trans Timeout TID:{0}:{1}, Entity:{2}",
 						pTrans->GetTransID(),
 						typeid(*pTrans).name(),
 						GetEntityUID());
@@ -472,7 +472,7 @@ namespace SF {
 			{
 				if (pTrans->IsPrintTrace())
 				{
-					svrTrace(Svr::TRC_DBGTRANS, "Trans closed TID:{0}:{1}, Entity:{2}",
+					svrTrace(SVR_DBGTRANS, "Trans closed TID:{0}:{1}, Entity:{2}",
 						pTrans->GetTransID(), typeid(*pTrans).name(),
 						GetEntityUID());
 				}

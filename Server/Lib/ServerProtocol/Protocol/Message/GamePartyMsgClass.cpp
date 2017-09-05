@@ -127,14 +127,14 @@ namespace SF
 			}; // Result JoinPartyCmd::OverrideRouteContextDestination( EntityUID to )
 
 
-			Result JoinPartyCmd::TraceOut(MessageDataPtr& pMsg)
+			Result JoinPartyCmd::TraceOut(const char* prefix, MessageDataPtr& pMsg)
 			{
  				JoinPartyCmd parser;
 				parser.ParseMessage(*pMsg);
 				protocolTrace( Debug1, "JoinParty:{0}:{1} , RouteContext:{2}, TransactionID:{3}, InviterID:{4}, InvitedPlayer:{5}",
-						pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, parser.GetRouteContext(), parser.GetTransactionID(), parser.GetInviterID(), parser.GetInvitedPlayer()); 
+						prefix, pMsg->GetMessageHeader()->Length, parser.GetRouteContext(), parser.GetTransactionID(), parser.GetInviterID(), parser.GetInvitedPlayer()); 
 				return ResultCode::SUCCESS;
-			}; // Result JoinPartyCmd::TraceOut(MessageDataPtr& pMsg)
+			}; // Result JoinPartyCmd::TraceOut(const char* prefix, MessageDataPtr& pMsg)
 
 			const MessageID JoinPartyRes::MID = MessageID(MSGTYPE_RESULT, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_GAMEPARTY, 0);
 			Result JoinPartyRes::ParseMessage( MessageData* pIMsg )
@@ -244,14 +244,14 @@ namespace SF
 			}; // Result JoinPartyRes::OverrideRouteContextDestination( EntityUID to )
 
 
-			Result JoinPartyRes::TraceOut(MessageDataPtr& pMsg)
+			Result JoinPartyRes::TraceOut(const char* prefix, MessageDataPtr& pMsg)
 			{
  				JoinPartyRes parser;
 				parser.ParseMessage(*pMsg);
 				protocolTrace( Debug1, "JoinParty:{0}:{1} , RouteContext:{2}, TransactionID:{3}, Result:{4:X8}, PartyLeaderID:{5}, ChatHistoryData:{6,30}",
-						pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, parser.GetRouteContext(), parser.GetTransactionID(), parser.GetResult(), parser.GetPartyLeaderID(), parser.GetChatHistoryData()); 
+						prefix, pMsg->GetMessageHeader()->Length, parser.GetRouteContext(), parser.GetTransactionID(), parser.GetResult(), parser.GetPartyLeaderID(), parser.GetChatHistoryData()); 
 				return ResultCode::SUCCESS;
-			}; // Result JoinPartyRes::TraceOut(MessageDataPtr& pMsg)
+			}; // Result JoinPartyRes::TraceOut(const char* prefix, MessageDataPtr& pMsg)
 
 			// S2C: Player Joined
 			const MessageID PlayerJoinedS2CEvt::MID = MessageID(MSGTYPE_EVENT, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_GAMEPARTY, 1);
@@ -348,14 +348,14 @@ namespace SF
 			}; // Result PlayerJoinedS2CEvt::OverrideRouteContextDestination( EntityUID to )
 
 
-			Result PlayerJoinedS2CEvt::TraceOut(MessageDataPtr& pMsg)
+			Result PlayerJoinedS2CEvt::TraceOut(const char* prefix, MessageDataPtr& pMsg)
 			{
  				PlayerJoinedS2CEvt parser;
 				parser.ParseMessage(*pMsg);
 				protocolTrace( Debug1, "PlayerJoined:{0}:{1} , RouteContext:{2}, JoinedPlayer:{3}",
-						pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, parser.GetRouteContext(), parser.GetJoinedPlayer()); 
+						prefix, pMsg->GetMessageHeader()->Length, parser.GetRouteContext(), parser.GetJoinedPlayer()); 
 				return ResultCode::SUCCESS;
-			}; // Result PlayerJoinedS2CEvt::TraceOut(MessageDataPtr& pMsg)
+			}; // Result PlayerJoinedS2CEvt::TraceOut(const char* prefix, MessageDataPtr& pMsg)
 
 			// S2C: Player Joined
 			const MessageID PartyLeaderChangedS2CEvt::MID = MessageID(MSGTYPE_EVENT, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_GAMEPARTY, 2);
@@ -452,14 +452,14 @@ namespace SF
 			}; // Result PartyLeaderChangedS2CEvt::OverrideRouteContextDestination( EntityUID to )
 
 
-			Result PartyLeaderChangedS2CEvt::TraceOut(MessageDataPtr& pMsg)
+			Result PartyLeaderChangedS2CEvt::TraceOut(const char* prefix, MessageDataPtr& pMsg)
 			{
  				PartyLeaderChangedS2CEvt parser;
 				parser.ParseMessage(*pMsg);
 				protocolTrace( Debug1, "PartyLeaderChanged:{0}:{1} , RouteContext:{2}, NewLeaderID:{3}",
-						pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, parser.GetRouteContext(), parser.GetNewLeaderID()); 
+						prefix, pMsg->GetMessageHeader()->Length, parser.GetRouteContext(), parser.GetNewLeaderID()); 
 				return ResultCode::SUCCESS;
-			}; // Result PartyLeaderChangedS2CEvt::TraceOut(MessageDataPtr& pMsg)
+			}; // Result PartyLeaderChangedS2CEvt::TraceOut(const char* prefix, MessageDataPtr& pMsg)
 
 			// Cmd: Kick player
 			const MessageID LeavePartyCmd::MID = MessageID(MSGTYPE_COMMAND, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_GAMEPARTY, 3);
@@ -559,14 +559,14 @@ namespace SF
 			}; // Result LeavePartyCmd::OverrideRouteContextDestination( EntityUID to )
 
 
-			Result LeavePartyCmd::TraceOut(MessageDataPtr& pMsg)
+			Result LeavePartyCmd::TraceOut(const char* prefix, MessageDataPtr& pMsg)
 			{
  				LeavePartyCmd parser;
 				parser.ParseMessage(*pMsg);
 				protocolTrace( Debug1, "LeaveParty:{0}:{1} , RouteContext:{2}, TransactionID:{3}, PlayerID:{4}",
-						pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, parser.GetRouteContext(), parser.GetTransactionID(), parser.GetPlayerID()); 
+						prefix, pMsg->GetMessageHeader()->Length, parser.GetRouteContext(), parser.GetTransactionID(), parser.GetPlayerID()); 
 				return ResultCode::SUCCESS;
-			}; // Result LeavePartyCmd::TraceOut(MessageDataPtr& pMsg)
+			}; // Result LeavePartyCmd::TraceOut(const char* prefix, MessageDataPtr& pMsg)
 
 			const MessageID LeavePartyRes::MID = MessageID(MSGTYPE_RESULT, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_GAMEPARTY, 3);
 			Result LeavePartyRes::ParseMessage( MessageData* pIMsg )
@@ -665,14 +665,14 @@ namespace SF
 			}; // Result LeavePartyRes::OverrideRouteContextDestination( EntityUID to )
 
 
-			Result LeavePartyRes::TraceOut(MessageDataPtr& pMsg)
+			Result LeavePartyRes::TraceOut(const char* prefix, MessageDataPtr& pMsg)
 			{
  				LeavePartyRes parser;
 				parser.ParseMessage(*pMsg);
 				protocolTrace( Debug1, "LeaveParty:{0}:{1} , RouteContext:{2}, TransactionID:{3}, Result:{4:X8}",
-						pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, parser.GetRouteContext(), parser.GetTransactionID(), parser.GetResult()); 
+						prefix, pMsg->GetMessageHeader()->Length, parser.GetRouteContext(), parser.GetTransactionID(), parser.GetResult()); 
 				return ResultCode::SUCCESS;
-			}; // Result LeavePartyRes::TraceOut(MessageDataPtr& pMsg)
+			}; // Result LeavePartyRes::TraceOut(const char* prefix, MessageDataPtr& pMsg)
 
 			// S2C: Player left
 			const MessageID PlayerLeftS2CEvt::MID = MessageID(MSGTYPE_EVENT, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_GAMEPARTY, 4);
@@ -769,14 +769,14 @@ namespace SF
 			}; // Result PlayerLeftS2CEvt::OverrideRouteContextDestination( EntityUID to )
 
 
-			Result PlayerLeftS2CEvt::TraceOut(MessageDataPtr& pMsg)
+			Result PlayerLeftS2CEvt::TraceOut(const char* prefix, MessageDataPtr& pMsg)
 			{
  				PlayerLeftS2CEvt parser;
 				parser.ParseMessage(*pMsg);
 				protocolTrace( Debug1, "PlayerLeft:{0}:{1} , RouteContext:{2}, LeftPlayerID:{3}",
-						pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, parser.GetRouteContext(), parser.GetLeftPlayerID()); 
+						prefix, pMsg->GetMessageHeader()->Length, parser.GetRouteContext(), parser.GetLeftPlayerID()); 
 				return ResultCode::SUCCESS;
-			}; // Result PlayerLeftS2CEvt::TraceOut(MessageDataPtr& pMsg)
+			}; // Result PlayerLeftS2CEvt::TraceOut(const char* prefix, MessageDataPtr& pMsg)
 
 			// Cmd: Kick player
 			const MessageID KickPlayerCmd::MID = MessageID(MSGTYPE_COMMAND, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_GAMEPARTY, 5);
@@ -879,14 +879,14 @@ namespace SF
 			}; // Result KickPlayerCmd::OverrideRouteContextDestination( EntityUID to )
 
 
-			Result KickPlayerCmd::TraceOut(MessageDataPtr& pMsg)
+			Result KickPlayerCmd::TraceOut(const char* prefix, MessageDataPtr& pMsg)
 			{
  				KickPlayerCmd parser;
 				parser.ParseMessage(*pMsg);
 				protocolTrace( Debug1, "KickPlayer:{0}:{1} , RouteContext:{2}, TransactionID:{3}, PlayerID:{4}, PlayerToKick:{5}",
-						pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, parser.GetRouteContext(), parser.GetTransactionID(), parser.GetPlayerID(), parser.GetPlayerToKick()); 
+						prefix, pMsg->GetMessageHeader()->Length, parser.GetRouteContext(), parser.GetTransactionID(), parser.GetPlayerID(), parser.GetPlayerToKick()); 
 				return ResultCode::SUCCESS;
-			}; // Result KickPlayerCmd::TraceOut(MessageDataPtr& pMsg)
+			}; // Result KickPlayerCmd::TraceOut(const char* prefix, MessageDataPtr& pMsg)
 
 			const MessageID KickPlayerRes::MID = MessageID(MSGTYPE_RESULT, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_GAMEPARTY, 5);
 			Result KickPlayerRes::ParseMessage( MessageData* pIMsg )
@@ -985,14 +985,14 @@ namespace SF
 			}; // Result KickPlayerRes::OverrideRouteContextDestination( EntityUID to )
 
 
-			Result KickPlayerRes::TraceOut(MessageDataPtr& pMsg)
+			Result KickPlayerRes::TraceOut(const char* prefix, MessageDataPtr& pMsg)
 			{
  				KickPlayerRes parser;
 				parser.ParseMessage(*pMsg);
 				protocolTrace( Debug1, "KickPlayer:{0}:{1} , RouteContext:{2}, TransactionID:{3}, Result:{4:X8}",
-						pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, parser.GetRouteContext(), parser.GetTransactionID(), parser.GetResult()); 
+						prefix, pMsg->GetMessageHeader()->Length, parser.GetRouteContext(), parser.GetTransactionID(), parser.GetResult()); 
 				return ResultCode::SUCCESS;
-			}; // Result KickPlayerRes::TraceOut(MessageDataPtr& pMsg)
+			}; // Result KickPlayerRes::TraceOut(const char* prefix, MessageDataPtr& pMsg)
 
 			// S2C: Player kicked
 			const MessageID PlayerKickedS2CEvt::MID = MessageID(MSGTYPE_EVENT, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_GAMEPARTY, 6);
@@ -1089,14 +1089,14 @@ namespace SF
 			}; // Result PlayerKickedS2CEvt::OverrideRouteContextDestination( EntityUID to )
 
 
-			Result PlayerKickedS2CEvt::TraceOut(MessageDataPtr& pMsg)
+			Result PlayerKickedS2CEvt::TraceOut(const char* prefix, MessageDataPtr& pMsg)
 			{
  				PlayerKickedS2CEvt parser;
 				parser.ParseMessage(*pMsg);
 				protocolTrace( Debug1, "PlayerKicked:{0}:{1} , RouteContext:{2}, KickedPlayerID:{3}",
-						pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, parser.GetRouteContext(), parser.GetKickedPlayerID()); 
+						prefix, pMsg->GetMessageHeader()->Length, parser.GetRouteContext(), parser.GetKickedPlayerID()); 
 				return ResultCode::SUCCESS;
-			}; // Result PlayerKickedS2CEvt::TraceOut(MessageDataPtr& pMsg)
+			}; // Result PlayerKickedS2CEvt::TraceOut(const char* prefix, MessageDataPtr& pMsg)
 
 			// C2S: Chatting message
 			const MessageID ChatMessageC2SEvt::MID = MessageID(MSGTYPE_EVENT, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_GAMEPARTY, 7);
@@ -1199,14 +1199,14 @@ namespace SF
 			}; // Result ChatMessageC2SEvt::OverrideRouteContextDestination( EntityUID to )
 
 
-			Result ChatMessageC2SEvt::TraceOut(MessageDataPtr& pMsg)
+			Result ChatMessageC2SEvt::TraceOut(const char* prefix, MessageDataPtr& pMsg)
 			{
  				ChatMessageC2SEvt parser;
 				parser.ParseMessage(*pMsg);
 				protocolTrace( Debug1, "ChatMessage:{0}:{1} , RouteContext:{2}, PlayerID:{3}, ChatMessage:{4,60}",
-						pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, parser.GetRouteContext(), parser.GetPlayerID(), parser.GetChatMessage()); 
+						prefix, pMsg->GetMessageHeader()->Length, parser.GetRouteContext(), parser.GetPlayerID(), parser.GetChatMessage()); 
 				return ResultCode::SUCCESS;
-			}; // Result ChatMessageC2SEvt::TraceOut(MessageDataPtr& pMsg)
+			}; // Result ChatMessageC2SEvt::TraceOut(const char* prefix, MessageDataPtr& pMsg)
 
 			// S2C: Chatting message
 			const MessageID ChatMessageS2CEvt::MID = MessageID(MSGTYPE_EVENT, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_GAMEPARTY, 8);
@@ -1315,14 +1315,14 @@ namespace SF
 			}; // Result ChatMessageS2CEvt::OverrideRouteContextDestination( EntityUID to )
 
 
-			Result ChatMessageS2CEvt::TraceOut(MessageDataPtr& pMsg)
+			Result ChatMessageS2CEvt::TraceOut(const char* prefix, MessageDataPtr& pMsg)
 			{
  				ChatMessageS2CEvt parser;
 				parser.ParseMessage(*pMsg);
 				protocolTrace( Debug1, "ChatMessage:{0}:{1} , RouteContext:{2}, SenderID:{3}, SenderName:{4,60}, ChatMessage:{5,60}",
-						pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, parser.GetRouteContext(), parser.GetSenderID(), parser.GetSenderName(), parser.GetChatMessage()); 
+						prefix, pMsg->GetMessageHeader()->Length, parser.GetRouteContext(), parser.GetSenderID(), parser.GetSenderName(), parser.GetChatMessage()); 
 				return ResultCode::SUCCESS;
-			}; // Result ChatMessageS2CEvt::TraceOut(MessageDataPtr& pMsg)
+			}; // Result ChatMessageS2CEvt::TraceOut(const char* prefix, MessageDataPtr& pMsg)
 
 			// C2S: Quick Chatting message
 			const MessageID QuickChatMessageC2SEvt::MID = MessageID(MSGTYPE_EVENT, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_GAMEPARTY, 9);
@@ -1422,14 +1422,14 @@ namespace SF
 			}; // Result QuickChatMessageC2SEvt::OverrideRouteContextDestination( EntityUID to )
 
 
-			Result QuickChatMessageC2SEvt::TraceOut(MessageDataPtr& pMsg)
+			Result QuickChatMessageC2SEvt::TraceOut(const char* prefix, MessageDataPtr& pMsg)
 			{
  				QuickChatMessageC2SEvt parser;
 				parser.ParseMessage(*pMsg);
 				protocolTrace( Debug1, "QuickChatMessage:{0}:{1} , RouteContext:{2}, PlayerID:{3}, QuickChatID:{4}",
-						pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, parser.GetRouteContext(), parser.GetPlayerID(), parser.GetQuickChatID()); 
+						prefix, pMsg->GetMessageHeader()->Length, parser.GetRouteContext(), parser.GetPlayerID(), parser.GetQuickChatID()); 
 				return ResultCode::SUCCESS;
-			}; // Result QuickChatMessageC2SEvt::TraceOut(MessageDataPtr& pMsg)
+			}; // Result QuickChatMessageC2SEvt::TraceOut(const char* prefix, MessageDataPtr& pMsg)
 
 			// S2C: Quick Chatting message
 			const MessageID QuickChatMessageS2CEvt::MID = MessageID(MSGTYPE_EVENT, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_GAMEPARTY, 10);
@@ -1529,14 +1529,14 @@ namespace SF
 			}; // Result QuickChatMessageS2CEvt::OverrideRouteContextDestination( EntityUID to )
 
 
-			Result QuickChatMessageS2CEvt::TraceOut(MessageDataPtr& pMsg)
+			Result QuickChatMessageS2CEvt::TraceOut(const char* prefix, MessageDataPtr& pMsg)
 			{
  				QuickChatMessageS2CEvt parser;
 				parser.ParseMessage(*pMsg);
 				protocolTrace( Debug1, "QuickChatMessage:{0}:{1} , RouteContext:{2}, SenderID:{3}, QuickChatID:{4}",
-						pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, parser.GetRouteContext(), parser.GetSenderID(), parser.GetQuickChatID()); 
+						prefix, pMsg->GetMessageHeader()->Length, parser.GetRouteContext(), parser.GetSenderID(), parser.GetQuickChatID()); 
 				return ResultCode::SUCCESS;
-			}; // Result QuickChatMessageS2CEvt::TraceOut(MessageDataPtr& pMsg)
+			}; // Result QuickChatMessageS2CEvt::TraceOut(const char* prefix, MessageDataPtr& pMsg)
 
 			// Cmd: Match
 			const MessageID StartGameMatchCmd::MID = MessageID(MSGTYPE_COMMAND, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_GAMEPARTY, 11);
@@ -1639,14 +1639,14 @@ namespace SF
 			}; // Result StartGameMatchCmd::OverrideRouteContextDestination( EntityUID to )
 
 
-			Result StartGameMatchCmd::TraceOut(MessageDataPtr& pMsg)
+			Result StartGameMatchCmd::TraceOut(const char* prefix, MessageDataPtr& pMsg)
 			{
  				StartGameMatchCmd parser;
 				parser.ParseMessage(*pMsg);
 				protocolTrace( Debug1, "StartGameMatch:{0}:{1} , RouteContext:{2}, TransactionID:{3}, PlayerID:{4}, MaxGamePlayers:{5}",
-						pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, parser.GetRouteContext(), parser.GetTransactionID(), parser.GetPlayerID(), parser.GetMaxGamePlayers()); 
+						prefix, pMsg->GetMessageHeader()->Length, parser.GetRouteContext(), parser.GetTransactionID(), parser.GetPlayerID(), parser.GetMaxGamePlayers()); 
 				return ResultCode::SUCCESS;
-			}; // Result StartGameMatchCmd::TraceOut(MessageDataPtr& pMsg)
+			}; // Result StartGameMatchCmd::TraceOut(const char* prefix, MessageDataPtr& pMsg)
 
 			const MessageID StartGameMatchRes::MID = MessageID(MSGTYPE_RESULT, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_GAMEPARTY, 11);
 			Result StartGameMatchRes::ParseMessage( MessageData* pIMsg )
@@ -1745,14 +1745,14 @@ namespace SF
 			}; // Result StartGameMatchRes::OverrideRouteContextDestination( EntityUID to )
 
 
-			Result StartGameMatchRes::TraceOut(MessageDataPtr& pMsg)
+			Result StartGameMatchRes::TraceOut(const char* prefix, MessageDataPtr& pMsg)
 			{
  				StartGameMatchRes parser;
 				parser.ParseMessage(*pMsg);
 				protocolTrace( Debug1, "StartGameMatch:{0}:{1} , RouteContext:{2}, TransactionID:{3}, Result:{4:X8}",
-						pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, parser.GetRouteContext(), parser.GetTransactionID(), parser.GetResult()); 
+						prefix, pMsg->GetMessageHeader()->Length, parser.GetRouteContext(), parser.GetTransactionID(), parser.GetResult()); 
 				return ResultCode::SUCCESS;
-			}; // Result StartGameMatchRes::TraceOut(MessageDataPtr& pMsg)
+			}; // Result StartGameMatchRes::TraceOut(const char* prefix, MessageDataPtr& pMsg)
 
 			// S2C: Enqueued at a game matching
 			const MessageID QueuedGameMatchingS2CEvt::MID = MessageID(MSGTYPE_EVENT, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_GAMEPARTY, 12);
@@ -1849,14 +1849,14 @@ namespace SF
 			}; // Result QueuedGameMatchingS2CEvt::OverrideRouteContextDestination( EntityUID to )
 
 
-			Result QueuedGameMatchingS2CEvt::TraceOut(MessageDataPtr& pMsg)
+			Result QueuedGameMatchingS2CEvt::TraceOut(const char* prefix, MessageDataPtr& pMsg)
 			{
  				QueuedGameMatchingS2CEvt parser;
 				parser.ParseMessage(*pMsg);
 				protocolTrace( Debug1, "QueuedGameMatching:{0}:{1} , RouteContext:{2}, MatchingQueueTicket:{3}",
-						pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, parser.GetRouteContext(), parser.GetMatchingQueueTicket()); 
+						prefix, pMsg->GetMessageHeader()->Length, parser.GetRouteContext(), parser.GetMatchingQueueTicket()); 
 				return ResultCode::SUCCESS;
-			}; // Result QueuedGameMatchingS2CEvt::TraceOut(MessageDataPtr& pMsg)
+			}; // Result QueuedGameMatchingS2CEvt::TraceOut(const char* prefix, MessageDataPtr& pMsg)
 
 			// Cmd: Match
 			const MessageID CancelGameMatchCmd::MID = MessageID(MSGTYPE_COMMAND, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_GAMEPARTY, 13);
@@ -1956,14 +1956,14 @@ namespace SF
 			}; // Result CancelGameMatchCmd::OverrideRouteContextDestination( EntityUID to )
 
 
-			Result CancelGameMatchCmd::TraceOut(MessageDataPtr& pMsg)
+			Result CancelGameMatchCmd::TraceOut(const char* prefix, MessageDataPtr& pMsg)
 			{
  				CancelGameMatchCmd parser;
 				parser.ParseMessage(*pMsg);
 				protocolTrace( Debug1, "CancelGameMatch:{0}:{1} , RouteContext:{2}, TransactionID:{3}, PlayerID:{4}",
-						pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, parser.GetRouteContext(), parser.GetTransactionID(), parser.GetPlayerID()); 
+						prefix, pMsg->GetMessageHeader()->Length, parser.GetRouteContext(), parser.GetTransactionID(), parser.GetPlayerID()); 
 				return ResultCode::SUCCESS;
-			}; // Result CancelGameMatchCmd::TraceOut(MessageDataPtr& pMsg)
+			}; // Result CancelGameMatchCmd::TraceOut(const char* prefix, MessageDataPtr& pMsg)
 
 			const MessageID CancelGameMatchRes::MID = MessageID(MSGTYPE_RESULT, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_GAMEPARTY, 13);
 			Result CancelGameMatchRes::ParseMessage( MessageData* pIMsg )
@@ -2062,14 +2062,14 @@ namespace SF
 			}; // Result CancelGameMatchRes::OverrideRouteContextDestination( EntityUID to )
 
 
-			Result CancelGameMatchRes::TraceOut(MessageDataPtr& pMsg)
+			Result CancelGameMatchRes::TraceOut(const char* prefix, MessageDataPtr& pMsg)
 			{
  				CancelGameMatchRes parser;
 				parser.ParseMessage(*pMsg);
 				protocolTrace( Debug1, "CancelGameMatch:{0}:{1} , RouteContext:{2}, TransactionID:{3}, Result:{4:X8}",
-						pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, parser.GetRouteContext(), parser.GetTransactionID(), parser.GetResult()); 
+						prefix, pMsg->GetMessageHeader()->Length, parser.GetRouteContext(), parser.GetTransactionID(), parser.GetResult()); 
 				return ResultCode::SUCCESS;
-			}; // Result CancelGameMatchRes::TraceOut(MessageDataPtr& pMsg)
+			}; // Result CancelGameMatchRes::TraceOut(const char* prefix, MessageDataPtr& pMsg)
 
 			// S2C: Canceled at a game matching
 			const MessageID CanceledGameMatchingS2CEvt::MID = MessageID(MSGTYPE_EVENT, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_GAMEPARTY, 14);
@@ -2166,14 +2166,14 @@ namespace SF
 			}; // Result CanceledGameMatchingS2CEvt::OverrideRouteContextDestination( EntityUID to )
 
 
-			Result CanceledGameMatchingS2CEvt::TraceOut(MessageDataPtr& pMsg)
+			Result CanceledGameMatchingS2CEvt::TraceOut(const char* prefix, MessageDataPtr& pMsg)
 			{
  				CanceledGameMatchingS2CEvt parser;
 				parser.ParseMessage(*pMsg);
 				protocolTrace( Debug1, "CanceledGameMatching:{0}:{1} , RouteContext:{2}, MatchingQueueTicket:{3}",
-						pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, parser.GetRouteContext(), parser.GetMatchingQueueTicket()); 
+						prefix, pMsg->GetMessageHeader()->Length, parser.GetRouteContext(), parser.GetMatchingQueueTicket()); 
 				return ResultCode::SUCCESS;
-			}; // Result CanceledGameMatchingS2CEvt::TraceOut(MessageDataPtr& pMsg)
+			}; // Result CanceledGameMatchingS2CEvt::TraceOut(const char* prefix, MessageDataPtr& pMsg)
 
 			// S2C: Enqueued item is dequeued
 			const MessageID MatchingItemDequeuedS2CEvt::MID = MessageID(MSGTYPE_EVENT, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_GAMEPARTY, 15);
@@ -2270,14 +2270,14 @@ namespace SF
 			}; // Result MatchingItemDequeuedS2CEvt::OverrideRouteContextDestination( EntityUID to )
 
 
-			Result MatchingItemDequeuedS2CEvt::TraceOut(MessageDataPtr& pMsg)
+			Result MatchingItemDequeuedS2CEvt::TraceOut(const char* prefix, MessageDataPtr& pMsg)
 			{
  				MatchingItemDequeuedS2CEvt parser;
 				parser.ParseMessage(*pMsg);
 				protocolTrace( Debug1, "MatchingItemDequeued:{0}:{1} , RouteContext:{2}, MatchingTicket:{3}",
-						pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, parser.GetRouteContext(), parser.GetMatchingTicket()); 
+						prefix, pMsg->GetMessageHeader()->Length, parser.GetRouteContext(), parser.GetMatchingTicket()); 
 				return ResultCode::SUCCESS;
-			}; // Result MatchingItemDequeuedS2CEvt::TraceOut(MessageDataPtr& pMsg)
+			}; // Result MatchingItemDequeuedS2CEvt::TraceOut(const char* prefix, MessageDataPtr& pMsg)
 
 
 

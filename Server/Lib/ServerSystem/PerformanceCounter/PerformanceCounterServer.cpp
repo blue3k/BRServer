@@ -335,7 +335,7 @@ namespace Svr {
 		{
 			if (!(m_InstanceMap.FindInWriteTree(pInstance->GetInstanceEntityUID().UID, pInstance)))
 			{
-				svrTrace(Trace::TRC_ERROR, "PerforamnceCounter:{0}, Create/Find Both failed?", pInstance->GetInstanceEntityUID());
+				svrTrace(Error, "PerforamnceCounter:{0}, Create/Find Both failed?", pInstance->GetInstanceEntityUID());
 			}
 			else
 			{
@@ -366,7 +366,7 @@ namespace Svr {
 					pInstance->AddCounter(new(GetSystemMemoryManager()) PerformanceCounterRaw<uint64_t>(counters[iCounter].CounterName));
 					break;
 				default:
-					svrTrace(Trace::TRC_ERROR, "PerforamnceCounter:{0}, Invalid counter type:{1}", pInstance->GetInstanceEntityUID(), counters[iCounter].DateType);
+					svrTrace(Error, "PerforamnceCounter:{0}, Invalid counter type:{1}", pInstance->GetInstanceEntityUID(), counters[iCounter].DateType);
 					break;
 				}
 			}
@@ -392,7 +392,7 @@ namespace Svr {
 				SharedPointerT<PerformanceCounterInstance> pInstance;
 				if (!(m_InstanceMap.Remove(instances[iInstance], pInstance)))
 				{
-					svrTrace(Trace::TRC_ERROR, "PerforamnceCounter:{0}, Failed to remove", instances[iInstance]);
+					svrTrace(Error, "PerforamnceCounter:{0}, Failed to remove", instances[iInstance]);
 				}
 			}
 		}
@@ -418,7 +418,7 @@ namespace Svr {
 				MessageDataPtr pMsgSend = Message::Monitoring::PerformanceCounterUpdateCounterInfoS2CEvt::Create((GetSystemMemoryManager()), messageClass.GetInstanceUID());
 				if (pMsgSend == nullptr)
 				{
-					svrTrace(Trace::TRC_ERROR, "Failed to generate performance counter update request packet");
+					svrTrace(Error, "Failed to generate performance counter update request packet");
 				}
 				else
 				{

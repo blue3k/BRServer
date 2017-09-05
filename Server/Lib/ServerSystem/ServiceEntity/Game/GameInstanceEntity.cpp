@@ -18,7 +18,7 @@
 #include "ResultCode/SFResultCodeLibrary.h"
 #include "ResultCode/SFResultCodeGame.h"
 #include "Net/Message.h"
-#include "Common/BrRandom.h"
+#include "Util/SFRandom.h"
 
 #include "Server/BrServer.h"
 #include "Entity/EntityManager.h"
@@ -33,7 +33,7 @@
 
 #include "Server/BrServer.h"
 #include "ServerSystem/ServiceEntity/Game/GameInstancePlayer.h"
-#include "ServerSystem/ServerService/GameInstanceManagerService.h"
+#include "Protocol/ServerService/GameInstanceManagerService.h"
 #include "ServerSystem/ServiceEntity/Game/GameInstanceEntity.h"
 #include "ServerSystem/ServiceEntity/Game/GameInstanceManagerServiceEntity.h"
 
@@ -237,7 +237,7 @@ namespace Svr {
 		if (numBot > maxPlayer)
 		{
 			// Too many boot number
-			svrTrace(Trace::TRC_ERROR, "Too many bot number numBot:{0} -> {1}, maxPlayer:{2}", numBot, maxPlayer-1, maxPlayer);
+			svrTrace(Error, "Too many bot number numBot:{0} -> {1}, maxPlayer:{2}", numBot, maxPlayer-1, maxPlayer);
 			numBot = maxPlayer - 1;
 		}
 

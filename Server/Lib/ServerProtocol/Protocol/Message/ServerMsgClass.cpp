@@ -121,14 +121,14 @@ namespace SF
 			}; // Result GenericFailureCmd::OverrideRouteContextDestination( EntityUID to )
 
 
-			Result GenericFailureCmd::TraceOut(MessageDataPtr& pMsg)
+			Result GenericFailureCmd::TraceOut(const char* prefix, MessageDataPtr& pMsg)
 			{
  				GenericFailureCmd parser;
 				parser.ParseMessage(*pMsg);
 				protocolTrace( Debug1, "GenericFailure:{0}:{1} , RouteContext:{2}, TransactionID:{3}",
-						pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, parser.GetRouteContext(), parser.GetTransactionID()); 
+						prefix, pMsg->GetMessageHeader()->Length, parser.GetRouteContext(), parser.GetTransactionID()); 
 				return ResultCode::SUCCESS;
-			}; // Result GenericFailureCmd::TraceOut(MessageDataPtr& pMsg)
+			}; // Result GenericFailureCmd::TraceOut(const char* prefix, MessageDataPtr& pMsg)
 
 			const MessageID GenericFailureRes::MID = MessageID(MSGTYPE_RESULT, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_SERVER, 0);
 			Result GenericFailureRes::ParseMessage( MessageData* pIMsg )
@@ -227,14 +227,14 @@ namespace SF
 			}; // Result GenericFailureRes::OverrideRouteContextDestination( EntityUID to )
 
 
-			Result GenericFailureRes::TraceOut(MessageDataPtr& pMsg)
+			Result GenericFailureRes::TraceOut(const char* prefix, MessageDataPtr& pMsg)
 			{
  				GenericFailureRes parser;
 				parser.ParseMessage(*pMsg);
 				protocolTrace( Debug1, "GenericFailure:{0}:{1} , RouteContext:{2}, TransactionID:{3}, Result:{4:X8}",
-						pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, parser.GetRouteContext(), parser.GetTransactionID(), parser.GetResult()); 
+						prefix, pMsg->GetMessageHeader()->Length, parser.GetRouteContext(), parser.GetTransactionID(), parser.GetResult()); 
 				return ResultCode::SUCCESS;
-			}; // Result GenericFailureRes::TraceOut(MessageDataPtr& pMsg)
+			}; // Result GenericFailureRes::TraceOut(const char* prefix, MessageDataPtr& pMsg)
 
 			// C2S: Server Started or Connected
 			const MessageID ServerConnectedC2SEvt::MID = MessageID(MSGTYPE_EVENT, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_SERVER, 1);
@@ -337,14 +337,14 @@ namespace SF
 			}; // Result ServerConnectedC2SEvt::OverrideRouteContextDestination( EntityUID to )
 
 
-			Result ServerConnectedC2SEvt::TraceOut(MessageDataPtr& pMsg)
+			Result ServerConnectedC2SEvt::TraceOut(const char* prefix, MessageDataPtr& pMsg)
 			{
  				ServerConnectedC2SEvt parser;
 				parser.ParseMessage(*pMsg);
 				protocolTrace( Debug2, "ServerConnected:{0}:{1} , RouteContext:{2}, ClusterManagerServiceInformation:{3}, StartUpTime:{4}, PrivateAddress:{5}",
-						pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, parser.GetRouteContext(), parser.GetClusterManagerServiceInformation(), parser.GetStartUpTime(), parser.GetPrivateAddress()); 
+						prefix, pMsg->GetMessageHeader()->Length, parser.GetRouteContext(), parser.GetClusterManagerServiceInformation(), parser.GetStartUpTime(), parser.GetPrivateAddress()); 
 				return ResultCode::SUCCESS;
-			}; // Result ServerConnectedC2SEvt::TraceOut(MessageDataPtr& pMsg)
+			}; // Result ServerConnectedC2SEvt::TraceOut(const char* prefix, MessageDataPtr& pMsg)
 
 
 

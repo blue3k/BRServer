@@ -22,7 +22,7 @@
 #include "Protocol/Policy/ClusterServerNetPolicy.h"
 #include "Transaction/MessageRoute.h"
 #include "ServerSystem/ServiceEntity/MatchingServiceEntity.h"
-#include "ServerSystem/ServerTransaction.h"
+#include "Transaction/ServerTransaction.h"
 
 
 namespace SF {

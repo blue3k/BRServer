@@ -66,11 +66,11 @@ namespace DB {
 		{
 			const char* errorString = mysql_error(pSql);
 			AssertRel(errorString!=nullptr);
-			dbTrace( Trace::TRC_ERROR, "DB Failed Error hr:{0:X8}, {1} : {2} ", hr, className, errorString );
+			dbTrace( Error, "DB Failed Error hr:{0:X8}, {1} : {2} ", hr, className, errorString );
 		}
 		else
 		{
-			dbTrace( Trace::TRC_ERROR, "DB Failed Error hr:{0:X8}, {1}", hr, className );
+			dbTrace( Error, "DB Failed Error hr:{0:X8}, {1}", hr, className );
 		}
 	}
 

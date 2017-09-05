@@ -55,7 +55,6 @@
     <ClCompile Include="$(MSBuildThisFileDirectory)DataSourceMYSQL.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)DataSourceOLEDB.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)DBClusterManager.cpp" />
-    <ClCompile Include="$(MSBuildThisFileDirectory)DBTrace.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)Factory.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)FactoryMYSQL.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)FactoryOLEDB.cpp" />

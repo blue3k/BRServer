@@ -450,15 +450,15 @@ namespace Svr {
 			{
 				if( hr == Result(ResultCode::SVR_NO_RESULT_HANDLER))
 				{
-					svrTrace( Trace::TRC_ERROR, "Transaction has no result handler : Result MessageID:{0}, {1}", pRes->GetMsgID(), typeid(*this).name() );
+					svrTrace( Error, "Transaction has no result handler : Result MessageID:{0}, {1}", pRes->GetMsgID(), typeid(*this).name() );
 				}
 				else
 				{
-					svrTrace( Trace::TRC_ERROR, "Transaction result process failed: Result MessageID:{0}, {1}", pRes->GetMsgID(), typeid(*this).name() );
+					svrTrace( Error, "Transaction result process failed: Result MessageID:{0}, {1}", pRes->GetMsgID(), typeid(*this).name() );
 				}
 			}
 
-			Util::SafeRelease( pRes );
+			Util::SafeDelete( pRes );
 
 			return hr;
 		}
@@ -595,7 +595,7 @@ namespace Svr {
 
 			if(MessageClass::GetRouteContext().GetTo().GetServerID() != Svr::GetMyServerID() )
 			{
-				svrTrace( Trace::TRC_ERROR, "Invalid ServerID {0} MsgID:{0}", typeid(*this).name(), MessageClass::GetMessage()->GetMessageHeader()->msgID );
+				svrTrace( Error, "Invalid ServerID {0} MsgID:{0}", typeid(*this).name(), MessageClass::GetMessage()->GetMessageHeader()->msgID );
 				svrErr(ResultCode::SVR_INVALID_SERVERID);
 			}
 

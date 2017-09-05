@@ -162,14 +162,14 @@ namespace SF
 
 			}; // Result RegisterPartyMatchingCmd::OverrideRouteInformation( EntityUID to, unsigned hopCount )
 
-			Result RegisterPartyMatchingCmd::TraceOut(MessageDataPtr& pMsg)
+			Result RegisterPartyMatchingCmd::TraceOut(const char* prefix, MessageDataPtr& pMsg)
 			{
  				RegisterPartyMatchingCmd parser;
 				parser.ParseMessage(*pMsg);
 				protocolTrace( Debug1, "RegisterPartyMatching:{0}:{1} , RouteContext:{2}, TransactionID:{3}, RouteHopCount:{4}, Players:{5,30}",
-						pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, parser.GetRouteContext(), parser.GetTransactionID(), parser.GetRouteHopCount(), parser.GetPlayers()); 
+						prefix, pMsg->GetMessageHeader()->Length, parser.GetRouteContext(), parser.GetTransactionID(), parser.GetRouteHopCount(), parser.GetPlayers()); 
 				return ResultCode::SUCCESS;
-			}; // Result RegisterPartyMatchingCmd::TraceOut(MessageDataPtr& pMsg)
+			}; // Result RegisterPartyMatchingCmd::TraceOut(const char* prefix, MessageDataPtr& pMsg)
 
 			const MessageID RegisterPartyMatchingRes::MID = MessageID(MSGTYPE_RESULT, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_PARTYMATCHINGQUEUE, 0);
 			Result RegisterPartyMatchingRes::ParseMessage( MessageData* pIMsg )
@@ -300,14 +300,14 @@ namespace SF
 
 			}; // Result RegisterPartyMatchingRes::OverrideRouteInformation( EntityUID to, unsigned hopCount )
 
-			Result RegisterPartyMatchingRes::TraceOut(MessageDataPtr& pMsg)
+			Result RegisterPartyMatchingRes::TraceOut(const char* prefix, MessageDataPtr& pMsg)
 			{
  				RegisterPartyMatchingRes parser;
 				parser.ParseMessage(*pMsg);
 				protocolTrace( Debug1, "RegisterPartyMatching:{0}:{1} , RouteContext:{2}, TransactionID:{3}, Result:{4:X8}, MatchingTicket:{5}",
-						pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, parser.GetRouteContext(), parser.GetTransactionID(), parser.GetResult(), parser.GetMatchingTicket()); 
+						prefix, pMsg->GetMessageHeader()->Length, parser.GetRouteContext(), parser.GetTransactionID(), parser.GetResult(), parser.GetMatchingTicket()); 
 				return ResultCode::SUCCESS;
-			}; // Result RegisterPartyMatchingRes::TraceOut(MessageDataPtr& pMsg)
+			}; // Result RegisterPartyMatchingRes::TraceOut(const char* prefix, MessageDataPtr& pMsg)
 
 			// Cmd: Register match alone
 			const MessageID RegisterPlayerMatchingCmd::MID = MessageID(MSGTYPE_COMMAND, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_PARTYMATCHINGQUEUE, 1);
@@ -440,14 +440,14 @@ namespace SF
 
 			}; // Result RegisterPlayerMatchingCmd::OverrideRouteInformation( EntityUID to, unsigned hopCount )
 
-			Result RegisterPlayerMatchingCmd::TraceOut(MessageDataPtr& pMsg)
+			Result RegisterPlayerMatchingCmd::TraceOut(const char* prefix, MessageDataPtr& pMsg)
 			{
  				RegisterPlayerMatchingCmd parser;
 				parser.ParseMessage(*pMsg);
 				protocolTrace( Debug1, "RegisterPlayerMatching:{0}:{1} , RouteContext:{2}, TransactionID:{3}, RouteHopCount:{4}, PlayerID:{5}",
-						pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, parser.GetRouteContext(), parser.GetTransactionID(), parser.GetRouteHopCount(), parser.GetPlayerID()); 
+						prefix, pMsg->GetMessageHeader()->Length, parser.GetRouteContext(), parser.GetTransactionID(), parser.GetRouteHopCount(), parser.GetPlayerID()); 
 				return ResultCode::SUCCESS;
-			}; // Result RegisterPlayerMatchingCmd::TraceOut(MessageDataPtr& pMsg)
+			}; // Result RegisterPlayerMatchingCmd::TraceOut(const char* prefix, MessageDataPtr& pMsg)
 
 			const MessageID RegisterPlayerMatchingRes::MID = MessageID(MSGTYPE_RESULT, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_PARTYMATCHINGQUEUE, 1);
 			Result RegisterPlayerMatchingRes::ParseMessage( MessageData* pIMsg )
@@ -578,14 +578,14 @@ namespace SF
 
 			}; // Result RegisterPlayerMatchingRes::OverrideRouteInformation( EntityUID to, unsigned hopCount )
 
-			Result RegisterPlayerMatchingRes::TraceOut(MessageDataPtr& pMsg)
+			Result RegisterPlayerMatchingRes::TraceOut(const char* prefix, MessageDataPtr& pMsg)
 			{
  				RegisterPlayerMatchingRes parser;
 				parser.ParseMessage(*pMsg);
 				protocolTrace( Debug1, "RegisterPlayerMatching:{0}:{1} , RouteContext:{2}, TransactionID:{3}, Result:{4:X8}, MatchingTicket:{5}",
-						pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, parser.GetRouteContext(), parser.GetTransactionID(), parser.GetResult(), parser.GetMatchingTicket()); 
+						prefix, pMsg->GetMessageHeader()->Length, parser.GetRouteContext(), parser.GetTransactionID(), parser.GetResult(), parser.GetMatchingTicket()); 
 				return ResultCode::SUCCESS;
-			}; // Result RegisterPlayerMatchingRes::TraceOut(MessageDataPtr& pMsg)
+			}; // Result RegisterPlayerMatchingRes::TraceOut(const char* prefix, MessageDataPtr& pMsg)
 
 			// Cmd: update registration information
 			const MessageID UpdateMatchingEntityUIDCmd::MID = MessageID(MSGTYPE_COMMAND, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_PARTYMATCHINGQUEUE, 2);
@@ -721,14 +721,14 @@ namespace SF
 
 			}; // Result UpdateMatchingEntityUIDCmd::OverrideRouteInformation( EntityUID to, unsigned hopCount )
 
-			Result UpdateMatchingEntityUIDCmd::TraceOut(MessageDataPtr& pMsg)
+			Result UpdateMatchingEntityUIDCmd::TraceOut(const char* prefix, MessageDataPtr& pMsg)
 			{
  				UpdateMatchingEntityUIDCmd parser;
 				parser.ParseMessage(*pMsg);
 				protocolTrace( Debug1, "UpdateMatchingEntityUID:{0}:{1} , RouteContext:{2}, TransactionID:{3}, RouteHopCount:{4}, MatchingTicket:{5}, PreviousUID:{6}",
-						pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, parser.GetRouteContext(), parser.GetTransactionID(), parser.GetRouteHopCount(), parser.GetMatchingTicket(), parser.GetPreviousUID()); 
+						prefix, pMsg->GetMessageHeader()->Length, parser.GetRouteContext(), parser.GetTransactionID(), parser.GetRouteHopCount(), parser.GetMatchingTicket(), parser.GetPreviousUID()); 
 				return ResultCode::SUCCESS;
-			}; // Result UpdateMatchingEntityUIDCmd::TraceOut(MessageDataPtr& pMsg)
+			}; // Result UpdateMatchingEntityUIDCmd::TraceOut(const char* prefix, MessageDataPtr& pMsg)
 
 			const MessageID UpdateMatchingEntityUIDRes::MID = MessageID(MSGTYPE_RESULT, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_PARTYMATCHINGQUEUE, 2);
 			Result UpdateMatchingEntityUIDRes::ParseMessage( MessageData* pIMsg )
@@ -855,14 +855,14 @@ namespace SF
 
 			}; // Result UpdateMatchingEntityUIDRes::OverrideRouteInformation( EntityUID to, unsigned hopCount )
 
-			Result UpdateMatchingEntityUIDRes::TraceOut(MessageDataPtr& pMsg)
+			Result UpdateMatchingEntityUIDRes::TraceOut(const char* prefix, MessageDataPtr& pMsg)
 			{
  				UpdateMatchingEntityUIDRes parser;
 				parser.ParseMessage(*pMsg);
 				protocolTrace( Debug1, "UpdateMatchingEntityUID:{0}:{1} , RouteContext:{2}, TransactionID:{3}, Result:{4:X8}",
-						pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, parser.GetRouteContext(), parser.GetTransactionID(), parser.GetResult()); 
+						prefix, pMsg->GetMessageHeader()->Length, parser.GetRouteContext(), parser.GetTransactionID(), parser.GetResult()); 
 				return ResultCode::SUCCESS;
-			}; // Result UpdateMatchingEntityUIDRes::TraceOut(MessageDataPtr& pMsg)
+			}; // Result UpdateMatchingEntityUIDRes::TraceOut(const char* prefix, MessageDataPtr& pMsg)
 
 			// Cmd: calcel registration
 			const MessageID UnregisterMatchingCmd::MID = MessageID(MSGTYPE_COMMAND, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_PARTYMATCHINGQUEUE, 3);
@@ -995,14 +995,14 @@ namespace SF
 
 			}; // Result UnregisterMatchingCmd::OverrideRouteInformation( EntityUID to, unsigned hopCount )
 
-			Result UnregisterMatchingCmd::TraceOut(MessageDataPtr& pMsg)
+			Result UnregisterMatchingCmd::TraceOut(const char* prefix, MessageDataPtr& pMsg)
 			{
  				UnregisterMatchingCmd parser;
 				parser.ParseMessage(*pMsg);
 				protocolTrace( Debug1, "UnregisterMatching:{0}:{1} , RouteContext:{2}, TransactionID:{3}, RouteHopCount:{4}, MatchingTicket:{5}",
-						pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, parser.GetRouteContext(), parser.GetTransactionID(), parser.GetRouteHopCount(), parser.GetMatchingTicket()); 
+						prefix, pMsg->GetMessageHeader()->Length, parser.GetRouteContext(), parser.GetTransactionID(), parser.GetRouteHopCount(), parser.GetMatchingTicket()); 
 				return ResultCode::SUCCESS;
-			}; // Result UnregisterMatchingCmd::TraceOut(MessageDataPtr& pMsg)
+			}; // Result UnregisterMatchingCmd::TraceOut(const char* prefix, MessageDataPtr& pMsg)
 
 			const MessageID UnregisterMatchingRes::MID = MessageID(MSGTYPE_RESULT, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_PARTYMATCHINGQUEUE, 3);
 			Result UnregisterMatchingRes::ParseMessage( MessageData* pIMsg )
@@ -1129,14 +1129,14 @@ namespace SF
 
 			}; // Result UnregisterMatchingRes::OverrideRouteInformation( EntityUID to, unsigned hopCount )
 
-			Result UnregisterMatchingRes::TraceOut(MessageDataPtr& pMsg)
+			Result UnregisterMatchingRes::TraceOut(const char* prefix, MessageDataPtr& pMsg)
 			{
  				UnregisterMatchingRes parser;
 				parser.ParseMessage(*pMsg);
 				protocolTrace( Debug1, "UnregisterMatching:{0}:{1} , RouteContext:{2}, TransactionID:{3}, Result:{4:X8}",
-						pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, parser.GetRouteContext(), parser.GetTransactionID(), parser.GetResult()); 
+						prefix, pMsg->GetMessageHeader()->Length, parser.GetRouteContext(), parser.GetTransactionID(), parser.GetResult()); 
 				return ResultCode::SUCCESS;
-			}; // Result UnregisterMatchingRes::TraceOut(MessageDataPtr& pMsg)
+			}; // Result UnregisterMatchingRes::TraceOut(const char* prefix, MessageDataPtr& pMsg)
 
 			// S2C: For some reason, matching is canceled
 			const MessageID PartyMatchingCanceledS2CEvt::MID = MessageID(MSGTYPE_EVENT, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_PARTYMATCHINGQUEUE, 4);
@@ -1268,14 +1268,14 @@ namespace SF
 
 			}; // Result PartyMatchingCanceledS2CEvt::OverrideRouteInformation( EntityUID to, unsigned hopCount )
 
-			Result PartyMatchingCanceledS2CEvt::TraceOut(MessageDataPtr& pMsg)
+			Result PartyMatchingCanceledS2CEvt::TraceOut(const char* prefix, MessageDataPtr& pMsg)
 			{
  				PartyMatchingCanceledS2CEvt parser;
 				parser.ParseMessage(*pMsg);
 				protocolTrace( Debug1, "PartyMatchingCanceled:{0}:{1} , RouteContext:{2}, RouteHopCount:{3}, DestPartyUID:{4}, MatchingTicket:{5}",
-						pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, parser.GetRouteContext(), parser.GetRouteHopCount(), parser.GetDestPartyUID(), parser.GetMatchingTicket()); 
+						prefix, pMsg->GetMessageHeader()->Length, parser.GetRouteContext(), parser.GetRouteHopCount(), parser.GetDestPartyUID(), parser.GetMatchingTicket()); 
 				return ResultCode::SUCCESS;
-			}; // Result PartyMatchingCanceledS2CEvt::TraceOut(MessageDataPtr& pMsg)
+			}; // Result PartyMatchingCanceledS2CEvt::TraceOut(const char* prefix, MessageDataPtr& pMsg)
 
 			// S2C: For some reason, matching is canceled
 			const MessageID PlayerMatchingCanceledS2CEvt::MID = MessageID(MSGTYPE_EVENT, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_PARTYMATCHINGQUEUE, 5);
@@ -1407,14 +1407,14 @@ namespace SF
 
 			}; // Result PlayerMatchingCanceledS2CEvt::OverrideRouteInformation( EntityUID to, unsigned hopCount )
 
-			Result PlayerMatchingCanceledS2CEvt::TraceOut(MessageDataPtr& pMsg)
+			Result PlayerMatchingCanceledS2CEvt::TraceOut(const char* prefix, MessageDataPtr& pMsg)
 			{
  				PlayerMatchingCanceledS2CEvt parser;
 				parser.ParseMessage(*pMsg);
 				protocolTrace( Debug1, "PlayerMatchingCanceled:{0}:{1} , RouteContext:{2}, RouteHopCount:{3}, DestPlayerID:{4}, MatchingTicket:{5}",
-						pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, parser.GetRouteContext(), parser.GetRouteHopCount(), parser.GetDestPlayerID(), parser.GetMatchingTicket()); 
+						prefix, pMsg->GetMessageHeader()->Length, parser.GetRouteContext(), parser.GetRouteHopCount(), parser.GetDestPlayerID(), parser.GetMatchingTicket()); 
 				return ResultCode::SUCCESS;
-			}; // Result PlayerMatchingCanceledS2CEvt::TraceOut(MessageDataPtr& pMsg)
+			}; // Result PlayerMatchingCanceledS2CEvt::TraceOut(const char* prefix, MessageDataPtr& pMsg)
 
 			// S2C: Enqueued item is dequeued
 			const MessageID PartyMatchingItemDequeuedS2CEvt::MID = MessageID(MSGTYPE_EVENT, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_PARTYMATCHINGQUEUE, 6);
@@ -1543,14 +1543,14 @@ namespace SF
 
 			}; // Result PartyMatchingItemDequeuedS2CEvt::OverrideRouteInformation( EntityUID to, unsigned hopCount )
 
-			Result PartyMatchingItemDequeuedS2CEvt::TraceOut(MessageDataPtr& pMsg)
+			Result PartyMatchingItemDequeuedS2CEvt::TraceOut(const char* prefix, MessageDataPtr& pMsg)
 			{
  				PartyMatchingItemDequeuedS2CEvt parser;
 				parser.ParseMessage(*pMsg);
 				protocolTrace( Debug1, "PartyMatchingItemDequeued:{0}:{1} , RouteContext:{2}, RouteHopCount:{3}, MatchingTicket:{4}",
-						pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, parser.GetRouteContext(), parser.GetRouteHopCount(), parser.GetMatchingTicket()); 
+						prefix, pMsg->GetMessageHeader()->Length, parser.GetRouteContext(), parser.GetRouteHopCount(), parser.GetMatchingTicket()); 
 				return ResultCode::SUCCESS;
-			}; // Result PartyMatchingItemDequeuedS2CEvt::TraceOut(MessageDataPtr& pMsg)
+			}; // Result PartyMatchingItemDequeuedS2CEvt::TraceOut(const char* prefix, MessageDataPtr& pMsg)
 
 			// S2C: Enqueued item is dequeued
 			const MessageID PlayerMatchingItemDequeuedS2CEvt::MID = MessageID(MSGTYPE_EVENT, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_PARTYMATCHINGQUEUE, 7);
@@ -1679,14 +1679,14 @@ namespace SF
 
 			}; // Result PlayerMatchingItemDequeuedS2CEvt::OverrideRouteInformation( EntityUID to, unsigned hopCount )
 
-			Result PlayerMatchingItemDequeuedS2CEvt::TraceOut(MessageDataPtr& pMsg)
+			Result PlayerMatchingItemDequeuedS2CEvt::TraceOut(const char* prefix, MessageDataPtr& pMsg)
 			{
  				PlayerMatchingItemDequeuedS2CEvt parser;
 				parser.ParseMessage(*pMsg);
 				protocolTrace( Debug1, "PlayerMatchingItemDequeued:{0}:{1} , RouteContext:{2}, RouteHopCount:{3}, MatchingTicket:{4}",
-						pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, parser.GetRouteContext(), parser.GetRouteHopCount(), parser.GetMatchingTicket()); 
+						prefix, pMsg->GetMessageHeader()->Length, parser.GetRouteContext(), parser.GetRouteHopCount(), parser.GetMatchingTicket()); 
 				return ResultCode::SUCCESS;
-			}; // Result PlayerMatchingItemDequeuedS2CEvt::TraceOut(MessageDataPtr& pMsg)
+			}; // Result PlayerMatchingItemDequeuedS2CEvt::TraceOut(const char* prefix, MessageDataPtr& pMsg)
 
 			// Cmd: Reserve a item
 			const MessageID ReserveItemCmd::MID = MessageID(MSGTYPE_COMMAND, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_PARTYMATCHINGQUEUE, 8);
@@ -1816,14 +1816,14 @@ namespace SF
 
 			}; // Result ReserveItemCmd::OverrideRouteInformation( EntityUID to, unsigned hopCount )
 
-			Result ReserveItemCmd::TraceOut(MessageDataPtr& pMsg)
+			Result ReserveItemCmd::TraceOut(const char* prefix, MessageDataPtr& pMsg)
 			{
  				ReserveItemCmd parser;
 				parser.ParseMessage(*pMsg);
 				protocolTrace( Debug1, "ReserveItem:{0}:{1} , RouteContext:{2}, TransactionID:{3}, RouteHopCount:{4}",
-						pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, parser.GetRouteContext(), parser.GetTransactionID(), parser.GetRouteHopCount()); 
+						prefix, pMsg->GetMessageHeader()->Length, parser.GetRouteContext(), parser.GetTransactionID(), parser.GetRouteHopCount()); 
 				return ResultCode::SUCCESS;
-			}; // Result ReserveItemCmd::TraceOut(MessageDataPtr& pMsg)
+			}; // Result ReserveItemCmd::TraceOut(const char* prefix, MessageDataPtr& pMsg)
 
 			const MessageID ReserveItemRes::MID = MessageID(MSGTYPE_RESULT, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_PARTYMATCHINGQUEUE, 8);
 			Result ReserveItemRes::ParseMessage( MessageData* pIMsg )
@@ -1958,14 +1958,14 @@ namespace SF
 
 			}; // Result ReserveItemRes::OverrideRouteInformation( EntityUID to, unsigned hopCount )
 
-			Result ReserveItemRes::TraceOut(MessageDataPtr& pMsg)
+			Result ReserveItemRes::TraceOut(const char* prefix, MessageDataPtr& pMsg)
 			{
  				ReserveItemRes parser;
 				parser.ParseMessage(*pMsg);
 				protocolTrace( Debug1, "ReserveItem:{0}:{1} , RouteContext:{2}, TransactionID:{3}, Result:{4:X8}, NumberOfPlayersInTheItem:{5}, MatchingTicket:{6}",
-						pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, parser.GetRouteContext(), parser.GetTransactionID(), parser.GetResult(), parser.GetNumberOfPlayersInTheItem(), parser.GetMatchingTicket()); 
+						prefix, pMsg->GetMessageHeader()->Length, parser.GetRouteContext(), parser.GetTransactionID(), parser.GetResult(), parser.GetNumberOfPlayersInTheItem(), parser.GetMatchingTicket()); 
 				return ResultCode::SUCCESS;
-			}; // Result ReserveItemRes::TraceOut(MessageDataPtr& pMsg)
+			}; // Result ReserveItemRes::TraceOut(const char* prefix, MessageDataPtr& pMsg)
 
 			// Cmd: Reserve a item
 			const MessageID ReserveItemsCmd::MID = MessageID(MSGTYPE_COMMAND, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_PARTYMATCHINGQUEUE, 9);
@@ -2098,14 +2098,14 @@ namespace SF
 
 			}; // Result ReserveItemsCmd::OverrideRouteInformation( EntityUID to, unsigned hopCount )
 
-			Result ReserveItemsCmd::TraceOut(MessageDataPtr& pMsg)
+			Result ReserveItemsCmd::TraceOut(const char* prefix, MessageDataPtr& pMsg)
 			{
  				ReserveItemsCmd parser;
 				parser.ParseMessage(*pMsg);
 				protocolTrace( Debug1, "ReserveItems:{0}:{1} , RouteContext:{2}, TransactionID:{3}, RouteHopCount:{4}, NumberOfItemsToReserve:{5}",
-						pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, parser.GetRouteContext(), parser.GetTransactionID(), parser.GetRouteHopCount(), parser.GetNumberOfItemsToReserve()); 
+						prefix, pMsg->GetMessageHeader()->Length, parser.GetRouteContext(), parser.GetTransactionID(), parser.GetRouteHopCount(), parser.GetNumberOfItemsToReserve()); 
 				return ResultCode::SUCCESS;
-			}; // Result ReserveItemsCmd::TraceOut(MessageDataPtr& pMsg)
+			}; // Result ReserveItemsCmd::TraceOut(const char* prefix, MessageDataPtr& pMsg)
 
 			const MessageID ReserveItemsRes::MID = MessageID(MSGTYPE_RESULT, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_PARTYMATCHINGQUEUE, 9);
 			Result ReserveItemsRes::ParseMessage( MessageData* pIMsg )
@@ -2252,14 +2252,14 @@ namespace SF
 
 			}; // Result ReserveItemsRes::OverrideRouteInformation( EntityUID to, unsigned hopCount )
 
-			Result ReserveItemsRes::TraceOut(MessageDataPtr& pMsg)
+			Result ReserveItemsRes::TraceOut(const char* prefix, MessageDataPtr& pMsg)
 			{
  				ReserveItemsRes parser;
 				parser.ParseMessage(*pMsg);
 				protocolTrace( Debug1, "ReserveItems:{0}:{1} , RouteContext:{2}, TransactionID:{3}, Result:{4:X8}, NumberOfPlayersInTheItem:{5,30}, MatchingTicket:{6,30}",
-						pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, parser.GetRouteContext(), parser.GetTransactionID(), parser.GetResult(), parser.GetNumberOfPlayersInTheItem(), parser.GetMatchingTicket()); 
+						prefix, pMsg->GetMessageHeader()->Length, parser.GetRouteContext(), parser.GetTransactionID(), parser.GetResult(), parser.GetNumberOfPlayersInTheItem(), parser.GetMatchingTicket()); 
 				return ResultCode::SUCCESS;
-			}; // Result ReserveItemsRes::TraceOut(MessageDataPtr& pMsg)
+			}; // Result ReserveItemsRes::TraceOut(const char* prefix, MessageDataPtr& pMsg)
 
 			// Cmd: Cancel reservation
 			const MessageID CancelReservationCmd::MID = MessageID(MSGTYPE_COMMAND, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_PARTYMATCHINGQUEUE, 10);
@@ -2392,14 +2392,14 @@ namespace SF
 
 			}; // Result CancelReservationCmd::OverrideRouteInformation( EntityUID to, unsigned hopCount )
 
-			Result CancelReservationCmd::TraceOut(MessageDataPtr& pMsg)
+			Result CancelReservationCmd::TraceOut(const char* prefix, MessageDataPtr& pMsg)
 			{
  				CancelReservationCmd parser;
 				parser.ParseMessage(*pMsg);
 				protocolTrace( Debug1, "CancelReservation:{0}:{1} , RouteContext:{2}, TransactionID:{3}, RouteHopCount:{4}, TicketToCancel:{5}",
-						pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, parser.GetRouteContext(), parser.GetTransactionID(), parser.GetRouteHopCount(), parser.GetTicketToCancel()); 
+						prefix, pMsg->GetMessageHeader()->Length, parser.GetRouteContext(), parser.GetTransactionID(), parser.GetRouteHopCount(), parser.GetTicketToCancel()); 
 				return ResultCode::SUCCESS;
-			}; // Result CancelReservationCmd::TraceOut(MessageDataPtr& pMsg)
+			}; // Result CancelReservationCmd::TraceOut(const char* prefix, MessageDataPtr& pMsg)
 
 			const MessageID CancelReservationRes::MID = MessageID(MSGTYPE_RESULT, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_PARTYMATCHINGQUEUE, 10);
 			Result CancelReservationRes::ParseMessage( MessageData* pIMsg )
@@ -2526,14 +2526,14 @@ namespace SF
 
 			}; // Result CancelReservationRes::OverrideRouteInformation( EntityUID to, unsigned hopCount )
 
-			Result CancelReservationRes::TraceOut(MessageDataPtr& pMsg)
+			Result CancelReservationRes::TraceOut(const char* prefix, MessageDataPtr& pMsg)
 			{
  				CancelReservationRes parser;
 				parser.ParseMessage(*pMsg);
 				protocolTrace( Debug1, "CancelReservation:{0}:{1} , RouteContext:{2}, TransactionID:{3}, Result:{4:X8}",
-						pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, parser.GetRouteContext(), parser.GetTransactionID(), parser.GetResult()); 
+						prefix, pMsg->GetMessageHeader()->Length, parser.GetRouteContext(), parser.GetTransactionID(), parser.GetResult()); 
 				return ResultCode::SUCCESS;
-			}; // Result CancelReservationRes::TraceOut(MessageDataPtr& pMsg)
+			}; // Result CancelReservationRes::TraceOut(const char* prefix, MessageDataPtr& pMsg)
 
 			// Cmd: Cancel reservation
 			const MessageID CancelReservationsCmd::MID = MessageID(MSGTYPE_COMMAND, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_PARTYMATCHINGQUEUE, 11);
@@ -2671,14 +2671,14 @@ namespace SF
 
 			}; // Result CancelReservationsCmd::OverrideRouteInformation( EntityUID to, unsigned hopCount )
 
-			Result CancelReservationsCmd::TraceOut(MessageDataPtr& pMsg)
+			Result CancelReservationsCmd::TraceOut(const char* prefix, MessageDataPtr& pMsg)
 			{
  				CancelReservationsCmd parser;
 				parser.ParseMessage(*pMsg);
 				protocolTrace( Debug1, "CancelReservations:{0}:{1} , RouteContext:{2}, TransactionID:{3}, RouteHopCount:{4}, TicketToCancel:{5,30}",
-						pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, parser.GetRouteContext(), parser.GetTransactionID(), parser.GetRouteHopCount(), parser.GetTicketToCancel()); 
+						prefix, pMsg->GetMessageHeader()->Length, parser.GetRouteContext(), parser.GetTransactionID(), parser.GetRouteHopCount(), parser.GetTicketToCancel()); 
 				return ResultCode::SUCCESS;
-			}; // Result CancelReservationsCmd::TraceOut(MessageDataPtr& pMsg)
+			}; // Result CancelReservationsCmd::TraceOut(const char* prefix, MessageDataPtr& pMsg)
 
 			const MessageID CancelReservationsRes::MID = MessageID(MSGTYPE_RESULT, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_PARTYMATCHINGQUEUE, 11);
 			Result CancelReservationsRes::ParseMessage( MessageData* pIMsg )
@@ -2805,14 +2805,14 @@ namespace SF
 
 			}; // Result CancelReservationsRes::OverrideRouteInformation( EntityUID to, unsigned hopCount )
 
-			Result CancelReservationsRes::TraceOut(MessageDataPtr& pMsg)
+			Result CancelReservationsRes::TraceOut(const char* prefix, MessageDataPtr& pMsg)
 			{
  				CancelReservationsRes parser;
 				parser.ParseMessage(*pMsg);
 				protocolTrace( Debug1, "CancelReservations:{0}:{1} , RouteContext:{2}, TransactionID:{3}, Result:{4:X8}",
-						pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, parser.GetRouteContext(), parser.GetTransactionID(), parser.GetResult()); 
+						prefix, pMsg->GetMessageHeader()->Length, parser.GetRouteContext(), parser.GetTransactionID(), parser.GetResult()); 
 				return ResultCode::SUCCESS;
-			}; // Result CancelReservationsRes::TraceOut(MessageDataPtr& pMsg)
+			}; // Result CancelReservationsRes::TraceOut(const char* prefix, MessageDataPtr& pMsg)
 
 			// Cmd: Dequeue a reserved item
 			const MessageID DequeueItemCmd::MID = MessageID(MSGTYPE_COMMAND, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_PARTYMATCHINGQUEUE, 12);
@@ -2945,14 +2945,14 @@ namespace SF
 
 			}; // Result DequeueItemCmd::OverrideRouteInformation( EntityUID to, unsigned hopCount )
 
-			Result DequeueItemCmd::TraceOut(MessageDataPtr& pMsg)
+			Result DequeueItemCmd::TraceOut(const char* prefix, MessageDataPtr& pMsg)
 			{
  				DequeueItemCmd parser;
 				parser.ParseMessage(*pMsg);
 				protocolTrace( Debug1, "DequeueItem:{0}:{1} , RouteContext:{2}, TransactionID:{3}, RouteHopCount:{4}, MatchingTicket:{5}",
-						pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, parser.GetRouteContext(), parser.GetTransactionID(), parser.GetRouteHopCount(), parser.GetMatchingTicket()); 
+						prefix, pMsg->GetMessageHeader()->Length, parser.GetRouteContext(), parser.GetTransactionID(), parser.GetRouteHopCount(), parser.GetMatchingTicket()); 
 				return ResultCode::SUCCESS;
-			}; // Result DequeueItemCmd::TraceOut(MessageDataPtr& pMsg)
+			}; // Result DequeueItemCmd::TraceOut(const char* prefix, MessageDataPtr& pMsg)
 
 			const MessageID DequeueItemRes::MID = MessageID(MSGTYPE_RESULT, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_PARTYMATCHINGQUEUE, 12);
 			Result DequeueItemRes::ParseMessage( MessageData* pIMsg )
@@ -3101,14 +3101,14 @@ namespace SF
 
 			}; // Result DequeueItemRes::OverrideRouteInformation( EntityUID to, unsigned hopCount )
 
-			Result DequeueItemRes::TraceOut(MessageDataPtr& pMsg)
+			Result DequeueItemRes::TraceOut(const char* prefix, MessageDataPtr& pMsg)
 			{
  				DequeueItemRes parser;
 				parser.ParseMessage(*pMsg);
 				protocolTrace( Debug1, "DequeueItem:{0}:{1} , RouteContext:{2}, TransactionID:{3}, Result:{4:X8}, MatchingTicket:{5}, RegisterUID:{6}, RegisterID:{7}, Players:{8,30}",
-						pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, parser.GetRouteContext(), parser.GetTransactionID(), parser.GetResult(), parser.GetMatchingTicket(), parser.GetRegisterUID(), parser.GetRegisterID(), parser.GetPlayers()); 
+						prefix, pMsg->GetMessageHeader()->Length, parser.GetRouteContext(), parser.GetTransactionID(), parser.GetResult(), parser.GetMatchingTicket(), parser.GetRegisterUID(), parser.GetRegisterID(), parser.GetPlayers()); 
 				return ResultCode::SUCCESS;
-			}; // Result DequeueItemRes::TraceOut(MessageDataPtr& pMsg)
+			}; // Result DequeueItemRes::TraceOut(const char* prefix, MessageDataPtr& pMsg)
 
 			// C2S: Item error you should delete it
 			const MessageID MatchingItemErrorC2SEvt::MID = MessageID(MSGTYPE_EVENT, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_PARTYMATCHINGQUEUE, 13);
@@ -3237,14 +3237,14 @@ namespace SF
 
 			}; // Result MatchingItemErrorC2SEvt::OverrideRouteInformation( EntityUID to, unsigned hopCount )
 
-			Result MatchingItemErrorC2SEvt::TraceOut(MessageDataPtr& pMsg)
+			Result MatchingItemErrorC2SEvt::TraceOut(const char* prefix, MessageDataPtr& pMsg)
 			{
  				MatchingItemErrorC2SEvt parser;
 				parser.ParseMessage(*pMsg);
 				protocolTrace( Debug1, "MatchingItemError:{0}:{1} , RouteContext:{2}, RouteHopCount:{3}, MatchingTicket:{4}",
-						pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, parser.GetRouteContext(), parser.GetRouteHopCount(), parser.GetMatchingTicket()); 
+						prefix, pMsg->GetMessageHeader()->Length, parser.GetRouteContext(), parser.GetRouteHopCount(), parser.GetMatchingTicket()); 
 				return ResultCode::SUCCESS;
-			}; // Result MatchingItemErrorC2SEvt::TraceOut(MessageDataPtr& pMsg)
+			}; // Result MatchingItemErrorC2SEvt::TraceOut(const char* prefix, MessageDataPtr& pMsg)
 
 
 

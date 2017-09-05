@@ -22,12 +22,12 @@
 #include "Transaction/Transaction.h"
 //#include "ServerSystem/PlugIn.h"
 #include "SvrTrace.h"
-#include "ServerSystem/BrServer.h"
-#include "ServerSystem/ServerEntityManager.h"
+#include "Server/BrServer.h"
+#include "ServerEntity/ServerEntityManager.h"
 
 
-#include "ServerSystem/ServerEntity/EntityServerEntity.h"
-#include "ServerSystem/ServiceEntity/ClusterManagerServiceEntity.h"
+#include "ServerEntity/SvrEntityServerEntity.h"
+#include "ServiceEntity/ClusterManagerServiceEntity.h"
 #include "Transaction/ServerTransactionGeneric.h"
 
 #include "Protocol/Policy/EntityServerNetPolicy.h"
@@ -65,7 +65,7 @@ namespace Svr
 
 		svrChk(ServerEntity::InitializeEntity( newEntityID ) );
 
-		BR_ENTITY_MESSAGE( Message::Server::ServerConnectedC2SEvt)		{ pNewTrans = new EntityServerStartedTrans( pMsgData ); return ResultCode::SUCCESS; } );
+		BR_ENTITY_MESSAGE( Message::Server::ServerConnectedC2SEvt)		{ pNewTrans = new(GetMemoryManager()) EntityServerStartedTrans(pMsgData ); return ResultCode::SUCCESS; } );
 
 	Proc_End:
 
@@ -83,7 +83,7 @@ namespace Svr
 		{
 		case Net::ConnectionEvent::EVT_CONNECTION_RESULT:
 			if( (conEvent.hr) // && IsInitialConnection()
-				&& GetPolicy<Policy::IPolicyEntityServer>() )
+				&& GetConnection() != nullptr )
 			{
 				// Register entity manager server
 				svrChk( BrServer::GetInstance()->GetComponent<Svr::ServerEntityManager>()->UpdateEntityManagerServerEntity( this ) );

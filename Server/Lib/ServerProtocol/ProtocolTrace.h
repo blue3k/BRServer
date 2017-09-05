@@ -17,20 +17,15 @@
 
 namespace SF
 {
-	enum TraceChannels {
-		Debug		=	SF::Trace::TRC_DBG1,
-		Debug1 = SF::Trace::TRC_DBG2,
-		Debug2 = SF::Trace::TRC_DBG3,
-		//TRC_		=	Trace::TRC_DBG2,
-		//TRC_		=	Trace::TRC_DBG3,
-		//TRC_		=	Trace::TRC_DBG4,
-		//TRC_		=	Trace::TRC_DBG5,
-		//TRC_		=	Trace::TRC_DBG6,
-		//TRC_		=	Trace::TRC_DBG7,
-		//TRC_		=	Trace::TRC_DBG8,
-		//TRC_		=	Trace::TRC_DBG6,
 
-	};
+	//namespace LogSubChannels
+	//{
+	//	constexpr LogSubChannelType Debug = SF::LogSubChannels::Debug1;
+	//	constexpr LogSubChannelType TRC_QUERY = SF::LogSubChannels::Debug2;
+	//	constexpr LogSubChannelType TRC_ROUTING = SF::LogSubChannels::Debug3;
+	//	constexpr LogSubChannelType TRC_DBINFO = SF::LogSubChannels::Custom1;
+	//}
+
 };
 
 
@@ -39,10 +34,8 @@ namespace SF
 // Default trace module
 //
 
-DEFINE_TRACE_MODULE(protocol)
 
-
-#define protocolTrace(lModeMask,szfmt, ...)				TRACE_OUT(protocol,lModeMask,szfmt,__VA_ARGS__)
+#define protocolTrace(lModeMask, ...)				SFLog(Protocol,lModeMask,__VA_ARGS__)
 
 
 

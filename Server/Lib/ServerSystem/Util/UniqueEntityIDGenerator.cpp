@@ -65,7 +65,7 @@ namespace SF {
 		if (index >= IDMASK_MAXINDEX)
 		{
 			// Invalid ID release
-			defTrace(Trace::TRC_DBG1, "Invalid ID release : {0}", uiID);
+			defTrace(Debug1, "Invalid ID release : {0}", uiID);
 			return false;
 		}
 
@@ -73,7 +73,7 @@ namespace SF {
 		{
 			//Assert(0);
 			// duplicated ID free
-			defTrace(Trace::TRC_DBG1, "Duplicated ID free : {0}", uiID);
+			defTrace(Debug1, "Duplicated ID free : {0}", uiID);
 			return false;
 		}
 

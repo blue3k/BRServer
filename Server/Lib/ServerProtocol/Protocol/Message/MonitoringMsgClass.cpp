@@ -93,14 +93,14 @@ namespace SF
 
 
 
-			Result GetInstanceListCmd::TraceOut(MessageDataPtr& pMsg)
+			Result GetInstanceListCmd::TraceOut(const char* prefix, MessageDataPtr& pMsg)
 			{
  				GetInstanceListCmd parser;
 				parser.ParseMessage(*pMsg);
 				protocolTrace( Debug1, "GetInstanceList:{0}:{1} , TransactionID:{2}",
-						pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, parser.GetTransactionID()); 
+						prefix, pMsg->GetMessageHeader()->Length, parser.GetTransactionID()); 
 				return ResultCode::SUCCESS;
-			}; // Result GetInstanceListCmd::TraceOut(MessageDataPtr& pMsg)
+			}; // Result GetInstanceListCmd::TraceOut(const char* prefix, MessageDataPtr& pMsg)
 
 			const MessageID GetInstanceListRes::MID = MessageID(MSGTYPE_RESULT, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_MONITORING, 0);
 			Result GetInstanceListRes::ParseMessage( MessageData* pIMsg )
@@ -182,14 +182,14 @@ namespace SF
 
 
 
-			Result GetInstanceListRes::TraceOut(MessageDataPtr& pMsg)
+			Result GetInstanceListRes::TraceOut(const char* prefix, MessageDataPtr& pMsg)
 			{
  				GetInstanceListRes parser;
 				parser.ParseMessage(*pMsg);
 				protocolTrace( Debug1, "GetInstanceList:{0}:{1} , TransactionID:{2}, Result:{3:X8}, CounterInstances:{4,30}, TotalInstanceCount:{5}",
-						pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, parser.GetTransactionID(), parser.GetResult(), parser.GetCounterInstances(), parser.GetTotalInstanceCount()); 
+						prefix, pMsg->GetMessageHeader()->Length, parser.GetTransactionID(), parser.GetResult(), parser.GetCounterInstances(), parser.GetTotalInstanceCount()); 
 				return ResultCode::SUCCESS;
-			}; // Result GetInstanceListRes::TraceOut(MessageDataPtr& pMsg)
+			}; // Result GetInstanceListRes::TraceOut(const char* prefix, MessageDataPtr& pMsg)
 
 			// Cmd: Remove a player to ranking
 			const MessageID RequestCounterValuesCmd::MID = MessageID(MSGTYPE_COMMAND, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_MONITORING, 1);
@@ -261,14 +261,14 @@ namespace SF
 
 
 
-			Result RequestCounterValuesCmd::TraceOut(MessageDataPtr& pMsg)
+			Result RequestCounterValuesCmd::TraceOut(const char* prefix, MessageDataPtr& pMsg)
 			{
  				RequestCounterValuesCmd parser;
 				parser.ParseMessage(*pMsg);
 				protocolTrace( Debug1, "RequestCounterValues:{0}:{1} , TransactionID:{2}, InstanceUID:{3}",
-						pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, parser.GetTransactionID(), parser.GetInstanceUID()); 
+						prefix, pMsg->GetMessageHeader()->Length, parser.GetTransactionID(), parser.GetInstanceUID()); 
 				return ResultCode::SUCCESS;
-			}; // Result RequestCounterValuesCmd::TraceOut(MessageDataPtr& pMsg)
+			}; // Result RequestCounterValuesCmd::TraceOut(const char* prefix, MessageDataPtr& pMsg)
 
 			const MessageID RequestCounterValuesRes::MID = MessageID(MSGTYPE_RESULT, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_MONITORING, 1);
 			Result RequestCounterValuesRes::ParseMessage( MessageData* pIMsg )
@@ -350,14 +350,14 @@ namespace SF
 
 
 
-			Result RequestCounterValuesRes::TraceOut(MessageDataPtr& pMsg)
+			Result RequestCounterValuesRes::TraceOut(const char* prefix, MessageDataPtr& pMsg)
 			{
  				RequestCounterValuesRes parser;
 				parser.ParseMessage(*pMsg);
 				protocolTrace( Debug1, "RequestCounterValues:{0}:{1} , TransactionID:{2}, Result:{3:X8}, InstanceUID:{4}, CounterValues:{5,30}",
-						pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, parser.GetTransactionID(), parser.GetResult(), parser.GetInstanceUID(), parser.GetCounterValues()); 
+						prefix, pMsg->GetMessageHeader()->Length, parser.GetTransactionID(), parser.GetResult(), parser.GetInstanceUID(), parser.GetCounterValues()); 
 				return ResultCode::SUCCESS;
-			}; // Result RequestCounterValuesRes::TraceOut(MessageDataPtr& pMsg)
+			}; // Result RequestCounterValuesRes::TraceOut(const char* prefix, MessageDataPtr& pMsg)
 
 			// C2S: Counter instance is created
 			const MessageID PerformanceCounterNewC2SEvt::MID = MessageID(MSGTYPE_EVENT, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_MONITORING, 2);
@@ -440,14 +440,14 @@ namespace SF
 
 
 
-			Result PerformanceCounterNewC2SEvt::TraceOut(MessageDataPtr& pMsg)
+			Result PerformanceCounterNewC2SEvt::TraceOut(const char* prefix, MessageDataPtr& pMsg)
 			{
  				PerformanceCounterNewC2SEvt parser;
 				parser.ParseMessage(*pMsg);
 				protocolTrace( Debug2, "PerformanceCounterNew:{0}:{1} , InstanceName:{2,60}, InstanceUID:{3}, NewCounters:{4,30}",
-						pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, parser.GetInstanceName(), parser.GetInstanceUID(), parser.GetNewCounters()); 
+						prefix, pMsg->GetMessageHeader()->Length, parser.GetInstanceName(), parser.GetInstanceUID(), parser.GetNewCounters()); 
 				return ResultCode::SUCCESS;
-			}; // Result PerformanceCounterNewC2SEvt::TraceOut(MessageDataPtr& pMsg)
+			}; // Result PerformanceCounterNewC2SEvt::TraceOut(const char* prefix, MessageDataPtr& pMsg)
 
 			// C2S: Counter instance is deleted
 			const MessageID PerformanceCounterFreeC2SEvt::MID = MessageID(MSGTYPE_EVENT, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_MONITORING, 3);
@@ -521,14 +521,14 @@ namespace SF
 
 
 
-			Result PerformanceCounterFreeC2SEvt::TraceOut(MessageDataPtr& pMsg)
+			Result PerformanceCounterFreeC2SEvt::TraceOut(const char* prefix, MessageDataPtr& pMsg)
 			{
  				PerformanceCounterFreeC2SEvt parser;
 				parser.ParseMessage(*pMsg);
 				protocolTrace( Debug2, "PerformanceCounterFree:{0}:{1} , FreeInstances:{2,30}",
-						pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, parser.GetFreeInstances()); 
+						prefix, pMsg->GetMessageHeader()->Length, parser.GetFreeInstances()); 
 				return ResultCode::SUCCESS;
-			}; // Result PerformanceCounterFreeC2SEvt::TraceOut(MessageDataPtr& pMsg)
+			}; // Result PerformanceCounterFreeC2SEvt::TraceOut(const char* prefix, MessageDataPtr& pMsg)
 
 			// C2S: Counter update broadcast
 			const MessageID PerformanceCounterUpdateC2SEvt::MID = MessageID(MSGTYPE_EVENT, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_MONITORING, 4);
@@ -605,14 +605,14 @@ namespace SF
 
 
 
-			Result PerformanceCounterUpdateC2SEvt::TraceOut(MessageDataPtr& pMsg)
+			Result PerformanceCounterUpdateC2SEvt::TraceOut(const char* prefix, MessageDataPtr& pMsg)
 			{
  				PerformanceCounterUpdateC2SEvt parser;
 				parser.ParseMessage(*pMsg);
 				protocolTrace( Debug2, "PerformanceCounterUpdate:{0}:{1} , InstanceUID:{2}, CounterValues:{3,30}",
-						pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, parser.GetInstanceUID(), parser.GetCounterValues()); 
+						prefix, pMsg->GetMessageHeader()->Length, parser.GetInstanceUID(), parser.GetCounterValues()); 
 				return ResultCode::SUCCESS;
-			}; // Result PerformanceCounterUpdateC2SEvt::TraceOut(MessageDataPtr& pMsg)
+			}; // Result PerformanceCounterUpdateC2SEvt::TraceOut(const char* prefix, MessageDataPtr& pMsg)
 
 			// S2C: Request from server
 			const MessageID PerformanceCounterUpdateCounterInfoS2CEvt::MID = MessageID(MSGTYPE_EVENT, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_MONITORING, 5);
@@ -681,14 +681,14 @@ namespace SF
 
 
 
-			Result PerformanceCounterUpdateCounterInfoS2CEvt::TraceOut(MessageDataPtr& pMsg)
+			Result PerformanceCounterUpdateCounterInfoS2CEvt::TraceOut(const char* prefix, MessageDataPtr& pMsg)
 			{
  				PerformanceCounterUpdateCounterInfoS2CEvt parser;
 				parser.ParseMessage(*pMsg);
 				protocolTrace( Debug2, "PerformanceCounterUpdateCounterInfo:{0}:{1} , InstanceUID:{2}",
-						pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, parser.GetInstanceUID()); 
+						prefix, pMsg->GetMessageHeader()->Length, parser.GetInstanceUID()); 
 				return ResultCode::SUCCESS;
-			}; // Result PerformanceCounterUpdateCounterInfoS2CEvt::TraceOut(MessageDataPtr& pMsg)
+			}; // Result PerformanceCounterUpdateCounterInfoS2CEvt::TraceOut(const char* prefix, MessageDataPtr& pMsg)
 
 
 

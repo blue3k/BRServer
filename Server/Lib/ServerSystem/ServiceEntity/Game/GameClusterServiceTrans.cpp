@@ -96,13 +96,13 @@ namespace Svr {
 	//			svrErrClose(ResultCode::INVALID_PLAYERID);
 	//		}
 
-	//		svrTrace(Svr::TRC_ENTITY, "Reinitialize Player Entity UID:{0}", GetPlayerID());
+	//		svrTrace(SVR_ENTITY, "Reinitialize Player Entity UID:{0}", GetPlayerID());
 	//		Assert(pPlayerEntity->GetShardID() == GetShardID());
 	//	}
 	//	else
 	//	{
 	//		Svr::Entity* pEntity = nullptr;
-	//		svrTrace(Svr::TRC_ENTITY, "Create new Player Entity UID:{0}", GetPlayerID());
+	//		svrTrace(SVR_ENTITY, "Create new Player Entity UID:{0}", GetPlayerID());
 
 	//		svrChk(Svr::GetServerComponent<GameEntityManager>()->CreateEntity(ClusterID::Game_Conspiracy, EntityFaculty::User, pEntity));
 	//		svrChkPtr(pPlayerEntity = dynamic_cast<GamePlayerEntity*>(pEntity));

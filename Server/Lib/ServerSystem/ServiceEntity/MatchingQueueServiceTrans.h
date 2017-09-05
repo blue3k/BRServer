@@ -23,7 +23,7 @@
 #include "Transaction/MessageRoute.h"
 #include "ServiceEntity/ClusteredServiceEntity.h"
 #include "ServerSystem/ServiceEntity/MatchingQueueServiceEntity.h"
-#include "ServerSystem/ServerTransaction.h"
+#include "Transaction/ServerTransaction.h"
 
 
 namespace SF {

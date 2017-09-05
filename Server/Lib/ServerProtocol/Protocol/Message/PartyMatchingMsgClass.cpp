@@ -150,14 +150,14 @@ namespace SF
 
 			}; // Result PartyGameMatchedS2CEvt::OverrideRouteInformation( EntityUID to, unsigned hopCount )
 
-			Result PartyGameMatchedS2CEvt::TraceOut(MessageDataPtr& pMsg)
+			Result PartyGameMatchedS2CEvt::TraceOut(const char* prefix, MessageDataPtr& pMsg)
 			{
  				PartyGameMatchedS2CEvt parser;
 				parser.ParseMessage(*pMsg);
 				protocolTrace( Debug1, "PartyGameMatched:{0}:{1} , RouteContext:{2}, RouteHopCount:{3}",
-						pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, parser.GetRouteContext(), parser.GetRouteHopCount()); 
+						prefix, pMsg->GetMessageHeader()->Length, parser.GetRouteContext(), parser.GetRouteHopCount()); 
 				return ResultCode::SUCCESS;
-			}; // Result PartyGameMatchedS2CEvt::TraceOut(MessageDataPtr& pMsg)
+			}; // Result PartyGameMatchedS2CEvt::TraceOut(const char* prefix, MessageDataPtr& pMsg)
 
 			// S2C: 
 			const MessageID PlayerGameMatchedS2CEvt::MID = MessageID(MSGTYPE_EVENT, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_PARTYMATCHING, 1);
@@ -292,14 +292,14 @@ namespace SF
 
 			}; // Result PlayerGameMatchedS2CEvt::OverrideRouteInformation( EntityUID to, unsigned hopCount )
 
-			Result PlayerGameMatchedS2CEvt::TraceOut(MessageDataPtr& pMsg)
+			Result PlayerGameMatchedS2CEvt::TraceOut(const char* prefix, MessageDataPtr& pMsg)
 			{
  				PlayerGameMatchedS2CEvt parser;
 				parser.ParseMessage(*pMsg);
 				protocolTrace( Debug1, "PlayerGameMatched:{0}:{1} , RouteContext:{2}, RouteHopCount:{3}, DestPlayerID:{4}, GameInsUID:{5}, RequestedRole:{6}",
-						pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, parser.GetRouteContext(), parser.GetRouteHopCount(), parser.GetDestPlayerID(), parser.GetGameInsUID(), (int)parser.GetRequestedRole()); 
+						prefix, pMsg->GetMessageHeader()->Length, parser.GetRouteContext(), parser.GetRouteHopCount(), parser.GetDestPlayerID(), parser.GetGameInsUID(), (int)parser.GetRequestedRole()); 
 				return ResultCode::SUCCESS;
-			}; // Result PlayerGameMatchedS2CEvt::TraceOut(MessageDataPtr& pMsg)
+			}; // Result PlayerGameMatchedS2CEvt::TraceOut(const char* prefix, MessageDataPtr& pMsg)
 
 
 

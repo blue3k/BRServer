@@ -125,7 +125,7 @@ namespace DB {
 		}
 
 
-		dbTrace(TRC_INFO, "Closing DB Worker");
+		dbTrace(TRC_DBINFO, "Closing DB Worker");
 	}
 
 

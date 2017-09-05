@@ -101,7 +101,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="$(MSBuildThisFileDirectory)GenericMsgClass.cpp" />
-    <ClCompile Include="$(MSBuildThisFileDirectory)ProtocolTrace.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)Protocol\Message\ClusterServerMsgClass.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)Protocol\Message\ClusterServerMsgDebug.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)Protocol\Message\ClusterServerMsgParsing.cpp" />

@@ -62,7 +62,7 @@ namespace SF
 				const EntityID& GetLocalEntID() const	{ return m_LocalEntID; };
 				const char* GetEntName() const	{ return m_EntName; };
 
-				static Result TraceOut(MessageDataPtr& pMsg);
+				static Result TraceOut(const char* prefix, MessageDataPtr& pMsg);
 
 				virtual Result ParseMessage( MessageData* pIMsg );
 				static Result ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageDataPtr& pIMsg, MessageBase* &pMsgBase );
@@ -107,7 +107,7 @@ namespace SF
 				const Result& GetResult() const	{ return m_Result; };
 				const uint64_t& GetEntUID() const	{ return m_EntUID; };
 
-				static Result TraceOut(MessageDataPtr& pMsg);
+				static Result TraceOut(const char* prefix, MessageDataPtr& pMsg);
 
 				virtual Result ParseMessage( MessageData* pIMsg );
 				static Result ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageDataPtr& pIMsg, MessageBase* &pMsgBase );
@@ -151,7 +151,7 @@ namespace SF
 				const TransactionID& GetTransactionID() const	{ return m_TransactionID; };
 				const uint64_t& GetEntUID() const	{ return m_EntUID; };
 
-				static Result TraceOut(MessageDataPtr& pMsg);
+				static Result TraceOut(const char* prefix, MessageDataPtr& pMsg);
 
 				virtual Result ParseMessage( MessageData* pIMsg );
 				static Result ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageDataPtr& pIMsg, MessageBase* &pMsgBase );
@@ -194,7 +194,7 @@ namespace SF
 				const TransactionID& GetTransactionID() const	{ return m_TransactionID; };
 				const Result& GetResult() const	{ return m_Result; };
 
-				static Result TraceOut(MessageDataPtr& pMsg);
+				static Result TraceOut(const char* prefix, MessageDataPtr& pMsg);
 
 				virtual Result ParseMessage( MessageData* pIMsg );
 				static Result ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageDataPtr& pIMsg, MessageBase* &pMsgBase );
@@ -238,7 +238,7 @@ namespace SF
 				const TransactionID& GetTransactionID() const	{ return m_TransactionID; };
 				const EntityID& GetLocalEntID() const	{ return m_LocalEntID; };
 
-				static Result TraceOut(MessageDataPtr& pMsg);
+				static Result TraceOut(const char* prefix, MessageDataPtr& pMsg);
 
 				virtual Result ParseMessage( MessageData* pIMsg );
 				static Result ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageDataPtr& pIMsg, MessageBase* &pMsgBase );
@@ -283,7 +283,7 @@ namespace SF
 				const Result& GetResult() const	{ return m_Result; };
 				const uint64_t& GetEntUID() const	{ return m_EntUID; };
 
-				static Result TraceOut(MessageDataPtr& pMsg);
+				static Result TraceOut(const char* prefix, MessageDataPtr& pMsg);
 
 				virtual Result ParseMessage( MessageData* pIMsg );
 				static Result ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageDataPtr& pIMsg, MessageBase* &pMsgBase );

@@ -286,6 +286,13 @@ namespace Svr {
 
 
 
+	// Initialize and deinitialization
+	void InitializeEngineForServer();
+
+	void DeinitializeEngine();
+
+
+
 #include "BrServer.inl"
 
 }; // namespace SF

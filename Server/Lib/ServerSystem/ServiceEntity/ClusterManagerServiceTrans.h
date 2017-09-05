@@ -23,7 +23,7 @@
 #include "Transaction/MessageRoute.h"
 #include "ServiceEntity/ClusteredServiceEntity.h"
 #include "ServiceEntity/ClusterManagerServiceEntity.h"
-#include "ServerSystem/ServerTransaction.h"
+#include "Transaction/ServerTransaction.h"
 
 
 

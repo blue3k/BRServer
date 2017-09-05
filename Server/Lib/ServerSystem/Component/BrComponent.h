@@ -85,7 +85,6 @@ namespace SF {
 			}
 		}
 
-		IMemoryManager& GetMemoryManager() { return m_MemoryManager; }
 
 		// Clear components
 		virtual void ClearComponents()
@@ -119,7 +118,7 @@ namespace SF {
 
 			//if( !(hr) )
 			//{
-			//	defTrace( Trace::TRC_ERROR, "Component {0} failed to initialize", iComponent );
+			//	defTrace( Error, "Component {0} failed to initialize", iComponent );
 			//}
 
 			return hr;
@@ -142,7 +141,7 @@ namespace SF {
 
 			//if (!(hr))
 			//{
-			//	defTrace(Trace::TRC_ERROR, "Component {0} failed to terminate", iComponent);
+			//	defTrace(Error, "Component {0} failed to terminate", iComponent);
 			//}
 
 			return hr;
@@ -185,7 +184,7 @@ namespace SF {
 				return ResultCode::SUCCESS_FALSE;
 			}
 
-			ComponentType* newComponent = new(GetMemoryManager()) ComponentType;
+			ComponentType* newComponent = new(m_MemoryManager) ComponentType;
 			if( newComponent == nullptr )
 				return ResultCode::OUT_OF_MEMORY;
 
@@ -207,7 +206,7 @@ namespace SF {
 				return ResultCode::SUCCESS_FALSE;
 			}
 
-			ComponentType* newComponent = new(GetMemoryManager()) ComponentType(p0);
+			ComponentType* newComponent = new(m_MemoryManager) ComponentType(p0);
 			if( newComponent == nullptr )
 				return ResultCode::OUT_OF_MEMORY;
 
@@ -229,7 +228,7 @@ namespace SF {
 				return ResultCode::SUCCESS_FALSE;
 			}
 
-			ComponentType* newComponent = new(GetMemoryManager()) ComponentType(p0,p1);
+			ComponentType* newComponent = new(m_MemoryManager) ComponentType(p0,p1);
 			if( newComponent == nullptr )
 				return ResultCode::OUT_OF_MEMORY;
 
@@ -251,7 +250,7 @@ namespace SF {
 				return ResultCode::SUCCESS_FALSE;
 			}
 
-			ComponentType* newComponent = new(GetMemoryManager()) ComponentType(p0, p1, p2);
+			ComponentType* newComponent = new(m_MemoryManager) ComponentType(p0, p1, p2);
 			if (newComponent == nullptr)
 				return ResultCode::OUT_OF_MEMORY;
 

@@ -193,7 +193,7 @@ namespace GameTable {
 		if (tableDBInstance == nullptr)
 			return ResultCode::DB_INVALID_CONFIG;
 
-		defTrace(Trace::TRC_INFO, "Loading tables from {0}/{1}", tableDBInstance->ConnectionString, tableDB->DBName);
+		defTrace(Info, "Loading tables from {0}/{1}", tableDBInstance->ConnectionString, tableDB->DBName);
 		defChk(TableSystem::stm_Instance.Initialize(tableDBInstance->ConnectionString, tableDB->DBName, tableDBInstance->UserID, tableDBInstance->Password));
 
 		defChk(TableSystem::stm_Instance.QueryTableVersion());

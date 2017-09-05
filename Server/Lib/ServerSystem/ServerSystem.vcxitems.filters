@@ -76,10 +76,11 @@
     <Filter Include="Server">
       <UniqueIdentifier>{ca934b7d-b892-4bee-ada0-f7c967d04446}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Service">
+      <UniqueIdentifier>{2aea48bf-8416-49c2-893c-b7a9963c9f78}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="$(MSBuildThisFileDirectory)MessageHandlerTable.h" />
-    <ClInclude Include="$(MSBuildThisFileDirectory)MessageRoute.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)stdafx.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)ServiceEntity\Login\LoginServiceEntity.h">
       <Filter>ServerService\Login</Filter>
@@ -142,9 +143,6 @@
       <Filter>ServerService\GameInstance</Filter>
     </ClInclude>
     <ClInclude Include="$(MSBuildThisFileDirectory)ServiceEntity\Game\GamePlayerEntity.h">
-      <Filter>ServerService\Game</Filter>
-    </ClInclude>
-    <ClInclude Include="$(MSBuildThisFileDirectory)ServerEntity\GameServerEntity.h">
       <Filter>ServerService\Game</Filter>
     </ClInclude>
     <ClInclude Include="$(MSBuildThisFileDirectory)ServiceEntity\GamePartyEntity.h">
@@ -213,17 +211,11 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)ParallelTransaction.h">
       <Filter>Transaction</Filter>
     </ClInclude>
-    <ClInclude Include="C:\work\BRServerSF\Server\Lib\ServerSystem\ParameterSetting.h">
-      <Filter>Server</Filter>
-    </ClInclude>
     <ClInclude Include="$(MSBuildThisFileDirectory)ZooKeeper\SFZooKeeper.h">
       <Filter>ZooKeeper</Filter>
     </ClInclude>
     <ClInclude Include="$(MSBuildThisFileDirectory)SvrPolicyID.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)ServerLog\SvrLog.h">
-      <Filter>ServerLog</Filter>
-    </ClInclude>
-    <ClInclude Include="$(MSBuildThisFileDirectory)ServerLog\SvrLog_Internal.h">
       <Filter>ServerLog</Filter>
     </ClInclude>
     <ClInclude Include="$(MSBuildThisFileDirectory)ServerLog\SvrLogComponent.h">
@@ -258,103 +250,122 @@
       <Filter>Component</Filter>
     </ClInclude>
     <ClInclude Include="$(MSBuildThisFileDirectory)SvrConst.h" />
-    <ClInclude Include="C:\work\BRServerSF\Server\Lib\ServerSystem\Util\UniqueEntityIDGenerator.h">
+    <ClInclude Include="$(MSBuildThisFileDirectory)Util\UniqueEntityIDGenerator.h">
       <Filter>Util</Filter>
     </ClInclude>
-    <ClInclude Include="C:\work\BRServerSF\Server\Lib\ServerSystem\ServerService\ServerServiceBase.h">
-      <Filter>ServerService</Filter>
+    <ClInclude Include="$(MSBuildThisFileDirectory)Server\BrServer.h">
+      <Filter>Server</Filter>
     </ClInclude>
-    <ClInclude Include="C:\work\BRServerSF\Server\Lib\ServerSystem\ServerEntity\ServerEntity.h">
-      <Filter>ServerEntity</Filter>
+    <ClInclude Include="$(MSBuildThisFileDirectory)Server\BrServerUtil.h">
+      <Filter>Server</Filter>
     </ClInclude>
-    <ClInclude Include="C:\work\BRServerSF\Server\Lib\ServerSystem\ServerEntity\ServerEntityManager.h">
-      <Filter>ServerEntity</Filter>
+    <ClInclude Include="$(MSBuildThisFileDirectory)Server\BrService.h">
+      <Filter>Server</Filter>
     </ClInclude>
-    <ClInclude Include="C:\work\BRServerSF\Server\Lib\ServerSystem\Component\ServerComponent.h">
-      <Filter>Component</Filter>
+    <ClInclude Include="$(MSBuildThisFileDirectory)Entity\Entity.h">
+      <Filter>Entity</Filter>
     </ClInclude>
-    <ClInclude Include="C:\work\BRServerSF\Server\Lib\ServerSystem\Component\ServerComponentCarrier.h">
-      <Filter>Component</Filter>
+    <ClInclude Include="$(MSBuildThisFileDirectory)Entity\EntityInformation.h">
+      <Filter>Entity</Filter>
     </ClInclude>
-    <ClInclude Include="C:\work\BRServerSF\Server\Lib\ServerSystem\ServerEntity\GenericServerEntity.h">
-      <Filter>ServerEntity</Filter>
+    <ClInclude Include="$(MSBuildThisFileDirectory)Entity\EntityManager.h">
+      <Filter>Entity</Filter>
     </ClInclude>
-    <ClInclude Include="C:\work\BRServerSF\Server\Lib\ServerSystem\ServerEntity\ServerTransaction.h">
-      <Filter>ServerEntity</Filter>
+    <ClInclude Include="$(MSBuildThisFileDirectory)Entity\EntityTable.h">
+      <Filter>Entity</Filter>
     </ClInclude>
-    <ClInclude Include="C:\work\BRServerSF\Server\Lib\ServerSystem\Transaction\ServerTransactionGeneric.h">
-      <Filter>Transaction</Filter>
+    <ClInclude Include="$(MSBuildThisFileDirectory)Entity\EntityTimerActions.h">
+      <Filter>Entity</Filter>
     </ClInclude>
-    <ClInclude Include="C:\work\BRServerSF\Server\Lib\ServerSystem\ServiceEntity\ServiceEntity.h">
-      <Filter>ServerService</Filter>
-    </ClInclude>
-    <ClInclude Include="C:\work\BRServerSF\Server\Lib\ServerSystem\ServiceEntity\Game\GameSystem.h">
+    <ClInclude Include="$(MSBuildThisFileDirectory)ServiceEntity\Game\GameSystem.h">
       <Filter>ServerService\Game</Filter>
     </ClInclude>
-    <ClInclude Include="C:\work\BRServerSF\Server\Lib\ServerSystem\Server\BrService.h">
-      <Filter>Server</Filter>
+    <ClInclude Include="$(MSBuildThisFileDirectory)ServerEntity\GenericServerEntity.h">
+      <Filter>ServerEntity</Filter>
     </ClInclude>
-    <ClInclude Include="C:\work\BRServerSF\Server\Lib\ServerSystem\Server\BrServer.h">
-      <Filter>Server</Filter>
-    </ClInclude>
-    <ClInclude Include="C:\work\BRServerSF\Server\Lib\ServerSystem\Server\BrServerUtil.h">
-      <Filter>Server</Filter>
-    </ClInclude>
-    <ClInclude Include="C:\work\BRServerSF\Server\Lib\ServerSystem\Entity\EntityTimerActions.h">
-      <Filter>Entity</Filter>
-    </ClInclude>
-    <ClInclude Include="C:\work\BRServerSF\Server\Lib\ServerSystem\Entity\MasterEntity.h">
-      <Filter>Entity</Filter>
-    </ClInclude>
-    <ClInclude Include="C:\work\BRServerSF\Server\Lib\ServerSystem\Entity\PlayerEntityInformation.h">
-      <Filter>Entity</Filter>
-    </ClInclude>
-    <ClInclude Include="C:\work\BRServerSF\Server\Lib\ServerSystem\Entity\SimpleEntity.h">
-      <Filter>Entity</Filter>
-    </ClInclude>
-    <ClInclude Include="C:\work\BRServerSF\Server\Lib\ServerSystem\Entity\SimpleUserEntity.h">
-      <Filter>Entity</Filter>
-    </ClInclude>
-    <ClInclude Include="C:\work\BRServerSF\Server\Lib\ServerSystem\Entity\Entity.h">
-      <Filter>Entity</Filter>
-    </ClInclude>
-    <ClInclude Include="C:\work\BRServerSF\Server\Lib\ServerSystem\Entity\EntityManager.h">
-      <Filter>Entity</Filter>
-    </ClInclude>
-    <ClInclude Include="C:\work\BRServerSF\Server\Lib\ServerSystem\Entity\EntityTable.h">
-      <Filter>Entity</Filter>
-    </ClInclude>
-    <ClInclude Include="C:\work\BRServerSF\Server\Lib\ServerSystem\Transaction\MessageRoute.h">
-      <Filter>Transaction</Filter>
-    </ClInclude>
-    <ClInclude Include="C:\work\BRServerSF\Server\Lib\ServerSystem\Transaction\MessageHandlerTable.h">
-      <Filter>Transaction</Filter>
-    </ClInclude>
-    <ClInclude Include="C:\work\BRServerSF\Server\Lib\ServerSystem\Transaction\Transaction.h">
-      <Filter>Transaction</Filter>
-    </ClInclude>
-    <ClInclude Include="C:\work\BRServerSF\Server\Lib\ServerSystem\Transaction\TransactionSteper.h">
-      <Filter>Transaction</Filter>
-    </ClInclude>
-    <ClInclude Include="C:\work\BRServerSF\Server\Lib\ServerSystem\Transaction\TransactionUtil.h">
-      <Filter>Transaction</Filter>
-    </ClInclude>
-    <ClInclude Include="C:\work\BRServerSF\Server\Lib\ServerSystem\Entity\EntityInformation.h">
-      <Filter>Entity</Filter>
-    </ClInclude>
-    <ClInclude Include="C:\work\BRServerSF\Server\Lib\ServerSystem\Util\LocalUIDGenerator.h">
+    <ClInclude Include="$(MSBuildThisFileDirectory)Util\GlobalUIDGenerator.h">
       <Filter>Util</Filter>
     </ClInclude>
-    <ClInclude Include="C:\work\BRServerSF\Server\Lib\ServerSystem\Task\ServerTaskManager.h">
+    <ClInclude Include="$(MSBuildThisFileDirectory)Util\LocalUIDGenerator.h">
+      <Filter>Util</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)Entity\MasterEntity.h">
+      <Filter>Entity</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)Transaction\MessageHandlerTable.h">
+      <Filter>Transaction</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)Transaction\MessageRoute.h">
+      <Filter>Transaction</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)MessageRoute.h">
+      <Filter>Transaction</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)Entity\PlayerEntityInformation.h">
+      <Filter>Entity</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)Component\ServerComponent.h">
+      <Filter>Component</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)Component\ServerComponentCarrier.h">
+      <Filter>Component</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)ServerEntity\ServerEntity.h">
+      <Filter>ServerEntity</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)ServerEntity\ServerEntityManager.h">
+      <Filter>ServerEntity</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)Task\ServerTaskManager.h">
       <Filter>Task</Filter>
     </ClInclude>
-    <ClInclude Include="C:\work\BRServerSF\Server\Lib\ServerSystem\Util\GlobalUIDGenerator.h">
-      <Filter>Util</Filter>
+    <ClInclude Include="$(MSBuildThisFileDirectory)ServerService\ServerServiceBase.h">
+      <Filter>ServerService</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)ServiceEntity\ServiceEntity.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)Entity\SimpleEntity.h">
+      <Filter>Entity</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)Entity\SimpleUserEntity.h">
+      <Filter>Entity</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)Transaction\ServerTransactionGeneric.h">
+      <Filter>Transaction</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)Transaction\ServerTransaction.h">
+      <Filter>Transaction</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)ServerEntity\SvrEntityServerEntity.h">
+      <Filter>ServerEntity</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)ServerEntity\SvrGameServerEntity.h">
+      <Filter>ServerEntity</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)Transaction\Transaction.h">
+      <Filter>Transaction</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)Transaction\TransactionSteper.h">
+      <Filter>Transaction</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)Transaction\TransactionUtil.h">
+      <Filter>Transaction</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)ServerEntity\SvrLoopbackConnection.h">
+      <Filter>ServerEntity</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)SvrTrace.h" />
+    <ClInclude Include="C:\work\BRServerSF\Server\Lib\ServerSystem\Service\ServerService.h">
+      <Filter>Service</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\work\BRServerSF\Server\Lib\ServerSystem\Component\SFServerConfigComponent.h">
+      <Filter>Component</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\work\BRServerSF\Server\Lib\ServerSystem\Component\SFZooKeeperSessionComponent.h">
+      <Filter>Component</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="$(MSBuildThisFileDirectory)makefile.mak" />
-    <None Include="$(MSBuildThisFileDirectory)MessageRoute.inl" />
     <None Include="$(MSBuildThisFileDirectory)ServiceEntity\ClusteredServiceEntity.inl">
       <Filter>ServerService\Clustering</Filter>
     </None>
@@ -379,12 +390,6 @@
     <None Include="$(MSBuildThisFileDirectory)PerformanceCounter\PerformanceCounterInstance.inl">
       <Filter>ServerService\Performance</Filter>
     </None>
-    <None Include="$(MSBuildThisFileDirectory)ServerLog\SvrLog.inl">
-      <Filter>ServerLog</Filter>
-    </None>
-    <None Include="$(MSBuildThisFileDirectory)ServerLog\SvrLog_Internal.inl">
-      <Filter>ServerLog</Filter>
-    </None>
     <None Include="$(MSBuildThisFileDirectory)GameLog\GameLog.inl">
       <Filter>GameLog</Filter>
     </None>
@@ -400,44 +405,47 @@
     <None Include="$(MSBuildThisFileDirectory)Task\ServerTaskEvent.inl">
       <Filter>Task</Filter>
     </None>
-    <None Include="C:\work\BRServerSF\Server\Lib\ServerSystem\ServerEntity\ServerEntity.inl">
-      <Filter>ServerEntity</Filter>
+    <None Include="$(MSBuildThisFileDirectory)Server\BrServer.inl">
+      <Filter>Server</Filter>
     </None>
-    <None Include="C:\work\BRServerSF\Server\Lib\ServerSystem\Component\ServerComponent.inl">
-      <Filter>Component</Filter>
+    <None Include="$(MSBuildThisFileDirectory)Server\BrServerUtil.inl">
+      <Filter>Server</Filter>
     </None>
-    <None Include="C:\work\BRServerSF\Server\Lib\ServerSystem\ServiceEntity\Game\GameSystem.inl">
+    <None Include="$(MSBuildThisFileDirectory)Entity\Entity.inl">
+      <Filter>Entity</Filter>
+    </None>
+    <None Include="$(MSBuildThisFileDirectory)Entity\EntityInformation.inl">
+      <Filter>Entity</Filter>
+    </None>
+    <None Include="$(MSBuildThisFileDirectory)ServiceEntity\Game\GameSystem.inl">
       <Filter>ServerService\Game</Filter>
     </None>
-    <None Include="C:\work\BRServerSF\Server\Lib\ServerSystem\Server\BrServerUtil.inl">
-      <Filter>Server</Filter>
-    </None>
-    <None Include="C:\work\BRServerSF\Server\Lib\ServerSystem\Server\BrServer.inl">
-      <Filter>Server</Filter>
-    </None>
-    <None Include="C:\work\BRServerSF\Server\Lib\ServerSystem\Entity\MasterEntity.inl">
+    <None Include="$(MSBuildThisFileDirectory)Entity\MasterEntity.inl">
       <Filter>Entity</Filter>
     </None>
-    <None Include="C:\work\BRServerSF\Server\Lib\ServerSystem\Entity\PlayerEntityInformation.inl">
-      <Filter>Entity</Filter>
-    </None>
-    <None Include="C:\work\BRServerSF\Server\Lib\ServerSystem\Entity\SimpleUserEntity.inl">
-      <Filter>Entity</Filter>
-    </None>
-    <None Include="C:\work\BRServerSF\Server\Lib\ServerSystem\Entity\Entity.inl">
-      <Filter>Entity</Filter>
-    </None>
-    <None Include="C:\work\BRServerSF\Server\Lib\ServerSystem\Transaction\MessageRoute.inl">
+    <None Include="$(MSBuildThisFileDirectory)Transaction\MessageRoute.inl">
       <Filter>Transaction</Filter>
     </None>
-    <None Include="C:\work\BRServerSF\Server\Lib\ServerSystem\Transaction\Transaction.inl">
+    <None Include="$(MSBuildThisFileDirectory)MessageRoute.inl">
       <Filter>Transaction</Filter>
     </None>
-    <None Include="C:\work\BRServerSF\Server\Lib\ServerSystem\Entity\EntityInformation.inl">
+    <None Include="$(MSBuildThisFileDirectory)Entity\PlayerEntityInformation.inl">
       <Filter>Entity</Filter>
     </None>
-    <None Include="C:\work\BRServerSF\Server\Lib\ServerSystem\Task\ServerTaskManager.inl">
+    <None Include="$(MSBuildThisFileDirectory)Component\ServerComponent.inl">
+      <Filter>Component</Filter>
+    </None>
+    <None Include="$(MSBuildThisFileDirectory)ServerEntity\ServerEntity.inl">
+      <Filter>ServerEntity</Filter>
+    </None>
+    <None Include="$(MSBuildThisFileDirectory)Task\ServerTaskManager.inl">
       <Filter>Task</Filter>
+    </None>
+    <None Include="$(MSBuildThisFileDirectory)Entity\SimpleUserEntity.inl">
+      <Filter>Entity</Filter>
+    </None>
+    <None Include="$(MSBuildThisFileDirectory)Transaction\Transaction.inl">
+      <Filter>Transaction</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>
@@ -504,9 +512,6 @@
     <ClCompile Include="$(MSBuildThisFileDirectory)ServiceEntity\Game\GamePlayerEntity.cpp">
       <Filter>ServerService\Game</Filter>
     </ClCompile>
-    <ClCompile Include="$(MSBuildThisFileDirectory)ServerEntity\GameServerEntity.cpp">
-      <Filter>ServerService\Game</Filter>
-    </ClCompile>
     <ClCompile Include="$(MSBuildThisFileDirectory)ServiceEntity\GamePartyEntity.cpp">
       <Filter>ServerService\Party</Filter>
     </ClCompile>
@@ -570,19 +575,10 @@
     <ClCompile Include="$(MSBuildThisFileDirectory)ParallelTransaction.cpp">
       <Filter>Transaction</Filter>
     </ClCompile>
-    <ClCompile Include="C:\work\BRServerSF\Server\Lib\ServerSystem\ParameterSetting.cpp">
-      <Filter>Server</Filter>
-    </ClCompile>
     <ClCompile Include="$(MSBuildThisFileDirectory)ZooKeeper\SFZooKeeper.cpp">
       <Filter>ZooKeeper</Filter>
     </ClCompile>
-    <ClCompile Include="$(MSBuildThisFileDirectory)ServerLog\SvrLog.cpp">
-      <Filter>ServerLog</Filter>
-    </ClCompile>
     <ClCompile Include="$(MSBuildThisFileDirectory)ServerLog\SvrLogComponent.cpp">
-      <Filter>ServerLog</Filter>
-    </ClCompile>
-    <ClCompile Include="$(MSBuildThisFileDirectory)ServerLog\SvrTrace.cpp">
       <Filter>ServerLog</Filter>
     </ClCompile>
     <ClCompile Include="$(MSBuildThisFileDirectory)String\ToStringSvr.cpp">
@@ -597,77 +593,93 @@
     <ClCompile Include="$(MSBuildThisFileDirectory)Task\ServerTaskEvent.cpp">
       <Filter>Task</Filter>
     </ClCompile>
-    <ClCompile Include="C:\work\BRServerSF\Server\Lib\ServerSystem\Util\UniqueEntityIDGenerator.cpp">
+    <ClCompile Include="$(MSBuildThisFileDirectory)Util\UniqueEntityIDGenerator.cpp">
       <Filter>Util</Filter>
     </ClCompile>
-    <ClCompile Include="C:\work\BRServerSF\Server\Lib\ServerSystem\ServerEntity\ServerEntityManager.cpp">
+    <ClCompile Include="$(MSBuildThisFileDirectory)Server\BRService.win64.cpp">
+      <Filter>Server</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)Server\BRServer.cpp">
+      <Filter>Server</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)Server\BrServerUtil.cpp">
+      <Filter>Server</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)Server\BRService.linux.cpp">
+      <Filter>Server</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)Entity\Entity.cpp">
+      <Filter>Entity</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)Entity\EntityInformation.cpp">
+      <Filter>Entity</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)Entity\EntityManager.cpp">
+      <Filter>Entity</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)Entity\EntityTable.cpp">
+      <Filter>Entity</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)Entity\EntityTimerActions.cpp">
+      <Filter>Entity</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)ServerEntity\GenericServerEntity.cpp">
       <Filter>ServerEntity</Filter>
     </ClCompile>
-    <ClCompile Include="C:\work\BRServerSF\Server\Lib\ServerSystem\ServerEntity\ServerEntity.cpp">
-      <Filter>ServerEntity</Filter>
+    <ClCompile Include="$(MSBuildThisFileDirectory)Util\GlobalUIDGenerator.cpp">
+      <Filter>Util</Filter>
     </ClCompile>
-    <ClCompile Include="C:\work\BRServerSF\Server\Lib\ServerSystem\Component\ServerComponent.cpp">
+    <ClCompile Include="$(MSBuildThisFileDirectory)Util\LocalUIDGenerator.cpp">
+      <Filter>Util</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)Entity\MasterEntity.cpp">
+      <Filter>Entity</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)Entity\PlayerEntityInformation.cpp">
+      <Filter>Entity</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)Component\ServerComponent.cpp">
       <Filter>Component</Filter>
     </ClCompile>
-    <ClCompile Include="C:\work\BRServerSF\Server\Lib\ServerSystem\ServerEntity\GenericServerEntity.cpp">
+    <ClCompile Include="$(MSBuildThisFileDirectory)ServerEntity\ServerEntity.cpp">
       <Filter>ServerEntity</Filter>
     </ClCompile>
-    <ClCompile Include="C:\work\BRServerSF\Server\Lib\ServerSystem\Transaction\ServerTransactionGeneric.cpp">
-      <Filter>Transaction</Filter>
+    <ClCompile Include="$(MSBuildThisFileDirectory)ServerEntity\ServerEntityManager.cpp">
+      <Filter>ServerEntity</Filter>
     </ClCompile>
-    <ClCompile Include="C:\work\BRServerSF\Server\Lib\ServerSystem\ServiceEntity\ServiceEntity.cpp">
-      <Filter>ServerService</Filter>
-    </ClCompile>
-    <ClCompile Include="C:\work\BRServerSF\Server\Lib\ServerSystem\Server\BRService.linux.cpp">
-      <Filter>Server</Filter>
-    </ClCompile>
-    <ClCompile Include="C:\work\BRServerSF\Server\Lib\ServerSystem\Server\BRService.win64.cpp">
-      <Filter>Server</Filter>
-    </ClCompile>
-    <ClCompile Include="C:\work\BRServerSF\Server\Lib\ServerSystem\Server\BRServer.cpp">
-      <Filter>Server</Filter>
-    </ClCompile>
-    <ClCompile Include="C:\work\BRServerSF\Server\Lib\ServerSystem\Server\BrServerUtil.cpp">
-      <Filter>Server</Filter>
-    </ClCompile>
-    <ClCompile Include="C:\work\BRServerSF\Server\Lib\ServerSystem\Entity\MasterEntity.cpp">
-      <Filter>Entity</Filter>
-    </ClCompile>
-    <ClCompile Include="C:\work\BRServerSF\Server\Lib\ServerSystem\Entity\PlayerEntityInformation.cpp">
-      <Filter>Entity</Filter>
-    </ClCompile>
-    <ClCompile Include="C:\work\BRServerSF\Server\Lib\ServerSystem\Entity\SimpleEntity.cpp">
-      <Filter>Entity</Filter>
-    </ClCompile>
-    <ClCompile Include="C:\work\BRServerSF\Server\Lib\ServerSystem\Entity\SimpleUserEntity.cpp">
-      <Filter>Entity</Filter>
-    </ClCompile>
-    <ClCompile Include="C:\work\BRServerSF\Server\Lib\ServerSystem\Entity\Entity.cpp">
-      <Filter>Entity</Filter>
-    </ClCompile>
-    <ClCompile Include="C:\work\BRServerSF\Server\Lib\ServerSystem\Entity\EntityManager.cpp">
-      <Filter>Entity</Filter>
-    </ClCompile>
-    <ClCompile Include="C:\work\BRServerSF\Server\Lib\ServerSystem\Entity\EntityTable.cpp">
-      <Filter>Entity</Filter>
-    </ClCompile>
-    <ClCompile Include="C:\work\BRServerSF\Server\Lib\ServerSystem\Entity\EntityTimerActions.cpp">
-      <Filter>Entity</Filter>
-    </ClCompile>
-    <ClCompile Include="C:\work\BRServerSF\Server\Lib\ServerSystem\Transaction\Transaction.cpp">
-      <Filter>Transaction</Filter>
-    </ClCompile>
-    <ClCompile Include="C:\work\BRServerSF\Server\Lib\ServerSystem\Entity\EntityInformation.cpp">
-      <Filter>Entity</Filter>
-    </ClCompile>
-    <ClCompile Include="C:\work\BRServerSF\Server\Lib\ServerSystem\Util\LocalUIDGenerator.cpp">
-      <Filter>Util</Filter>
-    </ClCompile>
-    <ClCompile Include="C:\work\BRServerSF\Server\Lib\ServerSystem\Task\ServerTaskManager.cpp">
+    <ClCompile Include="$(MSBuildThisFileDirectory)Task\ServerTaskManager.cpp">
       <Filter>Task</Filter>
     </ClCompile>
-    <ClCompile Include="C:\work\BRServerSF\Server\Lib\ServerSystem\Util\GlobalUIDGenerator.cpp">
-      <Filter>Util</Filter>
+    <ClCompile Include="$(MSBuildThisFileDirectory)ServiceEntity\ServiceEntity.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)Entity\SimpleEntity.cpp">
+      <Filter>Entity</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)Entity\SimpleUserEntity.cpp">
+      <Filter>Entity</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)Transaction\ServerTransactionGeneric.cpp">
+      <Filter>Transaction</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)ServerEntity\SvrEntityServerEntity.cpp">
+      <Filter>ServerEntity</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)ServerEntity\SvrGameServerEntity.cpp">
+      <Filter>ServerEntity</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)Transaction\Transaction.cpp">
+      <Filter>Transaction</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)ServerEntity\SvrLoopbackConnection.cpp">
+      <Filter>ServerEntity</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\work\BRServerSF\Server\Lib\ServerSystem\Service\ServerService.cpp">
+      <Filter>Service</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\work\BRServerSF\Server\Lib\ServerSystem\Component\SFServerConfigComponent.cpp">
+      <Filter>Component</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\work\BRServerSF\Server\Lib\ServerSystem\Component\SFZooKeeperSessionComponent.cpp">
+      <Filter>Component</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

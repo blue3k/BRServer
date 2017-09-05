@@ -16,7 +16,7 @@
 #include "SFTypedefs.h"
 #include "Transaction/Transaction.h"
 #include "ServerSystem/ServiceEntity/GamePartyEntity.h"
-#include "ServerSystem/ServerTransaction.h"
+#include "Transaction/ServerTransaction.h"
 
 
 

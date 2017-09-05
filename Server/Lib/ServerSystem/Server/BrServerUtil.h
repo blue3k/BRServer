@@ -41,6 +41,12 @@ namespace Svr
 
 
 
+	// Initialize and deinitialization
+	void InitializeEngineForServer();
+
+	void DeinitializeEngine();
+
+
 #include "BrServerUtil.inl"
 
 

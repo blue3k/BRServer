@@ -53,7 +53,7 @@ namespace DB {
 		if (numRec) 
 		{
 			myErrorInfo.GetAllErrorInfo( 0,lcLocale,&myErrStr, &mySource );
-			dbTrace( Trace::TRC_ERROR, "DB Failed Error hr:{0:X8}, {1} : {2} ", hr, className, (LPCWSTR)myErrStr );
+			dbTrace( Error, "DB Failed Error hr:{0:X8}, {1} : {2} ", hr, className, (LPCWSTR)myErrStr );
 		}
 	}
 

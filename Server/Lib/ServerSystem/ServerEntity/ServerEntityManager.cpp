@@ -43,6 +43,7 @@ namespace Svr
 
 	ServerEntityManager::ServerEntityManager()
 		:IServerComponent(ServerComponentID_ServerEntityManager)
+		, m_MemoryManager("ServerEntityManager", GetSystemMemoryManager())
 	{
 	}
 
@@ -54,7 +55,7 @@ namespace Svr
 	{
 		Result hr = ResultCode::SUCCESS;
 		ServerEntity *pNewServerEntity = nullptr;
-		Net::ConnectionPtr pConnection = nullptr;
+		Net::ConnectionPtr pConnection;
 
 		MutexScopeLock localLock(m_ServerTableLock);
 
@@ -68,7 +69,7 @@ namespace Svr
 
 		Assert(netClass != NetClass::Unknown);
 
-		svrTrace( Svr::TRC_ENTITY, "Registering Server {0} SvrID:{1} {2}", netClass, serverID, netAddress);
+		svrTrace( SVR_ENTITY, "Registering Server {0} SvrID:{1} {2}", netClass, serverID, netAddress);
 
 		svrChk( BrServer::GetInstance()->CreateServerEntity(netClass, pNewServerEntity) );
 
@@ -83,7 +84,7 @@ namespace Svr
 
 		pNewServerEntity->SetLocalConnection((Net::Connection*)pConnection);
 
-		svrTrace(Svr::TRC_ENTITY, "Registered Server {0} SvrID:{1} {2}, taskGrp:{3}", netClass, serverID, netAddress, pNewServerEntity->GetTaskGroupID());
+		svrTrace(SVR_ENTITY, "Registered Server {0} SvrID:{1} {2}, taskGrp:{3}", netClass, serverID, netAddress, pNewServerEntity->GetTaskGroupID());
 
 
 	Proc_End:
@@ -225,7 +226,7 @@ namespace Svr
 			AssertRel(netClass == pOldEntity->GetRemoteClass());
 			if (pServerEntity != nullptr && pOldEntity != pServerEntity)
 			{
-				svrTrace(Svr::TRC_ENTITY, "Adding Duplicated Server {0} SvrID:{1}", netClass, serverID);
+				svrTrace(SVR_ENTITY, "Adding Duplicated Server {0} SvrID:{1}", netClass, serverID);
 				AssertRel(false);
 				return ResultCode::UNEXPECTED;
 			}
@@ -236,7 +237,7 @@ namespace Svr
 
 		Assert(netClass != NetClass::Unknown);
 
-		svrTrace(Svr::TRC_ENTITY, "Adding Server {0} SvrID:{1}", netClass, serverID);
+		svrTrace(SVR_ENTITY, "Adding Server {0} SvrID:{1}", netClass, serverID);
 
 		if (pServerEntity == nullptr)
 		{

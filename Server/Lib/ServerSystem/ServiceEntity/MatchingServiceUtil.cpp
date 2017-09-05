@@ -165,7 +165,7 @@ namespace MatchingUtil {
 		case ClusterID::MatchingQueue_Game_8x1W:	return ServerComponentID_MatchingQueueWatcherService_8x1W;
 		default:
 			Assert(false);
-			svrTrace(Trace::TRC_ERROR, "Invalid cluster id for compoent %0%", clusterID);
+			svrTrace(Error, "Invalid cluster id for compoent %0%", clusterID);
 			return ServerComponentID_MatchingQueueWatcherService_8x1;
 		}
 	}

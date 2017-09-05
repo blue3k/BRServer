@@ -18,13 +18,13 @@
 #include "Transaction/ServerTransactionGeneric.h"
 #include "ServerEntity/ServerEntityManager.h"
 
-#include "ServerEntity/EntityServerEntity.h"
+#include "ServerEntity/SvrEntityServerEntity.h"
 #include "ServiceEntity/ClusterManagerServiceEntity.h"
 
 #include "Protocol/Message/ServerMsgClass.h"
-#include "Protocol/Policy/ServerNetNetPolicy.h"
+#include "Protocol/Policy/ServerNetPolicy.h"
 #include "Protocol/Message/ClusterServerMsgClass.h"
-#include "Protocol/Policy/ClusterServerNetNetPolicy.h"
+#include "Protocol/Policy/ClusterServerNetPolicy.h"
 
 
 SF_MEMORYPOOL_IMPLEMENT(SF::Svr::GenericServerStartedTrans);
@@ -36,8 +36,8 @@ namespace Svr {
 
 
 
-	EntityServerStartedTrans::EntityServerStartedTrans( MessageDataPtr &pIMsg )
-		:ServerStartedTrans(pIMsg)
+	EntityServerStartedTrans::EntityServerStartedTrans(IMemoryManager& memMgr, MessageDataPtr &pIMsg )
+		:ServerStartedTrans(memMgr, pIMsg)
 	{
 		BR_TRANS_MESSAGE( Message::ClusterServer::GetClusterMemberListRes,	{ return OnGetClusterMemberList(pRes); });
 	}
@@ -56,11 +56,11 @@ namespace Svr {
 
 		svrChk(pRes->GetResult());
 
-		svrChk( msgRes.ParseMessage( ((Svr::MessageResult*)pRes)->GetMessage() ) );
+		svrChk( msgRes.ParseMessage( *((Svr::MessageResult*)pRes)->GetMessage() ) );
 
 
 		// Update service information with master's one
-		for( uint iMember = 0; iMember < msgRes.GetMemberList().GetSize(); iMember++ )
+		for( uint iMember = 0; iMember < msgRes.GetMemberList().size(); iMember++ )
 		{
 			const ServiceInformation *pCurrentService = &msgRes.GetMemberList()[iMember];
 			Svr::ServerServiceInformation *pService = nullptr;
@@ -103,7 +103,7 @@ namespace Svr {
 		// If we got connected to the master, request member list so that we can get dynamically added cluster manager informations
 		if( serviceInfo.Membership == ClusterMembership::Master )
 		{
-			svrChk( GetMyOwner()->GetInterface<Policy::IPolicyClusterServer>()->GetClusterMemberListCmd( RouteContext(GetOwnerEntityUID(),serviceInfo.UID), GetTransID(), 0, pService->GetClusterID() ) );
+			svrChk(Policy::NetPolicyClusterServer(GetMyOwner()->GetConnection()).GetClusterMemberListCmd( RouteContext(GetOwnerEntityUID(),serviceInfo.UID), GetTransID(), 0, pService->GetClusterID() ) );
 		}
 		else
 			CloseTransaction(hr);

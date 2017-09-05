@@ -24,7 +24,7 @@
 #include "Protocol/Policy/GameServerNetPolicy.h"
 #include "Transaction/MessageRoute.h"
 #include "ServerSystem/ServiceEntity/Game/GameClusterServiceEntity.h"
-#include "ServerSystem/ServerTransaction.h"
+#include "Transaction/ServerTransaction.h"
 
 
 namespace SF {

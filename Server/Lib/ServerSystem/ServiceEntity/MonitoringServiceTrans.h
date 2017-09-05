@@ -22,7 +22,7 @@
 #include "Protocol/Policy/MonitoringNetPolicy.h"
 #include "Transaction/MessageRoute.h"
 #include "ServerSystem/ServiceEntity/MonitoringServiceEntity.h"
-#include "ServerSystem/ServerTransaction.h"
+#include "Transaction/ServerTransaction.h"
 
 
 namespace SF {

@@ -60,7 +60,7 @@ namespace SF
 				const uint16_t& GetRouteHopCount() const	{ return m_RouteHopCount; };
 				const Array<MatchingPlayerInformation>& GetPlayers() const	{ return m_Players; };
 
-				static Result TraceOut(MessageDataPtr& pMsg);
+				static Result TraceOut(const char* prefix, MessageDataPtr& pMsg);
 
 				virtual Result ParseMessage( MessageData* pIMsg );
 				static Result ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageDataPtr& pIMsg, MessageBase* &pMsgBase );
@@ -110,7 +110,7 @@ namespace SF
 				const Result& GetResult() const	{ return m_Result; };
 				const MatchingQueueTicket& GetMatchingTicket() const	{ return m_MatchingTicket; };
 
-				static Result TraceOut(MessageDataPtr& pMsg);
+				static Result TraceOut(const char* prefix, MessageDataPtr& pMsg);
 
 				virtual Result ParseMessage( MessageData* pIMsg );
 				static Result ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageDataPtr& pIMsg, MessageBase* &pMsgBase );
@@ -159,7 +159,7 @@ namespace SF
 				const uint16_t& GetRouteHopCount() const	{ return m_RouteHopCount; };
 				const PlayerID& GetPlayerID() const	{ return m_PlayerID; };
 
-				static Result TraceOut(MessageDataPtr& pMsg);
+				static Result TraceOut(const char* prefix, MessageDataPtr& pMsg);
 
 				virtual Result ParseMessage( MessageData* pIMsg );
 				static Result ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageDataPtr& pIMsg, MessageBase* &pMsgBase );
@@ -209,7 +209,7 @@ namespace SF
 				const Result& GetResult() const	{ return m_Result; };
 				const MatchingQueueTicket& GetMatchingTicket() const	{ return m_MatchingTicket; };
 
-				static Result TraceOut(MessageDataPtr& pMsg);
+				static Result TraceOut(const char* prefix, MessageDataPtr& pMsg);
 
 				virtual Result ParseMessage( MessageData* pIMsg );
 				static Result ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageDataPtr& pIMsg, MessageBase* &pMsgBase );
@@ -261,7 +261,7 @@ namespace SF
 				const MatchingQueueTicket& GetMatchingTicket() const	{ return m_MatchingTicket; };
 				const uint64_t& GetPreviousUID() const	{ return m_PreviousUID; };
 
-				static Result TraceOut(MessageDataPtr& pMsg);
+				static Result TraceOut(const char* prefix, MessageDataPtr& pMsg);
 
 				virtual Result ParseMessage( MessageData* pIMsg );
 				static Result ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageDataPtr& pIMsg, MessageBase* &pMsgBase );
@@ -309,7 +309,7 @@ namespace SF
 				const TransactionID& GetTransactionID() const	{ return m_TransactionID; };
 				const Result& GetResult() const	{ return m_Result; };
 
-				static Result TraceOut(MessageDataPtr& pMsg);
+				static Result TraceOut(const char* prefix, MessageDataPtr& pMsg);
 
 				virtual Result ParseMessage( MessageData* pIMsg );
 				static Result ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageDataPtr& pIMsg, MessageBase* &pMsgBase );
@@ -359,7 +359,7 @@ namespace SF
 				const uint16_t& GetRouteHopCount() const	{ return m_RouteHopCount; };
 				const MatchingQueueTicket& GetMatchingTicket() const	{ return m_MatchingTicket; };
 
-				static Result TraceOut(MessageDataPtr& pMsg);
+				static Result TraceOut(const char* prefix, MessageDataPtr& pMsg);
 
 				virtual Result ParseMessage( MessageData* pIMsg );
 				static Result ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageDataPtr& pIMsg, MessageBase* &pMsgBase );
@@ -407,7 +407,7 @@ namespace SF
 				const TransactionID& GetTransactionID() const	{ return m_TransactionID; };
 				const Result& GetResult() const	{ return m_Result; };
 
-				static Result TraceOut(MessageDataPtr& pMsg);
+				static Result TraceOut(const char* prefix, MessageDataPtr& pMsg);
 
 				virtual Result ParseMessage( MessageData* pIMsg );
 				static Result ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageDataPtr& pIMsg, MessageBase* &pMsgBase );
@@ -458,7 +458,7 @@ namespace SF
 				const uint64_t& GetDestPartyUID() const	{ return m_DestPartyUID; };
 				const MatchingQueueTicket& GetMatchingTicket() const	{ return m_MatchingTicket; };
 
-				static Result TraceOut(MessageDataPtr& pMsg);
+				static Result TraceOut(const char* prefix, MessageDataPtr& pMsg);
 
 				virtual Result ParseMessage( MessageData* pIMsg );
 				static Result ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageDataPtr& pIMsg, MessageBase* &pMsgBase );
@@ -509,7 +509,7 @@ namespace SF
 				const PlayerID& GetDestPlayerID() const	{ return m_DestPlayerID; };
 				const MatchingQueueTicket& GetMatchingTicket() const	{ return m_MatchingTicket; };
 
-				static Result TraceOut(MessageDataPtr& pMsg);
+				static Result TraceOut(const char* prefix, MessageDataPtr& pMsg);
 
 				virtual Result ParseMessage( MessageData* pIMsg );
 				static Result ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageDataPtr& pIMsg, MessageBase* &pMsgBase );
@@ -558,7 +558,7 @@ namespace SF
 				const uint16_t& GetRouteHopCount() const	{ return m_RouteHopCount; };
 				const MatchingQueueTicket& GetMatchingTicket() const	{ return m_MatchingTicket; };
 
-				static Result TraceOut(MessageDataPtr& pMsg);
+				static Result TraceOut(const char* prefix, MessageDataPtr& pMsg);
 
 				virtual Result ParseMessage( MessageData* pIMsg );
 				static Result ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageDataPtr& pIMsg, MessageBase* &pMsgBase );
@@ -607,7 +607,7 @@ namespace SF
 				const uint16_t& GetRouteHopCount() const	{ return m_RouteHopCount; };
 				const MatchingQueueTicket& GetMatchingTicket() const	{ return m_MatchingTicket; };
 
-				static Result TraceOut(MessageDataPtr& pMsg);
+				static Result TraceOut(const char* prefix, MessageDataPtr& pMsg);
 
 				virtual Result ParseMessage( MessageData* pIMsg );
 				static Result ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageDataPtr& pIMsg, MessageBase* &pMsgBase );
@@ -655,7 +655,7 @@ namespace SF
 				const TransactionID& GetTransactionID() const	{ return m_TransactionID; };
 				const uint16_t& GetRouteHopCount() const	{ return m_RouteHopCount; };
 
-				static Result TraceOut(MessageDataPtr& pMsg);
+				static Result TraceOut(const char* prefix, MessageDataPtr& pMsg);
 
 				virtual Result ParseMessage( MessageData* pIMsg );
 				static Result ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageDataPtr& pIMsg, MessageBase* &pMsgBase );
@@ -707,7 +707,7 @@ namespace SF
 				const uint32_t& GetNumberOfPlayersInTheItem() const	{ return m_NumberOfPlayersInTheItem; };
 				const MatchingQueueTicket& GetMatchingTicket() const	{ return m_MatchingTicket; };
 
-				static Result TraceOut(MessageDataPtr& pMsg);
+				static Result TraceOut(const char* prefix, MessageDataPtr& pMsg);
 
 				virtual Result ParseMessage( MessageData* pIMsg );
 				static Result ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageDataPtr& pIMsg, MessageBase* &pMsgBase );
@@ -757,7 +757,7 @@ namespace SF
 				const uint16_t& GetRouteHopCount() const	{ return m_RouteHopCount; };
 				const uint32_t& GetNumberOfItemsToReserve() const	{ return m_NumberOfItemsToReserve; };
 
-				static Result TraceOut(MessageDataPtr& pMsg);
+				static Result TraceOut(const char* prefix, MessageDataPtr& pMsg);
 
 				virtual Result ParseMessage( MessageData* pIMsg );
 				static Result ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageDataPtr& pIMsg, MessageBase* &pMsgBase );
@@ -809,7 +809,7 @@ namespace SF
 				const Array<uint32_t>& GetNumberOfPlayersInTheItem() const	{ return m_NumberOfPlayersInTheItem; };
 				const Array<MatchingQueueTicket>& GetMatchingTicket() const	{ return m_MatchingTicket; };
 
-				static Result TraceOut(MessageDataPtr& pMsg);
+				static Result TraceOut(const char* prefix, MessageDataPtr& pMsg);
 
 				virtual Result ParseMessage( MessageData* pIMsg );
 				static Result ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageDataPtr& pIMsg, MessageBase* &pMsgBase );
@@ -859,7 +859,7 @@ namespace SF
 				const uint16_t& GetRouteHopCount() const	{ return m_RouteHopCount; };
 				const MatchingQueueTicket& GetTicketToCancel() const	{ return m_TicketToCancel; };
 
-				static Result TraceOut(MessageDataPtr& pMsg);
+				static Result TraceOut(const char* prefix, MessageDataPtr& pMsg);
 
 				virtual Result ParseMessage( MessageData* pIMsg );
 				static Result ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageDataPtr& pIMsg, MessageBase* &pMsgBase );
@@ -907,7 +907,7 @@ namespace SF
 				const TransactionID& GetTransactionID() const	{ return m_TransactionID; };
 				const Result& GetResult() const	{ return m_Result; };
 
-				static Result TraceOut(MessageDataPtr& pMsg);
+				static Result TraceOut(const char* prefix, MessageDataPtr& pMsg);
 
 				virtual Result ParseMessage( MessageData* pIMsg );
 				static Result ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageDataPtr& pIMsg, MessageBase* &pMsgBase );
@@ -957,7 +957,7 @@ namespace SF
 				const uint16_t& GetRouteHopCount() const	{ return m_RouteHopCount; };
 				const Array<MatchingQueueTicket>& GetTicketToCancel() const	{ return m_TicketToCancel; };
 
-				static Result TraceOut(MessageDataPtr& pMsg);
+				static Result TraceOut(const char* prefix, MessageDataPtr& pMsg);
 
 				virtual Result ParseMessage( MessageData* pIMsg );
 				static Result ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageDataPtr& pIMsg, MessageBase* &pMsgBase );
@@ -1005,7 +1005,7 @@ namespace SF
 				const TransactionID& GetTransactionID() const	{ return m_TransactionID; };
 				const Result& GetResult() const	{ return m_Result; };
 
-				static Result TraceOut(MessageDataPtr& pMsg);
+				static Result TraceOut(const char* prefix, MessageDataPtr& pMsg);
 
 				virtual Result ParseMessage( MessageData* pIMsg );
 				static Result ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageDataPtr& pIMsg, MessageBase* &pMsgBase );
@@ -1055,7 +1055,7 @@ namespace SF
 				const uint16_t& GetRouteHopCount() const	{ return m_RouteHopCount; };
 				const MatchingQueueTicket& GetMatchingTicket() const	{ return m_MatchingTicket; };
 
-				static Result TraceOut(MessageDataPtr& pMsg);
+				static Result TraceOut(const char* prefix, MessageDataPtr& pMsg);
 
 				virtual Result ParseMessage( MessageData* pIMsg );
 				static Result ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageDataPtr& pIMsg, MessageBase* &pMsgBase );
@@ -1111,7 +1111,7 @@ namespace SF
 				const PlayerID& GetRegisterID() const	{ return m_RegisterID; };
 				const Array<MatchingPlayerInformation>& GetPlayers() const	{ return m_Players; };
 
-				static Result TraceOut(MessageDataPtr& pMsg);
+				static Result TraceOut(const char* prefix, MessageDataPtr& pMsg);
 
 				virtual Result ParseMessage( MessageData* pIMsg );
 				static Result ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageDataPtr& pIMsg, MessageBase* &pMsgBase );
@@ -1160,7 +1160,7 @@ namespace SF
 				const uint16_t& GetRouteHopCount() const	{ return m_RouteHopCount; };
 				const MatchingQueueTicket& GetMatchingTicket() const	{ return m_MatchingTicket; };
 
-				static Result TraceOut(MessageDataPtr& pMsg);
+				static Result TraceOut(const char* prefix, MessageDataPtr& pMsg);
 
 				virtual Result ParseMessage( MessageData* pIMsg );
 				static Result ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageDataPtr& pIMsg, MessageBase* &pMsgBase );

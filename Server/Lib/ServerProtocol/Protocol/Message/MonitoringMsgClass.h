@@ -56,7 +56,7 @@ namespace SF
 
 				const TransactionID& GetTransactionID() const	{ return m_TransactionID; };
 
-				static Result TraceOut(MessageDataPtr& pMsg);
+				static Result TraceOut(const char* prefix, MessageDataPtr& pMsg);
 
 				virtual Result ParseMessage( MessageData* pIMsg );
 				static Result ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageDataPtr& pIMsg, MessageBase* &pMsgBase );
@@ -103,7 +103,7 @@ namespace SF
 				const Array<PerformanceCounterInstanceInfo>& GetCounterInstances() const	{ return m_CounterInstances; };
 				const uint32_t& GetTotalInstanceCount() const	{ return m_TotalInstanceCount; };
 
-				static Result TraceOut(MessageDataPtr& pMsg);
+				static Result TraceOut(const char* prefix, MessageDataPtr& pMsg);
 
 				virtual Result ParseMessage( MessageData* pIMsg );
 				static Result ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageDataPtr& pIMsg, MessageBase* &pMsgBase );
@@ -147,7 +147,7 @@ namespace SF
 				const TransactionID& GetTransactionID() const	{ return m_TransactionID; };
 				const uint64_t& GetInstanceUID() const	{ return m_InstanceUID; };
 
-				static Result TraceOut(MessageDataPtr& pMsg);
+				static Result TraceOut(const char* prefix, MessageDataPtr& pMsg);
 
 				virtual Result ParseMessage( MessageData* pIMsg );
 				static Result ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageDataPtr& pIMsg, MessageBase* &pMsgBase );
@@ -194,7 +194,7 @@ namespace SF
 				const uint64_t& GetInstanceUID() const	{ return m_InstanceUID; };
 				const Array<uint64_t>& GetCounterValues() const	{ return m_CounterValues; };
 
-				static Result TraceOut(MessageDataPtr& pMsg);
+				static Result TraceOut(const char* prefix, MessageDataPtr& pMsg);
 
 				virtual Result ParseMessage( MessageData* pIMsg );
 				static Result ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageDataPtr& pIMsg, MessageBase* &pMsgBase );
@@ -243,7 +243,7 @@ namespace SF
 				const uint64_t& GetInstanceUID() const	{ return m_InstanceUID; };
 				const Array<PerformanceCounterInfo>& GetNewCounters() const	{ return m_NewCounters; };
 
-				static Result TraceOut(MessageDataPtr& pMsg);
+				static Result TraceOut(const char* prefix, MessageDataPtr& pMsg);
 
 				virtual Result ParseMessage( MessageData* pIMsg );
 				static Result ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageDataPtr& pIMsg, MessageBase* &pMsgBase );
@@ -286,7 +286,7 @@ namespace SF
 
 				const Array<uint64_t>& GetFreeInstances() const	{ return m_FreeInstances; };
 
-				static Result TraceOut(MessageDataPtr& pMsg);
+				static Result TraceOut(const char* prefix, MessageDataPtr& pMsg);
 
 				virtual Result ParseMessage( MessageData* pIMsg );
 				static Result ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageDataPtr& pIMsg, MessageBase* &pMsgBase );
@@ -331,7 +331,7 @@ namespace SF
 				const uint64_t& GetInstanceUID() const	{ return m_InstanceUID; };
 				const Array<uint64_t>& GetCounterValues() const	{ return m_CounterValues; };
 
-				static Result TraceOut(MessageDataPtr& pMsg);
+				static Result TraceOut(const char* prefix, MessageDataPtr& pMsg);
 
 				virtual Result ParseMessage( MessageData* pIMsg );
 				static Result ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageDataPtr& pIMsg, MessageBase* &pMsgBase );
@@ -374,7 +374,7 @@ namespace SF
 
 				const uint64_t& GetInstanceUID() const	{ return m_InstanceUID; };
 
-				static Result TraceOut(MessageDataPtr& pMsg);
+				static Result TraceOut(const char* prefix, MessageDataPtr& pMsg);
 
 				virtual Result ParseMessage( MessageData* pIMsg );
 				static Result ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageDataPtr& pIMsg, MessageBase* &pMsgBase );

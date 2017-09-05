@@ -57,7 +57,7 @@ namespace SF
 				const RouteContext& GetRouteContext() const	{ return m_RouteContext; };
 				const uint16_t& GetRouteHopCount() const	{ return m_RouteHopCount; };
 
-				static Result TraceOut(MessageDataPtr& pMsg);
+				static Result TraceOut(const char* prefix, MessageDataPtr& pMsg);
 
 				virtual Result ParseMessage( MessageData* pIMsg );
 				static Result ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageDataPtr& pIMsg, MessageBase* &pMsgBase );
@@ -110,7 +110,7 @@ namespace SF
 				const uint64_t& GetGameInsUID() const	{ return m_GameInsUID; };
 				const uint8_t& GetRequestedRole() const	{ return m_RequestedRole; };
 
-				static Result TraceOut(MessageDataPtr& pMsg);
+				static Result TraceOut(const char* prefix, MessageDataPtr& pMsg);
 
 				virtual Result ParseMessage( MessageData* pIMsg );
 				static Result ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageDataPtr& pIMsg, MessageBase* &pMsgBase );

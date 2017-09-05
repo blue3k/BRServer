@@ -261,7 +261,7 @@ namespace Google {
 			if (hr == ((Result)ResultCode::SVR_INVALID_EXTERNAL_AUTH))
 			{
 				// silently ignore it
-				//svrTrace(Trace::TRC_ERROR, "Invalid auth: hr:{0}, {1}, token:{2}", ArgHex32<uint32_t>(hr), (const char*)m_ResultBuffer.data(), authChar);
+				//svrTrace(Error, "Invalid auth: hr:{0}, {1}, token:{2}", ArgHex32<uint32_t>(hr), (const char*)m_ResultBuffer.data(), authChar);
 				return hr;
 			}
 			else
@@ -269,11 +269,11 @@ namespace Google {
 				if (m_ResultBuffer.GetSize() > 0)
 				{
 					m_ResultBuffer.push_back('\0');
-					svrTrace(Trace::TRC_ERROR, "Invalid purchase status: hr:{0:X8}, {1}, token:{2}, payload:{3}", hr, (const char*)m_ResultBuffer.data(), authChar, m_DeveloperPayload);
+					svrTrace(Error, "Invalid purchase status: hr:{0:X8}, {1}, token:{2}, payload:{3}", hr, (const char*)m_ResultBuffer.data(), authChar, m_DeveloperPayload);
 				}
 				else
 				{
-					svrTrace(Trace::TRC_ERROR, "Failed to check purchase status: hr:{0:X8}, token:{1}, payload:{2}", hr, authChar, m_DeveloperPayload);
+					svrTrace(Error, "Failed to check purchase status: hr:{0:X8}, token:{1}, payload:{2}", hr, authChar, m_DeveloperPayload);
 				}
 			}
 		}

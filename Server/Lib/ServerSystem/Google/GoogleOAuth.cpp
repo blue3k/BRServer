@@ -318,11 +318,11 @@ namespace Google {
 
 		if (!(hr))
 		{
-			svrTrace(Trace::TRC_ERROR, "Failed to Authorize google API hr:{0:X8}, account:{1}, {2}", hr, m_Account, m_ResultBuffer.GetSize() > 0 ? (char*)m_ResultBuffer.data() : "null");
+			svrTrace(Error, "Failed to Authorize google API hr:{0:X8}, account:{1}, {2}", hr, m_Account, m_ResultBuffer.GetSize() > 0 ? (char*)m_ResultBuffer.data() : "null");
 		}
 		else
 		{
-			//svrTrace(Trace::TRC_INFO, "Google API Authorization is updated hr:{0}, {1}", ArgHex32<uint32_t>(hr), (char*)m_ResultBuffer.data());
+			//svrTrace(Info, "Google API Authorization is updated hr:{0}, {1}", ArgHex32<uint32_t>(hr), (char*)m_ResultBuffer.data());
 		}
 
 		return hr;

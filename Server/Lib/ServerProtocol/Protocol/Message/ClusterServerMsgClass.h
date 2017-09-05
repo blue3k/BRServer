@@ -60,7 +60,7 @@ namespace SF
 				const uint16_t& GetRouteHopCount() const	{ return m_RouteHopCount; };
 				const ClusterID& GetClusterID() const	{ return m_ClusterID; };
 
-				static Result TraceOut(MessageDataPtr& pMsg);
+				static Result TraceOut(const char* prefix, MessageDataPtr& pMsg);
 
 				virtual Result ParseMessage( MessageData* pIMsg );
 				static Result ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageDataPtr& pIMsg, MessageBase* &pMsgBase );
@@ -110,7 +110,7 @@ namespace SF
 				const Result& GetResult() const	{ return m_Result; };
 				const Array<ServiceInformation>& GetMemberList() const	{ return m_MemberList; };
 
-				static Result TraceOut(MessageDataPtr& pMsg);
+				static Result TraceOut(const char* prefix, MessageDataPtr& pMsg);
 
 				virtual Result ParseMessage( MessageData* pIMsg );
 				static Result ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageDataPtr& pIMsg, MessageBase* &pMsgBase );
@@ -169,7 +169,7 @@ namespace SF
 				const ClusterType& GetClusterType() const	{ return m_ClusterType; };
 				const ClusterMembership& GetClusterMembership() const	{ return m_ClusterMembership; };
 
-				static Result TraceOut(MessageDataPtr& pMsg);
+				static Result TraceOut(const char* prefix, MessageDataPtr& pMsg);
 
 				virtual Result ParseMessage( MessageData* pIMsg );
 				static Result ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageDataPtr& pIMsg, MessageBase* &pMsgBase );
@@ -219,7 +219,7 @@ namespace SF
 				const Result& GetResult() const	{ return m_Result; };
 				const Array<ServiceInformation>& GetMemberList() const	{ return m_MemberList; };
 
-				static Result TraceOut(MessageDataPtr& pMsg);
+				static Result TraceOut(const char* prefix, MessageDataPtr& pMsg);
 
 				virtual Result ParseMessage( MessageData* pIMsg );
 				static Result ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageDataPtr& pIMsg, MessageBase* &pMsgBase );
@@ -278,7 +278,7 @@ namespace SF
 				const ClusterType& GetClusterType() const	{ return m_ClusterType; };
 				const ClusterMembership& GetJoinedServiceMembership() const	{ return m_JoinedServiceMembership; };
 
-				static Result TraceOut(MessageDataPtr& pMsg);
+				static Result TraceOut(const char* prefix, MessageDataPtr& pMsg);
 
 				virtual Result ParseMessage( MessageData* pIMsg );
 				static Result ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageDataPtr& pIMsg, MessageBase* &pMsgBase );
@@ -331,7 +331,7 @@ namespace SF
 				const ClusterType& GetClusterType() const	{ return m_ClusterType; };
 				const Array<ServiceInformation>& GetMemberList() const	{ return m_MemberList; };
 
-				static Result TraceOut(MessageDataPtr& pMsg);
+				static Result TraceOut(const char* prefix, MessageDataPtr& pMsg);
 
 				virtual Result ParseMessage( MessageData* pIMsg );
 				static Result ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageDataPtr& pIMsg, MessageBase* &pMsgBase );
@@ -381,7 +381,7 @@ namespace SF
 				const uint16_t& GetRouteHopCount() const	{ return m_RouteHopCount; };
 				const ClusterID& GetClusterID() const	{ return m_ClusterID; };
 
-				static Result TraceOut(MessageDataPtr& pMsg);
+				static Result TraceOut(const char* prefix, MessageDataPtr& pMsg);
 
 				virtual Result ParseMessage( MessageData* pIMsg );
 				static Result ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageDataPtr& pIMsg, MessageBase* &pMsgBase );
@@ -429,7 +429,7 @@ namespace SF
 				const TransactionID& GetTransactionID() const	{ return m_TransactionID; };
 				const Result& GetResult() const	{ return m_Result; };
 
-				static Result TraceOut(MessageDataPtr& pMsg);
+				static Result TraceOut(const char* prefix, MessageDataPtr& pMsg);
 
 				virtual Result ParseMessage( MessageData* pIMsg );
 				static Result ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageDataPtr& pIMsg, MessageBase* &pMsgBase );
@@ -481,7 +481,7 @@ namespace SF
 				const ClusterID& GetClusterID() const	{ return m_ClusterID; };
 				const uint64_t& GetMasterUID() const	{ return m_MasterUID; };
 
-				static Result TraceOut(MessageDataPtr& pMsg);
+				static Result TraceOut(const char* prefix, MessageDataPtr& pMsg);
 
 				virtual Result ParseMessage( MessageData* pIMsg );
 				static Result ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageDataPtr& pIMsg, MessageBase* &pMsgBase );
@@ -534,7 +534,7 @@ namespace SF
 				const uint64_t& GetVoteToUID() const	{ return m_VoteToUID; };
 				const uint64_t& GetVotedUpTime() const	{ return m_VotedUpTime; };
 
-				static Result TraceOut(MessageDataPtr& pMsg);
+				static Result TraceOut(const char* prefix, MessageDataPtr& pMsg);
 
 				virtual Result ParseMessage( MessageData* pIMsg );
 				static Result ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageDataPtr& pIMsg, MessageBase* &pMsgBase );
@@ -586,7 +586,7 @@ namespace SF
 				const ClusterID& GetClusterID() const	{ return m_ClusterID; };
 				const ServiceStatus& GetMemberStatus() const	{ return m_MemberStatus; };
 
-				static Result TraceOut(MessageDataPtr& pMsg);
+				static Result TraceOut(const char* prefix, MessageDataPtr& pMsg);
 
 				virtual Result ParseMessage( MessageData* pIMsg );
 				static Result ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageDataPtr& pIMsg, MessageBase* &pMsgBase );
@@ -638,7 +638,7 @@ namespace SF
 				const ClusterID& GetClusterID() const	{ return m_ClusterID; };
 				const uint32_t& GetWorkload() const	{ return m_Workload; };
 
-				static Result TraceOut(MessageDataPtr& pMsg);
+				static Result TraceOut(const char* prefix, MessageDataPtr& pMsg);
 
 				virtual Result ParseMessage( MessageData* pIMsg );
 				static Result ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageDataPtr& pIMsg, MessageBase* &pMsgBase );
@@ -688,7 +688,7 @@ namespace SF
 				const uint16_t& GetRouteHopCount() const	{ return m_RouteHopCount; };
 				const ClusterID& GetClusterID() const	{ return m_ClusterID; };
 
-				static Result TraceOut(MessageDataPtr& pMsg);
+				static Result TraceOut(const char* prefix, MessageDataPtr& pMsg);
 
 				virtual Result ParseMessage( MessageData* pIMsg );
 				static Result ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageDataPtr& pIMsg, MessageBase* &pMsgBase );
@@ -738,7 +738,7 @@ namespace SF
 				const Result& GetResult() const	{ return m_Result; };
 				const ServiceInformation& GetMember() const	{ return m_Member; };
 
-				static Result TraceOut(MessageDataPtr& pMsg);
+				static Result TraceOut(const char* prefix, MessageDataPtr& pMsg);
 
 				virtual Result ParseMessage( MessageData* pIMsg );
 				static Result ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageDataPtr& pIMsg, MessageBase* &pMsgBase );
@@ -788,7 +788,7 @@ namespace SF
 				const PlayerID& GetPlayerID() const	{ return m_PlayerID; };
 				const uint64_t& GetPlayerUID() const	{ return m_PlayerUID; };
 
-				static Result TraceOut(MessageDataPtr& pMsg);
+				static Result TraceOut(const char* prefix, MessageDataPtr& pMsg);
 
 				virtual Result ParseMessage( MessageData* pIMsg );
 				static Result ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageDataPtr& pIMsg, MessageBase* &pMsgBase );
@@ -838,7 +838,7 @@ namespace SF
 				const PlayerID& GetPlayerID() const	{ return m_PlayerID; };
 				const uint64_t& GetPlayerUID() const	{ return m_PlayerUID; };
 
-				static Result TraceOut(MessageDataPtr& pMsg);
+				static Result TraceOut(const char* prefix, MessageDataPtr& pMsg);
 
 				virtual Result ParseMessage( MessageData* pIMsg );
 				static Result ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageDataPtr& pIMsg, MessageBase* &pMsgBase );

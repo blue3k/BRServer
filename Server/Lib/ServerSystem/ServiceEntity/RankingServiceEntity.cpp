@@ -17,7 +17,7 @@
 #include "Thread/Thread.h"
 #include "Memory/SFMemory.h"
 #include "GameConst.h"
-#include "Common/BrRandom.h"
+#include "Util/SFRandom.h"
 #include "Net/NetDef.h"
 #include "Entity/Entity.h"
 #include "Component/ServerComponent.h"
@@ -41,11 +41,13 @@ namespace Svr {
 	//
 
 	RankingServiceEntity::RankingServiceEntity(ClusterID clusterID, ClusterMembership initialMembership)
-		:FreeReplicaClusterServiceEntity(clusterID, initialMembership)
+		: FreeReplicaClusterServiceEntity(clusterID, initialMembership)
+		, m_RankingMap(GetMemoryManager())
+		, m_PlayerMap(GetMemoryManager())
 	{
-		BR_ENTITY_MESSAGE(Message::RankingServer::AddPlayerCmd)					{ svrMemReturn(pNewTrans = new(GetMemoryManager()) RankingServerAddPlayerTrans(pMsgData)); return ResultCode::SUCCESS; } );
-		BR_ENTITY_MESSAGE(Message::RankingServer::UpdatePlayerScoreCmd)			{ svrMemReturn(pNewTrans = new(GetMemoryManager()) RankingServerUpdatePlayerScoreTrans(pMsgData)); return ResultCode::SUCCESS; } );
-		BR_ENTITY_MESSAGE(Message::RankingServer::DebugPrintALLRankingCmd)		{ svrMemReturn(pNewTrans = new(GetMemoryManager()) RankingServerDebugPrintALLRankingTrans(pMsgData)); return ResultCode::SUCCESS; } );
+		BR_ENTITY_MESSAGE(Message::RankingServer::AddPlayerCmd)					{ svrMemReturn(pNewTrans = new(GetMemoryManager()) RankingServerAddPlayerTrans(GetMemoryManager(),pMsgData)); return ResultCode::SUCCESS; } );
+		BR_ENTITY_MESSAGE(Message::RankingServer::UpdatePlayerScoreCmd)			{ svrMemReturn(pNewTrans = new(GetMemoryManager()) RankingServerUpdatePlayerScoreTrans(GetMemoryManager(), pMsgData)); return ResultCode::SUCCESS; } );
+		BR_ENTITY_MESSAGE(Message::RankingServer::DebugPrintALLRankingCmd)		{ svrMemReturn(pNewTrans = new(GetMemoryManager()) RankingServerDebugPrintALLRankingTrans(GetMemoryManager(), pMsgData)); return ResultCode::SUCCESS; } );
 	}
 
 	RankingServiceEntity::~RankingServiceEntity()

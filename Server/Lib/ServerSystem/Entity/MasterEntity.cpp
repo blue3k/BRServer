@@ -78,7 +78,7 @@ namespace Svr
 		if (pTrans == nullptr)
 			return;
 
-		svrTrace(Svr::TRC_DBGTRANS, "Transaction Release TID:{0}", pTrans->GetTransID());
+		svrTrace(SVR_DBGTRANS, "Transaction Release TID:{0}", pTrans->GetTransID());
 
 		if (pTrans->GetTimerAction() && pTrans->GetTimerAction()->GetScheduledTime() != TimeStampMS::max())
 			m_activeTransactionScheduler.RemoveTimerAction(currentThreadID, pTrans->GetTimerAction());
@@ -171,7 +171,7 @@ namespace Svr
 
 		if( GetEntityState() == EntityState::CLOSING )
 		{
-			svrTrace( Svr::TRC_TRANSACTION, "Entity Close - Entity ID : {0} , name : {1}, State : {2}", GetEntityID(), typeid(*this).name(), GetEntityState() );
+			svrTrace( SVR_TRANSACTION, "Entity Close - Entity ID : {0} , name : {1}, State : {2}", GetEntityID(), typeid(*this).name(), GetEntityState() );
 			svrChk( TerminateEntity() );
 			hr = ResultCode::SUCCESS_FALSE;
 			goto Proc_End;
@@ -262,7 +262,7 @@ namespace Svr
 
 		if( GetEntityState() == EntityState::CLOSING )
 		{
-			svrTrace( Svr::TRC_TRANSACTION, "Entity Close - Entity ID : {0} , name : {1}, State : {2}", GetEntityID(), typeid(*this).name(), GetEntityState() );
+			svrTrace( SVR_TRANSACTION, "Entity Close - Entity ID : {0} , name : {1}, State : {2}", GetEntityID(), typeid(*this).name(), GetEntityState() );
 			svrChk( TerminateEntity() );
 			hr = ResultCode::SUCCESS_FALSE;
 			goto Proc_End;
@@ -287,7 +287,7 @@ namespace Svr
 		svrChkPtr(pTransRes);
 		if( pCurTran->IsPrintTrace() )
 		{
-			svrTrace( Svr::TRC_DBGTRANS, "Trans Proc TID:{0}:{1}, Entity:{2}", pCurTran->GetTransID(), typeid(*pCurTran).name(), GetEntityUID() );
+			svrTrace( SVR_DBGTRANS, "Trans Proc TID:{0}:{1}, Entity:{2}", pCurTran->GetTransID(), typeid(*pCurTran).name(), GetEntityUID() );
 		}
 
 		pCurTran->UpdateHeartBitTime();
@@ -299,7 +299,7 @@ namespace Svr
 		{
 			if( pCurTran->IsPrintTrace() )
 			{
-				svrTrace( Svr::TRC_TRANSACTION, "Trans failed hr={0:X8}, TID:{1}:{2}, Entity:{3}", 
+				svrTrace( SVR_TRANSACTION, "Trans failed hr={0:X8}, TID:{1}:{2}, Entity:{3}", 
 					hrTem,
 					pCurTran->GetTransID(), 
 					typeid(*pCurTran).name(),
@@ -344,7 +344,7 @@ namespace Svr
 		auto workerThreadID = pWorker->GetThreadID();
 		if (workerThreadID == ThreadID())
 		{
-			svrTrace(Trace::TRC_WARN, "MasterEntity:{0} is added but worker has invalid thread id.");
+			svrTrace(Warning, "MasterEntity:{0} is added but worker has invalid thread id.");
 		}
 		UpdateWorkingThreadID(pWorker->GetThreadID());
 		Entity::OnAddedToTaskManager(pWorker);
@@ -379,7 +379,7 @@ namespace Svr
 				}
 				else
 				{
-					svrTrace(Svr::TRC_TRANSACTION, "Transaction result for TID:{0} is failed to route.", eventTask.EventData.pTransResultEvent->GetTransID());
+					svrTrace(SVR_TRANSACTION, "Transaction result for TID:{0} is failed to route.", eventTask.EventData.pTransResultEvent->GetTransID());
 					auto pNonConstTransRes = const_cast<TransactionResult*>(eventTask.EventData.pTransResultEvent);
 					IMemoryManager::Delete(pNonConstTransRes);
 					svrErr(ResultCode::FAIL);
@@ -387,7 +387,7 @@ namespace Svr
 			}
 			else
 			{
-				svrTrace(Svr::TRC_TRANSACTION, "Failed to process transaction result. null Transaction result.");
+				svrTrace(SVR_TRANSACTION, "Failed to process transaction result. null Transaction result.");
 			}
 			break;
 		default:

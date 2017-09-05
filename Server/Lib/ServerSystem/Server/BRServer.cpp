@@ -14,8 +14,7 @@
 #include "SvrTrace.h"
 #include "String/StrUtil.h"
 #include "Util/TimeUtil.h"
-#include "Common/BrRandom.h"
-#include "Common/BrXML.h"
+#include "Util/SFRandom.h"
 #include "DB/DBClusterManager.h"
 #include "Net/NetServer.h"
 #include "Net/NetServerPeerTCP.h"
@@ -24,13 +23,13 @@
 #include "Entity/EntityManager.h"
 #include "Entity/EntityTable.h"
 #include "ServiceEntity/ClusterManagerServiceEntity.h"
-#include "ServerSystem/SvrLoopbackConnection.h"
+#include "ServerEntity/SvrLoopbackConnection.h"
 #include "SvrConst.h"
-#include "ServerEntity/EntityServerEntity.h"
+#include "ServerEntity/SvrEntityServerEntity.h"
 #include "Server/BrServerUtil.h"
 #include "PerformanceCounter/PerformanceCounterClient.h"
 #include "Transaction/Transaction.h"
-#include "ServerSystem/SvrConfig.h"
+#include "ServerConfig/SFServerConfig.h"
 #include "DB/Factory.h"
 #include "Table/TableSystem.h"
 
@@ -68,6 +67,8 @@ namespace Svr{
 		// main server class has private thread for task
 		SetTickInterval(DurationMS(0));
 
+
+		// TODO: to component
 		DB::Factory::InitializeDBFactory();
 	}
 
@@ -142,8 +143,6 @@ namespace Svr{
 				}
 				Assert(pConn == nullptr);
 
-				break;
-			case Net::INet::Event::EVT_CONNECTION_DISCONNECTED:
 				break;
 			default:
 				break;
@@ -349,39 +348,39 @@ Proc_End:
 
 		m_ServerUpUTCTIme = Util::Time.GetTimeUTCSec();
 
-		svrTrace( Trace::TRC_INFO, "Starting Server" );
+		svrTrace( Info, "Starting Server" );
 
-		svrTrace( Trace::TRC_INFO, "Apply configuration" );
+		svrTrace( Info, "Apply configuration" );
 		// Apply configuration
 		hr = ApplyConfiguration();
 		if( !(hr) )
 		{
-			svrTrace( Trace::TRC_ERROR, "Failed Apply configuration, hr={0:X8}", hr );
+			svrTrace( Error, "Failed Apply configuration, hr={0:X8}", hr );
 			svrErr( hr );
 		}
 
 		hr = InitializeMonitoring();
 		if (!(hr))
 		{
-			svrTrace(Trace::TRC_ERROR, "Failed Apply configuration, hr={0:X8}", hr);
+			svrTrace(Error, "Failed Apply configuration, hr={0:X8}", hr);
 			svrErr(hr);
 		}
 
 		// Initialize server resource
-		svrTrace( Trace::TRC_INFO, "Initialize server resource" );
+		svrTrace( Info, "Initialize server resource" );
 		hr = InitializeServerResource();
 		if( !(hr) )
 		{
-			svrTrace( Trace::TRC_ERROR, "Failed Initialize resource, hr={0:X8}", hr );
+			svrTrace( Error, "Failed Initialize resource, hr={0:X8}", hr );
 			svrErr( hr );
 		}
 
 		// Initialize Network
-		svrTrace( Trace::TRC_INFO, "Initialize Private network" );
+		svrTrace( Info, "Initialize Private network" );
 		hr = InitializeNetPrivate();
 		if( !(hr) )
 		{
-			svrTrace( Trace::TRC_ERROR, "Failed Initialize Private Network, hr={0:X8}", hr );
+			svrTrace( Error, "Failed Initialize Private Network, hr={0:X8}", hr );
 			svrErr( hr );
 		}
 
@@ -395,11 +394,11 @@ Proc_End:
 		if( !( hr ) )
 		{
 			SetServerState( ServerState::STOPED );
-			svrTrace( Trace::TRC_INFO, "Start failed hr:{0:X8}", hr );
+			svrTrace( Info, "Start failed hr:{0:X8}", hr );
 		}
 		else
 		{
-			svrTrace( Trace::TRC_INFO, "Start process done" );
+			svrTrace( Info, "Start process done" );
 		}
 
 		return (hr);
@@ -471,13 +470,13 @@ Proc_End:
 		hr = CloseNetPrivate();
 		if( !(hr) )
 		{
-			svrTrace( Trace::TRC_ERROR, "Failed Close Private Network, hr={0:X8}", hr );
+			svrTrace( Error, "Failed Close Private Network, hr={0:X8}", hr );
 		}
 
 		hr = CloseServerResource();
 		if( !(hr) )
 		{
-			svrTrace( Trace::TRC_ERROR, "Failed Close Private Network, hr={0:X8}", hr );
+			svrTrace( Error, "Failed Close Private Network, hr={0:X8}", hr );
 		}
 
 		GetEntityTable().Clear();
@@ -490,7 +489,7 @@ Proc_End:
 
 		SetServerState( ServerState::STOPED );
 
-		svrTrace( Trace::TRC_INFO, "Server closed hr:{0:X8}", hr );
+		svrTrace( Info, "Server closed hr:{0:X8}", hr );
 
 		return true;
 	}
@@ -508,7 +507,7 @@ Proc_End:
 
 		if( GetMyConfig() == nullptr )
 		{
-			svrTrace( Trace::TRC_ERROR, "No configuration is specified for this server {0}", typeid(*this).name() );
+			svrTrace( Error, "No configuration is specified for this server {0}", typeid(*this).name() );
 			svrErr( ResultCode::UNEXPECTED );
 		}
 
@@ -517,11 +516,11 @@ Proc_End:
 		svrChkPtr(GetMyConfig()->NetPrivate);
 		svrChk( m_pNetPrivate->HostOpen( GetNetClass(), GetMyConfig()->NetPrivate->IP.c_str(), GetMyConfig()->NetPrivate->Port ) );
 
-		svrTrace( Trace::TRC_INFO, "Initialize basic entities" );
+		svrTrace( Info, "Initialize basic entities" );
 		hr = InitializeEntities();
 		if( !(hr) )
 		{
-			svrTrace( Trace::TRC_ERROR, "Failed Initialize basic entities, hr={0:X8}", hr );
+			svrTrace( Error, "Failed Initialize basic entities, hr={0:X8}", hr );
 			svrErr( hr );
 		}
 
@@ -598,13 +597,13 @@ Proc_End:
 		// Process private network event
 		if( !(ProcessPrivateNetworkEvent()) )
 		{
-			svrTrace( Svr::TRC_DBGFAIL, "ProcessPrivateNetworkEvent : {0:X8}", hr );
+			svrTrace( SVR_DBGFAIL, "ProcessPrivateNetworkEvent : {0:X8}", hr );
 		}
 
 
 		if( !(ProcessPublicNetworkEvent()) )
 		{
-			svrTrace( Svr::TRC_DBGFAIL, "ProcessPublicNetworkEvent : {0:X8}", hr );
+			svrTrace( SVR_DBGFAIL, "ProcessPublicNetworkEvent : {0:X8}", hr );
 		}
 
 		for (auto itMgr : m_DBManagers)
@@ -649,6 +648,9 @@ Proc_End:
 
 		return ResultCode::SUCCESS;
 	}
+
+
+
 
 
 }; //namespace SF{

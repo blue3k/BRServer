@@ -102,14 +102,14 @@ namespace SF
 
 
 
-			Result RegisterEntityCmd::TraceOut(MessageDataPtr& pMsg)
+			Result RegisterEntityCmd::TraceOut(const char* prefix, MessageDataPtr& pMsg)
 			{
  				RegisterEntityCmd parser;
 				parser.ParseMessage(*pMsg);
 				protocolTrace( Debug2, "RegisterEntity:{0}:{1} , TransactionID:{2}, LocalEntID:{3}, EntName:{4,60}",
-						pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, parser.GetTransactionID(), parser.GetLocalEntID(), parser.GetEntName()); 
+						prefix, pMsg->GetMessageHeader()->Length, parser.GetTransactionID(), parser.GetLocalEntID(), parser.GetEntName()); 
 				return ResultCode::SUCCESS;
-			}; // Result RegisterEntityCmd::TraceOut(MessageDataPtr& pMsg)
+			}; // Result RegisterEntityCmd::TraceOut(const char* prefix, MessageDataPtr& pMsg)
 
 			const MessageID RegisterEntityRes::MID = MessageID(MSGTYPE_RESULT, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_ENTITYSERVER, 0);
 			Result RegisterEntityRes::ParseMessage( MessageData* pIMsg )
@@ -183,14 +183,14 @@ namespace SF
 
 
 
-			Result RegisterEntityRes::TraceOut(MessageDataPtr& pMsg)
+			Result RegisterEntityRes::TraceOut(const char* prefix, MessageDataPtr& pMsg)
 			{
  				RegisterEntityRes parser;
 				parser.ParseMessage(*pMsg);
 				protocolTrace( Debug2, "RegisterEntity:{0}:{1} , TransactionID:{2}, Result:{3:X8}, EntUID:{4}",
-						pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, parser.GetTransactionID(), parser.GetResult(), parser.GetEntUID()); 
+						prefix, pMsg->GetMessageHeader()->Length, parser.GetTransactionID(), parser.GetResult(), parser.GetEntUID()); 
 				return ResultCode::SUCCESS;
-			}; // Result RegisterEntityRes::TraceOut(MessageDataPtr& pMsg)
+			}; // Result RegisterEntityRes::TraceOut(const char* prefix, MessageDataPtr& pMsg)
 
 			// Cmd: Find Entity
 			const MessageID UnregisterEntityCmd::MID = MessageID(MSGTYPE_COMMAND, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_ENTITYSERVER, 1);
@@ -262,14 +262,14 @@ namespace SF
 
 
 
-			Result UnregisterEntityCmd::TraceOut(MessageDataPtr& pMsg)
+			Result UnregisterEntityCmd::TraceOut(const char* prefix, MessageDataPtr& pMsg)
 			{
  				UnregisterEntityCmd parser;
 				parser.ParseMessage(*pMsg);
 				protocolTrace( Debug2, "UnregisterEntity:{0}:{1} , TransactionID:{2}, EntUID:{3}",
-						pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, parser.GetTransactionID(), parser.GetEntUID()); 
+						prefix, pMsg->GetMessageHeader()->Length, parser.GetTransactionID(), parser.GetEntUID()); 
 				return ResultCode::SUCCESS;
-			}; // Result UnregisterEntityCmd::TraceOut(MessageDataPtr& pMsg)
+			}; // Result UnregisterEntityCmd::TraceOut(const char* prefix, MessageDataPtr& pMsg)
 
 			const MessageID UnregisterEntityRes::MID = MessageID(MSGTYPE_RESULT, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_ENTITYSERVER, 1);
 			Result UnregisterEntityRes::ParseMessage( MessageData* pIMsg )
@@ -340,14 +340,14 @@ namespace SF
 
 
 
-			Result UnregisterEntityRes::TraceOut(MessageDataPtr& pMsg)
+			Result UnregisterEntityRes::TraceOut(const char* prefix, MessageDataPtr& pMsg)
 			{
  				UnregisterEntityRes parser;
 				parser.ParseMessage(*pMsg);
 				protocolTrace( Debug2, "UnregisterEntity:{0}:{1} , TransactionID:{2}, Result:{3:X8}",
-						pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, parser.GetTransactionID(), parser.GetResult()); 
+						prefix, pMsg->GetMessageHeader()->Length, parser.GetTransactionID(), parser.GetResult()); 
 				return ResultCode::SUCCESS;
-			}; // Result UnregisterEntityRes::TraceOut(MessageDataPtr& pMsg)
+			}; // Result UnregisterEntityRes::TraceOut(const char* prefix, MessageDataPtr& pMsg)
 
 			// Cmd: Find Entity
 			const MessageID FindEntityCmd::MID = MessageID(MSGTYPE_COMMAND, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_ENTITYSERVER, 2);
@@ -419,14 +419,14 @@ namespace SF
 
 
 
-			Result FindEntityCmd::TraceOut(MessageDataPtr& pMsg)
+			Result FindEntityCmd::TraceOut(const char* prefix, MessageDataPtr& pMsg)
 			{
  				FindEntityCmd parser;
 				parser.ParseMessage(*pMsg);
 				protocolTrace( Debug2, "FindEntity:{0}:{1} , TransactionID:{2}, LocalEntID:{3}",
-						pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, parser.GetTransactionID(), parser.GetLocalEntID()); 
+						prefix, pMsg->GetMessageHeader()->Length, parser.GetTransactionID(), parser.GetLocalEntID()); 
 				return ResultCode::SUCCESS;
-			}; // Result FindEntityCmd::TraceOut(MessageDataPtr& pMsg)
+			}; // Result FindEntityCmd::TraceOut(const char* prefix, MessageDataPtr& pMsg)
 
 			const MessageID FindEntityRes::MID = MessageID(MSGTYPE_RESULT, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_ENTITYSERVER, 2);
 			Result FindEntityRes::ParseMessage( MessageData* pIMsg )
@@ -500,14 +500,14 @@ namespace SF
 
 
 
-			Result FindEntityRes::TraceOut(MessageDataPtr& pMsg)
+			Result FindEntityRes::TraceOut(const char* prefix, MessageDataPtr& pMsg)
 			{
  				FindEntityRes parser;
 				parser.ParseMessage(*pMsg);
 				protocolTrace( Debug2, "FindEntity:{0}:{1} , TransactionID:{2}, Result:{3:X8}, EntUID:{4}",
-						pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, parser.GetTransactionID(), parser.GetResult(), parser.GetEntUID()); 
+						prefix, pMsg->GetMessageHeader()->Length, parser.GetTransactionID(), parser.GetResult(), parser.GetEntUID()); 
 				return ResultCode::SUCCESS;
-			}; // Result FindEntityRes::TraceOut(MessageDataPtr& pMsg)
+			}; // Result FindEntityRes::TraceOut(const char* prefix, MessageDataPtr& pMsg)
 
 
 

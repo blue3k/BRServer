@@ -22,7 +22,7 @@
 #include "Protocol/Policy/GamePartyManagerNetPolicy.h"
 #include "Transaction/MessageRoute.h"
 #include "ServerSystem/ServiceEntity/GamePartyManagerServiceEntity.h"
-#include "ServerSystem/ServerTransaction.h"
+#include "Transaction/ServerTransaction.h"
 
 
 namespace SF {

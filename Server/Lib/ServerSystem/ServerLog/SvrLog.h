@@ -14,6 +14,7 @@
 #include "SFTypedefs.h"
 #include "String/StrUtil.h"
 #include "Util/TimeUtil.h"
+#include "Util/SFLog.h"
 #include "String/StrFormat.h"
 #include "ResultCode/SFResultCodeSystem.h"
 
@@ -109,91 +110,6 @@ namespace Trace {
 
 
 
-	////////////////////////////////////////////////////////////////////////////////
-	//
-	// Trace Log Module
-	//
-	class TraceModule
-	{
-	public:
-		enum { MAX_TRACEMODULE = 30 };
-
-		static const char* CONFIG_FILENAME;
-
-	private:
-		// Trace mode Mask 
-		uint			m_uiTraceMask;
-
-		// Name of trace module
-		char*			m_szName;
-		char*			m_szNameTag;
-
-		static TimeStampMS     m_MaskUpdated;
-		static std::unordered_map<std::string, uint32_t> stm_Masks;
-		
-	private:
-
-		// Module state registry key
-		//static HKEY		stm_hRegKey;
-		//static 
-
-		// Trace modules
-		static TraceModule* stm_ModuleList[MAX_TRACEMODULE];
-
-		static bool LoadTraceConfig();
-
-		// Update trace
-		void UpdateTrace();
-
-		static Result CheckAndUpdate();
-
-		friend class TraceOutModule;
-
-	public:
-
-		TraceModule( const char *szName, const char *szNameTag );
-		~TraceModule();
-
-		static TraceModule** GetModules();
-
-		inline bool CheckTrace( uint trcMask );
-		inline uint GetTraceMask();
-		inline const char *GetName();
-		inline const char *GetNameTag();
-
-		// Trace print out
-		void* TraceReserveWriteBuffer( uint trcInputMask, char*& stringBuffer, INT &buffLen );
-		void TraceSendWriteBuffer( void* pWriteBuffer, INT buffLen );
-	};
-
-
-
-
-	//////////////////////////////////////////////////////////////////////////////////////
-	//
-	// Trace system initialize
-	//
-
-	void Flush();
-
-	// Allocate console if not exist
-	void AllocScreenConsole();
-
-
-
-	//////////////////////////////////////////////////////////////////////////////////////
-	//
-	//  System Exception handler
-	//
-
-	enum ExceptionMode 
-	{
-		Exception_Crash,
-		Exception_SnapShot,
-	};
-
-	// initialize exception Handler
-	void InitExceptionHandler();
 
 	
 } // namespace Trace
@@ -204,27 +120,7 @@ namespace Trace {
 //
 //  Declare trace module
 //
-#define DECLARE_TRACE_MODULE(trcMod) \
-	SF::Trace::TraceModule trcMod##TraceModule(#trcMod,#trcMod":");  \
-														\
 
-
-#define TRACE_OUT(trcMod,lModeMask, ...) \
-	do{if( trcMod##TraceModule.CheckTrace(lModeMask) ) {\
-		INT buffLen = 0;\
-		char *strTraceBuff = nullptr;\
-		void* bufferContext = trcMod##TraceModule.TraceReserveWriteBuffer(lModeMask,strTraceBuff,buffLen );\
-		if( bufferContext == nullptr || strTraceBuff == nullptr ) break;\
-		StrUtil::Format( strTraceBuff, buffLen,  __VA_ARGS__ );\
-		trcMod##TraceModule.TraceSendWriteBuffer(bufferContext,buffLen );\
-	}}while(0);\
-	\
-
-
-
-#define DEFINE_TRACE_MODULE(trcMod) \
-	extern SF::Trace::TraceModule trcMod##TraceModule;\
-	\
 
 
 
@@ -242,14 +138,14 @@ namespace Trace {
 	#define TrcErrJmp(trcMod, errval, __var) \
 	do {\
 		__var = errval;\
-		TRACE_OUT(trcMod, Trace::TRC_ERROR, "{0}({1}): {2}",     \
+		SFLog(trcMod, Error, "{0}({1}): {2}",     \
 			__FILE__, __LINE__, hr ); \
 		goto Proc_End;\
 	} while(0);
 
 	#define TrcErrReturn(trcMod, errval) \
 	do {\
-		TRACE_OUT(trcMod, Trace::TRC_ERROR, "{0}({1}): {2}",     \
+		SFLog(trcMod, Error, "{0}({1}): {2}",     \
 			__FILE__, __LINE__, (SF::Result)errval ); \
 		return errval;\
 	} while(0);
@@ -260,14 +156,14 @@ namespace Trace {
 		hr = checkState;\
 		if( !(hr) )\
 		{\
-			defTrace( Trace::TRC_ERROR, "{0}({1}): {2}", __FILE__, __LINE__, hr ); \
+			defTrace( Error, "{0}({1}): {2}", __FILE__, __LINE__, hr ); \
 			goto Proc_End;\
 		}\
 	}while(0)\
 
 #define trcErr(errVal) \
 	do{\
-		defTrace( Trace::TRC_ERROR, "{0}({1}): {2}", __FILE__, __LINE__, hr ); \
+		defTrace( Error, "{0}({1}): {2}", __FILE__, __LINE__, hr ); \
 		hr = errVal;\
 		goto Proc_End;\
 	}while(0)\
@@ -277,7 +173,7 @@ namespace Trace {
 	do {\
 		if( (checkPointer) == NULL )\
 		{\
-			defTrace( Trace::TRC_ERROR, "{0}({1}): Null Exception",     \
+			defTrace( Error, "{0}({1}): Null Exception",     \
 				__FILE__, __LINE__ ); \
 			hr = ResultCode::OUT_OF_MEMORY;\
 			goto Proc_End;\
@@ -289,7 +185,7 @@ namespace Trace {
 	do{\
 		if( (checkPointer) == NULL )\
 		{\
-			defTrace( Trace::TRC_ERROR, "{0}({1}): Invalid Pointer", __FILE__, __LINE__ ); \
+			defTrace( Error, "{0}({1}): Invalid Pointer", __FILE__, __LINE__ ); \
 			hr = ResultCode::INVALID_POINTER;\
 			goto Proc_End;\
 		}\
@@ -301,7 +197,7 @@ namespace Trace {
 #define trcAssert(condi) \
 				do{ \
 					if( !(condi) ) {\
-					defTrace( Trace::TRC_ASSERT, "{0}({1}): Assert occure : {2}", __FILE__, __LINE__, #condi );  Trace::Flush();\
+					defTrace( Assert, "{0}({1}): Assert occure : {2}", __FILE__, __LINE__, #condi );  Service::LogModule->Flush();\
 						Assert(condi);\
 						trcErr(ResultCode::UNEXPECTED);\
 					}\
@@ -312,7 +208,7 @@ namespace Trace {
 #define trcAssertExp(condi,expr) \
 				do{ \
 					if( !(condi) ) {\
-						defTrace( Trace::TRC_ASSERT, "{0}({1}): Assert occure : {2} : {3}", __FILE__, __LINE__, #condi, expr ); Trace::Flush();\
+						defTrace( Assert, "{0}({1}): Assert occure : {2} : {3}", __FILE__, __LINE__, #condi, expr ); Service::LogModule->Flush();\
 						Assert(condi);\
 						trcErr(ResultCode::UNEXPECTED);\
 					}\
@@ -323,7 +219,7 @@ namespace Trace {
 #define TrcAssertReturn(condi) \
 				do{ \
 					if( !(condi) ) {\
-					defTrace( Trace::TRC_ASSERT, "{0}({1}): Assert occure : {2}", __FILE__, __LINE__, #condi );  Trace::Flush();\
+					defTrace( Assert, "{0}({1}): Assert occure : {2}", __FILE__, __LINE__, #condi );  Service::LogModule->Flush();\
 						Assert(condi);\
 						return ResultCode::UNEXPECTED;\
 					}\
@@ -334,7 +230,7 @@ namespace Trace {
 #define TrcAssertReturnExp(condi,expr) \
 				do{ \
 					if( !(condi) ) {\
-						defTrace( Trace::TRC_ASSERT, "{0}({1}): Assert occure : {2} : {3}", __FILE__, __LINE__, #condi, expr ); Trace::Flush();\
+						defTrace( Assert, "{0}({1}): Assert occure : {2} : {3}", __FILE__, __LINE__, #condi, expr ); Service::LogModule->Flush();\
 						Assert(condi);\
 						return ResultCode::UNEXPECTED;\
 					}\
@@ -397,7 +293,7 @@ namespace Trace {
 #define trcAssert(condi) \
 				{ \
 					if( !(condi) ) {\
-						defTrace( Trace::TRC_ASSERT, "{0}({1}): Assert occure : {2}", __FILE__, __LINE__, #condi ); Trace::Flush();\
+						defTrace( Assert, "{0}({1}): Assert occure : {2}", __FILE__, __LINE__, #condi ); Service::LogModule->Flush();\
 						trcErr(ResultCode::UNEXPECTED);\
 					}\
 				} \
@@ -407,7 +303,7 @@ namespace Trace {
 #define trcAssertExp(condi,expr) \
 				do{ \
 					if( !(condi) ) {\
-						defTrace( Trace::TRC_ASSERT, "{0}({1}): Assert occure : {2} : {3}", __FILE__, __LINE__, #condi, expr ); Trace::Flush();\
+						defTrace( Assert, "{0}({1}): Assert occure : {2} : {3}", __FILE__, __LINE__, #condi, expr ); Service::LogModule->Flush();\
 						trcErr(ResultCode::UNEXPECTED);\
 					}\
 				} while(0); \
@@ -416,7 +312,7 @@ namespace Trace {
 #define TrcAssertReturn(condi) \
 				{ \
 					if( !(condi) ) {\
-						defTrace( Trace::TRC_ASSERT, "{0}({1}): Assert occure : {2}", __FILE__, __LINE__, #condi ); Trace::Flush();\
+						defTrace( Assert, "{0}({1}): Assert occure : {2}", __FILE__, __LINE__, #condi ); Service::LogModule->Flush();\
 						return ResultCode::UNEXPECTED;\
 					}\
 				} \
@@ -426,7 +322,7 @@ namespace Trace {
 #define TrcAssertReturnExp(condi,expr) \
 				do{ \
 					if( !(condi) ) {\
-						defTrace( Trace::TRC_ASSERT, "{0}({1}): Assert occure : {2} : {3}", __FILE__, __LINE__, #condi, expr ); Trace::Flush();\
+						defTrace( Assert, "{0}({1}): Assert occure : {2} : {3}", __FILE__, __LINE__, #condi, expr ); Service::LogModule->Flush();\
 						return ResultCode::UNEXPECTED;\
 					}\
 				} while(0); \
@@ -474,21 +370,21 @@ namespace Trace {
 // Default trace module
 //
 
-DEFINE_TRACE_MODULE(def)
+
 
 #define defErr(e)			trcErr(e)
 #define defChk(e)			trcChk(e)
-#define defChkErr(ErrCode,exp)			{ do{ Result hRes = exp; if( !(hRes) ) TrcErrJmp(svr,ErrCode,hr); } while(0); }
+#define defChkErr(ErrCode,exp)			{ do{ Result hRes = exp; if( !(hRes) ) TrcErrJmp(Svr,ErrCode,hr); } while(0); }
 #define defMem(a)			trcMem(a)
 #define defChkPtr(a)		trcChkPtr(a)
 
 #define defAssert(e)			trcAssert(e)
 #define defAssertExp(e,expr)	trcAssertExp(e,expr)
-#define defTrace(lModeMask, ...)				TRACE_OUT(def,lModeMask,__VA_ARGS__)
+#define defTrace(lModeMask, ...)				SFLog(System,lModeMask,__VA_ARGS__)
 
 #define defChkSilent(e)		trcChkSilent(e)
 #define defErrSilent(e)		trcErrSilent(e)
 
 
-#include "SvrLog.inl"
+
 

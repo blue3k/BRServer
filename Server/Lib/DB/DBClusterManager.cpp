@@ -158,7 +158,7 @@ namespace DB {
 		pDBSource = m_ShardingBucket[partitioningID];
 		dbAssert(pDBSource == nullptr || !pDBSource->GetOpened());
 
-		dbTrace(Trace::TRC_INFO, "Adding DBSource {0}, {1}, {2}", strInstanceName, strConnectionString, strDBName);
+		dbTrace(Info, "Adding DBSource {0}, {1}, {2}", strInstanceName, strConnectionString, strDBName);
 
 		if (pDBSource == nullptr)
 		{
@@ -232,7 +232,7 @@ Proc_End:
 			// Find the data source
 			if (!(SelectDBByKey(pQuery->GetPartitioningKey(), pDBSource)))
 			{
-				dbTrace(Trace::TRC_ERROR, "QueryWorker failure: The sharding bucket is empty");
+				dbTrace(Error, "QueryWorker failure: The sharding bucket is empty");
 				// It's not expected
 				pQuery->SetResult(ResultCode::UNEXPECTED);
 				RouteResult(pQuery);
@@ -252,7 +252,7 @@ Proc_End:
 			{
 				// It's not expected
 				pQuery->SetResult(ResultCode::UNEXPECTED);
-				dbTrace(Trace::TRC_ERROR, "Assigning query to a worker failed {0}, TransID:{1}", typeid(pQuery).name(), pQuery->GetTransID());
+				dbTrace(Error, "Assigning query to a worker failed {0}, TransID:{1}", typeid(pQuery).name(), pQuery->GetTransID());
 				RouteResult(pQuery);
 				continue;
 			}
@@ -263,7 +263,7 @@ Proc_End:
 				{
 					pQuery->SetResult(ResultCode::UNEXPECTED);
 					pSession->ReleaseSession();
-					dbTrace(Trace::TRC_ERROR, "Failed to open DB session {0}, TransID:{1}", typeid(*pQuery).name(), pQuery->GetTransID());
+					dbTrace(Error, "Failed to open DB session {0}, TransID:{1}", typeid(*pQuery).name(), pQuery->GetTransID());
 					RouteResult(pQuery);
 					continue;
 				}
@@ -275,7 +275,7 @@ Proc_End:
 			{
 				// It's not expected
 				pQuery->SetResult(ResultCode::UNEXPECTED);
-				dbTrace(Trace::TRC_ERROR, "Assigning query to a worker failed {0}, TransID:{1}", typeid(*pQuery).name(), pQuery->GetTransID());
+				dbTrace(Error, "Assigning query to a worker failed {0}, TransID:{1}", typeid(*pQuery).name(), pQuery->GetTransID());
 			}
 			else
 			{
@@ -317,7 +317,7 @@ Proc_End:
 						if (pDBSource->GetDefaultDB() != rowRes.DBName
 							|| pDBSource->GetConnectionString() != rowRes.ConnectionString)
 						{
-							dbTrace(Trace::TRC_INFO, "Initializating DBSource {0}, Shard:{1} {2}, {3}", typeid(*this).name(), rowRes.ShardID,  rowRes.ConnectionString, rowRes.DBName);
+							dbTrace(Info, "Initializating DBSource {0}, Shard:{1} {2}, {3}", typeid(*this).name(), rowRes.ShardID,  rowRes.ConnectionString, rowRes.DBName);
 							dbChk(pDBSource->InitializeDBSource(rowRes.ConnectionString, rowRes.DBName, m_UserID, m_Password));
 						}
 					}
@@ -352,7 +352,7 @@ Proc_End:
 		// Find the data source
 		if (!(SelectDBByKey(pQuery->GetPartitioningKey(), pDBSource)))
 		{
-			dbTrace(Trace::TRC_ERROR, "QueryWorker failure: The sharding bucket is empty");
+			dbTrace(Error, "QueryWorker failure: The sharding bucket is empty");
 			// It's not expected
 			pQuery->SetResult(ResultCode::UNEXPECTED);
 			dbErr(ResultCode::UNEXPECTED);
@@ -371,7 +371,7 @@ Proc_End:
 		{
 			// It's not expected
 			pQuery->SetResult(ResultCode::UNEXPECTED);
-			dbTrace(Trace::TRC_ERROR, "Assigning query to a worker failed {0}, TransID:{1}", typeid(pQuery).name(), pQuery->GetTransID());
+			dbTrace(Error, "Assigning query to a worker failed {0}, TransID:{1}", typeid(pQuery).name(), pQuery->GetTransID());
 			dbErr(ResultCode::UNEXPECTED);
 		}
 
@@ -381,14 +381,14 @@ Proc_End:
 			{
 				pQuery->SetResult(ResultCode::UNEXPECTED);
 				pSession->ReleaseSession();
-				dbTrace(Trace::TRC_ERROR, "Failed to open DB session {0}, TransID:{1}", typeid(pQuery).name(), pQuery->GetTransID());
+				dbTrace(Error, "Failed to open DB session {0}, TransID:{1}", typeid(pQuery).name(), pQuery->GetTransID());
 				dbErr(ResultCode::UNEXPECTED);
 			}
 		}
 
 		pQuery->SetSession(pSession);
 
-		dbTrace(DB::TRC_QUERY, "Query pending transID:{0} msg:{1}, class:{2}", pQuery->GetTransID(), pQuery->GetMsgID(), typeid(pQuery).name());
+		dbTrace(TRC_QUERY, "Query pending transID:{0} msg:{1}, class:{2}", pQuery->GetTransID(), pQuery->GetMsgID(), typeid(pQuery).name());
 
 		dbChk(QueryWorkerManager::PendingQuery(pQuery));
 
@@ -405,7 +405,7 @@ Proc_End:
 		Result hr = ResultCode::SUCCESS;
 		Svr::TransactionResult *pRes = pQuery;
 
-		dbTrace(DB::TRC_QUERY, "Query route result transID:{0} msg:{1}, class:{2}", pQuery->GetTransID(), pQuery->GetMsgID(), typeid(pQuery).name());
+		dbTrace(TRC_QUERY, "Query route result transID:{0} msg:{1}, class:{2}", pQuery->GetTransID(), pQuery->GetMsgID(), typeid(pQuery).name());
 
 		if( pRes->GetTransID() != TransactionID() )
 		{
@@ -451,7 +451,7 @@ Proc_End:
 		// Find the data source
 		if (!(SelectDBByKey(pQuery->GetPartitioningKey(), pDBSource)))
 		{
-			dbTrace(Trace::TRC_ERROR, "QueryWorker failure: The sharding bucket is empty");
+			dbTrace(Error, "QueryWorker failure: The sharding bucket is empty");
 			// It's not expected
 			pQuery->SetResult(ResultCode::UNEXPECTED);
 			dbErr(ResultCode::UNEXPECTED);
@@ -467,7 +467,7 @@ Proc_End:
 		{
 			// It's not expected
 			pQuery->SetResult(ResultCode::UNEXPECTED);
-			dbTrace(Trace::TRC_ERROR, "Assigning query to a worker failed {0}, TransID:{1}", typeid(pQuery).name(), pQuery->GetTransID());
+			dbTrace(Error, "Assigning query to a worker failed {0}, TransID:{1}", typeid(pQuery).name(), pQuery->GetTransID());
 			dbErr(ResultCode::UNEXPECTED);
 		}
 
@@ -477,7 +477,7 @@ Proc_End:
 			{
 				pQuery->SetResult(ResultCode::UNEXPECTED);
 				pSession->ReleaseSession();
-				dbTrace(Trace::TRC_ERROR, "Failed to open DB session {0}, TransID:{1}", typeid(pQuery).name(), pQuery->GetTransID());
+				dbTrace(Error, "Failed to open DB session {0}, TransID:{1}", typeid(pQuery).name(), pQuery->GetTransID());
 				dbErr(ResultCode::UNEXPECTED);
 			}
 		}

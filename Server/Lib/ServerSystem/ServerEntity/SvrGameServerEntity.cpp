@@ -20,7 +20,7 @@
 #include "ServerEntity/ServerEntity.h"
 #include "Transaction/Transaction.h"
 #include "SvrTrace.h"
-#include "ServerSystem/ServerEntity/GameServerEntity.h"
+#include "ServerEntity/SvrGameServerEntity.h"
 #include "Transaction/ServerTransactionGeneric.h"
 
 #include "Protocol/Policy/GameServerNetPolicy.h"
@@ -53,7 +53,7 @@ namespace Svr {
 
 		svrChk(ServerEntity::InitializeEntity( newEntityID ) );
 
-		BR_ENTITY_MESSAGE(Message::Server::ServerConnectedC2SEvt) { svrMemReturn(pNewTrans = new(GetMemoryManager()) Svr::GenericServerStartedTrans(pMsgData)); return ResultCode::SUCCESS; } );
+		BR_ENTITY_MESSAGE(Message::Server::ServerConnectedC2SEvt) { svrMemReturn(pNewTrans = new(GetMemoryManager()) Svr::GenericServerStartedTrans(GetMemoryManager(), pMsgData)); return ResultCode::SUCCESS; } );
 
 	Proc_End:
 

@@ -96,7 +96,7 @@ namespace Svr {
 			{
 				m_CreateRequestCount++;
 				// Garbage login session information will lead process to here. Ignore it and create new one
-				svrTrace(Svr::TRC_ENTITY, "Garbage login session information will lead process to here. Ignore it and create new one UID:{0} ticket:{1}",
+				svrTrace(SVR_ENTITY, "Garbage login session information will lead process to here. Ignore it and create new one UID:{0} ticket:{1}",
 					super::GetMyOwner()->GetPlayerID(), super::GetMyOwner()->GetAuthTicket());
 				if (!(RegisterNewPlayerToJoinGameServer()))
 				{
@@ -135,7 +135,7 @@ namespace Svr {
 
 		// Generate new authenticate ID
 		newTicket = super::GetMyOwner()->GetAuthTicketGenerator().NewUID();
-		svrTrace(Svr::TRC_DBGINFO, "New Player Ticket Ticket:{0}", newTicket);
+		svrTrace(SVR_DBGINFO, "New Player Ticket Ticket:{0}", newTicket);
 		super::GetMyOwner()->SetAuthTicket(newTicket);
 
 		// register new ticket
@@ -182,7 +182,7 @@ namespace Svr {
 
 			if( m_GameEntityUID == 0 )
 			{
-				svrTrace(Svr::TRC_ENTITY, "No login session");
+				svrTrace(SVR_ENTITY, "No login session");
 				svrChk( RegisterNewPlayerToJoinGameServer() );
 			}
 			else
@@ -217,13 +217,13 @@ namespace Svr {
 		hr = pServiceEntity->FindRandomService( pService );
 		if (!(hr))
 		{
-			svrTrace(Trace::TRC_ERROR, "Failed to find cluster service entity for game:{0} PlayerID:{1}", super::GetGameID(), super::GetMyOwner()->GetPlayerID());
+			svrTrace(Error, "Failed to find cluster service entity for game:{0} PlayerID:{1}", super::GetGameID(), super::GetMyOwner()->GetPlayerID());
 			goto Proc_End;
 		}
 
 		super::GetMyOwner()->HeartBit();
 
-		svrTrace(Svr::TRC_ENTITY, "Creating new Entity for PID:{0}, on svr:{1}", super::GetMyOwner()->GetPlayerID(), pService->GetEntityUID());
+		svrTrace(SVR_ENTITY, "Creating new Entity for PID:{0}, on svr:{1}", super::GetMyOwner()->GetPlayerID(), pService->GetEntityUID());
 
 		svrChk( pService->GetService<Svr::GameServerService>()->RegisterPlayerToJoinGameServerCmd(super::GetTransID(),
 			super::GetMyOwner()->GetPlayerID(), super::GetMyOwner()->GetAuthTicket(), super::GetMyOwner()->GetFacebookUID(), super::GetMyOwner()->GetShardID()));
@@ -249,7 +249,7 @@ namespace Svr {
 			else
 			{
 				// Garbage login session information will lead process to here. Ignore it and create new one
-				svrTrace(Svr::TRC_ENTITY, "Garbage login session information will lead process to here. Ignore it and create new one UID:{0} ticket:{1}", 
+				svrTrace(SVR_ENTITY, "Garbage login session information will lead process to here. Ignore it and create new one UID:{0} ticket:{1}", 
 					super::GetMyOwner()->GetPlayerID(), super::GetMyOwner()->GetAuthTicket());
 				svrChkSilent( RegisterNewPlayerToJoinGameServer() );
 			}
@@ -446,7 +446,7 @@ namespace Svr {
 		}
 		else
 		{
-			svrTrace(Trace::TRC_ERROR, "Failed to create player FBUID:{0}, email:{1}, result:{2}", GetUID(), pDBRes->EMail, pDBRes->Result);
+			svrTrace(Error, "Failed to create player FBUID:{0}, email:{1}, result:{2}", GetUID(), pDBRes->EMail, pDBRes->Result);
 			hr = ResultCode::E_INVALID_VALUE;
 		}
 
@@ -645,7 +645,7 @@ namespace Svr {
 
 		if (GetMyOwner()->GetAuthTicket() != 0 && GetMyOwner()->GetIsTicketOwner() )
 		{
-			svrTrace(Svr::TRC_ENTITY, "Login entity closed without gameserver joining. Delete login session for UID:{0}, ticket:{1}", GetMyOwner()->GetPlayerID(), GetMyOwner()->GetAuthTicket());
+			svrTrace(SVR_ENTITY, "Login entity closed without gameserver joining. Delete login session for UID:{0}, ticket:{1}", GetMyOwner()->GetPlayerID(), GetMyOwner()->GetAuthTicket());
 			svrChk( Svr::GetServerComponent<DB::LoginSessionDB>()->DeleteLoginSession( GetTransID(), GetMyOwner()->GetPlayerID(), GetMyOwner()->GetAuthTicket() ) );
 		}
 		else
@@ -913,7 +913,7 @@ namespace Svr {
 		hr = pServiceEntity->FindRandomService(pService);
 		if (!(hr))
 		{
-			svrTrace(Trace::TRC_ERROR, "Failed to find ranking service");
+			svrTrace(Error, "Failed to find ranking service");
 			goto Proc_End;
 		}
 
@@ -1012,7 +1012,7 @@ namespace Svr {
 		hr = pServiceEntity->FindRandomService(pService);
 		if (!(hr))
 		{
-			svrTrace(Trace::TRC_ERROR, "Failed to find ranking service");
+			svrTrace(Error, "Failed to find ranking service");
 			goto Proc_End;
 		}
 

@@ -37,7 +37,7 @@
 #include "ServerSystem/ServiceEntity/GamePartyManagerServiceEntity.h"
 #include "ServerSystem/ServerService/GamePartyManagerService.h"
 #include "ServerSystem/ServiceEntity/Game/GameInstanceManagerServiceEntity.h"
-#include "ServerSystem/ServerService/GameInstanceManagerService.h"
+#include "Protocol/ServerService/GameInstanceManagerService.h"
 
 #include "Server/BrServer.h"
 
@@ -354,7 +354,7 @@ namespace Svr {
 			auto matchingQueueService = Svr::GetServerComponent<Svr::RingClusterServiceEntity>(matchingCompID);
 			if (matchingQueueService == nullptr)
 			{
-				svrTrace(Trace::TRC_ERROR, "Failed to get matching queue service MaxGamePlayer:{0}, NumberOfPlayer:{1}, matchingCompID:{2}", GetMaxGamePlayers(), GetMyOwner()->GetNumPlayer(), matchingCompID);
+				svrTrace(Error, "Failed to get matching queue service MaxGamePlayer:{0}, NumberOfPlayer:{1}, matchingCompID:{2}", GetMaxGamePlayers(), GetMyOwner()->GetNumPlayer(), matchingCompID);
 				svrErr(ResultCode::SVR_INVALID_CLUSTERID);
 			}
 			else

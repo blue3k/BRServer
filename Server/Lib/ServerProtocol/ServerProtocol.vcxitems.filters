@@ -13,8 +13,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="$(MSBuildThisFileDirectory)stdafx.h" />
-    <ClInclude Include="$(MSBuildThisFileDirectory)GenericMsgClass.h" />
-    <ClInclude Include="$(MSBuildThisFileDirectory)ProtocolTrace.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Protocol\Message\GamePartyManagerMsgClass.h">
       <Filter>Message</Filter>
     </ClInclude>
@@ -214,49 +212,51 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)Protocol\Policy\GameInstanceNetPolicy.h">
       <Filter>Policy</Filter>
     </ClInclude>
-    <ClInclude Include="C:\work\BRServerSF\Server\Lib\ServerProtocol\Protocol\ServerService\GameInstanceManagerService.h">
+    <ClInclude Include="$(MSBuildThisFileDirectory)Protocol\ServerService\ClusterServerService.h">
       <Filter>ServerService</Filter>
     </ClInclude>
-    <ClInclude Include="C:\work\BRServerSF\Server\Lib\ServerProtocol\Protocol\ServerService\GameInstanceService.h">
+    <ClInclude Include="$(MSBuildThisFileDirectory)Protocol\ServerService\EntityServerService.h">
       <Filter>ServerService</Filter>
     </ClInclude>
-    <ClInclude Include="C:\work\BRServerSF\Server\Lib\ServerProtocol\Protocol\ServerService\GamePartyManagerService.h">
+    <ClInclude Include="$(MSBuildThisFileDirectory)Protocol\ServerService\GameInstanceManagerService.h">
       <Filter>ServerService</Filter>
     </ClInclude>
-    <ClInclude Include="C:\work\BRServerSF\Server\Lib\ServerProtocol\Protocol\ServerService\GamePartyService.h">
+    <ClInclude Include="$(MSBuildThisFileDirectory)Protocol\ServerService\GameInstanceService.h">
       <Filter>ServerService</Filter>
     </ClInclude>
-    <ClInclude Include="C:\work\BRServerSF\Server\Lib\ServerProtocol\Protocol\ServerService\GameServerService.h">
+    <ClInclude Include="$(MSBuildThisFileDirectory)Protocol\ServerService\GamePartyManagerService.h">
       <Filter>ServerService</Filter>
     </ClInclude>
-    <ClInclude Include="C:\work\BRServerSF\Server\Lib\ServerProtocol\Protocol\ServerService\LoginServerService.h">
+    <ClInclude Include="$(MSBuildThisFileDirectory)Protocol\ServerService\GamePartyService.h">
       <Filter>ServerService</Filter>
     </ClInclude>
-    <ClInclude Include="C:\work\BRServerSF\Server\Lib\ServerProtocol\Protocol\ServerService\MonitoringService.h">
+    <ClInclude Include="$(MSBuildThisFileDirectory)Protocol\ServerService\GameServerService.h">
       <Filter>ServerService</Filter>
     </ClInclude>
-    <ClInclude Include="C:\work\BRServerSF\Server\Lib\ServerProtocol\Protocol\ServerService\PartyMatchingQueueService.h">
+    <ClInclude Include="$(MSBuildThisFileDirectory)GenericMsgClass.h">
       <Filter>ServerService</Filter>
     </ClInclude>
-    <ClInclude Include="C:\work\BRServerSF\Server\Lib\ServerProtocol\Protocol\ServerService\PartyMatchingService.h">
+    <ClInclude Include="$(MSBuildThisFileDirectory)Protocol\ServerService\LoginServerService.h">
       <Filter>ServerService</Filter>
     </ClInclude>
-    <ClInclude Include="C:\work\BRServerSF\Server\Lib\ServerProtocol\Protocol\ServerService\RankingServerService.h">
+    <ClInclude Include="$(MSBuildThisFileDirectory)Protocol\ServerService\MonitoringService.h">
       <Filter>ServerService</Filter>
     </ClInclude>
-    <ClInclude Include="C:\work\BRServerSF\Server\Lib\ServerProtocol\Protocol\ServerService\ServerService.h">
+    <ClInclude Include="$(MSBuildThisFileDirectory)Protocol\ServerService\PartyMatchingQueueService.h">
       <Filter>ServerService</Filter>
     </ClInclude>
-    <ClInclude Include="C:\work\BRServerSF\Server\Lib\ServerProtocol\Protocol\ServerService\ClusterServerService.h">
+    <ClInclude Include="$(MSBuildThisFileDirectory)Protocol\ServerService\PartyMatchingService.h">
       <Filter>ServerService</Filter>
     </ClInclude>
-    <ClInclude Include="C:\work\BRServerSF\Server\Lib\ServerProtocol\Protocol\ServerService\EntityServerService.h">
+    <ClInclude Include="$(MSBuildThisFileDirectory)Protocol\ServerService\RankingServerService.h">
       <Filter>ServerService</Filter>
     </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)Protocol\ServerService\ServerService.h">
+      <Filter>ServerService</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)ProtocolTrace.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="$(MSBuildThisFileDirectory)GenericMsgClass.cpp" />
-    <ClCompile Include="$(MSBuildThisFileDirectory)ProtocolTrace.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)Protocol\Message\GamePartyManagerMsgClass.cpp">
       <Filter>Message</Filter>
     </ClCompile>
@@ -413,43 +413,46 @@
     <ClCompile Include="$(MSBuildThisFileDirectory)Protocol\Policy\GameInstanceNetPolicy.cpp">
       <Filter>Policy</Filter>
     </ClCompile>
-    <ClCompile Include="C:\work\BRServerSF\Server\Lib\ServerProtocol\Protocol\ServerService\GameInstanceService.cpp">
+    <ClCompile Include="$(MSBuildThisFileDirectory)Protocol\ServerService\ClusterServerService.cpp">
       <Filter>ServerService</Filter>
     </ClCompile>
-    <ClCompile Include="C:\work\BRServerSF\Server\Lib\ServerProtocol\Protocol\ServerService\GamePartyManagerService.cpp">
+    <ClCompile Include="$(MSBuildThisFileDirectory)Protocol\ServerService\EntityServerService.cpp">
       <Filter>ServerService</Filter>
     </ClCompile>
-    <ClCompile Include="C:\work\BRServerSF\Server\Lib\ServerProtocol\Protocol\ServerService\GamePartyService.cpp">
+    <ClCompile Include="$(MSBuildThisFileDirectory)Protocol\ServerService\GameInstanceManagerService.cpp">
       <Filter>ServerService</Filter>
     </ClCompile>
-    <ClCompile Include="C:\work\BRServerSF\Server\Lib\ServerProtocol\Protocol\ServerService\GameServerService.cpp">
+    <ClCompile Include="$(MSBuildThisFileDirectory)Protocol\ServerService\GameInstanceService.cpp">
       <Filter>ServerService</Filter>
     </ClCompile>
-    <ClCompile Include="C:\work\BRServerSF\Server\Lib\ServerProtocol\Protocol\ServerService\LoginServerService.cpp">
+    <ClCompile Include="$(MSBuildThisFileDirectory)Protocol\ServerService\GamePartyManagerService.cpp">
       <Filter>ServerService</Filter>
     </ClCompile>
-    <ClCompile Include="C:\work\BRServerSF\Server\Lib\ServerProtocol\Protocol\ServerService\MonitoringService.cpp">
+    <ClCompile Include="$(MSBuildThisFileDirectory)Protocol\ServerService\GamePartyService.cpp">
       <Filter>ServerService</Filter>
     </ClCompile>
-    <ClCompile Include="C:\work\BRServerSF\Server\Lib\ServerProtocol\Protocol\ServerService\PartyMatchingQueueService.cpp">
+    <ClCompile Include="$(MSBuildThisFileDirectory)Protocol\ServerService\GameServerService.cpp">
       <Filter>ServerService</Filter>
     </ClCompile>
-    <ClCompile Include="C:\work\BRServerSF\Server\Lib\ServerProtocol\Protocol\ServerService\PartyMatchingService.cpp">
+    <ClCompile Include="$(MSBuildThisFileDirectory)GenericMsgClass.cpp">
       <Filter>ServerService</Filter>
     </ClCompile>
-    <ClCompile Include="C:\work\BRServerSF\Server\Lib\ServerProtocol\Protocol\ServerService\RankingServerService.cpp">
+    <ClCompile Include="$(MSBuildThisFileDirectory)Protocol\ServerService\LoginServerService.cpp">
       <Filter>ServerService</Filter>
     </ClCompile>
-    <ClCompile Include="C:\work\BRServerSF\Server\Lib\ServerProtocol\Protocol\ServerService\ServerService.cpp">
+    <ClCompile Include="$(MSBuildThisFileDirectory)Protocol\ServerService\MonitoringService.cpp">
       <Filter>ServerService</Filter>
     </ClCompile>
-    <ClCompile Include="C:\work\BRServerSF\Server\Lib\ServerProtocol\Protocol\ServerService\ClusterServerService.cpp">
+    <ClCompile Include="$(MSBuildThisFileDirectory)Protocol\ServerService\PartyMatchingQueueService.cpp">
       <Filter>ServerService</Filter>
     </ClCompile>
-    <ClCompile Include="C:\work\BRServerSF\Server\Lib\ServerProtocol\Protocol\ServerService\EntityServerService.cpp">
+    <ClCompile Include="$(MSBuildThisFileDirectory)Protocol\ServerService\PartyMatchingService.cpp">
       <Filter>ServerService</Filter>
     </ClCompile>
-    <ClCompile Include="C:\work\BRServerSF\Server\Lib\ServerProtocol\Protocol\ServerService\GameInstanceManagerService.cpp">
+    <ClCompile Include="$(MSBuildThisFileDirectory)Protocol\ServerService\RankingServerService.cpp">
+      <Filter>ServerService</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)Protocol\ServerService\ServerService.cpp">
       <Filter>ServerService</Filter>
     </ClCompile>
   </ItemGroup>

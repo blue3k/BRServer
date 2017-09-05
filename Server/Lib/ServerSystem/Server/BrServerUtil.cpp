@@ -14,9 +14,14 @@
 #include "Task/ServerTaskManager.h"
 #include "Entity/Entity.h"
 #include "Entity/EntityTable.h"
-#include "ServerSystem/SvrConfig.h"
+#include "ServerConfig/SFServerConfig.h"
 #include "Server/BrServer.h"
 #include "Server/BrServerUtil.h"
+
+#include "SFEngine.h"
+#include "Component/SFServerConfigComponent.h"
+#include "Component/SFZooKeeperSessionComponent.h"
+#include "Component/SFConnectionManagerComponent.h"
 
 
 namespace SF {
@@ -50,6 +55,33 @@ namespace Svr {
 		Assert(BrServer::GetInstance());
 		return BrServer::GetInstance()->GetServerUID();
 	}
+
+
+
+	// Initialize and deinitialization
+	void InitializeEngineForServer()
+	{
+		SF::EngineInitParam initParam;
+
+		initParam.LogFilePrefix = Util::GetServiceName();
+		initParam.LogOutputFile = LogChannelMask();
+		initParam.AsyncTaskThreadCount = 6;
+		initParam.NetworkThreadCount = 4;
+
+		auto pEngine = SF::Engine::Start(initParam);
+		if (pEngine == nullptr)
+			return;
+
+		pEngine->AddComponent<ZooKeeperSessionComponent>("127.0.0.1:2181");
+		pEngine->AddComponent<ServerConfigComponent>("/ServerConfig");
+		pEngine->AddComponent<ConnectionManagerComponent>(2048);
+	}
+
+	void DeinitializeEngine()
+	{
+		SF::Engine::Stop();
+	}
+
 
 }
 }

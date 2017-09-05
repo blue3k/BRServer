@@ -194,7 +194,7 @@ namespace Svr {
 			if( Util::TimeSince(pItem->ReservedTime) > DurationMS(Const::MATCHING_QUEUE_RESERVATION_TIMEOUT))
 			{
 				// return back to secondary queue so that it can be selected again
-				svrTrace( Trace::TRC_ERROR, "Timeout for a reserved matching queue item, Reserver:{0}, {1}", pItem->Reserver, pItem->ReservedTime );
+				svrTrace( Error, "Timeout for a reserved matching queue item, Reserver:{0}, {1}", pItem->Reserver, pItem->ReservedTime );
 				pItem->Reserver = 0;
 				pItem->ReservedTime = TimeStampMS::min();
 				m_SecondaryQueue.Enqueue( pItem );

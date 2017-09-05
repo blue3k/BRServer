@@ -127,14 +127,14 @@ namespace SF
 			}; // Result PlayerJoinedToGameServerCmd::OverrideRouteContextDestination( EntityUID to )
 
 
-			Result PlayerJoinedToGameServerCmd::TraceOut(MessageDataPtr& pMsg)
+			Result PlayerJoinedToGameServerCmd::TraceOut(const char* prefix, MessageDataPtr& pMsg)
 			{
  				PlayerJoinedToGameServerCmd parser;
 				parser.ParseMessage(*pMsg);
 				protocolTrace( Debug1, "PlayerJoinedToGameServer:{0}:{1} , RouteContext:{2}, TransactionID:{3}, PlayerID:{4}, AuthTicket:{5}",
-						pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, parser.GetRouteContext(), parser.GetTransactionID(), parser.GetPlayerID(), parser.GetAuthTicket()); 
+						prefix, pMsg->GetMessageHeader()->Length, parser.GetRouteContext(), parser.GetTransactionID(), parser.GetPlayerID(), parser.GetAuthTicket()); 
 				return ResultCode::SUCCESS;
-			}; // Result PlayerJoinedToGameServerCmd::TraceOut(MessageDataPtr& pMsg)
+			}; // Result PlayerJoinedToGameServerCmd::TraceOut(const char* prefix, MessageDataPtr& pMsg)
 
 			const MessageID PlayerJoinedToGameServerRes::MID = MessageID(MSGTYPE_RESULT, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_LOGINSERVER, 0);
 			Result PlayerJoinedToGameServerRes::ParseMessage( MessageData* pIMsg )
@@ -233,14 +233,14 @@ namespace SF
 			}; // Result PlayerJoinedToGameServerRes::OverrideRouteContextDestination( EntityUID to )
 
 
-			Result PlayerJoinedToGameServerRes::TraceOut(MessageDataPtr& pMsg)
+			Result PlayerJoinedToGameServerRes::TraceOut(const char* prefix, MessageDataPtr& pMsg)
 			{
  				PlayerJoinedToGameServerRes parser;
 				parser.ParseMessage(*pMsg);
 				protocolTrace( Debug1, "PlayerJoinedToGameServer:{0}:{1} , RouteContext:{2}, TransactionID:{3}, Result:{4:X8}",
-						pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, parser.GetRouteContext(), parser.GetTransactionID(), parser.GetResult()); 
+						prefix, pMsg->GetMessageHeader()->Length, parser.GetRouteContext(), parser.GetTransactionID(), parser.GetResult()); 
 				return ResultCode::SUCCESS;
-			}; // Result PlayerJoinedToGameServerRes::TraceOut(MessageDataPtr& pMsg)
+			}; // Result PlayerJoinedToGameServerRes::TraceOut(const char* prefix, MessageDataPtr& pMsg)
 
 			// Cmd: Kick logged in player
 			const MessageID KickPlayerCmd::MID = MessageID(MSGTYPE_COMMAND, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_LOGINSERVER, 1);
@@ -340,14 +340,14 @@ namespace SF
 			}; // Result KickPlayerCmd::OverrideRouteContextDestination( EntityUID to )
 
 
-			Result KickPlayerCmd::TraceOut(MessageDataPtr& pMsg)
+			Result KickPlayerCmd::TraceOut(const char* prefix, MessageDataPtr& pMsg)
 			{
  				KickPlayerCmd parser;
 				parser.ParseMessage(*pMsg);
 				protocolTrace( Debug1, "KickPlayer:{0}:{1} , RouteContext:{2}, TransactionID:{3}, KickedPlayerID:{4}",
-						pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, parser.GetRouteContext(), parser.GetTransactionID(), parser.GetKickedPlayerID()); 
+						prefix, pMsg->GetMessageHeader()->Length, parser.GetRouteContext(), parser.GetTransactionID(), parser.GetKickedPlayerID()); 
 				return ResultCode::SUCCESS;
-			}; // Result KickPlayerCmd::TraceOut(MessageDataPtr& pMsg)
+			}; // Result KickPlayerCmd::TraceOut(const char* prefix, MessageDataPtr& pMsg)
 
 			const MessageID KickPlayerRes::MID = MessageID(MSGTYPE_RESULT, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_LOGINSERVER, 1);
 			Result KickPlayerRes::ParseMessage( MessageData* pIMsg )
@@ -446,14 +446,14 @@ namespace SF
 			}; // Result KickPlayerRes::OverrideRouteContextDestination( EntityUID to )
 
 
-			Result KickPlayerRes::TraceOut(MessageDataPtr& pMsg)
+			Result KickPlayerRes::TraceOut(const char* prefix, MessageDataPtr& pMsg)
 			{
  				KickPlayerRes parser;
 				parser.ParseMessage(*pMsg);
 				protocolTrace( Debug1, "KickPlayer:{0}:{1} , RouteContext:{2}, TransactionID:{3}, Result:{4:X8}",
-						pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, parser.GetRouteContext(), parser.GetTransactionID(), parser.GetResult()); 
+						prefix, pMsg->GetMessageHeader()->Length, parser.GetRouteContext(), parser.GetTransactionID(), parser.GetResult()); 
 				return ResultCode::SUCCESS;
-			}; // Result KickPlayerRes::TraceOut(MessageDataPtr& pMsg)
+			}; // Result KickPlayerRes::TraceOut(const char* prefix, MessageDataPtr& pMsg)
 
 
 

@@ -29,9 +29,11 @@
 #include "Server/BrServerUtil.h"
 #include "Entity/EntityManager.h"
 
-#include "ServerEntity/EntityServerEntity.h"
+#include "ServerEntity/SvrEntityServerEntity.h"
 #include "ServiceEntity/ClusterManagerServiceEntity.h"
 #include "Protocol/Policy/ServerNetPolicy.h"
+
+#include "Service/EngineServices.h"
 
 
 namespace SF {
@@ -221,7 +223,7 @@ namespace Svr {
 				svrChkPtr(myConfig);
 
 
-				svrTrace( Svr::TRC_DBGSVR, "Sending Server Connected to Entity Server from:{0}", myConfig->Name.c_str() );
+				svrTrace( SVR_DBGSVR, "Sending Server Connected to Entity Server from:{0}", myConfig->Name.c_str() );
 
 				Policy::IPolicyServer *pPolicy = GetConnection()->GetInterface<Policy::IPolicyServer>();
 				svrChkPtr(pPolicy);
@@ -441,7 +443,7 @@ namespace Svr {
 			}
 			else
 			{
-				svrTrace(Trace::TRC_ERROR, "null message pointer in event taqsk");
+				svrTrace(Error, "null message pointer in event taqsk");
 			}
 			break;
 		case ServerTaskEvent::EventTypes::PACKET_MESSAGE_SYNC_EVENT:
@@ -467,7 +469,7 @@ namespace Svr {
 			}
 			else
 			{
-				svrTrace(Svr::TRC_TRANSACTION, "Failed to process transaction result. null Transaction result.");
+				svrTrace(SVR_TRANSACTION, "Failed to process transaction result. null Transaction result.");
 			}
 			break;
 		default:

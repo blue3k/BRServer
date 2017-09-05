@@ -25,64 +25,52 @@ namespace SF {
 
 
 		// User transaction close, just return Result by default
-#define BR_IMPLEMENT_USERMSGTRANS_CLOSE( MessageName ) \
+#define BR_IMPLEMENT_USERMSGTRANS_CLOSE( PolicyClass, MessageName ) \
 	virtual Result OnCloseTransaction( Result hrRes )\
 		{\
 		Result hr = ResultCode::SUCCESS;\
 		if( IsClosed() )\
 			return ResultCode::SUCCESS;\
-		auto pPolicy = GetInterface();\
-		if( pPolicy != nullptr ) {\
-			svrChk( pPolicy->MessageName( hrRes ) );\
-				}\
-				Proc_End:\
+		svrChk( PolicyClass(GetConnection()).MessageName( hrRes ) );\
+	Proc_End:\
 		super::OnCloseTransaction(hrRes);\
 		return hr;\
 		}\
 
 
 		// User transaction close with argument, just return Result by default
-#define BR_IMPLEMENT_USERMSGTRANS_CLOSE_ARGS( MessageName, ... ) \
+#define BR_IMPLEMENT_USERMSGTRANS_CLOSE_ARGS( PolicyClass, MessageName, ... ) \
 	virtual Result OnCloseTransaction( Result hrRes )\
 		{\
 		Result hr = ResultCode::SUCCESS;\
 		if( IsClosed() )\
 			return ResultCode::SUCCESS;\
-		auto pPolicy = GetInterface();\
-		if( pPolicy != nullptr ) {\
-			svrChk( pPolicy->MessageName( hrRes, ##__VA_ARGS__ ) );\
-				}\
-				Proc_End:\
+		svrChk( PolicyClass(GetConnection()).MessageName( hrRes, ##__VA_ARGS__ ) );\
+	Proc_End:\
 		super::OnCloseTransaction(hrRes);\
 		return hr;\
 		}\
 
 
 		// Generic transaction close, return Context and Result by default
-#define BR_IMPLEMENT_MSGTRANS_CLOSE( MessageName ) \
+#define BR_IMPLEMENT_MSGTRANS_CLOSE( PolicyClass, MessageName ) \
 	virtual Result OnCloseTransaction( Result hrRes )\
 		{\
 		Result hr = ResultCode::SUCCESS;\
-		auto pPolicy = GetInterface();\
-		if( pPolicy != nullptr ) {\
-			svrChk( pPolicy->MessageName( GetTransactionID(), hrRes ) );\
-				}\
-				Proc_End:\
+		svrChk( PolicyClass(GetConnection()).MessageName( GetTransactionID(), hrRes ) );\
+		Proc_End:\
 		super::OnCloseTransaction(hrRes);\
 		return hr;\
 		}\
 
 
 		// Generic transaction close with argument, return Context and Result by default
-#define BR_IMPLEMENT_MSGTRANS_CLOSE_ARGS( MessageName, ... ) \
+#define BR_IMPLEMENT_MSGTRANS_CLOSE_ARGS( PolicyClass, MessageName, ... ) \
 	virtual Result OnCloseTransaction( Result hrRes )\
 		{\
 		Result hr = ResultCode::SUCCESS;\
-		auto pPolicy = GetInterface();\
-		if( pPolicy != nullptr ) {\
-			svrChk( pPolicy->MessageName( GetTransactionID(), hrRes, ##__VA_ARGS__ ) );\
-				}\
-				Proc_End:\
+		svrChk( PolicyClass(GetConnection()).MessageName( GetTransactionID(), hrRes, ##__VA_ARGS__ ) );\
+		Proc_End:\
 		super::OnCloseTransaction(hrRes);\
 		return hr;\
 		}\
@@ -90,58 +78,46 @@ namespace SF {
 
 
 		// Generic transaction close with argument, return Context and Result by default
-#define BR_SVR_MSGTRANS_CLOSE( MessageName, routeContext ) \
+#define BR_SVR_MSGTRANS_CLOSE( PolicyClass, MessageName, routeContext ) \
 	virtual Result OnCloseTransaction( Result hrRes )\
 		{\
 		Result hr = ResultCode::SUCCESS;\
-		auto pPolicy = GetInterface();\
-		if( pPolicy != nullptr ) {\
-			svrChk( pPolicy->MessageName( routeContext, GetTransactionID(), hrRes ) );\
-				}\
-				Proc_End:\
+		svrChk( PolicyClass(GetConnection()).MessageName( routeContext, GetTransactionID(), hrRes ) );\
+		Proc_End:\
 		super::OnCloseTransaction(hrRes);\
 		return hr;\
 		}\
 
 		// Generic transaction close with argument, return Context and Result by default
-#define BR_SVR_MSGTRANS_CLOSE_ARGS( MessageName, routeContext, ... ) \
+#define BR_SVR_MSGTRANS_CLOSE_ARGS( PolicyClass, MessageName, routeContext, ... ) \
 	virtual Result OnCloseTransaction( Result hrRes ) override\
 		{\
 		Result hr = ResultCode::SUCCESS;\
-		auto pPolicy = GetInterface();\
-		if( pPolicy != nullptr ) {\
-			svrChk( pPolicy->MessageName( routeContext, super::GetTransactionID(), hrRes, ##__VA_ARGS__ ) );\
-				}\
-				Proc_End:\
+		svrChk( PolicyClass(GetConnection()).MessageName( routeContext, super::GetTransactionID(), hrRes, ##__VA_ARGS__ ) );\
+		Proc_End:\
 		super::OnCloseTransaction(hrRes);\
 		return hr;\
 		}\
 
 
 		// Event transaction close, no default arguemnt
-#define BR_IMPLEMENT_EVTTRANS_CLOSE( MessageName ) \
+#define BR_IMPLEMENT_EVTTRANS_CLOSE( PolicyClass, MessageName ) \
 	virtual Result OnCloseTransaction( Result hrRes )\
 		{\
 		Result hr = ResultCode::SUCCESS;\
-		auto pPolicy = GetInterface();\
-		if( pPolicy != nullptr ) {\
-			svrChk( pPolicy->MessageName() );\
-				}\
-				Proc_End:\
+		svrChk( PolicyClass(GetConnection()).MessageName() );\
+		Proc_End:\
 		super::OnCloseTransaction(hrRes);\
 		return hr;\
 		}\
 
 
 		// Event transaction close with argument, no default arguemnt
-#define BR_IMPLEMENT_EVTTRANS_CLOSE_ARGS( MessageName, ... ) \
+#define BR_IMPLEMENT_EVTTRANS_CLOSE_ARGS( PolicyClass, MessageName, ... ) \
 	virtual Result OnCloseTransaction( Result hrRes )\
 		{\
 		Result hr = ResultCode::SUCCESS;\
-		auto pPolicy = GetInterface();\
-		if( pPolicy != nullptr ) {\
-			svrChk( pPolicy->MessageName( __VA_ARGS__ ) );\
-		}\
+		svrChk( PolicyClass(GetConnection()).MessageName( __VA_ARGS__ ) );\
 	Proc_End:\
 		super::OnCloseTransaction(hrRes);\
 		return hr;\

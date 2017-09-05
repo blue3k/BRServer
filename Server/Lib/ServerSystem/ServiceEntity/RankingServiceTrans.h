@@ -24,7 +24,7 @@
 #include "Protocol/Policy/RankingServerNetPolicy.h"
 #include "Transaction/MessageRoute.h"
 #include "ServerSystem/ServiceEntity/RankingServiceEntity.h"
-#include "ServerSystem/ServerTransaction.h"
+#include "Transaction/ServerTransaction.h"
 
 
 namespace SF {
@@ -32,17 +32,17 @@ namespace Svr {
 
 	
 	
-	class RankingServerAddPlayerTrans : public ServerEntityMessageTransaction<RankingServiceEntity, Message::RankingServer::AddPlayerCmd, RankingServerAddPlayerTrans, 1>
+	class RankingServerAddPlayerTrans : public ServerEntityMessageTransaction<RankingServiceEntity, Message::RankingServer::AddPlayerCmd>
 	{
 	public:
-		typedef ServerEntityMessageTransaction<RankingServiceEntity, Message::RankingServer::AddPlayerCmd, RankingServerAddPlayerTrans, 1> super;
+		typedef ServerEntityMessageTransaction<RankingServiceEntity, Message::RankingServer::AddPlayerCmd> super;
 
 	private:
 
 
 
 	public:
-		RankingServerAddPlayerTrans(MessageDataPtr &pIMsg);
+		RankingServerAddPlayerTrans(IMemoryManager& memMgr, MessageDataPtr &pIMsg);
 		virtual ~RankingServerAddPlayerTrans() {}
 
 		// Start Transaction
@@ -51,10 +51,10 @@ namespace Svr {
 	};
 
 
-	class RankingServerUpdatePlayerScoreTrans : public ServerEntityMessageTransaction<RankingServiceEntity, Message::RankingServer::UpdatePlayerScoreCmd, RankingServerUpdatePlayerScoreTrans, 1>
+	class RankingServerUpdatePlayerScoreTrans : public ServerEntityMessageTransaction<RankingServiceEntity, Message::RankingServer::UpdatePlayerScoreCmd>
 	{
 	public:
-		typedef ServerEntityMessageTransaction<RankingServiceEntity, Message::RankingServer::UpdatePlayerScoreCmd, RankingServerUpdatePlayerScoreTrans, 1> super;
+		typedef ServerEntityMessageTransaction<RankingServiceEntity, Message::RankingServer::UpdatePlayerScoreCmd> super;
 
 	private:
 
@@ -62,34 +62,33 @@ namespace Svr {
 		StaticArray<TotalRankingPlayerInformation, 32> m_RankingList;
 
 	public:
-		RankingServerUpdatePlayerScoreTrans(MessageDataPtr &pIMsg);
+		RankingServerUpdatePlayerScoreTrans(IMemoryManager& memMgr, MessageDataPtr &pIMsg);
 		virtual ~RankingServerUpdatePlayerScoreTrans() {}
 
 		// Start Transaction
 		virtual Result StartTransaction();
 
-		Policy::NetSvrPolicyRankingServer* GetInterface() { return ServerEntityMessageTransaction::GetInterface<Policy::NetSvrPolicyRankingServer>(); }
-		BR_SVR_MSGTRANS_CLOSE_ARGS(UpdatePlayerScoreRes, GetRouteContext().GetSwaped(), m_RankingList);
+
+		BR_SVR_MSGTRANS_CLOSE_ARGS(Policy::NetSvrPolicyRankingServer, UpdatePlayerScoreRes, GetRouteContext().GetSwaped(), m_RankingList);
 	};
 
 
-	class RankingServerDebugPrintALLRankingTrans : public ServerEntityMessageTransaction<RankingServiceEntity, Message::RankingServer::DebugPrintALLRankingCmd, RankingServerDebugPrintALLRankingTrans, 1>
+	class RankingServerDebugPrintALLRankingTrans : public ServerEntityMessageTransaction<RankingServiceEntity, Message::RankingServer::DebugPrintALLRankingCmd>
 	{
 	public:
-		typedef ServerEntityMessageTransaction<RankingServiceEntity, Message::RankingServer::DebugPrintALLRankingCmd, RankingServerDebugPrintALLRankingTrans, 1> super;
+		typedef ServerEntityMessageTransaction<RankingServiceEntity, Message::RankingServer::DebugPrintALLRankingCmd> super;
 
 	private:
 
 		StaticArray<TotalRankingPlayerInformation, 10000> m_RankingList;
 	public:
-		RankingServerDebugPrintALLRankingTrans(MessageDataPtr &pIMsg);
+		RankingServerDebugPrintALLRankingTrans(IMemoryManager& memMgr, MessageDataPtr &pIMsg);
 		virtual ~RankingServerDebugPrintALLRankingTrans() {}
 
 		// Start Transaction
 		virtual Result StartTransaction();
 
-		Policy::NetSvrPolicyRankingServer* GetInterface() { return ServerEntityMessageTransaction::GetInterface<Policy::NetSvrPolicyRankingServer>(); }
-		BR_SVR_MSGTRANS_CLOSE(DebugPrintALLRankingRes, GetRouteContext().GetSwaped());
+		BR_SVR_MSGTRANS_CLOSE(Policy::NetSvrPolicyRankingServer, DebugPrintALLRankingRes, GetRouteContext().GetSwaped());
 	};
 
 

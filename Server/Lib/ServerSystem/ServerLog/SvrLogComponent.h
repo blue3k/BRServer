@@ -12,35 +12,37 @@
 #pragma once
 
 #include "SFTypedefs.h"
-#include "Common/BrLibComponents.h"
-#include "Common/SharedPointer.h"
+#include "Object/LibraryComponent.h"
+#include "Object/SharedPointer.h"
 
 
 namespace SF {
 
+	class ServerLogObject;
 
-	class LibComponentTrace : public Component
+	class ServerLogComponent : public LibraryComponent
 	{
 	public:
 
-		enum {
-			ComponentID = (uint)LibCompoentIDs::Trace
-		};
-
 	private:
+		char m_ConfigFilePath[256];
 
-		SharedPointerT<SharedObject> m_pInstance;
+		SharedPointerT<ServerLogObject> m_LogObject;
 
 	public:
+		static constexpr FixedString TypeName = "ServerLogModule";
 
-		LibComponentTrace();
-		LibComponentTrace(const char* modulePath, const char* moduleName, const char* traceCfgPath);
-		~LibComponentTrace();
+		ServerLogComponent(const char* traceCfgPath);
+		~ServerLogComponent();
+
+
+
+		virtual const FixedString& GetTypeName() override { return TypeName; }
 
 		// Initialize server component
 		virtual Result InitializeComponent() override;
 		// Terminate server component
-		virtual void TerminateComponent() override;
+		virtual void DeinitializeComponent() override;
 	};
 
 

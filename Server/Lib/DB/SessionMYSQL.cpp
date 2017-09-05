@@ -231,20 +231,20 @@ namespace DB {
 		{
 			if( pMyQuery )
 			{
-				defTrace( Trace::TRC_ERROR, "Query failed hr:0x{0:X8} : {1} : {2}", hr, typeid(*pMyQuery).name(), pMyQuery->GetQueryString() );
+				defTrace( Error, "Query failed hr:0x{0:X8} : {1} : {2}", hr, typeid(*pMyQuery).name(), pMyQuery->GetQueryString() );
 			}
 			else
 			{
-				defTrace( Trace::TRC_ERROR, "Query failed hr:0x{0:X8}", hr );
+				defTrace( Error, "Query failed hr:0x{0:X8}", hr );
 			}
 
 			if( hr == ((Result)ResultCode::DB_CONNECTION_LOST))
 			{
-				defTrace( Trace::TRC_WARN, "DB connection is lost, recovering the connection... " );
+				defTrace( Warning, "DB connection is lost, recovering the connection... " );
 				Result hrTem = OpenSession();
 				if( !(hrTem) )
 				{
-					defTrace( Trace::TRC_ERROR, "DB connection recovery is failed ... {0:X8}", hrTem );
+					defTrace( Error, "DB connection recovery is failed ... {0:X8}", hrTem );
 				}
 			}
 		}
@@ -325,7 +325,7 @@ namespace DB {
 		}
 		else if (mysql_ping(m_mySQL))
 		{
-			dbTrace(TRC_INFO, "DBConnection lost, reconnecting..");
+			dbTrace(TRC_DBINFO, "DBConnection lost, reconnecting..");
 			// ignore close errors
 			CloseSession();
 			dbChk(OpenSession());
@@ -471,7 +471,7 @@ namespace DB {
 					pResults = m_pParameter + pMyQuery->GetInputParameterCount();
 					if(outParamCount != num_fields )
 					{
-						dbTrace( Trace::TRC_ERROR, "Database output count is mismatched. Query: {0}, {2} is specified, {1} is expected", pMyQuery->GetQueryString(), num_fields, (pMyQuery->GetParameterCount() - pMyQuery->GetInputParameterCount()));
+						dbTrace( Error, "Database output count is mismatched. Query: {0}, {2} is specified, {1} is expected", pMyQuery->GetQueryString(), num_fields, (pMyQuery->GetParameterCount() - pMyQuery->GetInputParameterCount()));
 						dbErr(ResultCode::DB_RESULT_COUNT_MISMATCH);
 					}
 					outParamCount = 0;
@@ -481,7 +481,7 @@ namespace DB {
 					pResults = pMyQuery->BuildResult();
 					if( pMyQuery->GetResultCount() != num_fields )
 					{
-						dbTrace( Trace::TRC_ERROR, "Database result column count is mismatched. Query: {0}, {2} is specified, {1} is expected", pMyQuery->GetQueryString(), num_fields, pMyQuery->GetResultCount() );
+						dbTrace( Error, "Database result column count is mismatched. Query: {0}, {2} is specified, {1} is expected", pMyQuery->GetQueryString(), num_fields, pMyQuery->GetResultCount() );
 						dbErr(ResultCode::DB_RESULT_COUNT_MISMATCH);
 					}
 				}
@@ -493,8 +493,8 @@ namespace DB {
 				{
 					if( !MYSQL_IsCompatibleType( pResults[i].buffer_type, fields[i].type ) )
 					{
-						dbTrace( Trace::TRC_ERROR, "Database result column type is mismatched. Query: {0}", pMyQuery->GetQueryString() );
-						dbTrace( Trace::TRC_ERROR, "DB column info: {4}.{0}.{1}, {4}.{2}.{3}, {5}: binded Type:%d, Required Type:%d",
+						dbTrace( Error, "Database result column type is mismatched. Query: {0}", pMyQuery->GetQueryString() );
+						dbTrace( Error, "DB column info: {4}.{0}.{1}, {4}.{2}.{3}, {5}: binded Type:%d, Required Type:%d",
 							(const char *) fields[i].table,
 							(const char *) fields[i].name,
 							(const char *) fields[i].org_table,

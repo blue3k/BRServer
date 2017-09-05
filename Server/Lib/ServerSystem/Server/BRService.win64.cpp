@@ -14,11 +14,11 @@
 
 #include <conio.h>
 #include "ResultCode/SFResultCodeSvr.h"
-#include "Serversystem/SvrTrace.h"
-#include "Serversystem/BRService.h"
+#include "SvrTrace.h"
+#include "Server/BRService.h"
 #include "Util/TimeUtil.h"
 #include "Net/NetUtil.h"
-#include "ServerSystem/ParameterSetting.h"
+#include "Server/ParameterSetting.h"
 
 namespace SF {
 namespace Svr {
@@ -112,7 +112,7 @@ namespace Svr {
 			if( !GetModuleFileNameA( NULL, strPath, MAX_PATH ) )
 			{
 				int iErr = GetLastError();
-				svrTrace( Trace::TRC_ERROR, "GetModuleFileName failed err:{0}", iErr );
+				svrTrace( Error, "GetModuleFileName failed err:{0}", iErr );
 				trcErr( HRESULT_FROM_WIN32(iErr) );
 			}
 
@@ -129,7 +129,7 @@ namespace Svr {
 			if( schSCManager == nullptr) 
 			{
 				int iErr = GetLastError();
-				svrTrace( Trace::TRC_ERROR, "OpenSCManager failed err:{0}", iErr );
+				svrTrace( Error, "OpenSCManager failed err:{0}", iErr );
 				trcErr( HRESULT_FROM_WIN32(iErr) );
 			}
 
@@ -141,7 +141,7 @@ namespace Svr {
 				if( iErr != ERROR_SERVICE_DOES_NOT_EXIST )
 				{
 					// Service not accessable
-					svrTrace( Trace::TRC_ERROR, "OpenService failed err:{0}", iErr );
+					svrTrace( Error, "OpenService failed err:{0}", iErr );
 					trcErr( HRESULT_FROM_WIN32(iErr) );
 				}
 
@@ -165,7 +165,7 @@ namespace Svr {
 				if( schService == NULL )
 				{
 					int iErr = GetLastError();
-					svrTrace( Trace::TRC_ERROR, "CreateService failed err:{0}", iErr );
+					svrTrace( Error, "CreateService failed err:{0}", iErr );
 					trcErr( HRESULT_FROM_WIN32(iErr) );
 				}
 			}
@@ -188,7 +188,7 @@ namespace Svr {
 
 					if ( g_SvcStatus.dwCurrentState != SERVICE_STOPPED )
 					{
-						svrTrace( Trace::TRC_ERROR, "Service Stop Failed" );
+						svrTrace( Error, "Service Stop Failed" );
 						trcErr( ResultCode::UNEXPECTED );
 					}
 				}
@@ -208,13 +208,13 @@ namespace Svr {
 						strServiceName))
 				{
 					int iErr = GetLastError();
-					svrTrace( Trace::TRC_ERROR, "ChangeServiceConfig failed err:{0}", iErr );
+					svrTrace( Error, "ChangeServiceConfig failed err:{0}", iErr );
 					trcErr( HRESULT_FROM_WIN32(iErr) );
 				}
 			}
 
 
-			svrTrace( Trace::TRC_INFO, "Service Installed" );
+			svrTrace( Info, "Service Installed" );
 
 
 		Proc_End:
@@ -244,7 +244,7 @@ namespace Svr {
 			if( schSCManager == NULL) 
 			{
 				int iErr = GetLastError();
-				svrTrace( Trace::TRC_ERROR, "OpenSCManager failed err:{0}", iErr );
+				svrTrace( Error, "OpenSCManager failed err:{0}", iErr );
 				trcErr( HRESULT_FROM_WIN32(iErr) );
 			}
 
@@ -253,7 +253,7 @@ namespace Svr {
 			if( schSCManager == NULL) 
 			{
 				int iErr = GetLastError();
-				svrTrace( Trace::TRC_ERROR, "OpenService failed err:{0}", iErr );
+				svrTrace( Error, "OpenService failed err:{0}", iErr );
 				trcErr( HRESULT_FROM_WIN32(iErr) );
 			}
 
@@ -274,7 +274,7 @@ namespace Svr {
 
 				if ( g_SvcStatus.dwCurrentState != SERVICE_STOPPED )
 				{
-					svrTrace( Trace::TRC_ERROR, "Service Stop Failed" );
+					svrTrace( Error, "Service Stop Failed" );
 					trcErr( ResultCode::UNEXPECTED );
 				}
 			}
@@ -286,12 +286,12 @@ namespace Svr {
 				int iErr = GetLastError();
 				if( iErr != ERROR_SERVICE_MARKED_FOR_DELETE )
 				{
-					svrTrace( Trace::TRC_ERROR, "DeleteService failed err:{0}", iErr );
+					svrTrace( Error, "DeleteService failed err:{0}", iErr );
 					trcErr( HRESULT_FROM_WIN32(iErr) );
 				}
 			}
 
-			svrTrace( Trace::TRC_INFO, "DeleteService Done" );
+			svrTrace( Info, "DeleteService Done" );
 
 
 		Proc_End:
@@ -356,13 +356,13 @@ namespace Svr {
 				Trace::AllocScreenConsole();
 			}
 
-			svrTrace( Trace::TRC_INFO, "Loading configuration" );
+			svrTrace( Info, "Loading configuration" );
 
 			svrChk( Svr::Config::LoadConfig( strCfgPath ) );
 
 
 
-			svrTrace( Trace::TRC_INFO, "<{0}> Start with Mode {1} ", Util::GetServiceNameA(), bIsDebugRun ? "Debug" : "Service" );
+			svrTrace( Info, "<{0}> Start with Mode {1} ", Util::GetServiceNameA(), bIsDebugRun ? "Debug" : "Service" );
 
 
 			// if not service mode
@@ -413,7 +413,7 @@ namespace Svr {
 				if (!StartServiceCtrlDispatcher( DispatchTable )) 
 				{
 					int iError = GetLastError();
-					svrTrace( Trace::TRC_ERROR, "StartServiceCtrlDispatcher failed err:{0}", iError );
+					svrTrace( Error, "StartServiceCtrlDispatcher failed err:{0}", iError );
 					return HRESULT_FROM_WIN32( iError );
 				}
 			}
@@ -421,7 +421,7 @@ namespace Svr {
 
 		Proc_End:
 
-			svrTrace( Trace::TRC_INFO, "<{0}> Closed", Util::GetServiceName() );
+			svrTrace( Info, "<{0}> Closed", Util::GetServiceName() );
 
 			g_pSvrInstance = nullptr;
 
@@ -459,7 +459,7 @@ namespace Svr {
 				if ( g_hCtrlEvents[iEvt] == NULL)
 				{
 					int iError = GetLastError();
-					svrTrace( Trace::TRC_ERROR, "CreateEvent failed err:{0}", iError );
+					svrTrace( Error, "CreateEvent failed err:{0}", iError );
 					trcErr( HRESULT_FROM_WIN32( iError ) );
 				}
 			}
@@ -474,7 +474,7 @@ namespace Svr {
 			if( !g_SvcStatusHandle )
 			{ 
 				int iError = GetLastError();
-				svrTrace( Trace::TRC_ERROR, "RegisterServiceCtrlHandler failed err:{0}", iError );
+				svrTrace( Error, "RegisterServiceCtrlHandler failed err:{0}", iError );
 				return;
 			} 
 
@@ -491,7 +491,7 @@ namespace Svr {
 			// Run Server and initialization state check
 			if( g_pSvrInstance == NULL )
 			{
-				svrTrace( Trace::TRC_ERROR, "Invalid ServerInstance" );
+				svrTrace( Error, "Invalid ServerInstance" );
 				ReportServiceStatus( SERVICE_STOPPED, ResultCode::SVR_SERVICE_FAILED, 0 );
 				trcErr( ResultCode::UNEXPECTED );
 			}

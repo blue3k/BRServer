@@ -93,7 +93,7 @@ namespace Svr {
 
 		svrChk(super::StartTransaction() );
 
-		Trace::Flush();
+		Service::LogModule->Flush();
 
 		if( !(GetServerComponent<ClusterManagerServiceEntity>()->GetClusterServiceEntity( GetClusterID(), pServiceEntity )) )
 		{
@@ -249,7 +249,7 @@ namespace Svr {
 		// This should not be failed
 		if( !(GetMyOwner()->GetClusterServiceEntity( GetClusterID(), pServiceEntity )) )
 		{
-			svrTrace(Svr::TRC_CLUSTER, "Ignoring unregistered cluster service sync: ClusterID:{0}", GetClusterID() );
+			svrTrace(SVR_CLUSTER, "Ignoring unregistered cluster service sync: ClusterID:{0}", GetClusterID() );
 			//svrErr(ResultCode::SVR_INVALID_CLUSTERID);
 			goto Proc_End;
 		}

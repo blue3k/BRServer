@@ -93,7 +93,7 @@ namespace Svr {
 		pMsg = Message::Monitoring::PerformanceCounterNewC2SEvt::Create(GetMemoryManager(), newInstance->GetInstanceName(), newInstance->GetInstanceEntityUID(), counterInfos);
 		if (pMsg == nullptr)
 		{
-			svrTrace(Trace::TRC_ERROR, "Failed to generate performance counter free packet");
+			svrTrace(Error, "Failed to generate performance counter free packet");
 		}
 		else
 		{
@@ -111,7 +111,7 @@ namespace Svr {
 
 			if (!(m_CounterInstanceMap.Insert(newInstance->GetInstanceEntityUID().UID, newInstance)))
 			{
-				svrTrace(Trace::TRC_ERROR, "Failed to insert new performance counter instance");
+				svrTrace(Error, "Failed to insert new performance counter instance");
 				continue;
 			}
 
@@ -149,7 +149,7 @@ namespace Svr {
 					pMsg = Message::Monitoring::PerformanceCounterFreeC2SEvt::Create(GetMemoryManager(), freeList);
 					if (pMsg == nullptr)
 					{
-						svrTrace(Trace::TRC_ERROR, "Failed to generate performance counter free packet");
+						svrTrace(Error, "Failed to generate performance counter free packet");
 					}
 					else
 					{
@@ -169,7 +169,7 @@ namespace Svr {
 			pMsg = Message::Monitoring::PerformanceCounterFreeC2SEvt::Create(GetMemoryManager(), freeList);
 			if (pMsg == nullptr)
 			{
-				svrTrace(Trace::TRC_ERROR, "Failed to generate performance counter free packet");
+				svrTrace(Error, "Failed to generate performance counter free packet");
 			}
 			else
 			{
@@ -219,7 +219,7 @@ namespace Svr {
 			pMsg = Message::Monitoring::PerformanceCounterUpdateC2SEvt::Create(GetMemoryManager(), pInstance->GetInstanceEntityUID(), counterValues);
 			if(pMsg == nullptr)
 			{
-				svrTrace(Trace::TRC_ERROR, "Failed to generate performance counter free packet");
+				svrTrace(Error, "Failed to generate performance counter free packet");
 			}
 			else
 			{
@@ -353,7 +353,7 @@ namespace Svr {
 
 		if (!(m_CounterInstanceMap.Find(messageClass.GetInstanceUID(), pFound)))
 		{
-			svrTrace(Trace::TRC_ERROR, "PerforamnceCounter:{0}, {1}, counter already deleted1", remoteAddr, messageClass.GetInstanceUID());
+			svrTrace(Error, "PerforamnceCounter:{0}, {1}, counter already deleted1", remoteAddr, messageClass.GetInstanceUID());
 			return hr;
 		}
 
@@ -365,7 +365,7 @@ namespace Svr {
 		}
 		else
 		{
-			svrTrace(Trace::TRC_ERROR, "PerforamnceCounter:{0}, {1}, counter already deleted", remoteAddr, messageClass.GetInstanceUID());
+			svrTrace(Error, "PerforamnceCounter:{0}, {1}, counter already deleted", remoteAddr, messageClass.GetInstanceUID());
 		}
 
 	Proc_End:

@@ -212,7 +212,7 @@ namespace Svr {
 			pConn = pService->GetServerEntity()->GetConnection();
 			if( pConn == nullptr )
 			{
-				svrTrace( Trace::TRC_ERROR, "Failed routing a message({0}) for {1}", super::GetMessage()->GetMessageHeader()->msgID, typeid(*pMyOwner).name() );
+				svrTrace( Error, "Failed routing a message({0}) for {1}", super::GetMessage()->GetMessageHeader()->msgID, typeid(*pMyOwner).name() );
 				svrErr(ResultCode::SVR_CLUSTER_NOTREADY);
 			}
 
@@ -224,7 +224,7 @@ namespace Svr {
 			pClonedMessage = super::GetMessage()->Clone();
 			if( pClonedMessage == nullptr )
 			{
-				svrTrace( Trace::TRC_ERROR, "Failed routing a message({0}) for {1}, Out of memory", super::GetMessage()->GetMessageHeader()->msgID, typeid(*pMyOwner).name() );
+				svrTrace( Error, "Failed routing a message({0}) for {1}, Out of memory", super::GetMessage()->GetMessageHeader()->msgID, typeid(*pMyOwner).name() );
 				goto Proc_End;
 			}
 

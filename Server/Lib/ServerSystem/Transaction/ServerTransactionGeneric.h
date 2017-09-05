@@ -19,7 +19,7 @@
 #include "ServerEntity/ServerEntityManager.h"
 
 #include "Protocol/Message/ServerMsgClass.h"
-#include "Protocol/Policy/ServerNetNetPolicy.h"
+//#include "Protocol/Policy/ServerNetNetPolicy.h"
 
 
 
@@ -34,11 +34,11 @@ namespace Svr {
 
 
 	// Server started
-	template< class ServerEntityType, class PolicyType, class MessageType, class TransactionType >
-	class ServerStartedTrans : public MessageTransaction< ServerEntityType, PolicyType, MessageType, TransactionType>
+	template< class ServerEntityType, class MessageType >
+	class ServerStartedTrans : public MessageTransaction< ServerEntityType, MessageType>
 	{
 	private:
-		typedef MessageTransaction< ServerEntityType, PolicyType, MessageType, TransactionType, MessageHandlerBufferSize> super;
+		typedef MessageTransaction< ServerEntityType, MessageType> super;
 
 	public:
 		ServerStartedTrans( IMemoryManager& memMgr, MessageDataPtr &pIMsg ) : super( memMgr, pIMsg )
@@ -70,11 +70,11 @@ namespace Svr {
 					Net::Connection *pMyConn = super::GetMyOwner()->GetConnection();
 					NetAddress AlreadyAddr(0), MyAddr(0);
 					if( pAlreadyConn )
-						AlreadyAddr = pAlreadyConn->GetConnectionInfo().Remote;
+						AlreadyAddr = pAlreadyConn->GetRemoteInfo().PeerAddress;
 					if( pMyConn )
-						MyAddr = pMyConn->GetConnectionInfo().Remote;
+						MyAddr = pMyConn->GetRemoteInfo().PeerAddress;
 
-					svrTrace( Trace::TRC_ASSERT, "Error, Duplicated ServerID:{0} : Already from : {1}:{2}, New {3}:{4}", super::GetRouteContext().GetFrom().GetServerID(), pAlreadyConn->GetCID(), AlreadyAddr, pMyConn->GetCID(), MyAddr );
+					svrTrace( Assert, "Error, Duplicated ServerID:{0} : Already from : {1}:{2}, New {3}:{4}", super::GetRouteContext().GetFrom().GetServerID(), pAlreadyConn->GetCID(), AlreadyAddr, pMyConn->GetCID(), MyAddr );
 				}
 			}
 
@@ -91,27 +91,29 @@ namespace Svr {
 	};
 
 
-	class GenericServerStartedTrans : public ServerStartedTrans< Svr::ServerEntity, Policy::NetSvrPolicyServer, Message::Server::ServerConnectedC2SEvt, GenericServerStartedTrans>
+	class GenericServerStartedTrans : public ServerStartedTrans< Svr::ServerEntity, Message::Server::ServerConnectedC2SEvt>
 	{
 	private:
 
 	public:
-		GenericServerStartedTrans(IMemoryManager& memMgr, MessageDataPtr &pIMsg ) : ServerStartedTrans< Svr::ServerEntity, Policy::NetSvrPolicyServer, Message::Server::ServerConnectedC2SEvt, GenericServerStartedTrans>(memMgr, pIMsg) {}
+		GenericServerStartedTrans(IMemoryManager& memMgr, MessageDataPtr &pIMsg )
+			: ServerStartedTrans< Svr::ServerEntity, Message::Server::ServerConnectedC2SEvt>(memMgr, pIMsg)
+		{}
 		virtual ~GenericServerStartedTrans() {}
 	};
 
 
 
 	// Entity Server started
-	class EntityServerStartedTrans : public ServerStartedTrans< Svr::ServerEntity, Policy::NetSvrPolicyServer, Message::Server::ServerConnectedC2SEvt, EntityServerStartedTrans>
+	class EntityServerStartedTrans : public ServerStartedTrans< Svr::ServerEntity, Message::Server::ServerConnectedC2SEvt>
 	{
 	public:
-		typedef ServerStartedTrans< Svr::ServerEntity, Policy::NetSvrPolicyServer, Message::Server::ServerConnectedC2SEvt, EntityServerStartedTrans> super;
+		typedef ServerStartedTrans< Svr::ServerEntity, Message::Server::ServerConnectedC2SEvt> super;
 
 	private:
 
 	public:
-		EntityServerStartedTrans( MessageDataPtr &pIMsg );
+		EntityServerStartedTrans(IMemoryManager& memMgr, MessageDataPtr &pIMsg );
 		virtual ~EntityServerStartedTrans();
 
 		Result OnGetClusterMemberList(Svr::TransactionResult* pRes);

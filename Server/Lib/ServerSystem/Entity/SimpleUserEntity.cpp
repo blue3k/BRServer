@@ -173,13 +173,13 @@ namespace Svr
 			//Assert(m_pHandlerTable);
 			if (!(GetMessageHandlerTable()->HandleMessage<Svr::Transaction*&>(GetConnection(), pIMsg, pNewTrans)))
 			{
-				svrTrace(Trace::TRC_ERROR, "Failed to handle remote message Entity:{0}:{1}, MsgID:{2}", typeid(*this).name(), GetEntityID(), pMsgHdr->msgID);
+				svrTrace(Error, "Failed to handle remote message Entity:{0}:{1}, MsgID:{2}", typeid(*this).name(), GetEntityID(), pMsgHdr->msgID);
 				svrErr(ResultCode::SVR_NOTEXPECTED_MESSAGE);
 			}
 			break;
 		}
 		default:
-			svrTrace(Trace::TRC_ERROR, "Not Processed Remote message Entity:{0}:{1}, MsgID:{2}", typeid(*this).name(), GetEntityID(), pMsgHdr->msgID);
+			svrTrace(Error, "Not Processed Remote message Entity:{0}:{1}, MsgID:{2}", typeid(*this).name(), GetEntityID(), pMsgHdr->msgID);
 			svrErr(ResultCode::SVR_NOTEXPECTED_MESSAGE);
 			break;
 		};
@@ -406,7 +406,7 @@ namespace Svr
 				}
 				else
 				{
-					svrTrace(Trace::TRC_WARN, "Transaction result for TID:{0} is failed to route.", eventTask.EventData.pTransResultEvent->GetTransID());
+					svrTrace(Warning, "Transaction result for TID:{0} is failed to route.", eventTask.EventData.pTransResultEvent->GetTransID());
 					auto pRes = const_cast<TransactionResult*>(eventTask.EventData.pTransResultEvent);
 					IMemoryManager::Delete(pRes);
 					//svrErr(ResultCode::FAIL);
@@ -414,7 +414,7 @@ namespace Svr
 			}
 			else
 			{
-				svrTrace(Svr::TRC_TRANSACTION, "Failed to process transaction result. null Transaction result.");
+				svrTrace(SVR_TRANSACTION, "Failed to process transaction result. null Transaction result.");
 			}
 			break;
 		default:

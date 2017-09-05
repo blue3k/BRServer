@@ -33,7 +33,7 @@ namespace Svr {
 
 	void ServerComponentCarrier::OnAddComponent(Component* newComponent)
 	{
-		svrTrace(Svr::TRC_INFO, "Server Component is added {0}, {1}", typeid(*newComponent).name(), newComponent->GetComponentID());
+		svrTrace(SVR_INFO, "Server Component is added {0}, {1}", typeid(*newComponent).name(), newComponent->GetComponentID());
 	}
 
 
