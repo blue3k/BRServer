@@ -231,11 +231,11 @@ namespace ConspiracyGameInstanceServer {
 
 
 	// create remote entity by class
-	Result GameInstanceServer::CreateServerEntity( BR::NetClass netClass, Svr::ServerEntity* &pServerEntity )
+	Result GameInstanceServer::CreateServerEntity( NetClass netClass, Svr::ServerEntity* &pServerEntity )
 	{
 		switch( netClass )
 		{
-		case BR::NetClass::Entity:
+		case NetClass::Entity:
 			pServerEntity = new(GetMemoryManager()) Svr::EntityServerEntity();
 			break;
 		default:

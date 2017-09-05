@@ -121,7 +121,7 @@ namespace GameServer {
 
 		//svrChk(pRes->GetResult());
 		if (!(pRes->GetResult()))
-			svrTrace(Svr::TRC_INFO, "Unregister Matching is failed hr:{0:X8}", pRes->GetResult());
+			svrTrace(SVR_INFO, "Unregister Matching is failed hr:{0:X8}", pRes->GetResult());
 
 	//Proc_End:
 
@@ -229,7 +229,7 @@ namespace GameServer {
 
 		if (!(hr) && hr != Result(ResultCode::INVALID_PLAYERID))
 		{
-			svrTrace(Trace::TRC_ERROR, "Failed to close entity:{0}, hr:{1:X8}", GetOwnerEntityUID(), hr);
+			svrTrace(Error, "Failed to close entity:{0}, hr:{1:X8}", GetOwnerEntityUID(), hr);
 		}
 
 		if (m_WaitingTransactions <= 0)

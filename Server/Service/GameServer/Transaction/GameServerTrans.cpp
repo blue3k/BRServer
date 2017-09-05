@@ -122,14 +122,14 @@ namespace GameServer {
 	{
 		if( (hrRes) )
 		{
-			svrTrace(Svr::TRC_INFO, "Server Initialization is completed, enabling incomming connections");
+			svrTrace(SVR_INFO, "Server Initialization is completed, enabling incomming connections");
 			// We don't need this because all connection will be registered when it requested join by Login server
 			//GetMyServer()->GetNetPublic()->SetIsEnableAccept(true);
 			GetMyServer()->SetServerState(Svr::ServerState::RUNNING);
 		}
 		else
 		{
-			svrTrace(Trace::TRC_ERROR, "Server Initialization is failed, restart may required");
+			svrTrace(Error, "Server Initialization is failed, restart may required");
 		}
 
 		return super::OnCloseTransaction(hrRes);

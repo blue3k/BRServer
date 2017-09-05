@@ -17,7 +17,7 @@
 #include "ResultCode/SFResultCodeGame.h"
 #include "Memory/MemoryPool.h"
 #include "Types/SFEngineTypedefs.h"
-#include "Common/BrRandom.h"
+#include "Util/SFRandom.h"
 #include "GameConst.h"
 
 #include "Server/BrServer.h"
@@ -117,13 +117,13 @@ namespace ConspiracyGameInstanceServer {
 
 			svrChk( GetMyOwner()->AddPlayerToJoin(pNewInsPlayer) );
 			pNewInsPlayer = nullptr;
-			svrTrace(Svr::TRC_INFO, "GameUID:{0} Join player {1}, NumPlayer:{2}, ", GetMyOwner()->GetEntityUID(), GetPlayer().PlayerID, GetMyOwner()->GetNumPlayer());
+			svrTrace(SVR_INFO, "GameUID:{0} Join player {1}, NumPlayer:{2}, ", GetMyOwner()->GetEntityUID(), GetPlayer().PlayerID, GetMyOwner()->GetNumPlayer());
 
 			m_bIsFirstJoin = true;
 		}
 		else
 		{
-			svrTrace(Svr::TRC_INFO, "GameUID:{0} Rejoin player {1}, NumPlayer:{2}, ", GetMyOwner()->GetEntityUID(), GetPlayer().PlayerID, GetMyOwner()->GetNumPlayer());
+			svrTrace(SVR_INFO, "GameUID:{0} Rejoin player {1}, NumPlayer:{2}, ", GetMyOwner()->GetEntityUID(), GetPlayer().PlayerID, GetMyOwner()->GetNumPlayer());
 
 			// Player ID should be bigger than 10, 1~10 is used by bot
 			Assert(GetPlayer().PlayerID > 10);

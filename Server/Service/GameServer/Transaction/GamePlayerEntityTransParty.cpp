@@ -809,7 +809,7 @@ namespace GameServer {
 
 	Proc_End:
 
-		svrTrace(Svr::TRC_INFO, "PartyChat PlayerID:{0}, hr:{1}", GetMyOwner()->GetPlayerID(), hr);
+		svrTrace(SVR_INFO, "PartyChat PlayerID:{0}, hr:{1}", GetMyOwner()->GetPlayerID(), hr);
 
 		CloseTransaction( hr );
 
@@ -829,7 +829,7 @@ namespace GameServer {
 
 	Proc_End:
 
-		svrTrace(Svr::TRC_INFO, "PartyChat Received PlayerID:{0}, FromPlayerID:{1} hr:{2}", GetMyOwner()->GetPlayerID(), GetSenderID(), hr);
+		svrTrace(SVR_INFO, "PartyChat Received PlayerID:{0}, FromPlayerID:{1} hr:{2}", GetMyOwner()->GetPlayerID(), GetSenderID(), hr);
 
 		CloseTransaction( hr );
 

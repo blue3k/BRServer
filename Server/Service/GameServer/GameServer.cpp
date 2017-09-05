@@ -2,14 +2,12 @@
 //
 
 #include "stdafx.h"
-#include "Common/BrLibComponents.h"
+#include "Object/LibraryComponent.h"
 #include "Util/TimeUtil.h"
-#include "Common/TraceComponent.h"
-#include "Common/DefaultLibComponent.h"
-#include "Memory/MemoryPool.h"
-#include "ServerSystem/BrService.h"
+#include "ServerLog/SvrLogComponent.h"
+#include "Server/BrService.h"
 #include "SvrTrace.h"
-#include "ServerSystem/ParameterSetting.h"
+#include "Server/ParameterSetting.h"
 
 
 #include "GameServer.h"
@@ -47,16 +45,11 @@ int main(int numArg, const char* argc[])
 
 
 	Result hr = ResultCode::SUCCESS;
-	SharedPointerT<BR::GameServer::GameServer> pServerInstance;
+	SharedPointerT<GameServer::GameServer> pServerInstance;
 
-	svrChk(BR::Svr::Service::ServicePrepare());
+	svrChk(Svr::Service::ServicePrepare());
 
-	svrChk(LibComponentManager::GetInstance().AddComponent<LibComponentDefault>());
-	svrChk(LibComponentManager::GetInstance().AddComponent<LibComponentTrace>());
-	svrChk(LibComponentManager::GetInstance().AddComponent<Util::LibComponentTime>());
-	svrChk(LibComponentManager::GetInstance().AddComponent<MemoryPoolManager>());
-
-	svrChk(LibComponentManager::GetInstance().InitializeComponents());
+	SF::Svr::InitializeEngineForServer();
 
 
 	pServerInstance = SharedPointerT<GameServer::GameServer>(new(GetSystemMemoryManager()) GameServer::GameServer);
@@ -74,7 +67,7 @@ Proc_End:
 	}
 
 
-	LibComponentManager::GetInstance().TerminateComponents();
+	SF::Svr::DeinitializeEngine();
 
 	return 0;
 }

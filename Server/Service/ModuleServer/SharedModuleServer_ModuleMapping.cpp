@@ -83,11 +83,11 @@ namespace SharedModuleServer {
 
 			if (pServiceEntity->GetClusterMembership() <= ClusterMembership::StatusWatcher)
 			{
-				svrTrace(Trace::TRC_WARN, "Duplicated entity watcher entity {0} EntityUID:{1}, while adding {2} EntityUID:{3}", typeid(*pServiceEntityTest).name(), pServiceEntityTest->GetEntityUID(), typeid(*pServiceEntity).name(), pServiceEntity->GetEntityUID());
+				svrTrace(Warning, "Duplicated entity watcher entity {0} EntityUID:{1}, while adding {2} EntityUID:{3}", typeid(*pServiceEntityTest).name(), pServiceEntityTest->GetEntityUID(), typeid(*pServiceEntity).name(), pServiceEntity->GetEntityUID());
 			}
 			else
 			{
-				svrTrace(Trace::TRC_ERROR, "Duplicated cluster entity {0} EntityUID:{1}, while adding {2} EntityUID:{3}", typeid(*pServiceEntityTest).name(), pServiceEntityTest->GetEntityUID(), typeid(*pServiceEntity).name(), pServiceEntity->GetEntityUID());
+				svrTrace(Error, "Duplicated cluster entity {0} EntityUID:{1}, while adding {2} EntityUID:{3}", typeid(*pServiceEntityTest).name(), pServiceEntityTest->GetEntityUID(), typeid(*pServiceEntity).name(), pServiceEntity->GetEntityUID());
 			}
 			IMemoryManager::Delete(pServiceEntity);
 			goto Proc_End;
@@ -195,7 +195,7 @@ namespace SharedModuleServer {
 
 		default:
 			Assert(false);
-			svrTrace(Trace::TRC_ERROR, "Invalid cluster ID for module{0}", clusterID);
+			svrTrace(Error, "Invalid cluster ID for module{0}", clusterID);
 			break;
 		}
 

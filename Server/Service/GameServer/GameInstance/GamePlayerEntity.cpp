@@ -248,7 +248,7 @@ namespace GameServer {
 		connectionInfo.SetRemoteInfo(NetClass::Client, authTicket);
 
 		svrChk(pConnection->InitConnection(GetMyServer()->GetNetPublic()->GetSocket(), connectionInfo));
-		svrTrace(Trace::TRC_USER1, "Initialize connection CID:{0}, Addr:{1}", pConnection->GetCID(), pConnection->GetConnectionInfo().Remote);
+		svrTrace(Trace::TRC_USER1, "Initialize connection CID:{0}, Addr:{1}", pConnection->GetCID(), pConnection->GetRemoteInfo().PeerAddress);
 
 		svrChk(GetMyServer()->GetNetPublic()->GetConnectionManager().PendingConnection(pConnection));
 
@@ -446,15 +446,15 @@ namespace GameServer {
 
 		svrChkPtr(GetMyServer()->GetPresetGameConfig());
 
-		svrTrace(Svr::TRC_DBGTRANS, "Check GamePlayer Update Tick PID:{0} last:{1}, curTime:{2}, numTick:{3}, remain:{4}", GetPlayerID(), m_LatestUpdateTime, curUTCSec, numberOfTicks, remainTime);
+		svrTrace(SVR_DBGTRANS, "Check GamePlayer Update Tick PID:{0} last:{1}, curTime:{2}, numTick:{3}, remain:{4}", GetPlayerID(), m_LatestUpdateTime, curUTCSec, numberOfTicks, remainTime);
 
 		if( numberOfTicks > 0 )
 		{
-			svrTrace(Svr::TRC_DBGTRANS, "GamePlayer Update PID:{0}, numTick:{1}, Sta:{2}", GetPlayerID(), numberOfTicks, playerInfoSystem->GetStamina());
+			svrTrace(SVR_DBGTRANS, "GamePlayer Update PID:{0}, numTick:{1}, Sta:{2}", GetPlayerID(), numberOfTicks, playerInfoSystem->GetStamina());
 
 			if (numberOfTicks > std::numeric_limits<uint16_t>::max())
 			{
-				svrTrace( Trace::TRC_ERROR, "Invalid tick count, applying maximum int16" );
+				svrTrace( Error, "Invalid tick count, applying maximum int16" );
 				numberOfTicks = std::numeric_limits<uint16_t>::max();
 			}
 

@@ -93,7 +93,7 @@ namespace ConspiracyGameInstanceServer {
 			hr = FindEntity(MessageClass::GetRouteContext().GetTo().GetEntityID(), pEntity);
 			if (!(hr))
 			{
-				svrTrace(Trace::TRC_WARN, "Can't find transaction target instance:{0}", MessageClass::GetRouteContext().GetTo());
+				svrTrace(Warning, "Can't find transaction target instance:{0}", MessageClass::GetRouteContext().GetTo());
 				goto Proc_End;
 			}
 

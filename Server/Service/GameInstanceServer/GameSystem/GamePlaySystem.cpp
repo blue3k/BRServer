@@ -14,7 +14,7 @@
 #include "stdafx.h"
 
 #include "Util/TimeUtil.h"
-#include "Common/BrRandom.h"
+#include "Util/SFRandom.h"
 #include "ResultCode/SFResultCodeSvr.h"
 #include "ResultCode/SFResultCodeGame.h"
 
@@ -181,7 +181,7 @@ namespace ConspiracyGameInstanceServer {
 			// skip errnous player
 			if (iSlot >= GameConst::MAX_GAMEPLAYER)
 			{
-				svrTrace(Trace::TRC_WARN, "Failed to find requested role, player:{0}, requested:{1}", pPlayer->GetPlayerID(), (uint)pPlayer->GetRequestedRole());
+				svrTrace(Warning, "Failed to find requested role, player:{0}, requested:{1}", pPlayer->GetPlayerID(), (uint)pPlayer->GetRequestedRole());
 				return ResultCode::SUCCESS;
 			}
 
@@ -355,7 +355,7 @@ namespace ConspiracyGameInstanceServer {
 			if( !(GetOwner().FindPlayer(exculdePlayer, pGamePlayer)) )
 			{
 				// pick random
-				svrTrace( Trace::TRC_ERROR, "Invalid hunted player: PlayerID:{0}", GetHuntedPlayer() );
+				svrTrace( Error, "Invalid hunted player: PlayerID:{0}", GetHuntedPlayer() );
 				GetOwner().ForeachPlayer( [&](GamePlayer* pPlayer ) -> Result
 				{
 					if( pGamePlayer != nullptr )
@@ -396,7 +396,7 @@ namespace ConspiracyGameInstanceServer {
 		}
 
 
-		svrTrace( Trace::TRC_ERROR, "Failed to find player PickAnyoneCloseToHuntedPlayer Hunted PlayerID:{0}", GetHuntedPlayer() );
+		svrTrace( Error, "Failed to find player PickAnyoneCloseToHuntedPlayer Hunted PlayerID:{0}", GetHuntedPlayer() );
 		return 0;
 	}
 
@@ -415,7 +415,7 @@ namespace ConspiracyGameInstanceServer {
 	Proc_End:
 
 		if( !(hr) )
-			svrTrace( Svr::TRC_GAME1, "Failed to find player KillPlayer PlayerID:{0}, reason:{1}", playerToKill, (int)reason );
+			svrTrace( SVR_GAME1, "Failed to find player KillPlayer PlayerID:{0}, reason:{1}", playerToKill, (int)reason );
 
 		return hr;
 	}
@@ -483,11 +483,11 @@ namespace ConspiracyGameInstanceServer {
 
 		if( !(hr) )
 		{
-			svrTrace(Svr::TRC_GAME1, "Failed to kill a player PlayerID:{0}, reason:{1}, Result:{2:X8}", pPlayerToKill->GetPlayerID(), (int)reason, hr );
+			svrTrace(SVR_GAME1, "Failed to kill a player PlayerID:{0}, reason:{1}, Result:{2:X8}", pPlayerToKill->GetPlayerID(), (int)reason, hr );
 		}
 		else
 		{
-			svrTrace(Svr::TRC_GAME1, "Player PlayerID:{0} is killed by reason:{1}", pPlayerToKill->GetPlayerID(), (int)reason );
+			svrTrace(SVR_GAME1, "Player PlayerID:{0} is killed by reason:{1}", pPlayerToKill->GetPlayerID(), (int)reason );
 		}
 
 		return hr;
@@ -553,11 +553,11 @@ namespace ConspiracyGameInstanceServer {
 
 		if (!(hr))
 		{
-			svrTrace(Svr::TRC_GAME1, "Failed to revive a player PlayerID:{0}, Result:{1:X8}", pPlayerToRevive->GetPlayerID(), hr);
+			svrTrace(SVR_GAME1, "Failed to revive a player PlayerID:{0}, Result:{1:X8}", pPlayerToRevive->GetPlayerID(), hr);
 		}
 		else
 		{
-			svrTrace(Svr::TRC_GAME1, "Player PlayerID:{0} is revived", pPlayerToRevive->GetPlayerID());
+			svrTrace(SVR_GAME1, "Player PlayerID:{0} is revived", pPlayerToRevive->GetPlayerID());
 		}
 
 		return hr;

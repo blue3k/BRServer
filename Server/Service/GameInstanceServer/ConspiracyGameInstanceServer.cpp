@@ -2,14 +2,13 @@
 //
 
 #include "stdafx.h"
-#include "Common/BrLibComponents.h"
+#include "Object/LibraryComponent.h"
 #include "Util/TimeUtil.h"
-#include "Common/TraceComponent.h"
-#include "Common/DefaultLibComponent.h"
-#include "Memory/MemoryPool.h"
-#include "ServerSystem/BrService.h"
+#include "ServerLog/SvrLogComponent.h"
+#include "Server/BrService.h"
 #include "SvrTrace.h"
-#include "ServerSystem/ParameterSetting.h"
+#include "Server/ParameterSetting.h"
+
 
 #include "GameServer.h"
 #include "ConspiracyGameInstanceServerClass.h"
@@ -50,16 +49,9 @@ int main(int numArg, const char* argc[])
 	SharedPointerT<ConspiracyGameInstanceServer::GameInstanceServer> pServerInstance;
 
 	svrChk(Svr::Service::ServicePrepare());
+	SF::Svr::InitializeEngineForServer();
 
-	svrChk(LibComponentManager::GetInstance().AddComponent<LibComponentDefault>());
-	svrChk(LibComponentManager::GetInstance().AddComponent<LibComponentTrace>());
-	svrChk(LibComponentManager::GetInstance().AddComponent<Util::LibComponentTime>());
-	svrChk(LibComponentManager::GetInstance().AddComponent<MemoryPoolManager>());
-
-	svrChk(LibComponentManager::GetInstance().InitializeComponents());
-
-
-	pServerInstance = SharedPointerT<ConspiracyGameInstanceServer::GameInstanceServer>(new(GetMemoryManager()) ConspiracyGameInstanceServer::GameInstanceServer );
+	pServerInstance = SharedPointerT<ConspiracyGameInstanceServer::GameInstanceServer>(new(GetSystemMemoryManager()) ConspiracyGameInstanceServer::GameInstanceServer );
 
 	svrChk(Svr::Service::ServiceRun((ConspiracyGameInstanceServer::GameInstanceServer*)pServerInstance));
 
@@ -73,7 +65,7 @@ Proc_End:
 		pServerInstance = SharedPointerT<ConspiracyGameInstanceServer::GameInstanceServer>();
 	}
 
-	LibComponentManager::GetInstance().TerminateComponents();
+	SF::Svr::DeinitializeEngine();
 
 	return 0;
 }

@@ -14,7 +14,7 @@
 #include "stdafx.h"
 
 #include "Util/TimeUtil.h"
-#include "Common/BrRandom.h"
+#include "Util/SFRandom.h"
 #include "ResultCode/SFResultCodeSvr.h"
 #include "ResultCode/SFResultCodeLibrary.h"
 #include "ResultCode/SFResultCodeGame.h"

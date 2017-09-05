@@ -22,6 +22,7 @@
 #include "Net/NetServer.h"
 #include "Net/NetServerPeer.h"
 
+
 #include "Transaction/Transaction.h"
 #include "Entity/Entity.h"
 #include "Transaction/MessageRoute.h"
@@ -29,14 +30,13 @@
 #include "Server/BrServer.h"
 #include "Server/BrServerUtil.h"
 #include "String/SvrToString.h"
-#include "ServerEntity/EntityServerEntity.h"
-#include "ServerSystem/ServerEntity/GameMasterServerEntity.h"
-#include "ServerSystem/ServerEntity/GameServerEntity.h"
-#include "ServerSystem/SvrLoopbackConnection.h"
+#include "ServerEntity/SvrEntityServerEntity.h"
+#include "ServerEntity/SvrGameServerEntity.h"
+#include "ServerEntity/SvrLoopbackConnection.h"
 #include "Entity/SimpleUserEntity.h"
-#include "ServerSystem/ServerTransaction.h"
+#include "Transaction/ServerTransaction.h"
 #include "ServerEntity/ServerEntity.h"
-#include "ServerSystem/TransactionSteper.h"
-#include "ServerSystem/TransactionUtil.h"
+#include "Transaction/TransactionSteper.h"
+#include "Transaction/TransactionUtil.h"
 
 // TODO: reference additional headers your program requires here

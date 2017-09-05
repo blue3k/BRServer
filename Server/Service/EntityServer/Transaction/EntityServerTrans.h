@@ -24,10 +24,10 @@ namespace SF {
 namespace EntityServer {
 
 	
-	class EntityServerStartProcess : public Svr::TransactionT<EntityServer,EntityServerStartProcess>
+	class EntityServerStartProcess : public Svr::TransactionT<EntityServer>
 	{
 	private:
-		typedef Svr::TransactionT<EntityServer, EntityServerStartProcess> super;
+		typedef Svr::TransactionT<EntityServer> super;
 		
 		enum class StartingStep 
 		{

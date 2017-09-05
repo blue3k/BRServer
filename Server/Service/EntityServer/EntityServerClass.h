@@ -45,7 +45,6 @@ namespace EntityServer {
 		
 	protected:
 
-		virtual MemoryAllocator& GetAllocator()			{ return STDAllocator::GetInstance(); }
 
 		virtual Svr::EntityManager* CreateEntityManager() override;
 		virtual Svr::ServerEntity* CreateLoopbackEntity() override;
@@ -74,14 +73,17 @@ namespace EntityServer {
 		virtual Result CloseNetPrivate();
 		
 		// create remote entity by class
-		virtual Result CreateServerEntity( BR::NetClass netClass, Svr::ServerEntity* &pServerEntity );
+		virtual Result CreateServerEntity( NetClass netClass, Svr::ServerEntity* &pServerEntity );
 
 
 	};
 
 
 	// Query login server instance
-	inline EntityServer* GetMyServer();
+	inline EntityServer* GetMyServer()
+	{
+		return dynamic_cast<EntityServer*>(Svr::BrServer::GetInstance());
+	}
 
 
 

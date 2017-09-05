@@ -14,7 +14,7 @@
 #include "SvrConst.h"
 #include "Server/BrServer.h"
 #include "SvrTrace.h"
-#include "ServerSystem/SvrConfig.h"
+#include "ServerConfig/SFServerConfig.h"
 #include "Entity/EntityManager.h"
 #include "ServerEntity/ServerEntityManager.h"
 //#include "ServerSystem/ServiceEntity/EntityManagerServiceEntity.h"
@@ -47,7 +47,7 @@ namespace EntityServer {
 
 
 	EntityServer::EntityServer()
-		:BrServer(BR::NetClass::Entity)
+		: BrServer(NetClass::Entity)
 	{
 	}
 
@@ -81,7 +81,7 @@ namespace EntityServer {
 		std::for_each( Svr::Config::GetConfig().EntityServers.begin(), Svr::Config::GetConfig().EntityServers.end(), 
 			[&]( const Svr::Config::GenericServer* pServer )
 		{
-			if( pServer->Name == Util::GetServiceNameA() )
+			if( pServer->Name == Util::GetServiceName() )
 			{
 				pMySvr = pServer;
 			}
@@ -214,7 +214,7 @@ namespace EntityServer {
 
 
 	// create remote entity by class
-	Result EntityServer::CreateServerEntity( BR::NetClass netClass, Svr::ServerEntity* &pServerEntity )
+	Result EntityServer::CreateServerEntity( NetClass netClass, Svr::ServerEntity* &pServerEntity )
 	{
 		switch( netClass )
 		{

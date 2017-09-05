@@ -12,7 +12,7 @@
 #pragma once
 
 #include "SFTypedefs.h"
-#include "ServerSystem/ServerTransaction.h"
+#include "Transaction/ServerTransaction.h"
 #include "Memory/MemoryPool.h"
 #include "Types/SFEngineTypedefs.h"
 #include "Protocol/Message/GameMsgClass.h"

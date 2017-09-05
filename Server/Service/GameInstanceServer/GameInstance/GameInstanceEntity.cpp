@@ -18,7 +18,7 @@
 #include "ResultCode/SFResultCodeLibrary.h"
 #include "ResultCode/SFResultCodeGame.h"
 #include "Net/Message.h"
-#include "Common/BrRandom.h"
+#include "Util/SFRandom.h"
 
 #include "Server/BrServer.h"
 #include "Entity/EntityManager.h"
@@ -39,7 +39,7 @@
 #include "ConspiracyGameInstanceSvrConst.h"
 
 #include "GamePlayer.h"
-#include "ServerSystem/ServerService/GameInstanceManagerService.h"
+#include "Protocol/ServerService/GameInstanceManagerService.h"
 #include "ServerSystem/ServiceEntity/Game/GameInstanceManagerServiceEntity.h"
 #include "Table/conspiracy/BotTalkTbl.h"
 #include "Table/TableSystem.h"
@@ -121,7 +121,7 @@ namespace ConspiracyGameInstanceServer {
 
 		if (!( conspiracy::GameConfigTbl::FindItem(m_PresetGameConfigID, pGameConfig) ))
 		{
-			svrTrace(Trace::TRC_ERROR, "Failed to find Gameconfig");
+			svrTrace(Error, "Failed to find Gameconfig");
 			goto Proc_End;
 		}
 
@@ -130,7 +130,7 @@ namespace ConspiracyGameInstanceServer {
 
 		if (!(conspiracy::BotTalkTbl::FindItem(1, m_pBotTalk)))
 		{
-			svrTrace(Trace::TRC_ERROR, "Failed to find bot talk item");
+			svrTrace(Error, "Failed to find bot talk item");
 		}
 
 

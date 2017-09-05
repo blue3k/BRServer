@@ -556,12 +556,12 @@ namespace GameServer {
 			Result hRes = pFriendSystem->AddFriend(info);
 			if (hRes == Result(ResultCode::E_MAX_FRIEND))
 			{
-				svrTrace(Trace::TRC_WARN, "Failed to add friend. Max friends, PlayerID:{0} to friend system", set.FriendUID);
+				svrTrace(Warning, "Failed to add friend. Max friends, PlayerID:{0} to friend system", set.FriendUID);
 				return;
 			}
 			else if (!(hr))
 			{
-				svrTrace(Trace::TRC_ERROR, "Failed to add friend PlayerID:{0} to friend system", set.FriendUID);
+				svrTrace(Error, "Failed to add friend PlayerID:{0} to friend system", set.FriendUID);
 				return;
 			}
 
@@ -608,7 +608,7 @@ namespace GameServer {
 
 		if( !(hr) )
 		{
-			svrTrace( Trace::TRC_ERROR, "Failed to get friend level PlayerID:{0}, hr={1}", pDBRes ? pDBRes->UserID : 0, ArgHex32(hr) );
+			svrTrace( Error, "Failed to get friend level PlayerID:{0}, hr={1}", pDBRes ? pDBRes->UserID : 0, ArgHex32(hr) );
 		}
 
 		m_WaitingCount--;
@@ -648,7 +648,7 @@ namespace GameServer {
 
 		if( !(hr) )
 		{
-			svrTrace(Trace::TRC_ERROR, "Failed to get friend level PlayerID:{0}, hr={1:X8}", pDBRes ? pDBRes->PlayerID : 0, hr);
+			svrTrace(Error, "Failed to get friend level PlayerID:{0}, hr={1:X8}", pDBRes ? pDBRes->PlayerID : 0, hr);
 		}
 
 		m_WaitingCount--;
@@ -752,7 +752,7 @@ namespace GameServer {
 		// if failed to write to DB, roleback the changes
 		if(!(hr))
 		{
-			svrTrace( Trace::TRC_ERROR, "Failed to save give stamina result PlayerID:{0}, Dest:{1}, hr:{2:X8}", GetMyOwner()->GetPlayerID(), GetTargetPlayer(), hr );
+			svrTrace( Error, "Failed to save give stamina result PlayerID:{0}, Dest:{1}, hr:{2:X8}", GetMyOwner()->GetPlayerID(), GetTargetPlayer(), hr );
 			CloseTransaction(hr);
 		}
 
@@ -774,7 +774,7 @@ namespace GameServer {
 		// if failed to write to DB, roleback the changes
 		if(!(hr))
 		{
-			svrTrace( Trace::TRC_ERROR, "Failed to save give-stamina timestamp PlayerID:{0}, Dest:{1}", GetMyOwner()->GetPlayerID(), GetTargetPlayer() );
+			svrTrace( Error, "Failed to save give-stamina timestamp PlayerID:{0}, Dest:{1}", GetMyOwner()->GetPlayerID(), GetTargetPlayer() );
 		}
 
 		m_WaitingQueries--;
@@ -896,7 +896,7 @@ namespace GameServer {
 
 	//	if( !(hr) )
 	//	{
-	//		svrTrace( Trace::TRC_ERROR, "Failed to save received stamina result PlayerID:{0}, Sender:{1}", GetDestPlayerID(), GetSenderID() );
+	//		svrTrace( Error, "Failed to save received stamina result PlayerID:{0}, Sender:{1}", GetDestPlayerID(), GetSenderID() );
 	//	}
 
 	//	CloseTransaction(hr);

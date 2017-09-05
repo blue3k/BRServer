@@ -225,7 +225,7 @@ namespace GameServer {
 		playerInfoSystem->UpdateStatByLevel();
 
 
-		svrTrace(Svr::TRC_DBGTRANS, "SetPlayerGameData PlayerID:{0}. Grade:{1}, lvl:{2}, Exp:{3}, GameMoney:{4}, Gem:{5}, Sta:{6}, updateTick:{7}", GetMyOwner()->GetPlayerID(),
+		svrTrace(SVR_DBGTRANS, "SetPlayerGameData PlayerID:{0}. Grade:{1}, lvl:{2}, Exp:{3}, GameMoney:{4}, Gem:{5}, Sta:{6}, updateTick:{7}", GetMyOwner()->GetPlayerID(),
 			playerData.Grade, playerData.Level, playerData.Exp, playerData.GameMoney, playerData.Gem, playerData.Stamina,
 			(uint64_t)playerData.LatestTickTime);
 
@@ -236,12 +236,12 @@ namespace GameServer {
 		// If first login, the value will be zero
 		if (latestTick == 0)
 		{
-			svrTrace(Trace::TRC_WARN, "Invalid player tick time for PlayerID:{0}. Reset to current time", GetMyOwner()->GetPlayerID());
+			svrTrace(Warning, "Invalid player tick time for PlayerID:{0}. Reset to current time", GetMyOwner()->GetPlayerID());
 			GetMyOwner()->SetLatestUpdateTime(Util::Time.GetTimeUTCSec());
 		}
 		else
 		{
-			svrTrace(Svr::TRC_TRANSACTION, "Latest tick time PlayerID:{0}. {1}", GetMyOwner()->GetPlayerID(), (uint64_t)playerData.LatestTickTime);
+			svrTrace(SVR_TRANSACTION, "Latest tick time PlayerID:{0}. {1}", GetMyOwner()->GetPlayerID(), (uint64_t)playerData.LatestTickTime);
 
 			GetMyOwner()->SetLatestUpdateTime(TimeStampSec(DurationSec(playerData.LatestTickTime)));
 		}
@@ -298,7 +298,7 @@ namespace GameServer {
 				playerInfoSystem->SetupDefaultStat();
 				playerInfoData.LatestTickTime = Util::Time.GetTimeUTCSec().time_since_epoch().count();
 
-				svrTrace(Svr::TRC_DBGTRANS, "Player data created PlayerID:{0}", GetMyOwner()->GetPlayerID());
+				svrTrace(SVR_DBGTRANS, "Player data created PlayerID:{0}", GetMyOwner()->GetPlayerID());
 			}
 
 			svrChk(SetPlayerGameData(playerInfoData));
@@ -972,7 +972,7 @@ namespace GameServer {
 				hrRes = GetMyOwner()->GetComponent<UserGamePlayerInfoSystem>()->GainStamina(1);
 				if (!(hrRes))
 				{
-					svrTrace(Trace::TRC_WARN, "Stamina gain is failed, PlayerID:{0}, hr:{1:X8}", GetMyOwner()->GetPlayerID(), hrRes);
+					svrTrace(Warning, "Stamina gain is failed, PlayerID:{0}, hr:{1:X8}", GetMyOwner()->GetPlayerID(), hrRes);
 				}
 				break;
 			default:

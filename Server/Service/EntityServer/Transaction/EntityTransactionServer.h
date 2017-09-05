@@ -53,12 +53,12 @@ namespace EntityServer {
 	//
 
 	// Server started
-	class TransGenericServerStarted : public Svr::ServerStartedTrans< Svr::ServerEntity, Policy::NetSvrPolicyEntityServer, Message::Server::ServerConnectedC2SEvt, TransGenericServerStarted>
+	class TransGenericServerStarted : public Svr::ServerStartedTrans< Svr::ServerEntity, Message::Server::ServerConnectedC2SEvt>
 	{
 	private:
 
 	public:
-		TransGenericServerStarted( MessageDataPtr &pIMsg ) : ServerStartedTrans(pIMsg) {}
+		TransGenericServerStarted( IMemoryManager& memMgr, MessageDataPtr &pIMsg ) : ServerStartedTrans(memMgr, pIMsg) {}
 		virtual ~TransGenericServerStarted() {}
 	};
 	

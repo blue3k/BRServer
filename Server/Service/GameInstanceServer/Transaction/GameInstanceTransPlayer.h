@@ -22,7 +22,7 @@
 #include "Protocol/Policy/GameInstanceNetPolicy.h"
 
 #include "Transaction/MessageRoute.h"
-#include "ServerSystem/ServerTransaction.h"
+#include "Transaction/ServerTransaction.h"
 
 #include "ConspiracyGameInstanceServerClass.h"
 #include "Transaction/GameInstanceTransaction.h"

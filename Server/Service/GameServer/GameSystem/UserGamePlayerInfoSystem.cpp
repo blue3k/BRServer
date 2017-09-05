@@ -14,7 +14,7 @@
 #include "stdafx.h"
 
 #include "Util/TimeUtil.h"
-#include "Common/BrRandom.h"
+#include "Util/SFRandom.h"
 #include "ResultCode/SFResultCodeSystem.h"
 #include "ResultCode/SFResultCodeSvr.h"
 #include "ResultCode/SFResultCodeGame.h"
@@ -262,7 +262,7 @@ namespace GameServer {
 	Proc_End:
 
 		if( !(hr) )
-			svrTrace( Trace::TRC_ERROR, "Player Setlevel is failed to set {0}", newLevel );
+			svrTrace( Error, "Player Setlevel is failed to set {0}", newLevel );
 
 		return hr;
 	}

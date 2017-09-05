@@ -68,7 +68,7 @@ namespace ConspiracyGameInstanceServer {
 	//	svrChk(Svr::GetServerComponent<Svr::EntityManager>()->AddEntity(EntityFaculty::GameInstance, pGameInstance));
 
 	//	gameUID = pGameInstance->GetEntityUID();
-	//	svrTrace(Trace::TRC_INFO, "CreateGameInstance:{0}, numBot:{1}, maxPlayer:{2}", GetEntityUID(), numBot, maxPlayer);
+	//	svrTrace(Info, "CreateGameInstance:{0}, numBot:{1}, maxPlayer:{2}", GetEntityUID(), numBot, maxPlayer);
 
 	//	++m_NumberOfInstance;
 	//	m_LocalWorkload.fetch_add(1,std::memory_order_relaxed);

@@ -16,7 +16,7 @@
 #include "SFTypedefs.h"
 #include "Thread/Thread.h"
 #include "Net/NetDef.h"
-#include "ServerEntity/EntityServerEntity.h"
+#include "ServerEntity/SvrEntityServerEntity.h"
 
 
 namespace SF {
@@ -35,7 +35,7 @@ namespace EntityServer {
 		virtual ~EntityServerEntity();
 
 
-		virtual Result ProcessConnectionEvent( const BR::Net::ConnectionEvent& conEvent ) override;
+		virtual Result ProcessConnectionEvent( const Net::ConnectionEvent& conEvent ) override;
 
 	};
 
