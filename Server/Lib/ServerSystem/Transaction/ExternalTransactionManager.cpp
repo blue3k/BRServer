@@ -17,10 +17,10 @@
 #include "ServerLog/SvrLog.h"
 #include "Thread/Thread.h"
 #include "SvrConst.h"
-#include "ServerSystem/Entity.h"
-#include "ServerSystem/MessageRoute.h"
-#include "ServerSystem/ExternalTransactionManager.h"
-#include "ServerSystem/ExternalTransaction.h"
+#include "Entity/Entity.h"
+#include "Transaction/MessageRoute.h"
+#include "Transaction/ExternalTransactionManager.h"
+#include "Transaction/ExternalTransaction.h"
 
 
 
@@ -33,13 +33,11 @@ namespace Svr
 	//	External task class
 	//
 
-	MemoryAllocator &ExternalTransactionManager::m_Allocator(STDAllocator::GetInstance());
-
 
 	ExternalTransactionManager::ExternalTransactionManager()
 		:ParallelTransactionManager()
 	{
-		SetTickInterval(DurationMS(Svr::Const::PARALLEL_TRANSACTION_MANAGER_TICKTASK_INTERVAL));
+		SetTickInterval(Svr::Const::PARALLEL_TRANSACTION_MANAGER_TICKTASK_INTERVAL);
 	}
 
 	ExternalTransactionManager::~ExternalTransactionManager()
@@ -48,34 +46,31 @@ namespace Svr
 
 	void* ExternalTransactionManager::CURL_malloc(size_t size)
 	{
-		void *pPtr = nullptr;
-		m_Allocator.Alloc(size, pPtr);
-		return pPtr;
+		return GetSystemMemoryManager().Alloc(size);
 	}
 
 	void ExternalTransactionManager::CURL_free(void *ptr)
 	{
-		m_Allocator.Free(ptr);
+		IMemoryManager::Free(ptr);
 	}
 
 	void* ExternalTransactionManager::CURL_realloc(void *ptr, size_t size)
 	{
-		m_Allocator.Realloc(size, ptr);
-		return ptr;
+		return GetSystemMemoryManager().Realloc(ptr, size);
 	}
 
 	char* ExternalTransactionManager::CURL_strdup(const char *str)
 	{
 		char *strTarget = nullptr;
-		StrUtil::StringDup(strTarget, str);
+		StrUtil::StringDup(GetSystemMemoryManager(), strTarget, str);
 		return strTarget;
 	}
 
 	void* ExternalTransactionManager::CURL_calloc(size_t nmemb, size_t size)
 	{
 		size_t totalSize = size*nmemb;
-		void *pPtr = nullptr;
-		if ((m_Allocator.Alloc(totalSize, pPtr)))
+		void *pPtr = GetSystemMemoryManager().Alloc(totalSize);
+		if (pPtr != nullptr)
 		{
 			memset(pPtr, 0, totalSize);
 		}
@@ -183,7 +178,7 @@ namespace Svr
 		Result hr = ResultCode::SUCCESS;
 		GCMHttpExternalTransaction *newTrans = nullptr;
 
-		svrMem( newTrans = new GCMHttpExternalTransaction );
+		svrMem( newTrans = new(GetMemoryManager()) GCMHttpExternalTransaction(GetMemoryManager()));
 
 		svrChk( newTrans->SetParameters( strRegisterIDs, strMessage, param0 ) );
 
@@ -196,7 +191,7 @@ namespace Svr
 
 		if( !(hr) )
 		{
-			Util::SafeRelease( newTrans );
+			Util::SafeDelete( newTrans );
 		}
 
 		return hr;
@@ -209,7 +204,7 @@ namespace Svr
 		Result hr = ResultCode::SUCCESS;
 		ExternalTransactionGoogleAndroidReceiptCheck *newTrans = nullptr;
 
-		svrMem(newTrans = new ExternalTransactionGoogleAndroidReceiptCheck(sender, &m_GoogleAuth));
+		svrMem(newTrans = new(GetMemoryManager()) ExternalTransactionGoogleAndroidReceiptCheck((GetMemoryManager()), sender, &m_GoogleAuth));
 
 		svrChk(newTrans->SetParameters(packageName, productID, purchaseToken));
 
@@ -233,7 +228,7 @@ namespace Svr
 		Result hr = ResultCode::SUCCESS;
 		ExternalTransactionIOSRecepitCheck *newTrans = nullptr;
 
-		svrMem(newTrans = new ExternalTransactionIOSRecepitCheck(sender, m_IOSURL.c_str()));
+		svrMem(newTrans = new(GetMemoryManager()) ExternalTransactionIOSRecepitCheck((GetMemoryManager()), sender, m_IOSURL.c_str()));
 
 		svrChk(newTrans->SetParameters(packageName, productID, transactionID, purchaseToken));
 

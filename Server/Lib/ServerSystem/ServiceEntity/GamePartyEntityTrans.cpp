@@ -443,7 +443,7 @@ namespace Svr {
 
 		svrChk( Svr::GetServerComponent<Svr::ServerEntityManager>()->GetServerEntity( GetMyOwner()->GetMatchingTicket().QueueUID.GetServerID(), pServer ) );
 
-		svrChk( pServer->GetInterface<Policy::IPolicyPartyMatchingQueue>()->UnregisterMatchingCmd( RouteContext(GetOwnerEntityUID(), GetMyOwner()->GetMatchingTicket().QueueUID), GetTransID(), 0,
+		svrChk( pServer->GetInterface<Policy::NetPolicyPartyMatchingQueue>()->UnregisterMatchingCmd( RouteContext(GetOwnerEntityUID(), GetMyOwner()->GetMatchingTicket().QueueUID), GetTransID(), 0,
 			GetMyOwner()->GetMatchingTicket() ) );
 
 		

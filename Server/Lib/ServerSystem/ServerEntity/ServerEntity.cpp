@@ -225,9 +225,9 @@ namespace Svr {
 
 				svrTrace( SVR_DBGSVR, "Sending Server Connected to Entity Server from:{0}", myConfig->Name.c_str() );
 
-				Policy::IPolicyServer *pPolicy = GetConnection()->GetInterface<Policy::IPolicyServer>();
+				Policy::NetPolicyServer *pPolicy = GetConnection()->GetInterface<Policy::NetPolicyServer>();
 				svrChkPtr(pPolicy);
-				const ServerServiceInformation* pServerServiceInfo = Svr::BrServer::GetInstance()->GetComponent<ClusterManagerServiceEntity>()->GetMyServiceInfo();
+				const ServerServiceInformation* pServerServiceInfo = Svr::GetServerComponent<ClusterManagerServiceEntity>()->GetMyServiceInfo();
 				ServiceInformation serviceInformation( pServerServiceInfo->GetEntityUID(), 
 					pServerServiceInfo->GetClusterMembership(), 
 					pServerServiceInfo->GetServiceStatus(), 

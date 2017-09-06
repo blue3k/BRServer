@@ -293,8 +293,10 @@ namespace Svr {
 	//
 	//
 
-	MatchingServiceEntity::MatchingQueue_Multiple::MatchingQueue_Multiple()
-		: m_StartQueueIndex(0)
+	MatchingServiceEntity::MatchingQueue_Multiple::MatchingQueue_Multiple(IMemoryManager& memMgr)
+		: m_MemoryManager(memMgr)
+		, m_pQueuePtr(memMgr)
+		, m_StartQueueIndex(0)
 	{
 	}
 
@@ -322,13 +324,13 @@ namespace Svr {
 	{
 		Result hr = ResultCode::SUCCESS;
 		uint missTry = 0;
-		StaticArray<uint, MAX_QUEUE_COUNT> pickedNumbers;
+		StaticArray<uint, MAX_QUEUE_COUNT> pickedNumbers(GetMemoryManager());
 
-		pickedNumbers.SetSize(m_pQueuePtr.GetSize());
-		memset(pickedNumbers.data(), 0, sizeof(uint) * pickedNumbers.GetSize());
+		pickedNumbers.SetItemCount(m_pQueuePtr.size());
+		memset(pickedNumbers.data(), 0, sizeof(uint) * pickedNumbers.size());
 
 		uint iDequeue = 0;
-		for (; iDequeue == 0 && missTry < m_pQueuePtr.GetSize();)
+		for (; iDequeue == 0 && missTry < m_pQueuePtr.size();)
 		{
 			ReservedMatchingItem item;
 			uint currentQueue = m_StartQueueIndex;
@@ -349,7 +351,7 @@ namespace Svr {
 			{
 				missTry++;
 			}
-			m_StartQueueIndex = (decltype(m_StartQueueIndex))((currentQueue + 1) % m_pQueuePtr.GetSize());
+			m_StartQueueIndex = (decltype(m_StartQueueIndex))((currentQueue + 1) % m_pQueuePtr.size());
 		}
 
 	Proc_End:
@@ -361,7 +363,7 @@ namespace Svr {
 	{
 		uint totalCount = 0;
 
-		for (uint iQueue = 0; iQueue < m_pQueuePtr.GetSize(); iQueue++)
+		for (uint iQueue = 0; iQueue < m_pQueuePtr.size(); iQueue++)
 		{
 			totalCount += std::min((uint)m_pQueuePtr[iQueue].pQueue->GetEnqueCount(), m_pQueuePtr[iQueue].MaxAllowPerMatch);
 		}
@@ -378,6 +380,7 @@ namespace Svr {
 	MatchingServiceEntity::MatchingServiceEntity(ClusterID clusterID, ClusterMembership initialMembership, bool useBot)
 		: ShardedClusterServiceEntity(clusterID, initialMembership )
 		, m_IsUseBot(true)
+		, m_MatchingReserevedQueues(GetMemoryManager())
 		, m_MatchedCount("Matched")
 	{
 		switch(clusterID)
@@ -430,7 +433,7 @@ namespace Svr {
 		{
 			if (iQueue == 1)
 			{
-				auto queueInterface = new(GetMemoryManager()) MatchingQueue_Multiple();
+				auto queueInterface = new(GetMemoryManager()) MatchingQueue_Multiple(GetMemoryManager());
 				queueInterface->AddQueue(&newQueueEntity->GetReservedItemQueue(iQueue, PlayerRole::None), MAX_NUM_PLAYER, PlayerRole::None);
 				if (m_TargetMatchingMemberCount == 4)
 				{
@@ -528,11 +531,11 @@ namespace Svr {
 	Result MatchingServiceEntity::UpdateMatching()
 	{
 		Result hr = ResultCode::SUCCESS;
-		Transaction *pTrans = nullptr;
+		TransactionPtr pTrans;
 		uint targetMatchingMemberCount = m_TargetMatchingMemberCount;
 		uint numPatterns = 0;
 		const uint* pMatchingPatternTable = nullptr;
-		StaticArray<ReservedMatchingItem, MAX_PREPARED_PLAYER> grabbedItems;
+		StaticArray<ReservedMatchingItem, MAX_PREPARED_PLAYER> grabbedItems(GetMemoryManager());
 		uint itemCountPerQueue[MAX_QUEUE_COUNT];
 		uint numItemsInQueues = 0;
 		const uint* pCurMatchingPattern = nullptr;
@@ -611,7 +614,7 @@ namespace Svr {
 		m_WaitingBotMatchingStart = TimeStampMS::min();
 
 		++m_MatchedCount;
-		pTrans = new(GetMemoryManager()) MatchingTransProcessMatchedItems(targetMatchingMemberCount, grabbedItems);
+		pTrans = new(GetMemoryManager()) MatchingTransProcessMatchedItems(GetMemoryManager(), targetMatchingMemberCount, grabbedItems);
 		svrMem(pTrans);
 		svrChk(PendingTransaction(GetTaskWorker()->GetThreadID(), pTrans));
 
@@ -624,9 +627,9 @@ namespace Svr {
 	Result MatchingServiceEntity::UpdateBotMatching()
 	{
 		Result hr = ResultCode::SUCCESS;
-		Transaction *pTrans = nullptr;
+		TransactionPtr pTrans;
 		uint targetMatchingMemberCount = m_TargetMatchingMemberCount;
-		StaticArray<ReservedMatchingItem, MAX_PREPARED_PLAYER> grabbedItems;
+		StaticArray<ReservedMatchingItem, MAX_PREPARED_PLAYER> grabbedItems(GetMemoryManager());
 		uint grabbedPlayerCount = 0;
 
 		if (m_WaitingBotMatchingStart == TimeStampMS::min())
@@ -670,7 +673,7 @@ namespace Svr {
 		if (grabbedPlayerCount > 0)
 		{
 			++m_MatchedCount;
-			pTrans = new(GetMemoryManager()) MatchingTransProcessMatchedItems(targetMatchingMemberCount, grabbedItems);
+			pTrans = new(GetMemoryManager()) MatchingTransProcessMatchedItems(GetMemoryManager(), targetMatchingMemberCount, grabbedItems);
 			svrMem(pTrans);
 			svrChk(PendingTransaction(GetTaskWorker()->GetThreadID(), pTrans));
 		}
@@ -683,7 +686,7 @@ namespace Svr {
 	uint MatchingServiceEntity::GetGrabbedPlayerCount(Array<ReservedMatchingItem>& grabbedItems)
 	{
 		uint grabbedPlayerCount = 0;
-		for (uint iGrab = 0; iGrab < grabbedItems.GetSize(); iGrab++)
+		for (uint iGrab = 0; iGrab < grabbedItems.size(); iGrab++)
 		{
 			grabbedPlayerCount += grabbedItems[iGrab].MemberCount;
 		}
@@ -762,23 +765,29 @@ namespace Svr {
 		, m_MinQueueCount(minQueueCount)
 		, m_MaxQueueCount(maxQueueCount)
 	{
-
+		for (auto& itQueue : m_ReservedItemQueue)
+		{
+			itQueue = new(GetMemoryManager()) PageQueue<MatchingServiceEntity::ReservedMatchingItem>(GetMemoryManager());
+		}
 	}
 
 	MatchingServiceQueueEntity::~MatchingServiceQueueEntity()
 	{
-
+		for (auto& itQueue : m_ReservedItemQueue)
+		{
+			IMemoryManager::Delete(itQueue);
+		}
 	}
 
 	PageQueue<MatchingServiceEntity::ReservedMatchingItem>& MatchingServiceQueueEntity::GetReservedItemQueue(uint iMemberCount, PlayerRole requestRole)
 	{
 		if (iMemberCount == 1 && m_MatchingMemberCount > 2)
 		{
-			if (requestRole == PlayerRole::Werewolf)   return m_ReservedItemQueue[(uint)m_MatchingMemberCount + 0];
-			else if (requestRole == PlayerRole::Seer)  return m_ReservedItemQueue[(uint)m_MatchingMemberCount + 1];
+			if (requestRole == PlayerRole::Werewolf)   return *m_ReservedItemQueue[(uint)m_MatchingMemberCount + 0];
+			else if (requestRole == PlayerRole::Seer)  return *m_ReservedItemQueue[(uint)m_MatchingMemberCount + 1];
 		}
 
-		return m_ReservedItemQueue[iMemberCount];
+		return *m_ReservedItemQueue[iMemberCount];
 	}
 
 	Result MatchingServiceQueueEntity::InitializeEntity(EntityID newEntityID)
@@ -818,7 +827,7 @@ namespace Svr {
 				{
 					auto playerRole = MatchingUtil::GetPlayerRoleFromQueueComponentID(compoID);
 					auto targetMemberCount = MatchingUtil::GetPartyMemberCountFromQueueComponentID(compoID);
-					Transaction *pTrans = new(GetMemoryManager()) MatchingTransGrabPlayer(m_MatchingMemberCount, targetMemberCount, playerRole, m_MinQueueCount, m_MaxQueueCount);
+					TransactionPtr pTrans = new(GetMemoryManager()) MatchingTransGrabPlayer(GetMemoryManager(), m_MatchingMemberCount, targetMemberCount, playerRole, m_MinQueueCount, m_MaxQueueCount);
 					svrMem(pTrans);
 					svrChk(PendingTransaction(GetTaskWorker()->GetThreadID(), pTrans));
 				}

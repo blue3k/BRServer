@@ -150,7 +150,7 @@ namespace Svr {
 		svrTrace( SVR_CLUSTER, "Cluster memberlist query Entity:{0}, ClusterID:{1},Type:{2},Membership:{3}", GetOwnerEntityUID(), GetMyOwner()->GetClusterID(), GetMyOwner()->GetClusterType(), GetMyOwner()->GetClusterMembership() );
 
 		// 2. Get service entity list in the cluster
-		svrChk(pMasterServerEntity->GetInterface<Policy::IPolicyClusterServer>()->JoinClusterCmd( RouteContext(GetOwnerEntityUID(),clusterManagerMasterUID), GetTransID(), 0,
+		svrChk(pMasterServerEntity->GetInterface<Policy::NetPolicyClusterServer>()->JoinClusterCmd( RouteContext(GetOwnerEntityUID(),clusterManagerMasterUID), GetTransID(), 0,
 			GetOwnerEntityUID(), netPrivate->GetNetClass(), netPrivate->GetLocalAddress(),
 			GetMyOwner()->GetClusterID(), GetMyOwner()->GetClusterType(), membership));
 
@@ -223,7 +223,7 @@ namespace Svr {
 			m_Step = Step_RequestDataSync;
 			svrChk( GetServerComponent<ServerEntityManager>()->GetServerEntity( m_currentMaster.UID.GetServerID(), pServerEntity ) );
 
-			svrChk( pServerEntity->GetInterface<Policy::IPolicyClusterServer>()->RequestDataSyncCmd( RouteContext(GetMyOwner()->GetEntityUID(), m_currentMaster.UID), GetTransID(), 0,
+			svrChk( pServerEntity->GetInterface<Policy::NetPolicyClusterServer>()->RequestDataSyncCmd( RouteContext(GetMyOwner()->GetEntityUID(), m_currentMaster.UID), GetTransID(), 0,
 				GetMyOwner()->GetClusterID() ) );
 		}
 

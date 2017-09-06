@@ -15,14 +15,14 @@
 
 #include "SFTypedefs.h"
 #include "Thread/Thread.h"
-#include "Common/ObjectPool.h"
+#include "Object/ObjectPool.h"
 #include "Memory/SFMemory.h"
 #include "Net/NetDef.h"
-#include "ServerSystem/SimpleEntity.h"
-#include "ServerSystem/Transaction.h"
+#include "Entity/SimpleEntity.h"
+#include "Transaction/Transaction.h"
 #include "Types/BrSvrTypes.h"
-#include "ServerSystem/ServerComponent.h"
-#include "Common/MemoryBufferUtil.h"
+#include "Component/ServerComponent.h"
+
 
 #include "curl/curl.h"
 #include "json/json.h"
@@ -47,16 +47,16 @@ namespace Svr{
 	class ParallelTransaction : public SubTransactionWitResult
 	{
 	public:
-		ParallelTransaction(TransactionID parentTransID, Message::MessageID MsgID)
-			:SubTransactionWitResult( parentTransID, MsgID )
+		ParallelTransaction(IMemoryManager& memoryManager, TransactionID parentTransID, Message::MessageID MsgID)
+			:SubTransactionWitResult(memoryManager, parentTransID, MsgID )
 		{}
 	};
 
 	class ParallelTransactionNop : public ParallelTransaction
 	{
 	public:
-		ParallelTransactionNop()
-			:ParallelTransaction(0, 0)
+		ParallelTransactionNop(IMemoryManager& memoryManager)
+			:ParallelTransaction(memoryManager, 0, 0)
 		{}
 
 	};
@@ -108,6 +108,8 @@ namespace Svr{
 	public:
 		ParallelTransactionManager();
 		~ParallelTransactionManager();
+
+		IMemoryManager& GetMemoryManager() { return GetSystemMemoryManager(); }
 
 		// Initialize server component
 		virtual Result InitializeComponent();

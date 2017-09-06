@@ -74,7 +74,7 @@ namespace Svr {
 	//	Result hr = ResultCode::SUCCESS;
 	//	SharedPointerT<Svr::Entity> pEntity;
 	//	GamePlayerEntity *pPlayerEntity = nullptr;
-	//	Policy::IPolicyGameServer *pTargetPolicy = nullptr;
+	//	Policy::NetPolicyGameServer *pTargetPolicy = nullptr;
 
 	//	m_PlayerUID = 0;
 
@@ -117,7 +117,7 @@ namespace Svr {
 	//	m_PlayerUID = pPlayerEntity->GetEntityUID();
 
 	//	// it's local player send message to local loopback entity
-	//	svrChkPtr(pTargetPolicy = GetMyServer()->GetLoopbackServerEntity()->GetInterface<Policy::IPolicyGameServer>());
+	//	svrChkPtr(pTargetPolicy = GetMyServer()->GetLoopbackServerEntity()->GetInterface<Policy::NetPolicyGameServer>());
 
 	//	svrChk(pTargetPolicy->RegisterPlayerToJoinGameServerOnPlayerEntityCmd(
 	//		RouteContext(GetOwnerEntityUID(), m_PlayerUID), GetTransID(),

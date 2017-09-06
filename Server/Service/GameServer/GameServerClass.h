@@ -85,7 +85,7 @@ namespace GameServer
 
 		const Svr::Config::GameClusterInfo* GetGameClusterInfo() { return m_pGameClusterCfg; }
 
-		const Svr::Config::PublicNetSocket* GetPublicNetConfig() { return GetGameConfig()->NetPublic; }
+		const Svr::ServerConfig::NetPublic* GetPublicNetConfig() { return GetGameConfig()->NetPublic; }
 
 
 		// Get net public

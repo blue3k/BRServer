@@ -307,7 +307,7 @@ namespace ConspiracyGameInstanceServer {
 		//charType = GetRole() != PlayerRole::None ? ChatType::Role : ChatType::Normal;
 		//svrChk( GetMyOwner()->GetComponent<ChattingLogSystem>()->AddChattingLog( Util::Time.GetTimeUTCSec(), pMyPlayer->GetPlayerID(), pMyPlayer->GetPlayerState() == PlayerState::Ghost, charType, GetChatMessage() ) );
 
-		//GetMyOwner()->ForeachPlayerGameServer( [&]( GamePlayer* pPlayer, Policy::IPolicyGameServer *pPolicy )->Result {
+		//GetMyOwner()->ForeachPlayerGameServer( [&]( GamePlayer* pPlayer, Policy::NetPolicyGameServer *pPolicy )->Result {
 		//	if( GetRole() == PlayerRole::None || GetRole() == pPlayer->GetRole() )
 		//	{
 		//		message = GetChatMessage();

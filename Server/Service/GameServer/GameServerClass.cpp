@@ -39,7 +39,7 @@
 #include "Protocol/Policy/GameMasterServerNetPolicy.h"
 
 #include "Net/NetServerPeer.h"
-#include "Net/NetServer.h"
+#include "Net/NetSvrDef.h"
 #include "Net/NetServerUDP.h"
 #include "GameInstance/GameEntityManager.h"
 

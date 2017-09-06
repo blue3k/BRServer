@@ -64,7 +64,7 @@ namespace Svr {
 
 
 	private:
-		Config::PublicNetSocket*	m_PublicNetSocket;
+		ServerConfig::NetPublic*	m_PublicNetSocket;
 		Net::ServerMUDP*			m_pNetPublic;
 		GameID						m_GameID;
 
@@ -73,14 +73,14 @@ namespace Svr {
 
 	public:
 
-		GameServiceEntity(GameID gameID, Config::PublicNetSocket *publicNetSocket, ClusterMembership initialMembership = ClusterMembership::StatusWatcher );
+		GameServiceEntity(GameID gameID, ServerConfig::NetPublic *publicNetSocket, ClusterMembership initialMembership = ClusterMembership::StatusWatcher );
 		~GameServiceEntity();
 
 		// We are not going to use hashed key
 		virtual uint KeyHash( uint64_t key ) { return (uint)key; }
 		
 
-		Config::PublicNetSocket* GetPublicNetConfig() { return m_PublicNetSocket;  }
+		ServerConfig::NetPublic* GetPublicNetConfig() { return m_PublicNetSocket;  }
 
 		//////////////////////////////////////////////////////////////////////////
 		//

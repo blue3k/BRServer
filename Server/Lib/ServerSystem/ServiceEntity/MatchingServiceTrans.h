@@ -30,10 +30,10 @@ namespace Svr {
 
 	
 
-	class MatchingTransGrabPlayer : public TransactionT<MatchingServiceQueueEntity, MatchingTransGrabPlayer>
+	class MatchingTransGrabPlayer : public TransactionT<MatchingServiceQueueEntity>
 	{
 	public:
-		typedef TransactionT<MatchingServiceQueueEntity, MatchingTransGrabPlayer> super;
+		typedef TransactionT<MatchingServiceQueueEntity> super;
 
 	private:
 
@@ -113,10 +113,10 @@ namespace Svr {
 
 
 
-	class MatchingTransProcessMatchedItems : public TransactionT<MasterEntity, MatchingTransProcessMatchedItems>
+	class MatchingTransProcessMatchedItems : public TransactionT<MasterEntity>
 	{
 	public:
-		typedef TransactionT<MasterEntity, MatchingTransProcessMatchedItems> super;
+		typedef TransactionT<MasterEntity> super;
 
 	private:
 
@@ -132,7 +132,7 @@ namespace Svr {
 		// Current total member count
 		uint m_MatchedItemCount;
 
-		INT m_PendingDequeueItem;
+		int m_PendingDequeueItem;
 
 		uint m_DequeuedTotalMembers;
 

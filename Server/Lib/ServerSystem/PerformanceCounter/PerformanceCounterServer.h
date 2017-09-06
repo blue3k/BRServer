@@ -50,13 +50,14 @@ namespace Svr {
 				MessageHandlerTable<MessageHandlerType>	m_HandlerTable;
 
 			public:
-				MessageHandler(PerformanceCounterServer *CounterServer);
+				MessageHandler(IMemoryManager& memMgr, PerformanceCounterServer *CounterServer);
 
-				virtual Result OnRecv(const sockaddr_storage& remoteAddr, Message::MessageData *pMsg) override;
+				virtual Result OnRecv(const sockaddr_storage& remoteAddr, SharedPointerT<Message::MessageData>& pMsg) override;
 			};
 
 		private:
 
+			MemoryManager m_MemoryManager;
 
 			Net::RawUDP* m_RawUDP;
 
@@ -68,7 +69,6 @@ namespace Svr {
 				sockaddr_storage From;
 
 				PacketInfo(void* ptr = nullptr)
-					: pMessage(nullptr)
 				{
 					assert(ptr == nullptr);
 				}
@@ -109,6 +109,8 @@ namespace Svr {
 			virtual void Run() override;
 
 		public:
+
+			IMemoryManager& GetMemoryManager() { return m_MemoryManager; }
 
 			static Result Initialize(const char* serverAddress, uint port);
 			static Result Initialize(const NetAddress& serverAddress);

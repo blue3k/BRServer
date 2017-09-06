@@ -29,6 +29,8 @@
 #include "ServerSystem/ServiceEntity/Login/LoginServiceTrans.h"
 #include "ServerSystem/ServiceEntity/Login/LoginServiceEntity.h"
 
+
+
 SF_MEMORYPOOL_IMPLEMENT(SF::Svr::LoginPartyTrans);
 
 

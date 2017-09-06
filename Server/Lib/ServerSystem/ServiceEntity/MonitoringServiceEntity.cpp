@@ -27,7 +27,7 @@
 #include "SvrTrace.h"
 #include "SvrConst.h"
 #include "ServerSystem/PerformanceCounter/PerformanceCounterServer.h"
-
+#include "Service/ServerService.h"
 
 namespace SF {
 namespace Svr {
@@ -43,8 +43,8 @@ namespace Svr {
 	{
 		SetTickInterval(DurationMS(10000));
 
-		BR_ENTITY_MESSAGE(Message::Monitoring::GetInstanceListCmd)		{ svrMemReturn(pNewTrans = new(GetMemoryManager()) MonitoringTransGetInstanceList(pMsgData)); return ResultCode::SUCCESS; } );
-		BR_ENTITY_MESSAGE(Message::Monitoring::RequestCounterValuesCmd) { svrMemReturn(pNewTrans = new(GetMemoryManager()) MonitoringTransRequestCounterValues(pMsgData)); return ResultCode::SUCCESS; } );
+		BR_ENTITY_MESSAGE(Message::Monitoring::GetInstanceListCmd)		{ svrMemReturn(pNewTrans = new(GetMemoryManager()) MonitoringTransGetInstanceList(GetMemoryManager(), pMsgData)); return ResultCode::SUCCESS; } );
+		BR_ENTITY_MESSAGE(Message::Monitoring::RequestCounterValuesCmd) { svrMemReturn(pNewTrans = new(GetMemoryManager()) MonitoringTransRequestCounterValues(GetMemoryManager(), pMsgData)); return ResultCode::SUCCESS; } );
 	}
 
 	MonitoringServiceEntity::~MonitoringServiceEntity()
@@ -54,17 +54,14 @@ namespace Svr {
 	Result MonitoringServiceEntity::InitializeEntity( EntityID newEntityID )
 	{
 		Result hr = ResultCode::SUCCESS;
-		Svr::Config::NetSocket *netAddress = nullptr;
 		NetAddress localAddr;
+		auto monitoringConfig = Service::ServerConfig->FindGenericServer("MonitoringServer");
 
 		svrChk(ServiceEntity::InitializeEntity(newEntityID) );
 
-		svrChkPtr(Svr::Config::GetConfig().MonitoringServer);
-		svrChkPtr(Svr::Config::GetConfig().MonitoringServer->NetPrivate);
+		svrChkPtr(monitoringConfig);
 		
-		netAddress = Svr::Config::GetConfig().MonitoringServer->NetPrivate;
-
-		svrChk(Net::SetLocalNetAddress(localAddr, netAddress->IP.c_str(), netAddress->Port));
+		svrChk(Net::SetLocalNetAddress(localAddr, monitoringConfig->PrivateNet.IP, monitoringConfig->PrivateNet.Port));
 
 		svrChk(PerformanceCounterServer::Initialize(localAddr));
 
@@ -93,8 +90,8 @@ namespace Svr {
 
 		ServiceEntity::RegisterServiceMessageHandler(pServerEntity);
 
-		pServerEntity->BR_ENTITY_MESSAGE(Message::Monitoring::GetInstanceListCmd)				{ svrMemReturn(pNewTrans = new(GetMemoryManager()) MonitoringTransGetInstanceList(pMsgData)); return ResultCode::SUCCESS; } );
-		pServerEntity->BR_ENTITY_MESSAGE(Message::Monitoring::RequestCounterValuesCmd)			{ svrMemReturn(pNewTrans = new(GetMemoryManager()) MonitoringTransRequestCounterValues(pMsgData)); return ResultCode::SUCCESS; } );
+		pServerEntity->BR_ENTITY_MESSAGE(Message::Monitoring::GetInstanceListCmd)				{ svrMemReturn(pNewTrans = new(GetMemoryManager()) MonitoringTransGetInstanceList(GetMemoryManager(), pMsgData)); return ResultCode::SUCCESS; } );
+		pServerEntity->BR_ENTITY_MESSAGE(Message::Monitoring::RequestCounterValuesCmd)			{ svrMemReturn(pNewTrans = new(GetMemoryManager()) MonitoringTransRequestCounterValues(GetMemoryManager(), pMsgData)); return ResultCode::SUCCESS; } );
 
 		return ResultCode::SUCCESS;
 	}

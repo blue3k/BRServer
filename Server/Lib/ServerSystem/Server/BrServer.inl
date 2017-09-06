@@ -109,21 +109,21 @@ template<class componentType>
 componentType* GetServerComponent()
 {
 	if (BrServer::GetInstance() == nullptr) return nullptr;
-	return BrServer::GetInstance()->GetComponent<componentType>();
+	return BrServer::GetInstance()->GetComponentCarrier().GetComponent<componentType>();
 }
 
 template<class componentType>
 componentType* GetServerComponent(uint componentID)
 {
 	Assert( BrServer::GetInstance() );
-	return BrServer::GetInstance()->GetComponent<componentType>(componentID);
+	return BrServer::GetInstance()->GetComponentCarrier().GetComponent<componentType>(componentID);
 }
 
 template< class ComponentType >
 Result AddServerComponent(ComponentType* &newComponent)
 {
 	if (BrServer::GetInstance() == nullptr) return ResultCode::UNEXPECTED;
-	return BrServer::GetInstance()->AddComponent(newComponent);
+	return BrServer::GetInstance()->GetComponentCarrier().AddComponent(newComponent);
 }
 
 
@@ -145,20 +145,16 @@ Result BrServer::AddDBCluster(ServerConfig::DBCluster *pDBClusterCfg)
 	DBManagerType *pDB = nullptr;
 
 	if (pDBClusterCfg == nullptr)
-		return ResultCode::UNEXPECTED;
+		return ResultCode::INVALID_ARG;
 
 	// Just add it once
-	if (GetComponent<DBManagerType>() != nullptr)
+	if (m_Components.GetComponent<DBManagerType>() != nullptr)
 		return ResultCode::SUCCESS_FALSE;
 
 
-	auto& DBinstances = Svr::Config::GetConfig().DBInstances;
-	auto itInstnace = DBinstances.find(pDBClusterCfg->DBInstanceName);
-
-	if (itInstnace == DBinstances.end())
+	auto instanceInfo = Service::ServerConfig->FindDBInstance(pDBClusterCfg->DBInstanceName);
+	if (instanceInfo == nullptr)
 		return ResultCode::DB_INVALID_CONFIG;
-
-	auto instanceInfo = itInstnace->second;
 
 	svrMem( pDB = new(GetMemoryManager()) DBManagerType );
 	pDBManager = reinterpret_cast<DB::DBClusterManager*>(pDB);
@@ -176,7 +172,7 @@ Result BrServer::AddDBCluster(ServerConfig::DBCluster *pDBClusterCfg)
 		instanceInfo->UserID, 
 		instanceInfo->Password ) );
 
-	svrChk( AddComponent( pDB ) );
+	svrChk(m_Components.AddComponent( pDB ) );
 
 
 Proc_End:

@@ -16,12 +16,12 @@
 #include "ResultCode/SFResultCodeNet.h"
 #include "ServerLog/SvrLog.h"
 #include "Thread/Thread.h"
-#include "ServerSystem/SvrConst.h"
-#include "ServerSystem/Entity.h"
-#include "ServerSystem/MessageRoute.h"
-#include "ServerSystem/ExternalTransaction.h"
-#include "ServerSystem/ExternalTransactionManager.h"
-#include "ServerSystem/BrServer.h"
+#include "SvrConst.h"
+#include "Entity/Entity.h"
+#include "Transaction/MessageRoute.h"
+#include "Transaction/ExternalTransaction.h"
+#include "Transaction/ExternalTransactionManager.h"
+#include "Server/BrServer.h"
 
 #include "zlib.h"
 
@@ -42,9 +42,10 @@ namespace Svr
 
 
 
-	HTTPExternalTransaction::HTTPExternalTransaction(TransactionID parentTransID, Message::MessageID MsgID)
-		:ParallelTransaction(parentTransID, MsgID)
+	HTTPExternalTransaction::HTTPExternalTransaction(IMemoryManager& memMgr, TransactionID parentTransID, Message::MessageID MsgID)
+		: ParallelTransaction(memMgr, parentTransID, MsgID)
 		, m_Curl(nullptr)
+		, m_HTTPResult(memMgr)
 		, m_CurlResult(CURLE_OK)
 	{
 		m_Curl = curl_easy_init();
@@ -66,7 +67,7 @@ namespace Svr
 
 		auto *stream = (ResultBuffer*)param;
 
-		stream->Append(size * nmemb, (const char*)data);
+		stream->AddItems(size * nmemb, (char*)data);
 
 		return (int)(size * nmemb);
 	}
@@ -101,9 +102,9 @@ namespace Svr
 	const char* GCMHttpExternalTransaction::stm_URL= "https://android.googleapis.com/gcm/send";
 	const char* GCMHttpExternalTransaction::stm_strAPIKey= "AIzaSyBfTbM73k-MxPQtzQvKDHm1z-q0Q8T1KBA";
 
-	GCMHttpExternalTransaction::GCMHttpExternalTransaction()
-			:HTTPExternalTransaction( TransactionID(), Message::MessageID() )
-			,m_Headers(nullptr)
+	GCMHttpExternalTransaction::GCMHttpExternalTransaction(IMemoryManager& memMgr)
+			: HTTPExternalTransaction(memMgr, TransactionID(), Message::MessageID() )
+			, m_Headers(nullptr)
 	{
 		m_strRegID[0] = 0;
 		m_strMessage[0] = 0;
@@ -177,7 +178,7 @@ namespace Svr
 
 		char strPostFields[1024];
 
-		svrChk( StrUtil::Format( strPostFields, " { \"registration_ids\" :[ \"{0}\"], \"data\": { \"Message\" :  \"{1}\" }, { \"Param\" :  \"{2}\" }   } ", m_strRegID, m_strMessage, m_Param0 ) );
+		StrUtil::Format( strPostFields, " { \"registration_ids\" :[ \"{0}\"], \"data\": { \"Message\" :  \"{1}\" }, { \"Param\" :  \"{2}\" }   } ", m_strRegID, m_strMessage, m_Param0 );
 
 		svrChk(ExternalTransactionManager::ToResult(m_CurlResult));
 
@@ -198,7 +199,7 @@ Proc_End:
 
 		if( !(hr) && m_CurlResult != 0 )
 		{
-			svrTrace( Trace::TRC_ERROR, "GCM query failed by {0}:{1}, result:{2}", (int)m_CurlResult, curl_easy_strerror(m_CurlResult), resultString );
+			svrTrace( Error, "GCM query failed by {0}:{1}, result:{2}", (int)m_CurlResult, curl_easy_strerror(m_CurlResult), resultString );
 		}
 
 		CloseTransaction(hr);
@@ -214,8 +215,8 @@ Proc_End:
 	const Message::MessageID ExternalTransactionGoogleAndroidReceiptCheck::MID = Message::MessageID(Message::MSGTYPE_COMMAND, Message::MSGTYPE_RELIABLE, Message::MSGTYPE_NONE, PROTOCOLID_NONE, ExternalTransactionMesageCode_AndroidCheckReceipt);
 
 	// Constructor
-	ExternalTransactionGoogleAndroidReceiptCheck::ExternalTransactionGoogleAndroidReceiptCheck(TransactionID parentTransID, Google::OAuth* pOAuth)
-		: ParallelTransaction(parentTransID, MID)
+	ExternalTransactionGoogleAndroidReceiptCheck::ExternalTransactionGoogleAndroidReceiptCheck(IMemoryManager& memMgr, TransactionID parentTransID, Google::OAuth* pOAuth)
+		: ParallelTransaction(memMgr, parentTransID, MID)
 		, m_DevAPI(pOAuth)
 	{
 		m_strPackageName[0] = '\0';
@@ -262,7 +263,7 @@ Proc_End:
 		{
 			ExternalTransactionManager* pExtMgr = nullptr;
 
-			svrTrace(TRC_INFO, "Google Authentication error, Reauthorizing...");
+			svrTrace(SVR_INFO, "Google Authentication error, Reauthorizing...");
 
 			svrChkPtr(pExtMgr = GetServerComponent<ExternalTransactionManager>());
 
@@ -290,14 +291,16 @@ Proc_End:
 	const Message::MessageID ExternalTransactionIOSRecepitCheck::MID = Message::MessageID(Message::MSGTYPE_COMMAND, Message::MSGTYPE_RELIABLE, Message::MSGTYPE_NONE, PROTOCOLID_NONE, ExternalTransactionMesageCode_IOSCheckReceipt);
 
 	// Constructor
-	ExternalTransactionIOSRecepitCheck::ExternalTransactionIOSRecepitCheck(TransactionID parentTransID, const char* strURL)
-		: HTTPExternalTransaction(parentTransID, MID)
+	ExternalTransactionIOSRecepitCheck::ExternalTransactionIOSRecepitCheck(IMemoryManager& memMgr, TransactionID parentTransID, const char* strURL)
+		: HTTPExternalTransaction(memMgr, parentTransID, MID)
 		, m_strURL(strURL)
+		, m_strReceipt(memMgr)
+		, m_strTransactionID(memMgr)
 	{
 		m_strPackageName[0] = '\0';
 		m_strProductID[0] = '\0';
-		m_strTransactionID.SetSize(m_strTransactionID.GetAllocatedSize());
-		memset(m_strTransactionID.data(), 0, m_strTransactionID.GetSize());
+		m_strTransactionID.SetItemCount(m_strTransactionID.GetAllocatedSize());
+		memset(m_strTransactionID.data(), 0, m_strTransactionID.size());
 	}
 
 	// Set parameters
@@ -313,7 +316,7 @@ Proc_End:
 
 		m_strReceipt.Clear();
 		svrChk(m_strReceipt.AddItems(sizeof(prefix)-1, (const uint8_t*)prefix));
-		svrChk(Util::Base64Encode(purchaseToken.GetSize(), purchaseToken.data(), m_strReceipt, '='));
+		svrChk(Util::Base64Encode(purchaseToken.size(), purchaseToken.data(), m_strReceipt, '='));
 		svrChk(m_strReceipt.AddItems(sizeof(postfix)-1, (const uint8_t*)postfix)); // IOS requires no null terminate string
 
 	Proc_End:
@@ -367,7 +370,7 @@ Proc_End:
 			hr = ResultCode::UNEXPECTED; break;
 		}
 
-		svrTrace(Trace::TRC_ERROR, "IOS Purchase check Failed: {0}", reason );
+		svrTrace(Error, "IOS Purchase check Failed: {0}", reason );
 
 		return hr;
 	}
@@ -394,7 +397,7 @@ Proc_End:
 		m_CurlResult = curl_easy_setopt(m_Curl, CURLOPT_URL, m_strURL);
 		svrChk(ExternalTransactionManager::ToResult(m_CurlResult));
 
-		m_CurlResult = curl_easy_setopt(m_Curl, CURLOPT_POSTFIELDSIZE, m_strReceipt.GetSize());
+		m_CurlResult = curl_easy_setopt(m_Curl, CURLOPT_POSTFIELDSIZE, m_strReceipt.size());
 		svrChk(ExternalTransactionManager::ToResult(m_CurlResult));
 		//m_CurlResult = curl_easy_setopt(m_Curl, CURLOPT_COPYPOSTFIELDS, strBuffer);
 		m_CurlResult = curl_easy_setopt(m_Curl, CURLOPT_POSTFIELDS, (const char*)m_strReceipt.data());
@@ -415,7 +418,7 @@ Proc_End:
 		svrChk(ExternalTransactionManager::ToResult(m_CurlResult));
 
 
-		parsingSuccessful = reader.parse((char*)m_HTTPResult.GetPtr(), root);
+		parsingSuccessful = reader.parse((char*)m_HTTPResult.data(), root);
 		if (!parsingSuccessful)
 		{
 			svrErr(ResultCode::UNEXPECTED);
@@ -495,7 +498,7 @@ Proc_End:
 
 		if (!(hr) && m_CurlResult != 0)
 		{
-			svrTrace(Trace::TRC_ERROR, "IOS receipt query failed by {0}:{1}, result:{2}", (int)m_CurlResult, curl_easy_strerror(m_CurlResult), resultString);
+			svrTrace(Error, "IOS receipt query failed by {0}:{1}, result:{2}", (int)m_CurlResult, curl_easy_strerror(m_CurlResult), resultString);
 		}
 
 		return hr;
@@ -512,7 +515,7 @@ Proc_End:
 		hr = VerifyReceipt();
 		if (hr == Result(ResultCode::SVR_INVALID_PURCHASE_MODE))
 		{
-			svrTrace(Trace::TRC_INFO, "IOS receipt query failed with invalid environment retrying with test mode");
+			svrTrace(SVR_INFO, "IOS receipt query failed with invalid environment retrying with test mode");
 			// try with sand box url
 			m_strURL = "https://sandbox.itunes.apple.com/verifyReceipt";
 			hr = VerifyReceipt();

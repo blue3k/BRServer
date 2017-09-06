@@ -30,10 +30,10 @@ namespace Svr {
 
 	
 	
-	class LoginPartyTrans : public TransactionT<LoginServiceEntity, LoginPartyTrans>
+	class LoginPartyTrans : public TransactionT<LoginServiceEntity>
 	{
 	public:
-		typedef TransactionT<LoginServiceEntity, LoginPartyTrans> super;
+		typedef TransactionT<LoginServiceEntity> super;
 
 	private:
 

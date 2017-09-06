@@ -64,7 +64,6 @@ namespace Svr {
 		char m_GCMKeys[GameConst::MAX_GCMKEYS];
 
 
-		PlayerID GetPlayerID() { return GetAccountID(); }
 
 		// Time for kill this entity
 		Util::TimeStampTimer m_TimeToKill;
@@ -86,10 +85,20 @@ namespace Svr {
 		LoginPlayerEntity();
 		virtual ~LoginPlayerEntity();
 
+		PlayerID GetPlayerID() { return GetAccountID(); }
+		void SetPlayerID(PlayerID value) { SetAccountID(value); }
+
 		FacebookUID GetFacebookUID() { return m_FacebookUID; }
+		void SetFacebookUID(FacebookUID value) { m_FacebookUID = value; }
+
 		AuthTicket GetAuthTicket() { return m_AuthTicket; }
+		void SetAuthTicket(AuthTicket value) { m_AuthTicket = value; }
+
 		uint GetShardID() { return m_ShardID; }
+		void SetShardID(uint value) { m_ShardID = value; }
+
 		bool GetIsTicketOwner() { return m_IsTicketOwner; }
+		void SetIsTicketOwner(bool value) { m_IsTicketOwner = value; }
 
 		const Util::TimeStampTimer& GetTimeToKill() { return m_TimeToKill; }
 

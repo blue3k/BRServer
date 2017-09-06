@@ -51,8 +51,8 @@ namespace Svr {
 		Result hr = ResultCode::SUCCESS;
 		Message::ClusterServer::GetClusterMemberListRes msgRes;
 		Svr::ServerEntity *pServerEntity = nullptr;
-		ServerEntityManager *pServerEntityManager = BrServer::GetInstance()->GetComponent<Svr::ServerEntityManager>();
-		ClusterManagerServiceEntity *pClusterManagerEntity = BrServer::GetInstance()->GetComponent<Svr::ClusterManagerServiceEntity>();
+		ServerEntityManager *pServerEntityManager = GetServerComponent<Svr::ServerEntityManager>();
+		ClusterManagerServiceEntity *pClusterManagerEntity = GetServerComponent<Svr::ClusterManagerServiceEntity>();
 
 		svrChk(pRes->GetResult());
 

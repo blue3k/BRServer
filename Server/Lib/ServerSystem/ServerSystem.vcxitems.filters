@@ -124,12 +124,6 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)ServiceEntity\Game\GameServiceTrans.h">
       <Filter>ServerService\Game</Filter>
     </ClInclude>
-    <ClInclude Include="$(MSBuildThisFileDirectory)ExternalTransaction.h">
-      <Filter>Transaction</Filter>
-    </ClInclude>
-    <ClInclude Include="$(MSBuildThisFileDirectory)ExternalTransactionManager.h">
-      <Filter>Transaction</Filter>
-    </ClInclude>
     <ClInclude Include="$(MSBuildThisFileDirectory)ServiceEntity\Game\GameClusterServiceEntity.h">
       <Filter>ServerService\Game</Filter>
     </ClInclude>
@@ -207,9 +201,6 @@
     </ClInclude>
     <ClInclude Include="$(MSBuildThisFileDirectory)Google\GoogleOAuth.h">
       <Filter>ServerService\Google</Filter>
-    </ClInclude>
-    <ClInclude Include="$(MSBuildThisFileDirectory)ParallelTransaction.h">
-      <Filter>Transaction</Filter>
     </ClInclude>
     <ClInclude Include="$(MSBuildThisFileDirectory)ZooKeeper\SFZooKeeper.h">
       <Filter>ZooKeeper</Filter>
@@ -354,23 +345,23 @@
       <Filter>ServerEntity</Filter>
     </ClInclude>
     <ClInclude Include="$(MSBuildThisFileDirectory)SvrTrace.h" />
-    <ClInclude Include="C:\work\BRServerSF\Server\Lib\ServerSystem\Service\ServerService.h">
-      <Filter>Service</Filter>
+    <ClInclude Include="$(MSBuildThisFileDirectory)Component\SFServerConfigComponent.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)Component\SFZooKeeperSessionComponent.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)Service\ServerService.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)Transaction\ParallelTransaction.h">
+      <Filter>Transaction</Filter>
     </ClInclude>
-    <ClInclude Include="C:\work\BRServerSF\Server\Lib\ServerSystem\Component\SFServerConfigComponent.h">
-      <Filter>Component</Filter>
+    <ClInclude Include="$(MSBuildThisFileDirectory)Transaction\ExternalTransactionManager.h">
+      <Filter>Transaction</Filter>
     </ClInclude>
-    <ClInclude Include="C:\work\BRServerSF\Server\Lib\ServerSystem\Component\SFZooKeeperSessionComponent.h">
-      <Filter>Component</Filter>
+    <ClInclude Include="$(MSBuildThisFileDirectory)Transaction\ExternalTransaction.h">
+      <Filter>Transaction</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="$(MSBuildThisFileDirectory)makefile.mak" />
     <None Include="$(MSBuildThisFileDirectory)ServiceEntity\ClusteredServiceEntity.inl">
       <Filter>ServerService\Clustering</Filter>
-    </None>
-    <None Include="$(MSBuildThisFileDirectory)ExternalTransactionManager.inl">
-      <Filter>Transaction</Filter>
     </None>
     <None Include="$(MSBuildThisFileDirectory)ServiceEntity\Game\GameInstanceEntity.inl">
       <Filter>ServerService\GameInstance</Filter>
@@ -447,6 +438,9 @@
     <None Include="$(MSBuildThisFileDirectory)Transaction\Transaction.inl">
       <Filter>Transaction</Filter>
     </None>
+    <None Include="$(MSBuildThisFileDirectory)Transaction\ExternalTransactionManager.inl">
+      <Filter>Transaction</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="$(MSBuildThisFileDirectory)ServiceEntity\Login\LoginServiceEntity.cpp">
@@ -490,12 +484,6 @@
     </ClCompile>
     <ClCompile Include="$(MSBuildThisFileDirectory)ServiceEntity\Game\GameServiceTrans.cpp">
       <Filter>ServerService\Game</Filter>
-    </ClCompile>
-    <ClCompile Include="$(MSBuildThisFileDirectory)ExternalTransaction.cpp">
-      <Filter>Transaction</Filter>
-    </ClCompile>
-    <ClCompile Include="$(MSBuildThisFileDirectory)ExternalTransactionManager.cpp">
-      <Filter>Transaction</Filter>
     </ClCompile>
     <ClCompile Include="$(MSBuildThisFileDirectory)ServiceEntity\Game\GameClusterServiceEntity.cpp">
       <Filter>ServerService\Game</Filter>
@@ -571,9 +559,6 @@
     </ClCompile>
     <ClCompile Include="$(MSBuildThisFileDirectory)Google\GoogleOAuth.cpp">
       <Filter>ServerService\Google</Filter>
-    </ClCompile>
-    <ClCompile Include="$(MSBuildThisFileDirectory)ParallelTransaction.cpp">
-      <Filter>Transaction</Filter>
     </ClCompile>
     <ClCompile Include="$(MSBuildThisFileDirectory)ZooKeeper\SFZooKeeper.cpp">
       <Filter>ZooKeeper</Filter>
@@ -672,14 +657,17 @@
     <ClCompile Include="$(MSBuildThisFileDirectory)ServerEntity\SvrLoopbackConnection.cpp">
       <Filter>ServerEntity</Filter>
     </ClCompile>
-    <ClCompile Include="C:\work\BRServerSF\Server\Lib\ServerSystem\Service\ServerService.cpp">
-      <Filter>Service</Filter>
+    <ClCompile Include="$(MSBuildThisFileDirectory)Component\SFServerConfigComponent.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)Component\SFZooKeeperSessionComponent.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)Service\ServerService.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)Transaction\ParallelTransaction.cpp">
+      <Filter>Transaction</Filter>
     </ClCompile>
-    <ClCompile Include="C:\work\BRServerSF\Server\Lib\ServerSystem\Component\SFServerConfigComponent.cpp">
-      <Filter>Component</Filter>
+    <ClCompile Include="$(MSBuildThisFileDirectory)Transaction\ExternalTransaction.cpp">
+      <Filter>Transaction</Filter>
     </ClCompile>
-    <ClCompile Include="C:\work\BRServerSF\Server\Lib\ServerSystem\Component\SFZooKeeperSessionComponent.cpp">
-      <Filter>Component</Filter>
+    <ClCompile Include="$(MSBuildThisFileDirectory)Transaction\ExternalTransactionManager.cpp">
+      <Filter>Transaction</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

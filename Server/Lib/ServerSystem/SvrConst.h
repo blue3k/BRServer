@@ -61,7 +61,7 @@ namespace Const {
 	constexpr DurationMS		REMOTE_CONNECTION_RETRY_MAX = DurationMS(5 * 60 * 1000);
 
 	constexpr DurationMS		SIMPLEUSER_TICKTASK_INTERVAL = DurationMS(60 * 1000);
-	constexpr DurationMS		PARALLEL_TRANSACTION_MANAGER_TICKTASK_intERVAL = DurationMS(1000);
+	constexpr DurationMS		PARALLEL_TRANSACTION_MANAGER_TICKTASK_INTERVAL = DurationMS(1000);
 
 	constexpr DurationMS		PARTY_TICKTASK_INTERVAL = DurationMS(2 * 60 * 1000);
 

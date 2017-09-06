@@ -258,9 +258,9 @@ namespace GameServer {
 		if (GetMyOwner()->GetPartyUID() != 0)
 		{
 			PartyUID partyUID = GetMyOwner()->GetPartyUID();
-			Policy::IPolicyGameParty* pPolicy = nullptr;
+			Policy::NetPolicyGameParty* pPolicy = nullptr;
 
-			svrChkPtr(pPolicy = Svr::GetServerComponent<Svr::ServerEntityManager>()->GetServerPolicy<Policy::IPolicyGameParty>(partyUID.GetServerID()));
+			svrChkPtr(pPolicy = Svr::GetServerComponent<Svr::ServerEntityManager>()->GetServerPolicy<Policy::NetPolicyGameParty>(partyUID.GetServerID()));
 			svrChk(pPolicy->JoinPartyCmd(RouteContext(GetOwnerEntityUID(), partyUID), GetTransID(), 0, GetMyOwner()->GetPlayerInformation()));
 		}
 		else
@@ -376,7 +376,7 @@ namespace GameServer {
 	{
 		Result hr = ResultCode::SUCCESS;
 		EntityUID loginEntityUID(GetLoginEntityUID());
-		Policy::IPolicyLoginServer *pLoginPolicy = nullptr;
+		Policy::NetPolicyLoginServer *pLoginPolicy = nullptr;
 
 		m_GameUID = 0;
 		m_PartyLeaderID = 0;
@@ -397,7 +397,7 @@ namespace GameServer {
 		}
 
 		// TODO: We need to distinguish whether character data is updated or not
-		svrChkPtr( pLoginPolicy = Svr::GetServerComponent<Svr::ServerEntityManager>()->GetServerPolicy<Policy::IPolicyLoginServer>( loginEntityUID.GetServerID()) );
+		svrChkPtr( pLoginPolicy = Svr::GetServerComponent<Svr::ServerEntityManager>()->GetServerPolicy<Policy::NetPolicyLoginServer>( loginEntityUID.GetServerID()) );
 		svrChk( pLoginPolicy->PlayerJoinedToGameServerCmd( RouteContext(GetOwnerEntityUID(),loginEntityUID), GetTransID(),
 			GetAccID(), GetTicket() ) );
 
@@ -1315,7 +1315,7 @@ namespace GameServer {
 		Result hr = ResultCode::SUCCESS;
 		//Svr::ServerEntity *pServerEntity = nullptr;
 		EntityUID playerUID;
-		//Policy::IPolicyGameServer* pTargetPolicy = nullptr;
+		//Policy::NetPolicyGameServer* pTargetPolicy = nullptr;
 		Policy::NetSvrPolicyGame *pPolicy = nullptr;
 		auto& targetPlayerID = GetTargetPlayerID();
 		uint uiRequestMax = Util::Min((uint)targetPlayerID.GetSize(), (uint)20);
@@ -1365,7 +1365,7 @@ namespace GameServer {
 		Result hr = ResultCode::SUCCESS;
 		Svr::ServerEntity *pServerEntity = nullptr;
 		EntityUID playerUID;
-		Policy::IPolicyGameServer* pTargetPolicy = nullptr;
+		Policy::NetPolicyGameServer* pTargetPolicy = nullptr;
 		bool bInGame;
 
 
@@ -1377,7 +1377,7 @@ namespace GameServer {
 		playerUID = GetRouteContext().GetFrom();
 
 		svrChk( Svr::GetServerComponent<Svr::ServerEntityManager>()->GetServerEntity( playerUID.GetServerID(), pServerEntity ) );
-		svrChkPtr(pTargetPolicy = pServerEntity->GetInterface<Policy::IPolicyGameServer>());
+		svrChkPtr(pTargetPolicy = pServerEntity->GetInterface<Policy::NetPolicyGameServer>());
 
 		bInGame = GetMyOwner()->GetGameInsUID() != 0 || GetMyOwner()->GetPartyUID() != 0;
 
@@ -1738,7 +1738,7 @@ namespace GameServer {
 	Result PlayerTransSetConfigPreset::StartTransaction()
 	{
 		Result hr = ResultCode::SUCCESS;
-		Policy::IPolicyGameInstance *pPolicy = nullptr;
+		Policy::NetPolicyGameInstance *pPolicy = nullptr;
 		GameInsUID insUID;
 
 		svrChk( super::StartTransaction() );
@@ -1750,7 +1750,7 @@ namespace GameServer {
 		insUID = GetMyOwner()->GetGameInsUID();
 		if( insUID != 0 )
 		{
-			svrChkPtr( pPolicy = Svr::GetServerComponent<Svr::ServerEntityManager>()->GetServerPolicy<Policy::IPolicyGameInstance>(insUID.GetServerID()) );
+			svrChkPtr( pPolicy = Svr::GetServerComponent<Svr::ServerEntityManager>()->GetServerPolicy<Policy::NetPolicyGameInstance>(insUID.GetServerID()) );
 
 			svrChk( pPolicy->SetConfigPresetC2SEvt( RouteContext(GetOwnerEntityUID(),insUID), GetPresetID() ) );
 		}

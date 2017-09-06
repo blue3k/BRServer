@@ -185,7 +185,7 @@ namespace GameTable {
 	Result InitializeTable(const ServerConfig* config)
 	{
 		Result hr = ResultCode::SUCCESS;
-		auto tableDB = config->GetDBCluster("TableDB");
+		auto tableDB = config->FindDBCluster("TableDB");
 		if (tableDB == nullptr)
 			return ResultCode::DB_INVALID_CONFIG;
 

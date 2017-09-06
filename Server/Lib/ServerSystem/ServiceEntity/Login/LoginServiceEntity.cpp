@@ -31,7 +31,8 @@
 #include "ServiceEntity/ClusterManagerServiceEntity.h"
 #include "SvrTrace.h"
 #include "SvrConst.h"
-#include "ServerSystem/SvrConfig.h"
+#include "ServerConfig/SFServerConfig.h"
+#include "Service/ServerService.h"
 
 #include "Protocol/Message/LoginServerMsgClass.h"
 
@@ -50,10 +51,11 @@ namespace Svr {
 	//
 
 
-	LoginServiceEntity::LoginServiceEntity(Config::PublicNetSocket *publicNetSocket, ClusterMembership initialMembership)
+	LoginServiceEntity::LoginServiceEntity(ServerConfig::NetPublic *publicNetSocket, ClusterMembership initialMembership)
 		: ReplicaClusterServiceEntity(ClusterID::Login, initialMembership)
 		, m_PublicNetSocket(publicNetSocket)
 		, m_pNetPublic(nullptr)
+		, m_NewConnectionQueue(GetMemoryManager())
 	{
 		AssertRel(publicNetSocket != nullptr);
 	}
@@ -79,18 +81,26 @@ namespace Svr {
 		svrChkPtr(m_PublicNetSocket);
 
 		svrMem(m_pNetPublic = new(GetMemoryManager()) Net::ServerMUDP(BrServer::GetInstance()->GetServerUID(), NetClass::Login));
-		svrChk(m_pNetPublic->HostOpen(NetClass::Login, m_PublicNetSocket->IPV6.c_str(), m_PublicNetSocket->Port));
+
+		m_pNetPublic->SetNewConnectionhandler([this](SharedPointerT<Net::Connection>& conn)
+		{
+			SharedPointerAtomicT<Net::Connection> pConTem;
+			pConTem = std::forward<SharedPointerT<Net::Connection>>(conn);
+			m_NewConnectionQueue.Enqueue(pConTem);
+		});
+
+		svrChk(m_pNetPublic->HostOpen(NetClass::Login, m_PublicNetSocket->ListenIP, m_PublicNetSocket->Port));
 
 		// Account DB
-		svrChk(pServerInst->AddDBCluster<DB::AccountDB>(Config::GetConfig().AccountDB));
+		svrChk(pServerInst->AddDBCluster<DB::AccountDB>(Service::ServerConfig->FindDBCluster("AccountDB")));
 
 		// Session DB initialize
-		svrChk(pServerInst->AddDBCluster<DB::LoginSessionDB>(Config::GetConfig().LoginSessionDB));
+		svrChk(pServerInst->AddDBCluster<DB::LoginSessionDB>(Service::ServerConfig->FindDBCluster("LoginSessionDB")));
 
 		// Register game clusters, so that login server can monitor game servers status
 		for (ClusterID gameCluster = ClusterID::Game; gameCluster < ClusterID::Game_Max; gameCluster++)
 		{
-			svrChk(pServerInst->GetComponent<ClusterManagerServiceEntity>()->CreateWatcherForCluster(gameCluster, ClusterType::Shard, pClusteredEntity));
+			svrChk(GetServerComponent<ClusterManagerServiceEntity>()->CreateWatcherForCluster(gameCluster, ClusterType::Shard, pClusteredEntity));
 		}
 
 		m_pNetPublic->SetIsEnableAccept(true);
@@ -143,62 +153,63 @@ namespace Svr {
 	Result LoginServiceEntity::ProcessPublicNetworkEvent()
 	{
 		Result hr = ResultCode::SUCCESS;
-		Net::INet::Event curEvent;
-		LoginPlayerEntity *pLoginPlayerEntity = nullptr;
-		Net::ConnectionPtr pConn;
+		SharedPointerT<LoginPlayerEntity> pLoginPlayerEntity;
+		SharedPointerT<Net::Connection> pConn;
 
 		if (m_pNetPublic == nullptr)
 			return ResultCode::SUCCESS;
 
-		while ((m_pNetPublic->DequeueNetEvent(curEvent)))
+		svrChkPtr(GetServerComponent<Svr::EntityManager>());
+
+		auto numQueued = m_NewConnectionQueue.GetEnqueCount();
+		for (uint iQueue = 0; iQueue < numQueued; iQueue++)
 		{
-			pConn = nullptr;
+			SharedPointerAtomicT<Net::Connection> pConnAtomic;
 
-			switch (curEvent.EventType)
+			if (!m_NewConnectionQueue.Dequeue(pConnAtomic))
+				break;
+
+			switch (pConnAtomic->GetConnectionState())
 			{
-			case Net::INet::Event::EVT_NET_INITIALIZED:
+			case Net::ConnectionState::CONNECTING:
+				m_NewConnectionQueue.Enqueue(std::forward<SharedPointerAtomicT<Net::Connection>>(pConnAtomic));
 				break;
-			case Net::INet::Event::EVT_NET_CLOSED:
-				break;
-			case Net::INet::Event::EVT_NEW_CONNECTION:
-				if (curEvent.EventConnection == nullptr)
-					break;
-
-				pConn = std::forward<Net::ConnectionPtr>(curEvent.EventConnection);
-
-				svrChkPtr(pConn);
-				svrChkPtr(GetServerComponent<Svr::EntityManager>());
-
-				svrMem(pLoginPlayerEntity = new(GetMemoryManager()) LoginPlayerEntity);
-
-				svrChk(GetServerComponent<EntityManager>()->AddEntity(EntityFaculty::User, pLoginPlayerEntity));
-
-				if (!(pLoginPlayerEntity->SetConnection(std::forward<Net::ConnectionPtr>(pConn))))
-				{
-					// NOTE: We need to mark to close this
-					pLoginPlayerEntity->ClearEntity();
-				}
-				else
-				{
-					pConn = nullptr;
-				}
-
-				pLoginPlayerEntity = nullptr;
-				break;
-			case Net::INet::Event::EVT_CONNECTION_DISCONNECTED:
+			case Net::ConnectionState::CONNECTED:
 				break;
 			default:
+				assert(false); // I want to see when this happens
+				pConn = std::forward <SharedPointerAtomicT<Net::Connection>>(pConnAtomic);
+				pConn->Dispose();
+				Service::ConnectionManager->RemoveConnection(pConn);
+				pConn = nullptr;
 				break;
-			};
+			}
+
+			if (pConnAtomic == nullptr)
+				continue;
+
+			pConn = std::forward <SharedPointerAtomicT<Net::Connection>>(pConnAtomic);
+
+			svrMem(pLoginPlayerEntity = new(GetMemoryManager()) LoginPlayerEntity);
+
+			svrChk(GetServerComponent<EntityManager>()->AddEntity(EntityFaculty::User, *pLoginPlayerEntity));
+
+			if (!(pLoginPlayerEntity->SetConnection(std::forward<Net::ConnectionPtr>(pConn))))
+			{
+				// NOTE: We need to mark to close this
+				pLoginPlayerEntity->ClearEntity();
+			}
+			else
+			{
+				pConn = nullptr;
+			}
+
+			pLoginPlayerEntity = nullptr;
 		}
 
 
 	Proc_End:
 
-		if (pConn != nullptr && m_pNetPublic)
-			m_pNetPublic->GetConnectionManager().PendingReleaseConnection(pConn);
-
-		Util::SafeDelete(pLoginPlayerEntity);
 
 		return ResultCode::SUCCESS;
 	}

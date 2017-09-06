@@ -15,6 +15,8 @@
 #include "SvrTrace.h"
 #include "Server/BrServerUtil.h"
 #include "Task/ServerTaskEvent.h"
+#include "Task/ServerTask.h"
+#include "Task/ServerTaskManager.h"
 #include "Net/NetServerUDP.h"
 #include "Util/TimeUtil.h"
 #include "Types/SFEngineTypedefs.h"
@@ -101,7 +103,6 @@ namespace Svr {
 
 		svrChk( super::SetConnection(std::forward<SharedPointerT<Net::Connection>>(pCon)) );
 
-		svrChk( GetConnection()->CreatePolicy( Policy::NetSvrPolicyGame::ID_POLICY ) );
 
 		pCon = nullptr;
 
@@ -132,14 +133,14 @@ namespace Svr {
 	Result LoginPlayerEntity::RegisterMessageHandlers()
 	{
 		BR_ENTITY_MESSAGE(Message::Login::HeartBitC2SEvt)					{ pNewTrans = nullptr; HeartBit(); return ResultCode::SUCCESS; } );
-		BR_ENTITY_MESSAGE(Message::Login::LoginCmd)							{ pNewTrans = new(GetMemoryManager()) LoginPlayerTransLogin(pMsgData); return ResultCode::SUCCESS; } );
-		BR_ENTITY_MESSAGE(Message::Login::LoginByFacebookCmd)				{ pNewTrans = new(GetMemoryManager()) LoginPlayerTransLoginByFacebook(pMsgData); return ResultCode::SUCCESS; } );
-		BR_ENTITY_MESSAGE(Message::Login::CreateRandomUserCmd)				{ pNewTrans = new(GetMemoryManager()) LoginPlayerTransCreateRandomUser(pMsgData); return ResultCode::SUCCESS; } );
-		BR_ENTITY_MESSAGE(Message::LoginServer::PlayerJoinedToGameServerCmd){ pNewTrans = new(GetMemoryManager()) LoginPlayerJoinedToGameServerTrans(pMsgData); return ResultCode::SUCCESS; } );
+		BR_ENTITY_MESSAGE(Message::Login::LoginCmd)							{ pNewTrans = new(GetMemoryManager()) LoginPlayerTransLogin(GetMemoryManager(), pMsgData); return ResultCode::SUCCESS; } );
+		BR_ENTITY_MESSAGE(Message::Login::LoginByFacebookCmd)				{ pNewTrans = new(GetMemoryManager()) LoginPlayerTransLoginByFacebook(GetMemoryManager(), pMsgData); return ResultCode::SUCCESS; } );
+		BR_ENTITY_MESSAGE(Message::Login::CreateRandomUserCmd)				{ pNewTrans = new(GetMemoryManager()) LoginPlayerTransCreateRandomUser(GetMemoryManager(), pMsgData); return ResultCode::SUCCESS; } );
+		BR_ENTITY_MESSAGE(Message::LoginServer::PlayerJoinedToGameServerCmd){ pNewTrans = new(GetMemoryManager()) LoginPlayerJoinedToGameServerTrans(GetMemoryManager(), pMsgData); return ResultCode::SUCCESS; } );
 
-		BR_ENTITY_MESSAGE(Message::Login::UpdateMyScoreCmd)					{ pNewTrans = new(GetMemoryManager()) RankingUpdateScoreTrans(pMsgData); return ResultCode::SUCCESS; } );
-		BR_ENTITY_MESSAGE(Message::Login::DataTestCmd)						{ pNewTrans = new(GetMemoryManager()) LoginUserDataTestTrans(pMsgData); return ResultCode::SUCCESS; } );
-		BR_ENTITY_MESSAGE(Message::Login::DebugPrintALLRankingCmd)			{ pNewTrans = new(GetMemoryManager()) LoginUserDebugPrintALLRankingTrans(pMsgData); return ResultCode::SUCCESS; } );
+		BR_ENTITY_MESSAGE(Message::Login::UpdateMyScoreCmd)					{ pNewTrans = new(GetMemoryManager()) RankingUpdateScoreTrans(GetMemoryManager(), pMsgData); return ResultCode::SUCCESS; } );
+		BR_ENTITY_MESSAGE(Message::Login::DataTestCmd)						{ pNewTrans = new(GetMemoryManager()) LoginUserDataTestTrans(GetMemoryManager(), pMsgData); return ResultCode::SUCCESS; } );
+		BR_ENTITY_MESSAGE(Message::Login::DebugPrintALLRankingCmd)			{ pNewTrans = new(GetMemoryManager()) LoginUserDebugPrintALLRankingTrans(GetMemoryManager(), pMsgData); return ResultCode::SUCCESS; } );
 		return ResultCode::SUCCESS;
 	}
 

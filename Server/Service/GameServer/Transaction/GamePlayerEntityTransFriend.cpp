@@ -83,7 +83,7 @@ namespace GameServer {
 		Result hr = ResultCode::SUCCESS;
 		//Svr::ServerEntity *pServerEntity = nullptr;
 		EntityUID playerUID;
-		//Policy::IPolicyGameServer* pTargetPolicy = nullptr;
+		//Policy::NetPolicyGameServer* pTargetPolicy = nullptr;
 		DB::QueryGetPlayerShardIDCmd* pMsgRes;
 
 		svrChkClose( pRes->GetResult() );
@@ -113,7 +113,7 @@ namespace GameServer {
 		Result hr = ResultCode::SUCCESS;
 		Svr::ServerEntity *pServerEntity = nullptr;
 		EntityUID playerUID;
-		Policy::IPolicyGameServer* pTargetPolicy = nullptr;
+		Policy::NetPolicyGameServer* pTargetPolicy = nullptr;
 		DB::QueryNotification_AddCmd *pMsgRes;
 
 		svrChkClose( pRes->GetResult() );
@@ -122,7 +122,7 @@ namespace GameServer {
 		if( ( Svr::GetServerComponent<Svr::GameClusterServiceEntity>()->FindPlayer( GetFriendID(), playerUID )) )
 		{
 			svrChk( Svr::GetServerComponent<Svr::ServerEntityManager>()->GetServerEntity( playerUID.GetServerID(), pServerEntity ) );
-			pTargetPolicy = pServerEntity->GetInterface<Policy::IPolicyGameServer>();
+			pTargetPolicy = pServerEntity->GetInterface<Policy::NetPolicyGameServer>();
 			svrChkPtr(pTargetPolicy);
 			pTargetPolicy->NotifyC2SEvt( RouteContext(GetOwnerEntityUID(),playerUID), 
 				GetFriendID(), pMsgRes->NotificationID, NotificationType::FriendRequest, GetMyOwner()->GetPlayerID(), GetMyOwner()->GetFacebookUID(), GetMyOwner()->GetNickName(), m_TimeStamp.time_since_epoch().count() );
@@ -352,7 +352,7 @@ namespace GameServer {
 		Result hr = ResultCode::SUCCESS;
 		Svr::ServerEntity *pServerEntity = nullptr;
 		EntityUID playerUID;
-		Policy::IPolicyGameServer* pTargetPolicy = nullptr;
+		Policy::NetPolicyGameServer* pTargetPolicy = nullptr;
 
 		if (!(Svr::GetServerComponent<Svr::GameClusterServiceEntity>()->FindPlayer(GetInviterID(), playerUID)))
 		{
@@ -361,7 +361,7 @@ namespace GameServer {
 
 		svrChk( Svr::GetServerComponent<Svr::ServerEntityManager>()->GetServerEntity( playerUID.GetServerID(), pServerEntity ) );
 
-		svrChkPtr( pTargetPolicy = pServerEntity->GetInterface<Policy::IPolicyGameServer>() );
+		svrChkPtr( pTargetPolicy = pServerEntity->GetInterface<Policy::NetPolicyGameServer>() );
 
 		svrChk( pTargetPolicy->FriendAcceptedC2SEvt( RouteContext(GetOwnerEntityUID(),playerUID), 
 			GetInviterID(), GetMyOwner()->GetFriendInformation() ) );
@@ -460,7 +460,7 @@ namespace GameServer {
 	Result PlayerTransRemoveFriend::StartTransaction()
 	{
 		Result hr = ResultCode::SUCCESS;
-		Policy::IPolicyGameServer *pPolicy = nullptr;
+		Policy::NetPolicyGameServer *pPolicy = nullptr;
 		Svr::ServerEntity *pServerEntity = nullptr;
 		EntityUID playerUID;
 		ServerFriendInformation* pFriendInfo = nullptr;
@@ -478,7 +478,7 @@ namespace GameServer {
 		{
 			svrChk( Svr::GetServerComponent<Svr::ServerEntityManager>()->GetServerEntity( playerUID.GetServerID(), pServerEntity ) );
 
-			pPolicy = pServerEntity->GetInterface<Policy::IPolicyGameServer>();
+			pPolicy = pServerEntity->GetInterface<Policy::NetPolicyGameServer>();
 
 			svrChk( pPolicy->FriendRemovedC2SEvt( RouteContext(GetOwnerEntityUID(),playerUID), 
 				GetFriendID(), GetMyOwner()->GetPlayerID() ) );
@@ -791,7 +791,7 @@ namespace GameServer {
 		Result hr = ResultCode::SUCCESS;
 		Svr::ServerEntity *pServerEntity = nullptr;
 		EntityUID playerUID;
-		Policy::IPolicyGameServer* pTargetPolicy = nullptr;
+		Policy::NetPolicyGameServer* pTargetPolicy = nullptr;
 		DB::QueryNotification_AddCmd *pMsgRes = (DB::QueryNotification_AddCmd*)pRes;
 
 		svrChkClose( pRes->GetResult() );
@@ -799,7 +799,7 @@ namespace GameServer {
 		if( ( Svr::GetServerComponent<Svr::GameClusterServiceEntity>()->FindPlayer( GetTargetPlayer(), playerUID )) )
 		{
 			svrChk( Svr::GetServerComponent<Svr::ServerEntityManager>()->GetServerEntity( playerUID.GetServerID(), pServerEntity ) );
-			pTargetPolicy = pServerEntity->GetInterface<Policy::IPolicyGameServer>();
+			pTargetPolicy = pServerEntity->GetInterface<Policy::NetPolicyGameServer>();
 			svrChkPtr(pTargetPolicy);
 			pTargetPolicy->NotifyC2SEvt( RouteContext(GetOwnerEntityUID(),playerUID), 
 				GetTargetPlayer(), pMsgRes->NotificationID, NotificationType::GiftStamina, GetMyOwner()->GetPlayerID(), GetMyOwner()->GetFacebookUID(), GetMyOwner()->GetNickName(), m_TimeStamp.time_since_epoch().count());

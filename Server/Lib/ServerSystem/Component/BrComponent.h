@@ -277,7 +277,7 @@ namespace SF {
 			if( m_Components[newComponent->GetComponentID()] != nullptr )
 			{
 				// already registered
-				return ResultCode::E_DUPLICATED_COMPONENT;
+				return ResultCode::DUPLICATED_COMPONENT;
 			}
 
 			m_Components[newComponent->GetComponentID()] = newComponent;

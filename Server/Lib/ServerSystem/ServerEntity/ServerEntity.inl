@@ -41,17 +41,7 @@ inline Net::Connection* ServerEntity::GetConnection()
 	return result;
 }
 
-template< class PolicyType >
-PolicyType* ServerEntity::GetInterface()
-{
-	Net::Connection* pConn = GetConnection();
-	if (pConn == nullptr)
-	{
-		return nullptr;
-	}
 
-	return pConn->GetInterface<PolicyType>();
-}
 
 
 // Get/Set Class Name

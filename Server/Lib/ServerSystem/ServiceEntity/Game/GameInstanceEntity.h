@@ -174,7 +174,7 @@ namespace Svr
 		//Result ForeachPlayer(Func func);
 		////Result ForeachPlayer( std::function<Result(GamePlayer* pPlayer)> func );
 
-		//Result ForeachPlayerGameServer( std::function<Result(GamePlayer* pPlayer, Policy::IPolicyGameServer *pPolicy)> func );
+		//Result ForeachPlayerGameServer( std::function<Result(GamePlayer* pPlayer, Policy::NetPolicyGameServer *pPolicy)> func );
 
 		//Result ForeachPlayerSvrGameInstance( std::function<Result(GamePlayer* pPlayer, Policy::NetSvrPolicyGameInstance *pPolicy)> func );
 

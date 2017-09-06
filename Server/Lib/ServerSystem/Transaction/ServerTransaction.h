@@ -200,7 +200,7 @@ namespace Svr {
 			Result hr = ResultCode::SUCCESS;
 			Net::Connection *pConn = nullptr;
 			ClusteredServiceEntity *pMyOwner = nullptr;
-			Message::MessageData *pClonedMessage = nullptr;
+			MessageDataPtr pClonedMessage;
 			pMyOwner = super::GetMyOwner();
 
 
@@ -221,14 +221,14 @@ namespace Svr {
 
 			MessageClass::OverrideRouteInformation( pService->GetEntityUID(), super::GetRouteHopCount() + 1 );
 
-			pClonedMessage = super::GetMessage()->Clone();
+			pClonedMessage = super::GetMessage()->Clone(GetMemoryManager());
 			if( pClonedMessage == nullptr )
 			{
 				svrTrace( Error, "Failed routing a message({0}) for {1}, Out of memory", super::GetMessage()->GetMessageHeader()->msgID, typeid(*pMyOwner).name() );
 				goto Proc_End;
 			}
 
-			Assert(pClonedMessage->GetRefCount() == 1);
+			Assert(pClonedMessage->GetReferenceCount() == 1);
 			pConn->Send( pClonedMessage );
 
 			//Util::SafeRelease( pClonedMessage );

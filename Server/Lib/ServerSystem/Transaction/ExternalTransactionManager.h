@@ -15,15 +15,15 @@
 
 #include "SFTypedefs.h"
 #include "Thread/Thread.h"
-#include "Common/ObjectPool.h"
+#include "Object/ObjectPool.h"
 #include "Memory/SFMemory.h"
 #include "Net/NetDef.h"
-#include "ServerSystem/SimpleEntity.h"
-#include "ServerSystem/Transaction.h"
+#include "Entity/SimpleEntity.h"
+#include "Transaction/Transaction.h"
 #include "Types/BrSvrTypes.h"
-#include "ServerSystem/ServerComponent.h"
-#include "ServerSystem/ParallelTransaction.h"
-#include "Common/MemoryBufferUtil.h"
+#include "Component/ServerComponent.h"
+#include "Transaction/ParallelTransaction.h"
+
 
 #include "curl/curl.h"
 #include "json/json.h"
@@ -62,8 +62,6 @@ namespace Svr{
 		static char* CURL_strdup(const char *str);
 		static void* CURL_calloc(size_t nmemb, size_t size);
 
-		// allocator for CURL library
-		static MemoryAllocator &m_Allocator;
 
 		Google::OAuth m_GoogleAuth;
 		std::string m_IOSURL;

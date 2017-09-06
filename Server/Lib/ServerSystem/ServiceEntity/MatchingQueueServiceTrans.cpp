@@ -23,11 +23,11 @@
 #include "Server/BrServer.h"
 #include "ServerEntity/ServerEntityManager.h"
 #include "Entity/EntityManager.h"
-#include "ServerSystem/ServiceEntity/MatchingQueueServiceTrans.h"
-#include "ServerSystem/ServiceEntity/MatchingServiceEntity.h"
-#include "ServerSystem/ServiceEntity/MatchingQueueServiceEntity.h"
+#include "ServiceEntity/MatchingQueueServiceTrans.h"
+#include "ServiceEntity/MatchingServiceEntity.h"
+#include "ServiceEntity/MatchingQueueServiceEntity.h"
 
-#include "ServerSystem/ServerService/PartyMatchingQueueService.h"
+#include "Protocol/ServerService/PartyMatchingQueueService.h"
 
 
 SF_MEMORYPOOL_IMPLEMENT(SF::Svr::RegisterPartyMatchingTrans);
@@ -57,7 +57,7 @@ namespace Svr {
 
 		svrChk( super::StartTransaction() );
 
-		svrChk(GetMyOwner()->Enqueue(GetRouteContext().GetFrom(), 0, (uint)GetPlayers().GetSize(), GetPlayers().data(), m_MatchingTicket));
+		svrChk(GetMyOwner()->Enqueue(GetRouteContext().GetFrom(), 0, (uint)GetPlayers().size(), GetPlayers().data(), m_MatchingTicket));
 
 	Proc_End:
 
@@ -158,7 +158,7 @@ namespace Svr {
 			m_MatchingTicket.push_back(matchingTicket);
 		}
 
-		hr = m_NumPlayersInTheTicket.GetSize() == 0 ? Result(ResultCode::SVR_NOITEM_INQUEUE) : Result(ResultCode::SUCCESS);
+		hr = m_NumPlayersInTheTicket.size() == 0 ? Result(ResultCode::SVR_NOITEM_INQUEUE) : Result(ResultCode::SUCCESS);
 
 	Proc_End:
 

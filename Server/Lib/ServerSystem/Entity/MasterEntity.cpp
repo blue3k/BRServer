@@ -324,7 +324,7 @@ namespace Svr
 			svrChk(m_activeTransactionScheduler.Reschedul(currentThreadID, pTimerAction));
 		}
 
-		SetBestScehdulingTime(pCurTran);
+		SetBestScehdulingTime(*pCurTran);
 
 	Proc_End:
 

@@ -81,7 +81,7 @@ namespace Svr {
 
 		};
 
-		typedef Hash::HashTable2<uint64_t, QueueItem*> QueueItemIDTable;
+		typedef HashTable2<uint64_t, QueueItem*> QueueItemIDTable;
 
 
 	private:

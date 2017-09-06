@@ -642,7 +642,7 @@ namespace Svr {
 
 			OwnerEntityType *pOwnerEntity = nullptr;
 
-			hr = MessageTransaction<OwnerEntityType, PolicyType, MessageClass, TransactionType, MessageHandlerBufferSize>::ParseMessage();
+			hr = MessageTransaction<OwnerEntityType, MessageClass>::ParseMessage();
 			svrChk(hr);
 
 			if (!(FindEntity(MessageClass::GetRouteContext().GetTo().GetEntityID(), entity)))

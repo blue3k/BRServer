@@ -16,7 +16,7 @@
 #include "Util/TimeUtil.h"
 #include "Util/SFRandom.h"
 #include "DB/DBClusterManager.h"
-#include "Net/NetServer.h"
+#include "Net/NetSvrDef.h"
 #include "Net/NetServerPeerTCP.h"
 #include "ServerEntity/ServerEntity.h"
 #include "ServerEntity/ServerEntityManager.h"
@@ -32,6 +32,7 @@
 #include "ServerConfig/SFServerConfig.h"
 #include "DB/Factory.h"
 #include "Table/TableSystem.h"
+#include "Service/ServerService.h"
 
 #include "Transaction/ExternalTransactionManager.h"
 
@@ -49,18 +50,19 @@ namespace Svr{
 	//	Server definition
 	//
 	BrServer::BrServer( NetClass netClass )
-		: m_State(ServerState::STOPED)
+		: m_Components(GetMemoryManager())
+		, m_State(ServerState::STOPED)
 		, m_uiUID(0)
-		, m_pNetPrivate(nullptr)
 		, m_NetClass(netClass )
 		, m_pMyConfig(nullptr)
 		, m_ServerUpUTCTIme(TimeStampSec::min())
-		, m_pLoopbackServerEntity(nullptr)
 		, m_NumberServicesToWait(0)
+		, m_DBManagers(GetMemoryManager())
 		//, m_bIsStartProcessDone(false)
 		, m_bIsNetPublicEnabled(false)
 		, m_bIsKillSignaled(false)
 		, m_bStartTransaction(false)
+		, m_NewConnectionQueue(GetMemoryManager())
 	{
 		SetInstance( this );
 
@@ -93,67 +95,64 @@ namespace Svr{
 	Result BrServer::ProcessPrivateNetworkEvent()
 	{
 		Result hr = ResultCode::SUCCESS;
-		Net::INet::Event curEvent;
 		Svr::ServerEntity *pServerEntity = nullptr;
-		Net::ConnectionPtr pConn = nullptr;
+		SharedPointerT<Net::Connection> pConn;
 
-		if( m_pNetPrivate == nullptr )
-			return ResultCode::SUCCESS;
-
-
-		while( (m_pNetPrivate->DequeueNetEvent( curEvent )) )
+		auto numQueued = m_NewConnectionQueue.GetEnqueCount();
+		for (uint iQueue = 0; iQueue < numQueued; iQueue++)
 		{
-			pServerEntity = nullptr;
-			pConn = nullptr;
+			SharedPointerAtomicT<Net::Connection> pConnAtomic;
 
-			switch( curEvent.EventType )
+			if (!m_NewConnectionQueue.Dequeue(pConnAtomic))
+				break;
+
+			switch (pConnAtomic->GetConnectionState())
 			{
-			case Net::INet::Event::EVT_NET_INITIALIZED:
+			case Net::ConnectionState::CONNECTING:
+				m_NewConnectionQueue.Enqueue(std::forward<SharedPointerAtomicT<Net::Connection>>(pConnAtomic));
 				break;
-			case Net::INet::Event::EVT_NET_CLOSED:
-				break;
-			case Net::INet::Event::EVT_NEW_CONNECTION:
-				if( curEvent.EventConnection == nullptr )
-					break;
-
-				pConn = std::forward<Net::ConnectionPtr>(curEvent.EventConnection);
-
-				for (int iTry = 0; iTry < 4; iTry++)
-				{
-					std::atomic_thread_fence(std::memory_order_acquire);
-
-					if ((GetServerComponent<ServerEntityManager>()->AddOrGetServerEntity((ServerID)pConn->GetConnectionInfo().RemoteID, pConn->GetConnectionInfo().RemoteClass, 
-						pServerEntity)))
-					{
-						auto localConn = pServerEntity->GetLocalConnection();
-						auto oldConn = pServerEntity->GetRemoteConnection();
-						if (localConn == nullptr || localConn != (Net::Connection*)pConn)
-						{
-							//Assert(pConn->GetRefCount() == 0);
-							if (oldConn != nullptr)
-								oldConn->Disconnect("ProcessPrivateNetworkEvent, Disconnect old connection");
-							svrChk(pServerEntity->SetRemoteConnection((Net::Connection*)pConn));
-						}
-						pConn = nullptr;
-						pServerEntity = nullptr;
-						break;
-					}
-
-					ThisThread::SleepFor(DurationMS(0));
-				}
-				Assert(pConn == nullptr);
-
+			case Net::ConnectionState::CONNECTED:
 				break;
 			default:
+				assert(false); // I want to see when this happenes
+				pConn = std::forward <SharedPointerAtomicT<Net::Connection>>(pConnAtomic);
+				pConn->Dispose();
+				Service::ConnectionManager->RemoveConnection(pConn);
+				pConn = nullptr;
 				break;
-			};
+			}
+
+			if (pConnAtomic == nullptr)
+				continue;
+
+			pConn = std::forward <SharedPointerAtomicT<Net::Connection>>(pConnAtomic);
+			auto& remoteInfo = pConn->GetRemoteInfo();
+			if ((GetServerComponent<ServerEntityManager>()->AddOrGetServerEntity((ServerID)remoteInfo.PeerID, remoteInfo.PeerClass, pServerEntity)))
+			{
+				auto localConn = pServerEntity->GetLocalConnection();
+				auto oldConn = pServerEntity->GetRemoteConnection();
+				if (localConn == nullptr || localConn != (Net::Connection*)pConn)
+				{
+					//Assert(pConn->GetRefCount() == 0);
+					if (oldConn != nullptr)
+						oldConn->Disconnect("ProcessPrivateNetworkEvent, Disconnect old connection");
+					svrChk(pServerEntity->SetRemoteConnection((Net::Connection*)pConn));
+				}
+				pConn = nullptr;
+				pServerEntity = nullptr;
+				break;
+			}
+			else
+			{
+				// We need to handle this again
+				pConnAtomic = std::forward<SharedPointerT<Net::Connection>>(pConn);
+				m_NewConnectionQueue.Enqueue(std::forward<SharedPointerAtomicT<Net::Connection>>(pConnAtomic));
+			}
 		}
 
 
 Proc_End:
 
-		if( pConn != nullptr && m_pNetPrivate )
-			m_pNetPrivate->GetConnectionManager().PendingReleaseConnection(pConn);
 
 		Util::SafeDelete( pServerEntity );
 
@@ -209,17 +208,13 @@ Proc_End:
 	Result BrServer::InitializeMonitoring()
 	{
 		Result hr = ResultCode::SUCCESS;
-		Svr::Config::NetSocket *netInfo = nullptr;
 		NetAddress svrAddress;
-
+		auto monitoringConfig = Service::ServerConfig->FindGenericServer("MonitoringServer");
 		// Skip if not specified
-		if (Svr::Config::GetConfig().MonitoringServer == nullptr)
+		if (monitoringConfig == nullptr)
 			return hr;
 
-		netInfo = Svr::Config::GetConfig().MonitoringServer->NetPrivate;
-		svrChkPtr(netInfo);
-
-		svrChk(Net::SetNetAddress(svrAddress, netInfo->IP.c_str(), netInfo->Port));
+		svrChk(Net::SetNetAddress(svrAddress, monitoringConfig->PrivateNet.IP, monitoringConfig->PrivateNet.Port));
 
 		Assert(GetServerUID() != 0);
 		svrChk(PerformanceCounterClient::Initialize(GetServerUID(), svrAddress));
@@ -240,9 +235,9 @@ Proc_End:
 
 		svrMem( pEntityManager = CreateEntityManager() );
 		svrChk( pEntityManager->InitializeManager( Const::ENTITY_GAMEMANAGER_THREAD ) );
-		svrChk( AddComponent(pEntityManager) );
+		svrChk( m_Components.AddComponent(pEntityManager) );
 
-		svrChk( AddComponent<ServerEntityManager>() );
+		svrChk(m_Components.AddComponent<ServerEntityManager>() );
 
 
 		// Initialize remote entity manager
@@ -259,7 +254,7 @@ Proc_End:
 		pConn = nullptr;
 
 		pEntity = pLoopbackEntity;
-		svrChk(GetComponent<Svr::ServerEntityManager>()->AddOrGetServerEntity(GetServerUID(), GetNetClass(), pEntity));
+		svrChk(m_Components.GetComponent<Svr::ServerEntityManager>()->AddOrGetServerEntity(GetServerUID(), GetNetClass(), pEntity));
 		pEntity = nullptr;
 
 		SetLoopbackServerEntity(pLoopbackEntity);
@@ -268,16 +263,16 @@ Proc_End:
 
 		if( GetNetClass() == NetClass::Entity )
 		{
-			svrChk( AddComponent<ClusterManagerServiceEntity>(ClusterMembership::Slave) );
+			svrChk(m_Components.AddComponent<ClusterManagerServiceEntity>(ClusterMembership::Slave) );
 		}
 		else
 		{
-			svrChk( AddComponent<ClusterManagerServiceEntity>(ClusterMembership::StatusWatcher) );
+			svrChk(m_Components.AddComponent<ClusterManagerServiceEntity>(ClusterMembership::StatusWatcher) );
 		}
 
-		svrChk( GetComponent<EntityManager>()->AddEntity( 
+		svrChk(m_Components.GetComponent<EntityManager>()->AddEntity(
 			EntityID( EntityFaculty::Service,(uint)ClusterID::ClusterManager ), 
-			GetComponent<ClusterManagerServiceEntity>() ) );
+			m_Components.GetComponent<ClusterManagerServiceEntity>() ) );
 
 	Proc_End:
 
@@ -291,32 +286,36 @@ Proc_End:
 	{
 		Result hr = ResultCode::SUCCESS;
 		auto myConfig = GetMyConfig();
-
+		auto myGameConfig = dynamic_cast<const ServerConfig::GameServer*>(myConfig);
 		svrChkPtr(myConfig);
 
-		for (auto componentConfig : myConfig->ServerComponents)
+		if (myGameConfig != nullptr)
 		{
-			char strRelativePath[1024];
-			auto google = dynamic_cast<Config::ServerComponentGoogle* > (componentConfig);
-			if (google != nullptr)
+			for (auto& componentConfig : myGameConfig->Components)
 			{
-				StrUtil::Format(strRelativePath, "../../Config/{0}", google->P12KeyFile.c_str());
-				svrChk(AddComponent<ExternalTransactionManager>());
-				svrChk(GetComponent<ExternalTransactionManager>()->InitializeManagerGoogle(
-					strRelativePath,
-					google->Account.c_str(), 
-					google->AuthScopes.c_str()));
+				char strRelativePath[1024];
+				auto google = dynamic_cast<ServerConfig::ServerComponentGoogle*> (componentConfig);
+				if (google != nullptr)
+				{
+					StrUtil::Format(strRelativePath, "../../Config/{0}", google->P12KeyFile);
+					svrChk(m_Components.AddComponent<ExternalTransactionManager>());
+					svrChk(m_Components.GetComponent<ExternalTransactionManager>()->InitializeManagerGoogle(
+						strRelativePath,
+						google->Account,
+						google->AuthScopes));
+				}
+
+				auto ios = dynamic_cast<ServerConfig::ServerComponentIOS*> (componentConfig);
+				if (ios != nullptr)
+				{
+					svrChk(m_Components.AddComponent<ExternalTransactionManager>());
+					svrChk(m_Components.GetComponent<ExternalTransactionManager>()->InitializeManagerIOS(ios->URL));
+				}
 			}
 
-			auto ios = dynamic_cast<Config::ServerComponentIOS* > (componentConfig);
-			if (ios != nullptr)
-			{
-				svrChk(AddComponent<ExternalTransactionManager>());
-				svrChk(GetComponent<ExternalTransactionManager>()->InitializeManagerIOS(ios->URL.c_str()));
-			}
 		}
 
-		svrChk(ServerComponentCarrier::InitializeComponents());
+		svrChk(m_Components.InitializeComponents());
 
 
 	Proc_End:
@@ -334,7 +333,7 @@ Proc_End:
 	// Close server and release resource
 	Result BrServer::CloseServerResource()
 	{
-		TerminateComponents();
+		m_Components.TerminateComponents();
 
 		return ResultCode::SUCCESS;
 	}
@@ -482,7 +481,7 @@ Proc_End:
 		GetEntityTable().Clear();
 
 		// clear components
-		ClearComponents();
+		m_Components.ClearComponents();
 
 		PerformanceCounterClient::Terminate();
 
@@ -513,8 +512,15 @@ Proc_End:
 
 		// Create private network and open it
 		svrMem( m_pNetPrivate = new(GetMemoryManager()) Net::ServerPeerTCP(GetMyConfig()->UID, GetNetClass()) );
-		svrChkPtr(GetMyConfig()->NetPrivate);
-		svrChk( m_pNetPrivate->HostOpen( GetNetClass(), GetMyConfig()->NetPrivate->IP.c_str(), GetMyConfig()->NetPrivate->Port ) );
+
+		m_pNetPrivate->SetNewConnectionhandler([this](SharedPointerT<Net::Connection>& newConn)
+		{
+			SharedPointerAtomicT<Net::Connection> pConnAtomic;
+			pConnAtomic = std::forward<SharedPointerT<Net::Connection>>(newConn);
+			m_NewConnectionQueue.Enqueue(std::forward<SharedPointerAtomicT<Net::Connection>>(pConnAtomic));
+		});
+
+		svrChk( m_pNetPrivate->HostOpen( GetNetClass(), GetMyConfig()->PrivateNet.IP, GetMyConfig()->PrivateNet.Port ) );
 
 		svrTrace( Info, "Initialize basic entities" );
 		hr = InitializeEntities();
@@ -554,10 +560,9 @@ Proc_End:
 		}
 
 		// close private net
-		if( m_pNetPrivate )
+		if( m_pNetPrivate != nullptr )
 		{
 			hr = m_pNetPrivate->HostClose();
-			m_pNetPrivate->Release();
 			m_pNetPrivate = nullptr;
 		}
 

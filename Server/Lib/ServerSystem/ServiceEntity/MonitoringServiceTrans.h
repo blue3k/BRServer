@@ -30,47 +30,50 @@ namespace Svr {
 
 	
 
-	class MonitoringTransGetInstanceList : public ServerEntityMessageTransaction< MonitoringServiceEntity, Message::Monitoring::GetInstanceListCmd, MonitoringTransGetInstanceList, 1>
+	class MonitoringTransGetInstanceList : public ServerEntityMessageTransaction< MonitoringServiceEntity, Message::Monitoring::GetInstanceListCmd>
 	{
 	public:
-		typedef ServerEntityMessageTransaction< MonitoringServiceEntity, Message::Monitoring::GetInstanceListCmd, MonitoringTransGetInstanceList, 1> super;
+		typedef ServerEntityMessageTransaction< MonitoringServiceEntity, Message::Monitoring::GetInstanceListCmd> super;
 
 	private:
 		StaticArray<PerformanceCounterInstanceInfo, 1024> m_InstanceList;
 		uint32_t m_TotalCounterInstance;
 
 	public:
-		MonitoringTransGetInstanceList(MessageDataPtr &pIMsg) : ServerEntityMessageTransaction(pIMsg) {}
+		MonitoringTransGetInstanceList(IMemoryManager& memMgr, MessageDataPtr &pIMsg)
+			: ServerEntityMessageTransaction(memMgr, pIMsg)
+			, m_InstanceList(memMgr)
+		{}
 		virtual ~MonitoringTransGetInstanceList() {}
 
 		// Start Transaction
 		virtual Result StartTransaction();
 
-		Policy::NetSvrPolicyMonitoring* GetInterface()	{ return ServerEntityMessageTransaction::GetInterface<Policy::NetSvrPolicyMonitoring>(); }
-
-		BR_IMPLEMENT_MSGTRANS_CLOSE_ARGS(GetInstanceListRes, m_InstanceList, m_TotalCounterInstance);
+		BR_IMPLEMENT_MSGTRANS_CLOSE_ARGS(Policy::NetSvrPolicyMonitoring, GetInstanceListRes, m_InstanceList, m_TotalCounterInstance);
 	};
 
 
 
-	class MonitoringTransRequestCounterValues : public ServerEntityMessageTransaction< MonitoringServiceEntity, Message::Monitoring::RequestCounterValuesCmd, MonitoringTransRequestCounterValues, 1>
+	class MonitoringTransRequestCounterValues : public ServerEntityMessageTransaction< MonitoringServiceEntity, Message::Monitoring::RequestCounterValuesCmd>
 	{
 	public:
-		typedef ServerEntityMessageTransaction< MonitoringServiceEntity, Message::Monitoring::RequestCounterValuesCmd, MonitoringTransRequestCounterValues, 1> super;
+		typedef ServerEntityMessageTransaction< MonitoringServiceEntity, Message::Monitoring::RequestCounterValuesCmd> super;
 
 	private:
 		StaticArray<uint64_t, 1024> m_CounterValues;
 
 	public:
-		MonitoringTransRequestCounterValues(MessageDataPtr &pIMsg) : ServerEntityMessageTransaction(pIMsg) {}
+		MonitoringTransRequestCounterValues(IMemoryManager& memMgr, MessageDataPtr &pIMsg)
+			: ServerEntityMessageTransaction(memMgr, pIMsg)
+			, m_CounterValues(memMgr)
+		{}
 		virtual ~MonitoringTransRequestCounterValues() {}
 
 		// Start Transaction
 		virtual Result StartTransaction();
 
-		Policy::NetSvrPolicyMonitoring* GetInterface()	{ return ServerEntityMessageTransaction::GetInterface<Policy::NetSvrPolicyMonitoring>(); }
 
-		BR_IMPLEMENT_MSGTRANS_CLOSE_ARGS(RequestCounterValuesRes, GetInstanceUID(), m_CounterValues);
+		BR_IMPLEMENT_MSGTRANS_CLOSE_ARGS(Policy::NetSvrPolicyMonitoring, RequestCounterValuesRes, GetInstanceUID(), m_CounterValues);
 	};
 
 

@@ -20,7 +20,6 @@
     <None Include="$(MSBuildThisFileDirectory)Entity\MasterEntity.inl" />
     <None Include="$(MSBuildThisFileDirectory)Entity\PlayerEntityInformation.inl" />
     <None Include="$(MSBuildThisFileDirectory)Entity\SimpleUserEntity.inl" />
-    <None Include="$(MSBuildThisFileDirectory)ExternalTransactionManager.inl" />
     <None Include="$(MSBuildThisFileDirectory)GameLog\GameLog.inl" />
     <None Include="$(MSBuildThisFileDirectory)makefile.mak" />
     <None Include="$(MSBuildThisFileDirectory)MessageRoute.inl" />
@@ -38,6 +37,7 @@
     <None Include="$(MSBuildThisFileDirectory)Task\ServerTask.inl" />
     <None Include="$(MSBuildThisFileDirectory)Task\ServerTaskEvent.inl" />
     <None Include="$(MSBuildThisFileDirectory)Task\ServerTaskManager.inl" />
+    <None Include="$(MSBuildThisFileDirectory)Transaction\ExternalTransactionManager.inl" />
     <None Include="$(MSBuildThisFileDirectory)Transaction\MessageRoute.inl" />
     <None Include="$(MSBuildThisFileDirectory)Transaction\Transaction.inl" />
     <None Include="$(MSBuildThisFileDirectory)Types\BrGameTypes.inl" />
@@ -58,15 +58,12 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)Entity\PlayerEntityInformation.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Entity\SimpleEntity.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Entity\SimpleUserEntity.h" />
-    <ClInclude Include="$(MSBuildThisFileDirectory)ExternalTransaction.h" />
-    <ClInclude Include="$(MSBuildThisFileDirectory)ExternalTransactionManager.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)GameConst.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)GameLog\ChattingHistory.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)GameLog\GameLog.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Google\GoogleAndroidDeveloperAPI.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Google\GoogleOAuth.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)MessageRoute.h" />
-    <ClInclude Include="$(MSBuildThisFileDirectory)ParallelTransaction.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)PerformanceCounter\PerformanceCounter.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)PerformanceCounter\PerformanceCounterClient.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)PerformanceCounter\PerformanceCounterInstance.h" />
@@ -129,8 +126,11 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)Task\ServerTask.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Task\ServerTaskEvent.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Task\ServerTaskManager.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)Transaction\ExternalTransaction.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)Transaction\ExternalTransactionManager.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Transaction\MessageHandlerTable.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Transaction\MessageRoute.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)Transaction\ParallelTransaction.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Transaction\ServerTransaction.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Transaction\ServerTransactionGeneric.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Transaction\Transaction.h" />
@@ -156,12 +156,9 @@
     <ClCompile Include="$(MSBuildThisFileDirectory)Entity\PlayerEntityInformation.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)Entity\SimpleEntity.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)Entity\SimpleUserEntity.cpp" />
-    <ClCompile Include="$(MSBuildThisFileDirectory)ExternalTransaction.cpp" />
-    <ClCompile Include="$(MSBuildThisFileDirectory)ExternalTransactionManager.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)GameLog\ChattingHistory.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)Google\GoogleAndroidDeveloperAPI.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)Google\GoogleOAuth.cpp" />
-    <ClCompile Include="$(MSBuildThisFileDirectory)ParallelTransaction.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)PerformanceCounter\PerformanceCounter.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)PerformanceCounter\PerformanceCounterClient.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)PerformanceCounter\PerformanceCounterInstance.cpp" />
@@ -215,6 +212,9 @@
     <ClCompile Include="$(MSBuildThisFileDirectory)Task\ServerTask.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)Task\ServerTaskEvent.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)Task\ServerTaskManager.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)Transaction\ExternalTransaction.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)Transaction\ExternalTransactionManager.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)Transaction\ParallelTransaction.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)Transaction\ServerTransactionGeneric.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)Transaction\Transaction.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)Types\BrGameTypes.cpp" />

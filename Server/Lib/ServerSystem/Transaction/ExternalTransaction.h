@@ -15,16 +15,16 @@
 
 #include "SFTypedefs.h"
 #include "Thread/Thread.h"
-#include "Common/ObjectPool.h"
+#include "Object/ObjectPool.h"
 #include "Memory/MemoryPool.h"
 #include "Memory/SFMemory.h"
 #include "Net/NetDef.h"
-#include "ServerSystem/SimpleEntity.h"
-#include "ServerSystem/Transaction.h"
+#include "Entity/SimpleEntity.h"
+#include "Transaction/Transaction.h"
 #include "Types/BrSvrTypes.h"
-#include "ServerSystem/ServerComponent.h"
-#include "ServerSystem/ParallelTransaction.h"
-#include "Common/MemoryBufferUtil.h"
+#include "Component/ServerComponent.h"
+#include "Transaction/ParallelTransaction.h"
+
 
 #include "curl/curl.h"
 #include "json/json.h"
@@ -60,7 +60,7 @@ namespace Svr{
 	{
 	public:
 
-		typedef StringBuffer<20*1024> ResultBuffer;
+		typedef StaticArray<char,20*1024> ResultBuffer;
 
 	protected:
 	public:
@@ -78,7 +78,7 @@ namespace Svr{
 
 	public:
 
-		HTTPExternalTransaction(TransactionID parentTransID, Message::MessageID MsgID);
+		HTTPExternalTransaction(IMemoryManager& memMgr, TransactionID parentTransID, Message::MessageID MsgID);
 		virtual ~HTTPExternalTransaction();
 
 		CURL *GetCURL()				{ return m_Curl; }
@@ -94,7 +94,7 @@ namespace Svr{
 	//	GCM External task class
 	//
 
-	class GCMHttpExternalTransaction : public HTTPExternalTransaction, public MemoryPoolObject<GCMHttpExternalTransaction>
+	class GCMHttpExternalTransaction : public HTTPExternalTransaction
 	{
 
 	private:
@@ -118,7 +118,7 @@ namespace Svr{
 	public:
 
 		// Constructor
-		GCMHttpExternalTransaction();
+		GCMHttpExternalTransaction(IMemoryManager& memMgr);
 
 		// Set parameters
 		Result SetParameters( const char* strRegID, const char* strMessage, uint64_t param0 );
@@ -131,7 +131,7 @@ namespace Svr{
 	};
 
 
-	class ExternalTransactionGoogleAndroidReceiptCheck : public ParallelTransaction, public MemoryPoolObject<ExternalTransactionGoogleAndroidReceiptCheck>
+	class ExternalTransactionGoogleAndroidReceiptCheck : public ParallelTransaction
 	{
 	public:
 
@@ -147,7 +147,7 @@ namespace Svr{
 	public:
 
 		// Constructor
-		ExternalTransactionGoogleAndroidReceiptCheck(TransactionID parentTransID, Google::OAuth* pOAuth);
+		ExternalTransactionGoogleAndroidReceiptCheck(IMemoryManager& memMgr, TransactionID parentTransID, Google::OAuth* pOAuth);
 
 		const std::string& GetDeveloperPayload() { return m_DevAPI.GetDeveloperPayload(); }
 
@@ -163,7 +163,7 @@ namespace Svr{
 	};
 
 
-	class ExternalTransactionIOSRecepitCheck : public HTTPExternalTransaction, public MemoryPoolObject<ExternalTransactionIOSRecepitCheck>
+	class ExternalTransactionIOSRecepitCheck : public HTTPExternalTransaction
 	{
 	public:
 
@@ -184,7 +184,7 @@ namespace Svr{
 		Result ToResult(int status);
 
 		// Constructor
-		ExternalTransactionIOSRecepitCheck(TransactionID parentTransID, const char* strURL);
+		ExternalTransactionIOSRecepitCheck(IMemoryManager& memMgr, TransactionID parentTransID, const char* strURL);
 
 		// Set parameters
 		Result SetParameters(const char* packageName, const char* productID, const char* transactionID, const Array<uint8_t>& purchaseToken);

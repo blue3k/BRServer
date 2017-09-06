@@ -24,8 +24,8 @@
 #include "Entity/EntityManager.h"
 #include "ServiceEntity/ClusterManagerServiceEntity.h"
 
-#include "ServerSystem/ServerService/RankingServerService.h"
-#include "ServerSystem/ServerService/GameServerService.h"
+#include "Protocol/ServerService/RankingServerService.h"
+#include "Protocol/ServerService/GameServerService.h"
 #include "Protocol/Message/RankingServerMsgClass.h"
 
 
@@ -34,7 +34,7 @@
 #include "Protocol/Message/GameServerMsgClass.h"
 #include "Protocol/Policy/GameServerNetPolicy.h"
 
-#include "ServerSystem/ServiceEntity/Login/LoginPlayerEntityTrans.h"
+#include "ServiceEntity/Login/LoginPlayerEntityTrans.h"
 #include "ServiceEntity/Login/LoginPlayerEntity.h"
 
 #include "Server/BrServer.h"
@@ -70,9 +70,9 @@ namespace Svr {
 	//	Game command transaction
 	//
 
-	template<class MessageClass, class TransactionClass>
-	LoginPlayerTransLoginBase<MessageClass,TransactionClass>::LoginPlayerTransLoginBase( MessageDataPtr &pIMsg )
-		: super( pIMsg )
+	template<class MessageClass>
+	LoginPlayerTransLoginBase<MessageClass>::LoginPlayerTransLoginBase(IMemoryManager& memMgr, MessageDataPtr &pIMsg )
+		: super(memMgr, pIMsg)
 		, m_CreateRequestCount(0)
 	{
 		super::SetExclusive(true);
@@ -87,8 +87,8 @@ namespace Svr {
 		m_UserID[0] = '\0';
 	}
 
-	template<class MessageClass, class TransactionClass>
-	Result LoginPlayerTransLoginBase<MessageClass, TransactionClass>::OnGenericError(Svr::TransactionResult* &pRes)
+	template<class MessageClass>
+	Result LoginPlayerTransLoginBase<MessageClass>::OnGenericError(Svr::TransactionResult* &pRes)
 	{
 		if (pRes->GetResult() == Result(ResultCode::INVALID_PLAYERID) || pRes->GetResult() == Result(ResultCode::SVR_INVALID_ENTITYUID))
 		{
@@ -116,8 +116,8 @@ namespace Svr {
 		return ResultCode::SUCCESS;
 	}
 
-	template<class MessageClass, class TransactionClass>
-	Result LoginPlayerTransLoginBase<MessageClass,TransactionClass>::OnLogin( Result hrRes, AccountID accountID, FacebookUID FBUserID, INT shardID )
+	template<class MessageClass>
+	Result LoginPlayerTransLoginBase<MessageClass>::OnLogin( Result hrRes, AccountID accountID, FacebookUID FBUserID, INT shardID )
 	{
 		Result hr = ResultCode::SUCCESS;
 		AuthTicket newTicket = 0;
@@ -149,12 +149,12 @@ namespace Svr {
 		return hr; 
 	}
 
-	template<class MessageClass, class TransactionClass>
-	Result LoginPlayerTransLoginBase<MessageClass,TransactionClass>::OnSessionRegistered( Svr::TransactionResult* &pRes )
+	template<class MessageClass>
+	Result LoginPlayerTransLoginBase<MessageClass>::OnSessionRegistered( Svr::TransactionResult* &pRes )
 	{
 		Result hr = ResultCode::SUCCESS;
 		DB::QueryRegisterAuthTicketCmd* pDBRes = (DB::QueryRegisterAuthTicketCmd*)pRes;
-		Policy::IPolicyGameServer *pGameServerPolicy = nullptr;
+		Policy::NetPolicyGameServer *pGameServerPolicy = nullptr;
 
 		svrChk(pRes->GetResult());
 
@@ -166,12 +166,12 @@ namespace Svr {
 		// if someone already logged in
 		if (pDBRes->Result != 0)
 		{
-			svrErrClose(ResultCode::E_LOGIN_ALREADY_LOGGEDIN_OTHERPLACE);
+			svrErrClose(ResultCode::LOGIN_ALREADY_LOGGEDIN_OTHERPLACE);
 		}
 		else
 		{
 			Svr::ClusteredServiceEntity *pServiceEntity = nullptr;
-			// To accomodate login only services, allow login without game server
+			// To accommodate login only services, allow login without game server
 			if (!Svr::GetServerComponent<Svr::ClusterManagerServiceEntity>()->GetClusterServiceEntity((ClusterID)((uint)ClusterID::Game + (uint)super::GetGameID()), pServiceEntity)
 				|| pServiceEntity->GetNumberOfNonWatcherServices() == 0)
 			{
@@ -180,14 +180,14 @@ namespace Svr {
 				goto Proc_End;
 			}
 
-			if( m_GameEntityUID == 0 )
+			if( m_GameEntityUID.UID == 0 )
 			{
 				svrTrace(SVR_ENTITY, "No login session");
 				svrChk( RegisterNewPlayerToJoinGameServer() );
 			}
 			else
 			{
-				pGameServerPolicy = Svr::GetServerComponent<Svr::ServerEntityManager>()->GetServerPolicy<Policy::IPolicyGameServer>(m_GameEntityUID.GetServerID());
+				pGameServerPolicy = Svr::GetServerComponent<Svr::ServerEntityManager>()->GetServerPolicy<Policy::NetPolicyGameServer>(m_GameEntityUID.GetServerID());
 				if (pGameServerPolicy == nullptr
 					|| !(pGameServerPolicy->RegisterPlayerToJoinGameServerCmd(RouteContext(super::GetOwnerEntityUID(), m_GameEntityUID), super::GetTransID(),
 						super::GetMyOwner()->GetPlayerID(), super::GetMyOwner()->GetAuthTicket(), super::GetMyOwner()->GetFacebookUID(), super::GetMyOwner()->GetShardID())))
@@ -205,8 +205,8 @@ namespace Svr {
 		return ResultCode::SUCCESS;
 	}
 
-	template<class MessageClass, class TransactionClass>
-	Result LoginPlayerTransLoginBase<MessageClass,TransactionClass>::RegisterNewPlayerToJoinGameServer()
+	template<class MessageClass>
+	Result LoginPlayerTransLoginBase<MessageClass>::RegisterNewPlayerToJoinGameServer()
 	{
 		Result hr = ResultCode::SUCCESS;
 		Svr::ClusteredServiceEntity *pServiceEntity = nullptr;
@@ -232,8 +232,8 @@ namespace Svr {
 		return hr; 
 	}
 
-	template<class MessageClass, class TransactionClass>
-	Result LoginPlayerTransLoginBase<MessageClass,TransactionClass>::OnRegisterPlayerToJoinGameServer( Svr::TransactionResult* &pRes )
+	template<class MessageClass>
+	Result LoginPlayerTransLoginBase<MessageClass>::OnRegisterPlayerToJoinGameServer( Svr::TransactionResult* &pRes )
 	{
 		Result hr = ResultCode::SUCCESS;
 
@@ -257,7 +257,7 @@ namespace Svr {
 		}
 
 		svrChk(pRes->GetResult());
-		svrChk( res.ParseMessage( pMsgRes->GetMessage() ) );
+		svrChk( res.ParseMessage( *pMsgRes->GetMessage() ) );
 
 		super::GetMyOwner()->HeartBit();
 
@@ -279,8 +279,8 @@ namespace Svr {
 		return ResultCode::SUCCESS; 
 	}
 
-	template<class MessageClass, class TransactionClass>
-	Result LoginPlayerTransLoginBase<MessageClass, TransactionClass>::OnConnectToGameServerRes(Svr::TransactionResult* &pRes)
+	template<class MessageClass>
+	Result LoginPlayerTransLoginBase<MessageClass>::OnConnectToGameServerRes(Svr::TransactionResult* &pRes)
 	{
 		Result hr = ResultCode::SUCCESS;
 		DB::QueryConnectedToGameServerCmd* pDBRes = (DB::QueryConnectedToGameServerCmd*)pRes;
@@ -296,7 +296,7 @@ namespace Svr {
 		}
 		else
 		{
-			svrErrClose(ResultCode::E_LOGIN_ALREADY_LOGGEDIN_OTHERPLACE);
+			svrErrClose(ResultCode::LOGIN_ALREADY_LOGGEDIN_OTHERPLACE);
 		}
 
 	Proc_End:
@@ -307,8 +307,8 @@ namespace Svr {
 	}
 
 	// Start Transaction
-	template<class MessageClass, class TransactionClass>
-	Result LoginPlayerTransLoginBase<MessageClass,TransactionClass>::StartTransaction()
+	template<class MessageClass>
+	Result LoginPlayerTransLoginBase<MessageClass>::StartTransaction()
 	{
 		Result hr = ResultCode::SUCCESS;
 
@@ -321,7 +321,7 @@ namespace Svr {
 
 		if(super::GetMyOwner()->GetAccountID() != 0 )
 		{
-			svrErrClose(ResultCode::E_LOGIN_ALREADY_LOGGEDIN);
+			svrErrClose(ResultCode::LOGIN_ALREADY_LOGGEDIN);
 		}
 
 	Proc_End:
@@ -334,12 +334,12 @@ namespace Svr {
 		return hr;
 	}
 
-	template<class MessageClass, class TransactionClass>
-	Result LoginPlayerTransLoginBase<MessageClass, TransactionClass>::OnCloseTransaction(Result hrRes)
+	template<class MessageClass>
+	Result LoginPlayerTransLoginBase<MessageClass>::OnCloseTransaction(Result hrRes)
 	{
 		if (!super::IsClosed())
 		{
-			svrTrace(TRC_INFO, "LoginRequest result of {0}, hr={1}", m_UserID, hrRes);
+			svrTrace(SVR_INFO, "LoginRequest result of {0}, hr={1}", m_UserID, hrRes);
 		}
 
 		Result result = super::OnCloseTransaction(hrRes);
@@ -349,8 +349,8 @@ namespace Svr {
 
 
 
-	LoginPlayerTransLogin::LoginPlayerTransLogin( MessageDataPtr &pIMsg )
-		:LoginPlayerTransLoginBase( pIMsg )
+	LoginPlayerTransLogin::LoginPlayerTransLogin(IMemoryManager& memMgr, MessageDataPtr &pIMsg )
+		:LoginPlayerTransLoginBase(memMgr, pIMsg )
 	{
 		BR_TRANS_MESSAGE( DB::QueryLoginCmd, { return OnLogin(pRes); });
 	}
@@ -376,11 +376,11 @@ namespace Svr {
 			// Login failed
 			if( pDBRes->Result == -1 )
 			{
-				CloseTransaction(ResultCode::E_LOGIN_INVALID_USERNAME);
+				CloseTransaction(ResultCode::LOGIN_INVALID_USERNAME);
 			}
 			else
 			{
-				CloseTransaction(ResultCode::E_LOGIN_INVALID_PASSWORD);
+				CloseTransaction(ResultCode::LOGIN_INVALID_PASSWORD);
 			}
 		}
 
@@ -402,7 +402,7 @@ namespace Svr {
 
 		if( GetMyOwner()->GetAccountID() != 0 )
 		{
-			svrErrClose(ResultCode::E_LOGIN_ALREADY_LOGGEDIN);
+			svrErrClose(ResultCode::LOGIN_ALREADY_LOGGEDIN);
 		}
 
 		GetMyOwner()->HeartBit();
@@ -422,8 +422,8 @@ namespace Svr {
 	}
 
 
-	LoginPlayerTransLoginByFacebook::LoginPlayerTransLoginByFacebook( MessageDataPtr &pIMsg )
-		:LoginPlayerTransLoginBase( pIMsg )
+	LoginPlayerTransLoginByFacebook::LoginPlayerTransLoginByFacebook(IMemoryManager& memMgr, MessageDataPtr &pIMsg )
+		: LoginPlayerTransLoginBase(memMgr, pIMsg )
 	{
 		SetExclusive(true);
 		BR_TRANS_MESSAGE( DB::QueryFacebookCreateUserCmd, { return OnUserCreated(pRes); });
@@ -447,7 +447,7 @@ namespace Svr {
 		else
 		{
 			svrTrace(Error, "Failed to create player FBUID:{0}, email:{1}, result:{2}", GetUID(), pDBRes->EMail, pDBRes->Result);
-			hr = ResultCode::E_INVALID_VALUE;
+			hr = ResultCode::INVALID_VALUE;
 		}
 
 	Proc_End:
@@ -470,11 +470,11 @@ namespace Svr {
 		if (GetEMail() == nullptr || GetEMail()[0] == '\0')
 		{
 			// Generate fake&unique email from UID
-			svrChk(StrUtil::Format(email, "{0}@braveplayer.com__", GetUID()));
+			StrUtil::Format(email, "{0}@braveplayer.com__", GetUID());
 		}
 		else
 		{
-			svrChk(StrUtil::StringLwr(email, GetEMail()));
+			StrUtil::StringLwr(email, GetEMail());
 		}
 
 
@@ -514,12 +514,12 @@ namespace Svr {
 
 		if( GetUID() == 0 )
 		{
-			svrErr(ResultCode::E_INVALID_ACCOUNTID);
+			svrErr(ResultCode::INVALID_ACCOUNTID);
 		}
 
 		if( GetMyOwner()->GetAccountID() != 0 )
 		{
-			svrErrClose(ResultCode::E_LOGIN_ALREADY_LOGGEDIN);
+			svrErrClose(ResultCode::LOGIN_ALREADY_LOGGEDIN);
 		}
 
 		GetMyOwner()->HeartBit();
@@ -543,8 +543,8 @@ namespace Svr {
 
 
 
-	LoginPlayerTransCreateRandomUser::LoginPlayerTransCreateRandomUser(MessageDataPtr &pIMsg)
-		:LoginPlayerTransLoginBase(pIMsg)
+	LoginPlayerTransCreateRandomUser::LoginPlayerTransCreateRandomUser(IMemoryManager& memMgr, MessageDataPtr &pIMsg)
+		:LoginPlayerTransLoginBase(memMgr, pIMsg)
 	{
 		BR_TRANS_MESSAGE(DB::QueryCreateRandomUserCmd, { return OnCreated(pRes); });
 	}
@@ -567,7 +567,7 @@ namespace Svr {
 		}
 		else
 		{
-			CloseTransaction(ResultCode::E_LOGIN_INVALID_SIGNATURE);
+			CloseTransaction(ResultCode::LOGIN_INVALID_SIGNATURE);
 		}
 
 	Proc_End:
@@ -588,17 +588,17 @@ namespace Svr {
 
 		if (GetMyOwner()->GetAccountID() != 0)
 		{
-			svrErrClose(ResultCode::E_LOGIN_ALREADY_LOGGEDIN);
+			svrErrClose(ResultCode::LOGIN_ALREADY_LOGGEDIN);
 		}
 
 		GetMyOwner()->HeartBit();
 
 		if (GetCellPhone() == nullptr || GetCellPhone()[0] == '\0')
 		{
-			svrErrClose(ResultCode::E_LOGIN_INVALID_SIGNATURE);
+			svrErrClose(ResultCode::LOGIN_INVALID_SIGNATURE);
 		}
 
-		svrChk(StrUtil::Format(m_UserID, "{0}", GetCellPhone()));
+		StrUtil::Format(m_UserID, "{0}", GetCellPhone());
 
 		svrChk(Svr::GetServerComponent<DB::AccountDB>()->CreateRandomUser(GetTransID(), m_UserID, GetCellPhone()));
 
@@ -680,8 +680,8 @@ namespace Svr {
 	// Login Server service
 	//
 
-	LoginPlayerKickPlayerTrans::LoginPlayerKickPlayerTrans( MessageDataPtr &pIMsg )
-		: UserTransactionS2SCmd(pIMsg)
+	LoginPlayerKickPlayerTrans::LoginPlayerKickPlayerTrans(IMemoryManager& memMgr, MessageDataPtr &pIMsg )
+		: UserTransactionS2SCmd(memMgr, pIMsg)
 	{
 		BR_TRANS_MESSAGE( DB::QueryDeleteLoginSessionCmd, { return OnDeleteSession(pRes); } );
 	}
@@ -749,8 +749,8 @@ namespace Svr {
 
 
 
-	LoginPlayerJoinedToGameServerTrans::LoginPlayerJoinedToGameServerTrans( MessageDataPtr &pIMsg )
-		:UserTransactionS2SCmd( pIMsg )
+	LoginPlayerJoinedToGameServerTrans::LoginPlayerJoinedToGameServerTrans(IMemoryManager& memMgr, MessageDataPtr &pIMsg )
+		:UserTransactionS2SCmd(memMgr, pIMsg )
 	{
 		SetExclusive(true);
 		BR_TRANS_MESSAGE(DB::QueryConnectedToGameServerCmd, { return OnConnectToGameServerRes(pRes); });
@@ -772,7 +772,7 @@ namespace Svr {
 		}
 		else
 		{
-			svrErrClose(ResultCode::E_LOGIN_ALREADY_LOGGEDIN_OTHERPLACE);
+			svrErrClose(ResultCode::LOGIN_ALREADY_LOGGEDIN_OTHERPLACE);
 		}
 
 	Proc_End:
@@ -798,7 +798,7 @@ namespace Svr {
 		}
 		else
 		{
-			svrErrClose(ResultCode::E_LOGIN_ALREADY_LOGGEDIN_OTHERPLACE);
+			svrErrClose(ResultCode::LOGIN_ALREADY_LOGGEDIN_OTHERPLACE);
 		}
 
 	Proc_End:
@@ -823,7 +823,7 @@ namespace Svr {
 
 		if( GetMyOwner()->GetAuthTicket() == 0 || GetMyOwner()->GetAuthTicket() != GetAuthTicket() )
 		{
-			svrErrClose(ResultCode::E_INVALID_TICKET);
+			svrErrClose(ResultCode::INVALID_TICKET);
 		}
 
 		if (GetMyOwner()->GetIsTicketOwner())
@@ -854,8 +854,9 @@ namespace Svr {
 	// Ranking handling
 	//
 
-	RankingUpdateScoreTrans::RankingUpdateScoreTrans(MessageDataPtr &pIMsg)
-		: MessageTransaction(pIMsg)
+	RankingUpdateScoreTrans::RankingUpdateScoreTrans(IMemoryManager& memMgr, MessageDataPtr &pIMsg)
+		: MessageTransaction(memMgr, pIMsg)
+		, m_RankingList(memMgr)
 	{
 		BR_TRANS_MESSAGE(Message::RankingServer::UpdatePlayerScoreRes, { return OnScoreUpdated(pRes); });
 	}
@@ -869,16 +870,16 @@ namespace Svr {
 
 		svrChk(pRes->GetResult());
 
-		svrChk(res.ParseMessage(pMsgRes->GetMessage()));
+		svrChk(res.ParseMessage(*pMsgRes->GetMessage()));
 
 		super::GetMyOwner()->HeartBit();
 
 		for (auto itRank : res.GetRanking())
 		{
-			svrChk(m_RankingList.Add(itRank));
+			svrChk(m_RankingList.Append(itRank));
 		}
 
-		svrTrace(TRC_INFO, "Ranking Score updated {0} : {1}", GetMyOwner()->GetUserName(), GetRankingScore());
+		svrTrace(SVR_INFO, "Ranking Score updated {0} : {1}", GetMyOwner()->GetUserName(), GetRankingScore());
 
 
 	Proc_End:
@@ -940,8 +941,9 @@ namespace Svr {
 
 	std::atomic<uint32_t> LoginUserDataTestTrans::stm_TestCount(0);
 
-	LoginUserDataTestTrans::LoginUserDataTestTrans(MessageDataPtr &pIMsg)
-		: MessageTransaction(pIMsg)
+	LoginUserDataTestTrans::LoginUserDataTestTrans(IMemoryManager& memMgr, MessageDataPtr &pIMsg)
+		: MessageTransaction(memMgr, pIMsg)
+		, m_Data(memMgr)
 	{
 	}
 	// Start Transaction
@@ -955,11 +957,11 @@ namespace Svr {
 		// update life time of this user entity
 		super::GetMyOwner()->HeartBit();
 
-		m_Data.AddItems(GetTestData().GetSize(), GetTestData().data());
+		m_Data.AddItems(GetTestData().size(), GetTestData().data());
 		testCount = stm_TestCount.fetch_add(1, std::memory_order_relaxed);
 		if ((testCount % 50) == 0)
 		{
-			svrTrace(TRC_INFO, "TestData processed count:{0}", testCount);
+			svrTrace(SVR_INFO, "TestData processed count:{0}", testCount);
 		}
 
 	Proc_End:
@@ -973,8 +975,9 @@ namespace Svr {
 
 
 
-	LoginUserDebugPrintALLRankingTrans::LoginUserDebugPrintALLRankingTrans(MessageDataPtr &pIMsg)
-		: MessageTransaction(pIMsg)
+	LoginUserDebugPrintALLRankingTrans::LoginUserDebugPrintALLRankingTrans(IMemoryManager& memMgr, MessageDataPtr &pIMsg)
+		: MessageTransaction(memMgr, pIMsg)
+
 	{
 		BR_TRANS_MESSAGE(Message::RankingServer::DebugPrintALLRankingRes, { return OnPrintAllRankingRes(pRes); });
 	}

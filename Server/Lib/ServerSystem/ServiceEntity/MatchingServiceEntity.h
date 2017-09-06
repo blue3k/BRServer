@@ -116,11 +116,11 @@ namespace Svr {
 			virtual uint GetEnqueueCount() = 0;
 		};
 
-		// single query wraper
+		// single query wrapper
 		class MatchingQueue_Single : public MatchingQueueInterface
 		{
 		private:
-			PageQueue<ReservedMatchingItem>* m_pQueuePtr;
+			PageQueue<ReservedMatchingItem>* m_pQueuePtr = nullptr;
 
 		public:
 
@@ -160,12 +160,15 @@ namespace Svr {
 
 
 		private:
+			IMemoryManager& m_MemoryManager;
 			StaticArray<QueueItem, MAX_QUEUE_COUNT> m_pQueuePtr;
 			uint m_StartQueueIndex;
 
 		public:
 
-			MatchingQueue_Multiple();
+			MatchingQueue_Multiple(IMemoryManager& memMgr);
+
+			IMemoryManager& GetMemoryManager() { return m_MemoryManager; }
 
 			Result AddQueue(PageQueue<ReservedMatchingItem>* pQueuePtr, uint maxPerMatch, PlayerRole requestRole);
 
@@ -198,15 +201,15 @@ namespace Svr {
 	private:
 
 		// Matching target member count
-		uint m_TargetMatchingMemberCount;
-		uint m_MaxMatchingQueue;
+		uint m_TargetMatchingMemberCount = 0;
+		uint m_MaxMatchingQueue = 0;
 
 		bool m_IsUseBot;
 
 		TimeStampMS m_WaitingBotMatchingStart;
 
 		// Reservation state
-		uint m_ReservationStartFrom;
+		uint m_ReservationStartFrom = 0;
 
 		WeakPointerT<Entity> m_pQueueEntity;
 		StaticArray<MatchingQueueInterface*, MAX_QUEUE_COUNT> m_MatchingReserevedQueues;
@@ -280,9 +283,9 @@ namespace Svr {
 	private:
 
 		// cached members by member queue
-		PageQueue<MatchingServiceEntity::ReservedMatchingItem> m_ReservedItemQueue[MAX_QUEUE_COUNT];
+		PageQueue<MatchingServiceEntity::ReservedMatchingItem>* m_ReservedItemQueue[MAX_QUEUE_COUNT] = { nullptr, };
 
-		INT m_ReservedItemQueueTransaction[MAX_QUEUE_COUNT];
+		int m_ReservedItemQueueTransaction[MAX_QUEUE_COUNT];
 
 		// target queue member count
 		uint m_MatchingMemberCount;
@@ -297,7 +300,6 @@ namespace Svr {
 		MatchingServiceQueueEntity(uint matchingMemberCount, uint minQueueCount, uint maxQueueCount);
 		~MatchingServiceQueueEntity();
 
-		MemoryAllocator& GetAllocator() { return STDAllocator::GetInstance(); }
 
 		uint GetMinQueueCount()															{ return m_MinQueueCount; }
 		uint GetMaxQueueCount()															{ return m_MaxQueueCount; }

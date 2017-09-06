@@ -47,7 +47,7 @@ namespace Svr {
 	Result MonitoringTransGetInstanceList::StartTransaction()
 	{
 		Result hr = ResultCode::SUCCESS;
-		StaticArray<SharedPointerT<PerformanceCounterInstance>, 1024> instanceList;
+		StaticArray<SharedPointerT<PerformanceCounterInstance>, 1024> instanceList(GetMemoryManager());
 		m_TotalCounterInstance = 0;
 
 		svrChk(super::StartTransaction());
@@ -56,7 +56,7 @@ namespace Svr {
 
 		m_TotalCounterInstance = PerformanceCounterServer::GetInstanceList(0, instanceList);
 
-		for (uint iInstance = 0; iInstance < instanceList.GetSize(); iInstance++)
+		for (uint iInstance = 0; iInstance < instanceList.size(); iInstance++)
 		{
 			auto pInstance = instanceList[iInstance];
 			if (pInstance == nullptr)
@@ -87,7 +87,7 @@ namespace Svr {
 
 		//svrChk(PerformanceCounterServer::GetCounter(GetInstanceUID(), bufferSize, m_CounterValues.data()));
 		Assert(false);
-		m_CounterValues.SetSize(bufferSize);
+		m_CounterValues.SetItemCount(bufferSize);
 
 	Proc_End:
 

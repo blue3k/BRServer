@@ -39,7 +39,7 @@
 #include "Protocol/Policy/GameInstanceNetPolicy.h"
 #include "Protocol/Policy/GameMasterServerNetPolicy.h"
 
-#include "Net/NetServer.h"
+#include "Net/NetSvrDef.h"
 #include "Entity/EntityManager.h"
 #include "GameInstance/GameInstanceEntity.h"
 

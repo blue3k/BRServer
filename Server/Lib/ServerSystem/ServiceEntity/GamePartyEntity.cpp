@@ -137,7 +137,7 @@ namespace Svr {
 	}
 
 	// foreach game player with Game policy
-	Result GamePartyEntity::ForeachPlayerGameServer( std::function<Result(PartyPlayer* pPlayer, Policy::IPolicyGameServer *pPolicy)> func )
+	Result GamePartyEntity::ForeachPlayerGameServer( std::function<Result(PartyPlayer* pPlayer, Policy::NetPolicyGameServer *pPolicy)> func )
 	{
 		for( auto itPlayer = m_PartyPlayerByUID.begin(); itPlayer != m_PartyPlayerByUID.end(); ++ itPlayer )
 		{
@@ -145,7 +145,7 @@ namespace Svr {
 			if( pPartyPlayer == nullptr )
 				continue;
 
-			Policy::IPolicyGameServer *pPolicy = pPartyPlayer->GetInterface<Policy::IPolicyGameServer>();
+			Policy::NetPolicyGameServer *pPolicy = pPartyPlayer->GetInterface<Policy::NetPolicyGameServer>();
 			if( pPolicy )
 			{
 				Result hrRes = func( pPartyPlayer, pPolicy );

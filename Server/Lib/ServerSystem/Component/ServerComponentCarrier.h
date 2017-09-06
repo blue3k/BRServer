@@ -79,6 +79,12 @@ namespace Svr {
 
 	class ServerComponentCarrier : public ComponentCarrier<ServerComponentID_Max>
 	{
+	public:
+
+		ServerComponentCarrier(IMemoryManager& memMgr)
+			: ComponentCarrier<ServerComponentID_Max>(memMgr)
+		{}
+
 		void OnAddComponent(Component* newComponent) override;
 	};
 

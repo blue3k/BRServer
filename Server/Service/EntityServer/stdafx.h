@@ -20,8 +20,8 @@
 
 #include "Net/NetDef.h"
 #include "Net/Connection.h"
-#include "Net/NetServer.h"
-#include "Net/NetServerPeer.h"
+#include "Net/NetSvrDef.h"
+#include "Net/NetServerPeerTCP.h"
 
 #include "Transaction/Transaction.h"
 #include "Entity/Entity.h"

@@ -14,7 +14,7 @@
 #include "SFTypedefs.h"
 #include "Transaction/Transaction.h"
 #include "Memory/MemoryPool.h"
-#include "Common/Memento.h"
+#include "Util/Memento.h"
 #include "Container/SFArray.h"
 #include "Types/SFEngineTypedefs.h"
 #include "Net/Message.h"
@@ -36,11 +36,11 @@ namespace SF {
 namespace Svr {
 
 
-	template<class MessageClass, class TransactionClass>
-	class LoginPlayerTransLoginBase : public Svr::MessageTransaction< LoginPlayerEntity, Policy::NetSvrPolicyLogin, MessageClass, TransactionClass, sizeof(Svr::TransactionMessageHandlerType)*6 >
+	template<class MessageClass>
+	class LoginPlayerTransLoginBase : public Svr::MessageTransaction< LoginPlayerEntity, MessageClass >
 	{
 	private:
-		typedef Svr::MessageTransaction< LoginPlayerEntity, Policy::NetSvrPolicyLogin, MessageClass, TransactionClass, sizeof(Svr::TransactionMessageHandlerType) * 6 > super;
+		typedef Svr::MessageTransaction< LoginPlayerEntity, MessageClass> super;
 
 	protected:
 
@@ -55,7 +55,7 @@ namespace Svr {
 
 
 	public:
-		LoginPlayerTransLoginBase( MessageDataPtr &pIMsg );
+		LoginPlayerTransLoginBase(IMemoryManager& memMgr, MessageDataPtr &pIMsg );
 		virtual ~LoginPlayerTransLoginBase() {}
 
 		Result OnLogin( Result hrRes, AccountID accountID, FacebookUID FBUserID, INT shardID );
@@ -82,13 +82,13 @@ namespace Svr {
 	//	Game command transaction
 	//
 
-	class LoginPlayerTransLogin : public LoginPlayerTransLoginBase<Message::Login::LoginCmd, LoginPlayerTransLogin>
+	class LoginPlayerTransLogin : public LoginPlayerTransLoginBase<Message::Login::LoginCmd>
 	{
 	public:
-		typedef LoginPlayerTransLoginBase<Message::Login::LoginCmd, LoginPlayerTransLogin> super;
+		typedef LoginPlayerTransLoginBase<Message::Login::LoginCmd> super;
 
 	public:
-		LoginPlayerTransLogin( MessageDataPtr &pIMsg );
+		LoginPlayerTransLogin(IMemoryManager& memMgr, MessageDataPtr &pIMsg );
 		virtual ~LoginPlayerTransLogin() {}
 
 		Result OnLogin( Svr::TransactionResult* &pRes );
@@ -96,7 +96,7 @@ namespace Svr {
 		// Start Transaction
 		virtual Result StartTransaction();
 
-		BR_IMPLEMENT_USERMSGTRANS_CLOSE_ARGS(LoginRes,m_GameServerAddr, m_GameServerAddrIPV4, GetMyOwner()->GetPlayerID(), GetMyOwner()->GetAuthTicket(), (Context)GetMyOwner()->GetEntityUID());
+		BR_IMPLEMENT_USERMSGTRANS_CLOSE_ARGS(Policy::NetSvrPolicyLogin, LoginRes, m_GameServerAddr, m_GameServerAddrIPV4, GetMyOwner()->GetPlayerID(), GetMyOwner()->GetAuthTicket(), (Context)GetMyOwner()->GetEntityUID());
 	};
 
 
@@ -105,13 +105,13 @@ namespace Svr {
 	//	Game command transaction
 	//
 
-	class LoginPlayerTransLoginByFacebook : public LoginPlayerTransLoginBase<Message::Login::LoginByFacebookCmd, LoginPlayerTransLoginByFacebook>
+	class LoginPlayerTransLoginByFacebook : public LoginPlayerTransLoginBase<Message::Login::LoginByFacebookCmd>
 	{
 	public:
-		typedef LoginPlayerTransLoginBase<Message::Login::LoginByFacebookCmd, LoginPlayerTransLoginByFacebook> super;
+		typedef LoginPlayerTransLoginBase<Message::Login::LoginByFacebookCmd> super;
 
 	public:
-		LoginPlayerTransLoginByFacebook( MessageDataPtr &pIMsg );
+		LoginPlayerTransLoginByFacebook(IMemoryManager& memMgr, MessageDataPtr &pIMsg );
 		virtual ~LoginPlayerTransLoginByFacebook() {}
 
 		Result OnUserCreated( Svr::TransactionResult* &pRes );
@@ -121,7 +121,7 @@ namespace Svr {
 		// Start Transaction
 		virtual Result StartTransaction() override;
 
-		BR_IMPLEMENT_USERMSGTRANS_CLOSE_ARGS(LoginByFacebookRes,m_GameServerAddr, m_GameServerAddrIPV4, GetMyOwner()->GetPlayerID(), GetMyOwner()->GetAuthTicket(), (Context)GetMyOwner()->GetEntityUID());
+		BR_IMPLEMENT_USERMSGTRANS_CLOSE_ARGS(Policy::NetSvrPolicyLogin, LoginByFacebookRes,m_GameServerAddr, m_GameServerAddrIPV4, GetMyOwner()->GetPlayerID(), GetMyOwner()->GetAuthTicket(), (Context)GetMyOwner()->GetEntityUID());
 	};
 
 
@@ -130,13 +130,13 @@ namespace Svr {
 	//	Login
 	//
 
-	class LoginPlayerTransCreateRandomUser : public LoginPlayerTransLoginBase<Message::Login::CreateRandomUserCmd, LoginPlayerTransCreateRandomUser>
+	class LoginPlayerTransCreateRandomUser : public LoginPlayerTransLoginBase<Message::Login::CreateRandomUserCmd>
 	{
 	public:
-		typedef LoginPlayerTransLoginBase<Message::Login::CreateRandomUserCmd, LoginPlayerTransCreateRandomUser> super;
+		typedef LoginPlayerTransLoginBase<Message::Login::CreateRandomUserCmd> super;
 
 	public:
-		LoginPlayerTransCreateRandomUser(MessageDataPtr &pIMsg);
+		LoginPlayerTransCreateRandomUser(IMemoryManager& memMgr, MessageDataPtr &pIMsg);
 		virtual ~LoginPlayerTransCreateRandomUser() {}
 
 		Result OnCreated(Svr::TransactionResult* &pRes);
@@ -144,16 +144,16 @@ namespace Svr {
 		// Start Transaction
 		virtual Result StartTransaction();
 
-		BR_IMPLEMENT_USERMSGTRANS_CLOSE_ARGS(CreateRandomUserRes, m_GameServerAddr, m_GameServerAddrIPV4, GetMyOwner()->GetPlayerID(), GetMyOwner()->GetAuthTicket(), (Context)GetMyOwner()->GetEntityUID());
+		BR_IMPLEMENT_USERMSGTRANS_CLOSE_ARGS(Policy::NetSvrPolicyLogin, CreateRandomUserRes, m_GameServerAddr, m_GameServerAddrIPV4, GetMyOwner()->GetPlayerID(), GetMyOwner()->GetAuthTicket(), (Context)GetMyOwner()->GetEntityUID());
 	};
 
 	
 
 	// Close zone instance
-	class LoginPlayerTransCloseInstance : public Svr::TransactionT<LoginPlayerEntity, LoginPlayerTransCloseInstance>
+	class LoginPlayerTransCloseInstance : public Svr::TransactionT<LoginPlayerEntity>
 	{
 	public:
-		typedef Svr::TransactionT<LoginPlayerEntity, LoginPlayerTransCloseInstance> super;
+		typedef Svr::TransactionT<LoginPlayerEntity> super;
 
 	public:
 		LoginPlayerTransCloseInstance(IMemoryManager& memMgr);
@@ -177,14 +177,14 @@ namespace Svr {
 	// Login Server service
 	//
 
-	class LoginPlayerKickPlayerTrans : public Svr::UserTransactionS2SCmd< LoginPlayerEntity, Policy::NetSvrPolicyLoginServer, Message::LoginServer::KickPlayerCmd, LoginPlayerKickPlayerTrans, sizeof(Svr::TransactionMessageHandlerType)*1>
+	class LoginPlayerKickPlayerTrans : public Svr::UserTransactionS2SCmd< LoginPlayerEntity, Message::LoginServer::KickPlayerCmd>
 	{
 	public:
-		typedef Svr::UserTransactionS2SCmd< LoginPlayerEntity, Policy::NetSvrPolicyLoginServer, Message::LoginServer::KickPlayerCmd, LoginPlayerKickPlayerTrans, sizeof(Svr::TransactionMessageHandlerType) * 1> super;
+		typedef Svr::UserTransactionS2SCmd< LoginPlayerEntity, Message::LoginServer::KickPlayerCmd> super;
 
 	public:
 
-		LoginPlayerKickPlayerTrans( MessageDataPtr &pIMsg );// : UserTransactionS2SCmd(pIMsg) {}
+		LoginPlayerKickPlayerTrans(IMemoryManager& memMgr, MessageDataPtr &pIMsg );// : UserTransactionS2SCmd(pIMsg) {}
 		virtual ~LoginPlayerKickPlayerTrans() {}
 
 		Result OnDeleteSession( Svr::TransactionResult *pRes );
@@ -192,14 +192,14 @@ namespace Svr {
 		// Start Transaction
 		virtual Result StartTransaction();
 
-		BR_SVR_MSGTRANS_CLOSE(KickPlayerRes,GetRouteContext().GetSwaped());
+		BR_SVR_MSGTRANS_CLOSE(Policy::NetSvrPolicyLoginServer, KickPlayerRes,GetRouteContext().GetSwaped());
 	};
 
 
-	class LoginPlayerJoinedToGameServerTrans : public Svr::UserTransactionS2SCmd< LoginPlayerEntity, Policy::NetSvrPolicyLoginServer, Message::LoginServer::PlayerJoinedToGameServerCmd, LoginPlayerJoinedToGameServerTrans, sizeof(Svr::TransactionMessageHandlerType)*1>
+	class LoginPlayerJoinedToGameServerTrans : public Svr::UserTransactionS2SCmd< LoginPlayerEntity, Message::LoginServer::PlayerJoinedToGameServerCmd>
 	{
 	public:
-		typedef Svr::UserTransactionS2SCmd< LoginPlayerEntity, Policy::NetSvrPolicyLoginServer, Message::LoginServer::PlayerJoinedToGameServerCmd, LoginPlayerJoinedToGameServerTrans, sizeof(Svr::TransactionMessageHandlerType) * 1> super;
+		typedef Svr::UserTransactionS2SCmd< LoginPlayerEntity, Message::LoginServer::PlayerJoinedToGameServerCmd> super;
 
 	private:
 		GameInsUID m_GameUID;
@@ -208,7 +208,7 @@ namespace Svr {
 
 	public:
 
-		LoginPlayerJoinedToGameServerTrans( MessageDataPtr &pIMsg );
+		LoginPlayerJoinedToGameServerTrans(IMemoryManager& memMgr, MessageDataPtr &pIMsg );
 		virtual ~LoginPlayerJoinedToGameServerTrans() {}
 
 		Result OnConnectToGameServerRes( Svr::TransactionResult* &pRes );
@@ -217,7 +217,7 @@ namespace Svr {
 		// Start Transaction
 		virtual Result StartTransaction();
 
-		BR_SVR_MSGTRANS_CLOSE(PlayerJoinedToGameServerRes,GetRouteContext().GetSwaped());
+		BR_SVR_MSGTRANS_CLOSE(Policy::NetSvrPolicyLoginServer, PlayerJoinedToGameServerRes,GetRouteContext().GetSwaped());
 	};
 
 
@@ -229,17 +229,17 @@ namespace Svr {
 	// Ranking handling
 	//
 
-	class RankingUpdateScoreTrans : public Svr::MessageTransaction< LoginPlayerEntity, Policy::NetSvrPolicyLogin, Message::Login::UpdateMyScoreCmd, RankingUpdateScoreTrans, sizeof(Svr::TransactionMessageHandlerType) * 1 >
+	class RankingUpdateScoreTrans : public Svr::MessageTransaction< LoginPlayerEntity, Message::Login::UpdateMyScoreCmd >
 	{
 	public:
-		typedef Svr::MessageTransaction< LoginPlayerEntity, Policy::NetSvrPolicyLogin, Message::Login::UpdateMyScoreCmd, RankingUpdateScoreTrans, sizeof(Svr::TransactionMessageHandlerType) * 1 > super;
+		typedef Svr::MessageTransaction< LoginPlayerEntity, Message::Login::UpdateMyScoreCmd > super;
 
 	private:
 
 		StaticArray<TotalRankingPlayerInformation, 20> m_RankingList;
 
 	public:
-		RankingUpdateScoreTrans(MessageDataPtr &pIMsg);
+		RankingUpdateScoreTrans(IMemoryManager& memMgr, MessageDataPtr &pIMsg);
 		virtual ~RankingUpdateScoreTrans() {}
 
 		Result OnScoreUpdated(Svr::TransactionResult* &pRes);
@@ -248,7 +248,7 @@ namespace Svr {
 		// Start Transaction
 		virtual Result StartTransaction() override;
 
-		BR_IMPLEMENT_USERMSGTRANS_CLOSE_ARGS(UpdateMyScoreRes, m_RankingList);
+		BR_IMPLEMENT_USERMSGTRANS_CLOSE_ARGS(Policy::NetSvrPolicyLogin, UpdateMyScoreRes, m_RankingList);
 	};
 
 
@@ -257,10 +257,10 @@ namespace Svr {
 	// Ranking handling
 	//
 
-	class LoginUserDataTestTrans : public Svr::MessageTransaction< LoginPlayerEntity, Policy::NetSvrPolicyLogin, Message::Login::DataTestCmd, LoginUserDataTestTrans, 1 >
+	class LoginUserDataTestTrans : public Svr::MessageTransaction< LoginPlayerEntity, Message::Login::DataTestCmd >
 	{
 	public:
-		typedef Svr::MessageTransaction< LoginPlayerEntity, Policy::NetSvrPolicyLogin, Message::Login::DataTestCmd, LoginUserDataTestTrans, 1 > super;
+		typedef Svr::MessageTransaction< LoginPlayerEntity, Message::Login::DataTestCmd > super;
 
 	private:
 
@@ -268,26 +268,26 @@ namespace Svr {
 		StaticArray<uint8_t, 30 * 1024> m_Data;
 
 	public:
-		LoginUserDataTestTrans(MessageDataPtr &pIMsg);
+		LoginUserDataTestTrans(IMemoryManager& memMgr, MessageDataPtr &pIMsg);
 		virtual ~LoginUserDataTestTrans() {}
 
 
 		// Start Transaction
 		virtual Result StartTransaction() override;
 
-		BR_IMPLEMENT_USERMSGTRANS_CLOSE_ARGS(DataTestRes, m_Data);
+		BR_IMPLEMENT_USERMSGTRANS_CLOSE_ARGS(Policy::NetSvrPolicyLogin, DataTestRes, m_Data);
 	};
 
-	class LoginUserDebugPrintALLRankingTrans : public Svr::MessageTransaction< LoginPlayerEntity, Policy::NetSvrPolicyLogin, Message::Login::DebugPrintALLRankingCmd, LoginUserDebugPrintALLRankingTrans, sizeof(Svr::TransactionMessageHandlerType) * 1 >
+	class LoginUserDebugPrintALLRankingTrans : public Svr::MessageTransaction< LoginPlayerEntity, Message::Login::DebugPrintALLRankingCmd >
 	{
 	public:
-		typedef Svr::MessageTransaction< LoginPlayerEntity, Policy::NetSvrPolicyLogin, Message::Login::DebugPrintALLRankingCmd, LoginUserDebugPrintALLRankingTrans, sizeof(Svr::TransactionMessageHandlerType) * 1 > super;
+		typedef Svr::MessageTransaction< LoginPlayerEntity, Message::Login::DebugPrintALLRankingCmd > super;
 
 	private:
 
 
 	public:
-		LoginUserDebugPrintALLRankingTrans(MessageDataPtr &pIMsg);
+		LoginUserDebugPrintALLRankingTrans(IMemoryManager& memMgr, MessageDataPtr &pIMsg);
 		virtual ~LoginUserDebugPrintALLRankingTrans() {}
 
 		Result OnPrintAllRankingRes(Svr::TransactionResult* &pRes);
@@ -296,7 +296,7 @@ namespace Svr {
 		// Start Transaction
 		virtual Result StartTransaction() override;
 
-		BR_IMPLEMENT_USERMSGTRANS_CLOSE(DebugPrintALLRankingRes);
+		BR_IMPLEMENT_USERMSGTRANS_CLOSE(Policy::NetSvrPolicyLogin, DebugPrintALLRankingRes);
 	};
 
 

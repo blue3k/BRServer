@@ -33,7 +33,7 @@
 #include "ServerSystem/ServiceEntity/MatchingQueueServiceEntity.h"
 #include "ServerSystem/ServiceEntity/Game/GameInstanceManagerServiceEntity.h"
 
-#include "ServerSystem/ServerService/PartyMatchingQueueService.h"
+#include "Protocol/ServerService/PartyMatchingQueueService.h"
 #include "Protocol/ServerService/GameInstanceManagerService.h"
 
 
@@ -170,7 +170,7 @@ namespace Svr {
 		svrChk(GetServerComponent<ServerEntityManager>()->GetServerEntity(ticket.QueueUID.GetServerID(), pServerEntity));
 
 		// 2. Get service entity list in the cluster
-		svrChk(pServerEntity->GetInterface<Policy::IPolicyPartyMatchingQueue>()->MatchingItemErrorC2SEvt(RouteContext(GetMyOwner()->GetEntityUID(), ticket.QueueUID), 0, ticket));
+		svrChk(Policy::NetPolicyPartyMatchingQueue(pServerEntity->GetConnection()).MatchingItemErrorC2SEvt(RouteContext(GetMyOwner()->GetEntityUID(), ticket.QueueUID), 0, ticket));
 
 	Proc_End:
 
@@ -192,10 +192,10 @@ namespace Svr {
 			goto Proc_End;
 		}
 
-		svrChk(msgRes.ParseMessage(((MessageResult*)pRes)->GetMessage()));
+		svrChk(msgRes.ParseMessage(*((MessageResult*)pRes)->GetMessage()));
 
 		{
-			auto numItems = std::min(msgRes.GetNumberOfPlayersInTheItem().GetSize(), msgRes.GetMatchingTicket().GetSize());
+			auto numItems = std::min(msgRes.GetNumberOfPlayersInTheItem().size(), msgRes.GetMatchingTicket().size());
 			auto& pNumPlayersInItems = msgRes.GetNumberOfPlayersInTheItem();
 			auto& pMatchingTickets = msgRes.GetMatchingTicket();
 
@@ -273,13 +273,14 @@ namespace Svr {
 	MatchingTransProcessMatchedItems::MatchingTransProcessMatchedItems(IMemoryManager& memoryManager, uint targetMatchingMemberCount, const Array<ReservedMatchingItem>& matchedItems)
 		: TransactionT(memoryManager, TransactionID())
 		, m_TargetMatchingMemberCount(targetMatchingMemberCount)
+		, m_MatchedItems(GetMemoryManager())
 	{
 		Assert(m_TargetMatchingMemberCount > 0);
 		Assert(m_MatchedItemCount > 0);
 
 		SetPrintTrace(false);
 
-		for (uint iItem = 0; iItem < matchedItems.GetSize(); iItem++)
+		for (uint iItem = 0; iItem < matchedItems.size(); iItem++)
 		{
 			MatchingItem item;
 			item.MatchingTicket = matchedItems[iItem].MatchingTicket;
@@ -303,7 +304,7 @@ namespace Svr {
 		svrChk(GetServerComponent<ServerEntityManager>()->GetServerEntity(ticket.QueueUID.GetServerID(), pServerEntity));
 
 		// 2. Get service entity list in the cluster
-		svrChk(pServerEntity->GetInterface<Policy::IPolicyPartyMatchingQueue>()->DequeueItemCmd(RouteContext(GetMyOwner()->GetEntityUID(), ticket.QueueUID), GetTransID(), 0, ticket));
+		svrChk(Policy::NetPolicyPartyMatchingQueue(pServerEntity->GetConnection()).DequeueItemCmd(RouteContext(GetMyOwner()->GetEntityUID(), ticket.QueueUID), GetTransID(), 0, ticket));
 
 		m_PendingDequeueItem++;
 
@@ -322,18 +323,18 @@ namespace Svr {
 		// Maybe canceled?
 		if ((pRes->GetResult()))
 		{
-			svrChk(msgRes.ParseMessage(((MessageResult*)pRes)->GetMessage()));
+			svrChk(msgRes.ParseMessage(*((MessageResult*)pRes)->GetMessage()));
 
-			AssertRel(msgRes.GetPlayers().GetSize() <= MAX_NUM_PLAYER);
+			AssertRel(msgRes.GetPlayers().size() <= MAX_NUM_PLAYER);
 
-			for (uint iItem = 0; iItem < m_MatchedItems.GetSize(); iItem++)
+			for (uint iItem = 0; iItem < m_MatchedItems.size(); iItem++)
 			{
 				if (m_MatchedItems[iItem].MatchingTicket != msgRes.GetMatchingTicket())
 					continue;
 
-				m_DequeuedTotalMembers += (uint)msgRes.GetPlayers().GetSize();
-				m_MatchedItems[iItem].MemberCount = (uint)msgRes.GetPlayers().GetSize();
-				memcpy(m_MatchedItems[iItem].Players, msgRes.GetPlayers().data(), sizeof(MatchingPlayerInformation)*msgRes.GetPlayers().GetSize());
+				m_DequeuedTotalMembers += (uint)msgRes.GetPlayers().size();
+				m_MatchedItems[iItem].MemberCount = (uint)msgRes.GetPlayers().size();
+				memcpy(m_MatchedItems[iItem].Players, msgRes.GetPlayers().data(), sizeof(MatchingPlayerInformation)*msgRes.GetPlayers().size());
 				for (uint iPlayer = 0; iPlayer < m_MatchedItems[iItem].MemberCount; iPlayer++)
 				{
 					m_MatchedItems[iItem].Players[iPlayer].RequestedRole = m_MatchedItems[iItem].RequestedRole;
@@ -360,7 +361,7 @@ namespace Svr {
 				{
 					// Game create is failed
 					svrTrace(SVR_MATCHING, "Creating Game instance is failed item Matching:{0}", GetTargetMatchingMemberCount());
-					CloseTransaction(ResultCode::E_GAME_NOTREADY);
+					CloseTransaction(ResultCode::GAME_NOTREADY);
 				}
 			}
 			else
@@ -403,13 +404,13 @@ namespace Svr {
 
 		svrChk(pRes->GetResult());
 
-		svrChk(msgRes.ParseMessage(((MessageResult*)pRes)->GetMessage()));
+		svrChk(msgRes.ParseMessage(*((MessageResult*)pRes)->GetMessage()));
 
 		gameUID = msgRes.GetRouteContext().GetFrom();
 
 
 		// Send Game information to players
-		for (size_t iItem = 0; iItem < m_MatchedItems.GetSize(); iItem++)
+		for (size_t iItem = 0; iItem < m_MatchedItems.size(); iItem++)
 		{
 			auto& reservedMember = m_MatchedItems[iItem];
 
@@ -427,9 +428,9 @@ namespace Svr {
 				}
 
 				notifiedPlayerCount++;
-				pServerEntity->GetInterface<Policy::NetSvrPolicyPartyMatching>()->PlayerGameMatchedS2CEvt(
+				Policy::NetSvrPolicyPartyMatching(pServerEntity->GetConnection()).PlayerGameMatchedS2CEvt(
 					RouteContext(GetOwnerEntityUID(), reservedMember.Players[member].PlayerUID), 0,
-					reservedMember.Players[member].PlayerID, gameUID, reservedMember.RequestedRole);
+					reservedMember.Players[member].PlayerID, gameUID, (uint8_t)reservedMember.RequestedRole);
 			}
 
 			// this should be a party, or canceled item
@@ -457,9 +458,7 @@ namespace Svr {
 			ServerEntity *pServerEntity = nullptr;
 			if ((GetServerComponent<ServerEntityManager>()->GetServerEntity(gameUID.GetServerID(), pServerEntity)))
 			{
-				auto pPolicy = pServerEntity->GetInterface<Policy::IPolicyGameInstance>();
-				if (pPolicy != nullptr)
-					pPolicy->DeleteGameC2SEvt(RouteContext(GetOwnerEntityUID(), gameUID));
+				Policy::NetPolicyGameInstance(pServerEntity->GetConnection()).DeleteGameC2SEvt(RouteContext(GetOwnerEntityUID(), gameUID));
 			}
 
 		}
@@ -479,7 +478,7 @@ namespace Svr {
 
 		svrChk(super::StartTransaction());
 
-		for (size_t iItem = 0; iItem < m_MatchedItems.GetSize(); iItem++)
+		for (size_t iItem = 0; iItem < m_MatchedItems.size(); iItem++)
 		{
 			DequeueItem(m_MatchedItems[iItem].MatchingTicket);
 		}

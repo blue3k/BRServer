@@ -86,7 +86,7 @@ namespace Svr
 				&& GetConnection() != nullptr )
 			{
 				// Register entity manager server
-				svrChk( BrServer::GetInstance()->GetComponent<Svr::ServerEntityManager>()->UpdateEntityManagerServerEntity( this ) );
+				svrChk( GetServerComponent<Svr::ServerEntityManager>()->UpdateEntityManagerServerEntity( this ) );
 			}
 			break;
 		case Net::ConnectionEvent::EVT_DISCONNECTED:

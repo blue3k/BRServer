@@ -19,7 +19,6 @@
 #include "Container/Indexing.h"
 #include "Thread/SystemSynchronization.h"
 #include "Net/NetDef.h"
-#include "Net/NetServerPeer.h"
 #include "Net/NetServerPeerTCP.h"
 #include "Task/ServerTaskManager.h"
 #include "ServerEntity/ServerEntity.h"

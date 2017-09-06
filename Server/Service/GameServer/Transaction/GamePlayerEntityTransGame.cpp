@@ -164,11 +164,11 @@ namespace GameServer {
 		// Leave party when the player joined a party
 		if (GetMyOwner()->GetPartyUID() != 0)
 		{
-			Policy::IPolicyGameParty *pPolicy = nullptr;
+			Policy::NetPolicyGameParty *pPolicy = nullptr;
 			Svr::ServerEntity *pServerEntity = nullptr;
 
 			svrChk(Svr::GetServerComponent<Svr::ServerEntityManager>()->GetServerEntity(GetMyOwner()->GetPartyUID().GetServerID(), pServerEntity));
-			svrChkPtr(pPolicy = pServerEntity->GetInterface<Policy::IPolicyGameParty>());
+			svrChkPtr(pPolicy = pServerEntity->GetInterface<Policy::NetPolicyGameParty>());
 
 			svrChk(pPolicy->LeavePartyCmd(RouteContext(GetOwnerEntityUID(), GetMyOwner()->GetPartyUID()), GetTransID(), GetMyOwner()->GetPlayerID()));
 		}
@@ -209,7 +209,7 @@ namespace GameServer {
 	{
 		Result hr = ResultCode::SUCCESS;
 		GameInsUID insUID;
-		Policy::IPolicyGameInstance* pPolicy = nullptr;
+		Policy::NetPolicyGameInstance* pPolicy = nullptr;
 
 		svrChk( super::StartTransaction() );
 
@@ -245,7 +245,7 @@ namespace GameServer {
 
 		insUID = GetInsUID();
 
-		svrChkPtr( pPolicy = Svr::GetServerComponent<Svr::ServerEntityManager>()->GetServerPolicy<Policy::IPolicyGameInstance>(insUID.GetServerID()) );
+		svrChkPtr( pPolicy = Svr::GetServerComponent<Svr::ServerEntityManager>()->GetServerPolicy<Policy::NetPolicyGameInstance>(insUID.GetServerID()) );
 
 		svrChk( pPolicy->JoinGameCmd( RouteContext(GetOwnerEntityUID(),insUID), GetTransID(),
 			GetMyOwner()->GetPlayerInformation(), GetMyOwner()->GetAuthTicket(), PlayerRole::None ) );
@@ -335,7 +335,7 @@ namespace GameServer {
 	{
 		Result hr = ResultCode::SUCCESS;
 		GameInsUID insUID;
-		Policy::IPolicyGameInstance *pPolicy = nullptr;
+		Policy::NetPolicyGameInstance *pPolicy = nullptr;
 
 		svrChk( super::StartTransaction() );
 
@@ -349,7 +349,7 @@ namespace GameServer {
 		if( insUID.UID == 0 )
 			svrErrClose(ResultCode::E_INVALID_INSTANCEID);
 
-		svrChkPtr( pPolicy = Svr::GetServerComponent<Svr::ServerEntityManager>()->GetServerPolicy<Policy::IPolicyGameInstance>(insUID.GetServerID()) );
+		svrChkPtr( pPolicy = Svr::GetServerComponent<Svr::ServerEntityManager>()->GetServerPolicy<Policy::NetPolicyGameInstance>(insUID.GetServerID()) );
 
 		svrChk( pPolicy->LeaveGameCmd( RouteContext(GetOwnerEntityUID(),insUID), GetTransID(), GetMyOwner()->GetPlayerID() ) );
 
@@ -418,7 +418,7 @@ namespace GameServer {
 	{
 		Result hr = ResultCode::SUCCESS;
 		GameInsUID insUID;
-		Policy::IPolicyGameInstance *pPolicy = nullptr;
+		Policy::NetPolicyGameInstance *pPolicy = nullptr;
 
 		svrChk( super::StartTransaction() );
 
@@ -432,7 +432,7 @@ namespace GameServer {
 		if( insUID.UID == 0 )
 			svrErrClose(ResultCode::E_INVALID_INSTANCEID);
 
-		svrChkPtr( pPolicy = Svr::GetServerComponent<Svr::ServerEntityManager>()->GetServerPolicy<Policy::IPolicyGameInstance>(insUID.GetServerID()) );
+		svrChkPtr( pPolicy = Svr::GetServerComponent<Svr::ServerEntityManager>()->GetServerPolicy<Policy::NetPolicyGameInstance>(insUID.GetServerID()) );
 
 		svrChk( pPolicy->KickPlayerCmd(RouteContext(GetOwnerEntityUID(), insUID.GetServerID()), GetTransID(),
 			GetMyOwner()->GetPlayerID(), GetPlayerToKick() ) );
@@ -500,7 +500,7 @@ namespace GameServer {
 	{
 		Result hr = ResultCode::SUCCESS;
 		GameInsUID insUID;
-		Policy::IPolicyGameInstance *pPolicy = nullptr;
+		Policy::NetPolicyGameInstance *pPolicy = nullptr;
 
 		svrChk( super::StartTransaction() );
 
@@ -514,7 +514,7 @@ namespace GameServer {
 		if( insUID.UID == 0 )
 			svrErrClose(ResultCode::E_INVALID_INSTANCEID);
 
-		svrChkPtr( pPolicy = Svr::GetServerComponent<Svr::ServerEntityManager>()->GetServerPolicy<Policy::IPolicyGameInstance>(insUID.GetServerID()) );
+		svrChkPtr( pPolicy = Svr::GetServerComponent<Svr::ServerEntityManager>()->GetServerPolicy<Policy::NetPolicyGameInstance>(insUID.GetServerID()) );
 
 		svrChk( pPolicy->AssignRoleCmd( RouteContext(GetOwnerEntityUID(),insUID), GetTransID(),
 			GetMyOwner()->GetPlayerID() ) );
@@ -557,7 +557,7 @@ namespace GameServer {
 	{
 		Result hr = ResultCode::SUCCESS;
 		GameInsUID insUID;
-		Policy::IPolicyGameInstance *pPolicy = nullptr;
+		Policy::NetPolicyGameInstance *pPolicy = nullptr;
 
 		svrChk( super::StartTransaction() );
 
@@ -571,7 +571,7 @@ namespace GameServer {
 		if( insUID.UID == 0 )
 			svrErrClose(ResultCode::E_INVALID_INSTANCEID);
 
-		svrChkPtr( pPolicy = Svr::GetServerComponent<Svr::ServerEntityManager>()->GetServerPolicy<Policy::IPolicyGameInstance>(insUID.GetServerID()) );
+		svrChkPtr( pPolicy = Svr::GetServerComponent<Svr::ServerEntityManager>()->GetServerPolicy<Policy::NetPolicyGameInstance>(insUID.GetServerID()) );
 
 		svrChk( pPolicy->ChatMessageC2SEvt( RouteContext(GetOwnerEntityUID(),insUID), 
 			GetMyOwner()->GetPlayerID(), GetRole(), GetChatMessage() ) );
@@ -635,7 +635,7 @@ namespace GameServer {
 	{
 		Result hr = ResultCode::SUCCESS;
 		GameInsUID insUID;
-		Policy::IPolicyGameInstance *pPolicy = nullptr;
+		Policy::NetPolicyGameInstance *pPolicy = nullptr;
 
 		svrChk( super::StartTransaction() );
 
@@ -649,7 +649,7 @@ namespace GameServer {
 		if( insUID.UID == 0 )
 			svrErrClose(ResultCode::E_INVALID_INSTANCEID);
 
-		svrChkPtr( pPolicy = Svr::GetServerComponent<Svr::ServerEntityManager>()->GetServerPolicy<Policy::IPolicyGameInstance>(insUID.GetServerID()) );
+		svrChkPtr( pPolicy = Svr::GetServerComponent<Svr::ServerEntityManager>()->GetServerPolicy<Policy::NetPolicyGameInstance>(insUID.GetServerID()) );
 
 		svrChk( pPolicy->VoteGameAdvanceCmd( RouteContext(GetOwnerEntityUID(),insUID), GetTransID(), GetMyOwner()->GetPlayerID() ));
 	
@@ -711,7 +711,7 @@ namespace GameServer {
 	{
 		Result hr = ResultCode::SUCCESS;
 		GameInsUID insUID;
-		Policy::IPolicyGameInstance *pPolicy = nullptr;
+		Policy::NetPolicyGameInstance *pPolicy = nullptr;
 
 		svrChk( super::StartTransaction() );
 
@@ -725,7 +725,7 @@ namespace GameServer {
 		if( insUID.UID == 0 )
 			svrErrClose(ResultCode::E_INVALID_INSTANCEID);
 
-		svrChkPtr( pPolicy = Svr::GetServerComponent<Svr::ServerEntityManager>()->GetServerPolicy<Policy::IPolicyGameInstance>(insUID.GetServerID()) );
+		svrChkPtr( pPolicy = Svr::GetServerComponent<Svr::ServerEntityManager>()->GetServerPolicy<Policy::NetPolicyGameInstance>(insUID.GetServerID()) );
 
 		svrChk( pPolicy->VoteCmd( RouteContext(GetOwnerEntityUID(),insUID), GetTransID(),
 			GetMyOwner()->GetPlayerID(), GetVoteTarget(), GetActionSerial() ) );
@@ -810,7 +810,7 @@ namespace GameServer {
 	{
 		Result hr = ResultCode::SUCCESS;
 		GameInsUID insUID;
-		Policy::IPolicyGameInstance *pPolicy = nullptr;
+		Policy::NetPolicyGameInstance *pPolicy = nullptr;
 
 		svrChk( super::StartTransaction() );
 
@@ -824,7 +824,7 @@ namespace GameServer {
 		if( insUID.UID == 0 )
 			svrErrClose(ResultCode::E_INVALID_INSTANCEID);
 
-		svrChkPtr( pPolicy = Svr::GetServerComponent<Svr::ServerEntityManager>()->GetServerPolicy<Policy::IPolicyGameInstance>(insUID.GetServerID()) );
+		svrChkPtr( pPolicy = Svr::GetServerComponent<Svr::ServerEntityManager>()->GetServerPolicy<Policy::NetPolicyGameInstance>(insUID.GetServerID()) );
 
 		svrChk( pPolicy->AdvanceGameCmd( RouteContext(GetOwnerEntityUID(),insUID), GetTransID(),
 			GetMyOwner()->GetPlayerID() ) );
@@ -1085,8 +1085,8 @@ namespace GameServer {
 		else
 		{
 			// Let the party handle this
-			Policy::IPolicyGameParty *pPolicy = nullptr;
-			svrChkPtr( pPolicy = Svr::GetServerComponent<Svr::ServerEntityManager>()->GetServerPolicy<Policy::IPolicyGameParty>( GetMyOwner()->GetPartyUID().GetServerID()) );
+			Policy::NetPolicyGameParty *pPolicy = nullptr;
+			svrChkPtr( pPolicy = Svr::GetServerComponent<Svr::ServerEntityManager>()->GetServerPolicy<Policy::NetPolicyGameParty>( GetMyOwner()->GetPartyUID().GetServerID()) );
 			svrChk( pPolicy->StartGameMatchCmd( RouteContext(GetOwnerEntityUID(),GetMyOwner()->GetPartyUID()), GetTransID(), GetMyOwner()->GetPlayerID(), GetNumPlayer() ) );
 		}
 	
@@ -1179,17 +1179,17 @@ namespace GameServer {
 
 		if( GetMyOwner()->GetPartyUID().UID == 0 )
 		{
-			Policy::IPolicyPartyMatchingQueue *pPolicy = nullptr;
+			Policy::NetPolicyPartyMatchingQueue *pPolicy = nullptr;
 			// Player isn't in a party, just do it alone
-			svrChkPtr( pPolicy = Svr::GetServerComponent<Svr::ServerEntityManager>()->GetServerPolicy<Policy::IPolicyPartyMatchingQueue>( GetMyOwner()->GetMatchingTicket().QueueUID.GetServerID()) );
+			svrChkPtr( pPolicy = Svr::GetServerComponent<Svr::ServerEntityManager>()->GetServerPolicy<Policy::NetPolicyPartyMatchingQueue>( GetMyOwner()->GetMatchingTicket().QueueUID.GetServerID()) );
 
 			svrChk( pPolicy->UnregisterMatchingCmd( RouteContext(GetOwnerEntityUID(),GetMyOwner()->GetMatchingTicket().QueueUID), GetTransID(), 0, GetMyOwner()->GetMatchingTicket() ) );
 		}
 		else
 		{
 			// Let the party handle this
-			Policy::IPolicyGameParty *pPolicy = nullptr;
-			svrChkPtr( pPolicy = Svr::GetServerComponent<Svr::ServerEntityManager>()->GetServerPolicy<Policy::IPolicyGameParty>( GetMyOwner()->GetPartyUID().GetServerID()) );
+			Policy::NetPolicyGameParty *pPolicy = nullptr;
+			svrChkPtr( pPolicy = Svr::GetServerComponent<Svr::ServerEntityManager>()->GetServerPolicy<Policy::NetPolicyGameParty>( GetMyOwner()->GetPartyUID().GetServerID()) );
 			svrChk( pPolicy->CancelGameMatchCmd( RouteContext(GetOwnerEntityUID(),GetMyOwner()->GetPartyUID()), GetTransID(), GetMyOwner()->GetPlayerID() ) );
 		}
 	
@@ -1332,7 +1332,7 @@ namespace GameServer {
 	Result PlayerTransPlayAgain::RequestPlayAgain()
 	{
 		Result hr = ResultCode::SUCCESS;
-		Policy::IPolicyGameInstance *pPolicy = nullptr;
+		Policy::NetPolicyGameInstance *pPolicy = nullptr;
 		GameInsUID insUID = GetMyOwner()->GetGameInsUID();
 
 		if (insUID == 0)
@@ -1340,7 +1340,7 @@ namespace GameServer {
 			svrErr(ResultCode::SVR_INVALID_ENTITYUID);
 		}
 
-		svrChkPtr(pPolicy = Svr::GetServerComponent<Svr::ServerEntityManager>()->GetServerPolicy<Policy::IPolicyGameInstance>(insUID.GetServerID()));
+		svrChkPtr(pPolicy = Svr::GetServerComponent<Svr::ServerEntityManager>()->GetServerPolicy<Policy::NetPolicyGameInstance>(insUID.GetServerID()));
 		svrChk(pPolicy->GamePlayAgainCmd(RouteContext(GetOwnerEntityUID(), insUID), GetTransID(), GetMyOwner()->GetPlayerID(), GetMyOwner()->GetPartyUID()));
 
 	Proc_End:
@@ -1438,7 +1438,7 @@ namespace GameServer {
 	Result PlayerTransPlayAgainS2SEvt::StartTransaction()
 	{
 		Result hr = ResultCode::SUCCESS;
-		Policy::IPolicyGameParty *pPolicy = nullptr;
+		Policy::NetPolicyGameParty *pPolicy = nullptr;
 		Svr::ServerEntity *pServerEntity = nullptr;
 
 		m_PartyUID = 0;
@@ -1467,7 +1467,7 @@ namespace GameServer {
 		else
 		{
 			svrChk(Svr::GetServerComponent<Svr::ServerEntityManager>()->GetServerEntity(GetPartyUID().GetServerID(), pServerEntity));
-			svrChkPtr(pPolicy = pServerEntity->GetInterface<Policy::IPolicyGameParty>());
+			svrChkPtr(pPolicy = pServerEntity->GetInterface<Policy::NetPolicyGameParty>());
 			svrChk(pPolicy->JoinPartyCmd(RouteContext(GetOwnerEntityUID(), GetPartyUID()), GetTransID(), GetLeadPlayer(), GetMyOwner()->GetPlayerInformation()));
 		}
 
@@ -1492,7 +1492,7 @@ namespace GameServer {
 	Result PlayerTransGameRevealPlayer::OnUpdatePlayerRes(Svr::TransactionResult* &pRes)
 	{
 		Result hr = ResultCode::SUCCESS;
-		Policy::IPolicyGameInstance *pPolicy = nullptr;
+		Policy::NetPolicyGameInstance *pPolicy = nullptr;
 		GameInsUID insUID = GetMyOwner()->GetGameInsUID();
 
 		//auto *pDBRes = (DB::QueryUpdateTickStatusCmd*)pRes;
@@ -1505,7 +1505,7 @@ namespace GameServer {
 			svrErr(ResultCode::SVR_INVALID_ENTITYUID);
 		}
 
-		svrChkPtr(pPolicy = Svr::GetServerComponent<Svr::ServerEntityManager>()->GetServerPolicy<Policy::IPolicyGameInstance>(insUID.GetServerID()));
+		svrChkPtr(pPolicy = Svr::GetServerComponent<Svr::ServerEntityManager>()->GetServerPolicy<Policy::NetPolicyGameInstance>(insUID.GetServerID()));
 		svrChk(pPolicy->GameRevealPlayerCmd(RouteContext(GetOwnerEntityUID(), insUID), GetTransID(), GetMyOwner()->GetPlayerID(), GetTargetPlayerID()));
 
 	Proc_End:
@@ -1595,7 +1595,7 @@ namespace GameServer {
 	Result PlayerTransGamePlayerRevive::OnUpdatePlayerRes(Svr::TransactionResult* &pRes)
 	{
 		Result hr = ResultCode::SUCCESS;
-		Policy::IPolicyGameInstance *pPolicy = nullptr;
+		Policy::NetPolicyGameInstance *pPolicy = nullptr;
 		GameInsUID insUID = GetMyOwner()->GetGameInsUID();
 
 		//auto *pDBRes = (DB::QueryUpdateTickStatusCmd*)pRes;
@@ -1608,7 +1608,7 @@ namespace GameServer {
 			svrErr(ResultCode::SVR_INVALID_ENTITYUID);
 		}
 
-		svrChkPtr(pPolicy = Svr::GetServerComponent<Svr::ServerEntityManager>()->GetServerPolicy<Policy::IPolicyGameInstance>(insUID.GetServerID()));
+		svrChkPtr(pPolicy = Svr::GetServerComponent<Svr::ServerEntityManager>()->GetServerPolicy<Policy::NetPolicyGameInstance>(insUID.GetServerID()));
 		svrChk(pPolicy->GamePlayerReviveCmd(RouteContext(GetOwnerEntityUID(), insUID), GetTransID(), GetMyOwner()->GetPlayerID()));
 
 	Proc_End:
@@ -1681,7 +1681,7 @@ namespace GameServer {
 	Result PlayerTransGamePlayerRevivedS2SEvt::StartTransaction()
 	{
 		Result hr = ResultCode::SUCCESS;
-		//Policy::IPolicyGameParty *pPolicy = nullptr;
+		//Policy::NetPolicyGameParty *pPolicy = nullptr;
 		//Svr::ServerEntity *pServerEntity = nullptr;
 
 		svrChk(super::StartTransaction());

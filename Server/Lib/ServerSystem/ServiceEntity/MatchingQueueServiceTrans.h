@@ -30,10 +30,10 @@ namespace SF {
 namespace Svr {
 
 	
-	class RegisterPartyMatchingTrans : public ClusterEntityMessageTransaction< MatchingQueueServiceEntity, Message::PartyMatchingQueue::RegisterPartyMatchingCmd, RegisterPartyMatchingTrans>
+	class RegisterPartyMatchingTrans : public ClusterEntityMessageTransaction< MatchingQueueServiceEntity, Message::PartyMatchingQueue::RegisterPartyMatchingCmd>
 	{
 	public:
-		typedef ClusterEntityMessageTransaction< MatchingQueueServiceEntity, Message::PartyMatchingQueue::RegisterPartyMatchingCmd, RegisterPartyMatchingTrans> super;
+		typedef ClusterEntityMessageTransaction< MatchingQueueServiceEntity, Message::PartyMatchingQueue::RegisterPartyMatchingCmd> super;
 
 	private:
 		MatchingQueueTicket m_MatchingTicket;
@@ -45,16 +45,14 @@ namespace Svr {
 		// Start Transaction
 		virtual Result StartTransaction();
 
-		Policy::NetSvrPolicyPartyMatchingQueue* GetInterface()	{ return ServerEntityMessageTransaction::GetInterface<Policy::NetSvrPolicyPartyMatchingQueue>(); }
-
-		BR_SVR_MSGTRANS_CLOSE_ARGS(RegisterPartyMatchingRes, GetRouteContext().GetSwaped(), m_MatchingTicket);
+		BR_SVR_MSGTRANS_CLOSE_ARGS(Policy::NetSvrPolicyPartyMatchingQueue, RegisterPartyMatchingRes, GetRouteContext().GetSwaped(), m_MatchingTicket);
 	};
 
 	
-	class RegisterPlayerMatchingTrans : public ClusterEntityMessageTransaction< MatchingQueueServiceEntity, Message::PartyMatchingQueue::RegisterPlayerMatchingCmd, RegisterPlayerMatchingTrans>
+	class RegisterPlayerMatchingTrans : public ClusterEntityMessageTransaction< MatchingQueueServiceEntity, Message::PartyMatchingQueue::RegisterPlayerMatchingCmd>
 	{
 	public:
-		typedef ClusterEntityMessageTransaction< MatchingQueueServiceEntity, Message::PartyMatchingQueue::RegisterPlayerMatchingCmd, RegisterPlayerMatchingTrans> super;
+		typedef ClusterEntityMessageTransaction< MatchingQueueServiceEntity, Message::PartyMatchingQueue::RegisterPlayerMatchingCmd> super;
 
 	private:
 		MatchingQueueTicket m_MatchingTicket;
@@ -66,16 +64,15 @@ namespace Svr {
 		// Start Transaction
 		virtual Result StartTransaction();
 
-		Policy::NetSvrPolicyPartyMatchingQueue* GetInterface()	{ return ServerEntityMessageTransaction::GetInterface<Policy::NetSvrPolicyPartyMatchingQueue>(); }
 
-		BR_SVR_MSGTRANS_CLOSE_ARGS(RegisterPlayerMatchingRes, GetRouteContext().GetSwaped(), m_MatchingTicket);
+		BR_SVR_MSGTRANS_CLOSE_ARGS(Policy::NetSvrPolicyPartyMatchingQueue, RegisterPlayerMatchingRes, GetRouteContext().GetSwaped(), m_MatchingTicket);
 	};
 	
 	
-	class UpdateMatchingEntityUIDTrans : public ClusterEntityMessageTransaction< MatchingQueueServiceEntity, Message::PartyMatchingQueue::UpdateMatchingEntityUIDCmd, UpdateMatchingEntityUIDTrans>
+	class UpdateMatchingEntityUIDTrans : public ClusterEntityMessageTransaction< MatchingQueueServiceEntity, Message::PartyMatchingQueue::UpdateMatchingEntityUIDCmd>
 	{
 	public:
-		typedef ClusterEntityMessageTransaction< MatchingQueueServiceEntity, Message::PartyMatchingQueue::UpdateMatchingEntityUIDCmd, UpdateMatchingEntityUIDTrans> super;
+		typedef ClusterEntityMessageTransaction< MatchingQueueServiceEntity, Message::PartyMatchingQueue::UpdateMatchingEntityUIDCmd> super;
 
 	private:
 
@@ -86,16 +83,15 @@ namespace Svr {
 		// Start Transaction
 		virtual Result StartTransaction();
 
-		Policy::NetSvrPolicyPartyMatchingQueue* GetInterface()	{ return ServerEntityMessageTransaction::GetInterface<Policy::NetSvrPolicyPartyMatchingQueue>(); }
 
-		BR_SVR_MSGTRANS_CLOSE(UpdateMatchingEntityUIDRes, GetRouteContext().GetSwaped());
+		BR_SVR_MSGTRANS_CLOSE(Policy::NetSvrPolicyPartyMatchingQueue, UpdateMatchingEntityUIDRes, GetRouteContext().GetSwaped());
 	};
 
 
-	class UnregisterMatchingTrans : public ClusterEntityMessageTransaction< MatchingQueueServiceEntity, Message::PartyMatchingQueue::UnregisterMatchingCmd, UnregisterMatchingTrans>
+	class UnregisterMatchingTrans : public ClusterEntityMessageTransaction< MatchingQueueServiceEntity, Message::PartyMatchingQueue::UnregisterMatchingCmd>
 	{
 	public:
-		typedef ClusterEntityMessageTransaction< MatchingQueueServiceEntity, Message::PartyMatchingQueue::UnregisterMatchingCmd, UnregisterMatchingTrans> super;
+		typedef ClusterEntityMessageTransaction< MatchingQueueServiceEntity, Message::PartyMatchingQueue::UnregisterMatchingCmd> super;
 
 	private:
 		MatchingQueueTicket m_MatchingTicket;
@@ -107,18 +103,16 @@ namespace Svr {
 		// Start Transaction
 		virtual Result StartTransaction();
 
-		Policy::NetSvrPolicyPartyMatchingQueue* GetInterface()	{ return ServerEntityMessageTransaction::GetInterface<Policy::NetSvrPolicyPartyMatchingQueue>(); }
-
-		BR_SVR_MSGTRANS_CLOSE(UnregisterMatchingRes, GetRouteContext().GetSwaped());
+		BR_SVR_MSGTRANS_CLOSE(Policy::NetSvrPolicyPartyMatchingQueue, UnregisterMatchingRes, GetRouteContext().GetSwaped());
 	};
 
 
 	
 	
-	class ReserveItemTrans : public ClusterEntityMessageTransaction< MatchingQueueServiceEntity, Message::PartyMatchingQueue::ReserveItemCmd, ReserveItemTrans>
+	class ReserveItemTrans : public ClusterEntityMessageTransaction< MatchingQueueServiceEntity, Message::PartyMatchingQueue::ReserveItemCmd>
 	{
 	public:
-		typedef ClusterEntityMessageTransaction< MatchingQueueServiceEntity, Message::PartyMatchingQueue::ReserveItemCmd, ReserveItemTrans> super;
+		typedef ClusterEntityMessageTransaction< MatchingQueueServiceEntity, Message::PartyMatchingQueue::ReserveItemCmd> super;
 
 	private:
 		uint m_NumPlayersInTheTicket;
@@ -131,40 +125,42 @@ namespace Svr {
 		// Start Transaction
 		virtual Result StartTransaction();
 
-		Policy::NetSvrPolicyPartyMatchingQueue* GetInterface()	{ return ServerEntityMessageTransaction::GetInterface<Policy::NetSvrPolicyPartyMatchingQueue>(); }
 
-		BR_SVR_MSGTRANS_CLOSE_ARGS(ReserveItemRes, GetRouteContext().GetSwaped(), m_NumPlayersInTheTicket, m_MatchingTicket);
+		BR_SVR_MSGTRANS_CLOSE_ARGS(Policy::NetSvrPolicyPartyMatchingQueue, ReserveItemRes, GetRouteContext().GetSwaped(), m_NumPlayersInTheTicket, m_MatchingTicket);
 	};
 
 
 
-	class MatchingQueueReserveItemsTrans : public ClusterEntityMessageTransaction< MatchingQueueServiceEntity, Message::PartyMatchingQueue::ReserveItemsCmd, MatchingQueueReserveItemsTrans>
+	class MatchingQueueReserveItemsTrans : public ClusterEntityMessageTransaction< MatchingQueueServiceEntity, Message::PartyMatchingQueue::ReserveItemsCmd>
 	{
 	public:
-		typedef ClusterEntityMessageTransaction< MatchingQueueServiceEntity, Message::PartyMatchingQueue::ReserveItemsCmd, MatchingQueueReserveItemsTrans> super;
+		typedef ClusterEntityMessageTransaction< MatchingQueueServiceEntity, Message::PartyMatchingQueue::ReserveItemsCmd> super;
 
 	private:
 		StaticArray<uint,40> m_NumPlayersInTheTicket;
 		StaticArray<MatchingQueueTicket,40> m_MatchingTicket;
 
 	public:
-		MatchingQueueReserveItemsTrans(IMemoryManager& memMgr, MessageDataPtr &pIMsg) : ClusterEntityMessageTransaction(memMgr, pIMsg) { SetPrintTrace(false); }
+		MatchingQueueReserveItemsTrans(IMemoryManager& memMgr, MessageDataPtr &pIMsg)
+			: ClusterEntityMessageTransaction(memMgr, pIMsg)
+			, m_NumPlayersInTheTicket(memMgr)
+			, m_MatchingTicket(memMgr)
+		{ SetPrintTrace(false); }
 		virtual ~MatchingQueueReserveItemsTrans() {}
 
 		// Start Transaction
 		virtual Result StartTransaction();
 
-		Policy::NetSvrPolicyPartyMatchingQueue* GetInterface()	{ return ServerEntityMessageTransaction::GetInterface<Policy::NetSvrPolicyPartyMatchingQueue>(); }
 
-		BR_SVR_MSGTRANS_CLOSE_ARGS(ReserveItemsRes, GetRouteContext().GetSwaped(), m_NumPlayersInTheTicket, m_MatchingTicket);
+		BR_SVR_MSGTRANS_CLOSE_ARGS(Policy::NetSvrPolicyPartyMatchingQueue, ReserveItemsRes, GetRouteContext().GetSwaped(), m_NumPlayersInTheTicket, m_MatchingTicket);
 	};
 
 
 	
-	class CancelReservationTrans : public ClusterEntityMessageTransaction< MatchingQueueServiceEntity, Message::PartyMatchingQueue::CancelReservationCmd, CancelReservationTrans>
+	class CancelReservationTrans : public ClusterEntityMessageTransaction< MatchingQueueServiceEntity, Message::PartyMatchingQueue::CancelReservationCmd>
 	{
 	public:
-		typedef ClusterEntityMessageTransaction< MatchingQueueServiceEntity, Message::PartyMatchingQueue::CancelReservationCmd, CancelReservationTrans> super;
+		typedef ClusterEntityMessageTransaction< MatchingQueueServiceEntity, Message::PartyMatchingQueue::CancelReservationCmd> super;
 
 	private:
 
@@ -175,16 +171,15 @@ namespace Svr {
 		// Start Transaction
 		virtual Result StartTransaction();
 
-		Policy::NetSvrPolicyPartyMatchingQueue* GetInterface()	{ return ServerEntityMessageTransaction::GetInterface<Policy::NetSvrPolicyPartyMatchingQueue>(); }
-
-		BR_SVR_MSGTRANS_CLOSE(CancelReservationRes, GetRouteContext().GetSwaped());
+		
+		BR_SVR_MSGTRANS_CLOSE(Policy::NetSvrPolicyPartyMatchingQueue, CancelReservationRes, GetRouteContext().GetSwaped());
 	};
 	
 	
-	class DequeueItemTrans : public ClusterEntityMessageTransaction< MatchingQueueServiceEntity, Message::PartyMatchingQueue::DequeueItemCmd, DequeueItemTrans>
+	class DequeueItemTrans : public ClusterEntityMessageTransaction< MatchingQueueServiceEntity, Message::PartyMatchingQueue::DequeueItemCmd>
 	{
 	public:
-		typedef ClusterEntityMessageTransaction< MatchingQueueServiceEntity, Message::PartyMatchingQueue::DequeueItemCmd, DequeueItemTrans> super;
+		typedef ClusterEntityMessageTransaction< MatchingQueueServiceEntity, Message::PartyMatchingQueue::DequeueItemCmd> super;
 
 	private:
 		MatchingQueueItem m_matchingQueueItem;
@@ -196,17 +191,16 @@ namespace Svr {
 		// Start Transaction
 		virtual Result StartTransaction();
 
-		Policy::NetSvrPolicyPartyMatchingQueue* GetInterface()	{ return ServerEntityMessageTransaction::GetInterface<Policy::NetSvrPolicyPartyMatchingQueue>(); }
 
-		BR_SVR_MSGTRANS_CLOSE_ARGS(DequeueItemRes, GetRouteContext().GetSwaped(), GetMatchingTicket(), m_matchingQueueItem.RegisterUID, m_matchingQueueItem.RegisterID, LinkedArray<MatchingPlayerInformation>((uint)countof(m_matchingQueueItem.Players), m_matchingQueueItem.NumPlayers, m_matchingQueueItem.Players));
+		BR_SVR_MSGTRANS_CLOSE_ARGS(Policy::NetSvrPolicyPartyMatchingQueue, DequeueItemRes, GetRouteContext().GetSwaped(), GetMatchingTicket(), m_matchingQueueItem.RegisterUID, m_matchingQueueItem.RegisterID, LinkedArray<MatchingPlayerInformation>((uint)countof(m_matchingQueueItem.Players), m_matchingQueueItem.NumPlayers, m_matchingQueueItem.Players));
 	};
 
 
 
-	class MatchingQueueTransMatchingItemError : public ClusterEntityMessageTransaction< MatchingQueueServiceEntity, Message::PartyMatchingQueue::MatchingItemErrorC2SEvt, MatchingQueueTransMatchingItemError>
+	class MatchingQueueTransMatchingItemError : public ClusterEntityMessageTransaction< MatchingQueueServiceEntity, Message::PartyMatchingQueue::MatchingItemErrorC2SEvt>
 	{
 	public:
-		typedef ClusterEntityMessageTransaction< MatchingQueueServiceEntity, Message::PartyMatchingQueue::MatchingItemErrorC2SEvt, MatchingQueueTransMatchingItemError> super;
+		typedef ClusterEntityMessageTransaction< MatchingQueueServiceEntity, Message::PartyMatchingQueue::MatchingItemErrorC2SEvt> super;
 
 	private:
 

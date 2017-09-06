@@ -30,10 +30,10 @@ namespace Svr {
 
 
 
-	class GamePartyTrans : public TransactionT<GameServiceEntity, GamePartyTrans>
+	class GamePartyTrans : public TransactionT<GameServiceEntity>
 	{
 	public:
-		typedef TransactionT<GameServiceEntity, GamePartyTrans> super;
+		typedef TransactionT<GameServiceEntity> super;
 
 	private:
 

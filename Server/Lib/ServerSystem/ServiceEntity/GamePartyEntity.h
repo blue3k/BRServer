@@ -149,7 +149,7 @@ namespace Svr {
 		// foreach game player
 		Result ForeachPlayer( std::function<Result(PartyPlayer* pPlayer)> func );
 
-		Result ForeachPlayerGameServer( std::function<Result(PartyPlayer* pPlayer, Policy::IPolicyGameServer *pPolicy)> func );
+		Result ForeachPlayerGameServer( std::function<Result(PartyPlayer* pPlayer, Policy::NetPolicyGameServer *pPolicy)> func );
 		Result ForeachPlayerSvrGameParty( std::function<Result(PartyPlayer* pPlayer, Policy::NetSvrPolicyGameParty *pPolicy)> func );
 
 

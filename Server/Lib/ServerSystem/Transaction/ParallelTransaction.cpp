@@ -17,13 +17,13 @@
 #include "ServerLog/SvrLog.h"
 #include "Thread/Thread.h"
 #include "SvrConst.h"
-#include "ServerSystem/Entity.h"
-#include "ServerSystem/MessageRoute.h"
-#include "ServerSystem/ParallelTransaction.h"
-#include "ServerSystem/BrServer.h"
-#include "ServerSystem/EntityManager.h"
-#include "ServerSystem/EntityTable.h"
-#include "ServerSystem/BrServerUtil.h"
+#include "Entity/Entity.h"
+#include "Transaction/MessageRoute.h"
+#include "Transaction/ParallelTransaction.h"
+#include "Server/BrServer.h"
+#include "Entity/EntityManager.h"
+#include "Entity/EntityTable.h"
+#include "Server/BrServerUtil.h"
 
 
 namespace SF {
@@ -69,14 +69,14 @@ namespace Svr
 				Result hr = pTransaction->StartTransaction();
 				if( !(hr) )
 				{
-					svrTrace( Trace::TRC_ERROR, "Transaction Failed hr = 0x{0:X8}, {1}", hr, typeid(*pTransaction).name() );
+					svrTrace( Error, "Transaction Failed hr = 0x{0:X8}, {1}", hr, typeid(*pTransaction).name() );
 				}
 
 				if( pTransaction->IsClosed() )
 					pTransaction->FlushTransaction();
 				else
 				{
-					svrTrace( Trace::TRC_ERROR, "Transaction must be closed hr = 0x{0:X8}, {1}", hr, typeid(*pTransaction).name() );
+					svrTrace( Error, "Transaction must be closed hr = 0x{0:X8}, {1}", hr, typeid(*pTransaction).name() );
 					pTransaction->CloseTransaction(ResultCode::SUCCESS);
 					pTransaction->FlushTransaction();
 				}
@@ -103,8 +103,9 @@ namespace Svr
 
 
 	ParallelTransactionManager::ParallelTransactionManager()
-		:SimpleEntity(0,0)
-		,IServerComponent(ComponentID)
+		: SimpleEntity(0,0)
+		, IServerComponent(ComponentID)
+		, m_PendingQueries(GetMemoryManager())
 	{
 	}
 
@@ -136,7 +137,7 @@ namespace Svr
 
 		for( int iworker = 0; iworker < 20; iworker++ )
 		{
-			TaskWorker *pWorker = new TaskWorker(m_PendingQueries);
+			TaskWorker *pWorker = new(GetMemoryManager()) TaskWorker(m_PendingQueries);
 			pWorker->Start();
 			m_QueryWorker.push_back(pWorker);
 		}
@@ -161,7 +162,7 @@ namespace Svr
 		// Poke all worker at least once
 		for (size_t iworker = 0; iworker < m_QueryWorker.size(); iworker++)
 		{
-			ParallelTransaction* pTransNOP = new ParallelTransactionNop;
+			ParallelTransaction* pTransNOP = new(GetMemoryManager()) ParallelTransactionNop(GetMemoryManager());
 			m_PendingQueries.Enqueue(pTransNOP);
 		}
 

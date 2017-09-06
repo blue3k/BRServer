@@ -69,7 +69,7 @@ namespace Svr {
 	//
 	//	Server definition
 	//
-	class BrServer : public Thread, public MasterEntity, public ServerComponentCarrier
+	class BrServer : public Thread, public MasterEntity
 	{
 	public:
 
@@ -77,6 +77,8 @@ namespace Svr {
 		// Entity by ID map 
 
 	private:
+
+		ServerComponentCarrier m_Components;
 
 		// Server state
 		ServerState		m_State;
@@ -88,7 +90,7 @@ namespace Svr {
 		NetAddress					m_AddrPrivate;
 
 		// ServerPeer host interfaces
-		Net::ServerPeerTCP*			m_pNetPrivate;
+		SharedPointerT<Net::ServerPeerTCP>			m_pNetPrivate;
 		
 		// Server net class
 		NetClass					m_NetClass;
@@ -116,7 +118,11 @@ namespace Svr {
 		bool m_bIsKillSignaled;
 		bool m_bStartTransaction;
 
-		// singletone instance
+
+		PageQueue<SharedPointerAtomicT<Net::Connection>> m_NewConnectionQueue;
+
+
+		// singleton instance
 		static BrServer *stm_pServerInstance;
 
 
@@ -138,6 +144,8 @@ namespace Svr {
 		// Create entity manager
 		virtual EntityManager* CreateEntityManager();
 		virtual ServerEntity* CreateLoopbackEntity();
+
+
 
 
 		//////////////////////////////////////////////////////////////////////////
@@ -197,7 +205,10 @@ namespace Svr {
 
 
 		// Get net private
-		inline Net::ServerPeerTCP* GetNetPrivate()								{ return m_pNetPrivate; }
+		inline Net::ServerPeerTCP* GetNetPrivate()								{ return *m_pNetPrivate; }
+
+		ServerComponentCarrier& GetComponentCarrier() { return m_Components; }
+
 
 		template<class DBManagerType>
 		Result AddDBCluster(ServerConfig::DBCluster *pDBClusterCfg);
@@ -231,7 +242,7 @@ namespace Svr {
 		// Initialize server basic entities
 		virtual Result InitializeEntities();
 
-		virtual Result InitializeComponents() override;
+		virtual Result InitializeComponents();
 
 		// Initialize server resource
 		virtual Result InitializeServerResource();

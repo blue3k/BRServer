@@ -82,9 +82,10 @@ namespace Svr {
 	{
 		Result hr = ResultCode::SUCCESS;
 		int64_t rankingBase = 0;
-		int32_t currentRanking;
+		int64_t currentRanking = 0, expectedRanking = 0;
+		uint64_t latestScore;
 		RankingServiceEntity::RankingKey myRankingKey;
-		bool added = false;
+		bool added = false, removedInTheMiddle = false;
 
 		auto rankCount = (int)GetCount();
 
@@ -98,65 +99,132 @@ namespace Svr {
 		// we are not going to wait db result
 		svrChk(GetServerComponent<DB::RankingDB>()->UpdateRankingScoreCmd(TransactionID(), GetPlayerInfo().PlayerID, GetPlayerInfo().FBUID, GetPlayerInfo().NickName, GetPlayerInfo().Level, GetRankingScore()));
 
+		// TODO: commit changes for project. remove it later
+		// -------------------------------
+		GetMyOwner()->CommitChanges();
 
-		rankingBase = m_PlayerRanking - (m_PlayerRanking % rankCount);
+		// -------------------------------
+		//GetMyOwner()->GetBaseRanking(GetRankingScore(), expectedRanking);
+
+
+		rankingBase = std::max((m_PlayerRanking - (rankCount >> 1)), (int64_t)0);
 		m_RankingList.Clear();
 		svrChk(GetMyOwner()->GetRankingList(rankingBase, rankCount, m_RankingList));
 
 		if (m_RankingList.size() == 0)
 			goto Proc_End;
 
-		for (unsigned iRank = 0; iRank < m_RankingList.size(); iRank++)
-		{
-			auto& rankInfo = m_RankingList[iRank];
-			if (rankInfo.PlayerID == GetPlayerInfo().PlayerID)
-			{
-				// It's old information remove it
-				m_RankingList.RemoveAt((int)iRank);
-				break;
-			}
-		}
-		// Remove one if the player isn't in the list
-		if ((int)m_RankingList.size() >= rankCount)
-		{
-			m_RankingList.RemoveAt((int)m_RankingList.size() - 1);
-		}
 
-
-		// Insert player where it need to be
-		added = false;
 
 		if (m_RankingList.size() > 0)
+		{
+			GetMyOwner()->GetBaseRanking(m_RankingList[0].GetScore(), expectedRanking);
 			currentRanking = m_RankingList[0].Ranking;
+			latestScore = m_RankingList[0].GetScore();
+		}
 		else
+		{
+			expectedRanking = 0;
 			currentRanking = 0;
-
-		// the ranking key using
-		assert(GetPlayerInfo().PlayerID < std::numeric_limits<uint32_t>::max());
-		assert(GetRankingScore() < std::numeric_limits<uint32_t>::max());
-		myRankingKey.PlayerID = static_cast<uint32_t>(GetPlayerInfo().PlayerID);
-		myRankingKey.Score = static_cast<decltype(myRankingKey.Score)>(GetRankingScore());
+			latestScore = 0;
+		}
 
 		for (unsigned iRank = 0; iRank < m_RankingList.size(); iRank++, currentRanking++)
 		{
 			RankingServiceEntity::RankingKey rankingKey;
 			auto& rankInfo = m_RankingList[iRank];
-			rankInfo.Ranking = currentRanking;
 
-			rankingKey.PlayerID = static_cast<uint32_t>(rankInfo.PlayerID);
-			rankingKey.Score = static_cast<decltype(rankingKey.Score)>(rankInfo.GetScore());
-
-			if (added || rankingKey.RankingKeyValue > myRankingKey.RankingKeyValue)
-				continue;
-
-			added = true;
-			m_RankingList.insert(iRank, TotalRankingPlayerInformation(0, currentRanking, GetPlayerInfo().PlayerID, GetPlayerInfo().FBUID, GetPlayerInfo().NickName, GetPlayerInfo().Level, (int32_t)GetRankingScore(), (int32_t)(GetRankingScore() >> 32)));
+			// Define ranking 
+			if (latestScore != rankInfo.GetScore())
+			{
+				latestScore = rankInfo.GetScore();
+				expectedRanking = currentRanking;
+			}
+			rankInfo.Ranking = static_cast<decltype(rankInfo.Ranking)>(expectedRanking);
 		}
 
-		if (!added)
-		{
-			m_RankingList.push_back(TotalRankingPlayerInformation(0, currentRanking, GetPlayerInfo().PlayerID, GetPlayerInfo().FBUID, GetPlayerInfo().NickName, GetPlayerInfo().Level, (int32_t)GetRankingScore(), (int32_t)(GetRankingScore() >> 32)));
-		}
+		//GetMyOwner()->PrintAllRanking("RankingTest");
+
+		//// Remove myself if in the expected list
+		//for (unsigned iRank = 0; iRank < m_RankingList.size(); iRank++)
+		//{
+		//	auto& rankInfo = m_RankingList[iRank];
+		//	if (rankInfo.PlayerID == GetPlayerInfo().PlayerID)
+		//	{
+		//		// It's old information remove it
+		//		removedInTheMiddle = true;
+		//		m_RankingList.RemoveAt((int)iRank);
+		//		break;
+		//	}
+		//}
+
+		//// Remove one if the player isn't in the list
+		//if ((int)m_RankingList.size() >= rankCount)
+		//{
+		//	m_RankingList.RemoveAt((int)m_RankingList.size() - 1);
+		//}
+
+
+		//// Insert player where it need to be
+		//added = false;
+
+		//if (m_RankingList.size() > 0)
+		//{
+		//	GetMyOwner()->GetBaseRanking(m_RankingList[0].GetScore(), expectedRanking);
+		//	currentRanking = m_RankingList[0].Ranking;
+		//	latestScore = m_RankingList[0].GetScore();
+		//}
+		//else
+		//{
+		//	expectedRanking = 0;
+		//	currentRanking = 0;
+		//	latestScore = 0;
+		//}
+
+
+		//// the ranking key using
+		//assert(GetPlayerInfo().PlayerID < std::numeric_limits<uint32_t>::max());
+		//assert(GetRankingScore() < std::numeric_limits<uint32_t>::max());
+		//myRankingKey.PlayerID = static_cast<uint32_t>(GetPlayerInfo().PlayerID);
+		//myRankingKey.Score = static_cast<decltype(myRankingKey.Score)>(GetRankingScore());
+
+		//for (unsigned iRank = 0; iRank < m_RankingList.size(); iRank++, currentRanking++)
+		//{
+		//	RankingServiceEntity::RankingKey rankingKey;
+		//	auto& rankInfo = m_RankingList[iRank];
+
+		//	rankingKey.PlayerID = static_cast<uint32_t>(rankInfo.PlayerID);
+		//	rankingKey.Score = static_cast<decltype(rankingKey.Score)>(rankInfo.GetScore());
+
+		//	// Define ranking 
+		//	if (latestScore != rankInfo.GetScore())
+		//	{
+		//		latestScore = rankInfo.GetScore();
+		//		GetMyOwner()->GetBaseRanking(latestScore, expectedRanking);
+		//		//expectedRanking = currentRanking;
+		//	}
+		//	rankInfo.Ranking = static_cast<decltype(rankInfo.Ranking)>(expectedRanking);
+
+		//	if (added || rankingKey.RankingKeyValue > myRankingKey.RankingKeyValue)
+		//		continue;
+
+		//	// If i am going to be the first guy in the list, My ranking need to be calculated separately
+		//	latestScore = GetRankingScore();
+		//	GetMyOwner()->GetBaseRanking(latestScore, expectedRanking);
+
+		//	added = true;
+		//	m_RankingList.Insert(iRank, TotalRankingPlayerInformation(0, expectedRanking, GetPlayerInfo().PlayerID, GetPlayerInfo().FBUID, GetPlayerInfo().NickName, GetPlayerInfo().Level, (int32_t)GetRankingScore(), (int32_t)(GetRankingScore() >> 32)));
+		//}
+
+		//if (!added)
+		//{
+		//	if (latestScore != GetRankingScore())
+		//	{
+		//		expectedRanking = currentRanking;
+		//	}
+
+		//	m_RankingList.Add(TotalRankingPlayerInformation(0, expectedRanking, GetPlayerInfo().PlayerID, GetPlayerInfo().FBUID, GetPlayerInfo().NickName, GetPlayerInfo().Level, (int32_t)GetRankingScore(), (int32_t)(GetRankingScore() >> 32)));
+		//}
 
 
 	Proc_End:
@@ -180,63 +248,14 @@ namespace Svr {
 	{
 		Result hr = ResultCode::SUCCESS;
 
-		// parameter from client
-		auto fileName = GetFileName();
-		File fileStream;
-		char szBuff[1024];
-		TimeStampSec nowTime;
-		time_t time;
-		struct tm nowTimeTM;
-		char strFileName[MAX_PATH];
-
+		
 		svrChk(super::StartTransaction());
 
-		// TODO: fill it
-		m_RankingList.Clear();
+		GetMyOwner()->PrintAllRanking(GetFileName());
 
-		GetMyOwner()->CommitChanges();
-
-		svrChk(GetMyOwner()->GetRankingList(0, 100, m_RankingList));
-		//svrChk(GetMyOwner()->GetRankingListAll(m_RankingList));
-
-		nowTime = Util::Time.GetRawUTCSec();
-
-		time = nowTime.time_since_epoch().count() + Util::Time.GetUTCSecOffset().count();
-		nowTimeTM = *gmtime(&time);
-
-		snprintf(strFileName, MAX_PATH, "%s..\\log\\%s[%d_%04d_%02d_%02d]_%s_log.txt",
-			Util::GetModulePath(), Util::GetServiceName(), nowTimeTM.tm_year + 1900, nowTimeTM.tm_mon + 1, nowTimeTM.tm_mday, nowTimeTM.tm_hour, fileName);
-
-		fileStream.Open(strFileName, File::OpenMode::Append, File::SharingMode::Exclusive);
-
-		//uint32_t		RankingID;
-		//uint32_t		Ranking;
-		//AccountID		PlayerID;
-		//FacebookUID   FBUID;
-		//char			NickName[MAX_NAME];
-		//uint32_t		Level;
-		//uint32_t		ScoreLow;	// Win
-		//uint32_t		ScoreHigh;	// Lose
-
-		snprintf(szBuff, MAX_PATH, "Ranking, Score, PlayerID, FaceboolUID, NickName, Level\n");
-		DWORD dwStrLen = (DWORD)strlen(szBuff);
-		size_t szWritlen;
-
-		// write header..
-		fileStream.Write((byte*) szBuff, dwStrLen, szWritlen);
-
-		for (unsigned i = 0; i < m_RankingList.size(); i++)
-		{
-			TotalRankingPlayerInformation& rankInfo = m_RankingList[i];
-			snprintf(szBuff, MAX_PATH, "%d, %llu, %llu, %llu, %s, %d\n", 
-				rankInfo.Ranking, rankInfo.GetScore(), rankInfo.PlayerID, rankInfo.FBUID, rankInfo.NickName, rankInfo.Level);
-			dwStrLen = (DWORD)strlen(szBuff);
-			fileStream.Write((byte*)szBuff, dwStrLen, szWritlen);
-		}
-
+		
 	Proc_End:
 
-		fileStream.Close();
 		CloseTransaction(hr);
 
 		return hr;

@@ -29,16 +29,16 @@ namespace Svr {
 	PerformanceCounterServer *PerformanceCounterServer::stm_pInstance = nullptr;
 
 
-	PerformanceCounterServer::MessageHandler::MessageHandler(PerformanceCounterServer *CounterServer)
+	PerformanceCounterServer::MessageHandler::MessageHandler(IMemoryManager& memMgr, PerformanceCounterServer *CounterServer)
 		: m_CounterServer(*CounterServer)
-		, m_HandlerTable(STDAllocator::GetInstance())
+		, m_HandlerTable(memMgr)
 	{
 		BR_MESSAGE_HANDLER(PerformanceCounterNewC2SEvt, Enqueue);
 		BR_MESSAGE_HANDLER(PerformanceCounterFreeC2SEvt, Enqueue);
 		BR_MESSAGE_HANDLER(PerformanceCounterUpdateC2SEvt, PerformanceCounterUpdateC2SEvt);
 	}
 
-	Result PerformanceCounterServer::MessageHandler::OnRecv(const sockaddr_storage& remoteAddr, Message::MessageData *pMsg)
+	Result PerformanceCounterServer::MessageHandler::OnRecv(const sockaddr_storage& remoteAddr, SharedPointerT<Message::MessageData>& pMsg)
 	{
 		Result hr = ResultCode::SUCCESS;
 		MessageHandlerType handler;
@@ -54,10 +54,14 @@ namespace Svr {
 	}
 
 	PerformanceCounterServer::PerformanceCounterServer()
-		: m_RawUDP(nullptr)
-		, m_MessageHandler(this)
+		: m_MemoryManager("PerformanceCounterServer", GetSystemMemoryManager())
+		, m_RawUDP(nullptr)
+		, m_MessageHandler(GetMemoryManager(), this)
+		, m_NewDeleteQueue(GetMemoryManager())
+		, m_UpdateQueue(GetMemoryManager())
+		, m_TimedOutQueue(GetMemoryManager())
+		, m_InstanceMap(GetMemoryManager())
 	{
-
 	}
 
 	PerformanceCounterServer::~PerformanceCounterServer()
@@ -163,7 +167,7 @@ namespace Svr {
 		auto pRawUDP = new(GetSystemMemoryManager()) Net::RawUDP();
 		svrChkPtr(pRawUDP);
 
-		stm_pInstance = new(GetSystemMemoryManager()) PerformanceCounterServer();
+		stm_pInstance = new PerformanceCounterServer();
 
 		svrChk(pRawUDP->InitializeNet(serverAddress, &stm_pInstance->m_MessageHandler));
 
@@ -193,7 +197,7 @@ namespace Svr {
 
 		stm_pInstance->Stop(true);
 
-		IMemoryManager::Delete(stm_pInstance);
+		delete stm_pInstance;
 		stm_pInstance = nullptr;
 
 		return ResultCode::SUCCESS;
@@ -232,7 +236,7 @@ namespace Svr {
 
 	//Proc_End:
 
-		return (uint)instanceList.GetSize();
+		return (uint)instanceList.size();
 	}
 /*
 	uint PerformanceCounterServer::GetInstanceList(uint startIndex, uint bufferSize, PerformanceCounterInstance** pInstanceBuffer)

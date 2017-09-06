@@ -46,7 +46,7 @@ inline Result GameInstanceEntity::ForeachPlayerGameServer(Func func)
 		if (pGamePlayer->GetPlayerState() == PlayerState::None)
 			return true;
 
-		Policy::IPolicyGameServer *pPolicy = pGamePlayer->GetInterface<Policy::IPolicyGameServer>();
+		Policy::NetPolicyGameServer *pPolicy = pGamePlayer->GetInterface<Policy::NetPolicyGameServer>();
 		if (pPolicy)
 		{
 			Result hrRes = func(pGamePlayer, pPolicy);
