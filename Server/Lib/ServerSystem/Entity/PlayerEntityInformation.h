@@ -57,7 +57,6 @@ namespace Svr {
 
 		const PlayerInformation& GetPlayerInformation() const	{ return m_PlayerInfo; }
 		const TimeStampSec& GetLatestServerUpTime() const { return m_LatestServerUpTime; }
-		const PlayerInformation& GetPlayerInformation() const { return m_PlayerInfo; }
 		ServerEntity* GetServerEntity() const { return m_ServerEntity; }
 		const EntityUID& GetPlayerEntityUID() const { return m_PlayerEntityUID; }
 		bool GetIsActivePlayer() const { return m_IsActivePlayer; }
@@ -65,7 +64,7 @@ namespace Svr {
 		PlayerID GetPlayerID() const							{ return m_PlayerInfo.PlayerID; }
 		const char* GetPlayerName() const						{ return m_PlayerInfo.NickName; }
 		Result SetPlayerName( const char* newName)				{ return StrUtil::StringCpy( m_PlayerInfo.NickName, newName ); }
-		const PlayerInformation& GetPlayerInformation() const	{ return m_PlayerInfo; }
+
 		//FriendInformation GetFriendInformation() const			{ return FriendInformation(m_PlayerInfo.PlayerID, m_PlayerInfo.FacebookUID, m_PlayerInfo.NickName, m_PlayerInfo.Level, 0, 0, m_PlayerInfo.IsPlayingGame, m_PlayerInfo.LastActiveTime, 0); }
 
 		// Check server status

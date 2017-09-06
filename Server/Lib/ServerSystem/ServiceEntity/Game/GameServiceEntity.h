@@ -68,6 +68,8 @@ namespace Svr {
 		Net::ServerMUDP*			m_pNetPublic;
 		GameID						m_GameID;
 
+		PageQueue<SharedPointerAtomicT<Net::Connection>> m_NewConnectionQueue;
+
 	protected:
 
 
@@ -102,7 +104,7 @@ namespace Svr {
 		//
 
 		// Process network event
-		Result ProcessPublicNetworkEvent();
+		Result ProcessNewConnection();
 		
 	};
 

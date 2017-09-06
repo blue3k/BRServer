@@ -48,8 +48,7 @@ namespace Svr {
 
 
 	GamePlayerEntity::GamePlayerEntity()
-		: m_ISvrGamePolicy(nullptr)
-		, m_PlayerState(PlayerState_None)
+		: m_PlayerState(PlayerState_None)
 		, m_GameInsUID(0)
 		, m_LatestUpdateTime(TimeStampSec(DurationSec(0)))
 		, m_LatestActiveTime(TimeStampSec(DurationSec(0)))
@@ -77,9 +76,9 @@ namespace Svr {
 		SetLatestActiveTime(Util::Time.GetTimeUTCSec());
 		m_LatestUpdateTime = TimeStampSec(DurationSec(0));
 
-		SetPlayerAutoLogout(DurationMS(15*60*1000));
+		SetPlayerAutoLogoutTime(DurationMS(15*60*1000));
 
-		//m_TimeToKill.SetTimer(DurationMS(PlayerAutoLogout * 1000));
+		//m_KillTimer.SetTimer(DurationMS(PlayerAutoLogout * 1000));
 
 		//svrChk( AddComponent<UserFriendSystem>(this) );
 		//svrChk( AddComponent<UserGamePlayerInfoSystem>(this) );
@@ -109,11 +108,6 @@ namespace Svr {
 
 		svrChk(Svr::SimpleUserEntity::SetConnection(std::forward<SharedPointerT<Net::Connection>>(pCon)));
 
-		if (GetConnection() != nullptr)
-		{
-			svrChkPtr(m_ISvrGamePolicy = GetConnection()->GetInterface<Policy::NetSvrPolicyGame>());
-		}
-
 	Proc_End:
 
 		return hr;
@@ -122,8 +116,6 @@ namespace Svr {
 	// Release connection if has
 	void GamePlayerEntity::ReleaseConnection()
 	{
-		m_ISvrGamePolicy = nullptr;
-
 		Svr::SimpleUserEntity::ReleaseConnection();
 	}
 
@@ -134,7 +126,7 @@ namespace Svr {
 
 	void GamePlayerEntity::SetLatestActiveTime(TimeStampSec latestActiveTime)
 	{
-		m_TimeToKill.SetTimer(GetPlayerAutoLogout());
+		m_KillTimer.SetTimer(GetPlayerAutoLogoutTime());
 
 		m_LatestActiveTime = latestActiveTime;
 	}
@@ -202,14 +194,14 @@ namespace Svr {
 	Result GamePlayerEntity::TickUpdate(TimerAction *pAction)
 	{
 		Result hr = ResultCode::SUCCESS;
-		Transaction *trans = nullptr;
+		TransactionPtr trans;
 
 		hr = Svr::SimpleUserEntity::TickUpdate(pAction);
 		if (hr == Result(ResultCode::SUCCESS_FALSE))
 			return hr;
 
 
-		if (m_TimeToKill.CheckTimer() 
+		if (m_KillTimer.CheckTimer() 
 			&& GetEntityState() == EntityState::WORKING)
 		{
 			svrMem(trans = CreateCloseTransaction());
@@ -255,14 +247,14 @@ namespace Svr {
 
 	bool GamePlayerEntity::GetIsInGame() const
 	{
-		return GetGameInsUID() != 0 || GetPartyUID() != 0;
+		return GetGameInsUID().UID != 0 || GetPartyUID().UID != 0;
 	}
 
 	void GamePlayerEntity::SetGameInsUID( const GameInsUID& gameInsID )
 	{
 		m_GameInsUID = gameInsID;
 
-		m_PlayerInformation.IsPlayingGame = m_GameInsUID != 0 ? TRUE : FALSE;
+		m_PlayerInformation.IsPlayingGame = m_GameInsUID.UID != 0 ? TRUE : FALSE;
 	}
 
 

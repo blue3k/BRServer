@@ -219,7 +219,7 @@ namespace Svr {
 		//
 
 		// Process Private network event
-		virtual Result ProcessPrivateNetworkEvent();
+		virtual Result ProcessNewConnection();
 
 		// Process Public network event
 		virtual Result ProcessPublicNetworkEvent();

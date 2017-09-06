@@ -46,6 +46,7 @@ namespace Svr {
 		: FreeReplicaClusterServiceEntity(ClusterID::Game, initialMembership)
 		, m_PublicNetSocket(publicNetSocket)
 		, m_GameID(gameID)
+		, m_NewConnectionQueue(GetMemoryManager())
 	{
 		AssertRel(publicNetSocket != nullptr);
 	}
@@ -65,7 +66,7 @@ namespace Svr {
 		svrChkPtr(m_PublicNetSocket);
 
 		svrMem(m_pNetPublic = new(GetMemoryManager()) Net::ServerMUDP(BrServer::GetInstance()->GetServerUID(), NetClass::Game));
-		svrChk(m_pNetPublic->HostOpen(NetClass::Game, m_PublicNetSocket->IPV6.c_str(), m_PublicNetSocket->Port));
+		svrChk(m_pNetPublic->HostOpen(NetClass::Game, m_PublicNetSocket->IPV6, m_PublicNetSocket->Port));
 
 
 		// Register game cluster as a slave
@@ -109,7 +110,7 @@ namespace Svr {
 		if( BrServer::GetInstance()->GetServerState() != ServerState::RUNNING )
 			goto Proc_End;
 
-		svrChk(ProcessPublicNetworkEvent());
+		svrChk(ProcessNewConnection());
 
 	Proc_End:
 
@@ -120,66 +121,65 @@ namespace Svr {
 
 
 	// Process network event
-	Result GameServiceEntity::ProcessPublicNetworkEvent()
+	Result GameServiceEntity::ProcessNewConnection()
 	{
 		Result hr = ResultCode::SUCCESS;
-		Net::INet::Event curEvent;
-		GamePlayerEntity *pGamePlayerEntity = nullptr;
-		Net::ConnectionPtr pConn = nullptr;
-		EntityManager *pEntityManager = nullptr;
+		Svr::ServerEntity *pServerEntity = nullptr;
+		EntityManager* pEntityManager = nullptr;
 		Entity* pEntity = nullptr;
+		GamePlayerEntity* pGamePlayerEntity = nullptr;
+		SharedPointerT<Net::Connection> pConn;
 
-		if (m_pNetPublic == nullptr)
-			return ResultCode::SUCCESS;
+		pEntityManager = GetServerComponent<EntityManager>();
 
-		while ((m_pNetPublic->DequeueNetEvent(curEvent)))
+		auto numQueued = m_NewConnectionQueue.GetEnqueCount();
+		svrChkPtr(pEntityManager);
+		for (uint iQueue = 0; iQueue < numQueued; iQueue++)
 		{
-			pConn = nullptr;
+			SharedPointerAtomicT<Net::Connection> pConnAtomic;
 
-			switch (curEvent.EventType)
+			if (!m_NewConnectionQueue.Dequeue(pConnAtomic))
+				break;
+
+			switch (pConnAtomic->GetConnectionState())
 			{
-			case Net::INet::Event::EVT_NET_INITIALIZED:
+			case Net::ConnectionState::CONNECTING:
+				m_NewConnectionQueue.Enqueue(std::forward<SharedPointerAtomicT<Net::Connection>>(pConnAtomic));
 				break;
-			case Net::INet::Event::EVT_NET_CLOSED:
-				break;
-			case Net::INet::Event::EVT_NEW_CONNECTION:
-				if (curEvent.EventConnection == nullptr)
-					break;
-
-				pConn = std::forward<Net::ConnectionPtr>(curEvent.EventConnection);
-
-				pEntityManager = GetServerComponent<EntityManager>();
-
-				svrChkPtr(pConn);
-				svrChkPtr(pEntityManager);
-
-				svrChk(pEntityManager->CreateEntity(GetClusterID(), EntityFaculty::User, pEntity));
-				svrChkPtr(pGamePlayerEntity = dynamic_cast<GamePlayerEntity*>(pEntity));
-				//svrChk(pEntityManager->CreateGamePlayerEntity(pGamePlayerEntity));
-
-				svrChk(pEntityManager->AddEntity(EntityFaculty::User, pGamePlayerEntity));
-
-				if (!(pGamePlayerEntity->SetConnection(std::forward<Net::ConnectionPtr>(pConn))))
-				{
-					// NOTE: We need to mark to close this
-					pGamePlayerEntity->ClearEntity();
-				}
-
-				pGamePlayerEntity = nullptr;
-
-				break;
-			case Net::INet::Event::EVT_CONNECTION_DISCONNECTED:
+			case Net::ConnectionState::CONNECTED:
 				break;
 			default:
+				assert(false); // I want to see when this happenes
+				pConn = std::forward <SharedPointerAtomicT<Net::Connection>>(pConnAtomic);
+				pConn->Dispose();
+				Service::ConnectionManager->RemoveConnection(pConn);
+				pConn = nullptr;
 				break;
-			};
+			}
+
+			if (pConnAtomic == nullptr)
+				continue;
+
+			pConn = std::forward <SharedPointerAtomicT<Net::Connection>>(pConnAtomic);
+
+			svrChkPtr(pConn);
+
+			svrChk(pEntityManager->CreateEntity(GetClusterID(), EntityFaculty::User, pEntity));
+			svrChkPtr(pGamePlayerEntity = dynamic_cast<GamePlayerEntity*>(pEntity));
+
+			svrChk(pEntityManager->AddEntity(EntityFaculty::User, pGamePlayerEntity));
+
+			if (!(pGamePlayerEntity->SetConnection(std::forward<Net::ConnectionPtr>(pConn))))
+			{
+				// NOTE: We need to mark to close this
+				pGamePlayerEntity->ClearEntity();
+			}
+
+			pGamePlayerEntity = nullptr;
 		}
 
 
 	Proc_End:
-
-		if (pConn != nullptr && m_pNetPublic)
-			m_pNetPublic->GetConnectionManager().PendingReleaseConnection(pConn);
 
 		Util::SafeDelete(pGamePlayerEntity);
 

@@ -117,22 +117,23 @@ namespace Svr {
 		GamePlayerEntity();
 		virtual ~GamePlayerEntity();
 
-		PlayerState GetPlayerState() { return m_PlayerState; }
+		PlayerState GetPlayerState() const { return m_PlayerState; }
 		void SetPlayerState(PlayerState value) { m_PlayerState = value; }
 
 
-		GameInsUID GetGameInsUID() { return m_GameInsUID; }
+		GameInsUID GetGameInsUID() const { return m_GameInsUID; }
 		uint GetShardID() { return m_ShardID; }
 
-		DurationMS GetPlayerAutoLogoutTime() { return m_PlayerAutoLogout; }
+		DurationMS GetPlayerAutoLogoutTime() const { return m_PlayerAutoLogout; }
+		void SetPlayerAutoLogoutTime(DurationMS value) { m_PlayerAutoLogout = value; }
 
 		const Util::TimeStampTimer& GetKillTimer() { return m_KillTimer; }
 
-		TimeStampSec GetLatestUpdateTime() { return m_LatestUpdateTime; }
-		TimeStampSec GetLatestActiveTime() { return m_LatestActiveTime; }
-		TimeStampSec GetLatestDBSyncTime() { return m_LatestDBSyncTime; }
+		TimeStampSec GetLatestUpdateTime() const { return m_LatestUpdateTime; }
+		TimeStampSec GetLatestActiveTime() const { return m_LatestActiveTime; }
+		TimeStampSec GetLatestDBSyncTime() const { return m_LatestDBSyncTime; }
 
-		PartyUID GetPartyUID() { return m_PartyUID; }
+		PartyUID GetPartyUID() const { return m_PartyUID; }
 		void SetPartyUID(PartyUID value) { m_PartyUID = value; }
 
 		// Initialize entity to proceed new connection

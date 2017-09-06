@@ -14,6 +14,7 @@
 #include "String/StrUtil.h"
 
 #include "Memory/SFMemory.h"
+#include "Memory/SFCircularHeap.h"
 #include "Types/BrGameTypes.h"
 #include "GameConst.h"
 #include "Container/CircularQueue.h"
@@ -42,7 +43,7 @@ namespace Svr {
 
 	private:
 		// Memory log allocator
-		CircularBufferAllocator<MaxBufferSize,BR_ALIGN> m_LogAllocator;
+		CircularHeap<MaxBufferSize,SF_ALIGN> m_LogAllocator;
 
 		// Game log queue
 		CircularQueue<GameLogItem*,MaxLog> m_gameLogQueue;

@@ -17,7 +17,6 @@
 #include "Types/BrGameTypes.h"
 #include "GameConst.h"
 #include "Container/CircularQueue.h"
-#include "Common/Binary.h"
 #include "Types/BrSvrTypes.h"
 #include "ServerSystem/GameLog/GameLog.h"
 

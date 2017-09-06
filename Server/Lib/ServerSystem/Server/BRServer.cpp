@@ -92,7 +92,7 @@ namespace Svr{
 
 	
 	// Process Private network event
-	Result BrServer::ProcessPrivateNetworkEvent()
+	Result BrServer::ProcessNewConnection()
 	{
 		Result hr = ResultCode::SUCCESS;
 		Svr::ServerEntity *pServerEntity = nullptr;
@@ -135,7 +135,7 @@ namespace Svr{
 				{
 					//Assert(pConn->GetRefCount() == 0);
 					if (oldConn != nullptr)
-						oldConn->Disconnect("ProcessPrivateNetworkEvent, Disconnect old connection");
+						oldConn->Disconnect("ProcessNewConnection, Disconnect old connection");
 					svrChk(pServerEntity->SetRemoteConnection((Net::Connection*)pConn));
 				}
 				pConn = nullptr;
@@ -600,9 +600,9 @@ Proc_End:
 		
 
 		// Process private network event
-		if( !(ProcessPrivateNetworkEvent()) )
+		if( !(ProcessNewConnection()) )
 		{
-			svrTrace( SVR_DBGFAIL, "ProcessPrivateNetworkEvent : {0:X8}", hr );
+			svrTrace( SVR_DBGFAIL, "ProcessNewConnection : {0:X8}", hr );
 		}
 
 

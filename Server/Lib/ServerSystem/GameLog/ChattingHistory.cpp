@@ -11,7 +11,7 @@
 
 
 #include "stdafx.h"
-#include "Common/MemoryStream.h"
+#include "Memory/MemoryManager.h"
 #include "SvrTrace.h"
 #include "ServerSystem/GameLog/ChattingHistory.h"
 #include "GameConst.h"
