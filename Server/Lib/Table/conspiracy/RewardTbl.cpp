@@ -107,8 +107,8 @@ namespace conspiracy
 
 		if (m_RoleTablePrev != nullptr)
 		{
- 			for( auto itItem : *m_RoleTablePrev) { IMemoryManager::Delete(itItem.second); } ;
-			IMemoryManager::Delete(m_RoleTablePrev);
+ 			for( auto itItem : *m_RoleTablePrev) { IHeap::Delete(itItem.second); } ;
+			IHeap::Delete(m_RoleTablePrev);
 		}
 		m_RoleTablePrev = m_RoleTable;
 		m_RoleTable = pNewRoleTable;

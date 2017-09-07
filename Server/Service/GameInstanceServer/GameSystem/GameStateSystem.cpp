@@ -817,7 +817,7 @@ namespace ConspiracyGameInstanceServer {
 		Result hr = ResultCode::SUCCESS;
 
 		if( !m_GamePlayStates[(uint)m_CurrentGameState]->CanAdvanceToNext() )
-			return ResultCode::E_GAME_NOT_READY_FOR_NEXT_STATE;
+			return ResultCode::GAME_NOT_READY_FOR_NEXT_STATE;
 
 		{
 		LockStateChangingScope stateChangingLock(m_IsInStateChanging);
@@ -877,11 +877,11 @@ namespace ConspiracyGameInstanceServer {
 			return ResultCode::INVALID_ARG;
 
 		if( !pVoter->GetIsActivePlayer() )
-			return ResultCode::E_GAME_INVALID_PLAYER_STATE;
+			return ResultCode::GAME_INVALID_PLAYER_STATE;
 
 		// state with vote can't advance
 		if( !m_GamePlayStates[(uint)m_CurrentGameState]->CanAdvanceToNext() )
-			return ResultCode::E_GAME_INVALID_GAMESTATE;
+			return ResultCode::GAME_INVALID_GAMESTATE;
 
 		if( pVoter->GetVotedGameAdvance() )
 			return hr;
@@ -911,7 +911,7 @@ namespace ConspiracyGameInstanceServer {
 		Result hr = ResultCode::SUCCESS;
 
 		hr = m_GamePlayStates[(uint)m_CurrentGameState]->Vote(pVoter,pPlayer);
-		if( hr != Result(ResultCode::E_GAME_INVALID_PLAYER_STATE) )
+		if( hr != Result(ResultCode::GAME_INVALID_PLAYER_STATE) )
 			svrChk(hr);
 
 		svrChk( GetOwner().GetComponent<GameLogSystem>()->UpdateGameVote( pVoter->GetPlayerID(), pPlayer->GetPlayerID() ) );

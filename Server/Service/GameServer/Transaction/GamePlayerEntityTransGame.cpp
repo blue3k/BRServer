@@ -25,11 +25,11 @@
 #include "SvrTrace.h"
 #include "ServerEntity/ServerEntityManager.h"
 
-#include "ServerSystem/ServerService/PartyMatchingQueueService.h"
+#include "Protocol/ServerService/PartyMatchingQueueService.h"
 #include "ServerSystem/ServiceEntity/MatchingQueueServiceEntity.h"
 #include "ServerSystem/ServiceEntity/Game/GameClusterServiceEntity.h"
 #include "ServerSystem/ServiceEntity/MatchingServiceUtil.h"
-#include "ServerSystem/ServerService/GamePartyManagerService.h"
+#include "Protocol/ServerService/GamePartyManagerService.h"
 #include "ServerSystem/ServiceEntity/GamePartyManagerServiceEntity.h"
 
 #include "Protocol/Message/PartyMatchingQueueMsgClass.h"
@@ -233,7 +233,7 @@ namespace GameServer {
 			svrErr(ResultCode::INVALID_PLAYERID);
 
 		if( GetMyOwner()->GetGameInsUID() != 0 && GetMyOwner()->GetGameInsUID() != GetInsUID() )
-			svrErr(ResultCode::E_GAME_ALREADY_IN_GAME);
+			svrErr(ResultCode::GAME_ALREADY_IN_GAME);
 
 		if( GetInsUID() == 0 )
 			svrErr(ResultCode::E_INVALID_INSTANCEID);
@@ -241,7 +241,7 @@ namespace GameServer {
 		// We can't check stamina here because it could be a rejoin case
 		//svrChkPtr(GetMyServer()->GetPresetGameConfig());
 		//if( GetMyOwner()->GetComponent<UserGamePlayerInfoSystem>()->GetStamina() < GetMyServer()->GetPresetGameConfig()->StaminaForGame )
-		//	svrErrClose(ResultCode::E_GAME_LOW_STAMINA);
+		//	svrErrClose(ResultCode::GAME_LOW_STAMINA);
 
 		insUID = GetInsUID();
 
@@ -1041,7 +1041,7 @@ namespace GameServer {
 		//	svrErr(ResultCode::INVALID_PLAYERID);
 
 		if( GetMyOwner()->GetGameInsUID() != 0 )
-			svrErrClose(ResultCode::E_GAME_ALREADY_IN_GAME);
+			svrErrClose(ResultCode::GAME_ALREADY_IN_GAME);
 
 		if (GetMyOwner()->GetMatchingTicket() != 0)
 		{
@@ -1060,12 +1060,12 @@ namespace GameServer {
 		currentStamina = pPlayerInfoSystem->GetStamina();
 		StaminaForGame = GetMyServer()->GetPresetGameConfig()->StaminaForGame;
 		if( currentStamina < StaminaForGame )
-			svrErrClose(ResultCode::E_GAME_LOW_STAMINA);
+			svrErrClose(ResultCode::GAME_LOW_STAMINA);
 
 		if (GetRequestRole() != PlayerRole::None)
 		{
-			svrChkCloseErr(ResultCode::E_GAME_INVALID_COSTID, conspiracy::OrganicTbl::FindItem((int)conspiracy::OrganicTbl::EItemEffect::Enum::RoleChoice, pCostItem));
-			svrChkCloseErr(ResultCode::E_GAME_NOTENOUGH_RESOURCE, pPlayerInfoSystem->CheckCost(pCostItem));
+			svrChkCloseErr(ResultCode::GAME_INVALID_COSTID, conspiracy::OrganicTbl::FindItem((int)conspiracy::OrganicTbl::EItemEffect::Enum::RoleChoice, pCostItem));
+			svrChkCloseErr(ResultCode::GAME_NOTENOUGH_RESOURCE, pPlayerInfoSystem->CheckCost(pCostItem));
 		}
 
 		m_TotalGem = pPlayerInfoSystem->GetGem();
@@ -1279,20 +1279,20 @@ namespace GameServer {
 
 		// This means it's not full game
 		//if (m_RetryCount <= 1 
-		//	&& pRes->GetResult() == Result(ResultCode::E_GAME_INVALID_PLAYER_COUNT) // if some members are missing
+		//	&& pRes->GetResult() == Result(ResultCode::GAME_INVALID_PLAYER_COUNT) // if some members are missing
 		//	&& GetMyOwner()->GetPartyUID() == 0)
 		//{
 		//	svrChk(RequestCreateParty()));
 		//}
 		//else
 		if (res.GetReplayMemberCount() > GameConst::MAX_GAMEPLAYER)
-			svrErr(ResultCode::E_GAME_INVALID_PLAYER_COUNT);
+			svrErr(ResultCode::GAME_INVALID_PLAYER_COUNT);
 
 
 		svrChkPtr(pPlayerInfoSystem = GetMyOwner()->GetComponent<UserGamePlayerInfoSystem>());
 
-		svrChkCloseErr(ResultCode::E_GAME_INVALID_COSTID, conspiracy::OrganicTbl::FindItem((int)conspiracy::OrganicTbl::EItemEffect::Enum::ReStart, pCostItem));
-		svrChkCloseErr(ResultCode::E_GAME_NOTENOUGH_RESOURCE, pPlayerInfoSystem->ApplyCost(pCostItem, TransLogCategory::Buy, "PlayAgain"));
+		svrChkCloseErr(ResultCode::GAME_INVALID_COSTID, conspiracy::OrganicTbl::FindItem((int)conspiracy::OrganicTbl::EItemEffect::Enum::ReStart, pCostItem));
+		svrChkCloseErr(ResultCode::GAME_NOTENOUGH_RESOURCE, pPlayerInfoSystem->ApplyCost(pCostItem, TransLogCategory::Buy, "PlayAgain"));
 
 		m_TotalGem = pPlayerInfoSystem->GetGem();
 		m_TotalGameMoney = pPlayerInfoSystem->GetGameMoney();
@@ -1376,8 +1376,8 @@ namespace GameServer {
 
 		svrChkPtr(pPlayerInfoSystem = GetMyOwner()->GetComponent<UserGamePlayerInfoSystem>());
 
-		svrChkCloseErr(ResultCode::E_GAME_INVALID_COSTID, conspiracy::OrganicTbl::FindItem((int)conspiracy::OrganicTbl::EItemEffect::Enum::ReStart, pCostItem));
-		svrChkCloseErr(ResultCode::E_GAME_NOTENOUGH_RESOURCE, pPlayerInfoSystem->CheckCost(pCostItem));
+		svrChkCloseErr(ResultCode::GAME_INVALID_COSTID, conspiracy::OrganicTbl::FindItem((int)conspiracy::OrganicTbl::EItemEffect::Enum::ReStart, pCostItem));
+		svrChkCloseErr(ResultCode::GAME_NOTENOUGH_RESOURCE, pPlayerInfoSystem->CheckCost(pCostItem));
 
 
 		//m_RetryCount = 0;
@@ -1454,7 +1454,7 @@ namespace GameServer {
 		if (GetMyOwner()->GetPartyUID() != 0)
 		{
 			if (GetMyOwner()->GetPartyUID() != GetPartyUID())
-				svrErr(ResultCode::E_GAME_ALREADY_IN_PARTY);
+				svrErr(ResultCode::GAME_ALREADY_IN_PARTY);
 
 			m_LeadPlayer = GetLeadPlayer();
 			m_PartyUID = GetPartyUID();
@@ -1569,8 +1569,8 @@ namespace GameServer {
 
 		svrChkPtr(pPlayerInfoSystem = GetMyOwner()->GetComponent<UserGamePlayerInfoSystem>());
 
-		svrChkCloseErr(ResultCode::E_GAME_INVALID_COSTID, conspiracy::OrganicTbl::FindItem((int)conspiracy::OrganicTbl::EItemEffect::Enum::Check, pCostItem));
-		svrChkCloseErr(ResultCode::E_GAME_NOTENOUGH_RESOURCE, pPlayerInfoSystem->ApplyCost(pCostItem, TransLogCategory::Buy, "RevealPlayer"));
+		svrChkCloseErr(ResultCode::GAME_INVALID_COSTID, conspiracy::OrganicTbl::FindItem((int)conspiracy::OrganicTbl::EItemEffect::Enum::Check, pCostItem));
+		svrChkCloseErr(ResultCode::GAME_NOTENOUGH_RESOURCE, pPlayerInfoSystem->ApplyCost(pCostItem, TransLogCategory::Buy, "RevealPlayer"));
 
 
 		svrChk(GetMyOwner()->UpdateDBSync(GetTransID()));
@@ -1658,8 +1658,8 @@ namespace GameServer {
 
 		svrChkPtr(pPlayerInfoSystem = GetMyOwner()->GetComponent<UserGamePlayerInfoSystem>());
 
-		svrChkCloseErr(ResultCode::E_GAME_INVALID_COSTID, conspiracy::OrganicTbl::FindItem((int)conspiracy::OrganicTbl::EItemEffect::Enum::Revival, pCostItem));
-		svrChkCloseErr(ResultCode::E_GAME_NOTENOUGH_RESOURCE, pPlayerInfoSystem->ApplyCost(pCostItem, TransLogCategory::Buy, "Revive"));
+		svrChkCloseErr(ResultCode::GAME_INVALID_COSTID, conspiracy::OrganicTbl::FindItem((int)conspiracy::OrganicTbl::EItemEffect::Enum::Revival, pCostItem));
+		svrChkCloseErr(ResultCode::GAME_NOTENOUGH_RESOURCE, pPlayerInfoSystem->ApplyCost(pCostItem, TransLogCategory::Buy, "Revive"));
 
 		m_TotalGem = pPlayerInfoSystem->GetGem();
 		m_TotalGameMoney = pPlayerInfoSystem->GetGameMoney();
@@ -1720,8 +1720,8 @@ namespace GameServer {
 		svrChkPtr(pPlayerInfoSystem = GetMyOwner()->GetComponent<UserGamePlayerInfoSystem>());
 
 
-		svrChkCloseErr(ResultCode::E_GAME_INVALID_COSTID, conspiracy::OrganicTbl::FindItem((int)conspiracy::OrganicTbl::EItemEffect::Enum::ResetRankNormal, pCostItem));
-		svrChkCloseErr(ResultCode::E_GAME_NOTENOUGH_RESOURCE, pPlayerInfoSystem->ApplyCost(pCostItem, TransLogCategory::Buy, "ResetRank"));
+		svrChkCloseErr(ResultCode::GAME_INVALID_COSTID, conspiracy::OrganicTbl::FindItem((int)conspiracy::OrganicTbl::EItemEffect::Enum::ResetRankNormal, pCostItem));
+		svrChkCloseErr(ResultCode::GAME_NOTENOUGH_RESOURCE, pPlayerInfoSystem->ApplyCost(pCostItem, TransLogCategory::Buy, "ResetRank"));
 
 		svrChkClose(pPlayerInfoSystem->ResetRankNormal(pCostItem));
 

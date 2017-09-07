@@ -46,8 +46,8 @@ namespace Svr {
 		, IServerComponent(ComponentID)
 		, m_NumberOfInstance("NumberOfGameInstances")
 	{
-		BR_ENTITY_MESSAGE(Message::GameInstanceManager::CreateGameCmd) { svrMemReturn(pNewTrans = new(GetMemoryManager()) GameInstanceTransCreateGame(pMsgData)); return ResultCode::SUCCESS; } );
-		BR_ENTITY_MESSAGE(Message::GameInstanceManager::GameDeletedC2SEvt) { svrMemReturn(pNewTrans = new(GetMemoryManager()) GameInstanceTransGameDeleted(pMsgData)); return ResultCode::SUCCESS; } );
+		BR_ENTITY_MESSAGE(Message::GameInstanceManager::CreateGameCmd)		{ svrMemReturn(pNewTrans = new(GetMemoryManager()) GameInstanceTransCreateGame(GetMemoryManager(), pMsgData)); return ResultCode::SUCCESS; } );
+		BR_ENTITY_MESSAGE(Message::GameInstanceManager::GameDeletedC2SEvt)	{ svrMemReturn(pNewTrans = new(GetMemoryManager()) GameInstanceTransGameDeleted(GetMemoryManager(), pMsgData)); return ResultCode::SUCCESS; } );
 	}
 
 	GameInstanceManagerServiceEntity::~GameInstanceManagerServiceEntity()
@@ -80,8 +80,8 @@ namespace Svr {
 
 		svrChk(LoadbalanceClusterServiceEntity::RegisterServiceMessageHandler( pServerEntity ) );
 
-		pServerEntity->BR_ENTITY_MESSAGE(Message::GameInstanceManager::CreateGameCmd)				{ svrMemReturn(pNewTrans = new(GetMemoryManager()) GameInstanceTransCreateGame(pMsgData)); return ResultCode::SUCCESS; } );
-		pServerEntity->BR_ENTITY_MESSAGE(Message::GameInstanceManager::GameDeletedC2SEvt)			{ svrMemReturn(pNewTrans = new(GetMemoryManager()) GameInstanceTransGameDeleted(pMsgData)); return ResultCode::SUCCESS; } );
+		pServerEntity->BR_ENTITY_MESSAGE(Message::GameInstanceManager::CreateGameCmd)				{ svrMemReturn(pNewTrans = new(GetMemoryManager()) GameInstanceTransCreateGame(GetMemoryManager(), pMsgData)); return ResultCode::SUCCESS; } );
+		pServerEntity->BR_ENTITY_MESSAGE(Message::GameInstanceManager::GameDeletedC2SEvt)			{ svrMemReturn(pNewTrans = new(GetMemoryManager()) GameInstanceTransGameDeleted(GetMemoryManager(), pMsgData)); return ResultCode::SUCCESS; } );
 
 	Proc_End:
 

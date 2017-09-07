@@ -179,7 +179,7 @@ namespace Svr {
 
 	Proc_End:
 
-		IMemoryManager::Delete(pTranRes);
+		IHeap::Delete(pTranRes);
 		pTranRes = nullptr;
 
 		return hr;

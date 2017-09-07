@@ -29,38 +29,37 @@ namespace SF {
 namespace Svr {
 
 
-	class PartyManagerTransCreateParty : public ClusterEntityMessageTransaction< GamePartyManagerServiceEntity, Message::GamePartyManager::CreatePartyCmd, PartyManagerTransCreateParty, 1>
+	class PartyManagerTransCreateParty : public ClusterEntityMessageTransaction< GamePartyManagerServiceEntity, Message::GamePartyManager::CreatePartyCmd>
 	{
 	public:
-		typedef ClusterEntityMessageTransaction< GamePartyManagerServiceEntity, Message::GamePartyManager::CreatePartyCmd, PartyManagerTransCreateParty, 1> super;
+		typedef ClusterEntityMessageTransaction< GamePartyManagerServiceEntity, Message::GamePartyManager::CreatePartyCmd> super;
 
 	private:
 		PartyUID	m_PartyUID;
 
 	public:
-		PartyManagerTransCreateParty(MessageDataPtr &pIMsg) : ClusterEntityMessageTransaction(pIMsg) {}
+		PartyManagerTransCreateParty(IHeap& heap, MessageDataPtr &pIMsg) : ClusterEntityMessageTransaction(heap, pIMsg) {}
 		virtual ~PartyManagerTransCreateParty() {}
 
 		// Start Transaction
 		virtual Result StartTransaction();
 
-		Policy::NetSvrPolicyGamePartyManager* GetInterface()	{ return ServerEntityMessageTransaction::GetInterface<Policy::NetSvrPolicyGamePartyManager>(); }
 
-		BR_SVR_MSGTRANS_CLOSE(CreatePartyRes, RouteContext(m_PartyUID,GetRouteContext().GetFrom()));
+		BR_SVR_MSGTRANS_CLOSE(Policy::NetSvrPolicyGamePartyManager, CreatePartyRes, RouteContext(m_PartyUID,GetRouteContext().GetFrom()));
 	};
 
 
 
 
-	class PartyManagerTransPartyDeleted : public ClusterEntityMessageTransaction< GamePartyManagerServiceEntity, Message::GamePartyManager::PartyDeletedC2SEvt, PartyManagerTransPartyDeleted, 1>
+	class PartyManagerTransPartyDeleted : public ClusterEntityMessageTransaction< GamePartyManagerServiceEntity, Message::GamePartyManager::PartyDeletedC2SEvt>
 	{
 	public:
-		typedef ClusterEntityMessageTransaction< GamePartyManagerServiceEntity, Message::GamePartyManager::PartyDeletedC2SEvt, PartyManagerTransPartyDeleted, 1> super;
+		typedef ClusterEntityMessageTransaction< GamePartyManagerServiceEntity, Message::GamePartyManager::PartyDeletedC2SEvt> super;
 
 	private:
 
 	public:
-		PartyManagerTransPartyDeleted(MessageDataPtr &pIMsg) : ClusterEntityMessageTransaction(pIMsg) {}
+		PartyManagerTransPartyDeleted(IHeap& heap, MessageDataPtr &pIMsg) : ClusterEntityMessageTransaction(heap, pIMsg) {}
 		virtual ~PartyManagerTransPartyDeleted() {}
 
 		// Start Transaction

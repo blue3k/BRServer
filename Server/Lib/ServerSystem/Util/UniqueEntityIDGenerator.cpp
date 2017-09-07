@@ -37,7 +37,7 @@ namespace SF {
 		if( pItem )
 		{
 			uiNewID = pItem->UID;
-			IMemoryManager::Delete(pItem);
+			IHeap::Delete(pItem);
 		}
 		else
 		{
@@ -94,7 +94,7 @@ namespace SF {
 		m_FreeIDs.for_each( [](StackPool::Item *pItem) 
 		{
 			Item* pMyItem = (Item*)pItem;
-			IMemoryManager::Delete(pMyItem);
+			IHeap::Delete(pMyItem);
 		});
 		m_FreeIDs.Clear();
 		m_CounterForID = 0;

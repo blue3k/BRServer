@@ -141,7 +141,6 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)Util\GlobalUIDGenerator.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Util\LocalUIDGenerator.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Util\UniqueEntityIDGenerator.h" />
-    <ClInclude Include="$(MSBuildThisFileDirectory)ZooKeeper\SFZooKeeper.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="$(MSBuildThisFileDirectory)Component\ServerComponent.cpp" />
@@ -221,7 +220,6 @@
     <ClCompile Include="$(MSBuildThisFileDirectory)Util\GlobalUIDGenerator.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)Util\LocalUIDGenerator.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)Util\UniqueEntityIDGenerator.cpp" />
-    <ClCompile Include="$(MSBuildThisFileDirectory)ZooKeeper\SFZooKeeper.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Xml Include="$(MSBuildThisFileDirectory)..\..\Config\ServerConfig.xml" />

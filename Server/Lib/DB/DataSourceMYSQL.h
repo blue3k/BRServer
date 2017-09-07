@@ -35,7 +35,7 @@ namespace DB {
 		uint m_Port;
 
 	public:
-		DataSourceMYSQL(IMemoryManager& memMgr);
+		DataSourceMYSQL(IHeap& memMgr);
 		virtual ~DataSourceMYSQL() { CloseDBSource(); }
 
 		const String& GetServerIP()			{ return m_ServerIP; }

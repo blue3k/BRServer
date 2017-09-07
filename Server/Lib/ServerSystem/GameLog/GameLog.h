@@ -71,7 +71,7 @@ namespace Svr {
 
 	public:
 
-		GameLog();
+		GameLog(IHeap& heap);
 		virtual ~GameLog();
 
 		// Initialize 
@@ -81,7 +81,7 @@ namespace Svr {
 		virtual void TerminateLog();
 
 		// Get log binary
-		Result GetGameLogBinary( OutputMemoryStream& stream, uint startIndex, uint count );
+		Result GetGameLogBinary( OutputMemoryStream& stream, uint startIndex, uint count ) const;
 
 	};
 

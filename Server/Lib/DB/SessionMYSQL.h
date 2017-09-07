@@ -55,17 +55,17 @@ namespace DB {
 
 	private:
 
-		IMemoryManager& m_MemoryManager;
+		IHeap& m_MemoryManager;
 
 		// statement pool map
 		StatementPoolMap	m_StatementPoolMap;
 
 	public:
 		// statement pool MYSQL
-		StatementPoolMYSQL(IMemoryManager& memoryManager);
+		StatementPoolMYSQL(IHeap& memoryManager);
 		~StatementPoolMYSQL();
 
-		IMemoryManager& GetMemoryManager() { return m_MemoryManager; }
+		IHeap& GetMemoryManager() { return m_MemoryManager; }
 
 		// Cleanup the pool
 		Result ClearStatementPools();
@@ -153,7 +153,7 @@ namespace DB {
 
 	public:
 		// constructor / destructor
-		SessionMYSQL(IMemoryManager& memMgr, DataSourceMYSQL *pDataSource);
+		SessionMYSQL(IHeap& memMgr, DataSourceMYSQL *pDataSource);
 		virtual ~SessionMYSQL();
 
 		// return context value

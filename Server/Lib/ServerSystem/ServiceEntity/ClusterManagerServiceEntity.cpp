@@ -29,7 +29,7 @@
 #include "Protocol/Message/ClusterServerMsgClass.h"
 #include "ServerSystem/ServiceEntity/ClusterServiceTrans.h"
 #include "ServerSystem/ServiceEntity/ClusterManagerServiceTrans.h"
-#include "ServerSystem/ServerService/ClusterServerService.h"
+#include "Protocol/ServerService/ClusterServerService.h"
 
 
 namespace SF {

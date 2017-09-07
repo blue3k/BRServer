@@ -59,7 +59,7 @@ namespace DB {
 		{
 			QueryWorker* pWorker = *itWorker;
 			pWorker->Stop(true);
-			IMemoryManager::Delete(pWorker);
+			IHeap::Delete(pWorker);
 		}
 		m_QueryWorker.clear();
 	}
@@ -87,7 +87,7 @@ namespace DB {
 		if (initCount <= 0 && stm_pInstance != nullptr)
 		{
 			stm_pInstance->StopWorkers();
-			IMemoryManager::Delete(stm_pInstance);
+			IHeap::Delete(stm_pInstance);
 			stm_pInstance = nullptr;
 		}
 	}

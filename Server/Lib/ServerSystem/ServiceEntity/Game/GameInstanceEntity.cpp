@@ -27,7 +27,6 @@
 //#include "ConspiracyGameInstanceServerClass.h"
 
 //#include "Protocol/Policy/GameNetPolicy.h"
-#include "Protocol/Policy/GameMasterServerNetPolicy.h"
 
 //#include "GameInstanceEntity.h"
 
@@ -54,8 +53,9 @@ namespace Svr {
 
 	GameInstanceEntity::GameInstanceEntity()
 		: MasterEntity(64,64)
+		, m_GamePlayerByUID(GetMemoryManager())
+		, m_PendingReleasePlayer(GetMemoryManager())
 		, m_NumBot(0)
-		, m_Allocator(STDAllocator::GetInstance())
 	{
 		SetTickInterval(DurationMS(Const::GAMEINSTANCE_TICK_TIME));
 		m_EmptyInstanceKillTimeOut = DurationMS(Const::GAMEINSTANCE_EMPTYINSTANCE_KILL_TIMEOUT);
@@ -109,7 +109,7 @@ namespace Svr {
 	{
 		Result hr = ResultCode::SUCCESS;
 		auto CurTime = Util::Time.GetTimeMs();
-		StaticArray<PlayerID,64> LeaverList;
+		StaticArray<PlayerID,64> LeaverList(GetHeap());
 		GameInstancePlayer *pGamePlayer = nullptr;
 		PlayerID pltID;
 		INT playerCount = 0;
@@ -201,7 +201,7 @@ namespace Svr {
 	// Close Game Instance
 	void GameInstanceEntity::CloseGameInstance()
 	{
-		svrTrace(TRC_INFO, "CloseGameInstance:{0}", GetEntityUID());
+		svrTrace(SVR_INFO, "CloseGameInstance:{0}", GetEntityUID());
 
 		LeaveAllPlayerForGameDelete();
 
@@ -231,7 +231,7 @@ namespace Svr {
 
 		if (maxPlayer > GameConst::MAX_GAMEPLAYER)
 		{
-			svrErr(ResultCode::E_GAME_INVALID_PLAYER_COUNT);
+			svrErr(ResultCode::GAME_INVALID_PLAYER_COUNT);
 		}
 
 		if (numBot > maxPlayer)
@@ -297,7 +297,7 @@ namespace Svr {
 		svrChkPtr( pPlayer );
 		if ((m_GamePlayerByUID.Find(pPlayer->GetPlayerID(), pFound)))
 		{
-			svrErr(ResultCode::E_GAME_ALREADY_IN_GAME);
+			svrErr(ResultCode::GAME_ALREADY_IN_GAME);
 		}
 
 		m_TotalJoinedPlayer++;
@@ -328,7 +328,7 @@ namespace Svr {
 
 	//Proc_End:
 
-		svrTrace(TRC_INFO, "LeavePlayer, remain:{0}", m_GamePlayerByUID.GetItemCount());
+		svrTrace(SVR_INFO, "LeavePlayer, remain:{0}", m_GamePlayerByUID.GetItemCount());
 
 		if (m_GamePlayerByUID.GetItemCount() == 0) // if no player remain
 		{
@@ -355,9 +355,8 @@ namespace Svr {
 	{
 		m_GamePlayerByUID.ForeachOrder(0, GameConst::MAX_GAMEPLAYER, [&](const PlayerID& playerID, GameInstancePlayer* pPlayer)-> bool
 		{
-			auto pPolicy = pPlayer->GetInterface<Policy::NetSvrPolicyGameInstance>();
-			if (pPolicy != nullptr && pPlayer->GetPlayerEntityUID() != 0)
-				pPolicy->PlayerKickedS2CEvt(RouteContext(GetEntityUID(), pPlayer->GetPlayerEntityUID()), pPlayer->GetPlayerID());
+			if (pPlayer->GetPlayerEntityUID().UID != 0)
+				Policy::NetSvrPolicyGameInstance(pPlayer->GetConnection()).PlayerKickedS2CEvt(RouteContext(GetEntityUID(), pPlayer->GetPlayerEntityUID()), pPlayer->GetPlayerID());
 
 			LeavePlayer( pPlayer );
 

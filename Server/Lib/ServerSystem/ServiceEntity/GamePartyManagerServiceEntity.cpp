@@ -52,8 +52,8 @@ namespace Svr {
 		, m_PartyCount("PartyCount")
 	{
 		// Game party manager transactions
-		BR_ENTITY_MESSAGE(Message::GamePartyManager::CreatePartyCmd)		{ svrMemReturn(pNewTrans = new(GetMemoryManager()) PartyManagerTransCreateParty(pMsgData)); return ResultCode::SUCCESS; } );
-		BR_ENTITY_MESSAGE(Message::GamePartyManager::PartyDeletedC2SEvt)	{ svrMemReturn(pNewTrans = new(GetMemoryManager()) PartyManagerTransPartyDeleted(pMsgData)); return ResultCode::SUCCESS; } );
+		BR_ENTITY_MESSAGE(Message::GamePartyManager::CreatePartyCmd)		{ svrMemReturn(pNewTrans = new(GetMemoryManager()) PartyManagerTransCreateParty(GetHeap(), pMsgData)); return ResultCode::SUCCESS; } );
+		BR_ENTITY_MESSAGE(Message::GamePartyManager::PartyDeletedC2SEvt)	{ svrMemReturn(pNewTrans = new(GetMemoryManager()) PartyManagerTransPartyDeleted(GetHeap(), pMsgData)); return ResultCode::SUCCESS; } );
 
 	}
 
@@ -85,21 +85,21 @@ namespace Svr {
 		svrChk(LoadbalanceClusterServiceEntity::RegisterServiceMessageHandler( pServerEntity ) );
 
 		// Game party manager transactions
-		pServerEntity->BR_ENTITY_MESSAGE(Message::GamePartyManager::CreatePartyCmd)						{ svrMemReturn(pNewTrans = new(GetMemoryManager()) PartyManagerTransCreateParty(pMsgData)); return ResultCode::SUCCESS; } );
-		pServerEntity->BR_ENTITY_MESSAGE(Message::GamePartyManager::PartyDeletedC2SEvt)					{ svrMemReturn(pNewTrans = new(GetMemoryManager()) PartyManagerTransPartyDeleted(pMsgData)); return ResultCode::SUCCESS; } );
+		pServerEntity->BR_ENTITY_MESSAGE(Message::GamePartyManager::CreatePartyCmd)						{ svrMemReturn(pNewTrans = new(GetHeap()) PartyManagerTransCreateParty(GetHeap(), pMsgData)); return ResultCode::SUCCESS; } );
+		pServerEntity->BR_ENTITY_MESSAGE(Message::GamePartyManager::PartyDeletedC2SEvt)					{ svrMemReturn(pNewTrans = new(GetHeap()) PartyManagerTransPartyDeleted(GetHeap(), pMsgData)); return ResultCode::SUCCESS; } );
 
 		// Game party instance transactions
-		pServerEntity->BR_ENTITY_MESSAGE(Message::GameParty::JoinPartyCmd)								{ svrMemReturn(pNewTrans = new(GetMemoryManager()) PartyTransJoinParty(pMsgData)); return ResultCode::SUCCESS; } );
-		pServerEntity->BR_ENTITY_MESSAGE(Message::GameParty::LeavePartyCmd)								{ svrMemReturn(pNewTrans = new(GetMemoryManager()) PartyTransLeaveParty(pMsgData)); return ResultCode::SUCCESS; } );
-		pServerEntity->BR_ENTITY_MESSAGE(Message::GameParty::KickPlayerCmd)								{ svrMemReturn(pNewTrans = new(GetMemoryManager()) PartyTransKickPlayer(pMsgData)); return ResultCode::SUCCESS; } );
-		pServerEntity->BR_ENTITY_MESSAGE(Message::GameParty::ChatMessageC2SEvt)							{ svrMemReturn(pNewTrans = new(GetMemoryManager()) PartyTransChatMessage(pMsgData)); return ResultCode::SUCCESS; } );
-		pServerEntity->BR_ENTITY_MESSAGE(Message::GameParty::QuickChatMessageC2SEvt)					{ svrMemReturn(pNewTrans = new(GetMemoryManager()) PartyTransQuickChatMessage(pMsgData)); return ResultCode::SUCCESS; } );
+		pServerEntity->BR_ENTITY_MESSAGE(Message::GameParty::JoinPartyCmd)								{ svrMemReturn(pNewTrans = new(GetHeap()) PartyTransJoinParty(GetHeap(), pMsgData)); return ResultCode::SUCCESS; } );
+		pServerEntity->BR_ENTITY_MESSAGE(Message::GameParty::LeavePartyCmd)								{ svrMemReturn(pNewTrans = new(GetHeap()) PartyTransLeaveParty(GetHeap(), pMsgData)); return ResultCode::SUCCESS; } );
+		pServerEntity->BR_ENTITY_MESSAGE(Message::GameParty::KickPlayerCmd)								{ svrMemReturn(pNewTrans = new(GetHeap()) PartyTransKickPlayer(GetHeap(), pMsgData)); return ResultCode::SUCCESS; } );
+		pServerEntity->BR_ENTITY_MESSAGE(Message::GameParty::ChatMessageC2SEvt)							{ svrMemReturn(pNewTrans = new(GetHeap()) PartyTransChatMessage(GetHeap(), pMsgData)); return ResultCode::SUCCESS; } );
+		pServerEntity->BR_ENTITY_MESSAGE(Message::GameParty::QuickChatMessageC2SEvt)					{ svrMemReturn(pNewTrans = new(GetHeap()) PartyTransQuickChatMessage(GetHeap(), pMsgData)); return ResultCode::SUCCESS; } );
 
-		pServerEntity->BR_ENTITY_MESSAGE(Message::GameParty::StartGameMatchCmd)							{ svrMemReturn(pNewTrans = new(GetMemoryManager()) PartyTransStartGameMatchCmd(pMsgData)); return ResultCode::SUCCESS; } );
-		pServerEntity->BR_ENTITY_MESSAGE(Message::GameParty::CancelGameMatchCmd)						{ svrMemReturn(pNewTrans = new(GetMemoryManager()) PartyTransCancelGameMatchCmd(pMsgData)); return ResultCode::SUCCESS; } );
-		pServerEntity->BR_ENTITY_MESSAGE(Message::PartyMatchingQueue::PartyMatchingCanceledS2CEvt)		{ svrMemReturn(pNewTrans = new(GetMemoryManager()) PartyTransPartyMatchingCanceled(pMsgData)); return ResultCode::SUCCESS; } );
-		pServerEntity->BR_ENTITY_MESSAGE(Message::PartyMatchingQueue::PartyMatchingItemDequeuedS2CEvt)	{ svrMemReturn(pNewTrans = new(GetMemoryManager()) PartyTransMatchingItemDequeued(pMsgData)); return ResultCode::SUCCESS; } );
-		pServerEntity->BR_ENTITY_MESSAGE(Message::PartyMatching::PartyGameMatchedS2CEvt)				{ svrMemReturn(pNewTrans = new(GetMemoryManager()) PartyTransPartyGameMatchedS2CEvt(pMsgData)); return ResultCode::SUCCESS; } );
+		pServerEntity->BR_ENTITY_MESSAGE(Message::GameParty::StartGameMatchCmd)							{ svrMemReturn(pNewTrans = new(GetHeap()) PartyTransStartGameMatchCmd(GetHeap(), pMsgData)); return ResultCode::SUCCESS; } );
+		pServerEntity->BR_ENTITY_MESSAGE(Message::GameParty::CancelGameMatchCmd)						{ svrMemReturn(pNewTrans = new(GetHeap()) PartyTransCancelGameMatchCmd(GetHeap(), pMsgData)); return ResultCode::SUCCESS; } );
+		pServerEntity->BR_ENTITY_MESSAGE(Message::PartyMatchingQueue::PartyMatchingCanceledS2CEvt)		{ svrMemReturn(pNewTrans = new(GetHeap()) PartyTransPartyMatchingCanceled(GetHeap(), pMsgData)); return ResultCode::SUCCESS; } );
+		pServerEntity->BR_ENTITY_MESSAGE(Message::PartyMatchingQueue::PartyMatchingItemDequeuedS2CEvt)	{ svrMemReturn(pNewTrans = new(GetHeap()) PartyTransMatchingItemDequeued(GetHeap(), pMsgData)); return ResultCode::SUCCESS; } );
+		pServerEntity->BR_ENTITY_MESSAGE(Message::PartyMatching::PartyGameMatchedS2CEvt)				{ svrMemReturn(pNewTrans = new(GetHeap()) PartyTransPartyGameMatchedS2CEvt(GetHeap(), pMsgData)); return ResultCode::SUCCESS; } );
 
 	Proc_End:
 
@@ -154,7 +154,7 @@ namespace Svr {
 		else
 		{
 			--m_PartyCount;
-			svrTrace(TRC_INFO, "Party deleted {0}", partyUID);
+			svrTrace(SVR_INFO, "Party deleted {0}", partyUID);
 			m_LocalWorkload.fetch_sub(1, std::memory_order_relaxed);
 		}
 

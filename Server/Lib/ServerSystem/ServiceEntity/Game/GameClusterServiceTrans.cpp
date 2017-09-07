@@ -142,7 +142,7 @@ namespace Svr {
 
 		svrChk( super::StartTransaction() );
 
-		svrChk( GetServerComponent<ServerEntityManager>()->GetServerEntity( GetPlayerUID().GetServerID(), pServerEntity ) );
+		svrChk( GetServerComponent<ServerEntityManager>()->GetServerEntity(EntityUID(GetPlayerUID()).GetServerID(), pServerEntity ) );
 
 		svrChk( GetMyOwner()->CreatePlayer( GetPlayerID(), GetPlayerUID(), pServerEntity ) );
 

@@ -35,7 +35,7 @@ namespace DB {
 
 	protected:
 
-		IMemoryManager& m_MemoryManager;
+		IHeap& m_MemoryManager;
 
 		// service connection string
 		String			m_strConnectionString;
@@ -53,13 +53,13 @@ namespace DB {
 		StackPool			m_SessionPool;
 
 	public:
-		DataSource(IMemoryManager& memMgr)
+		DataSource(IHeap& memMgr)
 			: m_MemoryManager(memMgr)
 			, m_Opened(false)
 		{}
 		virtual ~DataSource() {}
 
-		IMemoryManager& GetMemoryManager() { return m_MemoryManager; }
+		IHeap& GetMemoryManager() { return m_MemoryManager; }
 
 		bool GetOpened() { return m_Opened; }
 

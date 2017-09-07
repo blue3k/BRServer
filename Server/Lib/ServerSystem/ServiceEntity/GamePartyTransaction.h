@@ -27,18 +27,17 @@ namespace Svr {
 	class PartyPlayer;
 
 	// Message transaction template
-	template< class PolicyClass, class MessageClass, class MemoryPoolClass >
-	class GamePartyMessageTransaction : public ServerEntityMessageTransaction<GamePartyEntity, MessageClass, MemoryPoolClass>
+	template< class MessageClass >
+	class GamePartyMessageTransaction : public ServerEntityMessageTransaction<GamePartyEntity, MessageClass>
 	{
 	private:
-		typedef ServerEntityMessageTransaction<GamePartyEntity, MessageClass, MemoryPoolClass> super;
-		typedef PolicyClass PolicyClassType;
+		typedef ServerEntityMessageTransaction<GamePartyEntity, MessageClass> super;
 	protected:
 		// Player Player ID
 		PlayerID	m_PlayerID;
 
 	public:
-		GamePartyMessageTransaction( IMemoryManager& memMgr, MessageDataPtr &pIMsg )
+		GamePartyMessageTransaction( IHeap& memMgr, MessageDataPtr &pIMsg )
 			:super( memMgr, pIMsg )
 			,m_PlayerID(0)
 		{
@@ -68,7 +67,7 @@ namespace Svr {
 
 
 }; // Svr
-}; // BR
+}; // SF
 
 
 

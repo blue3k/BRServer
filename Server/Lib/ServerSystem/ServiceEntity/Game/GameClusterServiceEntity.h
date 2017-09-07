@@ -67,6 +67,11 @@ namespace Svr {
 
 		public:
 
+			PlayerID GetPlayerID() const { return m_PlayerID; }
+			EntityUID GetEntityUID() const { return m_EntityUID; }
+			TimeStampMS GetServerUpTime() const { return m_ServerUpTime; }
+			ServerEntity* GetServerEntity() const { return m_ServerEntity; }
+
 			// Constructor with constructor
 			PlayerTableItem( PlayerID playerID, EntityUID entityUID, ServerEntity* pServerEntity )
 				:m_PlayerID(playerID)
@@ -91,8 +96,6 @@ namespace Svr {
 		typedef PlayerTableItem* PlayerIDMapIterator;
 
 	private:
-
-		IMemoryManager& GetAllocator() { return GetSystemMemoryManager(); }
 
 		// Player ID map
 		PlayerIDMap m_PlayerIDMap;

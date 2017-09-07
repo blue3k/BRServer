@@ -63,7 +63,7 @@ namespace DB {
 				if (dataSource != nullptr)
 				{
 					dataSource->CloseDBSource();
-					IMemoryManager::Delete(dataSource);
+					IHeap::Delete(dataSource);
 				}
 				return ResultCode::SUCCESS;
 			});
@@ -95,7 +95,7 @@ namespace DB {
 			if (dataSource != nullptr)
 			{
 				dataSource->CloseDBSource();
-				IMemoryManager::Delete(dataSource);
+				IHeap::Delete(dataSource);
 			}
 			return ResultCode::SUCCESS;
 		});

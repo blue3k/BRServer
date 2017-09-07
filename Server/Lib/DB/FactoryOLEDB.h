@@ -38,10 +38,10 @@ namespace DB {
 		virtual void ReportError( void* DBContext, Result hr, const char* className );
 
 		// initialize DB source
-		virtual Result	CreateDataSource(IMemoryManager& memMgr, DataSource* &pDBSource );
+		virtual Result	CreateDataSource(IHeap& memMgr, DataSource* &pDBSource );
 
 		// close DB source
-		virtual Result	CreateSession(IMemoryManager& memMgr, DataSource* pDBSource, Session* &pSession );
+		virtual Result	CreateSession(IHeap& memMgr, DataSource* pDBSource, Session* &pSession );
 	};
 
 } // namespace DB

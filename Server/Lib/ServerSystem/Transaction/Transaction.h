@@ -78,7 +78,7 @@ namespace Svr {
 
 	private:
 
-		IMemoryManager& m_MemoryManager;
+		IHeap& m_MemoryManager;
 
 		// Parent transaction ID
 		TransactionID		m_parentTransID;
@@ -146,11 +146,12 @@ namespace Svr {
 
 	public:
 		// Constructor/Destructor
-		Transaction( IMemoryManager& memoryManager, TransactionID parentTransID );
+		Transaction( IHeap& memoryManager, TransactionID parentTransID );
 
 		virtual void Dispose() override;
 
-		IMemoryManager& GetMemoryManager() { return m_MemoryManager; }
+		IHeap& GetMemoryManager() { return m_MemoryManager; }
+		IHeap& GetHeap() { return m_MemoryManager; }
 
 		inline void SetServerEntity(ServerEntity* pServerEntity)
 		{
@@ -264,7 +265,7 @@ namespace Svr {
 			SF::Message::MessageID m_MsgID;
 
 		public:
-			SubTransaction(IMemoryManager& memoryManager, TransactionID parentTransID , SF::Message::MessageID MsgID );
+			SubTransaction(IHeap& memoryManager, TransactionID parentTransID , SF::Message::MessageID MsgID );
 			virtual ~SubTransaction();
 
 			//virtual Result CloseTransaction( Result hrRes );
@@ -377,7 +378,7 @@ namespace Svr {
 		bool	m_bFlushRes;
 
 	public:
-		SubTransactionWitResult(IMemoryManager& memoryManager, TransactionID parentTransID , Message::MessageID MsgID );
+		SubTransactionWitResult(IHeap& memoryManager, TransactionID parentTransID , Message::MessageID MsgID );
 		virtual ~SubTransactionWitResult();
 
 		// Get transaction ID
@@ -409,7 +410,7 @@ namespace Svr {
 		MessageHandlerTable<TransactionMessageHandlerType>		m_Handlers;
 
 	public:
-		TransactionT(IMemoryManager& memMgr, TransactionID transID )
+		TransactionT(IHeap& memMgr, TransactionID transID )
 			: Transaction(memMgr, transID )
 			, m_Handlers(memMgr)
 		{
@@ -502,7 +503,7 @@ namespace Svr {
 		SharedPointerT<Net::Connection> m_pConn;
 
 	public:
-		MessageTransaction(IMemoryManager& memoryManager, MessageDataPtr &pIMsg )
+		MessageTransaction(IHeap& memoryManager, MessageDataPtr &pIMsg )
 			: TransactionT<OwnerType>(memoryManager, TransactionID() )
 			, MessageClass( pIMsg )
 		{
@@ -574,7 +575,7 @@ namespace Svr {
 	class UserTransactionS2SEvt : public MessageTransaction<OwnerEntityType, MessageClass>
 	{
 	protected:
-		UserTransactionS2SEvt(IMemoryManager& memMgr, MessageDataPtr &pIMsg )
+		UserTransactionS2SEvt(IHeap& memMgr, MessageDataPtr &pIMsg )
 			:MessageTransaction<OwnerEntityType, MessageClass>(memMgr, pIMsg )
 		{
 		}
@@ -628,7 +629,7 @@ namespace Svr {
 		typedef MessageTransaction<OwnerEntityType, MessageClass> superTrans;
 
 	protected:
-		UserTransactionS2SCmd(IMemoryManager& memMgr, MessageDataPtr &pIMsg )
+		UserTransactionS2SCmd(IHeap& memMgr, MessageDataPtr &pIMsg )
 			: MessageTransaction<OwnerEntityType, MessageClass>(memMgr, pIMsg )
 		{
 		}

@@ -51,19 +51,19 @@ namespace SF
 			}; // Result PartyGameMatchedS2CEvt::ParseMessage( MessageData* pIMsg )
 
 
-			Result PartyGameMatchedS2CEvt::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
+			Result PartyGameMatchedS2CEvt::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
 			{
  				Result hr;
 
-				protocolMem(pMessageBase = new(memoryManager) PartyGameMatchedS2CEvt(pIMsg));
+				protocolMem(pMessageBase = new(memHeap) PartyGameMatchedS2CEvt(pIMsg));
 				protocolChk(pMessageBase->ParseMsg());
 
 			Proc_End:
 				return hr;
 
-			}; // Result PartyGameMatchedS2CEvt::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
+			}; // Result PartyGameMatchedS2CEvt::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
 
-			MessageData* PartyGameMatchedS2CEvt::Create( IMemoryManager& memoryManager, const RouteContext &InRouteContext, const uint16_t &InRouteHopCount )
+			MessageData* PartyGameMatchedS2CEvt::Create( IHeap& memHeap, const RouteContext &InRouteContext, const uint16_t &InRouteHopCount )
 			{
  				MessageData *pNewMsg = nullptr;
 				Result hr;
@@ -75,7 +75,7 @@ namespace SF
 					+ sizeof(uint16_t));
 
 
-				protocolMem( pNewMsg = MessageData::NewMessage( memoryManager, PartyMatching::PartyGameMatchedS2CEvt::MID, __uiMessageSize ) );
+				protocolMem( pNewMsg = MessageData::NewMessage( memHeap, PartyMatching::PartyGameMatchedS2CEvt::MID, __uiMessageSize ) );
 
 				pMsgData = pNewMsg->GetMessageData();
 
@@ -92,7 +92,7 @@ namespace SF
 				}
 				return pNewMsg;
 
-			}; // MessageData* PartyGameMatchedS2CEvt::Create( IMemoryManager& memoryManager, const RouteContext &InRouteContext, const uint16_t &InRouteHopCount )
+			}; // MessageData* PartyGameMatchedS2CEvt::Create( IHeap& memHeap, const RouteContext &InRouteContext, const uint16_t &InRouteHopCount )
 
 			Result PartyGameMatchedS2CEvt::OverrideRouteContextDestination( EntityUID to )
 			{
@@ -187,19 +187,19 @@ namespace SF
 			}; // Result PlayerGameMatchedS2CEvt::ParseMessage( MessageData* pIMsg )
 
 
-			Result PlayerGameMatchedS2CEvt::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
+			Result PlayerGameMatchedS2CEvt::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
 			{
  				Result hr;
 
-				protocolMem(pMessageBase = new(memoryManager) PlayerGameMatchedS2CEvt(pIMsg));
+				protocolMem(pMessageBase = new(memHeap) PlayerGameMatchedS2CEvt(pIMsg));
 				protocolChk(pMessageBase->ParseMsg());
 
 			Proc_End:
 				return hr;
 
-			}; // Result PlayerGameMatchedS2CEvt::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
+			}; // Result PlayerGameMatchedS2CEvt::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
 
-			MessageData* PlayerGameMatchedS2CEvt::Create( IMemoryManager& memoryManager, const RouteContext &InRouteContext, const uint16_t &InRouteHopCount, const PlayerID &InDestPlayerID, const uint64_t &InGameInsUID, const uint8_t &InRequestedRole )
+			MessageData* PlayerGameMatchedS2CEvt::Create( IHeap& memHeap, const RouteContext &InRouteContext, const uint16_t &InRouteHopCount, const PlayerID &InDestPlayerID, const uint64_t &InGameInsUID, const uint8_t &InRequestedRole )
 			{
  				MessageData *pNewMsg = nullptr;
 				Result hr;
@@ -214,7 +214,7 @@ namespace SF
 					+ sizeof(uint8_t));
 
 
-				protocolMem( pNewMsg = MessageData::NewMessage( memoryManager, PartyMatching::PlayerGameMatchedS2CEvt::MID, __uiMessageSize ) );
+				protocolMem( pNewMsg = MessageData::NewMessage( memHeap, PartyMatching::PlayerGameMatchedS2CEvt::MID, __uiMessageSize ) );
 
 				pMsgData = pNewMsg->GetMessageData();
 
@@ -234,7 +234,7 @@ namespace SF
 				}
 				return pNewMsg;
 
-			}; // MessageData* PlayerGameMatchedS2CEvt::Create( IMemoryManager& memoryManager, const RouteContext &InRouteContext, const uint16_t &InRouteHopCount, const PlayerID &InDestPlayerID, const uint64_t &InGameInsUID, const uint8_t &InRequestedRole )
+			}; // MessageData* PlayerGameMatchedS2CEvt::Create( IHeap& memHeap, const RouteContext &InRouteContext, const uint16_t &InRouteHopCount, const PlayerID &InDestPlayerID, const uint64_t &InGameInsUID, const uint8_t &InRequestedRole )
 
 			Result PlayerGameMatchedS2CEvt::OverrideRouteContextDestination( EntityUID to )
 			{

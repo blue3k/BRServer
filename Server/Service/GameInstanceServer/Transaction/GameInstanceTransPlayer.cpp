@@ -286,7 +286,7 @@ namespace ConspiracyGameInstanceServer {
 		hr = GetMyOwner()->GetComponent<GamePlaySystem>()->BroadCastChatMessage(pMyPlayer, GetRole(), GetChatMessage());
 
 		//if( GetRole() != PlayerRole::None && GetRole() != PlayerRole::Werewolf  )
-		//	svrErr(ResultCode::E_GAME_INVALID_ROLE);
+		//	svrErr(ResultCode::GAME_INVALID_ROLE);
 
 		//gameState = GetMyOwner()->GetComponent<GameStateSystem>()->GetCurrentGameState();
 		//bIsGhost = gameState != GameStateID::None && gameState != GameStateID::End && pMyPlayer->GetPlayerState() == PlayerState::Ghost;
@@ -298,7 +298,7 @@ namespace ConspiracyGameInstanceServer {
 		////case GameStateID::SecondNightVote:
 		//case GameStateID::NightVote:
 		//	if( !bIsGhost && GetRole() != PlayerRole::Werewolf )
-		//		svrErrClose(ResultCode::E_GAME_INVALID_GAMESTATE);
+		//		svrErrClose(ResultCode::GAME_INVALID_GAMESTATE);
 		//	break;
 		//default:
 		//	break;
@@ -437,10 +437,10 @@ namespace ConspiracyGameInstanceServer {
 		svrChk(GetMyPlayer(pMyPlayer));
 
 		if (GetMyOwner()->GetComponent<GameStateSystem>()->GetCurrentGameState() != GameStateID::MorningDebate)
-			svrErrClose(ResultCode::E_GAME_INVALID_GAMESTATE);
+			svrErrClose(ResultCode::GAME_INVALID_GAMESTATE);
 
 		if (pMyPlayer->GetPlayerState() != PlayerState::Ghost)
-			svrErrClose(ResultCode::E_GAME_INVALID_PLAYER_STATE);
+			svrErrClose(ResultCode::GAME_INVALID_PLAYER_STATE);
 
 		numReveal = std::min((size_t)GameConst::MAX_PLAYER_REVEAL, GetTargetPlayerID().GetSize());
 		for (uint iTargetPlayer = 0; iTargetPlayer < numReveal; iTargetPlayer++)
@@ -473,13 +473,13 @@ namespace ConspiracyGameInstanceServer {
 		svrChk(GetMyPlayer(pMyPlayer));
 
 		if (pMyPlayer->GetReviveCount() > 0)
-			svrErrClose(ResultCode::E_GAME_MAX_TRY);
+			svrErrClose(ResultCode::GAME_MAX_TRY);
 
 		if (GetMyOwner()->GetComponent<GameStateSystem>()->GetCurrentGameState() != GameStateID::MorningDebate)
-			svrErrClose(ResultCode::E_GAME_INVALID_GAMESTATE);
+			svrErrClose(ResultCode::GAME_INVALID_GAMESTATE);
 
 		if (pMyPlayer->GetPlayerState() != PlayerState::Ghost)
-			svrErrClose(ResultCode::E_GAME_INVALID_PLAYER_STATE);
+			svrErrClose(ResultCode::GAME_INVALID_PLAYER_STATE);
 
 		svrChkClose(GetMyOwner()->GetComponent<GamePlaySystem>()->RevivePlayer(pMyPlayer));
 

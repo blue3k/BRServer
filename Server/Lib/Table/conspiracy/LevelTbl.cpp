@@ -36,8 +36,8 @@ namespace conspiracy
 
 		if (m_LevelTablePrev != nullptr)
 		{
- 			for( auto itItem : *m_LevelTablePrev) { IMemoryManager::Delete(itItem.second); } ;
-			IMemoryManager::Delete(m_LevelTablePrev);
+ 			for( auto itItem : *m_LevelTablePrev) { IHeap::Delete(itItem.second); } ;
+			IHeap::Delete(m_LevelTablePrev);
 		}
 		m_LevelTablePrev = m_LevelTable;
 		m_LevelTable = pNewLevelTable;

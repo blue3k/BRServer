@@ -65,9 +65,9 @@ namespace SF
 				static Result TraceOut(const char* prefix, MessageDataPtr& pMsg);
 
 				virtual Result ParseMessage( MessageData* pIMsg );
-				static Result ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageDataPtr& pIMsg, MessageBase* &pMsgBase );
+				static Result ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr& pIMsg, MessageBase* &pMsgBase );
 
-				static MessageData* Create( IMemoryManager& memoryManager, const TransactionID &InTransactionID, const EntityID &InLocalEntID, const char* InEntName );
+				static MessageData* Create( IHeap& memHeap, const TransactionID &InTransactionID, const EntityID &InLocalEntID, const char* InEntName );
 
 			}; // class RegisterEntityCmd : public MessageBase
 
@@ -110,9 +110,9 @@ namespace SF
 				static Result TraceOut(const char* prefix, MessageDataPtr& pMsg);
 
 				virtual Result ParseMessage( MessageData* pIMsg );
-				static Result ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageDataPtr& pIMsg, MessageBase* &pMsgBase );
+				static Result ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr& pIMsg, MessageBase* &pMsgBase );
 
-				static MessageData* Create( IMemoryManager& memoryManager, const TransactionID &InTransactionID, const Result &InResult, const uint64_t &InEntUID );
+				static MessageData* Create( IHeap& memHeap, const TransactionID &InTransactionID, const Result &InResult, const uint64_t &InEntUID );
 
 			}; // class RegisterEntityRes : public MessageBase
 
@@ -154,9 +154,9 @@ namespace SF
 				static Result TraceOut(const char* prefix, MessageDataPtr& pMsg);
 
 				virtual Result ParseMessage( MessageData* pIMsg );
-				static Result ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageDataPtr& pIMsg, MessageBase* &pMsgBase );
+				static Result ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr& pIMsg, MessageBase* &pMsgBase );
 
-				static MessageData* Create( IMemoryManager& memoryManager, const TransactionID &InTransactionID, const uint64_t &InEntUID );
+				static MessageData* Create( IHeap& memHeap, const TransactionID &InTransactionID, const uint64_t &InEntUID );
 
 			}; // class UnregisterEntityCmd : public MessageBase
 
@@ -197,9 +197,9 @@ namespace SF
 				static Result TraceOut(const char* prefix, MessageDataPtr& pMsg);
 
 				virtual Result ParseMessage( MessageData* pIMsg );
-				static Result ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageDataPtr& pIMsg, MessageBase* &pMsgBase );
+				static Result ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr& pIMsg, MessageBase* &pMsgBase );
 
-				static MessageData* Create( IMemoryManager& memoryManager, const TransactionID &InTransactionID, const Result &InResult );
+				static MessageData* Create( IHeap& memHeap, const TransactionID &InTransactionID, const Result &InResult );
 
 			}; // class UnregisterEntityRes : public MessageBase
 
@@ -241,9 +241,9 @@ namespace SF
 				static Result TraceOut(const char* prefix, MessageDataPtr& pMsg);
 
 				virtual Result ParseMessage( MessageData* pIMsg );
-				static Result ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageDataPtr& pIMsg, MessageBase* &pMsgBase );
+				static Result ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr& pIMsg, MessageBase* &pMsgBase );
 
-				static MessageData* Create( IMemoryManager& memoryManager, const TransactionID &InTransactionID, const EntityID &InLocalEntID );
+				static MessageData* Create( IHeap& memHeap, const TransactionID &InTransactionID, const EntityID &InLocalEntID );
 
 			}; // class FindEntityCmd : public MessageBase
 
@@ -286,9 +286,9 @@ namespace SF
 				static Result TraceOut(const char* prefix, MessageDataPtr& pMsg);
 
 				virtual Result ParseMessage( MessageData* pIMsg );
-				static Result ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageDataPtr& pIMsg, MessageBase* &pMsgBase );
+				static Result ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr& pIMsg, MessageBase* &pMsgBase );
 
-				static MessageData* Create( IMemoryManager& memoryManager, const TransactionID &InTransactionID, const Result &InResult, const uint64_t &InEntUID );
+				static MessageData* Create( IHeap& memHeap, const TransactionID &InTransactionID, const Result &InResult, const uint64_t &InEntUID );
 
 			}; // class FindEntityRes : public MessageBase
 

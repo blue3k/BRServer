@@ -50,19 +50,19 @@ namespace SF
 			}; // Result GetInstanceListCmd::ParseMessage( MessageData* pIMsg )
 
 
-			Result GetInstanceListCmd::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
+			Result GetInstanceListCmd::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
 			{
  				Result hr;
 
-				protocolMem(pMessageBase = new(memoryManager) GetInstanceListCmd(pIMsg));
+				protocolMem(pMessageBase = new(memHeap) GetInstanceListCmd(pIMsg));
 				protocolChk(pMessageBase->ParseMsg());
 
 			Proc_End:
 				return hr;
 
-			}; // Result GetInstanceListCmd::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
+			}; // Result GetInstanceListCmd::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
 
-			MessageData* GetInstanceListCmd::Create( IMemoryManager& memoryManager, const TransactionID &InTransactionID )
+			MessageData* GetInstanceListCmd::Create( IHeap& memHeap, const TransactionID &InTransactionID )
 			{
  				MessageData *pNewMsg = nullptr;
 				Result hr;
@@ -73,7 +73,7 @@ namespace SF
 					+ sizeof(TransactionID));
 
 
-				protocolMem( pNewMsg = MessageData::NewMessage( memoryManager, Monitoring::GetInstanceListCmd::MID, __uiMessageSize ) );
+				protocolMem( pNewMsg = MessageData::NewMessage( memHeap, Monitoring::GetInstanceListCmd::MID, __uiMessageSize ) );
 
 				pMsgData = pNewMsg->GetMessageData();
 
@@ -89,7 +89,7 @@ namespace SF
 				}
 				return pNewMsg;
 
-			}; // MessageData* GetInstanceListCmd::Create( IMemoryManager& memoryManager, const TransactionID &InTransactionID )
+			}; // MessageData* GetInstanceListCmd::Create( IHeap& memHeap, const TransactionID &InTransactionID )
 
 
 
@@ -131,19 +131,19 @@ namespace SF
 			}; // Result GetInstanceListRes::ParseMessage( MessageData* pIMsg )
 
 
-			Result GetInstanceListRes::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
+			Result GetInstanceListRes::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
 			{
  				Result hr;
 
-				protocolMem(pMessageBase = new(memoryManager) GetInstanceListRes(pIMsg));
+				protocolMem(pMessageBase = new(memHeap) GetInstanceListRes(pIMsg));
 				protocolChk(pMessageBase->ParseMsg());
 
 			Proc_End:
 				return hr;
 
-			}; // Result GetInstanceListRes::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
+			}; // Result GetInstanceListRes::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
 
-			MessageData* GetInstanceListRes::Create( IMemoryManager& memoryManager, const TransactionID &InTransactionID, const Result &InResult, const Array<PerformanceCounterInstanceInfo>& InCounterInstances, const uint32_t &InTotalInstanceCount )
+			MessageData* GetInstanceListRes::Create( IHeap& memHeap, const TransactionID &InTransactionID, const Result &InResult, const Array<PerformanceCounterInstanceInfo>& InCounterInstances, const uint32_t &InTotalInstanceCount )
 			{
  				MessageData *pNewMsg = nullptr;
 				Result hr;
@@ -158,7 +158,7 @@ namespace SF
 
 
 				uint16_t numberOfInCounterInstances = (uint16_t)InCounterInstances.size(); 
-				protocolMem( pNewMsg = MessageData::NewMessage( memoryManager, Monitoring::GetInstanceListRes::MID, __uiMessageSize ) );
+				protocolMem( pNewMsg = MessageData::NewMessage( memHeap, Monitoring::GetInstanceListRes::MID, __uiMessageSize ) );
 
 				pMsgData = pNewMsg->GetMessageData();
 
@@ -178,7 +178,7 @@ namespace SF
 				}
 				return pNewMsg;
 
-			}; // MessageData* GetInstanceListRes::Create( IMemoryManager& memoryManager, const TransactionID &InTransactionID, const Result &InResult, const Array<PerformanceCounterInstanceInfo>& InCounterInstances, const uint32_t &InTotalInstanceCount )
+			}; // MessageData* GetInstanceListRes::Create( IHeap& memHeap, const TransactionID &InTransactionID, const Result &InResult, const Array<PerformanceCounterInstanceInfo>& InCounterInstances, const uint32_t &InTotalInstanceCount )
 
 
 
@@ -216,19 +216,19 @@ namespace SF
 			}; // Result RequestCounterValuesCmd::ParseMessage( MessageData* pIMsg )
 
 
-			Result RequestCounterValuesCmd::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
+			Result RequestCounterValuesCmd::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
 			{
  				Result hr;
 
-				protocolMem(pMessageBase = new(memoryManager) RequestCounterValuesCmd(pIMsg));
+				protocolMem(pMessageBase = new(memHeap) RequestCounterValuesCmd(pIMsg));
 				protocolChk(pMessageBase->ParseMsg());
 
 			Proc_End:
 				return hr;
 
-			}; // Result RequestCounterValuesCmd::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
+			}; // Result RequestCounterValuesCmd::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
 
-			MessageData* RequestCounterValuesCmd::Create( IMemoryManager& memoryManager, const TransactionID &InTransactionID, const uint64_t &InInstanceUID )
+			MessageData* RequestCounterValuesCmd::Create( IHeap& memHeap, const TransactionID &InTransactionID, const uint64_t &InInstanceUID )
 			{
  				MessageData *pNewMsg = nullptr;
 				Result hr;
@@ -240,7 +240,7 @@ namespace SF
 					+ sizeof(uint64_t));
 
 
-				protocolMem( pNewMsg = MessageData::NewMessage( memoryManager, Monitoring::RequestCounterValuesCmd::MID, __uiMessageSize ) );
+				protocolMem( pNewMsg = MessageData::NewMessage( memHeap, Monitoring::RequestCounterValuesCmd::MID, __uiMessageSize ) );
 
 				pMsgData = pNewMsg->GetMessageData();
 
@@ -257,7 +257,7 @@ namespace SF
 				}
 				return pNewMsg;
 
-			}; // MessageData* RequestCounterValuesCmd::Create( IMemoryManager& memoryManager, const TransactionID &InTransactionID, const uint64_t &InInstanceUID )
+			}; // MessageData* RequestCounterValuesCmd::Create( IHeap& memHeap, const TransactionID &InTransactionID, const uint64_t &InInstanceUID )
 
 
 
@@ -299,19 +299,19 @@ namespace SF
 			}; // Result RequestCounterValuesRes::ParseMessage( MessageData* pIMsg )
 
 
-			Result RequestCounterValuesRes::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
+			Result RequestCounterValuesRes::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
 			{
  				Result hr;
 
-				protocolMem(pMessageBase = new(memoryManager) RequestCounterValuesRes(pIMsg));
+				protocolMem(pMessageBase = new(memHeap) RequestCounterValuesRes(pIMsg));
 				protocolChk(pMessageBase->ParseMsg());
 
 			Proc_End:
 				return hr;
 
-			}; // Result RequestCounterValuesRes::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
+			}; // Result RequestCounterValuesRes::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
 
-			MessageData* RequestCounterValuesRes::Create( IMemoryManager& memoryManager, const TransactionID &InTransactionID, const Result &InResult, const uint64_t &InInstanceUID, const Array<uint64_t>& InCounterValues )
+			MessageData* RequestCounterValuesRes::Create( IHeap& memHeap, const TransactionID &InTransactionID, const Result &InResult, const uint64_t &InInstanceUID, const Array<uint64_t>& InCounterValues )
 			{
  				MessageData *pNewMsg = nullptr;
 				Result hr;
@@ -326,7 +326,7 @@ namespace SF
 
 
 				uint16_t numberOfInCounterValues = (uint16_t)InCounterValues.size(); 
-				protocolMem( pNewMsg = MessageData::NewMessage( memoryManager, Monitoring::RequestCounterValuesRes::MID, __uiMessageSize ) );
+				protocolMem( pNewMsg = MessageData::NewMessage( memHeap, Monitoring::RequestCounterValuesRes::MID, __uiMessageSize ) );
 
 				pMsgData = pNewMsg->GetMessageData();
 
@@ -346,7 +346,7 @@ namespace SF
 				}
 				return pNewMsg;
 
-			}; // MessageData* RequestCounterValuesRes::Create( IMemoryManager& memoryManager, const TransactionID &InTransactionID, const Result &InResult, const uint64_t &InInstanceUID, const Array<uint64_t>& InCounterValues )
+			}; // MessageData* RequestCounterValuesRes::Create( IHeap& memHeap, const TransactionID &InTransactionID, const Result &InResult, const uint64_t &InInstanceUID, const Array<uint64_t>& InCounterValues )
 
 
 
@@ -390,19 +390,19 @@ namespace SF
 			}; // Result PerformanceCounterNewC2SEvt::ParseMessage( MessageData* pIMsg )
 
 
-			Result PerformanceCounterNewC2SEvt::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
+			Result PerformanceCounterNewC2SEvt::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
 			{
  				Result hr;
 
-				protocolMem(pMessageBase = new(memoryManager) PerformanceCounterNewC2SEvt(pIMsg));
+				protocolMem(pMessageBase = new(memHeap) PerformanceCounterNewC2SEvt(pIMsg));
 				protocolChk(pMessageBase->ParseMsg());
 
 			Proc_End:
 				return hr;
 
-			}; // Result PerformanceCounterNewC2SEvt::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
+			}; // Result PerformanceCounterNewC2SEvt::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
 
-			MessageData* PerformanceCounterNewC2SEvt::Create( IMemoryManager& memoryManager, const char* InInstanceName, const uint64_t &InInstanceUID, const Array<PerformanceCounterInfo>& InNewCounters )
+			MessageData* PerformanceCounterNewC2SEvt::Create( IHeap& memHeap, const char* InInstanceName, const uint64_t &InInstanceUID, const Array<PerformanceCounterInfo>& InNewCounters )
 			{
  				MessageData *pNewMsg = nullptr;
 				Result hr;
@@ -416,7 +416,7 @@ namespace SF
 
 
 				uint16_t numberOfInNewCounters = (uint16_t)InNewCounters.size(); 
-				protocolMem( pNewMsg = MessageData::NewMessage( memoryManager, Monitoring::PerformanceCounterNewC2SEvt::MID, __uiMessageSize ) );
+				protocolMem( pNewMsg = MessageData::NewMessage( memHeap, Monitoring::PerformanceCounterNewC2SEvt::MID, __uiMessageSize ) );
 
 				pMsgData = pNewMsg->GetMessageData();
 
@@ -436,7 +436,7 @@ namespace SF
 				}
 				return pNewMsg;
 
-			}; // MessageData* PerformanceCounterNewC2SEvt::Create( IMemoryManager& memoryManager, const char* InInstanceName, const uint64_t &InInstanceUID, const Array<PerformanceCounterInfo>& InNewCounters )
+			}; // MessageData* PerformanceCounterNewC2SEvt::Create( IHeap& memHeap, const char* InInstanceName, const uint64_t &InInstanceUID, const Array<PerformanceCounterInfo>& InNewCounters )
 
 
 
@@ -476,19 +476,19 @@ namespace SF
 			}; // Result PerformanceCounterFreeC2SEvt::ParseMessage( MessageData* pIMsg )
 
 
-			Result PerformanceCounterFreeC2SEvt::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
+			Result PerformanceCounterFreeC2SEvt::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
 			{
  				Result hr;
 
-				protocolMem(pMessageBase = new(memoryManager) PerformanceCounterFreeC2SEvt(pIMsg));
+				protocolMem(pMessageBase = new(memHeap) PerformanceCounterFreeC2SEvt(pIMsg));
 				protocolChk(pMessageBase->ParseMsg());
 
 			Proc_End:
 				return hr;
 
-			}; // Result PerformanceCounterFreeC2SEvt::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
+			}; // Result PerformanceCounterFreeC2SEvt::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
 
-			MessageData* PerformanceCounterFreeC2SEvt::Create( IMemoryManager& memoryManager, const Array<uint64_t>& InFreeInstances )
+			MessageData* PerformanceCounterFreeC2SEvt::Create( IHeap& memHeap, const Array<uint64_t>& InFreeInstances )
 			{
  				MessageData *pNewMsg = nullptr;
 				Result hr;
@@ -500,7 +500,7 @@ namespace SF
 
 
 				uint16_t numberOfInFreeInstances = (uint16_t)InFreeInstances.size(); 
-				protocolMem( pNewMsg = MessageData::NewMessage( memoryManager, Monitoring::PerformanceCounterFreeC2SEvt::MID, __uiMessageSize ) );
+				protocolMem( pNewMsg = MessageData::NewMessage( memHeap, Monitoring::PerformanceCounterFreeC2SEvt::MID, __uiMessageSize ) );
 
 				pMsgData = pNewMsg->GetMessageData();
 
@@ -517,7 +517,7 @@ namespace SF
 				}
 				return pNewMsg;
 
-			}; // MessageData* PerformanceCounterFreeC2SEvt::Create( IMemoryManager& memoryManager, const Array<uint64_t>& InFreeInstances )
+			}; // MessageData* PerformanceCounterFreeC2SEvt::Create( IHeap& memHeap, const Array<uint64_t>& InFreeInstances )
 
 
 
@@ -558,19 +558,19 @@ namespace SF
 			}; // Result PerformanceCounterUpdateC2SEvt::ParseMessage( MessageData* pIMsg )
 
 
-			Result PerformanceCounterUpdateC2SEvt::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
+			Result PerformanceCounterUpdateC2SEvt::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
 			{
  				Result hr;
 
-				protocolMem(pMessageBase = new(memoryManager) PerformanceCounterUpdateC2SEvt(pIMsg));
+				protocolMem(pMessageBase = new(memHeap) PerformanceCounterUpdateC2SEvt(pIMsg));
 				protocolChk(pMessageBase->ParseMsg());
 
 			Proc_End:
 				return hr;
 
-			}; // Result PerformanceCounterUpdateC2SEvt::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
+			}; // Result PerformanceCounterUpdateC2SEvt::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
 
-			MessageData* PerformanceCounterUpdateC2SEvt::Create( IMemoryManager& memoryManager, const uint64_t &InInstanceUID, const Array<uint64_t>& InCounterValues )
+			MessageData* PerformanceCounterUpdateC2SEvt::Create( IHeap& memHeap, const uint64_t &InInstanceUID, const Array<uint64_t>& InCounterValues )
 			{
  				MessageData *pNewMsg = nullptr;
 				Result hr;
@@ -583,7 +583,7 @@ namespace SF
 
 
 				uint16_t numberOfInCounterValues = (uint16_t)InCounterValues.size(); 
-				protocolMem( pNewMsg = MessageData::NewMessage( memoryManager, Monitoring::PerformanceCounterUpdateC2SEvt::MID, __uiMessageSize ) );
+				protocolMem( pNewMsg = MessageData::NewMessage( memHeap, Monitoring::PerformanceCounterUpdateC2SEvt::MID, __uiMessageSize ) );
 
 				pMsgData = pNewMsg->GetMessageData();
 
@@ -601,7 +601,7 @@ namespace SF
 				}
 				return pNewMsg;
 
-			}; // MessageData* PerformanceCounterUpdateC2SEvt::Create( IMemoryManager& memoryManager, const uint64_t &InInstanceUID, const Array<uint64_t>& InCounterValues )
+			}; // MessageData* PerformanceCounterUpdateC2SEvt::Create( IHeap& memHeap, const uint64_t &InInstanceUID, const Array<uint64_t>& InCounterValues )
 
 
 
@@ -638,19 +638,19 @@ namespace SF
 			}; // Result PerformanceCounterUpdateCounterInfoS2CEvt::ParseMessage( MessageData* pIMsg )
 
 
-			Result PerformanceCounterUpdateCounterInfoS2CEvt::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
+			Result PerformanceCounterUpdateCounterInfoS2CEvt::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
 			{
  				Result hr;
 
-				protocolMem(pMessageBase = new(memoryManager) PerformanceCounterUpdateCounterInfoS2CEvt(pIMsg));
+				protocolMem(pMessageBase = new(memHeap) PerformanceCounterUpdateCounterInfoS2CEvt(pIMsg));
 				protocolChk(pMessageBase->ParseMsg());
 
 			Proc_End:
 				return hr;
 
-			}; // Result PerformanceCounterUpdateCounterInfoS2CEvt::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
+			}; // Result PerformanceCounterUpdateCounterInfoS2CEvt::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
 
-			MessageData* PerformanceCounterUpdateCounterInfoS2CEvt::Create( IMemoryManager& memoryManager, const uint64_t &InInstanceUID )
+			MessageData* PerformanceCounterUpdateCounterInfoS2CEvt::Create( IHeap& memHeap, const uint64_t &InInstanceUID )
 			{
  				MessageData *pNewMsg = nullptr;
 				Result hr;
@@ -661,7 +661,7 @@ namespace SF
 					+ sizeof(uint64_t));
 
 
-				protocolMem( pNewMsg = MessageData::NewMessage( memoryManager, Monitoring::PerformanceCounterUpdateCounterInfoS2CEvt::MID, __uiMessageSize ) );
+				protocolMem( pNewMsg = MessageData::NewMessage( memHeap, Monitoring::PerformanceCounterUpdateCounterInfoS2CEvt::MID, __uiMessageSize ) );
 
 				pMsgData = pNewMsg->GetMessageData();
 
@@ -677,7 +677,7 @@ namespace SF
 				}
 				return pNewMsg;
 
-			}; // MessageData* PerformanceCounterUpdateCounterInfoS2CEvt::Create( IMemoryManager& memoryManager, const uint64_t &InInstanceUID )
+			}; // MessageData* PerformanceCounterUpdateCounterInfoS2CEvt::Create( IHeap& memHeap, const uint64_t &InInstanceUID )
 
 
 

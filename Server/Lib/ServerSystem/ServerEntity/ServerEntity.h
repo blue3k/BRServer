@@ -103,8 +103,6 @@ namespace Svr {
 		SF::Net::Connection* GetConnection();
 		void GetConnectionShared(SharedPointerT<SF::Net::Connection>& outConn);
 
-		template< class PolicyType >
-		PolicyType* GetInterface();
 
 		// Get/Set Class Name
 		inline ServerEntityClass GetRemoteClass() const;

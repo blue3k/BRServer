@@ -51,19 +51,19 @@ namespace SF
 			}; // Result GenericFailureCmd::ParseMessage( MessageData* pIMsg )
 
 
-			Result GenericFailureCmd::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
+			Result GenericFailureCmd::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
 			{
  				Result hr;
 
-				protocolMem(pMessageBase = new(memoryManager) GenericFailureCmd(pIMsg));
+				protocolMem(pMessageBase = new(memHeap) GenericFailureCmd(pIMsg));
 				protocolChk(pMessageBase->ParseMsg());
 
 			Proc_End:
 				return hr;
 
-			}; // Result GenericFailureCmd::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
+			}; // Result GenericFailureCmd::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
 
-			MessageData* GenericFailureCmd::Create( IMemoryManager& memoryManager, const RouteContext &InRouteContext, const TransactionID &InTransactionID )
+			MessageData* GenericFailureCmd::Create( IHeap& memHeap, const RouteContext &InRouteContext, const TransactionID &InTransactionID )
 			{
  				MessageData *pNewMsg = nullptr;
 				Result hr;
@@ -75,7 +75,7 @@ namespace SF
 					+ sizeof(TransactionID));
 
 
-				protocolMem( pNewMsg = MessageData::NewMessage( memoryManager, Server::GenericFailureCmd::MID, __uiMessageSize ) );
+				protocolMem( pNewMsg = MessageData::NewMessage( memHeap, Server::GenericFailureCmd::MID, __uiMessageSize ) );
 
 				pMsgData = pNewMsg->GetMessageData();
 
@@ -92,7 +92,7 @@ namespace SF
 				}
 				return pNewMsg;
 
-			}; // MessageData* GenericFailureCmd::Create( IMemoryManager& memoryManager, const RouteContext &InRouteContext, const TransactionID &InTransactionID )
+			}; // MessageData* GenericFailureCmd::Create( IHeap& memHeap, const RouteContext &InRouteContext, const TransactionID &InTransactionID )
 
 			Result GenericFailureCmd::OverrideRouteContextDestination( EntityUID to )
 			{
@@ -155,19 +155,19 @@ namespace SF
 			}; // Result GenericFailureRes::ParseMessage( MessageData* pIMsg )
 
 
-			Result GenericFailureRes::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
+			Result GenericFailureRes::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
 			{
  				Result hr;
 
-				protocolMem(pMessageBase = new(memoryManager) GenericFailureRes(pIMsg));
+				protocolMem(pMessageBase = new(memHeap) GenericFailureRes(pIMsg));
 				protocolChk(pMessageBase->ParseMsg());
 
 			Proc_End:
 				return hr;
 
-			}; // Result GenericFailureRes::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
+			}; // Result GenericFailureRes::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
 
-			MessageData* GenericFailureRes::Create( IMemoryManager& memoryManager, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const Result &InResult )
+			MessageData* GenericFailureRes::Create( IHeap& memHeap, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const Result &InResult )
 			{
  				MessageData *pNewMsg = nullptr;
 				Result hr;
@@ -180,7 +180,7 @@ namespace SF
 					+ sizeof(Result));
 
 
-				protocolMem( pNewMsg = MessageData::NewMessage( memoryManager, Server::GenericFailureRes::MID, __uiMessageSize ) );
+				protocolMem( pNewMsg = MessageData::NewMessage( memHeap, Server::GenericFailureRes::MID, __uiMessageSize ) );
 
 				pMsgData = pNewMsg->GetMessageData();
 
@@ -198,7 +198,7 @@ namespace SF
 				}
 				return pNewMsg;
 
-			}; // MessageData* GenericFailureRes::Create( IMemoryManager& memoryManager, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const Result &InResult )
+			}; // MessageData* GenericFailureRes::Create( IHeap& memHeap, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const Result &InResult )
 
 			Result GenericFailureRes::OverrideRouteContextDestination( EntityUID to )
 			{
@@ -263,19 +263,19 @@ namespace SF
 			}; // Result ServerConnectedC2SEvt::ParseMessage( MessageData* pIMsg )
 
 
-			Result ServerConnectedC2SEvt::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
+			Result ServerConnectedC2SEvt::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
 			{
  				Result hr;
 
-				protocolMem(pMessageBase = new(memoryManager) ServerConnectedC2SEvt(pIMsg));
+				protocolMem(pMessageBase = new(memHeap) ServerConnectedC2SEvt(pIMsg));
 				protocolChk(pMessageBase->ParseMsg());
 
 			Proc_End:
 				return hr;
 
-			}; // Result ServerConnectedC2SEvt::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
+			}; // Result ServerConnectedC2SEvt::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
 
-			MessageData* ServerConnectedC2SEvt::Create( IMemoryManager& memoryManager, const RouteContext &InRouteContext, const ServiceInformation &InClusterManagerServiceInformation, const uint32_t &InStartUpTime, const NetAddress &InPrivateAddress )
+			MessageData* ServerConnectedC2SEvt::Create( IHeap& memHeap, const RouteContext &InRouteContext, const ServiceInformation &InClusterManagerServiceInformation, const uint32_t &InStartUpTime, const NetAddress &InPrivateAddress )
 			{
  				MessageData *pNewMsg = nullptr;
 				Result hr;
@@ -289,7 +289,7 @@ namespace SF
 					+ sizeof(NetAddress));
 
 
-				protocolMem( pNewMsg = MessageData::NewMessage( memoryManager, Server::ServerConnectedC2SEvt::MID, __uiMessageSize ) );
+				protocolMem( pNewMsg = MessageData::NewMessage( memHeap, Server::ServerConnectedC2SEvt::MID, __uiMessageSize ) );
 
 				pMsgData = pNewMsg->GetMessageData();
 
@@ -308,7 +308,7 @@ namespace SF
 				}
 				return pNewMsg;
 
-			}; // MessageData* ServerConnectedC2SEvt::Create( IMemoryManager& memoryManager, const RouteContext &InRouteContext, const ServiceInformation &InClusterManagerServiceInformation, const uint32_t &InStartUpTime, const NetAddress &InPrivateAddress )
+			}; // MessageData* ServerConnectedC2SEvt::Create( IHeap& memHeap, const RouteContext &InRouteContext, const ServiceInformation &InClusterManagerServiceInformation, const uint32_t &InStartUpTime, const NetAddress &InPrivateAddress )
 
 			Result ServerConnectedC2SEvt::OverrideRouteContextDestination( EntityUID to )
 			{

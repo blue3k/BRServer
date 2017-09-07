@@ -43,9 +43,6 @@
     <Filter Include="Config">
       <UniqueIdentifier>{9d118c32-1ffe-4f75-97d9-40a055f138e5}</UniqueIdentifier>
     </Filter>
-    <Filter Include="ZooKeeper">
-      <UniqueIdentifier>{ee56321a-a7d8-4475-850c-f5529263bf65}</UniqueIdentifier>
-    </Filter>
     <Filter Include="ServerLog">
       <UniqueIdentifier>{8a397929-3ab9-43d0-9b4f-0212853774f1}</UniqueIdentifier>
     </Filter>
@@ -201,9 +198,6 @@
     </ClInclude>
     <ClInclude Include="$(MSBuildThisFileDirectory)Google\GoogleOAuth.h">
       <Filter>ServerService\Google</Filter>
-    </ClInclude>
-    <ClInclude Include="$(MSBuildThisFileDirectory)ZooKeeper\SFZooKeeper.h">
-      <Filter>ZooKeeper</Filter>
     </ClInclude>
     <ClInclude Include="$(MSBuildThisFileDirectory)SvrPolicyID.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)ServerLog\SvrLog.h">
@@ -559,9 +553,6 @@
     </ClCompile>
     <ClCompile Include="$(MSBuildThisFileDirectory)Google\GoogleOAuth.cpp">
       <Filter>ServerService\Google</Filter>
-    </ClCompile>
-    <ClCompile Include="$(MSBuildThisFileDirectory)ZooKeeper\SFZooKeeper.cpp">
-      <Filter>ZooKeeper</Filter>
     </ClCompile>
     <ClCompile Include="$(MSBuildThisFileDirectory)ServerLog\SvrLogComponent.cpp">
       <Filter>ServerLog</Filter>

@@ -75,6 +75,7 @@ namespace Svr {
 		GameInstanceEntity* GetGameOwner() { return m_GameOwner; }
 
 		bool GetIsBot() { return m_IsBot; }
+		void SetIsBot(bool value) { m_IsBot = value; }
 
 		// Initialize player
 		Result InitializePlayer(GameInstanceEntity* pGameOwner, bool isBot = false);

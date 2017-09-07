@@ -309,11 +309,11 @@ namespace ConspiracyGameInstanceServer {
 			{
 			case PlayerRole::Seer:
 				if (m_RoleRequestSeer == 0) m_RoleRequestSeer++;
-				else                        svrErr(ResultCode::E_GAME_INVALID_ROLE);
+				else                        svrErr(ResultCode::GAME_INVALID_ROLE);
 				break;
 			case PlayerRole::Werewolf:
 				if (m_RoleRequestWerewolf < 2) m_RoleRequestWerewolf++;
-				else                           svrErr(ResultCode::E_GAME_INVALID_ROLE);
+				else                           svrErr(ResultCode::GAME_INVALID_ROLE);
 				break;
 			default:
 				break;

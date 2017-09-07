@@ -836,7 +836,7 @@ namespace GameServer {
 		//GetMyOwner()->UpdateGamePlayer();
 
 		//if( pPlayerInfoSystem->GetStamina() <= 0 )
-		//	svrErrClose(ResultCode::E_GAME_NOTENOUGH_RESOURCE);
+		//	svrErrClose(ResultCode::GAME_NOTENOUGH_RESOURCE);
 
 
 		pFriend = GetMyOwner()->GetComponent<UserFriendSystem>()->GetFriend(GetTargetPlayer());

@@ -58,30 +58,30 @@ namespace Svr {
 	//};
 
 
-	class GameServerTransGamePlayerEntityCreatedS2CEvt : public ClusterEntityMessageTransaction< GameClusterServiceEntity, Message::ClusterServer::GamePlayerEntityCreatedC2SEvt, GameServerTransGamePlayerEntityCreatedS2CEvt>
+	class GameServerTransGamePlayerEntityCreatedS2CEvt : public ClusterEntityMessageTransaction< GameClusterServiceEntity, Message::ClusterServer::GamePlayerEntityCreatedC2SEvt>
 	{
 	public:
-		typedef ClusterEntityMessageTransaction< GameClusterServiceEntity, Message::ClusterServer::GamePlayerEntityCreatedC2SEvt, GameServerTransGamePlayerEntityCreatedS2CEvt> super;
+		typedef ClusterEntityMessageTransaction< GameClusterServiceEntity, Message::ClusterServer::GamePlayerEntityCreatedC2SEvt> super;
 
 	private:
 
 	public:
-		GameServerTransGamePlayerEntityCreatedS2CEvt( MessageDataPtr &pIMsg ) : ClusterEntityMessageTransaction( pIMsg ) {}
+		GameServerTransGamePlayerEntityCreatedS2CEvt(IHeap& memHeap, MessageDataPtr &pIMsg ) : ClusterEntityMessageTransaction( memHeap, pIMsg ) {}
 		virtual ~GameServerTransGamePlayerEntityCreatedS2CEvt() {}
 
 		// Start Transaction
 		virtual Result StartTransaction();
 	};
 
-	class GameServerTransGamePlayerEntityDeletedS2CEvt : public ClusterEntityMessageTransaction< GameClusterServiceEntity, Message::ClusterServer::GamePlayerEntityDeletedC2SEvt, GameServerTransGamePlayerEntityDeletedS2CEvt>
+	class GameServerTransGamePlayerEntityDeletedS2CEvt : public ClusterEntityMessageTransaction< GameClusterServiceEntity, Message::ClusterServer::GamePlayerEntityDeletedC2SEvt>
 	{
 	public:
-		typedef ClusterEntityMessageTransaction< GameClusterServiceEntity, Message::ClusterServer::GamePlayerEntityDeletedC2SEvt, GameServerTransGamePlayerEntityDeletedS2CEvt> super;
+		typedef ClusterEntityMessageTransaction< GameClusterServiceEntity, Message::ClusterServer::GamePlayerEntityDeletedC2SEvt> super;
 
 	private:
 
 	public:
-		GameServerTransGamePlayerEntityDeletedS2CEvt( MessageDataPtr &pIMsg ) : ClusterEntityMessageTransaction( pIMsg ) {}
+		GameServerTransGamePlayerEntityDeletedS2CEvt(IHeap& memHeap, MessageDataPtr &pIMsg ) : ClusterEntityMessageTransaction(memHeap, pIMsg ) {}
 		virtual ~GameServerTransGamePlayerEntityDeletedS2CEvt() {}
 
 		// Start Transaction

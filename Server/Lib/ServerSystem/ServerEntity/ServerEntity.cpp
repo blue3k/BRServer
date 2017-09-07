@@ -464,7 +464,7 @@ namespace Svr {
 				else
 				{
 					auto pNonConst = const_cast<TransactionResult*>(eventTask.EventData.pTransResultEvent);
-					IMemoryManager::Delete(pNonConst);
+					IHeap::Delete(pNonConst);
 				}
 			}
 			else

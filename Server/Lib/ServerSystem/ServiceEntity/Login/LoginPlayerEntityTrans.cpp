@@ -187,9 +187,8 @@ namespace Svr {
 			}
 			else
 			{
-				pGameServerPolicy = Svr::GetServerComponent<Svr::ServerEntityManager>()->GetServerPolicy<Policy::NetPolicyGameServer>(m_GameEntityUID.GetServerID());
-				if (pGameServerPolicy == nullptr
-					|| !(pGameServerPolicy->RegisterPlayerToJoinGameServerCmd(RouteContext(super::GetOwnerEntityUID(), m_GameEntityUID), super::GetTransID(),
+				auto pEntityManager = Svr::GetServerComponent<Svr::ServerEntityManager>();
+				if (!(Policy::NetPolicyGameServer(pEntityManager->GetServerConnection(m_GameEntityUID.GetServerID())).RegisterPlayerToJoinGameServerCmd(RouteContext(super::GetOwnerEntityUID(), m_GameEntityUID), super::GetTransID(),
 						super::GetMyOwner()->GetPlayerID(), super::GetMyOwner()->GetAuthTicket(), super::GetMyOwner()->GetFacebookUID(), super::GetMyOwner()->GetShardID())))
 				{
 					svrChk(RegisterNewPlayerToJoinGameServer());

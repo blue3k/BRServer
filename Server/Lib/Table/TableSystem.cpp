@@ -86,7 +86,7 @@ namespace GameTable {
 			if (m_pDataSource != nullptr)
 			{
 				m_pDataSource->CloseDBSource();
-				IMemoryManager::Delete(m_pDataSource);
+				IHeap::Delete(m_pDataSource);
 			}
 
 		//Proc_End:

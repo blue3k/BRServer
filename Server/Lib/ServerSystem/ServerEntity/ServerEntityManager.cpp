@@ -254,7 +254,15 @@ namespace Svr
 		return hr;
 	}
 
+	Net::Connection* ServerEntityManager::GetServerConnection(ServerID svrID)
+	{
+		ServerEntity* pServerEntity = nullptr;
 
+		if (!GetServerEntity(svrID, pServerEntity))
+			return nullptr;
+
+		return  pServerEntity->GetConnection();
+	}
 
 
 }; // namespace Svr

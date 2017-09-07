@@ -408,7 +408,7 @@ namespace Svr
 				{
 					svrTrace(Warning, "Transaction result for TID:{0} is failed to route.", eventTask.EventData.pTransResultEvent->GetTransID());
 					auto pRes = const_cast<TransactionResult*>(eventTask.EventData.pTransResultEvent);
-					IMemoryManager::Delete(pRes);
+					IHeap::Delete(pRes);
 					//svrErr(ResultCode::FAIL);
 				}
 			}

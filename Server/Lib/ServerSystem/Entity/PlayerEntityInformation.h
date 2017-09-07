@@ -77,8 +77,7 @@ namespace Svr {
 		RouteContext GetRouteContext( EntityUID uidFrom );
 
 		// Query policy from game server entity
-		template< class PolicyType >
-		PolicyType* GetInterface();
+		Net::Connection* GetConnection() const		{ return m_ServerEntity != nullptr ? m_ServerEntity->GetConnection() : nullptr; }
 
 	};
 

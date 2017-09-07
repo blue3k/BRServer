@@ -775,7 +775,7 @@ namespace Svr {
 	{
 		for (auto& itQueue : m_ReservedItemQueue)
 		{
-			IMemoryManager::Delete(itQueue);
+			IHeap::Delete(itQueue);
 		}
 	}
 

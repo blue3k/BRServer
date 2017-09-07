@@ -34,14 +34,5 @@ inline RouteContext PlayerEntityInformation::GetRouteContext( EntityUID uidFrom 
 }
 
 
-// Query policy from game server entity
-template< class PolicyType >
-inline PolicyType* PlayerEntityInformation::GetInterface()
-{
-	if( !CheckServerStatus() )
-		return nullptr;
-
-	return m_ServerEntity->GetInterface<PolicyType>();
-}
 
 

@@ -56,7 +56,7 @@ namespace Svr{
 	{
 	public:
 		ParallelTransactionNop(IMemoryManager& memoryManager)
-			:ParallelTransaction(memoryManager, 0, 0)
+			:ParallelTransaction(memoryManager, TransactionID(), 0)
 		{}
 
 	};

@@ -78,10 +78,10 @@ namespace ConspiracyGameInstanceServer {
 			return ResultCode::INVALID_POINTER;
 
 		if( !pVoter->IsInGame() )
-			return ResultCode::E_GAME_NO_SUFFRAGE;
+			return ResultCode::GAME_NO_SUFFRAGE;
 
 		if( !pVoteTarget->IsInGame() )
-			return ResultCode::E_GAME_INVALID_VOTE_TARGET;
+			return ResultCode::GAME_INVALID_VOTE_TARGET;
 
 		// Increase voted count
 		pVoteTarget->SetVoted( pVoteTarget->GetVoted() + 1 );
@@ -187,10 +187,10 @@ namespace ConspiracyGameInstanceServer {
 		Result hr = ResultCode::SUCCESS;
 		
 		if( !pVoter->IsInGame() || pVoter->GetPlayerState() == PlayerState::Ghost )
-			return ResultCode::E_GAME_INVALID_PLAYER_STATE;
+			return ResultCode::GAME_INVALID_PLAYER_STATE;
 
 		if( !pVoteTarget->IsInGame() || pVoteTarget->GetPlayerState() == PlayerState::Ghost )
-			return ResultCode::E_GAME_INVALID_VOTE_TARGET;
+			return ResultCode::GAME_INVALID_VOTE_TARGET;
 
 		svrChk(GameVote::Vote(pVoter,pVoteTarget) );
 
@@ -336,16 +336,16 @@ namespace ConspiracyGameInstanceServer {
 		Result hr = ResultCode::SUCCESS;
 
 		if(GetGamePlaySystem().IsSuspect(pVoter->GetPlayerID()) )
-			return ResultCode::E_GAME_NO_SUFFRAGE;
+			return ResultCode::GAME_NO_SUFFRAGE;
 
 		if( !pVoter->IsInGame() || pVoter->GetPlayerState() == PlayerState::Ghost )
-			return ResultCode::E_GAME_INVALID_PLAYER_STATE;
+			return ResultCode::GAME_INVALID_PLAYER_STATE;
 
 		if( !GetGamePlaySystem().IsSuspect(pVoteTarget->GetPlayerID()) )
-			return ResultCode::E_GAME_INVALID_VOTE_TARGET;
+			return ResultCode::GAME_INVALID_VOTE_TARGET;
 
 		if( !pVoteTarget->IsInGame() || pVoteTarget->GetPlayerState() == PlayerState::Ghost )
-			return ResultCode::E_GAME_INVALID_VOTE_TARGET;
+			return ResultCode::GAME_INVALID_VOTE_TARGET;
 
 		svrChk(GameVote::Vote(pVoter,pVoteTarget) );
 
@@ -487,23 +487,23 @@ namespace ConspiracyGameInstanceServer {
 			return ResultCode::INVALID_POINTER;
 
 		if( !pVoter->IsInGame() || pVoter->GetPlayerState() == PlayerState::Ghost )
-			return ResultCode::E_GAME_NO_SUFFRAGE;
+			return ResultCode::GAME_NO_SUFFRAGE;
 
 		if( !pVoteTarget->IsInGame() || pVoteTarget->GetPlayerState() == PlayerState::Ghost )
-			return ResultCode::E_GAME_INVALID_VOTE_TARGET;
+			return ResultCode::GAME_INVALID_VOTE_TARGET;
 
 		// Seer
 		if( pVoter->GetPlayerID() == GetGamePlaySystem().GetSeer() )
 		{
 			// We can't allow to vote again when he got the notice
 			if (GetSeersChoice() != 0)
-				return ResultCode::E_GAME_NO_SUFFRAGE;
+				return ResultCode::GAME_NO_SUFFRAGE;
 
 			if (GetGamePlaySystem().GetSeer() == 0)
 				return ResultCode::UNEXPECTED;
 
 			if (pVoteTarget->GetRevealedBySeer())
-				return ResultCode::E_GAME_INVALID_VOTE_TARGET;
+				return ResultCode::GAME_INVALID_VOTE_TARGET;
 
 
 			// send result as soon as he vote
@@ -537,10 +537,10 @@ namespace ConspiracyGameInstanceServer {
 		}
 
 		if( pVoter->GetRole() != PlayerRole::Werewolf )
-			return ResultCode::E_GAME_NO_SUFFRAGE;
+			return ResultCode::GAME_NO_SUFFRAGE;
 
 		if( pVoteTarget->GetRole() == PlayerRole::Werewolf )
-			return ResultCode::E_GAME_INVALID_VOTE_TARGET;
+			return ResultCode::GAME_INVALID_VOTE_TARGET;
 
 		svrChk(GameVote::Vote(pVoter,pVoteTarget) );
 

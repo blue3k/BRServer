@@ -89,7 +89,7 @@ namespace SharedModuleServer {
 			{
 				svrTrace(Error, "Duplicated cluster entity {0} EntityUID:{1}, while adding {2} EntityUID:{3}", typeid(*pServiceEntityTest).name(), pServiceEntityTest->GetEntityUID(), typeid(*pServiceEntity).name(), pServiceEntity->GetEntityUID());
 			}
-			IMemoryManager::Delete(pServiceEntity);
+			IHeap::Delete(pServiceEntity);
 			goto Proc_End;
 		}
 

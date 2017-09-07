@@ -54,19 +54,19 @@ namespace SF
 			}; // Result CreateGameCmd::ParseMessage( MessageData* pIMsg )
 
 
-			Result CreateGameCmd::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
+			Result CreateGameCmd::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
 			{
  				Result hr;
 
-				protocolMem(pMessageBase = new(memoryManager) CreateGameCmd(pIMsg));
+				protocolMem(pMessageBase = new(memHeap) CreateGameCmd(pIMsg));
 				protocolChk(pMessageBase->ParseMsg());
 
 			Proc_End:
 				return hr;
 
-			}; // Result CreateGameCmd::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
+			}; // Result CreateGameCmd::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
 
-			MessageData* CreateGameCmd::Create( IMemoryManager& memoryManager, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const uint16_t &InRouteHopCount, const uint16_t &InNumberOfBotPlayer, const uint16_t &InMaxPlayer )
+			MessageData* CreateGameCmd::Create( IHeap& memHeap, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const uint16_t &InRouteHopCount, const uint16_t &InNumberOfBotPlayer, const uint16_t &InMaxPlayer )
 			{
  				MessageData *pNewMsg = nullptr;
 				Result hr;
@@ -81,7 +81,7 @@ namespace SF
 					+ sizeof(uint16_t));
 
 
-				protocolMem( pNewMsg = MessageData::NewMessage( memoryManager, GameInstanceManager::CreateGameCmd::MID, __uiMessageSize ) );
+				protocolMem( pNewMsg = MessageData::NewMessage( memHeap, GameInstanceManager::CreateGameCmd::MID, __uiMessageSize ) );
 
 				pMsgData = pNewMsg->GetMessageData();
 
@@ -101,7 +101,7 @@ namespace SF
 				}
 				return pNewMsg;
 
-			}; // MessageData* CreateGameCmd::Create( IMemoryManager& memoryManager, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const uint16_t &InRouteHopCount, const uint16_t &InNumberOfBotPlayer, const uint16_t &InMaxPlayer )
+			}; // MessageData* CreateGameCmd::Create( IHeap& memHeap, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const uint16_t &InRouteHopCount, const uint16_t &InNumberOfBotPlayer, const uint16_t &InMaxPlayer )
 
 			Result CreateGameCmd::OverrideRouteContextDestination( EntityUID to )
 			{
@@ -194,19 +194,19 @@ namespace SF
 			}; // Result CreateGameRes::ParseMessage( MessageData* pIMsg )
 
 
-			Result CreateGameRes::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
+			Result CreateGameRes::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
 			{
  				Result hr;
 
-				protocolMem(pMessageBase = new(memoryManager) CreateGameRes(pIMsg));
+				protocolMem(pMessageBase = new(memHeap) CreateGameRes(pIMsg));
 				protocolChk(pMessageBase->ParseMsg());
 
 			Proc_End:
 				return hr;
 
-			}; // Result CreateGameRes::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
+			}; // Result CreateGameRes::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
 
-			MessageData* CreateGameRes::Create( IMemoryManager& memoryManager, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const Result &InResult )
+			MessageData* CreateGameRes::Create( IHeap& memHeap, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const Result &InResult )
 			{
  				MessageData *pNewMsg = nullptr;
 				Result hr;
@@ -219,7 +219,7 @@ namespace SF
 					+ sizeof(Result));
 
 
-				protocolMem( pNewMsg = MessageData::NewMessage( memoryManager, GameInstanceManager::CreateGameRes::MID, __uiMessageSize ) );
+				protocolMem( pNewMsg = MessageData::NewMessage( memHeap, GameInstanceManager::CreateGameRes::MID, __uiMessageSize ) );
 
 				pMsgData = pNewMsg->GetMessageData();
 
@@ -237,7 +237,7 @@ namespace SF
 				}
 				return pNewMsg;
 
-			}; // MessageData* CreateGameRes::Create( IMemoryManager& memoryManager, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const Result &InResult )
+			}; // MessageData* CreateGameRes::Create( IHeap& memHeap, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const Result &InResult )
 
 			Result CreateGameRes::OverrideRouteContextDestination( EntityUID to )
 			{
@@ -328,19 +328,19 @@ namespace SF
 			}; // Result GameDeletedC2SEvt::ParseMessage( MessageData* pIMsg )
 
 
-			Result GameDeletedC2SEvt::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
+			Result GameDeletedC2SEvt::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
 			{
  				Result hr;
 
-				protocolMem(pMessageBase = new(memoryManager) GameDeletedC2SEvt(pIMsg));
+				protocolMem(pMessageBase = new(memHeap) GameDeletedC2SEvt(pIMsg));
 				protocolChk(pMessageBase->ParseMsg());
 
 			Proc_End:
 				return hr;
 
-			}; // Result GameDeletedC2SEvt::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
+			}; // Result GameDeletedC2SEvt::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
 
-			MessageData* GameDeletedC2SEvt::Create( IMemoryManager& memoryManager, const RouteContext &InRouteContext, const uint16_t &InRouteHopCount )
+			MessageData* GameDeletedC2SEvt::Create( IHeap& memHeap, const RouteContext &InRouteContext, const uint16_t &InRouteHopCount )
 			{
  				MessageData *pNewMsg = nullptr;
 				Result hr;
@@ -352,7 +352,7 @@ namespace SF
 					+ sizeof(uint16_t));
 
 
-				protocolMem( pNewMsg = MessageData::NewMessage( memoryManager, GameInstanceManager::GameDeletedC2SEvt::MID, __uiMessageSize ) );
+				protocolMem( pNewMsg = MessageData::NewMessage( memHeap, GameInstanceManager::GameDeletedC2SEvt::MID, __uiMessageSize ) );
 
 				pMsgData = pNewMsg->GetMessageData();
 
@@ -369,7 +369,7 @@ namespace SF
 				}
 				return pNewMsg;
 
-			}; // MessageData* GameDeletedC2SEvt::Create( IMemoryManager& memoryManager, const RouteContext &InRouteContext, const uint16_t &InRouteHopCount )
+			}; // MessageData* GameDeletedC2SEvt::Create( IHeap& memHeap, const RouteContext &InRouteContext, const uint16_t &InRouteHopCount )
 
 			Result GameDeletedC2SEvt::OverrideRouteContextDestination( EntityUID to )
 			{

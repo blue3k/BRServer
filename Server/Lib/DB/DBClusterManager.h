@@ -64,7 +64,7 @@ namespace DB {
 		DBClusterManager();
 		virtual ~DBClusterManager();
 
-		IMemoryManager& GetMemoryManager() { return m_MemoryManager; }
+		IHeap& GetMemoryManager() { return m_MemoryManager; }
 
 		uint GetPartitioningCount() const { return m_PartitioningCount; }
 

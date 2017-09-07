@@ -58,7 +58,7 @@ namespace DB {
 	}
 
 	// initialize DB source
-	Result	FactoryOLEDB::CreateDataSource(IMemoryManager& memMgr, DataSource* &pDBSource )
+	Result	FactoryOLEDB::CreateDataSource(IHeap& memMgr, DataSource* &pDBSource )
 	{
 		if( pDBSource = new DataSourceOLEDB(memMgr))
 			return ResultCode::SUCCESS;
@@ -67,7 +67,7 @@ namespace DB {
 	}
 
 	// close DB source
-	Result	FactoryOLEDB::CreateSession(IMemoryManager& memMgr, DataSource* pDBSource, Session* &pSession )
+	Result	FactoryOLEDB::CreateSession(IHeap& memMgr, DataSource* pDBSource, Session* &pSession )
 	{
 		if( pSession = new SessionOLEDB(memMgr, pDBSource) )
 			return ResultCode::SUCCESS;

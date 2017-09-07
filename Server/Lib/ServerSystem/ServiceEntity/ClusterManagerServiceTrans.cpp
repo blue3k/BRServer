@@ -19,7 +19,7 @@
 #include "Protocol/Message/ClusterServerMsgClass.h"
 #include "Protocol/Policy/ClusterServerNetPolicy.h"
 
-#include "ServerSystem/ServerService/ClusterServerService.h"
+#include "Protocol/ServerService/ClusterServerService.h"
 
 #include "Server/BrServerUtil.h"
 #include "SvrTrace.h"

@@ -84,7 +84,7 @@ namespace Svr {
 		// Server service membership
 		ServiceStatus m_ServiceStatus = ServiceStatus::Offline;
 
-		// Server Up time, this will be synched to the server entity when the service object is created or synchronized
+		// Server Up time, this will be synced to the server entity when the service object is created or synchronized
 		//uint64_t, m_ServerUpTime;
 
 		// workload
@@ -107,6 +107,7 @@ namespace Svr {
 		ServerEntity* GetServerEntity() { return m_ServerEntity; }
 
 		ClusterMembership GetClusterMembership() { return m_ClusterMembership; }
+		void SetClusterMembership(ClusterMembership value) { m_ClusterMembership = value; }
 
 		ServiceStatus GetServiceStatus() { return m_ServiceStatus; }
 		void SetServiceStatus(ServiceStatus value) { m_ServiceStatus = value; }

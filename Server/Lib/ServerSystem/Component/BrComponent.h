@@ -81,7 +81,7 @@ namespace SF {
 			{
 				if (m_Components[iComponent] != nullptr)
 					m_Components[iComponent]->TerminateComponent();
-				IMemoryManager::Delete( m_Components[iComponent] );
+				IHeap::Delete( m_Components[iComponent] );
 			}
 		}
 
@@ -191,7 +191,7 @@ namespace SF {
 			Result hr = AddComponent(newComponent);
 			if( !(hr) )
 			{
-				IMemoryManager::Delete(newComponent);
+				IHeap::Delete(newComponent);
 			}
 
 			return hr;
@@ -213,7 +213,7 @@ namespace SF {
 			Result hr = AddComponent(newComponent);
 			if( !(hr) )
 			{
-				IMemoryManager::Delete(newComponent);
+				IHeap::Delete(newComponent);
 			}
 
 			return hr;
@@ -235,7 +235,7 @@ namespace SF {
 			Result hr = AddComponent(newComponent);
 			if( !(hr) )
 			{
-				IMemoryManager::Delete(newComponent);
+				IHeap::Delete(newComponent);
 			}
 
 			return hr;
@@ -257,7 +257,7 @@ namespace SF {
 			Result hr = AddComponent(newComponent);
 			if (!(hr))
 			{
-				IMemoryManager::Delete(newComponent);
+				IHeap::Delete(newComponent);
 			}
 
 			return hr;

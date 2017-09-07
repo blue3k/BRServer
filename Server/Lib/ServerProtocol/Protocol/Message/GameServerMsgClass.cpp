@@ -55,19 +55,19 @@ namespace SF
 			}; // Result RegisterPlayerToJoinGameServerCmd::ParseMessage( MessageData* pIMsg )
 
 
-			Result RegisterPlayerToJoinGameServerCmd::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
+			Result RegisterPlayerToJoinGameServerCmd::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
 			{
  				Result hr;
 
-				protocolMem(pMessageBase = new(memoryManager) RegisterPlayerToJoinGameServerCmd(pIMsg));
+				protocolMem(pMessageBase = new(memHeap) RegisterPlayerToJoinGameServerCmd(pIMsg));
 				protocolChk(pMessageBase->ParseMsg());
 
 			Proc_End:
 				return hr;
 
-			}; // Result RegisterPlayerToJoinGameServerCmd::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
+			}; // Result RegisterPlayerToJoinGameServerCmd::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
 
-			MessageData* RegisterPlayerToJoinGameServerCmd::Create( IMemoryManager& memoryManager, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const PlayerID &InPlayerID, const AuthTicket &InTicket, const FacebookUID &InFBUserID, const uint32_t &InShardID )
+			MessageData* RegisterPlayerToJoinGameServerCmd::Create( IHeap& memHeap, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const PlayerID &InPlayerID, const AuthTicket &InTicket, const FacebookUID &InFBUserID, const uint32_t &InShardID )
 			{
  				MessageData *pNewMsg = nullptr;
 				Result hr;
@@ -83,7 +83,7 @@ namespace SF
 					+ sizeof(uint32_t));
 
 
-				protocolMem( pNewMsg = MessageData::NewMessage( memoryManager, GameServer::RegisterPlayerToJoinGameServerCmd::MID, __uiMessageSize ) );
+				protocolMem( pNewMsg = MessageData::NewMessage( memHeap, GameServer::RegisterPlayerToJoinGameServerCmd::MID, __uiMessageSize ) );
 
 				pMsgData = pNewMsg->GetMessageData();
 
@@ -104,7 +104,7 @@ namespace SF
 				}
 				return pNewMsg;
 
-			}; // MessageData* RegisterPlayerToJoinGameServerCmd::Create( IMemoryManager& memoryManager, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const PlayerID &InPlayerID, const AuthTicket &InTicket, const FacebookUID &InFBUserID, const uint32_t &InShardID )
+			}; // MessageData* RegisterPlayerToJoinGameServerCmd::Create( IHeap& memHeap, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const PlayerID &InPlayerID, const AuthTicket &InTicket, const FacebookUID &InFBUserID, const uint32_t &InShardID )
 
 			Result RegisterPlayerToJoinGameServerCmd::OverrideRouteContextDestination( EntityUID to )
 			{
@@ -174,19 +174,19 @@ namespace SF
 			}; // Result RegisterPlayerToJoinGameServerRes::ParseMessage( MessageData* pIMsg )
 
 
-			Result RegisterPlayerToJoinGameServerRes::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
+			Result RegisterPlayerToJoinGameServerRes::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
 			{
  				Result hr;
 
-				protocolMem(pMessageBase = new(memoryManager) RegisterPlayerToJoinGameServerRes(pIMsg));
+				protocolMem(pMessageBase = new(memHeap) RegisterPlayerToJoinGameServerRes(pIMsg));
 				protocolChk(pMessageBase->ParseMsg());
 
 			Proc_End:
 				return hr;
 
-			}; // Result RegisterPlayerToJoinGameServerRes::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
+			}; // Result RegisterPlayerToJoinGameServerRes::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
 
-			MessageData* RegisterPlayerToJoinGameServerRes::Create( IMemoryManager& memoryManager, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const Result &InResult, const char* InPublicAddress, const char* InPublicAddressV6, const uint32_t &InPort )
+			MessageData* RegisterPlayerToJoinGameServerRes::Create( IHeap& memHeap, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const Result &InResult, const char* InPublicAddress, const char* InPublicAddressV6, const uint32_t &InPort )
 			{
  				MessageData *pNewMsg = nullptr;
 				Result hr;
@@ -202,7 +202,7 @@ namespace SF
 					+ sizeof(uint32_t));
 
 
-				protocolMem( pNewMsg = MessageData::NewMessage( memoryManager, GameServer::RegisterPlayerToJoinGameServerRes::MID, __uiMessageSize ) );
+				protocolMem( pNewMsg = MessageData::NewMessage( memHeap, GameServer::RegisterPlayerToJoinGameServerRes::MID, __uiMessageSize ) );
 
 				pMsgData = pNewMsg->GetMessageData();
 
@@ -225,7 +225,7 @@ namespace SF
 				}
 				return pNewMsg;
 
-			}; // MessageData* RegisterPlayerToJoinGameServerRes::Create( IMemoryManager& memoryManager, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const Result &InResult, const char* InPublicAddress, const char* InPublicAddressV6, const uint32_t &InPort )
+			}; // MessageData* RegisterPlayerToJoinGameServerRes::Create( IHeap& memHeap, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const Result &InResult, const char* InPublicAddress, const char* InPublicAddressV6, const uint32_t &InPort )
 
 			Result RegisterPlayerToJoinGameServerRes::OverrideRouteContextDestination( EntityUID to )
 			{
@@ -291,19 +291,19 @@ namespace SF
 			}; // Result RegisterPlayerToJoinGameServerOnPlayerEntityCmd::ParseMessage( MessageData* pIMsg )
 
 
-			Result RegisterPlayerToJoinGameServerOnPlayerEntityCmd::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
+			Result RegisterPlayerToJoinGameServerOnPlayerEntityCmd::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
 			{
  				Result hr;
 
-				protocolMem(pMessageBase = new(memoryManager) RegisterPlayerToJoinGameServerOnPlayerEntityCmd(pIMsg));
+				protocolMem(pMessageBase = new(memHeap) RegisterPlayerToJoinGameServerOnPlayerEntityCmd(pIMsg));
 				protocolChk(pMessageBase->ParseMsg());
 
 			Proc_End:
 				return hr;
 
-			}; // Result RegisterPlayerToJoinGameServerOnPlayerEntityCmd::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
+			}; // Result RegisterPlayerToJoinGameServerOnPlayerEntityCmd::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
 
-			MessageData* RegisterPlayerToJoinGameServerOnPlayerEntityCmd::Create( IMemoryManager& memoryManager, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const PlayerID &InPlayerID, const AuthTicket &InTicket, const FacebookUID &InFBUserID )
+			MessageData* RegisterPlayerToJoinGameServerOnPlayerEntityCmd::Create( IHeap& memHeap, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const PlayerID &InPlayerID, const AuthTicket &InTicket, const FacebookUID &InFBUserID )
 			{
  				MessageData *pNewMsg = nullptr;
 				Result hr;
@@ -318,7 +318,7 @@ namespace SF
 					+ sizeof(FacebookUID));
 
 
-				protocolMem( pNewMsg = MessageData::NewMessage( memoryManager, GameServer::RegisterPlayerToJoinGameServerOnPlayerEntityCmd::MID, __uiMessageSize ) );
+				protocolMem( pNewMsg = MessageData::NewMessage( memHeap, GameServer::RegisterPlayerToJoinGameServerOnPlayerEntityCmd::MID, __uiMessageSize ) );
 
 				pMsgData = pNewMsg->GetMessageData();
 
@@ -338,7 +338,7 @@ namespace SF
 				}
 				return pNewMsg;
 
-			}; // MessageData* RegisterPlayerToJoinGameServerOnPlayerEntityCmd::Create( IMemoryManager& memoryManager, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const PlayerID &InPlayerID, const AuthTicket &InTicket, const FacebookUID &InFBUserID )
+			}; // MessageData* RegisterPlayerToJoinGameServerOnPlayerEntityCmd::Create( IHeap& memHeap, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const PlayerID &InPlayerID, const AuthTicket &InTicket, const FacebookUID &InFBUserID )
 
 			Result RegisterPlayerToJoinGameServerOnPlayerEntityCmd::OverrideRouteContextDestination( EntityUID to )
 			{
@@ -401,19 +401,19 @@ namespace SF
 			}; // Result RegisterPlayerToJoinGameServerOnPlayerEntityRes::ParseMessage( MessageData* pIMsg )
 
 
-			Result RegisterPlayerToJoinGameServerOnPlayerEntityRes::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
+			Result RegisterPlayerToJoinGameServerOnPlayerEntityRes::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
 			{
  				Result hr;
 
-				protocolMem(pMessageBase = new(memoryManager) RegisterPlayerToJoinGameServerOnPlayerEntityRes(pIMsg));
+				protocolMem(pMessageBase = new(memHeap) RegisterPlayerToJoinGameServerOnPlayerEntityRes(pIMsg));
 				protocolChk(pMessageBase->ParseMsg());
 
 			Proc_End:
 				return hr;
 
-			}; // Result RegisterPlayerToJoinGameServerOnPlayerEntityRes::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
+			}; // Result RegisterPlayerToJoinGameServerOnPlayerEntityRes::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
 
-			MessageData* RegisterPlayerToJoinGameServerOnPlayerEntityRes::Create( IMemoryManager& memoryManager, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const Result &InResult )
+			MessageData* RegisterPlayerToJoinGameServerOnPlayerEntityRes::Create( IHeap& memHeap, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const Result &InResult )
 			{
  				MessageData *pNewMsg = nullptr;
 				Result hr;
@@ -426,7 +426,7 @@ namespace SF
 					+ sizeof(Result));
 
 
-				protocolMem( pNewMsg = MessageData::NewMessage( memoryManager, GameServer::RegisterPlayerToJoinGameServerOnPlayerEntityRes::MID, __uiMessageSize ) );
+				protocolMem( pNewMsg = MessageData::NewMessage( memHeap, GameServer::RegisterPlayerToJoinGameServerOnPlayerEntityRes::MID, __uiMessageSize ) );
 
 				pMsgData = pNewMsg->GetMessageData();
 
@@ -444,7 +444,7 @@ namespace SF
 				}
 				return pNewMsg;
 
-			}; // MessageData* RegisterPlayerToJoinGameServerOnPlayerEntityRes::Create( IMemoryManager& memoryManager, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const Result &InResult )
+			}; // MessageData* RegisterPlayerToJoinGameServerOnPlayerEntityRes::Create( IHeap& memHeap, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const Result &InResult )
 
 			Result RegisterPlayerToJoinGameServerOnPlayerEntityRes::OverrideRouteContextDestination( EntityUID to )
 			{
@@ -514,19 +514,19 @@ namespace SF
 			}; // Result ChatMessageC2SEvt::ParseMessage( MessageData* pIMsg )
 
 
-			Result ChatMessageC2SEvt::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
+			Result ChatMessageC2SEvt::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
 			{
  				Result hr;
 
-				protocolMem(pMessageBase = new(memoryManager) ChatMessageC2SEvt(pIMsg));
+				protocolMem(pMessageBase = new(memHeap) ChatMessageC2SEvt(pIMsg));
 				protocolChk(pMessageBase->ParseMsg());
 
 			Proc_End:
 				return hr;
 
-			}; // Result ChatMessageC2SEvt::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
+			}; // Result ChatMessageC2SEvt::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
 
-			MessageData* ChatMessageC2SEvt::Create( IMemoryManager& memoryManager, const RouteContext &InRouteContext, const AccountID &InSenderID, const uint8_t &InRole, const char* InSenderName, const char* InChatMessage )
+			MessageData* ChatMessageC2SEvt::Create( IHeap& memHeap, const RouteContext &InRouteContext, const AccountID &InSenderID, const uint8_t &InRole, const char* InSenderName, const char* InChatMessage )
 			{
  				MessageData *pNewMsg = nullptr;
 				Result hr;
@@ -541,7 +541,7 @@ namespace SF
 					+ sizeof(uint8_t));
 
 
-				protocolMem( pNewMsg = MessageData::NewMessage( memoryManager, GameServer::ChatMessageC2SEvt::MID, __uiMessageSize ) );
+				protocolMem( pNewMsg = MessageData::NewMessage( memHeap, GameServer::ChatMessageC2SEvt::MID, __uiMessageSize ) );
 
 				pMsgData = pNewMsg->GetMessageData();
 
@@ -563,7 +563,7 @@ namespace SF
 				}
 				return pNewMsg;
 
-			}; // MessageData* ChatMessageC2SEvt::Create( IMemoryManager& memoryManager, const RouteContext &InRouteContext, const AccountID &InSenderID, const uint8_t &InRole, const char* InSenderName, const char* InChatMessage )
+			}; // MessageData* ChatMessageC2SEvt::Create( IHeap& memHeap, const RouteContext &InRouteContext, const AccountID &InSenderID, const uint8_t &InRole, const char* InSenderName, const char* InChatMessage )
 
 			Result ChatMessageC2SEvt::OverrideRouteContextDestination( EntityUID to )
 			{
@@ -634,19 +634,19 @@ namespace SF
 			}; // Result NotifyC2SEvt::ParseMessage( MessageData* pIMsg )
 
 
-			Result NotifyC2SEvt::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
+			Result NotifyC2SEvt::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
 			{
  				Result hr;
 
-				protocolMem(pMessageBase = new(memoryManager) NotifyC2SEvt(pIMsg));
+				protocolMem(pMessageBase = new(memHeap) NotifyC2SEvt(pIMsg));
 				protocolChk(pMessageBase->ParseMsg());
 
 			Proc_End:
 				return hr;
 
-			}; // Result NotifyC2SEvt::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
+			}; // Result NotifyC2SEvt::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
 
-			MessageData* NotifyC2SEvt::Create( IMemoryManager& memoryManager, const RouteContext &InRouteContext, const PlayerID &InDestPlayerID, const uint32_t &InNotificationID, const NotificationType &InMessageID, const uint64_t &InMessageParam0, const uint64_t &InMessageParam1, const char* InMessageText, const uint64_t &InTimeStamp )
+			MessageData* NotifyC2SEvt::Create( IHeap& memHeap, const RouteContext &InRouteContext, const PlayerID &InDestPlayerID, const uint32_t &InNotificationID, const NotificationType &InMessageID, const uint64_t &InMessageParam0, const uint64_t &InMessageParam1, const char* InMessageText, const uint64_t &InTimeStamp )
 			{
  				MessageData *pNewMsg = nullptr;
 				Result hr;
@@ -664,7 +664,7 @@ namespace SF
 					+ sizeof(uint64_t));
 
 
-				protocolMem( pNewMsg = MessageData::NewMessage( memoryManager, GameServer::NotifyC2SEvt::MID, __uiMessageSize ) );
+				protocolMem( pNewMsg = MessageData::NewMessage( memHeap, GameServer::NotifyC2SEvt::MID, __uiMessageSize ) );
 
 				pMsgData = pNewMsg->GetMessageData();
 
@@ -688,7 +688,7 @@ namespace SF
 				}
 				return pNewMsg;
 
-			}; // MessageData* NotifyC2SEvt::Create( IMemoryManager& memoryManager, const RouteContext &InRouteContext, const PlayerID &InDestPlayerID, const uint32_t &InNotificationID, const NotificationType &InMessageID, const uint64_t &InMessageParam0, const uint64_t &InMessageParam1, const char* InMessageText, const uint64_t &InTimeStamp )
+			}; // MessageData* NotifyC2SEvt::Create( IHeap& memHeap, const RouteContext &InRouteContext, const PlayerID &InDestPlayerID, const uint32_t &InNotificationID, const NotificationType &InMessageID, const uint64_t &InMessageParam0, const uint64_t &InMessageParam1, const char* InMessageText, const uint64_t &InTimeStamp )
 
 			Result NotifyC2SEvt::OverrideRouteContextDestination( EntityUID to )
 			{
@@ -752,19 +752,19 @@ namespace SF
 			}; // Result FriendAcceptedC2SEvt::ParseMessage( MessageData* pIMsg )
 
 
-			Result FriendAcceptedC2SEvt::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
+			Result FriendAcceptedC2SEvt::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
 			{
  				Result hr;
 
-				protocolMem(pMessageBase = new(memoryManager) FriendAcceptedC2SEvt(pIMsg));
+				protocolMem(pMessageBase = new(memHeap) FriendAcceptedC2SEvt(pIMsg));
 				protocolChk(pMessageBase->ParseMsg());
 
 			Proc_End:
 				return hr;
 
-			}; // Result FriendAcceptedC2SEvt::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
+			}; // Result FriendAcceptedC2SEvt::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
 
-			MessageData* FriendAcceptedC2SEvt::Create( IMemoryManager& memoryManager, const RouteContext &InRouteContext, const AccountID &InDestPlayerID, const ServerFriendInformation &InAccepter )
+			MessageData* FriendAcceptedC2SEvt::Create( IHeap& memHeap, const RouteContext &InRouteContext, const AccountID &InDestPlayerID, const ServerFriendInformation &InAccepter )
 			{
  				MessageData *pNewMsg = nullptr;
 				Result hr;
@@ -777,7 +777,7 @@ namespace SF
 					+ sizeof(ServerFriendInformation));
 
 
-				protocolMem( pNewMsg = MessageData::NewMessage( memoryManager, GameServer::FriendAcceptedC2SEvt::MID, __uiMessageSize ) );
+				protocolMem( pNewMsg = MessageData::NewMessage( memHeap, GameServer::FriendAcceptedC2SEvt::MID, __uiMessageSize ) );
 
 				pMsgData = pNewMsg->GetMessageData();
 
@@ -795,7 +795,7 @@ namespace SF
 				}
 				return pNewMsg;
 
-			}; // MessageData* FriendAcceptedC2SEvt::Create( IMemoryManager& memoryManager, const RouteContext &InRouteContext, const AccountID &InDestPlayerID, const ServerFriendInformation &InAccepter )
+			}; // MessageData* FriendAcceptedC2SEvt::Create( IHeap& memHeap, const RouteContext &InRouteContext, const AccountID &InDestPlayerID, const ServerFriendInformation &InAccepter )
 
 			Result FriendAcceptedC2SEvt::OverrideRouteContextDestination( EntityUID to )
 			{
@@ -859,19 +859,19 @@ namespace SF
 			}; // Result FriendRemovedC2SEvt::ParseMessage( MessageData* pIMsg )
 
 
-			Result FriendRemovedC2SEvt::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
+			Result FriendRemovedC2SEvt::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
 			{
  				Result hr;
 
-				protocolMem(pMessageBase = new(memoryManager) FriendRemovedC2SEvt(pIMsg));
+				protocolMem(pMessageBase = new(memHeap) FriendRemovedC2SEvt(pIMsg));
 				protocolChk(pMessageBase->ParseMsg());
 
 			Proc_End:
 				return hr;
 
-			}; // Result FriendRemovedC2SEvt::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
+			}; // Result FriendRemovedC2SEvt::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
 
-			MessageData* FriendRemovedC2SEvt::Create( IMemoryManager& memoryManager, const RouteContext &InRouteContext, const AccountID &InDestPlayerID, const PlayerID &InRemoverID )
+			MessageData* FriendRemovedC2SEvt::Create( IHeap& memHeap, const RouteContext &InRouteContext, const AccountID &InDestPlayerID, const PlayerID &InRemoverID )
 			{
  				MessageData *pNewMsg = nullptr;
 				Result hr;
@@ -884,7 +884,7 @@ namespace SF
 					+ sizeof(PlayerID));
 
 
-				protocolMem( pNewMsg = MessageData::NewMessage( memoryManager, GameServer::FriendRemovedC2SEvt::MID, __uiMessageSize ) );
+				protocolMem( pNewMsg = MessageData::NewMessage( memHeap, GameServer::FriendRemovedC2SEvt::MID, __uiMessageSize ) );
 
 				pMsgData = pNewMsg->GetMessageData();
 
@@ -902,7 +902,7 @@ namespace SF
 				}
 				return pNewMsg;
 
-			}; // MessageData* FriendRemovedC2SEvt::Create( IMemoryManager& memoryManager, const RouteContext &InRouteContext, const AccountID &InDestPlayerID, const PlayerID &InRemoverID )
+			}; // MessageData* FriendRemovedC2SEvt::Create( IHeap& memHeap, const RouteContext &InRouteContext, const AccountID &InDestPlayerID, const PlayerID &InRemoverID )
 
 			Result FriendRemovedC2SEvt::OverrideRouteContextDestination( EntityUID to )
 			{
@@ -966,19 +966,19 @@ namespace SF
 			}; // Result RequestPlayerStatusUpdateC2SEvt::ParseMessage( MessageData* pIMsg )
 
 
-			Result RequestPlayerStatusUpdateC2SEvt::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
+			Result RequestPlayerStatusUpdateC2SEvt::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
 			{
  				Result hr;
 
-				protocolMem(pMessageBase = new(memoryManager) RequestPlayerStatusUpdateC2SEvt(pIMsg));
+				protocolMem(pMessageBase = new(memHeap) RequestPlayerStatusUpdateC2SEvt(pIMsg));
 				protocolChk(pMessageBase->ParseMsg());
 
 			Proc_End:
 				return hr;
 
-			}; // Result RequestPlayerStatusUpdateC2SEvt::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
+			}; // Result RequestPlayerStatusUpdateC2SEvt::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
 
-			MessageData* RequestPlayerStatusUpdateC2SEvt::Create( IMemoryManager& memoryManager, const RouteContext &InRouteContext, const AccountID &InDestPlayerID, const PlayerID &InRequesterID )
+			MessageData* RequestPlayerStatusUpdateC2SEvt::Create( IHeap& memHeap, const RouteContext &InRouteContext, const AccountID &InDestPlayerID, const PlayerID &InRequesterID )
 			{
  				MessageData *pNewMsg = nullptr;
 				Result hr;
@@ -991,7 +991,7 @@ namespace SF
 					+ sizeof(PlayerID));
 
 
-				protocolMem( pNewMsg = MessageData::NewMessage( memoryManager, GameServer::RequestPlayerStatusUpdateC2SEvt::MID, __uiMessageSize ) );
+				protocolMem( pNewMsg = MessageData::NewMessage( memHeap, GameServer::RequestPlayerStatusUpdateC2SEvt::MID, __uiMessageSize ) );
 
 				pMsgData = pNewMsg->GetMessageData();
 
@@ -1009,7 +1009,7 @@ namespace SF
 				}
 				return pNewMsg;
 
-			}; // MessageData* RequestPlayerStatusUpdateC2SEvt::Create( IMemoryManager& memoryManager, const RouteContext &InRouteContext, const AccountID &InDestPlayerID, const PlayerID &InRequesterID )
+			}; // MessageData* RequestPlayerStatusUpdateC2SEvt::Create( IHeap& memHeap, const RouteContext &InRouteContext, const AccountID &InDestPlayerID, const PlayerID &InRequesterID )
 
 			Result RequestPlayerStatusUpdateC2SEvt::OverrideRouteContextDestination( EntityUID to )
 			{
@@ -1074,19 +1074,19 @@ namespace SF
 			}; // Result NotifyPlayerStatusUpdatedC2SEvt::ParseMessage( MessageData* pIMsg )
 
 
-			Result NotifyPlayerStatusUpdatedC2SEvt::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
+			Result NotifyPlayerStatusUpdatedC2SEvt::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
 			{
  				Result hr;
 
-				protocolMem(pMessageBase = new(memoryManager) NotifyPlayerStatusUpdatedC2SEvt(pIMsg));
+				protocolMem(pMessageBase = new(memHeap) NotifyPlayerStatusUpdatedC2SEvt(pIMsg));
 				protocolChk(pMessageBase->ParseMsg());
 
 			Proc_End:
 				return hr;
 
-			}; // Result NotifyPlayerStatusUpdatedC2SEvt::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
+			}; // Result NotifyPlayerStatusUpdatedC2SEvt::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
 
-			MessageData* NotifyPlayerStatusUpdatedC2SEvt::Create( IMemoryManager& memoryManager, const RouteContext &InRouteContext, const AccountID &InDestPlayerID, const uint32_t &InLatestActiveTime, const uint8_t &InIsInGame )
+			MessageData* NotifyPlayerStatusUpdatedC2SEvt::Create( IHeap& memHeap, const RouteContext &InRouteContext, const AccountID &InDestPlayerID, const uint32_t &InLatestActiveTime, const uint8_t &InIsInGame )
 			{
  				MessageData *pNewMsg = nullptr;
 				Result hr;
@@ -1100,7 +1100,7 @@ namespace SF
 					+ sizeof(uint8_t));
 
 
-				protocolMem( pNewMsg = MessageData::NewMessage( memoryManager, GameServer::NotifyPlayerStatusUpdatedC2SEvt::MID, __uiMessageSize ) );
+				protocolMem( pNewMsg = MessageData::NewMessage( memHeap, GameServer::NotifyPlayerStatusUpdatedC2SEvt::MID, __uiMessageSize ) );
 
 				pMsgData = pNewMsg->GetMessageData();
 
@@ -1119,7 +1119,7 @@ namespace SF
 				}
 				return pNewMsg;
 
-			}; // MessageData* NotifyPlayerStatusUpdatedC2SEvt::Create( IMemoryManager& memoryManager, const RouteContext &InRouteContext, const AccountID &InDestPlayerID, const uint32_t &InLatestActiveTime, const uint8_t &InIsInGame )
+			}; // MessageData* NotifyPlayerStatusUpdatedC2SEvt::Create( IHeap& memHeap, const RouteContext &InRouteContext, const AccountID &InDestPlayerID, const uint32_t &InLatestActiveTime, const uint8_t &InIsInGame )
 
 			Result NotifyPlayerStatusUpdatedC2SEvt::OverrideRouteContextDestination( EntityUID to )
 			{
@@ -1187,19 +1187,19 @@ namespace SF
 			}; // Result NotifyPartyInviteC2SEvt::ParseMessage( MessageData* pIMsg )
 
 
-			Result NotifyPartyInviteC2SEvt::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
+			Result NotifyPartyInviteC2SEvt::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
 			{
  				Result hr;
 
-				protocolMem(pMessageBase = new(memoryManager) NotifyPartyInviteC2SEvt(pIMsg));
+				protocolMem(pMessageBase = new(memHeap) NotifyPartyInviteC2SEvt(pIMsg));
 				protocolChk(pMessageBase->ParseMsg());
 
 			Proc_End:
 				return hr;
 
-			}; // Result NotifyPartyInviteC2SEvt::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
+			}; // Result NotifyPartyInviteC2SEvt::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
 
-			MessageData* NotifyPartyInviteC2SEvt::Create( IMemoryManager& memoryManager, const RouteContext &InRouteContext, const PlayerID &InDestPlayerID, const PlayerID &InInviterID, const char* InInviterName, const uint64_t &InPartyUID )
+			MessageData* NotifyPartyInviteC2SEvt::Create( IHeap& memHeap, const RouteContext &InRouteContext, const PlayerID &InDestPlayerID, const PlayerID &InInviterID, const char* InInviterName, const uint64_t &InPartyUID )
 			{
  				MessageData *pNewMsg = nullptr;
 				Result hr;
@@ -1214,7 +1214,7 @@ namespace SF
 					+ sizeof(uint64_t));
 
 
-				protocolMem( pNewMsg = MessageData::NewMessage( memoryManager, GameServer::NotifyPartyInviteC2SEvt::MID, __uiMessageSize ) );
+				protocolMem( pNewMsg = MessageData::NewMessage( memHeap, GameServer::NotifyPartyInviteC2SEvt::MID, __uiMessageSize ) );
 
 				pMsgData = pNewMsg->GetMessageData();
 
@@ -1235,7 +1235,7 @@ namespace SF
 				}
 				return pNewMsg;
 
-			}; // MessageData* NotifyPartyInviteC2SEvt::Create( IMemoryManager& memoryManager, const RouteContext &InRouteContext, const PlayerID &InDestPlayerID, const PlayerID &InInviterID, const char* InInviterName, const uint64_t &InPartyUID )
+			}; // MessageData* NotifyPartyInviteC2SEvt::Create( IHeap& memHeap, const RouteContext &InRouteContext, const PlayerID &InDestPlayerID, const PlayerID &InInviterID, const char* InInviterName, const uint64_t &InPartyUID )
 
 			Result NotifyPartyInviteC2SEvt::OverrideRouteContextDestination( EntityUID to )
 			{

@@ -117,7 +117,7 @@ namespace ConspiracyGameInstanceServer {
 
 		if( voterCount <= 0 || voterCount > GameConst::MAX_GAMEPLAYER )
 		{
-			return ResultCode::E_GAME_INVALID_PLAYER_COUNT;
+			return ResultCode::GAME_INVALID_PLAYER_COUNT;
 		}
 
 		size_t allocationSize = sizeof(GameLogVote) + (voterCount-1)*sizeof(GameLogVote::VoteInfo);
@@ -143,7 +143,7 @@ namespace ConspiracyGameInstanceServer {
 		Result hr = ResultCode::SUCCESS;
 
 		if( m_CurrentVoteLogItem == nullptr /*|| m_CurrentVoteLogItem->Type != type*/ )
-			return ResultCode::E_GAME_INVALID_VOTETYPE;
+			return ResultCode::GAME_INVALID_VOTETYPE;
 
 		svrChk( m_CurrentVoteLogItem->SetVoteStatus( voter, voted ) );
 
@@ -166,7 +166,7 @@ namespace ConspiracyGameInstanceServer {
 		Assert(numRankers > 0 );
 		if( numRankers <= 0 || numRankers > GameConst::MAX_GAMEPLAYER )
 		{
-			return ResultCode::E_GAME_INVALID_PLAYER_COUNT;
+			return ResultCode::GAME_INVALID_PLAYER_COUNT;
 		}
 
 		size_t allocationSize = sizeof(GameLogVoteResult) + (numRankers-1)*sizeof(PlayerID);

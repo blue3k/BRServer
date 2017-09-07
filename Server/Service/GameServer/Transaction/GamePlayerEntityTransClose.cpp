@@ -24,7 +24,7 @@
 #include "SvrTrace.h"
 #include "ServerEntity/ServerEntityManager.h"
 
-#include "ServerSystem/ServerService/PartyMatchingQueueService.h"
+#include "Protocol/ServerService/PartyMatchingQueueService.h"
 #include "ServerSystem/ServiceEntity/MatchingQueueServiceEntity.h"
 #include "ServerSystem/ServiceEntity/Game/GameClusterServiceEntity.h"
 

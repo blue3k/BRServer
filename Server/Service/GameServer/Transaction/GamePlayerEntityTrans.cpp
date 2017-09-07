@@ -483,7 +483,7 @@ namespace GameServer {
 		// succeeded to query
 		if (pDBRes->Result < 0)
 		{
-			svrErr(ResultCode::E_GAME_INVALID_PLAYER);
+			svrErr(ResultCode::GAME_INVALID_PLAYER);
 		}
 
 		svrChk(Svr::GetServerComponent<DB::GameConspiracyDB>()->GetPlayerInfoCmd(GetTransID(), pDBRes->ShardID, GetPlayerID()));
@@ -507,7 +507,7 @@ namespace GameServer {
 		// succeeded to query
 		if( pDBRes->Result < 0 )
 		{
-			svrErr(ResultCode::E_GAME_INVALID_PLAYER);
+			svrErr(ResultCode::GAME_INVALID_PLAYER);
 		}
 
 		svrAssert( pDBRes->m_RowsetResult.size() >= 1 );
@@ -589,7 +589,7 @@ namespace GameServer {
 		// succeeded to query
 		if (pDBRes->Result < 0)
 		{
-			svrErr(ResultCode::E_GAME_INVALID_PLAYER);
+			svrErr(ResultCode::GAME_INVALID_PLAYER);
 		}
 
 		svrChkCloseErr(ResultCode::UNEXPECTED, StrUtil::StringCpy(m_ComplitionState, pDBRes->ComplitionState));
@@ -647,7 +647,7 @@ namespace GameServer {
 		// succeeded to query
 		if (pDBRes->Result < 0)
 		{
-			svrErr(ResultCode::E_GAME_INVALID_PLAYER);
+			svrErr(ResultCode::GAME_INVALID_PLAYER);
 		}
 
 	Proc_End:
@@ -1015,7 +1015,7 @@ namespace GameServer {
 		svrChk( super::StartTransaction() );
 
 		if( GetMyOwner()->GetPlayerID() != GetDestPlayerID() )
-			svrErr(ResultCode::E_GAME_INVALID_PLAYER);
+			svrErr(ResultCode::GAME_INVALID_PLAYER);
 
 		svrChk( GetMyOwner()->GetComponent<UserNotifySystem>()->AddNotification(GetNotificationID(), (NotificationType)GetMessageID(), GetMessageParam0(), GetMessageParam1(), GetMessageText(), 0, GetTimeStamp() ) );
 		svrChkPtr(pPolicy = GetInterface<Policy::NetSvrPolicyGame>());
@@ -1061,8 +1061,8 @@ namespace GameServer {
 
 		if (GetIsCostFree() == 0)
 		{
-			svrChkCloseErr(ResultCode::E_GAME_INVALID_COSTID, conspiracy::OrganicTbl::FindItem((int)conspiracy::OrganicTbl::EItemEffect::Enum::NickName, pCostItem));
-			svrChkCloseErr(ResultCode::E_GAME_NOTENOUGH_RESOURCE, pPlayerInfoSystem->ApplyCost(pCostItem, TransLogCategory::Buy, "SetNickName"));
+			svrChkCloseErr(ResultCode::GAME_INVALID_COSTID, conspiracy::OrganicTbl::FindItem((int)conspiracy::OrganicTbl::EItemEffect::Enum::NickName, pCostItem));
+			svrChkCloseErr(ResultCode::GAME_NOTENOUGH_RESOURCE, pPlayerInfoSystem->ApplyCost(pCostItem, TransLogCategory::Buy, "SetNickName"));
 		}
 
 		m_TotalGem = pPlayerInfoSystem->GetGem();
@@ -1092,8 +1092,8 @@ namespace GameServer {
 
 		if (GetIsCostFree() == 0)
 		{
-			svrChkCloseErr(ResultCode::E_GAME_INVALID_COSTID, conspiracy::OrganicTbl::FindItem((int)conspiracy::OrganicTbl::EItemEffect::Enum::NickName, pCostItem));
-			svrChkCloseErr(ResultCode::E_GAME_NOTENOUGH_RESOURCE, pPlayerInfoSystem->CheckCost(pCostItem));
+			svrChkCloseErr(ResultCode::GAME_INVALID_COSTID, conspiracy::OrganicTbl::FindItem((int)conspiracy::OrganicTbl::EItemEffect::Enum::NickName, pCostItem));
+			svrChkCloseErr(ResultCode::GAME_NOTENOUGH_RESOURCE, pPlayerInfoSystem->CheckCost(pCostItem));
 		}
 
 		svrChk(Svr::GetServerComponent<DB::GameConspiracyDB>()->SetNickName(GetTransID(), GetMyOwner()->GetShardID(), GetMyOwner()->GetPlayerID(), GetNickName()));
@@ -1372,7 +1372,7 @@ namespace GameServer {
 		svrChk( super::StartTransaction() );
 
 		if( GetMyOwner()->GetPlayerID() != GetDestPlayerID() )
-			svrErr(ResultCode::E_GAME_INVALID_PLAYER);
+			svrErr(ResultCode::GAME_INVALID_PLAYER);
 
 		playerUID = GetRouteContext().GetFrom();
 
@@ -1675,7 +1675,7 @@ namespace GameServer {
 
 		if( !( conspiracy::ShopTbl::FindItem( GetShopItemID(), m_pShopItem ) ) )
 		{
-			svrErrClose(ResultCode::E_GAME_INVALID_SHOPITEMID);
+			svrErrClose(ResultCode::GAME_INVALID_SHOPITEMID);
 		}
 
 		svrChkPtr(pExtMgr = Svr::GetServerComponent<Svr::ExternalTransactionManager>());

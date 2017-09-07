@@ -359,7 +359,7 @@ namespace SF {
 		{
 			if (pTaskWorker->GetThreadID() != ThreadID())
 				pTaskWorker->Stop(true);
-			IMemoryManager::Delete(pTaskWorker);
+			IHeap::Delete(pTaskWorker);
 			return ResultCode::SUCCESS;
 		});
 

@@ -295,7 +295,7 @@ namespace Svr {
 
 		stm_pInstance->Stop(true);
 
-		IMemoryManager::Delete(stm_pInstance);
+		IHeap::Delete(stm_pInstance);
 		stm_pInstance = nullptr;
 
 		return ResultCode::SUCCESS;

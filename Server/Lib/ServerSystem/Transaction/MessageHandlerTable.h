@@ -98,15 +98,13 @@ namespace Svr {
 										> HandlerTableType;
 	private:
 		HandlerTableType m_HandlerTable;
-		MemoryPool* m_MemoryPool = nullptr;
 
 	public:
 		
-		MessageHandlerTable( IMemoryManager &allocator )
+		MessageHandlerTable( IHeap &allocator )
 			: m_HandlerTable(allocator)
 			, m_Allocator(allocator)
 		{
-			m_MemoryPool = m_Allocator.GetMemoryPoolBySize(sizeof(TableItem));
 		}
 
 		virtual ~MessageHandlerTable()
@@ -120,14 +118,7 @@ namespace Svr {
 
 				m_HandlerTable.erase( itItem );
 
-				if (m_MemoryPool != nullptr)
-				{
-					m_MemoryPool->Free(pTableItem, "MessageHandlerTable");
-				}
-				else
-				{
-					IMemoryManager::Delete(pTableItem);
-				}
+				IHeap::Delete(pTableItem);
 			}
 		}
 
@@ -150,15 +141,7 @@ namespace Svr {
 			}
 
 			TableItem *pNewItem = nullptr;
-			if (m_MemoryPool != nullptr)
-			{
-				auto pPtr = m_MemoryPool->Alloc("MessageHandlerTable");
-				pNewItem = new(pPtr) TableItem(MessageClassType::MID, newHandler, fileName, lineNumber);
-			}
-			else
-			{
-				pNewItem = new(m_Allocator) TableItem(MessageClassType::MID, newHandler, fileName, lineNumber);
-			}
+			pNewItem = new(m_Allocator) TableItem(MessageClassType::MID, newHandler, fileName, lineNumber);
 			
 			if( pNewItem == nullptr )
 				return ResultCode::OUT_OF_MEMORY;
@@ -226,7 +209,7 @@ namespace Svr {
 		}
 
 	private:
-		IMemoryManager			&m_Allocator;
+		IHeap			&m_Allocator;
 	};
 
 

@@ -444,7 +444,7 @@ namespace Svr {
 				}
 
 				notifiedPlayerCount++;
-				pServerEntity->GetInterface<Policy::NetSvrPolicyPartyMatching>()->PartyGameMatchedS2CEvt(
+				Policy::NetSvrPolicyPartyMatching(pServerEntity->GetConnection()).PartyGameMatchedS2CEvt(
 					RouteContext(GetOwnerEntityUID(), reservedMember.RegisterEntityUID), 0);
 			}
 		}

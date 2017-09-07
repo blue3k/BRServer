@@ -53,19 +53,19 @@ namespace SF
 			}; // Result GetClusterMemberListCmd::ParseMessage( MessageData* pIMsg )
 
 
-			Result GetClusterMemberListCmd::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
+			Result GetClusterMemberListCmd::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
 			{
  				Result hr;
 
-				protocolMem(pMessageBase = new(memoryManager) GetClusterMemberListCmd(pIMsg));
+				protocolMem(pMessageBase = new(memHeap) GetClusterMemberListCmd(pIMsg));
 				protocolChk(pMessageBase->ParseMsg());
 
 			Proc_End:
 				return hr;
 
-			}; // Result GetClusterMemberListCmd::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
+			}; // Result GetClusterMemberListCmd::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
 
-			MessageData* GetClusterMemberListCmd::Create( IMemoryManager& memoryManager, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const uint16_t &InRouteHopCount, const ClusterID &InClusterID )
+			MessageData* GetClusterMemberListCmd::Create( IHeap& memHeap, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const uint16_t &InRouteHopCount, const ClusterID &InClusterID )
 			{
  				MessageData *pNewMsg = nullptr;
 				Result hr;
@@ -79,7 +79,7 @@ namespace SF
 					+ sizeof(ClusterID));
 
 
-				protocolMem( pNewMsg = MessageData::NewMessage( memoryManager, ClusterServer::GetClusterMemberListCmd::MID, __uiMessageSize ) );
+				protocolMem( pNewMsg = MessageData::NewMessage( memHeap, ClusterServer::GetClusterMemberListCmd::MID, __uiMessageSize ) );
 
 				pMsgData = pNewMsg->GetMessageData();
 
@@ -98,7 +98,7 @@ namespace SF
 				}
 				return pNewMsg;
 
-			}; // MessageData* GetClusterMemberListCmd::Create( IMemoryManager& memoryManager, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const uint16_t &InRouteHopCount, const ClusterID &InClusterID )
+			}; // MessageData* GetClusterMemberListCmd::Create( IHeap& memHeap, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const uint16_t &InRouteHopCount, const ClusterID &InClusterID )
 
 			Result GetClusterMemberListCmd::OverrideRouteContextDestination( EntityUID to )
 			{
@@ -195,19 +195,19 @@ namespace SF
 			}; // Result GetClusterMemberListRes::ParseMessage( MessageData* pIMsg )
 
 
-			Result GetClusterMemberListRes::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
+			Result GetClusterMemberListRes::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
 			{
  				Result hr;
 
-				protocolMem(pMessageBase = new(memoryManager) GetClusterMemberListRes(pIMsg));
+				protocolMem(pMessageBase = new(memHeap) GetClusterMemberListRes(pIMsg));
 				protocolChk(pMessageBase->ParseMsg());
 
 			Proc_End:
 				return hr;
 
-			}; // Result GetClusterMemberListRes::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
+			}; // Result GetClusterMemberListRes::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
 
-			MessageData* GetClusterMemberListRes::Create( IMemoryManager& memoryManager, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const Result &InResult, const Array<ServiceInformation>& InMemberList )
+			MessageData* GetClusterMemberListRes::Create( IHeap& memHeap, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const Result &InResult, const Array<ServiceInformation>& InMemberList )
 			{
  				MessageData *pNewMsg = nullptr;
 				Result hr;
@@ -222,7 +222,7 @@ namespace SF
 
 
 				uint16_t numberOfInMemberList = (uint16_t)InMemberList.size(); 
-				protocolMem( pNewMsg = MessageData::NewMessage( memoryManager, ClusterServer::GetClusterMemberListRes::MID, __uiMessageSize ) );
+				protocolMem( pNewMsg = MessageData::NewMessage( memHeap, ClusterServer::GetClusterMemberListRes::MID, __uiMessageSize ) );
 
 				pMsgData = pNewMsg->GetMessageData();
 
@@ -242,7 +242,7 @@ namespace SF
 				}
 				return pNewMsg;
 
-			}; // MessageData* GetClusterMemberListRes::Create( IMemoryManager& memoryManager, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const Result &InResult, const Array<ServiceInformation>& InMemberList )
+			}; // MessageData* GetClusterMemberListRes::Create( IHeap& memHeap, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const Result &InResult, const Array<ServiceInformation>& InMemberList )
 
 			Result GetClusterMemberListRes::OverrideRouteContextDestination( EntityUID to )
 			{
@@ -342,19 +342,19 @@ namespace SF
 			}; // Result JoinClusterCmd::ParseMessage( MessageData* pIMsg )
 
 
-			Result JoinClusterCmd::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
+			Result JoinClusterCmd::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
 			{
  				Result hr;
 
-				protocolMem(pMessageBase = new(memoryManager) JoinClusterCmd(pIMsg));
+				protocolMem(pMessageBase = new(memHeap) JoinClusterCmd(pIMsg));
 				protocolChk(pMessageBase->ParseMsg());
 
 			Proc_End:
 				return hr;
 
-			}; // Result JoinClusterCmd::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
+			}; // Result JoinClusterCmd::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
 
-			MessageData* JoinClusterCmd::Create( IMemoryManager& memoryManager, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const uint16_t &InRouteHopCount, const uint64_t &InSender, const NetClass &InSenderNetClass, const NetAddress &InSenderAddress, const ClusterID &InClusterID, const ClusterType &InClusterType, const ClusterMembership &InClusterMembership )
+			MessageData* JoinClusterCmd::Create( IHeap& memHeap, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const uint16_t &InRouteHopCount, const uint64_t &InSender, const NetClass &InSenderNetClass, const NetAddress &InSenderAddress, const ClusterID &InClusterID, const ClusterType &InClusterType, const ClusterMembership &InClusterMembership )
 			{
  				MessageData *pNewMsg = nullptr;
 				Result hr;
@@ -373,7 +373,7 @@ namespace SF
 					+ sizeof(ClusterMembership));
 
 
-				protocolMem( pNewMsg = MessageData::NewMessage( memoryManager, ClusterServer::JoinClusterCmd::MID, __uiMessageSize ) );
+				protocolMem( pNewMsg = MessageData::NewMessage( memHeap, ClusterServer::JoinClusterCmd::MID, __uiMessageSize ) );
 
 				pMsgData = pNewMsg->GetMessageData();
 
@@ -397,7 +397,7 @@ namespace SF
 				}
 				return pNewMsg;
 
-			}; // MessageData* JoinClusterCmd::Create( IMemoryManager& memoryManager, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const uint16_t &InRouteHopCount, const uint64_t &InSender, const NetClass &InSenderNetClass, const NetAddress &InSenderAddress, const ClusterID &InClusterID, const ClusterType &InClusterType, const ClusterMembership &InClusterMembership )
+			}; // MessageData* JoinClusterCmd::Create( IHeap& memHeap, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const uint16_t &InRouteHopCount, const uint64_t &InSender, const NetClass &InSenderNetClass, const NetAddress &InSenderAddress, const ClusterID &InClusterID, const ClusterType &InClusterType, const ClusterMembership &InClusterMembership )
 
 			Result JoinClusterCmd::OverrideRouteContextDestination( EntityUID to )
 			{
@@ -494,19 +494,19 @@ namespace SF
 			}; // Result JoinClusterRes::ParseMessage( MessageData* pIMsg )
 
 
-			Result JoinClusterRes::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
+			Result JoinClusterRes::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
 			{
  				Result hr;
 
-				protocolMem(pMessageBase = new(memoryManager) JoinClusterRes(pIMsg));
+				protocolMem(pMessageBase = new(memHeap) JoinClusterRes(pIMsg));
 				protocolChk(pMessageBase->ParseMsg());
 
 			Proc_End:
 				return hr;
 
-			}; // Result JoinClusterRes::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
+			}; // Result JoinClusterRes::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
 
-			MessageData* JoinClusterRes::Create( IMemoryManager& memoryManager, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const Result &InResult, const Array<ServiceInformation>& InMemberList )
+			MessageData* JoinClusterRes::Create( IHeap& memHeap, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const Result &InResult, const Array<ServiceInformation>& InMemberList )
 			{
  				MessageData *pNewMsg = nullptr;
 				Result hr;
@@ -521,7 +521,7 @@ namespace SF
 
 
 				uint16_t numberOfInMemberList = (uint16_t)InMemberList.size(); 
-				protocolMem( pNewMsg = MessageData::NewMessage( memoryManager, ClusterServer::JoinClusterRes::MID, __uiMessageSize ) );
+				protocolMem( pNewMsg = MessageData::NewMessage( memHeap, ClusterServer::JoinClusterRes::MID, __uiMessageSize ) );
 
 				pMsgData = pNewMsg->GetMessageData();
 
@@ -541,7 +541,7 @@ namespace SF
 				}
 				return pNewMsg;
 
-			}; // MessageData* JoinClusterRes::Create( IMemoryManager& memoryManager, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const Result &InResult, const Array<ServiceInformation>& InMemberList )
+			}; // MessageData* JoinClusterRes::Create( IHeap& memHeap, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const Result &InResult, const Array<ServiceInformation>& InMemberList )
 
 			Result JoinClusterRes::OverrideRouteContextDestination( EntityUID to )
 			{
@@ -640,19 +640,19 @@ namespace SF
 			}; // Result NewServerServiceJoinedC2SEvt::ParseMessage( MessageData* pIMsg )
 
 
-			Result NewServerServiceJoinedC2SEvt::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
+			Result NewServerServiceJoinedC2SEvt::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
 			{
  				Result hr;
 
-				protocolMem(pMessageBase = new(memoryManager) NewServerServiceJoinedC2SEvt(pIMsg));
+				protocolMem(pMessageBase = new(memHeap) NewServerServiceJoinedC2SEvt(pIMsg));
 				protocolChk(pMessageBase->ParseMsg());
 
 			Proc_End:
 				return hr;
 
-			}; // Result NewServerServiceJoinedC2SEvt::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
+			}; // Result NewServerServiceJoinedC2SEvt::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
 
-			MessageData* NewServerServiceJoinedC2SEvt::Create( IMemoryManager& memoryManager, const RouteContext &InRouteContext, const uint16_t &InRouteHopCount, const uint64_t &InJoinedServiceUID, const NetClass &InJoinedServiceNetClass, const NetAddress &InJoinedServiceAddress, const ClusterID &InClusterID, const ClusterType &InClusterType, const ClusterMembership &InJoinedServiceMembership )
+			MessageData* NewServerServiceJoinedC2SEvt::Create( IHeap& memHeap, const RouteContext &InRouteContext, const uint16_t &InRouteHopCount, const uint64_t &InJoinedServiceUID, const NetClass &InJoinedServiceNetClass, const NetAddress &InJoinedServiceAddress, const ClusterID &InClusterID, const ClusterType &InClusterType, const ClusterMembership &InJoinedServiceMembership )
 			{
  				MessageData *pNewMsg = nullptr;
 				Result hr;
@@ -670,7 +670,7 @@ namespace SF
 					+ sizeof(ClusterMembership));
 
 
-				protocolMem( pNewMsg = MessageData::NewMessage( memoryManager, ClusterServer::NewServerServiceJoinedC2SEvt::MID, __uiMessageSize ) );
+				protocolMem( pNewMsg = MessageData::NewMessage( memHeap, ClusterServer::NewServerServiceJoinedC2SEvt::MID, __uiMessageSize ) );
 
 				pMsgData = pNewMsg->GetMessageData();
 
@@ -693,7 +693,7 @@ namespace SF
 				}
 				return pNewMsg;
 
-			}; // MessageData* NewServerServiceJoinedC2SEvt::Create( IMemoryManager& memoryManager, const RouteContext &InRouteContext, const uint16_t &InRouteHopCount, const uint64_t &InJoinedServiceUID, const NetClass &InJoinedServiceNetClass, const NetAddress &InJoinedServiceAddress, const ClusterID &InClusterID, const ClusterType &InClusterType, const ClusterMembership &InJoinedServiceMembership )
+			}; // MessageData* NewServerServiceJoinedC2SEvt::Create( IHeap& memHeap, const RouteContext &InRouteContext, const uint16_t &InRouteHopCount, const uint64_t &InJoinedServiceUID, const NetClass &InJoinedServiceNetClass, const NetAddress &InJoinedServiceAddress, const ClusterID &InClusterID, const ClusterType &InClusterType, const ClusterMembership &InJoinedServiceMembership )
 
 			Result NewServerServiceJoinedC2SEvt::OverrideRouteContextDestination( EntityUID to )
 			{
@@ -791,19 +791,19 @@ namespace SF
 			}; // Result SyncClusterServiceC2SEvt::ParseMessage( MessageData* pIMsg )
 
 
-			Result SyncClusterServiceC2SEvt::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
+			Result SyncClusterServiceC2SEvt::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
 			{
  				Result hr;
 
-				protocolMem(pMessageBase = new(memoryManager) SyncClusterServiceC2SEvt(pIMsg));
+				protocolMem(pMessageBase = new(memHeap) SyncClusterServiceC2SEvt(pIMsg));
 				protocolChk(pMessageBase->ParseMsg());
 
 			Proc_End:
 				return hr;
 
-			}; // Result SyncClusterServiceC2SEvt::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
+			}; // Result SyncClusterServiceC2SEvt::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
 
-			MessageData* SyncClusterServiceC2SEvt::Create( IMemoryManager& memoryManager, const RouteContext &InRouteContext, const uint16_t &InRouteHopCount, const ClusterID &InClusterID, const ClusterType &InClusterType, const Array<ServiceInformation>& InMemberList )
+			MessageData* SyncClusterServiceC2SEvt::Create( IHeap& memHeap, const RouteContext &InRouteContext, const uint16_t &InRouteHopCount, const ClusterID &InClusterID, const ClusterType &InClusterType, const Array<ServiceInformation>& InMemberList )
 			{
  				MessageData *pNewMsg = nullptr;
 				Result hr;
@@ -819,7 +819,7 @@ namespace SF
 
 
 				uint16_t numberOfInMemberList = (uint16_t)InMemberList.size(); 
-				protocolMem( pNewMsg = MessageData::NewMessage( memoryManager, ClusterServer::SyncClusterServiceC2SEvt::MID, __uiMessageSize ) );
+				protocolMem( pNewMsg = MessageData::NewMessage( memHeap, ClusterServer::SyncClusterServiceC2SEvt::MID, __uiMessageSize ) );
 
 				pMsgData = pNewMsg->GetMessageData();
 
@@ -840,7 +840,7 @@ namespace SF
 				}
 				return pNewMsg;
 
-			}; // MessageData* SyncClusterServiceC2SEvt::Create( IMemoryManager& memoryManager, const RouteContext &InRouteContext, const uint16_t &InRouteHopCount, const ClusterID &InClusterID, const ClusterType &InClusterType, const Array<ServiceInformation>& InMemberList )
+			}; // MessageData* SyncClusterServiceC2SEvt::Create( IHeap& memHeap, const RouteContext &InRouteContext, const uint16_t &InRouteHopCount, const ClusterID &InClusterID, const ClusterType &InClusterType, const Array<ServiceInformation>& InMemberList )
 
 			Result SyncClusterServiceC2SEvt::OverrideRouteContextDestination( EntityUID to )
 			{
@@ -934,19 +934,19 @@ namespace SF
 			}; // Result RequestDataSyncCmd::ParseMessage( MessageData* pIMsg )
 
 
-			Result RequestDataSyncCmd::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
+			Result RequestDataSyncCmd::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
 			{
  				Result hr;
 
-				protocolMem(pMessageBase = new(memoryManager) RequestDataSyncCmd(pIMsg));
+				protocolMem(pMessageBase = new(memHeap) RequestDataSyncCmd(pIMsg));
 				protocolChk(pMessageBase->ParseMsg());
 
 			Proc_End:
 				return hr;
 
-			}; // Result RequestDataSyncCmd::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
+			}; // Result RequestDataSyncCmd::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
 
-			MessageData* RequestDataSyncCmd::Create( IMemoryManager& memoryManager, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const uint16_t &InRouteHopCount, const ClusterID &InClusterID )
+			MessageData* RequestDataSyncCmd::Create( IHeap& memHeap, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const uint16_t &InRouteHopCount, const ClusterID &InClusterID )
 			{
  				MessageData *pNewMsg = nullptr;
 				Result hr;
@@ -960,7 +960,7 @@ namespace SF
 					+ sizeof(ClusterID));
 
 
-				protocolMem( pNewMsg = MessageData::NewMessage( memoryManager, ClusterServer::RequestDataSyncCmd::MID, __uiMessageSize ) );
+				protocolMem( pNewMsg = MessageData::NewMessage( memHeap, ClusterServer::RequestDataSyncCmd::MID, __uiMessageSize ) );
 
 				pMsgData = pNewMsg->GetMessageData();
 
@@ -979,7 +979,7 @@ namespace SF
 				}
 				return pNewMsg;
 
-			}; // MessageData* RequestDataSyncCmd::Create( IMemoryManager& memoryManager, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const uint16_t &InRouteHopCount, const ClusterID &InClusterID )
+			}; // MessageData* RequestDataSyncCmd::Create( IHeap& memHeap, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const uint16_t &InRouteHopCount, const ClusterID &InClusterID )
 
 			Result RequestDataSyncCmd::OverrideRouteContextDestination( EntityUID to )
 			{
@@ -1072,19 +1072,19 @@ namespace SF
 			}; // Result RequestDataSyncRes::ParseMessage( MessageData* pIMsg )
 
 
-			Result RequestDataSyncRes::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
+			Result RequestDataSyncRes::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
 			{
  				Result hr;
 
-				protocolMem(pMessageBase = new(memoryManager) RequestDataSyncRes(pIMsg));
+				protocolMem(pMessageBase = new(memHeap) RequestDataSyncRes(pIMsg));
 				protocolChk(pMessageBase->ParseMsg());
 
 			Proc_End:
 				return hr;
 
-			}; // Result RequestDataSyncRes::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
+			}; // Result RequestDataSyncRes::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
 
-			MessageData* RequestDataSyncRes::Create( IMemoryManager& memoryManager, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const Result &InResult )
+			MessageData* RequestDataSyncRes::Create( IHeap& memHeap, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const Result &InResult )
 			{
  				MessageData *pNewMsg = nullptr;
 				Result hr;
@@ -1097,7 +1097,7 @@ namespace SF
 					+ sizeof(Result));
 
 
-				protocolMem( pNewMsg = MessageData::NewMessage( memoryManager, ClusterServer::RequestDataSyncRes::MID, __uiMessageSize ) );
+				protocolMem( pNewMsg = MessageData::NewMessage( memHeap, ClusterServer::RequestDataSyncRes::MID, __uiMessageSize ) );
 
 				pMsgData = pNewMsg->GetMessageData();
 
@@ -1115,7 +1115,7 @@ namespace SF
 				}
 				return pNewMsg;
 
-			}; // MessageData* RequestDataSyncRes::Create( IMemoryManager& memoryManager, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const Result &InResult )
+			}; // MessageData* RequestDataSyncRes::Create( IHeap& memHeap, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const Result &InResult )
 
 			Result RequestDataSyncRes::OverrideRouteContextDestination( EntityUID to )
 			{
@@ -1209,19 +1209,19 @@ namespace SF
 			}; // Result ClusterMasterAssignedS2CEvt::ParseMessage( MessageData* pIMsg )
 
 
-			Result ClusterMasterAssignedS2CEvt::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
+			Result ClusterMasterAssignedS2CEvt::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
 			{
  				Result hr;
 
-				protocolMem(pMessageBase = new(memoryManager) ClusterMasterAssignedS2CEvt(pIMsg));
+				protocolMem(pMessageBase = new(memHeap) ClusterMasterAssignedS2CEvt(pIMsg));
 				protocolChk(pMessageBase->ParseMsg());
 
 			Proc_End:
 				return hr;
 
-			}; // Result ClusterMasterAssignedS2CEvt::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
+			}; // Result ClusterMasterAssignedS2CEvt::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
 
-			MessageData* ClusterMasterAssignedS2CEvt::Create( IMemoryManager& memoryManager, const RouteContext &InRouteContext, const uint16_t &InRouteHopCount, const uint64_t &InSender, const ClusterID &InClusterID, const uint64_t &InMasterUID )
+			MessageData* ClusterMasterAssignedS2CEvt::Create( IHeap& memHeap, const RouteContext &InRouteContext, const uint16_t &InRouteHopCount, const uint64_t &InSender, const ClusterID &InClusterID, const uint64_t &InMasterUID )
 			{
  				MessageData *pNewMsg = nullptr;
 				Result hr;
@@ -1236,7 +1236,7 @@ namespace SF
 					+ sizeof(uint64_t));
 
 
-				protocolMem( pNewMsg = MessageData::NewMessage( memoryManager, ClusterServer::ClusterMasterAssignedS2CEvt::MID, __uiMessageSize ) );
+				protocolMem( pNewMsg = MessageData::NewMessage( memHeap, ClusterServer::ClusterMasterAssignedS2CEvt::MID, __uiMessageSize ) );
 
 				pMsgData = pNewMsg->GetMessageData();
 
@@ -1256,7 +1256,7 @@ namespace SF
 				}
 				return pNewMsg;
 
-			}; // MessageData* ClusterMasterAssignedS2CEvt::Create( IMemoryManager& memoryManager, const RouteContext &InRouteContext, const uint16_t &InRouteHopCount, const uint64_t &InSender, const ClusterID &InClusterID, const uint64_t &InMasterUID )
+			}; // MessageData* ClusterMasterAssignedS2CEvt::Create( IHeap& memHeap, const RouteContext &InRouteContext, const uint16_t &InRouteHopCount, const uint64_t &InSender, const ClusterID &InClusterID, const uint64_t &InMasterUID )
 
 			Result ClusterMasterAssignedS2CEvt::OverrideRouteContextDestination( EntityUID to )
 			{
@@ -1351,19 +1351,19 @@ namespace SF
 			}; // Result ClusterMasterVoteC2SEvt::ParseMessage( MessageData* pIMsg )
 
 
-			Result ClusterMasterVoteC2SEvt::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
+			Result ClusterMasterVoteC2SEvt::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
 			{
  				Result hr;
 
-				protocolMem(pMessageBase = new(memoryManager) ClusterMasterVoteC2SEvt(pIMsg));
+				protocolMem(pMessageBase = new(memHeap) ClusterMasterVoteC2SEvt(pIMsg));
 				protocolChk(pMessageBase->ParseMsg());
 
 			Proc_End:
 				return hr;
 
-			}; // Result ClusterMasterVoteC2SEvt::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
+			}; // Result ClusterMasterVoteC2SEvt::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
 
-			MessageData* ClusterMasterVoteC2SEvt::Create( IMemoryManager& memoryManager, const RouteContext &InRouteContext, const uint16_t &InRouteHopCount, const ClusterID &InClusterID, const uint64_t &InVoteToUID, const uint64_t &InVotedUpTime )
+			MessageData* ClusterMasterVoteC2SEvt::Create( IHeap& memHeap, const RouteContext &InRouteContext, const uint16_t &InRouteHopCount, const ClusterID &InClusterID, const uint64_t &InVoteToUID, const uint64_t &InVotedUpTime )
 			{
  				MessageData *pNewMsg = nullptr;
 				Result hr;
@@ -1378,7 +1378,7 @@ namespace SF
 					+ sizeof(uint64_t));
 
 
-				protocolMem( pNewMsg = MessageData::NewMessage( memoryManager, ClusterServer::ClusterMasterVoteC2SEvt::MID, __uiMessageSize ) );
+				protocolMem( pNewMsg = MessageData::NewMessage( memHeap, ClusterServer::ClusterMasterVoteC2SEvt::MID, __uiMessageSize ) );
 
 				pMsgData = pNewMsg->GetMessageData();
 
@@ -1398,7 +1398,7 @@ namespace SF
 				}
 				return pNewMsg;
 
-			}; // MessageData* ClusterMasterVoteC2SEvt::Create( IMemoryManager& memoryManager, const RouteContext &InRouteContext, const uint16_t &InRouteHopCount, const ClusterID &InClusterID, const uint64_t &InVoteToUID, const uint64_t &InVotedUpTime )
+			}; // MessageData* ClusterMasterVoteC2SEvt::Create( IHeap& memHeap, const RouteContext &InRouteContext, const uint16_t &InRouteHopCount, const ClusterID &InClusterID, const uint64_t &InVoteToUID, const uint64_t &InVotedUpTime )
 
 			Result ClusterMasterVoteC2SEvt::OverrideRouteContextDestination( EntityUID to )
 			{
@@ -1493,19 +1493,19 @@ namespace SF
 			}; // Result ClusterUpdateStatusC2SEvt::ParseMessage( MessageData* pIMsg )
 
 
-			Result ClusterUpdateStatusC2SEvt::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
+			Result ClusterUpdateStatusC2SEvt::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
 			{
  				Result hr;
 
-				protocolMem(pMessageBase = new(memoryManager) ClusterUpdateStatusC2SEvt(pIMsg));
+				protocolMem(pMessageBase = new(memHeap) ClusterUpdateStatusC2SEvt(pIMsg));
 				protocolChk(pMessageBase->ParseMsg());
 
 			Proc_End:
 				return hr;
 
-			}; // Result ClusterUpdateStatusC2SEvt::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
+			}; // Result ClusterUpdateStatusC2SEvt::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
 
-			MessageData* ClusterUpdateStatusC2SEvt::Create( IMemoryManager& memoryManager, const RouteContext &InRouteContext, const uint16_t &InRouteHopCount, const uint64_t &InSender, const ClusterID &InClusterID, const ServiceStatus &InMemberStatus )
+			MessageData* ClusterUpdateStatusC2SEvt::Create( IHeap& memHeap, const RouteContext &InRouteContext, const uint16_t &InRouteHopCount, const uint64_t &InSender, const ClusterID &InClusterID, const ServiceStatus &InMemberStatus )
 			{
  				MessageData *pNewMsg = nullptr;
 				Result hr;
@@ -1520,7 +1520,7 @@ namespace SF
 					+ sizeof(ServiceStatus));
 
 
-				protocolMem( pNewMsg = MessageData::NewMessage( memoryManager, ClusterServer::ClusterUpdateStatusC2SEvt::MID, __uiMessageSize ) );
+				protocolMem( pNewMsg = MessageData::NewMessage( memHeap, ClusterServer::ClusterUpdateStatusC2SEvt::MID, __uiMessageSize ) );
 
 				pMsgData = pNewMsg->GetMessageData();
 
@@ -1540,7 +1540,7 @@ namespace SF
 				}
 				return pNewMsg;
 
-			}; // MessageData* ClusterUpdateStatusC2SEvt::Create( IMemoryManager& memoryManager, const RouteContext &InRouteContext, const uint16_t &InRouteHopCount, const uint64_t &InSender, const ClusterID &InClusterID, const ServiceStatus &InMemberStatus )
+			}; // MessageData* ClusterUpdateStatusC2SEvt::Create( IHeap& memHeap, const RouteContext &InRouteContext, const uint16_t &InRouteHopCount, const uint64_t &InSender, const ClusterID &InClusterID, const ServiceStatus &InMemberStatus )
 
 			Result ClusterUpdateStatusC2SEvt::OverrideRouteContextDestination( EntityUID to )
 			{
@@ -1635,19 +1635,19 @@ namespace SF
 			}; // Result ClusterUpdateWorkloadC2SEvt::ParseMessage( MessageData* pIMsg )
 
 
-			Result ClusterUpdateWorkloadC2SEvt::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
+			Result ClusterUpdateWorkloadC2SEvt::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
 			{
  				Result hr;
 
-				protocolMem(pMessageBase = new(memoryManager) ClusterUpdateWorkloadC2SEvt(pIMsg));
+				protocolMem(pMessageBase = new(memHeap) ClusterUpdateWorkloadC2SEvt(pIMsg));
 				protocolChk(pMessageBase->ParseMsg());
 
 			Proc_End:
 				return hr;
 
-			}; // Result ClusterUpdateWorkloadC2SEvt::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
+			}; // Result ClusterUpdateWorkloadC2SEvt::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
 
-			MessageData* ClusterUpdateWorkloadC2SEvt::Create( IMemoryManager& memoryManager, const RouteContext &InRouteContext, const uint16_t &InRouteHopCount, const uint64_t &InSender, const ClusterID &InClusterID, const uint32_t &InWorkload )
+			MessageData* ClusterUpdateWorkloadC2SEvt::Create( IHeap& memHeap, const RouteContext &InRouteContext, const uint16_t &InRouteHopCount, const uint64_t &InSender, const ClusterID &InClusterID, const uint32_t &InWorkload )
 			{
  				MessageData *pNewMsg = nullptr;
 				Result hr;
@@ -1662,7 +1662,7 @@ namespace SF
 					+ sizeof(uint32_t));
 
 
-				protocolMem( pNewMsg = MessageData::NewMessage( memoryManager, ClusterServer::ClusterUpdateWorkloadC2SEvt::MID, __uiMessageSize ) );
+				protocolMem( pNewMsg = MessageData::NewMessage( memHeap, ClusterServer::ClusterUpdateWorkloadC2SEvt::MID, __uiMessageSize ) );
 
 				pMsgData = pNewMsg->GetMessageData();
 
@@ -1682,7 +1682,7 @@ namespace SF
 				}
 				return pNewMsg;
 
-			}; // MessageData* ClusterUpdateWorkloadC2SEvt::Create( IMemoryManager& memoryManager, const RouteContext &InRouteContext, const uint16_t &InRouteHopCount, const uint64_t &InSender, const ClusterID &InClusterID, const uint32_t &InWorkload )
+			}; // MessageData* ClusterUpdateWorkloadC2SEvt::Create( IHeap& memHeap, const RouteContext &InRouteContext, const uint16_t &InRouteHopCount, const uint64_t &InSender, const ClusterID &InClusterID, const uint32_t &InWorkload )
 
 			Result ClusterUpdateWorkloadC2SEvt::OverrideRouteContextDestination( EntityUID to )
 			{
@@ -1776,19 +1776,19 @@ namespace SF
 			}; // Result GetLowestWorkloadClusterMemberCmd::ParseMessage( MessageData* pIMsg )
 
 
-			Result GetLowestWorkloadClusterMemberCmd::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
+			Result GetLowestWorkloadClusterMemberCmd::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
 			{
  				Result hr;
 
-				protocolMem(pMessageBase = new(memoryManager) GetLowestWorkloadClusterMemberCmd(pIMsg));
+				protocolMem(pMessageBase = new(memHeap) GetLowestWorkloadClusterMemberCmd(pIMsg));
 				protocolChk(pMessageBase->ParseMsg());
 
 			Proc_End:
 				return hr;
 
-			}; // Result GetLowestWorkloadClusterMemberCmd::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
+			}; // Result GetLowestWorkloadClusterMemberCmd::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
 
-			MessageData* GetLowestWorkloadClusterMemberCmd::Create( IMemoryManager& memoryManager, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const uint16_t &InRouteHopCount, const ClusterID &InClusterID )
+			MessageData* GetLowestWorkloadClusterMemberCmd::Create( IHeap& memHeap, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const uint16_t &InRouteHopCount, const ClusterID &InClusterID )
 			{
  				MessageData *pNewMsg = nullptr;
 				Result hr;
@@ -1802,7 +1802,7 @@ namespace SF
 					+ sizeof(ClusterID));
 
 
-				protocolMem( pNewMsg = MessageData::NewMessage( memoryManager, ClusterServer::GetLowestWorkloadClusterMemberCmd::MID, __uiMessageSize ) );
+				protocolMem( pNewMsg = MessageData::NewMessage( memHeap, ClusterServer::GetLowestWorkloadClusterMemberCmd::MID, __uiMessageSize ) );
 
 				pMsgData = pNewMsg->GetMessageData();
 
@@ -1821,7 +1821,7 @@ namespace SF
 				}
 				return pNewMsg;
 
-			}; // MessageData* GetLowestWorkloadClusterMemberCmd::Create( IMemoryManager& memoryManager, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const uint16_t &InRouteHopCount, const ClusterID &InClusterID )
+			}; // MessageData* GetLowestWorkloadClusterMemberCmd::Create( IHeap& memHeap, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const uint16_t &InRouteHopCount, const ClusterID &InClusterID )
 
 			Result GetLowestWorkloadClusterMemberCmd::OverrideRouteContextDestination( EntityUID to )
 			{
@@ -1915,19 +1915,19 @@ namespace SF
 			}; // Result GetLowestWorkloadClusterMemberRes::ParseMessage( MessageData* pIMsg )
 
 
-			Result GetLowestWorkloadClusterMemberRes::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
+			Result GetLowestWorkloadClusterMemberRes::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
 			{
  				Result hr;
 
-				protocolMem(pMessageBase = new(memoryManager) GetLowestWorkloadClusterMemberRes(pIMsg));
+				protocolMem(pMessageBase = new(memHeap) GetLowestWorkloadClusterMemberRes(pIMsg));
 				protocolChk(pMessageBase->ParseMsg());
 
 			Proc_End:
 				return hr;
 
-			}; // Result GetLowestWorkloadClusterMemberRes::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
+			}; // Result GetLowestWorkloadClusterMemberRes::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
 
-			MessageData* GetLowestWorkloadClusterMemberRes::Create( IMemoryManager& memoryManager, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const Result &InResult, const ServiceInformation &InMember )
+			MessageData* GetLowestWorkloadClusterMemberRes::Create( IHeap& memHeap, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const Result &InResult, const ServiceInformation &InMember )
 			{
  				MessageData *pNewMsg = nullptr;
 				Result hr;
@@ -1941,7 +1941,7 @@ namespace SF
 					+ sizeof(ServiceInformation));
 
 
-				protocolMem( pNewMsg = MessageData::NewMessage( memoryManager, ClusterServer::GetLowestWorkloadClusterMemberRes::MID, __uiMessageSize ) );
+				protocolMem( pNewMsg = MessageData::NewMessage( memHeap, ClusterServer::GetLowestWorkloadClusterMemberRes::MID, __uiMessageSize ) );
 
 				pMsgData = pNewMsg->GetMessageData();
 
@@ -1960,7 +1960,7 @@ namespace SF
 				}
 				return pNewMsg;
 
-			}; // MessageData* GetLowestWorkloadClusterMemberRes::Create( IMemoryManager& memoryManager, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const Result &InResult, const ServiceInformation &InMember )
+			}; // MessageData* GetLowestWorkloadClusterMemberRes::Create( IHeap& memHeap, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const Result &InResult, const ServiceInformation &InMember )
 
 			Result GetLowestWorkloadClusterMemberRes::OverrideRouteContextDestination( EntityUID to )
 			{
@@ -2054,19 +2054,19 @@ namespace SF
 			}; // Result GamePlayerEntityCreatedC2SEvt::ParseMessage( MessageData* pIMsg )
 
 
-			Result GamePlayerEntityCreatedC2SEvt::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
+			Result GamePlayerEntityCreatedC2SEvt::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
 			{
  				Result hr;
 
-				protocolMem(pMessageBase = new(memoryManager) GamePlayerEntityCreatedC2SEvt(pIMsg));
+				protocolMem(pMessageBase = new(memHeap) GamePlayerEntityCreatedC2SEvt(pIMsg));
 				protocolChk(pMessageBase->ParseMsg());
 
 			Proc_End:
 				return hr;
 
-			}; // Result GamePlayerEntityCreatedC2SEvt::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
+			}; // Result GamePlayerEntityCreatedC2SEvt::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
 
-			MessageData* GamePlayerEntityCreatedC2SEvt::Create( IMemoryManager& memoryManager, const RouteContext &InRouteContext, const uint16_t &InRouteHopCount, const PlayerID &InPlayerID, const uint64_t &InPlayerUID )
+			MessageData* GamePlayerEntityCreatedC2SEvt::Create( IHeap& memHeap, const RouteContext &InRouteContext, const uint16_t &InRouteHopCount, const PlayerID &InPlayerID, const uint64_t &InPlayerUID )
 			{
  				MessageData *pNewMsg = nullptr;
 				Result hr;
@@ -2080,7 +2080,7 @@ namespace SF
 					+ sizeof(uint64_t));
 
 
-				protocolMem( pNewMsg = MessageData::NewMessage( memoryManager, ClusterServer::GamePlayerEntityCreatedC2SEvt::MID, __uiMessageSize ) );
+				protocolMem( pNewMsg = MessageData::NewMessage( memHeap, ClusterServer::GamePlayerEntityCreatedC2SEvt::MID, __uiMessageSize ) );
 
 				pMsgData = pNewMsg->GetMessageData();
 
@@ -2099,7 +2099,7 @@ namespace SF
 				}
 				return pNewMsg;
 
-			}; // MessageData* GamePlayerEntityCreatedC2SEvt::Create( IMemoryManager& memoryManager, const RouteContext &InRouteContext, const uint16_t &InRouteHopCount, const PlayerID &InPlayerID, const uint64_t &InPlayerUID )
+			}; // MessageData* GamePlayerEntityCreatedC2SEvt::Create( IHeap& memHeap, const RouteContext &InRouteContext, const uint16_t &InRouteHopCount, const PlayerID &InPlayerID, const uint64_t &InPlayerUID )
 
 			Result GamePlayerEntityCreatedC2SEvt::OverrideRouteContextDestination( EntityUID to )
 			{
@@ -2193,19 +2193,19 @@ namespace SF
 			}; // Result GamePlayerEntityDeletedC2SEvt::ParseMessage( MessageData* pIMsg )
 
 
-			Result GamePlayerEntityDeletedC2SEvt::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
+			Result GamePlayerEntityDeletedC2SEvt::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
 			{
  				Result hr;
 
-				protocolMem(pMessageBase = new(memoryManager) GamePlayerEntityDeletedC2SEvt(pIMsg));
+				protocolMem(pMessageBase = new(memHeap) GamePlayerEntityDeletedC2SEvt(pIMsg));
 				protocolChk(pMessageBase->ParseMsg());
 
 			Proc_End:
 				return hr;
 
-			}; // Result GamePlayerEntityDeletedC2SEvt::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
+			}; // Result GamePlayerEntityDeletedC2SEvt::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
 
-			MessageData* GamePlayerEntityDeletedC2SEvt::Create( IMemoryManager& memoryManager, const RouteContext &InRouteContext, const uint16_t &InRouteHopCount, const PlayerID &InPlayerID, const uint64_t &InPlayerUID )
+			MessageData* GamePlayerEntityDeletedC2SEvt::Create( IHeap& memHeap, const RouteContext &InRouteContext, const uint16_t &InRouteHopCount, const PlayerID &InPlayerID, const uint64_t &InPlayerUID )
 			{
  				MessageData *pNewMsg = nullptr;
 				Result hr;
@@ -2219,7 +2219,7 @@ namespace SF
 					+ sizeof(uint64_t));
 
 
-				protocolMem( pNewMsg = MessageData::NewMessage( memoryManager, ClusterServer::GamePlayerEntityDeletedC2SEvt::MID, __uiMessageSize ) );
+				protocolMem( pNewMsg = MessageData::NewMessage( memHeap, ClusterServer::GamePlayerEntityDeletedC2SEvt::MID, __uiMessageSize ) );
 
 				pMsgData = pNewMsg->GetMessageData();
 
@@ -2238,7 +2238,7 @@ namespace SF
 				}
 				return pNewMsg;
 
-			}; // MessageData* GamePlayerEntityDeletedC2SEvt::Create( IMemoryManager& memoryManager, const RouteContext &InRouteContext, const uint16_t &InRouteHopCount, const PlayerID &InPlayerID, const uint64_t &InPlayerUID )
+			}; // MessageData* GamePlayerEntityDeletedC2SEvt::Create( IHeap& memHeap, const RouteContext &InRouteContext, const uint16_t &InRouteHopCount, const PlayerID &InPlayerID, const uint64_t &InPlayerUID )
 
 			Result GamePlayerEntityDeletedC2SEvt::OverrideRouteContextDestination( EntityUID to )
 			{

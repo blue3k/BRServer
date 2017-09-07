@@ -110,8 +110,8 @@ namespace conspiracy
 
 		if (m_ItemEffectTablePrev != nullptr)
 		{
- 			for( auto itItem : *m_ItemEffectTablePrev) { IMemoryManager::Delete(itItem.second); } ;
-			IMemoryManager::Delete(m_ItemEffectTablePrev);
+ 			for( auto itItem : *m_ItemEffectTablePrev) { IHeap::Delete(itItem.second); } ;
+			IHeap::Delete(m_ItemEffectTablePrev);
 		}
 		m_ItemEffectTablePrev = m_ItemEffectTable;
 		m_ItemEffectTable = pNewItemEffectTable;

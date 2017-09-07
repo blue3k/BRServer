@@ -328,7 +328,7 @@ namespace Svr
 
 	Proc_End:
 
-		IMemoryManager::Delete(pTransRes);
+		IHeap::Delete(pTransRes);
 		pTransRes = nullptr;
 
 		return hr;
@@ -381,7 +381,7 @@ namespace Svr
 				{
 					svrTrace(SVR_TRANSACTION, "Transaction result for TID:{0} is failed to route.", eventTask.EventData.pTransResultEvent->GetTransID());
 					auto pNonConstTransRes = const_cast<TransactionResult*>(eventTask.EventData.pTransResultEvent);
-					IMemoryManager::Delete(pNonConstTransRes);
+					IHeap::Delete(pNonConstTransRes);
 					svrErr(ResultCode::FAIL);
 				}
 			}

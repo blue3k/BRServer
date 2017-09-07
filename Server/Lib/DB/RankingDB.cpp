@@ -71,7 +71,7 @@ namespace DB {
 
 	Proc_End:
 
-		IMemoryManager::Delete(pQuery);
+		IHeap::Delete(pQuery);
 
 		return hr;
 	}
@@ -98,7 +98,7 @@ namespace DB {
 
 	Proc_End:
 
-		IMemoryManager::Delete(pQuery);
+		IHeap::Delete(pQuery);
 
 		return hr;
 	}
@@ -120,7 +120,7 @@ namespace DB {
 
 		if (!(hr))
 		{
-			IMemoryManager::Delete(pQuery);
+			IHeap::Delete(pQuery);
 			pQuery = nullptr;
 		}
 

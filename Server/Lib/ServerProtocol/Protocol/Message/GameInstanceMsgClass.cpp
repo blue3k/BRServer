@@ -50,19 +50,19 @@ namespace SF
 			}; // Result DeleteGameC2SEvt::ParseMessage( MessageData* pIMsg )
 
 
-			Result DeleteGameC2SEvt::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
+			Result DeleteGameC2SEvt::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
 			{
  				Result hr;
 
-				protocolMem(pMessageBase = new(memoryManager) DeleteGameC2SEvt(pIMsg));
+				protocolMem(pMessageBase = new(memHeap) DeleteGameC2SEvt(pIMsg));
 				protocolChk(pMessageBase->ParseMsg());
 
 			Proc_End:
 				return hr;
 
-			}; // Result DeleteGameC2SEvt::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
+			}; // Result DeleteGameC2SEvt::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
 
-			MessageData* DeleteGameC2SEvt::Create( IMemoryManager& memoryManager, const RouteContext &InRouteContext )
+			MessageData* DeleteGameC2SEvt::Create( IHeap& memHeap, const RouteContext &InRouteContext )
 			{
  				MessageData *pNewMsg = nullptr;
 				Result hr;
@@ -73,7 +73,7 @@ namespace SF
 					+ sizeof(RouteContext));
 
 
-				protocolMem( pNewMsg = MessageData::NewMessage( memoryManager, GameInstance::DeleteGameC2SEvt::MID, __uiMessageSize ) );
+				protocolMem( pNewMsg = MessageData::NewMessage( memHeap, GameInstance::DeleteGameC2SEvt::MID, __uiMessageSize ) );
 
 				pMsgData = pNewMsg->GetMessageData();
 
@@ -89,7 +89,7 @@ namespace SF
 				}
 				return pNewMsg;
 
-			}; // MessageData* DeleteGameC2SEvt::Create( IMemoryManager& memoryManager, const RouteContext &InRouteContext )
+			}; // MessageData* DeleteGameC2SEvt::Create( IHeap& memHeap, const RouteContext &InRouteContext )
 
 			Result DeleteGameC2SEvt::OverrideRouteContextDestination( EntityUID to )
 			{
@@ -155,19 +155,19 @@ namespace SF
 			}; // Result JoinGameCmd::ParseMessage( MessageData* pIMsg )
 
 
-			Result JoinGameCmd::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
+			Result JoinGameCmd::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
 			{
  				Result hr;
 
-				protocolMem(pMessageBase = new(memoryManager) JoinGameCmd(pIMsg));
+				protocolMem(pMessageBase = new(memHeap) JoinGameCmd(pIMsg));
 				protocolChk(pMessageBase->ParseMsg());
 
 			Proc_End:
 				return hr;
 
-			}; // Result JoinGameCmd::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
+			}; // Result JoinGameCmd::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
 
-			MessageData* JoinGameCmd::Create( IMemoryManager& memoryManager, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const PlayerInformation &InPlayer, const AuthTicket &InTicket, const uint8_t &InRequestedRole )
+			MessageData* JoinGameCmd::Create( IHeap& memHeap, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const PlayerInformation &InPlayer, const AuthTicket &InTicket, const uint8_t &InRequestedRole )
 			{
  				MessageData *pNewMsg = nullptr;
 				Result hr;
@@ -182,7 +182,7 @@ namespace SF
 					+ sizeof(uint8_t));
 
 
-				protocolMem( pNewMsg = MessageData::NewMessage( memoryManager, GameInstance::JoinGameCmd::MID, __uiMessageSize ) );
+				protocolMem( pNewMsg = MessageData::NewMessage( memHeap, GameInstance::JoinGameCmd::MID, __uiMessageSize ) );
 
 				pMsgData = pNewMsg->GetMessageData();
 
@@ -202,7 +202,7 @@ namespace SF
 				}
 				return pNewMsg;
 
-			}; // MessageData* JoinGameCmd::Create( IMemoryManager& memoryManager, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const PlayerInformation &InPlayer, const AuthTicket &InTicket, const uint8_t &InRequestedRole )
+			}; // MessageData* JoinGameCmd::Create( IHeap& memHeap, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const PlayerInformation &InPlayer, const AuthTicket &InTicket, const uint8_t &InRequestedRole )
 
 			Result JoinGameCmd::OverrideRouteContextDestination( EntityUID to )
 			{
@@ -283,19 +283,19 @@ namespace SF
 			}; // Result JoinGameRes::ParseMessage( MessageData* pIMsg )
 
 
-			Result JoinGameRes::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
+			Result JoinGameRes::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
 			{
  				Result hr;
 
-				protocolMem(pMessageBase = new(memoryManager) JoinGameRes(pIMsg));
+				protocolMem(pMessageBase = new(memHeap) JoinGameRes(pIMsg));
 				protocolChk(pMessageBase->ParseMsg());
 
 			Proc_End:
 				return hr;
 
-			}; // Result JoinGameRes::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
+			}; // Result JoinGameRes::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
 
-			MessageData* JoinGameRes::Create( IMemoryManager& memoryManager, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const Result &InResult, const NetAddress &InGameInsSvr, const uint32_t &InTimeStamp, const uint8_t &InGameState, const uint8_t &InDay, const uint8_t &InMaxPlayer, const uint8_t &InPlayerIndex, const uint8_t &InPlayerCharacter, const uint8_t &InRole, const uint8_t &InDead, const uint8_t &InIsNewJoin, const Array<uint8_t>& InChatHistoryData, const Array<uint8_t>& InGameLogData )
+			MessageData* JoinGameRes::Create( IHeap& memHeap, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const Result &InResult, const NetAddress &InGameInsSvr, const uint32_t &InTimeStamp, const uint8_t &InGameState, const uint8_t &InDay, const uint8_t &InMaxPlayer, const uint8_t &InPlayerIndex, const uint8_t &InPlayerCharacter, const uint8_t &InRole, const uint8_t &InDead, const uint8_t &InIsNewJoin, const Array<uint8_t>& InChatHistoryData, const Array<uint8_t>& InGameLogData )
 			{
  				MessageData *pNewMsg = nullptr;
 				Result hr;
@@ -322,7 +322,7 @@ namespace SF
 
 				uint16_t numberOfInChatHistoryData = (uint16_t)InChatHistoryData.size(); 
 				uint16_t numberOfInGameLogData = (uint16_t)InGameLogData.size(); 
-				protocolMem( pNewMsg = MessageData::NewMessage( memoryManager, GameInstance::JoinGameRes::MID, __uiMessageSize ) );
+				protocolMem( pNewMsg = MessageData::NewMessage( memHeap, GameInstance::JoinGameRes::MID, __uiMessageSize ) );
 
 				pMsgData = pNewMsg->GetMessageData();
 
@@ -354,7 +354,7 @@ namespace SF
 				}
 				return pNewMsg;
 
-			}; // MessageData* JoinGameRes::Create( IMemoryManager& memoryManager, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const Result &InResult, const NetAddress &InGameInsSvr, const uint32_t &InTimeStamp, const uint8_t &InGameState, const uint8_t &InDay, const uint8_t &InMaxPlayer, const uint8_t &InPlayerIndex, const uint8_t &InPlayerCharacter, const uint8_t &InRole, const uint8_t &InDead, const uint8_t &InIsNewJoin, const Array<uint8_t>& InChatHistoryData, const Array<uint8_t>& InGameLogData )
+			}; // MessageData* JoinGameRes::Create( IHeap& memHeap, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const Result &InResult, const NetAddress &InGameInsSvr, const uint32_t &InTimeStamp, const uint8_t &InGameState, const uint8_t &InDay, const uint8_t &InMaxPlayer, const uint8_t &InPlayerIndex, const uint8_t &InPlayerCharacter, const uint8_t &InRole, const uint8_t &InDead, const uint8_t &InIsNewJoin, const Array<uint8_t>& InChatHistoryData, const Array<uint8_t>& InGameLogData )
 
 			Result JoinGameRes::OverrideRouteContextDestination( EntityUID to )
 			{
@@ -421,19 +421,19 @@ namespace SF
 			}; // Result PlayerJoinedS2CEvt::ParseMessage( MessageData* pIMsg )
 
 
-			Result PlayerJoinedS2CEvt::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
+			Result PlayerJoinedS2CEvt::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
 			{
  				Result hr;
 
-				protocolMem(pMessageBase = new(memoryManager) PlayerJoinedS2CEvt(pIMsg));
+				protocolMem(pMessageBase = new(memHeap) PlayerJoinedS2CEvt(pIMsg));
 				protocolChk(pMessageBase->ParseMsg());
 
 			Proc_End:
 				return hr;
 
-			}; // Result PlayerJoinedS2CEvt::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
+			}; // Result PlayerJoinedS2CEvt::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
 
-			MessageData* PlayerJoinedS2CEvt::Create( IMemoryManager& memoryManager, const RouteContext &InRouteContext, const PlayerInformation &InJoinedPlayer, const uint8_t &InJoinedPlayerRole, const uint8_t &InJoinedPlayerDead, const uint8_t &InJoinedPlayerIndex, const uint8_t &InJoinedPlayerCharacter )
+			MessageData* PlayerJoinedS2CEvt::Create( IHeap& memHeap, const RouteContext &InRouteContext, const PlayerInformation &InJoinedPlayer, const uint8_t &InJoinedPlayerRole, const uint8_t &InJoinedPlayerDead, const uint8_t &InJoinedPlayerIndex, const uint8_t &InJoinedPlayerCharacter )
 			{
  				MessageData *pNewMsg = nullptr;
 				Result hr;
@@ -449,7 +449,7 @@ namespace SF
 					+ sizeof(uint8_t));
 
 
-				protocolMem( pNewMsg = MessageData::NewMessage( memoryManager, GameInstance::PlayerJoinedS2CEvt::MID, __uiMessageSize ) );
+				protocolMem( pNewMsg = MessageData::NewMessage( memHeap, GameInstance::PlayerJoinedS2CEvt::MID, __uiMessageSize ) );
 
 				pMsgData = pNewMsg->GetMessageData();
 
@@ -470,7 +470,7 @@ namespace SF
 				}
 				return pNewMsg;
 
-			}; // MessageData* PlayerJoinedS2CEvt::Create( IMemoryManager& memoryManager, const RouteContext &InRouteContext, const PlayerInformation &InJoinedPlayer, const uint8_t &InJoinedPlayerRole, const uint8_t &InJoinedPlayerDead, const uint8_t &InJoinedPlayerIndex, const uint8_t &InJoinedPlayerCharacter )
+			}; // MessageData* PlayerJoinedS2CEvt::Create( IHeap& memHeap, const RouteContext &InRouteContext, const PlayerInformation &InJoinedPlayer, const uint8_t &InJoinedPlayerRole, const uint8_t &InJoinedPlayerDead, const uint8_t &InJoinedPlayerIndex, const uint8_t &InJoinedPlayerCharacter )
 
 			Result PlayerJoinedS2CEvt::OverrideRouteContextDestination( EntityUID to )
 			{
@@ -533,19 +533,19 @@ namespace SF
 			}; // Result SetConfigPresetC2SEvt::ParseMessage( MessageData* pIMsg )
 
 
-			Result SetConfigPresetC2SEvt::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
+			Result SetConfigPresetC2SEvt::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
 			{
  				Result hr;
 
-				protocolMem(pMessageBase = new(memoryManager) SetConfigPresetC2SEvt(pIMsg));
+				protocolMem(pMessageBase = new(memHeap) SetConfigPresetC2SEvt(pIMsg));
 				protocolChk(pMessageBase->ParseMsg());
 
 			Proc_End:
 				return hr;
 
-			}; // Result SetConfigPresetC2SEvt::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
+			}; // Result SetConfigPresetC2SEvt::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
 
-			MessageData* SetConfigPresetC2SEvt::Create( IMemoryManager& memoryManager, const RouteContext &InRouteContext, const uint32_t &InPresetID )
+			MessageData* SetConfigPresetC2SEvt::Create( IHeap& memHeap, const RouteContext &InRouteContext, const uint32_t &InPresetID )
 			{
  				MessageData *pNewMsg = nullptr;
 				Result hr;
@@ -557,7 +557,7 @@ namespace SF
 					+ sizeof(uint32_t));
 
 
-				protocolMem( pNewMsg = MessageData::NewMessage( memoryManager, GameInstance::SetConfigPresetC2SEvt::MID, __uiMessageSize ) );
+				protocolMem( pNewMsg = MessageData::NewMessage( memHeap, GameInstance::SetConfigPresetC2SEvt::MID, __uiMessageSize ) );
 
 				pMsgData = pNewMsg->GetMessageData();
 
@@ -574,7 +574,7 @@ namespace SF
 				}
 				return pNewMsg;
 
-			}; // MessageData* SetConfigPresetC2SEvt::Create( IMemoryManager& memoryManager, const RouteContext &InRouteContext, const uint32_t &InPresetID )
+			}; // MessageData* SetConfigPresetC2SEvt::Create( IHeap& memHeap, const RouteContext &InRouteContext, const uint32_t &InPresetID )
 
 			Result SetConfigPresetC2SEvt::OverrideRouteContextDestination( EntityUID to )
 			{
@@ -638,19 +638,19 @@ namespace SF
 			}; // Result LeaveGameCmd::ParseMessage( MessageData* pIMsg )
 
 
-			Result LeaveGameCmd::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
+			Result LeaveGameCmd::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
 			{
  				Result hr;
 
-				protocolMem(pMessageBase = new(memoryManager) LeaveGameCmd(pIMsg));
+				protocolMem(pMessageBase = new(memHeap) LeaveGameCmd(pIMsg));
 				protocolChk(pMessageBase->ParseMsg());
 
 			Proc_End:
 				return hr;
 
-			}; // Result LeaveGameCmd::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
+			}; // Result LeaveGameCmd::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
 
-			MessageData* LeaveGameCmd::Create( IMemoryManager& memoryManager, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const PlayerID &InPlayerID )
+			MessageData* LeaveGameCmd::Create( IHeap& memHeap, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const PlayerID &InPlayerID )
 			{
  				MessageData *pNewMsg = nullptr;
 				Result hr;
@@ -663,7 +663,7 @@ namespace SF
 					+ sizeof(PlayerID));
 
 
-				protocolMem( pNewMsg = MessageData::NewMessage( memoryManager, GameInstance::LeaveGameCmd::MID, __uiMessageSize ) );
+				protocolMem( pNewMsg = MessageData::NewMessage( memHeap, GameInstance::LeaveGameCmd::MID, __uiMessageSize ) );
 
 				pMsgData = pNewMsg->GetMessageData();
 
@@ -681,7 +681,7 @@ namespace SF
 				}
 				return pNewMsg;
 
-			}; // MessageData* LeaveGameCmd::Create( IMemoryManager& memoryManager, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const PlayerID &InPlayerID )
+			}; // MessageData* LeaveGameCmd::Create( IHeap& memHeap, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const PlayerID &InPlayerID )
 
 			Result LeaveGameCmd::OverrideRouteContextDestination( EntityUID to )
 			{
@@ -744,19 +744,19 @@ namespace SF
 			}; // Result LeaveGameRes::ParseMessage( MessageData* pIMsg )
 
 
-			Result LeaveGameRes::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
+			Result LeaveGameRes::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
 			{
  				Result hr;
 
-				protocolMem(pMessageBase = new(memoryManager) LeaveGameRes(pIMsg));
+				protocolMem(pMessageBase = new(memHeap) LeaveGameRes(pIMsg));
 				protocolChk(pMessageBase->ParseMsg());
 
 			Proc_End:
 				return hr;
 
-			}; // Result LeaveGameRes::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
+			}; // Result LeaveGameRes::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
 
-			MessageData* LeaveGameRes::Create( IMemoryManager& memoryManager, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const Result &InResult )
+			MessageData* LeaveGameRes::Create( IHeap& memHeap, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const Result &InResult )
 			{
  				MessageData *pNewMsg = nullptr;
 				Result hr;
@@ -769,7 +769,7 @@ namespace SF
 					+ sizeof(Result));
 
 
-				protocolMem( pNewMsg = MessageData::NewMessage( memoryManager, GameInstance::LeaveGameRes::MID, __uiMessageSize ) );
+				protocolMem( pNewMsg = MessageData::NewMessage( memHeap, GameInstance::LeaveGameRes::MID, __uiMessageSize ) );
 
 				pMsgData = pNewMsg->GetMessageData();
 
@@ -787,7 +787,7 @@ namespace SF
 				}
 				return pNewMsg;
 
-			}; // MessageData* LeaveGameRes::Create( IMemoryManager& memoryManager, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const Result &InResult )
+			}; // MessageData* LeaveGameRes::Create( IHeap& memHeap, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const Result &InResult )
 
 			Result LeaveGameRes::OverrideRouteContextDestination( EntityUID to )
 			{
@@ -850,19 +850,19 @@ namespace SF
 			}; // Result PlayerLeftS2CEvt::ParseMessage( MessageData* pIMsg )
 
 
-			Result PlayerLeftS2CEvt::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
+			Result PlayerLeftS2CEvt::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
 			{
  				Result hr;
 
-				protocolMem(pMessageBase = new(memoryManager) PlayerLeftS2CEvt(pIMsg));
+				protocolMem(pMessageBase = new(memHeap) PlayerLeftS2CEvt(pIMsg));
 				protocolChk(pMessageBase->ParseMsg());
 
 			Proc_End:
 				return hr;
 
-			}; // Result PlayerLeftS2CEvt::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
+			}; // Result PlayerLeftS2CEvt::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
 
-			MessageData* PlayerLeftS2CEvt::Create( IMemoryManager& memoryManager, const RouteContext &InRouteContext, const PlayerID &InLeftPlayerID )
+			MessageData* PlayerLeftS2CEvt::Create( IHeap& memHeap, const RouteContext &InRouteContext, const PlayerID &InLeftPlayerID )
 			{
  				MessageData *pNewMsg = nullptr;
 				Result hr;
@@ -874,7 +874,7 @@ namespace SF
 					+ sizeof(PlayerID));
 
 
-				protocolMem( pNewMsg = MessageData::NewMessage( memoryManager, GameInstance::PlayerLeftS2CEvt::MID, __uiMessageSize ) );
+				protocolMem( pNewMsg = MessageData::NewMessage( memHeap, GameInstance::PlayerLeftS2CEvt::MID, __uiMessageSize ) );
 
 				pMsgData = pNewMsg->GetMessageData();
 
@@ -891,7 +891,7 @@ namespace SF
 				}
 				return pNewMsg;
 
-			}; // MessageData* PlayerLeftS2CEvt::Create( IMemoryManager& memoryManager, const RouteContext &InRouteContext, const PlayerID &InLeftPlayerID )
+			}; // MessageData* PlayerLeftS2CEvt::Create( IHeap& memHeap, const RouteContext &InRouteContext, const PlayerID &InLeftPlayerID )
 
 			Result PlayerLeftS2CEvt::OverrideRouteContextDestination( EntityUID to )
 			{
@@ -956,19 +956,19 @@ namespace SF
 			}; // Result KickPlayerCmd::ParseMessage( MessageData* pIMsg )
 
 
-			Result KickPlayerCmd::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
+			Result KickPlayerCmd::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
 			{
  				Result hr;
 
-				protocolMem(pMessageBase = new(memoryManager) KickPlayerCmd(pIMsg));
+				protocolMem(pMessageBase = new(memHeap) KickPlayerCmd(pIMsg));
 				protocolChk(pMessageBase->ParseMsg());
 
 			Proc_End:
 				return hr;
 
-			}; // Result KickPlayerCmd::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
+			}; // Result KickPlayerCmd::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
 
-			MessageData* KickPlayerCmd::Create( IMemoryManager& memoryManager, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const PlayerID &InPlayerID, const PlayerID &InPlayerToKick )
+			MessageData* KickPlayerCmd::Create( IHeap& memHeap, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const PlayerID &InPlayerID, const PlayerID &InPlayerToKick )
 			{
  				MessageData *pNewMsg = nullptr;
 				Result hr;
@@ -982,7 +982,7 @@ namespace SF
 					+ sizeof(PlayerID));
 
 
-				protocolMem( pNewMsg = MessageData::NewMessage( memoryManager, GameInstance::KickPlayerCmd::MID, __uiMessageSize ) );
+				protocolMem( pNewMsg = MessageData::NewMessage( memHeap, GameInstance::KickPlayerCmd::MID, __uiMessageSize ) );
 
 				pMsgData = pNewMsg->GetMessageData();
 
@@ -1001,7 +1001,7 @@ namespace SF
 				}
 				return pNewMsg;
 
-			}; // MessageData* KickPlayerCmd::Create( IMemoryManager& memoryManager, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const PlayerID &InPlayerID, const PlayerID &InPlayerToKick )
+			}; // MessageData* KickPlayerCmd::Create( IHeap& memHeap, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const PlayerID &InPlayerID, const PlayerID &InPlayerToKick )
 
 			Result KickPlayerCmd::OverrideRouteContextDestination( EntityUID to )
 			{
@@ -1064,19 +1064,19 @@ namespace SF
 			}; // Result KickPlayerRes::ParseMessage( MessageData* pIMsg )
 
 
-			Result KickPlayerRes::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
+			Result KickPlayerRes::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
 			{
  				Result hr;
 
-				protocolMem(pMessageBase = new(memoryManager) KickPlayerRes(pIMsg));
+				protocolMem(pMessageBase = new(memHeap) KickPlayerRes(pIMsg));
 				protocolChk(pMessageBase->ParseMsg());
 
 			Proc_End:
 				return hr;
 
-			}; // Result KickPlayerRes::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
+			}; // Result KickPlayerRes::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
 
-			MessageData* KickPlayerRes::Create( IMemoryManager& memoryManager, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const Result &InResult )
+			MessageData* KickPlayerRes::Create( IHeap& memHeap, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const Result &InResult )
 			{
  				MessageData *pNewMsg = nullptr;
 				Result hr;
@@ -1089,7 +1089,7 @@ namespace SF
 					+ sizeof(Result));
 
 
-				protocolMem( pNewMsg = MessageData::NewMessage( memoryManager, GameInstance::KickPlayerRes::MID, __uiMessageSize ) );
+				protocolMem( pNewMsg = MessageData::NewMessage( memHeap, GameInstance::KickPlayerRes::MID, __uiMessageSize ) );
 
 				pMsgData = pNewMsg->GetMessageData();
 
@@ -1107,7 +1107,7 @@ namespace SF
 				}
 				return pNewMsg;
 
-			}; // MessageData* KickPlayerRes::Create( IMemoryManager& memoryManager, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const Result &InResult )
+			}; // MessageData* KickPlayerRes::Create( IHeap& memHeap, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const Result &InResult )
 
 			Result KickPlayerRes::OverrideRouteContextDestination( EntityUID to )
 			{
@@ -1170,19 +1170,19 @@ namespace SF
 			}; // Result PlayerKickedS2CEvt::ParseMessage( MessageData* pIMsg )
 
 
-			Result PlayerKickedS2CEvt::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
+			Result PlayerKickedS2CEvt::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
 			{
  				Result hr;
 
-				protocolMem(pMessageBase = new(memoryManager) PlayerKickedS2CEvt(pIMsg));
+				protocolMem(pMessageBase = new(memHeap) PlayerKickedS2CEvt(pIMsg));
 				protocolChk(pMessageBase->ParseMsg());
 
 			Proc_End:
 				return hr;
 
-			}; // Result PlayerKickedS2CEvt::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
+			}; // Result PlayerKickedS2CEvt::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
 
-			MessageData* PlayerKickedS2CEvt::Create( IMemoryManager& memoryManager, const RouteContext &InRouteContext, const PlayerID &InKickedPlayerID )
+			MessageData* PlayerKickedS2CEvt::Create( IHeap& memHeap, const RouteContext &InRouteContext, const PlayerID &InKickedPlayerID )
 			{
  				MessageData *pNewMsg = nullptr;
 				Result hr;
@@ -1194,7 +1194,7 @@ namespace SF
 					+ sizeof(PlayerID));
 
 
-				protocolMem( pNewMsg = MessageData::NewMessage( memoryManager, GameInstance::PlayerKickedS2CEvt::MID, __uiMessageSize ) );
+				protocolMem( pNewMsg = MessageData::NewMessage( memHeap, GameInstance::PlayerKickedS2CEvt::MID, __uiMessageSize ) );
 
 				pMsgData = pNewMsg->GetMessageData();
 
@@ -1211,7 +1211,7 @@ namespace SF
 				}
 				return pNewMsg;
 
-			}; // MessageData* PlayerKickedS2CEvt::Create( IMemoryManager& memoryManager, const RouteContext &InRouteContext, const PlayerID &InKickedPlayerID )
+			}; // MessageData* PlayerKickedS2CEvt::Create( IHeap& memHeap, const RouteContext &InRouteContext, const PlayerID &InKickedPlayerID )
 
 			Result PlayerKickedS2CEvt::OverrideRouteContextDestination( EntityUID to )
 			{
@@ -1275,19 +1275,19 @@ namespace SF
 			}; // Result AssignRoleCmd::ParseMessage( MessageData* pIMsg )
 
 
-			Result AssignRoleCmd::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
+			Result AssignRoleCmd::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
 			{
  				Result hr;
 
-				protocolMem(pMessageBase = new(memoryManager) AssignRoleCmd(pIMsg));
+				protocolMem(pMessageBase = new(memHeap) AssignRoleCmd(pIMsg));
 				protocolChk(pMessageBase->ParseMsg());
 
 			Proc_End:
 				return hr;
 
-			}; // Result AssignRoleCmd::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
+			}; // Result AssignRoleCmd::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
 
-			MessageData* AssignRoleCmd::Create( IMemoryManager& memoryManager, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const PlayerID &InPlayerID )
+			MessageData* AssignRoleCmd::Create( IHeap& memHeap, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const PlayerID &InPlayerID )
 			{
  				MessageData *pNewMsg = nullptr;
 				Result hr;
@@ -1300,7 +1300,7 @@ namespace SF
 					+ sizeof(PlayerID));
 
 
-				protocolMem( pNewMsg = MessageData::NewMessage( memoryManager, GameInstance::AssignRoleCmd::MID, __uiMessageSize ) );
+				protocolMem( pNewMsg = MessageData::NewMessage( memHeap, GameInstance::AssignRoleCmd::MID, __uiMessageSize ) );
 
 				pMsgData = pNewMsg->GetMessageData();
 
@@ -1318,7 +1318,7 @@ namespace SF
 				}
 				return pNewMsg;
 
-			}; // MessageData* AssignRoleCmd::Create( IMemoryManager& memoryManager, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const PlayerID &InPlayerID )
+			}; // MessageData* AssignRoleCmd::Create( IHeap& memHeap, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const PlayerID &InPlayerID )
 
 			Result AssignRoleCmd::OverrideRouteContextDestination( EntityUID to )
 			{
@@ -1381,19 +1381,19 @@ namespace SF
 			}; // Result AssignRoleRes::ParseMessage( MessageData* pIMsg )
 
 
-			Result AssignRoleRes::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
+			Result AssignRoleRes::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
 			{
  				Result hr;
 
-				protocolMem(pMessageBase = new(memoryManager) AssignRoleRes(pIMsg));
+				protocolMem(pMessageBase = new(memHeap) AssignRoleRes(pIMsg));
 				protocolChk(pMessageBase->ParseMsg());
 
 			Proc_End:
 				return hr;
 
-			}; // Result AssignRoleRes::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
+			}; // Result AssignRoleRes::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
 
-			MessageData* AssignRoleRes::Create( IMemoryManager& memoryManager, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const Result &InResult )
+			MessageData* AssignRoleRes::Create( IHeap& memHeap, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const Result &InResult )
 			{
  				MessageData *pNewMsg = nullptr;
 				Result hr;
@@ -1406,7 +1406,7 @@ namespace SF
 					+ sizeof(Result));
 
 
-				protocolMem( pNewMsg = MessageData::NewMessage( memoryManager, GameInstance::AssignRoleRes::MID, __uiMessageSize ) );
+				protocolMem( pNewMsg = MessageData::NewMessage( memHeap, GameInstance::AssignRoleRes::MID, __uiMessageSize ) );
 
 				pMsgData = pNewMsg->GetMessageData();
 
@@ -1424,7 +1424,7 @@ namespace SF
 				}
 				return pNewMsg;
 
-			}; // MessageData* AssignRoleRes::Create( IMemoryManager& memoryManager, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const Result &InResult )
+			}; // MessageData* AssignRoleRes::Create( IHeap& memHeap, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const Result &InResult )
 
 			Result AssignRoleRes::OverrideRouteContextDestination( EntityUID to )
 			{
@@ -1487,19 +1487,19 @@ namespace SF
 			}; // Result RoleAssignedS2CEvt::ParseMessage( MessageData* pIMsg )
 
 
-			Result RoleAssignedS2CEvt::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
+			Result RoleAssignedS2CEvt::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
 			{
  				Result hr;
 
-				protocolMem(pMessageBase = new(memoryManager) RoleAssignedS2CEvt(pIMsg));
+				protocolMem(pMessageBase = new(memHeap) RoleAssignedS2CEvt(pIMsg));
 				protocolChk(pMessageBase->ParseMsg());
 
 			Proc_End:
 				return hr;
 
-			}; // Result RoleAssignedS2CEvt::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
+			}; // Result RoleAssignedS2CEvt::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
 
-			MessageData* RoleAssignedS2CEvt::Create( IMemoryManager& memoryManager, const RouteContext &InRouteContext, const uint8_t &InRole )
+			MessageData* RoleAssignedS2CEvt::Create( IHeap& memHeap, const RouteContext &InRouteContext, const uint8_t &InRole )
 			{
  				MessageData *pNewMsg = nullptr;
 				Result hr;
@@ -1511,7 +1511,7 @@ namespace SF
 					+ sizeof(uint8_t));
 
 
-				protocolMem( pNewMsg = MessageData::NewMessage( memoryManager, GameInstance::RoleAssignedS2CEvt::MID, __uiMessageSize ) );
+				protocolMem( pNewMsg = MessageData::NewMessage( memHeap, GameInstance::RoleAssignedS2CEvt::MID, __uiMessageSize ) );
 
 				pMsgData = pNewMsg->GetMessageData();
 
@@ -1528,7 +1528,7 @@ namespace SF
 				}
 				return pNewMsg;
 
-			}; // MessageData* RoleAssignedS2CEvt::Create( IMemoryManager& memoryManager, const RouteContext &InRouteContext, const uint8_t &InRole )
+			}; // MessageData* RoleAssignedS2CEvt::Create( IHeap& memHeap, const RouteContext &InRouteContext, const uint8_t &InRole )
 
 			Result RoleAssignedS2CEvt::OverrideRouteContextDestination( EntityUID to )
 			{
@@ -1595,19 +1595,19 @@ namespace SF
 			}; // Result ChatMessageC2SEvt::ParseMessage( MessageData* pIMsg )
 
 
-			Result ChatMessageC2SEvt::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
+			Result ChatMessageC2SEvt::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
 			{
  				Result hr;
 
-				protocolMem(pMessageBase = new(memoryManager) ChatMessageC2SEvt(pIMsg));
+				protocolMem(pMessageBase = new(memHeap) ChatMessageC2SEvt(pIMsg));
 				protocolChk(pMessageBase->ParseMsg());
 
 			Proc_End:
 				return hr;
 
-			}; // Result ChatMessageC2SEvt::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
+			}; // Result ChatMessageC2SEvt::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
 
-			MessageData* ChatMessageC2SEvt::Create( IMemoryManager& memoryManager, const RouteContext &InRouteContext, const PlayerID &InPlayerID, const uint8_t &InRole, const char* InChatMessage )
+			MessageData* ChatMessageC2SEvt::Create( IHeap& memHeap, const RouteContext &InRouteContext, const PlayerID &InPlayerID, const uint8_t &InRole, const char* InChatMessage )
 			{
  				MessageData *pNewMsg = nullptr;
 				Result hr;
@@ -1621,7 +1621,7 @@ namespace SF
 					+ sizeof(uint8_t));
 
 
-				protocolMem( pNewMsg = MessageData::NewMessage( memoryManager, GameInstance::ChatMessageC2SEvt::MID, __uiMessageSize ) );
+				protocolMem( pNewMsg = MessageData::NewMessage( memHeap, GameInstance::ChatMessageC2SEvt::MID, __uiMessageSize ) );
 
 				pMsgData = pNewMsg->GetMessageData();
 
@@ -1641,7 +1641,7 @@ namespace SF
 				}
 				return pNewMsg;
 
-			}; // MessageData* ChatMessageC2SEvt::Create( IMemoryManager& memoryManager, const RouteContext &InRouteContext, const PlayerID &InPlayerID, const uint8_t &InRole, const char* InChatMessage )
+			}; // MessageData* ChatMessageC2SEvt::Create( IHeap& memHeap, const RouteContext &InRouteContext, const PlayerID &InPlayerID, const uint8_t &InRole, const char* InChatMessage )
 
 			Result ChatMessageC2SEvt::OverrideRouteContextDestination( EntityUID to )
 			{
@@ -1705,19 +1705,19 @@ namespace SF
 			}; // Result AdvanceGameCmd::ParseMessage( MessageData* pIMsg )
 
 
-			Result AdvanceGameCmd::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
+			Result AdvanceGameCmd::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
 			{
  				Result hr;
 
-				protocolMem(pMessageBase = new(memoryManager) AdvanceGameCmd(pIMsg));
+				protocolMem(pMessageBase = new(memHeap) AdvanceGameCmd(pIMsg));
 				protocolChk(pMessageBase->ParseMsg());
 
 			Proc_End:
 				return hr;
 
-			}; // Result AdvanceGameCmd::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
+			}; // Result AdvanceGameCmd::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
 
-			MessageData* AdvanceGameCmd::Create( IMemoryManager& memoryManager, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const PlayerID &InPlayerID )
+			MessageData* AdvanceGameCmd::Create( IHeap& memHeap, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const PlayerID &InPlayerID )
 			{
  				MessageData *pNewMsg = nullptr;
 				Result hr;
@@ -1730,7 +1730,7 @@ namespace SF
 					+ sizeof(PlayerID));
 
 
-				protocolMem( pNewMsg = MessageData::NewMessage( memoryManager, GameInstance::AdvanceGameCmd::MID, __uiMessageSize ) );
+				protocolMem( pNewMsg = MessageData::NewMessage( memHeap, GameInstance::AdvanceGameCmd::MID, __uiMessageSize ) );
 
 				pMsgData = pNewMsg->GetMessageData();
 
@@ -1748,7 +1748,7 @@ namespace SF
 				}
 				return pNewMsg;
 
-			}; // MessageData* AdvanceGameCmd::Create( IMemoryManager& memoryManager, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const PlayerID &InPlayerID )
+			}; // MessageData* AdvanceGameCmd::Create( IHeap& memHeap, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const PlayerID &InPlayerID )
 
 			Result AdvanceGameCmd::OverrideRouteContextDestination( EntityUID to )
 			{
@@ -1811,19 +1811,19 @@ namespace SF
 			}; // Result AdvanceGameRes::ParseMessage( MessageData* pIMsg )
 
 
-			Result AdvanceGameRes::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
+			Result AdvanceGameRes::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
 			{
  				Result hr;
 
-				protocolMem(pMessageBase = new(memoryManager) AdvanceGameRes(pIMsg));
+				protocolMem(pMessageBase = new(memHeap) AdvanceGameRes(pIMsg));
 				protocolChk(pMessageBase->ParseMsg());
 
 			Proc_End:
 				return hr;
 
-			}; // Result AdvanceGameRes::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
+			}; // Result AdvanceGameRes::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
 
-			MessageData* AdvanceGameRes::Create( IMemoryManager& memoryManager, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const Result &InResult )
+			MessageData* AdvanceGameRes::Create( IHeap& memHeap, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const Result &InResult )
 			{
  				MessageData *pNewMsg = nullptr;
 				Result hr;
@@ -1836,7 +1836,7 @@ namespace SF
 					+ sizeof(Result));
 
 
-				protocolMem( pNewMsg = MessageData::NewMessage( memoryManager, GameInstance::AdvanceGameRes::MID, __uiMessageSize ) );
+				protocolMem( pNewMsg = MessageData::NewMessage( memHeap, GameInstance::AdvanceGameRes::MID, __uiMessageSize ) );
 
 				pMsgData = pNewMsg->GetMessageData();
 
@@ -1854,7 +1854,7 @@ namespace SF
 				}
 				return pNewMsg;
 
-			}; // MessageData* AdvanceGameRes::Create( IMemoryManager& memoryManager, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const Result &InResult )
+			}; // MessageData* AdvanceGameRes::Create( IHeap& memHeap, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const Result &InResult )
 
 			Result AdvanceGameRes::OverrideRouteContextDestination( EntityUID to )
 			{
@@ -1919,19 +1919,19 @@ namespace SF
 			}; // Result GameAdvancedS2CEvt::ParseMessage( MessageData* pIMsg )
 
 
-			Result GameAdvancedS2CEvt::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
+			Result GameAdvancedS2CEvt::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
 			{
  				Result hr;
 
-				protocolMem(pMessageBase = new(memoryManager) GameAdvancedS2CEvt(pIMsg));
+				protocolMem(pMessageBase = new(memHeap) GameAdvancedS2CEvt(pIMsg));
 				protocolChk(pMessageBase->ParseMsg());
 
 			Proc_End:
 				return hr;
 
-			}; // Result GameAdvancedS2CEvt::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
+			}; // Result GameAdvancedS2CEvt::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
 
-			MessageData* GameAdvancedS2CEvt::Create( IMemoryManager& memoryManager, const RouteContext &InRouteContext, const uint32_t &InTimeStamp, const uint8_t &InGameState, const uint8_t &InDay )
+			MessageData* GameAdvancedS2CEvt::Create( IHeap& memHeap, const RouteContext &InRouteContext, const uint32_t &InTimeStamp, const uint8_t &InGameState, const uint8_t &InDay )
 			{
  				MessageData *pNewMsg = nullptr;
 				Result hr;
@@ -1945,7 +1945,7 @@ namespace SF
 					+ sizeof(uint8_t));
 
 
-				protocolMem( pNewMsg = MessageData::NewMessage( memoryManager, GameInstance::GameAdvancedS2CEvt::MID, __uiMessageSize ) );
+				protocolMem( pNewMsg = MessageData::NewMessage( memHeap, GameInstance::GameAdvancedS2CEvt::MID, __uiMessageSize ) );
 
 				pMsgData = pNewMsg->GetMessageData();
 
@@ -1964,7 +1964,7 @@ namespace SF
 				}
 				return pNewMsg;
 
-			}; // MessageData* GameAdvancedS2CEvt::Create( IMemoryManager& memoryManager, const RouteContext &InRouteContext, const uint32_t &InTimeStamp, const uint8_t &InGameState, const uint8_t &InDay )
+			}; // MessageData* GameAdvancedS2CEvt::Create( IHeap& memHeap, const RouteContext &InRouteContext, const uint32_t &InTimeStamp, const uint8_t &InGameState, const uint8_t &InDay )
 
 			Result GameAdvancedS2CEvt::OverrideRouteContextDestination( EntityUID to )
 			{
@@ -2031,19 +2031,19 @@ namespace SF
 			}; // Result GameEndedS2CEvt::ParseMessage( MessageData* pIMsg )
 
 
-			Result GameEndedS2CEvt::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
+			Result GameEndedS2CEvt::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
 			{
  				Result hr;
 
-				protocolMem(pMessageBase = new(memoryManager) GameEndedS2CEvt(pIMsg));
+				protocolMem(pMessageBase = new(memHeap) GameEndedS2CEvt(pIMsg));
 				protocolChk(pMessageBase->ParseMsg());
 
 			Proc_End:
 				return hr;
 
-			}; // Result GameEndedS2CEvt::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
+			}; // Result GameEndedS2CEvt::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
 
-			MessageData* GameEndedS2CEvt::Create( IMemoryManager& memoryManager, const RouteContext &InRouteContext, const uint8_t &InWinner, const uint32_t &InGainedExp, const uint32_t &InGainedGameMoney, const uint8_t &InPlayedRole, const uint8_t &InIsWon )
+			MessageData* GameEndedS2CEvt::Create( IHeap& memHeap, const RouteContext &InRouteContext, const uint8_t &InWinner, const uint32_t &InGainedExp, const uint32_t &InGainedGameMoney, const uint8_t &InPlayedRole, const uint8_t &InIsWon )
 			{
  				MessageData *pNewMsg = nullptr;
 				Result hr;
@@ -2059,7 +2059,7 @@ namespace SF
 					+ sizeof(uint8_t));
 
 
-				protocolMem( pNewMsg = MessageData::NewMessage( memoryManager, GameInstance::GameEndedS2CEvt::MID, __uiMessageSize ) );
+				protocolMem( pNewMsg = MessageData::NewMessage( memHeap, GameInstance::GameEndedS2CEvt::MID, __uiMessageSize ) );
 
 				pMsgData = pNewMsg->GetMessageData();
 
@@ -2080,7 +2080,7 @@ namespace SF
 				}
 				return pNewMsg;
 
-			}; // MessageData* GameEndedS2CEvt::Create( IMemoryManager& memoryManager, const RouteContext &InRouteContext, const uint8_t &InWinner, const uint32_t &InGainedExp, const uint32_t &InGainedGameMoney, const uint8_t &InPlayedRole, const uint8_t &InIsWon )
+			}; // MessageData* GameEndedS2CEvt::Create( IHeap& memHeap, const RouteContext &InRouteContext, const uint8_t &InWinner, const uint32_t &InGainedExp, const uint32_t &InGainedGameMoney, const uint8_t &InPlayedRole, const uint8_t &InIsWon )
 
 			Result GameEndedS2CEvt::OverrideRouteContextDestination( EntityUID to )
 			{
@@ -2144,19 +2144,19 @@ namespace SF
 			}; // Result VoteGameAdvanceCmd::ParseMessage( MessageData* pIMsg )
 
 
-			Result VoteGameAdvanceCmd::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
+			Result VoteGameAdvanceCmd::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
 			{
  				Result hr;
 
-				protocolMem(pMessageBase = new(memoryManager) VoteGameAdvanceCmd(pIMsg));
+				protocolMem(pMessageBase = new(memHeap) VoteGameAdvanceCmd(pIMsg));
 				protocolChk(pMessageBase->ParseMsg());
 
 			Proc_End:
 				return hr;
 
-			}; // Result VoteGameAdvanceCmd::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
+			}; // Result VoteGameAdvanceCmd::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
 
-			MessageData* VoteGameAdvanceCmd::Create( IMemoryManager& memoryManager, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const PlayerID &InPlayerID )
+			MessageData* VoteGameAdvanceCmd::Create( IHeap& memHeap, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const PlayerID &InPlayerID )
 			{
  				MessageData *pNewMsg = nullptr;
 				Result hr;
@@ -2169,7 +2169,7 @@ namespace SF
 					+ sizeof(PlayerID));
 
 
-				protocolMem( pNewMsg = MessageData::NewMessage( memoryManager, GameInstance::VoteGameAdvanceCmd::MID, __uiMessageSize ) );
+				protocolMem( pNewMsg = MessageData::NewMessage( memHeap, GameInstance::VoteGameAdvanceCmd::MID, __uiMessageSize ) );
 
 				pMsgData = pNewMsg->GetMessageData();
 
@@ -2187,7 +2187,7 @@ namespace SF
 				}
 				return pNewMsg;
 
-			}; // MessageData* VoteGameAdvanceCmd::Create( IMemoryManager& memoryManager, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const PlayerID &InPlayerID )
+			}; // MessageData* VoteGameAdvanceCmd::Create( IHeap& memHeap, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const PlayerID &InPlayerID )
 
 			Result VoteGameAdvanceCmd::OverrideRouteContextDestination( EntityUID to )
 			{
@@ -2250,19 +2250,19 @@ namespace SF
 			}; // Result VoteGameAdvanceRes::ParseMessage( MessageData* pIMsg )
 
 
-			Result VoteGameAdvanceRes::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
+			Result VoteGameAdvanceRes::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
 			{
  				Result hr;
 
-				protocolMem(pMessageBase = new(memoryManager) VoteGameAdvanceRes(pIMsg));
+				protocolMem(pMessageBase = new(memHeap) VoteGameAdvanceRes(pIMsg));
 				protocolChk(pMessageBase->ParseMsg());
 
 			Proc_End:
 				return hr;
 
-			}; // Result VoteGameAdvanceRes::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
+			}; // Result VoteGameAdvanceRes::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
 
-			MessageData* VoteGameAdvanceRes::Create( IMemoryManager& memoryManager, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const Result &InResult )
+			MessageData* VoteGameAdvanceRes::Create( IHeap& memHeap, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const Result &InResult )
 			{
  				MessageData *pNewMsg = nullptr;
 				Result hr;
@@ -2275,7 +2275,7 @@ namespace SF
 					+ sizeof(Result));
 
 
-				protocolMem( pNewMsg = MessageData::NewMessage( memoryManager, GameInstance::VoteGameAdvanceRes::MID, __uiMessageSize ) );
+				protocolMem( pNewMsg = MessageData::NewMessage( memHeap, GameInstance::VoteGameAdvanceRes::MID, __uiMessageSize ) );
 
 				pMsgData = pNewMsg->GetMessageData();
 
@@ -2293,7 +2293,7 @@ namespace SF
 				}
 				return pNewMsg;
 
-			}; // MessageData* VoteGameAdvanceRes::Create( IMemoryManager& memoryManager, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const Result &InResult )
+			}; // MessageData* VoteGameAdvanceRes::Create( IHeap& memHeap, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const Result &InResult )
 
 			Result VoteGameAdvanceRes::OverrideRouteContextDestination( EntityUID to )
 			{
@@ -2356,19 +2356,19 @@ namespace SF
 			}; // Result GameAdvanceVotedS2CEvt::ParseMessage( MessageData* pIMsg )
 
 
-			Result GameAdvanceVotedS2CEvt::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
+			Result GameAdvanceVotedS2CEvt::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
 			{
  				Result hr;
 
-				protocolMem(pMessageBase = new(memoryManager) GameAdvanceVotedS2CEvt(pIMsg));
+				protocolMem(pMessageBase = new(memHeap) GameAdvanceVotedS2CEvt(pIMsg));
 				protocolChk(pMessageBase->ParseMsg());
 
 			Proc_End:
 				return hr;
 
-			}; // Result GameAdvanceVotedS2CEvt::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
+			}; // Result GameAdvanceVotedS2CEvt::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
 
-			MessageData* GameAdvanceVotedS2CEvt::Create( IMemoryManager& memoryManager, const RouteContext &InRouteContext, const PlayerID &InVoter )
+			MessageData* GameAdvanceVotedS2CEvt::Create( IHeap& memHeap, const RouteContext &InRouteContext, const PlayerID &InVoter )
 			{
  				MessageData *pNewMsg = nullptr;
 				Result hr;
@@ -2380,7 +2380,7 @@ namespace SF
 					+ sizeof(PlayerID));
 
 
-				protocolMem( pNewMsg = MessageData::NewMessage( memoryManager, GameInstance::GameAdvanceVotedS2CEvt::MID, __uiMessageSize ) );
+				protocolMem( pNewMsg = MessageData::NewMessage( memHeap, GameInstance::GameAdvanceVotedS2CEvt::MID, __uiMessageSize ) );
 
 				pMsgData = pNewMsg->GetMessageData();
 
@@ -2397,7 +2397,7 @@ namespace SF
 				}
 				return pNewMsg;
 
-			}; // MessageData* GameAdvanceVotedS2CEvt::Create( IMemoryManager& memoryManager, const RouteContext &InRouteContext, const PlayerID &InVoter )
+			}; // MessageData* GameAdvanceVotedS2CEvt::Create( IHeap& memHeap, const RouteContext &InRouteContext, const PlayerID &InVoter )
 
 			Result GameAdvanceVotedS2CEvt::OverrideRouteContextDestination( EntityUID to )
 			{
@@ -2463,19 +2463,19 @@ namespace SF
 			}; // Result VoteCmd::ParseMessage( MessageData* pIMsg )
 
 
-			Result VoteCmd::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
+			Result VoteCmd::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
 			{
  				Result hr;
 
-				protocolMem(pMessageBase = new(memoryManager) VoteCmd(pIMsg));
+				protocolMem(pMessageBase = new(memHeap) VoteCmd(pIMsg));
 				protocolChk(pMessageBase->ParseMsg());
 
 			Proc_End:
 				return hr;
 
-			}; // Result VoteCmd::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
+			}; // Result VoteCmd::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
 
-			MessageData* VoteCmd::Create( IMemoryManager& memoryManager, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const PlayerID &InPlayerID, const PlayerID &InVoteTarget, const uint32_t &InActionSerial )
+			MessageData* VoteCmd::Create( IHeap& memHeap, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const PlayerID &InPlayerID, const PlayerID &InVoteTarget, const uint32_t &InActionSerial )
 			{
  				MessageData *pNewMsg = nullptr;
 				Result hr;
@@ -2490,7 +2490,7 @@ namespace SF
 					+ sizeof(uint32_t));
 
 
-				protocolMem( pNewMsg = MessageData::NewMessage( memoryManager, GameInstance::VoteCmd::MID, __uiMessageSize ) );
+				protocolMem( pNewMsg = MessageData::NewMessage( memHeap, GameInstance::VoteCmd::MID, __uiMessageSize ) );
 
 				pMsgData = pNewMsg->GetMessageData();
 
@@ -2510,7 +2510,7 @@ namespace SF
 				}
 				return pNewMsg;
 
-			}; // MessageData* VoteCmd::Create( IMemoryManager& memoryManager, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const PlayerID &InPlayerID, const PlayerID &InVoteTarget, const uint32_t &InActionSerial )
+			}; // MessageData* VoteCmd::Create( IHeap& memHeap, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const PlayerID &InPlayerID, const PlayerID &InVoteTarget, const uint32_t &InActionSerial )
 
 			Result VoteCmd::OverrideRouteContextDestination( EntityUID to )
 			{
@@ -2573,19 +2573,19 @@ namespace SF
 			}; // Result VoteRes::ParseMessage( MessageData* pIMsg )
 
 
-			Result VoteRes::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
+			Result VoteRes::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
 			{
  				Result hr;
 
-				protocolMem(pMessageBase = new(memoryManager) VoteRes(pIMsg));
+				protocolMem(pMessageBase = new(memHeap) VoteRes(pIMsg));
 				protocolChk(pMessageBase->ParseMsg());
 
 			Proc_End:
 				return hr;
 
-			}; // Result VoteRes::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
+			}; // Result VoteRes::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
 
-			MessageData* VoteRes::Create( IMemoryManager& memoryManager, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const Result &InResult )
+			MessageData* VoteRes::Create( IHeap& memHeap, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const Result &InResult )
 			{
  				MessageData *pNewMsg = nullptr;
 				Result hr;
@@ -2598,7 +2598,7 @@ namespace SF
 					+ sizeof(Result));
 
 
-				protocolMem( pNewMsg = MessageData::NewMessage( memoryManager, GameInstance::VoteRes::MID, __uiMessageSize ) );
+				protocolMem( pNewMsg = MessageData::NewMessage( memHeap, GameInstance::VoteRes::MID, __uiMessageSize ) );
 
 				pMsgData = pNewMsg->GetMessageData();
 
@@ -2616,7 +2616,7 @@ namespace SF
 				}
 				return pNewMsg;
 
-			}; // MessageData* VoteRes::Create( IMemoryManager& memoryManager, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const Result &InResult )
+			}; // MessageData* VoteRes::Create( IHeap& memHeap, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const Result &InResult )
 
 			Result VoteRes::OverrideRouteContextDestination( EntityUID to )
 			{
@@ -2680,19 +2680,19 @@ namespace SF
 			}; // Result VotedS2CEvt::ParseMessage( MessageData* pIMsg )
 
 
-			Result VotedS2CEvt::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
+			Result VotedS2CEvt::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
 			{
  				Result hr;
 
-				protocolMem(pMessageBase = new(memoryManager) VotedS2CEvt(pIMsg));
+				protocolMem(pMessageBase = new(memHeap) VotedS2CEvt(pIMsg));
 				protocolChk(pMessageBase->ParseMsg());
 
 			Proc_End:
 				return hr;
 
-			}; // Result VotedS2CEvt::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
+			}; // Result VotedS2CEvt::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
 
-			MessageData* VotedS2CEvt::Create( IMemoryManager& memoryManager, const RouteContext &InRouteContext, const PlayerID &InVoter, const PlayerID &InVotedTarget )
+			MessageData* VotedS2CEvt::Create( IHeap& memHeap, const RouteContext &InRouteContext, const PlayerID &InVoter, const PlayerID &InVotedTarget )
 			{
  				MessageData *pNewMsg = nullptr;
 				Result hr;
@@ -2705,7 +2705,7 @@ namespace SF
 					+ sizeof(PlayerID));
 
 
-				protocolMem( pNewMsg = MessageData::NewMessage( memoryManager, GameInstance::VotedS2CEvt::MID, __uiMessageSize ) );
+				protocolMem( pNewMsg = MessageData::NewMessage( memHeap, GameInstance::VotedS2CEvt::MID, __uiMessageSize ) );
 
 				pMsgData = pNewMsg->GetMessageData();
 
@@ -2723,7 +2723,7 @@ namespace SF
 				}
 				return pNewMsg;
 
-			}; // MessageData* VotedS2CEvt::Create( IMemoryManager& memoryManager, const RouteContext &InRouteContext, const PlayerID &InVoter, const PlayerID &InVotedTarget )
+			}; // MessageData* VotedS2CEvt::Create( IHeap& memHeap, const RouteContext &InRouteContext, const PlayerID &InVoter, const PlayerID &InVotedTarget )
 
 			Result VotedS2CEvt::OverrideRouteContextDestination( EntityUID to )
 			{
@@ -2789,19 +2789,19 @@ namespace SF
 			}; // Result VoteEndS2CEvt::ParseMessage( MessageData* pIMsg )
 
 
-			Result VoteEndS2CEvt::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
+			Result VoteEndS2CEvt::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
 			{
  				Result hr;
 
-				protocolMem(pMessageBase = new(memoryManager) VoteEndS2CEvt(pIMsg));
+				protocolMem(pMessageBase = new(memHeap) VoteEndS2CEvt(pIMsg));
 				protocolChk(pMessageBase->ParseMsg());
 
 			Proc_End:
 				return hr;
 
-			}; // Result VoteEndS2CEvt::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
+			}; // Result VoteEndS2CEvt::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
 
-			MessageData* VoteEndS2CEvt::Create( IMemoryManager& memoryManager, const RouteContext &InRouteContext, const Array<PlayerID>& InVoted )
+			MessageData* VoteEndS2CEvt::Create( IHeap& memHeap, const RouteContext &InRouteContext, const Array<PlayerID>& InVoted )
 			{
  				MessageData *pNewMsg = nullptr;
 				Result hr;
@@ -2814,7 +2814,7 @@ namespace SF
 
 
 				uint16_t numberOfInVoted = (uint16_t)InVoted.size(); 
-				protocolMem( pNewMsg = MessageData::NewMessage( memoryManager, GameInstance::VoteEndS2CEvt::MID, __uiMessageSize ) );
+				protocolMem( pNewMsg = MessageData::NewMessage( memHeap, GameInstance::VoteEndS2CEvt::MID, __uiMessageSize ) );
 
 				pMsgData = pNewMsg->GetMessageData();
 
@@ -2832,7 +2832,7 @@ namespace SF
 				}
 				return pNewMsg;
 
-			}; // MessageData* VoteEndS2CEvt::Create( IMemoryManager& memoryManager, const RouteContext &InRouteContext, const Array<PlayerID>& InVoted )
+			}; // MessageData* VoteEndS2CEvt::Create( IHeap& memHeap, const RouteContext &InRouteContext, const Array<PlayerID>& InVoted )
 
 			Result VoteEndS2CEvt::OverrideRouteContextDestination( EntityUID to )
 			{
@@ -2897,19 +2897,19 @@ namespace SF
 			}; // Result PlayerRevealedS2CEvt::ParseMessage( MessageData* pIMsg )
 
 
-			Result PlayerRevealedS2CEvt::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
+			Result PlayerRevealedS2CEvt::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
 			{
  				Result hr;
 
-				protocolMem(pMessageBase = new(memoryManager) PlayerRevealedS2CEvt(pIMsg));
+				protocolMem(pMessageBase = new(memHeap) PlayerRevealedS2CEvt(pIMsg));
 				protocolChk(pMessageBase->ParseMsg());
 
 			Proc_End:
 				return hr;
 
-			}; // Result PlayerRevealedS2CEvt::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
+			}; // Result PlayerRevealedS2CEvt::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
 
-			MessageData* PlayerRevealedS2CEvt::Create( IMemoryManager& memoryManager, const RouteContext &InRouteContext, const PlayerID &InRevealedPlayerID, const uint8_t &InRole, const uint8_t &InReason )
+			MessageData* PlayerRevealedS2CEvt::Create( IHeap& memHeap, const RouteContext &InRouteContext, const PlayerID &InRevealedPlayerID, const uint8_t &InRole, const uint8_t &InReason )
 			{
  				MessageData *pNewMsg = nullptr;
 				Result hr;
@@ -2923,7 +2923,7 @@ namespace SF
 					+ sizeof(uint8_t));
 
 
-				protocolMem( pNewMsg = MessageData::NewMessage( memoryManager, GameInstance::PlayerRevealedS2CEvt::MID, __uiMessageSize ) );
+				protocolMem( pNewMsg = MessageData::NewMessage( memHeap, GameInstance::PlayerRevealedS2CEvt::MID, __uiMessageSize ) );
 
 				pMsgData = pNewMsg->GetMessageData();
 
@@ -2942,7 +2942,7 @@ namespace SF
 				}
 				return pNewMsg;
 
-			}; // MessageData* PlayerRevealedS2CEvt::Create( IMemoryManager& memoryManager, const RouteContext &InRouteContext, const PlayerID &InRevealedPlayerID, const uint8_t &InRole, const uint8_t &InReason )
+			}; // MessageData* PlayerRevealedS2CEvt::Create( IHeap& memHeap, const RouteContext &InRouteContext, const PlayerID &InRevealedPlayerID, const uint8_t &InRole, const uint8_t &InReason )
 
 			Result PlayerRevealedS2CEvt::OverrideRouteContextDestination( EntityUID to )
 			{
@@ -3006,19 +3006,19 @@ namespace SF
 			}; // Result PlayerKilledS2CEvt::ParseMessage( MessageData* pIMsg )
 
 
-			Result PlayerKilledS2CEvt::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
+			Result PlayerKilledS2CEvt::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
 			{
  				Result hr;
 
-				protocolMem(pMessageBase = new(memoryManager) PlayerKilledS2CEvt(pIMsg));
+				protocolMem(pMessageBase = new(memHeap) PlayerKilledS2CEvt(pIMsg));
 				protocolChk(pMessageBase->ParseMsg());
 
 			Proc_End:
 				return hr;
 
-			}; // Result PlayerKilledS2CEvt::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
+			}; // Result PlayerKilledS2CEvt::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
 
-			MessageData* PlayerKilledS2CEvt::Create( IMemoryManager& memoryManager, const RouteContext &InRouteContext, const PlayerID &InKilledPlayer, const uint8_t &InReason )
+			MessageData* PlayerKilledS2CEvt::Create( IHeap& memHeap, const RouteContext &InRouteContext, const PlayerID &InKilledPlayer, const uint8_t &InReason )
 			{
  				MessageData *pNewMsg = nullptr;
 				Result hr;
@@ -3031,7 +3031,7 @@ namespace SF
 					+ sizeof(uint8_t));
 
 
-				protocolMem( pNewMsg = MessageData::NewMessage( memoryManager, GameInstance::PlayerKilledS2CEvt::MID, __uiMessageSize ) );
+				protocolMem( pNewMsg = MessageData::NewMessage( memHeap, GameInstance::PlayerKilledS2CEvt::MID, __uiMessageSize ) );
 
 				pMsgData = pNewMsg->GetMessageData();
 
@@ -3049,7 +3049,7 @@ namespace SF
 				}
 				return pNewMsg;
 
-			}; // MessageData* PlayerKilledS2CEvt::Create( IMemoryManager& memoryManager, const RouteContext &InRouteContext, const PlayerID &InKilledPlayer, const uint8_t &InReason )
+			}; // MessageData* PlayerKilledS2CEvt::Create( IHeap& memHeap, const RouteContext &InRouteContext, const PlayerID &InKilledPlayer, const uint8_t &InReason )
 
 			Result PlayerKilledS2CEvt::OverrideRouteContextDestination( EntityUID to )
 			{
@@ -3114,19 +3114,19 @@ namespace SF
 			}; // Result GamePlayAgainCmd::ParseMessage( MessageData* pIMsg )
 
 
-			Result GamePlayAgainCmd::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
+			Result GamePlayAgainCmd::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
 			{
  				Result hr;
 
-				protocolMem(pMessageBase = new(memoryManager) GamePlayAgainCmd(pIMsg));
+				protocolMem(pMessageBase = new(memHeap) GamePlayAgainCmd(pIMsg));
 				protocolChk(pMessageBase->ParseMsg());
 
 			Proc_End:
 				return hr;
 
-			}; // Result GamePlayAgainCmd::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
+			}; // Result GamePlayAgainCmd::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
 
-			MessageData* GamePlayAgainCmd::Create( IMemoryManager& memoryManager, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const PlayerID &InLeadPlayer, const uint64_t &InPartyUID )
+			MessageData* GamePlayAgainCmd::Create( IHeap& memHeap, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const PlayerID &InLeadPlayer, const uint64_t &InPartyUID )
 			{
  				MessageData *pNewMsg = nullptr;
 				Result hr;
@@ -3140,7 +3140,7 @@ namespace SF
 					+ sizeof(uint64_t));
 
 
-				protocolMem( pNewMsg = MessageData::NewMessage( memoryManager, GameInstance::GamePlayAgainCmd::MID, __uiMessageSize ) );
+				protocolMem( pNewMsg = MessageData::NewMessage( memHeap, GameInstance::GamePlayAgainCmd::MID, __uiMessageSize ) );
 
 				pMsgData = pNewMsg->GetMessageData();
 
@@ -3159,7 +3159,7 @@ namespace SF
 				}
 				return pNewMsg;
 
-			}; // MessageData* GamePlayAgainCmd::Create( IMemoryManager& memoryManager, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const PlayerID &InLeadPlayer, const uint64_t &InPartyUID )
+			}; // MessageData* GamePlayAgainCmd::Create( IHeap& memHeap, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const PlayerID &InLeadPlayer, const uint64_t &InPartyUID )
 
 			Result GamePlayAgainCmd::OverrideRouteContextDestination( EntityUID to )
 			{
@@ -3223,19 +3223,19 @@ namespace SF
 			}; // Result GamePlayAgainRes::ParseMessage( MessageData* pIMsg )
 
 
-			Result GamePlayAgainRes::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
+			Result GamePlayAgainRes::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
 			{
  				Result hr;
 
-				protocolMem(pMessageBase = new(memoryManager) GamePlayAgainRes(pIMsg));
+				protocolMem(pMessageBase = new(memHeap) GamePlayAgainRes(pIMsg));
 				protocolChk(pMessageBase->ParseMsg());
 
 			Proc_End:
 				return hr;
 
-			}; // Result GamePlayAgainRes::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
+			}; // Result GamePlayAgainRes::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
 
-			MessageData* GamePlayAgainRes::Create( IMemoryManager& memoryManager, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const Result &InResult, const uint32_t &InReplayMemberCount )
+			MessageData* GamePlayAgainRes::Create( IHeap& memHeap, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const Result &InResult, const uint32_t &InReplayMemberCount )
 			{
  				MessageData *pNewMsg = nullptr;
 				Result hr;
@@ -3249,7 +3249,7 @@ namespace SF
 					+ sizeof(uint32_t));
 
 
-				protocolMem( pNewMsg = MessageData::NewMessage( memoryManager, GameInstance::GamePlayAgainRes::MID, __uiMessageSize ) );
+				protocolMem( pNewMsg = MessageData::NewMessage( memHeap, GameInstance::GamePlayAgainRes::MID, __uiMessageSize ) );
 
 				pMsgData = pNewMsg->GetMessageData();
 
@@ -3268,7 +3268,7 @@ namespace SF
 				}
 				return pNewMsg;
 
-			}; // MessageData* GamePlayAgainRes::Create( IMemoryManager& memoryManager, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const Result &InResult, const uint32_t &InReplayMemberCount )
+			}; // MessageData* GamePlayAgainRes::Create( IHeap& memHeap, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const Result &InResult, const uint32_t &InReplayMemberCount )
 
 			Result GamePlayAgainRes::OverrideRouteContextDestination( EntityUID to )
 			{
@@ -3333,19 +3333,19 @@ namespace SF
 			}; // Result GamePlayAgainS2CEvt::ParseMessage( MessageData* pIMsg )
 
 
-			Result GamePlayAgainS2CEvt::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
+			Result GamePlayAgainS2CEvt::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
 			{
  				Result hr;
 
-				protocolMem(pMessageBase = new(memoryManager) GamePlayAgainS2CEvt(pIMsg));
+				protocolMem(pMessageBase = new(memHeap) GamePlayAgainS2CEvt(pIMsg));
 				protocolChk(pMessageBase->ParseMsg());
 
 			Proc_End:
 				return hr;
 
-			}; // Result GamePlayAgainS2CEvt::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
+			}; // Result GamePlayAgainS2CEvt::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
 
-			MessageData* GamePlayAgainS2CEvt::Create( IMemoryManager& memoryManager, const RouteContext &InRouteContext, const PlayerID &InTargetPlayer, const uint64_t &InPartyUID, const PlayerID &InLeadPlayer )
+			MessageData* GamePlayAgainS2CEvt::Create( IHeap& memHeap, const RouteContext &InRouteContext, const PlayerID &InTargetPlayer, const uint64_t &InPartyUID, const PlayerID &InLeadPlayer )
 			{
  				MessageData *pNewMsg = nullptr;
 				Result hr;
@@ -3359,7 +3359,7 @@ namespace SF
 					+ sizeof(PlayerID));
 
 
-				protocolMem( pNewMsg = MessageData::NewMessage( memoryManager, GameInstance::GamePlayAgainS2CEvt::MID, __uiMessageSize ) );
+				protocolMem( pNewMsg = MessageData::NewMessage( memHeap, GameInstance::GamePlayAgainS2CEvt::MID, __uiMessageSize ) );
 
 				pMsgData = pNewMsg->GetMessageData();
 
@@ -3378,7 +3378,7 @@ namespace SF
 				}
 				return pNewMsg;
 
-			}; // MessageData* GamePlayAgainS2CEvt::Create( IMemoryManager& memoryManager, const RouteContext &InRouteContext, const PlayerID &InTargetPlayer, const uint64_t &InPartyUID, const PlayerID &InLeadPlayer )
+			}; // MessageData* GamePlayAgainS2CEvt::Create( IHeap& memHeap, const RouteContext &InRouteContext, const PlayerID &InTargetPlayer, const uint64_t &InPartyUID, const PlayerID &InLeadPlayer )
 
 			Result GamePlayAgainS2CEvt::OverrideRouteContextDestination( EntityUID to )
 			{
@@ -3446,19 +3446,19 @@ namespace SF
 			}; // Result GameRevealPlayerCmd::ParseMessage( MessageData* pIMsg )
 
 
-			Result GameRevealPlayerCmd::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
+			Result GameRevealPlayerCmd::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
 			{
  				Result hr;
 
-				protocolMem(pMessageBase = new(memoryManager) GameRevealPlayerCmd(pIMsg));
+				protocolMem(pMessageBase = new(memHeap) GameRevealPlayerCmd(pIMsg));
 				protocolChk(pMessageBase->ParseMsg());
 
 			Proc_End:
 				return hr;
 
-			}; // Result GameRevealPlayerCmd::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
+			}; // Result GameRevealPlayerCmd::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
 
-			MessageData* GameRevealPlayerCmd::Create( IMemoryManager& memoryManager, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const PlayerID &InPlayerID, const Array<PlayerID>& InTargetPlayerID )
+			MessageData* GameRevealPlayerCmd::Create( IHeap& memHeap, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const PlayerID &InPlayerID, const Array<PlayerID>& InTargetPlayerID )
 			{
  				MessageData *pNewMsg = nullptr;
 				Result hr;
@@ -3473,7 +3473,7 @@ namespace SF
 
 
 				uint16_t numberOfInTargetPlayerID = (uint16_t)InTargetPlayerID.size(); 
-				protocolMem( pNewMsg = MessageData::NewMessage( memoryManager, GameInstance::GameRevealPlayerCmd::MID, __uiMessageSize ) );
+				protocolMem( pNewMsg = MessageData::NewMessage( memHeap, GameInstance::GameRevealPlayerCmd::MID, __uiMessageSize ) );
 
 				pMsgData = pNewMsg->GetMessageData();
 
@@ -3493,7 +3493,7 @@ namespace SF
 				}
 				return pNewMsg;
 
-			}; // MessageData* GameRevealPlayerCmd::Create( IMemoryManager& memoryManager, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const PlayerID &InPlayerID, const Array<PlayerID>& InTargetPlayerID )
+			}; // MessageData* GameRevealPlayerCmd::Create( IHeap& memHeap, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const PlayerID &InPlayerID, const Array<PlayerID>& InTargetPlayerID )
 
 			Result GameRevealPlayerCmd::OverrideRouteContextDestination( EntityUID to )
 			{
@@ -3564,19 +3564,19 @@ namespace SF
 			}; // Result GameRevealPlayerRes::ParseMessage( MessageData* pIMsg )
 
 
-			Result GameRevealPlayerRes::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
+			Result GameRevealPlayerRes::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
 			{
  				Result hr;
 
-				protocolMem(pMessageBase = new(memoryManager) GameRevealPlayerRes(pIMsg));
+				protocolMem(pMessageBase = new(memHeap) GameRevealPlayerRes(pIMsg));
 				protocolChk(pMessageBase->ParseMsg());
 
 			Proc_End:
 				return hr;
 
-			}; // Result GameRevealPlayerRes::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
+			}; // Result GameRevealPlayerRes::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
 
-			MessageData* GameRevealPlayerRes::Create( IMemoryManager& memoryManager, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const Result &InResult, const Array<PlayerID>& InRevealedPlayerID, const Array<uint8_t>& InRevealedRole )
+			MessageData* GameRevealPlayerRes::Create( IHeap& memHeap, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const Result &InResult, const Array<PlayerID>& InRevealedPlayerID, const Array<uint8_t>& InRevealedRole )
 			{
  				MessageData *pNewMsg = nullptr;
 				Result hr;
@@ -3593,7 +3593,7 @@ namespace SF
 
 				uint16_t numberOfInRevealedPlayerID = (uint16_t)InRevealedPlayerID.size(); 
 				uint16_t numberOfInRevealedRole = (uint16_t)InRevealedRole.size(); 
-				protocolMem( pNewMsg = MessageData::NewMessage( memoryManager, GameInstance::GameRevealPlayerRes::MID, __uiMessageSize ) );
+				protocolMem( pNewMsg = MessageData::NewMessage( memHeap, GameInstance::GameRevealPlayerRes::MID, __uiMessageSize ) );
 
 				pMsgData = pNewMsg->GetMessageData();
 
@@ -3615,7 +3615,7 @@ namespace SF
 				}
 				return pNewMsg;
 
-			}; // MessageData* GameRevealPlayerRes::Create( IMemoryManager& memoryManager, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const Result &InResult, const Array<PlayerID>& InRevealedPlayerID, const Array<uint8_t>& InRevealedRole )
+			}; // MessageData* GameRevealPlayerRes::Create( IHeap& memHeap, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const Result &InResult, const Array<PlayerID>& InRevealedPlayerID, const Array<uint8_t>& InRevealedRole )
 
 			Result GameRevealPlayerRes::OverrideRouteContextDestination( EntityUID to )
 			{
@@ -3679,19 +3679,19 @@ namespace SF
 			}; // Result GamePlayerReviveCmd::ParseMessage( MessageData* pIMsg )
 
 
-			Result GamePlayerReviveCmd::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
+			Result GamePlayerReviveCmd::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
 			{
  				Result hr;
 
-				protocolMem(pMessageBase = new(memoryManager) GamePlayerReviveCmd(pIMsg));
+				protocolMem(pMessageBase = new(memHeap) GamePlayerReviveCmd(pIMsg));
 				protocolChk(pMessageBase->ParseMsg());
 
 			Proc_End:
 				return hr;
 
-			}; // Result GamePlayerReviveCmd::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
+			}; // Result GamePlayerReviveCmd::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
 
-			MessageData* GamePlayerReviveCmd::Create( IMemoryManager& memoryManager, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const PlayerID &InPlayerID )
+			MessageData* GamePlayerReviveCmd::Create( IHeap& memHeap, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const PlayerID &InPlayerID )
 			{
  				MessageData *pNewMsg = nullptr;
 				Result hr;
@@ -3704,7 +3704,7 @@ namespace SF
 					+ sizeof(PlayerID));
 
 
-				protocolMem( pNewMsg = MessageData::NewMessage( memoryManager, GameInstance::GamePlayerReviveCmd::MID, __uiMessageSize ) );
+				protocolMem( pNewMsg = MessageData::NewMessage( memHeap, GameInstance::GamePlayerReviveCmd::MID, __uiMessageSize ) );
 
 				pMsgData = pNewMsg->GetMessageData();
 
@@ -3722,7 +3722,7 @@ namespace SF
 				}
 				return pNewMsg;
 
-			}; // MessageData* GamePlayerReviveCmd::Create( IMemoryManager& memoryManager, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const PlayerID &InPlayerID )
+			}; // MessageData* GamePlayerReviveCmd::Create( IHeap& memHeap, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const PlayerID &InPlayerID )
 
 			Result GamePlayerReviveCmd::OverrideRouteContextDestination( EntityUID to )
 			{
@@ -3785,19 +3785,19 @@ namespace SF
 			}; // Result GamePlayerReviveRes::ParseMessage( MessageData* pIMsg )
 
 
-			Result GamePlayerReviveRes::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
+			Result GamePlayerReviveRes::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
 			{
  				Result hr;
 
-				protocolMem(pMessageBase = new(memoryManager) GamePlayerReviveRes(pIMsg));
+				protocolMem(pMessageBase = new(memHeap) GamePlayerReviveRes(pIMsg));
 				protocolChk(pMessageBase->ParseMsg());
 
 			Proc_End:
 				return hr;
 
-			}; // Result GamePlayerReviveRes::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
+			}; // Result GamePlayerReviveRes::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
 
-			MessageData* GamePlayerReviveRes::Create( IMemoryManager& memoryManager, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const Result &InResult )
+			MessageData* GamePlayerReviveRes::Create( IHeap& memHeap, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const Result &InResult )
 			{
  				MessageData *pNewMsg = nullptr;
 				Result hr;
@@ -3810,7 +3810,7 @@ namespace SF
 					+ sizeof(Result));
 
 
-				protocolMem( pNewMsg = MessageData::NewMessage( memoryManager, GameInstance::GamePlayerReviveRes::MID, __uiMessageSize ) );
+				protocolMem( pNewMsg = MessageData::NewMessage( memHeap, GameInstance::GamePlayerReviveRes::MID, __uiMessageSize ) );
 
 				pMsgData = pNewMsg->GetMessageData();
 
@@ -3828,7 +3828,7 @@ namespace SF
 				}
 				return pNewMsg;
 
-			}; // MessageData* GamePlayerReviveRes::Create( IMemoryManager& memoryManager, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const Result &InResult )
+			}; // MessageData* GamePlayerReviveRes::Create( IHeap& memHeap, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const Result &InResult )
 
 			Result GamePlayerReviveRes::OverrideRouteContextDestination( EntityUID to )
 			{
@@ -3891,19 +3891,19 @@ namespace SF
 			}; // Result GamePlayerRevivedS2CEvt::ParseMessage( MessageData* pIMsg )
 
 
-			Result GamePlayerRevivedS2CEvt::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
+			Result GamePlayerRevivedS2CEvt::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
 			{
  				Result hr;
 
-				protocolMem(pMessageBase = new(memoryManager) GamePlayerRevivedS2CEvt(pIMsg));
+				protocolMem(pMessageBase = new(memHeap) GamePlayerRevivedS2CEvt(pIMsg));
 				protocolChk(pMessageBase->ParseMsg());
 
 			Proc_End:
 				return hr;
 
-			}; // Result GamePlayerRevivedS2CEvt::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
+			}; // Result GamePlayerRevivedS2CEvt::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
 
-			MessageData* GamePlayerRevivedS2CEvt::Create( IMemoryManager& memoryManager, const RouteContext &InRouteContext, const PlayerID &InRevivedPlayerID )
+			MessageData* GamePlayerRevivedS2CEvt::Create( IHeap& memHeap, const RouteContext &InRouteContext, const PlayerID &InRevivedPlayerID )
 			{
  				MessageData *pNewMsg = nullptr;
 				Result hr;
@@ -3915,7 +3915,7 @@ namespace SF
 					+ sizeof(PlayerID));
 
 
-				protocolMem( pNewMsg = MessageData::NewMessage( memoryManager, GameInstance::GamePlayerRevivedS2CEvt::MID, __uiMessageSize ) );
+				protocolMem( pNewMsg = MessageData::NewMessage( memHeap, GameInstance::GamePlayerRevivedS2CEvt::MID, __uiMessageSize ) );
 
 				pMsgData = pNewMsg->GetMessageData();
 
@@ -3932,7 +3932,7 @@ namespace SF
 				}
 				return pNewMsg;
 
-			}; // MessageData* GamePlayerRevivedS2CEvt::Create( IMemoryManager& memoryManager, const RouteContext &InRouteContext, const PlayerID &InRevivedPlayerID )
+			}; // MessageData* GamePlayerRevivedS2CEvt::Create( IHeap& memHeap, const RouteContext &InRouteContext, const PlayerID &InRevivedPlayerID )
 
 			Result GamePlayerRevivedS2CEvt::OverrideRouteContextDestination( EntityUID to )
 			{

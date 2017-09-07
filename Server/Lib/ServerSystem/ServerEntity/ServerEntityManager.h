@@ -94,16 +94,7 @@ namespace Svr
 		// Add new remote entity
 		Result AddOrGetServerEntity(ServerID serverID, NetClass netClass, ServerEntity* &pServerEntity);
 
-		// GetServerPolicy
-		template< class PolicyType >
-		PolicyType* GetServerPolicy( ServerID svrID )
-		{
-			ServerEntity* pServerEntity = nullptr;
-			if( !(GetServerEntity(svrID, pServerEntity)) )
-				return nullptr;
-
-			return pServerEntity->GetInterface<PolicyType>();
-		}
+		Net::Connection* GetServerConnection(ServerID svrID);
 	};
 
 

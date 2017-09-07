@@ -49,6 +49,7 @@ namespace Svr {
 
 
 	public:
+		ChattingHistory(IHeap& heap) : GameLog(heap) {}
 
 		// Initialize 
 		virtual Result InitializeLog() override;

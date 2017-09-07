@@ -106,8 +106,8 @@ namespace conspiracy
 
 		if (m_ShopItemIDTablePrev != nullptr)
 		{
- 			for( auto itItem : *m_ShopItemIDTablePrev) { IMemoryManager::Delete(itItem.second); } ;
-			IMemoryManager::Delete(m_ShopItemIDTablePrev);
+ 			for( auto itItem : *m_ShopItemIDTablePrev) { IHeap::Delete(itItem.second); } ;
+			IHeap::Delete(m_ShopItemIDTablePrev);
 		}
 		m_ShopItemIDTablePrev = m_ShopItemIDTable;
 		m_ShopItemIDTable = pNewShopItemIDTable;

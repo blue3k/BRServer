@@ -43,7 +43,7 @@ namespace SF {
 	//
 
 	// Constructor/Destructor
-	Transaction::Transaction(IMemoryManager& memoryManager, TransactionID parentTransID )
+	Transaction::Transaction(IHeap& memoryManager, TransactionID parentTransID )
 		: m_MemoryManager(memoryManager)
 		, m_parentTransID(parentTransID)
 		, m_MessageRouteContext(0)
@@ -186,7 +186,7 @@ namespace SF {
 	//
 	//	SubTransaction base class
 	//
-	SubTransaction::SubTransaction( IMemoryManager& memoryManager, TransactionID parentTransID ,Message::MessageID MsgID )
+	SubTransaction::SubTransaction( IHeap& memoryManager, TransactionID parentTransID ,Message::MessageID MsgID )
 			:Transaction(memoryManager, parentTransID ),
 			//m_uiContext(0),
 			m_MsgID(MsgID)
@@ -203,7 +203,7 @@ namespace SF {
 	//	Sub Transaction with result base class
 	//
 	
-	SubTransactionWitResult::SubTransactionWitResult(IMemoryManager& memoryManager, TransactionID parentTransID , Message::MessageID MsgID )
+	SubTransactionWitResult::SubTransactionWitResult(IHeap& memoryManager, TransactionID parentTransID , Message::MessageID MsgID )
 		:SubTransaction( memoryManager, parentTransID, MsgID ),
 		m_bFlushRes(false)
 	{

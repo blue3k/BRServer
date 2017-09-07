@@ -36,8 +36,8 @@ namespace conspiracy
 
 		if (m_TableVersionTablePrev != nullptr)
 		{
- 			for( auto itItem : *m_TableVersionTablePrev) { IMemoryManager::Delete(itItem.second); } ;
-			IMemoryManager::Delete(m_TableVersionTablePrev);
+ 			for( auto itItem : *m_TableVersionTablePrev) { IHeap::Delete(itItem.second); } ;
+			IHeap::Delete(m_TableVersionTablePrev);
 		}
 		m_TableVersionTablePrev = m_TableVersionTable;
 		m_TableVersionTable = pNewTableVersionTable;

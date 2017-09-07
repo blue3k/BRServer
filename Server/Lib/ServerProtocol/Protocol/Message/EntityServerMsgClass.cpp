@@ -54,19 +54,19 @@ namespace SF
 			}; // Result RegisterEntityCmd::ParseMessage( MessageData* pIMsg )
 
 
-			Result RegisterEntityCmd::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
+			Result RegisterEntityCmd::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
 			{
  				Result hr;
 
-				protocolMem(pMessageBase = new(memoryManager) RegisterEntityCmd(pIMsg));
+				protocolMem(pMessageBase = new(memHeap) RegisterEntityCmd(pIMsg));
 				protocolChk(pMessageBase->ParseMsg());
 
 			Proc_End:
 				return hr;
 
-			}; // Result RegisterEntityCmd::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
+			}; // Result RegisterEntityCmd::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
 
-			MessageData* RegisterEntityCmd::Create( IMemoryManager& memoryManager, const TransactionID &InTransactionID, const EntityID &InLocalEntID, const char* InEntName )
+			MessageData* RegisterEntityCmd::Create( IHeap& memHeap, const TransactionID &InTransactionID, const EntityID &InLocalEntID, const char* InEntName )
 			{
  				MessageData *pNewMsg = nullptr;
 				Result hr;
@@ -79,7 +79,7 @@ namespace SF
 					+ sizeof(EntityID));
 
 
-				protocolMem( pNewMsg = MessageData::NewMessage( memoryManager, EntityServer::RegisterEntityCmd::MID, __uiMessageSize ) );
+				protocolMem( pNewMsg = MessageData::NewMessage( memHeap, EntityServer::RegisterEntityCmd::MID, __uiMessageSize ) );
 
 				pMsgData = pNewMsg->GetMessageData();
 
@@ -98,7 +98,7 @@ namespace SF
 				}
 				return pNewMsg;
 
-			}; // MessageData* RegisterEntityCmd::Create( IMemoryManager& memoryManager, const TransactionID &InTransactionID, const EntityID &InLocalEntID, const char* InEntName )
+			}; // MessageData* RegisterEntityCmd::Create( IHeap& memHeap, const TransactionID &InTransactionID, const EntityID &InLocalEntID, const char* InEntName )
 
 
 
@@ -136,19 +136,19 @@ namespace SF
 			}; // Result RegisterEntityRes::ParseMessage( MessageData* pIMsg )
 
 
-			Result RegisterEntityRes::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
+			Result RegisterEntityRes::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
 			{
  				Result hr;
 
-				protocolMem(pMessageBase = new(memoryManager) RegisterEntityRes(pIMsg));
+				protocolMem(pMessageBase = new(memHeap) RegisterEntityRes(pIMsg));
 				protocolChk(pMessageBase->ParseMsg());
 
 			Proc_End:
 				return hr;
 
-			}; // Result RegisterEntityRes::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
+			}; // Result RegisterEntityRes::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
 
-			MessageData* RegisterEntityRes::Create( IMemoryManager& memoryManager, const TransactionID &InTransactionID, const Result &InResult, const uint64_t &InEntUID )
+			MessageData* RegisterEntityRes::Create( IHeap& memHeap, const TransactionID &InTransactionID, const Result &InResult, const uint64_t &InEntUID )
 			{
  				MessageData *pNewMsg = nullptr;
 				Result hr;
@@ -161,7 +161,7 @@ namespace SF
 					+ sizeof(uint64_t));
 
 
-				protocolMem( pNewMsg = MessageData::NewMessage( memoryManager, EntityServer::RegisterEntityRes::MID, __uiMessageSize ) );
+				protocolMem( pNewMsg = MessageData::NewMessage( memHeap, EntityServer::RegisterEntityRes::MID, __uiMessageSize ) );
 
 				pMsgData = pNewMsg->GetMessageData();
 
@@ -179,7 +179,7 @@ namespace SF
 				}
 				return pNewMsg;
 
-			}; // MessageData* RegisterEntityRes::Create( IMemoryManager& memoryManager, const TransactionID &InTransactionID, const Result &InResult, const uint64_t &InEntUID )
+			}; // MessageData* RegisterEntityRes::Create( IHeap& memHeap, const TransactionID &InTransactionID, const Result &InResult, const uint64_t &InEntUID )
 
 
 
@@ -217,19 +217,19 @@ namespace SF
 			}; // Result UnregisterEntityCmd::ParseMessage( MessageData* pIMsg )
 
 
-			Result UnregisterEntityCmd::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
+			Result UnregisterEntityCmd::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
 			{
  				Result hr;
 
-				protocolMem(pMessageBase = new(memoryManager) UnregisterEntityCmd(pIMsg));
+				protocolMem(pMessageBase = new(memHeap) UnregisterEntityCmd(pIMsg));
 				protocolChk(pMessageBase->ParseMsg());
 
 			Proc_End:
 				return hr;
 
-			}; // Result UnregisterEntityCmd::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
+			}; // Result UnregisterEntityCmd::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
 
-			MessageData* UnregisterEntityCmd::Create( IMemoryManager& memoryManager, const TransactionID &InTransactionID, const uint64_t &InEntUID )
+			MessageData* UnregisterEntityCmd::Create( IHeap& memHeap, const TransactionID &InTransactionID, const uint64_t &InEntUID )
 			{
  				MessageData *pNewMsg = nullptr;
 				Result hr;
@@ -241,7 +241,7 @@ namespace SF
 					+ sizeof(uint64_t));
 
 
-				protocolMem( pNewMsg = MessageData::NewMessage( memoryManager, EntityServer::UnregisterEntityCmd::MID, __uiMessageSize ) );
+				protocolMem( pNewMsg = MessageData::NewMessage( memHeap, EntityServer::UnregisterEntityCmd::MID, __uiMessageSize ) );
 
 				pMsgData = pNewMsg->GetMessageData();
 
@@ -258,7 +258,7 @@ namespace SF
 				}
 				return pNewMsg;
 
-			}; // MessageData* UnregisterEntityCmd::Create( IMemoryManager& memoryManager, const TransactionID &InTransactionID, const uint64_t &InEntUID )
+			}; // MessageData* UnregisterEntityCmd::Create( IHeap& memHeap, const TransactionID &InTransactionID, const uint64_t &InEntUID )
 
 
 
@@ -295,19 +295,19 @@ namespace SF
 			}; // Result UnregisterEntityRes::ParseMessage( MessageData* pIMsg )
 
 
-			Result UnregisterEntityRes::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
+			Result UnregisterEntityRes::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
 			{
  				Result hr;
 
-				protocolMem(pMessageBase = new(memoryManager) UnregisterEntityRes(pIMsg));
+				protocolMem(pMessageBase = new(memHeap) UnregisterEntityRes(pIMsg));
 				protocolChk(pMessageBase->ParseMsg());
 
 			Proc_End:
 				return hr;
 
-			}; // Result UnregisterEntityRes::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
+			}; // Result UnregisterEntityRes::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
 
-			MessageData* UnregisterEntityRes::Create( IMemoryManager& memoryManager, const TransactionID &InTransactionID, const Result &InResult )
+			MessageData* UnregisterEntityRes::Create( IHeap& memHeap, const TransactionID &InTransactionID, const Result &InResult )
 			{
  				MessageData *pNewMsg = nullptr;
 				Result hr;
@@ -319,7 +319,7 @@ namespace SF
 					+ sizeof(Result));
 
 
-				protocolMem( pNewMsg = MessageData::NewMessage( memoryManager, EntityServer::UnregisterEntityRes::MID, __uiMessageSize ) );
+				protocolMem( pNewMsg = MessageData::NewMessage( memHeap, EntityServer::UnregisterEntityRes::MID, __uiMessageSize ) );
 
 				pMsgData = pNewMsg->GetMessageData();
 
@@ -336,7 +336,7 @@ namespace SF
 				}
 				return pNewMsg;
 
-			}; // MessageData* UnregisterEntityRes::Create( IMemoryManager& memoryManager, const TransactionID &InTransactionID, const Result &InResult )
+			}; // MessageData* UnregisterEntityRes::Create( IHeap& memHeap, const TransactionID &InTransactionID, const Result &InResult )
 
 
 
@@ -374,19 +374,19 @@ namespace SF
 			}; // Result FindEntityCmd::ParseMessage( MessageData* pIMsg )
 
 
-			Result FindEntityCmd::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
+			Result FindEntityCmd::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
 			{
  				Result hr;
 
-				protocolMem(pMessageBase = new(memoryManager) FindEntityCmd(pIMsg));
+				protocolMem(pMessageBase = new(memHeap) FindEntityCmd(pIMsg));
 				protocolChk(pMessageBase->ParseMsg());
 
 			Proc_End:
 				return hr;
 
-			}; // Result FindEntityCmd::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
+			}; // Result FindEntityCmd::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
 
-			MessageData* FindEntityCmd::Create( IMemoryManager& memoryManager, const TransactionID &InTransactionID, const EntityID &InLocalEntID )
+			MessageData* FindEntityCmd::Create( IHeap& memHeap, const TransactionID &InTransactionID, const EntityID &InLocalEntID )
 			{
  				MessageData *pNewMsg = nullptr;
 				Result hr;
@@ -398,7 +398,7 @@ namespace SF
 					+ sizeof(EntityID));
 
 
-				protocolMem( pNewMsg = MessageData::NewMessage( memoryManager, EntityServer::FindEntityCmd::MID, __uiMessageSize ) );
+				protocolMem( pNewMsg = MessageData::NewMessage( memHeap, EntityServer::FindEntityCmd::MID, __uiMessageSize ) );
 
 				pMsgData = pNewMsg->GetMessageData();
 
@@ -415,7 +415,7 @@ namespace SF
 				}
 				return pNewMsg;
 
-			}; // MessageData* FindEntityCmd::Create( IMemoryManager& memoryManager, const TransactionID &InTransactionID, const EntityID &InLocalEntID )
+			}; // MessageData* FindEntityCmd::Create( IHeap& memHeap, const TransactionID &InTransactionID, const EntityID &InLocalEntID )
 
 
 
@@ -453,19 +453,19 @@ namespace SF
 			}; // Result FindEntityRes::ParseMessage( MessageData* pIMsg )
 
 
-			Result FindEntityRes::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
+			Result FindEntityRes::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
 			{
  				Result hr;
 
-				protocolMem(pMessageBase = new(memoryManager) FindEntityRes(pIMsg));
+				protocolMem(pMessageBase = new(memHeap) FindEntityRes(pIMsg));
 				protocolChk(pMessageBase->ParseMsg());
 
 			Proc_End:
 				return hr;
 
-			}; // Result FindEntityRes::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
+			}; // Result FindEntityRes::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
 
-			MessageData* FindEntityRes::Create( IMemoryManager& memoryManager, const TransactionID &InTransactionID, const Result &InResult, const uint64_t &InEntUID )
+			MessageData* FindEntityRes::Create( IHeap& memHeap, const TransactionID &InTransactionID, const Result &InResult, const uint64_t &InEntUID )
 			{
  				MessageData *pNewMsg = nullptr;
 				Result hr;
@@ -478,7 +478,7 @@ namespace SF
 					+ sizeof(uint64_t));
 
 
-				protocolMem( pNewMsg = MessageData::NewMessage( memoryManager, EntityServer::FindEntityRes::MID, __uiMessageSize ) );
+				protocolMem( pNewMsg = MessageData::NewMessage( memHeap, EntityServer::FindEntityRes::MID, __uiMessageSize ) );
 
 				pMsgData = pNewMsg->GetMessageData();
 
@@ -496,7 +496,7 @@ namespace SF
 				}
 				return pNewMsg;
 
-			}; // MessageData* FindEntityRes::Create( IMemoryManager& memoryManager, const TransactionID &InTransactionID, const Result &InResult, const uint64_t &InEntUID )
+			}; // MessageData* FindEntityRes::Create( IHeap& memHeap, const TransactionID &InTransactionID, const Result &InResult, const uint64_t &InEntUID )
 
 
 

@@ -19,7 +19,7 @@
 #include "Protocol/Message/ClusterServerMsgClass.h"
 #include "Protocol/Policy/ClusterServerNetPolicy.h"
 
-#include "ServerSystem/ServerService/ClusterServerService.h"
+#include "Protocol/ServerService/ClusterServerService.h"
 
 #include "Server/BrServerUtil.h"
 #include "SvrTrace.h"
@@ -47,8 +47,8 @@ namespace Svr {
 
 
 
-	ClusterInitializationTrans::ClusterInitializationTrans(IMemoryManager& memoryManager)
-		: TransactionT(memoryManager, TransactionID() )
+	ClusterInitializationTrans::ClusterInitializationTrans(IHeap& heap)
+		: TransactionT(heap, TransactionID() )
 	{
 		BR_TRANS_MESSAGE( TimerResult, { return OnTimer(pRes); });
 		//BR_TRANS_MESSAGE( Message::ClusterServer::GetClusterMemberListRes,	{ return OnGetClusterMemberList(pRes); });

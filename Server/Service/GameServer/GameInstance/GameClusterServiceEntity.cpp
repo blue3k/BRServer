@@ -21,7 +21,7 @@
 #include "ServerService/ServerServiceBase.h"
 #include "ServerEntity/ServerEntity.h"
 #include "ServerSystem/ServiceEntity/Game/GameClusterServiceEntity.h"
-#include "ServerSystem/ServerService/ClusterServerService.h"
+#include "Protocol/ServerService/ClusterServerService.h"
 #include "SvrTrace.h"
 #include "Server/BrServerUtil.h"
 

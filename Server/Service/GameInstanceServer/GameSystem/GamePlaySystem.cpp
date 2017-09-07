@@ -273,7 +273,7 @@ namespace ConspiracyGameInstanceServer {
 			switch( pPlayer->GetRole() )
 			{
 			case PlayerRole::None:
-				return ResultCode::E_GAME_INVALID_ROLE;
+				return ResultCode::GAME_INVALID_ROLE;
 				break;
 			case PlayerRole::Villager:
 			case PlayerRole::Seer:
@@ -305,7 +305,7 @@ namespace ConspiracyGameInstanceServer {
 			//case PlayerRole::Devil:
 			default:
 				// I Have no idea for these now
-				hr = ResultCode::E_GAME_INVALID_ROLE;
+				hr = ResultCode::GAME_INVALID_ROLE;
 				return hr;
 			};
 			return ResultCode::SUCCESS;
@@ -429,7 +429,7 @@ namespace ConspiracyGameInstanceServer {
 
 		if( pPlayerToKill->GetPlayerState() == PlayerState::Ghost )
 		{
-			hr = ResultCode::E_GAME_INVALID_PLAYER_STATE;
+			hr = ResultCode::GAME_INVALID_PLAYER_STATE;
 			goto Proc_End;
 		}
 
@@ -449,7 +449,7 @@ namespace ConspiracyGameInstanceServer {
 		switch( pPlayerToKill->GetRole() )
 		{
 		case PlayerRole::None:
-			return ResultCode::E_GAME_INVALID_ROLE;
+			return ResultCode::GAME_INVALID_ROLE;
 			break;
 		case PlayerRole::Villager:
 		case PlayerRole::Seer:
@@ -465,7 +465,7 @@ namespace ConspiracyGameInstanceServer {
 			m_NumWereWolf--;
 			break;
 		default:
-			svrErr(ResultCode::E_GAME_INVALID_ROLE);
+			svrErr(ResultCode::GAME_INVALID_ROLE);
 			break;
 		}
 
@@ -502,7 +502,7 @@ namespace ConspiracyGameInstanceServer {
 
 		if (pPlayerToRevive->GetPlayerState() != PlayerState::Ghost)
 		{
-			hr = ResultCode::E_GAME_INVALID_PLAYER_STATE;
+			hr = ResultCode::GAME_INVALID_PLAYER_STATE;
 			goto Proc_End;
 		}
 
@@ -511,7 +511,7 @@ namespace ConspiracyGameInstanceServer {
 		switch (pPlayerToRevive->GetRole())
 		{
 		case PlayerRole::None:
-			return ResultCode::E_GAME_INVALID_ROLE;
+			return ResultCode::GAME_INVALID_ROLE;
 			break;
 		case PlayerRole::Villager:
 		case PlayerRole::Seer:
@@ -527,7 +527,7 @@ namespace ConspiracyGameInstanceServer {
 			m_NumWereWolf++;
 			break;
 		default:
-			svrErr(ResultCode::E_GAME_INVALID_ROLE);
+			svrErr(ResultCode::GAME_INVALID_ROLE);
 			break;
 		}
 
@@ -631,7 +631,7 @@ namespace ConspiracyGameInstanceServer {
 
 
 		if (role != PlayerRole::None && role != PlayerRole::Werewolf)
-			svrErr(ResultCode::E_GAME_INVALID_ROLE);
+			svrErr(ResultCode::GAME_INVALID_ROLE);
 
 		gameState = GetOwner().GetComponent<GameStateSystem>()->GetCurrentGameState();
 		bIsGhost = gameState != GameStateID::None && gameState != GameStateID::End && pMyPlayer->GetPlayerState() == PlayerState::Ghost;
@@ -644,7 +644,7 @@ namespace ConspiracyGameInstanceServer {
 		case GameStateID::NightVote:
 			if (!bIsGhost && role != PlayerRole::Werewolf)
 			{
-				hr = ResultCode::E_GAME_INVALID_GAMESTATE;
+				hr = ResultCode::GAME_INVALID_GAMESTATE;
 				goto Proc_End;
 			}
 			break;

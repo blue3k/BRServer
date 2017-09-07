@@ -26,7 +26,7 @@ namespace SF {
 namespace DB {
 
 	
-	DataSourceMYSQL::DataSourceMYSQL(IMemoryManager& memMgr)
+	DataSourceMYSQL::DataSourceMYSQL(IHeap& memMgr)
 		: DataSource(memMgr)
 	{
 	}

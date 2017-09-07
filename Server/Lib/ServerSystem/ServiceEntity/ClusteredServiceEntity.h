@@ -102,10 +102,10 @@ namespace Svr {
 		ServiceTableItem* m_MyServiceInfo = nullptr;
 
 		// Service UID map
-		ServiceEntityUIDMap				m_ServiceEntityUIDMap;
+		ServiceEntityUIDMap			m_ServiceEntityUIDMap;
 
 		// Service watcher list
-		ServiceEntityUIDMap				m_WatcherUIDMap;
+		ServiceEntityUIDMap			m_WatcherUIDMap;
 
 		ServerEntity* m_ServerEntity = nullptr;
 
@@ -146,6 +146,7 @@ namespace Svr {
 		// Change workload
 		Result SetWorkload(uint workload);
 
+		ServiceEntityUIDMap& GetServiceEntityUIDMap() { return m_ServiceEntityUIDMap; }
 
 		ServiceTableItem* GetMyServiceInfo() { return m_MyServiceInfo; }
 
@@ -301,7 +302,7 @@ namespace Svr {
 
 		CriticalSection m_ListLock;
 
-		// round robine query
+		// round robin query
 		ServerServiceInformation*	m_pCurrentQueryService;
 
 	public:

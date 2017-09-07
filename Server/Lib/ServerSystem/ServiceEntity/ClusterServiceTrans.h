@@ -32,10 +32,10 @@ namespace Svr {
 
 
 
-	class ClusterInitializationTrans : public TransactionT<ClusteredServiceEntity, ClusterInitializationTrans>
+	class ClusterInitializationTrans : public TransactionT<ClusteredServiceEntity>
 	{
 	public:
-		typedef TransactionT<ClusteredServiceEntity, ClusterInitializationTrans> super;
+		typedef TransactionT<ClusteredServiceEntity> super;
 
 	private:
 		enum Step {
@@ -50,7 +50,7 @@ namespace Svr {
 		Result m_hr;
 
 	public:
-		ClusterInitializationTrans(IMemoryManager& memoryManager);
+		ClusterInitializationTrans(IHeap& heap);
 		virtual ~ClusterInitializationTrans();
 
 		//virtual void Dispose() override;
@@ -86,15 +86,15 @@ namespace Svr {
 	//
 
 
-	class RequestDataSyncTrans : public ClusterEntityMessageTransaction< ClusteredServiceEntity, Message::ClusterServer::RequestDataSyncCmd, RequestDataSyncTrans, 1>
+	class RequestDataSyncTrans : public ClusterEntityMessageTransaction< ClusteredServiceEntity, Message::ClusterServer::RequestDataSyncCmd>
 	{
 	public:
-		typedef ClusterEntityMessageTransaction< ClusteredServiceEntity, Message::ClusterServer::RequestDataSyncCmd, RequestDataSyncTrans, 1> super;
+		typedef ClusterEntityMessageTransaction< ClusteredServiceEntity, Message::ClusterServer::RequestDataSyncCmd> super;
 
 	private:
 
 	public:
-		RequestDataSyncTrans(MessageDataPtr &pIMsg ) : ClusterEntityMessageTransaction( pIMsg )
+		RequestDataSyncTrans(IHeap& heap, MessageDataPtr &pIMsg ) : ClusterEntityMessageTransaction(heap, pIMsg )
 		{
 			// let's enable runtime data sync
 			//SetExclusive( true );
@@ -104,22 +104,20 @@ namespace Svr {
 		// Start Transaction
 		virtual Result StartTransaction();
 
-		Policy::NetSvrPolicyClusterServer* GetInterface()	{ return ServerEntityMessageTransaction::GetInterface<Policy::NetSvrPolicyClusterServer>(); }
-
-		BR_SVR_MSGTRANS_CLOSE(RequestDataSyncRes,GetRouteContext().GetSwaped());
+		BR_SVR_MSGTRANS_CLOSE(Policy::NetSvrPolicyClusterServer, RequestDataSyncRes,GetRouteContext().GetSwaped());
 	};
 
 
 
-	class ClusterMasterAssignedTrans : public ClusterEntityMessageTransaction< ClusteredServiceEntity, Message::ClusterServer::ClusterMasterAssignedS2CEvt, ClusterMasterAssignedTrans, 1>
+	class ClusterMasterAssignedTrans : public ClusterEntityMessageTransaction< ClusteredServiceEntity, Message::ClusterServer::ClusterMasterAssignedS2CEvt>
 	{
 	public:
-		typedef ClusterEntityMessageTransaction< ClusteredServiceEntity, Message::ClusterServer::ClusterMasterAssignedS2CEvt, ClusterMasterAssignedTrans, 1> super;
+		typedef ClusterEntityMessageTransaction< ClusteredServiceEntity, Message::ClusterServer::ClusterMasterAssignedS2CEvt> super;
 
 	private:
 
 	public:
-		ClusterMasterAssignedTrans(MessageDataPtr &pIMsg ) : ClusterEntityMessageTransaction( pIMsg ) {}
+		ClusterMasterAssignedTrans(IHeap& heap, MessageDataPtr &pIMsg ) : ClusterEntityMessageTransaction(heap, pIMsg ) {}
 		virtual ~ClusterMasterAssignedTrans() {}
 
 		// Start Transaction
@@ -128,15 +126,15 @@ namespace Svr {
 
 
 
-	class ClusterMasterVoteTrans : public ClusterEntityMessageTransaction< ClusteredServiceEntity, Message::ClusterServer::ClusterMasterVoteC2SEvt, ClusterMasterVoteTrans, 1>
+	class ClusterMasterVoteTrans : public ClusterEntityMessageTransaction< ClusteredServiceEntity, Message::ClusterServer::ClusterMasterVoteC2SEvt>
 	{
 	public:
-		typedef ClusterEntityMessageTransaction< ClusteredServiceEntity, Message::ClusterServer::ClusterMasterVoteC2SEvt, ClusterMasterVoteTrans, 1> super;
+		typedef ClusterEntityMessageTransaction< ClusteredServiceEntity, Message::ClusterServer::ClusterMasterVoteC2SEvt> super;
 
 	private:
 
 	public:
-		ClusterMasterVoteTrans(MessageDataPtr &pIMsg ) : ClusterEntityMessageTransaction( pIMsg ) {}
+		ClusterMasterVoteTrans(IHeap& heap, MessageDataPtr &pIMsg ) : ClusterEntityMessageTransaction(heap, pIMsg ) {}
 		virtual ~ClusterMasterVoteTrans() {}
 
 		// Start Transaction
@@ -144,15 +142,15 @@ namespace Svr {
 	};
 
 
-	class ClusterUpdateStatusTrans : public ClusterEntityMessageTransaction< ClusteredServiceEntity, Message::ClusterServer::ClusterUpdateStatusC2SEvt, ClusterUpdateStatusTrans, 1>
+	class ClusterUpdateStatusTrans : public ClusterEntityMessageTransaction< ClusteredServiceEntity, Message::ClusterServer::ClusterUpdateStatusC2SEvt>
 	{
 	public:
-		typedef ClusterEntityMessageTransaction< ClusteredServiceEntity, Message::ClusterServer::ClusterUpdateStatusC2SEvt, ClusterUpdateStatusTrans, 1> super;
+		typedef ClusterEntityMessageTransaction< ClusteredServiceEntity, Message::ClusterServer::ClusterUpdateStatusC2SEvt> super;
 
 	private:
 
 	public:
-		ClusterUpdateStatusTrans(MessageDataPtr &pIMsg) : ClusterEntityMessageTransaction(pIMsg) {}
+		ClusterUpdateStatusTrans(IHeap& heap, MessageDataPtr &pIMsg) : ClusterEntityMessageTransaction(heap, pIMsg) {}
 		virtual ~ClusterUpdateStatusTrans() {}
 
 		// Start Transaction
@@ -161,15 +159,15 @@ namespace Svr {
 
 
 
-	class ClusterUpdateWorkloadTrans : public ClusterEntityMessageTransaction< ClusteredServiceEntity, Message::ClusterServer::ClusterUpdateWorkloadC2SEvt, ClusterUpdateWorkloadTrans, 1>
+	class ClusterUpdateWorkloadTrans : public ClusterEntityMessageTransaction< ClusteredServiceEntity, Message::ClusterServer::ClusterUpdateWorkloadC2SEvt>
 	{
 	public:
-		typedef ClusterEntityMessageTransaction< ClusteredServiceEntity, Message::ClusterServer::ClusterUpdateWorkloadC2SEvt, ClusterUpdateWorkloadTrans, 1> super;
+		typedef ClusterEntityMessageTransaction< ClusteredServiceEntity, Message::ClusterServer::ClusterUpdateWorkloadC2SEvt> super;
 
 	private:
 
 	public:
-		ClusterUpdateWorkloadTrans(MessageDataPtr &pIMsg) : ClusterEntityMessageTransaction(pIMsg) {}
+		ClusterUpdateWorkloadTrans(IHeap& heap, MessageDataPtr &pIMsg) : ClusterEntityMessageTransaction(heap, pIMsg) {}
 		virtual ~ClusterUpdateWorkloadTrans() {}
 
 		// Start Transaction
@@ -177,16 +175,16 @@ namespace Svr {
 	};
 
 
-	class GetLowestWorkloadClusterMemberTrans : public ClusterEntityMessageTransaction< ClusteredServiceEntity, Message::ClusterServer::GetLowestWorkloadClusterMemberCmd, GetLowestWorkloadClusterMemberTrans>
+	class GetLowestWorkloadClusterMemberTrans : public ClusterEntityMessageTransaction< ClusteredServiceEntity, Message::ClusterServer::GetLowestWorkloadClusterMemberCmd>
 	{
 	public:
-		typedef ClusterEntityMessageTransaction< ClusteredServiceEntity, Message::ClusterServer::GetLowestWorkloadClusterMemberCmd, GetLowestWorkloadClusterMemberTrans> super;
+		typedef ClusterEntityMessageTransaction< ClusteredServiceEntity, Message::ClusterServer::GetLowestWorkloadClusterMemberCmd> super;
 
 	private:
 		ServiceInformation m_LowestMemberInfo;
 
 	public:
-		GetLowestWorkloadClusterMemberTrans(MessageDataPtr &pIMsg) : ClusterEntityMessageTransaction(pIMsg)
+		GetLowestWorkloadClusterMemberTrans(IHeap& heap, MessageDataPtr &pIMsg) : ClusterEntityMessageTransaction(heap, pIMsg)
 		{
 			// let's enable runtime data sync
 			//SetExclusive( true );
@@ -196,22 +194,20 @@ namespace Svr {
 		// Start Transaction
 		virtual Result StartTransaction();
 
-		Policy::NetSvrPolicyClusterServer* GetInterface() { return ServerEntityMessageTransaction::GetInterface<Policy::NetSvrPolicyClusterServer>(); }
-
-		BR_SVR_MSGTRANS_CLOSE_ARGS(GetLowestWorkloadClusterMemberRes, GetRouteContext().GetSwaped(), m_LowestMemberInfo);
+		BR_SVR_MSGTRANS_CLOSE_ARGS(Policy::NetSvrPolicyClusterServer, GetLowestWorkloadClusterMemberRes, GetRouteContext().GetSwaped(), m_LowestMemberInfo);
 	};
 
 
 
-	class ClusterNewServerServiceJoinedC2SEvtEntityTrans : public ClusterEntityMessageTransaction< ClusteredServiceEntity, Message::ClusterServer::NewServerServiceJoinedC2SEvt, ClusterNewServerServiceJoinedC2SEvtEntityTrans, 1>
+	class ClusterNewServerServiceJoinedC2SEvtEntityTrans : public ClusterEntityMessageTransaction< ClusteredServiceEntity, Message::ClusterServer::NewServerServiceJoinedC2SEvt>
 	{
 	public:
-		typedef ClusterEntityMessageTransaction< ClusteredServiceEntity, Message::ClusterServer::NewServerServiceJoinedC2SEvt, ClusterNewServerServiceJoinedC2SEvtEntityTrans, 1> super;
+		typedef ClusterEntityMessageTransaction< ClusteredServiceEntity, Message::ClusterServer::NewServerServiceJoinedC2SEvt> super;
 
 	private:
 
 	public:
-		ClusterNewServerServiceJoinedC2SEvtEntityTrans(MessageDataPtr &pIMsg) : ClusterEntityMessageTransaction(pIMsg) {}
+		ClusterNewServerServiceJoinedC2SEvtEntityTrans(IHeap& heap, MessageDataPtr &pIMsg) : ClusterEntityMessageTransaction(heap, pIMsg) {}
 		virtual ~ClusterNewServerServiceJoinedC2SEvtEntityTrans() {}
 
 		// Start Transaction
@@ -219,15 +215,15 @@ namespace Svr {
 	};
 
 
-	class ClusterNewServerServiceJoinedC2SEvtTrans : public ClusterEntityMessageTransaction< ClusteredServiceEntity, Message::ClusterServer::NewServerServiceJoinedC2SEvt, ClusterNewServerServiceJoinedC2SEvtTrans, 1>
+	class ClusterNewServerServiceJoinedC2SEvtTrans : public ClusterEntityMessageTransaction< ClusteredServiceEntity, Message::ClusterServer::NewServerServiceJoinedC2SEvt>
 	{
 	public:
-		typedef ClusterEntityMessageTransaction< ClusteredServiceEntity, Message::ClusterServer::NewServerServiceJoinedC2SEvt, ClusterNewServerServiceJoinedC2SEvtTrans, 1> super;
+		typedef ClusterEntityMessageTransaction< ClusteredServiceEntity, Message::ClusterServer::NewServerServiceJoinedC2SEvt> super;
 
 	private:
 
 	public:
-		ClusterNewServerServiceJoinedC2SEvtTrans(MessageDataPtr &pIMsg) : ClusterEntityMessageTransaction(pIMsg) {}
+		ClusterNewServerServiceJoinedC2SEvtTrans(IHeap& heap, MessageDataPtr &pIMsg) : ClusterEntityMessageTransaction(heap, pIMsg) {}
 		virtual ~ClusterNewServerServiceJoinedC2SEvtTrans() {}
 
 		// Start Transaction

@@ -65,7 +65,7 @@ namespace DB {
 	//	Statement pool class
 	//
 
-	StatementPoolMYSQL::StatementPoolMYSQL(IMemoryManager& memoryManager)
+	StatementPoolMYSQL::StatementPoolMYSQL(IHeap& memoryManager)
 		: m_MemoryManager(memoryManager)
 	{
 	}
@@ -84,10 +84,10 @@ namespace DB {
 			pPool->for_each( []( StackPool::Item *pItem )
 			{
 				PoolItem *pStmtItem = (PoolItem*)pItem;
-				IMemoryManager::Delete(pStmtItem);
+				IHeap::Delete(pStmtItem);
 			});
 			pPool->Clear();
-			IMemoryManager::Delete(pPool);
+			IHeap::Delete(pPool);
 		}
 
 		m_StatementPoolMap.clear();
@@ -159,7 +159,7 @@ namespace DB {
 	//
 
 	// constructor / destructor
-	SessionMYSQL::SessionMYSQL(IMemoryManager& memMgr, DataSourceMYSQL *pDataSource)
+	SessionMYSQL::SessionMYSQL(IHeap& memMgr, DataSourceMYSQL *pDataSource)
 		:Session(pDataSource)
 		, m_pMyDataSource(pDataSource)
 		, m_mySQL(nullptr)

@@ -346,7 +346,7 @@ namespace SF {
 	Proc_End:
 
 
-		IMemoryManager::Delete(pTransRes);
+		IHeap::Delete(pTransRes);
 
 		return hr;
 	}
@@ -444,7 +444,7 @@ namespace SF {
 				pTrans->UpdateHeartBitTime();
 				pTrans->RecordTransactionHistory(pTranRes);
 				pTrans->ProcessTransaction(pTranRes);
-				IMemoryManager::Delete(pTranRes);
+				IHeap::Delete(pTranRes);
 			}
 			else if (!(pTrans->CheckHeartBitTimeout()))// Transaction time out
 			{
@@ -502,7 +502,7 @@ namespace SF {
 		
 	Proc_End:
 
-		IMemoryManager::Delete(pTransRes);
+		IHeap::Delete(pTransRes);
 		pTransRes = nullptr;
 
 		return hr;

@@ -292,7 +292,6 @@ namespace Svr {
 	{
 		Result hr = ResultCode::SUCCESS;
 		ServerEntity* pServerEntity = nullptr;
-		Policy::NetSvrPolicyPartyMatchingQueue* pPolicyMatchingQueueSvr = nullptr;
 
 		if (pItem == nullptr)
 			return ResultCode::INVALID_ARG;
@@ -305,16 +304,14 @@ namespace Svr {
 
 		// If delete is required by canceling
 		svrChk((GetServerComponent<ServerEntityManager>()->GetServerEntity(pItem->RegisterUID.GetServerID(), pServerEntity)));
-		pPolicyMatchingQueueSvr = pServerEntity->GetInterface<Policy::NetSvrPolicyPartyMatchingQueue>();
-		svrChkPtr(pPolicyMatchingQueueSvr);
-
+		
 		if (pItem->NumPlayers > 1)
 		{
-			pPolicyMatchingQueueSvr->PartyMatchingCanceledS2CEvt(RouteContext(GetEntityUID(), pItem->RegisterUID), 0, pItem->RegisterUID, pItem->GetTicket(GetEntityUID()));
+			Policy::NetSvrPolicyPartyMatchingQueue(pServerEntity->GetConnection()).PartyMatchingCanceledS2CEvt(RouteContext(GetEntityUID(), pItem->RegisterUID), 0, pItem->RegisterUID, pItem->GetTicket(GetEntityUID()));
 		}
 		else
 		{
-			pPolicyMatchingQueueSvr->PlayerMatchingCanceledS2CEvt(RouteContext(GetEntityUID(), pItem->RegisterUID), 0, pItem->RegisterID, pItem->GetTicket(GetEntityUID()));
+			Policy::NetSvrPolicyPartyMatchingQueue(pServerEntity->GetConnection()).PlayerMatchingCanceledS2CEvt(RouteContext(GetEntityUID(), pItem->RegisterUID), 0, pItem->RegisterID, pItem->GetTicket(GetEntityUID()));
 		}
 
 	Proc_End:

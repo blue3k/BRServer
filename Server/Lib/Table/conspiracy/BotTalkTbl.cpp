@@ -36,8 +36,8 @@ namespace conspiracy
 
 		if (m_ItemIDTablePrev != nullptr)
 		{
- 			for( auto itItem : *m_ItemIDTablePrev) { IMemoryManager::Delete(itItem.second); } ;
-			IMemoryManager::Delete(m_ItemIDTablePrev);
+ 			for( auto itItem : *m_ItemIDTablePrev) { IHeap::Delete(itItem.second); } ;
+			IHeap::Delete(m_ItemIDTablePrev);
 		}
 		m_ItemIDTablePrev = m_ItemIDTable;
 		m_ItemIDTable = pNewItemIDTable;

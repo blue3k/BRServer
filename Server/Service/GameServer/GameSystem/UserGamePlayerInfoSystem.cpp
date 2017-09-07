@@ -171,7 +171,7 @@ namespace GameServer {
 			//|| pShopItem->RequiredCash > GetCash()
 			)
 		{
-			return ResultCode::E_GAME_NOTENOUGH_RESOURCE;
+			return ResultCode::GAME_NOTENOUGH_RESOURCE;
 		}
 
 		GetOwner().AddGameTransactionLog(TransLogCategory::Buy, pShopItem->RequiredGem, pShopItem->RequiredGameMoney, pShopItem->Quantity);
@@ -188,7 +188,7 @@ namespace GameServer {
 			svrChk( GainFriendSlot(pShopItem->Quantity) );
 			break;
 		default:
-			return ResultCode::E_GAME_INVALID_SHOPITEM;
+			return ResultCode::GAME_INVALID_SHOPITEM;
 			break;
 		}
 
@@ -214,7 +214,7 @@ namespace GameServer {
 			return ResultCode::INVALID_POINTER;
 
 		if (GetGem() < pCostItem->RequiredGem || GetGameMoney() < pCostItem->RequiredGameMoney)
-			return ResultCode::E_GAME_NOTENOUGH_RESOURCE;
+			return ResultCode::GAME_NOTENOUGH_RESOURCE;
 
 	//Proc_End:
 
@@ -336,7 +336,7 @@ namespace GameServer {
 			}
 			break;
 		default:
-			svrErr(ResultCode::E_GAME_INVALID_ROLE);
+			svrErr(ResultCode::GAME_INVALID_ROLE);
 		}
 
 		m_TotalPlayed++;

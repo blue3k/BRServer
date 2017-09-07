@@ -63,7 +63,7 @@ namespace DB {
 		QueryWorkerManager();
 		virtual ~QueryWorkerManager();
 
-		IMemoryManager& GetMemoryManager() { return m_MemoryManager; }
+		IHeap& GetMemoryManager() { return m_MemoryManager; }
 
 		// Initialize DB
 		static Result InitializeDBWorkerManager();

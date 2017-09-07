@@ -30,8 +30,8 @@
 
 namespace SF {
 namespace Policy {
-	class IPolicyGameServer;
-	class ISvrPolicyGameParty;
+	class NetPolicyGameServer;
+	class NetSvrPolicyGameParty;
 };
 };
 
@@ -121,8 +121,7 @@ namespace Svr {
 		const MatchingQueueTicket& GetMatchingQueueTicket() { return m_MatchingTicket; }
 		void SetMatchingQueueTicket(const MatchingQueueTicket& value) { m_MatchingTicket = value; }
 
-		const ChattingHistory& GetChatHistory() { return m_ChatHistory; }
-
+		ChattingHistory& GetChatHistory() { return m_ChatHistory; }
 
 
 		// Party ID query
@@ -149,8 +148,8 @@ namespace Svr {
 		// foreach game player
 		Result ForeachPlayer( std::function<Result(PartyPlayer* pPlayer)> func );
 
-		Result ForeachPlayerGameServer( std::function<Result(PartyPlayer* pPlayer, Policy::NetPolicyGameServer *pPolicy)> func );
-		Result ForeachPlayerSvrGameParty( std::function<Result(PartyPlayer* pPlayer, Policy::NetSvrPolicyGameParty *pPolicy)> func );
+		Result ForeachPlayerGameServer( std::function<Result(PartyPlayer* pPlayer, Policy::NetPolicyGameServer &pPolicy)> func );
+		Result ForeachPlayerSvrGameParty( std::function<Result(PartyPlayer* pPlayer, Policy::NetSvrPolicyGameParty &pPolicy)> func );
 
 
 

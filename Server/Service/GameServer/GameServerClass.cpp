@@ -357,7 +357,7 @@ namespace GameServer {
 
 		svrChk( m_pNetPublic->HostClose() );
 
-		IMemoryManager::Delete(m_pNetPublic);
+		IHeap::Delete(m_pNetPublic);
 
 	Proc_End:
 

@@ -70,6 +70,7 @@ namespace SF {
 		virtual ~TickTask();
 
 		IMemoryManager& GetMemoryManager() { return m_MemoryManager; }
+		IHeap& GetHeap() { return m_MemoryManager; }
 
 		// Get TickTask ID
 		inline uint32_t GetTaskID() const;

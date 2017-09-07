@@ -12,8 +12,8 @@
 
 
 template<size_t MaxBufferSize, size_t MaxLog>
-GameLog<MaxBufferSize,MaxLog>::GameLog()
-	:m_LogAllocator(STDAllocator::GetInstance())
+GameLog<MaxBufferSize,MaxLog>::GameLog(IHeap& heap)
+	: m_LogAllocator(heap)
 {
 }
 
@@ -71,13 +71,13 @@ Proc_End:
 
 // Get log binary
 template<size_t MaxBufferSize, size_t MaxLog>
-Result GameLog<MaxBufferSize,MaxLog>::GetGameLogBinary( OutputMemoryStream& stream, uint startIndex, uint count )
+Result GameLog<MaxBufferSize,MaxLog>::GetGameLogBinary( OutputMemoryStream& stream, uint startIndex, uint count ) const
 {
 	Result hr = ResultCode::SUCCESS;
 
 	m_gameLogQueue.ReverseForeach( startIndex, count, [&]( GameLogItem* pLogItem ) 
 	{
-		return (stream.Write( pLogItem->LogItemSize, (uint8_t*)pLogItem ));
+		return (stream.Write( (uint8_t*)pLogItem, pLogItem->LogItemSize));
 	});
 
 

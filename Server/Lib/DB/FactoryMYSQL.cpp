@@ -75,7 +75,7 @@ namespace DB {
 	}
 
 	// initialize DB source
-	Result	FactoryMYSQL::CreateDataSource(IMemoryManager& memMgr, DataSource* &pDBSource )
+	Result	FactoryMYSQL::CreateDataSource(IHeap& memMgr, DataSource* &pDBSource )
 	{
 		if( (pDBSource = new(memMgr) DataSourceMYSQL(memMgr)) != nullptr )
 			return ResultCode::SUCCESS;
@@ -84,7 +84,7 @@ namespace DB {
 	}
 
 	// close DB source
-	Result	FactoryMYSQL::CreateSession(IMemoryManager& memMgr, DataSource* pDBSource, Session* &pSession )
+	Result	FactoryMYSQL::CreateSession(IHeap& memMgr, DataSource* pDBSource, Session* &pSession )
 	{
 		if( (pSession = new(memMgr) SessionMYSQL(memMgr, (DataSourceMYSQL*)pDBSource)) != nullptr)
 			return ResultCode::SUCCESS;
