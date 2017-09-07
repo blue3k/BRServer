@@ -120,7 +120,7 @@ namespace Svr
 
 		svrTrace( SVR_ENTITY, "Registering Server {0} SvrID:{1}, {2}", typeid(ServerEntityType).name(), serverID, netAddress);
 
-		svrMem( pNewServerEntity = new(GetMemoryManager()) ServerEntityType );
+		svrMem( pNewServerEntity = new(GetHeap()) ServerEntityType );
 
 		svrChk( BrServer::GetInstance()->GetNetPrivate()->RegisterServerConnection( serverID, netClass, netAddress, pConnection ) );
 

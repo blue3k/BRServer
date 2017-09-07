@@ -33,7 +33,7 @@
 
 #include "Table/TableSystem.h"
 
-#include "ServerEntity/EntityServerEntity.h"
+#include "ServerEntity/SvrEntityServerEntity.h"
 
 
 #include "Protocol/Policy/EntityServerNetPolicy.h"
@@ -41,9 +41,9 @@
 #include "Protocol/Policy/EntityServerNetPolicy.h"
 #include "Protocol/Policy/GameServerNetPolicy.h"
 #include "Protocol/Policy/GameInstanceNetPolicy.h"
-#include "Protocol/Policy/GameMasterServerNetPolicy.h"
 
-#include "Net/NetServerPeer.h"
+
+#include "Net/NetServerPeerTCP.h"
 #include "Net/NetSvrDef.h"
 #include "Net/NetServerUDP.h"
 #include "Entity/EntityManager.h"

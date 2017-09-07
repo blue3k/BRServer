@@ -49,6 +49,8 @@ namespace Google {
 		AndroidDeveloperAPI(OAuth* pOAuth);
 		~AndroidDeveloperAPI();
 
+		IHeap& GetHeap() { return GetSystemMemoryManager(); }
+
 		const std::string& GetDeveloperPayload() { return m_DeveloperPayload; }
 
 		// Check purchase receipt

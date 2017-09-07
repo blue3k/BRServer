@@ -60,7 +60,9 @@ namespace Svr
 			// purge received guaranted messages
 			OnRecvMessage((Net::Connection*)m_pConnection, MessageDataPtr());
 
-			m_pConnection->GetNet()->TakeOverConnection((Net::Connection*)m_pConnection);
+			// This connection will be updated with User entity
+			m_pConnection->SetTickFlags(0);
+			//m_pConnection->GetNet()->TakeOverConnection((Net::Connection*)m_pConnection);
 		}
 
 		return ResultCode::SUCCESS;

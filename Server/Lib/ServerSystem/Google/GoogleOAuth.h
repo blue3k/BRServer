@@ -63,6 +63,8 @@ namespace Google {
 			OAuth();
 			~OAuth();
 
+			IHeap& GetHeap() { return GetSystemMemoryManager(); }
+
 			const char* GetAuthString()                     { return m_ActiveAuthString; }
 
 			Result Initialize(const char* strPKeyFile, const char* strAccount, const char* scopes);

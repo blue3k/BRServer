@@ -31,6 +31,9 @@
 #include "Net/Connection.h"
 #include "Server/BrServerUtil.h"
 #include "SvrConst.h"
+#include "Service/ServerService.h"
+
+
 
 namespace SF {
 	class TimerAction;
@@ -646,7 +649,7 @@ namespace Svr {
 			hr = MessageTransaction<OwnerEntityType, MessageClass>::ParseMessage();
 			svrChk(hr);
 
-			if (!(FindEntity(MessageClass::GetRouteContext().GetTo().GetEntityID(), entity)))
+			if (!(Service::EntityTable->find(MessageClass::GetRouteContext().GetTo().GetEntityID(), entity)))
 			{
 				// Can't find target player entity, maybe logged out?
 				hr = ResultCode::SVR_INVALID_ENTITYUID;

@@ -15,7 +15,9 @@
 #include "BrService.h"
 #include "Util/TimeUtil.h"
 #include "Net/NetUtil.h"
-#include "ServerSystem/ParameterSetting.h"
+#include "Server/ParameterSetting.h"
+#include "Service/ServerService.h"
+
 
 #if LINUX
 #include <signal.h>
@@ -118,10 +120,10 @@ namespace Svr {
 
 
 		// Install Service
-		Result ServiceInstall( const char *strCfgPath, const char *strUser, const char *strPWD )
+		Result ServiceInstall( const char *strUser, const char *strPWD )
 		{
 			Result hr = ResultCode::SUCCESS;
-			unused(strCfgPath, strUser, strPWD);
+			unused(strUser, strPWD);
 			return hr;
 		}
 
@@ -156,7 +158,7 @@ namespace Svr {
 			g_pSvrInstance = pSvrInstance;
 			Assert( BrServer::GetInstance() == pSvrInstance );
 
-			svrChk(StrUtil::Format(strCfgPath, "{0}{1}", Util::GetModulePathA(), ParameterSetting::GetSetting("config", "../../Config/ServerConfig_linux.xml")));
+			StrUtil::Format(strCfgPath, "{0}{1}", Util::GetModulePathA(), ParameterSetting::GetSetting("config", "../../Config/ServerConfig_linux.xml"));
 
 			strServiceName = ParameterSetting::GetSetting("servicename");
 			if( strServiceName != nullptr && strServiceName[0] != '\0' )

@@ -93,14 +93,6 @@ namespace GameServer
 
 		// Query Loopback entity
 		inline Svr::ServerEntity* GetLoopbackGameServerEntity();
-		
-		//////////////////////////////////////////////////////////////////////////
-		//
-		//	virtual network process
-		//
-
-		// Process Public network event
-		virtual Result ProcessPublicNetworkEvent() override;
 
 
 		//////////////////////////////////////////////////////////////////////////

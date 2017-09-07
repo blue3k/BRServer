@@ -40,7 +40,6 @@
     <ClCompile Include="$(MSBuildThisFileDirectory)GameInstance\GamePlayerEntity.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)GameServer.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)GameServerClass.cpp" />
-    <ClCompile Include="$(MSBuildThisFileDirectory)GameServer_NetProc.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)GameSystem\UserFriendSystem.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)GameSystem\UserGamePlayerInfoSystem.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)GameSystem\UserNotifySystem.cpp" />

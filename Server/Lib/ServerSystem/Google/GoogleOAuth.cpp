@@ -45,6 +45,7 @@ namespace Google {
 
 	OAuth::OAuth()
 		: m_privateKey(nullptr)
+		, m_ResultBuffer(GetSystemMemoryManager())
 		, m_AuthStringIndex(0)
 		, m_ActiveAuthString(nullptr)
 		, m_AuthenticatedTime(TimeStampMS::min())
@@ -79,7 +80,7 @@ namespace Google {
 
 		auto sslResult = PKCS12_verify_mac(p12, GoogleDefaultPassword, (int)strlen(GoogleDefaultPassword));
 		if (sslResult == FALSE) // invalid password
-			svrErr(ResultCode::E_INVALID_PASSWORD);
+			svrErr(ResultCode::INVALID_PASSWORD);
 
 		sslResult = PKCS12_parse(p12, GoogleDefaultPassword, &m_privateKey, &cert, &ca);
 		if (sslResult == FALSE)
@@ -111,7 +112,7 @@ namespace Google {
 	{
 		Result hr = ResultCode::SUCCESS;
 
-		StaticArray<uint8_t, 128> digest;
+		StaticArray<uint8_t, 128> digest(GetHeap());
 		int sslResult = TRUE;
 		uint8_t sign_buffer[512];
 		uint sign_len = (uint)countof(sign_buffer);
@@ -154,10 +155,10 @@ namespace Google {
 		// signing
 
 		// SHA256
-		svrChk(Util::SHA256Hash(requestString.GetSize(), requestString.data(), digest));
+		svrChk(Util::SHA256Hash(requestString.size(), requestString.data(), digest));
 
 		// RSA sign
-		sslResult = RSA_sign(NID_sha256, digest.data(), (uint)digest.GetSize(), sign_buffer, &sign_len, pkey);
+		sslResult = RSA_sign(NID_sha256, digest.data(), (uint)digest.size(), sign_buffer, &sign_len, pkey);
 		if (sslResult == FALSE)
 		{
 			svrErr(ResultCode::UNEXPECTED);
@@ -213,7 +214,7 @@ namespace Google {
 		char *ct = nullptr;
 
 		m_ResultBuffer.Clear();
-		svrChk(StrUtil::Format(strPostFields, "{0}{1}", "grant_type=urn:ietf:params:oauth:grant-type:jwt-bearer&assertion=", (const char*)requestString.data()));
+		StrUtil::Format(strPostFields, "{0}{1}", "grant_type=urn:ietf:params:oauth:grant-type:jwt-bearer&assertion=", (const char*)requestString.data());
 
 		svrMem(curl = curl_easy_init());
 
@@ -277,7 +278,7 @@ namespace Google {
 		std::string accessToken;
 		bool parsingSuccessful;
 
-		StaticArray<uint8_t, 2048> requestString;
+		StaticArray<uint8_t, 2048> requestString(GetHeap());
 		Json::Value root;
 		Json::Reader reader;
 
@@ -309,7 +310,7 @@ namespace Google {
 		}
 
 		m_AuthStringIndex++;
-		svrChk(StrUtil::Format(m_AuthString[m_AuthStringIndex % 2], "Authorization: Bearer {0}", accessToken.c_str()));
+		StrUtil::Format(m_AuthString[m_AuthStringIndex % 2], "Authorization: Bearer {0}", accessToken.c_str());
 		m_ActiveAuthString = m_AuthString[m_AuthStringIndex % 2];
 
 		m_AuthenticatedTime = Util::Time.GetTimeMs();
@@ -318,7 +319,7 @@ namespace Google {
 
 		if (!(hr))
 		{
-			svrTrace(Error, "Failed to Authorize google API hr:{0:X8}, account:{1}, {2}", hr, m_Account, m_ResultBuffer.GetSize() > 0 ? (char*)m_ResultBuffer.data() : "null");
+			svrTrace(Error, "Failed to Authorize google API hr:{0:X8}, account:{1}, {2}", hr, m_Account, m_ResultBuffer.size() > 0 ? (char*)m_ResultBuffer.data() : "null");
 		}
 		else
 		{

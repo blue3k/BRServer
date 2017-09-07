@@ -44,6 +44,7 @@ namespace Google {
 
 	AndroidDeveloperAPI::AndroidDeveloperAPI(OAuth* pOAuth)
 		: m_OAuth(pOAuth)
+		, m_ResultBuffer(GetHeap())
 	{
 	}
 
@@ -163,7 +164,7 @@ namespace Google {
 
 		m_ResultBuffer.Clear();
 
-		svrChk(StrUtil::Format(strRequest, urlFormat, packageName, productID, purchaseToken));
+		StrUtil::Format(strRequest, urlFormat, packageName, productID, purchaseToken);
 
 		svrMem(curl = curl_easy_init());
 
@@ -266,7 +267,7 @@ namespace Google {
 			}
 			else
 			{
-				if (m_ResultBuffer.GetSize() > 0)
+				if (m_ResultBuffer.size() > 0)
 				{
 					m_ResultBuffer.push_back('\0');
 					svrTrace(Error, "Invalid purchase status: hr:{0:X8}, {1}, token:{2}, payload:{3}", hr, (const char*)m_ResultBuffer.data(), authChar, m_DeveloperPayload);

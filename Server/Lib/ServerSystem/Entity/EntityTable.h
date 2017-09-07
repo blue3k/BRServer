@@ -49,6 +49,7 @@ namespace Svr {
 
 		typedef HashTable2< uint, SharedPointerT<Entity> > EntityMap;
 
+		const FixedString TypeName = "EntityTable";
 
 	private:
 
@@ -61,6 +62,8 @@ namespace Svr {
 	public:
 
 		EntityTable();
+
+		virtual const FixedString& GetTypeName() override { return TypeName; }
 
 
 		//////////////////////////////////////////////////////////////////////////

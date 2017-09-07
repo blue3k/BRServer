@@ -15,7 +15,6 @@
 #include "Util/TimeUtil.h"
 #include "ServerLog/SvrLog.h"
 #include "Thread/Thread.h"
-#include "Net/NetServerPeer.h"
 #include "Net/NetServerPeerTCP.h"
 #include "SvrConst.h"
 #include "ServerEntity/ServerEntity.h"
@@ -77,9 +76,8 @@ namespace Svr {
 		if (m_ServerID == 0 && pConn->GetRemoteInfo().PeerID != 0)
 			m_ServerID = (ServerID)pConn->GetRemoteInfo().PeerID;
 
-		if(pConn->GetNet() != nullptr)
-			pConn->GetNet()->TakeOverConnection((Net::Connection*)pConn);
-
+		// This connection will be updated with server entity
+		pConn->SetTickFlags(0);
 
 	Proc_End:
 
@@ -94,7 +92,7 @@ namespace Svr {
 		if (pCurConn != nullptr)
 		{
 			pCurConn->SetEventHandler(nullptr);
-			pCurConn->GetNet()->ReleaseConnection(pCurConn);
+			//pCurConn->GetNet()->ReleaseConnection(pCurConn);
 
 			auto localCon = m_pConnLocal;
 			Assert(localCon == nullptr || localCon != pCurConn);

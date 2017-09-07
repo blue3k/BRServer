@@ -36,7 +36,7 @@ namespace Svr {
 
 
 
-	EntityServerStartedTrans::EntityServerStartedTrans(IMemoryManager& memMgr, MessageDataPtr &pIMsg )
+	EntityServerStartedTrans::EntityServerStartedTrans(IHeap& memMgr, MessageDataPtr &pIMsg )
 		:ServerStartedTrans(memMgr, pIMsg)
 	{
 		BR_TRANS_MESSAGE( Message::ClusterServer::GetClusterMemberListRes,	{ return OnGetClusterMemberList(pRes); });

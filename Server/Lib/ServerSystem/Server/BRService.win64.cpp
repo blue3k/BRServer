@@ -19,6 +19,10 @@
 #include "Util/TimeUtil.h"
 #include "Net/NetUtil.h"
 #include "Server/ParameterSetting.h"
+#include "Service/ServerService.h"
+#include "Service/EngineService.h"
+
+
 
 namespace SF {
 namespace Svr {
@@ -97,19 +101,18 @@ namespace Svr {
 
 
 		// Install Service
-		Result ServiceInstall( const char *strCfgPath, const char *strUser, const char *strPWD )
+		Result ServiceInstall( const char *strUser, const char *strPWD )
 		{
-			unused(strCfgPath);
 			Result hr = ResultCode::SUCCESS;
-			const char* strServiceName = Util::GetServiceNameA();
+			const char* strServiceName = Util::GetServiceName();
 
-			SC_HANDLE schSCManager = NULL;
-			SC_HANDLE schService = NULL;
+			SC_HANDLE schSCManager = nullptr;
+			SC_HANDLE schService = nullptr;
 
 			char strPath[MAX_PATH];
 
 
-			if( !GetModuleFileNameA( NULL, strPath, MAX_PATH ) )
+			if( !GetModuleFileNameA(nullptr, strPath, MAX_PATH ) )
 			{
 				int iErr = GetLastError();
 				svrTrace( Error, "GetModuleFileName failed err:{0}", iErr );
@@ -249,7 +252,7 @@ namespace Svr {
 			}
 
 
-			schService = OpenServiceW( schSCManager, Util::GetModuleName(), SERVICE_ALL_ACCESS );
+			schService = OpenServiceA( schSCManager, Util::GetModuleName(), SERVICE_ALL_ACCESS );
 			if( schSCManager == NULL) 
 			{
 				int iErr = GetLastError();
@@ -316,19 +319,15 @@ namespace Svr {
 		{
 			Result hr = ResultCode::SUCCESS;
 			bool bIsDebugRun = false;
-			char strCfgPath[1024];
 			bool bIsInstall = false;
 			const char *strUser = nullptr; const char *strPWD = nullptr;
 			const char *strServiceName = nullptr;
 
-			SetCurrentDirectoryW( Util::GetModulePath() );
-
+			SetCurrentDirectoryA( Util::GetModulePath() );
 
 			g_pSvrInstance = pSvrInstance;
 			Assert( BrServer::GetInstance() == pSvrInstance );
 
-
-			svrChk(StrUtil::Format(strCfgPath, "{0}{1}", Util::GetModulePathA(), ParameterSetting::GetSetting("config", "..\\..\\Config\\ServerConfig.xml")));
 
 			strServiceName = ParameterSetting::GetSetting("servicename");
 			if (strServiceName != nullptr && strServiceName[0] != '\0')
@@ -336,33 +335,26 @@ namespace Svr {
 				Util::SetServiceName(strServiceName);
 			}
 
+
 			bIsInstall = StrUtil::StringCmpLwr(ParameterSetting::GetSetting("install"), -1, "true", -1) == 0;
 			bIsDebugRun = StrUtil::StringCmpLwr(ParameterSetting::GetSetting("debug"), -1, "true", -1) == 0;
 			strUser = ParameterSetting::GetSetting("user");
 			strPWD = ParameterSetting::GetSetting("password");
 
-//			Trace::Initialize();
-
-			Net::RegisterConnectionDebugMessage();
 
 			if( bIsInstall )
 			{
-				svrChk( Service::ServiceInstall( strCfgPath, strUser, strPWD ) );
+				svrChk( Service::ServiceInstall( strUser, strPWD ) );
 				goto Proc_End;
 			}
 
-			if( bIsDebugRun )
-			{
-				Trace::AllocScreenConsole();
-			}
 
 			svrTrace( Info, "Loading configuration" );
 
-			svrChk( Svr::Config::LoadConfig( strCfgPath ) );
 
 
 
-			svrTrace( Info, "<{0}> Start with Mode {1} ", Util::GetServiceNameA(), bIsDebugRun ? "Debug" : "Service" );
+			svrTrace( Info, "<{0}> Start with Mode {1} ", Util::GetServiceName(), bIsDebugRun ? "Debug" : "Service" );
 
 
 			// if not service mode
@@ -467,7 +459,7 @@ namespace Svr {
 
 
 			// Register the handler function for the service.
-			g_SvcStatusHandle = RegisterServiceCtrlHandler( 
+			g_SvcStatusHandle = RegisterServiceCtrlHandlerA( 
 				Util::GetServiceName(), 
 				ServiceCtrlHandler);
 

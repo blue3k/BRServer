@@ -35,8 +35,6 @@ namespace SF {
 		extern ServiceInstance<EntityTableService> EntityTable;
 		//extern ServiceInstance<EngineObjectManagerService> EngineObjectManager;
 		//extern ServiceInstance<GraphicDeviceService> GraphicDevice;
-		//extern ServiceInstance<NetSystemService> NetSystem;
-
 	};
 
 

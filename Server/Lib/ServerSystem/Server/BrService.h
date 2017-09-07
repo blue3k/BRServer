@@ -33,7 +33,7 @@ namespace Svr
 	namespace Service
 	{
 		// Install Service
-		Result ServiceInstall( const char *strCfgPath, const char *strUser, const char *strPWD);
+		Result ServiceInstall( const char *strUser, const char *strPWD);
 
 		// Uninstall service
 		Result ServiceUninstall();

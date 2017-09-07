@@ -17,6 +17,7 @@
 #include "ServerConfig/SFServerConfig.h"
 #include "Server/BrServer.h"
 #include "Server/BrServerUtil.h"
+#include "Server/ParameterSetting.h"
 
 #include "SFEngine.h"
 #include "Component/SFServerConfigComponent.h"
@@ -49,19 +50,30 @@ namespace Svr {
 	// Initialize and deinitialization
 	void InitializeEngineForServer()
 	{
+		//char strCfgPath[1024];
+		auto bIsDebugRun = StrUtil::StringCmpLwr(ParameterSetting::GetSetting("debug"), -1, "true", -1) == 0;
+		auto zkaddress = ParameterSetting::GetSetting("zkaddress", "127.0.0.1:2181");
+		auto zkconfig = ParameterSetting::GetSetting("zkconfig", "/ServerConfig");
 		SF::EngineInitParam initParam;
+
+		//StrUtil::Format(strCfgPath, "{0}{1}", Util::GetModulePath(), ParameterSetting::GetSetting("config", "..\\..\\Config\\ServerConfig.xml"));
+
 
 		initParam.LogFilePrefix = Util::GetServiceName();
 		initParam.LogOutputFile = LogChannelMask();
 		initParam.AsyncTaskThreadCount = 6;
 		initParam.NetworkThreadCount = 4;
 
+		if (!bIsDebugRun)
+			initParam.LogOutputConsole = { 0, };
+
+
 		auto pEngine = SF::Engine::Start(initParam);
 		if (pEngine == nullptr)
 			return;
 
-		pEngine->AddComponent<ZooKeeperSessionComponent>("127.0.0.1:2181");
-		pEngine->AddComponent<ServerConfigComponent>("/ServerConfig");
+		pEngine->AddComponent<ZooKeeperSessionComponent>(zkaddress);
+		pEngine->AddComponent<ServerConfigComponent>(zkconfig);
 		pEngine->AddComponent<ConnectionManagerComponent>(2048);
 		pEngine->AddComponent<EntityTable>();
 	}

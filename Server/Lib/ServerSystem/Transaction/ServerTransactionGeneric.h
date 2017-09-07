@@ -41,7 +41,7 @@ namespace Svr {
 		typedef MessageTransaction< ServerEntityType, MessageType> super;
 
 	public:
-		ServerStartedTrans( IMemoryManager& memMgr, MessageDataPtr &pIMsg ) : super( memMgr, pIMsg )
+		ServerStartedTrans( IHeap& memMgr, MessageDataPtr &pIMsg ) : super( memMgr, pIMsg )
 		{
 		}
 
@@ -96,7 +96,7 @@ namespace Svr {
 	private:
 
 	public:
-		GenericServerStartedTrans(IMemoryManager& memMgr, MessageDataPtr &pIMsg )
+		GenericServerStartedTrans(IHeap& memMgr, MessageDataPtr &pIMsg )
 			: ServerStartedTrans< Svr::ServerEntity, Message::Server::ServerConnectedC2SEvt>(memMgr, pIMsg)
 		{}
 		virtual ~GenericServerStartedTrans() {}
@@ -113,7 +113,7 @@ namespace Svr {
 	private:
 
 	public:
-		EntityServerStartedTrans(IMemoryManager& memMgr, MessageDataPtr &pIMsg );
+		EntityServerStartedTrans(IHeap& memMgr, MessageDataPtr &pIMsg );
 		virtual ~EntityServerStartedTrans();
 
 		Result OnGetClusterMemberList(Svr::TransactionResult* pRes);
