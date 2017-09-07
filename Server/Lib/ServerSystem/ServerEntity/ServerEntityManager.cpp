@@ -25,8 +25,9 @@
 #include "Entity/EntityTable.h"
 #include "SvrTrace.h"
 #include "SvrConst.h"
-#include "Net/NetServerPeer.h"
+#include "Net/NetServerPeerTCP.h"
 #include "ServiceEntity/ClusteredServiceEntity.h"
+#include "Service/ServerService.h"
 
 
 
@@ -44,6 +45,7 @@ namespace Svr
 	ServerEntityManager::ServerEntityManager()
 		:IServerComponent(ServerComponentID_ServerEntityManager)
 		, m_MemoryManager("ServerEntityManager", GetSystemMemoryManager())
+		, m_ServerIDMap(GetHeap())
 	{
 	}
 
@@ -157,7 +159,7 @@ namespace Svr
 		if( pPrevNode->Key != 0 && pPrevListNode->pServerEntity == pServerEntity )
 			return ResultCode::SUCCESS_FALSE;
 
-		svrMem( pNewListNode = new(GetMemoryManager()) ServerUpTimeListNodeItem );
+		svrMem( pNewListNode = new(GetHeap()) ServerUpTimeListNodeItem );
 		memset( pNewListNode, 0, sizeof(ServerUpTimeListNodeItem) );
 
 		pNewListNode->pServerEntity = pServerEntity;
@@ -178,7 +180,6 @@ namespace Svr
 	Result ServerEntityManager::AddServerEntity(NetClass netClass, ServerEntity* pServerEntity)
 	{
 		Result hr = ResultCode::SUCCESS, res;
-		auto& entityTable = GetEntityTable();
 		svrChkPtr( pServerEntity );
 
 		if (netClass < NetClass::Unknown
@@ -187,12 +188,12 @@ namespace Svr
 			return ResultCode::INVALID_ARG;
 		}
 
-		svrChk( pServerEntity->InitializeEntity(entityTable.GenEntityID(EntityFaculty::Server) ) );
+		svrChk( pServerEntity->InitializeEntity(Service::EntityTable->GenEntityID(EntityFaculty::Server) ) );
 
 		// Add to task list
 		svrChk( AddTickTask( pServerEntity ) );
 
-		svrChk(entityTable.Insert(pServerEntity));
+		svrChk(Service::EntityTable->insert(pServerEntity));
 
 		svrChk(m_ServerIDMap.Insert(pServerEntity->GetServerID(), pServerEntity));
 

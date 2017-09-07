@@ -75,7 +75,7 @@ namespace Svr
 		ServerEntityManager();
 		virtual ~ServerEntityManager();
 
-		IMemoryManager& GetMemoryManager() { return m_MemoryManager; }
+		IMemoryManager& GetHeap() { return m_MemoryManager; }
 
 		// Register server
 		template<class ServerEntityType>

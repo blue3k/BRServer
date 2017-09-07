@@ -53,7 +53,7 @@ namespace Svr {
 		{
 		public:
 			// Hash table mapping Item
-			typedef DoubleLinkedList<uint64_t>::Node TableItemType;
+			typedef OrderedLinkedList<uint64_t>::Node TableItemType;
 			TableItemType m_TableNode;
 
 			// For a Ordered list
@@ -156,7 +156,7 @@ namespace Svr {
 		bool GetIsInVoting() { return m_IsInVoting; }
 
 		bool GetInitialized() { return m_Initialized; }
-
+		void SetInitialized(bool value) { m_Initialized = value; }
 
 		//////////////////////////////////////////////////////////////////////////
 		//

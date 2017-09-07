@@ -699,7 +699,7 @@ namespace Svr {
 	{
 		Result hr = ResultCode::SUCCESS;
 		ServiceTableItem *pTblItem = nullptr;
-		Indexing::MapItemConverter<ServiceTableItem,TableItemType,&ServiceTableItem::m_ListNode> converter;
+		MapItemConverter<ServiceTableItem,TableItemType,&ServiceTableItem::m_ListNode> converter;
 
 		pTblItem = (ServiceTableItem*)pService;
 
@@ -734,7 +734,7 @@ namespace Svr {
 	{
 		Result hr = ResultCode::SUCCESS;
 		ServiceTableItem *pTblItem = nullptr;
-		Indexing::MapItemConverter<ServiceTableItem,TableItemType,&ServiceTableItem::m_ListNode> converter;
+		MapItemConverter<ServiceTableItem,TableItemType,&ServiceTableItem::m_ListNode> converter;
 
 		if( m_pCurrentQueryService == nullptr )
 		{
@@ -831,7 +831,7 @@ namespace Svr {
 		Result hr = ResultCode::SUCCESS;
 		uint hashedKey = KeyHash(key);
 		INT serviceIndex = -1;
-		StaticArray<ServerServiceInformation*,50> services;
+		StaticArray<ServerServiceInformation*,50> services(GetHeap());
 
 		svrChkPtr( pService );
 
@@ -930,7 +930,7 @@ namespace Svr {
 	{
 		Result hr = ResultCode::SUCCESS;
 		ServiceTableItem *pTblItem = nullptr;
-		Indexing::MapItemConverter<ServiceTableItem,TableItemType,&ServiceTableItem::m_ListNode> converter;
+		MapItemConverter<ServiceTableItem,TableItemType,&ServiceTableItem::m_ListNode> converter;
 
 		pService = nullptr;
 

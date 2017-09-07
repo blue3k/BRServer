@@ -92,7 +92,7 @@ namespace Svr {
 	public:
 		typedef MessageHandler_TableItem<MessageHandlerType> TableItem;
 		typedef StaticHashTable<	uint, TableItem,
-										//Indexing::ConstMemFunc<TableItem,uint,&TableItem::GetMessageCode>,
+										//ConstMemFunc<TableItem,uint,&TableItem::GetMessageCode>,
 										MapItemConverter<TableItem,typename TableItem::TableItemType,&TableItem::TableNode>,
 										NonUniqueKeyTrait, ThreadSyncTraitNone
 										> HandlerTableType;

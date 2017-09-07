@@ -24,6 +24,7 @@
 #include "Entity/EntityManager.h"
 #include "Entity/EntityTable.h"
 #include "Server/BrServerUtil.h"
+#include "Service/ServerService.h"
 
 
 namespace SF {
@@ -83,9 +84,8 @@ namespace Svr
 
 				if (pTransaction->GetParentTransID() != 0)
 				{
-					auto& entityTable = GetEntityTable();
 					TransactionResult* pRes = pTransaction;
-					if ((entityTable.RouteTransactionResult(pRes)))
+					if ((Service::EntityTable->RouteTransactionResult(pRes)))
 					{
 						pTransaction = nullptr;
 					}

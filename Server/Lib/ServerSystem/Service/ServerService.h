@@ -15,6 +15,7 @@
 #include "Service/Service.h"
 #include "Service/EngineService.h"
 #include "ServerConfig/SFServerConfig.h"
+#include "Service/EntityTableService.h"
 
 
 
@@ -31,7 +32,7 @@ namespace SF {
 	namespace Service
 	{
 		extern ServiceInstance<SF::ServerConfig> ServerConfig;
-		//extern ServiceInstance<EngineTaskService> EngineTaskManager;
+		extern ServiceInstance<EntityTableService> EntityTable;
 		//extern ServiceInstance<EngineObjectManagerService> EngineObjectManager;
 		//extern ServiceInstance<GraphicDeviceService> GraphicDevice;
 		//extern ServiceInstance<NetSystemService> NetSystem;

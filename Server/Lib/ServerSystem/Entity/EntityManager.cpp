@@ -24,6 +24,7 @@
 #include "PerformanceCounter/PerformanceCounterClient.h"
 #include "ServiceEntity/Login/LoginPlayerEntity.h"
 #include "ServiceEntity/Game/GamePlayerEntity.h"
+#include "Service/ServerService.h"
 
 
 namespace SF {
@@ -72,8 +73,8 @@ namespace Svr {
 	Result EntityManager::AddEntity( EntityFaculty faculty, Svr::Entity* pEntity )
 	{
 		Result hr = ResultCode::SUCCESS;
-		auto& entityTable = GetEntityTable();
-		svrChk( pEntity->InitializeEntity(entityTable.GenEntityID(faculty) ) );
+
+		svrChk( pEntity->InitializeEntity(Service::EntityTable->GenEntityID(faculty) ) );
 
 		// Disable ServiceMessage handler
 		//if( faculty == EntityFaculty::Service )
@@ -88,7 +89,7 @@ namespace Svr {
 
 		svrChk( AddTickTask( pEntity ) );
 
-		svrChk(entityTable.Insert(pEntity));
+		svrChk(Service::EntityTable->insert(pEntity));
 
 		OnEntityAdded(pEntity);
 
@@ -101,9 +102,8 @@ namespace Svr {
 	Result EntityManager::AddEntity( EntityID entityID, Svr::Entity* pEntity )
 	{
 		Result hr = ResultCode::SUCCESS;
-		auto& entityTable = GetEntityTable();
 
-		svrChk(entityTable.ReserveEntityID( entityID ) );
+		svrChk(Service::EntityTable->ReserveEntityID( entityID ) );
 
 		svrChk( pEntity->InitializeEntity( entityID ) );
 
@@ -117,7 +117,7 @@ namespace Svr {
 
 		svrChk( AddTickTask( pEntity ) );
 
-		svrChk(entityTable.Insert(pEntity));
+		svrChk(Service::EntityTable->insert(pEntity));
 
 		OnEntityAdded(pEntity);
 
@@ -139,18 +139,16 @@ namespace Svr {
 
 	Result EntityManager::FindEntity(EntityID entityID, SharedPointerT<Entity> &pEntity)
 	{
-		auto& entityTable = GetEntityTable();
-		return entityTable.Find( entityID, pEntity );
+		return Service::EntityTable->find( entityID, pEntity );
 	}
 
 	// add entity to table
 	Result EntityManager::RemoveEntity(EntityID entityID)
 	{
 		Result hr = ResultCode::SUCCESS;
-		auto& entityTable = GetEntityTable();
 
 		SharedPointerT<Entity> pEntity;
-		hr = entityTable.Erase(entityID, pEntity);
+		hr = Service::EntityTable->erase(entityID, pEntity);
 		if (!(hr))
 		{
 			hr = ResultCode::SUCCESS_FALSE;
@@ -189,13 +187,13 @@ namespace Svr {
 
 		//SharedPointerT<Entity> pRemoved;
 
-		//hr = GetEntityTable().Erase(pEntity->GetEntityID(), pRemoved);
+		//hr = Service::EntityTable->Erase(pEntity->GetEntityID(), pRemoved);
 		//if (!(hr))
 		//{
 		//	hr = ResultCode::SUCCESS_FALSE;
 		//	goto Proc_End;
 		//}
-		////svrChk(GetEntityTable().Erase(pEntity->GetEntityID(), pRemoved));
+		////svrChk(Service::EntityTable->Erase(pEntity->GetEntityID(), pRemoved));
 
 		//pEntity->SetEntityState( EntityState::CLOSING );
 
@@ -251,7 +249,7 @@ namespace Svr {
 
 		//if (m_PerformanceCounterInstance != nullptr)
 		//{
-		//	//GetEntityTable().FreeEntityID(m_PerformanceCounterInstance->GetInstanceEntityUID());
+		//	//Service::EntityTable->FreeEntityID(m_PerformanceCounterInstance->GetInstanceEntityUID());
 		//	m_PerformanceCounterInstance = SharedPointerT < PerformanceCounterInstance >();
 		//}
 

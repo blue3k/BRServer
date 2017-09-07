@@ -116,6 +116,7 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)ServiceEntity\RankingServiceEntity.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)ServiceEntity\RankingServiceTrans.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)ServiceEntity\ServiceEntity.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)Service\EntityTableService.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Service\ServerService.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)stdafx.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)String\SvrToString.h" />

@@ -339,9 +339,6 @@
       <Filter>ServerEntity</Filter>
     </ClInclude>
     <ClInclude Include="$(MSBuildThisFileDirectory)SvrTrace.h" />
-    <ClInclude Include="$(MSBuildThisFileDirectory)Component\SFServerConfigComponent.h" />
-    <ClInclude Include="$(MSBuildThisFileDirectory)Component\SFZooKeeperSessionComponent.h" />
-    <ClInclude Include="$(MSBuildThisFileDirectory)Service\ServerService.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Transaction\ParallelTransaction.h">
       <Filter>Transaction</Filter>
     </ClInclude>
@@ -350,6 +347,18 @@
     </ClInclude>
     <ClInclude Include="$(MSBuildThisFileDirectory)Transaction\ExternalTransaction.h">
       <Filter>Transaction</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)Component\SFServerConfigComponent.h">
+      <Filter>Component</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)Component\SFZooKeeperSessionComponent.h">
+      <Filter>Component</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)Service\ServerService.h">
+      <Filter>Service</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)Service\EntityTableService.h">
+      <Filter>Service</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -648,9 +657,6 @@
     <ClCompile Include="$(MSBuildThisFileDirectory)ServerEntity\SvrLoopbackConnection.cpp">
       <Filter>ServerEntity</Filter>
     </ClCompile>
-    <ClCompile Include="$(MSBuildThisFileDirectory)Component\SFServerConfigComponent.cpp" />
-    <ClCompile Include="$(MSBuildThisFileDirectory)Component\SFZooKeeperSessionComponent.cpp" />
-    <ClCompile Include="$(MSBuildThisFileDirectory)Service\ServerService.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)Transaction\ParallelTransaction.cpp">
       <Filter>Transaction</Filter>
     </ClCompile>
@@ -659,6 +665,15 @@
     </ClCompile>
     <ClCompile Include="$(MSBuildThisFileDirectory)Transaction\ExternalTransactionManager.cpp">
       <Filter>Transaction</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)Component\SFServerConfigComponent.cpp">
+      <Filter>Component</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)Component\SFZooKeeperSessionComponent.cpp">
+      <Filter>Component</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)Service\ServerService.cpp">
+      <Filter>Service</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

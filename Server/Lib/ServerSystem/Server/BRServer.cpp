@@ -35,6 +35,7 @@
 #include "Service/ServerService.h"
 
 #include "Transaction/ExternalTransactionManager.h"
+#include "Service/ServerService.h"
 
 
 namespace SF{
@@ -477,8 +478,6 @@ Proc_End:
 		{
 			svrTrace( Error, "Failed Close Private Network, hr={0:X8}", hr );
 		}
-
-		GetEntityTable().Clear();
 
 		// clear components
 		m_Components.ClearComponents();

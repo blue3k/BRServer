@@ -48,22 +48,22 @@ namespace Svr {
 		// only entity has some special operations
 		if (BrServer::GetInstance()->GetNetClass() == NetClass::Entity)
 		{
-			BR_ENTITY_MESSAGE(Message::ClusterServer::GetClusterMemberListCmd) { svrMemReturn(pNewTrans = new(GetMemoryManager()) ClusterGetMemberListTrans(pMsgData)); return ResultCode::SUCCESS; } );
-			BR_ENTITY_MESSAGE(Message::ClusterServer::JoinClusterCmd) { svrMemReturn(pNewTrans = new(GetMemoryManager()) JoinClusterTransForEntityServer(pMsgData)); return ResultCode::SUCCESS; } );
-			BR_ENTITY_MESSAGE(Message::ClusterServer::GetLowestWorkloadClusterMemberCmd) { svrMemReturn(pNewTrans = new(GetMemoryManager()) GetLowestWorkloadClusterMemberTrans(pMsgData)); return ResultCode::SUCCESS; } );
-			BR_ENTITY_MESSAGE(Message::ClusterServer::NewServerServiceJoinedC2SEvt) { svrMemReturn(pNewTrans = new(GetMemoryManager()) ClusterNewServerServiceJoinedC2SEvtEntityTrans(pMsgData)); return ResultCode::SUCCESS; } );
+			BR_ENTITY_MESSAGE(Message::ClusterServer::GetClusterMemberListCmd)				{ svrMemReturn(pNewTrans = new(GetHeap()) ClusterGetMemberListTrans(GetHeap(), pMsgData)); return ResultCode::SUCCESS; } );
+			BR_ENTITY_MESSAGE(Message::ClusterServer::JoinClusterCmd)						{ svrMemReturn(pNewTrans = new(GetHeap()) JoinClusterTransForEntityServer(GetHeap(), pMsgData)); return ResultCode::SUCCESS; } );
+			BR_ENTITY_MESSAGE(Message::ClusterServer::GetLowestWorkloadClusterMemberCmd)	{ svrMemReturn(pNewTrans = new(GetHeap()) GetLowestWorkloadClusterMemberTrans(GetHeap(), pMsgData)); return ResultCode::SUCCESS; } );
+			BR_ENTITY_MESSAGE(Message::ClusterServer::NewServerServiceJoinedC2SEvt)			{ svrMemReturn(pNewTrans = new(GetHeap()) ClusterNewServerServiceJoinedC2SEvtEntityTrans(GetHeap(), pMsgData)); return ResultCode::SUCCESS; } );
 		}
 		else
 		{
-			BR_ENTITY_MESSAGE(Message::ClusterServer::JoinClusterCmd) { svrMemReturn(pNewTrans = new(GetMemoryManager()) JoinClusterTrans(pMsgData)); return ResultCode::SUCCESS; } );
-			BR_ENTITY_MESSAGE(Message::ClusterServer::NewServerServiceJoinedC2SEvt) { svrMemReturn(pNewTrans = new(GetMemoryManager()) ClusterNewServerServiceJoinedC2SEvtTrans(pMsgData)); return ResultCode::SUCCESS; } );
+			BR_ENTITY_MESSAGE(Message::ClusterServer::JoinClusterCmd)						{ svrMemReturn(pNewTrans = new(GetHeap()) JoinClusterTrans(GetHeap(), pMsgData)); return ResultCode::SUCCESS; } );
+			BR_ENTITY_MESSAGE(Message::ClusterServer::NewServerServiceJoinedC2SEvt)			{ svrMemReturn(pNewTrans = new(GetHeap()) ClusterNewServerServiceJoinedC2SEvtTrans(GetHeap(), pMsgData)); return ResultCode::SUCCESS; } );
 		}
-		BR_ENTITY_MESSAGE(Message::ClusterServer::SyncClusterServiceC2SEvt) { svrMemReturn(pNewTrans = new(GetMemoryManager()) SyncClusterServiceTrans(pMsgData)); return ResultCode::SUCCESS; } );
-		BR_ENTITY_MESSAGE(Message::ClusterServer::ClusterMasterAssignedS2CEvt) { svrMemReturn(pNewTrans = new(GetMemoryManager()) ClusterMasterAssignedTrans(pMsgData)); return ResultCode::SUCCESS; } );
-		BR_ENTITY_MESSAGE(Message::ClusterServer::ClusterMasterVoteC2SEvt) { svrMemReturn(pNewTrans = new(GetMemoryManager()) ClusterMasterVoteTrans(pMsgData)); return ResultCode::SUCCESS; } );
-		BR_ENTITY_MESSAGE(Message::ClusterServer::RequestDataSyncCmd) { svrMemReturn(pNewTrans = new(GetMemoryManager()) RequestDataSyncTrans(pMsgData)); return ResultCode::SUCCESS; } );
-		BR_ENTITY_MESSAGE(Message::ClusterServer::ClusterUpdateStatusC2SEvt) { svrMemReturn(pNewTrans = new(GetMemoryManager()) ClusterUpdateStatusTrans(pMsgData)); return ResultCode::SUCCESS; } );
-		BR_ENTITY_MESSAGE(Message::ClusterServer::ClusterUpdateWorkloadC2SEvt) { svrMemReturn(pNewTrans = new(GetMemoryManager()) ClusterUpdateWorkloadTrans(pMsgData)); return ResultCode::SUCCESS; } );
+		BR_ENTITY_MESSAGE(Message::ClusterServer::SyncClusterServiceC2SEvt)					{ svrMemReturn(pNewTrans = new(GetHeap()) SyncClusterServiceTrans(GetHeap(), pMsgData)); return ResultCode::SUCCESS; } );
+		BR_ENTITY_MESSAGE(Message::ClusterServer::ClusterMasterAssignedS2CEvt)				{ svrMemReturn(pNewTrans = new(GetHeap()) ClusterMasterAssignedTrans(GetHeap(), pMsgData)); return ResultCode::SUCCESS; } );
+		BR_ENTITY_MESSAGE(Message::ClusterServer::ClusterMasterVoteC2SEvt)					{ svrMemReturn(pNewTrans = new(GetHeap()) ClusterMasterVoteTrans(GetHeap(), pMsgData)); return ResultCode::SUCCESS; } );
+		BR_ENTITY_MESSAGE(Message::ClusterServer::RequestDataSyncCmd)						{ svrMemReturn(pNewTrans = new(GetHeap()) RequestDataSyncTrans(GetHeap(), pMsgData)); return ResultCode::SUCCESS; } );
+		BR_ENTITY_MESSAGE(Message::ClusterServer::ClusterUpdateStatusC2SEvt)				{ svrMemReturn(pNewTrans = new(GetHeap()) ClusterUpdateStatusTrans(GetHeap(), pMsgData)); return ResultCode::SUCCESS; } );
+		BR_ENTITY_MESSAGE(Message::ClusterServer::ClusterUpdateWorkloadC2SEvt)				{ svrMemReturn(pNewTrans = new(GetHeap()) ClusterUpdateWorkloadTrans(GetHeap(), pMsgData)); return ResultCode::SUCCESS; } );
 	}
 	
 	ClusterManagerServiceEntity::~ClusterManagerServiceEntity()
@@ -148,7 +148,7 @@ namespace Svr {
 		if( ( GetServerComponent<EntityManager>()->FindEntity( entityID, pEntity ) ) )
 		{
 			// same entity already registered, just check integrity
-			ClusteredServiceEntity* pClusterEntity = BR_DYNAMIC_CAST(ClusteredServiceEntity*,(Entity*)pEntity);
+			ClusteredServiceEntity* pClusterEntity = dynamic_cast<ClusteredServiceEntity*>((Entity*)pEntity);
 			unused(pClusterEntity);
 			Assert(pClusterEntity != nullptr);
 			Assert( pClusterEntity->GetClusterID() == clusterID && pClusterEntity->GetClusterType() == clusterType );
@@ -162,7 +162,7 @@ namespace Svr {
 		case ClusterType::FreeReplication:
 		case ClusterType::Ring:
 		case ClusterType::Shard:
-			svrMem( pServiceEntity = new(GetMemoryManager()) WatcherClusteredServiceEntity( clusterType, clusterID, ClusterMembership::StatusWatcher ) );
+			svrMem( pServiceEntity = new(GetHeap()) WatcherClusteredServiceEntity( clusterType, clusterID, ClusterMembership::StatusWatcher ) );
 			break;
 		default:
 			svrErr(ResultCode::SVR_INVALID_CLUSTERTYPE);
@@ -189,7 +189,7 @@ namespace Svr {
 	{
 		Result hr = ResultCode::SUCCESS;
 		ClusterIDMap::iterator itCur;
-		StaticArray<ServiceInformation,100> memberList;
+		StaticArray<ServiceInformation,100> memberList(GetHeap());
 		ServerServiceInformation *pTargetServiceInfo = nullptr;
 		ClusterServerService *pTargetService = nullptr;
 
@@ -228,22 +228,22 @@ namespace Svr {
 		// only entity has some special operations
 		if( BrServer::GetInstance()->GetNetClass() == NetClass::Entity )
 		{
-			pServerEntity->BR_ENTITY_MESSAGE(Message::ClusterServer::GetClusterMemberListCmd)				{ svrMemReturn(pNewTrans = new(GetMemoryManager()) ClusterGetMemberListTrans(pMsgData)); return ResultCode::SUCCESS; } );
-			pServerEntity->BR_ENTITY_MESSAGE(Message::ClusterServer::JoinClusterCmd)						{ svrMemReturn(pNewTrans = new(GetMemoryManager()) JoinClusterTransForEntityServer(pMsgData)); return ResultCode::SUCCESS; } );
-			pServerEntity->BR_ENTITY_MESSAGE(Message::ClusterServer::GetLowestWorkloadClusterMemberCmd)		{ svrMemReturn(pNewTrans = new(GetMemoryManager()) GetLowestWorkloadClusterMemberTrans(pMsgData)); return ResultCode::SUCCESS; } );
-			pServerEntity->BR_ENTITY_MESSAGE(Message::ClusterServer::NewServerServiceJoinedC2SEvt)			{ svrMemReturn(pNewTrans = new(GetMemoryManager()) ClusterNewServerServiceJoinedC2SEvtEntityTrans(pMsgData)); return ResultCode::SUCCESS; } );
+			pServerEntity->BR_ENTITY_MESSAGE(Message::ClusterServer::GetClusterMemberListCmd)				{ svrMemReturn(pNewTrans = new(GetHeap()) ClusterGetMemberListTrans(GetHeap(), pMsgData)); return ResultCode::SUCCESS; } );
+			pServerEntity->BR_ENTITY_MESSAGE(Message::ClusterServer::JoinClusterCmd)						{ svrMemReturn(pNewTrans = new(GetHeap()) JoinClusterTransForEntityServer(GetHeap(), pMsgData)); return ResultCode::SUCCESS; } );
+			pServerEntity->BR_ENTITY_MESSAGE(Message::ClusterServer::GetLowestWorkloadClusterMemberCmd)		{ svrMemReturn(pNewTrans = new(GetHeap()) GetLowestWorkloadClusterMemberTrans(GetHeap(), pMsgData)); return ResultCode::SUCCESS; } );
+			pServerEntity->BR_ENTITY_MESSAGE(Message::ClusterServer::NewServerServiceJoinedC2SEvt)			{ svrMemReturn(pNewTrans = new(GetHeap()) ClusterNewServerServiceJoinedC2SEvtEntityTrans(GetHeap(), pMsgData)); return ResultCode::SUCCESS; } );
 		}
 		else
 		{
-			pServerEntity->BR_ENTITY_MESSAGE(Message::ClusterServer::JoinClusterCmd)						{ svrMemReturn(pNewTrans = new(GetMemoryManager()) JoinClusterTrans(pMsgData)); return ResultCode::SUCCESS; } );
-			pServerEntity->BR_ENTITY_MESSAGE(Message::ClusterServer::NewServerServiceJoinedC2SEvt)			{ svrMemReturn(pNewTrans = new(GetMemoryManager()) ClusterNewServerServiceJoinedC2SEvtTrans(pMsgData)); return ResultCode::SUCCESS; } );
+			pServerEntity->BR_ENTITY_MESSAGE(Message::ClusterServer::JoinClusterCmd)						{ svrMemReturn(pNewTrans = new(GetHeap()) JoinClusterTrans(GetHeap(), pMsgData)); return ResultCode::SUCCESS; } );
+			pServerEntity->BR_ENTITY_MESSAGE(Message::ClusterServer::NewServerServiceJoinedC2SEvt)			{ svrMemReturn(pNewTrans = new(GetHeap()) ClusterNewServerServiceJoinedC2SEvtTrans(GetHeap(), pMsgData)); return ResultCode::SUCCESS; } );
 		}
-		pServerEntity->BR_ENTITY_MESSAGE(Message::ClusterServer::SyncClusterServiceC2SEvt)				{ svrMemReturn(pNewTrans = new(GetMemoryManager()) SyncClusterServiceTrans(pMsgData)); return ResultCode::SUCCESS; } );
-		pServerEntity->BR_ENTITY_MESSAGE(Message::ClusterServer::ClusterMasterAssignedS2CEvt)			{ svrMemReturn(pNewTrans = new(GetMemoryManager()) ClusterMasterAssignedTrans(pMsgData)); return ResultCode::SUCCESS; } );
-		pServerEntity->BR_ENTITY_MESSAGE(Message::ClusterServer::ClusterMasterVoteC2SEvt)				{ svrMemReturn(pNewTrans = new(GetMemoryManager()) ClusterMasterVoteTrans(pMsgData)); return ResultCode::SUCCESS; } );
-		pServerEntity->BR_ENTITY_MESSAGE(Message::ClusterServer::RequestDataSyncCmd)					{ svrMemReturn(pNewTrans = new(GetMemoryManager()) RequestDataSyncTrans(pMsgData)); return ResultCode::SUCCESS; } );
-		pServerEntity->BR_ENTITY_MESSAGE(Message::ClusterServer::ClusterUpdateStatusC2SEvt)				{ svrMemReturn(pNewTrans = new(GetMemoryManager()) ClusterUpdateStatusTrans(pMsgData)); return ResultCode::SUCCESS; } );
-		pServerEntity->BR_ENTITY_MESSAGE(Message::ClusterServer::ClusterUpdateWorkloadC2SEvt)			{ svrMemReturn(pNewTrans = new(GetMemoryManager()) ClusterUpdateWorkloadTrans(pMsgData)); return ResultCode::SUCCESS; } );
+		pServerEntity->BR_ENTITY_MESSAGE(Message::ClusterServer::SyncClusterServiceC2SEvt)					{ svrMemReturn(pNewTrans = new(GetHeap()) SyncClusterServiceTrans(GetHeap(), pMsgData)); return ResultCode::SUCCESS; } );
+		pServerEntity->BR_ENTITY_MESSAGE(Message::ClusterServer::ClusterMasterAssignedS2CEvt)				{ svrMemReturn(pNewTrans = new(GetHeap()) ClusterMasterAssignedTrans(GetHeap(), pMsgData)); return ResultCode::SUCCESS; } );
+		pServerEntity->BR_ENTITY_MESSAGE(Message::ClusterServer::ClusterMasterVoteC2SEvt)					{ svrMemReturn(pNewTrans = new(GetHeap()) ClusterMasterVoteTrans(GetHeap(), pMsgData)); return ResultCode::SUCCESS; } );
+		pServerEntity->BR_ENTITY_MESSAGE(Message::ClusterServer::RequestDataSyncCmd)						{ svrMemReturn(pNewTrans = new(GetHeap()) RequestDataSyncTrans(GetHeap(), pMsgData)); return ResultCode::SUCCESS; } );
+		pServerEntity->BR_ENTITY_MESSAGE(Message::ClusterServer::ClusterUpdateStatusC2SEvt)					{ svrMemReturn(pNewTrans = new(GetHeap()) ClusterUpdateStatusTrans(GetHeap(), pMsgData)); return ResultCode::SUCCESS; } );
+		pServerEntity->BR_ENTITY_MESSAGE(Message::ClusterServer::ClusterUpdateWorkloadC2SEvt)				{ svrMemReturn(pNewTrans = new(GetHeap()) ClusterUpdateWorkloadTrans(GetHeap(), pMsgData)); return ResultCode::SUCCESS; } );
 
 		return ResultCode::SUCCESS;
 	}

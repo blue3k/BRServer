@@ -26,6 +26,7 @@
 #include "ServerSystem/ServiceEntity/Game/GameInstanceManagerServiceTrans.h"
 #include "SvrTrace.h"
 #include "SvrConst.h"
+#include "Service/ServerService.h"
 
 #include "Protocol/Message/GameInstanceManagerMsgClass.h"
 #include "PerformanceCounter/PerformanceCounterClient.h"
@@ -62,7 +63,7 @@ namespace Svr {
 
 		svrChk(LoadbalanceClusterServiceEntity::InitializeEntity(newEntityID));
 
-		//entityUID = EntityUID(GetMyServerID(), GetEntityTable().GenEntityID(EntityFaculty::Service));
+		//entityUID = EntityUID(GetMyServerID(), Service::EntityTable->GenEntityID(EntityFaculty::Service));
 		pInstance = PerformanceCounterClient::GetDefaultCounterInstance();
 		if (pInstance != nullptr)
 		{

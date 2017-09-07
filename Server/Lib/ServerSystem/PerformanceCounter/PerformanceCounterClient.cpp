@@ -18,6 +18,7 @@
 #include "Entity/EntityManager.h"
 #include "Protocol/Message/MonitoringMsgClass.h"
 #include "PerformanceCounter/PerformanceCounterClient.h"
+#include "Service/ServerService.h"
 
 
 
@@ -303,14 +304,12 @@ namespace Svr {
 
 	PerformanceCounterInstance* PerformanceCounterClient::GetDefaultCounterInstance()
 	{
-		auto& entityTable = GetEntityTable();
-
 		if (stm_pInstance == nullptr)
 			return nullptr;
 
 		if (stm_pInstance->m_DefaultCounter == nullptr)
 		{
-			auto entityUID = EntityUID(stm_pInstance->m_ServerID, entityTable.GenEntityID(EntityFaculty::Service));
+			auto entityUID = EntityUID(stm_pInstance->m_ServerID, Service::EntityTable->GenEntityID(EntityFaculty::Service));
 			stm_pInstance->m_DefaultCounter = SharedPointerT<PerformanceCounterInstance>(new(GetSystemMemoryManager()) PerformanceCounterInstance(Util::GetServiceName(), entityUID));
 			stm_pInstance->m_DefaultCounter->RegisterToClient();
 		}

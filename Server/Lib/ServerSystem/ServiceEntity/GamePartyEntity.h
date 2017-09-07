@@ -76,7 +76,7 @@ namespace Svr {
 	public:
 
 		typedef StaticHashTable<	PlayerID, PartyPlayer,
-										//Indexing::ConstMemFunc<PlayerEntityInformation,PlayerID,&PlayerEntityInformation::GetPlayerID>,
+										//ConstMemFunc<PlayerEntityInformation,PlayerID,&PlayerEntityInformation::GetPlayerID>,
 										MapItemConverter<PartyPlayer,typename PartyPlayer::TableItemType,&PartyPlayer::TableNode>,
 										NonUniqueKeyTrait, ThreadSyncTraitNone
 										> 

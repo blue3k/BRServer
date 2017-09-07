@@ -29,7 +29,7 @@
 #include "Server/BrServerUtil.h"
 #include "Entity/EntityTable.h"
 #include "Net/Message.h"
-
+#include "Service/ServerService.h"
 #include "Protocol/Policy/ServerNetPolicy.h"
 
 
@@ -141,8 +141,7 @@ namespace SF {
 
 		if (BrServer::GetInstance())
 		{
-			SharedPointerT<Entity> erased;
-			GetEntityTable().Erase(GetEntityID(), erased);
+			Service::EntityTable->erase(GetEntityID());
 		}
 
 		return ResultCode::SUCCESS;
@@ -276,7 +275,7 @@ namespace SF {
 				if (pNewTrans != nullptr && BrServer::GetInstance())
 				{
 					assert(false); // This shouldn't be happend now
-					svrChk(GetEntityTable().RouteTransaction(pNewTrans->GetTransID().GetEntityID(), pNewTrans));
+					svrChk(Service::EntityTable->RouteTransaction(pNewTrans->GetTransID().GetEntityID(), pNewTrans));
 				}
 			}
 		}

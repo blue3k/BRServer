@@ -115,17 +115,17 @@ namespace Svr {
 		auto netPrivate = BrServer::GetInstance()->GetNetPrivate();
 		Assert(netPrivate->GetNetClass() != NetClass::Unknown);
 
-		// 1. Find entity manager servery
+		// 1. Find entity manager service
 		pClusterManager = GetServerComponent<ClusterManagerServiceEntity>();
 		clusterManagerMasterUID = pClusterManager->GetMasterUID();
 		GetServerComponent<ServerEntityManager>()->GetServerEntity(clusterManagerMasterUID.GetServerID(), pMasterServerEntity);
 
-		if (pClusterManager == GetOwnerEntity()) // If I'm the clustermanager entity of this server
+		if (pClusterManager == GetOwnerEntity()) // If I'm the cluster manager entity of this server
 		{
 			// wait at least 2 secs for connections if 
 			if (Util::TimeSince(GetTransactionStartTime()) > DurationMS(4000))
 			{
-				if (clusterManagerMasterUID == 0)
+				if (clusterManagerMasterUID.UID == 0)
 				{
 					svrTrace(Warning, "Waiting Master entity too long ready:{0}, ClusterID:{1},Type:{2},Membership:{3}", GetOwnerEntityUID(), GetMyOwner()->GetClusterID(), GetMyOwner()->GetClusterType(), GetMyOwner()->GetClusterMembership());
 				}
@@ -140,7 +140,7 @@ namespace Svr {
 			}
 		}
 
-		if(pMasterServerEntity == nullptr || clusterManagerMasterUID == 0)
+		if(pMasterServerEntity == nullptr || clusterManagerMasterUID.UID == 0)
 		{
 			svrTrace(SVR_CLUSTER, "Waiting Entity Server ready:{0}, ClusterID:{1},Type:{2},Membership:{3}", GetOwnerEntityUID(), GetMyOwner()->GetClusterID(), GetMyOwner()->GetClusterType(), GetMyOwner()->GetClusterMembership());
 			SetTimer(DurationMS(1000));
@@ -150,7 +150,7 @@ namespace Svr {
 		svrTrace( SVR_CLUSTER, "Cluster memberlist query Entity:{0}, ClusterID:{1},Type:{2},Membership:{3}", GetOwnerEntityUID(), GetMyOwner()->GetClusterID(), GetMyOwner()->GetClusterType(), GetMyOwner()->GetClusterMembership() );
 
 		// 2. Get service entity list in the cluster
-		svrChk(pMasterServerEntity->GetInterface<Policy::NetPolicyClusterServer>()->JoinClusterCmd( RouteContext(GetOwnerEntityUID(),clusterManagerMasterUID), GetTransID(), 0,
+		svrChk(Policy::NetPolicyClusterServer(pMasterServerEntity->GetConnection()).JoinClusterCmd( RouteContext(GetOwnerEntityUID(),clusterManagerMasterUID), GetTransID(), 0,
 			GetOwnerEntityUID(), netPrivate->GetNetClass(), netPrivate->GetLocalAddress(),
 			GetMyOwner()->GetClusterID(), GetMyOwner()->GetClusterType(), membership));
 
@@ -179,12 +179,12 @@ namespace Svr {
 
 		svrChk(pRes->GetResult());
 
-		svrChk( msgRes.ParseMessage( ((MessageResult*)pRes)->GetMessage() ) );
+		svrChk( msgRes.ParseMessage( *((MessageResult*)pRes)->GetMessage() ) );
 
 		svrTrace( SVR_CLUSTER, "Cluster Joined Entity:{0}, ClusterID:{1},Type:{2},Membership:{3}", GetOwnerEntityUID(), GetMyOwner()->GetClusterID(), GetMyOwner()->GetClusterType(), GetMyOwner()->GetClusterMembership() );
 
 		// Fill my cluster status
-		svrChk( AddOtherServicesToMe((uint)msgRes.GetMemberList().GetSize(), msgRes.GetMemberList().data()) );
+		svrChk( AddOtherServicesToMe((uint)msgRes.GetMemberList().size(), msgRes.GetMemberList().data()) );
 
 		// 4. Request full data if replica
 		if( !(RequestDataSync()) )
@@ -211,7 +211,7 @@ namespace Svr {
 		Result hr = ResultCode::SUCCESS;
 		ServerEntity *pServerEntity = nullptr;
 
-		if( m_currentMaster.UID == 0 )
+		if( m_currentMaster.UID.UID == 0 )
 		{
 			CloseTransaction(hr);
 		}
@@ -223,7 +223,7 @@ namespace Svr {
 			m_Step = Step_RequestDataSync;
 			svrChk( GetServerComponent<ServerEntityManager>()->GetServerEntity( m_currentMaster.UID.GetServerID(), pServerEntity ) );
 
-			svrChk( pServerEntity->GetInterface<Policy::NetPolicyClusterServer>()->RequestDataSyncCmd( RouteContext(GetMyOwner()->GetEntityUID(), m_currentMaster.UID), GetTransID(), 0,
+			svrChk(Policy::NetPolicyClusterServer(pServerEntity->GetConnection()).RequestDataSyncCmd( RouteContext(GetMyOwner()->GetEntityUID(), m_currentMaster.UID), GetTransID(), 0,
 				GetMyOwner()->GetClusterID() ) );
 		}
 
@@ -569,7 +569,7 @@ namespace Svr {
 		ClusteredServiceEntity *pServiceEntity = nullptr;
 
 		Assert(GetJoinedServiceNetClass() != NetClass::Unknown);
-		Assert(GetJoinedServiceUID().GetServerID() < 1000);
+		Assert(EntityUID(GetJoinedServiceUID()).GetServerID() < 1000);
 
 		svrChk(super::StartTransaction());
 
@@ -587,7 +587,7 @@ namespace Svr {
 			}
 		}
 
-		svrChk(GetServerComponent<ServerEntityManager>()->GetOrRegisterServer(GetJoinedServiceUID().GetServerID(), GetJoinedServiceNetClass(), GetJoinedServiceAddress(), pSenderEntity));
+		svrChk(GetServerComponent<ServerEntityManager>()->GetOrRegisterServer(EntityUID(GetJoinedServiceUID()).GetServerID(), GetJoinedServiceNetClass(), GetJoinedServiceAddress(), pSenderEntity));
 
 		svrChk(pServiceEntity->NewServerService(GetJoinedServiceUID(), pSenderEntity, GetJoinedServiceMembership(), ServiceStatus::Online, pRequestedService));
 
@@ -615,7 +615,7 @@ namespace Svr {
 		ClusteredServiceEntity *pServiceEntity = nullptr;
 
 		Assert(GetJoinedServiceNetClass() != NetClass::Unknown);
-		Assert(GetJoinedServiceUID().GetServerID() < 1000);
+		Assert(EntityUID(GetJoinedServiceUID()).GetServerID() < 1000);
 
 		svrChk(super::StartTransaction());
 
@@ -635,7 +635,7 @@ namespace Svr {
 				}
 			}
 
-			svrChk(GetServerComponent<ServerEntityManager>()->GetOrRegisterServer(GetJoinedServiceUID().GetServerID(), GetJoinedServiceNetClass(), GetJoinedServiceAddress(), pSenderEntity));
+			svrChk(GetServerComponent<ServerEntityManager>()->GetOrRegisterServer(EntityUID(GetJoinedServiceUID()).GetServerID(), GetJoinedServiceNetClass(), GetJoinedServiceAddress(), pSenderEntity));
 
 			svrChk(pServiceEntity->NewServerService(GetJoinedServiceUID(), pSenderEntity, GetJoinedServiceMembership(), ServiceStatus::Online, pRequestedService));
 		}

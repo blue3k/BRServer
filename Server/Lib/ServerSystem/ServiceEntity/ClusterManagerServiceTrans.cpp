@@ -64,12 +64,12 @@ namespace Svr {
 
 			pClusterService->ForEach( [&]( ServerServiceInformation* pService ) 
 			{
-				auto &connectionInfo = pService->GetServerEntity()->GetConnection()->GetConnectionInfo();
-				Assert(connectionInfo.RemoteClass != NetClass::Unknown);
+				auto &remoteInfo = pService->GetServerEntity()->GetConnection()->GetRemoteInfo();
+				Assert(remoteInfo.PeerClass != NetClass::Unknown);
 
 				ServiceInformation serviceInfo( 
 					pService->GetEntityUID(), pService->GetClusterMembership(), pService->GetServiceStatus(), 
-					connectionInfo.RemoteClass, connectionInfo.Remote, pService->GetServerEntity()->GetServerUpTime(), pService->GetWorkload() );
+					remoteInfo.PeerClass, remoteInfo.PeerAddress, pService->GetServerEntity()->GetServerUpTime(), pService->GetWorkload() );
 				m_MemberList.push_back( serviceInfo );
 			});
 		}
@@ -97,11 +97,11 @@ namespace Svr {
 
 		if( !(GetServerComponent<ClusterManagerServiceEntity>()->GetClusterServiceEntity( GetClusterID(), pServiceEntity )) )
 		{
-			if( GetSender().GetServerID() == GetMyServerID() )
+			if( EntityUID(GetSender()).GetServerID() == GetMyServerID() )
 			{
 				SharedPointerT<Entity> pEntity;
-				svrChk( GetServerComponent<EntityManager>()->FindEntity( GetSender().GetEntityID(), pEntity ) );
-				svrChkPtr( pServiceEntity = BR_DYNAMIC_CAST(ClusteredServiceEntity*,(Entity*)pEntity) );
+				svrChk( GetServerComponent<EntityManager>()->FindEntity(EntityUID(GetSender()).GetEntityID(), pEntity ) );
+				svrChkPtr( pServiceEntity = dynamic_cast<ClusteredServiceEntity*>((Entity*)pEntity) );
 			}
 			else
 			{
@@ -110,7 +110,7 @@ namespace Svr {
 		}
 
 		// If no master yet
-		if( pServiceEntity->GetMasterUID() == 0 )
+		if( pServiceEntity->GetMasterUID().UID == 0 )
 		{
 			// And it can be a master
 			if( memberShip == ClusterMembership::Slave )
@@ -123,7 +123,7 @@ namespace Svr {
 				memberShip = ClusterMembership::Slave; // make it a slave
 		}
 
-		svrChk( GetServerComponent<ServerEntityManager>()->GetOrRegisterServer( GetSender().GetServerID(), GetSenderNetClass(), GetSenderAddress(), pSenderEntity ) );
+		svrChk( GetServerComponent<ServerEntityManager>()->GetOrRegisterServer(EntityUID(GetSender()).GetServerID(), GetSenderNetClass(), GetSenderAddress(), pSenderEntity ) );
 
 		svrChk( pServiceEntity->NewServerService( GetSender(), pSenderEntity, memberShip, ServiceStatus::Online, pRequestedService ) );
 
@@ -139,7 +139,7 @@ namespace Svr {
 
 			m_MemberList.push_back( serviceInfo );
 
-			if( pService->GetEntityUID() != GetSender() )
+			if( pService->GetEntityUID().UID != GetSender() )
 			{
 				Assert(pService->GetClusterID() == GetClusterID());
 				pService->GetService<ClusterServerService>()->NewServerServiceJoinedC2SEvt( GetOwnerEntity()->GetEntityID(), 0, GetSender(), GetSenderNetClass(), GetSenderAddress(), GetClusterID(), GetClusterType(), memberShip );
@@ -171,11 +171,11 @@ namespace Svr {
 		svrAssert( GetMyOwner() == GetServerComponent<ClusterManagerServiceEntity>() );
 		if( !(GetMyOwner()->GetClusterServiceEntity( GetClusterID(), pServiceEntity )) )
 		{
-			if( GetSender().GetServerID() == GetMyServerID() )
+			if(EntityUID(GetSender()).GetServerID() == GetMyServerID() )
 			{
 				SharedPointerT<Entity> pEntity;
-				svrChk( GetServerComponent<EntityManager>()->FindEntity( GetSender().GetEntityID(), pEntity ) );
-				svrChkPtr(pServiceEntity = BR_DYNAMIC_CAST(ClusteredServiceEntity*, (Entity*)pEntity));
+				svrChk( GetServerComponent<EntityManager>()->FindEntity(EntityUID(GetSender()).GetEntityID(), pEntity ) );
+				svrChkPtr(pServiceEntity = dynamic_cast<ClusteredServiceEntity*>((Entity*)pEntity));
 			}
 			else
 			{
@@ -184,20 +184,20 @@ namespace Svr {
 		}
 
 		// If no master yet
-		if( pServiceEntity->GetMasterUID() == 0 )
+		if( pServiceEntity->GetMasterUID().UID == 0 )
 		{
 			// And it can be a master
 			if( memberShip == ClusterMembership::Slave )
 				memberShip = ClusterMembership::Master; // make it as a master
 		}
-		else if(pServiceEntity->GetMasterUID() != GetSender())// If there is a master
+		else if(pServiceEntity->GetMasterUID().UID != GetSender())// If there is a master
 		{
 			// and it's a master 
 			if( memberShip == ClusterMembership::Master )
 				memberShip = ClusterMembership::Slave; // make it as a slave
 		}
 
-		svrChk( GetServerComponent<ServerEntityManager>()->GetOrRegisterServer( GetSender().GetServerID(), GetSenderNetClass(), GetSenderAddress(), pSenderEntity ) );
+		svrChk( GetServerComponent<ServerEntityManager>()->GetOrRegisterServer(EntityUID(GetSender()).GetServerID(), GetSenderNetClass(), GetSenderAddress(), pSenderEntity ) );
 
 		svrChk( pServiceEntity->NewServerService( GetSender(), pSenderEntity, memberShip, ServiceStatus::Online, pRequestedService ) );
 
@@ -213,7 +213,7 @@ namespace Svr {
 
 			m_MemberList.push_back( serviceInfo );
 
-			if( pService->GetEntityUID() != GetSender() )
+			if( pService->GetEntityUID().UID != GetSender() )
 			{
 				Assert(pService->GetClusterID() == GetClusterID());
 				pService->GetService<ClusterServerService>()->NewServerServiceJoinedC2SEvt( GetOwnerEntity()->GetEntityID(), 0, GetSender(), GetSenderNetClass(), GetSenderAddress(), GetClusterID(), GetClusterType(), memberShip );
@@ -256,7 +256,7 @@ namespace Svr {
 
 		bAddStatusWatcher = pServiceEntity->GetClusterMembership() != ClusterMembership::StatusWatcher;
 
-		for( uint iMember = 0; iMember < GetMemberList().GetSize(); iMember++ )
+		for( uint iMember = 0; iMember < GetMemberList().size(); iMember++ )
 		{
 			const ServiceInformation& serviceInfo = GetMemberList()[iMember];
 			

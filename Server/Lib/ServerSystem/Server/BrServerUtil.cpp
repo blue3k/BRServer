@@ -22,26 +22,14 @@
 #include "Component/SFServerConfigComponent.h"
 #include "Component/SFZooKeeperSessionComponent.h"
 #include "Component/SFConnectionManagerComponent.h"
+#include "Service/ServerService.h"
 
 
 namespace SF {
 namespace Svr {
 
 
-	// Entity Table
-	EntityTable					g_EntityTable;
 
-
-	// Get entity table
-	EntityTable& GetEntityTable()
-	{
-		return g_EntityTable;
-	}
-
-	Result FindEntity(EntityID entityID, SharedPointerT<Entity>& entity)
-	{
-		return g_EntityTable.Find(entityID, entity);
-	}
 
 	uint GetServerUID()
 	{
@@ -75,6 +63,7 @@ namespace Svr {
 		pEngine->AddComponent<ZooKeeperSessionComponent>("127.0.0.1:2181");
 		pEngine->AddComponent<ServerConfigComponent>("/ServerConfig");
 		pEngine->AddComponent<ConnectionManagerComponent>(2048);
+		pEngine->AddComponent<EntityTable>();
 	}
 
 	void DeinitializeEngine()

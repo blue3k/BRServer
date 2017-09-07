@@ -21,6 +21,7 @@
 #include "Container/Indexing.h"
 #include "Util/UniqueEntityIDGenerator.h"
 #include "Object/SharedPointer.h"
+#include "Service/EntityTableService.h"
 
 
 namespace SF {
@@ -42,30 +43,53 @@ namespace Svr {
 	// Entity manager class
 	//
 
-	class EntityTable : public HashTable2< uint, SharedPointerT<Entity> >
+	class EntityTable : public LibraryComponent, public EntityTableService
 	{
 	public:
 
-		typedef HashTable2< uint, SharedPointerT<Entity> > super;
+		typedef HashTable2< uint, SharedPointerT<Entity> > EntityMap;
+
 
 	private:
+
+		EntityMap					m_EntityMap;
+
 		// ID generator
 		UniqueEntityIDGenerator		m_UIDGenerator;
 		UniqueEntityIDGenerator		m_UIDGeneratorForService;
 
 	public:
 
+		EntityTable();
+
+
+		//////////////////////////////////////////////////////////////////////////
+		//
+		//	Component override
+		//
+
+
+		// Initialize component
+		virtual Result InitializeComponent() override;
+
+		// Terminate component
+		virtual void DeinitializeComponent() override;
+
+
 		//////////////////////////////////////////////////////////////////////////
 		//
 		//	Entity ID gen
 		//
 
-		EntityID GenEntityID(EntityFaculty faculty);
-		Result ReserveEntityID( EntityID uiEntityID );
-		bool FreeEntityID( EntityID uiEntityID );
+		virtual EntityID GenEntityID(EntityFaculty faculty) override;
+		virtual Result ReserveEntityID( EntityID uiEntityID ) override;
+		virtual bool FreeEntityID( EntityID uiEntityID ) override;
 
+		virtual Result find(EntityID key, SharedPointerT<Svr::Entity>& pEntity) override;
+		virtual Result insert(Entity *pEntity) override;
+		virtual Result erase(Entity *pEntity) override;
+		virtual Result erase(EntityID key, SharedPointerT<Svr::Entity>& removed) override;
 
-		bool Insert(Entity *pEntity);
 
 		//////////////////////////////////////////////////////////////////////////
 		//
@@ -73,10 +97,10 @@ namespace Svr {
 		//
 
 		// Route Message Cmd/Evt
-		Result RouteTransaction( EntityID entityID, TransactionPtr &pTrans );
+		virtual Result RouteTransaction( EntityID entityID, TransactionPtr &pTrans ) override;
 
 		// Route Transaction result
-		Result RouteTransactionResult( TransactionResult* &pRes );
+		virtual Result RouteTransactionResult( TransactionResult* &pRes ) override;
 	};
 
 

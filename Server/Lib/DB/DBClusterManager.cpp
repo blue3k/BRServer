@@ -24,6 +24,8 @@
 #include "Server/BrServer.h"
 #include "Entity/EntityTable.h"
 #include "Server/BrServerUtil.h"
+#include "Service/ServerService.h"
+
 
 namespace SF {
 namespace DB {
@@ -415,7 +417,7 @@ Proc_End:
 			const char* queryName = typeid(*pRes).name();
 			auto msgID = pRes->GetMsgID();
 			auto entityID = pRes->GetTransID().GetEntityID();
-			hr = Svr::GetEntityTable().RouteTransactionResult(pRes);
+			hr = Service::EntityTable->RouteTransactionResult(pRes);
 			if (!(hr))
 			{
 				dbTrace(TRC_ROUTING, "Failed to route a message hr:{0} msgID:{1}, target entityID:{2}, query:{3}", hr, msgID, entityID, queryName);
