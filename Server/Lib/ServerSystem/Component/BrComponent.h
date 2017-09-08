@@ -63,14 +63,14 @@ namespace SF {
 
 	private:
 
-		IMemoryManager& m_MemoryManager;
+		IHeap& m_Heap;
 
 		// component array
 		Component* m_Components[MaxComponentID+1];
 
 	public:
-		ComponentCarrier(IMemoryManager& memoryManager)
-			: m_MemoryManager(memoryManager)
+		ComponentCarrier(IHeap& memoryManager)
+			: m_Heap(memoryManager)
 		{
 			memset( m_Components, 0, sizeof(Component*)*(MaxComponentID+1) );
 		}
@@ -184,7 +184,7 @@ namespace SF {
 				return ResultCode::SUCCESS_FALSE;
 			}
 
-			ComponentType* newComponent = new(m_MemoryManager) ComponentType;
+			ComponentType* newComponent = new(m_Heap) ComponentType;
 			if( newComponent == nullptr )
 				return ResultCode::OUT_OF_MEMORY;
 
@@ -206,7 +206,7 @@ namespace SF {
 				return ResultCode::SUCCESS_FALSE;
 			}
 
-			ComponentType* newComponent = new(m_MemoryManager) ComponentType(p0);
+			ComponentType* newComponent = new(m_Heap) ComponentType(p0);
 			if( newComponent == nullptr )
 				return ResultCode::OUT_OF_MEMORY;
 
@@ -228,7 +228,7 @@ namespace SF {
 				return ResultCode::SUCCESS_FALSE;
 			}
 
-			ComponentType* newComponent = new(m_MemoryManager) ComponentType(p0,p1);
+			ComponentType* newComponent = new(m_Heap) ComponentType(p0,p1);
 			if( newComponent == nullptr )
 				return ResultCode::OUT_OF_MEMORY;
 
@@ -250,7 +250,7 @@ namespace SF {
 				return ResultCode::SUCCESS_FALSE;
 			}
 
-			ComponentType* newComponent = new(m_MemoryManager) ComponentType(p0, p1, p2);
+			ComponentType* newComponent = new(m_Heap) ComponentType(p0, p1, p2);
 			if (newComponent == nullptr)
 				return ResultCode::OUT_OF_MEMORY;
 

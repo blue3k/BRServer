@@ -15,7 +15,7 @@
 #include "Memory/MemoryPool.h"
 #include "Types/BrSvrTypes.h"
 
-#include "ServerSystem/ServiceEntity/MatchingServiceUtil.h"
+#include "ServiceEntity/MatchingServiceUtil.h"
 #include "Component/ServerComponent.h"
 
 

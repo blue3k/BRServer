@@ -50,6 +50,7 @@ namespace Svr {
 		// Get Owner
 		inline OwnerEntity& GetOwner();
 		
+		IHeap& GetHeap() { return GetOwner().GetHeap(); }
 
 		//////////////////////////////////////////////////////////////////////////////
 		//

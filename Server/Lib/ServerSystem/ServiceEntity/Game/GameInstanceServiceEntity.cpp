@@ -22,8 +22,8 @@
 #include "Component/ServerComponent.h"
 #include "ServerService/ServerServiceBase.h"
 #include "ServerEntity/ServerEntity.h"
-#include "ServerSystem/ServiceEntity/Game/GameInstanceServiceEntity.h"
-#include "ServerSystem/ServiceEntity/RankingServiceTrans.h"
+#include "ServiceEntity/Game/GameInstanceServiceEntity.h"
+#include "ServiceEntity/RankingServiceTrans.h"
 #include "SvrTrace.h"
 #include "SvrConst.h"
 

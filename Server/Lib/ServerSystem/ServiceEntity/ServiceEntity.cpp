@@ -19,7 +19,7 @@
 #include "Entity/Entity.h"
 #include "Component/ServerComponent.h"
 #include "ServerService/ServerServiceBase.h"
-#include "ServerSystem/ServiceEntity/ServiceEntity.h"
+#include "ServiceEntity/ServiceEntity.h"
 #include "ServerEntity/ServerEntityManager.h"
 #include "SvrTrace.h"
 #include "Task/ServerTaskEvent.h"

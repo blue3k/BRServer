@@ -46,6 +46,7 @@ namespace SF {
 		virtual Result insert(Svr::Entity *pEntity) { return ResultCode::NOT_IMPLEMENTED; }
 		virtual Result erase(Svr::Entity *pEntity) { return ResultCode::NOT_IMPLEMENTED; }
 		virtual Result erase(EntityID key, SharedPointerT<Svr::Entity>& removed) { return ResultCode::NOT_IMPLEMENTED; }
+		virtual Result erase(EntityID key) { SharedPointerT<Svr::Entity> removed; return erase(key, removed); }
 
 
 		//////////////////////////////////////////////////////////////////////////

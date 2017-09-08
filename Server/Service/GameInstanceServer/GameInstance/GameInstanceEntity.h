@@ -22,7 +22,7 @@
 #include "Entity/Entity.h"
 #include "Server/BrServer.h"
 #include "ServiceEntity/Game/GameSystem.h"
-#include "ServerSystem/ServiceEntity/Game/GameInstanceEntity.h"
+#include "ServiceEntity/Game/GameInstanceEntity.h"
 #include "ServerSystem/GameLog/ChattingHistory.h"
 #include "GameSystem/GameSystemComponentIDs.h"
 

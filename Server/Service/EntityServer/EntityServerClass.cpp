@@ -17,7 +17,7 @@
 #include "ServerConfig/SFServerConfig.h"
 #include "Entity/EntityManager.h"
 #include "ServerEntity/ServerEntityManager.h"
-//#include "ServerSystem/ServiceEntity/EntityManagerServiceEntity.h"
+//#include "ServiceEntity/EntityManagerServiceEntity.h"
 #include "ServiceEntity/ClusterManagerServiceEntity.h"
 #include "Util/TimeUtil.h"
 
@@ -76,19 +76,6 @@ namespace EntityServer {
 	Result EntityServer::ApplyConfiguration()
 	{
 		Result hr = ResultCode::SUCCESS;
-		const Svr::Config::GenericServer* pMySvr = nullptr;
-
-		std::for_each( Svr::Config::GetConfig().EntityServers.begin(), Svr::Config::GetConfig().EntityServers.end(), 
-			[&]( const Svr::Config::GenericServer* pServer )
-		{
-			if( pServer->Name == Util::GetServiceName() )
-			{
-				pMySvr = pServer;
-			}
-		});
-
-		svrChkPtr( pMySvr );
-		SetMyConfig( pMySvr );
 
 		svrChk(Svr::BrServer::ApplyConfiguration() );
 
@@ -142,7 +129,7 @@ namespace EntityServer {
 		// Register entity servers
 		// All server should use same sock family(IPV4 or IPV6)
 		privateNetSockFamily = GetMyServer()->GetNetPrivate()->GetLocalAddress().SocketFamily;
-		for( auto itEntity = Svr::Config::GetConfig().EntityServers.begin(); itEntity != Svr::Config::GetConfig().EntityServers.end(); ++itEntity )
+		for( auto itEntity = Service::ServerConfig->EntityServers.begin(); itEntity != Service::ServerConfig->EntityServers.end(); ++itEntity )
 		{
 			EntityServerEntity *pEntity = nullptr;
 			auto pEntityCfg = *itEntity;

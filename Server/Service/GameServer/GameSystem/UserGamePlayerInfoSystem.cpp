@@ -164,7 +164,7 @@ namespace GameServer {
 			return ResultCode::INVALID_POINTER;
 
 		if( !(conspiracy::LevelTbl::FindItem( m_Level, pLevelInfo )) )
-			return ResultCode::E_INVALID_PLAYER_LEVEL;
+			return ResultCode::INVALID_PLAYER_LEVEL;
 
 		if( pShopItem->RequiredGem > GetGem()
 			|| pShopItem->RequiredGameMoney > GetGameMoney()
@@ -282,10 +282,7 @@ namespace GameServer {
 			m_Level++;
 
 			// Send level up to client
-			if( GetOwner().GetISvrGamePolicy() != nullptr )
-			{
-				GetOwner().GetISvrGamePolicy()->LevelUpS2CEvt( m_Exp, m_Level );
-			}
+			Policy::NetSvrPolicyGame(GetOwner().GetConnection()).LevelUpS2CEvt(m_Exp, m_Level);
 
 			UpdateStatByLevel(pNextLevelInfo);
 

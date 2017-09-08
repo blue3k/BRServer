@@ -42,7 +42,7 @@ namespace SF {
 			TimeStampMS m_LatestUpdated;
 
 
-			ULONG m_SyncSerial;
+			uint m_SyncSerial;
 			StaticArray<PerformanceCounter*, 100> m_Counters;
 
 

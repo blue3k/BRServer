@@ -20,8 +20,7 @@ ConspiracyGameInstanceServerEntity* GameInstanceServer::GetLoopbackGameServerEnt
 // Query Game server instance
 GameInstanceServer* GetMyServer()
 {
-	return BR_DYNAMIC_CAST(GameInstanceServer*,Svr::BrServer::GetInstance());
-	//return dynamic_cast<GameInstanceServer*>(Svr::BrServer::GetInstance());
+	return dynamic_cast<GameInstanceServer*>(Svr::BrServer::GetInstance());
 }
 
 

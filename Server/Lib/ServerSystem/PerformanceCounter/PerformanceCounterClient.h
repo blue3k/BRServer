@@ -104,8 +104,6 @@ namespace SF {
 			static PerformanceCounterClient *stm_pInstance;
 
 		private:
-			PerformanceCounterClient();
-			~PerformanceCounterClient();
 
 			IMemoryManager& GetMemoryManager() { return m_MemoryManager; }
 
@@ -121,6 +119,8 @@ namespace SF {
 			virtual void Run() override;
 
 		public:
+			PerformanceCounterClient();
+			~PerformanceCounterClient();
 
 			static Result Initialize(uint serverID, const NetAddress& serverAddress);
 			static Result Terminate();

@@ -58,8 +58,8 @@ namespace ConspiracyGameInstanceServer {
 
 
 
-	GameEntityTransDeleteGame::GameEntityTransDeleteGame(MessageDataPtr &pIMsg)
-		: ServerEntityMessageTransaction(pIMsg)
+	GameEntityTransDeleteGame::GameEntityTransDeleteGame(IHeap& heap, MessageDataPtr &pIMsg)
+		: ServerEntityMessageTransaction(heap, pIMsg)
 	{
 		SetWorkOnServerEntity(false);
 		SetExclusive(true);
@@ -93,7 +93,6 @@ namespace ConspiracyGameInstanceServer {
 	{
 		Result hr = ResultCode::SUCCESS;
 		GamePlayer *pMyPlayer = nullptr;
-		Policy::NetSvrPolicyGameInstance *pMyPolicy = nullptr;
 		Svr::GameInstancePlayer* pNewInsPlayer = nullptr;
 		auto pGameStateSystem = GetMyOwner()->GetComponent<GameStateSystem>();
 
@@ -113,7 +112,7 @@ namespace ConspiracyGameInstanceServer {
 			svrChk(GetMyOwner()->CreatePlayerInstance(GetPlayer(), pNewInsPlayer));
 			pMyPlayer =  dynamic_cast<GamePlayer*>(pNewInsPlayer);
 			svrChk(pMyPlayer->InitializePlayer( GetMyOwner() ) );
-			pMyPlayer->SetRequestedRole(GetRequestedRole());
+			pMyPlayer->SetRequestedRole((PlayerRole)GetRequestedRole());
 
 			svrChk( GetMyOwner()->AddPlayerToJoin(pNewInsPlayer) );
 			pNewInsPlayer = nullptr;
@@ -146,25 +145,24 @@ namespace ConspiracyGameInstanceServer {
 		// Earlier close so that the player can get JoinGameRes first
 		CloseTransaction( hr );
 
-		pMyPolicy = pMyPlayer->GetInterface<Policy::NetSvrPolicyGameInstance>();
 		// Send all other player to me
-		if (pMyPolicy != nullptr)
 		{
+			Policy::NetSvrPolicyGameInstance pMyPolicy(GetConnection());
 			GetMyOwner()->ForeachPlayer([&](GamePlayer* pPlayer)->Result {
 
 				PlayerRole otherRole = GetMyOwner()->GetComponent<GamePlaySystem>()->GetRevealedRole(pMyPlayer, pPlayer);
-				pMyPolicy->PlayerJoinedS2CEvt(RouteContext(GetOwnerEntityUID(), pMyPlayer->GetPlayerEntityUID()), pPlayer->GetPlayerInformation(), otherRole, (UINT8)(pPlayer->GetPlayerState() != PlayerState::Playing), (UINT8)pPlayer->GetIndex(), (UINT8)pPlayer->GetCharacter());
+				pMyPolicy.PlayerJoinedS2CEvt(RouteContext(GetOwnerEntityUID(), pMyPlayer->GetPlayerEntityUID()), pPlayer->GetPlayerInformation(), (uint8_t)otherRole, (uint8_t)(pPlayer->GetPlayerState() != PlayerState::Playing), (uint8_t)pPlayer->GetIndex(), (uint8_t)pPlayer->GetCharacter());
 
 				return ResultCode::SUCCESS;
 			});
 		}
 
 		// Send my info to others
-		GetMyOwner()->ForeachPlayerSvrGameInstance( [&]( GamePlayer* pPlayer, Policy::NetSvrPolicyGameInstance *pPolicy )->Result {
+		GetMyOwner()->ForeachPlayerSvrGameInstance( [&]( GamePlayer* pPlayer, Policy::NetSvrPolicyGameInstance &pPolicy )->Result {
 			if( pMyPlayer != pPlayer )
 			{
 				PlayerRole myRoleToOther = GetMyOwner()->GetComponent<GamePlaySystem>()->GetRevealedRole( pPlayer, pMyPlayer );
-				pPolicy->PlayerJoinedS2CEvt( RouteContext( GetOwnerEntityUID(), pPlayer->GetPlayerEntityUID()), pMyPlayer->GetPlayerInformation(), myRoleToOther, (uint8_t)(pMyPlayer->GetPlayerState() != PlayerState::Playing), (uint8_t)pMyPlayer->GetIndex(), (uint8_t)pMyPlayer->GetCharacter()  );
+				pPolicy.PlayerJoinedS2CEvt( RouteContext( GetOwnerEntityUID(), pPlayer->GetPlayerEntityUID()), pMyPlayer->GetPlayerInformation(), (uint8_t)myRoleToOther, (uint8_t)(pMyPlayer->GetPlayerState() != PlayerState::Playing), (uint8_t)pMyPlayer->GetIndex(), (uint8_t)pMyPlayer->GetCharacter()  );
 			}
 			return ResultCode::SUCCESS;
 		});
@@ -219,8 +217,8 @@ namespace ConspiracyGameInstanceServer {
 
 		if( GetPlayerToKick() == (PlayerID)(-1) )
 		{
-			svrChk( GetMyOwner()->ForeachPlayerSvrGameInstance( [&]( GamePlayer* pPlayer, Policy::NetSvrPolicyGameInstance *pPolicy )->Result {
-				pPolicy->PlayerKickedS2CEvt( RouteContext( GetOwnerEntityUID(), pPlayer->GetPlayerEntityUID()), pPlayer->GetPlayerID()  );
+			svrChk( GetMyOwner()->ForeachPlayerSvrGameInstance( [&]( GamePlayer* pPlayer, Policy::NetSvrPolicyGameInstance &pPolicy )->Result {
+				pPolicy.PlayerKickedS2CEvt( RouteContext( GetOwnerEntityUID(), pPlayer->GetPlayerEntityUID()), pPlayer->GetPlayerID()  );
 				return GetMyOwner()->LeavePlayer( pPlayer->GetPlayerID() );
 			}) );
 		}
@@ -230,9 +228,7 @@ namespace ConspiracyGameInstanceServer {
 			GamePlayer *pPlayerToKick = nullptr;
 
 			svrChk( GetMyOwner()->FindPlayer( GetPlayerToKick(), pPlayerToKick ) );
-			pPolicy = pPlayerToKick->GetInterface<Policy::NetSvrPolicyGameInstance>();
-			if (pPolicy != nullptr)
-				pPolicy->PlayerKickedS2CEvt( RouteContext( GetOwnerEntityUID(), pPlayerToKick->GetPlayerEntityUID()), pPlayerToKick->GetPlayerID()  );
+			Policy::NetSvrPolicyGameInstance(pPlayerToKick->GetConnection()).PlayerKickedS2CEvt( RouteContext( GetOwnerEntityUID(), pPlayerToKick->GetPlayerEntityUID()), pPlayerToKick->GetPlayerID()  );
 			svrChk( GetMyOwner()->LeavePlayer( pPlayerToKick->GetPlayerID() ) );
 		}
 
@@ -283,7 +279,7 @@ namespace ConspiracyGameInstanceServer {
 
 		svrChk( GetMyPlayer( pMyPlayer ) );
 
-		hr = GetMyOwner()->GetComponent<GamePlaySystem>()->BroadCastChatMessage(pMyPlayer, GetRole(), GetChatMessage());
+		hr = GetMyOwner()->GetComponent<GamePlaySystem>()->BroadCastChatMessage(pMyPlayer, (PlayerRole)GetRole(), GetChatMessage());
 
 		//if( GetRole() != PlayerRole::None && GetRole() != PlayerRole::Werewolf  )
 		//	svrErr(ResultCode::GAME_INVALID_ROLE);
@@ -400,14 +396,14 @@ namespace ConspiracyGameInstanceServer {
 
 		svrChk(super::StartTransaction());
 
-		GetMyOwner()->ForeachPlayerSvrGameInstance([&](GamePlayer* pPlayer, Policy::NetSvrPolicyGameInstance *pPolicy)->Result
+		GetMyOwner()->ForeachPlayerSvrGameInstance([&](GamePlayer* pPlayer, Policy::NetSvrPolicyGameInstance &pPolicy)->Result
 		{
-			if (pPlayer->GetPlayerEntityUID() == 0)
+			if (pPlayer->GetPlayerEntityUID().UID == 0)
 				return ResultCode::SUCCESS;
 
 			m_MemberCount++;
 
-			pPolicy->GamePlayAgainS2CEvt(RouteContext(ownerUID, pPlayer->GetPlayerEntityUID()), pPlayer->GetPlayerID(), GetPartyUID(), GetLeadPlayer());
+			pPolicy.GamePlayAgainS2CEvt(RouteContext(ownerUID, pPlayer->GetPlayerEntityUID()), pPlayer->GetPlayerID(), GetPartyUID(), GetLeadPlayer());
 			return ResultCode::SUCCESS;
 		});
 
@@ -442,13 +438,13 @@ namespace ConspiracyGameInstanceServer {
 		if (pMyPlayer->GetPlayerState() != PlayerState::Ghost)
 			svrErrClose(ResultCode::GAME_INVALID_PLAYER_STATE);
 
-		numReveal = std::min((size_t)GameConst::MAX_PLAYER_REVEAL, GetTargetPlayerID().GetSize());
+		numReveal = std::min((size_t)GameConst::MAX_PLAYER_REVEAL, GetTargetPlayerID().size());
 		for (uint iTargetPlayer = 0; iTargetPlayer < numReveal; iTargetPlayer++)
 		{
 			svrChk(GetMyOwner()->FindPlayer(GetTargetPlayerID()[iTargetPlayer], pTargetPlayer));
 
 			m_RevealedPlayerID.push_back(pTargetPlayer->GetPlayerID());
-			m_RevealedPlayerRole.push_back(pTargetPlayer->GetRole());
+			m_RevealedPlayerRole.push_back((uint8_t)pTargetPlayer->GetRole());
 		}
 
 

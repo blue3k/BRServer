@@ -15,21 +15,21 @@
 #include "SvrConst.h"
 #include "Server/BrServer.h"
 #include "SvrTrace.h"
-#include "ServerSystem/SvrConfig.h"
+#include "Service/ServerService.h"
 #include "ServerEntity/ServerEntityManager.h"
 
 #include "ServiceEntity/ClusterManagerServiceEntity.h"
-#include "ServerSystem/ServiceEntity/Game/GameClusterServiceEntity.h"
-#include "ServerSystem/ServiceEntity/Game/GameInstanceManagerServiceEntity.h"
-#include "ServerSystem/ServiceEntity/Login/LoginServiceEntity.h"
-#include "ServerSystem/ServiceEntity/Game/GameServiceEntity.h"
-#include "ServerSystem/ServiceEntity/Game/GameInstanceServiceEntity.h"
+#include "ServiceEntity/Game/GameClusterServiceEntity.h"
+#include "ServiceEntity/Game/GameInstanceManagerServiceEntity.h"
+#include "ServiceEntity/Login/LoginServiceEntity.h"
+#include "ServiceEntity/Game/GameServiceEntity.h"
+#include "ServiceEntity/Game/GameInstanceServiceEntity.h"
 
-#include "ServerSystem/ServiceEntity/MatchingQueueServiceEntity.h"
-#include "ServerSystem/ServiceEntity/MatchingServiceEntity.h"
-#include "ServerSystem/ServiceEntity/GamePartyManagerServiceEntity.h"
-#include "ServerSystem/ServiceEntity/RankingServiceEntity.h"
-#include "ServerSystem/ServiceEntity/MonitoringServiceEntity.h"
+#include "ServiceEntity/MatchingQueueServiceEntity.h"
+#include "ServiceEntity/MatchingServiceEntity.h"
+#include "ServiceEntity/GamePartyManagerServiceEntity.h"
+#include "ServiceEntity/RankingServiceEntity.h"
+#include "ServiceEntity/MonitoringServiceEntity.h"
 
 #include "Table/TableSystem.h"
 
@@ -108,7 +108,7 @@ namespace SharedModuleServer {
 	}
 
 	// Create clustered service
-	Result SharedModuleServer::RegisterClusteredService(Svr::Config::ModuleBase* module)
+	Result SharedModuleServer::RegisterClusteredService(ServerConfig::ModuleBase* module)
 	{
 		Result hr = ResultCode::SUCCESS;
 		ClusterID clusterID;
@@ -124,14 +124,14 @@ namespace SharedModuleServer {
 
 		case ClusterID::Login:
 		{
-			auto pLogin = (Svr::Config::ModuleLogin*)module;
+			auto pLogin = (ServerConfig::ModuleLogin*)module;
 			svrChk(GetComponent<Svr::EntityManager>()->AddEntity(EntityFaculty::Service, new(GetMemoryManager()) Svr::LoginServiceEntity(pLogin->NetPublic)));
 			break;
 		}
 
 		case ClusterID::Game:
 		{
-			auto pGame = (Svr::Config::ModuleGame*)module;
+			auto pGame = (ServerConfig::ModuleGame*)module;
 			svrChk(GetComponent<Svr::EntityManager>()->AddEntity(EntityFaculty::Service, new(GetMemoryManager()) Svr::GameServiceEntity(GetGameID(), pGame->NetPublic)));
 			svrChk(AddServiceEntityComponent<Svr::GameInstanceManagerWatcherServiceEntity>(GetGameID()));
 			break;
@@ -159,7 +159,7 @@ namespace SharedModuleServer {
 
 		case ClusterID::Matching_Game_4:
 		{
-			auto pMatching = (Svr::Config::ModuleMatching*)module;
+			auto pMatching = (ServerConfig::ModuleMatching*)module;
 			svrChk(AddServiceEntityComponent<Svr::MatchingServiceEntity>(clusterID, ClusterMembership::Slave, pMatching->UseBot));
 			svrChk(AddServiceEntityComponent<Svr::GameInstanceManagerWatcherServiceEntity>(GetGameID()));
 			svrChk(RegisterClustereWatcherComponents(ClusterID::MatchingQueue_Game_4x1, Svr::ServerComponentID_MatchingQueueWatcherService_4x1, Svr::ServerComponentID_MatchingQueueWatcherService_4x1W));
@@ -167,7 +167,7 @@ namespace SharedModuleServer {
 		}
 		case ClusterID::Matching_Game_8:
 		{
-			auto pMatching = (Svr::Config::ModuleMatching*)module;
+			auto pMatching = (ServerConfig::ModuleMatching*)module;
 			svrChk(AddServiceEntityComponent<Svr::MatchingServiceEntity>(clusterID, ClusterMembership::Slave, pMatching->UseBot));
 			svrChk(AddServiceEntityComponent<Svr::GameInstanceManagerWatcherServiceEntity>(GetGameID()));
 			svrChk(RegisterClustereWatcherComponents(ClusterID::MatchingQueue_Game_8x1, Svr::ServerComponentID_MatchingQueueWatcherService_8x1, Svr::ServerComponentID_MatchingQueueWatcherService_8x1W));

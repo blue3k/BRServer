@@ -23,10 +23,10 @@ namespace SF
  		class NetPolicyLoginServer 
 		{
  			private:
-				Net::Connection* m_pConnection;
+				SharedPointerT<Net::Connection>& m_pConnection;
 			public:
 			// Constructor
-			NetPolicyLoginServer ( Net::Connection* pConn ) : m_pConnection(pConn)
+			NetPolicyLoginServer ( SharedPointerT<Net::Connection>& pConn ) : m_pConnection(pConn)
 			{}
 
 			// Cmd: Notify user joind and see it's valid authticket instance
@@ -40,10 +40,10 @@ namespace SF
 		class NetSvrPolicyLoginServer
 		{
  			private:
-				Net::Connection* m_pConnection;
+				SharedPointerT<Net::Connection>& m_pConnection;
 			public:
 			// Constructor
-			NetSvrPolicyLoginServer ( Net::Connection* pConn ) : m_pConnection(pConn)
+			NetSvrPolicyLoginServer ( SharedPointerT<Net::Connection>& pConn ) : m_pConnection(pConn)
 			{}
 
 			// Cmd: Notify user joind and see it's valid authticket instance

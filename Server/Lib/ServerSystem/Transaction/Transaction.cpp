@@ -173,12 +173,12 @@ namespace SF {
 	///////////////////////////////////////////////////////////
 	// Helper functions
 
-	Net::Connection* Transaction::GetServerEntityConnection(ServerEntity* pServerEntity)
+	SharedPointerT<Net::Connection> Transaction::GetServerEntityConnection(ServerEntity* pServerEntity)
 	{
 		if (pServerEntity == nullptr)
 			return nullptr;
 
-		return pServerEntity->GetConnection();
+		return std::forward<SharedPointerT<Net::Connection>>(pServerEntity->GetConnection());
 	}
 
 

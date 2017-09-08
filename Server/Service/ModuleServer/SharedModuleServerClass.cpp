@@ -15,15 +15,15 @@
 #include "SvrConst.h"
 #include "Server/BrServer.h"
 #include "SvrTrace.h"
-#include "ServerSystem/SvrConfig.h"
+#include "Service/ServerService.h"
 #include "ServerEntity/ServerEntityManager.h"
-//#include "ServerSystem/ServiceEntity/EntityManagerServiceEntity.h"
+//#include "ServiceEntity/EntityManagerServiceEntity.h"
 #include "ServiceEntity/ClusterManagerServiceEntity.h"
-#include "ServerSystem/ServiceEntity/Game/GameClusterServiceEntity.h"
+#include "ServiceEntity/Game/GameClusterServiceEntity.h"
 
-#include "ServerSystem/ServiceEntity/MatchingQueueServiceEntity.h"
-#include "ServerSystem/ServiceEntity/MatchingServiceEntity.h"
-#include "ServerSystem/ServiceEntity/GamePartyManagerServiceEntity.h"
+#include "ServiceEntity/MatchingQueueServiceEntity.h"
+#include "ServiceEntity/MatchingServiceEntity.h"
+#include "ServiceEntity/GamePartyManagerServiceEntity.h"
 
 #include "Table/TableSystem.h"
 
@@ -92,10 +92,10 @@ namespace SharedModuleServer {
 	{
 		Result hr = ResultCode::SUCCESS;
 
-		const Svr::Config::ModuleServer* pMySvr = nullptr;
+		const ServerConfig::ModuleServer* pMySvr = nullptr;
 
-		std::for_each( Svr::Config::GetConfig().ModuleServers.begin(), Svr::Config::GetConfig().ModuleServers.end(), 
-			[&]( const Svr::Config::ModuleServer* pServer )
+		std::for_each( Service::ServerConfig->ModuleServers.begin(), Service::ServerConfig->ModuleServers.end(), 
+			[&]( const ServerConfig::ModuleServer* pServer )
 		{
 			if( pServer->Name == Util::GetServiceNameA() )
 			{
@@ -155,19 +155,19 @@ namespace SharedModuleServer {
 	Result SharedModuleServer::InitializeNetPrivate()
 	{
 		Result hr = ResultCode::SUCCESS;
-		Svr::Config::ModuleServer *pServerConfig = nullptr;
+		ServerConfig::ModuleServer *pServerConfig = nullptr;
 		SockFamily privateNetSockFamily;
 
 		svrChk(Svr::BrServer::InitializeNetPrivate() );
 
 		GetMyServer()->GetNetPrivate()->SetIsEnableAccept(true);
 
-		if (Svr::Config::GetConfig().EntityServers.size() > 0)
+		if (Service::ServerConfig->EntityServers.size() > 0)
 		{
 			// Register entity servers
 			// All server should use same sock family(IPV4 or IPV6)
 			privateNetSockFamily = GetMyServer()->GetNetPrivate()->GetLocalAddress().SocketFamily;
-			for (auto itEntity = Svr::Config::GetConfig().EntityServers.begin(); itEntity != Svr::Config::GetConfig().EntityServers.end(); ++itEntity)
+			for (auto itEntity = Service::ServerConfig->EntityServers.begin(); itEntity != Service::ServerConfig->EntityServers.end(); ++itEntity)
 			{
 				Svr::EntityServerEntity *pEntity = nullptr;
 				auto pEntityCfg = *itEntity;
@@ -189,9 +189,9 @@ namespace SharedModuleServer {
 		// Register service entities
 		//
 
-		pServerConfig = (Svr::Config::ModuleServer*)( GetMyConfig() );
+		pServerConfig = (ServerConfig::ModuleServer*)( GetMyConfig() );
 
-		std::for_each( pServerConfig->Modules.begin(), pServerConfig->Modules.end(), [&]( Svr::Config::ModuleBase* pModule )
+		std::for_each( pServerConfig->Modules.begin(), pServerConfig->Modules.end(), [&]( ServerConfig::ModuleBase* pModule )
 		{
 			RegisterClusteredService(pModule);
 		});

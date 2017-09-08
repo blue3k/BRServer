@@ -11,7 +11,7 @@
 
 #include "stdafx.h"
 #include "GameServer.h"
-#include "ServerSystem/BrService.h"
+#include "Server/BrService.h"
 #include "SvrTrace.h"
 #include "GameServerClass.h"
 #include "Memory/MemoryPool.h"

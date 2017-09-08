@@ -34,21 +34,21 @@ namespace ConspiracyGameInstanceServer {
 
 
 	// Message transaction template
-	template< class OwnerType, class PolicyClass, class MessageClass, class MemoryPoolClass, size_t MessageHandlerBufferSize = sizeof(Svr::TransactionMessageHandlerType)*2 >
-	class RoutedGamePlayerMessageTransaction : public Svr::TransactionT<OwnerType,MemoryPoolClass,MessageHandlerBufferSize>, public MessageClass
+	template< class OwnerType, class MessageClass >
+	class RoutedGamePlayerMessageTransaction : public Svr::TransactionT<OwnerType>, public MessageClass
 	{
 	private:
-		typedef Svr::TransactionT<OwnerType, MemoryPoolClass, MessageHandlerBufferSize> super;
+		typedef Svr::TransactionT<OwnerType> super;
 
 	protected:
 		// Player Player ID
 		PlayerID	m_PlayerID;
 
 	public:
-		RoutedGamePlayerMessageTransaction( MessageDataPtr &pIMsg )
-			:super( TransactionID() )
-			,MessageClass( pIMsg )
-			,m_PlayerID(0)
+		RoutedGamePlayerMessageTransaction(IHeap& heap, MessageDataPtr &pIMsg )
+			: super(heap, TransactionID() )
+			, MessageClass( pIMsg )
+			, m_PlayerID(0)
 		{
 		}
 
@@ -90,7 +90,7 @@ namespace ConspiracyGameInstanceServer {
 				svrErr( ResultCode::SVR_INVALID_SERVERID );
 			}
 
-			hr = FindEntity(MessageClass::GetRouteContext().GetTo().GetEntityID(), pEntity);
+			hr = Service::EntityTable->find(MessageClass::GetRouteContext().GetTo().GetEntityID(), pEntity);
 			if (!(hr))
 			{
 				svrTrace(Warning, "Can't find transaction target instance:{0}", MessageClass::GetRouteContext().GetTo());
@@ -115,20 +115,13 @@ namespace ConspiracyGameInstanceServer {
 			return pSvrEnt;
 		}
 
-		PolicyClass* GetInterface()
-		{
-			return GetInterface<PolicyClass>();
-		}
 
-
-		template< class PolicyType >
-		PolicyType* GetInterface()
+		SharedPointerT<Net::Connection> GetConnection()
 		{
-			SharedPointerT<Net::Connection> pConn;
-			super::GetServerEntity()->GetConnectionShared(pConn);
-			if (pConn != nullptr)
-				return pConn->GetInterface<PolicyType>();
-			return nullptr;
+			if (super::GetServerEntity() == nullptr)
+				return SharedPointerT<Net::Connection>();
+
+			return std::forward<SharedPointerT<Net::Connection>>(super::GetServerEntity()->GetConnection());
 		}
 
 		FORCEINLINE GameInstanceEntity* GetMyOwner()

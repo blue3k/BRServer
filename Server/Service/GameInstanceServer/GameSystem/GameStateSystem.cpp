@@ -71,12 +71,12 @@ namespace ConspiracyGameInstanceServer {
 		m_StateStartTimeUTC = Util::Time.GetTimeUTCSec();
 
 		uint day = GetOwner().GetComponent<GameStateSystem>()->GetCurrentDay();
-		GetOwner().ForeachPlayerSvrGameInstance( [&]( GamePlayer* pPlayer, Policy::NetSvrPolicyGameInstance *pPolicy )->Result
+		GetOwner().ForeachPlayerSvrGameInstance( [&]( GamePlayer* pPlayer, Policy::NetSvrPolicyGameInstance &pPolicy )->Result
 		{
 			pPlayer->SetVotedGameAdvance(false);
 
-			if( pPlayer->GetPlayerEntityUID() != 0 )
-				pPolicy->GameAdvancedS2CEvt( RouteContext( GetOwner().GetEntityUID(), pPlayer->GetPlayerEntityUID()), m_StateStartTimeUTC.time_since_epoch().count(), GetGameState(), (uint8_t)day );
+			if( pPlayer->GetPlayerEntityUID().UID != 0 )
+				pPolicy.GameAdvancedS2CEvt( RouteContext( GetOwner().GetEntityUID(), pPlayer->GetPlayerEntityUID()), m_StateStartTimeUTC.time_since_epoch().count(), (uint8_t)GetGameState(), (uint8_t)day );
 
 			return ResultCode::SUCCESS;
 		});
@@ -258,14 +258,14 @@ namespace ConspiracyGameInstanceServer {
 
 
 			// Reveal to medium 
-			if( GetGamePlaySystem().GetLynchedPlayer() != 0 && GetGamePlaySystem().GetLynchedRole() != PlayerRole::None ) // execpt the first night, the lynched role will be specified
+			if( GetGamePlaySystem().GetLynchedPlayer() != 0 && GetGamePlaySystem().GetLynchedRole() != PlayerRole::None ) // except the first night, the lynched role will be specified
 			{
-				GetOwner().ForeachPlayerSvrGameInstance( [&]( GamePlayer* pPlayer, Policy::NetSvrPolicyGameInstance *pPolicy )->Result {
+				GetOwner().ForeachPlayerSvrGameInstance( [&]( GamePlayer* pPlayer, Policy::NetSvrPolicyGameInstance &pPolicy )->Result {
 					if( pPlayer->GetRole() != PlayerRole::Medium )
 						return ResultCode::SUCCESS;
 
-					if( pPlayer->GetPlayerEntityUID() != 0 )
-						pPolicy->PlayerRevealedS2CEvt( RouteContext( GetOwner().GetEntityUID(), pPlayer->GetPlayerEntityUID()), GetGamePlaySystem().GetLynchedPlayer(), GetGamePlaySystem().GetLynchedRole(), PlayerRevealedReason::Medium );
+					if( pPlayer->GetPlayerEntityUID().UID != 0 )
+						pPolicy.PlayerRevealedS2CEvt( RouteContext( GetOwner().GetEntityUID(), pPlayer->GetPlayerEntityUID()), GetGamePlaySystem().GetLynchedPlayer(), (uint8_t)GetGamePlaySystem().GetLynchedRole(), (uint8_t)PlayerRevealedReason::Medium );
 
 					return ResultCode::FAIL;
 				});
@@ -315,9 +315,9 @@ namespace ConspiracyGameInstanceServer {
 				// if he is protected by a boardguard
 				if( m_vote.IsFlagSet(GameVoteNight::BODYGUARD) && GetGamePlaySystem().GetBodyGuard() != 0 && m_vote.GetBodyGuardsChoice() == m_vote.GetPlayerToKill() )
 				{
-					GetOwner().ForeachPlayerSvrGameInstance( [&]( GamePlayer* pPlayer, Policy::NetSvrPolicyGameInstance *pPolicy )->Result {
-						if( pPlayer->GetPlayerEntityUID() != 0 )
-							pPolicy->PlayerKilledS2CEvt( RouteContext( GetOwner().GetEntityUID(), pPlayer->GetPlayerEntityUID()), m_vote.GetPlayerToKill(), PlayerKilledReason::BlockedByBodyguard );
+					GetOwner().ForeachPlayerSvrGameInstance( [&]( GamePlayer* pPlayer, Policy::NetSvrPolicyGameInstance &pPolicy )->Result {
+						if( pPlayer->GetPlayerEntityUID().UID != 0 )
+							pPolicy.PlayerKilledS2CEvt( RouteContext( GetOwner().GetEntityUID(), pPlayer->GetPlayerEntityUID()), m_vote.GetPlayerToKill(), (uint8_t)PlayerKilledReason::BlockedByBodyguard );
 						return ResultCode::SUCCESS;
 					});
 					svrChk( GetOwner().GetComponent<GameLogSystem>()->AddGamePlayerKilled( Util::Time.GetTimeUTCSec(), PlayerKilledReason::BlockedByBodyguard, m_vote.GetPlayerToKill() ) );
@@ -452,13 +452,13 @@ namespace ConspiracyGameInstanceServer {
 
 			GetGamePlaySystem().SetSuspect(m_vote.GetVoteRanker(0),m_vote.GetVoteRanker(1));
 
-			StaticArray<PlayerID, 2> rankers;
+			StaticArray<PlayerID, 2> rankers(GetOwner().GetHeap());
 			rankers.push_back(m_vote.GetVoteRanker(0));
 			rankers.push_back(m_vote.GetVoteRanker(1));
 			//PlayerID rankers[2] = {m_vote.GetVoteRanker(0),m_vote.GetVoteRanker(1)};
-			GetOwner().ForeachPlayerSvrGameInstance( [&]( GamePlayer* pPlayer, Policy::NetSvrPolicyGameInstance *pPolicy )->Result {
-				if( pPlayer->GetPlayerEntityUID() != 0 )
-					pPolicy->VoteEndS2CEvt( RouteContext( GetOwner().GetEntityUID(), pPlayer->GetPlayerEntityUID()), rankers );
+			GetOwner().ForeachPlayerSvrGameInstance( [&]( GamePlayer* pPlayer, Policy::NetSvrPolicyGameInstance &pPolicy )->Result {
+				if( pPlayer->GetPlayerEntityUID().UID != 0 )
+					pPolicy.VoteEndS2CEvt( RouteContext( GetOwner().GetEntityUID(), pPlayer->GetPlayerEntityUID()), rankers );
 				return ResultCode::SUCCESS;
 			});
 
@@ -612,12 +612,12 @@ namespace ConspiracyGameInstanceServer {
 			svrChk(GamePlayState::OnEnter() );
 
 			// Broad cast game end
-			GetOwner().ForeachPlayerSvrGameInstance( [&]( GamePlayer* pPlayer, Policy::NetSvrPolicyGameInstance *pPolicy )->Result {
+			GetOwner().ForeachPlayerSvrGameInstance( [&]( GamePlayer* pPlayer, Policy::NetSvrPolicyGameInstance &pPolicy )->Result {
 
 				uint expGain = 0;
 				bool isWinner = pPlayer->IsWinnerSide(winner);
 
-				// Get expgain by role
+				// Get exp gain by role
 				switch( pPlayer->GetRole() )
 				{
 				default:
@@ -655,7 +655,7 @@ namespace ConspiracyGameInstanceServer {
 
 				// Broadcast other player's role to me
 				GetOwner().ForeachPlayer( [&]( GamePlayer* pOtherPlayer )->Result {
-					pPolicy->PlayerRevealedS2CEvt( RouteContext( GetOwner().GetEntityUID(), pPlayer->GetPlayerEntityUID()), pOtherPlayer->GetPlayerID(), pOtherPlayer->GetRole(), PlayerRevealedReason::GameEnd );
+					pPolicy.PlayerRevealedS2CEvt( RouteContext( GetOwner().GetEntityUID(), pPlayer->GetPlayerEntityUID()), pOtherPlayer->GetPlayerID(), (uint8_t)pOtherPlayer->GetRole(), (uint8_t)PlayerRevealedReason::GameEnd );
 					return ResultCode::SUCCESS;
 				});
 
@@ -663,7 +663,7 @@ namespace ConspiracyGameInstanceServer {
 				uint gainedMoney = isWinner ? pItem->WinMoney : pItem->LoseMoney;
 
 				// send game end
-				pPolicy->GameEndedS2CEvt( RouteContext( GetOwner().GetEntityUID(), pPlayer->GetPlayerEntityUID()), winner, expGain, gainedMoney, pPlayer->GetRole(), isWinner );
+				pPolicy.GameEndedS2CEvt( RouteContext( GetOwner().GetEntityUID(), pPlayer->GetPlayerEntityUID()), (uint8_t)winner, expGain, gainedMoney, (uint8_t)pPlayer->GetRole(), isWinner );
 
 				return ResultCode::SUCCESS;
 			});
@@ -785,8 +785,12 @@ namespace ConspiracyGameInstanceServer {
 		}
 	}
 
+	IMemoryManager& GameStateSystem::GetMemoryManager() 
+	{
+		return GetOwner().GetMemoryManager();
+	}
 
-	// Initialzie system
+	// Initialize system
 	Result GameStateSystem::InitializeComponent()
 	{
 		m_IsInStateChanging = false;
@@ -888,9 +892,9 @@ namespace ConspiracyGameInstanceServer {
 
 		pVoter->SetVotedGameAdvance(true);
 		m_GameAdvanceVoted++;
-		GetOwner().ForeachPlayerSvrGameInstance( [&](GamePlayer *pPlayer, Policy::NetSvrPolicyGameInstance *pPolicy)
+		GetOwner().ForeachPlayerSvrGameInstance( [&](GamePlayer *pPlayer, Policy::NetSvrPolicyGameInstance &pPolicy)
 		{
-			pPolicy->GameAdvanceVotedS2CEvt( BR::RouteContext(GetOwner().GetEntityUID(), pPlayer->GetPlayerEntityUID()), pVoter->GetPlayerID() );
+			pPolicy.GameAdvanceVotedS2CEvt( RouteContext(GetOwner().GetEntityUID(), pPlayer->GetPlayerEntityUID()), pVoter->GetPlayerID() );
 			return ResultCode::SUCCESS;
 		});
 

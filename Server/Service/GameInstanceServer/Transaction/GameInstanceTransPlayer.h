@@ -15,7 +15,7 @@
 #include "Transaction/Transaction.h"
 #include "Memory/MemoryPool.h"
 #include "Types/SFEngineTypedefs.h"
-#include "Common/MemoryStream.h"
+#include "Stream/SFMemoryStream.h"
 #include "Protocol/Message/GameMsgClass.h"
 #include "Protocol/Policy/GameNetPolicy.h"
 #include "Protocol/Message/GameInstanceMsgClass.h"
@@ -35,15 +35,15 @@ namespace SF {
 namespace ConspiracyGameInstanceServer {
 
 
-	class GameEntityTransDeleteGame : public Svr::ServerEntityMessageTransaction< GameInstanceEntity, Message::GameInstance::DeleteGameC2SEvt, GameEntityTransDeleteGame, 1>
+	class GameEntityTransDeleteGame : public Svr::ServerEntityMessageTransaction< GameInstanceEntity, Message::GameInstance::DeleteGameC2SEvt>
 	{
 	public:
-		typedef Svr::ServerEntityMessageTransaction< GameInstanceEntity, Message::GameInstance::DeleteGameC2SEvt, GameEntityTransDeleteGame, 1> super;
+		typedef Svr::ServerEntityMessageTransaction< GameInstanceEntity, Message::GameInstance::DeleteGameC2SEvt> super;
 
 	private:
 
 	public:
-		GameEntityTransDeleteGame(MessageDataPtr &pIMsg);// : ServerEntityMessageTransaction(pIMsg) {}
+		GameEntityTransDeleteGame(IHeap& heap, MessageDataPtr &pIMsg);// : ServerEntityMessageTransaction(pIMsg) {}
 		virtual ~GameEntityTransDeleteGame() {}
 
 		// Start Transaction
@@ -51,10 +51,10 @@ namespace ConspiracyGameInstanceServer {
 	};
 
 
-	class GameEntityTransJoinGame : public RoutedGamePlayerMessageTransaction< GameInstanceEntity, Policy::NetSvrPolicyGameInstance, Message::GameInstance::JoinGameCmd, GameEntityTransJoinGame>
+	class GameEntityTransJoinGame : public RoutedGamePlayerMessageTransaction< GameInstanceEntity, Message::GameInstance::JoinGameCmd>
 	{
 	public:
-		typedef RoutedGamePlayerMessageTransaction< GameInstanceEntity, Policy::NetSvrPolicyGameInstance, Message::GameInstance::JoinGameCmd, GameEntityTransJoinGame> super;
+		typedef RoutedGamePlayerMessageTransaction< GameInstanceEntity, Message::GameInstance::JoinGameCmd> super;
 
 	private:
 
@@ -73,7 +73,11 @@ namespace ConspiracyGameInstanceServer {
 
 
 	public:
-		GameEntityTransJoinGame( MessageDataPtr &pIMsg )  :RoutedGamePlayerMessageTransaction( pIMsg ) {}
+		GameEntityTransJoinGame(IHeap& heap, MessageDataPtr &pIMsg )
+			: RoutedGamePlayerMessageTransaction(heap, pIMsg )
+			, m_ChatHistoryBuffer(heap)
+			, m_GameLogBuffer(heap)
+		{}
 		virtual ~GameEntityTransJoinGame() {}
 
 		// Start Transaction
@@ -97,77 +101,77 @@ namespace ConspiracyGameInstanceServer {
 			return hr;
 		}
 */
-		BR_SVR_MSGTRANS_CLOSE_ARGS( JoinGameRes, RouteContext( m_GameInsUID, GetRouteContext().GetFrom()), m_Addr, (uint32_t)(m_TimeStamp.time_since_epoch().count()), m_GameState, (uint8_t)m_Day,
+		BR_SVR_MSGTRANS_CLOSE_ARGS(Policy::NetSvrPolicyGameInstance, JoinGameRes, RouteContext( m_GameInsUID, GetRouteContext().GetFrom()), m_Addr, (uint32_t)(m_TimeStamp.time_since_epoch().count()), (uint8_t)m_GameState, (uint8_t)m_Day,
 			(uint8_t)GetMyOwner()->GetMaxPlayer(),
-			(uint8_t)m_PlayerIndex, (uint8_t)m_PlayerCharacter, (PlayerRole)m_Role, (uint8_t)m_Dead, (uint8_t)m_bIsFirstJoin,
-			m_ChatHistoryBuffer.ToArray(),
-			m_GameLogBuffer.ToArray());
+			(uint8_t)m_PlayerIndex, (uint8_t)m_PlayerCharacter, (uint8_t)m_Role, (uint8_t)m_Dead, (uint8_t)m_bIsFirstJoin,
+			m_ChatHistoryBuffer.GetBuffer(),
+			m_GameLogBuffer.GetBuffer());
 	};
 
 
-	class GameEntityTransLeaveGame : public RoutedGamePlayerMessageTransaction< GameInstanceEntity, Policy::NetSvrPolicyGameInstance, Message::GameInstance::LeaveGameCmd, GameEntityTransLeaveGame>
+	class GameEntityTransLeaveGame : public RoutedGamePlayerMessageTransaction< GameInstanceEntity, Message::GameInstance::LeaveGameCmd>
 	{
 	public:
-		typedef RoutedGamePlayerMessageTransaction< GameInstanceEntity, Policy::NetSvrPolicyGameInstance, Message::GameInstance::LeaveGameCmd, GameEntityTransLeaveGame> super;
+		typedef RoutedGamePlayerMessageTransaction< GameInstanceEntity, Message::GameInstance::LeaveGameCmd> super;
 
 	private:
 
 	public:
-		GameEntityTransLeaveGame( MessageDataPtr &pIMsg )  :RoutedGamePlayerMessageTransaction( pIMsg ) {}
+		GameEntityTransLeaveGame(IHeap& heap, MessageDataPtr &pIMsg )  :RoutedGamePlayerMessageTransaction(heap, pIMsg ) {}
 		virtual ~GameEntityTransLeaveGame() {}
 
 		// Start Transaction
 		virtual Result StartTransaction();
 
-		BR_SVR_MSGTRANS_CLOSE(LeaveGameRes, GetRouteContext().GetSwaped());
+		BR_SVR_MSGTRANS_CLOSE(Policy::NetSvrPolicyGameInstance, LeaveGameRes, GetRouteContext().GetSwaped());
 	};
 
-	class GameEntityTransKickPlayer : public RoutedGamePlayerMessageTransaction< GameInstanceEntity, Policy::NetSvrPolicyGameInstance, Message::GameInstance::KickPlayerCmd, GameEntityTransKickPlayer>
+	class GameEntityTransKickPlayer : public RoutedGamePlayerMessageTransaction< GameInstanceEntity, Message::GameInstance::KickPlayerCmd>
 	{
 	public:
-		typedef RoutedGamePlayerMessageTransaction< GameInstanceEntity, Policy::NetSvrPolicyGameInstance, Message::GameInstance::KickPlayerCmd, GameEntityTransKickPlayer> super;
+		typedef RoutedGamePlayerMessageTransaction< GameInstanceEntity, Message::GameInstance::KickPlayerCmd> super;
 
 	private:
 
 	public:
-		GameEntityTransKickPlayer( MessageDataPtr &pIMsg )  :RoutedGamePlayerMessageTransaction( pIMsg ) {}
+		GameEntityTransKickPlayer(IHeap& heap, MessageDataPtr &pIMsg )  :RoutedGamePlayerMessageTransaction( heap, pIMsg ) {}
 		virtual ~GameEntityTransKickPlayer() {}
 
 		// Start Transaction
 		virtual Result StartTransaction();
 
-		BR_SVR_MSGTRANS_CLOSE(KickPlayerRes, GetRouteContext().GetSwaped());
+		BR_SVR_MSGTRANS_CLOSE(Policy::NetSvrPolicyGameInstance, KickPlayerRes, GetRouteContext().GetSwaped());
 	};
 
 	
 
-	class GameEntityTransAssignRole : public RoutedGamePlayerMessageTransaction< GameInstanceEntity, Policy::NetSvrPolicyGameInstance, Message::GameInstance::AssignRoleCmd, GameEntityTransAssignRole>
+	class GameEntityTransAssignRole : public RoutedGamePlayerMessageTransaction< GameInstanceEntity, Message::GameInstance::AssignRoleCmd>
 	{
 	public:
-		typedef RoutedGamePlayerMessageTransaction< GameInstanceEntity, Policy::NetSvrPolicyGameInstance, Message::GameInstance::AssignRoleCmd, GameEntityTransAssignRole> super;
+		typedef RoutedGamePlayerMessageTransaction< GameInstanceEntity, Message::GameInstance::AssignRoleCmd> super;
 
 	private:
 
 	public:
-		GameEntityTransAssignRole( MessageDataPtr &pIMsg )  :RoutedGamePlayerMessageTransaction( pIMsg ) {}
+		GameEntityTransAssignRole(IHeap& heap, MessageDataPtr &pIMsg )  :RoutedGamePlayerMessageTransaction(heap, pIMsg ) {}
 		virtual ~GameEntityTransAssignRole() {}
 
 		// Start Transaction
 		virtual Result StartTransaction();
 
-		BR_SVR_MSGTRANS_CLOSE(AssignRoleRes, GetRouteContext().GetSwaped());
+		BR_SVR_MSGTRANS_CLOSE(Policy::NetSvrPolicyGameInstance, AssignRoleRes, GetRouteContext().GetSwaped());
 	};
 
 
-	class GameEntityTransChatMessage : public RoutedGamePlayerMessageTransaction< GameInstanceEntity, Policy::NetSvrPolicyGameInstance, Message::GameInstance::ChatMessageC2SEvt, GameEntityTransChatMessage>
+	class GameEntityTransChatMessage : public RoutedGamePlayerMessageTransaction< GameInstanceEntity, Message::GameInstance::ChatMessageC2SEvt>
 	{
 	public:
-		typedef RoutedGamePlayerMessageTransaction< GameInstanceEntity, Policy::NetSvrPolicyGameInstance, Message::GameInstance::ChatMessageC2SEvt, GameEntityTransChatMessage> super;
+		typedef RoutedGamePlayerMessageTransaction< GameInstanceEntity, Message::GameInstance::ChatMessageC2SEvt> super;
 
 	private:
 
 	public:
-		GameEntityTransChatMessage( MessageDataPtr &pIMsg )  :RoutedGamePlayerMessageTransaction( pIMsg ) {}
+		GameEntityTransChatMessage(IHeap& heap, MessageDataPtr &pIMsg )  :RoutedGamePlayerMessageTransaction( heap, pIMsg ) {}
 		virtual ~GameEntityTransChatMessage() {}
 
 		// Start Transaction
@@ -176,117 +180,121 @@ namespace ConspiracyGameInstanceServer {
 	};
 
 
-	class GameEntityTransVoteGameAdvance : public RoutedGamePlayerMessageTransaction< GameInstanceEntity, Policy::NetSvrPolicyGameInstance, Message::GameInstance::VoteGameAdvanceCmd, GameEntityTransVoteGameAdvance>
+	class GameEntityTransVoteGameAdvance : public RoutedGamePlayerMessageTransaction< GameInstanceEntity, Message::GameInstance::VoteGameAdvanceCmd>
 	{
 	public:
-		typedef RoutedGamePlayerMessageTransaction< GameInstanceEntity, Policy::NetSvrPolicyGameInstance, Message::GameInstance::VoteGameAdvanceCmd, GameEntityTransVoteGameAdvance> super;
+		typedef RoutedGamePlayerMessageTransaction< GameInstanceEntity, Message::GameInstance::VoteGameAdvanceCmd> super;
 
 	private:
 
 	public:
-		GameEntityTransVoteGameAdvance( MessageDataPtr &pIMsg )  :RoutedGamePlayerMessageTransaction( pIMsg ) {}
+		GameEntityTransVoteGameAdvance(IHeap& heap, MessageDataPtr &pIMsg )  :RoutedGamePlayerMessageTransaction(heap,  pIMsg ) {}
 		virtual ~GameEntityTransVoteGameAdvance() {}
 
 		// Start Transaction
 		virtual Result StartTransaction();
 
-		BR_SVR_MSGTRANS_CLOSE(VoteGameAdvanceRes, GetRouteContext().GetSwaped());
+		BR_SVR_MSGTRANS_CLOSE(Policy::NetSvrPolicyGameInstance, VoteGameAdvanceRes, GetRouteContext().GetSwaped());
 	};
 
 
 
-	class GameEntityTransVote : public RoutedGamePlayerMessageTransaction< GameInstanceEntity, Policy::NetSvrPolicyGameInstance, Message::GameInstance::VoteCmd, GameEntityTransVote>
+	class GameEntityTransVote : public RoutedGamePlayerMessageTransaction< GameInstanceEntity, Message::GameInstance::VoteCmd>
 	{
 	public:
-		typedef RoutedGamePlayerMessageTransaction< GameInstanceEntity, Policy::NetSvrPolicyGameInstance, Message::GameInstance::VoteCmd, GameEntityTransVote> super;
+		typedef RoutedGamePlayerMessageTransaction< GameInstanceEntity, Message::GameInstance::VoteCmd> super;
 
 	private:
 
 	public:
-		GameEntityTransVote( MessageDataPtr &pIMsg )  :RoutedGamePlayerMessageTransaction( pIMsg ) {}
+		GameEntityTransVote(IHeap& heap, MessageDataPtr &pIMsg )  :RoutedGamePlayerMessageTransaction(heap,  pIMsg ) {}
 		virtual ~GameEntityTransVote() {}
 
 		// Start Transaction
 		virtual Result StartTransaction();
 
-		BR_SVR_MSGTRANS_CLOSE(VoteRes, GetRouteContext().GetSwaped());
+		BR_SVR_MSGTRANS_CLOSE(Policy::NetSvrPolicyGameInstance, VoteRes, GetRouteContext().GetSwaped());
 	};
 
-	class GameEntityTransAdvanceGame : public RoutedGamePlayerMessageTransaction< GameInstanceEntity, Policy::NetSvrPolicyGameInstance, Message::GameInstance::AdvanceGameCmd, GameEntityTransAdvanceGame>
+	class GameEntityTransAdvanceGame : public RoutedGamePlayerMessageTransaction< GameInstanceEntity, Message::GameInstance::AdvanceGameCmd>
 	{
 	public:
-		typedef RoutedGamePlayerMessageTransaction< GameInstanceEntity, Policy::NetSvrPolicyGameInstance, Message::GameInstance::AdvanceGameCmd, GameEntityTransAdvanceGame> super;
+		typedef RoutedGamePlayerMessageTransaction< GameInstanceEntity, Message::GameInstance::AdvanceGameCmd> super;
 
 	private:
 
 	public:
-		GameEntityTransAdvanceGame( MessageDataPtr &pIMsg )  :RoutedGamePlayerMessageTransaction( pIMsg ) {}
+		GameEntityTransAdvanceGame(IHeap& heap, MessageDataPtr &pIMsg )  :RoutedGamePlayerMessageTransaction(heap, pIMsg ) {}
 		virtual ~GameEntityTransAdvanceGame() {}
 
 		// Start Transaction
 		virtual Result StartTransaction();
 
-		BR_SVR_MSGTRANS_CLOSE(AdvanceGameRes, GetRouteContext().GetSwaped());
+		BR_SVR_MSGTRANS_CLOSE(Policy::NetSvrPolicyGameInstance, AdvanceGameRes, GetRouteContext().GetSwaped());
 	};
 	
 
 
-	class GameEntityTransGamePlayAgain : public RoutedGamePlayerMessageTransaction< GameInstanceEntity, Policy::NetSvrPolicyGameInstance, Message::GameInstance::GamePlayAgainCmd, GameEntityTransGamePlayAgain>
+	class GameEntityTransGamePlayAgain : public RoutedGamePlayerMessageTransaction< GameInstanceEntity, Message::GameInstance::GamePlayAgainCmd>
 	{
 	public:
-		typedef RoutedGamePlayerMessageTransaction< GameInstanceEntity, Policy::NetSvrPolicyGameInstance, Message::GameInstance::GamePlayAgainCmd, GameEntityTransGamePlayAgain> super;
+		typedef RoutedGamePlayerMessageTransaction< GameInstanceEntity, Message::GameInstance::GamePlayAgainCmd> super;
 
 	private:
 		uint m_MemberCount;
 
 	public:
-		GameEntityTransGamePlayAgain(MessageDataPtr &pIMsg) :RoutedGamePlayerMessageTransaction(pIMsg) {}
+		GameEntityTransGamePlayAgain(IHeap& heap, MessageDataPtr &pIMsg) :RoutedGamePlayerMessageTransaction(heap, pIMsg) {}
 		virtual ~GameEntityTransGamePlayAgain() {}
 
 		// Start Transaction
 		virtual Result StartTransaction();
 
-		BR_SVR_MSGTRANS_CLOSE_ARGS(GamePlayAgainRes, GetRouteContext().GetSwaped(), m_MemberCount);
+		BR_SVR_MSGTRANS_CLOSE_ARGS(Policy::NetSvrPolicyGameInstance, GamePlayAgainRes, GetRouteContext().GetSwaped(), m_MemberCount);
 	};
 
 
 
-	class GameEntityTransGameRevealPlayer : public RoutedGamePlayerMessageTransaction< GameInstanceEntity, Policy::NetSvrPolicyGameInstance, Message::GameInstance::GameRevealPlayerCmd, GameEntityTransGameRevealPlayer>
+	class GameEntityTransGameRevealPlayer : public RoutedGamePlayerMessageTransaction< GameInstanceEntity, Message::GameInstance::GameRevealPlayerCmd>
 	{
 	public:
-		typedef RoutedGamePlayerMessageTransaction< GameInstanceEntity, Policy::NetSvrPolicyGameInstance, Message::GameInstance::GameRevealPlayerCmd, GameEntityTransGameRevealPlayer> super;
+		typedef RoutedGamePlayerMessageTransaction< GameInstanceEntity, Message::GameInstance::GameRevealPlayerCmd> super;
 
 	private:
 		StaticArray<PlayerID, 4> m_RevealedPlayerID;
-		StaticArray<PlayerRole, 4> m_RevealedPlayerRole;
+		StaticArray<uint8_t, 4> m_RevealedPlayerRole;
 
 	public:
-		GameEntityTransGameRevealPlayer(MessageDataPtr &pIMsg) :RoutedGamePlayerMessageTransaction(pIMsg) {}
+		GameEntityTransGameRevealPlayer(IHeap& heap, MessageDataPtr &pIMsg)
+			: RoutedGamePlayerMessageTransaction(heap, pIMsg)
+			, m_RevealedPlayerID(heap)
+			, m_RevealedPlayerRole(heap)
+		{}
 		virtual ~GameEntityTransGameRevealPlayer() {}
 
 		// Start Transaction
 		virtual Result StartTransaction();
 
-		BR_SVR_MSGTRANS_CLOSE_ARGS(GameRevealPlayerRes, GetRouteContext().GetSwaped(), m_RevealedPlayerID, m_RevealedPlayerRole);
+		BR_SVR_MSGTRANS_CLOSE_ARGS(Policy::NetSvrPolicyGameInstance, GameRevealPlayerRes, GetRouteContext().GetSwaped(), m_RevealedPlayerID, m_RevealedPlayerRole);
 	};
 
 
 
-	class GameEntityTransGamePlayerRevive : public RoutedGamePlayerMessageTransaction< GameInstanceEntity, Policy::NetSvrPolicyGameInstance, Message::GameInstance::GamePlayerReviveCmd, GameEntityTransGamePlayerRevive>
+	class GameEntityTransGamePlayerRevive : public RoutedGamePlayerMessageTransaction< GameInstanceEntity, Message::GameInstance::GamePlayerReviveCmd>
 	{
 	public:
-		typedef RoutedGamePlayerMessageTransaction< GameInstanceEntity, Policy::NetSvrPolicyGameInstance, Message::GameInstance::GamePlayerReviveCmd, GameEntityTransGamePlayerRevive> super;
+		typedef RoutedGamePlayerMessageTransaction< GameInstanceEntity, Message::GameInstance::GamePlayerReviveCmd> super;
 
 	private:
 
 	public:
-		GameEntityTransGamePlayerRevive(MessageDataPtr &pIMsg) :RoutedGamePlayerMessageTransaction(pIMsg) {}
+		GameEntityTransGamePlayerRevive(IHeap& heap, MessageDataPtr &pIMsg) :RoutedGamePlayerMessageTransaction(heap, pIMsg) {}
 		virtual ~GameEntityTransGamePlayerRevive() {}
 
 		// Start Transaction
 		virtual Result StartTransaction();
 
-		BR_SVR_MSGTRANS_CLOSE(GamePlayerReviveRes, GetRouteContext().GetSwaped());
+		BR_SVR_MSGTRANS_CLOSE(Policy::NetSvrPolicyGameInstance, GamePlayerReviveRes, GetRouteContext().GetSwaped());
 	};
 
 

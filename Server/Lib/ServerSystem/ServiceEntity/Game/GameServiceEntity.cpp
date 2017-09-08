@@ -23,11 +23,11 @@
 #include "Component/ServerComponent.h"
 #include "ServerService/ServerServiceBase.h"
 #include "ServerEntity/ServerEntity.h"
-#include "ServerSystem/ServiceEntity/Game/GameServiceEntity.h"
+#include "ServiceEntity/Game/GameServiceEntity.h"
 #include "ServiceEntity/Game/GamePlayerEntity.h"
 #include "SvrTrace.h"
 #include "SvrConst.h"
-#include "ServerSystem/ServiceEntity/Game/GameClusterServiceEntity.h"
+#include "ServiceEntity/Game/GameClusterServiceEntity.h"
 #include "Entity/EntityManager.h"
 #include "ServiceEntity/ClusterManagerServiceEntity.h"
 
@@ -66,6 +66,7 @@ namespace Svr {
 		svrChkPtr(m_PublicNetSocket);
 
 		svrMem(m_pNetPublic = new(GetMemoryManager()) Net::ServerMUDP(BrServer::GetInstance()->GetServerUID(), NetClass::Game));
+		m_pNetPublic->RegisterToEngineObjectManager();
 		svrChk(m_pNetPublic->HostOpen(NetClass::Game, m_PublicNetSocket->IPV6, m_PublicNetSocket->Port));
 
 
@@ -92,7 +93,7 @@ namespace Svr {
 
 	Proc_End:
 
-		Util::SafeDelete(m_pNetPublic);
+		m_pNetPublic = nullptr;
 
 		return hr;
 	}

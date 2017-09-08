@@ -26,8 +26,8 @@
 #include "Server/BrServer.h"
 #include "ServerEntity/ServerEntityManager.h"
 #include "Entity/EntityManager.h"
-#include "ServerSystem/ServiceEntity/MonitoringServiceTrans.h"
-#include "ServerSystem/ServiceEntity/MonitoringServiceEntity.h"
+#include "ServiceEntity/MonitoringServiceTrans.h"
+#include "ServiceEntity/MonitoringServiceEntity.h"
 
 #include "PerformanceCounter/PerformanceCounterInstance.h"
 #include "ServerSystem/PerformanceCounter/PerformanceCounterServer.h"

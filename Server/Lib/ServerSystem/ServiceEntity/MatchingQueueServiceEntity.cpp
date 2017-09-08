@@ -22,15 +22,15 @@
 #include "Component/ServerComponent.h"
 #include "ServerService/ServerServiceBase.h"
 #include "ServerEntity/ServerEntity.h"
-#include "ServerSystem/ServiceEntity/MatchingQueueServiceEntity.h"
-#include "ServerSystem/ServiceEntity/MatchingQueueServiceTrans.h"
+#include "ServiceEntity/MatchingQueueServiceEntity.h"
+#include "ServiceEntity/MatchingQueueServiceTrans.h"
 #include "SvrTrace.h"
 #include "SvrConst.h"
 #include "ServerEntity/ServerEntityManager.h"
 
 #include "PerformanceCounter/PerformanceCounterClient.h"
 
-#include "ServerSystem/ServiceEntity/MatchingServiceUtil.h"
+#include "ServiceEntity/MatchingServiceUtil.h"
 
 SF_MEMORYPOOL_IMPLEMENT(SF::Svr::MatchingQueueServiceEntity::QueueItem);
 

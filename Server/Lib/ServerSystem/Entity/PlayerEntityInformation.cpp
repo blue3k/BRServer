@@ -57,7 +57,7 @@ namespace Svr {
 		m_PlayerEntityUID = playerUID;
 
 		// Make the play inactive
-		if( m_ServerEntity == nullptr || m_PlayerEntityUID == 0 )
+		if( m_ServerEntity == nullptr || m_PlayerEntityUID.UID == 0 )
 			m_IsActivePlayer = false;
 
 		return ResultCode::SUCCESS;

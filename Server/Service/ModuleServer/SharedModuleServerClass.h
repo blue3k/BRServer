@@ -113,7 +113,7 @@ namespace SharedModuleServer
 		Result AddServiceEntityComponent(ConstructorArgs... constructorArgs);
 
 		// Register clustered service
-		Result RegisterClusteredService(Svr::Config::ModuleBase* module);
+		Result RegisterClusteredService(ServerConfig::ModuleBase* module);
 		Result RegisterClustereWatcherComponents(ClusterID clusterID, Svr::ServerComponentID componentIDStart, Svr::ServerComponentID componentIDEnd);
 
 	};

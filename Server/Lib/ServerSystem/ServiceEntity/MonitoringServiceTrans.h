@@ -21,7 +21,7 @@
 #include "Protocol/Message/MonitoringMsgClass.h"
 #include "Protocol/Policy/MonitoringNetPolicy.h"
 #include "Transaction/MessageRoute.h"
-#include "ServerSystem/ServiceEntity/MonitoringServiceEntity.h"
+#include "ServiceEntity/MonitoringServiceEntity.h"
 #include "Transaction/ServerTransaction.h"
 
 

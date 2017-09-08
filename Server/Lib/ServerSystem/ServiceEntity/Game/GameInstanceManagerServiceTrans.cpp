@@ -21,9 +21,9 @@
 #include "Server/BrServer.h"
 #include "ServerEntity/ServerEntityManager.h"
 #include "Entity/EntityManager.h"
-#include "ServerSystem/ServiceEntity/Game/GameInstanceManagerServiceTrans.h"
-#include "ServerSystem/ServiceEntity/Game/GameInstanceManagerServiceEntity.h"
-#include "ServerSystem/ServiceEntity/Game/GameInstanceEntity.h"
+#include "ServiceEntity/Game/GameInstanceManagerServiceTrans.h"
+#include "ServiceEntity/Game/GameInstanceManagerServiceEntity.h"
+#include "ServiceEntity/Game/GameInstanceEntity.h"
 
 
 

@@ -26,11 +26,11 @@
 #include "ServerEntity/ServerEntityManager.h"
 
 #include "Protocol/ServerService/PartyMatchingQueueService.h"
-#include "ServerSystem/ServiceEntity/MatchingQueueServiceEntity.h"
-#include "ServerSystem/ServiceEntity/Game/GameClusterServiceEntity.h"
-#include "ServerSystem/ServiceEntity/MatchingServiceUtil.h"
+#include "ServiceEntity/MatchingQueueServiceEntity.h"
+#include "ServiceEntity/Game/GameClusterServiceEntity.h"
+#include "ServiceEntity/MatchingServiceUtil.h"
 #include "Protocol/ServerService/GamePartyManagerService.h"
-#include "ServerSystem/ServiceEntity/GamePartyManagerServiceEntity.h"
+#include "ServiceEntity/GamePartyManagerServiceEntity.h"
 
 #include "Protocol/Message/PartyMatchingQueueMsgClass.h"
 
@@ -164,13 +164,11 @@ namespace GameServer {
 		// Leave party when the player joined a party
 		if (GetMyOwner()->GetPartyUID() != 0)
 		{
-			Policy::NetPolicyGameParty *pPolicy = nullptr;
 			Svr::ServerEntity *pServerEntity = nullptr;
 
 			svrChk(Svr::GetServerComponent<Svr::ServerEntityManager>()->GetServerEntity(GetMyOwner()->GetPartyUID().GetServerID(), pServerEntity));
-			svrChkPtr(pPolicy = pServerEntity->GetInterface<Policy::NetPolicyGameParty>());
 
-			svrChk(pPolicy->LeavePartyCmd(RouteContext(GetOwnerEntityUID(), GetMyOwner()->GetPartyUID()), GetTransID(), GetMyOwner()->GetPlayerID()));
+			svrChk(Policy::NetPolicyGameParty(pServerEntity->GetConnection()).LeavePartyCmd(RouteContext(GetOwnerEntityUID(), GetMyOwner()->GetPartyUID()), GetTransID(), GetMyOwner()->GetPlayerID()));
 		}
 		else
 		{
@@ -1438,7 +1436,6 @@ namespace GameServer {
 	Result PlayerTransPlayAgainS2SEvt::StartTransaction()
 	{
 		Result hr = ResultCode::SUCCESS;
-		Policy::NetPolicyGameParty *pPolicy = nullptr;
 		Svr::ServerEntity *pServerEntity = nullptr;
 
 		m_PartyUID = 0;
@@ -1467,8 +1464,8 @@ namespace GameServer {
 		else
 		{
 			svrChk(Svr::GetServerComponent<Svr::ServerEntityManager>()->GetServerEntity(GetPartyUID().GetServerID(), pServerEntity));
-			svrChkPtr(pPolicy = pServerEntity->GetInterface<Policy::NetPolicyGameParty>());
-			svrChk(pPolicy->JoinPartyCmd(RouteContext(GetOwnerEntityUID(), GetPartyUID()), GetTransID(), GetLeadPlayer(), GetMyOwner()->GetPlayerInformation()));
+
+			svrChk(Policy::NetPolicyGameParty(pServerEntity->GetConnection()).JoinPartyCmd(RouteContext(GetOwnerEntityUID(), GetPartyUID()), GetTransID(), GetLeadPlayer(), GetMyOwner()->GetPlayerInformation()));
 		}
 
 	Proc_End:

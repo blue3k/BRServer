@@ -102,38 +102,32 @@ namespace Svr {
 		ServerServiceInformation(ClusterID clusterID, ServerEntity* pServerEntity, ClusterMembership membership);
 		~ServerServiceInformation();
 
-		ClusterID GetClusterID() { return m_ClusterID; }
+		ClusterID GetClusterID() const { return m_ClusterID; }
 
-		ServerEntity* GetServerEntity() { return m_ServerEntity; }
+		ServerEntity* GetServerEntity() const { return m_ServerEntity; }
 
-		ClusterMembership GetClusterMembership() { return m_ClusterMembership; }
+		ClusterMembership GetClusterMembership() const { return m_ClusterMembership; }
 		void SetClusterMembership(ClusterMembership value) { m_ClusterMembership = value; }
 
-		ServiceStatus GetServiceStatus() { return m_ServiceStatus; }
+		ServiceStatus GetServiceStatus() const { return m_ServiceStatus; }
 		void SetServiceStatus(ServiceStatus value) { m_ServiceStatus = value; }
 
-		uint GetWorkload() { return m_Workload; }
+		uint GetWorkload() const { return m_Workload; }
 		void SetWorkload(uint value) { m_Workload = value; }
 
-		uint GetVotedCount() { return m_VotedCount; }
+		uint GetVotedCount() const { return m_VotedCount; }
 		void SetVotedCount(uint value) { m_VotedCount = value; }
 
-		ServerServiceBase* GetServiceBase() { return m_ServiceBase; }
+		ServerServiceBase* GetServiceBase() const { return m_ServiceBase; }
 		void SetServiceBase(ServerServiceBase* value) { m_ServiceBase = value; }
 
 
 		// Get connection
-		SF::Net::Connection* GetConnection() const;
+		SharedPointerT<Net::Connection> GetConnection() const;
 
 		// Get service information
 		void GetServiceInformation( ServiceInformation & serviceInformation );
 
-		// Get Policy
-		template< class InterfaceType >
-		FORCEINLINE InterfaceType GetInterface() const
-		{
-			return InterfaceType(GetConnection());
-		}
 
 		// Setup route context from input transaction to the service entity
 		RouteContext RouteContextFrom(TransactionID fromTrans)

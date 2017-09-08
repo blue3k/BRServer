@@ -24,10 +24,10 @@ namespace SF {
 namespace ConspiracyGameInstanceServer {
 
 	
-	class GameInstanceServerStartProcess : public Svr::TransactionT<GameInstanceServer,GameInstanceServerStartProcess>
+	class GameInstanceServerStartProcess : public Svr::TransactionT<GameInstanceServer>
 	{
 	private:
-		typedef Svr::TransactionT<GameInstanceServer, GameInstanceServerStartProcess> super;
+		typedef Svr::TransactionT<GameInstanceServer> super;
 
 		enum class StartingStep 
 		{
@@ -39,7 +39,7 @@ namespace ConspiracyGameInstanceServer {
 		StartingStep m_Step;
 
 	public:
-		GameInstanceServerStartProcess();
+		GameInstanceServerStartProcess(IHeap &heap);
 		~GameInstanceServerStartProcess();
 
 		// Override delete function

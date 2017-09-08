@@ -105,8 +105,6 @@ namespace Svr {
 		//	Player Info
 		//
 
-		PlayerID GetPlayerID() { return GetAccountID(); }
-
 
 
 	protected:
@@ -116,6 +114,11 @@ namespace Svr {
 
 		GamePlayerEntity();
 		virtual ~GamePlayerEntity();
+
+
+
+		PlayerID GetPlayerID() { return GetAccountID(); }
+
 
 		PlayerState GetPlayerState() const { return m_PlayerState; }
 		void SetPlayerState(PlayerState value) { m_PlayerState = value; }
@@ -142,8 +145,6 @@ namespace Svr {
 		// Set connection for pilot
 		virtual Result SetConnection( SharedPointerT<Net::Connection>&& pCon ) override;
 
-		// Release connection if has
-		virtual void ReleaseConnection() override;
 
 
 

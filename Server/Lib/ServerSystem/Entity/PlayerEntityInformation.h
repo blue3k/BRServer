@@ -77,7 +77,7 @@ namespace Svr {
 		RouteContext GetRouteContext( EntityUID uidFrom );
 
 		// Query policy from game server entity
-		Net::Connection* GetConnection() const		{ return m_ServerEntity != nullptr ? m_ServerEntity->GetConnection() : nullptr; }
+		SharedPointerT<Net::Connection> GetConnection() const		{ return m_ServerEntity != nullptr ? std::forward<SharedPointerT<Net::Connection>>(m_ServerEntity->GetConnection()) : SharedPointerT<Net::Connection>(); }
 
 	};
 

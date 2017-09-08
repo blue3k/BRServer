@@ -26,7 +26,7 @@
 #include "Server/BrServerUtil.h"
 
 #include "Protocol/Message/LoginServerMsgClass.h"
-#include "ServerSystem/ServiceEntity/Game/GameClusterServiceTrans.h"
+#include "ServiceEntity/Game/GameClusterServiceTrans.h"
 
 
 SF_MEMORYPOOL_IMPLEMENT(SF::Svr::GameClusterServiceEntity::PlayerTableItem);

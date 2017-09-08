@@ -60,7 +60,7 @@ namespace Svr {
 	}
 
 	// set connection
-	Result ServerEntity::SetConnection(SharedPointerT<Net::Connection> &destConn, Net::Connection * pConn)
+	Result ServerEntity::SetConnection(SharedPointerAtomicT<Net::Connection> &destConn, Net::Connection * pConn)
 	{
 		Result hr = ResultCode::SUCCESS;
 		MutexScopeLock localLock(m_ConnectionLock);
@@ -92,7 +92,7 @@ namespace Svr {
 		if (pCurConn != nullptr)
 		{
 			pCurConn->SetEventHandler(nullptr);
-			//pCurConn->GetNet()->ReleaseConnection(pCurConn);
+			pCurConn->DisconnectNRelease();
 
 			auto localCon = m_pConnLocal;
 			Assert(localCon == nullptr || localCon != pCurConn);
@@ -117,10 +117,11 @@ namespace Svr {
 
 	void ServerEntity::GetConnectionShared(SharedPointerT<Net::Connection>& outConn)
 	{
-		MutexScopeLock localLock(m_ConnectionLock);
+		outConn = std::forward<SharedPointerT<Net::Connection>>(GetConnection());
+		//MutexScopeLock localLock(m_ConnectionLock);
 
-		auto pConn = GetConnection();
-		outConn = pConn != nullptr ? (Net::Connection*)pConn : SharedPointerT<Net::Connection>();
+		//auto pConn = GetConnection();
+		//outConn = pConn != nullptr ? (Net::Connection*)pConn : SharedPointerT<Net::Connection>();
 	}
 
 	// Initialize entity to proceed new connection
@@ -187,17 +188,17 @@ namespace Svr {
 
 		// First try to route message
 		pMsg->GetRouteInfo(routeContext, transID);
-		if (routeContext.GetTo() != GetEntityUID() && (GetServerComponent<EntityManager>()->FindEntity(routeContext.GetTo(), pEntity)))
+		if (routeContext.GetTo() != GetEntityUID() && (Service::EntityTable->find(routeContext.GetTo(), pEntity)))
 		{
 			return pEntity->ProcessMessage(pServerEntity, pCon, pMsg);
 		}
 
-		if (routeContext.GetTo() != 0)
+		if (routeContext.GetTo().UID != 0)
 		{
-			if(pMsg->GetMessageHeader()->msgID.IDs.Type == Message::MSGTYPE_COMMAND)
-				pCon->GetInterface<Policy::NetSvrPolicyServer>()->GenericFailureRes(routeContext.GetSwaped(), transID, ResultCode::SVR_INVALID_ENTITYUID);
+			if (pMsg->GetMessageHeader()->msgID.IDs.Type == Message::MSGTYPE_COMMAND)
+				Policy::NetSvrPolicyServer(SharedPointerT<Net::Connection>(pCon)).GenericFailureRes(routeContext.GetSwaped(), transID, ResultCode::SVR_INVALID_ENTITYUID);
 
-			Util::SafeRelease(pMsg);
+			pMsg = nullptr;
 			return ResultCode::SUCCESS_FALSE;
 		}
 
@@ -221,10 +222,10 @@ namespace Svr {
 				svrChkPtr(myConfig);
 
 
-				svrTrace( SVR_DBGSVR, "Sending Server Connected to Entity Server from:{0}", myConfig->Name.c_str() );
+				svrTrace( SVR_DBGSVR, "Sending Server Connected to Entity Server from:{0}", myConfig->Name );
 
-				Policy::NetPolicyServer *pPolicy = GetConnection()->GetInterface<Policy::NetPolicyServer>();
-				svrChkPtr(pPolicy);
+				Policy::NetPolicyServer pPolicy(GetConnection());
+
 				const ServerServiceInformation* pServerServiceInfo = Svr::GetServerComponent<ClusterManagerServiceEntity>()->GetMyServiceInfo();
 				ServiceInformation serviceInformation( pServerServiceInfo->GetEntityUID(), 
 					pServerServiceInfo->GetClusterMembership(), 
@@ -235,7 +236,7 @@ namespace Svr {
 					pServerServiceInfo->GetWorkload() );
 
 				// This is a replication of a remote server. ServerID in EntityUID wil have remote server id then local serverID
-				svrChk(pPolicy->ServerConnectedC2SEvt(RouteContext(Svr::BrServer::GetInstance()->GetServerUID(), 0),
+				svrChk(pPolicy.ServerConnectedC2SEvt(RouteContext(Svr::BrServer::GetInstance()->GetServerUID(), 0),
 					serviceInformation, 
 					BrServer::GetInstance()->GetServerUpTime().time_since_epoch().count(),
 					netPrivate->GetLocalAddress()));
@@ -340,14 +341,16 @@ namespace Svr {
 						m_LocalConnectionRetryWait = Util::TimeMinNonZero(m_LocalConnectionRetryWait + DurationMS(Svr::Const::REMOTE_CONNECTION_RETRY), DurationMS(Svr::Const::REMOTE_CONNECTION_RETRY_MAX));
 
 						m_LocalConnectionRetryTime = Util::Time.GetTimeMs();
-						auto connectionInfo = pConn->GetConnectionInfo();
-						if (GetPrivateNetAddress().usPort != 0)
+						auto remoteInfo = pConn->GetRemoteInfo();
+						auto localInfo = pConn->GetLocalInfo();
+						if (GetPrivateNetAddress().Port != 0)
 						{
-							svrChk(pConn->GetNet()->Connect(pConn, (uint)connectionInfo.RemoteID, connectionInfo.RemoteClass, GetPrivateNetAddress()));
+							remoteInfo.PeerAddress = GetPrivateNetAddress();
+							svrChk(pConn->Connect(localInfo, remoteInfo));
 						}
 						else
 						{
-							svrChk(pConn->GetNet()->Connect(pConn, (uint)connectionInfo.RemoteID, connectionInfo.RemoteClass, connectionInfo.Remote));
+							svrChk(pConn->Connect(localInfo, remoteInfo));
 						}
 					}
 				}
@@ -375,7 +378,7 @@ namespace Svr {
 		//{
 		//	prevConn->CloseConnection();
 		//	Assert(prevConn->GetRefCount() == 1);
-		//	prevConn->GetNet()->ReleaseConnection(prevConn);
+		//	prevConn->DisconnectNRelease();
 		//	m_pConnRemotePrev.store(nullptr, std::memory_order_relaxed);
 		//}
 		svrChk(UpdateConnection(pConnRemote));
@@ -437,7 +440,7 @@ namespace Svr {
 			pMsg = eventTask.EventData.MessageEvent.pMessage;
 			if (pMsg != nullptr)
 			{
-				ProcessMessage(this, GetConnection(), pMsg);
+				ProcessMessage(this, *GetConnection(), pMsg);
 			}
 			else
 			{

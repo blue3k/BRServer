@@ -25,9 +25,9 @@
 #include "Server/BrServer.h"
 #include "ServerEntity/ServerEntityManager.h"
 
-#include "ServerSystem/ServiceEntity/GamePartyManagerServiceEntity.h"
+#include "ServiceEntity/GamePartyManagerServiceEntity.h"
 #include "Protocol/ServerService/GamePartyManagerService.h"
-#include "ServerSystem/ServiceEntity/Game/GameClusterServiceEntity.h"
+#include "ServiceEntity/Game/GameClusterServiceEntity.h"
 
 #include "Protocol/Message/GameInstanceMsgClass.h"
 #include "Protocol/Policy/GameInstanceNetPolicy.h"
@@ -84,8 +84,8 @@ namespace GameServer {
 	//	Party
 	//
 
-	PlayerTransGameMatchedS2SEvt::PlayerTransGameMatchedS2SEvt(MessageDataPtr &pIMsg)
-	  :UserTransactionS2SEvt( pIMsg )
+	PlayerTransGameMatchedS2SEvt::PlayerTransGameMatchedS2SEvt(IHeap& heap, MessageDataPtr &pIMsg)
+	  : UserTransactionS2SEvt( heap, pIMsg )
 	{
 		BR_TRANS_MESSAGE( Message::GameInstance::JoinGameRes, { return OnJoinGameRes(pRes); } );
 		BR_TRANS_MESSAGE( DB::QueryUpdateJoinGameCmd, { return OnUpdateDBRes(pRes); } );
@@ -151,13 +151,11 @@ namespace GameServer {
 
 		if (GetMyOwner()->GetPartyUID() != 0)
 		{
-			Policy::NetPolicyGameParty *pPolicy = nullptr;
 			Svr::ServerEntity *pServerEntity = nullptr;
 
 			svrChk(Svr::GetServerComponent<Svr::ServerEntityManager>()->GetServerEntity(GetMyOwner()->GetPartyUID().GetServerID(), pServerEntity));
-			svrChkPtr(pPolicy = pServerEntity->GetInterface<Policy::NetPolicyGameParty>());
 
-			svrChk(pPolicy->LeavePartyCmd(RouteContext(GetOwnerEntityUID(), GetMyOwner()->GetPartyUID()), GetTransID(), GetMyOwner()->GetPlayerID()) );
+			svrChk(Policy::NetPolicyGameParty(pServerEntity->GetConnection()).LeavePartyCmd(RouteContext(GetOwnerEntityUID(), GetMyOwner()->GetPartyUID()), GetTransID(), GetMyOwner()->GetPlayerID()) );
 
 			m_WaitingQueires++;
 		}
@@ -322,8 +320,8 @@ namespace GameServer {
 
 
 
-	PlayerTransCreateParty::PlayerTransCreateParty( MessageDataPtr &pIMsg )
-		:MessageTransaction( pIMsg )
+	PlayerTransCreateParty::PlayerTransCreateParty(IHeap& heap, MessageDataPtr &pIMsg )
+		:MessageTransaction(heap, pIMsg )
 	{
 		BR_TRANS_MESSAGE( Message::GamePartyManager::CreatePartyRes, { return OnCreatePartyRes(pRes); } );
 	}
@@ -388,8 +386,8 @@ namespace GameServer {
 
 	
 
-	PlayerTransJoinParty::PlayerTransJoinParty( MessageDataPtr &pIMsg )
-		:MessageTransaction( pIMsg )
+	PlayerTransJoinParty::PlayerTransJoinParty(IHeap& heap, MessageDataPtr &pIMsg )
+		:MessageTransaction( heap, pIMsg )
 	{
 		BR_TRANS_MESSAGE( Message::GameParty::JoinPartyRes, { return OnJoinPartyRes(pRes); } );
 	}
@@ -425,7 +423,6 @@ namespace GameServer {
 	Result PlayerTransJoinParty::StartTransaction()
 	{
 		Result hr = ResultCode::SUCCESS;
-		Policy::NetPolicyGameParty *pPolicy = nullptr;
 		Svr::ServerEntity *pServerEntity = nullptr;
 		auto config = GetMyServer()->GetPresetGameConfig();
 
@@ -454,9 +451,8 @@ namespace GameServer {
 
 		svrChk( Svr::GetServerComponent<Svr::ServerEntityManager>()->GetServerEntity( GetPartyUID().GetServerID(), pServerEntity ) );
 
-		svrChkPtr( pPolicy = pServerEntity->GetInterface<Policy::NetPolicyGameParty>() );
 
-		svrChk( pPolicy->JoinPartyCmd(RouteContext(GetOwnerEntityUID(), GetPartyUID()), GetTransID(),
+		svrChk(Policy::NetPolicyGameParty(pServerEntity->GetConnection()).JoinPartyCmd(RouteContext(GetOwnerEntityUID(), GetPartyUID()), GetTransID(),
 			GetInviterID(), GetMyOwner()->GetPlayerInformation() ) );
 
 	Proc_End:
@@ -509,8 +505,8 @@ namespace GameServer {
 
 
 
-	PlayerTransLeaveParty::PlayerTransLeaveParty( MessageDataPtr &pIMsg )
-		:MessageTransaction( pIMsg )
+	PlayerTransLeaveParty::PlayerTransLeaveParty(IHeap& heap, MessageDataPtr &pIMsg )
+		:MessageTransaction( heap, pIMsg )
 	{
 		BR_TRANS_MESSAGE( Message::GameParty::LeavePartyRes, { return OnLeavePartyRes(pRes); } );
 	}
@@ -547,7 +543,6 @@ namespace GameServer {
 	Result PlayerTransLeaveParty::StartTransaction()
 	{
 		Result hr = ResultCode::SUCCESS;
-		Policy::NetPolicyGameParty *pPolicy = nullptr;
 		Svr::ServerEntity *pServerEntity = nullptr;
 
 		svrChk( super::StartTransaction() );
@@ -560,9 +555,8 @@ namespace GameServer {
 			svrErr(ResultCode::GAME_INVALID_PARTYID);
 
 		svrChk( Svr::GetServerComponent<Svr::ServerEntityManager>()->GetServerEntity( GetPartyUID().GetServerID(), pServerEntity ) );
-		svrChkPtr( pPolicy = pServerEntity->GetInterface<Policy::NetPolicyGameParty>() );
 
-		svrChk( pPolicy->LeavePartyCmd( RouteContext(GetOwnerEntityUID(),GetMyOwner()->GetPartyUID()), GetTransID(),
+		svrChk(Policy::NetPolicyGameParty(pServerEntity->GetConnection()).LeavePartyCmd( RouteContext(GetOwnerEntityUID(),GetMyOwner()->GetPartyUID()), GetTransID(),
 			GetMyOwner()->GetPlayerID() ) );
 	
 	Proc_End:
@@ -600,8 +594,8 @@ namespace GameServer {
 	
 	
 
-	PlayerTransPartyKickPlayer::PlayerTransPartyKickPlayer( MessageDataPtr &pIMsg )
-		:MessageTransaction( pIMsg )
+	PlayerTransPartyKickPlayer::PlayerTransPartyKickPlayer(IHeap& heap, MessageDataPtr &pIMsg )
+		:MessageTransaction( heap, pIMsg )
 	{
 		BR_TRANS_MESSAGE( Message::GameParty::KickPlayerRes, { return OnPlayerKickRes(pRes); } );
 	}
@@ -627,7 +621,6 @@ namespace GameServer {
 	Result PlayerTransPartyKickPlayer::StartTransaction()
 	{
 		Result hr = ResultCode::SUCCESS;
-		Policy::NetPolicyGameParty *pPolicy = nullptr;
 		Svr::ServerEntity *pServerEntity = nullptr;
 
 		svrChk( super::StartTransaction() );
@@ -640,9 +633,8 @@ namespace GameServer {
 			svrErr(ResultCode::GAME_INVALID_PARTYID);
 
 		svrChk( Svr::GetServerComponent<Svr::ServerEntityManager>()->GetServerEntity( GetPartyUID().GetServerID(), pServerEntity ) );
-		svrChkPtr( pPolicy = pServerEntity->GetInterface<Policy::NetPolicyGameParty>() );
 
-		svrChk( pPolicy->KickPlayerCmd( RouteContext(GetOwnerEntityUID(),GetPartyUID()), GetTransID(),
+		svrChk(Policy::NetPolicyGameParty(pServerEntity->GetConnection()).KickPlayerCmd( RouteContext(GetOwnerEntityUID(),GetPartyUID()), GetTransID(),
 			GetMyOwner()->GetPlayerID(), GetPlayerToKick() ) );
 	
 	Proc_End:
@@ -682,39 +674,12 @@ namespace GameServer {
 	
 
 	
-	PlayerTransPartyInvite::PlayerTransPartyInvite( MessageDataPtr &pIMsg ):MessageTransaction(pIMsg)
+	PlayerTransPartyInvite::PlayerTransPartyInvite(IHeap& heap, MessageDataPtr &pIMsg )
+		: MessageTransaction(heap, pIMsg)
 	{
 		//BR_TRANS_MESSAGE( DB::QueryNotification_AddCmd, { return OnNotifyAdded(pRes); } );
 	}
 
-	//Result PlayerTransPartyInvite::OnNotifyAdded(  Svr::TransactionResult* &pRes )
-	//{
-	//	Result hr = ResultCode::SUCCESS;
-	//	Svr::ServerEntity *pServerEntity = nullptr;
-	//	EntityUID playerUID;
-	//	Policy::NetPolicyGameServer* pTargetPolicy = nullptr;
-
-	//	svrChk( pRes->GetResult() );
-	//	DB::QueryNotification_AddCmd *pMsgRes = (DB::QueryNotification_AddCmd*)pRes;
-
-
-	//	// Find player and send notify
-	//	if( (Svr::GetServerComponent<Svr::GameClusterServiceEntity>()->FindPlayer( GetInviteTargetID(), playerUID )) )
-	//	{
-	//		svrChk( Svr::GetServerComponent<Svr::ServerEntityManager>()->GetServerEntity( playerUID.SvrID, pServerEntity ) );
-	//		pTargetPolicy = pServerEntity->GetInterface<Policy::NetPolicyGameServer>();
-
-	//		svrChk( pTargetPolicy->NotifyC2SEvt( RouteContext(GetOwnerEntityUID(),playerUID), 
-	//			GetInviteTargetID(), pMsgRes->NotificationID, NotificationType::PartyRequest, GetMyOwner()->GetPlayerID(), GetMyOwner()->GetPartyUID(), GetMyOwner()->GetNickName() ) );
-	//	}
-
-	//Proc_End:
-
-	//	CloseTransaction(hr);
-
-	//	return hr;
-	//	
-	//}
 
 	// Start Transaction
 	Result PlayerTransPartyInvite::StartTransaction()
@@ -722,7 +687,6 @@ namespace GameServer {
 		Result hr = ResultCode::SUCCESS;
 		Svr::ServerEntity *pServerEntity = nullptr;
 		EntityUID playerUID;
-		Policy::NetPolicyGameServer* pTargetPolicy = nullptr;
 
 		svrChk( super::StartTransaction() );
 
@@ -739,9 +703,8 @@ namespace GameServer {
 		if( (Svr::GetServerComponent<Svr::GameClusterServiceEntity>()->FindPlayer( GetInviteTargetID(), playerUID )) )
 		{
 			svrChk( Svr::GetServerComponent<Svr::ServerEntityManager>()->GetServerEntity( playerUID.GetServerID(), pServerEntity ) );
-			svrChkPtr(pTargetPolicy = pServerEntity->GetInterface<Policy::NetPolicyGameServer>());
 
-			svrChk( pTargetPolicy->NotifyPartyInviteC2SEvt( RouteContext(GetOwnerEntityUID(),playerUID), 
+			svrChk(Policy::NetPolicyGameServer(pServerEntity->GetConnection()).NotifyPartyInviteC2SEvt( RouteContext(GetOwnerEntityUID(),playerUID),
 				GetInviteTargetID(), GetMyOwner()->GetPlayerID(), GetMyOwner()->GetNickName(), GetMyOwner()->GetPartyUID() ) );
 
 			CloseTransaction( hr );
@@ -788,7 +751,6 @@ namespace GameServer {
 	{
 		Result hr = ResultCode::SUCCESS;
 		Svr::ServerEntity *pServerEntity = nullptr;
-		Policy::NetPolicyGameParty *pPolicy = nullptr;
 
 		svrChk( super::StartTransaction() );
 
@@ -802,9 +764,8 @@ namespace GameServer {
 			svrErr(ResultCode::GAME_INVALID_PARTYID);
 
 		svrChk( Svr::GetServerComponent<Svr::ServerEntityManager>()->GetServerEntity( GetMyOwner()->GetPartyUID().GetServerID(), pServerEntity ) );
-		svrChkPtr( pPolicy = pServerEntity->GetInterface<Policy::NetPolicyGameParty>() );
 
-		svrChk( pPolicy->ChatMessageC2SEvt( RouteContext(GetOwnerEntityUID(),GetMyOwner()->GetPartyUID()), 
+		svrChk(Policy::NetPolicyGameParty(pServerEntity->GetConnection()).ChatMessageC2SEvt( RouteContext(GetOwnerEntityUID(),GetMyOwner()->GetPartyUID()),
 			GetMyOwner()->GetPlayerID(), GetChatMessage() ) );
 
 	Proc_End:
@@ -844,7 +805,6 @@ namespace GameServer {
 	{
 		Result hr = ResultCode::SUCCESS;
 		Svr::ServerEntity *pServerEntity = nullptr;
-		Policy::NetPolicyGameParty *pPolicy = nullptr;
 
 		svrChk( super::StartTransaction() );
 
@@ -858,9 +818,8 @@ namespace GameServer {
 			svrErr(ResultCode::GAME_INVALID_PARTYID);
 
 		svrChk( Svr::GetServerComponent<Svr::ServerEntityManager>()->GetServerEntity( GetMyOwner()->GetPartyUID().GetServerID(), pServerEntity ) );
-		svrChkPtr( pPolicy = pServerEntity->GetInterface<Policy::NetPolicyGameParty>() );
 
-		svrChk( pPolicy->QuickChatMessageC2SEvt( RouteContext(GetOwnerEntityUID(),GetMyOwner()->GetPartyUID()), 
+		svrChk(Policy::NetPolicyGameParty(pServerEntity->GetConnection()).QuickChatMessageC2SEvt( RouteContext(GetOwnerEntityUID(),GetMyOwner()->GetPartyUID()),
 			GetMyOwner()->GetPlayerID(), GetQuickChatID() ) );
 	
 	Proc_End:

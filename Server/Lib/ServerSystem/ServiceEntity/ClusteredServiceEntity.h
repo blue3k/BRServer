@@ -18,7 +18,7 @@
 #include "Memory/MemoryPool.h"
 #include "Util/TimeUtil.h"
 #include "Types/BrSvrTypes.h"
-#include "ServerSystem/ServiceEntity/ServiceEntity.h"
+#include "ServiceEntity/ServiceEntity.h"
 #include "Component/ServerComponent.h"
 #include "ServerService/ServerServiceBase.h"
 #include "Container/HashTable.h"

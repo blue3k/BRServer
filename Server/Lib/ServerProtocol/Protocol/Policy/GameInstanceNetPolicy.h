@@ -23,10 +23,10 @@ namespace SF
  		class NetPolicyGameInstance 
 		{
  			private:
-				Net::Connection* m_pConnection;
+				SharedPointerT<Net::Connection>& m_pConnection;
 			public:
 			// Constructor
-			NetPolicyGameInstance ( Net::Connection* pConn ) : m_pConnection(pConn)
+			NetPolicyGameInstance ( SharedPointerT<Net::Connection>& pConn ) : m_pConnection(pConn)
 			{}
 
 			// C2S: Game instance deletion
@@ -62,10 +62,10 @@ namespace SF
 		class NetSvrPolicyGameInstance
 		{
  			private:
-				Net::Connection* m_pConnection;
+				SharedPointerT<Net::Connection>& m_pConnection;
 			public:
 			// Constructor
-			NetSvrPolicyGameInstance ( Net::Connection* pConn ) : m_pConnection(pConn)
+			NetSvrPolicyGameInstance ( SharedPointerT<Net::Connection>& pConn ) : m_pConnection(pConn)
 			{}
 
 			// Cmd: Join Game

@@ -32,10 +32,11 @@ namespace Svr {
 	PerformanceCounterInstance::PerformanceCounterInstance(const char *strInstanceName, EntityUID instanceEntityUID)
 		: m_InstanceEntityUID(instanceEntityUID)
 		, m_SyncSerial(0)
+		, m_Counters(GetSystemMemoryManager())
 		, m_pManager(nullptr)
 	{
 		AssertRel(strInstanceName);
-		AssertRel(m_InstanceEntityUID != 0);
+		AssertRel(m_InstanceEntityUID.UID != 0);
 
 		StrUtil::StringCpy(m_pInstanceName, strInstanceName);
 

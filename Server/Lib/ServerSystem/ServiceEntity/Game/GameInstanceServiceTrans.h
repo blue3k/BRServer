@@ -21,7 +21,7 @@
 #include "Protocol/Message/ClusterServerMsgClass.h"
 #include "Protocol/Policy/ClusterServerNetPolicy.h"
 #include "Transaction/MessageRoute.h"
-#include "ServerSystem/ServiceEntity/Game/GameServiceEntity.h"
+#include "ServiceEntity/Game/GameServiceEntity.h"
 #include "Transaction/ServerTransaction.h"
 
 

@@ -27,8 +27,8 @@
 #include "SvrTrace.h"
 
 #include "Protocol/Message/ClusterServerMsgClass.h"
-#include "ServerSystem/ServiceEntity/ClusterServiceTrans.h"
-#include "ServerSystem/ServiceEntity/ClusterManagerServiceTrans.h"
+#include "ServiceEntity/ClusterServiceTrans.h"
+#include "ServiceEntity/ClusterManagerServiceTrans.h"
 #include "Protocol/ServerService/ClusterServerService.h"
 
 
@@ -145,7 +145,7 @@ namespace Svr {
 		EntityID entityID(EntityFaculty::Service,(uint32_t)clusterID);
 		SharedPointerT<Entity> pEntity;
 
-		if( ( GetServerComponent<EntityManager>()->FindEntity( entityID, pEntity ) ) )
+		if( (Service::EntityTable->find( entityID, pEntity ) ) )
 		{
 			// same entity already registered, just check integrity
 			ClusteredServiceEntity* pClusterEntity = dynamic_cast<ClusteredServiceEntity*>((Entity*)pEntity);

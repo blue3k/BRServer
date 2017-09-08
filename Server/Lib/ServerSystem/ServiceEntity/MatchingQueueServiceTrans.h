@@ -22,7 +22,7 @@
 #include "Protocol/Policy/PartyMatchingQueueNetPolicy.h"
 #include "Transaction/MessageRoute.h"
 #include "ServiceEntity/ClusteredServiceEntity.h"
-#include "ServerSystem/ServiceEntity/MatchingQueueServiceEntity.h"
+#include "ServiceEntity/MatchingQueueServiceEntity.h"
 #include "Transaction/ServerTransaction.h"
 
 

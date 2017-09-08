@@ -25,7 +25,7 @@
 //#include "GameSystem/GameSystemComponentIDs.h"
 //
 //#include "ConspiracyGameInstanceSvrConst.h"
-#include "ServerSystem/ServiceEntity/Game/GameInstancePlayer.h"
+#include "ServiceEntity/Game/GameInstancePlayer.h"
 
 #include "Protocol/Policy/GameServerNetPolicy.h"
 #include "Protocol/Policy/GameInstanceNetPolicy.h"
@@ -128,6 +128,7 @@ namespace Svr
 		uint GetNumBot() { return m_NumBot; }
 
 		DurationMS GetEmptyInstanceKillTimeOut() { return m_EmptyInstanceKillTimeOut; }
+		void SetEmptyInstanceKillTimeOut(DurationMS value) { m_EmptyInstanceKillTimeOut = value; }
 
 		// Instance ID query
 		inline GameInsID GetInstanceID();

@@ -26,8 +26,8 @@
 #include "Server/BrServer.h"
 #include "ServerEntity/ServerEntityManager.h"
 #include "Entity/EntityManager.h"
-#include "ServerSystem/ServiceEntity/Game/GameInstanceServiceTrans.h"
-#include "ServerSystem/ServiceEntity/Game/GameInstanceServiceEntity.h"
+#include "ServiceEntity/Game/GameInstanceServiceTrans.h"
+#include "ServiceEntity/Game/GameInstanceServiceEntity.h"
 #include "GameInstanceServiceTrans.h"
 
 SF_MEMORYPOOL_IMPLEMENT(SF::Svr::GameInstanceTrans);

@@ -31,10 +31,10 @@
 //#include "GameInstanceEntity.h"
 
 #include "Server/BrServer.h"
-#include "ServerSystem/ServiceEntity/Game/GameInstancePlayer.h"
+#include "ServiceEntity/Game/GameInstancePlayer.h"
 #include "Protocol/ServerService/GameInstanceManagerService.h"
-#include "ServerSystem/ServiceEntity/Game/GameInstanceEntity.h"
-#include "ServerSystem/ServiceEntity/Game/GameInstanceManagerServiceEntity.h"
+#include "ServiceEntity/Game/GameInstanceEntity.h"
+#include "ServiceEntity/Game/GameInstanceManagerServiceEntity.h"
 
 
 

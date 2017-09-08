@@ -135,19 +135,18 @@ namespace ConspiracyGameInstanceServer {
 		GameStateSystem( GameInstanceEntity* pEntity );
 		~GameStateSystem();
 
-		IMemoryManager& GetMemoryManager() { return GetOwner().GetMemoryManager(); }
+		IMemoryManager& GetMemoryManager();
 
 		GameStateID GetCurrentGameState() { return m_CurrentGameState; }
 
 		uint GetCurrentDay() { return m_CurrentDay; }
 
-		bool GetGameAdvanceVoted() { return m_GameAdvanceVoted; }
+		uint GetGameAdvanceVoted() { return m_GameAdvanceVoted; }
 		uint GetIsInStateChanging() { return m_IsInStateChanging; }
 
 
 		// Get current game play state
 		GamePlayState* GetCurrentGamePlayState();
-		GameStateID GetCurrentGameState();
 
 		// increase day
 		void NextDay();
@@ -185,11 +184,6 @@ namespace ConspiracyGameInstanceServer {
 	inline GamePlayState* GameStateSystem::GetCurrentGamePlayState()
 	{
 		return m_GamePlayStates[(uint)m_CurrentGameState];
-	}
-
-	inline GameStateID GameStateSystem::GetCurrentGameState()
-	{
-		return m_CurrentGameState;
 	}
 
 	inline void GameStateSystem::NextDay()

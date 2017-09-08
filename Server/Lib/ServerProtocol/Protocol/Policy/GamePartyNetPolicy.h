@@ -23,10 +23,10 @@ namespace SF
  		class NetPolicyGameParty 
 		{
  			private:
-				Net::Connection* m_pConnection;
+				SharedPointerT<Net::Connection>& m_pConnection;
 			public:
 			// Constructor
-			NetPolicyGameParty ( Net::Connection* pConn ) : m_pConnection(pConn)
+			NetPolicyGameParty ( SharedPointerT<Net::Connection>& pConn ) : m_pConnection(pConn)
 			{}
 
 			// Cmd: Join Party
@@ -50,10 +50,10 @@ namespace SF
 		class NetSvrPolicyGameParty
 		{
  			private:
-				Net::Connection* m_pConnection;
+				SharedPointerT<Net::Connection>& m_pConnection;
 			public:
 			// Constructor
-			NetSvrPolicyGameParty ( Net::Connection* pConn ) : m_pConnection(pConn)
+			NetSvrPolicyGameParty ( SharedPointerT<Net::Connection>& pConn ) : m_pConnection(pConn)
 			{}
 
 			// Cmd: Join Party

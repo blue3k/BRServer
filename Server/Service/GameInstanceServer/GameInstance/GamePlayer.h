@@ -18,7 +18,7 @@
 #include "Memory/MemoryPool.h"
 #include "Entity/Entity.h"
 #include "ServiceEntity/Game/GameSystem.h"
-#include "ServerSystem/ServiceEntity/Game/GameInstancePlayer.h"
+#include "ServiceEntity/Game/GameInstancePlayer.h"
 #include "GameConst.h"
 #include "Types/BrGameTypes.h"
 

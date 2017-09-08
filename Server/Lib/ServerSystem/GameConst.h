@@ -25,32 +25,30 @@ namespace GameConst {
 	};	// namespace Chat
 
 
-	enum  {
-		MAX_GCMKEYS		= 512,
-		MAX_NAME		= 64,
-		MAX_EMAIL		= 128,
-		MAX_GAMEPLAYER	= 8,
+	constexpr int MAX_GCMKEYS		= 512;
+	constexpr int MAX_NAME		= 64;
+	constexpr int MAX_EMAIL		= 128;
+	constexpr int MAX_GAMEPLAYER	= 8;
 
-		MAX_COMPLITIONSTATE = 16,
+	constexpr int MAX_COMPLITIONSTATE = 16;
 
-		MAX_GAMELOG			= 100,
-		MAX_GAMELOG_BUFFER	= 1024,
-		MAX_CHATMESSAGE_SIZE= 1024,
-		MAX_CHATLOG			= 300,
-		MAX_CHATLOG_BUFFER	= 1024,
+	constexpr int MAX_GAMELOG			= 100;
+	constexpr int MAX_GAMELOG_BUFFER	= 1024;
+	constexpr int MAX_CHATMESSAGE_SIZE= 1024;
+	constexpr int MAX_CHATLOG			= 300;
+	constexpr int MAX_CHATLOG_BUFFER	= 1024;
 
-		MAX_CHATSYNC		= 40,
+	constexpr int MAX_CHATSYNC		= 40;
 
-		AI_VOTE_TIMEOUT	= 60*1000,
+	constexpr int AI_VOTE_TIMEOUT	= 60*1000;
 
-		MAX_RANKING_QUERY_COUNT = 20,
+	constexpr int MAX_RANKING_QUERY_COUNT = 20;
 
-		PLAYER_UPDATE_STATUS_TIME = 30 * 1000,
+	constexpr int PLAYER_UPDATE_STATUS_TIME = 30 * 1000;
 
-		MAX_PLAYER_REVEAL = 1,
+	constexpr int MAX_PLAYER_REVEAL = 1;
 
-		MATCHING_TIMEOUT = 60*1000,
-	};
+	constexpr int MATCHING_TIMEOUT = 60*1000;
 
 
 };// namespace Const

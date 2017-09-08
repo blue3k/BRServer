@@ -17,7 +17,6 @@
 #include "Container/SFArray.h"
 #include "Types/SFEngineTypedefs.h"
 #include "GameConst.h"
-#include "Common/MemoryStream.h"
 #include "Protocol/Message/GameMsgClass.h"
 #include "Protocol/Policy/GameNetPolicy.h"
 #include "Protocol/Message/GameServerMsgClass.h"
@@ -46,16 +45,16 @@ namespace GameServer {
 
 	
 	// Player voted event
-	class PlayerTransGameMatchedS2SEvt : public Svr::UserTransactionS2SEvt< GamePlayerEntity, Policy::NetSvrPolicyGame, Message::PartyMatching::PlayerGameMatchedS2CEvt, PlayerTransGameMatchedS2SEvt>
+	class PlayerTransGameMatchedS2SEvt : public Svr::UserTransactionS2SEvt< GamePlayerEntity, Message::PartyMatching::PlayerGameMatchedS2CEvt>
 	{
 	public:
-		typedef Svr::UserTransactionS2SEvt< GamePlayerEntity, Policy::NetSvrPolicyGame, Message::PartyMatching::PlayerGameMatchedS2CEvt, PlayerTransGameMatchedS2SEvt> super;
+		typedef Svr::UserTransactionS2SEvt< GamePlayerEntity, Message::PartyMatching::PlayerGameMatchedS2CEvt> super;
 
 	private:
 		INT m_WaitingQueires;
 
 	public:
-		PlayerTransGameMatchedS2SEvt( MessageDataPtr &pIMsg );//  :UserTransactionS2SEvt( pIMsg ) {}
+		PlayerTransGameMatchedS2SEvt(IHeap& heap, MessageDataPtr &pIMsg );//  :UserTransactionS2SEvt( pIMsg ) {}
 		virtual ~PlayerTransGameMatchedS2SEvt() {}
 
 		Result OnJoinGameRes( Svr::TransactionResult* &pRes );
@@ -68,13 +67,13 @@ namespace GameServer {
 
 
 	// Player leader changed
-	class PlayerTransPartyQueuedGameMatchingS2CEvt : public Svr::UserTransactionS2SEvt< GamePlayerEntity, Policy::NetSvrPolicyGame, Message::GameParty::QueuedGameMatchingS2CEvt, PlayerTransPartyQueuedGameMatchingS2CEvt>
+	class PlayerTransPartyQueuedGameMatchingS2CEvt : public Svr::UserTransactionS2SEvt< GamePlayerEntity, Message::GameParty::QueuedGameMatchingS2CEvt>
 	{
 	private:
-		typedef Svr::UserTransactionS2SEvt< GamePlayerEntity, Policy::NetSvrPolicyGame, Message::GameParty::QueuedGameMatchingS2CEvt, PlayerTransPartyQueuedGameMatchingS2CEvt> super;
+		typedef Svr::UserTransactionS2SEvt< GamePlayerEntity, Message::GameParty::QueuedGameMatchingS2CEvt> super;
 
 	public:
-		PlayerTransPartyQueuedGameMatchingS2CEvt( MessageDataPtr &pIMsg )  :UserTransactionS2SEvt( pIMsg ) {}
+		PlayerTransPartyQueuedGameMatchingS2CEvt(IHeap& heap, MessageDataPtr &pIMsg )  :UserTransactionS2SEvt( heap, pIMsg ) {}
 		virtual ~PlayerTransPartyQueuedGameMatchingS2CEvt() {}
 
 		// Start Transaction
@@ -83,13 +82,13 @@ namespace GameServer {
 
 
 	// Dequeued
-	class PlayerTransPartyMatchingItemDequeuedS2CEvt : public Svr::UserTransactionS2SEvt< GamePlayerEntity, Policy::NetSvrPolicyGame, Message::GameParty::MatchingItemDequeuedS2CEvt, PlayerTransPartyMatchingItemDequeuedS2CEvt>
+	class PlayerTransPartyMatchingItemDequeuedS2CEvt : public Svr::UserTransactionS2SEvt< GamePlayerEntity, Message::GameParty::MatchingItemDequeuedS2CEvt>
 	{
 	private:
-		typedef Svr::UserTransactionS2SEvt< GamePlayerEntity, Policy::NetSvrPolicyGame, Message::GameParty::MatchingItemDequeuedS2CEvt, PlayerTransPartyMatchingItemDequeuedS2CEvt> super;
+		typedef Svr::UserTransactionS2SEvt< GamePlayerEntity, Message::GameParty::MatchingItemDequeuedS2CEvt> super;
 
 	public:
-		PlayerTransPartyMatchingItemDequeuedS2CEvt( MessageDataPtr &pIMsg )  :UserTransactionS2SEvt( pIMsg ) {}
+		PlayerTransPartyMatchingItemDequeuedS2CEvt(IHeap& heap, MessageDataPtr &pIMsg )  :UserTransactionS2SEvt( heap, pIMsg ) {}
 		virtual ~PlayerTransPartyMatchingItemDequeuedS2CEvt() {}
 
 		// Start Transaction
@@ -98,13 +97,13 @@ namespace GameServer {
 	
 
 	// Player leader changed
-	class PlayerTransPartyCanceledGameMatchingS2CEvt : public Svr::UserTransactionS2SEvt< GamePlayerEntity, Policy::NetSvrPolicyGame, Message::GameParty::CanceledGameMatchingS2CEvt, PlayerTransPartyCanceledGameMatchingS2CEvt>
+	class PlayerTransPartyCanceledGameMatchingS2CEvt : public Svr::UserTransactionS2SEvt< GamePlayerEntity, Message::GameParty::CanceledGameMatchingS2CEvt>
 	{
 	private:
-		typedef Svr::UserTransactionS2SEvt< GamePlayerEntity, Policy::NetSvrPolicyGame, Message::GameParty::CanceledGameMatchingS2CEvt, PlayerTransPartyCanceledGameMatchingS2CEvt> super;
+		typedef Svr::UserTransactionS2SEvt< GamePlayerEntity, Message::GameParty::CanceledGameMatchingS2CEvt> super;
 
 	public:
-		PlayerTransPartyCanceledGameMatchingS2CEvt( MessageDataPtr &pIMsg )  :UserTransactionS2SEvt( pIMsg ) {}
+		PlayerTransPartyCanceledGameMatchingS2CEvt(IHeap& heap, MessageDataPtr &pIMsg )  :UserTransactionS2SEvt(heap, pIMsg ) {}
 		virtual ~PlayerTransPartyCanceledGameMatchingS2CEvt() {}
 
 		// Start Transaction
@@ -114,16 +113,16 @@ namespace GameServer {
 
 
 	
-	class PlayerTransCreateParty : public Svr::MessageTransaction< GamePlayerEntity, Policy::NetSvrPolicyGame, Message::Game::CreatePartyCmd, PlayerTransCreateParty>
+	class PlayerTransCreateParty : public Svr::MessageTransaction< GamePlayerEntity, Message::Game::CreatePartyCmd>
 	{
 	private:
-		typedef Svr::MessageTransaction< GamePlayerEntity, Policy::NetSvrPolicyGame, Message::Game::CreatePartyCmd, PlayerTransCreateParty> super;
+		typedef Svr::MessageTransaction< GamePlayerEntity, Message::Game::CreatePartyCmd> super;
 
 	private:
 		PartyUID m_PartyUID;
 
 	public:
-		PlayerTransCreateParty( MessageDataPtr &pIMsg );
+		PlayerTransCreateParty(IHeap& heap, MessageDataPtr &pIMsg );
 		virtual ~PlayerTransCreateParty() {}
 
 		Result OnCreatePartyRes( Svr::TransactionResult* &pRes );
@@ -131,15 +130,15 @@ namespace GameServer {
 		// Start Transaction
 		virtual Result StartTransaction();
 
-		BR_IMPLEMENT_USERMSGTRANS_CLOSE_ARGS(CreatePartyRes,m_PartyUID);
+		BR_IMPLEMENT_USERMSGTRANS_CLOSE_ARGS(Policy::NetSvrPolicyGame, CreatePartyRes,m_PartyUID);
 	};
 	
 	
 	
-	class PlayerTransJoinParty : public Svr::MessageTransaction< GamePlayerEntity, Policy::NetSvrPolicyGame, Message::Game::JoinPartyCmd, PlayerTransJoinParty>
+	class PlayerTransJoinParty : public Svr::MessageTransaction< GamePlayerEntity, Message::Game::JoinPartyCmd>
 	{
 	private:
-		typedef Svr::MessageTransaction< GamePlayerEntity, Policy::NetSvrPolicyGame, Message::Game::JoinPartyCmd, PlayerTransJoinParty> super;
+		typedef Svr::MessageTransaction< GamePlayerEntity, Message::Game::JoinPartyCmd> super;
 
 	private:
 		PlayerID m_LeaderID;
@@ -147,7 +146,7 @@ namespace GameServer {
 
 
 	public:
-		PlayerTransJoinParty( MessageDataPtr &pIMsg );
+		PlayerTransJoinParty(IHeap& heap, MessageDataPtr &pIMsg );
 		virtual ~PlayerTransJoinParty() {}
 
 		Result OnJoinPartyRes( Svr::TransactionResult* &pRes );
@@ -155,17 +154,17 @@ namespace GameServer {
 		// Start Transaction
 		virtual Result StartTransaction();
 
-		BR_IMPLEMENT_USERMSGTRANS_CLOSE_ARGS(JoinPartyRes,GetPartyUID(),m_LeaderID, m_ChatHistoryData);
+		BR_IMPLEMENT_USERMSGTRANS_CLOSE_ARGS(Policy::NetSvrPolicyGame, JoinPartyRes,GetPartyUID(),m_LeaderID, m_ChatHistoryData);
 	};
 	
 	// Party player joined
-	class PlayerTransPartyPlayerJoinedS2SEvt : public Svr::UserTransactionS2SEvt< GamePlayerEntity, Policy::NetSvrPolicyGame, Message::GameParty::PlayerJoinedS2CEvt, PlayerTransPartyPlayerJoinedS2SEvt>
+	class PlayerTransPartyPlayerJoinedS2SEvt : public Svr::UserTransactionS2SEvt< GamePlayerEntity, Message::GameParty::PlayerJoinedS2CEvt>
 	{
 	private:
-		typedef Svr::UserTransactionS2SEvt< GamePlayerEntity, Policy::NetSvrPolicyGame, Message::GameParty::PlayerJoinedS2CEvt, PlayerTransPartyPlayerJoinedS2SEvt> super;
+		typedef Svr::UserTransactionS2SEvt< GamePlayerEntity, Message::GameParty::PlayerJoinedS2CEvt> super;
 
 	public:
-		PlayerTransPartyPlayerJoinedS2SEvt( MessageDataPtr &pIMsg )  :UserTransactionS2SEvt( pIMsg ) {}
+		PlayerTransPartyPlayerJoinedS2SEvt(IHeap& heap, MessageDataPtr &pIMsg )  :UserTransactionS2SEvt( heap, pIMsg ) {}
 		virtual ~PlayerTransPartyPlayerJoinedS2SEvt() {}
 
 		// Start Transaction
@@ -174,13 +173,13 @@ namespace GameServer {
 	
 	
 	// Player leader changed
-	class PlayerTransPartyLeaderChangedS2SEvt : public Svr::UserTransactionS2SEvt< GamePlayerEntity, Policy::NetSvrPolicyGame, Message::GameParty::PartyLeaderChangedS2CEvt, PlayerTransPartyLeaderChangedS2SEvt>
+	class PlayerTransPartyLeaderChangedS2SEvt : public Svr::UserTransactionS2SEvt< GamePlayerEntity, Message::GameParty::PartyLeaderChangedS2CEvt>
 	{
 	private:
-		typedef Svr::UserTransactionS2SEvt< GamePlayerEntity, Policy::NetSvrPolicyGame, Message::GameParty::PartyLeaderChangedS2CEvt, PlayerTransPartyLeaderChangedS2SEvt> super;
+		typedef Svr::UserTransactionS2SEvt< GamePlayerEntity, Message::GameParty::PartyLeaderChangedS2CEvt> super;
 
 	public:
-		PlayerTransPartyLeaderChangedS2SEvt( MessageDataPtr &pIMsg )  :UserTransactionS2SEvt( pIMsg ) {}
+		PlayerTransPartyLeaderChangedS2SEvt(IHeap& heap, MessageDataPtr &pIMsg )  :UserTransactionS2SEvt( heap, pIMsg ) {}
 		virtual ~PlayerTransPartyLeaderChangedS2SEvt() {}
 
 		// Start Transaction
@@ -189,13 +188,13 @@ namespace GameServer {
 
 	
 	
-	class PlayerTransLeaveParty : public Svr::MessageTransaction< GamePlayerEntity, Policy::NetSvrPolicyGame, Message::Game::LeavePartyCmd, PlayerTransLeaveParty>
+	class PlayerTransLeaveParty : public Svr::MessageTransaction< GamePlayerEntity, Message::Game::LeavePartyCmd>
 	{
 	private:
-		typedef Svr::MessageTransaction< GamePlayerEntity, Policy::NetSvrPolicyGame, Message::Game::LeavePartyCmd, PlayerTransLeaveParty> super;
+		typedef Svr::MessageTransaction< GamePlayerEntity, Message::Game::LeavePartyCmd> super;
 
 	public:
-		PlayerTransLeaveParty( MessageDataPtr &pIMsg );
+		PlayerTransLeaveParty(IHeap& heap, MessageDataPtr &pIMsg );
 		virtual ~PlayerTransLeaveParty() {}
 
 		Result OnLeavePartyRes( Svr::TransactionResult* &pRes );
@@ -203,19 +202,19 @@ namespace GameServer {
 		// Start Transaction
 		virtual Result StartTransaction();
 
-		BR_IMPLEMENT_USERMSGTRANS_CLOSE(LeavePartyRes);
+		BR_IMPLEMENT_USERMSGTRANS_CLOSE(Policy::NetSvrPolicyGame, LeavePartyRes);
 	};
 	
 	
 	
 	// Player leader changed
-	class PlayerTransPartyPlayerLeftS2SEvt : public Svr::UserTransactionS2SEvt< GamePlayerEntity, Policy::NetSvrPolicyGame, Message::GameParty::PlayerLeftS2CEvt, PlayerTransPartyPlayerLeftS2SEvt>
+	class PlayerTransPartyPlayerLeftS2SEvt : public Svr::UserTransactionS2SEvt< GamePlayerEntity, Message::GameParty::PlayerLeftS2CEvt>
 	{
 	public:
-		typedef Svr::UserTransactionS2SEvt< GamePlayerEntity, Policy::NetSvrPolicyGame, Message::GameParty::PlayerLeftS2CEvt, PlayerTransPartyPlayerLeftS2SEvt> super;
+		typedef Svr::UserTransactionS2SEvt< GamePlayerEntity, Message::GameParty::PlayerLeftS2CEvt> super;
 
 	public:
-		PlayerTransPartyPlayerLeftS2SEvt( MessageDataPtr &pIMsg )  :UserTransactionS2SEvt( pIMsg ) {}
+		PlayerTransPartyPlayerLeftS2SEvt(IHeap& heap, MessageDataPtr &pIMsg )  :UserTransactionS2SEvt(heap, pIMsg ) {}
 		virtual ~PlayerTransPartyPlayerLeftS2SEvt() {}
 
 		// Start Transaction
@@ -225,13 +224,13 @@ namespace GameServer {
 	
 	
 	
-	class PlayerTransPartyKickPlayer : public Svr::MessageTransaction< GamePlayerEntity, Policy::NetSvrPolicyGame, Message::Game::PartyKickPlayerCmd, PlayerTransPartyKickPlayer>
+	class PlayerTransPartyKickPlayer : public Svr::MessageTransaction< GamePlayerEntity, Message::Game::PartyKickPlayerCmd>
 	{
 	public:
-		typedef Svr::MessageTransaction< GamePlayerEntity, Policy::NetSvrPolicyGame, Message::Game::PartyKickPlayerCmd, PlayerTransPartyKickPlayer> super;
+		typedef Svr::MessageTransaction< GamePlayerEntity, Message::Game::PartyKickPlayerCmd> super;
 
 	public:
-		PlayerTransPartyKickPlayer( MessageDataPtr &pIMsg );
+		PlayerTransPartyKickPlayer(IHeap& heap, MessageDataPtr &pIMsg );
 		virtual ~PlayerTransPartyKickPlayer() {}
 
 		Result OnPlayerKickRes( Svr::TransactionResult* &pRes );
@@ -239,19 +238,19 @@ namespace GameServer {
 		// Start Transaction
 		virtual Result StartTransaction();
 
-		BR_IMPLEMENT_USERMSGTRANS_CLOSE(PartyKickPlayerRes);
+		BR_IMPLEMENT_USERMSGTRANS_CLOSE(Policy::NetSvrPolicyGame, PartyKickPlayerRes);
 	};
 	
 	
 	
 	// Player leader changed
-	class PlayerTransPartyPlayerKickedS2SEvt : public Svr::UserTransactionS2SEvt< GamePlayerEntity, Policy::NetSvrPolicyGame, Message::GameParty::PlayerKickedS2CEvt, PlayerTransPartyPlayerKickedS2SEvt>
+	class PlayerTransPartyPlayerKickedS2SEvt : public Svr::UserTransactionS2SEvt< GamePlayerEntity, Message::GameParty::PlayerKickedS2CEvt>
 	{
 	public:
-		typedef Svr::UserTransactionS2SEvt< GamePlayerEntity, Policy::NetSvrPolicyGame, Message::GameParty::PlayerKickedS2CEvt, PlayerTransPartyPlayerKickedS2SEvt> super;
+		typedef Svr::UserTransactionS2SEvt< GamePlayerEntity, Message::GameParty::PlayerKickedS2CEvt> super;
 
 	public:
-		PlayerTransPartyPlayerKickedS2SEvt( MessageDataPtr &pIMsg )  :UserTransactionS2SEvt( pIMsg ) {}
+		PlayerTransPartyPlayerKickedS2SEvt(IHeap& heap, MessageDataPtr &pIMsg )  :UserTransactionS2SEvt( heap, pIMsg ) {}
 		virtual ~PlayerTransPartyPlayerKickedS2SEvt() {}
 
 		// Start Transaction
@@ -261,31 +260,29 @@ namespace GameServer {
 
 	
 	
-	class PlayerTransPartyInvite : public Svr::MessageTransaction< GamePlayerEntity, Policy::NetSvrPolicyGame, Message::Game::PartyInviteCmd, PlayerTransPartyInvite>
+	class PlayerTransPartyInvite : public Svr::MessageTransaction< GamePlayerEntity, Message::Game::PartyInviteCmd>
 	{
 	public:
-		typedef Svr::MessageTransaction< GamePlayerEntity, Policy::NetSvrPolicyGame, Message::Game::PartyInviteCmd, PlayerTransPartyInvite> super;
+		typedef Svr::MessageTransaction< GamePlayerEntity, Message::Game::PartyInviteCmd> super;
 
 	public:
-		PlayerTransPartyInvite( MessageDataPtr &pIMsg );//:MessageTransaction(pIMsg) {}
+		PlayerTransPartyInvite(IHeap& heap, MessageDataPtr &pIMsg );//:MessageTransaction(pIMsg) {}
 		virtual ~PlayerTransPartyInvite() {}
-
-		//Result OnNotifyAdded(  Svr::TransactionResult* &pRes );
 
 		// Start Transaction
 		virtual Result StartTransaction();
 
-		BR_IMPLEMENT_USERMSGTRANS_CLOSE(PartyInviteRes);
+		BR_IMPLEMENT_USERMSGTRANS_CLOSE(Policy::NetSvrPolicyGame, PartyInviteRes);
 	};
 	
 	
-	class PlayerTransNotifyPartyInviteS2SEvt : public Svr::UserTransactionS2SEvt< GamePlayerEntity, Policy::NetSvrPolicyGame, Message::GameServer::NotifyPartyInviteC2SEvt, PlayerTransNotifyPartyInviteS2SEvt>
+	class PlayerTransNotifyPartyInviteS2SEvt : public Svr::UserTransactionS2SEvt< GamePlayerEntity, Message::GameServer::NotifyPartyInviteC2SEvt>
 	{
 	public:
-		typedef Svr::UserTransactionS2SEvt< GamePlayerEntity, Policy::NetSvrPolicyGame, Message::GameServer::NotifyPartyInviteC2SEvt, PlayerTransNotifyPartyInviteS2SEvt> super;
+		typedef Svr::UserTransactionS2SEvt< GamePlayerEntity, Message::GameServer::NotifyPartyInviteC2SEvt> super;
 
 	public:
-		PlayerTransNotifyPartyInviteS2SEvt( MessageDataPtr &pIMsg ):UserTransactionS2SEvt(pIMsg) {}
+		PlayerTransNotifyPartyInviteS2SEvt(IHeap& heap, MessageDataPtr &pIMsg ):UserTransactionS2SEvt(heap, pIMsg) {}
 		virtual ~PlayerTransNotifyPartyInviteS2SEvt() {}
 
 		// Start Transaction
@@ -294,31 +291,31 @@ namespace GameServer {
 	
 
 	
-	class PlayerTransPartyChatMessage : public Svr::MessageTransaction< GamePlayerEntity, Policy::NetSvrPolicyGame, Message::Game::PartyChatMessageCmd, PlayerTransPartyChatMessage>
+	class PlayerTransPartyChatMessage : public Svr::MessageTransaction< GamePlayerEntity, Message::Game::PartyChatMessageCmd>
 	{
 	public:
-		typedef Svr::MessageTransaction< GamePlayerEntity, Policy::NetSvrPolicyGame, Message::Game::PartyChatMessageCmd, PlayerTransPartyChatMessage> super;
+		typedef Svr::MessageTransaction< GamePlayerEntity, Message::Game::PartyChatMessageCmd> super;
 
 	private:
 
 	public:
-		PlayerTransPartyChatMessage( MessageDataPtr &pIMsg )  :MessageTransaction( pIMsg ) {}
+		PlayerTransPartyChatMessage(IHeap& heap, MessageDataPtr &pIMsg )  :MessageTransaction(heap, pIMsg ) {}
 		virtual ~PlayerTransPartyChatMessage() {}
 
 		// Start Transaction
 		virtual Result StartTransaction();
 
-		BR_IMPLEMENT_USERMSGTRANS_CLOSE(PartyChatMessageRes);
+		BR_IMPLEMENT_USERMSGTRANS_CLOSE(Policy::NetSvrPolicyGame, PartyChatMessageRes);
 	};
 
-	// Chat message from other entitity	
-	class PlayerTransPartyChatMessageS2CEvt : public Svr::UserTransactionS2SEvt< GamePlayerEntity, Policy::NetSvrPolicyGame, Message::GameParty::ChatMessageS2CEvt, PlayerTransPartyChatMessageS2CEvt>
+	// Chat message from other entity	
+	class PlayerTransPartyChatMessageS2CEvt : public Svr::UserTransactionS2SEvt< GamePlayerEntity, Message::GameParty::ChatMessageS2CEvt>
 	{
 	public:
-		typedef Svr::UserTransactionS2SEvt< GamePlayerEntity, Policy::NetSvrPolicyGame, Message::GameParty::ChatMessageS2CEvt, PlayerTransPartyChatMessageS2CEvt> super;
+		typedef Svr::UserTransactionS2SEvt< GamePlayerEntity, Message::GameParty::ChatMessageS2CEvt> super;
 
 	public:
-		PlayerTransPartyChatMessageS2CEvt( MessageDataPtr &pIMsg )  :UserTransactionS2SEvt( pIMsg ) {}
+		PlayerTransPartyChatMessageS2CEvt(IHeap& heap, MessageDataPtr &pIMsg )  :UserTransactionS2SEvt( heap, pIMsg ) {}
 		virtual ~PlayerTransPartyChatMessageS2CEvt() {}
 
 		// Start Transaction
@@ -326,31 +323,31 @@ namespace GameServer {
 	};
 	
 	
-	class PlayerTransPartyQuickChatMessage : public Svr::MessageTransaction< GamePlayerEntity, Policy::NetSvrPolicyGame, Message::Game::PartyQuickChatMessageCmd, PlayerTransPartyQuickChatMessage>
+	class PlayerTransPartyQuickChatMessage : public Svr::MessageTransaction< GamePlayerEntity, Message::Game::PartyQuickChatMessageCmd>
 	{
 	public:
-		typedef Svr::MessageTransaction< GamePlayerEntity, Policy::NetSvrPolicyGame, Message::Game::PartyQuickChatMessageCmd, PlayerTransPartyQuickChatMessage> super;
+		typedef Svr::MessageTransaction< GamePlayerEntity, Message::Game::PartyQuickChatMessageCmd> super;
 
 	private:
 
 	public:
-		PlayerTransPartyQuickChatMessage( MessageDataPtr &pIMsg )  :MessageTransaction( pIMsg ) {}
+		PlayerTransPartyQuickChatMessage(IHeap& heap, MessageDataPtr &pIMsg )  : MessageTransaction(heap, pIMsg ) {}
 		virtual ~PlayerTransPartyQuickChatMessage() {}
 
 		// Start Transaction
 		virtual Result StartTransaction();
 
-		BR_IMPLEMENT_USERMSGTRANS_CLOSE(PartyQuickChatMessageRes);
+		BR_IMPLEMENT_USERMSGTRANS_CLOSE(Policy::NetSvrPolicyGame, PartyQuickChatMessageRes);
 	};
 
-	// Chat message from other entitity	
-	class PlayerTransPartyQuickChatMessageS2CEvt : public Svr::UserTransactionS2SEvt< GamePlayerEntity, Policy::NetSvrPolicyGame, Message::GameParty::QuickChatMessageS2CEvt, PlayerTransPartyQuickChatMessageS2CEvt>
+	// Chat message from other entity	
+	class PlayerTransPartyQuickChatMessageS2CEvt : public Svr::UserTransactionS2SEvt< GamePlayerEntity, Message::GameParty::QuickChatMessageS2CEvt>
 	{
 	public:
-		typedef Svr::UserTransactionS2SEvt< GamePlayerEntity, Policy::NetSvrPolicyGame, Message::GameParty::QuickChatMessageS2CEvt, PlayerTransPartyQuickChatMessageS2CEvt> super;
+		typedef Svr::UserTransactionS2SEvt< GamePlayerEntity, Message::GameParty::QuickChatMessageS2CEvt> super;
 
 	public:
-		PlayerTransPartyQuickChatMessageS2CEvt( MessageDataPtr &pIMsg )  :UserTransactionS2SEvt( pIMsg ) {}
+		PlayerTransPartyQuickChatMessageS2CEvt(IHeap& heap, MessageDataPtr &pIMsg )  :UserTransactionS2SEvt( heap, pIMsg ) {}
 		virtual ~PlayerTransPartyQuickChatMessageS2CEvt() {}
 
 		// Start Transaction

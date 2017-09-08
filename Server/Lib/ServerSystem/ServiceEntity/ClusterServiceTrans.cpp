@@ -26,7 +26,7 @@
 #include "Server/BrServer.h"
 #include "ServerEntity/ServerEntityManager.h"
 #include "Entity/EntityManager.h"
-#include "ServerSystem/ServiceEntity/ClusterServiceTrans.h"
+#include "ServiceEntity/ClusterServiceTrans.h"
 #include "ServiceEntity/ClusterManagerServiceEntity.h"
 
 

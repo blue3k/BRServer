@@ -15,7 +15,7 @@
 
 #include "SFTypedefs.h"
 #include "Transaction/Transaction.h"
-#include "ServerSystem/ServiceEntity/GamePartyEntity.h"
+#include "ServiceEntity/GamePartyEntity.h"
 #include "Transaction/ServerTransaction.h"
 
 
@@ -44,10 +44,6 @@ namespace Svr {
 			super::m_WorkOnServerEntity = false;
 		}
 		
-		Net::Connection* GetConnection()
-		{
-			return super::GetServerEntity()->GetConnection();
-		}
 
 		Result GetMyPlayer( PartyPlayer* &pPlayer )
 		{

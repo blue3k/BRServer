@@ -20,8 +20,7 @@ SharedModuleServerEntity* SharedModuleServer::GetLoopbackGameServerEntity()
 // Query Game server instance
 SharedModuleServer* GetMyServer()
 {
-	return BR_DYNAMIC_CAST(SharedModuleServer*,Svr::BrServer::GetInstance());
-	//return dynamic_cast<SharedModuleServer*>(Svr::BrServer::GetInstance());
+	return dynamic_cast<SharedModuleServer*>(Svr::BrServer::GetInstance());
 }
 
 

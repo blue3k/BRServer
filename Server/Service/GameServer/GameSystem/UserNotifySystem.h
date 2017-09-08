@@ -16,12 +16,36 @@
 #include "Memory/MemoryPool.h"
 
 #include "ServiceEntity/Game/GameSystem.h"
-#include "Common/MemoryBufferUtil.h"
+
 #include "GameConst.h"
 #include "UserSystemComponentIDs.h"
 
 
 namespace SF {
+
+
+
+	struct UserNotifySystem_Notification
+	{
+		static constexpr int MAX_NOTIFICATION_TEXT = 512;
+
+		uint NotificationID;
+		NotificationType MessageID;
+		int64_t MessageParam0;
+		int64_t MessageParam1;
+		char MessageText[MAX_NOTIFICATION_TEXT];
+		uint8_t IsRead;
+		int64_t TimeStamp;
+
+		bool operator == (const UserNotifySystem_Notification& src)
+		{
+			return NotificationID == src.NotificationID && MessageID == src.MessageID;
+		}
+	};
+	template<> constexpr UserNotifySystem_Notification DefaultValue<UserNotifySystem_Notification>() { return UserNotifySystem_Notification(); }
+
+
+
 namespace GameServer {
 
 	class GamePlayerEntity;
@@ -35,33 +59,14 @@ namespace GameServer {
 	{
 	public:
 
-		enum {
-			ComponentID				= UserSystemComponentID_Notification,
+		static constexpr int ComponentID = UserSystemComponentID_Notification;
+		static constexpr int MAX_NOTIFICATION = 128;
 
-			MAX_NOTIFICATION		= 128,
-			MAX_NOTIFICATION_TEXT	= 512,
-		};
-
-		struct Notification
-		{
-			uint NotificationID;
-			NotificationType MessageID;
-			int64_t MessageParam0;
-			int64_t MessageParam1;
-			char MessageText[MAX_NOTIFICATION_TEXT];
-			uint8_t IsRead;
-			int64_t TimeStamp;
-
-			bool operator == ( const Notification& src )
-			{
-				return NotificationID == src.NotificationID && MessageID == src.MessageID;
-			}
-		};
-
+		typedef UserNotifySystem_Notification Notification;
 
 	private:
 
-		MemoryBuffer<Notification,sizeof(Notification)*MAX_NOTIFICATION>	m_Notifications;
+		StaticArray<Notification,MAX_NOTIFICATION>	m_Notifications;
 
 
 	public:

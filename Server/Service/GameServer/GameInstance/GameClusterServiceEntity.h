@@ -25,7 +25,7 @@
 #include "Container/Indexing.h"
 
 #include "Entity/EntityInformation.h"
-#include "ServerSystem/ServiceEntity/Game/GameClusterServiceEntity.h"
+#include "ServiceEntity/Game/GameClusterServiceEntity.h"
 
 
 namespace SF {
@@ -56,7 +56,7 @@ namespace GameServer {
 
 	public:
 		// Constructor/Destructor
-		GameClusterServiceEntity(GameID gameID, Svr::ServerConfig::NetPublic *publicNetSocket, ClusterMembership initialMembership = ClusterMembership::StatusWatcher);
+		GameClusterServiceEntity(GameID gameID, ServerConfig::NetPublic *publicNetSocket, ClusterMembership initialMembership = ClusterMembership::StatusWatcher);
 		virtual ~GameClusterServiceEntity();
 
 		

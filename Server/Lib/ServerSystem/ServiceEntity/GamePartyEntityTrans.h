@@ -31,9 +31,9 @@
 
 #include "Transaction/MessageRoute.h"
 
-#include "ServerSystem/ServiceEntity/GamePartyEntity.h"
+#include "ServiceEntity/GamePartyEntity.h"
 #include "Net/Message.h"
-#include "ServerSystem/ServiceEntity/GamePartyTransaction.h"
+#include "ServiceEntity/GamePartyTransaction.h"
 
 
 namespace SF {

@@ -36,7 +36,7 @@ namespace Svr
 
 
 	SimpleUserEntity::SimpleUserEntity()
-		:SimpleEntity(Const::Default::ENTITY_SIMPLE_TRANS_QUEUE, Const::Default::ENTITY_SIMPLE_TRANSRES_QUEUE),
+		:SimpleEntity(Const::ENTITY_SIMPLE_TRANS_QUEUE, Const::ENTITY_SIMPLE_TRANSRES_QUEUE),
 		m_pConnection(nullptr)
 	{
 		SetTickInterval(DurationMS(Svr::Const::SIMPLEUSER_TICKTASK_INTERVAL));
@@ -77,7 +77,7 @@ namespace Svr
 			return;
 
 		m_pConnection->SetEventHandler(nullptr);
-		m_pConnection->GetNet()->ReleaseConnection((Net::Connection*)m_pConnection);
+		m_pConnection->DisconnectNRelease();
 		m_pConnection = SharedPointerT<Net::Connection>();
 	}
 
@@ -173,7 +173,7 @@ namespace Svr
 		case Message::MSGTYPE_EVENT:
 		{
 			//Assert(m_pHandlerTable);
-			if (!(GetMessageHandlerTable()->HandleMessage<Svr::Transaction*&>(GetConnection(), pIMsg, pNewTrans)))
+			if (!(GetMessageHandlerTable()->HandleMessage<TransactionPtr&>(*GetConnection(), pIMsg, pNewTrans)))
 			{
 				svrTrace(Error, "Failed to handle remote message Entity:{0}:{1}, MsgID:{2}", typeid(*this).name(), GetEntityID(), pMsgHdr->msgID);
 				svrErr(ResultCode::SVR_NOTEXPECTED_MESSAGE);
@@ -282,9 +282,8 @@ namespace Svr
 
 	Proc_End:
 
-		if( pIMsg )
-			Util::SafeDelete( pIMsg );
 
+		pIMsg = nullptr;
 
 		return hr;
 	}
@@ -381,14 +380,14 @@ namespace Svr
 			ProcessConnectionEvent(*eventTask.EventData.pConnectionEvent);
 			break;
 		case ServerTaskEvent::EventTypes::PACKET_MESSAGE_EVENT:
-			pMsg = std::forward<MessageDataPtr>(eventTask.EventData.MessageEvent.pMessage);
-			pConn = dynamic_cast<Net::ConnectionUDPBase*>(GetConnection());
+			pMsg = std::forward<MessageDataPtr>(const_cast<ServerTaskEvent&>(eventTask).EventData.MessageEvent.pMessage);
 			if (pMsg != nullptr)
 			{
 				ProcessMessageData(pMsg);
 			}
 			else
 			{
+				pConn = dynamic_cast<Net::ConnectionUDPBase*>(*GetConnection());
 				if (pConn != nullptr)
 					pConn->ProcGuarrentedMessageWindow([&](MessageDataPtr& pMsg){ ProcessMessageData(pMsg); });
 			}

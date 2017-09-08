@@ -66,12 +66,12 @@ namespace Svr {
 			{
 				if( pServerEntity != super::GetMyOwner() )
 				{
-					Net::Connection *pAlreadyConn = pServerEntity->GetConnection();
-					Net::Connection *pMyConn = super::GetMyOwner()->GetConnection();
+					SharedPointerT<Net::Connection> pAlreadyConn = std::forward<SharedPointerT<Net::Connection>>(pServerEntity->GetConnection());
+					SharedPointerT<Net::Connection> pMyConn = std::forward<SharedPointerT<Net::Connection>>(super::GetMyOwner()->GetConnection());
 					NetAddress AlreadyAddr(0), MyAddr(0);
-					if( pAlreadyConn )
+					if( pAlreadyConn != nullptr )
 						AlreadyAddr = pAlreadyConn->GetRemoteInfo().PeerAddress;
-					if( pMyConn )
+					if( pMyConn != nullptr )
 						MyAddr = pMyConn->GetRemoteInfo().PeerAddress;
 
 					svrTrace( Assert, "Error, Duplicated ServerID:{0} : Already from : {1}:{2}, New {3}:{4}", super::GetRouteContext().GetFrom().GetServerID(), pAlreadyConn->GetCID(), AlreadyAddr, pMyConn->GetCID(), MyAddr );

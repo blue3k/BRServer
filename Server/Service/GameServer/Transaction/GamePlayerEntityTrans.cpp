@@ -27,7 +27,7 @@
 #include "SvrTrace.h"
 #include "ServerEntity/ServerEntityManager.h"
 #include "ServiceEntity/ClusterManagerServiceEntity.h"
-#include "ServerSystem/ServiceEntity/Game/GameClusterServiceEntity.h"
+#include "ServiceEntity/Game/GameClusterServiceEntity.h"
 #include "ServerSystem/ExternalTransaction.h"
 #include "Transaction/ExternalTransactionManager.h"
 
@@ -1018,8 +1018,7 @@ namespace GameServer {
 			svrErr(ResultCode::GAME_INVALID_PLAYER);
 
 		svrChk( GetMyOwner()->GetComponent<UserNotifySystem>()->AddNotification(GetNotificationID(), (NotificationType)GetMessageID(), GetMessageParam0(), GetMessageParam1(), GetMessageText(), 0, GetTimeStamp() ) );
-		svrChkPtr(pPolicy = GetInterface<Policy::NetSvrPolicyGame>());
-		svrChk(pPolicy->NotifyS2CEvt(GetNotificationID(), GetMessageID(), GetMessageParam0(), GetMessageParam1(), GetMessageText(), 0, GetTimeStamp()));
+		svrChk(Policy::NetSvrPolicyGame(GetConnection()).NotifyS2CEvt(GetNotificationID(), GetMessageID(), GetMessageParam0(), GetMessageParam1(), GetMessageText(), 0, GetTimeStamp()));
 
 	Proc_End:
 
@@ -1298,8 +1297,7 @@ namespace GameServer {
 
 		svrChk(pRes->GetResult());
 
-		svrChkPtr(pPolicy = GetInterface<Policy::NetSvrPolicyGame>());
-		svrChk(pPolicy->NotifyPlayerStatusUpdatedS2CEvt(pDBRes->PlayerID, pDBRes->LatestActiveTime, pDBRes->PlayerState != 0 ? 1 : 0));
+		svrChk(Policy::NetSvrPolicyGame(GetConnection()).NotifyPlayerStatusUpdatedS2CEvt(pDBRes->PlayerID, pDBRes->LatestActiveTime, pDBRes->PlayerState != 0 ? 1 : 0));
 
 	Proc_End:
 
@@ -1316,7 +1314,7 @@ namespace GameServer {
 		//Svr::ServerEntity *pServerEntity = nullptr;
 		EntityUID playerUID;
 		//Policy::NetPolicyGameServer* pTargetPolicy = nullptr;
-		Policy::NetSvrPolicyGame *pPolicy = nullptr;
+		Policy::NetSvrPolicyGame pPolicy(GetConnection());
 		auto& targetPlayerID = GetTargetPlayerID();
 		uint uiRequestMax = Util::Min((uint)targetPlayerID.GetSize(), (uint)20);
 
@@ -1324,8 +1322,6 @@ namespace GameServer {
 
 		svrChk( super::StartTransaction() );
 		
-		svrChkPtr(pPolicy = GetInterface<Policy::NetSvrPolicyGame>());
-
 
 		for( uint iPlayer = 0; iPlayer < uiRequestMax; iPlayer++ )
 		{
@@ -1345,7 +1341,7 @@ namespace GameServer {
 			}
 			else
 			{
-				svrChk(pPolicy->NotifyPlayerStatusUpdatedS2CEvt(targetPlayerID[iPlayer], 0, 0));
+				svrChk(pPolicy.NotifyPlayerStatusUpdatedS2CEvt(targetPlayerID[iPlayer], 0, 0));
 			}
 		}
 
@@ -1365,7 +1361,6 @@ namespace GameServer {
 		Result hr = ResultCode::SUCCESS;
 		Svr::ServerEntity *pServerEntity = nullptr;
 		EntityUID playerUID;
-		Policy::NetPolicyGameServer* pTargetPolicy = nullptr;
 		bool bInGame;
 
 
@@ -1377,11 +1372,10 @@ namespace GameServer {
 		playerUID = GetRouteContext().GetFrom();
 
 		svrChk( Svr::GetServerComponent<Svr::ServerEntityManager>()->GetServerEntity( playerUID.GetServerID(), pServerEntity ) );
-		svrChkPtr(pTargetPolicy = pServerEntity->GetInterface<Policy::NetPolicyGameServer>());
 
 		bInGame = GetMyOwner()->GetGameInsUID() != 0 || GetMyOwner()->GetPartyUID() != 0;
 
-		svrChk( pTargetPolicy->NotifyPlayerStatusUpdatedC2SEvt( RouteContext(GetOwnerEntityUID(),playerUID), GetDestPlayerID(), GetMyOwner()->GetLatestActiveTime().time_since_epoch().count(), bInGame ? 1 : 0 ) );
+		svrChk(Policy::NetPolicyGameServer(pServerEntity->GetConnection())->NotifyPlayerStatusUpdatedC2SEvt( RouteContext(GetOwnerEntityUID(),playerUID), GetDestPlayerID(), GetMyOwner()->GetLatestActiveTime().time_since_epoch().count(), bInGame ? 1 : 0 ) );
 
 	Proc_End:
 
@@ -1394,12 +1388,10 @@ namespace GameServer {
 	Result PlayerTransNotifyPlayerStatusUpdatedS2S::StartTransaction()
 	{
 		Result hr = ResultCode::SUCCESS;
-		Policy::NetSvrPolicyGame *pPolicy = nullptr;
 
 		svrChk( super::StartTransaction() );
 
-		svrChkPtr(pPolicy = GetInterface<Policy::NetSvrPolicyGame>());
-		svrChk( pPolicy->NotifyPlayerStatusUpdatedS2CEvt( GetDestPlayerID(), GetLatestActiveTime(), GetIsInGame() ) );
+		svrChk(Policy::NetSvrPolicyGame(GetConnection())->NotifyPlayerStatusUpdatedS2CEvt( GetDestPlayerID(), GetLatestActiveTime(), GetIsInGame() ) );
 
 	Proc_End:
 

@@ -26,7 +26,7 @@
 #include "Server/BrServer.h"
 #include "ServerEntity/ServerEntityManager.h"
 #include "Entity/EntityManager.h"
-#include "ServerSystem/ServiceEntity/ClusterManagerServiceTrans.h"
+#include "ServiceEntity/ClusterManagerServiceTrans.h"
 #include "ServiceEntity/ClusterManagerServiceEntity.h"
 
 
@@ -100,7 +100,7 @@ namespace Svr {
 			if( EntityUID(GetSender()).GetServerID() == GetMyServerID() )
 			{
 				SharedPointerT<Entity> pEntity;
-				svrChk( GetServerComponent<EntityManager>()->FindEntity(EntityUID(GetSender()).GetEntityID(), pEntity ) );
+				svrChk(Service::EntityTable->find(EntityUID(GetSender()).GetEntityID(), pEntity ) );
 				svrChkPtr( pServiceEntity = dynamic_cast<ClusteredServiceEntity*>((Entity*)pEntity) );
 			}
 			else
@@ -174,7 +174,7 @@ namespace Svr {
 			if(EntityUID(GetSender()).GetServerID() == GetMyServerID() )
 			{
 				SharedPointerT<Entity> pEntity;
-				svrChk( GetServerComponent<EntityManager>()->FindEntity(EntityUID(GetSender()).GetEntityID(), pEntity ) );
+				svrChk(Service::EntityTable->find(EntityUID(GetSender()).GetEntityID(), pEntity ) );
 				svrChkPtr(pServiceEntity = dynamic_cast<ClusteredServiceEntity*>((Entity*)pEntity));
 			}
 			else

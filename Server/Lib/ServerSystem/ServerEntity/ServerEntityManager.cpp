@@ -255,14 +255,14 @@ namespace Svr
 		return hr;
 	}
 
-	Net::Connection* ServerEntityManager::GetServerConnection(ServerID svrID)
+	SharedPointerT<Net::Connection> ServerEntityManager::GetServerConnection(ServerID svrID)
 	{
 		ServerEntity* pServerEntity = nullptr;
 
 		if (!GetServerEntity(svrID, pServerEntity))
 			return nullptr;
 
-		return  pServerEntity->GetConnection();
+		return  std::forward<SharedPointerT<Net::Connection>>(pServerEntity->GetConnection());
 	}
 
 

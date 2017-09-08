@@ -12,7 +12,7 @@
 #include "stdafx.h"
 #include "EntityServer.h"
 #include "Net/NetServerUDP.h"
-#include "ServerSystem/BrService.h"
+#include "Server/BrService.h"
 #include "SvrTrace.h"
 #include "Entity/EntityManager.h"
 #include "ServerEntity/ServerEntityManager.h"
@@ -63,8 +63,8 @@ namespace EntityServer {
 		case StartingStep::WaitEntityServer:
 			GetMyServer()->GetNetPrivate()->SetIsEnableAccept(true);
 
-			if( GetMyServer()->GetComponent<Svr::ClusterManagerServiceEntity>()->GetInitialized() )
-			//if( ((GetMyServer()->GetComponent<Svr::ServerEntityManager>()->GetEntityManagerServerEntity(pServer)) && pServer != Svr::BrServer::GetInstance()->GetLoopbackServerEntity())
+			if( Svr::GetServerComponent<Svr::ClusterManagerServiceEntity>()->GetInitialized() )
+			//if( ((Svr::GetServerComponent<Svr::ServerEntityManager>()->GetEntityManagerServerEntity(pServer)) && pServer != Svr::BrServer::GetInstance()->GetLoopbackServerEntity())
 			//	|| m_WaitCount > 6 ) // wait 6*500 ms
 			{
 				svrChk( InitializeServices() );

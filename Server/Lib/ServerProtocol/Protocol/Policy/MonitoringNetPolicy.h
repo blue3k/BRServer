@@ -23,10 +23,10 @@ namespace SF
  		class NetPolicyMonitoring 
 		{
  			private:
-				Net::Connection* m_pConnection;
+				SharedPointerT<Net::Connection>& m_pConnection;
 			public:
 			// Constructor
-			NetPolicyMonitoring ( Net::Connection* pConn ) : m_pConnection(pConn)
+			NetPolicyMonitoring ( SharedPointerT<Net::Connection>& pConn ) : m_pConnection(pConn)
 			{}
 
 			// Cmd: Add a player to ranking
@@ -46,10 +46,10 @@ namespace SF
 		class NetSvrPolicyMonitoring
 		{
  			private:
-				Net::Connection* m_pConnection;
+				SharedPointerT<Net::Connection>& m_pConnection;
 			public:
 			// Constructor
-			NetSvrPolicyMonitoring ( Net::Connection* pConn ) : m_pConnection(pConn)
+			NetSvrPolicyMonitoring ( SharedPointerT<Net::Connection>& pConn ) : m_pConnection(pConn)
 			{}
 
 			// Cmd: Add a player to ranking

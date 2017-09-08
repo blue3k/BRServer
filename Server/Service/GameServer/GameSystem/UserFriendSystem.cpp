@@ -95,7 +95,7 @@ namespace GameServer {
 	// Get friend information
 	ServerFriendInformation* UserFriendSystem::GetFriend(PlayerID friendID)
 	{
-		for( unsigned int index = 0; index < m_Friends.GetSize(); index++ )
+		for( unsigned int index = 0; index < m_Friends.size(); index++ )
 		{
 			if( m_Friends[index].PlayerID == friendID )
 				return &m_Friends[index];
@@ -107,7 +107,7 @@ namespace GameServer {
 	// Change friend nick name
 	Result UserFriendSystem::SetFriendName( PlayerID friendID, const char* strNewName )
 	{
-		for( unsigned int index = 0; index < m_Friends.GetSize(); index++ )
+		for( unsigned int index = 0; index < m_Friends.size(); index++ )
 		{
 			if( m_Friends[index].PlayerID == friendID )
 			{
@@ -126,7 +126,7 @@ namespace GameServer {
 
 	bool UserFriendSystem::CanAddFriend()
 	{
-		return m_Friends.GetSize() < GetMaxFriendSlot();
+		return m_Friends.size() < GetMaxFriendSlot();
 	}
 
 	// Add a friend
@@ -137,10 +137,10 @@ namespace GameServer {
 
 		if (!CanAddFriend())
 		{
-			return ResultCode::E_MAX_FRIEND;
+			return ResultCode::MAX_FRIEND;
 		}
 
-		return m_Friends.Append( 1, &info );
+		return m_Friends.insert( 1, info );
 	}
 
 	// Remove a friend
@@ -150,17 +150,17 @@ namespace GameServer {
 		if( pFriend == nullptr )
 			return ResultCode::SUCCESS_FALSE;
 
-		return m_Friends.Remove( pFriend );
+		return m_Friends.RemoveItem( *pFriend );
 	}
 
 	uint UserFriendSystem::GetNumberOfFriends()
 	{
-		return (uint)m_Friends.GetSize();
+		return (uint)m_Friends.size();
 	}
 
 	Result UserFriendSystem::ForeachFriends(uint start, uint maxCount, std::function<Result(const ServerFriendInformation&)> functor)
 	{
-		for (unsigned int index = start; index < m_Friends.GetSize() && index < maxCount; index++)
+		for (unsigned int index = start; index < m_Friends.size() && index < maxCount; index++)
 		{
 			Result hr = functor( m_Friends[index] );
 			if( !(hr) )

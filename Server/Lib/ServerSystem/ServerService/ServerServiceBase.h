@@ -46,14 +46,7 @@ namespace Svr {
 
 		EntityUID GetServiceEntityUID() { return m_ServerServiceInformation->GetEntityUID(); }
 
-		FORCEINLINE Net::Connection* GetConnection() { return m_ServerServiceInformation->GetConnection(); }
-
-		// Get Policy
-		template< class InterfaceType >
-		FORCEINLINE InterfaceType GetInterface() const
-		{
-			return m_ServerServiceInformation->GetInterface<InterfaceType>();
-		}
+		FORCEINLINE SharedPointerT<Net::Connection> GetConnection() { return std::forward<SharedPointerT<Net::Connection>>(m_ServerServiceInformation->GetConnection()); }
 
 	};
 

@@ -68,7 +68,7 @@ namespace Svr {
 	private:
 
 		ServerConfig::NetPublic *m_PublicNetSocket;
-		Net::ServerMUDP*			m_pNetPublic;
+		SharedPointerT<Net::ServerMUDP>			m_pNetPublic;
 
 		PageQueue<SharedPointerAtomicT<Net::Connection>> m_NewConnectionQueue;
 
@@ -104,7 +104,7 @@ namespace Svr {
 		//
 
 		// Get net public
-		Net::ServerMUDP* GetNetPublic() { return m_pNetPublic; }
+		Net::ServerMUDP* GetNetPublic() { return *m_pNetPublic; }
 
 		// Process network event
 		Result ProcessPublicNetworkEvent();

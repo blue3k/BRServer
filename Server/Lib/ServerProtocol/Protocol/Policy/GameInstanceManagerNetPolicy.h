@@ -23,10 +23,10 @@ namespace SF
  		class NetPolicyGameInstanceManager 
 		{
  			private:
-				Net::Connection* m_pConnection;
+				SharedPointerT<Net::Connection>& m_pConnection;
 			public:
 			// Constructor
-			NetPolicyGameInstanceManager ( Net::Connection* pConn ) : m_pConnection(pConn)
+			NetPolicyGameInstanceManager ( SharedPointerT<Net::Connection>& pConn ) : m_pConnection(pConn)
 			{}
 
 			// Cmd: Create a game instance
@@ -40,10 +40,10 @@ namespace SF
 		class NetSvrPolicyGameInstanceManager
 		{
  			private:
-				Net::Connection* m_pConnection;
+				SharedPointerT<Net::Connection>& m_pConnection;
 			public:
 			// Constructor
-			NetSvrPolicyGameInstanceManager ( Net::Connection* pConn ) : m_pConnection(pConn)
+			NetSvrPolicyGameInstanceManager ( SharedPointerT<Net::Connection>& pConn ) : m_pConnection(pConn)
 			{}
 
 			// Cmd: Create a game instance

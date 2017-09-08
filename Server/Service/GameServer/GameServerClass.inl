@@ -10,14 +10,14 @@
 
 
 
-const Svr::Config::PublicServer* GameServer::GetGameConfig()
+const ServerConfig::GameServer* GameServer::GetGameConfig()
 {
-	return dynamic_cast<const Svr::Config::PublicServer*>(GetMyConfig());
+	return dynamic_cast<const ServerConfig::GameServer*>(GetMyConfig());
 }
 
 
 // Get net public
-BR::Net::ServerMUDP* GameServer::GetNetPublic()
+SharedPointerT<Net::ServerMUDP>& GameServer::GetNetPublic()
 {
 	return m_pNetPublic;
 }
@@ -32,8 +32,7 @@ Svr::ServerEntity* GameServer::GetLoopbackGameServerEntity()
 // Query Game server instance
 GameServer* GetMyServer()
 {
-	return BR_DYNAMIC_CAST(GameServer*,Svr::BrServer::GetInstance());
-	//return dynamic_cast<GameServer*>(Svr::BrServer::GetInstance());
+	return dynamic_cast<GameServer*>(Svr::BrServer::GetInstance());
 }
 
 

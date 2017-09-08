@@ -16,7 +16,7 @@
 #include "Memory/MemoryPool.h"
 
 #include "ServiceEntity/Game/GameSystem.h"
-#include "Common/MemoryBufferUtil.h"
+
 #include "GameConst.h"
 #include "UserSystemComponentIDs.h"
 
@@ -67,7 +67,7 @@ namespace GameServer {
 
 	private:
 
-		MemoryBuffer<ServerFriendInformation, sizeof(ServerFriendInformation)*MAX_FRIENDS>	m_Friends;
+		StaticArray<ServerFriendInformation, MAX_FRIENDS>	m_Friends;
 
 		TimeStampMS m_LatestStatusSync;
 
@@ -98,7 +98,6 @@ namespace GameServer {
 		// Clear friend list
 		void ClearFriendList();
 
-		TimeStampMS GetLatestStatusSync()												{ return m_LatestStatusSync; }
 
 		// Check whether he is a friend or not
 		bool IsFriend( PlayerID friendID );

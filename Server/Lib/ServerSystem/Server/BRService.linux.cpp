@@ -174,7 +174,7 @@ namespace Svr {
 
 			svrTrace( Info, "Loading configuration" );
 
-			svrChk( Svr::Config::LoadConfig( strCfgPath ) );
+			svrChk( ServerConfig::LoadConfig( strCfgPath ) );
 
 			svrTrace( Info, "<{0}> Starting", Util::GetServiceNameA() );
 

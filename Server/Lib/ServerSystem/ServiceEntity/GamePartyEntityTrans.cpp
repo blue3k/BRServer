@@ -29,22 +29,22 @@
 #include "Protocol/Policy/PartyMatchingNetPolicy.h"
 #include "Protocol/Message/PartyMatchingQueueMsgClass.h"
 #include "Protocol/Policy/PartyMatchingQueueNetPolicy.h"
-#include "ServerSystem/ServiceEntity/MatchingServiceUtil.h"
+#include "ServiceEntity/MatchingServiceUtil.h"
 #include "Protocol/ServerService/PartyMatchingQueueService.h"
-#include "ServerSystem/ServiceEntity/MatchingQueueServiceEntity.h"
+#include "ServiceEntity/MatchingQueueServiceEntity.h"
 
 #include "Protocol/Message/GameInstanceManagerMsgClass.h"
-#include "ServerSystem/ServiceEntity/GamePartyManagerServiceEntity.h"
+#include "ServiceEntity/GamePartyManagerServiceEntity.h"
 #include "Protocol/ServerService/GamePartyManagerService.h"
-#include "ServerSystem/ServiceEntity/Game/GameInstanceManagerServiceEntity.h"
+#include "ServiceEntity/Game/GameInstanceManagerServiceEntity.h"
 #include "Protocol/ServerService/GameInstanceManagerService.h"
 
 #include "Server/BrServer.h"
 
 #include "Entity/EntityManager.h"
 #include "ServerEntity/ServerEntityManager.h"
-#include "ServerSystem/ServiceEntity/GamePartyEntity.h"
-#include "ServerSystem/ServiceEntity/GamePartyEntityTrans.h"
+#include "ServiceEntity/GamePartyEntity.h"
+#include "ServiceEntity/GamePartyEntityTrans.h"
 
 //#include "DB/GameDB.h"
 #include "DB/AccountDB.h"

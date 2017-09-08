@@ -23,7 +23,7 @@
 #include "Protocol/Message/RankingServerMsgClass.h"
 #include "Protocol/Policy/RankingServerNetPolicy.h"
 #include "Transaction/MessageRoute.h"
-#include "ServerSystem/ServiceEntity/RankingServiceEntity.h"
+#include "ServiceEntity/RankingServiceEntity.h"
 #include "Transaction/ServerTransaction.h"
 
 

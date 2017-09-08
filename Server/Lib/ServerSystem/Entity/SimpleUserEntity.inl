@@ -21,11 +21,6 @@
 
 
 
-// Get Connection
-Net::Connection* SimpleUserEntity::GetConnection()
-{
-	return (Net::Connection*)m_pConnection;
-}
 
 
 

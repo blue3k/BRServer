@@ -27,10 +27,10 @@ namespace GameServer {
 
 
 	template<class ProcessEntity>
-	class GameServerTransRegisterPlayerToJoinGameServer : public Svr::ServerEntityMessageTransaction< ProcessEntity, Message::GameServer::RegisterPlayerToJoinGameServerCmd, GameServerTransRegisterPlayerToJoinGameServer<ProcessEntity>, sizeof(Svr::TransactionMessageHandlerType)*2>
+	class GameServerTransRegisterPlayerToJoinGameServer : public Svr::ServerEntityMessageTransaction< ProcessEntity, Message::GameServer::RegisterPlayerToJoinGameServerCmd>
 	{
 	public:
-		typedef Svr::ServerEntityMessageTransaction< ProcessEntity, Message::GameServer::RegisterPlayerToJoinGameServerCmd, GameServerTransRegisterPlayerToJoinGameServer, sizeof(Svr::TransactionMessageHandlerType) * 2> super;
+		typedef Svr::ServerEntityMessageTransaction< ProcessEntity, Message::GameServer::RegisterPlayerToJoinGameServerCmd> super;
 
 	private:
 		const char* m_PublicAddress;
@@ -40,7 +40,7 @@ namespace GameServer {
 
 	public:
 
-		GameServerTransRegisterPlayerToJoinGameServer(MessageDataPtr &pIMsg);
+		GameServerTransRegisterPlayerToJoinGameServer(IHeap& heap, MessageDataPtr &pIMsg);
 		virtual ~GameServerTransRegisterPlayerToJoinGameServer() {}
 
 		Result OnPlayerRegisteredRes(Svr::TransactionResult* &pRes);
@@ -48,9 +48,7 @@ namespace GameServer {
 		// Start Transaction
 		virtual Result StartTransaction() override;
 
-		Policy::NetSvrPolicyGameServer* GetInterface() { return super::template GetInterface<Policy::NetSvrPolicyGameServer>(); }
-
-		BR_SVR_MSGTRANS_CLOSE_ARGS(RegisterPlayerToJoinGameServerRes, RouteContext(m_PlayerUID, super::GetRouteContext().GetFrom()), m_PublicAddress, m_PublicAddressIPV6, m_Port);
+		BR_SVR_MSGTRANS_CLOSE_ARGS(Policy::NetSvrPolicyGameServer, RegisterPlayerToJoinGameServerRes, RouteContext(m_PlayerUID, super::GetRouteContext().GetFrom()), m_PublicAddress, m_PublicAddressIPV6, m_Port);
 	};
 
 

@@ -27,7 +27,7 @@
 
 #include "Protocol/Policy/EntityServerNetPolicy.h"
 #include "Protocol/Policy/GameServerNetPolicy.h"
-#include "Protocol/Policy/GameMasterServerNetPolicy.h"
+
 
 #include "EntityTransactionServer.h"
 #include "EntityTransactionUser.h"
@@ -54,7 +54,7 @@ namespace EntityServer {
 	//	// Add to cluster service
 	//	svrAssert(serviceInfo.Membership > ClusterMembership::Slave);
 
-	//	svrChk(GetMyServer()->GetComponent<Svr::ClusterManagerServiceEntity>()->NewServerService(serviceInfo.UID, GetMyOwner(), serviceInfo.Membership, serviceInfo.Status, pService));
+	//	svrChk(Svr::GetServerComponent<Svr::ClusterManagerServiceEntity>()->NewServerService(serviceInfo.UID, GetMyOwner(), serviceInfo.Membership, serviceInfo.Status, pService));
 
 	//Proc_End:
 

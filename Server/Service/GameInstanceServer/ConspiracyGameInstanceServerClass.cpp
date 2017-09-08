@@ -15,21 +15,21 @@
 #include "SvrConst.h"
 #include "Server/BrServer.h"
 #include "SvrTrace.h"
-#include "ServerSystem/SvrConfig.h"
+#include "Service/ServerService.h"
 #include "ServerEntity/ServerEntityManager.h"
 #include "ServiceEntity/ClusterManagerServiceEntity.h"
-#include "ServerSystem/ServiceEntity/Game/GameClusterServiceEntity.h"
+#include "ServiceEntity/Game/GameClusterServiceEntity.h"
 
-#include "ServerSystem/ServiceEntity/MatchingQueueServiceEntity.h"
-#include "ServerSystem/ServiceEntity/MatchingServiceEntity.h"
-#include "ServerSystem/ServiceEntity/GamePartyManagerServiceEntity.h"
+#include "ServiceEntity/MatchingQueueServiceEntity.h"
+#include "ServiceEntity/MatchingServiceEntity.h"
+#include "ServiceEntity/GamePartyManagerServiceEntity.h"
 #include "ServerEntity/GenericServerEntity.h"
 #include "GameInstance/GameInstanceManager.h"
 
 
 #include "Table/TableSystem.h"
 
-#include "ServerEntity/EntityServerEntity.h"
+#include "ServerEntity/SvrEntityServerEntity.h"
 
 
 #include "Protocol/Policy/EntityServerNetPolicy.h"
@@ -37,7 +37,6 @@
 #include "Protocol/Policy/EntityServerNetPolicy.h"
 #include "Protocol/Policy/GameServerNetPolicy.h"
 #include "Protocol/Policy/GameInstanceNetPolicy.h"
-#include "Protocol/Policy/GameMasterServerNetPolicy.h"
 
 #include "Net/NetSvrDef.h"
 #include "Entity/EntityManager.h"
@@ -46,7 +45,7 @@
 
 #include "ConspiracyGameInstanceSvrConst.h"
 #include "ConspiracyGameInstanceServerClass.h"
-//#include "PlayerInfoManager.h"
+
 #include "Transaction/GameInstanceServerTrans.h"
 #include "GameInstance/GameEntityManager.h"
 
@@ -97,24 +96,10 @@ namespace ConspiracyGameInstanceServer {
 	{
 		Result hr = ResultCode::SUCCESS;
 
-		//const Svr::Config::GameCluster* pMyGame = nullptr;
-		const Svr::Config::GenericServer* pMySvr = nullptr;
-		svrChkPtr(Svr::Config::GetConfig().GameCluster);
-		m_pGameClusterCfg = Svr::Config::GetConfig().GameCluster;
+		svrChkPtr(GetMyConfig());
 
-		std::for_each( Svr::Config::GetConfig().GameCluster->GameInstancess.begin(), Svr::Config::GetConfig().GameCluster->GameInstancess.end(), 
-			[&]( const Svr::Config::GenericServer* pServer )
-		{
-			if( pServer->Name == Util::GetServiceNameA() )
-			{
-				pMySvr = pServer;
-			}
-		});
-
-		svrChkPtr( pMySvr );
+		m_pGameClusterCfg = GetMyConfig()->pGameCluster;
 		svrChkPtr( m_pGameClusterCfg );
-
-		SetMyConfig( pMySvr );
 
 		svrChk(Svr::BrServer::ApplyConfiguration() );
 
@@ -132,7 +117,7 @@ namespace ConspiracyGameInstanceServer {
 
 		svrChk(Svr::BrServer::InitializeServerResource() );
 
-		svrChk(GameTable::InitializeTable() );
+		svrChk(GameTable::InitializeTable(Service::ServerConfig) );
 
 		svrChk( InitializeEntity( EntityID(EntityFaculty::Server,0) ) );
 
@@ -172,7 +157,7 @@ namespace ConspiracyGameInstanceServer {
 		// Register entity servers
 		// All server should use same sock family(IPV4 or IPV6)
 		privateNetSockFamily = GetMyServer()->GetNetPrivate()->GetLocalAddress().SocketFamily;
-		for( auto itEntity = Svr::Config::GetConfig().EntityServers.begin(); itEntity != Svr::Config::GetConfig().EntityServers.end(); ++itEntity )
+		for( auto itEntity = Service::ServerConfig->EntityServers.begin(); itEntity != Service::ServerConfig->EntityServers.end(); ++itEntity )
 		{
 			Svr::EntityServerEntity *pEntity = nullptr;
 			auto pEntityCfg = *itEntity;
@@ -192,8 +177,8 @@ namespace ConspiracyGameInstanceServer {
 		{
 		GameInstanceManagerServiceEntity *pGameInstanceManager = nullptr;
 		svrMem( pGameInstanceManager = new(GetMemoryManager()) GameInstanceManagerServiceEntity(ClusterID::GameInstanceManager, ClusterMembership::Slave) );
-		svrChk( GetMyServer()->GetComponent<Svr::EntityManager>()->AddEntity( EntityFaculty::Service, pGameInstanceManager ) );
-		svrChk( GetMyServer()->GetComponent<Svr::ClusterManagerServiceEntity>()->AddClusterServiceEntity( pGameInstanceManager ) );
+		svrChk( Svr::GetServerComponent<Svr::EntityManager>()->AddEntity( EntityFaculty::Service, pGameInstanceManager ) );
+		svrChk( Svr::GetServerComponent<Svr::ClusterManagerServiceEntity>()->AddClusterServiceEntity( pGameInstanceManager ) );
 		svrChk( AddComponent(pGameInstanceManager) );
 		}
 

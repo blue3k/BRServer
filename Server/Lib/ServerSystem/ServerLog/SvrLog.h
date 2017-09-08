@@ -197,7 +197,7 @@ namespace Trace {
 #define trcAssert(condi) \
 				do{ \
 					if( !(condi) ) {\
-					defTrace( Assert, "{0}({1}): Assert occure : {2}", __FILE__, __LINE__, #condi );  Service::LogModule->Flush();\
+					defTrace( Assert, "{0}({1}): Assert occure : {2}", __FILE__, __LINE__, #condi );  SF::Service::LogModule->Flush();\
 						Assert(condi);\
 						trcErr(ResultCode::UNEXPECTED);\
 					}\
@@ -208,7 +208,7 @@ namespace Trace {
 #define trcAssertExp(condi,expr) \
 				do{ \
 					if( !(condi) ) {\
-						defTrace( Assert, "{0}({1}): Assert occure : {2} : {3}", __FILE__, __LINE__, #condi, expr ); Service::LogModule->Flush();\
+						defTrace( Assert, "{0}({1}): Assert occure : {2} : {3}", __FILE__, __LINE__, #condi, expr ); SF::Service::LogModule->Flush();\
 						Assert(condi);\
 						trcErr(ResultCode::UNEXPECTED);\
 					}\
@@ -219,7 +219,7 @@ namespace Trace {
 #define TrcAssertReturn(condi) \
 				do{ \
 					if( !(condi) ) {\
-					defTrace( Assert, "{0}({1}): Assert occure : {2}", __FILE__, __LINE__, #condi );  Service::LogModule->Flush();\
+					defTrace( Assert, "{0}({1}): Assert occure : {2}", __FILE__, __LINE__, #condi );  SF::Service::LogModule->Flush();\
 						Assert(condi);\
 						return ResultCode::UNEXPECTED;\
 					}\
@@ -230,7 +230,7 @@ namespace Trace {
 #define TrcAssertReturnExp(condi,expr) \
 				do{ \
 					if( !(condi) ) {\
-						defTrace( Assert, "{0}({1}): Assert occure : {2} : {3}", __FILE__, __LINE__, #condi, expr ); Service::LogModule->Flush();\
+						defTrace( Assert, "{0}({1}): Assert occure : {2} : {3}", __FILE__, __LINE__, #condi, expr ); SF::Service::LogModule->Flush();\
 						Assert(condi);\
 						return ResultCode::UNEXPECTED;\
 					}\

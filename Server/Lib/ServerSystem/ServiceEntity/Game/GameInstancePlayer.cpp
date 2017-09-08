@@ -25,8 +25,8 @@
 #include "SvrConst.h"
 #include "SvrTrace.h"
 #include "Server/BrServerUtil.h"
-#include "ServerSystem/ServiceEntity/Game/GameInstancePlayer.h"
-#include "ServerSystem/ServiceEntity/Game/GameInstanceEntity.h"
+#include "ServiceEntity/Game/GameInstancePlayer.h"
+#include "ServiceEntity/Game/GameInstanceEntity.h"
 
 
 

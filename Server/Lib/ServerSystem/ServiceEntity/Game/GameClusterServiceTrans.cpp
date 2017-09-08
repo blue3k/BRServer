@@ -21,8 +21,8 @@
 #include "Server/BrServer.h"
 #include "ServerEntity/ServerEntityManager.h"
 #include "Entity/EntityManager.h"
-#include "ServerSystem/ServiceEntity/Game/GameClusterServiceTrans.h"
-#include "ServerSystem/ServiceEntity/Game/GameClusterServiceEntity.h"
+#include "ServiceEntity/Game/GameClusterServiceTrans.h"
+#include "ServiceEntity/Game/GameClusterServiceEntity.h"
 
 
 
@@ -85,10 +85,10 @@ namespace Svr {
 	//		svrErr(ResultCode::INVALID_PLAYERID);
 	//	}
 
-	//	if ((Svr::GetServerComponent<Svr::EntityManager>()->FindEntity(GetRouteContext().GetTo(), pEntity))
+	//	if ((Service::EntityTable->find(GetRouteContext().GetTo(), pEntity))
 	//		&& pEntity->GetEntityID().GetFacultyID() == (uint)EntityFaculty::User)
 	//	{
-	//		svrChkPtr(pPlayerEntity = BR_DYNAMIC_CAST(GamePlayerEntity*, (Svr::Entity*)pEntity));
+	//		svrChkPtr(pPlayerEntity = dynamic_cast<GamePlayerEntity*>((Svr::Entity*)pEntity));
 
 	//		// If a login server has invalid login session information from the DB. the player ID will not be match
 	//		if (pPlayerEntity->GetPlayerID() != GetPlayerID())

@@ -131,7 +131,7 @@ namespace ConspiracyGameInstanceServer {
 			//	SetBodyGuard( pPlayer->GetPlayerID() );
 			//	break;
 		case PlayerRole::Werewolf:
-			if (m_Werewolves.GetSize() > MAX_WEREWOLF)
+			if (m_Werewolves.size() > MAX_WEREWOLF)
 			{
 				Assert(!"Too many werewolfs are assigned This mustn't be happened");
 				pPlayer->SetRole(PlayerRole::Villager);
@@ -220,26 +220,25 @@ namespace ConspiracyGameInstanceServer {
 		});
 
 
-		GetOwner().ForeachPlayerSvrGameInstance( [&]( GamePlayer* pPlayer, Policy::NetSvrPolicyGameInstance *pPolicy )->Result {
-			if( pPlayer->GetPlayerEntityUID() != 0 )
-				pPolicy->RoleAssignedS2CEvt( RouteContext( GetOwner().GetEntityUID(), pPlayer->GetPlayerEntityUID()), pPlayer->GetRole() );
+		GetOwner().ForeachPlayerSvrGameInstance( [&]( GamePlayer* pPlayer, Policy::NetSvrPolicyGameInstance& pPolicy )->Result {
+			if( pPlayer->GetPlayerEntityUID().UID != 0 )
+				pPolicy.RoleAssignedS2CEvt( RouteContext( GetOwner().GetEntityUID(), pPlayer->GetPlayerEntityUID()), (uint8_t)pPlayer->GetRole() );
 			return ResultCode::SUCCESS;
 		});
 
 
 		// notify other's role
-		for( uint iwolf = 0; iwolf < m_Werewolves.GetSize(); iwolf++ )
+		for( uint iwolf = 0; iwolf < m_Werewolves.size(); iwolf++ )
 		{
-			for( uint iother = 0; iother < m_Werewolves.GetSize(); iother++ )
+			for( uint iother = 0; iother < m_Werewolves.size(); iother++ )
 			{
 				if( iwolf == iother ) continue;
 
 				if( m_Werewolves[iwolf] != nullptr && m_Werewolves[iother] != nullptr )
 				{
-					auto pPolicy = m_Werewolves[iwolf]->GetInterface<Policy::NetSvrPolicyGameInstance>();
-					if (m_Werewolves[iwolf]->GetPlayerEntityUID() != 0 && pPolicy != nullptr)
+					if (m_Werewolves[iwolf]->GetPlayerEntityUID().UID != 0)
 					{
-						pPolicy->PlayerRevealedS2CEvt(RouteContext(GetOwner().GetEntityUID(), m_Werewolves[iwolf]->GetPlayerEntityUID()), m_Werewolves[iother]->GetPlayerID(), m_Werewolves[iother]->GetRole(), PlayerRevealedReason::Werewolf);
+						Policy::NetSvrPolicyGameInstance(m_Werewolves[iwolf]->GetConnection()).PlayerRevealedS2CEvt(RouteContext(GetOwner().GetEntityUID(), m_Werewolves[iwolf]->GetPlayerEntityUID()), m_Werewolves[iother]->GetPlayerID(), (uint8_t)m_Werewolves[iother]->GetRole(), (uint8_t)PlayerRevealedReason::Werewolf);
 					}
 				}
 			}
@@ -471,9 +470,9 @@ namespace ConspiracyGameInstanceServer {
 
 		GetOwner().OnPlayerGetOutOfGame( pPlayerToKill );
 
-		GetOwner().ForeachPlayerSvrGameInstance( [&]( GamePlayer* pPlayer, Policy::NetSvrPolicyGameInstance *pPolicy )->Result {
-			if( pPlayer->GetPlayerEntityUID() != 0 )
-				pPolicy->PlayerKilledS2CEvt( RouteContext( GetOwner().GetEntityUID(), pPlayer->GetPlayerEntityUID()), pPlayerToKill->GetPlayerID(), reason);
+		GetOwner().ForeachPlayerSvrGameInstance( [&]( GamePlayer* pPlayer, Policy::NetSvrPolicyGameInstance &pPolicy )->Result {
+			if( pPlayer->GetPlayerEntityUID().UID != 0 )
+				pPolicy.PlayerKilledS2CEvt( RouteContext( GetOwner().GetEntityUID(), pPlayer->GetPlayerEntityUID()), pPlayerToKill->GetPlayerID(), (uint8_t)reason);
 			return ResultCode::SUCCESS;
 		});
 
@@ -542,9 +541,9 @@ namespace ConspiracyGameInstanceServer {
 		};
 
 
-		GetOwner().ForeachPlayerSvrGameInstance([&](GamePlayer* pPlayer, Policy::NetSvrPolicyGameInstance *pPolicy)->Result {
-			if (pPlayer->GetPlayerEntityUID() != 0)
-				pPolicy->GamePlayerRevivedS2CEvt(RouteContext(GetOwner().GetEntityUID(), pPlayer->GetPlayerEntityUID()), pPlayerToRevive->GetPlayerID());
+		GetOwner().ForeachPlayerSvrGameInstance([&](GamePlayer* pPlayer, Policy::NetSvrPolicyGameInstance &pPolicy)->Result {
+			if (pPlayer->GetPlayerEntityUID().UID != 0)
+				pPolicy.GamePlayerRevivedS2CEvt(RouteContext(GetOwner().GetEntityUID(), pPlayer->GetPlayerEntityUID()), pPlayerToRevive->GetPlayerID());
 			return ResultCode::SUCCESS;
 		});
 
@@ -655,7 +654,7 @@ namespace ConspiracyGameInstanceServer {
 		charType = role != PlayerRole::None ? ChatType::Role : ChatType::Normal;
 		svrChk(GetOwner().GetComponent<ChattingLogSystem>()->AddChattingLog(Util::Time.GetTimeUTCSec(), pMyPlayer->GetPlayerID(), pMyPlayer->GetPlayerState() == PlayerState::Ghost, charType, message));
 
-		GetOwner().ForeachPlayerGameServer([&](GamePlayer* pPlayer, Policy::NetPolicyGameServer *pPolicy)->Result {
+		GetOwner().ForeachPlayerGameServer([&](GamePlayer* pPlayer, Policy::NetPolicyGameServer &pPolicy)->Result {
 			if (role == PlayerRole::None || role == pPlayer->GetRole())
 			{
 				if (bIsGhost && pPlayer->GetPlayerState() != PlayerState::Ghost)
@@ -663,7 +662,7 @@ namespace ConspiracyGameInstanceServer {
 					// Skip broadcast from ghost to others
 					return ResultCode::SUCCESS;
 				}
-				pPolicy->ChatMessageC2SEvt(RouteContext(ownerEntityUID, pPlayer->GetPlayerEntityUID()), pMyPlayer->GetPlayerID(), role, pMyPlayer->GetPlayerName(), message);
+				pPolicy.ChatMessageC2SEvt(RouteContext(ownerEntityUID, pPlayer->GetPlayerEntityUID()), pMyPlayer->GetPlayerID(), (uint8_t)role, pMyPlayer->GetPlayerName(), message);
 			}
 			return ResultCode::SUCCESS;
 		});

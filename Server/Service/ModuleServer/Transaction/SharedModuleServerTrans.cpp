@@ -12,7 +12,7 @@
 #include "stdafx.h"
 #include "GameServer.h"
 #include "Net/NetServerUDP.h"
-#include "ServerSystem/BrService.h"
+#include "Server/BrService.h"
 #include "SvrTrace.h"
 #include "Entity/EntityManager.h"
 #include "ServerEntity/ServerEntityManager.h"
@@ -60,8 +60,8 @@ namespace SharedModuleServer {
 		switch( m_Step )
 		{
 		case StartingStep::WaitEntityServer:
-			if( GetMyServer()->GetComponent<Svr::ClusterManagerServiceEntity>()->GetInitialized() )
-//			if( (GetMyServer()->GetComponent<Svr::ServerEntityManager>()->GetEntityManagerServerEntity(pServer)) )
+			if( Svr::GetServerComponent<Svr::ClusterManagerServiceEntity>()->GetInitialized() )
+//			if( (Svr::GetServerComponent<Svr::ServerEntityManager>()->GetEntityManagerServerEntity(pServer)) )
 			{
 				svrChk( InitializeServices() );
 				m_Step = StartingStep::WaitInitializeComponents;

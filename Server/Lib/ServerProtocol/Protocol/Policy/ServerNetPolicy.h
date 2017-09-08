@@ -23,10 +23,10 @@ namespace SF
  		class NetPolicyServer 
 		{
  			private:
-				Net::Connection* m_pConnection;
+				SharedPointerT<Net::Connection>& m_pConnection;
 			public:
 			// Constructor
-			NetPolicyServer ( Net::Connection* pConn ) : m_pConnection(pConn)
+			NetPolicyServer ( SharedPointerT<Net::Connection>& pConn ) : m_pConnection(pConn)
 			{}
 
 			// Cmd: 
@@ -40,10 +40,10 @@ namespace SF
 		class NetSvrPolicyServer
 		{
  			private:
-				Net::Connection* m_pConnection;
+				SharedPointerT<Net::Connection>& m_pConnection;
 			public:
 			// Constructor
-			NetSvrPolicyServer ( Net::Connection* pConn ) : m_pConnection(pConn)
+			NetSvrPolicyServer ( SharedPointerT<Net::Connection>& pConn ) : m_pConnection(pConn)
 			{}
 
 			// Cmd: 

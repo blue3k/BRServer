@@ -351,6 +351,10 @@ Proc_End:
 		svrTrace( Info, "Starting Server" );
 
 		svrTrace( Info, "Apply configuration" );
+
+		SetMyConfig(Service::ServerConfig->FindGenericServer(Util::GetServiceName()));
+		svrChkPtr(GetMyConfig());
+
 		// Apply configuration
 		hr = ApplyConfiguration();
 		if( !(hr) )
@@ -511,6 +515,7 @@ Proc_End:
 
 		// Create private network and open it
 		svrMem( m_pNetPrivate = new(GetMemoryManager()) Net::ServerPeerTCP(GetMyConfig()->UID, GetNetClass()) );
+		m_pNetPrivate->RegisterToEngineObjectManager();
 
 		m_pNetPrivate->SetNewConnectionhandler([this](SharedPointerT<Net::Connection>& newConn)
 		{

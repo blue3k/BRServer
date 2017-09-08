@@ -39,18 +39,25 @@ SF_MEMORYPOOL_IMPLEMENT(BR::GameServer::UserNotifySystem);
 
 
 namespace SF {
+	constexpr int UserNotifySystem_Notification::MAX_NOTIFICATION_TEXT;
+
+
 namespace GameServer {
+
+	constexpr int UserNotifySystem::ComponentID;
+	constexpr int UserNotifySystem::MAX_NOTIFICATION;
 
 
 	
 	//////////////////////////////////////////////////////////////////////////
 	//
-	//	GamePlay state calss
+	//	GamePlay state class
 	//
 
 	// Constructor 
 	UserNotifySystem::UserNotifySystem( GamePlayerEntity* pEntity )
 		:GameSystem(pEntity)
+		, m_Notifications(pEntity->GetHeap())
 	{
 	}
 
@@ -58,7 +65,7 @@ namespace GameServer {
 	{
 	}
 
-	// Initialzie system
+	// Initialize system
 	Result UserNotifySystem::InitializeComponent()
 	{
 		m_Notifications.Clear();
@@ -87,7 +94,7 @@ namespace GameServer {
 	// Get Notification information
 	UserNotifySystem::Notification* UserNotifySystem::GetNotification( uint notificationID )
 	{
-		for( unsigned int index = 0; index < m_Notifications.GetSize(); index++ )
+		for( unsigned int index = 0; index < m_Notifications.size(); index++ )
 		{
 			if( m_Notifications[index].NotificationID == notificationID )
 				return &m_Notifications[index];
@@ -99,7 +106,7 @@ namespace GameServer {
 	// Find
 	INT UserNotifySystem::FindNotification( uint notificationID )
 	{
-		for( int index = 0; index < (INT)m_Notifications.GetSize(); index++ )
+		for( int index = 0; index < (INT)m_Notifications.size(); index++ )
 		{
 			if( m_Notifications[index].NotificationID == notificationID )
 				return index;
@@ -114,7 +121,7 @@ namespace GameServer {
 		if( GetNotification(info.NotificationID) )
 			return ResultCode::SUCCESS_FALSE;
 
-		return m_Notifications.Append( 1, &info );
+		return m_Notifications.insert( 1, info );
 	}
 
 	Result UserNotifySystem::AddNotification( uint NotificationID, NotificationType MessageID, int64_t MessageParam0, int64_t MessageParam1, const char* MessageText, uint8_t IsRead, int64_t timeStamp )
@@ -150,7 +157,7 @@ namespace GameServer {
 
 	Result UserNotifySystem::ForeachNotification( std::function<Result(const UserNotifySystem::Notification&)> functor )
 	{
-		for( unsigned int index = 0; index < m_Notifications.GetSize(); index++ )
+		for( unsigned int index = 0; index < m_Notifications.size(); index++ )
 		{
 			Result hr = functor( m_Notifications[index] );
 			if( !(hr) )

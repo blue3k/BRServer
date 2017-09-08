@@ -12,7 +12,7 @@
 #include "stdafx.h"
 #include "GameServer.h"
 #include "Net/NetServerUDP.h"
-#include "ServerSystem/BrService.h"
+#include "Server/BrService.h"
 #include "SvrTrace.h"
 #include "Entity/EntityManager.h"
 #include "ServerEntity/ServerEntityManager.h"
@@ -24,9 +24,9 @@
 #include "Protocol/Policy/GameNetPolicy.h"
 
 #include "ServiceEntity/ClusterManagerServiceEntity.h"
-#include "ServerSystem/ServiceEntity/MatchingQueueServiceEntity.h"
-#include "ServerSystem/ServiceEntity/MatchingServiceEntity.h"
-#include "ServerSystem/ServiceEntity/GamePartyManagerServiceEntity.h"
+#include "ServiceEntity/MatchingQueueServiceEntity.h"
+#include "ServiceEntity/MatchingServiceEntity.h"
+#include "ServiceEntity/GamePartyManagerServiceEntity.h"
 #include "GameInstance/GameInstanceManager.h"
 
 
@@ -41,8 +41,8 @@ namespace ConspiracyGameInstanceServer {
 
 
 	// Server start process
-	GameInstanceServerStartProcess::GameInstanceServerStartProcess()
-		: TransactionT(TransactionID() )
+	GameInstanceServerStartProcess::GameInstanceServerStartProcess(IHeap &heap)
+		: TransactionT(heap, TransactionID() )
 	{
 		SetExclusive(true);
 		BR_TRANS_MESSAGE( Svr::TimerResult, { return OnTimer(pRes); });
@@ -64,8 +64,8 @@ namespace ConspiracyGameInstanceServer {
 		switch( m_Step )
 		{
 		case StartingStep::WaitEntityServer:
-			if( GetMyServer()->GetComponent<Svr::ClusterManagerServiceEntity>()->GetInitialized() )
-//			if( (GetMyServer()->GetComponent<Svr::ServerEntityManager>()->GetEntityManagerServerEntity(pServer)) )
+			if( Svr::GetServerComponent<Svr::ClusterManagerServiceEntity>()->GetInitialized() )
+//			if( (Svr::GetServerComponent<Svr::ServerEntityManager>()->GetEntityManagerServerEntity(pServer)) )
 			{
 				svrChk( InitializeServices() );
 				m_Step = StartingStep::WaitInitializeComponents;

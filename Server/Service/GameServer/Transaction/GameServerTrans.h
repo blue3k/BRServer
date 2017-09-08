@@ -24,10 +24,10 @@ namespace SF {
 namespace GameServer {
 
 	
-	class GameServerStartProcess : public Svr::TransactionT<GameServer,GameServerStartProcess>
+	class GameServerStartProcess : public Svr::TransactionT<GameServer>
 	{
 	private:
-		typedef Svr::TransactionT<GameServer, GameServerStartProcess> super;
+		typedef Svr::TransactionT<GameServer> super;
 
 		enum class StartingStep 
 		{
@@ -39,7 +39,7 @@ namespace GameServer {
 		StartingStep m_Step;
 
 	public:
-		GameServerStartProcess();
+		GameServerStartProcess(IHeap& heap);
 		~GameServerStartProcess();
 
 		// Override delete function

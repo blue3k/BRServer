@@ -23,10 +23,10 @@ namespace SF
  		class NetPolicyPartyMatchingQueue 
 		{
  			private:
-				Net::Connection* m_pConnection;
+				SharedPointerT<Net::Connection>& m_pConnection;
 			public:
 			// Constructor
-			NetPolicyPartyMatchingQueue ( Net::Connection* pConn ) : m_pConnection(pConn)
+			NetPolicyPartyMatchingQueue ( SharedPointerT<Net::Connection>& pConn ) : m_pConnection(pConn)
 			{}
 
 			// Cmd: Register match by party
@@ -56,10 +56,10 @@ namespace SF
 		class NetSvrPolicyPartyMatchingQueue
 		{
  			private:
-				Net::Connection* m_pConnection;
+				SharedPointerT<Net::Connection>& m_pConnection;
 			public:
 			// Constructor
-			NetSvrPolicyPartyMatchingQueue ( Net::Connection* pConn ) : m_pConnection(pConn)
+			NetSvrPolicyPartyMatchingQueue ( SharedPointerT<Net::Connection>& pConn ) : m_pConnection(pConn)
 			{}
 
 			// Cmd: Register match by party

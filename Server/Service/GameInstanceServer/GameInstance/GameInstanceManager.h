@@ -14,7 +14,7 @@
 #include "SFTypedefs.h"
 
 
-#include "ServerSystem/ServiceEntity/Game/GameInstanceManagerServiceEntity.h"
+#include "ServiceEntity/Game/GameInstanceManagerServiceEntity.h"
 
 
 

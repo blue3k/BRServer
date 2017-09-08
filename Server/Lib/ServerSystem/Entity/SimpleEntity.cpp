@@ -51,7 +51,7 @@ namespace Svr {
 	// clear transaction
 	Result SimpleEntity::ClearEntity()
 	{
-		ReleaseTransaction((Transaction*)m_pCurTran);
+		ReleaseTransaction(m_pCurTran);
 		m_pCurTran = SharedPointerT<Transaction>();
 
 		return Entity::ClearEntity();
@@ -89,26 +89,22 @@ namespace Svr {
 		}
 
 		// Tick current transaction
-		pCurTrans = (Transaction*)m_pCurTran;
-		if (pCurTrans != nullptr)
+		if (m_pCurTran != nullptr)
 		{
-			svrChk(ProcessTransaction(pCurTrans));
+			svrChk(ProcessTransaction(m_pCurTran));
 		}
 
 		// If no active transaction, pop one and try it
 		loopCount = GetTransactionQueue().GetEnqueCount();
 		for (decltype(loopCount) iTrans = 0; pCurTrans == nullptr && iTrans < loopCount; iTrans++)
 		{
-			if (!(GetTransactionQueue().Dequeue(pCurTrans)))
+			if (!(GetTransactionQueue().Dequeue(m_pCurTran)))
 				break;
 
-			m_pCurTran = SharedPointerT<Transaction>(pCurTrans);
 			//svrTrace(SVR_TRANSACTION, "Trans NewActive TID:{0}, ParentTID:{1} {2}, Entity:{3}:%4%", pCurTrans->GetTransID(), pCurTrans->GetParentTransID(), typeid(*pCurTrans).name(), GetEntityUID(), typeid(*this).name());
 
-			svrChk(ProcessTransaction(pCurTrans));
+			svrChk(ProcessTransaction(m_pCurTran));
 		}
-
-		m_pCurTran = SharedPointerT<Transaction>(pCurTrans);
 
 		if( GetEntityState() == EntityState::CLOSING )
 		{
@@ -119,7 +115,7 @@ namespace Svr {
 		// We need to reschedule us
 		if (pAction != nullptr)
 		{
-			SetBestScehdulingTime((Transaction*)m_pCurTran);
+			SetBestScehdulingTime(*m_pCurTran);
 		}
 
 

@@ -62,7 +62,7 @@ namespace Svr {
 		virtual void ReleaseConnection();
 
 		// Get Connection
-		inline Net::Connection* GetConnection();
+		inline SharedPointerT<Net::Connection>& GetConnection() { return m_pConnection; }
 		void GetConnectionShared(SharedPointerT<Net::Connection>& outConn);
 
 

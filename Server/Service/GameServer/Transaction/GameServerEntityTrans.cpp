@@ -12,7 +12,7 @@
 #include "stdafx.h"
 #include "GameServer.h"
 #include "Net/NetServerUDP.h"
-#include "ServerSystem/BrService.h"
+#include "Server/BrService.h"
 #include "SvrTrace.h"
 #include "Entity/EntityManager.h"
 #include "ServerEntity/ServerEntityManager.h"
@@ -41,8 +41,8 @@ namespace GameServer {
 
 
 	template<class ProcessEntity>
-	GameServerTransRegisterPlayerToJoinGameServer<ProcessEntity>::GameServerTransRegisterPlayerToJoinGameServer(MessageDataPtr &pIMsg)
-		: super(pIMsg)
+	GameServerTransRegisterPlayerToJoinGameServer<ProcessEntity>::GameServerTransRegisterPlayerToJoinGameServer(IHeap& heap, MessageDataPtr &pIMsg)
+		: super(heap, pIMsg)
 		, m_PublicAddress(nullptr)
 		, m_PublicAddressIPV6(nullptr)
 		, m_Port(0)
@@ -76,7 +76,6 @@ namespace GameServer {
 		Result hr = ResultCode::SUCCESS;
 		SharedPointerT<Svr::Entity> pEntity;
 		GamePlayerEntity *pPlayerEntity = nullptr;
-		Policy::NetPolicyGameServer *pTargetPolicy = nullptr;
 
 		m_PlayerUID = 0;
 
@@ -87,10 +86,10 @@ namespace GameServer {
 			svrErr(ResultCode::INVALID_PLAYERID);
 		}
 
-		if( (Svr::GetServerComponent<Svr::EntityManager>()->FindEntity(super::GetRouteContext().GetTo(), pEntity ))
+		if( (Service::EntityTable->find(super::GetRouteContext().GetTo(), pEntity ))
 			&& pEntity->GetEntityID().GetFacultyID() == (uint)EntityFaculty::User )
 		{
-			svrChkPtr( pPlayerEntity = BR_DYNAMIC_CAST(GamePlayerEntity*,(Svr::Entity*)pEntity) );
+			svrChkPtr( pPlayerEntity = dynamic_cast<GamePlayerEntity*>((Svr::Entity*)pEntity) );
 
 			// If a login server has invalid login session information from the DB. the player ID will not be match
 			if( pPlayerEntity->GetPlayerID() != super::GetPlayerID() )
@@ -131,9 +130,8 @@ namespace GameServer {
 		else
 		{
 			// it's local player send message to local loopback entity
-			svrChkPtr(pTargetPolicy = GetMyServer()->GetLoopbackServerEntity()->GetInterface<Policy::NetPolicyGameServer>());
 
-			svrChk(pTargetPolicy->RegisterPlayerToJoinGameServerOnPlayerEntityCmd(
+			svrChk(Policy::NetPolicyGameServer(GetMyServer()->GetLoopbackServerEntity()->GetConnection()).RegisterPlayerToJoinGameServerOnPlayerEntityCmd(
 				RouteContext(super::GetOwnerEntityUID(), m_PlayerUID), super::GetTransID(),
 				super::GetPlayerID(), super::GetTicket(), super::GetFBUserID()));
 

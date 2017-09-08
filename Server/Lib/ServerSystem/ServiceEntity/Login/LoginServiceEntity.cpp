@@ -24,10 +24,10 @@
 #include "ServerService/ServerServiceBase.h"
 #include "ServerEntity/ServerEntity.h"
 #include "Entity/EntityManager.h"
-#include "ServerSystem/ServiceEntity/Login/LoginServiceEntity.h"
+#include "ServiceEntity/Login/LoginServiceEntity.h"
 #include "ServiceEntity/Login/LoginPlayerEntity.h"
-#include "ServerSystem/ServiceEntity/Login/LoginPlayerEntityTrans.h"
-#include "ServerSystem/ServiceEntity/RankingServiceTrans.h"
+#include "ServiceEntity/Login/LoginPlayerEntityTrans.h"
+#include "ServiceEntity/RankingServiceTrans.h"
 #include "ServiceEntity/ClusterManagerServiceEntity.h"
 #include "SvrTrace.h"
 #include "SvrConst.h"
@@ -81,7 +81,7 @@ namespace Svr {
 		svrChkPtr(m_PublicNetSocket);
 
 		svrMem(m_pNetPublic = new(GetMemoryManager()) Net::ServerMUDP(BrServer::GetInstance()->GetServerUID(), NetClass::Login));
-
+		m_pNetPublic->RegisterToEngineObjectManager();
 		m_pNetPublic->SetNewConnectionhandler([this](SharedPointerT<Net::Connection>& conn)
 		{
 			SharedPointerAtomicT<Net::Connection> pConTem;
@@ -122,7 +122,7 @@ namespace Svr {
 
 	Proc_End:
 
-		Util::SafeDelete(m_pNetPublic);
+		m_pNetPublic = nullptr;
 
 		return hr;
 	}

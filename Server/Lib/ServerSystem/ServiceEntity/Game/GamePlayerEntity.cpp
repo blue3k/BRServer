@@ -113,11 +113,7 @@ namespace Svr {
 		return hr;
 	}
 
-	// Release connection if has
-	void GamePlayerEntity::ReleaseConnection()
-	{
-		Svr::SimpleUserEntity::ReleaseConnection();
-	}
+
 
 	//////////////////////////////////////////////////////////////////////////////////////////////////
 	//

@@ -42,8 +42,9 @@ namespace ConspiracyGameInstanceServer {
 
 	// Constructor 
 	GameLogSystem::GameLogSystem( GameInstanceEntity* pEntity )
-		:GameSystem(pEntity)
-		,m_CurrentVoteLogItem(nullptr)
+		: GameSystem(pEntity)
+		, GameLog(GetHeap())
+		, m_CurrentVoteLogItem(nullptr)
 	{
 	}
 
@@ -52,7 +53,7 @@ namespace ConspiracyGameInstanceServer {
 	}
 	
 
-	// Initialzie system
+	// Initialize system
 	Result GameLogSystem::InitializeComponent()
 	{
 		Result hr = ResultCode::SUCCESS;

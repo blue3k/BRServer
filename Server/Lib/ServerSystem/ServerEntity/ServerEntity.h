@@ -66,8 +66,8 @@ namespace Svr {
 		TimeStampSec m_ServerUpTime;
 		
 		// Connection to remote
-		SharedPointerT<SF::Net::Connection>	m_pConnRemote;
-		SharedPointerT<SF::Net::Connection>	m_pConnLocal;
+		SharedPointerAtomicT<SF::Net::Connection>	m_pConnRemote;
+		SharedPointerAtomicT<SF::Net::Connection>	m_pConnLocal;
 		TimeStampMS							m_LocalConnectionRetryTime;
 		DurationMS							m_LocalConnectionRetryWait;
 		CriticalSection						m_ConnectionLock;
@@ -75,7 +75,7 @@ namespace Svr {
 	protected:
 
 
-		Result SetConnection(SharedPointerT<SF::Net::Connection> &destConn, SF::Net::Connection * pConn);
+		Result SetConnection(SharedPointerAtomicT<SF::Net::Connection> &destConn, SF::Net::Connection * pConn);
 		Result UpdateConnection(SF::Net::Connection* pConn);
 
 
@@ -100,7 +100,7 @@ namespace Svr {
 		// Get Connection
 		FORCEINLINE SF::Net::Connection* GetRemoteConnection()							{ return *m_pConnRemote; }
 		FORCEINLINE SF::Net::Connection* GetLocalConnection()							{ return *m_pConnLocal; }
-		SF::Net::Connection* GetConnection();
+		SharedPointerT<SF::Net::Connection> GetConnection();
 		void GetConnectionShared(SharedPointerT<SF::Net::Connection>& outConn);
 
 
@@ -131,7 +131,7 @@ namespace Svr {
 		//virtual Result OnRoutedMessage(MessageDataPtr &pMsg) override;
 
 		// Process Message and release message after all processed
-		virtual Result ProcessMessage(ServerEntity *pServerEntity, SF::Net::Connection *pCon, MessageDataPtr &pMsg ) override;
+		virtual Result ProcessMessage(ServerEntity *pServerEntity, Net::Connection* pCon, MessageDataPtr &pMsg ) override;
 
 		// Process Connection event
 		virtual Result ProcessConnectionEvent( const SF::Net::ConnectionEvent& conEvent );
@@ -153,13 +153,13 @@ namespace Svr {
 	};
 
 
-#include "ServerEntity.inl"
-
-
 
 }; // namespace Svr
 }; // namespace SF
 
+
+
+#include "ServerEntity.inl"
 
 
 

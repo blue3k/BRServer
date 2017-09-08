@@ -43,7 +43,8 @@ namespace ConspiracyGameInstanceServer {
 
 	// Constructor 
 	ChattingLogSystem::ChattingLogSystem( GameInstanceEntity* pEntity )
-		:GameSystem(pEntity)
+		: GameSystem(pEntity)
+		, ChattingHistory(GetHeap())
 	{
 	}
 
@@ -52,7 +53,7 @@ namespace ConspiracyGameInstanceServer {
 	}
 	
 
-	// Initialzie system
+	// Initialize system
 	Result ChattingLogSystem::InitializeComponent()
 	{
 		Result hr = ResultCode::SUCCESS;

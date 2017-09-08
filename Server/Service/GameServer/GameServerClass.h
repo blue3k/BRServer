@@ -48,10 +48,10 @@ namespace GameServer
 
 	private:
 		// Public network interface
-		Net::ServerMUDP*			m_pNetPublic;
+		SharedPointerT<Net::ServerMUDP>			m_pNetPublic;
 
 		// Game cluster config
-		const Svr::Config::GameClusterInfo*	m_pGameClusterCfg;
+		const ServerConfig::GameCluster*	m_pGameClusterCfg;
 
 		// game config preset
 		int m_TableVersion;
@@ -81,15 +81,15 @@ namespace GameServer
 		//
 
 		// Get Login server config
-		inline const Svr::Config::PublicServer* GetGameConfig();
+		inline const ServerConfig::GameServer* GetGameConfig();
 
-		const Svr::Config::GameClusterInfo* GetGameClusterInfo() { return m_pGameClusterCfg; }
+		const ServerConfig::GameCluster* GetGameClusterInfo() { return m_pGameClusterCfg; }
 
-		const Svr::ServerConfig::NetPublic* GetPublicNetConfig() { return GetGameConfig()->NetPublic; }
+		const ServerConfig::NetPublic* GetPublicNetConfig() { return &GetGameConfig()->PublicNet; }
 
 
 		// Get net public
-		inline Net::ServerMUDP* GetNetPublic();
+		inline SharedPointerT<Net::ServerMUDP>& GetNetPublic();
 
 		// Query Loopback entity
 		inline Svr::ServerEntity* GetLoopbackGameServerEntity();
@@ -124,7 +124,7 @@ namespace GameServer
 
 
 		//Result InitializeAccountDB();
-		//Result InitializeGameDB(Svr::Config::DBCluster* pDBClusterCfg);
+		//Result InitializeGameDB(ServerConfig::DBCluster* pDBClusterCfg);
 
 
 		// Initialize private Network

@@ -65,7 +65,7 @@ namespace Svr {
 
 	private:
 		ServerConfig::NetPublic*	m_PublicNetSocket;
-		Net::ServerMUDP*			m_pNetPublic;
+		SharedPointerT<Net::ServerMUDP>			m_pNetPublic;
 		GameID						m_GameID;
 
 		PageQueue<SharedPointerAtomicT<Net::Connection>> m_NewConnectionQueue;

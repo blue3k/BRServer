@@ -23,10 +23,10 @@ namespace SF
  		class NetPolicyGameServer 
 		{
  			private:
-				Net::Connection* m_pConnection;
+				SharedPointerT<Net::Connection>& m_pConnection;
 			public:
 			// Constructor
-			NetPolicyGameServer ( Net::Connection* pConn ) : m_pConnection(pConn)
+			NetPolicyGameServer ( SharedPointerT<Net::Connection>& pConn ) : m_pConnection(pConn)
 			{}
 
 			// Cmd: Kick
@@ -54,10 +54,10 @@ namespace SF
 		class NetSvrPolicyGameServer
 		{
  			private:
-				Net::Connection* m_pConnection;
+				SharedPointerT<Net::Connection>& m_pConnection;
 			public:
 			// Constructor
-			NetSvrPolicyGameServer ( Net::Connection* pConn ) : m_pConnection(pConn)
+			NetSvrPolicyGameServer ( SharedPointerT<Net::Connection>& pConn ) : m_pConnection(pConn)
 			{}
 
 			// Cmd: Kick

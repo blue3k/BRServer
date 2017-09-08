@@ -22,7 +22,7 @@
 #include "ServerEntity/ServerEntity.h"
 #include "ServerEntity/ServerEntityManager.h"
 #include "ServiceEntity/ClusteredServiceEntity.h"
-#include "ServerSystem/ServiceEntity/ClusterServiceTrans.h"
+#include "ServiceEntity/ClusterServiceTrans.h"
 #include "Protocol/ServerService/ClusterServerService.h"
 #include "SvrTrace.h"
 #include "Task/ServerTaskEvent.h"

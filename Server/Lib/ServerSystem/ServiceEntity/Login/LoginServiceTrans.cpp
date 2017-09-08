@@ -26,8 +26,8 @@
 #include "Server/BrServer.h"
 #include "ServerEntity/ServerEntityManager.h"
 #include "Entity/EntityManager.h"
-#include "ServerSystem/ServiceEntity/Login/LoginServiceTrans.h"
-#include "ServerSystem/ServiceEntity/Login/LoginServiceEntity.h"
+#include "ServiceEntity/Login/LoginServiceTrans.h"
+#include "ServiceEntity/Login/LoginServiceEntity.h"
 
 
 

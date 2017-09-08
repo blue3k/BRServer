@@ -64,7 +64,7 @@ namespace GameServer {
 		enum PlayerState
 		{
 			PlayerState_None,		// Nothing just created
-			PlayerState_LogedIn,	// Just Loged in
+			PlayerState_LogedIn,	// Just Logged in
 		};
 
 	private:
@@ -109,13 +109,15 @@ namespace GameServer {
 		// Player Name
 		char m_UserName[GameConst::MAX_NAME];
 
-		PlayerID GetPlayerID() { return GetAccountID(); }
-
-
 	public:
 
 		GamePlayerEntity();
 		virtual ~GamePlayerEntity();
+
+
+		PlayerID GetPlayerID() { return GetAccountID(); }
+
+
 
 		PlayerState GetPlayerState() { return m_PlayerState; }
 		void SetPlayerState(PlayerState value) { m_PlayerState = value; }
@@ -160,8 +162,6 @@ namespace GameServer {
 		// Set connection for pilot
 		virtual Result SetConnection( SharedPointerT<Net::Connection>&& pCon ) override;
 
-		// Release connection if has
-		virtual void ReleaseConnection() override;
 
 
 

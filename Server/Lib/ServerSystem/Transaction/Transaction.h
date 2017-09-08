@@ -252,7 +252,7 @@ namespace Svr {
 		///////////////////////////////////////////////////////////
 		// Helper functions
 
-		SF::Net::Connection* GetServerEntityConnection(ServerEntity* pServerEntity);
+		SharedPointerT<Net::Connection> GetServerEntityConnection(ServerEntity* pServerEntity);
 	};
 
 
@@ -556,18 +556,13 @@ namespace Svr {
 		{
 		}
 		
-		virtual Net::Connection* GetConnection()
+		virtual SharedPointerT<Net::Connection>& GetConnection()
 		{
 			if (TransactionT<OwnerType>::GetOwnerEntity() == nullptr)
-				return nullptr;
+				return m_pConn;
 
 			TransactionT<OwnerType>::GetMyOwner()->GetConnectionShared(m_pConn);
-
-			if (m_pConn != nullptr)
-			{
-				return *m_pConn;
-			}
-			return nullptr;
+			return m_pConn;
 		}
 
 	};
@@ -583,6 +578,7 @@ namespace Svr {
 		{
 		}
 
+
 		// Initialize Transaction
 		virtual Result InitializeTransaction( Entity *pOwner )
 		{
@@ -594,7 +590,7 @@ namespace Svr {
 			// We ignore input owner
 			pOwner = nullptr;
 
-			hr = MessageTransaction<OwnerEntityType, PolicyType, MessageClass, TransactionType, MessageHandlerBufferSize>::ParseMessage();
+			hr = MessageTransaction<OwnerEntityType, MessageClass>::ParseMessage();
 			svrChk(hr);
 
 			if(MessageClass::GetRouteContext().GetTo().GetServerID() != Svr::GetMyServerID() )
@@ -603,7 +599,7 @@ namespace Svr {
 				svrErr(ResultCode::SVR_INVALID_SERVERID);
 			}
 
-			svrChk(FindEntity(MessageClass::GetRouteContext().GetTo().GetEntityID(), pFound));
+			svrChk(Service::EntityTable->find(MessageClass::GetRouteContext().GetTo().GetEntityID(), pFound));
 
 			svrChkPtr(pOwnerEntity = static_cast<OwnerEntityType*>((Entity*)pFound));
 
@@ -613,7 +609,7 @@ namespace Svr {
 			//}
 
 
-			hr = MessageTransaction<OwnerEntityType, PolicyType, MessageClass, TransactionType, MessageHandlerBufferSize>::InitializeTransaction(pOwnerEntity);
+			hr = MessageTransaction<OwnerEntityType, MessageClass>::InitializeTransaction(pOwnerEntity);
 			svrChk(hr);
 
 		Proc_End:
@@ -661,7 +657,7 @@ namespace Svr {
 			assert(superTrans::GetServerEntity() != nullptr);
 			svrChkPtr(superTrans::GetServerEntity());
 			// S2S Communication so return policy owner is server entity
-			//svrChkPtr( m_ServerEntity = BR_DYNAMIC_CAST(ServerEntity*, pOwner) );
+			//svrChkPtr( m_ServerEntity = dynamic_cast<ServerEntity>( pOwner) );
 
 			svrChk( Transaction::InitializeTransaction( pOwnerEntity ) );
 

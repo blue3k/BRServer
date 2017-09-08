@@ -20,8 +20,8 @@
 #include "Server/BrServer.h"
 #include "ServerEntity/ServerEntityManager.h"
 #include "Entity/EntityManager.h"
-#include "ServerSystem/ServiceEntity/GamePartyManagerServiceTrans.h"
-#include "ServerSystem/ServiceEntity/GamePartyManagerServiceEntity.h"
+#include "ServiceEntity/GamePartyManagerServiceTrans.h"
+#include "ServiceEntity/GamePartyManagerServiceEntity.h"
 
 
 

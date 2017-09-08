@@ -14,10 +14,10 @@
 #include "SFTypedefs.h"
 #include "Types/BrGameTypes.h"
 #include "Memory/MemoryPool.h"
-#include "Common/Memento.h"
+#include "Util/Memento.h"
 
 #include "ServiceEntity/Game/GameSystem.h"
-#include "Common/MemoryBufferUtil.h"
+
 #include "GameConst.h"
 #include "UserSystemComponentIDs.h"
 #include "Table/conspiracy/LevelTbl.h"

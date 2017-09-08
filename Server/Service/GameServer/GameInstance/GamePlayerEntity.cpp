@@ -184,23 +184,13 @@ namespace GameServer {
 
 		svrChk(Svr::SimpleUserEntity::SetConnection(std::forward<SharedPointerT<Net::Connection>>(pCon)));
 
-		if (GetConnection() != nullptr)
-		{
-			svrChkPtr(m_ISvrGamePolicy = GetConnection()->GetInterface<Policy::NetSvrPolicyGame>());
-		}
 
 	Proc_End:
 
 		return hr;
 	}
 
-	// Release connection if has
-	void GamePlayerEntity::ReleaseConnection()
-	{
-		m_ISvrGamePolicy = nullptr;
 
-		Svr::SimpleUserEntity::ReleaseConnection();
-	}
 
 	//////////////////////////////////////////////////////////////////////////////////////////////////
 	//

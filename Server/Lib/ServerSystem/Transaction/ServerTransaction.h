@@ -24,7 +24,7 @@
 #include "SvrConst.h"
 #include "SvrTrace.h"
 #include "Types/BrSvrTypes.h"
-
+#include "Service/EngineService.h"
 
 #include "Transaction/Transaction.h"
 #include "ServiceEntity/ClusteredServiceEntity.h"
@@ -94,14 +94,14 @@ namespace Svr {
 		// route function call
 		ServerEntity* GetServerEntity() { return superTrans::GetServerEntity(); }
 
-		Net::Connection* GetConnection()
+		SharedPointerT<Net::Connection> GetConnection()
 		{
 			auto serverEntity = GetServerEntity();
 			if (serverEntity != nullptr)
 			{
-				return serverEntity->GetConnection();
+				return std::forward<SharedPointerT<Net::Connection>>(serverEntity->GetConnection());
 			}
-			return nullptr;
+			return SharedPointerT<Net::Connection>();
 		}
 
 		// Initialize Transaction
@@ -149,18 +149,7 @@ namespace Svr {
 			Assert(pSvrEnt);
 			return pSvrEnt;
 		}
-/*
-		template< class PolicyType >
-		PolicyType* GetInterface()
-		{
-			SharedPointerT<Net::Connection> pConn;
-			superTrans::GetServerEntity()->GetConnectionShared(pConn);
-			if (pConn != nullptr)
-				return pConn->GetInterface<PolicyType>();
-			else
-				return nullptr;
-		}
-*/
+
 		FORCEINLINE OwnerEntityType* GetMyOwner()
 		{
 			Assert(superTrans::GetOwnerEntity() );
@@ -198,7 +187,7 @@ namespace Svr {
 		Result TossMessageToTarget( ServerServiceInformation* pService )
 		{
 			Result hr = ResultCode::SUCCESS;
-			Net::Connection *pConn = nullptr;
+			SharedPointerT<Net::Connection> pConn;
 			ClusteredServiceEntity *pMyOwner = nullptr;
 			MessageDataPtr pClonedMessage;
 			pMyOwner = super::GetMyOwner();
@@ -209,7 +198,7 @@ namespace Svr {
 			if( pService->GetEntityUID() == pMyOwner->GetEntityUID() )
 				goto Proc_End;
 
-			pConn = pService->GetServerEntity()->GetConnection();
+			pConn = std::forward<SharedPointerT<Net::Connection>>(pService->GetServerEntity()->GetConnection());
 			if( pConn == nullptr )
 			{
 				svrTrace( Error, "Failed routing a message({0}) for {1}", super::GetMessage()->GetMessageHeader()->msgID, typeid(*pMyOwner).name() );

@@ -21,7 +21,7 @@
 #include "Protocol/Message/GamePartyManagerMsgClass.h"
 #include "Protocol/Policy/GamePartyManagerNetPolicy.h"
 #include "Transaction/MessageRoute.h"
-#include "ServerSystem/ServiceEntity/GamePartyManagerServiceEntity.h"
+#include "ServiceEntity/GamePartyManagerServiceEntity.h"
 #include "Transaction/ServerTransaction.h"
 
 

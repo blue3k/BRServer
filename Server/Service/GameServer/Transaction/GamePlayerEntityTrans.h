@@ -460,7 +460,7 @@ namespace GameServer {
 		typedef Svr::UserTransactionS2SEvt< GamePlayerEntity, Policy::NetSvrPolicyGame, Message::GameServer::NotifyC2SEvt, PlayerTransNotifyS2S> super;
 
 	public:
-		PlayerTransNotifyS2S( MessageDataPtr &pIMsg ):UserTransactionS2SEvt(pIMsg) {}
+		PlayerTransNotifyS2S( MessageDataPtr &pIMsg ): UserTransactionS2SEvt(pIMsg) {}
 		virtual ~PlayerTransNotifyS2S() {}
 
 		// Start Transaction

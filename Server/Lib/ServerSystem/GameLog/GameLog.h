@@ -58,11 +58,9 @@ namespace Svr {
 
 			Assert(szExpectedSize >= sizeof(LogItemType));
 
-			void* pPtr = nullptr;
-			if( !(m_LogAllocator.Alloc( szExpectedSize, pPtr )) )
-			{
+			void* pPtr = m_LogAllocator.Alloc(szExpectedSize);
+			if(pPtr == nullptr)
 				return nullptr;
-			}
 
 			return (uint8_t*)pPtr;
 		}
