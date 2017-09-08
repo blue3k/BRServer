@@ -45,16 +45,16 @@ namespace GameServer {
 	//	Friend transaction
 	//
 
-	class PlayerTransInviteFriend : public Svr::MessageTransaction< GamePlayerEntity, Policy::NetSvrPolicyGame, Message::Game::InviteFriendCmd, PlayerTransInviteFriend>
+	class PlayerTransInviteFriend : public Svr::MessageTransaction< GamePlayerEntity, Message::Game::InviteFriendCmd>
 	{
 	public:
-		typedef Svr::MessageTransaction< GamePlayerEntity, Policy::NetSvrPolicyGame, Message::Game::InviteFriendCmd, PlayerTransInviteFriend> super;
+		typedef Svr::MessageTransaction< GamePlayerEntity, Message::Game::InviteFriendCmd> super;
 
 	private:
 		TimeStampSec m_TimeStamp;
 
 	public:
-		PlayerTransInviteFriend( MessageDataPtr &pIMsg );//  :MessageTransaction( pIMsg ) {}
+		PlayerTransInviteFriend(IHeap& heap, MessageDataPtr &pIMsg );//  :MessageTransaction( pIMsg ) {}
 		virtual ~PlayerTransInviteFriend() {}
 
 		Result OnGetPlayerShardID(Svr::TransactionResult* &pRes);
@@ -63,15 +63,15 @@ namespace GameServer {
 		// Start Transaction
 		virtual Result StartTransaction();
 
-		BR_IMPLEMENT_USERMSGTRANS_CLOSE(InviteFriendRes);
+		BR_IMPLEMENT_USERMSGTRANS_CLOSE(Policy::NetSvrPolicyGame, InviteFriendRes);
 	};
 
 
 
-	class PlayerTransFriendAccept : public Svr::MessageTransaction< GamePlayerEntity, Policy::NetSvrPolicyGame, Message::Game::AcceptFriendRequestCmd, PlayerTransFriendAccept, sizeof(Svr::TransactionMessageHandlerType)*6 >
+	class PlayerTransFriendAccept : public Svr::MessageTransaction< GamePlayerEntity, Message::Game::AcceptFriendRequestCmd>
 	{
 	public:
-		typedef Svr::MessageTransaction< GamePlayerEntity, Policy::NetSvrPolicyGame, Message::Game::AcceptFriendRequestCmd, PlayerTransFriendAccept, sizeof(Svr::TransactionMessageHandlerType) * 6 > super;
+		typedef Svr::MessageTransaction< GamePlayerEntity, Message::Game::AcceptFriendRequestCmd> super;
 
 	private:
 		int m_WaitingResultCount;
@@ -79,7 +79,7 @@ namespace GameServer {
 		ServerFriendInformation m_NewFriend;
 
 	public:
-		PlayerTransFriendAccept( MessageDataPtr &pIMsg );//  :MessageTransaction( pIMsg ) {}
+		PlayerTransFriendAccept(IHeap& heap, MessageDataPtr &pIMsg );//  :MessageTransaction( pIMsg ) {}
 		virtual ~PlayerTransFriendAccept() {}
 
 		Result OnGetPlayerShardID(Svr::TransactionResult* &pRes);
@@ -93,17 +93,17 @@ namespace GameServer {
 		// Start Transaction
 		virtual Result StartTransaction();
 
-		BR_IMPLEMENT_USERMSGTRANS_CLOSE_ARGS(AcceptFriendRequestRes,m_NewFriend);
+		BR_IMPLEMENT_USERMSGTRANS_CLOSE_ARGS(Policy::NetSvrPolicyGame, AcceptFriendRequestRes,m_NewFriend);
 	};
 
 
-	class PlayerTransFriendAcceptedS2S : public Svr::UserTransactionS2SEvt< GamePlayerEntity, Policy::NetSvrPolicyGame, Message::GameServer::FriendAcceptedC2SEvt, PlayerTransFriendAcceptedS2S>
+	class PlayerTransFriendAcceptedS2S : public Svr::UserTransactionS2SEvt< GamePlayerEntity, Message::GameServer::FriendAcceptedC2SEvt>
 	{
 	public:
-		typedef Svr::UserTransactionS2SEvt< GamePlayerEntity, Policy::NetSvrPolicyGame, Message::GameServer::FriendAcceptedC2SEvt, PlayerTransFriendAcceptedS2S> super;
+		typedef Svr::UserTransactionS2SEvt< GamePlayerEntity, Message::GameServer::FriendAcceptedC2SEvt> super;
 
 	public:
-		PlayerTransFriendAcceptedS2S( MessageDataPtr &pIMsg ):UserTransactionS2SEvt(pIMsg) {}
+		PlayerTransFriendAcceptedS2S(IHeap& heap, MessageDataPtr &pIMsg ):UserTransactionS2SEvt(heap, pIMsg) {}
 		virtual ~PlayerTransFriendAcceptedS2S() {}
 
 		// Start Transaction
@@ -112,16 +112,16 @@ namespace GameServer {
 	
 
 
-	class PlayerTransRemoveFriend : public Svr::MessageTransaction< GamePlayerEntity, Policy::NetSvrPolicyGame, Message::Game::RemoveFriendCmd, PlayerTransRemoveFriend>
+	class PlayerTransRemoveFriend : public Svr::MessageTransaction< GamePlayerEntity, Message::Game::RemoveFriendCmd>
 	{
 	public:
-		typedef Svr::MessageTransaction< GamePlayerEntity, Policy::NetSvrPolicyGame, Message::Game::RemoveFriendCmd, PlayerTransRemoveFriend> super;
+		typedef Svr::MessageTransaction< GamePlayerEntity, Message::Game::RemoveFriendCmd> super;
 
 	private:
 		int m_WaitingResultCount;
 
 	public:
-		PlayerTransRemoveFriend( MessageDataPtr &pIMsg );//  :MessageTransaction( pIMsg ) {}
+		PlayerTransRemoveFriend(IHeap& heap, MessageDataPtr &pIMsg );//  :MessageTransaction( pIMsg ) {}
 		virtual ~PlayerTransRemoveFriend() {}
 
 		Result OnRemoved( Svr::TransactionResult* &pRes );
@@ -129,18 +129,18 @@ namespace GameServer {
 		// Start Transaction
 		virtual Result StartTransaction();
 
-		BR_IMPLEMENT_USERMSGTRANS_CLOSE_ARGS(RemoveFriendRes, GetFriendID());
+		BR_IMPLEMENT_USERMSGTRANS_CLOSE_ARGS(Policy::NetSvrPolicyGame, RemoveFriendRes, GetFriendID());
 	};
 
 
 
-	class PlayerTransFriendRemovedS2S : public Svr::UserTransactionS2SEvt< GamePlayerEntity, Policy::NetSvrPolicyGame, Message::GameServer::FriendRemovedC2SEvt, PlayerTransFriendRemovedS2S>
+	class PlayerTransFriendRemovedS2S : public Svr::UserTransactionS2SEvt< GamePlayerEntity, Message::GameServer::FriendRemovedC2SEvt>
 	{
 	public:
-		typedef Svr::UserTransactionS2SEvt< GamePlayerEntity, Policy::NetSvrPolicyGame, Message::GameServer::FriendRemovedC2SEvt, PlayerTransFriendRemovedS2S> super;
+		typedef Svr::UserTransactionS2SEvt< GamePlayerEntity, Message::GameServer::FriendRemovedC2SEvt> super;
 
 	public:
-		PlayerTransFriendRemovedS2S( MessageDataPtr &pIMsg ):UserTransactionS2SEvt(pIMsg) {}
+		PlayerTransFriendRemovedS2S(IHeap& heap, MessageDataPtr &pIMsg ):UserTransactionS2SEvt(heap, pIMsg) {}
 		virtual ~PlayerTransFriendRemovedS2S() {}
 
 		// Start Transaction
@@ -148,10 +148,10 @@ namespace GameServer {
 	};
 
 
-	class PlayerTransGetFriendList : public Svr::MessageTransaction< GamePlayerEntity, Policy::NetSvrPolicyGame, Message::Game::GetFriendListCmd, PlayerTransGetFriendList>
+	class PlayerTransGetFriendList : public Svr::MessageTransaction< GamePlayerEntity, Message::Game::GetFriendListCmd>
 	{
 	public:
-		typedef Svr::MessageTransaction< GamePlayerEntity, Policy::NetSvrPolicyGame, Message::Game::GetFriendListCmd, PlayerTransGetFriendList> super;
+		typedef Svr::MessageTransaction< GamePlayerEntity, Message::Game::GetFriendListCmd> super;
 
 	private:
 		StaticArray<FriendInformation, 20> m_Friends;
@@ -163,7 +163,7 @@ namespace GameServer {
 
 
 	public:
-		PlayerTransGetFriendList( MessageDataPtr &pIMsg );//  :MessageTransaction( pIMsg ) {}
+		PlayerTransGetFriendList(IHeap& heap, MessageDataPtr &pIMsg );//  :MessageTransaction( pIMsg ) {}
 		virtual ~PlayerTransGetFriendList() {}
 
 		Result OnGetList( Svr::TransactionResult* &pRes );
@@ -178,15 +178,15 @@ namespace GameServer {
 
 		virtual Result CloseTransaction( Result hr ) override;
 
-		BR_IMPLEMENT_USERMSGTRANS_CLOSE_ARGS(GetFriendListRes, m_MaxFriendSlot, m_TotalNumberOfFriends, GetStartIndex(), m_Friends);
+		BR_IMPLEMENT_USERMSGTRANS_CLOSE_ARGS(Policy::NetSvrPolicyGame, GetFriendListRes, m_MaxFriendSlot, m_TotalNumberOfFriends, GetStartIndex(), m_Friends);
 	};
 
 	
 	
-	class PlayerTransGiveStamina : public Svr::MessageTransaction< GamePlayerEntity, Policy::NetSvrPolicyGame, Message::Game::GiveStaminaCmd, PlayerTransGiveStamina>
+	class PlayerTransGiveStamina : public Svr::MessageTransaction< GamePlayerEntity, Message::Game::GiveStaminaCmd>
 	{
 	public:
-		typedef Svr::MessageTransaction< GamePlayerEntity, Policy::NetSvrPolicyGame, Message::Game::GiveStaminaCmd, PlayerTransGiveStamina> super;
+		typedef Svr::MessageTransaction< GamePlayerEntity, Message::Game::GiveStaminaCmd> super;
 
 	private:
 		//Memento<UserGamePlayerInfoSystem::MEMENTO_SIZE> m_SavedData;
@@ -194,7 +194,7 @@ namespace GameServer {
 		INT m_WaitingQueries;
 
 	public:
-		PlayerTransGiveStamina( MessageDataPtr &pIMsg );//  :MessageTransaction( pIMsg ) {}
+		PlayerTransGiveStamina(IHeap& heap, MessageDataPtr &pIMsg );//  :MessageTransaction( pIMsg ) {}
 		virtual ~PlayerTransGiveStamina() {}
 
 		Result OnSavedToDB( Svr::TransactionResult* &pRes );
@@ -204,7 +204,7 @@ namespace GameServer {
 		// Start Transaction
 		virtual Result StartTransaction();
 
-		BR_IMPLEMENT_USERMSGTRANS_CLOSE_ARGS(GiveStaminaRes, GetTargetPlayer(), m_TimeStamp.time_since_epoch().count());
+		BR_IMPLEMENT_USERMSGTRANS_CLOSE_ARGS(Policy::NetSvrPolicyGame, GiveStaminaRes, GetTargetPlayer(), m_TimeStamp.time_since_epoch().count());
 	};
 
 

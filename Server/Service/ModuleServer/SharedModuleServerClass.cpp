@@ -70,7 +70,7 @@ namespace SharedModuleServer {
 
 
 	SharedModuleServer::SharedModuleServer()
-		:BrServer(BR::NetClass::Game)
+		:BrServer(NetClass::Game)
 		, m_GameID(GameID::Game)
 	{
 	}
@@ -92,22 +92,8 @@ namespace SharedModuleServer {
 	{
 		Result hr = ResultCode::SUCCESS;
 
-		const ServerConfig::ModuleServer* pMySvr = nullptr;
-
-		std::for_each( Service::ServerConfig->ModuleServers.begin(), Service::ServerConfig->ModuleServers.end(), 
-			[&]( const ServerConfig::ModuleServer* pServer )
-		{
-			if( pServer->Name == Util::GetServiceNameA() )
-			{
-				pMySvr = pServer;
-			}
-		});
-
-		svrChkPtr( pMySvr );
-
-		m_GameID = pMySvr->GetGameID();
-
-		SetMyConfig( pMySvr );
+		if(GetMyConfig()->pGameCluster != nullptr)
+			m_GameID = GetMyConfig()->pGameCluster->GameClusterID;
 
 		svrChk(Svr::BrServer::ApplyConfiguration() );
 
@@ -162,26 +148,20 @@ namespace SharedModuleServer {
 
 		GetMyServer()->GetNetPrivate()->SetIsEnableAccept(true);
 
-		if (Service::ServerConfig->EntityServers.size() > 0)
-		{
-			// Register entity servers
-			// All server should use same sock family(IPV4 or IPV6)
-			privateNetSockFamily = GetMyServer()->GetNetPrivate()->GetLocalAddress().SocketFamily;
-			for (auto itEntity = Service::ServerConfig->EntityServers.begin(); itEntity != Service::ServerConfig->EntityServers.end(); ++itEntity)
-			{
-				Svr::EntityServerEntity *pEntity = nullptr;
-				auto pEntityCfg = *itEntity;
 
-				NetAddress netAddress(privateNetSockFamily, pEntityCfg->NetPrivate->IP.c_str(), pEntityCfg->NetPrivate->Port);
+		privateNetSockFamily = GetMyServer()->GetNetPrivate()->GetLocalAddress().SocketFamily;
 
-				svrChk(GetComponent<Svr::ServerEntityManager>()->GetOrRegisterServer<Svr::EntityServerEntity>(pEntityCfg->UID, NetClass::Entity, netAddress, pEntity));
-			}
-		}
-		else
+		for (auto& itServer : Service::ServerConfig->GetServers())
 		{
-			// No entity server is assigned.
-			// Add local entity manager
+			if (!itServer->Name.StartWith("BREntityServer"))
+				continue;
+
+			Svr::EntityServerEntity *pEntity = nullptr;
+			NetAddress netAddress(privateNetSockFamily, itServer->PrivateNet.IP, itServer->PrivateNet.Port);
+
+			svrChk(GetComponentCarrier().GetComponent<Svr::ServerEntityManager>()->GetOrRegisterServer<Svr::EntityServerEntity>(itServer->UID, NetClass::Entity, netAddress, pEntity));
 		}
+
 
 
 		//////////////////////////////////////////////////////////////////////////////////////////
@@ -191,15 +171,16 @@ namespace SharedModuleServer {
 
 		pServerConfig = (ServerConfig::ModuleServer*)( GetMyConfig() );
 
-		std::for_each( pServerConfig->Modules.begin(), pServerConfig->Modules.end(), [&]( ServerConfig::ModuleBase* pModule )
+		for(auto& itModule : pServerConfig->Modules)
 		{
-			RegisterClusteredService(pModule);
-		});
+			RegisterClusteredService(itModule);
+		}
+
 
 		// push Startup transaction
 		{
-			Svr::Transaction * pProcess = nullptr;
-			svrMem( pProcess = new(GetMemoryManager()) SharedModuleServerStartProcess );
+			TransactionPtr pProcess;
+			svrMem( pProcess = new(GetHeap()) SharedModuleServerStartProcess(GetHeap()) );
 			svrChk( pProcess->InitializeTransaction(this) );
 			svrChk( PendingTransaction(ThisThread::GetThreadID(), pProcess) );
 		}

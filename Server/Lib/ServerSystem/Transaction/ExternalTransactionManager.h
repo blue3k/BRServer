@@ -64,7 +64,8 @@ namespace Svr{
 
 
 		Google::OAuth m_GoogleAuth;
-		std::string m_IOSURL;
+		String m_IOSURL;
+		String m_IOSAltURL;
 
 	public:
 		ExternalTransactionManager();
@@ -73,7 +74,7 @@ namespace Svr{
 		Result UpdateGoogleAuth();
 
 		Result InitializeManagerGoogle(const char* strP12KeyFile, const char* strAccount, const char* scopes);
-		Result InitializeManagerIOS(const char* strURL);
+		Result InitializeManagerIOS(const char* strURL, const char* strAltURL);
 
 		// Initialize server component
 		virtual Result InitializeComponent() override;

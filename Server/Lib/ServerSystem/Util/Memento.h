@@ -47,7 +47,7 @@ namespace SF {
 
 	public:
 		// Constructor
-		Memento(IMemoryManager& memMgr)
+		Memento(IHeap& memMgr)
 			: m_StaticBuffer(memMgr)
 		{
 		}

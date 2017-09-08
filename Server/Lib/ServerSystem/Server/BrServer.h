@@ -81,10 +81,10 @@ namespace Svr {
 		ServerComponentCarrier m_Components;
 
 		// Server state
-		ServerState		m_State;
+		ServerState		m_State = ServerState::STOPED;
 
 		// UID of this server
-		uint32_t			m_uiUID;
+		uint32_t			m_uiUID = 0;
 
 		// Network address
 		NetAddress					m_AddrPrivate;
@@ -96,7 +96,7 @@ namespace Svr {
 		NetClass					m_NetClass;
 
 		// Server config
-		const ServerConfig::GenericServer	*m_pMyConfig;
+		const ServerConfig::GenericServer	*m_pMyConfig = nullptr;
 
 		// Server execution time stamp
 		TimeStampSec					m_ServerUpUTCTIme;
@@ -114,9 +114,9 @@ namespace Svr {
 		//bool			m_bIsStartProcessDone;
 
 		// Server status
-		bool m_bIsNetPublicEnabled;
-		bool m_bIsKillSignaled;
-		bool m_bStartTransaction;
+		bool m_bIsNetPublicEnabled = false;
+		bool m_bIsKillSignaled = false;
+		bool m_bStartTransaction = false;
 
 
 		PageQueue<SharedPointerAtomicT<Net::Connection>> m_NewConnectionQueue;
@@ -211,7 +211,7 @@ namespace Svr {
 
 
 		template<class DBManagerType>
-		Result AddDBCluster(ServerConfig::DBCluster *pDBClusterCfg);
+		Result AddDBCluster(const ServerConfig::DBCluster *pDBClusterCfg);
 
 		//////////////////////////////////////////////////////////////////////////
 		//

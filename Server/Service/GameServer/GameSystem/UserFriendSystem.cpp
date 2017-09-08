@@ -51,7 +51,8 @@ namespace GameServer {
 
 	// Constructor 
 	UserFriendSystem::UserFriendSystem( GamePlayerEntity* pEntity )
-		:GameSystem(pEntity)
+		: GameSystem(pEntity)
+		, m_Friends(GetHeap())
 	{
 	}
 

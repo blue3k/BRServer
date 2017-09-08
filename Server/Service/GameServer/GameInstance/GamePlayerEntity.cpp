@@ -63,68 +63,62 @@ namespace GameServer {
 
 
 	GamePlayerEntity::GamePlayerEntity()
-		: m_ISvrGamePolicy(nullptr)
-		, m_PlayerState(PlayerState_None)
-		, m_GameInsUID(0)
-		, m_LatestUpdateTime(TimeStampSec(DurationSec(0)))
-		, m_LatestActiveTime(TimeStampSec(DurationSec(0)))
-		, m_LatestDBSyncTime(TimeStampSec(DurationSec(0)))
-		, m_Allocator(STDAllocator::GetInstance())
+		: ComponentCarrier(GetHeap())
 	{
 		memset( m_UserName, 0, sizeof(m_UserName) );
 		memset( m_GCMKeys, 0, sizeof(m_GCMKeys) );
 
-		BR_ENTITY_MESSAGE(Message::GameServer::RegisterPlayerToJoinGameServerCmd)					{ svrMemReturn(pNewTrans = new(GetMemoryManager()) GameServerTransRegisterPlayerToJoinGameServer<GamePlayerEntity>(pMsgData)); return ResultCode::SUCCESS; } );
+		BR_ENTITY_MESSAGE(Message::GameServer::RegisterPlayerToJoinGameServerCmd)					{ svrMemReturn(pNewTrans = new(GetHeap()) GameServerTransRegisterPlayerToJoinGameServer<GamePlayerEntity>(GetHeap(), pMsgData)); return ResultCode::SUCCESS; } );
 
-		BR_ENTITY_MESSAGE(Message::GameServer::RegisterPlayerToJoinGameServerOnPlayerEntityCmd)		{ svrMemReturn(pNewTrans = new(GetMemoryManager()) PlayerTransRegisterPlayerToJoinGameServerOnPlayerEntity(pMsgData)); return ResultCode::SUCCESS; } );
-		BR_ENTITY_MESSAGE(Message::GameServer::ChatMessageC2SEvt)									{ svrMemReturn(pNewTrans = new(GetMemoryManager()) PlayerTransChatMessageFromOtherEntity(pMsgData)); return ResultCode::SUCCESS; } );
+		BR_ENTITY_MESSAGE(Message::GameServer::RegisterPlayerToJoinGameServerOnPlayerEntityCmd)		{ svrMemReturn(pNewTrans = new(GetHeap()) PlayerTransRegisterPlayerToJoinGameServerOnPlayerEntity(GetHeap(),  pMsgData)); return ResultCode::SUCCESS; } );
+		BR_ENTITY_MESSAGE(Message::GameServer::ChatMessageC2SEvt)									{ svrMemReturn(pNewTrans = new(GetHeap()) PlayerTransChatMessageFromOtherEntity(GetHeap(),  pMsgData)); return ResultCode::SUCCESS; } );
 
 		////////////////////////////////////////////////////////////////////////////////////////////////////
 		// Game Player
 
-		BR_ENTITY_MESSAGE(Message::GameServer::FriendAcceptedC2SEvt)								{ svrMemReturn(pNewTrans = new(GetMemoryManager()) PlayerTransFriendAcceptedS2S(pMsgData)); return ResultCode::SUCCESS; } );
-		BR_ENTITY_MESSAGE(Message::GameServer::FriendRemovedC2SEvt)									{ svrMemReturn(pNewTrans = new(GetMemoryManager()) PlayerTransFriendRemovedS2S(pMsgData)); return ResultCode::SUCCESS; } );
-		BR_ENTITY_MESSAGE(Message::GameServer::NotifyC2SEvt)										{ svrMemReturn(pNewTrans = new(GetMemoryManager()) PlayerTransNotifyS2S(pMsgData)); return ResultCode::SUCCESS; } );
-		//BR_ENTITY_MESSAGE(Message::GameServer::GiveStaminaC2SEvt)									{ svrMemReturn(pNewTrans = new(GetMemoryManager()) PlayerTransGiveStaminaS2S(pMsgData) ); return ResultCode::SUCCESS; } );
-		BR_ENTITY_MESSAGE(Message::GameServer::RequestPlayerStatusUpdateC2SEvt)						{ svrMemReturn(pNewTrans = new(GetMemoryManager()) PlayerTransRequestPlayerStatusUpdateS2S(pMsgData)); return ResultCode::SUCCESS; } );
-		BR_ENTITY_MESSAGE(Message::GameServer::NotifyPlayerStatusUpdatedC2SEvt)						{ svrMemReturn(pNewTrans = new(GetMemoryManager()) PlayerTransNotifyPlayerStatusUpdatedS2S(pMsgData)); return ResultCode::SUCCESS; } );
+		BR_ENTITY_MESSAGE(Message::GameServer::FriendAcceptedC2SEvt)								{ svrMemReturn(pNewTrans = new(GetHeap()) PlayerTransFriendAcceptedS2S(GetHeap(),  pMsgData)); return ResultCode::SUCCESS; } );
+		BR_ENTITY_MESSAGE(Message::GameServer::FriendRemovedC2SEvt)									{ svrMemReturn(pNewTrans = new(GetHeap()) PlayerTransFriendRemovedS2S(GetHeap(),  pMsgData)); return ResultCode::SUCCESS; } );
+		BR_ENTITY_MESSAGE(Message::GameServer::NotifyC2SEvt)										{ svrMemReturn(pNewTrans = new(GetHeap()) PlayerTransNotifyS2S(GetHeap(),  pMsgData)); return ResultCode::SUCCESS; } );
+		//BR_ENTITY_MESSAGE(Message::GameServer::GiveStaminaC2SEvt)									{ svrMemReturn(pNewTrans = new(GetHeap()) PlayerTransGiveStaminaS2S(GetHeap(),  pMsgData) ); return ResultCode::SUCCESS; } );
+		BR_ENTITY_MESSAGE(Message::GameServer::RequestPlayerStatusUpdateC2SEvt)						{ svrMemReturn(pNewTrans = new(GetHeap()) PlayerTransRequestPlayerStatusUpdateS2S(GetHeap(),  pMsgData)); return ResultCode::SUCCESS; } );
+		BR_ENTITY_MESSAGE(Message::GameServer::NotifyPlayerStatusUpdatedC2SEvt)						{ svrMemReturn(pNewTrans = new(GetHeap()) PlayerTransNotifyPlayerStatusUpdatedS2S(GetHeap(),  pMsgData)); return ResultCode::SUCCESS; } );
 
-		BR_ENTITY_MESSAGE(Message::GameServer::NotifyPartyInviteC2SEvt)								{ svrMemReturn(pNewTrans = new(GetMemoryManager()) PlayerTransNotifyPartyInviteS2SEvt(pMsgData)); return ResultCode::SUCCESS; } );
+		BR_ENTITY_MESSAGE(Message::GameServer::NotifyPartyInviteC2SEvt)								{ svrMemReturn(pNewTrans = new(GetHeap()) PlayerTransNotifyPartyInviteS2SEvt(GetHeap(),  pMsgData)); return ResultCode::SUCCESS; } );
 
 		////////////////////////////////////////////////////////////////////////////////////////////////////
 		// Game instance server to player
 
-		BR_ENTITY_MESSAGE(Message::GameInstance::PlayerJoinedS2CEvt)								{ svrMemReturn(pNewTrans = new(GetMemoryManager()) PlayerTransJoinedS2SEvt(pMsgData)); return ResultCode::SUCCESS; } );
-		BR_ENTITY_MESSAGE(Message::GameInstance::PlayerLeftS2CEvt)									{ svrMemReturn(pNewTrans = new(GetMemoryManager()) PlayerTransLeftS2SEvt(pMsgData)); return ResultCode::SUCCESS; } );
-		BR_ENTITY_MESSAGE(Message::GameInstance::PlayerKickedS2CEvt)								{ svrMemReturn(pNewTrans = new(GetMemoryManager()) PlayerTransPlayerKickedS2SEvt(pMsgData)); return ResultCode::SUCCESS; } );
-		BR_ENTITY_MESSAGE(Message::GameInstance::RoleAssignedS2CEvt)								{ svrMemReturn(pNewTrans = new(GetMemoryManager()) PlayerTransRoleAssignedS2SEvt(pMsgData)); return ResultCode::SUCCESS; } );
-		BR_ENTITY_MESSAGE(Message::GameInstance::GameAdvanceVotedS2CEvt)							{ svrMemReturn(pNewTrans = new(GetMemoryManager()) PlayerTransGameAdvanceVotedS2SEvt(pMsgData)); return ResultCode::SUCCESS; } );
-		BR_ENTITY_MESSAGE(Message::GameInstance::VoteEndS2CEvt)										{ svrMemReturn(pNewTrans = new(GetMemoryManager()) PlayerTransVoteEndS2SEvt(pMsgData)); return ResultCode::SUCCESS; } );
-		BR_ENTITY_MESSAGE(Message::GameInstance::PlayerRevealedS2CEvt)								{ svrMemReturn(pNewTrans = new(GetMemoryManager()) PlayerTransPlayerRevealedS2SEvt(pMsgData)); return ResultCode::SUCCESS; } );
-		BR_ENTITY_MESSAGE(Message::GameInstance::GameAdvancedS2CEvt)								{ svrMemReturn(pNewTrans = new(GetMemoryManager()) PlayerTransGameAdvancedS2SEvt(pMsgData)); return ResultCode::SUCCESS; });
-		BR_ENTITY_MESSAGE(Message::GameInstance::GameEndedS2CEvt)									{ svrMemReturn(pNewTrans = new(GetMemoryManager()) PlayerTransGameEndedS2SEvt(pMsgData)); return ResultCode::SUCCESS; } );
-		BR_ENTITY_MESSAGE(Message::GameInstance::PlayerKilledS2CEvt)								{ svrMemReturn(pNewTrans = new(GetMemoryManager()) PlayerTransPlayerKilledS2SEvt(pMsgData)); return ResultCode::SUCCESS; } );
-		BR_ENTITY_MESSAGE(Message::GameInstance::VotedS2CEvt)										{ svrMemReturn(pNewTrans = new(GetMemoryManager()) PlayerTransPlayerVotedS2SEvt(pMsgData)); 	return ResultCode::SUCCESS; } );
-		BR_ENTITY_MESSAGE(Message::GameInstance::GamePlayAgainS2CEvt)								{ svrMemReturn(pNewTrans = new(GetMemoryManager()) PlayerTransPlayAgainS2SEvt(pMsgData)); return ResultCode::SUCCESS; } );
-		BR_ENTITY_MESSAGE(Message::GameInstance::GamePlayerRevivedS2CEvt)							{ svrMemReturn(pNewTrans = new(GetMemoryManager()) PlayerTransGamePlayerRevivedS2SEvt(pMsgData)); return ResultCode::SUCCESS; } );
+		BR_ENTITY_MESSAGE(Message::GameInstance::PlayerJoinedS2CEvt)								{ svrMemReturn(pNewTrans = new(GetHeap()) PlayerTransJoinedS2SEvt(GetHeap(),  pMsgData)); return ResultCode::SUCCESS; } );
+		BR_ENTITY_MESSAGE(Message::GameInstance::PlayerLeftS2CEvt)									{ svrMemReturn(pNewTrans = new(GetHeap()) PlayerTransLeftS2SEvt(GetHeap(),  pMsgData)); return ResultCode::SUCCESS; } );
+		BR_ENTITY_MESSAGE(Message::GameInstance::PlayerKickedS2CEvt)								{ svrMemReturn(pNewTrans = new(GetHeap()) PlayerTransPlayerKickedS2SEvt(GetHeap(),  pMsgData)); return ResultCode::SUCCESS; } );
+		BR_ENTITY_MESSAGE(Message::GameInstance::RoleAssignedS2CEvt)								{ svrMemReturn(pNewTrans = new(GetHeap()) PlayerTransRoleAssignedS2SEvt(GetHeap(),  pMsgData)); return ResultCode::SUCCESS; } );
+		BR_ENTITY_MESSAGE(Message::GameInstance::GameAdvanceVotedS2CEvt)							{ svrMemReturn(pNewTrans = new(GetHeap()) PlayerTransGameAdvanceVotedS2SEvt(GetHeap(),  pMsgData)); return ResultCode::SUCCESS; } );
+		BR_ENTITY_MESSAGE(Message::GameInstance::VoteEndS2CEvt)										{ svrMemReturn(pNewTrans = new(GetHeap()) PlayerTransVoteEndS2SEvt(GetHeap(),  pMsgData)); return ResultCode::SUCCESS; } );
+		BR_ENTITY_MESSAGE(Message::GameInstance::PlayerRevealedS2CEvt)								{ svrMemReturn(pNewTrans = new(GetHeap()) PlayerTransPlayerRevealedS2SEvt(GetHeap(),  pMsgData)); return ResultCode::SUCCESS; } );
+		BR_ENTITY_MESSAGE(Message::GameInstance::GameAdvancedS2CEvt)								{ svrMemReturn(pNewTrans = new(GetHeap()) PlayerTransGameAdvancedS2SEvt(GetHeap(),  pMsgData)); return ResultCode::SUCCESS; });
+		BR_ENTITY_MESSAGE(Message::GameInstance::GameEndedS2CEvt)									{ svrMemReturn(pNewTrans = new(GetHeap()) PlayerTransGameEndedS2SEvt(GetHeap(),  pMsgData)); return ResultCode::SUCCESS; } );
+		BR_ENTITY_MESSAGE(Message::GameInstance::PlayerKilledS2CEvt)								{ svrMemReturn(pNewTrans = new(GetHeap()) PlayerTransPlayerKilledS2SEvt(GetHeap(),  pMsgData)); return ResultCode::SUCCESS; } );
+		BR_ENTITY_MESSAGE(Message::GameInstance::VotedS2CEvt)										{ svrMemReturn(pNewTrans = new(GetHeap()) PlayerTransPlayerVotedS2SEvt(GetHeap(),  pMsgData)); 	return ResultCode::SUCCESS; } );
+		BR_ENTITY_MESSAGE(Message::GameInstance::GamePlayAgainS2CEvt)								{ svrMemReturn(pNewTrans = new(GetHeap()) PlayerTransPlayAgainS2SEvt(GetHeap(),  pMsgData)); return ResultCode::SUCCESS; } );
+		BR_ENTITY_MESSAGE(Message::GameInstance::GamePlayerRevivedS2CEvt)							{ svrMemReturn(pNewTrans = new(GetHeap()) PlayerTransGamePlayerRevivedS2SEvt(GetHeap(),  pMsgData)); return ResultCode::SUCCESS; } );
 
 		//////////////////////////////////////////////////////////////////////////////////////////////////
 		// PartyServer to player 
-		BR_ENTITY_MESSAGE(Message::GameParty::PlayerJoinedS2CEvt)									{ svrMemReturn(pNewTrans = new(GetMemoryManager()) PlayerTransPartyPlayerJoinedS2SEvt(pMsgData)); return ResultCode::SUCCESS; } );
-		BR_ENTITY_MESSAGE(Message::GameParty::PartyLeaderChangedS2CEvt)								{ svrMemReturn(pNewTrans = new(GetMemoryManager()) PlayerTransPartyLeaderChangedS2SEvt(pMsgData)); return ResultCode::SUCCESS; } );
-		BR_ENTITY_MESSAGE(Message::GameParty::PlayerLeftS2CEvt)										{ svrMemReturn(pNewTrans = new(GetMemoryManager()) PlayerTransPartyPlayerLeftS2SEvt(pMsgData)); return ResultCode::SUCCESS; } );
-		BR_ENTITY_MESSAGE(Message::GameParty::PlayerKickedS2CEvt)									{ svrMemReturn(pNewTrans = new(GetMemoryManager()) PlayerTransPartyPlayerKickedS2SEvt(pMsgData)); return ResultCode::SUCCESS; } );
-		BR_ENTITY_MESSAGE(Message::GameParty::ChatMessageS2CEvt)									{ svrMemReturn(pNewTrans = new(GetMemoryManager()) PlayerTransPartyChatMessageS2CEvt(pMsgData)); return ResultCode::SUCCESS; } );
-		BR_ENTITY_MESSAGE(Message::GameParty::QuickChatMessageS2CEvt)								{ svrMemReturn(pNewTrans = new(GetMemoryManager()) PlayerTransPartyQuickChatMessageS2CEvt(pMsgData)); return ResultCode::SUCCESS; } );
-		BR_ENTITY_MESSAGE(Message::GameParty::QueuedGameMatchingS2CEvt)								{ svrMemReturn(pNewTrans = new(GetMemoryManager()) PlayerTransPartyQueuedGameMatchingS2CEvt(pMsgData)); return ResultCode::SUCCESS; } );
-		BR_ENTITY_MESSAGE(Message::GameParty::CanceledGameMatchingS2CEvt)							{ svrMemReturn(pNewTrans = new(GetMemoryManager()) PlayerTransPartyCanceledGameMatchingS2CEvt(pMsgData)); return ResultCode::SUCCESS; } );
-		BR_ENTITY_MESSAGE(Message::GameParty::MatchingItemDequeuedS2CEvt)							{ svrMemReturn(pNewTrans = new(GetMemoryManager()) PlayerTransPartyMatchingItemDequeuedS2CEvt(pMsgData)); return ResultCode::SUCCESS; } );
+		BR_ENTITY_MESSAGE(Message::GameParty::PlayerJoinedS2CEvt)									{ svrMemReturn(pNewTrans = new(GetHeap()) PlayerTransPartyPlayerJoinedS2SEvt(GetHeap(),  pMsgData)); return ResultCode::SUCCESS; } );
+		BR_ENTITY_MESSAGE(Message::GameParty::PartyLeaderChangedS2CEvt)								{ svrMemReturn(pNewTrans = new(GetHeap()) PlayerTransPartyLeaderChangedS2SEvt(GetHeap(),  pMsgData)); return ResultCode::SUCCESS; } );
+		BR_ENTITY_MESSAGE(Message::GameParty::PlayerLeftS2CEvt)										{ svrMemReturn(pNewTrans = new(GetHeap()) PlayerTransPartyPlayerLeftS2SEvt(GetHeap(),  pMsgData)); return ResultCode::SUCCESS; } );
+		BR_ENTITY_MESSAGE(Message::GameParty::PlayerKickedS2CEvt)									{ svrMemReturn(pNewTrans = new(GetHeap()) PlayerTransPartyPlayerKickedS2SEvt(GetHeap(),  pMsgData)); return ResultCode::SUCCESS; } );
+		BR_ENTITY_MESSAGE(Message::GameParty::ChatMessageS2CEvt)									{ svrMemReturn(pNewTrans = new(GetHeap()) PlayerTransPartyChatMessageS2CEvt(GetHeap(),  pMsgData)); return ResultCode::SUCCESS; } );
+		BR_ENTITY_MESSAGE(Message::GameParty::QuickChatMessageS2CEvt)								{ svrMemReturn(pNewTrans = new(GetHeap()) PlayerTransPartyQuickChatMessageS2CEvt(GetHeap(),  pMsgData)); return ResultCode::SUCCESS; } );
+		BR_ENTITY_MESSAGE(Message::GameParty::QueuedGameMatchingS2CEvt)								{ svrMemReturn(pNewTrans = new(GetHeap()) PlayerTransPartyQueuedGameMatchingS2CEvt(GetHeap(),  pMsgData)); return ResultCode::SUCCESS; } );
+		BR_ENTITY_MESSAGE(Message::GameParty::CanceledGameMatchingS2CEvt)							{ svrMemReturn(pNewTrans = new(GetHeap()) PlayerTransPartyCanceledGameMatchingS2CEvt(GetHeap(),  pMsgData)); return ResultCode::SUCCESS; } );
+		BR_ENTITY_MESSAGE(Message::GameParty::MatchingItemDequeuedS2CEvt)							{ svrMemReturn(pNewTrans = new(GetHeap()) PlayerTransPartyMatchingItemDequeuedS2CEvt(GetHeap(),  pMsgData)); return ResultCode::SUCCESS; } );
 
 		////////////////////////////////////////////////////////////////////////////////////////////////////
 		// GameMatching to player
-		BR_ENTITY_MESSAGE(Message::PartyMatching::PlayerGameMatchedS2CEvt)							{ svrMemReturn(pNewTrans = new(GetMemoryManager()) PlayerTransGameMatchedS2SEvt(pMsgData)); return ResultCode::SUCCESS; } );
-		BR_ENTITY_MESSAGE(Message::PartyMatchingQueue::PlayerMatchingCanceledS2CEvt)				{ svrMemReturn(pNewTrans = new(GetMemoryManager()) PlayerTransPlayerMatchingCanceledS2CEvt(pMsgData)); return ResultCode::SUCCESS; } );
-		BR_ENTITY_MESSAGE(Message::PartyMatchingQueue::PlayerMatchingItemDequeuedS2CEvt)			{ svrMemReturn(pNewTrans = new(GetMemoryManager()) PlayerTransPlayerMatchingItemDequeuedS2CEvt(pMsgData)); return ResultCode::SUCCESS; } );
+		BR_ENTITY_MESSAGE(Message::PartyMatching::PlayerGameMatchedS2CEvt)							{ svrMemReturn(pNewTrans = new(GetHeap()) PlayerTransGameMatchedS2SEvt(GetHeap(),  pMsgData)); return ResultCode::SUCCESS; } );
+		BR_ENTITY_MESSAGE(Message::PartyMatchingQueue::PlayerMatchingCanceledS2CEvt)				{ svrMemReturn(pNewTrans = new(GetHeap()) PlayerTransPlayerMatchingCanceledS2CEvt(GetHeap(),  pMsgData)); return ResultCode::SUCCESS; } );
+		BR_ENTITY_MESSAGE(Message::PartyMatchingQueue::PlayerMatchingItemDequeuedS2CEvt)			{ svrMemReturn(pNewTrans = new(GetHeap()) PlayerTransPlayerMatchingItemDequeuedS2CEvt(GetHeap(),  pMsgData)); return ResultCode::SUCCESS; } );
 	}
 
 	GamePlayerEntity::~GamePlayerEntity()
@@ -222,7 +216,7 @@ namespace GameServer {
 	{
 		Result hr = ResultCode::SUCCESS;
 		Net::ConnectionPtr pConnection;
-		Net::Connection::ConnectionInformation connectionInfo;
+		Net::PeerInfo local, remote;
 
 		svrChkPtr(GetMyServer()->GetNetPublic());
 
@@ -231,16 +225,17 @@ namespace GameServer {
 		SetAuthTicket(authTicket);
 		SetFacebookUID(fbUID);
 
-		svrChkPtr(pConnection = GetMyServer()->GetNetPublic()->GetConnectionManager().NewConnection());
+		svrChkPtr(pConnection = new(GetSystemMemoryManager()) Net::ConnectionMUDPServer(GetSystemMemoryManager()));
 
-		memset(&connectionInfo, 0, sizeof(connectionInfo));
-		connectionInfo.SetLocalInfo(GetMyServer()->GetNetClass(), GetMyServer()->GetNetPublic()->GetLocalAddress(), GetMyServer()->GetServerUID());
-		connectionInfo.SetRemoteInfo(NetClass::Client, authTicket);
+		local.SetInfo(GetMyServer()->GetNetClass(), GetMyServer()->GetNetPublic()->GetLocalAddress(), GetMyServer()->GetServerUID());
+		remote.SetInfo(NetClass::Client, authTicket);
+		//connectionInfo.SetLocalInfo(GetMyServer()->GetNetClass(), GetMyServer()->GetNetPublic()->GetLocalAddress(), GetMyServer()->GetServerUID());
+		//connectionInfo.SetRemoteInfo(NetClass::Client, authTicket);
 
-		svrChk(pConnection->InitConnection(GetMyServer()->GetNetPublic()->GetSocket(), connectionInfo));
-		svrTrace(Trace::TRC_USER1, "Initialize connection CID:{0}, Addr:{1}", pConnection->GetCID(), pConnection->GetRemoteInfo().PeerAddress);
+		svrChk(pConnection->InitConnection(GetMyServer()->GetNetPublic()->GetSocket(), local, remote));
+		svrTrace(SVR_INFO, "Initialize connection CID:{0}, Addr:{1}", pConnection->GetCID(), pConnection->GetRemoteInfo().PeerAddress);
 
-		svrChk(GetMyServer()->GetNetPublic()->GetConnectionManager().PendingConnection(pConnection));
+		Service::ConnectionManager->AddConnection(pConnection);
 
 		svrChk(SetConnection(std::forward<Net::ConnectionPtr>(pConnection)));
 
@@ -294,61 +289,61 @@ namespace GameServer {
 	{
 		
 		BR_ENTITY_MESSAGE(Message::Game::HeartBitC2SEvt)				{ pNewTrans = nullptr; return OnNewUserTranscation(); } );
-		BR_ENTITY_MESSAGE(Message::Game::JoinGameServerCmd)				{ pNewTrans = new(GetMemoryManager()) PlayerTransJoinGameServer(pMsgData); return ResultCode::SUCCESS; } );
-		BR_ENTITY_MESSAGE(Message::Game::GetUserGamePlayerInfoCmd)		{ pNewTrans = new(GetMemoryManager()) PlayerTransGetUserGamePlayerInfo(pMsgData); return OnNewUserTranscation(); } );
-		BR_ENTITY_MESSAGE(Message::Game::GetGamePlayerInfoCmd)			{ pNewTrans = new(GetMemoryManager()) PlayerTransGetGamePlayerInfo(pMsgData); return OnNewUserTranscation(); } );
+		BR_ENTITY_MESSAGE(Message::Game::JoinGameServerCmd)				{ pNewTrans = new(GetHeap()) PlayerTransJoinGameServer(GetHeap(),  pMsgData); return ResultCode::SUCCESS; } );
+		BR_ENTITY_MESSAGE(Message::Game::GetUserGamePlayerInfoCmd)		{ pNewTrans = new(GetHeap()) PlayerTransGetUserGamePlayerInfo(GetHeap(),  pMsgData); return OnNewUserTranscation(); } );
+		BR_ENTITY_MESSAGE(Message::Game::GetGamePlayerInfoCmd)			{ pNewTrans = new(GetHeap()) PlayerTransGetGamePlayerInfo(GetHeap(),  pMsgData); return OnNewUserTranscation(); } );
 
-		BR_ENTITY_MESSAGE(Message::Game::GetComplitionStateCmd)			{ pNewTrans = new(GetMemoryManager()) PlayerTransGetComplitionState(pMsgData); return OnNewUserTranscation(); } );
-		BR_ENTITY_MESSAGE(Message::Game::SetComplitionStateCmd)			{ pNewTrans = new(GetMemoryManager()) PlayerTransSetComplitionState(pMsgData); return OnNewUserTranscation(); } );
-		BR_ENTITY_MESSAGE(Message::Game::RegisterGCMCmd)				{ pNewTrans = new(GetMemoryManager()) PlayerTransRegisterGCM(pMsgData); return ResultCode::SUCCESS; } );
-		BR_ENTITY_MESSAGE(Message::Game::UnregisterGCMCmd)				{ pNewTrans = new(GetMemoryManager()) PlayerTransUnregisterGCM(pMsgData); return ResultCode::SUCCESS; } );
+		BR_ENTITY_MESSAGE(Message::Game::GetComplitionStateCmd)			{ pNewTrans = new(GetHeap()) PlayerTransGetComplitionState(GetHeap(),  pMsgData); return OnNewUserTranscation(); } );
+		BR_ENTITY_MESSAGE(Message::Game::SetComplitionStateCmd)			{ pNewTrans = new(GetHeap()) PlayerTransSetComplitionState(GetHeap(),  pMsgData); return OnNewUserTranscation(); } );
+		BR_ENTITY_MESSAGE(Message::Game::RegisterGCMCmd)				{ pNewTrans = new(GetHeap()) PlayerTransRegisterGCM(GetHeap(),  pMsgData); return ResultCode::SUCCESS; } );
+		BR_ENTITY_MESSAGE(Message::Game::UnregisterGCMCmd)				{ pNewTrans = new(GetHeap()) PlayerTransUnregisterGCM(GetHeap(),  pMsgData); return ResultCode::SUCCESS; } );
 
-		BR_ENTITY_MESSAGE(Message::Game::InviteFriendCmd)				{ pNewTrans = new(GetMemoryManager()) PlayerTransInviteFriend(pMsgData); return OnNewUserTranscation(); } );
-		BR_ENTITY_MESSAGE(Message::Game::AcceptFriendRequestCmd)		{ pNewTrans = new(GetMemoryManager()) PlayerTransFriendAccept(pMsgData); return OnNewUserTranscation(); } );
-		BR_ENTITY_MESSAGE(Message::Game::RemoveFriendCmd)				{ pNewTrans = new(GetMemoryManager()) PlayerTransRemoveFriend(pMsgData); return OnNewUserTranscation(); } );
-		BR_ENTITY_MESSAGE(Message::Game::GetFriendListCmd)				{ pNewTrans = new(GetMemoryManager()) PlayerTransGetFriendList(pMsgData); return OnNewUserTranscation(); } );
-		BR_ENTITY_MESSAGE(Message::Game::GiveStaminaCmd)				{ pNewTrans = new(GetMemoryManager()) PlayerTransGiveStamina(pMsgData); return OnNewUserTranscation(); } );
+		BR_ENTITY_MESSAGE(Message::Game::InviteFriendCmd)				{ pNewTrans = new(GetHeap()) PlayerTransInviteFriend(GetHeap(),  pMsgData); return OnNewUserTranscation(); } );
+		BR_ENTITY_MESSAGE(Message::Game::AcceptFriendRequestCmd)		{ pNewTrans = new(GetHeap()) PlayerTransFriendAccept(GetHeap(),  pMsgData); return OnNewUserTranscation(); } );
+		BR_ENTITY_MESSAGE(Message::Game::RemoveFriendCmd)				{ pNewTrans = new(GetHeap()) PlayerTransRemoveFriend(GetHeap(),  pMsgData); return OnNewUserTranscation(); } );
+		BR_ENTITY_MESSAGE(Message::Game::GetFriendListCmd)				{ pNewTrans = new(GetHeap()) PlayerTransGetFriendList(GetHeap(),  pMsgData); return OnNewUserTranscation(); } );
+		BR_ENTITY_MESSAGE(Message::Game::GiveStaminaCmd)				{ pNewTrans = new(GetHeap()) PlayerTransGiveStamina(GetHeap(),  pMsgData); return OnNewUserTranscation(); } );
 
-		BR_ENTITY_MESSAGE(Message::Game::GetNotificationListCmd)		{ pNewTrans = new(GetMemoryManager()) PlayerTransGetNotificationList(pMsgData); return OnNewUserTranscation(); } );
-		BR_ENTITY_MESSAGE(Message::Game::DeleteNotificationCmd)			{ pNewTrans = new(GetMemoryManager()) PlayerTransDeleteNotification(pMsgData); return OnNewUserTranscation(); } );
-		BR_ENTITY_MESSAGE(Message::Game::AcceptNotificationCmd)			{ pNewTrans = new(GetMemoryManager()) PlayerTransAcceptNotification(pMsgData); return OnNewUserTranscation(); } );
-		BR_ENTITY_MESSAGE(Message::Game::SetNotificationReadCmd)		{ pNewTrans = new(GetMemoryManager()) PlayerTransSetNotificationRead(pMsgData); return OnNewUserTranscation(); } );
+		BR_ENTITY_MESSAGE(Message::Game::GetNotificationListCmd)		{ pNewTrans = new(GetHeap()) PlayerTransGetNotificationList(GetHeap(),  pMsgData); return OnNewUserTranscation(); } );
+		BR_ENTITY_MESSAGE(Message::Game::DeleteNotificationCmd)			{ pNewTrans = new(GetHeap()) PlayerTransDeleteNotification(GetHeap(),  pMsgData); return OnNewUserTranscation(); } );
+		BR_ENTITY_MESSAGE(Message::Game::AcceptNotificationCmd)			{ pNewTrans = new(GetHeap()) PlayerTransAcceptNotification(GetHeap(),  pMsgData); return OnNewUserTranscation(); } );
+		BR_ENTITY_MESSAGE(Message::Game::SetNotificationReadCmd)		{ pNewTrans = new(GetHeap()) PlayerTransSetNotificationRead(GetHeap(),  pMsgData); return OnNewUserTranscation(); } );
 
-		BR_ENTITY_MESSAGE(Message::Game::SetNickNameCmd)				{ pNewTrans = new(GetMemoryManager()) PlayerTransSetNickName(pMsgData); return OnNewUserTranscation(); } );
-		BR_ENTITY_MESSAGE(Message::Game::FindPlayerByEMailCmd)			{ pNewTrans = new(GetMemoryManager()) PlayerTransFindPlayerByEMail(pMsgData); return OnNewUserTranscation(); } );
-		BR_ENTITY_MESSAGE(Message::Game::FindPlayerByPlayerIDCmd)		{ pNewTrans = new(GetMemoryManager()) PlayerTransFindPlayerByPlayerID(pMsgData); return OnNewUserTranscation(); } );
+		BR_ENTITY_MESSAGE(Message::Game::SetNickNameCmd)				{ pNewTrans = new(GetHeap()) PlayerTransSetNickName(GetHeap(),  pMsgData); return OnNewUserTranscation(); } );
+		BR_ENTITY_MESSAGE(Message::Game::FindPlayerByEMailCmd)			{ pNewTrans = new(GetHeap()) PlayerTransFindPlayerByEMail(GetHeap(),  pMsgData); return OnNewUserTranscation(); } );
+		BR_ENTITY_MESSAGE(Message::Game::FindPlayerByPlayerIDCmd)		{ pNewTrans = new(GetHeap()) PlayerTransFindPlayerByPlayerID(GetHeap(),  pMsgData); return OnNewUserTranscation(); } );
 
-		BR_ENTITY_MESSAGE(Message::Game::RequestPlayerStatusUpdateCmd)	{ pNewTrans = new(GetMemoryManager()) PlayerTransRequestPlayerStatusUpdate(pMsgData); return OnNewUserTranscation(); } );
-		BR_ENTITY_MESSAGE(Message::Game::GetRankingListCmd)				{ pNewTrans = new(GetMemoryManager()) PlayerTransGetRankingList(pMsgData); return OnNewUserTranscation(); } );
-		BR_ENTITY_MESSAGE(Message::Game::BuyShopItemPrepareCmd)			{ pNewTrans = new(GetMemoryManager()) PlayerTransBuyShopItemPrepare(pMsgData); return OnNewUserTranscation(); } );
-		BR_ENTITY_MESSAGE(Message::Game::BuyShopItemCmd)				{ pNewTrans = new(GetMemoryManager()) PlayerTransBuyShopItem(pMsgData); return OnNewUserTranscation(); } );
+		BR_ENTITY_MESSAGE(Message::Game::RequestPlayerStatusUpdateCmd)	{ pNewTrans = new(GetHeap()) PlayerTransRequestPlayerStatusUpdate(GetHeap(),  pMsgData); return OnNewUserTranscation(); } );
+		BR_ENTITY_MESSAGE(Message::Game::GetRankingListCmd)				{ pNewTrans = new(GetHeap()) PlayerTransGetRankingList(GetHeap(),  pMsgData); return OnNewUserTranscation(); } );
+		BR_ENTITY_MESSAGE(Message::Game::BuyShopItemPrepareCmd)			{ pNewTrans = new(GetHeap()) PlayerTransBuyShopItemPrepare(GetHeap(),  pMsgData); return OnNewUserTranscation(); } );
+		BR_ENTITY_MESSAGE(Message::Game::BuyShopItemCmd)				{ pNewTrans = new(GetHeap()) PlayerTransBuyShopItem(GetHeap(),  pMsgData); return OnNewUserTranscation(); } );
 
-		BR_ENTITY_MESSAGE(Message::Game::JoinGameCmd)					{ pNewTrans = new(GetMemoryManager()) PlayerTransJoinGame(pMsgData); return OnNewUserTranscation(); } );
-		BR_ENTITY_MESSAGE(Message::Game::KickPlayerCmd)					{ pNewTrans = new(GetMemoryManager()) PlayerTransKickPlayer(pMsgData); return OnNewUserTranscation(); } );
-		BR_ENTITY_MESSAGE(Message::Game::LeaveGameCmd)					{ pNewTrans = new(GetMemoryManager()) PlayerTransLeaveGame(pMsgData); return OnNewUserTranscation(); } );
-		BR_ENTITY_MESSAGE(Message::Game::AssignRoleCmd)					{ pNewTrans = new(GetMemoryManager()) PlayerTransAssignRole(pMsgData); return OnNewUserTranscation(); } );
-		BR_ENTITY_MESSAGE(Message::Game::ChatMessageCmd)				{ pNewTrans = new(GetMemoryManager()) PlayerTransChatMessage(pMsgData); return OnNewUserTranscation(); } );
-		BR_ENTITY_MESSAGE(Message::Game::VoteGameAdvanceCmd)			{ pNewTrans = new(GetMemoryManager()) PlayerTransVoteGameAdvance(pMsgData); return OnNewUserTranscation(); } );
-		BR_ENTITY_MESSAGE(Message::Game::VoteCmd)						{ pNewTrans = new(GetMemoryManager()) PlayerTransVote(pMsgData); return OnNewUserTranscation(); } );
-		BR_ENTITY_MESSAGE(Message::Game::AdvanceGameCmd)				{ pNewTrans = new(GetMemoryManager()) PlayerTransAdvanceGame(pMsgData); return OnNewUserTranscation(); } );
-		BR_ENTITY_MESSAGE(Message::Game::GamePlayAgainCmd)				{ pNewTrans = new(GetMemoryManager()) PlayerTransPlayAgain(pMsgData); return OnNewUserTranscation(); } );
-		BR_ENTITY_MESSAGE(Message::Game::GameRevealPlayerCmd)			{ pNewTrans = new(GetMemoryManager()) PlayerTransGameRevealPlayer(pMsgData); return OnNewUserTranscation(); } );
-		BR_ENTITY_MESSAGE(Message::Game::GamePlayerReviveCmd)			{ pNewTrans = new(GetMemoryManager()) PlayerTransGamePlayerRevive(pMsgData); return OnNewUserTranscation(); } );
-		BR_ENTITY_MESSAGE(Message::Game::GamePlayerResetRankCmd)		{ pNewTrans = new(GetMemoryManager()) PlayerTransGamePlayerResetRank(pMsgData); return OnNewUserTranscation(); } );
+		BR_ENTITY_MESSAGE(Message::Game::JoinGameCmd)					{ pNewTrans = new(GetHeap()) PlayerTransJoinGame(GetHeap(),  pMsgData); return OnNewUserTranscation(); } );
+		BR_ENTITY_MESSAGE(Message::Game::KickPlayerCmd)					{ pNewTrans = new(GetHeap()) PlayerTransKickPlayer(GetHeap(),  pMsgData); return OnNewUserTranscation(); } );
+		BR_ENTITY_MESSAGE(Message::Game::LeaveGameCmd)					{ pNewTrans = new(GetHeap()) PlayerTransLeaveGame(GetHeap(),  pMsgData); return OnNewUserTranscation(); } );
+		BR_ENTITY_MESSAGE(Message::Game::AssignRoleCmd)					{ pNewTrans = new(GetHeap()) PlayerTransAssignRole(GetHeap(),  pMsgData); return OnNewUserTranscation(); } );
+		BR_ENTITY_MESSAGE(Message::Game::ChatMessageCmd)				{ pNewTrans = new(GetHeap()) PlayerTransChatMessage(GetHeap(),  pMsgData); return OnNewUserTranscation(); } );
+		BR_ENTITY_MESSAGE(Message::Game::VoteGameAdvanceCmd)			{ pNewTrans = new(GetHeap()) PlayerTransVoteGameAdvance(GetHeap(),  pMsgData); return OnNewUserTranscation(); } );
+		BR_ENTITY_MESSAGE(Message::Game::VoteCmd)						{ pNewTrans = new(GetHeap()) PlayerTransVote(GetHeap(),  pMsgData); return OnNewUserTranscation(); } );
+		BR_ENTITY_MESSAGE(Message::Game::AdvanceGameCmd)				{ pNewTrans = new(GetHeap()) PlayerTransAdvanceGame(GetHeap(),  pMsgData); return OnNewUserTranscation(); } );
+		BR_ENTITY_MESSAGE(Message::Game::GamePlayAgainCmd)				{ pNewTrans = new(GetHeap()) PlayerTransPlayAgain(GetHeap(),  pMsgData); return OnNewUserTranscation(); } );
+		BR_ENTITY_MESSAGE(Message::Game::GameRevealPlayerCmd)			{ pNewTrans = new(GetHeap()) PlayerTransGameRevealPlayer(GetHeap(),  pMsgData); return OnNewUserTranscation(); } );
+		BR_ENTITY_MESSAGE(Message::Game::GamePlayerReviveCmd)			{ pNewTrans = new(GetHeap()) PlayerTransGamePlayerRevive(GetHeap(),  pMsgData); return OnNewUserTranscation(); } );
+		BR_ENTITY_MESSAGE(Message::Game::GamePlayerResetRankCmd)		{ pNewTrans = new(GetHeap()) PlayerTransGamePlayerResetRank(GetHeap(),  pMsgData); return OnNewUserTranscation(); } );
 
-		BR_ENTITY_MESSAGE(Message::Game::CreatePartyCmd)				{ pNewTrans = new(GetMemoryManager()) PlayerTransCreateParty(pMsgData); return OnNewUserTranscation(); } );
-		BR_ENTITY_MESSAGE(Message::Game::JoinPartyCmd)					{ pNewTrans = new(GetMemoryManager()) PlayerTransJoinParty(pMsgData); return OnNewUserTranscation(); } );
-		BR_ENTITY_MESSAGE(Message::Game::LeavePartyCmd)					{ pNewTrans = new(GetMemoryManager()) PlayerTransLeaveParty(pMsgData); return OnNewUserTranscation(); } );
-		BR_ENTITY_MESSAGE(Message::Game::PartyKickPlayerCmd)			{ pNewTrans = new(GetMemoryManager()) PlayerTransPartyKickPlayer(pMsgData); return OnNewUserTranscation(); } );
-		BR_ENTITY_MESSAGE(Message::Game::PartyInviteCmd)				{ pNewTrans = new(GetMemoryManager()) PlayerTransPartyInvite(pMsgData); return OnNewUserTranscation(); } );
-		BR_ENTITY_MESSAGE(Message::Game::PartyChatMessageCmd)			{ pNewTrans = new(GetMemoryManager()) PlayerTransPartyChatMessage(pMsgData); return OnNewUserTranscation(); } );
-		BR_ENTITY_MESSAGE(Message::Game::PartyQuickChatMessageCmd)		{ pNewTrans = new(GetMemoryManager()) PlayerTransPartyQuickChatMessage(pMsgData); return OnNewUserTranscation(); } );
+		BR_ENTITY_MESSAGE(Message::Game::CreatePartyCmd)				{ pNewTrans = new(GetHeap()) PlayerTransCreateParty(GetHeap(),  pMsgData); return OnNewUserTranscation(); } );
+		BR_ENTITY_MESSAGE(Message::Game::JoinPartyCmd)					{ pNewTrans = new(GetHeap()) PlayerTransJoinParty(GetHeap(),  pMsgData); return OnNewUserTranscation(); } );
+		BR_ENTITY_MESSAGE(Message::Game::LeavePartyCmd)					{ pNewTrans = new(GetHeap()) PlayerTransLeaveParty(GetHeap(),  pMsgData); return OnNewUserTranscation(); } );
+		BR_ENTITY_MESSAGE(Message::Game::PartyKickPlayerCmd)			{ pNewTrans = new(GetHeap()) PlayerTransPartyKickPlayer(GetHeap(),  pMsgData); return OnNewUserTranscation(); } );
+		BR_ENTITY_MESSAGE(Message::Game::PartyInviteCmd)				{ pNewTrans = new(GetHeap()) PlayerTransPartyInvite(GetHeap(),  pMsgData); return OnNewUserTranscation(); } );
+		BR_ENTITY_MESSAGE(Message::Game::PartyChatMessageCmd)			{ pNewTrans = new(GetHeap()) PlayerTransPartyChatMessage(GetHeap(),  pMsgData); return OnNewUserTranscation(); } );
+		BR_ENTITY_MESSAGE(Message::Game::PartyQuickChatMessageCmd)		{ pNewTrans = new(GetHeap()) PlayerTransPartyQuickChatMessage(GetHeap(),  pMsgData); return OnNewUserTranscation(); } );
 
-		BR_ENTITY_MESSAGE(Message::Game::RequestGameMatchCmd)			{ pNewTrans = new(GetMemoryManager()) PlayerTransRequestGameMatch(pMsgData); return OnNewUserTranscation(); } );
-		BR_ENTITY_MESSAGE(Message::Game::CancelGameMatchCmd)			{ pNewTrans = new(GetMemoryManager()) PlayerTransCancelGameMatch(pMsgData); return OnNewUserTranscation(); } );
+		BR_ENTITY_MESSAGE(Message::Game::RequestGameMatchCmd)			{ pNewTrans = new(GetHeap()) PlayerTransRequestGameMatch(GetHeap(),  pMsgData); return OnNewUserTranscation(); } );
+		BR_ENTITY_MESSAGE(Message::Game::CancelGameMatchCmd)			{ pNewTrans = new(GetHeap()) PlayerTransCancelGameMatch(GetHeap(),  pMsgData); return OnNewUserTranscation(); } );
 
-		BR_ENTITY_MESSAGE(Message::Game::SetPresetGameConfigIDCmd)		{ pNewTrans = new(GetMemoryManager()) PlayerTransSetConfigPreset(pMsgData); return OnNewUserTranscation(); } );
-		BR_ENTITY_MESSAGE(Message::Game::GainGameResourceCmd)			{ pNewTrans = new(GetMemoryManager()) PlayerTransGainGameResource(pMsgData); return OnNewUserTranscation(); } );
+		BR_ENTITY_MESSAGE(Message::Game::SetPresetGameConfigIDCmd)		{ pNewTrans = new(GetHeap()) PlayerTransSetConfigPreset(GetHeap(),  pMsgData); return OnNewUserTranscation(); } );
+		BR_ENTITY_MESSAGE(Message::Game::GainGameResourceCmd)			{ pNewTrans = new(GetHeap()) PlayerTransGainGameResource(GetHeap(),  pMsgData); return OnNewUserTranscation(); } );
 
 		return ResultCode::SUCCESS;
 	}
@@ -386,7 +381,7 @@ namespace GameServer {
 		if (m_TimeToKill.CheckTimer() 
 			&& GetEntityState() == EntityState::WORKING)
 		{
-			svrMem(trans = new(GetMemoryManager()) PlayerTransCloseInstance(GetMemoryManager()));
+			svrMem(trans = new(GetHeap()) PlayerTransCloseInstance(GetHeap()));
 			svrChk(trans->InitializeTransaction(this));
 			PendingTransaction(GetTaskWorker()->GetThreadID(), trans);
 		}
@@ -474,14 +469,14 @@ namespace GameServer {
 
 	bool GamePlayerEntity::GetIsInGame() const
 	{
-		return GetGameInsUID() != 0 || GetPartyUID() != 0;
+		return GetGameInsUID().UID != 0 || GetPartyUID().UID != 0;
 	}
 
 	void GamePlayerEntity::SetGameInsUID( const GameInsUID& gameInsID )
 	{
 		m_GameInsUID = gameInsID;
 
-		m_PlayerInformation.IsPlayingGame = m_GameInsUID != 0 ? TRUE : FALSE;
+		m_PlayerInformation.IsPlayingGame = m_GameInsUID.UID != 0 ? TRUE : FALSE;
 	}
 
 

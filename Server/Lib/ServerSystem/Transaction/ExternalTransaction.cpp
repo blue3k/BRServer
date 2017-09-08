@@ -291,9 +291,10 @@ Proc_End:
 	const Message::MessageID ExternalTransactionIOSRecepitCheck::MID = Message::MessageID(Message::MSGTYPE_COMMAND, Message::MSGTYPE_RELIABLE, Message::MSGTYPE_NONE, PROTOCOLID_NONE, ExternalTransactionMesageCode_IOSCheckReceipt);
 
 	// Constructor
-	ExternalTransactionIOSRecepitCheck::ExternalTransactionIOSRecepitCheck(IMemoryManager& memMgr, TransactionID parentTransID, const char* strURL)
+	ExternalTransactionIOSRecepitCheck::ExternalTransactionIOSRecepitCheck(IMemoryManager& memMgr, TransactionID parentTransID, const char* strURL, const char* strAltURL)
 		: HTTPExternalTransaction(memMgr, parentTransID, MID)
 		, m_strURL(strURL)
+		, m_strAltURL(strAltURL)
 		, m_strReceipt(memMgr)
 		, m_strTransactionID(memMgr)
 	{
@@ -375,7 +376,7 @@ Proc_End:
 		return hr;
 	}
 
-	Result ExternalTransactionIOSRecepitCheck::VerifyReceipt()
+	Result ExternalTransactionIOSRecepitCheck::VerifyReceipt(const char* strURL)
 	{
 		Result hr = ResultCode::SUCCESS;
 
@@ -385,7 +386,7 @@ Proc_End:
 		Json::Reader reader;
 		bool parsingSuccessful;
 
-		svrChkPtr(m_strURL);
+		svrChkPtr(strURL);
 
 		m_HTTPResult.Clear();
 
@@ -394,7 +395,7 @@ Proc_End:
 		// À§´Â ºô¸µ Å×½ºÆ®¿ë »÷µå¹Ú½º. https://buy.itunes.apple.com/verifyReceipt ½ÇÀüÀº ¿©±â´Ù.
 		m_CurlResult = curl_easy_setopt(GetCURL(), CURLOPT_POST, 1L);
 		svrChk(ExternalTransactionManager::ToResult(m_CurlResult));
-		m_CurlResult = curl_easy_setopt(m_Curl, CURLOPT_URL, m_strURL);
+		m_CurlResult = curl_easy_setopt(m_Curl, CURLOPT_URL, strURL);
 		svrChk(ExternalTransactionManager::ToResult(m_CurlResult));
 
 		m_CurlResult = curl_easy_setopt(m_Curl, CURLOPT_POSTFIELDSIZE, m_strReceipt.size());
@@ -512,13 +513,16 @@ Proc_End:
 		svrChk(super::StartTransaction());
 
 
-		hr = VerifyReceipt();
+		hr = VerifyReceipt(m_strURL);
 		if (hr == Result(ResultCode::SVR_INVALID_PURCHASE_MODE))
 		{
-			svrTrace(SVR_INFO, "IOS receipt query failed with invalid environment retrying with test mode");
-			// try with sand box url
-			m_strURL = "https://sandbox.itunes.apple.com/verifyReceipt";
-			hr = VerifyReceipt();
+			if (m_strAltURL != nullptr)
+			{
+				svrTrace(SVR_INFO, "IOS receipt query failed with invalid environment retrying with alt url");
+				// try with sand box url
+				//m_strURL = "https://sandbox.itunes.apple.com/verifyReceipt";
+				hr = VerifyReceipt(m_strAltURL);
+			}
 		}
 
 

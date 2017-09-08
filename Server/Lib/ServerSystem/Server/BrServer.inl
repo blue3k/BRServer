@@ -138,7 +138,7 @@ ServerEntity* GetLoopbackServerEntity()
 
 
 template<class DBManagerType>
-Result BrServer::AddDBCluster(ServerConfig::DBCluster *pDBClusterCfg)
+Result BrServer::AddDBCluster(const ServerConfig::DBCluster *pDBClusterCfg)
 {
 	Result hr = ResultCode::SUCCESS;
 	DB::DBClusterManager* pDBManager = nullptr;

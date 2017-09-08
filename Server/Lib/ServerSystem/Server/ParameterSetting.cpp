@@ -17,7 +17,7 @@
 #include "String/StrParserUtil.h"
 #include "String/StrUtil.h"
 #include "ServerSystem/SvrTrace.h"
-#include "ServerSystem/ParameterSetting.h"
+#include "Server/ParameterSetting.h"
 
 
 namespace SF

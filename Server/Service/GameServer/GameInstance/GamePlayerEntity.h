@@ -70,19 +70,19 @@ namespace GameServer {
 	private:
 
 		// Player state
-		PlayerState m_PlayerState;
+		PlayerState m_PlayerState = PlayerState_None;
 
 
 		// Game instance UID
-		GameInsUID m_GameInsUID;
+		GameInsUID m_GameInsUID = 0;
 
 
 		mutable ServerFriendInformation m_PlayerInformation;
 
-		PartyUID m_PartyUID;
-		uint m_ShardID;
+		PartyUID m_PartyUID = 0;
+		uint m_ShardID = 0;
 
-		TimeStampMS m_MatchingStartTime;
+		TimeStampMS m_MatchingStartTime = TimeStampSec(DurationSec(0));
 
 		MatchingQueueTicket m_MatchingTicket;
 
@@ -92,12 +92,12 @@ namespace GameServer {
 		char m_GCMKeys[GameConst::MAX_GCMKEYS];
 		
 		// Latest update time in UTC time
-		TimeStampSec m_LatestUpdateTime;
+		TimeStampSec m_LatestUpdateTime = TimeStampSec(DurationSec(0));
 
 		// Latest active time in UTC time
-		TimeStampSec m_LatestActiveTime;
+		TimeStampSec m_LatestActiveTime = TimeStampSec(DurationSec(0));
 
-		TimeStampSec m_LatestDBSyncTime;
+		TimeStampSec m_LatestDBSyncTime = TimeStampSec(DurationSec(0));
 
 
 
@@ -119,40 +119,40 @@ namespace GameServer {
 
 
 
-		PlayerState GetPlayerState() { return m_PlayerState; }
+		PlayerState GetPlayerState() const { return m_PlayerState; }
 		void SetPlayerState(PlayerState value) { m_PlayerState = value; }
 
-		const GameInsUID& GetGameInsUID() { return m_GameInsUID; }
+		const GameInsUID& GetGameInsUID() const { return m_GameInsUID; }
 
-		const PartyUID& GetPartyUID() { return m_PartyUID; }
+		const PartyUID& GetPartyUID() const { return m_PartyUID; }
 		void SetPartyUID(const PartyUID& value) { m_PartyUID = value; }
 
-		uint GetShardID() { return m_ShardID; }
+		uint GetShardID() const { return m_ShardID; }
 		void SetShardID(uint value) { m_ShardID = value; }
 
-		TimeStampMS GetMatchingStartTime() { return m_MatchingStartTime; }
+		TimeStampMS GetMatchingStartTime() const { return m_MatchingStartTime; }
 
-		const MatchingQueueTicket& GetMatchingTicket() { return m_MatchingTicket; }
+		const MatchingQueueTicket& GetMatchingTicket() const { return m_MatchingTicket; }
 		void SetMatchingTicket(MatchingQueueTicket ticket);
 
-		const Util::TimeStampTimer& GetTimeToKill() { return m_TimeToKill; }
+		const Util::TimeStampTimer& GetTimeToKill() const { return m_TimeToKill; }
 
 
-		const char* GetGCMKeys() { return m_GCMKeys; }
+		const char* GetGCMKeys() const { return m_GCMKeys; }
 		void SetGCMKeys(const char* value) { StrUtil::StringCpy(m_GCMKeys, value); }
 
-		TimeStampSec GetLatestUpdateTime() { return m_LatestUpdateTime; }
+		TimeStampSec GetLatestUpdateTime() const { return m_LatestUpdateTime; }
 		void SetLatestUpdateTime(TimeStampSec value) { m_LatestUpdateTime = value; }
 
 
-		TimeStampSec GetLatestActiveTime() { return m_LatestActiveTime; }
+		TimeStampSec GetLatestActiveTime() const { return m_LatestActiveTime; }
 		void SetLatestActiveTime(TimeStampSec latestActiveTime);
 
-		TimeStampSec GetLatestDBSyncTime() { return m_LatestDBSyncTime; }
+		TimeStampSec GetLatestDBSyncTime() const { return m_LatestDBSyncTime; }
 		void SetLatestDBSyncTime(TimeStampSec value) { m_LatestDBSyncTime = value; }
 
 
-		const char* GetUserName() { return m_UserName; }
+		const char* GetUserName() const { return m_UserName; }
 		void SetUserName(const char* value) { StrUtil::StringCpy(m_UserName, value); }
 
 

@@ -129,15 +129,18 @@ namespace EntityServer {
 		// Register entity servers
 		// All server should use same sock family(IPV4 or IPV6)
 		privateNetSockFamily = GetMyServer()->GetNetPrivate()->GetLocalAddress().SocketFamily;
-		for( auto itEntity = Service::ServerConfig->EntityServers.begin(); itEntity != Service::ServerConfig->EntityServers.end(); ++itEntity )
-		{
-			EntityServerEntity *pEntity = nullptr;
-			auto pEntityCfg = *itEntity;
-			if( pEntityCfg->Name != Util::GetServiceNameA() ) // 
-			{
-				NetAddress netAddress(privateNetSockFamily, pEntityCfg->NetPrivate->IP.c_str(), pEntityCfg->NetPrivate->Port);
 
-				svrChk( GetComponent<Svr::ServerEntityManager>()->GetOrRegisterServer<EntityServerEntity>( pEntityCfg->UID, NetClass::Entity, netAddress, pEntity ) );
+		for( auto& itServer : Service::ServerConfig->GetServers() )
+		{
+			if (!itServer->Name.StartWith("BREntityServer"))
+				continue;
+
+			EntityServerEntity *pEntity = nullptr;
+			if(itServer->Name != Util::GetServiceName() ) // 
+			{
+				NetAddress netAddress(privateNetSockFamily, itServer->PrivateNet.IP, itServer->PrivateNet.Port);
+
+				svrChk( Svr::GetServerComponent<Svr::ServerEntityManager>()->GetOrRegisterServer<EntityServerEntity>(itServer->UID, NetClass::Entity, netAddress, pEntity ) );
 			}
 		}
 
@@ -148,7 +151,7 @@ namespace EntityServer {
 
 
 		// Add my entity manager entity
-		svrChk( GetComponent<Svr::ServerEntityManager>()->UpdateEntityManagerServerEntity( GetLoopbackServerEntity() ) );
+		svrChk(Svr::GetServerComponent<Svr::ServerEntityManager>()->UpdateEntityManagerServerEntity( GetLoopbackServerEntity() ) );
 
 
 		// Prepare watcher clusters
@@ -166,8 +169,8 @@ namespace EntityServer {
 
 		// push Startup transaction
 		{
-			Svr::Transaction * pProcess = nullptr;
-			svrMem( pProcess = new(GetMemoryManager()) EntityServerStartProcess );
+			TransactionPtr pProcess;
+			svrMem( pProcess = new(GetHeap()) EntityServerStartProcess(GetHeap()) );
 			svrChk( pProcess->InitializeTransaction(this) );
 			svrChk( PendingTransaction(ThisThread::GetThreadID(), pProcess) );
 		}

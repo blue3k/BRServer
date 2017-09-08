@@ -42,7 +42,7 @@ namespace EntityServer {
 		uint m_WaitCount;
 
 	public:
-		EntityServerStartProcess();
+		EntityServerStartProcess(IHeap& heap);
 		~EntityServerStartProcess();
 
 		// Override delete function

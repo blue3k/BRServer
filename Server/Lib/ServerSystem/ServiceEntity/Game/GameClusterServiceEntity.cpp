@@ -41,7 +41,7 @@ namespace Svr {
 	//	Entity informations
 	//
 
-	GameClusterServiceEntity::GameClusterServiceEntity(GameID gameID, ServerConfig::NetPublic *publicNetSocket, ClusterMembership initialMembership)
+	GameClusterServiceEntity::GameClusterServiceEntity(GameID gameID, const ServerConfig::NetPublic *publicNetSocket, ClusterMembership initialMembership)
 		: FreeReplicaClusterServiceEntity(GetGameClusterID(gameID), initialMembership)
 		, IServerComponent(ComponentID)
 		, m_PlayerIDMap(GetMemoryManager())

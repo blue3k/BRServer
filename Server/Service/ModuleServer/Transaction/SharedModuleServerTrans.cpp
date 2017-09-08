@@ -36,8 +36,8 @@ namespace SharedModuleServer {
 
 
 	// Server start process
-	SharedModuleServerStartProcess::SharedModuleServerStartProcess()
-		: TransactionT(TransactionID() )
+	SharedModuleServerStartProcess::SharedModuleServerStartProcess(IHeap& heap)
+		: TransactionT(heap, TransactionID() )
 	{
 		SetExclusive(true);
 		BR_TRANS_MESSAGE( Svr::TimerResult, { return OnTimer(pRes); });

@@ -47,7 +47,7 @@ namespace GameServer {
 		, m_PublicAddressIPV6(nullptr)
 		, m_Port(0)
 	{
-		super::template RegisterMessageHandler<Message::GameServer::RegisterPlayerToJoinGameServerOnPlayerEntityRes>(__FILE__, __LINE__, [&](::BR::Svr::TransactionResult* pRes)->Result { return OnPlayerRegisteredRes(pRes); });
+		super::template RegisterMessageHandler<Message::GameServer::RegisterPlayerToJoinGameServerOnPlayerEntityRes>(__FILE__, __LINE__, [&](::SF::Svr::TransactionResult* pRes)->Result { return OnPlayerRegisteredRes(pRes); });
 	}
 
 	template<class ProcessEntity>
@@ -59,7 +59,7 @@ namespace GameServer {
 		Message::GameServer::RegisterPlayerToJoinGameServerOnPlayerEntityRes res;
 
 		svrChk(pRes->GetResult());
-		svrChk(res.ParseMessage(pMsgRes->GetMessage()));
+		svrChk(res.ParseMessage(*pMsgRes->GetMessage()));
 
 
 	Proc_End:
@@ -118,8 +118,8 @@ namespace GameServer {
 		pPlayerEntity->SetShardID(super::GetShardID());
 		m_PlayerUID = pPlayerEntity->GetEntityUID();
 
-		m_PublicAddress = GetMyServer()->GetPublicNetConfig()->IPV4.c_str();
-		m_PublicAddressIPV6 = GetMyServer()->GetPublicNetConfig()->IPV6.c_str();
+		m_PublicAddress = GetMyServer()->GetPublicNetConfig()->IPV4;
+		m_PublicAddressIPV6 = GetMyServer()->GetPublicNetConfig()->IPV6;
 		m_Port = GetMyServer()->GetPublicNetConfig()->Port;
 
 		if ((Svr::Entity*)pPlayerEntity == (Svr::Entity*)super::GetMyOwner())

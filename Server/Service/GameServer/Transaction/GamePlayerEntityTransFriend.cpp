@@ -71,8 +71,8 @@ namespace GameServer {
 	//
 
 	
-	PlayerTransInviteFriend::PlayerTransInviteFriend( MessageDataPtr &pIMsg )
-		:MessageTransaction( pIMsg )
+	PlayerTransInviteFriend::PlayerTransInviteFriend(IHeap& heap, MessageDataPtr &pIMsg )
+		:MessageTransaction( heap, pIMsg )
 	{
 		BR_TRANS_MESSAGE(DB::QueryGetPlayerShardIDCmd, { return OnGetPlayerShardID(pRes); });
 		BR_TRANS_MESSAGE(DB::QueryNotification_AddCmd, { return OnNotifyAdded(pRes); });
@@ -81,9 +81,7 @@ namespace GameServer {
 	Result PlayerTransInviteFriend::OnGetPlayerShardID(Svr::TransactionResult* &pRes)
 	{
 		Result hr = ResultCode::SUCCESS;
-		//Svr::ServerEntity *pServerEntity = nullptr;
 		EntityUID playerUID;
-		//Policy::NetPolicyGameServer* pTargetPolicy = nullptr;
 		DB::QueryGetPlayerShardIDCmd* pMsgRes;
 
 		svrChkClose( pRes->GetResult() );
@@ -95,7 +93,7 @@ namespace GameServer {
 		}
 		else
 		{
-			svrErrClose(ResultCode::E_INVALID_ACCOUNTID);
+			svrErrClose(ResultCode::INVALID_ACCOUNTID);
 		}
 
 
@@ -143,10 +141,10 @@ namespace GameServer {
 		svrChk( super::StartTransaction() );
 
 		if (!GetMyOwner()->GetComponent<UserFriendSystem>()->CanAddFriend())
-			svrErrClose(ResultCode::E_MAX_FRIEND);
+			svrErrClose(ResultCode::MAX_FRIEND);
 
 		if (!GetMyOwner()->GetComponent<UserFriendSystem>()->IsFriend(GetFriendID()))
-			svrErrClose(ResultCode::E_ALREADY_IN_FRIEND);
+			svrErrClose(ResultCode::ALREADY_IN_FRIEND);
 
 		svrChk( Svr::GetServerComponent<DB::AccountDB>()->GetPlayerShardID( GetTransID(), GetFriendID() ) );
 
@@ -162,8 +160,8 @@ namespace GameServer {
 
 
 
-	PlayerTransFriendAccept::PlayerTransFriendAccept( MessageDataPtr &pIMsg )
-		:MessageTransaction( pIMsg )
+	PlayerTransFriendAccept::PlayerTransFriendAccept( IHeap& heap, MessageDataPtr &pIMsg )
+		:MessageTransaction(heap, pIMsg )
 	{
 		BR_TRANS_MESSAGE(DB::QueryAddFriendCmd, { return OnFriendAdded(pRes); });
 		BR_TRANS_MESSAGE(DB::QueryGetFriendSlotStatusCmd, { return OnFriendSlotStatus(pRes); });
@@ -211,7 +209,7 @@ namespace GameServer {
 		maxFriend = pDBRes->AddedFriendSlot + GetMyServer()->GetPresetGameConfig()->DefaultFriend;
 
 		if (pDBRes->NumFriends >= maxFriend)
-			svrErrClose(ResultCode::E_TARGET_MAX_FRIEND);
+			svrErrClose(ResultCode::TARGET_MAX_FRIEND);
 
 
 		{
@@ -254,7 +252,7 @@ namespace GameServer {
 				hr = pFriendSystem->AddFriend(m_NewFriend);
 				if (!(hr))
 				{
-					if (hr != Result(ResultCode::E_MAX_FRIEND)) // silence max friend error
+					if (hr != Result(ResultCode::MAX_FRIEND)) // silence max friend error
 						svrErr(hr);
 				}
 
@@ -377,7 +375,7 @@ namespace GameServer {
 		svrChk( super::StartTransaction() );
 
 		if (!GetMyOwner()->GetComponent<UserFriendSystem>()->CanAddFriend())
-			svrErrClose(ResultCode::E_MAX_FRIEND);
+			svrErrClose(ResultCode::MAX_FRIEND);
 
 		// TODO: we need to check inviter's maximum friend slot
 		svrChk(Svr::GetServerComponent<DB::AccountDB>()->GetPlayerShardID(GetTransID(), GetInviterID()));
@@ -407,7 +405,7 @@ namespace GameServer {
 		}
 
 		hr = GetMyOwner()->GetComponent<UserFriendSystem>()->AddFriend( GetAccepter() );
-		if (hr == Result(ResultCode::E_MAX_FRIEND))
+		if (hr == Result(ResultCode::MAX_FRIEND))
 		{
 			svrErrClose(hr);
 		}
@@ -424,8 +422,8 @@ namespace GameServer {
 
 
 
-	PlayerTransRemoveFriend::PlayerTransRemoveFriend( MessageDataPtr &pIMsg )
-		:MessageTransaction( pIMsg )
+	PlayerTransRemoveFriend::PlayerTransRemoveFriend( IHeap& heap, MessageDataPtr &pIMsg )
+		:MessageTransaction(heap, pIMsg )
 	{
 		BR_TRANS_MESSAGE( DB::QueryRemoveFriendCmd, { return OnRemoved(pRes); });
 	}
@@ -503,8 +501,7 @@ namespace GameServer {
 		}
 
 		svrChk( GetMyOwner()->GetComponent<UserFriendSystem>()->RemoveFriend( GetRemoverID() ) );
-		svrChkPtr(GetInterface());
-		svrChk(GetInterface()->FriendRemovedS2CEvt(GetRemoverID()));
+		svrChk(Policy::NetSvrPolicyGame(GetConnection()).FriendRemovedS2CEvt(GetRemoverID()));
 
 	Proc_End:
 
@@ -515,8 +512,9 @@ namespace GameServer {
 
 
 
-	PlayerTransGetFriendList::PlayerTransGetFriendList( MessageDataPtr &pIMsg )
-		:MessageTransaction( pIMsg )
+	PlayerTransGetFriendList::PlayerTransGetFriendList( IHeap& heap, MessageDataPtr &pIMsg )
+		: MessageTransaction(heap, pIMsg )
+		, m_Friends(heap)
 	{
 		BR_TRANS_MESSAGE(DB::QueryGetFriendListCmd, { return OnGetList(pRes); });
 		//BR_TRANS_MESSAGE(DB::QueryGetFriendQuickInfoCmd, { return OnGetQuickInfo(pRes); });
@@ -544,7 +542,7 @@ namespace GameServer {
 			ServerFriendInformation info(set.FriendUID, set.FriendShardID, set.FriendFacebookUID, "", 1, 0, 0, FALSE, 0, set.FriendStaminaTime);
 
 			Result hRes = pFriendSystem->AddFriend(info);
-			if (hRes == Result(ResultCode::E_MAX_FRIEND))
+			if (hRes == Result(ResultCode::MAX_FRIEND))
 			{
 				svrTrace(Warning, "Failed to add friend. Max friends, PlayerID:{0} to friend system", set.FriendUID);
 				return;
@@ -718,8 +716,8 @@ namespace GameServer {
 
 
 
-	PlayerTransGiveStamina::PlayerTransGiveStamina( MessageDataPtr &pIMsg )
-		:MessageTransaction( pIMsg )
+	PlayerTransGiveStamina::PlayerTransGiveStamina(IHeap& heap, MessageDataPtr &pIMsg )
+		: MessageTransaction(heap, pIMsg )
 	{
 		SetExclusive(true);
 		BR_TRANS_MESSAGE( DB::QueryUpdateTickStatusCmd, { return OnSavedToDB(pRes); });
@@ -864,7 +862,7 @@ namespace GameServer {
 
 
 
-	//PlayerTransGiveStaminaS2S::PlayerTransGiveStaminaS2S( MessageDataPtr &pIMsg )
+	//PlayerTransGiveStaminaS2S::PlayerTransGiveStaminaS2S( IHeap& heap, MessageDataPtr &pIMsg )
 	//	:UserTransactionS2SEvt(pIMsg)
 	//{
 	//	SetExclusive(true);

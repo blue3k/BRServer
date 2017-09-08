@@ -153,18 +153,19 @@ namespace ConspiracyGameInstanceServer {
 
 		GetMyServer()->GetNetPrivate()->SetIsEnableAccept(true);
 
+		privateNetSockFamily = GetMyServer()->GetNetPrivate()->GetLocalAddress().SocketFamily;
 
 		// Register entity servers
 		// All server should use same sock family(IPV4 or IPV6)
-		privateNetSockFamily = GetMyServer()->GetNetPrivate()->GetLocalAddress().SocketFamily;
-		for( auto itEntity = Service::ServerConfig->EntityServers.begin(); itEntity != Service::ServerConfig->EntityServers.end(); ++itEntity )
+		for (auto& itServer : Service::ServerConfig->GetServers())
 		{
+			if (!itServer->Name.StartWith("BREntityServer"))
+				continue;
+
 			Svr::EntityServerEntity *pEntity = nullptr;
-			auto pEntityCfg = *itEntity;
+			NetAddress netAddress(privateNetSockFamily, itServer->PrivateNet.IP, itServer->PrivateNet.Port);
 
-			NetAddress netAddress(privateNetSockFamily, pEntityCfg->NetPrivate->IP.c_str(), pEntityCfg->NetPrivate->Port);
-
-			svrChk(GetComponent<Svr::ServerEntityManager>()->GetOrRegisterServer<Svr::EntityServerEntity>(pEntityCfg->UID, NetClass::Entity, netAddress, pEntity));
+			svrChk(GetComponentCarrier().GetComponent<Svr::ServerEntityManager>()->GetOrRegisterServer<Svr::EntityServerEntity>(itServer->UID, NetClass::Entity, netAddress, pEntity));
 		}
 
 
@@ -179,14 +180,14 @@ namespace ConspiracyGameInstanceServer {
 		svrMem( pGameInstanceManager = new(GetMemoryManager()) GameInstanceManagerServiceEntity(ClusterID::GameInstanceManager, ClusterMembership::Slave) );
 		svrChk( Svr::GetServerComponent<Svr::EntityManager>()->AddEntity( EntityFaculty::Service, pGameInstanceManager ) );
 		svrChk( Svr::GetServerComponent<Svr::ClusterManagerServiceEntity>()->AddClusterServiceEntity( pGameInstanceManager ) );
-		svrChk( AddComponent(pGameInstanceManager) );
+		svrChk(GetComponentCarrier().AddComponent(pGameInstanceManager) );
 		}
 
 
 		// push Startup transaction
 		{
-			Svr::Transaction * pProcess = nullptr;
-			svrMem( pProcess = new(GetMemoryManager()) GameInstanceServerStartProcess );
+			TransactionPtr pProcess;
+			svrMem( pProcess = new(GetHeap()) GameInstanceServerStartProcess(GetHeap()) );
 			svrChk( pProcess->InitializeTransaction(this) );
 			svrChk(PendingTransaction(ThisThread::GetThreadID(), pProcess));
 		}

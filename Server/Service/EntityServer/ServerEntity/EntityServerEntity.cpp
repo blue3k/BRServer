@@ -50,7 +50,7 @@ namespace EntityServer {
 
 
 	// Initialize entity to proceed new connection
-	Result EntityServerEntity::ProcessConnectionEvent( const BR::Net::ConnectionEvent& conEvent )
+	Result EntityServerEntity::ProcessConnectionEvent( const Net::ConnectionEvent& conEvent )
 	{
 		Result hr = ResultCode::SUCCESS;
 		Svr::ClusterManagerServiceEntity *pClusterManager = nullptr;

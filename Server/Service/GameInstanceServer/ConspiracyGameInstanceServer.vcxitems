@@ -16,7 +16,6 @@
   <ItemGroup>
     <ClCompile Include="$(MSBuildThisFileDirectory)ConspiracyGameInstanceServer.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)ConspiracyGameInstanceServerClass.cpp" />
-    <ClCompile Include="$(MSBuildThisFileDirectory)ConspiracyGameInstanceServer_NetProc.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)GameInstance\GameEntityManager.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)GameInstance\GameInstanceEntity.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)GameInstance\GameInstanceEntity_MsgProc.cpp" />

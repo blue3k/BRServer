@@ -52,17 +52,10 @@ namespace Svr{
 	//
 	BrServer::BrServer( NetClass netClass )
 		: m_Components(GetMemoryManager())
-		, m_State(ServerState::STOPED)
-		, m_uiUID(0)
 		, m_NetClass(netClass )
-		, m_pMyConfig(nullptr)
 		, m_ServerUpUTCTIme(TimeStampSec::min())
 		, m_NumberServicesToWait(0)
 		, m_DBManagers(GetMemoryManager())
-		//, m_bIsStartProcessDone(false)
-		, m_bIsNetPublicEnabled(false)
-		, m_bIsKillSignaled(false)
-		, m_bStartTransaction(false)
 		, m_NewConnectionQueue(GetMemoryManager())
 	{
 		SetInstance( this );
@@ -310,7 +303,7 @@ Proc_End:
 				if (ios != nullptr)
 				{
 					svrChk(m_Components.AddComponent<ExternalTransactionManager>());
-					svrChk(m_Components.GetComponent<ExternalTransactionManager>()->InitializeManagerIOS(ios->URL));
+					svrChk(m_Components.GetComponent<ExternalTransactionManager>()->InitializeManagerIOS(ios->URL, ios->AltURL));
 				}
 			}
 

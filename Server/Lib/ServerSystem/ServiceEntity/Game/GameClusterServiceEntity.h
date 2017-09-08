@@ -104,11 +104,11 @@ namespace Svr {
 		SyncCounter m_NumberOfPlayerOnThisServer;
 
 
-		ServerConfig::NetPublic*	m_PublicNetSocket;
+		const ServerConfig::NetPublic*	m_PublicNetSocket;
 
 	public:
 		// Constructor/Destructor
-		GameClusterServiceEntity(GameID gameID, ServerConfig::NetPublic *publicNetSocket, ClusterMembership initialMembership = ClusterMembership::StatusWatcher);
+		GameClusterServiceEntity(GameID gameID, const ServerConfig::NetPublic *publicNetSocket, ClusterMembership initialMembership = ClusterMembership::StatusWatcher);
 		virtual ~GameClusterServiceEntity();
 
 		virtual Result RegisterServiceMessageHandler( ServerEntity *pServerEntity ) override;
@@ -120,7 +120,7 @@ namespace Svr {
 		static ClusterID GetGameClusterID( GameID gameID ) { return (ClusterID)((uint)ClusterID::Game + (uint)gameID); }
 
 
-		ServerConfig::NetPublic* GetPublicNetConfig() { return m_PublicNetSocket; }
+		const ServerConfig::NetPublic* GetPublicNetConfig() { return m_PublicNetSocket; }
 
 		//////////////////////////////////////////////////////////////////////////
 		//

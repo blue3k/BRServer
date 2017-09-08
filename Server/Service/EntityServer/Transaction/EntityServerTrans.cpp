@@ -36,8 +36,8 @@ namespace EntityServer {
 
 
 	// Server start process
-	EntityServerStartProcess::EntityServerStartProcess()
-		: TransactionT(TransactionID() )
+	EntityServerStartProcess::EntityServerStartProcess(IHeap& heap)
+		: TransactionT(heap, TransactionID() )
 	{
 		m_WaitCount = 0;
 		SetExclusive(true);

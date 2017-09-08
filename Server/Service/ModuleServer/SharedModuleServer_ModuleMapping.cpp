@@ -34,6 +34,7 @@
 #include "Table/TableSystem.h"
 
 #include "ServerEntity/SvrEntityServerEntity.h"
+#include "Transaction/ExternalTransactionManager.h"
 
 
 #include "Protocol/Policy/EntityServerNetPolicy.h"
@@ -74,9 +75,9 @@ namespace SharedModuleServer {
 		Svr::ClusteredServiceEntity *pServiceEntityTest = nullptr;
 		ServiceEntityType* pServiceEntity = nullptr;
 
-		svrMem(pServiceEntity = new(GetMemoryManager()) ServiceEntityType(constructorArgs...));
+		svrMem(pServiceEntity = new(GetHeap()) ServiceEntityType(constructorArgs...));
 
-		if( (GetComponent<Svr::ClusterManagerServiceEntity>()->GetClusterServiceEntity( pServiceEntity->GetClusterID(), pServiceEntityTest )) )
+		if( (GetComponentCarrier().GetComponent<Svr::ClusterManagerServiceEntity>()->GetClusterServiceEntity( pServiceEntity->GetClusterID(), pServiceEntityTest )) )
 		{
 			if (pServiceEntityTest == pServiceEntity)
 				goto Proc_End;
@@ -93,13 +94,13 @@ namespace SharedModuleServer {
 			goto Proc_End;
 		}
 
-		svrChk( GetComponent<Svr::EntityManager>()->AddEntity( EntityFaculty::Service, pServiceEntity ) );
-		svrChk( GetComponent<Svr::ClusterManagerServiceEntity>()->AddClusterServiceEntity( pServiceEntity ) );
+		svrChk( GetComponentCarrier().GetComponent<Svr::EntityManager>()->AddEntity( EntityFaculty::Service, pServiceEntity ) );
+		svrChk( GetComponentCarrier().GetComponent<Svr::ClusterManagerServiceEntity>()->AddClusterServiceEntity( pServiceEntity ) );
 
 		pComponent = dynamic_cast<Svr::IServerComponent*>(pServiceEntity);
 		if( pComponent != nullptr )
 		{
-			svrChk( AddComponent(pComponent) );
+			svrChk(GetComponentCarrier().AddComponent(pComponent) );
 		}
 
 	Proc_End:
@@ -108,94 +109,138 @@ namespace SharedModuleServer {
 	}
 
 	// Create clustered service
-	Result SharedModuleServer::RegisterClusteredService(ServerConfig::ModuleBase* module)
+	Result SharedModuleServer::RegisterClusteredService(ServerConfig::ServerModule* module)
 	{
 		Result hr = ResultCode::SUCCESS;
-		ClusterID clusterID;
-
+		char strRelativePath[1024];
+		FixedString32 moduleName = module->ModuleName;
 		svrChkPtr(module);
 
-		clusterID = module->GetModuleClusterID();
-		switch(clusterID)
+		switch(moduleName)
 		{
-		case ClusterID::Monitoring:
-			svrChk(GetComponent<Svr::EntityManager>()->AddEntity(EntityFaculty::Service, new(GetMemoryManager()) Svr::MonitoringServiceEntity));
+		case "ModMonitoring"_hash32:
+			svrChk(GetComponentCarrier().GetComponent<Svr::EntityManager>()->AddEntity(EntityFaculty::Service, new(GetHeap()) Svr::MonitoringServiceEntity));
 			break;
 
-		case ClusterID::Login:
+		case "ModLogin"_hash32:
 		{
-			auto pLogin = (ServerConfig::ModuleLogin*)module;
-			svrChk(GetComponent<Svr::EntityManager>()->AddEntity(EntityFaculty::Service, new(GetMemoryManager()) Svr::LoginServiceEntity(pLogin->NetPublic)));
+			auto pLogin = (ServerConfig::ServerModulePublicService*)module;
+			svrChk(GetComponentCarrier().GetComponent<Svr::EntityManager>()->AddEntity(EntityFaculty::Service, new(GetHeap()) Svr::LoginServiceEntity(&pLogin->PublicNet)));
 			break;
 		}
 
-		case ClusterID::Game:
+		case "ModGame"_hash32:
 		{
-			auto pGame = (ServerConfig::ModuleGame*)module;
-			svrChk(GetComponent<Svr::EntityManager>()->AddEntity(EntityFaculty::Service, new(GetMemoryManager()) Svr::GameServiceEntity(GetGameID(), pGame->NetPublic)));
+			auto pGame = (ServerConfig::ServerModulePublicService*)module;
+			svrChk(GetComponentCarrier().GetComponent<Svr::EntityManager>()->AddEntity(EntityFaculty::Service, new(GetHeap()) Svr::GameServiceEntity(GetGameID(), &pGame->PublicNet)));
 			svrChk(AddServiceEntityComponent<Svr::GameInstanceManagerWatcherServiceEntity>(GetGameID()));
 			break;
 		}
 
-		case ClusterID::Ranking:
+		case "ModRanking"_hash32:
 		{
-			Svr::ClusteredServiceEntity* pServiceEntity = new(GetMemoryManager()) Svr::RankingServiceEntity(ClusterID::Ranking, ClusterMembership::Master);
-			svrChk(GetComponent<Svr::EntityManager>()->AddEntity(EntityFaculty::Service, pServiceEntity));
-			svrChk(GetComponent<Svr::ClusterManagerServiceEntity>()->AddClusterServiceEntity(pServiceEntity));
+			Svr::ClusteredServiceEntity* pServiceEntity = new(GetHeap()) Svr::RankingServiceEntity(ClusterID::Ranking, ClusterMembership::Master);
+			svrChk(GetComponentCarrier().GetComponent<Svr::EntityManager>()->AddEntity(EntityFaculty::Service, pServiceEntity));
+			svrChk(GetComponentCarrier().GetComponent<Svr::ClusterManagerServiceEntity>()->AddClusterServiceEntity(pServiceEntity));
 			break;
 		}
 
-		case ClusterID::GameInstanceManager:
-			// TODO: 
-			//svrChk(AddServiceEntityComponent<Svr::GameInstanceManagerServiceEntity>(ClusterID::GameInstanceManager, ClusterMembership::Slave));
+		case "ModGameInstanceManager"_hash32:
+		{
+			Svr::ClusteredServiceEntity* pServiceEntity = new(GetHeap()) Svr::GameInstanceManagerServiceEntity(ClusterID::GameInstanceManager, ClusterMembership::Master);
+			svrChk(GetComponentCarrier().GetComponent<Svr::EntityManager>()->AddEntity(EntityFaculty::Service, pServiceEntity));
+			svrChk(GetComponentCarrier().GetComponent<Svr::ClusterManagerServiceEntity>()->AddClusterServiceEntity(pServiceEntity));
 			break;
+		}
 
-		case ClusterID::GamePartyManager:
+		case "ModGamePartyManager"_hash32:
 			svrChk(AddServiceEntityComponent<Svr::GamePartyManagerServiceEntity>(ClusterMembership::Slave));
 			svrChk(AddServiceEntityComponent<Svr::GameInstanceManagerWatcherServiceEntity>(GetGameID()));
 			svrChk(RegisterClustereWatcherComponents(ClusterID::MatchingQueue_Game_4x1, Svr::ServerComponentID_MatchingQueueWatcherService_4x1, Svr::ServerComponentID_MatchingQueueWatcherService_4x1W));
 			svrChk(RegisterClustereWatcherComponents(ClusterID::MatchingQueue_Game_8x1, Svr::ServerComponentID_MatchingQueueWatcherService_8x1, Svr::ServerComponentID_MatchingQueueWatcherService_8x1W));
 			break;
 
-		case ClusterID::Matching_Game_4:
+		case "ModMatching_Game_4"_hash32:
 		{
-			auto pMatching = (ServerConfig::ModuleMatching*)module;
-			svrChk(AddServiceEntityComponent<Svr::MatchingServiceEntity>(clusterID, ClusterMembership::Slave, pMatching->UseBot));
+			auto pMatching = (ServerConfig::ServerModuleMatching_4*)module;
+			svrChk(AddServiceEntityComponent<Svr::MatchingServiceEntity>(ClusterID::Matching_Game_4, ClusterMembership::Slave, pMatching->UseBot));
 			svrChk(AddServiceEntityComponent<Svr::GameInstanceManagerWatcherServiceEntity>(GetGameID()));
 			svrChk(RegisterClustereWatcherComponents(ClusterID::MatchingQueue_Game_4x1, Svr::ServerComponentID_MatchingQueueWatcherService_4x1, Svr::ServerComponentID_MatchingQueueWatcherService_4x1W));
 			break;
 		}
-		case ClusterID::Matching_Game_8:
+		case "ModMatching_Game_8"_hash32:
 		{
-			auto pMatching = (ServerConfig::ModuleMatching*)module;
-			svrChk(AddServiceEntityComponent<Svr::MatchingServiceEntity>(clusterID, ClusterMembership::Slave, pMatching->UseBot));
+			auto pMatching = (ServerConfig::ServerModuleMatching_8*)module;
+			svrChk(AddServiceEntityComponent<Svr::MatchingServiceEntity>(ClusterID::Matching_Game_8, ClusterMembership::Slave, pMatching->UseBot));
 			svrChk(AddServiceEntityComponent<Svr::GameInstanceManagerWatcherServiceEntity>(GetGameID()));
 			svrChk(RegisterClustereWatcherComponents(ClusterID::MatchingQueue_Game_8x1, Svr::ServerComponentID_MatchingQueueWatcherService_8x1, Svr::ServerComponentID_MatchingQueueWatcherService_8x1W));
 			break;
 		}
-
-		case ClusterID::MatchingQueue_Game_4x1:
-		case ClusterID::MatchingQueue_Game_4x2:
-		case ClusterID::MatchingQueue_Game_4x3:
-		case ClusterID::MatchingQueue_Game_4x1W:
-		case ClusterID::MatchingQueue_Game_4x1S:
-
-		case ClusterID::MatchingQueue_Game_8x1:
-		case ClusterID::MatchingQueue_Game_8x2:
-		case ClusterID::MatchingQueue_Game_8x3:
-		case ClusterID::MatchingQueue_Game_8x4:
-		case ClusterID::MatchingQueue_Game_8x5:
-		case ClusterID::MatchingQueue_Game_8x6:
-		case ClusterID::MatchingQueue_Game_8x7:
-		case ClusterID::MatchingQueue_Game_8x1W:
-		case ClusterID::MatchingQueue_Game_8x1S:
-
-			svrChk( AddServiceEntityComponent<Svr::MatchingQueueServiceEntity>( clusterID, ClusterMembership::Slave ) );
+		case "ModPurchaseValidateGoogle"_hash32:
+		{
+			auto pModule = (ServerConfig::ServerModuleGooglePurchaseValidate*)module;
+			StrUtil::Format(strRelativePath, "../../Config/{0}", pModule->P12KeyFile);
+			svrChk(GetComponentCarrier().AddComponent<Svr::ExternalTransactionManager>());
+			svrChk(GetComponentCarrier().GetComponent<Svr::ExternalTransactionManager>()->InitializeManagerGoogle(
+				strRelativePath,
+				pModule->Account,
+				pModule->AuthScopes));
 			break;
+		}
+		case "ModPurchaseValidateIOS"_hash32:
+		{
+			auto pModule = (ServerConfig::ServerModuleIOSPurchaseValidate*)module;
+			svrChk(GetComponentCarrier().AddComponent<Svr::ExternalTransactionManager>());
+			svrChk(GetComponentCarrier().GetComponent<Svr::ExternalTransactionManager>()->InitializeManagerIOS(pModule->URL, pModule->AltURL));
+			break;
+		}
 
+		case "ModMatchingQueue_Game_8x1"_hash32:
+		case "ModMatchingQueue_Game_8x2"_hash32:
+		case "ModMatchingQueue_Game_8x3"_hash32:
+		case "ModMatchingQueue_Game_8x4"_hash32:
+		case "ModMatchingQueue_Game_8x5"_hash32:
+		case "ModMatchingQueue_Game_8x6"_hash32:
+		case "ModMatchingQueue_Game_8x7"_hash32:
+		case "ModMatchingQueue_Game_8x1S"_hash32:
+		case "ModMatchingQueue_Game_8x1W"_hash32:
+
+		case "ModMatchingQueue_Game_4x1"_hash32:
+		case "ModMatchingQueue_Game_4x2"_hash32:
+		case "ModMatchingQueue_Game_4x3"_hash32:
+		case "ModMatchingQueue_Game_4x1S"_hash32:
+		case "ModMatchingQueue_Game_4x1W"_hash32:
+		{
+			ClusterID clusterID;
+			switch (moduleName)
+			{
+			case "ModMatchingQueue_Game_8x1"_hash32:		clusterID = ClusterID::MatchingQueue_Game_8x1;	break;
+			case "ModMatchingQueue_Game_8x2"_hash32:		clusterID = ClusterID::MatchingQueue_Game_8x2;	break;
+			case "ModMatchingQueue_Game_8x3"_hash32:		clusterID = ClusterID::MatchingQueue_Game_8x3;	break;
+			case "ModMatchingQueue_Game_8x4"_hash32:		clusterID = ClusterID::MatchingQueue_Game_8x4;	break;
+			case "ModMatchingQueue_Game_8x5"_hash32:		clusterID = ClusterID::MatchingQueue_Game_8x5;	break;
+			case "ModMatchingQueue_Game_8x6"_hash32:		clusterID = ClusterID::MatchingQueue_Game_8x6;	break;
+			case "ModMatchingQueue_Game_8x7"_hash32:		clusterID = ClusterID::MatchingQueue_Game_8x7;	break;
+			case "ModMatchingQueue_Game_8x1S"_hash32:		clusterID = ClusterID::MatchingQueue_Game_8x1S;	break;
+			case "ModMatchingQueue_Game_8x1W"_hash32:		clusterID = ClusterID::MatchingQueue_Game_8x1W;	break;
+
+			case "ModMatchingQueue_Game_4x1"_hash32:		clusterID = ClusterID::MatchingQueue_Game_4x1;	break;
+			case "ModMatchingQueue_Game_4x2"_hash32:		clusterID = ClusterID::MatchingQueue_Game_4x2;	break;
+			case "ModMatchingQueue_Game_4x3"_hash32:		clusterID = ClusterID::MatchingQueue_Game_4x3;	break;
+			case "ModMatchingQueue_Game_4x1S"_hash32:		clusterID = ClusterID::MatchingQueue_Game_4x1S;	break;
+			case "ModMatchingQueue_Game_4x1W"_hash32:		clusterID = ClusterID::MatchingQueue_Game_4x1W;	break;
+			default:
+				assert(false);
+				svrTrace(Error, "Invalid cluster ID for module{0}", module->ModuleName);
+				break;
+			}
+
+			svrChk(AddServiceEntityComponent<Svr::MatchingQueueServiceEntity>(clusterID, ClusterMembership::Slave));
+			break;
+		}
 		default:
-			Assert(false);
-			svrTrace(Error, "Invalid cluster ID for module{0}", clusterID);
+			assert(false);
+			svrTrace(Error, "Invalid cluster ID for module: {0}", module->ModuleName);
 			break;
 		}
 
@@ -214,7 +259,7 @@ namespace SharedModuleServer {
 		{
 			for (INT componentID = componentIDStart; componentID <= componentIDEnd; componentID++, clusterID++)
 			{
-				if (GetComponent(componentID) != nullptr)
+				if (GetComponentCarrier().GetComponent(componentID) != nullptr)
 				{
 					continue;
 				}

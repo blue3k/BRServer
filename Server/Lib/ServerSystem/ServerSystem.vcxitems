@@ -81,6 +81,7 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)Server\BrServer.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Server\BrServerUtil.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Server\BrService.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)Server\ParameterSetting.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)ServiceEntity\ClusteredServiceEntity.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)ServiceEntity\ClusterManagerServiceEntity.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)ServiceEntity\ClusterManagerServiceTrans.h" />
@@ -174,6 +175,7 @@
     <ClCompile Include="$(MSBuildThisFileDirectory)Server\BrServerUtil.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)Server\BRService.linux.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)Server\BRService.win64.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)Server\ParameterSetting.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)ServiceEntity\ClusteredServiceEntity.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)ServiceEntity\ClusterManagerServiceEntity.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)ServiceEntity\ClusterManagerServiceTrans.cpp" />

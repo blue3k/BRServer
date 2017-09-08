@@ -51,7 +51,7 @@ namespace Svr {
 	//
 
 
-	LoginServiceEntity::LoginServiceEntity(ServerConfig::NetPublic *publicNetSocket, ClusterMembership initialMembership)
+	LoginServiceEntity::LoginServiceEntity(const ServerConfig::NetPublic *publicNetSocket, ClusterMembership initialMembership)
 		: ReplicaClusterServiceEntity(ClusterID::Login, initialMembership)
 		, m_PublicNetSocket(publicNetSocket)
 		, m_pNetPublic(nullptr)

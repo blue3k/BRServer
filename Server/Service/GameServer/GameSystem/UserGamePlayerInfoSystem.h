@@ -88,87 +88,87 @@ namespace GameServer {
 		~UserGamePlayerInfoSystem();
 
 
-		uint8_t GetGrade() { return m_Grade; }
+		uint8_t GetGrade() const { return m_Grade; }
 		void SetGrade(uint8_t value) { m_Grade = value; }
 
-		int16_t GetLevel() { return m_Level; }
+		int16_t GetLevel() const { return m_Level; }
 		void SetLevel(int16_t value) { m_Level = value; }
 
-		int64_t GetExp() { return m_Exp; }
+		int64_t GetExp() const { return m_Exp; }
 		void SetExp(int64_t value) { m_Exp = value; }
 
-		int64_t GetGameMoney() { return m_GameMoney; }
+		int64_t GetGameMoney() const { return m_GameMoney; }
 		void SetGameMoney(int64_t value) { m_GameMoney = value; }
 
-		int64_t GetGem() { return m_Gem; }
+		int64_t GetGem() const { return m_Gem; }
 		void SetGem(int64_t value) { m_Gem = value; }
 
-		int16_t GetStamina() { return m_Stamina; }
+		int16_t GetStamina() const { return m_Stamina; }
 		void SetStamina(int16_t value) { m_Stamina = value; }
 
-		int16_t GetAddedFriendSlot() { return m_AddedFriendSlot; }
+		int16_t GetAddedFriendSlot() const { return m_AddedFriendSlot; }
 		void SetAddedFriendSlot(int16_t value) { m_AddedFriendSlot = value; }
 
-		int32_t GetTotalPlayed() { return m_TotalPlayed; }
+		int32_t GetTotalPlayed() const { return m_TotalPlayed; }
 		void SetTotalPlayed(int32_t value) { m_TotalPlayed = value; }
 
-		int32_t GetWinPlaySCitizen() { return m_WinPlaySCitizen; }
+		int32_t GetWinPlaySCitizen() const { return m_WinPlaySCitizen; }
 		void SetWinPlaySCitizen(int32_t value) { m_WinPlaySCitizen = value; }
 
-		int32_t GetWinPlaySMonster() { return m_WinPlaySMonster; }
+		int32_t GetWinPlaySMonster() const { return m_WinPlaySMonster; }
 		void SetWinPlaySMonster(int32_t value) { m_WinPlaySMonster = value; }
 
-		int32_t GetWinPlaySSeer() { return m_WinPlaySSeer; }
+		int32_t GetWinPlaySSeer() const { return m_WinPlaySSeer; }
 		void SetWinPlaySSeer(int32_t value) { m_WinPlaySSeer = value; }
 
-		int32_t GetLosePlaySCitizen() { return m_LosePlaySCitizen; }
+		int32_t GetLosePlaySCitizen() const { return m_LosePlaySCitizen; }
 		void SetLosePlaySCitizen(int32_t value) { m_LosePlaySCitizen = value; }
 
-		int32_t GetLosePlaySMonster() { return m_LosePlaySMonster; }
+		int32_t GetLosePlaySMonster() const { return m_LosePlaySMonster; }
 		void SetLosePlaySMonster(int32_t value) { m_LosePlaySMonster = value; }
 
-		int32_t GetLosePlaySSeer() { return m_LosePlaySSeer; }
+		int32_t GetLosePlaySSeer() const { return m_LosePlaySSeer; }
 		void SetLosePlaySSeer(int32_t value) { m_LosePlaySSeer = value; }
 
-		int32_t GetWinPlayNCitizen() { return m_WinPlayNCitizen; }
+		int32_t GetWinPlayNCitizen() const { return m_WinPlayNCitizen; }
 		void SetWinPlayNCitizen(int32_t value) { m_WinPlayNCitizen = value; }
 
-		int32_t GetWinPlayNMonster() { return m_WinPlayNMonster; }
+		int32_t GetWinPlayNMonster() const { return m_WinPlayNMonster; }
 		void SetWinPlayNMonster(int32_t value) { m_WinPlayNMonster = value; }
 
-		int32_t GetWinPlayNSeer() { return m_WinPlayNSeer; }
+		int32_t GetWinPlayNSeer() const { return m_WinPlayNSeer; }
 		void SetWinPlayNSeer(int32_t value) { m_WinPlayNSeer = value; }
 
-		int32_t GetLosePlayNCitizen() { return m_LosePlayNCitizen; }
+		int32_t GetLosePlayNCitizen() const { return m_LosePlayNCitizen; }
 		void SetLosePlayNCitizen(int32_t value) { m_LosePlayNCitizen = value; }
 
-		int32_t GetLosePlayNMonster() { return m_LosePlayNMonster; }
+		int32_t GetLosePlayNMonster() const { return m_LosePlayNMonster; }
 		void SetLosePlayNMonster(int32_t value) { m_LosePlayNMonster = value; }
 
-		int32_t GetLosePlayNSeer() { return m_LosePlayNSeer; }
+		int32_t GetLosePlayNSeer() const { return m_LosePlayNSeer; }
 		void SetLosePlayNSeer(int32_t value) { m_LosePlayNSeer = value; }
 
-		int32_t GetWeeklyWin() { return m_WeeklyWin; }
+		int32_t GetWeeklyWin() const { return m_WeeklyWin; }
 		void SetWeeklyWin(int32_t value) { m_WeeklyWin = value; }
 
-		int32_t GetWeeklyLose() { return m_WeeklyLose; }
+		int32_t GetWeeklyLose() const { return m_WeeklyLose; }
 		void SetWeeklyLose(int32_t value) { m_WeeklyLose = value; }
 
-		int GetMaxAutoRefillStamina() { return m_MaxAutoRefillStamina; }
+		int GetMaxAutoRefillStamina() const { return m_MaxAutoRefillStamina; }
 
-		int GetMaxStamina() { return m_MaxStamina; }
+		int GetMaxStamina() const { return m_MaxStamina; }
 		void SetMaxStamina(int value) { m_MaxStamina = value; }
 
-		int GetMaxFriend() { return m_MaxFriend; }
+		int GetMaxFriend() const { return m_MaxFriend; }
 		void SetMaxFriend(int value) { m_MaxFriend = value; }
 
-		int64_t GetMaxGameMoney() { return m_MaxGameMoney; }
+		int64_t GetMaxGameMoney() const { return m_MaxGameMoney; }
 		void SetMaxGameMoney(int64_t value) { m_MaxGameMoney = value; }
 
-		int64_t GetMaxGem() { return m_MaxGem; }
+		int64_t GetMaxGem() const { return m_MaxGem; }
 		void SetMaxGem(int64_t value) { m_MaxGem = value; }
 
-		int16_t GetDefaultFriendSlot() { return m_DefaultFriendSlot; }
+		int16_t GetDefaultFriendSlot() const { return m_DefaultFriendSlot; }
 		void SetDefaultFriendSlot(int16_t value) { m_DefaultFriendSlot = value; }
 
 

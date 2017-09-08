@@ -67,7 +67,7 @@ namespace Svr {
 
 	private:
 
-		ServerConfig::NetPublic *m_PublicNetSocket;
+		const ServerConfig::NetPublic *m_PublicNetSocket;
 		SharedPointerT<Net::ServerMUDP>			m_pNetPublic;
 
 		PageQueue<SharedPointerAtomicT<Net::Connection>> m_NewConnectionQueue;
@@ -77,7 +77,7 @@ namespace Svr {
 
 	public:
 
-		LoginServiceEntity(ServerConfig::NetPublic *publicNetSocket, ClusterMembership initialMembership = ClusterMembership::StatusWatcher );
+		LoginServiceEntity(const ServerConfig::NetPublic *publicNetSocket, ClusterMembership initialMembership = ClusterMembership::StatusWatcher );
 		~LoginServiceEntity();
 
 		// We are not going to use hashed key

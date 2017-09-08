@@ -32,14 +32,14 @@ namespace SF {
 	Result ToString(char*& pBuff, INT& iBuffLen, const ServiceStatus& Data, int Option);
 	Result ToString(char*& pBuff, INT& iBuffLen, const LocalUID& Data, int Option);
 	Result ToString(char*& pBuff, INT& iBuffLen, const ServiceInformation& Data, int Option);
-	Result ToString(char*& pBuff, INT& iBuffLen, const MatchingQueueTicket& Data, int Option);
+	//Result ToString(char*& pBuff, INT& iBuffLen, const MatchingQueueTicket& Data, int Option);
 	Result ToString(char*& pBuff, INT& iBuffLen, const MatchingPlayerInformation& Data, int Option);
 	Result ToString(char*& pBuff, INT& iBuffLen, const PerformanceCounterInfo& Data, int Option);
 	Result ToString(char*& pBuff, INT& iBuffLen, const PerformanceCounterInstanceInfo& Data, int Option);
 	Result ToString(char*& pBuff, INT& iBuffLen, const ServerFriendInformation& Data, int Option);
 
 	extern template Result ToStringArray(char*& pBuff, INT& iBuffLen, const Array<ServiceStatus>& Data, int Option);
-	extern template Result ToStringArray(char*& pBuff, INT& iBuffLen, const Array<MatchingQueueTicket>& Data, int Option);
+	//extern template Result ToStringArray(char*& pBuff, INT& iBuffLen, const Array<MatchingQueueTicket>& Data, int Option);
 	extern template Result ToStringArray(char*& pBuff, INT& iBuffLen, const Array<MatchingPlayerInformation>& Data, int Option);
 	extern template Result ToStringArray(char*& pBuff, INT& iBuffLen, const Array<PerformanceCounterInfo>& Data, int Option);
 	extern template Result ToStringArray(char*& pBuff, INT& iBuffLen, const Array<PerformanceCounterInstanceInfo>& Data, int Option);

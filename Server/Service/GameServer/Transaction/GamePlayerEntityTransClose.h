@@ -39,15 +39,15 @@ namespace GameServer {
 
 
 	// Close zone instance
-	class PlayerTransCloseInstance : public Svr::TransactionT<GamePlayerEntity, PlayerTransCloseInstance,sizeof(Svr::TransactionMessageHandlerType)*6>
+	class PlayerTransCloseInstance : public Svr::TransactionT<GamePlayerEntity>
 	{
 	private:
-		typedef Svr::TransactionT<GamePlayerEntity, PlayerTransCloseInstance, sizeof(Svr::TransactionMessageHandlerType) * 6> super;
+		typedef Svr::TransactionT<GamePlayerEntity> super;
 
 		INT m_WaitingTransactions;
 
 	public:
-		PlayerTransCloseInstance();
+		PlayerTransCloseInstance(IHeap& heap);
 		virtual ~PlayerTransCloseInstance() {}
 
 		Result UpdateDBRes(Svr::TransactionResult* &pRes);

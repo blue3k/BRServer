@@ -65,8 +65,8 @@ namespace SF {
 namespace GameServer {
 
 
-	PlayerTransCloseInstance::PlayerTransCloseInstance()
-		: TransactionT( TransactionID() )
+	PlayerTransCloseInstance::PlayerTransCloseInstance(IHeap& heap)
+		: TransactionT(heap, TransactionID() )
 	{
 		SetExclusive(true);
 		BR_TRANS_MESSAGE(DB::QueryUpdateTickStatusCmd, { return UpdateDBRes(pRes); });
@@ -190,32 +190,24 @@ namespace GameServer {
 
 		if( pOwner->GetMatchingTicket() != 0 )
 		{
-			Policy::NetPolicyPartyMatchingQueue *pPolicy = Svr::GetServerComponent<Svr::ServerEntityManager>()->GetServerPolicy<Policy::NetPolicyPartyMatchingQueue>(pOwner->GetMatchingTicket().QueueUID.GetServerID());
-			if (pPolicy != nullptr)
-			{
-				if((pPolicy->UnregisterMatchingCmd(RouteContext(GetOwnerEntityUID(), pOwner->GetMatchingTicket().QueueUID), GetTransID(), 0, pOwner->GetMatchingTicket())))
-					m_WaitingTransactions++;
-			}
+			if((Policy::NetPolicyPartyMatchingQueue(Svr::GetServerComponent<Svr::ServerEntityManager>()->GetServerConnection(pOwner->GetMatchingTicket().QueueUID.GetServerID())).UnregisterMatchingCmd(
+				RouteContext(GetOwnerEntityUID(), pOwner->GetMatchingTicket().QueueUID), GetTransID(), 
+				0, pOwner->GetMatchingTicket())))
+				m_WaitingTransactions++;
 		}
 
-		if (pOwner->GetPartyUID() != 0)
+		if (pOwner->GetPartyUID().UID != 0)
 		{
-			Policy::NetPolicyGameParty *pPolicy = Svr::GetServerComponent<Svr::ServerEntityManager>()->GetServerPolicy<Policy::NetPolicyGameParty>(pOwner->GetPartyUID().GetServerID());
-			if (pPolicy != nullptr)
-			{
-				if ((pPolicy->LeavePartyCmd(RouteContext(GetOwnerEntityUID(), pOwner->GetPartyUID()), GetTransID(), pOwner->GetPlayerID())))
-					m_WaitingTransactions++;
-			}
+			if ((Policy::NetPolicyGameParty(Svr::GetServerComponent<Svr::ServerEntityManager>()->GetServerConnection(pOwner->GetPartyUID().GetServerID())).LeavePartyCmd(
+				RouteContext(GetOwnerEntityUID(), pOwner->GetPartyUID()), GetTransID(), pOwner->GetPlayerID())))
+				m_WaitingTransactions++;
 		}
 
-		if (pOwner->GetGameInsUID() != 0)
+		if (pOwner->GetGameInsUID().UID != 0)
 		{
-			Policy::NetPolicyGameInstance *pPolicy = Svr::GetServerComponent<Svr::ServerEntityManager>()->GetServerPolicy<Policy::NetPolicyGameInstance>(pOwner->GetGameInsUID().GetServerID());
-			if (pPolicy != nullptr)
-			{
-				if ((pPolicy->LeaveGameCmd(RouteContext(GetOwnerEntityUID(), pOwner->GetGameInsUID()), GetTransID(), pOwner->GetPlayerID())))
-					m_WaitingTransactions++;
-			}
+			if ((Policy::NetPolicyGameInstance(Svr::GetServerComponent<Svr::ServerEntityManager>()->GetServerConnection(pOwner->GetGameInsUID().GetServerID())).LeaveGameCmd(
+				RouteContext(GetOwnerEntityUID(), pOwner->GetGameInsUID()), GetTransID(), pOwner->GetPlayerID())))
+				m_WaitingTransactions++;
 		}
 
 		if ((Svr::GetServerComponent<DB::LoginSessionDB>()->DeleteLoginSession(GetTransID(), GetMyOwner()->GetPlayerID(), GetMyOwner()->GetAuthTicket())))

@@ -171,6 +171,7 @@ namespace Svr{
 
 	private:
 		const char* m_strURL;
+		const char* m_strAltURL;
 		char m_strPackageName[128];
 		char m_strProductID[128];
 		StaticArray<uint8_t, 20 * 1024> m_strReceipt;
@@ -184,7 +185,7 @@ namespace Svr{
 		Result ToResult(int status);
 
 		// Constructor
-		ExternalTransactionIOSRecepitCheck(IMemoryManager& memMgr, TransactionID parentTransID, const char* strURL);
+		ExternalTransactionIOSRecepitCheck(IMemoryManager& memMgr, TransactionID parentTransID, const char* strURL, const char* strAltURL);
 
 		// Set parameters
 		Result SetParameters(const char* packageName, const char* productID, const char* transactionID, const Array<uint8_t>& purchaseToken);
@@ -194,7 +195,7 @@ namespace Svr{
 		// Initialize Transaction
 		virtual Result InitializeTransaction(Entity* pOwner) override;
 
-		Result VerifyReceipt();
+		Result VerifyReceipt(const char* strURL);
 
 		// Start Transaction
 		virtual Result StartTransaction() override;

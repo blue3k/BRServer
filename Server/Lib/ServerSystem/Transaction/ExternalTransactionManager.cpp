@@ -119,14 +119,12 @@ namespace Svr
 		return hr;
 	}
 
-	Result ExternalTransactionManager::InitializeManagerIOS(const char* strURL)
+	Result ExternalTransactionManager::InitializeManagerIOS(const char* strURL, const char* strAltURL)
 	{
 		Result hr = ResultCode::SUCCESS;
 
 		m_IOSURL = strURL;
-		//svrChk(m_GoogleAuth.Initialize(strP12KeyFile, strAccount, scopes));
-
-	//Proc_End:
+		m_IOSAltURL = strAltURL;
 
 		return hr;
 	}
@@ -228,7 +226,7 @@ namespace Svr
 		Result hr = ResultCode::SUCCESS;
 		ExternalTransactionIOSRecepitCheck *newTrans = nullptr;
 
-		svrMem(newTrans = new(GetMemoryManager()) ExternalTransactionIOSRecepitCheck((GetMemoryManager()), sender, m_IOSURL.c_str()));
+		svrMem(newTrans = new(GetMemoryManager()) ExternalTransactionIOSRecepitCheck((GetMemoryManager()), sender, m_IOSURL, m_IOSAltURL));
 
 		svrChk(newTrans->SetParameters(packageName, productID, transactionID, purchaseToken));
 

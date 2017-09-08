@@ -24,10 +24,10 @@ namespace SF {
 namespace SharedModuleServer {
 
 	
-	class SharedModuleServerStartProcess : public Svr::TransactionT<SharedModuleServer,SharedModuleServerStartProcess>
+	class SharedModuleServerStartProcess : public Svr::TransactionT<SharedModuleServer>
 	{
 	private:
-		typedef Svr::TransactionT<SharedModuleServer, SharedModuleServerStartProcess> super;
+		typedef Svr::TransactionT<SharedModuleServer> super;
 
 		enum class StartingStep 
 		{
@@ -39,7 +39,7 @@ namespace SharedModuleServer {
 		StartingStep m_Step;
 
 	public:
-		SharedModuleServerStartProcess();
+		SharedModuleServerStartProcess(IHeap& heap);
 		~SharedModuleServerStartProcess();
 
 		// Override delete function
