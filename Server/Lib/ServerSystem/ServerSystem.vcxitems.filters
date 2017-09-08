@@ -360,9 +360,7 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)Service\EntityTableService.h">
       <Filter>Service</Filter>
     </ClInclude>
-    <ClInclude Include="C:\work\BRServerSF\Server\Lib\ServerSystem\Server\ParameterSetting.h">
-      <Filter>Server</Filter>
-    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)Server\ParameterSetting.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="$(MSBuildThisFileDirectory)makefile.mak" />
@@ -678,9 +676,7 @@
     <ClCompile Include="$(MSBuildThisFileDirectory)Service\ServerService.cpp">
       <Filter>Service</Filter>
     </ClCompile>
-    <ClCompile Include="C:\work\BRServerSF\Server\Lib\ServerSystem\Server\ParameterSetting.cpp">
-      <Filter>Server</Filter>
-    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)Server\ParameterSetting.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Xml Include="$(MSBuildThisFileDirectory)..\..\Config\ServerConfig.xml">
