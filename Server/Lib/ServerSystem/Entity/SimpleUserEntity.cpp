@@ -62,7 +62,6 @@ namespace Svr
 
 			// This connection will be updated with User entity
 			m_pConnection->SetTickFlags(0);
-			//m_pConnection->GetNet()->TakeOverConnection((Net::Connection*)m_pConnection);
 		}
 
 		return ResultCode::SUCCESS;
@@ -81,12 +80,7 @@ namespace Svr
 		m_pConnection = SharedPointerT<Net::Connection>();
 	}
 
-	void SimpleUserEntity::GetConnectionShared(SharedPointerT<Net::Connection>& outConn)
-	{
-		MutexScopeLock localLock(m_ConnectionLock);
 
-		outConn = m_pConnection;
-	}
 
 	// Initialize entity to proceed new connection
 	Result SimpleUserEntity::InitializeEntity( EntityID newEntityID )
@@ -239,15 +233,17 @@ namespace Svr
 
 		// Update connection
 		// We need to make a copy here while m_pConnection can be changed on another thread
-		SharedPointerT<Net::Connection> pConn;
-		GetConnectionShared(pConn);
+		auto& pConn = GetConnection();
+		auto thisThreadID = ThisThread::GetThreadID();
 
 		if (pConn != nullptr)
 		{
-			if (pConn->GetRunningThreadID() == ThreadID())
-				pConn->SetRunningThreadID(ThisThread::GetThreadID());
+			if (pConn->GetActiveTickFlags() == 0 && pConn->GetRunningThreadID() != thisThreadID)
+			{
+				pConn->SetRunningThreadID(thisThreadID);
+			}
 
-			if(pConn->GetRunningThreadID() == ThisThread::GetThreadID())
+			if(pConn->GetRunningThreadID() == thisThreadID)
 				pConn->UpdateNetCtrl();
 		}
 
@@ -343,36 +339,14 @@ namespace Svr
 		TransactionPtr pCurTran;
 		MessageDataPtr pMsg;
 		Net::ConnectionUDPBase* pConn = nullptr;
-		auto pMyConn = GetConnection();
+		auto& pMyConn = GetConnection();
+		auto thisThreadID = ThisThread::GetThreadID();
 
 		if (pMyConn != nullptr)
 		{
-			// Event task stuff will be called from entity 
-			// This should be the running thread from now on
-			//if (pMyConn->GetRunningThreadID() != ThisThread::GetThreadID())
-			//	pMyConn->SetRunningThreadID(ThisThread::GetThreadID());
-			// - Yes, but it could be still managed by connection manager. let's see what happens
-			if (pMyConn->GetRunningThreadID() == ThreadID())
-				pMyConn->SetRunningThreadID(ThisThread::GetThreadID());
-			else
+			if (pMyConn->GetActiveTickFlags() == 0 && pMyConn->GetRunningThreadID() != thisThreadID)
 			{
-				if (pMyConn->GetRunningThreadID() != ThisThread::GetThreadID())
-				{
-					//	return ResultCode::SUCCESS_FALSE; // this event should be rescheduled
-					switch (eventTask.EventType)
-					{
-					case ServerTaskEvent::EventTypes::PACKET_MESSAGE_EVENT:
-						AssertRel(eventTask.EventData.MessageEvent.pMessage == nullptr);
-						// fallthru
-					case ServerTaskEvent::EventTypes::CONNECTION_EVENT:
-					case ServerTaskEvent::EventTypes::PACKET_MESSAGE_SYNC_EVENT:
-					case ServerTaskEvent::EventTypes::PACKET_MESSAGE_SEND_EVENT:
-					case ServerTaskEvent::EventTypes::TRANSRESULT_EVENT:
-						return ResultCode::SUCCESS_FALSE;
-					default:
-						return ResultCode::UNEXPECTED;
-					}
-				}
+				pMyConn->SetRunningThreadID(thisThreadID);
 			}
 		}
 

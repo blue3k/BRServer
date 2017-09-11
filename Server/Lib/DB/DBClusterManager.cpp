@@ -433,7 +433,7 @@ Proc_End:
 		}
 		else
 		{
-			assert(0); // lost transaction result
+			assert(pRes->GetTransID() == TransactionID()); // otherwise it's a lost transaction result
 		}
 
 	Proc_End:

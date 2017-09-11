@@ -63,7 +63,6 @@ namespace Svr {
 
 		// Get Connection
 		inline const SharedPointerT<Net::Connection>& GetConnection() { return m_pConnection; }
-		void GetConnectionShared(SharedPointerT<Net::Connection>& outConn);
 
 
 		// Initialize entity to proceed new connection

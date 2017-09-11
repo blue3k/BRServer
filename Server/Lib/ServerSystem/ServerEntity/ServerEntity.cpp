@@ -78,6 +78,7 @@ namespace Svr {
 
 		// This connection will be updated with server entity
 		pConn->SetTickFlags(0);
+		pConn->SetRunningThreadID(ThreadID());
 
 	Proc_End:
 
@@ -145,10 +146,20 @@ namespace Svr {
 			return ResultCode::SUCCESS;
 
 		auto localCon = m_pConnLocal;
-		if (localCon != nullptr) localCon->SetEventHandler(nullptr);
+		if (localCon != nullptr)
+		{
+			localCon->SetEventHandler(nullptr);
+			localCon->DisconnectNRelease();
+		}
+		m_pConnLocal = nullptr;
 
 		auto remoteCon = m_pConnRemote;
-		if (remoteCon != nullptr) remoteCon->SetEventHandler(nullptr);
+		if (remoteCon != nullptr)
+		{
+			remoteCon->SetEventHandler(nullptr);
+			remoteCon->DisconnectNRelease();
+		}
+		m_pConnRemote = nullptr;
 
 		svrChk(MasterEntity::TerminateEntity() );
 
@@ -259,6 +270,8 @@ namespace Svr {
 		if (pConn == nullptr)
 			return hr;
 
+		pConn->SetRunningThreadID(ThisThread::GetThreadID());
+
 		// update connection
 		pConn->UpdateNetCtrl();
 
@@ -319,13 +332,8 @@ namespace Svr {
 					auto pIOCallback = pConn->GetIOCallback();
 					if (pIOCallback != nullptr && pIOCallback->GetIsIORegistered())
 					{
-						if(pConn->GetSocket() != INVALID_SOCKET)
-							pConn->CloseSocket();
-						else if(Util::TimeSince(m_LocalConnectionRetryTime) > DurationMS(5*60*1000))
-						{
-							// waited too much, force clear
-							pIOCallback->OnIOUnregistered();
-						}
+						pConn->CloseConnection();
+						pConn->CloseSocket();
 					}
 					else if (Util::TimeSince(m_LocalConnectionRetryTime) > m_LocalConnectionRetryWait)
 					{
@@ -362,16 +370,9 @@ namespace Svr {
 		}
 
 		pConnRemote = (Net::Connection*)m_pConnRemote;
-		//auto prevConn = m_pConnRemotePrev.load(std::memory_order_relaxed);
+
 		Assert(pConn == nullptr || pConn != pConnRemote);
-		//Assert(prevConn == nullptr || prevConn != pConnRemote);
-		//if (prevConn != nullptr && pConnRemote != prevConn)
-		//{
-		//	prevConn->CloseConnection();
-		//	Assert(prevConn->GetRefCount() == 1);
-		//	prevConn->DisconnectNRelease();
-		//	m_pConnRemotePrev.store(nullptr, std::memory_order_relaxed);
-		//}
+
 		svrChk(UpdateConnection(pConnRemote));
 
 	Proc_End:
