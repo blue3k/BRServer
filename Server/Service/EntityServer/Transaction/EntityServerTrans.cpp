@@ -85,13 +85,17 @@ namespace EntityServer {
 			break;
 		case StartingStep::Done:
 			CloseTransaction(hr);
+			svrTrace(SVR_INFO, "Entity Server start porcess has finished");
 			break;
 		}
 
 	Proc_End:
 
-		if( !(hr) )
+		if (!(hr))
+		{
+			svrTrace(SVR_INFO, "Entity Server start porcess has finished with error {0}", hr);
 			CloseTransaction(hr);
+		}
 
 		return hr;
 	}
@@ -104,7 +108,7 @@ namespace EntityServer {
 		// Grab Game server list from entity
 		// try connecte to it
 		// Only entity server can be slave or master
-		//svrChk( Svr::GetServerComponent<Svr::EntityManager>()->AddEntity( EntityFaculty::Service, Svr::GetServerComponent<Svr::ClusterManagerServiceEntity>() ) );
+		//svrChk( Service::EntityManager->AddEntity( EntityFaculty::Service, Svr::GetServerComponent<Svr::ClusterManagerServiceEntity>() ) );
 
 
 	//Proc_End:

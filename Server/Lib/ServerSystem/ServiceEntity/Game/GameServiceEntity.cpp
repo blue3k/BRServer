@@ -72,7 +72,7 @@ namespace Svr {
 
 		// Register game cluster as a slave
 		svrMem(pGameService = new(GetMemoryManager()) Svr::GameClusterServiceEntity(m_GameID, m_PublicNetSocket, ClusterMembership::Slave));
-		svrChk(GetServerComponent<Svr::EntityManager>()->AddEntity(EntityFaculty::Service, pGameService));
+		svrChk(Service::EntityManager->AddEntity(EntityFaculty::Service, pGameService));
 		svrChk(GetServerComponent<Svr::ClusterManagerServiceEntity>()->AddClusterServiceEntity(pGameService));
 		svrChk(AddServerComponent(pGameService));
 
@@ -126,15 +126,11 @@ namespace Svr {
 	{
 		Result hr = ResultCode::SUCCESS;
 		Svr::ServerEntity *pServerEntity = nullptr;
-		EntityManager* pEntityManager = nullptr;
 		Entity* pEntity = nullptr;
 		GamePlayerEntity* pGamePlayerEntity = nullptr;
 		SharedPointerT<Net::Connection> pConn;
 
-		pEntityManager = GetServerComponent<EntityManager>();
-
 		auto numQueued = m_NewConnectionQueue.GetEnqueCount();
-		svrChkPtr(pEntityManager);
 		for (uint iQueue = 0; iQueue < numQueued; iQueue++)
 		{
 			SharedPointerAtomicT<Net::Connection> pConnAtomic;
@@ -142,7 +138,8 @@ namespace Svr {
 			if (!m_NewConnectionQueue.Dequeue(pConnAtomic))
 				break;
 
-			switch (pConnAtomic->GetConnectionState())
+			auto connectionState = pConnAtomic->GetConnectionState();
+			switch (connectionState)
 			{
 			case Net::ConnectionState::CONNECTING:
 				m_NewConnectionQueue.Enqueue(std::forward<SharedPointerAtomicT<Net::Connection>>(pConnAtomic));
@@ -150,10 +147,10 @@ namespace Svr {
 			case Net::ConnectionState::CONNECTED:
 				break;
 			default:
-				assert(false); // I want to see when this happenes
+				assert(connectionState == Net::ConnectionState::DISCONNECTED); // I want to see when this happens
 				pConn = std::forward <SharedPointerAtomicT<Net::Connection>>(pConnAtomic);
-				pConn->Dispose();
 				Service::ConnectionManager->RemoveConnection(pConn);
+				pConn->DisconnectNRelease();
 				pConn = nullptr;
 				break;
 			}
@@ -165,10 +162,10 @@ namespace Svr {
 
 			svrChkPtr(pConn);
 
-			svrChk(pEntityManager->CreateEntity(GetClusterID(), EntityFaculty::User, pEntity));
+			svrChk(Service::EntityManager->CreateEntity(GetClusterID(), EntityFaculty::User, pEntity));
 			svrChkPtr(pGamePlayerEntity = dynamic_cast<GamePlayerEntity*>(pEntity));
 
-			svrChk(pEntityManager->AddEntity(EntityFaculty::User, pGamePlayerEntity));
+			svrChk(Service::EntityManager->AddEntity(EntityFaculty::User, pGamePlayerEntity));
 
 			if (!(pGamePlayerEntity->SetConnection(std::forward<Net::ConnectionPtr>(pConn))))
 			{

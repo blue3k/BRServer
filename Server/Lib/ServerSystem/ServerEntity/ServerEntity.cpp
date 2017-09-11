@@ -115,14 +115,6 @@ namespace Svr {
 		return SetConnection(m_pConnLocal, pConn);
 	}
 
-	void ServerEntity::GetConnectionShared(SharedPointerT<Net::Connection>& outConn)
-	{
-		outConn = std::forward<SharedPointerT<Net::Connection>>(GetConnection());
-		//MutexScopeLock localLock(m_ConnectionLock);
-
-		//auto pConn = GetConnection();
-		//outConn = pConn != nullptr ? (Net::Connection*)pConn : SharedPointerT<Net::Connection>();
-	}
 
 	// Initialize entity to proceed new connection
 	Result ServerEntity::InitializeEntity( EntityID newEntityID )
@@ -224,7 +216,6 @@ namespace Svr {
 
 				svrTrace( SVR_DBGSVR, "Sending Server Connected to Entity Server from:{0}", myConfig->Name );
 
-				Policy::NetPolicyServer pPolicy(GetConnection());
 
 				const ServerServiceInformation* pServerServiceInfo = Svr::GetServerComponent<ClusterManagerServiceEntity>()->GetMyServiceInfo();
 				ServiceInformation serviceInformation( pServerServiceInfo->GetEntityUID(), 
@@ -236,7 +227,7 @@ namespace Svr {
 					pServerServiceInfo->GetWorkload() );
 
 				// This is a replication of a remote server. ServerID in EntityUID wil have remote server id then local serverID
-				svrChk(pPolicy.ServerConnectedC2SEvt(RouteContext(Svr::BrServer::GetInstance()->GetServerUID(), 0),
+				svrChk(Policy::NetPolicyServer(GetConnection()).ServerConnectedC2SEvt(RouteContext(Svr::BrServer::GetInstance()->GetServerUID(), 0),
 					serviceInformation, 
 					BrServer::GetInstance()->GetServerUpTime().time_since_epoch().count(),
 					netPrivate->GetLocalAddress()));

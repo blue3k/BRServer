@@ -121,13 +121,9 @@ namespace Svr {
 	// foreach game player
 	Result GamePartyEntity::ForeachPlayer( std::function<Result(PartyPlayer* pPlayer)> func )
 	{
-		PartyPlayerUIDMap::iterator itPlayer;
-
-		m_PartyPlayerByUID.begin( itPlayer );
-
-		for( ; itPlayer.IsValid(); ++ itPlayer )
+		for(auto itPlayer : m_PartyPlayerByUID)
 		{
-			PartyPlayer* pPartyPlayer = *itPlayer;
+			PartyPlayer* pPartyPlayer = itPlayer;
 			if( pPartyPlayer )
 			{
 				Result hrRes = func( pPartyPlayer );
@@ -281,17 +277,16 @@ namespace Svr {
 	// Leave all player
 	Result GamePartyEntity::LeaveAllPlayer()
 	{
-		PartyPlayerUIDMap::iterator itPlayer;
-
-		m_PartyPlayerByUID.begin(itPlayer);
-		while( itPlayer.IsValid() )
+		auto itPlayer = m_PartyPlayerByUID.begin();
+		while(itPlayer.IsValid())
 		{
 			PartyPlayer *pPlayer = *itPlayer;
 			itPlayer = nullptr;
 
 			LeavePlayer( pPlayer, true );
 
-			m_PartyPlayerByUID.begin( itPlayer );
+			// Leave player will remove player from the table
+			itPlayer = m_PartyPlayerByUID.begin();
 		}
 
 		m_PartyPlayerByUID.clear();

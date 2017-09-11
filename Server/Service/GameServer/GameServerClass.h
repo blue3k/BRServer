@@ -62,7 +62,6 @@ namespace GameServer
 	protected:
 
 		// Create entity manager
-		virtual Svr::EntityManager* CreateEntityManager() override;
 		virtual Svr::ServerEntity* CreateLoopbackEntity() override;
 
 	public:

@@ -140,7 +140,7 @@ namespace Svr {
 		if( BrServer::GetInstance()->GetServerState() != ServerState::RUNNING )
 			goto Proc_End;
 
-		svrChk(ProcessPublicNetworkEvent());
+		svrChk(ProcessNewConnection());
 
 	Proc_End:
 
@@ -150,7 +150,7 @@ namespace Svr {
 
 
 	// Process network event
-	Result LoginServiceEntity::ProcessPublicNetworkEvent()
+	Result LoginServiceEntity::ProcessNewConnection()
 	{
 		Result hr = ResultCode::SUCCESS;
 		SharedPointerT<LoginPlayerEntity> pLoginPlayerEntity;
@@ -159,7 +159,6 @@ namespace Svr {
 		if (m_pNetPublic == nullptr)
 			return ResultCode::SUCCESS;
 
-		svrChkPtr(GetServerComponent<Svr::EntityManager>());
 
 		auto numQueued = m_NewConnectionQueue.GetEnqueCount();
 		for (uint iQueue = 0; iQueue < numQueued; iQueue++)
@@ -169,7 +168,8 @@ namespace Svr {
 			if (!m_NewConnectionQueue.Dequeue(pConnAtomic))
 				break;
 
-			switch (pConnAtomic->GetConnectionState())
+			auto connectionState = pConnAtomic->GetConnectionState();
+			switch (connectionState)
 			{
 			case Net::ConnectionState::CONNECTING:
 				m_NewConnectionQueue.Enqueue(std::forward<SharedPointerAtomicT<Net::Connection>>(pConnAtomic));
@@ -177,10 +177,10 @@ namespace Svr {
 			case Net::ConnectionState::CONNECTED:
 				break;
 			default:
-				assert(false); // I want to see when this happens
+				assert(connectionState == Net::ConnectionState::DISCONNECTED); // I want to see when this happens
 				pConn = std::forward <SharedPointerAtomicT<Net::Connection>>(pConnAtomic);
-				pConn->Dispose();
 				Service::ConnectionManager->RemoveConnection(pConn);
+				pConn->DisconnectNRelease();
 				pConn = nullptr;
 				break;
 			}
@@ -192,7 +192,7 @@ namespace Svr {
 
 			svrMem(pLoginPlayerEntity = new(GetMemoryManager()) LoginPlayerEntity);
 
-			svrChk(GetServerComponent<EntityManager>()->AddEntity(EntityFaculty::User, *pLoginPlayerEntity));
+			svrChk(Service::EntityManager->AddEntity(EntityFaculty::User, *pLoginPlayerEntity));
 
 			if (!(pLoginPlayerEntity->SetConnection(std::forward<Net::ConnectionPtr>(pConn))))
 			{

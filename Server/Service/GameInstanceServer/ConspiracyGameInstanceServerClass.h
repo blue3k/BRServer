@@ -58,8 +58,6 @@ namespace ConspiracyGameInstanceServer
 
 	protected:
 
-		virtual Svr::EntityManager* CreateEntityManager() override;
-
 		// Create entity manager
 		virtual Svr::ServerEntity* CreateLoopbackEntity() override;
 

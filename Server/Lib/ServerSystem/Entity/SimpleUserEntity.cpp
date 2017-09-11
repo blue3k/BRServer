@@ -117,7 +117,9 @@ namespace Svr
 		SetAuthTicket( 0 );
 
 		if (m_pConnection != nullptr)
-			m_pConnection->SetEventHandler(nullptr);
+		{
+			ReleaseConnection();
+		}
 
 		svrChk(SimpleEntity::TerminateEntity() );
 

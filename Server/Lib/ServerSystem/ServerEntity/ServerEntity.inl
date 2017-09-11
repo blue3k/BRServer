@@ -28,14 +28,15 @@ namespace SF {
 		}
 
 		// Get Connection
-		inline SharedPointerT<SF::Net::Connection> ServerEntity::GetConnection()
+		inline const SharedPointerT<SF::Net::Connection>& ServerEntity::GetConnection()
 		{
 			SharedPointerT<SF::Net::Connection> pConn;
 			pConn = m_pConnLocal;
 			if (pConn == nullptr || pConn->GetConnectionState() == Net::ConnectionState::DISCONNECTED)
 				pConn = m_pConnRemote;
 
-			return std::forward<SharedPointerT<SF::Net::Connection>>(pConn);
+			m_ResultConn = std::forward<SharedPointerT<Net::Connection>>(pConn);
+			return m_ResultConn;
 		}
 
 

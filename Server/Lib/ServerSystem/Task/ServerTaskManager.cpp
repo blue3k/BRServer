@@ -138,6 +138,7 @@ namespace SF {
 
 	Result TaskWorker::UpdateRemoveTickTaskQueue()
 	{
+		StaticArray<SharedPointerT<TickTask>, 256> removedObjects(GetSystemMemoryManager());
 		auto loopCount = m_PendingRemoveTask.GetEnqueCount();
 		for (; loopCount > 0; loopCount--)
 		{
@@ -173,9 +174,10 @@ namespace SF {
 						}
 					}
 
-					m_TimeScheduler.RemoveTimerAction(GetThreadID(), pTask->GetTimerAction());
+					m_TimeScheduler.RemoveTimerAction(ThisThread::GetThreadID(), pTask->GetTimerAction());
 					pTask->OnRemovedFromTaskManager(this);
 					pTask->SetTaskGroupID(0);
+					removedObjects.push_back(std::forward<SharedPointerT<TickTask>>(pTask));
 				}
 				else
 				{
@@ -195,6 +197,9 @@ namespace SF {
 			}
 		}
 
+		// Commit changes before actually release object pointers, so that the references of deleted objects are cleared
+		m_TimeScheduler.CommitChanges(ThisThread::GetThreadID());
+		removedObjects.Clear();
 
 		return ResultCode::SUCCESS;
 	}

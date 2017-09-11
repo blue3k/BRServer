@@ -32,6 +32,8 @@ namespace SF
 	{
 	public:
 
+		static constexpr FixedString TypeName = "ZooKeeperSessionComponent";
+
 	private:
 
 		IMemoryManager& m_MemoryManager;
@@ -41,7 +43,7 @@ namespace SF
 	public:
 
 		// Constructor
-		ZooKeeperSessionComponent(const char* serverAddresses);
+		ZooKeeperSessionComponent(const char* serverAddresses, uint32_t zkLogLevel);
 		~ZooKeeperSessionComponent();
 
 		// MemoryManager
@@ -50,7 +52,6 @@ namespace SF
 		ZooKeeper& GetZooKeeper() { return m_zkInstance; }
 
 
-		static constexpr FixedString TypeName = "ServerConfig";
 
 		virtual const FixedString& GetTypeName() override { return TypeName; }
 

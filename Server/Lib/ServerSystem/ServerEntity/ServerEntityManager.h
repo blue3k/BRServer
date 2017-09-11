@@ -94,7 +94,7 @@ namespace Svr
 		// Add new remote entity
 		Result AddOrGetServerEntity(ServerID serverID, NetClass netClass, ServerEntity* &pServerEntity);
 
-		SharedPointerT<Net::Connection> GetServerConnection(ServerID svrID);
+		const SharedPointerT<Net::Connection>& GetServerConnection(ServerID svrID);
 	};
 
 

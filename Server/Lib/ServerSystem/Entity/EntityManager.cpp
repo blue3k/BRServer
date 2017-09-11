@@ -34,14 +34,17 @@ namespace Svr {
 
 	//////////////////////////////////////////////////////////////////////////
 	//
-	//	Game User entity manager
+	//	Game entity manager
 	//
+
+	constexpr FixedString EntityManager::TypeName;
 
 
 	// Constructor/Destructor
-	EntityManager::EntityManager()
-		: IServerComponent(ComponentID)
+	EntityManager::EntityManager(uint numTaskGroup)
+		: LibraryComponent(TypeName)
 		, m_MemoryManager("EntityManager", GetSystemMemoryManager())
+		, m_NumTaskGroup(numTaskGroup)
 		, m_NumberOfServices("NumberOfService")
 		, m_NumberOfTotalEntities("TotalEntities")
 	{
@@ -50,6 +53,7 @@ namespace Svr {
 
 	EntityManager::~EntityManager()
 	{
+		AddDependency<EntityTable>();
 	}
 
 	Result EntityManager::CreateEntity(ClusterID clusterID, EntityFaculty faculty, Entity* &pEntity)
@@ -217,14 +221,16 @@ namespace Svr {
 		--m_NumberOfTotalEntities;
 	}
 
-
-	// Initialize TickTaskManager
-	Result EntityManager::InitializeManager(uint uiNumGroup)
+	// Initialize component
+	Result EntityManager::InitializeComponent()
 	{
-		Result hr = ResultCode::SUCCESS;
+		Result hr = LibraryComponent::InitializeComponent();
+		if (!hr)
+			return hr;
+
 		PerformanceCounterInstance* counterInstance = nullptr;
 
-		svrChk(TickTaskManager::InitializeManager(uiNumGroup));
+		svrChk(TickTaskManager::InitializeManager(m_NumTaskGroup));
 
 		//m_PerformanceCounterInstance = SharedPointerT < PerformanceCounterInstance >(new PerformanceCounterInstance("EntityManager", entityUID));
 		counterInstance = PerformanceCounterClient::GetDefaultCounterInstance();
@@ -236,14 +242,15 @@ namespace Svr {
 		}
 		//m_PerformanceCounterInstance->RegisterToClient();
 
+		Service::EntityManager = this;
+
 	Proc_End:
 
 		return hr;
 	}
 
-
-	// Terminate TickTaskManager
-	Result EntityManager::TerminateManager()
+	// Terminate component
+	void EntityManager::DeinitializeComponent()
 	{
 		Result hr = ResultCode::SUCCESS;
 
@@ -255,16 +262,13 @@ namespace Svr {
 
 		svrChk(TickTaskManager::TerminateManager());
 
+		Service::EntityManager = nullptr;
+
 	Proc_End:
 
-		return hr;
+		return;
 	}
 
-
-	void EntityManager::TerminateComponent()
-	{
-		TerminateManager();
-	}
 
 
 

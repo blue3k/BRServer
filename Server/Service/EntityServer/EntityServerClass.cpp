@@ -57,11 +57,6 @@ namespace EntityServer {
 	}
 	
 	
-	Svr::EntityManager* EntityServer::CreateEntityManager()
-	{
-		return new(GetMemoryManager()) Svr::EntityManager;
-	}
-
 	Svr::ServerEntity* EntityServer::CreateLoopbackEntity()
 	{
 		return new(GetMemoryManager()) Svr::EntityServerEntity;
@@ -122,6 +117,7 @@ namespace EntityServer {
 		Svr::ClusteredServiceEntity *pServiceEntity = nullptr;
 		SockFamily privateNetSockFamily;
 
+		Engine::GetInstance()->AddComponent<Svr::EntityManager>(GetMyConfig()->EntityControlCount);
 
 		svrChk(Svr::BrServer::InitializeNetPrivate() );
 

@@ -39,15 +39,13 @@ namespace DB {
 
 	Result Factory::InitializeDBFactory()
 	{
-		stm_pInstance = new DBFACTORY_CLASS;
+		stm_pInstance = new(GetSystemMemoryManager()) DBFACTORY_CLASS;
 		return ResultCode::SUCCESS;
 	}
 
 	Result Factory::TerminateDBFactory()
 	{
-		if (stm_pInstance)
-			delete stm_pInstance;
-
+		IHeap::Delete(stm_pInstance);
 		stm_pInstance = nullptr;
 		return ResultCode::SUCCESS;
 	}

@@ -69,7 +69,7 @@ namespace Svr {
 	//
 	//	Server definition
 	//
-	class BrServer : public Thread, public MasterEntity
+	class BrServer : public MasterEntity
 	{
 	public:
 
@@ -121,6 +121,7 @@ namespace Svr {
 
 		PageQueue<SharedPointerAtomicT<Net::Connection>> m_NewConnectionQueue;
 
+		Thread* m_MainServerThread = nullptr;
 
 		// singleton instance
 		static BrServer *stm_pServerInstance;
@@ -142,7 +143,6 @@ namespace Svr {
 		inline void SetMyConfig( const ServerConfig::GenericServer* pMyConfig );
 
 		// Create entity manager
-		virtual EntityManager* CreateEntityManager();
 		virtual ServerEntity* CreateLoopbackEntity();
 
 
@@ -153,8 +153,11 @@ namespace Svr {
 		//	Thread override
 		//
 
+		void StartThread();
+		void StopThread();
+
 		bool OnStart();
-		virtual void Run() override;
+		void Run(Thread* pThread);
 		bool OnEnd();
 
 

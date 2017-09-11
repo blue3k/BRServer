@@ -94,14 +94,14 @@ namespace Svr {
 		// route function call
 		ServerEntity* GetServerEntity() { return superTrans::GetServerEntity(); }
 
-		SharedPointerT<Net::Connection> GetConnection()
+		const SharedPointerT<Net::Connection>& GetConnection()
 		{
+			static const SharedPointerT<Net::Connection> Dummy;
 			auto serverEntity = GetServerEntity();
 			if (serverEntity != nullptr)
-			{
-				return std::forward<SharedPointerT<Net::Connection>>(serverEntity->GetConnection());
-			}
-			return SharedPointerT<Net::Connection>();
+				return serverEntity->GetConnection();
+
+			return Dummy;
 		}
 
 		// Initialize Transaction
@@ -187,7 +187,6 @@ namespace Svr {
 		Result TossMessageToTarget( ServerServiceInformation* pService )
 		{
 			Result hr = ResultCode::SUCCESS;
-			SharedPointerT<Net::Connection> pConn;
 			ClusteredServiceEntity *pMyOwner = nullptr;
 			MessageDataPtr pClonedMessage;
 			pMyOwner = super::GetMyOwner();
@@ -198,7 +197,7 @@ namespace Svr {
 			if( pService->GetEntityUID() == pMyOwner->GetEntityUID() )
 				goto Proc_End;
 
-			pConn = std::forward<SharedPointerT<Net::Connection>>(pService->GetServerEntity()->GetConnection());
+			auto& pConn = pService->GetServerEntity()->GetConnection();
 			if( pConn == nullptr )
 			{
 				svrTrace( Error, "Failed routing a message({0}) for {1}", super::GetMessage()->GetMessageHeader()->msgID, typeid(*pMyOwner).name() );

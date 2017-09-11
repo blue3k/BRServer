@@ -252,7 +252,7 @@ namespace Svr {
 		///////////////////////////////////////////////////////////
 		// Helper functions
 
-		SharedPointerT<Net::Connection> GetServerEntityConnection(ServerEntity* pServerEntity);
+		const SharedPointerT<Net::Connection>& GetServerEntityConnection(ServerEntity* pServerEntity);
 	};
 
 
@@ -483,17 +483,9 @@ namespace Svr {
 
 
 		// Get owner instance
-		OwnerType* GetMyOwner()
-		{
-			Assert( GetOwnerEntity() );
-			return (OwnerType*)GetOwnerEntity();
-		}
+		OwnerType* GetMyOwner() { assert(GetOwnerEntity()); return (OwnerType*)GetOwnerEntity(); }
 
-		EntityUID GetOwnerEntityUID()
-		{
-			Assert( GetOwnerEntity() );
-			return GetOwnerEntity()->GetEntityUID();
-		}
+		EntityUID GetOwnerEntityUID()		{ Assert( GetOwnerEntity() ); return GetOwnerEntity()->GetEntityUID(); }
 	};
 
 
@@ -556,13 +548,13 @@ namespace Svr {
 		{
 		}
 		
-		virtual SharedPointerT<Net::Connection>& GetConnection()
+		virtual const SharedPointerT<Net::Connection>& GetConnection()
 		{
+			const static SharedPointerT<Net::Connection> Dummy;
 			if (TransactionT<OwnerType>::GetOwnerEntity() == nullptr)
-				return m_pConn;
+				return Dummy;
 
-			TransactionT<OwnerType>::GetMyOwner()->GetConnectionShared(m_pConn);
-			return m_pConn;
+			return TransactionT<OwnerType>::GetMyOwner()->GetConnection();
 		}
 
 	};

@@ -144,6 +144,8 @@ namespace SharedModuleServer {
 		ServerConfig::ModuleServer *pServerConfig = nullptr;
 		SockFamily privateNetSockFamily;
 
+		Engine::GetInstance()->AddComponent<Svr::EntityManager>(GetMyConfig()->EntityControlCount);
+
 		svrChk(Svr::BrServer::InitializeNetPrivate() );
 
 		GetMyServer()->GetNetPrivate()->SetIsEnableAccept(true);

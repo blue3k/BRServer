@@ -26,6 +26,8 @@ namespace SF {
 namespace Svr {
 
 
+	constexpr FixedString EntityTable::TypeName;
+
 	EntityTable::EntityTable()
 		: LibraryComponent("EntityTable")
 		, m_EntityMap(GetSystemMemoryManager())

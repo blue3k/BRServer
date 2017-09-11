@@ -23,8 +23,9 @@
 #include "Component/SFServerConfigComponent.h"
 #include "Component/SFZooKeeperSessionComponent.h"
 #include "Component/SFConnectionManagerComponent.h"
+#include "ServerLog/SvrLogComponent.h"
 #include "Service/ServerService.h"
-
+#include "zookeeper.h"
 
 namespace SF {
 namespace Svr {
@@ -50,19 +51,29 @@ namespace Svr {
 	// Initialize and deinitialization
 	void InitializeEngineForServer()
 	{
-		//char strCfgPath[1024];
-		auto bIsDebugRun = StrUtil::StringCmpLwr(ParameterSetting::GetSetting("debug"), -1, "true", -1) == 0;
+		char strLogPath[1024];
+		auto bIsDebugRun = StrUtil::StringCmpLwr(ParameterSetting::GetSetting("debug"), -1, "true", -1);
 		auto zkaddress = ParameterSetting::GetSetting("zkaddress", "127.0.0.1:2181");
 		auto zkconfig = ParameterSetting::GetSetting("zkconfig", "/ServerConfig");
 		SF::EngineInitParam initParam;
 
-		//StrUtil::Format(strCfgPath, "{0}{1}", Util::GetModulePath(), ParameterSetting::GetSetting("config", "..\\..\\Config\\ServerConfig.xml"));
 
+		auto strServiceName = ParameterSetting::GetSetting("servicename");
+		if (!StrUtil::IsNullOrEmpty(strServiceName))
+			Util::SetServiceName(strServiceName);
 
-		initParam.LogFilePrefix = Util::GetServiceName();
+		auto modulePath = Util::GetModulePath();
+
+		StrUtil::Format(strLogPath, "{0}..\\log\\{1}", Util::GetModulePath(), Util::GetServiceName());
+
+		initParam.LogFilePrefix = strLogPath;
 		initParam.LogOutputFile = LogChannelMask();
 		initParam.AsyncTaskThreadCount = 6;
 		initParam.NetworkThreadCount = 4;
+		initParam.EnableMemoryLeakDetection = true;
+
+		initParam.NetRecvBufferSize = Net::Const::SVR_RECV_BUFFER_SIZE;
+		initParam.NetSendBufferSize = Net::Const::SVR_SEND_BUFFER_SIZE;
 
 		if (!bIsDebugRun)
 			initParam.LogOutputConsole = { 0, };
@@ -72,7 +83,8 @@ namespace Svr {
 		if (pEngine == nullptr)
 			return;
 
-		pEngine->AddComponent<ZooKeeperSessionComponent>(zkaddress);
+		pEngine->AddComponent<ServerLogComponent>("..\\..\\Config\\traceConfig.cfg");
+		pEngine->AddComponent<ZooKeeperSessionComponent>(zkaddress, ZOO_LOG_LEVEL_DEBUG);
 		pEngine->AddComponent<ServerConfigComponent>(zkconfig);
 		pEngine->AddComponent<ConnectionManagerComponent>(2048);
 		pEngine->AddComponent<EntityTable>();

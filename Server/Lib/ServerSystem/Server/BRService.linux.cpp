@@ -138,7 +138,7 @@ namespace Svr {
 		Result ServicePrepare()
 		{
 			auto debugSetting = ParameterSetting::GetSetting("debug");
-			bool bIsDebugRun = StrUtil::StringCmpLwr(debugSetting, -1, "true", -1) == 0;
+			bool bIsDebugRun = StrUtil::StringCmpLwr(debugSetting, -1, "true", -1);
 			if(!bIsDebugRun)
 				daemonize();
 

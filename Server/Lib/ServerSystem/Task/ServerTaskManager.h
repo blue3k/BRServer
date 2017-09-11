@@ -127,12 +127,6 @@ namespace SF {
 	{
 	public:
 
-		//////////////////////////////////////////////////////////////////
-		// Hash definition
-
-		// TickTask groups
-		//typedef std::unordered_map<SysUInt,TaskWorker*> TaskGroupMap;
-
 
 	private:
 
@@ -142,7 +136,6 @@ namespace SF {
 	protected:
 
 		// TickTask groups
-		//TaskGroupMap	m_TaskGroups;
 		DynamicArray<TaskWorker*>	m_TaskGroups;
 
 	public:

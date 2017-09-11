@@ -94,7 +94,7 @@ namespace SharedModuleServer {
 			goto Proc_End;
 		}
 
-		svrChk( GetComponentCarrier().GetComponent<Svr::EntityManager>()->AddEntity( EntityFaculty::Service, pServiceEntity ) );
+		svrChk(Service::EntityManager->AddEntity( EntityFaculty::Service, pServiceEntity ) );
 		svrChk( GetComponentCarrier().GetComponent<Svr::ClusterManagerServiceEntity>()->AddClusterServiceEntity( pServiceEntity ) );
 
 		pComponent = dynamic_cast<Svr::IServerComponent*>(pServiceEntity);
@@ -119,20 +119,20 @@ namespace SharedModuleServer {
 		switch(moduleName)
 		{
 		case "ModMonitoring"_hash32:
-			svrChk(GetComponentCarrier().GetComponent<Svr::EntityManager>()->AddEntity(EntityFaculty::Service, new(GetHeap()) Svr::MonitoringServiceEntity));
+			svrChk(Service::EntityManager->AddEntity(EntityFaculty::Service, new(GetHeap()) Svr::MonitoringServiceEntity));
 			break;
 
 		case "ModLogin"_hash32:
 		{
 			auto pLogin = (ServerConfig::ServerModulePublicService*)module;
-			svrChk(GetComponentCarrier().GetComponent<Svr::EntityManager>()->AddEntity(EntityFaculty::Service, new(GetHeap()) Svr::LoginServiceEntity(&pLogin->PublicNet)));
+			svrChk(Service::EntityManager->AddEntity(EntityFaculty::Service, new(GetHeap()) Svr::LoginServiceEntity(&pLogin->PublicNet)));
 			break;
 		}
 
 		case "ModGame"_hash32:
 		{
 			auto pGame = (ServerConfig::ServerModulePublicService*)module;
-			svrChk(GetComponentCarrier().GetComponent<Svr::EntityManager>()->AddEntity(EntityFaculty::Service, new(GetHeap()) Svr::GameServiceEntity(GetGameID(), &pGame->PublicNet)));
+			svrChk(Service::EntityManager->AddEntity(EntityFaculty::Service, new(GetHeap()) Svr::GameServiceEntity(GetGameID(), &pGame->PublicNet)));
 			svrChk(AddServiceEntityComponent<Svr::GameInstanceManagerWatcherServiceEntity>(GetGameID()));
 			break;
 		}
@@ -140,7 +140,7 @@ namespace SharedModuleServer {
 		case "ModRanking"_hash32:
 		{
 			Svr::ClusteredServiceEntity* pServiceEntity = new(GetHeap()) Svr::RankingServiceEntity(ClusterID::Ranking, ClusterMembership::Master);
-			svrChk(GetComponentCarrier().GetComponent<Svr::EntityManager>()->AddEntity(EntityFaculty::Service, pServiceEntity));
+			svrChk(Service::EntityManager->AddEntity(EntityFaculty::Service, pServiceEntity));
 			svrChk(GetComponentCarrier().GetComponent<Svr::ClusterManagerServiceEntity>()->AddClusterServiceEntity(pServiceEntity));
 			break;
 		}
@@ -148,7 +148,7 @@ namespace SharedModuleServer {
 		case "ModGameInstanceManager"_hash32:
 		{
 			Svr::ClusteredServiceEntity* pServiceEntity = new(GetHeap()) Svr::GameInstanceManagerServiceEntity(ClusterID::GameInstanceManager, ClusterMembership::Master);
-			svrChk(GetComponentCarrier().GetComponent<Svr::EntityManager>()->AddEntity(EntityFaculty::Service, pServiceEntity));
+			svrChk(Service::EntityManager->AddEntity(EntityFaculty::Service, pServiceEntity));
 			svrChk(GetComponentCarrier().GetComponent<Svr::ClusterManagerServiceEntity>()->AddClusterServiceEntity(pServiceEntity));
 			break;
 		}

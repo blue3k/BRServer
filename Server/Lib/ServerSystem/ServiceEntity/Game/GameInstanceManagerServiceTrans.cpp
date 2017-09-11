@@ -47,7 +47,7 @@ namespace Svr {
 
 		svrChk( super::StartTransaction() );
 
-		svrChk( GetServerComponent<EntityManager>()->CreateEntity( ClusterID::GameInstanceManager, EntityFaculty::GameInstance, pEntity ) );
+		svrChk(Service::EntityManager->CreateEntity( ClusterID::GameInstanceManager, EntityFaculty::GameInstance, pEntity ) );
 
 		svrChkPtr(pGameInstance = dynamic_cast<GameInstanceEntity*>(pEntity));
 		svrChk(pGameInstance->InitializeGameEntity(GetNumberOfBotPlayer(), GetMaxPlayer()));

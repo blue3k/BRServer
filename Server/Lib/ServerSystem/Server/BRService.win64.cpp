@@ -329,15 +329,8 @@ namespace Svr {
 			Assert( BrServer::GetInstance() == pSvrInstance );
 
 
-			strServiceName = ParameterSetting::GetSetting("servicename");
-			if (strServiceName != nullptr && strServiceName[0] != '\0')
-			{
-				Util::SetServiceName(strServiceName);
-			}
-
-
-			bIsInstall = StrUtil::StringCmpLwr(ParameterSetting::GetSetting("install"), -1, "true", -1) == 0;
-			bIsDebugRun = StrUtil::StringCmpLwr(ParameterSetting::GetSetting("debug"), -1, "true", -1) == 0;
+			bIsInstall = StrUtil::StringCmpLwr(ParameterSetting::GetSetting("install"), -1, "true", -1);
+			bIsDebugRun = StrUtil::StringCmpLwr(ParameterSetting::GetSetting("debug"), -1, "true", -1);
 			strUser = ParameterSetting::GetSetting("user");
 			strPWD = ParameterSetting::GetSetting("password");
 

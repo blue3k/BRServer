@@ -129,10 +129,7 @@ namespace Svr
 	{
 		Result hr = ResultCode::SUCCESS;
 
-		if (GetServerComponent<EntityManager>() != nullptr)
-		{
-			svrChk(GetServerComponent<EntityManager>()->AddEntity(EntityFaculty::Service, this));
-		}
+		svrChk(Service::EntityManager->AddEntity(EntityFaculty::Service, this));
 
 
 		for( int iworker = 0; iworker < 20; iworker++ )

@@ -216,7 +216,7 @@ namespace Svr
 				svrChk(m_activeTrans.Insert(pNewTran->GetTransID().GetTransactionIndex(), pNewTran));
 			}
 
-			auto timerAction = new TimerActionTransaction(pNewTran);
+			auto timerAction = new(GetHeap()) TimerActionTransaction(pNewTran);
 			pNewTran->SetTimerAction(timerAction);
 			timerAction->SetNextTickTime(pNewTran);
 			svrChk(m_activeTransactionScheduler.AddTimerAction(currentThreadID, timerAction));

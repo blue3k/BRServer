@@ -86,7 +86,7 @@ namespace Svr {
 		svrChk(pService->GetService<Svr::GamePartyManagerService>()->PartyDeletedC2SEvt(pOwner->GetEntityUID(), 0));
 
 
-		Svr::GetServerComponent<EntityManager>()->RemoveEntity( pOwner );
+		Service::EntityManager->RemoveEntity( pOwner );
 
 	Proc_End:
 

@@ -39,8 +39,9 @@ namespace GameServer {
 
 
 	// Constructor/Destructor
-	GameEntityManager::GameEntityManager()
-		: m_NumberOfPlayers("NumberOfPlayers")
+	GameEntityManager::GameEntityManager(uint NumTaskGroup)
+		: EntityManager(NumTaskGroup)
+		, m_NumberOfPlayers("NumberOfPlayers")
 	{
 	}
 
@@ -120,31 +121,6 @@ namespace GameServer {
 	//Proc_End:
 
 		return;
-	}
-
-	// Initialize TickTaskManager
-	Result GameEntityManager::InitializeManager( uint uiNumGroup )
-	{
-		Result hr = ResultCode::SUCCESS;
-
-		svrChk(Svr::EntityManager::InitializeManager( uiNumGroup ) );
-
-	Proc_End:
-
-		return hr;
-	}
-
-
-	// Terminate TickTaskManager
-	Result GameEntityManager::TerminateManager()
-	{
-		Result hr = ResultCode::SUCCESS;
-
-		svrChk(Svr::EntityManager::TerminateManager() );
-
-	Proc_End:
-
-		return hr;
 	}
 
 

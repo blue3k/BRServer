@@ -23,10 +23,10 @@ namespace SF
  		class NetPolicyPartyMatching 
 		{
  			private:
-				SharedPointerT<Net::Connection>& m_pConnection;
+				const SharedPointerT<Net::Connection>& m_pConnection;
 			public:
 			// Constructor
-			NetPolicyPartyMatching ( SharedPointerT<Net::Connection>& pConn ) : m_pConnection(pConn)
+			NetPolicyPartyMatching ( const SharedPointerT<Net::Connection>& pConn ) : m_pConnection(pConn)
 			{}
 
 
@@ -36,10 +36,10 @@ namespace SF
 		class NetSvrPolicyPartyMatching
 		{
  			private:
-				SharedPointerT<Net::Connection>& m_pConnection;
+				const SharedPointerT<Net::Connection>& m_pConnection;
 			public:
 			// Constructor
-			NetSvrPolicyPartyMatching ( SharedPointerT<Net::Connection>& pConn ) : m_pConnection(pConn)
+			NetSvrPolicyPartyMatching ( const SharedPointerT<Net::Connection>& pConn ) : m_pConnection(pConn)
 			{}
 
 			// S2C: 

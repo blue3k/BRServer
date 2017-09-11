@@ -23,10 +23,10 @@ namespace SF
  		class NetPolicyClusterServer 
 		{
  			private:
-				SharedPointerT<Net::Connection>& m_pConnection;
+				const SharedPointerT<Net::Connection>& m_pConnection;
 			public:
 			// Constructor
-			NetPolicyClusterServer ( SharedPointerT<Net::Connection>& pConn ) : m_pConnection(pConn)
+			NetPolicyClusterServer ( const SharedPointerT<Net::Connection>& pConn ) : m_pConnection(pConn)
 			{}
 
 			// Cmd: Cluster member list query
@@ -58,10 +58,10 @@ namespace SF
 		class NetSvrPolicyClusterServer
 		{
  			private:
-				SharedPointerT<Net::Connection>& m_pConnection;
+				const SharedPointerT<Net::Connection>& m_pConnection;
 			public:
 			// Constructor
-			NetSvrPolicyClusterServer ( SharedPointerT<Net::Connection>& pConn ) : m_pConnection(pConn)
+			NetSvrPolicyClusterServer ( const SharedPointerT<Net::Connection>& pConn ) : m_pConnection(pConn)
 			{}
 
 			// Cmd: Cluster member list query

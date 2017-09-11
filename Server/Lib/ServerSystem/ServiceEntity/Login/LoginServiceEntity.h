@@ -107,7 +107,7 @@ namespace Svr {
 		Net::ServerMUDP* GetNetPublic() { return *m_pNetPublic; }
 
 		// Process network event
-		Result ProcessPublicNetworkEvent();
+		Result ProcessNewConnection();
 	};
 
 

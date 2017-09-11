@@ -232,7 +232,7 @@ namespace GameServer {
 		//connectionInfo.SetLocalInfo(GetMyServer()->GetNetClass(), GetMyServer()->GetNetPublic()->GetLocalAddress(), GetMyServer()->GetServerUID());
 		//connectionInfo.SetRemoteInfo(NetClass::Client, authTicket);
 
-		svrChk(pConnection->InitConnection(GetMyServer()->GetNetPublic()->GetSocket(), local, remote));
+		svrChk(pConnection->InitConnection(GetMyServer()->GetNetPublic()->GetSocket(), false, local, remote));
 		svrTrace(SVR_INFO, "Initialize connection CID:{0}, Addr:{1}", pConnection->GetCID(), pConnection->GetRemoteInfo().PeerAddress);
 
 		Service::ConnectionManager->AddConnection(pConnection);

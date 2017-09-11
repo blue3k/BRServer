@@ -37,8 +37,9 @@ namespace ConspiracyGameInstanceServer {
 
 
 	// Constructor/Destructor
-	GameEntityManager::GameEntityManager()
-		: m_NumberOfPlayers("NumberOfPlayers")
+	GameEntityManager::GameEntityManager(uint numGroup)
+		: EntityManager(numGroup)
+		, m_NumberOfPlayers("NumberOfPlayers")
 	{
 	}
 

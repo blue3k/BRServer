@@ -36,7 +36,9 @@ xcopy Server\bin\lib\x64Release\*.dll TestApp\x64Release\ /y
 
 
 xcopy StormForge\Bin\Win\x64Debug\*.dll Server\bin\x64Debug\ /y
+xcopy StormForge\Bin\Win\x64Debug\*.pdb Server\bin\x64Debug\ /y
 xcopy StormForge\Bin\Win\x64Release\*.dll Server\bin\x64Release\ /y
+xcopy StormForge\Bin\Win\x64Release\*.pdb Server\bin\x64Release\ /y
 xcopy StormForge\Bin\Win\x64Debug\*.dll TestApp\x64Debug\ /y
 xcopy StormForge\Bin\Win\x64Release\*.dll TestApp\x64Release\ /y
 

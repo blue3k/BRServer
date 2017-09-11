@@ -1603,7 +1603,7 @@ namespace GameServer {
 		svrChkClose(pRes->GetResult());
 
 		if (pCheckRes->GetPurchaseTransactionID().size() == 0
-			|| StrUtil::StringCmp((const char*)pCheckRes->GetPurchaseTransactionID().data(), (INT)pCheckRes->GetPurchaseTransactionID().size(), GetPurchaseTransactionID(), -1) != 0)
+			|| !StrUtil::StringCmp((const char*)pCheckRes->GetPurchaseTransactionID().data(), (INT)pCheckRes->GetPurchaseTransactionID().size(), GetPurchaseTransactionID(), -1))
 			svrErrClose(ResultCode::SVR_INVALID_PURCHASE_INFO);
 
 
@@ -1691,8 +1691,8 @@ namespace GameServer {
 		}
 		else
 		{
-			if (StrUtil::StringCmpLwr("android", -1, GetPlatform(), -1) == 0
-				|| StrUtil::StringCmpLwr("windows", -1, GetPlatform(), -1) == 0)
+			if (StrUtil::StringCmpLwr("android", -1, GetPlatform(), -1)
+				|| StrUtil::StringCmpLwr("windows", -1, GetPlatform(), -1))
 			{
 				// The last byte must be null, null terminate
 				svrChk(pExtMgr->AndroidCheckReceipt(GetTransID(), GetPackageName(), m_pShopItem->AndroidItemID, GetPurchaseTransactionID()));

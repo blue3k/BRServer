@@ -43,7 +43,7 @@ namespace GameServer {
 
 	public:
 		// Constructor/Destructor
-		GameEntityManager();
+		GameEntityManager(uint NumTaskGroup);
 		virtual ~GameEntityManager();
 
 
@@ -62,11 +62,6 @@ namespace GameServer {
 
 		virtual void RegisterCounter() override;
 
-		// Initialize TickTaskManager
-		virtual Result InitializeManager( uint uiNumGroup );
-
-		// Terminate TickTaskManager
-		virtual Result TerminateManager();
 
 	};
 

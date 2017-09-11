@@ -46,7 +46,6 @@ namespace EntityServer {
 	protected:
 
 
-		virtual Svr::EntityManager* CreateEntityManager() override;
 		virtual Svr::ServerEntity* CreateLoopbackEntity() override;
 
 

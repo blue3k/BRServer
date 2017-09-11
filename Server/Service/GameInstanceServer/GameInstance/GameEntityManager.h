@@ -43,7 +43,7 @@ namespace ConspiracyGameInstanceServer {
 
 	public:
 		// Constructor/Destructor
-		GameEntityManager();
+		GameEntityManager(uint numGroup);
 		virtual ~GameEntityManager();
 
 

@@ -413,7 +413,6 @@ namespace Svr {
 	{
 		Result hr = ResultCode::SUCCESS;
 		char strName[128];
-		auto entityManager = GetServerComponent<EntityManager>();
 		auto pInstance = PerformanceCounterClient::GetDefaultCounterInstance();
 		auto matchingQueueCount = MatchingUtil::GetQueueCount(m_TargetMatchingMemberCount) + 1;
 		MatchingServiceQueueEntity* newQueueEntity = nullptr;
@@ -472,7 +471,7 @@ namespace Svr {
 			pInstance->AddCounter(&m_MatchedCount);
 		}
 
-		svrChk(entityManager->AddEntity(EntityFaculty::Service, newQueueEntity));
+		svrChk(Service::EntityManager->AddEntity(EntityFaculty::Service, newQueueEntity));
 
 		m_pQueueEntity = SharedPointerT<Entity>(newQueueEntity);
 

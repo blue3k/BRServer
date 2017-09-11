@@ -143,13 +143,13 @@ namespace DB {
 		String userID = strUserID;
 		String password = strPassword;
 
-		if (m_UserID.length() == 0) m_UserID = userID;
+		if (m_UserID.IsNullOrEmpty()) m_UserID = userID;
 		else userID = m_UserID;
 
-		if (m_Password.length() == 0) m_Password = password;
+		if (m_Password.IsNullOrEmpty()) m_Password = password;
 		else password = m_Password;
 
-		if (userID.length() == 0 || password.length() == 0)
+		if (userID.IsNullOrEmpty() || password.IsNullOrEmpty())
 			dbErr(ResultCode::DB_INVALID_CONFIG);
 
 		while (m_ShardingBucket.size() <= partitioningID)
@@ -430,6 +430,10 @@ Proc_End:
 			m_ResultQueries.Enqueue(pQuery);
 			pQuery = nullptr;
 			pRes = nullptr;
+		}
+		else
+		{
+			assert(0); // lost transaction result
 		}
 
 	Proc_End:

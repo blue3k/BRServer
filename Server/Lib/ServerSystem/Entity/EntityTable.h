@@ -49,7 +49,7 @@ namespace Svr {
 
 		typedef HashTable2< uint, SharedPointerT<Entity> > EntityMap;
 
-		const FixedString TypeName = "EntityTable";
+		static constexpr FixedString TypeName = "EntityTable";
 
 	private:
 

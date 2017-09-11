@@ -24,6 +24,7 @@ namespace SF {
 	{
 		ServiceInstance<SF::ServerConfig> ServerConfig;
 		ServiceInstance<EntityTableService> EntityTable;
+		ServiceInstance<EntityManagerService> EntityManager;
 		//ServiceInstance<SF::ServerConfig> ServerConfig;
 	}
 

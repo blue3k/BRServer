@@ -167,7 +167,7 @@ namespace Svr {
 		auto pRawUDP = new(GetSystemMemoryManager()) Net::RawUDP();
 		svrChkPtr(pRawUDP);
 
-		stm_pInstance = new PerformanceCounterServer();
+		stm_pInstance = new(GetSystemMemoryManager()) PerformanceCounterServer();
 
 		svrChk(pRawUDP->InitializeNet(serverAddress, &stm_pInstance->m_MessageHandler));
 
@@ -197,7 +197,7 @@ namespace Svr {
 
 		stm_pInstance->Stop(true);
 
-		delete stm_pInstance;
+		IHeap::Delete(stm_pInstance);
 		stm_pInstance = nullptr;
 
 		return ResultCode::SUCCESS;

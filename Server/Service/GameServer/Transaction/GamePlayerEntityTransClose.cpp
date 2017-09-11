@@ -234,7 +234,7 @@ namespace GameServer {
 	{
 		GetMyOwner()->AddGameTransactionLog(TransLogCategory::Account, -2, 0, 0, "EntityClose");
 
-		Svr::GetServerComponent<GameEntityManager>()->RemoveEntity(GetMyOwner());
+		Service::EntityManager->RemoveEntity(GetMyOwner());
 
 		return ResultCode::SUCCESS;
 	}

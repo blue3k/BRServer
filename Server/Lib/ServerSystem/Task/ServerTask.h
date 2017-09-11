@@ -86,7 +86,7 @@ namespace SF {
 
 		TaskWorker* GetTaskWorker();
 
-		TickTaskTimerAction* GetTimerAction()					{ return (TickTaskTimerAction*)m_TimerAction; }
+		TickTaskTimerAction* GetTimerAction()					{ return *m_TimerAction; }
 
 		// Get task Load
 		inline SysUInt GetTaskLoad() const;

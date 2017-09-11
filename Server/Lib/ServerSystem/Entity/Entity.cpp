@@ -497,7 +497,8 @@ namespace SF {
 
 		svrChkPtr( pTransRes );
 
-		svrChk(GetTaskManager()->AddEventTask(GetTaskGroupID(), ServerTaskEvent(this, pTransRes)))
+		svrChk(GetTaskManager()->AddEventTask(GetTaskGroupID(), ServerTaskEvent(this, pTransRes)));
+		pTransRes = nullptr;
 		
 	Proc_End:
 

@@ -123,7 +123,7 @@ namespace Svr {
 
 
 		// Get connection
-		SharedPointerT<Net::Connection> GetConnection() const;
+		const SharedPointerT<Net::Connection>& GetConnection() const;
 
 		// Get service information
 		void GetServiceInformation( ServiceInformation & serviceInformation );

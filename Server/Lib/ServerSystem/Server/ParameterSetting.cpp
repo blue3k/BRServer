@@ -37,7 +37,7 @@ namespace SF
 		{
 		case '-':
 			argument++;
-			if (StrUtil::StringCmpLwr(argument, (INT)strlen(argument), "install", (INT)strlen("install")) == 0)
+			if (StrUtil::StringCmpLwr(argument, (INT)strlen(argument), "install", (INT)strlen("install")))
 			{
 				svrChk(SetSetting("install", "true"));
 			}
@@ -56,11 +56,11 @@ namespace SF
 				argument += 2;
 				svrChk(SetSetting("password", argument));
 			}
-			else if (StrUtil::StringCmpLwr(argument, (INT)strlen(argument), "uninstall", (INT)strlen("uninstall")) == 0)
+			else if (StrUtil::StringCmpLwr(argument, (INT)strlen(argument), "uninstall", (INT)strlen("uninstall")))
 			{
 				svrChk(SetSetting("uninstall", "true"));
 			}
-			else if (StrUtil::StringCmpLwr(argument, (INT)strlen(argument), "debug", (INT)strlen("debug")) == 0)
+			else if (StrUtil::StringCmpLwr(argument, (INT)strlen(argument), "debug", (INT)strlen("debug")))
 			{
 				svrChk(SetSetting("debug", "true"));
 			}

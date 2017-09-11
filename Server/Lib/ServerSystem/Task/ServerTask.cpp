@@ -50,6 +50,7 @@ namespace SF {
 	{
 		if (m_TimerAction!=nullptr)
 			m_TimerAction->DisposeWeakPointer();
+		m_TimerAction = nullptr;
 		//Util::SafeDelete(m_TimerAction);
 	}
 

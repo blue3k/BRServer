@@ -100,8 +100,6 @@ namespace Svr {
 			static PerformanceCounterServer *stm_pInstance;
 
 		private:
-			PerformanceCounterServer();
-			~PerformanceCounterServer();
 
 			void UpdateNewFreeInstance();
 			void UpdateValues();
@@ -109,6 +107,8 @@ namespace Svr {
 			virtual void Run() override;
 
 		public:
+			PerformanceCounterServer();
+			~PerformanceCounterServer();
 
 			IMemoryManager& GetMemoryManager() { return m_MemoryManager; }
 

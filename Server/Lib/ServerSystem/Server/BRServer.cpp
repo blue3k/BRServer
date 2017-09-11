@@ -33,6 +33,7 @@
 #include "DB/Factory.h"
 #include "Table/TableSystem.h"
 #include "Service/ServerService.h"
+#include "Thread/Thread.h"
 
 #include "Transaction/ExternalTransactionManager.h"
 #include "Service/ServerService.h"
@@ -62,7 +63,6 @@ namespace Svr{
 
 		// main server class has private thread for task
 		SetTickInterval(DurationMS(0));
-
 
 		// TODO: to component
 		DB::Factory::InitializeDBFactory();
@@ -100,7 +100,8 @@ namespace Svr{
 			if (!m_NewConnectionQueue.Dequeue(pConnAtomic))
 				break;
 
-			switch (pConnAtomic->GetConnectionState())
+			auto connectionState = pConnAtomic->GetConnectionState();
+			switch (connectionState)
 			{
 			case Net::ConnectionState::CONNECTING:
 				m_NewConnectionQueue.Enqueue(std::forward<SharedPointerAtomicT<Net::Connection>>(pConnAtomic));
@@ -108,10 +109,10 @@ namespace Svr{
 			case Net::ConnectionState::CONNECTED:
 				break;
 			default:
-				assert(false); // I want to see when this happenes
+				assert(connectionState == Net::ConnectionState::DISCONNECTED); // I want to see when this happens
 				pConn = std::forward <SharedPointerAtomicT<Net::Connection>>(pConnAtomic);
-				pConn->Dispose();
 				Service::ConnectionManager->RemoveConnection(pConn);
+				pConn->DisconnectNRelease();
 				pConn = nullptr;
 				break;
 			}
@@ -169,8 +170,7 @@ Proc_End:
 	{
 		Result hr = ResultCode::SUCCESS;
 
-		if (GetThreadID() != ThisThread::GetThreadID())
-			Stop(true);
+		StopThread();
 
 		svrChk(MasterEntity::TerminateEntity());
 
@@ -224,12 +224,7 @@ Proc_End:
 		Result hr = ResultCode::SUCCESS;
 		ServerEntity *pLoopbackEntity = nullptr;
 		ServerEntity *pEntity = nullptr;
-		EntityManager *pEntityManager = nullptr;
 		Svr::LoopbackConnection *pConn = nullptr;
-
-		svrMem( pEntityManager = CreateEntityManager() );
-		svrChk( pEntityManager->InitializeManager( Const::ENTITY_GAMEMANAGER_THREAD ) );
-		svrChk( m_Components.AddComponent(pEntityManager) );
 
 		svrChk(m_Components.AddComponent<ServerEntityManager>() );
 
@@ -264,7 +259,7 @@ Proc_End:
 			svrChk(m_Components.AddComponent<ClusterManagerServiceEntity>(ClusterMembership::StatusWatcher) );
 		}
 
-		svrChk(m_Components.GetComponent<EntityManager>()->AddEntity(
+		svrChk(Service::EntityManager->AddEntity(
 			EntityID( EntityFaculty::Service,(uint)ClusterID::ClusterManager ), 
 			m_Components.GetComponent<ClusterManagerServiceEntity>() ) );
 
@@ -330,6 +325,29 @@ Proc_End:
 		m_Components.TerminateComponents();
 
 		return ResultCode::SUCCESS;
+	}
+
+
+	void BrServer::StartThread()
+	{
+		if (m_MainServerThread != nullptr)
+			return;
+
+		m_MainServerThread = new(GetHeap()) FunctorThread([this](Thread* pThread)
+		{
+			Run(pThread);
+		});
+
+		m_MainServerThread->Start();
+	}
+
+	void BrServer::StopThread()
+	{
+		if (m_MainServerThread == nullptr)
+			return;
+
+		m_MainServerThread->Stop(true);
+		IHeap::Delete(m_MainServerThread);
 	}
 
 
@@ -402,7 +420,7 @@ Proc_End:
 	}
 
 
-	void BrServer::Run()
+	void BrServer::Run(Thread* pThread)
 	{
 		//Result hr = ResultCode::SUCCESS;
 		const DurationMS lMinCheckTime = DurationMS(10); // 10ms
@@ -416,15 +434,15 @@ Proc_End:
 		// We need to set this value manually
 		//SetServerState( ServerState::RUNNING );
 
-		UpdateWorkingThreadID(GetThreadID());
+		UpdateWorkingThreadID(ThisThread::GetThreadID());
 
 		// Main loop
 		while (1)
 		{
-			auto loopInterval = UpdateInterval( lMinCheckTime );
+			auto loopInterval = pThread->UpdateInterval( lMinCheckTime );
 			if( !m_bIsKillSignaled )
 			{
-				if (CheckKillEvent(loopInterval))
+				if (pThread->CheckKillEvent(loopInterval))
 				{
 					m_bIsKillSignaled = true;
 
@@ -551,11 +569,6 @@ Proc_End:
 			Svr::GetServerComponent<Svr::ServerEntityManager>()->TerminateManager();
 		}
 
-		if (Svr::GetServerComponent<Svr::EntityManager>())
-		{
-			Svr::GetServerComponent<Svr::EntityManager>()->TerminateManager();
-		}
-
 		// close private net
 		if( m_pNetPrivate != nullptr )
 		{
@@ -566,11 +579,6 @@ Proc_End:
 	//Proc_End:
 
 		return hr;
-	}
-
-	EntityManager* BrServer::CreateEntityManager()
-	{
-		return new(GetMemoryManager()) EntityManager;
 	}
 
 	ServerEntity* BrServer::CreateLoopbackEntity()
@@ -634,7 +642,7 @@ Proc_End:
 		if( GetServerState() == ServerState::STOPED )
 		{
 			SetServerState( ServerState::STARTING );
-			Start();
+			StartThread();
 		}
 
 		return ResultCode::SUCCESS;
@@ -645,7 +653,7 @@ Proc_End:
 	{
 		if( GetServerState() != ServerState::STOPED )
 		{
-			Stop( true );
+			StopThread();
 		}
 
 		return ResultCode::SUCCESS;

@@ -96,7 +96,7 @@ namespace Svr {
 
 		m_AcceptJoin = false;
 
-		GetServerComponent<Svr::EntityManager>()->RemoveEntity(this);
+		Service::EntityManager->RemoveEntity(this);
 
 	//Proc_End:
 

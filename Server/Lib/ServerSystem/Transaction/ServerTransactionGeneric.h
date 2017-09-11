@@ -66,8 +66,8 @@ namespace Svr {
 			{
 				if( pServerEntity != super::GetMyOwner() )
 				{
-					SharedPointerT<Net::Connection> pAlreadyConn = std::forward<SharedPointerT<Net::Connection>>(pServerEntity->GetConnection());
-					SharedPointerT<Net::Connection> pMyConn = std::forward<SharedPointerT<Net::Connection>>(super::GetMyOwner()->GetConnection());
+					auto& pAlreadyConn = pServerEntity->GetConnection();
+					auto& pMyConn = super::GetMyOwner()->GetConnection();
 					NetAddress AlreadyAddr(0), MyAddr(0);
 					if( pAlreadyConn != nullptr )
 						AlreadyAddr = pAlreadyConn->GetRemoteInfo().PeerAddress;

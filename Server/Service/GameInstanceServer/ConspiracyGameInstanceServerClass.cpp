@@ -80,10 +80,7 @@ namespace ConspiracyGameInstanceServer {
 	}
 
 
-	Svr::EntityManager* GameInstanceServer::CreateEntityManager()
-	{
-		return new(GetMemoryManager()) GameEntityManager;
-	}
+
 
 	Svr::ServerEntity* GameInstanceServer::CreateLoopbackEntity()
 	{
@@ -149,6 +146,9 @@ namespace ConspiracyGameInstanceServer {
 		Result hr = ResultCode::SUCCESS;
 		SockFamily privateNetSockFamily;
 
+		Engine::GetInstance()->AddComponent<GameEntityManager>(GetMyConfig()->EntityControlCount);
+
+
 		svrChk(Svr::BrServer::InitializeNetPrivate() );
 
 		GetMyServer()->GetNetPrivate()->SetIsEnableAccept(true);
@@ -178,7 +178,7 @@ namespace ConspiracyGameInstanceServer {
 		{
 		GameInstanceManagerServiceEntity *pGameInstanceManager = nullptr;
 		svrMem( pGameInstanceManager = new(GetMemoryManager()) GameInstanceManagerServiceEntity(ClusterID::GameInstanceManager, ClusterMembership::Slave) );
-		svrChk( Svr::GetServerComponent<Svr::EntityManager>()->AddEntity( EntityFaculty::Service, pGameInstanceManager ) );
+		svrChk(Service::EntityManager->AddEntity( EntityFaculty::Service, pGameInstanceManager ) );
 		svrChk( Svr::GetServerComponent<Svr::ClusterManagerServiceEntity>()->AddClusterServiceEntity( pGameInstanceManager ) );
 		svrChk(GetComponentCarrier().AddComponent(pGameInstanceManager) );
 		}

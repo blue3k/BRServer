@@ -23,10 +23,10 @@ namespace SF
  		class NetPolicyRankingServer 
 		{
  			private:
-				SharedPointerT<Net::Connection>& m_pConnection;
+				const SharedPointerT<Net::Connection>& m_pConnection;
 			public:
 			// Constructor
-			NetPolicyRankingServer ( SharedPointerT<Net::Connection>& pConn ) : m_pConnection(pConn)
+			NetPolicyRankingServer ( const SharedPointerT<Net::Connection>& pConn ) : m_pConnection(pConn)
 			{}
 
 			// Cmd: Add a player to ranking
@@ -48,10 +48,10 @@ namespace SF
 		class NetSvrPolicyRankingServer
 		{
  			private:
-				SharedPointerT<Net::Connection>& m_pConnection;
+				const SharedPointerT<Net::Connection>& m_pConnection;
 			public:
 			// Constructor
-			NetSvrPolicyRankingServer ( SharedPointerT<Net::Connection>& pConn ) : m_pConnection(pConn)
+			NetSvrPolicyRankingServer ( const SharedPointerT<Net::Connection>& pConn ) : m_pConnection(pConn)
 			{}
 
 			// Cmd: Add a player to ranking

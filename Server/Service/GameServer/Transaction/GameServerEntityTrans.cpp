@@ -106,9 +106,9 @@ namespace GameServer {
 			Svr::Entity* pEntity = nullptr;
 			svrTrace(SVR_ENTITY, "Create new Player Entity UID:{0}", super::GetPlayerID());
 
-			svrChk(Svr::GetServerComponent<GameEntityManager>()->CreateEntity(ClusterID::Game_Conspiracy, EntityFaculty::User, pEntity));
+			svrChk(Service::EntityManager->CreateEntity(ClusterID::Game_Conspiracy, EntityFaculty::User, pEntity));
 			svrChkPtr(pPlayerEntity = dynamic_cast<GamePlayerEntity*>(pEntity));
-			svrChk(Svr::GetServerComponent<GameEntityManager>()->AddEntity(EntityFaculty::User, pEntity));
+			svrChk(Service::EntityManager->AddEntity(EntityFaculty::User, pEntity));
 
 			// Add Entity will Initialize entity so that AccountID is erased.
 			// SetAccountID need to be set after entity is added

@@ -49,18 +49,19 @@ void EntityInformation::SetName(IMemoryManager& memMgr, const char* strName )
 
 
 
-inline SharedPointerT<Net::Connection> ServerServiceInformation::GetConnection() const
+inline const SharedPointerT<Net::Connection>& ServerServiceInformation::GetConnection() const
 {
-	if( m_ServerEntity == nullptr ) return nullptr;
+	const static SharedPointerT<Net::Connection> Dummy;
+	if( m_ServerEntity == nullptr ) return Dummy;
 
-	return std::forward<SharedPointerT<Net::Connection>>(m_ServerEntity->GetConnection());
+	return m_ServerEntity->GetConnection();
 }
 
 // check whether this service is available or not
 inline bool ServerServiceInformation::IsServiceAvailable() const
 {
 	Assert(m_ServerEntity);
-	auto pConn = std::forward<SharedPointerT<Net::Connection>>(GetConnection());
+	auto& pConn = GetConnection();
 	return pConn != nullptr && pConn->GetConnectionState() == Net::ConnectionState::CONNECTED;
 }
 

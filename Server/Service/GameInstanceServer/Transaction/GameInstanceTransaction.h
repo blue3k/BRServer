@@ -116,12 +116,13 @@ namespace ConspiracyGameInstanceServer {
 		}
 
 
-		SharedPointerT<Net::Connection> GetConnection()
+		const SharedPointerT<Net::Connection>& GetConnection()
 		{
+			static const SharedPointerT<Net::Connection> Dummy;
 			if (super::GetServerEntity() == nullptr)
-				return SharedPointerT<Net::Connection>();
+				return Dummy;
 
-			return std::forward<SharedPointerT<Net::Connection>>(super::GetServerEntity()->GetConnection());
+			return super::GetServerEntity()->GetConnection();
 		}
 
 		FORCEINLINE GameInstanceEntity* GetMyOwner()

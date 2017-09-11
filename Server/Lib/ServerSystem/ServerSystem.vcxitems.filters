@@ -361,6 +361,7 @@
       <Filter>Service</Filter>
     </ClInclude>
     <ClInclude Include="$(MSBuildThisFileDirectory)Server\ParameterSetting.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)Service\EntityManagerService.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="$(MSBuildThisFileDirectory)makefile.mak" />

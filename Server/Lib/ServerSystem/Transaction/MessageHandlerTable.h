@@ -109,8 +109,7 @@ namespace Svr {
 
 		virtual ~MessageHandlerTable()
 		{
-			typename HandlerTableType::iterator itItem;
-			m_HandlerTable.begin( itItem );
+			typename HandlerTableType::iterator itItem = m_HandlerTable.begin();
 			while( itItem.IsValid() )
 			{
 				TableItem *pTableItem = *itItem;
@@ -119,6 +118,8 @@ namespace Svr {
 				m_HandlerTable.erase( itItem );
 
 				IHeap::Delete(pTableItem);
+
+				itItem = m_HandlerTable.begin();
 			}
 		}
 

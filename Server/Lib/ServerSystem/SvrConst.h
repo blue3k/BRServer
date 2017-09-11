@@ -44,8 +44,6 @@ namespace Const {
 	constexpr int		MAX_RANKING_LIST = 20;
 
 
-	constexpr int		ENTITY_GAMEMANAGER_THREAD = 8;
-
 	constexpr int		SERVER_TRANS_QUEUE = 1024;
 	constexpr int		SERVER_TRANSRES_QUEUE = 1024;
 
@@ -66,8 +64,8 @@ namespace Const {
 	constexpr DurationMS		PARTY_TICKTASK_INTERVAL = DurationMS(2 * 60 * 1000);
 
 		// Wait time for login sequences
-#ifdef DEBUG
-	constexpr DurationMS		LOGIN_TIME_WAIT_PLAYER_JOIN = DurationMS(1 * 60 * 1000);
+#ifdef _DEBUG
+	constexpr DurationMS		LOGIN_TIME_WAIT_PLAYER_JOIN = DurationMS(30 * 1000);
 #else
 	constexpr DurationMS		LOGIN_TIME_WAIT_PLAYER_JOIN = DurationMS(2 * 60 * 1000);  // This is DB maximum, see spRegisterAuthTicket
 #endif

@@ -19,7 +19,12 @@
 
 
 ServiceInformation::ServiceInformation()
-	:UID(0),Membership(ClusterMembership::StatusWatcher),Status(ServiceStatus::Offline),ServerClass(NetClass::Unknown), ServerAddress(0), ServerUpTime(TimeStampSec::max()), Workload(0)
+	: UID(0)
+	, Membership(ClusterMembership::StatusWatcher)
+	, Status(ServiceStatus::Offline)
+	, ServerClass(NetClass::Unknown)
+	, ServerUpTime(TimeStampSec::max())
+	, Workload(0)
 {
 }
 
@@ -229,7 +234,7 @@ bool MatchingQueueItem::operator == ( const MatchingQueueItem& op ) const
 
 inline bool PerformanceCounterInfo::operator == (const PerformanceCounterInfo& op) const
 {
-	return StrUtil::StringCmpLwr(CounterName, (INT)countof(CounterName), op.CounterName, (INT)countof(CounterName)) == 0;
+	return StrUtil::StringCmpLwr(CounterName, (INT)countof(CounterName), op.CounterName, (INT)countof(CounterName));
 }
 
 inline bool PerformanceCounterInstanceInfo::operator == (const PerformanceCounterInstanceInfo& op) const

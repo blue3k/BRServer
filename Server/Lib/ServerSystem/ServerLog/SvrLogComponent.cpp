@@ -152,7 +152,7 @@ namespace SF
 			if (Util::TimeSince(m_MaskUpdated) > DurationMS(60 * 1000))
 			{
 				LoadTraceConfig();
-				
+				m_MaskUpdated = Util::Time.GetTimeMs();
 			}
 
 			return ResultCode::SUCCESS;

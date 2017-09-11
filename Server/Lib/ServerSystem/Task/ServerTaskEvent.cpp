@@ -78,7 +78,8 @@ namespace SF {
 	ServerTaskEvent::ServerTaskEvent(TickTask* pTickTask, Svr::TransactionResult* pTransRes)
 		: EventType(EventTypes::TRANSRESULT_EVENT)
 	{
-		Assert(pTransRes != nullptr);
+		assert(pTransRes != nullptr);
+		assert(IHeap::CheckMemoryHeader(pTransRes)); // This will help to check the transaction result is created with IHeap interface
 		TaskPtr.FromSharedObject(pTickTask);
 		EventData.pTransResultEvent = pTransRes;
 	}

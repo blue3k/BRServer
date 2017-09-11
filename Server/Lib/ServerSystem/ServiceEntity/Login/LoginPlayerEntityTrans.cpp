@@ -482,7 +482,7 @@ namespace Svr {
 		// succeeded to login
 		if( pDBRes->Result == 0 )
 		{
-			if (StrUtil::StringCmp(email, pDBRes->EMail) != 0)
+			if (!StrUtil::StringCmp(email, pDBRes->EMail))
 			{
 				svrChk(Svr::GetServerComponent<DB::AccountDB>()->UpdateUserContactInfo(0, pDBRes->AccountID, email, ""));
 			}
@@ -665,7 +665,7 @@ namespace Svr {
 		// This must be called prior to clear authTicket otherwise the connection must be released already
 		GetMyOwner()->ReleaseConnection();
 
-		Svr::GetServerComponent<Svr::EntityManager>()->RemoveEntity( GetMyOwner() );
+		Service::EntityManager->RemoveEntity( GetMyOwner() );
 
 		return ResultCode::SUCCESS;
 	}

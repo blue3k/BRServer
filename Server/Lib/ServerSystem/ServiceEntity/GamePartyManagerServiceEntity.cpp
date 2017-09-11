@@ -121,7 +121,7 @@ namespace Svr {
 
 		svrChkPtr( pGameParty = new(GetMemoryManager()) GamePartyEntity );
 
-		svrChk( GetServerComponent<EntityManager>()->AddEntity( EntityFaculty::Party, pGameParty ) );
+		svrChk(Service::EntityManager->AddEntity( EntityFaculty::Party, pGameParty ) );
 
 		svrMem( pPlayer = new(GetMemoryManager()) PartyPlayer( creator ) );
 		svrChk( pPlayer->SetServerEntity( pServerEntity, playerUID ) );
@@ -147,7 +147,7 @@ namespace Svr {
 	{
 		Result hr = ResultCode::SUCCESS;
 
-		if (!(Svr::GetServerComponent<Svr::EntityManager>()->RemoveEntity(partyUID.GetEntityID())))
+		if (!(Service::EntityManager->RemoveEntity(partyUID.GetEntityID())))
 		{
 			svrTrace(Error, "Failed to delete party info {0}", partyUID);
 		}

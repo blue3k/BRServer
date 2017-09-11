@@ -60,7 +60,7 @@ namespace DB {
 	// initialize DB source
 	Result	FactoryOLEDB::CreateDataSource(IHeap& memMgr, DataSource* &pDBSource )
 	{
-		if( pDBSource = new DataSourceOLEDB(memMgr))
+		if( pDBSource = new(GetHeap()) DataSourceOLEDB(memMgr))
 			return ResultCode::SUCCESS;
 
 		return ResultCode::OUT_OF_MEMORY;
@@ -69,7 +69,7 @@ namespace DB {
 	// close DB source
 	Result	FactoryOLEDB::CreateSession(IHeap& memMgr, DataSource* pDBSource, Session* &pSession )
 	{
-		if( pSession = new SessionOLEDB(memMgr, pDBSource) )
+		if( pSession = new(GetHeap()) SessionOLEDB(memMgr, pDBSource) )
 			return ResultCode::SUCCESS;
 
 		return ResultCode::OUT_OF_MEMORY;
