@@ -42,20 +42,6 @@ namespace SF {
 
 
 
-		// Get/Set Class Name
-		ServerEntity::ServerEntityClass ServerEntity::GetRemoteClass() const
-		{
-			auto pConn = *m_pConnLocal;
-			if (pConn)
-				return pConn->GetRemoteInfo().PeerClass;
-
-			pConn = *m_pConnRemote;
-			if (pConn)
-				return pConn->GetRemoteInfo().PeerClass;
-
-			return NetClass::Unknown;
-		}
-
 		// Get public net address
 		inline const NetAddress& ServerEntity::GetPublicNetAddress() const
 		{

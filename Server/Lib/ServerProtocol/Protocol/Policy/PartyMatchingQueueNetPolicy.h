@@ -23,7 +23,7 @@ namespace SF
  		class NetPolicyPartyMatchingQueue 
 		{
  			private:
-				const SharedPointerT<Net::Connection>& m_pConnection;
+				SharedPointerT<Net::Connection> m_pConnection;
 			public:
 			// Constructor
 			NetPolicyPartyMatchingQueue ( const SharedPointerT<Net::Connection>& pConn ) : m_pConnection(pConn)
@@ -56,7 +56,7 @@ namespace SF
 		class NetSvrPolicyPartyMatchingQueue
 		{
  			private:
-				const SharedPointerT<Net::Connection>& m_pConnection;
+				SharedPointerT<Net::Connection> m_pConnection;
 			public:
 			// Constructor
 			NetSvrPolicyPartyMatchingQueue ( const SharedPointerT<Net::Connection>& pConn ) : m_pConnection(pConn)

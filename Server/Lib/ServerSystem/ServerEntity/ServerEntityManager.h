@@ -112,7 +112,6 @@ namespace Svr
 		ServerEntity* pSvrEntity = nullptr;
 		if ((GetServerEntity(serverID, pSvrEntity)))
 		{
-			AssertRel(netClass == pSvrEntity->GetRemoteClass());
 			pServerEntity = dynamic_cast<ServerEntityType*>(pSvrEntity);
 			Assert(pServerEntity);
 			return hr;

@@ -91,7 +91,9 @@ namespace Svr {
 
 		// ServerPeer host interfaces
 		SharedPointerT<Net::ServerPeerTCP>			m_pNetPrivate;
-		
+
+		GameID m_GameID = GameID::Invalid;
+
 		// Server net class
 		NetClass					m_NetClass;
 
@@ -172,6 +174,7 @@ namespace Svr {
 		BrServer( NetClass svrNetClass );
 		virtual ~BrServer();
 
+		GameID GetGameID() { return m_GameID; }
 		
 		// Get net class
 		inline NetClass GetNetClass();
@@ -280,6 +283,21 @@ namespace Svr {
 
 		// Stop server thread
 		virtual Result StopServer();
+
+
+		////////////////////////////////////////////////////////////////////
+		//
+		//
+		//
+
+		template< class ServiceEntityType, typename... ConstructorArgs >
+		Result AddServiceEntityComponent(ConstructorArgs... constructorArgs);
+
+		// Register clustered service
+		Result RegisterClustereWatcherComponents(ClusterID clusterID, Svr::ServerComponentID componentIDStart, Svr::ServerComponentID componentIDEnd);
+
+		// Register server module
+		Result RegisterModule(ServerConfig::ServerModule* module);
 	};
 
 

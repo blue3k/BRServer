@@ -64,7 +64,6 @@ namespace Svr
 		ServerEntity* pSvrEntity = nullptr;
 		if ((GetServerEntity(serverID, pSvrEntity)))
 		{
-			AssertRel(netClass == pSvrEntity->GetRemoteClass());
 			pServerEntity = pSvrEntity;
 			return hr;
 		}
@@ -224,7 +223,6 @@ namespace Svr
 		ServerEntity* pOldEntity = nullptr;
 		if ((GetServerEntity(serverID, pOldEntity)))
 		{
-			AssertRel(netClass == pOldEntity->GetRemoteClass());
 			if (pServerEntity != nullptr && pOldEntity != pServerEntity)
 			{
 				svrTrace(SVR_ENTITY, "Adding Duplicated Server {0} SvrID:{1}", netClass, serverID);

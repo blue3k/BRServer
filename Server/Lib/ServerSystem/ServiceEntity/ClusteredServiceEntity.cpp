@@ -323,7 +323,6 @@ namespace Svr {
 		};
 
 		svrChkPtr( pServerEntity );
-		Assert(pServerEntity->GetRemoteClass() != NetClass::Unknown);
 
 		// Create new one
 		svrMem( pNewService = new(GetHeap()) ServiceTableItem( GetClusterID(), pServerEntity, membership ) );

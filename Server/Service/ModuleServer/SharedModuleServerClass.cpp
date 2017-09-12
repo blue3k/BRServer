@@ -71,7 +71,6 @@ namespace SharedModuleServer {
 
 	SharedModuleServer::SharedModuleServer()
 		:BrServer(NetClass::Game)
-		, m_GameID(GameID::Game)
 	{
 	}
 
@@ -92,8 +91,6 @@ namespace SharedModuleServer {
 	{
 		Result hr = ResultCode::SUCCESS;
 
-		if(GetMyConfig()->pGameCluster != nullptr)
-			m_GameID = GetMyConfig()->pGameCluster->GameClusterID;
 
 		svrChk(Svr::BrServer::ApplyConfiguration() );
 
@@ -141,7 +138,6 @@ namespace SharedModuleServer {
 	Result SharedModuleServer::InitializeNetPrivate()
 	{
 		Result hr = ResultCode::SUCCESS;
-		ServerConfig::ModuleServer *pServerConfig = nullptr;
 		SockFamily privateNetSockFamily;
 
 		Engine::GetInstance()->AddComponent<Svr::EntityManager>(GetMyConfig()->EntityControlCount);
@@ -164,19 +160,6 @@ namespace SharedModuleServer {
 			svrChk(GetComponentCarrier().GetComponent<Svr::ServerEntityManager>()->GetOrRegisterServer<Svr::EntityServerEntity>(itServer->UID, NetClass::Entity, netAddress, pEntity));
 		}
 
-
-
-		//////////////////////////////////////////////////////////////////////////////////////////
-		//
-		// Register service entities
-		//
-
-		pServerConfig = (ServerConfig::ModuleServer*)( GetMyConfig() );
-
-		for(auto& itModule : pServerConfig->Modules)
-		{
-			RegisterClusteredService(itModule);
-		}
 
 
 		// push Startup transaction

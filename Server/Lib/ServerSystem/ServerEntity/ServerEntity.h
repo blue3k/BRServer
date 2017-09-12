@@ -104,9 +104,6 @@ namespace Svr {
 		const SharedPointerT<SF::Net::Connection>& GetConnection();
 
 
-		// Get/Set Class Name
-		inline ServerEntityClass GetRemoteClass() const;
-
 		// Get public net address
 		const NetAddress& GetPublicNetAddress() const;
 		void SetPublicNetAddress( const NetAddress& netAddr );

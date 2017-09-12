@@ -23,7 +23,7 @@ namespace SF
  		class NetPolicyGameParty 
 		{
  			private:
-				const SharedPointerT<Net::Connection>& m_pConnection;
+				SharedPointerT<Net::Connection> m_pConnection;
 			public:
 			// Constructor
 			NetPolicyGameParty ( const SharedPointerT<Net::Connection>& pConn ) : m_pConnection(pConn)
@@ -50,7 +50,7 @@ namespace SF
 		class NetSvrPolicyGameParty
 		{
  			private:
-				const SharedPointerT<Net::Connection>& m_pConnection;
+				SharedPointerT<Net::Connection> m_pConnection;
 			public:
 			// Constructor
 			NetSvrPolicyGameParty ( const SharedPointerT<Net::Connection>& pConn ) : m_pConnection(pConn)

@@ -35,7 +35,7 @@
     <GameTransactionLogDB ClusterType="Sharding" DBInstanceName="gameTransactionLog00" DBName="dbgametransaction00" />
 
 	<!-- Eventually we are going to use DBCluster and ModuleServer only -->
-	<ModuleServer UID="52" Name="BRMatchingQueue01" PrivateEntityControlCount="4" EntityControlCount="4" NetIOCount="4" >
+	<ModuleServer UID="53" Name="BRMatchingQueue01" PrivateEntityControlCount="4" EntityControlCount="4" NetIOCount="4" >
 		<NetPrivate IP="192.168.0.2" Port="2052"/>
 		<ModMatchingQueue_Game_8x1 />
 		<ModMatchingQueue_Game_8x2 />

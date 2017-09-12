@@ -23,7 +23,7 @@ namespace SF
  		class NetPolicyGameInstance 
 		{
  			private:
-				const SharedPointerT<Net::Connection>& m_pConnection;
+				SharedPointerT<Net::Connection> m_pConnection;
 			public:
 			// Constructor
 			NetPolicyGameInstance ( const SharedPointerT<Net::Connection>& pConn ) : m_pConnection(pConn)
@@ -62,7 +62,7 @@ namespace SF
 		class NetSvrPolicyGameInstance
 		{
  			private:
-				const SharedPointerT<Net::Connection>& m_pConnection;
+				SharedPointerT<Net::Connection> m_pConnection;
 			public:
 			// Constructor
 			NetSvrPolicyGameInstance ( const SharedPointerT<Net::Connection>& pConn ) : m_pConnection(pConn)

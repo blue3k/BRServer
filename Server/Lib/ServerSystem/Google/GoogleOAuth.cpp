@@ -15,6 +15,7 @@
 #include "String/StrUtil.h"
 #include "Util/Utility.h"
 #include "Util/TimeUtil.h"
+#include "IO/SFFile.h"
 #include "ResultCode/SFResultCodeSvr.h"
 #include "ResultCode/SFResultCodeSystem.h"
 #include "ResultCode/SFResultCodeLibrary.h"
@@ -63,6 +64,9 @@ namespace Google {
 	Result OAuth::LoadPrivateKey(const char* strPKeyFile)
 	{
 		Result hr = ResultCode::SUCCESS;
+		char filePath[1024];
+		StaticArray<uint8_t, 4096> buffer(GetHeap());
+		size_t read;
 
 		if (m_privateKey != nullptr)
 			return ResultCode::SUCCESS_FALSE;
@@ -70,11 +74,29 @@ namespace Google {
 		// load all open ssl algorithms
 		OpenSSL_add_all_algorithms();
 
+		StrUtil::Format(filePath, "{0}{1}", Util::GetModulePath(), strPKeyFile);
+
 		// ssl signing
+		BIO* memBIO = BIO_new(BIO_s_mem());
+
+		File file;
+		file.Open(filePath, File::OpenMode::Read, File::SharingMode::ReadShared);
+		if (!file.IsOpened())
+		{
+			BIO_free(memBIO);
+			return ResultCode::SUCCESS_FALSE;
+		}
+
+		file.Read(buffer.data(), buffer.GetAllocatedSize(), read);
+		buffer.SetItemCount(read);
+
+		BIO_write(memBIO, buffer.data(), buffer.size());
+
 		// Load key file
-		FILE *fp = nullptr;
-		fp = fopen(strPKeyFile, "rb");
-		PKCS12 * p12 = d2i_PKCS12_fp(fp, nullptr);
+		//FILE *fp = nullptr;
+		//fp = fopen(filePath, "rb");
+		//PKCS12 * p12 = d2i_PKCS12_fp(fp, nullptr);
+		PKCS12 * p12 = d2i_PKCS12_bio(memBIO, nullptr);
 		X509 *cert = nullptr;
 		STACK_OF(X509) *ca = nullptr;
 
@@ -93,8 +115,11 @@ namespace Google {
 
 	Proc_End:
 
-		if (fp != nullptr)
-			fclose(fp);
+		//if (fp != nullptr)
+		//	fclose(fp);
+
+		if (memBIO != nullptr)
+			BIO_free(memBIO);
 
 		if (ca != nullptr)
 			sk_X509_pop_free(ca, X509_free);

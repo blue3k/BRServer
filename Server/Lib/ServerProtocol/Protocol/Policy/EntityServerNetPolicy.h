@@ -23,7 +23,7 @@ namespace SF
  		class NetPolicyEntityServer 
 		{
  			private:
-				const SharedPointerT<Net::Connection>& m_pConnection;
+				SharedPointerT<Net::Connection> m_pConnection;
 			public:
 			// Constructor
 			NetPolicyEntityServer ( const SharedPointerT<Net::Connection>& pConn ) : m_pConnection(pConn)
@@ -42,7 +42,7 @@ namespace SF
 		class NetSvrPolicyEntityServer
 		{
  			private:
-				const SharedPointerT<Net::Connection>& m_pConnection;
+				SharedPointerT<Net::Connection> m_pConnection;
 			public:
 			// Constructor
 			NetSvrPolicyEntityServer ( const SharedPointerT<Net::Connection>& pConn ) : m_pConnection(pConn)

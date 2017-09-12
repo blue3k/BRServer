@@ -47,7 +47,6 @@ namespace SharedModuleServer
 
 	private:
 
-		GameID m_GameID;
 
 	protected:
 
@@ -58,7 +57,6 @@ namespace SharedModuleServer
 		SharedModuleServer();
 		~SharedModuleServer();
 
-		GameID GetGameID() { return m_GameID; }
 
 
 		///////////////////////////////////////////////////////////////////////////////////
@@ -101,21 +99,6 @@ namespace SharedModuleServer
 
 		// create remote entity by class
 		virtual Result CreateServerEntity( NetClass netClass, Svr::ServerEntity* &pServerEntity ) override;
-
-
-
-		////////////////////////////////////////////////////////////////////
-		//
-		//
-		//
-
-		template< class ServiceEntityType, typename... ConstructorArgs >
-		Result AddServiceEntityComponent(ConstructorArgs... constructorArgs);
-
-		// Register clustered service
-		Result RegisterClusteredService(ServerConfig::ServerModule* module);
-		Result RegisterClustereWatcherComponents(ClusterID clusterID, Svr::ServerComponentID componentIDStart, Svr::ServerComponentID componentIDEnd);
-
 	};
 
 
