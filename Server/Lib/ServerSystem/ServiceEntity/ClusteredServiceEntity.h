@@ -87,6 +87,7 @@ namespace Svr {
 
 		// Cluster ID
 		ClusterID m_ClusterID;
+		FixedString m_ClusterName;
 
 		// Cluster type
 		ClusterType m_ClusterType;
@@ -117,28 +118,31 @@ namespace Svr {
 	public:
 
 		// Check connectivity of two service
-		static bool CheckConnectivity( NetClass netClass1, ClusterMembership membership1, NetClass netClass2, ClusterMembership membership2 );
+		//static bool CheckConnectivity( NetClass netClass1, ClusterMembership membership1, NetClass netClass2, ClusterMembership membership2 );
 
-		bool CheckConnectivity( NetClass netClass2, ClusterMembership membership2 );
+		//bool CheckConnectivity( NetClass netClass2, ClusterMembership membership2 );
 
 	public:
 
 		ClusteredServiceEntity( ClusterType clusterType, ClusterID clusterID, ClusterMembership initialMembership = ClusterMembership::StatusWatcher, ServerEntity* pServerEntity = nullptr );
 		virtual ~ClusteredServiceEntity();
 
-		EntityUID GetMasterUID() { return m_MasterUID; }
+		EntityUID GetMasterUID() const { return m_MasterUID; }
 		void SetMasterUID(EntityUID value) { m_MasterUID = value; }
 
-		ClusterID GetClusterID() { return m_ClusterID; }
+		ClusterID GetClusterID() const { return m_ClusterID; }
 		void SetClusterID(ClusterID value) { m_ClusterID = value; }
 
-		ClusterType GetClusterType() { return m_ClusterType; }
+		FixedString GetClusterName() const { return m_ClusterName; }
+		void SetClusterName(FixedString value) { m_ClusterName = value; }
+
+		ClusterType GetClusterType() const { return m_ClusterType; }
 		void SetClusterType(ClusterType value) { m_ClusterType = value; }
 
-		ClusterMembership GetClusterMembership() { return m_ClusterMembership; }
+		ClusterMembership GetClusterMembership() const { return m_ClusterMembership; }
 		void SetClusterMembership(ClusterMembership value) { m_ClusterMembership = value; }
 
-		ServiceStatus GetServiceStatus() { return m_ServiceStatus; }
+		ServiceStatus GetServiceStatus() const { return m_ServiceStatus; }
 		// Change service status
 		Result SetServiceStatus(ServiceStatus newStatus);
 

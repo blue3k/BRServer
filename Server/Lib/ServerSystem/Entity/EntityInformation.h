@@ -138,6 +138,7 @@ namespace Svr {
 			return RouteContext(EntityUID(GetMyServerID(), fromTrans.GetEntityID()), m_ServerEntity->GetEntityUID());
 		}
 
+
 		template< class ServiceType >
 		FORCEINLINE ServiceType* GetService()
 		{

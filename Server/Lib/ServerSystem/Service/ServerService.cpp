@@ -25,6 +25,7 @@ namespace SF {
 		ServiceInstance<SF::ServerConfig> ServerConfig;
 		ServiceInstance<EntityTableService> EntityTable;
 		ServiceInstance<EntityManagerService> EntityManager;
+		ServiceInstance<ZooKeeperSessionService> ZKSession;
 		//ServiceInstance<SF::ServerConfig> ServerConfig;
 	}
 

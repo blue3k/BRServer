@@ -17,6 +17,8 @@
 #include "ServerConfig/SFServerConfig.h"
 #include "Service/EntityTableService.h"
 #include "Service/EntityManagerService.h"
+#include "Service/ZookeeperSessionService.h"
+#include "Service/ServerClusterService.h"
 
 
 
@@ -35,8 +37,8 @@ namespace SF {
 		extern ServiceInstance<SF::ServerConfig> ServerConfig;
 		extern ServiceInstance<EntityTableService> EntityTable;
 		extern ServiceInstance<EntityManagerService> EntityManager;
-		//extern ServiceInstance<EngineObjectManagerService> EngineObjectManager;
-		//extern ServiceInstance<GraphicDeviceService> GraphicDevice;
+		extern ServiceInstance<ZooKeeperSessionService> ZKSession; // main zookeeper session
+		extern ServiceInstance<ServerClusterService> ServerCluster;
 	};
 
 

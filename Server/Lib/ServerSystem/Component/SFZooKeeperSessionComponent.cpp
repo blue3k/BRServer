@@ -20,20 +20,32 @@ namespace SF
 {
 	ZooKeeperSessionComponent::ZooKeeperSessionComponent(const char* serverAddresses, uint32_t zkLogLevel)
 		: LibraryComponent("ZooKeeperSessionComponent")
-		, m_MemoryManager(GetSystemMemoryManager())
-		, m_ServerAddresses(GetMemoryManager(), serverAddresses)
-		, m_zkInstance(GetMemoryManager())
+		, m_Heap(GetSystemMemoryManager())
 	{
-
+		m_ServerAddresses = serverAddresses;
 		// some components will need 
 		m_zkInstance.Connect(m_ServerAddresses);// "127.0.0.1:2181");
 		m_zkInstance.WaitForConnected();
+
+		Service::ZKSession = this;
 	}
 
 	ZooKeeperSessionComponent::~ZooKeeperSessionComponent()
 	{
+		Service::ZKSession = nullptr;
+
 		m_zkInstance.Close();
 		m_zkInstance.WaitForDisconnected();
+	}
+
+	ZooKeeper& ZooKeeperSessionComponent::GetZooKeeperSession()
+	{
+		if(!m_zkInstance.IsConnected())
+		{
+			m_zkInstance.Connect(m_ServerAddresses);
+			m_zkInstance.WaitForConnected();
+		}
+		return m_zkInstance;
 	}
 
 

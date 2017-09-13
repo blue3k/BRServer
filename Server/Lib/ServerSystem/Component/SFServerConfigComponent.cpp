@@ -44,14 +44,9 @@ namespace SF
 		if (!result)
 			return result;
 
-		auto pZkSession = Engine::GetEngineComponent<ZooKeeperSessionComponent>();
-		if (pZkSession == nullptr)
-		{
-			svrTrace(Info, "ZooKeeper session isn't ready. Failed to load server config");
-			return ResultCode::UNEXPECTED;
-		}
 
-		ServerConfigZooKeeper zkConfigLoader(**Service::ServerConfig, pZkSession->GetZooKeeper());
+
+		ServerConfigZooKeeper zkConfigLoader(**Service::ServerConfig, Service::ZKSession->GetZooKeeperSession());
 		result = zkConfigLoader.LoadConfig(m_ConfigPath);
 		if (!result)
 		{

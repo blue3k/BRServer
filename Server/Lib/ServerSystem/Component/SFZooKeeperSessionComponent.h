@@ -20,7 +20,6 @@
 #include "Service/ServerService.h"
 
 #include "ZooKeeper/SFZooKeeper.h"
-#include "ServerConfig/SFServerConfig.h"
 
 
 
@@ -28,7 +27,7 @@
 namespace SF
 {
 
-	class ZooKeeperSessionComponent : public LibraryComponent
+	class ZooKeeperSessionComponent : public LibraryComponent, public ZooKeeperSessionService
 	{
 	public:
 
@@ -36,9 +35,7 @@ namespace SF
 
 	private:
 
-		IMemoryManager& m_MemoryManager;
-		String m_ServerAddresses;
-		ZooKeeper m_zkInstance;
+		IHeap& m_Heap;
 
 	public:
 
@@ -47,11 +44,10 @@ namespace SF
 		~ZooKeeperSessionComponent();
 
 		// MemoryManager
-		IMemoryManager& GetMemoryManager() { return m_MemoryManager; }
-
-		ZooKeeper& GetZooKeeper() { return m_zkInstance; }
+		IHeap& GetHeap() { return m_Heap; }
 
 
+		virtual ZooKeeper& GetZooKeeperSession() override;
 
 		virtual const FixedString& GetTypeName() override { return TypeName; }
 

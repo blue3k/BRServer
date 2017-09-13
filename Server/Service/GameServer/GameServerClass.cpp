@@ -253,7 +253,6 @@ namespace GameServer {
 		componentID = Svr::ServerComponentID_MatchingWatcherService_4;
 		for( ClusterID matchingQueueClusterID = ClusterID::Matching_Game_4; matchingQueueClusterID <= ClusterID::Matching_Game_8; matchingQueueClusterID++, componentID++ )
 		{
-			//Svr::MatchingServiceEntity *pMatcherEntity = nullptr;
 			Svr::MatchingWatcherServiceEntity *pWatcherEntity = nullptr;
 
 			// Local watchers

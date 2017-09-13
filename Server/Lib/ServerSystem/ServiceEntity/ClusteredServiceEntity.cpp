@@ -74,28 +74,28 @@ namespace Svr {
 	{
 	}
 
-	// Check connectivity of two service
-	bool ClusteredServiceEntity::CheckConnectivity( NetClass netClass1, ClusterMembership membership1, NetClass netClass2, ClusterMembership membership2 )
-	{
-		if( netClass1 == NetClass::Entity || netClass2 == NetClass::Entity
-			|| membership1 != ClusterMembership::StatusWatcher || membership2 != ClusterMembership::StatusWatcher )
-		{
-			return true;
-		}
-		return false;
-	}
-	
-	// Check connectivity of two service
-	bool ClusteredServiceEntity::CheckConnectivity( NetClass netClass2, ClusterMembership membership2 )
-	{
-		if( BrServer::GetInstance()->GetNetClass() == NetClass::Entity || netClass2 == NetClass::Entity
-			|| GetClusterMembership() != ClusterMembership::StatusWatcher || membership2 != ClusterMembership::StatusWatcher )
-		{
-			return true;
-		}
-		return false;
-	}
-	
+	//// Check connectivity of two service
+	//bool ClusteredServiceEntity::CheckConnectivity( NetClass netClass1, ClusterMembership membership1, NetClass netClass2, ClusterMembership membership2 )
+	//{
+	//	if( netClass1 == NetClass::Entity || netClass2 == NetClass::Entity
+	//		|| membership1 != ClusterMembership::StatusWatcher || membership2 != ClusterMembership::StatusWatcher )
+	//	{
+	//		return true;
+	//	}
+	//	return false;
+	//}
+	//
+	//// Check connectivity of two service
+	//bool ClusteredServiceEntity::CheckConnectivity( NetClass netClass2, ClusterMembership membership2 )
+	//{
+	//	if( BrServer::GetInstance()->GetNetClass() == NetClass::Entity || netClass2 == NetClass::Entity
+	//		|| GetClusterMembership() != ClusterMembership::StatusWatcher || membership2 != ClusterMembership::StatusWatcher )
+	//	{
+	//		return true;
+	//	}
+	//	return false;
+	//}
+	//
 
 	//////////////////////////////////////////////////////////////////////////
 	//

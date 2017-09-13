@@ -57,7 +57,6 @@ namespace Svr {
 
 			svrChk( super::StartTransaction() );
 
-			//GetMyOwner()->SetClusterID( GetClusterID() );
 			super::GetMyOwner()->SetReceivedServerStatus(true);
 			super::GetMyOwner()->SetEntityUID( EntityUID(super::GetRouteContext().GetFrom().GetServerID(), super::GetMyOwner()->GetEntityID() ) );
 

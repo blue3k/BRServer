@@ -119,7 +119,9 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)ServiceEntity\ServiceEntity.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Service\EntityManagerService.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Service\EntityTableService.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)Service\ServerClusterService.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Service\ServerService.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)Service\ZookeeperSessionService.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)stdafx.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)String\SvrToString.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)String\ToStringSvr.h" />

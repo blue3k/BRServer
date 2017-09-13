@@ -237,7 +237,7 @@ namespace Svr {
 					Svr::BrServer::GetInstance()->GetServerUpTime(), 
 					pServerServiceInfo->GetWorkload() );
 
-				// This is a replication of a remote server. ServerID in EntityUID wil have remote server id then local serverID
+				// This is a replication of a remote server. ServerID in EntityUID will have remote server id then local serverID
 				svrChk(Policy::NetPolicyServer(GetConnection()).ServerConnectedC2SEvt(RouteContext(Svr::BrServer::GetInstance()->GetServerUID(), 0),
 					serviceInformation, 
 					BrServer::GetInstance()->GetServerUpTime().time_since_epoch().count(),

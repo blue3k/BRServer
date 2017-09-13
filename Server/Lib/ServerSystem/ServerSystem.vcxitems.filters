@@ -362,6 +362,12 @@
     </ClInclude>
     <ClInclude Include="$(MSBuildThisFileDirectory)Server\ParameterSetting.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Service\EntityManagerService.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)Service\ZookeeperSessionService.h">
+      <Filter>Service</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)Service\ServerClusterService.h">
+      <Filter>Service</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="$(MSBuildThisFileDirectory)makefile.mak" />

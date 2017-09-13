@@ -101,7 +101,6 @@ namespace Svr {
 	Result ClusterInitializationTrans::JoinCluster(  )
 	{
 		Result hr = ResultCode::SUCCESS;
-		//ClusterServerService *pService = nullptr;
 		ServerEntity *pMasterServerEntity = nullptr;
 		EntityUID clusterManagerMasterUID;
 		ClusterManagerServiceEntity *pClusterManager = nullptr;
@@ -155,10 +154,6 @@ namespace Svr {
 			GetMyOwner()->GetClusterID(), GetMyOwner()->GetClusterType(), membership));
 
 
-		//svrChk( GetServerComponent<ClusterManagerServiceEntity>()->GetService<ClusterServerService>( pService ) );
-		//svrChk( pService->JoinClusterCmd( GetTransID(), 0, 
-		//	GetOwnerEntityUID(), netPrivate->GetNetClass(), netPrivate->GetLocalAddress(),
-		//	GetMyOwner()->GetClusterID(), GetMyOwner()->GetClusterType(), GetMyOwner()->GetClusterMembership() ) );
 
 	Proc_End:
 

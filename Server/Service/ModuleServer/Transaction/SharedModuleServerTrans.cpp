@@ -61,7 +61,6 @@ namespace SharedModuleServer {
 		{
 		case StartingStep::WaitEntityServer:
 			if( Svr::GetServerComponent<Svr::ClusterManagerServiceEntity>()->GetInitialized() )
-//			if( (Svr::GetServerComponent<Svr::ServerEntityManager>()->GetEntityManagerServerEntity(pServer)) )
 			{
 				svrChk( InitializeServices() );
 				m_Step = StartingStep::WaitInitializeComponents;
