@@ -28,6 +28,8 @@ namespace SF
 			// Constructor
 			NetPolicyMonitoring ( const SharedPointerT<Net::Connection>& pConn ) : m_pConnection(pConn)
 			{}
+			NetPolicyMonitoring ( const SharedPointerAtomicT<Net::Connection>& pConn ) : m_pConnection(pConn)
+			{}
 
 			// Cmd: Add a player to ranking
 			Result GetInstanceListCmd( const TransactionID &InTransactionID );
@@ -50,6 +52,8 @@ namespace SF
 			public:
 			// Constructor
 			NetSvrPolicyMonitoring ( const SharedPointerT<Net::Connection>& pConn ) : m_pConnection(pConn)
+			{}
+			NetSvrPolicyMonitoring ( const SharedPointerAtomicT<Net::Connection>& pConn ) : m_pConnection(pConn)
 			{}
 
 			// Cmd: Add a player to ranking

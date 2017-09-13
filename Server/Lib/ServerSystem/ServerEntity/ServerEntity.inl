@@ -28,15 +28,15 @@ namespace SF {
 		}
 
 		// Get Connection
-		inline const SharedPointerT<SF::Net::Connection>& ServerEntity::GetConnection()
+		inline const SharedPointerAtomicT<SF::Net::Connection>& ServerEntity::GetConnection()
 		{
-			SharedPointerT<SF::Net::Connection> pConn;
-			pConn = m_pConnLocal;
+			// I can't use SharedPointerT for return.
+			// Even though I use cache variable, if GetConnection is called over different thread, the SharedPointer can be screwred.
+			auto pConn = *m_pConnLocal;
 			if (pConn == nullptr || pConn->GetConnectionState() == Net::ConnectionState::DISCONNECTED)
-				pConn = m_pConnRemote;
+				return m_pConnRemote;
 
-			m_ResultConn = std::forward<SharedPointerT<Net::Connection>>(pConn);
-			return m_ResultConn;
+			return m_pConnLocal;
 		}
 
 

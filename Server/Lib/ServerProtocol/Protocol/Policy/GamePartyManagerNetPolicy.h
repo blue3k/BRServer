@@ -28,6 +28,8 @@ namespace SF
 			// Constructor
 			NetPolicyGamePartyManager ( const SharedPointerT<Net::Connection>& pConn ) : m_pConnection(pConn)
 			{}
+			NetPolicyGamePartyManager ( const SharedPointerAtomicT<Net::Connection>& pConn ) : m_pConnection(pConn)
+			{}
 
 			// Cmd: Create a party instance
 			Result CreatePartyCmd( const RouteContext &InRouteContext, const TransactionID &InTransactionID, const uint16_t &InRouteHopCount, const PlayerInformation &InCreator );
@@ -44,6 +46,8 @@ namespace SF
 			public:
 			// Constructor
 			NetSvrPolicyGamePartyManager ( const SharedPointerT<Net::Connection>& pConn ) : m_pConnection(pConn)
+			{}
+			NetSvrPolicyGamePartyManager ( const SharedPointerAtomicT<Net::Connection>& pConn ) : m_pConnection(pConn)
 			{}
 
 			// Cmd: Create a party instance

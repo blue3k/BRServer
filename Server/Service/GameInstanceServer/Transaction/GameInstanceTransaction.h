@@ -116,9 +116,9 @@ namespace ConspiracyGameInstanceServer {
 		}
 
 
-		const SharedPointerT<Net::Connection>& GetConnection()
+		const SharedPointerAtomicT<Net::Connection>& GetConnection()
 		{
-			static const SharedPointerT<Net::Connection> Dummy;
+			static const SharedPointerAtomicT<Net::Connection> Dummy;
 			if (super::GetServerEntity() == nullptr)
 				return Dummy;
 

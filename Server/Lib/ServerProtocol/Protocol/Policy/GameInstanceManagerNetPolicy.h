@@ -28,6 +28,8 @@ namespace SF
 			// Constructor
 			NetPolicyGameInstanceManager ( const SharedPointerT<Net::Connection>& pConn ) : m_pConnection(pConn)
 			{}
+			NetPolicyGameInstanceManager ( const SharedPointerAtomicT<Net::Connection>& pConn ) : m_pConnection(pConn)
+			{}
 
 			// Cmd: Create a game instance
 			Result CreateGameCmd( const RouteContext &InRouteContext, const TransactionID &InTransactionID, const uint16_t &InRouteHopCount, const uint16_t &InNumberOfBotPlayer, const uint16_t &InMaxPlayer );
@@ -44,6 +46,8 @@ namespace SF
 			public:
 			// Constructor
 			NetSvrPolicyGameInstanceManager ( const SharedPointerT<Net::Connection>& pConn ) : m_pConnection(pConn)
+			{}
+			NetSvrPolicyGameInstanceManager ( const SharedPointerAtomicT<Net::Connection>& pConn ) : m_pConnection(pConn)
 			{}
 
 			// Cmd: Create a game instance

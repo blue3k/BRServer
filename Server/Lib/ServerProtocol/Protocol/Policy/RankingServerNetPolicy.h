@@ -28,6 +28,8 @@ namespace SF
 			// Constructor
 			NetPolicyRankingServer ( const SharedPointerT<Net::Connection>& pConn ) : m_pConnection(pConn)
 			{}
+			NetPolicyRankingServer ( const SharedPointerAtomicT<Net::Connection>& pConn ) : m_pConnection(pConn)
+			{}
 
 			// Cmd: Add a player to ranking
 			Result AddPlayerCmd( const RouteContext &InRouteContext, const TransactionID &InTransactionID, const PlayerInformation &InPlayerInfo, const uint64_t &InRankingScore );
@@ -52,6 +54,8 @@ namespace SF
 			public:
 			// Constructor
 			NetSvrPolicyRankingServer ( const SharedPointerT<Net::Connection>& pConn ) : m_pConnection(pConn)
+			{}
+			NetSvrPolicyRankingServer ( const SharedPointerAtomicT<Net::Connection>& pConn ) : m_pConnection(pConn)
 			{}
 
 			// Cmd: Add a player to ranking

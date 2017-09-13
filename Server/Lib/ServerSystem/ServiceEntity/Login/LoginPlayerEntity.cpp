@@ -181,6 +181,10 @@ namespace Svr {
 
 		if( m_TimeToKill.CheckTimer() )
 		{
+			if (GetAccountID() > 0)
+			{
+				svrTrace(Debug1, "Closing silent login players AccID:{0}", GetAccountID());
+			}
 			PendingCloseTransaction();
 		}
 

@@ -168,7 +168,7 @@ namespace GameServer {
 	{
 		Result hr = ResultCode::SUCCESS;
 
-		if (pCon == GetConnection())
+		if (*pCon == *GetConnection())
 			return hr;
 
 		if( GetConnection() != nullptr )

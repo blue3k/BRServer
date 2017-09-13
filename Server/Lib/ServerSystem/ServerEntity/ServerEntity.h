@@ -68,7 +68,6 @@ namespace Svr {
 		// Connection to remote
 		SharedPointerAtomicT<SF::Net::Connection>	m_pConnRemote;
 		SharedPointerAtomicT<SF::Net::Connection>	m_pConnLocal;
-		SharedPointerT<SF::Net::Connection>			m_ResultConn;
 		TimeStampMS							m_LocalConnectionRetryTime;
 		DurationMS							m_LocalConnectionRetryWait;
 		CriticalSection						m_ConnectionLock;
@@ -101,7 +100,7 @@ namespace Svr {
 		// Get Connection
 		FORCEINLINE SF::Net::Connection* GetRemoteConnection()							{ return *m_pConnRemote; }
 		FORCEINLINE SF::Net::Connection* GetLocalConnection()							{ return *m_pConnLocal; }
-		const SharedPointerT<SF::Net::Connection>& GetConnection();
+		const SharedPointerAtomicT<SF::Net::Connection>& GetConnection();
 
 
 		// Get public net address

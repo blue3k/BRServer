@@ -46,7 +46,7 @@ namespace Svr {
 
 		EntityUID GetServiceEntityUID() { return m_ServerServiceInformation->GetEntityUID(); }
 
-		FORCEINLINE const SharedPointerT<Net::Connection>& GetConnection() { return m_ServerServiceInformation->GetConnection(); }
+		FORCEINLINE const SharedPointerAtomicT<Net::Connection>& GetConnection() { return m_ServerServiceInformation->GetConnection(); }
 
 	};
 

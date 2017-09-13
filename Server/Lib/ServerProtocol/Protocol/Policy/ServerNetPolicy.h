@@ -28,6 +28,8 @@ namespace SF
 			// Constructor
 			NetPolicyServer ( const SharedPointerT<Net::Connection>& pConn ) : m_pConnection(pConn)
 			{}
+			NetPolicyServer ( const SharedPointerAtomicT<Net::Connection>& pConn ) : m_pConnection(pConn)
+			{}
 
 			// Cmd: 
 			Result GenericFailureCmd( const RouteContext &InRouteContext, const TransactionID &InTransactionID );
@@ -44,6 +46,8 @@ namespace SF
 			public:
 			// Constructor
 			NetSvrPolicyServer ( const SharedPointerT<Net::Connection>& pConn ) : m_pConnection(pConn)
+			{}
+			NetSvrPolicyServer ( const SharedPointerAtomicT<Net::Connection>& pConn ) : m_pConnection(pConn)
 			{}
 
 			// Cmd: 

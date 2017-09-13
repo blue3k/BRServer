@@ -253,9 +253,9 @@ namespace Svr
 		return hr;
 	}
 
-	const SharedPointerT<Net::Connection>& ServerEntityManager::GetServerConnection(ServerID svrID)
+	const SharedPointerAtomicT<Net::Connection>& ServerEntityManager::GetServerConnection(ServerID svrID)
 	{
-		const static SharedPointerT<Net::Connection> Dummy;
+		const static SharedPointerAtomicT<Net::Connection> Dummy;
 		ServerEntity* pServerEntity = nullptr;
 
 		if (!GetServerEntity(svrID, pServerEntity))

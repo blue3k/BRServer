@@ -173,9 +173,9 @@ namespace SF {
 	///////////////////////////////////////////////////////////
 	// Helper functions
 
-	const SharedPointerT<Net::Connection>& Transaction::GetServerEntityConnection(ServerEntity* pServerEntity)
+	const SharedPointerAtomicT<Net::Connection>& Transaction::GetServerEntityConnection(ServerEntity* pServerEntity)
 	{
-		static const SharedPointerT<Net::Connection> Dummy;
+		static const SharedPointerAtomicT<Net::Connection> Dummy;
 		if (pServerEntity == nullptr)
 			return Dummy;
 

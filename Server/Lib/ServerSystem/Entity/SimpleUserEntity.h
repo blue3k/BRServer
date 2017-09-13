@@ -39,7 +39,8 @@ namespace Svr {
 
 	private:
 		// Connection to remote
-		SharedPointerT<Net::Connection>	m_pConnection;
+		// To match with server connection pointer type, this should be atomic
+		SharedPointerAtomicT<Net::Connection>	m_pConnection;
 		CriticalSection m_ConnectionLock;
 
 				// Account ID
@@ -62,7 +63,7 @@ namespace Svr {
 		virtual void ReleaseConnection();
 
 		// Get Connection
-		inline const SharedPointerT<Net::Connection>& GetConnection() { return m_pConnection; }
+		inline const SharedPointerAtomicT<Net::Connection>& GetConnection() { return m_pConnection; }
 
 
 		// Initialize entity to proceed new connection

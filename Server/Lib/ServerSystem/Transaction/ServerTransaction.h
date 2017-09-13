@@ -94,9 +94,9 @@ namespace Svr {
 		// route function call
 		ServerEntity* GetServerEntity() { return superTrans::GetServerEntity(); }
 
-		const SharedPointerT<Net::Connection>& GetConnection()
+		const SharedPointerAtomicT<Net::Connection>& GetConnection()
 		{
-			static const SharedPointerT<Net::Connection> Dummy;
+			static const SharedPointerAtomicT<Net::Connection> Dummy;
 			auto serverEntity = GetServerEntity();
 			if (serverEntity != nullptr)
 				return serverEntity->GetConnection();

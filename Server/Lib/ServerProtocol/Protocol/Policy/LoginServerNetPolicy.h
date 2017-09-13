@@ -28,6 +28,8 @@ namespace SF
 			// Constructor
 			NetPolicyLoginServer ( const SharedPointerT<Net::Connection>& pConn ) : m_pConnection(pConn)
 			{}
+			NetPolicyLoginServer ( const SharedPointerAtomicT<Net::Connection>& pConn ) : m_pConnection(pConn)
+			{}
 
 			// Cmd: Notify user joind and see it's valid authticket instance
 			Result PlayerJoinedToGameServerCmd( const RouteContext &InRouteContext, const TransactionID &InTransactionID, const PlayerID &InPlayerID, const AuthTicket &InAuthTicket );
@@ -44,6 +46,8 @@ namespace SF
 			public:
 			// Constructor
 			NetSvrPolicyLoginServer ( const SharedPointerT<Net::Connection>& pConn ) : m_pConnection(pConn)
+			{}
+			NetSvrPolicyLoginServer ( const SharedPointerAtomicT<Net::Connection>& pConn ) : m_pConnection(pConn)
 			{}
 
 			// Cmd: Notify user joind and see it's valid authticket instance

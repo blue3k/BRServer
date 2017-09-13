@@ -64,8 +64,8 @@ namespace Const {
 	constexpr DurationMS		PARTY_TICKTASK_INTERVAL = DurationMS(2 * 60 * 1000);
 
 		// Wait time for login sequences
-#ifdef _DEBUG
-	constexpr DurationMS		LOGIN_TIME_WAIT_PLAYER_JOIN = DurationMS(30 * 1000);
+#if 0
+	constexpr DurationMS		LOGIN_TIME_WAIT_PLAYER_JOIN = DurationMS(60 * 1000);
 #else
 	constexpr DurationMS		LOGIN_TIME_WAIT_PLAYER_JOIN = DurationMS(2 * 60 * 1000);  // This is DB maximum, see spRegisterAuthTicket
 #endif

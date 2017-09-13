@@ -28,6 +28,8 @@ namespace SF
 			// Constructor
 			NetPolicyGameInstance ( const SharedPointerT<Net::Connection>& pConn ) : m_pConnection(pConn)
 			{}
+			NetPolicyGameInstance ( const SharedPointerAtomicT<Net::Connection>& pConn ) : m_pConnection(pConn)
+			{}
 
 			// C2S: Game instance deletion
 			Result DeleteGameC2SEvt( const RouteContext &InRouteContext );
@@ -66,6 +68,8 @@ namespace SF
 			public:
 			// Constructor
 			NetSvrPolicyGameInstance ( const SharedPointerT<Net::Connection>& pConn ) : m_pConnection(pConn)
+			{}
+			NetSvrPolicyGameInstance ( const SharedPointerAtomicT<Net::Connection>& pConn ) : m_pConnection(pConn)
 			{}
 
 			// Cmd: Join Game

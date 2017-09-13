@@ -252,7 +252,7 @@ namespace Svr {
 		///////////////////////////////////////////////////////////
 		// Helper functions
 
-		const SharedPointerT<Net::Connection>& GetServerEntityConnection(ServerEntity* pServerEntity);
+		const SharedPointerAtomicT<Net::Connection>& GetServerEntityConnection(ServerEntity* pServerEntity);
 	};
 
 
@@ -548,9 +548,9 @@ namespace Svr {
 		{
 		}
 		
-		virtual const SharedPointerT<Net::Connection>& GetConnection()
+		virtual const SharedPointerAtomicT<Net::Connection>& GetConnection()
 		{
-			const static SharedPointerT<Net::Connection> Dummy;
+			const static SharedPointerAtomicT<Net::Connection> Dummy;
 			if (TransactionT<OwnerType>::GetOwnerEntity() == nullptr)
 				return Dummy;
 

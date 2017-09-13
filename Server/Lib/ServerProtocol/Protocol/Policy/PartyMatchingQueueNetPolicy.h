@@ -28,6 +28,8 @@ namespace SF
 			// Constructor
 			NetPolicyPartyMatchingQueue ( const SharedPointerT<Net::Connection>& pConn ) : m_pConnection(pConn)
 			{}
+			NetPolicyPartyMatchingQueue ( const SharedPointerAtomicT<Net::Connection>& pConn ) : m_pConnection(pConn)
+			{}
 
 			// Cmd: Register match by party
 			Result RegisterPartyMatchingCmd( const RouteContext &InRouteContext, const TransactionID &InTransactionID, const uint16_t &InRouteHopCount, const Array<MatchingPlayerInformation>& InPlayers );
@@ -60,6 +62,8 @@ namespace SF
 			public:
 			// Constructor
 			NetSvrPolicyPartyMatchingQueue ( const SharedPointerT<Net::Connection>& pConn ) : m_pConnection(pConn)
+			{}
+			NetSvrPolicyPartyMatchingQueue ( const SharedPointerAtomicT<Net::Connection>& pConn ) : m_pConnection(pConn)
 			{}
 
 			// Cmd: Register match by party

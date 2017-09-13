@@ -49,9 +49,9 @@ void EntityInformation::SetName(IMemoryManager& memMgr, const char* strName )
 
 
 
-inline const SharedPointerT<Net::Connection>& ServerServiceInformation::GetConnection() const
+inline const SharedPointerAtomicT<Net::Connection>& ServerServiceInformation::GetConnection() const
 {
-	const static SharedPointerT<Net::Connection> Dummy;
+	const static SharedPointerAtomicT<Net::Connection> Dummy;
 	if( m_ServerEntity == nullptr ) return Dummy;
 
 	return m_ServerEntity->GetConnection();
