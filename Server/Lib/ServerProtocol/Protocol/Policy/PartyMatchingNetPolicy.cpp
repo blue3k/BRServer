@@ -35,7 +35,7 @@ namespace SF
 			 MessageDataPtr pMessage;
 			 protocolChkPtr(m_pConnection);
 
-			 pMessage = SF::Message::PartyMatching::PartyGameMatchedS2CEvt::Create(m_pConnection->GetMemoryManager(), InRouteContext, InRouteHopCount);
+			 pMessage = SF::Message::PartyMatching::PartyGameMatchedS2CEvt::Create(m_pConnection->GetNetIOHandler().GetIOHeap(), InRouteContext, InRouteHopCount);
 			 protocolChkPtr(*pMessage);
 
 			 return m_pConnection->Send( pMessage );
@@ -53,7 +53,7 @@ namespace SF
 			 MessageDataPtr pMessage;
 			 protocolChkPtr(m_pConnection);
 
-			 pMessage = SF::Message::PartyMatching::PlayerGameMatchedS2CEvt::Create(m_pConnection->GetMemoryManager(), InRouteContext, InRouteHopCount, InDestPlayerID, InGameInsUID, InRequestedRole);
+			 pMessage = SF::Message::PartyMatching::PlayerGameMatchedS2CEvt::Create(m_pConnection->GetNetIOHandler().GetIOHeap(), InRouteContext, InRouteHopCount, InDestPlayerID, InGameInsUID, InRequestedRole);
 			 protocolChkPtr(*pMessage);
 
 			 return m_pConnection->Send( pMessage );

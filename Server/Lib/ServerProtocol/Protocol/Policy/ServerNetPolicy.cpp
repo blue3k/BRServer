@@ -33,7 +33,7 @@ namespace SF
 			 MessageDataPtr pMessage;
 			 protocolChkPtr(m_pConnection);
 
-			 pMessage = SF::Message::Server::GenericFailureCmd::Create(m_pConnection->GetMemoryManager(), InRouteContext, InTransactionID);
+			 pMessage = SF::Message::Server::GenericFailureCmd::Create(m_pConnection->GetNetIOHandler().GetIOHeap(), InRouteContext, InTransactionID);
 			 protocolChkPtr(*pMessage);
 
 			 return m_pConnection->Send( pMessage );
@@ -51,7 +51,7 @@ namespace SF
 			 MessageDataPtr pMessage;
 			 protocolChkPtr(m_pConnection);
 
-			 pMessage = SF::Message::Server::ServerConnectedC2SEvt::Create(m_pConnection->GetMemoryManager(), InRouteContext, InClusterManagerServiceInformation, InStartUpTime, InPrivateAddress);
+			 pMessage = SF::Message::Server::ServerConnectedC2SEvt::Create(m_pConnection->GetNetIOHandler().GetIOHeap(), InRouteContext, InClusterManagerServiceInformation, InStartUpTime, InPrivateAddress);
 			 protocolChkPtr(*pMessage);
 
 			 return m_pConnection->Send( pMessage );
@@ -71,7 +71,7 @@ namespace SF
 			 MessageDataPtr pMessage;
 			 protocolChkPtr(m_pConnection);
 
-			 pMessage = SF::Message::Server::GenericFailureRes::Create(m_pConnection->GetMemoryManager(), InRouteContext, InTransactionID, InResult);
+			 pMessage = SF::Message::Server::GenericFailureRes::Create(m_pConnection->GetNetIOHandler().GetIOHeap(), InRouteContext, InTransactionID, InResult);
 			 protocolChkPtr(*pMessage);
 
 			 return m_pConnection->Send( pMessage );

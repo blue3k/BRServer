@@ -33,7 +33,7 @@ namespace SF
 			 MessageDataPtr pMessage;
 			 protocolChkPtr(m_pConnection);
 
-			 pMessage = SF::Message::EntityServer::RegisterEntityCmd::Create(m_pConnection->GetMemoryManager(), InTransactionID, InLocalEntID, InEntName);
+			 pMessage = SF::Message::EntityServer::RegisterEntityCmd::Create(m_pConnection->GetNetIOHandler().GetIOHeap(), InTransactionID, InLocalEntID, InEntName);
 			 protocolChkPtr(*pMessage);
 
 			 return m_pConnection->Send( pMessage );
@@ -51,7 +51,7 @@ namespace SF
 			 MessageDataPtr pMessage;
 			 protocolChkPtr(m_pConnection);
 
-			 pMessage = SF::Message::EntityServer::UnregisterEntityCmd::Create(m_pConnection->GetMemoryManager(), InTransactionID, InEntUID);
+			 pMessage = SF::Message::EntityServer::UnregisterEntityCmd::Create(m_pConnection->GetNetIOHandler().GetIOHeap(), InTransactionID, InEntUID);
 			 protocolChkPtr(*pMessage);
 
 			 return m_pConnection->Send( pMessage );
@@ -69,7 +69,7 @@ namespace SF
 			 MessageDataPtr pMessage;
 			 protocolChkPtr(m_pConnection);
 
-			 pMessage = SF::Message::EntityServer::FindEntityCmd::Create(m_pConnection->GetMemoryManager(), InTransactionID, InLocalEntID);
+			 pMessage = SF::Message::EntityServer::FindEntityCmd::Create(m_pConnection->GetNetIOHandler().GetIOHeap(), InTransactionID, InLocalEntID);
 			 protocolChkPtr(*pMessage);
 
 			 return m_pConnection->Send( pMessage );
@@ -89,7 +89,7 @@ namespace SF
 			 MessageDataPtr pMessage;
 			 protocolChkPtr(m_pConnection);
 
-			 pMessage = SF::Message::EntityServer::RegisterEntityRes::Create(m_pConnection->GetMemoryManager(), InTransactionID, InResult, InEntUID);
+			 pMessage = SF::Message::EntityServer::RegisterEntityRes::Create(m_pConnection->GetNetIOHandler().GetIOHeap(), InTransactionID, InResult, InEntUID);
 			 protocolChkPtr(*pMessage);
 
 			 return m_pConnection->Send( pMessage );
@@ -107,7 +107,7 @@ namespace SF
 			 MessageDataPtr pMessage;
 			 protocolChkPtr(m_pConnection);
 
-			 pMessage = SF::Message::EntityServer::UnregisterEntityRes::Create(m_pConnection->GetMemoryManager(), InTransactionID, InResult);
+			 pMessage = SF::Message::EntityServer::UnregisterEntityRes::Create(m_pConnection->GetNetIOHandler().GetIOHeap(), InTransactionID, InResult);
 			 protocolChkPtr(*pMessage);
 
 			 return m_pConnection->Send( pMessage );
@@ -125,7 +125,7 @@ namespace SF
 			 MessageDataPtr pMessage;
 			 protocolChkPtr(m_pConnection);
 
-			 pMessage = SF::Message::EntityServer::FindEntityRes::Create(m_pConnection->GetMemoryManager(), InTransactionID, InResult, InEntUID);
+			 pMessage = SF::Message::EntityServer::FindEntityRes::Create(m_pConnection->GetNetIOHandler().GetIOHeap(), InTransactionID, InResult, InEntUID);
 			 protocolChkPtr(*pMessage);
 
 			 return m_pConnection->Send( pMessage );

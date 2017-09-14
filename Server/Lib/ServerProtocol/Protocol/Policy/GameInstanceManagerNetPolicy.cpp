@@ -33,7 +33,7 @@ namespace SF
 			 MessageDataPtr pMessage;
 			 protocolChkPtr(m_pConnection);
 
-			 pMessage = SF::Message::GameInstanceManager::CreateGameCmd::Create(m_pConnection->GetMemoryManager(), InRouteContext, InTransactionID, InRouteHopCount, InNumberOfBotPlayer, InMaxPlayer);
+			 pMessage = SF::Message::GameInstanceManager::CreateGameCmd::Create(m_pConnection->GetNetIOHandler().GetIOHeap(), InRouteContext, InTransactionID, InRouteHopCount, InNumberOfBotPlayer, InMaxPlayer);
 			 protocolChkPtr(*pMessage);
 
 			 return m_pConnection->Send( pMessage );
@@ -51,7 +51,7 @@ namespace SF
 			 MessageDataPtr pMessage;
 			 protocolChkPtr(m_pConnection);
 
-			 pMessage = SF::Message::GameInstanceManager::GameDeletedC2SEvt::Create(m_pConnection->GetMemoryManager(), InRouteContext, InRouteHopCount);
+			 pMessage = SF::Message::GameInstanceManager::GameDeletedC2SEvt::Create(m_pConnection->GetNetIOHandler().GetIOHeap(), InRouteContext, InRouteHopCount);
 			 protocolChkPtr(*pMessage);
 
 			 return m_pConnection->Send( pMessage );
@@ -71,7 +71,7 @@ namespace SF
 			 MessageDataPtr pMessage;
 			 protocolChkPtr(m_pConnection);
 
-			 pMessage = SF::Message::GameInstanceManager::CreateGameRes::Create(m_pConnection->GetMemoryManager(), InRouteContext, InTransactionID, InResult);
+			 pMessage = SF::Message::GameInstanceManager::CreateGameRes::Create(m_pConnection->GetNetIOHandler().GetIOHeap(), InRouteContext, InTransactionID, InResult);
 			 protocolChkPtr(*pMessage);
 
 			 return m_pConnection->Send( pMessage );

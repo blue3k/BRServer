@@ -695,17 +695,17 @@ namespace Svr {
 		// succeeded to create
 		if( pDBRes->Result >= 0 )
 		{
-			// Clear local ticket value and close entity
-			GetMyOwner()->SetAuthTicket(0);
-			GetMyOwner()->PendingCloseTransaction();
 		}
 		else
 		{
 			svrErr(ResultCode::UNEXPECTED);
 		}
 
+
 	Proc_End:
 
+		GetMyOwner()->SetAuthTicket(0);
+		GetMyOwner()->SetAccountID(0);
 		GetMyOwner()->PendingCloseTransaction();
 		CloseTransaction(hr);
 

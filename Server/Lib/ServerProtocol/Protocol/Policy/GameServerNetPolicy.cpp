@@ -33,7 +33,7 @@ namespace SF
 			 MessageDataPtr pMessage;
 			 protocolChkPtr(m_pConnection);
 
-			 pMessage = SF::Message::GameServer::RegisterPlayerToJoinGameServerCmd::Create(m_pConnection->GetMemoryManager(), InRouteContext, InTransactionID, InPlayerID, InTicket, InFBUserID, InShardID);
+			 pMessage = SF::Message::GameServer::RegisterPlayerToJoinGameServerCmd::Create(m_pConnection->GetNetIOHandler().GetIOHeap(), InRouteContext, InTransactionID, InPlayerID, InTicket, InFBUserID, InShardID);
 			 protocolChkPtr(*pMessage);
 
 			 return m_pConnection->Send( pMessage );
@@ -51,7 +51,7 @@ namespace SF
 			 MessageDataPtr pMessage;
 			 protocolChkPtr(m_pConnection);
 
-			 pMessage = SF::Message::GameServer::RegisterPlayerToJoinGameServerOnPlayerEntityCmd::Create(m_pConnection->GetMemoryManager(), InRouteContext, InTransactionID, InPlayerID, InTicket, InFBUserID);
+			 pMessage = SF::Message::GameServer::RegisterPlayerToJoinGameServerOnPlayerEntityCmd::Create(m_pConnection->GetNetIOHandler().GetIOHeap(), InRouteContext, InTransactionID, InPlayerID, InTicket, InFBUserID);
 			 protocolChkPtr(*pMessage);
 
 			 return m_pConnection->Send( pMessage );
@@ -69,7 +69,7 @@ namespace SF
 			 MessageDataPtr pMessage;
 			 protocolChkPtr(m_pConnection);
 
-			 pMessage = SF::Message::GameServer::ChatMessageC2SEvt::Create(m_pConnection->GetMemoryManager(), InRouteContext, InSenderID, InRole, InSenderName, InChatMessage);
+			 pMessage = SF::Message::GameServer::ChatMessageC2SEvt::Create(m_pConnection->GetNetIOHandler().GetIOHeap(), InRouteContext, InSenderID, InRole, InSenderName, InChatMessage);
 			 protocolChkPtr(*pMessage);
 
 			 return m_pConnection->Send( pMessage );
@@ -87,7 +87,7 @@ namespace SF
 			 MessageDataPtr pMessage;
 			 protocolChkPtr(m_pConnection);
 
-			 pMessage = SF::Message::GameServer::NotifyC2SEvt::Create(m_pConnection->GetMemoryManager(), InRouteContext, InDestPlayerID, InNotificationID, InMessageID, InMessageParam0, InMessageParam1, InMessageText, InTimeStamp);
+			 pMessage = SF::Message::GameServer::NotifyC2SEvt::Create(m_pConnection->GetNetIOHandler().GetIOHeap(), InRouteContext, InDestPlayerID, InNotificationID, InMessageID, InMessageParam0, InMessageParam1, InMessageText, InTimeStamp);
 			 protocolChkPtr(*pMessage);
 
 			 return m_pConnection->Send( pMessage );
@@ -105,7 +105,7 @@ namespace SF
 			 MessageDataPtr pMessage;
 			 protocolChkPtr(m_pConnection);
 
-			 pMessage = SF::Message::GameServer::FriendAcceptedC2SEvt::Create(m_pConnection->GetMemoryManager(), InRouteContext, InDestPlayerID, InAccepter);
+			 pMessage = SF::Message::GameServer::FriendAcceptedC2SEvt::Create(m_pConnection->GetNetIOHandler().GetIOHeap(), InRouteContext, InDestPlayerID, InAccepter);
 			 protocolChkPtr(*pMessage);
 
 			 return m_pConnection->Send( pMessage );
@@ -123,7 +123,7 @@ namespace SF
 			 MessageDataPtr pMessage;
 			 protocolChkPtr(m_pConnection);
 
-			 pMessage = SF::Message::GameServer::FriendRemovedC2SEvt::Create(m_pConnection->GetMemoryManager(), InRouteContext, InDestPlayerID, InRemoverID);
+			 pMessage = SF::Message::GameServer::FriendRemovedC2SEvt::Create(m_pConnection->GetNetIOHandler().GetIOHeap(), InRouteContext, InDestPlayerID, InRemoverID);
 			 protocolChkPtr(*pMessage);
 
 			 return m_pConnection->Send( pMessage );
@@ -141,7 +141,7 @@ namespace SF
 			 MessageDataPtr pMessage;
 			 protocolChkPtr(m_pConnection);
 
-			 pMessage = SF::Message::GameServer::RequestPlayerStatusUpdateC2SEvt::Create(m_pConnection->GetMemoryManager(), InRouteContext, InDestPlayerID, InRequesterID);
+			 pMessage = SF::Message::GameServer::RequestPlayerStatusUpdateC2SEvt::Create(m_pConnection->GetNetIOHandler().GetIOHeap(), InRouteContext, InDestPlayerID, InRequesterID);
 			 protocolChkPtr(*pMessage);
 
 			 return m_pConnection->Send( pMessage );
@@ -159,7 +159,7 @@ namespace SF
 			 MessageDataPtr pMessage;
 			 protocolChkPtr(m_pConnection);
 
-			 pMessage = SF::Message::GameServer::NotifyPlayerStatusUpdatedC2SEvt::Create(m_pConnection->GetMemoryManager(), InRouteContext, InDestPlayerID, InLatestActiveTime, InIsInGame);
+			 pMessage = SF::Message::GameServer::NotifyPlayerStatusUpdatedC2SEvt::Create(m_pConnection->GetNetIOHandler().GetIOHeap(), InRouteContext, InDestPlayerID, InLatestActiveTime, InIsInGame);
 			 protocolChkPtr(*pMessage);
 
 			 return m_pConnection->Send( pMessage );
@@ -177,7 +177,7 @@ namespace SF
 			 MessageDataPtr pMessage;
 			 protocolChkPtr(m_pConnection);
 
-			 pMessage = SF::Message::GameServer::NotifyPartyInviteC2SEvt::Create(m_pConnection->GetMemoryManager(), InRouteContext, InDestPlayerID, InInviterID, InInviterName, InPartyUID);
+			 pMessage = SF::Message::GameServer::NotifyPartyInviteC2SEvt::Create(m_pConnection->GetNetIOHandler().GetIOHeap(), InRouteContext, InDestPlayerID, InInviterID, InInviterName, InPartyUID);
 			 protocolChkPtr(*pMessage);
 
 			 return m_pConnection->Send( pMessage );
@@ -197,7 +197,7 @@ namespace SF
 			 MessageDataPtr pMessage;
 			 protocolChkPtr(m_pConnection);
 
-			 pMessage = SF::Message::GameServer::RegisterPlayerToJoinGameServerRes::Create(m_pConnection->GetMemoryManager(), InRouteContext, InTransactionID, InResult, InPublicAddress, InPublicAddressV6, InPort);
+			 pMessage = SF::Message::GameServer::RegisterPlayerToJoinGameServerRes::Create(m_pConnection->GetNetIOHandler().GetIOHeap(), InRouteContext, InTransactionID, InResult, InPublicAddress, InPublicAddressV6, InPort);
 			 protocolChkPtr(*pMessage);
 
 			 return m_pConnection->Send( pMessage );
@@ -215,7 +215,7 @@ namespace SF
 			 MessageDataPtr pMessage;
 			 protocolChkPtr(m_pConnection);
 
-			 pMessage = SF::Message::GameServer::RegisterPlayerToJoinGameServerOnPlayerEntityRes::Create(m_pConnection->GetMemoryManager(), InRouteContext, InTransactionID, InResult);
+			 pMessage = SF::Message::GameServer::RegisterPlayerToJoinGameServerOnPlayerEntityRes::Create(m_pConnection->GetNetIOHandler().GetIOHeap(), InRouteContext, InTransactionID, InResult);
 			 protocolChkPtr(*pMessage);
 
 			 return m_pConnection->Send( pMessage );

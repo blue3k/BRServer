@@ -329,8 +329,8 @@ namespace Svr {
 			{
 				if (m_LocalConnectionRetryTime != TimeStampMS::min())
 				{
-					auto pIOCallback = pConn->GetIOCallback();
-					if (pIOCallback != nullptr && pIOCallback->GetIsIORegistered())
+					auto& pIOCallback = pConn->GetNetIOHandler();
+					if (pIOCallback.GetIsIORegistered())
 					{
 						pConn->CloseConnection();
 						pConn->CloseSocket();

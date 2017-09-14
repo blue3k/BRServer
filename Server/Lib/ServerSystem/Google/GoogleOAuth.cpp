@@ -90,7 +90,7 @@ namespace Google {
 		file.Read(buffer.data(), buffer.GetAllocatedSize(), read);
 		buffer.SetItemCount(read);
 
-		BIO_write(memBIO, buffer.data(), buffer.size());
+		BIO_write(memBIO, buffer.data(), static_cast<int>(buffer.size()));
 
 		// Load key file
 		//FILE *fp = nullptr;

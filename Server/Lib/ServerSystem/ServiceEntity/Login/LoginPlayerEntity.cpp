@@ -137,6 +137,7 @@ namespace Svr {
 		BR_ENTITY_MESSAGE(Message::Login::LoginByFacebookCmd)				{ pNewTrans = new(GetMemoryManager()) LoginPlayerTransLoginByFacebook(GetMemoryManager(), pMsgData); return ResultCode::SUCCESS; } );
 		BR_ENTITY_MESSAGE(Message::Login::CreateRandomUserCmd)				{ pNewTrans = new(GetMemoryManager()) LoginPlayerTransCreateRandomUser(GetMemoryManager(), pMsgData); return ResultCode::SUCCESS; } );
 		BR_ENTITY_MESSAGE(Message::LoginServer::PlayerJoinedToGameServerCmd){ pNewTrans = new(GetMemoryManager()) LoginPlayerJoinedToGameServerTrans(GetMemoryManager(), pMsgData); return ResultCode::SUCCESS; } );
+		BR_ENTITY_MESSAGE(Message::LoginServer::KickPlayerCmd)				{ pNewTrans = new(GetMemoryManager()) LoginPlayerKickPlayerTrans(GetMemoryManager(), pMsgData); return ResultCode::SUCCESS; } );
 
 		BR_ENTITY_MESSAGE(Message::Login::UpdateMyScoreCmd)					{ pNewTrans = new(GetMemoryManager()) RankingUpdateScoreTrans(GetMemoryManager(), pMsgData); return ResultCode::SUCCESS; } );
 		BR_ENTITY_MESSAGE(Message::Login::DataTestCmd)						{ pNewTrans = new(GetMemoryManager()) LoginUserDataTestTrans(GetMemoryManager(), pMsgData); return ResultCode::SUCCESS; } );

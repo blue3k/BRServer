@@ -217,22 +217,21 @@ namespace GameServer {
 		Result hr = ResultCode::SUCCESS;
 		Net::ConnectionPtr pConnection;
 		Net::PeerInfo local, remote;
+		auto& pNetPublicServer = GetMyServer()->GetNetPublic();
 
-		svrChkPtr(GetMyServer()->GetNetPublic());
+		svrChkPtr(pNetPublicServer);
 
 		ReleaseConnection();
 
 		SetAuthTicket(authTicket);
 		SetFacebookUID(fbUID);
 
-		svrChkPtr(pConnection = new(GetSystemMemoryManager()) Net::ConnectionMUDPServer(GetSystemMemoryManager()));
+		svrChkPtr(pConnection = new(GetSystemMemoryManager()) Net::ConnectionMUDPServer(GetSystemMemoryManager(), **pNetPublicServer));
 
-		local.SetInfo(GetMyServer()->GetNetClass(), GetMyServer()->GetNetPublic()->GetLocalAddress(), GetMyServer()->GetServerUID());
+		local.SetInfo(GetMyServer()->GetNetClass(), pNetPublicServer->GetLocalAddress(), GetMyServer()->GetServerUID());
 		remote.SetInfo(NetClass::Client, authTicket);
-		//connectionInfo.SetLocalInfo(GetMyServer()->GetNetClass(), GetMyServer()->GetNetPublic()->GetLocalAddress(), GetMyServer()->GetServerUID());
-		//connectionInfo.SetRemoteInfo(NetClass::Client, authTicket);
 
-		svrChk(pConnection->InitConnection(GetMyServer()->GetNetPublic()->GetSocket(), false, local, remote));
+		svrChk(pConnection->InitConnection(pNetPublicServer->GetSocket(), false, local, remote));
 		svrTrace(SVR_INFO, "Initialize connection CID:{0}, Addr:{1}", pConnection->GetCID(), pConnection->GetRemoteInfo().PeerAddress);
 
 		Service::ConnectionManager->AddConnection(pConnection);

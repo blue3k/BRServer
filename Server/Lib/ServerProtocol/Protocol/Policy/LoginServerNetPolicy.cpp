@@ -33,7 +33,7 @@ namespace SF
 			 MessageDataPtr pMessage;
 			 protocolChkPtr(m_pConnection);
 
-			 pMessage = SF::Message::LoginServer::PlayerJoinedToGameServerCmd::Create(m_pConnection->GetMemoryManager(), InRouteContext, InTransactionID, InPlayerID, InAuthTicket);
+			 pMessage = SF::Message::LoginServer::PlayerJoinedToGameServerCmd::Create(m_pConnection->GetNetIOHandler().GetIOHeap(), InRouteContext, InTransactionID, InPlayerID, InAuthTicket);
 			 protocolChkPtr(*pMessage);
 
 			 return m_pConnection->Send( pMessage );
@@ -51,7 +51,7 @@ namespace SF
 			 MessageDataPtr pMessage;
 			 protocolChkPtr(m_pConnection);
 
-			 pMessage = SF::Message::LoginServer::KickPlayerCmd::Create(m_pConnection->GetMemoryManager(), InRouteContext, InTransactionID, InKickedPlayerID);
+			 pMessage = SF::Message::LoginServer::KickPlayerCmd::Create(m_pConnection->GetNetIOHandler().GetIOHeap(), InRouteContext, InTransactionID, InKickedPlayerID);
 			 protocolChkPtr(*pMessage);
 
 			 return m_pConnection->Send( pMessage );
@@ -71,7 +71,7 @@ namespace SF
 			 MessageDataPtr pMessage;
 			 protocolChkPtr(m_pConnection);
 
-			 pMessage = SF::Message::LoginServer::PlayerJoinedToGameServerRes::Create(m_pConnection->GetMemoryManager(), InRouteContext, InTransactionID, InResult);
+			 pMessage = SF::Message::LoginServer::PlayerJoinedToGameServerRes::Create(m_pConnection->GetNetIOHandler().GetIOHeap(), InRouteContext, InTransactionID, InResult);
 			 protocolChkPtr(*pMessage);
 
 			 return m_pConnection->Send( pMessage );
@@ -89,7 +89,7 @@ namespace SF
 			 MessageDataPtr pMessage;
 			 protocolChkPtr(m_pConnection);
 
-			 pMessage = SF::Message::LoginServer::KickPlayerRes::Create(m_pConnection->GetMemoryManager(), InRouteContext, InTransactionID, InResult);
+			 pMessage = SF::Message::LoginServer::KickPlayerRes::Create(m_pConnection->GetNetIOHandler().GetIOHeap(), InRouteContext, InTransactionID, InResult);
 			 protocolChkPtr(*pMessage);
 
 			 return m_pConnection->Send( pMessage );

@@ -33,7 +33,7 @@ namespace SF
 			 MessageDataPtr pMessage;
 			 protocolChkPtr(m_pConnection);
 
-			 pMessage = SF::Message::PartyMatchingQueue::RegisterPartyMatchingCmd::Create(m_pConnection->GetMemoryManager(), InRouteContext, InTransactionID, InRouteHopCount, InPlayers);
+			 pMessage = SF::Message::PartyMatchingQueue::RegisterPartyMatchingCmd::Create(m_pConnection->GetNetIOHandler().GetIOHeap(), InRouteContext, InTransactionID, InRouteHopCount, InPlayers);
 			 protocolChkPtr(*pMessage);
 
 			 return m_pConnection->Send( pMessage );
@@ -51,7 +51,7 @@ namespace SF
 			 MessageDataPtr pMessage;
 			 protocolChkPtr(m_pConnection);
 
-			 pMessage = SF::Message::PartyMatchingQueue::RegisterPlayerMatchingCmd::Create(m_pConnection->GetMemoryManager(), InRouteContext, InTransactionID, InRouteHopCount, InPlayerID);
+			 pMessage = SF::Message::PartyMatchingQueue::RegisterPlayerMatchingCmd::Create(m_pConnection->GetNetIOHandler().GetIOHeap(), InRouteContext, InTransactionID, InRouteHopCount, InPlayerID);
 			 protocolChkPtr(*pMessage);
 
 			 return m_pConnection->Send( pMessage );
@@ -69,7 +69,7 @@ namespace SF
 			 MessageDataPtr pMessage;
 			 protocolChkPtr(m_pConnection);
 
-			 pMessage = SF::Message::PartyMatchingQueue::UpdateMatchingEntityUIDCmd::Create(m_pConnection->GetMemoryManager(), InRouteContext, InTransactionID, InRouteHopCount, InMatchingTicket, InPreviousUID);
+			 pMessage = SF::Message::PartyMatchingQueue::UpdateMatchingEntityUIDCmd::Create(m_pConnection->GetNetIOHandler().GetIOHeap(), InRouteContext, InTransactionID, InRouteHopCount, InMatchingTicket, InPreviousUID);
 			 protocolChkPtr(*pMessage);
 
 			 return m_pConnection->Send( pMessage );
@@ -87,7 +87,7 @@ namespace SF
 			 MessageDataPtr pMessage;
 			 protocolChkPtr(m_pConnection);
 
-			 pMessage = SF::Message::PartyMatchingQueue::UnregisterMatchingCmd::Create(m_pConnection->GetMemoryManager(), InRouteContext, InTransactionID, InRouteHopCount, InMatchingTicket);
+			 pMessage = SF::Message::PartyMatchingQueue::UnregisterMatchingCmd::Create(m_pConnection->GetNetIOHandler().GetIOHeap(), InRouteContext, InTransactionID, InRouteHopCount, InMatchingTicket);
 			 protocolChkPtr(*pMessage);
 
 			 return m_pConnection->Send( pMessage );
@@ -105,7 +105,7 @@ namespace SF
 			 MessageDataPtr pMessage;
 			 protocolChkPtr(m_pConnection);
 
-			 pMessage = SF::Message::PartyMatchingQueue::ReserveItemCmd::Create(m_pConnection->GetMemoryManager(), InRouteContext, InTransactionID, InRouteHopCount);
+			 pMessage = SF::Message::PartyMatchingQueue::ReserveItemCmd::Create(m_pConnection->GetNetIOHandler().GetIOHeap(), InRouteContext, InTransactionID, InRouteHopCount);
 			 protocolChkPtr(*pMessage);
 
 			 return m_pConnection->Send( pMessage );
@@ -123,7 +123,7 @@ namespace SF
 			 MessageDataPtr pMessage;
 			 protocolChkPtr(m_pConnection);
 
-			 pMessage = SF::Message::PartyMatchingQueue::ReserveItemsCmd::Create(m_pConnection->GetMemoryManager(), InRouteContext, InTransactionID, InRouteHopCount, InNumberOfItemsToReserve);
+			 pMessage = SF::Message::PartyMatchingQueue::ReserveItemsCmd::Create(m_pConnection->GetNetIOHandler().GetIOHeap(), InRouteContext, InTransactionID, InRouteHopCount, InNumberOfItemsToReserve);
 			 protocolChkPtr(*pMessage);
 
 			 return m_pConnection->Send( pMessage );
@@ -141,7 +141,7 @@ namespace SF
 			 MessageDataPtr pMessage;
 			 protocolChkPtr(m_pConnection);
 
-			 pMessage = SF::Message::PartyMatchingQueue::CancelReservationCmd::Create(m_pConnection->GetMemoryManager(), InRouteContext, InTransactionID, InRouteHopCount, InTicketToCancel);
+			 pMessage = SF::Message::PartyMatchingQueue::CancelReservationCmd::Create(m_pConnection->GetNetIOHandler().GetIOHeap(), InRouteContext, InTransactionID, InRouteHopCount, InTicketToCancel);
 			 protocolChkPtr(*pMessage);
 
 			 return m_pConnection->Send( pMessage );
@@ -159,7 +159,7 @@ namespace SF
 			 MessageDataPtr pMessage;
 			 protocolChkPtr(m_pConnection);
 
-			 pMessage = SF::Message::PartyMatchingQueue::CancelReservationsCmd::Create(m_pConnection->GetMemoryManager(), InRouteContext, InTransactionID, InRouteHopCount, InTicketToCancel);
+			 pMessage = SF::Message::PartyMatchingQueue::CancelReservationsCmd::Create(m_pConnection->GetNetIOHandler().GetIOHeap(), InRouteContext, InTransactionID, InRouteHopCount, InTicketToCancel);
 			 protocolChkPtr(*pMessage);
 
 			 return m_pConnection->Send( pMessage );
@@ -177,7 +177,7 @@ namespace SF
 			 MessageDataPtr pMessage;
 			 protocolChkPtr(m_pConnection);
 
-			 pMessage = SF::Message::PartyMatchingQueue::DequeueItemCmd::Create(m_pConnection->GetMemoryManager(), InRouteContext, InTransactionID, InRouteHopCount, InMatchingTicket);
+			 pMessage = SF::Message::PartyMatchingQueue::DequeueItemCmd::Create(m_pConnection->GetNetIOHandler().GetIOHeap(), InRouteContext, InTransactionID, InRouteHopCount, InMatchingTicket);
 			 protocolChkPtr(*pMessage);
 
 			 return m_pConnection->Send( pMessage );
@@ -195,7 +195,7 @@ namespace SF
 			 MessageDataPtr pMessage;
 			 protocolChkPtr(m_pConnection);
 
-			 pMessage = SF::Message::PartyMatchingQueue::MatchingItemErrorC2SEvt::Create(m_pConnection->GetMemoryManager(), InRouteContext, InRouteHopCount, InMatchingTicket);
+			 pMessage = SF::Message::PartyMatchingQueue::MatchingItemErrorC2SEvt::Create(m_pConnection->GetNetIOHandler().GetIOHeap(), InRouteContext, InRouteHopCount, InMatchingTicket);
 			 protocolChkPtr(*pMessage);
 
 			 return m_pConnection->Send( pMessage );
@@ -215,7 +215,7 @@ namespace SF
 			 MessageDataPtr pMessage;
 			 protocolChkPtr(m_pConnection);
 
-			 pMessage = SF::Message::PartyMatchingQueue::RegisterPartyMatchingRes::Create(m_pConnection->GetMemoryManager(), InRouteContext, InTransactionID, InResult, InMatchingTicket);
+			 pMessage = SF::Message::PartyMatchingQueue::RegisterPartyMatchingRes::Create(m_pConnection->GetNetIOHandler().GetIOHeap(), InRouteContext, InTransactionID, InResult, InMatchingTicket);
 			 protocolChkPtr(*pMessage);
 
 			 return m_pConnection->Send( pMessage );
@@ -233,7 +233,7 @@ namespace SF
 			 MessageDataPtr pMessage;
 			 protocolChkPtr(m_pConnection);
 
-			 pMessage = SF::Message::PartyMatchingQueue::RegisterPlayerMatchingRes::Create(m_pConnection->GetMemoryManager(), InRouteContext, InTransactionID, InResult, InMatchingTicket);
+			 pMessage = SF::Message::PartyMatchingQueue::RegisterPlayerMatchingRes::Create(m_pConnection->GetNetIOHandler().GetIOHeap(), InRouteContext, InTransactionID, InResult, InMatchingTicket);
 			 protocolChkPtr(*pMessage);
 
 			 return m_pConnection->Send( pMessage );
@@ -251,7 +251,7 @@ namespace SF
 			 MessageDataPtr pMessage;
 			 protocolChkPtr(m_pConnection);
 
-			 pMessage = SF::Message::PartyMatchingQueue::UpdateMatchingEntityUIDRes::Create(m_pConnection->GetMemoryManager(), InRouteContext, InTransactionID, InResult);
+			 pMessage = SF::Message::PartyMatchingQueue::UpdateMatchingEntityUIDRes::Create(m_pConnection->GetNetIOHandler().GetIOHeap(), InRouteContext, InTransactionID, InResult);
 			 protocolChkPtr(*pMessage);
 
 			 return m_pConnection->Send( pMessage );
@@ -269,7 +269,7 @@ namespace SF
 			 MessageDataPtr pMessage;
 			 protocolChkPtr(m_pConnection);
 
-			 pMessage = SF::Message::PartyMatchingQueue::UnregisterMatchingRes::Create(m_pConnection->GetMemoryManager(), InRouteContext, InTransactionID, InResult);
+			 pMessage = SF::Message::PartyMatchingQueue::UnregisterMatchingRes::Create(m_pConnection->GetNetIOHandler().GetIOHeap(), InRouteContext, InTransactionID, InResult);
 			 protocolChkPtr(*pMessage);
 
 			 return m_pConnection->Send( pMessage );
@@ -287,7 +287,7 @@ namespace SF
 			 MessageDataPtr pMessage;
 			 protocolChkPtr(m_pConnection);
 
-			 pMessage = SF::Message::PartyMatchingQueue::PartyMatchingCanceledS2CEvt::Create(m_pConnection->GetMemoryManager(), InRouteContext, InRouteHopCount, InDestPartyUID, InMatchingTicket);
+			 pMessage = SF::Message::PartyMatchingQueue::PartyMatchingCanceledS2CEvt::Create(m_pConnection->GetNetIOHandler().GetIOHeap(), InRouteContext, InRouteHopCount, InDestPartyUID, InMatchingTicket);
 			 protocolChkPtr(*pMessage);
 
 			 return m_pConnection->Send( pMessage );
@@ -305,7 +305,7 @@ namespace SF
 			 MessageDataPtr pMessage;
 			 protocolChkPtr(m_pConnection);
 
-			 pMessage = SF::Message::PartyMatchingQueue::PlayerMatchingCanceledS2CEvt::Create(m_pConnection->GetMemoryManager(), InRouteContext, InRouteHopCount, InDestPlayerID, InMatchingTicket);
+			 pMessage = SF::Message::PartyMatchingQueue::PlayerMatchingCanceledS2CEvt::Create(m_pConnection->GetNetIOHandler().GetIOHeap(), InRouteContext, InRouteHopCount, InDestPlayerID, InMatchingTicket);
 			 protocolChkPtr(*pMessage);
 
 			 return m_pConnection->Send( pMessage );
@@ -323,7 +323,7 @@ namespace SF
 			 MessageDataPtr pMessage;
 			 protocolChkPtr(m_pConnection);
 
-			 pMessage = SF::Message::PartyMatchingQueue::PartyMatchingItemDequeuedS2CEvt::Create(m_pConnection->GetMemoryManager(), InRouteContext, InRouteHopCount, InMatchingTicket);
+			 pMessage = SF::Message::PartyMatchingQueue::PartyMatchingItemDequeuedS2CEvt::Create(m_pConnection->GetNetIOHandler().GetIOHeap(), InRouteContext, InRouteHopCount, InMatchingTicket);
 			 protocolChkPtr(*pMessage);
 
 			 return m_pConnection->Send( pMessage );
@@ -341,7 +341,7 @@ namespace SF
 			 MessageDataPtr pMessage;
 			 protocolChkPtr(m_pConnection);
 
-			 pMessage = SF::Message::PartyMatchingQueue::PlayerMatchingItemDequeuedS2CEvt::Create(m_pConnection->GetMemoryManager(), InRouteContext, InRouteHopCount, InMatchingTicket);
+			 pMessage = SF::Message::PartyMatchingQueue::PlayerMatchingItemDequeuedS2CEvt::Create(m_pConnection->GetNetIOHandler().GetIOHeap(), InRouteContext, InRouteHopCount, InMatchingTicket);
 			 protocolChkPtr(*pMessage);
 
 			 return m_pConnection->Send( pMessage );
@@ -359,7 +359,7 @@ namespace SF
 			 MessageDataPtr pMessage;
 			 protocolChkPtr(m_pConnection);
 
-			 pMessage = SF::Message::PartyMatchingQueue::ReserveItemRes::Create(m_pConnection->GetMemoryManager(), InRouteContext, InTransactionID, InResult, InNumberOfPlayersInTheItem, InMatchingTicket);
+			 pMessage = SF::Message::PartyMatchingQueue::ReserveItemRes::Create(m_pConnection->GetNetIOHandler().GetIOHeap(), InRouteContext, InTransactionID, InResult, InNumberOfPlayersInTheItem, InMatchingTicket);
 			 protocolChkPtr(*pMessage);
 
 			 return m_pConnection->Send( pMessage );
@@ -377,7 +377,7 @@ namespace SF
 			 MessageDataPtr pMessage;
 			 protocolChkPtr(m_pConnection);
 
-			 pMessage = SF::Message::PartyMatchingQueue::ReserveItemsRes::Create(m_pConnection->GetMemoryManager(), InRouteContext, InTransactionID, InResult, InNumberOfPlayersInTheItem, InMatchingTicket);
+			 pMessage = SF::Message::PartyMatchingQueue::ReserveItemsRes::Create(m_pConnection->GetNetIOHandler().GetIOHeap(), InRouteContext, InTransactionID, InResult, InNumberOfPlayersInTheItem, InMatchingTicket);
 			 protocolChkPtr(*pMessage);
 
 			 return m_pConnection->Send( pMessage );
@@ -395,7 +395,7 @@ namespace SF
 			 MessageDataPtr pMessage;
 			 protocolChkPtr(m_pConnection);
 
-			 pMessage = SF::Message::PartyMatchingQueue::CancelReservationRes::Create(m_pConnection->GetMemoryManager(), InRouteContext, InTransactionID, InResult);
+			 pMessage = SF::Message::PartyMatchingQueue::CancelReservationRes::Create(m_pConnection->GetNetIOHandler().GetIOHeap(), InRouteContext, InTransactionID, InResult);
 			 protocolChkPtr(*pMessage);
 
 			 return m_pConnection->Send( pMessage );
@@ -413,7 +413,7 @@ namespace SF
 			 MessageDataPtr pMessage;
 			 protocolChkPtr(m_pConnection);
 
-			 pMessage = SF::Message::PartyMatchingQueue::CancelReservationsRes::Create(m_pConnection->GetMemoryManager(), InRouteContext, InTransactionID, InResult);
+			 pMessage = SF::Message::PartyMatchingQueue::CancelReservationsRes::Create(m_pConnection->GetNetIOHandler().GetIOHeap(), InRouteContext, InTransactionID, InResult);
 			 protocolChkPtr(*pMessage);
 
 			 return m_pConnection->Send( pMessage );
@@ -431,7 +431,7 @@ namespace SF
 			 MessageDataPtr pMessage;
 			 protocolChkPtr(m_pConnection);
 
-			 pMessage = SF::Message::PartyMatchingQueue::DequeueItemRes::Create(m_pConnection->GetMemoryManager(), InRouteContext, InTransactionID, InResult, InMatchingTicket, InRegisterUID, InRegisterID, InPlayers);
+			 pMessage = SF::Message::PartyMatchingQueue::DequeueItemRes::Create(m_pConnection->GetNetIOHandler().GetIOHeap(), InRouteContext, InTransactionID, InResult, InMatchingTicket, InRegisterUID, InRegisterID, InPlayers);
 			 protocolChkPtr(*pMessage);
 
 			 return m_pConnection->Send( pMessage );

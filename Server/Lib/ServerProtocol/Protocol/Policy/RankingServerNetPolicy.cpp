@@ -33,7 +33,7 @@ namespace SF
 			 MessageDataPtr pMessage;
 			 protocolChkPtr(m_pConnection);
 
-			 pMessage = SF::Message::RankingServer::AddPlayerCmd::Create(m_pConnection->GetMemoryManager(), InRouteContext, InTransactionID, InPlayerInfo, InRankingScore);
+			 pMessage = SF::Message::RankingServer::AddPlayerCmd::Create(m_pConnection->GetNetIOHandler().GetIOHeap(), InRouteContext, InTransactionID, InPlayerInfo, InRankingScore);
 			 protocolChkPtr(*pMessage);
 
 			 return m_pConnection->Send( pMessage );
@@ -51,7 +51,7 @@ namespace SF
 			 MessageDataPtr pMessage;
 			 protocolChkPtr(m_pConnection);
 
-			 pMessage = SF::Message::RankingServer::RemovePlayerCmd::Create(m_pConnection->GetMemoryManager(), InRouteContext, InTransactionID, InPlayerID);
+			 pMessage = SF::Message::RankingServer::RemovePlayerCmd::Create(m_pConnection->GetNetIOHandler().GetIOHeap(), InRouteContext, InTransactionID, InPlayerID);
 			 protocolChkPtr(*pMessage);
 
 			 return m_pConnection->Send( pMessage );
@@ -69,7 +69,7 @@ namespace SF
 			 MessageDataPtr pMessage;
 			 protocolChkPtr(m_pConnection);
 
-			 pMessage = SF::Message::RankingServer::GetPlayerRankingCmd::Create(m_pConnection->GetMemoryManager(), InRouteContext, InTransactionID, InPlayerID);
+			 pMessage = SF::Message::RankingServer::GetPlayerRankingCmd::Create(m_pConnection->GetNetIOHandler().GetIOHeap(), InRouteContext, InTransactionID, InPlayerID);
 			 protocolChkPtr(*pMessage);
 
 			 return m_pConnection->Send( pMessage );
@@ -87,7 +87,7 @@ namespace SF
 			 MessageDataPtr pMessage;
 			 protocolChkPtr(m_pConnection);
 
-			 pMessage = SF::Message::RankingServer::UpdatePlayerScoreCmd::Create(m_pConnection->GetMemoryManager(), InRouteContext, InTransactionID, InRankingScore, InPlayerInfo, InCount);
+			 pMessage = SF::Message::RankingServer::UpdatePlayerScoreCmd::Create(m_pConnection->GetNetIOHandler().GetIOHeap(), InRouteContext, InTransactionID, InRankingScore, InPlayerInfo, InCount);
 			 protocolChkPtr(*pMessage);
 
 			 return m_pConnection->Send( pMessage );
@@ -105,7 +105,7 @@ namespace SF
 			 MessageDataPtr pMessage;
 			 protocolChkPtr(m_pConnection);
 
-			 pMessage = SF::Message::RankingServer::GetRankingCmd::Create(m_pConnection->GetMemoryManager(), InRouteContext, InTransactionID, InRankingType, InBaseRanking, InCount);
+			 pMessage = SF::Message::RankingServer::GetRankingCmd::Create(m_pConnection->GetNetIOHandler().GetIOHeap(), InRouteContext, InTransactionID, InRankingType, InBaseRanking, InCount);
 			 protocolChkPtr(*pMessage);
 
 			 return m_pConnection->Send( pMessage );
@@ -123,7 +123,7 @@ namespace SF
 			 MessageDataPtr pMessage;
 			 protocolChkPtr(m_pConnection);
 
-			 pMessage = SF::Message::RankingServer::DebugPrintALLRankingCmd::Create(m_pConnection->GetMemoryManager(), InRouteContext, InTransactionID, InFileName);
+			 pMessage = SF::Message::RankingServer::DebugPrintALLRankingCmd::Create(m_pConnection->GetNetIOHandler().GetIOHeap(), InRouteContext, InTransactionID, InFileName);
 			 protocolChkPtr(*pMessage);
 
 			 return m_pConnection->Send( pMessage );
@@ -143,7 +143,7 @@ namespace SF
 			 MessageDataPtr pMessage;
 			 protocolChkPtr(m_pConnection);
 
-			 pMessage = SF::Message::RankingServer::AddPlayerRes::Create(m_pConnection->GetMemoryManager(), InRouteContext, InTransactionID, InResult, InRanking);
+			 pMessage = SF::Message::RankingServer::AddPlayerRes::Create(m_pConnection->GetNetIOHandler().GetIOHeap(), InRouteContext, InTransactionID, InResult, InRanking);
 			 protocolChkPtr(*pMessage);
 
 			 return m_pConnection->Send( pMessage );
@@ -161,7 +161,7 @@ namespace SF
 			 MessageDataPtr pMessage;
 			 protocolChkPtr(m_pConnection);
 
-			 pMessage = SF::Message::RankingServer::RemovePlayerRes::Create(m_pConnection->GetMemoryManager(), InRouteContext, InTransactionID, InResult);
+			 pMessage = SF::Message::RankingServer::RemovePlayerRes::Create(m_pConnection->GetNetIOHandler().GetIOHeap(), InRouteContext, InTransactionID, InResult);
 			 protocolChkPtr(*pMessage);
 
 			 return m_pConnection->Send( pMessage );
@@ -179,7 +179,7 @@ namespace SF
 			 MessageDataPtr pMessage;
 			 protocolChkPtr(m_pConnection);
 
-			 pMessage = SF::Message::RankingServer::GetPlayerRankingRes::Create(m_pConnection->GetMemoryManager(), InRouteContext, InTransactionID, InResult, InRanking);
+			 pMessage = SF::Message::RankingServer::GetPlayerRankingRes::Create(m_pConnection->GetNetIOHandler().GetIOHeap(), InRouteContext, InTransactionID, InResult, InRanking);
 			 protocolChkPtr(*pMessage);
 
 			 return m_pConnection->Send( pMessage );
@@ -197,7 +197,7 @@ namespace SF
 			 MessageDataPtr pMessage;
 			 protocolChkPtr(m_pConnection);
 
-			 pMessage = SF::Message::RankingServer::UpdatePlayerScoreRes::Create(m_pConnection->GetMemoryManager(), InRouteContext, InTransactionID, InResult, InRanking);
+			 pMessage = SF::Message::RankingServer::UpdatePlayerScoreRes::Create(m_pConnection->GetNetIOHandler().GetIOHeap(), InRouteContext, InTransactionID, InResult, InRanking);
 			 protocolChkPtr(*pMessage);
 
 			 return m_pConnection->Send( pMessage );
@@ -215,7 +215,7 @@ namespace SF
 			 MessageDataPtr pMessage;
 			 protocolChkPtr(m_pConnection);
 
-			 pMessage = SF::Message::RankingServer::GetRankingRes::Create(m_pConnection->GetMemoryManager(), InRouteContext, InTransactionID, InResult, InRanking);
+			 pMessage = SF::Message::RankingServer::GetRankingRes::Create(m_pConnection->GetNetIOHandler().GetIOHeap(), InRouteContext, InTransactionID, InResult, InRanking);
 			 protocolChkPtr(*pMessage);
 
 			 return m_pConnection->Send( pMessage );
@@ -233,7 +233,7 @@ namespace SF
 			 MessageDataPtr pMessage;
 			 protocolChkPtr(m_pConnection);
 
-			 pMessage = SF::Message::RankingServer::DebugPrintALLRankingRes::Create(m_pConnection->GetMemoryManager(), InRouteContext, InTransactionID, InResult);
+			 pMessage = SF::Message::RankingServer::DebugPrintALLRankingRes::Create(m_pConnection->GetNetIOHandler().GetIOHeap(), InRouteContext, InTransactionID, InResult);
 			 protocolChkPtr(*pMessage);
 
 			 return m_pConnection->Send( pMessage );

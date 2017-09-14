@@ -33,7 +33,7 @@ namespace SF
 			 MessageDataPtr pMessage;
 			 protocolChkPtr(m_pConnection);
 
-			 pMessage = SF::Message::Monitoring::GetInstanceListCmd::Create(m_pConnection->GetMemoryManager(), InTransactionID);
+			 pMessage = SF::Message::Monitoring::GetInstanceListCmd::Create(m_pConnection->GetNetIOHandler().GetIOHeap(), InTransactionID);
 			 protocolChkPtr(*pMessage);
 
 			 return m_pConnection->Send( pMessage );
@@ -51,7 +51,7 @@ namespace SF
 			 MessageDataPtr pMessage;
 			 protocolChkPtr(m_pConnection);
 
-			 pMessage = SF::Message::Monitoring::RequestCounterValuesCmd::Create(m_pConnection->GetMemoryManager(), InTransactionID, InInstanceUID);
+			 pMessage = SF::Message::Monitoring::RequestCounterValuesCmd::Create(m_pConnection->GetNetIOHandler().GetIOHeap(), InTransactionID, InInstanceUID);
 			 protocolChkPtr(*pMessage);
 
 			 return m_pConnection->Send( pMessage );
@@ -69,7 +69,7 @@ namespace SF
 			 MessageDataPtr pMessage;
 			 protocolChkPtr(m_pConnection);
 
-			 pMessage = SF::Message::Monitoring::PerformanceCounterNewC2SEvt::Create(m_pConnection->GetMemoryManager(), InInstanceName, InInstanceUID, InNewCounters);
+			 pMessage = SF::Message::Monitoring::PerformanceCounterNewC2SEvt::Create(m_pConnection->GetNetIOHandler().GetIOHeap(), InInstanceName, InInstanceUID, InNewCounters);
 			 protocolChkPtr(*pMessage);
 
 			 return m_pConnection->Send( pMessage );
@@ -87,7 +87,7 @@ namespace SF
 			 MessageDataPtr pMessage;
 			 protocolChkPtr(m_pConnection);
 
-			 pMessage = SF::Message::Monitoring::PerformanceCounterFreeC2SEvt::Create(m_pConnection->GetMemoryManager(), InFreeInstances);
+			 pMessage = SF::Message::Monitoring::PerformanceCounterFreeC2SEvt::Create(m_pConnection->GetNetIOHandler().GetIOHeap(), InFreeInstances);
 			 protocolChkPtr(*pMessage);
 
 			 return m_pConnection->Send( pMessage );
@@ -105,7 +105,7 @@ namespace SF
 			 MessageDataPtr pMessage;
 			 protocolChkPtr(m_pConnection);
 
-			 pMessage = SF::Message::Monitoring::PerformanceCounterUpdateC2SEvt::Create(m_pConnection->GetMemoryManager(), InInstanceUID, InCounterValues);
+			 pMessage = SF::Message::Monitoring::PerformanceCounterUpdateC2SEvt::Create(m_pConnection->GetNetIOHandler().GetIOHeap(), InInstanceUID, InCounterValues);
 			 protocolChkPtr(*pMessage);
 
 			 return m_pConnection->Send( pMessage );
@@ -125,7 +125,7 @@ namespace SF
 			 MessageDataPtr pMessage;
 			 protocolChkPtr(m_pConnection);
 
-			 pMessage = SF::Message::Monitoring::GetInstanceListRes::Create(m_pConnection->GetMemoryManager(), InTransactionID, InResult, InCounterInstances, InTotalInstanceCount);
+			 pMessage = SF::Message::Monitoring::GetInstanceListRes::Create(m_pConnection->GetNetIOHandler().GetIOHeap(), InTransactionID, InResult, InCounterInstances, InTotalInstanceCount);
 			 protocolChkPtr(*pMessage);
 
 			 return m_pConnection->Send( pMessage );
@@ -143,7 +143,7 @@ namespace SF
 			 MessageDataPtr pMessage;
 			 protocolChkPtr(m_pConnection);
 
-			 pMessage = SF::Message::Monitoring::RequestCounterValuesRes::Create(m_pConnection->GetMemoryManager(), InTransactionID, InResult, InInstanceUID, InCounterValues);
+			 pMessage = SF::Message::Monitoring::RequestCounterValuesRes::Create(m_pConnection->GetNetIOHandler().GetIOHeap(), InTransactionID, InResult, InInstanceUID, InCounterValues);
 			 protocolChkPtr(*pMessage);
 
 			 return m_pConnection->Send( pMessage );
@@ -161,7 +161,7 @@ namespace SF
 			 MessageDataPtr pMessage;
 			 protocolChkPtr(m_pConnection);
 
-			 pMessage = SF::Message::Monitoring::PerformanceCounterUpdateCounterInfoS2CEvt::Create(m_pConnection->GetMemoryManager(), InInstanceUID);
+			 pMessage = SF::Message::Monitoring::PerformanceCounterUpdateCounterInfoS2CEvt::Create(m_pConnection->GetNetIOHandler().GetIOHeap(), InInstanceUID);
 			 protocolChkPtr(*pMessage);
 
 			 return m_pConnection->Send( pMessage );

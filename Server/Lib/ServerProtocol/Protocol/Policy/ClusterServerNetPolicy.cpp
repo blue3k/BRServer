@@ -33,7 +33,7 @@ namespace SF
 			 MessageDataPtr pMessage;
 			 protocolChkPtr(m_pConnection);
 
-			 pMessage = SF::Message::ClusterServer::GetClusterMemberListCmd::Create(m_pConnection->GetMemoryManager(), InRouteContext, InTransactionID, InRouteHopCount, InClusterID);
+			 pMessage = SF::Message::ClusterServer::GetClusterMemberListCmd::Create(m_pConnection->GetNetIOHandler().GetIOHeap(), InRouteContext, InTransactionID, InRouteHopCount, InClusterID);
 			 protocolChkPtr(*pMessage);
 
 			 return m_pConnection->Send( pMessage );
@@ -51,7 +51,7 @@ namespace SF
 			 MessageDataPtr pMessage;
 			 protocolChkPtr(m_pConnection);
 
-			 pMessage = SF::Message::ClusterServer::JoinClusterCmd::Create(m_pConnection->GetMemoryManager(), InRouteContext, InTransactionID, InRouteHopCount, InSender, InSenderNetClass, InSenderAddress, InClusterID, InClusterType, InClusterMembership);
+			 pMessage = SF::Message::ClusterServer::JoinClusterCmd::Create(m_pConnection->GetNetIOHandler().GetIOHeap(), InRouteContext, InTransactionID, InRouteHopCount, InSender, InSenderNetClass, InSenderAddress, InClusterID, InClusterType, InClusterMembership);
 			 protocolChkPtr(*pMessage);
 
 			 return m_pConnection->Send( pMessage );
@@ -69,7 +69,7 @@ namespace SF
 			 MessageDataPtr pMessage;
 			 protocolChkPtr(m_pConnection);
 
-			 pMessage = SF::Message::ClusterServer::NewServerServiceJoinedC2SEvt::Create(m_pConnection->GetMemoryManager(), InRouteContext, InRouteHopCount, InJoinedServiceUID, InJoinedServiceNetClass, InJoinedServiceAddress, InClusterID, InClusterType, InJoinedServiceMembership);
+			 pMessage = SF::Message::ClusterServer::NewServerServiceJoinedC2SEvt::Create(m_pConnection->GetNetIOHandler().GetIOHeap(), InRouteContext, InRouteHopCount, InJoinedServiceUID, InJoinedServiceNetClass, InJoinedServiceAddress, InClusterID, InClusterType, InJoinedServiceMembership);
 			 protocolChkPtr(*pMessage);
 
 			 return m_pConnection->Send( pMessage );
@@ -87,7 +87,7 @@ namespace SF
 			 MessageDataPtr pMessage;
 			 protocolChkPtr(m_pConnection);
 
-			 pMessage = SF::Message::ClusterServer::SyncClusterServiceC2SEvt::Create(m_pConnection->GetMemoryManager(), InRouteContext, InRouteHopCount, InClusterID, InClusterType, InMemberList);
+			 pMessage = SF::Message::ClusterServer::SyncClusterServiceC2SEvt::Create(m_pConnection->GetNetIOHandler().GetIOHeap(), InRouteContext, InRouteHopCount, InClusterID, InClusterType, InMemberList);
 			 protocolChkPtr(*pMessage);
 
 			 return m_pConnection->Send( pMessage );
@@ -105,7 +105,7 @@ namespace SF
 			 MessageDataPtr pMessage;
 			 protocolChkPtr(m_pConnection);
 
-			 pMessage = SF::Message::ClusterServer::RequestDataSyncCmd::Create(m_pConnection->GetMemoryManager(), InRouteContext, InTransactionID, InRouteHopCount, InClusterID);
+			 pMessage = SF::Message::ClusterServer::RequestDataSyncCmd::Create(m_pConnection->GetNetIOHandler().GetIOHeap(), InRouteContext, InTransactionID, InRouteHopCount, InClusterID);
 			 protocolChkPtr(*pMessage);
 
 			 return m_pConnection->Send( pMessage );
@@ -123,7 +123,7 @@ namespace SF
 			 MessageDataPtr pMessage;
 			 protocolChkPtr(m_pConnection);
 
-			 pMessage = SF::Message::ClusterServer::ClusterMasterVoteC2SEvt::Create(m_pConnection->GetMemoryManager(), InRouteContext, InRouteHopCount, InClusterID, InVoteToUID, InVotedUpTime);
+			 pMessage = SF::Message::ClusterServer::ClusterMasterVoteC2SEvt::Create(m_pConnection->GetNetIOHandler().GetIOHeap(), InRouteContext, InRouteHopCount, InClusterID, InVoteToUID, InVotedUpTime);
 			 protocolChkPtr(*pMessage);
 
 			 return m_pConnection->Send( pMessage );
@@ -141,7 +141,7 @@ namespace SF
 			 MessageDataPtr pMessage;
 			 protocolChkPtr(m_pConnection);
 
-			 pMessage = SF::Message::ClusterServer::ClusterUpdateStatusC2SEvt::Create(m_pConnection->GetMemoryManager(), InRouteContext, InRouteHopCount, InSender, InClusterID, InMemberStatus);
+			 pMessage = SF::Message::ClusterServer::ClusterUpdateStatusC2SEvt::Create(m_pConnection->GetNetIOHandler().GetIOHeap(), InRouteContext, InRouteHopCount, InSender, InClusterID, InMemberStatus);
 			 protocolChkPtr(*pMessage);
 
 			 return m_pConnection->Send( pMessage );
@@ -159,7 +159,7 @@ namespace SF
 			 MessageDataPtr pMessage;
 			 protocolChkPtr(m_pConnection);
 
-			 pMessage = SF::Message::ClusterServer::ClusterUpdateWorkloadC2SEvt::Create(m_pConnection->GetMemoryManager(), InRouteContext, InRouteHopCount, InSender, InClusterID, InWorkload);
+			 pMessage = SF::Message::ClusterServer::ClusterUpdateWorkloadC2SEvt::Create(m_pConnection->GetNetIOHandler().GetIOHeap(), InRouteContext, InRouteHopCount, InSender, InClusterID, InWorkload);
 			 protocolChkPtr(*pMessage);
 
 			 return m_pConnection->Send( pMessage );
@@ -177,7 +177,7 @@ namespace SF
 			 MessageDataPtr pMessage;
 			 protocolChkPtr(m_pConnection);
 
-			 pMessage = SF::Message::ClusterServer::GetLowestWorkloadClusterMemberCmd::Create(m_pConnection->GetMemoryManager(), InRouteContext, InTransactionID, InRouteHopCount, InClusterID);
+			 pMessage = SF::Message::ClusterServer::GetLowestWorkloadClusterMemberCmd::Create(m_pConnection->GetNetIOHandler().GetIOHeap(), InRouteContext, InTransactionID, InRouteHopCount, InClusterID);
 			 protocolChkPtr(*pMessage);
 
 			 return m_pConnection->Send( pMessage );
@@ -195,7 +195,7 @@ namespace SF
 			 MessageDataPtr pMessage;
 			 protocolChkPtr(m_pConnection);
 
-			 pMessage = SF::Message::ClusterServer::GamePlayerEntityCreatedC2SEvt::Create(m_pConnection->GetMemoryManager(), InRouteContext, InRouteHopCount, InPlayerID, InPlayerUID);
+			 pMessage = SF::Message::ClusterServer::GamePlayerEntityCreatedC2SEvt::Create(m_pConnection->GetNetIOHandler().GetIOHeap(), InRouteContext, InRouteHopCount, InPlayerID, InPlayerUID);
 			 protocolChkPtr(*pMessage);
 
 			 return m_pConnection->Send( pMessage );
@@ -213,7 +213,7 @@ namespace SF
 			 MessageDataPtr pMessage;
 			 protocolChkPtr(m_pConnection);
 
-			 pMessage = SF::Message::ClusterServer::GamePlayerEntityDeletedC2SEvt::Create(m_pConnection->GetMemoryManager(), InRouteContext, InRouteHopCount, InPlayerID, InPlayerUID);
+			 pMessage = SF::Message::ClusterServer::GamePlayerEntityDeletedC2SEvt::Create(m_pConnection->GetNetIOHandler().GetIOHeap(), InRouteContext, InRouteHopCount, InPlayerID, InPlayerUID);
 			 protocolChkPtr(*pMessage);
 
 			 return m_pConnection->Send( pMessage );
@@ -233,7 +233,7 @@ namespace SF
 			 MessageDataPtr pMessage;
 			 protocolChkPtr(m_pConnection);
 
-			 pMessage = SF::Message::ClusterServer::GetClusterMemberListRes::Create(m_pConnection->GetMemoryManager(), InRouteContext, InTransactionID, InResult, InMemberList);
+			 pMessage = SF::Message::ClusterServer::GetClusterMemberListRes::Create(m_pConnection->GetNetIOHandler().GetIOHeap(), InRouteContext, InTransactionID, InResult, InMemberList);
 			 protocolChkPtr(*pMessage);
 
 			 return m_pConnection->Send( pMessage );
@@ -251,7 +251,7 @@ namespace SF
 			 MessageDataPtr pMessage;
 			 protocolChkPtr(m_pConnection);
 
-			 pMessage = SF::Message::ClusterServer::JoinClusterRes::Create(m_pConnection->GetMemoryManager(), InRouteContext, InTransactionID, InResult, InMemberList);
+			 pMessage = SF::Message::ClusterServer::JoinClusterRes::Create(m_pConnection->GetNetIOHandler().GetIOHeap(), InRouteContext, InTransactionID, InResult, InMemberList);
 			 protocolChkPtr(*pMessage);
 
 			 return m_pConnection->Send( pMessage );
@@ -269,7 +269,7 @@ namespace SF
 			 MessageDataPtr pMessage;
 			 protocolChkPtr(m_pConnection);
 
-			 pMessage = SF::Message::ClusterServer::RequestDataSyncRes::Create(m_pConnection->GetMemoryManager(), InRouteContext, InTransactionID, InResult);
+			 pMessage = SF::Message::ClusterServer::RequestDataSyncRes::Create(m_pConnection->GetNetIOHandler().GetIOHeap(), InRouteContext, InTransactionID, InResult);
 			 protocolChkPtr(*pMessage);
 
 			 return m_pConnection->Send( pMessage );
@@ -287,7 +287,7 @@ namespace SF
 			 MessageDataPtr pMessage;
 			 protocolChkPtr(m_pConnection);
 
-			 pMessage = SF::Message::ClusterServer::ClusterMasterAssignedS2CEvt::Create(m_pConnection->GetMemoryManager(), InRouteContext, InRouteHopCount, InSender, InClusterID, InMasterUID);
+			 pMessage = SF::Message::ClusterServer::ClusterMasterAssignedS2CEvt::Create(m_pConnection->GetNetIOHandler().GetIOHeap(), InRouteContext, InRouteHopCount, InSender, InClusterID, InMasterUID);
 			 protocolChkPtr(*pMessage);
 
 			 return m_pConnection->Send( pMessage );
@@ -305,7 +305,7 @@ namespace SF
 			 MessageDataPtr pMessage;
 			 protocolChkPtr(m_pConnection);
 
-			 pMessage = SF::Message::ClusterServer::GetLowestWorkloadClusterMemberRes::Create(m_pConnection->GetMemoryManager(), InRouteContext, InTransactionID, InResult, InMember);
+			 pMessage = SF::Message::ClusterServer::GetLowestWorkloadClusterMemberRes::Create(m_pConnection->GetNetIOHandler().GetIOHeap(), InRouteContext, InTransactionID, InResult, InMember);
 			 protocolChkPtr(*pMessage);
 
 			 return m_pConnection->Send( pMessage );
