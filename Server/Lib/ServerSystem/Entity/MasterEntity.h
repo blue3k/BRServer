@@ -79,7 +79,7 @@ namespace Svr {
 
 		virtual void OnAddedToTaskManager(TaskWorker *pWorker) override;
 
-		virtual Result OnEventTask(const ServerTaskEvent& eventTask) override;
+		virtual Result OnEventTask(ServerTaskEvent& eventTask) override;
 
 	};
 

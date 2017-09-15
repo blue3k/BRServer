@@ -59,10 +59,10 @@ namespace SF
 			case "db"_hash32:					m_Parameter.MainChannelMasks[(int)LogMainChannels::DB] = maskValue; break;
 			case "svr"_hash32:					m_Parameter.MainChannelMasks[(int)LogMainChannels::Svr] = maskValue; break;
 			case "protocol"_hash32:				m_Parameter.MainChannelMasks[(int)LogMainChannels::Protocol] = maskValue; break;
-			case "outputdebugger"_hash32:		OutputDebugger = maskValue; break;
-			case "outputconsole"_hash32:		OutputConsole = maskValue; break;
-			case "outputfile"_hash32:			OutputFile = maskValue; break;
-			case "outputdebugfile"_hash32:		break;
+			case "OutputDebugger"_hash32:		OutputDebugger = maskValue; break;
+			case "OutputConsole"_hash32:		OutputConsole = maskValue; break;
+			case "OutputFile"_hash32:			OutputFile = maskValue; break;
+			case "OutputDbgFile"_hash32:		break;
 			default:
 				break;
 			}
@@ -139,10 +139,10 @@ namespace SF
 			auto pConsole = Engine::GetEngineComponent<LogOutputConsoleComponent>();
 			if (pConsole != nullptr) pConsole->GetHandler().SetOutputMask(OutputConsole);
 
-			auto pDebugger = Engine::GetEngineComponent<LogOutputConsoleComponent>();
+			auto pDebugger = Engine::GetEngineComponent<LogOutputDebuggerComponent>();
 			if (pDebugger != nullptr) pDebugger->GetHandler().SetOutputMask(OutputDebugger);
 
-			auto pFile = Engine::GetEngineComponent<LogOutputConsoleComponent>();
+			auto pFile = Engine::GetEngineComponent<LogOutputFileComponent>();
 			if (pFile != nullptr) pFile->GetHandler().SetOutputMask(OutputFile);
 		}
 

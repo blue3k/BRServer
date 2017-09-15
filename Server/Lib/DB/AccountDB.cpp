@@ -29,7 +29,6 @@ namespace DB {
 	
 	// constructor / destructor
 	AccountDB::AccountDB()
-		:Svr::IServerComponent(ComponentID)
 	{
 	}
 
@@ -41,7 +40,6 @@ namespace DB {
 	void AccountDB::TerminateComponent()
 	{
 		TerminateDB();
-		Svr::IServerComponent::TerminateComponent();
 	}
 
 

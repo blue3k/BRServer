@@ -291,6 +291,9 @@ namespace Svr {
 		//
 
 		template< class ServiceEntityType, typename... ConstructorArgs >
+		ServiceEntityType* AddServiceEntity(ConstructorArgs... constructorArgs);
+
+		template< class ServiceEntityType, typename... ConstructorArgs >
 		Result AddServiceEntityComponent(ConstructorArgs... constructorArgs);
 
 		// Register clustered service
@@ -313,8 +316,7 @@ namespace Svr {
 	template< class ComponentType >
 	ComponentType* GetServerComponent();
 
-	template< class ComponentType >
-	Result AddServerComponent(ComponentType* &newComponent);
+
 
 
 

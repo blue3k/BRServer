@@ -145,7 +145,7 @@ namespace Svr {
 
 		/////////////////////////////////////////////////////////////////////////////////////
 		// Event task handling
-		virtual Result OnEventTask(const ServerTaskEvent& eventTask) override;
+		virtual Result OnEventTask(ServerTaskEvent& eventTask) override;
 	};
 
 

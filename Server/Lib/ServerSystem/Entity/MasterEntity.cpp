@@ -350,7 +350,7 @@ namespace Svr
 		Entity::OnAddedToTaskManager(pWorker);
 	}
 
-	Result MasterEntity::OnEventTask(const ServerTaskEvent& eventTask)
+	Result MasterEntity::OnEventTask(ServerTaskEvent& eventTask)
 	{
 		Result hr = ResultCode::SUCCESS;
 		TransactionPtr pCurTran;

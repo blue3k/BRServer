@@ -27,7 +27,7 @@ namespace DB {
 	//	GameDB Class 
 	//
 
-	class LoginSessionDB : private DBClusterManager, public Svr::IServerComponent
+	class LoginSessionDB : public DBClusterManager
 	{
 	public:
 
@@ -42,7 +42,8 @@ namespace DB {
 		LoginSessionDB();
 		virtual ~LoginSessionDB();
 
-		virtual void TerminateComponent() override;
+		Result InitializeComponent() { return ResultCode::SUCCESS; }
+		virtual void TerminateComponent() ;
 
 	public:
 

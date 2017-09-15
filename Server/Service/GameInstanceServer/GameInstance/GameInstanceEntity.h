@@ -68,7 +68,7 @@ namespace ConspiracyGameInstanceServer
 	//	Game Instance entity class
 	//
 
-	class GameInstanceEntity : public Svr::GameInstanceEntity, public ComponentCarrier<GameSystemComponentID_Max>
+	class GameInstanceEntity : public Svr::GameInstanceEntity
 	{
 	public:
 
@@ -77,6 +77,7 @@ namespace ConspiracyGameInstanceServer
 	private:
 		typedef Svr::GameInstanceEntity super;
 
+		ComponentCarrier<GameSystemComponentID_Max> m_ComponentCarrier;
 
 		// Player by index
 		GamePlayer*				m_PlayerByIndex[GameConst::MAX_GAMEPLAYER];
@@ -110,6 +111,13 @@ namespace ConspiracyGameInstanceServer
 
 		GameInstanceEntity();
 		~GameInstanceEntity();
+
+		ComponentCarrier<GameSystemComponentID_Max>& GetComponentCarrier() { return m_ComponentCarrier; }
+
+		// Get component with its type
+		template< class ComponentType >
+		ComponentType* GetComponent() { return m_ComponentCarrier.GetComponent<ComponentType>(); }
+
 
 		GameConfigType* GetPresetGameConfig() { return m_PresetGameConfig; }
 

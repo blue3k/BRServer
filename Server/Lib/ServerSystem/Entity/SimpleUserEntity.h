@@ -111,7 +111,7 @@ namespace Svr {
 		virtual Result OnNetSyncMessage(Net::Connection* pConn) override;
 		virtual Result OnNetSendReadyMessage(Net::Connection* pConn) override;
 
-		virtual Result OnEventTask(const ServerTaskEvent& eventTask) override;
+		virtual Result OnEventTask(ServerTaskEvent& eventTask) override;
 	};
 
 

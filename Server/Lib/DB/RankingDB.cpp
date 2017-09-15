@@ -28,7 +28,6 @@ namespace DB {
 	
 	// constructor / destructor
 	RankingDB::RankingDB()
-		:Svr::IServerComponent(ComponentID)
 	{
 	}
 
@@ -40,7 +39,6 @@ namespace DB {
 	void RankingDB::TerminateComponent()
 	{
 		TerminateDB();
-		Svr::IServerComponent::TerminateComponent();
 	}
 
 

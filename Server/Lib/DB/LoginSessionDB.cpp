@@ -28,7 +28,6 @@ namespace DB {
 	
 	// constructor / destructor
 	LoginSessionDB::LoginSessionDB()
-		:Svr::IServerComponent(ComponentID)
 	{
 	}
 
@@ -39,7 +38,6 @@ namespace DB {
 	void LoginSessionDB::TerminateComponent()
 	{
 		TerminateDB();
-		Svr::IServerComponent::TerminateComponent();
 	}
 
 

@@ -40,7 +40,7 @@ namespace Svr {
 	//	ServerServiceComponentEntity class
 	//
 
-	class ClusterManagerServiceEntity : public ReplicaClusterServiceEntity, public IServerComponent
+	class ClusterManagerServiceEntity : public ReplicaClusterServiceEntity
 	{
 	public:
 
@@ -83,6 +83,13 @@ namespace Svr {
 		virtual Result RegisterServiceMessageHandler( ServerEntity *pServerEntity ) override;
 
 		virtual Result TickUpdate(TimerAction *pAction = nullptr) override;
+
+		// Initialize server component
+		Result InitializeComponent() { return ResultCode::SUCCESS; }
+		// Terminate server component
+		void TerminateComponent() {  }
+
+
 	};
 
 

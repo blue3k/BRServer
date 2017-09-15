@@ -30,9 +30,7 @@ namespace MatchingUtil
 	Result GetQueueComponentIDMinMax(uint matchingMemberCount, uint& minComponentID, uint& maxComponentID);
 	uint GetQueueCount(uint matchingMemberCount);
 
-	uint GetQueueComponentID(uint matchingMemberCount, uint partyMemberCount, PlayerRole playerRole);
-
-	uint GetComponentIDFromClusterID(ClusterID clusterID);
+	ClusterID GetQueueClusterID(uint matchingMemberCount, uint partyMemberCount, PlayerRole playerRole);
 
 }
 } // namespace Svr 

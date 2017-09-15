@@ -44,7 +44,6 @@ namespace Svr {
 
 	GameInstanceManagerServiceEntity::GameInstanceManagerServiceEntity(ClusterID clusterID, ClusterMembership initialMembership)
 		: LoadbalanceClusterServiceEntity(clusterID, initialMembership )
-		, IServerComponent(ComponentID)
 		, m_NumberOfInstance("NumberOfGameInstances")
 	{
 		BR_ENTITY_MESSAGE(Message::GameInstanceManager::CreateGameCmd)		{ svrMemReturn(pNewTrans = new(GetMemoryManager()) GameInstanceTransCreateGame(GetMemoryManager(), pMsgData)); return ResultCode::SUCCESS; } );
@@ -131,7 +130,6 @@ namespace Svr {
 
 	GameInstanceManagerWatcherServiceEntity::GameInstanceManagerWatcherServiceEntity( GameID gameID )
 		:LoadbalanceClusterServiceEntity(ClusterIDFromGameID(gameID), ClusterMembership::StatusWatcher)
-		,IServerComponent(ComponentID)
 	{
 	}
 

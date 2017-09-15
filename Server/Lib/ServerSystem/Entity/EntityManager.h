@@ -16,6 +16,7 @@
 #include "Entity/Entity.h"
 #include "Task/ServerTaskManager.h"
 #include "Object/LibraryComponent.h"
+#include "Object/SharedObjectManager.h"
 #include "Service/ServerService.h"
 #include "PerformanceCounter/PerformanceCounter.h"
 #include "PerformanceCounter/PerformanceCounterInstance.h"
@@ -39,6 +40,8 @@ namespace Svr {
 	private:
 
 		MemoryManager m_MemoryManager;
+
+		SharedObjectManager m_SharedObjectManager;
 
 		uint m_NumTaskGroup = 0;
 		PerformanceCounterRaw < uint64_t > m_NumberOfServices;
@@ -78,7 +81,9 @@ namespace Svr {
 
 		//virtual void RegisterCounter() override {}
 
+		virtual void FlushDeletedEntity() override;
 
+		virtual void Update() override;
 
 		// Initialize component
 		virtual Result InitializeComponent() override;

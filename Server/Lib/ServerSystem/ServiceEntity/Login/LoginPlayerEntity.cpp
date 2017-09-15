@@ -180,7 +180,9 @@ namespace Svr {
 	{
 		Result hr = ResultCode::SUCCESS;
 
-		if( m_TimeToKill.CheckTimer() )
+		auto& connection = GetConnection();
+
+		if( m_TimeToKill.CheckTimer() || connection == nullptr || connection->GetConnectionState() == Net::ConnectionState::DISCONNECTED)
 		{
 			if (GetAccountID() > 0)
 			{
@@ -199,6 +201,10 @@ namespace Svr {
 		Result hr = ResultCode::SUCCESS;
 		TransactionPtr trans;
 
+		if (m_ClosingPended)
+			return hr;
+
+		m_ClosingPended = true;
 		svrMem( trans = new(GetMemoryManager()) LoginPlayerTransCloseInstance(GetMemoryManager()) );
 		svrChk( trans->InitializeTransaction(this) );
 		svrChk(PendingTransaction(GetTaskWorker()->GetThreadID(), trans));

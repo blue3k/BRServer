@@ -85,6 +85,7 @@ namespace SF {
 			}
 		}
 
+		IHeap& GetHeap() { return m_Heap; }
 
 		// Clear components
 		virtual void ClearComponents()
@@ -264,9 +265,6 @@ namespace SF {
 		}
 
 
-		virtual void OnAddComponent( Component* newComponent)
-		{}
-
 		template< class ComponentType >
 		Result AddComponent( ComponentType* &newComponent )
 		{
@@ -288,6 +286,9 @@ namespace SF {
 
 			return ResultCode::SUCCESS;
 		}
+
+		virtual void OnAddComponent(Component* newComponent)
+		{}
 
 		// Get component with its ID
 		Component* GetComponent( int ID )
@@ -348,6 +349,7 @@ namespace SF {
 					functor(m_Components[iComponent]);
 			}
 		}
+
 	};
 
 

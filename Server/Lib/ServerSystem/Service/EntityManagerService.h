@@ -61,6 +61,10 @@ namespace SF {
 
 		virtual void RegisterCounter() {}
 
+		virtual void FlushDeletedEntity() {}
+
+		virtual void Update() {}
+
 	};
 
 	

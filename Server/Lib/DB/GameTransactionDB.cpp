@@ -28,7 +28,6 @@ namespace DB {
 	
 	// constructor / destructor
 	GameTransactionDB::GameTransactionDB()
-		:Svr::IServerComponent(ComponentID)
 	{
 	}
 
@@ -39,7 +38,6 @@ namespace DB {
 	void GameTransactionDB::TerminateComponent()
 	{
 		TerminateDB();
-		Svr::IServerComponent::TerminateComponent();
 	}
 
 	

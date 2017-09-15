@@ -74,7 +74,8 @@ namespace Svr {
 		svrMem(pGameService = new(GetMemoryManager()) Svr::GameClusterServiceEntity(m_GameID, m_PublicNetSocket, ClusterMembership::Slave));
 		svrChk(Service::EntityManager->AddEntity(EntityFaculty::Service, pGameService));
 		svrChk(GetServerComponent<Svr::ClusterManagerServiceEntity>()->AddClusterServiceEntity(pGameService));
-		svrChk(AddServerComponent(pGameService));
+		//svrChk(AddServerComponent(pGameService));
+		BrServer::GetInstance()->GetComponentCarrier().AddComponentWithAdapter(pGameService);
 
 
 	Proc_End:

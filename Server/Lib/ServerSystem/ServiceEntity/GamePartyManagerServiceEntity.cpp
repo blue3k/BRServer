@@ -48,7 +48,6 @@ namespace Svr {
 
 	GamePartyManagerServiceEntity::GamePartyManagerServiceEntity(ClusterMembership initialMembership)
 		: LoadbalanceClusterServiceEntity(ClusterID::GamePartyManager, initialMembership )
-		, IServerComponent(ComponentID)
 		, m_PartyCount("PartyCount")
 	{
 		// Game party manager transactions
@@ -174,7 +173,6 @@ namespace Svr {
 
 	GamePartyManagerWatcherServiceEntity::GamePartyManagerWatcherServiceEntity()
 		:LoadbalanceClusterServiceEntity(ClusterID::GamePartyManager, ClusterMembership::StatusWatcher)
-		,IServerComponent(ComponentID)
 	{
 	}
 

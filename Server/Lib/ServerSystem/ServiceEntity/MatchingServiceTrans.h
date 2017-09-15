@@ -56,7 +56,7 @@ namespace Svr {
 
 		// target queue member count
 		uint m_TargetQueueMemberCount;
-		uint m_TargetQueueComponentID;
+		ClusterID m_TargetQueueClusterID = ClusterID::Max;
 		uint m_MatchingMemberCount;
 		PlayerRole m_RequestRole;
 

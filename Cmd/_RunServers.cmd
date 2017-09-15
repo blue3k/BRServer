@@ -1,6 +1,6 @@
 
 
-del /s %PATH_BIN%\..\log\*.txt
+del /s %PATH_BIN%\..\log\*.log
 
 
 start %PATH_BIN%\BREntityServer.Win.exe -debug -n:BREntityServer1

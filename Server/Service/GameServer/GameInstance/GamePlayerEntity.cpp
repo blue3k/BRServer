@@ -63,7 +63,7 @@ namespace GameServer {
 
 
 	GamePlayerEntity::GamePlayerEntity()
-		: ComponentCarrier(GetHeap())
+		: m_ComponentCarrier(GetHeap())
 	{
 		memset( m_UserName, 0, sizeof(m_UserName) );
 		memset( m_GCMKeys, 0, sizeof(m_GCMKeys) );
@@ -150,11 +150,11 @@ namespace GameServer {
 
 		m_TimeToKill.SetTimer(DurationMS(PlayerAutoLogout * 1000));
 
-		svrChk( AddComponent<UserFriendSystem>(this) );
-		svrChk( AddComponent<UserGamePlayerInfoSystem>(this) );
-		svrChk( AddComponent<UserNotifySystem>(this) );
+		svrChk( GetComponentCarrier().AddComponent<UserFriendSystem>(this) );
+		svrChk( GetComponentCarrier().AddComponent<UserGamePlayerInfoSystem>(this) );
+		svrChk( GetComponentCarrier().AddComponent<UserNotifySystem>(this) );
 
-		svrChk( InitializeComponents() );
+		svrChk(GetComponentCarrier().InitializeComponents() );
 
 	Proc_End:
 

@@ -96,18 +96,52 @@ namespace MatchingUtil {
 
 	uint GetQueueCount(uint matchingMemberCount)
 	{
-		uint minComponentID, maxComponentID;
-
-		if (!(GetQueueComponentIDMinMax(matchingMemberCount, minComponentID, maxComponentID)))
+		switch (matchingMemberCount)
 		{
-			Assert(false);
-			return (uint)0;
-		}
+		case 4:
+			return 5;
 
-		return maxComponentID - minComponentID + 1;
+		case 8:
+			return 9;
+
+		default:
+			assert(false);
+			return 0;
+		};
 	}
 
 
+	ClusterID GetQueueClusterID(uint matchingMemberCount, uint partyMemberCount, PlayerRole playerRole)
+	{
+		int minClusterID = (int)ClusterID::Max;
+		switch (matchingMemberCount)
+		{
+		case 4:
+			minClusterID = (int)ClusterID::MatchingQueue_Game_4x1;
+			break;
+
+		case 8:
+			minClusterID = (int)ClusterID::MatchingQueue_Game_8x1;
+			break;
+
+		default:
+			assert(false);
+			return ClusterID::Max;
+		};
+
+
+		int resultClusterID;
+		switch (playerRole)
+		{
+		case PlayerRole::Seer:      resultClusterID = minClusterID + (int)GetQueueCount(matchingMemberCount) - 2;  break;
+		case PlayerRole::Werewolf:  resultClusterID = minClusterID + (int)GetQueueCount(matchingMemberCount) - 1;  break;
+		default:                    resultClusterID = minClusterID + (int)partyMemberCount - 1;  break;
+		}
+
+
+		return (ClusterID)resultClusterID;
+	}
+/*
 	uint GetQueueComponentID(uint matchingMemberCount, uint partyMemberCount, PlayerRole playerRole)
 	{
 		uint minComponentID, maxComponentID;
@@ -143,8 +177,8 @@ namespace MatchingUtil {
 
 		return componentID;
 	}
-
-
+*/
+/*
 	uint GetComponentIDFromClusterID(ClusterID clusterID)
 	{
 		switch (clusterID)
@@ -169,7 +203,7 @@ namespace MatchingUtil {
 			return ServerComponentID_MatchingQueueWatcherService_8x1;
 		}
 	}
-
+*/
 
 };// namespace 
 };// namespace Svr 

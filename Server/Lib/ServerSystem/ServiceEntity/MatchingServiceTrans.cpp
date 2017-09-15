@@ -32,6 +32,7 @@
 #include "ServiceEntity/MatchingServiceEntity.h"
 #include "ServiceEntity/MatchingQueueServiceEntity.h"
 #include "ServiceEntity/Game/GameInstanceManagerServiceEntity.h"
+#include "ServiceEntity/ClusterManagerServiceEntity.h"
 
 #include "Protocol/ServerService/PartyMatchingQueueService.h"
 #include "Protocol/ServerService/GameInstanceManagerService.h"
@@ -65,7 +66,7 @@ namespace Svr {
 		Assert(m_MaxQueueCount);
 		Assert(m_MaxQueueCount > m_MinQueueCount);
 
-		m_TargetQueueComponentID = MatchingUtil::GetQueueComponentID(matchingMemberCount, targetQueueMemberCount, m_RequestRole);
+		m_TargetQueueClusterID = MatchingUtil::GetQueueClusterID(matchingMemberCount, targetQueueMemberCount, m_RequestRole);
 
 		SetPrintTrace(false);
 
@@ -122,11 +123,11 @@ namespace Svr {
 	{
 		Result hr = ResultCode::SUCCESS;
 		ServerServiceInformation *pService = nullptr;
-		RingClusterServiceEntity *pServiceEntity = nullptr;
+		ClusteredServiceEntity *pServiceEntity = nullptr;
 
-		svrChkPtr(pServiceEntity = GetServerComponent<RingClusterServiceEntity>(m_TargetQueueComponentID));
+		svrChk(GetServerComponent<ClusterManagerServiceEntity>()->GetClusterServiceEntity(m_TargetQueueClusterID, pServiceEntity));
 
-		if (!(pServiceEntity->GetService(pService)))
+		if (!(pServiceEntity->FindRandomService(pService)))
 		{
 			return ResultCode::SVR_CLUSTER_NOTREADY;
 		}
@@ -134,7 +135,7 @@ namespace Svr {
 		// NOTE: Workload bug, just try to grab
 		//if (pService->GetWorkload() > 0)
 		{
-			svrTrace(SVR_DBGMATCHING, "Try to make a reservation. Matching:{0}, TargetQueueCompo:{1}, expected {2}", m_MatchingMemberCount, m_TargetQueueComponentID, pService->GetWorkload());
+			svrTrace(SVR_DBGMATCHING, "Try to make a reservation. Matching:{0}, TargetQueueCompo:{1}, expected {2}", m_MatchingMemberCount, m_TargetQueueClusterID, pService->GetWorkload());
 			svrChk(pService->GetService<Svr::PartyMatchingQueueService>()->ReserveItemsCmd(GetTransID(), 0, grabCount));
 		}
 		//else
@@ -148,11 +149,11 @@ namespace Svr {
 		{
 			if (pServiceEntity != nullptr)
 			{
-				svrTrace(Error, "Matching queue watcher query is failed, matching queueID:{0}, ServiceEntityUID:{1}, ClusterID:{2}", m_TargetQueueComponentID, pServiceEntity->GetEntityUID(), pServiceEntity->GetClusterID());
+				svrTrace(Error, "Matching queue watcher query is failed, matching queueID:{0}, ServiceEntityUID:{1}, ClusterID:{2}", m_TargetQueueClusterID, pServiceEntity->GetEntityUID(), pServiceEntity->GetClusterID());
 			}
 			else
 			{
-				svrTrace(Error, "Matching queue watcher query is failed, matching queueID:{0}", m_TargetQueueComponentID);
+				svrTrace(Error, "Matching queue watcher query is failed, matching queueID:{0}", m_TargetQueueClusterID);
 			}
 		}
 
@@ -165,7 +166,7 @@ namespace Svr {
 		Result hr = ResultCode::SUCCESS;
 		ServerEntity *pServerEntity = nullptr;
 
-		svrTrace(SVR_MATCHING, "Request Delete item Matching:{0}, MatchingQueueID:{1}, MTicket:{2}", m_MatchingMemberCount, m_TargetQueueComponentID, ticket);
+		svrTrace(SVR_MATCHING, "Request Delete item Matching:{0}, MatchingQueueID:{1}, MTicket:{2}", m_MatchingMemberCount, m_TargetQueueClusterID, ticket);
 
 		svrChk(GetServerComponent<ServerEntityManager>()->GetServerEntity(ticket.QueueUID.GetServerID(), pServerEntity));
 
@@ -199,7 +200,7 @@ namespace Svr {
 			auto& pNumPlayersInItems = msgRes.GetNumberOfPlayersInTheItem();
 			auto& pMatchingTickets = msgRes.GetMatchingTicket();
 
-			svrTrace(SVR_MATCHING, "{2} items are cached, Matching:{0}, MatchingQueueCompo:{1}, Count:{2}", m_MatchingMemberCount, m_TargetQueueComponentID, numItems);
+			svrTrace(SVR_MATCHING, "{2} items are cached, Matching:{0}, MatchingQueueCompo:{1}, Count:{2}", m_MatchingMemberCount, m_TargetQueueClusterID, numItems);
 
 			for (uint iItem = 0; iItem < numItems; iItem++)
 			{

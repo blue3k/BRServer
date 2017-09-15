@@ -332,7 +332,6 @@ namespace Svr {
 
 	RankingWatcherServiceEntity::RankingWatcherServiceEntity( ClusterID clusterID, uint componentID )
 		: ReplicaClusterServiceEntity(clusterID, ClusterMembership::StatusWatcher)
-		, IServerComponent(componentID)
 	{
 	}
 

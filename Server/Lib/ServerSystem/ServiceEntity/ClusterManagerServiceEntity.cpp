@@ -43,7 +43,6 @@ namespace Svr {
 
 	ClusterManagerServiceEntity::ClusterManagerServiceEntity(ClusterMembership initialMembership)
 		: ReplicaClusterServiceEntity(ClusterID::ClusterManager, initialMembership )
-		, IServerComponent(ComponentID)
 	{
 		// only entity has some special operations
 		if (BrServer::GetInstance()->GetNetClass() == NetClass::Entity)

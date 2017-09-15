@@ -332,7 +332,7 @@ namespace Svr {
 					auto& pIOCallback = pConn->GetNetIOHandler();
 					if (pIOCallback.GetIsIORegistered())
 					{
-						pConn->CloseConnection();
+						pConn->CloseConnection("ServerEntity connection clean up");
 						pConn->CloseSocket();
 					}
 					else if (Util::TimeSince(m_LocalConnectionRetryTime) > m_LocalConnectionRetryWait)
@@ -417,7 +417,7 @@ namespace Svr {
 		return GetTaskManager()->AddEventTask(GetTaskGroupID(), ServerTaskEvent(ServerTaskEvent::EventTypes::PACKET_MESSAGE_SEND_EVENT, this, WeakPointerT<Net::Connection>(pConn)));
 	}
 
-	Result ServerEntity::OnEventTask(const ServerTaskEvent& eventTask)
+	Result ServerEntity::OnEventTask(ServerTaskEvent& eventTask)
 	{
 		TransactionPtr pCurTran;
 		MessageDataPtr pMsg;

@@ -202,7 +202,7 @@ namespace GameServer {
 			svrMem(pGameService = new(GetHeap()) GameClusterServiceEntity(GetGameClusterInfo()->GameClusterID, &pMySvr->PublicNet, ClusterMembership::Slave));
 			svrChk(Service::EntityManager->AddEntity(EntityFaculty::Service, pGameService));
 			svrChk(GetComponentCarrier().GetComponent<Svr::ClusterManagerServiceEntity>()->AddClusterServiceEntity(pGameService));
-			GetComponentCarrier().AddComponent(pGameService);
+			GetComponentCarrier().AddComponentWithAdapter(pGameService);
 		}
 
 
@@ -238,14 +238,12 @@ namespace GameServer {
 		componentID = Svr::ServerComponentID_MatchingQueueWatcherService_4x1;
 		for (ClusterID matchingQueueClusterID = ClusterID::MatchingQueue_Game_4x1; matchingQueueClusterID <= ClusterID::MatchingQueue_Max; matchingQueueClusterID++, componentID++)
 		{
-			//Svr::MatchingQueueServiceEntity *pQueueEntity = nullptr;
 			Svr::MatchingQueueWatcherServiceEntity *pQueueWatcherEntity = nullptr;
 
 			// Local watchers
-			svrMem( pQueueWatcherEntity = new(GetHeap()) Svr::MatchingQueueWatcherServiceEntity(matchingQueueClusterID, componentID) );
+			svrMem( pQueueWatcherEntity = new(GetHeap()) Svr::MatchingQueueWatcherServiceEntity(matchingQueueClusterID) );
 			svrChk( Service::EntityManager->AddEntity( EntityFaculty::Service, pQueueWatcherEntity ) );
 			svrChk(GetComponentCarrier().GetComponent<Svr::ClusterManagerServiceEntity>()->AddClusterServiceEntity( pQueueWatcherEntity ) );
-			svrChk(GetComponentCarrier().AddComponent(pQueueWatcherEntity) );
 		}
 
 
@@ -256,10 +254,9 @@ namespace GameServer {
 			Svr::MatchingWatcherServiceEntity *pWatcherEntity = nullptr;
 
 			// Local watchers
-			svrMem( pWatcherEntity = new(GetHeap()) Svr::MatchingWatcherServiceEntity(matchingQueueClusterID, componentID) );
+			svrMem( pWatcherEntity = new(GetHeap()) Svr::MatchingWatcherServiceEntity(matchingQueueClusterID) );
 			svrChk(Service::EntityManager->AddEntity( EntityFaculty::Service, pWatcherEntity ) );
 			svrChk(GetComponentCarrier().GetComponent<Svr::ClusterManagerServiceEntity>()->AddClusterServiceEntity( pWatcherEntity ) );
-			svrChk(GetComponentCarrier().AddComponent(pWatcherEntity) );
 		}
 
 
@@ -270,7 +267,7 @@ namespace GameServer {
 			svrMem( pGameInstanceManagerWatcher = new(GetHeap()) Svr::GameInstanceManagerWatcherServiceEntity(GetGameClusterInfo()->GameClusterID) );
 			svrChk( Service::EntityManager->AddEntity( EntityFaculty::Service, pGameInstanceManagerWatcher ) );
 			svrChk( GetComponentCarrier().GetComponent<Svr::ClusterManagerServiceEntity>()->AddClusterServiceEntity( pGameInstanceManagerWatcher ) );
-			GetComponentCarrier().AddComponent(pGameInstanceManagerWatcher);
+			GetComponentCarrier().AddComponentWithAdapter(pGameInstanceManagerWatcher);
 		}
 
 		{
@@ -279,7 +276,7 @@ namespace GameServer {
 			svrMem( pGamePartyManagerWatcher = new(GetHeap()) Svr::GamePartyManagerWatcherServiceEntity() );
 			svrChk( Service::EntityManager->AddEntity( EntityFaculty::Service, pGamePartyManagerWatcher ) );
 			svrChk( GetComponentCarrier().GetComponent<Svr::ClusterManagerServiceEntity>()->AddClusterServiceEntity( pGamePartyManagerWatcher ) );
-			GetComponentCarrier().AddComponent(pGamePartyManagerWatcher);
+			GetComponentCarrier().AddComponentWithAdapter(pGamePartyManagerWatcher);
 		}
 
 

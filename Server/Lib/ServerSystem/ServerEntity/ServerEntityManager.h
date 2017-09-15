@@ -14,6 +14,7 @@
 
 
 #include "SFTypedefs.h"
+#include "Object/SharedObject.h"
 #include "Container/OrderedLinkedList.h"
 #include "Container/HashTable2.h"
 #include "Container/Indexing.h"
@@ -37,7 +38,7 @@ namespace Svr
 	//		- Will use with server type
 	//
 
-	class ServerEntityManager : public TickTaskManager, public IServerComponent
+	class ServerEntityManager : public SharedObject, public TickTaskManager
 	{
 	public:
 		enum { ComponentID = ServerComponentID_ServerEntityManager };
@@ -95,6 +96,13 @@ namespace Svr
 		Result AddOrGetServerEntity(ServerID serverID, NetClass netClass, ServerEntity* &pServerEntity);
 
 		const SharedPointerAtomicT<Net::Connection>& GetServerConnection(ServerID svrID);
+
+
+		// Initialize server component
+		Result InitializeComponent() { return ResultCode::SUCCESS; }
+		// Terminate server component
+		void TerminateComponent() {  }
+
 	};
 
 
@@ -127,10 +135,19 @@ namespace Svr
 		pNewServerEntity->SetLocalConnection((Net::Connection*)pConnection);
 
 		pServerEntity = pNewServerEntity;
+		pNewServerEntity = nullptr;
 
-		svrChk(AddServerEntity(netClass, pNewServerEntity));
+		svrChk(AddServerEntity(netClass, pServerEntity));
 
 	Proc_End:
+
+		IHeap::Delete(pNewServerEntity);
+
+		if (!hr)
+		{
+			SharedReferenceDec dec(pServerEntity);
+			pServerEntity = nullptr;
+		}
 
 		return hr;
 	}

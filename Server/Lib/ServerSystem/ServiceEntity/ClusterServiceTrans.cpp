@@ -112,6 +112,7 @@ namespace Svr {
 		svrTrace(SVR_CLUSTER, "Cluster Join Entity:{0}, ClusterID:{1}, Type:{2}, Membership:{3}", GetOwnerEntityUID(), GetMyOwner()->GetClusterID(), GetMyOwner()->GetClusterType(), GetMyOwner()->GetClusterMembership());
 
 		auto netPrivate = BrServer::GetInstance()->GetNetPrivate();
+		svrChkPtr(netPrivate);
 		Assert(netPrivate->GetNetClass() != NetClass::Unknown);
 
 		// 1. Find entity manager service

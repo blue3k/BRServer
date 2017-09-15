@@ -113,7 +113,7 @@ namespace SF {
 		virtual void OnAddedToTaskManager(TaskWorker *pWorker);
 		virtual void OnRemovedFromTaskManager(TaskWorker *pWorker);
 
-		virtual Result OnEventTask(const ServerTaskEvent& eventTask) { Assert(false);  return ResultCode::NOT_IMPLEMENTED; }
+		virtual Result OnEventTask(ServerTaskEvent& eventTask) { Assert(false);  return ResultCode::NOT_IMPLEMENTED; }
 	};
 
 

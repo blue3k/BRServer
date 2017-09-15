@@ -45,7 +45,7 @@ namespace Svr {
 	//	GameInstanceManagerServiceEntity class
 	//
 
-	class GameInstanceManagerServiceEntity : public LoadbalanceClusterServiceEntity, public IServerComponent
+	class GameInstanceManagerServiceEntity : public LoadbalanceClusterServiceEntity
 	{
 	public:
 
@@ -81,6 +81,13 @@ namespace Svr {
 		// Called when a game instance is deleted
 		virtual Result FreeGameInstance( GameInsUID gameUID );
 
+
+		// Initialize server component
+		Result InitializeComponent() { return ResultCode::SUCCESS; }
+		// Terminate server component
+		void TerminateComponent() {  }
+
+
 	};
 
 
@@ -92,7 +99,7 @@ namespace Svr {
 	//	MatchingQueueWatcherServiceEntity class
 	//
 
-	class GameInstanceManagerWatcherServiceEntity : public LoadbalanceClusterServiceEntity, public IServerComponent
+	class GameInstanceManagerWatcherServiceEntity : public LoadbalanceClusterServiceEntity
 	{
 	public:
 
@@ -106,6 +113,12 @@ namespace Svr {
 
 		GameInstanceManagerWatcherServiceEntity( GameID gameID );
 		~GameInstanceManagerWatcherServiceEntity();
+
+		// Initialize server component
+		Result InitializeComponent() { return ResultCode::SUCCESS; }
+		// Terminate server component
+		void TerminateComponent() {  }
+
 
 	};
 

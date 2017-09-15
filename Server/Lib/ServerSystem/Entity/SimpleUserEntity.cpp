@@ -332,7 +332,7 @@ namespace Svr
 	}
 
 
-	Result SimpleUserEntity::OnEventTask(const ServerTaskEvent& eventTask)
+	Result SimpleUserEntity::OnEventTask(ServerTaskEvent& eventTask)
 	{
 		Result hr = ResultCode::SUCCESS;
 
@@ -342,11 +342,31 @@ namespace Svr
 		auto& pMyConn = GetConnection();
 		auto thisThreadID = ThisThread::GetThreadID();
 
+
 		if (pMyConn != nullptr)
 		{
-			if (pMyConn->GetActiveTickFlags() == 0 && pMyConn->GetRunningThreadID() != thisThreadID)
+			if (pMyConn->GetRunningThreadID() != thisThreadID)
 			{
-				pMyConn->SetRunningThreadID(thisThreadID);
+				if (pMyConn->GetActiveTickFlags() == 0)
+				{
+					pMyConn->SetRunningThreadID(thisThreadID);
+				}
+				else
+				{
+					// We need to wait the control take over
+					// reschedule the event
+					switch (eventTask.EventType)
+					{
+					case ServerTaskEvent::EventTypes::PACKET_MESSAGE_SYNC_EVENT:
+					case ServerTaskEvent::EventTypes::PACKET_MESSAGE_SEND_EVENT:
+						GetTaskWorker()->AddEventTask(std::forward<ServerTaskEvent>(eventTask));
+						return hr;
+						break;
+					default:
+						break;
+					}
+				}
+
 			}
 		}
 

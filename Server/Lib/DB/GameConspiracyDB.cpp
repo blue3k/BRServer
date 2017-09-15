@@ -28,7 +28,6 @@ namespace DB {
 	
 	// constructor / destructor
 	GameConspiracyDB::GameConspiracyDB()
-		:Svr::IServerComponent(ComponentID)
 	{
 	}
 
@@ -39,7 +38,6 @@ namespace DB {
 	void GameConspiracyDB::TerminateComponent()
 	{
 		TerminateDB();
-		Svr::IServerComponent::TerminateComponent();
 	}
 
 	

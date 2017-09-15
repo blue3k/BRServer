@@ -31,7 +31,7 @@ namespace DB {
 	//	RankingDBServer Class 
 	//
 
-	class RankingDB : protected DBClusterManager, public Svr::IServerComponent
+	class RankingDB : public DBClusterManager
 	{
 	public:
 
@@ -46,7 +46,9 @@ namespace DB {
 		RankingDB();
 		virtual ~RankingDB();
 
-		virtual void TerminateComponent() override;
+		Result InitializeComponent() { return ResultCode::SUCCESS; }
+
+		virtual void TerminateComponent();
 
 	public:
 

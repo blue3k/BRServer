@@ -29,7 +29,7 @@ namespace DB {
 	//	AccountDBServer Class 
 	//
 
-	class AccountDB : protected DBClusterManager, public Svr::IServerComponent
+	class AccountDB : public DBClusterManager
 	{
 	public:
 
@@ -44,7 +44,8 @@ namespace DB {
 		AccountDB();
 		virtual ~AccountDB();
 
-		virtual void TerminateComponent() override;
+		Result InitializeComponent() { return ResultCode::SUCCESS; }
+		virtual void TerminateComponent() ;
 
 	public:
 

@@ -62,7 +62,7 @@ namespace ConspiracyGameInstanceServer {
 
 
 	GameInstanceEntity::GameInstanceEntity()
-		: ComponentCarrier(GetHeap())
+		: m_ComponentCarrier(GetHeap())
 		, m_TableVersion(-1)
 		, m_PresetGameConfigID(1) // 1 is default
 		, m_PresetGameConfig(nullptr)
@@ -100,12 +100,12 @@ namespace ConspiracyGameInstanceServer {
 
 		svrChk(UpdateGameTable() );
 
-		svrChk( AddComponent<GamePlaySystem>( this, false ) );
-		svrChk( AddComponent<GameStateSystem>( this, false ) );
-		svrChk( AddComponent<GameLogSystem>( this, false ) );
-		svrChk( AddComponent<ChattingLogSystem>( this, false ) );
+		svrChk( GetComponentCarrier().AddComponent<GamePlaySystem>( this, false ) );
+		svrChk( GetComponentCarrier().AddComponent<GameStateSystem>( this, false ) );
+		svrChk( GetComponentCarrier().AddComponent<GameLogSystem>( this, false ) );
+		svrChk( GetComponentCarrier().AddComponent<ChattingLogSystem>( this, false ) );
 
-		svrChk( InitializeComponents() );
+		svrChk(GetComponentCarrier().InitializeComponents() );
 
 	Proc_End:
 
@@ -164,7 +164,7 @@ namespace ConspiracyGameInstanceServer {
 
 		svrChk(super::TerminateEntity());
 
-		ClearComponents();
+		GetComponentCarrier().ClearComponents();
 
 	Proc_End:
 
@@ -193,7 +193,7 @@ namespace ConspiracyGameInstanceServer {
 		// Call check timer to update
 		svrChk(super::UpdateGameStatus(ulCurTime));
 
-		svrChk( GetComponent<GameStateSystem>()->UpdateSystem() );
+		svrChk(GetComponentCarrier().GetComponent<GameStateSystem>()->UpdateSystem() );
 
 	Proc_End:
 
@@ -373,8 +373,8 @@ namespace ConspiracyGameInstanceServer {
 		// update exit status
 		svrChk(super::OnPlayerGetOutOfGame(pPlayer));
 
-		svrChk( GetComponent<GamePlaySystem>()->OnPlayerGetOutOfGame((GamePlayer*)pPlayer) );
-		svrChk( GetComponent<GameStateSystem>()->OnPlayerGetOutOfGame((GamePlayer*)pPlayer) );
+		svrChk(GetComponentCarrier().GetComponent<GamePlaySystem>()->OnPlayerGetOutOfGame((GamePlayer*)pPlayer) );
+		svrChk(GetComponentCarrier().GetComponent<GameStateSystem>()->OnPlayerGetOutOfGame((GamePlayer*)pPlayer) );
 
 	Proc_End:
 

@@ -31,6 +31,8 @@
 #include "ServiceEntity/MatchingServiceUtil.h"
 #include "Protocol/ServerService/GamePartyManagerService.h"
 #include "ServiceEntity/GamePartyManagerServiceEntity.h"
+#include "ServiceEntity/ClusterManagerServiceEntity.h"
+
 
 #include "Protocol/Message/PartyMatchingQueueMsgClass.h"
 
@@ -1053,10 +1055,16 @@ namespace GameServer {
 		if( GetMyOwner()->GetPartyUID().UID == 0 )
 		{
 			// Player isn't in a party, just do it alone
-			auto componentID = Svr::MatchingUtil::GetQueueComponentID(GetNumPlayer(), 1, (PlayerRole)GetRequestRole());
-			auto watcherService = Svr::GetServerComponent<Svr::MatchingQueueWatcherServiceEntity>(componentID);
-			svrChkPtr(watcherService);
-			svrChk(watcherService->GetService(pService));
+			Svr::ClusteredServiceEntity *pServiceEntity = nullptr;
+			auto queueClusterID = Svr::MatchingUtil::GetQueueClusterID(GetNumPlayer(), 1, (PlayerRole)GetRequestRole());
+
+			svrChk(Svr::GetServerComponent<Svr::ClusterManagerServiceEntity>()->GetClusterServiceEntity(queueClusterID, pServiceEntity));
+
+			//auto componentID = Svr::MatchingUtil::GetQueueComponentID(GetNumPlayer(), 1, (PlayerRole)GetRequestRole());
+			//auto pServiceEntity = Svr::GetServerComponent<Svr::MatchingQueueWatcherServiceEntity>(componentID);
+			svrChkPtr(pServiceEntity);
+
+			svrChk(pServiceEntity->FindRandomService(pService));
 
 			svrChk( pService->GetService<Svr::PartyMatchingQueueService>()->RegisterPlayerMatchingCmd(GetTransID(), 0, GetMyOwner()->GetPlayerID() ) );
 		}

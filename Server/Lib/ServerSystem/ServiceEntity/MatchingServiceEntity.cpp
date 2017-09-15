@@ -741,9 +741,8 @@ namespace Svr {
 	//
 
 
-	MatchingWatcherServiceEntity::MatchingWatcherServiceEntity( ClusterID clusterID, uint componentID )
-		:RingClusterServiceEntity(clusterID, ClusterMembership::StatusWatcher)
-		,IServerComponent(componentID)
+	MatchingWatcherServiceEntity::MatchingWatcherServiceEntity( ClusterID clusterID )
+		: RingClusterServiceEntity(clusterID, ClusterMembership::StatusWatcher)
 	{
 	}
 

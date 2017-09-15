@@ -30,7 +30,7 @@ namespace DB {
 	//	DBClusterManager Class 
 	//
 	
-	class DBClusterManager
+	class DBClusterManager : public SharedObject
 	{
 	public:
 

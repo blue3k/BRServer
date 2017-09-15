@@ -44,16 +44,17 @@ namespace Svr {
 	EntityManager::EntityManager(uint numTaskGroup)
 		: LibraryComponent(TypeName)
 		, m_MemoryManager("EntityManager", GetSystemMemoryManager())
+		, m_SharedObjectManager(m_MemoryManager)
 		, m_NumTaskGroup(numTaskGroup)
 		, m_NumberOfServices("NumberOfService")
 		, m_NumberOfTotalEntities("TotalEntities")
 	{
+		AddDependency<EntityTable>();
 	}
 
 
 	EntityManager::~EntityManager()
 	{
-		AddDependency<EntityTable>();
 	}
 
 	Result EntityManager::CreateEntity(ClusterID clusterID, EntityFaculty faculty, Entity* &pEntity)
@@ -90,6 +91,8 @@ namespace Svr {
 		//		pServiceEntity->RegisterServiceMessageHandler(GetLoopbackServerEntity());
 		//	}
 		//}
+
+		m_SharedObjectManager.RegisterSharedObject(pEntity);
 
 		svrChk( AddTickTask( pEntity ) );
 
@@ -247,6 +250,16 @@ namespace Svr {
 	Proc_End:
 
 		return hr;
+	}
+
+	void EntityManager::FlushDeletedEntity()
+	{
+		m_SharedObjectManager.ClearFreedObjects();
+	}
+
+	void EntityManager::Update()
+	{
+		m_SharedObjectManager.Update();
 	}
 
 	// Terminate component

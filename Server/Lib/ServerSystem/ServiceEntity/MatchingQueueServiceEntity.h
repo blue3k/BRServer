@@ -46,7 +46,7 @@ namespace Svr {
 	//	ServerServiceComponentEntity class
 	//
 
-	class MatchingQueueServiceEntity : public RingClusterServiceEntity, public IServerComponent
+	class MatchingQueueServiceEntity : public RingClusterServiceEntity
 	{
 	public:
 
@@ -167,6 +167,8 @@ namespace Svr {
 
 		// Delete item by error
 		Result DeleteItem(const MatchingQueueTicket& ticket, MatchingQueueItem &item);
+
+
 	};
 
 
@@ -178,13 +180,13 @@ namespace Svr {
 	//	MatchingQueueWatcherServiceEntity class
 	//
 
-	class MatchingQueueWatcherServiceEntity : public RingClusterServiceEntity, public IServerComponent
+	class MatchingQueueWatcherServiceEntity : public RingClusterServiceEntity
 	{
 	public:
 
 	public:
 
-		MatchingQueueWatcherServiceEntity( ClusterID clusterID, uint componentID );
+		MatchingQueueWatcherServiceEntity( ClusterID clusterID );
 		~MatchingQueueWatcherServiceEntity();
 
 	};

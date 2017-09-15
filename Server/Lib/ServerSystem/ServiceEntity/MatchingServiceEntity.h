@@ -258,11 +258,12 @@ namespace Svr {
 
 
 
-	class MatchingWatcherServiceEntity : public RingClusterServiceEntity, public IServerComponent
+	class MatchingWatcherServiceEntity : public RingClusterServiceEntity
 	{
 	public:
-		MatchingWatcherServiceEntity( ClusterID clusterID, uint componentID );
+		MatchingWatcherServiceEntity( ClusterID clusterID );
 		~MatchingWatcherServiceEntity();
+
 	};
 
 

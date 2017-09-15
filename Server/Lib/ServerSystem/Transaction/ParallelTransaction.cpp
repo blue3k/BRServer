@@ -104,7 +104,6 @@ namespace Svr
 
 	ParallelTransactionManager::ParallelTransactionManager()
 		: SimpleEntity(0,0)
-		, IServerComponent(ComponentID)
 		, m_PendingQueries(GetMemoryManager())
 	{
 	}

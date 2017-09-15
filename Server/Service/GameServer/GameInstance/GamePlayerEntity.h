@@ -56,7 +56,7 @@ namespace GameServer {
 	//	Game Instance entity class
 	//
 
-	class GamePlayerEntity : public Svr::SimpleUserEntity, public ComponentCarrier<UserSystemComponentID_Max>
+	class GamePlayerEntity : public Svr::SimpleUserEntity
 	{
 	public:
 
@@ -68,6 +68,8 @@ namespace GameServer {
 		};
 
 	private:
+
+		ComponentCarrier<UserSystemComponentID_Max> m_ComponentCarrier;
 
 		// Player state
 		PlayerState m_PlayerState = PlayerState_None;
@@ -113,6 +115,17 @@ namespace GameServer {
 
 		GamePlayerEntity();
 		virtual ~GamePlayerEntity();
+
+
+		ComponentCarrier<UserSystemComponentID_Max>& GetComponentCarrier() { return m_ComponentCarrier; }
+
+		// Get component with its type
+		template< class ComponentType >
+		ComponentType* GetComponent() { return m_ComponentCarrier.GetComponent<ComponentType>(); }
+
+		// Get component with its type
+		template< class ComponentType >
+		const ComponentType* GetComponent() const { return m_ComponentCarrier.GetComponent<ComponentType>(); }
 
 
 		PlayerID GetPlayerID() { return GetAccountID(); }

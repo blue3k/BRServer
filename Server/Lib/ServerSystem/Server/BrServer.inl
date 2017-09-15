@@ -119,12 +119,6 @@ componentType* GetServerComponent(uint componentID)
 	return BrServer::GetInstance()->GetComponentCarrier().GetComponent<componentType>(componentID);
 }
 
-template< class ComponentType >
-Result AddServerComponent(ComponentType* &newComponent)
-{
-	if (BrServer::GetInstance() == nullptr) return ResultCode::UNEXPECTED;
-	return BrServer::GetInstance()->GetComponentCarrier().AddComponent(newComponent);
-}
 
 
 

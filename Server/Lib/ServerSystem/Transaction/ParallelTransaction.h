@@ -69,7 +69,7 @@ namespace Svr{
 	//	External task class
 	//
 
-	class ParallelTransactionManager : protected SimpleEntity, public IServerComponent
+	class ParallelTransactionManager : public SimpleEntity
 	{
 	public:
 

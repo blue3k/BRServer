@@ -34,10 +34,12 @@
 #include "ServiceEntity/MatchingQueueServiceEntity.h"
 
 #include "Protocol/Message/GameInstanceManagerMsgClass.h"
-#include "ServiceEntity/GamePartyManagerServiceEntity.h"
 #include "Protocol/ServerService/GamePartyManagerService.h"
-#include "ServiceEntity/Game/GameInstanceManagerServiceEntity.h"
 #include "Protocol/ServerService/GameInstanceManagerService.h"
+
+#include "ServiceEntity/GamePartyManagerServiceEntity.h"
+#include "ServiceEntity/Game/GameInstanceManagerServiceEntity.h"
+#include "ServiceEntity/ClusterManagerServiceEntity.h"
 
 #include "Server/BrServer.h"
 
@@ -349,16 +351,21 @@ namespace Svr {
 		}
 
 		{
-			auto matchingCompID = Svr::MatchingUtil::GetQueueComponentID(GetMaxGamePlayers(), GetMyOwner()->GetNumPlayer(), PlayerRole::None);
-			auto matchingQueueService = Svr::GetServerComponent<Svr::RingClusterServiceEntity>(matchingCompID);
+			ClusteredServiceEntity *matchingQueueService = nullptr;
+			auto queueClusterID = Svr::MatchingUtil::GetQueueClusterID(GetMaxGamePlayers(), GetMyOwner()->GetNumPlayer(), PlayerRole::None);
+
+			svrChk(GetServerComponent<ClusterManagerServiceEntity>()->GetClusterServiceEntity(queueClusterID, matchingQueueService));
+
+			//auto matchingCompID = Svr::MatchingUtil::GetQueueComponentID(GetMaxGamePlayers(), GetMyOwner()->GetNumPlayer(), PlayerRole::None);
+			//auto matchingQueueService = Svr::GetServerComponent<Svr::RingClusterServiceEntity>(matchingCompID);
 			if (matchingQueueService == nullptr)
 			{
-				svrTrace(Error, "Failed to get matching queue service MaxGamePlayer:{0}, NumberOfPlayer:{1}, matchingCompID:{2}", GetMaxGamePlayers(), GetMyOwner()->GetNumPlayer(), matchingCompID);
+				svrTrace(Error, "Failed to get matching queue service MaxGamePlayer:{0}, NumberOfPlayer:{1}, queueClusterID:{2}", GetMaxGamePlayers(), GetMyOwner()->GetNumPlayer(), queueClusterID);
 				svrErr(ResultCode::SVR_INVALID_CLUSTERID);
 			}
 			else
 			{
-				svrChk(matchingQueueService->GetService(pService));
+				svrChk(matchingQueueService->FindRandomService(pService));
 			}
 
 			GetMyOwner()->ForeachPlayer([&](PartyPlayer* pPlayer)->Result {

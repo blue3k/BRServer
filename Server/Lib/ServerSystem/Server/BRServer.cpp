@@ -268,11 +268,11 @@ Proc_End:
 		ServerEntity *pEntity = nullptr;
 		Svr::LoopbackConnection *pConn = nullptr;
 
-		svrChk(m_Components.AddComponent<ServerEntityManager>() );
+		svrChk(m_Components.AddComponentWithAdapter<ServerEntityManager>() );
 
 
 		// Initialize remote entity manager
-		svrChk( GetServerComponent<ServerEntityManager>()->InitializeManager( GetMyConfig()->EntityControlCount ) );
+		svrChk(m_Components.GetComponent<ServerEntityManager>()->InitializeManager( GetMyConfig()->EntityControlCount ) );
 
 
 		// Add loop back entity
@@ -294,11 +294,11 @@ Proc_End:
 
 		if( GetNetClass() == NetClass::Entity )
 		{
-			svrChk(m_Components.AddComponent<ClusterManagerServiceEntity>(ClusterMembership::Slave) );
+			svrChk(m_Components.AddComponentWithAdapter<ClusterManagerServiceEntity>(ClusterMembership::Slave) );
 		}
 		else
 		{
-			svrChk(m_Components.AddComponent<ClusterManagerServiceEntity>(ClusterMembership::StatusWatcher) );
+			svrChk(m_Components.AddComponentWithAdapter<ClusterManagerServiceEntity>(ClusterMembership::StatusWatcher) );
 		}
 
 		svrChk(Service::EntityManager->AddEntity(
@@ -345,7 +345,6 @@ Proc_End:
 	// Close server and release resource
 	Result BrServer::CloseServerResource()
 	{
-		m_Components.TerminateComponents();
 
 		return ResultCode::SUCCESS;
 	}
@@ -431,6 +430,12 @@ Proc_End:
 
 		if( !( hr ) )
 		{
+			CloseNetPublic();
+			CloseNetPrivate();
+
+			m_Components.TerminateComponents();
+			m_Components.ClearComponents();
+
 			SetServerState( ServerState::STOPED );
 			svrTrace( Info, "Start failed hr:{0:X8}", hr );
 		}
@@ -518,6 +523,7 @@ Proc_End:
 		}
 
 		// clear components
+		m_Components.TerminateComponents();
 		m_Components.ClearComponents();
 
 		PerformanceCounterClient::Terminate();
@@ -646,6 +652,8 @@ Proc_End:
 
 		GameTable::Update();
 
+		Service::EntityManager->Update();
+
 		MasterEntity::TickUpdate(pAction);
 
 
@@ -682,12 +690,10 @@ Proc_End:
 		return ResultCode::SUCCESS;
 	}
 
-
 	template< class ServiceEntityType, typename... ConstructorArgs >
-	Result BrServer::AddServiceEntityComponent(ConstructorArgs... constructorArgs)
+	ServiceEntityType* BrServer::AddServiceEntity(ConstructorArgs... constructorArgs)
 	{
 		Result hr = ResultCode::SUCCESS;
-		Svr::IServerComponent *pComponent = nullptr;
 		Svr::ClusteredServiceEntity *pServiceEntityTest = nullptr;
 		ServiceEntityType* pServiceEntity = nullptr;
 
@@ -713,11 +719,23 @@ Proc_End:
 		svrChk(Service::EntityManager->AddEntity(EntityFaculty::Service, pServiceEntity));
 		svrChk(GetComponentCarrier().GetComponent<Svr::ClusterManagerServiceEntity>()->AddClusterServiceEntity(pServiceEntity));
 
-		pComponent = dynamic_cast<Svr::IServerComponent*>(pServiceEntity);
-		if (pComponent != nullptr)
-		{
-			svrChk(GetComponentCarrier().AddComponent(pComponent));
-		}
+
+	Proc_End:
+
+		return pServiceEntity;
+	}
+
+
+	template< class ServiceEntityType, typename... ConstructorArgs >
+	Result BrServer::AddServiceEntityComponent(ConstructorArgs... constructorArgs)
+	{
+		Result hr = ResultCode::SUCCESS;
+
+		auto pServiceEntity = AddServiceEntity<ServiceEntityType>(constructorArgs...);
+		if (pServiceEntity == nullptr)
+			return ResultCode::FAIL;
+
+		svrChk(GetComponentCarrier().AddComponentWithAdapter(pServiceEntity));
 
 	Proc_End:
 
@@ -738,7 +756,7 @@ Proc_End:
 					continue;
 				}
 
-				svrChk(AddServiceEntityComponent<Svr::MatchingQueueWatcherServiceEntity>(clusterID, componentID));
+				svrChkPtr(AddServiceEntity<Svr::MatchingQueueWatcherServiceEntity>(clusterID));
 			}
 		}
 
@@ -774,7 +792,7 @@ Proc_End:
 		{
 			auto pGame = (ServerConfig::ServerModulePublicService*)module;
 			svrChk(Service::EntityManager->AddEntity(EntityFaculty::Service, new(GetHeap()) Svr::GameServiceEntity(GetGameID(), &pGame->PublicNet)));
-			svrChk(AddServiceEntityComponent<Svr::GameInstanceManagerWatcherServiceEntity>(GetGameID()));
+			svrChkPtr(AddServiceEntity<Svr::GameInstanceManagerWatcherServiceEntity>(GetGameID()));
 			break;
 		}
 
@@ -804,7 +822,7 @@ Proc_End:
 		case "ModMatching_Game_4"_hash32:
 		{
 			auto pMatching = (ServerConfig::ServerModuleMatching_4*)module;
-			svrChk(AddServiceEntityComponent<Svr::MatchingServiceEntity>(ClusterID::Matching_Game_4, ClusterMembership::Slave, pMatching->UseBot));
+			svrChkPtr(AddServiceEntity<Svr::MatchingServiceEntity>(ClusterID::Matching_Game_4, ClusterMembership::Slave, pMatching->UseBot));
 			svrChk(AddServiceEntityComponent<Svr::GameInstanceManagerWatcherServiceEntity>(GetGameID()));
 			svrChk(RegisterClustereWatcherComponents(ClusterID::MatchingQueue_Game_4x1, Svr::ServerComponentID_MatchingQueueWatcherService_4x1, Svr::ServerComponentID_MatchingQueueWatcherService_4x1W));
 			break;
@@ -812,7 +830,7 @@ Proc_End:
 		case "ModMatching_Game_8"_hash32:
 		{
 			auto pMatching = (ServerConfig::ServerModuleMatching_8*)module;
-			svrChk(AddServiceEntityComponent<Svr::MatchingServiceEntity>(ClusterID::Matching_Game_8, ClusterMembership::Slave, pMatching->UseBot));
+			svrChkPtr(AddServiceEntity<Svr::MatchingServiceEntity>(ClusterID::Matching_Game_8, ClusterMembership::Slave, pMatching->UseBot));
 			svrChk(AddServiceEntityComponent<Svr::GameInstanceManagerWatcherServiceEntity>(GetGameID()));
 			svrChk(RegisterClustereWatcherComponents(ClusterID::MatchingQueue_Game_8x1, Svr::ServerComponentID_MatchingQueueWatcherService_8x1, Svr::ServerComponentID_MatchingQueueWatcherService_8x1W));
 			break;
@@ -821,7 +839,7 @@ Proc_End:
 		{
 			auto pModule = (ServerConfig::ServerModuleGooglePurchaseValidate*)module;
 			StrUtil::Format(strRelativePath, "../../Config/{0}", pModule->P12KeyFile);
-			svrChk(GetComponentCarrier().AddComponent<Svr::ExternalTransactionManager>());
+			svrChk(GetComponentCarrier().AddComponentWithAdapter<Svr::ExternalTransactionManager>());
 			svrChk(GetComponentCarrier().GetComponent<Svr::ExternalTransactionManager>()->InitializeManagerGoogle(
 				strRelativePath,
 				pModule->Account,
@@ -831,7 +849,7 @@ Proc_End:
 		case "ModPurchaseValidateIOS"_hash32:
 		{
 			auto pModule = (ServerConfig::ServerModuleIOSPurchaseValidate*)module;
-			svrChk(GetComponentCarrier().AddComponent<Svr::ExternalTransactionManager>());
+			svrChk(GetComponentCarrier().AddComponentWithAdapter<Svr::ExternalTransactionManager>());
 			svrChk(GetComponentCarrier().GetComponent<Svr::ExternalTransactionManager>()->InitializeManagerIOS(pModule->URL, pModule->AltURL));
 			break;
 		}
@@ -876,7 +894,7 @@ Proc_End:
 				break;
 			}
 
-			svrChk(AddServiceEntityComponent<Svr::MatchingQueueServiceEntity>(clusterID, ClusterMembership::Slave));
+			svrChkPtr(AddServiceEntity<Svr::MatchingQueueServiceEntity>(clusterID, ClusterMembership::Slave));
 			break;
 		}
 		default:

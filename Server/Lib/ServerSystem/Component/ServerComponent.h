@@ -46,45 +46,70 @@ namespace Svr {
 		}
 	};
 	
-	
+
 	///////////////////////////////////////////////////////////////////////////////////////////////////////
 	//
-	//	IServerService Component base class
+	//	IServerComponent base class
 	//
 
-	class IServerServiceComponent : public IServerComponent
+	template<class AdaptedObject>
+	class ServerComponentAdapterT : public IServerComponent
 	{
+	private:
+		SharedPointerT<AdaptedObject> m_Instance;
+
 	public:
-		IServerServiceComponent( uint id ) : IServerComponent(id)
+		ServerComponentAdapterT(const SharedPointerT<AdaptedObject>& adapter)
+			: IServerComponent(AdaptedObject::ComponentID)
+			, m_Instance(adapter)
 		{
 		}
 
-		virtual ~IServerServiceComponent()
+		virtual ~ServerComponentAdapterT()
 		{
 		}
 
-		// Check server component
-		virtual Result CheckService() { return ResultCode::SUCCESS; }
-
-		
-		// Get entity, default implementation is return null
-		virtual ServerServiceBase* GetService( uint64_t serverSelector ) = 0;
-
-		template< class ServerServiceType >
-		ServerServiceType* GetService( uint64_t serverSelector )
+		AdaptedObject* operator *()
 		{
-			ServerServiceBase *pService = GetService(serverSelector);
-			Assert(pService != nullptr);
-			//Assert(pService->GetServerEntity());
-			if( pService == nullptr /*|| pService->GetServerEntity() == nullptr*/ )
-				return nullptr;
+			return *m_Instance;
+		}
 
-			return dynamic_cast<ServerServiceType*>(pService);
+		AdaptedObject* operator ->()
+		{
+			return *m_Instance;
+		}
+
+		operator AdaptedObject*()
+		{
+			return *m_Instance;
+		}
+
+		// Initialize server component
+		virtual Result InitializeComponent()
+		{
+			Result result = IServerComponent::InitializeComponent();
+			if (!result)
+				return result;
+
+			if(m_Instance != nullptr)
+				return m_Instance->InitializeComponent();
+
+			return result;
+		}
+
+		// Terminate server component
+		virtual void TerminateComponent()
+		{
+			if (!GetIsInitialized())
+				return;
+
+			IServerComponent::TerminateComponent();
+
+			if(m_Instance != nullptr)
+				m_Instance->TerminateComponent();
 		}
 
 	};
-
-
 
 
 	

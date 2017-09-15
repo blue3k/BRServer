@@ -56,7 +56,7 @@ namespace GameServer {
 
 	// Constructor 
 	UserNotifySystem::UserNotifySystem( GamePlayerEntity* pEntity )
-		:GameSystem(pEntity)
+		: GameSystem(pEntity)
 		, m_Notifications(pEntity->GetHeap())
 	{
 	}

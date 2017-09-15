@@ -43,14 +43,21 @@ namespace Svr
 
 
 	ServerEntityManager::ServerEntityManager()
-		:IServerComponent(ServerComponentID_ServerEntityManager)
-		, m_MemoryManager("ServerEntityManager", GetSystemMemoryManager())
+		: m_MemoryManager("ServerEntityManager", GetSystemMemoryManager())
 		, m_ServerIDMap(GetHeap())
 	{
 	}
 
 	ServerEntityManager::~ServerEntityManager()
 	{
+		m_ServerIDMap.Foreach([this](ServerID, ServerEntity* pSvrEntity)
+		{
+			Service::EntityManager->RemoveEntity(pSvrEntity);
+			//assert(pSvrEntity->GetReferenceCount() == 0);
+			return true;
+		});
+		Service::EntityManager->FlushDeletedEntity();
+		m_ServerIDMap.Clear();
 	}
 
 	Result ServerEntityManager::GetOrRegisterServer( ServerID serverID, NetClass netClass, const NetAddress& netAddress, ServerEntity* &pServerEntity )

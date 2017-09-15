@@ -46,7 +46,6 @@ namespace Svr {
 
 	MatchingQueueServiceEntity::MatchingQueueServiceEntity(ClusterID clusterID, ClusterMembership initialMembership)
 		: RingClusterServiceEntity(clusterID, initialMembership )
-		, IServerComponent(MatchingUtil::GetComponentIDFromClusterID(clusterID))
 		, m_ItemIDTable(GetMemoryManager())
 		, m_MainQueue(GetMemoryManager())
 		, m_SecondaryQueue(GetMemoryManager())
@@ -542,9 +541,8 @@ namespace Svr {
 	//
 
 
-	MatchingQueueWatcherServiceEntity::MatchingQueueWatcherServiceEntity( ClusterID clusterID, uint componentID )
+	MatchingQueueWatcherServiceEntity::MatchingQueueWatcherServiceEntity( ClusterID clusterID )
 		:RingClusterServiceEntity(clusterID, ClusterMembership::StatusWatcher)
-		,IServerComponent(componentID)
 	{
 	}
 

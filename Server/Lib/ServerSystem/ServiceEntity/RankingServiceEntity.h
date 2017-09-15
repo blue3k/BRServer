@@ -127,7 +127,7 @@ namespace Svr {
 	//	RankingWatcherServiceEntity class
 	//
 
-	class RankingWatcherServiceEntity : public ReplicaClusterServiceEntity, public IServerComponent
+	class RankingWatcherServiceEntity : public ReplicaClusterServiceEntity
 	{
 	public:
 
@@ -137,6 +137,13 @@ namespace Svr {
 
 		RankingWatcherServiceEntity( ClusterID clusterID, uint componentID );
 		~RankingWatcherServiceEntity();
+
+		// Initialize server component
+		Result InitializeComponent() { return ResultCode::SUCCESS; }
+		// Terminate server component
+		void TerminateComponent() {  }
+
+
 	};
 
 

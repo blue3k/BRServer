@@ -27,7 +27,7 @@ namespace DB {
 	//	GameDB Class 
 	//
 
-	class GameConspiracyDB : private DBClusterManager, public Svr::IServerComponent
+	class GameConspiracyDB : public DBClusterManager
 	{
 	public:
 
@@ -42,7 +42,8 @@ namespace DB {
 		GameConspiracyDB();
 		virtual ~GameConspiracyDB();
 
-		virtual void TerminateComponent() override;
+		Result InitializeComponent() { return ResultCode::SUCCESS; }
+		virtual void TerminateComponent() ;
 
 	public:
 

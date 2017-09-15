@@ -44,7 +44,7 @@ namespace Svr {
 	//	GamePartyManagerServiceEntity class
 	//
 
-	class GamePartyManagerServiceEntity : public LoadbalanceClusterServiceEntity, public IServerComponent
+	class GamePartyManagerServiceEntity : public LoadbalanceClusterServiceEntity
 	{
 	public:
 
@@ -83,6 +83,12 @@ namespace Svr {
 		// Called when a game party is deleted
 		virtual Result FreeGameParty( PartyUID partyUID );
 
+		// Initialize server component
+		Result InitializeComponent() { return ResultCode::SUCCESS; }
+		// Terminate server component
+		void TerminateComponent() {  }
+
+
 	};
 
 
@@ -94,7 +100,7 @@ namespace Svr {
 	//	MatchingQueueWatcherServiceEntity class
 	//
 
-	class GamePartyManagerWatcherServiceEntity : public LoadbalanceClusterServiceEntity, public IServerComponent
+	class GamePartyManagerWatcherServiceEntity : public LoadbalanceClusterServiceEntity
 	{
 	public:
 
@@ -106,6 +112,12 @@ namespace Svr {
 
 		GamePartyManagerWatcherServiceEntity();
 		~GamePartyManagerWatcherServiceEntity();
+
+		// Initialize server component
+		Result InitializeComponent() { return ResultCode::SUCCESS; }
+		// Terminate server component
+		void TerminateComponent() {  }
+
 
 	};
 

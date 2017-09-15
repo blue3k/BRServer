@@ -40,7 +40,7 @@ namespace Svr {
 	//	GameClusterServiceEntity class
 	//
 
-	class GameClusterServiceEntity : public FreeReplicaClusterServiceEntity, public IServerComponent
+	class GameClusterServiceEntity : public FreeReplicaClusterServiceEntity
 	{
 	public:
 
@@ -136,6 +136,12 @@ namespace Svr {
 
 		// Get Player info
 		Result FindPlayer( PlayerID playerID, EntityUID &playerUID );
+
+		// Initialize server component
+		Result InitializeComponent() { return ResultCode::SUCCESS; }
+		// Terminate server component
+		void TerminateComponent() {  }
+
 
 	};
 
