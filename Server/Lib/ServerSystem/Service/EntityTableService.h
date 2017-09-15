@@ -48,6 +48,9 @@ namespace SF {
 		virtual Result erase(EntityID key, SharedPointerT<Svr::Entity>& removed) { return ResultCode::NOT_IMPLEMENTED; }
 		virtual Result erase(EntityID key) { SharedPointerT<Svr::Entity> removed; return erase(key, removed); }
 
+		// Only for special purpose. bad performance
+		virtual Result for_each(std::function<bool(const SharedPointerT<Svr::Entity>&)> func) { return ResultCode::NOT_IMPLEMENTED; }
+
 
 		//////////////////////////////////////////////////////////////////////////
 		//

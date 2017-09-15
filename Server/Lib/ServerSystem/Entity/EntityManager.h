@@ -54,6 +54,7 @@ namespace Svr {
 
 
 		IMemoryManager& GetMemoryManager() { return m_MemoryManager; }
+		IHeap& GetHeap() { return m_MemoryManager; }
 
 
 		virtual const FixedString& GetTypeName() override { return TypeName; }
@@ -82,6 +83,9 @@ namespace Svr {
 		//virtual void RegisterCounter() override {}
 
 		virtual void FlushDeletedEntity() override;
+
+		// Clear and remove all registered objects
+		virtual void Clear() override;
 
 		virtual void Update() override;
 

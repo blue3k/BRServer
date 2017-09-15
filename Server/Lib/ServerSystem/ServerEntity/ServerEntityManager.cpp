@@ -50,10 +50,13 @@ namespace Svr
 
 	ServerEntityManager::~ServerEntityManager()
 	{
-		m_ServerIDMap.Foreach([this](ServerID, ServerEntity* pSvrEntity)
+	}
+
+	void ServerEntityManager::Dispose()
+	{
+		m_ServerIDMap.for_each([this](ServerID, ServerEntity* pSvrEntity)
 		{
 			Service::EntityManager->RemoveEntity(pSvrEntity);
-			//assert(pSvrEntity->GetReferenceCount() == 0);
 			return true;
 		});
 		Service::EntityManager->FlushDeletedEntity();

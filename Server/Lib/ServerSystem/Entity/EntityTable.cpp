@@ -162,6 +162,16 @@ namespace Svr {
 		return hr;
 	}
 
+	Result EntityTable::for_each(std::function<bool(const SharedPointerT<Svr::Entity>&)> func)
+	{
+		m_EntityMap.for_each([&](const uint& key, const SharedPointerT<Entity>& item)-> bool
+		{
+			return func(item);
+		});
+
+		return ResultCode::SUCCESS;
+	}
+
 
 }; // namespace SF {
 }; // namespace Svr {

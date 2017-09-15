@@ -100,6 +100,9 @@ namespace Svr{
 	{
 		SetInstance( this );
 
+		// TODO: 
+		GetHeap().SetIgnoreMemmoryLeak(true);
+
 		// main server class has private thread for task
 		SetTickInterval(DurationMS(0));
 
@@ -430,11 +433,18 @@ Proc_End:
 
 		if( !( hr ) )
 		{
+			// TODO: more clean up
+
 			CloseNetPublic();
 			CloseNetPrivate();
 
+			// TODO
+			Service::EntityManager->Clear();
+
 			m_Components.TerminateComponents();
 			m_Components.ClearComponents();
+
+			Service::EntityManager->FlushDeletedEntity();
 
 			SetServerState( ServerState::STOPED );
 			svrTrace( Info, "Start failed hr:{0:X8}", hr );

@@ -608,10 +608,13 @@ namespace Svr {
 	Result ReplicaClusterServiceEntity::TickUpdate(TimerAction *pAction)
 	{
 		Result hr = ResultCode::SUCCESS;
-
+		auto pClusterManager = GetServerComponent<ClusterManagerServiceEntity>();
 		svrChk(ClusteredServiceEntity::TickUpdate(pAction) );
 
-		if( GetServerComponent<ClusterManagerServiceEntity>()->GetClusterMembership() == ClusterMembership::Master )
+
+		// TODO: crap
+		svrChkPtr(pClusterManager);
+		if(pClusterManager->GetClusterMembership() == ClusterMembership::Master )
 		{
 			UpdateOnMasterManager();
 		}

@@ -76,6 +76,8 @@ namespace Svr
 		ServerEntityManager();
 		virtual ~ServerEntityManager();
 
+		virtual void Dispose() override;
+
 		IMemoryManager& GetHeap() { return m_MemoryManager; }
 
 		// Register server

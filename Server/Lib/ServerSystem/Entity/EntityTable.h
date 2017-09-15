@@ -93,6 +93,8 @@ namespace Svr {
 		virtual Result erase(Entity *pEntity) override;
 		virtual Result erase(EntityID key, SharedPointerT<Svr::Entity>& removed) override;
 
+		// Only for special purpose. bad performance
+		virtual Result for_each(std::function<bool(const SharedPointerT<Svr::Entity>&)> func) override;
 
 		//////////////////////////////////////////////////////////////////////////
 		//

@@ -252,6 +252,24 @@ namespace Svr {
 		return hr;
 	}
 
+	void EntityManager::Clear()
+	{
+		DynamicArray<SharedPointerT<Svr::Entity>> entityList(GetHeap());
+		entityList.SetIncreaseSize(2048);
+		Service::EntityTable->for_each([&](const SharedPointerT<Svr::Entity>& item) -> bool
+		{
+			entityList.push_back(item);
+			return true;
+		});
+
+		for (auto& itEntity : entityList)
+		{
+			RemoveEntity(*itEntity);
+		}
+
+		FlushDeletedEntity();
+	}
+
 	void EntityManager::FlushDeletedEntity()
 	{
 		m_SharedObjectManager.ClearFreedObjects();

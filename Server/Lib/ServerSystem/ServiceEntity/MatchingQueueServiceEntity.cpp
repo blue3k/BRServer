@@ -117,7 +117,7 @@ namespace Svr {
 	{
 		Result hr = ResultCode::SUCCESS;
 
-		m_ItemIDTable.Foreach([](const uint64_t& key, const QueueItem* pItem)
+		m_ItemIDTable.for_each([](const uint64_t& key, const QueueItem* pItem)
 		{
 			Util::SafeDelete(pItem);
 			return true;
