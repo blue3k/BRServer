@@ -183,7 +183,7 @@ namespace GameServer {
 
 		svrChk( super::StartTransaction() );
 
-		GetMyOwner()->ReleaseConnection();
+		GetMyOwner()->ReleaseConnection("Closing Game Player entity");
 
 		if((pOwner->UpdateDBSync(GetTransID())))
 			m_WaitingTransactions++;

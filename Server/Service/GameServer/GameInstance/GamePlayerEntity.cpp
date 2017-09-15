@@ -173,7 +173,7 @@ namespace GameServer {
 
 		if( GetConnection() != nullptr )
 		{
-			ReleaseConnection();
+			ReleaseConnection("Replacing game player connection");
 		}
 
 		svrChk(Svr::SimpleUserEntity::SetConnection(std::forward<SharedPointerT<Net::Connection>>(pCon)));
@@ -221,7 +221,7 @@ namespace GameServer {
 
 		svrChkPtr(pNetPublicServer);
 
-		ReleaseConnection();
+		ReleaseConnection("JoinGameServer releasing old connection");
 
 		SetAuthTicket(authTicket);
 		SetFacebookUID(fbUID);
@@ -352,7 +352,7 @@ namespace GameServer {
 	{
 		Result hr = ResultCode::SUCCESS;
 
-		ReleaseConnection();
+		ReleaseConnection("Clearing game player entity");
 
 		svrChk(Svr::SimpleUserEntity::ClearEntity() );
 

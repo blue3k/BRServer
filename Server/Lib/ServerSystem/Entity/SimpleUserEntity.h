@@ -60,7 +60,7 @@ namespace Svr {
 		virtual Result SetConnection( SharedPointerT<Net::Connection>&& pConn );
 		
 		// Release connection if has
-		virtual void ReleaseConnection();
+		virtual void ReleaseConnection(const char* reason);
 
 		// Get Connection
 		inline const SharedPointerAtomicT<Net::Connection>& GetConnection() { return m_pConnection; }

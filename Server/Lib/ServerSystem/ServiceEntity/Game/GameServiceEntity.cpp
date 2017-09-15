@@ -151,7 +151,7 @@ namespace Svr {
 				assert(connectionState == Net::ConnectionState::DISCONNECTED); // I want to see when this happens
 				pConn = std::forward <SharedPointerAtomicT<Net::Connection>>(pConnAtomic);
 				Service::ConnectionManager->RemoveConnection(pConn);
-				pConn->DisconnectNRelease();
+				pConn->DisconnectNRelease("Disconnected before handed over to GameService");
 				pConn = nullptr;
 				break;
 			}

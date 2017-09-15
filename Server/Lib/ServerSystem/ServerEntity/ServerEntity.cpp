@@ -93,7 +93,7 @@ namespace Svr {
 		if (pCurConn != nullptr)
 		{
 			pCurConn->SetEventHandler(nullptr);
-			pCurConn->DisconnectNRelease();
+			pCurConn->DisconnectNRelease("ServerEntity Replacing remote connection");
 
 			auto localCon = m_pConnLocal;
 			Assert(localCon == nullptr || localCon != pCurConn);
@@ -149,7 +149,7 @@ namespace Svr {
 		if (localCon != nullptr)
 		{
 			localCon->SetEventHandler(nullptr);
-			localCon->DisconnectNRelease();
+			localCon->DisconnectNRelease("Terminate Server entity");
 		}
 		m_pConnLocal = nullptr;
 
@@ -157,7 +157,7 @@ namespace Svr {
 		if (remoteCon != nullptr)
 		{
 			remoteCon->SetEventHandler(nullptr);
-			remoteCon->DisconnectNRelease();
+			remoteCon->DisconnectNRelease("Terminate Server entity");
 		}
 		m_pConnRemote = nullptr;
 

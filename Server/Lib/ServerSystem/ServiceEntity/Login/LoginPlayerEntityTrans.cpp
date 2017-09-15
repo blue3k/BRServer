@@ -663,7 +663,7 @@ namespace Svr {
 	Result LoginPlayerTransCloseInstance::OnCloseTransaction( Result hrRes )
 	{
 		// This must be called prior to clear authTicket otherwise the connection must be released already
-		GetMyOwner()->ReleaseConnection();
+		GetMyOwner()->ReleaseConnection("Closing user instance");
 
 		Service::EntityManager->RemoveEntity( GetMyOwner() );
 

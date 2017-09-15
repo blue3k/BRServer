@@ -98,7 +98,7 @@ namespace Svr {
 
 		if( GetConnection() != nullptr )
 		{
-			ReleaseConnection();
+			ReleaseConnection("Replacing user connection");
 		}
 
 		svrChk( super::SetConnection(std::forward<SharedPointerT<Net::Connection>>(pCon)) );
@@ -150,7 +150,7 @@ namespace Svr {
 	{
 		Result hr = ResultCode::SUCCESS;
 
-		ReleaseConnection();
+		ReleaseConnection("Terminate login player entity");
 
 		svrChk( super::ClearEntity() );
 

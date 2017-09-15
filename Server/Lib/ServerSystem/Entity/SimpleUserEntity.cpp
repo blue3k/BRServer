@@ -68,7 +68,7 @@ namespace Svr
 	}
 
 	// Release connection if has
-	void SimpleUserEntity::ReleaseConnection()
+	void SimpleUserEntity::ReleaseConnection(const char* reason)
 	{
 		MutexScopeLock localLock(m_ConnectionLock);
 
@@ -76,7 +76,7 @@ namespace Svr
 			return;
 
 		m_pConnection->SetEventHandler(nullptr);
-		m_pConnection->DisconnectNRelease();
+		m_pConnection->DisconnectNRelease(reason);
 		m_pConnection = SharedPointerT<Net::Connection>();
 	}
 
@@ -112,7 +112,7 @@ namespace Svr
 
 		if (m_pConnection != nullptr)
 		{
-			ReleaseConnection();
+			ReleaseConnection("Terminate user entity");
 		}
 
 		svrChk(SimpleEntity::TerminateEntity() );
