@@ -210,6 +210,8 @@ namespace Svr {
 		// Find random service, maybe lowest workload service
 		virtual Result FindRandomService( ServerServiceInformation* &pService );
 
+		virtual Result FindRandomWatcher(ServerServiceInformation* &pService);
+
 		// Foreach service
 		Result ForEach( std::function<void(ServerServiceInformation*)> func );
 

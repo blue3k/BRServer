@@ -658,6 +658,12 @@ namespace Svr {
 			return hr;
 		}
 
+		const SharedPointerAtomicT<Net::Connection>& GetConnection()
+		{
+			return Transaction::GetServerEntityConnection(superTrans::GetServerEntity());
+		}
+
+
 	};
 
 

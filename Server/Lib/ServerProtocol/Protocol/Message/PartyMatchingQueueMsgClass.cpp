@@ -1820,7 +1820,7 @@ namespace SF
 			{
  				ReserveItemCmd parser;
 				parser.ParseMessage(*pMsg);
-				protocolTrace( Debug1, "ReserveItem:{0}:{1} , RouteContext:{2}, TransactionID:{3}, RouteHopCount:{4}",
+				protocolTrace( Debug4, "ReserveItem:{0}:{1} , RouteContext:{2}, TransactionID:{3}, RouteHopCount:{4}",
 						prefix, pMsg->GetMessageHeader()->Length, parser.GetRouteContext(), parser.GetTransactionID(), parser.GetRouteHopCount()); 
 				return ResultCode::SUCCESS;
 			}; // Result ReserveItemCmd::TraceOut(const char* prefix, MessageDataPtr& pMsg)
@@ -1962,7 +1962,7 @@ namespace SF
 			{
  				ReserveItemRes parser;
 				parser.ParseMessage(*pMsg);
-				protocolTrace( Debug1, "ReserveItem:{0}:{1} , RouteContext:{2}, TransactionID:{3}, Result:{4:X8}, NumberOfPlayersInTheItem:{5}, MatchingTicket:{6}",
+				protocolTrace( Debug4, "ReserveItem:{0}:{1} , RouteContext:{2}, TransactionID:{3}, Result:{4:X8}, NumberOfPlayersInTheItem:{5}, MatchingTicket:{6}",
 						prefix, pMsg->GetMessageHeader()->Length, parser.GetRouteContext(), parser.GetTransactionID(), parser.GetResult(), parser.GetNumberOfPlayersInTheItem(), parser.GetMatchingTicket()); 
 				return ResultCode::SUCCESS;
 			}; // Result ReserveItemRes::TraceOut(const char* prefix, MessageDataPtr& pMsg)
@@ -2102,7 +2102,7 @@ namespace SF
 			{
  				ReserveItemsCmd parser;
 				parser.ParseMessage(*pMsg);
-				protocolTrace( Debug1, "ReserveItems:{0}:{1} , RouteContext:{2}, TransactionID:{3}, RouteHopCount:{4}, NumberOfItemsToReserve:{5}",
+				protocolTrace( Debug4, "ReserveItems:{0}:{1} , RouteContext:{2}, TransactionID:{3}, RouteHopCount:{4}, NumberOfItemsToReserve:{5}",
 						prefix, pMsg->GetMessageHeader()->Length, parser.GetRouteContext(), parser.GetTransactionID(), parser.GetRouteHopCount(), parser.GetNumberOfItemsToReserve()); 
 				return ResultCode::SUCCESS;
 			}; // Result ReserveItemsCmd::TraceOut(const char* prefix, MessageDataPtr& pMsg)
@@ -2256,7 +2256,7 @@ namespace SF
 			{
  				ReserveItemsRes parser;
 				parser.ParseMessage(*pMsg);
-				protocolTrace( Debug1, "ReserveItems:{0}:{1} , RouteContext:{2}, TransactionID:{3}, Result:{4:X8}, NumberOfPlayersInTheItem:{5,30}, MatchingTicket:{6,30}",
+				protocolTrace( Debug4, "ReserveItems:{0}:{1} , RouteContext:{2}, TransactionID:{3}, Result:{4:X8}, NumberOfPlayersInTheItem:{5,30}, MatchingTicket:{6,30}",
 						prefix, pMsg->GetMessageHeader()->Length, parser.GetRouteContext(), parser.GetTransactionID(), parser.GetResult(), parser.GetNumberOfPlayersInTheItem(), parser.GetMatchingTicket()); 
 				return ResultCode::SUCCESS;
 			}; // Result ReserveItemsRes::TraceOut(const char* prefix, MessageDataPtr& pMsg)
@@ -2396,7 +2396,7 @@ namespace SF
 			{
  				CancelReservationCmd parser;
 				parser.ParseMessage(*pMsg);
-				protocolTrace( Debug1, "CancelReservation:{0}:{1} , RouteContext:{2}, TransactionID:{3}, RouteHopCount:{4}, TicketToCancel:{5}",
+				protocolTrace( Debug4, "CancelReservation:{0}:{1} , RouteContext:{2}, TransactionID:{3}, RouteHopCount:{4}, TicketToCancel:{5}",
 						prefix, pMsg->GetMessageHeader()->Length, parser.GetRouteContext(), parser.GetTransactionID(), parser.GetRouteHopCount(), parser.GetTicketToCancel()); 
 				return ResultCode::SUCCESS;
 			}; // Result CancelReservationCmd::TraceOut(const char* prefix, MessageDataPtr& pMsg)
@@ -2530,7 +2530,7 @@ namespace SF
 			{
  				CancelReservationRes parser;
 				parser.ParseMessage(*pMsg);
-				protocolTrace( Debug1, "CancelReservation:{0}:{1} , RouteContext:{2}, TransactionID:{3}, Result:{4:X8}",
+				protocolTrace( Debug4, "CancelReservation:{0}:{1} , RouteContext:{2}, TransactionID:{3}, Result:{4:X8}",
 						prefix, pMsg->GetMessageHeader()->Length, parser.GetRouteContext(), parser.GetTransactionID(), parser.GetResult()); 
 				return ResultCode::SUCCESS;
 			}; // Result CancelReservationRes::TraceOut(const char* prefix, MessageDataPtr& pMsg)
@@ -2675,7 +2675,7 @@ namespace SF
 			{
  				CancelReservationsCmd parser;
 				parser.ParseMessage(*pMsg);
-				protocolTrace( Debug1, "CancelReservations:{0}:{1} , RouteContext:{2}, TransactionID:{3}, RouteHopCount:{4}, TicketToCancel:{5,30}",
+				protocolTrace( Debug4, "CancelReservations:{0}:{1} , RouteContext:{2}, TransactionID:{3}, RouteHopCount:{4}, TicketToCancel:{5,30}",
 						prefix, pMsg->GetMessageHeader()->Length, parser.GetRouteContext(), parser.GetTransactionID(), parser.GetRouteHopCount(), parser.GetTicketToCancel()); 
 				return ResultCode::SUCCESS;
 			}; // Result CancelReservationsCmd::TraceOut(const char* prefix, MessageDataPtr& pMsg)
@@ -2809,7 +2809,7 @@ namespace SF
 			{
  				CancelReservationsRes parser;
 				parser.ParseMessage(*pMsg);
-				protocolTrace( Debug1, "CancelReservations:{0}:{1} , RouteContext:{2}, TransactionID:{3}, Result:{4:X8}",
+				protocolTrace( Debug4, "CancelReservations:{0}:{1} , RouteContext:{2}, TransactionID:{3}, Result:{4:X8}",
 						prefix, pMsg->GetMessageHeader()->Length, parser.GetRouteContext(), parser.GetTransactionID(), parser.GetResult()); 
 				return ResultCode::SUCCESS;
 			}; // Result CancelReservationsRes::TraceOut(const char* prefix, MessageDataPtr& pMsg)
@@ -2949,7 +2949,7 @@ namespace SF
 			{
  				DequeueItemCmd parser;
 				parser.ParseMessage(*pMsg);
-				protocolTrace( Debug1, "DequeueItem:{0}:{1} , RouteContext:{2}, TransactionID:{3}, RouteHopCount:{4}, MatchingTicket:{5}",
+				protocolTrace( Debug4, "DequeueItem:{0}:{1} , RouteContext:{2}, TransactionID:{3}, RouteHopCount:{4}, MatchingTicket:{5}",
 						prefix, pMsg->GetMessageHeader()->Length, parser.GetRouteContext(), parser.GetTransactionID(), parser.GetRouteHopCount(), parser.GetMatchingTicket()); 
 				return ResultCode::SUCCESS;
 			}; // Result DequeueItemCmd::TraceOut(const char* prefix, MessageDataPtr& pMsg)
@@ -3105,7 +3105,7 @@ namespace SF
 			{
  				DequeueItemRes parser;
 				parser.ParseMessage(*pMsg);
-				protocolTrace( Debug1, "DequeueItem:{0}:{1} , RouteContext:{2}, TransactionID:{3}, Result:{4:X8}, MatchingTicket:{5}, RegisterUID:{6}, RegisterID:{7}, Players:{8,30}",
+				protocolTrace( Debug4, "DequeueItem:{0}:{1} , RouteContext:{2}, TransactionID:{3}, Result:{4:X8}, MatchingTicket:{5}, RegisterUID:{6}, RegisterID:{7}, Players:{8,30}",
 						prefix, pMsg->GetMessageHeader()->Length, parser.GetRouteContext(), parser.GetTransactionID(), parser.GetResult(), parser.GetMatchingTicket(), parser.GetRegisterUID(), parser.GetRegisterID(), parser.GetPlayers()); 
 				return ResultCode::SUCCESS;
 			}; // Result DequeueItemRes::TraceOut(const char* prefix, MessageDataPtr& pMsg)

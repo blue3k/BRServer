@@ -19,8 +19,6 @@
 
 #include "Service/ServerService.h"
 
-#include "ZooKeeper/SFZooKeeper.h"
-#include "ServerConfig/SFServerConfig.h"
 
 
 
@@ -28,27 +26,24 @@
 namespace SF
 {
 
-	class ServerConfigComponent : public LibraryComponent
+	class ServerNetComponent : public LibraryComponent
 	{
 	public:
-		static constexpr FixedString TypeName = "ServerConfig";
+
+		static constexpr FixedString TypeName = "SFServerNetComponent";
 
 	private:
 
 		IMemoryManager& m_MemoryManager;
 
-		String m_ConfigPath;
-
 	public:
 
 		// Constructor
-		ServerConfigComponent(const char* configPath);
-		~ServerConfigComponent();
+		ServerNetComponent();
+		~ServerNetComponent();
 
 		// MemoryManager
 		IMemoryManager& GetMemoryManager() { return m_MemoryManager; }
-
-
 
 		virtual const FixedString& GetTypeName() override { return TypeName; }
 

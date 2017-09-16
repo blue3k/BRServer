@@ -62,7 +62,7 @@
     <!-- ============================  From Matching searcher to Matching queue  ============================================ -->
 
 
-    <Command Name="ReserveItem" Reliable="true" Crypto="No" Trace="Debug1" Desc="Reserve a item">
+    <Command Name="ReserveItem" Reliable="true" Crypto="No" Trace="Debug4" Desc="Reserve a item">
       <Cmd>
       </Cmd>
       <Res>
@@ -71,7 +71,7 @@
       </Res>
     </Command>
 
-    <Command Name="ReserveItems" Reliable="true" Crypto="No" Trace="Debug1" Desc="Reserve a item">
+    <Command Name="ReserveItems" Reliable="true" Crypto="No" Trace="Debug4" Desc="Reserve a item">
       <Cmd>
         <Params Type="uint32" Name="NumberOfItemsToReserve"/>
       </Cmd>
@@ -81,7 +81,7 @@
       </Res>
     </Command>
 
-    <Command Name="CancelReservation" Reliable="true" Crypto="No" Trace="Debug1" Desc="Cancel reservation">
+    <Command Name="CancelReservation" Reliable="true" Crypto="No" Trace="Debug4" Desc="Cancel reservation">
       <Cmd>
         <Params Type="MatchingQueueTicket" Name="TicketToCancel"/>
       </Cmd>
@@ -89,7 +89,7 @@
       </Res>
     </Command>
 
-    <Command Name="CancelReservations" Reliable="true" Crypto="No" Trace="Debug1" Desc="Cancel reservation">
+    <Command Name="CancelReservations" Reliable="true" Crypto="No" Trace="Debug4" Desc="Cancel reservation">
       <Cmd>
         <Params Type="MatchingQueueTicket" Name="TicketToCancel" IsArray="true"/>
       </Cmd>
@@ -97,7 +97,7 @@
       </Res>
     </Command>
 
-    <Command Name="DequeueItem" Reliable="true" Crypto="No" Trace="Debug1" Desc="Dequeue a reserved item">
+    <Command Name="DequeueItem" Reliable="true" Crypto="No" Trace="Debug4" Desc="Dequeue a reserved item">
       <Cmd>
         <Params Type="MatchingQueueTicket" Name="MatchingTicket"/>
       </Cmd>

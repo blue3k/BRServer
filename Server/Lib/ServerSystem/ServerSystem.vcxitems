@@ -48,6 +48,7 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)Component\ServerComponent.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Component\ServerComponentCarrier.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Component\SFServerConfigComponent.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)Component\SFServerNetComponent.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Component\SFZooKeeperSessionComponent.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Entity\Entity.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Entity\EntityInformation.h" />
@@ -150,6 +151,7 @@
   <ItemGroup>
     <ClCompile Include="$(MSBuildThisFileDirectory)Component\ServerComponent.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)Component\SFServerConfigComponent.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)Component\SFServerNetComponent.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)Component\SFZooKeeperSessionComponent.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)Entity\Entity.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)Entity\EntityInformation.cpp" />

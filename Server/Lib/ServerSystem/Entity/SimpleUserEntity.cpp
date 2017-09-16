@@ -76,6 +76,7 @@ namespace Svr
 			return;
 
 		m_pConnection->SetEventHandler(nullptr);
+		Service::ConnectionManager->RemoveConnection(SharedPointerT<Net::Connection>(m_pConnection));
 		m_pConnection->DisconnectNRelease(reason);
 		m_pConnection = SharedPointerT<Net::Connection>();
 	}

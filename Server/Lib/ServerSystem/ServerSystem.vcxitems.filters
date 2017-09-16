@@ -368,6 +368,9 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)Service\ServerClusterService.h">
       <Filter>Service</Filter>
     </ClInclude>
+    <ClInclude Include="C:\work\BRServerSF\Server\Lib\ServerSystem\Component\SFServerNetComponent.h">
+      <Filter>Component</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="$(MSBuildThisFileDirectory)makefile.mak" />
@@ -684,6 +687,9 @@
       <Filter>Service</Filter>
     </ClCompile>
     <ClCompile Include="$(MSBuildThisFileDirectory)Server\ParameterSetting.cpp" />
+    <ClCompile Include="C:\work\BRServerSF\Server\Lib\ServerSystem\Component\SFServerNetComponent.cpp">
+      <Filter>Component</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Xml Include="$(MSBuildThisFileDirectory)..\..\Config\ServerConfig.xml">

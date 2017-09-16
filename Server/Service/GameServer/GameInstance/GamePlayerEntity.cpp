@@ -231,10 +231,13 @@ namespace GameServer {
 		local.SetInfo(GetMyServer()->GetNetClass(), pNetPublicServer->GetLocalAddress(), GetMyServer()->GetServerUID());
 		remote.SetInfo(NetClass::Client, authTicket);
 
+		pConnection->SetCID(Service::ConnectionManager->NewCID());
+
 		svrChk(pConnection->InitConnection(pNetPublicServer->GetSocket(), false, local, remote));
-		svrTrace(SVR_INFO, "Initialize connection CID:{0}, Addr:{1}", pConnection->GetCID(), pConnection->GetRemoteInfo().PeerAddress);
 
 		Service::ConnectionManager->AddConnection(pConnection);
+
+		svrTrace(SVR_INFO, "Initialize connection CID:{0}, Addr:{1}", pConnection->GetCID(), pConnection->GetRemoteInfo().PeerAddress);
 
 		svrChk(SetConnection(std::forward<Net::ConnectionPtr>(pConnection)));
 
@@ -243,6 +246,12 @@ namespace GameServer {
 		AddGameTransactionLog(TransLogCategory::Account, 2, 0, 0, "Entity Initialize");
 
 	Proc_End:
+
+		if (pConnection != nullptr && pConnection->GetCID() != 0)
+		{
+			Service::ConnectionManager->FreeCID((uint)pConnection->GetCID());
+			pConnection->SetCID(0);
+		}
 
 		return hr;
 	}

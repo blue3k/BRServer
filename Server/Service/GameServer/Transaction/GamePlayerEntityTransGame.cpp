@@ -1056,6 +1056,7 @@ namespace GameServer {
 		{
 			// Player isn't in a party, just do it alone
 			Svr::ClusteredServiceEntity *pServiceEntity = nullptr;
+			Svr::ServerServiceInformation *pWatcherService = nullptr;
 			auto queueClusterID = Svr::MatchingUtil::GetQueueClusterID(GetNumPlayer(), 1, (PlayerRole)GetRequestRole());
 
 			svrChk(Svr::GetServerComponent<Svr::ClusterManagerServiceEntity>()->GetClusterServiceEntity(queueClusterID, pServiceEntity));
@@ -1064,7 +1065,7 @@ namespace GameServer {
 			//auto pServiceEntity = Svr::GetServerComponent<Svr::MatchingQueueWatcherServiceEntity>(componentID);
 			svrChkPtr(pServiceEntity);
 
-			svrChk(pServiceEntity->FindRandomService(pService));
+			svrChk(pServiceEntity->FindRandomWatcher(pService));
 
 			svrChk( pService->GetService<Svr::PartyMatchingQueueService>()->RegisterPlayerMatchingCmd(GetTransID(), 0, GetMyOwner()->GetPlayerID() ) );
 		}

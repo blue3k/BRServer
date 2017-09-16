@@ -25,7 +25,7 @@ namespace SF
 {
 
 	ServerConfigComponent::ServerConfigComponent(const char* configPath)
-		: LibraryComponent("ServerConfigComponent")
+		: LibraryComponent(TypeName)
 		, m_MemoryManager(GetSystemMemoryManager())
 		, m_ConfigPath(GetMemoryManager(), configPath)
 	{

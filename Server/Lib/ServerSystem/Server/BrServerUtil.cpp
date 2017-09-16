@@ -20,6 +20,7 @@
 #include "Server/ParameterSetting.h"
 
 #include "SFEngine.h"
+#include "Component/SFServerNetComponent.h"
 #include "Component/SFServerConfigComponent.h"
 #include "Component/SFZooKeeperSessionComponent.h"
 #include "Component/SFConnectionManagerComponent.h"
@@ -83,6 +84,7 @@ namespace Svr {
 		if (pEngine == nullptr)
 			return;
 
+		pEngine->AddComponent<ServerNetComponent>();
 		pEngine->AddComponent<ServerLogComponent>("..\\..\\Config\\traceConfig.cfg");
 		pEngine->AddComponent<ZooKeeperSessionComponent>(zkaddress, ZOO_LOG_LEVEL_DEBUG);
 		pEngine->AddComponent<ServerConfigComponent>(zkconfig);

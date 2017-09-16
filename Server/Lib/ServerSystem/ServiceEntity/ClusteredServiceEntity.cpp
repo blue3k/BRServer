@@ -412,6 +412,28 @@ namespace Svr {
 		return pBestService != nullptr ? ResultCode::SUCCESS : ResultCode::FAIL;
 	}
 
+	// Find random service, maybe lowest workload service
+	Result ClusteredServiceEntity::FindRandomWatcher(ServerServiceInformation* &pService)
+	{
+		//Result hr = ResultCode::SUCCESS;
+		ServiceTableItem *pBestService = nullptr;
+
+		for (auto pService : m_WatcherUIDMap)
+		{
+			if (pService != nullptr)
+			{
+				pBestService = pService;
+				break;
+			}
+		}
+
+		pService = pBestService;
+
+		//Proc_End:
+
+		return pBestService != nullptr ? ResultCode::SUCCESS : ResultCode::FAIL;
+	}
+
 	// Foreach service
 	Result ClusteredServiceEntity::ForEach( std::function<void(ServerServiceInformation*)> func )
 	{
