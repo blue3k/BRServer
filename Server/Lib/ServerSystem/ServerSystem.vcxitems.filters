@@ -365,11 +365,14 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)Service\ZookeeperSessionService.h">
       <Filter>Service</Filter>
     </ClInclude>
-    <ClInclude Include="$(MSBuildThisFileDirectory)Service\ServerClusterService.h">
-      <Filter>Service</Filter>
-    </ClInclude>
     <ClInclude Include="C:\work\BRServerSF\Server\Lib\ServerSystem\Component\SFServerNetComponent.h">
       <Filter>Component</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\work\BRServerSF\Server\Lib\ServerSystem\Service\ClusterManagerService.h">
+      <Filter>Service</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\work\BRServerSF\Server\Lib\ServerSystem\Service\ServerEntityManagerService.h">
+      <Filter>Service</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

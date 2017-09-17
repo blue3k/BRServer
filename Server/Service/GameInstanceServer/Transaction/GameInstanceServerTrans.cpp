@@ -64,8 +64,8 @@ namespace ConspiracyGameInstanceServer {
 		switch( m_Step )
 		{
 		case StartingStep::WaitEntityServer:
-			if( Svr::GetServerComponent<Svr::ClusterManagerServiceEntity>()->GetInitialized() )
-//			if( (Svr::GetServerComponent<Svr::ServerEntityManager>()->GetEntityManagerServerEntity(pServer)) )
+			if( Service::ClusterManager->GetInitialized() )
+//			if( (Service::ServerEntityManager->GetEntityManagerServerEntity(pServer)) )
 			{
 				svrChk( InitializeServices() );
 				m_Step = StartingStep::WaitInitializeComponents;
@@ -96,7 +96,7 @@ namespace ConspiracyGameInstanceServer {
 	{
 		Result hr = ResultCode::SUCCESS;
 		
-		svrChk( Svr::GetServerComponent<Svr::ClusterManagerServiceEntity>()->InitializeNotInitializedClusterEntities() );
+		svrChk( Service::ClusterManager->InitializeNotInitializedClusterEntities() );
 		
 
 	Proc_End:

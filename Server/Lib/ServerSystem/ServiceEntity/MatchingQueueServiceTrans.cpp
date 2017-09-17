@@ -22,6 +22,7 @@
 #include "SvrTrace.h"
 #include "Server/BrServer.h"
 #include "ServerEntity/ServerEntityManager.h"
+#include "ServiceEntity/ClusterManagerServiceEntity.h"
 #include "Entity/EntityManager.h"
 #include "ServiceEntity/MatchingQueueServiceTrans.h"
 #include "ServiceEntity/MatchingServiceEntity.h"
@@ -198,7 +199,7 @@ namespace Svr {
 		svrChk(GetMyOwner()->DequeueItem(GetMatchingTicket(), m_matchingQueueItem));
 
 
-		svrChk(GetServerComponent<ServerEntityManager>()->GetServerEntity( m_matchingQueueItem.RegisterUID.GetServerID(), pServerEntity ));
+		svrChk(Service::ServerEntityManager->GetServerEntity( m_matchingQueueItem.RegisterUID.GetServerID(), pServerEntity ));
 
 		if( m_matchingQueueItem.NumPlayers == 0 )
 			svrErrClose(ResultCode::SVR_INVALID_QUEUEITEM);
@@ -242,7 +243,7 @@ namespace Svr {
 		svrChk(GetMyOwner()->DeleteItem(GetMatchingTicket(), matchingQueueItem));
 
 
-		svrChk(GetServerComponent<ServerEntityManager>()->GetServerEntity(matchingQueueItem.RegisterUID.GetServerID(), pServerEntity));
+		svrChk(Service::ServerEntityManager->GetServerEntity(matchingQueueItem.RegisterUID.GetServerID(), pServerEntity));
 
 		if (matchingQueueItem.NumPlayers == 0)
 			svrErrClose(ResultCode::SVR_INVALID_QUEUEITEM);

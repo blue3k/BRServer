@@ -46,9 +46,11 @@ namespace Svr {
 	//	ServerServiceComponentEntity class
 	//
 
-	class MatchingQueueServiceEntity : public RingClusterServiceEntity
+	class MatchingQueueServiceEntity : public ShardedClusterServiceEntity
 	{
 	public:
+
+		typedef ShardedClusterServiceEntity super;
 
 		// Queue item
 		struct QueueItem : public MatchingQueueItem
@@ -108,7 +110,7 @@ namespace Svr {
 
 	public:
 
-		MatchingQueueServiceEntity( ClusterID clusterID, ClusterMembership initialMembership = ClusterMembership::StatusWatcher );
+		MatchingQueueServiceEntity( GameID gameID, ClusterID clusterID, ClusterMembership initialMembership = ClusterMembership::StatusWatcher );
 		~MatchingQueueServiceEntity();
 
 
@@ -172,24 +174,6 @@ namespace Svr {
 	};
 
 
-
-
-
-	///////////////////////////////////////////////////////////////////////////////////////////////////////
-	//
-	//	MatchingQueueWatcherServiceEntity class
-	//
-
-	class MatchingQueueWatcherServiceEntity : public RingClusterServiceEntity
-	{
-	public:
-
-	public:
-
-		MatchingQueueWatcherServiceEntity( ClusterID clusterID );
-		~MatchingQueueWatcherServiceEntity();
-
-	};
 
 
 

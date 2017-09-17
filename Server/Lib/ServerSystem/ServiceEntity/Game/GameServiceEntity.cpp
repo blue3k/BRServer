@@ -43,7 +43,7 @@ namespace Svr {
 	//
 
 	GameServiceEntity::GameServiceEntity(GameID gameID, const ServerConfig::NetPublic *publicNetSocket, ClusterMembership initialMembership)
-		: FreeReplicaClusterServiceEntity(ClusterID::Game, initialMembership)
+		: super(gameID, ClusterID::Game, initialMembership)
 		, m_PublicNetSocket(publicNetSocket)
 		, m_GameID(gameID)
 		, m_NewConnectionQueue(GetMemoryManager())
@@ -59,8 +59,9 @@ namespace Svr {
 	{
 		Result hr = ResultCode::SUCCESS;
 		GameClusterServiceEntity *pGameService = nullptr;
+		ServerServiceInformation* pServiceInfo = nullptr;
 
-		svrChk(FreeReplicaClusterServiceEntity::InitializeEntity(newEntityID) );
+		svrChk(super::InitializeEntity(newEntityID) );
 
 		// public network
 		svrChkPtr(m_PublicNetSocket);
@@ -73,9 +74,7 @@ namespace Svr {
 		// Register game cluster as a slave
 		svrMem(pGameService = new(GetMemoryManager()) Svr::GameClusterServiceEntity(m_GameID, m_PublicNetSocket, ClusterMembership::Slave));
 		svrChk(Service::EntityManager->AddEntity(EntityFaculty::Service, pGameService));
-		svrChk(GetServerComponent<Svr::ClusterManagerServiceEntity>()->AddClusterServiceEntity(pGameService));
-		//svrChk(AddServerComponent(pGameService));
-		BrServer::GetInstance()->GetComponentCarrier().AddComponentWithAdapter(pGameService);
+		svrChk(Service::ClusterManager->AddClusterServiceEntity(pGameService, pServiceInfo));
 
 
 	Proc_End:
@@ -88,7 +87,7 @@ namespace Svr {
 	{
 		Result hr = ResultCode::SUCCESS;
 
-		svrChk(FreeReplicaClusterServiceEntity::ClearEntity() );
+		svrChk(super::ClearEntity() );
 
 		svrChk(m_pNetPublic->HostClose());
 
@@ -103,7 +102,7 @@ namespace Svr {
 	{
 		Result hr = ResultCode::SUCCESS;
 
-		svrChk(FreeReplicaClusterServiceEntity::TickUpdate(pAction) );
+		svrChk(super::TickUpdate(pAction) );
 
 		// check below only if we are working
 		if( GetEntityState() != EntityState::WORKING )

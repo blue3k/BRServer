@@ -24,7 +24,7 @@
 #include "Task/ServerTaskManager.h"
 #include "ServerEntity/ServerEntity.h"
 #include "Component/ServerComponent.h"
-
+#include "Service/ServerEntityManagerService.h"
 
 
 namespace SF {
@@ -38,10 +38,11 @@ namespace Svr
 	//		- Will use with server type
 	//
 
-	class ServerEntityManager : public SharedObject, public TickTaskManager
+	class ServerEntityManager : public SharedObject, public TickTaskManager, public ServerEntityManagerService
 	{
 	public:
-		enum { ComponentID = ServerComponentID_ServerEntityManager };
+
+		static constexpr FixedString TypeName = "ServerEntityManager";
 
 		typedef HashTable2<ServerID, ServerEntity* > ServerIDMap;
 
@@ -59,6 +60,8 @@ namespace Svr
 
 		MemoryManager m_MemoryManager;
 
+		uint m_ThreadCount = 2;
+
 		// Server ID map for entity manager server
 		ServerUpTimeList		m_EntityManagerServerUpTimeMap;
 
@@ -73,38 +76,38 @@ namespace Svr
 
 	public:
 		// Constructor/Destructor
-		ServerEntityManager();
+		ServerEntityManager(uint threadCount);
 		virtual ~ServerEntityManager();
 
 		virtual void Dispose() override;
 
 		IMemoryManager& GetHeap() { return m_MemoryManager; }
 
+		// Clear all server entity
+		virtual void Clear() override;
+
 		// Register server
 		template<class ServerEntityType>
 		Result GetOrRegisterServer( ServerID serverID, NetClass netClass, const NetAddress& netAddress, ServerEntityType* &pServerEntity );
-		Result GetOrRegisterServer(ServerID serverID, NetClass netClass, const NetAddress& netAddress, ServerEntity* &pServerEntity);
+		virtual Result GetOrRegisterServer(ServerID serverID, NetClass netClass, const NetAddress& netAddress, ServerEntity* &pServerEntity) override;
 
 		// Get remote entity
-		Result GetServerEntity( ServerID svrID, ServerEntity* &pServerEntity );
+		virtual Result GetServerEntity( ServerID svrID, ServerEntity* &pServerEntity ) override;
 
 		// Get available firstEntity server entity
-		Result GetEntityManagerServerEntity( ServerEntity* &pServerEntity );
+		virtual Result GetEntityManagerServerEntity( ServerEntity* &pServerEntity ) override;
 
 		// Add new remote entity
-		Result UpdateEntityManagerServerEntity( ServerEntity* pServerEntity );
+		virtual Result UpdateEntityManagerServerEntity( ServerEntity* pServerEntity ) override;
 
 		// Add new remote entity
-		Result AddOrGetServerEntity(ServerID serverID, NetClass netClass, ServerEntity* &pServerEntity);
+		virtual Result AddOrGetServerEntity(ServerID serverID, NetClass netClass, ServerEntity* &pServerEntity) override;
 
-		const SharedPointerAtomicT<Net::Connection>& GetServerConnection(ServerID svrID);
+		virtual const SharedPointerAtomicT<Net::Connection>& GetServerConnection(ServerID svrID) override;
 
-
-		// Initialize server component
-		Result InitializeComponent() { return ResultCode::SUCCESS; }
-		// Terminate server component
-		void TerminateComponent() {  }
-
+		Result InitializeComponent() { return TickTaskManager::InitializeManager(m_ThreadCount); }
+		// Terminate component
+		void DeinitializeComponent() { TickTaskManager::TerminateManager(); }
 	};
 
 

@@ -227,19 +227,8 @@ namespace Svr {
 
 				svrTrace( SVR_DBGSVR, "Sending Server Connected to Entity Server from:{0}", myConfig->Name );
 
-
-				const ServerServiceInformation* pServerServiceInfo = Svr::GetServerComponent<ClusterManagerServiceEntity>()->GetMyServiceInfo();
-				ServiceInformation serviceInformation( pServerServiceInfo->GetEntityUID(), 
-					pServerServiceInfo->GetClusterMembership(), 
-					pServerServiceInfo->GetServiceStatus(), 
-					Svr::BrServer::GetInstance()->GetNetPrivate()->GetNetClass(),
-					Svr::BrServer::GetInstance()->GetNetPrivate()->GetLocalAddress(), 
-					Svr::BrServer::GetInstance()->GetServerUpTime(), 
-					pServerServiceInfo->GetWorkload() );
-
 				// This is a replication of a remote server. ServerID in EntityUID will have remote server id then local serverID
 				svrChk(Policy::NetPolicyServer(GetConnection()).ServerConnectedC2SEvt(RouteContext(Svr::BrServer::GetInstance()->GetServerUID(), 0),
-					serviceInformation, 
 					BrServer::GetInstance()->GetServerUpTime().time_since_epoch().count(),
 					netPrivate->GetLocalAddress()));
 			}

@@ -44,6 +44,7 @@ namespace SF
 				RouteContext m_RouteContext;
 				TransactionID m_TransactionID;
 				uint16_t m_RouteHopCount;
+				uint32_t m_GameID;
 				PlayerInformation m_Creator;
 			public:
 				CreatePartyCmd()
@@ -58,6 +59,7 @@ namespace SF
 				const RouteContext& GetRouteContext() const	{ return m_RouteContext; };
 				const TransactionID& GetTransactionID() const	{ return m_TransactionID; };
 				const uint16_t& GetRouteHopCount() const	{ return m_RouteHopCount; };
+				const uint32_t& GetGameID() const	{ return m_GameID; };
 				const PlayerInformation& GetCreator() const	{ return m_Creator; };
 
 				static Result TraceOut(const char* prefix, MessageDataPtr& pMsg);
@@ -65,7 +67,7 @@ namespace SF
 				virtual Result ParseMessage( MessageData* pIMsg );
 				static Result ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr& pIMsg, MessageBase* &pMsgBase );
 
-				static MessageData* Create( IHeap& memHeap, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const uint16_t &InRouteHopCount, const PlayerInformation &InCreator );
+				static MessageData* Create( IHeap& memHeap, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const uint16_t &InRouteHopCount, const uint32_t &InGameID, const PlayerInformation &InCreator );
 
 				Result OverrideRouteContextDestination( EntityUID to );
 

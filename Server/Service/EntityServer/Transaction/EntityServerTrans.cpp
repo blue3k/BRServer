@@ -63,8 +63,8 @@ namespace EntityServer {
 		case StartingStep::WaitEntityServer:
 			GetMyServer()->GetNetPrivate()->SetIsEnableAccept(true);
 
-			if( Svr::GetServerComponent<Svr::ClusterManagerServiceEntity>()->GetInitialized() )
-			//if( ((Svr::GetServerComponent<Svr::ServerEntityManager>()->GetEntityManagerServerEntity(pServer)) && pServer != Svr::BrServer::GetInstance()->GetLoopbackServerEntity())
+			if( Service::ClusterManager->GetInitialized() )
+			//if( ((Service::ServerEntityManager->GetEntityManagerServerEntity(pServer)) && pServer != Svr::BrServer::GetInstance()->GetLoopbackServerEntity())
 			//	|| m_WaitCount > 6 ) // wait 6*500 ms
 			{
 				svrChk( InitializeServices() );
@@ -108,7 +108,7 @@ namespace EntityServer {
 		// Grab Game server list from entity
 		// try connecte to it
 		// Only entity server can be slave or master
-		//svrChk( Service::EntityManager->AddEntity( EntityFaculty::Service, Svr::GetServerComponent<Svr::ClusterManagerServiceEntity>() ) );
+		//svrChk( Service::EntityManager->AddEntity( EntityFaculty::Service, Service::ClusterManager ) );
 
 
 	//Proc_End:

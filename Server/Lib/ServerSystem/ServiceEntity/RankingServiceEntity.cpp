@@ -42,8 +42,8 @@ namespace Svr {
 	//	Entity informations
 	//
 
-	RankingServiceEntity::RankingServiceEntity(ClusterID clusterID, ClusterMembership initialMembership)
-		: FreeReplicaClusterServiceEntity(clusterID, initialMembership)
+	RankingServiceEntity::RankingServiceEntity(GameID gameID, ClusterID clusterID, ClusterMembership initialMembership)
+		: super(gameID, clusterID, initialMembership)
 		, m_RankingMap(GetMemoryManager())
 		, m_PlayerMap(GetMemoryManager())
 	{
@@ -67,7 +67,7 @@ namespace Svr {
 
 		auto rankingDBConfig = Service::ServerConfig->FindDBCluster("RankingDB");
 
-		svrChk(FreeReplicaClusterServiceEntity::InitializeEntity(newEntityID) );
+		svrChk(super::InitializeEntity(newEntityID) );
 
 		svrChk(pServerInst->AddDBCluster<DB::RankingDB>(rankingDBConfig));
 
@@ -111,7 +111,7 @@ namespace Svr {
 	{
 		Result hr = ResultCode::SUCCESS;
 
-		svrChk(FreeReplicaClusterServiceEntity::ClearEntity() );
+		svrChk(super::ClearEntity() );
 
 	Proc_End:
 
@@ -122,7 +122,7 @@ namespace Svr {
 	{
 		Result hr = ResultCode::SUCCESS;
 
-		svrChk(FreeReplicaClusterServiceEntity::TickUpdate(pAction) );
+		svrChk(super::TickUpdate(pAction) );
 
 		// check below only if we are working
 		if( GetEntityState() != EntityState::WORKING )
@@ -324,20 +324,6 @@ namespace Svr {
 		return;
 	}
 
-	///////////////////////////////////////////////////////////////////////////////////////////////////////
-	//
-	//	RankingWatcherServiceEntity class
-	//
-
-
-	RankingWatcherServiceEntity::RankingWatcherServiceEntity( ClusterID clusterID, uint componentID )
-		: ReplicaClusterServiceEntity(clusterID, ClusterMembership::StatusWatcher)
-	{
-	}
-
-	RankingWatcherServiceEntity::~RankingWatcherServiceEntity()
-	{
-	}
 
 
 

@@ -93,6 +93,8 @@ namespace Svr {
 		//	Game info
 		//
 
+		GameID m_GameID = GameID::Invalid;
+
 		// Team Leader ID
 		PlayerID m_LeaderID;
 
@@ -112,8 +114,11 @@ namespace Svr {
 		//	Game Party
 		//
 
-		GamePartyEntity();
+		GamePartyEntity(GameID gameID);
 		~GamePartyEntity();
+
+		GameID GetGameID() const { return m_GameID; }
+		//void SetGameID(GameID value) { m_GameID = value; }
 
 		PlayerID GetLeaderID() { return m_LeaderID; }
 		void SetLeaderID(PlayerID value) { m_LeaderID = value; }

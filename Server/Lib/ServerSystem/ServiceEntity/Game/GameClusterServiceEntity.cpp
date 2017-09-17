@@ -42,7 +42,7 @@ namespace Svr {
 	//
 
 	GameClusterServiceEntity::GameClusterServiceEntity(GameID gameID, const ServerConfig::NetPublic *publicNetSocket, ClusterMembership initialMembership)
-		: FreeReplicaClusterServiceEntity(GetGameClusterID(gameID), initialMembership)
+		: super(gameID, ClusterID::Game, initialMembership)
 		, m_PlayerIDMap(GetMemoryManager())
 		, m_PublicNetSocket(publicNetSocket)
 	{
@@ -75,7 +75,7 @@ namespace Svr {
 	{
 		Result hr = ResultCode::SUCCESS;
 
-		svrChk(FreeReplicaClusterServiceEntity::RegisterServiceMessageHandler( pServerEntity ) );
+		svrChk(super::RegisterServiceMessageHandler( pServerEntity ) );
 
 		pServerEntity->BR_ENTITY_MESSAGE(Message::ClusterServer::GamePlayerEntityCreatedC2SEvt)				{ svrMemReturn(pNewTrans = new(GetHeap()) GameServerTransGamePlayerEntityCreatedS2CEvt(GetHeap(), pMsgData)); return ResultCode::SUCCESS; } );
 		pServerEntity->BR_ENTITY_MESSAGE(Message::ClusterServer::GamePlayerEntityDeletedC2SEvt)				{ svrMemReturn(pNewTrans = new(GetHeap()) GameServerTransGamePlayerEntityDeletedS2CEvt(GetHeap(), pMsgData)); return ResultCode::SUCCESS; } );
@@ -90,7 +90,7 @@ namespace Svr {
 	{
 		Result hr = ResultCode::SUCCESS;
 
-		svrChk(FreeReplicaClusterServiceEntity::TickUpdate(pAction) );
+		svrChk(super::TickUpdate(pAction) );
 
 		if( (SignedCounterType)m_NumberOfPlayerOnThisServer > 0 )
 		{
@@ -146,18 +146,19 @@ namespace Svr {
 
 		m_NumberOfPlayerOnThisServer.fetch_add(1, std::memory_order_relaxed);
 
-		ForEachNonWatcher([&](ServerServiceInformation* pServerService){
-			if( pServerService->GetEntityUID() == GetEntityUID() )
-				return;
+		// TODO: Create player entity to zk
+		//ForEachNonWatcher([&](ServerServiceInformation* pServerService){
+		//	if( pServerService->GetEntityUID() == GetEntityUID() )
+		//		return;
 
-			ClusterServerService *pService = pServerService->GetService<ClusterServerService>();
-			if( pService == nullptr )
-				return;
+		//	ClusterServerService *pService = pServerService->GetService<ClusterServerService>();
+		//	if( pService == nullptr )
+		//		return;
 
-			// I don't want to let it be replicated, so the route hop is 1 even though it's the first hop
-			pService->GamePlayerEntityCreatedC2SEvt( GetEntityID(), 1, playerID, entityUID );
-			
-		});
+		//	// I don't want to let it be replicated, so the route hop is 1 even though it's the first hop
+		//	pService->GamePlayerEntityCreatedC2SEvt( GetEntityID(), 1, playerID, entityUID );
+		//	
+		//});
 
 	Proc_End:
 
@@ -188,18 +189,19 @@ namespace Svr {
 		{
 			m_NumberOfPlayerOnThisServer.fetch_sub(1, std::memory_order_relaxed);
 
-			ForEachNonWatcher([&](ServerServiceInformation* pServerService){
-				if( pServerService->GetEntityUID() == GetEntityUID() )
-					return;
+			// TODO: Notify to zk
+			//ForEachNonWatcher([&](ServerServiceInformation* pServerService){
+			//	if( pServerService->GetEntityUID() == GetEntityUID() )
+			//		return;
 
-				ClusterServerService *pService = pServerService->GetService<ClusterServerService>();
-				if( pService == nullptr )
-					return;
+			//	ClusterServerService *pService = pServerService->GetService<ClusterServerService>();
+			//	if( pService == nullptr )
+			//		return;
 
-				// I don't want to let it be replicated, so the route hop is 1 even though it's the first hop
-				pService->GamePlayerEntityDeletedC2SEvt( GetEntityID(), 1, playerID, pPlayerInfo->GetEntityUID() );
-			
-			});
+			//	// I don't want to let it be replicated, so the route hop is 1 even though it's the first hop
+			//	pService->GamePlayerEntityDeletedC2SEvt( GetEntityID(), 1, playerID, pPlayerInfo->GetEntityUID() );
+			//
+			//});
 		}
 
 	Proc_End:

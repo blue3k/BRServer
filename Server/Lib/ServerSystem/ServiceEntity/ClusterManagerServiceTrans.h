@@ -72,94 +72,94 @@ namespace Svr {
 	//};
 
 
-	/////////////////////////////////////////////////////////////////////////////
+	///////////////////////////////////////////////////////////////////////////////
+	////
+	////	Cluster related transactions
+	////
 	//
-	//	Cluster related transactions
+	//class ClusterGetMemberListTrans : public ServerEntityMessageTransaction< ClusterManagerServiceEntity, Message::ClusterServer::GetClusterMemberListCmd>
+	//{
+	//public:
+
+	//	typedef ServerEntityMessageTransaction< ClusterManagerServiceEntity, Message::ClusterServer::GetClusterMemberListCmd> super;
+
+	//private:
+	//	StaticArray<ServiceInformation,50> m_MemberList;
+
+	//public:
+	//	ClusterGetMemberListTrans(IHeap& heap, MessageDataPtr &pIMsg )
+	//		: ServerEntityMessageTransaction(heap, pIMsg )
+	//		, m_MemberList(heap)
+	//	{}
+	//	virtual ~ClusterGetMemberListTrans() {}
+
+	//	// Start Transaction
+	//	virtual Result StartTransaction();
+
+	//	
+	//	BR_SVR_MSGTRANS_CLOSE_ARGS(Policy::NetSvrPolicyClusterServer, GetClusterMemberListRes,GetRouteContext().GetSwaped(), m_MemberList);
+	//};
+
+
+	//class JoinClusterTrans : public ServerEntityMessageTransaction< ClusterManagerServiceEntity, Message::ClusterServer::JoinClusterCmd>
+	//{
+	//public:
+	//	typedef ServerEntityMessageTransaction< ClusterManagerServiceEntity, Message::ClusterServer::JoinClusterCmd> super;
+
+	//private:
+	//	StaticArray<ServiceInformation,50> m_MemberList;
+
+	//public:
+	//	JoinClusterTrans(IHeap& heap, MessageDataPtr &pIMsg )
+	//		: ServerEntityMessageTransaction(heap, pIMsg )
+	//		, m_MemberList(heap)
+	//	{}
+	//	virtual ~JoinClusterTrans() {}
+
+	//	// Start Transaction
+	//	virtual Result StartTransaction();
+
+
+	//	BR_SVR_MSGTRANS_CLOSE_ARGS(Policy::NetSvrPolicyClusterServer, JoinClusterRes, GetRouteContext().GetSwaped(), m_MemberList);
+	//};
 	//
-	
-	class ClusterGetMemberListTrans : public ClusterEntityMessageTransaction< ClusterManagerServiceEntity, Message::ClusterServer::GetClusterMemberListCmd>
-	{
-	public:
 
-		typedef ClusterEntityMessageTransaction< ClusterManagerServiceEntity, Message::ClusterServer::GetClusterMemberListCmd> super;
+	//class JoinClusterTransForEntityServer : public ServerEntityMessageTransaction< ClusterManagerServiceEntity, Message::ClusterServer::JoinClusterCmd>
+	//{
+	//public:
+	//	typedef ServerEntityMessageTransaction< ClusterManagerServiceEntity, Message::ClusterServer::JoinClusterCmd> super;
 
-	private:
-		StaticArray<ServiceInformation,50> m_MemberList;
+	//private:
+	//	StaticArray<ServiceInformation,50> m_MemberList;
 
-	public:
-		ClusterGetMemberListTrans(IHeap& heap, MessageDataPtr &pIMsg )
-			: ClusterEntityMessageTransaction(heap, pIMsg )
-			, m_MemberList(heap)
-		{}
-		virtual ~ClusterGetMemberListTrans() {}
+	//public:
+	//	JoinClusterTransForEntityServer(IHeap& heap, MessageDataPtr &pIMsg )
+	//		: ServerEntityMessageTransaction( heap, pIMsg )
+	//		, m_MemberList(heap)
+	//	{}
+	//	virtual ~JoinClusterTransForEntityServer() {}
 
-		// Start Transaction
-		virtual Result StartTransaction();
-
-		
-		BR_SVR_MSGTRANS_CLOSE_ARGS(Policy::NetSvrPolicyClusterServer, GetClusterMemberListRes,GetRouteContext().GetSwaped(), m_MemberList);
-	};
+	//	// Start Transaction
+	//	virtual Result StartTransaction();
 
 
-	class JoinClusterTrans : public ClusterEntityMessageTransaction< ClusterManagerServiceEntity, Message::ClusterServer::JoinClusterCmd>
-	{
-	public:
-		typedef ClusterEntityMessageTransaction< ClusterManagerServiceEntity, Message::ClusterServer::JoinClusterCmd> super;
-
-	private:
-		StaticArray<ServiceInformation,50> m_MemberList;
-
-	public:
-		JoinClusterTrans(IHeap& heap, MessageDataPtr &pIMsg )
-			: ClusterEntityMessageTransaction(heap, pIMsg )
-			, m_MemberList(heap)
-		{}
-		virtual ~JoinClusterTrans() {}
-
-		// Start Transaction
-		virtual Result StartTransaction();
-
-
-		BR_SVR_MSGTRANS_CLOSE_ARGS(Policy::NetSvrPolicyClusterServer, JoinClusterRes,GetRouteContext().GetSwaped(), m_MemberList);
-	};
-	
-
-	class JoinClusterTransForEntityServer : public ClusterEntityMessageTransaction< ClusterManagerServiceEntity, Message::ClusterServer::JoinClusterCmd>
-	{
-	public:
-		typedef ClusterEntityMessageTransaction< ClusterManagerServiceEntity, Message::ClusterServer::JoinClusterCmd> super;
-
-	private:
-		StaticArray<ServiceInformation,50> m_MemberList;
-
-	public:
-		JoinClusterTransForEntityServer(IHeap& heap, MessageDataPtr &pIMsg )
-			: ClusterEntityMessageTransaction( heap, pIMsg )
-			, m_MemberList(heap)
-		{}
-		virtual ~JoinClusterTransForEntityServer() {}
-
-		// Start Transaction
-		virtual Result StartTransaction();
-
-
-		BR_SVR_MSGTRANS_CLOSE_ARGS(Policy::NetSvrPolicyClusterServer, JoinClusterRes,GetRouteContext().GetSwaped(), m_MemberList);
-	};
+	//	BR_SVR_MSGTRANS_CLOSE_ARGS(Policy::NetSvrPolicyClusterServer, JoinClusterRes,GetRouteContext().GetSwaped(), m_MemberList);
+	//};
 
 
 
-	
-	class SyncClusterServiceTrans : public ClusterEntityMessageTransaction< ClusterManagerServiceEntity, Message::ClusterServer::SyncClusterServiceC2SEvt>
-	{
-	private:
+	//
+	//class SyncClusterServiceTrans : public ServerEntityMessageTransaction< ClusterManagerServiceEntity, Message::ClusterServer::SyncClusterServiceC2SEvt>
+	//{
+	//private:
 
-	public:
-		SyncClusterServiceTrans(IHeap& heap, MessageDataPtr &pIMsg ) : ClusterEntityMessageTransaction( heap, pIMsg ) {}
-		virtual ~SyncClusterServiceTrans() {}
+	//public:
+	//	SyncClusterServiceTrans(IHeap& heap, MessageDataPtr &pIMsg ) : ServerEntityMessageTransaction( heap, pIMsg ) {}
+	//	virtual ~SyncClusterServiceTrans() {}
 
-		// Start Transaction
-		virtual Result StartTransaction();
-	};
+	//	// Start Transaction
+	//	virtual Result StartTransaction();
+	//};
 
 
 } // namespace GameServer 

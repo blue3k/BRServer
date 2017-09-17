@@ -37,10 +37,11 @@ namespace Svr {
 		EntityUID	m_UID;
 
 		// Entity name
-		char*	m_Name;
+		String	m_NodeName;
+		FixedString m_NodeNameCrc;
 
 	public:
-		EntityInformation();
+		EntityInformation(const EntityUID& entityUID);
 		virtual ~EntityInformation();
 
 		////////////////////////////////////////////////////////////////////////
@@ -50,13 +51,13 @@ namespace Svr {
 
 		// Entity UID
 		inline EntityUID GetEntityUID() const;
-		inline void SetEntityUID( EntityUID entityUID );
 
 		inline ServerID GetServerID() const;
 
 		// Entity Name
-		inline const char* GetName() const;
-		inline void SetName( IMemoryManager& memMgr, const char* strName );
+		const String& GetNodeName() const { return m_NodeName; }
+		FixedString GetNodeNameCrc() const { return m_NodeNameCrc; }
+		void SetNodeName(const char* strName) { m_NodeName = strName; m_NodeNameCrc = strName; }
 
 	};
 
@@ -71,6 +72,8 @@ namespace Svr {
 	class ServerServiceInformation : public EntityInformation
 	{
 	private:
+
+		GameID m_GameID;
 
 		// Service Cluster ID
 		ClusterID m_ClusterID;
@@ -99,10 +102,12 @@ namespace Svr {
 
 
 	public:
-		ServerServiceInformation(ClusterID clusterID, ServerEntity* pServerEntity, ClusterMembership membership);
+		ServerServiceInformation(GameID gameID, ClusterID clusterID, EntityUID entityUID, ServerEntity* pServerEntity, ClusterMembership membership);
 		~ServerServiceInformation();
 
+
 		ClusterID GetClusterID() const { return m_ClusterID; }
+		GameID GetGameID() const { return m_GameID; }
 
 		ServerEntity* GetServerEntity() const { return m_ServerEntity; }
 
@@ -173,7 +178,7 @@ namespace Svr {
 
 	public:
 		// Constructor
-		UserEntityInformation();
+		UserEntityInformation(EntityUID& entityUID);
 		~UserEntityInformation();
 
 		// AccountID

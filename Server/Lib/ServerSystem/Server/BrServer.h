@@ -297,7 +297,7 @@ namespace Svr {
 		Result AddServiceEntityComponent(ConstructorArgs... constructorArgs);
 
 		// Register clustered service
-		Result RegisterClustereWatcherComponents(ClusterID clusterID, Svr::ServerComponentID componentIDStart, Svr::ServerComponentID componentIDEnd);
+		Result RegisterClustereWatchers(ClusterID clusterID, ClusterID clusterIDEnd);
 
 		// Register server module
 		Result RegisterModule(ServerConfig::ServerModule* module);
@@ -316,6 +316,7 @@ namespace Svr {
 	template< class ComponentType >
 	ComponentType* GetServerComponent();
 
+	inline GameID GetServerGameID() { if (BrServer::GetInstance() == nullptr) return GameID::Invalid; return BrServer::GetInstance()->GetGameID(); }
 
 
 

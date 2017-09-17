@@ -377,8 +377,8 @@ namespace Svr {
 	//
 	//
 
-	MatchingServiceEntity::MatchingServiceEntity(ClusterID clusterID, ClusterMembership initialMembership, bool useBot)
-		: ShardedClusterServiceEntity(clusterID, initialMembership )
+	MatchingServiceEntity::MatchingServiceEntity(GameID gameID, ClusterID clusterID, ClusterMembership initialMembership, bool useBot)
+		: ShardedClusterServiceEntity(gameID, clusterID, initialMembership )
 		, m_IsUseBot(true)
 		, m_MatchingReserevedQueues(GetMemoryManager())
 		, m_MatchedCount("Matched")
@@ -733,22 +733,6 @@ namespace Svr {
 
 
 
-
-
-	///////////////////////////////////////////////////////////////////////////////////////////////////////
-	//
-	//	MatchingWatcherServiceEntity class
-	//
-
-
-	MatchingWatcherServiceEntity::MatchingWatcherServiceEntity( ClusterID clusterID )
-		: RingClusterServiceEntity(clusterID, ClusterMembership::StatusWatcher)
-	{
-	}
-
-	MatchingWatcherServiceEntity::~MatchingWatcherServiceEntity()
-	{
-	}
 
 
 

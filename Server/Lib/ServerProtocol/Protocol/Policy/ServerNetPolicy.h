@@ -34,7 +34,7 @@ namespace SF
 			// Cmd: 
 			Result GenericFailureCmd( const RouteContext &InRouteContext, const TransactionID &InTransactionID );
 			// C2S: Server Started or Connected
-			Result ServerConnectedC2SEvt( const RouteContext &InRouteContext, const ServiceInformation &InClusterManagerServiceInformation, const uint32_t &InStartUpTime, const NetAddress &InPrivateAddress );
+			Result ServerConnectedC2SEvt( const RouteContext &InRouteContext, const uint32_t &InStartUpTime, const NetAddress &InPrivateAddress );
 
 		}; // class NetPolicyServer 
 

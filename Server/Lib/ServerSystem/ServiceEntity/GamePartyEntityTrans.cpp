@@ -81,8 +81,8 @@ namespace Svr {
 
 		svrChk(Transaction::StartTransaction() );
 
-
-		svrChk(GetServerComponent<GamePartyManagerServiceEntity>()->GetService(pService));
+		svrChk(Service::ClusterManager->GetRandomService(GameID::Invalid, ClusterID::GamePartyManager, pService));
+		//svrChk(GetServerComponent<GamePartyManagerServiceEntity>()->GetService(pService));
 
 		// 2. Get service entity list in the cluster
 		svrChk(pService->GetService<Svr::GamePartyManagerService>()->PartyDeletedC2SEvt(pOwner->GetEntityUID(), 0));
@@ -341,7 +341,8 @@ namespace Svr {
 			// We already have full member, just create game and let them know to join
 			ServerServiceInformation *pService = nullptr;
 
-			svrChk( GetServerComponent<GameInstanceManagerWatcherServiceEntity>()->GetService( pService ) );
+			svrChk(Service::ClusterManager->GetRandomService(GetMyOwner()->GetGameID(), ClusterID::GameInstanceManager, pService));
+			//svrChk( GetServerComponent<GameInstanceManagerWatcherServiceEntity>()->GetService( pService ) );
 
 			// 2. Get service entity list in the cluster
 			svrChk( pService->GetService<GameInstanceManagerService>()->CreateGameCmd(GetTransID(), 0, 0, (USHORT)GetMaxGamePlayers()) );
@@ -354,18 +355,14 @@ namespace Svr {
 			ClusteredServiceEntity *matchingQueueService = nullptr;
 			auto queueClusterID = Svr::MatchingUtil::GetQueueClusterID(GetMaxGamePlayers(), GetMyOwner()->GetNumPlayer(), PlayerRole::None);
 
-			svrChk(GetServerComponent<ClusterManagerServiceEntity>()->GetClusterServiceEntity(queueClusterID, matchingQueueService));
+			svrChk(Service::ClusterManager->GetRandomService(GetServerGameID(), queueClusterID, pService));
 
 			//auto matchingCompID = Svr::MatchingUtil::GetQueueComponentID(GetMaxGamePlayers(), GetMyOwner()->GetNumPlayer(), PlayerRole::None);
 			//auto matchingQueueService = Svr::GetServerComponent<Svr::RingClusterServiceEntity>(matchingCompID);
-			if (matchingQueueService == nullptr)
+			if (pService == nullptr)
 			{
 				svrTrace(Error, "Failed to get matching queue service MaxGamePlayer:{0}, NumberOfPlayer:{1}, queueClusterID:{2}", GetMaxGamePlayers(), GetMyOwner()->GetNumPlayer(), queueClusterID);
 				svrErr(ResultCode::SVR_INVALID_CLUSTERID);
-			}
-			else
-			{
-				svrChk(matchingQueueService->FindRandomService(pService));
 			}
 
 			GetMyOwner()->ForeachPlayer([&](PartyPlayer* pPlayer)->Result {
@@ -447,7 +444,7 @@ namespace Svr {
 		}
 
 
-		svrChk( Svr::GetServerComponent<Svr::ServerEntityManager>()->GetServerEntity( GetMyOwner()->GetMatchingQueueTicket().QueueUID.GetServerID(), pServer ) );
+		svrChk( Service::ServerEntityManager->GetServerEntity( GetMyOwner()->GetMatchingQueueTicket().QueueUID.GetServerID(), pServer ) );
 
 		svrChk(Policy::NetPolicyPartyMatchingQueue(pServer->GetConnection()).UnregisterMatchingCmd( RouteContext(GetOwnerEntityUID(), GetMyOwner()->GetMatchingQueueTicket().QueueUID), GetTransID(), 0,
 			GetMyOwner()->GetMatchingQueueTicket() ) );

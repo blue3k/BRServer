@@ -251,7 +251,6 @@ namespace SF
 				pCur = pIMsg->GetMessageData();
 
 				protocolChk( Protocol::StreamParamCopy( &m_RouteContext, pCur, iMsgSize, sizeof(RouteContext) ) );
-				protocolChk( Protocol::StreamParamCopy( &m_ClusterManagerServiceInformation, pCur, iMsgSize, sizeof(ServiceInformation) ) );
 				protocolChk( Protocol::StreamParamCopy( &m_StartUpTime, pCur, iMsgSize, sizeof(uint32_t) ) );
 				protocolChk( Protocol::StreamParamCopy( &m_PrivateAddress, pCur, iMsgSize, sizeof(NetAddress) ) );
 
@@ -275,7 +274,7 @@ namespace SF
 
 			}; // Result ServerConnectedC2SEvt::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
 
-			MessageData* ServerConnectedC2SEvt::Create( IHeap& memHeap, const RouteContext &InRouteContext, const ServiceInformation &InClusterManagerServiceInformation, const uint32_t &InStartUpTime, const NetAddress &InPrivateAddress )
+			MessageData* ServerConnectedC2SEvt::Create( IHeap& memHeap, const RouteContext &InRouteContext, const uint32_t &InStartUpTime, const NetAddress &InPrivateAddress )
 			{
  				MessageData *pNewMsg = nullptr;
 				Result hr;
@@ -284,7 +283,6 @@ namespace SF
 
 				unsigned __uiMessageSize = (unsigned)(sizeof(MessageHeader) 
 					+ sizeof(RouteContext)
-					+ sizeof(ServiceInformation)
 					+ sizeof(uint32_t)
 					+ sizeof(NetAddress));
 
@@ -294,7 +292,6 @@ namespace SF
 				pMsgData = pNewMsg->GetMessageData();
 
 				Protocol::PackParamCopy( pMsgData, &InRouteContext, sizeof(RouteContext));
-				Protocol::PackParamCopy( pMsgData, &InClusterManagerServiceInformation, sizeof(ServiceInformation));
 				Protocol::PackParamCopy( pMsgData, &InStartUpTime, sizeof(uint32_t));
 				Protocol::PackParamCopy( pMsgData, &InPrivateAddress, sizeof(NetAddress));
 
@@ -308,7 +305,7 @@ namespace SF
 				}
 				return pNewMsg;
 
-			}; // MessageData* ServerConnectedC2SEvt::Create( IHeap& memHeap, const RouteContext &InRouteContext, const ServiceInformation &InClusterManagerServiceInformation, const uint32_t &InStartUpTime, const NetAddress &InPrivateAddress )
+			}; // MessageData* ServerConnectedC2SEvt::Create( IHeap& memHeap, const RouteContext &InRouteContext, const uint32_t &InStartUpTime, const NetAddress &InPrivateAddress )
 
 			Result ServerConnectedC2SEvt::OverrideRouteContextDestination( EntityUID to )
 			{
@@ -341,8 +338,8 @@ namespace SF
 			{
  				ServerConnectedC2SEvt parser;
 				parser.ParseMessage(*pMsg);
-				protocolTrace( Debug2, "ServerConnected:{0}:{1} , RouteContext:{2}, ClusterManagerServiceInformation:{3}, StartUpTime:{4}, PrivateAddress:{5}",
-						prefix, pMsg->GetMessageHeader()->Length, parser.GetRouteContext(), parser.GetClusterManagerServiceInformation(), parser.GetStartUpTime(), parser.GetPrivateAddress()); 
+				protocolTrace( Debug2, "ServerConnected:{0}:{1} , RouteContext:{2}, StartUpTime:{3}, PrivateAddress:{4}",
+						prefix, pMsg->GetMessageHeader()->Length, parser.GetRouteContext(), parser.GetStartUpTime(), parser.GetPrivateAddress()); 
 				return ResultCode::SUCCESS;
 			}; // Result ServerConnectedC2SEvt::TraceOut(const char* prefix, MessageDataPtr& pMsg)
 

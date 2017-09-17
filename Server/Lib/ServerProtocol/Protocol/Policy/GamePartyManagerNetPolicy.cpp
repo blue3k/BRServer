@@ -26,14 +26,14 @@ namespace SF
  	namespace Policy
 	{
  		// Cmd: Create a party instance
-		Result NetPolicyGamePartyManager::CreatePartyCmd( const RouteContext &InRouteContext, const TransactionID &InTransactionID, const uint16_t &InRouteHopCount, const PlayerInformation &InCreator )
+		Result NetPolicyGamePartyManager::CreatePartyCmd( const RouteContext &InRouteContext, const TransactionID &InTransactionID, const uint16_t &InRouteHopCount, const uint32_t &InGameID, const PlayerInformation &InCreator )
 		{
  			Result hr;
 
 			 MessageDataPtr pMessage;
 			 protocolChkPtr(m_pConnection);
 
-			 pMessage = SF::Message::GamePartyManager::CreatePartyCmd::Create(m_pConnection->GetNetIOHandler().GetIOHeap(), InRouteContext, InTransactionID, InRouteHopCount, InCreator);
+			 pMessage = SF::Message::GamePartyManager::CreatePartyCmd::Create(m_pConnection->GetNetIOHandler().GetIOHeap(), InRouteContext, InTransactionID, InRouteHopCount, InGameID, InCreator);
 			 protocolChkPtr(*pMessage);
 
 			 return m_pConnection->Send( pMessage );
@@ -42,7 +42,7 @@ namespace SF
 
 			return hr;
 
-		}; // Result NetPolicyGamePartyManager::CreatePartyCmd( const RouteContext &InRouteContext, const TransactionID &InTransactionID, const uint16_t &InRouteHopCount, const PlayerInformation &InCreator )
+		}; // Result NetPolicyGamePartyManager::CreatePartyCmd( const RouteContext &InRouteContext, const TransactionID &InTransactionID, const uint16_t &InRouteHopCount, const uint32_t &InGameID, const PlayerInformation &InCreator )
 		// C2S: Party instance notify of deletion
 		Result NetPolicyGamePartyManager::PartyDeletedC2SEvt( const RouteContext &InRouteContext, const uint16_t &InRouteHopCount )
 		{

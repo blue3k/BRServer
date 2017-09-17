@@ -38,14 +38,17 @@ namespace Svr
 
 	///////////////////////////////////////////////////////////////////////////////////////////////////////
 	//
-	//	Plugin entity class
+	//	ServerEntityManager class
 	//
 
+	constexpr FixedString ServerEntityManager::TypeName;
 
-	ServerEntityManager::ServerEntityManager()
+	ServerEntityManager::ServerEntityManager(uint threadCount)
 		: m_MemoryManager("ServerEntityManager", GetSystemMemoryManager())
+		, m_ThreadCount(threadCount)
 		, m_ServerIDMap(GetHeap())
 	{
+		Service::ServerEntityManager = this;
 	}
 
 	ServerEntityManager::~ServerEntityManager()
@@ -53,6 +56,13 @@ namespace Svr
 	}
 
 	void ServerEntityManager::Dispose()
+	{
+		Service::ServerEntityManager = nullptr;
+
+		Clear();
+	}
+
+	void ServerEntityManager::Clear()
 	{
 		m_ServerIDMap.for_each([this](ServerID, ServerEntity* pSvrEntity)
 		{

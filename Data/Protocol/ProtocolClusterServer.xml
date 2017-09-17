@@ -15,7 +15,15 @@
       </Res>
     </Command>
 
-    <Command Name="JoinCluster" Reliable="true" Crypto="No" Trace="Debug2"  Usage="ClusterStatusRead" Desc="Join to the cluster, This operation will be manually broadcasted and gathered the result">
+    <Command Name="RequestDataSync" Reliable="true" Crypto="No" Trace="Debug2"  Usage="ClusterDataRead" Desc="Join to the cluster">
+      <Cmd>
+        <Params Type="ClusterID" Name="ClusterID"/>
+      </Cmd>
+      <Res>
+      </Res>
+    </Command>
+    
+    <!--<Command Name="JoinCluster" Reliable="true" Crypto="No" Trace="Debug2"  Usage="ClusterStatusRead" Desc="Join to the cluster, This operation will be manually broadcasted and gathered the result">
       <Cmd>
         <Params Type="EntityUID" Name="Sender"/>
         <Params Type="NetClass" Name="SenderNetClass"/>
@@ -44,13 +52,6 @@
       <Params Type="ServiceInformation" Name="MemberList" IsArray="true"/>
     </C2SEvent>
 
-    <Command Name="RequestDataSync" Reliable="true" Crypto="No" Trace="Debug2"  Usage="ClusterDataRead" Desc="Join to the cluster">
-      <Cmd>
-        <Params Type="ClusterID" Name="ClusterID"/>
-      </Cmd>
-      <Res>
-      </Res>
-    </Command>
 
     <S2CEvent Name="ClusterMasterAssigned" Reliable="true" Crypto="No" Trace="Debug2"  Usage="ClusterStatusWrite" Desc="Master instance of the cluster is assigned">
       <Params Type="EntityUID" Name="Sender"/>
@@ -83,7 +84,7 @@
       <Res>
         <Params Type="ServiceInformation" Name="Member" />
       </Res>
-    </Command>
+    </Command>-->
 
     <!-- ============================= Game cluster generic ======================================= -->
 

@@ -118,7 +118,7 @@ namespace GameServer {
 
 		if( ( Svr::GetServerComponent<Svr::GameClusterServiceEntity>()->FindPlayer( GetFriendID(), playerUID )) )
 		{
-			svrChk( Svr::GetServerComponent<Svr::ServerEntityManager>()->GetServerEntity( playerUID.GetServerID(), pServerEntity ) );
+			svrChk( Service::ServerEntityManager->GetServerEntity( playerUID.GetServerID(), pServerEntity ) );
 
 			Policy::NetPolicyGameServer(pServerEntity->GetConnection()).NotifyC2SEvt( RouteContext(GetOwnerEntityUID(),playerUID),
 				GetFriendID(), pMsgRes->NotificationID, NotificationType::FriendRequest, GetMyOwner()->GetPlayerID(), GetMyOwner()->GetFacebookUID(), GetMyOwner()->GetNickName(), m_TimeStamp.time_since_epoch().count() );
@@ -354,7 +354,7 @@ namespace GameServer {
 			goto Proc_End;
 		}
 
-		svrChk( Svr::GetServerComponent<Svr::ServerEntityManager>()->GetServerEntity( playerUID.GetServerID(), pServerEntity ) );
+		svrChk( Service::ServerEntityManager->GetServerEntity( playerUID.GetServerID(), pServerEntity ) );
 
 		svrChk(Policy::NetPolicyGameServer(pServerEntity->GetConnection()).FriendAcceptedC2SEvt( RouteContext(GetOwnerEntityUID(),playerUID),
 			GetInviterID(), GetMyOwner()->GetFriendInformation() ) );
@@ -466,7 +466,7 @@ namespace GameServer {
 		// Find player and notify to remove
 		if( (Svr::GetServerComponent<Svr::GameClusterServiceEntity>()->FindPlayer( GetFriendID(), playerUID )) )
 		{
-			svrChk( Svr::GetServerComponent<Svr::ServerEntityManager>()->GetServerEntity( playerUID.GetServerID(), pServerEntity ) );
+			svrChk( Service::ServerEntityManager->GetServerEntity( playerUID.GetServerID(), pServerEntity ) );
 
 			svrChk(Policy::NetPolicyGameServer(pServerEntity->GetConnection()).FriendRemovedC2SEvt( RouteContext(GetOwnerEntityUID(),playerUID),
 				GetFriendID(), GetMyOwner()->GetPlayerID() ) );
@@ -785,7 +785,7 @@ namespace GameServer {
 
 		if( ( Svr::GetServerComponent<Svr::GameClusterServiceEntity>()->FindPlayer( GetTargetPlayer(), playerUID )) )
 		{
-			svrChk( Svr::GetServerComponent<Svr::ServerEntityManager>()->GetServerEntity( playerUID.GetServerID(), pServerEntity ) );
+			svrChk( Service::ServerEntityManager->GetServerEntity( playerUID.GetServerID(), pServerEntity ) );
 			Policy::NetPolicyGameServer(pServerEntity->GetConnection()).NotifyC2SEvt( RouteContext(GetOwnerEntityUID(),playerUID),
 				GetTargetPlayer(), pMsgRes->NotificationID, NotificationType::GiftStamina, GetMyOwner()->GetPlayerID(), GetMyOwner()->GetFacebookUID(), GetMyOwner()->GetNickName(), m_TimeStamp.time_since_epoch().count());
 		}

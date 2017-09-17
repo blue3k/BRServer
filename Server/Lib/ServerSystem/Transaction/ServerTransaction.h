@@ -28,6 +28,7 @@
 
 #include "Transaction/Transaction.h"
 #include "ServiceEntity/ClusteredServiceEntity.h"
+#include "ServiceEntity/ClusterManagerServiceEntity.h"
 
 
 
@@ -304,7 +305,7 @@ namespace Svr {
 		Result BroadcastToChildren()
 		{
 			Result hr = ResultCode::SUCCESS;
-
+			ClusterServiceInfo* pServiceInfo = nullptr;
 			ClusteredServiceEntity *pMyOwner = nullptr;
 			pMyOwner = super::GetMyOwner();
 
@@ -333,35 +334,29 @@ namespace Svr {
 			//	}
 			//}
 
-			pMyOwner->ForEach( [&]( ServerServiceInformation* pService ) 
+			svrChk(Service::ClusterManager->GetClusterInfo(pMyOwner->GetGameID(), pMyOwner->GetClusterID(), pServiceInfo));
+			for(auto itService : pServiceInfo->Services) //pServiceInfo->Services.ForeachOrder(0, pServiceInfo->Services..size(), [&]( FixedString nodeName, ServerServiceInformation* pService )
 			{
+				auto pService = itService;
 				if( pService->GetEntityUID() == pMyOwner->GetEntityUID() )
-					return;
-
-				//if( MessageClass::HasSender )
-				//{
-				//	// Only master will recei
-				//	if( pSender != nullptr && pSender->GetClusterMembership() >= ClusterMembership::StatusWatcher
-				//		&& pService->GetClusterMembership() != ClusterMembership::Master )
-				//		return;
-				//}
+					continue;
 
 				// Only status write will be broadcasted to the watchers
 				if( pService->GetClusterMembership() == ClusterMembership::StatusWatcher
 					&& (super::GetMessageUsage() != Message::MessageUsage_ClusterStatusWrite ) )
 				{
-					return;
+					continue;
 				}
 
 				TossMessageToTarget( pService );
-			});
+			};
 
-		//Proc_End:
+		Proc_End:
 
 			return hr;
 		}
 
-		// Toss to the message to next ring
+		// Toss the message to next ring
 		Result TossToNextRing()
 		{
 			Result hr = ResultCode::SUCCESS;
@@ -371,10 +366,11 @@ namespace Svr {
 
 			svrAssert( pMyOwner->GetClusterType() != ClusterType::Ring );
 
-			pMyOwner = dynamic_cast<RingClusterServiceEntity *>(super::GetMyOwner());
+			pMyOwner = dynamic_cast<RingClusterServiceEntity*>(super::GetMyOwner());
 			svrChkPtr(pMyOwner);
-			pMyOwner->GetNextRing( pMyOwner->GetMyServiceInfo(), pNextService );
 
+			//pMyOwner->GetNextRing( pMyOwner->GetMyServiceInfo(), pNextService );
+			svrChk(Service::ClusterManager->GetNextService(pMyOwner->GetMyServiceInfo(), pNextService));
 			if( pNextService )
 			{
 				TossMessageToTarget( pNextService );

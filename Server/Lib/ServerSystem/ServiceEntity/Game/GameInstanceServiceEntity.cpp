@@ -38,8 +38,8 @@ namespace Svr {
 	//	Entity informations
 	//
 
-	GameInstanceServiceEntity::GameInstanceServiceEntity(ClusterMembership initialMembership)
-		:ReplicaClusterServiceEntity(ClusterID::GameInstanceManager, initialMembership)
+	GameInstanceServiceEntity::GameInstanceServiceEntity(GameID gameID, ClusterMembership initialMembership)
+		: super(gameID, ClusterID::GameInstanceManager, initialMembership)
 	{
 	}
 
@@ -51,7 +51,7 @@ namespace Svr {
 	{
 		Result hr = ResultCode::SUCCESS;
 
-		svrChk(ReplicaClusterServiceEntity::InitializeEntity(newEntityID) );
+		svrChk(super::InitializeEntity(newEntityID) );
 
 		m_CurrentProcessingNumberofMember = 0;
 
@@ -67,7 +67,7 @@ namespace Svr {
 	{
 		Result hr = ResultCode::SUCCESS;
 
-		svrChk(ReplicaClusterServiceEntity::ClearEntity() );
+		svrChk(super::ClearEntity() );
 
 	Proc_End:
 
@@ -78,7 +78,7 @@ namespace Svr {
 	{
 		Result hr = ResultCode::SUCCESS;
 
-		svrChk(ReplicaClusterServiceEntity::TickUpdate(pAction) );
+		svrChk(super::TickUpdate(pAction) );
 
 		// check below only if we are working
 		if( GetEntityState() != EntityState::WORKING )

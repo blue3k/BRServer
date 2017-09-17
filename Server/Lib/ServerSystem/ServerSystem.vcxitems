@@ -118,9 +118,10 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)ServiceEntity\RankingServiceEntity.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)ServiceEntity\RankingServiceTrans.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)ServiceEntity\ServiceEntity.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)Service\ClusterManagerService.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Service\EntityManagerService.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Service\EntityTableService.h" />
-    <ClInclude Include="$(MSBuildThisFileDirectory)Service\ServerClusterService.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)Service\ServerEntityManagerService.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Service\ServerService.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Service\ZookeeperSessionService.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)stdafx.h" />

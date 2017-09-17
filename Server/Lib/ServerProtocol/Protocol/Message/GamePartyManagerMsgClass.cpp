@@ -43,6 +43,7 @@ namespace SF
 				protocolChk( Protocol::StreamParamCopy( &m_RouteContext, pCur, iMsgSize, sizeof(RouteContext) ) );
 				protocolChk( Protocol::StreamParamCopy( &m_TransactionID, pCur, iMsgSize, sizeof(TransactionID) ) );
 				protocolChk( Protocol::StreamParamCopy( &m_RouteHopCount, pCur, iMsgSize, sizeof(uint16_t) ) );
+				protocolChk( Protocol::StreamParamCopy( &m_GameID, pCur, iMsgSize, sizeof(uint32_t) ) );
 				protocolChk( Protocol::StreamParamCopy( &m_Creator, pCur, iMsgSize, sizeof(PlayerInformation) ) );
 
 
@@ -65,7 +66,7 @@ namespace SF
 
 			}; // Result CreatePartyCmd::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
 
-			MessageData* CreatePartyCmd::Create( IHeap& memHeap, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const uint16_t &InRouteHopCount, const PlayerInformation &InCreator )
+			MessageData* CreatePartyCmd::Create( IHeap& memHeap, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const uint16_t &InRouteHopCount, const uint32_t &InGameID, const PlayerInformation &InCreator )
 			{
  				MessageData *pNewMsg = nullptr;
 				Result hr;
@@ -76,6 +77,7 @@ namespace SF
 					+ sizeof(RouteContext)
 					+ sizeof(TransactionID)
 					+ sizeof(uint16_t)
+					+ sizeof(uint32_t)
 					+ sizeof(PlayerInformation));
 
 
@@ -86,6 +88,7 @@ namespace SF
 				Protocol::PackParamCopy( pMsgData, &InRouteContext, sizeof(RouteContext));
 				Protocol::PackParamCopy( pMsgData, &InTransactionID, sizeof(TransactionID));
 				Protocol::PackParamCopy( pMsgData, &InRouteHopCount, sizeof(uint16_t));
+				Protocol::PackParamCopy( pMsgData, &InGameID, sizeof(uint32_t));
 				Protocol::PackParamCopy( pMsgData, &InCreator, sizeof(PlayerInformation));
 
 
@@ -98,7 +101,7 @@ namespace SF
 				}
 				return pNewMsg;
 
-			}; // MessageData* CreatePartyCmd::Create( IHeap& memHeap, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const uint16_t &InRouteHopCount, const PlayerInformation &InCreator )
+			}; // MessageData* CreatePartyCmd::Create( IHeap& memHeap, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const uint16_t &InRouteHopCount, const uint32_t &InGameID, const PlayerInformation &InCreator )
 
 			Result CreatePartyCmd::OverrideRouteContextDestination( EntityUID to )
 			{
@@ -161,8 +164,8 @@ namespace SF
 			{
  				CreatePartyCmd parser;
 				parser.ParseMessage(*pMsg);
-				protocolTrace( Debug1, "CreateParty:{0}:{1} , RouteContext:{2}, TransactionID:{3}, RouteHopCount:{4}, Creator:{5}",
-						prefix, pMsg->GetMessageHeader()->Length, parser.GetRouteContext(), parser.GetTransactionID(), parser.GetRouteHopCount(), parser.GetCreator()); 
+				protocolTrace( Debug1, "CreateParty:{0}:{1} , RouteContext:{2}, TransactionID:{3}, RouteHopCount:{4}, GameID:{5}, Creator:{6}",
+						prefix, pMsg->GetMessageHeader()->Length, parser.GetRouteContext(), parser.GetTransactionID(), parser.GetRouteHopCount(), parser.GetGameID(), parser.GetCreator()); 
 				return ResultCode::SUCCESS;
 			}; // Result CreatePartyCmd::TraceOut(const char* prefix, MessageDataPtr& pMsg)
 

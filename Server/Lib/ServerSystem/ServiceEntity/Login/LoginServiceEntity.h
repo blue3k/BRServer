@@ -60,10 +60,10 @@ namespace Svr {
 	//	ServerServiceComponentEntity class
 	//
 
-	class LoginServiceEntity : public ReplicaClusterServiceEntity
+	class LoginServiceEntity : public ShardedClusterServiceEntity
 	{
 	public:
-
+		typedef ShardedClusterServiceEntity super;
 
 	private:
 

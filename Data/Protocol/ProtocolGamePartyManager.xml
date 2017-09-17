@@ -6,6 +6,7 @@
 
 	<Command Name="CreateParty" Reliable="true" Crypto="No" Trace="Debug1" Desc="Create a party instance">
 		<Cmd>
+      <Params Type="uint32" Name="GameID"/>
       <Params Type="PlayerInformation" Name="Creator"/>
     </Cmd>
 		<Res>

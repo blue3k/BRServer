@@ -167,4 +167,20 @@
     <ClCompile Include="$(MSBuildThisFileDirectory)Protocol\ServerService\RankingServerService.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)Protocol\ServerService\ServerService.cpp" />
   </ItemGroup>
+  <ItemGroup>
+    <Xml Include="$(MSBuildThisFileDirectory)..\..\..\Data\Protocol\ProtocolClusterServer.xml" />
+    <Xml Include="$(MSBuildThisFileDirectory)..\..\..\Data\Protocol\ProtocolEntityServer.xml" />
+    <Xml Include="$(MSBuildThisFileDirectory)..\..\..\Data\Protocol\ProtocolGameInstance.xml" />
+    <Xml Include="$(MSBuildThisFileDirectory)..\..\..\Data\Protocol\ProtocolGameInstanceManager.xml" />
+    <Xml Include="$(MSBuildThisFileDirectory)..\..\..\Data\Protocol\ProtocolGameMasterServer.xml" />
+    <Xml Include="$(MSBuildThisFileDirectory)..\..\..\Data\Protocol\ProtocolGameParty.xml" />
+    <Xml Include="$(MSBuildThisFileDirectory)..\..\..\Data\Protocol\ProtocolGamePartyManager.xml" />
+    <Xml Include="$(MSBuildThisFileDirectory)..\..\..\Data\Protocol\ProtocolGameServer.xml" />
+    <Xml Include="$(MSBuildThisFileDirectory)..\..\..\Data\Protocol\ProtocolLoginServer.xml" />
+    <Xml Include="$(MSBuildThisFileDirectory)..\..\..\Data\Protocol\ProtocolMonitoring.xml" />
+    <Xml Include="$(MSBuildThisFileDirectory)..\..\..\Data\Protocol\ProtocolPartyMatching.xml" />
+    <Xml Include="$(MSBuildThisFileDirectory)..\..\..\Data\Protocol\ProtocolPartyMatchingQueue.xml" />
+    <Xml Include="$(MSBuildThisFileDirectory)..\..\..\Data\Protocol\ProtocolRankingServer.xml" />
+    <Xml Include="$(MSBuildThisFileDirectory)..\..\..\Data\Protocol\ProtocolServer.xml" />
+  </ItemGroup>
 </Project>

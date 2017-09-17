@@ -62,7 +62,7 @@ namespace EntityServer {
 		switch( conEvent.EventType )
 		{
 		case Net::ConnectionEvent::EVT_CONNECTION_RESULT:
-			pClusterManager = Svr::GetServerComponent<Svr::ClusterManagerServiceEntity>();
+			pClusterManager = Service::ClusterManager;
 			
 			// Add all expected cluster service objects
 			for( ClusterID clusterID = ClusterID::ClusterManager; clusterID < ClusterID::Max; clusterID++ )

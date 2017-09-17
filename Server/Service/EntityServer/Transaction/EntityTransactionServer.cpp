@@ -54,7 +54,7 @@ namespace EntityServer {
 	//	// Add to cluster service
 	//	svrAssert(serviceInfo.Membership > ClusterMembership::Slave);
 
-	//	svrChk(Svr::GetServerComponent<Svr::ClusterManagerServiceEntity>()->NewServerService(serviceInfo.UID, GetMyOwner(), serviceInfo.Membership, serviceInfo.Status, pService));
+	//	svrChk(Service::ClusterManager->NewServerService(serviceInfo.UID, GetMyOwner(), serviceInfo.Membership, serviceInfo.Status, pService));
 
 	//Proc_End:
 

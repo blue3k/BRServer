@@ -48,6 +48,8 @@ namespace Svr {
 	{
 	public:
 
+		typedef LoadbalanceClusterServiceEntity super;
+
 		enum { ComponentID = ServerComponentID_GamePartyManagerService };
 
 	private:
@@ -78,7 +80,7 @@ namespace Svr {
 		//
 
 		// Add new Entity
-		virtual Result CreateGameParty( const PlayerInformation& creator, EntityUID playerUID, ServerEntity *pServerEntity, PartyUID &partyUID );
+		virtual Result CreateGameParty( GameID gameID, const PlayerInformation& creator, EntityUID playerUID, ServerEntity *pServerEntity, PartyUID &partyUID );
 
 		// Called when a game party is deleted
 		virtual Result FreeGameParty( PartyUID partyUID );
@@ -94,32 +96,6 @@ namespace Svr {
 
 
 
-
-	///////////////////////////////////////////////////////////////////////////////////////////////////////
-	//
-	//	MatchingQueueWatcherServiceEntity class
-	//
-
-	class GamePartyManagerWatcherServiceEntity : public LoadbalanceClusterServiceEntity
-	{
-	public:
-
-		enum { ComponentID = ServerComponentID_GamePartyManagerService };
-
-	private:
-
-	public:
-
-		GamePartyManagerWatcherServiceEntity();
-		~GamePartyManagerWatcherServiceEntity();
-
-		// Initialize server component
-		Result InitializeComponent() { return ResultCode::SUCCESS; }
-		// Terminate server component
-		void TerminateComponent() {  }
-
-
-	};
 
 
 

@@ -42,8 +42,8 @@ namespace Svr {
 	//	Entity informations
 	//
 
-	GameInstanceManagerServiceEntity::GameInstanceManagerServiceEntity(ClusterID clusterID, ClusterMembership initialMembership)
-		: LoadbalanceClusterServiceEntity(clusterID, initialMembership )
+	GameInstanceManagerServiceEntity::GameInstanceManagerServiceEntity(GameID gameID, ClusterID clusterID, ClusterMembership initialMembership)
+		: super(gameID, clusterID, initialMembership )
 		, m_NumberOfInstance("NumberOfGameInstances")
 	{
 		BR_ENTITY_MESSAGE(Message::GameInstanceManager::CreateGameCmd)		{ svrMemReturn(pNewTrans = new(GetMemoryManager()) GameInstanceTransCreateGame(GetMemoryManager(), pMsgData)); return ResultCode::SUCCESS; } );
@@ -60,7 +60,7 @@ namespace Svr {
 		EntityUID entityUID;
 		PerformanceCounterInstance* pInstance = nullptr;
 
-		svrChk(LoadbalanceClusterServiceEntity::InitializeEntity(newEntityID));
+		svrChk(super::InitializeEntity(newEntityID));
 
 		//entityUID = EntityUID(GetMyServerID(), Service::EntityTable->GenEntityID(EntityFaculty::Service));
 		pInstance = PerformanceCounterClient::GetDefaultCounterInstance();
@@ -78,7 +78,7 @@ namespace Svr {
 	{
 		Result hr = ResultCode::SUCCESS;
 
-		svrChk(LoadbalanceClusterServiceEntity::RegisterServiceMessageHandler( pServerEntity ) );
+		svrChk(super::RegisterServiceMessageHandler( pServerEntity ) );
 
 		pServerEntity->BR_ENTITY_MESSAGE(Message::GameInstanceManager::CreateGameCmd)				{ svrMemReturn(pNewTrans = new(GetMemoryManager()) GameInstanceTransCreateGame(GetMemoryManager(), pMsgData)); return ResultCode::SUCCESS; } );
 		pServerEntity->BR_ENTITY_MESSAGE(Message::GameInstanceManager::GameDeletedC2SEvt)			{ svrMemReturn(pNewTrans = new(GetMemoryManager()) GameInstanceTransGameDeleted(GetMemoryManager(), pMsgData)); return ResultCode::SUCCESS; } );
@@ -121,39 +121,6 @@ namespace Svr {
 		return hr;
 	}
 
-
-	///////////////////////////////////////////////////////////////////////////////////////////////////////
-	//
-	//	GameInstanceManagerWatcherServiceEntity class
-	//
-
-
-	GameInstanceManagerWatcherServiceEntity::GameInstanceManagerWatcherServiceEntity( GameID gameID )
-		:LoadbalanceClusterServiceEntity(ClusterIDFromGameID(gameID), ClusterMembership::StatusWatcher)
-	{
-	}
-
-	ClusterID GameInstanceManagerWatcherServiceEntity::ClusterIDFromGameID( GameID gameID )
-	{
-		switch(gameID)
-		{
-		case GameID::Game:
-		case GameID::MyTownHero:
-		case GameID::Conspiracy:
-			return ClusterID::GameInstanceManager;
-			break;
-		default:
-			// invalid game id
-			AssertRel(0);
-			return ClusterID::GameInstanceManager;
-		}
-	}
-
-	GameInstanceManagerWatcherServiceEntity::~GameInstanceManagerWatcherServiceEntity()
-	{
-	}
-
-	
 
 
 

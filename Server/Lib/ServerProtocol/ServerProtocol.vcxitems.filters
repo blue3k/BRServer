@@ -10,6 +10,9 @@
     <Filter Include="ServerService">
       <UniqueIdentifier>{4593622c-04c3-4384-a1ea-7bb4f1e29452}</UniqueIdentifier>
     </Filter>
+    <Filter Include="XML">
+      <UniqueIdentifier>{d4776c8d-0ecf-40b0-a5c1-d0bf696b51c2}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="$(MSBuildThisFileDirectory)stdafx.h" />
@@ -455,5 +458,49 @@
     <ClCompile Include="$(MSBuildThisFileDirectory)Protocol\ServerService\ServerService.cpp">
       <Filter>ServerService</Filter>
     </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Xml Include="C:\work\BRServerSF\Server\Lib\ServerProtocol\..\..\..\Data\Protocol\ProtocolGameMasterServer.xml">
+      <Filter>XML</Filter>
+    </Xml>
+    <Xml Include="C:\work\BRServerSF\Server\Lib\ServerProtocol\..\..\..\Data\Protocol\ProtocolGameParty.xml">
+      <Filter>XML</Filter>
+    </Xml>
+    <Xml Include="C:\work\BRServerSF\Server\Lib\ServerProtocol\..\..\..\Data\Protocol\ProtocolGamePartyManager.xml">
+      <Filter>XML</Filter>
+    </Xml>
+    <Xml Include="C:\work\BRServerSF\Server\Lib\ServerProtocol\..\..\..\Data\Protocol\ProtocolGameServer.xml">
+      <Filter>XML</Filter>
+    </Xml>
+    <Xml Include="C:\work\BRServerSF\Server\Lib\ServerProtocol\..\..\..\Data\Protocol\ProtocolLoginServer.xml">
+      <Filter>XML</Filter>
+    </Xml>
+    <Xml Include="C:\work\BRServerSF\Server\Lib\ServerProtocol\..\..\..\Data\Protocol\ProtocolMonitoring.xml">
+      <Filter>XML</Filter>
+    </Xml>
+    <Xml Include="C:\work\BRServerSF\Server\Lib\ServerProtocol\..\..\..\Data\Protocol\ProtocolPartyMatching.xml">
+      <Filter>XML</Filter>
+    </Xml>
+    <Xml Include="C:\work\BRServerSF\Server\Lib\ServerProtocol\..\..\..\Data\Protocol\ProtocolPartyMatchingQueue.xml">
+      <Filter>XML</Filter>
+    </Xml>
+    <Xml Include="C:\work\BRServerSF\Server\Lib\ServerProtocol\..\..\..\Data\Protocol\ProtocolRankingServer.xml">
+      <Filter>XML</Filter>
+    </Xml>
+    <Xml Include="C:\work\BRServerSF\Server\Lib\ServerProtocol\..\..\..\Data\Protocol\ProtocolServer.xml">
+      <Filter>XML</Filter>
+    </Xml>
+    <Xml Include="C:\work\BRServerSF\Server\Lib\ServerProtocol\..\..\..\Data\Protocol\ProtocolClusterServer.xml">
+      <Filter>XML</Filter>
+    </Xml>
+    <Xml Include="C:\work\BRServerSF\Server\Lib\ServerProtocol\..\..\..\Data\Protocol\ProtocolEntityServer.xml">
+      <Filter>XML</Filter>
+    </Xml>
+    <Xml Include="C:\work\BRServerSF\Server\Lib\ServerProtocol\..\..\..\Data\Protocol\ProtocolGameInstance.xml">
+      <Filter>XML</Filter>
+    </Xml>
+    <Xml Include="C:\work\BRServerSF\Server\Lib\ServerProtocol\..\..\..\Data\Protocol\ProtocolGameInstanceManager.xml">
+      <Filter>XML</Filter>
+    </Xml>
   </ItemGroup>
 </Project>

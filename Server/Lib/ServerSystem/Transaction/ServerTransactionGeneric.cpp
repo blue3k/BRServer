@@ -36,86 +36,86 @@ namespace Svr {
 
 
 
-	EntityServerStartedTrans::EntityServerStartedTrans(IHeap& memMgr, MessageDataPtr &pIMsg )
-		:ServerStartedTrans(memMgr, pIMsg)
-	{
-		BR_TRANS_MESSAGE( Message::ClusterServer::GetClusterMemberListRes,	{ return OnGetClusterMemberList(pRes); });
-	}
+	//EntityServerStartedTrans::EntityServerStartedTrans(IHeap& memMgr, MessageDataPtr &pIMsg )
+	//	:ServerStartedTrans(memMgr, pIMsg)
+	//{
+	//	BR_TRANS_MESSAGE( Message::ClusterServer::GetClusterMemberListRes,	{ return OnGetClusterMemberList(pRes); });
+	//}
 
-	EntityServerStartedTrans::~EntityServerStartedTrans()
-	{
-	}
+	//EntityServerStartedTrans::~EntityServerStartedTrans()
+	//{
+	//}
 
-	Result EntityServerStartedTrans::OnGetClusterMemberList(Svr::TransactionResult* pRes)
-	{
-		Result hr = ResultCode::SUCCESS;
-		Message::ClusterServer::GetClusterMemberListRes msgRes;
-		Svr::ServerEntity *pServerEntity = nullptr;
-		ServerEntityManager *pServerEntityManager = GetServerComponent<Svr::ServerEntityManager>();
-		ClusterManagerServiceEntity *pClusterManagerEntity = GetServerComponent<Svr::ClusterManagerServiceEntity>();
+	//Result EntityServerStartedTrans::OnGetClusterMemberList(Svr::TransactionResult* pRes)
+	//{
+	//	Result hr = ResultCode::SUCCESS;
+	//	Message::ClusterServer::GetClusterMemberListRes msgRes;
+	//	Svr::ServerEntity *pServerEntity = nullptr;
+	//	ServerEntityManager *pServerEntityManager = GetServerComponent<Svr::ServerEntityManager>();
+	//	ClusterManagerServiceEntity *pClusterManagerEntity = GetServerComponent<Svr::ClusterManagerServiceEntity>();
 
-		svrChk(pRes->GetResult());
+	//	svrChk(pRes->GetResult());
 
-		svrChk( msgRes.ParseMessage( *((Svr::MessageResult*)pRes)->GetMessage() ) );
-
-
-		// Update service information with master's one
-		for( uint iMember = 0; iMember < msgRes.GetMemberList().size(); iMember++ )
-		{
-			const ServiceInformation *pCurrentService = &msgRes.GetMemberList()[iMember];
-			Svr::ServerServiceInformation *pService = nullptr;
-			EntityServerEntity *pNewServerEntity = nullptr;
-
-			// We don't need other watcher services
-			if (pClusterManagerEntity->GetClusterMembership() >= ClusterMembership::StatusWatcher
-				&& pCurrentService->Membership >= ClusterMembership::StatusWatcher)
-				continue;
-
-			// This server doesn't registered
-			svrChk( pServerEntityManager->GetOrRegisterServer<EntityServerEntity>( pCurrentService->UID.GetServerID(), NetClass::Entity, pCurrentService->ServerAddress, pNewServerEntity ) );
-			pServerEntity = pNewServerEntity;
-
-			svrChk( pClusterManagerEntity->NewServerService( pCurrentService->UID, pServerEntity, pCurrentService->Membership, pCurrentService->Status, pService ) );
-		}
-
-	Proc_End:
-
-		return ResultCode::SUCCESS;
-	}
-
-		// Start Transaction
-	Result EntityServerStartedTrans::StartTransaction()
-	{
-		Result hr = ResultCode::SUCCESS;
-		Svr::ServerServiceInformation *pService = nullptr;
-		const ServiceInformation &serviceInfo = GetClusterManagerServiceInformation();
-		Svr::ClusterManagerServiceEntity *pClusterManagerEntity = nullptr;
-
-		svrChk( super::StartTransaction() );
+	//	svrChk( msgRes.ParseMessage( *((Svr::MessageResult*)pRes)->GetMessage() ) );
 
 
-		svrChkPtr( pClusterManagerEntity = GetServerComponent<Svr::ClusterManagerServiceEntity>() );
+	//	// Update service information with master's one
+	//	for( uint iMember = 0; iMember < msgRes.GetMemberList().size(); iMember++ )
+	//	{
+	//		const ServiceInformation *pCurrentService = &msgRes.GetMemberList()[iMember];
+	//		Svr::ServerServiceInformation *pService = nullptr;
+	//		EntityServerEntity *pNewServerEntity = nullptr;
 
-		// We are going to add them manually, this is special case for cluster manager service
-		// Add to cluster service
-		svrChk( pClusterManagerEntity->NewServerService( serviceInfo.UID, GetMyOwner(), serviceInfo.Membership, serviceInfo.Status, pService ) );
+	//		// We don't need other watcher services
+	//		if (pClusterManagerEntity->GetClusterMembership() >= ClusterMembership::StatusWatcher
+	//			&& pCurrentService->Membership >= ClusterMembership::StatusWatcher)
+	//			continue;
 
-		// If we got connected to the master, request member list so that we can get dynamically added cluster manager informations
-		if( serviceInfo.Membership == ClusterMembership::Master )
-		{
-			svrChk(Policy::NetPolicyClusterServer(GetMyOwner()->GetConnection()).GetClusterMemberListCmd( RouteContext(GetOwnerEntityUID(),serviceInfo.UID), GetTransID(), 0, pService->GetClusterID() ) );
-		}
-		else
-			CloseTransaction(hr);
+	//		// This server doesn't registered
+	//		svrChk( pServerEntityManager->GetOrRegisterServer<EntityServerEntity>( pCurrentService->UID.GetServerID(), NetClass::Entity, pCurrentService->ServerAddress, pNewServerEntity ) );
+	//		pServerEntity = pNewServerEntity;
+
+	//		svrChk( pClusterManagerEntity->NewServerService( pCurrentService->UID, pServerEntity, pCurrentService->Membership, pCurrentService->Status, pService ) );
+	//	}
+
+	//Proc_End:
+
+	//	return ResultCode::SUCCESS;
+	//}
+
+	//	// Start Transaction
+	//Result EntityServerStartedTrans::StartTransaction()
+	//{
+	//	Result hr = ResultCode::SUCCESS;
+	//	Svr::ServerServiceInformation *pService = nullptr;
+	//	const ServiceInformation &serviceInfo = GetClusterManagerServiceInformation();
+	//	Svr::ClusterManagerServiceEntity *pClusterManagerEntity = nullptr;
+
+	//	svrChk( super::StartTransaction() );
 
 
-	Proc_End:
+	//	svrChkPtr( pClusterManagerEntity = GetServerComponent<Svr::ClusterManagerServiceEntity>() );
 
-		if( !(hr) )
-			CloseTransaction(hr);
+	//	// We are going to add them manually, this is special case for cluster manager service
+	//	// Add to cluster service
+	//	svrChk( pClusterManagerEntity->NewServerService( serviceInfo.UID, GetMyOwner(), serviceInfo.Membership, serviceInfo.Status, pService ) );
 
-		return hr;
-	}
+	//	// If we got connected to the master, request member list so that we can get dynamically added cluster manager informations
+	//	if( serviceInfo.Membership == ClusterMembership::Master )
+	//	{
+	//		svrChk(Policy::NetPolicyClusterServer(GetMyOwner()->GetConnection()).GetClusterMemberListCmd( RouteContext(GetOwnerEntityUID(),serviceInfo.UID), GetTransID(), 0, pService->GetClusterID() ) );
+	//	}
+	//	else
+	//		CloseTransaction(hr);
+
+
+	//Proc_End:
+
+	//	if( !(hr) )
+	//		CloseTransaction(hr);
+
+	//	return hr;
+	//}
 
 	
 

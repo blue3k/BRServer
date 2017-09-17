@@ -164,7 +164,7 @@ namespace Svr{
 
 			pConn = std::forward <SharedPointerAtomicT<Net::Connection>>(pConnAtomic);
 			auto& remoteInfo = pConn->GetRemoteInfo();
-			if ((GetServerComponent<ServerEntityManager>()->AddOrGetServerEntity((ServerID)remoteInfo.PeerID, remoteInfo.PeerClass, pServerEntity)))
+			if ((Service::ServerEntityManager->AddOrGetServerEntity((ServerID)remoteInfo.PeerID, remoteInfo.PeerClass, pServerEntity)))
 			{
 				auto localConn = pServerEntity->GetLocalConnection();
 				auto oldConn = pServerEntity->GetRemoteConnection();
@@ -271,12 +271,6 @@ Proc_End:
 		ServerEntity *pEntity = nullptr;
 		Svr::LoopbackConnection *pConn = nullptr;
 
-		svrChk(m_Components.AddComponentWithAdapter<ServerEntityManager>() );
-
-
-		// Initialize remote entity manager
-		svrChk(m_Components.GetComponent<ServerEntityManager>()->InitializeManager( GetMyConfig()->EntityControlCount ) );
-
 
 		// Add loop back entity
 		svrMem( pLoopbackEntity = CreateLoopbackEntity() );
@@ -288,25 +282,13 @@ Proc_End:
 		pConn = nullptr;
 
 		pEntity = pLoopbackEntity;
-		svrChk(m_Components.GetComponent<Svr::ServerEntityManager>()->AddOrGetServerEntity(GetServerUID(), GetNetClass(), pEntity));
+		svrChk(Service::ServerEntityManager->AddOrGetServerEntity(GetServerUID(), GetNetClass(), pEntity));
 		pEntity = nullptr;
 
 		SetLoopbackServerEntity(pLoopbackEntity);
 		pLoopbackEntity = nullptr;
 
 
-		if( GetNetClass() == NetClass::Entity )
-		{
-			svrChk(m_Components.AddComponentWithAdapter<ClusterManagerServiceEntity>(ClusterMembership::Slave) );
-		}
-		else
-		{
-			svrChk(m_Components.AddComponentWithAdapter<ClusterManagerServiceEntity>(ClusterMembership::StatusWatcher) );
-		}
-
-		svrChk(Service::EntityManager->AddEntity(
-			EntityID( EntityFaculty::Service,(uint)ClusterID::ClusterManager ), 
-			m_Components.GetComponent<ClusterManagerServiceEntity>() ) );
 
 	Proc_End:
 
@@ -603,10 +585,10 @@ Proc_End:
 
 
 		// Terminate remote entity manager
-		if( Svr::GetServerComponent<Svr::ServerEntityManager>() )
-		{
-			Svr::GetServerComponent<Svr::ServerEntityManager>()->TerminateManager();
-		}
+		Service::ServerEntityManager->Clear();
+		Service::ClusterManager->Clear();
+		Service::EntityManager->Clear();
+		//Service::EntityTable->Clear();
 
 		// close private net
 		if( m_pNetPrivate != nullptr )
@@ -709,25 +691,9 @@ Proc_End:
 
 		svrMem(pServiceEntity = new(GetHeap()) ServiceEntityType(constructorArgs...));
 
-		if ((GetComponentCarrier().GetComponent<Svr::ClusterManagerServiceEntity>()->GetClusterServiceEntity(pServiceEntity->GetClusterID(), pServiceEntityTest)))
-		{
-			if (pServiceEntityTest == pServiceEntity)
-				goto Proc_End;
-
-			if (pServiceEntity->GetClusterMembership() <= ClusterMembership::StatusWatcher)
-			{
-				svrTrace(Warning, "Duplicated entity watcher entity {0} EntityUID:{1}, while adding {2} EntityUID:{3}", typeid(*pServiceEntityTest).name(), pServiceEntityTest->GetEntityUID(), typeid(*pServiceEntity).name(), pServiceEntity->GetEntityUID());
-			}
-			else
-			{
-				svrTrace(Error, "Duplicated cluster entity {0} EntityUID:{1}, while adding {2} EntityUID:{3}", typeid(*pServiceEntityTest).name(), pServiceEntityTest->GetEntityUID(), typeid(*pServiceEntity).name(), pServiceEntity->GetEntityUID());
-			}
-			IHeap::Delete(pServiceEntity);
-			goto Proc_End;
-		}
+		svrChk(Service::ClusterManager->AddClusterServiceEntity(pServiceEntity));
 
 		svrChk(Service::EntityManager->AddEntity(EntityFaculty::Service, pServiceEntity));
-		svrChk(GetComponentCarrier().GetComponent<Svr::ClusterManagerServiceEntity>()->AddClusterServiceEntity(pServiceEntity));
 
 
 	Proc_End:
@@ -753,20 +719,19 @@ Proc_End:
 	}
 
 
-	Result BrServer::RegisterClustereWatcherComponents(ClusterID clusterID, Svr::ServerComponentID componentIDStart, Svr::ServerComponentID componentIDEnd)
+	Result BrServer::RegisterClustereWatchers(ClusterID clusterID, ClusterID clusterIDEnd)
 	{
 		Result hr = ResultCode::SUCCESS;
 
-		if (componentIDStart != 0 && componentIDEnd != 0)
-		{
-			for (INT componentID = componentIDStart; componentID <= componentIDEnd; componentID++, clusterID++)
-			{
-				if (GetComponentCarrier().GetComponent(componentID) != nullptr)
-				{
-					continue;
-				}
+		auto pClusterManager = Service::ClusterManager;
+		if (pClusterManager == nullptr)
+			return ResultCode::INVALID_STATE;
 
-				svrChkPtr(AddServiceEntity<Svr::MatchingQueueWatcherServiceEntity>(clusterID));
+		if (clusterID != ClusterID::Invalid && clusterIDEnd != ClusterID::Invalid)
+		{
+			for (; (int)clusterID <= (int)clusterIDEnd; clusterID++)
+			{
+				svrChk(pClusterManager->SetWatchForCluster(GetServerGameID(), clusterID, true));
 			}
 		}
 
@@ -802,47 +767,51 @@ Proc_End:
 		{
 			auto pGame = (ServerConfig::ServerModulePublicService*)module;
 			svrChk(Service::EntityManager->AddEntity(EntityFaculty::Service, new(GetHeap()) Svr::GameServiceEntity(GetGameID(), &pGame->PublicNet)));
-			svrChkPtr(AddServiceEntity<Svr::GameInstanceManagerWatcherServiceEntity>(GetGameID()));
+
+			//svrChkPtr(AddServiceEntity<Svr::GameInstanceManagerWatcherServiceEntity>(GetGameID()));
+			svrChk(Service::ClusterManager->SetWatchForCluster(GetServerGameID(), ClusterID::GameInstanceManager, true));
+			svrChk(RegisterClustereWatchers(ClusterID::MatchingQueue_Game_4x1, ClusterID::MatchingQueue_Game_4x1W));
+			svrChk(RegisterClustereWatchers(ClusterID::MatchingQueue_Game_8x1, ClusterID::MatchingQueue_Game_8x1W));
 			break;
 		}
 
 		case "ModRanking"_hash32:
 		{
-			Svr::ClusteredServiceEntity* pServiceEntity = new(GetHeap()) Svr::RankingServiceEntity(ClusterID::Ranking, ClusterMembership::Master);
+			Svr::ClusteredServiceEntity* pServiceEntity = new(GetHeap()) Svr::RankingServiceEntity(GetServerGameID(), ClusterID::Ranking, ClusterMembership::Master);
 			svrChk(Service::EntityManager->AddEntity(EntityFaculty::Service, pServiceEntity));
-			svrChk(GetComponentCarrier().GetComponent<Svr::ClusterManagerServiceEntity>()->AddClusterServiceEntity(pServiceEntity));
+			svrChk(Service::ClusterManager->AddClusterServiceEntity(pServiceEntity));
 			break;
 		}
 
 		case "ModGameInstanceManager"_hash32:
 		{
-			Svr::ClusteredServiceEntity* pServiceEntity = new(GetHeap()) Svr::GameInstanceManagerServiceEntity(ClusterID::GameInstanceManager, ClusterMembership::Master);
+			Svr::ClusteredServiceEntity* pServiceEntity = new(GetHeap()) Svr::GameInstanceManagerServiceEntity(GetServerGameID(), ClusterID::GameInstanceManager, ClusterMembership::Master);
 			svrChk(Service::EntityManager->AddEntity(EntityFaculty::Service, pServiceEntity));
-			svrChk(GetComponentCarrier().GetComponent<Svr::ClusterManagerServiceEntity>()->AddClusterServiceEntity(pServiceEntity));
+			svrChk(Service::ClusterManager->AddClusterServiceEntity(pServiceEntity));
 			break;
 		}
 
 		case "ModGamePartyManager"_hash32:
 			svrChk(AddServiceEntityComponent<Svr::GamePartyManagerServiceEntity>(ClusterMembership::Slave));
-			svrChk(AddServiceEntityComponent<Svr::GameInstanceManagerWatcherServiceEntity>(GetGameID()));
-			svrChk(RegisterClustereWatcherComponents(ClusterID::MatchingQueue_Game_4x1, Svr::ServerComponentID_MatchingQueueWatcherService_4x1, Svr::ServerComponentID_MatchingQueueWatcherService_4x1W));
-			svrChk(RegisterClustereWatcherComponents(ClusterID::MatchingQueue_Game_8x1, Svr::ServerComponentID_MatchingQueueWatcherService_8x1, Svr::ServerComponentID_MatchingQueueWatcherService_8x1W));
+			//svrChk(AddServiceEntityComponent<Svr::GameInstanceManagerWatcherServiceEntity>(GetGameID()));
+			svrChk(RegisterClustereWatchers(ClusterID::MatchingQueue_Game_4x1, ClusterID::MatchingQueue_Game_4x1W));
+			svrChk(RegisterClustereWatchers(ClusterID::MatchingQueue_Game_8x1, ClusterID::MatchingQueue_Game_8x1W));
 			break;
 
 		case "ModMatching_Game_4"_hash32:
 		{
 			auto pMatching = (ServerConfig::ServerModuleMatching_4*)module;
-			svrChkPtr(AddServiceEntity<Svr::MatchingServiceEntity>(ClusterID::Matching_Game_4, ClusterMembership::Slave, pMatching->UseBot));
-			svrChk(AddServiceEntityComponent<Svr::GameInstanceManagerWatcherServiceEntity>(GetGameID()));
-			svrChk(RegisterClustereWatcherComponents(ClusterID::MatchingQueue_Game_4x1, Svr::ServerComponentID_MatchingQueueWatcherService_4x1, Svr::ServerComponentID_MatchingQueueWatcherService_4x1W));
+			svrChkPtr(AddServiceEntity<Svr::MatchingServiceEntity>(GetServerGameID(), ClusterID::Matching_Game_4, ClusterMembership::Slave, pMatching->UseBot));
+			//svrChk(AddServiceEntityComponent<Svr::GameInstanceManagerWatcherServiceEntity>(GetGameID()));
+			svrChk(RegisterClustereWatchers(ClusterID::MatchingQueue_Game_4x1, ClusterID::MatchingQueue_Game_4x1W));
 			break;
 		}
 		case "ModMatching_Game_8"_hash32:
 		{
 			auto pMatching = (ServerConfig::ServerModuleMatching_8*)module;
-			svrChkPtr(AddServiceEntity<Svr::MatchingServiceEntity>(ClusterID::Matching_Game_8, ClusterMembership::Slave, pMatching->UseBot));
-			svrChk(AddServiceEntityComponent<Svr::GameInstanceManagerWatcherServiceEntity>(GetGameID()));
-			svrChk(RegisterClustereWatcherComponents(ClusterID::MatchingQueue_Game_8x1, Svr::ServerComponentID_MatchingQueueWatcherService_8x1, Svr::ServerComponentID_MatchingQueueWatcherService_8x1W));
+			svrChkPtr(AddServiceEntity<Svr::MatchingServiceEntity>(GetServerGameID(), ClusterID::Matching_Game_8, ClusterMembership::Slave, pMatching->UseBot));
+			//svrChk(AddServiceEntityComponent<Svr::GameInstanceManagerWatcherServiceEntity>(GetGameID()));
+			svrChk(RegisterClustereWatchers(ClusterID::MatchingQueue_Game_8x1, ClusterID::MatchingQueue_Game_8x1W));
 			break;
 		}
 		case "ModPurchaseValidateGoogle"_hash32:
@@ -904,7 +873,7 @@ Proc_End:
 				break;
 			}
 
-			svrChkPtr(AddServiceEntity<Svr::MatchingQueueServiceEntity>(clusterID, ClusterMembership::Slave));
+			svrChkPtr(AddServiceEntity<Svr::MatchingQueueServiceEntity>(GetServerGameID(), clusterID, ClusterMembership::Slave));
 			break;
 		}
 		default:

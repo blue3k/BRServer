@@ -45,18 +45,18 @@ namespace SF
 
 		}; // Result ServerService::GenericFailureCmd( const TransactionID &InTransactionID )
 		// C2S: Server Started or Connected
-		Result ServerService::ServerConnectedC2SEvt( const EntityID &InSenderEntityID, const ServiceInformation &InClusterManagerServiceInformation, const uint32_t &InStartUpTime, const NetAddress &InPrivateAddress )
+		Result ServerService::ServerConnectedC2SEvt( const EntityID &InSenderEntityID, const uint32_t &InStartUpTime, const NetAddress &InPrivateAddress )
 		{
  			Result hr;
 
 			RouteContext InRouteContext( EntityUID(GetMyServerID(),InSenderEntityID), GetServiceEntityUID() );
-			svrChk(Policy::NetPolicyServer(GetConnection()).ServerConnectedC2SEvt( InRouteContext, InClusterManagerServiceInformation, InStartUpTime, InPrivateAddress ) );
+			svrChk(Policy::NetPolicyServer(GetConnection()).ServerConnectedC2SEvt( InRouteContext, InStartUpTime, InPrivateAddress ) );
 
 		Proc_End:
 
 			return hr;
 
-		}; // Result ServerService::ServerConnectedC2SEvt( const EntityID &InSenderEntityID, const ServiceInformation &InClusterManagerServiceInformation, const uint32_t &InStartUpTime, const NetAddress &InPrivateAddress )
+		}; // Result ServerService::ServerConnectedC2SEvt( const EntityID &InSenderEntityID, const uint32_t &InStartUpTime, const NetAddress &InPrivateAddress )
 
 
 	}; // namespace Svr

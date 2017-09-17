@@ -42,9 +42,10 @@ namespace Svr {
 	//
 
 
-	GamePartyEntity::GamePartyEntity()
+	GamePartyEntity::GamePartyEntity(GameID gameID)
 		: MasterEntity(64,64)
 		, m_PartyPlayerByUID(GetHeap())
+		, m_GameID(gameID)
 		, m_LeaderID(0)
 		, m_ChatHistory(GetHeap())
 	{

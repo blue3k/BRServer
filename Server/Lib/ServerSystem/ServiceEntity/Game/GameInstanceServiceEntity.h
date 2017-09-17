@@ -43,10 +43,11 @@ namespace Svr {
 	//	ServerServiceComponentEntity class
 	//
 
-	class GameInstanceServiceEntity : public ReplicaClusterServiceEntity
+	class GameInstanceServiceEntity : public ShardedClusterServiceEntity
 	{
 	public:
 
+		typedef ShardedClusterServiceEntity super;
 
 	private:
 
@@ -61,7 +62,7 @@ namespace Svr {
 
 	public:
 
-		GameInstanceServiceEntity( ClusterMembership initialMembership = ClusterMembership::StatusWatcher );
+		GameInstanceServiceEntity(GameID gameID, ClusterMembership initialMembership = ClusterMembership::StatusWatcher );
 		~GameInstanceServiceEntity();
 
 		bool GetLastRankingFailed() { return m_LastRankingFailed; }

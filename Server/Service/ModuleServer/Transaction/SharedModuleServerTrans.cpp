@@ -60,7 +60,7 @@ namespace SharedModuleServer {
 		switch( m_Step )
 		{
 		case StartingStep::WaitEntityServer:
-			if( Svr::GetServerComponent<Svr::ClusterManagerServiceEntity>()->GetInitialized() )
+			if( Service::ClusterManager->GetInitialized() )
 			{
 				svrChk( InitializeServices() );
 				m_Step = StartingStep::WaitInitializeComponents;
@@ -92,7 +92,7 @@ namespace SharedModuleServer {
 		Result hr = ResultCode::SUCCESS;
 		//uint componentID = 0;
 		
-		svrChk( Svr::GetServerComponent<Svr::ClusterManagerServiceEntity>()->InitializeNotInitializedClusterEntities() );
+		svrChk( Service::ClusterManager->InitializeNotInitializedClusterEntities() );
 
 		
 		// Initialize all cluster entities which is not initialized by ClusterManagerServiceEntity

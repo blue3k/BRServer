@@ -40,12 +40,13 @@ namespace Svr {
 	//	GameClusterServiceEntity class
 	//
 
-	class GameClusterServiceEntity : public FreeReplicaClusterServiceEntity
+	class GameClusterServiceEntity : public ShardedClusterServiceEntity
 	{
 	public:
 
 		enum { ComponentID = ServerComponentID_GameClusterService };
 
+		typedef ShardedClusterServiceEntity super;
 
 		// Player table item
 		class PlayerTableItem
@@ -62,7 +63,7 @@ namespace Svr {
 			TimeStampMS m_ServerUpTime;
 
 			// Linked server entity
-			ServerEntity* m_ServerEntity;
+			ServerEntity* m_ServerEntity = nullptr;
 
 
 		public:
@@ -117,9 +118,6 @@ namespace Svr {
 
 
 		// Game Cluster ID
-		static ClusterID GetGameClusterID( GameID gameID ) { return (ClusterID)((uint)ClusterID::Game + (uint)gameID); }
-
-
 		const ServerConfig::NetPublic* GetPublicNetConfig() { return m_PublicNetSocket; }
 
 		//////////////////////////////////////////////////////////////////////////

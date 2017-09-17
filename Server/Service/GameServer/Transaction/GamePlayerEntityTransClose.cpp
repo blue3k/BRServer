@@ -190,7 +190,7 @@ namespace GameServer {
 
 		if( pOwner->GetMatchingTicket() != 0 )
 		{
-			if((Policy::NetPolicyPartyMatchingQueue(Svr::GetServerComponent<Svr::ServerEntityManager>()->GetServerConnection(pOwner->GetMatchingTicket().QueueUID.GetServerID())).UnregisterMatchingCmd(
+			if((Policy::NetPolicyPartyMatchingQueue(Service::ServerEntityManager->GetServerConnection(pOwner->GetMatchingTicket().QueueUID.GetServerID())).UnregisterMatchingCmd(
 				RouteContext(GetOwnerEntityUID(), pOwner->GetMatchingTicket().QueueUID), GetTransID(), 
 				0, pOwner->GetMatchingTicket())))
 				m_WaitingTransactions++;
@@ -198,14 +198,14 @@ namespace GameServer {
 
 		if (pOwner->GetPartyUID().UID != 0)
 		{
-			if ((Policy::NetPolicyGameParty(Svr::GetServerComponent<Svr::ServerEntityManager>()->GetServerConnection(pOwner->GetPartyUID().GetServerID())).LeavePartyCmd(
+			if ((Policy::NetPolicyGameParty(Service::ServerEntityManager->GetServerConnection(pOwner->GetPartyUID().GetServerID())).LeavePartyCmd(
 				RouteContext(GetOwnerEntityUID(), pOwner->GetPartyUID()), GetTransID(), pOwner->GetPlayerID())))
 				m_WaitingTransactions++;
 		}
 
 		if (pOwner->GetGameInsUID().UID != 0)
 		{
-			if ((Policy::NetPolicyGameInstance(Svr::GetServerComponent<Svr::ServerEntityManager>()->GetServerConnection(pOwner->GetGameInsUID().GetServerID())).LeaveGameCmd(
+			if ((Policy::NetPolicyGameInstance(Service::ServerEntityManager->GetServerConnection(pOwner->GetGameInsUID().GetServerID())).LeaveGameCmd(
 				RouteContext(GetOwnerEntityUID(), pOwner->GetGameInsUID()), GetTransID(), pOwner->GetPlayerID())))
 				m_WaitingTransactions++;
 		}

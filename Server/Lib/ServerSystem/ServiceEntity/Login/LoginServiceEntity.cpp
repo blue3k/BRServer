@@ -52,7 +52,7 @@ namespace Svr {
 
 
 	LoginServiceEntity::LoginServiceEntity(const ServerConfig::NetPublic *publicNetSocket, ClusterMembership initialMembership)
-		: ReplicaClusterServiceEntity(ClusterID::Login, initialMembership)
+		: super(GameID::Invalid, ClusterID::Login, initialMembership)
 		, m_PublicNetSocket(publicNetSocket)
 		, m_pNetPublic(nullptr)
 		, m_NewConnectionQueue(GetMemoryManager())
@@ -72,7 +72,7 @@ namespace Svr {
 
 		svrChkPtr(pServerInst);
 
-		svrChk(ReplicaClusterServiceEntity::InitializeEntity(newEntityID) );
+		svrChk(super::InitializeEntity(newEntityID) );
 
 		LoginPlayerEntity::GetAuthTicketGenerator().SetServerID(pServerInst->GetServerUID());
 
@@ -98,10 +98,8 @@ namespace Svr {
 		svrChk(pServerInst->AddDBCluster<DB::LoginSessionDB>(Service::ServerConfig->FindDBCluster("LoginSessionDB")));
 
 		// Register game clusters, so that login server can monitor game servers status
-		for (ClusterID gameCluster = ClusterID::Game; gameCluster < ClusterID::Game_Max; gameCluster++)
-		{
-			svrChk(GetServerComponent<ClusterManagerServiceEntity>()->CreateWatcherForCluster(gameCluster, ClusterType::Shard, pClusteredEntity));
-		}
+		svrChk(Service::ClusterManager->SetWatchForCluster(GameID::Conspiracy, ClusterID::Game, true));
+		svrChk(Service::ClusterManager->SetWatchForCluster(GameID::MyTownHero, ClusterID::Game, true));
 
 		m_pNetPublic->SetIsEnableAccept(true);
 
@@ -115,7 +113,7 @@ namespace Svr {
 	{
 		Result hr = ResultCode::SUCCESS;
 
-		svrChk(ReplicaClusterServiceEntity::ClearEntity() );
+		svrChk(super::ClearEntity() );
 
 		if(m_pNetPublic != nullptr)
 			svrChk(m_pNetPublic->HostClose());
@@ -131,7 +129,7 @@ namespace Svr {
 	{
 		Result hr = ResultCode::SUCCESS;
 
-		svrChk(ReplicaClusterServiceEntity::TickUpdate(pAction) );
+		svrChk(super::TickUpdate(pAction) );
 
 		// check below only if we are working
 		if( GetEntityState() != EntityState::WORKING )

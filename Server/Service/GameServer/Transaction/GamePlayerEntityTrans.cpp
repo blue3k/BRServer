@@ -259,7 +259,7 @@ namespace GameServer {
 		{
 			PartyUID partyUID = GetMyOwner()->GetPartyUID();
 
-			svrChk(Policy::NetPolicyGameParty(Svr::GetServerComponent<Svr::ServerEntityManager>()->GetServerConnection(partyUID.GetServerID())).JoinPartyCmd(
+			svrChk(Policy::NetPolicyGameParty(Service::ServerEntityManager->GetServerConnection(partyUID.GetServerID())).JoinPartyCmd(
 				RouteContext(GetOwnerEntityUID(), partyUID), GetTransID(), 
 				0, GetMyOwner()->GetPlayerInformation()));
 		}
@@ -396,7 +396,7 @@ namespace GameServer {
 		}
 
 		// TODO: We need to distinguish whether character data is updated or not
-		svrChk(Policy::NetPolicyLoginServer(Svr::GetServerComponent<Svr::ServerEntityManager>()->GetServerConnection(loginEntityUID.GetServerID())).PlayerJoinedToGameServerCmd(
+		svrChk(Policy::NetPolicyLoginServer(Service::ServerEntityManager->GetServerConnection(loginEntityUID.GetServerID())).PlayerJoinedToGameServerCmd(
 			RouteContext(GetOwnerEntityUID(),loginEntityUID), GetTransID(),
 			GetAccID(), GetTicket() ) );
 
@@ -1368,7 +1368,7 @@ namespace GameServer {
 
 		playerUID = GetRouteContext().GetFrom();
 
-		svrChk( Svr::GetServerComponent<Svr::ServerEntityManager>()->GetServerEntity( playerUID.GetServerID(), pServerEntity ) );
+		svrChk( Service::ServerEntityManager->GetServerEntity( playerUID.GetServerID(), pServerEntity ) );
 
 		bInGame = GetMyOwner()->GetGameInsUID().UID != 0 || GetMyOwner()->GetPartyUID().UID != 0;
 
@@ -1744,7 +1744,7 @@ namespace GameServer {
 		insUID = GetMyOwner()->GetGameInsUID();
 		if( insUID.UID != 0 )
 		{
-			svrChk(Policy::NetPolicyGameInstance(Svr::GetServerComponent<Svr::ServerEntityManager>()->GetServerConnection(insUID.GetServerID())).SetConfigPresetC2SEvt( RouteContext(GetOwnerEntityUID(),insUID), GetPresetID() ) );
+			svrChk(Policy::NetPolicyGameInstance(Service::ServerEntityManager->GetServerConnection(insUID.GetServerID())).SetConfigPresetC2SEvt( RouteContext(GetOwnerEntityUID(),insUID), GetPresetID() ) );
 		}
 
 	Proc_End:

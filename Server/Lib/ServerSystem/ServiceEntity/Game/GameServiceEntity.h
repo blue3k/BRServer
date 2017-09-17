@@ -58,10 +58,11 @@ namespace Svr {
 	//	ServerServiceComponentEntity class
 	//
 
-	class GameServiceEntity : public FreeReplicaClusterServiceEntity
+	class GameServiceEntity : public ShardedClusterServiceEntity
 	{
 	public:
 
+		typedef ShardedClusterServiceEntity super;
 
 	private:
 		const ServerConfig::NetPublic*	m_PublicNetSocket;

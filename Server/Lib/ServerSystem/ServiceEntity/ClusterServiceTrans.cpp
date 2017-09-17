@@ -52,7 +52,7 @@ namespace Svr {
 	{
 		BR_TRANS_MESSAGE( TimerResult, { return OnTimer(pRes); });
 		//BR_TRANS_MESSAGE( Message::ClusterServer::GetClusterMemberListRes,	{ return OnGetClusterMemberList(pRes); });
-		BR_TRANS_MESSAGE( Message::ClusterServer::JoinClusterRes,			{ return OnClusterJoined(pRes); });
+		//BR_TRANS_MESSAGE( Message::ClusterServer::JoinClusterRes,			{ return OnClusterJoined(pRes); });
 		BR_TRANS_MESSAGE( Message::ClusterServer::RequestDataSyncRes,		{ return OnClusterDataSync(pRes); });
 	}
 
@@ -79,9 +79,9 @@ namespace Svr {
 
 		switch( m_Step )
 		{
-		case Step_JoinCluster:
-			svrChk(JoinCluster());
-			break;
+		//case Step_JoinCluster:
+		//	svrChk(JoinCluster());
+		//	break;
 		case Step_RequestDataSync:
 			svrChk(RequestDataSync()); // try one more
 			break;
@@ -98,109 +98,109 @@ namespace Svr {
 	}
 
 
-	Result ClusterInitializationTrans::JoinCluster(  )
-	{
-		Result hr = ResultCode::SUCCESS;
-		ServerEntity *pMasterServerEntity = nullptr;
-		EntityUID clusterManagerMasterUID;
-		ClusterManagerServiceEntity *pClusterManager = nullptr;
-		ClusterMembership membership = GetMyOwner()->GetClusterMembership();
+	//Result ClusterInitializationTrans::JoinCluster(  )
+	//{
+	//	Result hr = ResultCode::SUCCESS;
+	//	ServerEntity *pMasterServerEntity = nullptr;
+	//	EntityUID clusterManagerMasterUID;
+	//	ClusterManagerServiceEntity *pClusterManager = nullptr;
+	//	ClusterMembership membership = GetMyOwner()->GetClusterMembership();
 
-		// send join cluster
-		m_Step = Step_JoinCluster;
+	//	// send join cluster
+	//	m_Step = Step_JoinCluster;
 
-		svrTrace(SVR_CLUSTER, "Cluster Join Entity:{0}, ClusterID:{1}, Type:{2}, Membership:{3}", GetOwnerEntityUID(), GetMyOwner()->GetClusterID(), GetMyOwner()->GetClusterType(), GetMyOwner()->GetClusterMembership());
+	//	svrTrace(SVR_CLUSTER, "Cluster Join Entity:{0}, ClusterID:{1}, Type:{2}, Membership:{3}", GetOwnerEntityUID(), GetMyOwner()->GetClusterID(), GetMyOwner()->GetClusterType(), GetMyOwner()->GetClusterMembership());
 
-		auto netPrivate = BrServer::GetInstance()->GetNetPrivate();
-		svrChkPtr(netPrivate);
-		Assert(netPrivate->GetNetClass() != NetClass::Unknown);
+	//	auto netPrivate = BrServer::GetInstance()->GetNetPrivate();
+	//	svrChkPtr(netPrivate);
+	//	Assert(netPrivate->GetNetClass() != NetClass::Unknown);
 
-		// 1. Find entity manager service
-		pClusterManager = GetServerComponent<ClusterManagerServiceEntity>();
-		clusterManagerMasterUID = pClusterManager->GetMasterUID();
-		GetServerComponent<ServerEntityManager>()->GetServerEntity(clusterManagerMasterUID.GetServerID(), pMasterServerEntity);
+	//	// 1. Find entity manager service
+	//	pClusterManager = Service::ClusterManager;
+	//	clusterManagerMasterUID = pClusterManager->GetMasterUID();
+	//	Service::ServerEntityManager->GetServerEntity(clusterManagerMasterUID.GetServerID(), pMasterServerEntity);
 
-		if (pClusterManager == GetOwnerEntity()) // If I'm the cluster manager entity of this server
-		{
-			// wait at least 2 secs for connections if 
-			if (Util::TimeSince(GetTransactionStartTime()) > DurationMS(4000))
-			{
-				if (clusterManagerMasterUID.UID == 0)
-				{
-					svrTrace(Warning, "Waiting Master entity too long ready:{0}, ClusterID:{1},Type:{2},Membership:{3}", GetOwnerEntityUID(), GetMyOwner()->GetClusterID(), GetMyOwner()->GetClusterType(), GetMyOwner()->GetClusterMembership());
-				}
-				//GetServerComponent<ServerEntityManager>()->GetEntityManagerServerEntity(pMasterServerEntity);
-			}
+	//	if (pClusterManager == GetOwnerEntity()) // If I'm the cluster manager entity of this server
+	//	{
+	//		// wait at least 2 secs for connections if 
+	//		if (Util::TimeSince(GetTransactionStartTime()) > DurationMS(4000))
+	//		{
+	//			if (clusterManagerMasterUID.UID == 0)
+	//			{
+	//				svrTrace(Warning, "Waiting Master entity too long ready:{0}, ClusterID:{1},Type:{2},Membership:{3}", GetOwnerEntityUID(), GetMyOwner()->GetClusterID(), GetMyOwner()->GetClusterType(), GetMyOwner()->GetClusterMembership());
+	//			}
+	//			//Service::ServerEntityManager->GetEntityManagerServerEntity(pMasterServerEntity);
+	//		}
 
-			if (pMasterServerEntity == GetOwnerEntity() && membership >= ClusterMembership::Slave)
-			{
-				svrTrace( SVR_CLUSTER, "Cluster GetMemberList Entity:{0}, ClusterID:{1},Type:{2},Membership:{3} : {4}", GetOwnerEntityUID(), GetMyOwner()->GetClusterID(), GetMyOwner()->GetClusterType(), GetMyOwner()->GetClusterMembership(),
-					"I'm the first one in this cluster" );
-				membership = ClusterMembership::Master;
-			}
-		}
+	//		if (pMasterServerEntity == GetOwnerEntity() && membership >= ClusterMembership::Slave)
+	//		{
+	//			svrTrace( SVR_CLUSTER, "Cluster GetMemberList Entity:{0}, ClusterID:{1},Type:{2},Membership:{3} : {4}", GetOwnerEntityUID(), GetMyOwner()->GetClusterID(), GetMyOwner()->GetClusterType(), GetMyOwner()->GetClusterMembership(),
+	//				"I'm the first one in this cluster" );
+	//			membership = ClusterMembership::Master;
+	//		}
+	//	}
 
-		if(pMasterServerEntity == nullptr || clusterManagerMasterUID.UID == 0)
-		{
-			svrTrace(SVR_CLUSTER, "Waiting Entity Server ready:{0}, ClusterID:{1},Type:{2},Membership:{3}", GetOwnerEntityUID(), GetMyOwner()->GetClusterID(), GetMyOwner()->GetClusterType(), GetMyOwner()->GetClusterMembership());
-			SetTimer(DurationMS(1000));
-			goto Proc_End;
-		}
+	//	if(pMasterServerEntity == nullptr || clusterManagerMasterUID.UID == 0)
+	//	{
+	//		svrTrace(SVR_CLUSTER, "Waiting Entity Server ready:{0}, ClusterID:{1},Type:{2},Membership:{3}", GetOwnerEntityUID(), GetMyOwner()->GetClusterID(), GetMyOwner()->GetClusterType(), GetMyOwner()->GetClusterMembership());
+	//		SetTimer(DurationMS(1000));
+	//		goto Proc_End;
+	//	}
 
-		svrTrace( SVR_CLUSTER, "Cluster memberlist query Entity:{0}, ClusterID:{1},Type:{2},Membership:{3}", GetOwnerEntityUID(), GetMyOwner()->GetClusterID(), GetMyOwner()->GetClusterType(), GetMyOwner()->GetClusterMembership() );
+	//	svrTrace( SVR_CLUSTER, "Cluster memberlist query Entity:{0}, ClusterID:{1},Type:{2},Membership:{3}", GetOwnerEntityUID(), GetMyOwner()->GetClusterID(), GetMyOwner()->GetClusterType(), GetMyOwner()->GetClusterMembership() );
 
-		// 2. Get service entity list in the cluster
-		svrChk(Policy::NetPolicyClusterServer(pMasterServerEntity->GetConnection()).JoinClusterCmd( RouteContext(GetOwnerEntityUID(),clusterManagerMasterUID), GetTransID(), 0,
-			GetOwnerEntityUID(), netPrivate->GetNetClass(), netPrivate->GetLocalAddress(),
-			GetMyOwner()->GetClusterID(), GetMyOwner()->GetClusterType(), membership));
+	//	// 2. Get service entity list in the cluster
+	//	svrChk(Policy::NetPolicyClusterServer(pMasterServerEntity->GetConnection()).JoinClusterCmd( RouteContext(GetOwnerEntityUID(),clusterManagerMasterUID), GetTransID(), 0,
+	//		GetOwnerEntityUID(), netPrivate->GetNetClass(), netPrivate->GetLocalAddress(),
+	//		GetMyOwner()->GetClusterID(), GetMyOwner()->GetClusterType(), membership));
 
 
 
-	Proc_End:
+	//Proc_End:
 
-		if( !(hr) )
-		{
-			// if failed something retry after 1 sec from scratch
-			m_Step = Step_JoinCluster;
-			SetFailRetryTimer(hr);
-		}
+	//	if( !(hr) )
+	//	{
+	//		// if failed something retry after 1 sec from scratch
+	//		m_Step = Step_JoinCluster;
+	//		SetFailRetryTimer(hr);
+	//	}
 
-		return hr;
-	}
+	//	return hr;
+	//}
 
-	Result ClusterInitializationTrans::OnClusterJoined(TransactionResult* pRes)
-	{
-		Result hr = ResultCode::SUCCESS;
-		Message::ClusterServer::JoinClusterRes msgRes;
+	//Result ClusterInitializationTrans::OnClusterJoined(TransactionResult* pRes)
+	//{
+	//	Result hr = ResultCode::SUCCESS;
+	//	Message::ClusterServer::JoinClusterRes msgRes;
 
-		svrChk(pRes->GetResult());
+	//	svrChk(pRes->GetResult());
 
-		svrChk( msgRes.ParseMessage( *((MessageResult*)pRes)->GetMessage() ) );
+	//	svrChk( msgRes.ParseMessage( *((MessageResult*)pRes)->GetMessage() ) );
 
-		svrTrace( SVR_CLUSTER, "Cluster Joined Entity:{0}, ClusterID:{1},Type:{2},Membership:{3}", GetOwnerEntityUID(), GetMyOwner()->GetClusterID(), GetMyOwner()->GetClusterType(), GetMyOwner()->GetClusterMembership() );
+	//	svrTrace( SVR_CLUSTER, "Cluster Joined Entity:{0}, ClusterID:{1},Type:{2},Membership:{3}", GetOwnerEntityUID(), GetMyOwner()->GetClusterID(), GetMyOwner()->GetClusterType(), GetMyOwner()->GetClusterMembership() );
 
-		// Fill my cluster status
-		svrChk( AddOtherServicesToMe((uint)msgRes.GetMemberList().size(), msgRes.GetMemberList().data()) );
+	//	// Fill my cluster status
+	//	svrChk( AddOtherServicesToMe((uint)msgRes.GetMemberList().size(), msgRes.GetMemberList().data()) );
 
-		// 4. Request full data if replica
-		if( !(RequestDataSync()) )
-		{
-			// if failed sync we can retry laster
-			m_Step = Step_RequestDataSync;
-			SetFailRetryTimer(hr);
-		}
+	//	// 4. Request full data if replica
+	//	if( !(RequestDataSync()) )
+	//	{
+	//		// if failed sync we can retry laster
+	//		m_Step = Step_RequestDataSync;
+	//		SetFailRetryTimer(hr);
+	//	}
 
-	Proc_End:
+	//Proc_End:
 
-		if( !(hr) )
-		{
-			// if failed something retry after 1 sec from scratch
-			m_Step = Step_JoinCluster;
-			SetFailRetryTimer(hr);
-		}
+	//	if( !(hr) )
+	//	{
+	//		// if failed something retry after 1 sec from scratch
+	//		m_Step = Step_JoinCluster;
+	//		SetFailRetryTimer(hr);
+	//	}
 
-		return ResultCode::SUCCESS;
-	}
+	//	return ResultCode::SUCCESS;
+	//}
 
 	Result ClusterInitializationTrans::RequestDataSync()
 	{
@@ -217,9 +217,10 @@ namespace Svr {
 
 			// 4. Request full data if replica
 			m_Step = Step_RequestDataSync;
-			svrChk( GetServerComponent<ServerEntityManager>()->GetServerEntity( m_currentMaster.UID.GetServerID(), pServerEntity ) );
+			svrChk( Service::ServerEntityManager->GetServerEntity( m_currentMaster.UID.GetServerID(), pServerEntity ) );
 
-			svrChk(Policy::NetPolicyClusterServer(pServerEntity->GetConnection()).RequestDataSyncCmd( RouteContext(GetMyOwner()->GetEntityUID(), m_currentMaster.UID), GetTransID(), 0,
+			svrChk(Policy::NetPolicyClusterServer(pServerEntity->GetConnection()).RequestDataSyncCmd( 
+				RouteContext(GetMyOwner()->GetEntityUID(), m_currentMaster.UID), GetTransID(), 0,
 				GetMyOwner()->GetClusterID() ) );
 		}
 
@@ -249,40 +250,40 @@ namespace Svr {
 		return ResultCode::SUCCESS;
 	}
 
-	// Add other services to me
-	Result ClusterInitializationTrans::AddOtherServicesToMe( uint numServices, const ServiceInformation *pServiceInformations )
-	{
-		Result hr = ResultCode::SUCCESS;
-		bool bAddStatusWatcher = GetMyOwner()->GetClusterMembership() != ClusterMembership::StatusWatcher;
+	//// Add other services to me
+	//Result ClusterInitializationTrans::AddOtherServicesToMe( uint numServices, const ServiceInformation *pServiceInformations )
+	//{
+	//	Result hr = ResultCode::SUCCESS;
+	//	bool bAddStatusWatcher = GetMyOwner()->GetClusterMembership() != ClusterMembership::StatusWatcher;
 
-		ServerEntityManager *pServerEntityManager = GetServerComponent<ServerEntityManager>();
-		for( uint iMember = 0; iMember < numServices; iMember++ )
-		{
-			ServerEntity *pServerEntity = nullptr;
-			ServerServiceInformation *pService = nullptr;
-			const ServiceInformation *pServiceInfo = &pServiceInformations[iMember];
+	//	ServerEntityManager *pServerEntityManager = Service::ServerEntityManager;
+	//	for( uint iMember = 0; iMember < numServices; iMember++ )
+	//	{
+	//		ServerEntity *pServerEntity = nullptr;
+	//		ServerServiceInformation *pService = nullptr;
+	//		const ServiceInformation *pServiceInfo = &pServiceInformations[iMember];
 
-			// Skip watcher
-			if( !bAddStatusWatcher && pServiceInfo->Membership == ClusterMembership::StatusWatcher )
-				continue;
+	//		// Skip watcher
+	//		if( !bAddStatusWatcher && pServiceInfo->Membership == ClusterMembership::StatusWatcher )
+	//			continue;
 
-			svrChk(pServerEntityManager->GetOrRegisterServer(pServiceInfo->UID.GetServerID(), pServiceInfo->ServerClass,
-				pServiceInfo->ServerAddress,
-				pServerEntity ) );
+	//		svrChk(pServerEntityManager->GetOrRegisterServer(pServiceInfo->UID.GetServerID(), pServiceInfo->ServerClass,
+	//			pServiceInfo->ServerAddress,
+	//			pServerEntity ) );
 
-			if( pServerEntity->GetServerUpTime() == TimeStampSec::min() || pServerEntity->GetServerUpTime() < pServiceInfo->ServerUpTime )
-				pServerEntity->SetServerUpTime( pServiceInfo->ServerUpTime );
+	//		if( pServerEntity->GetServerUpTime() == TimeStampSec::min() || pServerEntity->GetServerUpTime() < pServiceInfo->ServerUpTime )
+	//			pServerEntity->SetServerUpTime( pServiceInfo->ServerUpTime );
 
-			svrChk( GetMyOwner()->NewServerService( pServiceInfo->UID, pServerEntity, pServiceInfo->Membership, pServiceInfo->Status, pService ) );
-		}
+	//		svrChk( GetMyOwner()->NewServerService( pServiceInfo->UID, pServerEntity, pServiceInfo->Membership, pServiceInfo->Status, pService ) );
+	//	}
 
-		m_currentMaster.UID = GetMyOwner()->GetMasterUID();
+	//	m_currentMaster.UID = GetMyOwner()->GetMasterUID();
 
 
-	Proc_End:
+	//Proc_End:
 
-		return hr;
-	}
+	//	return hr;
+	//}
 
 	// Start Transaction
 	Result ClusterInitializationTrans::StartTransaction()
@@ -297,7 +298,8 @@ namespace Svr {
 
 		svrTrace( SVR_CLUSTER, "Cluster Initialization Entity:{0}:{1}, ClusterID:{2},Type:{3},Membership:{4}", GetOwnerEntityUID(), typeid(*GetMyOwner()).name(), GetMyOwner()->GetClusterID(), GetMyOwner()->GetClusterType(), GetMyOwner()->GetClusterMembership() );
 
-		svrChk(JoinCluster());
+		svrChk(RequestDataSync());
+		//svrChk(JoinCluster());
 		//svrChk( GetClusterMemberList() );
 
 	Proc_End:
@@ -348,306 +350,306 @@ namespace Svr {
 		return hr;
 	}
 
-	// Start Transaction
-	Result ClusterMasterAssignedTrans::StartTransaction()
-	{
-		Result hr = ResultCode::SUCCESS;
-
-		svrChk( super::StartTransaction() );
-
-		svrChk( GetMyOwner()->SetMaster( GetMasterUID() ) );
-
-		GetMyOwner()->EndVoting();
-
-	Proc_End:
-
-		CloseTransaction( hr );
-
-		return hr;
-	}
-
-	// Start Transaction
-	Result ClusterMasterVoteTrans::StartTransaction()
-	{
-		Result hr = ResultCode::SUCCESS;
-		ServerServiceInformation *pVotedService = nullptr;
-		uint uiExpectedVoterCount = 0, uiTotalVoted = 0;
-		uint uiMaxVotedCount = 0;
-		EntityUID maxEntity(0);
-
-		svrChk( super::StartTransaction() );
-
-		// Only master or slave can process vote result
-		if( GetMyOwner()->GetClusterMembership() < ClusterMembership::Slave )
-			goto Proc_End;
-
-		svrChk( GetMyOwner()->FindService( GetVoteToUID(), pVotedService ) );
-
-		// If not voting state yet, enter it
-		GetMyOwner()->StartVoting();
-
-		pVotedService->SetVotedCount( pVotedService->GetVotedCount() +1 );
-
-		// check voted status
-		GetMyOwner()->ForEach( [&](ServerServiceInformation *pService) 
-		{
-			// Only master or slave will process vote so send only to them
-			if( pService->IsServiceAvailable() && pService->GetClusterMembership() >= ClusterMembership::Slave )
-			{
-				uiExpectedVoterCount++;
-				uiTotalVoted += pService->GetVotedCount();
-				if( uiMaxVotedCount < pService->GetVotedCount() )
-				{
-					uiMaxVotedCount = pService->GetVotedCount();
-					maxEntity = pService->GetEntityUID();
-				}
-			}
-		});
-
-		// If vote is done
-		if( uiTotalVoted >= uiExpectedVoterCount )
-		{
-			if( maxEntity == GetMyOwner()->GetEntityUID() )
-			{
-				GetMyOwner()->AssignMaster( maxEntity );
-			}
-			GetMyOwner()->EndVoting();
-		}
-
-	Proc_End:
-
-		CloseTransaction( hr );
-
-		return hr;
-	}
-
-
-	// Start Transaction
-	Result ClusterUpdateStatusTrans::StartTransaction()
-	{
-		Result hr = ResultCode::SUCCESS;
-		ServerServiceInformation *pService = nullptr;
-		Svr::ClusteredServiceEntity *pServiceEntity = nullptr;
-
-		svrChk(super::StartTransaction());
-
-		if ((GetServerComponent<ClusterManagerServiceEntity>()->GetClusterServiceEntity(GetClusterID(), pServiceEntity)))
-		{
-			if ((pServiceEntity->FindService(GetSender(), pService)))
-			{
-				pService->SetServiceStatus(GetMemberStatus());
-			}
-			else
-			{
-				svrTrace(SVR_CLUSTER, "Ignoring update status for ClusterID:{0}, Entity:{1} to {2}, The entity seems not ready.", GetClusterID(), GetSender(), GetMemberStatus());
-			}
-		}
-		else
-		{
-			svrTrace(SVR_CLUSTER, "Ignoring update status for ClusterID:{0}, Entity:{1} to {2}", GetClusterID(), GetSender(), GetMemberStatus());
-		}
-
-	Proc_End:
-
-		if (!(hr))
-		{
-			svrTrace(SVR_CLUSTER, "Update state is failed ClusterID:{0}, Entity:{1} to {2}", GetClusterID(), GetSender(), GetMemberStatus());
-			CloseTransaction(hr);
-		}
-		else
-		{
-			svrTrace(SVR_CLUSTER, "State is updated ClusterID:{0}, Entity:{1} to {2}", GetClusterID(), GetSender(), GetMemberStatus());
-			CloseTransaction(hr);
-		}
+	//// Start Transaction
+	//Result ClusterMasterAssignedTrans::StartTransaction()
+	//{
+	//	Result hr = ResultCode::SUCCESS;
+
+	//	svrChk( super::StartTransaction() );
+
+	//	svrChk( GetMyOwner()->SetMaster( GetMasterUID() ) );
+
+	//	GetMyOwner()->EndVoting();
+
+	//Proc_End:
+
+	//	CloseTransaction( hr );
+
+	//	return hr;
+	//}
+
+	//// Start Transaction
+	//Result ClusterMasterVoteTrans::StartTransaction()
+	//{
+	//	Result hr = ResultCode::SUCCESS;
+	//	ServerServiceInformation *pVotedService = nullptr;
+	//	uint uiExpectedVoterCount = 0, uiTotalVoted = 0;
+	//	uint uiMaxVotedCount = 0;
+	//	EntityUID maxEntity(0);
+
+	//	svrChk( super::StartTransaction() );
+
+	//	// Only master or slave can process vote result
+	//	if( GetMyOwner()->GetClusterMembership() < ClusterMembership::Slave )
+	//		goto Proc_End;
+
+	//	svrChk( GetMyOwner()->FindService( GetVoteToUID(), pVotedService ) );
+
+	//	// If not voting state yet, enter it
+	//	GetMyOwner()->StartVoting();
+
+	//	pVotedService->SetVotedCount( pVotedService->GetVotedCount() +1 );
+
+	//	// check voted status
+	//	GetMyOwner()->ForEach( [&](ServerServiceInformation *pService) 
+	//	{
+	//		// Only master or slave will process vote so send only to them
+	//		if( pService->IsServiceAvailable() && pService->GetClusterMembership() >= ClusterMembership::Slave )
+	//		{
+	//			uiExpectedVoterCount++;
+	//			uiTotalVoted += pService->GetVotedCount();
+	//			if( uiMaxVotedCount < pService->GetVotedCount() )
+	//			{
+	//				uiMaxVotedCount = pService->GetVotedCount();
+	//				maxEntity = pService->GetEntityUID();
+	//			}
+	//		}
+	//	});
+
+	//	// If vote is done
+	//	if( uiTotalVoted >= uiExpectedVoterCount )
+	//	{
+	//		if( maxEntity == GetMyOwner()->GetEntityUID() )
+	//		{
+	//			GetMyOwner()->AssignMaster( maxEntity );
+	//		}
+	//		GetMyOwner()->EndVoting();
+	//	}
+
+	//Proc_End:
+
+	//	CloseTransaction( hr );
+
+	//	return hr;
+	//}
+
+
+	//// Start Transaction
+	//Result ClusterUpdateStatusTrans::StartTransaction()
+	//{
+	//	Result hr = ResultCode::SUCCESS;
+	//	ServerServiceInformation *pService = nullptr;
+	//	Svr::ClusteredServiceEntity *pServiceEntity = nullptr;
+
+	//	svrChk(super::StartTransaction());
+
+	//	if ((Service::ClusterManager->GetClusterServiceEntity(GetClusterID(), pServiceEntity)))
+	//	{
+	//		if ((pServiceEntity->FindService(GetSender(), pService)))
+	//		{
+	//			pService->SetServiceStatus(GetMemberStatus());
+	//		}
+	//		else
+	//		{
+	//			svrTrace(SVR_CLUSTER, "Ignoring update status for ClusterID:{0}, Entity:{1} to {2}, The entity seems not ready.", GetClusterID(), GetSender(), GetMemberStatus());
+	//		}
+	//	}
+	//	else
+	//	{
+	//		svrTrace(SVR_CLUSTER, "Ignoring update status for ClusterID:{0}, Entity:{1} to {2}", GetClusterID(), GetSender(), GetMemberStatus());
+	//	}
+
+	//Proc_End:
+
+	//	if (!(hr))
+	//	{
+	//		svrTrace(SVR_CLUSTER, "Update state is failed ClusterID:{0}, Entity:{1} to {2}", GetClusterID(), GetSender(), GetMemberStatus());
+	//		CloseTransaction(hr);
+	//	}
+	//	else
+	//	{
+	//		svrTrace(SVR_CLUSTER, "State is updated ClusterID:{0}, Entity:{1} to {2}", GetClusterID(), GetSender(), GetMemberStatus());
+	//		CloseTransaction(hr);
+	//	}
 
-		return hr;
-	}
+	//	return hr;
+	//}
 
 
-	// Start Transaction
-	Result ClusterUpdateWorkloadTrans::StartTransaction()
-	{
-		Result hr = ResultCode::SUCCESS;
-		ClusteredServiceEntity* pServiceEntity = nullptr;
-		ServerServiceInformation *pUpdatedService = nullptr;
+	//// Start Transaction
+	//Result ClusterUpdateWorkloadTrans::StartTransaction()
+	//{
+	//	Result hr = ResultCode::SUCCESS;
+	//	ClusteredServiceEntity* pServiceEntity = nullptr;
+	//	ServerServiceInformation *pUpdatedService = nullptr;
 
-		svrChk(super::StartTransaction());
+	//	svrChk(super::StartTransaction());
 
-		if (GetMyOwner()->GetClusterID() == GetClusterID())
-		{
-			pServiceEntity = GetMyOwner();
-		}
-		else
-		{
-			if (!(GetServerComponent<ClusterManagerServiceEntity>()->GetClusterServiceEntity(GetClusterID(), pServiceEntity)))
-			{
-				svrTrace(SVR_CLUSTER, "Ignoring workload update of an unregistered cluster ClusterID:{0} Sender:{1}", GetClusterID(), GetSender());
-				CloseTransaction(hr);
-				goto Proc_End;
-			}
-		}
+	//	if (GetMyOwner()->GetClusterID() == GetClusterID())
+	//	{
+	//		pServiceEntity = GetMyOwner();
+	//	}
+	//	else
+	//	{
+	//		if (!(Service::ClusterManager->GetClusterServiceEntity(GetClusterID(), pServiceEntity)))
+	//		{
+	//			svrTrace(SVR_CLUSTER, "Ignoring workload update of an unregistered cluster ClusterID:{0} Sender:{1}", GetClusterID(), GetSender());
+	//			CloseTransaction(hr);
+	//			goto Proc_End;
+	//		}
+	//	}
 
-		hr = pServiceEntity->FindService(GetSender(), pUpdatedService);
-		if (!(hr))
-		{
-			goto Proc_End;
-		}
+	//	hr = pServiceEntity->FindService(GetSender(), pUpdatedService);
+	//	if (!(hr))
+	//	{
+	//		goto Proc_End;
+	//	}
 
-		pUpdatedService->SetWorkload(GetWorkload());
+	//	pUpdatedService->SetWorkload(GetWorkload());
 
-		// Manual replication is needed while this is not a usual transaction
-		// Hop count 1 is the maximum number with replica clustring model
-		if (GetRouteHopCount() >= 1)
-			goto Proc_End;
+	//	// Manual replication is needed while this is not a usual transaction
+	//	// Hop count 1 is the maximum number with replica clustring model
+	//	if (GetRouteHopCount() >= 1)
+	//		goto Proc_End;
 
-		pServiceEntity->ForEach([&](ServerServiceInformation* pService)
-		{
-			if (pService->GetEntityUID() == pUpdatedService->GetEntityUID())
-				return;
+	//	pServiceEntity->ForEach([&](ServerServiceInformation* pService)
+	//	{
+	//		if (pService->GetEntityUID() == pUpdatedService->GetEntityUID())
+	//			return;
 
-			TossMessageToTarget(pService);
-		});
+	//		TossMessageToTarget(pService);
+	//	});
 
 
-	Proc_End:
+	//Proc_End:
 
-		if (!(hr))
-		{
-			svrTrace(Error, "Failed to update workload of unregistered cluster ClusterID:{0}, Sender:{1}", GetClusterID(), GetSender());
-			CloseTransaction(hr);
-		}
-		else
-			CloseTransaction(hr);
+	//	if (!(hr))
+	//	{
+	//		svrTrace(Error, "Failed to update workload of unregistered cluster ClusterID:{0}, Sender:{1}", GetClusterID(), GetSender());
+	//		CloseTransaction(hr);
+	//	}
+	//	else
+	//		CloseTransaction(hr);
 
-		return hr;
-	}
+	//	return hr;
+	//}
 
 
 
-	// Start Transaction
-	Result GetLowestWorkloadClusterMemberTrans::StartTransaction()
-	{
-		Result hr = ResultCode::SUCCESS;
-		ServerServiceInformation *pLowestService = nullptr;
+	//// Start Transaction
+	//Result GetLowestWorkloadClusterMemberTrans::StartTransaction()
+	//{
+	//	Result hr = ResultCode::SUCCESS;
+	//	ServerServiceInformation *pLowestService = nullptr;
 
-		svrChk(super::StartTransaction());
+	//	svrChk(super::StartTransaction());
 
-		GetMyOwner()->ForEachNonWatcher([&](ServerServiceInformation* pService)
-		{
-			if (!pService->IsServiceAvailable()) return;
+	//	GetMyOwner()->ForEachNonWatcher([&](ServerServiceInformation* pService)
+	//	{
+	//		if (!pService->IsServiceAvailable()) return;
 
-			if (pLowestService == nullptr || pLowestService->GetWorkload() > pService->GetWorkload())
-				pLowestService = pService;
+	//		if (pLowestService == nullptr || pLowestService->GetWorkload() > pService->GetWorkload())
+	//			pLowestService = pService;
 
-			return;
-		});
+	//		return;
+	//	});
 
-		if (pLowestService == nullptr)
-			svrErrClose(ResultCode::SVR_CLUSTER_NOTREADY);
+	//	if (pLowestService == nullptr)
+	//		svrErrClose(ResultCode::SVR_CLUSTER_NOTREADY);
 
-		pLowestService->GetServiceInformation(m_LowestMemberInfo);
+	//	pLowestService->GetServiceInformation(m_LowestMemberInfo);
 
-	Proc_End:
+	//Proc_End:
 
-		CloseTransaction(hr);
+	//	CloseTransaction(hr);
 
-		return hr;
-	}
+	//	return hr;
+	//}
 
 
 
-	// Start Transaction
-	Result ClusterNewServerServiceJoinedC2SEvtEntityTrans::StartTransaction()
-	{
-		Result hr = ResultCode::SUCCESS;
-		ServerServiceInformation *pRequestedService = nullptr;
-		ServerEntity *pSenderEntity = nullptr;
-		ClusteredServiceEntity *pServiceEntity = nullptr;
+	//// Start Transaction
+	//Result ClusterNewServerServiceJoinedC2SEvtEntityTrans::StartTransaction()
+	//{
+	//	Result hr = ResultCode::SUCCESS;
+	//	ServerServiceInformation *pRequestedService = nullptr;
+	//	ServerEntity *pSenderEntity = nullptr;
+	//	ClusteredServiceEntity *pServiceEntity = nullptr;
 
-		Assert(GetJoinedServiceNetClass() != NetClass::Unknown);
-		Assert(EntityUID(GetJoinedServiceUID()).GetServerID() < 1000);
+	//	Assert(GetJoinedServiceNetClass() != NetClass::Unknown);
+	//	Assert(EntityUID(GetJoinedServiceUID()).GetServerID() < 1000);
 
-		svrChk(super::StartTransaction());
+	//	svrChk(super::StartTransaction());
 
-		// This transaction is used for two cases. so it's better to query cluster service again
-		if (GetMyOwner()->GetClusterID() == GetClusterID())
-		{
-			pServiceEntity = GetMyOwner();
-		}
-		else
-		{
-			if (!(GetServerComponent<ClusterManagerServiceEntity>()->GetClusterServiceEntity(GetClusterID(), pServiceEntity)))
-			{
-				svrTrace(SVR_CLUSTER, "Ignoring to add new server service cluster member ClusterID:{0}, Joined:{1}", GetClusterID(), GetJoinedServiceUID());
-				goto Proc_End;
-			}
-		}
+	//	// This transaction is used for two cases. so it's better to query cluster service again
+	//	if (GetMyOwner()->GetClusterID() == GetClusterID())
+	//	{
+	//		pServiceEntity = GetMyOwner();
+	//	}
+	//	else
+	//	{
+	//		if (!(Service::ClusterManager->GetClusterServiceEntity(GetClusterID(), pServiceEntity)))
+	//		{
+	//			svrTrace(SVR_CLUSTER, "Ignoring to add new server service cluster member ClusterID:{0}, Joined:{1}", GetClusterID(), GetJoinedServiceUID());
+	//			goto Proc_End;
+	//		}
+	//	}
 
-		svrChk(GetServerComponent<ServerEntityManager>()->GetOrRegisterServer(EntityUID(GetJoinedServiceUID()).GetServerID(), GetJoinedServiceNetClass(), GetJoinedServiceAddress(), pSenderEntity));
+	//	svrChk(Service::ServerEntityManager->GetOrRegisterServer(EntityUID(GetJoinedServiceUID()).GetServerID(), GetJoinedServiceNetClass(), GetJoinedServiceAddress(), pSenderEntity));
 
-		svrChk(pServiceEntity->NewServerService(GetJoinedServiceUID(), pSenderEntity, GetJoinedServiceMembership(), ServiceStatus::Online, pRequestedService));
+	//	svrChk(pServiceEntity->NewServerService(GetJoinedServiceUID(), pSenderEntity, GetJoinedServiceMembership(), ServiceStatus::Online, pRequestedService));
 
 
-	Proc_End:
+	//Proc_End:
 
-		if (!(hr))
-		{
-			svrTrace(Error, "Failed to add new server service cluster member ClusterID:{0}, Joined:{1}", GetClusterID(), GetJoinedServiceUID());
-		}
+	//	if (!(hr))
+	//	{
+	//		svrTrace(Error, "Failed to add new server service cluster member ClusterID:{0}, Joined:{1}", GetClusterID(), GetJoinedServiceUID());
+	//	}
 
-		CloseTransaction(hr);
+	//	CloseTransaction(hr);
 
-		return hr;
-	}
+	//	return hr;
+	//}
 
 
 
-	// Start Transaction
-	Result ClusterNewServerServiceJoinedC2SEvtTrans::StartTransaction()
-	{
-		Result hr = ResultCode::SUCCESS;
-		ServerServiceInformation *pRequestedService = nullptr;
-		ServerEntity *pSenderEntity = nullptr;
-		ClusteredServiceEntity *pServiceEntity = nullptr;
+	//// Start Transaction
+	//Result ClusterNewServerServiceJoinedC2SEvtTrans::StartTransaction()
+	//{
+	//	Result hr = ResultCode::SUCCESS;
+	//	ServerServiceInformation *pRequestedService = nullptr;
+	//	ServerEntity *pSenderEntity = nullptr;
+	//	ClusteredServiceEntity *pServiceEntity = nullptr;
 
-		Assert(GetJoinedServiceNetClass() != NetClass::Unknown);
-		Assert(EntityUID(GetJoinedServiceUID()).GetServerID() < 1000);
+	//	Assert(GetJoinedServiceNetClass() != NetClass::Unknown);
+	//	Assert(EntityUID(GetJoinedServiceUID()).GetServerID() < 1000);
 
-		svrChk(super::StartTransaction());
+	//	svrChk(super::StartTransaction());
 
-		if (GetClusterID() != ClusterID::ClusterManager || GetJoinedServiceNetClass() == NetClass::Entity)
-		{
-			// This transaction is used for two cases. so it's better to query cluster service again
-			if (GetMyOwner()->GetClusterID() == GetClusterID())
-			{
-				pServiceEntity = GetMyOwner();
-			}
-			else
-			{
-				if (!(GetServerComponent<ClusterManagerServiceEntity>()->GetClusterServiceEntity(GetClusterID(), pServiceEntity)))
-				{
-					svrTrace(SVR_CLUSTER, "Ignoring to add new server service cluster member ClusterID:{0}, Joined:{1}", GetClusterID(), GetJoinedServiceUID());
-					goto Proc_End;
-				}
-			}
+	//	if (GetClusterID() != ClusterID::ClusterManager || GetJoinedServiceNetClass() == NetClass::Entity)
+	//	{
+	//		// This transaction is used for two cases. so it's better to query cluster service again
+	//		if (GetMyOwner()->GetClusterID() == GetClusterID())
+	//		{
+	//			pServiceEntity = GetMyOwner();
+	//		}
+	//		else
+	//		{
+	//			if (!(Service::ClusterManager->GetClusterServiceEntity(GetClusterID(), pServiceEntity)))
+	//			{
+	//				svrTrace(SVR_CLUSTER, "Ignoring to add new server service cluster member ClusterID:{0}, Joined:{1}", GetClusterID(), GetJoinedServiceUID());
+	//				goto Proc_End;
+	//			}
+	//		}
 
-			svrChk(GetServerComponent<ServerEntityManager>()->GetOrRegisterServer(EntityUID(GetJoinedServiceUID()).GetServerID(), GetJoinedServiceNetClass(), GetJoinedServiceAddress(), pSenderEntity));
+	//		svrChk(Service::ServerEntityManager->GetOrRegisterServer(EntityUID(GetJoinedServiceUID()).GetServerID(), GetJoinedServiceNetClass(), GetJoinedServiceAddress(), pSenderEntity));
 
-			svrChk(pServiceEntity->NewServerService(GetJoinedServiceUID(), pSenderEntity, GetJoinedServiceMembership(), ServiceStatus::Online, pRequestedService));
-		}
+	//		svrChk(pServiceEntity->NewServerService(GetJoinedServiceUID(), pSenderEntity, GetJoinedServiceMembership(), ServiceStatus::Online, pRequestedService));
+	//	}
 
 
-	Proc_End:
+	//Proc_End:
 
-		if (!(hr))
-		{
-			svrTrace(Error, "Failed to add new server service cluster member ClusterID:{0}, Joined:{1}", GetClusterID(), GetJoinedServiceUID());
-		}
+	//	if (!(hr))
+	//	{
+	//		svrTrace(Error, "Failed to add new server service cluster member ClusterID:{0}, Joined:{1}", GetClusterID(), GetJoinedServiceUID());
+	//	}
 
-		CloseTransaction(hr);
+	//	CloseTransaction(hr);
 
-		return hr;
-	}
+	//	return hr;
+	//}
 
 
 

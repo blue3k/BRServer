@@ -49,45 +49,19 @@ namespace Svr {
 			MASTER_CHECK_TIME = 3000,
 		};
 
-		class ServiceTableItem : public ServerServiceInformation
-		{
-		public:
-			// Hash table mapping Item
-			typedef OrderedLinkedList<uint64_t>::Node TableItemType;
-			TableItemType m_TableNode;
-
-			// For a Ordered list
-			TableItemType m_ListNode;
-
-		private:
-
-		public:
-
-			// Constructor with constructor
-			ServiceTableItem( ClusterID clusterID, ServerEntity* pServerEntity, ClusterMembership membership )
-				:ServerServiceInformation(clusterID, pServerEntity, membership)
-			{
-				memset(&m_TableNode, 0, sizeof(m_TableNode) );
-				memset(&m_ListNode, 0, sizeof(m_ListNode) );
-			}
-
-		};
-
-
-		typedef ServiceTableItem::TableItemType TableItemType;
-		typedef StaticHashTable< uint64_t, ServiceTableItem,
-									MapItemConverter<ServiceTableItem,TableItemType,&ServiceTableItem::m_TableNode>,
-									UniqueKeyTrait, ThreadSyncTraitNoneT<uint64_t, ServiceTableItem>
-									> ServiceEntityUIDMap;
-
 	private:
 
 		// Master instance entity UID
 		EntityUID m_MasterUID;
 
+		// Game id
+		GameID m_GameID;
+
 		// Cluster ID
 		ClusterID m_ClusterID;
 		FixedString m_ClusterName;
+
+		bool m_ActivelyConnectRemote = false;
 
 		// Cluster type
 		ClusterType m_ClusterType;
@@ -99,14 +73,12 @@ namespace Svr {
 
 		uint m_Workload;
 
+
 		// Cluster member instance for itself
-		ServiceTableItem* m_MyServiceInfo = nullptr;
+		ServerServiceInformation* m_MyServiceInfo = nullptr;
 
 		// Service UID map
-		ServiceEntityUIDMap			m_ServiceEntityUIDMap;
-
-		// Service watcher list
-		ServiceEntityUIDMap			m_WatcherUIDMap;
+		//ServiceEntityUIDMap			m_ServiceEntityUIDMap;
 
 		ServerEntity* m_ServerEntity = nullptr;
 
@@ -124,17 +96,22 @@ namespace Svr {
 
 	public:
 
-		ClusteredServiceEntity( ClusterType clusterType, ClusterID clusterID, ClusterMembership initialMembership = ClusterMembership::StatusWatcher, ServerEntity* pServerEntity = nullptr );
+		ClusteredServiceEntity( ClusterType clusterType, GameID gameID, ClusterID clusterID, ClusterMembership initialMembership = ClusterMembership::StatusWatcher, ServerEntity* pServerEntity = nullptr );
 		virtual ~ClusteredServiceEntity();
+
+		bool GetActivelyConnectRemote() { return m_ActivelyConnectRemote; }
+		void SetActivelyConnectRemote(bool value) { m_ActivelyConnectRemote = value; }
 
 		EntityUID GetMasterUID() const { return m_MasterUID; }
 		void SetMasterUID(EntityUID value) { m_MasterUID = value; }
 
+		GameID GetGameID() const { return m_GameID; }
+
 		ClusterID GetClusterID() const { return m_ClusterID; }
-		void SetClusterID(ClusterID value) { m_ClusterID = value; }
+		//void SetClusterID(ClusterID value) { m_ClusterID = value; }
 
 		FixedString GetClusterName() const { return m_ClusterName; }
-		void SetClusterName(FixedString value) { m_ClusterName = value; }
+		//void SetClusterName(FixedString value) { m_ClusterName = value; }
 
 		ClusterType GetClusterType() const { return m_ClusterType; }
 		void SetClusterType(ClusterType value) { m_ClusterType = value; }
@@ -150,9 +127,8 @@ namespace Svr {
 		// Change workload
 		Result SetWorkload(uint workload);
 
-		ServiceEntityUIDMap& GetServiceEntityUIDMap() { return m_ServiceEntityUIDMap; }
 
-		ServiceTableItem* GetMyServiceInfo() { return m_MyServiceInfo; }
+		ServerServiceInformation* GetMyServiceInfo() { return m_MyServiceInfo; }
 
 		ServerEntity* GetServerEntity() { return m_ServerEntity; }
 		void SetServerEntity(ServerEntity* value) { m_ServerEntity = value; }
@@ -175,68 +151,28 @@ namespace Svr {
 		// clear transaction
 		virtual Result ClearEntity() override;
 
-		virtual Result UpdateOnMasterManager() { return ResultCode::SUCCESS; }
 
 		virtual Result TickUpdate(TimerAction *pAction = nullptr) override;
 		virtual Result ProcessTransaction(TransactionPtr &pTrans) override;
 
-		//////////////////////////////////////////////////////////////////////////
-		//
-		//	Voting information
-		//
+		////////////////////////////////////////////////////////////////////////////
+		////
+		////	Voting information
+		////
 
 
-		void StartVoting();
-		void EndVoting();
+		//void StartVoting();
+		//void EndVoting();
 
-		//////////////////////////////////////////////////////////////////////////
-		//
-		//	Entity informations
-		//
-
-
-
-
-		size_t GetNumberOfServices()				{ return m_ServiceEntityUIDMap.size() + m_WatcherUIDMap.size(); }
-		size_t GetNumberOfNonWatcherServices()		{ return m_ServiceEntityUIDMap.size(); }
-		size_t GetNumberOfAvailableServices();
-
-		// Register Entity by Given serverID
-		virtual Result NewServerService( EntityUID entityUID, ServerEntity *pServerEntity, ClusterMembership membership, ServiceStatus status, ServerServiceInformation* &pService );
-
-		// Find Service information by ServiceID
-		Result FindService( EntityUID entityUID, ServerServiceInformation* &pService );
-
-		// Find random service, maybe lowest workload service
-		virtual Result FindRandomService( ServerServiceInformation* &pService );
-
-		virtual Result FindRandomWatcher(ServerServiceInformation* &pService);
-
-		// Foreach service
-		Result ForEach( std::function<void(ServerServiceInformation*)> func );
-
-		Result ForEachNonWatcher( std::function<void(ServerServiceInformation*)> func );
 
 		// Assign master to given UID
 		Result SetMaster( EntityUID entityUID );
-		// SetMaster + broadcast
-		Result AssignMaster( EntityUID entityUID );
-
-		template<class ServiceType>
-		Result GetService( ServiceType* &pService );
 
 		// Sync data to target 
 		virtual Result SyncDataToTarget( EntityUID entityUID );
 
 	};
 
-
-	class WatcherClusteredServiceEntity : public ClusteredServiceEntity
-	{
-	public:
-
-		WatcherClusteredServiceEntity( ClusterType clusterType, ClusterID clusterID, ClusterMembership initialMembership = ClusterMembership::StatusWatcher, ServerEntity* pServerEntity = nullptr );
-	};
 
 	
 	///////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -253,9 +189,8 @@ namespace Svr {
 
 	public:
 
-		ReplicaClusterServiceEntity( ClusterID clusterID, ClusterMembership initialMembership = ClusterMembership::StatusWatcher, ServerEntity* pServerEntity = nullptr );
+		ReplicaClusterServiceEntity(GameID gameID, ClusterID clusterID, ClusterMembership initialMembership = ClusterMembership::StatusWatcher, ServerEntity* pServerEntity = nullptr );
 
-		virtual Result UpdateOnMasterManager() override;
 
 		// Register message handler for this component
 		virtual Result RegisterServiceMessageHandler( ServerEntity *pServerEntity ) override;
@@ -280,7 +215,7 @@ namespace Svr {
 
 	public:
 
-		FreeReplicaClusterServiceEntity( ClusterID clusterID, ClusterMembership initialMembership = ClusterMembership::StatusWatcher, ServerEntity* pServerEntity = nullptr );
+		FreeReplicaClusterServiceEntity(GameID gameID, ClusterID clusterID, ClusterMembership initialMembership = ClusterMembership::StatusWatcher, ServerEntity* pServerEntity = nullptr );
 
 		// Register message handler for this component
 		//virtual Result RegisterServiceMessageHandler( ServerEntity *pServerEntity ) override;
@@ -304,24 +239,16 @@ namespace Svr {
 
 	private:
 		// Ordered service list
-		OrderedServiceList	m_ServiceList;
+		//OrderedServiceList	m_ServiceList;
 
-		CriticalSection m_ListLock;
+		//CriticalSection m_ListLock;
 
 		// round robin query
-		ServerServiceInformation*	m_pCurrentQueryService;
+		//ServerServiceInformation*	m_pCurrentQueryService;
 
 	public:
-		RingClusterServiceEntity( ClusterID clusterID, ClusterMembership initialMembership = ClusterMembership::StatusWatcher, ServerEntity* pServerEntity = nullptr );
+		RingClusterServiceEntity(GameID gameID, ClusterID clusterID, ClusterMembership initialMembership = ClusterMembership::StatusWatcher, ServerEntity* pServerEntity = nullptr );
 
-		// Override so that we can make ring linked list
-		Result NewServerService( EntityUID entityUID, ServerEntity *pServerEntity, ClusterMembership membership, ServiceStatus status, ServerServiceInformation* &pService );
-
-		// Get next ring token
-		Result GetNextRing( ServerServiceInformation* pService, ServerServiceInformation* &pNextService );
-
-		// Get a service form the ring
-		Result GetService( ServerServiceInformation* &pService );
 	};
 	
 
@@ -336,22 +263,11 @@ namespace Svr {
 	{
 	private:
 
-		// This will be to hash modulation number if it assigned.
-		uint m_HashMod = 0;
 
 	public:
 
 		// Constructor
-		ShardedClusterServiceEntity( ClusterID clusterID, ClusterMembership initialMembership = ClusterMembership::StatusWatcher, ServerEntity* pServerEntity = nullptr );
-
-		uint GetHashMod() { return m_HashMod; }
-		void SetHashMod(uint value) { m_HashMod = value; }
-
-		// Hash the key value
-		virtual uint KeyHash( uint64_t key );
-
-		// Get Service shard by key
-		virtual Result GetShard( uint64_t key, ServerServiceInformation* &pService );
+		ShardedClusterServiceEntity( GameID gameID, ClusterID clusterID, ClusterMembership initialMembership = ClusterMembership::StatusWatcher, ServerEntity* pServerEntity = nullptr );
 
 		////////////////////////////////////////////////////////////////////////////////////
 	};
@@ -362,7 +278,6 @@ namespace Svr {
 	//
 	//	LoadbalanceClusterServiceEntity class
 	//
-
 
 	class LoadbalanceClusterServiceEntity : public ClusteredServiceEntity
 	{
@@ -387,17 +302,11 @@ namespace Svr {
 	public:
 
 		// Constructor
-		LoadbalanceClusterServiceEntity( ClusterID clusterID, ClusterMembership initialMembership = ClusterMembership::StatusWatcher, ServerEntity* pServerEntity = nullptr );
+		LoadbalanceClusterServiceEntity(GameID gameID, ClusterID clusterID, ClusterMembership initialMembership = ClusterMembership::StatusWatcher, ServerEntity* pServerEntity = nullptr );
 
 		// Initialize entity to proceed new connection
 		virtual Result InitializeEntity( EntityID newEntityID );
 
-
-		// Override so that we can make ring linked list
-		Result NewServerService( EntityUID entityUID, ServerEntity *pServerEntity, ClusterMembership membership, ServiceStatus status, ServerServiceInformation* &pService );
-
-		// Get a service form the ring
-		Result GetService( ServerServiceInformation* &pService );
 
 		////////////////////////////////////////////////////////////////////////////////////
 		virtual Result TickUpdate(TimerAction *pAction = nullptr);

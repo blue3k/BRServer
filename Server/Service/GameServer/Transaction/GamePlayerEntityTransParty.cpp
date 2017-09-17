@@ -153,7 +153,7 @@ namespace GameServer {
 		{
 			Svr::ServerEntity *pServerEntity = nullptr;
 
-			svrChk(Svr::GetServerComponent<Svr::ServerEntityManager>()->GetServerEntity(GetMyOwner()->GetPartyUID().GetServerID(), pServerEntity));
+			svrChk(Service::ServerEntityManager->GetServerEntity(GetMyOwner()->GetPartyUID().GetServerID(), pServerEntity));
 
 			svrChk(Policy::NetPolicyGameParty(pServerEntity->GetConnection()).LeavePartyCmd(RouteContext(GetOwnerEntityUID(), GetMyOwner()->GetPartyUID()), GetTransID(), GetMyOwner()->GetPlayerID()) );
 
@@ -238,7 +238,7 @@ namespace GameServer {
 
 		insUID = GetGameInsUID();
 
-		svrChk(Policy::NetPolicyGameInstance(Svr::GetServerComponent<Svr::ServerEntityManager>()->GetServerConnection(insUID.GetServerID())).JoinGameCmd( RouteContext(GetOwnerEntityUID(),insUID), GetTransID(),
+		svrChk(Policy::NetPolicyGameInstance(Service::ServerEntityManager->GetServerConnection(insUID.GetServerID())).JoinGameCmd( RouteContext(GetOwnerEntityUID(),insUID), GetTransID(),
 			GetMyOwner()->GetPlayerInformation(), GetMyOwner()->GetAuthTicket(), GetRequestedRole()));
 
 	Proc_End:
@@ -369,9 +369,9 @@ namespace GameServer {
 			svrErrClose(ResultCode::GAME_LOW_STAMINA);
 		}
 
-		svrChk( Svr::GetServerComponent<Svr::GamePartyManagerServiceEntity>()->GetService( pService ) );
+		svrChk( Service::ClusterManager->GetRandomService(Svr::GetServerGameID(), ClusterID::GamePartyManager, pService ) );
 
-		svrChk( pService->GetService<Svr::GamePartyManagerService>()->CreatePartyCmd(GetTransID(), 0, GetMyOwner()->GetPlayerInformation() ) );
+		svrChk( pService->GetService<Svr::GamePartyManagerService>()->CreatePartyCmd(GetTransID(), 0, (uint32_t)Svr::GetServerGameID(), GetMyOwner()->GetPlayerInformation() ) );
 
 	Proc_End:
 
@@ -448,7 +448,7 @@ namespace GameServer {
 				svrErrClose(ResultCode::GAME_NOTENOUGH_RESOURCE);
 		}
 
-		svrChk( Svr::GetServerComponent<Svr::ServerEntityManager>()->GetServerEntity( EntityUID(GetPartyUID()).GetServerID(), pServerEntity ) );
+		svrChk( Service::ServerEntityManager->GetServerEntity( EntityUID(GetPartyUID()).GetServerID(), pServerEntity ) );
 
 
 		svrChk(Policy::NetPolicyGameParty(pServerEntity->GetConnection()).JoinPartyCmd(RouteContext(GetOwnerEntityUID(), GetPartyUID()), GetTransID(),
@@ -553,7 +553,7 @@ namespace GameServer {
 		if( GetMyOwner()->GetPartyUID() == PartyUID(0) )
 			svrErr(ResultCode::GAME_INVALID_PARTYID);
 
-		svrChk( Svr::GetServerComponent<Svr::ServerEntityManager>()->GetServerEntity( EntityUID(GetPartyUID()).GetServerID(), pServerEntity ) );
+		svrChk( Service::ServerEntityManager->GetServerEntity( EntityUID(GetPartyUID()).GetServerID(), pServerEntity ) );
 
 		svrChk(Policy::NetPolicyGameParty(pServerEntity->GetConnection()).LeavePartyCmd( RouteContext(GetOwnerEntityUID(),GetMyOwner()->GetPartyUID()), GetTransID(),
 			GetMyOwner()->GetPlayerID() ) );
@@ -630,7 +630,7 @@ namespace GameServer {
 		if( GetMyOwner()->GetPartyUID().UID != GetPartyUID() )
 			svrErr(ResultCode::GAME_INVALID_PARTYID);
 
-		svrChk( Svr::GetServerComponent<Svr::ServerEntityManager>()->GetServerEntity( EntityUID(GetPartyUID()).GetServerID(), pServerEntity ) );
+		svrChk( Service::ServerEntityManager->GetServerEntity( EntityUID(GetPartyUID()).GetServerID(), pServerEntity ) );
 
 		svrChk(Policy::NetPolicyGameParty(pServerEntity->GetConnection()).KickPlayerCmd( RouteContext(GetOwnerEntityUID(),GetPartyUID()), GetTransID(),
 			GetMyOwner()->GetPlayerID(), GetPlayerToKick() ) );
@@ -700,7 +700,7 @@ namespace GameServer {
 		// Find player and send notify
 		if( (Svr::GetServerComponent<Svr::GameClusterServiceEntity>()->FindPlayer( GetInviteTargetID(), playerUID )) )
 		{
-			svrChk( Svr::GetServerComponent<Svr::ServerEntityManager>()->GetServerEntity( playerUID.GetServerID(), pServerEntity ) );
+			svrChk( Service::ServerEntityManager->GetServerEntity( playerUID.GetServerID(), pServerEntity ) );
 
 			svrChk(Policy::NetPolicyGameServer(pServerEntity->GetConnection()).NotifyPartyInviteC2SEvt( RouteContext(GetOwnerEntityUID(),playerUID),
 				GetInviteTargetID(), GetMyOwner()->GetPlayerID(), GetMyOwner()->GetNickName(), GetMyOwner()->GetPartyUID() ) );
@@ -761,7 +761,7 @@ namespace GameServer {
 		if( GetMyOwner()->GetPartyUID().UID == 0 )
 			svrErr(ResultCode::GAME_INVALID_PARTYID);
 
-		svrChk( Svr::GetServerComponent<Svr::ServerEntityManager>()->GetServerEntity( GetMyOwner()->GetPartyUID().GetServerID(), pServerEntity ) );
+		svrChk( Service::ServerEntityManager->GetServerEntity( GetMyOwner()->GetPartyUID().GetServerID(), pServerEntity ) );
 
 		svrChk(Policy::NetPolicyGameParty(pServerEntity->GetConnection()).ChatMessageC2SEvt( RouteContext(GetOwnerEntityUID(),GetMyOwner()->GetPartyUID()),
 			GetMyOwner()->GetPlayerID(), GetChatMessage() ) );
@@ -815,7 +815,7 @@ namespace GameServer {
 		if( GetMyOwner()->GetPartyUID().UID == 0 )
 			svrErr(ResultCode::GAME_INVALID_PARTYID);
 
-		svrChk( Svr::GetServerComponent<Svr::ServerEntityManager>()->GetServerEntity( GetMyOwner()->GetPartyUID().GetServerID(), pServerEntity ) );
+		svrChk( Service::ServerEntityManager->GetServerEntity( GetMyOwner()->GetPartyUID().GetServerID(), pServerEntity ) );
 
 		svrChk(Policy::NetPolicyGameParty(pServerEntity->GetConnection()).QuickChatMessageC2SEvt( RouteContext(GetOwnerEntityUID(),GetMyOwner()->GetPartyUID()),
 			GetMyOwner()->GetPlayerID(), GetQuickChatID() ) );

@@ -44,14 +44,14 @@ namespace SF
 
 		}; // Result NetPolicyServer::GenericFailureCmd( const RouteContext &InRouteContext, const TransactionID &InTransactionID )
 		// C2S: Server Started or Connected
-		Result NetPolicyServer::ServerConnectedC2SEvt( const RouteContext &InRouteContext, const ServiceInformation &InClusterManagerServiceInformation, const uint32_t &InStartUpTime, const NetAddress &InPrivateAddress )
+		Result NetPolicyServer::ServerConnectedC2SEvt( const RouteContext &InRouteContext, const uint32_t &InStartUpTime, const NetAddress &InPrivateAddress )
 		{
  			Result hr;
 
 			 MessageDataPtr pMessage;
 			 protocolChkPtr(m_pConnection);
 
-			 pMessage = SF::Message::Server::ServerConnectedC2SEvt::Create(m_pConnection->GetNetIOHandler().GetIOHeap(), InRouteContext, InClusterManagerServiceInformation, InStartUpTime, InPrivateAddress);
+			 pMessage = SF::Message::Server::ServerConnectedC2SEvt::Create(m_pConnection->GetNetIOHandler().GetIOHeap(), InRouteContext, InStartUpTime, InPrivateAddress);
 			 protocolChkPtr(*pMessage);
 
 			 return m_pConnection->Send( pMessage );
@@ -60,7 +60,7 @@ namespace SF
 
 			return hr;
 
-		}; // Result NetPolicyServer::ServerConnectedC2SEvt( const RouteContext &InRouteContext, const ServiceInformation &InClusterManagerServiceInformation, const uint32_t &InStartUpTime, const NetAddress &InPrivateAddress )
+		}; // Result NetPolicyServer::ServerConnectedC2SEvt( const RouteContext &InRouteContext, const uint32_t &InStartUpTime, const NetAddress &InPrivateAddress )
 
 
 		// Cmd: 

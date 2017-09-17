@@ -136,7 +136,7 @@ namespace EntityServer {
 			{
 				NetAddress netAddress(privateNetSockFamily, itServer->PrivateNet.IP, itServer->PrivateNet.Port);
 
-				svrChk( Svr::GetServerComponent<Svr::ServerEntityManager>()->GetOrRegisterServer<EntityServerEntity>(itServer->UID, NetClass::Entity, netAddress, pEntity ) );
+				svrChk( Service::ServerEntityManager->GetOrRegisterServer<EntityServerEntity>(itServer->UID, NetClass::Entity, netAddress, pEntity ) );
 			}
 		}
 
@@ -147,11 +147,11 @@ namespace EntityServer {
 
 
 		// Add my entity manager entity
-		svrChk(Svr::GetServerComponent<Svr::ServerEntityManager>()->UpdateEntityManagerServerEntity( GetLoopbackServerEntity() ) );
+		svrChk(Service::ServerEntityManager->UpdateEntityManagerServerEntity( GetLoopbackServerEntity() ) );
 
 
 		// Prepare watcher clusters
-		svrChkPtr( pClusterManager = Svr::GetServerComponent<Svr::ClusterManagerServiceEntity>() );
+		svrChkPtr( pClusterManager = Service::ClusterManager );
 
 		for( ClusterID clusterID = ClusterID::ClusterManager; clusterID < ClusterID::Max; clusterID++ )
 		{

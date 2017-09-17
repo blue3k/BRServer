@@ -61,7 +61,7 @@ namespace Svr {
 			super::GetMyOwner()->SetEntityUID( EntityUID(super::GetRouteContext().GetFrom().GetServerID(), super::GetMyOwner()->GetEntityID() ) );
 
 			// check about already registered server
-			if( (Svr::GetServerComponent<Svr::ServerEntityManager>()->GetServerEntity(super::GetRouteContext().GetFrom().GetServerID(), pServerEntity )) )
+			if( (Service::ServerEntityManager->GetServerEntity(super::GetRouteContext().GetFrom().GetServerID(), pServerEntity )) )
 			{
 				if( pServerEntity != super::GetMyOwner() )
 				{
@@ -103,24 +103,24 @@ namespace Svr {
 
 
 
-	// Entity Server started
-	class EntityServerStartedTrans : public ServerStartedTrans< Svr::ServerEntity, Message::Server::ServerConnectedC2SEvt>
-	{
-	public:
-		typedef ServerStartedTrans< Svr::ServerEntity, Message::Server::ServerConnectedC2SEvt> super;
+	//// Entity Server started
+	//class EntityServerStartedTrans : public ServerStartedTrans< Svr::ServerEntity, Message::Server::ServerConnectedC2SEvt>
+	//{
+	//public:
+	//	typedef ServerStartedTrans< Svr::ServerEntity, Message::Server::ServerConnectedC2SEvt> super;
 
-	private:
+	//private:
 
-	public:
-		EntityServerStartedTrans(IHeap& memMgr, MessageDataPtr &pIMsg );
-		virtual ~EntityServerStartedTrans();
+	//public:
+	//	EntityServerStartedTrans(IHeap& memMgr, MessageDataPtr &pIMsg );
+	//	virtual ~EntityServerStartedTrans();
 
-		Result OnGetClusterMemberList(Svr::TransactionResult* pRes);
+	//	Result OnGetClusterMemberList(Svr::TransactionResult* pRes);
 
-		// Start Transaction
-		virtual Result StartTransaction();
+	//	// Start Transaction
+	//	virtual Result StartTransaction();
 
-	};
+	//};
 
 
 }	// namespace Svr 

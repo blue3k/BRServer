@@ -49,6 +49,8 @@ namespace Svr {
 	{
 	public:
 
+		typedef LoadbalanceClusterServiceEntity super;
+
 		enum { ComponentID = ServerComponentID_GameInstanceManagerService };
 
 	protected:
@@ -57,7 +59,7 @@ namespace Svr {
 
 	public:
 
-		GameInstanceManagerServiceEntity( ClusterID clusterID, ClusterMembership initialMembership = ClusterMembership::StatusWatcher );
+		GameInstanceManagerServiceEntity(GameID gameID, ClusterID clusterID, ClusterMembership initialMembership = ClusterMembership::StatusWatcher );
 		~GameInstanceManagerServiceEntity();
 
 
@@ -91,36 +93,6 @@ namespace Svr {
 	};
 
 
-
-
-
-	///////////////////////////////////////////////////////////////////////////////////////////////////////
-	//
-	//	MatchingQueueWatcherServiceEntity class
-	//
-
-	class GameInstanceManagerWatcherServiceEntity : public LoadbalanceClusterServiceEntity
-	{
-	public:
-
-		enum { ComponentID = ServerComponentID_GameInstanceManagerService };
-
-	private:
-
-		static ClusterID ClusterIDFromGameID( GameID gameID );
-
-	public:
-
-		GameInstanceManagerWatcherServiceEntity( GameID gameID );
-		~GameInstanceManagerWatcherServiceEntity();
-
-		// Initialize server component
-		Result InitializeComponent() { return ResultCode::SUCCESS; }
-		// Terminate server component
-		void TerminateComponent() {  }
-
-
-	};
 
 
 

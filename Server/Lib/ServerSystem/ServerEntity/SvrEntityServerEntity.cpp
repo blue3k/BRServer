@@ -65,7 +65,8 @@ namespace Svr
 
 		svrChk(ServerEntity::InitializeEntity( newEntityID ) );
 
-		BR_ENTITY_MESSAGE( Message::Server::ServerConnectedC2SEvt)		{ pNewTrans = new(GetHeap()) EntityServerStartedTrans(GetHeap(), pMsgData ); return ResultCode::SUCCESS; } );
+		//BR_ENTITY_MESSAGE( Message::Server::ServerConnectedC2SEvt)		{ pNewTrans = new(GetHeap()) EntityServerStartedTrans(GetHeap(), pMsgData ); return ResultCode::SUCCESS; } );
+		BR_ENTITY_MESSAGE(Message::Server::ServerConnectedC2SEvt) { pNewTrans = new(GetHeap()) GenericServerStartedTrans(GetHeap(), pMsgData); return ResultCode::SUCCESS; } );
 
 	Proc_End:
 
@@ -86,7 +87,7 @@ namespace Svr
 				&& GetConnection() != nullptr )
 			{
 				// Register entity manager server
-				svrChk( GetServerComponent<Svr::ServerEntityManager>()->UpdateEntityManagerServerEntity( this ) );
+				svrChk( Service::ServerEntityManager->UpdateEntityManagerServerEntity( this ) );
 			}
 			break;
 		case Net::ConnectionEvent::EVT_DISCONNECTED:

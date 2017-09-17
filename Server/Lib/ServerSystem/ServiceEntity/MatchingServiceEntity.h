@@ -228,7 +228,7 @@ namespace Svr {
 
 	public:
 
-		MatchingServiceEntity( ClusterID clusterID, ClusterMembership initialMembership = ClusterMembership::StatusWatcher, bool useBot = true );
+		MatchingServiceEntity( GameID gameID, ClusterID clusterID, ClusterMembership initialMembership = ClusterMembership::StatusWatcher, bool useBot = true );
 		~MatchingServiceEntity();
 
 		// We are not going to use hashed key
@@ -255,16 +255,6 @@ namespace Svr {
 
 	};
 
-
-
-
-	class MatchingWatcherServiceEntity : public RingClusterServiceEntity
-	{
-	public:
-		MatchingWatcherServiceEntity( ClusterID clusterID );
-		~MatchingWatcherServiceEntity();
-
-	};
 
 
 

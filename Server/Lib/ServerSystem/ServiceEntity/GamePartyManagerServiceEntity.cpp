@@ -47,7 +47,7 @@ namespace Svr {
 	//
 
 	GamePartyManagerServiceEntity::GamePartyManagerServiceEntity(ClusterMembership initialMembership)
-		: LoadbalanceClusterServiceEntity(ClusterID::GamePartyManager, initialMembership )
+		: super(GameID::Invalid, ClusterID::GamePartyManager, initialMembership )
 		, m_PartyCount("PartyCount")
 	{
 		// Game party manager transactions
@@ -70,7 +70,7 @@ namespace Svr {
 			pInstance->AddCounter(&m_PartyCount);
 		}
 
-		svrChk(LoadbalanceClusterServiceEntity::InitializeEntity(newEntityID));
+		svrChk(super::InitializeEntity(newEntityID));
 
 	Proc_End:
 
@@ -81,7 +81,7 @@ namespace Svr {
 	{
 		Result hr = ResultCode::SUCCESS;
 
-		svrChk(LoadbalanceClusterServiceEntity::RegisterServiceMessageHandler( pServerEntity ) );
+		svrChk(super::RegisterServiceMessageHandler( pServerEntity ) );
 
 		// Game party manager transactions
 		pServerEntity->BR_ENTITY_MESSAGE(Message::GamePartyManager::CreatePartyCmd)						{ svrMemReturn(pNewTrans = new(GetHeap()) PartyManagerTransCreateParty(GetHeap(), pMsgData)); return ResultCode::SUCCESS; } );
@@ -112,13 +112,13 @@ namespace Svr {
 	//
 
 	// Add new Entity
-	Result GamePartyManagerServiceEntity::CreateGameParty( const PlayerInformation& creator, EntityUID playerUID, ServerEntity *pServerEntity, PartyUID &partyUID )
+	Result GamePartyManagerServiceEntity::CreateGameParty( GameID gameID, const PlayerInformation& creator, EntityUID playerUID, ServerEntity *pServerEntity, PartyUID &partyUID )
 	{
 		Result hr = ResultCode::SUCCESS;
 		GamePartyEntity *pGameParty = nullptr;
 		PartyPlayer *pPlayer = nullptr;
 
-		svrChkPtr( pGameParty = new(GetMemoryManager()) GamePartyEntity );
+		svrChkPtr( pGameParty = new(GetMemoryManager()) GamePartyEntity(gameID) );
 
 		svrChk(Service::EntityManager->AddEntity( EntityFaculty::Party, pGameParty ) );
 
@@ -163,25 +163,6 @@ namespace Svr {
 	}
 
 
-
-
-	///////////////////////////////////////////////////////////////////////////////////////////////////////
-	//
-	//	GamePartyManagerWatcherServiceEntity class
-	//
-
-
-	GamePartyManagerWatcherServiceEntity::GamePartyManagerWatcherServiceEntity()
-		:LoadbalanceClusterServiceEntity(ClusterID::GamePartyManager, ClusterMembership::StatusWatcher)
-	{
-	}
-
-
-	GamePartyManagerWatcherServiceEntity::~GamePartyManagerWatcherServiceEntity()
-	{
-	}
-
-	
 
 
 

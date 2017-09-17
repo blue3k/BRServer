@@ -179,7 +179,7 @@ namespace ConspiracyGameInstanceServer {
 		GameInstanceManagerServiceEntity *pGameInstanceManager = nullptr;
 		svrMem( pGameInstanceManager = new(GetMemoryManager()) GameInstanceManagerServiceEntity(ClusterID::GameInstanceManager, ClusterMembership::Slave) );
 		svrChk(Service::EntityManager->AddEntity( EntityFaculty::Service, pGameInstanceManager ) );
-		svrChk( Svr::GetServerComponent<Svr::ClusterManagerServiceEntity>()->AddClusterServiceEntity( pGameInstanceManager ) );
+		svrChk( Service::ClusterManager->AddClusterServiceEntity( pGameInstanceManager ) );
 		svrChk(GetComponentCarrier().AddComponentWithAdapter(pGameInstanceManager) );
 		}
 

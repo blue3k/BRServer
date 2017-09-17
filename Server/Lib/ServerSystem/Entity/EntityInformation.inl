@@ -23,28 +23,12 @@ EntityUID EntityInformation::GetEntityUID() const
 	return m_UID;
 }
 
-void EntityInformation::SetEntityUID( EntityUID entityUID )
-{
-	m_UID = entityUID;
-}
-
 ServerID EntityInformation::GetServerID() const
 {
 	return m_UID.GetServerID();
 }
 
 
-
-// Entity Name
-const char* EntityInformation::GetName() const
-{
-	return m_Name;
-}
-
-void EntityInformation::SetName(IMemoryManager& memMgr, const char* strName )
-{
-	StrUtil::StringDup(memMgr, m_Name, strName );
-}
 
 
 

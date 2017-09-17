@@ -43,9 +43,11 @@ namespace Svr {
 	//	ServerServiceComponentEntity class
 	//
 
-	class RankingServiceEntity : public FreeReplicaClusterServiceEntity
+	class RankingServiceEntity : public ShardedClusterServiceEntity
 	{
 	public:
+
+		typedef ShardedClusterServiceEntity super;
 
 		//TODO: I need 128 bit integer for ranking key
 		union RankingKey
@@ -74,7 +76,7 @@ namespace Svr {
 
 	public:
 
-		RankingServiceEntity( ClusterID clusterID, ClusterMembership initialMembership = ClusterMembership::StatusWatcher );
+		RankingServiceEntity(GameID gameID, ClusterID clusterID, ClusterMembership initialMembership = ClusterMembership::StatusWatcher );
 		~RankingServiceEntity();
 
 		// We are not going to use hashed key
@@ -120,31 +122,6 @@ namespace Svr {
 
 
 
-
-
-	///////////////////////////////////////////////////////////////////////////////////////////////////////
-	//
-	//	RankingWatcherServiceEntity class
-	//
-
-	class RankingWatcherServiceEntity : public ReplicaClusterServiceEntity
-	{
-	public:
-
-	private:
-
-	public:
-
-		RankingWatcherServiceEntity( ClusterID clusterID, uint componentID );
-		~RankingWatcherServiceEntity();
-
-		// Initialize server component
-		Result InitializeComponent() { return ResultCode::SUCCESS; }
-		// Terminate server component
-		void TerminateComponent() {  }
-
-
-	};
 
 
 

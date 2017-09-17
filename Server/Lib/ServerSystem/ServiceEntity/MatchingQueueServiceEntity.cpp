@@ -22,6 +22,7 @@
 #include "Component/ServerComponent.h"
 #include "ServerService/ServerServiceBase.h"
 #include "ServerEntity/ServerEntity.h"
+#include "ServiceEntity/ClusterManagerServiceEntity.h"
 #include "ServiceEntity/MatchingQueueServiceEntity.h"
 #include "ServiceEntity/MatchingQueueServiceTrans.h"
 #include "SvrTrace.h"
@@ -44,8 +45,8 @@ namespace Svr {
 	//	Entity informations
 	//
 
-	MatchingQueueServiceEntity::MatchingQueueServiceEntity(ClusterID clusterID, ClusterMembership initialMembership)
-		: RingClusterServiceEntity(clusterID, initialMembership )
+	MatchingQueueServiceEntity::MatchingQueueServiceEntity(GameID gameID, ClusterID clusterID, ClusterMembership initialMembership)
+		: super(gameID, clusterID, initialMembership )
 		, m_ItemIDTable(GetMemoryManager())
 		, m_MainQueue(GetMemoryManager())
 		, m_SecondaryQueue(GetMemoryManager())
@@ -98,7 +99,7 @@ namespace Svr {
 		Result hr = ResultCode::SUCCESS;
 		auto pInstance = PerformanceCounterClient::GetDefaultCounterInstance();
 
-		svrChk(RingClusterServiceEntity::InitializeEntity(newEntityID) );
+		svrChk(super::InitializeEntity(newEntityID) );
 
 		if (pInstance != nullptr)
 		{
@@ -129,7 +130,7 @@ namespace Svr {
 		m_SecondaryQueue.ClearQueue();
 		m_ReservedQueue.ClearQueue();
 
-		svrChk(RingClusterServiceEntity::ClearEntity() );
+		svrChk(super::ClearEntity() );
 
 	Proc_End:
 
@@ -140,9 +141,8 @@ namespace Svr {
 	Result MatchingQueueServiceEntity::TickUpdate(TimerAction *pAction)
 	{
 		Result hr = ResultCode::SUCCESS;
-		ServiceEntityUIDMap::iterator itService;
 
-		svrChk(RingClusterServiceEntity::TickUpdate(pAction) );
+		svrChk(super::TickUpdate(pAction) );
 
 		// Update workload
 		if( m_WorkloadUpdateTimer.CheckTimer() )
@@ -266,7 +266,7 @@ namespace Svr {
 	// Register message handler for this component
 	Result MatchingQueueServiceEntity::RegisterServiceMessageHandler( ServerEntity *pServerEntity )
 	{
-		RingClusterServiceEntity::RegisterServiceMessageHandler( pServerEntity );
+		super::RegisterServiceMessageHandler( pServerEntity );
 
 		pServerEntity->BR_ENTITY_MESSAGE(Message::PartyMatchingQueue::RegisterPartyMatchingCmd)				{ svrMemReturn(pNewTrans = new(GetMemoryManager()) RegisterPartyMatchingTrans(GetMemoryManager(),pMsgData)); return ResultCode::SUCCESS; } );
 		pServerEntity->BR_ENTITY_MESSAGE(Message::PartyMatchingQueue::RegisterPlayerMatchingCmd)			{ svrMemReturn(pNewTrans = new(GetMemoryManager()) RegisterPlayerMatchingTrans(GetMemoryManager(), pMsgData)); return ResultCode::SUCCESS; } );
@@ -302,7 +302,7 @@ namespace Svr {
 		}
 
 		// If delete is required by canceling
-		svrChk((GetServerComponent<ServerEntityManager>()->GetServerEntity(pItem->RegisterUID.GetServerID(), pServerEntity)));
+		svrChk((Service::ServerEntityManager->GetServerEntity(pItem->RegisterUID.GetServerID(), pServerEntity)));
 		
 		if (pItem->NumPlayers > 1)
 		{
@@ -534,22 +534,6 @@ namespace Svr {
 	}
 
 
-
-	///////////////////////////////////////////////////////////////////////////////////////////////////////
-	//
-	//	MatchingQueueWatcherServiceEntity class
-	//
-
-
-	MatchingQueueWatcherServiceEntity::MatchingQueueWatcherServiceEntity( ClusterID clusterID )
-		:RingClusterServiceEntity(clusterID, ClusterMembership::StatusWatcher)
-	{
-	}
-
-
-	MatchingQueueWatcherServiceEntity::~MatchingQueueWatcherServiceEntity()
-	{
-	}
 
 
 
