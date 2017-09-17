@@ -424,12 +424,19 @@ namespace Svr {
 
 	bool ClusterManagerServiceEntity::GetIsInitialized()
 	{
+		int waitingCount = 0;
+		m_ClusterInfoMap.for_each([&](const uint64_t& key, ClusterServiceInfo* pValue)-> bool
+		{
+			if (!pValue->IsZKInitialized()) waitingCount++;
+			return true;
+		});
 
+		return waitingCount == 0;
 	}
 
 	void ClusterManagerServiceEntity::Clear()
 	{
-		m_ClusterInfoMap.for_each([&](const uint64_t& key, ClusterServiceInfo* pValue)-> bool
+		m_ClusterInfoMap.for_each([](const uint64_t& key, ClusterServiceInfo* pValue)-> bool
 		{
 			IHeap::Delete(pValue);
 			return true;

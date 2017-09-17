@@ -43,8 +43,8 @@ namespace ConspiracyGameInstanceServer {
 
 
 	// Constructor/Destructor
-	GameInstanceManagerServiceEntity::GameInstanceManagerServiceEntity( ClusterID clusterID, ClusterMembership initialMembership )
-		:Svr::GameInstanceManagerServiceEntity(clusterID, initialMembership)
+	GameInstanceManagerServiceEntity::GameInstanceManagerServiceEntity( GameID gameID, ClusterID clusterID, ClusterMembership initialMembership )
+		: Svr::GameInstanceManagerServiceEntity(gameID, clusterID, initialMembership)
 	{
 	}
 
@@ -53,33 +53,6 @@ namespace ConspiracyGameInstanceServer {
 	{
 	}
 
-
-
-	//// Create new game instance
-	//Result GameInstanceManagerServiceEntity::CreateGameInstance( GameInsUID &gameUID, uint numBot, uint maxPlayer )
-	//{
-	//	Result hr = ResultCode::SUCCESS;
-	//	 GameInstanceEntity* pGameInstance = nullptr;
-
-	//	svrChkPtr( pGameInstance = new(GetMemoryManager()) GameInstanceEntity );
-
-	//	svrChk( pGameInstance->InitializeGameEntity( numBot, maxPlayer ) );
-
-	//	svrChk(Service::EntityManager->AddEntity(EntityFaculty::GameInstance, pGameInstance));
-
-	//	gameUID = pGameInstance->GetEntityUID();
-	//	svrTrace(Info, "CreateGameInstance:{0}, numBot:{1}, maxPlayer:{2}", GetEntityUID(), numBot, maxPlayer);
-
-	//	++m_NumberOfInstance;
-	//	m_LocalWorkload.fetch_add(1,std::memory_order_relaxed);
-
-	//Proc_End:
-
-	//	if( !(hr) )
-	//		Util::SafeDelete(pGameInstance);
-
-	//	return hr;
-	//}
 
 
 
@@ -92,6 +65,7 @@ namespace ConspiracyGameInstanceServer {
 
 
 		////////////////////////////////////////////////////////////////////////////////////////////////////
+		// We register message handler to server entity. the message transaction will be add to the game instance entity
 		// To game instance
 		pServerEntity->BR_ENTITY_MESSAGE(Message::GameInstance::DeleteGameC2SEvt)				{ svrMemReturn(pNewTrans = new(GetHeap()) GameEntityTransDeleteGame(GetHeap(), pMsgData)); return ResultCode::SUCCESS; } );
 		pServerEntity->BR_ENTITY_MESSAGE(Message::GameInstance::JoinGameCmd)					{ svrMemReturn(pNewTrans = new(GetHeap()) GameEntityTransJoinGame(GetHeap(), pMsgData)); return ResultCode::SUCCESS; } );

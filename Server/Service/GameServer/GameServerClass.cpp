@@ -183,25 +183,14 @@ namespace GameServer {
 		// All server should use same sock family(IPV4 or IPV6)
 		privateNetSockFamily = GetMyServer()->GetNetPrivate()->GetLocalAddress().SocketFamily;
 
-		// Register entity servers
-		// All server should use same sock family(IPV4 or IPV6)
-		for (auto& itServer : Service::ServerConfig->GetServers())
-		{
-			if (!itServer->Name.StartWith("BREntityServer"))
-				continue;
 
-			Svr::EntityServerEntity *pEntity = nullptr;
-			NetAddress netAddress(privateNetSockFamily, itServer->PrivateNet.IP, itServer->PrivateNet.Port);
-
-			svrChk(GetComponentCarrier().GetComponent<Svr::ServerEntityManager>()->GetOrRegisterServer<Svr::EntityServerEntity>(itServer->UID, NetClass::Entity, netAddress, pEntity));
-		}
 
 		{
 			// Register game conspiracy cluster as a slave
 			auto pMySvr = (const ServerConfig::GameServer*)GetMyConfig();
 			svrMem(pGameService = new(GetHeap()) GameClusterServiceEntity(GetGameClusterInfo()->GameClusterID, &pMySvr->PublicNet, ClusterMembership::Slave));
 			svrChk(Service::EntityManager->AddEntity(EntityFaculty::Service, pGameService));
-			svrChk(GetComponentCarrier().GetComponent<Svr::ClusterManagerServiceEntity>()->AddClusterServiceEntity(pGameService));
+			svrChk(Service::ClusterManager->AddClusterServiceEntity(pGameService));
 			GetComponentCarrier().AddComponentWithAdapter(pGameService);
 		}
 
@@ -236,48 +225,24 @@ namespace GameServer {
 
 		// Queue items
 		componentID = Svr::ServerComponentID_MatchingQueueWatcherService_4x1;
-		for (ClusterID matchingQueueClusterID = ClusterID::MatchingQueue_Game_4x1; matchingQueueClusterID <= ClusterID::MatchingQueue_Max; matchingQueueClusterID++, componentID++)
+		for (ClusterID matchingQueueClusterID = ClusterID::MatchingQueue_Game_4x1; matchingQueueClusterID <= ClusterID::MatchingQueue_Max; matchingQueueClusterID++)
 		{
-			Svr::MatchingQueueWatcherServiceEntity *pQueueWatcherEntity = nullptr;
-
-			// Local watchers
-			svrMem( pQueueWatcherEntity = new(GetHeap()) Svr::MatchingQueueWatcherServiceEntity(matchingQueueClusterID) );
-			svrChk( Service::EntityManager->AddEntity( EntityFaculty::Service, pQueueWatcherEntity ) );
-			svrChk(GetComponentCarrier().GetComponent<Svr::ClusterManagerServiceEntity>()->AddClusterServiceEntity( pQueueWatcherEntity ) );
+			svrChk(Service::ClusterManager->SetWatchForCluster( Svr::GetServerGameID(), matchingQueueClusterID, true) );
 		}
 
 
 		// Adding matching entities
 		componentID = Svr::ServerComponentID_MatchingWatcherService_4;
-		for( ClusterID matchingQueueClusterID = ClusterID::Matching_Game_4; matchingQueueClusterID <= ClusterID::Matching_Game_8; matchingQueueClusterID++, componentID++ )
+		for( ClusterID matchingClusterID = ClusterID::Matching_Game_4; matchingClusterID <= ClusterID::Matching_Game_8; matchingClusterID++ )
 		{
-			Svr::MatchingWatcherServiceEntity *pWatcherEntity = nullptr;
-
-			// Local watchers
-			svrMem( pWatcherEntity = new(GetHeap()) Svr::MatchingWatcherServiceEntity(matchingQueueClusterID) );
-			svrChk(Service::EntityManager->AddEntity( EntityFaculty::Service, pWatcherEntity ) );
-			svrChk(GetComponentCarrier().GetComponent<Svr::ClusterManagerServiceEntity>()->AddClusterServiceEntity( pWatcherEntity ) );
+			svrChk(Service::ClusterManager->SetWatchForCluster(Svr::GetServerGameID(), matchingClusterID, true));
 		}
 
 
 
-		{
-			Svr::GameInstanceManagerWatcherServiceEntity *pGameInstanceManagerWatcher = nullptr;
-			// Local slave entity manager service
-			svrMem( pGameInstanceManagerWatcher = new(GetHeap()) Svr::GameInstanceManagerWatcherServiceEntity(GetGameClusterInfo()->GameClusterID) );
-			svrChk( Service::EntityManager->AddEntity( EntityFaculty::Service, pGameInstanceManagerWatcher ) );
-			svrChk( GetComponentCarrier().GetComponent<Svr::ClusterManagerServiceEntity>()->AddClusterServiceEntity( pGameInstanceManagerWatcher ) );
-			GetComponentCarrier().AddComponentWithAdapter(pGameInstanceManagerWatcher);
-		}
+		svrChk(Service::ClusterManager->SetWatchForCluster(Svr::GetServerGameID(), ClusterID::GameInstanceManager, true));
+		svrChk(Service::ClusterManager->SetWatchForCluster(Svr::GetServerGameID(), ClusterID::GamePartyManager, true));
 
-		{
-			Svr::GamePartyManagerWatcherServiceEntity *pGamePartyManagerWatcher = nullptr;
-			// Local slave entity manager service
-			svrMem( pGamePartyManagerWatcher = new(GetHeap()) Svr::GamePartyManagerWatcherServiceEntity() );
-			svrChk( Service::EntityManager->AddEntity( EntityFaculty::Service, pGamePartyManagerWatcher ) );
-			svrChk( GetComponentCarrier().GetComponent<Svr::ClusterManagerServiceEntity>()->AddClusterServiceEntity( pGamePartyManagerWatcher ) );
-			GetComponentCarrier().AddComponentWithAdapter(pGamePartyManagerWatcher);
-		}
 
 
 
@@ -358,15 +323,7 @@ namespace GameServer {
 	// create remote entity by class
 	Result GameServer::CreateServerEntity( NetClass netClass, Svr::ServerEntity* &pServerEntity )
 	{
-		switch( netClass )
-		{
-		case NetClass::Entity:
-			pServerEntity = new(GetHeap()) Svr::EntityServerEntity();
-			break;
-		default:
-			pServerEntity = new(GetHeap()) Svr::GenericServerEntity();
-			break;
-		};
+		pServerEntity = new(GetHeap()) Svr::GenericServerEntity();
 
 		if( pServerEntity == nullptr )
 			return ResultCode::OUT_OF_MEMORY;

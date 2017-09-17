@@ -49,6 +49,10 @@ namespace SF {
 
 		virtual void Clear() {}
 
+		// Initialize not initialized cluster entities
+		// This need to be called after clusterManagerService is initialized
+		virtual Result InitializeNotInitializedClusterEntities() { return ResultCode::NOT_IMPLEMENTED; }
+
 		// Get cluster info
 		virtual Result GetClusterInfo(GameID gameID, ClusterID clusterID, Svr::ClusterServiceInfo* &pServiceInfo) { return ResultCode::NOT_IMPLEMENTED; }
 

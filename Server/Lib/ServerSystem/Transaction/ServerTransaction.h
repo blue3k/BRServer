@@ -310,8 +310,7 @@ namespace Svr {
 			pMyOwner = super::GetMyOwner();
 
 			// Only the master and an entity server can broadcast in replica model
-			if( pMyOwner->GetClusterType() == ClusterType::Replication && pMyOwner->GetClusterMembership() != ClusterMembership::Master
-				&& BrServer::GetInstance()->GetNetClass() != NetClass::Entity )
+			if( pMyOwner->GetClusterType() == ClusterType::Replication && pMyOwner->GetClusterMembership() != ClusterMembership::Master )
 				return hr;
 
 			if( MessageClass::HasRouteHopCount )

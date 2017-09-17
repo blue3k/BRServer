@@ -64,8 +64,7 @@ namespace GameServer {
 		switch( m_Step )
 		{
 		case StartingStep::WaitEntityServer:
-			if( Service::ClusterManager->GetInitialized() )
-//			if( (Service::ServerEntityManager->GetEntityManagerServerEntity(pServer)) )
+			if( Service::ClusterManager->GetIsInitialized() )
 			{
 				svrChk( InitializeServices() );
 				m_Step = StartingStep::WaitInitializeComponents;

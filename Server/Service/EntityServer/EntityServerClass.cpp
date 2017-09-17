@@ -210,9 +210,6 @@ namespace EntityServer {
 		//case NetClass::Login:
 		//	pServerEntity = new(GetMemoryManager()) LoginServerEntity();
 		//	break;
-		case NetClass::Entity:
-			pServerEntity = new(GetMemoryManager()) EntityServerEntity();
-			break;
 		default:
 			pServerEntity = new(GetMemoryManager()) Svr::GenericServerEntity();
 			break;

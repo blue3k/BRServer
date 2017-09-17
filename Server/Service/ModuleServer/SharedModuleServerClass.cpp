@@ -149,16 +149,6 @@ namespace SharedModuleServer {
 
 		privateNetSockFamily = GetMyServer()->GetNetPrivate()->GetLocalAddress().SocketFamily;
 
-		for (auto& itServer : Service::ServerConfig->GetServers())
-		{
-			if (!itServer->Name.StartWith("BREntityServer"))
-				continue;
-
-			Svr::EntityServerEntity *pEntity = nullptr;
-			NetAddress netAddress(privateNetSockFamily, itServer->PrivateNet.IP, itServer->PrivateNet.Port);
-
-			svrChk(GetComponentCarrier().GetComponent<Svr::ServerEntityManager>()->GetOrRegisterServer<Svr::EntityServerEntity>(itServer->UID, NetClass::Entity, netAddress, pEntity));
-		}
 
 
 
@@ -198,9 +188,6 @@ namespace SharedModuleServer {
 	{
 		switch( netClass )
 		{
-		case NetClass::Entity:
-			pServerEntity = new(GetMemoryManager()) Svr::EntityServerEntity();
-			break;
 		default:
 			pServerEntity = new(GetMemoryManager()) Svr::GenericServerEntity();
 			break;

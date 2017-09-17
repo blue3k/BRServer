@@ -54,8 +54,7 @@ namespace GameServer {
 	{
 		switch (clusterID)
 		{
-		case ClusterID::Game:
-		case ClusterID::Game_Conspiracy:
+		case ClusterID::User:
 		{
 			assert(faculty == EntityFaculty::User);
 			pEntity = new(GetMemoryManager()) GamePlayerEntity;

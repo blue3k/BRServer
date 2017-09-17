@@ -75,8 +75,6 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ConspiracyGameServer.Win", 
 		{7035EA94-3335-4FD7-A3E3-28F80CCBABBF} = {7035EA94-3335-4FD7-A3E3-28F80CCBABBF}
 	EndProjectSection
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "EntityServer", "Server\Service\EntityServer\EntityServer.vcxitems", "{BCD5E4BD-08EA-4714-ADEF-92ADB69108E4}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Win", "Win", "{9DF9B349-5C1D-4732-8AD9-4B782B0C4E27}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Linux", "Linux", "{AB00B791-0DCA-442E-8D2C-06E741A3D452}"
@@ -118,7 +116,6 @@ Global
 		Server\Service\GameInstanceServer\ConspiracyGameInstanceServer.vcxitems*{85d506dc-f0be-45a8-9d2e-899b4dd1d05f}*SharedItemsImports = 4
 		Server\Service\GameServer\ConspiracyGameServer.vcxitems*{90a3ce16-19a4-4380-bba1-878b4880f7d2}*SharedItemsImports = 4
 		Server\Lib\ServerSystem\ServerSystem.vcxitems*{9bad071f-8327-4270-a882-5113d650e6d3}*SharedItemsImports = 4
-		Server\Service\EntityServer\EntityServer.vcxitems*{bcd5e4bd-08ea-4714-adef-92adb69108e4}*SharedItemsImports = 9
 		Server\Lib\ServerProtocol\ServerProtocol.vcxitems*{bebe8b4e-f75b-4330-8762-139debf3841c}*SharedItemsImports = 9
 		Server\Lib\DB\DB.vcxitems*{d3448f9f-6af6-42fc-b387-3077995b850c}*SharedItemsImports = 9
 		Server\Service\ModuleServer\ModuleServer.vcxitems*{f5ec3733-e13a-4b4a-a3c5-abd750723b9b}*SharedItemsImports = 4
@@ -333,7 +330,6 @@ Global
 		{03B0209D-8646-48DF-A5E7-8B90C48E61E5} = {66028306-5D28-4B3E-BFD1-F7558E17F298}
 		{F5EC3733-E13A-4B4A-A3C5-ABD750723B9B} = {9DF9B349-5C1D-4732-8AD9-4B782B0C4E27}
 		{90A3CE16-19A4-4380-BBA1-878B4880F7D2} = {9DF9B349-5C1D-4732-8AD9-4B782B0C4E27}
-		{BCD5E4BD-08EA-4714-ADEF-92ADB69108E4} = {66028306-5D28-4B3E-BFD1-F7558E17F298}
 		{9DF9B349-5C1D-4732-8AD9-4B782B0C4E27} = {66028306-5D28-4B3E-BFD1-F7558E17F298}
 		{AB00B791-0DCA-442E-8D2C-06E741A3D452} = {66028306-5D28-4B3E-BFD1-F7558E17F298}
 		{F132A822-A7A3-4A67-9F09-EF4D24B09D7A} = {AB00B791-0DCA-442E-8D2C-06E741A3D452}

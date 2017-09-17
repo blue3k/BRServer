@@ -155,19 +155,6 @@ namespace ConspiracyGameInstanceServer {
 
 		privateNetSockFamily = GetMyServer()->GetNetPrivate()->GetLocalAddress().SocketFamily;
 
-		// Register entity servers
-		// All server should use same sock family(IPV4 or IPV6)
-		for (auto& itServer : Service::ServerConfig->GetServers())
-		{
-			if (!itServer->Name.StartWith("BREntityServer"))
-				continue;
-
-			Svr::EntityServerEntity *pEntity = nullptr;
-			NetAddress netAddress(privateNetSockFamily, itServer->PrivateNet.IP, itServer->PrivateNet.Port);
-
-			svrChk(GetComponentCarrier().GetComponent<Svr::ServerEntityManager>()->GetOrRegisterServer<Svr::EntityServerEntity>(itServer->UID, NetClass::Entity, netAddress, pEntity));
-		}
-
 
 
 		//////////////////////////////////////////////////////////////////////////////////////////
@@ -177,7 +164,7 @@ namespace ConspiracyGameInstanceServer {
 
 		{
 		GameInstanceManagerServiceEntity *pGameInstanceManager = nullptr;
-		svrMem( pGameInstanceManager = new(GetMemoryManager()) GameInstanceManagerServiceEntity(ClusterID::GameInstanceManager, ClusterMembership::Slave) );
+		svrMem( pGameInstanceManager = new(GetMemoryManager()) GameInstanceManagerServiceEntity(Svr::GetServerGameID(), ClusterID::GameInstanceManager, ClusterMembership::Slave) );
 		svrChk(Service::EntityManager->AddEntity( EntityFaculty::Service, pGameInstanceManager ) );
 		svrChk( Service::ClusterManager->AddClusterServiceEntity( pGameInstanceManager ) );
 		svrChk(GetComponentCarrier().AddComponentWithAdapter(pGameInstanceManager) );
@@ -221,9 +208,6 @@ namespace ConspiracyGameInstanceServer {
 	{
 		switch( netClass )
 		{
-		case NetClass::Entity:
-			pServerEntity = new(GetMemoryManager()) Svr::EntityServerEntity();
-			break;
 		default:
 			pServerEntity = new(GetMemoryManager()) Svr::GenericServerEntity();
 			break;

@@ -106,7 +106,7 @@ namespace GameServer {
 			Svr::Entity* pEntity = nullptr;
 			svrTrace(SVR_ENTITY, "Create new Player Entity UID:{0}", super::GetPlayerID());
 
-			svrChk(Service::EntityManager->CreateEntity(ClusterID::Game_Conspiracy, EntityFaculty::User, pEntity));
+			svrChk(Service::EntityManager->CreateEntity(ClusterID::User, EntityFaculty::User, pEntity));
 			svrChkPtr(pPlayerEntity = dynamic_cast<GamePlayerEntity*>(pEntity));
 			svrChk(Service::EntityManager->AddEntity(EntityFaculty::User, pEntity));
 

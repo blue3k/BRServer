@@ -96,6 +96,8 @@ namespace Svr {
 
 		IHeap& GetHeap() { return m_Heap; }
 
+		bool IsZKInitialized() { return m_ZKInitialized; }
+
 		void DownloadServiceInfo();
 		void UploadLocalServiceInfo();
 
@@ -165,7 +167,7 @@ namespace Svr {
 
 		// Initialize not initialized cluster entities
 		// This need to be called after clusterManagerService is initialized
-		Result InitializeNotInitializedClusterEntities();
+		virtual Result InitializeNotInitializedClusterEntities() override;
 
 
 		// Set watch state for cluster

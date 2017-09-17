@@ -39,7 +39,7 @@ namespace ConspiracyGameInstanceServer {
 
 	public:
 		// Constructor/Destructor
-		GameInstanceManagerServiceEntity( ClusterID clusterID, ClusterMembership initialMembership = ClusterMembership::StatusWatcher );
+		GameInstanceManagerServiceEntity(GameID gameID, ClusterID clusterID, ClusterMembership initialMembership = ClusterMembership::Slave);
 		virtual ~GameInstanceManagerServiceEntity();
 
 
@@ -48,12 +48,6 @@ namespace ConspiracyGameInstanceServer {
 		//	Game Instance operations
 		//
 
-
-		// Add new Entity
-		//virtual Result CreateGameInstance(GameInsUID &gameUID, uint numBot, uint maxPlayer) override;
-
-		// Called when a game instance is deleted
-		//virtual Result FreeGameInstance(GameInsUID gameUID) override;
 
 		virtual Result RegisterServiceMessageHandler(Svr::ServerEntity *pServerEntity) override;
 	};
