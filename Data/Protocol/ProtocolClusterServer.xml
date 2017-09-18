@@ -88,7 +88,7 @@
 
     <!-- ============================= Game cluster generic ======================================= -->
 
-    <C2SEvent Name="GamePlayerEntityCreated" Reliable="true" Crypto="No" Trace="Debug1" Usage="ClusterDataWrite" Desc="Called when a player entity is created">
+    <!--<C2SEvent Name="GamePlayerEntityCreated" Reliable="true" Crypto="No" Trace="Debug1" Usage="ClusterDataWrite" Desc="Called when a player entity is created">
       <Params Type="PlayerID" Name="PlayerID"/>
       <Params Type="EntityUID" Name="PlayerUID"/>
     </C2SEvent>
@@ -96,7 +96,7 @@
     <C2SEvent Name="GamePlayerEntityDeleted" Reliable="true" Crypto="No" Trace="Debug1" Usage="ClusterDataWrite" Desc="Called when a player entity is deleted">
       <Params Type="PlayerID" Name="PlayerID"/>
       <Params Type="EntityUID" Name="PlayerUID"/>
-    </C2SEvent>
+    </C2SEvent>-->
     
     
   </ProtocolGroup>

@@ -18,7 +18,7 @@
 #include "Service/ServerService.h"
 #include "ServerEntity/ServerEntityManager.h"
 
-#include "ServiceEntity/Game/GameClusterServiceEntity.h"
+#include "ServiceEntity/Game/PlayerManagerServiceEntity.h"
 
 #include "ServiceEntity/MatchingQueueServiceEntity.h"
 #include "ServiceEntity/MatchingServiceEntity.h"
@@ -50,7 +50,7 @@
 #include "GameSvrConst.h"
 #include "GameServerClass.h"
 #include "Transaction/GameServerTrans.h"
-#include "GameInstance/GameClusterServiceEntity.h"
+#include "ServiceEntity/Game/PlayerManagerServiceEntity.h"
 
 #include "DB/GameConspiracyDB.h"
 #include "DB/GameTransactionDB.h"
@@ -88,8 +88,8 @@ namespace GameServer {
 	{
 	}
 
-	
-	
+
+
 	// Update game config
 	Result GameServer::UpdateGameConfig(uint configPresetID)
 	{
@@ -163,7 +163,7 @@ namespace GameServer {
 
 	Svr::Entity* GameServer::CreateEntity(ClusterID clusterID, EntityFaculty faculty)
 	{
-		if(clusterID == ClusterID::User && faculty == EntityFaculty::User)
+		if(clusterID == ClusterID::Game && faculty == EntityFaculty::User)
 		{
 			return new(GetHeap()) GamePlayerEntity;
 		}
@@ -176,7 +176,7 @@ namespace GameServer {
 	Result GameServer::InitializeNetPrivate()
 	{
 		Result hr = ResultCode::SUCCESS;
-		Svr::GameClusterServiceEntity *pGameService = nullptr;
+		Svr::PlayerManagerServiceEntity *pGameService = nullptr;
 		uint componentID = 0;
 		SockFamily privateNetSockFamily;
 
@@ -195,15 +195,8 @@ namespace GameServer {
 
 
 
-		{
-			// Register game conspiracy cluster as a slave
-			auto pMySvr = (const ServerConfig::GameServer*)GetMyConfig();
-			svrChkPtr(AddServiceEntity<GameClusterServiceEntity>(Svr::GetServerGameID(), &pMySvr->PublicNet, ClusterMembership::Slave));
-			//svrMem(pGameService = new(GetHeap()) GameClusterServiceEntity(GetGameClusterInfo()->GameClusterID, &pMySvr->PublicNet, ClusterMembership::Slave));
-			//svrChk(Service::EntityManager->AddEntity(EntityFaculty::Service, pGameService));
-			//svrChk(Service::ClusterManager->AddClusterServiceEntity(pGameService));
-			//GetComponentCarrier().AddComponentWithAdapter(pGameService);
-		}
+		// Register game conspiracy cluster as a slave
+		svrChkPtr(AddServiceEntity<Svr::PlayerManagerServiceEntity>());
 
 
 		// Account DB

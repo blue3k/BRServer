@@ -14,7 +14,6 @@
     <ProjectCapability Include="SourceItemsFromImports" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="$(MSBuildThisFileDirectory)GameInstance\GameClusterServiceEntity.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)GameInstance\GamePlayerEntity.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)GameServer.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)GameServerClass.h" />
@@ -34,7 +33,6 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)Transaction\GameServerTrans.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="$(MSBuildThisFileDirectory)GameInstance\GameClusterServiceEntity.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)GameInstance\GamePlayerEntity.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)GameServer.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)GameServerClass.cpp" />

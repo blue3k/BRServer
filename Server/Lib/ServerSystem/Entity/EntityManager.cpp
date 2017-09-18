@@ -51,7 +51,6 @@ namespace Svr {
 	{
 	}
 
-
 	EntityManager::~EntityManager()
 	{
 	}
@@ -70,16 +69,19 @@ namespace Svr {
 				return ResultCode::SUCCESS;
 		}
 
-		switch (clusterID)
+		if (faculty == EntityFaculty::User)
 		{
-		case ClusterID::Login:
-			pEntity = new(GetMemoryManager()) LoginPlayerEntity;
-			break;
-		case ClusterID::Game:
-			pEntity = new(GetMemoryManager()) GamePlayerEntity;
-			break;
-		default:
-			return ResultCode::INVALID_ARG;
+			switch (clusterID)
+			{
+			case ClusterID::Login:
+				pEntity = new(GetMemoryManager()) LoginPlayerEntity;
+				break;
+			case ClusterID::Game:
+				pEntity = new(GetMemoryManager()) GamePlayerEntity;
+				break;
+			default:
+				return ResultCode::INVALID_ARG;
+			}
 		}
 
 		return pEntity != nullptr ? ResultCode::SUCCESS : ResultCode::OUT_OF_MEMORY;

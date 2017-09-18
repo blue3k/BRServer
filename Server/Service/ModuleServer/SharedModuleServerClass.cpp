@@ -19,7 +19,7 @@
 #include "ServerEntity/ServerEntityManager.h"
 //#include "ServiceEntity/EntityManagerServiceEntity.h"
 
-#include "ServiceEntity/Game/GameClusterServiceEntity.h"
+#include "ServiceEntity/Game/PlayerManagerServiceEntity.h"
 
 #include "ServiceEntity/MatchingQueueServiceEntity.h"
 #include "ServiceEntity/MatchingServiceEntity.h"

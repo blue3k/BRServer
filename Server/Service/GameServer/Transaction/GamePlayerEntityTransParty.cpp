@@ -27,7 +27,7 @@
 
 #include "ServiceEntity/GamePartyManagerServiceEntity.h"
 #include "Protocol/ServerService/GamePartyManagerService.h"
-#include "ServiceEntity/Game/GameClusterServiceEntity.h"
+#include "ServiceEntity/Game/PlayerManagerServiceEntity.h"
 
 #include "Protocol/Message/GameInstanceMsgClass.h"
 #include "Protocol/Policy/GameInstanceNetPolicy.h"
@@ -696,9 +696,9 @@ namespace GameServer {
 			svrErr(ResultCode::GAME_INVALID_PARTYID);
 
 		//svrChk( Svr::GetServerComponent<DB::AccountDB>()->Notification_Add( GetTransID(), GetInviteTargetID(), true, NotificationType::PartyRequest, GetMyOwner()->GetPlayerID(), GetMyOwner()->GetPartyUID(), GetMyOwner()->GetNickName() ) );
-		
+
 		// Find player and send notify
-		if( (Svr::GetServerComponent<Svr::GameClusterServiceEntity>()->FindPlayer( GetInviteTargetID(), playerUID )) )
+		if( Service::PlayerManager->FindPlayer( GetInviteTargetID(), playerUID ) )
 		{
 			svrChk( Service::ServerEntityManager->GetServerEntity( playerUID.GetServerID(), pServerEntity ) );
 

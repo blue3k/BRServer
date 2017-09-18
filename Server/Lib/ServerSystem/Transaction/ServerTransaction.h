@@ -327,12 +327,12 @@ namespace Svr {
 				if( pService->GetEntityUID() == pMyOwner->GetEntityUID() )
 					continue;
 
-				// Only status write will be broadcasted to the watchers
-				if( pService->GetClusterMembership() == ClusterMembership::StatusWatcher
-					&& (super::GetMessageUsage() != Message::MessageUsage_ClusterStatusWrite ) )
-				{
-					continue;
-				}
+				//// Only status write will be broadcasted to the watchers
+				//if( pService->GetClusterMembership() == ClusterMembership::StatusWatcher
+				//	&& (super::GetMessageUsage() != Message::MessageUsage_ClusterStatusWrite ) )
+				//{
+				//	continue;
+				//}
 
 				TossMessageToTarget( pService );
 			};

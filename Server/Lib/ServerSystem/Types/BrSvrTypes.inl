@@ -20,7 +20,7 @@
 
 ServiceInformation::ServiceInformation()
 	: UID(0)
-	, Membership(ClusterMembership::StatusWatcher)
+	, Membership(ClusterMembership::Slave)
 	, Status(ServiceStatus::Offline)
 	, ServerClass(NetClass::Unknown)
 	, ServerUpTime(TimeStampSec::max())
@@ -48,7 +48,7 @@ ServiceInformation::ServiceInformation( int initValue )
 {
 	Assert( initValue == 0 );
 	UID = 0;
-	Membership = ClusterMembership::StatusWatcher;
+	Membership = ClusterMembership::Slave;
 	ServerClass = NetClass::Unknown;
 	Status = ServiceStatus::Offline;
 	ServerAddress = NetAddress(0);

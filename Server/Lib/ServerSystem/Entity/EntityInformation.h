@@ -82,7 +82,7 @@ namespace Svr {
 		ServerEntity* m_ServerEntity = nullptr;
 
 		// Server service membership
-		ClusterMembership m_ClusterMembership = ClusterMembership::Watcher;
+		ClusterMembership m_ClusterMembership = ClusterMembership::Slave;
 
 		// Server service membership
 		ServiceStatus m_ServiceStatus = ServiceStatus::Offline;

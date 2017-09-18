@@ -76,7 +76,7 @@ namespace Svr {
 
 	public:
 
-		GameServiceEntity(GameID gameID, const ServerConfig::NetPublic *publicNetSocket, ClusterMembership initialMembership = ClusterMembership::StatusWatcher );
+		GameServiceEntity(GameID gameID, const ServerConfig::NetPublic *publicNetSocket, ClusterMembership initialMembership = ClusterMembership::Slave);
 		~GameServiceEntity();
 
 		// We are not going to use hashed key

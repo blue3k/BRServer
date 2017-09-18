@@ -110,7 +110,7 @@ namespace Svr {
 
 	public:
 
-		MatchingQueueServiceEntity( GameID gameID, ClusterID clusterID, ClusterMembership initialMembership = ClusterMembership::StatusWatcher );
+		MatchingQueueServiceEntity( GameID gameID, ClusterID clusterID, ClusterMembership initialMembership = ClusterMembership::Slave);
 		~MatchingQueueServiceEntity();
 
 

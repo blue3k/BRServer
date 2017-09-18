@@ -23,7 +23,7 @@
 #include "Server/BrServerUtil.h"
 #include "SvrTrace.h"
 #include "ServerEntity/ServerEntityManager.h"
-#include "ServiceEntity/Game/GameClusterServiceEntity.h"
+#include "ServiceEntity/Game/PlayerManagerServiceEntity.h"
 
 #include "Protocol/Message/GameServerMsgClass.h"
 #include "Protocol/Policy/GameServerNetPolicy.h"
@@ -115,7 +115,7 @@ namespace GameServer {
 		svrChkClose( pRes->GetResult() );
 		pMsgRes = (DB::QueryNotification_AddCmd*)pRes;
 
-		if( ( Svr::GetServerComponent<Svr::GameClusterServiceEntity>()->FindPlayer( GetFriendID(), playerUID )) )
+		if( ( Service::PlayerManager->FindPlayer( GetFriendID(), playerUID )) )
 		{
 			svrChk( Service::ServerEntityManager->GetServerEntity( playerUID.GetServerID(), pServerEntity ) );
 
@@ -348,7 +348,7 @@ namespace GameServer {
 		Svr::ServerEntity *pServerEntity = nullptr;
 		EntityUID playerUID;
 
-		if (!(Svr::GetServerComponent<Svr::GameClusterServiceEntity>()->FindPlayer(GetInviterID(), playerUID)))
+		if (!(Service::PlayerManager->FindPlayer(GetInviterID(), playerUID)))
 		{
 			goto Proc_End;
 		}
@@ -463,7 +463,7 @@ namespace GameServer {
 			svrErrClose(ResultCode::INVALID_PLAYERID);
 
 		// Find player and notify to remove
-		if( (Svr::GetServerComponent<Svr::GameClusterServiceEntity>()->FindPlayer( GetFriendID(), playerUID )) )
+		if( (Service::PlayerManager->FindPlayer( GetFriendID(), playerUID )) )
 		{
 			svrChk( Service::ServerEntityManager->GetServerEntity( playerUID.GetServerID(), pServerEntity ) );
 
@@ -782,7 +782,7 @@ namespace GameServer {
 
 		svrChkClose( pRes->GetResult() );
 
-		if( ( Svr::GetServerComponent<Svr::GameClusterServiceEntity>()->FindPlayer( GetTargetPlayer(), playerUID )) )
+		if( ( Service::PlayerManager->FindPlayer( GetTargetPlayer(), playerUID )) )
 		{
 			svrChk( Service::ServerEntityManager->GetServerEntity( playerUID.GetServerID(), pServerEntity ) );
 			Policy::NetPolicyGameServer(pServerEntity->GetConnection()).NotifyC2SEvt( RouteContext(GetOwnerEntityUID(),playerUID),

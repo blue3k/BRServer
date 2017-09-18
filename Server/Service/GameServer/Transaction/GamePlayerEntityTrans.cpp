@@ -27,7 +27,7 @@
 #include "SvrTrace.h"
 #include "ServerEntity/ServerEntityManager.h"
 
-#include "ServiceEntity/Game/GameClusterServiceEntity.h"
+#include "ServiceEntity/Game/PlayerManagerServiceEntity.h"
 #include "Transaction/ExternalTransaction.h"
 #include "Transaction/ExternalTransactionManager.h"
 
@@ -345,11 +345,9 @@ namespace GameServer {
 	Result PlayerTransJoinGameServer::RegisterToPlayerManager()
 	{
 		Result hr = ResultCode::SUCCESS;
-		Svr::GameClusterServiceEntity *pGameService = nullptr;
 		EntityUID playerUID;
 
-		svrChkPtr( pGameService = Svr::GetServerComponent<Svr::GameClusterServiceEntity>() );
-		if( (pGameService->FindPlayer( GetAccID(), playerUID)) )
+		if( (Service::PlayerManager->FindPlayer( GetAccID(), playerUID)) )
 		{
 			// We don't have to kick because we use previous entity
 			//Assert( playerUID == GetMyOwner()->GetEntityUID() );
@@ -357,7 +355,7 @@ namespace GameServer {
 		}
 		else
 		{
-			svrChk( pGameService->CreatePlayer( GetMyOwner()->GetPlayerID(), GetOwnerEntityUID() ) );
+			svrChk(Service::PlayerManager->CreatePlayer( GetMyOwner()->GetPlayerID(), GetOwnerEntityUID() ) );
 		}
 
 	Proc_End:
@@ -1321,7 +1319,7 @@ namespace GameServer {
 
 		for( uint iPlayer = 0; iPlayer < uiRequestMax; iPlayer++ )
 		{
-			if( ( Svr::GetServerComponent<Svr::GameClusterServiceEntity>()->FindPlayer( targetPlayerID[iPlayer], playerUID )) )
+			if( ( Service::PlayerManager->FindPlayer( targetPlayerID[iPlayer], playerUID )) )
 			{
 				// Now we know he is online we can check with DB
 				auto pFriend = GetMyOwner()->GetComponent<UserFriendSystem>()->GetFriend(targetPlayerID[iPlayer]);

@@ -27,7 +27,7 @@
 #include "ServiceEntity/Game/GamePlayerEntity.h"
 #include "SvrTrace.h"
 #include "SvrConst.h"
-#include "ServiceEntity/Game/GameClusterServiceEntity.h"
+#include "ServiceEntity/Game/PlayerManagerServiceEntity.h"
 #include "Entity/EntityManager.h"
 
 
@@ -58,7 +58,7 @@ namespace Svr {
 	Result GameServiceEntity::InitializeEntity( EntityID newEntityID )
 	{
 		Result hr = ResultCode::SUCCESS;
-		GameClusterServiceEntity *pGameService = nullptr;
+		PlayerManagerServiceEntity *pGameService = nullptr;
 		ServerServiceInformation* pServiceInfo = nullptr;
 
 		svrChk(super::InitializeEntity(newEntityID) );
@@ -72,7 +72,7 @@ namespace Svr {
 
 
 		// Register game cluster as a slave
-		svrMem(pGameService = new(GetMemoryManager()) Svr::GameClusterServiceEntity(m_GameID, m_PublicNetSocket, ClusterMembership::Slave));
+		svrMem(pGameService = new(GetMemoryManager()) Svr::PlayerManagerServiceEntity());
 		svrChk(Service::EntityManager->AddEntity(EntityFaculty::Service, pGameService));
 		svrChk(Service::ClusterManager->AddClusterServiceEntity(pGameService, pServiceInfo));
 

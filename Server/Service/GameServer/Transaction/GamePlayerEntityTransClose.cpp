@@ -26,7 +26,7 @@
 
 #include "Protocol/ServerService/PartyMatchingQueueService.h"
 #include "ServiceEntity/MatchingQueueServiceEntity.h"
-#include "ServiceEntity/Game/GameClusterServiceEntity.h"
+#include "ServiceEntity/Game/PlayerManagerServiceEntity.h"
 
 #include "Protocol/Message/PartyMatchingQueueMsgClass.h"
 
@@ -176,7 +176,6 @@ namespace GameServer {
 	{
 		Result hr = ResultCode::SUCCESS;
 		GamePlayerEntity* pOwner = (GamePlayerEntity*)GetOwnerEntity();
-		Svr::GameClusterServiceEntity *pGameService = nullptr;
 
 		m_WaitingTransactions = 0;
 
@@ -212,8 +211,7 @@ namespace GameServer {
 		if ((Svr::GetServerComponent<DB::LoginSessionDB>()->DeleteLoginSession(GetTransID(), GetMyOwner()->GetPlayerID(), GetMyOwner()->GetAuthTicket())))
 			m_WaitingTransactions++;
 
-		svrChkPtr(pGameService = Svr::GetServerComponent<Svr::GameClusterServiceEntity>());
-		svrChk(pGameService->DeletePlayer(GetMyOwner()->GetPlayerID(), GetOwnerEntityUID()));
+		svrChk(Service::PlayerManager->DeletePlayer(GetMyOwner()->GetPlayerID()));
 
 
 	Proc_End:

@@ -61,7 +61,7 @@ namespace Svr {
 
 	public:
 
-		GamePartyManagerServiceEntity( ClusterMembership initialMembership = ClusterMembership::StatusWatcher );
+		GamePartyManagerServiceEntity( ClusterMembership initialMembership = ClusterMembership::Slave);
 		~GamePartyManagerServiceEntity();
 
 

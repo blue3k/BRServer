@@ -77,7 +77,7 @@ namespace Svr {
 
 	public:
 
-		LoginServiceEntity(const ServerConfig::NetPublic *publicNetSocket, ClusterMembership initialMembership = ClusterMembership::StatusWatcher );
+		LoginServiceEntity(const ServerConfig::NetPublic *publicNetSocket, ClusterMembership initialMembership = ClusterMembership::Slave);
 		~LoginServiceEntity();
 
 		// We are not going to use hashed key

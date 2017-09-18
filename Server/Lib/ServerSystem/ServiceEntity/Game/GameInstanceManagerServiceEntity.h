@@ -59,7 +59,7 @@ namespace Svr {
 
 	public:
 
-		GameInstanceManagerServiceEntity(GameID gameID, ClusterID clusterID, ClusterMembership initialMembership = ClusterMembership::StatusWatcher );
+		GameInstanceManagerServiceEntity(GameID gameID, ClusterID clusterID, ClusterMembership initialMembership = ClusterMembership::Slave);
 		~GameInstanceManagerServiceEntity();
 
 

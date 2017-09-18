@@ -85,7 +85,7 @@ namespace Svr {
 		if (!zkSession.Exists(m_ClusterPath))
 		{
 			String outPath(GetHeap());
-			Result result = zkSession.Create(m_ClusterPath, "", nullptr, 0, outPath);
+			Result result = zkSession.Create(m_ClusterPath, std::string(""), nullptr, 0, outPath);
 			if (!result)
 				return;
 		}
@@ -203,7 +203,7 @@ namespace Svr {
 
 		StrUtil::Format(nodePath, "{0}/{1}", m_ClusterPath, pNewServiceInfo->GetNodeName());
 
-		nodeValue["EntityID"] = Json::Value(pNewServiceInfo->GetEntityUID().UID);
+		nodeValue["EntityUID"] = Json::Value(pNewServiceInfo->GetEntityUID().UID);
 		nodeValue["NetAddress"] = ToJsonNetPrivate(privateAddress);
 
 		stringValue = std::forward<std::string>(writer.write(nodeValue));
@@ -300,7 +300,7 @@ namespace Svr {
 		svrChk(GetNodeValue(nodePath, jsonValue));
 
 		svrChk(ParseNetPrivate(jsonValue.get("NetAddress", ""), netAddress));
-		entityUID.UID = jsonValue.get("EntityID", Json::Value(0)).asUInt64();
+		entityUID.UID = jsonValue.get("EntityUID", Json::Value(0)).asUInt64();
 
 		svrChk(Service::ServerEntityManager->GetOrRegisterServer(entityUID.GetServerID(), NetClass::Server, netAddress, pServerEntity));
 
@@ -502,7 +502,7 @@ namespace Svr {
 		if (!zkSession.Exists(ClusterManagerServiceEntity::ServiceBasePath))
 		{
 			// Create game cluster path if not exist
-			zkSession.Create(ClusterManagerServiceEntity::ServiceBasePath, "", nullptr, 0, outPath);
+			zkSession.Create(ClusterManagerServiceEntity::ServiceBasePath, std::string(""), nullptr, 0, outPath);
 		}
 
 		// Create game cluster path if not exist
@@ -514,7 +514,7 @@ namespace Svr {
 			auto gameName = Enum<GameID>().GetValueName((GameID)iGame);
 			gameClusterPath.Format("{0}/{1}", ClusterManagerServiceEntity::ServiceBasePath, gameName);
 			if (!zkSession.Exists(gameClusterPath))
-				zkSession.Create(gameClusterPath, "", nullptr, 0, outPath);
+				zkSession.Create(gameClusterPath, std::string(""), nullptr, 0, outPath);
 		}
 
 		pTrans = nullptr;

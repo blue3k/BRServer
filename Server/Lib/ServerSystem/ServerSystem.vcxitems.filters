@@ -121,12 +121,6 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)ServiceEntity\Game\GameServiceTrans.h">
       <Filter>ServerService\Game</Filter>
     </ClInclude>
-    <ClInclude Include="$(MSBuildThisFileDirectory)ServiceEntity\Game\GameClusterServiceEntity.h">
-      <Filter>ServerService\Game</Filter>
-    </ClInclude>
-    <ClInclude Include="$(MSBuildThisFileDirectory)ServiceEntity\Game\GameClusterServiceTrans.h">
-      <Filter>ServerService\Game</Filter>
-    </ClInclude>
     <ClInclude Include="$(MSBuildThisFileDirectory)ServiceEntity\Game\GameInstanceEntity.h">
       <Filter>ServerService\GameInstance</Filter>
     </ClInclude>
@@ -381,6 +375,9 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)Service\PlayerManagerService.h">
       <Filter>Service</Filter>
     </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)ServiceEntity\Game\PlayerManagerServiceEntity.h">
+      <Filter>ServerService\Game</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="$(MSBuildThisFileDirectory)makefile.mak" />
@@ -507,12 +504,6 @@
       <Filter>ServerService\Game</Filter>
     </ClCompile>
     <ClCompile Include="$(MSBuildThisFileDirectory)ServiceEntity\Game\GameServiceTrans.cpp">
-      <Filter>ServerService\Game</Filter>
-    </ClCompile>
-    <ClCompile Include="$(MSBuildThisFileDirectory)ServiceEntity\Game\GameClusterServiceEntity.cpp">
-      <Filter>ServerService\Game</Filter>
-    </ClCompile>
-    <ClCompile Include="$(MSBuildThisFileDirectory)ServiceEntity\Game\GameClusterServiceTrans.cpp">
       <Filter>ServerService\Game</Filter>
     </ClCompile>
     <ClCompile Include="$(MSBuildThisFileDirectory)ServiceEntity\Game\GameInstanceEntity.cpp">
@@ -701,6 +692,9 @@
     </ClCompile>
     <ClCompile Include="$(MSBuildThisFileDirectory)Component\SFServerNetComponent.cpp">
       <Filter>Component</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)ServiceEntity\Game\PlayerManagerServiceEntity.cpp">
+      <Filter>ServerService\Game</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -18,7 +18,7 @@
 #include "Protocol/Message/GameServerMsgClass.h"
 #include "Protocol/Policy/GameServerNetPolicy.h"
 #include "GameServerClass.h"
-#include "GameInstance/GameClusterServiceEntity.h"
+#include "ServiceEntity/Game/PlayerManagerServiceEntity.h"
 #include "GameInstance/GamePlayerEntity.h"
 
 namespace SF {
@@ -52,7 +52,7 @@ namespace GameServer {
 	};
 
 
-	extern template class GameServerTransRegisterPlayerToJoinGameServer<GameClusterServiceEntity>;
+	extern template class GameServerTransRegisterPlayerToJoinGameServer<Svr::PlayerManagerServiceEntity>;
 	extern template class GameServerTransRegisterPlayerToJoinGameServer<GamePlayerEntity>;
 
 

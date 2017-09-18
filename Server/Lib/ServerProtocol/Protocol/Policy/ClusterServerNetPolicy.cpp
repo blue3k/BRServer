@@ -61,42 +61,6 @@ namespace SF
 			return hr;
 
 		}; // Result NetPolicyClusterServer::RequestDataSyncCmd( const RouteContext &InRouteContext, const TransactionID &InTransactionID, const uint16_t &InRouteHopCount, const ClusterID &InClusterID )
-		// C2S: Called when a player entity is created
-		Result NetPolicyClusterServer::GamePlayerEntityCreatedC2SEvt( const RouteContext &InRouteContext, const uint16_t &InRouteHopCount, const PlayerID &InPlayerID, const uint64_t &InPlayerUID )
-		{
- 			Result hr;
-
-			 MessageDataPtr pMessage;
-			 protocolChkPtr(m_pConnection);
-
-			 pMessage = SF::Message::ClusterServer::GamePlayerEntityCreatedC2SEvt::Create(m_pConnection->GetNetIOHandler().GetIOHeap(), InRouteContext, InRouteHopCount, InPlayerID, InPlayerUID);
-			 protocolChkPtr(*pMessage);
-
-			 return m_pConnection->Send( pMessage );
-
-		Proc_End:
-
-			return hr;
-
-		}; // Result NetPolicyClusterServer::GamePlayerEntityCreatedC2SEvt( const RouteContext &InRouteContext, const uint16_t &InRouteHopCount, const PlayerID &InPlayerID, const uint64_t &InPlayerUID )
-		// C2S: Called when a player entity is deleted
-		Result NetPolicyClusterServer::GamePlayerEntityDeletedC2SEvt( const RouteContext &InRouteContext, const uint16_t &InRouteHopCount, const PlayerID &InPlayerID, const uint64_t &InPlayerUID )
-		{
- 			Result hr;
-
-			 MessageDataPtr pMessage;
-			 protocolChkPtr(m_pConnection);
-
-			 pMessage = SF::Message::ClusterServer::GamePlayerEntityDeletedC2SEvt::Create(m_pConnection->GetNetIOHandler().GetIOHeap(), InRouteContext, InRouteHopCount, InPlayerID, InPlayerUID);
-			 protocolChkPtr(*pMessage);
-
-			 return m_pConnection->Send( pMessage );
-
-		Proc_End:
-
-			return hr;
-
-		}; // Result NetPolicyClusterServer::GamePlayerEntityDeletedC2SEvt( const RouteContext &InRouteContext, const uint16_t &InRouteHopCount, const PlayerID &InPlayerID, const uint64_t &InPlayerUID )
 
 
 		// Cmd: Cluster member list query

@@ -37,10 +37,10 @@ namespace Svr {
 
 	///////////////////////////////////////////////////////////////////////////////////////////////////////
 	//
-	//	GameClusterServiceEntity class
+	//	PlayerManagerServiceEntity class
 	//
 
-	class GameClusterServiceEntity : public ShardedClusterServiceEntity, public PlayerManagerService
+	class PlayerManagerServiceEntity : public ShardedClusterServiceEntity, public PlayerManagerService
 	{
 	public:
 
@@ -100,16 +100,15 @@ namespace Svr {
 
 	public:
 		// Constructor/Destructor
-		GameClusterServiceEntity(const ServerConfig::NetPublic *publicNetSocket, ClusterMembership initialMembership = ClusterMembership::StatusWatcher);
-		virtual ~GameClusterServiceEntity();
+		PlayerManagerServiceEntity();
+		virtual ~PlayerManagerServiceEntity();
+
+		virtual void Dispose() override;
 
 		virtual Result RegisterServiceMessageHandler( ServerEntity *pServerEntity ) override;
 
 		virtual Result TickUpdate(TimerAction *pAction = nullptr) override;
 
-
-		// Game Cluster ID
-		const ServerConfig::NetPublic* GetPublicNetConfig() { return m_PublicNetSocket; }
 
 		//////////////////////////////////////////////////////////////////////////
 		//
@@ -127,8 +126,6 @@ namespace Svr {
 		virtual Result CreatePlayer(PlayerID playerID, EntityUID entityUID) override;
 		virtual Result DeletePlayer(PlayerID playerID) override;
 		virtual Result FindPlayer(PlayerID playerID, EntityUID& entityUID) override;
-
-
 
 	};
 

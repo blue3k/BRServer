@@ -96,7 +96,7 @@ namespace Svr {
 
 	public:
 
-		ClusteredServiceEntity( ClusterType clusterType, GameID gameID, ClusterID clusterID, ClusterMembership initialMembership = ClusterMembership::StatusWatcher, ServerEntity* pServerEntity = nullptr );
+		ClusteredServiceEntity( ClusterType clusterType, GameID gameID, ClusterID clusterID, ClusterMembership initialMembership = ClusterMembership::Slave, ServerEntity* pServerEntity = nullptr );
 		virtual ~ClusteredServiceEntity();
 
 		bool GetActivelyConnectRemote() { return m_ActivelyConnectRemote; }
@@ -189,7 +189,7 @@ namespace Svr {
 
 	public:
 
-		ReplicaClusterServiceEntity(GameID gameID, ClusterID clusterID, ClusterMembership initialMembership = ClusterMembership::StatusWatcher, ServerEntity* pServerEntity = nullptr );
+		ReplicaClusterServiceEntity(GameID gameID, ClusterID clusterID, ClusterMembership initialMembership = ClusterMembership::Slave, ServerEntity* pServerEntity = nullptr );
 
 
 		// Register message handler for this component
@@ -215,7 +215,7 @@ namespace Svr {
 
 	public:
 
-		FreeReplicaClusterServiceEntity(GameID gameID, ClusterID clusterID, ClusterMembership initialMembership = ClusterMembership::StatusWatcher, ServerEntity* pServerEntity = nullptr );
+		FreeReplicaClusterServiceEntity(GameID gameID, ClusterID clusterID, ClusterMembership initialMembership = ClusterMembership::Slave, ServerEntity* pServerEntity = nullptr );
 
 		// Register message handler for this component
 		//virtual Result RegisterServiceMessageHandler( ServerEntity *pServerEntity ) override;
@@ -247,7 +247,7 @@ namespace Svr {
 		//ServerServiceInformation*	m_pCurrentQueryService;
 
 	public:
-		RingClusterServiceEntity(GameID gameID, ClusterID clusterID, ClusterMembership initialMembership = ClusterMembership::StatusWatcher, ServerEntity* pServerEntity = nullptr );
+		RingClusterServiceEntity(GameID gameID, ClusterID clusterID, ClusterMembership initialMembership = ClusterMembership::Slave, ServerEntity* pServerEntity = nullptr );
 
 	};
 	
@@ -267,7 +267,7 @@ namespace Svr {
 	public:
 
 		// Constructor
-		ShardedClusterServiceEntity( GameID gameID, ClusterID clusterID, ClusterMembership initialMembership = ClusterMembership::StatusWatcher, ServerEntity* pServerEntity = nullptr );
+		ShardedClusterServiceEntity( GameID gameID, ClusterID clusterID, ClusterMembership initialMembership = ClusterMembership::Slave, ServerEntity* pServerEntity = nullptr );
 
 		////////////////////////////////////////////////////////////////////////////////////
 	};
@@ -302,7 +302,7 @@ namespace Svr {
 	public:
 
 		// Constructor
-		LoadbalanceClusterServiceEntity(GameID gameID, ClusterID clusterID, ClusterMembership initialMembership = ClusterMembership::StatusWatcher, ServerEntity* pServerEntity = nullptr );
+		LoadbalanceClusterServiceEntity(GameID gameID, ClusterID clusterID, ClusterMembership initialMembership = ClusterMembership::Slave, ServerEntity* pServerEntity = nullptr );
 
 		// Initialize entity to proceed new connection
 		virtual Result InitializeEntity( EntityID newEntityID );

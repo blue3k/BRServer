@@ -27,11 +27,11 @@
 
 #include "GameServerEntityTrans.h"
 #include "GameInstance/GamePlayerEntity.h"
-#include "GameInstance/GameClusterServiceEntity.h"
+#include "ServiceEntity/Game/PlayerManagerServiceEntity.h"
 #include "Protocol/Message/GameServerMsgClass.h"
 
 
-SF_MEMORYPOOL_IMPLEMENT(BR::GameServer::GameServerTransRegisterPlayerToJoinGameServer<BR::GameServer::GameClusterServiceEntity>);
+SF_MEMORYPOOL_IMPLEMENT(BR::GameServer::GameServerTransRegisterPlayerToJoinGameServer<BR::GameServer::PlayerManagerServiceEntity>);
 SF_MEMORYPOOL_IMPLEMENT(BR::GameServer::GameServerTransRegisterPlayerToJoinGameServer<BR::GameServer::GamePlayerEntity>);
 
 
@@ -105,7 +105,7 @@ namespace GameServer {
 			Svr::Entity* pEntity = nullptr;
 			svrTrace(SVR_ENTITY, "Create new Player Entity UID:{0}", super::GetPlayerID());
 
-			svrChk(Service::EntityManager->CreateEntity(ClusterID::User, EntityFaculty::User, pEntity));
+			svrChk(Service::EntityManager->CreateEntity(ClusterID::Game, EntityFaculty::User, pEntity));
 			svrChkPtr(pPlayerEntity = dynamic_cast<GamePlayerEntity*>(pEntity));
 			svrChk(Service::EntityManager->AddEntity(EntityFaculty::User, pEntity));
 
@@ -145,7 +145,7 @@ namespace GameServer {
 	}
 
 
-	template class GameServerTransRegisterPlayerToJoinGameServer<GameClusterServiceEntity>;
+	template class GameServerTransRegisterPlayerToJoinGameServer<Svr::PlayerManagerServiceEntity>;
 	template class GameServerTransRegisterPlayerToJoinGameServer<GamePlayerEntity>;
 
 

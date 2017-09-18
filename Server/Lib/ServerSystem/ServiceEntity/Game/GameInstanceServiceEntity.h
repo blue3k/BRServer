@@ -62,7 +62,7 @@ namespace Svr {
 
 	public:
 
-		GameInstanceServiceEntity(GameID gameID, ClusterMembership initialMembership = ClusterMembership::StatusWatcher );
+		GameInstanceServiceEntity(GameID gameID, ClusterMembership initialMembership = ClusterMembership::Slave);
 		~GameInstanceServiceEntity();
 
 		bool GetLastRankingFailed() { return m_LastRankingFailed; }

@@ -57,32 +57,6 @@ namespace SF
 			return hr;
 
 		}; // Result ClusterServerService::RequestDataSyncCmd( const TransactionID &InTransactionID, const uint16_t &InRouteHopCount, const ClusterID &InClusterID )
-		// C2S: Called when a player entity is created
-		Result ClusterServerService::GamePlayerEntityCreatedC2SEvt( const EntityID &InSenderEntityID, const uint16_t &InRouteHopCount, const PlayerID &InPlayerID, const uint64_t &InPlayerUID )
-		{
- 			Result hr;
-
-			RouteContext InRouteContext( EntityUID(GetMyServerID(),InSenderEntityID), GetServiceEntityUID() );
-			svrChk(Policy::NetPolicyClusterServer(GetConnection()).GamePlayerEntityCreatedC2SEvt( InRouteContext, InRouteHopCount, InPlayerID, InPlayerUID ) );
-
-		Proc_End:
-
-			return hr;
-
-		}; // Result ClusterServerService::GamePlayerEntityCreatedC2SEvt( const EntityID &InSenderEntityID, const uint16_t &InRouteHopCount, const PlayerID &InPlayerID, const uint64_t &InPlayerUID )
-		// C2S: Called when a player entity is deleted
-		Result ClusterServerService::GamePlayerEntityDeletedC2SEvt( const EntityID &InSenderEntityID, const uint16_t &InRouteHopCount, const PlayerID &InPlayerID, const uint64_t &InPlayerUID )
-		{
- 			Result hr;
-
-			RouteContext InRouteContext( EntityUID(GetMyServerID(),InSenderEntityID), GetServiceEntityUID() );
-			svrChk(Policy::NetPolicyClusterServer(GetConnection()).GamePlayerEntityDeletedC2SEvt( InRouteContext, InRouteHopCount, InPlayerID, InPlayerUID ) );
-
-		Proc_End:
-
-			return hr;
-
-		}; // Result ClusterServerService::GamePlayerEntityDeletedC2SEvt( const EntityID &InSenderEntityID, const uint16_t &InRouteHopCount, const PlayerID &InPlayerID, const uint64_t &InPlayerUID )
 
 
 	}; // namespace Svr

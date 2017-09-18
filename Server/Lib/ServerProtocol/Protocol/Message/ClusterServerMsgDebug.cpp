@@ -34,10 +34,6 @@ namespace SF
 			// Cmd: Join to the cluster
 			MessageDebugTraceMap.insert(std::make_pair(Message::ClusterServer::RequestDataSyncCmd::MID.IDSeq.MsgID,&Message::ClusterServer::RequestDataSyncCmd::TraceOut));
 			MessageDebugTraceMap.insert(std::make_pair(Message::ClusterServer::RequestDataSyncRes::MID.IDSeq.MsgID,&Message::ClusterServer::RequestDataSyncRes::TraceOut));
-			// C2S: Called when a player entity is created
-			MessageDebugTraceMap.insert(std::make_pair(Message::ClusterServer::GamePlayerEntityCreatedC2SEvt::MID.IDSeq.MsgID,&Message::ClusterServer::GamePlayerEntityCreatedC2SEvt::TraceOut));
-			// C2S: Called when a player entity is deleted
-			MessageDebugTraceMap.insert(std::make_pair(Message::ClusterServer::GamePlayerEntityDeletedC2SEvt::MID.IDSeq.MsgID,&Message::ClusterServer::GamePlayerEntityDeletedC2SEvt::TraceOut));
 		}; // void RegisterDebugTraceClusterServer()
 
 

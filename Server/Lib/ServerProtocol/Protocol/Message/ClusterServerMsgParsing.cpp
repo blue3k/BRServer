@@ -36,10 +36,6 @@ namespace SF
 			// Cmd: Join to the cluster
 			MessageParseToMessageBaseMap.insert(std::make_pair(Message::ClusterServer::RequestDataSyncCmd::MID.IDSeq.MsgID,&Message::ClusterServer::RequestDataSyncCmd::ParseMessageToMessageBase));
 			MessageParseToMessageBaseMap.insert(std::make_pair(Message::ClusterServer::RequestDataSyncRes::MID.IDSeq.MsgID,&Message::ClusterServer::RequestDataSyncRes::ParseMessageToMessageBase));
-			// C2S: Called when a player entity is created
-			MessageParseToMessageBaseMap.insert(std::make_pair(Message::ClusterServer::GamePlayerEntityCreatedC2SEvt::MID.IDSeq.MsgID,&Message::ClusterServer::GamePlayerEntityCreatedC2SEvt::ParseMessageToMessageBase));
-			// C2S: Called when a player entity is deleted
-			MessageParseToMessageBaseMap.insert(std::make_pair(Message::ClusterServer::GamePlayerEntityDeletedC2SEvt::MID.IDSeq.MsgID,&Message::ClusterServer::GamePlayerEntityDeletedC2SEvt::ParseMessageToMessageBase));
 		}; // void RegisterParserClusterServer()
 
 

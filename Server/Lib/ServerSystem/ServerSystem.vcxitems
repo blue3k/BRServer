@@ -92,8 +92,7 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)ServiceEntity\GamePartyManagerServiceEntity.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)ServiceEntity\GamePartyManagerServiceTrans.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)ServiceEntity\GamePartyTransaction.h" />
-    <ClInclude Include="$(MSBuildThisFileDirectory)ServiceEntity\Game\GameClusterServiceEntity.h" />
-    <ClInclude Include="$(MSBuildThisFileDirectory)ServiceEntity\Game\GameClusterServiceTrans.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)ServiceEntity\Game\PlayerManagerServiceEntity.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)ServiceEntity\Game\GameInstanceEntity.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)ServiceEntity\Game\GameInstanceManagerServiceEntity.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)ServiceEntity\Game\GameInstanceManagerServiceTrans.h" />
@@ -191,8 +190,7 @@
     <ClCompile Include="$(MSBuildThisFileDirectory)ServiceEntity\GamePartyEntityTrans.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)ServiceEntity\GamePartyManagerServiceEntity.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)ServiceEntity\GamePartyManagerServiceTrans.cpp" />
-    <ClCompile Include="$(MSBuildThisFileDirectory)ServiceEntity\Game\GameClusterServiceEntity.cpp" />
-    <ClCompile Include="$(MSBuildThisFileDirectory)ServiceEntity\Game\GameClusterServiceTrans.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)ServiceEntity\Game\PlayerManagerServiceEntity.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)ServiceEntity\Game\GameInstanceEntity.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)ServiceEntity\Game\GameInstanceManagerServiceEntity.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)ServiceEntity\Game\GameInstanceManagerServiceTrans.cpp" />
