@@ -173,7 +173,7 @@ namespace Svr {
 			//Svr::ClusteredServiceEntity *pServiceEntity = nullptr;
 			ClusterServiceInfo* pClusterServiceInfo = nullptr;
 			// To accommodate login only services, allow login without game server
-			svrChkPtr(pClusterServiceInfo = Service::ClusterManager->GetClusterInfo((GameID)super::GetGameID(), ClusterID::Game));
+			svrChkPtr(pClusterServiceInfo = Service::ClusterManager->GetClusterInfo(GetMyOwner()->GetGameID(), ClusterID::Game));
 			if(pClusterServiceInfo->Services.size() == 0)
 			{
 				// Login is succeeded, but there is no game cluster for the game or no available game service
@@ -212,12 +212,10 @@ namespace Svr {
 		Svr::ServerServiceInformation *pService = nullptr;
 
 		// Find new game server for this player
-		svrChk(Service::ClusterManager->GetRandomService((GameID)super::GetGameID(), ClusterID::Game, pService));
-		//svrChk( Service::ClusterManager->GetClusterServiceEntity( (ClusterID)((uint)ClusterID::Game + (uint)super::GetGameID()), pServiceEntity ) );
-		//hr = pServiceEntity->FindRandomService( pService );
+		svrChk(Service::ClusterManager->GetRandomService(GetMyOwner()->GetGameID(), ClusterID::Game, pService));
 		if (!hr)
 		{
-			svrTrace(Error, "Failed to find cluster service entity for game:{0} PlayerID:{1}", super::GetGameID(), super::GetMyOwner()->GetPlayerID());
+			svrTrace(Error, "Failed to find cluster service entity for game:{0} PlayerID:{1}", Enum<GameID>().GetValueName(GetMyOwner()->GetGameID()), super::GetMyOwner()->GetPlayerID());
 			goto Proc_End;
 		}
 
@@ -365,6 +363,7 @@ namespace Svr {
 		GetMyOwner()->HeartBit();
 
 		GetMyOwner()->SetUserName(GetID());
+		GetMyOwner()->SetGameID((GameID)super::GetGameID());
 
 		// succeeded to login
 		if( pDBRes->Result == 0 )
@@ -910,7 +909,7 @@ namespace Svr {
 
 
 		// Find new ranking server
-		svrChk(Service::ClusterManager->GetRandomService(GameID::Invalid, ClusterID::Ranking, pService));
+		svrChk(Service::ClusterManager->GetRandomService(GetMyOwner()->GetGameID(), ClusterID::Ranking, pService));
 		//svrChk(Service::ClusterManager->GetClusterServiceEntity(ClusterID::Ranking, pServiceEntity));
 		//hr = pServiceEntity->FindRandomService(pService);
 		if (!hr)
@@ -1012,7 +1011,7 @@ namespace Svr {
 
 
 		// Find new ranking server
-		svrChk(Service::ClusterManager->GetRandomService(GameID::Invalid, ClusterID::Ranking, pService));
+		svrChk(Service::ClusterManager->GetRandomService(GetMyOwner()->GetGameID(), ClusterID::Ranking, pService));
 		//svrChk(Service::ClusterManager->GetClusterServiceEntity(ClusterID::Ranking, pServiceEntity));
 		//hr = pServiceEntity->FindRandomService(pService);
 		if (!(hr))

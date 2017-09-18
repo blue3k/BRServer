@@ -46,8 +46,8 @@ namespace Svr {
 	//	Entity informations
 	//
 
-	GamePartyManagerServiceEntity::GamePartyManagerServiceEntity(ClusterMembership initialMembership)
-		: super(GameID::Invalid, ClusterID::GamePartyManager, initialMembership )
+	GamePartyManagerServiceEntity::GamePartyManagerServiceEntity(GameID gameID, ClusterMembership initialMembership)
+		: super(gameID, ClusterID::GamePartyManager, initialMembership )
 		, m_PartyCount("PartyCount")
 	{
 		// Game party manager transactions

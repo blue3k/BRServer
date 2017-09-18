@@ -16,6 +16,8 @@ start %PATH_BIN%\BRModuleServer.Win.exe -debug -n:BRLoginServer01
 
 start %PATH_BIN%\BRModuleServer.Win.exe -debug -n:BRMatchingQueue01
 
+start %PATH_BIN%\BRModuleServer.Win.exe -debug -n:BRMyTownHeroRanking
+
 
 timeout /t 2 /nobreak
 

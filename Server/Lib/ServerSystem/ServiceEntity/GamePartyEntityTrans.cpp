@@ -81,12 +81,8 @@ namespace Svr {
 
 		svrChk(Transaction::StartTransaction() );
 
-		svrChk(Service::ClusterManager->GetRandomService(GameID::Invalid, ClusterID::GamePartyManager, pService));
-		//svrChk(GetServerComponent<GamePartyManagerServiceEntity>()->GetService(pService));
-
-		// 2. Get service entity list in the cluster
+		svrChk(Service::ClusterManager->GetRandomService(m_GameID, ClusterID::GamePartyManager, pService));
 		svrChk(pService->GetService<Svr::GamePartyManagerService>()->PartyDeletedC2SEvt(pOwner->GetEntityUID(), 0));
-
 
 		Service::EntityManager->RemoveEntity( pOwner );
 

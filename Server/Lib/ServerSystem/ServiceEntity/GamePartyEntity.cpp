@@ -340,7 +340,7 @@ namespace Svr {
 		Result hr = ResultCode::SUCCESS;
 		TransactionPtr pTrans;
 
-		svrMem( pTrans = new(GetHeap()) PartyTransCloseInstance(GetHeap()));
+		svrMem( pTrans = new(GetHeap()) PartyTransCloseInstance(GetHeap(), GetGameID()));
 
 		svrTrace(SVR_INFO, "Closing party instance {0}, memberCount:{1}", GetEntityUID(), m_PartyPlayerByUID.size());
 

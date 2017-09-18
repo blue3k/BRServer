@@ -55,6 +55,7 @@ namespace Svr {
 	private:
 		typedef Svr::SimpleUserEntity super;
 
+		GameID m_GameID = GameID::Invalid;
 		FacebookUID m_FacebookUID;
 		AuthTicket m_AuthTicket;
 		uint m_ShardID;
@@ -85,6 +86,9 @@ namespace Svr {
 
 		LoginPlayerEntity();
 		virtual ~LoginPlayerEntity();
+
+		GameID GetGameID() { return m_GameID; }
+		void SetGameID(GameID value) { m_GameID = value; }
 
 		PlayerID GetPlayerID() { return GetAccountID(); }
 		void SetPlayerID(PlayerID value) { SetAccountID(value); }

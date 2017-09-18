@@ -97,6 +97,7 @@ namespace Svr {
 		// Session DB initialize
 		svrChk(pServerInst->AddDBCluster<DB::LoginSessionDB>(Service::ServerConfig->FindDBCluster("LoginSessionDB")));
 
+		// TODO: need to do this more better way
 		// Register game clusters, so that login server can monitor game servers status
 		svrChk(Service::ClusterManager->SetWatchForCluster(GameID::Conspiracy, ClusterID::Game, true));
 		svrChk(Service::ClusterManager->SetWatchForCluster(GameID::MyTownHero, ClusterID::Game, true));

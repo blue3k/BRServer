@@ -47,9 +47,13 @@ namespace Svr {
 	class PartyTransCloseInstance : public Transaction 
 	{
 	private:
+		GameID m_GameID;
 
 	public:
-		PartyTransCloseInstance(IHeap& memMgr) : Svr::Transaction( memMgr, TransactionID() ) { SetExclusive(true); }
+		PartyTransCloseInstance(IHeap& memMgr, GameID gameID)
+			: Svr::Transaction( memMgr, TransactionID() )
+			, m_GameID(gameID)
+		{ SetExclusive(true); }
 		virtual ~PartyTransCloseInstance() {}
 
 		// Start Transaction

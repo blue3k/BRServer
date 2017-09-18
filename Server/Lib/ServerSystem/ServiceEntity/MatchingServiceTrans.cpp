@@ -125,7 +125,7 @@ namespace Svr {
 		ServerServiceInformation *pService = nullptr;
 		ClusteredServiceEntity *pServiceEntity = nullptr;
 
-		if(!Service::ClusterManager->GetRandomService(GameID::Invalid, m_TargetQueueClusterID, pService))
+		if(!Service::ClusterManager->GetRandomService(GetServerGameID(), m_TargetQueueClusterID, pService))
 		{
 			return ResultCode::SVR_CLUSTER_NOTREADY;
 		}
