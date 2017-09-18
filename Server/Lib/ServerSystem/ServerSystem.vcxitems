@@ -121,6 +121,7 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)Service\ClusterManagerService.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Service\EntityManagerService.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Service\EntityTableService.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)Service\PlayerManagerService.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Service\ServerEntityManagerService.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Service\ServerService.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Service\ZookeeperSessionService.h" />

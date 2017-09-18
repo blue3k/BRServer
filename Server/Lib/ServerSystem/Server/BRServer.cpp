@@ -691,43 +691,6 @@ Proc_End:
 		return ResultCode::SUCCESS;
 	}
 
-	template< class ServiceEntityType, typename... ConstructorArgs >
-	ServiceEntityType* BrServer::AddServiceEntity(ConstructorArgs... constructorArgs)
-	{
-		Result hr = ResultCode::SUCCESS;
-		Svr::ClusteredServiceEntity *pServiceEntityTest = nullptr;
-		ServiceEntityType* pServiceEntity = nullptr;
-
-		svrMem(pServiceEntity = new(GetHeap()) ServiceEntityType(constructorArgs...));
-
-		svrChk(Service::EntityManager->AddEntity(EntityFaculty::Service, pServiceEntity));
-
-		svrChk(Service::ClusterManager->AddClusterServiceEntity(pServiceEntity));
-
-
-	Proc_End:
-
-		return pServiceEntity;
-	}
-
-
-	template< class ServiceEntityType, typename... ConstructorArgs >
-	Result BrServer::AddServiceEntityComponent(ConstructorArgs... constructorArgs)
-	{
-		Result hr = ResultCode::SUCCESS;
-
-		auto pServiceEntity = AddServiceEntity<ServiceEntityType>(constructorArgs...);
-		if (pServiceEntity == nullptr)
-			return ResultCode::FAIL;
-
-		svrChk(GetComponentCarrier().AddComponentWithAdapter(pServiceEntity));
-
-	Proc_End:
-
-		return hr;
-	}
-
-
 	Result BrServer::RegisterClustereWatchers(ClusterID clusterID, ClusterID clusterIDEnd)
 	{
 		Result hr = ResultCode::SUCCESS;

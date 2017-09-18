@@ -198,10 +198,11 @@ namespace GameServer {
 		{
 			// Register game conspiracy cluster as a slave
 			auto pMySvr = (const ServerConfig::GameServer*)GetMyConfig();
-			svrMem(pGameService = new(GetHeap()) GameClusterServiceEntity(GetGameClusterInfo()->GameClusterID, &pMySvr->PublicNet, ClusterMembership::Slave));
-			svrChk(Service::EntityManager->AddEntity(EntityFaculty::Service, pGameService));
-			svrChk(Service::ClusterManager->AddClusterServiceEntity(pGameService));
-			GetComponentCarrier().AddComponentWithAdapter(pGameService);
+			svrChkPtr(AddServiceEntity<GameClusterServiceEntity>(Svr::GetServerGameID(), &pMySvr->PublicNet, ClusterMembership::Slave));
+			//svrMem(pGameService = new(GetHeap()) GameClusterServiceEntity(GetGameClusterInfo()->GameClusterID, &pMySvr->PublicNet, ClusterMembership::Slave));
+			//svrChk(Service::EntityManager->AddEntity(EntityFaculty::Service, pGameService));
+			//svrChk(Service::ClusterManager->AddClusterServiceEntity(pGameService));
+			//GetComponentCarrier().AddComponentWithAdapter(pGameService);
 		}
 
 

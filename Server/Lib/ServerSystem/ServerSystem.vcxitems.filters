@@ -378,6 +378,9 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)Component\SFServerNetComponent.h">
       <Filter>Component</Filter>
     </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)Service\PlayerManagerService.h">
+      <Filter>Service</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="$(MSBuildThisFileDirectory)makefile.mak" />

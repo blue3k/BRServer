@@ -91,7 +91,7 @@ namespace Svr {
 		}
 
 		// set up watcher and get children
-		m_GetChildrenTask = zkSession.AGetChildren(m_ClusterPath, this);
+		DownloadServiceInfo();
 
 		m_ZKInitialized = true;
 	}
@@ -104,14 +104,7 @@ namespace Svr {
 		if (!zkSession.IsConnected())
 			return ResultCode::FAIL;
 
-		Result result = zkSession.Get(nodePath, valueBuffer, nullptr);
-		if (!result) return result;
-
-		Json::Reader reader;
-
-		auto bRes = reader.parse(reinterpret_cast<const char*>(valueBuffer.data()), reinterpret_cast<const char*>(valueBuffer.data()) + valueBuffer.GetItemCount(), jsonValue, false);
-		if (!bRes)
-			return ResultCode::FAIL;
+		Result result = zkSession.Get(nodePath, jsonValue);
 
 		return result;
 	}
@@ -160,31 +153,42 @@ namespace Svr {
 		Json::Value nodeValue(Json::objectValue);
 		NetAddress privateAddress;
 
+		pNewServiceInfo = new(GetHeap()) ServerServiceInformation(
+			pServiceEntity->GetGameID(),
+			pServiceEntity->GetClusterID(),
+			pServiceEntity->GetEntityUID(),
+			pServiceEntity->GetServerEntity(),
+			pServiceEntity->GetClusterMembership()
+		);
+
 		auto oldInfo = Services.find(pNewServiceInfo->GetNodeNameCrc());
 		if (oldInfo != nullptr)
 		{
-			// Sometimes zookeeper has node information for previous execution
+			// Sometimes zookeeper has node information from previous execution
+			IHeap::Delete(pNewServiceInfo);
 			pNewServiceInfo = oldInfo;
 			assert(pServiceEntity->GetEntityUID() == oldInfo->GetEntityUID());
 			assert(pServiceEntity->GetServerEntity() == oldInfo->GetServerEntity());
 		}
 		else
 		{
-			pNewServiceInfo = new(GetHeap()) ServerServiceInformation(
-				pServiceEntity->GetGameID(),
-				pServiceEntity->GetClusterID(),
-				pServiceEntity->GetEntityUID(),
-				pServiceEntity->GetServerEntity(),
-				pServiceEntity->GetClusterMembership()
-			);
+			hr = Services.Insert(pNewServiceInfo->GetNodeNameCrc(), pNewServiceInfo);
+			if (!hr)
+			{
+				assert(false); // Huh?
+				if (oldInfo == nullptr)
+					IHeap::Delete(pNewServiceInfo);
+				return nullptr;
+			}
 		}
 
-		hr = Services.Insert(pNewServiceInfo->GetNodeNameCrc(), pNewServiceInfo);
-		if (!hr)
+		for (auto itLocalService : LocalServiceEntites)
 		{
-			assert(false); // Huh?
-			IHeap::Delete(pNewServiceInfo);
-			return nullptr;
+			if (itLocalService == pServiceEntity)
+			{
+				assert(false);
+				return pNewServiceInfo; // insert twice?
+			}
 		}
 
 		svrChk(LocalServiceEntites.push_back(pServiceEntity));
@@ -204,6 +208,8 @@ namespace Svr {
 
 		stringValue = std::forward<std::string>(writer.write(nodeValue));
 
+		svrTrace(Debug, "ZK local service added ({0}), GameID:{1} ClusterID:{2}", pNewServiceInfo->GetNodeName(), Enum<GameID>().GetValueName(m_ClusterKey.GameClusterID), Enum<ClusterID>().GetValueName(m_ClusterKey.ServiceClusterID));
+
 		zkSession.ACreate(nodePath, stringValue, nullptr, zkSession.NODE_FLAG_EPHEMERAL);
 
 	Proc_End:
@@ -222,6 +228,8 @@ namespace Svr {
 		auto& zkSession = Service::ZKSession->GetZooKeeperSession();
 		if (!zkSession.IsConnected())
 			return;
+
+		svrTrace(Debug, "ZK requesting service list, GameID:{0} ClusterID:{1}", Enum<GameID>().GetValueName(m_ClusterKey.GameClusterID), Enum<ClusterID>().GetValueName(m_ClusterKey.ServiceClusterID));
 
 		zkSession.AGetChildren(m_ClusterPath, this);
 	}
@@ -244,6 +252,7 @@ namespace Svr {
 
 	Result ClusterServiceInfo_Impl::OnNewEvent(const ZKEvent& eventOut)
 	{
+		svrTrace(Debug, "ZKEvent:{0}, GameID:{1} ClusterID:{2}", eventOut.EventType, Enum<GameID>().GetValueName(m_ClusterKey.GameClusterID), Enum<ClusterID>().GetValueName(m_ClusterKey.ServiceClusterID));
 		if (eventOut.EventType == ZooKeeper::EVENT_CHILD)
 		{
 			DownloadServiceInfo();
@@ -299,6 +308,8 @@ namespace Svr {
 
 		svrChk(Services.Insert(nodeNameCrc, pNewServiceInfo));
 
+		svrTrace(Debug, "ZK ServiceInfo Added({0}), GameID:{1} ClusterID:{2}", nodeName, Enum<GameID>().GetValueName(m_ClusterKey.GameClusterID), Enum<ClusterID>().GetValueName(m_ClusterKey.ServiceClusterID));
+
 		// Connect to the service entity
 		if (m_ActivelyConnect)
 		{
@@ -315,7 +326,7 @@ namespace Svr {
 	{
 		if (!pTask.Result)
 		{
-			assert(false);
+			//assert(false);
 			return;
 		}
 
@@ -355,6 +366,7 @@ namespace Svr {
 			if (pRemove->GetServerID() == serverID)
 				continue;
 
+			svrTrace(Debug, "ZK service removed ({0}), GameID:{1} ClusterID:{2}", pRemove->GetNodeName(), Enum<GameID>().GetValueName(m_ClusterKey.GameClusterID), Enum<ClusterID>().GetValueName(m_ClusterKey.ServiceClusterID));
 			Services.Remove(itRemove, pRemove);
 			if (pRemove != nullptr)
 			{

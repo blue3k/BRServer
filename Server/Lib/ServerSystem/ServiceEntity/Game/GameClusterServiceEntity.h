@@ -40,13 +40,14 @@ namespace Svr {
 	//	GameClusterServiceEntity class
 	//
 
-	class GameClusterServiceEntity : public ShardedClusterServiceEntity
+	class GameClusterServiceEntity : public ShardedClusterServiceEntity, public PlayerManagerService
 	{
 	public:
 
-		enum { ComponentID = ServerComponentID_GameClusterService };
-
 		typedef ShardedClusterServiceEntity super;
+
+		const char* ZKBasePath = "/Player";
+
 
 		// Player table item
 		class PlayerTableItem
@@ -59,32 +60,22 @@ namespace Svr {
 			// Entity UID
 			EntityUID m_EntityUID;
 
-			// Server Up time, Used for checking latest updated server entity
-			TimeStampMS m_ServerUpTime;
-
-			// Linked server entity
-			ServerEntity* m_ServerEntity = nullptr;
-
 
 		public:
 
 			PlayerID GetPlayerID() const { return m_PlayerID; }
 			EntityUID GetEntityUID() const { return m_EntityUID; }
-			TimeStampMS GetServerUpTime() const { return m_ServerUpTime; }
-			ServerEntity* GetServerEntity() const { return m_ServerEntity; }
 
 			// Constructor with constructor
-			PlayerTableItem( PlayerID playerID, EntityUID entityUID, ServerEntity* pServerEntity )
+			PlayerTableItem( PlayerID playerID, EntityUID entityUID )
 				:m_PlayerID(playerID)
 				,m_EntityUID(entityUID)
-				,m_ServerUpTime(pServerEntity->GetServerUpTime())
-				,m_ServerEntity(pServerEntity)
 			{
 			}
 
 		public:
 
-			void UpdateEntityInfo( EntityUID entityUID, ServerEntity* pServerEntity );
+			void UpdateEntityInfo( EntityUID entityUID);
 		};
 
 
@@ -98,7 +89,7 @@ namespace Svr {
 
 	private:
 
-		// Player ID map
+		// Player ID map. Locally created players
 		PlayerIDMap m_PlayerIDMap;
 
 		// Number of player who exists on this server
@@ -109,7 +100,7 @@ namespace Svr {
 
 	public:
 		// Constructor/Destructor
-		GameClusterServiceEntity(GameID gameID, const ServerConfig::NetPublic *publicNetSocket, ClusterMembership initialMembership = ClusterMembership::StatusWatcher);
+		GameClusterServiceEntity(const ServerConfig::NetPublic *publicNetSocket, ClusterMembership initialMembership = ClusterMembership::StatusWatcher);
 		virtual ~GameClusterServiceEntity();
 
 		virtual Result RegisterServiceMessageHandler( ServerEntity *pServerEntity ) override;
@@ -125,20 +116,18 @@ namespace Svr {
 		//	Player operations
 		//
 
-		// Create PlayerInfo
-		Result CreatePlayer( PlayerID playerID, EntityUID entityUID, ServerEntity* pGameServerEntity );
-		Result CreatePlayer( PlayerID playerID, EntityUID entityUID );
+		virtual void Clear() override;
 
-		// Create PlayerInfo
-		Result DeletePlayer(PlayerID playerID, EntityUID entityUID);
+		// Create or update player id
+		virtual Result CreatePlayer(GameID gameID, PlayerID playerID, EntityUID entityUID) override;
+		virtual Result DeletePlayer(GameID gameID, PlayerID playerID) override;
+		virtual Result FindPlayer(GameID gameID, PlayerID playerID, EntityUID& entityUID) override;
 
-		// Get Player info
-		Result FindPlayer( PlayerID playerID, EntityUID &playerUID );
+		// Use server gameID for search
+		virtual Result CreatePlayer(PlayerID playerID, EntityUID entityUID) override;
+		virtual Result DeletePlayer(PlayerID playerID) override;
+		virtual Result FindPlayer(PlayerID playerID, EntityUID& entityUID) override;
 
-		// Initialize server component
-		Result InitializeComponent() { return ResultCode::SUCCESS; }
-		// Terminate server component
-		void TerminateComponent() {  }
 
 
 	};

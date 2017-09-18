@@ -41,8 +41,8 @@ namespace Svr {
 	//	Entity informations
 	//
 
-	GameClusterServiceEntity::GameClusterServiceEntity(GameID gameID, const ServerConfig::NetPublic *publicNetSocket, ClusterMembership initialMembership)
-		: super(gameID, ClusterID::Game, initialMembership)
+	GameClusterServiceEntity::GameClusterServiceEntity(const ServerConfig::NetPublic *publicNetSocket, ClusterMembership initialMembership)
+		: super(GetServerGameID(), ClusterID::Game, initialMembership)
 		, m_PlayerIDMap(GetMemoryManager())
 		, m_PublicNetSocket(publicNetSocket)
 	{
@@ -64,11 +64,9 @@ namespace Svr {
 	//	Player operations
 	//
 
-	void GameClusterServiceEntity::PlayerTableItem::UpdateEntityInfo( EntityUID entityUID, ServerEntity* pServerEntity )
+	void GameClusterServiceEntity::PlayerTableItem::UpdateEntityInfo( EntityUID entityUID )
 	{
 		m_EntityUID = entityUID;
-		m_ServerUpTime = pServerEntity->GetServerUpTime();
-		m_ServerEntity = pServerEntity;
 	}
 
 	Result GameClusterServiceEntity::RegisterServiceMessageHandler( ServerEntity *pServerEntity )
@@ -77,8 +75,8 @@ namespace Svr {
 
 		svrChk(super::RegisterServiceMessageHandler( pServerEntity ) );
 
-		pServerEntity->BR_ENTITY_MESSAGE(Message::ClusterServer::GamePlayerEntityCreatedC2SEvt)				{ svrMemReturn(pNewTrans = new(GetHeap()) GameServerTransGamePlayerEntityCreatedS2CEvt(GetHeap(), pMsgData)); return ResultCode::SUCCESS; } );
-		pServerEntity->BR_ENTITY_MESSAGE(Message::ClusterServer::GamePlayerEntityDeletedC2SEvt)				{ svrMemReturn(pNewTrans = new(GetHeap()) GameServerTransGamePlayerEntityDeletedS2CEvt(GetHeap(), pMsgData)); return ResultCode::SUCCESS; } );
+		//pServerEntity->BR_ENTITY_MESSAGE(Message::ClusterServer::GamePlayerEntityCreatedC2SEvt)				{ svrMemReturn(pNewTrans = new(GetHeap()) GameServerTransGamePlayerEntityCreatedS2CEvt(GetHeap(), pMsgData)); return ResultCode::SUCCESS; } );
+		//pServerEntity->BR_ENTITY_MESSAGE(Message::ClusterServer::GamePlayerEntityDeletedC2SEvt)				{ svrMemReturn(pNewTrans = new(GetHeap()) GameServerTransGamePlayerEntityDeletedS2CEvt(GetHeap(), pMsgData)); return ResultCode::SUCCESS; } );
 
 
 	Proc_End:
@@ -102,149 +100,158 @@ namespace Svr {
 		return hr;
 	}
 
-	// Create PlayerInfo
-	Result GameClusterServiceEntity::CreatePlayer( PlayerID playerID, EntityUID entityUID, ServerEntity* pGameServerEntity )
+	void GameClusterServiceEntity::Clear()
 	{
-		Result hr = ResultCode::SUCCESS;
+
+	}
+
+	// Create or update player id
+	Result GameClusterServiceEntity::CreatePlayer(GameID gameID, PlayerID playerID, EntityUID entityUID)
+	{
+		Result hr;
 		PlayerTableItem *pNewPlayerInfo = nullptr;
 		PlayerIDMapIterator itPlayer;
+		char nodePath[256];
+		bool bIsUpdate = false;
 
-		if( playerID == 0 || entityUID.UID == 0 ) svrErr(ResultCode::INVALID_PLAYERID);
-		svrChkPtr( pGameServerEntity );
-		if( entityUID.GetServerID() != pGameServerEntity->GetServerID() )
-		{
-			svrErr(ResultCode::SVR_INVALID_SERVERID);
-		}
+		if (playerID == 0 || entityUID.UID == 0) svrErr(ResultCode::INVALID_PLAYERID);
 
-		if( (m_PlayerIDMap.find( playerID, itPlayer )) )
+		//if (entityUID.GetServerID() != GetMyServerID())
+		//{
+		//	svrErr(ResultCode::SVR_INVALID_SERVERID);
+		//}
+
+		if ((m_PlayerIDMap.find(playerID, itPlayer)))
 		{
 			Assert(itPlayer->GetPlayerID() == playerID);
-			itPlayer->UpdateEntityInfo( entityUID, pGameServerEntity );
-			goto Proc_End;
+			itPlayer->UpdateEntityInfo(entityUID);
+			bIsUpdate = true;
+			return hr;
 		}
 
-		svrMem( pNewPlayerInfo = new(GetMemoryManager()) PlayerTableItem( playerID, entityUID, pGameServerEntity ) );
-
-		svrChk( m_PlayerIDMap.insert(pNewPlayerInfo->GetPlayerID(), pNewPlayerInfo ) );
-
-		pNewPlayerInfo = nullptr;
-
-	Proc_End:
-
-		Util::SafeDelete( pNewPlayerInfo );
-
-		return hr;
-	}
-
-	Result GameClusterServiceEntity::CreatePlayer( PlayerID playerID, EntityUID entityUID )
-	{
-		Result hr = ResultCode::SUCCESS;
-
-		if( playerID == 0 || entityUID.UID == 0 ) svrErr(ResultCode::INVALID_PLAYERID);
-
-		svrChk( CreatePlayer( playerID, entityUID, GetLoopbackServerEntity() ) );
-
+		svrMem(pNewPlayerInfo = new(GetMemoryManager()) PlayerTableItem(playerID, entityUID));
 		m_NumberOfPlayerOnThisServer.fetch_add(1, std::memory_order_relaxed);
 
-		// TODO: Create player entity to zk
-		//ForEachNonWatcher([&](ServerServiceInformation* pServerService){
-		//	if( pServerService->GetEntityUID() == GetEntityUID() )
-		//		return;
 
-		//	ClusterServerService *pService = pServerService->GetService<ClusterServerService>();
-		//	if( pService == nullptr )
-		//		return;
+		auto& zkSession = Service::ZKSession->GetZooKeeperSession();
+		if (!zkSession.IsConnected())
+		{
+			svrTrace(Error, "Zookeeper session server hasn't ready!");
+			return ResultCode::UNEXPECTED;
+		}
 
-		//	// I don't want to let it be replicated, so the route hop is 1 even though it's the first hop
-		//	pService->GamePlayerEntityCreatedC2SEvt( GetEntityID(), 1, playerID, entityUID );
-		//	
-		//});
+		Json::Value nodeValue(Json::objectValue);
+		nodeValue["EntityID"] = Json::Value(pNewServiceInfo->GetEntityUID().UID);
+
+		StrUtil::Format(nodePath, "{0}/{1}/{2}", ZKBasePath, Enum<GameID>().GetValueName(gameID), playerID);
+		if (zkSession.Exists(nodePath))
+		{
+			if (bIsUpdate)
+			{
+				zkSession.ASet(nodePath, , -1);
+			}
+		}
+		zkSession.ACreate(nodePath,);
+
 
 	Proc_End:
 
 		return hr;
 	}
 
-	// Create PlayerInfo
-	Result GameClusterServiceEntity::DeletePlayer( PlayerID playerID, EntityUID playerEntityUID )
+	Result GameClusterServiceEntity::DeletePlayer(GameID gameID, PlayerID playerID)
 	{
-		Result hr = ResultCode::SUCCESS;
+		Result hr;
 		PlayerTableItem *pPlayerInfo = nullptr;
 		PlayerIDMapIterator itPlayer;
+		char nodePath[256];
 
-		if( !(m_PlayerIDMap.find( playerID, itPlayer )) )
+		if (!m_PlayerIDMap.find(playerID, itPlayer))
 		{
-			return ResultCode::INVALID_PLAYERID;
+			return ResultCode::INVALID_ENTITY;
 		}
 
-		pPlayerInfo = itPlayer;
 
-		svrChk( m_PlayerIDMap.erase(playerID) );
+		PlayerTableItem* pTblItem = itPlayer;
 
-		if (pPlayerInfo->GetEntityUID() != playerEntityUID)
+		if (pTblItem->GetPlayerID() != playerID)
 			svrErr(ResultCode::INVALID_ENTITY);
 
-		// replicate delete from my server
-		if( pPlayerInfo && pPlayerInfo->GetEntityUID().GetServerID() == GetMyServerID() )
+		svrChk(m_PlayerIDMap.erase(playerID));
+
+		m_NumberOfPlayerOnThisServer.fetch_sub(1, std::memory_order_relaxed);
+
+		IHeap::Delete(pTblItem);
+
+
+		auto& zkSession = Service::ZKSession->GetZooKeeperSession();
+		if (!zkSession.IsConnected())
 		{
-			m_NumberOfPlayerOnThisServer.fetch_sub(1, std::memory_order_relaxed);
-
-			// TODO: Notify to zk
-			//ForEachNonWatcher([&](ServerServiceInformation* pServerService){
-			//	if( pServerService->GetEntityUID() == GetEntityUID() )
-			//		return;
-
-			//	ClusterServerService *pService = pServerService->GetService<ClusterServerService>();
-			//	if( pService == nullptr )
-			//		return;
-
-			//	// I don't want to let it be replicated, so the route hop is 1 even though it's the first hop
-			//	pService->GamePlayerEntityDeletedC2SEvt( GetEntityID(), 1, playerID, pPlayerInfo->GetEntityUID() );
-			//
-			//});
+			svrTrace(Error, "Zookeeper session server hasn't ready!");
+			return ResultCode::UNEXPECTED;
 		}
+
+		StrUtil::Format(nodePath, "{0}/{1}/{2}", ZKBasePath, Enum<GameID>().GetValueName(gameID), playerID);
+		zkSession.ADelete(nodePath);
+
 
 	Proc_End:
 
-		Util::SafeDelete( pPlayerInfo );
 
 		return hr;
-
 	}
 
-	// Get Player info
-	Result GameClusterServiceEntity::FindPlayer( PlayerID playerID, EntityUID &playerUID )
+	Result GameClusterServiceEntity::FindPlayer(GameID gameID, PlayerID playerID, EntityUID& entityUID)
 	{
 		Result hr = ResultCode::SUCCESS;
 		PlayerIDMapIterator itPlayer;
+		char nodePath[256];
+		Json::Value jsonValue(Json::objectValue);
 
-		if( !(m_PlayerIDMap.find( playerID, itPlayer )) )
+		if (m_PlayerIDMap.find(playerID, itPlayer))
 		{
-			return ResultCode::SVR_PLAYER_NOT_FOUND;
+			entityUID = itPlayer->GetEntityUID();
+			return hr;
 		}
 
-		// Check validity
-		if( itPlayer->GetServerUpTime() != itPlayer->GetServerEntity()->GetServerUpTime() )
+
+		auto& zkSession = Service::ZKSession->GetZooKeeperSession();
+		if (!zkSession.IsConnected())
 		{
-			// invalid player information
-			PlayerTableItem *pPlayerInfo = nullptr;
-
-			pPlayerInfo = itPlayer;
-
-			svrChk( m_PlayerIDMap.erase(pPlayerInfo->GetPlayerID()) );
-
-			Util::SafeDelete( pPlayerInfo );
-
-			return ResultCode::SVR_PLAYER_NOT_FOUND;
+			svrTrace(Error, "Zookeeper session server hasn't ready!");
+			return ResultCode::UNEXPECTED;
 		}
 
-		playerUID = itPlayer->GetEntityUID();
+		StrUtil::Format(nodePath, "{0}/{1}/{2}", ZKBasePath, Enum<GameID>().GetValueName(gameID), playerID);
 
+		zkSession.Get(nodePath, jsonValue);
+
+		entityUID.UID = jsonValue.get("EntityID", Json::Value(0)).asUInt64();
 
 	Proc_End:
 
 		return hr;
 	}
+
+
+	// Use server gameID for search
+	Result GameClusterServiceEntity::CreatePlayer(PlayerID playerID, EntityUID entityUID)
+	{
+		return CreatePlayer(Svr::GetServerGameID(), playerID, entityUID);
+	}
+
+	Result GameClusterServiceEntity::DeletePlayer(PlayerID playerID)
+	{
+		return DeletePlayer(Svr::GetServerGameID(), playerID);
+	}
+
+	Result GameClusterServiceEntity::FindPlayer(PlayerID playerID, EntityUID& entityUID)
+	{
+		return FindPlayer(Svr::GetServerGameID(), playerID, entityUID);
+	}
+
+
+
 
 
 }; // namespace Svr {
