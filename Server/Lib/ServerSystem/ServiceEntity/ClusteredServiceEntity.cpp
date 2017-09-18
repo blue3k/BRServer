@@ -162,14 +162,6 @@ namespace Svr {
 		if( m_ServerEntity == nullptr )
 			m_ServerEntity = GetLoopbackServerEntity();
 
-		svrChk(Service::ClusterManager->AddClusterServiceEntity(this, m_MyServiceInfo));
-
-		//svrChk( NewServerService( GetEntityUID(), GetServerEntity(), GetClusterMembership(), GetServiceStatus(), pMyService ) );
-
-		//m_MyServiceInfo = (ServiceTableItem*)pMyService;
-
-		//OnInitializeEntity();
-
 	Proc_End:
 
 		return hr;

@@ -39,7 +39,7 @@
 
 #include "ServiceEntity/GamePartyManagerServiceEntity.h"
 #include "ServiceEntity/Game/GameInstanceManagerServiceEntity.h"
-#include "ServiceEntity/ClusterManagerServiceEntity.h"
+
 
 #include "Server/BrServer.h"
 

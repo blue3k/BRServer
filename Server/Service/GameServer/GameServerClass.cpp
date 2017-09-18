@@ -17,7 +17,7 @@
 #include "SvrTrace.h"
 #include "Service/ServerService.h"
 #include "ServerEntity/ServerEntityManager.h"
-#include "ServiceEntity/ClusterManagerServiceEntity.h"
+
 #include "ServiceEntity/Game/GameClusterServiceEntity.h"
 
 #include "ServiceEntity/MatchingQueueServiceEntity.h"
@@ -38,10 +38,13 @@
 #include "Protocol/Policy/GameInstanceNetPolicy.h"
 
 
+#include "GameInstance/GamePlayerEntity.h"
+
+
 #include "Net/NetServerPeerTCP.h"
 #include "Net/NetSvrDef.h"
 #include "Net/NetServerUDP.h"
-#include "GameInstance/GameEntityManager.h"
+
 
 
 #include "GameSvrConst.h"
@@ -86,11 +89,6 @@ namespace GameServer {
 	}
 
 	
-
-	Svr::ServerEntity* GameServer::CreateLoopbackEntity()
-	{
-		return new(GetHeap()) Svr::GameServerEntity;
-	}
 	
 	// Update game config
 	Result GameServer::UpdateGameConfig(uint configPresetID)
@@ -163,6 +161,17 @@ namespace GameServer {
 	}
 
 
+	Svr::Entity* GameServer::CreateEntity(ClusterID clusterID, EntityFaculty faculty)
+	{
+		if(clusterID == ClusterID::User && faculty == EntityFaculty::User)
+		{
+			return new(GetHeap()) GamePlayerEntity;
+		}
+
+		return nullptr;
+	}
+
+
 	// Initialize private Network
 	Result GameServer::InitializeNetPrivate()
 	{
@@ -171,8 +180,9 @@ namespace GameServer {
 		uint componentID = 0;
 		SockFamily privateNetSockFamily;
 
+		Service::EntityManager->RegisterEntityCreator([this](ClusterID clusterID, EntityFaculty faculty) { return CreateEntity(clusterID, faculty); });
 
-		Engine::GetInstance()->AddComponent<SF::GameServer::GameEntityManager>(GetMyConfig()->EntityControlCount);
+		//Engine::GetInstance()->AddComponent<SF::GameServer::GameEntityManager>(GetMyConfig()->EntityControlCount);
 
 		svrChk(Svr::BrServer::InitializeNetPrivate() );
 

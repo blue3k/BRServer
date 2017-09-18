@@ -32,10 +32,11 @@ namespace Svr {
 	//	GameUser Entity manager
 	//
 
-	class EntityManager : public LibraryComponent, public TickTaskManager, public EntityManagerService
+	class EntityManager : public TickTaskManager, public EntityManagerService
 	{
 	public:
 		static constexpr FixedString TypeName = "EntityManager";
+
 
 	private:
 
@@ -47,6 +48,9 @@ namespace Svr {
 		PerformanceCounterRaw < uint64_t > m_NumberOfServices;
 		PerformanceCounterRaw < uint64_t > m_NumberOfTotalEntities;
 
+
+		DynamicArray<EntityCreator> m_EntityCretors;
+
 	public:
 		// Constructor/Destructor
 		EntityManager(uint numTaskGroup);
@@ -56,8 +60,7 @@ namespace Svr {
 		IMemoryManager& GetMemoryManager() { return m_MemoryManager; }
 		IHeap& GetHeap() { return m_MemoryManager; }
 
-
-		virtual const FixedString& GetTypeName() override { return TypeName; }
+		virtual void RegisterEntityCreator(const EntityCreator& creator) override;
 
 		////////////////////////////////////////////////////////////////////////////
 		//
@@ -90,10 +93,10 @@ namespace Svr {
 		virtual void Update() override;
 
 		// Initialize component
-		virtual Result InitializeComponent() override;
+		virtual Result InitializeComponent();
 
 		// Terminate component
-		virtual void DeinitializeComponent() override;
+		virtual void DeinitializeComponent();
 
 
 	};

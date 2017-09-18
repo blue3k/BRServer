@@ -307,7 +307,6 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)ServerService\ServerServiceBase.h">
       <Filter>ServerService</Filter>
     </ClInclude>
-    <ClInclude Include="$(MSBuildThisFileDirectory)ServiceEntity\ServiceEntity.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Entity\SimpleEntity.h">
       <Filter>Entity</Filter>
     </ClInclude>
@@ -361,18 +360,23 @@
       <Filter>Service</Filter>
     </ClInclude>
     <ClInclude Include="$(MSBuildThisFileDirectory)Server\ParameterSetting.h" />
-    <ClInclude Include="$(MSBuildThisFileDirectory)Service\EntityManagerService.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Service\ZookeeperSessionService.h">
       <Filter>Service</Filter>
     </ClInclude>
-    <ClInclude Include="C:\work\BRServerSF\Server\Lib\ServerSystem\Component\SFServerNetComponent.h">
+    <ClInclude Include="$(MSBuildThisFileDirectory)Service\ClusterManagerService.h">
+      <Filter>Service</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)Service\EntityManagerService.h">
+      <Filter>Service</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)Service\ServerEntityManagerService.h">
+      <Filter>Service</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)ServiceEntity\ServiceEntity.h">
+      <Filter>ServerService</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)Component\SFServerNetComponent.h">
       <Filter>Component</Filter>
-    </ClInclude>
-    <ClInclude Include="C:\work\BRServerSF\Server\Lib\ServerSystem\Service\ClusterManagerService.h">
-      <Filter>Service</Filter>
-    </ClInclude>
-    <ClInclude Include="C:\work\BRServerSF\Server\Lib\ServerSystem\Service\ServerEntityManagerService.h">
-      <Filter>Service</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -649,7 +653,6 @@
     <ClCompile Include="$(MSBuildThisFileDirectory)Task\ServerTaskManager.cpp">
       <Filter>Task</Filter>
     </ClCompile>
-    <ClCompile Include="$(MSBuildThisFileDirectory)ServiceEntity\ServiceEntity.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)Entity\SimpleEntity.cpp">
       <Filter>Entity</Filter>
     </ClCompile>
@@ -690,7 +693,10 @@
       <Filter>Service</Filter>
     </ClCompile>
     <ClCompile Include="$(MSBuildThisFileDirectory)Server\ParameterSetting.cpp" />
-    <ClCompile Include="C:\work\BRServerSF\Server\Lib\ServerSystem\Component\SFServerNetComponent.cpp">
+    <ClCompile Include="$(MSBuildThisFileDirectory)ServiceEntity\ServiceEntity.cpp">
+      <Filter>ServerService</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)Component\SFServerNetComponent.cpp">
       <Filter>Component</Filter>
     </ClCompile>
   </ItemGroup>

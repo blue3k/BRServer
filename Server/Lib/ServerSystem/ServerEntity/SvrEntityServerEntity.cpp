@@ -27,7 +27,6 @@
 
 
 #include "ServerEntity/SvrEntityServerEntity.h"
-#include "ServiceEntity/ClusterManagerServiceEntity.h"
 #include "Transaction/ServerTransactionGeneric.h"
 
 #include "Protocol/Policy/EntityServerNetPolicy.h"

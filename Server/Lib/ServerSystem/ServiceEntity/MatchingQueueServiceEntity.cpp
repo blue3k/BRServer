@@ -22,7 +22,7 @@
 #include "Component/ServerComponent.h"
 #include "ServerService/ServerServiceBase.h"
 #include "ServerEntity/ServerEntity.h"
-#include "ServiceEntity/ClusterManagerServiceEntity.h"
+
 #include "ServiceEntity/MatchingQueueServiceEntity.h"
 #include "ServiceEntity/MatchingQueueServiceTrans.h"
 #include "SvrTrace.h"

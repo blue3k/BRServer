@@ -18,7 +18,7 @@
 #include "Service/ServerService.h"
 #include "ServerEntity/ServerEntityManager.h"
 
-#include "ServiceEntity/ClusterManagerServiceEntity.h"
+
 #include "ServiceEntity/Game/GameClusterServiceEntity.h"
 #include "ServiceEntity/Game/GameInstanceManagerServiceEntity.h"
 #include "ServiceEntity/Login/LoginServiceEntity.h"

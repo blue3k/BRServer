@@ -18,7 +18,7 @@
 #include "Service/ServerService.h"
 #include "ServerEntity/ServerEntityManager.h"
 //#include "ServiceEntity/EntityManagerServiceEntity.h"
-#include "ServiceEntity/ClusterManagerServiceEntity.h"
+
 #include "ServiceEntity/Game/GameClusterServiceEntity.h"
 
 #include "ServiceEntity/MatchingQueueServiceEntity.h"
@@ -80,11 +80,6 @@ namespace SharedModuleServer {
 	}
 
 
-	Svr::ServerEntity* SharedModuleServer::CreateLoopbackEntity()
-	{
-		return new(GetMemoryManager()) Svr::ServerEntity;
-	}
-
 
 	// Apply configuration
 	Result SharedModuleServer::ApplyConfiguration()
@@ -140,7 +135,6 @@ namespace SharedModuleServer {
 		Result hr = ResultCode::SUCCESS;
 		SockFamily privateNetSockFamily;
 
-		Engine::GetInstance()->AddComponent<Svr::EntityManager>(GetMyConfig()->EntityControlCount);
 
 		svrChk(Svr::BrServer::InitializeNetPrivate() );
 
@@ -186,12 +180,7 @@ namespace SharedModuleServer {
 	// create remote entity by class
 	Result SharedModuleServer::CreateServerEntity( NetClass netClass, Svr::ServerEntity* &pServerEntity )
 	{
-		switch( netClass )
-		{
-		default:
-			pServerEntity = new(GetMemoryManager()) Svr::GenericServerEntity();
-			break;
-		};
+		pServerEntity = new(GetMemoryManager()) Svr::GenericServerEntity();
 
 		if( pServerEntity == nullptr )
 			return ResultCode::OUT_OF_MEMORY;

@@ -22,9 +22,23 @@ namespace SF {
 	namespace Svr {
 		class ClusteredServiceEntity;
 		class ServerServiceInformation;
-		class ClusterServiceInfo;
 	}
 	
+
+	////////////////////////////////////////////////////////////////////////////////////////////////////////
+	// ClusterService information
+	struct ClusterServiceInfo
+	{
+		SortedArray<FixedString, Svr::ServerServiceInformation*> Services;
+		DynamicArray<SharedPointerT<Svr::ClusteredServiceEntity>> LocalServiceEntites;
+
+		ClusterServiceInfo(IHeap& heap)
+			: Services(heap)
+			, LocalServiceEntites(heap)
+		{
+		}
+	};
+
 
 	/////////////////////////////////////////////////////////////////////////////////////////
 	//
@@ -54,7 +68,7 @@ namespace SF {
 		virtual Result InitializeNotInitializedClusterEntities() { return ResultCode::NOT_IMPLEMENTED; }
 
 		// Get cluster info
-		virtual Result GetClusterInfo(GameID gameID, ClusterID clusterID, Svr::ClusterServiceInfo* &pServiceInfo) { return ResultCode::NOT_IMPLEMENTED; }
+		virtual ClusterServiceInfo* GetClusterInfo(GameID gameID, ClusterID clusterID) { return nullptr; }
 
 		// Get random cluster service
 		virtual Result GetRandomService(GameID gameID, ClusterID clusterID, Svr::ServerServiceInformation* &pServiceInfo) { return ResultCode::NOT_IMPLEMENTED; }

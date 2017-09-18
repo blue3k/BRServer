@@ -17,7 +17,7 @@
 #include "SvrTrace.h"
 #include "Service/ServerService.h"
 #include "ServerEntity/ServerEntityManager.h"
-#include "ServiceEntity/ClusterManagerServiceEntity.h"
+
 #include "ServiceEntity/Game/GameClusterServiceEntity.h"
 
 #include "ServiceEntity/MatchingQueueServiceEntity.h"
@@ -47,7 +47,7 @@
 #include "ConspiracyGameInstanceServerClass.h"
 
 #include "Transaction/GameInstanceServerTrans.h"
-#include "GameInstance/GameEntityManager.h"
+
 
 #include "DB/GameConspiracyDB.h"
 #include "DB/AccountDB.h"
@@ -82,10 +82,6 @@ namespace ConspiracyGameInstanceServer {
 
 
 
-	Svr::ServerEntity* GameInstanceServer::CreateLoopbackEntity()
-	{
-		return new(GetMemoryManager()) Svr::GenericServerEntity;
-	}
 
 
 	// Apply configuration
@@ -139,6 +135,15 @@ namespace ConspiracyGameInstanceServer {
 		return hr;
 	}
 
+	Svr::Entity* GameInstanceServer::CreateEntity(ClusterID clusterID, EntityFaculty faculty)
+	{
+		if (clusterID == ClusterID::GameInstanceManager && faculty == EntityFaculty::GameInstance)
+		{
+			return new(GetHeap()) GameInstanceEntity;
+		}
+
+		return nullptr;
+	}
 
 	// Initialize private Network
 	Result GameInstanceServer::InitializeNetPrivate()
@@ -146,8 +151,7 @@ namespace ConspiracyGameInstanceServer {
 		Result hr = ResultCode::SUCCESS;
 		SockFamily privateNetSockFamily;
 
-		Engine::GetInstance()->AddComponent<GameEntityManager>(GetMyConfig()->EntityControlCount);
-
+		Service::EntityManager->RegisterEntityCreator([this](ClusterID clusterID, EntityFaculty faculty) { return CreateEntity(clusterID, faculty); });
 
 		svrChk(Svr::BrServer::InitializeNetPrivate() );
 
@@ -206,12 +210,7 @@ namespace ConspiracyGameInstanceServer {
 	// create remote entity by class
 	Result GameInstanceServer::CreateServerEntity( NetClass netClass, Svr::ServerEntity* &pServerEntity )
 	{
-		switch( netClass )
-		{
-		default:
-			pServerEntity = new(GetMemoryManager()) Svr::GenericServerEntity();
-			break;
-		};
+		pServerEntity = new(GetMemoryManager()) Svr::GenericServerEntity();
 
 		if( pServerEntity == nullptr )
 			return ResultCode::OUT_OF_MEMORY;

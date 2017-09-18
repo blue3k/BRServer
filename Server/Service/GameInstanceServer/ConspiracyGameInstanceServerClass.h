@@ -58,8 +58,6 @@ namespace ConspiracyGameInstanceServer
 
 	protected:
 
-		// Create entity manager
-		virtual Svr::ServerEntity* CreateLoopbackEntity() override;
 
 	public:
 		GameInstanceServer();
@@ -74,6 +72,9 @@ namespace ConspiracyGameInstanceServer
 		// Query Loopback entity
 		inline ConspiracyGameInstanceServerEntity* GetLoopbackGameServerEntity();
 		
+
+		Svr::Entity* CreateEntity(ClusterID clusterID, EntityFaculty faculty);
+
 		//////////////////////////////////////////////////////////////////////////
 		//
 		//	virtual network process

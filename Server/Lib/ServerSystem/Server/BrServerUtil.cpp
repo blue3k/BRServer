@@ -20,6 +20,7 @@
 #include "Server/ParameterSetting.h"
 #include "ServerEntity/ServerEntityManager.h"
 #include "ServiceEntity/ClusterManagerServiceEntity.h"
+#include "Entity/EntityManager.h"
 
 #include "SFEngine.h"
 #include "Component/SFServerNetComponent.h"
@@ -87,14 +88,16 @@ namespace Svr {
 		if (pEngine == nullptr)
 			return;
 
-		auto pMyConfig = Service::ServerConfig->FindGenericServer(Util::GetServiceName());
-
 		pEngine->AddComponent<ServerNetComponent>();
 		pEngine->AddComponent<ServerLogComponent>("..\\..\\Config\\traceConfig.cfg");
 		pEngine->AddComponent<ZooKeeperSessionComponent>(zkaddress, ZOO_LOG_LEVEL_DEBUG);
 		pEngine->AddComponent<ServerConfigComponent>(zkconfig);
+
+		auto pMyConfig = Service::ServerConfig->FindGenericServer(Util::GetServiceName());
+
 		pEngine->AddComponent<ConnectionManagerComponent>(2048);
 		pEngine->AddComponent<EntityTable>();
+		pEngine->AddComponent<LibraryComponentAdapter<EntityManager, uint>, IHeap&, uint>(GetSystemMemoryManager(), pMyConfig->EntityControlCount);
 		pEngine->AddComponent<LibraryComponentAdapter<Svr::ServerEntityManager,uint>, IHeap&, uint>(GetSystemMemoryManager(), pMyConfig->EntityControlCount);
 		pEngine->AddComponent<LibraryComponentAdapter<Svr::ClusterManagerServiceEntity>, IHeap&>(GetSystemMemoryManager());
 	}

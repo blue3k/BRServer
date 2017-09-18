@@ -61,9 +61,6 @@ namespace GameServer
 
 	protected:
 
-		// Create entity manager
-		virtual Svr::ServerEntity* CreateLoopbackEntity() override;
-
 	public:
 		GameServer();
 		~GameServer();
@@ -93,6 +90,8 @@ namespace GameServer
 		// Query Loopback entity
 		inline Svr::ServerEntity* GetLoopbackGameServerEntity();
 
+
+		Svr::Entity* CreateEntity(ClusterID clusterID, EntityFaculty faculty);
 
 		//////////////////////////////////////////////////////////////////////////
 		//

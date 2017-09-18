@@ -38,6 +38,12 @@ namespace SF {
 	{
 	public:
 
+		typedef std::function<Svr::Entity*(ClusterID, EntityFaculty)> EntityCreator;
+
+	public:
+
+		virtual void RegisterEntityCreator(const EntityCreator& creator) {}
+
 		////////////////////////////////////////////////////////////////////////////
 		//
 		// TickTask add/remove proving

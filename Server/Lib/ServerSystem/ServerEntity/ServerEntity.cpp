@@ -29,7 +29,6 @@
 #include "Entity/EntityManager.h"
 
 #include "ServerEntity/SvrEntityServerEntity.h"
-#include "ServiceEntity/ClusterManagerServiceEntity.h"
 #include "Protocol/Policy/ServerNetPolicy.h"
 
 #include "Service/EngineServices.h"

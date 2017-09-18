@@ -22,7 +22,7 @@
 #include "SvrTrace.h"
 #include "Server/BrServer.h"
 #include "ServerEntity/ServerEntityManager.h"
-#include "ServiceEntity/ClusterManagerServiceEntity.h"
+
 #include "Entity/EntityManager.h"
 #include "ServiceEntity/MatchingQueueServiceTrans.h"
 #include "ServiceEntity/MatchingServiceEntity.h"

@@ -123,7 +123,7 @@ namespace SF {
 	//	TickTask Manager base class -  interface for task manager
 	//
 
-	class TickTaskManager
+	class TickTaskManager : public SharedObject
 	{
 	public:
 

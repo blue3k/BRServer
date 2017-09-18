@@ -23,7 +23,7 @@
 #include "Protocol/Message/GameMsgClass.h"
 #include "Protocol/Policy/GameNetPolicy.h"
 
-#include "ServiceEntity/ClusterManagerServiceEntity.h"
+
 
 #include "SharedModuleServerTrans.h"
 

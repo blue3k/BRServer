@@ -26,7 +26,7 @@
 #include "Server/BrServerUtil.h"
 #include "SvrTrace.h"
 #include "ServerEntity/ServerEntityManager.h"
-#include "ServiceEntity/ClusterManagerServiceEntity.h"
+
 #include "ServiceEntity/Game/GameClusterServiceEntity.h"
 #include "Transaction/ExternalTransaction.h"
 #include "Transaction/ExternalTransactionManager.h"
@@ -48,7 +48,6 @@
 
 #include "Server/BrServer.h"
 
-#include "GameInstance/GameEntityManager.h"
 
 #include "GameSystem/UserFriendSystem.h"
 #include "GameSystem/UserGamePlayerInfoSystem.h"

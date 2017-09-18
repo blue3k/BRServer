@@ -28,7 +28,7 @@
 
 #include "Transaction/Transaction.h"
 #include "ServiceEntity/ClusteredServiceEntity.h"
-#include "ServiceEntity/ClusterManagerServiceEntity.h"
+
 
 
 
@@ -320,21 +320,8 @@ namespace Svr {
 					return hr;
 			}
 
-			// Watcher's write request will not be broadcasted
-			//if( MessageClass::HasSender )
-			//{
-			//	ServerServiceInformation *pSender = nullptr;
-			//	if( (pMyOwner->FindService( GetSender(), pSender )) )
-			//	{
-			//		//if( pSender->GetClusterMembership() >= ClusterMembership::StatusWatcher )
-			//		//{
-			//		//	return hr;
-			//		//}
-			//	}
-			//}
-
-			svrChk(Service::ClusterManager->GetClusterInfo(pMyOwner->GetGameID(), pMyOwner->GetClusterID(), pServiceInfo));
-			for(auto itService : pServiceInfo->Services) //pServiceInfo->Services.ForeachOrder(0, pServiceInfo->Services..size(), [&]( FixedString nodeName, ServerServiceInformation* pService )
+			svrChkPtr(pServiceInfo = Service::ClusterManager->GetClusterInfo(pMyOwner->GetGameID(), pMyOwner->GetClusterID()));
+			for(auto itService : pServiceInfo->Services)
 			{
 				auto pService = itService;
 				if( pService->GetEntityUID() == pMyOwner->GetEntityUID() )

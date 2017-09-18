@@ -16,7 +16,6 @@
   <ItemGroup>
     <ClCompile Include="$(MSBuildThisFileDirectory)ConspiracyGameInstanceServer.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)ConspiracyGameInstanceServerClass.cpp" />
-    <ClCompile Include="$(MSBuildThisFileDirectory)GameInstance\GameEntityManager.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)GameInstance\GameInstanceEntity.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)GameInstance\GameInstanceEntity_MsgProc.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)GameInstance\GameInstanceManager.cpp" />
@@ -32,7 +31,6 @@
   <ItemGroup>
     <ClInclude Include="$(MSBuildThisFileDirectory)ConspiracyGameInstanceServerClass.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)ConspiracyGameInstanceSvrConst.h" />
-    <ClInclude Include="$(MSBuildThisFileDirectory)GameInstance\GameEntityManager.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)GameInstance\GameInstanceEntity.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)GameInstance\GameInstanceManager.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)GameInstance\GamePlayer.h" />

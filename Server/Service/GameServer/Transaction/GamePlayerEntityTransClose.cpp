@@ -45,7 +45,6 @@
 //#include "GameInstance/GamePlayer.h"
 #include "Server/BrServer.h"
 
-#include "GameInstance/GameEntityManager.h"
 
 #include "GameSystem/UserFriendSystem.h"
 #include "GameSystem/UserGamePlayerInfoSystem.h"

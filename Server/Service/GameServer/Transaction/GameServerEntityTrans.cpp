@@ -23,12 +23,11 @@
 #include "Protocol/Message/GameMsgClass.h"
 #include "Protocol/Policy/GameNetPolicy.h"
 
-#include "ServiceEntity/ClusterManagerServiceEntity.h"
+
 
 #include "GameServerEntityTrans.h"
 #include "GameInstance/GamePlayerEntity.h"
 #include "GameInstance/GameClusterServiceEntity.h"
-#include "GameInstance/GameEntityManager.h"
 #include "Protocol/Message/GameServerMsgClass.h"
 
 

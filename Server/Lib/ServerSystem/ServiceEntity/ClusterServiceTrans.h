@@ -22,7 +22,7 @@
 #include "Protocol/Policy/ClusterServerNetPolicy.h"
 #include "Transaction/MessageRoute.h"
 #include "ServiceEntity/ClusteredServiceEntity.h"
-#include "ServiceEntity/ClusterManagerServiceEntity.h"
+
 #include "Transaction/ServerTransaction.h"
 
 

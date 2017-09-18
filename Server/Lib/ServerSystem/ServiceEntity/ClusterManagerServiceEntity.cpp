@@ -23,12 +23,12 @@
 #include "Component/ServerComponent.h"
 #include "ServerService/ServerServiceBase.h"
 #include "ServerEntity/ServerEntity.h"
-#include "ServiceEntity/ClusterManagerServiceEntity.h"
 #include "SvrTrace.h"
 #include "Service/ServerService.h"
 
 #include "Protocol/Message/ClusterServerMsgClass.h"
 #include "ServiceEntity/ClusterServiceTrans.h"
+#include "ServiceEntity/ClusterManagerServiceEntity.h"
 #include "ServiceEntity/ClusterManagerServiceTrans.h"
 #include "Protocol/ServerService/ClusterServerService.h"
 
@@ -44,15 +44,14 @@ namespace Svr {
 	//
 
 
-	ClusterServiceInfo::ClusterServiceInfo(IHeap& heap, GameID gameID, ClusterID clusterID, bool activelyConnect)
+	ClusterServiceInfo_Impl::ClusterServiceInfo_Impl(IHeap& heap, GameID gameID, ClusterID clusterID, bool activelyConnect)
 		: ZooKeeperWatcher(heap)
+		, ClusterServiceInfo(heap)
 		, m_Heap(heap)
 		, m_ActivelyConnect(activelyConnect)
 		, m_ClusterKey(gameID, clusterID)
 		, m_ClusterPath(heap)
 		, m_LatestSelected(0)
-		, Services(heap)
-		, LocalServiceEntites(heap)
 	{
 		if (m_ClusterKey.GameClusterID != GameID::Invalid)
 		{
@@ -66,16 +65,18 @@ namespace Svr {
 		InitZK();
 	}
 
-	ClusterServiceInfo::~ClusterServiceInfo()
+	ClusterServiceInfo_Impl::~ClusterServiceInfo_Impl()
 	{
 		for (auto itService : Services)
 		{
 			IHeap::Delete(itService);
 		}
 		Services.Clear();
+
+		LocalServiceEntites.Clear();
 	}
 
-	void ClusterServiceInfo::InitZK()
+	void ClusterServiceInfo_Impl::InitZK()
 	{
 		auto& zkSession = Service::ZKSession->GetZooKeeperSession();
 		if (!zkSession.IsConnected())
@@ -84,29 +85,19 @@ namespace Svr {
 		if (!zkSession.Exists(m_ClusterPath))
 		{
 			String outPath(GetHeap());
-
-			// Create game cluster path if not exist
-			if (m_ClusterKey.GameClusterID != GameID::Invalid)
-			{
-				String gameClusterPath(GetHeap());
-				gameClusterPath.Format("{0}/{1}", ClusterManagerServiceEntity::ServiceBasePath, Enum<GameID>().GetValueName(m_ClusterKey.GameClusterID));
-				if(!zkSession.Exists(gameClusterPath))
-					zkSession.Create(gameClusterPath, "", nullptr, 0, outPath);
-			}
-
 			Result result = zkSession.Create(m_ClusterPath, "", nullptr, 0, outPath);
 			if (!result)
 				return;
 		}
 
 		// set up watcher and get children
-		GetChildrenTask = zkSession.AGetChildren(m_ClusterPath, this);
+		m_GetChildrenTask = zkSession.AGetChildren(m_ClusterPath, this);
 
 		m_ZKInitialized = true;
 	}
 
 
-	Result ClusterServiceInfo::GetNodeValue(const String& nodePath, Json::Value& jsonValue)
+	Result ClusterServiceInfo_Impl::GetNodeValue(const String& nodePath, Json::Value& jsonValue)
 	{
 		StaticArray<uint8_t, 1024> valueBuffer(GetHeap());
 		auto& zkSession = Service::ZKSession->GetZooKeeperSession();
@@ -125,7 +116,7 @@ namespace Svr {
 		return result;
 	}
 
-	Result ClusterServiceInfo::SetNodeValue(const String& nodePath, const Json::Value& jsonValue)
+	Result ClusterServiceInfo_Impl::SetNodeValue(const String& nodePath, const Json::Value& jsonValue)
 	{
 		Json::FastWriter writer;
 		auto& zkSession = Service::ZKSession->GetZooKeeperSession();
@@ -140,7 +131,7 @@ namespace Svr {
 
 
 
-	Json::Value ClusterServiceInfo::ToJsonNetPrivate(const NetAddress& privateNet) const
+	Json::Value ClusterServiceInfo_Impl::ToJsonNetPrivate(const NetAddress& privateNet) const
 	{
 		Json::Value itemValue(Json::objectValue);
 
@@ -151,15 +142,15 @@ namespace Svr {
 	}
 
 
-	Result ClusterServiceInfo::ParseNetPrivate(const Json::Value& itemValue, NetAddress& privateNet)
+	Result ClusterServiceInfo_Impl::ParseNetPrivate(const Json::Value& itemValue, NetAddress& privateNet)
 	{
 		StrUtil::StringCpy(privateNet.Address, itemValue.get("IP", Json::Value("")).asCString());
-		privateNet.Port = itemValue.get("Port", Json::Value("")).asUInt();
+		privateNet.Port = itemValue.get("Port", Json::Value(0)).asUInt();
 
 		return ResultCode::SUCCESS;
 	}
 
-	ServerServiceInformation* ClusterServiceInfo::NewLocalService(ClusteredServiceEntity* pServiceEntity)
+	ServerServiceInformation* ClusterServiceInfo_Impl::NewLocalService(ClusteredServiceEntity* pServiceEntity)
 	{
 		Result hr;
 		ServerServiceInformation* pNewServiceInfo = nullptr;
@@ -167,26 +158,49 @@ namespace Svr {
 		std::string stringValue;
 		Json::FastWriter writer;
 		Json::Value nodeValue(Json::objectValue);
+		NetAddress privateAddress;
 
-		pNewServiceInfo = new(GetHeap()) ServerServiceInformation(
-			pServiceEntity->GetGameID(),
-			pServiceEntity->GetClusterID(),
-			pServiceEntity->GetEntityUID(),
-			pServiceEntity->GetServerEntity(),
-			pServiceEntity->GetClusterMembership()
-		);
+		auto oldInfo = Services.find(pNewServiceInfo->GetNodeNameCrc());
+		if (oldInfo != nullptr)
+		{
+			// Sometimes zookeeper has node information for previous execution
+			pNewServiceInfo = oldInfo;
+			assert(pServiceEntity->GetEntityUID() == oldInfo->GetEntityUID());
+			assert(pServiceEntity->GetServerEntity() == oldInfo->GetServerEntity());
+		}
+		else
+		{
+			pNewServiceInfo = new(GetHeap()) ServerServiceInformation(
+				pServiceEntity->GetGameID(),
+				pServiceEntity->GetClusterID(),
+				pServiceEntity->GetEntityUID(),
+				pServiceEntity->GetServerEntity(),
+				pServiceEntity->GetClusterMembership()
+			);
+		}
+
+		hr = Services.Insert(pNewServiceInfo->GetNodeNameCrc(), pNewServiceInfo);
+		if (!hr)
+		{
+			assert(false); // Huh?
+			IHeap::Delete(pNewServiceInfo);
+			return nullptr;
+		}
+
 		svrChk(LocalServiceEntites.push_back(pServiceEntity));
-		svrChk(Services.Insert(pNewServiceInfo->GetNodeNameCrc(), pNewServiceInfo));
 
 		// add to zk
 		auto& zkSession = Service::ZKSession->GetZooKeeperSession();
 		if (!zkSession.IsConnected())
 			return pNewServiceInfo;
 
-		StrUtil::Format(nodePath, "{0}/{1}_{2}", m_ClusterPath, pNewServiceInfo->GetNodeName());
+		privateAddress = pServiceEntity->GetServerEntity()->GetPrivateNetAddress();
+		assert(privateAddress.Port != 0 && !StrUtil::IsNullOrEmpty(privateAddress.Address));
+
+		StrUtil::Format(nodePath, "{0}/{1}", m_ClusterPath, pNewServiceInfo->GetNodeName());
 
 		nodeValue["EntityID"] = Json::Value(pNewServiceInfo->GetEntityUID().UID);
-		nodeValue["NetAddress"] = ToJsonNetPrivate(pServiceEntity->GetServerEntity()->GetPrivateNetAddress());
+		nodeValue["NetAddress"] = ToJsonNetPrivate(privateAddress);
 
 		stringValue = std::forward<std::string>(writer.write(nodeValue));
 
@@ -194,10 +208,16 @@ namespace Svr {
 
 	Proc_End:
 
+		if (!hr)
+		{
+			IHeap::Delete(pNewServiceInfo);
+			return nullptr;
+		}
+
 		return pNewServiceInfo;
 	}
 
-	void ClusterServiceInfo::DownloadServiceInfo()
+	void ClusterServiceInfo_Impl::DownloadServiceInfo()
 	{
 		auto& zkSession = Service::ZKSession->GetZooKeeperSession();
 		if (!zkSession.IsConnected())
@@ -206,7 +226,7 @@ namespace Svr {
 		zkSession.AGetChildren(m_ClusterPath, this);
 	}
 
-	void ClusterServiceInfo::UploadLocalServiceInfo()
+	void ClusterServiceInfo_Impl::UploadLocalServiceInfo()
 	{
 		auto& zkSession = Service::ZKSession->GetZooKeeperSession();
 		if (!zkSession.IsConnected())
@@ -222,7 +242,7 @@ namespace Svr {
 	//	Overridable Event handling
 	//
 
-	Result ClusterServiceInfo::OnNewEvent(const ZKEvent& eventOut)
+	Result ClusterServiceInfo_Impl::OnNewEvent(const ZKEvent& eventOut)
 	{
 		if (eventOut.EventType == ZooKeeper::EVENT_CHILD)
 		{
@@ -236,29 +256,27 @@ namespace Svr {
 		return ResultCode::SUCCESS;
 	}
 
-	void ClusterServiceInfo::OnComlition(ZooKeeperTask& pTask)
+	void ClusterServiceInfo_Impl::OnComlition(ZooKeeperTask& pTask)
 	{
 		if (!pTask.Result)
 		{
 			assert(false);
 			return;
 		}
-
-
 	}
 
-	void ClusterServiceInfo::OnStatComlition(StatTask& pTask)
+	void ClusterServiceInfo_Impl::OnStatComlition(StatTask& pTask)
 	{
 
 	}
 
-	void ClusterServiceInfo::OnDataComlition(DataTask& pTask)
+	void ClusterServiceInfo_Impl::OnDataComlition(DataTask& pTask)
 	{
 
 	}
 
 
-	Result ClusterServiceInfo::AddNewService(const char* nodeName, FixedString nodeNameCrc)
+	Result ClusterServiceInfo_Impl::AddServiceInfo(const char* nodeName, FixedString nodeNameCrc)
 	{
 		Result hr;
 		String nodePath(GetHeap());
@@ -272,7 +290,7 @@ namespace Svr {
 
 		svrChk(GetNodeValue(nodePath, jsonValue));
 
-		svrChk(ParseNetPrivate(jsonValue, netAddress));
+		svrChk(ParseNetPrivate(jsonValue.get("NetAddress", ""), netAddress));
 		entityUID.UID = jsonValue.get("EntityID", Json::Value(0)).asUInt64();
 
 		svrChk(Service::ServerEntityManager->GetOrRegisterServer(entityUID.GetServerID(), NetClass::Server, netAddress, pServerEntity));
@@ -293,7 +311,7 @@ namespace Svr {
 		return hr;
 	}
 
-	void ClusterServiceInfo::OnStringsComlition(StringsTask& pTask)
+	void ClusterServiceInfo_Impl::OnStringsComlition(StringsTask& pTask)
 	{
 		if (!pTask.Result)
 		{
@@ -308,10 +326,9 @@ namespace Svr {
 		}
 
 		// This should be getchildren list because that's the only thing have string list result
-		for (auto& itItem : pTask.ResultStrings)
+		for (auto& nodeName : pTask.ResultStrings)
 		{
-			String nodeName = ZooKeeper::GetLeapNodeName(itItem);
-			FixedString nodeNameCrc = *nodeName;
+			FixedString nodeNameCrc = nodeName;
 			ServerServiceInformation* pFound = nullptr;
 			Services.Find(nodeNameCrc, pFound);
 			if (pFound != nullptr)
@@ -322,26 +339,33 @@ namespace Svr {
 			else
 			{
 				// New Service I need to add this to the list
-				AddNewService(itItem, nodeNameCrc);
+				AddServiceInfo(nodeName, nodeNameCrc);
 			}
 		}
 
 		// If anything not in the list should be removed
+		auto serverID = GetServerUID();
 		for (auto itRemove : listAlreadyHave)
 		{
-			ServerServiceInformation* pRemoved = nullptr;
-			Services.Remove(itRemove, pRemoved);
-			if (pRemoved != nullptr)
+			ServerServiceInformation* pRemove = nullptr;
+			if (!Services.Find(itRemove, pRemove))
+				continue;
+
+			// don't remove local service
+			if (pRemove->GetServerID() == serverID)
+				continue;
+
+			Services.Remove(itRemove, pRemove);
+			if (pRemove != nullptr)
 			{
-				assert(pRemoved->GetEntityUID().GetServerID() != BrServer::GetInstance()->GetServerUID());
-				IHeap::Delete(pRemoved);
+				IHeap::Delete(pRemove);
 			}
 		}
 
-		GetChildrenTask = nullptr;
+		m_GetChildrenTask = nullptr;
 	}
 
-	void ClusterServiceInfo::OnStringsStatComlition(StringsStatTask& pTask)
+	void ClusterServiceInfo_Impl::OnStringsStatComlition(StringsStatTask& pTask)
 	{
 		if (!pTask.Result)
 		{
@@ -352,7 +376,7 @@ namespace Svr {
 
 	}
 
-	void ClusterServiceInfo::OnStringComlition(StringTask& pTask)
+	void ClusterServiceInfo_Impl::OnStringComlition(StringTask& pTask)
 	{
 		if (!pTask.Result)
 		{
@@ -364,7 +388,7 @@ namespace Svr {
 
 	}
 
-	void ClusterServiceInfo::OnACLComlition(ACLTask& pTask)
+	void ClusterServiceInfo_Impl::OnACLComlition(ACLTask& pTask)
 	{
 
 	}
@@ -425,7 +449,7 @@ namespace Svr {
 	bool ClusterManagerServiceEntity::GetIsInitialized()
 	{
 		int waitingCount = 0;
-		m_ClusterInfoMap.for_each([&](const uint64_t& key, ClusterServiceInfo* pValue)-> bool
+		m_ClusterInfoMap.for_each([&](const uint64_t& key, ClusterServiceInfo_Impl* pValue)-> bool
 		{
 			if (!pValue->IsZKInitialized()) waitingCount++;
 			return true;
@@ -436,7 +460,7 @@ namespace Svr {
 
 	void ClusterManagerServiceEntity::Clear()
 	{
-		m_ClusterInfoMap.for_each([](const uint64_t& key, ClusterServiceInfo* pValue)-> bool
+		m_ClusterInfoMap.for_each([](const uint64_t& key, ClusterServiceInfo_Impl* pValue)-> bool
 		{
 			IHeap::Delete(pValue);
 			return true;
@@ -450,14 +474,36 @@ namespace Svr {
 	{
 		Result hr = ResultCode::SUCCESS;
 		TransactionPtr pTrans;
+		String outPath(GetHeap());
+		String gameClusterPath(GetHeap());
 
 		svrChk(super::InitializeEntity(newEntityID) );
 
-		// Push initialization transaction
-		//svrMem(pTrans = new(GetHeap()) ClusterInitializationTrans(GetHeap()));
-		//svrChk(pTrans->InitializeTransaction(this));
+		auto& zkSession = Service::ZKSession->GetZooKeeperSession();
+		if (!zkSession.IsConnected())
+		{
+			svrTrace(Error, "Zookeeper session server hasn't ready!");
+			return ResultCode::UNEXPECTED;
+		}
 
-		//svrChk(PendingTransaction(ThisThread::GetThreadID(), pTrans));
+
+		if (!zkSession.Exists(ClusterManagerServiceEntity::ServiceBasePath))
+		{
+			// Create game cluster path if not exist
+			zkSession.Create(ClusterManagerServiceEntity::ServiceBasePath, "", nullptr, 0, outPath);
+		}
+
+		// Create game cluster path if not exist
+		for(int iGame = 0; iGame < Enum<GameID>().GetNumberOfValues(); iGame++)
+		{
+			if ((GameID)iGame == GameID::Invalid)
+				continue;
+
+			auto gameName = Enum<GameID>().GetValueName((GameID)iGame);
+			gameClusterPath.Format("{0}/{1}", ClusterManagerServiceEntity::ServiceBasePath, gameName);
+			if (!zkSession.Exists(gameClusterPath))
+				zkSession.Create(gameClusterPath, "", nullptr, 0, outPath);
+		}
 
 		pTrans = nullptr;
 
@@ -487,11 +533,7 @@ namespace Svr {
 
 	Result ClusterManagerServiceEntity::InitializeComponent()
 	{
-		return Service::EntityManager->AddEntity(
-			EntityID(EntityFaculty::Service, (uint)ClusterID::ClusterManager),
-			this);
-
-		//return ResultCode::SUCCESS;
+		return ResultCode::SUCCESS;
 	}
 	// Terminate component
 	void ClusterManagerServiceEntity::DeinitializeComponent()
@@ -501,20 +543,20 @@ namespace Svr {
 	// Set watch state for cluster
 	Result ClusterManagerServiceEntity::SetWatchForCluster(GameID gameID, ClusterID clusterID, bool activelyConnect)
 	{
-		ClusterServiceInfo* pServiceInfo = GetOrSetWatchForCluster(gameID, clusterID, activelyConnect);
+		ClusterServiceInfo_Impl* pServiceInfo = static_cast<ClusterServiceInfo_Impl*>(GetOrSetWatchForCluster(gameID, clusterID, activelyConnect));
 
 		return pServiceInfo != nullptr ? ResultCode::SUCCESS : ResultCode::UNEXPECTED;
 	}
 
 	ClusterServiceInfo* ClusterManagerServiceEntity::GetOrSetWatchForCluster(GameID gameID, ClusterID clusterID, bool activelyConnect)
 	{
-		ClusterServiceInfo* pServiceInfo = nullptr;
+		ClusterServiceInfo_Impl* pServiceInfo = nullptr;
 		ClusterSearchKey key(gameID, clusterID);
 
 		if (m_ClusterInfoMap.find(key, pServiceInfo))
 			return pServiceInfo;
 
-		pServiceInfo = new(GetHeap()) ClusterServiceInfo(GetHeap(), gameID, clusterID, activelyConnect);
+		pServiceInfo = new(GetHeap()) ClusterServiceInfo_Impl(GetHeap(), gameID, clusterID, activelyConnect);
 		if (pServiceInfo == nullptr || !m_ClusterInfoMap.insert(key, pServiceInfo))
 		{
 			IHeap::Delete(pServiceInfo);
@@ -529,7 +571,7 @@ namespace Svr {
 	// This need to be called after clusterManagerService is initialized
 	Result ClusterManagerServiceEntity::InitializeNotInitializedClusterEntities()
 	{
-		m_ClusterInfoMap.for_each([&](const uint64_t& key, ClusterServiceInfo* pValue)-> bool
+		m_ClusterInfoMap.for_each([&](const uint64_t& key, ClusterServiceInfo_Impl* pValue)-> bool
 		{
 			for (auto itLocal : pValue->LocalServiceEntites)
 			{
@@ -542,22 +584,21 @@ namespace Svr {
 	}
 
 	// Get cluster info
-	Result ClusterManagerServiceEntity::GetClusterInfo(GameID gameID, ClusterID clusterID, ClusterServiceInfo* &pServiceInfo)
+	ClusterServiceInfo* ClusterManagerServiceEntity::GetClusterInfo(GameID gameID, ClusterID clusterID)
 	{
 		Result hr = ResultCode::SUCCESS;
 		ClusterSearchKey key(gameID, clusterID);
+		ClusterServiceInfo_Impl* pServiceInfo = nullptr;
 
 		hr = m_ClusterInfoMap.find(key, pServiceInfo);
 		if (hr)
-			return hr;
+		{
+			return pServiceInfo;
+		}
 
 		// Add new one if not exists
 		// We might want to request some service after this call. connect actively
-		pServiceInfo = GetOrSetWatchForCluster(gameID, clusterID, true);
-
-	Proc_End:
-
-		return hr;
+		return GetOrSetWatchForCluster(gameID, clusterID, true);
 	}
 
 
@@ -565,11 +606,11 @@ namespace Svr {
 	Result ClusterManagerServiceEntity::GetRandomService(GameID gameID, ClusterID clusterID, ServerServiceInformation* &pServiceInfo )
 	{
 		Result hr = ResultCode::SUCCESS;
-		ClusterServiceInfo* pClusterServiceInfo = nullptr;
+		ClusterServiceInfo_Impl* pClusterServiceInfo = nullptr;
 		ClusterSearchKey key(gameID, clusterID);
 
 		hr = m_ClusterInfoMap.find(key, pClusterServiceInfo);
-		if ((!hr))
+		if (!hr)
 			return hr;
 
 		if (pClusterServiceInfo->Services.size() == 0)
@@ -585,7 +626,7 @@ namespace Svr {
 	Result ClusterManagerServiceEntity::GetShardService(GameID gameID, ClusterID clusterID, uint64_t shardKey, ServerServiceInformation* &pServiceInfo)
 	{
 		Result hr = ResultCode::SUCCESS;
-		ClusterServiceInfo* pClusterServiceInfo = nullptr;
+		ClusterServiceInfo_Impl* pClusterServiceInfo = nullptr;
 		ClusterSearchKey key(gameID, clusterID);
 
 		hr = m_ClusterInfoMap.find(key, pClusterServiceInfo);
@@ -604,7 +645,7 @@ namespace Svr {
 	Result ClusterManagerServiceEntity::GetNextService(Svr::ServerServiceInformation* pServiceInfo, Svr::ServerServiceInformation* &pNextServiceInfo)
 	{
 		Result hr = ResultCode::SUCCESS;
-		ClusterServiceInfo* pClusterServiceInfo = nullptr;
+		ClusterServiceInfo_Impl* pClusterServiceInfo = nullptr;
 		ClusterSearchKey key(pServiceInfo->GetGameID(), pServiceInfo->GetClusterID());
 
 		pNextServiceInfo = nullptr;
@@ -634,13 +675,13 @@ namespace Svr {
 	Result ClusterManagerServiceEntity::AddClusterServiceEntity( ClusteredServiceEntity* pServiceEntity, ServerServiceInformation* &pServiceInfo)
 	{
 		Result hr = ResultCode::SUCCESS;
-		ClusterServiceInfo* pClusterServiceInfo = nullptr;
+		ClusterServiceInfo_Impl* pClusterServiceInfo = nullptr;
 		ClusterSearchKey key;
 
 		svrChkPtr(pServiceEntity);
 
 		key = ClusterSearchKey(pServiceEntity->GetGameID(), pServiceEntity->GetClusterID());
-		pClusterServiceInfo = GetOrSetWatchForCluster(pServiceEntity->GetGameID(), pServiceEntity->GetClusterID(), pServiceEntity->GetActivelyConnectRemote());
+		pClusterServiceInfo = static_cast<ClusterServiceInfo_Impl*>(GetOrSetWatchForCluster(pServiceEntity->GetGameID(), pServiceEntity->GetClusterID(), pServiceEntity->GetActivelyConnectRemote()));
 		if (pClusterServiceInfo == nullptr)
 			return ResultCode::UNEXPECTED;
 
@@ -656,14 +697,14 @@ namespace Svr {
 	Result ClusterManagerServiceEntity::UpdateWorkLoad(ClusteredServiceEntity* pServiceEntity)
 	{
 		Result hr = ResultCode::SUCCESS;
-		ClusterServiceInfo* pClusterServiceInfo = nullptr;
+		ClusterServiceInfo_Impl* pClusterServiceInfo = nullptr;
 		ClusterSearchKey key;
 		ServerServiceInformation* pServiceInfo = nullptr;
 
 		svrChkPtr(pServiceEntity);
 
 		key = ClusterSearchKey(pServiceEntity->GetGameID(), pServiceEntity->GetClusterID());
-		pClusterServiceInfo = GetOrSetWatchForCluster(pServiceEntity->GetGameID(), pServiceEntity->GetClusterID(), pServiceEntity->GetActivelyConnectRemote());
+		pClusterServiceInfo = static_cast<ClusterServiceInfo_Impl*>(GetOrSetWatchForCluster(pServiceEntity->GetGameID(), pServiceEntity->GetClusterID(), pServiceEntity->GetActivelyConnectRemote()));
 		if (pClusterServiceInfo == nullptr)
 			return ResultCode::UNEXPECTED;
 
@@ -682,14 +723,14 @@ namespace Svr {
 	Result ClusterManagerServiceEntity::UpdateServiceStatus(ClusteredServiceEntity* pServiceEntity)
 	{
 		Result hr = ResultCode::SUCCESS;
-		ClusterServiceInfo* pClusterServiceInfo = nullptr;
+		ClusterServiceInfo_Impl* pClusterServiceInfo = nullptr;
 		ClusterSearchKey key;
 		ServerServiceInformation* pServiceInfo = nullptr;
 
 		svrChkPtr(pServiceEntity);
 
 		key = ClusterSearchKey(pServiceEntity->GetGameID(), pServiceEntity->GetClusterID());
-		pClusterServiceInfo = GetOrSetWatchForCluster(pServiceEntity->GetGameID(), pServiceEntity->GetClusterID(), pServiceEntity->GetActivelyConnectRemote());
+		pClusterServiceInfo = static_cast<ClusterServiceInfo_Impl*>(GetOrSetWatchForCluster(pServiceEntity->GetGameID(), pServiceEntity->GetClusterID(), pServiceEntity->GetActivelyConnectRemote()));
 		if (pClusterServiceInfo == nullptr)
 			return ResultCode::UNEXPECTED;
 

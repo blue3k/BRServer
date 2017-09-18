@@ -22,7 +22,7 @@
 #include "SvrTrace.h"
 #include "ServerEntity/ServerEntityManager.h"
 #include "Entity/EntityManager.h"
-#include "ServiceEntity/ClusterManagerServiceEntity.h"
+
 
 #include "Protocol/ServerService/RankingServerService.h"
 #include "Protocol/ServerService/GameServerService.h"
@@ -171,9 +171,9 @@ namespace Svr {
 		else
 		{
 			//Svr::ClusteredServiceEntity *pServiceEntity = nullptr;
-			Svr::ClusterServiceInfo* pClusterServiceInfo = nullptr;
+			ClusterServiceInfo* pClusterServiceInfo = nullptr;
 			// To accommodate login only services, allow login without game server
-			svrChk(Service::ClusterManager->GetClusterInfo((GameID)super::GetGameID(), ClusterID::Game, pClusterServiceInfo));
+			svrChkPtr(pClusterServiceInfo = Service::ClusterManager->GetClusterInfo((GameID)super::GetGameID(), ClusterID::Game));
 			if(pClusterServiceInfo->Services.size() == 0)
 			{
 				// Login is succeeded, but there is no game cluster for the game or no available game service

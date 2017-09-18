@@ -50,8 +50,6 @@ namespace SharedModuleServer
 
 	protected:
 
-		// Create entity manager
-		virtual Svr::ServerEntity* CreateLoopbackEntity() override;
 
 	public:
 		SharedModuleServer();

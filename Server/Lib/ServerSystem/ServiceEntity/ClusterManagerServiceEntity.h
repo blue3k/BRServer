@@ -52,7 +52,10 @@ namespace Svr {
 	};
 #pragma pack(pop)
 
-	class ClusterServiceInfo : public ZooKeeperWatcher
+
+
+	// Cluster service information implementation
+	class ClusterServiceInfo_Impl : public ZooKeeperWatcher, public ClusterServiceInfo
 	{
 	public:
 
@@ -64,16 +67,12 @@ namespace Svr {
 		String m_ClusterPath;
 		std::atomic<uint> m_LatestSelected;
 
+		SharedPointerT<ZooKeeperWatcher::StringsTask> m_GetChildrenTask;
+
 		friend class ClusterManagerServiceEntity;
 
 	public:
 
-		SortedArray<FixedString, ServerServiceInformation*> Services;
-		DynamicArray<SharedPointerT<ClusteredServiceEntity>> LocalServiceEntites;
-
-		// Tasks
-
-		SharedPointerT<ZooKeeperWatcher::StringsTask> GetChildrenTask;
 
 	private:
 
@@ -87,12 +86,12 @@ namespace Svr {
 
 		Result ParseNetPrivate(const Json::Value& json, NetAddress& privateNet);
 
-		Result AddNewService(const char* nodeName, FixedString nodeNameCrc);
+		Result AddServiceInfo(const char* nodeName, FixedString nodeNameCrc);
 
 
 	public:
-		ClusterServiceInfo(IHeap& heap, GameID gameID, ClusterID clusterID, bool activelyConnect);
-		~ClusterServiceInfo();
+		ClusterServiceInfo_Impl(IHeap& heap, GameID gameID, ClusterID clusterID, bool activelyConnect);
+		~ClusterServiceInfo_Impl();
 
 		IHeap& GetHeap() { return m_Heap; }
 
@@ -136,7 +135,7 @@ namespace Svr {
 		static constexpr const char* ServiceBasePath = "/BRServices";
 
 		// Server Entity table
-		typedef HashTable2<	uint64_t, ClusterServiceInfo* >  ClusterInfomationMap;
+		typedef HashTable2<	uint64_t, ClusterServiceInfo_Impl* >  ClusterInfomationMap;
 
 
 	private:
@@ -176,7 +175,7 @@ namespace Svr {
 
 
 		// Get cluster info
-		virtual Result GetClusterInfo(GameID gameID, ClusterID clusterID, ClusterServiceInfo* &pServiceInfo) override;
+		virtual ClusterServiceInfo* GetClusterInfo(GameID gameID, ClusterID clusterID) override;
 
 		// Get random cluster service
 		virtual Result GetRandomService(GameID gameID, ClusterID clusterID, ServerServiceInformation* &pServiceInfo) override;

@@ -29,7 +29,7 @@
 #include "SvrConst.h"
 #include "ServiceEntity/Game/GameClusterServiceEntity.h"
 #include "Entity/EntityManager.h"
-#include "ServiceEntity/ClusterManagerServiceEntity.h"
+
 
 
 

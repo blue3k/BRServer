@@ -19,7 +19,7 @@
 #include "ServerEntity/ServerEntityManager.h"
 
 #include "ServerEntity/SvrEntityServerEntity.h"
-#include "ServiceEntity/ClusterManagerServiceEntity.h"
+
 
 #include "Protocol/Message/ServerMsgClass.h"
 #include "Protocol/Policy/ServerNetPolicy.h"

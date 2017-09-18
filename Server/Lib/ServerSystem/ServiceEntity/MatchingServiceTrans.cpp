@@ -32,7 +32,7 @@
 #include "ServiceEntity/MatchingServiceEntity.h"
 #include "ServiceEntity/MatchingQueueServiceEntity.h"
 #include "ServiceEntity/Game/GameInstanceManagerServiceEntity.h"
-#include "ServiceEntity/ClusterManagerServiceEntity.h"
+
 
 #include "Protocol/ServerService/PartyMatchingQueueService.h"
 #include "Protocol/ServerService/GameInstanceManagerService.h"

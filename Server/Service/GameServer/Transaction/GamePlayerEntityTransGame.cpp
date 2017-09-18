@@ -31,7 +31,7 @@
 #include "ServiceEntity/MatchingServiceUtil.h"
 #include "Protocol/ServerService/GamePartyManagerService.h"
 #include "ServiceEntity/GamePartyManagerServiceEntity.h"
-#include "ServiceEntity/ClusterManagerServiceEntity.h"
+
 
 
 #include "Protocol/Message/PartyMatchingQueueMsgClass.h"
@@ -51,7 +51,6 @@
 
 #include "Server/BrServer.h"
 
-#include "GameInstance/GameEntityManager.h"
 
 #include "GameSystem/UserFriendSystem.h"
 #include "GameSystem/UserGamePlayerInfoSystem.h"

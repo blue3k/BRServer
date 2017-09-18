@@ -28,7 +28,7 @@
 #include "ServiceEntity/Login/LoginPlayerEntity.h"
 #include "ServiceEntity/Login/LoginPlayerEntityTrans.h"
 #include "ServiceEntity/RankingServiceTrans.h"
-#include "ServiceEntity/ClusterManagerServiceEntity.h"
+
 #include "SvrTrace.h"
 #include "SvrConst.h"
 #include "ServerConfig/SFServerConfig.h"

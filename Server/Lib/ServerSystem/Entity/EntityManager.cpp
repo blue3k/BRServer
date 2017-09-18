@@ -42,14 +42,13 @@ namespace Svr {
 
 	// Constructor/Destructor
 	EntityManager::EntityManager(uint numTaskGroup)
-		: LibraryComponent(TypeName)
-		, m_MemoryManager("EntityManager", GetSystemMemoryManager())
+		: m_MemoryManager("EntityManager", GetSystemMemoryManager())
 		, m_SharedObjectManager(m_MemoryManager)
 		, m_NumTaskGroup(numTaskGroup)
 		, m_NumberOfServices("NumberOfService")
 		, m_NumberOfTotalEntities("TotalEntities")
+		, m_EntityCretors(GetHeap())
 	{
-		AddDependency<EntityTable>();
 	}
 
 
@@ -57,8 +56,20 @@ namespace Svr {
 	{
 	}
 
+	void EntityManager::RegisterEntityCreator(const EntityCreator& creator)
+	{
+		m_EntityCretors.push_back(creator);
+	}
+
 	Result EntityManager::CreateEntity(ClusterID clusterID, EntityFaculty faculty, Entity* &pEntity)
 	{
+		for (auto itCreator : m_EntityCretors)
+		{
+			pEntity = itCreator(clusterID, faculty);
+			if (pEntity != nullptr)
+				return ResultCode::SUCCESS;
+		}
+
 		switch (clusterID)
 		{
 		case ClusterID::Login:
@@ -227,10 +238,7 @@ namespace Svr {
 	// Initialize component
 	Result EntityManager::InitializeComponent()
 	{
-		Result hr = LibraryComponent::InitializeComponent();
-		if (!hr)
-			return hr;
-
+		Result hr;
 		PerformanceCounterInstance* counterInstance = nullptr;
 
 		svrChk(TickTaskManager::InitializeManager(m_NumTaskGroup));

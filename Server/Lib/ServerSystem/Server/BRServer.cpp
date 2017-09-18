@@ -41,7 +41,6 @@
 
 
 
-#include "ServiceEntity/ClusterManagerServiceEntity.h"
 #include "ServiceEntity/Game/GameClusterServiceEntity.h"
 #include "ServiceEntity/Game/GameInstanceManagerServiceEntity.h"
 #include "ServiceEntity/Login/LoginServiceEntity.h"
@@ -267,33 +266,21 @@ Proc_End:
 	Result BrServer::InitializeEntities()
 	{
 		Result hr = ResultCode::SUCCESS;
-		ServerEntity *pLoopbackEntity = nullptr;
 		ServerEntity *pEntity = nullptr;
-		Svr::LoopbackConnection *pConn = nullptr;
 
 
 		// Add loop back entity
-		svrMem( pLoopbackEntity = CreateLoopbackEntity() );
-		pLoopbackEntity->SetEntityUID( EntityUID(GetServerUID(),EntityID(EntityFaculty::Server,0) ) );
-		pLoopbackEntity->SetServerID(GetServerUID());
-		pLoopbackEntity->SetServerUpTime( GetServerUpTime() );
-		svrMem( pConn = new(GetMemoryManager()) Svr::LoopbackConnection( GetNetClass(), pLoopbackEntity) );
-		pLoopbackEntity->SetLocalConnection((Net::Connection*)pConn);
-		pConn = nullptr;
-
-		pEntity = pLoopbackEntity;
+		svrMem(pEntity = CreateLoopbackEntity() );
 		svrChk(Service::ServerEntityManager->AddOrGetServerEntity(GetServerUID(), GetNetClass(), pEntity));
-		pEntity = nullptr;
 
-		SetLoopbackServerEntity(pLoopbackEntity);
-		pLoopbackEntity = nullptr;
+		SetLoopbackServerEntity(pEntity);
+		pEntity = nullptr;
 
 
 
 	Proc_End:
 
-		//Util::SafeRelease( pConn );
-		Util::SafeDelete( pLoopbackEntity );
+		Util::SafeDelete(pEntity);
 
 		return hr;
 	}
@@ -372,6 +359,12 @@ Proc_End:
 
 		SetMyConfig(Service::ServerConfig->FindGenericServer(Util::GetServiceName()));
 		svrChkPtr(GetMyConfig());
+
+		// Register cluster manager as entity
+		svrChk(Service::EntityManager->AddEntity(
+			EntityID(EntityFaculty::Service, (uint)ClusterID::ClusterManager),
+			dynamic_cast<Svr::ClusterManagerServiceEntity*>(*Service::ClusterManager)));
+
 
 		// Apply configuration
 		hr = ApplyConfiguration();
@@ -604,7 +597,23 @@ Proc_End:
 
 	ServerEntity* BrServer::CreateLoopbackEntity()
 	{
-		return new(GetMemoryManager()) ServerEntity( Const::SERVER_TRANS_QUEUE, Const::SERVER_TRANSRES_QUEUE );
+		Result hr;
+		ServerEntity *pLoopbackEntity = nullptr;
+		Svr::LoopbackConnection *pConn = nullptr;
+
+		pLoopbackEntity = new(GetMemoryManager()) ServerEntity(Const::SERVER_TRANS_QUEUE, Const::SERVER_TRANSRES_QUEUE);
+		pLoopbackEntity->SetEntityUID(EntityUID(GetServerUID(), EntityID(EntityFaculty::Server, 0)));
+		pLoopbackEntity->SetServerID(GetServerUID());
+		pLoopbackEntity->SetServerUpTime(GetServerUpTime());
+		svrChkPtr(GetNetPrivate());
+		pLoopbackEntity->SetPrivateNetAddress(GetNetPrivate()->GetLocalAddress());
+		svrMem(pConn = new(GetMemoryManager()) Svr::LoopbackConnection(GetNetClass(), pLoopbackEntity));
+		pLoopbackEntity->SetLocalConnection((Net::Connection*)pConn);
+		pConn = nullptr;
+
+	Proc_End:
+
+		return pLoopbackEntity;
 	}
 
 	// Initialize private Network
@@ -691,9 +700,9 @@ Proc_End:
 
 		svrMem(pServiceEntity = new(GetHeap()) ServiceEntityType(constructorArgs...));
 
-		svrChk(Service::ClusterManager->AddClusterServiceEntity(pServiceEntity));
-
 		svrChk(Service::EntityManager->AddEntity(EntityFaculty::Service, pServiceEntity));
+
+		svrChk(Service::ClusterManager->AddClusterServiceEntity(pServiceEntity));
 
 
 	Proc_End:
@@ -777,17 +786,19 @@ Proc_End:
 
 		case "ModRanking"_hash32:
 		{
-			Svr::ClusteredServiceEntity* pServiceEntity = new(GetHeap()) Svr::RankingServiceEntity(GetServerGameID(), ClusterID::Ranking, ClusterMembership::Master);
-			svrChk(Service::EntityManager->AddEntity(EntityFaculty::Service, pServiceEntity));
-			svrChk(Service::ClusterManager->AddClusterServiceEntity(pServiceEntity));
+			svrChkPtr(AddServiceEntity<Svr::RankingServiceEntity>(GetServerGameID(), ClusterID::Ranking, ClusterMembership::Slave));
+			//Svr::ClusteredServiceEntity* pServiceEntity = new(GetHeap()) Svr::RankingServiceEntity(GetServerGameID(), ClusterID::Ranking, ClusterMembership::Master);
+			//svrChk(Service::EntityManager->AddEntity(EntityFaculty::Service, pServiceEntity));
+			//svrChk(Service::ClusterManager->AddClusterServiceEntity(pServiceEntity));
 			break;
 		}
 
 		case "ModGameInstanceManager"_hash32:
 		{
-			Svr::ClusteredServiceEntity* pServiceEntity = new(GetHeap()) Svr::GameInstanceManagerServiceEntity(GetServerGameID(), ClusterID::GameInstanceManager, ClusterMembership::Master);
-			svrChk(Service::EntityManager->AddEntity(EntityFaculty::Service, pServiceEntity));
-			svrChk(Service::ClusterManager->AddClusterServiceEntity(pServiceEntity));
+			svrChkPtr(AddServiceEntity<Svr::GameInstanceManagerServiceEntity>(GetServerGameID(), ClusterID::GameInstanceManager, ClusterMembership::Slave));
+			//Svr::ClusteredServiceEntity* pServiceEntity = new(GetHeap()) Svr::GameInstanceManagerServiceEntity(GetServerGameID(), ClusterID::GameInstanceManager, ClusterMembership::Master);
+			//svrChk(Service::EntityManager->AddEntity(EntityFaculty::Service, pServiceEntity));
+			//svrChk(Service::ClusterManager->AddClusterServiceEntity(pServiceEntity));
 			break;
 		}
 

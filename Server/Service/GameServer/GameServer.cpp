@@ -8,7 +8,6 @@
 #include "Server/BrService.h"
 #include "SvrTrace.h"
 #include "Server/ParameterSetting.h"
-#include "GameInstance/GameEntityManager.h"
 
 #include "GameServer.h"
 #include "GameServerClass.h"

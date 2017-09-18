@@ -27,7 +27,7 @@
 #include "ServerEntity/ServerEntityManager.h"
 #include "Entity/EntityManager.h"
 #include "ServiceEntity/ClusterManagerServiceTrans.h"
-#include "ServiceEntity/ClusterManagerServiceEntity.h"
+
 
 
 //SF_MEMORYPOOL_IMPLEMENT(SF::Svr::ClusterManagerInitializationTrans);

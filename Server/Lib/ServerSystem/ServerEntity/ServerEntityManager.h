@@ -38,7 +38,7 @@ namespace Svr
 	//		- Will use with server type
 	//
 
-	class ServerEntityManager : public SharedObject, public TickTaskManager, public ServerEntityManagerService
+	class ServerEntityManager : public TickTaskManager, public ServerEntityManagerService
 	{
 	public:
 

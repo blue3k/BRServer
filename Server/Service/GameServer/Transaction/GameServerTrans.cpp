@@ -23,7 +23,7 @@
 #include "Protocol/Message/GameMsgClass.h"
 #include "Protocol/Policy/GameNetPolicy.h"
 
-#include "ServiceEntity/ClusterManagerServiceEntity.h"
+
 #include "ServiceEntity/MatchingQueueServiceEntity.h"
 #include "ServiceEntity/MatchingServiceEntity.h"
 #include "ServiceEntity/GamePartyManagerServiceEntity.h"
