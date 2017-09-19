@@ -206,11 +206,10 @@ namespace Svr {
 		nodeValue["EntityUID"] = Json::Value(pNewServiceInfo->GetEntityUID().UID);
 		nodeValue["NetAddress"] = ToJsonNetPrivate(privateAddress);
 
-		stringValue = std::forward<std::string>(writer.write(nodeValue));
-
 		svrTrace(Debug, "ZK local service added ({0}), GameID:{1} ClusterID:{2}", pNewServiceInfo->GetNodeName(), Enum<GameID>().GetValueName(m_ClusterKey.GameClusterID), Enum<ClusterID>().GetValueName(m_ClusterKey.ServiceClusterID));
 
-		zkSession.ACreate(nodePath, stringValue, nullptr, zkSession.NODE_FLAG_EPHEMERAL);
+		zkSession.ADelete(nodePath); // In case something is there, delete it
+		zkSession.ACreate(nodePath, nodeValue, nullptr, zkSession.NODE_FLAG_EPHEMERAL);
 
 	Proc_End:
 

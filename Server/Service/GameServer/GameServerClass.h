@@ -48,7 +48,7 @@ namespace GameServer
 
 	private:
 		// Public network interface
-		SharedPointerT<Net::ServerMUDP>			m_pNetPublic;
+		//SharedPointerT<Net::ServerMUDP>			m_pNetPublic;
 
 		// Game cluster config
 		const ServerConfig::GameCluster*	m_pGameClusterCfg;
@@ -81,11 +81,11 @@ namespace GameServer
 
 		const ServerConfig::GameCluster* GetGameClusterInfo() { return m_pGameClusterCfg; }
 
-		const ServerConfig::NetPublic* GetPublicNetConfig() { return &GetGameConfig()->PublicNet; }
+		//const ServerConfig::NetPublic* GetPublicNetConfig() { return &GetGameConfig()->PublicNet; }
 
 
 		// Get net public
-		inline SharedPointerT<Net::ServerMUDP>& GetNetPublic();
+		//inline SharedPointerT<Net::ServerMUDP>& GetNetPublic();
 
 		// Query Loopback entity
 		inline Svr::ServerEntity* GetLoopbackGameServerEntity();

@@ -27,6 +27,7 @@
 #include "GameServerClass.h"
 
 
+#include "ServiceEntity/Game/GameServiceTrans.h"
 #include "Protocol/Policy/GameServerNetPolicy.h"
 #include "Protocol/Policy/GameNetPolicy.h"
 #include "Protocol/Message/GameMsgClass.h"
@@ -63,14 +64,9 @@ namespace GameServer {
 
 
 	GamePlayerEntity::GamePlayerEntity()
-		: m_ComponentCarrier(GetHeap())
+		: super()
+		, m_ComponentCarrier(GetHeap())
 	{
-		memset( m_UserName, 0, sizeof(m_UserName) );
-		memset( m_GCMKeys, 0, sizeof(m_GCMKeys) );
-
-		BR_ENTITY_MESSAGE(Message::GameServer::RegisterPlayerToJoinGameServerCmd)					{ svrMemReturn(pNewTrans = new(GetHeap()) GameServerTransRegisterPlayerToJoinGameServer<GamePlayerEntity>(GetHeap(), pMsgData)); return ResultCode::SUCCESS; } );
-
-		BR_ENTITY_MESSAGE(Message::GameServer::RegisterPlayerToJoinGameServerOnPlayerEntityCmd)		{ svrMemReturn(pNewTrans = new(GetHeap()) PlayerTransRegisterPlayerToJoinGameServerOnPlayerEntity(GetHeap(),  pMsgData)); return ResultCode::SUCCESS; } );
 		BR_ENTITY_MESSAGE(Message::GameServer::ChatMessageC2SEvt)									{ svrMemReturn(pNewTrans = new(GetHeap()) PlayerTransChatMessageFromOtherEntity(GetHeap(),  pMsgData)); return ResultCode::SUCCESS; } );
 
 		////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -84,6 +80,7 @@ namespace GameServer {
 		BR_ENTITY_MESSAGE(Message::GameServer::NotifyPlayerStatusUpdatedC2SEvt)						{ svrMemReturn(pNewTrans = new(GetHeap()) PlayerTransNotifyPlayerStatusUpdatedS2S(GetHeap(),  pMsgData)); return ResultCode::SUCCESS; } );
 
 		BR_ENTITY_MESSAGE(Message::GameServer::NotifyPartyInviteC2SEvt)								{ svrMemReturn(pNewTrans = new(GetHeap()) PlayerTransNotifyPartyInviteS2SEvt(GetHeap(),  pMsgData)); return ResultCode::SUCCESS; } );
+
 
 		////////////////////////////////////////////////////////////////////////////////////////////////////
 		// Game instance server to player
@@ -125,36 +122,24 @@ namespace GameServer {
 	{
 	}
 
+
+
 	// Initialize entity to proceed new connection
-	Result GamePlayerEntity::InitializeEntity( EntityID newEntityID )
+	Result GamePlayerEntity::InitializeEntity(EntityID newEntityID)
 	{
 		Result hr = ResultCode::SUCCESS;
 		auto pGameConfig = GetMyServer()->GetPresetGameConfig();
 		auto PlayerAutoLogout = pGameConfig->PlayerAutoLogout;
 
-		svrChk(Svr::SimpleUserEntity::InitializeEntity( newEntityID ) );
+		svrChk(super::InitializeEntity(newEntityID));
 
-		m_GameInsUID = 0;
-		m_PartyUID = 0;
-		m_ShardID = 0;
-		m_MatchingTicket = 0;
-		m_MatchingStartTime = TimeStampMS(DurationMS(0));
+		GetTimeToKill().SetTimer(DurationMS(PlayerAutoLogout * 1000));
 
-		memset( &m_PlayerInformation, 0, sizeof(m_PlayerInformation) );
+		svrChk(GetComponentCarrier().AddComponent<UserFriendSystem>(this));
+		svrChk(GetComponentCarrier().AddComponent<UserGamePlayerInfoSystem>(this));
+		svrChk(GetComponentCarrier().AddComponent<UserNotifySystem>(this));
 
-		m_UserName[0] = '\0';
-		m_GCMKeys[0] = '\0';
-		
-		SetLatestActiveTime(Util::Time.GetTimeUTCSec());
-		m_LatestUpdateTime = TimeStampSec(DurationSec(0));
-
-		m_TimeToKill.SetTimer(DurationMS(PlayerAutoLogout * 1000));
-
-		svrChk( GetComponentCarrier().AddComponent<UserFriendSystem>(this) );
-		svrChk( GetComponentCarrier().AddComponent<UserGamePlayerInfoSystem>(this) );
-		svrChk( GetComponentCarrier().AddComponent<UserNotifySystem>(this) );
-
-		svrChk(GetComponentCarrier().InitializeComponents() );
+		svrChk(GetComponentCarrier().InitializeComponents());
 
 	Proc_End:
 
@@ -162,43 +147,6 @@ namespace GameServer {
 		return hr;
 	}
 
-
-	// Set connection for pilot
-	Result GamePlayerEntity::SetConnection(SharedPointerT<Net::Connection>&& pCon)
-	{
-		Result hr = ResultCode::SUCCESS;
-
-		if (*pCon == *GetConnection())
-			return hr;
-
-		if( GetConnection() != nullptr )
-		{
-			ReleaseConnection("Replacing game player connection");
-		}
-
-		svrChk(Svr::SimpleUserEntity::SetConnection(std::forward<SharedPointerT<Net::Connection>>(pCon)));
-
-
-	Proc_End:
-
-		return hr;
-	}
-
-
-
-	//////////////////////////////////////////////////////////////////////////////////////////////////
-	//
-	//	Entity process
-	//
-
-	void GamePlayerEntity::SetMatchingTicket(MatchingQueueTicket ticket)
-	{
-		if (ticket != 0)
-		{
-			m_MatchingStartTime = Util::Time.GetTimeMs();
-		}
-		m_MatchingTicket = ticket;
-	}
 
 	void GamePlayerEntity::SetLatestActiveTime(TimeStampSec latestActiveTime)
 	{
@@ -206,70 +154,10 @@ namespace GameServer {
 		if (pGameConfig != nullptr)
 		{
 			auto PlayerAutoLogout = pGameConfig->PlayerAutoLogout;
-			m_TimeToKill.SetTimer(DurationMS(PlayerAutoLogout * 1000));
+			GetTimeToKill().SetTimer(DurationMS(PlayerAutoLogout * 1000));
 		}
 
-		m_LatestActiveTime = latestActiveTime;
-	}
-
-	Result GamePlayerEntity::OnJoinGameServerInitialize(AuthTicket authTicket, FacebookUID fbUID)
-	{
-		Result hr = ResultCode::SUCCESS;
-		Net::ConnectionPtr pConnection;
-		Net::PeerInfo local, remote;
-		auto& pNetPublicServer = GetMyServer()->GetNetPublic();
-
-		svrChkPtr(pNetPublicServer);
-
-		ReleaseConnection("JoinGameServer releasing old connection");
-
-		SetAuthTicket(authTicket);
-		SetFacebookUID(fbUID);
-
-		svrChkPtr(pConnection = new(GetSystemMemoryManager()) Net::ConnectionMUDPServer(GetSystemMemoryManager(), **pNetPublicServer));
-
-		local.SetInfo(GetMyServer()->GetNetClass(), pNetPublicServer->GetLocalAddress(), GetMyServer()->GetServerUID());
-		remote.SetInfo(NetClass::Client, authTicket);
-
-		pConnection->SetCID(Service::ConnectionManager->NewCID());
-
-		svrChk(pConnection->InitConnection(pNetPublicServer->GetSocket(), false, local, remote));
-
-		Service::ConnectionManager->AddConnection(pConnection);
-
-		svrTrace(SVR_INFO, "Initialize connection CID:{0}, Addr:{1}", pConnection->GetCID(), pConnection->GetRemoteInfo().PeerAddress);
-
-		svrChk(SetConnection(std::forward<Net::ConnectionPtr>(pConnection)));
-
-		SetLatestActiveTime(Util::Time.GetTimeUTCSec());
-
-		AddGameTransactionLog(TransLogCategory::Account, 2, 0, 0, "Entity Initialize");
-
-	Proc_End:
-
-		if (pConnection != nullptr && pConnection->GetCID() != 0)
-		{
-			Service::ConnectionManager->FreeCID((uint)pConnection->GetCID());
-			pConnection->SetCID(0);
-		}
-
-		return hr;
-	}
-
-	Result GamePlayerEntity::OnNewUserTranscation()
-	{
-		// m_LatestUpdateTime is used as a valid character data signal
-		if (m_LatestUpdateTime == TimeStampSec::min())
-			return ResultCode::SUCCESS_FALSE;
-
-		SetLatestActiveTime(Util::Time.GetTimeUTCSec());
-
-		if (m_LatestDBSyncTime == TimeStampSec::min() || Util::TimeSinceUTC(m_LatestDBSyncTime) > DurationSec(GameConst::PLAYER_UPDATE_STATUS_TIME))
-		{
-			UpdateDBSync();
-		}
-
-		return ResultCode::SUCCESS;
+		super::SetLatestActiveTime(latestActiveTime);
 	}
 
 	Result GamePlayerEntity::UpdateDBSync(TransactionID transID)
@@ -279,7 +167,7 @@ namespace GameServer {
 		if (!(UpdateGamePlayer()))
 			return hr;
 
-		m_LatestDBSyncTime = Util::Time.GetTimeUTCSec();
+		SetLatestDBSyncTime(Util::Time.GetTimeUTCSec());
 		auto pPlayerInfoSystem = GetComponent<UserGamePlayerInfoSystem>();
 
 		svrChk(Svr::GetServerComponent<DB::GameConspiracyDB>()->UpdateTickStatusCmd(transID, GetShardID(), GetPlayerID(),
@@ -292,125 +180,12 @@ namespace GameServer {
 		return hr;
 	}
 
-	// register message handlers
-	Result GamePlayerEntity::RegisterMessageHandlers()
-	{
-		
-		BR_ENTITY_MESSAGE(Message::Game::HeartBitC2SEvt)				{ pNewTrans = nullptr; return OnNewUserTranscation(); } );
-		BR_ENTITY_MESSAGE(Message::Game::JoinGameServerCmd)				{ pNewTrans = new(GetHeap()) PlayerTransJoinGameServer(GetHeap(),  pMsgData); return ResultCode::SUCCESS; } );
-		BR_ENTITY_MESSAGE(Message::Game::GetUserGamePlayerInfoCmd)		{ pNewTrans = new(GetHeap()) PlayerTransGetUserGamePlayerInfo(GetHeap(),  pMsgData); return OnNewUserTranscation(); } );
-		BR_ENTITY_MESSAGE(Message::Game::GetGamePlayerInfoCmd)			{ pNewTrans = new(GetHeap()) PlayerTransGetGamePlayerInfo(GetHeap(),  pMsgData); return OnNewUserTranscation(); } );
-
-		BR_ENTITY_MESSAGE(Message::Game::GetComplitionStateCmd)			{ pNewTrans = new(GetHeap()) PlayerTransGetComplitionState(GetHeap(),  pMsgData); return OnNewUserTranscation(); } );
-		BR_ENTITY_MESSAGE(Message::Game::SetComplitionStateCmd)			{ pNewTrans = new(GetHeap()) PlayerTransSetComplitionState(GetHeap(),  pMsgData); return OnNewUserTranscation(); } );
-		BR_ENTITY_MESSAGE(Message::Game::RegisterGCMCmd)				{ pNewTrans = new(GetHeap()) PlayerTransRegisterGCM(GetHeap(),  pMsgData); return ResultCode::SUCCESS; } );
-		BR_ENTITY_MESSAGE(Message::Game::UnregisterGCMCmd)				{ pNewTrans = new(GetHeap()) PlayerTransUnregisterGCM(GetHeap(),  pMsgData); return ResultCode::SUCCESS; } );
-
-		BR_ENTITY_MESSAGE(Message::Game::InviteFriendCmd)				{ pNewTrans = new(GetHeap()) PlayerTransInviteFriend(GetHeap(),  pMsgData); return OnNewUserTranscation(); } );
-		BR_ENTITY_MESSAGE(Message::Game::AcceptFriendRequestCmd)		{ pNewTrans = new(GetHeap()) PlayerTransFriendAccept(GetHeap(),  pMsgData); return OnNewUserTranscation(); } );
-		BR_ENTITY_MESSAGE(Message::Game::RemoveFriendCmd)				{ pNewTrans = new(GetHeap()) PlayerTransRemoveFriend(GetHeap(),  pMsgData); return OnNewUserTranscation(); } );
-		BR_ENTITY_MESSAGE(Message::Game::GetFriendListCmd)				{ pNewTrans = new(GetHeap()) PlayerTransGetFriendList(GetHeap(),  pMsgData); return OnNewUserTranscation(); } );
-		BR_ENTITY_MESSAGE(Message::Game::GiveStaminaCmd)				{ pNewTrans = new(GetHeap()) PlayerTransGiveStamina(GetHeap(),  pMsgData); return OnNewUserTranscation(); } );
-
-		BR_ENTITY_MESSAGE(Message::Game::GetNotificationListCmd)		{ pNewTrans = new(GetHeap()) PlayerTransGetNotificationList(GetHeap(),  pMsgData); return OnNewUserTranscation(); } );
-		BR_ENTITY_MESSAGE(Message::Game::DeleteNotificationCmd)			{ pNewTrans = new(GetHeap()) PlayerTransDeleteNotification(GetHeap(),  pMsgData); return OnNewUserTranscation(); } );
-		BR_ENTITY_MESSAGE(Message::Game::AcceptNotificationCmd)			{ pNewTrans = new(GetHeap()) PlayerTransAcceptNotification(GetHeap(),  pMsgData); return OnNewUserTranscation(); } );
-		BR_ENTITY_MESSAGE(Message::Game::SetNotificationReadCmd)		{ pNewTrans = new(GetHeap()) PlayerTransSetNotificationRead(GetHeap(),  pMsgData); return OnNewUserTranscation(); } );
-
-		BR_ENTITY_MESSAGE(Message::Game::SetNickNameCmd)				{ pNewTrans = new(GetHeap()) PlayerTransSetNickName(GetHeap(),  pMsgData); return OnNewUserTranscation(); } );
-		BR_ENTITY_MESSAGE(Message::Game::FindPlayerByEMailCmd)			{ pNewTrans = new(GetHeap()) PlayerTransFindPlayerByEMail(GetHeap(),  pMsgData); return OnNewUserTranscation(); } );
-		BR_ENTITY_MESSAGE(Message::Game::FindPlayerByPlayerIDCmd)		{ pNewTrans = new(GetHeap()) PlayerTransFindPlayerByPlayerID(GetHeap(),  pMsgData); return OnNewUserTranscation(); } );
-
-		BR_ENTITY_MESSAGE(Message::Game::RequestPlayerStatusUpdateCmd)	{ pNewTrans = new(GetHeap()) PlayerTransRequestPlayerStatusUpdate(GetHeap(),  pMsgData); return OnNewUserTranscation(); } );
-		BR_ENTITY_MESSAGE(Message::Game::GetRankingListCmd)				{ pNewTrans = new(GetHeap()) PlayerTransGetRankingList(GetHeap(),  pMsgData); return OnNewUserTranscation(); } );
-		BR_ENTITY_MESSAGE(Message::Game::BuyShopItemPrepareCmd)			{ pNewTrans = new(GetHeap()) PlayerTransBuyShopItemPrepare(GetHeap(),  pMsgData); return OnNewUserTranscation(); } );
-		BR_ENTITY_MESSAGE(Message::Game::BuyShopItemCmd)				{ pNewTrans = new(GetHeap()) PlayerTransBuyShopItem(GetHeap(),  pMsgData); return OnNewUserTranscation(); } );
-
-		BR_ENTITY_MESSAGE(Message::Game::JoinGameCmd)					{ pNewTrans = new(GetHeap()) PlayerTransJoinGame(GetHeap(),  pMsgData); return OnNewUserTranscation(); } );
-		BR_ENTITY_MESSAGE(Message::Game::KickPlayerCmd)					{ pNewTrans = new(GetHeap()) PlayerTransKickPlayer(GetHeap(),  pMsgData); return OnNewUserTranscation(); } );
-		BR_ENTITY_MESSAGE(Message::Game::LeaveGameCmd)					{ pNewTrans = new(GetHeap()) PlayerTransLeaveGame(GetHeap(),  pMsgData); return OnNewUserTranscation(); } );
-		BR_ENTITY_MESSAGE(Message::Game::AssignRoleCmd)					{ pNewTrans = new(GetHeap()) PlayerTransAssignRole(GetHeap(),  pMsgData); return OnNewUserTranscation(); } );
-		BR_ENTITY_MESSAGE(Message::Game::ChatMessageCmd)				{ pNewTrans = new(GetHeap()) PlayerTransChatMessage(GetHeap(),  pMsgData); return OnNewUserTranscation(); } );
-		BR_ENTITY_MESSAGE(Message::Game::VoteGameAdvanceCmd)			{ pNewTrans = new(GetHeap()) PlayerTransVoteGameAdvance(GetHeap(),  pMsgData); return OnNewUserTranscation(); } );
-		BR_ENTITY_MESSAGE(Message::Game::VoteCmd)						{ pNewTrans = new(GetHeap()) PlayerTransVote(GetHeap(),  pMsgData); return OnNewUserTranscation(); } );
-		BR_ENTITY_MESSAGE(Message::Game::AdvanceGameCmd)				{ pNewTrans = new(GetHeap()) PlayerTransAdvanceGame(GetHeap(),  pMsgData); return OnNewUserTranscation(); } );
-		BR_ENTITY_MESSAGE(Message::Game::GamePlayAgainCmd)				{ pNewTrans = new(GetHeap()) PlayerTransPlayAgain(GetHeap(),  pMsgData); return OnNewUserTranscation(); } );
-		BR_ENTITY_MESSAGE(Message::Game::GameRevealPlayerCmd)			{ pNewTrans = new(GetHeap()) PlayerTransGameRevealPlayer(GetHeap(),  pMsgData); return OnNewUserTranscation(); } );
-		BR_ENTITY_MESSAGE(Message::Game::GamePlayerReviveCmd)			{ pNewTrans = new(GetHeap()) PlayerTransGamePlayerRevive(GetHeap(),  pMsgData); return OnNewUserTranscation(); } );
-		BR_ENTITY_MESSAGE(Message::Game::GamePlayerResetRankCmd)		{ pNewTrans = new(GetHeap()) PlayerTransGamePlayerResetRank(GetHeap(),  pMsgData); return OnNewUserTranscation(); } );
-
-		BR_ENTITY_MESSAGE(Message::Game::CreatePartyCmd)				{ pNewTrans = new(GetHeap()) PlayerTransCreateParty(GetHeap(),  pMsgData); return OnNewUserTranscation(); } );
-		BR_ENTITY_MESSAGE(Message::Game::JoinPartyCmd)					{ pNewTrans = new(GetHeap()) PlayerTransJoinParty(GetHeap(),  pMsgData); return OnNewUserTranscation(); } );
-		BR_ENTITY_MESSAGE(Message::Game::LeavePartyCmd)					{ pNewTrans = new(GetHeap()) PlayerTransLeaveParty(GetHeap(),  pMsgData); return OnNewUserTranscation(); } );
-		BR_ENTITY_MESSAGE(Message::Game::PartyKickPlayerCmd)			{ pNewTrans = new(GetHeap()) PlayerTransPartyKickPlayer(GetHeap(),  pMsgData); return OnNewUserTranscation(); } );
-		BR_ENTITY_MESSAGE(Message::Game::PartyInviteCmd)				{ pNewTrans = new(GetHeap()) PlayerTransPartyInvite(GetHeap(),  pMsgData); return OnNewUserTranscation(); } );
-		BR_ENTITY_MESSAGE(Message::Game::PartyChatMessageCmd)			{ pNewTrans = new(GetHeap()) PlayerTransPartyChatMessage(GetHeap(),  pMsgData); return OnNewUserTranscation(); } );
-		BR_ENTITY_MESSAGE(Message::Game::PartyQuickChatMessageCmd)		{ pNewTrans = new(GetHeap()) PlayerTransPartyQuickChatMessage(GetHeap(),  pMsgData); return OnNewUserTranscation(); } );
-
-		BR_ENTITY_MESSAGE(Message::Game::RequestGameMatchCmd)			{ pNewTrans = new(GetHeap()) PlayerTransRequestGameMatch(GetHeap(),  pMsgData); return OnNewUserTranscation(); } );
-		BR_ENTITY_MESSAGE(Message::Game::CancelGameMatchCmd)			{ pNewTrans = new(GetHeap()) PlayerTransCancelGameMatch(GetHeap(),  pMsgData); return OnNewUserTranscation(); } );
-
-		BR_ENTITY_MESSAGE(Message::Game::SetPresetGameConfigIDCmd)		{ pNewTrans = new(GetHeap()) PlayerTransSetConfigPreset(GetHeap(),  pMsgData); return OnNewUserTranscation(); } );
-		BR_ENTITY_MESSAGE(Message::Game::GainGameResourceCmd)			{ pNewTrans = new(GetHeap()) PlayerTransGainGameResource(GetHeap(),  pMsgData); return OnNewUserTranscation(); } );
-
-		return ResultCode::SUCCESS;
-	}
-
-	// clear transaction
-	Result GamePlayerEntity::ClearEntity()
-	{
-		Result hr = ResultCode::SUCCESS;
-
-		ReleaseConnection("Clearing game player entity");
-
-		svrChk(Svr::SimpleUserEntity::ClearEntity() );
-
-	Proc_End:
-
-		return hr;
-	}
-
-	// Run the task
-	Result GamePlayerEntity::TickUpdate(TimerAction *pAction)
-	{
-		Result hr = ResultCode::SUCCESS;
-		TransactionPtr trans;
-
-		hr = Svr::SimpleUserEntity::TickUpdate(pAction);
-		if (hr == Result(ResultCode::SUCCESS_FALSE))
-			return hr;
-
-		//if (m_LatestDBSyncTime == 0 || Util::TimeSinceUTC(m_LatestDBSyncTime) > GameConst::PLAYER_UPDATE_STATUS_TIME)
-		//{
-		//	UpdateDBSync();
-		//}
-
-
-		if (m_TimeToKill.CheckTimer() 
-			&& GetEntityState() == EntityState::WORKING)
-		{
-			svrMem(trans = new(GetHeap()) PlayerTransCloseInstance(GetHeap()));
-			svrChk(trans->InitializeTransaction(this));
-			PendingTransaction(GetTaskWorker()->GetThreadID(), trans);
-		}
-
-	Proc_End:
-
-		if (trans != nullptr)
-		{
-			SharedPointerT<Svr::Transaction>(trans);
-		}
-
-		return hr;
-	}
-
-
 	// Update game configuration
 	Result GamePlayerEntity::UpdateGameConfig()
 	{
 		Result hr = ResultCode::SUCCESS;
 
-		svrChk( GetComponent<UserGamePlayerInfoSystem>()->UpdateStatMaximum() );
+		svrChk(GetComponent<UserGamePlayerInfoSystem>()->UpdateStatMaximum());
 
 	Proc_End:
 
@@ -424,7 +199,7 @@ namespace GameServer {
 		Result hr = ResultCode::SUCCESS;
 
 		// m_LatestUpdateTime will be initialized when character data is loaded
-		if (m_LatestUpdateTime == TimeStampSec::min())
+		if (GetLatestUpdateTime() == TimeStampSec::min())
 		{
 			return ResultCode::FAIL;
 		}
@@ -433,28 +208,28 @@ namespace GameServer {
 
 		auto tickTime = GetMyServer()->GetPresetGameConfig()->StaminaRecoveryTime;
 		TimeStampSec curUTCSec = Util::Time.GetTimeUTCSec();
-		DurationSec timeDiff = curUTCSec - m_LatestUpdateTime;
+		DurationSec timeDiff = curUTCSec - GetLatestUpdateTime();
 		auto numberOfTicks = timeDiff.count() / tickTime;
 		DurationSec remainTime = timeDiff % tickTime;
 
 		svrChkPtr(GetMyServer()->GetPresetGameConfig());
 
-		svrTrace(SVR_DBGTRANS, "Check GamePlayer Update Tick PID:{0} last:{1}, curTime:{2}, numTick:{3}, remain:{4}", GetPlayerID(), m_LatestUpdateTime, curUTCSec, numberOfTicks, remainTime);
+		svrTrace(SVR_DBGTRANS, "Check GamePlayer Update Tick PID:{0} last:{1}, curTime:{2}, numTick:{3}, remain:{4}", GetPlayerID(), GetLatestUpdateTime(), curUTCSec, numberOfTicks, remainTime);
 
-		if( numberOfTicks > 0 )
+		if (numberOfTicks > 0)
 		{
 			svrTrace(SVR_DBGTRANS, "GamePlayer Update PID:{0}, numTick:{1}, Sta:{2}", GetPlayerID(), numberOfTicks, playerInfoSystem->GetStamina());
 
 			if (numberOfTicks > std::numeric_limits<uint16_t>::max())
 			{
-				svrTrace( Error, "Invalid tick count, applying maximum int16" );
+				svrTrace(Error, "Invalid tick count, applying maximum int16");
 				numberOfTicks = std::numeric_limits<uint16_t>::max();
 			}
 
 			if (playerInfoSystem->GetStamina() < playerInfoSystem->GetMaxAutoRefillStamina())
 			{
 				// limit stamina gain to MaxAutoRefillStamina
-				auto maxCanGain = std::min((INT)(numberOfTicks * 1), (playerInfoSystem->GetMaxAutoRefillStamina()- playerInfoSystem->GetStamina()));
+				auto maxCanGain = std::min((INT)(numberOfTicks * 1), (playerInfoSystem->GetMaxAutoRefillStamina() - playerInfoSystem->GetStamina()));
 				playerInfoSystem->GainStamina(maxCanGain);
 			}
 
@@ -466,25 +241,6 @@ namespace GameServer {
 	Proc_End:
 
 		return hr;
-	}
-	
-	
-
-	//////////////////////////////////////////////////////////////////////////////////////////////////
-	//
-	//	
-	//
-
-	bool GamePlayerEntity::GetIsInGame() const
-	{
-		return GetGameInsUID().UID != 0 || GetPartyUID().UID != 0;
-	}
-
-	void GamePlayerEntity::SetGameInsUID( const GameInsUID& gameInsID )
-	{
-		m_GameInsUID = gameInsID;
-
-		m_PlayerInformation.IsPlayingGame = m_GameInsUID.UID != 0 ? TRUE : FALSE;
 	}
 
 
@@ -510,31 +266,82 @@ namespace GameServer {
 		return m_PlayerInformation;
 	}
 
-	void GamePlayerEntity::AddGameTransactionLog(TransLogCategory LogCategory, INT consume, INT gain, uint64_t totalValue, const char* logMessage)
+	void GamePlayerEntity::PendingCloseTransaction()
 	{
-		Svr::GetServerComponent<DB::GameTransactionDB>()->AddGameLog(GetShardID(), GetPlayerID(), Util::Time.GetTimeUTCSec(), LogCategory, consume, gain, totalValue, logMessage);
-	}
+		Result hr;
+		TransactionPtr trans;
 
-	void GamePlayerEntity::AddGameTransactionLog(TransLogCategory LogCategory, INT consume, INT gain, uint64_t totalValue)
-	{
-		AddGameTransactionLog(LogCategory, consume, gain, totalValue, "");
-	}
+		svrMem(trans = new(GetHeap()) PlayerTransCloseInstance(GetHeap()));
+		svrChk(trans->InitializeTransaction(this));
+		PendingTransaction(GetTaskWorker()->GetThreadID(), trans);
 
-	// Send push notify
-	Result GamePlayerEntity::SendPushNotify( const char* strMessage, uint64_t param )
-	{
-		Result hr = ResultCode::SUCCESS;
-
-		// Send GCM push notify
-		if( GetGCMKeys() != nullptr && GetGCMKeys()[0] != '\0' )
-		{
-			Svr::ExternalTransactionManager *pExternal = Svr::GetServerComponent<Svr::ExternalTransactionManager>();
-			svrChkPtr(pExternal);
-			svrChk( pExternal->SendGCMNotify( 0, GetGCMKeys(), strMessage, param ) );
-		}
 	Proc_End:
 
-		return hr;
+		return;
+	}
+
+	// register message handlers
+	Result GamePlayerEntity::RegisterMessageHandlers()
+	{
+
+		BR_ENTITY_MESSAGE(Message::Game::HeartBitC2SEvt) { pNewTrans = nullptr; return OnNewUserTranscation(); } );
+		BR_ENTITY_MESSAGE(Message::Game::JoinGameServerCmd) { pNewTrans = new(GetHeap()) PlayerTransJoinGameServer(GetHeap(), pMsgData); return ResultCode::SUCCESS; } );
+		BR_ENTITY_MESSAGE(Message::Game::GetUserGamePlayerInfoCmd) { pNewTrans = new(GetHeap()) PlayerTransGetUserGamePlayerInfo(GetHeap(), pMsgData); return OnNewUserTranscation(); } );
+		BR_ENTITY_MESSAGE(Message::Game::GetGamePlayerInfoCmd) { pNewTrans = new(GetHeap()) PlayerTransGetGamePlayerInfo(GetHeap(), pMsgData); return OnNewUserTranscation(); } );
+
+		BR_ENTITY_MESSAGE(Message::Game::GetComplitionStateCmd) { pNewTrans = new(GetHeap()) PlayerTransGetComplitionState(GetHeap(), pMsgData); return OnNewUserTranscation(); } );
+		BR_ENTITY_MESSAGE(Message::Game::SetComplitionStateCmd) { pNewTrans = new(GetHeap()) PlayerTransSetComplitionState(GetHeap(), pMsgData); return OnNewUserTranscation(); } );
+		BR_ENTITY_MESSAGE(Message::Game::RegisterGCMCmd) { pNewTrans = new(GetHeap()) PlayerTransRegisterGCM(GetHeap(), pMsgData); return ResultCode::SUCCESS; } );
+		BR_ENTITY_MESSAGE(Message::Game::UnregisterGCMCmd) { pNewTrans = new(GetHeap()) PlayerTransUnregisterGCM(GetHeap(), pMsgData); return ResultCode::SUCCESS; } );
+
+		BR_ENTITY_MESSAGE(Message::Game::InviteFriendCmd) { pNewTrans = new(GetHeap()) PlayerTransInviteFriend(GetHeap(), pMsgData); return OnNewUserTranscation(); } );
+		BR_ENTITY_MESSAGE(Message::Game::AcceptFriendRequestCmd) { pNewTrans = new(GetHeap()) PlayerTransFriendAccept(GetHeap(), pMsgData); return OnNewUserTranscation(); } );
+		BR_ENTITY_MESSAGE(Message::Game::RemoveFriendCmd) { pNewTrans = new(GetHeap()) PlayerTransRemoveFriend(GetHeap(), pMsgData); return OnNewUserTranscation(); } );
+		BR_ENTITY_MESSAGE(Message::Game::GetFriendListCmd) { pNewTrans = new(GetHeap()) PlayerTransGetFriendList(GetHeap(), pMsgData); return OnNewUserTranscation(); } );
+		BR_ENTITY_MESSAGE(Message::Game::GiveStaminaCmd) { pNewTrans = new(GetHeap()) PlayerTransGiveStamina(GetHeap(), pMsgData); return OnNewUserTranscation(); } );
+
+		BR_ENTITY_MESSAGE(Message::Game::GetNotificationListCmd) { pNewTrans = new(GetHeap()) PlayerTransGetNotificationList(GetHeap(), pMsgData); return OnNewUserTranscation(); } );
+		BR_ENTITY_MESSAGE(Message::Game::DeleteNotificationCmd) { pNewTrans = new(GetHeap()) PlayerTransDeleteNotification(GetHeap(), pMsgData); return OnNewUserTranscation(); } );
+		BR_ENTITY_MESSAGE(Message::Game::AcceptNotificationCmd) { pNewTrans = new(GetHeap()) PlayerTransAcceptNotification(GetHeap(), pMsgData); return OnNewUserTranscation(); } );
+		BR_ENTITY_MESSAGE(Message::Game::SetNotificationReadCmd) { pNewTrans = new(GetHeap()) PlayerTransSetNotificationRead(GetHeap(), pMsgData); return OnNewUserTranscation(); } );
+
+		BR_ENTITY_MESSAGE(Message::Game::SetNickNameCmd) { pNewTrans = new(GetHeap()) PlayerTransSetNickName(GetHeap(), pMsgData); return OnNewUserTranscation(); } );
+		BR_ENTITY_MESSAGE(Message::Game::FindPlayerByEMailCmd) { pNewTrans = new(GetHeap()) PlayerTransFindPlayerByEMail(GetHeap(), pMsgData); return OnNewUserTranscation(); } );
+		BR_ENTITY_MESSAGE(Message::Game::FindPlayerByPlayerIDCmd) { pNewTrans = new(GetHeap()) PlayerTransFindPlayerByPlayerID(GetHeap(), pMsgData); return OnNewUserTranscation(); } );
+
+		BR_ENTITY_MESSAGE(Message::Game::RequestPlayerStatusUpdateCmd) { pNewTrans = new(GetHeap()) PlayerTransRequestPlayerStatusUpdate(GetHeap(), pMsgData); return OnNewUserTranscation(); } );
+		BR_ENTITY_MESSAGE(Message::Game::GetRankingListCmd) { pNewTrans = new(GetHeap()) PlayerTransGetRankingList(GetHeap(), pMsgData); return OnNewUserTranscation(); } );
+		BR_ENTITY_MESSAGE(Message::Game::BuyShopItemPrepareCmd) { pNewTrans = new(GetHeap()) PlayerTransBuyShopItemPrepare(GetHeap(), pMsgData); return OnNewUserTranscation(); } );
+		BR_ENTITY_MESSAGE(Message::Game::BuyShopItemCmd) { pNewTrans = new(GetHeap()) PlayerTransBuyShopItem(GetHeap(), pMsgData); return OnNewUserTranscation(); } );
+
+		BR_ENTITY_MESSAGE(Message::Game::JoinGameCmd) { pNewTrans = new(GetHeap()) PlayerTransJoinGame(GetHeap(), pMsgData); return OnNewUserTranscation(); } );
+		BR_ENTITY_MESSAGE(Message::Game::KickPlayerCmd) { pNewTrans = new(GetHeap()) PlayerTransKickPlayer(GetHeap(), pMsgData); return OnNewUserTranscation(); } );
+		BR_ENTITY_MESSAGE(Message::Game::LeaveGameCmd) { pNewTrans = new(GetHeap()) PlayerTransLeaveGame(GetHeap(), pMsgData); return OnNewUserTranscation(); } );
+		BR_ENTITY_MESSAGE(Message::Game::AssignRoleCmd) { pNewTrans = new(GetHeap()) PlayerTransAssignRole(GetHeap(), pMsgData); return OnNewUserTranscation(); } );
+		BR_ENTITY_MESSAGE(Message::Game::ChatMessageCmd) { pNewTrans = new(GetHeap()) PlayerTransChatMessage(GetHeap(), pMsgData); return OnNewUserTranscation(); } );
+		BR_ENTITY_MESSAGE(Message::Game::VoteGameAdvanceCmd) { pNewTrans = new(GetHeap()) PlayerTransVoteGameAdvance(GetHeap(), pMsgData); return OnNewUserTranscation(); } );
+		BR_ENTITY_MESSAGE(Message::Game::VoteCmd) { pNewTrans = new(GetHeap()) PlayerTransVote(GetHeap(), pMsgData); return OnNewUserTranscation(); } );
+		BR_ENTITY_MESSAGE(Message::Game::AdvanceGameCmd) { pNewTrans = new(GetHeap()) PlayerTransAdvanceGame(GetHeap(), pMsgData); return OnNewUserTranscation(); } );
+		BR_ENTITY_MESSAGE(Message::Game::GamePlayAgainCmd) { pNewTrans = new(GetHeap()) PlayerTransPlayAgain(GetHeap(), pMsgData); return OnNewUserTranscation(); } );
+		BR_ENTITY_MESSAGE(Message::Game::GameRevealPlayerCmd) { pNewTrans = new(GetHeap()) PlayerTransGameRevealPlayer(GetHeap(), pMsgData); return OnNewUserTranscation(); } );
+		BR_ENTITY_MESSAGE(Message::Game::GamePlayerReviveCmd) { pNewTrans = new(GetHeap()) PlayerTransGamePlayerRevive(GetHeap(), pMsgData); return OnNewUserTranscation(); } );
+		BR_ENTITY_MESSAGE(Message::Game::GamePlayerResetRankCmd) { pNewTrans = new(GetHeap()) PlayerTransGamePlayerResetRank(GetHeap(), pMsgData); return OnNewUserTranscation(); } );
+
+		BR_ENTITY_MESSAGE(Message::Game::CreatePartyCmd) { pNewTrans = new(GetHeap()) PlayerTransCreateParty(GetHeap(), pMsgData); return OnNewUserTranscation(); } );
+		BR_ENTITY_MESSAGE(Message::Game::JoinPartyCmd) { pNewTrans = new(GetHeap()) PlayerTransJoinParty(GetHeap(), pMsgData); return OnNewUserTranscation(); } );
+		BR_ENTITY_MESSAGE(Message::Game::LeavePartyCmd) { pNewTrans = new(GetHeap()) PlayerTransLeaveParty(GetHeap(), pMsgData); return OnNewUserTranscation(); } );
+		BR_ENTITY_MESSAGE(Message::Game::PartyKickPlayerCmd) { pNewTrans = new(GetHeap()) PlayerTransPartyKickPlayer(GetHeap(), pMsgData); return OnNewUserTranscation(); } );
+		BR_ENTITY_MESSAGE(Message::Game::PartyInviteCmd) { pNewTrans = new(GetHeap()) PlayerTransPartyInvite(GetHeap(), pMsgData); return OnNewUserTranscation(); } );
+		BR_ENTITY_MESSAGE(Message::Game::PartyChatMessageCmd) { pNewTrans = new(GetHeap()) PlayerTransPartyChatMessage(GetHeap(), pMsgData); return OnNewUserTranscation(); } );
+		BR_ENTITY_MESSAGE(Message::Game::PartyQuickChatMessageCmd) { pNewTrans = new(GetHeap()) PlayerTransPartyQuickChatMessage(GetHeap(), pMsgData); return OnNewUserTranscation(); } );
+
+		BR_ENTITY_MESSAGE(Message::Game::RequestGameMatchCmd) { pNewTrans = new(GetHeap()) PlayerTransRequestGameMatch(GetHeap(), pMsgData); return OnNewUserTranscation(); } );
+		BR_ENTITY_MESSAGE(Message::Game::CancelGameMatchCmd) { pNewTrans = new(GetHeap()) PlayerTransCancelGameMatch(GetHeap(), pMsgData); return OnNewUserTranscation(); } );
+
+		BR_ENTITY_MESSAGE(Message::Game::SetPresetGameConfigIDCmd) { pNewTrans = new(GetHeap()) PlayerTransSetConfigPreset(GetHeap(), pMsgData); return OnNewUserTranscation(); } );
+		BR_ENTITY_MESSAGE(Message::Game::GainGameResourceCmd) { pNewTrans = new(GetHeap()) PlayerTransGainGameResource(GetHeap(), pMsgData); return OnNewUserTranscation(); } );
+
+		return ResultCode::SUCCESS;
 	}
 
 

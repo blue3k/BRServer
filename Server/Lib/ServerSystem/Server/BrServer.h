@@ -296,8 +296,6 @@ namespace Svr {
 		template< class ServiceEntityType, typename... ConstructorArgs >
 		Result AddServiceEntityComponent(ConstructorArgs... constructorArgs);
 
-		// Register clustered service
-		Result RegisterClustereWatchers(ClusterID clusterID, ClusterID clusterIDEnd);
 
 		// Register server module
 		Result RegisterModule(ServerConfig::ServerModule* module);
@@ -316,7 +314,6 @@ namespace Svr {
 	ServiceEntityType* BrServer::AddServiceEntity(ConstructorArgs... constructorArgs)
 	{
 		Result hr = ResultCode::SUCCESS;
-		Svr::ClusteredServiceEntity *pServiceEntityTest = nullptr;
 		ServiceEntityType* pServiceEntity = nullptr;
 
 		svrMem(pServiceEntity = new(GetHeap()) ServiceEntityType(constructorArgs...));

@@ -28,7 +28,9 @@
 #include "SvrTrace.h"
 #include "SvrConst.h"
 #include "ServiceEntity/Game/PlayerManagerServiceEntity.h"
+#include "ServiceEntity/Game/GameServiceTrans.h"
 #include "Entity/EntityManager.h"
+
 
 
 
@@ -44,11 +46,13 @@ namespace Svr {
 
 	GameServiceEntity::GameServiceEntity(GameID gameID, const ServerConfig::NetPublic *publicNetSocket, ClusterMembership initialMembership)
 		: super(gameID, ClusterID::Game, initialMembership)
-		, m_PublicNetSocket(publicNetSocket)
+		, m_PublicNet(publicNetSocket)
 		, m_GameID(gameID)
 		, m_NewConnectionQueue(GetMemoryManager())
 	{
 		AssertRel(publicNetSocket != nullptr);
+
+		BR_ENTITY_MESSAGE(Message::GameServer::RegisterPlayerToJoinGameServerCmd) { svrMemReturn(pNewTrans = new(GetHeap()) GameServerTransRegisterPlayerToJoinGameServer<GameServiceEntity>(GetHeap(), pMsgData)); return ResultCode::SUCCESS; } );
 	}
 
 	GameServiceEntity::~GameServiceEntity()
@@ -64,17 +68,27 @@ namespace Svr {
 		svrChk(super::InitializeEntity(newEntityID) );
 
 		// public network
-		svrChkPtr(m_PublicNetSocket);
+		svrChkPtr(m_PublicNet);
 
 		svrMem(m_pNetPublic = new(GetMemoryManager()) Net::ServerMUDP(BrServer::GetInstance()->GetServerUID(), NetClass::Game));
+
 		m_pNetPublic->RegisterToEngineObjectManager();
-		svrChk(m_pNetPublic->HostOpen(NetClass::Game, m_PublicNetSocket->IPV6, m_PublicNetSocket->Port));
+		m_pNetPublic->SetNewConnectionhandler([this](SharedPointerT<Net::Connection>& conn)
+		{
+			SharedPointerAtomicT<Net::Connection> pConTem;
+			pConTem = std::forward<SharedPointerT<Net::Connection>>(conn);
+			m_NewConnectionQueue.Enqueue(pConTem);
+		});
+
+		svrChk(m_pNetPublic->HostOpen(NetClass::Game, m_PublicNet->ListenIP, m_PublicNet->Port));
 
 
 		// Register game cluster as a slave
-		svrMem(pGameService = new(GetMemoryManager()) Svr::PlayerManagerServiceEntity());
-		svrChk(Service::EntityManager->AddEntity(EntityFaculty::Service, pGameService));
-		svrChk(Service::ClusterManager->AddClusterServiceEntity(pGameService, pServiceInfo));
+		svrChkPtr(BrServer::GetInstance()->AddServiceEntity<Svr::PlayerManagerServiceEntity>());
+
+		svrChk(Service::ClusterManager->SetWatchForCluster(GetServerGameID(), ClusterID::GameInstanceManager, true));
+		svrChk(Service::ClusterManager->RegisterClustereWatchers(GetGameID(), ClusterID::MatchingQueue_Game_4x1, ClusterID::MatchingQueue_Game_4x1W));
+		svrChk(Service::ClusterManager->RegisterClustereWatchers(GetGameID(), ClusterID::MatchingQueue_Game_8x1, ClusterID::MatchingQueue_Game_8x1W));
 
 
 	Proc_End:
@@ -89,7 +103,10 @@ namespace Svr {
 
 		svrChk(super::ClearEntity() );
 
-		svrChk(m_pNetPublic->HostClose());
+		if (m_pNetPublic != nullptr)
+		{
+			svrChk(m_pNetPublic->HostClose());
+		}
 
 	Proc_End:
 

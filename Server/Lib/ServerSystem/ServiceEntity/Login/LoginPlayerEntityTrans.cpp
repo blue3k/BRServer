@@ -127,6 +127,7 @@ namespace Svr {
 		super::GetMyOwner()->HeartBit();
 
 		super::GetMyOwner()->SetIsTicketOwner(false);
+		GetMyOwner()->SetGameID((GameID)super::GetGameID());
 
 		// succeeded to login
 		super::GetMyOwner()->SetAccountID(accountID);
@@ -363,7 +364,6 @@ namespace Svr {
 		GetMyOwner()->HeartBit();
 
 		GetMyOwner()->SetUserName(GetID());
-		GetMyOwner()->SetGameID((GameID)super::GetGameID());
 
 		// succeeded to login
 		if( pDBRes->Result == 0 )

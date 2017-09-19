@@ -49,7 +49,6 @@
     <ClCompile Include="$(MSBuildThisFileDirectory)Transaction\GameServerTrans.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="$(MSBuildThisFileDirectory)GameInstance\GamePlayerEntity.inl" />
     <None Include="$(MSBuildThisFileDirectory)GameServerClass.inl" />
   </ItemGroup>
 </Project>

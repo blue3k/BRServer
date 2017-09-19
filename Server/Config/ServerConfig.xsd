@@ -41,7 +41,6 @@
 							</xs:element>
 						</xs:sequence>
 						<xs:attribute name="Name" type="xs:string" use="optional"/>
-            <xs:attribute name="GameID" type="xs:string" use="required"/>
           </xs:complexType>
 				</xs:element>
 			</xs:sequence>
@@ -148,13 +147,6 @@
 	</xs:complexType>
   
 	<xs:complexType name="DBClusterInstance">
-		<xs:attribute name="PartitioningID" use="required">
-			<xs:simpleType>
-				<xs:restriction base="xs:integer">
-					<xs:minInclusive value="0"/>
-				</xs:restriction>
-			</xs:simpleType>
-		</xs:attribute>
 		<xs:attribute name="DBInstanceName" type="xs:string" use="required"/>
 		<xs:attribute name="DBName" type="xs:string" use="required"/>
 	</xs:complexType>
@@ -236,7 +228,6 @@
 
   <xs:simpleType name="GameID">
     <xs:restriction base="xs:string">
-      <xs:enumeration value="Game"/>
       <xs:enumeration value="Conspiracy"/>
 	  <xs:enumeration value="MyTownHero"/>
     </xs:restriction>
@@ -300,7 +291,7 @@
           </xs:choice>
           
 				</xs:sequence>
-        <xs:attribute name="GameID" type="GameID" use="optional" />
+        <xs:attribute name="GameID" type="GameID" use="optional" default="MyTownHero" />
       </xs:extension>
 		</xs:complexContent>
 	</xs:complexType>

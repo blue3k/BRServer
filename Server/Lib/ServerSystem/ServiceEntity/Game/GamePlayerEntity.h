@@ -20,8 +20,8 @@
 
 #include "Types/BrGameTypes.h"
 #include "Entity/Entity.h"
-#include "ServiceEntity/Game/GameSystem.h"
 #include "Entity/SimpleUserEntity.h"
+#include "ServiceEntity/Game/GameSystem.h"
 
 
 
@@ -64,39 +64,43 @@ namespace Svr {
 		enum PlayerState
 		{
 			PlayerState_None,		// Nothing just created
-			PlayerState_LogedIn,	// Just Loged in
+			PlayerState_LogedIn,	// Just Logged in
 		};
 
 	private:
 
-		// Player connection
-		//Policy::NetSvrPolicyGame* m_ISvrGamePolicy;
 
 		// Player state
-		PlayerState m_PlayerState;
+		PlayerState m_PlayerState = PlayerState_None;
+
 
 		// Game instance UID
-		GameInsUID m_GameInsUID;
+		GameInsUID m_GameInsUID = 0;
 
-		mutable PlayerInformation m_PlayerInformation;
+		Net::ServerNet* m_ServerNet = nullptr;
 
-		uint m_ShardID;
+		const ServerConfig::NetPublic*	m_PublicNet = nullptr;
 
-		DurationMS m_PlayerAutoLogout;
+
+		PartyUID m_PartyUID = 0;
+		uint m_ShardID = 0;
+
+		TimeStampMS m_MatchingStartTime = TimeStampSec(DurationSec(0));
+
+		MatchingQueueTicket m_MatchingTicket;
 
 		// Time for kill this game
-		Util::TimeStampTimer m_KillTimer;
+		Util::TimeStampTimer m_TimeToKill;
+
+		char m_GCMKeys[GameConst::MAX_GCMKEYS];
 
 		// Latest update time in UTC time
-		TimeStampSec m_LatestUpdateTime;
+		TimeStampSec m_LatestUpdateTime = TimeStampSec(DurationSec(0));
 
 		// Latest active time in UTC time
-		TimeStampSec m_LatestActiveTime;
-		void SetLatestActiveTime(TimeStampSec latestActiveTime);
+		TimeStampSec m_LatestActiveTime = TimeStampSec(DurationSec(0));
 
-		TimeStampSec m_LatestDBSyncTime;
-
-		PartyUID m_PartyUID;
+		TimeStampSec m_LatestDBSyncTime = TimeStampSec(DurationSec(0));
 
 
 
@@ -105,9 +109,14 @@ namespace Svr {
 		//	Player Info
 		//
 
+		// Player Name
+		char m_UserName[GameConst::MAX_NAME];
 
 
 	protected:
+
+		// Cached player information
+		mutable ServerFriendInformation m_PlayerInformation;
 
 
 	public:
@@ -115,35 +124,60 @@ namespace Svr {
 		GamePlayerEntity();
 		virtual ~GamePlayerEntity();
 
+		Net::ServerNet* GetServerNet() { return m_ServerNet; }
+		void SetServerNet(Net::ServerNet* value) { m_ServerNet = value; }
+
+		const ServerConfig::NetPublic* GetPublicNetConfig() { return m_PublicNet; }
+		void SetPublicNetConfig(const ServerConfig::NetPublic* value) { m_PublicNet = value; }
+
 
 
 		PlayerID GetPlayerID() { return GetAccountID(); }
 
 
+
 		PlayerState GetPlayerState() const { return m_PlayerState; }
 		void SetPlayerState(PlayerState value) { m_PlayerState = value; }
 
+		const GameInsUID& GetGameInsUID() const { return m_GameInsUID; }
 
-		GameInsUID GetGameInsUID() const { return m_GameInsUID; }
-		uint GetShardID() { return m_ShardID; }
+		const PartyUID& GetPartyUID() const { return m_PartyUID; }
+		void SetPartyUID(const PartyUID& value) { m_PartyUID = value; }
 
-		DurationMS GetPlayerAutoLogoutTime() const { return m_PlayerAutoLogout; }
-		void SetPlayerAutoLogoutTime(DurationMS value) { m_PlayerAutoLogout = value; }
+		uint GetShardID() const { return m_ShardID; }
+		void SetShardID(uint value) { m_ShardID = value; }
 
-		const Util::TimeStampTimer& GetKillTimer() { return m_KillTimer; }
+		TimeStampMS GetMatchingStartTime() const { return m_MatchingStartTime; }
+
+		const MatchingQueueTicket& GetMatchingTicket() const { return m_MatchingTicket; }
+		void SetMatchingTicket(MatchingQueueTicket ticket);
+
+		Util::TimeStampTimer& GetTimeToKill() { return m_TimeToKill; }
+
+
+		const char* GetGCMKeys() const { return m_GCMKeys; }
+		void SetGCMKeys(const char* value) { StrUtil::StringCpy(m_GCMKeys, value); }
 
 		TimeStampSec GetLatestUpdateTime() const { return m_LatestUpdateTime; }
-		TimeStampSec GetLatestActiveTime() const { return m_LatestActiveTime; }
-		TimeStampSec GetLatestDBSyncTime() const { return m_LatestDBSyncTime; }
+		void SetLatestUpdateTime(TimeStampSec value) { m_LatestUpdateTime = value; }
 
-		PartyUID GetPartyUID() const { return m_PartyUID; }
-		void SetPartyUID(PartyUID value) { m_PartyUID = value; }
+
+		TimeStampSec GetLatestActiveTime() const { return m_LatestActiveTime; }
+		virtual void SetLatestActiveTime(TimeStampSec latestActiveTime) { m_LatestActiveTime = latestActiveTime; }
+
+		TimeStampSec GetLatestDBSyncTime() const { return m_LatestDBSyncTime; }
+		void SetLatestDBSyncTime(TimeStampSec value) { m_LatestDBSyncTime = value; }
+
+
+		const char* GetUserName() const { return m_UserName; }
+		void SetUserName(const char* value) { StrUtil::StringCpy(m_UserName, value); }
+
 
 		// Initialize entity to proceed new connection
-		virtual Result InitializeEntity( EntityID newEntityID ) override;
+		virtual Result InitializeEntity(EntityID newEntityID);
 
 		// Set connection for pilot
-		virtual Result SetConnection( SharedPointerT<Net::Connection>&& pCon ) override;
+		virtual Result SetConnection(SharedPointerT<Net::Connection>&& pCon) override;
 
 
 
@@ -154,11 +188,13 @@ namespace Svr {
 		//	Entity process
 		//
 
-		virtual Result OnNewUserTranscation();
-		virtual Result UpdateDBSync(TransactionID transID = TransactionID());
+		Result OnJoinGameServerInitialize(AuthTicket authTicket, FacebookUID fbUID);
+
+		Result OnNewUserTranscation();
+		virtual Result UpdateDBSync(TransactionID transID = TransactionID()) = 0;
 
 		// register message handlers
-		virtual Result RegisterMessageHandlers() override;
+		//virtual Result RegisterMessageHandlers();
 
 		// clear transaction
 		virtual Result ClearEntity() override;
@@ -166,16 +202,18 @@ namespace Svr {
 		// Run the task
 		virtual Result TickUpdate(TimerAction *pAction = nullptr) override;
 
-
-		virtual Transaction* CreateCloseTransaction() { return nullptr; }
+		virtual void PendingCloseTransaction() = 0;
 
 		//////////////////////////////////////////////////////////////////////////////////////////////////
 		//
 		//	Update
 		//
 
+		// Update game configuration
+		virtual Result UpdateGameConfig() = 0;
+
 		// Update Game Player 
-		virtual Result UpdateGamePlayer();
+		virtual Result UpdateGamePlayer() = 0;
 
 
 		//////////////////////////////////////////////////////////////////////////////////////////////////
@@ -185,15 +223,18 @@ namespace Svr {
 
 		bool GetIsInGame() const;
 
-		void SetGameInsUID( const GameInsUID& gameInsID );
+		void SetGameInsUID(const GameInsUID& gameInsID);
 
-		virtual const PlayerInformation& GetPlayerInformation() const;
-		//const ServerFriendInformation& GetFriendInformation() const;
+		virtual const PlayerInformation& GetPlayerInformation() const = 0;
+		virtual const ServerFriendInformation& GetFriendInformation() const = 0;
 
-		FORCEINLINE const char* GetNickName()							{ return m_PlayerInformation.NickName; }
-		FORCEINLINE Result SetNickName( const char* newName )			{ return StrUtil::StringCpy( m_PlayerInformation.NickName, newName ); }
+		FORCEINLINE const char* GetNickName() { return m_PlayerInformation.NickName; }
+		FORCEINLINE Result SetNickName(const char* newName) { return StrUtil::StringCpy(m_PlayerInformation.NickName, newName); }
 
-		virtual Result SetAccountID( AccountID accID ) override { m_PlayerInformation.PlayerID = accID; return Svr::SimpleUserEntity::SetAccountID(accID); }
+		FORCEINLINE FacebookUID GetFacebookUID() { return m_PlayerInformation.FBUID; }
+		FORCEINLINE void SetFacebookUID(FacebookUID newUID) { m_PlayerInformation.FBUID = newUID; }
+
+		virtual Result SetAccountID(AccountID accID) { m_PlayerInformation.PlayerID = accID; return Svr::SimpleUserEntity::SetAccountID(accID); }
 
 		template< class ...ArgTypes >
 		void AddGameTransactionLogT(TransLogCategory LogCategory, INT consume, INT gain, uint64_t totalValue, const char* strFormat, ArgTypes... args)
@@ -207,9 +248,8 @@ namespace Svr {
 		void AddGameTransactionLog(TransLogCategory LogCategory, INT consume, INT gain, uint64_t totalValue, const char* logMessage);
 		void AddGameTransactionLog(TransLogCategory LogCategory, INT consume, INT gain, uint64_t totalValue);
 
-		// TODO: move to component
 		// Send push notify
-		//Result SendPushNotify( const char* strMessage, uint64_t param = 0 );
+		Result SendPushNotify(const char* strMessage, uint64_t param = 0);
 
 	};
 

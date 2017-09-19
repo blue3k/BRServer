@@ -45,8 +45,6 @@ namespace Svr {
 		: super(GetServerGameID(), ClusterID::PlayerManager, ClusterMembership::Slave)
 		, m_PlayerIDMap(GetMemoryManager())
 	{
-		//BR_ENTITY_MESSAGE(Message::GameServer::RegisterPlayerToJoinGameServerCmd) { svrMemReturn(pNewTrans = new(GetMemoryManager()) GameServerTransRegisterPlayerToJoinGameServer(pMsgData)); return ResultCode::SUCCESS; } );
-
 		//BR_ENTITY_MESSAGE(Message::ClusterServer::GamePlayerEntityCreatedC2SEvt) { svrMemReturn(pNewTrans = new(GetHeap()) GameServerTransGamePlayerEntityCreatedS2CEvt(GetHeap(), pMsgData)); return ResultCode::SUCCESS; } );
 		//BR_ENTITY_MESSAGE(Message::ClusterServer::GamePlayerEntityDeletedC2SEvt) { svrMemReturn(pNewTrans = new(GetHeap()) GameServerTransGamePlayerEntityDeletedS2CEvt(GetHeap(), pMsgData)); return ResultCode::SUCCESS; } );
 

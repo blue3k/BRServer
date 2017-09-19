@@ -691,29 +691,6 @@ Proc_End:
 		return ResultCode::SUCCESS;
 	}
 
-	Result BrServer::RegisterClustereWatchers(ClusterID clusterID, ClusterID clusterIDEnd)
-	{
-		Result hr = ResultCode::SUCCESS;
-
-		auto pClusterManager = Service::ClusterManager;
-		if (pClusterManager == nullptr)
-			return ResultCode::INVALID_STATE;
-
-		if (clusterID != ClusterID::Invalid && clusterIDEnd != ClusterID::Invalid)
-		{
-			for (; (int)clusterID <= (int)clusterIDEnd; clusterID++)
-			{
-				svrChk(pClusterManager->SetWatchForCluster(GetServerGameID(), clusterID, true));
-			}
-		}
-
-	Proc_End:
-
-		Assert((hr));
-
-		return hr;
-	}
-
 	// Create clustered service
 	Result BrServer::RegisterModule(ServerConfig::ServerModule* module)
 	{
@@ -738,11 +715,7 @@ Proc_End:
 		case "ModGame"_hash32:
 		{
 			auto pGame = (ServerConfig::ServerModulePublicService*)module;
-			svrChk(Service::EntityManager->AddEntity(EntityFaculty::Service, new(GetHeap()) Svr::GameServiceEntity(GetGameID(), &pGame->PublicNet)));
-
-			svrChk(Service::ClusterManager->SetWatchForCluster(GetServerGameID(), ClusterID::GameInstanceManager, true));
-			svrChk(RegisterClustereWatchers(ClusterID::MatchingQueue_Game_4x1, ClusterID::MatchingQueue_Game_4x1W));
-			svrChk(RegisterClustereWatchers(ClusterID::MatchingQueue_Game_8x1, ClusterID::MatchingQueue_Game_8x1W));
+			svrChkPtr(AddServiceEntity<Svr::GameServiceEntity>(GetGameID(), &pGame->PublicNet));
 			break;
 		}
 
@@ -760,22 +733,22 @@ Proc_End:
 
 		case "ModGamePartyManager"_hash32:
 			svrChk(AddServiceEntityComponent<Svr::GamePartyManagerServiceEntity>(GetServerGameID(), ClusterMembership::Slave));
-			svrChk(RegisterClustereWatchers(ClusterID::MatchingQueue_Game_4x1, ClusterID::MatchingQueue_Game_4x1W));
-			svrChk(RegisterClustereWatchers(ClusterID::MatchingQueue_Game_8x1, ClusterID::MatchingQueue_Game_8x1W));
+			svrChk(Service::ClusterManager->RegisterClustereWatchers(GetGameID(), ClusterID::MatchingQueue_Game_4x1, ClusterID::MatchingQueue_Game_4x1W));
+			svrChk(Service::ClusterManager->RegisterClustereWatchers(GetGameID(), ClusterID::MatchingQueue_Game_8x1, ClusterID::MatchingQueue_Game_8x1W));
 			break;
 
 		case "ModMatching_Game_4"_hash32:
 		{
 			auto pMatching = (ServerConfig::ServerModuleMatching_4*)module;
 			svrChkPtr(AddServiceEntity<Svr::MatchingServiceEntity>(GetServerGameID(), ClusterID::Matching_Game_4, ClusterMembership::Slave, pMatching->UseBot));
-			svrChk(RegisterClustereWatchers(ClusterID::MatchingQueue_Game_4x1, ClusterID::MatchingQueue_Game_4x1W));
+			svrChk(Service::ClusterManager->RegisterClustereWatchers(GetGameID(), ClusterID::MatchingQueue_Game_4x1, ClusterID::MatchingQueue_Game_4x1W));
 			break;
 		}
 		case "ModMatching_Game_8"_hash32:
 		{
 			auto pMatching = (ServerConfig::ServerModuleMatching_8*)module;
 			svrChkPtr(AddServiceEntity<Svr::MatchingServiceEntity>(GetServerGameID(), ClusterID::Matching_Game_8, ClusterMembership::Slave, pMatching->UseBot));
-			svrChk(RegisterClustereWatchers(ClusterID::MatchingQueue_Game_8x1, ClusterID::MatchingQueue_Game_8x1W));
+			svrChk(Service::ClusterManager->RegisterClustereWatchers(GetGameID(), ClusterID::MatchingQueue_Game_8x1, ClusterID::MatchingQueue_Game_8x1W));
 			break;
 		}
 		case "ModPurchaseValidateGoogle"_hash32:

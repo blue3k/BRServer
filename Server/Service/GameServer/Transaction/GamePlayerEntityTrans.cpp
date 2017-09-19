@@ -66,7 +66,7 @@
 #include "openssl/sha.h"
 
 
-SF_MEMORYPOOL_IMPLEMENT(BR::GameServer::PlayerTransRegisterPlayerToJoinGameServerOnPlayerEntity);
+
 
 SF_MEMORYPOOL_IMPLEMENT(BR::GameServer::PlayerTransJoinGameServer);
 SF_MEMORYPOOL_IMPLEMENT(BR::GameServer::PlayerTransGetUserGamePlayerInfo);
@@ -108,20 +108,6 @@ namespace GameServer {
 	//
 	//	Game command transaction
 	//
-
-	// Start Transaction
-	Result PlayerTransRegisterPlayerToJoinGameServerOnPlayerEntity::StartTransaction()
-	{
-		Result hr = ResultCode::SUCCESS;
-
-		svrChk(GetMyOwner()->OnJoinGameServerInitialize(GetTicket(), GetFBUserID()));
-
-	Proc_End:
-
-		CloseTransaction(hr);
-
-		return hr;
-	}
 
 
 	PlayerTransJoinGameServer::PlayerTransJoinGameServer(IHeap& heap, MessageDataPtr &pIMsg )

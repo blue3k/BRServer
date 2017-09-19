@@ -85,6 +85,25 @@ namespace SF {
 		virtual Result UpdateWorkLoad(Svr::ClusteredServiceEntity* pServiceEntity) { return ResultCode::NOT_IMPLEMENTED; }
 		virtual Result UpdateServiceStatus(Svr::ClusteredServiceEntity* pServiceEntity) { return ResultCode::NOT_IMPLEMENTED; }
 
+		virtual Result RegisterClustereWatchers(GameID gameID, ClusterID clusterID, ClusterID clusterIDEnd)
+		{
+			Result hr = ResultCode::SUCCESS;
+
+			if (clusterID != ClusterID::Invalid && clusterIDEnd != ClusterID::Invalid)
+			{
+				for (; (int)clusterID <= (int)clusterIDEnd; clusterID++)
+				{
+					hr = SetWatchForCluster(gameID, clusterID, true);
+					if (!hr)
+						return hr;
+				}
+			}
+
+		Proc_End:
+
+			return hr;
+		}
+
 	};
 
 	

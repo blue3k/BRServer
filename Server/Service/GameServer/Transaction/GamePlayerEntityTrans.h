@@ -54,21 +54,6 @@ namespace GameServer {
 	//	Game command transaction
 	//
 
-	class PlayerTransRegisterPlayerToJoinGameServerOnPlayerEntity : public Svr::UserTransactionS2SCmd< GamePlayerEntity, Message::GameServer::RegisterPlayerToJoinGameServerOnPlayerEntityCmd>
-	{
-	public:
-		typedef Svr::UserTransactionS2SCmd< GamePlayerEntity, Message::GameServer::RegisterPlayerToJoinGameServerOnPlayerEntityCmd> super;
-
-	public:
-		PlayerTransRegisterPlayerToJoinGameServerOnPlayerEntity(IHeap& heap, MessageDataPtr &pIMsg) : UserTransactionS2SCmd(heap, pIMsg) {}
-		virtual ~PlayerTransRegisterPlayerToJoinGameServerOnPlayerEntity() {}
-
-		// Start Transaction
-		virtual Result StartTransaction() override;
-
-		BR_SVR_MSGTRANS_CLOSE(Policy::NetSvrPolicyGameServer, RegisterPlayerToJoinGameServerOnPlayerEntityRes, GetRouteContext().GetSwaped());
-	};
-
 
 	class PlayerTransJoinGameServer : public Svr::MessageTransaction< GamePlayerEntity, Message::Game::JoinGameServerCmd>
 	{

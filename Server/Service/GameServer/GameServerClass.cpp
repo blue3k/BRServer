@@ -24,6 +24,7 @@
 #include "ServiceEntity/MatchingServiceEntity.h"
 #include "ServiceEntity/GamePartyManagerServiceEntity.h"
 #include "ServiceEntity/Game/GameInstanceManagerServiceEntity.h"
+#include "ServiceEntity/Game/GameServiceEntity.h"
 
 
 #include "Table/TableSystem.h"
@@ -75,7 +76,7 @@ namespace GameServer {
 
 	GameServer::GameServer()
 		: BrServer(NetClass::Game)
-		, m_pNetPublic(nullptr)
+		//, m_pNetPublic(nullptr)
 		, m_pGameClusterCfg(nullptr)
 		, m_TableVersion(0)
 		, m_PresetGameConfigID(1)
@@ -176,9 +177,6 @@ namespace GameServer {
 	Result GameServer::InitializeNetPrivate()
 	{
 		Result hr = ResultCode::SUCCESS;
-		Svr::PlayerManagerServiceEntity *pGameService = nullptr;
-		uint componentID = 0;
-		SockFamily privateNetSockFamily;
 
 		Service::EntityManager->RegisterEntityCreator([this](ClusterID clusterID, EntityFaculty faculty) { return CreateEntity(clusterID, faculty); });
 
@@ -188,15 +186,6 @@ namespace GameServer {
 
 		GetMyServer()->GetNetPrivate()->SetIsEnableAccept(true);
 
-
-		// Register entity servers
-		// All server should use same sock family(IPV4 or IPV6)
-		privateNetSockFamily = GetMyServer()->GetNetPrivate()->GetLocalAddress().SocketFamily;
-
-
-
-		// Register game conspiracy cluster as a slave
-		svrChkPtr(AddServiceEntity<Svr::PlayerManagerServiceEntity>());
 
 
 		// Account DB
@@ -228,7 +217,6 @@ namespace GameServer {
 		//
 
 		// Queue items
-		componentID = Svr::ServerComponentID_MatchingQueueWatcherService_4x1;
 		for (ClusterID matchingQueueClusterID = ClusterID::MatchingQueue_Game_4x1; matchingQueueClusterID <= ClusterID::MatchingQueue_Max; matchingQueueClusterID++)
 		{
 			svrChk(Service::ClusterManager->SetWatchForCluster( Svr::GetServerGameID(), matchingQueueClusterID, true) );
@@ -236,7 +224,6 @@ namespace GameServer {
 
 
 		// Adding matching entities
-		componentID = Svr::ServerComponentID_MatchingWatcherService_4;
 		for( ClusterID matchingClusterID = ClusterID::Matching_Game_4; matchingClusterID <= ClusterID::Matching_Game_8; matchingClusterID++ )
 		{
 			svrChk(Service::ClusterManager->SetWatchForCluster(Svr::GetServerGameID(), matchingClusterID, true));
@@ -279,9 +266,9 @@ namespace GameServer {
 
 		svrChkPtr(GetGameConfig());
 
-		svrMem(m_pNetPublic = new(GetHeap()) Net::ServerMUDP(GetMyConfig()->UID, GetNetClass()));
-		m_pNetPublic->RegisterToEngineObjectManager();
-		svrChk( m_pNetPublic->HostOpen( GetNetClass(), GetGameConfig()->PublicNet.ListenIP, GetGameConfig()->PublicNet.Port ) );
+		//svrMem(m_pNetPublic = new(GetHeap()) Net::ServerMUDP(GetMyConfig()->UID, GetNetClass()));
+		//m_pNetPublic->RegisterToEngineObjectManager();
+		//svrChk( m_pNetPublic->HostOpen( GetNetClass(), GetGameConfig()->PublicNet.ListenIP, GetGameConfig()->PublicNet.Port ) );
 
 		//// Game server only accept public connection with valid peerID(AuthTicket)
 		//m_pNetPublic->SetUseAddressMap(false);
@@ -300,12 +287,12 @@ namespace GameServer {
 	{
 		Result hr = ResultCode::SUCCESS;
 
-		if( m_pNetPublic == nullptr )
-			return ResultCode::SUCCESS;
+		//if( m_pNetPublic == nullptr )
+		//	return ResultCode::SUCCESS;
 
-		svrChk( m_pNetPublic->HostClose() );
+		//svrChk( m_pNetPublic->HostClose() );
 
-		m_pNetPublic = nullptr;
+		//m_pNetPublic = nullptr;
 
 	Proc_End:
 

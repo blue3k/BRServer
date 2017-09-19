@@ -76,9 +76,9 @@ namespace Svr {
 			case ClusterID::Login:
 				pEntity = new(GetMemoryManager()) LoginPlayerEntity;
 				break;
-			case ClusterID::Game:
-				pEntity = new(GetMemoryManager()) GamePlayerEntity;
-				break;
+			//case ClusterID::Game:
+			//	pEntity = new(GetMemoryManager()) GamePlayerEntity;
+			//	break;
 			default:
 				return ResultCode::INVALID_ARG;
 			}

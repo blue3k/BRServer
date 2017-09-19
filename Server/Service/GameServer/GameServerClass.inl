@@ -16,11 +16,11 @@ const ServerConfig::GameServer* GameServer::GetGameConfig()
 }
 
 
-// Get net public
-SharedPointerT<Net::ServerMUDP>& GameServer::GetNetPublic()
-{
-	return m_pNetPublic;
-}
+//// Get net public
+//SharedPointerT<Net::ServerMUDP>& GameServer::GetNetPublic()
+//{
+//	return m_pNetPublic;
+//}
 
 
 // Query Loopback entity

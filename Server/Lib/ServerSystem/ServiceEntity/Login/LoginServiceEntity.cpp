@@ -102,6 +102,9 @@ namespace Svr {
 		svrChk(Service::ClusterManager->SetWatchForCluster(GameID::Conspiracy, ClusterID::Game, true));
 		svrChk(Service::ClusterManager->SetWatchForCluster(GameID::MyTownHero, ClusterID::Game, true));
 
+		svrChk(Service::ClusterManager->SetWatchForCluster(GameID::MyTownHero, ClusterID::Ranking, true));
+
+
 		m_pNetPublic->SetIsEnableAccept(true);
 
 	Proc_End:

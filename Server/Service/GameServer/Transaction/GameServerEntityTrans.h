@@ -20,40 +20,11 @@
 #include "GameServerClass.h"
 #include "ServiceEntity/Game/PlayerManagerServiceEntity.h"
 #include "GameInstance/GamePlayerEntity.h"
+#include "ServiceENtity/Game/GameServiceEntity.h"
 
 namespace SF {
 namespace GameServer {
 
-
-
-	template<class ProcessEntity>
-	class GameServerTransRegisterPlayerToJoinGameServer : public Svr::ServerEntityMessageTransaction< ProcessEntity, Message::GameServer::RegisterPlayerToJoinGameServerCmd>
-	{
-	public:
-		typedef Svr::ServerEntityMessageTransaction< ProcessEntity, Message::GameServer::RegisterPlayerToJoinGameServerCmd> super;
-
-	private:
-		const char* m_PublicAddress;
-		const char* m_PublicAddressIPV6;
-		uint m_Port;
-		EntityUID m_PlayerUID;
-
-	public:
-
-		GameServerTransRegisterPlayerToJoinGameServer(IHeap& heap, MessageDataPtr &pIMsg);
-		virtual ~GameServerTransRegisterPlayerToJoinGameServer() {}
-
-		Result OnPlayerRegisteredRes(Svr::TransactionResult* &pRes);
-
-		// Start Transaction
-		virtual Result StartTransaction() override;
-
-		BR_SVR_MSGTRANS_CLOSE_ARGS(Policy::NetSvrPolicyGameServer, RegisterPlayerToJoinGameServerRes, RouteContext(m_PlayerUID, super::GetRouteContext().GetFrom()), m_PublicAddress, m_PublicAddressIPV6, m_Port);
-	};
-
-
-	extern template class GameServerTransRegisterPlayerToJoinGameServer<Svr::PlayerManagerServiceEntity>;
-	extern template class GameServerTransRegisterPlayerToJoinGameServer<GamePlayerEntity>;
 
 
 };// namespace GameServer 

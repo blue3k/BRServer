@@ -4,7 +4,7 @@ DBInstances: Database instances. list all db instances and its access informatio
 	- ConnectionString: DB connection string. exclude ID/PW
 	- UserID: DB instance access ID
 	- Password: DB instance access password
-			 
+
 MonitoringServer: Monitoring server information. All servers send performance counter information to monitoring server.
                   모니터링 서버 정보. 모든 서버들은 모니터링 서버로 performance counter정보를 전송합니다.
 

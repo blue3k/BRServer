@@ -25,8 +25,10 @@
 #include "Protocol/Policy/GameServerNetPolicy.h"
 #include "Protocol/Policy/GameNetPolicy.h"
 #include "Protocol/Message/GameMsgClass.h"
+#include "Protocol/Message/GameServerMsgClass.h"
 
 #include "ServiceEntity/Game/GamePlayerEntity.h"
+#include "ServiceEntity/Game/GameServiceTrans.h"
 
 #include "DB/GameConspiracyDB.h"
 #include "DB/GameTransactionDB.h"
@@ -54,6 +56,11 @@ namespace Svr {
 		, m_LatestActiveTime(TimeStampSec(DurationSec(0)))
 		, m_LatestDBSyncTime(TimeStampSec(DurationSec(0)))
 	{
+		memset(m_UserName, 0, sizeof(m_UserName));
+		memset(m_GCMKeys, 0, sizeof(m_GCMKeys));
+
+		BR_ENTITY_MESSAGE(Message::GameServer::RegisterPlayerToJoinGameServerCmd) { svrMemReturn(pNewTrans = new(GetHeap()) GameServerTransRegisterPlayerToJoinGameServer<GamePlayerEntity>(GetHeap(), pMsgData)); return ResultCode::SUCCESS; } );
+		BR_ENTITY_MESSAGE(Message::GameServer::RegisterPlayerToJoinGameServerOnPlayerEntityCmd) { svrMemReturn(pNewTrans = new(GetHeap()) PlayerTransRegisterPlayerToJoinGameServerOnPlayerEntity(GetHeap(), pMsgData)); return ResultCode::SUCCESS; } );
 	}
 
 	GamePlayerEntity::~GamePlayerEntity()
@@ -61,30 +68,27 @@ namespace Svr {
 	}
 
 	// Initialize entity to proceed new connection
-	Result GamePlayerEntity::InitializeEntity( EntityID newEntityID )
+	Result GamePlayerEntity::InitializeEntity(EntityID newEntityID)
 	{
 		Result hr = ResultCode::SUCCESS;
 
-		svrChk(Svr::SimpleUserEntity::InitializeEntity( newEntityID ) );
+		svrChk(Svr::SimpleUserEntity::InitializeEntity(newEntityID));
 
 		m_GameInsUID = 0;
+		m_PartyUID = 0;
 		m_ShardID = 0;
+		m_MatchingTicket = 0;
+		m_MatchingStartTime = TimeStampMS(DurationMS(0));
 
-		memset( &m_PlayerInformation, 0, sizeof(m_PlayerInformation) );
+		memset(&m_PlayerInformation, 0, sizeof(m_PlayerInformation));
 
-		
+		m_UserName[0] = '\0';
+		m_GCMKeys[0] = '\0';
+
 		SetLatestActiveTime(Util::Time.GetTimeUTCSec());
 		m_LatestUpdateTime = TimeStampSec(DurationSec(0));
 
-		SetPlayerAutoLogoutTime(DurationMS(15*60*1000));
 
-		//m_KillTimer.SetTimer(DurationMS(PlayerAutoLogout * 1000));
-
-		//svrChk( AddComponent<UserFriendSystem>(this) );
-		//svrChk( AddComponent<UserGamePlayerInfoSystem>(this) );
-		//svrChk( AddComponent<UserNotifySystem>(this) );
-
-		//svrChk( InitializeComponents() );
 
 	Proc_End:
 
@@ -101,12 +105,13 @@ namespace Svr {
 		if (*pCon == *GetConnection())
 			return hr;
 
-		if( GetConnection() != nullptr )
+		if (GetConnection() != nullptr)
 		{
-			ReleaseConnection("Replacing game player entity connection");
+			ReleaseConnection("Replacing game player connection");
 		}
 
 		svrChk(Svr::SimpleUserEntity::SetConnection(std::forward<SharedPointerT<Net::Connection>>(pCon)));
+
 
 	Proc_End:
 
@@ -120,11 +125,56 @@ namespace Svr {
 	//	Entity process
 	//
 
-	void GamePlayerEntity::SetLatestActiveTime(TimeStampSec latestActiveTime)
+	void GamePlayerEntity::SetMatchingTicket(MatchingQueueTicket ticket)
 	{
-		m_KillTimer.SetTimer(GetPlayerAutoLogoutTime());
+		if (ticket != 0)
+		{
+			m_MatchingStartTime = Util::Time.GetTimeMs();
+		}
+		m_MatchingTicket = ticket;
+	}
 
-		m_LatestActiveTime = latestActiveTime;
+	Result GamePlayerEntity::OnJoinGameServerInitialize(AuthTicket authTicket, FacebookUID fbUID)
+	{
+		Result hr = ResultCode::SUCCESS;
+		Net::ConnectionPtr pConnection;
+		Net::PeerInfo local, remote;
+
+		svrChkPtr(m_ServerNet);
+
+		ReleaseConnection("JoinGameServer releasing old connection");
+
+		SetAuthTicket(authTicket);
+		SetFacebookUID(fbUID);
+
+		svrChkPtr(pConnection = new(GetSystemMemoryManager()) Net::ConnectionMUDPServer(GetSystemMemoryManager(), *m_ServerNet));
+
+		local.SetInfo(GetServerNet()->GetNetClass(), m_ServerNet->GetLocalAddress(), BrServer::GetInstance()->GetServerUID());
+		remote.SetInfo(NetClass::Client, authTicket);
+
+		pConnection->SetCID(Service::ConnectionManager->NewCID());
+
+		svrChk(pConnection->InitConnection(m_ServerNet->GetSocket(), false, local, remote));
+
+		Service::ConnectionManager->AddConnection(pConnection);
+
+		svrTrace(SVR_INFO, "Initialize connection CID:{0}, Addr:{1}", pConnection->GetCID(), pConnection->GetRemoteInfo().PeerAddress);
+
+		svrChk(SetConnection(std::forward<Net::ConnectionPtr>(pConnection)));
+
+		SetLatestActiveTime(Util::Time.GetTimeUTCSec());
+
+		AddGameTransactionLog(TransLogCategory::Account, 2, 0, 0, "Entity Initialize");
+
+	Proc_End:
+
+		if (pConnection != nullptr && pConnection->GetCID() != 0)
+		{
+			Service::ConnectionManager->FreeCID((uint)pConnection->GetCID());
+			pConnection->SetCID(0);
+		}
+
+		return hr;
 	}
 
 	Result GamePlayerEntity::OnNewUserTranscation()
@@ -143,35 +193,6 @@ namespace Svr {
 		return ResultCode::SUCCESS;
 	}
 
-	Result GamePlayerEntity::UpdateDBSync(TransactionID transID)
-	{
-		Result hr = ResultCode::SUCCESS;
-
-		if (!(UpdateGamePlayer()))
-			return ResultCode::SUCCESS_FALSE;
-
-		m_LatestDBSyncTime = Util::Time.GetTimeUTCSec();
-		//auto pPlayerInfoSystem = GetComponent<UserGamePlayerInfoSystem>();
-
-		//svrChk(Svr::GetServerComponent<DB::GameConspiracyDB>()->UpdateTickStatusCmd(transID, GetShardID(), GetPlayerID(),
-		//	pPlayerInfoSystem->GetGem(), pPlayerInfoSystem->GetStamina(), GetIsInGame() ? 1 : 0,
-		//	GetLatestActiveTime(),
-		//	GetLatestUpdateTime()));
-
-	//Proc_End:
-
-		return hr;
-	}
-
-	// register message handlers
-	Result GamePlayerEntity::RegisterMessageHandlers()
-	{
-		
-		BR_ENTITY_MESSAGE(Message::Game::HeartBitC2SEvt)				{ pNewTrans = nullptr; return OnNewUserTranscation(); } );
-
-		return ResultCode::SUCCESS;
-	}
-
 	// clear transaction
 	Result GamePlayerEntity::ClearEntity()
 	{
@@ -179,7 +200,7 @@ namespace Svr {
 
 		ReleaseConnection("Clearing game player entity");
 
-		svrChk(Svr::SimpleUserEntity::ClearEntity() );
+		svrChk(Svr::SimpleUserEntity::ClearEntity());
 
 	Proc_End:
 
@@ -190,51 +211,30 @@ namespace Svr {
 	Result GamePlayerEntity::TickUpdate(TimerAction *pAction)
 	{
 		Result hr = ResultCode::SUCCESS;
-		TransactionPtr trans;
 
 		hr = Svr::SimpleUserEntity::TickUpdate(pAction);
 		if (hr == Result(ResultCode::SUCCESS_FALSE))
 			return hr;
 
+		//if (m_LatestDBSyncTime == 0 || Util::TimeSinceUTC(m_LatestDBSyncTime) > GameConst::PLAYER_UPDATE_STATUS_TIME)
+		//{
+		//	UpdateDBSync();
+		//}
 
-		if (m_KillTimer.CheckTimer() 
+
+		if (m_TimeToKill.CheckTimer()
 			&& GetEntityState() == EntityState::WORKING)
 		{
-			svrMem(trans = CreateCloseTransaction());
-			svrChk(trans->InitializeTransaction(this));
-			PendingTransaction(GetTaskWorker()->GetThreadID(), trans);
+			PendingCloseTransaction();
 		}
 
 	Proc_End:
 
-		if (trans != nullptr)
-		{
-			SharedPointerT<Svr::Transaction>(trans);
-		}
 
 		return hr;
 	}
 
 
-
-	// Update Game Player 
-	Result GamePlayerEntity::UpdateGamePlayer()
-	{
-		Result hr = ResultCode::SUCCESS;
-
-		// m_LatestUpdateTime will be initialized when character data is loaded
-		if (m_LatestUpdateTime == TimeStampSec::min())
-		{
-			return ResultCode::SUCCESS_FALSE;
-		}
-
-
-	//Proc_End:
-
-		return hr;
-	}
-	
-	
 
 	//////////////////////////////////////////////////////////////////////////////////////////////////
 	//
@@ -246,35 +246,13 @@ namespace Svr {
 		return GetGameInsUID().UID != 0 || GetPartyUID().UID != 0;
 	}
 
-	void GamePlayerEntity::SetGameInsUID( const GameInsUID& gameInsID )
+	void GamePlayerEntity::SetGameInsUID(const GameInsUID& gameInsID)
 	{
 		m_GameInsUID = gameInsID;
 
 		m_PlayerInformation.IsPlayingGame = m_GameInsUID.UID != 0 ? TRUE : FALSE;
 	}
 
-
-	const PlayerInformation& GamePlayerEntity::GetPlayerInformation() const
-	{
-		//const_cast<GamePlayerEntity*>(this)->m_PlayerInformation.Level = GetComponent<UserGamePlayerInfoSystem>()->GetLevel();
-		//const_cast<GamePlayerEntity*>(this)->m_PlayerInformation.WeeklyWin = GetComponent<UserGamePlayerInfoSystem>()->GetWeeklyWin();
-		//const_cast<GamePlayerEntity*>(this)->m_PlayerInformation.WeeklyLose = GetComponent<UserGamePlayerInfoSystem>()->GetWeeklyLose();
-
-		return m_PlayerInformation;
-	}
-
-
-	//const ServerFriendInformation& GamePlayerEntity::GetFriendInformation() const
-	//{
-	//	m_PlayerInformation.ShardID = GetShardID();
-	//	m_PlayerInformation.Level = GetComponent<UserGamePlayerInfoSystem>()->GetLevel();
-	//	m_PlayerInformation.WeeklyWin = GetComponent<UserGamePlayerInfoSystem>()->GetWeeklyWin();
-	//	m_PlayerInformation.WeeklyLose = GetComponent<UserGamePlayerInfoSystem>()->GetWeeklyLose();
-	//	m_PlayerInformation.LastActiveTime = GetLatestActiveTime().time_since_epoch().count();
-	//	m_PlayerInformation.IsPlayingGame = GetIsInGame();
-
-	//	return m_PlayerInformation;
-	//}
 
 	void GamePlayerEntity::AddGameTransactionLog(TransLogCategory LogCategory, INT consume, INT gain, uint64_t totalValue, const char* logMessage)
 	{
@@ -286,25 +264,25 @@ namespace Svr {
 		AddGameTransactionLog(LogCategory, consume, gain, totalValue, "");
 	}
 
-	//// Send push notify
-	//Result GamePlayerEntity::SendPushNotify( const char* strMessage, uint64_t param )
-	//{
-	//	Result hr = ResultCode::SUCCESS;
+	// Send push notify
+	Result GamePlayerEntity::SendPushNotify(const char* strMessage, uint64_t param)
+	{
+		Result hr = ResultCode::SUCCESS;
 
-	//	// Send GCM push notify
-	//	if( GetGCMKeys() != nullptr && GetGCMKeys()[0] != '\0' )
-	//	{
-	//		Svr::ExternalTransactionManager *pExternal = Svr::GetServerComponent<Svr::ExternalTransactionManager>();
-	//		svrChkPtr(pExternal);
-	//		svrChk( pExternal->SendGCMNotify( 0, GetGCMKeys(), strMessage, param ) );
-	//	}
-	//Proc_End:
+		// Send GCM push notify
+		if (GetGCMKeys() != nullptr && GetGCMKeys()[0] != '\0')
+		{
+			Svr::ExternalTransactionManager *pExternal = Svr::GetServerComponent<Svr::ExternalTransactionManager>();
+			svrChkPtr(pExternal);
+			svrChk(pExternal->SendGCMNotify(0, GetGCMKeys(), strMessage, param));
+		}
+	Proc_End:
 
-	//	return hr;
-	//}
+		return hr;
+	}
 
 
-}; // namespace GameServer
+}; // namespace Svr
 }; // namespace SF
 
 

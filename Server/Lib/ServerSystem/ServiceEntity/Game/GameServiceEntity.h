@@ -65,7 +65,7 @@ namespace Svr {
 		typedef ShardedClusterServiceEntity super;
 
 	private:
-		const ServerConfig::NetPublic*	m_PublicNetSocket;
+		const ServerConfig::NetPublic*	m_PublicNet;
 		SharedPointerT<Net::ServerMUDP>			m_pNetPublic;
 		GameID						m_GameID;
 
@@ -82,8 +82,8 @@ namespace Svr {
 		// We are not going to use hashed key
 		virtual uint KeyHash( uint64_t key ) { return (uint)key; }
 		
-
-		const ServerConfig::NetPublic* GetPublicNetConfig() { return m_PublicNetSocket;  }
+		Net::ServerMUDP* GetServerNet() { return *m_pNetPublic; }
+		const ServerConfig::NetPublic* GetPublicNetConfig() { return m_PublicNet;  }
 
 		//////////////////////////////////////////////////////////////////////////
 		//
