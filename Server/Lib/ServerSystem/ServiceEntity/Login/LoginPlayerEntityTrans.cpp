@@ -910,8 +910,6 @@ namespace Svr {
 
 		// Find new ranking server
 		svrChk(Service::ClusterManager->GetRandomService(GetMyOwner()->GetGameID(), ClusterID::Ranking, pService));
-		//svrChk(Service::ClusterManager->GetClusterServiceEntity(ClusterID::Ranking, pServiceEntity));
-		//hr = pServiceEntity->FindRandomService(pService);
 		if (!hr)
 		{
 			svrTrace(Error, "Failed to find ranking service");

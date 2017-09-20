@@ -33,8 +33,6 @@
 #include "Protocol/Message/GamePartyMsgClass.h"
 #include "Protocol/Policy/GamePartyNetPolicy.h"
 
-#include "Protocol/Message/GameServerMsgClass.h"
-#include "Protocol/Policy/GameServerNetPolicy.h"
 #include "Protocol/Message/GameInstanceMsgClass.h"
 #include "Protocol/Policy/GameInstanceNetPolicy.h"
 

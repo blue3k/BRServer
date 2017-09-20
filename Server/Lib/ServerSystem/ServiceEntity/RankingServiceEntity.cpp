@@ -172,7 +172,7 @@ namespace Svr {
 			svrChk(m_PlayerMap.Insert(player.PlayerID, pPlayerRankInformation));
 			m_PlayerMap.CommitChanges();
 
-			// TODO: only use lower 32bit value
+			// TODO: We are only useing lower 32bit value. if we need more value we need to change this implementation
 			rankingKey.Score = (uint32_t)score;
 			svrChk(m_RankingMap.Insert(rankingKey.RankingKeyValue, pPlayerRankInformation, &playerRanking));
 		}

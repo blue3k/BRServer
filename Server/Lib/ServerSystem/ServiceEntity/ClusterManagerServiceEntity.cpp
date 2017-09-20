@@ -193,6 +193,9 @@ namespace Svr {
 
 		svrChk(LocalServiceEntites.push_back(pServiceEntity));
 
+		pServiceEntity->SetMyServiceInfo(pNewServiceInfo);
+
+
 		// add to zk
 		auto& zkSession = Service::ZKSession->GetZooKeeperSession();
 		if (!zkSession.IsConnected())
@@ -698,7 +701,6 @@ namespace Svr {
 
 		pServiceInfo = pClusterServiceInfo->NewLocalService(pServiceEntity);
 
-		// TODO: add to zk
 
 	Proc_End:
 
@@ -719,10 +721,13 @@ namespace Svr {
 		if (pClusterServiceInfo == nullptr)
 			return ResultCode::UNEXPECTED;
 
-		svrChk(pClusterServiceInfo->Services.find(pServiceEntity->GetMyServiceInfo()->GetNodeNameCrc(), pServiceInfo));
+		if (pServiceEntity->GetMyServiceInfo() != nullptr)
+		{
+			svrChk(pClusterServiceInfo->Services.find(pServiceEntity->GetMyServiceInfo()->GetNodeNameCrc(), pServiceInfo));
 
-		pServiceEntity->GetMyServiceInfo()->GetWorkload();
-		// TODO: update to zk
+			// TODO: update to zk
+			pServiceEntity->GetMyServiceInfo()->GetWorkload();
+		}
 
 
 	Proc_End:

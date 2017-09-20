@@ -271,6 +271,9 @@ namespace GameServer {
 		Result hr;
 		TransactionPtr trans;
 
+		if (m_ClosingPended) return;
+		m_ClosingPended = true;
+
 		svrMem(trans = new(GetHeap()) PlayerTransCloseInstance(GetHeap()));
 		svrChk(trans->InitializeTransaction(this));
 		PendingTransaction(GetTaskWorker()->GetThreadID(), trans);

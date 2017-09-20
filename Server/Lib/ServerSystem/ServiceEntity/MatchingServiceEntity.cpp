@@ -377,7 +377,7 @@ namespace Svr {
 	//
 	//
 
-	MatchingServiceEntity::MatchingServiceEntity(GameID gameID, ClusterID clusterID, ClusterMembership initialMembership, bool useBot)
+	MatchingServiceEntity::MatchingServiceEntity(GameID gameID, ClusterID clusterID, bool useBot, ClusterMembership initialMembership)
 		: ShardedClusterServiceEntity(gameID, clusterID, initialMembership )
 		, m_IsUseBot(true)
 		, m_MatchingReserevedQueues(GetMemoryManager())
@@ -422,11 +422,26 @@ namespace Svr {
 		m_ReservationStartFrom = 1;
 		m_WaitingBotMatchingStart = TimeStampMS::min();
 
+		switch (m_TargetMatchingMemberCount)
+		{
+		case 4:
+			svrChk(Service::ClusterManager->RegisterClustereWatchers(GetGameID(), ClusterID::MatchingQueue_Game_4x1, ClusterID::MatchingQueue_Game_4x1W));
+			break;
+		case 8:
+			svrChk(Service::ClusterManager->RegisterClustereWatchers(GetGameID(), ClusterID::MatchingQueue_Game_8x1, ClusterID::MatchingQueue_Game_8x1W));
+			break;
+		default:
+			assert(false); // not supported
+			break;
+		}
+
+		svrChk(Service::ClusterManager->SetWatchForCluster(GetGameID(), ClusterID::GameInstanceManager, true));
+
 
 		newQueueEntity = new(GetMemoryManager()) MatchingServiceQueueEntity(m_TargetMatchingMemberCount, MIN_ITEM_RESERVATION, MAX_ITEM_RESERVATION);
 		svrChkPtr(newQueueEntity);
 
-		// TODO: Map queues
+		// Map queues
 		m_MatchingReserevedQueues.push_back(nullptr);
 		for (uint iQueue = 1; iQueue < (uint)matchingQueueCount; iQueue++)
 		{

@@ -63,6 +63,8 @@ namespace GameServer {
 
 		ComponentCarrier<UserSystemComponentID_Max> m_ComponentCarrier;
 
+		bool m_ClosingPended = false;
+
 	public:
 
 		GamePlayerEntity();

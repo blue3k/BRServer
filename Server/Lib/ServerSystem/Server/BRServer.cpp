@@ -99,7 +99,7 @@ namespace Svr{
 	{
 		SetInstance( this );
 
-		// TODO: 
+		// TODO: Fix server memory leak on shutdown
 		GetHeap().SetIgnoreMemmoryLeak(true);
 
 		// main server class has private thread for task
@@ -708,7 +708,7 @@ Proc_End:
 		case "ModLogin"_hash32:
 		{
 			auto pLogin = (ServerConfig::ServerModulePublicService*)module;
-			svrChk(Service::EntityManager->AddEntity(EntityFaculty::Service, new(GetHeap()) Svr::LoginServiceEntity(&pLogin->PublicNet)));
+			svrChkPtr(AddServiceEntity<Svr::LoginServiceEntity>(&pLogin->PublicNet));
 			break;
 		}
 
@@ -721,34 +721,30 @@ Proc_End:
 
 		case "ModRanking"_hash32:
 		{
-			svrChkPtr(AddServiceEntity<Svr::RankingServiceEntity>(GetServerGameID(), ClusterID::Ranking, ClusterMembership::Slave));
+			svrChkPtr(AddServiceEntity<Svr::RankingServiceEntity>(GetServerGameID(), ClusterID::Ranking));
 			break;
 		}
 
 		case "ModGameInstanceManager"_hash32:
 		{
-			svrChkPtr(AddServiceEntity<Svr::GameInstanceManagerServiceEntity>(GetServerGameID(), ClusterID::GameInstanceManager, ClusterMembership::Slave));
+			svrChkPtr(AddServiceEntity<Svr::GameInstanceManagerServiceEntity>(GetServerGameID(), ClusterID::GameInstanceManager));
 			break;
 		}
 
 		case "ModGamePartyManager"_hash32:
-			svrChk(AddServiceEntityComponent<Svr::GamePartyManagerServiceEntity>(GetServerGameID(), ClusterMembership::Slave));
-			svrChk(Service::ClusterManager->RegisterClustereWatchers(GetGameID(), ClusterID::MatchingQueue_Game_4x1, ClusterID::MatchingQueue_Game_4x1W));
-			svrChk(Service::ClusterManager->RegisterClustereWatchers(GetGameID(), ClusterID::MatchingQueue_Game_8x1, ClusterID::MatchingQueue_Game_8x1W));
+			svrChk(AddServiceEntityComponent<Svr::GamePartyManagerServiceEntity>(GetServerGameID()));
 			break;
 
 		case "ModMatching_Game_4"_hash32:
 		{
 			auto pMatching = (ServerConfig::ServerModuleMatching_4*)module;
-			svrChkPtr(AddServiceEntity<Svr::MatchingServiceEntity>(GetServerGameID(), ClusterID::Matching_Game_4, ClusterMembership::Slave, pMatching->UseBot));
-			svrChk(Service::ClusterManager->RegisterClustereWatchers(GetGameID(), ClusterID::MatchingQueue_Game_4x1, ClusterID::MatchingQueue_Game_4x1W));
+			svrChkPtr(AddServiceEntity<Svr::MatchingServiceEntity>(GetServerGameID(), ClusterID::Matching_Game_4, pMatching->UseBot));
 			break;
 		}
 		case "ModMatching_Game_8"_hash32:
 		{
 			auto pMatching = (ServerConfig::ServerModuleMatching_8*)module;
-			svrChkPtr(AddServiceEntity<Svr::MatchingServiceEntity>(GetServerGameID(), ClusterID::Matching_Game_8, ClusterMembership::Slave, pMatching->UseBot));
-			svrChk(Service::ClusterManager->RegisterClustereWatchers(GetGameID(), ClusterID::MatchingQueue_Game_8x1, ClusterID::MatchingQueue_Game_8x1W));
+			svrChkPtr(AddServiceEntity<Svr::MatchingServiceEntity>(GetServerGameID(), ClusterID::Matching_Game_8, pMatching->UseBot));
 			break;
 		}
 		case "ModPurchaseValidateGoogle"_hash32:

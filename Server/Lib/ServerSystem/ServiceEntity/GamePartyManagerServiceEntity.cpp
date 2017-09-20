@@ -72,6 +72,10 @@ namespace Svr {
 
 		svrChk(super::InitializeEntity(newEntityID));
 
+		svrChk(Service::ClusterManager->RegisterClustereWatchers(GetGameID(), ClusterID::MatchingQueue_Game_4x1, ClusterID::MatchingQueue_Game_4x1W));
+		svrChk(Service::ClusterManager->RegisterClustereWatchers(GetGameID(), ClusterID::MatchingQueue_Game_8x1, ClusterID::MatchingQueue_Game_8x1W));
+
+
 	Proc_End:
 
 		return hr;

@@ -67,11 +67,6 @@ namespace Svr {
 	//	Player operations
 	//
 
-	void PlayerManagerServiceEntity::PlayerTableItem::UpdateEntityInfo( EntityUID entityUID )
-	{
-		m_EntityUID = entityUID;
-	}
-
 	Result PlayerManagerServiceEntity::RegisterServiceMessageHandler( ServerEntity *pServerEntity )
 	{
 		Result hr = ResultCode::SUCCESS;
@@ -86,6 +81,41 @@ namespace Svr {
 
 		return hr;
 	}
+
+	// Initialize entity to proceed new connection
+	Result PlayerManagerServiceEntity::InitializeEntity(EntityID newEntityID)
+	{
+		Result hr;
+		auto& zkSession = Service::ZKSession->GetZooKeeperSession();
+		char gamePath[512];
+
+		svrChk(super::InitializeEntity(newEntityID));
+
+		if (!zkSession.IsConnected())
+		{
+			svrTrace(Error, "Zookeeper session server hasn't ready!");
+			return ResultCode::UNEXPECTED;
+		}
+
+		if (!zkSession.Exists(ZKBasePath))
+		{
+			zkSession.ACreate(ZKBasePath, Json::Value(Json::objectValue), nullptr, 0);
+		}
+
+		// TODO: iterate all game type
+		StrUtil::Format(gamePath, "{0}/{1}", ZKBasePath, Enum<GameID>().GetValueName(GameID::Conspiracy));
+		if (!zkSession.Exists(gamePath))
+			zkSession.ACreate(gamePath, Json::Value(Json::objectValue), nullptr, 0);
+
+		StrUtil::Format(gamePath, "{0}/{1}", ZKBasePath, Enum<GameID>().GetValueName(GameID::MyTownHero));
+		if (!zkSession.Exists(gamePath))
+			zkSession.ACreate(gamePath, Json::Value(Json::objectValue), nullptr, 0);
+
+	Proc_End:
+
+		return hr;
+	}
+
 
 	Result PlayerManagerServiceEntity::TickUpdate(TimerAction *pAction)
 	{
@@ -112,7 +142,6 @@ namespace Svr {
 	Result PlayerManagerServiceEntity::CreatePlayer(GameID gameID, PlayerID playerID, EntityUID entityUID)
 	{
 		Result hr;
-		PlayerTableItem *pNewPlayerInfo = nullptr;
 		PlayerIDMapIterator itPlayer;
 		char nodePath[256];
 		bool bIsUpdate = false;
@@ -127,15 +156,20 @@ namespace Svr {
 
 		if ((m_PlayerIDMap.find(playerID, itPlayer)))
 		{
-			Assert(itPlayer->GetPlayerID() == playerID);
-			itPlayer->UpdateEntityInfo(entityUID);
+			if (itPlayer != entityUID)
+			{
+				m_PlayerIDMap.erase(playerID);
+				svrChk(m_PlayerIDMap.Insert(playerID, entityUID));
+			}
 			bIsUpdate = true;
-			return hr;
+		}
+		else
+		{
+			svrChk(m_PlayerIDMap.Insert(playerID, entityUID));
 		}
 
-		svrMem(pNewPlayerInfo = new(GetMemoryManager()) PlayerTableItem(playerID, entityUID));
 		m_NumberOfPlayerOnThisServer.fetch_add(1, std::memory_order_relaxed);
-
+		
 
 		auto& zkSession = Service::ZKSession->GetZooKeeperSession();
 		if (!zkSession.IsConnected())
@@ -176,7 +210,6 @@ namespace Svr {
 	Result PlayerManagerServiceEntity::DeletePlayer(GameID gameID, PlayerID playerID)
 	{
 		Result hr;
-		PlayerTableItem *pPlayerInfo = nullptr;
 		PlayerIDMapIterator itPlayer;
 		char nodePath[256];
 
@@ -185,17 +218,9 @@ namespace Svr {
 			return ResultCode::INVALID_ENTITY;
 		}
 
-
-		PlayerTableItem* pTblItem = itPlayer;
-
-		if (pTblItem->GetPlayerID() != playerID)
-			svrErr(ResultCode::INVALID_ENTITY);
-
 		svrChk(m_PlayerIDMap.erase(playerID));
 
 		m_NumberOfPlayerOnThisServer.fetch_sub(1, std::memory_order_relaxed);
-
-		IHeap::Delete(pTblItem);
 
 
 		auto& zkSession = Service::ZKSession->GetZooKeeperSession();
@@ -224,7 +249,7 @@ namespace Svr {
 
 		if (m_PlayerIDMap.find(playerID, itPlayer))
 		{
-			entityUID = itPlayer->GetEntityUID();
+			entityUID = itPlayer;
 			return hr;
 		}
 
@@ -238,7 +263,8 @@ namespace Svr {
 
 		StrUtil::Format(nodePath, "{0}/{1}/{2}", ZKBasePath, Enum<GameID>().GetValueName(gameID), playerID);
 
-		zkSession.Get(nodePath, jsonValue);
+		if(!zkSession.Get(nodePath, jsonValue))
+			return ResultCode::FAIL;
 
 		entityUID.UID = jsonValue.get("EntityUID", Json::Value(0)).asUInt64();
 

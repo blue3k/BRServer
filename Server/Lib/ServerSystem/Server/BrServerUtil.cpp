@@ -94,6 +94,8 @@ namespace Svr {
 		pEngine->AddComponent<ServerConfigComponent>(zkconfig);
 
 		auto pMyConfig = Service::ServerConfig->FindGenericServer(Util::GetServiceName());
+		if (pMyConfig == nullptr)
+			return;
 
 		pEngine->AddComponent<ConnectionManagerComponent>(2048);
 		pEngine->AddComponent<EntityTable>();

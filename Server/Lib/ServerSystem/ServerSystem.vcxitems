@@ -69,6 +69,10 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)PerformanceCounter\PerformanceCounterClient.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)PerformanceCounter\PerformanceCounterInstance.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)PerformanceCounter\PerformanceCounterServer.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)ResultCode\SFResultCodeDB.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)ResultCode\SFResultCodeGame.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)ResultCode\SFResultCodeLogin.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)ResultCode\SFResultCodeSvr.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)ServerEntity\SvrEntityServerEntity.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)ServerEntity\SvrGameServerEntity.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)ServerEntity\GenericServerEntity.h" />
@@ -222,7 +226,6 @@
     <ClCompile Include="$(MSBuildThisFileDirectory)Transaction\ExternalTransaction.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)Transaction\ExternalTransactionManager.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)Transaction\ParallelTransaction.cpp" />
-    <ClCompile Include="$(MSBuildThisFileDirectory)Transaction\ServerTransactionGeneric.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)Transaction\Transaction.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)Types\BrGameTypes.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)Util\GlobalUIDGenerator.cpp" />
@@ -230,6 +233,12 @@
     <ClCompile Include="$(MSBuildThisFileDirectory)Util\UniqueEntityIDGenerator.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <Xml Include="$(MSBuildThisFileDirectory)..\..\..\Data\ResultCode\ResultCodeDB.xml" />
+    <Xml Include="$(MSBuildThisFileDirectory)..\..\..\Data\ResultCode\ResultCodeGame.xml" />
+    <Xml Include="$(MSBuildThisFileDirectory)..\..\..\Data\ResultCode\ResultCodeLogin.xml" />
+    <Xml Include="$(MSBuildThisFileDirectory)..\..\..\Data\ResultCode\ResultCodeNet.xml" />
+    <Xml Include="$(MSBuildThisFileDirectory)..\..\..\Data\ResultCode\ResultCodeSvr.xml" />
+    <Xml Include="$(MSBuildThisFileDirectory)..\..\..\Data\ResultCode\ServerResultFacility.xml" />
     <Xml Include="$(MSBuildThisFileDirectory)..\..\Config\ServerConfig.xml" />
     <Xml Include="$(MSBuildThisFileDirectory)..\..\Config\ServerConfig_Conspiracy.xml" />
     <Xml Include="$(MSBuildThisFileDirectory)..\..\Config\ServerConfig_linux.xml" />
@@ -240,6 +249,12 @@
     <Xml Include="$(MSBuildThisFileDirectory)..\..\Config\ServerConfig_winsample.xml" />
   </ItemGroup>
   <ItemGroup>
+    <Xsd Include="$(MSBuildThisFileDirectory)..\..\..\Data\ResultCode\SFResultCode.xsd">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </Xsd>
+    <Xsd Include="$(MSBuildThisFileDirectory)..\..\..\Data\ResultCode\SFResultCodeFacility.xsd">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </Xsd>
     <Xsd Include="$(MSBuildThisFileDirectory)..\..\Config\ServerConfig.xsd">
       <ExcludedFromBuild>true</ExcludedFromBuild>
     </Xsd>

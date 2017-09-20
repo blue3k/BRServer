@@ -77,7 +77,6 @@ namespace Svr {
 	{
 		Result hr = ResultCode::SUCCESS;
 		CounterType loopCount;
-		Transaction* pCurTrans = nullptr;
 
 		if (GetEntityState() == EntityState::FREE)
 			return hr;
@@ -96,12 +95,12 @@ namespace Svr {
 
 		// If no active transaction, pop one and try it
 		loopCount = GetTransactionQueue().GetEnqueCount();
-		for (decltype(loopCount) iTrans = 0; pCurTrans == nullptr && iTrans < loopCount; iTrans++)
+		for (decltype(loopCount) iTrans = 0; m_pCurTran == nullptr && iTrans < loopCount; iTrans++)
 		{
 			if (!(GetTransactionQueue().Dequeue(m_pCurTran)))
 				break;
 
-			//svrTrace(SVR_TRANSACTION, "Trans NewActive TID:{0}, ParentTID:{1} {2}, Entity:{3}:%4%", pCurTrans->GetTransID(), pCurTrans->GetParentTransID(), typeid(*pCurTrans).name(), GetEntityUID(), typeid(*this).name());
+			svrTrace(SVR_TRANSACTION, "Trans NewActive TID:{0}, ParentTID:{1} {2}, Entity:{3}:%4%", m_pCurTran->GetTransID(), m_pCurTran->GetParentTransID(), typeid(*m_pCurTran).name(), GetEntityUID(), typeid(*this).name());
 
 			svrChk(ProcessTransaction(m_pCurTran));
 		}

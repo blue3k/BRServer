@@ -381,7 +381,6 @@ namespace Svr {
 		svrTrace(SVR_MATCHING, "Creating game Matching:{0}", GetTargetMatchingMemberCount());
 
 		svrChk(Service::ClusterManager->GetRandomService(GetServerGameID(), ClusterID::GameInstanceManager, pService));
-		//svrChk(GetServerComponent<GameInstanceManagerWatcherServiceEntity>()->GetService(pService));
 
 		// 2. Get service entity list in the cluster
 		svrChk(pService->GetService<GameInstanceManagerService>()->CreateGameCmd(GetTransID(), 0, (uint16_t)(m_TargetMatchingMemberCount - m_DequeuedTotalMembers), (uint16_t)m_TargetMatchingMemberCount));

@@ -34,8 +34,6 @@
 #include "Protocol/Policy/LoginServerNetPolicy.h"
 #include "Protocol/Message/LoginServerMsgClass.h"
 
-#include "Protocol/Message/GameServerMsgClass.h"
-#include "Protocol/Policy/GameServerNetPolicy.h"
 #include "Protocol/Message/GameInstanceMsgClass.h"
 #include "Protocol/Policy/GameInstanceNetPolicy.h"
 #include "Protocol/Message/GamePartyMsgClass.h"
@@ -333,16 +331,7 @@ namespace GameServer {
 		Result hr = ResultCode::SUCCESS;
 		EntityUID playerUID;
 
-		if( (Service::PlayerManager->FindPlayer( GetAccID(), playerUID)) )
-		{
-			// We don't have to kick because we use previous entity
-			//Assert( playerUID == GetMyOwner()->GetEntityUID() );
-			goto Proc_End;
-		}
-		else
-		{
-			svrChk(Service::PlayerManager->CreatePlayer( GetMyOwner()->GetPlayerID(), GetOwnerEntityUID() ) );
-		}
+		svrChk(Service::PlayerManager->CreatePlayer( GetMyOwner()->GetPlayerID(), GetOwnerEntityUID() ) );
 
 	Proc_End:
 

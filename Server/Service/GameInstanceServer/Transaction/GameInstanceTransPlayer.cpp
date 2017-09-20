@@ -159,7 +159,7 @@ namespace ConspiracyGameInstanceServer {
 
 		// Send my info to others
 		GetMyOwner()->ForeachPlayerSvrGameInstance( [&]( GamePlayer* pPlayer, Policy::NetSvrPolicyGameInstance &pPolicy )->Result {
-			if( pMyPlayer != pPlayer )
+			if( pMyPlayer != pPlayer && !pPlayer->GetIsBot())
 			{
 				PlayerRole myRoleToOther = GetMyOwner()->GetComponent<GamePlaySystem>()->GetRevealedRole( pPlayer, pMyPlayer );
 				pPolicy.PlayerJoinedS2CEvt( RouteContext( GetOwnerEntityUID(), pPlayer->GetPlayerEntityUID()), pMyPlayer->GetPlayerInformation(), (uint8_t)myRoleToOther, (uint8_t)(pMyPlayer->GetPlayerState() != PlayerState::Playing), (uint8_t)pMyPlayer->GetIndex(), (uint8_t)pMyPlayer->GetCharacter()  );
@@ -218,17 +218,18 @@ namespace ConspiracyGameInstanceServer {
 		if( GetPlayerToKick() == (PlayerID)(-1) )
 		{
 			svrChk( GetMyOwner()->ForeachPlayerSvrGameInstance( [&]( GamePlayer* pPlayer, Policy::NetSvrPolicyGameInstance &pPolicy )->Result {
-				pPolicy.PlayerKickedS2CEvt( RouteContext( GetOwnerEntityUID(), pPlayer->GetPlayerEntityUID()), pPlayer->GetPlayerID()  );
+				if(!pPlayer->GetIsBot())
+					pPolicy.PlayerKickedS2CEvt( RouteContext( GetOwnerEntityUID(), pPlayer->GetPlayerEntityUID()), pPlayer->GetPlayerID()  );
 				return GetMyOwner()->LeavePlayer( pPlayer->GetPlayerID() );
 			}) );
 		}
 		else
 		{
-			Policy::NetSvrPolicyGameInstance *pPolicy = nullptr;
 			GamePlayer *pPlayerToKick = nullptr;
 
 			svrChk( GetMyOwner()->FindPlayer( GetPlayerToKick(), pPlayerToKick ) );
-			Policy::NetSvrPolicyGameInstance(pPlayerToKick->GetConnection()).PlayerKickedS2CEvt( RouteContext( GetOwnerEntityUID(), pPlayerToKick->GetPlayerEntityUID()), pPlayerToKick->GetPlayerID()  );
+			if(!pPlayerToKick->GetIsBot())
+				Policy::NetSvrPolicyGameInstance(pPlayerToKick->GetConnection()).PlayerKickedS2CEvt( RouteContext( GetOwnerEntityUID(), pPlayerToKick->GetPlayerEntityUID()), pPlayerToKick->GetPlayerID()  );
 			svrChk( GetMyOwner()->LeavePlayer( pPlayerToKick->GetPlayerID() ) );
 		}
 
@@ -403,7 +404,8 @@ namespace ConspiracyGameInstanceServer {
 
 			m_MemberCount++;
 
-			pPolicy.GamePlayAgainS2CEvt(RouteContext(ownerUID, pPlayer->GetPlayerEntityUID()), pPlayer->GetPlayerID(), GetPartyUID(), GetLeadPlayer());
+			if(!pPlayer->GetIsBot())
+				pPolicy.GamePlayAgainS2CEvt(RouteContext(ownerUID, pPlayer->GetPlayerEntityUID()), pPlayer->GetPlayerID(), GetPartyUID(), GetLeadPlayer());
 			return ResultCode::SUCCESS;
 		});
 

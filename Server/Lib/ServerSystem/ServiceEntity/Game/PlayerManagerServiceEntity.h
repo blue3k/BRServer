@@ -46,46 +46,18 @@ namespace Svr {
 
 		typedef ShardedClusterServiceEntity super;
 
-		const char* ZKBasePath = "/Player";
+		const char* ZKBasePath = "/BRPlayer";
 
 
-		// Player table item
-		class PlayerTableItem
-		{
-		private:
 
-			// Player ID
-			PlayerID m_PlayerID = 0;
-
-			// Entity UID
-			EntityUID m_EntityUID;
-
-
-		public:
-
-			PlayerID GetPlayerID() const { return m_PlayerID; }
-			EntityUID GetEntityUID() const { return m_EntityUID; }
-
-			// Constructor with constructor
-			PlayerTableItem( PlayerID playerID, EntityUID entityUID )
-				:m_PlayerID(playerID)
-				,m_EntityUID(entityUID)
-			{
-			}
-
-		public:
-
-			void UpdateEntityInfo( EntityUID entityUID);
-		};
-
-
-		typedef HashTable2< PlayerID,
-			PlayerTableItem*,
+		typedef HashTable2< PlayerID, EntityUID,
 			UniqueKeyTrait, 
-			ThreadSyncTraitReadWriteT<PlayerID, PlayerTableItem*>,
+			ThreadSyncTraitReadWriteT<PlayerID, EntityUID>,
 			hash < PlayerID >
 			> PlayerIDMap;
-		typedef PlayerTableItem* PlayerIDMapIterator;
+
+		typedef EntityUID PlayerIDMapIterator;
+
 
 	private:
 
@@ -106,6 +78,11 @@ namespace Svr {
 		virtual void Dispose() override;
 
 		virtual Result RegisterServiceMessageHandler( ServerEntity *pServerEntity ) override;
+
+
+		// Initialize entity to proceed new connection
+		virtual Result InitializeEntity(EntityID newEntityID) override;
+
 
 		virtual Result TickUpdate(TimerAction *pAction = nullptr) override;
 

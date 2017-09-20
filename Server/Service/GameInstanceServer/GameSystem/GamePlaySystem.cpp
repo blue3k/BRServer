@@ -662,6 +662,10 @@ namespace ConspiracyGameInstanceServer {
 					// Skip broadcast from ghost to others
 					return ResultCode::SUCCESS;
 				}
+
+				if(pPlayer->GetIsBot())
+					return ResultCode::SUCCESS;
+
 				pPolicy.ChatMessageC2SEvt(RouteContext(ownerEntityUID, pPlayer->GetPlayerEntityUID()), pMyPlayer->GetPlayerID(), (uint8_t)role, pMyPlayer->GetPlayerName(), message);
 			}
 			return ResultCode::SUCCESS;

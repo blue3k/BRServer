@@ -110,6 +110,8 @@ namespace Svr {
 			ReleaseConnection("Replacing game player connection");
 		}
 
+		Service::ConnectionManager->AddConnection(pCon);
+
 		svrChk(Svr::SimpleUserEntity::SetConnection(std::forward<SharedPointerT<Net::Connection>>(pCon)));
 
 
@@ -156,10 +158,13 @@ namespace Svr {
 
 		svrChk(pConnection->InitConnection(m_ServerNet->GetSocket(), false, local, remote));
 
-		Service::ConnectionManager->AddConnection(pConnection);
-
 		svrTrace(SVR_INFO, "Initialize connection CID:{0}, Addr:{1}", pConnection->GetCID(), pConnection->GetRemoteInfo().PeerAddress);
 
+		// All players are already logged in, we don't need address map
+		// All player connection in game service will be routed with peerid
+		pConnection->SetUseAddressMap(false);
+
+		// replace previous connection first
 		svrChk(SetConnection(std::forward<Net::ConnectionPtr>(pConnection)));
 
 		SetLatestActiveTime(Util::Time.GetTimeUTCSec());

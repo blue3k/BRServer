@@ -74,6 +74,7 @@ namespace SF {
 
 	void Transaction::Dispose()
 	{
+		assert(GetState() != State::STATE_STARTED);
 //#ifdef DEBUG
 //		auto pEntity = dynamic_cast<MasterEntity*>(GetOwnerEntity());
 //		if (pEntity != nullptr)

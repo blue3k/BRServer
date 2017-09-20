@@ -228,7 +228,7 @@ namespace Svr {
 
 	public:
 
-		MatchingServiceEntity( GameID gameID, ClusterID clusterID, ClusterMembership initialMembership = ClusterMembership::Slave, bool useBot = true );
+		MatchingServiceEntity( GameID gameID, ClusterID clusterID, bool useBot = true, ClusterMembership initialMembership = ClusterMembership::Slave );
 		~MatchingServiceEntity();
 
 		// We are not going to use hashed key

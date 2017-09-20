@@ -18,6 +18,7 @@
 
 namespace SF
 {
+
 	ZooKeeperSessionComponent::ZooKeeperSessionComponent(const char* serverAddresses, uint32_t zkLogLevel)
 		: LibraryComponent("ZooKeeperSessionComponent")
 		, m_Heap(GetSystemMemoryManager())

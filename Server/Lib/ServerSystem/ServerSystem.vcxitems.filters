@@ -76,6 +76,12 @@
     <Filter Include="Service">
       <UniqueIdentifier>{2aea48bf-8416-49c2-893c-b7a9963c9f78}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ResultCode">
+      <UniqueIdentifier>{8cb70fd0-2063-4f62-9615-144e64cdd558}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ResultCode\Data">
+      <UniqueIdentifier>{422ae7cf-26bf-4c93-8995-f1279927b4a8}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="$(MSBuildThisFileDirectory)stdafx.h" />
@@ -378,6 +384,18 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)ServiceEntity\Game\PlayerManagerServiceEntity.h">
       <Filter>ServerService\Game</Filter>
     </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)ResultCode\SFResultCodeGame.h">
+      <Filter>ResultCode</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)ResultCode\SFResultCodeLogin.h">
+      <Filter>ResultCode</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)ResultCode\SFResultCodeSvr.h">
+      <Filter>ResultCode</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)ResultCode\SFResultCodeDB.h">
+      <Filter>ResultCode</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="$(MSBuildThisFileDirectory)makefile.mak" />
@@ -653,9 +671,6 @@
     <ClCompile Include="$(MSBuildThisFileDirectory)Entity\SimpleUserEntity.cpp">
       <Filter>Entity</Filter>
     </ClCompile>
-    <ClCompile Include="$(MSBuildThisFileDirectory)Transaction\ServerTransactionGeneric.cpp">
-      <Filter>Transaction</Filter>
-    </ClCompile>
     <ClCompile Include="$(MSBuildThisFileDirectory)ServerEntity\SvrEntityServerEntity.cpp">
       <Filter>ServerEntity</Filter>
     </ClCompile>
@@ -722,8 +737,32 @@
     <Xml Include="$(MSBuildThisFileDirectory)..\..\Config\ServerConfig_winsample.xml">
       <Filter>Config\Data</Filter>
     </Xml>
+    <Xml Include="$(MSBuildThisFileDirectory)..\..\..\Data\ResultCode\ResultCodeDB.xml">
+      <Filter>ResultCode\Data</Filter>
+    </Xml>
+    <Xml Include="$(MSBuildThisFileDirectory)..\..\..\Data\ResultCode\ResultCodeGame.xml">
+      <Filter>ResultCode\Data</Filter>
+    </Xml>
+    <Xml Include="$(MSBuildThisFileDirectory)..\..\..\Data\ResultCode\ResultCodeLogin.xml">
+      <Filter>ResultCode\Data</Filter>
+    </Xml>
+    <Xml Include="$(MSBuildThisFileDirectory)..\..\..\Data\ResultCode\ResultCodeNet.xml">
+      <Filter>ResultCode\Data</Filter>
+    </Xml>
+    <Xml Include="$(MSBuildThisFileDirectory)..\..\..\Data\ResultCode\ResultCodeSvr.xml">
+      <Filter>ResultCode\Data</Filter>
+    </Xml>
+    <Xml Include="$(MSBuildThisFileDirectory)..\..\..\Data\ResultCode\ServerResultFacility.xml">
+      <Filter>ResultCode\Data</Filter>
+    </Xml>
   </ItemGroup>
   <ItemGroup>
     <Xsd Include="$(MSBuildThisFileDirectory)..\..\Config\ServerConfig.xsd" />
+    <Xsd Include="$(MSBuildThisFileDirectory)..\..\..\Data\ResultCode\SFResultCode.xsd">
+      <Filter>ResultCode\Data</Filter>
+    </Xsd>
+    <Xsd Include="$(MSBuildThisFileDirectory)..\..\..\Data\ResultCode\SFResultCodeFacility.xsd">
+      <Filter>ResultCode\Data</Filter>
+    </Xsd>
   </ItemGroup>
 </Project>

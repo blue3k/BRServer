@@ -129,6 +129,7 @@ namespace Svr {
 
 
 		ServerServiceInformation* GetMyServiceInfo() { return m_MyServiceInfo; }
+		void SetMyServiceInfo(ServerServiceInformation* value) { m_MyServiceInfo = value; }
 
 		ServerEntity* GetServerEntity() { return m_ServerEntity; }
 		void SetServerEntity(ServerEntity* value) { m_ServerEntity = value; }
