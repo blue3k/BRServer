@@ -184,10 +184,6 @@ namespace Svr {
 
 		if( m_TimeToKill.CheckTimer() || connection == nullptr || connection->GetConnectionState() == Net::ConnectionState::DISCONNECTED)
 		{
-			if (GetAccountID() > 0)
-			{
-				svrTrace(Debug1, "Closing silent login players AccID:{0}", GetAccountID());
-			}
 			PendingCloseTransaction();
 		}
 
@@ -203,6 +199,11 @@ namespace Svr {
 
 		if (m_ClosingPended)
 			return hr;
+
+		if (GetAccountID() > 0)
+		{
+			svrTrace(Debug1, "Closing silent login players AccID:{0}", GetAccountID());
+		}
 
 		m_ClosingPended = true;
 		svrMem( trans = new(GetMemoryManager()) LoginPlayerTransCloseInstance(GetMemoryManager()) );
