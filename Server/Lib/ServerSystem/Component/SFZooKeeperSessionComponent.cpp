@@ -19,9 +19,55 @@
 namespace SF
 {
 
+	/////////////////////////////////////////////////////////////////////////////////////////
+	//
+	//	ZooKeeperSessionComponent class
+	//
+
+	class ZooKeeperSessionObject : public EngineObject
+	{
+	private:
+		String m_ServerAddresses;
+		ZooKeeper& m_zkInstance;
+
+	public:
+		ZooKeeperSessionObject(const String& serverAddress, ZooKeeper& zkInstance)
+			: EngineObject(GetEngineMemoryManager(), "ZooKeeperSessionObject")
+			, m_ServerAddresses(serverAddress)
+			, m_zkInstance(zkInstance)
+		{
+		}
+
+		// Object task
+		virtual Result OnTick(EngineTaskTick tick) override
+		{
+			ZooKeeper::ZKEvent zkEvent;
+			while (m_zkInstance.DequeueEvent(zkEvent))
+			{
+				if (zkEvent.EventType == ZooKeeper::EVENT_SESSION)
+				{
+					if (!m_zkInstance.IsConnected() && m_zkInstance.GetState() != ZooKeeper::STATE_CONNECTING)
+					{
+						m_zkInstance.Connect(m_ServerAddresses);
+					}
+				}
+			}
+			return ResultCode::SUCCESS;
+		}
+	};
+
+
+
+
+	/////////////////////////////////////////////////////////////////////////////////////////
+	//
+	//	ZooKeeperSessionComponent class
+	//
+
 	ZooKeeperSessionComponent::ZooKeeperSessionComponent(const char* serverAddresses, uint32_t zkLogLevel)
 		: LibraryComponent("ZooKeeperSessionComponent")
 		, m_Heap(GetSystemMemoryManager())
+		, m_zkInstance(GetSystemMemoryManager())
 	{
 		m_ServerAddresses = serverAddresses;
 		// some components will need 
@@ -39,14 +85,15 @@ namespace SF
 		m_zkInstance.WaitForDisconnected();
 	}
 
-	ZooKeeper& ZooKeeperSessionComponent::GetZooKeeperSession()
+	ZooKeeper* ZooKeeperSessionComponent::GetZooKeeperSession()
 	{
 		if(!m_zkInstance.IsConnected())
 		{
-			m_zkInstance.Connect(m_ServerAddresses);
+			if(m_zkInstance.GetState() != ZooKeeper::STATE_CONNECTING)
+				m_zkInstance.Connect(m_ServerAddresses);
 			m_zkInstance.WaitForConnected();
 		}
-		return m_zkInstance;
+		return &m_zkInstance;
 	}
 
 
@@ -60,12 +107,18 @@ namespace SF
 		if (!m_zkInstance.IsConnected())
 			return ResultCode::FAIL;
 
+
+		m_SessionObject = new(GetEngineMemoryManager()) ZooKeeperSessionObject(m_ServerAddresses, m_zkInstance);
+		m_SessionObject->SetTickGroup(EngineTaskTick::AsyncTick);
+
 		return result;
 	}
 
 	// Terminate component
 	void ZooKeeperSessionComponent::DeinitializeComponent()
 	{
+		m_SessionObject->Dispose();
+		m_SessionObject = nullptr;
 
 		LibraryComponent::DeinitializeComponent();
 	}

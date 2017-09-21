@@ -89,6 +89,8 @@ namespace Svr {
 		Result AddServiceInfo(const char* nodeName, FixedString nodeNameCrc);
 
 
+		void AddLocalServiceInfoToServer(ServerServiceInformation* pLocalServiceInfo);
+
 	public:
 		ClusterServiceInfo_Impl(IHeap& heap, GameID gameID, ClusterID clusterID, bool activelyConnect);
 		~ClusterServiceInfo_Impl();

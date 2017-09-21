@@ -44,9 +44,11 @@ namespace SF
 		if (!result)
 			return result;
 
+		auto pZkSession = Service::ZKSession->GetZooKeeperSession();
+		if(pZkSession == nullptr)
+			return ResultCode::FAIL;
 
-
-		ServerConfigZooKeeper zkConfigLoader(**Service::ServerConfig, Service::ZKSession->GetZooKeeperSession());
+		ServerConfigZooKeeper zkConfigLoader(**Service::ServerConfig, *pZkSession);
 		result = zkConfigLoader.LoadConfig(m_ConfigPath);
 		if (!result)
 		{

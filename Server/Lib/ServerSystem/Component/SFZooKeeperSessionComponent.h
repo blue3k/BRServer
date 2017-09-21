@@ -26,6 +26,7 @@
 
 namespace SF
 {
+	
 
 	class ZooKeeperSessionComponent : public LibraryComponent, public ZooKeeperSessionService
 	{
@@ -36,6 +37,10 @@ namespace SF
 	private:
 
 		IHeap& m_Heap;
+		String m_ServerAddresses;
+		ZooKeeper m_zkInstance;
+
+		SharedPointerT<class ZooKeeperSessionObject> m_SessionObject;
 
 	public:
 
@@ -47,7 +52,7 @@ namespace SF
 		IHeap& GetHeap() { return m_Heap; }
 
 
-		virtual ZooKeeper& GetZooKeeperSession() override;
+		virtual ZooKeeper* GetZooKeeperSession() override;
 
 		virtual const FixedString& GetTypeName() override { return TypeName; }
 

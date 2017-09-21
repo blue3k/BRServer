@@ -14,13 +14,12 @@
 #include "SFTypedefs.h"
 #include "Object/SharedPointer.h"
 #include "String/FixedStringDB.h"
-#include "ZooKeeper/SFZooKeeper.h"
 
 
 
 namespace SF {
 
-
+	class ZooKeeper;
 	
 	/////////////////////////////////////////////////////////////////////////////////////////
 	//
@@ -29,29 +28,9 @@ namespace SF {
 
 	class ZooKeeperSessionService
 	{
-	protected:
-		String m_ServerAddresses;
-		ZooKeeper m_zkInstance;
-
 	public:
 
-		ZooKeeperSessionService()
-			: m_zkInstance(GetSystemMemoryManager()) 
-		{}
-
-		virtual ~ZooKeeperSessionService()
-		{
-			if (m_zkInstance.IsConnected())
-			{
-				m_zkInstance.Close();
-				m_zkInstance.WaitForDisconnected();
-			}
-		}
-
-		virtual ZooKeeper& GetZooKeeperSession()
-		{
-			return m_zkInstance;
-		}
+		virtual ZooKeeper* GetZooKeeperSession() { return nullptr; }
 
 	};
 
