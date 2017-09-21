@@ -1,8 +1,6 @@
 
 
-%PATH_BIN%\BREntityServer.exe -%SERVICE_COMMAND% -n:BREntityServer1
-%PATH_BIN%\BREntityServer.exe -%SERVICE_COMMAND% -n:BREntityServer2
-%PATH_BIN%\BREntityServer.exe -%SERVICE_COMMAND% -n:BREntityServer3
+
 
 %PATH_BIN%\BRLoginServer.exe -%SERVICE_COMMAND% -n:BRLoginServer01
 %PATH_BIN%\BRLoginServer.exe -%SERVICE_COMMAND% -n:BRLoginServer02
