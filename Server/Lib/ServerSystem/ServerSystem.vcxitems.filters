@@ -319,9 +319,6 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)Transaction\ServerTransaction.h">
       <Filter>Transaction</Filter>
     </ClInclude>
-    <ClInclude Include="$(MSBuildThisFileDirectory)ServerEntity\SvrEntityServerEntity.h">
-      <Filter>ServerEntity</Filter>
-    </ClInclude>
     <ClInclude Include="$(MSBuildThisFileDirectory)ServerEntity\SvrGameServerEntity.h">
       <Filter>ServerEntity</Filter>
     </ClInclude>
@@ -670,9 +667,6 @@
     </ClCompile>
     <ClCompile Include="$(MSBuildThisFileDirectory)Entity\SimpleUserEntity.cpp">
       <Filter>Entity</Filter>
-    </ClCompile>
-    <ClCompile Include="$(MSBuildThisFileDirectory)ServerEntity\SvrEntityServerEntity.cpp">
-      <Filter>ServerEntity</Filter>
     </ClCompile>
     <ClCompile Include="$(MSBuildThisFileDirectory)ServerEntity\SvrGameServerEntity.cpp">
       <Filter>ServerEntity</Filter>

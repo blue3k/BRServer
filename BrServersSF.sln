@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.26730.10
+# Visual Studio 14
+VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Lib", "Lib", "{6C29CCE4-32A6-409C-87E1-3F76DF945F99}"
 EndProject
@@ -101,6 +101,10 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "SFProtocol", "..\StormForge
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "SFEngine", "..\StormForge\Engine\Src\SFEngine\SFEngine.vcxitems", "{4C5F1EDA-DF00-4652-A0E1-AE068E906064}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ServerInstanceLauncher", "Server\Service\ServerInstanceLauncher\ServerInstanceLauncher.vcxitems", "{BCD5E4BD-08EA-4714-ADEF-92ADB69108E4}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ServerInstanceLauncher.Win", "Server\Service\ServerInstanceLauncher\ServerInstanceLauncher.Win.vcxproj", "{4EBBBB99-1840-4B1A-B9C5-AA2F910836D7}"
+EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
 		Server\Service\ModuleServer\ModuleServer.vcxitems*{03b0209d-8646-48df-a5e7-8b90c48e61e5}*SharedItemsImports = 9
@@ -109,6 +113,7 @@ Global
 		Server\Lib\DB\DB.vcxitems*{44d18223-fcdb-4525-bdd1-ef8bb2af8b3d}*SharedItemsImports = 4
 		..\StormForge\Engine\Src\SFEngine\SFEngine.vcxitems*{4c5f1eda-df00-4652-a0e1-ae068e906064}*SharedItemsImports = 9
 		Server\Lib\ServerSystem\ServerSystem.vcxitems*{4e37f891-0d4d-4929-9026-8383be8e7426}*SharedItemsImports = 9
+		Server\Service\ServerInstanceLauncher\ServerInstanceLauncher.vcxitems*{4ebbbb99-1840-4b1a-b9c5-aa2f910836d7}*SharedItemsImports = 4
 		..\StormForge\Engine\Src\CoreBase\SFCoreBase.vcxitems*{62d7bd92-62c4-4b83-8e3b-0afe3942fe28}*SharedItemsImports = 9
 		..\StormForge\Engine\Src\Protocol\SFProtocol.vcxitems*{6d3c3d98-6342-40dd-a734-d9b353d9ab7b}*SharedItemsImports = 9
 		Server\Lib\ServerProtocol\ServerProtocol.vcxitems*{7035ea94-3335-4fd7-a3e3-28f80ccbabbf}*SharedItemsImports = 4
@@ -116,6 +121,7 @@ Global
 		Server\Service\GameInstanceServer\ConspiracyGameInstanceServer.vcxitems*{85d506dc-f0be-45a8-9d2e-899b4dd1d05f}*SharedItemsImports = 4
 		Server\Service\GameServer\ConspiracyGameServer.vcxitems*{90a3ce16-19a4-4380-bba1-878b4880f7d2}*SharedItemsImports = 4
 		Server\Lib\ServerSystem\ServerSystem.vcxitems*{9bad071f-8327-4270-a882-5113d650e6d3}*SharedItemsImports = 4
+		Server\Service\ServerInstanceLauncher\ServerInstanceLauncher.vcxitems*{bcd5e4bd-08ea-4714-adef-92adb69108e4}*SharedItemsImports = 9
 		Server\Lib\ServerProtocol\ServerProtocol.vcxitems*{bebe8b4e-f75b-4330-8762-139debf3841c}*SharedItemsImports = 9
 		Server\Lib\DB\DB.vcxitems*{d3448f9f-6af6-42fc-b387-3077995b850c}*SharedItemsImports = 9
 		Server\Service\ModuleServer\ModuleServer.vcxitems*{f5ec3733-e13a-4b4a-a3c5-abd750723b9b}*SharedItemsImports = 4
@@ -306,6 +312,16 @@ Global
 		{7035EA94-3335-4FD7-A3E3-28F80CCBABBF}.Release|x64.Build.0 = Release|x64
 		{7035EA94-3335-4FD7-A3E3-28F80CCBABBF}.Release|x86.ActiveCfg = Release|Win32
 		{7035EA94-3335-4FD7-A3E3-28F80CCBABBF}.Release|x86.Build.0 = Release|Win32
+		{4EBBBB99-1840-4B1A-B9C5-AA2F910836D7}.Debug|Any CPU.ActiveCfg = Debug|x64
+		{4EBBBB99-1840-4B1A-B9C5-AA2F910836D7}.Debug|ARM.ActiveCfg = Debug|x64
+		{4EBBBB99-1840-4B1A-B9C5-AA2F910836D7}.Debug|x64.ActiveCfg = Debug|x64
+		{4EBBBB99-1840-4B1A-B9C5-AA2F910836D7}.Debug|x64.Build.0 = Debug|x64
+		{4EBBBB99-1840-4B1A-B9C5-AA2F910836D7}.Debug|x86.ActiveCfg = Debug|x64
+		{4EBBBB99-1840-4B1A-B9C5-AA2F910836D7}.Release|Any CPU.ActiveCfg = Release|x64
+		{4EBBBB99-1840-4B1A-B9C5-AA2F910836D7}.Release|ARM.ActiveCfg = Release|x64
+		{4EBBBB99-1840-4B1A-B9C5-AA2F910836D7}.Release|x64.ActiveCfg = Release|x64
+		{4EBBBB99-1840-4B1A-B9C5-AA2F910836D7}.Release|x64.Build.0 = Release|x64
+		{4EBBBB99-1840-4B1A-B9C5-AA2F910836D7}.Release|x86.ActiveCfg = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -339,6 +355,8 @@ Global
 		{7035EA94-3335-4FD7-A3E3-28F80CCBABBF} = {7E178A11-31C7-47EB-B7A8-47EF8EFCD03D}
 		{62D7BD92-62C4-4B83-8E3B-0AFE3942FE28} = {6C29CCE4-32A6-409C-87E1-3F76DF945F99}
 		{4C5F1EDA-DF00-4652-A0E1-AE068E906064} = {6C29CCE4-32A6-409C-87E1-3F76DF945F99}
+		{BCD5E4BD-08EA-4714-ADEF-92ADB69108E4} = {66028306-5D28-4B3E-BFD1-F7558E17F298}
+		{4EBBBB99-1840-4B1A-B9C5-AA2F910836D7} = {9DF9B349-5C1D-4732-8AD9-4B782B0C4E27}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {F8713DEB-60D5-4903-B579-CB8A3BA0FAB6}

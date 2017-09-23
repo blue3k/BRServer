@@ -49,8 +49,6 @@ namespace SF {
 		// Get available firstEntity server entity
 		virtual Result GetEntityManagerServerEntity(Svr::ServerEntity* &pServerEntity) { return ResultCode::NOT_IMPLEMENTED; }
 
-		// Add new remote entity
-		virtual Result UpdateEntityManagerServerEntity(Svr::ServerEntity* pServerEntity) { return ResultCode::NOT_IMPLEMENTED; }
 
 		// Add new remote entity
 		virtual Result AddOrGetServerEntity(ServerID serverID, NetClass netClass, Svr::ServerEntity* &pServerEntity) { return ResultCode::NOT_IMPLEMENTED; }

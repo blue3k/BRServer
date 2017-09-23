@@ -29,7 +29,6 @@
 
 #include "Table/TableSystem.h"
 
-#include "ServerEntity/SvrEntityServerEntity.h"
 #include "ServerEntity/GenericServerEntity.h"
 
 #include "Protocol/Policy/EntityServerNetPolicy.h"

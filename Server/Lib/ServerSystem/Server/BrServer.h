@@ -158,7 +158,7 @@ namespace Svr {
 		void StartThread();
 		void StopThread();
 
-		bool OnStart();
+		virtual bool OnStart();
 		void Run(Thread* pThread);
 		bool OnEnd();
 

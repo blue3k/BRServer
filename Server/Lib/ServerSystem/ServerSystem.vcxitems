@@ -73,7 +73,6 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)ResultCode\SFResultCodeGame.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)ResultCode\SFResultCodeLogin.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)ResultCode\SFResultCodeSvr.h" />
-    <ClInclude Include="$(MSBuildThisFileDirectory)ServerEntity\SvrEntityServerEntity.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)ServerEntity\SvrGameServerEntity.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)ServerEntity\GenericServerEntity.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)ServerEntity\ServerEntity.h" />
@@ -174,7 +173,6 @@
     <ClCompile Include="$(MSBuildThisFileDirectory)PerformanceCounter\PerformanceCounterClient.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)PerformanceCounter\PerformanceCounterInstance.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)PerformanceCounter\PerformanceCounterServer.cpp" />
-    <ClCompile Include="$(MSBuildThisFileDirectory)ServerEntity\SvrEntityServerEntity.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)ServerEntity\SvrGameServerEntity.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)ServerEntity\GenericServerEntity.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)ServerEntity\ServerEntity.cpp" />

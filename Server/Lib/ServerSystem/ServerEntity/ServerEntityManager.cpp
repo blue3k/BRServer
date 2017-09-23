@@ -151,50 +151,6 @@ namespace Svr
 		return pServerEntity != nullptr ? hr : ResultCode::FAIL;
 	}
 
-	Result ServerEntityManager::UpdateEntityManagerServerEntity( ServerEntity* pServerEntity )
-	{
-		Result hr = ResultCode::SUCCESS;
-		ServerUpTimeList::Node *pPrevNode = nullptr;
-		ServerUpTimeListNodeItem *pPrevListNode = nullptr;
-		ServerUpTimeListNodeItem *pNewListNode = nullptr;
-		ServerUpTimeList::iterator itEntity;
-
-		svrChkPtr( pServerEntity );
-
-		// Find in the list and remove if it exists
-		for( itEntity = m_EntityManagerServerUpTimeMap.begin(); itEntity.IsValid(); ++itEntity )
-		{
-			ServerUpTimeListNodeItem *pNode = (ServerUpTimeListNodeItem*)&*itEntity;
-			if( pNode->pServerEntity == pServerEntity )
-			{
-				svrChk( m_EntityManagerServerUpTimeMap.Remove( itEntity ) );
-				break;
-			}
-		}
-
-		svrChk( m_EntityManagerServerUpTimeMap.FindPrevNode( pServerEntity->GetServerUpTime().time_since_epoch().count(), pPrevNode ) );
-
-		pPrevListNode = (ServerUpTimeListNodeItem*)pPrevNode;
-		if( pPrevNode->Key != 0 && pPrevListNode->pServerEntity == pServerEntity )
-			return ResultCode::SUCCESS_FALSE;
-
-		svrMem( pNewListNode = new(GetHeap()) ServerUpTimeListNodeItem );
-		memset( pNewListNode, 0, sizeof(ServerUpTimeListNodeItem) );
-
-		pNewListNode->pServerEntity = pServerEntity;
-
-		//pNewListNode
-		svrChk( m_EntityManagerServerUpTimeMap.Insert( pPrevNode, pServerEntity->GetServerUpTime().time_since_epoch().count(), pNewListNode ) );
-
-		pNewListNode = nullptr;
-
-	Proc_End:
-
-		Util::SafeDelete( pNewListNode );
-
-		return hr;
-	}
-
 	// Add new connection
 	Result ServerEntityManager::AddServerEntity(NetClass netClass, ServerEntity* pServerEntity)
 	{

@@ -5,6 +5,7 @@
 
 #pragma once
 
+
 #include "SFTypedefs.h"
 #include "ResultCode/SFResultCodeSvr.h"
 #include "Util/Utility.h"
@@ -22,7 +23,6 @@
 #include "Net/NetSvrDef.h"
 #include "Net/NetServerPeerTCP.h"
 
-
 #include "Transaction/Transaction.h"
 #include "Entity/Entity.h"
 #include "Transaction/MessageRoute.h"
@@ -37,5 +37,7 @@
 #include "ServerEntity/ServerEntity.h"
 #include "Transaction/TransactionSteper.h"
 #include "Transaction/TransactionUtil.h"
+
+
 
 // TODO: reference additional headers your program requires here

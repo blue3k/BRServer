@@ -30,7 +30,6 @@
 #include "Server/BrServer.h"
 #include "Server/BrServerUtil.h"
 #include "String/SvrToString.h"
-#include "ServerEntity/SvrEntityServerEntity.h"
 #include "ServerEntity/SvrGameServerEntity.h"
 #include "ServerEntity/SvrLoopbackConnection.h"
 #include "Entity/SimpleUserEntity.h"

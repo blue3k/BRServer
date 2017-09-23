@@ -28,7 +28,6 @@
 #include "Server/BrServerUtil.h"
 #include "Entity/EntityManager.h"
 
-#include "ServerEntity/SvrEntityServerEntity.h"
 #include "Protocol/Policy/ServerNetPolicy.h"
 
 #include "Service/EngineServices.h"

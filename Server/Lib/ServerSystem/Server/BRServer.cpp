@@ -25,7 +25,6 @@
 #include "ServiceEntity/ClusterManagerServiceEntity.h"
 #include "ServerEntity/SvrLoopbackConnection.h"
 #include "SvrConst.h"
-#include "ServerEntity/SvrEntityServerEntity.h"
 #include "Server/BrServerUtil.h"
 #include "PerformanceCounter/PerformanceCounterClient.h"
 #include "Transaction/Transaction.h"
@@ -55,7 +54,6 @@
 
 #include "Table/TableSystem.h"
 
-#include "ServerEntity/SvrEntityServerEntity.h"
 #include "Transaction/ExternalTransactionManager.h"
 
 

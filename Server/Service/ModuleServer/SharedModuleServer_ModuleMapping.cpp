@@ -33,7 +33,6 @@
 
 #include "Table/TableSystem.h"
 
-#include "ServerEntity/SvrEntityServerEntity.h"
 #include "Transaction/ExternalTransactionManager.h"
 
 

@@ -97,8 +97,6 @@ namespace Svr
 		// Get available firstEntity server entity
 		virtual Result GetEntityManagerServerEntity( ServerEntity* &pServerEntity ) override;
 
-		// Add new remote entity
-		virtual Result UpdateEntityManagerServerEntity( ServerEntity* pServerEntity ) override;
 
 		// Add new remote entity
 		virtual Result AddOrGetServerEntity(ServerID serverID, NetClass netClass, ServerEntity* &pServerEntity) override;
