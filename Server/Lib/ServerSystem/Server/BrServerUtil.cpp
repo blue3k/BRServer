@@ -93,6 +93,7 @@ namespace Svr {
 		pEngine->AddComponent<ZooKeeperSessionComponent>(zkaddress, ZOO_LOG_LEVEL_DEBUG);
 		pEngine->AddComponent<ServerConfigComponent>(zkconfig);
 
+
 		auto pMyConfig = Service::ServerConfig->FindGenericServer(Util::GetServiceName());
 		if (pMyConfig == nullptr)
 			return;

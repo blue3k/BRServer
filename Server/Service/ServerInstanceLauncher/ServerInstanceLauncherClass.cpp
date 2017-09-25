@@ -13,11 +13,12 @@
 #include "stdafx.h"
 #include "SvrConst.h"
 #include "Server/BrServer.h"
+#include "Server/ParameterSetting.h"
 #include "SvrTrace.h"
 #include "ServerConfig/SFServerConfig.h"
+#include "ServerConfig/SFServerConfigZooKeeper.h"
 #include "Entity/EntityManager.h"
 #include "ServerEntity/ServerEntityManager.h"
-//#include "ServiceEntity/EntityManagerServiceEntity.h"
 #include "ServiceEntity/ClusterManagerServiceEntity.h"
 #include "Util/TimeUtil.h"
 
@@ -25,7 +26,7 @@
 
 
 
-#define PATH_DATABASE "../../../Data"
+#define PATH_COMMAND_NODE "/BRServerControl"
 
 
 namespace SF {
@@ -40,6 +41,7 @@ namespace ServerInstanceLauncher {
 
 	ServerInstanceLauncher::ServerInstanceLauncher()
 		: BrServer(NetClass::Server)
+		, m_CommandWatcher(GetHeap(), PATH_COMMAND_NODE)
 	{
 	}
 
@@ -67,8 +69,36 @@ namespace ServerInstanceLauncher {
 
 		svrTrace(Info, "Starting Server");
 
-
 		svrChk(InitializeServerResource());
+
+		m_CommandWatcher.SetNewCommandHandler( [this](const String& command, const Json::Value& commandValue)
+		{
+			auto instanceName = commandValue.get("InstanceName", "");
+
+			if(instanceName)
+
+			FixedString commandName = command;
+			switch (commandName)
+			{
+			case "ReloadConfig"_hash64:
+				ReloadConfig();
+				break;
+			case "RestartServerInstance"_hash64:
+				RestartServerInstance();
+				break;
+			case "StartServerInstance"_hash64:
+				StartServerInstance();
+				break;
+			case "StopServerInstance"_hash64:
+				StopServerInstance();
+				break;
+			default:
+				break;
+			}
+		});
+
+
+		m_CommandWatcher.WatchCommands();
 
 	Proc_End:
 
@@ -136,7 +166,6 @@ namespace ServerInstanceLauncher {
 	}
 
 
-
 	Result ServerInstanceLauncher::TickUpdate(TimerAction *pAction)
 	{
 		
@@ -144,8 +173,52 @@ namespace ServerInstanceLauncher {
 		return BrServer::TickUpdate(pAction);
 	}
 
-}; // namespace ServerInstanceLauncher
-}; // namespace SF
+
+	//////////////////////////////////////////////////////////////////////////
+	//
+	//	Service launcher
+	//
+
+	Result ServerInstanceLauncher::ReloadConfig()
+	{
+		auto zkSession = Service::ZKSession->GetZooKeeperSession();
+		if (zkSession == nullptr || !zkSession->IsConnected())
+			return ResultCode::NOT_INITIALIZED;
+
+		auto zkconfigPath = ParameterSetting::GetSetting("zkconfig", "/ServerConfig");
+		auto pServerConfig = *Service::ServerConfig;
+
+		ServerConfigZooKeeper zkConfig(*pServerConfig, *zkSession);
+
+	return zkConfig.LoadConfig(zkconfigPath);
+	}
+
+	Result ServerInstanceLauncher::RestartServerInstance()
+	{
+		auto zkSession = Service::ZKSession->GetZooKeeperSession();
+		if (zkSession == nullptr || !zkSession->IsConnected())
+			return ResultCode::NOT_INITIALIZED;
+
+
+	}
+
+	Result ServerInstanceLauncher::StartServerInstance()
+	{
+
+	}
+
+	Result ServerInstanceLauncher::StopServerInstance()
+	{
+
+	}
+
+
+
+
+
+
+} // namespace ServerInstanceLauncher
+} // namespace SF
 
 
 

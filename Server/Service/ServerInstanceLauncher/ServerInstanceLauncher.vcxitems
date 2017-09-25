@@ -17,10 +17,14 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)ServerInstanceLauncher.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)ServerInstanceLauncherClass.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)ServerEntity\ServerInstanceLauncherEntity.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)SFProcessManager.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)stdafx.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)ZooKeeperCommand.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="$(MSBuildThisFileDirectory)ServerInstanceLauncher.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)ServerInstanceLauncherClass.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)SFProcessManager.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)ZooKeeperCommand.cpp" />
   </ItemGroup>
 </Project>

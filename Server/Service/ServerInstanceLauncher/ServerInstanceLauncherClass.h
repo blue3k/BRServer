@@ -1,10 +1,10 @@
 ////////////////////////////////////////////////////////////////////////////////
 // 
-// CopyRight (c) 2013 The Braves
+// CopyRight (c) 2017 StromForge
 // 
 // Author : KyungKun Ko
 //
-// Description : Entity server main
+// Description : Launcher service main class
 //	
 ////////////////////////////////////////////////////////////////////////////////
 
@@ -13,18 +13,19 @@
 
 #include "SFTypedefs.h"
 #include "Server/BrServer.h"
-#include "Entity/Entity.h"
-#include "Transaction/Transaction.h"
 
-
+#include "ZooKeeper/SFZooKeeper.h"
+#include "ZooKeeperCommand.h"
 
 namespace SF {
 namespace ServerInstanceLauncher {
 
 
+
+
 	//////////////////////////////////////////////////////////////////////////
 	//
-	//	Entity server class
+	//	Server Instance Launcher server class
 	//
 
 	class ServerInstanceLauncher : public Svr::BrServer
@@ -32,6 +33,8 @@ namespace ServerInstanceLauncher {
 	public:
 
 	private:
+
+		CommandWatcher m_CommandWatcher;
 
 	public:
 		ServerInstanceLauncher();
@@ -69,6 +72,19 @@ namespace ServerInstanceLauncher {
 		// Close server and release resource
 		virtual Result CloseServerResource();
 
+
+	public:
+
+
+		//////////////////////////////////////////////////////////////////////////
+		//
+		//	Service launcher
+		//
+
+		Result ReloadConfig();
+		Result RestartServerInstance();
+		Result StartServerInstance();
+		Result StopServerInstance();
 
 
 	};
