@@ -234,17 +234,14 @@ namespace ServerInstanceLauncher {
 		args.push_back(instanceNameParam);
 		args.push_back(nullptr);
 
-		m_ProcessManager.StartProcess(serverInstanceName, serverModuleName, args);
-
-		return ResultCode::NOT_IMPLEMENTED;
+		return m_ProcessManager.StartProcess(serverInstanceName, serverModuleName, args);
 	}
 
 	Result ServerInstanceLauncher::StopServerInstance(ZooKeeper* pZkInstance, const Json::Value& commandValue)
 	{
 		auto serverInstanceName = commandValue.get("ServerName", "").asCString();
-		m_ProcessManager.StopProcess(serverInstanceName);
 
-		return ResultCode::NOT_IMPLEMENTED;
+		return m_ProcessManager.StopProcess(serverInstanceName);
 	}
 
 
