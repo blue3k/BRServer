@@ -6,3 +6,4 @@ set PATH_CONFIG=%COMMAND_ROOT%..\Server\Config
 
 
 call _RunServers.cmd
+

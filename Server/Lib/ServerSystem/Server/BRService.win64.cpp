@@ -318,7 +318,7 @@ namespace Svr {
 		Result ServiceRun(BrServer *pSvrInstance )
 		{
 			Result hr = ResultCode::SUCCESS;
-			bool bIsDebugRun = false;
+			bool bAsService = false;
 			bool bIsInstall = false;
 			const char *strUser = nullptr; const char *strPWD = nullptr;
 			const char *strServiceName = nullptr;
@@ -330,7 +330,7 @@ namespace Svr {
 
 
 			bIsInstall = StrUtil::StringCmpLwr(ParameterSetting::GetSetting("install"), -1, "true", -1);
-			bIsDebugRun = StrUtil::StringCmpLwr(ParameterSetting::GetSetting("debug"), -1, "true", -1);
+			bAsService = StrUtil::StringCmpLwr(ParameterSetting::GetSetting("servicemode"), -1, "true", -1);
 			strUser = ParameterSetting::GetSetting("user");
 			strPWD = ParameterSetting::GetSetting("password");
 
@@ -341,17 +341,11 @@ namespace Svr {
 				goto Proc_End;
 			}
 
-
-			svrTrace( Info, "Loading configuration" );
-
-
-
-
-			svrTrace( Info, "<{0}> Start with Mode {1} ", Util::GetServiceName(), bIsDebugRun ? "Debug" : "Service" );
+			svrTrace( Info, "<{0}> Start with {1} Mode", Util::GetServiceName(), bAsService ? "Service" : "Normal" );
 
 
 			// if not service mode
-			if( bIsDebugRun )
+			if( !bAsService )
 			{
 				svrChk( g_pSvrInstance->StartServer() );
 
@@ -409,8 +403,6 @@ namespace Svr {
 			svrTrace( Info, "<{0}> Closed", Util::GetServiceName() );
 
 			g_pSvrInstance = nullptr;
-
-//			Trace::Uninitialize();
 
 			return hr;
 		}

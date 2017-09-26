@@ -16,6 +16,7 @@
 
 #include "ZooKeeper/SFZooKeeper.h"
 #include "ZooKeeperCommand.h"
+#include "SFProcessManager.h"
 
 namespace SF {
 namespace ServerInstanceLauncher {
@@ -34,7 +35,13 @@ namespace ServerInstanceLauncher {
 
 	private:
 
+		NetAddress m_MyIPV4Address;
+		NetAddress m_MyIPV6Address;
+
+		CircularPageQueue<String> m_NewCommands;
+
 		CommandWatcher m_CommandWatcher;
+		ProcessManager m_ProcessManager;
 
 	public:
 		ServerInstanceLauncher();
@@ -81,10 +88,10 @@ namespace ServerInstanceLauncher {
 		//	Service launcher
 		//
 
-		Result ReloadConfig();
-		Result RestartServerInstance();
-		Result StartServerInstance();
-		Result StopServerInstance();
+		Result ReloadConfig(ZooKeeper* pZkInstance, const Json::Value& commandValue);
+		Result RestartServerInstance(ZooKeeper* pZkInstance, const Json::Value& commandValue);
+		Result StartServerInstance(ZooKeeper* pZkInstance, const Json::Value& commandValue);
+		Result StopServerInstance(ZooKeeper* pZkInstance, const Json::Value& commandValue);
 
 
 	};

@@ -38,7 +38,7 @@ namespace ServerInstanceLauncher {
 		String m_CommandRootPath;
 		SortedSet<String> m_CommandNodes;
 
-		std::function<void(const String&, const Json::Value&)> m_OnNewCommandHandler;
+		std::function<void(const String&)> m_OnNewCommandHandler;
 
 	public:
 
@@ -46,6 +46,8 @@ namespace ServerInstanceLauncher {
 		~CommandWatcher();
 
 		IHeap& GetHeap() { return m_Heap; }
+		const String& GetRootPath() { return m_CommandRootPath; }
+
 
 		// Start watching commands
 		void WatchCommands();
@@ -54,7 +56,7 @@ namespace ServerInstanceLauncher {
 		Result ConsumeCommand(String command);
 
 
-		void SetNewCommandHandler(std::function<void(const String&,const Json::Value&)> handler) { m_OnNewCommandHandler = handler; }
+		void SetNewCommandHandler(std::function<void(const String&)> handler) { m_OnNewCommandHandler = handler; }
 
 
 		/////////////////////////////////////////////

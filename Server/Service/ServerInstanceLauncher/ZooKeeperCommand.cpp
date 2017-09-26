@@ -150,13 +150,7 @@ namespace ServerInstanceLauncher {
 
 		for (auto itNewCommand : listNewCommands)
 		{
-			Json::Value value;
-			String nodePath;
-			nodePath.Format("{0}/{1}", m_CommandRootPath, itNewCOmmand);
-			if (GetZKInstance()->Get(nodePath, value))
-			{
-				m_OnNewCommandHandler(itNewCommand, value);
-			}
+			m_OnNewCommandHandler(itNewCommand);
 		}
 	}
 

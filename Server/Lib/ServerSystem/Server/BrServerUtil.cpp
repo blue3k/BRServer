@@ -57,7 +57,7 @@ namespace Svr {
 	void InitializeEngineForServer()
 	{
 		char strLogPath[1024];
-		auto bIsDebugRun = StrUtil::StringCmpLwr(ParameterSetting::GetSetting("debug"), -1, "true", -1);
+		auto bAsService = StrUtil::StringCmpLwr(ParameterSetting::GetSetting("servicemode"), -1, "true", -1);
 		auto zkaddress = ParameterSetting::GetSetting("zkaddress", "127.0.0.1:2181");
 		auto zkconfig = ParameterSetting::GetSetting("zkconfig", "/ServerConfig");
 		SF::EngineInitParam initParam;
@@ -80,7 +80,7 @@ namespace Svr {
 		initParam.NetRecvBufferSize = Net::Const::SVR_RECV_BUFFER_SIZE;
 		initParam.NetSendBufferSize = Net::Const::SVR_SEND_BUFFER_SIZE;
 
-		if (!bIsDebugRun)
+		if (bAsService)
 			initParam.LogOutputConsole = { 0, };
 
 

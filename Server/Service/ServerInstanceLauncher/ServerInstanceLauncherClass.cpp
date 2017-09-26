@@ -41,7 +41,9 @@ namespace ServerInstanceLauncher {
 
 	ServerInstanceLauncher::ServerInstanceLauncher()
 		: BrServer(NetClass::Server)
+		, m_NewCommands(GetHeap())
 		, m_CommandWatcher(GetHeap(), PATH_COMMAND_NODE)
+		, m_ProcessManager(GetHeap())
 	{
 	}
 
@@ -71,37 +73,17 @@ namespace ServerInstanceLauncher {
 
 		svrChk(InitializeServerResource());
 
-		m_CommandWatcher.SetNewCommandHandler( [this](const String& command, const Json::Value& commandValue)
+		Net::GetLocalAddress(SockFamily::IPV4, m_MyIPV4Address);
+		Net::GetLocalAddress(SockFamily::IPV6, m_MyIPV6Address);
+
+		m_CommandWatcher.SetNewCommandHandler( [this](const String& command)
 		{
-			auto instanceName = commandValue.get("InstanceName", "");
-
-			if(instanceName)
-
-			FixedString commandName = command;
-			switch (commandName)
-			{
-			case "ReloadConfig"_hash64:
-				ReloadConfig();
-				break;
-			case "RestartServerInstance"_hash64:
-				RestartServerInstance();
-				break;
-			case "StartServerInstance"_hash64:
-				StartServerInstance();
-				break;
-			case "StopServerInstance"_hash64:
-				StopServerInstance();
-				break;
-			default:
-				break;
-			}
+			m_NewCommands.Enqueue(command);
 		});
-
 
 		m_CommandWatcher.WatchCommands();
 
 	Proc_End:
-
 
 		if (!(hr))
 		{
@@ -168,7 +150,47 @@ namespace ServerInstanceLauncher {
 
 	Result ServerInstanceLauncher::TickUpdate(TimerAction *pAction)
 	{
-		
+		String commandName(GetHeap());
+
+		while (m_NewCommands.Dequeue(commandName))
+		{
+			Json::Value commandValue;
+			String nodePath;
+			auto pZKInstance = m_CommandWatcher.GetZKInstance();
+
+			nodePath.Format("{0}/{1}", m_CommandWatcher.GetRootPath(), commandName);
+			if (!pZKInstance->Get(nodePath, commandValue))
+				continue;
+
+			auto ipAddress = commandValue.get("IPAddress", "").asCString();
+
+			if (!StrUtil::StringCmp(m_MyIPV4Address.Address, -1, ipAddress, -1)
+				&& !StrUtil::StringCmp(m_MyIPV6Address.Address, -1, ipAddress, -1))
+				continue;
+
+			if (!m_CommandWatcher.ConsumeCommand(commandName))
+				continue;
+
+			FixedString commandNameF = commandName;
+			switch (commandNameF)
+			{
+			case "ReloadConfig"_hash64:
+				ReloadConfig(pZKInstance, commandValue);
+				break;
+			case "RestartServerInstance"_hash64:
+				RestartServerInstance(pZKInstance, commandValue);
+				break;
+			case "StartServerInstance"_hash64:
+				StartServerInstance(pZKInstance, commandValue);
+				break;
+			case "StopServerInstance"_hash64:
+				StopServerInstance(pZKInstance, commandValue);
+				break;
+			default:
+				break;
+			}
+
+		}
 
 		return BrServer::TickUpdate(pAction);
 	}
@@ -179,37 +201,50 @@ namespace ServerInstanceLauncher {
 	//	Service launcher
 	//
 
-	Result ServerInstanceLauncher::ReloadConfig()
+	Result ServerInstanceLauncher::ReloadConfig(ZooKeeper* pZkInstance, const Json::Value& commandValue)
 	{
-		auto zkSession = Service::ZKSession->GetZooKeeperSession();
-		if (zkSession == nullptr || !zkSession->IsConnected())
-			return ResultCode::NOT_INITIALIZED;
-
 		auto zkconfigPath = ParameterSetting::GetSetting("zkconfig", "/ServerConfig");
 		auto pServerConfig = *Service::ServerConfig;
 
-		ServerConfigZooKeeper zkConfig(*pServerConfig, *zkSession);
+		ServerConfigZooKeeper zkConfig(*pServerConfig, *pZkInstance);
 
-	return zkConfig.LoadConfig(zkconfigPath);
+		return zkConfig.LoadConfig(zkconfigPath);
 	}
 
-	Result ServerInstanceLauncher::RestartServerInstance()
+	Result ServerInstanceLauncher::RestartServerInstance(ZooKeeper* pZkInstance, const Json::Value& commandValue)
 	{
-		auto zkSession = Service::ZKSession->GetZooKeeperSession();
-		if (zkSession == nullptr || !zkSession->IsConnected())
-			return ResultCode::NOT_INITIALIZED;
-
-
+		StopServerInstance(pZkInstance, commandValue);
+		return StartServerInstance(pZkInstance, commandValue);
 	}
 
-	Result ServerInstanceLauncher::StartServerInstance()
+	Result ServerInstanceLauncher::StartServerInstance(ZooKeeper* pZkInstance, const Json::Value& commandValue)
 	{
+		auto serverInstanceName = commandValue.get("ServerName", "").asCString();
+		auto serverModuleName = commandValue.get("ServerModule", "").asCString();
 
+		if (StrUtil::IsNullOrEmpty(serverInstanceName) || StrUtil::IsNullOrEmpty(serverModuleName))
+		{
+			svrTrace(Error, "Instance name or Module name is invalid {0}, {1}", serverInstanceName, serverModuleName);
+			return ResultCode::INVALID_ARG;
+		}
+
+		char instanceNameParam[256];
+		StrUtil::Format(instanceNameParam, "-n:{0}", serverInstanceName);
+		StaticArray<const char*, 10> args(GetHeap());
+		args.push_back(instanceNameParam);
+		args.push_back(nullptr);
+
+		m_ProcessManager.StartProcess(serverInstanceName, serverModuleName, args);
+
+		return ResultCode::NOT_IMPLEMENTED;
 	}
 
-	Result ServerInstanceLauncher::StopServerInstance()
+	Result ServerInstanceLauncher::StopServerInstance(ZooKeeper* pZkInstance, const Json::Value& commandValue)
 	{
+		auto serverInstanceName = commandValue.get("ServerName", "").asCString();
+		m_ProcessManager.StopProcess(serverInstanceName);
 
+		return ResultCode::NOT_IMPLEMENTED;
 	}
 
 

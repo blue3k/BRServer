@@ -25,6 +25,8 @@
     <ClCompile Include="$(MSBuildThisFileDirectory)ServerInstanceLauncher.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)ServerInstanceLauncherClass.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)SFProcessManager.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)SFProcessManagerLinux.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)SFProcessManagerWin.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)ZooKeeperCommand.cpp" />
   </ItemGroup>
 </Project>

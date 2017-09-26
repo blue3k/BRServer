@@ -4,7 +4,7 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup>
     <OutDir>$(SolutionDir)Server/bin/$(Platform)$(Configuration)\</OutDir>
-    <TargetName>BR$(ProjectName)</TargetName>
+    <TargetName>BR$(RootNamespace)</TargetName>
     <IntDir>$(SolutionDir)Intermediate\Win64\$(Platform)$(Configuration)\$(ProjectName)\</IntDir>
   </PropertyGroup>
   <ItemDefinitionGroup>

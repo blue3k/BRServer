@@ -39,7 +39,8 @@ namespace Svr {
 		static bool m_StopSignaled = false;
 		static void signal_handler(int sig)
 		{
-			switch (sig) {
+			switch (sig)
+			{
 			case SIGHUP:
 				break;
 			case SIGTERM:
@@ -108,7 +109,7 @@ namespace Svr {
 
 			m_StopSignaled = false;
 
-			//printf("Registring signals pid:%d\n", getpid());
+			//printf("Registering signals pid:%d\n", getpid());
 
 			signal(SIGCHLD, SIG_IGN); /* ignore child */
 			signal(SIGTSTP, SIG_IGN); /* ignore tty signals */
@@ -137,9 +138,9 @@ namespace Svr {
 		// prepare service running
 		Result ServicePrepare()
 		{
-			auto debugSetting = ParameterSetting::GetSetting("debug");
-			bool bIsDebugRun = StrUtil::StringCmpLwr(debugSetting, -1, "true", -1);
-			if(!bIsDebugRun)
+			auto serviceModeSetting = ParameterSetting::GetSetting("servicemode");
+			bool bAsService = StrUtil::StringCmpLwr(serviceModeSetting, -1, "true", -1);
+			if(bAsService)
 				daemonize();
 
 			return ResultCode::SUCCESS;
@@ -171,10 +172,6 @@ namespace Svr {
 
 			Net::RegisterConnectionDebugMessage();
 
-
-			svrTrace( Info, "Loading configuration" );
-
-			svrChk( ServerConfig::LoadConfig( strCfgPath ) );
 
 			svrTrace( Info, "<{0}> Starting", Util::GetServiceNameA() );
 

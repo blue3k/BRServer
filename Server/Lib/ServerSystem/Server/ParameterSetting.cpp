@@ -60,9 +60,9 @@ namespace SF
 			{
 				svrChk(SetSetting("uninstall", "true"));
 			}
-			else if (StrUtil::StringCmpLwr(argument, (INT)strlen(argument), "debug", (INT)strlen("debug")))
+			else if (StrUtil::StringCmpLwr(argument, (INT)strlen(argument), "servicemode", (INT)strlen("servicemode")))
 			{
-				svrChk(SetSetting("debug", "true"));
+				svrChk(SetSetting("servicemode", "true"));
 			}
 			break;
 		default:
