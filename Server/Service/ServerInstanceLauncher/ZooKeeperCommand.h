@@ -32,6 +32,7 @@ namespace ServerInstanceLauncher {
 	{
 	public:
 
+		const char* DefaultCommandRoot = "/BRServerControl";
 
 	private:
 		IHeap& m_Heap;
@@ -42,7 +43,7 @@ namespace ServerInstanceLauncher {
 
 	public:
 
-		CommandWatcher(IHeap& heap, const char* commandRoot);
+		CommandWatcher(IHeap& heap);
 		~CommandWatcher();
 
 		IHeap& GetHeap() { return m_Heap; }

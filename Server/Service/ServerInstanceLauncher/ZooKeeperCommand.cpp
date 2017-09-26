@@ -31,10 +31,10 @@ namespace ServerInstanceLauncher {
 	//
 
 
-	CommandWatcher::CommandWatcher(IHeap& heap, const char* commandRoot)
+	CommandWatcher::CommandWatcher(IHeap& heap)
 		: ZooKeeperWatcher(heap)
 		, m_Heap(heap)
-		, m_CommandRootPath(heap, commandRoot)
+		, m_CommandRootPath(heap, DefaultCommandRoot)
 		, m_CommandNodes(heap)
 	{
 	}

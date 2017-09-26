@@ -26,7 +26,7 @@
 
 
 
-#define PATH_COMMAND_NODE "/BRServerControl"
+
 
 
 namespace SF {
@@ -42,7 +42,7 @@ namespace ServerInstanceLauncher {
 	ServerInstanceLauncher::ServerInstanceLauncher()
 		: BrServer(NetClass::Server)
 		, m_NewCommands(GetHeap())
-		, m_CommandWatcher(GetHeap(), PATH_COMMAND_NODE)
+		, m_CommandWatcher(GetHeap())
 		, m_ProcessManager(GetHeap())
 	{
 	}
@@ -150,15 +150,15 @@ namespace ServerInstanceLauncher {
 
 	Result ServerInstanceLauncher::TickUpdate(TimerAction *pAction)
 	{
-		String commandName(GetHeap());
+		String commandNodeName(GetHeap());
 
-		while (m_NewCommands.Dequeue(commandName))
+		while (m_NewCommands.Dequeue(commandNodeName))
 		{
 			Json::Value commandValue;
 			String nodePath;
 			auto pZKInstance = m_CommandWatcher.GetZKInstance();
 
-			nodePath.Format("{0}/{1}", m_CommandWatcher.GetRootPath(), commandName);
+			nodePath.Format("{0}/{1}", m_CommandWatcher.GetRootPath(), commandNodeName);
 			if (!pZKInstance->Get(nodePath, commandValue))
 				continue;
 
@@ -168,8 +168,11 @@ namespace ServerInstanceLauncher {
 				&& !StrUtil::StringCmp(m_MyIPV6Address.Address, -1, ipAddress, -1))
 				continue;
 
-			if (!m_CommandWatcher.ConsumeCommand(commandName))
+			if (!m_CommandWatcher.ConsumeCommand(commandNodeName))
 				continue;
+
+
+			auto commandName = commandValue.get("Command", "").asCString();
 
 			FixedString commandNameF = commandName;
 			switch (commandNameF)
@@ -189,7 +192,6 @@ namespace ServerInstanceLauncher {
 			default:
 				break;
 			}
-
 		}
 
 		return BrServer::TickUpdate(pAction);
@@ -219,8 +221,8 @@ namespace ServerInstanceLauncher {
 
 	Result ServerInstanceLauncher::StartServerInstance(ZooKeeper* pZkInstance, const Json::Value& commandValue)
 	{
-		auto serverInstanceName = commandValue.get("ServerName", "").asCString();
-		auto serverModuleName = commandValue.get("ServerModule", "").asCString();
+		auto serverInstanceName = commandValue.get("ServerInstanceName", "").asCString();
+		auto serverModuleName = commandValue.get("ServerExecutionModule", "").asCString();
 
 		if (StrUtil::IsNullOrEmpty(serverInstanceName) || StrUtil::IsNullOrEmpty(serverModuleName))
 		{
@@ -230,16 +232,24 @@ namespace ServerInstanceLauncher {
 
 		char instanceNameParam[256];
 		StrUtil::Format(instanceNameParam, "-n:{0}", serverInstanceName);
+
+		char moduleNameParam[256];
+#if WINDOWS
+		StrUtil::Format(moduleNameParam, "{0}.exe", serverModuleName);
+#else
+		StrUtil::Format(moduleNameParam, "{0}", serverModuleName);
+#endif
+
 		StaticArray<const char*, 10> args(GetHeap());
 		args.push_back(instanceNameParam);
 		args.push_back(nullptr);
 
-		return m_ProcessManager.StartProcess(serverInstanceName, serverModuleName, args);
+		return m_ProcessManager.StartProcess(serverInstanceName, moduleNameParam, args);
 	}
 
 	Result ServerInstanceLauncher::StopServerInstance(ZooKeeper* pZkInstance, const Json::Value& commandValue)
 	{
-		auto serverInstanceName = commandValue.get("ServerName", "").asCString();
+		auto serverInstanceName = commandValue.get("ServerInstanceName", "").asCString();
 
 		return m_ProcessManager.StopProcess(serverInstanceName);
 	}
