@@ -226,6 +226,8 @@ namespace ServerInstanceLauncher {
 		auto zkconfigPath = ParameterSetting::GetSetting("zkconfig", "/ServerConfig");
 		auto pServerConfig = *Service::ServerConfig;
 
+		svrTrace(Error, "Reloading configuration from {0}", zkconfigPath);
+
 		ServerConfigZooKeeper zkConfig(*pServerConfig, *pZkInstance);
 
 		return zkConfig.LoadConfig(zkconfigPath);
@@ -241,6 +243,8 @@ namespace ServerInstanceLauncher {
 	{
 		auto serverInstanceName = commandValue.get("ServerInstanceName", "");
 		auto serverModuleName = commandValue.get("ServerExecutionModule", "");
+
+		svrTrace(Error, "Starting Server Instance {0}, {1}", serverInstanceName.asCString(), serverModuleName.asCString());
 
 		if (StrUtil::IsNullOrEmpty(serverInstanceName.asCString()) || StrUtil::IsNullOrEmpty(serverModuleName.asCString()))
 		{
@@ -268,6 +272,8 @@ namespace ServerInstanceLauncher {
 	Result ServerInstanceLauncher::StopServerInstance(ZooKeeper* pZkInstance, const Json::Value& commandValue)
 	{
 		auto serverInstanceName = commandValue.get("ServerInstanceName", "");
+
+		svrTrace(Error, "Stopping Server Instance {0}", serverInstanceName.asCString());
 
 		return m_ProcessManager.StopProcess(serverInstanceName.asCString());
 	}
