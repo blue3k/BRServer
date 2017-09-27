@@ -76,7 +76,10 @@ namespace ServerInstanceLauncher {
 		Net::GetLocalAddress(SockFamily::IPV4, m_MyIPV4Address);
 		Net::GetLocalAddress(SockFamily::IPV6, m_MyIPV6Address);
 
-		m_CommandWatcher.SetNewCommandHandler( [this](const String& command)
+		m_ProcessManager.ManageProcesses("BR");
+
+
+		m_CommandWatcher.SetNewCommandHandler( [this](const FixedString& command)
 		{
 			m_NewCommands.Enqueue(command);
 		});
@@ -150,10 +153,23 @@ namespace ServerInstanceLauncher {
 
 	Result ServerInstanceLauncher::TickUpdate(TimerAction *pAction)
 	{
-		String commandNodeName(GetHeap());
+		m_ProcessManager.UpdateProcessStatus();
 
-		while (m_NewCommands.Dequeue(commandNodeName))
+		UpdateCommand();
+
+		return BrServer::TickUpdate(pAction);
+	}
+
+
+	Result ServerInstanceLauncher::UpdateCommand()
+	{
+		Result hr;
+
+		FixedString commandNodeNameCrc;
+
+		while (m_NewCommands.Dequeue(commandNodeNameCrc))
 		{
+			auto commandNodeName = commandNodeNameCrc.ToString();
 			Json::Value commandValue;
 			String nodePath;
 			auto pZKInstance = m_CommandWatcher.GetZKInstance();
@@ -162,41 +178,43 @@ namespace ServerInstanceLauncher {
 			if (!pZKInstance->Get(nodePath, commandValue))
 				continue;
 
-			auto ipAddress = commandValue.get("IPAddress", "").asCString();
+			auto ipAddress = commandValue.get("IPAddress", "");
 
-			if (!StrUtil::StringCmp(m_MyIPV4Address.Address, -1, ipAddress, -1)
-				&& !StrUtil::StringCmp(m_MyIPV6Address.Address, -1, ipAddress, -1))
+			if (!StrUtil::StringCmp(m_MyIPV4Address.Address, -1, ipAddress.asCString(), -1)
+				&& !StrUtil::StringCmp(m_MyIPV6Address.Address, -1, ipAddress.asCString(), -1))
 				continue;
 
 			if (!m_CommandWatcher.ConsumeCommand(commandNodeName))
 				continue;
 
 
-			auto commandName = commandValue.get("Command", "").asCString();
+			auto commandName = commandValue.get("Command", "");
 
-			FixedString commandNameF = commandName;
-			switch (commandNameF)
+			FixedString commandNameCrc = commandName.asCString();
+			switch (commandNameCrc)
 			{
 			case "ReloadConfig"_hash64:
-				ReloadConfig(pZKInstance, commandValue);
+				svrChk(ReloadConfig(pZKInstance, commandValue));
 				break;
 			case "RestartServerInstance"_hash64:
-				RestartServerInstance(pZKInstance, commandValue);
+				svrChk(RestartServerInstance(pZKInstance, commandValue));
 				break;
 			case "StartServerInstance"_hash64:
-				StartServerInstance(pZKInstance, commandValue);
+				svrChk(StartServerInstance(pZKInstance, commandValue));
 				break;
 			case "StopServerInstance"_hash64:
-				StopServerInstance(pZKInstance, commandValue);
+				svrChk(StopServerInstance(pZKInstance, commandValue));
 				break;
 			default:
 				break;
 			}
 		}
 
-		return BrServer::TickUpdate(pAction);
-	}
 
+	Proc_End:
+
+		return hr;
+	}
 
 	//////////////////////////////////////////////////////////////////////////
 	//
@@ -221,21 +239,21 @@ namespace ServerInstanceLauncher {
 
 	Result ServerInstanceLauncher::StartServerInstance(ZooKeeper* pZkInstance, const Json::Value& commandValue)
 	{
-		auto serverInstanceName = commandValue.get("ServerInstanceName", "").asCString();
-		auto serverModuleName = commandValue.get("ServerExecutionModule", "").asCString();
+		auto serverInstanceName = commandValue.get("ServerInstanceName", "");
+		auto serverModuleName = commandValue.get("ServerExecutionModule", "");
 
-		if (StrUtil::IsNullOrEmpty(serverInstanceName) || StrUtil::IsNullOrEmpty(serverModuleName))
+		if (StrUtil::IsNullOrEmpty(serverInstanceName.asCString()) || StrUtil::IsNullOrEmpty(serverModuleName.asCString()))
 		{
-			svrTrace(Error, "Instance name or Module name is invalid {0}, {1}", serverInstanceName, serverModuleName);
+			svrTrace(Error, "Instance name or Module name is invalid {0}, {1}", serverInstanceName.asCString(), serverModuleName.asCString());
 			return ResultCode::INVALID_ARG;
 		}
 
 		char instanceNameParam[256];
-		StrUtil::Format(instanceNameParam, "-n:{0}", serverInstanceName);
+		StrUtil::Format(instanceNameParam, "-n:{0}", serverInstanceName.asCString());
 
 		char moduleNameParam[256];
 #if WINDOWS
-		StrUtil::Format(moduleNameParam, "{0}.exe", serverModuleName);
+		StrUtil::Format(moduleNameParam, "{0}.exe", serverModuleName.asCString());
 #else
 		StrUtil::Format(moduleNameParam, "{0}", serverModuleName);
 #endif
@@ -244,14 +262,14 @@ namespace ServerInstanceLauncher {
 		args.push_back(instanceNameParam);
 		args.push_back(nullptr);
 
-		return m_ProcessManager.StartProcess(serverInstanceName, moduleNameParam, args);
+		return m_ProcessManager.StartProcess(serverInstanceName.asCString(), moduleNameParam, args);
 	}
 
 	Result ServerInstanceLauncher::StopServerInstance(ZooKeeper* pZkInstance, const Json::Value& commandValue)
 	{
-		auto serverInstanceName = commandValue.get("ServerInstanceName", "").asCString();
+		auto serverInstanceName = commandValue.get("ServerInstanceName", "");
 
-		return m_ProcessManager.StopProcess(serverInstanceName);
+		return m_ProcessManager.StopProcess(serverInstanceName.asCString());
 	}
 
 

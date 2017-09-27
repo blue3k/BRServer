@@ -116,9 +116,10 @@ namespace ServerInstanceLauncher {
 			//assert(false);
 			return;
 		}
-		DynamicArray<String> listNewCommands(GetHeap(), static_cast<int>(m_CommandNodes.size()));
+		DynamicArray<FixedString> listNewCommands(GetHeap());
+		listNewCommands.Reserve(static_cast<int>(m_CommandNodes.size()));
 
-		SortedSet<String> listAlreadyHave(GetHeap(), static_cast<int>(m_CommandNodes.size()));
+		SortedSet<FixedString> listAlreadyHave(GetHeap());
 		for (auto itCommand : m_CommandNodes)
 		{
 			listAlreadyHave.Insert(itCommand);
@@ -127,15 +128,17 @@ namespace ServerInstanceLauncher {
 		// This should be getchildren list because that's the only thing have string list result
 		for (auto& nodeName : pTask.ResultStrings)
 		{
-			if (m_CommandNodes.Find(nodeName))
+			FixedString nodeNameCrc = Service::StringDB->AddNGetString(nodeName);
+			
+			if (m_CommandNodes.Find(nodeNameCrc))
 			{
-				listAlreadyHave.Remove(nodeName);
+				listAlreadyHave.Remove(nodeNameCrc);
 			}
 			else
 			{
 				// New Service I need to add this to the list
-				m_CommandNodes.insert(nodeName);
-				listNewCommands.push_back(nodeName);
+				m_CommandNodes.insert(nodeNameCrc);
+				listNewCommands.push_back(nodeNameCrc);
 			}
 		}
 

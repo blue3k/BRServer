@@ -13,7 +13,7 @@
   <PropertyGroup Label="Globals">
     <ProjectGuid>{85D506DC-F0BE-45A8-9D2E-899B4DD1D05F}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
-    <RootNamespace>GameServer</RootNamespace>
+    <RootNamespace>ConspiracyGameInstanceServer</RootNamespace>
     <SccProjectName>
     </SccProjectName>
     <SccAuxPath>

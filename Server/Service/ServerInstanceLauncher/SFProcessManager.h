@@ -16,6 +16,10 @@
 
 #include "ZooKeeper/SFZooKeeper.h"
 
+#if WINDOWS
+#include <Winternl.h>
+#endif
+
 
 namespace SF {
 
@@ -51,7 +55,16 @@ namespace SF {
 		// Child Process list managed by this class
 		SortedArray<FixedString, ProcessInfo> m_ProcesseInfos;
 
-		ProcessEndHandler m_OnEndHandler;
+		ProcessEndHandler m_OnEndHandler = [](const ProcessInfo&) {};
+
+		// This method doesn't support process start by programmatically
+//#if WINDOWS
+//		NativeHandle m_hNTDLL = nullptr;
+//		typedef NTSTATUS (NTAPI *NtQueryInformationProcessT)(IN HANDLE ProcessHandle, IN PROCESSINFOCLASS ProcessInformationClass, OUT PVOID ProcessInformation, IN ULONG ProcessInformationLength, OUT PULONG ReturnLength OPTIONAL);
+//		NtQueryInformationProcessT m_NtQueryInformationProcess = nullptr;
+//#endif
+
+
 
 	public:
 
@@ -62,9 +75,15 @@ namespace SF {
 
 		void SetProcessEndHandled(const ProcessEndHandler& handler) { m_OnEndHandler = handler; }
 
+		// Manage processed if they are not managed by 
+		void ManageProcesses(const char* prefix);
+
 		// Add child process 
 		Result StartProcess(const char* processName, const char* processPath, const Array<const char*>& args);
 		Result StopProcess(const char* processName);
+
+		// Stop process directly. doesn't care the process list
+		Result StopProcess(NativeHandle hProcess);
 
 		// update process running status
 		void UpdateProcessStatus();

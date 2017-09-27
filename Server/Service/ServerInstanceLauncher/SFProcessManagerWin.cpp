@@ -21,6 +21,7 @@
 #if WINDOWS
 
 
+
 namespace SF {
 
 
@@ -34,7 +35,7 @@ namespace SF {
 	Result ProcessManager::StartProcess(const char* processName, const char* processPath, const Array<const char*>& args)
 	{
 		// It should have process name, and null termination
-		if (args.size() > 1 && args[args.size() - 1] == nullptr)
+		if (args.size() < 1 || args[args.size() - 1] != nullptr)
 		{
 			return ResultCode::INVALID_ARG;
 		}
@@ -68,8 +69,9 @@ namespace SF {
 			&pi)           // Pointer to PROCESS_INFORMATION structure
 			)
 		{
-			printf("CreateProcess failed (%d).\n", GetLastError());
-			return GetLastResultCode();
+			auto result = GetLastResultCode();
+			svrTrace(Error, "CreateProcess failed {0}", result);
+			return result;
 		}
 
 
@@ -84,25 +86,110 @@ namespace SF {
 		return ResultCode::SUCCESS;
 	}
 
+	// Manage processed if they are not managed by 
+	void ProcessManager::ManageProcesses(const char* prefix)
+	{
+		//if (m_NtQueryInformationProcess == nullptr)
+		//{
+		//	svrTrace(Error, "OS doesn't support process detailed information query. Recovering process list doesn't supported!");
+		//	return;
+		//}
+
+		DWORD processIDs[2048], filledSize;
+
+		if (!EnumProcesses(processIDs, sizeof(processIDs), &filledSize))
+		{
+			return;
+		}
+
+		auto processCount = filledSize / sizeof(DWORD);
+
+		for (auto iProc = 0; iProc < processCount; iProc++)
+		{
+			if (processIDs[iProc] == 0)
+				continue;
+
+			char processName[256] = "";
+			//HANDLE hProcess = OpenProcess(PROCESS_QUERY_INFORMATION | PROCESS_VM_READ, FALSE, processIDs[iProc]);
+			HANDLE hProcess = OpenProcess(PROCESS_TERMINATE | PROCESS_QUERY_INFORMATION | PROCESS_VM_READ, FALSE, processIDs[iProc]);
+			if (hProcess == nullptr)
+				continue;
+
+			HMODULE hMod;
+			DWORD cbNeeded;
+			if (!EnumProcessModules(hProcess, &hMod, sizeof(hMod), &cbNeeded))
+			{
+				CloseHandle(hProcess);
+				continue;
+			}
+
+			GetModuleBaseNameA(hProcess, hMod, processName, (int)(sizeof(processName) / sizeof(char)));
+
+			auto compareSize = (int)strlen(prefix);
+			if (!StrUtil::StringCmp(processName, compareSize, prefix, compareSize))
+			{
+				CloseHandle(hProcess);
+				continue;
+			}
+
+			compareSize = (int)strlen(Util::GetModuleName());
+			if (StrUtil::StringCmp(processName, compareSize, Util::GetModuleName(), compareSize))
+				continue;
+
+			// This method doesn't support process started programmatically
+			//PROCESS_BASIC_INFORMATION basicInfo;
+			//memset(&basicInfo, 0, sizeof(basicInfo));
+
+			//m_NtQueryInformationProcess(hProcess, ProcessBasicInformation, &basicInfo, sizeof(basicInfo), nullptr);
+
+			//if (basicInfo.PebBaseAddress != nullptr)
+			//{
+			//	auto& pbe = *basicInfo.PebBaseAddress;
+			//	svrTrace(Info, "{0}", pbe.ProcessParameters->CommandLine.Buffer);
+			//}
+
+			// Kill any process started already
+			Result hr = StopProcess(hProcess);
+			if (hr)
+			{
+				svrTrace(Info, "{0} is closed", processName);
+			}
+			else
+			{
+				svrTrace(Info, "Failed to close {0}, hr:{1}", processName, hr);
+			}
+
+			//CloseHandle(hProcess);
+		}
+	}
+
 	Result ProcessManager::StopProcess(const char* processName)
 	{
 		auto itProc = m_ProcesseInfos.find(processName);
 		if (itProc.ProcessHandle == 0)
 			return ResultCode::INVALID_ARG;
 
-		// TODO: replace to signal so that it can be handled gracefully
-		TerminateProcess(itProc.ProcessHandle, 0);
-
-		// Max 5 min wait
-		WaitForSingleObject(itProc.ProcessHandle, PROCESS_TERMINATE_TIMEOUT);
-
-		CloseHandle(itProc.ProcessHandle);
+		StopProcess(itProc.ProcessHandle);
 
 		itProc.LatestActionTime = Util::Time.GetTimeUTCSec();
 
 		m_OnEndHandler(itProc);
 
 		m_ProcesseInfos.Remove(itProc.Name, itProc);
+
+		return ResultCode::SUCCESS;
+	}
+
+	Result ProcessManager::StopProcess(NativeHandle hProcess)
+	{
+		// TODO: replace to signal so that it can be handled gracefully
+		if (!TerminateProcess(hProcess, 0))
+			return GetLastResultCode();
+
+		// Max 5 min wait
+		WaitForSingleObject(hProcess, PROCESS_TERMINATE_TIMEOUT);
+
+		CloseHandle(hProcess);
 
 		return ResultCode::SUCCESS;
 	}

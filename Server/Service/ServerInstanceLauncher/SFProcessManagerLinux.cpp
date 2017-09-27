@@ -34,7 +34,7 @@ namespace SF {
 	Result ProcessManager::StartProcess(const char* processName, const char* processPath, const Array<const char*>& args)
 	{
 		// It should have process name, and null termination
-		if (args.size() > 1 && args[args.size() - 1] == nullptr)
+		if (args.size() < 1 || args[args.size() - 1] != nullptr)
 		{
 			return ResultCode::INVALID_ARG;
 		}

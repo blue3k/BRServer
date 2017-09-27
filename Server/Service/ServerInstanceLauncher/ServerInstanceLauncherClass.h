@@ -38,7 +38,7 @@ namespace ServerInstanceLauncher {
 		NetAddress m_MyIPV4Address;
 		NetAddress m_MyIPV6Address;
 
-		CircularPageQueue<String> m_NewCommands;
+		CircularPageQueue<FixedString> m_NewCommands;
 
 		CommandWatcher m_CommandWatcher;
 		ProcessManager m_ProcessManager;
@@ -63,6 +63,10 @@ namespace ServerInstanceLauncher {
 		virtual Result TickUpdate(TimerAction *pAction = nullptr) override;
 
 		virtual Result CreateServerEntity(NetClass netClass, Svr::ServerEntity* &pServerEntity) override { return ResultCode::NOT_IMPLEMENTED; }
+
+
+		Result UpdateCommand();
+
 
 		//////////////////////////////////////////////////////////////////////////
 		//

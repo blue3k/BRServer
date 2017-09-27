@@ -137,7 +137,9 @@ namespace Svr {
 
 	Result ClusterServiceInfo_Impl::ParseNetPrivate(const Json::Value& itemValue, NetAddress& privateNet)
 	{
-		StrUtil::StringCpy(privateNet.Address, itemValue.get("IP", Json::Value("")).asCString());
+		auto IP = itemValue.get("IP", Json::Value(""));
+
+		StrUtil::StringCpy(privateNet.Address, IP.asCString());
 		privateNet.Port = itemValue.get("Port", Json::Value(0)).asUInt();
 
 		return ResultCode::SUCCESS;

@@ -34,6 +34,10 @@ namespace SF {
 		: m_Heap(heap)
 		, m_ProcesseInfos(heap)
 	{
+//#if WINDOWS
+//		m_hNTDLL = LoadLibraryA("ntdll.dll");
+//		m_NtQueryInformationProcess = (NtQueryInformationProcessT)GetProcAddress((HMODULE)m_hNTDLL, "NtQueryInformationProcess");
+//#endif
 	}
 
 	ProcessManager::~ProcessManager()

@@ -37,9 +37,9 @@ namespace ServerInstanceLauncher {
 	private:
 		IHeap& m_Heap;
 		String m_CommandRootPath;
-		SortedSet<String> m_CommandNodes;
+		SortedSet<FixedString> m_CommandNodes;
 
-		std::function<void(const String&)> m_OnNewCommandHandler;
+		std::function<void(const FixedString&)> m_OnNewCommandHandler;
 
 	public:
 
@@ -57,7 +57,7 @@ namespace ServerInstanceLauncher {
 		Result ConsumeCommand(String command);
 
 
-		void SetNewCommandHandler(std::function<void(const String&)> handler) { m_OnNewCommandHandler = handler; }
+		void SetNewCommandHandler(std::function<void(const FixedString&)> handler) { m_OnNewCommandHandler = handler; }
 
 
 		/////////////////////////////////////////////
