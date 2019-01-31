@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XMLSpy v2008 rel. 2 (http://www.altova.com) by mazuki (darksiderg) -->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" attributeFormDefault="unqualified">
+	<xs:element name="gameStateTbl">
+		<xs:annotation>
+			<xs:documentation>Reward experiment</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="StateItem" maxOccurs="unbounded">
+					<xs:complexType>
+						<xs:attribute name="StateItemID" use="required">
+							<xs:simpleType>
+								<xs:restriction base="xs:string">
+									<xs:enumeration value="None"/>
+									<xs:enumeration value="FreeDebate"/>
+									<xs:enumeration value="NightVote"/>
+									<xs:enumeration value="MorningDebate"/>
+									<xs:enumeration value="VoteForSuspects"/>
+									<xs:enumeration value="DefenceOfSuspects"/>
+									<xs:enumeration value="VoteForHanging"/>
+									<xs:enumeration value="End"/>
+									<xs:enumeration value="Hanging"/>
+									<xs:enumeration value="Login"/>
+									<xs:enumeration value="Lobby"/>
+								</xs:restriction>
+							</xs:simpleType>
+						</xs:attribute>
+						<xs:attribute name="Section" type="xs:int" use="optional" default="0"/>
+						<xs:attribute name="BGM" type="xs:string" use="optional" default='""'/>
+						<xs:attribute name="BGMLoop" type="xs:boolean" use="optional" default="true"/>
+						<xs:attribute name="Delay" type="xs:float" use="optional" default="0"/>
+					</xs:complexType>
+				</xs:element>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+</xs:schema>

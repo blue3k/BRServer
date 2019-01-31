@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<ResultCodes xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+             xsi:noNamespaceSchemaLocation="SFResultCode.xsd"
+             Facility="DB"
+             IDTable="false"
+             >
+
+  
+  <ResultCodeItem Severity="Error" CodeName="INVALID_CONFIG" Desc="Database connection failed"/>
+  <ResultCodeItem Severity="Error" CodeName="CONNECTION_FAILED" Desc="Database connection failed"/>
+  <ResultCodeItem Severity="Error" CodeName="CONNECTION_LOST" Desc="Database connection lost"/>
+  <ResultCodeItem Severity="Error" CodeName="STATEMENT_PREPARE_FAILED" Desc="Database statement prepare is failed"/>
+  <ResultCodeItem Severity="Error" CodeName="PARAMETER_BIND_FAILED" Desc="Database parameter binding is failed"/>
+  <ResultCodeItem Severity="Error" CodeName="RESULT_PATCH_FAILED" Desc="Database result patch is failed"/>
+  <ResultCodeItem Severity="Error" CodeName="RESULT_COUNT_MISMATCH" Desc="Database result column count is mismatched"/>
+  <ResultCodeItem Severity="Error" CodeName="RESULT_FIELDTYPE_MISMATCH" Desc="Database result column type is mismatched"/>
+  <ResultCodeItem Severity="Error" CodeName="DUPLICATED_SOURCE" Desc="Duplicated Database source is specified"/>
+  <ResultCodeItem Severity="Error" CodeName="INVALID_PARTITIONINGID" Desc="Invalid partitioning ID"/>
+  <ResultCodeItem Severity="Error" CodeName="NOT_CONNECTED" Desc="Database not connected"/>
+
+</ResultCodes>
+

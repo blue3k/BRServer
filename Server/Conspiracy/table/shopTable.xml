@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<!-- edited with XMLSpy v2008 rel. 2 (http://www.altova.com) by mazuki (darksiderg) -->
+<ShopTbl xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="shopTable.xsd">
+	<ShopItem ShopItemID="1" ItemInfo="마법석 1개" RequiredCash="1050" RequiredGem="0" RequiredGameMoney="0" ItemEffect="Gem" Quantity="1"/>
+	<ShopItem ShopItemID="2" ItemInfo="마법석 6개" RequiredCash="5299" RequiredGem="0" RequiredGameMoney="0" ItemEffect="Gem" Quantity="6"/>
+	<ShopItem ShopItemID="3" ItemInfo="마법석 12개" RequiredCash="9999" RequiredGem="0" RequiredGameMoney="0" ItemEffect="Gem" Quantity="12"/>
+	<ShopItem ShopItemID="4" ItemInfo="마법석 30개" RequiredCash="24000" RequiredGem="0" RequiredGameMoney="0" ItemEffect="Gem" Quantity="30"/>
+	<ShopItem ShopItemID="5" ItemInfo="마법석 60개" RequiredCash="46999" RequiredGem="0" RequiredGameMoney="0" ItemEffect="Gem" Quantity="60"/>
+	<ShopItem ShopItemID="6" ItemInfo="마법석 85개" RequiredCash="64000" RequiredGem="0" RequiredGameMoney="0" ItemEffect="Gem" Quantity="85"/>
+	<ShopItem ShopItemID="7" ItemInfo="하트 모두충전" RequiredCash="0" RequiredGem="5" RequiredGameMoney="0" ItemEffect="Stamina" Quantity="99999"/>
+	<ShopItem ShopItemID="8" ItemInfo="하트 1개 충전" RequiredCash="0" RequiredGem="0" RequiredGameMoney="1000" ItemEffect="Stamina" Quantity="1"/>
+	<ShopItem ShopItemID="9" ItemInfo="친구슬롯 5개" RequiredCash="0" RequiredGem="5" RequiredGameMoney="0" ItemEffect="FriendSlot" Quantity="5"/>
+	<ShopItem ShopItemID="10" ItemInfo="" RequiredCash="0" RequiredGem="5" RequiredGameMoney="0" ItemEffect="ResetRankNormal" Quantity="0"/>
+	<ShopItem ShopItemID="11" ItemInfo="" RequiredCash="0" RequiredGem="5" RequiredGameMoney="0" ItemEffect="NickName" Quantity="0"/>
+	<ShopItem ShopItemID="12" ItemInfo="" RequiredCash="0" RequiredGem="5" RequiredGameMoney="0" ItemEffect="ReStart" Quantity="0"/>
+</ShopTbl>

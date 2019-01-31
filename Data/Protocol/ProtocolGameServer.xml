@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Protocols xmlns="http://www.StormForge.com/XMLProtocol" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.StormForge.com/XMLProtocol ../../StormForge/Engine/Data/Protocol/ProtocolDef.xsd">
+	<ProtocolGroup Name="GameServer" GenParameterRouteContext="true" IsMobile="false" IsServer="true" Desc="Game Server Protocol">
+		<!-- ============================  Server Generic  ============================================ -->
+
+    <Command Name="RegisterPlayerToJoinGameServer" Reliable="true" Crypto="No" Trace="Debug1" Desc="Register player so that the player can connection and join to the game server.">
+      <Cmd>
+        <Params Type="PlayerID" Name="PlayerID" Desc="PlayerID to join"/>
+        <Params Type="AuthTicket" Name="Ticket" Desc="Authentication ticket. represents login session ID"/>
+        <Params Type="FacebookUID" Name="FBUserID" Desc="Facebook user ID"/>
+        <Params Type="uint32" Name="ShardID" Desc="DB shard ID for player partitioning"/>
+      </Cmd>
+      <Res>
+        <Params Type="String" Name="PublicAddress" Desc="Game server address the client can use to connect."/>
+        <Params Type="String" Name="PublicAddressV6" Desc="IPV6 Game server address the client can use to connect."/> 
+        <Params Type="uint32" Name="Port" Desc="Port to connect"/>
+      </Res>
+    </Command>
+
+    <Command Name="RegisterPlayerToJoinGameServerOnPlayerEntity" Reliable="true" Crypto="No" Trace="Debug1" Desc="Same to RegisterPlayerToJoinGameServer, but can run on player entity. only works when the player entity exists. If player disconnected for some reason, you can run this method to connect.">
+      <Cmd>
+        <Params Type="PlayerID" Name="PlayerID" Desc="PlayerID"/>
+        <Params Type="AuthTicket" Name="Ticket" Desc="Login session ID"/>
+        <Params Type="FacebookUID" Name="FBUserID" Desc="Facebook user ID"/>
+      </Cmd>
+      <Res>
+      </Res>
+    </Command>
+
+	<!-- Need to refactor as generalized JSON -->
+    <C2SEvent Name="ChatMessage" Reliable="true" Crypto="No" Trace="Debug1" Desc="Chatting message event.">
+		<Params Type="AccountID" Name="SenderID" Desc="AccountID is player ID for now"/>
+		<Params Type="PlayerRole" Name="Role" Desc="Role filter"/>
+		<Params Type="String" Name="SenderName" Desc="Sender Name"/>
+		<Params Type="String" Name="ChatMessage" Desc="Chatting message event."/>
+	</C2SEvent>
+
+    <C2SEvent Name="Notify" Reliable="true" Crypto="No" Trace="Debug1" Desc="Notification event for P2P">
+      <Params Type="PlayerID" Name="DestPlayerID"/>
+      <Params Type="uint32" Name="NotificationID"/>
+      <Params Type="NotificationType" Name="MessageID"/>
+      <Params Type="uint64" Name="MessageParam0"/>
+      <Params Type="uint64" Name="MessageParam1"/>
+      <Params Type="String" Name="MessageText"/>
+      <Params Type="uint64" Name="TimeStamp"/>
+    </C2SEvent>
+
+    <C2SEvent Name="FriendAccepted" Reliable="true" Crypto="No" Trace="Debug1" Desc="Friend Accepted">
+      <Params Type="AccountID" Name="DestPlayerID" Desc="Destination player who requested friend"/>
+      <Params Type="ServerFriendInformation" Name="Accepter" Desc="My friend information"/>
+    </C2SEvent>
+
+    <C2SEvent Name="FriendRemoved" Reliable="true" Crypto="No" Trace="Debug1" Desc="Friend Remove">
+      <Params Type="AccountID" Name="DestPlayerID" Desc="Destination player ID to notify that I removed him."/>
+      <Params Type="PlayerID" Name="RemoverID" Desc="My player ID"/>
+    </C2SEvent>
+
+
+
+    <C2SEvent Name="RequestPlayerStatusUpdate" Reliable="true" Crypto="No" Trace="Debug1" Desc="Request Player Status Update">
+      <Params Type="AccountID" Name="DestPlayerID" Desc="destination player ID to check status"/>
+      <Params Type="PlayerID" Name="RequesterID" Desc="Request sender ID"/>
+    </C2SEvent>
+
+    <C2SEvent Name="NotifyPlayerStatusUpdated" Reliable="true" Crypto="No" Trace="Debug1" Desc="Notify Player Status Updated">
+      <Params Type="AccountID" Name="DestPlayerID" Desc="Destination player ID to send."/>
+      <Params Type="uint32" Name="LatestActiveTime" Desc="Latest active time."/>
+      <Params Type="uint8" Name="IsInGame" Desc="Is in game?"/>
+    </C2SEvent>
+
+    <C2SEvent Name="NotifyPartyInvite" Reliable="true" Crypto="No" Trace="Debug1" Desc="Party invite Notification">
+      <Params Type="PlayerID" Name="DestPlayerID" Desc="Invited player ID"/>
+      <Params Type="PlayerID" Name="InviterID" Desc="Inviter player ID. Usually Party leader."/>
+      <Params Type="String" Name="InviterName" Desc="Inviter player Name"/>
+      <Params Type="EntityUID" Name="PartyUID" Desc="Party UID"/>
+    </C2SEvent>
+
+
+    <!-- =============================  ======================================= -->
+
+	</ProtocolGroup>
+</Protocols>

@@ -1,0 +1,110 @@
+﻿
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Table Upload</title>
+    @Scripts.Render("~/bundles/modernizr")
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/Scripts/jquery-ui/jquery-ui.js")
+    @Scripts.Render("~/bundles/bootstrap")
+</head>
+<body>
+    <script type="text/javascript">
+
+        var tableList = '@ViewBag.FileNames'.split('/');
+
+        $(document).ready(function () {
+
+            var uploadStatus = $("#UploadStatus").selectable();
+            for (iFile = 0; iFile < tableList.length; iFile++)
+            {
+                var child = '<li id="tbl_">'+tableList[iFile]+'<span class="tab"'+'id="status_' + tableList[iFile]+'"></span></li>';
+                uploadStatus.append(child);
+            }
+            uploadStatus.selectable();
+
+            $("#uploadbutton").click(function () {
+
+                // upload all file and process
+                var fileListElement = $("#TableFiles");
+                var fileList = fileListElement[0].files;
+                for (iFile = 0; iFile < fileList.length; iFile++) {
+
+                    for (iFileFound = 0; iFileFound < tableList.length; iFileFound++) {
+                        if (fileList[iFile].name.toLowerCase() == (tableList[iFileFound]+'.xml').toLowerCase()) break;
+                    }
+                    if (iFileFound >= tableList.length) continue;
+
+                    var uploadStatusPre = $('#UploadStatus li #status_' + tableList[iFileFound]);
+                    uploadStatusPre.text(' => Uploading');
+
+                    var formData = new FormData();
+                    formData.append('tableName', tableList[iFileFound]);
+                    formData.append('file', fileList[iFile]);
+
+                    $.ajax({
+                        url: '@Url.Action("UploadTableFile")',
+                        type: 'POST',
+                        contentType: false,
+                        processData: false,
+                        data: formData,
+                        success: function (data) {
+                            var uploadStatus = $('#UploadStatus li #status_' + data['TableName']);
+                            uploadStatus.text(' => Success:' + data['Succeeded']+ ', ' + data['Message']);
+                        },
+                        error: function (result) {
+                            alert('error:' + result);
+                            // alert("Failed");
+                        }
+                    });
+                }
+
+            });
+
+
+            $("#RequestReload").click(function () {
+
+                // Request reload
+                $.ajax({
+                    url: '@Url.Action("RequestReload")',
+                    type: 'POST',
+                    contentType: false,
+                    processData: false,
+                    success: function (data) {
+                        var requestStatus = $('#requestStatus');
+                        requestStatus.text(' => Success:' + data['Succeeded'] + ', ' + data['Message']);
+                    },
+                    error: function (result) {
+                        alert('error:' + result);
+                        // alert("Failed");
+                    }
+                });
+
+            });
+        });
+
+        function setfilename(val)
+        {
+            var fileName = val.substr(val.lastIndexOf("\\")+1, val.length);
+            document.getElementById("filename").value = fileName;
+        }
+
+    </script>
+    @Html.ActionLink("Home", "Index", "Home")
+    <br /><br />
+
+    <input type="file" id="TableFiles" name="TableFiles" size="12" accept=".xml" multiple />
+    <input id="uploadbutton" type="button" value="UploadAllTables" />
+    <input id="RequestReload" type="button" value="RequestReload" />
+    <ul id="UploadStatus"></ul>
+    <br/>
+    <p id="requestStatus">requestStatus</p>
+
+</body>
+</html>

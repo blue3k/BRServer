@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Protocols xmlns="http://www.StormForge.com/XMLProtocol" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.StormForge.com/XMLProtocol ../../StormForge/Engine/Data/Protocol/ProtocolDef.xsd">
+	<ProtocolGroup Name="LoginServer" GenParameterRouteContext="true" IsMobile="false" IsServer="true" Desc="Login Server Protocol">
+
+	<!-- ============================  Server Generic  ============================================ -->
+
+	<Command Name="PlayerJoinedToGameServer" Reliable="true" Crypto="No" Trace="Debug1" Desc="Notify Login server that client is successfully connected and joined to game server so that login server clear the player information.">
+		<Cmd>
+			<Params Type="PlayerID" Name="PlayerID" Desc="Player ID"/>
+			<Params Type="AuthTicket" Name="AuthTicket" Desc="Authorization ticket."/>
+		</Cmd>
+		<Res>
+		</Res>
+	</Command>
+
+    <Command Name="KickPlayer" Reliable="true" Crypto="No" Trace="Debug1" Desc="Kick logged in player, used to kick player on other login server to prevent duplicated login.">
+      <Cmd>
+        <Params Type="PlayerID" Name="KickedPlayerID" Desc="Player ID to kick"/>
+      </Cmd>
+      <Res>
+      </Res>
+    </Command>
+
+    <!-- =============================  ======================================= -->
+
+	</ProtocolGroup>
+</Protocols>

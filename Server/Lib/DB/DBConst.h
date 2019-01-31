@@ -1,0 +1,67 @@
+////////////////////////////////////////////////////////////////////////////////
+// 
+// CopyRight (c) 2013 The Braves
+// 
+// Author: Kyungkun Ko
+//
+// Description : DB constant definitions
+//	
+//
+////////////////////////////////////////////////////////////////////////////////
+
+
+#pragma once
+
+#include "SFTypedefs.h"
+
+
+namespace SF {
+namespace DB {
+
+	namespace Const
+	{
+		enum {
+
+			// Default sharding buckets
+			DEFAULT_SHARDING_BUCKETS = 128,
+
+			// 
+			DB_MAIN_THREAD_INTERVAL	= 1, 
+			QUERYWORKER_MAX			= 20,
+
+			DB_WORKER_JOB_WAITING_MAX  = 5000,
+
+			DB_MANAGER_UPDATE_SHARDLIST_LIMIT = 5000,
+
+			// retry connection every 500 ms
+			CONNECTION_RETRY_TIME	= 500,
+
+			// temporary setting buffer size
+			MAX_DBCONFIGLOAD		= 64,					
+
+			// User Name Max
+			MAX_USERNAME			= 128,
+
+			MAX_PLATFORM_NAME = 64,
+			MAX_PURCHASEID = 64,
+			MAX_PURCHASETOKEN = 512,
+
+			// Notification text Max
+			MAX_NOTIFICATION_TEXT	= 512,
+
+			// User email Max
+			MAX_EMAIL				= 128,
+			MAX_CELLPHONE			= 64,
+			MAX_COMPLITIONSTATE     = 16,
+
+			// Password Max
+			MAX_PASSWORD			= 64,
+
+			// User Name Max
+			MAX_GCMKEY				= 512,
+
+		};
+	}
+
+} // namespace DB
+} // namespace SF

@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XMLSpy v2008 rel. 2 (http://www.altova.com) by mazuki (darksiderg) -->
+<clientSettingTable xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="D:\Work\Conspiracy\trunk\Design\Table\xsd\clientSettingTable.xsd">
+	<clientSettingItem DefenceOfSuspectsDescription="3" NightVoteDescription="3" VoteForSuspectsResult="3" EndResult1="3" EndResult2="3" EndResult3="2" HideVoteTime="5" VoteForSuspectsPhase="3" VoteForHangingDescription1="3" VoteForHangingDescription2="3" VoteForHangingDescription3="3" FreeDebateDescription1="3" FreeDebateDescription2="3" DefenceOfSuspectsPhase="3" NightVotePhase="3" EndDescription1="3" EndDescription2="3" EndDescription3="3" EndPhase="3" KillAnimationTime="2" FreeDebateShowRole="3" FreeDebatePhase="3" ShowVoteTime="2" VoteForSuspectsDescription="3" VoteForHangingPhase1="3" VoteForHangingPhase2="3"/>
+</clientSettingTable>

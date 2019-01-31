@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Servers xmlns="http://www.TheBraves.com/ServerConfig" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.TheBraves.com/ServerConfig ServerConfig.xsd">
+  <DBInstances InstanceName="account00" ConnectionString="192.168.0.9,21022" UserID="blue3k" Password="pious75" />
+  <DBInstances InstanceName="session00" ConnectionString="192.168.0.9,21022" UserID="blue3k" Password="pious75" />
+  <DBInstances InstanceName="ranking" ConnectionString="192.168.0.9,21022" UserID="blue3k" Password="pious75" />
+
+  <AccountDB ClusterType="Sharding" DBInstanceName="account00" DBName="dbaccount" />
+  <LoginSessionDB ClusterType="Sharding" DBInstanceName="session00" DBName="dbsession00" />
+  <RankingDB ClusterType="Sharding" DBInstanceName="ranking" DBName="dbconspiracyranking" />
+
+
+  <ModuleServer UID="11" Name="BRLoginServer01" WorkerThreadCount="4" NetIOThreadCount="4">
+    <NetPrivate IP="192.168.0.6" Port="2011"/>
+    <ModLogin>
+      <NetPublic IPV4="192.168.0.6" IPV6="192.168.0.6" ListenIP="::" Port="21001" MaxConnection="200000"/>
+    </ModLogin>
+  </ModuleServer>
+
+  <GameCluster Name="Second Game" GameID="MyTownHero" >
+
+    <ModuleServer UID="220" Name="BRMyTownHeroRanking" WorkerThreadCount="4" NetIOThreadCount="4">
+      <NetPrivate IP="192.168.0.6" Port="3011"/>
+      <ModRanking />
+    </ModuleServer>
+
+  </GameCluster>
+
+	
+</Servers>

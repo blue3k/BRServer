@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<RewardTbl xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="rewardTable.xsd">
+	<RewardItem Role="Villager" WinExp="200" LoseExp="40" WinMoney="200" LoseMoney="40"/>
+	<RewardItem Role="Monster" WinExp="300" LoseExp="60" WinMoney="300" LoseMoney="60"/>
+	<RewardItem Role="Seer" WinExp="200" LoseExp="40" WinMoney="200" LoseMoney="40"/>
+</RewardTbl>

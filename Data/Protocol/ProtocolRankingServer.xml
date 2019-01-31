@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Protocols xmlns="http://www.StormForge.com/XMLProtocol" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.StormForge.com/XMLProtocol ../../StormForge/Engine/Data/Protocol/ProtocolDef.xsd">
+	<ProtocolGroup Name="RankingServer" GenParameterRouteContext="true" IsMobile="false" IsServer="true" Desc="Game ranking Server Protocol">
+
+    <!-- ============================  Ranking ============================================ -->
+
+    <Command Name="AddPlayer" Reliable="true" Crypto="No" Trace="Debug1" Desc="Add a player to ranking">
+		  <Cmd>
+        <Params Type="PlayerInformation" Name="PlayerInfo" Desc="PlayerInformation to add"/>
+        <Params Type="uint64" Name="RankingScore" Desc="Ranking score"/>
+		</Cmd>
+		  <Res>
+        <Params Type="uint32" Name="Ranking" Desc="Ranking"/>
+	  	</Res>
+	  </Command>
+
+    <Command Name="RemovePlayer" Reliable="true" Crypto="No" Trace="Debug1" Desc="Remove a player to ranking">
+      <Cmd>
+        <Params Type="PlayerID" Name="PlayerID" Desc="Player ID to remove"/>
+      </Cmd>
+      <Res>
+      </Res>
+    </Command>
+
+    <Command Name="GetPlayerRanking" Reliable="true" Crypto="No" Trace="Debug1" Desc="Get player to ranking">
+      <Cmd>
+        <Params Type="PlayerID" Name="PlayerID" Desc="Requester player ID"/>
+      </Cmd>
+      <Res>
+        <Params Type="uint32" Name="Ranking" Desc="My ranking"/>
+      </Res>
+    </Command>
+
+    <Command Name="UpdatePlayerScore" Reliable="true" Crypto="No" Trace="Debug1" Desc="Update a player to ranking">
+      <Cmd>
+        <Params Type="uint64" Name="RankingScore" Desc="new score"/>
+        <Params Type="PlayerInformation" Name="PlayerInfo" Desc="Player information to update"/>
+        <Params Type="uint16" Name="Count" Desc="Number of playerinformation to query"/>
+      </Cmd>
+      <Res>
+        <Params Type="TotalRankingPlayerInformation" Name="Ranking" IsArray="true" Desc="ranking player information"/>
+      </Res>
+    </Command>
+
+
+    <Command Name="GetRanking" Reliable="true" Crypto="No" Trace="Debug1" Desc="Get ranking list">
+      <Cmd>
+        <Params Type="RankingType" Name="RankingType" Desc="To separate ranking type"/>
+        <Params Type="uint16" Name="BaseRanking" Desc="Base ranking to query, 0 based ranking order"/>
+        <Params Type="uint16" Name="Count" Desc="Number of playerinformation to query"/>
+      </Cmd>
+      <Res>
+        <Params Type="TotalRankingPlayerInformation" Name="Ranking" IsArray="true" Desc="ranking player information"/>
+      </Res>
+    </Command>
+
+    <Command Name="DebugPrintALLRanking" Reliable="true" Crypto="No" Trace="Debug1" Desc="Debug test">
+      <Cmd>
+		<Params Type="String" Name="FileName"/>
+      </Cmd>
+      <Res>
+      </Res>
+    </Command>
+
+    <!-- =============================  ======================================= -->
+
+	</ProtocolGroup>
+</Protocols>

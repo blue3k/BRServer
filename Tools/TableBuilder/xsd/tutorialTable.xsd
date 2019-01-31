@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XMLSpy v2008 rel. 2 (http://www.altova.com) by mazuki (darksiderg) -->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" attributeFormDefault="unqualified">
+	<xs:element name="TutorialTbl">
+		<xs:annotation>
+			<xs:documentation>Comment describing your root element</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="TutorialItem" maxOccurs="unbounded">
+					<xs:complexType>
+						<xs:attribute name="Step" use="required">
+							<xs:simpleType>
+								<xs:restriction base="xs:int"/>
+							</xs:simpleType>
+						</xs:attribute>
+						<xs:attribute name="Text" use="required">
+							<xs:simpleType>
+								<xs:restriction base="xs:string"/>
+							</xs:simpleType>
+						</xs:attribute>
+						<xs:attribute name="Keyword" type="xs:string" use="optional"/>
+						<xs:attribute name="Time" type="xs:float" use="optional" default="0"/>
+					</xs:complexType>
+				</xs:element>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+</xs:schema>

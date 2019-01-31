@@ -1,0 +1,52 @@
+﻿////////////////////////////////////////////////////////////////////////////////
+// 
+// CopyRight (c) 2016 StormForge
+// 
+// Author : Generated
+// 
+// Description : GameParty Service definitions
+// 
+////////////////////////////////////////////////////////////////////////////////
+
+#pragma once
+
+#include "SFTypedefs.h"
+#include "Protocol/SFProtocol.h"
+#include "ServerService/ServerServiceBase.h"
+#include "Net/SFNetDef.h"
+#include "Protocol/Policy/GamePartyNetPolicy.h"
+
+
+
+namespace SF
+{
+ 	namespace Svr
+	{
+ 		class GamePartyService : public ServerServiceBase
+		{
+ 			public:
+			// Constructor
+			GamePartyService ( ServerServiceInformation* pService );
+
+			// Cmd: Join party
+			Result JoinPartyCmd( const TransactionID &InTransactionID, const PlayerID &InInviterID, const PlayerInformation &InInvitedPlayer );
+			// Cmd: Event for player left.
+			Result LeavePartyCmd( const TransactionID &InTransactionID, const PlayerID &InPlayerID );
+			// Cmd: Kick player
+			Result KickPlayerCmd( const TransactionID &InTransactionID, const PlayerID &InPlayerID, const PlayerID &InPlayerToKick );
+			// C2S: Send chat message to server.
+			Result ChatMessageC2SEvt( const EntityID &InSenderEntityID, const PlayerID &InPlayerID, const char* InChatMessage );
+			// C2S: Quick Chatting message
+			Result QuickChatMessageC2SEvt( const EntityID &InSenderEntityID, const PlayerID &InPlayerID, const uint32_t &InQuickChatID );
+			// Cmd: Start party game matching
+			Result StartGameMatchCmd( const TransactionID &InTransactionID, const PlayerID &InPlayerID, const uint32_t &InMaxGamePlayers );
+			// Cmd: Cancel game matching
+			Result CancelGameMatchCmd( const TransactionID &InTransactionID, const PlayerID &InPlayerID );
+
+		}; // class GamePartyService : public ServerServiceBase
+
+
+	}; // namespace Svr
+}; // namespace SF
+
+

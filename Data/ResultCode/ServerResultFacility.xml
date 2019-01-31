@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<ResultCodeFacilities xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+            xsi:noNamespaceSchemaLocation="SFResultCodeFacility.xsd">
+
+  <Facility Facility="DB" Value="0x711"/>
+  <Facility Facility="Svr" Value="0x712"/>
+  <Facility Facility="Net" Value="0x713"/>
+  <Facility Facility="Game" Value="0x714"/>
+  <Facility Facility="Login" Value="0x715"/>
+
+
+
+</ResultCodeFacilities>
+

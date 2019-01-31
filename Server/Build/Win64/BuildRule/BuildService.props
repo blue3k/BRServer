@@ -1,0 +1,21 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ImportGroup Label="PropertySheets" />
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup>
+    <OutDir>$(SolutionDir)Server/bin/$(Platform)$(Configuration)\</OutDir>
+    <TargetName>BR$(RootNamespace)</TargetName>
+    <IntDir>$(SolutionDir)Intermediate\Win64\$(Platform)$(Configuration)\$(ProjectName)\</IntDir>
+  </PropertyGroup>
+  <ItemDefinitionGroup>
+    <Link>
+      <AdditionalLibraryDirectories>$(ProjectDir)../../bin/lib/$(Platform)$(Configuration);$(ProjectDir)../../External/lib/$(Platform)$(Configuration);$(ProjectDir)../../bin/lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;libTable.Win.lib;libDB.Win.lib;libServerSystem.Win.lib;Ws2_32.lib;libServerProtocol.Win.lib;Mswsock.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <OutputFile>$(OutDir)$(TargetName)$(TargetExt)</OutputFile>
+    </Link>
+    <ClCompile>
+      <PreprocessorDefinitions>HAVE_CONFIG_H;HAVE_WIN32_THREADS;_UNICODE;UNICODE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ClCompile>
+  </ItemDefinitionGroup>
+  <ItemGroup />
+</Project>

@@ -1,0 +1,5 @@
+
+1. p4v -> Connection -> Environment Settings -> Check "Use current...xxx" -> Press OK
+2. Run p4 have to check whether p4 can get file list or not.
+
+

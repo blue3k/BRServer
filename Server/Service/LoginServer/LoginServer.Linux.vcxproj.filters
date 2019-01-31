@@ -1,0 +1,61 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClInclude Include="LoginServerClass.h" />
+    <ClInclude Include="LoginSvrConst.h" />
+    <ClInclude Include="stdafx.h" />
+    <ClInclude Include="LoginServer.h" />
+    <ClInclude Include="Transaction\LoginServerTrans.h">
+      <Filter>EntityInstance</Filter>
+    </ClInclude>
+    <ClInclude Include="ServerEntity\GameServerEntity.h">
+      <Filter>EntityInstance</Filter>
+    </ClInclude>
+    <ClInclude Include="ServerEntity\LoginServerEntity.h">
+      <Filter>EntityInstance</Filter>
+    </ClInclude>
+    <ClInclude Include="ServerEntity\ServerEntityTrans.h">
+      <Filter>EntityInstance</Filter>
+    </ClInclude>
+    <ClInclude Include="Entity\LoginPlayerEntity.h">
+      <Filter>EntityInstance</Filter>
+    </ClInclude>
+    <ClInclude Include="Entity\LoginPlayerEntityTrans.h">
+      <Filter>EntityInstance</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="LoginServerClass.inl" />
+    <None Include="Entity\LoginPlayerEntity.inl">
+      <Filter>EntityInstance</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="stdafx.cpp" />
+    <ClCompile Include="LoginServer.cpp" />
+    <ClCompile Include="LoginServerClass.cpp" />
+    <ClCompile Include="Transaction\LoginServerTrans.cpp">
+      <Filter>EntityInstance</Filter>
+    </ClCompile>
+    <ClCompile Include="ServerEntity\LoginServerEntity.cpp">
+      <Filter>EntityInstance</Filter>
+    </ClCompile>
+    <ClCompile Include="ServerEntity\ServerEntityTrans.cpp">
+      <Filter>EntityInstance</Filter>
+    </ClCompile>
+    <ClCompile Include="ServerEntity\GameServerEntity.cpp">
+      <Filter>EntityInstance</Filter>
+    </ClCompile>
+    <ClCompile Include="Entity\LoginPlayerEntityTrans.cpp">
+      <Filter>EntityInstance</Filter>
+    </ClCompile>
+    <ClCompile Include="Entity\LoginPlayerEntity.cpp">
+      <Filter>EntityInstance</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="EntityInstance">
+      <UniqueIdentifier>{35fba132-36f0-46fe-98d8-290df7e20e5b}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Protocols xmlns="http://www.StormForge.com/XMLProtocol" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.StormForge.com/XMLProtocol ../../StormForge/Engine/Data/Protocol/ProtocolDef.xsd">
+  <ProtocolGroup Name="PartyMatching" GenParameterRouteContext="true" GenParameterRouteHopCount="true" IsMobile="false" IsServer="true" Desc="Game matching Protocol">
+
+    <!-- ============================  Server cluster  ============================================ -->
+
+    
+    <S2CEvent Name="PartyGameMatched" Reliable="true" Crypto="No" Trace="Debug1" Desc="Event message will be sent from matching srvice when the pary game mathcing has done.">
+    </S2CEvent>
+
+    <S2CEvent Name="PlayerGameMatched" Reliable="true" Crypto="No" Trace="Debug1" Desc="Event message will be sent when a player game matching has successfully finished.">
+      <Params Type="PlayerID" Name="DestPlayerID" Desc="Destination player ID"/>
+      <Params Type="GameInsUID" Name="GameInsUID" Desc="Game instance UID"/>
+      <Params Type="PlayerRole" Name="RequestedRole" Desc="Requested role"/>
+    </S2CEvent>
+
+    <!-- =============================  ======================================= -->
+
+  
+  </ProtocolGroup>
+</Protocols>

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<!-- edited with XMLSpy v2008 rel. 2 (http://www.altova.com) by mazuki (darksiderg) -->
+<gameStateTbl xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="gameStateTable.xsd">
+	<StateItem StateItemID="FreeDebate" BGM="song_test"/>
+	<StateItem StateItemID="NightVote" BGM="song_test"/>
+	<StateItem StateItemID="MorningDebate" BGM="song_test"/>
+	<StateItem StateItemID="VoteForSuspects" BGM="song_test"/>
+	<StateItem StateItemID="DefenceOfSuspects" BGM="song_test"/>
+	<StateItem StateItemID="VoteForHanging" BGM="song_test"/>
+	<StateItem StateItemID="End" BGM="song_test"/>
+	<StateItem StateItemID="Hanging" BGM="song_test"/>
+</gameStateTbl>

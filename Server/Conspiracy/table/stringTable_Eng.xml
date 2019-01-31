@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<StringTbl xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="stringTable.xsd">
+	<StringItem StringItemID="1" String="Hello!"/>
+	<StringItem StringItemID="2" String="Bye, see you tomorrow~"/>
+</StringTbl>

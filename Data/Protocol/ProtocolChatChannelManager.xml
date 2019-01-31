@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Protocols xmlns="http://www.StormForge.com/XMLProtocol" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.StormForge.com/XMLProtocol ../../StormForge/Engine/Data/Protocol/ProtocolDef.xsd">
+	<ProtocolGroup Name="ChatChannelManager" GenParameterRouteContext="true" GenParameterRouteHopCount="true" IsMobile="false" IsServer="true" Desc="Chatting channel manager service Protocol">
+
+
+	<!-- ============================  Server Generic  ============================================ -->
+
+	<Command Name="CreateChannel" Reliable="true" Crypto="No" Trace="Debug1" Desc="Create a channel instance">
+		<Cmd>
+      <Params Type="String" Name="ChannelName" Desc="Channel name for search"/>
+      <Params Type="String" Name="Passcode" Desc="Passcode, can be empty string for public room"/>
+      <Params Type="PlayerInformation" Name="Creator" Desc="Player information who creates"/>
+    </Cmd>
+		<Res>
+      <Params Type="EntityUID" Name="ChannelUID" Desc="Created channel unique ID"/>
+    </Res>
+	</Command>
+
+    <Command Name="FindChannel" Reliable="true" Crypto="No" Trace="Debug1" Desc="Find a channel instance with name">
+      <Cmd>
+        <Params Type="String" Name="ChannelName" Desc="Channel name to find"/>
+      </Cmd>
+      <Res>
+        <Params Type="EntityUID" Name="ChannelUID" Desc="Channel entity UID"/>
+      </Res>
+    </Command>
+
+    <C2SEvent Name="ChatChannelDeleted" Reliable="true" Crypto="No" Trace="Debug1" Desc="Notification that a chat channel instance has deleted">
+    </C2SEvent>
+
+    <!-- =============================  ======================================= -->
+
+	</ProtocolGroup>
+</Protocols>

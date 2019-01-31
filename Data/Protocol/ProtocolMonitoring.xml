@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Protocols xmlns="http://www.StormForge.com/XMLProtocol" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.StormForge.com/XMLProtocol ../../StormForge/Engine/Data/Protocol/ProtocolDef.xsd">
+	<ProtocolGroup Name="Monitoring" GenParameterRouteContext="false" IsMobile="false" IsServer="true" Desc="Monitoring Server Protocol">
+
+    <!-- ============================  Access monitoring service from generic client ============================================ -->
+
+    <Command Name="GetInstanceList" Reliable="true" Crypto="No" Trace="Debug1" Desc="[deprecated]">
+		  <Cmd>
+      </Cmd>
+      <Res>
+        <Params Type="PerformanceCounterInstanceInfo" Name="CounterInstances" IsArray="true"/>
+        <Params Type="uint32" Name="TotalInstanceCount"/>
+      </Res>
+	  </Command>
+
+    <Command Name="RequestCounterValues" Reliable="true" Crypto="No" Trace="Debug1" Desc="[deprecated]">
+      <Cmd>
+        <Params Type="EntityUID" Name="InstanceUID"/>
+      </Cmd>
+      <Res>
+        <Params Type="EntityUID" Name="InstanceUID"/>
+        <Params Type="uint64" Name="CounterValues" IsArray="true"/>
+      </Res>
+    </Command>
+
+
+    <!-- ============================  Performance counter interfaces ============================================ -->
+    
+    <C2SEvent Name="PerformanceCounterNew" Reliable="true" Crypto="No" Trace="Debug2"  Desc="Message when new performance counter is added.">
+      <Params Type="String" Name="InstanceName"/>
+      <Params Type="EntityUID" Name="InstanceUID"/>
+      <Params Type="PerformanceCounterInfo" Name="NewCounters" IsArray="true"/>
+    </C2SEvent>
+
+    <C2SEvent Name="PerformanceCounterFree" Reliable="true" Crypto="No" Trace="Debug2"  Desc="Counter instance is deleted">
+      <Params Type="EntityUID" Name="FreeInstances" IsArray="true"/>
+    </C2SEvent>
+
+    <C2SEvent Name="PerformanceCounterUpdate" Reliable="true" Crypto="No" Trace="Debug2"  Desc="Counter update broadcast">
+      <Params Type="EntityUID" Name="InstanceUID"/>
+      <Params Type="uint64" Name="CounterValues" IsArray="true"/>
+    </C2SEvent>
+
+    <S2CEvent Name="PerformanceCounterUpdateCounterInfo" Reliable="true" Crypto="No" Trace="Debug2"  Desc="Server will send this message to an instance to get performance counters.">
+      <Params Type="EntityUID" Name="InstanceUID"/>
+    </S2CEvent>
+
+    <!-- =============================  ======================================= -->
+
+	</ProtocolGroup>
+</Protocols>

@@ -1,0 +1,507 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Policy">
+      <UniqueIdentifier>{3bc764d2-9764-4a24-9dbf-0e05dd2f162b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Message">
+      <UniqueIdentifier>{71018c43-0706-49a7-96a3-006a6c49bb26}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ServerService">
+      <UniqueIdentifier>{4593622c-04c3-4384-a1ea-7bb4f1e29452}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="XML">
+      <UniqueIdentifier>{d4776c8d-0ecf-40b0-a5c1-d0bf696b51c2}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="$(MSBuildThisFileDirectory)stdafx.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)Protocol\Message\GamePartyManagerMsgClass.h">
+      <Filter>Message</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)Protocol\Message\GamePartyManagerMsgDebug.h">
+      <Filter>Message</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)Protocol\Message\GamePartyManagerMsgParsing.h">
+      <Filter>Message</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)Protocol\Message\GamePartyMsgClass.h">
+      <Filter>Message</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)Protocol\Message\GamePartyMsgDebug.h">
+      <Filter>Message</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)Protocol\Message\GamePartyMsgParsing.h">
+      <Filter>Message</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)Protocol\Message\GameServerMsgClass.h">
+      <Filter>Message</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)Protocol\Message\GameServerMsgDebug.h">
+      <Filter>Message</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)Protocol\Message\GameServerMsgParsing.h">
+      <Filter>Message</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)Protocol\Message\LoginServerMsgClass.h">
+      <Filter>Message</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)Protocol\Message\LoginServerMsgDebug.h">
+      <Filter>Message</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)Protocol\Message\LoginServerMsgParsing.h">
+      <Filter>Message</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)Protocol\Message\MonitoringMsgClass.h">
+      <Filter>Message</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)Protocol\Message\MonitoringMsgDebug.h">
+      <Filter>Message</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)Protocol\Message\MonitoringMsgParsing.h">
+      <Filter>Message</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)Protocol\Message\PartyMatchingMsgClass.h">
+      <Filter>Message</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)Protocol\Message\PartyMatchingMsgDebug.h">
+      <Filter>Message</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)Protocol\Message\PartyMatchingMsgParsing.h">
+      <Filter>Message</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)Protocol\Message\PartyMatchingQueueMsgClass.h">
+      <Filter>Message</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)Protocol\Message\PartyMatchingQueueMsgDebug.h">
+      <Filter>Message</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)Protocol\Message\PartyMatchingQueueMsgParsing.h">
+      <Filter>Message</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)Protocol\Message\ProtocolClusterServer.h">
+      <Filter>Message</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)Protocol\Message\ProtocolEntityServer.h">
+      <Filter>Message</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)Protocol\Message\ProtocolGameInstance.h">
+      <Filter>Message</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)Protocol\Message\ProtocolGameInstanceManager.h">
+      <Filter>Message</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)Protocol\Message\ProtocolGameMasterServer.h">
+      <Filter>Message</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)Protocol\Message\ProtocolGameParty.h">
+      <Filter>Message</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)Protocol\Message\ProtocolGamePartyManager.h">
+      <Filter>Message</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)Protocol\Message\ProtocolGameServer.h">
+      <Filter>Message</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)Protocol\Message\ProtocolLoginServer.h">
+      <Filter>Message</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)Protocol\Message\ProtocolMonitoring.h">
+      <Filter>Message</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)Protocol\Message\ProtocolPartyMatching.h">
+      <Filter>Message</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)Protocol\Message\ProtocolPartyMatchingQueue.h">
+      <Filter>Message</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)Protocol\Message\ProtocolRankingServer.h">
+      <Filter>Message</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)Protocol\Message\ProtocolServer.h">
+      <Filter>Message</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)Protocol\Message\RankingServerMsgClass.h">
+      <Filter>Message</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)Protocol\Message\RankingServerMsgDebug.h">
+      <Filter>Message</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)Protocol\Message\RankingServerMsgParsing.h">
+      <Filter>Message</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)Protocol\Message\ServerMsgClass.h">
+      <Filter>Message</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)Protocol\Message\ServerMsgDebug.h">
+      <Filter>Message</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)Protocol\Message\ServerMsgParsing.h">
+      <Filter>Message</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)Protocol\Message\ClusterServerMsgClass.h">
+      <Filter>Message</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)Protocol\Message\ClusterServerMsgDebug.h">
+      <Filter>Message</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)Protocol\Message\ClusterServerMsgParsing.h">
+      <Filter>Message</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)Protocol\Message\GameInstanceManagerMsgClass.h">
+      <Filter>Message</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)Protocol\Message\GameInstanceManagerMsgDebug.h">
+      <Filter>Message</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)Protocol\Message\GameInstanceManagerMsgParsing.h">
+      <Filter>Message</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)Protocol\Message\GameInstanceMsgClass.h">
+      <Filter>Message</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)Protocol\Message\GameInstanceMsgDebug.h">
+      <Filter>Message</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)Protocol\Message\GameInstanceMsgParsing.h">
+      <Filter>Message</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)Protocol\SvrProtocol.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)Protocol\Policy\GamePartyManagerNetPolicy.h">
+      <Filter>Policy</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)Protocol\Policy\GamePartyNetPolicy.h">
+      <Filter>Policy</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)Protocol\Policy\GameServerNetPolicy.h">
+      <Filter>Policy</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)Protocol\Policy\LoginServerNetPolicy.h">
+      <Filter>Policy</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)Protocol\Policy\MonitoringNetPolicy.h">
+      <Filter>Policy</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)Protocol\Policy\PartyMatchingNetPolicy.h">
+      <Filter>Policy</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)Protocol\Policy\PartyMatchingQueueNetPolicy.h">
+      <Filter>Policy</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)Protocol\Policy\RankingServerNetPolicy.h">
+      <Filter>Policy</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)Protocol\Policy\ServerNetPolicy.h">
+      <Filter>Policy</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)Protocol\Policy\ClusterServerNetPolicy.h">
+      <Filter>Policy</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)Protocol\Policy\GameInstanceManagerNetPolicy.h">
+      <Filter>Policy</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)Protocol\Policy\GameInstanceNetPolicy.h">
+      <Filter>Policy</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)Protocol\ServerService\ClusterServerService.h">
+      <Filter>ServerService</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)Protocol\ServerService\GameInstanceManagerService.h">
+      <Filter>ServerService</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)Protocol\ServerService\GameInstanceService.h">
+      <Filter>ServerService</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)Protocol\ServerService\GamePartyManagerService.h">
+      <Filter>ServerService</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)Protocol\ServerService\GamePartyService.h">
+      <Filter>ServerService</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)Protocol\ServerService\GameServerService.h">
+      <Filter>ServerService</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)GenericMsgClass.h">
+      <Filter>ServerService</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)Protocol\ServerService\LoginServerService.h">
+      <Filter>ServerService</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)Protocol\ServerService\MonitoringService.h">
+      <Filter>ServerService</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)Protocol\ServerService\PartyMatchingQueueService.h">
+      <Filter>ServerService</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)Protocol\ServerService\PartyMatchingService.h">
+      <Filter>ServerService</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)Protocol\ServerService\RankingServerService.h">
+      <Filter>ServerService</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)Protocol\ServerService\ServerService.h">
+      <Filter>ServerService</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)ProtocolTrace.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)Protocol\Message\ChatChannelManagerMsgClass.h">
+      <Filter>Message</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)Protocol\Message\ChatChannelManagerMsgDebug.h">
+      <Filter>Message</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)Protocol\Message\ChatChannelManagerMsgParsing.h">
+      <Filter>Message</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)Protocol\Message\ChatChannelMsgClass.h">
+      <Filter>Message</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)Protocol\Message\ChatChannelMsgDebug.h">
+      <Filter>Message</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)Protocol\Message\ChatChannelMsgParsing.h">
+      <Filter>Message</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)Protocol\Policy\ChatChannelManagerNetPolicy.h">
+      <Filter>Policy</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)Protocol\Policy\ChatChannelNetPolicy.h">
+      <Filter>Policy</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)Protocol\ServerService\ChatChannelManagerService.h">
+      <Filter>ServerService</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)Protocol\ServerService\ChatChannelService.h">
+      <Filter>ServerService</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="$(MSBuildThisFileDirectory)Protocol\Message\GamePartyManagerMsgClass.cpp">
+      <Filter>Message</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)Protocol\Message\GamePartyManagerMsgDebug.cpp">
+      <Filter>Message</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)Protocol\Message\GamePartyManagerMsgParsing.cpp">
+      <Filter>Message</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)Protocol\Message\GamePartyMsgClass.cpp">
+      <Filter>Message</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)Protocol\Message\GamePartyMsgDebug.cpp">
+      <Filter>Message</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)Protocol\Message\GamePartyMsgParsing.cpp">
+      <Filter>Message</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)Protocol\Message\GameServerMsgClass.cpp">
+      <Filter>Message</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)Protocol\Message\GameServerMsgDebug.cpp">
+      <Filter>Message</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)Protocol\Message\GameServerMsgParsing.cpp">
+      <Filter>Message</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)Protocol\Message\LoginServerMsgClass.cpp">
+      <Filter>Message</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)Protocol\Message\LoginServerMsgDebug.cpp">
+      <Filter>Message</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)Protocol\Message\LoginServerMsgParsing.cpp">
+      <Filter>Message</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)Protocol\Message\MonitoringMsgClass.cpp">
+      <Filter>Message</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)Protocol\Message\MonitoringMsgDebug.cpp">
+      <Filter>Message</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)Protocol\Message\MonitoringMsgParsing.cpp">
+      <Filter>Message</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)Protocol\Message\PartyMatchingMsgClass.cpp">
+      <Filter>Message</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)Protocol\Message\PartyMatchingMsgDebug.cpp">
+      <Filter>Message</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)Protocol\Message\PartyMatchingMsgParsing.cpp">
+      <Filter>Message</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)Protocol\Message\PartyMatchingQueueMsgClass.cpp">
+      <Filter>Message</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)Protocol\Message\PartyMatchingQueueMsgDebug.cpp">
+      <Filter>Message</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)Protocol\Message\PartyMatchingQueueMsgParsing.cpp">
+      <Filter>Message</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)Protocol\Message\RankingServerMsgClass.cpp">
+      <Filter>Message</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)Protocol\Message\RankingServerMsgDebug.cpp">
+      <Filter>Message</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)Protocol\Message\RankingServerMsgParsing.cpp">
+      <Filter>Message</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)Protocol\Message\ServerMsgClass.cpp">
+      <Filter>Message</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)Protocol\Message\ServerMsgDebug.cpp">
+      <Filter>Message</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)Protocol\Message\ServerMsgParsing.cpp">
+      <Filter>Message</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)Protocol\Message\ClusterServerMsgClass.cpp">
+      <Filter>Message</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)Protocol\Message\ClusterServerMsgDebug.cpp">
+      <Filter>Message</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)Protocol\Message\ClusterServerMsgParsing.cpp">
+      <Filter>Message</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)Protocol\Message\GameInstanceManagerMsgClass.cpp">
+      <Filter>Message</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)Protocol\Message\GameInstanceManagerMsgDebug.cpp">
+      <Filter>Message</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)Protocol\Message\GameInstanceManagerMsgParsing.cpp">
+      <Filter>Message</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)Protocol\Message\GameInstanceMsgClass.cpp">
+      <Filter>Message</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)Protocol\Message\GameInstanceMsgDebug.cpp">
+      <Filter>Message</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)Protocol\Message\GameInstanceMsgParsing.cpp">
+      <Filter>Message</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)Protocol\Policy\GamePartyManagerNetPolicy.cpp">
+      <Filter>Policy</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)Protocol\Policy\GamePartyNetPolicy.cpp">
+      <Filter>Policy</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)Protocol\Policy\GameServerNetPolicy.cpp">
+      <Filter>Policy</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)Protocol\Policy\LoginServerNetPolicy.cpp">
+      <Filter>Policy</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)Protocol\Policy\MonitoringNetPolicy.cpp">
+      <Filter>Policy</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)Protocol\Policy\PartyMatchingNetPolicy.cpp">
+      <Filter>Policy</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)Protocol\Policy\PartyMatchingQueueNetPolicy.cpp">
+      <Filter>Policy</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)Protocol\Policy\RankingServerNetPolicy.cpp">
+      <Filter>Policy</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)Protocol\Policy\ServerNetPolicy.cpp">
+      <Filter>Policy</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)Protocol\Policy\ClusterServerNetPolicy.cpp">
+      <Filter>Policy</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)Protocol\Policy\GameInstanceManagerNetPolicy.cpp">
+      <Filter>Policy</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)Protocol\Policy\GameInstanceNetPolicy.cpp">
+      <Filter>Policy</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)Protocol\ServerService\ClusterServerService.cpp">
+      <Filter>ServerService</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)Protocol\ServerService\GameInstanceManagerService.cpp">
+      <Filter>ServerService</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)Protocol\ServerService\GameInstanceService.cpp">
+      <Filter>ServerService</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)Protocol\ServerService\GamePartyManagerService.cpp">
+      <Filter>ServerService</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)Protocol\ServerService\GamePartyService.cpp">
+      <Filter>ServerService</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)Protocol\ServerService\GameServerService.cpp">
+      <Filter>ServerService</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)GenericMsgClass.cpp">
+      <Filter>ServerService</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)Protocol\ServerService\LoginServerService.cpp">
+      <Filter>ServerService</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)Protocol\ServerService\MonitoringService.cpp">
+      <Filter>ServerService</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)Protocol\ServerService\PartyMatchingQueueService.cpp">
+      <Filter>ServerService</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)Protocol\ServerService\PartyMatchingService.cpp">
+      <Filter>ServerService</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)Protocol\ServerService\RankingServerService.cpp">
+      <Filter>ServerService</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)Protocol\ServerService\ServerService.cpp">
+      <Filter>ServerService</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)Protocol\Message\ChatChannelManagerMsgDebug.cpp">
+      <Filter>Message</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)Protocol\Message\ChatChannelManagerMsgParsing.cpp">
+      <Filter>Message</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)Protocol\Message\ChatChannelMsgClass.cpp">
+      <Filter>Message</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)Protocol\Message\ChatChannelMsgDebug.cpp">
+      <Filter>Message</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)Protocol\Message\ChatChannelMsgParsing.cpp">
+      <Filter>Message</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)Protocol\Message\ChatChannelManagerMsgClass.cpp">
+      <Filter>Message</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)Protocol\Policy\ChatChannelManagerNetPolicy.cpp">
+      <Filter>Policy</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)Protocol\Policy\ChatChannelNetPolicy.cpp">
+      <Filter>Policy</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)Protocol\ServerService\ChatChannelService.cpp">
+      <Filter>ServerService</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)Protocol\ServerService\ChatChannelManagerService.cpp">
+      <Filter>ServerService</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Xml Include="$(MSBuildThisFileDirectory)..\..\..\Data\Protocol\ProtocolClusterServer.xml" />
+    <Xml Include="$(MSBuildThisFileDirectory)..\..\..\Data\Protocol\ProtocolGameInstance.xml" />
+    <Xml Include="$(MSBuildThisFileDirectory)..\..\..\Data\Protocol\ProtocolGameInstanceManager.xml" />
+    <Xml Include="$(MSBuildThisFileDirectory)..\..\..\Data\Protocol\ProtocolGameMasterServer.xml" />
+    <Xml Include="$(MSBuildThisFileDirectory)..\..\..\Data\Protocol\ProtocolGameParty.xml" />
+    <Xml Include="$(MSBuildThisFileDirectory)..\..\..\Data\Protocol\ProtocolGamePartyManager.xml" />
+    <Xml Include="$(MSBuildThisFileDirectory)..\..\..\Data\Protocol\ProtocolGameServer.xml" />
+    <Xml Include="$(MSBuildThisFileDirectory)..\..\..\Data\Protocol\ProtocolLoginServer.xml" />
+    <Xml Include="$(MSBuildThisFileDirectory)..\..\..\Data\Protocol\ProtocolMonitoring.xml" />
+    <Xml Include="$(MSBuildThisFileDirectory)..\..\..\Data\Protocol\ProtocolPartyMatching.xml" />
+    <Xml Include="$(MSBuildThisFileDirectory)..\..\..\Data\Protocol\ProtocolPartyMatchingQueue.xml" />
+    <Xml Include="$(MSBuildThisFileDirectory)..\..\..\Data\Protocol\ProtocolRankingServer.xml" />
+    <Xml Include="$(MSBuildThisFileDirectory)..\..\..\Data\Protocol\ProtocolServer.xml" />
+  </ItemGroup>
+</Project>

@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" attributeFormDefault="unqualified">
+
+	<xs:element name="BotTalkTbl">
+		<xs:complexType>
+			<xs:sequence>
+        <xs:element name="BotTalkTblItem" minOccurs="1" maxOccurs="unbounded">
+          <xs:complexType>
+            <xs:attribute name="ItemID" type="xs:int" use="required"/>
+            <xs:attribute name="BotName_Begin" type="xs:int" use="required"/>
+            <xs:attribute name="BotName_End" type="xs:int" use="required"/>
+            <xs:attribute name="FirstDay_Begin" type="xs:int" use="required"/>
+            <xs:attribute name="FirstDay_End" type="xs:int" use="required"/>
+            <xs:attribute name="FirstDay_PlayDelay" type="xs:float" use="required"/>
+            <xs:attribute name="FirstDay_BotDelay1" type="xs:float" use="required"/>
+            <xs:attribute name="FirstDay_BotDelay2" type="xs:float" use="required"/>
+            <xs:attribute name="FreeTalk_Begin" type="xs:int" use="required"/>
+            <xs:attribute name="FreeTalk_End" type="xs:int" use="required"/>
+            <xs:attribute name="FreeTalk_PlayDelay" type="xs:float" use="required"/>
+            <xs:attribute name="FreeTalk_BotDelay1" type="xs:float" use="required"/>
+            <xs:attribute name="FreeTalk_BotDelay2" type="xs:float" use="required"/>
+            <xs:attribute name="Defense_Begin" type="xs:int" use="required"/>
+            <xs:attribute name="Defense_End" type="xs:int" use="required"/>
+            <xs:attribute name="Defense_PlayDelay" type="xs:float" use="required"/>
+            <xs:attribute name="Defense_BotDelay1" type="xs:float" use="required"/>
+            <xs:attribute name="Defense_BotDelay2" type="xs:float" use="required"/>
+            <xs:attribute name="GameResultWinner_Begin" type="xs:int" use="required"/>
+            <xs:attribute name="GameResultWinner_End" type="xs:int" use="required"/>
+            <xs:attribute name="GameResultLoser_Begin" type="xs:int" use="required"/>
+            <xs:attribute name="GameResultLoser_End" type="xs:int" use="required"/>
+          </xs:complexType>
+        </xs:element>
+      </xs:sequence>
+		</xs:complexType>
+	</xs:element>
+
+</xs:schema>

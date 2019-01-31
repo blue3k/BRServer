@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<job version="11.1">
+<exportjob>
+<passwords isencoded="yes" />
+<source>
+<host>localhost</host>
+<user>root</user>
+<pwd>Mrwyu7WYGZE=</pwd>
+<port>11000</port>
+<compressed>1</compressed>
+<ssl>0</ssl>
+<sslauth>0</sslauth>
+<clientkey></clientkey>
+<clientcert></clientcert>
+<cacert></cacert>
+<cipher></cipher>
+<charset></charset>
+</source>
+<export>
+<databases all="no">
+<database name = "dbsession00">
+<objects all="yes">
+</objects>
+</database>
+</databases>
+<script compress="yes" fileordir="file" timestampdir="" timestamp="yes">C:\kwork\bravethefirst.Server\trunk\BrServer\Server\DBBackup\dbsession00.zip</script>
+</export>
+<options>
+<createdb>yes</createdb>
+<usedb>yes</usedb>
+<dropobjects>yes</dropobjects>
+<ignoredefiner>yes</ignoredefiner>
+<bulkinsert>yes</bulkinsert>
+<completeinsert>no</completeinsert>
+<insertdelayed>no</insertdelayed>
+<flushlogs>yes</flushlogs>
+<flushmaster>no</flushmaster>
+<flushslave>no</flushslave>
+<locktableread>no</locktableread>
+<singletransaction>no</singletransaction>
+<disablekeys>no</disablekeys>
+<locktablewrite>no</locktablewrite>
+<fkchecks>yes</fkchecks>
+<autocommit>no</autocommit>
+<usecharset>utf8</usecharset>
+<bulksize>0</bulksize>
+<appendtofile>no</appendtofile>
+</options>
+<abortonerror>no</abortonerror>
+<sendreport send="no" /></exportjob>
+</job>

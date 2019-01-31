@@ -1,0 +1,27 @@
+HKCR
+{
+	WiconWMIPerf.WiconPerf.1 = s 'WiconPerf Class'
+	{
+		CLSID = s '{4B663D71-0B5C-4E17-B677-2ED35D2430C2}'
+	}
+	WiconWMIPerf.WiconPerf = s 'WiconPerf Class'
+	{
+		CLSID = s '{4B663D71-0B5C-4E17-B677-2ED35D2430C2}'
+		CurVer = s 'WiconWMIPerf.WiconPerf.1'
+	}
+	NoRemove CLSID
+	{
+		ForceRemove {4B663D71-0B5C-4E17-B677-2ED35D2430C2} = s 'WiconPerf Class'
+		{
+			ProgID = s 'WiconWMIPerf.WiconPerf.1'
+			VersionIndependentProgID = s 'WiconWMIPerf.WiconPerf'
+
+			InprocServer32 = s '%MODULE%'
+			{
+				val ThreadingModel = s 'Both'
+			}
+			val AppID = s '{%APPID%}'
+			'TypeLib' = s '{ABA3771B-9625-4D94-9E96-595B5A5D58C0}'
+		}
+	}
+}

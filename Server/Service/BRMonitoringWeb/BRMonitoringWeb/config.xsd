@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" attributeFormDefault="unqualified">
+
+  <xs:complexType name ="Monitoring">
+    <xs:sequence>
+    </xs:sequence>
+    <xs:attribute name="MonitoringListenPort" type="xs:int"></xs:attribute>
+  </xs:complexType>
+
+  <xs:complexType name ="DBCluster">
+    <xs:sequence>
+    </xs:sequence>
+    <xs:attribute name="ClusterName" type="xs:string"></xs:attribute>
+    <xs:attribute name="ConnectionString" type="xs:string"></xs:attribute>
+  </xs:complexType>
+
+  <xs:element name="MonitoringConfig">
+		<xs:annotation>
+			<xs:documentation>Comment describing your root element</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="AccountDB" type="DBCluster" maxOccurs="1" />
+        <xs:element name="GameDB" type="DBCluster" maxOccurs="unbounded" />
+        <xs:element name="RankingDB" type="DBCluster" maxOccurs="unbounded" />
+        <xs:element name="TableDB" type="DBCluster" maxOccurs="1" />
+        
+        <xs:element name="Monitoring" type="Monitoring" maxOccurs="1" />
+      </xs:sequence>
+		</xs:complexType>
+	</xs:element>
+</xs:schema>

@@ -1,0 +1,17 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ImportGroup Label="PropertySheets" />
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup />
+  <ItemDefinitionGroup>
+    <ClCompile>
+      <AdditionalIncludeDirectories>..\..\Server\Lib;..\..\External\gtest\include;..\..\External\gmock\include;..\..\External\libxml\include;..\..\External\MYSQLConnectorC-6.1.6\include;..\..\External\curl7.41\include;..\..\External\jsoncpp\include;..\..\External\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>HAVE_CONFIG_H;HAVE_WIN32_THREADS;_UNICODE;UNICODE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ClCompile>
+    <Link>
+      <AdditionalDependencies>kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;gtest.lib;Common.lib;External.lib;libxml.lib;Table.lib;DB.lib;ServerSystem.lib;Net.lib;Protocol.lib;Ws2_32.lib;libeay32.lib;libcurl.lib;ssleay32.lib;lib_json.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(SolutionDir)Server/bin/lib;$(SolutionDir)Server/bin/lib/$(Platform)$(Configuration);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemGroup />
+</Project>

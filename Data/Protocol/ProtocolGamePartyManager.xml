@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Protocols xmlns="http://www.StormForge.com/XMLProtocol" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.StormForge.com/XMLProtocol ../../StormForge/Engine/Data/Protocol/ProtocolDef.xsd">
+	<ProtocolGroup Name="GamePartyManager" GenParameterRouteContext="true" GenParameterRouteHopCount="true" IsMobile="false" IsServer="true" Desc="Game Party manager service Protocol">
+
+	<!-- ============================  Server Generic  ============================================ -->
+
+	<Command Name="CreateParty" Reliable="true" Crypto="No" Trace="Debug1" Desc="Create a party instance">
+		<Cmd>
+      <Params Type="uint32" Name="GameID" Desc="Game ID"/>
+      <Params Type="PlayerInformation" Name="Creator" Desc="Player Information who is requesting."/>
+    </Cmd>
+		<Res>
+		</Res>
+	</Command>
+
+    <C2SEvent Name="PartyDeleted" Reliable="true" Crypto="No" Trace="Debug1" Desc="Party instance notify of deletion. Sent by party instance">
+    </C2SEvent>
+
+    <!-- =============================  ======================================= -->
+
+	</ProtocolGroup>
+</Protocols>

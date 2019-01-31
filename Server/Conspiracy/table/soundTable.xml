@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XMLSpy v2008 rel. 2 (http://www.altova.com) by mazuki (darksiderg) -->
+<SoundTbl xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="soundTable.xsd">
+	<SoundItem Filename="sound_effect" BGM="false" Loop="true" Event="sound_effect"/>
+	<SoundItem Filename="song_test" BGM="true" Loop="false" Event="song_test"/>
+</SoundTbl>

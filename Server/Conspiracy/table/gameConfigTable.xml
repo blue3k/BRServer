@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<!-- edited with XMLSpy v2008 rel. 2 (http://www.altova.com) by mazuki (darksiderg) -->
+<GameConfigTbl xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="gameConfigTable.xsd">
+	<GameConfigItem PresetID="1" DefaultMail="30" DefaultGem="0" MaxGem="1000" DefaultMoney="0" MaxMoney="10000000" DefaultFriend="25" MaxFriend="50" DefaultStamina="25" MaxStamina="100" StaminaRecoveryTime="360" StaminaForGame="1" FreeDiscussion="129" RolePlayTime="22"  RolePlayAndKillingTime="40" FirstVote="26" DefenceTime="66" SecondVote="31" MorningDiscussion="99" ResultNoticeTime="15" PlayerDisplayOffline="20" MaxCharacterSet="8" ForceProgressCount="5" PlayerAutoLogout="60"/>
+	<GameConfigItem PresetID="2" DefaultMail="30" DefaultGem="0" MaxGem="1000" DefaultMoney="0" MaxMoney="10000000" DefaultFriend="10" MaxFriend="100" DefaultStamina="5" MaxStamina="20" StaminaRecoveryTime="1800" StaminaForGame="1" FreeDiscussion="90" RolePlayTime="20" RolePlayAndKillingTime="40" FirstVote="10" DefenceTime="30" SecondVote="10" MorningDiscussion="60" ResultNoticeTime="15" PlayerDisplayOffline="300" MaxCharacterSet="8" ForceProgressCount="5" PlayerAutoLogout="60"/>
+</GameConfigTbl>

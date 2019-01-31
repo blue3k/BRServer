@@ -1,0 +1,115 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="14.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|ARM">
+      <Configuration>Debug</Configuration>
+      <Platform>ARM</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug|x86">
+      <Configuration>Debug</Configuration>
+      <Platform>x86</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|ARM">
+      <Configuration>Release</Configuration>
+      <Platform>ARM</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x86">
+      <Configuration>Release</Configuration>
+      <Platform>x86</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Entity\LoginPlayerEntity.h" />
+    <ClInclude Include="Entity\LoginPlayerEntityTrans.h" />
+    <ClInclude Include="LoginServer.h" />
+    <ClInclude Include="LoginServerClass.h" />
+    <ClInclude Include="LoginSvrConst.h" />
+    <ClInclude Include="ServerEntity\GameServerEntity.h" />
+    <ClInclude Include="ServerEntity\LoginServerEntity.h" />
+    <ClInclude Include="ServerEntity\ServerEntityTrans.h" />
+    <ClInclude Include="stdafx.h" />
+    <ClInclude Include="Transaction\LoginServerTrans.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Entity\LoginPlayerEntity.inl" />
+    <None Include="LoginServerClass.inl" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="Entity\LoginPlayerEntity.cpp" />
+    <ClCompile Include="Entity\LoginPlayerEntityTrans.cpp" />
+    <ClCompile Include="LoginServer.cpp" />
+    <ClCompile Include="LoginServerClass.cpp" />
+    <ClCompile Include="ServerEntity\GameServerEntity.cpp" />
+    <ClCompile Include="ServerEntity\LoginServerEntity.cpp" />
+    <ClCompile Include="ServerEntity\ServerEntityTrans.cpp" />
+    <ClCompile Include="stdafx.cpp" />
+    <ClCompile Include="Transaction\LoginServerTrans.cpp" />
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{88e4c558-54b5-431c-9e84-36602d046a04}</ProjectGuid>
+    <Keyword>Android</Keyword>
+    <MinimumVisualStudioVersion>14.0</MinimumVisualStudioVersion>
+    <ApplicationType>Android</ApplicationType>
+    <ApplicationTypeRevision>1.0</ApplicationTypeRevision>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x86'" Label="Configuration">
+    <ConfigurationType>Makefile</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>Clang_3_6</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|ARM'" Label="Configuration">
+    <ConfigurationType>Makefile</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>Clang_3_6</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x86'" Label="Configuration">
+    <ConfigurationType>Makefile</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>Clang_3_6</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|ARM'" Label="Configuration">
+    <ConfigurationType>Makefile</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>Clang_3_6</PlatformToolset>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings" />
+  <ImportGroup Label="Shared" />
+  <ImportGroup Label="PropertySheets" />
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x86'">
+    <NMakePreprocessorDefinitions>__GNUC__;__x86_64__</NMakePreprocessorDefinitions>
+    <NMakeIncludeSearchPath>../../Lib;$(NMakeIncludeSearchPath);$(VS_NDKRoot)\platforms\$(AndroidAPILevel)\arch-$(Platform)\usr\include;$(VS_NDKRoot)\sources\android\ndk_helper;$(VS_NDKRoot)\sources\android\cpufeatures;$(VS_NDKRoot)\sources\android\native_app_glue;$(StlIncludeDirectories)</NMakeIncludeSearchPath>
+    <NMakeBuildCommandLine>../../../LinuxBuild/build.cmd Server/Service LoginServer DEBUG build</NMakeBuildCommandLine>
+    <NMakeReBuildCommandLine>../../../LinuxBuild/rebuild.cmd Server/Service LoginServer DEBUG rebuild</NMakeReBuildCommandLine>
+    <NMakeCleanCommandLine>../../../LinuxBuild/build.cmd Server/Service LoginServer DEBUG clean</NMakeCleanCommandLine>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|ARM'">
+    <NMakePreprocessorDefinitions>__GNUC__;__x86_64__</NMakePreprocessorDefinitions>
+    <NMakeIncludeSearchPath>../../Lib;$(NMakeIncludeSearchPath);$(VS_NDKRoot)\platforms\$(AndroidAPILevel)\arch-$(Platform)\usr\include;$(VS_NDKRoot)\sources\android\ndk_helper;$(VS_NDKRoot)\sources\android\cpufeatures;$(VS_NDKRoot)\sources\android\native_app_glue;$(StlIncludeDirectories)</NMakeIncludeSearchPath>
+    <NMakeBuildCommandLine>../../../LinuxBuild/build.cmd Server/Service LoginServer DEBUG build</NMakeBuildCommandLine>
+    <NMakeReBuildCommandLine>../../../LinuxBuild/rebuild.cmd Server/Service LoginServer DEBUG rebuild</NMakeReBuildCommandLine>
+    <NMakeCleanCommandLine>../../../LinuxBuild/build.cmd Server/Service LoginServer DEBUG clean</NMakeCleanCommandLine>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|ARM'">
+    <NMakePreprocessorDefinitions>__GNUC__;__x86_64__</NMakePreprocessorDefinitions>
+    <NMakeIncludeSearchPath>../../Lib;$(NMakeIncludeSearchPath);$(VS_NDKRoot)\platforms\$(AndroidAPILevel)\arch-$(Platform)\usr\include;$(VS_NDKRoot)\sources\android\ndk_helper;$(VS_NDKRoot)\sources\android\cpufeatures;$(VS_NDKRoot)\sources\android\native_app_glue;$(StlIncludeDirectories)</NMakeIncludeSearchPath>
+    <NMakeBuildCommandLine>../../../LinuxBuild/build.cmd Server/Service LoginServer DEBUG build</NMakeBuildCommandLine>
+    <NMakeReBuildCommandLine>../../../LinuxBuild/rebuild.cmd Server/Service LoginServer DEBUG rebuild</NMakeReBuildCommandLine>
+    <NMakeCleanCommandLine>../../../LinuxBuild/build.cmd Server/Service LoginServer DEBUG clean</NMakeCleanCommandLine>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x86'">
+    <NMakePreprocessorDefinitions>__GNUC__;__x86_64__</NMakePreprocessorDefinitions>
+    <NMakeIncludeSearchPath>../../Lib;$(NMakeIncludeSearchPath);$(VS_NDKRoot)\platforms\$(AndroidAPILevel)\arch-$(Platform)\usr\include;$(VS_NDKRoot)\sources\android\ndk_helper;$(VS_NDKRoot)\sources\android\cpufeatures;$(VS_NDKRoot)\sources\android\native_app_glue;$(StlIncludeDirectories)</NMakeIncludeSearchPath>
+    <NMakeBuildCommandLine>../../../LinuxBuild/build.cmd Server/Service LoginServer DEBUG build</NMakeBuildCommandLine>
+    <NMakeReBuildCommandLine>../../../LinuxBuild/rebuild.cmd Server/Service LoginServer DEBUG rebuild</NMakeReBuildCommandLine>
+    <NMakeCleanCommandLine>../../../LinuxBuild/build.cmd Server/Service LoginServer DEBUG clean</NMakeCleanCommandLine>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x86'">
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|ARM'">
+  </ItemDefinitionGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets" />
+</Project>

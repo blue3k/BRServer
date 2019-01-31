@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Protocols xmlns="http://www.StormForge.com/XMLProtocol" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.StormForge.com/XMLProtocol ../../StormForge/Engine/Data/Protocol/ProtocolDef.xsd">
+	<ProtocolGroup Name="ChatChannel" GenParameterRouteContext="true" IsMobile="false" IsServer="true" Desc="Chatting channel service">
+
+
+    <!-- ============================  chat channel management  ============================================ -->
+
+    <Command Name="Join" Reliable="true" Crypto="No" Trace="Debug1" Desc="Request to join chat channel">
+		  <Cmd>
+        <Params Type="String" Name="Passcode" Desc="Channel pass code"/>
+        <Params Type="PlayerInformation" Name="JoiningPlayer" Desc="Player information structure to join"/>
+      </Cmd>
+	  <Res>
+        <Params Type="PlayerID" Name="ChatChannelLeaderID" Desc="Chat channel leader ID"/>
+		</Res>
+	  </Command>
+
+    <S2CEvent Name="PlayerJoined" Reliable="true" Crypto="No" Trace="Debug1" Desc="Server envent to notify joined player information">
+      <Params Type="PlayerInformation" Name="JoinedPlayer" Desc="Joined player information"/>
+    </S2CEvent>
+
+    <S2CEvent Name="LeaderChanged" Reliable="true" Crypto="No" Trace="Debug1" Desc="Chat channel leader changed">
+      <Params Type="PlayerID" Name="NewLeaderID" Desc="New leader player id"/>
+    </S2CEvent>
+
+
+    <Command Name="Leave" Reliable="true" Crypto="No" Trace="Debug1" Desc="Leave chat channel">
+      <Cmd>
+        <Params Type="PlayerID" Name="PlayerID" Desc="PlayerID to leave"/>
+      </Cmd>
+      <Res>
+      </Res>
+    </Command>
+
+   <S2CEvent Name="PlayerLeft" Reliable="true" Crypto="No" Trace="Debug1" Desc="Notification event when a player left">
+		<Params Type="PlayerID" Name="LeftPlayerID" Desc="Player ID who left"/>
+	</S2CEvent>
+
+	<Command Name="KickPlayer" Reliable="true" Crypto="No" Trace="Debug1" Desc="Kick a player">
+		<Cmd>
+			<Params Type="PlayerID" Name="PlayerID" Desc="Player ID who does kick"/>
+			<Params Type="PlayerID" Name="PlayerToKick" Desc="Kicked player ID"/>
+		</Cmd>
+		<Res>
+		</Res>
+	</Command>
+
+	<S2CEvent Name="PlayerKicked" Reliable="true" Crypto="No" Trace="Debug1" Desc="Notification event when a player kicked">
+		<Params Type="PlayerID" Name="KickedPlayerID" Desc="Kicked playerID"/>
+	</S2CEvent>
+
+	<C2SEvent Name="ChatMessage" Reliable="true" Crypto="No" Trace="Debug1" Desc="Sending a chatting message">
+		<Params Type="PlayerID" Name="SenderID" Desc="Sender ID"/>
+		<Params Type="String" Name="ChatMessage" Desc="Chatting message"/>
+	</C2SEvent>
+
+    <S2CEvent Name="ChatMessage" Reliable="true" Crypto="No" Trace="Debug1" Desc="brocasting event for a chatting message">
+      <Params Type="PlayerID" Name="SenderID" Desc="Sender ID"/>
+      <Params Type="String" Name="SenderName" Desc="Sender name, came from sender"/>
+      <Params Type="String" Name="ChatMessage" Desc="Chatting message"/>
+    </S2CEvent>
+
+
+    <!-- =============================  ======================================= -->
+
+	</ProtocolGroup>
+</Protocols>

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Protocols xmlns="http://www.StormForge.com/XMLProtocol" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.StormForge.com/XMLProtocol ../../StormForge/Engine/Data/Protocol/ProtocolDef.xsd">
+  <ProtocolGroup Name="Server" GenParameterRouteContext="true" GenParameterRouteHopCount="false" IsMobile="false" IsServer="true" Desc="Server Generic Protocol">
+    <!-- ============================  Server Generic  ============================================ -->
+
+    <Command Name="GenericFailure" Reliable="true" Crypto="No" Trace="Debug1" Desc="Generic failure message">
+      <Cmd>
+      </Cmd>
+      <Res>
+      </Res>
+    </Command>
+
+
+    <C2SEvent Name="ServerConnected" Reliable="true" Crypto="No" Trace="Debug2"  Desc="Server Started or Connected">
+      <Params Type="uint32" Name="StartUpTime"/>
+      <Params Type="NetAddress" Name="PrivateAddress"/>
+    </C2SEvent>
+
+
+
+  </ProtocolGroup>
+</Protocols>

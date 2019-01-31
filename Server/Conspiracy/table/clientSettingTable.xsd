@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XMLSpy v2008 rel. 2 (http://www.altova.com) by mazuki (darksiderg) -->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" attributeFormDefault="unqualified">
+	<xs:element name="clientSettingTable">
+		<xs:annotation>
+			<xs:documentation>Comment describing your root element</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="clientSettingItem" maxOccurs="unbounded">
+					<xs:complexType>
+						<xs:attribute name="ShowVoteTime" use="required">
+							<xs:simpleType>
+								<xs:restriction base="xs:float"/>
+							</xs:simpleType>
+						</xs:attribute>
+						<xs:attribute name="HideVoteTime" use="required">
+							<xs:simpleType>
+								<xs:restriction base="xs:float"/>
+							</xs:simpleType>
+						</xs:attribute>
+						<xs:attribute name="KillAnimationTime" use="required">
+							<xs:simpleType>
+								<xs:restriction base="xs:float"/>
+							</xs:simpleType>
+						</xs:attribute>
+						<xs:attribute name="FreeDebateShowRole" use="required">
+							<xs:simpleType>
+								<xs:restriction base="xs:float"/>
+							</xs:simpleType>
+						</xs:attribute>
+						<xs:attribute name="FreeDebatePhase" use="required">
+							<xs:simpleType>
+								<xs:restriction base="xs:float"/>
+							</xs:simpleType>
+						</xs:attribute>
+						<xs:attribute name="FreeDebateDescription1" use="required">
+							<xs:simpleType>
+								<xs:restriction base="xs:float"/>
+							</xs:simpleType>
+						</xs:attribute>
+						<xs:attribute name="FreeDebateDescription2" use="required">
+							<xs:simpleType>
+								<xs:restriction base="xs:float"/>
+							</xs:simpleType>
+						</xs:attribute>
+						<xs:attribute name="NightVotePhase" use="required">
+							<xs:simpleType>
+								<xs:restriction base="xs:float"/>
+							</xs:simpleType>
+						</xs:attribute>
+						<xs:attribute name="NightVoteDescription" use="required">
+							<xs:simpleType>
+								<xs:restriction base="xs:float"/>
+							</xs:simpleType>
+						</xs:attribute>
+						<xs:attribute name="VoteForSuspectsPhase" use="required">
+							<xs:simpleType>
+								<xs:restriction base="xs:float"/>
+							</xs:simpleType>
+						</xs:attribute>
+						<xs:attribute name="VoteForSuspectsDescription" use="required">
+							<xs:simpleType>
+								<xs:restriction base="xs:float"/>
+							</xs:simpleType>
+						</xs:attribute>
+						<xs:attribute name="VoteForSuspectsResult" use="required">
+							<xs:simpleType>
+								<xs:restriction base="xs:float"/>
+							</xs:simpleType>
+						</xs:attribute>
+						<xs:attribute name="VoteForHangingPhase1" use="required">
+							<xs:simpleType>
+								<xs:restriction base="xs:float"/>
+							</xs:simpleType>
+						</xs:attribute>
+						<xs:attribute name="VoteForHangingDescription1" use="required">
+							<xs:simpleType>
+								<xs:restriction base="xs:float"/>
+							</xs:simpleType>
+						</xs:attribute>
+						<xs:attribute name="VoteForHangingPhase2" use="required">
+							<xs:simpleType>
+								<xs:restriction base="xs:float"/>
+							</xs:simpleType>
+						</xs:attribute>
+						<xs:attribute name="VoteForHangingDescription2" use="required">
+							<xs:simpleType>
+								<xs:restriction base="xs:float"/>
+							</xs:simpleType>
+						</xs:attribute>
+						<xs:attribute name="VoteForHangingDescription3" use="required">
+							<xs:simpleType>
+								<xs:restriction base="xs:float"/>
+							</xs:simpleType>
+						</xs:attribute>
+						<xs:attribute name="DefenceOfSuspectsPhase" use="required">
+							<xs:simpleType>
+								<xs:restriction base="xs:float"/>
+							</xs:simpleType>
+						</xs:attribute>
+						<xs:attribute name="DefenceOfSuspectsDescription" use="required">
+							<xs:simpleType>
+								<xs:restriction base="xs:float"/>
+							</xs:simpleType>
+						</xs:attribute>
+						<xs:attribute name="EndPhase" use="required">
+							<xs:simpleType>
+								<xs:restriction base="xs:float"/>
+							</xs:simpleType>
+						</xs:attribute>
+						<xs:attribute name="EndDescription1" use="required">
+							<xs:simpleType>
+								<xs:restriction base="xs:float"/>
+							</xs:simpleType>
+						</xs:attribute>
+						<xs:attribute name="EndDescription2" use="required">
+							<xs:simpleType>
+								<xs:restriction base="xs:float"/>
+							</xs:simpleType>
+						</xs:attribute>
+						<xs:attribute name="EndDescription3" use="required">
+							<xs:simpleType>
+								<xs:restriction base="xs:float"/>
+							</xs:simpleType>
+						</xs:attribute>
+						<xs:attribute name="EndResult1" use="required">
+							<xs:simpleType>
+								<xs:restriction base="xs:float"/>
+							</xs:simpleType>
+						</xs:attribute>
+						<xs:attribute name="EndResult2" use="required">
+							<xs:simpleType>
+								<xs:restriction base="xs:float"/>
+							</xs:simpleType>
+						</xs:attribute>
+						<xs:attribute name="EndResult3" use="required">
+							<xs:simpleType>
+								<xs:restriction base="xs:float"/>
+							</xs:simpleType>
+						</xs:attribute>
+					</xs:complexType>
+				</xs:element>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+</xs:schema>

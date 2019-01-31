@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XMLSpy v2008 rel. 2 (http://www.altova.com) by mazuki (darksiderg) -->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" attributeFormDefault="unqualified">
+	<xs:element name="GameConfigTbl">
+		<xs:annotation>
+			<xs:documentation>Comment describing your root element</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="GameConfigItem" maxOccurs="unbounded">
+					<xs:complexType>
+						<xs:attribute name="PresetID" use="required">
+							<xs:simpleType>
+								<xs:restriction base="xs:int">
+									<xs:minInclusive value="1"/>
+								</xs:restriction>
+							</xs:simpleType>
+						</xs:attribute>
+						<xs:attribute name="DefaultMail" type="xs:int" use="required"/>
+						<xs:attribute name="DefaultGem" type="xs:int" use="required"/>
+						<xs:attribute name="MaxGem" type="xs:int" use="required"/>
+						<xs:attribute name="DefaultMoney" type="xs:int" use="required"/>
+						<xs:attribute name="MaxMoney" type="xs:int" use="required"/>
+						<xs:attribute name="DefaultFriend" type="xs:int" use="required"/>
+						<xs:attribute name="MaxFriend" type="xs:int" use="required"/>
+						<xs:attribute name="DefaultStamina" type="xs:int" use="required"/>
+						<xs:attribute name="MaxStamina" type="xs:int" use="required"/>
+            <xs:attribute name="MaxAutoRefilStamina" type="xs:int" use="required"/>
+            <xs:attribute name="StaminaRecoveryTime" type="xs:int" use="required"/>
+						<xs:attribute name="StaminaForGame" type="xs:int" use="required"/>
+						<xs:attribute name="FreeDiscussion" type="xs:int" use="required"/>
+						<xs:attribute name="RolePlayTime" type="xs:int" use="required"/>
+						<xs:attribute name="RolePlayAndKillingTime" type="xs:int" use="required"/>
+						<xs:attribute name="FirstVote" type="xs:int" use="required"/>
+						<xs:attribute name="DefenceTime" type="xs:int" use="required"/>
+						<xs:attribute name="SecondVote" type="xs:int" use="required"/>
+						<xs:attribute name="MorningDiscussion" type="xs:int" use="required"/>
+						<xs:attribute name="ResultNoticeTime" type="xs:int" use="required"/>
+						<xs:attribute name="PlayerDisplayOffline" type="xs:int" use="required"/>
+						<xs:attribute name="MaxCharacterSet" type="xs:int" use="required"/>
+						<xs:attribute name="ForceProgressCount" type="xs:int" use="required"/>
+						<xs:attribute name="PlayerAutoLogout" type="xs:int" use="required"/>
+					</xs:complexType>
+				</xs:element>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+</xs:schema>

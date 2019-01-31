@@ -1,0 +1,47 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 14
+VisualStudioVersion = 14.0.24720.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TableBuilder", "TableBuilder\TableBuilder.csproj", "{334DDBB8-21B5-41F2-8428-DAF3F4B0691B}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "SaxParserTest", "SaxParserTest\SaxParserTest.vcxproj", "{E9161A9D-D0C5-464E-AB8B-2AEAF9FB4EA0}"
+	ProjectSection(ProjectDependencies) = postProject
+		{334DDBB8-21B5-41F2-8428-DAF3F4B0691B} = {334DDBB8-21B5-41F2-8428-DAF3F4B0691B}
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Debug|Mixed Platforms = Debug|Mixed Platforms
+		Debug|Win32 = Debug|Win32
+		Release|Any CPU = Release|Any CPU
+		Release|Mixed Platforms = Release|Mixed Platforms
+		Release|Win32 = Release|Win32
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{334DDBB8-21B5-41F2-8428-DAF3F4B0691B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{334DDBB8-21B5-41F2-8428-DAF3F4B0691B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{334DDBB8-21B5-41F2-8428-DAF3F4B0691B}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{334DDBB8-21B5-41F2-8428-DAF3F4B0691B}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{334DDBB8-21B5-41F2-8428-DAF3F4B0691B}.Debug|Win32.ActiveCfg = Debug|Any CPU
+		{334DDBB8-21B5-41F2-8428-DAF3F4B0691B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{334DDBB8-21B5-41F2-8428-DAF3F4B0691B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{334DDBB8-21B5-41F2-8428-DAF3F4B0691B}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{334DDBB8-21B5-41F2-8428-DAF3F4B0691B}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{334DDBB8-21B5-41F2-8428-DAF3F4B0691B}.Release|Win32.ActiveCfg = Release|Any CPU
+		{E9161A9D-D0C5-464E-AB8B-2AEAF9FB4EA0}.Debug|Any CPU.ActiveCfg = Debug|Win32
+		{E9161A9D-D0C5-464E-AB8B-2AEAF9FB4EA0}.Debug|Mixed Platforms.ActiveCfg = Debug|x64
+		{E9161A9D-D0C5-464E-AB8B-2AEAF9FB4EA0}.Debug|Mixed Platforms.Build.0 = Debug|x64
+		{E9161A9D-D0C5-464E-AB8B-2AEAF9FB4EA0}.Debug|Win32.ActiveCfg = Debug|Win32
+		{E9161A9D-D0C5-464E-AB8B-2AEAF9FB4EA0}.Debug|Win32.Build.0 = Debug|Win32
+		{E9161A9D-D0C5-464E-AB8B-2AEAF9FB4EA0}.Release|Any CPU.ActiveCfg = Release|Win32
+		{E9161A9D-D0C5-464E-AB8B-2AEAF9FB4EA0}.Release|Mixed Platforms.ActiveCfg = Release|x64
+		{E9161A9D-D0C5-464E-AB8B-2AEAF9FB4EA0}.Release|Mixed Platforms.Build.0 = Release|x64
+		{E9161A9D-D0C5-464E-AB8B-2AEAF9FB4EA0}.Release|Win32.ActiveCfg = Release|Win32
+		{E9161A9D-D0C5-464E-AB8B-2AEAF9FB4EA0}.Release|Win32.Build.0 = Release|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
