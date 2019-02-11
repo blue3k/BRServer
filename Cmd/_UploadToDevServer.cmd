@@ -1,3 +1,4 @@
+rem DO NOT USE, Only for example
 
 set COMMAND_ROOT=%~dp0
 set PATH_BIN=%COMMAND_ROOT%..\Server\bin\%RELEASE_MODE%

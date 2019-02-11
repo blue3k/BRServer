@@ -607,8 +607,8 @@ namespace Svr {
 			return nullptr;
 		}
 
-		ClusterServiceInfo_Impl* pServiceInfoTemp = nullptr;
-		Assert(m_ClusterInfoMap.find(key, pServiceInfoTemp) && pServiceInfoTemp == pServiceInfo);
+		//ClusterServiceInfo_Impl* pServiceInfoTemp = nullptr;
+		//Assert(m_ClusterInfoMap.find(key, pServiceInfoTemp) && pServiceInfoTemp == pServiceInfo);
 
 		return pServiceInfo;
 	}
