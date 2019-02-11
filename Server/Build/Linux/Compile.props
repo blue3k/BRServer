@@ -7,7 +7,7 @@
   </PropertyGroup>
   <PropertyGroup>
     <OutDir>$(RemoteRootDir)/StormForge/bin\$(Platform)\$(Configuration)\</OutDir>
-    <IntDir>$(RemoteRootDir)/StormForge/Intermediate/$(ProjectName)</IntDir>
+    <IntDir>$(RemoteRootDir)/StormForge/Intermediate/$(ProjectName)\</IntDir>
   </PropertyGroup>
   <ItemDefinitionGroup>
     <ClCompile>
