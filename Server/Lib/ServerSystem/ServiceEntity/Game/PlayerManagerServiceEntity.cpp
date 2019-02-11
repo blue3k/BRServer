@@ -105,7 +105,7 @@ namespace Svr {
 
 		for (auto& itCluster : Service::ServerConfig->GetGameClusters())
 		{
-			StrUtil::Format(gamePath, "{0}/{1}", ZKBasePath, itCluster->GameClusterID);
+			StrUtil::Format(gamePath, "{0}/{1}", ZKBasePath, itCluster->GameClusterIDName);
 			if (!zkSession->Exists(gamePath))
 				zkSession->ACreate(gamePath, Json::Value(Json::objectValue), nullptr, 0);
 		}

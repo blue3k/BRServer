@@ -14,16 +14,16 @@
 
 
   <ModuleServer UID="11" Name="BRLoginServer01" WorkerThreadCount="4" NetIOThreadCount="4">
-    <NetPrivate IP="192.168.50.27" Port="2011"/>
+    <NetPrivate IP="192.168.50.183" Port="2011"/>
     <ModLogin>
-      <NetPublic IPV4="192.168.50.27" IPV6="192.168.50.27" ListenIP="::" Port="21001" MaxConnection="200000"/>
+      <NetPublic IPV4="192.168.50.183" IPV6="192.168.50.183" ListenIP="::" Port="21001" MaxConnection="200000"/>
     </ModLogin>
   </ModuleServer>
 
   <GameCluster Name="Second Game" GameID="MyTownHero" >
 
     <ModuleServer UID="220" Name="BRMyTownHeroRanking" WorkerThreadCount="4" NetIOThreadCount="4">
-      <NetPrivate IP="192.168.50.27" Port="3011"/>
+      <NetPrivate IP="192.168.50.183" Port="3011"/>
       <ModRanking />
     </ModuleServer>
 
@@ -36,7 +36,7 @@
     <GameTransactionLogDB ClusterType="Sharding" DBInstanceName="gameTransactionLog00" DBName="dbgametransaction00" />
 
     <ModuleServer UID="120" Name="BRMatchingQueue01" WorkerThreadCount="4" NetIOThreadCount="4" >
-      <NetPrivate IP="192.168.50.27" Port="11000"/>
+      <NetPrivate IP="192.168.50.183" Port="11000"/>
       <ModMatchingQueue_Game_4x1 />
       <ModMatchingQueue_Game_4x2 />
       <ModMatchingQueue_Game_4x3 />
@@ -57,16 +57,16 @@
     </ModuleServer>
 
     <Game UID="100" Name="BRConspiracyGameServer01" WorkerThreadCount="4" NetIOThreadCount="4">
-      <NetPrivate IP="192.168.50.27" Port="10000"/>
+      <NetPrivate IP="192.168.50.183" Port="10000"/>
       <ModPurchaseValidateGoogle Account="35978052136-02p54tlecq40fnrurg3ci9enarpueadm@developer.gserviceaccount.com" P12KeyFile="conspiracy_google.p12" AuthScopes="https://www.googleapis.com/auth/androidpublisher"/>
       <ModPurchaseValidateIOS URL="https://buy.itunes.apple.com/verifyReceipt" AltURL="https://sandbox.itunes.apple.com/verifyReceipt"/>
       <ModGame>
-        <NetPublic IPV4="192.168.50.27" IPV6="192.168.50.27" ListenIP="::" Port="11000"/>
+        <NetPublic IPV4="192.168.50.183" IPV6="192.168.50.183" ListenIP="::" Port="11000"/>
       </ModGame>
     </Game>
 
     <GameInstance UID="110" Name="BRConspiracyGameInstanceServer01" WorkerThreadCount="4" NetIOThreadCount="4" >
-      <NetPrivate IP="192.168.50.27" Port="10100"/>
+      <NetPrivate IP="192.168.50.183" Port="10100"/>
     </GameInstance>
 
   </GameCluster>

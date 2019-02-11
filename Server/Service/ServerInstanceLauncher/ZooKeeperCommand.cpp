@@ -109,12 +109,12 @@ namespace ServerInstanceLauncher {
 		return ResultCode::SUCCESS;
 	}
 
-	void CommandWatcher::OnComlition(ZooKeeperTask& pTask)
+	void CommandWatcher::OnComplition(ZooKeeperTask& pTask)
 	{
 
 	}
 
-	void CommandWatcher::OnStringsComlition(StringsTask& pTask)
+	void CommandWatcher::OnStringsComplition(StringsTask& pTask)
 	{
 		if (!pTask.ZKResult)
 		{
@@ -130,7 +130,7 @@ namespace ServerInstanceLauncher {
 			listAlreadyHave.Insert(itCommand);
 		}
 
-		// This should be getchildren list because that's the only thing have string list result
+		// This should be get children list because that's the only thing have string list result
 		for (auto& nodeName : pTask.ResultStrings)
 		{
 			FixedString nodeNameCrc = Service::StringDB->AddNGetString(nodeName);

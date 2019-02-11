@@ -256,7 +256,7 @@ namespace Svr {
 		return ResultCode::SUCCESS;
 	}
 
-	void ClusterServiceInfo_Impl::OnComlition(ZooKeeperTask& pTask)
+	void ClusterServiceInfo_Impl::OnComplition(ZooKeeperTask& pTask)
 	{
 		if (!pTask.ZKResult)
 		{
@@ -265,12 +265,12 @@ namespace Svr {
 		}
 	}
 
-	void ClusterServiceInfo_Impl::OnStatComlition(StatTask& pTask)
+	void ClusterServiceInfo_Impl::OnStatComplition(StatTask& pTask)
 	{
 
 	}
 
-	void ClusterServiceInfo_Impl::OnDataComlition(DataTask& pTask)
+	void ClusterServiceInfo_Impl::OnDataComplition(DataTask& pTask)
 	{
 
 	}
@@ -338,7 +338,7 @@ namespace Svr {
 		zkSession->ACreate(nodePath, nodeValue, nullptr, zkSession->NODE_FLAG_EPHEMERAL);
 	}
 
-	void ClusterServiceInfo_Impl::OnStringsComlition(StringsTask& pTask)
+	void ClusterServiceInfo_Impl::OnStringsComplition(StringsTask& pTask)
 	{
 		if (!pTask.ZKResult)
 		{
@@ -396,7 +396,7 @@ namespace Svr {
 		m_GetChildrenTask = nullptr;
 	}
 
-	void ClusterServiceInfo_Impl::OnStringsStatComlition(StringsStatTask& pTask)
+	void ClusterServiceInfo_Impl::OnStringsStatComplition(StringsStatTask& pTask)
 	{
 		if (!pTask.ZKResult)
 		{
@@ -407,7 +407,7 @@ namespace Svr {
 
 	}
 
-	void ClusterServiceInfo_Impl::OnStringComlition(StringTask& pTask)
+	void ClusterServiceInfo_Impl::OnStringComplition(StringTask& pTask)
 	{
 		if (!pTask.ZKResult)
 		{
@@ -419,7 +419,7 @@ namespace Svr {
 
 	}
 
-	//void ClusterServiceInfo_Impl::OnACLComlition(ACLTask& pTask)
+	//void ClusterServiceInfo_Impl::OnACLComplition(ACLTask& pTask)
 	//{
 
 	//}
@@ -526,7 +526,7 @@ namespace Svr {
 
 		for (auto& itGameCluster : Service::ServerConfig->GetGameClusters())
 		{
-			CreateNodeForGameCluster(zkSession, itGameCluster->GameClusterID.ToString());
+			CreateNodeForGameCluster(zkSession, itGameCluster->GameClusterIDName);
 		}
 
 		pTrans = nullptr;
@@ -597,12 +597,18 @@ namespace Svr {
 		if (m_ClusterInfoMap.find(key, pServiceInfo))
 			return pServiceInfo;
 
+		svrTrace(Info, "Adding service watcher for cluster, GameID:{0} ClusterID:{1}, {2}", gameID, Enum<ClusterID>().GetValueName(clusterID), clusterID);
+
 		pServiceInfo = new(GetHeap()) ClusterServiceInfo_Impl(GetHeap(), gameID, clusterID, activelyConnect);
 		if (pServiceInfo == nullptr || !m_ClusterInfoMap.insert(key, pServiceInfo))
 		{
+			svrTrace(Error, "Failed to Add service watcher for cluster, GameID:{0} ClusterID:{1}, {2}", gameID, Enum<ClusterID>().GetValueName(clusterID), clusterID);
 			IHeap::Delete(pServiceInfo);
 			return nullptr;
 		}
+
+		ClusterServiceInfo_Impl* pServiceInfoTemp = nullptr;
+		Assert(m_ClusterInfoMap.find(key, pServiceInfoTemp) && pServiceInfoTemp == pServiceInfo);
 
 		return pServiceInfo;
 	}

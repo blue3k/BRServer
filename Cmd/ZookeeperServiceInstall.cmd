@@ -8,3 +8,4 @@ cd %COMMAND_ROOT%..\External\zookeeper\bin\
 nssm install zookeeper %COMMAND_ROOT%..\External\zookeeper\bin\zkServer.cmd
 nssm set zookeeper AppEnvironmentExtra  JAVA_HOME="%JAVA_HOME%"
 
+pause

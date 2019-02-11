@@ -66,13 +66,13 @@ namespace ServerInstanceLauncher {
 		//
 
 		virtual Result OnNewEvent(const ZKEvent& eventOut) override;
-		virtual void OnComlition(ZooKeeperTask& pTask) override;
-		//virtual void OnStatComlition(StatTask& pTask) override;
-		//virtual void OnDataComlition(DataTask& pTask) override;
-		virtual void OnStringsComlition(StringsTask& pTask) override;
-		//virtual void OnStringsStatComlition(StringsStatTask& pTask) override;
-		//virtual void OnStringComlition(StringTask& pTask) override;
-		//virtual void OnACLComlition(ACLTask& pTask) override;
+		virtual void OnComplition(ZooKeeperTask& pTask) override;
+		//virtual void OnStatComplition(StatTask& pTask) override;
+		//virtual void OnDataComplition(DataTask& pTask) override;
+		virtual void OnStringsComplition(StringsTask& pTask) override;
+		//virtual void OnStringsStatComplition(StringsStatTask& pTask) override;
+		//virtual void OnStringComplition(StringTask& pTask) override;
+		//virtual void OnACLComplition(ACLTask& pTask) override;
 	};
 
 
