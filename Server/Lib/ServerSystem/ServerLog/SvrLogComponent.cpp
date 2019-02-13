@@ -51,18 +51,18 @@ namespace SF
 
 		void SetMask(const char* maskName, uint32_t maskValue)
 		{
-			switch (Hash32(maskName))
+			switch (Crc32C(maskName))
 			{
-			case "default"_hash32:
-			case "def"_hash32:					m_Parameter.MainChannelMasks[(int)LogMainChannels::System] = maskValue; break;
-			case "net"_hash32:					m_Parameter.MainChannelMasks[(int)LogMainChannels::Net] = maskValue; break;
-			case "db"_hash32:					m_Parameter.MainChannelMasks[(int)LogMainChannels::DB] = maskValue; break;
-			case "svr"_hash32:					m_Parameter.MainChannelMasks[(int)LogMainChannels::Svr] = maskValue; break;
-			case "protocol"_hash32:				m_Parameter.MainChannelMasks[(int)LogMainChannels::Protocol] = maskValue; break;
-			case "OutputDebugger"_hash32:		OutputDebugger = maskValue; break;
-			case "OutputConsole"_hash32:		OutputConsole = maskValue; break;
-			case "OutputFile"_hash32:			OutputFile = maskValue; break;
-			case "OutputDbgFile"_hash32:		break;
+			case "default"_crc:
+			case "def"_crc:					m_Parameter.MainChannelMasks[(int)LogMainChannels::System] = maskValue; break;
+			case "net"_crc:					m_Parameter.MainChannelMasks[(int)LogMainChannels::Net] = maskValue; break;
+			case "db"_crc:					m_Parameter.MainChannelMasks[(int)LogMainChannels::DB] = maskValue; break;
+			case "svr"_crc:					m_Parameter.MainChannelMasks[(int)LogMainChannels::Svr] = maskValue; break;
+			case "protocol"_crc:				m_Parameter.MainChannelMasks[(int)LogMainChannels::Protocol] = maskValue; break;
+			case "OutputDebugger"_crc:		OutputDebugger = maskValue; break;
+			case "OutputConsole"_crc:		OutputConsole = maskValue; break;
+			case "OutputFile"_crc:			OutputFile = maskValue; break;
+			case "OutputDbgFile"_crc:		break;
 			default:
 				break;
 			}

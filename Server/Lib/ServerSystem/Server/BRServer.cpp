@@ -733,59 +733,59 @@ Proc_End:
 
 		switch (moduleName)
 		{
-		case "ModMonitoring"_hash32:
+		case "ModMonitoring"_crc:
 			svrChk(Service::EntityManager->AddEntity(EntityFaculty::Service, new(GetHeap()) Svr::MonitoringServiceEntity));
 			break;
 
-		case "ModLogin"_hash32:
+		case "ModLogin"_crc:
 		{
 			auto pLogin = (ServerConfig::ServerModulePublicService*)module;
 			svrChkPtr(AddServiceEntity<Svr::LoginServiceEntity>(&pLogin->PublicNet));
 			break;
 		}
 
-		case "ModGame"_hash32:
+		case "ModGame"_crc:
 		{
 			auto pGame = (ServerConfig::ServerModulePublicService*)module;
 			svrChkPtr(AddServiceEntity<Svr::GameServiceEntity>(GetGameID(), &pGame->PublicNet));
 			break;
 		}
 
-		case "ModRanking"_hash32:
+		case "ModRanking"_crc:
 		{
 			svrChkPtr(AddServiceEntity<Svr::RankingServiceEntity>(GetServerGameID(), ClusterID::Ranking));
 			break;
 		}
 
-		case "ModChatting"_hash32:
+		case "ModChatting"_crc:
 		{
 			svrChkPtr(AddServiceEntity<Svr::ChatChannelManagerServiceEntity>(GetServerGameID()));
 			break;
 		}
 
-		case "ModGameInstanceManager"_hash32:
+		case "ModGameInstanceManager"_crc:
 		{
 			svrChkPtr(AddServiceEntity<Svr::GameInstanceManagerServiceEntity>(GetServerGameID(), ClusterID::GameInstanceManager));
 			break;
 		}
 
-		case "ModGamePartyManager"_hash32:
+		case "ModGamePartyManager"_crc:
 			svrChk(AddServiceEntityComponent<Svr::GamePartyManagerServiceEntity>(GetServerGameID()));
 			break;
 
-		case "ModMatching_Game_4"_hash32:
+		case "ModMatching_Game_4"_crc:
 		{
 			auto pMatching = (ServerConfig::ServerModuleMatching_4*)module;
 			svrChkPtr(AddServiceEntity<Svr::MatchingServiceEntity>(GetServerGameID(), ClusterID::Matching_Game_4, pMatching->UseBot));
 			break;
 		}
-		case "ModMatching_Game_8"_hash32:
+		case "ModMatching_Game_8"_crc:
 		{
 			auto pMatching = (ServerConfig::ServerModuleMatching_8*)module;
 			svrChkPtr(AddServiceEntity<Svr::MatchingServiceEntity>(GetServerGameID(), ClusterID::Matching_Game_8, pMatching->UseBot));
 			break;
 		}
-		case "ModPurchaseValidateGoogle"_hash32:
+		case "ModPurchaseValidateGoogle"_crc:
 		{
 			auto pModule = (ServerConfig::ServerModuleGooglePurchaseValidate*)module;
 			StrUtil::Format(strRelativePath, "../../Config/{0}", pModule->P12KeyFile);
@@ -796,7 +796,7 @@ Proc_End:
 				pModule->AuthScopes));
 			break;
 		}
-		case "ModPurchaseValidateIOS"_hash32:
+		case "ModPurchaseValidateIOS"_crc:
 		{
 			auto pModule = (ServerConfig::ServerModuleIOSPurchaseValidate*)module;
 			svrChk(GetComponentCarrier().AddComponentWithAdapter<Svr::ExternalTransactionManager>());
@@ -804,40 +804,40 @@ Proc_End:
 			break;
 		}
 
-		case "ModMatchingQueue_Game_8x1"_hash32:
-		case "ModMatchingQueue_Game_8x2"_hash32:
-		case "ModMatchingQueue_Game_8x3"_hash32:
-		case "ModMatchingQueue_Game_8x4"_hash32:
-		case "ModMatchingQueue_Game_8x5"_hash32:
-		case "ModMatchingQueue_Game_8x6"_hash32:
-		case "ModMatchingQueue_Game_8x7"_hash32:
-		case "ModMatchingQueue_Game_8x1S"_hash32:
-		case "ModMatchingQueue_Game_8x1W"_hash32:
+		case "ModMatchingQueue_Game_8x1"_crc:
+		case "ModMatchingQueue_Game_8x2"_crc:
+		case "ModMatchingQueue_Game_8x3"_crc:
+		case "ModMatchingQueue_Game_8x4"_crc:
+		case "ModMatchingQueue_Game_8x5"_crc:
+		case "ModMatchingQueue_Game_8x6"_crc:
+		case "ModMatchingQueue_Game_8x7"_crc:
+		case "ModMatchingQueue_Game_8x1S"_crc:
+		case "ModMatchingQueue_Game_8x1W"_crc:
 
-		case "ModMatchingQueue_Game_4x1"_hash32:
-		case "ModMatchingQueue_Game_4x2"_hash32:
-		case "ModMatchingQueue_Game_4x3"_hash32:
-		case "ModMatchingQueue_Game_4x1S"_hash32:
-		case "ModMatchingQueue_Game_4x1W"_hash32:
+		case "ModMatchingQueue_Game_4x1"_crc:
+		case "ModMatchingQueue_Game_4x2"_crc:
+		case "ModMatchingQueue_Game_4x3"_crc:
+		case "ModMatchingQueue_Game_4x1S"_crc:
+		case "ModMatchingQueue_Game_4x1W"_crc:
 		{
 			ClusterID clusterID;
 			switch (moduleName)
 			{
-			case "ModMatchingQueue_Game_8x1"_hash32:		clusterID = ClusterID::MatchingQueue_Game_8x1;	break;
-			case "ModMatchingQueue_Game_8x2"_hash32:		clusterID = ClusterID::MatchingQueue_Game_8x2;	break;
-			case "ModMatchingQueue_Game_8x3"_hash32:		clusterID = ClusterID::MatchingQueue_Game_8x3;	break;
-			case "ModMatchingQueue_Game_8x4"_hash32:		clusterID = ClusterID::MatchingQueue_Game_8x4;	break;
-			case "ModMatchingQueue_Game_8x5"_hash32:		clusterID = ClusterID::MatchingQueue_Game_8x5;	break;
-			case "ModMatchingQueue_Game_8x6"_hash32:		clusterID = ClusterID::MatchingQueue_Game_8x6;	break;
-			case "ModMatchingQueue_Game_8x7"_hash32:		clusterID = ClusterID::MatchingQueue_Game_8x7;	break;
-			case "ModMatchingQueue_Game_8x1S"_hash32:		clusterID = ClusterID::MatchingQueue_Game_8x1S;	break;
-			case "ModMatchingQueue_Game_8x1W"_hash32:		clusterID = ClusterID::MatchingQueue_Game_8x1W;	break;
+			case "ModMatchingQueue_Game_8x1"_crc:		clusterID = ClusterID::MatchingQueue_Game_8x1;	break;
+			case "ModMatchingQueue_Game_8x2"_crc:		clusterID = ClusterID::MatchingQueue_Game_8x2;	break;
+			case "ModMatchingQueue_Game_8x3"_crc:		clusterID = ClusterID::MatchingQueue_Game_8x3;	break;
+			case "ModMatchingQueue_Game_8x4"_crc:		clusterID = ClusterID::MatchingQueue_Game_8x4;	break;
+			case "ModMatchingQueue_Game_8x5"_crc:		clusterID = ClusterID::MatchingQueue_Game_8x5;	break;
+			case "ModMatchingQueue_Game_8x6"_crc:		clusterID = ClusterID::MatchingQueue_Game_8x6;	break;
+			case "ModMatchingQueue_Game_8x7"_crc:		clusterID = ClusterID::MatchingQueue_Game_8x7;	break;
+			case "ModMatchingQueue_Game_8x1S"_crc:		clusterID = ClusterID::MatchingQueue_Game_8x1S;	break;
+			case "ModMatchingQueue_Game_8x1W"_crc:		clusterID = ClusterID::MatchingQueue_Game_8x1W;	break;
 
-			case "ModMatchingQueue_Game_4x1"_hash32:		clusterID = ClusterID::MatchingQueue_Game_4x1;	break;
-			case "ModMatchingQueue_Game_4x2"_hash32:		clusterID = ClusterID::MatchingQueue_Game_4x2;	break;
-			case "ModMatchingQueue_Game_4x3"_hash32:		clusterID = ClusterID::MatchingQueue_Game_4x3;	break;
-			case "ModMatchingQueue_Game_4x1S"_hash32:		clusterID = ClusterID::MatchingQueue_Game_4x1S;	break;
-			case "ModMatchingQueue_Game_4x1W"_hash32:		clusterID = ClusterID::MatchingQueue_Game_4x1W;	break;
+			case "ModMatchingQueue_Game_4x1"_crc:		clusterID = ClusterID::MatchingQueue_Game_4x1;	break;
+			case "ModMatchingQueue_Game_4x2"_crc:		clusterID = ClusterID::MatchingQueue_Game_4x2;	break;
+			case "ModMatchingQueue_Game_4x3"_crc:		clusterID = ClusterID::MatchingQueue_Game_4x3;	break;
+			case "ModMatchingQueue_Game_4x1S"_crc:		clusterID = ClusterID::MatchingQueue_Game_4x1S;	break;
+			case "ModMatchingQueue_Game_4x1W"_crc:		clusterID = ClusterID::MatchingQueue_Game_4x1W;	break;
 			default:
 				assert(false);
 				svrTrace(Error, "Invalid cluster ID for module{0}", module->ModuleName);
