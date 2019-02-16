@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Servers xmlns="http://www.TheBraves.com/ServerConfig" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.TheBraves.com/ServerConfig ServerConfig.xsd">
-  <DBInstances InstanceName="account00" ConnectionString="192.168.50.183,21022" UserID="blue3k" Password="pious75" />
-  <DBInstances InstanceName="tabledb" ConnectionString="192.168.50.183,21022" UserID="blue3k" Password="pious75" />
-  <DBInstances InstanceName="session00" ConnectionString="192.168.50.183,21022" UserID="blue3k" Password="pious75" />
-  <DBInstances InstanceName="conspiracy00" ConnectionString="192.168.50.183,21022" UserID="blue3k" Password="pious75" />
-  <DBInstances InstanceName="ranking" ConnectionString="192.168.50.183,21022" UserID="blue3k" Password="pious75" />
-  <DBInstances InstanceName="gameTransactionLog00" ConnectionString="192.168.50.183,21022" UserID="blue3k" Password="pious75" />
+  <DBInstances InstanceName="account00" ConnectionString="192.168.50.183,21022" UserID="blue3k" Password="111" />
+  <DBInstances InstanceName="tabledb" ConnectionString="192.168.50.183,21022" UserID="blue3k" Password="111" />
+  <DBInstances InstanceName="session00" ConnectionString="192.168.50.183,21022" UserID="blue3k" Password="111" />
+  <DBInstances InstanceName="conspiracy00" ConnectionString="192.168.50.183,21022" UserID="blue3k" Password="111" />
+  <DBInstances InstanceName="ranking" ConnectionString="192.168.50.183,21022" UserID="blue3k" Password="111" />
+  <DBInstances InstanceName="gameTransactionLog00" ConnectionString="192.168.50.183,21022" UserID="blue3k" Password="111" />
 
   <TableDB DBInstanceName="tabledb" DBName="dbconspiracytable" />
   <AccountDB ClusterType="Sharding" DBInstanceName="account00" DBName="dbaccount" />
