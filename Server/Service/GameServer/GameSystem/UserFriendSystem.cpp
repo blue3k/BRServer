@@ -141,7 +141,7 @@ namespace GameServer {
 			return ResultCode::MAX_FRIEND;
 		}
 
-		return m_Friends.insert( 1, info );
+		return m_Friends.push_back( info );
 	}
 
 	// Remove a friend

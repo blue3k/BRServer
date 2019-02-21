@@ -633,7 +633,7 @@ namespace GameServer {
 
 		if( !(hr) )
 		{
-			svrTrace(Error, "Failed to get friend level PlayerID:{0}, hr={1:X8}", pDBRes ? pDBRes->PlayerID : 0, hr);
+			svrTrace(Error, "Failed to get friend PlayerID:{0}, hr={1:X8}", pDBRes ? pDBRes->PlayerID : 0, hr);
 		}
 
 		m_WaitingCount--;
