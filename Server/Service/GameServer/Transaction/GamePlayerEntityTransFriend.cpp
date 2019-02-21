@@ -734,7 +734,7 @@ namespace GameServer {
 
 		m_WaitingQueries--;
 
-		// if failed to write to DB, roleback the changes
+		// if failed to write to DB, rollback the changes
 		if(!(hr))
 		{
 			svrTrace( Error, "Failed to save give stamina result PlayerID:{0}, Dest:{1}, hr:{2:X8}", GetMyOwner()->GetPlayerID(), GetTargetPlayer(), hr );
@@ -756,7 +756,7 @@ namespace GameServer {
 
 	Proc_End:
 
-		// if failed to write to DB, roleback the changes
+		// if failed to write to DB, rollback the changes
 		if(!(hr))
 		{
 			svrTrace( Error, "Failed to save give-stamina timestamp PlayerID:{0}, Dest:{1}", GetMyOwner()->GetPlayerID(), GetTargetPlayer() );
