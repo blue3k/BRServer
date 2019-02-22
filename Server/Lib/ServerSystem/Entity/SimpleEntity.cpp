@@ -51,6 +51,8 @@ namespace Svr {
 	// clear transaction
 	Result SimpleEntity::ClearEntity()
 	{
+		if (m_pCurTran != nullptr)
+			m_pCurTran->CloseTransaction(ResultCode::INVALID_STATE);
 		ReleaseTransaction(m_pCurTran);
 		m_pCurTran = SharedPointerT<Transaction>();
 

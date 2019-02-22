@@ -403,7 +403,7 @@ namespace GameServer {
 
 		m_LeaderID = res.GetPartyLeaderID();
 
-		assert(m_ChatHistoryData.GetAllocatedSize() >= res.GetChatHistoryData().size());
+		//assert(m_ChatHistoryData.GetAllocatedSize() >= res.GetChatHistoryData().size());
 		m_ChatHistoryData.resize(std::min(m_ChatHistoryData.GetAllocatedSize(), res.GetChatHistoryData().size()));
 		memcpy(m_ChatHistoryData.data(), res.GetChatHistoryData().data(), sizeof(uint8_t)*m_ChatHistoryData.size());
 
