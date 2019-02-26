@@ -75,6 +75,7 @@ namespace DB {
 	// close DB source
 	Result	DataSourceMYSQL::CloseDBSource()
 	{
+		m_ServerIP = String::Empty;
 		return DataSource::CloseDBSource();
 	}
 	
