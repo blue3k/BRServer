@@ -78,6 +78,9 @@ namespace ServerInstanceLauncher {
 		Net::GetLocalAddress(SockFamily::IPV4, m_MyIPV4Address);
 		Net::GetLocalAddress(SockFamily::IPV6, m_MyIPV6Address);
 
+		// override watch address
+		m_MyIPV4Address = ParameterSetting::GetSetting("watchIPV4", m_MyIPV4Address.Address);
+		m_MyIPV6Address = ParameterSetting::GetSetting("watchIPV6", m_MyIPV6Address.Address);
 
 		svrTrace(Info, "Listening commands for IPV4: {0}", m_MyIPV4Address);
 		svrTrace(Info, "                       IPV6: {0}", m_MyIPV6Address);

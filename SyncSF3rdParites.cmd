@@ -27,6 +27,7 @@ xcopy External\mysql-connector-c-6.1.6-winx64\lib\vs12\mysqlclient.lib Server\bi
 xcopy External\mysql-connector-c-6.1.6-winx64\lib\vs12\mysqlclient.lib Server\bin\lib\x64Release\ /y
 xcopy External\mysql-connector-c-6.1.6-winx64\lib\libmysql.* Server\bin\lib\x64Debug\ /y
 xcopy External\mysql-connector-c-6.1.6-winx64\lib\libmysql.* Server\bin\lib\x64Release\ /y
+xcopy External\mysql-connector-c-6.1.6-winx64\lib\libmysql.* Server\bin\ /y
 
 
 xcopy Server\bin\lib\x64Debug\*.dll Server\bin\x64Debug\ /y
