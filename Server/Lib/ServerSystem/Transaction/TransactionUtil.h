@@ -29,9 +29,8 @@ namespace SF {
 	virtual Result OnCloseTransaction( Result hrRes )\
 		{\
 		Result hr = ResultCode::SUCCESS;\
-		if( IsClosed() )\
-			return ResultCode::SUCCESS;\
-		svrChk( PolicyClass(GetConnection()).MessageName( hrRes ) );\
+		if( IsClosed() ) return ResultCode::SUCCESS;\
+		svrChk( PolicyClass(GetConnection()).MessageName( GetMessageContext(), hrRes ) );\
 	Proc_End:\
 		super::OnCloseTransaction(hrRes);\
 		return hr;\
@@ -43,9 +42,8 @@ namespace SF {
 	virtual Result OnCloseTransaction( Result hrRes )\
 		{\
 		Result hr = ResultCode::SUCCESS;\
-		if( IsClosed() )\
-			return ResultCode::SUCCESS;\
-		svrChk( PolicyClass(GetConnection()).MessageName( hrRes, ##__VA_ARGS__ ) );\
+		if( IsClosed() ) return ResultCode::SUCCESS;\
+		svrChk( PolicyClass(GetConnection()).MessageName( GetMessageContext(), hrRes, ##__VA_ARGS__ ) );\
 	Proc_End:\
 		super::OnCloseTransaction(hrRes);\
 		return hr;\

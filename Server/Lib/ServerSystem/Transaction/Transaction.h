@@ -559,6 +559,8 @@ namespace Svr {
 			return pOwnerEntity->GetConnection();
 		}
 
+
+		TransactionID GetMessageContext() { return MessageClass::GetTransactionID(); }
 	};
 
 

@@ -98,7 +98,7 @@ namespace GameServer {
 		// Start Transaction
 		virtual Result StartTransaction();
 
-		BR_IMPLEMENT_USERMSGTRANS_CLOSE_ARGS(Policy::NetSvrPolicyGame, JoinGameServerRes,m_PlayerNick, m_GameUID, GetMyOwner()->GetPartyUID(), m_PartyLeaderID, m_MatchingTicket);
+		BR_IMPLEMENT_USERMSGTRANS_CLOSE_ARGS(Policy::NetSvrPolicyGame, JoinGameServerRes, m_PlayerNick, m_GameUID, GetMyOwner()->GetPartyUID(), m_PartyLeaderID, m_MatchingTicket);
 	};
 
 	
