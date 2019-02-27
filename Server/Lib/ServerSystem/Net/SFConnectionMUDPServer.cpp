@@ -110,6 +110,9 @@ namespace Net {
 			hr = SendSync(m_RecvReliableWindow.GetBaseSequence(), m_RecvReliableWindow.GetSyncMask());
 		}
 
+		// Flush sync message asap
+		SendFlush();
+
 		return hr;
 	}
 
