@@ -1,3 +1,0 @@
-LIBRARY   MemLogger
-EXPORTS
-   QueryMemLogger   @1
