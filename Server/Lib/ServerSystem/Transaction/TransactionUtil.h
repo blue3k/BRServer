@@ -38,12 +38,15 @@ namespace SF {
 
 
 		// User transaction close with argument, just return Result by default
+		// When OwnerEntity is nullptr, it should try to access input parameters
 #define BR_IMPLEMENT_USERMSGTRANS_CLOSE_ARGS( PolicyClass, MessageName, ... ) \
 	virtual Result OnCloseTransaction( Result hrRes )\
 		{\
 		Result hr = ResultCode::SUCCESS;\
 		if( IsClosed() ) return ResultCode::SUCCESS;\
-		svrChk( PolicyClass(GetConnection()).MessageName( GetMessageContext(), hrRes, ##__VA_ARGS__ ) );\
+		if(GetOwnerEntity() != nullptr) {\
+			svrChk( PolicyClass(GetConnection()).MessageName( GetMessageContext(), hrRes, ##__VA_ARGS__ ) );\
+		}\
 	Proc_End:\
 		super::OnCloseTransaction(hrRes);\
 		return hr;\
