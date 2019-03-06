@@ -29,7 +29,9 @@ namespace SF
 	class ServerLogObject : public EngineObject
 	{
 	private:
+		// config file path
 		char m_ConfigFilePath[256];
+		time_t m_LastConfigTimeStamp = 0;
 		LogChannelParameter m_Parameter;
 		LogChannelMask OutputConsole;
 		LogChannelMask OutputDebugger;
@@ -95,6 +97,13 @@ namespace SF
 			std::string strCfgPath = Util::GetModulePath();
 			strCfgPath.append(m_ConfigFilePath);
 
+			struct stat st;
+			int ierr = stat(strCfgPath.c_str(), &st);
+			if (m_LastConfigTimeStamp == st.st_mtime)
+				return;
+
+			m_LastConfigTimeStamp = st.st_mtime;
+
 			FILE *file = fopen(strCfgPath.c_str(), "r");
 			if (file == nullptr)
 				return;
@@ -151,7 +160,7 @@ namespace SF
 		// Object task
 		virtual Result OnTick(EngineTaskTick tick) override
 		{
-			if (Util::TimeSince(m_MaskUpdated) > DurationMS(60 * 1000))
+			if (Util::TimeSince(m_MaskUpdated) > DurationMS(5 * 1000))
 			{
 				LoadTraceConfig();
 				m_MaskUpdated = Util::Time.GetTimeMs();
