@@ -168,6 +168,9 @@ namespace SF
 				case ',': // We found comma, terminate
 					*curChar = '\0';
 					return curChar+1;
+				case '/': // comment is end of line
+					*curChar = '\0';
+					// fallthru
 				case '\0': // Null terminate, no more search
 					return curChar;
 				}
