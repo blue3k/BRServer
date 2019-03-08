@@ -382,12 +382,12 @@ namespace Svr
 			{
 				ProcessMessageData(pMsg);
 			}
-			else
-			{
-				pConn = dynamic_cast<Net::ConnectionUDPBase*>(*GetConnection());
-				if (pConn != nullptr)
-					pConn->ProcGuarrentedMessageWindow([&](MessageDataPtr& pMsg){ ProcessMessageData(pMsg); });
-			}
+			//else
+			//{
+			//	pConn = dynamic_cast<Net::ConnectionUDPBase*>(*GetConnection());
+			//	if (pConn != nullptr)
+			//		pConn->ProcGuarrentedMessageWindow([&](MessageDataPtr& pMsg){ ProcessMessageData(pMsg); });
+			//}
 			break;
 		case ServerTaskEvent::EventTypes::PACKET_MESSAGE_SYNC_EVENT:
 			if (pMyConn != nullptr) pMyConn->UpdateSendQueue();
