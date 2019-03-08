@@ -13,6 +13,7 @@
       <PreprocessorDefinitions>HAVE_CONFIG_H;HAVE_WIN32_THREADS;CURL_STATICLIB;HAVE_STDDEF_H=1;HAVE_STDINT_H=1;HAVE_SYS_TYPES_H=1;NOMINMAX;_UNICODE;UNICODE;NOCRYPT;_ENABLE_ATOMIC_ALIGNMENT_FIX;_VARIADIC_MAX=10;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <OmitFramePointers>false</OmitFramePointers>
+      <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
       <AddModuleNamesToAssembly>..\..\bin\lib</AddModuleNamesToAssembly>

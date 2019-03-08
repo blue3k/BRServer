@@ -54,6 +54,7 @@
       <ModMatchingQueue_Game_8x1W/>
       <ModMatching_Game_8 UseBot="true"/>
       <ModGamePartyManager/>
+		<ModChatting/>
     </ModuleServer>
 
     <Game UID="100" Name="BRConspiracyGameServer01" WorkerThreadCount="4" NetIOThreadCount="4">
