@@ -49,13 +49,15 @@ namespace Net {
 		: ConnectionMUDP(memoryManager, ioHandler)
 	{
 		SetNetCtrlAction(NetCtrlCode_SyncReliable, &m_HandleSyncReliable);
+
+		AddStateAction(ConnectionState::CONNECTED, &m_ActSync);
 	}
 
 	ConnectionMUDPServer::~ConnectionMUDPServer()
 	{
 
 	}
-
+/*
 	Result ConnectionMUDPServer::ProcSendReliable()
 	{
 		Result result = ConnectionMUDP::ProcSendReliable();
@@ -82,6 +84,7 @@ namespace Net {
 #endif
 		return result;
 	}
+*/
 
 	Result ConnectionMUDPServer::UpdateSendQueue()
 	{
@@ -89,26 +92,13 @@ namespace Net {
 		if (GetConnectionState() == ConnectionState::DISCONNECTED)
 			return ResultCode::SUCCESS;
 
-		MutexScopeLock localLock(m_SendReliableWindow.GetLock());
+		MutexScopeLock localLock(GetUpdateLock());
 
-		hr = ProcSendReliableQueue();
-		if (!(hr))
-		{
-			SFLog(Net, Info, "Process Recv Guaranted queue failed {0:X8}", hr);
-		}
+		// Force update send
+		m_ActSendReliableQueue.Run();
+		m_ActSendReliableRetry.Run();
 
 
-		if (GetSendSyncThisTick())
-		{
-			hr = ProcReliableSendRetry();
-			if (!(hr))
-			{
-				SFLog(Net, Info, "Process message window failed {0:X8}", hr);
-			}
-
-			SetSendSyncThisTick(false);
-			hr = SendSync(m_RecvReliableWindow.GetBaseSequence(), m_RecvReliableWindow.GetSyncMask());
-		}
 
 		// Flush sync message asap
 		SendFlush();
