@@ -21,12 +21,12 @@
 #include "curl/curl.h"
 #include "json/json.h"
 
-#include <openssl/err.h>
-#include <openssl/pkcs12.h>
-#include <openssl/pem.h>
-#include <openssl/x509.h>
-#include <openssl/rsa.h>
-#include <openssl/bn.h>
+//#include <openssl/err.h>
+//#include <openssl/pkcs12.h>
+//#include <openssl/pem.h>
+//#include <openssl/x509.h>
+//#include <openssl/rsa.h>
+//#include <openssl/bn.h>
 
 #include "ServerSystem/Google/GoogleOAuth.h"
 #include "ServerSystem/Google/GoogleAndroidDeveloperAPI.h"

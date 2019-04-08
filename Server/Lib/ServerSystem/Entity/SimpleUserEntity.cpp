@@ -384,9 +384,9 @@ namespace Svr
 			}
 			else
 			{
-				pConn = dynamic_cast<Net::ConnectionUDPBase*>(*GetConnection());
-				if (pConn != nullptr)
-					pConn->ProcGuarrentedMessageWindow([&](MessageDataPtr& pMsg){ ProcessMessageData(pMsg); });
+				//pConn = dynamic_cast<Net::ConnectionUDPBase*>(*GetConnection());
+				//if (pConn != nullptr)
+				//	pConn->ProcGuarrentedMessageWindow([&](MessageDataPtr& pMsg){ ProcessMessageData(pMsg); });
 			}
 			break;
 		case ServerTaskEvent::EventTypes::PACKET_MESSAGE_SYNC_EVENT:

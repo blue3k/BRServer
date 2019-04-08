@@ -12,7 +12,11 @@
 #pragma once
 
 #include "SFTypedefs.h"
+#if defined(SF_USE_MBEDTLS)
+#include "mbedtls/pk.h"
+#else
 #include "openssl/crypto.h"
+#endif
 #include "Thread/SFSystemSynchronization.h"
 
 
@@ -36,7 +40,12 @@ namespace Google {
 			const char* GoogleDefaultPassword = "notasecret";
 
 			// private key
+#if defined(SF_USE_MBEDTLS)
+			mbedtls_pk_context m_privateKey;
+#else
 			EVP_PKEY* m_privateKey;
+#endif
+
 
 			StaticArray<uint8_t, 4096> m_ResultBuffer;
 			ULONG m_AuthStringIndex;

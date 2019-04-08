@@ -1,0 +1,245 @@
+﻿
+
+source_group(INCLUDES
+    Component/ServerComponent.inl
+    Entity/Entity.inl
+    Entity/EntityInformation.inl
+    Entity/MasterEntity.inl
+    Entity/PlayerEntityInformation.inl
+    Entity/SimpleUserEntity.inl
+    GameLog/GameLog.inl
+    makefile.mak
+    MessageRoute.inl
+    PerformanceCounter/PerformanceCounter.inl
+    PerformanceCounter/PerformanceCounterInstance.inl
+    ServerEntity/ServerEntity.inl
+    Server/BrServer.inl
+    Server/BrServerUtil.inl
+    ServiceEntity/ClusteredServiceEntity.inl
+    ServiceEntity/GamePartyEntity.inl
+    ServiceEntity/Game/GameInstanceEntity.inl
+    ServiceEntity/Game/GameInstancePlayer.inl
+    ServiceEntity/Game/GamePlayerEntity.inl
+    ServiceEntity/Game/GameSystem.inl
+    Task/ServerTask.inl
+    Task/ServerTaskEvent.inl
+    Task/ServerTaskManager.inl
+    Transaction/ExternalTransactionManager.inl
+    Transaction/MessageRoute.inl
+    Transaction/Transaction.inl
+    Types/BrGameTypes.inl
+    Types/BrSvrTypes.inl
+    Component/BrComponent.h
+    Component/ServerComponent.h
+    Component/ServerComponentCarrier.h
+    Component/SFServerConfigComponent.h
+    Component/SFServerNetComponent.h
+    Component/SFZooKeeperSessionComponent.h
+    Entity/Entity.h
+    Entity/EntityInformation.h
+    Entity/EntityManager.h
+    Entity/EntityTable.h
+    Entity/EntityTimerActions.h
+    Entity/MasterEntity.h
+    Entity/PlayerEntityInformation.h
+    Entity/SimpleEntity.h
+    Entity/SimpleUserEntity.h
+    GameConst.h
+    GameLog/ChattingHistory.h
+    GameLog/GameLog.h
+    Google/GoogleAndroidDeveloperAPI.h
+    Google/GoogleOAuth.h
+    MessageRoute.h
+    PerformanceCounter/PerformanceCounter.h
+    PerformanceCounter/PerformanceCounterClient.h
+    PerformanceCounter/PerformanceCounterInstance.h
+    PerformanceCounter/PerformanceCounterServer.h
+    ResultCode/SFResultCodeDB.h
+    ResultCode/SFResultCodeGame.h
+    ResultCode/SFResultCodeLogin.h
+    ResultCode/SFResultCodeSvr.h
+    ServerEntity/SvrGameServerEntity.h
+    ServerEntity/GenericServerEntity.h
+    ServerEntity/ServerEntity.h
+    ServerEntity/ServerEntityManager.h
+    ServerEntity/SvrLoopbackConnection.h
+    ServerLog/SvrLog.h
+    ServerLog/SvrLogComponent.h
+    ServerLog/SvrTrace.h
+    ServerService/ServerServiceBase.h
+    Server/BrServer.h
+    Server/BrServerUtil.h
+    Server/BrService.h
+    Server/ParameterSetting.h
+    ServiceEntity/Chat/ChatChannelEntity.h
+    ServiceEntity/Chat/ChatChannelEntityTrans.h
+    ServiceEntity/Chat/ChatChannelManagerServiceEntity.h
+    ServiceEntity/Chat/ChatChannelManagerServiceTrans.h
+    ServiceEntity/Chat/ChatChannelTransaction.h
+    ServiceEntity/ClusteredServiceEntity.h
+    ServiceEntity/ClusterManagerServiceEntity.h
+    ServiceEntity/ClusterServiceTrans.h
+    ServiceEntity/GamePartyEntity.h
+    ServiceEntity/GamePartyEntityTrans.h
+    ServiceEntity/GamePartyManagerServiceEntity.h
+    ServiceEntity/GamePartyManagerServiceTrans.h
+    ServiceEntity/GamePartyTransaction.h
+    ServiceEntity/Game/PlayerManagerServiceEntity.h
+    ServiceEntity/Game/GameInstanceEntity.h
+    ServiceEntity/Game/GameInstanceManagerServiceEntity.h
+    ServiceEntity/Game/GameInstanceManagerServiceTrans.h
+    ServiceEntity/Game/GameInstancePlayer.h
+    ServiceEntity/Game/GameInstanceServiceEntity.h
+    ServiceEntity/Game/GameInstanceServiceTrans.h
+    ServiceEntity/Game/GamePlayerEntity.h
+    ServiceEntity/Game/GameServiceEntity.h
+    ServiceEntity/Game/GameServiceTrans.h
+    ServiceEntity/Game/GameSystem.h
+    ServiceEntity/Login/LoginPlayerEntity.h
+    ServiceEntity/Login/LoginPlayerEntityTrans.h
+    ServiceEntity/Login/LoginServiceEntity.h
+    ServiceEntity/Login/LoginServiceTrans.h
+    ServiceEntity/MatchingQueueServiceEntity.h
+    ServiceEntity/MatchingQueueServiceTrans.h
+    ServiceEntity/MatchingServiceEntity.h
+    ServiceEntity/MatchingServiceTrans.h
+    ServiceEntity/MatchingServiceUtil.h
+    ServiceEntity/MonitoringServiceEntity.h
+    ServiceEntity/MonitoringServiceTrans.h
+    ServiceEntity/RankingServiceEntity.h
+    ServiceEntity/RankingServiceTrans.h
+    ServiceEntity/ServiceEntity.h
+    Service/ClusterManagerService.h
+    Service/EntityManagerService.h
+    Service/EntityTableService.h
+    Service/PlayerManagerService.h
+    Service/ServerEntityManagerService.h
+    Service/ServerService.h
+    Service/ZookeeperSessionService.h
+    stdafx.h
+    String/ToStringSvr.h
+    SvrConst.h
+    SvrPolicyID.h
+    SvrTrace.h
+    Task/ServerTask.h
+    Task/ServerTaskEvent.h
+    Task/ServerTaskManager.h
+    Transaction/ExternalTransaction.h
+    Transaction/ExternalTransactionManager.h
+    Transaction/MessageHandlerTable.h
+    Transaction/MessageRoute.h
+    Transaction/ParallelTransaction.h
+    Transaction/ServerTransaction.h
+    Transaction/ServerTransactionGeneric.h
+    Transaction/Transaction.h
+    Transaction/TransactionSteper.h
+    Transaction/TransactionUtil.h
+    Types/BrGameTypes.h
+    Types/BrSvrTypes.h
+    Util/GlobalUIDGenerator.h
+    Util/LocalUIDGenerator.h
+    Util/Memento.h
+    Util/UniqueEntityIDGenerator.h
+)
+
+
+set(BRSERVERSYSTEM_LIB_FILES
+    Component/ServerComponent.cpp
+    Component/SFServerConfigComponent.cpp
+    Component/SFServerNetComponent.cpp
+    Component/SFZooKeeperSessionComponent.cpp
+    Entity/Entity.cpp
+    Entity/EntityInformation.cpp
+    Entity/EntityManager.cpp
+    Entity/EntityTable.cpp
+    Entity/EntityTimerActions.cpp
+    Entity/MasterEntity.cpp
+    Entity/PlayerEntityInformation.cpp
+    Entity/SimpleEntity.cpp
+    Entity/SimpleUserEntity.cpp
+    GameLog/ChattingHistory.cpp
+    Google/GoogleAndroidDeveloperAPI.cpp
+    Google/GoogleOAuth.cpp
+    Net/SFConnectionMUDPServer.cpp
+    Net/SFNetServerMUDP.cpp
+    PerformanceCounter/PerformanceCounter.cpp
+    PerformanceCounter/PerformanceCounterClient.cpp
+    PerformanceCounter/PerformanceCounterInstance.cpp
+    PerformanceCounter/PerformanceCounterServer.cpp
+    ServerEntity/SvrGameServerEntity.cpp
+    ServerEntity/GenericServerEntity.cpp
+    ServerEntity/ServerEntity.cpp
+    ServerEntity/ServerEntityManager.cpp
+    ServerEntity/SvrLoopbackConnection.cpp
+    ServerLog/SvrLogComponent.cpp
+    Server/BRServer.cpp
+    Server/BrServerUtil.cpp
+    Server/BRService.linux.cpp
+    Server/BRService.win64.cpp
+    Server/ParameterSetting.cpp
+    ServiceEntity/Chat/ChatChannelEntity.cpp
+    ServiceEntity/Chat/ChatChannelEntityTrans.cpp
+    ServiceEntity/Chat/ChatChannelManagerServiceEntity.cpp
+    ServiceEntity/Chat/ChatChannelManagerServiceTrans.cpp
+    ServiceEntity/ClusteredServiceEntity.cpp
+    ServiceEntity/ClusterManagerServiceEntity.cpp
+    ServiceEntity/ClusterServiceTrans.cpp
+    ServiceEntity/GamePartyEntity.cpp
+    ServiceEntity/GamePartyEntityTrans.cpp
+    ServiceEntity/GamePartyManagerServiceEntity.cpp
+    ServiceEntity/GamePartyManagerServiceTrans.cpp
+    ServiceEntity/Game/PlayerManagerServiceEntity.cpp
+    ServiceEntity/Game/GameInstanceEntity.cpp
+    ServiceEntity/Game/GameInstanceManagerServiceEntity.cpp
+    ServiceEntity/Game/GameInstanceManagerServiceTrans.cpp
+    ServiceEntity/Game/GameInstancePlayer.cpp
+    ServiceEntity/Game/GameInstanceServiceEntity.cpp
+    ServiceEntity/Game/GameInstanceServiceTrans.cpp
+    ServiceEntity/Game/GamePlayerEntity.cpp
+    ServiceEntity/Game/GameServiceEntity.cpp
+    ServiceEntity/Game/GameServiceTrans.cpp
+    ServiceEntity/Login/LoginPlayerEntity.cpp
+    ServiceEntity/Login/LoginPlayerEntityTrans.cpp
+    ServiceEntity/Login/LoginServiceEntity.cpp
+    ServiceEntity/Login/LoginServiceTrans.cpp
+    ServiceEntity/MatchingQueueServiceEntity.cpp
+    ServiceEntity/MatchingQueueServiceTrans.cpp
+    ServiceEntity/MatchingServiceEntity.cpp
+    ServiceEntity/MatchingServiceTrans.cpp
+    ServiceEntity/MatchingServiceUtil.cpp
+    ServiceEntity/MonitoringServiceEntity.cpp
+    ServiceEntity/MonitoringServiceTrans.cpp
+    ServiceEntity/RankingServiceEntity.cpp
+    ServiceEntity/RankingServiceTrans.cpp
+    ServiceEntity/ServiceEntity.cpp
+    Service/ServerService.cpp
+    String/ToStringSvr.cpp
+    Task/ServerTask.cpp
+    Task/ServerTaskEvent.cpp
+    Task/ServerTaskManager.cpp
+    Transaction/ExternalTransaction.cpp
+    Transaction/ExternalTransactionManager.cpp
+    Transaction/ParallelTransaction.cpp
+    Transaction/Transaction.cpp
+    Types/BrGameTypes.cpp
+    Util/GlobalUIDGenerator.cpp
+    Util/LocalUIDGenerator.cpp
+    Util/UniqueEntityIDGenerator.cpp
+  )
+
+
+
+
+include_directories(./)
+
+
+
+add_library(BRServerSystem STATIC ${BRSERVERSYSTEM_LIB_FILES})
+
+
+install (TARGETS BRServerSystem
+         ARCHIVE DESTINATION lib COMPONENT BRServer
+         LIBRARY DESTINATION lib COMPONENT BRServer
+         RUNTIME DESTINATION bin COMPONENT BRServer)
+
+

@@ -24,12 +24,21 @@
 #include "curl/curl.h"
 #include "json/json.h"
 
+#if defined(SF_USE_MBEDTLS)
+#include "mbedtls/pkcs12.h"
+#include "mbedtls/error.h"
+#include "mbedtls/rsa.h"
+#include "mbedtls/x509.h"
+
+#else // SF_USE_MBEDTLS
 #include <openssl/err.h>
 #include <openssl/pkcs12.h>
 #include <openssl/pem.h>
 #include <openssl/x509.h>
 #include <openssl/rsa.h>
 #include <openssl/bn.h>
+
+#endif // SF_USE_MBEDTLS
 
 #include "ServerSystem/Google/GoogleOAuth.h"
 
@@ -53,18 +62,40 @@ namespace Google {
 	{
 		m_ActiveAuthString = m_AuthString[m_AuthStringIndex];
 		memset(m_AuthString, 0, sizeof m_AuthString);
+#if defined(SF_USE_MBEDTLS)
+		mbedtls_pk_init(&m_privateKey);
+#endif
 	}
 
 	OAuth::~OAuth()
 	{
+#if defined(SF_USE_MBEDTLS)
+		mbedtls_pk_free(&m_privateKey);
+#else
 		if (m_privateKey != nullptr)
 			EVP_PKEY_free(m_privateKey);
+#endif
 	}
 
 	Result OAuth::LoadPrivateKey(const char* strPKeyFile)
 	{
 		Result hr = ResultCode::SUCCESS;
 		char filePath[1024];
+
+#if defined(SF_USE_MBEDTLS)
+
+		// TODO: support reloading
+		if (mbedtls_pk_get_type(&m_privateKey) == MBEDTLS_PK_RSA)
+			return ResultCode::SUCCESS;
+
+		StrUtil::Format(filePath, "{0}{1}", Util::GetModulePath(), strPKeyFile);
+
+		auto sslResult = mbedtls_pk_parse_keyfile(&m_privateKey, filePath, GoogleDefaultPassword);
+		if (sslResult != 0) // invalid password?
+			return ResultCode::INVALID_PASSWORD;
+
+		return ResultCode::SUCCESS;
+#else
 		StaticArray<uint8_t, 4096> buffer(GetHeap());
 		size_t read;
 
@@ -129,7 +160,7 @@ namespace Google {
 
 		if (p12)
 			PKCS12_free(p12);
-
+#endif
 		return hr;
 	}
 
@@ -153,17 +184,6 @@ namespace Google {
 			"}}";
 		char body[1024];
 
-		if (m_privateKey == nullptr
-			|| strAccount == nullptr
-			|| scopes == nullptr)
-			return ResultCode::FAIL;
-
-		// EVP_PKEY_get1_RSA ?
-		RSA* pkey = EVP_PKEY_get0_RSA(m_privateKey);
-		if (pkey == nullptr)
-			return ResultCode::UNEXPECTED;
-
-
 		// 1hour later from now
 		time_t timeToRequest = time(0) + 3;
 		StrUtil::Format(body, bodyFormat, strAccount, scopes, timeToRequest);
@@ -182,12 +202,46 @@ namespace Google {
 		// SHA256
 		svrChk(Util::SHA256Hash(requestString.size(), requestString.data(), digest));
 
+
+#if defined(SF_USE_MBEDTLS)
+
+		auto pRsaKey = mbedtls_pk_rsa(&m_privateKey);
+		if (pRsaKey == nullptr
+			|| strAccount == nullptr
+			|| scopes == nullptr)
+			return ResultCode::FAIL;
+
+		// RSA sign
+		sslResult = mbedtls_rsa_pkcs1_sign(&rsa, NULL, NULL, MBEDTLS_RSA_PRIVATE, MBEDTLS_MD_SHA256,
+			20, digest.data(), sign_buffer);
+		if (sslResult != 0)
+		{
+			svrErr(ResultCode::UNEXPECTED);
+		}
+
+
+#else // SF_USE_MBEDTLS
+		if (m_privateKey == nullptr
+			|| strAccount == nullptr
+			|| scopes == nullptr)
+			return ResultCode::FAIL;
+
+		// EVP_PKEY_get1_RSA ?
+		RSA* pkey = EVP_PKEY_get0_RSA(m_privateKey);
+		if (pkey == nullptr)
+			return ResultCode::UNEXPECTED;
+
+
+		//////////////////////////////////////////////////////////////////////
+		// signing
+
 		// RSA sign
 		sslResult = RSA_sign(NID_sha256, digest.data(), (uint)digest.size(), sign_buffer, &sign_len, pkey);
 		if (sslResult == FALSE)
 		{
 			svrErr(ResultCode::UNEXPECTED);
 		}
+#endif // SF_USE_MBEDTLS
 
 		svrChk(requestString.push_back('.'));
 
