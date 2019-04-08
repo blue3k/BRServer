@@ -12,7 +12,6 @@
 #pragma once
 
 #include "SFTypedefs.h"
-#include "openssl/crypto.h"
 #include "Thread/SFSystemSynchronization.h"
 #include "Container/SFArray.h"
 

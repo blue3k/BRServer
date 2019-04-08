@@ -43,7 +43,7 @@ namespace Google {
 #if defined(SF_USE_MBEDTLS)
 			mbedtls_pk_context m_privateKey;
 #else
-			EVP_PKEY* m_privateKey;
+			EVP_PKEY* m_privateKey = nullptr;
 #endif
 
 

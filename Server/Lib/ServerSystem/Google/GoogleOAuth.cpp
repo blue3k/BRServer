@@ -54,8 +54,7 @@ namespace Google {
 	//
 
 	OAuth::OAuth()
-		: m_privateKey(nullptr)
-		, m_ResultBuffer(GetSystemHeap())
+		: m_ResultBuffer(GetSystemHeap())
 		, m_AuthStringIndex(0)
 		, m_ActiveAuthString(nullptr)
 		, m_AuthenticatedTime(TimeStampMS::min())
@@ -205,14 +204,14 @@ namespace Google {
 
 #if defined(SF_USE_MBEDTLS)
 
-		auto pRsaKey = mbedtls_pk_rsa(&m_privateKey);
+		auto pRsaKey = mbedtls_pk_rsa(m_privateKey);
 		if (pRsaKey == nullptr
 			|| strAccount == nullptr
 			|| scopes == nullptr)
 			return ResultCode::FAIL;
 
 		// RSA sign
-		sslResult = mbedtls_rsa_pkcs1_sign(&rsa, NULL, NULL, MBEDTLS_RSA_PRIVATE, MBEDTLS_MD_SHA256,
+		sslResult = mbedtls_rsa_pkcs1_sign(pRsaKey, NULL, NULL, MBEDTLS_RSA_PRIVATE, MBEDTLS_MD_SHA256,
 			20, digest.data(), sign_buffer);
 		if (sslResult != 0)
 		{

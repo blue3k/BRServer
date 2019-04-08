@@ -63,8 +63,6 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ConspiracyGameServer", "Ser
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ServerProtocol.Win", "Server\Lib\ServerProtocol\ServerProtocol.Win.vcxproj", "{7035EA94-3335-4FD7-A3E3-28F80CCBABBF}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "SFCoreBase", "..\StormForge\Engine\Src\CoreBase\SFCoreBase.vcxitems", "{62D7BD92-62C4-4B83-8E3B-0AFE3942FE28}"
-EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "SFProtocol", "..\StormForge\Engine\Src\Protocol\SFProtocol.vcxitems", "{6D3C3D98-6342-40DD-A734-D9B353D9AB7B}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "SFEngine", "..\StormForge\Engine\Src\SFEngine\SFEngine.vcxitems", "{4C5F1EDA-DF00-4652-A0E1-AE068E906064}"
@@ -79,6 +77,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ServerInstanceLauncher.Win"
 		{7035EA94-3335-4FD7-A3E3-28F80CCBABBF} = {7035EA94-3335-4FD7-A3E3-28F80CCBABBF}
 	EndProjectSection
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "SFCore", "..\StormForge\Engine\Src\SFCore\SFCore.vcxitems", "{62D7BD92-62C4-4B83-8E3B-0AFE3942FE28}"
+EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
 		Server\Service\ModuleServer\ModuleServer.vcxitems*{03b0209d-8646-48df-a5e7-8b90c48e61e5}*SharedItemsImports = 9
@@ -88,7 +88,7 @@ Global
 		..\StormForge\Engine\Src\SFEngine\SFEngine.vcxitems*{4c5f1eda-df00-4652-a0e1-ae068e906064}*SharedItemsImports = 9
 		Server\Lib\ServerSystem\ServerSystem.vcxitems*{4e37f891-0d4d-4929-9026-8383be8e7426}*SharedItemsImports = 9
 		Server\Service\ServerInstanceLauncher\ServerInstanceLauncher.vcxitems*{4ebbbb99-1840-4b1a-b9c5-aa2f910836d7}*SharedItemsImports = 4
-		..\StormForge\Engine\Src\CoreBase\SFCoreBase.vcxitems*{62d7bd92-62c4-4b83-8e3b-0afe3942fe28}*SharedItemsImports = 9
+		..\StormForge\Engine\Src\SFCore\SFCore.vcxitems*{62d7bd92-62c4-4b83-8e3b-0afe3942fe28}*SharedItemsImports = 9
 		..\StormForge\Engine\Src\Protocol\SFProtocol.vcxitems*{6d3c3d98-6342-40dd-a734-d9b353d9ab7b}*SharedItemsImports = 9
 		Server\Lib\ServerProtocol\ServerProtocol.vcxitems*{7035ea94-3335-4fd7-a3e3-28f80ccbabbf}*SharedItemsImports = 4
 		Server\Service\GameServer\ConspiracyGameServer.vcxitems*{74ded5ce-18e1-47dc-8b6d-d1a441c21930}*SharedItemsImports = 9
@@ -203,11 +203,11 @@ Global
 		{9DF9B349-5C1D-4732-8AD9-4B782B0C4E27} = {66028306-5D28-4B3E-BFD1-F7558E17F298}
 		{74DED5CE-18E1-47DC-8B6D-D1A441C21930} = {66028306-5D28-4B3E-BFD1-F7558E17F298}
 		{7035EA94-3335-4FD7-A3E3-28F80CCBABBF} = {7E178A11-31C7-47EB-B7A8-47EF8EFCD03D}
-		{62D7BD92-62C4-4B83-8E3B-0AFE3942FE28} = {6C29CCE4-32A6-409C-87E1-3F76DF945F99}
 		{6D3C3D98-6342-40DD-A734-D9B353D9AB7B} = {6C29CCE4-32A6-409C-87E1-3F76DF945F99}
 		{4C5F1EDA-DF00-4652-A0E1-AE068E906064} = {6C29CCE4-32A6-409C-87E1-3F76DF945F99}
 		{BCD5E4BD-08EA-4714-ADEF-92ADB69108E4} = {66028306-5D28-4B3E-BFD1-F7558E17F298}
 		{4EBBBB99-1840-4B1A-B9C5-AA2F910836D7} = {9DF9B349-5C1D-4732-8AD9-4B782B0C4E27}
+		{62D7BD92-62C4-4B83-8E3B-0AFE3942FE28} = {6C29CCE4-32A6-409C-87E1-3F76DF945F99}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {F8713DEB-60D5-4903-B579-CB8A3BA0FAB6}

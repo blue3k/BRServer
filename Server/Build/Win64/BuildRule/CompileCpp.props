@@ -10,14 +10,14 @@
   <ItemDefinitionGroup>
     <ClCompile>
       <AdditionalIncludeDirectories>.\;..\..\Lib;$(SolutionDir)External\mysql-connector-c-6.1.6-winx64\include;$(SolutionDir)Server/Lib/ServerProtocol;$(SolutionDir)Server/Lib/DB;$(SolutionDir)Server/Lib/ServerSystem;$(SF_DIR)3rdParties\src\curl\curl\include;$(SF_DIR)3rdParties\src\jsoncpp\include;$(SF_DIR)3rdParties\src\libxml\libxml2\include;$(SF_DIR)3rdParties\src\mbedtls\mbedtls-2.16.0\include;$(SF_DIR)3rdParties\src\libiconv\libiconv-1.14\include;$(SF_DIR)3rdParties\src\zlib\zlib-1.2.8;$(SF_DIR)3rdParties\src\zookeeperConnector\include;$(SF_DIR)3rdParties\src\zookeeperConnector\generated;$(SF_DIR)Engine/Src/SFCore;$(SF_DIR)Engine/Src/SFEngine;$(SF_DIR)Engine/Src/Protocol;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>HAVE_CONFIG_H;HAVE_WIN32_THREADS;CURL_STATICLIB;HAVE_STDDEF_H=1;HAVE_STDINT_H=1;HAVE_SYS_TYPES_H=1;NOMINMAX;_UNICODE;UNICODE;NOCRYPT;_ENABLE_ATOMIC_ALIGNMENT_FIX;_VARIADIC_MAX=10;_CRT_SECURE_NO_WARNINGS;USE_MBEDTLS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>HAVE_CONFIG_H;HAVE_WIN32_THREADS;CURL_STATICLIB;HAVE_STDDEF_H=1;HAVE_STDINT_H=1;HAVE_SYS_TYPES_H=1;NOMINMAX;_UNICODE;UNICODE;NOCRYPT;_ENABLE_ATOMIC_ALIGNMENT_FIX;_VARIADIC_MAX=10;_CRT_SECURE_NO_WARNINGS;SF_USE_MBEDTLS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <OmitFramePointers>false</OmitFramePointers>
       <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
       <AddModuleNamesToAssembly>..\..\bin\lib</AddModuleNamesToAssembly>
-      <AdditionalDependencies>Iconv.Win.lib;libXML.Win.lib;Curl.Win.lib;JsonCPP.Win.lib;libcrypto.lib;libssl.lib;libmysql.lib;SFCore.Win.lib;SFEngine.Win.lib;SFProtocol.Win.lib;zookeeper.lib;vulkan-1.lib;jpeg.Win.lib;libpng.Win.lib;ZLib.Win.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>Iconv.Win.lib;libXML.Win.lib;Curl.Win.lib;JsonCPP.Win.lib;libcrypto.lib;libssl.lib;libmysql.lib;SFCoreBase.Win.lib;SFEngine.Win.lib;SFProtocol.Win.lib;zookeeper.lib;vulkan-1.lib;jpeg.Win.lib;libpng.Win.lib;ZLib.Win.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalLibraryDirectories>$(SolutionDir)Server\bin/lib/$(Platform)$(Configuration)\;$(SF_DIR)Bin\lib/Win/$(Platform)$(Configuration)\;$(SF_DIR)Bin\Win/$(Platform)/openssl/lib;$(SF_DIR)Bin/Win/$(Platform)$(Configuration)\;$(SF_DIR)3rdParties/VulkanSDK/1.0.57.0/Lib/;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>

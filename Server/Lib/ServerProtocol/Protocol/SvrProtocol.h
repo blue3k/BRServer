@@ -12,6 +12,7 @@
 #pragma once
 
 #include "Types/BrSvrTypes.h"
-#include "ProtocolTrace.h"
 #include "String/ToStringSvr.h"
+#include "ProtocolTrace.h"
+#include "Protocol/SFProtocolHelper.h"
 
