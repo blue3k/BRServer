@@ -52,7 +52,7 @@ namespace Svr {
 	{
 		// Game ChatChannel manager transactions
 		BR_ENTITY_MESSAGE(Message::ChatChannelManager::CreateChannelCmd)			{ svrMemReturn(pNewTrans = new(GetHeap()) ChatChannelManagerTransCreateChatChannel(GetHeap(), pMsgData)); return ResultCode::SUCCESS; } );
-		BR_ENTITY_MESSAGE(Message::ChatChannelManager::CreateChannelCmd) { svrMemReturn(pNewTrans = new(GetHeap()) ChatChannelManagerTransFindChatChannel(GetHeap(), pMsgData)); return ResultCode::SUCCESS; } );
+		BR_ENTITY_MESSAGE(Message::ChatChannelManager::FindChannelCmd)				{ svrMemReturn(pNewTrans = new(GetHeap()) ChatChannelManagerTransFindChatChannel(GetHeap(), pMsgData)); return ResultCode::SUCCESS; } );
 		BR_ENTITY_MESSAGE(Message::ChatChannelManager::ChatChannelDeletedC2SEvt)	{ svrMemReturn(pNewTrans = new(GetHeap()) ChatChannelManagerTransChatChannelDeleted(GetHeap(), pMsgData)); return ResultCode::SUCCESS; } );
 	}
 

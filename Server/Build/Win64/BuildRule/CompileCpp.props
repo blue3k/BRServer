@@ -17,7 +17,7 @@
     </ClCompile>
     <Link>
       <AddModuleNamesToAssembly>..\..\bin\lib</AddModuleNamesToAssembly>
-      <AdditionalDependencies>Iconv.Win.lib;libXML.Win.lib;Curl.Win.lib;JsonCPP.Win.lib;libcrypto.lib;libssl.lib;libmysql.lib;SFCoreBase.Win.lib;SFEngine.Win.lib;SFProtocol.Win.lib;zookeeper.lib;vulkan-1.lib;jpeg.Win.lib;libpng.Win.lib;ZLib.Win.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>Iconv.Win.lib;libXML.Win.lib;Curl.Win.lib;JsonCPP.Win.lib;libcrypto.lib;libssl.lib;libmysql.lib;SFCore.Win.lib;SFEngine.Win.lib;SFProtocol.Win.lib;zookeeper.lib;vulkan-1.lib;jpeg.Win.lib;libpng.Win.lib;ZLib.Win.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalLibraryDirectories>$(SolutionDir)Server\bin/lib/$(Platform)$(Configuration)\;$(SF_DIR)Bin\lib/Win/$(Platform)$(Configuration)\;$(SF_DIR)Bin\Win/$(Platform)/openssl/lib;$(SF_DIR)Bin/Win/$(Platform)$(Configuration)\;$(SF_DIR)3rdParties/VulkanSDK/1.0.57.0/Lib/;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
