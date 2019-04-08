@@ -95,6 +95,7 @@ if(WIN32)
 
 	set(PLATFORM_LIBS Ws2_32 Mswsock)
 
+
 elseif(ANDROID_PLATFORM)
 
 	message ( "Setup Android configs" + ${CMAKE_BUILD_TYPE} )
