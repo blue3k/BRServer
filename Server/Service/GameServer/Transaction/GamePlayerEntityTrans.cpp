@@ -61,8 +61,9 @@
 
 #include "Table/conspiracy/GameConfigTbl.h"
 #include "Table/conspiracy/OrganicTbl.h"
-#include "openssl/sha.h"
 
+//#include "openssl/sha.h"
+#define 	SHA256_DIGEST_LENGTH   32
 
 
 
