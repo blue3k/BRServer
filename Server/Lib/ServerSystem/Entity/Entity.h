@@ -77,7 +77,7 @@ namespace Svr{
 		TimeStampMS			m_ulCreateTime;
 
 		// Latestly processed transaction index
-		mutable std::atomic<ULONG>	m_lTransIdx;
+		mutable std::atomic<uint64_t>	m_lTransIdx;
 
 
 		// Entity transaction queue
@@ -131,7 +131,7 @@ namespace Svr{
 		virtual CounterType GetPendingTransactionCount() const;
 
 		// Generate new transaction index
-		inline ULONG GenTransIndex();
+		inline uint64_t GenTransIndex();
 
 
 		// Initialize entity to proceed new connection

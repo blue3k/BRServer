@@ -52,7 +52,7 @@ void Entity::SetEntityCreateTime(TimeStampMS ulCreateTime)
 }
 
 // Generate new transaction index
-ULONG Entity::GenTransIndex()
+uint64_t Entity::GenTransIndex()
 {
 	auto result = m_lTransIdx.fetch_add(1, std::memory_order_relaxed);
 
