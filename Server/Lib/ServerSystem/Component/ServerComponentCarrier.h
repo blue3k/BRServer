@@ -16,7 +16,7 @@
 #include "SFTypedefs.h"
 #include "Memory/SFMemory.h"
 #include "Component/BrComponent.h"
-
+#include "Component/ServerComponent.h"
 
 namespace SF {
 namespace Svr {
