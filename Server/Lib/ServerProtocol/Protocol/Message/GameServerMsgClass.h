@@ -1,6 +1,6 @@
 ﻿////////////////////////////////////////////////////////////////////////////////
 // 
-// CopyRight (c) 2016 StormForge
+// CopyRight (c) 2016 Kyungkun Ko
 // 
 // Author : Generated
 // 
@@ -42,7 +42,7 @@ namespace SF
 				uint64_t GetSender() { return 0; }
 			private:
 				RouteContext m_RouteContext;
-				TransactionID m_TransactionID;
+				uint64_t m_TransactionID;
 				PlayerID m_PlayerID;
 				AuthTicket m_Ticket;
 				FacebookUID m_FBUserID;
@@ -58,7 +58,7 @@ namespace SF
 					MessageUsage GetMessageUsage() { return MessageUsage_None; }
 
 				const RouteContext& GetRouteContext() const	{ return m_RouteContext; };
-				const TransactionID& GetTransactionID() const	{ return m_TransactionID; };
+				const uint64_t& GetTransactionID() const	{ return m_TransactionID; };
 				const PlayerID& GetPlayerID() const	{ return m_PlayerID; };
 				const AuthTicket& GetTicket() const	{ return m_Ticket; };
 				const FacebookUID& GetFBUserID() const	{ return m_FBUserID; };
@@ -69,7 +69,7 @@ namespace SF
 				virtual Result ParseMessage( MessageData* pIMsg );
 				static Result ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr& pIMsg, MessageBase* &pMsgBase );
 
-				static MessageData* Create( IHeap& memHeap, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const PlayerID &InPlayerID, const AuthTicket &InTicket, const FacebookUID &InFBUserID, const uint32_t &InShardID );
+				static MessageData* Create( IHeap& memHeap, const RouteContext &InRouteContext, const uint64_t &InTransactionID, const PlayerID &InPlayerID, const AuthTicket &InTicket, const FacebookUID &InFBUserID, const uint32_t &InShardID );
 
 				Result OverrideRouteContextDestination( EntityUID to );
 
@@ -94,7 +94,7 @@ namespace SF
 				uint64_t GetSender() { return 0; }
 			private:
 				RouteContext m_RouteContext;
-				TransactionID m_TransactionID;
+				uint64_t m_TransactionID;
 				Result m_Result;
 				const char* m_PublicAddress;
 				const char* m_PublicAddressV6;
@@ -114,7 +114,7 @@ namespace SF
 					MessageUsage GetMessageUsage() { return MessageUsage_None; }
 
 				const RouteContext& GetRouteContext() const	{ return m_RouteContext; };
-				const TransactionID& GetTransactionID() const	{ return m_TransactionID; };
+				const uint64_t& GetTransactionID() const	{ return m_TransactionID; };
 				const Result& GetResult() const	{ return m_Result; };
 				const char* GetPublicAddress() const	{ return m_PublicAddress; };
 				const char* GetPublicAddressV6() const	{ return m_PublicAddressV6; };
@@ -125,7 +125,7 @@ namespace SF
 				virtual Result ParseMessage( MessageData* pIMsg );
 				static Result ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr& pIMsg, MessageBase* &pMsgBase );
 
-				static MessageData* Create( IHeap& memHeap, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const Result &InResult, const char* InPublicAddress, const char* InPublicAddressV6, const uint32_t &InPort );
+				static MessageData* Create( IHeap& memHeap, const RouteContext &InRouteContext, const uint64_t &InTransactionID, const Result &InResult, const char* InPublicAddress, const char* InPublicAddressV6, const uint32_t &InPort );
 
 				Result OverrideRouteContextDestination( EntityUID to );
 
@@ -150,7 +150,7 @@ namespace SF
 				uint64_t GetSender() { return 0; }
 			private:
 				RouteContext m_RouteContext;
-				TransactionID m_TransactionID;
+				uint64_t m_TransactionID;
 				PlayerID m_PlayerID;
 				AuthTicket m_Ticket;
 				FacebookUID m_FBUserID;
@@ -165,7 +165,7 @@ namespace SF
 					MessageUsage GetMessageUsage() { return MessageUsage_None; }
 
 				const RouteContext& GetRouteContext() const	{ return m_RouteContext; };
-				const TransactionID& GetTransactionID() const	{ return m_TransactionID; };
+				const uint64_t& GetTransactionID() const	{ return m_TransactionID; };
 				const PlayerID& GetPlayerID() const	{ return m_PlayerID; };
 				const AuthTicket& GetTicket() const	{ return m_Ticket; };
 				const FacebookUID& GetFBUserID() const	{ return m_FBUserID; };
@@ -175,7 +175,7 @@ namespace SF
 				virtual Result ParseMessage( MessageData* pIMsg );
 				static Result ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr& pIMsg, MessageBase* &pMsgBase );
 
-				static MessageData* Create( IHeap& memHeap, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const PlayerID &InPlayerID, const AuthTicket &InTicket, const FacebookUID &InFBUserID );
+				static MessageData* Create( IHeap& memHeap, const RouteContext &InRouteContext, const uint64_t &InTransactionID, const PlayerID &InPlayerID, const AuthTicket &InTicket, const FacebookUID &InFBUserID );
 
 				Result OverrideRouteContextDestination( EntityUID to );
 
@@ -200,7 +200,7 @@ namespace SF
 				uint64_t GetSender() { return 0; }
 			private:
 				RouteContext m_RouteContext;
-				TransactionID m_TransactionID;
+				uint64_t m_TransactionID;
 				Result m_Result;
 			public:
 				RegisterPlayerToJoinGameServerOnPlayerEntityRes()
@@ -213,7 +213,7 @@ namespace SF
 					MessageUsage GetMessageUsage() { return MessageUsage_None; }
 
 				const RouteContext& GetRouteContext() const	{ return m_RouteContext; };
-				const TransactionID& GetTransactionID() const	{ return m_TransactionID; };
+				const uint64_t& GetTransactionID() const	{ return m_TransactionID; };
 				const Result& GetResult() const	{ return m_Result; };
 
 				static Result TraceOut(const char* prefix, MessageDataPtr& pMsg);
@@ -221,7 +221,7 @@ namespace SF
 				virtual Result ParseMessage( MessageData* pIMsg );
 				static Result ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr& pIMsg, MessageBase* &pMsgBase );
 
-				static MessageData* Create( IHeap& memHeap, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const Result &InResult );
+				static MessageData* Create( IHeap& memHeap, const RouteContext &InRouteContext, const uint64_t &InTransactionID, const Result &InResult );
 
 				Result OverrideRouteContextDestination( EntityUID to );
 
@@ -243,7 +243,7 @@ namespace SF
 				}; // enum ParameterTypeInfo
 			public:
 				uint64_t GetPlayerID() { return 0; }
-				TransactionID GetTransactionID() { return 0; }
+				uint64_t GetTransactionID() { return 0; }
 				uint32_t GetRouteHopCount() { return 0; }
 				uint64_t GetSender() { return 0; }
 			private:
@@ -299,7 +299,7 @@ namespace SF
 				}; // enum ParameterTypeInfo
 			public:
 				uint64_t GetPlayerID() { return 0; }
-				TransactionID GetTransactionID() { return 0; }
+				uint64_t GetTransactionID() { return 0; }
 				uint32_t GetRouteHopCount() { return 0; }
 				uint64_t GetSender() { return 0; }
 			private:
@@ -359,7 +359,7 @@ namespace SF
 				}; // enum ParameterTypeInfo
 			public:
 				uint64_t GetPlayerID() { return 0; }
-				TransactionID GetTransactionID() { return 0; }
+				uint64_t GetTransactionID() { return 0; }
 				uint32_t GetRouteHopCount() { return 0; }
 				uint64_t GetSender() { return 0; }
 			private:
@@ -407,7 +407,7 @@ namespace SF
 				}; // enum ParameterTypeInfo
 			public:
 				uint64_t GetPlayerID() { return 0; }
-				TransactionID GetTransactionID() { return 0; }
+				uint64_t GetTransactionID() { return 0; }
 				uint32_t GetRouteHopCount() { return 0; }
 				uint64_t GetSender() { return 0; }
 			private:
@@ -455,7 +455,7 @@ namespace SF
 				}; // enum ParameterTypeInfo
 			public:
 				uint64_t GetPlayerID() { return 0; }
-				TransactionID GetTransactionID() { return 0; }
+				uint64_t GetTransactionID() { return 0; }
 				uint32_t GetRouteHopCount() { return 0; }
 				uint64_t GetSender() { return 0; }
 			private:
@@ -503,7 +503,7 @@ namespace SF
 				}; // enum ParameterTypeInfo
 			public:
 				uint64_t GetPlayerID() { return 0; }
-				TransactionID GetTransactionID() { return 0; }
+				uint64_t GetTransactionID() { return 0; }
 				uint32_t GetRouteHopCount() { return 0; }
 				uint64_t GetSender() { return 0; }
 			private:
@@ -553,7 +553,7 @@ namespace SF
 				}; // enum ParameterTypeInfo
 			public:
 				uint64_t GetPlayerID() { return 0; }
-				TransactionID GetTransactionID() { return 0; }
+				uint64_t GetTransactionID() { return 0; }
 				uint32_t GetRouteHopCount() { return 0; }
 				uint64_t GetSender() { return 0; }
 			private:

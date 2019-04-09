@@ -1,6 +1,6 @@
 ﻿////////////////////////////////////////////////////////////////////////////////
 // 
-// CopyRight (c) 2016 StormForge
+// CopyRight (c) 2016 Kyungkun Ko
 // 
 // Author : Generated
 // 
@@ -42,7 +42,7 @@ namespace SF
 				uint64_t GetSender() { return 0; }
 			private:
 				RouteContext m_RouteContext;
-				TransactionID m_TransactionID;
+				uint64_t m_TransactionID;
 				PlayerID m_PlayerID;
 				AuthTicket m_AuthTicket;
 			public:
@@ -56,7 +56,7 @@ namespace SF
 					MessageUsage GetMessageUsage() { return MessageUsage_None; }
 
 				const RouteContext& GetRouteContext() const	{ return m_RouteContext; };
-				const TransactionID& GetTransactionID() const	{ return m_TransactionID; };
+				const uint64_t& GetTransactionID() const	{ return m_TransactionID; };
 				const PlayerID& GetPlayerID() const	{ return m_PlayerID; };
 				const AuthTicket& GetAuthTicket() const	{ return m_AuthTicket; };
 
@@ -65,7 +65,7 @@ namespace SF
 				virtual Result ParseMessage( MessageData* pIMsg );
 				static Result ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr& pIMsg, MessageBase* &pMsgBase );
 
-				static MessageData* Create( IHeap& memHeap, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const PlayerID &InPlayerID, const AuthTicket &InAuthTicket );
+				static MessageData* Create( IHeap& memHeap, const RouteContext &InRouteContext, const uint64_t &InTransactionID, const PlayerID &InPlayerID, const AuthTicket &InAuthTicket );
 
 				Result OverrideRouteContextDestination( EntityUID to );
 
@@ -90,7 +90,7 @@ namespace SF
 				uint64_t GetSender() { return 0; }
 			private:
 				RouteContext m_RouteContext;
-				TransactionID m_TransactionID;
+				uint64_t m_TransactionID;
 				Result m_Result;
 			public:
 				PlayerJoinedToGameServerRes()
@@ -103,7 +103,7 @@ namespace SF
 					MessageUsage GetMessageUsage() { return MessageUsage_None; }
 
 				const RouteContext& GetRouteContext() const	{ return m_RouteContext; };
-				const TransactionID& GetTransactionID() const	{ return m_TransactionID; };
+				const uint64_t& GetTransactionID() const	{ return m_TransactionID; };
 				const Result& GetResult() const	{ return m_Result; };
 
 				static Result TraceOut(const char* prefix, MessageDataPtr& pMsg);
@@ -111,7 +111,7 @@ namespace SF
 				virtual Result ParseMessage( MessageData* pIMsg );
 				static Result ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr& pIMsg, MessageBase* &pMsgBase );
 
-				static MessageData* Create( IHeap& memHeap, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const Result &InResult );
+				static MessageData* Create( IHeap& memHeap, const RouteContext &InRouteContext, const uint64_t &InTransactionID, const Result &InResult );
 
 				Result OverrideRouteContextDestination( EntityUID to );
 
@@ -137,7 +137,7 @@ namespace SF
 				uint64_t GetSender() { return 0; }
 			private:
 				RouteContext m_RouteContext;
-				TransactionID m_TransactionID;
+				uint64_t m_TransactionID;
 				PlayerID m_KickedPlayerID;
 			public:
 				KickPlayerCmd()
@@ -150,7 +150,7 @@ namespace SF
 					MessageUsage GetMessageUsage() { return MessageUsage_None; }
 
 				const RouteContext& GetRouteContext() const	{ return m_RouteContext; };
-				const TransactionID& GetTransactionID() const	{ return m_TransactionID; };
+				const uint64_t& GetTransactionID() const	{ return m_TransactionID; };
 				const PlayerID& GetKickedPlayerID() const	{ return m_KickedPlayerID; };
 
 				static Result TraceOut(const char* prefix, MessageDataPtr& pMsg);
@@ -158,7 +158,7 @@ namespace SF
 				virtual Result ParseMessage( MessageData* pIMsg );
 				static Result ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr& pIMsg, MessageBase* &pMsgBase );
 
-				static MessageData* Create( IHeap& memHeap, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const PlayerID &InKickedPlayerID );
+				static MessageData* Create( IHeap& memHeap, const RouteContext &InRouteContext, const uint64_t &InTransactionID, const PlayerID &InKickedPlayerID );
 
 				Result OverrideRouteContextDestination( EntityUID to );
 
@@ -183,7 +183,7 @@ namespace SF
 				uint64_t GetSender() { return 0; }
 			private:
 				RouteContext m_RouteContext;
-				TransactionID m_TransactionID;
+				uint64_t m_TransactionID;
 				Result m_Result;
 			public:
 				KickPlayerRes()
@@ -196,7 +196,7 @@ namespace SF
 					MessageUsage GetMessageUsage() { return MessageUsage_None; }
 
 				const RouteContext& GetRouteContext() const	{ return m_RouteContext; };
-				const TransactionID& GetTransactionID() const	{ return m_TransactionID; };
+				const uint64_t& GetTransactionID() const	{ return m_TransactionID; };
 				const Result& GetResult() const	{ return m_Result; };
 
 				static Result TraceOut(const char* prefix, MessageDataPtr& pMsg);
@@ -204,7 +204,7 @@ namespace SF
 				virtual Result ParseMessage( MessageData* pIMsg );
 				static Result ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr& pIMsg, MessageBase* &pMsgBase );
 
-				static MessageData* Create( IHeap& memHeap, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const Result &InResult );
+				static MessageData* Create( IHeap& memHeap, const RouteContext &InRouteContext, const uint64_t &InTransactionID, const Result &InResult );
 
 				Result OverrideRouteContextDestination( EntityUID to );
 

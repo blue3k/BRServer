@@ -1,6 +1,6 @@
 ﻿////////////////////////////////////////////////////////////////////////////////
 // 
-// CopyRight (c) 2016 StormForge
+// CopyRight (c) 2016 Kyungkun Ko
 // 
 // Author : Generated
 // 
@@ -29,9 +29,9 @@ namespace SF
 			GameServerService ( ServerServiceInformation* pService );
 
 			// Cmd: Register player so that the player can connection and join to the game server.
-			Result RegisterPlayerToJoinGameServerCmd( const TransactionID &InTransactionID, const PlayerID &InPlayerID, const AuthTicket &InTicket, const FacebookUID &InFBUserID, const uint32_t &InShardID );
+			Result RegisterPlayerToJoinGameServerCmd( const uint64_t &InTransactionID, const PlayerID &InPlayerID, const AuthTicket &InTicket, const FacebookUID &InFBUserID, const uint32_t &InShardID );
 			// Cmd: Same to RegisterPlayerToJoinGameServer, but can run on player entity. only works when the player entity exists. If player disconnected for some reason, you can run this method to connect.
-			Result RegisterPlayerToJoinGameServerOnPlayerEntityCmd( const TransactionID &InTransactionID, const PlayerID &InPlayerID, const AuthTicket &InTicket, const FacebookUID &InFBUserID );
+			Result RegisterPlayerToJoinGameServerOnPlayerEntityCmd( const uint64_t &InTransactionID, const PlayerID &InPlayerID, const AuthTicket &InTicket, const FacebookUID &InFBUserID );
 			// C2S: Chatting message event.
 			Result ChatMessageC2SEvt( const EntityID &InSenderEntityID, const AccountID &InSenderID, const uint8_t &InRole, const char* InSenderName, const char* InChatMessage );
 			// C2S: Notification event for P2P

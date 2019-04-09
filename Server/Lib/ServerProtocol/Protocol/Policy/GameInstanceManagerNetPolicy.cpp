@@ -9,7 +9,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 
 
-#include "stdafx.h"
+#include "ServerProtocolPCH.h"
 #include "SFTypedefs.h"
 #include "Net/SFNetDef.h"
 #include "Net/SFMessage.h"
@@ -26,7 +26,7 @@ namespace SF
  	namespace Policy
 	{
  		// Cmd: Create a game instance
-		Result NetPolicyGameInstanceManager::CreateGameCmd( const RouteContext &InRouteContext, const TransactionID &InTransactionID, const uint16_t &InRouteHopCount, const uint16_t &InNumberOfBotPlayer, const uint16_t &InMaxPlayer )
+		Result NetPolicyGameInstanceManager::CreateGameCmd( const RouteContext &InRouteContext, const uint64_t &InTransactionID, const uint16_t &InRouteHopCount, const uint16_t &InNumberOfBotPlayer, const uint16_t &InMaxPlayer )
 		{
  			Result hr;
 
@@ -42,7 +42,7 @@ namespace SF
 
 			return hr;
 
-		}; // Result NetPolicyGameInstanceManager::CreateGameCmd( const RouteContext &InRouteContext, const TransactionID &InTransactionID, const uint16_t &InRouteHopCount, const uint16_t &InNumberOfBotPlayer, const uint16_t &InMaxPlayer )
+		}; // Result NetPolicyGameInstanceManager::CreateGameCmd( const RouteContext &InRouteContext, const uint64_t &InTransactionID, const uint16_t &InRouteHopCount, const uint16_t &InNumberOfBotPlayer, const uint16_t &InMaxPlayer )
 		// C2S: Game instance notification of deletion
 		Result NetPolicyGameInstanceManager::GameDeletedC2SEvt( const RouteContext &InRouteContext, const uint16_t &InRouteHopCount )
 		{
@@ -64,7 +64,7 @@ namespace SF
 
 
 		// Cmd: Create a game instance
-		Result NetSvrPolicyGameInstanceManager::CreateGameRes( const RouteContext &InRouteContext, const TransactionID &InTransactionID, const Result &InResult )
+		Result NetSvrPolicyGameInstanceManager::CreateGameRes( const RouteContext &InRouteContext, const uint64_t &InTransactionID, const Result &InResult )
 		{
  			Result hr;
 
@@ -80,7 +80,7 @@ namespace SF
 
 			return hr;
 
-		}; // Result NetSvrPolicyGameInstanceManager::CreateGameRes( const RouteContext &InRouteContext, const TransactionID &InTransactionID, const Result &InResult )
+		}; // Result NetSvrPolicyGameInstanceManager::CreateGameRes( const RouteContext &InRouteContext, const uint64_t &InTransactionID, const Result &InResult )
 
 
 	}; // namespace Policy

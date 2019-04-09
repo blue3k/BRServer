@@ -9,7 +9,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 
 
-#include "stdafx.h"
+#include "ServerProtocolPCH.h"
 #include "SFTypedefs.h"
 #include "Net/SFNetDef.h"
 #include "Net/SFMessage.h"

@@ -1,6 +1,6 @@
 ﻿////////////////////////////////////////////////////////////////////////////////
 // 
-// CopyRight (c) 2016 StormForge
+// CopyRight (c) 2016 Kyungkun Ko
 // 
 // Author : Generated
 // 
@@ -29,23 +29,23 @@ namespace SF
 			PartyMatchingQueueService ( ServerServiceInformation* pService );
 
 			// Cmd: Register a party for matching
-			Result RegisterPartyMatchingCmd( const TransactionID &InTransactionID, const uint16_t &InRouteHopCount, const Array<MatchingPlayerInformation>& InPlayers );
+			Result RegisterPartyMatchingCmd( const uint64_t &InTransactionID, const uint16_t &InRouteHopCount, const Array<MatchingPlayerInformation>& InPlayers );
 			// Cmd: Register a player for matching
-			Result RegisterPlayerMatchingCmd( const TransactionID &InTransactionID, const uint16_t &InRouteHopCount, const PlayerID &InPlayerID );
+			Result RegisterPlayerMatchingCmd( const uint64_t &InTransactionID, const uint16_t &InRouteHopCount, const PlayerID &InPlayerID );
 			// Cmd: [Deprecated] update registration information
-			Result UpdateMatchingEntityUIDCmd( const TransactionID &InTransactionID, const uint16_t &InRouteHopCount, const MatchingQueueTicket &InMatchingTicket, const uint64_t &InPreviousUID );
+			Result UpdateMatchingEntityUIDCmd( const uint64_t &InTransactionID, const uint16_t &InRouteHopCount, const MatchingQueueTicket &InMatchingTicket, const uint64_t &InPreviousUID );
 			// Cmd: calcel registration
-			Result UnregisterMatchingCmd( const TransactionID &InTransactionID, const uint16_t &InRouteHopCount, const MatchingQueueTicket &InMatchingTicket );
+			Result UnregisterMatchingCmd( const uint64_t &InTransactionID, const uint16_t &InRouteHopCount, const MatchingQueueTicket &InMatchingTicket );
 			// Cmd: Reserve a item
-			Result ReserveItemCmd( const TransactionID &InTransactionID, const uint16_t &InRouteHopCount );
+			Result ReserveItemCmd( const uint64_t &InTransactionID, const uint16_t &InRouteHopCount );
 			// Cmd: Reserve a item
-			Result ReserveItemsCmd( const TransactionID &InTransactionID, const uint16_t &InRouteHopCount, const uint32_t &InNumberOfItemsToReserve );
+			Result ReserveItemsCmd( const uint64_t &InTransactionID, const uint16_t &InRouteHopCount, const uint32_t &InNumberOfItemsToReserve );
 			// Cmd: Cancel reservation
-			Result CancelReservationCmd( const TransactionID &InTransactionID, const uint16_t &InRouteHopCount, const MatchingQueueTicket &InTicketToCancel );
+			Result CancelReservationCmd( const uint64_t &InTransactionID, const uint16_t &InRouteHopCount, const MatchingQueueTicket &InTicketToCancel );
 			// Cmd: Cancel reservation
-			Result CancelReservationsCmd( const TransactionID &InTransactionID, const uint16_t &InRouteHopCount, const Array<MatchingQueueTicket>& InTicketToCancel );
+			Result CancelReservationsCmd( const uint64_t &InTransactionID, const uint16_t &InRouteHopCount, const Array<MatchingQueueTicket>& InTicketToCancel );
 			// Cmd: Dequeue a reserved item
-			Result DequeueItemCmd( const TransactionID &InTransactionID, const uint16_t &InRouteHopCount, const MatchingQueueTicket &InMatchingTicket );
+			Result DequeueItemCmd( const uint64_t &InTransactionID, const uint16_t &InRouteHopCount, const MatchingQueueTicket &InMatchingTicket );
 			// C2S: Item error you should delete it
 			Result MatchingItemErrorC2SEvt( const EntityID &InSenderEntityID, const uint16_t &InRouteHopCount, const MatchingQueueTicket &InMatchingTicket );
 

@@ -9,7 +9,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 
 
-#include "stdafx.h"
+#include "GameServerPCH.h"
 #include "GameServer.h"
 #include "GameServerClass.h"
 

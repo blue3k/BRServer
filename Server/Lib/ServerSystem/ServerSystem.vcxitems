@@ -131,7 +131,7 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)Service\ServerEntityManagerService.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Service\ServerService.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Service\ZookeeperSessionService.h" />
-    <ClInclude Include="$(MSBuildThisFileDirectory)stdafx.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)ServerSystemPCH.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)String\ToStringSvr.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)SvrConst.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)SvrPolicyID.h" />

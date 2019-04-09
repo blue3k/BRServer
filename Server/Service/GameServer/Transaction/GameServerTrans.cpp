@@ -9,7 +9,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 
 
-#include "stdafx.h"
+#include "GameServerPCH.h"
 #include "GameServer.h"
 #include "Net/SFNetServerUDP.h"
 #include "Server/BrService.h"

@@ -11,7 +11,7 @@
 
 
 
-#include "stdafx.h"
+#include "GameInstancePCH.h"
 
 #include "Util/SFTimeUtil.h"
 #include "Util/SFRandom.h"

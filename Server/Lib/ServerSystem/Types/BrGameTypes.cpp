@@ -10,7 +10,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 
 
-#include "stdafx.h"
+#include "ServerSystemPCH.h"
 #include "Types/BrGameTypes.h"
 #include "ServerLog/SvrLog.h"
 

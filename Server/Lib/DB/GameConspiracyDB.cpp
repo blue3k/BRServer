@@ -9,7 +9,7 @@
 //
 ////////////////////////////////////////////////////////////////////////////////
 
-#include "stdafx.h"
+#include "DBPch.h"
 #include "SFTypedefs.h"
 
 #include "DB/GameConspiracyDB.h"

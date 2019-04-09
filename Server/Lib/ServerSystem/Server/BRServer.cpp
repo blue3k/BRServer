@@ -9,7 +9,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 
 
-#include "stdafx.h"
+#include "ServerSystemPCH.h"
 #include "Server/BrServer.h"
 #include "SvrTrace.h"
 #include "String/SFStrUtil.h"

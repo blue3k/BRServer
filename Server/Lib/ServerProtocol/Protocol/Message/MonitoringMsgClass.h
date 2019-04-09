@@ -1,6 +1,6 @@
 ﻿////////////////////////////////////////////////////////////////////////////////
 // 
-// CopyRight (c) 2016 StormForge
+// CopyRight (c) 2016 Kyungkun Ko
 // 
 // Author : Generated
 // 
@@ -43,7 +43,7 @@ namespace SF
 				uint32_t GetRouteHopCount() { return 0; }
 				uint64_t GetSender() { return 0; }
 			private:
-				TransactionID m_TransactionID;
+				uint64_t m_TransactionID;
 			public:
 				GetInstanceListCmd()
 					{}
@@ -54,14 +54,14 @@ namespace SF
 
 					MessageUsage GetMessageUsage() { return MessageUsage_None; }
 
-				const TransactionID& GetTransactionID() const	{ return m_TransactionID; };
+				const uint64_t& GetTransactionID() const	{ return m_TransactionID; };
 
 				static Result TraceOut(const char* prefix, MessageDataPtr& pMsg);
 
 				virtual Result ParseMessage( MessageData* pIMsg );
 				static Result ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr& pIMsg, MessageBase* &pMsgBase );
 
-				static MessageData* Create( IHeap& memHeap, const TransactionID &InTransactionID );
+				static MessageData* Create( IHeap& memHeap, const uint64_t &InTransactionID );
 
 			}; // class GetInstanceListCmd : public MessageBase
 
@@ -84,7 +84,7 @@ namespace SF
 				uint32_t GetRouteHopCount() { return 0; }
 				uint64_t GetSender() { return 0; }
 			private:
-				TransactionID m_TransactionID;
+				uint64_t m_TransactionID;
 				Result m_Result;
 				ExternalBufferArray<PerformanceCounterInstanceInfo> m_CounterInstances;
 				uint32_t m_TotalInstanceCount;
@@ -98,7 +98,7 @@ namespace SF
 
 					MessageUsage GetMessageUsage() { return MessageUsage_None; }
 
-				const TransactionID& GetTransactionID() const	{ return m_TransactionID; };
+				const uint64_t& GetTransactionID() const	{ return m_TransactionID; };
 				const Result& GetResult() const	{ return m_Result; };
 				const Array<PerformanceCounterInstanceInfo>& GetCounterInstances() const	{ return m_CounterInstances; };
 				const uint32_t& GetTotalInstanceCount() const	{ return m_TotalInstanceCount; };
@@ -108,7 +108,7 @@ namespace SF
 				virtual Result ParseMessage( MessageData* pIMsg );
 				static Result ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr& pIMsg, MessageBase* &pMsgBase );
 
-				static MessageData* Create( IHeap& memHeap, const TransactionID &InTransactionID, const Result &InResult, const Array<PerformanceCounterInstanceInfo>& InCounterInstances, const uint32_t &InTotalInstanceCount );
+				static MessageData* Create( IHeap& memHeap, const uint64_t &InTransactionID, const Result &InResult, const Array<PerformanceCounterInstanceInfo>& InCounterInstances, const uint32_t &InTotalInstanceCount );
 
 			}; // class GetInstanceListRes : public MessageBase
 
@@ -132,7 +132,7 @@ namespace SF
 				uint32_t GetRouteHopCount() { return 0; }
 				uint64_t GetSender() { return 0; }
 			private:
-				TransactionID m_TransactionID;
+				uint64_t m_TransactionID;
 				uint64_t m_InstanceUID;
 			public:
 				RequestCounterValuesCmd()
@@ -144,7 +144,7 @@ namespace SF
 
 					MessageUsage GetMessageUsage() { return MessageUsage_None; }
 
-				const TransactionID& GetTransactionID() const	{ return m_TransactionID; };
+				const uint64_t& GetTransactionID() const	{ return m_TransactionID; };
 				const uint64_t& GetInstanceUID() const	{ return m_InstanceUID; };
 
 				static Result TraceOut(const char* prefix, MessageDataPtr& pMsg);
@@ -152,7 +152,7 @@ namespace SF
 				virtual Result ParseMessage( MessageData* pIMsg );
 				static Result ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr& pIMsg, MessageBase* &pMsgBase );
 
-				static MessageData* Create( IHeap& memHeap, const TransactionID &InTransactionID, const uint64_t &InInstanceUID );
+				static MessageData* Create( IHeap& memHeap, const uint64_t &InTransactionID, const uint64_t &InInstanceUID );
 
 			}; // class RequestCounterValuesCmd : public MessageBase
 
@@ -175,7 +175,7 @@ namespace SF
 				uint32_t GetRouteHopCount() { return 0; }
 				uint64_t GetSender() { return 0; }
 			private:
-				TransactionID m_TransactionID;
+				uint64_t m_TransactionID;
 				Result m_Result;
 				uint64_t m_InstanceUID;
 				ExternalBufferArray<uint64_t> m_CounterValues;
@@ -189,7 +189,7 @@ namespace SF
 
 					MessageUsage GetMessageUsage() { return MessageUsage_None; }
 
-				const TransactionID& GetTransactionID() const	{ return m_TransactionID; };
+				const uint64_t& GetTransactionID() const	{ return m_TransactionID; };
 				const Result& GetResult() const	{ return m_Result; };
 				const uint64_t& GetInstanceUID() const	{ return m_InstanceUID; };
 				const Array<uint64_t>& GetCounterValues() const	{ return m_CounterValues; };
@@ -199,7 +199,7 @@ namespace SF
 				virtual Result ParseMessage( MessageData* pIMsg );
 				static Result ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr& pIMsg, MessageBase* &pMsgBase );
 
-				static MessageData* Create( IHeap& memHeap, const TransactionID &InTransactionID, const Result &InResult, const uint64_t &InInstanceUID, const Array<uint64_t>& InCounterValues );
+				static MessageData* Create( IHeap& memHeap, const uint64_t &InTransactionID, const Result &InResult, const uint64_t &InInstanceUID, const Array<uint64_t>& InCounterValues );
 
 			}; // class RequestCounterValuesRes : public MessageBase
 
@@ -219,7 +219,7 @@ namespace SF
 				}; // enum ParameterTypeInfo
 			public:
 				uint64_t GetPlayerID() { return 0; }
-				TransactionID GetTransactionID() { return 0; }
+				uint64_t GetTransactionID() { return 0; }
 				RouteContext GetRouteContext() { return 0; }
 				uint32_t GetRouteHopCount() { return 0; }
 				uint64_t GetSender() { return 0; }
@@ -268,7 +268,7 @@ namespace SF
 				}; // enum ParameterTypeInfo
 			public:
 				uint64_t GetPlayerID() { return 0; }
-				TransactionID GetTransactionID() { return 0; }
+				uint64_t GetTransactionID() { return 0; }
 				RouteContext GetRouteContext() { return 0; }
 				uint32_t GetRouteHopCount() { return 0; }
 				uint64_t GetSender() { return 0; }
@@ -311,7 +311,7 @@ namespace SF
 				}; // enum ParameterTypeInfo
 			public:
 				uint64_t GetPlayerID() { return 0; }
-				TransactionID GetTransactionID() { return 0; }
+				uint64_t GetTransactionID() { return 0; }
 				RouteContext GetRouteContext() { return 0; }
 				uint32_t GetRouteHopCount() { return 0; }
 				uint64_t GetSender() { return 0; }
@@ -356,7 +356,7 @@ namespace SF
 				}; // enum ParameterTypeInfo
 			public:
 				uint64_t GetPlayerID() { return 0; }
-				TransactionID GetTransactionID() { return 0; }
+				uint64_t GetTransactionID() { return 0; }
 				RouteContext GetRouteContext() { return 0; }
 				uint32_t GetRouteHopCount() { return 0; }
 				uint64_t GetSender() { return 0; }

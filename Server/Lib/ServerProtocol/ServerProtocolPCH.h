@@ -5,11 +5,10 @@
 
 #pragma once
 
+
 #include "SFTypedefs.h"
 
 
-
-#include "ResultCode/SFResultCodeSvr.h"
 #include "Util/SFUtility.h"
 #include "String/SFStrUtil.h"
 #include "Net/SFMessage.h"
@@ -21,4 +20,9 @@
 #include "String/SFToString.h"
 #include "String/SFToStringBase.h"
 #include "String/SFToStringEngineTypes.h"
+
+#include "Protocol/SFProtocolHelper.h"
+
+
+
 

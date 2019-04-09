@@ -10,7 +10,7 @@
 
 
 
-#include "stdafx.h"
+#include "GameServerPCH.h"
 #include "Util/SFTimeUtil.h"
 #include "SvrConst.h"
 #include "Server/BrServer.h"

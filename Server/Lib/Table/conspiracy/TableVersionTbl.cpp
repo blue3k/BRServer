@@ -9,7 +9,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 
 
-#include "stdafx.h"
+#include "TablePCH.h"
 #include "SFTypedefs.h"
 #include "TableVersionTbl.h"
 #include "Memory/SFMemory.h"

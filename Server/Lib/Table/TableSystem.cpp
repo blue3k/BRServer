@@ -9,7 +9,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 
 
-#include "stdafx.h"
+#include "TablePCH.h"
 #include "SFTypedefs.h"
 #include "ServerLog/SvrLog.h"
 #include "ResultCode/SFResultCodeSvr.h"

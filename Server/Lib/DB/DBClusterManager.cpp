@@ -9,7 +9,7 @@
 //
 ////////////////////////////////////////////////////////////////////////////////
 
-#include "stdafx.h"
+#include "DBPch.h"
 #include "SFTypedefs.h"
 #include "Util/SFTimeUtil.h"
 #include "String/SFStrUtil.h"

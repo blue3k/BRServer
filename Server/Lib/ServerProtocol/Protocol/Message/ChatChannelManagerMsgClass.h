@@ -1,6 +1,6 @@
 ﻿////////////////////////////////////////////////////////////////////////////////
 // 
-// CopyRight (c) 2016 StormForge
+// CopyRight (c) 2016 Kyungkun Ko
 // 
 // Author : Generated
 // 
@@ -42,7 +42,7 @@ namespace SF
 				uint64_t GetSender() { return 0; }
 			private:
 				RouteContext m_RouteContext;
-				TransactionID m_TransactionID;
+				uint64_t m_TransactionID;
 				uint16_t m_RouteHopCount;
 				const char* m_ChannelName;
 				const char* m_Passcode;
@@ -62,7 +62,7 @@ namespace SF
 					MessageUsage GetMessageUsage() { return MessageUsage_None; }
 
 				const RouteContext& GetRouteContext() const	{ return m_RouteContext; };
-				const TransactionID& GetTransactionID() const	{ return m_TransactionID; };
+				const uint64_t& GetTransactionID() const	{ return m_TransactionID; };
 				const uint16_t& GetRouteHopCount() const	{ return m_RouteHopCount; };
 				const char* GetChannelName() const	{ return m_ChannelName; };
 				const char* GetPasscode() const	{ return m_Passcode; };
@@ -73,7 +73,7 @@ namespace SF
 				virtual Result ParseMessage( MessageData* pIMsg );
 				static Result ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr& pIMsg, MessageBase* &pMsgBase );
 
-				static MessageData* Create( IHeap& memHeap, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const uint16_t &InRouteHopCount, const char* InChannelName, const char* InPasscode, const PlayerInformation &InCreator );
+				static MessageData* Create( IHeap& memHeap, const RouteContext &InRouteContext, const uint64_t &InTransactionID, const uint16_t &InRouteHopCount, const char* InChannelName, const char* InPasscode, const PlayerInformation &InCreator );
 
 				Result OverrideRouteContextDestination( EntityUID to );
 
@@ -100,7 +100,7 @@ namespace SF
 				uint64_t GetSender() { return 0; }
 			private:
 				RouteContext m_RouteContext;
-				TransactionID m_TransactionID;
+				uint64_t m_TransactionID;
 				Result m_Result;
 				uint64_t m_ChannelUID;
 			public:
@@ -114,7 +114,7 @@ namespace SF
 					MessageUsage GetMessageUsage() { return MessageUsage_None; }
 
 				const RouteContext& GetRouteContext() const	{ return m_RouteContext; };
-				const TransactionID& GetTransactionID() const	{ return m_TransactionID; };
+				const uint64_t& GetTransactionID() const	{ return m_TransactionID; };
 				const Result& GetResult() const	{ return m_Result; };
 				const uint64_t& GetChannelUID() const	{ return m_ChannelUID; };
 
@@ -123,7 +123,7 @@ namespace SF
 				virtual Result ParseMessage( MessageData* pIMsg );
 				static Result ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr& pIMsg, MessageBase* &pMsgBase );
 
-				static MessageData* Create( IHeap& memHeap, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const Result &InResult, const uint64_t &InChannelUID );
+				static MessageData* Create( IHeap& memHeap, const RouteContext &InRouteContext, const uint64_t &InTransactionID, const Result &InResult, const uint64_t &InChannelUID );
 
 				Result OverrideRouteContextDestination( EntityUID to );
 
@@ -150,7 +150,7 @@ namespace SF
 				uint64_t GetSender() { return 0; }
 			private:
 				RouteContext m_RouteContext;
-				TransactionID m_TransactionID;
+				uint64_t m_TransactionID;
 				uint16_t m_RouteHopCount;
 				const char* m_ChannelName;
 			public:
@@ -166,7 +166,7 @@ namespace SF
 					MessageUsage GetMessageUsage() { return MessageUsage_None; }
 
 				const RouteContext& GetRouteContext() const	{ return m_RouteContext; };
-				const TransactionID& GetTransactionID() const	{ return m_TransactionID; };
+				const uint64_t& GetTransactionID() const	{ return m_TransactionID; };
 				const uint16_t& GetRouteHopCount() const	{ return m_RouteHopCount; };
 				const char* GetChannelName() const	{ return m_ChannelName; };
 
@@ -175,7 +175,7 @@ namespace SF
 				virtual Result ParseMessage( MessageData* pIMsg );
 				static Result ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr& pIMsg, MessageBase* &pMsgBase );
 
-				static MessageData* Create( IHeap& memHeap, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const uint16_t &InRouteHopCount, const char* InChannelName );
+				static MessageData* Create( IHeap& memHeap, const RouteContext &InRouteContext, const uint64_t &InTransactionID, const uint16_t &InRouteHopCount, const char* InChannelName );
 
 				Result OverrideRouteContextDestination( EntityUID to );
 
@@ -202,7 +202,7 @@ namespace SF
 				uint64_t GetSender() { return 0; }
 			private:
 				RouteContext m_RouteContext;
-				TransactionID m_TransactionID;
+				uint64_t m_TransactionID;
 				Result m_Result;
 				uint64_t m_ChannelUID;
 			public:
@@ -216,7 +216,7 @@ namespace SF
 					MessageUsage GetMessageUsage() { return MessageUsage_None; }
 
 				const RouteContext& GetRouteContext() const	{ return m_RouteContext; };
-				const TransactionID& GetTransactionID() const	{ return m_TransactionID; };
+				const uint64_t& GetTransactionID() const	{ return m_TransactionID; };
 				const Result& GetResult() const	{ return m_Result; };
 				const uint64_t& GetChannelUID() const	{ return m_ChannelUID; };
 
@@ -225,7 +225,7 @@ namespace SF
 				virtual Result ParseMessage( MessageData* pIMsg );
 				static Result ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr& pIMsg, MessageBase* &pMsgBase );
 
-				static MessageData* Create( IHeap& memHeap, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const Result &InResult, const uint64_t &InChannelUID );
+				static MessageData* Create( IHeap& memHeap, const RouteContext &InRouteContext, const uint64_t &InTransactionID, const Result &InResult, const uint64_t &InChannelUID );
 
 				Result OverrideRouteContextDestination( EntityUID to );
 
@@ -249,7 +249,7 @@ namespace SF
 				}; // enum ParameterTypeInfo
 			public:
 				uint64_t GetPlayerID() { return 0; }
-				TransactionID GetTransactionID() { return 0; }
+				uint64_t GetTransactionID() { return 0; }
 				uint64_t GetSender() { return 0; }
 			private:
 				RouteContext m_RouteContext;

@@ -46,7 +46,7 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)SessionMYSQL.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)SessionOLEDB.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)ShardCoordinatorDBQuery.h" />
-    <ClInclude Include="$(MSBuildThisFileDirectory)stdafx.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)DBPch.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="$(MSBuildThisFileDirectory)AccountDB.cpp" />

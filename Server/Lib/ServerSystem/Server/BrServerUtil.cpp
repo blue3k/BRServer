@@ -8,7 +8,7 @@
 //
 ////////////////////////////////////////////////////////////////////////////////
 
-#include "stdafx.h"
+#include "ServerSystemPCH.h"
 #include "Transaction/Transaction.h"
 #include "Types/BrSvrTypes.h"
 #include "Task/ServerTaskManager.h"

@@ -1,6 +1,6 @@
 ﻿////////////////////////////////////////////////////////////////////////////////
 // 
-// CopyRight (c) 2016 StormForge
+// CopyRight (c) 2016 Kyungkun Ko
 // 
 // Author : Generated
 // 
@@ -29,17 +29,17 @@ namespace SF
 			RankingServerService ( ServerServiceInformation* pService );
 
 			// Cmd: Add a player to ranking
-			Result AddPlayerCmd( const TransactionID &InTransactionID, const PlayerInformation &InPlayerInfo, const uint64_t &InRankingScore );
+			Result AddPlayerCmd( const uint64_t &InTransactionID, const PlayerInformation &InPlayerInfo, const uint64_t &InRankingScore );
 			// Cmd: Remove a player to ranking
-			Result RemovePlayerCmd( const TransactionID &InTransactionID, const PlayerID &InPlayerID );
+			Result RemovePlayerCmd( const uint64_t &InTransactionID, const PlayerID &InPlayerID );
 			// Cmd: Get player to ranking
-			Result GetPlayerRankingCmd( const TransactionID &InTransactionID, const PlayerID &InPlayerID );
+			Result GetPlayerRankingCmd( const uint64_t &InTransactionID, const PlayerID &InPlayerID );
 			// Cmd: Update a player to ranking
-			Result UpdatePlayerScoreCmd( const TransactionID &InTransactionID, const uint64_t &InRankingScore, const PlayerInformation &InPlayerInfo, const uint16_t &InCount );
+			Result UpdatePlayerScoreCmd( const uint64_t &InTransactionID, const uint64_t &InRankingScore, const PlayerInformation &InPlayerInfo, const uint16_t &InCount );
 			// Cmd: Get ranking list
-			Result GetRankingCmd( const TransactionID &InTransactionID, const RankingType &InRankingType, const uint16_t &InBaseRanking, const uint16_t &InCount );
+			Result GetRankingCmd( const uint64_t &InTransactionID, const RankingType &InRankingType, const uint16_t &InBaseRanking, const uint16_t &InCount );
 			// Cmd: Debug test
-			Result DebugPrintALLRankingCmd( const TransactionID &InTransactionID, const char* InFileName );
+			Result DebugPrintALLRankingCmd( const uint64_t &InTransactionID, const char* InFileName );
 
 		}; // class RankingServerService : public ServerServiceBase
 

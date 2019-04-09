@@ -1,6 +1,6 @@
 ﻿////////////////////////////////////////////////////////////////////////////////
 // 
-// CopyRight (c) 2017 StormForge
+// CopyRight (c) 2017 Kyungkun Ko
 // 
 // Author : Generated
 // 
@@ -9,7 +9,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 
 
-#include "stdafx.h"
+#include "ServerProtocolPCH.h"
 #include "SFTypedefs.h"
 #include "Protocol/SFProtocol.h"
 #include "Net/SFNetDef.h"

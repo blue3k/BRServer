@@ -11,7 +11,7 @@
 
 
 
-#include "stdafx.h"
+#include "ServerSystemPCH.h"
 #include "ServerLog/SvrLog.h"
 #include "ResultCode/SFResultCodeSvr.h"
 #include "Thread/SFThread.h"

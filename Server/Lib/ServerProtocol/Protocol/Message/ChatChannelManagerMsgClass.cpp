@@ -1,6 +1,6 @@
 ﻿////////////////////////////////////////////////////////////////////////////////
 // 
-// CopyRight (c) 2016 StormForge
+// CopyRight (c) 2016 Kyungkun Ko
 // 
 // Author : Generated
 // 
@@ -9,7 +9,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 
 
-#include "stdafx.h"
+#include "ServerProtocolPCH.h"
 #include "Protocol/SFProtocol.h"
 #include "String/SFToString.h"
 #include "Net/SFNetToString.h"
@@ -43,7 +43,7 @@ namespace SF
 				pCur = pIMsg->GetMessageData();
 
 				protocolChk( Protocol::StreamParamCopy( &m_RouteContext, pCur, iMsgSize, sizeof(RouteContext) ) );
-				protocolChk( Protocol::StreamParamCopy( &m_TransactionID, pCur, iMsgSize, sizeof(TransactionID) ) );
+				protocolChk( Protocol::StreamParamCopy( &m_TransactionID, pCur, iMsgSize, sizeof(uint64_t) ) );
 				protocolChk( Protocol::StreamParamCopy( &m_RouteHopCount, pCur, iMsgSize, sizeof(uint16_t) ) );
 				protocolChk( Protocol::StreamParamCopy( &uiSizeOfChannelName, pCur, iMsgSize, sizeof(uint16_t) ) );
 				protocolChk( Protocol::StreamParamLnk( m_ChannelName, pCur, iMsgSize, sizeof(char)*uiSizeOfChannelName ) );
@@ -71,7 +71,7 @@ namespace SF
 
 			}; // Result CreateChannelCmd::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
 
-			MessageData* CreateChannelCmd::Create( IHeap& memHeap, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const uint16_t &InRouteHopCount, const char* InChannelName, const char* InPasscode, const PlayerInformation &InCreator )
+			MessageData* CreateChannelCmd::Create( IHeap& memHeap, const RouteContext &InRouteContext, const uint64_t &InTransactionID, const uint16_t &InRouteHopCount, const char* InChannelName, const char* InPasscode, const PlayerInformation &InCreator )
 			{
  				MessageData *pNewMsg = nullptr;
 				Result hr;
@@ -82,7 +82,7 @@ namespace SF
 				uint16_t __uiInPasscodeLength = InPasscode ? (uint16_t)(strlen(InPasscode)+1) : 1;
 				unsigned __uiMessageSize = (unsigned)(sizeof(MessageHeader) +  + sizeof(uint16_t) + __uiInChannelNameLength + sizeof(uint16_t) + __uiInPasscodeLength 
 					+ sizeof(RouteContext)
-					+ sizeof(TransactionID)
+					+ sizeof(uint64_t)
 					+ sizeof(uint16_t)
 					+ sizeof(PlayerInformation));
 
@@ -92,7 +92,7 @@ namespace SF
 				pMsgData = pNewMsg->GetMessageData();
 
 				Protocol::PackParamCopy( pMsgData, &InRouteContext, sizeof(RouteContext));
-				Protocol::PackParamCopy( pMsgData, &InTransactionID, sizeof(TransactionID));
+				Protocol::PackParamCopy( pMsgData, &InTransactionID, sizeof(uint64_t));
 				Protocol::PackParamCopy( pMsgData, &InRouteHopCount, sizeof(uint16_t));
 				Protocol::PackParamCopy( pMsgData, &__uiInChannelNameLength, sizeof(uint16_t) );
 				Protocol::PackParamCopy( pMsgData, InChannelName ? InChannelName : "", __uiInChannelNameLength );
@@ -110,7 +110,7 @@ namespace SF
 				}
 				return pNewMsg;
 
-			}; // MessageData* CreateChannelCmd::Create( IHeap& memHeap, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const uint16_t &InRouteHopCount, const char* InChannelName, const char* InPasscode, const PlayerInformation &InCreator )
+			}; // MessageData* CreateChannelCmd::Create( IHeap& memHeap, const RouteContext &InRouteContext, const uint64_t &InTransactionID, const uint16_t &InRouteHopCount, const char* InChannelName, const char* InPasscode, const PlayerInformation &InCreator )
 
 			Result CreateChannelCmd::OverrideRouteContextDestination( EntityUID to )
 			{
@@ -157,7 +157,7 @@ namespace SF
 				routeContext.Components.To = to;
 				memcpy( pCur, &routeContext, sizeof(RouteContext) );
 				pCur += sizeof(RouteContext); iMsgSize -= sizeof(RouteContext);
-				pCur += sizeof(TransactionID); iMsgSize -= sizeof(TransactionID);
+				pCur += sizeof(uint64_t); iMsgSize -= sizeof(uint64_t);
 				Assert( iMsgSize >= (INT)sizeof(uint16_t) );
 				*(uint16_t*)pCur = hopCount;
 				pCur += sizeof(uint16_t); iMsgSize -= sizeof(uint16_t);
@@ -192,7 +192,7 @@ namespace SF
 				pCur = pIMsg->GetMessageData();
 
 				protocolChk( Protocol::StreamParamCopy( &m_RouteContext, pCur, iMsgSize, sizeof(RouteContext) ) );
-				protocolChk( Protocol::StreamParamCopy( &m_TransactionID, pCur, iMsgSize, sizeof(TransactionID) ) );
+				protocolChk( Protocol::StreamParamCopy( &m_TransactionID, pCur, iMsgSize, sizeof(uint64_t) ) );
 				protocolChk( Protocol::StreamParamCopy( &m_Result, pCur, iMsgSize, sizeof(Result) ) );
 				protocolChk( Protocol::StreamParamCopy( &m_ChannelUID, pCur, iMsgSize, sizeof(uint64_t) ) );
 
@@ -216,7 +216,7 @@ namespace SF
 
 			}; // Result CreateChannelRes::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
 
-			MessageData* CreateChannelRes::Create( IHeap& memHeap, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const Result &InResult, const uint64_t &InChannelUID )
+			MessageData* CreateChannelRes::Create( IHeap& memHeap, const RouteContext &InRouteContext, const uint64_t &InTransactionID, const Result &InResult, const uint64_t &InChannelUID )
 			{
  				MessageData *pNewMsg = nullptr;
 				Result hr;
@@ -225,7 +225,7 @@ namespace SF
 
 				unsigned __uiMessageSize = (unsigned)(sizeof(MessageHeader) 
 					+ sizeof(RouteContext)
-					+ sizeof(TransactionID)
+					+ sizeof(uint64_t)
 					+ sizeof(Result)
 					+ sizeof(uint64_t));
 
@@ -235,7 +235,7 @@ namespace SF
 				pMsgData = pNewMsg->GetMessageData();
 
 				Protocol::PackParamCopy( pMsgData, &InRouteContext, sizeof(RouteContext));
-				Protocol::PackParamCopy( pMsgData, &InTransactionID, sizeof(TransactionID));
+				Protocol::PackParamCopy( pMsgData, &InTransactionID, sizeof(uint64_t));
 				Protocol::PackParamCopy( pMsgData, &InResult, sizeof(Result));
 				Protocol::PackParamCopy( pMsgData, &InChannelUID, sizeof(uint64_t));
 
@@ -249,7 +249,7 @@ namespace SF
 				}
 				return pNewMsg;
 
-			}; // MessageData* CreateChannelRes::Create( IHeap& memHeap, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const Result &InResult, const uint64_t &InChannelUID )
+			}; // MessageData* CreateChannelRes::Create( IHeap& memHeap, const RouteContext &InRouteContext, const uint64_t &InTransactionID, const Result &InResult, const uint64_t &InChannelUID )
 
 			Result CreateChannelRes::OverrideRouteContextDestination( EntityUID to )
 			{
@@ -296,7 +296,7 @@ namespace SF
 				routeContext.Components.To = to;
 				memcpy( pCur, &routeContext, sizeof(RouteContext) );
 				pCur += sizeof(RouteContext); iMsgSize -= sizeof(RouteContext);
-				pCur += sizeof(TransactionID); iMsgSize -= sizeof(TransactionID);
+				pCur += sizeof(uint64_t); iMsgSize -= sizeof(uint64_t);
 				pCur += sizeof(Result); iMsgSize -= sizeof(Result);
 				pCur += sizeof(uint64_t); iMsgSize -= sizeof(uint64_t);
 
@@ -332,7 +332,7 @@ namespace SF
 				pCur = pIMsg->GetMessageData();
 
 				protocolChk( Protocol::StreamParamCopy( &m_RouteContext, pCur, iMsgSize, sizeof(RouteContext) ) );
-				protocolChk( Protocol::StreamParamCopy( &m_TransactionID, pCur, iMsgSize, sizeof(TransactionID) ) );
+				protocolChk( Protocol::StreamParamCopy( &m_TransactionID, pCur, iMsgSize, sizeof(uint64_t) ) );
 				protocolChk( Protocol::StreamParamCopy( &m_RouteHopCount, pCur, iMsgSize, sizeof(uint16_t) ) );
 				protocolChk( Protocol::StreamParamCopy( &uiSizeOfChannelName, pCur, iMsgSize, sizeof(uint16_t) ) );
 				protocolChk( Protocol::StreamParamLnk( m_ChannelName, pCur, iMsgSize, sizeof(char)*uiSizeOfChannelName ) );
@@ -357,7 +357,7 @@ namespace SF
 
 			}; // Result FindChannelCmd::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
 
-			MessageData* FindChannelCmd::Create( IHeap& memHeap, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const uint16_t &InRouteHopCount, const char* InChannelName )
+			MessageData* FindChannelCmd::Create( IHeap& memHeap, const RouteContext &InRouteContext, const uint64_t &InTransactionID, const uint16_t &InRouteHopCount, const char* InChannelName )
 			{
  				MessageData *pNewMsg = nullptr;
 				Result hr;
@@ -367,7 +367,7 @@ namespace SF
 				uint16_t __uiInChannelNameLength = InChannelName ? (uint16_t)(strlen(InChannelName)+1) : 1;
 				unsigned __uiMessageSize = (unsigned)(sizeof(MessageHeader) +  + sizeof(uint16_t) + __uiInChannelNameLength 
 					+ sizeof(RouteContext)
-					+ sizeof(TransactionID)
+					+ sizeof(uint64_t)
 					+ sizeof(uint16_t));
 
 
@@ -376,7 +376,7 @@ namespace SF
 				pMsgData = pNewMsg->GetMessageData();
 
 				Protocol::PackParamCopy( pMsgData, &InRouteContext, sizeof(RouteContext));
-				Protocol::PackParamCopy( pMsgData, &InTransactionID, sizeof(TransactionID));
+				Protocol::PackParamCopy( pMsgData, &InTransactionID, sizeof(uint64_t));
 				Protocol::PackParamCopy( pMsgData, &InRouteHopCount, sizeof(uint16_t));
 				Protocol::PackParamCopy( pMsgData, &__uiInChannelNameLength, sizeof(uint16_t) );
 				Protocol::PackParamCopy( pMsgData, InChannelName ? InChannelName : "", __uiInChannelNameLength );
@@ -391,7 +391,7 @@ namespace SF
 				}
 				return pNewMsg;
 
-			}; // MessageData* FindChannelCmd::Create( IHeap& memHeap, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const uint16_t &InRouteHopCount, const char* InChannelName )
+			}; // MessageData* FindChannelCmd::Create( IHeap& memHeap, const RouteContext &InRouteContext, const uint64_t &InTransactionID, const uint16_t &InRouteHopCount, const char* InChannelName )
 
 			Result FindChannelCmd::OverrideRouteContextDestination( EntityUID to )
 			{
@@ -438,7 +438,7 @@ namespace SF
 				routeContext.Components.To = to;
 				memcpy( pCur, &routeContext, sizeof(RouteContext) );
 				pCur += sizeof(RouteContext); iMsgSize -= sizeof(RouteContext);
-				pCur += sizeof(TransactionID); iMsgSize -= sizeof(TransactionID);
+				pCur += sizeof(uint64_t); iMsgSize -= sizeof(uint64_t);
 				Assert( iMsgSize >= (INT)sizeof(uint16_t) );
 				*(uint16_t*)pCur = hopCount;
 				pCur += sizeof(uint16_t); iMsgSize -= sizeof(uint16_t);
@@ -473,7 +473,7 @@ namespace SF
 				pCur = pIMsg->GetMessageData();
 
 				protocolChk( Protocol::StreamParamCopy( &m_RouteContext, pCur, iMsgSize, sizeof(RouteContext) ) );
-				protocolChk( Protocol::StreamParamCopy( &m_TransactionID, pCur, iMsgSize, sizeof(TransactionID) ) );
+				protocolChk( Protocol::StreamParamCopy( &m_TransactionID, pCur, iMsgSize, sizeof(uint64_t) ) );
 				protocolChk( Protocol::StreamParamCopy( &m_Result, pCur, iMsgSize, sizeof(Result) ) );
 				protocolChk( Protocol::StreamParamCopy( &m_ChannelUID, pCur, iMsgSize, sizeof(uint64_t) ) );
 
@@ -497,7 +497,7 @@ namespace SF
 
 			}; // Result FindChannelRes::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
 
-			MessageData* FindChannelRes::Create( IHeap& memHeap, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const Result &InResult, const uint64_t &InChannelUID )
+			MessageData* FindChannelRes::Create( IHeap& memHeap, const RouteContext &InRouteContext, const uint64_t &InTransactionID, const Result &InResult, const uint64_t &InChannelUID )
 			{
  				MessageData *pNewMsg = nullptr;
 				Result hr;
@@ -506,7 +506,7 @@ namespace SF
 
 				unsigned __uiMessageSize = (unsigned)(sizeof(MessageHeader) 
 					+ sizeof(RouteContext)
-					+ sizeof(TransactionID)
+					+ sizeof(uint64_t)
 					+ sizeof(Result)
 					+ sizeof(uint64_t));
 
@@ -516,7 +516,7 @@ namespace SF
 				pMsgData = pNewMsg->GetMessageData();
 
 				Protocol::PackParamCopy( pMsgData, &InRouteContext, sizeof(RouteContext));
-				Protocol::PackParamCopy( pMsgData, &InTransactionID, sizeof(TransactionID));
+				Protocol::PackParamCopy( pMsgData, &InTransactionID, sizeof(uint64_t));
 				Protocol::PackParamCopy( pMsgData, &InResult, sizeof(Result));
 				Protocol::PackParamCopy( pMsgData, &InChannelUID, sizeof(uint64_t));
 
@@ -530,7 +530,7 @@ namespace SF
 				}
 				return pNewMsg;
 
-			}; // MessageData* FindChannelRes::Create( IHeap& memHeap, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const Result &InResult, const uint64_t &InChannelUID )
+			}; // MessageData* FindChannelRes::Create( IHeap& memHeap, const RouteContext &InRouteContext, const uint64_t &InTransactionID, const Result &InResult, const uint64_t &InChannelUID )
 
 			Result FindChannelRes::OverrideRouteContextDestination( EntityUID to )
 			{
@@ -577,7 +577,7 @@ namespace SF
 				routeContext.Components.To = to;
 				memcpy( pCur, &routeContext, sizeof(RouteContext) );
 				pCur += sizeof(RouteContext); iMsgSize -= sizeof(RouteContext);
-				pCur += sizeof(TransactionID); iMsgSize -= sizeof(TransactionID);
+				pCur += sizeof(uint64_t); iMsgSize -= sizeof(uint64_t);
 				pCur += sizeof(Result); iMsgSize -= sizeof(Result);
 				pCur += sizeof(uint64_t); iMsgSize -= sizeof(uint64_t);
 

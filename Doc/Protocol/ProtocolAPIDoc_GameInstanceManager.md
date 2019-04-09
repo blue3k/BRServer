@@ -1,6 +1,6 @@
 ﻿***
  
- CopyRight (c) 2018 StormForge
+ CopyRight (c) 2019 StormForge
  
  Description : GameInstanceManager Message Protocol API Document
 
@@ -19,7 +19,7 @@ Create a game instance
 
 1. Command interface
 
-        Result CreateGameCmd(const RouteContext &InRouteContext, const TransactionID &InTransactionID, const uint16_t &InRouteHopCount, const uint16_t &InNumberOfBotPlayer, const uint16_t &InMaxPlayer)
+        Result CreateGameCmd(const RouteContext &InRouteContext, const uint64_t &InTransactionID, const uint16_t &InRouteHopCount, const uint16_t &InNumberOfBotPlayer, const uint16_t &InMaxPlayer)
 
 		- OutInRouteContext: RouteContext type. 
 

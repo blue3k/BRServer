@@ -1,6 +1,6 @@
 ﻿////////////////////////////////////////////////////////////////////////////////
 // 
-// CopyRight (c) 2016 StormForge
+// CopyRight (c) 2016 Kyungkun Ko
 // 
 // Author : Generated
 // 
@@ -42,7 +42,7 @@ namespace SF
 				uint64_t GetSender() { return 0; }
 			private:
 				RouteContext m_RouteContext;
-				TransactionID m_TransactionID;
+				uint64_t m_TransactionID;
 				uint16_t m_RouteHopCount;
 				ClusterID m_ClusterID;
 			public:
@@ -56,7 +56,7 @@ namespace SF
 					MessageUsage GetMessageUsage() { return MessageUsage_ClusterStatusRead; }
 
 				const RouteContext& GetRouteContext() const	{ return m_RouteContext; };
-				const TransactionID& GetTransactionID() const	{ return m_TransactionID; };
+				const uint64_t& GetTransactionID() const	{ return m_TransactionID; };
 				const uint16_t& GetRouteHopCount() const	{ return m_RouteHopCount; };
 				const ClusterID& GetClusterID() const	{ return m_ClusterID; };
 
@@ -65,7 +65,7 @@ namespace SF
 				virtual Result ParseMessage( MessageData* pIMsg );
 				static Result ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr& pIMsg, MessageBase* &pMsgBase );
 
-				static MessageData* Create( IHeap& memHeap, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const uint16_t &InRouteHopCount, const ClusterID &InClusterID );
+				static MessageData* Create( IHeap& memHeap, const RouteContext &InRouteContext, const uint64_t &InTransactionID, const uint16_t &InRouteHopCount, const ClusterID &InClusterID );
 
 				Result OverrideRouteContextDestination( EntityUID to );
 
@@ -92,7 +92,7 @@ namespace SF
 				uint64_t GetSender() { return 0; }
 			private:
 				RouteContext m_RouteContext;
-				TransactionID m_TransactionID;
+				uint64_t m_TransactionID;
 				Result m_Result;
 				ExternalBufferArray<ServiceInformation> m_MemberList;
 			public:
@@ -106,7 +106,7 @@ namespace SF
 					MessageUsage GetMessageUsage() { return MessageUsage_ClusterStatusRead; }
 
 				const RouteContext& GetRouteContext() const	{ return m_RouteContext; };
-				const TransactionID& GetTransactionID() const	{ return m_TransactionID; };
+				const uint64_t& GetTransactionID() const	{ return m_TransactionID; };
 				const Result& GetResult() const	{ return m_Result; };
 				const Array<ServiceInformation>& GetMemberList() const	{ return m_MemberList; };
 
@@ -115,7 +115,7 @@ namespace SF
 				virtual Result ParseMessage( MessageData* pIMsg );
 				static Result ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr& pIMsg, MessageBase* &pMsgBase );
 
-				static MessageData* Create( IHeap& memHeap, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const Result &InResult, const Array<ServiceInformation>& InMemberList );
+				static MessageData* Create( IHeap& memHeap, const RouteContext &InRouteContext, const uint64_t &InTransactionID, const Result &InResult, const Array<ServiceInformation>& InMemberList );
 
 				Result OverrideRouteContextDestination( EntityUID to );
 
@@ -142,7 +142,7 @@ namespace SF
 				uint64_t GetSender() { return 0; }
 			private:
 				RouteContext m_RouteContext;
-				TransactionID m_TransactionID;
+				uint64_t m_TransactionID;
 				uint16_t m_RouteHopCount;
 				ClusterID m_ClusterID;
 			public:
@@ -156,7 +156,7 @@ namespace SF
 					MessageUsage GetMessageUsage() { return MessageUsage_ClusterDataRead; }
 
 				const RouteContext& GetRouteContext() const	{ return m_RouteContext; };
-				const TransactionID& GetTransactionID() const	{ return m_TransactionID; };
+				const uint64_t& GetTransactionID() const	{ return m_TransactionID; };
 				const uint16_t& GetRouteHopCount() const	{ return m_RouteHopCount; };
 				const ClusterID& GetClusterID() const	{ return m_ClusterID; };
 
@@ -165,7 +165,7 @@ namespace SF
 				virtual Result ParseMessage( MessageData* pIMsg );
 				static Result ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr& pIMsg, MessageBase* &pMsgBase );
 
-				static MessageData* Create( IHeap& memHeap, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const uint16_t &InRouteHopCount, const ClusterID &InClusterID );
+				static MessageData* Create( IHeap& memHeap, const RouteContext &InRouteContext, const uint64_t &InTransactionID, const uint16_t &InRouteHopCount, const ClusterID &InClusterID );
 
 				Result OverrideRouteContextDestination( EntityUID to );
 
@@ -192,7 +192,7 @@ namespace SF
 				uint64_t GetSender() { return 0; }
 			private:
 				RouteContext m_RouteContext;
-				TransactionID m_TransactionID;
+				uint64_t m_TransactionID;
 				Result m_Result;
 			public:
 				RequestDataSyncRes()
@@ -205,7 +205,7 @@ namespace SF
 					MessageUsage GetMessageUsage() { return MessageUsage_ClusterDataRead; }
 
 				const RouteContext& GetRouteContext() const	{ return m_RouteContext; };
-				const TransactionID& GetTransactionID() const	{ return m_TransactionID; };
+				const uint64_t& GetTransactionID() const	{ return m_TransactionID; };
 				const Result& GetResult() const	{ return m_Result; };
 
 				static Result TraceOut(const char* prefix, MessageDataPtr& pMsg);
@@ -213,7 +213,7 @@ namespace SF
 				virtual Result ParseMessage( MessageData* pIMsg );
 				static Result ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr& pIMsg, MessageBase* &pMsgBase );
 
-				static MessageData* Create( IHeap& memHeap, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const Result &InResult );
+				static MessageData* Create( IHeap& memHeap, const RouteContext &InRouteContext, const uint64_t &InTransactionID, const Result &InResult );
 
 				Result OverrideRouteContextDestination( EntityUID to );
 

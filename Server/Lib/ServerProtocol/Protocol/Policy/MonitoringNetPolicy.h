@@ -32,9 +32,9 @@ namespace SF
 			{}
 
 			// Cmd: [deprecated]
-			Result GetInstanceListCmd( const TransactionID &InTransactionID );
+			Result GetInstanceListCmd( const uint64_t &InTransactionID );
 			// Cmd: [deprecated]
-			Result RequestCounterValuesCmd( const TransactionID &InTransactionID, const uint64_t &InInstanceUID );
+			Result RequestCounterValuesCmd( const uint64_t &InTransactionID, const uint64_t &InInstanceUID );
 			// C2S: Message when new performance counter is added.
 			Result PerformanceCounterNewC2SEvt( const char* InInstanceName, const uint64_t &InInstanceUID, const Array<PerformanceCounterInfo>& InNewCounters );
 			// C2S: Counter instance is deleted
@@ -57,9 +57,9 @@ namespace SF
 			{}
 
 			// Cmd: [deprecated]
-			Result GetInstanceListRes( const TransactionID &InTransactionID, const Result &InResult, const Array<PerformanceCounterInstanceInfo>& InCounterInstances, const uint32_t &InTotalInstanceCount );
+			Result GetInstanceListRes( const uint64_t &InTransactionID, const Result &InResult, const Array<PerformanceCounterInstanceInfo>& InCounterInstances, const uint32_t &InTotalInstanceCount );
 			// Cmd: [deprecated]
-			Result RequestCounterValuesRes( const TransactionID &InTransactionID, const Result &InResult, const uint64_t &InInstanceUID, const Array<uint64_t>& InCounterValues );
+			Result RequestCounterValuesRes( const uint64_t &InTransactionID, const Result &InResult, const uint64_t &InInstanceUID, const Array<uint64_t>& InCounterValues );
 			// S2C: Server will send this message to an instance to get performance counters.
 			Result PerformanceCounterUpdateCounterInfoS2CEvt( const uint64_t &InInstanceUID );
 

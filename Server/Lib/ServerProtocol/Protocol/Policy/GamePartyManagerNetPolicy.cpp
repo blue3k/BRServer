@@ -9,7 +9,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 
 
-#include "stdafx.h"
+#include "ServerProtocolPCH.h"
 #include "SFTypedefs.h"
 #include "Net/SFNetDef.h"
 #include "Net/SFMessage.h"
@@ -26,7 +26,7 @@ namespace SF
  	namespace Policy
 	{
  		// Cmd: Create a party instance
-		Result NetPolicyGamePartyManager::CreatePartyCmd( const RouteContext &InRouteContext, const TransactionID &InTransactionID, const uint16_t &InRouteHopCount, const uint32_t &InGameID, const PlayerInformation &InCreator )
+		Result NetPolicyGamePartyManager::CreatePartyCmd( const RouteContext &InRouteContext, const uint64_t &InTransactionID, const uint16_t &InRouteHopCount, const uint32_t &InGameID, const PlayerInformation &InCreator )
 		{
  			Result hr;
 
@@ -42,7 +42,7 @@ namespace SF
 
 			return hr;
 
-		}; // Result NetPolicyGamePartyManager::CreatePartyCmd( const RouteContext &InRouteContext, const TransactionID &InTransactionID, const uint16_t &InRouteHopCount, const uint32_t &InGameID, const PlayerInformation &InCreator )
+		}; // Result NetPolicyGamePartyManager::CreatePartyCmd( const RouteContext &InRouteContext, const uint64_t &InTransactionID, const uint16_t &InRouteHopCount, const uint32_t &InGameID, const PlayerInformation &InCreator )
 		// C2S: Party instance notify of deletion. Sent by party instance
 		Result NetPolicyGamePartyManager::PartyDeletedC2SEvt( const RouteContext &InRouteContext, const uint16_t &InRouteHopCount )
 		{
@@ -64,7 +64,7 @@ namespace SF
 
 
 		// Cmd: Create a party instance
-		Result NetSvrPolicyGamePartyManager::CreatePartyRes( const RouteContext &InRouteContext, const TransactionID &InTransactionID, const Result &InResult )
+		Result NetSvrPolicyGamePartyManager::CreatePartyRes( const RouteContext &InRouteContext, const uint64_t &InTransactionID, const Result &InResult )
 		{
  			Result hr;
 
@@ -80,7 +80,7 @@ namespace SF
 
 			return hr;
 
-		}; // Result NetSvrPolicyGamePartyManager::CreatePartyRes( const RouteContext &InRouteContext, const TransactionID &InTransactionID, const Result &InResult )
+		}; // Result NetSvrPolicyGamePartyManager::CreatePartyRes( const RouteContext &InRouteContext, const uint64_t &InTransactionID, const Result &InResult )
 
 
 	}; // namespace Policy

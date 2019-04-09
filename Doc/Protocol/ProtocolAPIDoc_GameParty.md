@@ -1,6 +1,6 @@
 ﻿***
  
- CopyRight (c) 2018 StormForge
+ CopyRight (c) 2019 StormForge
  
  Description : GameParty Message Protocol API Document
 
@@ -19,7 +19,7 @@ Join party
 
 1. Command interface
 
-        Result JoinPartyCmd(const RouteContext &InRouteContext, const TransactionID &InTransactionID, const PlayerID &InInviterID, const PlayerInformation &InInvitedPlayer)
+        Result JoinPartyCmd(const RouteContext &InRouteContext, const uint64_t &InTransactionID, const PlayerID &InInviterID, const PlayerInformation &InInvitedPlayer)
 
 		- OutInRouteContext: RouteContext type. 
 
@@ -70,7 +70,7 @@ Event for player left.
 
 1. Command interface
 
-        Result LeavePartyCmd(const RouteContext &InRouteContext, const TransactionID &InTransactionID, const PlayerID &InPlayerID)
+        Result LeavePartyCmd(const RouteContext &InRouteContext, const uint64_t &InTransactionID, const PlayerID &InPlayerID)
 
 		- OutInRouteContext: RouteContext type. 
 
@@ -105,7 +105,7 @@ Kick player
 
 1. Command interface
 
-        Result KickPlayerCmd(const RouteContext &InRouteContext, const TransactionID &InTransactionID, const PlayerID &InPlayerID, const PlayerID &InPlayerToKick)
+        Result KickPlayerCmd(const RouteContext &InRouteContext, const uint64_t &InTransactionID, const PlayerID &InPlayerID, const PlayerID &InPlayerToKick)
 
 		- OutInRouteContext: RouteContext type. 
 
@@ -192,7 +192,7 @@ Start party game matching
 
 1. Command interface
 
-        Result StartGameMatchCmd(const RouteContext &InRouteContext, const TransactionID &InTransactionID, const PlayerID &InPlayerID, const uint32_t &InMaxGamePlayers)
+        Result StartGameMatchCmd(const RouteContext &InRouteContext, const uint64_t &InTransactionID, const PlayerID &InPlayerID, const uint32_t &InMaxGamePlayers)
 
 		- OutInRouteContext: RouteContext type. 
 
@@ -229,7 +229,7 @@ Cancel game matching
 
 1. Command interface
 
-        Result CancelGameMatchCmd(const RouteContext &InRouteContext, const TransactionID &InTransactionID, const PlayerID &InPlayerID)
+        Result CancelGameMatchCmd(const RouteContext &InRouteContext, const uint64_t &InTransactionID, const PlayerID &InPlayerID)
 
 		- OutInRouteContext: RouteContext type. 
 

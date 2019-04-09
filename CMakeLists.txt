@@ -32,7 +32,7 @@ SET (CMAKE_C_FLAGS_DEBUG "${CMAKE_C_FLAGS_DEBUG} -DDEBUG")
 SET (CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -DDEBUG")
 
 
-set(ENGINE_LINK_LIBS SFProtocol SFEngine  SFCore  curl iconv png mng jpeg tiff zookeeper jsoncpp mbedtls xml2 zlib)
+set(ENGINE_LINK_LIBS BRDB BRServerProtocol BRServerSystem BRTable SFProtocol SFEngine  SFCore  curl iconv png mng jpeg tiff zookeeper jsoncpp mbedtls xml2 zlib)
 
 
 include_directories(AFTER 
@@ -57,7 +57,7 @@ include_directories(AFTER
 	)
 
 #link_directories(${CMAKE_SOURCE_DIR}/lib)
-link_directories(../StormForge/lib/build${CMAKE_SYSTEM_NAME}/${ARTECTURE}${CMAKE_BUILD_TYPE})
+link_directories(../StormForge/build${CMAKE_SYSTEM_NAME}/${ARTECTURE}${CMAKE_BUILD_TYPE}/lib)
 
 
 
@@ -89,6 +89,7 @@ if(WIN32)
 	link_directories(
 		External/mysql-connector-c-6.1.6-winx64/lib
 		External/mysql-connector-c-6.1.6-winx64/lib/vs12
+		../StormForge/buildWindows/x64$(Configuration)/lib
 	)
 	
 	set(ARTECTURE x64)

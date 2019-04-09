@@ -1,9 +1,10 @@
-// stdafx.h : include file for standard system include files,
+// ServerInstanceLanucherPCH.h : include file for standard system include files,
 // or project specific include files that are used frequently, but
 // are changed infrequently
 //
 
 #pragma once
+
 
 #include "SFTypedefs.h"
 #include "ResultCode/SFResultCodeSvr.h"
@@ -21,7 +22,6 @@
 #include "Net/SFNetSvrDef.h"
 #include "Net/SFNetServerPeerTCP.h"
 
-
 #include "Transaction/Transaction.h"
 #include "Entity/Entity.h"
 #include "Transaction/MessageRoute.h"
@@ -36,3 +36,7 @@
 #include "ServerEntity/ServerEntity.h"
 #include "Transaction/TransactionSteper.h"
 #include "Transaction/TransactionUtil.h"
+
+
+
+// TODO: reference additional headers your program requires here

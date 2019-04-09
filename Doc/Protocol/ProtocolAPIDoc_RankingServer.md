@@ -1,6 +1,6 @@
 ﻿***
  
- CopyRight (c) 2018 StormForge
+ CopyRight (c) 2019 StormForge
  
  Description : RankingServer Message Protocol API Document
 
@@ -19,7 +19,7 @@ Add a player to ranking
 
 1. Command interface
 
-        Result AddPlayerCmd(const RouteContext &InRouteContext, const TransactionID &InTransactionID, const PlayerInformation &InPlayerInfo, const uint64_t &InRankingScore)
+        Result AddPlayerCmd(const RouteContext &InRouteContext, const uint64_t &InTransactionID, const PlayerInformation &InPlayerInfo, const uint64_t &InRankingScore)
 
 		- OutInRouteContext: RouteContext type. 
 
@@ -48,7 +48,7 @@ Remove a player to ranking
 
 1. Command interface
 
-        Result RemovePlayerCmd(const RouteContext &InRouteContext, const TransactionID &InTransactionID, const PlayerID &InPlayerID)
+        Result RemovePlayerCmd(const RouteContext &InRouteContext, const uint64_t &InTransactionID, const PlayerID &InPlayerID)
 
 		- OutInRouteContext: RouteContext type. 
 
@@ -73,7 +73,7 @@ Get player to ranking
 
 1. Command interface
 
-        Result GetPlayerRankingCmd(const RouteContext &InRouteContext, const TransactionID &InTransactionID, const PlayerID &InPlayerID)
+        Result GetPlayerRankingCmd(const RouteContext &InRouteContext, const uint64_t &InTransactionID, const PlayerID &InPlayerID)
 
 		- OutInRouteContext: RouteContext type. 
 
@@ -100,7 +100,7 @@ Update a player to ranking
 
 1. Command interface
 
-        Result UpdatePlayerScoreCmd(const RouteContext &InRouteContext, const TransactionID &InTransactionID, const uint64_t &InRankingScore, const PlayerInformation &InPlayerInfo, const uint16_t &InCount)
+        Result UpdatePlayerScoreCmd(const RouteContext &InRouteContext, const uint64_t &InTransactionID, const uint64_t &InRankingScore, const PlayerInformation &InPlayerInfo, const uint16_t &InCount)
 
 		- OutInRouteContext: RouteContext type. 
 
@@ -131,7 +131,7 @@ Get ranking list
 
 1. Command interface
 
-        Result GetRankingCmd(const RouteContext &InRouteContext, const TransactionID &InTransactionID, const RankingType &InRankingType, const uint16_t &InBaseRanking, const uint16_t &InCount)
+        Result GetRankingCmd(const RouteContext &InRouteContext, const uint64_t &InTransactionID, const RankingType &InRankingType, const uint16_t &InBaseRanking, const uint16_t &InCount)
 
 		- OutInRouteContext: RouteContext type. 
 
@@ -162,7 +162,7 @@ Debug test
 
 1. Command interface
 
-        Result DebugPrintALLRankingCmd(const RouteContext &InRouteContext, const TransactionID &InTransactionID, const char* InFileName)
+        Result DebugPrintALLRankingCmd(const RouteContext &InRouteContext, const uint64_t &InTransactionID, const char* InFileName)
 
 		- OutInRouteContext: RouteContext type. 
 

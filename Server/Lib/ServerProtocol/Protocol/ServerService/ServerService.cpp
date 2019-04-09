@@ -1,6 +1,6 @@
 ﻿////////////////////////////////////////////////////////////////////////////////
 // 
-// CopyRight (c) 2016 StormForge
+// CopyRight (c) 2016 Kyungkun Ko
 // 
 // Author : Generated
 // 
@@ -9,7 +9,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 
 
-#include "stdafx.h"
+#include "ServerProtocolPCH.h"
 #include "SFTypedefs.h"
 #include "Protocol/SFProtocol.h"
 #include "ServerEntity/ServerEntity.h"
@@ -32,18 +32,18 @@ namespace SF
 
 
 		// Cmd: Generic failure message
-		Result ServerService::GenericFailureCmd( const TransactionID &InTransactionID )
+		Result ServerService::GenericFailureCmd( const uint64_t &InTransactionID )
 		{
  			Result hr;
 
-			RouteContext InRouteContext( EntityUID(GetMyServerID(),InTransactionID.GetEntityID()), GetServiceEntityUID() );
+			RouteContext InRouteContext( EntityUID(GetMyServerID(),TransactionID(InTransactionID).GetEntityID()), GetServiceEntityUID() );
 			svrChk(Policy::NetPolicyServer(GetConnection()).GenericFailureCmd( InRouteContext, InTransactionID ) );
 
 		Proc_End:
 
 			return hr;
 
-		}; // Result ServerService::GenericFailureCmd( const TransactionID &InTransactionID )
+		}; // Result ServerService::GenericFailureCmd( const uint64_t &InTransactionID )
 		// C2S: Server Started or Connected
 		Result ServerService::ServerConnectedC2SEvt( const EntityID &InSenderEntityID, const uint32_t &InStartUpTime, const NetAddress &InPrivateAddress )
 		{

@@ -9,7 +9,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 
 
-#include "stdafx.h"
+#include "ServerSystemPCH.h"
 
 #include "ResultCode/SFResultCodeLibrary.h"
 #include "ResultCode/SFResultCodeGame.h"

@@ -1,6 +1,6 @@
 ﻿***
  
- CopyRight (c) 2018 StormForge
+ CopyRight (c) 2019 StormForge
  
  Description : ChatChannel Message Protocol API Document
 
@@ -19,7 +19,7 @@ Request to join chat channel
 
 1. Command interface
 
-        Result JoinCmd(const RouteContext &InRouteContext, const TransactionID &InTransactionID, const char* InPasscode, const PlayerInformation &InJoiningPlayer)
+        Result JoinCmd(const RouteContext &InRouteContext, const uint64_t &InTransactionID, const char* InPasscode, const PlayerInformation &InJoiningPlayer)
 
 		- OutInRouteContext: RouteContext type. 
 
@@ -68,7 +68,7 @@ Leave chat channel
 
 1. Command interface
 
-        Result LeaveCmd(const RouteContext &InRouteContext, const TransactionID &InTransactionID, const PlayerID &InPlayerID)
+        Result LeaveCmd(const RouteContext &InRouteContext, const uint64_t &InTransactionID, const PlayerID &InPlayerID)
 
 		- OutInRouteContext: RouteContext type. 
 
@@ -103,7 +103,7 @@ Kick a player
 
 1. Command interface
 
-        Result KickPlayerCmd(const RouteContext &InRouteContext, const TransactionID &InTransactionID, const PlayerID &InPlayerID, const PlayerID &InPlayerToKick)
+        Result KickPlayerCmd(const RouteContext &InRouteContext, const uint64_t &InTransactionID, const PlayerID &InPlayerID, const PlayerID &InPlayerToKick)
 
 		- OutInRouteContext: RouteContext type. 
 

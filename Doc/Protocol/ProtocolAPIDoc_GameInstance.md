@@ -1,6 +1,6 @@
 ﻿***
  
- CopyRight (c) 2018 StormForge
+ CopyRight (c) 2019 StormForge
  
  Description : GameInstance Message Protocol API Document
 
@@ -27,7 +27,7 @@ Join to a game instance. You can call multiple times, but it would be waste
 
 1. Command interface
 
-        Result JoinGameCmd(const RouteContext &InRouteContext, const TransactionID &InTransactionID, const PlayerInformation &InPlayer, const uint8_t &InRequestedRole)
+        Result JoinGameCmd(const RouteContext &InRouteContext, const uint64_t &InTransactionID, const PlayerInformation &InPlayer, const uint8_t &InRequestedRole)
 
 		- OutInRouteContext: RouteContext type. 
 
@@ -106,7 +106,7 @@ Leave game instance.
 
 1. Command interface
 
-        Result LeaveGameCmd(const RouteContext &InRouteContext, const TransactionID &InTransactionID, const PlayerID &InPlayerID)
+        Result LeaveGameCmd(const RouteContext &InRouteContext, const uint64_t &InTransactionID, const PlayerID &InPlayerID)
 
 		- OutInRouteContext: RouteContext type. 
 
@@ -141,7 +141,7 @@ Kick player with given ID
 
 1. Command interface
 
-        Result KickPlayerCmd(const RouteContext &InRouteContext, const TransactionID &InTransactionID, const PlayerID &InPlayerID, const PlayerID &InPlayerToKick)
+        Result KickPlayerCmd(const RouteContext &InRouteContext, const uint64_t &InTransactionID, const PlayerID &InPlayerID, const PlayerID &InPlayerToKick)
 
 		- OutInRouteContext: RouteContext type. 
 
@@ -178,7 +178,7 @@ Assign new roles to all players.
 
 1. Command interface
 
-        Result AssignRoleCmd(const RouteContext &InRouteContext, const TransactionID &InTransactionID, const PlayerID &InPlayerID)
+        Result AssignRoleCmd(const RouteContext &InRouteContext, const uint64_t &InTransactionID, const PlayerID &InPlayerID)
 
 		- OutInRouteContext: RouteContext type. 
 
@@ -227,7 +227,7 @@ Advance game
 
 1. Command interface
 
-        Result AdvanceGameCmd(const RouteContext &InRouteContext, const TransactionID &InTransactionID, const PlayerID &InPlayerID)
+        Result AdvanceGameCmd(const RouteContext &InRouteContext, const uint64_t &InTransactionID, const PlayerID &InPlayerID)
 
 		- OutInRouteContext: RouteContext type. 
 
@@ -284,7 +284,7 @@ Game is ended
 
 1. Command interface
 
-        Result VoteGameAdvanceCmd(const RouteContext &InRouteContext, const TransactionID &InTransactionID, const PlayerID &InPlayerID)
+        Result VoteGameAdvanceCmd(const RouteContext &InRouteContext, const uint64_t &InTransactionID, const PlayerID &InPlayerID)
 
 		- OutInRouteContext: RouteContext type. 
 
@@ -319,7 +319,7 @@ Assign role
 
 1. Command interface
 
-        Result VoteCmd(const RouteContext &InRouteContext, const TransactionID &InTransactionID, const PlayerID &InPlayerID, const PlayerID &InVoteTarget, const uint32_t &InActionSerial)
+        Result VoteCmd(const RouteContext &InRouteContext, const uint64_t &InTransactionID, const PlayerID &InPlayerID, const PlayerID &InVoteTarget, const uint32_t &InActionSerial)
 
 		- OutInRouteContext: RouteContext type. 
 
@@ -396,7 +396,7 @@ Play again with the current players
 
 1. Command interface
 
-        Result GamePlayAgainCmd(const RouteContext &InRouteContext, const TransactionID &InTransactionID, const PlayerID &InLeadPlayer, const uint64_t &InPartyUID)
+        Result GamePlayAgainCmd(const RouteContext &InRouteContext, const uint64_t &InTransactionID, const PlayerID &InLeadPlayer, const uint64_t &InPartyUID)
 
 		- OutInRouteContext: RouteContext type. 
 
@@ -439,7 +439,7 @@ Player. revive himself
 
 1. Command interface
 
-        Result GameRevealPlayerCmd(const RouteContext &InRouteContext, const TransactionID &InTransactionID, const PlayerID &InPlayerID, const Array<PlayerID>& InTargetPlayerID)
+        Result GameRevealPlayerCmd(const RouteContext &InRouteContext, const uint64_t &InTransactionID, const PlayerID &InPlayerID, const Array<PlayerID>& InTargetPlayerID)
 
 		- OutInRouteContext: RouteContext type. 
 
@@ -470,7 +470,7 @@ Player. revive himself
 
 1. Command interface
 
-        Result GamePlayerReviveCmd(const RouteContext &InRouteContext, const TransactionID &InTransactionID, const PlayerID &InPlayerID)
+        Result GamePlayerReviveCmd(const RouteContext &InRouteContext, const uint64_t &InTransactionID, const PlayerID &InPlayerID)
 
 		- OutInRouteContext: RouteContext type. 
 

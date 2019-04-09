@@ -10,7 +10,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 
 
-#include "stdafx.h"
+#include "ServerSystemPCH.h"
 #include "SFAssert.h"
 #include "ServerLog/SvrLog.h"
 #include "Util/SFUtility.h"

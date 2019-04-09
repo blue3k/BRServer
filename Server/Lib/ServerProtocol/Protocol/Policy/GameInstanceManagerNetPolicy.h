@@ -32,7 +32,7 @@ namespace SF
 			{}
 
 			// Cmd: Create a game instance
-			Result CreateGameCmd( const RouteContext &InRouteContext, const TransactionID &InTransactionID, const uint16_t &InRouteHopCount, const uint16_t &InNumberOfBotPlayer, const uint16_t &InMaxPlayer );
+			Result CreateGameCmd( const RouteContext &InRouteContext, const uint64_t &InTransactionID, const uint16_t &InRouteHopCount, const uint16_t &InNumberOfBotPlayer, const uint16_t &InMaxPlayer );
 			// C2S: Game instance notification of deletion
 			Result GameDeletedC2SEvt( const RouteContext &InRouteContext, const uint16_t &InRouteHopCount );
 
@@ -51,7 +51,7 @@ namespace SF
 			{}
 
 			// Cmd: Create a game instance
-			Result CreateGameRes( const RouteContext &InRouteContext, const TransactionID &InTransactionID, const Result &InResult );
+			Result CreateGameRes( const RouteContext &InRouteContext, const uint64_t &InTransactionID, const Result &InResult );
 
 		}; // class NetSvrPolicyGameInstanceManager
 

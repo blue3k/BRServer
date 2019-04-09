@@ -1,6 +1,6 @@
 ﻿***
  
- CopyRight (c) 2018 StormForge
+ CopyRight (c) 2019 StormForge
  
  Description : ChatChannelManager Message Protocol API Document
 
@@ -19,7 +19,7 @@ Create a channel instance
 
 1. Command interface
 
-        Result CreateChannelCmd(const RouteContext &InRouteContext, const TransactionID &InTransactionID, const uint16_t &InRouteHopCount, const char* InChannelName, const char* InPasscode, const PlayerInformation &InCreator)
+        Result CreateChannelCmd(const RouteContext &InRouteContext, const uint64_t &InTransactionID, const uint16_t &InRouteHopCount, const char* InChannelName, const char* InPasscode, const PlayerInformation &InCreator)
 
 		- OutInRouteContext: RouteContext type. 
 
@@ -52,7 +52,7 @@ Find a channel instance with name
 
 1. Command interface
 
-        Result FindChannelCmd(const RouteContext &InRouteContext, const TransactionID &InTransactionID, const uint16_t &InRouteHopCount, const char* InChannelName)
+        Result FindChannelCmd(const RouteContext &InRouteContext, const uint64_t &InTransactionID, const uint16_t &InRouteHopCount, const char* InChannelName)
 
 		- OutInRouteContext: RouteContext type. 
 

@@ -15,7 +15,6 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="$(MSBuildThisFileDirectory)stdafx.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Protocol\Message\GamePartyManagerMsgClass.h">
       <Filter>Message</Filter>
     </ClInclude>
@@ -273,6 +272,8 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)Protocol\ServerService\ChatChannelService.h">
       <Filter>ServerService</Filter>
     </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)stdafx.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)ServerProtocolPCH.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="$(MSBuildThisFileDirectory)Protocol\Message\GamePartyManagerMsgClass.cpp">

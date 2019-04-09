@@ -9,7 +9,7 @@
 //
 ////////////////////////////////////////////////////////////////////////////////
 
-#include "stdafx.h"
+#include "ServerSystemPCH.h"
 #include "Thread/SFThread.h"
 #include "SFAssert.h"
 #include "ResultCode/SFResultCodeEngine.h"

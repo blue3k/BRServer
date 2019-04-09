@@ -10,7 +10,7 @@
 
 
 
-#include "stdafx.h"
+#include "ServerSystemPCH.h"
 #include "SvrConst.h"
 #include "SvrTrace.h"
 #include "Server/BrServerUtil.h"

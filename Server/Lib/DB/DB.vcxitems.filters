@@ -76,7 +76,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="$(MSBuildThisFileDirectory)DBConst.h" />
-    <ClInclude Include="$(MSBuildThisFileDirectory)stdafx.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)AccountDB.h">
       <Filter>DBSource</Filter>
     </ClInclude>
@@ -170,6 +169,7 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)ShardCoordinatorDBQuery.h">
       <Filter>DBSystem</Filter>
     </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)DBPch.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="DBSource">

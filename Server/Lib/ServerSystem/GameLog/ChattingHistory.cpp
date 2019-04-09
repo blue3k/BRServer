@@ -10,7 +10,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 
 
-#include "stdafx.h"
+#include "ServerSystemPCH.h"
 #include "Memory/SFMemoryManager.h"
 #include "SvrTrace.h"
 #include "ServerSystem/GameLog/ChattingHistory.h"

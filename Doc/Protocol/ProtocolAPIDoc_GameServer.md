@@ -1,6 +1,6 @@
 ﻿***
  
- CopyRight (c) 2018 StormForge
+ CopyRight (c) 2019 StormForge
  
  Description : GameServer Message Protocol API Document
 
@@ -19,7 +19,7 @@ Register player so that the player can connection and join to the game server.
 
 1. Command interface
 
-        Result RegisterPlayerToJoinGameServerCmd(const RouteContext &InRouteContext, const TransactionID &InTransactionID, const PlayerID &InPlayerID, const AuthTicket &InTicket, const FacebookUID &InFBUserID, const uint32_t &InShardID)
+        Result RegisterPlayerToJoinGameServerCmd(const RouteContext &InRouteContext, const uint64_t &InTransactionID, const PlayerID &InPlayerID, const AuthTicket &InTicket, const FacebookUID &InFBUserID, const uint32_t &InShardID)
 
 		- OutInRouteContext: RouteContext type. 
 
@@ -56,7 +56,7 @@ Same to RegisterPlayerToJoinGameServer, but can run on player entity. only works
 
 1. Command interface
 
-        Result RegisterPlayerToJoinGameServerOnPlayerEntityCmd(const RouteContext &InRouteContext, const TransactionID &InTransactionID, const PlayerID &InPlayerID, const AuthTicket &InTicket, const FacebookUID &InFBUserID)
+        Result RegisterPlayerToJoinGameServerOnPlayerEntityCmd(const RouteContext &InRouteContext, const uint64_t &InTransactionID, const PlayerID &InPlayerID, const AuthTicket &InTicket, const FacebookUID &InFBUserID)
 
 		- OutInRouteContext: RouteContext type. 
 

@@ -1,6 +1,6 @@
 ﻿***
  
- CopyRight (c) 2018 StormForge
+ CopyRight (c) 2019 StormForge
  
  Description : GamePartyManager Message Protocol API Document
 
@@ -19,7 +19,7 @@ Create a party instance
 
 1. Command interface
 
-        Result CreatePartyCmd(const RouteContext &InRouteContext, const TransactionID &InTransactionID, const uint16_t &InRouteHopCount, const uint32_t &InGameID, const PlayerInformation &InCreator)
+        Result CreatePartyCmd(const RouteContext &InRouteContext, const uint64_t &InTransactionID, const uint16_t &InRouteHopCount, const uint32_t &InGameID, const PlayerInformation &InCreator)
 
 		- OutInRouteContext: RouteContext type. 
 

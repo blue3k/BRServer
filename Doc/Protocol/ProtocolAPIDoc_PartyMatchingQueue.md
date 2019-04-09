@@ -1,6 +1,6 @@
 ﻿***
  
- CopyRight (c) 2018 StormForge
+ CopyRight (c) 2019 StormForge
  
  Description : PartyMatchingQueue Message Protocol API Document
 
@@ -19,7 +19,7 @@ Register a party for matching
 
 1. Command interface
 
-        Result RegisterPartyMatchingCmd(const RouteContext &InRouteContext, const TransactionID &InTransactionID, const uint16_t &InRouteHopCount, const Array<MatchingPlayerInformation>& InPlayers)
+        Result RegisterPartyMatchingCmd(const RouteContext &InRouteContext, const uint64_t &InTransactionID, const uint16_t &InRouteHopCount, const Array<MatchingPlayerInformation>& InPlayers)
 
 		- OutInRouteContext: RouteContext type. 
 
@@ -48,7 +48,7 @@ Register a player for matching
 
 1. Command interface
 
-        Result RegisterPlayerMatchingCmd(const RouteContext &InRouteContext, const TransactionID &InTransactionID, const uint16_t &InRouteHopCount, const PlayerID &InPlayerID)
+        Result RegisterPlayerMatchingCmd(const RouteContext &InRouteContext, const uint64_t &InTransactionID, const uint16_t &InRouteHopCount, const PlayerID &InPlayerID)
 
 		- OutInRouteContext: RouteContext type. 
 
@@ -77,7 +77,7 @@ C++: Cast message to RegisterPlayerMatchingRes to access values
 
 1. Command interface
 
-        Result UpdateMatchingEntityUIDCmd(const RouteContext &InRouteContext, const TransactionID &InTransactionID, const uint16_t &InRouteHopCount, const MatchingQueueTicket &InMatchingTicket, const uint64_t &InPreviousUID)
+        Result UpdateMatchingEntityUIDCmd(const RouteContext &InRouteContext, const uint64_t &InTransactionID, const uint16_t &InRouteHopCount, const MatchingQueueTicket &InMatchingTicket, const uint64_t &InPreviousUID)
 
 		- OutInRouteContext: RouteContext type. 
 
@@ -106,7 +106,7 @@ calcel registration
 
 1. Command interface
 
-        Result UnregisterMatchingCmd(const RouteContext &InRouteContext, const TransactionID &InTransactionID, const uint16_t &InRouteHopCount, const MatchingQueueTicket &InMatchingTicket)
+        Result UnregisterMatchingCmd(const RouteContext &InRouteContext, const uint64_t &InTransactionID, const uint16_t &InRouteHopCount, const MatchingQueueTicket &InMatchingTicket)
 
 		- OutInRouteContext: RouteContext type. 
 
@@ -185,7 +185,7 @@ Reserve a item
 
 1. Command interface
 
-        Result ReserveItemCmd(const RouteContext &InRouteContext, const TransactionID &InTransactionID, const uint16_t &InRouteHopCount)
+        Result ReserveItemCmd(const RouteContext &InRouteContext, const uint64_t &InTransactionID, const uint16_t &InRouteHopCount)
 
 		- OutInRouteContext: RouteContext type. 
 
@@ -214,7 +214,7 @@ Reserve a item
 
 1. Command interface
 
-        Result ReserveItemsCmd(const RouteContext &InRouteContext, const TransactionID &InTransactionID, const uint16_t &InRouteHopCount, const uint32_t &InNumberOfItemsToReserve)
+        Result ReserveItemsCmd(const RouteContext &InRouteContext, const uint64_t &InTransactionID, const uint16_t &InRouteHopCount, const uint32_t &InNumberOfItemsToReserve)
 
 		- OutInRouteContext: RouteContext type. 
 
@@ -245,7 +245,7 @@ Cancel reservation
 
 1. Command interface
 
-        Result CancelReservationCmd(const RouteContext &InRouteContext, const TransactionID &InTransactionID, const uint16_t &InRouteHopCount, const MatchingQueueTicket &InTicketToCancel)
+        Result CancelReservationCmd(const RouteContext &InRouteContext, const uint64_t &InTransactionID, const uint16_t &InRouteHopCount, const MatchingQueueTicket &InTicketToCancel)
 
 		- OutInRouteContext: RouteContext type. 
 
@@ -272,7 +272,7 @@ Cancel reservation
 
 1. Command interface
 
-        Result CancelReservationsCmd(const RouteContext &InRouteContext, const TransactionID &InTransactionID, const uint16_t &InRouteHopCount, const Array<MatchingQueueTicket>& InTicketToCancel)
+        Result CancelReservationsCmd(const RouteContext &InRouteContext, const uint64_t &InTransactionID, const uint16_t &InRouteHopCount, const Array<MatchingQueueTicket>& InTicketToCancel)
 
 		- OutInRouteContext: RouteContext type. 
 
@@ -299,7 +299,7 @@ Dequeue a reserved item
 
 1. Command interface
 
-        Result DequeueItemCmd(const RouteContext &InRouteContext, const TransactionID &InTransactionID, const uint16_t &InRouteHopCount, const MatchingQueueTicket &InMatchingTicket)
+        Result DequeueItemCmd(const RouteContext &InRouteContext, const uint64_t &InTransactionID, const uint16_t &InRouteHopCount, const MatchingQueueTicket &InMatchingTicket)
 
 		- OutInRouteContext: RouteContext type. 
 

@@ -10,7 +10,7 @@
 
 
 
-#include "stdafx.h"
+#include "ServerInstanceLanucherPCH.h"
 #include "SvrConst.h"
 #include "Server/BrServer.h"
 #include "Server/ParameterSetting.h"

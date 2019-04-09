@@ -1,6 +1,6 @@
 ﻿////////////////////////////////////////////////////////////////////////////////
 // 
-// CopyRight (c) 2016 StormForge
+// CopyRight (c) 2016 Kyungkun Ko
 // 
 // Author : Generated
 // 
@@ -29,7 +29,7 @@ namespace SF
 			ServerService ( ServerServiceInformation* pService );
 
 			// Cmd: Generic failure message
-			Result GenericFailureCmd( const TransactionID &InTransactionID );
+			Result GenericFailureCmd( const uint64_t &InTransactionID );
 			// C2S: Server Started or Connected
 			Result ServerConnectedC2SEvt( const EntityID &InSenderEntityID, const uint32_t &InStartUpTime, const NetAddress &InPrivateAddress );
 

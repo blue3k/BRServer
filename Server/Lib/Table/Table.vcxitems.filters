@@ -32,10 +32,10 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)conspiracy\RewardTbl.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)conspiracy\ShopTbl.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)conspiracy\TableVersionTbl.h" />
-    <ClInclude Include="$(MSBuildThisFileDirectory)stdafx.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)TableQueries.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)TableSystem.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)targetver.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)conspiracy\BotTalkTbl.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)TablePCH.h" />
   </ItemGroup>
 </Project>

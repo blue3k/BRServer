@@ -9,7 +9,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 
 
-#include "stdafx.h"
+#include "ServerSystemPCH.h"
 #include "Util/GlobalUIDGenerator.h"
 #include "Util/SFTimeUtil.h"
 

@@ -9,7 +9,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 
 
-#include "stdafx.h"
+#include "ServerProtocolPCH.h"
 #include "SFTypedefs.h"
 #include "Net/SFNetDef.h"
 #include "Net/SFMessage.h"
@@ -26,7 +26,7 @@ namespace SF
  	namespace Policy
 	{
  		// Cmd: [deprecated]
-		Result NetPolicyMonitoring::GetInstanceListCmd( const TransactionID &InTransactionID )
+		Result NetPolicyMonitoring::GetInstanceListCmd( const uint64_t &InTransactionID )
 		{
  			Result hr;
 
@@ -42,9 +42,9 @@ namespace SF
 
 			return hr;
 
-		}; // Result NetPolicyMonitoring::GetInstanceListCmd( const TransactionID &InTransactionID )
+		}; // Result NetPolicyMonitoring::GetInstanceListCmd( const uint64_t &InTransactionID )
 		// Cmd: [deprecated]
-		Result NetPolicyMonitoring::RequestCounterValuesCmd( const TransactionID &InTransactionID, const uint64_t &InInstanceUID )
+		Result NetPolicyMonitoring::RequestCounterValuesCmd( const uint64_t &InTransactionID, const uint64_t &InInstanceUID )
 		{
  			Result hr;
 
@@ -60,7 +60,7 @@ namespace SF
 
 			return hr;
 
-		}; // Result NetPolicyMonitoring::RequestCounterValuesCmd( const TransactionID &InTransactionID, const uint64_t &InInstanceUID )
+		}; // Result NetPolicyMonitoring::RequestCounterValuesCmd( const uint64_t &InTransactionID, const uint64_t &InInstanceUID )
 		// C2S: Message when new performance counter is added.
 		Result NetPolicyMonitoring::PerformanceCounterNewC2SEvt( const char* InInstanceName, const uint64_t &InInstanceUID, const Array<PerformanceCounterInfo>& InNewCounters )
 		{
@@ -118,7 +118,7 @@ namespace SF
 
 
 		// Cmd: [deprecated]
-		Result NetSvrPolicyMonitoring::GetInstanceListRes( const TransactionID &InTransactionID, const Result &InResult, const Array<PerformanceCounterInstanceInfo>& InCounterInstances, const uint32_t &InTotalInstanceCount )
+		Result NetSvrPolicyMonitoring::GetInstanceListRes( const uint64_t &InTransactionID, const Result &InResult, const Array<PerformanceCounterInstanceInfo>& InCounterInstances, const uint32_t &InTotalInstanceCount )
 		{
  			Result hr;
 
@@ -134,9 +134,9 @@ namespace SF
 
 			return hr;
 
-		}; // Result NetSvrPolicyMonitoring::GetInstanceListRes( const TransactionID &InTransactionID, const Result &InResult, const Array<PerformanceCounterInstanceInfo>& InCounterInstances, const uint32_t &InTotalInstanceCount )
+		}; // Result NetSvrPolicyMonitoring::GetInstanceListRes( const uint64_t &InTransactionID, const Result &InResult, const Array<PerformanceCounterInstanceInfo>& InCounterInstances, const uint32_t &InTotalInstanceCount )
 		// Cmd: [deprecated]
-		Result NetSvrPolicyMonitoring::RequestCounterValuesRes( const TransactionID &InTransactionID, const Result &InResult, const uint64_t &InInstanceUID, const Array<uint64_t>& InCounterValues )
+		Result NetSvrPolicyMonitoring::RequestCounterValuesRes( const uint64_t &InTransactionID, const Result &InResult, const uint64_t &InInstanceUID, const Array<uint64_t>& InCounterValues )
 		{
  			Result hr;
 
@@ -152,7 +152,7 @@ namespace SF
 
 			return hr;
 
-		}; // Result NetSvrPolicyMonitoring::RequestCounterValuesRes( const TransactionID &InTransactionID, const Result &InResult, const uint64_t &InInstanceUID, const Array<uint64_t>& InCounterValues )
+		}; // Result NetSvrPolicyMonitoring::RequestCounterValuesRes( const uint64_t &InTransactionID, const Result &InResult, const uint64_t &InInstanceUID, const Array<uint64_t>& InCounterValues )
 		// S2C: Server will send this message to an instance to get performance counters.
 		Result NetSvrPolicyMonitoring::PerformanceCounterUpdateCounterInfoS2CEvt( const uint64_t &InInstanceUID )
 		{

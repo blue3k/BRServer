@@ -10,7 +10,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 
 
-#include "stdafx.h"
+#include "ServerSystemPCH.h"
 #include "SFAssert.h"
 #include "Object/SFSharedPointer.h"
 #include "String/SFFixedString32.h"

@@ -1,6 +1,6 @@
 ﻿////////////////////////////////////////////////////////////////////////////////
 // 
-// CopyRight (c) 2016 StormForge
+// CopyRight (c) 2016 Kyungkun Ko
 // 
 // Author : Generated
 // 
@@ -29,9 +29,9 @@ namespace SF
 			ChatChannelManagerService ( ServerServiceInformation* pService );
 
 			// Cmd: Create a channel instance
-			Result CreateChannelCmd( const TransactionID &InTransactionID, const uint16_t &InRouteHopCount, const char* InChannelName, const char* InPasscode, const PlayerInformation &InCreator );
+			Result CreateChannelCmd( const uint64_t &InTransactionID, const uint16_t &InRouteHopCount, const char* InChannelName, const char* InPasscode, const PlayerInformation &InCreator );
 			// Cmd: Find a channel instance with name
-			Result FindChannelCmd( const TransactionID &InTransactionID, const uint16_t &InRouteHopCount, const char* InChannelName );
+			Result FindChannelCmd( const uint64_t &InTransactionID, const uint16_t &InRouteHopCount, const char* InChannelName );
 			// C2S: Notification that a chat channel instance has deleted
 			Result ChatChannelDeletedC2SEvt( const EntityID &InSenderEntityID, const uint16_t &InRouteHopCount );
 

@@ -1,6 +1,6 @@
 ﻿***
  
- CopyRight (c) 2018 StormForge
+ CopyRight (c) 2019 StormForge
  
  Description : Monitoring Message Protocol API Document
 
@@ -19,7 +19,7 @@ namespace SF::Message::Monitoring
 
 1. Command interface
 
-        Result GetInstanceListCmd(const TransactionID &InTransactionID)
+        Result GetInstanceListCmd(const uint64_t &InTransactionID)
 
 		- OutInTransactionID: TransactionID type. 
 
@@ -42,7 +42,7 @@ C++: Cast message to GetInstanceListRes to access values
 
 1. Command interface
 
-        Result RequestCounterValuesCmd(const TransactionID &InTransactionID, const uint64_t &InInstanceUID)
+        Result RequestCounterValuesCmd(const uint64_t &InTransactionID, const uint64_t &InInstanceUID)
 
 		- OutInTransactionID: TransactionID type. 
 

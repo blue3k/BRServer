@@ -34,11 +34,11 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)GameSystem\GameSystemComponentIDs.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)GameSystem\GameVote.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Resource.h" />
-    <ClInclude Include="$(MSBuildThisFileDirectory)stdafx.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)targetver.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Transaction\GameInstanceServerTrans.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Transaction\GameInstanceTransaction.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Transaction\GameInstanceTransPlayer.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)GameInstancePCH.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="$(MSBuildThisFileDirectory)ConspiracyGameInstanceServerClass.inl" />

@@ -1,6 +1,6 @@
 ﻿////////////////////////////////////////////////////////////////////////////////
 // 
-// CopyRight (c) 2016 StormForge
+// CopyRight (c) 2016 Kyungkun Ko
 // 
 // Author : Generated
 // 
@@ -9,7 +9,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 
 
-#include "stdafx.h"
+#include "ServerProtocolPCH.h"
 #include "Protocol/SFProtocol.h"
 #include "String/SFToString.h"
 #include "Net/SFNetToString.h"
@@ -40,7 +40,7 @@ namespace SF
 				iMsgSize = (int)((size_t)pIMsg->GetMessageSize() - sizeof(MessageHeader));
 				pCur = pIMsg->GetMessageData();
 
-				protocolChk( Protocol::StreamParamCopy( &m_TransactionID, pCur, iMsgSize, sizeof(TransactionID) ) );
+				protocolChk( Protocol::StreamParamCopy( &m_TransactionID, pCur, iMsgSize, sizeof(uint64_t) ) );
 
 
 			Proc_End:
@@ -62,7 +62,7 @@ namespace SF
 
 			}; // Result GetInstanceListCmd::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
 
-			MessageData* GetInstanceListCmd::Create( IHeap& memHeap, const TransactionID &InTransactionID )
+			MessageData* GetInstanceListCmd::Create( IHeap& memHeap, const uint64_t &InTransactionID )
 			{
  				MessageData *pNewMsg = nullptr;
 				Result hr;
@@ -70,14 +70,14 @@ namespace SF
 				uint8_t *pMsgData = nullptr;
 
 				unsigned __uiMessageSize = (unsigned)(sizeof(MessageHeader) 
-					+ sizeof(TransactionID));
+					+ sizeof(uint64_t));
 
 
 				protocolMem( pNewMsg = MessageData::NewMessage( memHeap, Monitoring::GetInstanceListCmd::MID, __uiMessageSize ) );
 
 				pMsgData = pNewMsg->GetMessageData();
 
-				Protocol::PackParamCopy( pMsgData, &InTransactionID, sizeof(TransactionID));
+				Protocol::PackParamCopy( pMsgData, &InTransactionID, sizeof(uint64_t));
 
 
 			Proc_End:
@@ -89,7 +89,7 @@ namespace SF
 				}
 				return pNewMsg;
 
-			}; // MessageData* GetInstanceListCmd::Create( IHeap& memHeap, const TransactionID &InTransactionID )
+			}; // MessageData* GetInstanceListCmd::Create( IHeap& memHeap, const uint64_t &InTransactionID )
 
 
 
@@ -116,7 +116,7 @@ namespace SF
 				iMsgSize = (int)((size_t)pIMsg->GetMessageSize() - sizeof(MessageHeader));
 				pCur = pIMsg->GetMessageData();
 
-				protocolChk( Protocol::StreamParamCopy( &m_TransactionID, pCur, iMsgSize, sizeof(TransactionID) ) );
+				protocolChk( Protocol::StreamParamCopy( &m_TransactionID, pCur, iMsgSize, sizeof(uint64_t) ) );
 				protocolChk( Protocol::StreamParamCopy( &m_Result, pCur, iMsgSize, sizeof(Result) ) );
 				protocolChk( Protocol::StreamParamCopy( &numberofCounterInstances, pCur, iMsgSize, sizeof(uint16_t) ) );
 				protocolChk( Protocol::StreamParamLnk( pCounterInstances, pCur, iMsgSize, sizeof(PerformanceCounterInstanceInfo)*numberofCounterInstances ) );
@@ -143,7 +143,7 @@ namespace SF
 
 			}; // Result GetInstanceListRes::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
 
-			MessageData* GetInstanceListRes::Create( IHeap& memHeap, const TransactionID &InTransactionID, const Result &InResult, const Array<PerformanceCounterInstanceInfo>& InCounterInstances, const uint32_t &InTotalInstanceCount )
+			MessageData* GetInstanceListRes::Create( IHeap& memHeap, const uint64_t &InTransactionID, const Result &InResult, const Array<PerformanceCounterInstanceInfo>& InCounterInstances, const uint32_t &InTotalInstanceCount )
 			{
  				MessageData *pNewMsg = nullptr;
 				Result hr;
@@ -151,7 +151,7 @@ namespace SF
 				uint8_t *pMsgData = nullptr;
 
 				unsigned __uiMessageSize = (unsigned)(sizeof(MessageHeader) 
-					+ sizeof(TransactionID)
+					+ sizeof(uint64_t)
 					+ sizeof(Result)
 					+ sizeof(PerformanceCounterInstanceInfo)*InCounterInstances.size() + sizeof(uint16_t)
 					+ sizeof(uint32_t));
@@ -162,7 +162,7 @@ namespace SF
 
 				pMsgData = pNewMsg->GetMessageData();
 
-				Protocol::PackParamCopy( pMsgData, &InTransactionID, sizeof(TransactionID));
+				Protocol::PackParamCopy( pMsgData, &InTransactionID, sizeof(uint64_t));
 				Protocol::PackParamCopy( pMsgData, &InResult, sizeof(Result));
 				Protocol::PackParamCopy( pMsgData, &numberOfInCounterInstances, sizeof(uint16_t)); 
 				Protocol::PackParamCopy( pMsgData, InCounterInstances.data(), (INT)(sizeof(PerformanceCounterInstanceInfo)*InCounterInstances.size())); 
@@ -178,7 +178,7 @@ namespace SF
 				}
 				return pNewMsg;
 
-			}; // MessageData* GetInstanceListRes::Create( IHeap& memHeap, const TransactionID &InTransactionID, const Result &InResult, const Array<PerformanceCounterInstanceInfo>& InCounterInstances, const uint32_t &InTotalInstanceCount )
+			}; // MessageData* GetInstanceListRes::Create( IHeap& memHeap, const uint64_t &InTransactionID, const Result &InResult, const Array<PerformanceCounterInstanceInfo>& InCounterInstances, const uint32_t &InTotalInstanceCount )
 
 
 
@@ -205,7 +205,7 @@ namespace SF
 				iMsgSize = (int)((size_t)pIMsg->GetMessageSize() - sizeof(MessageHeader));
 				pCur = pIMsg->GetMessageData();
 
-				protocolChk( Protocol::StreamParamCopy( &m_TransactionID, pCur, iMsgSize, sizeof(TransactionID) ) );
+				protocolChk( Protocol::StreamParamCopy( &m_TransactionID, pCur, iMsgSize, sizeof(uint64_t) ) );
 				protocolChk( Protocol::StreamParamCopy( &m_InstanceUID, pCur, iMsgSize, sizeof(uint64_t) ) );
 
 
@@ -228,7 +228,7 @@ namespace SF
 
 			}; // Result RequestCounterValuesCmd::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
 
-			MessageData* RequestCounterValuesCmd::Create( IHeap& memHeap, const TransactionID &InTransactionID, const uint64_t &InInstanceUID )
+			MessageData* RequestCounterValuesCmd::Create( IHeap& memHeap, const uint64_t &InTransactionID, const uint64_t &InInstanceUID )
 			{
  				MessageData *pNewMsg = nullptr;
 				Result hr;
@@ -236,7 +236,7 @@ namespace SF
 				uint8_t *pMsgData = nullptr;
 
 				unsigned __uiMessageSize = (unsigned)(sizeof(MessageHeader) 
-					+ sizeof(TransactionID)
+					+ sizeof(uint64_t)
 					+ sizeof(uint64_t));
 
 
@@ -244,7 +244,7 @@ namespace SF
 
 				pMsgData = pNewMsg->GetMessageData();
 
-				Protocol::PackParamCopy( pMsgData, &InTransactionID, sizeof(TransactionID));
+				Protocol::PackParamCopy( pMsgData, &InTransactionID, sizeof(uint64_t));
 				Protocol::PackParamCopy( pMsgData, &InInstanceUID, sizeof(uint64_t));
 
 
@@ -257,7 +257,7 @@ namespace SF
 				}
 				return pNewMsg;
 
-			}; // MessageData* RequestCounterValuesCmd::Create( IHeap& memHeap, const TransactionID &InTransactionID, const uint64_t &InInstanceUID )
+			}; // MessageData* RequestCounterValuesCmd::Create( IHeap& memHeap, const uint64_t &InTransactionID, const uint64_t &InInstanceUID )
 
 
 
@@ -284,7 +284,7 @@ namespace SF
 				iMsgSize = (int)((size_t)pIMsg->GetMessageSize() - sizeof(MessageHeader));
 				pCur = pIMsg->GetMessageData();
 
-				protocolChk( Protocol::StreamParamCopy( &m_TransactionID, pCur, iMsgSize, sizeof(TransactionID) ) );
+				protocolChk( Protocol::StreamParamCopy( &m_TransactionID, pCur, iMsgSize, sizeof(uint64_t) ) );
 				protocolChk( Protocol::StreamParamCopy( &m_Result, pCur, iMsgSize, sizeof(Result) ) );
 				protocolChk( Protocol::StreamParamCopy( &m_InstanceUID, pCur, iMsgSize, sizeof(uint64_t) ) );
 				protocolChk( Protocol::StreamParamCopy( &numberofCounterValues, pCur, iMsgSize, sizeof(uint16_t) ) );
@@ -311,7 +311,7 @@ namespace SF
 
 			}; // Result RequestCounterValuesRes::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
 
-			MessageData* RequestCounterValuesRes::Create( IHeap& memHeap, const TransactionID &InTransactionID, const Result &InResult, const uint64_t &InInstanceUID, const Array<uint64_t>& InCounterValues )
+			MessageData* RequestCounterValuesRes::Create( IHeap& memHeap, const uint64_t &InTransactionID, const Result &InResult, const uint64_t &InInstanceUID, const Array<uint64_t>& InCounterValues )
 			{
  				MessageData *pNewMsg = nullptr;
 				Result hr;
@@ -319,7 +319,7 @@ namespace SF
 				uint8_t *pMsgData = nullptr;
 
 				unsigned __uiMessageSize = (unsigned)(sizeof(MessageHeader) 
-					+ sizeof(TransactionID)
+					+ sizeof(uint64_t)
 					+ sizeof(Result)
 					+ sizeof(uint64_t)
 					+ sizeof(uint64_t)*InCounterValues.size() + sizeof(uint16_t));
@@ -330,7 +330,7 @@ namespace SF
 
 				pMsgData = pNewMsg->GetMessageData();
 
-				Protocol::PackParamCopy( pMsgData, &InTransactionID, sizeof(TransactionID));
+				Protocol::PackParamCopy( pMsgData, &InTransactionID, sizeof(uint64_t));
 				Protocol::PackParamCopy( pMsgData, &InResult, sizeof(Result));
 				Protocol::PackParamCopy( pMsgData, &InInstanceUID, sizeof(uint64_t));
 				Protocol::PackParamCopy( pMsgData, &numberOfInCounterValues, sizeof(uint16_t)); 
@@ -346,7 +346,7 @@ namespace SF
 				}
 				return pNewMsg;
 
-			}; // MessageData* RequestCounterValuesRes::Create( IHeap& memHeap, const TransactionID &InTransactionID, const Result &InResult, const uint64_t &InInstanceUID, const Array<uint64_t>& InCounterValues )
+			}; // MessageData* RequestCounterValuesRes::Create( IHeap& memHeap, const uint64_t &InTransactionID, const Result &InResult, const uint64_t &InInstanceUID, const Array<uint64_t>& InCounterValues )
 
 
 

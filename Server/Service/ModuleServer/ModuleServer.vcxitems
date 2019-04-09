@@ -17,7 +17,7 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)GameServer.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)SharedModuleServerClass.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)SharedModuleSvrConst.h" />
-    <ClInclude Include="$(MSBuildThisFileDirectory)stdafx.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)ModuleServerPCH.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Transaction\SharedModuleServerTrans.h" />
   </ItemGroup>
   <ItemGroup>

@@ -9,7 +9,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 
 
-#include "stdafx.h"
+#include "ServerProtocolPCH.h"
 #include "SFTypedefs.h"
 #include "Net/SFNetDef.h"
 #include "Net/SFMessage.h"
@@ -26,7 +26,7 @@ namespace SF
  	namespace Policy
 	{
  		// Cmd: Generic failure message
-		Result NetPolicyServer::GenericFailureCmd( const RouteContext &InRouteContext, const TransactionID &InTransactionID )
+		Result NetPolicyServer::GenericFailureCmd( const RouteContext &InRouteContext, const uint64_t &InTransactionID )
 		{
  			Result hr;
 
@@ -42,7 +42,7 @@ namespace SF
 
 			return hr;
 
-		}; // Result NetPolicyServer::GenericFailureCmd( const RouteContext &InRouteContext, const TransactionID &InTransactionID )
+		}; // Result NetPolicyServer::GenericFailureCmd( const RouteContext &InRouteContext, const uint64_t &InTransactionID )
 		// C2S: Server Started or Connected
 		Result NetPolicyServer::ServerConnectedC2SEvt( const RouteContext &InRouteContext, const uint32_t &InStartUpTime, const NetAddress &InPrivateAddress )
 		{
@@ -64,7 +64,7 @@ namespace SF
 
 
 		// Cmd: Generic failure message
-		Result NetSvrPolicyServer::GenericFailureRes( const RouteContext &InRouteContext, const TransactionID &InTransactionID, const Result &InResult )
+		Result NetSvrPolicyServer::GenericFailureRes( const RouteContext &InRouteContext, const uint64_t &InTransactionID, const Result &InResult )
 		{
  			Result hr;
 
@@ -80,7 +80,7 @@ namespace SF
 
 			return hr;
 
-		}; // Result NetSvrPolicyServer::GenericFailureRes( const RouteContext &InRouteContext, const TransactionID &InTransactionID, const Result &InResult )
+		}; // Result NetSvrPolicyServer::GenericFailureRes( const RouteContext &InRouteContext, const uint64_t &InTransactionID, const Result &InResult )
 
 
 	}; // namespace Policy

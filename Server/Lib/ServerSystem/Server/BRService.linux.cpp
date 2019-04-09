@@ -9,7 +9,7 @@
 //
 ////////////////////////////////////////////////////////////////////////////////
 
-#include "stdafx.h"
+#include "ServerSystemPCH.h"
 #include "ResultCode/SFResultCodeSvr.h"
 #include "SvrTrace.h"
 #include "BrService.h"

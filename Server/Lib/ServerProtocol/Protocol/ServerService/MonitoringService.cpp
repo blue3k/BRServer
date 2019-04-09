@@ -1,6 +1,6 @@
 ﻿////////////////////////////////////////////////////////////////////////////////
 // 
-// CopyRight (c) 2016 StormForge
+// CopyRight (c) 2016 Kyungkun Ko
 // 
 // Author : Generated
 // 
@@ -9,7 +9,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 
 
-#include "stdafx.h"
+#include "ServerProtocolPCH.h"
 #include "SFTypedefs.h"
 #include "Protocol/SFProtocol.h"
 #include "ServerEntity/ServerEntity.h"
@@ -32,7 +32,7 @@ namespace SF
 
 
 		// Cmd: [deprecated]
-		Result MonitoringService::GetInstanceListCmd( const TransactionID &InTransactionID )
+		Result MonitoringService::GetInstanceListCmd( const uint64_t &InTransactionID )
 		{
  			Result hr;
 
@@ -42,9 +42,9 @@ namespace SF
 
 			return hr;
 
-		}; // Result MonitoringService::GetInstanceListCmd( const TransactionID &InTransactionID )
+		}; // Result MonitoringService::GetInstanceListCmd( const uint64_t &InTransactionID )
 		// Cmd: [deprecated]
-		Result MonitoringService::RequestCounterValuesCmd( const TransactionID &InTransactionID, const uint64_t &InInstanceUID )
+		Result MonitoringService::RequestCounterValuesCmd( const uint64_t &InTransactionID, const uint64_t &InInstanceUID )
 		{
  			Result hr;
 
@@ -54,7 +54,7 @@ namespace SF
 
 			return hr;
 
-		}; // Result MonitoringService::RequestCounterValuesCmd( const TransactionID &InTransactionID, const uint64_t &InInstanceUID )
+		}; // Result MonitoringService::RequestCounterValuesCmd( const uint64_t &InTransactionID, const uint64_t &InInstanceUID )
 		// C2S: Message when new performance counter is added.
 		Result MonitoringService::PerformanceCounterNewC2SEvt( const char* InInstanceName, const uint64_t &InInstanceUID, const Array<PerformanceCounterInfo>& InNewCounters )
 		{

@@ -9,7 +9,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 
 
-#include "stdafx.h"
+#include "ServerProtocolPCH.h"
 #include "SFTypedefs.h"
 #include "Net/SFNetDef.h"
 #include "Net/SFMessage.h"
@@ -26,7 +26,7 @@ namespace SF
  	namespace Policy
 	{
  		// Cmd: Join party
-		Result NetPolicyGameParty::JoinPartyCmd( const RouteContext &InRouteContext, const TransactionID &InTransactionID, const PlayerID &InInviterID, const PlayerInformation &InInvitedPlayer )
+		Result NetPolicyGameParty::JoinPartyCmd( const RouteContext &InRouteContext, const uint64_t &InTransactionID, const PlayerID &InInviterID, const PlayerInformation &InInvitedPlayer )
 		{
  			Result hr;
 
@@ -42,9 +42,9 @@ namespace SF
 
 			return hr;
 
-		}; // Result NetPolicyGameParty::JoinPartyCmd( const RouteContext &InRouteContext, const TransactionID &InTransactionID, const PlayerID &InInviterID, const PlayerInformation &InInvitedPlayer )
+		}; // Result NetPolicyGameParty::JoinPartyCmd( const RouteContext &InRouteContext, const uint64_t &InTransactionID, const PlayerID &InInviterID, const PlayerInformation &InInvitedPlayer )
 		// Cmd: Event for player left.
-		Result NetPolicyGameParty::LeavePartyCmd( const RouteContext &InRouteContext, const TransactionID &InTransactionID, const PlayerID &InPlayerID )
+		Result NetPolicyGameParty::LeavePartyCmd( const RouteContext &InRouteContext, const uint64_t &InTransactionID, const PlayerID &InPlayerID )
 		{
  			Result hr;
 
@@ -60,9 +60,9 @@ namespace SF
 
 			return hr;
 
-		}; // Result NetPolicyGameParty::LeavePartyCmd( const RouteContext &InRouteContext, const TransactionID &InTransactionID, const PlayerID &InPlayerID )
+		}; // Result NetPolicyGameParty::LeavePartyCmd( const RouteContext &InRouteContext, const uint64_t &InTransactionID, const PlayerID &InPlayerID )
 		// Cmd: Kick player
-		Result NetPolicyGameParty::KickPlayerCmd( const RouteContext &InRouteContext, const TransactionID &InTransactionID, const PlayerID &InPlayerID, const PlayerID &InPlayerToKick )
+		Result NetPolicyGameParty::KickPlayerCmd( const RouteContext &InRouteContext, const uint64_t &InTransactionID, const PlayerID &InPlayerID, const PlayerID &InPlayerToKick )
 		{
  			Result hr;
 
@@ -78,7 +78,7 @@ namespace SF
 
 			return hr;
 
-		}; // Result NetPolicyGameParty::KickPlayerCmd( const RouteContext &InRouteContext, const TransactionID &InTransactionID, const PlayerID &InPlayerID, const PlayerID &InPlayerToKick )
+		}; // Result NetPolicyGameParty::KickPlayerCmd( const RouteContext &InRouteContext, const uint64_t &InTransactionID, const PlayerID &InPlayerID, const PlayerID &InPlayerToKick )
 		// C2S: Send chat message to server.
 		Result NetPolicyGameParty::ChatMessageC2SEvt( const RouteContext &InRouteContext, const PlayerID &InPlayerID, const char* InChatMessage )
 		{
@@ -116,7 +116,7 @@ namespace SF
 
 		}; // Result NetPolicyGameParty::QuickChatMessageC2SEvt( const RouteContext &InRouteContext, const PlayerID &InPlayerID, const uint32_t &InQuickChatID )
 		// Cmd: Start party game matching
-		Result NetPolicyGameParty::StartGameMatchCmd( const RouteContext &InRouteContext, const TransactionID &InTransactionID, const PlayerID &InPlayerID, const uint32_t &InMaxGamePlayers )
+		Result NetPolicyGameParty::StartGameMatchCmd( const RouteContext &InRouteContext, const uint64_t &InTransactionID, const PlayerID &InPlayerID, const uint32_t &InMaxGamePlayers )
 		{
  			Result hr;
 
@@ -132,9 +132,9 @@ namespace SF
 
 			return hr;
 
-		}; // Result NetPolicyGameParty::StartGameMatchCmd( const RouteContext &InRouteContext, const TransactionID &InTransactionID, const PlayerID &InPlayerID, const uint32_t &InMaxGamePlayers )
+		}; // Result NetPolicyGameParty::StartGameMatchCmd( const RouteContext &InRouteContext, const uint64_t &InTransactionID, const PlayerID &InPlayerID, const uint32_t &InMaxGamePlayers )
 		// Cmd: Cancel game matching
-		Result NetPolicyGameParty::CancelGameMatchCmd( const RouteContext &InRouteContext, const TransactionID &InTransactionID, const PlayerID &InPlayerID )
+		Result NetPolicyGameParty::CancelGameMatchCmd( const RouteContext &InRouteContext, const uint64_t &InTransactionID, const PlayerID &InPlayerID )
 		{
  			Result hr;
 
@@ -150,11 +150,11 @@ namespace SF
 
 			return hr;
 
-		}; // Result NetPolicyGameParty::CancelGameMatchCmd( const RouteContext &InRouteContext, const TransactionID &InTransactionID, const PlayerID &InPlayerID )
+		}; // Result NetPolicyGameParty::CancelGameMatchCmd( const RouteContext &InRouteContext, const uint64_t &InTransactionID, const PlayerID &InPlayerID )
 
 
 		// Cmd: Join party
-		Result NetSvrPolicyGameParty::JoinPartyRes( const RouteContext &InRouteContext, const TransactionID &InTransactionID, const Result &InResult, const PlayerID &InPartyLeaderID, const Array<uint8_t>& InChatHistoryData )
+		Result NetSvrPolicyGameParty::JoinPartyRes( const RouteContext &InRouteContext, const uint64_t &InTransactionID, const Result &InResult, const PlayerID &InPartyLeaderID, const Array<uint8_t>& InChatHistoryData )
 		{
  			Result hr;
 
@@ -170,7 +170,7 @@ namespace SF
 
 			return hr;
 
-		}; // Result NetSvrPolicyGameParty::JoinPartyRes( const RouteContext &InRouteContext, const TransactionID &InTransactionID, const Result &InResult, const PlayerID &InPartyLeaderID, const Array<uint8_t>& InChatHistoryData )
+		}; // Result NetSvrPolicyGameParty::JoinPartyRes( const RouteContext &InRouteContext, const uint64_t &InTransactionID, const Result &InResult, const PlayerID &InPartyLeaderID, const Array<uint8_t>& InChatHistoryData )
 		// S2C: Player joined event.
 		Result NetSvrPolicyGameParty::PlayerJoinedS2CEvt( const RouteContext &InRouteContext, const PlayerInformation &InJoinedPlayer )
 		{
@@ -208,7 +208,7 @@ namespace SF
 
 		}; // Result NetSvrPolicyGameParty::PartyLeaderChangedS2CEvt( const RouteContext &InRouteContext, const PlayerID &InNewLeaderID )
 		// Cmd: Event for player left.
-		Result NetSvrPolicyGameParty::LeavePartyRes( const RouteContext &InRouteContext, const TransactionID &InTransactionID, const Result &InResult )
+		Result NetSvrPolicyGameParty::LeavePartyRes( const RouteContext &InRouteContext, const uint64_t &InTransactionID, const Result &InResult )
 		{
  			Result hr;
 
@@ -224,7 +224,7 @@ namespace SF
 
 			return hr;
 
-		}; // Result NetSvrPolicyGameParty::LeavePartyRes( const RouteContext &InRouteContext, const TransactionID &InTransactionID, const Result &InResult )
+		}; // Result NetSvrPolicyGameParty::LeavePartyRes( const RouteContext &InRouteContext, const uint64_t &InTransactionID, const Result &InResult )
 		// S2C: Player left
 		Result NetSvrPolicyGameParty::PlayerLeftS2CEvt( const RouteContext &InRouteContext, const PlayerID &InLeftPlayerID )
 		{
@@ -244,7 +244,7 @@ namespace SF
 
 		}; // Result NetSvrPolicyGameParty::PlayerLeftS2CEvt( const RouteContext &InRouteContext, const PlayerID &InLeftPlayerID )
 		// Cmd: Kick player
-		Result NetSvrPolicyGameParty::KickPlayerRes( const RouteContext &InRouteContext, const TransactionID &InTransactionID, const Result &InResult )
+		Result NetSvrPolicyGameParty::KickPlayerRes( const RouteContext &InRouteContext, const uint64_t &InTransactionID, const Result &InResult )
 		{
  			Result hr;
 
@@ -260,7 +260,7 @@ namespace SF
 
 			return hr;
 
-		}; // Result NetSvrPolicyGameParty::KickPlayerRes( const RouteContext &InRouteContext, const TransactionID &InTransactionID, const Result &InResult )
+		}; // Result NetSvrPolicyGameParty::KickPlayerRes( const RouteContext &InRouteContext, const uint64_t &InTransactionID, const Result &InResult )
 		// S2C: Event for Player kicked.
 		Result NetSvrPolicyGameParty::PlayerKickedS2CEvt( const RouteContext &InRouteContext, const PlayerID &InKickedPlayerID )
 		{
@@ -316,7 +316,7 @@ namespace SF
 
 		}; // Result NetSvrPolicyGameParty::QuickChatMessageS2CEvt( const RouteContext &InRouteContext, const PlayerID &InSenderID, const uint32_t &InQuickChatID )
 		// Cmd: Start party game matching
-		Result NetSvrPolicyGameParty::StartGameMatchRes( const RouteContext &InRouteContext, const TransactionID &InTransactionID, const Result &InResult )
+		Result NetSvrPolicyGameParty::StartGameMatchRes( const RouteContext &InRouteContext, const uint64_t &InTransactionID, const Result &InResult )
 		{
  			Result hr;
 
@@ -332,7 +332,7 @@ namespace SF
 
 			return hr;
 
-		}; // Result NetSvrPolicyGameParty::StartGameMatchRes( const RouteContext &InRouteContext, const TransactionID &InTransactionID, const Result &InResult )
+		}; // Result NetSvrPolicyGameParty::StartGameMatchRes( const RouteContext &InRouteContext, const uint64_t &InTransactionID, const Result &InResult )
 		// S2C: Event sent when the party is queued for game matching
 		Result NetSvrPolicyGameParty::QueuedGameMatchingS2CEvt( const RouteContext &InRouteContext, const MatchingQueueTicket &InMatchingQueueTicket )
 		{
@@ -352,7 +352,7 @@ namespace SF
 
 		}; // Result NetSvrPolicyGameParty::QueuedGameMatchingS2CEvt( const RouteContext &InRouteContext, const MatchingQueueTicket &InMatchingQueueTicket )
 		// Cmd: Cancel game matching
-		Result NetSvrPolicyGameParty::CancelGameMatchRes( const RouteContext &InRouteContext, const TransactionID &InTransactionID, const Result &InResult )
+		Result NetSvrPolicyGameParty::CancelGameMatchRes( const RouteContext &InRouteContext, const uint64_t &InTransactionID, const Result &InResult )
 		{
  			Result hr;
 
@@ -368,7 +368,7 @@ namespace SF
 
 			return hr;
 
-		}; // Result NetSvrPolicyGameParty::CancelGameMatchRes( const RouteContext &InRouteContext, const TransactionID &InTransactionID, const Result &InResult )
+		}; // Result NetSvrPolicyGameParty::CancelGameMatchRes( const RouteContext &InRouteContext, const uint64_t &InTransactionID, const Result &InResult )
 		// S2C: Event sent when the game matching is canceled
 		Result NetSvrPolicyGameParty::CanceledGameMatchingS2CEvt( const RouteContext &InRouteContext, const MatchingQueueTicket &InMatchingQueueTicket )
 		{

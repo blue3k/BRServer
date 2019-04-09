@@ -32,7 +32,7 @@ namespace SF
 			{}
 
 			// Cmd: Create a party instance
-			Result CreatePartyCmd( const RouteContext &InRouteContext, const TransactionID &InTransactionID, const uint16_t &InRouteHopCount, const uint32_t &InGameID, const PlayerInformation &InCreator );
+			Result CreatePartyCmd( const RouteContext &InRouteContext, const uint64_t &InTransactionID, const uint16_t &InRouteHopCount, const uint32_t &InGameID, const PlayerInformation &InCreator );
 			// C2S: Party instance notify of deletion. Sent by party instance
 			Result PartyDeletedC2SEvt( const RouteContext &InRouteContext, const uint16_t &InRouteHopCount );
 
@@ -51,7 +51,7 @@ namespace SF
 			{}
 
 			// Cmd: Create a party instance
-			Result CreatePartyRes( const RouteContext &InRouteContext, const TransactionID &InTransactionID, const Result &InResult );
+			Result CreatePartyRes( const RouteContext &InRouteContext, const uint64_t &InTransactionID, const Result &InResult );
 
 		}; // class NetSvrPolicyGamePartyManager
 

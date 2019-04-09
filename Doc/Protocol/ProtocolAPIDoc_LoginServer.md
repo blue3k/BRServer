@@ -1,6 +1,6 @@
 ﻿***
  
- CopyRight (c) 2018 StormForge
+ CopyRight (c) 2019 StormForge
  
  Description : LoginServer Message Protocol API Document
 
@@ -19,7 +19,7 @@ Notify Login server that client is successfully connected and joined to game ser
 
 1. Command interface
 
-        Result PlayerJoinedToGameServerCmd(const RouteContext &InRouteContext, const TransactionID &InTransactionID, const PlayerID &InPlayerID, const AuthTicket &InAuthTicket)
+        Result PlayerJoinedToGameServerCmd(const RouteContext &InRouteContext, const uint64_t &InTransactionID, const PlayerID &InPlayerID, const AuthTicket &InAuthTicket)
 
 		- OutInRouteContext: RouteContext type. 
 
@@ -46,7 +46,7 @@ Kick logged in player, used to kick player on other login server to prevent dupl
 
 1. Command interface
 
-        Result KickPlayerCmd(const RouteContext &InRouteContext, const TransactionID &InTransactionID, const PlayerID &InKickedPlayerID)
+        Result KickPlayerCmd(const RouteContext &InRouteContext, const uint64_t &InTransactionID, const PlayerID &InKickedPlayerID)
 
 		- OutInRouteContext: RouteContext type. 
 

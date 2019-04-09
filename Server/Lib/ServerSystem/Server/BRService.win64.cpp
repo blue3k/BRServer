@@ -9,7 +9,7 @@
 //
 ////////////////////////////////////////////////////////////////////////////////
 
-#include "stdafx.h"
+#include "ServerSystemPCH.h"
 #if SF_PLATFORM == SF_PLATFORM_WINDOWS
 
 #include <conio.h>

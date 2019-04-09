@@ -9,7 +9,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 
 
-#include "stdafx.h"
+#include "ServerSystemPCH.h"
 #include "Util/SFTimeUtil.h"
 #include "SvrTrace.h"
 #include "Net/SFNetRawUDP.h"

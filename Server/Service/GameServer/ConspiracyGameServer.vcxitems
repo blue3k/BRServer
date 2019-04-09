@@ -22,7 +22,7 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)GameSystem\UserGamePlayerInfoSystem.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)GameSystem\UserNotifySystem.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)GameSystem\UserSystemComponentIDs.h" />
-    <ClInclude Include="$(MSBuildThisFileDirectory)stdafx.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)GameServerPCH.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Transaction\GamePlayerEntityTrans.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Transaction\GamePlayerEntityTransChatChannel.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Transaction\GamePlayerEntityTransClose.h" />

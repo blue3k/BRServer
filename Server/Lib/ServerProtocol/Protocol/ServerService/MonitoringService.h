@@ -1,6 +1,6 @@
 ﻿////////////////////////////////////////////////////////////////////////////////
 // 
-// CopyRight (c) 2016 StormForge
+// CopyRight (c) 2016 Kyungkun Ko
 // 
 // Author : Generated
 // 
@@ -29,9 +29,9 @@ namespace SF
 			MonitoringService ( ServerServiceInformation* pService );
 
 			// Cmd: [deprecated]
-			Result GetInstanceListCmd( const TransactionID &InTransactionID );
+			Result GetInstanceListCmd( const uint64_t &InTransactionID );
 			// Cmd: [deprecated]
-			Result RequestCounterValuesCmd( const TransactionID &InTransactionID, const uint64_t &InInstanceUID );
+			Result RequestCounterValuesCmd( const uint64_t &InTransactionID, const uint64_t &InInstanceUID );
 			// C2S: Message when new performance counter is added.
 			Result PerformanceCounterNewC2SEvt( const char* InInstanceName, const uint64_t &InInstanceUID, const Array<PerformanceCounterInfo>& InNewCounters );
 			// C2S: Counter instance is deleted

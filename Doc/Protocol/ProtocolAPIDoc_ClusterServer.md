@@ -1,6 +1,6 @@
 ﻿***
  
- CopyRight (c) 2018 StormForge
+ CopyRight (c) 2019 StormForge
  
  Description : ClusterServer Message Protocol API Document
 
@@ -19,7 +19,7 @@ Cluster member list query
 
 1. Command interface
 
-        Result GetClusterMemberListCmd(const RouteContext &InRouteContext, const TransactionID &InTransactionID, const uint16_t &InRouteHopCount, const ClusterID &InClusterID)
+        Result GetClusterMemberListCmd(const RouteContext &InRouteContext, const uint64_t &InTransactionID, const uint16_t &InRouteHopCount, const ClusterID &InClusterID)
 
 		- OutInRouteContext: RouteContext type. 
 
@@ -48,7 +48,7 @@ Join to the cluster
 
 1. Command interface
 
-        Result RequestDataSyncCmd(const RouteContext &InRouteContext, const TransactionID &InTransactionID, const uint16_t &InRouteHopCount, const ClusterID &InClusterID)
+        Result RequestDataSyncCmd(const RouteContext &InRouteContext, const uint64_t &InTransactionID, const uint16_t &InRouteHopCount, const ClusterID &InClusterID)
 
 		- OutInRouteContext: RouteContext type. 
 

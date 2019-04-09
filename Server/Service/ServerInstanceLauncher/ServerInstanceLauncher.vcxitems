@@ -18,7 +18,7 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)ServerInstanceLauncherClass.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)ServerEntity\ServerInstanceLauncherEntity.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)SFProcessManager.h" />
-    <ClInclude Include="$(MSBuildThisFileDirectory)stdafx.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)ServerInstanceLanucherPCH.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)ZooKeeperCommand.h" />
   </ItemGroup>
   <ItemGroup>

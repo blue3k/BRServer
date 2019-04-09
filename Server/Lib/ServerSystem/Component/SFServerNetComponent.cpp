@@ -10,7 +10,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 
 
-#include "stdafx.h"
+#include "ServerSystemPCH.h"
 #include "String/SFFixedString32.h"
 #include "SFEngine.h"
 #include "Service/ServerService.h"

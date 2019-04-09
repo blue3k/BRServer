@@ -10,7 +10,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 
 
-#include "stdafx.h"
+#include "DBPch.h"
 #include "DB/GameTransactionDBQuery.h"
 #include "DBTrace.h"
 #include "Memory/SFMemoryPool.h"

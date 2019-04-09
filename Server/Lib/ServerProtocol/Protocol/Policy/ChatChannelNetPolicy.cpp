@@ -9,7 +9,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 
 
-#include "stdafx.h"
+#include "ServerProtocolPCH.h"
 #include "SFTypedefs.h"
 #include "Net/SFNetDef.h"
 #include "Net/SFMessage.h"
@@ -26,7 +26,7 @@ namespace SF
  	namespace Policy
 	{
  		// Cmd: Request to join chat channel
-		Result NetPolicyChatChannel::JoinCmd( const RouteContext &InRouteContext, const TransactionID &InTransactionID, const char* InPasscode, const PlayerInformation &InJoiningPlayer )
+		Result NetPolicyChatChannel::JoinCmd( const RouteContext &InRouteContext, const uint64_t &InTransactionID, const char* InPasscode, const PlayerInformation &InJoiningPlayer )
 		{
  			Result hr;
 
@@ -42,9 +42,9 @@ namespace SF
 
 			return hr;
 
-		}; // Result NetPolicyChatChannel::JoinCmd( const RouteContext &InRouteContext, const TransactionID &InTransactionID, const char* InPasscode, const PlayerInformation &InJoiningPlayer )
+		}; // Result NetPolicyChatChannel::JoinCmd( const RouteContext &InRouteContext, const uint64_t &InTransactionID, const char* InPasscode, const PlayerInformation &InJoiningPlayer )
 		// Cmd: Leave chat channel
-		Result NetPolicyChatChannel::LeaveCmd( const RouteContext &InRouteContext, const TransactionID &InTransactionID, const PlayerID &InPlayerID )
+		Result NetPolicyChatChannel::LeaveCmd( const RouteContext &InRouteContext, const uint64_t &InTransactionID, const PlayerID &InPlayerID )
 		{
  			Result hr;
 
@@ -60,9 +60,9 @@ namespace SF
 
 			return hr;
 
-		}; // Result NetPolicyChatChannel::LeaveCmd( const RouteContext &InRouteContext, const TransactionID &InTransactionID, const PlayerID &InPlayerID )
+		}; // Result NetPolicyChatChannel::LeaveCmd( const RouteContext &InRouteContext, const uint64_t &InTransactionID, const PlayerID &InPlayerID )
 		// Cmd: Kick a player
-		Result NetPolicyChatChannel::KickPlayerCmd( const RouteContext &InRouteContext, const TransactionID &InTransactionID, const PlayerID &InPlayerID, const PlayerID &InPlayerToKick )
+		Result NetPolicyChatChannel::KickPlayerCmd( const RouteContext &InRouteContext, const uint64_t &InTransactionID, const PlayerID &InPlayerID, const PlayerID &InPlayerToKick )
 		{
  			Result hr;
 
@@ -78,7 +78,7 @@ namespace SF
 
 			return hr;
 
-		}; // Result NetPolicyChatChannel::KickPlayerCmd( const RouteContext &InRouteContext, const TransactionID &InTransactionID, const PlayerID &InPlayerID, const PlayerID &InPlayerToKick )
+		}; // Result NetPolicyChatChannel::KickPlayerCmd( const RouteContext &InRouteContext, const uint64_t &InTransactionID, const PlayerID &InPlayerID, const PlayerID &InPlayerToKick )
 		// C2S: Sending a chatting message
 		Result NetPolicyChatChannel::ChatMessageC2SEvt( const RouteContext &InRouteContext, const PlayerID &InSenderID, const char* InChatMessage )
 		{
@@ -100,7 +100,7 @@ namespace SF
 
 
 		// Cmd: Request to join chat channel
-		Result NetSvrPolicyChatChannel::JoinRes( const RouteContext &InRouteContext, const TransactionID &InTransactionID, const Result &InResult, const PlayerID &InChatChannelLeaderID )
+		Result NetSvrPolicyChatChannel::JoinRes( const RouteContext &InRouteContext, const uint64_t &InTransactionID, const Result &InResult, const PlayerID &InChatChannelLeaderID )
 		{
  			Result hr;
 
@@ -116,7 +116,7 @@ namespace SF
 
 			return hr;
 
-		}; // Result NetSvrPolicyChatChannel::JoinRes( const RouteContext &InRouteContext, const TransactionID &InTransactionID, const Result &InResult, const PlayerID &InChatChannelLeaderID )
+		}; // Result NetSvrPolicyChatChannel::JoinRes( const RouteContext &InRouteContext, const uint64_t &InTransactionID, const Result &InResult, const PlayerID &InChatChannelLeaderID )
 		// S2C: Server envent to notify joined player information
 		Result NetSvrPolicyChatChannel::PlayerJoinedS2CEvt( const RouteContext &InRouteContext, const PlayerInformation &InJoinedPlayer )
 		{
@@ -154,7 +154,7 @@ namespace SF
 
 		}; // Result NetSvrPolicyChatChannel::LeaderChangedS2CEvt( const RouteContext &InRouteContext, const PlayerID &InNewLeaderID )
 		// Cmd: Leave chat channel
-		Result NetSvrPolicyChatChannel::LeaveRes( const RouteContext &InRouteContext, const TransactionID &InTransactionID, const Result &InResult )
+		Result NetSvrPolicyChatChannel::LeaveRes( const RouteContext &InRouteContext, const uint64_t &InTransactionID, const Result &InResult )
 		{
  			Result hr;
 
@@ -170,7 +170,7 @@ namespace SF
 
 			return hr;
 
-		}; // Result NetSvrPolicyChatChannel::LeaveRes( const RouteContext &InRouteContext, const TransactionID &InTransactionID, const Result &InResult )
+		}; // Result NetSvrPolicyChatChannel::LeaveRes( const RouteContext &InRouteContext, const uint64_t &InTransactionID, const Result &InResult )
 		// S2C: Notification event when a player left
 		Result NetSvrPolicyChatChannel::PlayerLeftS2CEvt( const RouteContext &InRouteContext, const PlayerID &InLeftPlayerID )
 		{
@@ -190,7 +190,7 @@ namespace SF
 
 		}; // Result NetSvrPolicyChatChannel::PlayerLeftS2CEvt( const RouteContext &InRouteContext, const PlayerID &InLeftPlayerID )
 		// Cmd: Kick a player
-		Result NetSvrPolicyChatChannel::KickPlayerRes( const RouteContext &InRouteContext, const TransactionID &InTransactionID, const Result &InResult )
+		Result NetSvrPolicyChatChannel::KickPlayerRes( const RouteContext &InRouteContext, const uint64_t &InTransactionID, const Result &InResult )
 		{
  			Result hr;
 
@@ -206,7 +206,7 @@ namespace SF
 
 			return hr;
 
-		}; // Result NetSvrPolicyChatChannel::KickPlayerRes( const RouteContext &InRouteContext, const TransactionID &InTransactionID, const Result &InResult )
+		}; // Result NetSvrPolicyChatChannel::KickPlayerRes( const RouteContext &InRouteContext, const uint64_t &InTransactionID, const Result &InResult )
 		// S2C: Notification event when a player kicked
 		Result NetSvrPolicyChatChannel::PlayerKickedS2CEvt( const RouteContext &InRouteContext, const PlayerID &InKickedPlayerID )
 		{

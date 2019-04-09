@@ -10,7 +10,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 
 
-#include "stdafx.h"
+#include "ServerSystemPCH.h"
 #include "SFTypedefs.h"
 #include "ResultCode/SFResultCodeLibrary.h"
 #include "ResultCode/SFResultCodeLibrary.h"

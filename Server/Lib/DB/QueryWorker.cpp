@@ -10,7 +10,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 
 
-#include "stdafx.h"
+#include "DBPch.h"
 //#include <atldbcli.h>
 #include "SFTypedefs.h"
 #include "String/SFStrUtil.h"

@@ -1,6 +1,6 @@
 ﻿////////////////////////////////////////////////////////////////////////////////
 // 
-// CopyRight (c) 2016 StormForge
+// CopyRight (c) 2016 Kyungkun Ko
 // 
 // Author : Generated
 // 
@@ -9,7 +9,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 
 
-#include "stdafx.h"
+#include "ServerProtocolPCH.h"
 #include "SFTypedefs.h"
 #include "Protocol/SFProtocol.h"
 #include "ServerEntity/ServerEntity.h"
@@ -32,31 +32,31 @@ namespace SF
 
 
 		// Cmd: Create a channel instance
-		Result ChatChannelManagerService::CreateChannelCmd( const TransactionID &InTransactionID, const uint16_t &InRouteHopCount, const char* InChannelName, const char* InPasscode, const PlayerInformation &InCreator )
+		Result ChatChannelManagerService::CreateChannelCmd( const uint64_t &InTransactionID, const uint16_t &InRouteHopCount, const char* InChannelName, const char* InPasscode, const PlayerInformation &InCreator )
 		{
  			Result hr;
 
-			RouteContext InRouteContext( EntityUID(GetMyServerID(),InTransactionID.GetEntityID()), GetServiceEntityUID() );
+			RouteContext InRouteContext( EntityUID(GetMyServerID(),TransactionID(InTransactionID).GetEntityID()), GetServiceEntityUID() );
 			svrChk(Policy::NetPolicyChatChannelManager(GetConnection()).CreateChannelCmd( InRouteContext, InTransactionID, InRouteHopCount, InChannelName, InPasscode, InCreator ) );
 
 		Proc_End:
 
 			return hr;
 
-		}; // Result ChatChannelManagerService::CreateChannelCmd( const TransactionID &InTransactionID, const uint16_t &InRouteHopCount, const char* InChannelName, const char* InPasscode, const PlayerInformation &InCreator )
+		}; // Result ChatChannelManagerService::CreateChannelCmd( const uint64_t &InTransactionID, const uint16_t &InRouteHopCount, const char* InChannelName, const char* InPasscode, const PlayerInformation &InCreator )
 		// Cmd: Find a channel instance with name
-		Result ChatChannelManagerService::FindChannelCmd( const TransactionID &InTransactionID, const uint16_t &InRouteHopCount, const char* InChannelName )
+		Result ChatChannelManagerService::FindChannelCmd( const uint64_t &InTransactionID, const uint16_t &InRouteHopCount, const char* InChannelName )
 		{
  			Result hr;
 
-			RouteContext InRouteContext( EntityUID(GetMyServerID(),InTransactionID.GetEntityID()), GetServiceEntityUID() );
+			RouteContext InRouteContext( EntityUID(GetMyServerID(),TransactionID(InTransactionID).GetEntityID()), GetServiceEntityUID() );
 			svrChk(Policy::NetPolicyChatChannelManager(GetConnection()).FindChannelCmd( InRouteContext, InTransactionID, InRouteHopCount, InChannelName ) );
 
 		Proc_End:
 
 			return hr;
 
-		}; // Result ChatChannelManagerService::FindChannelCmd( const TransactionID &InTransactionID, const uint16_t &InRouteHopCount, const char* InChannelName )
+		}; // Result ChatChannelManagerService::FindChannelCmd( const uint64_t &InTransactionID, const uint16_t &InRouteHopCount, const char* InChannelName )
 		// C2S: Notification that a chat channel instance has deleted
 		Result ChatChannelManagerService::ChatChannelDeletedC2SEvt( const EntityID &InSenderEntityID, const uint16_t &InRouteHopCount )
 		{

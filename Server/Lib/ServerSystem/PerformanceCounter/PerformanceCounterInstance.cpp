@@ -9,7 +9,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 
 
-#include "stdafx.h"
+#include "ServerSystemPCH.h"
 #include "String/SFStrFormat.h"
 #include "SvrTrace.h"
 #include "PerformanceCounter/PerformanceCounterInstance.h"

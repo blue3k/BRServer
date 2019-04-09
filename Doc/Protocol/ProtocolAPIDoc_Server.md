@@ -1,6 +1,6 @@
 ﻿***
  
- CopyRight (c) 2018 StormForge
+ CopyRight (c) 2019 StormForge
  
  Description : Server Message Protocol API Document
 
@@ -19,7 +19,7 @@ Generic failure message
 
 1. Command interface
 
-        Result GenericFailureCmd(const RouteContext &InRouteContext, const TransactionID &InTransactionID)
+        Result GenericFailureCmd(const RouteContext &InRouteContext, const uint64_t &InTransactionID)
 
 		- OutInRouteContext: RouteContext type. 
 

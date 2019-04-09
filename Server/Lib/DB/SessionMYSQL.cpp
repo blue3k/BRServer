@@ -10,10 +10,10 @@
 ////////////////////////////////////////////////////////////////////////////////
 
 
-#include "stdafx.h"
+#include "DBPch.h"
 
 
-#include "stdafx.h"
+#include "DBPch.h"
 #include "SFTypedefs.h"
 #include "Factory.h"
 

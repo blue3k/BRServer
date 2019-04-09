@@ -90,7 +90,6 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="$(MSBuildThisFileDirectory)stdafx.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)ServiceEntity\Login\LoginServiceEntity.h">
       <Filter>ServerService\Login</Filter>
     </ClInclude>
@@ -411,6 +410,7 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)String\ToStringSvr.h">
       <Filter>String</Filter>
     </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)ServerSystemPCH.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="$(MSBuildThisFileDirectory)makefile.mak" />
