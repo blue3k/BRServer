@@ -29,9 +29,10 @@
 #include "Protocol/Message/ServerMsgClass.h"
 #include "Task/SFTimerSchedulerAction.h"
 #include "Net/SFConnection.h"
-//#include "Server/BrServerUtil.h"
+#include "Server/BrServerUtil.h"
 #include "SvrConst.h"
 #include "Service/ServerService.h"
+#include "Entity/Entity.h"
 
 
 
