@@ -108,7 +108,7 @@ namespace Svr {
 
 		// Service base cache
 		ServerServiceBase* m_ServiceBase = nullptr;
-		uint8_t	m_bufferForServiceBase[1024 + 512];
+		uint8_t	m_bufferForServiceBase[1024];
 
 
 	public:

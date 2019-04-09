@@ -22,7 +22,6 @@ SF_MEMORYPOOL_IMPLEMENT(SF::Svr::UserEntityInformation);
 namespace SF {
 namespace Svr {
 
-	static_assert(sizeof(ServerService) <= sizeof(ServerServiceInformation::m_bufferForServiceBase), "Not enough buffer size for serverservice instance");
 
 
 
@@ -35,6 +34,7 @@ namespace Svr {
 	EntityInformation::EntityInformation(const EntityUID& entityUID)
 		: m_UID(entityUID)
 	{
+		static_assert(sizeof(ServerService) <= sizeof(ServerServiceInformation::m_bufferForServiceBase), "Not enough buffer size for serverservice instance");
 	}
 
 	EntityInformation::~EntityInformation()
