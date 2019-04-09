@@ -49,7 +49,7 @@ namespace SF {
 		std::atomic<EventTypes> EventType;
 		WeakPointerT<TickTask>	TaskPtr;
 
-		BYTE					DataBuffer[sizeof(Net::ConnectionEvent)];
+		uint8_t					DataBuffer[sizeof(Net::ConnectionEvent)];
 		struct
 		{
 			Net::ConnectionEvent *pConnectionEvent;
