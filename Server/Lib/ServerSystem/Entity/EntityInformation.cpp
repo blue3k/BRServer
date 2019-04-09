@@ -34,7 +34,6 @@ namespace Svr {
 	EntityInformation::EntityInformation(const EntityUID& entityUID)
 		: m_UID(entityUID)
 	{
-		static_assert(sizeof(ServerService) <= sizeof(ServerServiceInformation::m_bufferForServiceBase), "Not enough buffer size for serverservice instance");
 	}
 
 	EntityInformation::~EntityInformation()
@@ -63,6 +62,8 @@ namespace Svr {
 		char nodeName[256];
 		StrUtil::Format(nodeName, "{0}_{1}", GetEntityUID().GetServerID(), GetEntityUID().GetEntityID());
 		SetNodeName(nodeName);
+
+		static_assert(sizeof(ServerService) <= sizeof(ServerServiceInformation::m_bufferForServiceBase), "Not enough buffer size for serverservice instance");
 	}
 
 	ServerServiceInformation::~ServerServiceInformation()
