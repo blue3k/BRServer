@@ -24,7 +24,7 @@ namespace SF
 
 		ServerFriendInformation() : ShardID(0) {}
 		ServerFriendInformation(const ServerFriendInformation& src) : FriendInformation(src), ShardID(src.ShardID) {}
-		ServerFriendInformation(AccountID playerID, int32_t shardID, FacebookUID fbUID, const char* nickName, uint level, uint weeklyWin, uint weeklyLose, BYTE isPlayingGame, uint64_t lastActiveTime, uint64_t LastStaminaSent)
+		ServerFriendInformation(AccountID playerID, int32_t shardID, FacebookUID fbUID, const char* nickName, uint level, uint weeklyWin, uint weeklyLose, uint8_t isPlayingGame, uint64_t lastActiveTime, uint64_t LastStaminaSent)
 			: FriendInformation(playerID, fbUID, nickName, level, weeklyWin, weeklyLose, isPlayingGame, lastActiveTime, LastStaminaSent)
 			, ShardID(shardID)
 		{
