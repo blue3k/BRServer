@@ -58,7 +58,8 @@ namespace Svr
 			m_pConnection->SetEventHandler(this);
 
 			// purge received guaranted messages
-			OnRecvMessage((Net::Connection*)m_pConnection, MessageDataPtr());
+			MessageDataPtr temp;
+			OnRecvMessage((Net::Connection*)m_pConnection, temp);
 
 			// This connection will be updated with User entity
 			m_pConnection->SetTickFlags(0);
@@ -76,7 +77,8 @@ namespace Svr
 			return;
 
 		m_pConnection->SetEventHandler(nullptr);
-		Service::ConnectionManager->RemoveConnection(SharedPointerT<Net::Connection>(m_pConnection));
+		SharedPointerT<Net::Connection> temp(m_pConnection);
+		Service::ConnectionManager->RemoveConnection(temp);
 		m_pConnection->DisconnectNRelease(reason);
 		m_pConnection = SharedPointerT<Net::Connection>();
 	}
@@ -400,7 +402,7 @@ namespace Svr
 			{
 				if ((FindActiveTransaction(eventTask.EventData.pTransResultEvent->GetTransID(), pCurTran)))
 				{
-					ProcessTransactionResult(pCurTran, const_cast<TransactionResult*>(eventTask.EventData.pTransResultEvent));
+					ProcessTransactionResult(pCurTran, eventTask.EventData.pTransResultEvent);
 				}
 				else
 				{
