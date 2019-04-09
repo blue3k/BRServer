@@ -102,7 +102,7 @@ namespace Svr {
 		}
 	}
 
-	void PerformanceCounterClient::UpdateNewInstance(ULONG newCount)
+	void PerformanceCounterClient::UpdateNewInstance(uint64_t newCount)
 	{
 		SharedPointerT<PerformanceCounterInstance> newInstance;
 		for (uint iItem = 0; iItem < newCount && (m_NewInstanceQueue.Dequeue(newInstance)); iItem++)
@@ -178,7 +178,7 @@ namespace Svr {
 			}
 		}
 
-		UpdateNewInstance((ULONG)newCount);
+		UpdateNewInstance((uint64_t)newCount);
 	}
 
 

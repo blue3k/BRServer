@@ -109,7 +109,7 @@ namespace SF {
 
 			void SendNewCounterPacket(PerformanceCounterInstance *newInstance);
 
-			void UpdateNewInstance(ULONG newCount);
+			void UpdateNewInstance(uint64_t newCount);
 			void UpdateFreeInstance();
 			void UpdateValues();
 

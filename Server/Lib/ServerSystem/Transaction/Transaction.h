@@ -208,7 +208,7 @@ namespace Svr {
 		Transaction::State GetState();
 
 		// Get heart bit time, ms
-		//FORCEINLINE ULONG GetHeartBitTime();
+		//FORCEINLINE uint64_t GetHeartBitTime();
 
 		// Update heart bit time, with timestamp
 		TimeStampMS UpdateHeartBitTime();

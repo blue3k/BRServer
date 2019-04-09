@@ -102,7 +102,7 @@ inline Transaction::State Transaction::GetState()
 }
 
 //// Get heart bit time, ms
-//ULONG Transaction::GetHeartBitTime()
+//uint64_t Transaction::GetHeartBitTime()
 //{
 //	return m_tHeartBit;
 //}

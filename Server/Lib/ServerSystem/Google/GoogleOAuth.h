@@ -48,7 +48,7 @@ namespace Google {
 
 
 			StaticArray<uint8_t, 4096> m_ResultBuffer;
-			ULONG m_AuthStringIndex;
+			uint64_t m_AuthStringIndex;
 			char m_AuthString[2][1024];
 			const char* m_ActiveAuthString;
 

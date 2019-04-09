@@ -43,7 +43,7 @@ namespace DB {
 	void FactoryOLEDB::ReportError( void* DBContext, Result hr, const char* className )
 	{
 		CDBErrorInfo myErrorInfo;
-		ULONG numRec = 0;
+		uint64_t numRec = 0;
 		BSTR myErrStr,mySource;
 		ISQLErrorInfo *pISQLErrorInfo = NULL;
 

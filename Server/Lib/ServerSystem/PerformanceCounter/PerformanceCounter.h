@@ -210,12 +210,12 @@ namespace Svr {
 	class PerformanceCounterAveragePerSec : public PerformanceCounterRaw<DataType>
 	{
 	private:
-		std::atomic<ULONG> m_TickIndex;
+		std::atomic<uint64_t> m_TickIndex;
 		TimeStampMS m_TickCountStartTime;
 		struct
 		{
-			std::atomic<ULONG> Working;
-			std::atomic<ULONG> TotalCount;
+			std::atomic<uint64_t> Working;
+			std::atomic<uint64_t> TotalCount;
 			std::atomic<DataType> TotalRawValue;
 		} m_Values[2];
 
@@ -282,7 +282,7 @@ namespace Svr {
 	class PerformanceCounterTickPerSec : public PerformanceCounterRaw<DataType>
 	{
 	private:
-		std::atomic<ULONG> m_TickIndex;
+		std::atomic<uint64_t> m_TickIndex;
 		TimeStampMS m_TickCountStartTime;
 		std::atomic<DataType> m_Values[2];
 
