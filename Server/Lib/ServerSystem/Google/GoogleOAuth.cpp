@@ -166,6 +166,11 @@ namespace Google {
 	Result OAuth::BuildAuthRequestString(const char* strAccount, const char* scopes, Array<uint8_t>& requestString)
 	{
 		Result hr = ResultCode::SUCCESS;
+#if defined(SF_USE_MBEDTLS)
+		mbedtls_rsa_context *pRsaKey = nullptr;
+#else
+		RSA* pkey = nullptr;
+#endif
 
 		StaticArray<uint8_t, 128> digest(GetHeap());
 		int sslResult = TRUE;
@@ -204,7 +209,7 @@ namespace Google {
 
 #if defined(SF_USE_MBEDTLS)
 
-		auto pRsaKey = mbedtls_pk_rsa(m_privateKey);
+		pRsaKey = mbedtls_pk_rsa(m_privateKey);
 		if (pRsaKey == nullptr
 			|| strAccount == nullptr
 			|| scopes == nullptr)
@@ -226,7 +231,7 @@ namespace Google {
 			return ResultCode::FAIL;
 
 		// EVP_PKEY_get1_RSA ?
-		RSA* pkey = EVP_PKEY_get0_RSA(m_privateKey);
+		pkey = EVP_PKEY_get0_RSA(m_privateKey);
 		if (pkey == nullptr)
 			return ResultCode::UNEXPECTED;
 
