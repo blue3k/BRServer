@@ -24,6 +24,7 @@
 #include "Protocol/ServerService/ClusterServerService.h"
 #include "SvrTrace.h"
 #include "Server/BrServerUtil.h"
+#include "Service/ServerService.h"
 
 #include "Protocol/Message/LoginServerMsgClass.h"
 

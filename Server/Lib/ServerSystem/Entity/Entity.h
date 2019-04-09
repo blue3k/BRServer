@@ -21,7 +21,7 @@
 #include "Types/BrSvrTypes.h"
 #include "Types/BrSvrTypes.h"
 #include "Object/SFSharedPointer.h"
-#include "Transaction/Transaction.h"
+#include "Transaction/MessageHandlerTable.h"
 
 
 namespace SF {
@@ -44,8 +44,14 @@ namespace SF {
 
 namespace Svr{
 
+	class ServerEntity;
 	class Transaction;
 	class TransactionResult;
+
+	using MessageDataPtr = SharedPointerT<Message::MessageData>;
+	using TransactionPtr = SharedPointerT<Transaction>;
+
+
 
 	///////////////////////////////////////////////////////////////////////////////////////////////////////
 	//

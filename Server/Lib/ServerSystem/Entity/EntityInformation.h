@@ -15,6 +15,7 @@
 #include "SFTypedefs.h"
 #include "Memory/SFMemoryPool.h"
 #include "Server/BrServer.h"
+#include "Server/BrServerUtil.h"
 #include "ServerEntity/ServerEntity.h"
 //#include "ServerService/ServerService.h"
 

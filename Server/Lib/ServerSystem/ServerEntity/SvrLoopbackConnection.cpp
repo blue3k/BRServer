@@ -16,6 +16,7 @@
 #include "ResultCode/SFResultCodeLibrary.h"
 #include "SvrLoopbackConnection.h"
 #include "ServerEntity/ServerEntity.h"
+#include "SvrTrace.h"
 
 
 

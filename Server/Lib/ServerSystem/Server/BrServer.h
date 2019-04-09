@@ -22,6 +22,7 @@
 #include "Task/ServerTaskManager.h"
 #include "Component/ServerComponentCarrier.h"
 #include "ServerConfig/SFServerConfig.h"
+#include "SvrTrace.h"
 
 
 namespace SF {
