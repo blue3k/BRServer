@@ -30,6 +30,7 @@
 #include "ServiceEntity/Game/PlayerManagerServiceEntity.h"
 #include "ServiceEntity/Game/GameServiceTrans.h"
 #include "Entity/EntityManager.h"
+#include "Server/BrServer.h"
 
 
 

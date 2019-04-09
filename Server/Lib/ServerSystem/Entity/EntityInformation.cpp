@@ -14,7 +14,7 @@
 #include "SFTypedefs.h"
 #include "EntityInformation.h"
 #include "Protocol/ServerService/ServerService.h"
-
+#include "ServerEntity/ServerEntity.h"
 
 SF_MEMORYPOOL_IMPLEMENT(SF::Svr::UserEntityInformation);
 
@@ -84,6 +84,31 @@ namespace Svr {
 			GetServerEntity()->GetServerUpTime(), 
 			GetWorkload() );
 	}
+
+	RouteContext ServerServiceInformation::RouteContextFrom(TransactionID fromTrans)
+	{
+		if (m_ServerEntity == nullptr)
+			return RouteContext();
+
+		return RouteContext(EntityUID(GetMyServerID(), fromTrans.GetEntityID()), m_ServerEntity->GetEntityUID());
+	}
+
+	const SharedPointerAtomicT<Net::Connection>& ServerServiceInformation::GetConnection() const
+	{
+		const static SharedPointerAtomicT<Net::Connection> Dummy;
+		if (m_ServerEntity == nullptr) return Dummy;
+
+		return m_ServerEntity->GetConnection();
+	}
+
+	// check whether this service is available or not
+	bool ServerServiceInformation::IsServiceAvailable() const
+	{
+		Assert(m_ServerEntity);
+		auto& pConn = GetConnection();
+		return pConn != nullptr && pConn->GetConnectionState() == Net::ConnectionState::CONNECTED;
+	}
+
 
 
 

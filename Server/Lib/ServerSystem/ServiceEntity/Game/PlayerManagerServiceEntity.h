@@ -26,6 +26,7 @@
 #include "Entity/EntityInformation.h"
 #include "ServiceEntity/ClusteredServiceEntity.h"
 #include "Service/PlayerManagerService.h"
+#include "ServerConfig/SFServerConfig.h"
 
 
 namespace SF {

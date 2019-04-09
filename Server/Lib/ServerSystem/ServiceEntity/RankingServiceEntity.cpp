@@ -29,6 +29,8 @@
 #include "SvrConst.h"
 #include "Service/ServerService.h"
 #include "IO/SFFile.h"
+#include "Server/BrServer.h"
+#include "Entity/MasterEntity.h"
 
 #include "DB/RankingDB.h"
 

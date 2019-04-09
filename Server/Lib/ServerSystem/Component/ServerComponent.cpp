@@ -18,6 +18,7 @@
 #include "Net/SFNetDef.h"
 #include "Entity/Entity.h"
 #include "Component/ServerComponent.h"
+#include "Component/ServerComponentCarrier.h"
 #include "SvrTrace.h"
 
 

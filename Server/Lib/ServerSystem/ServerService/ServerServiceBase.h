@@ -22,7 +22,7 @@ namespace Svr {
 
 
 	class ServerEntity;
-	class ServerServiceInformation;
+	//class ServerServiceInformation;
 	
 	///////////////////////////////////////////////////////////////////////////////////////////////////////
 	//
@@ -44,7 +44,7 @@ namespace Svr {
 
 		ServerServiceInformation* GetServerServiceInformation() { return m_ServerServiceInformation; }
 
-		EntityUID GetServiceEntityUID() { return m_ServerServiceInformation->GetEntityUID(); }
+		FORCEINLINE EntityUID GetServiceEntityUID() { return m_ServerServiceInformation->GetEntityUID(); }
 
 		FORCEINLINE const SharedPointerAtomicT<Net::Connection>& GetConnection() { return m_ServerServiceInformation->GetConnection(); }
 

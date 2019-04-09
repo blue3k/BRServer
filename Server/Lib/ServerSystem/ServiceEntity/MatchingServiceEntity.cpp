@@ -29,6 +29,7 @@
 #include "SvrConst.h"
 #include "Entity/EntityManager.h"
 #include "PerformanceCounter/PerformanceCounterClient.h"
+#include "Server/BrServer.h"
 
 
 

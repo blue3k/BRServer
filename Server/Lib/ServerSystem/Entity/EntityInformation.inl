@@ -33,21 +33,6 @@ ServerID EntityInformation::GetServerID() const
 
 
 
-inline const SharedPointerAtomicT<Net::Connection>& ServerServiceInformation::GetConnection() const
-{
-	const static SharedPointerAtomicT<Net::Connection> Dummy;
-	if( m_ServerEntity == nullptr ) return Dummy;
-
-	return m_ServerEntity->GetConnection();
-}
-
-// check whether this service is available or not
-inline bool ServerServiceInformation::IsServiceAvailable() const
-{
-	Assert(m_ServerEntity);
-	auto& pConn = GetConnection();
-	return pConn != nullptr && pConn->GetConnectionState() == Net::ConnectionState::CONNECTED;
-}
 
 
 

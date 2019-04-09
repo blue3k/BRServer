@@ -23,7 +23,7 @@
 #include "ServerService/ServerServiceBase.h"
 #include "Container/SFHashTable.h"
 #include "Container/SFIndexing.h"
-
+#include "Entity/MasterEntity.h"
 #include "Entity/EntityInformation.h"
 
 

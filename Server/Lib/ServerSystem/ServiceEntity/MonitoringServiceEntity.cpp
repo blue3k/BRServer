@@ -28,6 +28,9 @@
 #include "SvrConst.h"
 #include "ServerSystem/PerformanceCounter/PerformanceCounterServer.h"
 #include "Service/ServerService.h"
+#include "Server/BrServer.h"
+
+
 
 namespace SF {
 namespace Svr {

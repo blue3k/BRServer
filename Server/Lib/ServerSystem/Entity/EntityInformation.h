@@ -14,17 +14,26 @@
 
 #include "SFTypedefs.h"
 #include "Memory/SFMemoryPool.h"
-#include "Server/BrServer.h"
+//#include "Server/BrServer.h"
 #include "Server/BrServerUtil.h"
-#include "ServerEntity/ServerEntity.h"
+//#include "ServerEntity/ServerEntity.h"
 //#include "ServerService/ServerService.h"
 
 
 namespace SF {
+
+	namespace Net
+	{
+		class Connection;
+	}
+
+
 namespace Svr {
 
 	class ServerServiceBase;
 	class ServerService;
+	class ServerEntity;
+
 
 	//////////////////////////////////////////////////////////////////////////
 	//
@@ -136,13 +145,7 @@ namespace Svr {
 
 
 		// Setup route context from input transaction to the service entity
-		RouteContext RouteContextFrom(TransactionID fromTrans)
-		{
-			if (m_ServerEntity == nullptr)
-				return RouteContext();
-
-			return RouteContext(EntityUID(GetMyServerID(), fromTrans.GetEntityID()), m_ServerEntity->GetEntityUID());
-		}
+		RouteContext RouteContextFrom(TransactionID fromTrans);
 
 
 		template< class ServiceType >
@@ -150,7 +153,7 @@ namespace Svr {
 		{
 			if( m_ServiceBase == nullptr )
 			{
-				m_ServiceBase = reinterpret_cast<ServerServiceBase*>(new(m_bufferForServiceBase) ServiceType(this));
+				m_ServiceBase = dynamic_cast<ServerServiceBase*>(new(m_bufferForServiceBase) ServiceType(this));
 			}
 
 			return (ServiceType*)m_ServiceBase;

@@ -28,6 +28,7 @@
 #include "ServiceEntity/Login/LoginPlayerEntity.h"
 #include "ServiceEntity/Login/LoginPlayerEntityTrans.h"
 #include "ServiceEntity/RankingServiceTrans.h"
+#include "Server/BrServer.h"
 
 #include "SvrTrace.h"
 #include "SvrConst.h"

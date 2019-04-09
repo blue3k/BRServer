@@ -21,6 +21,7 @@
 #include "Types/SFEngineTypedefs.h"
 #include "ResultCode/SFResultCodeLibrary.h"
 #include "ResultCode/SFResultCodeGame.h"
+#include "Server/BrServer.h"
 
 #include "Protocol/Policy/GameServerNetPolicy.h"
 #include "Protocol/Policy/GameNetPolicy.h"

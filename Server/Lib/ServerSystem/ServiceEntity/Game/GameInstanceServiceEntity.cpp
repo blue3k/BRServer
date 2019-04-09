@@ -26,7 +26,7 @@
 #include "ServiceEntity/RankingServiceTrans.h"
 #include "SvrTrace.h"
 #include "SvrConst.h"
-
+#include "Server/BrServer.h"
 
 
 namespace SF {

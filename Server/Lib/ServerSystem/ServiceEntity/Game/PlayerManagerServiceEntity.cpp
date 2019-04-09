@@ -25,7 +25,7 @@
 #include "SvrTrace.h"
 #include "Server/BrServerUtil.h"
 #include "Service/ServerService.h"
-
+#include "Server/BrServer.h"
 #include "Protocol/Message/LoginServerMsgClass.h"
 
 

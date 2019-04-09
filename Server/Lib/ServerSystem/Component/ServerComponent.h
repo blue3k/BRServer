@@ -16,8 +16,8 @@
 #include "SFTypedefs.h"
 #include "Memory/SFMemory.h"
 #include "Component/BrComponent.h"
+#include "Component/ServerComponentIDs.h"
 #include "ServerService/ServerServiceBase.h"
-#include "Component/ServerComponentCarrier.h"
 
 
 namespace SF {

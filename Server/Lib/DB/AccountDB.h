@@ -17,6 +17,7 @@
 #include "DB/DBClusterManager.h"
 #include "SvrPolicyID.h"
 #include "Component/ServerComponent.h"
+#include "Component/ServerComponentIDs.h"
 
 
 namespace SF {
