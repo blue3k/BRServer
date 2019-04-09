@@ -208,7 +208,7 @@ namespace SF {
 	{
 		// Update tasks and workload
 		SysUInt WorkLoad = 0;
-		m_TaskList.ForeachOrder(0, INT_MAX, [&WorkLoad](UINT64 taskID, const SharedPointerT<TickTask>& pTask)-> bool
+		m_TaskList.ForeachOrder(0, INT_MAX, [&WorkLoad](uint64_t taskID, const SharedPointerT<TickTask>& pTask)-> bool
 		{
 			pTask->TickUpdate();
 			WorkLoad += pTask->GetTaskLoad();

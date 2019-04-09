@@ -42,7 +42,7 @@ namespace SF {
 	{
 	public:
 		// task list type
-		typedef SortedMap<UINT64, SharedPointerT<TickTask>>	TaskList;
+		typedef SortedMap<uint64_t, SharedPointerT<TickTask>>	TaskList;
 
 		const int TICK_UPDATE_TIME = 20;
 		const uint MAX_TASK_RETRY = 30 * 1000 / TICK_UPDATE_TIME; // retry for 30 sec

@@ -32,7 +32,7 @@ namespace DB {
 	//
 
 	QueryWorkerManager* QueryWorkerManager::stm_pInstance = nullptr;
-	std::atomic<LONG> QueryWorkerManager::stm_InitializationCount(0);
+	std::atomic<long> QueryWorkerManager::stm_InitializationCount(0);
 	
 	QueryWorkerManager::QueryWorkerManager()
 		: m_Heap("QueryWorkerManager", GetSystemHeap())

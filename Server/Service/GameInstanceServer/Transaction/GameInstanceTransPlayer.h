@@ -62,7 +62,7 @@ namespace ConspiracyGameInstanceServer {
 		TimeStampSec m_TimeStamp;
 		GameInsUID m_GameInsUID;
 		GameStateID m_GameState;
-		UINT8 m_Day;
+		uint8_t m_Day;
 		PlayerRole m_Role;
 		bool m_Dead, m_bIsFirstJoin;
 		uint m_PlayerIndex;

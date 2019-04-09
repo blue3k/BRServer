@@ -35,7 +35,7 @@ namespace Google {
 		{
 		private:
 
-			const LONG AUTHTICKET_TIMEOUT = 10 * 60 * 1000;
+			const long AUTHTICKET_TIMEOUT = 10 * 60 * 1000;
 
 			const char* GoogleDefaultPassword = "notasecret";
 

@@ -35,7 +35,7 @@ namespace SF {
 		};
 
 	private:
-		UINT m_ServerID;
+		uint m_ServerID;
 
 		// Cached Time
 		mutable TimeStampSec m_time;
@@ -48,7 +48,7 @@ namespace SF {
 
 		GlobalUIDGenerator();
 
-		inline void SetServerID( UINT serverID ) { m_ServerID = serverID; AssertRel( serverID < 256 ); }
+		inline void SetServerID( uint serverID ) { m_ServerID = serverID; AssertRel( serverID < 256 ); }
 
 		// Generate New ID
 		GlobalUID NewUID() const;

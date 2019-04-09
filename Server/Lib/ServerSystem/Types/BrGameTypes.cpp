@@ -23,7 +23,7 @@ namespace SF
 
 	
 	GameLogItem::GameLogItem(GameLogType logType, TimeStampSec timeStamp, size_t logItemSize)
-		: LogType(logType), LogItemSize((UINT16)logItemSize), TimeStamp(timeStamp)
+		: LogType(logType), LogItemSize((uint16_t)logItemSize), TimeStamp(timeStamp)
 	{
 	}
 

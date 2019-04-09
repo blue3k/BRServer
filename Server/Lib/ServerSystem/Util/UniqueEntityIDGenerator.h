@@ -35,7 +35,7 @@ namespace SF {
 		// Item for stack pool
 		struct Item : public StackPool::Item
 		{
-			UINT UID;
+			uint UID;
 
 			Item()
 			{
@@ -49,26 +49,26 @@ namespace SF {
 		~UniqueEntityIDGenerator();
 
 		// Generate New ID
-		UINT NewID();
+		uint NewID();
 
 		// Free Generated ID
-		bool FreeID( UINT uiID );
+		bool FreeID( uint uiID );
 
 		// Reserve ID
-		Result ReserveID( UINT idToReserve );
+		Result ReserveID( uint idToReserve );
 
 		// Clear all IDs
 		void ClearAllIDs();
 
 	private:
 		// Check ID integrety
-		bool IsFreeID( UINT id );
+		bool IsFreeID( uint id );
 
 		// Mark as free id
-		void MarkAsFree( UINT id );
+		void MarkAsFree( uint id );
 
 		// Mark as using id
-		void MarkAsUsing( UINT id );
+		void MarkAsUsing( uint id );
 
 	private:
 		// Free UID list
@@ -80,7 +80,7 @@ namespace SF {
 			IDMASK_BITMASK		= 64 - 1,	// 
 			IDMASK_MAXINDEX		= 1<<(EntityID::MAX_IDBIT-IDMASK_SHIFT),
 		};
-		std::atomic<UINT64>		m_IDMask[IDMASK_MAXINDEX];
+		std::atomic<uint64_t>		m_IDMask[IDMASK_MAXINDEX];
 
 		// Counter for new ID
 		SyncCounter			m_CounterForID;

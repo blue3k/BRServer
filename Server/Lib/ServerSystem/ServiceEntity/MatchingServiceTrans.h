@@ -60,7 +60,7 @@ namespace Svr {
 		uint m_MatchingMemberCount;
 		PlayerRole m_RequestRole;
 
-		//LONG m_RequestedTime;
+		//long m_RequestedTime;
 
 	public:
 		MatchingTransGrabPlayer(IHeap& memoryManager, uint matchingMemberCount, uint targetQueueMemberCount, PlayerRole playerRole, uint minQueueCount, uint maxQueueCount);

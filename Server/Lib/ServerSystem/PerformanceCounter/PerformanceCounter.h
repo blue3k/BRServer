@@ -36,7 +36,7 @@ namespace Svr {
 			MAX_COUNTERNAME = 128,
 		};
 
-		enum class DataTypes : UINT8
+		enum class DataTypes : uint8_t
 		{
 			Int32,
 			UInt32,
@@ -44,7 +44,7 @@ namespace Svr {
 			UInt64,
 		};
 
-		enum class CountingTypes : UINT8
+		enum class CountingTypes : uint8_t
 		{
 			Raw,
 			AveragePerSec,
