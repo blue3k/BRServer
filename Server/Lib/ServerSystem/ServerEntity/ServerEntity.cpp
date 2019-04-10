@@ -438,7 +438,7 @@ namespace Svr {
 			{
 				if ((FindActiveTransaction(eventTask.EventData.pTransResultEvent->GetTransID(), pCurTran)))
 				{
-					ProcessTransactionResult(pCurTran, const_cast<TransactionResult*>(eventTask.EventData.pTransResultEvent));
+					ProcessTransactionResult(pCurTran, eventTask.EventData.pTransResultEvent);
 				}
 				else
 				{

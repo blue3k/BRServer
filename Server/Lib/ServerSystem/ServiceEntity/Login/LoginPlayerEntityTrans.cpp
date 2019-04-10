@@ -127,7 +127,7 @@ namespace Svr {
 		super::GetMyOwner()->HeartBit();
 
 		super::GetMyOwner()->SetIsTicketOwner(false);
-		GetMyOwner()->SetGameID((GameID)super::GetGameID());
+		super::GetMyOwner()->SetGameID((GameID)super::GetGameID());
 
 		// succeeded to login
 		super::GetMyOwner()->SetAccountID(accountID);
@@ -180,7 +180,7 @@ namespace Svr {
 			//Svr::ClusteredServiceEntity *pServiceEntity = nullptr;
 			ClusterServiceInfo* pClusterServiceInfo = nullptr;
 			// To accommodate login only services, allow login without game server
-			svrChkPtr(pClusterServiceInfo = Service::ClusterManager->GetClusterInfo(GetMyOwner()->GetGameID(), ClusterID::Game));
+			svrChkPtr(pClusterServiceInfo = Service::ClusterManager->GetClusterInfo(super::GetMyOwner()->GetGameID(), ClusterID::Game));
 			if(pClusterServiceInfo->Services.size() == 0)
 			{
 				// Login is succeeded, but there is no game cluster for the game or no available game service
@@ -219,10 +219,10 @@ namespace Svr {
 		Svr::ServerServiceInformation *pService = nullptr;
 
 		// Find new game server for this player
-		svrChk(Service::ClusterManager->GetRandomService(GetMyOwner()->GetGameID(), ClusterID::Game, pService));
+		svrChk(Service::ClusterManager->GetRandomService(super::GetMyOwner()->GetGameID(), ClusterID::Game, pService));
 		if (!hr)
 		{
-			svrTrace(Error, "Failed to find cluster service entity for game:{0} PlayerID:{1}", Enum<GameID>().GetValueName(GetMyOwner()->GetGameID()), super::GetMyOwner()->GetPlayerID());
+			svrTrace(Error, "Failed to find cluster service entity for game:{0} PlayerID:{1}", Enum<GameID>().GetValueName(super::GetMyOwner()->GetGameID()), super::GetMyOwner()->GetPlayerID());
 			goto Proc_End;
 		}
 
@@ -268,9 +268,9 @@ namespace Svr {
 
 		if (!StrUtil::IsNullOrEmpty(res.GetPublicAddressV6()))
 		{
-			svrChk(Net::SetNetAddress(m_GameServerAddr, res.GetPublicAddressV6(), (USHORT)res.GetPort()));
+			svrChk(Net::SetNetAddress(m_GameServerAddr, res.GetPublicAddressV6(), (uint16_t)res.GetPort()));
 		}
-		svrChk(Net::SetNetAddress(m_GameServerAddrIPV4, res.GetPublicAddress(), (USHORT)res.GetPort()));
+		svrChk(Net::SetNetAddress(m_GameServerAddrIPV4, res.GetPublicAddress(), (uint16_t)res.GetPort()));
 		m_GameEntityUID = res.GetRouteContext().GetFrom();
 
 		svrChk(Svr::GetServerComponent<DB::LoginSessionDB>()->ConnectedToGameServer(super::GetTransID(), super::GetMyOwner()->GetPlayerID(), super::GetMyOwner()->GetAuthTicket(), super::GetOwnerEntityUID(), m_GameEntityUID));

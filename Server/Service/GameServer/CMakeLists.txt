@@ -1,6 +1,6 @@
 ﻿
 
-source_group(INCLUDES
+source_group(INCLUDES FILES 
     GameInstance/GamePlayerEntity.h
     GameServer.h
     GameServerClass.h

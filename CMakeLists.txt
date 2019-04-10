@@ -56,8 +56,6 @@ include_directories(AFTER
 	Server/Lib/Table
 	)
 
-#link_directories(${CMAKE_SOURCE_DIR}/lib)
-link_directories(../StormForge/build${CMAKE_SYSTEM_NAME}/${ARTECTURE}${CMAKE_BUILD_TYPE}/lib)
 
 
 
@@ -157,9 +155,16 @@ elseif(UNIX)
 	#
 	set(ARTECTURE x64)
 
+	link_directories(
+		#../StormForge/buildLinux/x64${CMAKE_BUILD_TYPE}/lib
+		../StormForge/build${CMAKE_SYSTEM_NAME}/${ARTECTURE}${CMAKE_BUILD_TYPE}/lib
+	)
+
 endif()
 
 
+#link_directories(${CMAKE_SOURCE_DIR}/lib)
+link_directories(../StormForge/build${CMAKE_SYSTEM_NAME}/${ARTECTURE}${CMAKE_BUILD_TYPE}/lib)
 
 set(CMAKE_INSTALL_PREFIX ${CMAKE_CURRENT_SOURCE_DIR}/build${CMAKE_SYSTEM_NAME}/${ARTECTURE}${CMAKE_BUILD_TYPE})
 

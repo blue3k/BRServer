@@ -1,6 +1,6 @@
 ﻿
 
-source_group(INCLUDES
+source_group(INCLUDES FILES
     GenericMsgClass.h
     ProtocolTrace.h
     Protocol/Message/ChatChannelManagerMsgClass.h

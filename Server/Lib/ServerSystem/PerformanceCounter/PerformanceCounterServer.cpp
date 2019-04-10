@@ -151,7 +151,7 @@ namespace Svr {
 		if (port > USHRT_MAX) port = 0;
 
 		// validate local IP
-		svrChk(Net::SetLocalNetAddress(localAddr, serverAddress, (USHORT)port));
+		svrChk(Net::SetLocalNetAddress(localAddr, serverAddress, (uint16_t)port));
 
 		svrChk(Initialize(localAddr));
 

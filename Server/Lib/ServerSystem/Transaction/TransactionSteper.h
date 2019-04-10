@@ -148,7 +148,11 @@ namespace Svr {
 					IsCompleted  = true;
 				}
 
-				Util::SafeRelease( pRes );
+				if (pRes != nullptr)
+				{
+					delete pRes;
+					pRes = nullptr;
+				}
 			}
 
 			return ResultCode::SUCCESS;

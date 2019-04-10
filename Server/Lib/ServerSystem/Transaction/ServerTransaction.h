@@ -193,10 +193,12 @@ namespace Svr {
 			pMyOwner = super::GetMyOwner();
 
 
-			svrChkPtr(pService);
+			if (pService == nullptr)
+				return hr;
 
+			// Skip unexpected message
 			if( pService->GetEntityUID() == pMyOwner->GetEntityUID() )
-				goto Proc_End;
+				return hr;
 
 			auto& pConn = pService->GetServerEntity()->GetConnection();
 			if( pConn == nullptr )
@@ -210,7 +212,7 @@ namespace Svr {
 
 			MessageClass::OverrideRouteInformation( pService->GetEntityUID(), super::GetRouteHopCount() + 1 );
 
-			pClonedMessage = super::GetMessage()->Clone(GetHeap());
+			pClonedMessage = super::GetMessage()->Clone(Transaction::GetHeap());
 			if( pClonedMessage == nullptr )
 			{
 				svrTrace( Error, "Failed routing a message({0}) for {1}, Out of memory", super::GetMessage()->GetMessageHeader()->msgID, typeid(*pMyOwner).name() );

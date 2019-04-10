@@ -1,6 +1,6 @@
 ﻿
 
-source_group(INCLUDES
+source_group(INCLUDES FILES FILES 
     ConspiracyGameInstanceServerClass.h
     ConspiracyGameInstanceSvrConst.h
     GameInstance/GameInstanceEntity.h

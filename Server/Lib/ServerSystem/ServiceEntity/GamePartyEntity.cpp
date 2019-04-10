@@ -144,7 +144,8 @@ namespace Svr {
 			if( pPartyPlayer == nullptr )
 				continue;
 
-			Result hrRes = func( pPartyPlayer, Policy::NetPolicyGameServer(pPartyPlayer->GetConnection()));
+			Policy::NetPolicyGameServer netPolicy(pPartyPlayer->GetConnection());
+			Result hrRes = func( pPartyPlayer, netPolicy);
 			if( !(hrRes) )
 				return hrRes;
 		}
@@ -159,7 +160,8 @@ namespace Svr {
 			if( pPartyPlayer == nullptr )
 				continue;
 
-			Result hrRes = func(pPartyPlayer, Policy::NetSvrPolicyGameParty(pPartyPlayer->GetConnection()));
+			Policy::NetSvrPolicyGameParty netPolicy(pPartyPlayer->GetConnection());
+			Result hrRes = func(pPartyPlayer, netPolicy);
 			if (!(hrRes))
 				return hrRes;
 		}

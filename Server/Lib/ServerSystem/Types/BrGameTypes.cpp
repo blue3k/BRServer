@@ -37,7 +37,7 @@ namespace SF
     {
     }
         
-    Result GameLogChatMessage::SetChatMessage( PlayerID player, BYTE playerStatus, ChatType type, const char* message)
+    Result GameLogChatMessage::SetChatMessage( PlayerID player, uint8_t playerStatus, ChatType type, const char* message)
     {
 		Result hr = ResultCode::SUCCESS;
 

@@ -295,7 +295,7 @@ namespace Svr {
 
 		size_t szWritlen;
 		// write header..
-		fileStream.Write((byte*)szBuff, dwStrLen, szWritlen);
+		fileStream.Write((uint8_t*)szBuff, dwStrLen, szWritlen);
 
 		ForeachAll([&](int32_t Ranking, const TotalRankingPlayerInformation* rankInfo)
 		{
@@ -316,7 +316,7 @@ namespace Svr {
 
 			dwStrLen = (uint32_t)strlen(szBuff);
 
-			fileStream.Write((byte*)szBuff, dwStrLen, szWritlen);
+			fileStream.Write((uint8_t*)szBuff, dwStrLen, szWritlen);
 		});
 
 	Proc_End:

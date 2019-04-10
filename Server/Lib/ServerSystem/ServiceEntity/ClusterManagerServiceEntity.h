@@ -16,6 +16,7 @@
 #include "SFTypedefs.h"
 
 #include "Memory/SFMemory.h"
+#include "Types/SFEngineTypedefs.h"
 #include "Types/BrSvrTypes.h"
 #include "Entity/Entity.h"
 #include "Component/ServerComponent.h"
@@ -42,11 +43,15 @@ namespace Svr {
 		struct {
 			ClusterID ServiceClusterID;
 			GameID GameClusterID;
-		};
+		} Components;
 		uint64_t Composited;
 
 		ClusterSearchKey() : Composited(0) {}
-		ClusterSearchKey(GameID gameID, ClusterID clusterID) : GameClusterID(gameID), ServiceClusterID(clusterID) {}
+		ClusterSearchKey(GameID gameID, ClusterID clusterID)
+		{
+			Components.GameClusterID = (gameID);
+			Components.ServiceClusterID = (clusterID);
+		}
 
 		operator uint64_t() { return Composited; }
 	};

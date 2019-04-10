@@ -46,7 +46,8 @@ inline Result GameInstanceEntity::ForeachPlayerGameServer(Func func)
 		if (pGamePlayer->GetPlayerState() == PlayerState::None)
 			return true;
 
-		Result hrRes = func(pGamePlayer, Policy::NetPolicyGameServer(pGamePlayer->GetConnection()));
+		Policy::NetPolicyGameServer netPolicy(pGamePlayer->GetConnection());
+		Result hrRes = func(pGamePlayer, netPolicy);
 		if (!(hrRes))
 			return false;
 
@@ -69,7 +70,8 @@ inline Result GameInstanceEntity::ForeachPlayerSvrGameInstance(Func func)
 		if (pGamePlayer->GetPlayerState() == PlayerState::None)
 			return true;
 
-		Result hrRes = func(pGamePlayer, Policy::NetSvrPolicyGameInstance(pGamePlayer->GetConnection()));
+		Policy::NetSvrPolicyGameInstance netPolicy(pGamePlayer->GetConnection());
+		Result hrRes = func(pGamePlayer, netPolicy);
 		if (!(hrRes))
 			return false;
 

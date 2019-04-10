@@ -146,6 +146,7 @@ namespace Svr {
 		char nodePath[256];
 		bool bIsUpdate = false;
 		Json::Value nodeValue(Json::objectValue);
+		auto zkSession = Service::ZKSession->GetZooKeeperSession();
 
 		if (playerID == 0 || entityUID.UID == 0) svrErr(ResultCode::INVALID_PLAYERID);
 
@@ -171,7 +172,6 @@ namespace Svr {
 		m_NumberOfPlayerOnThisServer.fetch_add(1, std::memory_order_relaxed);
 		
 
-		auto zkSession = Service::ZKSession->GetZooKeeperSession();
 		if (zkSession == nullptr || !zkSession->IsConnected())
 		{
 			svrTrace(Error, "Zookeeper session server hasn't ready!");
@@ -212,6 +212,7 @@ namespace Svr {
 		Result hr;
 		PlayerIDMapIterator itPlayer;
 		char nodePath[256];
+		auto zkSession = Service::ZKSession->GetZooKeeperSession();
 
 		if (!m_PlayerIDMap.find(playerID, itPlayer))
 		{
@@ -223,7 +224,6 @@ namespace Svr {
 		m_NumberOfPlayerOnThisServer.fetch_sub(1, std::memory_order_relaxed);
 
 
-		auto zkSession = Service::ZKSession->GetZooKeeperSession();
 		if (zkSession == nullptr || !zkSession->IsConnected())
 		{
 			svrTrace(Error, "Zookeeper session server hasn't ready!");

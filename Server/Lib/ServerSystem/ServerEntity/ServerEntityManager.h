@@ -25,7 +25,7 @@
 #include "ServerEntity/ServerEntity.h"
 #include "Component/ServerComponent.h"
 #include "Service/ServerEntityManagerService.h"
-
+#include "Server/BrServer.h"
 
 namespace SF {
 namespace Svr

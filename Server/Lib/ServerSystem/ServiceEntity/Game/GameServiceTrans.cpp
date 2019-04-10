@@ -111,6 +111,7 @@ namespace Svr {
 		Result hr = ResultCode::SUCCESS;
 		SharedPointerT<Svr::Entity> pEntity;
 		GamePlayerEntity *pPlayerEntity = nullptr;
+		auto pMyOwner = super::GetMyOwner();
 
 		m_PlayerUID = 0;
 
@@ -148,18 +149,18 @@ namespace Svr {
 			// Add Entity will Initialize entity so that AccountID is erased.
 			// SetAccountID need to be set after entity is added
 			pPlayerEntity->SetAccountID(super::GetPlayerID());
-			pPlayerEntity->SetServerNet(GetMyOwner()->GetServerNet());
-			pPlayerEntity->SetPublicNetConfig(GetMyOwner()->GetPublicNetConfig());
+			pPlayerEntity->SetServerNet(pMyOwner->GetServerNet());
+			pPlayerEntity->SetPublicNetConfig(pMyOwner->GetPublicNetConfig());
 		}
 
 		pPlayerEntity->SetShardID(super::GetShardID());
 		m_PlayerUID = pPlayerEntity->GetEntityUID();
 
-		m_PublicAddress = GetMyOwner()->GetPublicNetConfig()->IPV4;
-		m_PublicAddressIPV6 = GetMyOwner()->GetPublicNetConfig()->IPV6;
-		m_Port = GetMyOwner()->GetPublicNetConfig()->Port;
+		m_PublicAddress = pMyOwner->GetPublicNetConfig()->IPV4;
+		m_PublicAddressIPV6 = pMyOwner->GetPublicNetConfig()->IPV6;
+		m_Port = pMyOwner->GetPublicNetConfig()->Port;
 
-		if ((Svr::Entity*)pPlayerEntity == (Svr::Entity*)super::GetMyOwner())
+		if ((Svr::Entity*)pPlayerEntity == (Svr::Entity*)pMyOwner)
 		{
 			svrChk(pPlayerEntity->OnJoinGameServerInitialize(super::GetTicket(), super::GetFBUserID()));
 			super::CloseTransaction(hr);

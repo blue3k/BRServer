@@ -17,6 +17,7 @@
 #include "Thread/SFThread.h"
 #include "String/SFStrUtil.h"
 #include "String/SFToString.h"
+#include "Net/SFNetToString.h"
 #include "Util/SFLog.h"
 #include "Protocol/SFProtocol.h"
 
@@ -29,7 +30,6 @@
 #include "Net/SFNetCtrl.h"
 #include "Net/SFConnectionTasks.h"
 #include "Net/SFConnectionManagerTask.h"
-#include "Net/SFNetToString.h"
 
 
 

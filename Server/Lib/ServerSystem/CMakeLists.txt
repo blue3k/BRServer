@@ -1,6 +1,6 @@
 ﻿
 
-source_group(INCLUDES
+source_group(INCLUDES FILES
     Component/ServerComponent.inl
     Entity/Entity.inl
     Entity/EntityInformation.inl

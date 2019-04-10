@@ -728,7 +728,7 @@ Proc_End:
 	{
 		Result hr = ResultCode::SUCCESS;
 		char strRelativePath[1024];
-		FixedString32 moduleName = module->ModuleName;
+		FixedString32 moduleName = (const char*)module->ModuleName;
 		svrChkPtr(module);
 
 		switch (moduleName)

@@ -136,7 +136,8 @@ namespace Svr {
 			if( pChatChannelPlayer == nullptr )
 				continue;
 
-			Result hrRes = func( pChatChannelPlayer, Policy::NetPolicyGameServer(pChatChannelPlayer->GetConnection()));
+			Policy::NetPolicyGameServer netPolicy(pChatChannelPlayer->GetConnection());
+			Result hrRes = func( pChatChannelPlayer, netPolicy);
 			if( !(hrRes) )
 				return hrRes;
 		}
@@ -150,7 +151,8 @@ namespace Svr {
 			if(itPlayer == nullptr )
 				continue;
 
-			Result hrRes = func(itPlayer, Policy::NetSvrPolicyChatChannel(itPlayer->GetConnection()));
+			Policy::NetSvrPolicyChatChannel netPolicy(itPlayer->GetConnection());
+			Result hrRes = func(itPlayer, netPolicy);
 			if (!(hrRes))
 				return hrRes;
 		}

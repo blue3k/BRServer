@@ -1,6 +1,6 @@
 ﻿
 
-source_group(INCLUDES
+source_group(INCLUDES FILES 
     GameServer.h
     SharedModuleServerClass.h
     SharedModuleSvrConst.h

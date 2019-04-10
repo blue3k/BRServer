@@ -341,7 +341,7 @@ namespace Svr {
 			//svrChk( GetServerComponent<GameInstanceManagerWatcherServiceEntity>()->GetService( pService ) );
 
 			// 2. Get service entity list in the cluster
-			svrChk( pService->GetService<GameInstanceManagerService>()->CreateGameCmd(GetTransID(), 0, 0, (USHORT)GetMaxGamePlayers()) );
+			svrChk( pService->GetService<GameInstanceManagerService>()->CreateGameCmd(GetTransID(), 0, 0, (uint16_t)GetMaxGamePlayers()) );
 
 			//CloseTransaction(hr);
 			goto Proc_End;
@@ -397,11 +397,11 @@ namespace Svr {
 
 		switch( (int32_t)pRes->GetResult() )
 		{
-		case ResultCode::SVR_RESERVED_QUEUEITEM:
+		case (int32_t)ResultCode::SVR_RESERVED_QUEUEITEM:
 			svrErrClose(ResultCode::SVR_RESERVED_QUEUEITEM);
 			break;
-		case ResultCode::SVR_QUEUEITEM_CANCELED:
-		case ResultCode::SVR_INVALID_QUEUEITEM:
+		case (int32_t)ResultCode::SVR_QUEUEITEM_CANCELED:
+		case (int32_t)ResultCode::SVR_INVALID_QUEUEITEM:
 			GetMyOwner()->ForeachPlayerSvrGameParty( [&]( PartyPlayer* pOtherPlayer, Policy::NetSvrPolicyGameParty &pPolicy )->Result {
 				pPolicy.CanceledGameMatchingS2CEvt( pOtherPlayer->GetRouteContext(GetOwnerEntityUID()), GetMyOwner()->GetMatchingQueueTicket() );
 				return ResultCode::SUCCESS;

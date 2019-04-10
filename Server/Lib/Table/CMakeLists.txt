@@ -1,6 +1,6 @@
 ﻿
 
-source_group(INCLUDES
+source_group(INCLUDES FILES
     conspiracy/BotTalkTbl.h
     conspiracy/GameConfigTbl.h
     conspiracy/LevelTbl.h

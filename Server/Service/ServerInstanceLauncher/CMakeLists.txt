@@ -1,6 +1,6 @@
 ﻿
 
-source_group(INCLUDES
+source_group(INCLUDES FILES 
     ServerInstanceLauncher.h
     ServerInstanceLauncherClass.h
     ServerEntity/ServerInstanceLauncherEntity.h

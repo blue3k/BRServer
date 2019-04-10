@@ -166,10 +166,10 @@ namespace Svr {
 			}
 
 
-			Net::RegisterConnectionDebugMessage();
+			Protocol::RegisterConnectionDebugMessage();
 
 
-			svrTrace( Info, "<{0}> Starting", Util::GetServiceNameA() );
+			svrTrace( Info, "<{0}> Starting", Util::GetServiceName() );
 
 			// register signal handlers
 			signal(SIGHUP, signal_handler); /* catch hangup signal */
@@ -203,7 +203,7 @@ namespace Svr {
 
 			g_pSvrInstance->StopServer();
 
-			svrTrace( Info, "<{0}> Closed", Util::GetServiceNameA() );
+			svrTrace( Info, "<{0}> Closed", Util::GetServiceName() );
 
 			//Trace::Uninitialize();
 
