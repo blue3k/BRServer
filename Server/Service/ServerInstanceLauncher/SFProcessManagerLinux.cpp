@@ -85,6 +85,8 @@ namespace SF {
 		m_OnEndHandler(itProc);
 
 		m_ProcesseInfos.Remove(itProc.Name, itProc);
+
+		return ResultCode::SUCCESS;
 	}
 
 	// update process running status
