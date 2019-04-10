@@ -32,7 +32,7 @@ SET (CMAKE_C_FLAGS_DEBUG "${CMAKE_C_FLAGS_DEBUG} -DDEBUG")
 SET (CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -DDEBUG")
 
 
-set(ENGINE_LINK_LIBS BRDB BRServerProtocol BRServerSystem BRTable SFProtocol SFEngine  SFCore  curl iconv png mng jpeg tiff zookeeper jsoncpp mbedtls xml2 zlib)
+set(ENGINE_LINK_LIBS BRServerSystem BRTable BRServerProtocol BRDB SFProtocol SFEngine  SFCore  curl iconv png mng jpeg tiff zookeeper jsoncpp mbedtls xml2 zlib)
 
 
 include_directories(AFTER 
@@ -92,7 +92,7 @@ if(WIN32)
 	link_directories(
 		External/mysql-connector-c-6.1.6-winx64/lib
 		External/mysql-connector-c-6.1.6-winx64/lib/vs12
-		../StormForge/buildWindows/x64$(Configuration)/lib
+		../StormForge/build${CMAKE_SYSTEM_NAME}/${ARTECTURE}$(Configuration)/lib
 	)
 
 
@@ -100,8 +100,8 @@ elseif(UNIX)
 
 	message ( "Setup UNIX configs" + ${CMAKE_BUILD_TYPE} )
 
-	SET (CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -pthread -fPIC")
-	SET (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -pthread -fPIC")
+	SET (CMAKE_C_FLAGS "${CMAKE_C_FLAGS}  -fexceptions -frtti -pthread -fPIC")
+	SET (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS}  -fexceptions -frtti -pthread -fPIC")
 
 	SET (CMAKE_C_FLAGS_DEBUG "${CMAKE_C_FLAGS_DEBUG} -O0")
 	SET (CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -O0")
@@ -122,11 +122,12 @@ elseif(UNIX)
 	#
 	set(ARTECTURE x64)
 
-	# link_directories(
-		# #../StormForge/buildLinux/x64${CMAKE_BUILD_TYPE}/lib
-		# ../StormForge/build${CMAKE_SYSTEM_NAME}/${ARTECTURE}${CMAKE_BUILD_TYPE}/lib
-	# )
-	link_directories(../StormForge/build${CMAKE_SYSTEM_NAME}/${ARTECTURE}${CMAKE_BUILD_TYPE}/lib)
+	link_directories(
+		/usr/lib
+		../StormForge/build${CMAKE_SYSTEM_NAME}/${ARTECTURE}${CMAKE_BUILD_TYPE}/lib
+		)
+	
+	set(PLATFORM_LIBS mysqlclient rt m)
 
 endif()
 

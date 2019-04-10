@@ -1117,11 +1117,11 @@ namespace GameServer {
 
 		switch((int32_t)pRes->GetResult() )
 		{
-		case ResultCode::SVR_RESERVED_QUEUEITEM:
+		case (int32_t)ResultCode::SVR_RESERVED_QUEUEITEM:
 			svrErrClose(ResultCode::SVR_RESERVED_QUEUEITEM);
 			break;
-		case ResultCode::SVR_QUEUEITEM_CANCELED:
-		case ResultCode::SVR_INVALID_QUEUEITEM:
+		case (int32_t)ResultCode::SVR_QUEUEITEM_CANCELED:
+		case (int32_t)ResultCode::SVR_INVALID_QUEUEITEM:
 			GetMyOwner()->SetMatchingTicket( 0 );
 			break;
 		default:

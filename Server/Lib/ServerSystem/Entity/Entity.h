@@ -202,7 +202,7 @@ namespace Svr{
 
 }; // namespace Svr
 
-extern template class SharedPointerT<Svr::Entity>;
+//extern template class SharedPointerT<Svr::Entity>;
 extern template class WeakPointerT<Svr::Entity>;
 
 template<> inline SharedPointerT<Svr::Entity> DefaultValue<SharedPointerT<Svr::Entity>>() { return SharedPointerT<Svr::Entity>(); }

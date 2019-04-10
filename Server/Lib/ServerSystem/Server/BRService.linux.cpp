@@ -80,7 +80,9 @@ namespace Svr {
 			setsid(); /* obtain a new process group */
 			printf("Service pid:%d, tid:%d\n", getpid(), (int)syscall(SYS_gettid));
 			for (int iDescriptor = getdtablesize(); iDescriptor >= 0; --iDescriptor) close(iDescriptor); /* close all descriptors */
-			int i = open("/dev/null", O_RDWR); dup(i); dup(i); /* handle standart I/O */
+			int i = open("/dev/null", O_RDWR);
+			auto res = dup(i);
+			res = dup(i); /* handle standard I/O */
 
 			/* Close out the standard file descriptors */
 			close(STDIN_FILENO);
@@ -137,7 +139,11 @@ namespace Svr {
 		// prepare service running
 		Result ServicePrepare()
 		{
-			chdir(Util::GetModulePath());
+			auto res = chdir(Util::GetModulePath());
+			if (res != 0)
+			{
+				Assert(false);// failed to change directory
+			}
 
 			auto serviceModeSetting = ParameterSetting::GetSetting("servicemode");
 			bool bAsService = StrUtil::StringCompairIgnoreCase(serviceModeSetting, -1, "true", -1);

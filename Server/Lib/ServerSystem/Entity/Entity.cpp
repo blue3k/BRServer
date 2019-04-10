@@ -34,12 +34,13 @@
 
 
 
-namespace SF {
+namespace SF
+{
 
-	template class SharedPointerT<Svr::Entity>;
+	//template class SharedPointerT<Svr::Entity>;
 	template class WeakPointerT<Svr::Entity>;
 
-	namespace Svr
+namespace Svr
 {
 
 	///////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -56,13 +57,11 @@ namespace SF {
 		, m_transactionQueue(GetHeap(), uiTransQueueSize)
 		, m_HandlerTable(GetHeap())
 	{
-
 	}
 
 	Entity::~Entity()
 	{
 		_ClearEntity();
-		//Util::SafeDelete(m_pHandlerTable);
 	}
 
 	void Entity::Dispose()
@@ -513,39 +512,10 @@ namespace SF {
 
 		return hr;
 	}
-/*
-	void Entity::OnAddedToTaskManager(TaskWorker *pWorker)
-	{
-		Assert(pWorker);
-		if (pWorker == nullptr) return;
-
-		if (GetTickInterval() > 0)
-		{
-			if (m_TimerAction == nullptr)
-				m_TimerAction = new(GetHeap()) TickTaskTimerAction(this);
-
-			m_TimerAction->SetNextTickTime(Util::Time.GetTimeMs() + GetTickInterval());
-			pWorker->GetTimeScheduler().AddTimerAction(m_TimerAction);
-		}
-		else
-		{
-
-		}
-	}
-
-	void Entity::OnRemovedFromTaskManager(TaskWorker *pWorker)
-	{
-		if (m_TimerAction != nullptr)
-		{
-			m_TimerAction->DisposeWeakPointer();
-			m_TimerAction->SetNextTickTime(0);
-		}
-	}
-*/
 
 
-}; // namespace Svr
-}; // namespace SF
+} // namespace Svr
+} // namespace SF
 
 
 

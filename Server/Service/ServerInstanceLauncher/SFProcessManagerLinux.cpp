@@ -19,7 +19,8 @@
 #include "SFProcessManager.h"
 
 #if SF_PLATFORM == SF_PLATFORM_LINUX
-
+#include <sys/types.h>
+#include <sys/wait.h>
 
 namespace SF {
 
@@ -51,16 +52,16 @@ namespace SF {
 			/* This is the parent process. */
 			ProcessInfo info;
 			info.Name = processName;
-			info.ProcessHandle = nullptr;
+			info.ProcessHandle = 0;
 			info.ProcessID = child_pid;
 			info.LatestActionTime = Util::Time.GetTimeUTCSec();
 			m_ProcesseInfos.Set(info.Name, info);
 		}
 		else {
 			/* Now execute PROGRAM, searching for it in the path. */
-			execvp(processPath, args.data());
+			execvp(processPath, (char**)args.data());
 			/* The execvp function returns only if an error occurs. */
-			svrTrace(Error, “execvp is failed?;
+			svrTrace(Error, "execvp is failed?");
 			abort();
 		}
 
@@ -75,6 +76,7 @@ namespace SF {
 
 		kill(itProc.ProcessID, SIGTERM);
 
+		int status = 0;
 		waitpid(itProc.ProcessID, &status, 0);
 
 
@@ -82,7 +84,7 @@ namespace SF {
 
 		m_OnEndHandler(itProc);
 
-		m_ProcesseInfos.Remove(itProc.Name);
+		m_ProcesseInfos.Remove(itProc.Name, itProc);
 	}
 
 	// update process running status
@@ -97,7 +99,7 @@ namespace SF {
 			if (waitResult <= 0)
 				break;
 
-			for (auto& itProc : m_ProcesseInfos)
+			for (auto itProc : m_ProcesseInfos)
 			{
 				if (itProc.ProcessID != waitResult)
 					continue;
