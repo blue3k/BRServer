@@ -83,51 +83,18 @@ if(WIN32)
 		../StormForge/3rdParties/VulkanSDK/1.1.82.1/include
 		External/mysql-connector-c-6.1.6-winx64/include
 	)
-
-	link_directories(
-		External/mysql-connector-c-6.1.6-winx64/lib
-		External/mysql-connector-c-6.1.6-winx64/lib/vs12
-		../StormForge/buildWindows/x64$(Configuration)/lib
-	)
 	
 	set(ARTECTURE x64)
 
 	set(PLATFORM_LIBS Ws2_32 Mswsock)
 
 
-elseif(ANDROID_PLATFORM)
+	link_directories(
+		External/mysql-connector-c-6.1.6-winx64/lib
+		External/mysql-connector-c-6.1.6-winx64/lib/vs12
+		../StormForge/buildWindows/x64$(Configuration)/lib
+	)
 
-	message ( "Setup Android configs" + ${CMAKE_BUILD_TYPE} )
-
-	SET (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fexceptions -frtti -pthread -fPIC")
- 
-	SET (CMAKE_C_FLAGS_DEBUG "${CMAKE_C_FLAGS_DEBUG} -O0")
-	SET (CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -O0")
-
-	SET (CMAKE_C_FLAGS_RELEASE "${CMAKE_C_FLAGS_RELEASE} -O3")
-	SET (CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} -O3")
-
-	add_definitions(-D__ANDROID__=1)
-	set(PLATFORM_LIBS android jnigraphics log GLESv1_CM GLESv2 EGL)
-
-	set(ARTECTURE ${CMAKE_ANDROID_ARCH_ABI})
-
-elseif(IOS)
-
-	message ( "Setup IOS configs" + ${CMAKE_BUILD_TYPE} )
-
-	SET (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fexceptions -frtti -pthread -fPIC")
-
-	SET (CMAKE_C_FLAGS_DEBUG "${CMAKE_C_FLAGS_DEBUG} -O0")
-	SET (CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -O0")
-
-	SET (CMAKE_C_FLAGS_RELEASE "${CMAKE_C_FLAGS_RELEASE} -O3")
-	SET (CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} -O3")
-
-	add_definitions(-D__IOS__=1)
-	add_definitions(-DKQUEUE)
-
-	set(ARTECTURE ${CMAKE_OSX_ARCHITECTURES})
 
 elseif(UNIX)
 
@@ -155,16 +122,15 @@ elseif(UNIX)
 	#
 	set(ARTECTURE x64)
 
-	link_directories(
-		#../StormForge/buildLinux/x64${CMAKE_BUILD_TYPE}/lib
-		../StormForge/build${CMAKE_SYSTEM_NAME}/${ARTECTURE}${CMAKE_BUILD_TYPE}/lib
-	)
+	# link_directories(
+		# #../StormForge/buildLinux/x64${CMAKE_BUILD_TYPE}/lib
+		# ../StormForge/build${CMAKE_SYSTEM_NAME}/${ARTECTURE}${CMAKE_BUILD_TYPE}/lib
+	# )
+	link_directories(../StormForge/build${CMAKE_SYSTEM_NAME}/${ARTECTURE}${CMAKE_BUILD_TYPE}/lib)
 
 endif()
 
 
-#link_directories(${CMAKE_SOURCE_DIR}/lib)
-link_directories(../StormForge/build${CMAKE_SYSTEM_NAME}/${ARTECTURE}${CMAKE_BUILD_TYPE}/lib)
 
 set(CMAKE_INSTALL_PREFIX ${CMAKE_CURRENT_SOURCE_DIR}/build${CMAKE_SYSTEM_NAME}/${ARTECTURE}${CMAKE_BUILD_TYPE})
 
