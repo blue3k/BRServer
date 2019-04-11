@@ -16,13 +16,15 @@ using namespace SF;
 
 
 #if SF_PLATFORM == SF_PLATFORM_WINDOWS
-int APIENTRY WinMain(HINSTANCE hInstance,
-	HINSTANCE hPrevInstance,
-	LPSTR    lpCmdLine,
-	int       nCmdShow)
+// int APIENTRY WinMain(HINSTANCE hInstance,
+	// HINSTANCE hPrevInstance,
+	// LPSTR    lpCmdLine,
+	// int       nCmdShow)
+// {
+	// UNREFERENCED_PARAMETER(hPrevInstance);
+	// UNREFERENCED_PARAMETER(lpCmdLine);
+int main(int numArg, const char* argc[])
 {
-	UNREFERENCED_PARAMETER(hPrevInstance);
-	UNREFERENCED_PARAMETER(lpCmdLine);
 
 #if _WIN32_WINNT >= 0x0400 & defined(_ATL_FREE_THREADED)
 	Result hRes = CoInitializeEx(NULL, COINIT_MULTITHREADED);
@@ -32,7 +34,8 @@ int APIENTRY WinMain(HINSTANCE hInstance,
 	_ASSERTE((hRes));
 
 	ParameterSetting::SetSetting("config", "..\\..\\Config\\ServerConfig.xml");
-	ParameterSetting::ProcessParameter(lpCmdLine);
+	// ParameterSetting::ProcessParameter(lpCmdLine);
+	ParameterSetting::ProcessParameter(numArg, argc);
 
 #elif SF_PLATFORM == SF_PLATFORM_LINUX
 int main(int numArg, const char* argc[])
