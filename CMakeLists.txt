@@ -5,7 +5,7 @@ set(CMAKE_C_COMPILER clang)
 #set(CMAKE_CXX_COMPILER clang++)
 
 
-project(StormForge C CXX)
+project(BRServer C CXX)
 
 
 message ( "Input system = ${CMAKE_SYSTEM_NAME}" )
