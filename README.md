@@ -14,11 +14,11 @@ Use Setup.cmd to setup StormForge
 
 Linux build
 1. CMakeLinuxGen.sh to generate build project
- - CMakeLinuxBuild.sh to build
+2. CMakeLinuxBuild.sh to build
 
 Windows build
 1. CMakeWinGen.cmd
- - CMakeWinBuild.cmd
+2. CMakeWinBuild.cmd
 
 
 On Windows,
