@@ -23,6 +23,7 @@ Windows build
 BrTools.sln: Server tools
 
 
+
 1. Build order(빌드 순서)
  - Build StormForge 3rdParties
  - Build StormForge
@@ -32,6 +33,7 @@ BrTools.sln: Server tools
 
 
 2. DB setup
+ - Guide for mysql: https://dev.mysql.com/doc/refman/8.0/en/installing.html
  - Install MySql 5.6 or higher
  - Unzip /Server/DBBackup/dbSchemaSQL.zip
  - Creates databases in each sql file. dbaccount, dbconspiracy00, dbgametransaction00, dbsession00, dbconspiracyranking, and dbconspiracytable
