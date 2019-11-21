@@ -17,12 +17,9 @@ Linux build
 2. CMakeLinuxBuild.sh to build
 
 Windows build
-1. CMakeWinGen.cmd
-2. CMakeWinBuild.cmd
-
-
-On Windows,
-BrServers.sln: Main server build, you can unload linux projectes if you don't need them
+1. CMakeWinGen.cmd to generate build project
+2. CMakeWinBuild.cmd to build
+3. BrServers.sln: Main server build, you can unload linux projectes if you don't need them
 BrTools.sln: Server tools
 
 
