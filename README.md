@@ -20,6 +20,7 @@ Windows build
 1. CMakeWinGen.cmd
  - CMakeWinBuild.cmd
 
+
 On Windows,
 BrServers.sln: Main server build, you can unload linux projectes if you don't need them
 BrTools.sln: Server tools
