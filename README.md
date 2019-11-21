@@ -5,15 +5,25 @@ Prerequisits
 	- Visual Studio 2017 is required
 	- JDK jdk7 or higher: http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html
 	- Perl: You need perl to build openssl. https://www.activestate.com/activeperl/downloads
-	- Cygwin64 with development tool support
 	- StormForge should be cloned at ..\StormForge
 
 
+Use Setup.cmd to setup StormForge
+
+
+
+Linux build
+1. CMakeLinuxGen.sh to generate build project
+ - CMakeLinuxBuild.sh to build
+
+Windows build
+1. CMakeWinGen.cmd
+ - CMakeWinBuild.cmd
+
+On Windows,
 BrServers.sln: Main server build, you can unload linux projectes if you don't need them
 BrTools.sln: Server tools
 
-
-Use Setup.cmd to setup StormForge
 
 1. Build order(빌드 순서)
  - Build StormForge 3rdParties
