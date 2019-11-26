@@ -11,7 +11,7 @@ call ZookeeperServiceUninstall.cmd
 
 
 
-%SERVICE_BIN_PATH%\BRServerInstanceLauncher.exe -uninstall -servicemode
+%SERVICE_BIN_PATH%\BRServerLauncher.exe -uninstall -servicemode
 
 
 pause
