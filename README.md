@@ -71,12 +71,7 @@ After build setup
 	- Hit upload xml to zookeeper
 	
 
-5. Build Server instances
-	- Open BrServersSF.sln
-	- Run Debug&Release build
-
-
-6. Install Server Instance manager service
+5. Install Server Instance manager service
 	- You can use either Debug or release build for both server instances and server instance launcher
 	- You need to sync lanucher before install service. 
 		- Use ServiceLauncherSyncDebug.cmd for debug build service launcher

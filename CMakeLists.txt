@@ -135,7 +135,6 @@ endif()
 
 set(CMAKE_INSTALL_PREFIX ${CMAKE_CURRENT_SOURCE_DIR}/build${CMAKE_SYSTEM_NAME}/${ARTECTURE}${CMAKE_BUILD_TYPE})
 
-
 add_subdirectory(Server)
 
 

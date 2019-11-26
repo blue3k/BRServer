@@ -18,6 +18,7 @@ cmake --build . --parallel --target install  -- /p:Configuration=Debug
 
 robocopy lib ..\%PROCESS_ARCHITECTUR%%CMAKE_BUILD_TYPE%\lib  /purge /move
 robocopy bin ..\%PROCESS_ARCHITECTUR%%CMAKE_BUILD_TYPE%\bin  /purge /move
+robocopy bin ..\..\Server\bin\%PROCESS_ARCHITECTUR%%CMAKE_BUILD_TYPE% /move
 
 
 
@@ -31,6 +32,7 @@ cmake --build . --parallel --target install -- /p:Configuration=Release
 
 robocopy lib ..\%PROCESS_ARCHITECTUR%%CMAKE_BUILD_TYPE%\lib  /purge /move
 robocopy bin ..\%PROCESS_ARCHITECTUR%%CMAKE_BUILD_TYPE%\bin  /purge /move
+robocopy bin ..\..\Server\bin\%PROCESS_ARCHITECTUR%%CMAKE_BUILD_TYPE% /move
 
 
 
