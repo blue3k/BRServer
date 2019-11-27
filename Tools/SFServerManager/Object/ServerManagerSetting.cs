@@ -80,7 +80,7 @@ namespace SFServerManager
         string m_CommandNodePath = "/BRServerCommand";
         public string CommandNodePath { get { return m_CommandNodePath; } set { m_CommandNodePath = value; } }
 
-        string m_ModulePath = "x64Debug";
+        string m_ModulePath = "";
         public string ModulePath { get { return m_ModulePath; } set { m_ModulePath = value; } }
 
         [ImportingConstructor]

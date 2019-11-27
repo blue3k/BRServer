@@ -103,7 +103,10 @@ namespace SF {
 	{
 		auto itProc = m_ProcesseInfos.find(processName);
 		if (itProc.ProcessHandle == 0)
-			return ResultCode::INVALID_ARG;
+		{
+			svrTrace(Warning, "StopProcess nothing to stop.");
+			return ResultCode::SUCCESS_FALSE;
+		}
 
 		StopProcess(itProc.ProcessHandle);
 
