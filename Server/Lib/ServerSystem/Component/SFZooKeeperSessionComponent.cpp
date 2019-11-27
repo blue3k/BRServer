@@ -70,7 +70,7 @@ namespace SF
 		, m_zkInstance(GetSystemHeap())
 	{
 		m_ServerAddresses = serverAddresses;
-		// some components will need 
+		// some components need connected Zookeeper
 		m_zkInstance.Connect(m_ServerAddresses);// "127.0.0.1:2181");
 		m_zkInstance.WaitForConnected();
 

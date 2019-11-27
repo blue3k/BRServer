@@ -19,7 +19,7 @@ Linux build setup
 Windows build setup
 1. CMakeWinGen.cmd to generate build project
 2. CMakeWinBuild.cmd to build
-3. BrServers.sln: Main server build, you can unload linux projectes if you don't need them
+3. BrServers.sln: Main server project, you can unload linux projectes if you don't need them
 BrTools.sln: Server tools
 
 

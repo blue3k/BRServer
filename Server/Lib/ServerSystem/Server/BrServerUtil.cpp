@@ -97,7 +97,7 @@ namespace Svr {
 			return;
 
 		pEngine->AddComponent<ServerNetComponent>();
-		pEngine->AddComponent<ServerLogComponent>("..\\..\\Config\\traceConfig.cfg");
+		pEngine->AddComponent<ServerLogComponent>("..\\Config\\traceConfig.cfg");
 		pEngine->AddComponent<ZooKeeperSessionComponent>(zkaddress, ZOO_LOG_LEVEL_DEBUG);
 		pEngine->AddComponent<ServerConfigComponent>(zkconfig);
 
