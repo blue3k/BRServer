@@ -4,19 +4,18 @@ Braves Server
 Prerequisits
 	- Visual Studio 2017 is required
 	- JDK jdk7 or higher: http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html
-	- Perl: You need perl to build openssl. https://www.activestate.com/activeperl/downloads
-	- StormForge should be cloned at ..\StormForge
+	- StormForge
 
 
 Use Setup.cmd to setup StormForge
+Cmd folder has command line scripts for running server
 
 
-
-Linux build
+Linux build scripts
 1. CMakeLinuxGen.sh to generate build project
 2. CMakeLinuxBuild.sh to build
 
-Windows build
+Windows build scripts
 1. CMakeWinGen.cmd to generate build project
 2. CMakeWinBuild.cmd to build
 3. BrTools.sln: Server tools build
@@ -24,14 +23,14 @@ Windows build
 
 
 
-Generic Build Order
- - Build StormForge 3rdParties
- - Build StormForge
- - Sync StormForge libries(Run SyncSF3rdParites.cmd)
- - Build Tools(BrTools.sln)
- - Build Main game server(CMakeWinBuild.cmd or CMakeLinuxBuild.sh)
- - Use ServerUseDebug.cmd to copy debug version to bin for use
- - Use ServerUseRelease.cmd to copy release version to bin for use
+1. Generic Build Order
+ a. Build StormForge
+ b. Sync StormForge libries(Run SyncSF3rdParites.cmd)
+ c. Build Tools(BrTools.sln)
+ d. Build Main game server(CMakeWinBuild.cmd or CMakeLinuxBuild.sh)
+ e. Select build binary
+	 - Use ServerUseDebug.cmd to copy debug version to bin for use
+	 - Use ServerUseRelease.cmd to copy release version to bin for use
 
 
 2. DB setup
@@ -52,10 +51,11 @@ Generic Build Order
 	Linux : my.cnf
 	Windows: my.ini
 
+	[mysqld]
 	lower_case_table_name     = 1
 	character-set-server      = utf8
 	collation-server          = utf8_general_ci
-
+	default_authentication_plugin=mysql_native_password
 
  
 3. Install ZooKeeper service
@@ -63,14 +63,11 @@ Generic Build Order
 	- Use ZookeeperServiceInstall.cmd
 
 4. Editing Server Config and upload
-	- Open /Server/Config/ServerConfig.xml
-	- Search all IP sections and replace them to yours 
-
-	- /Server/Config/ServerConfig.xml을 에디터로 열기
-	- 모든 IP관련된 항목을 자신의 IP로 교체
-	- Run StormForge/bin/SFServerManager.exe
-	- Select your config file and enter your server IP
-	- Hit upload xml to zookeeper
+	- You can upload config xml to zookeeper with SFSetverManager client or other server tool
+	- Easy way
+		- Open /Server/Config/ServerConfig.xml
+		- Search all IP sections and replace them to yours 
+		- Upload with manager tool
 	
 
 5. Install Server Instance manager service
@@ -81,7 +78,7 @@ Generic Build Order
 
 
 6. Upload Server config to ZooKeeper
-	- Server instance and config management are handled with StormForge/Bin/SFServerManager.exe
+	- Server instance and config management are handled with SFServerManager
 	- Run SFServerManager
 	- Select your config xml
 	- Select ZooKeeper connection string something like => 127.0.0.1:2081
@@ -89,7 +86,10 @@ Generic Build Order
 
 
 7. Running
+	- Run Zookeeper
+	- Run ServiceLauncher
 	- Run SFServerManager
+	- Upload config if not uploaded or updated
 	- Click Start Server Instances
 	- Click Stop Server Instances when you want to stop them
 
