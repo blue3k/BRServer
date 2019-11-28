@@ -75,10 +75,9 @@ Generic Build Order
 
 5. Install Server Instance manager service
 	- You can use either Debug or release build for both server instances and server instance launcher
-	- You need to sync lanucher before install service. 
-	- Now you can run either ServiceInstallDebug.cmd or ServiceInstallRelease.cmd
-		- ServiceInstallDebug.cmd will let the service launcher ues debug build for server instances
-		- ServiceInstallRelease.cmd for release build server instances.
+	   Use ServerUseDebug.cmd or ServerUseRelease.cmd to switch
+	- Use ServiceLauncher.cmd to run console mode
+	- Or you can use ServiceInstall.cmd or ServiceUnInstall.cmd to install windows system service
 
 
 6. Upload Server config to ZooKeeper
