@@ -1,10 +1,6 @@
 #!/bin/bash
 
 
-export PATH=/cygdrive/c/cygwin64/bin:$PATH
-
-
-
 
 cd Protocol
 pwd

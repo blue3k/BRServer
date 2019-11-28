@@ -12,24 +12,24 @@ Use Setup.cmd to setup StormForge
 
 
 
-Linux build setup
+Linux build
 1. CMakeLinuxGen.sh to generate build project
 2. CMakeLinuxBuild.sh to build
 
-Windows build setup
+Windows build
 1. CMakeWinGen.cmd to generate build project
 2. CMakeWinBuild.cmd to build
-3. BrServers.sln: Main server project, you can unload linux projectes if you don't need them
-BrTools.sln: Server tools
+3. BrTools.sln: Server tools build
+3. buildWindows\x64\BrServers.sln: Generated server project
 
 
-After build setup
-1. Build order(빌드 순서)
+
+Generic Build Order
  - Build StormForge 3rdParties
  - Build StormForge
  - Sync StormForge libries(Run SyncSF3rdParites.cmd)
- - Build Tools
- - Build Main game server
+ - Build Tools(BrTools.sln)
+ - Build Main game server(CMakeWinBuild.cmd or CMakeLinuxBuild.sh)
 
 
 2. DB setup
