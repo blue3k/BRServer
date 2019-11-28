@@ -30,6 +30,8 @@ Generic Build Order
  - Sync StormForge libries(Run SyncSF3rdParites.cmd)
  - Build Tools(BrTools.sln)
  - Build Main game server(CMakeWinBuild.cmd or CMakeLinuxBuild.sh)
+ - Use ServerUseDebug.cmd to copy debug version to bin for use
+ - Use ServerUseRelease.cmd to copy release version to bin for use
 
 
 2. DB setup
@@ -74,8 +76,6 @@ Generic Build Order
 5. Install Server Instance manager service
 	- You can use either Debug or release build for both server instances and server instance launcher
 	- You need to sync lanucher before install service. 
-		- Use ServiceLauncherSyncDebug.cmd for debug build service launcher
-		- Use ServiceLauncherSyncRelease.cmd for release build service launcher.
 	- Now you can run either ServiceInstallDebug.cmd or ServiceInstallRelease.cmd
 		- ServiceInstallDebug.cmd will let the service launcher ues debug build for server instances
 		- ServiceInstallRelease.cmd for release build server instances.
