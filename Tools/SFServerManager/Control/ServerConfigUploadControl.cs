@@ -60,6 +60,9 @@ namespace SFServerManager
         private void OnXMLSelectionChanged(object sender, EventArgs e)
         {
             var selectedItem = listXMLFile.SelectedValue as string;
+            if (string.IsNullOrEmpty(selectedItem))
+                return;
+
             int index = m_Setting.XMLPaths.IndexOf(selectedItem);
             if(index >= 1)
             {
@@ -84,7 +87,9 @@ namespace SFServerManager
             int index = m_Setting.XMLPaths.IndexOf(text);
             if (index >= 0)
                 m_Setting.XMLPaths.RemoveAt(index);
-            m_Setting.XMLPaths.Insert(0, text);
+
+            if (!string.IsNullOrEmpty(text))
+                m_Setting.XMLPaths.Insert(0, text);
         }
 
 
@@ -104,7 +109,7 @@ namespace SFServerManager
             openDlg.Multiselect = false;
             openDlg.DefaultExt = "*.xml";
 
-            if (m_Setting.XMLPaths.Count > 0)
+            if (m_Setting.XMLPaths.Count > 0 && !string.IsNullOrEmpty(m_Setting.XMLPaths[0]))
                 openDlg.InitialDirectory = Path.GetDirectoryName(m_Setting.XMLPaths[0]);
             else
                 openDlg.InitialDirectory = System.IO.Directory.GetCurrentDirectory();
@@ -116,7 +121,9 @@ namespace SFServerManager
                 int index = m_Setting.XMLPaths.IndexOf(fileName);
                 if (index >= 0)
                     m_Setting.XMLPaths.RemoveAt(index);
-                m_Setting.XMLPaths.Insert(0, fileName);
+
+                if(!string.IsNullOrEmpty(fileName))
+                    m_Setting.XMLPaths.Insert(0, fileName);
             }
         }
 
