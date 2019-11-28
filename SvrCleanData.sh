@@ -4,4 +4,4 @@ cd Data
 
 bash buildData.sh clean
 
-pause
+
