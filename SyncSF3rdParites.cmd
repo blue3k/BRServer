@@ -36,12 +36,12 @@ xcopy Server\bin\lib\x64Debug\*.dll TestApp\x64Debug\ /y
 xcopy Server\bin\lib\x64Release\*.dll TestApp\x64Release\ /y
 
 
-xcopy ..\StormForge\Bin\Win\x64Debug\*.dll Server\bin\x64Debug\ /y
-xcopy ..\StormForge\Bin\Win\x64Debug\*.pdb Server\bin\x64Debug\ /y
-xcopy ..\StormForge\Bin\Win\x64Release\*.dll Server\bin\x64Release\ /y
-xcopy ..\StormForge\Bin\Win\x64Release\*.pdb Server\bin\x64Release\ /y
-xcopy ..\StormForge\Bin\Win\x64Debug\*.dll TestApp\x64Debug\ /y
-xcopy ..\StormForge\Bin\Win\x64Release\*.dll TestApp\x64Release\ /y
+robocopy ..\StormForge\buildWindows\x64Debug\bin Server\bin\x64Debug\ *.dll *.pdb *.lib
+robocopy ..\StormForge\buildWindows\x64Debug\lib Server\bin\lib\x64Debug\ *.dll *.pdb *.lib
+robocopy ..\StormForge\buildWindows\x64Release\bin Server\bin\x64Release\ *.dll *.pdb *.lib
+robocopy ..\StormForge\buildWindows\x64Release\lib Server\bin\lib\x64Release\ *.dll *.pdb *.lib
+robocopy ..\StormForge\buildWindows\x64Debug\ TestApp\x64Debug\ *.dll *.pdb *.lib
+robocopy ..\StormForge\buildWindows\x64Release\ TestApp\x64Release\ *.dll *.pdb *.lib
 
 
 :quit

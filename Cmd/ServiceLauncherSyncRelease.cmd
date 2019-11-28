@@ -5,9 +5,7 @@ cd %~dp0
 set SERVICE_BIN_PATH=%~dp0..\Server\bin
 set SERVICE_BUILD_PTAH=%~dp0..\buildWindows\x64Release\bin
 
-xcopy %SERVICE_BUILD_PTAH%\*.dll %SERVICE_BIN_PATH% /Y /D
-xcopy %SERVICE_BUILD_PTAH%\*.exe %SERVICE_BIN_PATH% /Y /D
-xcopy %SERVICE_BUILD_PTAH%\*.pdb %SERVICE_BIN_PATH% /Y /D
+robocopy %SERVICE_BUILD_PTAH%\ %SERVICE_BIN_PATH% *.dll *.exe *.pdb
 
 
 pause
