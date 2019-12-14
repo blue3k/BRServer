@@ -50,24 +50,20 @@ namespace DB {
 		int32_t Consume;
 		int32_t Gain;
 		int64_t TotalValue;
-		char LogMessage[MAX_TRANSACTION_LOG_MESSAGE];
+		String LogMessage;
 		int32_t Result;
 
 	public:
-		BRDB_BEGIN_PARAM_MAP(QueryAddGameLog, 8)
-			BRDB_SET_PARAM_TYPE(BRDB_PARAMIO_INPUT)
-			BRDB_COLUMN_ENTRY(PlayerID)
-			BRDB_COLUMN_ENTRY(GameTime)
-			BRDB_COLUMN_ENTRY(LogCategory)
-			BRDB_COLUMN_ENTRY(Consume)
-			BRDB_COLUMN_ENTRY(Gain)
-			BRDB_COLUMN_ENTRY(TotalValue)
-			BRDB_COLUMN_ENTRY(LogMessage)
-			BRDB_SET_PARAM_TYPE(BRDB_PARAMIO_OUTPUT)
-			BRDB_COLUMN_ENTRY(Result)
+		BRDB_BEGIN_PARAM_MAP(QueryAddGameLog, "spAddGameLog")
+			BRDB_PARAM_ENTRY(ParamIO::Input, PlayerID)
+			BRDB_PARAM_ENTRY(ParamIO::Input, GameTime)
+			BRDB_PARAM_ENTRY(ParamIO::Input, LogCategory)
+			BRDB_PARAM_ENTRY(ParamIO::Input, Consume)
+			BRDB_PARAM_ENTRY(ParamIO::Input, Gain)
+			BRDB_PARAM_ENTRY(ParamIO::Input, TotalValue)
+			BRDB_PARAM_ENTRY(ParamIO::Input, LogMessage)
+			BRDB_PARAM_ENTRY(ParamIO::Output, Result)
 		BRDB_END_PARAM_MAP()
-
-		BRDB_QUERYSTRING( "spAddGameLog", BRDB_PARAM_8 )
 	};
 
 	BRDB_DEFINE_QUERYCLASS(PROTOCOLID_GAMETRANSACTIONDB, QueryAddGameLog);

@@ -58,17 +58,13 @@ namespace DB {
 		int32_t Result;
 
 	public:
-		BRDB_BEGIN_PARAM_MAP(QueryRegisterAuthTicket,5)
-			BRDB_SET_PARAM_TYPE(BRDB_PARAMIO_INPUT)
-			BRDB_COLUMN_ENTRY(PlayerID)
-			BRDB_COLUMN_ENTRY(AuthTicket)
-			BRDB_COLUMN_ENTRY(LoginEntityUID)
-			BRDB_SET_PARAM_TYPE(BRDB_PARAMIO_OUTPUT)
-			BRDB_COLUMN_ENTRY(GameEntityUID)
-			BRDB_COLUMN_ENTRY(Result)
+		BRDB_BEGIN_PARAM_MAP(QueryRegisterAuthTicket, "spRegisterAuthTicket")
+			BRDB_PARAM_ENTRY(ParamIO::Input, PlayerID)
+			BRDB_PARAM_ENTRY(ParamIO::Input, AuthTicket)
+			BRDB_PARAM_ENTRY(ParamIO::Input, LoginEntityUID)
+			BRDB_PARAM_ENTRY(ParamIO::Output, GameEntityUID)
+			BRDB_PARAM_ENTRY(ParamIO::Input, Result)
 		BRDB_END_PARAM_MAP()
-
-		BRDB_QUERYSTRING( "spRegisterAuthTicket", BRDB_PARAM_5 )
 	};
 
 	BRDB_DEFINE_QUERYCLASS(PROTOCOLID_LOGINSESSIONDB, QueryRegisterAuthTicket);
@@ -84,17 +80,13 @@ namespace DB {
 		int32_t Result;
 
 	public:
-		BRDB_BEGIN_PARAM_MAP(QueryReplaceLoginSession, 5)
-			BRDB_SET_PARAM_TYPE(BRDB_PARAMIO_INPUT)
-			BRDB_COLUMN_ENTRY(PlayerID)
-			BRDB_COLUMN_ENTRY(OldAuthTicket)
-			BRDB_COLUMN_ENTRY(AuthTicket)
-			BRDB_COLUMN_ENTRY(LoginEntityUID)
-			BRDB_SET_PARAM_TYPE(BRDB_PARAMIO_OUTPUT)
-			BRDB_COLUMN_ENTRY(Result)
-			BRDB_END_PARAM_MAP()
-
-			BRDB_QUERYSTRING("spReplaceLoginSession", BRDB_PARAM_5)
+		BRDB_BEGIN_PARAM_MAP(QueryReplaceLoginSession, "spReplaceLoginSession")
+			BRDB_PARAM_ENTRY(ParamIO::Input, PlayerID)
+			BRDB_PARAM_ENTRY(ParamIO::Input, OldAuthTicket)
+			BRDB_PARAM_ENTRY(ParamIO::Input, AuthTicket)
+			BRDB_PARAM_ENTRY(ParamIO::Input, LoginEntityUID)
+			BRDB_PARAM_ENTRY(ParamIO::Output, Result)
+		BRDB_END_PARAM_MAP()
 	};
 
 	BRDB_DEFINE_QUERYCLASS(PROTOCOLID_LOGINSESSIONDB, QueryReplaceLoginSession);
@@ -108,15 +100,11 @@ namespace DB {
 		int32_t Result;
 
 	public:
-		BRDB_BEGIN_PARAM_MAP(QueryDeleteLoginSession,3)
-			BRDB_SET_PARAM_TYPE(BRDB_PARAMIO_INPUT)
-			BRDB_COLUMN_ENTRY(PlayerID)
-			BRDB_COLUMN_ENTRY(AuthTicket)
-			BRDB_SET_PARAM_TYPE(BRDB_PARAMIO_OUTPUT)
-			BRDB_COLUMN_ENTRY(Result)
+		BRDB_BEGIN_PARAM_MAP(QueryDeleteLoginSession, "spDeleteLoginSession")
+			BRDB_PARAM_ENTRY(ParamIO::Input, PlayerID)
+			BRDB_PARAM_ENTRY(ParamIO::Input, AuthTicket)
+			BRDB_PARAM_ENTRY(ParamIO::Output, Result)
 		BRDB_END_PARAM_MAP()
-
-		BRDB_QUERYSTRING( "spDeleteLoginSession", BRDB_PARAM_3 )
 	};
 
 	BRDB_DEFINE_QUERYCLASS(PROTOCOLID_LOGINSESSIONDB, QueryDeleteLoginSession);
@@ -132,17 +120,13 @@ namespace DB {
 		int32_t Result;
 
 	public:
-		BRDB_BEGIN_PARAM_MAP(QueryConnectedToGameServer,5)
-			BRDB_SET_PARAM_TYPE(BRDB_PARAMIO_INPUT)
-			BRDB_COLUMN_ENTRY(PlayerID)
-			BRDB_COLUMN_ENTRY(AuthTicket)
-			BRDB_COLUMN_ENTRY(LoginEntityUID)
-			BRDB_COLUMN_ENTRY(GameEntityUID)
-			BRDB_SET_PARAM_TYPE(BRDB_PARAMIO_OUTPUT)
-			BRDB_COLUMN_ENTRY(Result)
+		BRDB_BEGIN_PARAM_MAP(QueryConnectedToGameServer, "spConnectedToGameServer")
+			BRDB_PARAM_ENTRY(ParamIO::Input, PlayerID)
+			BRDB_PARAM_ENTRY(ParamIO::Input, AuthTicket)
+			BRDB_PARAM_ENTRY(ParamIO::Input, LoginEntityUID)
+			BRDB_PARAM_ENTRY(ParamIO::Input, GameEntityUID)
+			BRDB_PARAM_ENTRY(ParamIO::Output, Result)
 		BRDB_END_PARAM_MAP()
-
-		BRDB_QUERYSTRING( "spConnectedToGameServer", BRDB_PARAM_5 )
 	};
 
 	BRDB_DEFINE_QUERYCLASS(PROTOCOLID_LOGINSESSIONDB, QueryConnectedToGameServer);
@@ -158,16 +142,12 @@ namespace DB {
 		int32_t Result;
 
 	public:
-		BRDB_BEGIN_PARAM_MAP(QueryValidateGameServerSession, 4)
-			BRDB_SET_PARAM_TYPE(BRDB_PARAMIO_INPUT)
-			BRDB_COLUMN_ENTRY(PlayerID)
-			BRDB_COLUMN_ENTRY(AuthTicket)
-			BRDB_COLUMN_ENTRY(GameEntityUID)
-			BRDB_SET_PARAM_TYPE(BRDB_PARAMIO_OUTPUT)
-			BRDB_COLUMN_ENTRY(Result)
+		BRDB_BEGIN_PARAM_MAP(QueryValidateGameServerSession, "spValidateGameServerSession")
+			BRDB_PARAM_ENTRY(ParamIO::Input, PlayerID)
+			BRDB_PARAM_ENTRY(ParamIO::Input, AuthTicket)
+			BRDB_PARAM_ENTRY(ParamIO::Input, GameEntityUID)
+			BRDB_PARAM_ENTRY(ParamIO::Output, Result)
 		BRDB_END_PARAM_MAP()
-
-		BRDB_QUERYSTRING( "spValidateGameServerSession", BRDB_PARAM_4 )
 	};
 
 	BRDB_DEFINE_QUERYCLASS(PROTOCOLID_LOGINSESSIONDB, QueryValidateGameServerSession);
@@ -182,16 +162,13 @@ namespace DB {
 		int32_t Result;
 
 	public:
-		BRDB_BEGIN_PARAM_MAP(QueryGameServerHeartBit,4)
-			BRDB_SET_PARAM_TYPE(BRDB_PARAMIO_INPUT)
-			BRDB_COLUMN_ENTRY(PlayerID)
-			BRDB_COLUMN_ENTRY(AuthTicket)
-			BRDB_COLUMN_ENTRY(GameEntityUID)
-			BRDB_SET_PARAM_TYPE(BRDB_PARAMIO_OUTPUT)
-			BRDB_COLUMN_ENTRY(Result)
+		BRDB_BEGIN_PARAM_MAP(QueryGameServerHeartBit, "spGameServerHeartBit")
+			BRDB_PARAM_ENTRY(ParamIO::Input, PlayerID)
+			BRDB_PARAM_ENTRY(ParamIO::Input, AuthTicket)
+			BRDB_PARAM_ENTRY(ParamIO::Input, GameEntityUID)
+			BRDB_PARAM_ENTRY(ParamIO::Output, Result)
 		BRDB_END_PARAM_MAP()
 
-		BRDB_QUERYSTRING( "spGameServerHeartBit", BRDB_PARAM_4 )
 	};
 
 	BRDB_DEFINE_QUERYCLASS(PROTOCOLID_LOGINSESSIONDB, QueryGameServerHeartBit);
@@ -207,16 +184,13 @@ namespace DB {
 		int32_t Result;
 
 	public:
-		BRDB_BEGIN_PARAM_MAP(QueryFindPlayer,4)
-			BRDB_SET_PARAM_TYPE(BRDB_PARAMIO_INPUT)
-			BRDB_COLUMN_ENTRY(PlayerID)
-			BRDB_SET_PARAM_TYPE(BRDB_PARAMIO_OUTPUT)
-			BRDB_COLUMN_ENTRY(LoginEntityID)
-			BRDB_COLUMN_ENTRY(GameEntityUID)
-			BRDB_COLUMN_ENTRY(Result)
+		BRDB_BEGIN_PARAM_MAP(QueryFindPlayer, "spFindPlayer")
+			BRDB_PARAM_ENTRY(ParamIO::Input, PlayerID)
+			BRDB_PARAM_ENTRY(ParamIO::Output, LoginEntityID)
+			BRDB_PARAM_ENTRY(ParamIO::Output, GameEntityUID)
+			BRDB_PARAM_ENTRY(ParamIO::Output, Result)
 		BRDB_END_PARAM_MAP()
 
-		BRDB_QUERYSTRING( "spFindPlayer", BRDB_PARAM_4 )
 	};
 
 	BRDB_DEFINE_QUERYCLASS(PROTOCOLID_LOGINSESSIONDB, QueryFindPlayer);

@@ -23,7 +23,7 @@ namespace conspiracy
 	{
  	public:
 
-		// TableVersionItem structure defition
+		// TableVersionItem structure definition
 		struct TableVersionItem
 		{
  			int	TableVersion;

@@ -121,7 +121,7 @@ namespace DB {
 			return ResultCode::SUCCESS_FALSE;
 		}
 
-		auto pQuery = new(GetHeap()) QueryGetShardListCmd();
+		auto pQuery = new(GetHeap()) QueryGetShardListCmd(GetHeap());
 
 		pQuery->SetPartitioningKey(0);
 		pQuery->SetTransaction(TransactionID());
@@ -312,7 +312,7 @@ Proc_End:
 
 				// Update shard ids
 				auto pDBRes = (QueryGetShardListCmd*)pQuery;
-				for (auto& rowRes : pDBRes->m_RowsetResult)
+				for (auto& rowRes : pDBRes->RowsetResults)
 				{
 					if ((unsigned)rowRes.ShardID < GetPartitioningCount() && (SelectDBByKey(rowRes.ShardID, pDBSource)))
 					{
@@ -490,7 +490,7 @@ Proc_End:
 
 		pQuery->SetSession(pSession);
 
-		defChk(pSession->SendQuery(pQuery));
+		defChk(pSession->ProcessQuery(pQuery));
 
 	Proc_End:
 

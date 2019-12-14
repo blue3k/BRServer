@@ -24,7 +24,7 @@ namespace conspiracy
 	GameConfigTbl::PresetIDTable *GameConfigTbl::m_PresetIDTable = nullptr;
 	GameConfigTbl::PresetIDTable *GameConfigTbl::m_PresetIDTablePrev = nullptr;
 
-	Result GameConfigTbl::LoadTable( const std::list<GameConfigItem>& rowList )
+	Result GameConfigTbl::LoadTable( const Array<GameConfigItem>& rowList )
 	{
  		auto pNewPresetIDTable = new(GetSystemHeap()) PresetIDTable;
 

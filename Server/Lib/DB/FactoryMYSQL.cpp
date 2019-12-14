@@ -24,7 +24,8 @@
 #include "SessionMYSQL.h"
 
 #if SF_PLATFORM == SF_PLATFORM_WINDOWS
-#pragma comment(lib, "libmysql.lib")
+#pragma comment(lib, "mysqlcppconn.lib")
+#pragma comment(lib, "mysqlcppconn8.lib")
 #else
 #endif
 
@@ -34,12 +35,10 @@ namespace DB {
 
 	FactoryMYSQL::FactoryMYSQL()
 	{
-		mysql_library_init(0,NULL,NULL);
 	}
 
 	FactoryMYSQL::~FactoryMYSQL()
 	{
-		mysql_library_end();
 	}
 	
 	// Make this factory as the DB factory
@@ -56,19 +55,19 @@ namespace DB {
 
 	void FactoryMYSQL::ReportError( void* DBContext, Result hr, const char* className )
 	{
-		MYSQL *pSql = DBContext ? (MYSQL*)DBContext : nullptr;
+		//MYSQL *pSql = DBContext ? (MYSQL*)DBContext : nullptr;
 
 		// Skip routing error
 		if (hr == Result(ResultCode::INVALID_ENTITY))
 			return;
 
-		if( pSql )
-		{
-			const char* errorString = mysql_error(pSql);
-			AssertRel(errorString!=nullptr);
-			dbTrace( Error, "DB Failed Error hr:{0:X8}, {1} : {2} ", hr, className, errorString );
-		}
-		else
+		//if( pSql )
+		//{
+		//	const char* errorString = mysql_error(pSql);
+		//	AssertRel(errorString!=nullptr);
+		//	dbTrace( Error, "DB Failed Error hr:{0:X8}, {1} : {2} ", hr, className, errorString );
+		//}
+		//else
 		{
 			dbTrace( Error, "DB Failed Error hr:{0:X8}, {1}", hr, className );
 		}

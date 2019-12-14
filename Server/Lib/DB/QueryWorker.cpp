@@ -54,11 +54,11 @@ namespace DB {
 		pQueryManager = pQuery->GetQueryManager();
 		dbChkPtr(pQueryManager);
 
-		hr = pSession->SendQuery(pQuery);
+		hr = pSession->ProcessQuery(pQuery);
 		if( hr == ResultCode::DB_CONNECTION_LOST )
 		{
 			// Give one more chance, because the session will try to reconnect
-			hr = pSession->SendQuery(pQuery);
+			hr = pSession->ProcessQuery(pQuery);
 		}
 		dbChk(hr);
 

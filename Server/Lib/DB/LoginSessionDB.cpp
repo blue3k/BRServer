@@ -53,7 +53,7 @@ namespace DB {
 		Result hr = ResultCode::SUCCESS;
 		QueryRegisterAuthTicketCmd *pQuery = nullptr;
 
-		dbMem( pQuery = new(GetHeap()) QueryRegisterAuthTicketCmd );
+		dbMem( pQuery = new(GetHeap()) QueryRegisterAuthTicketCmd(GetHeap()));
 
 		pQuery->SetPartitioningKey((uint)playerID);
 
@@ -82,7 +82,7 @@ namespace DB {
 		Result hr = ResultCode::SUCCESS;
 		QueryReplaceLoginSessionCmd *pQuery = nullptr;
 
-		dbMem(pQuery = new(GetHeap()) QueryReplaceLoginSessionCmd);
+		dbMem(pQuery = new(GetHeap()) QueryReplaceLoginSessionCmd(GetHeap()));
 
 		pQuery->SetPartitioningKey((uint)playerID);
 
@@ -111,7 +111,7 @@ namespace DB {
 		Result hr = ResultCode::SUCCESS;
 		QueryDeleteLoginSessionCmd *pQuery = nullptr;
 
-		dbMem( pQuery = new(GetHeap()) QueryDeleteLoginSessionCmd );
+		dbMem( pQuery = new(GetHeap()) QueryDeleteLoginSessionCmd(GetHeap()));
 
 		pQuery->SetPartitioningKey((uint)playerID);
 
@@ -138,7 +138,7 @@ namespace DB {
 		Result hr = ResultCode::SUCCESS;
 		QueryConnectedToGameServerCmd *pQuery = nullptr;
 
-		dbMem( pQuery = new(GetHeap()) QueryConnectedToGameServerCmd );
+		dbMem( pQuery = new(GetHeap()) QueryConnectedToGameServerCmd(GetHeap()));
 
 		pQuery->SetPartitioningKey((uint)playerID);
 
@@ -167,7 +167,7 @@ namespace DB {
 		Result hr = ResultCode::SUCCESS;
 		QueryValidateGameServerSessionCmd *pQuery = nullptr;
 
-		dbMem(pQuery = new(GetHeap()) QueryValidateGameServerSessionCmd);
+		dbMem(pQuery = new(GetHeap()) QueryValidateGameServerSessionCmd(GetHeap()));
 
 		pQuery->SetPartitioningKey((uint)playerID);
 
@@ -194,7 +194,7 @@ namespace DB {
 		Result hr = ResultCode::SUCCESS;
 		QueryGameServerHeartBitCmd *pQuery = nullptr;
 
-		dbMem( pQuery = new(GetHeap()) QueryGameServerHeartBitCmd );
+		dbMem( pQuery = new(GetHeap()) QueryGameServerHeartBitCmd(GetHeap()));
 
 		pQuery->SetPartitioningKey((uint)playerID);
 

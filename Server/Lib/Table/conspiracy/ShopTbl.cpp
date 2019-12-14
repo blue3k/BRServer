@@ -19,7 +19,7 @@
 namespace conspiracy
 {
  
-	// EItemEffect structure defition
+	// EItemEffect structure definition
 	ShopTbl::EItemEffect::EnumMap ShopTbl::EItemEffect::m_Map;
 
 	ShopTbl::EItemEffect::EnumMap::EnumMap()
@@ -93,7 +93,7 @@ namespace conspiracy
 	ShopTbl::ShopItemIDTable *ShopTbl::m_ShopItemIDTable = nullptr;
 	ShopTbl::ShopItemIDTable *ShopTbl::m_ShopItemIDTablePrev = nullptr;
 
-	Result ShopTbl::LoadTable( const std::list<ShopItem>& rowList )
+	Result ShopTbl::LoadTable( const Array<ShopItem>& rowList )
 	{
  		auto pNewShopItemIDTable = new(GetSystemHeap()) ShopItemIDTable;
 

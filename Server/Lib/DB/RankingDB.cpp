@@ -53,11 +53,11 @@ namespace DB {
 		QueryGetTotalRankingCmd *pQuery = nullptr;
 		QueryGetTotalRankingSet *pSet = nullptr;
 
-		dbMem( pQuery = new(GetHeap()) QueryGetTotalRankingCmd );
+		dbMem( pQuery = new(GetHeap()) QueryGetTotalRankingCmd(GetHeap()));
 
 
 		pSet = pQuery;
-		memset( pSet, 0, sizeof(QueryGetTotalRankingSet) );
+		*pSet = {};
 
 		pQuery->MinRanking = minRanking;
 		pQuery->RankingCount = rankingCount;
@@ -81,11 +81,11 @@ namespace DB {
 		Result hr = ResultCode::SUCCESS;
 		QueryUpdateRankingScoreCmd *pQuery = nullptr;
 
-		dbMem(pQuery = new(GetHeap()) QueryUpdateRankingScoreCmd);
+		dbMem(pQuery = new(GetHeap()) QueryUpdateRankingScoreCmd(GetHeap()));
 
 		pQuery->PlayerID = playerID;
 		pQuery->FBUID = fBUID;
-		StrUtil::StringCopy(pQuery->NickName, nickName);
+		pQuery->NickName = nickName;
 		pQuery->Level = level;
 		pQuery->Score = score;
 
@@ -107,7 +107,7 @@ namespace DB {
 		Result hr = ResultCode::SUCCESS;
 		QueryGetRankersCmd *pQuery = nullptr;
 
-		dbMem(pQuery = new(GetHeap()) QueryGetRankersCmd);
+		dbMem(pQuery = new(GetHeap()) QueryGetRankersCmd(GetHeap()));
 
 		pQuery->BaseIndex = baseIndex;
 		pQuery->RequestCount = requestCount;

@@ -53,7 +53,7 @@ namespace ConspiracyGameInstanceServer {
 		virtual ~GameVote() {}
 
 		GamePlaySystem& GetGamePlaySystem();
-		FORCEINLINE GameInstanceEntity& GetOwner()			{ return *m_Owner; }
+		SF_FORCEINLINE GameInstanceEntity& GetOwner()			{ return *m_Owner; }
 
 		VoteState GetVoteState() { return m_VoteState; }
 		void SetVoteState(VoteState value) { m_VoteState = value; }
@@ -188,7 +188,7 @@ namespace ConspiracyGameInstanceServer {
 		GameVoteNight(GameInstanceEntity* Owner,uint votingFlags);
 		virtual ~GameVoteNight() {}
 
-		FORCEINLINE bool IsFlagSet( VoteFlags flag )	{ return (m_VotingFlags&flag) != 0; }
+		SF_FORCEINLINE bool IsFlagSet( VoteFlags flag )	{ return (m_VotingFlags&flag) != 0; }
 
 		PlayerID GetSeersChoice() { return m_SeersChoice; }
 		void SetSeersChoice(PlayerID value) { m_SeersChoice = value; }

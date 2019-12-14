@@ -151,7 +151,7 @@ namespace Svr {
 		}
 
 		// Get message handler
-		FORCEINLINE Result GetHandler( Message::MessageID msgID, MessageHandlerType &handler )
+		SF_FORCEINLINE Result GetHandler( Message::MessageID msgID, MessageHandlerType &handler )
 		{
 			typename HandlerTableType::iterator itHandler;
 			Result hr = m_HandlerTable.find(msgID.IDSeq.MsgID, itHandler);

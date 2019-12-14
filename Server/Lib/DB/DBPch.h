@@ -15,10 +15,7 @@
 
 
 #if !ANDROID
-#include <mysql.h>
-#include <mysqld_error.h>
-
+#include <mysqlx/xdevapi.h>
 #include "DB/DBTrace.h"
-#include <my_global.h>
 #endif
 

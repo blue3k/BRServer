@@ -52,7 +52,7 @@ namespace DB {
 		Result hr = ResultCode::SUCCESS;
 		QueryAddGameLogCmd *pQuery = nullptr;
 
-		dbMem(pQuery = new(GetHeap()) QueryAddGameLogCmd);
+		dbMem(pQuery = new(GetHeap()) QueryAddGameLogCmd(GetHeap()));
 
 		pQuery->SetPartitioningKey(shardID);
 
@@ -62,7 +62,7 @@ namespace DB {
 		pQuery->Consume = consume;
 		pQuery->Gain = gain;
 		pQuery->TotalValue = totalValue;
-		StrUtil::StringCopy(pQuery->LogMessage, logMessage);
+		pQuery->LogMessage = logMessage;
 		pQuery->Result = 0;
 
 		pQuery->SetTransaction( TransactionID() );

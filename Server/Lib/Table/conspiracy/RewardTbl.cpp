@@ -20,7 +20,7 @@ namespace conspiracy
 {
 	using namespace SF;
  
-	// ERole structure defition
+	// ERole structure definition
 	RewardTbl::ERole::EnumMap RewardTbl::ERole::m_Map;
 
 	RewardTbl::ERole::EnumMap::EnumMap()
@@ -94,7 +94,7 @@ namespace conspiracy
 	RewardTbl::RoleTable *RewardTbl::m_RoleTable = nullptr;
 	RewardTbl::RoleTable *RewardTbl::m_RoleTablePrev = nullptr;
 
-	Result RewardTbl::LoadTable( const std::list<RewardItem>& rowList )
+	Result RewardTbl::LoadTable( const Array<RewardItem>& rowList )
 	{
  		auto pNewRoleTable = new(GetSystemHeap()) RoleTable;
 

@@ -271,9 +271,9 @@ namespace GameServer {
 			svrErr(ResultCode::SVR_INVALID_PLAYER_GAMEDB);
 		}
 
-		svrAssert( pDBRes->m_RowsetResult.size() >= 1 );
+		svrAssert( pDBRes->RowsetResults.size() >= 1 );
 		{
-			auto& playerInfoData = *pDBRes->m_RowsetResult.begin();
+			auto& playerInfoData = *pDBRes->RowsetResults.begin();
 			auto playerInfoSystem = GetMyOwner()->GetComponent<UserGamePlayerInfoSystem>();
 
 			// New player data. Reset stat to default
@@ -313,9 +313,9 @@ namespace GameServer {
 			goto Proc_End;
 		}
 
-		svrAssert(pDBRes->m_RowsetResult.size() >= 1);
+		svrAssert(pDBRes->RowsetResults.size() >= 1);
 		{
-			auto& playerInfoData = *pDBRes->m_RowsetResult.begin();
+			auto& playerInfoData = *pDBRes->RowsetResults.begin();
 			svrChk(SetPlayerGameData(playerInfoData));
 		}
 
@@ -482,9 +482,9 @@ namespace GameServer {
 			svrErr(ResultCode::GAME_INVALID_PLAYER);
 		}
 
-		svrAssert( pDBRes->m_RowsetResult.size() >= 1 );
+		svrAssert( pDBRes->RowsetResults.size() >= 1 );
 		{
-			auto& playerInfoData = *pDBRes->m_RowsetResult.begin();
+			auto& playerInfoData = *pDBRes->RowsetResults.begin();
 
 			m_Result.Level = playerInfoData.Level;
 			m_Result.TotalPlayed = playerInfoData.TotalPlayed;
@@ -766,8 +766,8 @@ namespace GameServer {
 
 		pNotifySystem->ClearNotificationList();
 
-		itNotification = pDBRes->m_RowsetResult.begin();
-		for( ; itNotification != pDBRes->m_RowsetResult.end(); ++itNotification )
+		itNotification = pDBRes->RowsetResults.begin();
+		for( ; itNotification != pDBRes->RowsetResults.end(); ++itNotification )
 		{
 			svrChk( pNotifySystem->AddNotification(itNotification->NotificationID, (NotificationType)itNotification->MessageID, itNotification->MessageParam0, itNotification->MessageParam1, itNotification->MessageText, itNotification->IsRead, itNotification->TimeStamp) );
 			Policy::NetSvrPolicyGame(GetConnection()).NotifyS2CEvt(itNotification->NotificationID, itNotification->MessageID, itNotification->MessageParam0, itNotification->MessageParam1, itNotification->MessageText, itNotification->IsRead, itNotification->TimeStamp );
@@ -1389,8 +1389,8 @@ namespace GameServer {
 
 		svrChk(pRes->GetResult());
 
-		m_RankingList.reserve( pDBRes->m_RowsetResult.size() );
-		std::for_each( pDBRes->m_RowsetResult.begin(), pDBRes->m_RowsetResult.end(), [&]( DB::QueryGetTotalRankingSet &set )
+		m_RankingList.reserve( pDBRes->RowsetResults.size() );
+		std::for_each( pDBRes->RowsetResults.begin(), pDBRes->RowsetResults.end(), [&]( DB::QueryGetTotalRankingSet &set )
 		{
 			TotalRankingPlayerInformation info( set.RankingID, set.Ranking, set.PlayerID, set.FBUID, set.NickName, set.Level, set.Win, set.Lose );
 

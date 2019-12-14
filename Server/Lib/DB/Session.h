@@ -31,15 +31,15 @@ namespace DB {
 		virtual ~Session() {}
 
 		// Get data source which is linked to this session
-		FORCEINLINE DataSource* GetDataSource()			{ return m_pDataSource; }
+		SF_FORCEINLINE DataSource* GetDataSource()			{ return m_pDataSource; }
 
-		FORCEINLINE bool IsOpened()						{ return m_bIsOpened; }
+		SF_FORCEINLINE bool IsOpened()						{ return m_bIsOpened; }
 
 		// return context value
 		virtual void* GetContext() = 0;
 
 		// Send a query
-		virtual Result SendQuery( Query *pQuery ) = 0;
+		virtual Result ProcessQuery( Query *pQuery ) = 0;
 
 		// Open session
 		virtual Result OpenSession();

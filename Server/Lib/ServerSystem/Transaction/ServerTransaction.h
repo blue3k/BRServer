@@ -151,7 +151,7 @@ namespace Svr {
 			return pSvrEnt;
 		}
 
-		FORCEINLINE OwnerEntityType* GetMyOwner()
+		SF_FORCEINLINE OwnerEntityType* GetMyOwner()
 		{
 			Assert(superTrans::GetOwnerEntity() );
 			return dynamic_cast<OwnerEntityType*>(superTrans::GetOwnerEntity());

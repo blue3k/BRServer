@@ -23,7 +23,7 @@ namespace conspiracy
 	LevelTbl::LevelTable *LevelTbl::m_LevelTable = nullptr;
 	LevelTbl::LevelTable *LevelTbl::m_LevelTablePrev = nullptr;
 
-	Result LevelTbl::LoadTable( const std::list<LevelItem>& rowList )
+	Result LevelTbl::LoadTable( const Array<LevelItem>& rowList )
 	{
  		auto pNewLevelTable = new(GetSystemHeap()) LevelTable;
 

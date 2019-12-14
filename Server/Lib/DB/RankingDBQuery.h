@@ -45,7 +45,7 @@ namespace DB {
 		int32_t Lose;
 		int64_t PlayerID;
 		int64_t FBUID;
-		char  NickName[BINSIZE_NAME];
+		String  NickName;
 		int32_t Level;
 	};
 
@@ -56,12 +56,12 @@ namespace DB {
 		int32_t RankingCount;
 
 	public:
-		BRDB_BEGIN_PARAM_MAP(QueryGetTotalRanking,2)
-			BRDB_COLUMN_ENTRY(MinRanking)
-			BRDB_COLUMN_ENTRY(RankingCount)
+		BRDB_BEGIN_PARAM_MAP(QueryGetTotalRanking, "spGetTotalRanking")
+			BRDB_PARAM_ENTRY(ParamIO::Input, MinRanking)
+			BRDB_PARAM_ENTRY(ParamIO::Input, RankingCount)
 		BRDB_END_PARAM_MAP()
 		
-		BRDB_BEGIN_RESULT_MAP(QueryGetTotalRanking,9)
+		BRDB_BEGIN_RESULT_MAP(QueryGetTotalRanking)
 			BRDB_COLUMN_ENTRY(RankingID)
 			BRDB_COLUMN_ENTRY(Ranking)
 			BRDB_COLUMN_ENTRY(WinRate)
@@ -72,8 +72,6 @@ namespace DB {
 			BRDB_COLUMN_ENTRY(NickName)
 			BRDB_COLUMN_ENTRY(Level)
 		BRDB_END_RESULT_MAP()
-
-		BRDB_QUERYSTRING( "spGetTotalRanking", BRDB_PARAM_2 )
 	};
 
 	BRDB_DEFINE_ROWSETQUERYCLASS(PROTOCOLID_RANKINGDB,QueryGetTotalRanking, QueryGetTotalRankingSet);
@@ -86,21 +84,19 @@ namespace DB {
 	public:
 		int64_t PlayerID;
 		int64_t FBUID;
-		char  NickName[BINSIZE_NAME];
+		String  NickName;
 		int32_t Level;
 
 		uint64_t Score;
 
 	public:
-		BRDB_BEGIN_PARAM_MAP(QueryUpdateRankingScore, 5)
-			BRDB_COLUMN_ENTRY(PlayerID)
-			BRDB_COLUMN_ENTRY(FBUID)
-			BRDB_COLUMN_ENTRY(NickName)
-			BRDB_COLUMN_ENTRY(Level)
-			BRDB_COLUMN_ENTRY(Score)
+		BRDB_BEGIN_PARAM_MAP(QueryUpdateRankingScore, "spUpdateRankingScore")
+			BRDB_PARAM_ENTRY(ParamIO::Input, PlayerID)
+			BRDB_PARAM_ENTRY(ParamIO::Input, FBUID)
+			BRDB_PARAM_ENTRY(ParamIO::Input, NickName)
+			BRDB_PARAM_ENTRY(ParamIO::Input, Level)
+			BRDB_PARAM_ENTRY(ParamIO::Input, Score)
 		BRDB_END_PARAM_MAP()
-
-			BRDB_QUERYSTRING("spUpdateRankingScore", BRDB_PARAM_5)
 	};
 
 	BRDB_DEFINE_QUERYCLASS(PROTOCOLID_RANKINGDB, QueryUpdateRankingScore);
@@ -113,7 +109,7 @@ namespace DB {
 	{
 		int64_t PlayerID;
 		int64_t FBUID;
-		char  NickName[BINSIZE_NAME];
+		String  NickName;
 		int32_t Level;
 
 		uint64_t Score;
@@ -126,20 +122,18 @@ namespace DB {
 		int32_t RequestCount;
 
 	public:
-		BRDB_BEGIN_PARAM_MAP(QueryGetRankers, 2)
-			BRDB_COLUMN_ENTRY(BaseIndex)
-			BRDB_COLUMN_ENTRY(RequestCount)
-			BRDB_END_PARAM_MAP()
+		BRDB_BEGIN_PARAM_MAP(QueryGetRankers, "spGetRankers")
+			BRDB_PARAM_ENTRY(ParamIO::Input, BaseIndex)
+			BRDB_PARAM_ENTRY(ParamIO::Input, RequestCount)
+		BRDB_END_PARAM_MAP()
 
-			BRDB_BEGIN_RESULT_MAP(QueryGetRankersSet, 5)
+		BRDB_BEGIN_RESULT_MAP(QueryGetRankersSet)
 			BRDB_COLUMN_ENTRY(PlayerID)
 			BRDB_COLUMN_ENTRY(FBUID)
 			BRDB_COLUMN_ENTRY(NickName)
 			BRDB_COLUMN_ENTRY(Level)
 			BRDB_COLUMN_ENTRY(Score)
-			BRDB_END_RESULT_MAP()
-
-			BRDB_QUERYSTRING("spGetRankers", BRDB_PARAM_2)
+		BRDB_END_RESULT_MAP()
 	};
 
 	BRDB_DEFINE_ROWSETQUERYCLASS(PROTOCOLID_RANKINGDB, QueryGetRankers, QueryGetRankersSet);

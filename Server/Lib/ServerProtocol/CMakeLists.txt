@@ -1,6 +1,8 @@
 ﻿
 
-source_group(INCLUDES FILES
+
+
+set(BRSERVERPROTOCOL_LIB_FILES
     GenericMsgClass.h
     ProtocolTrace.h
     Protocol/Message/ChatChannelManagerMsgClass.h
@@ -86,11 +88,6 @@ source_group(INCLUDES FILES
     Protocol/ServerService/RankingServerService.h
     Protocol/ServerService/ServerService.h
     Protocol/SvrProtocol.h
-    stdafx.h
-)
-
-
-set(BRSERVERPROTOCOL_LIB_FILES
     GenericMsgClass.cpp
     Protocol/Message/ChatChannelManagerMsgClass.cpp
     Protocol/Message/ChatChannelManagerMsgDebug.cpp

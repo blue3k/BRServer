@@ -53,23 +53,20 @@ namespace DB {
 	class QueryCreateUser : public QueryBase
 	{
 	public:
-		char UserName[Const::MAX_USERNAME];
-		char Password[Const::MAX_PASSWORD];
-		char EMail[Const::MAX_USERNAME];
+		String UserName;
+		String Password;
+		String EMail;
 
 		int32_t Result;
 
 	public:
-		BRDB_BEGIN_PARAM_MAP(QueryCreateUser,4)
-			BRDB_SET_PARAM_TYPE(BRDB_PARAMIO_INPUT)
-			BRDB_COLUMN_ENTRY(UserName)
-			BRDB_COLUMN_ENTRY(Password)
-			BRDB_COLUMN_ENTRY(EMail)
-			BRDB_SET_PARAM_TYPE(BRDB_PARAMIO_OUTPUT)
-			BRDB_COLUMN_ENTRY(Result)
+		BRDB_BEGIN_PARAM_MAP(QueryCreateUser, "spCreateUser")
+			BRDB_PARAM_ENTRY(ParamIO::Input, UserName)
+			BRDB_PARAM_ENTRY(ParamIO::Input, Password)
+			BRDB_PARAM_ENTRY(ParamIO::Input, EMail)
+			BRDB_PARAM_ENTRY(ParamIO::Output, Result)
 		BRDB_END_PARAM_MAP()
 
-		BRDB_QUERYSTRING( "spCreateUser", BRDB_PARAM_4 )
 	};
 
 	BRDB_DEFINE_QUERYCLASS(PROTOCOLID_ACCOUNTDB,QueryCreateUser);
@@ -84,8 +81,8 @@ namespace DB {
 	class QueryLogin : public QueryBase
 	{
 	public:
-		char UserName[Const::MAX_USERNAME];
-		char Password[Const::MAX_PASSWORD];
+		String UserName;
+		String Password;
 
 		int64_t AccountID;
 		int64_t FBUserID;
@@ -93,18 +90,15 @@ namespace DB {
 		int32_t Result;
 
 	public:
-		BRDB_BEGIN_PARAM_MAP(QueryLogin,6)
-			BRDB_SET_PARAM_TYPE(BRDB_PARAMIO_INPUT)
-			BRDB_COLUMN_ENTRY(UserName)
-			BRDB_COLUMN_ENTRY(Password)
-			BRDB_SET_PARAM_TYPE(BRDB_PARAMIO_OUTPUT)
-			BRDB_COLUMN_ENTRY(AccountID)
-			BRDB_COLUMN_ENTRY(FBUserID)
-			BRDB_COLUMN_ENTRY(ShardID)
-			BRDB_COLUMN_ENTRY(Result)
+		BRDB_BEGIN_PARAM_MAP(QueryLogin, "spLogin")
+			BRDB_PARAM_ENTRY(ParamIO::Input, UserName)
+			BRDB_PARAM_ENTRY(ParamIO::Input, Password)
+			BRDB_PARAM_ENTRY(ParamIO::Output, AccountID)
+			BRDB_PARAM_ENTRY(ParamIO::Output, FBUserID)
+			BRDB_PARAM_ENTRY(ParamIO::Output, ShardID)
+			BRDB_PARAM_ENTRY(ParamIO::Output, Result)
 		BRDB_END_PARAM_MAP()
 
-		BRDB_QUERYSTRING( "spLogin", BRDB_PARAM_6 )
 	};
 
 	BRDB_DEFINE_QUERYCLASS(PROTOCOLID_ACCOUNTDB,QueryLogin);
@@ -119,20 +113,17 @@ namespace DB {
 	class QueryLogout : public QueryBase
 	{
 	public:
-		char UserName[Const::MAX_USERNAME];
+		String UserName;
 		uint8_t LogoutTime[4];
 		int32_t Result;
 
 
 	public:
-		BRDB_BEGIN_PARAM_MAP(QueryLogout, 2)
-			BRDB_SET_PARAM_TYPE(BRDB_PARAMIO_INPUT)	
-			BRDB_COLUMN_ENTRY(UserName)
-			BRDB_SET_PARAM_TYPE(BRDB_PARAMIO_OUTPUT)
-			BRDB_COLUMN_ENTRY(Result)
+		BRDB_BEGIN_PARAM_MAP(QueryLogout, "spLogout")
+			BRDB_PARAM_ENTRY(ParamIO::Input, UserName)
+			BRDB_PARAM_ENTRY(ParamIO::Output, Result)
 		BRDB_END_PARAM_MAP()
 
-		BRDB_QUERYSTRING( "spLogout", BRDB_PARAM_2 )
 	};
 
 	BRDB_DEFINE_QUERYCLASS(PROTOCOLID_ACCOUNTDB,QueryLogout);
@@ -142,7 +133,7 @@ namespace DB {
 	struct QueryUserListResultSet
 	{
 		int64_t m_PlayerUID;
-		char m_Name[BINSIZE_NAME];
+		String m_Name;
 		int64_t m_FBUID;
 	};
 
@@ -153,19 +144,16 @@ namespace DB {
 
 
 	public:
-		BRDB_BEGIN_PARAM_MAP(QueryUserList,1)
-			BRDB_SET_PARAM_TYPE(BRDB_PARAMIO_OUTPUT)
-			BRDB_COLUMN_ENTRY(Result)
+		BRDB_BEGIN_PARAM_MAP(QueryUserList,"spUserList")
+			BRDB_PARAM_ENTRY(ParamIO::Output, Result)
 		BRDB_END_PARAM_MAP()
 		
-		BRDB_BEGIN_RESULT_MAP(QueryUserList,3)
+		BRDB_BEGIN_RESULT_MAP(QueryUserList)
 			BRDB_COLUMN_ENTRY(m_PlayerUID)
 			BRDB_COLUMN_ENTRY(m_Name)
 			BRDB_COLUMN_ENTRY(m_FBUID)
 		BRDB_END_RESULT_MAP()
 
-
-		BRDB_QUERYSTRING( "spUserList", BRDB_PARAM_1 )
 	};
 
 	BRDB_DEFINE_ROWSETQUERYCLASS(PROTOCOLID_ACCOUNTDB,QueryUserList, QueryUserListResultSet);
@@ -180,8 +168,8 @@ namespace DB {
 	{
 	public:
 		int64_t FBUserID;
-		char EMail[Const::MAX_EMAIL];
-		char CellPhone[Const::MAX_CELLPHONE];
+		String EMail;
+		String CellPhone;
 
 		int64_t AccountID;
 		int32_t ShardID;
@@ -189,18 +177,15 @@ namespace DB {
 
 
 	public:
-		BRDB_BEGIN_PARAM_MAP(QueryFacebookCreateUser,6)
-			BRDB_SET_PARAM_TYPE(BRDB_PARAMIO_INPUT)
-			BRDB_COLUMN_ENTRY(FBUserID)
-			BRDB_COLUMN_ENTRY(EMail)
-			BRDB_COLUMN_ENTRY(CellPhone)
-			BRDB_SET_PARAM_TYPE(BRDB_PARAMIO_OUTPUT)
-			BRDB_COLUMN_ENTRY(AccountID)
-			BRDB_COLUMN_ENTRY(ShardID)
-			BRDB_COLUMN_ENTRY(Result)
+		BRDB_BEGIN_PARAM_MAP(QueryFacebookCreateUser, "spFacebookCreateUser")
+			BRDB_PARAM_ENTRY(ParamIO::Input, FBUserID)
+			BRDB_PARAM_ENTRY(ParamIO::Input, EMail)
+			BRDB_PARAM_ENTRY(ParamIO::Input, CellPhone)
+			BRDB_PARAM_ENTRY(ParamIO::Output, AccountID)
+			BRDB_PARAM_ENTRY(ParamIO::Output, ShardID)
+			BRDB_PARAM_ENTRY(ParamIO::Output, Result)
 		BRDB_END_PARAM_MAP()
 
-		BRDB_QUERYSTRING( "spFacebookCreateUser", BRDB_PARAM_6 )
 	};
 
 	BRDB_DEFINE_QUERYCLASS(PROTOCOLID_ACCOUNTDB, QueryFacebookCreateUser);
@@ -218,26 +203,22 @@ namespace DB {
 		int64_t FBUserID;
 
 		int64_t AccountID;
-		char EMail[Const::MAX_EMAIL];
-		char CellPhone[Const::MAX_CELLPHONE];
-		char GCMKeys[Const::MAX_GCMKEY];
+		String EMail;
+		String CellPhone;
+		String GCMKeys;
 		int32_t ShardID;
 		int32_t Result;
 
 	public:
-		BRDB_BEGIN_PARAM_MAP(QueryFacebookLogin,7)
-			BRDB_SET_PARAM_TYPE(BRDB_PARAMIO_INPUT)
-			BRDB_COLUMN_ENTRY(FBUserID)
-			BRDB_SET_PARAM_TYPE(BRDB_PARAMIO_OUTPUT)
-			BRDB_COLUMN_ENTRY(AccountID)
-			BRDB_COLUMN_ENTRY(EMail)
-			BRDB_COLUMN_ENTRY(CellPhone)
-			BRDB_COLUMN_ENTRY(GCMKeys)
-			BRDB_COLUMN_ENTRY(ShardID)
-			BRDB_COLUMN_ENTRY(Result)
+		BRDB_BEGIN_PARAM_MAP(QueryFacebookLogin, "spFacebookLogin")
+			BRDB_PARAM_ENTRY(ParamIO::Input, FBUserID)
+			BRDB_PARAM_ENTRY(ParamIO::Output, AccountID)
+			BRDB_PARAM_ENTRY(ParamIO::Output, EMail)
+			BRDB_PARAM_ENTRY(ParamIO::Output, CellPhone)
+			BRDB_PARAM_ENTRY(ParamIO::Output, GCMKeys)
+			BRDB_PARAM_ENTRY(ParamIO::Output, ShardID)
+			BRDB_PARAM_ENTRY(ParamIO::Output, Result)
 		BRDB_END_PARAM_MAP()
-
-		BRDB_QUERYSTRING( "spFacebookLogin", BRDB_PARAM_7 )
 	};
 
 	BRDB_DEFINE_QUERYCLASS(PROTOCOLID_ACCOUNTDB,QueryFacebookLogin);
@@ -252,8 +233,8 @@ namespace DB {
 	class QueryCreateRandomUser : public QueryBase
 	{
 	public:
-		char UserName[Const::MAX_USERNAME];
-		char CellPhone[Const::MAX_CELLPHONE];
+		String UserName;
+		String CellPhone;
 
 		int64_t AccountID;
 		int64_t FBUserID;
@@ -262,18 +243,14 @@ namespace DB {
 
 
 	public:
-		BRDB_BEGIN_PARAM_MAP(QueryCreateRandomUser, 6)
-			BRDB_SET_PARAM_TYPE(BRDB_PARAMIO_INPUT)
-			BRDB_COLUMN_ENTRY(UserName)
-			BRDB_COLUMN_ENTRY(CellPhone)
-			BRDB_SET_PARAM_TYPE(BRDB_PARAMIO_OUTPUT)
-			BRDB_COLUMN_ENTRY(AccountID)
-			BRDB_COLUMN_ENTRY(FBUserID)
-			BRDB_COLUMN_ENTRY(ShardID)
-			BRDB_COLUMN_ENTRY(Result)
+		BRDB_BEGIN_PARAM_MAP(QueryCreateRandomUser, "spCreateRandomUser")
+			BRDB_PARAM_ENTRY(ParamIO::Input, UserName)
+			BRDB_PARAM_ENTRY(ParamIO::Input, CellPhone)
+			BRDB_PARAM_ENTRY(ParamIO::Output, AccountID)
+			BRDB_PARAM_ENTRY(ParamIO::Output, FBUserID)
+			BRDB_PARAM_ENTRY(ParamIO::Output, ShardID)
+			BRDB_PARAM_ENTRY(ParamIO::Output, Result)
 			BRDB_END_PARAM_MAP()
-
-			BRDB_QUERYSTRING("spCreateRandomUser", BRDB_PARAM_6)
 	};
 
 	BRDB_DEFINE_QUERYCLASS(PROTOCOLID_ACCOUNTDB, QueryCreateRandomUser);
@@ -288,20 +265,17 @@ namespace DB {
 	{
 	public:
 		int64_t UserUID;
-		char GCMKeys[Const::MAX_GCMKEY];
+		String GCMKeys;
 
 		int32_t Result;
 
 	public:
-		BRDB_BEGIN_PARAM_MAP(QueryUpdateGCMKeys,3)
-			BRDB_SET_PARAM_TYPE(BRDB_PARAMIO_INPUT)
-			BRDB_COLUMN_ENTRY(UserUID)
-			BRDB_COLUMN_ENTRY(GCMKeys)
-			BRDB_SET_PARAM_TYPE(BRDB_PARAMIO_OUTPUT)
-			BRDB_COLUMN_ENTRY(Result)
+		BRDB_BEGIN_PARAM_MAP(QueryUpdateGCMKeys, "spUpdateGCMKeys")
+			BRDB_PARAM_ENTRY(ParamIO::Input, UserUID)
+			BRDB_PARAM_ENTRY(ParamIO::Input, GCMKeys)
+			BRDB_PARAM_ENTRY(ParamIO::Output, Result)
 		BRDB_END_PARAM_MAP()
 
-		BRDB_QUERYSTRING( "spUpdateGCMKeys", BRDB_PARAM_3 )
 	};
 
 	BRDB_DEFINE_QUERYCLASS(PROTOCOLID_ACCOUNTDB,QueryUpdateGCMKeys);
@@ -323,14 +297,11 @@ namespace DB {
 		int32_t Result;
 
 	public:
-		BRDB_BEGIN_PARAM_MAP(QueryUpdateUserContactInfo, 3)
-			BRDB_SET_PARAM_TYPE(BRDB_PARAMIO_INPUT)
-			BRDB_COLUMN_ENTRY(UserUID)
-			BRDB_COLUMN_ENTRY(EMail)
-			BRDB_COLUMN_ENTRY(CellPhone)
+		BRDB_BEGIN_PARAM_MAP(QueryUpdateUserContactInfo, "spUpdateUserContactInfo")
+			BRDB_PARAM_ENTRY(ParamIO::Input, UserUID)
+			BRDB_PARAM_ENTRY(ParamIO::Input, EMail)
+			BRDB_PARAM_ENTRY(ParamIO::Input, CellPhone)
 			BRDB_END_PARAM_MAP()
-
-			BRDB_QUERYSTRING("spUpdateUserContactInfo", BRDB_PARAM_3)
 	};
 
 	BRDB_DEFINE_QUERYCLASS(PROTOCOLID_ACCOUNTDB, QueryUpdateUserContactInfo);
@@ -349,17 +320,13 @@ namespace DB {
 		int32_t Result;
 
 	public:
-		BRDB_BEGIN_PARAM_MAP(QueryFindPlayerByEMail,5)
-			BRDB_SET_PARAM_TYPE(BRDB_PARAMIO_INPUT)
-			BRDB_COLUMN_ENTRY(EMail)
-			BRDB_SET_PARAM_TYPE(BRDB_PARAMIO_OUTPUT)
-			BRDB_COLUMN_ENTRY(UserID)
-			BRDB_COLUMN_ENTRY(ShardID)
-			BRDB_COLUMN_ENTRY(FacebookUID)
-			BRDB_COLUMN_ENTRY(Result)
+		BRDB_BEGIN_PARAM_MAP(QueryFindPlayerByEMail, "spFindPlayerByEMail")
+			BRDB_PARAM_ENTRY(ParamIO::Input, EMail)
+			BRDB_PARAM_ENTRY(ParamIO::Output, UserID)
+			BRDB_PARAM_ENTRY(ParamIO::Output, ShardID)
+			BRDB_PARAM_ENTRY(ParamIO::Output, FacebookUID)
+			BRDB_PARAM_ENTRY(ParamIO::Output, Result)
 		BRDB_END_PARAM_MAP()
-
-		BRDB_QUERYSTRING( "spFindPlayerByEMail", BRDB_PARAM_5 )
 	};
 
 	BRDB_DEFINE_QUERYCLASS(PROTOCOLID_ACCOUNTDB,QueryFindPlayerByEMail);
@@ -376,16 +343,12 @@ namespace DB {
 		int32_t Result;
 
 	public:
-		BRDB_BEGIN_PARAM_MAP(QueryFindPlayerByPlayerID,4)
-			BRDB_SET_PARAM_TYPE(BRDB_PARAMIO_INPUT)
-			BRDB_COLUMN_ENTRY(PlayerID)
-			BRDB_SET_PARAM_TYPE(BRDB_PARAMIO_OUTPUT)
-			BRDB_COLUMN_ENTRY(ShardID)
-			BRDB_COLUMN_ENTRY(FacebookUID)
-			BRDB_COLUMN_ENTRY(Result)
+		BRDB_BEGIN_PARAM_MAP(QueryFindPlayerByPlayerID, "spFindPlayerByPlayerID")
+			BRDB_PARAM_ENTRY(ParamIO::Input, PlayerID)
+			BRDB_PARAM_ENTRY(ParamIO::Output, ShardID)
+			BRDB_PARAM_ENTRY(ParamIO::Output, FacebookUID)
+			BRDB_PARAM_ENTRY(ParamIO::Output, Result)
 		BRDB_END_PARAM_MAP()
-
-		BRDB_QUERYSTRING( "spFindPlayerByPlayerID", BRDB_PARAM_4 )
 	};
 
 	BRDB_DEFINE_QUERYCLASS(PROTOCOLID_ACCOUNTDB, QueryFindPlayerByPlayerID);
@@ -400,15 +363,11 @@ namespace DB {
 		int32_t Result;
 
 	public:
-		BRDB_BEGIN_PARAM_MAP(QueryGetPlayerShardID, 3)
-			BRDB_SET_PARAM_TYPE(BRDB_PARAMIO_INPUT)
-			BRDB_COLUMN_ENTRY(UserID)
-			BRDB_SET_PARAM_TYPE(BRDB_PARAMIO_OUTPUT)
-			BRDB_COLUMN_ENTRY(ShardID)
-			BRDB_COLUMN_ENTRY(Result)
+		BRDB_BEGIN_PARAM_MAP(QueryGetPlayerShardID, "spGetPlayerShardID")
+			BRDB_PARAM_ENTRY(ParamIO::Input, UserID)
+			BRDB_PARAM_ENTRY(ParamIO::Output, ShardID)
+			BRDB_PARAM_ENTRY(ParamIO::Output, Result)
 		BRDB_END_PARAM_MAP()
-
-		BRDB_QUERYSTRING( "spGetPlayerShardID", BRDB_PARAM_3 )
 	};
 
 	BRDB_DEFINE_QUERYCLASS(PROTOCOLID_ACCOUNTDB, QueryGetPlayerShardID);

@@ -86,11 +86,11 @@ namespace Svr {
 			svrChkPtr(pResult);
 
 			// Nothing to query anymore
-			if (pResult->m_RowsetResult.size() == 0)
+			if (pResult->RowsetResults.size() == 0)
 				break;
 
-			svrTrace(Info, "Ranking request: from {0}, to {1}, count{2}", baseIndex, baseIndex + requestSize, pResult->m_RowsetResult.size());
-			for (auto& itRowSet : pResult->m_RowsetResult)
+			svrTrace(Info, "Ranking request: from {0}, to {1}, count{2}", baseIndex, baseIndex + requestSize, pResult->RowsetResults.size());
+			for (auto& itRowSet : pResult->RowsetResults)
 			{
 				int64_t playerRanking;
 				PlayerInformation playerInfo(itRowSet.PlayerID, itRowSet.FBUID, itRowSet.NickName, itRowSet.Level, false, 0);

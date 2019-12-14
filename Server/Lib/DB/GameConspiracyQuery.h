@@ -81,7 +81,7 @@ namespace DB {
 
 	struct QueryGetPlayerInfoData : public PlayerGameScore
 	{
-		char    GameNick[Const::MAX_USERNAME];
+		String  GameNick;
 		uint8_t	Grade;
 		int16_t	Level;
 		int64_t	Exp;
@@ -103,7 +103,7 @@ namespace DB {
 	struct QueryGetPlayerScoreRawSet
 	{
 		int32_t m_PlayerID;
-		uint8_t m_UName[BINSIZE_NAME];
+		String m_UName;
 		int16_t m_Gender;
 	};
 
@@ -114,20 +114,17 @@ namespace DB {
 		int32_t m_Result;
 
 	public:
-		BRDB_BEGIN_PARAM_MAP(QueryGetPlayerScoreList,2)
-			BRDB_SET_PARAM_TYPE(BRDB_PARAMIO_INPUT)
-			BRDB_COLUMN_ENTRY(m_AccountID)
-			BRDB_SET_PARAM_TYPE(BRDB_PARAMIO_OUTPUT)
-			BRDB_COLUMN_ENTRY(m_Result)
+		BRDB_BEGIN_PARAM_MAP(QueryGetPlayerScoreList, "spGetScoreList")
+			BRDB_PARAM_ENTRY(ParamIO::Input, m_AccountID)
+			BRDB_PARAM_ENTRY(ParamIO::Output, m_Result)
 		BRDB_END_PARAM_MAP()
 
-		BRDB_BEGIN_RESULT_MAP(QueryGetPlayerScoreList,3)
+		BRDB_BEGIN_RESULT_MAP(QueryGetPlayerScoreList)
 			BRDB_COLUMN_ENTRY(m_PlayerID)
 			BRDB_COLUMN_ENTRY(m_UName)
 			BRDB_COLUMN_ENTRY(m_Gender)
 		BRDB_END_RESULT_MAP()
 
-		BRDB_QUERYSTRING( "spGetScoreList", BRDB_PARAM_2 )
 	};
 
 	BRDB_DEFINE_ROWSETQUERYCLASS(PROTOCOLID_GAMEDB, QueryGetPlayerScoreList, QueryGetPlayerScoreRawSet);
@@ -143,16 +140,61 @@ namespace DB {
 		int32_t	Result;
 
 	public:
-		BRDB_BEGIN_PARAM_MAP(QueryCreatePlayerInfo, 3)
-			BRDB_SET_PARAM_TYPE(BRDB_PARAMIO_INPUT)
-			BRDB_COLUMN_ENTRY(PlayerID)
-			BRDB_COLUMN_ENTRY(InitialStamina)
-			BRDB_SET_PARAM_TYPE(BRDB_PARAMIO_OUTPUT)
-			BRDB_COLUMN_ENTRY(Result)
+		BRDB_BEGIN_PARAM_MAP(QueryCreatePlayerInfo, "spCreatePlayerInfo")
+			BRDB_PARAM_ENTRY(ParamIO::Input, PlayerID)
+			BRDB_PARAM_ENTRY(ParamIO::Input, InitialStamina)
+			BRDB_PARAM_ENTRY(ParamIO::Output, Result)
 		BRDB_END_PARAM_MAP()
 
 
-		BRDB_BEGIN_RESULT_MAP(QueryGetPlayerInfoData, 24)
+		BRDB_BEGIN_RESULT_MAP(QueryGetPlayerInfoData)
+			BRDB_COLUMN_ENTRY(GameNick)
+			BRDB_COLUMN_ENTRY(Grade)
+			BRDB_COLUMN_ENTRY(Level)
+			BRDB_COLUMN_ENTRY(Exp)
+			BRDB_COLUMN_ENTRY(GameMoney)
+			BRDB_COLUMN_ENTRY(Gem)
+			BRDB_COLUMN_ENTRY(Stamina)
+			BRDB_COLUMN_ENTRY(AddedFriendSlot)
+			BRDB_COLUMN_ENTRY(TotalPlayed)
+			BRDB_COLUMN_ENTRY(WinPlaySC)
+			BRDB_COLUMN_ENTRY(WinPlaySM)
+			BRDB_COLUMN_ENTRY(WinPlaySS)
+			BRDB_COLUMN_ENTRY(LosePlaySC)
+			BRDB_COLUMN_ENTRY(LosePlaySM)
+			BRDB_COLUMN_ENTRY(LosePlaySS)
+			BRDB_COLUMN_ENTRY(WinPlayNC)
+			BRDB_COLUMN_ENTRY(WinPlayNM)
+			BRDB_COLUMN_ENTRY(WinPlayNS)
+			BRDB_COLUMN_ENTRY(LosePlayNC)
+			BRDB_COLUMN_ENTRY(LosePlayNM)
+			BRDB_COLUMN_ENTRY(LosePlayNS)
+			BRDB_COLUMN_ENTRY(WeeklyPlayWin)
+			BRDB_COLUMN_ENTRY(WeeklyPlayLose)
+			BRDB_COLUMN_ENTRY(LatestTickTime)
+		BRDB_END_RESULT_MAP()
+	};
+
+	BRDB_DEFINE_ROWSETQUERYCLASS(PROTOCOLID_GAMEDB, QueryCreatePlayerInfo, QueryGetPlayerInfoData);
+
+
+	class QueryGetPlayerInfo : public QueryGetPlayerInfoData, public QueryBase
+	{
+	public:
+		// Player ID
+		int64_t	PlayerID;
+
+		// result
+		int32_t	Result;
+
+	public:
+		BRDB_BEGIN_PARAM_MAP(QueryGetPlayerInfo, "spGetPlayerInfo")
+			BRDB_PARAM_ENTRY(ParamIO::Input, PlayerID)
+			BRDB_PARAM_ENTRY(ParamIO::Output, Result)
+		BRDB_END_PARAM_MAP()
+
+
+		BRDB_BEGIN_RESULT_MAP(QueryGetPlayerInfoData)
 			BRDB_COLUMN_ENTRY(GameNick)
 			BRDB_COLUMN_ENTRY(Grade)
 			BRDB_COLUMN_ENTRY(Level)
@@ -179,60 +221,6 @@ namespace DB {
 			BRDB_COLUMN_ENTRY(LatestTickTime)
 		BRDB_END_RESULT_MAP()
 
-
-		BRDB_QUERYSTRING( "spCreatePlayerInfo", BRDB_PARAM_3 )
-	};
-
-	BRDB_DEFINE_ROWSETQUERYCLASS(PROTOCOLID_GAMEDB, QueryCreatePlayerInfo, QueryGetPlayerInfoData);
-
-
-	class QueryGetPlayerInfo : public QueryGetPlayerInfoData, public QueryBase
-	{
-	public:
-		// Player ID
-		int64_t	PlayerID;
-
-		// result
-		int32_t	Result;
-
-	public:
-		BRDB_BEGIN_PARAM_MAP(QueryGetPlayerInfo, 2)
-			BRDB_SET_PARAM_TYPE(BRDB_PARAMIO_INPUT)
-			BRDB_COLUMN_ENTRY(PlayerID)
-			BRDB_SET_PARAM_TYPE(BRDB_PARAMIO_OUTPUT)
-			BRDB_COLUMN_ENTRY(Result)
-			BRDB_END_PARAM_MAP()
-
-
-			BRDB_BEGIN_RESULT_MAP(QueryGetPlayerInfoData, 24)
-			BRDB_COLUMN_ENTRY(GameNick)
-			BRDB_COLUMN_ENTRY(Grade)
-			BRDB_COLUMN_ENTRY(Level)
-			BRDB_COLUMN_ENTRY(Exp)
-			BRDB_COLUMN_ENTRY(GameMoney)
-			BRDB_COLUMN_ENTRY(Gem)
-			BRDB_COLUMN_ENTRY(Stamina)
-			BRDB_COLUMN_ENTRY(AddedFriendSlot)
-			BRDB_COLUMN_ENTRY(TotalPlayed)
-			BRDB_COLUMN_ENTRY(WinPlaySC)
-			BRDB_COLUMN_ENTRY(WinPlaySM)
-			BRDB_COLUMN_ENTRY(WinPlaySS)
-			BRDB_COLUMN_ENTRY(LosePlaySC)
-			BRDB_COLUMN_ENTRY(LosePlaySM)
-			BRDB_COLUMN_ENTRY(LosePlaySS)
-			BRDB_COLUMN_ENTRY(WinPlayNC)
-			BRDB_COLUMN_ENTRY(WinPlayNM)
-			BRDB_COLUMN_ENTRY(WinPlayNS)
-			BRDB_COLUMN_ENTRY(LosePlayNC)
-			BRDB_COLUMN_ENTRY(LosePlayNM)
-			BRDB_COLUMN_ENTRY(LosePlayNS)
-			BRDB_COLUMN_ENTRY(WeeklyPlayWin)
-			BRDB_COLUMN_ENTRY(WeeklyPlayLose)
-			BRDB_COLUMN_ENTRY(LatestTickTime)
-			BRDB_END_RESULT_MAP()
-
-
-			BRDB_QUERYSTRING("spGetPlayerInfo", BRDB_PARAM_2)
 	};
 
 	BRDB_DEFINE_ROWSETQUERYCLASS(PROTOCOLID_GAMEDB, QueryGetPlayerInfo, QueryGetPlayerInfoData);
@@ -261,36 +249,32 @@ namespace DB {
 		int32_t	Result;
 
 	public:
-		BRDB_BEGIN_PARAM_MAP(QuerySetPlayerInfo,23)
-			BRDB_SET_PARAM_TYPE(BRDB_PARAMIO_INPUT)
-			BRDB_COLUMN_ENTRY(PlayerID)
-			BRDB_COLUMN_ENTRY(Level)
-			BRDB_COLUMN_ENTRY(Exp)
-			BRDB_COLUMN_ENTRY(GameMoney)
-			BRDB_COLUMN_ENTRY(Gem)
-			BRDB_COLUMN_ENTRY(Stamina)
-			BRDB_COLUMN_ENTRY(AddedFriendSlot)
-			BRDB_COLUMN_ENTRY(TotalPlayed)
-			BRDB_COLUMN_ENTRY(WinPlaySC)
-			BRDB_COLUMN_ENTRY(WinPlaySM)
-			BRDB_COLUMN_ENTRY(WinPlaySS)
-			BRDB_COLUMN_ENTRY(LosePlaySC)
-			BRDB_COLUMN_ENTRY(LosePlaySM)
-			BRDB_COLUMN_ENTRY(LosePlaySS)
-			BRDB_COLUMN_ENTRY(WinPlayNC)
-			BRDB_COLUMN_ENTRY(WinPlayNM)
-			BRDB_COLUMN_ENTRY(WinPlayNS)
-			BRDB_COLUMN_ENTRY(LosePlayNC)
-			BRDB_COLUMN_ENTRY(LosePlayNM)
-			BRDB_COLUMN_ENTRY(LosePlayNS)
-			BRDB_COLUMN_ENTRY(LatestActiveTime)
-			BRDB_COLUMN_ENTRY(LatestTickTime)
-			BRDB_SET_PARAM_TYPE(BRDB_PARAMIO_OUTPUT)
-			BRDB_COLUMN_ENTRY(Result)
+		BRDB_BEGIN_PARAM_MAP(QuerySetPlayerInfo, "spSetPlayerInfo")
+			BRDB_PARAM_ENTRY(ParamIO::Input, PlayerID)
+			BRDB_PARAM_ENTRY(ParamIO::Input, Level)
+			BRDB_PARAM_ENTRY(ParamIO::Input, Exp)
+			BRDB_PARAM_ENTRY(ParamIO::Input, GameMoney)
+			BRDB_PARAM_ENTRY(ParamIO::Input, Gem)
+			BRDB_PARAM_ENTRY(ParamIO::Input, Stamina)
+			BRDB_PARAM_ENTRY(ParamIO::Input, AddedFriendSlot)
+			BRDB_PARAM_ENTRY(ParamIO::Input, TotalPlayed)
+			BRDB_PARAM_ENTRY(ParamIO::Input, WinPlaySC)
+			BRDB_PARAM_ENTRY(ParamIO::Input, WinPlaySM)
+			BRDB_PARAM_ENTRY(ParamIO::Input, WinPlaySS)
+			BRDB_PARAM_ENTRY(ParamIO::Input, LosePlaySC)
+			BRDB_PARAM_ENTRY(ParamIO::Input, LosePlaySM)
+			BRDB_PARAM_ENTRY(ParamIO::Input, LosePlaySS)
+			BRDB_PARAM_ENTRY(ParamIO::Input, WinPlayNC)
+			BRDB_PARAM_ENTRY(ParamIO::Input, WinPlayNM)
+			BRDB_PARAM_ENTRY(ParamIO::Input, WinPlayNS)
+			BRDB_PARAM_ENTRY(ParamIO::Input, LosePlayNC)
+			BRDB_PARAM_ENTRY(ParamIO::Input, LosePlayNM)
+			BRDB_PARAM_ENTRY(ParamIO::Input, LosePlayNS)
+			BRDB_PARAM_ENTRY(ParamIO::Input, LatestActiveTime)
+			BRDB_PARAM_ENTRY(ParamIO::Input, LatestTickTime)
+			BRDB_PARAM_ENTRY(ParamIO::Output, Result)
 		BRDB_END_PARAM_MAP()
 
-
-		BRDB_QUERYSTRING( "spSetPlayerInfo", BRDB_PARAM_23 )
 	};
 
 	BRDB_DEFINE_QUERYCLASS(PROTOCOLID_GAMEDB,QuerySetPlayerInfo);
@@ -308,9 +292,9 @@ namespace DB {
 		int64_t	Gem;
 		int16_t	Stamina;
 		int16_t	AddedFriendSlot;
-		uint8_t    PurchaseID[Const::MAX_PURCHASEID];
-		char    PurchasePlatform[Const::MAX_PLATFORM_NAME];
-		char    PurchaseToken[Const::MAX_PURCHASETOKEN];
+		StaticArray<uint8_t,256>    PurchaseID;
+		String  PurchasePlatform;
+		String  PurchaseToken;
 		int32_t	LatestActiveTime;
 		int64_t	LatestTickTime;
 
@@ -318,26 +302,22 @@ namespace DB {
 		int32_t	Result;
 
 	public:
-		BRDB_BEGIN_PARAM_MAP(QuerySavePurchaseInfoToDB, 13)
-			BRDB_SET_PARAM_TYPE(BRDB_PARAMIO_INPUT)
-			BRDB_COLUMN_ENTRY(PlayerID)
-			BRDB_COLUMN_ENTRY(Level)
-			BRDB_COLUMN_ENTRY(Exp)
-			BRDB_COLUMN_ENTRY(GameMoney)
-			BRDB_COLUMN_ENTRY(Gem)
-			BRDB_COLUMN_ENTRY(Stamina)
-			BRDB_COLUMN_ENTRY(AddedFriendSlot)
-			BRDB_COLUMN_ENTRY(PurchaseID)
-			BRDB_COLUMN_ENTRY(PurchasePlatform)
-			BRDB_COLUMN_ENTRY(PurchaseToken)
-			BRDB_COLUMN_ENTRY(LatestActiveTime)
-			BRDB_COLUMN_ENTRY(LatestTickTime)
-			BRDB_SET_PARAM_TYPE(BRDB_PARAMIO_OUTPUT)
-			BRDB_COLUMN_ENTRY(Result)
+		BRDB_BEGIN_PARAM_MAP(QuerySavePurchaseInfoToDB, "spSavePurchaseInfoToDB")
+			BRDB_PARAM_ENTRY(ParamIO::Input, PlayerID)
+			BRDB_PARAM_ENTRY(ParamIO::Input, Level)
+			BRDB_PARAM_ENTRY(ParamIO::Input, Exp)
+			BRDB_PARAM_ENTRY(ParamIO::Input, GameMoney)
+			BRDB_PARAM_ENTRY(ParamIO::Input, Gem)
+			BRDB_PARAM_ENTRY(ParamIO::Input, Stamina)
+			BRDB_PARAM_ENTRY(ParamIO::Input, AddedFriendSlot)
+			BRDB_PARAM_ENTRY(ParamIO::Input, PurchaseID)
+			BRDB_PARAM_ENTRY(ParamIO::Input, PurchasePlatform)
+			BRDB_PARAM_ENTRY(ParamIO::Input, PurchaseToken)
+			BRDB_PARAM_ENTRY(ParamIO::Input, LatestActiveTime)
+			BRDB_PARAM_ENTRY(ParamIO::Input, LatestTickTime)
+			BRDB_PARAM_ENTRY(ParamIO::Output, Result)
 		BRDB_END_PARAM_MAP()
 
-
-		BRDB_QUERYSTRING( "spSavePurchaseInfoToDB", BRDB_PARAM_13 )
 	};
 
 	BRDB_DEFINE_QUERYCLASS(PROTOCOLID_GAMEDB, QuerySavePurchaseInfoToDB);
@@ -347,21 +327,17 @@ namespace DB {
 	{
 	public:
 		// Player ID
-		uint8_t    PurchaseID[Const::MAX_PURCHASEID];
+		DynamicArray<uint8_t>    PurchaseID;
 
 		// result
 		int32_t	Result;
 
 	public:
-		BRDB_BEGIN_PARAM_MAP(QueryCheckPurchaseID, 2)
-			BRDB_SET_PARAM_TYPE(BRDB_PARAMIO_INPUT)
-			BRDB_COLUMN_ENTRY(PurchaseID)
-			BRDB_SET_PARAM_TYPE(BRDB_PARAMIO_OUTPUT)
-			BRDB_COLUMN_ENTRY(Result)
-			BRDB_END_PARAM_MAP()
+		BRDB_BEGIN_PARAM_MAP(QueryCheckPurchaseID, "spCheckPurchaseID")
+			BRDB_PARAM_ENTRY(ParamIO::Input, PurchaseID)
+			BRDB_PARAM_ENTRY(ParamIO::Output, Result)
+		BRDB_END_PARAM_MAP()
 
-
-			BRDB_QUERYSTRING("spCheckPurchaseID", BRDB_PARAM_2)
 	};
 
 	BRDB_DEFINE_QUERYCLASS(PROTOCOLID_GAMEDB, QueryCheckPurchaseID);
@@ -385,15 +361,11 @@ namespace DB {
 		int32_t Result;
 
 	public:
-		BRDB_BEGIN_PARAM_MAP(QuerySetNickName, 3)
-			BRDB_SET_PARAM_TYPE(BRDB_PARAMIO_INPUT)
-			BRDB_COLUMN_ENTRY(PlayerID)
-			BRDB_COLUMN_ENTRY(NickName)
-			BRDB_SET_PARAM_TYPE(BRDB_PARAMIO_OUTPUT)
-			BRDB_COLUMN_ENTRY(Result)
-			BRDB_END_PARAM_MAP()
-
-			BRDB_QUERYSTRING("spSetNickName", BRDB_PARAM_3)
+		BRDB_BEGIN_PARAM_MAP(QuerySetNickName, "spSetNickName")
+			BRDB_PARAM_ENTRY(ParamIO::Input, PlayerID)
+			BRDB_PARAM_ENTRY(ParamIO::Input, NickName)
+			BRDB_PARAM_ENTRY(ParamIO::Output, Result)
+		BRDB_END_PARAM_MAP()
 	};
 
 	BRDB_DEFINE_QUERYCLASS(PROTOCOLID_GAMEDB, QuerySetNickName);
@@ -415,15 +387,11 @@ namespace DB {
 		int32_t Result;
 
 	public:
-		BRDB_BEGIN_PARAM_MAP(QueryGetNickName, 3)
-			BRDB_SET_PARAM_TYPE(BRDB_PARAMIO_INPUT)
-			BRDB_COLUMN_ENTRY(PlayerID)
-			BRDB_SET_PARAM_TYPE(BRDB_PARAMIO_OUTPUT)
-			BRDB_COLUMN_ENTRY(NickName)
-			BRDB_COLUMN_ENTRY(Result)
-			BRDB_END_PARAM_MAP()
-
-			BRDB_QUERYSTRING("spGetNickName", BRDB_PARAM_3)
+		BRDB_BEGIN_PARAM_MAP(QueryGetNickName, "spGetNickName")
+			BRDB_PARAM_ENTRY(ParamIO::Input, PlayerID)
+			BRDB_PARAM_ENTRY(ParamIO::Output, NickName)
+			BRDB_PARAM_ENTRY(ParamIO::Output, Result)
+		BRDB_END_PARAM_MAP()
 	};
 
 	BRDB_DEFINE_QUERYCLASS(PROTOCOLID_GAMEDB, QueryGetNickName);
@@ -444,31 +412,27 @@ namespace DB {
 		int32_t	Result;
 
 	public:
-		BRDB_BEGIN_PARAM_MAP(QueryUpdateGameEnd,19)
-			BRDB_SET_PARAM_TYPE(BRDB_PARAMIO_INPUT)
-			BRDB_COLUMN_ENTRY(PlayerID)
-			BRDB_COLUMN_ENTRY(Level)
-			BRDB_COLUMN_ENTRY(Exp)
-			BRDB_COLUMN_ENTRY(GameMoney)
-			BRDB_COLUMN_ENTRY(TotalPlayed)
-			BRDB_COLUMN_ENTRY(WinPlaySC)
-			BRDB_COLUMN_ENTRY(WinPlaySM)
-			BRDB_COLUMN_ENTRY(WinPlaySS)
-			BRDB_COLUMN_ENTRY(LosePlaySC)
-			BRDB_COLUMN_ENTRY(LosePlaySM)
-			BRDB_COLUMN_ENTRY(LosePlaySS)
-			BRDB_COLUMN_ENTRY(WinPlayNC)
-			BRDB_COLUMN_ENTRY(WinPlayNM)
-			BRDB_COLUMN_ENTRY(WinPlayNS)
-			BRDB_COLUMN_ENTRY(LosePlayNC)
-			BRDB_COLUMN_ENTRY(LosePlayNM)
-			BRDB_COLUMN_ENTRY(LosePlayNS)
-			BRDB_COLUMN_ENTRY(LatestActiveTime)
-			BRDB_SET_PARAM_TYPE(BRDB_PARAMIO_OUTPUT)
-			BRDB_COLUMN_ENTRY(Result)
+		BRDB_BEGIN_PARAM_MAP(QueryUpdateGameEnd, "spUpdateGameEnd")
+			BRDB_PARAM_ENTRY(ParamIO::Input, PlayerID)
+			BRDB_PARAM_ENTRY(ParamIO::Input, Level)
+			BRDB_PARAM_ENTRY(ParamIO::Input, Exp)
+			BRDB_PARAM_ENTRY(ParamIO::Input, GameMoney)
+			BRDB_PARAM_ENTRY(ParamIO::Input, TotalPlayed)
+			BRDB_PARAM_ENTRY(ParamIO::Input, WinPlaySC)
+			BRDB_PARAM_ENTRY(ParamIO::Input, WinPlaySM)
+			BRDB_PARAM_ENTRY(ParamIO::Input, WinPlaySS)
+			BRDB_PARAM_ENTRY(ParamIO::Input, LosePlaySC)
+			BRDB_PARAM_ENTRY(ParamIO::Input, LosePlaySM)
+			BRDB_PARAM_ENTRY(ParamIO::Input, LosePlaySS)
+			BRDB_PARAM_ENTRY(ParamIO::Input, WinPlayNC)
+			BRDB_PARAM_ENTRY(ParamIO::Input, WinPlayNM)
+			BRDB_PARAM_ENTRY(ParamIO::Input, WinPlayNS)
+			BRDB_PARAM_ENTRY(ParamIO::Input, LosePlayNC)
+			BRDB_PARAM_ENTRY(ParamIO::Input, LosePlayNM)
+			BRDB_PARAM_ENTRY(ParamIO::Input, LosePlayNS)
+			BRDB_PARAM_ENTRY(ParamIO::Input, LatestActiveTime)
+			BRDB_PARAM_ENTRY(ParamIO::Output, Result)
 		BRDB_END_PARAM_MAP()
-
-		BRDB_QUERYSTRING( "spUpdateGameEnd", BRDB_PARAM_19 )
 	};
 
 	BRDB_DEFINE_QUERYCLASS(PROTOCOLID_GAMEDB,QueryUpdateGameEnd);
@@ -490,19 +454,15 @@ namespace DB {
 		int32_t	Result;
 
 	public:
-		BRDB_BEGIN_PARAM_MAP(QueryUpdateJoinGame,7)
-			BRDB_SET_PARAM_TYPE(BRDB_PARAMIO_INPUT)
-			BRDB_COLUMN_ENTRY(PlayerID)
-			BRDB_COLUMN_ENTRY(Gem)
-			BRDB_COLUMN_ENTRY(Stamina)
-			BRDB_COLUMN_ENTRY(PlayerState)
-			BRDB_COLUMN_ENTRY(LatestActiveTime)
-			BRDB_COLUMN_ENTRY(LatestTickTime)
-			BRDB_SET_PARAM_TYPE(BRDB_PARAMIO_OUTPUT)
-			BRDB_COLUMN_ENTRY(Result)
+		BRDB_BEGIN_PARAM_MAP(QueryUpdateJoinGame, "spUpdateJoinGame")
+			BRDB_PARAM_ENTRY(ParamIO::Input, PlayerID)
+			BRDB_PARAM_ENTRY(ParamIO::Input, Gem)
+			BRDB_PARAM_ENTRY(ParamIO::Input, Stamina)
+			BRDB_PARAM_ENTRY(ParamIO::Input, PlayerState)
+			BRDB_PARAM_ENTRY(ParamIO::Input, LatestActiveTime)
+			BRDB_PARAM_ENTRY(ParamIO::Input, LatestTickTime)
+			BRDB_PARAM_ENTRY(ParamIO::Output, Result)
 		BRDB_END_PARAM_MAP()
-
-		BRDB_QUERYSTRING( "spUpdateJoinGame", BRDB_PARAM_7 )
 	};
 
 	BRDB_DEFINE_QUERYCLASS(PROTOCOLID_GAMEDB,QueryUpdateJoinGame);
@@ -524,19 +484,16 @@ namespace DB {
 		int32_t	Result;
 
 	public:
-		BRDB_BEGIN_PARAM_MAP(QueryUpdateTickStatus,7)
-			BRDB_SET_PARAM_TYPE(BRDB_PARAMIO_INPUT)
-			BRDB_COLUMN_ENTRY(PlayerID)
-			BRDB_COLUMN_ENTRY(Gem)
-			BRDB_COLUMN_ENTRY(Stamina)
-			BRDB_COLUMN_ENTRY(PlayerState)
-			BRDB_COLUMN_ENTRY(LatestActiveTime)
-			BRDB_COLUMN_ENTRY(LatestTickTime)
-			BRDB_SET_PARAM_TYPE(BRDB_PARAMIO_OUTPUT)
-			BRDB_COLUMN_ENTRY(Result)
+		BRDB_BEGIN_PARAM_MAP(QueryUpdateTickStatus, "spUpdateTickStatus")
+			BRDB_PARAM_ENTRY(ParamIO::Input, PlayerID)
+			BRDB_PARAM_ENTRY(ParamIO::Input, Gem)
+			BRDB_PARAM_ENTRY(ParamIO::Input, Stamina)
+			BRDB_PARAM_ENTRY(ParamIO::Input, PlayerState)
+			BRDB_PARAM_ENTRY(ParamIO::Input, LatestActiveTime)
+			BRDB_PARAM_ENTRY(ParamIO::Input, LatestTickTime)
+			BRDB_PARAM_ENTRY(ParamIO::Output, Result)
 		BRDB_END_PARAM_MAP()
 
-		BRDB_QUERYSTRING( "spUpdateTickStatus", BRDB_PARAM_7 )
 	};
 
 	BRDB_DEFINE_QUERYCLASS(PROTOCOLID_GAMEDB,QueryUpdateTickStatus);
@@ -555,16 +512,12 @@ namespace DB {
 		int32_t	Result;
 
 	public:
-		BRDB_BEGIN_PARAM_MAP(QueryGetPlayerStatus,4)
-			BRDB_SET_PARAM_TYPE(BRDB_PARAMIO_INPUT)
-			BRDB_COLUMN_ENTRY(PlayerID)
-			BRDB_SET_PARAM_TYPE(BRDB_PARAMIO_OUTPUT)
-			BRDB_COLUMN_ENTRY(PlayerState)
-			BRDB_COLUMN_ENTRY(LatestActiveTime)
-			BRDB_COLUMN_ENTRY(Result)
+		BRDB_BEGIN_PARAM_MAP(QueryGetPlayerStatus, "spGetPlayerStatus")
+			BRDB_PARAM_ENTRY(ParamIO::Input, PlayerID)
+			BRDB_PARAM_ENTRY(ParamIO::Output, PlayerState)
+			BRDB_PARAM_ENTRY(ParamIO::Output, LatestActiveTime)
+			BRDB_PARAM_ENTRY(ParamIO::Output, Result)
 		BRDB_END_PARAM_MAP()
-
-		BRDB_QUERYSTRING( "spGetPlayerStatus", BRDB_PARAM_4 )
 	};
 
 	BRDB_DEFINE_QUERYCLASS(PROTOCOLID_GAMEDB,QueryGetPlayerStatus);
@@ -590,18 +543,14 @@ namespace DB {
 		int32_t Result;
 
 	public:
-		BRDB_BEGIN_PARAM_MAP(QueryGetPlayerQuickInfo,5)
-			BRDB_SET_PARAM_TYPE(BRDB_PARAMIO_INPUT)
-			BRDB_COLUMN_ENTRY(UserID)
-			BRDB_SET_PARAM_TYPE(BRDB_PARAMIO_OUTPUT)
-			BRDB_COLUMN_ENTRY(Level)
-			BRDB_COLUMN_ENTRY(WeeklyWin)
-			BRDB_COLUMN_ENTRY(WeeklyLose)
-			BRDB_COLUMN_ENTRY(Result)
+		BRDB_BEGIN_PARAM_MAP(QueryGetPlayerQuickInfo, "spGetPlayerQuickInfo")
+			BRDB_PARAM_ENTRY(ParamIO::Input, UserID)
+			BRDB_PARAM_ENTRY(ParamIO::Output, Level)
+			BRDB_PARAM_ENTRY(ParamIO::Output, WeeklyWin)
+			BRDB_PARAM_ENTRY(ParamIO::Output, WeeklyLose)
+			BRDB_PARAM_ENTRY(ParamIO::Output, Result)
 		BRDB_END_PARAM_MAP()
 
-
-		BRDB_QUERYSTRING( "spGetPlayerQuickInfo", BRDB_PARAM_5 )
 	};
 
 	BRDB_DEFINE_QUERYCLASS(PROTOCOLID_GAMEDB,QueryGetPlayerQuickInfo);
@@ -621,20 +570,16 @@ namespace DB {
 		int32_t Result;
 
 	public:
-		BRDB_BEGIN_PARAM_MAP(QueryGetFriendQuickInfo, 7)
-			BRDB_SET_PARAM_TYPE(BRDB_PARAMIO_INPUT)
-			BRDB_COLUMN_ENTRY(PlayerID)
-			BRDB_SET_PARAM_TYPE(BRDB_PARAMIO_OUTPUT)
-			BRDB_COLUMN_ENTRY(Level)
-			BRDB_COLUMN_ENTRY(WeeklyWin)
-			BRDB_COLUMN_ENTRY(WeeklyLose)
-			BRDB_COLUMN_ENTRY(PlayerState)
-			BRDB_COLUMN_ENTRY(LatestActiveTime)
-			BRDB_COLUMN_ENTRY(Result)
+		BRDB_BEGIN_PARAM_MAP(QueryGetFriendQuickInfo, "spGetFriendQuickInfo")
+			BRDB_PARAM_ENTRY(ParamIO::Input, PlayerID)
+			BRDB_PARAM_ENTRY(ParamIO::Output, Level)
+			BRDB_PARAM_ENTRY(ParamIO::Output, WeeklyWin)
+			BRDB_PARAM_ENTRY(ParamIO::Output, WeeklyLose)
+			BRDB_PARAM_ENTRY(ParamIO::Output, PlayerState)
+			BRDB_PARAM_ENTRY(ParamIO::Output, LatestActiveTime)
+			BRDB_PARAM_ENTRY(ParamIO::Output, Result)
 			BRDB_END_PARAM_MAP()
 
-
-			BRDB_QUERYSTRING("spGetFriendQuickInfo", BRDB_PARAM_7)
 	};
 
 	BRDB_DEFINE_QUERYCLASS(PROTOCOLID_GAMEDB, QueryGetFriendQuickInfo);
@@ -646,7 +591,7 @@ namespace DB {
 	public:
 
 		int64_t PlayerID;
-		char GameNick[Const::MAX_USERNAME];
+		String GameNick;
 		int32_t Level;
 		int32_t WeeklyWin;
 		int32_t WeeklyLose;
@@ -656,21 +601,16 @@ namespace DB {
 		int32_t Result;
 
 	public:
-		BRDB_BEGIN_PARAM_MAP(QueryGetFriendQuickInfoWithNick, 8)
-			BRDB_SET_PARAM_TYPE(BRDB_PARAMIO_INPUT)
-			BRDB_COLUMN_ENTRY(PlayerID)
-			BRDB_SET_PARAM_TYPE(BRDB_PARAMIO_OUTPUT)
-			BRDB_COLUMN_ENTRY(GameNick)
-			BRDB_COLUMN_ENTRY(Level)
-			BRDB_COLUMN_ENTRY(WeeklyWin)
-			BRDB_COLUMN_ENTRY(WeeklyLose)
-			BRDB_COLUMN_ENTRY(PlayerState)
-			BRDB_COLUMN_ENTRY(LatestActiveTime)
-			BRDB_COLUMN_ENTRY(Result)
+		BRDB_BEGIN_PARAM_MAP(QueryGetFriendQuickInfoWithNick, "spGetFriendQuickInfoWithNick")
+			BRDB_PARAM_ENTRY(ParamIO::Input, PlayerID)
+			BRDB_PARAM_ENTRY(ParamIO::Output, GameNick)
+			BRDB_PARAM_ENTRY(ParamIO::Output, Level)
+			BRDB_PARAM_ENTRY(ParamIO::Output, WeeklyWin)
+			BRDB_PARAM_ENTRY(ParamIO::Output, WeeklyLose)
+			BRDB_PARAM_ENTRY(ParamIO::Output, PlayerState)
+			BRDB_PARAM_ENTRY(ParamIO::Output, LatestActiveTime)
+			BRDB_PARAM_ENTRY(ParamIO::Output, Result)
 			BRDB_END_PARAM_MAP()
-
-
-			BRDB_QUERYSTRING("spGetFriendQuickInfoWithNick", BRDB_PARAM_8)
 	};
 
 	BRDB_DEFINE_QUERYCLASS(PROTOCOLID_GAMEDB, QueryGetFriendQuickInfoWithNick);
@@ -689,18 +629,14 @@ namespace DB {
 		int32_t Result;
 
 	public:
-		BRDB_BEGIN_PARAM_MAP(QueryGetFriendSlotStatus, 5)
-			BRDB_SET_PARAM_TYPE(BRDB_PARAMIO_INPUT)
-			BRDB_COLUMN_ENTRY(PlayerID)
-			BRDB_SET_PARAM_TYPE(BRDB_PARAMIO_OUTPUT)
-			BRDB_COLUMN_ENTRY(Level)
-			BRDB_COLUMN_ENTRY(AddedFriendSlot)
-			BRDB_COLUMN_ENTRY(NumFriends)
-			BRDB_COLUMN_ENTRY(Result)
-			BRDB_END_PARAM_MAP()
+		BRDB_BEGIN_PARAM_MAP(QueryGetFriendSlotStatus, "spGetFriendSlotStatus")
+			BRDB_PARAM_ENTRY(ParamIO::Input, PlayerID)
+			BRDB_PARAM_ENTRY(ParamIO::Output, Level)
+			BRDB_PARAM_ENTRY(ParamIO::Output, AddedFriendSlot)
+			BRDB_PARAM_ENTRY(ParamIO::Output, NumFriends)
+			BRDB_PARAM_ENTRY(ParamIO::Output, Result)
+		BRDB_END_PARAM_MAP()
 
-
-			BRDB_QUERYSTRING("spGetFriendSlotStatus", BRDB_PARAM_5)
 	};
 
 	BRDB_DEFINE_QUERYCLASS(PROTOCOLID_GAMEDB, QueryGetFriendSlotStatus);
@@ -724,17 +660,14 @@ namespace DB {
 		int32_t Result;
 
 	public:
-		BRDB_BEGIN_PARAM_MAP(QueryAddFriend, 5)
-			BRDB_SET_PARAM_TYPE(BRDB_PARAMIO_INPUT)
-			BRDB_COLUMN_ENTRY(UserID)
-			BRDB_COLUMN_ENTRY(FriendUID)
-			BRDB_COLUMN_ENTRY(FriendShardID)
-			BRDB_COLUMN_ENTRY(FriendFacebookUID)
-			BRDB_SET_PARAM_TYPE(BRDB_PARAMIO_OUTPUT)
-			BRDB_COLUMN_ENTRY(Result)
-			BRDB_END_PARAM_MAP()
+		BRDB_BEGIN_PARAM_MAP(QueryAddFriend, "spFriend_Add")
+			BRDB_PARAM_ENTRY(ParamIO::Input, UserID)
+			BRDB_PARAM_ENTRY(ParamIO::Input, FriendUID)
+			BRDB_PARAM_ENTRY(ParamIO::Input, FriendShardID)
+			BRDB_PARAM_ENTRY(ParamIO::Input, FriendFacebookUID)
+			BRDB_PARAM_ENTRY(ParamIO::Output, Result)
+		BRDB_END_PARAM_MAP()
 
-			BRDB_QUERYSTRING("spFriend_Add", BRDB_PARAM_5)
 	};
 
 	BRDB_DEFINE_QUERYCLASS(PROTOCOLID_GAMEDB, QueryAddFriend);
@@ -756,15 +689,12 @@ namespace DB {
 		int32_t Result;
 
 	public:
-		BRDB_BEGIN_PARAM_MAP(QueryRemoveFriend, 3)
-			BRDB_SET_PARAM_TYPE(BRDB_PARAMIO_INPUT)
-			BRDB_COLUMN_ENTRY(UserID)
-			BRDB_COLUMN_ENTRY(FriendUID)
-			BRDB_SET_PARAM_TYPE(BRDB_PARAMIO_OUTPUT)
-			BRDB_COLUMN_ENTRY(Result)
-			BRDB_END_PARAM_MAP()
+		BRDB_BEGIN_PARAM_MAP(QueryRemoveFriend, "spFriend_Remove")
+			BRDB_PARAM_ENTRY(ParamIO::Input, UserID)
+			BRDB_PARAM_ENTRY(ParamIO::Input, FriendUID)
+			BRDB_PARAM_ENTRY(ParamIO::Output, Result)
+		BRDB_END_PARAM_MAP()
 
-			BRDB_QUERYSTRING("spFriend_Remove", BRDB_PARAM_3)
 	};
 
 	BRDB_DEFINE_QUERYCLASS(PROTOCOLID_GAMEDB, QueryRemoveFriend);
@@ -790,20 +720,17 @@ namespace DB {
 
 
 	public:
-		BRDB_BEGIN_PARAM_MAP(QueryGetFriendList, 1)
-			BRDB_SET_PARAM_TYPE(BRDB_PARAMIO_INPUT)
-			BRDB_COLUMN_ENTRY(UserID)
-			BRDB_END_PARAM_MAP()
+		BRDB_BEGIN_PARAM_MAP(QueryGetFriendList, "spFriend_List")
+			BRDB_PARAM_ENTRY(ParamIO::Input, UserID)
+		BRDB_END_PARAM_MAP()
 
-			BRDB_BEGIN_RESULT_MAP(QueryGetFriendList, 4)
+		BRDB_BEGIN_RESULT_MAP(QueryGetFriendList)
 			BRDB_COLUMN_ENTRY(FriendUID)
 			BRDB_COLUMN_ENTRY(FriendShardID)
 			BRDB_COLUMN_ENTRY(FriendFacebookUID)
 			BRDB_COLUMN_ENTRY(FriendStaminaTime)
-			BRDB_END_RESULT_MAP()
+		BRDB_END_RESULT_MAP()
 
-
-			BRDB_QUERYSTRING("spFriend_List", BRDB_PARAM_1)
 	};
 
 	BRDB_DEFINE_ROWSETQUERYCLASS(PROTOCOLID_GAMEDB, QueryGetFriendList, QueryGetFriendListSet);
@@ -821,16 +748,12 @@ namespace DB {
 		int32_t Result;
 
 	public:
-		BRDB_BEGIN_PARAM_MAP(QueryUpdateFriendStaminaTime, 4)
-			BRDB_SET_PARAM_TYPE(BRDB_PARAMIO_INPUT)
-			BRDB_COLUMN_ENTRY(UserID)
-			BRDB_COLUMN_ENTRY(FriendUID)
-			BRDB_COLUMN_ENTRY(TimeStamp)
-			BRDB_SET_PARAM_TYPE(BRDB_PARAMIO_OUTPUT)
-			BRDB_COLUMN_ENTRY(Result)
-			BRDB_END_PARAM_MAP()
-
-			BRDB_QUERYSTRING("spFriend_UpdateStaminaTime", BRDB_PARAM_4)
+		BRDB_BEGIN_PARAM_MAP(QueryUpdateFriendStaminaTime, "spFriend_UpdateStaminaTime")
+			BRDB_PARAM_ENTRY(ParamIO::Input, UserID)
+			BRDB_PARAM_ENTRY(ParamIO::Input, FriendUID)
+			BRDB_PARAM_ENTRY(ParamIO::Input, TimeStamp)
+			BRDB_PARAM_ENTRY(ParamIO::Output, Result)
+		BRDB_END_PARAM_MAP()
 	};
 
 	BRDB_DEFINE_QUERYCLASS(PROTOCOLID_GAMEDB, QueryUpdateFriendStaminaTime);
@@ -851,28 +774,24 @@ namespace DB {
 		uint16_t MessageID;
 		int64_t MessageParam0;
 		int64_t MessageParam1;
-		char MessageText[Const::MAX_NOTIFICATION_TEXT];
+		String MessageText;
 		int64_t TimeStamp;
 
 		int32_t NotificationID;
 		int32_t Result;
 
 	public:
-		BRDB_BEGIN_PARAM_MAP(QueryNotification_Add, 9)
-			BRDB_SET_PARAM_TYPE(BRDB_PARAMIO_INPUT)
-			BRDB_COLUMN_ENTRY(UserID)
-			BRDB_COLUMN_ENTRY(Collapsable)
-			BRDB_COLUMN_ENTRY(MessageID)
-			BRDB_COLUMN_ENTRY(MessageParam0)
-			BRDB_COLUMN_ENTRY(MessageParam1)
-			BRDB_COLUMN_ENTRY(MessageText)
-			BRDB_COLUMN_ENTRY(TimeStamp)
-			BRDB_SET_PARAM_TYPE(BRDB_PARAMIO_OUTPUT)
-			BRDB_COLUMN_ENTRY(NotificationID)
-			BRDB_COLUMN_ENTRY(Result)
-			BRDB_END_PARAM_MAP()
-
-			BRDB_QUERYSTRING("spNotification_Add", BRDB_PARAM_9)
+		BRDB_BEGIN_PARAM_MAP(QueryNotification_Add, "spNotification_Add")
+			BRDB_PARAM_ENTRY(ParamIO::Input, UserID)
+			BRDB_PARAM_ENTRY(ParamIO::Input, Collapsable)
+			BRDB_PARAM_ENTRY(ParamIO::Input, MessageID)
+			BRDB_PARAM_ENTRY(ParamIO::Input, MessageParam0)
+			BRDB_PARAM_ENTRY(ParamIO::Input, MessageParam1)
+			BRDB_PARAM_ENTRY(ParamIO::Input, MessageText)
+			BRDB_PARAM_ENTRY(ParamIO::Input, TimeStamp)
+			BRDB_PARAM_ENTRY(ParamIO::Output, NotificationID)
+			BRDB_PARAM_ENTRY(ParamIO::Output, Result)
+		BRDB_END_PARAM_MAP()
 	};
 
 	BRDB_DEFINE_QUERYCLASS(PROTOCOLID_GAMEDB, QueryNotification_Add);
@@ -884,7 +803,7 @@ namespace DB {
 		int16_t MessageID;
 		int64_t MessageParam0;
 		int64_t MessageParam1;
-		char MessageText[Const::MAX_NOTIFICATION_TEXT];
+		String MessageText;
 		int64_t TimeStamp;
 		uint8_t IsRead;
 	};
@@ -897,14 +816,12 @@ namespace DB {
 		int32_t Result;
 
 	public:
-		BRDB_BEGIN_PARAM_MAP(QueryNotification_GetList, 2)
-			BRDB_SET_PARAM_TYPE(BRDB_PARAMIO_INPUT)
-			BRDB_COLUMN_ENTRY(UserID)
-			BRDB_SET_PARAM_TYPE(BRDB_PARAMIO_OUTPUT)
-			BRDB_COLUMN_ENTRY(Result)
-			BRDB_END_PARAM_MAP()
+		BRDB_BEGIN_PARAM_MAP(QueryNotification_GetList, "spNotification_GetList")
+			BRDB_PARAM_ENTRY(ParamIO::Input, UserID)
+			BRDB_PARAM_ENTRY(ParamIO::Output, Result)
+		BRDB_END_PARAM_MAP()
 
-			BRDB_BEGIN_RESULT_MAP(QueryNotification_GetList, 7)
+		BRDB_BEGIN_RESULT_MAP(QueryNotification_GetList)
 			BRDB_COLUMN_ENTRY(NotificationID)
 			BRDB_COLUMN_ENTRY(MessageID)
 			BRDB_COLUMN_ENTRY(MessageParam0)
@@ -912,10 +829,8 @@ namespace DB {
 			BRDB_COLUMN_ENTRY(MessageText)
 			BRDB_COLUMN_ENTRY(IsRead)
 			BRDB_COLUMN_ENTRY(TimeStamp)
-			BRDB_END_RESULT_MAP()
+		BRDB_END_RESULT_MAP()
 
-
-			BRDB_QUERYSTRING("spNotification_GetList", BRDB_PARAM_2)
 	};
 
 	BRDB_DEFINE_ROWSETQUERYCLASS(PROTOCOLID_GAMEDB, QueryNotification_GetList, QueryNotification_GetListSet);
@@ -931,15 +846,12 @@ namespace DB {
 		int32_t Result;
 
 	public:
-		BRDB_BEGIN_PARAM_MAP(QueryNotification_Remove, 3)
-			BRDB_SET_PARAM_TYPE(BRDB_PARAMIO_INPUT)
-			BRDB_COLUMN_ENTRY(UserID)
-			BRDB_COLUMN_ENTRY(NotificationID)
-			BRDB_SET_PARAM_TYPE(BRDB_PARAMIO_OUTPUT)
-			BRDB_COLUMN_ENTRY(Result)
-			BRDB_END_PARAM_MAP()
+		BRDB_BEGIN_PARAM_MAP(QueryNotification_Remove, "spNotification_Remove")
+			BRDB_PARAM_ENTRY(ParamIO::Input, UserID)
+			BRDB_PARAM_ENTRY(ParamIO::Input, NotificationID)
+			BRDB_PARAM_ENTRY(ParamIO::Output, Result)
+		BRDB_END_PARAM_MAP()
 
-			BRDB_QUERYSTRING("spNotification_Remove", BRDB_PARAM_3)
 	};
 
 	BRDB_DEFINE_QUERYCLASS(PROTOCOLID_GAMEDB, QueryNotification_Remove);
@@ -954,15 +866,11 @@ namespace DB {
 		int32_t Result;
 
 	public:
-		BRDB_BEGIN_PARAM_MAP(QueryNotification_RemoveByMessageID, 3)
-			BRDB_SET_PARAM_TYPE(BRDB_PARAMIO_INPUT)
-			BRDB_COLUMN_ENTRY(UserID)
-			BRDB_COLUMN_ENTRY(MessageID)
-			BRDB_SET_PARAM_TYPE(BRDB_PARAMIO_OUTPUT)
-			BRDB_COLUMN_ENTRY(Result)
-			BRDB_END_PARAM_MAP()
-
-			BRDB_QUERYSTRING("spNotification_RemoveByMessageID", BRDB_PARAM_3)
+		BRDB_BEGIN_PARAM_MAP(QueryNotification_RemoveByMessageID, "spNotification_RemoveByMessageID")
+			BRDB_PARAM_ENTRY(ParamIO::Input, UserID)
+			BRDB_PARAM_ENTRY(ParamIO::Input, MessageID)
+			BRDB_PARAM_ENTRY(ParamIO::Output, Result)
+		BRDB_END_PARAM_MAP()
 	};
 
 	BRDB_DEFINE_QUERYCLASS(PROTOCOLID_GAMEDB, QueryNotification_RemoveByMessageID);
@@ -977,15 +885,11 @@ namespace DB {
 		int32_t Result;
 
 	public:
-		BRDB_BEGIN_PARAM_MAP(QueryNotification_SetRead, 3)
-			BRDB_SET_PARAM_TYPE(BRDB_PARAMIO_INPUT)
-			BRDB_COLUMN_ENTRY(UserID)
-			BRDB_COLUMN_ENTRY(NotificationID)
-			BRDB_SET_PARAM_TYPE(BRDB_PARAMIO_OUTPUT)
-			BRDB_COLUMN_ENTRY(Result)
-			BRDB_END_PARAM_MAP()
-
-			BRDB_QUERYSTRING("spNotification_SetRead", BRDB_PARAM_3)
+		BRDB_BEGIN_PARAM_MAP(QueryNotification_SetRead, "spNotification_SetRead")
+			BRDB_PARAM_ENTRY(ParamIO::Input, UserID)
+			BRDB_PARAM_ENTRY(ParamIO::Input, NotificationID)
+			BRDB_PARAM_ENTRY(ParamIO::Output, Result)
+		BRDB_END_PARAM_MAP()
 	};
 
 	BRDB_DEFINE_QUERYCLASS(PROTOCOLID_GAMEDB, QueryNotification_SetRead);
@@ -996,18 +900,15 @@ namespace DB {
 	{
 	public:
 		int64_t PlayerID;
-		char ComplitionState[Const::MAX_COMPLITIONSTATE];
+		String ComplitionState;
 
 		int32_t Result;
 
 	public:
-		BRDB_BEGIN_PARAM_MAP(QuerySetComplitionState, 2)
-			BRDB_SET_PARAM_TYPE(BRDB_PARAMIO_INPUT)
-			BRDB_COLUMN_ENTRY(PlayerID)
-			BRDB_COLUMN_ENTRY(ComplitionState)
-			BRDB_END_PARAM_MAP()
-
-			BRDB_QUERYSTRING("spSetComplitionState", BRDB_PARAM_2)
+		BRDB_BEGIN_PARAM_MAP(QuerySetComplitionState, "spSetComplitionState")
+			BRDB_PARAM_ENTRY(ParamIO::Input, PlayerID)
+			BRDB_PARAM_ENTRY(ParamIO::Input, ComplitionState)
+		BRDB_END_PARAM_MAP()
 	};
 
 	BRDB_DEFINE_QUERYCLASS(PROTOCOLID_GAMEDB, QuerySetComplitionState);
@@ -1017,19 +918,15 @@ namespace DB {
 	{
 	public:
 		int64_t PlayerID;
-		char ComplitionState[Const::MAX_COMPLITIONSTATE];
+		String ComplitionState;
 
 		int32_t Result;
 
 	public:
-		BRDB_BEGIN_PARAM_MAP(QueryGetComplitionState, 2)
-			BRDB_SET_PARAM_TYPE(BRDB_PARAMIO_INPUT)
-			BRDB_COLUMN_ENTRY(PlayerID)
-			BRDB_SET_PARAM_TYPE(BRDB_PARAMIO_OUTPUT)
-			BRDB_COLUMN_ENTRY(ComplitionState)
+		BRDB_BEGIN_PARAM_MAP(QueryGetComplitionState, "spGetComplitionState")
+			BRDB_PARAM_ENTRY(ParamIO::Input, PlayerID)
+			BRDB_PARAM_ENTRY(ParamIO::Output, ComplitionState)
 			BRDB_END_PARAM_MAP()
-
-			BRDB_QUERYSTRING("spGetComplitionState", BRDB_PARAM_2)
 	};
 
 	BRDB_DEFINE_QUERYCLASS(PROTOCOLID_GAMEDB, QueryGetComplitionState);

@@ -233,11 +233,11 @@ namespace Svr {
 		virtual const PlayerInformation& GetPlayerInformation() const = 0;
 		virtual const ServerFriendInformation& GetFriendInformation() const = 0;
 
-		FORCEINLINE const char* GetNickName() { return m_PlayerInformation.NickName; }
-		FORCEINLINE Result SetNickName(const char* newName) { return StrUtil::StringCopy(m_PlayerInformation.NickName, newName); }
+		SF_FORCEINLINE const char* GetNickName() { return m_PlayerInformation.NickName; }
+		SF_FORCEINLINE Result SetNickName(const char* newName) { return StrUtil::StringCopy(m_PlayerInformation.NickName, newName); }
 
-		FORCEINLINE FacebookUID GetFacebookUID() { return m_PlayerInformation.FBUID; }
-		FORCEINLINE void SetFacebookUID(FacebookUID newUID) { m_PlayerInformation.FBUID = newUID; }
+		SF_FORCEINLINE FacebookUID GetFacebookUID() { return m_PlayerInformation.FBUID; }
+		SF_FORCEINLINE void SetFacebookUID(FacebookUID newUID) { m_PlayerInformation.FBUID = newUID; }
 
 		virtual Result SetAccountID(AccountID accID) { m_PlayerInformation.PlayerID = accID; return Svr::SimpleUserEntity::SetAccountID(accID); }
 

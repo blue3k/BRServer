@@ -1,6 +1,8 @@
 ﻿
 
-source_group(INCLUDES FILES
+
+set(BRTABLE_LIB_FILES
+    targetver.h
     conspiracy/BotTalkTbl.h
     conspiracy/GameConfigTbl.h
     conspiracy/LevelTbl.h
@@ -8,14 +10,8 @@ source_group(INCLUDES FILES
     conspiracy/RewardTbl.h
     conspiracy/ShopTbl.h
     conspiracy/TableVersionTbl.h
-    stdafx.h
     TableQueries.h
     TableSystem.h
-    targetver.h
-)
-
-
-set(BRTABLE_LIB_FILES
     conspiracy/BotTalkTbl.cpp
     conspiracy/GameConfigTbl.cpp
     conspiracy/LevelTbl.cpp

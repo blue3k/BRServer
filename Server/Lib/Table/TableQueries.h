@@ -56,12 +56,9 @@ namespace DB {
 
 
 	public:
-		BRDB_BEGIN_PARAM_MAP(QueryTableVersionTbl,1)
-			BRDB_SET_PARAM_TYPE(BRDB_PARAMIO_OUTPUT)
-			BRDB_COLUMN_ENTRY(TableVersion)
+		BRDB_BEGIN_PARAM_MAP(QueryTableVersionTbl, "spGetTableVersion")
+			BRDB_PARAM_ENTRY(ParamIO::Input, TableVersion)
 		BRDB_END_PARAM_MAP()
-
-		BRDB_QUERYSTRING("spGetTableVersion", BRDB_PARAM_1)
 	};
 
 	BRDB_DEFINE_QUERYCLASS(PROTOCOLID_TABLEDB, QueryTableVersionTbl);
@@ -75,10 +72,10 @@ namespace DB {
 
 
 	public:
-		BRDB_BEGIN_EMPTY_PARAM_MAP(QueryGameConfigTbl)
-		BRDB_END_EMPTY_PARAM_MAP()
+		BRDB_BEGIN_PARAM_MAP(QueryGameConfigTbl, "select * from gtbl_gameconfigtable;")
+		BRDB_END_PARAM_MAP()
 
-		BRDB_BEGIN_RESULT_MAP(QueryGameConfigTbl, 25)
+		BRDB_BEGIN_RESULT_MAP(QueryGameConfigTbl)
 		BRDB_COLUMN_ENTRY(PresetID)
 		BRDB_COLUMN_ENTRY(DefaultMail)
 		BRDB_COLUMN_ENTRY(DefaultGem)
@@ -106,8 +103,6 @@ namespace DB {
 		BRDB_COLUMN_ENTRY(PlayerAutoLogout)
 		BRDB_END_RESULT_MAP()
 
-
-		BRDB_RAW_QUERY_STRING("select * from gtbl_gameconfigtable;")
 	};
 
 	BRDB_DEFINE_ROWSETQUERYCLASS(PROTOCOLID_TABLEDB, QueryGameConfigTbl, conspiracy::GameConfigTbl::GameConfigItem);
@@ -120,16 +115,14 @@ namespace DB {
 
 
 	public:
-		BRDB_BEGIN_EMPTY_PARAM_MAP(QueryLevelTbl)
-		BRDB_END_EMPTY_PARAM_MAP()
+		BRDB_BEGIN_PARAM_MAP(QueryLevelTbl, "select * from gtbl_leveltable;")
+		BRDB_END_PARAM_MAP()
 
-		BRDB_BEGIN_RESULT_MAP(QueryLevelTbl, 2)
+		BRDB_BEGIN_RESULT_MAP(QueryLevelTbl)
 		BRDB_COLUMN_ENTRY(Level)
 		BRDB_COLUMN_ENTRY(RequiredExpTotal)
 		BRDB_END_RESULT_MAP()
 
-
-		BRDB_RAW_QUERY_STRING("select * from gtbl_leveltable;")
 	};
 
 	BRDB_DEFINE_ROWSETQUERYCLASS(PROTOCOLID_TABLEDB, QueryLevelTbl, conspiracy::LevelTbl::LevelItem);
@@ -144,19 +137,17 @@ namespace DB {
 
 
 	public:
-		BRDB_BEGIN_EMPTY_PARAM_MAP(QueryOrganicTbl)
-		BRDB_END_EMPTY_PARAM_MAP()
+		BRDB_BEGIN_PARAM_MAP(QueryOrganicTbl, "select * from gtbl_organictable;")
+		BRDB_END_PARAM_MAP()
 
-		BRDB_BEGIN_RESULT_MAP(QueryOrganicTbl, 5)
-		BRDB_COLUMN_ENTRY(OrganicItemID)
-		BRDB_COLUMN_ENTRY(ItemInfo)
-		BRDB_COLUMN_ENTRY(RequiredGem)
-		BRDB_COLUMN_ENTRY(RequiredGameMoney)
-		BRDB_COLUMN_ENTRY(ItemEffect.m_iEnum)
+		BRDB_BEGIN_RESULT_MAP(QueryOrganicTbl)
+			BRDB_COLUMN_ENTRY(OrganicItemID)
+			BRDB_COLUMN_ENTRY(ItemInfo)
+			BRDB_COLUMN_ENTRY(RequiredGem)
+			BRDB_COLUMN_ENTRY(RequiredGameMoney)
+			BRDB_COLUMN_ENTRY(ItemEffect.m_iEnum)
 		BRDB_END_RESULT_MAP()
 
-
-		BRDB_RAW_QUERY_STRING("select * from gtbl_organictable;")
 	};
 
 	BRDB_DEFINE_ROWSETQUERYCLASS(PROTOCOLID_TABLEDB, QueryOrganicTbl, conspiracy::OrganicTbl::OrganicItem);
@@ -171,23 +162,21 @@ namespace DB {
 
 
 	public:
-		BRDB_BEGIN_EMPTY_PARAM_MAP(QueryShopTbl)
-		BRDB_END_EMPTY_PARAM_MAP()
+		BRDB_BEGIN_PARAM_MAP(QueryShopTbl, "select * from gtbl_shoptable;")
+		BRDB_END_PARAM_MAP()
 
-		BRDB_BEGIN_RESULT_MAP(QueryShopTbl, 9)
-		BRDB_COLUMN_ENTRY(ShopItemID)
-		BRDB_COLUMN_ENTRY(ItemInfo)
-		BRDB_COLUMN_ENTRY(RequiredCash)
-		BRDB_COLUMN_ENTRY(RequiredGem)
-		BRDB_COLUMN_ENTRY(RequiredGameMoney)
-		BRDB_COLUMN_ENTRY(ItemEffect.m_iEnum)
-		BRDB_COLUMN_ENTRY(Quantity)
-		BRDB_COLUMN_ENTRY(AndroidItemID)
-		BRDB_COLUMN_ENTRY(iOSItemID)
+		BRDB_BEGIN_RESULT_MAP(QueryShopTbl)
+			BRDB_COLUMN_ENTRY(ShopItemID)
+			BRDB_COLUMN_ENTRY(ItemInfo)
+			BRDB_COLUMN_ENTRY(RequiredCash)
+			BRDB_COLUMN_ENTRY(RequiredGem)
+			BRDB_COLUMN_ENTRY(RequiredGameMoney)
+			BRDB_COLUMN_ENTRY(ItemEffect.m_iEnum)
+			BRDB_COLUMN_ENTRY(Quantity)
+			BRDB_COLUMN_ENTRY(AndroidItemID)
+			BRDB_COLUMN_ENTRY(iOSItemID)
 		BRDB_END_RESULT_MAP()
 
-
-		BRDB_RAW_QUERY_STRING("select * from gtbl_shoptable;")
 	};
 
 	BRDB_DEFINE_ROWSETQUERYCLASS(PROTOCOLID_TABLEDB, QueryShopTbl, conspiracy::ShopTbl::ShopItem);
@@ -202,10 +191,10 @@ namespace DB {
 
 
 	public:
-		BRDB_BEGIN_EMPTY_PARAM_MAP(QueryRewardTbl)
-		BRDB_END_EMPTY_PARAM_MAP()
+		BRDB_BEGIN_PARAM_MAP(QueryRewardTbl, "select * from gtbl_rewardtable;")
+		BRDB_END_PARAM_MAP()
 
-		BRDB_BEGIN_RESULT_MAP(QueryRewardTbl, 5)
+		BRDB_BEGIN_RESULT_MAP(QueryRewardTbl)
 		BRDB_COLUMN_ENTRY(Role.m_iEnum)
 		BRDB_COLUMN_ENTRY(WinExp)
 		BRDB_COLUMN_ENTRY(LoseExp)
@@ -213,8 +202,6 @@ namespace DB {
 		BRDB_COLUMN_ENTRY(LoseMoney)
 		BRDB_END_RESULT_MAP()
 
-
-		BRDB_RAW_QUERY_STRING("select * from gtbl_rewardtable;")
 	};
 
 	BRDB_DEFINE_ROWSETQUERYCLASS(PROTOCOLID_TABLEDB, QueryRewardTbl, conspiracy::RewardTbl::RewardItem);
@@ -228,35 +215,34 @@ namespace DB {
 
 
 	public:
-		BRDB_BEGIN_EMPTY_PARAM_MAP(QueryBotTalkTable)
-			BRDB_END_EMPTY_PARAM_MAP()
+		BRDB_BEGIN_PARAM_MAP(QueryBotTalkTable, "select * from gtbl_bottalktable;")
+		BRDB_END_PARAM_MAP()
 
-			BRDB_BEGIN_RESULT_MAP(QueryBotTalkTable, 22)
-				BRDB_COLUMN_ENTRY(ItemID)
-				BRDB_COLUMN_ENTRY(BotName_Begin)
-				BRDB_COLUMN_ENTRY(BotName_End)
-				BRDB_COLUMN_ENTRY(FirstDay_Begin)
-				BRDB_COLUMN_ENTRY(FirstDay_End)
-				BRDB_COLUMN_ENTRY(FirstDay_PlayDelay)
-				BRDB_COLUMN_ENTRY(FirstDay_BotDelay1)
-				BRDB_COLUMN_ENTRY(FirstDay_BotDelay2)
-				BRDB_COLUMN_ENTRY(FreeTalk_Begin)
-				BRDB_COLUMN_ENTRY(FreeTalk_End)
-				BRDB_COLUMN_ENTRY(FreeTalk_PlayDelay)
-				BRDB_COLUMN_ENTRY(FreeTalk_BotDelay1)
-				BRDB_COLUMN_ENTRY(FreeTalk_BotDelay2)
-				BRDB_COLUMN_ENTRY(Defense_Begin)
-				BRDB_COLUMN_ENTRY(Defense_End)
-				BRDB_COLUMN_ENTRY(Defense_PlayDelay)
-				BRDB_COLUMN_ENTRY(Defense_BotDelay1)
-				BRDB_COLUMN_ENTRY(Defense_BotDelay2)
-				BRDB_COLUMN_ENTRY(GameResultWinner_Begin)
-				BRDB_COLUMN_ENTRY(GameResultWinner_End)
-				BRDB_COLUMN_ENTRY(GameResultLoser_Begin)
-				BRDB_COLUMN_ENTRY(GameResultLoser_End)
-			BRDB_END_RESULT_MAP()
+		BRDB_BEGIN_RESULT_MAP(QueryBotTalkTable)
+			BRDB_COLUMN_ENTRY(ItemID)
+			BRDB_COLUMN_ENTRY(BotName_Begin)
+			BRDB_COLUMN_ENTRY(BotName_End)
+			BRDB_COLUMN_ENTRY(FirstDay_Begin)
+			BRDB_COLUMN_ENTRY(FirstDay_End)
+			BRDB_COLUMN_ENTRY(FirstDay_PlayDelay)
+			BRDB_COLUMN_ENTRY(FirstDay_BotDelay1)
+			BRDB_COLUMN_ENTRY(FirstDay_BotDelay2)
+			BRDB_COLUMN_ENTRY(FreeTalk_Begin)
+			BRDB_COLUMN_ENTRY(FreeTalk_End)
+			BRDB_COLUMN_ENTRY(FreeTalk_PlayDelay)
+			BRDB_COLUMN_ENTRY(FreeTalk_BotDelay1)
+			BRDB_COLUMN_ENTRY(FreeTalk_BotDelay2)
+			BRDB_COLUMN_ENTRY(Defense_Begin)
+			BRDB_COLUMN_ENTRY(Defense_End)
+			BRDB_COLUMN_ENTRY(Defense_PlayDelay)
+			BRDB_COLUMN_ENTRY(Defense_BotDelay1)
+			BRDB_COLUMN_ENTRY(Defense_BotDelay2)
+			BRDB_COLUMN_ENTRY(GameResultWinner_Begin)
+			BRDB_COLUMN_ENTRY(GameResultWinner_End)
+			BRDB_COLUMN_ENTRY(GameResultLoser_Begin)
+			BRDB_COLUMN_ENTRY(GameResultLoser_End)
+		BRDB_END_RESULT_MAP()
 
-			BRDB_RAW_QUERY_STRING("select * from gtbl_bottalktable;")
 	};
 
 	BRDB_DEFINE_ROWSETQUERYCLASS(PROTOCOLID_TABLEDB, QueryBotTalkTable, conspiracy::BotTalkTbl::BotTalkTblItem);

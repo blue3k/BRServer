@@ -149,7 +149,7 @@ namespace Svr {
 
 
 		template< class ServiceType >
-		FORCEINLINE ServiceType* GetService()
+		SF_FORCEINLINE ServiceType* GetService()
 		{
 			if( m_ServiceBase == nullptr )
 			{

@@ -107,11 +107,11 @@ namespace GameTable {
 
 			defChk(pSession->OpenSession());
 
-			defChkPtr(pTblQuery = new(GetSystemHeap()) TableQueryType());
+			defChkPtr(pTblQuery = new(GetSystemHeap()) TableQueryType(GetSystemHeap()));
 			pTblQuery->Dummy = 0;
-			defChk(pSession->SendQuery(pTblQuery));
+			defChk(pSession->ProcessQuery(pTblQuery));
 
-			TableClass::LoadTable(pTblQuery->m_RowsetResult);
+			TableClass::LoadTable(pTblQuery->RowsetResults);
 
 		Proc_End:
 
@@ -133,9 +133,9 @@ namespace GameTable {
 
 			defChk(pSession->OpenSession());
 
-			defChkPtr(pTblQuery = new(GetSystemHeap()) DB::QueryTableVersionTblCmd);
+			defChkPtr(pTblQuery = new(GetSystemHeap()) DB::QueryTableVersionTblCmd(GetSystemHeap()));
 			pTblQuery->TableVersion = 0;
-			defChk(pSession->SendQuery(pTblQuery));
+			defChk(pSession->ProcessQuery(pTblQuery));
 
 			m_TableVersion = pTblQuery->TableVersion;
 

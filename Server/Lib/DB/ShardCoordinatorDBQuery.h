@@ -37,8 +37,8 @@ namespace DB {
 	struct QueryGetShardListSet
 	{
 		int32_t ShardID;
-		char ConnectionString[512];
-		char DBName[128];
+		String ConnectionString;
+		String DBName;
 	};
 
 	class QueryGetShardList : public QueryGetShardListSet, public QueryBase
@@ -47,17 +47,15 @@ namespace DB {
 		int32_t Dummy;
 
 	public:
-		BRDB_BEGIN_PARAM_MAP(QueryGetShardList, 1)
-			BRDB_COLUMN_ENTRY(Dummy)
+		BRDB_BEGIN_PARAM_MAP(QueryGetShardList, "spGetShardList")
+			BRDB_PARAM_ENTRY(ParamIO::Input, Dummy)
 		BRDB_END_PARAM_MAP()
 		
-		BRDB_BEGIN_RESULT_MAP(QueryGetShardListSet, 3)
+		BRDB_BEGIN_RESULT_MAP(QueryGetShardListSet)
 			BRDB_COLUMN_ENTRY(ShardID)
 			BRDB_COLUMN_ENTRY(ConnectionString)
 			BRDB_COLUMN_ENTRY(DBName)
 		BRDB_END_RESULT_MAP()
-
-		BRDB_QUERYSTRING( "spGetShardList", BRDB_PARAM_1 )
 	};
 
 	BRDB_DEFINE_ROWSETQUERYCLASS(PROTOCOLID_SHRDCOORDINATORDB, QueryGetShardList, QueryGetShardListSet);

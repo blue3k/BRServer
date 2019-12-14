@@ -1,6 +1,8 @@
 ﻿
 
-source_group(INCLUDES FILES 
+
+
+set(BR_LIB_FILES
     GameInstance/GamePlayerEntity.h
     GameServer.h
     GameServerClass.h
@@ -9,7 +11,6 @@ source_group(INCLUDES FILES
     GameSystem/UserGamePlayerInfoSystem.h
     GameSystem/UserNotifySystem.h
     GameSystem/UserSystemComponentIDs.h
-    stdafx.h
     Transaction/GamePlayerEntityTrans.h
     Transaction/GamePlayerEntityTransChatChannel.h
     Transaction/GamePlayerEntityTransClose.h
@@ -18,10 +19,6 @@ source_group(INCLUDES FILES
     Transaction/GamePlayerEntityTransParty.h
     Transaction/GameServerTrans.h
 	GameServerClass.inl
-)
-
-
-set(BR_LIB_FILES
     GameInstance/GamePlayerEntity.cpp
     GameServer.cpp
     GameServerClass.cpp

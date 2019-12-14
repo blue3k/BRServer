@@ -12,6 +12,7 @@
 
 #include "SFTypedefs.h"
 #include "ResultCode/SFResultCodeSystem.h"
+#include "Container/SFArray.h"
 
 
 
@@ -24,7 +25,7 @@ namespace conspiracy
 	{
  	public:
 
-		// GameConfigItem structure defition
+		// GameConfigItem structure definition
 		struct GameConfigItem
 		{
  			int	PresetID;
@@ -63,7 +64,7 @@ namespace conspiracy
 
 
 		// declare member function
-		static Result LoadTable( const std::list<GameConfigItem>& rowList );
+		static Result LoadTable( const Array<GameConfigItem>& rowList );
 
 		static Result FindItem( const int& Key, GameConfigItem*& pRow);
 	}; // class GameConfigTbl

@@ -81,7 +81,8 @@ if(WIN32)
 
 	include_directories(AFTER 
 		../StormForge/3rdParties/VulkanSDK/1.1.82.1/include
-		External/mysql-connector-c-6.1.6-winx64/include
+		#External/mysql-connector-c-6.1.6-winx64/include
+		../StormForge/3rdParties/src/mysql/mysql-connector-c++-8.0.18-winx64/include
 	)
 	
 	set(ARTECTURE x64)
@@ -90,9 +91,11 @@ if(WIN32)
 
 
 	link_directories(
-		External/mysql-connector-c-6.1.6-winx64/lib
-		External/mysql-connector-c-6.1.6-winx64/lib/vs12
+		#External/mysql-connector-c-6.1.6-winx64/lib
+		#External/mysql-connector-c-6.1.6-winx64/lib/vs12
 		../StormForge/build${CMAKE_SYSTEM_NAME}/${ARTECTURE}$(Configuration)/lib
+		Server/bin/lib/${ARTECTURE}$(Configuration)
+		#../StormForge/3rdParties/src/mysql/mysql-connector-c++-8.0.18-winx64/lib64/vs14
 	)
 
 
@@ -115,7 +118,7 @@ elseif(UNIX)
 
 
 	include_directories(AFTER 
-		/usr/include/mysql
+		/usr/local/mysql/connector-c++-8.0/include/
 		#3rdParties/VulkanSDK/1.1.82.1/include
 	)
 	
@@ -124,10 +127,11 @@ elseif(UNIX)
 
 	link_directories(
 		/usr/lib
+		/usr/local/mysql/connector-c++-8.0/lib64/debug
 		../StormForge/build${CMAKE_SYSTEM_NAME}/${ARTECTURE}${CMAKE_BUILD_TYPE}/lib
 		)
 	
-	set(PLATFORM_LIBS mysqlclient rt m)
+	set(PLATFORM_LIBS mysqlcppconn8 rt m)
 
 endif()
 

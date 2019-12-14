@@ -1,6 +1,8 @@
 ﻿
 
-source_group(INCLUDES FILES FILES 
+
+
+set(BRGAMEINSTANCESERVER_LIB_FILES
     ConspiracyGameInstanceServerClass.h
     ConspiracyGameInstanceSvrConst.h
     GameInstance/GameInstanceEntity.h
@@ -13,9 +15,6 @@ source_group(INCLUDES FILES FILES
     GameSystem/GameStateSystem.h
     GameSystem/GameSystemComponentIDs.h
     GameSystem/GameVote.h
-    Resource.h
-    stdafx.h
-    targetver.h
     Transaction/GameInstanceServerTrans.h
     Transaction/GameInstanceTransaction.h
     Transaction/GameInstanceTransPlayer.h
@@ -23,10 +22,6 @@ source_group(INCLUDES FILES FILES
     GameInstance/GameInstanceEntity.inl
     GameInstance/GamePlayer.inl
     GameSystem/GamePlaySystem.inl
-)
-
-
-set(BRGAMEINSTANCESERVER_LIB_FILES
     ConspiracyGameInstanceServer.cpp
     ConspiracyGameInstanceServerClass.cpp
     GameInstance/GameInstanceEntity.cpp

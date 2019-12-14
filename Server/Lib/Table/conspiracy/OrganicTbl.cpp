@@ -20,7 +20,7 @@ namespace conspiracy
 {
 	using namespace SF;
  
-	// EItemEffect structure defition
+	// EItemEffect structure definition
 	OrganicTbl::EItemEffect::EnumMap OrganicTbl::EItemEffect::m_Map;
 
 	OrganicTbl::EItemEffect::EnumMap::EnumMap()
@@ -97,7 +97,7 @@ namespace conspiracy
 	OrganicTbl::ItemEffectTable *OrganicTbl::m_ItemEffectTable = nullptr;
 	OrganicTbl::ItemEffectTable *OrganicTbl::m_ItemEffectTablePrev = nullptr;
 
-	Result OrganicTbl::LoadTable( const std::list<OrganicItem>& rowList )
+	Result OrganicTbl::LoadTable( const Array<OrganicItem>& rowList )
 	{
  		auto pNewItemEffectTable = new(GetSystemHeap()) ItemEffectTable;
 

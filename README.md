@@ -14,6 +14,7 @@ Cmd folder has command line scripts for running server
 Linux build scripts
 1. CMakeLinuxGen.sh to generate build project
 2. CMakeLinuxBuild.sh to build
+3. Download and install mysql xdev library https://dev.mysql.com/downloads/connector/cpp/ or build from source in 3rdparties folder
 
 Windows build scripts
 1. CMakeWinGen.cmd to generate build project

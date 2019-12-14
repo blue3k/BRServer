@@ -16,9 +16,7 @@
 #include "DB/DBTrace.h"
 #include "DB/Query.h"
 
-#include <my_global.h>
-#include <mysql.h>
-#include <mysqld_error.h>
+#include <mysqlx/xdevapi.h>
 
 
 namespace SF {
@@ -35,38 +33,21 @@ namespace DB {
 	{
 	public:
 
-		struct BindVariableState
-		{
-			my_bool isNull;
-			unsigned long OutputLength;
-		};
 
 
 	private:
 
 	public:
-		QueryMYSQL(Message::MessageID MsgID);
+		QueryMYSQL(IHeap& heap, Message::MessageID MsgID);
 		virtual ~QueryMYSQL();
 
-		// total parameter count
-		virtual INT GetParameterCount()		{ return 0; }
-		// input only parameter count
-		virtual INT GetInputParameterCount()	{ return 0; }
 
-		// result colomn count
-		virtual INT GetResultCount()			{ return 0; }
+		virtual void BindParameters(mysqlx::SqlStatement& statement);
 
-		virtual MYSQL_BIND* BuildParameter()	{ return nullptr; }
-
-		virtual MYSQL_BIND* BuildResult()		{ return nullptr; }
+		virtual void ParseResult(mysqlx::SqlResult& queryResult);
 
 
-		// Query message
-		virtual const char* GetQueryString() = 0;
-
-		// handle new result column
-		virtual void PrepareResultColumn()		{}
-		virtual void OnNewResultColumn()		{}
+		virtual void AddRowset() {}
 	};
 
 

@@ -12,6 +12,7 @@
 
 #include "SFTypedefs.h"
 #include "ResultCode/SFResultCodeSystem.h"
+#include "Container/SFArray.h"
 
 
 
@@ -23,7 +24,7 @@ namespace conspiracy
 	{
  	public:
 
-		// ERole enum class defition
+		// ERole enum class definition
 		class ERole
 		{
  		public:
@@ -61,7 +62,7 @@ namespace conspiracy
 			static EnumMap m_Map;
 		}; // class ERole
 
-		// RewardItem structure defition
+		// RewardItem structure definition
 		struct RewardItem
 		{
  			ERole	Role;
@@ -80,7 +81,7 @@ namespace conspiracy
 
 
 		// declare member function
-		static Result LoadTable( const std::list<RewardItem>& rowList );
+		static Result LoadTable( const Array<RewardItem>& rowList );
 
 		static Result FindItem( const unsigned int& Key, RewardItem*& pRow);
 	}; // class RewardTbl

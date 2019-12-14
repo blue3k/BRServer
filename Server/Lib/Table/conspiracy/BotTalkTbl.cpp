@@ -23,7 +23,7 @@ namespace conspiracy
 	BotTalkTbl::ItemIDTable *BotTalkTbl::m_ItemIDTable = nullptr;
 	BotTalkTbl::ItemIDTable *BotTalkTbl::m_ItemIDTablePrev = nullptr;
 
-	Result BotTalkTbl::LoadTable( const std::list<BotTalkTblItem>& rowList )
+	Result BotTalkTbl::LoadTable( const Array<BotTalkTblItem>& rowList )
 	{
  		auto pNewItemIDTable = new(GetSystemHeap()) ItemIDTable;
 

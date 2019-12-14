@@ -52,7 +52,7 @@ namespace DB {
 		QueryCreatePlayerInfoCmd *pQuery = nullptr;
 		QueryGetPlayerInfoData *pRawSet = nullptr;
 
-		dbMem(pQuery = new(GetHeap()) QueryCreatePlayerInfoCmd);
+		dbMem(pQuery = new(GetHeap()) QueryCreatePlayerInfoCmd(GetHeap()));
 
 		pQuery->SetPartitioningKey(shardID);
 
@@ -61,7 +61,7 @@ namespace DB {
 		pQuery->Result = 0;
 
 		pRawSet = pQuery;
-		memset(pRawSet, 0, sizeof(QueryGetPlayerInfoData));
+		*pRawSet = {};
 
 		pQuery->SetTransaction( Sender );
 
@@ -81,7 +81,7 @@ namespace DB {
 		QueryGetPlayerInfoCmd *pQuery = nullptr;
 		QueryGetPlayerInfoData *pRawSet = nullptr;
 
-		dbMem(pQuery = new(GetHeap()) QueryGetPlayerInfoCmd);
+		dbMem(pQuery = new(GetHeap()) QueryGetPlayerInfoCmd(GetHeap()));
 
 		pQuery->SetPartitioningKey(shardID);
 
@@ -89,7 +89,7 @@ namespace DB {
 		pQuery->Result = 0;
 
 		pRawSet = pQuery;
-		memset(pRawSet, 0, sizeof(QueryGetPlayerInfoData));
+		*pRawSet = {};
 
 		pQuery->SetTransaction(Sender);
 
@@ -125,7 +125,7 @@ namespace DB {
 		QuerySetPlayerInfoCmd *pQuery = nullptr;
 		QuerySetPlayerInfoData *pDataSet = nullptr;
 
-		dbMem( pQuery = new(GetHeap()) QuerySetPlayerInfoCmd );
+		dbMem( pQuery = new(GetHeap()) QuerySetPlayerInfoCmd(GetHeap()));
 
 		pQuery->SetPartitioningKey(shardID);
 
@@ -133,7 +133,7 @@ namespace DB {
 		pQuery->Result = 0;
 
 		pDataSet = pQuery;
-		memset(pDataSet, 0, sizeof(QuerySetPlayerInfoData));
+		*pDataSet = {};
 
 		pDataSet->Level = Level;
 		pDataSet->Exp = Exp;
@@ -186,7 +186,7 @@ namespace DB {
 		Result hr = ResultCode::SUCCESS;
 		QuerySavePurchaseInfoToDBCmd *pQuery = nullptr;
 
-		dbMem(pQuery = new(GetHeap()) QuerySavePurchaseInfoToDBCmd);
+		dbMem(pQuery = new(GetHeap()) QuerySavePurchaseInfoToDBCmd(GetHeap()));
 
 		pQuery->SetPartitioningKey(shardID);
 
@@ -202,11 +202,10 @@ namespace DB {
 
 		if (purchaseID.size() > sizeof(pQuery->PurchaseID))
 			dbErr(ResultCode::INVALID_ARG);
-		memset(pQuery->PurchaseID, 0, sizeof(pQuery->PurchaseID));
-		memcpy(pQuery->PurchaseID, purchaseID.data(), purchaseID.size());
 
-		dbChk(StrUtil::StringCopy(pQuery->PurchasePlatform, purchasePlatform));
-		dbChk(StrUtil::StringCopy(pQuery->PurchaseToken, purchaseToken));
+		pQuery->PurchaseID = purchaseID;
+		pQuery->PurchasePlatform, purchasePlatform;
+		pQuery->PurchaseToken, purchaseToken;
 		pQuery->LatestActiveTime = LatestActiveTime.time_since_epoch().count();
 		pQuery->LatestTickTime = LatestTickTime.time_since_epoch().count();
 
@@ -228,7 +227,7 @@ namespace DB {
 		Result hr = ResultCode::SUCCESS;
 		QueryCheckPurchaseIDCmd *pQuery = nullptr;
 
-		dbMem(pQuery = new(GetHeap()) QueryCheckPurchaseIDCmd);
+		dbMem(pQuery = new(GetHeap()) QueryCheckPurchaseIDCmd(GetHeap()));
 
 		pQuery->SetPartitioningKey(shardID);
 
@@ -236,8 +235,8 @@ namespace DB {
 
 		if (purchaseID.size() > sizeof(pQuery->PurchaseID))
 			dbErr(ResultCode::INVALID_ARG);
-		memset(pQuery->PurchaseID, 0, sizeof(pQuery->PurchaseID));
-		memcpy(pQuery->PurchaseID, purchaseID.data(), purchaseID.size());
+
+		pQuery->PurchaseID = purchaseID;
 
 		pQuery->Result = 0;
 
@@ -257,7 +256,7 @@ namespace DB {
 		Result hr = ResultCode::SUCCESS;
 		QuerySetNickNameCmd *pQuery = nullptr;
 
-		dbMem(pQuery = new(GetHeap()) QuerySetNickNameCmd);
+		dbMem(pQuery = new(GetHeap()) QuerySetNickNameCmd(GetHeap()));
 
 		pQuery->SetPartitioningKey(shardID);
 
@@ -284,7 +283,7 @@ namespace DB {
 		Result hr = ResultCode::SUCCESS;
 		QueryGetNickNameCmd *pQuery = nullptr;
 
-		dbMem(pQuery = new(GetHeap()) QueryGetNickNameCmd);
+		dbMem(pQuery = new(GetHeap()) QueryGetNickNameCmd(GetHeap()));
 
 		pQuery->SetPartitioningKey(shardID);
 
@@ -321,7 +320,7 @@ namespace DB {
 		Result hr = ResultCode::SUCCESS;
 		QueryUpdateGameEndCmd *pQuery = nullptr;
 
-		dbMem( pQuery = new(GetHeap()) QueryUpdateGameEndCmd );
+		dbMem( pQuery = new(GetHeap()) QueryUpdateGameEndCmd(GetHeap()));
 
 		pQuery->SetPartitioningKey(shardID);
 
@@ -371,7 +370,7 @@ namespace DB {
 		Result hr = ResultCode::SUCCESS;
 		QueryUpdateJoinGameCmd *pQuery = nullptr;
 
-		dbMem( pQuery = new(GetHeap()) QueryUpdateJoinGameCmd );
+		dbMem( pQuery = new(GetHeap()) QueryUpdateJoinGameCmd(GetHeap()));
 
 		pQuery->SetPartitioningKey(shardID);
 
@@ -410,7 +409,7 @@ namespace DB {
 		Result hr = ResultCode::SUCCESS;
 		QueryUpdateTickStatusCmd *pQuery = nullptr;
 
-		dbMem( pQuery = new(GetHeap()) QueryUpdateTickStatusCmd );
+		dbMem( pQuery = new(GetHeap()) QueryUpdateTickStatusCmd(GetHeap()));
 
 		pQuery->SetPartitioningKey(shardID);
 
@@ -442,7 +441,7 @@ namespace DB {
 		Result hr = ResultCode::SUCCESS;
 		QueryGetPlayerStatusCmd *pQuery = nullptr;
 
-		dbMem( pQuery = new(GetHeap()) QueryGetPlayerStatusCmd );
+		dbMem( pQuery = new(GetHeap()) QueryGetPlayerStatusCmd(GetHeap()));
 
 		pQuery->SetPartitioningKey(shardID);
 
@@ -470,7 +469,7 @@ namespace DB {
 		Result hr = ResultCode::SUCCESS;
 		QueryGetPlayerQuickInfoCmd *pQuery = nullptr;
 
-		dbMem( pQuery = new(GetHeap()) QueryGetPlayerQuickInfoCmd );
+		dbMem( pQuery = new(GetHeap()) QueryGetPlayerQuickInfoCmd(GetHeap()));
 
 		pQuery->SetPartitioningKey(shardID);
 
@@ -500,7 +499,7 @@ namespace DB {
 		Result hr = ResultCode::SUCCESS;
 		QueryGetFriendQuickInfoCmd *pQuery = nullptr;
 
-		dbMem(pQuery = new(GetHeap()) QueryGetFriendQuickInfoCmd);
+		dbMem(pQuery = new(GetHeap()) QueryGetFriendQuickInfoCmd(GetHeap()));
 
 		pQuery->SetPartitioningKey(shardID);
 
@@ -531,12 +530,12 @@ namespace DB {
 		Result hr = ResultCode::SUCCESS;
 		QueryGetFriendQuickInfoWithNickCmd *pQuery = nullptr;
 
-		dbMem(pQuery = new(GetHeap()) QueryGetFriendQuickInfoWithNickCmd);
+		dbMem(pQuery = new(GetHeap()) QueryGetFriendQuickInfoWithNickCmd(GetHeap()));
 
 		pQuery->SetPartitioningKey(shardID);
 
 		pQuery->PlayerID = playerID;
-		pQuery->GameNick[0] = '\0';
+		pQuery->GameNick = "";
 		pQuery->Level = 0;
 		pQuery->WeeklyWin = 0;
 		pQuery->WeeklyLose = 0;
@@ -564,7 +563,7 @@ namespace DB {
 		Result hr = ResultCode::SUCCESS;
 		QueryGetFriendSlotStatusCmd *pQuery = nullptr;
 
-		dbMem(pQuery = new(GetHeap()) QueryGetFriendSlotStatusCmd);
+		dbMem(pQuery = new(GetHeap()) QueryGetFriendSlotStatusCmd(GetHeap()));
 
 		pQuery->SetPartitioningKey(shardID);
 
@@ -591,7 +590,7 @@ namespace DB {
 		Result hr = ResultCode::SUCCESS;
 		QueryAddFriendCmd *pQuery = nullptr;
 
-		dbMem(pQuery = new(GetHeap()) QueryAddFriendCmd);
+		dbMem(pQuery = new(GetHeap()) QueryAddFriendCmd(GetHeap()));
 
 		pQuery->SetPartitioningKey(shardID);
 
@@ -618,7 +617,7 @@ namespace DB {
 		Result hr = ResultCode::SUCCESS;
 		QueryRemoveFriendCmd *pQuery = nullptr;
 
-		dbMem(pQuery = new(GetHeap()) QueryRemoveFriendCmd);
+		dbMem(pQuery = new(GetHeap()) QueryRemoveFriendCmd(GetHeap()));
 
 		pQuery->SetPartitioningKey(shardID);
 
@@ -643,7 +642,7 @@ namespace DB {
 		Result hr = ResultCode::SUCCESS;
 		QueryGetFriendListCmd *pQuery = nullptr;
 
-		dbMem(pQuery = new(GetHeap()) QueryGetFriendListCmd);
+		dbMem(pQuery = new(GetHeap()) QueryGetFriendListCmd(GetHeap()));
 
 		pQuery->SetPartitioningKey(shardID);
 
@@ -666,7 +665,7 @@ namespace DB {
 		Result hr = ResultCode::SUCCESS;
 		QueryUpdateFriendStaminaTimeCmd *pQuery = nullptr;
 
-		dbMem(pQuery = new(GetHeap()) QueryUpdateFriendStaminaTimeCmd);
+		dbMem(pQuery = new(GetHeap()) QueryUpdateFriendStaminaTimeCmd(GetHeap()));
 
 		pQuery->SetPartitioningKey(shardID);
 
@@ -694,7 +693,7 @@ namespace DB {
 		Result hr = ResultCode::SUCCESS;
 		QueryNotification_AddCmd *pQuery = nullptr;
 
-		dbMem(pQuery = new(GetHeap()) QueryNotification_AddCmd);
+		dbMem(pQuery = new(GetHeap()) QueryNotification_AddCmd(GetHeap()));
 
 		pQuery->SetPartitioningKey(shardID);
 
@@ -704,7 +703,7 @@ namespace DB {
 		pQuery->MessageID = (uint16_t)messageID;
 		pQuery->MessageParam0 = messageParam0;
 		pQuery->MessageParam1 = messageParam1;
-		dbChk(StrUtil::StringCopy(pQuery->MessageText, messageText));
+		pQuery->MessageText = messageText;
 		pQuery->TimeStamp = timeStamp.time_since_epoch().count();
 
 		pQuery->Result = 0;
@@ -726,7 +725,7 @@ namespace DB {
 		QueryNotification_GetListCmd *pQuery = nullptr;
 		QueryNotification_GetListSet *pSet = nullptr;
 
-		dbMem(pQuery = new(GetHeap()) QueryNotification_GetListCmd);
+		dbMem(pQuery = new(GetHeap()) QueryNotification_GetListCmd(GetHeap()));
 
 		pQuery->SetPartitioningKey(shardID);
 
@@ -734,7 +733,7 @@ namespace DB {
 		pQuery->UserID = UserID;
 
 		pSet = pQuery;
-		memset(pSet, 0, sizeof(QueryNotification_GetListSet));
+		*pSet = {};
 
 		pQuery->Result = 0;
 
@@ -754,7 +753,7 @@ namespace DB {
 		Result hr = ResultCode::SUCCESS;
 		QueryNotification_RemoveCmd *pQuery = nullptr;
 
-		dbMem(pQuery = new(GetHeap()) QueryNotification_RemoveCmd);
+		dbMem(pQuery = new(GetHeap()) QueryNotification_RemoveCmd(GetHeap()));
 
 		pQuery->SetPartitioningKey(shardID);
 
@@ -781,7 +780,7 @@ namespace DB {
 		Result hr = ResultCode::SUCCESS;
 		QueryNotification_RemoveByMessageIDCmd *pQuery = nullptr;
 
-		dbMem(pQuery = new(GetHeap()) QueryNotification_RemoveByMessageIDCmd);
+		dbMem(pQuery = new(GetHeap()) QueryNotification_RemoveByMessageIDCmd(GetHeap()));
 
 		pQuery->SetPartitioningKey(shardID);
 
@@ -807,7 +806,7 @@ namespace DB {
 		Result hr = ResultCode::SUCCESS;
 		QueryNotification_SetReadCmd *pQuery = nullptr;
 
-		dbMem(pQuery = new(GetHeap()) QueryNotification_SetReadCmd);
+		dbMem(pQuery = new(GetHeap()) QueryNotification_SetReadCmd(GetHeap()));
 
 		pQuery->SetPartitioningKey(shardID);
 
@@ -834,13 +833,13 @@ namespace DB {
 		Result hr = ResultCode::SUCCESS;
 		QuerySetComplitionStateCmd *pQuery = nullptr;
 
-		dbMem(pQuery = new(GetHeap()) QuerySetComplitionStateCmd);
+		dbMem(pQuery = new(GetHeap()) QuerySetComplitionStateCmd(GetHeap()));
 
 		pQuery->SetPartitioningKey(shardID);
 
 		pQuery->SetTransaction(Sender);
 		pQuery->PlayerID = userID;
-		dbChk(StrUtil::StringCopy(pQuery->ComplitionState, complitionState));
+		pQuery->ComplitionState = complitionState;
 
 
 		pQuery->Result = 0;
@@ -861,13 +860,13 @@ namespace DB {
 		Result hr = ResultCode::SUCCESS;
 		QueryGetComplitionStateCmd *pQuery = nullptr;
 
-		dbMem(pQuery = new(GetHeap()) QueryGetComplitionStateCmd);
+		dbMem(pQuery = new(GetHeap()) QueryGetComplitionStateCmd(GetHeap()));
 
 		pQuery->SetPartitioningKey(shardID);
 
 		pQuery->SetTransaction(Sender);
 		pQuery->PlayerID = userID;
-		dbChk(StrUtil::StringCopy(pQuery->ComplitionState, ""));
+		pQuery->ComplitionState = "";
 
 
 		pQuery->Result = 0;

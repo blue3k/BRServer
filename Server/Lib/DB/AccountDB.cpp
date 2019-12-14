@@ -53,11 +53,11 @@ namespace DB {
 		Result hr = ResultCode::SUCCESS;
 		QueryFacebookCreateUserCmd *pQuery = nullptr;
 
-		dbMem( pQuery = new(GetHeap()) QueryFacebookCreateUserCmd );
+		dbMem( pQuery = new(GetHeap()) QueryFacebookCreateUserCmd(GetHeap()) );
 
 		pQuery->FBUserID = facebookUID;
-		dbChk(StrUtil::StringCopy(pQuery->EMail, EMail));
-		dbChk(StrUtil::StringCopy(pQuery->CellPhone, cellPhone));
+		pQuery->EMail = EMail;
+		pQuery->CellPhone = cellPhone;
 		pQuery->AccountID = 0;
 		pQuery->ShardID = 0;
 		pQuery->Result = 0;
@@ -79,13 +79,13 @@ namespace DB {
 		Result hr = ResultCode::SUCCESS;
 		QueryFacebookLoginCmd *pQuery = nullptr;
 
-		dbMem( pQuery = new(GetHeap()) QueryFacebookLoginCmd );
+		dbMem( pQuery = new(GetHeap()) QueryFacebookLoginCmd(GetHeap()) );
 
 		pQuery->FBUserID = facebookUID;
 		pQuery->AccountID = 0;
-		pQuery->EMail[0] = 0;
-		pQuery->CellPhone[0] = 0;
-		pQuery->GCMKeys[0] = 0;
+		pQuery->EMail = 0;
+		pQuery->CellPhone = 0;
+		pQuery->GCMKeys = 0;
 		pQuery->ShardID = 0;
 		pQuery->Result = 0;
 
@@ -107,10 +107,10 @@ namespace DB {
 		Result hr = ResultCode::SUCCESS;
 		QueryCreateUserCmd *pQuery = nullptr;
 
-		dbMem( pQuery = new(GetHeap()) QueryCreateUserCmd );
+		dbMem( pQuery = new(GetHeap()) QueryCreateUserCmd(GetHeap()));
 
-		dbChk(StrUtil::StringCopy(pQuery->UserName, UserName));
-		dbChk(StrUtil::StringCopy(pQuery->Password, Password));
+		pQuery->UserName = UserName;
+		pQuery->Password = Password;
 		pQuery->Result = 0;
 
 		pQuery->SetTransaction( Sender );
@@ -130,10 +130,10 @@ namespace DB {
 		Result hr = ResultCode::SUCCESS;
 		QueryLoginCmd *pQuery = nullptr;
 
-		dbMem( pQuery = new(GetHeap()) QueryLoginCmd );
+		dbMem( pQuery = new(GetHeap()) QueryLoginCmd(GetHeap()));
 
-		dbChk(StrUtil::StringCopy(pQuery->UserName, UserName));
-		dbChk(StrUtil::StringCopy(pQuery->Password, Password));
+		pQuery->UserName, UserName;
+		pQuery->Password, Password;
 		pQuery->AccountID = 0;
 		pQuery->FBUserID = 0;
 		pQuery->ShardID = 0;
@@ -156,7 +156,7 @@ namespace DB {
 		Result hr = ResultCode::SUCCESS;
 		QueryLogoutCmd *pQuery = nullptr;
 
-		dbMem( pQuery = new(GetHeap()) QueryLogoutCmd );
+		dbMem( pQuery = new(GetHeap()) QueryLogoutCmd(GetHeap()));
 
 		pQuery->SetTransaction( Sender );
 
@@ -176,10 +176,10 @@ namespace DB {
 		Result hr = ResultCode::SUCCESS;
 		QueryCreateRandomUserCmd *pQuery = nullptr;
 
-		dbMem(pQuery = new(GetHeap()) QueryCreateRandomUserCmd);
+		dbMem(pQuery = new(GetHeap()) QueryCreateRandomUserCmd(GetHeap()));
 
-		dbChk(StrUtil::StringCopy(pQuery->UserName, userName));
-		dbChk(StrUtil::StringCopy(pQuery->CellPhone, cellPhone));
+		pQuery->UserName, userName;
+		pQuery->CellPhone, cellPhone;
 		pQuery->AccountID = 0;
 		pQuery->FBUserID = 0;
 		pQuery->ShardID = 0;
@@ -202,7 +202,7 @@ namespace DB {
 		Result hr = ResultCode::SUCCESS;
 		QueryUserListCmd *pQuery = nullptr;
 
-		dbMem( pQuery = new(GetHeap()) QueryUserListCmd );
+		dbMem( pQuery = new(GetHeap()) QueryUserListCmd(GetHeap()));
 
 		pQuery->SetTransaction( Sender );
 
@@ -223,11 +223,11 @@ namespace DB {
 
 		dbChkPtr( strGCMKeys );
 
-		dbMem( pQuery = new(GetHeap()) QueryUpdateGCMKeysCmd );
+		dbMem( pQuery = new(GetHeap()) QueryUpdateGCMKeysCmd(GetHeap()));
 
 		pQuery->SetTransaction( Sender );
 		pQuery->UserUID = accountID;
-		dbChk(StrUtil::StringCopy(pQuery->GCMKeys, strGCMKeys));
+		pQuery->GCMKeys, strGCMKeys;
 
 		dbChk( RequestQuery( pQuery ) );
 
@@ -248,7 +248,7 @@ namespace DB {
 
 		dbChkPtr(strEMail);
 
-		dbMem(pQuery = new(GetHeap()) QueryUpdateUserContactInfoCmd);
+		dbMem(pQuery = new(GetHeap()) QueryUpdateUserContactInfoCmd(GetHeap()));
 
 		pQuery->SetTransaction( Sender );
 		pQuery->UserUID = accountID;
@@ -272,7 +272,7 @@ namespace DB {
 		Result hr = ResultCode::SUCCESS;
 		QueryFindPlayerByEMailCmd *pQuery = nullptr;
 
-		dbMem( pQuery = new(GetHeap()) QueryFindPlayerByEMailCmd );
+		dbMem( pQuery = new(GetHeap()) QueryFindPlayerByEMailCmd(GetHeap()));
 
 		pQuery->SetTransaction( Sender );
 		dbChk( StrUtil::StringCopy( pQuery->EMail, email ) );
@@ -299,7 +299,7 @@ namespace DB {
 		Result hr = ResultCode::SUCCESS;
 		QueryFindPlayerByPlayerIDCmd *pQuery = nullptr;
 
-		dbMem(pQuery = new(GetHeap()) QueryFindPlayerByPlayerIDCmd);
+		dbMem(pQuery = new(GetHeap()) QueryFindPlayerByPlayerIDCmd(GetHeap()));
 
 		pQuery->SetTransaction(Sender);
 
@@ -327,7 +327,7 @@ namespace DB {
 		Result hr = ResultCode::SUCCESS;
 		QueryGetPlayerShardIDCmd *pQuery = nullptr;
 
-		dbMem(pQuery = new(GetHeap()) QueryGetPlayerShardIDCmd);
+		dbMem(pQuery = new(GetHeap()) QueryGetPlayerShardIDCmd(GetHeap()));
 
 		pQuery->SetTransaction( Sender );
 

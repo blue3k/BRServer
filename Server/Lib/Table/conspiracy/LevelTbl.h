@@ -12,6 +12,7 @@
 
 #include "SFTypedefs.h"
 #include "ResultCode/SFResultCodeSystem.h"
+#include "Container/SFArray.h"
 
 
 
@@ -23,7 +24,7 @@ namespace conspiracy
 	{
  	public:
 
-		// LevelItem structure defition
+		// LevelItem structure definition
 		struct LevelItem
 		{
  			int	Level;
@@ -39,7 +40,7 @@ namespace conspiracy
 
 
 		// declare member function
-		static Result LoadTable( const std::list<LevelItem>& rowList );
+		static Result LoadTable( const Array<LevelItem>& rowList );
 
 		static Result FindItem( const int& Key, LevelItem*& pRow);
 	}; // class LevelTbl

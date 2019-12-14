@@ -30,6 +30,23 @@ namespace DB {
 	class Session;
 	class DBClusterManager;
 
+
+	enum ParamIO : uint32_t
+	{
+		None = 0,
+		Input = 1,
+		Output = 2,
+		InOut = 3,
+
+	};
+
+	inline ParamIO operator | (ParamIO op1, ParamIO op2) { return static_cast<ParamIO>(static_cast<uint32_t>(op1) | static_cast<uint32_t>(op2)); }
+
+
+	using DBString = std::string;
+
+
+
 	/////////////////////////////////////////////////////////////////////////////////////////////
 	//
 	//	Query Base class
@@ -38,40 +55,97 @@ namespace DB {
 	class Query: public Svr::TransactionResult
 	{
 	public:
-		Query(Message::MessageID MsgID)
+
+		// Variable parameter information
+		struct ParameterInfo
+		{
+			// Parameter name
+			String Name;
+			// Parameter IO type
+			ParamIO IOType;
+			// Reference to variable
+			VariableBox VariableRef;
+
+			ParameterInfo() = default;
+			ParameterInfo(const ParameterInfo& src) = default;
+			ParameterInfo(ParameterInfo&& src) = default;
+			explicit ParameterInfo(const char* name, ParamIO ioType, VariableBox&& variable )
+				: Name(name), IOType(ioType), VariableRef(variable)
+			{
+			}
+
+			ParameterInfo& operator = (const ParameterInfo& src) = default;
+		};
+
+
+	public:
+		Query(IHeap& heap, Message::MessageID MsgID)
 			: Svr::TransactionResult(MsgID)
-			, m_pQueryManager(nullptr)
-			, m_pSession(nullptr)
-			, m_PartitioningKey(0)
+			, m_ParameterBinding(heap)
+			, m_RowsetBinding(heap)
 		{
 		}
 
 		virtual ~Query() {}
 
-		FORCEINLINE TimeStampMS GetRequestedTime()				{ return m_RequestedTime; }
-		FORCEINLINE void UpdateRequestedTime()					{ m_RequestedTime = Util::Time.GetTimeMs(); }
+		IHeap& GetHeap() { return m_ParameterBinding.GetHeap(); }
 
-		FORCEINLINE DBClusterManager* GetQueryManager()				{ return m_pQueryManager; }
-		FORCEINLINE void SetQueryManager(DBClusterManager* pMgr)	{ m_pQueryManager = pMgr; }
+		SF_FORCEINLINE TimeStampMS GetRequestedTime()					{ return m_RequestedTime; }
+		SF_FORCEINLINE void UpdateRequestedTime()						{ m_RequestedTime = Util::Time.GetTimeMs(); }
 
-		FORCEINLINE Session* GetSession()						{ return m_pSession; }
-		FORCEINLINE void SetSession(Session* pSes)				{ m_pSession = pSes; }
+		SF_FORCEINLINE DBClusterManager* GetQueryManager()				{ return m_pQueryManager; }
+		SF_FORCEINLINE void SetQueryManager(DBClusterManager* pMgr)	{ m_pQueryManager = pMgr; }
+
+		SF_FORCEINLINE Session* GetSession()							{ return m_pSession; }
+		SF_FORCEINLINE void SetSession(Session* pSes)					{ m_pSession = pSes; }
 
 		// Sharding ID
-		FORCEINLINE uint GetPartitioningKey()					{ return m_PartitioningKey; }
-		FORCEINLINE void SetPartitioningKey( uint key )			{ m_PartitioningKey = key; }
+		SF_FORCEINLINE uint GetPartitioningKey()						{ return m_PartitioningKey; }
+		SF_FORCEINLINE void SetPartitioningKey( uint key )				{ m_PartitioningKey = key; }
 
-		virtual bool GetHasRowSetResult()			{ return false; }
+		uint GetOutputParameterCount() const									{ return m_OutputParameterCount; }
+
+		const DBString& GetQueryString() const { return m_QueryString; }
+
+	protected:
+
+		virtual void BuildParameters() = 0;
+		virtual void BuildQueryString(const char* spName);
+
+
+
+		Result AddParameterBinding(ParameterInfo&& parameterInfo)	{ return m_ParameterBinding.push_back(parameterInfo); }
+		const Array<ParameterInfo>& GetParameterBinding() const		{ return m_ParameterBinding; }
+
+		Result AddRowsetBinding(ParameterInfo&& parameterInfo)		{ return m_RowsetBinding.push_back(parameterInfo); }
+		const Array<ParameterInfo>& GetRowsetBinding() const		{ return m_RowsetBinding; }
 
 
 	private:
 
-		DBClusterManager *m_pQueryManager;
-		Session*	m_pSession;
-		// DB shard partitioning key
-		uint		m_PartitioningKey;
+		// Query manager for the query
+		DBClusterManager *m_pQueryManager = nullptr;
 
+		// Session
+		Session*	m_pSession = nullptr;
+
+		// DB shard partitioning key
+		uint		m_PartitioningKey = 0;
+
+		// Requested time stamp
 		TimeStampMS	m_RequestedTime;
+
+		// Output parameter count
+		uint m_OutputParameterCount = 0;
+
+		// Query string
+		DBString m_QueryString;
+
+		// Parameter bindings info
+		DynamicArray<ParameterInfo> m_ParameterBinding;
+
+		// Rowset binding info
+		DynamicArray<ParameterInfo> m_RowsetBinding;
 	};
 
 	

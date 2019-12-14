@@ -1,6 +1,8 @@
 ﻿
 
-source_group(INCLUDES FILES
+
+
+set(BRSERVERSYSTEM_LIB_FILES
     Component/ServerComponent.inl
     Entity/Entity.inl
     Entity/EntityInformation.inl
@@ -8,8 +10,6 @@ source_group(INCLUDES FILES
     Entity/PlayerEntityInformation.inl
     Entity/SimpleUserEntity.inl
     GameLog/GameLog.inl
-    makefile.mak
-    MessageRoute.inl
     PerformanceCounter/PerformanceCounter.inl
     PerformanceCounter/PerformanceCounterInstance.inl
     ServerEntity/ServerEntity.inl
@@ -49,7 +49,6 @@ source_group(INCLUDES FILES
     GameLog/GameLog.h
     Google/GoogleAndroidDeveloperAPI.h
     Google/GoogleOAuth.h
-    MessageRoute.h
     PerformanceCounter/PerformanceCounter.h
     PerformanceCounter/PerformanceCounterClient.h
     PerformanceCounter/PerformanceCounterInstance.h
@@ -116,7 +115,6 @@ source_group(INCLUDES FILES
     Service/ServerEntityManagerService.h
     Service/ServerService.h
     Service/ZookeeperSessionService.h
-    stdafx.h
     String/ToStringSvr.h
     SvrConst.h
     SvrPolicyID.h
@@ -140,10 +138,6 @@ source_group(INCLUDES FILES
     Util/LocalUIDGenerator.h
     Util/Memento.h
     Util/UniqueEntityIDGenerator.h
-)
-
-
-set(BRSERVERSYSTEM_LIB_FILES
     Component/ServerComponent.cpp
     Component/SFServerConfigComponent.cpp
     Component/SFServerNetComponent.cpp

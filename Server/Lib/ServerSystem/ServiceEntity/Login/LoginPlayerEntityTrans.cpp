@@ -488,7 +488,7 @@ namespace Svr {
 		// succeeded to login
 		if( pDBRes->Result == 0 )
 		{
-			if (!StrUtil::StringCompair(email, pDBRes->EMail))
+			if (pDBRes->EMail != email)
 			{
 				svrChk(Svr::GetServerComponent<DB::AccountDB>()->UpdateUserContactInfo(0, pDBRes->AccountID, email, ""));
 			}

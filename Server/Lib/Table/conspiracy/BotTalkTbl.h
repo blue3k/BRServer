@@ -12,7 +12,7 @@
 
 #include "SFTypedefs.h"
 #include "ResultCode/SFResultCodeSystem.h"
-
+#include "Container/SFArray.h"
 
 
 namespace conspiracy
@@ -23,7 +23,7 @@ namespace conspiracy
 	{
  	public:
 
-		// BotTalkTblItem structure defition
+		// BotTalkTblItem structure definition
 		struct BotTalkTblItem
 		{
  			int	ItemID;
@@ -59,7 +59,7 @@ namespace conspiracy
 
 
 		// declare member function
-		static Result LoadTable( const std::list<BotTalkTblItem>& rowList );
+		static Result LoadTable( const Array<BotTalkTblItem>& rowList );
 
 		static Result FindItem( const int& Key, BotTalkTblItem*& pRow);
 	}; // class BotTalkTbl

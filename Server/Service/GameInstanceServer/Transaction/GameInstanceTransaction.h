@@ -125,7 +125,7 @@ namespace ConspiracyGameInstanceServer {
 			return super::GetServerEntity()->GetConnection();
 		}
 
-		FORCEINLINE GameInstanceEntity* GetMyOwner()
+		SF_FORCEINLINE GameInstanceEntity* GetMyOwner()
 		{
 			Assert( super::GetOwnerEntity() );
 			return (GameInstanceEntity*)super::GetOwnerEntity();

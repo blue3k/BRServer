@@ -98,8 +98,8 @@ namespace Svr {
 		Result SetLocalConnection(SF::Net::Connection * pConn);
 
 		// Get Connection
-		FORCEINLINE SF::Net::Connection* GetRemoteConnection()							{ return *m_pConnRemote; }
-		FORCEINLINE SF::Net::Connection* GetLocalConnection()							{ return *m_pConnLocal; }
+		SF_FORCEINLINE SF::Net::Connection* GetRemoteConnection()							{ return *m_pConnRemote; }
+		SF_FORCEINLINE SF::Net::Connection* GetLocalConnection()							{ return *m_pConnLocal; }
 		const SharedPointerAtomicT<SF::Net::Connection>& GetConnection();
 
 

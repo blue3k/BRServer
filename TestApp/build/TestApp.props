@@ -5,7 +5,7 @@
   <PropertyGroup />
   <ItemDefinitionGroup>
     <ClCompile>
-      <AdditionalIncludeDirectories>..\..\Server\Lib;..\..\External\gtest\include;..\..\External\gmock\include;..\..\External\libxml\include;..\..\External\MYSQLConnectorC-6.1.6\include;..\..\External\curl7.41\include;..\..\External\jsoncpp\include;..\..\External\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\..\Server\Lib;..\..\..\StormForge\3rdParties\src\gtest\gtest\googletest\include;..\..\..\StormForge\3rdParties\src\gtest\gtest\googlemock\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>HAVE_CONFIG_H;HAVE_WIN32_THREADS;_UNICODE;UNICODE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>

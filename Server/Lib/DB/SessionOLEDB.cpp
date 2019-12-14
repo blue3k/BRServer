@@ -63,7 +63,7 @@ namespace DB {
 		}
 
 		while(cmd.MoveNext() == Result(ResultCode::SUCCESS)) {
-			cmd.m_RowsetResult.push_back(cmd);	
+			cmd.RowsetResults.push_back(cmd);
 		}
 		
 		if( hr == DB_E_CANNOTCONNECT ) hr = ResultCode::DB_CONNECTION_FAILED;
@@ -97,7 +97,7 @@ namespace DB {
 	}
 
 	// Send a query
-	Result SessionOLEDB::SendQuery( Query *pQuery )
+	Result SessionOLEDB::ProcessQuery( Query *pQuery )
 	{
 		Result hr = ResultCode::SUCCESS;
 

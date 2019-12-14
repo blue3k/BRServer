@@ -44,9 +44,9 @@ namespace Svr {
 
 		ServerServiceInformation* GetServerServiceInformation() { return m_ServerServiceInformation; }
 
-		FORCEINLINE EntityUID GetServiceEntityUID() { return m_ServerServiceInformation->GetEntityUID(); }
+		SF_FORCEINLINE EntityUID GetServiceEntityUID() { return m_ServerServiceInformation->GetEntityUID(); }
 
-		FORCEINLINE const SharedPointerAtomicT<Net::Connection>& GetConnection() { return m_ServerServiceInformation->GetConnection(); }
+		SF_FORCEINLINE const SharedPointerAtomicT<Net::Connection>& GetConnection() { return m_ServerServiceInformation->GetConnection(); }
 
 	};
 

@@ -319,11 +319,11 @@ namespace GameServer {
 		svrChk(pRes->GetResult());
 
 		auto *pDBRes = (DB::QueryGetNickNamesCmd*)pRes;
-		if( pDBRes->Result < 0 || pDBRes->m_RowsetResult.size() == 0 )
+		if( pDBRes->Result < 0 || pDBRes->RowsetResults.size() == 0 )
 			svrErrClose(ResultCode::INVALID_PLAYERID);
 
 		{
-			auto& result = pDBRes->m_RowsetResult.begin();
+			auto& result = pDBRes->RowsetResults.begin();
 			svrChk(StrUtil::StringCopy(m_NewFriend.NickName, result->NickName));
 
 			svrChkPtr(pFriend = GetMyOwner()->GetComponent<UserFriendSystem>()->GetFriend(result->UserID));
@@ -533,8 +533,8 @@ namespace GameServer {
 
 		pFriendSystem->ClearFriendList();
 
-		m_Friends.reserve( pDBRes->m_RowsetResult.size() );
-		std::for_each( pDBRes->m_RowsetResult.begin(), pDBRes->m_RowsetResult.end(), [&]( DB::QueryGetFriendListSet &set )
+		m_Friends.reserve( pDBRes->RowsetResults.size() );
+		std::for_each( pDBRes->RowsetResults.begin(), pDBRes->RowsetResults.end(), [&]( DB::QueryGetFriendListSet &set )
 		{
 			ServerFriendInformation info(set.FriendUID, set.FriendShardID, set.FriendFacebookUID, "", 1, 0, 0, FALSE, 0, set.FriendStaminaTime);
 
@@ -700,7 +700,7 @@ namespace GameServer {
 		m_MaxFriendSlot = (decltype(m_MaxFriendSlot))GetMyOwner()->GetComponent<UserGamePlayerInfoSystem>()->GetFriendSlot();
 
 		m_Friends.Clear();
-		auto maxRequest = Util::Min(GetCount(), (ushort)UserFriendSystem::MAX_FRIEND_REQUEST);
+		auto maxRequest = Util::Min(GetCount(), static_cast<uint16_t>(UserFriendSystem::MAX_FRIEND_REQUEST));
 		friendSystem->ForeachFriends(GetStartIndex(), maxRequest, [&](const FriendInformation& friendInfo)
 		{
 			m_Friends.push_back(friendInfo);

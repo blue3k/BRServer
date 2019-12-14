@@ -208,7 +208,7 @@ namespace Svr {
 		Transaction::State GetState();
 
 		// Get heart bit time, ms
-		//FORCEINLINE uint64_t GetHeartBitTime();
+		//SF_FORCEINLINE uint64_t GetHeartBitTime();
 
 		// Update heart bit time, with timestamp
 		TimeStampMS UpdateHeartBitTime();
@@ -438,7 +438,7 @@ namespace Svr {
 
 		// Register message handler
 		template< class MessageClassType >
-		FORCEINLINE Result RegisterMessageHandler(const char* fileName, uint lineNumber, MessageHandlerType newHandler )
+		SF_FORCEINLINE Result RegisterMessageHandler(const char* fileName, uint lineNumber, MessageHandlerType newHandler )
 		{
 			return m_Handlers.Register<MessageClassType>(fileName, lineNumber, newHandler);
 		}

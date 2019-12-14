@@ -12,6 +12,7 @@
 
 #include "SFTypedefs.h"
 #include "ResultCode/SFResultCodeSystem.h"
+#include "Container/SFArray.h"
 
 
 
@@ -23,7 +24,7 @@ namespace conspiracy
 	{
  	public:
 
-		// EItemEffect enum class defition
+		// EItemEffect enum class definition
 		class EItemEffect
 		{
  		public:
@@ -64,7 +65,7 @@ namespace conspiracy
 			static EnumMap m_Map;
 		}; // class EItemEffect
 
-		// OrganicItem structure defition
+		// OrganicItem structure definition
 		struct OrganicItem
 		{
  			int	OrganicItemID;
@@ -83,7 +84,7 @@ namespace conspiracy
 
 
 		// declare member function
-		static Result LoadTable( const std::list<OrganicItem>& rowList );
+		static Result LoadTable( const Array<OrganicItem>& rowList );
 
 		static Result FindItem( const unsigned int& Key, OrganicItem*& pRow);
 	}; // class OrganicTbl
