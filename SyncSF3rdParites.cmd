@@ -22,14 +22,6 @@ echo continue
 )
 
 
-rem copy libraries
-xcopy External\mysql-connector-c-6.1.6-winx64\lib\vs12\mysqlclient.lib Server\bin\lib\x64Debug\ /y
-xcopy External\mysql-connector-c-6.1.6-winx64\lib\vs12\mysqlclient.lib Server\bin\lib\x64Release\ /y
-xcopy External\mysql-connector-c-6.1.6-winx64\lib\libmysql.* Server\bin\lib\x64Debug\ /y
-xcopy External\mysql-connector-c-6.1.6-winx64\lib\libmysql.* Server\bin\lib\x64Release\ /y
-xcopy External\mysql-connector-c-6.1.6-winx64\lib\libmysql.* Server\bin\ /y
-
-
 xcopy Server\bin\lib\x64Debug\*.dll Server\bin\x64Debug\ /y
 xcopy Server\bin\lib\x64Release\*.dll Server\bin\x64Release\ /y
 xcopy Server\bin\lib\x64Debug\*.dll TestApp\x64Debug\ /y
@@ -42,6 +34,23 @@ robocopy ..\StormForge\buildWindows\x64Release\bin Server\bin\x64Release\ *.dll 
 robocopy ..\StormForge\buildWindows\x64Release\lib Server\bin\lib\x64Release\ *.dll *.pdb *.lib
 robocopy ..\StormForge\buildWindows\x64Debug\ TestApp\x64Debug\ *.dll *.pdb *.lib
 robocopy ..\StormForge\buildWindows\x64Release\ TestApp\x64Release\ *.dll *.pdb *.lib
+
+
+
+robocopy ..\StormForge\3rdParties\src\openssl\buildWindows\openssl\bin Server\bin\x64Debug\ *.dll *.pdb *.lib
+robocopy ..\StormForge\3rdParties\src\openssl\buildWindows\openssl\lib Server\bin\lib\x64Debug\ *.dll *.pdb *.lib
+robocopy ..\StormForge\3rdParties\src\openssl\buildWindows\openssl\bin Server\bin\x64Release\ *.dll *.pdb *.lib
+robocopy ..\StormForge\3rdParties\src\openssl\buildWindows\openssl\lib Server\bin\lib\x64Release\ *.dll *.pdb *.lib
+robocopy ..\StormForge\3rdParties\src\openssl\buildWindows\openssl\bin buildWindows\x64\TestApp\UnitTest\Debug\ *.dll *.pdb *.lib
+robocopy ..\StormForge\3rdParties\src\openssl\buildWindows\openssl\bin buildWindows\x64\TestApp\UnitTest\Release\ *.dll *.pdb *.lib
+
+
+robocopy ..\StormForge\3rdParties\src\mysql\buildWindows\x64\lib64\Debug Server\bin\x64Debug\ *.dll *.pdb *.lib
+robocopy ..\StormForge\3rdParties\src\mysql\buildWindows\x64\lib64\vs14\Debug Server\bin\lib\x64Debug\ *.dll *.pdb *.lib
+robocopy ..\StormForge\3rdParties\src\mysql\buildWindows\x64\lib64 Server\bin\x64Release\ *.dll *.pdb *.lib
+robocopy ..\StormForge\3rdParties\src\mysql\buildWindows\x64\lib64\vs14 Server\bin\lib\x64Release\ *.dll *.pdb *.lib
+robocopy ..\StormForge\3rdParties\src\mysql\buildWindows\x64\lib64\Debug buildWindows\x64\TestApp\UnitTest\Debug\ *.dll *.pdb *.lib
+robocopy ..\StormForge\3rdParties\src\mysql\buildWindows\x64\lib64 buildWindows\x64\TestApp\UnitTest\Release\ *.dll *.pdb *.lib
 
 
 :quit

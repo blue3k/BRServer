@@ -1,9 +1,9 @@
 // TestApp.cpp : Defines the entry point for the console application.
 //
 
-#include "stdafx.h"
+#include"UnitTestPch.h"
+#include "SFTypedefs.h"
 #include <gtest/gtest.h>
-#include "Common/Trace.h"
 #include "TestBase.h"
 
 using ::testing::EmptyTestEventListener;
@@ -14,12 +14,12 @@ using ::testing::TestEventListeners;
 using ::testing::TestInfo;
 using ::testing::TestPartResult;
 using ::testing::UnitTest;
-using namespace ::BR;
+using namespace ::SF;
 
 
 namespace BRTest{
 
-// --gtest_catch_exceptions=0 to disable exception catch
+// --gtest_catch_exceptions=0 --gtest_break_on_failure to disable exception catch and stop on failure
 //	--gtest_filter = ThreadTest.EntityTaskManager --gtest_catch_exceptions=0
 
 //./foo_test --gtest_filter=* Also runs everything, due to the single match-everything * value.

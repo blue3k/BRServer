@@ -10,11 +10,6 @@
 ////////////////////////////////////////////////////////////////////////////////
 
 
-#include "stdafx.h"
-#include <gtest/gtest.h>
-#include "Common/Trace.h"
-#include "Common/StrUtil.h"
-#include "Common/MemoryPool.h"
 
 #include "../TestCommon/TestBaseCommon.h"
 
@@ -42,10 +37,15 @@ namespace BRTest
 	
 	protected:
 
+		SF::Heap m_Heap;
+
 	public:
 		MyTestBase()
+			: m_Heap("TestHeap", SF::GetSystemHeap())
 		{
 		}
+
+		SF::IHeap& GetHeap() { return m_Heap; }
 
 		// Remember that SetUp() is run immediately before a test starts.
 		virtual void SetUp()
@@ -86,6 +86,7 @@ namespace BRTest
 		virtual void SetUp()
 		{
 			start_time_ = time(NULL);
+
 		}
 
 		// TearDown() is invoked immediately after a test finishes.  Here we

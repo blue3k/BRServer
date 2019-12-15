@@ -31,7 +31,6 @@
 #include "ResultCode/SFResultCodeDB.h"
 
 
-
 namespace SF {
 namespace DB {
 
@@ -164,19 +163,36 @@ namespace DB {
 		dbChkPtr(GetDataSource());
 		dbChkPtr( m_pMyDataSource = (DataSourceMYSQL*)GetDataSource() );
 
-		CloseSession();
+		try
+		{
+			CloseSession();
 
-		Session::OpenSession();
+			Session::OpenSession();
 
-		m_pXSession = new mysqlx::Session(m_pMyDataSource->GetServerIP().data(), m_pMyDataSource->GetServerPort(), m_pMyDataSource->GetUserID().data(), m_pMyDataSource->GetPassword().data());
+			auto serverIP = mysqlx::string(m_pMyDataSource->GetServerIP().data());
+			auto userId = mysqlx::string(m_pMyDataSource->GetUserID().data());
+			auto password = mysqlx::string(m_pMyDataSource->GetPassword().data());
 
-		m_pXSession->sql(std::string("USE ") + *m_pMyDataSource->GetDefaultDB()).execute();
+			m_pXSession = new mysqlx::Session(
+				serverIP,
+				m_pMyDataSource->GetServerPort(), 
+				userId,
+				password);
 
-		// TODO:
-		//mysql_options(m_mySQL, MYSQL_SET_CHARSET_NAME, "utf8");
-		//mysql_options(m_mySQL, MYSQL_INIT_COMMAND, "SET NAMES utf8");
+			m_pXSession->sql(std::string("USE ") + *m_pMyDataSource->GetDefaultDB()).execute();
 
-		m_InitSync.fetch_add(1, std::memory_order_relaxed);
+			// TODO:
+			//mysql_options(m_mySQL, MYSQL_SET_CHARSET_NAME, "utf8");
+			//mysql_options(m_mySQL, MYSQL_INIT_COMMAND, "SET NAMES utf8");
+
+			m_InitSync.fetch_add(1, std::memory_order_relaxed);
+		}
+		catch (std::exception& e)
+		{
+			dbTrace(Error, "DB Failed Error :{0}", e.what());
+			hr = E_UNEXPECTED;
+		}
+
 
 	Proc_End:
 

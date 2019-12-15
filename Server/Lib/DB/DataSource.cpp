@@ -45,7 +45,7 @@ namespace DB {
 		do{
 			pItem = m_SessionPool.Pop();
 			
-			IHeap::Delete((Session*)pItem);
+			delete (Session*)pItem;
 		} while( pItem != nullptr );
 
 		m_Opened = false;

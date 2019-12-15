@@ -1,7 +1,7 @@
 // TestApp.cpp : Defines the entry point for the console application.
 //
 
-#include "stdafx.h"
+#include"UnitTestPch.h"
 #include <gtest/gtest.h>
 #include "Common/StrUtil.h"
 #include "Common/StrFormat.h"

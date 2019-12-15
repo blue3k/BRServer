@@ -10,31 +10,31 @@
 ////////////////////////////////////////////////////////////////////////////////
 
 
-#include "stdafx.h"
-#include <gtest/gtest.h>
-#include "Common/Thread.h"
-#include "Common/MemoryPool.h"
 #include "TestBase.h"
-
+#include "DB/Factory.h"
 
 
 namespace BRTest
 {
+	using namespace SF;
 
 	class DBTest : public MyTestBase
 	{
+
 	protected:
 
-		// Thread module test
-		std::vector<BR::Thread*>	m_Threads;
+		SF::DB::DBClusterManager* m_pTestDB = nullptr;
 
-		BR::SpinLock m_LockObject;
+		// Thread module test
+		std::vector<SF::Thread*>	m_Threads;
+
+		SpinLock m_LockObject;
 
 	public:
 
 		void StopAllThread()
 		{
-			std::for_each( m_Threads.begin(), m_Threads.end(), []( BR::Thread* pThread )
+			std::for_each( m_Threads.begin(), m_Threads.end(), []( Thread* pThread )
 			{
 				if( pThread ) pThread->Stop( true );
 				delete pThread;
@@ -46,6 +46,7 @@ namespace BRTest
 		virtual void SetUp()
 		{
 			MyTestBase::SetUp();
+			SF::DB::Factory::InitializeDBFactory();
 		}
 
 		// TearDown() is invoked immediately after a test finishes.  Here we
@@ -54,6 +55,15 @@ namespace BRTest
 			MyTestBase::TearDown();
 
 			StopAllThread();
+
+			if (m_pTestDB != nullptr)
+			{
+				m_pTestDB->TerminateDB();
+				delete m_pTestDB;
+			}
+			m_pTestDB = nullptr;
+
+			DB::Factory::TerminateDBFactory();
 		}
 	};
 

@@ -23,11 +23,6 @@
 #include "DataSourceMYSQL.h"
 #include "SessionMYSQL.h"
 
-#if SF_PLATFORM == SF_PLATFORM_WINDOWS
-#pragma comment(lib, "mysqlcppconn.lib")
-#pragma comment(lib, "mysqlcppconn8.lib")
-#else
-#endif
 
 namespace SF {
 namespace DB {

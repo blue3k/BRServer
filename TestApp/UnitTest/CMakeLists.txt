@@ -1,0 +1,36 @@
+﻿
+
+
+
+set(SF_UNIT_TEST_FILES
+	TestApp.cpp
+	TestBase.cpp
+	TestBase.h
+    DBTest.cpp
+	DBTest.h
+	UnitTestPch.h
+  )
+
+
+include_directories(
+	./
+	../../../StormForge/3rdParties/src/gtest/gtest/googletest/include
+	../../../StormForge/3rdParties/src/gtest/gtest/googlemock/include
+	)
+
+
+add_executable(BRUnitTest ${SF_UNIT_TEST_FILES})
+
+
+add_dependencies(BRUnitTest BRDB BRServerSystem BRServerProtocol BRTable)
+
+
+target_link_libraries(BRUnitTest ${ENGINE_LINK_LIBS} gtest ${PLATFORM_LIBS})
+
+
+install (TARGETS BRUnitTest
+         ARCHIVE DESTINATION lib COMPONENT BRServer
+         LIBRARY DESTINATION lib COMPONENT BRServer
+         RUNTIME DESTINATION bin COMPONENT BRServer)
+
+

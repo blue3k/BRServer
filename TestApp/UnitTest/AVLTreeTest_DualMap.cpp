@@ -1,12 +1,8 @@
 // AVLTreeTest.cpp : Defines the entry point for the console application.
 //
 
-#include "stdafx.h"
+#include"UnitTestPch.h"
 #include <gtest/gtest.h>
-#include "Common/SystemSynchronization.h"
-#include "Common/Thread.h"
-#include "Common/DualSortedMap.h"
-#include "Common/TimeUtil.h"
 #include "AVLTreeTest.h"
 
 

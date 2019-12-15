@@ -120,7 +120,7 @@ namespace DB {
 
 	Proc_End:
 
-		IHeap::Delete(pQuery);
+		delete pQuery;
 
 		return hr;
 	}

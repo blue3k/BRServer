@@ -77,7 +77,7 @@ namespace DB {
 			if (pSession != nullptr)
 				Factory::ErrorLog(pSession->GetContext(), hr, pQuery ? typeid(*pQuery).name() : "");
 
-			// when some DB error happenend, try to route result directly
+			// when some DB error happened, try to route result directly
 			if (pQuery && pQueryManager)
 			{
 				pQueryManager->RouteResult(pQuery);

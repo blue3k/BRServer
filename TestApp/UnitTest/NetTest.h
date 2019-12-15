@@ -10,7 +10,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 
 
-#include "stdafx.h"
+#include"UnitTestPch.h"
 #include <gtest/gtest.h>
 #include "Net/NetDef.h"
 #include "TestBase.h"

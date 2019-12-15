@@ -79,14 +79,9 @@ namespace DB {
 
 
 	public:
-		Query(IHeap& heap, Message::MessageID MsgID)
-			: Svr::TransactionResult(MsgID)
-			, m_ParameterBinding(heap)
-			, m_RowsetBinding(heap)
-		{
-		}
+		Query(IHeap& heap, Message::MessageID MsgID);
 
-		virtual ~Query() {}
+		virtual ~Query();
 
 		IHeap& GetHeap() { return m_ParameterBinding.GetHeap(); }
 
@@ -97,7 +92,7 @@ namespace DB {
 		SF_FORCEINLINE void SetQueryManager(DBClusterManager* pMgr)	{ m_pQueryManager = pMgr; }
 
 		SF_FORCEINLINE Session* GetSession()							{ return m_pSession; }
-		SF_FORCEINLINE void SetSession(Session* pSes)					{ m_pSession = pSes; }
+		SF_FORCEINLINE void SetSession(Session* pSes) { assert(m_pSession == nullptr);  m_pSession = pSes; }
 
 		// Sharding ID
 		SF_FORCEINLINE uint GetPartitioningKey()						{ return m_PartitioningKey; }

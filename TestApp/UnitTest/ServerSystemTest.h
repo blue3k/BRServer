@@ -10,7 +10,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 
 
-#include "stdafx.h"
+#include"UnitTestPch.h"
 #include <gtest/gtest.h>
 #include "Common/Thread.h"
 #include "Common/MemoryPool.h"

@@ -93,11 +93,27 @@ namespace DB {
 
 	void DBClusterManager::Clear()
 	{
+		while(m_PendingQueries.GetEnqueCount() > 0)
+		{
+			DB::Query* pQuery = nullptr;
+			m_PendingQueries.Dequeue(pQuery);
+			if (pQuery != nullptr)
+				delete pQuery;
+		}
+
+		while (m_ResultQueries.GetEnqueCount() > 0)
+		{
+			DB::Query* pQuery = nullptr;
+			m_ResultQueries.Dequeue(pQuery);
+			if (pQuery != nullptr)
+				delete pQuery;
+		}
+
 		m_ShardingBucket.for_each([](DataSource* dataSource) -> Result {
 			if (dataSource != nullptr)
 			{
 				dataSource->CloseDBSource();
-				IHeap::Delete(dataSource);
+				delete dataSource;
 			}
 			return ResultCode::SUCCESS;
 		});
@@ -209,6 +225,7 @@ Proc_End:
 	{
 		Result hr = ResultCode::SUCCESS;
 		Query* pQuery = nullptr;
+		Session * pSession = nullptr;
 
 		// Don't try any query while disconnected
 		if( m_bIsDisconnected )
@@ -217,7 +234,6 @@ Proc_End:
 		auto maxTry = m_PendingQueries.GetEnqueCount();
 		for (decltype(maxTry) iQuery = 0; iQuery < maxTry; iQuery++)
 		{
-			Session * pSession = nullptr;
 			DataSource *pDBSource = nullptr;
 
 			// dequeue one item
@@ -249,29 +265,34 @@ Proc_End:
 				continue;
 			}
 
-			// Get Session
-			if (!(pDBSource->AssignSession(pSession)))
+			// Assign DB session
+			if (pQuery->GetSession() == nullptr)
 			{
-				// It's not expected
-				pQuery->SetResult(ResultCode::UNEXPECTED);
-				dbTrace(Error, "Assigning query to a worker failed {0}, TransID:{1}", typeid(pQuery).name(), pQuery->GetTransID());
-				RouteResult(pQuery);
-				continue;
-			}
-
-			if (!pSession->IsOpened())
-			{
-				if (!(pSession->OpenSession()))
+				// Get Session
+				if (!(pDBSource->AssignSession(pSession)))
 				{
+					// It's not expected
 					pQuery->SetResult(ResultCode::UNEXPECTED);
-					pSession->ReleaseSession();
-					dbTrace(Error, "Failed to open DB session {0}, TransID:{1}", typeid(*pQuery).name(), pQuery->GetTransID());
+					dbTrace(Error, "Assigning query to a worker failed {0}, TransID:{1}", typeid(pQuery).name(), pQuery->GetTransID());
 					RouteResult(pQuery);
 					continue;
 				}
-			}
 
-			pQuery->SetSession(pSession);
+				if (!pSession->IsOpened())
+				{
+					if (!(pSession->OpenSession()))
+					{
+						pQuery->SetResult(ResultCode::UNEXPECTED);
+						pSession->ReleaseSession();
+						dbTrace(Error, "Failed to open DB session {0}, TransID:{1}", typeid(*pQuery).name(), pQuery->GetTransID());
+						RouteResult(pQuery);
+						continue;
+					}
+				}
+
+				pQuery->SetSession(pSession);
+				pSession = nullptr;
+			}
 
 			if (!(QueryWorkerManager::PendingQuery(pQuery)))
 			{
@@ -291,6 +312,9 @@ Proc_End:
 		}
 
 	Proc_End:
+
+		if (pSession != nullptr)
+			pSession->ReleaseSession();
 
 		return hr;
 	}
@@ -389,12 +413,23 @@ Proc_End:
 		}
 
 		pQuery->SetSession(pSession);
+		pSession = nullptr;
 
 		dbTrace(TRC_QUERY, "Query pending transID:{0} msg:{1}, class:{2}", pQuery->GetTransID(), pQuery->GetMsgID(), typeid(pQuery).name());
 
 		dbChk(QueryWorkerManager::PendingQuery(pQuery));
 
 	Proc_End:
+
+		if (pSession != nullptr)
+		{
+			pSession->ReleaseSession();
+		}
+
+		if (FAILED(hr) && pQuery != nullptr)
+		{
+			delete pQuery;
+		}
 
 		return hr;
 	}
@@ -492,7 +527,10 @@ Proc_End:
 
 		defChk(pSession->ProcessQuery(pQuery));
 
+
 	Proc_End:
+
+		pQuery->SetSession(nullptr);
 
 		if (pSession)
 			pSession->ReleaseSession();

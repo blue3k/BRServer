@@ -24,6 +24,19 @@
 namespace SF {
 namespace DB {
 
+	Query::Query(IHeap& heap, Message::MessageID MsgID)
+		: Svr::TransactionResult(MsgID)
+		, m_ParameterBinding(heap)
+		, m_RowsetBinding(heap)
+	{
+	}
+
+	Query::~Query()
+	{
+		if (m_pSession != nullptr)
+			m_pSession->ReleaseSession();
+		m_pSession = nullptr;
+	}
 
 	void Query::BuildQueryString(const char* spName)
 	{
