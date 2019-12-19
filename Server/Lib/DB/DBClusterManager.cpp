@@ -401,6 +401,7 @@ Proc_End:
 			dbErr(ResultCode::UNEXPECTED);
 		}
 
+		// Open session if it isn't
 		if (!pSession->IsOpened())
 		{
 			if (!(pSession->OpenSession()))
@@ -415,7 +416,7 @@ Proc_End:
 		pQuery->SetSession(pSession);
 		pSession = nullptr;
 
-		dbTrace(TRC_QUERY, "Query pending transID:{0} msg:{1}, class:{2}", pQuery->GetTransID(), pQuery->GetMsgID(), typeid(pQuery).name());
+		dbTrace(TRC_QUERY, "Query pending transID:{0} msg:{1}", pQuery->GetTransID(), pQuery->GetMsgID());
 
 		dbChk(QueryWorkerManager::PendingQuery(pQuery));
 
@@ -426,7 +427,7 @@ Proc_End:
 			pSession->ReleaseSession();
 		}
 
-		if (FAILED(hr) && pQuery != nullptr)
+		if (!hr && pQuery != nullptr)
 		{
 			delete pQuery;
 		}

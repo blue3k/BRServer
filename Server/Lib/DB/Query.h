@@ -92,7 +92,7 @@ namespace DB {
 		SF_FORCEINLINE void SetQueryManager(DBClusterManager* pMgr)	{ m_pQueryManager = pMgr; }
 
 		SF_FORCEINLINE Session* GetSession()							{ return m_pSession; }
-		SF_FORCEINLINE void SetSession(Session* pSes) { assert(m_pSession == nullptr);  m_pSession = pSes; }
+		SF_FORCEINLINE void SetSession(Session* pSes) { m_pSession = pSes; }
 
 		// Sharding ID
 		SF_FORCEINLINE uint GetPartitioningKey()						{ return m_PartitioningKey; }
@@ -101,13 +101,12 @@ namespace DB {
 		uint GetOutputParameterCount() const									{ return m_OutputParameterCount; }
 
 		const DBString& GetQueryString() const { return m_QueryString; }
+		const DBString& GetQueryOutputString() const { return m_QueryOutputString; }
 
 	protected:
 
 		virtual void BuildParameters() = 0;
-		virtual void BuildQueryString(const char* spName);
-
-
+		virtual void BuildQueryString(const char* spName, bool isSP = true);
 
 		Result AddParameterBinding(ParameterInfo&& parameterInfo)	{ return m_ParameterBinding.push_back(parameterInfo); }
 		const Array<ParameterInfo>& GetParameterBinding() const		{ return m_ParameterBinding; }
@@ -135,6 +134,7 @@ namespace DB {
 
 		// Query string
 		DBString m_QueryString;
+		DBString m_QueryOutputString;
 
 		// Parameter bindings info
 		DynamicArray<ParameterInfo> m_ParameterBinding;
@@ -155,6 +155,7 @@ namespace DB {
 } // namespace DB
 } // namespace SF
 
+#include "Variable/SFVariableBoxing.h"
 
 #ifdef BRDB_USE_OLEDB
 #include "DB/DBOLEDB.h"

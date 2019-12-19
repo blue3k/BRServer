@@ -27,7 +27,7 @@ namespace BRTest
 	public:
 
 		TestDBServer()
-			:m_Counter(1)
+			:m_Counter(0)
 		{
 
 		}
@@ -37,7 +37,7 @@ namespace BRTest
 		// Route query result to entity
 		virtual Result RouteResult(Query* &pQuery)
 		{
-			Result hr = S_OK;
+			Result hr = ResultCode::SUCCESS;
 			Svr::TransactionResult *pRes = (Svr::TransactionResult*)pQuery;
 
 			m_Counter.fetch_sub(1,std::memory_order_relaxed);
@@ -76,7 +76,7 @@ namespace BRTest
 
 		Proc_End:
 
-			AssertRel(SUCCEEDED(hr));
+			AssertRel(hr);
 
 			pQuery = nullptr;
 			Util::SafeDelete( pRes );
@@ -98,7 +98,7 @@ namespace BRTest
 			return NameBuffer;
 		}
 		
-		const UINT64 GetRandomFBUserID()
+		const uint64_t GetRandomFBUserID()
 		{
 			return rand()%50;
 		}
@@ -126,40 +126,40 @@ TEST_F(DBTest, DBManager)
 
 	TestDBServer *pTestDB = new(GetHeap()) TestDBServer;
 	m_pTestDB = pTestDB;
-	Result hr = S_OK;
+	Result hr = ResultCode::SUCCESS;
 	hr = reinterpret_cast<DB::DBClusterManager*>(pTestDB)->InitializeDBCluster( 1 );
-	EXPECT_HRESULT_SUCCEEDED( hr );
+	EXPECT_TRUE( hr );
 
 	reinterpret_cast<DB::DBClusterManager*>(pTestDB)->AddDBSource( 
 				0,
 				"",
-				"127.0.0.1,11000", 
+				m_TestDBConnectionString, 
 				"dbAccount", 
-				"brave", "dydwk12#" );
+				m_TestDBUserId, m_TestDBPassword );
 
 
 	srand(Util::Time.GetRawTimeMs().time_since_epoch().count() );
 
 	std::vector<std::function<void()>> queryList;
 
-	queryList.push_back( [&pTestDB](){
-		pTestDB->UserList(pTestDB->m_Counter.fetch_add(1,std::memory_order_relaxed)); 
-	} );
-	queryList.push_back( [&pTestDB](){
-		const char* userName = pTestDB->GetRandomUserName();
-		pTestDB->CreateUser(pTestDB->m_Counter.fetch_add(1,std::memory_order_relaxed),
-							userName, userName
-							);
-	} );
-	queryList.push_back( [&pTestDB](){
-		const char* userName = pTestDB->GetRandomUserName();
-		pTestDB->LogIn(pTestDB->m_Counter.fetch_add(1,std::memory_order_relaxed),
-							userName, userName );
-	} );
-	queryList.push_back( [&pTestDB](){
-			pTestDB->FacebookCreateUser(pTestDB->m_Counter.fetch_add(1,std::memory_order_relaxed),
-			pTestDB->GetRandomFBUserID(), pTestDB->GetRandomFBEMail(), pTestDB->GetRandomNickName() );
-	} );
+	//queryList.push_back( [&pTestDB](){
+	//	pTestDB->UserList(pTestDB->m_Counter.fetch_add(1,std::memory_order_relaxed)); 
+	//} );
+	//queryList.push_back( [&pTestDB](){
+	//	const char* userName = pTestDB->GetRandomUserName();
+	//	pTestDB->CreateUser(pTestDB->m_Counter.fetch_add(1,std::memory_order_relaxed),
+	//						userName, userName
+	//						);
+	//} );
+	//queryList.push_back( [&pTestDB](){
+	//	const char* userName = pTestDB->GetRandomUserName();
+	//	pTestDB->LogIn(pTestDB->m_Counter.fetch_add(1,std::memory_order_relaxed),
+	//						userName, userName );
+	//} );
+	//queryList.push_back( [&pTestDB](){
+	//		pTestDB->FacebookCreateUser(pTestDB->m_Counter.fetch_add(1,std::memory_order_relaxed),
+	//		pTestDB->GetRandomFBUserID(), pTestDB->GetRandomFBEMail(), pTestDB->GetRandomNickName() );
+	//} );
 	queryList.push_back( [&pTestDB](){
 		pTestDB->FacebookLogIn(pTestDB->m_Counter.fetch_add(1,std::memory_order_relaxed),
 			pTestDB->GetRandomFBUserID() );
@@ -183,16 +183,16 @@ TEST_F(DBTest, DBQueryLogin)
 {
 	TestDBServer *pTestDB = new(GetHeap()) TestDBServer;
 	m_pTestDB = pTestDB;
-	Result hr = S_OK;
+	Result hr = ResultCode::SUCCESS;
 	hr = reinterpret_cast<DB::DBClusterManager*>(pTestDB)->InitializeDBCluster( 1 );
-	EXPECT_HRESULT_SUCCEEDED( hr );
+	EXPECT_TRUE( hr );
 
 	reinterpret_cast<DB::DBClusterManager*>(pTestDB)->AddDBSource( 
 				0,
 				"",
-				"127.0.0.1,11000", 
+				m_TestDBConnectionString, 
 				"dbAccount", 
-				"brave", "dydwk12#" );
+				m_TestDBUserId, m_TestDBPassword );
 
 
 	pTestDB->LogIn(pTestDB->m_Counter.fetch_add(1,std::memory_order_relaxed), "Tester1", "Tester1" );
@@ -207,16 +207,16 @@ TEST_F(DBTest, DBQueryLoginByFB)
 {
 	TestDBServer *pTestDB = new(GetHeap()) TestDBServer;
 	m_pTestDB = pTestDB;
-	Result hr = S_OK;
+	Result hr = ResultCode::SUCCESS;
 	hr = reinterpret_cast<DB::DBClusterManager*>(pTestDB)->InitializeDBCluster( 1 );
-	EXPECT_HRESULT_SUCCEEDED( hr );
+	EXPECT_TRUE( hr );
 
 	reinterpret_cast<DB::DBClusterManager*>(pTestDB)->AddDBSource( 
 				0,
 				"",
-				"127.0.0.1,11000", 
+				m_TestDBConnectionString, 
 				"dbAccount", 
-				"brave", "dydwk12#" );
+				m_TestDBUserId, m_TestDBPassword );
 
 
 	pTestDB->FacebookLogIn(pTestDB->m_Counter.fetch_add(1,std::memory_order_relaxed), 100001894965105 );
@@ -235,16 +235,16 @@ TEST_F(DBTest, DBQuerySetNick)
 
 	TestDBServer *pTestDB = new(GetHeap()) TestDBServer;
 	m_pTestDB = pTestDB;
-	Result hr = S_OK;
+	Result hr = ResultCode::SUCCESS;
 	hr = reinterpret_cast<DB::DBClusterManager*>(pTestDB)->InitializeDBCluster( 1 );
-	EXPECT_HRESULT_SUCCEEDED( hr );
+	EXPECT_TRUE( hr );
 
 	reinterpret_cast<DB::DBClusterManager*>(pTestDB)->AddDBSource( 
 				0,
 				"",
-				"127.0.0.1,11000", 
+				m_TestDBConnectionString, 
 				"dbAccount", 
-				"brave", "dydwk12#" );
+				m_TestDBUserId, m_TestDBPassword );
 
 
 	char strTest[1024];// , strTest2[1024];

@@ -72,8 +72,7 @@ namespace DB {
 
 
 	public:
-		BRDB_BEGIN_PARAM_MAP(QueryGameConfigTbl, "select * from gtbl_gameconfigtable;")
-		BRDB_END_PARAM_MAP()
+		BRDB_RAW_QUERY(QueryGameConfigTbl, "select * from gtbl_gameconfigtable;")
 
 		BRDB_BEGIN_RESULT_MAP(QueryGameConfigTbl)
 		BRDB_COLUMN_ENTRY(PresetID)
@@ -115,8 +114,7 @@ namespace DB {
 
 
 	public:
-		BRDB_BEGIN_PARAM_MAP(QueryLevelTbl, "select * from gtbl_leveltable;")
-		BRDB_END_PARAM_MAP()
+		BRDB_RAW_QUERY(QueryLevelTbl, "select * from gtbl_leveltable;")
 
 		BRDB_BEGIN_RESULT_MAP(QueryLevelTbl)
 		BRDB_COLUMN_ENTRY(Level)
@@ -137,8 +135,7 @@ namespace DB {
 
 
 	public:
-		BRDB_BEGIN_PARAM_MAP(QueryOrganicTbl, "select * from gtbl_organictable;")
-		BRDB_END_PARAM_MAP()
+		BRDB_RAW_QUERY(QueryOrganicTbl, "select * from gtbl_organictable;")
 
 		BRDB_BEGIN_RESULT_MAP(QueryOrganicTbl)
 			BRDB_COLUMN_ENTRY(OrganicItemID)
@@ -162,8 +159,7 @@ namespace DB {
 
 
 	public:
-		BRDB_BEGIN_PARAM_MAP(QueryShopTbl, "select * from gtbl_shoptable;")
-		BRDB_END_PARAM_MAP()
+		BRDB_RAW_QUERY(QueryShopTbl, "select * from gtbl_shoptable;")
 
 		BRDB_BEGIN_RESULT_MAP(QueryShopTbl)
 			BRDB_COLUMN_ENTRY(ShopItemID)
@@ -191,8 +187,7 @@ namespace DB {
 
 
 	public:
-		BRDB_BEGIN_PARAM_MAP(QueryRewardTbl, "select * from gtbl_rewardtable;")
-		BRDB_END_PARAM_MAP()
+		BRDB_RAW_QUERY(QueryRewardTbl, "select * from gtbl_rewardtable;")
 
 		BRDB_BEGIN_RESULT_MAP(QueryRewardTbl)
 		BRDB_COLUMN_ENTRY(Role.m_iEnum)
@@ -215,8 +210,7 @@ namespace DB {
 
 
 	public:
-		BRDB_BEGIN_PARAM_MAP(QueryBotTalkTable, "select * from gtbl_bottalktable;")
-		BRDB_END_PARAM_MAP()
+		BRDB_RAW_QUERY(QueryBotTalkTable, "select * from gtbl_bottalktable;")
 
 		BRDB_BEGIN_RESULT_MAP(QueryBotTalkTable)
 			BRDB_COLUMN_ENTRY(ItemID)

@@ -32,7 +32,7 @@ SET (CMAKE_C_FLAGS_DEBUG "${CMAKE_C_FLAGS_DEBUG} -DDEBUG")
 SET (CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -DDEBUG")
 
 
-set(ENGINE_LINK_LIBS BRServerSystem BRTable BRServerProtocol BRDB SFProtocol SFEngine  SFCore  curl iconv png mng jpeg tiff zookeeper jsoncpp mbedtls xml2 zlib)
+set(ENGINE_LINK_LIBS BRDB BRServerSystem BRTable BRServerProtocol BRDB SFProtocol SFEngine  SFCore  curl iconv png mng jpeg tiff zookeeper jsoncpp mbedtls xml2 zlib)
 
 
 include_directories(AFTER 

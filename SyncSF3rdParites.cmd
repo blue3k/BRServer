@@ -46,9 +46,7 @@ robocopy ..\StormForge\3rdParties\src\openssl\buildWindows\openssl\bin buildWind
 
 
 robocopy ..\StormForge\3rdParties\src\mysql\buildWindows\x64\lib64\Debug Server\bin\x64Debug\ *.dll *.pdb *.lib
-robocopy ..\StormForge\3rdParties\src\mysql\buildWindows\x64\lib64\vs14\Debug Server\bin\lib\x64Debug\ *.dll *.pdb *.lib
 robocopy ..\StormForge\3rdParties\src\mysql\buildWindows\x64\lib64 Server\bin\x64Release\ *.dll *.pdb *.lib
-robocopy ..\StormForge\3rdParties\src\mysql\buildWindows\x64\lib64\vs14 Server\bin\lib\x64Release\ *.dll *.pdb *.lib
 robocopy ..\StormForge\3rdParties\src\mysql\buildWindows\x64\lib64\Debug buildWindows\x64\TestApp\UnitTest\Debug\ *.dll *.pdb *.lib
 robocopy ..\StormForge\3rdParties\src\mysql\buildWindows\x64\lib64 buildWindows\x64\TestApp\UnitTest\Release\ *.dll *.pdb *.lib
 

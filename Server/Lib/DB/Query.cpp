@@ -38,50 +38,58 @@ namespace DB {
 		m_pSession = nullptr;
 	}
 
-	void Query::BuildQueryString(const char* spName)
+	void Query::BuildQueryString(const char* spName, bool isSP)
 	{
 		const char* strComma = "";
-		StringBuilder builder(GetHeap());
 		m_OutputParameterCount = 0;
 
 		// call sp
-		builder.AppendFormat("{0}(", spName);
-		for (auto& itBinding : m_ParameterBinding)
+		if (isSP)
 		{
-			if ((itBinding.IOType&ParamIO::Output) == ParamIO::Output)
-			{
-				m_OutputParameterCount++;
-				builder.AppendFormat("{0}@{1}", strComma, itBinding.Name);
-			}
-			else
-			{
-				builder.AppendFormat("{0}?", strComma);
-			}
-
-			strComma = ", ";
-		}
-		builder.Append(");\n");
-
-		// output binding
-		if (m_OutputParameterCount > 0)
-		{
-			strComma = "";
-			builder.Append("select ");
+			StringBuilder builder(GetHeap());
+			builder.AppendFormat("CALL {0}(", spName);
 			for (auto& itBinding : m_ParameterBinding)
 			{
 				if ((itBinding.IOType&ParamIO::Output) == ParamIO::Output)
 				{
+					m_OutputParameterCount++;
 					builder.AppendFormat("{0}@{1}", strComma, itBinding.Name);
-					strComma = ", ";
 				}
-			}
-			builder.Append(");\n");
-		}
+				else
+				{
+					builder.AppendFormat("{0}?", strComma);
+				}
 
-		//String Password;
-		//ParameterInfo info("Password", ParamIO::Input, BoxingByReference(Password));
-		//AddParameterBinding(std::forward<ParameterInfo>(info));
-		m_QueryString = builder.ToString();
+				strComma = ", ";
+			}
+			builder.Append(");");
+			m_QueryString = builder.ToString();
+
+			// output binding
+			StringBuilder outputBuilder(GetHeap());
+			if (m_OutputParameterCount > 0)
+			{
+				strComma = "";
+				outputBuilder.Append("select ");
+				for (auto& itBinding : m_ParameterBinding)
+				{
+					if ((itBinding.IOType&ParamIO::Output) == ParamIO::Output)
+					{
+						outputBuilder.AppendFormat("{0}@{1}", strComma, itBinding.Name);
+						strComma = ", ";
+					}
+				}
+				outputBuilder.Append(";");
+			}
+
+			m_QueryOutputString = outputBuilder.ToString();
+		}
+		else
+		{
+			// just append raw query
+			m_QueryString = spName;
+			m_QueryOutputString = "";
+		}
 	}
 
 

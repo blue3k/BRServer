@@ -25,12 +25,17 @@ namespace BRTest
 
 		SF::DB::DBClusterManager* m_pTestDB = nullptr;
 
+		String m_TestDBConnectionString = "127.0.0.1,33060";
+		String m_TestDBUserId = "blue3k";
+		String m_TestDBPassword = "111";
+
 		// Thread module test
 		std::vector<SF::Thread*>	m_Threads;
 
 		SpinLock m_LockObject;
 
 	public:
+
 
 		void StopAllThread()
 		{

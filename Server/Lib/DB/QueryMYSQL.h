@@ -43,10 +43,12 @@ namespace DB {
 
 
 		virtual void BindParameters(mysqlx::SqlStatement& statement);
+		virtual void BuildRowset() {}
 
 		virtual void ParseResult(mysqlx::SqlResult& queryResult);
+		virtual void ParseOutput(mysqlx::SqlResult& queryResult);
 
-
+		// add patched rowset value into array
 		virtual void AddRowset() {}
 	};
 

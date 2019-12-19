@@ -50,16 +50,25 @@ namespace DB {
 
 		pSession = pQuery->GetSession();
 		dbChkPtr(pSession);
+		pQuery->SetSession(nullptr);
 
 		pQueryManager = pQuery->GetQueryManager();
 		dbChkPtr(pQueryManager);
 
-		hr = pSession->ProcessQuery(pQuery);
-		if( hr == ResultCode::DB_CONNECTION_LOST )
+
+		// Open session if it isn't
+		if (!pSession->IsOpened())
 		{
-			// Give one more chance, because the session will try to reconnect
-			hr = pSession->ProcessQuery(pQuery);
+			if (!(pSession->OpenSession()))
+			{
+				pQuery->SetResult(ResultCode::UNEXPECTED);
+				pSession->ReleaseSession();
+				dbTrace(Error, "Failed to open DB session {0}, TransID:{1}", typeid(pQuery).name(), pQuery->GetTransID());
+				dbErr(ResultCode::UNEXPECTED);
+			}
 		}
+
+		hr = pSession->ProcessQuery(pQuery);
 		dbChk(hr);
 
 		// This will be run only if the query is succeeded
@@ -83,13 +92,14 @@ namespace DB {
 				pQueryManager->RouteResult(pQuery);
 			}
 		}
-
+		
 		// return back to Data source
 		if (pSession != nullptr)
+		{
+			//pSession->CloseSession();
 			pSession->ReleaseSession();
+		}
 		pSession = nullptr;
-		if (pQuery)
-			pQuery->SetSession(nullptr);
 
 		Util::SafeDelete(pQuery);
 

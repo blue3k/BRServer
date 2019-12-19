@@ -115,6 +115,13 @@ namespace DB {
 			mysqlx::SqlResult queryResult = std::forward<mysqlx::SqlResult>(statement.execute());
 
 			pMyQuery->ParseResult(queryResult);
+
+			if (pMyQuery->GetQueryOutputString().size() > 0)
+			{
+				mysqlx::SqlResult outputResult = std::forward<mysqlx::SqlResult>(m_pXSession->sql(pMyQuery->GetQueryOutputString()).execute());
+
+				pMyQuery->ParseOutput(outputResult);
+			}
 		}
 		catch (std::exception& e)
 		{
@@ -130,7 +137,7 @@ namespace DB {
 		{
 			if( pMyQuery )
 			{
-				defTrace( Error, "Query failed hr:0x{0:X8} : {1} : {2}", hr, typeid(*pMyQuery).name(), pMyQuery->GetQueryString().c_str() );
+				defTrace( Error, "Query failed hr:0x{0:X8} : {1}", hr, pMyQuery->GetQueryString().c_str() );
 			}
 			else
 			{
@@ -179,7 +186,9 @@ namespace DB {
 				userId,
 				password);
 
-			m_pXSession->sql(std::string("USE ") + *m_pMyDataSource->GetDefaultDB()).execute();
+			String useDB;
+			useDB.Format("USE {0};", m_pMyDataSource->GetDefaultDB());
+			m_pXSession->sql(useDB.data()).execute();
 
 			// TODO:
 			//mysql_options(m_mySQL, MYSQL_SET_CHARSET_NAME, "utf8");
@@ -190,7 +199,7 @@ namespace DB {
 		catch (std::exception& e)
 		{
 			dbTrace(Error, "DB Failed Error :{0}", e.what());
-			hr = E_UNEXPECTED;
+			hr = ResultCode::UNEXPECTED;
 		}
 
 
@@ -214,8 +223,9 @@ namespace DB {
 		{
 			m_pXSession->close();
 			delete m_pXSession;
+			m_pXSession = nullptr;
 		}
-
+		
 		return ResultCode::SUCCESS;
 	}
 

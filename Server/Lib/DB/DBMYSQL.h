@@ -153,10 +153,16 @@ namespace DB {
 	//	Mapping
 	//
 
+	#define BRDB_RAW_QUERY(classType, spName)										\
+			classType(IHeap& heap, Message::MessageID msgID):QueryMYSQL(heap, msgID){	\
+			BuildParameters(); BuildQueryString(spName, false); \
+			}	\
+			virtual void BuildParameters() override {}								\
+
 
 	#define BRDB_BEGIN_PARAM_MAP(classType, spName)										\
 			classType(IHeap& heap, Message::MessageID msgID):QueryMYSQL(heap, msgID){	\
-			BuildParameters(); BuildQueryString(spName); \
+			BuildParameters(); BuildRowset(); BuildQueryString(spName); \
 			}	\
 			virtual void BuildParameters() override {									\
 
@@ -165,16 +171,17 @@ namespace DB {
 			AddParameterBinding(ParameterInfo(#member,ioType,BoxingByReference(member)));	
 
 
-	#define BRDB_COLUMN_ENTRY(member)												\
-			AddRowsetBinding(ParameterInfo(#member,ParamIO::Output,BoxingByReference(member)));
-
 
 	#define BRDB_END_PARAM_MAP()													\
 			}
 
 
 	#define BRDB_BEGIN_RESULT_MAP(classType)							\
-			virtual void ParseResult(const mysqlx::SqlResult& result) {										\
+			virtual void BuildRowset() override {										\
+
+
+	#define BRDB_COLUMN_ENTRY(member)												\
+			AddRowsetBinding(ParameterInfo(#member,ParamIO::Output,BoxingByReference(member)));
 
 
 	#define BRDB_END_RESULT_MAP()		}

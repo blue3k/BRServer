@@ -22,10 +22,10 @@ include_directories(
 add_executable(BRUnitTest ${SF_UNIT_TEST_FILES})
 
 
-add_dependencies(BRUnitTest BRDB BRServerSystem BRServerProtocol BRTable)
+add_dependencies(BRUnitTest BRServerSystem BRDB BRServerProtocol BRTable)
 
 
-target_link_libraries(BRUnitTest ${ENGINE_LINK_LIBS} gtest ${PLATFORM_LIBS})
+target_link_libraries(BRUnitTest ${ENGINE_LINK_LIBS} ${PLATFORM_LIBS} gtest)
 
 
 install (TARGETS BRUnitTest
