@@ -43,7 +43,7 @@ include_directories(AFTER
 	../StormForge/3rdParties/src/libxml/libxml2/include
 	../StormForge/3rdParties/src/curl/curl/include
 	../StormForge/3rdParties/src/zlib/zlib-1.2.8
-	../StormForge/3rdParties/src/jsoncpp/include
+	../StormForge/3rdParties/src/jsoncpp/jsoncpp/include
 	../StormForge/3rdParties/src/zookeeper/zookeeperConnector/include
 	../StormForge/Engine/Src/SFCore
 	../StormForge/Engine/Src/SFEngine
