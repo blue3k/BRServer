@@ -95,10 +95,8 @@ if(WIN32)
 
 
 	link_directories(
-		#External/mysql-connector-c-6.1.6-winx64/lib
-		#External/mysql-connector-c-6.1.6-winx64/lib/vs12
 		../StormForge/build${CMAKE_SYSTEM_NAME}/${ARTECTURE}$(Configuration)/lib
-		../StormForge/3rdParties/src/mysql/buildWindows/x64/lib64/vs14/$(Configuration)
+		../StormForge/3rdParties/src/mysql/buildWindows/x64/lib64/vs14/RelWithDebInfo
 		../StormForge/3rdParties/src/openssl/buildWindows/openssl/lib
 		Server/bin/lib/${ARTECTURE}$(Configuration)
 		#../StormForge/3rdParties/src/mysql/mysql-connector-c++-8.0.18-winx64/lib64/vs14
