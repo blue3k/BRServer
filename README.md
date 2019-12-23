@@ -36,14 +36,15 @@ Windows build scripts
 
 2. DB setup
  - Guide for mysql: https://dev.mysql.com/doc/refman/8.0/en/installing.html
- - Install MySql 5.6 or higher
+ - Install MySql 8.0 or higher
  - Unzip /Server/DBBackup/dbSchemaSQL.zip
  - Run all sql files one by one
  - PlayerID 1~10 is reserved, Initialization script will create them.
  
 	Download: https://dev.mysql.com/downloads/mysql/ 
 	 
-	General Guide: https://corlewsolutions.com/articles/article-21-how-to-install-mysql-server-5-6-on-windows-7-development-machine 
+	General Guide: https://www.liquidweb.com/kb/install-mysql-windows/
+	https://dev.mysql.com/doc/refman/8.0/en/binary-installation.html
 	 
 	 
 	Mandatory configs for server. These values should be set to the server config
@@ -55,11 +56,16 @@ Windows build scripts
 	character-set-server      = utf8mb4
 	collation-server          = utf8mb4_general_ci
 
- 
-3. Install ZooKeeper service
-	- You need JDK 1.7 or heigher, and JAVA_HOME environment variable assigned
-	- Use ZookeeperServiceInstall.cmd
+	Note: We upgraded to X dev plugin, if you want to change access port from gaem, you need to change mysqlx_port, default is 33060.
 
+3. Install ZooKeeper and kafka
+	- On Linux: 
+		- Generic: https://www.digitalocean.com/community/tutorials/how-to-install-apache-kafka-on-ubuntu-18-04
+		- Ubuntu: APT package is way behind, you need to use Debian package. https://dev.mysql.com/doc/refman/8.0/en/linux-installation-debian.html
+	- You need OpenJDK 8 or heigher, and JAVA_HOME environment variable assigned
+	- Zookeeper and kafka binary are included for windows user.
+	- Use ZookeeperServiceInstall.cmd
+	
 4. Editing Server Config and upload
 	- You can upload config xml to zookeeper with SFSetverManager client or other server tool
 	- Easy way
