@@ -38,9 +38,8 @@ Windows build scripts
  - Guide for mysql: https://dev.mysql.com/doc/refman/8.0/en/installing.html
  - Install MySql 5.6 or higher
  - Unzip /Server/DBBackup/dbSchemaSQL.zip
- - Creates databases in each sql file. dbaccount, dbconspiracy00, dbgametransaction00, dbsession00, dbconspiracyranking, and dbconspiracytable
- - Run all sql files
- - PlayerID 1~10 is reserved, create fake player by calling spCreateSystemPlayer('Bot', 0, 10, 4) in sql statement
+ - Run all sql files one by one
+ - PlayerID 1~10 is reserved, Initialization script will create them.
  
 	Download: https://dev.mysql.com/downloads/mysql/ 
 	 
@@ -53,10 +52,8 @@ Windows build scripts
 	Windows: my.ini
 
 	[mysqld]
-	lower_case_table_name     = 1
-	character-set-server      = utf8
-	collation-server          = utf8_general_ci
-	default_authentication_plugin=mysql_native_password
+	character-set-server      = utf8mb4
+	collation-server          = utf8mb4_general_ci
 
  
 3. Install ZooKeeper service
