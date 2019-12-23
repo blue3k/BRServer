@@ -60,7 +60,7 @@ namespace Svr {
 
 	Result RankingServiceEntity::InitializeEntity( EntityID newEntityID )
 	{
-		Result hr = ResultCode::SUCCESS;
+		FunctionContext hr;
 		auto pServerInst = BrServer::GetInstance();
 		DB::RankingDB* pRankDB = nullptr;
 		int64_t baseIndex = 0;
@@ -69,21 +69,21 @@ namespace Svr {
 
 		auto rankingDBConfig = Service::ServerConfig->FindDBCluster("RankingDB");
 
-		svrChk(super::InitializeEntity(newEntityID) );
+		svrCheck(super::InitializeEntity(newEntityID) );
 
-		svrChk(pServerInst->AddDBCluster<DB::RankingDB>(rankingDBConfig));
+		svrCheck(pServerInst->AddDBCluster<DB::RankingDB>(rankingDBConfig));
 
 		m_CurrentProcessingNumberofMember = 0;
 
 
 		pRankDB = GetServerComponent<DB::RankingDB>();
-		svrChkPtr(pRankDB);
+		svrCheckPtr(pRankDB);
 		
 		baseIndex = 0;
 		for (int64_t iRequest = 0; iRequest < maxRequestCount; iRequest++, baseIndex += requestSize)
 		{
 			auto pResult = pRankDB->GetRankers((int32_t)baseIndex, (int32_t)requestSize);
-			svrChkPtr(pResult);
+			svrCheckPtr(pResult);
 
 			// Nothing to query anymore
 			if (pResult->RowsetResults.size() == 0)
@@ -94,7 +94,7 @@ namespace Svr {
 			{
 				int64_t playerRanking;
 				PlayerInformation playerInfo(itRowSet.PlayerID, itRowSet.FBUID, itRowSet.NickName, itRowSet.Level, false, 0);
-				svrChk(UpdatePlayerScore(playerInfo, itRowSet.Score, playerRanking));
+				svrCheck(UpdatePlayerScore(playerInfo, itRowSet.Score, playerRanking));
 			}
 		}
 
@@ -103,35 +103,31 @@ namespace Svr {
 
 		m_RankingCheckTimer.SetTimer(DurationMS(Svr::Const::TIME_INTERVAL_RANKING_UPDATE));
 
-	Proc_End:
-
 		return hr;
 	}
 
 	// clear transaction
 	Result RankingServiceEntity::ClearEntity()
 	{
-		Result hr = ResultCode::SUCCESS;
+		FunctionContext hr = ResultCode::SUCCESS;
 
-		svrChk(super::ClearEntity() );
-
-	Proc_End:
+		svrCheck(super::ClearEntity() );
 
 		return hr;
 	}
 
 	Result RankingServiceEntity::TickUpdate(TimerAction *pAction)
 	{
-		Result hr = ResultCode::SUCCESS;
+		FunctionContext hr = ResultCode::SUCCESS;
 
-		svrChk(super::TickUpdate(pAction) );
+		svrCheck(super::TickUpdate(pAction) );
 
 		// check below only if we are working
-		if( GetEntityState() != EntityState::WORKING )
-			goto Proc_End;
+		if (GetEntityState() != EntityState::WORKING)
+			return hr;
 
 		if( BrServer::GetInstance()->GetServerState() != ServerState::RUNNING )
-			goto Proc_End;
+			return hr;
 
 
 		if (m_RankingCheckTimer.CheckTimer())
@@ -139,8 +135,6 @@ namespace Svr {
 			m_RankingMap.CommitChanges();
 			m_RankingCheckTimer.SetTimer(DurationMS(Svr::Const::TIME_INTERVAL_RANKING_UPDATE));
 		}
-
-	Proc_End:
 
 		return hr;
 	}
@@ -154,7 +148,7 @@ namespace Svr {
 
 	Result RankingServiceEntity::UpdatePlayerScore(const PlayerInformation& player, int64_t score, int64_t& playerRanking)
 	{
-		Result hr = ResultCode::SUCCESS;
+		FunctionContext hr = ResultCode::SUCCESS;
 		TotalRankingPlayerInformation *pPlayerRankInformation = nullptr;
 		TotalRankingPlayerInformation *pRemoved = nullptr;
 		RankingKey rankingKey;
@@ -169,14 +163,14 @@ namespace Svr {
 			hr = ResultCode::SUCCESS;
 
 			// not yet ranked
-			// TODO: we need to use more generalied player information description
+			// TODO: we need to use more generalized player information description
 			pPlayerRankInformation = new(GetHeap()) TotalRankingPlayerInformation(0, 0, player.PlayerID, player.FBUID, player.NickName, player.Level, (int32_t)score, (int32_t)(score >> 32));
-			svrChk(m_PlayerMap.Insert(player.PlayerID, pPlayerRankInformation));
+			svrCheck(m_PlayerMap.Insert(player.PlayerID, pPlayerRankInformation));
 			m_PlayerMap.CommitChanges();
 
 			// TODO: We are only useing lower 32bit value. if we need more value we need to change this implementation
 			rankingKey.Score = (uint32_t)score;
-			svrChk(m_RankingMap.Insert(rankingKey.RankingKeyValue, pPlayerRankInformation, &playerRanking));
+			svrCheck(m_RankingMap.Insert(rankingKey.RankingKeyValue, pPlayerRankInformation, &playerRanking));
 		}
 		else
 		{
@@ -193,10 +187,8 @@ namespace Svr {
 			StrUtil::StringCopy(pPlayerRankInformation->NickName, player.NickName);
 
 			rankingKey.Score = (uint32_t)score;
-			svrChk(m_RankingMap.Insert(rankingKey.RankingKeyValue, pPlayerRankInformation, &playerRanking));
+			svrCheck(m_RankingMap.Insert(rankingKey.RankingKeyValue, pPlayerRankInformation, &playerRanking));
 		}
-
-	Proc_End:
 
 		return hr;
 	}

@@ -205,6 +205,14 @@ set(BRSERVERSYSTEM_LIB_FILES
     ServiceEntity/MonitoringServiceTrans.cpp
     ServiceEntity/RankingServiceEntity.cpp
     ServiceEntity/RankingServiceTrans.cpp
+	ServiceEntity/Relay/RelayServiceEntity.cpp
+	ServiceEntity/Relay/RelayServiceEntity.h
+	ServiceEntity/Relay/RelayServiceTrans.cpp
+	ServiceEntity/Relay/RelayServiceTrans.h
+	ServiceEntity/Relay/RelayPlayer.cpp
+	ServiceEntity/Relay/RelayPlayer.h
+	ServiceEntity/Relay/RelayGameInstance.cpp
+	ServiceEntity/Relay/RelayGameInstance.h
     ServiceEntity/ServiceEntity.cpp
     Service/ServerService.cpp
     String/ToStringSvr.cpp

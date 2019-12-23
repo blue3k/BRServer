@@ -83,9 +83,6 @@ if(WIN32)
 
 	include_directories(AFTER 
 		../StormForge/3rdParties/VulkanSDK/1.1.82.1/include
-		#External/mysql-connector-c-6.1.6-winx64/include
-		#../StormForge/3rdParties/src/mysql/buildWindows/x64/include
-		#../StormForge/3rdParties/src/mysql/mysql-connector-c++-8.0.18-winx64/include
 		../StormForge/3rdParties/src/mysql/mysql-connector-c++-8.0.18-src/include
 	)
 	
@@ -93,13 +90,11 @@ if(WIN32)
 
 	set(PLATFORM_LIBS Ws2_32 Mswsock mysqlcppconn8-static libcrypto libssl)
 
-
 	link_directories(
 		../StormForge/build${CMAKE_SYSTEM_NAME}/${ARTECTURE}$(Configuration)/lib
-		../StormForge/3rdParties/src/mysql/buildWindows/x64/lib64/vs14/RelWithDebInfo
+		../StormForge/3rdParties/src/mysql/buildWindows/x64/lib64/vs14/$(Configuration)
 		../StormForge/3rdParties/src/openssl/buildWindows/openssl/lib
 		Server/bin/lib/${ARTECTURE}$(Configuration)
-		#../StormForge/3rdParties/src/mysql/mysql-connector-c++-8.0.18-winx64/lib64/vs14
 	)
 
 

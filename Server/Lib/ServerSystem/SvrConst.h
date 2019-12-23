@@ -83,6 +83,10 @@ namespace Const {
 	constexpr const char* ZK_SERVER_SERVICE_BASE = "/BRServices";
 	constexpr const char* ZK_SERVER_INSTANCE_NODE = "/BRServices/ServerInstances";
 
+	constexpr int32_t RELAY_PLAYER_JOIN_TIMEOUT = 1 * 60 * 1000;
+	constexpr int32_t RELAY_PLAYER_TIMEOUT = 30 * 1000;
+	constexpr int32_t RELAY_GAMEINSTANCE_TIMEOUT = 2 * 60 * 1000;
+
 }; // namespace Const
 }; // namespace Svr
 }; // namespace SF

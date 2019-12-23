@@ -42,6 +42,11 @@ namespace SF {
 // Default trace module
 //
 
+#define svrCheck(Op) CheckResult(Svr,Op)
+#define svrCheckMem(Op) CheckMem(Svr,Op)
+#define svrCheckPtr(Op) CheckPtr(Svr,Op)
+
+// Legacy - gradually deprecated
 
 #define svrErr(e)					TrcErrJmp(Svr,e,hr)
 #define svrChk(e)					{ do{ Result hRes = e; if( !(hRes) ) TrcErrJmp(Svr,hRes,hr); } while(0); }

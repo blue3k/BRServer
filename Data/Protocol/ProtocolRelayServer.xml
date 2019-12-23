@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Protocols xmlns="http://www.StormForge.com/XMLProtocol" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.StormForge.com/XMLProtocol ../../StormForge/Engine/Data/Protocol/ProtocolDef.xsd">
+	<ProtocolGroup Name="RelayServer" GenParameterRouteContext="true" IsMobile="false" IsServer="true" Desc="Game Relay Server Protocol">
+
+    <!-- ============================  Relay ============================================ -->
+
+    <Command Name="CreateRelayInstance" Reliable="true" Crypto="No" Trace="Debug1" Desc="Relay Instance">
+		  <Cmd>
+        <Params Type="PlayerInformation" Name="PlayerInfo" Desc="PlayerInformation to add"/>
+        <Params Type="uint64" Name="RelayScore" Desc="Relay score"/> 
+		</Cmd>
+		  <Res>
+        <Params Type="uint32" Name="Relay" Desc="Relay"/>
+	  	</Res>
+	  </Command>
+
+    <Command Name="AddPlayer" Reliable="true" Crypto="No" Trace="Debug1" Desc="Add a player to Relay">
+		  <Cmd>
+        <Params Type="PlayerInformation" Name="PlayerInfo" Desc="PlayerInformation to add"/>
+        <Params Type="uint64" Name="RelayScore" Desc="Relay score"/>
+		</Cmd>
+		  <Res>
+        <Params Type="uint32" Name="Relay" Desc="Relay"/>
+	  	</Res>
+	  </Command>
+
+    <Command Name="RemovePlayer" Reliable="true" Crypto="No" Trace="Debug1" Desc="Remove a player to Relay">
+      <Cmd>
+        <Params Type="PlayerID" Name="PlayerID" Desc="Player ID to remove"/>
+      </Cmd>
+      <Res>
+      </Res>
+    </Command>
+
+
+    <!-- =============================  ======================================= -->
+
+	</ProtocolGroup>
+</Protocols>
