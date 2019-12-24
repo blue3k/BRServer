@@ -144,26 +144,24 @@ namespace Google {
 	Result AndroidDeveloperAPI::CheckReceipt(const char* packageName, const char* productID, const char* purchaseToken)
 	{
 		const char* authChar = m_OAuth->GetAuthString();
+		std::string errs;
 
-		FunctionContext hr([this, authChar](Result result)
+		FunctionContext hr([this, authChar, &errs](Result result)
 		{
-			if (!result)
+			if (result == ((Result)ResultCode::SVR_INVALID_EXTERNAL_AUTH))
 			{
-				if (result == ((Result)ResultCode::SVR_INVALID_EXTERNAL_AUTH))
+				// silently ignore it
+			}
+			else
+			{
+				if (m_ResultBuffer.size() > 0)
 				{
-					// silently ignore it
+					m_ResultBuffer.push_back('\0');
+					svrTrace(Error, "Invalid purchase status: hr:{0:X8}, {1}, token:{2}, payload:{3}, error:{4}", result, (const char*)m_ResultBuffer.data(), authChar, m_DeveloperPayload, errs);
 				}
 				else
 				{
-					if (m_ResultBuffer.size() > 0)
-					{
-						m_ResultBuffer.push_back('\0');
-						svrTrace(Error, "Invalid purchase status: hr:{0:X8}, {1}, token:{2}, payload:{3}", result, (const char*)m_ResultBuffer.data(), authChar, m_DeveloperPayload.c_str());
-					}
-					else
-					{
-						svrTrace(Error, "Failed to check purchase status: hr:{0:X8}, token:{1}, payload:{2}", result, authChar, m_DeveloperPayload.c_str());
-					}
+					svrTrace(Error, "Failed to check purchase status: hr:{0:X8}, token:{1}, payload:{2}, error:{4}", result, authChar, m_DeveloperPayload, errs);
 				}
 			}
 		});
@@ -175,7 +173,6 @@ namespace Google {
 		struct curl_slist *headers = nullptr; // init to NULL is important 
 		Json::Value root;
 		Json::CharReaderBuilder jsonReader;
-		std::string errs;
 		bool parsingSuccessful;
 		char *ct = nullptr;
 

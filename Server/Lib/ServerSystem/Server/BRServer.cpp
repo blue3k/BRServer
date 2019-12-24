@@ -52,6 +52,7 @@
 #include "ServiceEntity/GamePartyManagerServiceEntity.h"
 #include "ServiceEntity/RankingServiceEntity.h"
 #include "ServiceEntity/MonitoringServiceEntity.h"
+#include "ServiceEntity/Relay/RelayServiceEntity.h"
 
 #include "Table/TableSystem.h"
 
@@ -801,6 +802,12 @@ Proc_End:
 			auto pModule = (ServerConfig::ServerModuleIOSPurchaseValidate*)module;
 			svrChk(GetComponentCarrier().AddComponentWithAdapter<Svr::ExternalTransactionManager>());
 			svrChk(GetComponentCarrier().GetComponent<Svr::ExternalTransactionManager>()->InitializeManagerIOS(pModule->URL, pModule->AltURL));
+			break;
+		}
+		case "ModRelay"_crc:
+		{
+			auto pModule = (ServerConfig::ServerModuleRelayService*)module;
+			svrChkPtr(AddServiceEntity<Svr::RelayServiceEntity>(GetServerGameID(), pModule->PublicNet, pModule->MaximumRelayInstances));
 			break;
 		}
 

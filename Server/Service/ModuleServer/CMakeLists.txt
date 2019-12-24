@@ -13,8 +13,6 @@ source_group(INCLUDES FILES
 set(BR_LIB_FILES
     SharedModuleServer.cpp
     SharedModuleServerClass.cpp
-    SharedModuleServer_ModuleMapping.cpp
-    SharedModuleServer_NetProc.cpp
     Transaction/SharedModuleServerTrans.cpp
   )
 
