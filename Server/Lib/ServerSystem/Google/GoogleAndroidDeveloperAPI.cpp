@@ -143,15 +143,39 @@ namespace Google {
 	// Check purchase receipt
 	Result AndroidDeveloperAPI::CheckReceipt(const char* packageName, const char* productID, const char* purchaseToken)
 	{
-		Result hr = ResultCode::SUCCESS;
+		const char* authChar = m_OAuth->GetAuthString();
+
+		FunctionContext hr([this, authChar](Result result)
+		{
+			if (!result)
+			{
+				if (result == ((Result)ResultCode::SVR_INVALID_EXTERNAL_AUTH))
+				{
+					// silently ignore it
+				}
+				else
+				{
+					if (m_ResultBuffer.size() > 0)
+					{
+						m_ResultBuffer.push_back('\0');
+						svrTrace(Error, "Invalid purchase status: hr:{0:X8}, {1}, token:{2}, payload:{3}", result, (const char*)m_ResultBuffer.data(), authChar, m_DeveloperPayload.c_str());
+					}
+					else
+					{
+						svrTrace(Error, "Failed to check purchase status: hr:{0:X8}, token:{1}, payload:{2}", result, authChar, m_DeveloperPayload.c_str());
+					}
+				}
+			}
+		});
+
 		const char* urlFormat = "https://www.googleapis.com/androidpublisher/v2/applications/{0}/purchases/products/{1}/tokens/{2}";
 		CURL *curl = nullptr;
 		char strRequest[2048];
 		CURLcode res;
 		struct curl_slist *headers = nullptr; // init to NULL is important 
 		Json::Value root;
-		Json::Reader reader;
-		const char* authChar = m_OAuth->GetAuthString();
+		Json::CharReaderBuilder jsonReader;
+		std::string errs;
 		bool parsingSuccessful;
 		char *ct = nullptr;
 
@@ -159,33 +183,33 @@ namespace Google {
 
 		StrUtil::Format(strRequest, urlFormat, packageName, productID, purchaseToken);
 
-		svrMem(curl = curl_easy_init());
+		svrCheckMem(curl = curl_easy_init());
 
-		svrChkPtr(authChar);
+		svrCheckPtr(authChar);
 
 		res = curl_easy_setopt(curl, CURLOPT_URL, strRequest);
 		if (res != CURLE_OK)
-			svrErr(ResultCode::UNEXPECTED);
+			svrCheck(ResultCode::UNEXPECTED);
 		Assert(res == 0);
 		curl_easy_setopt(curl, CURLOPT_SSL_VERIFYPEER, false);
 
 		headers = curl_slist_append(headers, authChar);
 		res = curl_easy_setopt(curl, CURLOPT_HTTPHEADER, headers);
 		if (res != CURLE_OK)
-			svrErr(ResultCode::UNEXPECTED);
+			svrCheck(ResultCode::UNEXPECTED);
 
 		res = curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, WriteResultCB);
 		if (res != CURLE_OK)
-			svrErr(ResultCode::UNEXPECTED);
+			svrCheck(ResultCode::UNEXPECTED);
 
 		res = curl_easy_setopt(curl, CURLOPT_WRITEDATA, &m_ResultBuffer);
 		if (res != CURLE_OK)
-			svrErr(ResultCode::UNEXPECTED);
+			svrCheck(ResultCode::UNEXPECTED);
 		Assert(res == 0);
 
 		res = curl_easy_perform(curl); /* ignores error */
 		if (res != CURLE_OK)
-			svrErr(ResultCode::UNEXPECTED);
+			svrCheck(ResultCode::UNEXPECTED);
 		Assert(res == 0);
 
 		curl_easy_setopt(curl, CURLOPT_VERBOSE, 1);
@@ -193,20 +217,21 @@ namespace Google {
 
 		res = curl_easy_getinfo(curl, CURLINFO_CONTENT_TYPE, &ct);
 		if (res != CURLE_OK)
-			svrErr(ResultCode::UNEXPECTED);
+			svrCheck(ResultCode::UNEXPECTED);
 		Assert(res == 0);
 
 		curl_easy_cleanup(curl);
 
-		svrChk(m_ResultBuffer.push_back('\0'));
+		svrCheck(m_ResultBuffer.push_back('\0'));
 
-		parsingSuccessful = reader.parse((char*)m_ResultBuffer.data(), root);
+		std::stringstream inputStream(std::string(reinterpret_cast<const char*>(m_ResultBuffer.data()), m_ResultBuffer.size()), std::ios_base::in);
+		parsingSuccessful = Json::parseFromStream(jsonReader, inputStream, &root, &errs);
 		if (!parsingSuccessful)
 		{
 			// report to the user the failure and their locations in the document.
 			//std::cout << "Failed to parse configuration\n"
 			//	<< reader.getFormatedErrorMessages();
-			svrErr(ToResult(root));
+			svrCheck(ToResult(root));
 		}
 
 		{
@@ -215,62 +240,26 @@ namespace Google {
 
 			auto value = root.get("purchaseState", "");
 			if (value.isNull() || value.isInt() == false)
-			{
-				hr = ToResult(root);
-				goto Proc_End;
-			}
+				return hr = ToResult(root);
 
 			purchaseState = value.asInt();
 
 			value = root.get("consumptionState", "");
 			if (value.isNull() || value.isInt() == false)
-			{
-				hr = ToResult(root);
-				goto Proc_End;
-			}
+				return hr = ToResult(root);
 
 			value = root.get("developerPayload", "");
 			if (value.isNull() || value.isString() == false)
-			{
-				hr = ToResult(root);
-				goto Proc_End;
-			}
+				return hr = ToResult(root);
 
 			m_DeveloperPayload = std::forward<std::string>(value.asString());
 			if (m_DeveloperPayload.length() == 0)
-			{
-				hr = ToResult(root);
-				goto Proc_End;
-			}
+				return hr = ToResult(root);
 
 			if (purchaseState == 1)
-				return ResultCode::SVR_PURCHASE_CANCELED;
+				return hr = ResultCode::SVR_PURCHASE_CANCELED;
 		}
 
-
-	Proc_End:
-
-		if (!(hr))
-		{
-			if (hr == ((Result)ResultCode::SVR_INVALID_EXTERNAL_AUTH))
-			{
-				// silently ignore it
-				//svrTrace(Error, "Invalid auth: hr:{0}, {1}, token:{2}", ArgHex32<uint32_t>(hr), (const char*)m_ResultBuffer.data(), authChar);
-				return hr;
-			}
-			else
-			{
-				if (m_ResultBuffer.size() > 0)
-				{
-					m_ResultBuffer.push_back('\0');
-					svrTrace(Error, "Invalid purchase status: hr:{0:X8}, {1}, token:{2}, payload:{3}", hr, (const char*)m_ResultBuffer.data(), authChar, m_DeveloperPayload.c_str());
-				}
-				else
-				{
-					svrTrace(Error, "Failed to check purchase status: hr:{0:X8}, token:{1}, payload:{2}", hr, authChar, m_DeveloperPayload.c_str());
-				}
-			}
-		}
 
 		return hr;
 	}

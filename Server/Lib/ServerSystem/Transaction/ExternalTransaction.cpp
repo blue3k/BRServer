@@ -378,51 +378,60 @@ Proc_End:
 
 	Result ExternalTransactionIOSRecepitCheck::VerifyReceipt(const char* strURL)
 	{
-		Result hr = ResultCode::SUCCESS;
-
 		char *resultString = nullptr;
+
+		FunctionContext hr([this, &resultString](Result result)
+		{
+			if (!result && m_CurlResult != 0)
+			{
+				svrTrace(Error, "IOS receipt query failed by {0}:{1}, result:{2}", (int)m_CurlResult, curl_easy_strerror(m_CurlResult), resultString);
+			}
+		});
+
 		curl_slist *headers = nullptr;
 		Json::Value root;
-		Json::Reader reader;
+		Json::CharReaderBuilder jsonReader;
+		std::string errs;
+
 		bool parsingSuccessful;
 
-		svrChkPtr(strURL);
+		svrCheckPtr(strURL);
 
 		m_HTTPResult.Clear();
 
 
 		// "https://sandbox.itunes.apple.com/verifyReceipt"
-		// À§´Â ºô¸µ Å×½ºÆ®¿ë »÷µå¹Ú½º. https://buy.itunes.apple.com/verifyReceipt ½ÇÀüÀº ¿©±â´Ù.
+		//  https://buy.itunes.apple.com/verifyReceipt 
 		m_CurlResult = curl_easy_setopt(GetCURL(), CURLOPT_POST, 1L);
-		svrChk(ExternalTransactionManager::ToResult(m_CurlResult));
+		svrCheck(ExternalTransactionManager::ToResult(m_CurlResult));
 		m_CurlResult = curl_easy_setopt(m_Curl, CURLOPT_URL, strURL);
-		svrChk(ExternalTransactionManager::ToResult(m_CurlResult));
+		svrCheck(ExternalTransactionManager::ToResult(m_CurlResult));
 
 		m_CurlResult = curl_easy_setopt(m_Curl, CURLOPT_POSTFIELDSIZE, m_strReceipt.size());
-		svrChk(ExternalTransactionManager::ToResult(m_CurlResult));
+		svrCheck(ExternalTransactionManager::ToResult(m_CurlResult));
 		//m_CurlResult = curl_easy_setopt(m_Curl, CURLOPT_COPYPOSTFIELDS, strBuffer);
 		m_CurlResult = curl_easy_setopt(m_Curl, CURLOPT_POSTFIELDS, (const char*)m_strReceipt.data());
-		svrChk(ExternalTransactionManager::ToResult(m_CurlResult));
+		svrCheck(ExternalTransactionManager::ToResult(m_CurlResult));
 		m_CurlResult = curl_easy_setopt(m_Curl, CURLOPT_SSL_VERIFYHOST, 0L);
-		svrChk(ExternalTransactionManager::ToResult(m_CurlResult));
+		svrCheck(ExternalTransactionManager::ToResult(m_CurlResult));
 
 		//svrMem(headers = curl_slist_append(headers, "Content-Type: text/plain"));
-		svrMem(headers = curl_slist_append(headers, "Content-Type: application/json"));
+		svrCheckMem(headers = curl_slist_append(headers, "Content-Type: application/json"));
 		m_CurlResult = curl_easy_setopt(m_Curl, CURLOPT_HTTPHEADER, headers);
-		svrChk(ExternalTransactionManager::ToResult(m_CurlResult));
+		svrCheck(ExternalTransactionManager::ToResult(m_CurlResult));
 
 
 		m_CurlResult = curl_easy_perform(GetCURL());
-		svrChk(ExternalTransactionManager::ToResult(m_CurlResult));
+		svrCheck(ExternalTransactionManager::ToResult(m_CurlResult));
 
 		m_CurlResult = curl_easy_getinfo(GetCURL(), CURLINFO_CONTENT_TYPE, &resultString);
-		svrChk(ExternalTransactionManager::ToResult(m_CurlResult));
+		svrCheck(ExternalTransactionManager::ToResult(m_CurlResult));
 
-
-		parsingSuccessful = reader.parse((char*)m_HTTPResult.data(), root);
+		std::stringstream inputStream(std::string(reinterpret_cast<const char*>(m_HTTPResult.data()), m_HTTPResult.size()), std::ios_base::in);
+		parsingSuccessful = Json::parseFromStream(jsonReader, inputStream, &root, &errs);
 		if (!parsingSuccessful)
 		{
-			svrErr(ResultCode::UNEXPECTED);
+			svrCheck(ResultCode::UNEXPECTED);
 		}
 
 		{
@@ -433,34 +442,34 @@ Proc_End:
 			auto value = root.get("status", "");
 			if (value.isNull() || value.isInt() == false)
 			{
-				svrErr(ResultCode::SVR_INVALID_PURCHASE_INFO);
+				svrCheck(ResultCode::SVR_INVALID_PURCHASE_INFO);
 			}
 
 			status = value.asInt();
-			svrChk(ToResult(status));
+			svrCheck(ToResult(status));
 
 			receiptInfo = root.get("receipt", "Invalid");
 			if (receiptInfo.isNull() || receiptInfo.isObject() == false)
 			{
-				svrErr(ResultCode::SVR_INVALID_PURCHASE_FORMAT);
+				svrCheck(ResultCode::SVR_INVALID_PURCHASE_FORMAT);
 			}
 
 			value = receiptInfo.get("bundle_id", "Invalid");
 			if (value.isNull() || value.isString() == false)
 			{
-				svrErr(ResultCode::SVR_INVALID_PURCHASE_FORMAT);
+				svrCheck(ResultCode::SVR_INVALID_PURCHASE_FORMAT);
 			}
 			bundleID = std::forward<std::string>(value.asString());
 
 			if (bundleID != m_strPackageName)
 			{
-				svrErr(ResultCode::SVR_INVALID_PURCHASE_INFO);
+				svrCheck(ResultCode::SVR_INVALID_PURCHASE_INFO);
 			}
 
 			inAppPurchases = receiptInfo.get("in_app", "");
 			if (inAppPurchases.isNull() || inAppPurchases.isArray() == false)
 			{
-				svrErr(ResultCode::SVR_INVALID_PURCHASE_FORMAT);
+				svrCheck(ResultCode::SVR_INVALID_PURCHASE_FORMAT);
 			}
 
 			for (auto itPurchase = inAppPurchases.begin(); itPurchase != inAppPurchases.end(); ++itPurchase)
@@ -474,32 +483,24 @@ Proc_End:
 				value = purchase.get("product_id", "Invalid");
 				if (value.isNull() || value.isString() == false)
 				{
-					svrErr(ResultCode::SVR_INVALID_PURCHASE_FORMAT);
+					svrCheck(ResultCode::SVR_INVALID_PURCHASE_FORMAT);
 				}
 				product_id = std::forward<std::string>(value.asString());
 
 				value = purchase.get("original_transaction_id", "Invalid");
 				if (value.isNull() || value.isString() == false)
 				{
-					svrErr(ResultCode::SVR_INVALID_PURCHASE_FORMAT);
+					svrCheck(ResultCode::SVR_INVALID_PURCHASE_FORMAT);
 				}
 				original_transaction_id = std::forward<std::string>(value.asString());
 
 				if (product_id == m_strProductID && original_transaction_id == (char*)m_strTransactionID.data())
 				{
-					goto Proc_End;
+					return hr;
 				}
 			}
 
-			svrErr(ResultCode::SVR_INVALID_PURCHASE_INFO);
-		}
-
-
-	Proc_End:
-
-		if (!(hr) && m_CurlResult != 0)
-		{
-			svrTrace(Error, "IOS receipt query failed by {0}:{1}, result:{2}", (int)m_CurlResult, curl_easy_strerror(m_CurlResult), resultString);
+			svrCheck(ResultCode::SVR_INVALID_PURCHASE_INFO);
 		}
 
 		return hr;

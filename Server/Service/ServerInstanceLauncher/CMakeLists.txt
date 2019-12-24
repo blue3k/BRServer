@@ -1,16 +1,12 @@
 ﻿
 
-source_group(INCLUDES FILES 
-    ServerInstanceLauncher.h
-    ServerInstanceLauncherClass.h
-    ServerEntity/ServerInstanceLauncherEntity.h
-    SFProcessManager.h
-    stdafx.h
-    ZooKeeperCommand.h
-)
 
 
 set(BR_LIB_FILES
+    ServerInstanceLauncher.h
+    ServerInstanceLauncherClass.h
+    SFProcessManager.h
+    ZooKeeperCommand.h
     ServerInstanceLauncher.cpp
     ServerInstanceLauncherClass.cpp
     SFProcessManager.cpp

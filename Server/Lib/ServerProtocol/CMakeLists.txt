@@ -145,6 +145,14 @@ set(BRSERVERPROTOCOL_LIB_FILES
     Protocol/Policy/PartyMatchingQueueNetPolicy.cpp
     Protocol/Policy/RankingServerNetPolicy.cpp
     Protocol/Policy/ServerNetPolicy.cpp
+	Protocol/Message/RelayServerMsgClass.cpp
+	Protocol/Message/RelayServerMsgClass.h
+	Protocol/Message/RelayServerMsgDebug.cpp
+	Protocol/Message/RelayServerMsgDebug.h
+	Protocol/Message/RelayServerMsgParsing.cpp
+	Protocol/Message/RelayServerMsgParsing.h
+	Protocol/Policy/RelayServerNetPolicy.cpp
+	Protocol/Policy/RelayServerNetPolicy.h
     Protocol/ServerService/ChatChannelManagerService.cpp
     Protocol/ServerService/ChatChannelService.cpp
     Protocol/ServerService/ClusterServerService.cpp

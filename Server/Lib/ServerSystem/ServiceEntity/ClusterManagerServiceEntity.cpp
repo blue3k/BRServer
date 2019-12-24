@@ -110,12 +110,13 @@ namespace Svr {
 
 	Result ClusterServiceInfo_Impl::SetNodeValue(const String& nodePath, const Json::Value& jsonValue)
 	{
-		Json::FastWriter writer;
 		auto zkSession = Service::ZKSession->GetZooKeeperSession();
 		if (zkSession == nullptr || !zkSession->IsConnected())
 			return ResultCode::FAIL;
 
-		auto stringValue = std::forward<std::string>(writer.write(jsonValue));
+		Json::StreamWriterBuilder builder;
+		builder["indentation"] = "";
+		auto stringValue = std::forward<std::string>(Json::writeString(builder, jsonValue));
 
 		return zkSession->Set(nodePath, stringValue);
 	}
@@ -149,7 +150,6 @@ namespace Svr {
 		Result hr;
 		ServerServiceInformation* pNewServiceInfo = nullptr;
 		std::string stringValue;
-		Json::FastWriter writer;
 
 		pNewServiceInfo = new(GetHeap()) ServerServiceInformation(
 			pServiceEntity->GetGameID(),

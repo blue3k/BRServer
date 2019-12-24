@@ -38,7 +38,6 @@ namespace SF
 		bool operator == (const ServerFriendInformation& src) const { return FriendInformation::operator ==(src); }
 	};
 
-	template<> inline ServerFriendInformation DefaultValue() { return ServerFriendInformation(); }
 
 
 

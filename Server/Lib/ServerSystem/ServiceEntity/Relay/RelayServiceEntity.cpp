@@ -125,8 +125,6 @@ namespace Svr {
 	}
 
 
-
-
 	// Process network event
 	Result RelayServiceEntity::ProcessNewConnection()
 	{

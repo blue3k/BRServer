@@ -33,7 +33,8 @@ SOURCES=ProtocolClusterServer.xml \
 	ProtocolRankingServer.xml \
 	ProtocolServer.xml \
 	ProtocolChatChannel.xml \
-	ProtocolChatChannelManager.xml
+	ProtocolChatChannelManager.xml \
+	ProtocolRelayServer.xml 
 
 
 SOURCES_POSTFIXED=$(SOURCES:.xml=.h)

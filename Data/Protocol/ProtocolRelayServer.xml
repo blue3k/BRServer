@@ -2,7 +2,7 @@
 <Protocols xmlns="http://www.StormForge.com/XMLProtocol" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.StormForge.com/XMLProtocol ../../StormForge/Engine/Data/Protocol/ProtocolDef.xsd">
 	<ProtocolGroup Name="RelayServer" GenParameterRouteContext="true" IsMobile="false" IsServer="true" Desc="Game Relay Server Protocol">
 
-    <!-- ============================  Relay ============================================ -->
+    <!-- ============================  RelayServer ============================================ -->
 
     <Command Name="CreateRelayInstance" Reliable="true" Crypto="No" Trace="Debug1" Desc="Relay Instance">
 		  <Cmd>
@@ -31,7 +31,6 @@
       <Res>
       </Res>
     </Command>
-
 
     <!-- =============================  ======================================= -->
 

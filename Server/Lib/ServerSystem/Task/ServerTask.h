@@ -144,7 +144,6 @@ namespace SF {
 
 
 	extern template class SharedPointerT<TickTask>;
-	template<> inline SharedPointerT<TickTask> DefaultValue<SharedPointerT<TickTask>>() { return SharedPointerT<TickTask>(); }
 
 
 }; // namespace SF

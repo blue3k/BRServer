@@ -89,7 +89,6 @@ namespace SF {
 
 	typedef SharedPointerT<SF::Svr::PerformanceCounterInstance> PerformanceCounterInstancePtr;
 
-	template<> inline PerformanceCounterInstancePtr DefaultValue<PerformanceCounterInstancePtr>() { return PerformanceCounterInstancePtr(); }
 	
 
 }; // namespace SF

@@ -67,7 +67,6 @@ namespace SF {
 		inline bool operator == ( const ServiceInformation& op ) const;
 	};
 
-	template<> inline ServiceInformation DefaultValue<ServiceInformation>() { return ServiceInformation(); }
 	
 	// Global ID in single machine
 	union GlobalUID

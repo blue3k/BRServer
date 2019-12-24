@@ -686,7 +686,6 @@ extern template class PageQueue<Svr::TransactionResult*>;
 extern template class SharedPointerT < Svr::Transaction >;
 extern template class WeakPointerT < Svr::Transaction >;
 
-template<> inline TransactionPtr DefaultValue<TransactionPtr>() { return TransactionPtr(); }
 
 
 

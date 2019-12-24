@@ -42,7 +42,6 @@ namespace SF {
 			return NotificationID == src.NotificationID && MessageID == src.MessageID;
 		}
 	};
-	template<> constexpr UserNotifySystem_Notification DefaultValue<UserNotifySystem_Notification>() { return UserNotifySystem_Notification(); }
 
 
 

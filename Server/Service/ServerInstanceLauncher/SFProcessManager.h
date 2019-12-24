@@ -86,13 +86,6 @@ namespace SF {
 
 
 
-	template<> inline ProcessManager::ProcessInfo DefaultValue<ProcessManager::ProcessInfo>()
-	{
-		static ProcessManager::ProcessInfo Dummy = { nullptr, };
-		return Dummy;
-	}
-
-
 } // namespace SF
 
 
