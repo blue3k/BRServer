@@ -49,6 +49,7 @@ include_directories(AFTER
 	../StormForge/Engine/Src/SFEngine
 	../StormForge/Engine/Src/Protocol
 #	../StormForge/3rdParties/src/mysql/mysql-8.0.15/include
+	3rdParties/PlayFabGSDK/gsdk/cpp/cppsdk
 	Server/Lib
 	Server/Lib/DB
 	Server/Lib/ServerProtocol
@@ -138,6 +139,7 @@ endif()
 
 set(CMAKE_INSTALL_PREFIX ${CMAKE_CURRENT_SOURCE_DIR}/build${CMAKE_SYSTEM_NAME}/${ARTECTURE}${CMAKE_BUILD_TYPE})
 
+add_subdirectory(3rdParties)
 add_subdirectory(Server)
 add_subdirectory(TestApp)
 

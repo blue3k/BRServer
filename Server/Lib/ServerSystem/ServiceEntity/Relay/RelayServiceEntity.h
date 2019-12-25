@@ -68,6 +68,10 @@ namespace Svr {
 
 	private:
 
+		GameID m_GameID;
+
+		uint32_t m_MaxInstances;
+
 		const ServerConfig::NetPublic*		m_PublicNetSocket = nullptr;
 		Net::RawUDP*						m_pNetPublic = nullptr;
 
@@ -78,7 +82,7 @@ namespace Svr {
 
 	public:
 
-		RelayServiceEntity(const ServerConfig::NetPublic *publicNetSocket, ClusterMembership initialMembership = ClusterMembership::Slave);
+		RelayServiceEntity(GameID gameID, const ServerConfig::NetPublic& publicNetSocket, uint32_t maximumRelayInstances, ClusterMembership initialMembership = ClusterMembership::Slave);
 		~RelayServiceEntity();
 		
 

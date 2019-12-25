@@ -365,8 +365,10 @@ namespace Svr {
 
 
 
-	// Initialize and deinitialization
+	// Initialize engine
 	void InitializeEngineForServer();
+
+	void InitializeEngineForStandaloneServer();
 
 	void DeinitializeEngine();
 

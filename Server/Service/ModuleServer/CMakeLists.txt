@@ -1,18 +1,15 @@
 ﻿
 
-source_group(INCLUDES FILES 
-    GameServer.h
-    SharedModuleServerClass.h
-    SharedModuleSvrConst.h
-    stdafx.h
-    Transaction/SharedModuleServerTrans.h
-	SharedModuleServerClass.inl
-)
+
 
 
 set(BR_LIB_FILES
+    SharedModuleSvrConst.h
     SharedModuleServer.cpp
+	SharedModuleServerClass.h
+	SharedModuleServerClass.inl
     SharedModuleServerClass.cpp
+    Transaction/SharedModuleServerTrans.h
     Transaction/SharedModuleServerTrans.cpp
   )
 

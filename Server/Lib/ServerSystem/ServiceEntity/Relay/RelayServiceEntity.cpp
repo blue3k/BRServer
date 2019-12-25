@@ -47,13 +47,14 @@ namespace Svr {
 	//
 
 
-	RelayServiceEntity::RelayServiceEntity(const ServerConfig::NetPublic *publicNetSocket, ClusterMembership initialMembership)
+	RelayServiceEntity::RelayServiceEntity(GameID gameID, const ServerConfig::NetPublic& publicNetSocket, uint32_t maximumRelayInstances, ClusterMembership initialMembership)
 		: super(nullptr, ClusterID::Relay, initialMembership)
-		, m_PublicNetSocket(publicNetSocket)
+		, m_GameID(gameID)
+		, m_MaxInstances(maximumRelayInstances)
+		, m_PublicNetSocket(&publicNetSocket)
 		, m_pNetPublic(nullptr)
 		, m_NewConnectionQueue(GetHeap())
 	{
-		AssertRel(publicNetSocket != nullptr);
 	}
 
 	RelayServiceEntity::~RelayServiceEntity()

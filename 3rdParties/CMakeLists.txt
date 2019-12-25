@@ -1,0 +1,8 @@
+
+
+
+
+add_subdirectory(PlayFabGSDK)
+
+
+
