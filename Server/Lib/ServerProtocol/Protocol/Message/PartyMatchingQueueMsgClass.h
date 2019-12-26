@@ -49,8 +49,8 @@ namespace SF
 				RegisterPartyMatchingCmd()
 					{}
 
-				RegisterPartyMatchingCmd( MessageDataPtr &pMsg )
-					:MessageBase(pMsg)
+				RegisterPartyMatchingCmd( MessageDataPtr &&pMsg )
+					: MessageBase(std::forward<MessageDataPtr>(pMsg))
 					{}
 
 					MessageUsage GetMessageUsage() { return MessageUsage_None; }
@@ -60,10 +60,10 @@ namespace SF
 				const uint16_t& GetRouteHopCount() const	{ return m_RouteHopCount; };
 				const Array<MatchingPlayerInformation>& GetPlayers() const	{ return m_Players; };
 
-				static Result TraceOut(const char* prefix, MessageDataPtr& pMsg);
+				static Result TraceOut(const char* prefix, const MessageDataPtr& pMsg);
 
 				virtual Result ParseMessage( MessageData* pIMsg );
-				static Result ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr& pIMsg, MessageBase* &pMsgBase );
+				static Result ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr&& pIMsg, MessageBase* &pMsgBase );
 
 				static MessageData* Create( IHeap& memHeap, const RouteContext &InRouteContext, const uint64_t &InTransactionID, const uint16_t &InRouteHopCount, const Array<MatchingPlayerInformation>& InPlayers );
 
@@ -99,8 +99,8 @@ namespace SF
 				RegisterPartyMatchingRes()
 					{}
 
-				RegisterPartyMatchingRes( MessageDataPtr &pMsg )
-					:MessageBase(pMsg)
+				RegisterPartyMatchingRes( MessageDataPtr &&pMsg )
+					: MessageBase(std::forward<MessageDataPtr>(pMsg))
 					{}
 
 					MessageUsage GetMessageUsage() { return MessageUsage_None; }
@@ -110,10 +110,10 @@ namespace SF
 				const Result& GetResult() const	{ return m_Result; };
 				const MatchingQueueTicket& GetMatchingTicket() const	{ return m_MatchingTicket; };
 
-				static Result TraceOut(const char* prefix, MessageDataPtr& pMsg);
+				static Result TraceOut(const char* prefix, const MessageDataPtr& pMsg);
 
 				virtual Result ParseMessage( MessageData* pIMsg );
-				static Result ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr& pIMsg, MessageBase* &pMsgBase );
+				static Result ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr&& pIMsg, MessageBase* &pMsgBase );
 
 				static MessageData* Create( IHeap& memHeap, const RouteContext &InRouteContext, const uint64_t &InTransactionID, const Result &InResult, const MatchingQueueTicket &InMatchingTicket );
 
@@ -148,8 +148,8 @@ namespace SF
 				RegisterPlayerMatchingCmd()
 					{}
 
-				RegisterPlayerMatchingCmd( MessageDataPtr &pMsg )
-					:MessageBase(pMsg)
+				RegisterPlayerMatchingCmd( MessageDataPtr &&pMsg )
+					: MessageBase(std::forward<MessageDataPtr>(pMsg))
 					{}
 
 					MessageUsage GetMessageUsage() { return MessageUsage_None; }
@@ -159,10 +159,10 @@ namespace SF
 				const uint16_t& GetRouteHopCount() const	{ return m_RouteHopCount; };
 				const PlayerID& GetPlayerID() const	{ return m_PlayerID; };
 
-				static Result TraceOut(const char* prefix, MessageDataPtr& pMsg);
+				static Result TraceOut(const char* prefix, const MessageDataPtr& pMsg);
 
 				virtual Result ParseMessage( MessageData* pIMsg );
-				static Result ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr& pIMsg, MessageBase* &pMsgBase );
+				static Result ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr&& pIMsg, MessageBase* &pMsgBase );
 
 				static MessageData* Create( IHeap& memHeap, const RouteContext &InRouteContext, const uint64_t &InTransactionID, const uint16_t &InRouteHopCount, const PlayerID &InPlayerID );
 
@@ -198,8 +198,8 @@ namespace SF
 				RegisterPlayerMatchingRes()
 					{}
 
-				RegisterPlayerMatchingRes( MessageDataPtr &pMsg )
-					:MessageBase(pMsg)
+				RegisterPlayerMatchingRes( MessageDataPtr &&pMsg )
+					: MessageBase(std::forward<MessageDataPtr>(pMsg))
 					{}
 
 					MessageUsage GetMessageUsage() { return MessageUsage_None; }
@@ -209,10 +209,10 @@ namespace SF
 				const Result& GetResult() const	{ return m_Result; };
 				const MatchingQueueTicket& GetMatchingTicket() const	{ return m_MatchingTicket; };
 
-				static Result TraceOut(const char* prefix, MessageDataPtr& pMsg);
+				static Result TraceOut(const char* prefix, const MessageDataPtr& pMsg);
 
 				virtual Result ParseMessage( MessageData* pIMsg );
-				static Result ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr& pIMsg, MessageBase* &pMsgBase );
+				static Result ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr&& pIMsg, MessageBase* &pMsgBase );
 
 				static MessageData* Create( IHeap& memHeap, const RouteContext &InRouteContext, const uint64_t &InTransactionID, const Result &InResult, const MatchingQueueTicket &InMatchingTicket );
 
@@ -249,8 +249,8 @@ namespace SF
 				UpdateMatchingEntityUIDCmd()
 					{}
 
-				UpdateMatchingEntityUIDCmd( MessageDataPtr &pMsg )
-					:MessageBase(pMsg)
+				UpdateMatchingEntityUIDCmd( MessageDataPtr &&pMsg )
+					: MessageBase(std::forward<MessageDataPtr>(pMsg))
 					{}
 
 					MessageUsage GetMessageUsage() { return MessageUsage_None; }
@@ -261,10 +261,10 @@ namespace SF
 				const MatchingQueueTicket& GetMatchingTicket() const	{ return m_MatchingTicket; };
 				const uint64_t& GetPreviousUID() const	{ return m_PreviousUID; };
 
-				static Result TraceOut(const char* prefix, MessageDataPtr& pMsg);
+				static Result TraceOut(const char* prefix, const MessageDataPtr& pMsg);
 
 				virtual Result ParseMessage( MessageData* pIMsg );
-				static Result ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr& pIMsg, MessageBase* &pMsgBase );
+				static Result ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr&& pIMsg, MessageBase* &pMsgBase );
 
 				static MessageData* Create( IHeap& memHeap, const RouteContext &InRouteContext, const uint64_t &InTransactionID, const uint16_t &InRouteHopCount, const MatchingQueueTicket &InMatchingTicket, const uint64_t &InPreviousUID );
 
@@ -299,8 +299,8 @@ namespace SF
 				UpdateMatchingEntityUIDRes()
 					{}
 
-				UpdateMatchingEntityUIDRes( MessageDataPtr &pMsg )
-					:MessageBase(pMsg)
+				UpdateMatchingEntityUIDRes( MessageDataPtr &&pMsg )
+					: MessageBase(std::forward<MessageDataPtr>(pMsg))
 					{}
 
 					MessageUsage GetMessageUsage() { return MessageUsage_None; }
@@ -309,10 +309,10 @@ namespace SF
 				const uint64_t& GetTransactionID() const	{ return m_TransactionID; };
 				const Result& GetResult() const	{ return m_Result; };
 
-				static Result TraceOut(const char* prefix, MessageDataPtr& pMsg);
+				static Result TraceOut(const char* prefix, const MessageDataPtr& pMsg);
 
 				virtual Result ParseMessage( MessageData* pIMsg );
-				static Result ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr& pIMsg, MessageBase* &pMsgBase );
+				static Result ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr&& pIMsg, MessageBase* &pMsgBase );
 
 				static MessageData* Create( IHeap& memHeap, const RouteContext &InRouteContext, const uint64_t &InTransactionID, const Result &InResult );
 
@@ -348,8 +348,8 @@ namespace SF
 				UnregisterMatchingCmd()
 					{}
 
-				UnregisterMatchingCmd( MessageDataPtr &pMsg )
-					:MessageBase(pMsg)
+				UnregisterMatchingCmd( MessageDataPtr &&pMsg )
+					: MessageBase(std::forward<MessageDataPtr>(pMsg))
 					{}
 
 					MessageUsage GetMessageUsage() { return MessageUsage_None; }
@@ -359,10 +359,10 @@ namespace SF
 				const uint16_t& GetRouteHopCount() const	{ return m_RouteHopCount; };
 				const MatchingQueueTicket& GetMatchingTicket() const	{ return m_MatchingTicket; };
 
-				static Result TraceOut(const char* prefix, MessageDataPtr& pMsg);
+				static Result TraceOut(const char* prefix, const MessageDataPtr& pMsg);
 
 				virtual Result ParseMessage( MessageData* pIMsg );
-				static Result ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr& pIMsg, MessageBase* &pMsgBase );
+				static Result ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr&& pIMsg, MessageBase* &pMsgBase );
 
 				static MessageData* Create( IHeap& memHeap, const RouteContext &InRouteContext, const uint64_t &InTransactionID, const uint16_t &InRouteHopCount, const MatchingQueueTicket &InMatchingTicket );
 
@@ -397,8 +397,8 @@ namespace SF
 				UnregisterMatchingRes()
 					{}
 
-				UnregisterMatchingRes( MessageDataPtr &pMsg )
-					:MessageBase(pMsg)
+				UnregisterMatchingRes( MessageDataPtr &&pMsg )
+					: MessageBase(std::forward<MessageDataPtr>(pMsg))
 					{}
 
 					MessageUsage GetMessageUsage() { return MessageUsage_None; }
@@ -407,10 +407,10 @@ namespace SF
 				const uint64_t& GetTransactionID() const	{ return m_TransactionID; };
 				const Result& GetResult() const	{ return m_Result; };
 
-				static Result TraceOut(const char* prefix, MessageDataPtr& pMsg);
+				static Result TraceOut(const char* prefix, const MessageDataPtr& pMsg);
 
 				virtual Result ParseMessage( MessageData* pIMsg );
-				static Result ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr& pIMsg, MessageBase* &pMsgBase );
+				static Result ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr&& pIMsg, MessageBase* &pMsgBase );
 
 				static MessageData* Create( IHeap& memHeap, const RouteContext &InRouteContext, const uint64_t &InTransactionID, const Result &InResult );
 
@@ -447,8 +447,8 @@ namespace SF
 				PartyMatchingCanceledS2CEvt()
 					{}
 
-				PartyMatchingCanceledS2CEvt( MessageDataPtr &pMsg )
-					:MessageBase(pMsg)
+				PartyMatchingCanceledS2CEvt( MessageDataPtr &&pMsg )
+					: MessageBase(std::forward<MessageDataPtr>(pMsg))
 					{}
 
 					MessageUsage GetMessageUsage() { return MessageUsage_None; }
@@ -458,10 +458,10 @@ namespace SF
 				const uint64_t& GetDestPartyUID() const	{ return m_DestPartyUID; };
 				const MatchingQueueTicket& GetMatchingTicket() const	{ return m_MatchingTicket; };
 
-				static Result TraceOut(const char* prefix, MessageDataPtr& pMsg);
+				static Result TraceOut(const char* prefix, const MessageDataPtr& pMsg);
 
 				virtual Result ParseMessage( MessageData* pIMsg );
-				static Result ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr& pIMsg, MessageBase* &pMsgBase );
+				static Result ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr&& pIMsg, MessageBase* &pMsgBase );
 
 				static MessageData* Create( IHeap& memHeap, const RouteContext &InRouteContext, const uint16_t &InRouteHopCount, const uint64_t &InDestPartyUID, const MatchingQueueTicket &InMatchingTicket );
 
@@ -498,8 +498,8 @@ namespace SF
 				PlayerMatchingCanceledS2CEvt()
 					{}
 
-				PlayerMatchingCanceledS2CEvt( MessageDataPtr &pMsg )
-					:MessageBase(pMsg)
+				PlayerMatchingCanceledS2CEvt( MessageDataPtr &&pMsg )
+					: MessageBase(std::forward<MessageDataPtr>(pMsg))
 					{}
 
 					MessageUsage GetMessageUsage() { return MessageUsage_None; }
@@ -509,10 +509,10 @@ namespace SF
 				const PlayerID& GetDestPlayerID() const	{ return m_DestPlayerID; };
 				const MatchingQueueTicket& GetMatchingTicket() const	{ return m_MatchingTicket; };
 
-				static Result TraceOut(const char* prefix, MessageDataPtr& pMsg);
+				static Result TraceOut(const char* prefix, const MessageDataPtr& pMsg);
 
 				virtual Result ParseMessage( MessageData* pIMsg );
-				static Result ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr& pIMsg, MessageBase* &pMsgBase );
+				static Result ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr&& pIMsg, MessageBase* &pMsgBase );
 
 				static MessageData* Create( IHeap& memHeap, const RouteContext &InRouteContext, const uint16_t &InRouteHopCount, const PlayerID &InDestPlayerID, const MatchingQueueTicket &InMatchingTicket );
 
@@ -548,8 +548,8 @@ namespace SF
 				PartyMatchingItemDequeuedS2CEvt()
 					{}
 
-				PartyMatchingItemDequeuedS2CEvt( MessageDataPtr &pMsg )
-					:MessageBase(pMsg)
+				PartyMatchingItemDequeuedS2CEvt( MessageDataPtr &&pMsg )
+					: MessageBase(std::forward<MessageDataPtr>(pMsg))
 					{}
 
 					MessageUsage GetMessageUsage() { return MessageUsage_None; }
@@ -558,10 +558,10 @@ namespace SF
 				const uint16_t& GetRouteHopCount() const	{ return m_RouteHopCount; };
 				const MatchingQueueTicket& GetMatchingTicket() const	{ return m_MatchingTicket; };
 
-				static Result TraceOut(const char* prefix, MessageDataPtr& pMsg);
+				static Result TraceOut(const char* prefix, const MessageDataPtr& pMsg);
 
 				virtual Result ParseMessage( MessageData* pIMsg );
-				static Result ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr& pIMsg, MessageBase* &pMsgBase );
+				static Result ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr&& pIMsg, MessageBase* &pMsgBase );
 
 				static MessageData* Create( IHeap& memHeap, const RouteContext &InRouteContext, const uint16_t &InRouteHopCount, const MatchingQueueTicket &InMatchingTicket );
 
@@ -597,8 +597,8 @@ namespace SF
 				PlayerMatchingItemDequeuedS2CEvt()
 					{}
 
-				PlayerMatchingItemDequeuedS2CEvt( MessageDataPtr &pMsg )
-					:MessageBase(pMsg)
+				PlayerMatchingItemDequeuedS2CEvt( MessageDataPtr &&pMsg )
+					: MessageBase(std::forward<MessageDataPtr>(pMsg))
 					{}
 
 					MessageUsage GetMessageUsage() { return MessageUsage_None; }
@@ -607,10 +607,10 @@ namespace SF
 				const uint16_t& GetRouteHopCount() const	{ return m_RouteHopCount; };
 				const MatchingQueueTicket& GetMatchingTicket() const	{ return m_MatchingTicket; };
 
-				static Result TraceOut(const char* prefix, MessageDataPtr& pMsg);
+				static Result TraceOut(const char* prefix, const MessageDataPtr& pMsg);
 
 				virtual Result ParseMessage( MessageData* pIMsg );
-				static Result ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr& pIMsg, MessageBase* &pMsgBase );
+				static Result ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr&& pIMsg, MessageBase* &pMsgBase );
 
 				static MessageData* Create( IHeap& memHeap, const RouteContext &InRouteContext, const uint16_t &InRouteHopCount, const MatchingQueueTicket &InMatchingTicket );
 
@@ -645,8 +645,8 @@ namespace SF
 				ReserveItemCmd()
 					{}
 
-				ReserveItemCmd( MessageDataPtr &pMsg )
-					:MessageBase(pMsg)
+				ReserveItemCmd( MessageDataPtr &&pMsg )
+					: MessageBase(std::forward<MessageDataPtr>(pMsg))
 					{}
 
 					MessageUsage GetMessageUsage() { return MessageUsage_None; }
@@ -655,10 +655,10 @@ namespace SF
 				const uint64_t& GetTransactionID() const	{ return m_TransactionID; };
 				const uint16_t& GetRouteHopCount() const	{ return m_RouteHopCount; };
 
-				static Result TraceOut(const char* prefix, MessageDataPtr& pMsg);
+				static Result TraceOut(const char* prefix, const MessageDataPtr& pMsg);
 
 				virtual Result ParseMessage( MessageData* pIMsg );
-				static Result ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr& pIMsg, MessageBase* &pMsgBase );
+				static Result ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr&& pIMsg, MessageBase* &pMsgBase );
 
 				static MessageData* Create( IHeap& memHeap, const RouteContext &InRouteContext, const uint64_t &InTransactionID, const uint16_t &InRouteHopCount );
 
@@ -695,8 +695,8 @@ namespace SF
 				ReserveItemRes()
 					{}
 
-				ReserveItemRes( MessageDataPtr &pMsg )
-					:MessageBase(pMsg)
+				ReserveItemRes( MessageDataPtr &&pMsg )
+					: MessageBase(std::forward<MessageDataPtr>(pMsg))
 					{}
 
 					MessageUsage GetMessageUsage() { return MessageUsage_None; }
@@ -707,10 +707,10 @@ namespace SF
 				const uint32_t& GetNumberOfPlayersInTheItem() const	{ return m_NumberOfPlayersInTheItem; };
 				const MatchingQueueTicket& GetMatchingTicket() const	{ return m_MatchingTicket; };
 
-				static Result TraceOut(const char* prefix, MessageDataPtr& pMsg);
+				static Result TraceOut(const char* prefix, const MessageDataPtr& pMsg);
 
 				virtual Result ParseMessage( MessageData* pIMsg );
-				static Result ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr& pIMsg, MessageBase* &pMsgBase );
+				static Result ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr&& pIMsg, MessageBase* &pMsgBase );
 
 				static MessageData* Create( IHeap& memHeap, const RouteContext &InRouteContext, const uint64_t &InTransactionID, const Result &InResult, const uint32_t &InNumberOfPlayersInTheItem, const MatchingQueueTicket &InMatchingTicket );
 
@@ -746,8 +746,8 @@ namespace SF
 				ReserveItemsCmd()
 					{}
 
-				ReserveItemsCmd( MessageDataPtr &pMsg )
-					:MessageBase(pMsg)
+				ReserveItemsCmd( MessageDataPtr &&pMsg )
+					: MessageBase(std::forward<MessageDataPtr>(pMsg))
 					{}
 
 					MessageUsage GetMessageUsage() { return MessageUsage_None; }
@@ -757,10 +757,10 @@ namespace SF
 				const uint16_t& GetRouteHopCount() const	{ return m_RouteHopCount; };
 				const uint32_t& GetNumberOfItemsToReserve() const	{ return m_NumberOfItemsToReserve; };
 
-				static Result TraceOut(const char* prefix, MessageDataPtr& pMsg);
+				static Result TraceOut(const char* prefix, const MessageDataPtr& pMsg);
 
 				virtual Result ParseMessage( MessageData* pIMsg );
-				static Result ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr& pIMsg, MessageBase* &pMsgBase );
+				static Result ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr&& pIMsg, MessageBase* &pMsgBase );
 
 				static MessageData* Create( IHeap& memHeap, const RouteContext &InRouteContext, const uint64_t &InTransactionID, const uint16_t &InRouteHopCount, const uint32_t &InNumberOfItemsToReserve );
 
@@ -797,8 +797,8 @@ namespace SF
 				ReserveItemsRes()
 					{}
 
-				ReserveItemsRes( MessageDataPtr &pMsg )
-					:MessageBase(pMsg)
+				ReserveItemsRes( MessageDataPtr &&pMsg )
+					: MessageBase(std::forward<MessageDataPtr>(pMsg))
 					{}
 
 					MessageUsage GetMessageUsage() { return MessageUsage_None; }
@@ -809,10 +809,10 @@ namespace SF
 				const Array<uint32_t>& GetNumberOfPlayersInTheItem() const	{ return m_NumberOfPlayersInTheItem; };
 				const Array<MatchingQueueTicket>& GetMatchingTicket() const	{ return m_MatchingTicket; };
 
-				static Result TraceOut(const char* prefix, MessageDataPtr& pMsg);
+				static Result TraceOut(const char* prefix, const MessageDataPtr& pMsg);
 
 				virtual Result ParseMessage( MessageData* pIMsg );
-				static Result ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr& pIMsg, MessageBase* &pMsgBase );
+				static Result ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr&& pIMsg, MessageBase* &pMsgBase );
 
 				static MessageData* Create( IHeap& memHeap, const RouteContext &InRouteContext, const uint64_t &InTransactionID, const Result &InResult, const Array<uint32_t>& InNumberOfPlayersInTheItem, const Array<MatchingQueueTicket>& InMatchingTicket );
 
@@ -848,8 +848,8 @@ namespace SF
 				CancelReservationCmd()
 					{}
 
-				CancelReservationCmd( MessageDataPtr &pMsg )
-					:MessageBase(pMsg)
+				CancelReservationCmd( MessageDataPtr &&pMsg )
+					: MessageBase(std::forward<MessageDataPtr>(pMsg))
 					{}
 
 					MessageUsage GetMessageUsage() { return MessageUsage_None; }
@@ -859,10 +859,10 @@ namespace SF
 				const uint16_t& GetRouteHopCount() const	{ return m_RouteHopCount; };
 				const MatchingQueueTicket& GetTicketToCancel() const	{ return m_TicketToCancel; };
 
-				static Result TraceOut(const char* prefix, MessageDataPtr& pMsg);
+				static Result TraceOut(const char* prefix, const MessageDataPtr& pMsg);
 
 				virtual Result ParseMessage( MessageData* pIMsg );
-				static Result ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr& pIMsg, MessageBase* &pMsgBase );
+				static Result ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr&& pIMsg, MessageBase* &pMsgBase );
 
 				static MessageData* Create( IHeap& memHeap, const RouteContext &InRouteContext, const uint64_t &InTransactionID, const uint16_t &InRouteHopCount, const MatchingQueueTicket &InTicketToCancel );
 
@@ -897,8 +897,8 @@ namespace SF
 				CancelReservationRes()
 					{}
 
-				CancelReservationRes( MessageDataPtr &pMsg )
-					:MessageBase(pMsg)
+				CancelReservationRes( MessageDataPtr &&pMsg )
+					: MessageBase(std::forward<MessageDataPtr>(pMsg))
 					{}
 
 					MessageUsage GetMessageUsage() { return MessageUsage_None; }
@@ -907,10 +907,10 @@ namespace SF
 				const uint64_t& GetTransactionID() const	{ return m_TransactionID; };
 				const Result& GetResult() const	{ return m_Result; };
 
-				static Result TraceOut(const char* prefix, MessageDataPtr& pMsg);
+				static Result TraceOut(const char* prefix, const MessageDataPtr& pMsg);
 
 				virtual Result ParseMessage( MessageData* pIMsg );
-				static Result ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr& pIMsg, MessageBase* &pMsgBase );
+				static Result ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr&& pIMsg, MessageBase* &pMsgBase );
 
 				static MessageData* Create( IHeap& memHeap, const RouteContext &InRouteContext, const uint64_t &InTransactionID, const Result &InResult );
 
@@ -946,8 +946,8 @@ namespace SF
 				CancelReservationsCmd()
 					{}
 
-				CancelReservationsCmd( MessageDataPtr &pMsg )
-					:MessageBase(pMsg)
+				CancelReservationsCmd( MessageDataPtr &&pMsg )
+					: MessageBase(std::forward<MessageDataPtr>(pMsg))
 					{}
 
 					MessageUsage GetMessageUsage() { return MessageUsage_None; }
@@ -957,10 +957,10 @@ namespace SF
 				const uint16_t& GetRouteHopCount() const	{ return m_RouteHopCount; };
 				const Array<MatchingQueueTicket>& GetTicketToCancel() const	{ return m_TicketToCancel; };
 
-				static Result TraceOut(const char* prefix, MessageDataPtr& pMsg);
+				static Result TraceOut(const char* prefix, const MessageDataPtr& pMsg);
 
 				virtual Result ParseMessage( MessageData* pIMsg );
-				static Result ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr& pIMsg, MessageBase* &pMsgBase );
+				static Result ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr&& pIMsg, MessageBase* &pMsgBase );
 
 				static MessageData* Create( IHeap& memHeap, const RouteContext &InRouteContext, const uint64_t &InTransactionID, const uint16_t &InRouteHopCount, const Array<MatchingQueueTicket>& InTicketToCancel );
 
@@ -995,8 +995,8 @@ namespace SF
 				CancelReservationsRes()
 					{}
 
-				CancelReservationsRes( MessageDataPtr &pMsg )
-					:MessageBase(pMsg)
+				CancelReservationsRes( MessageDataPtr &&pMsg )
+					: MessageBase(std::forward<MessageDataPtr>(pMsg))
 					{}
 
 					MessageUsage GetMessageUsage() { return MessageUsage_None; }
@@ -1005,10 +1005,10 @@ namespace SF
 				const uint64_t& GetTransactionID() const	{ return m_TransactionID; };
 				const Result& GetResult() const	{ return m_Result; };
 
-				static Result TraceOut(const char* prefix, MessageDataPtr& pMsg);
+				static Result TraceOut(const char* prefix, const MessageDataPtr& pMsg);
 
 				virtual Result ParseMessage( MessageData* pIMsg );
-				static Result ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr& pIMsg, MessageBase* &pMsgBase );
+				static Result ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr&& pIMsg, MessageBase* &pMsgBase );
 
 				static MessageData* Create( IHeap& memHeap, const RouteContext &InRouteContext, const uint64_t &InTransactionID, const Result &InResult );
 
@@ -1044,8 +1044,8 @@ namespace SF
 				DequeueItemCmd()
 					{}
 
-				DequeueItemCmd( MessageDataPtr &pMsg )
-					:MessageBase(pMsg)
+				DequeueItemCmd( MessageDataPtr &&pMsg )
+					: MessageBase(std::forward<MessageDataPtr>(pMsg))
 					{}
 
 					MessageUsage GetMessageUsage() { return MessageUsage_None; }
@@ -1055,10 +1055,10 @@ namespace SF
 				const uint16_t& GetRouteHopCount() const	{ return m_RouteHopCount; };
 				const MatchingQueueTicket& GetMatchingTicket() const	{ return m_MatchingTicket; };
 
-				static Result TraceOut(const char* prefix, MessageDataPtr& pMsg);
+				static Result TraceOut(const char* prefix, const MessageDataPtr& pMsg);
 
 				virtual Result ParseMessage( MessageData* pIMsg );
-				static Result ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr& pIMsg, MessageBase* &pMsgBase );
+				static Result ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr&& pIMsg, MessageBase* &pMsgBase );
 
 				static MessageData* Create( IHeap& memHeap, const RouteContext &InRouteContext, const uint64_t &InTransactionID, const uint16_t &InRouteHopCount, const MatchingQueueTicket &InMatchingTicket );
 
@@ -1097,8 +1097,8 @@ namespace SF
 				DequeueItemRes()
 					{}
 
-				DequeueItemRes( MessageDataPtr &pMsg )
-					:MessageBase(pMsg)
+				DequeueItemRes( MessageDataPtr &&pMsg )
+					: MessageBase(std::forward<MessageDataPtr>(pMsg))
 					{}
 
 					MessageUsage GetMessageUsage() { return MessageUsage_None; }
@@ -1111,10 +1111,10 @@ namespace SF
 				const PlayerID& GetRegisterID() const	{ return m_RegisterID; };
 				const Array<MatchingPlayerInformation>& GetPlayers() const	{ return m_Players; };
 
-				static Result TraceOut(const char* prefix, MessageDataPtr& pMsg);
+				static Result TraceOut(const char* prefix, const MessageDataPtr& pMsg);
 
 				virtual Result ParseMessage( MessageData* pIMsg );
-				static Result ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr& pIMsg, MessageBase* &pMsgBase );
+				static Result ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr&& pIMsg, MessageBase* &pMsgBase );
 
 				static MessageData* Create( IHeap& memHeap, const RouteContext &InRouteContext, const uint64_t &InTransactionID, const Result &InResult, const MatchingQueueTicket &InMatchingTicket, const uint64_t &InRegisterUID, const PlayerID &InRegisterID, const Array<MatchingPlayerInformation>& InPlayers );
 
@@ -1150,8 +1150,8 @@ namespace SF
 				MatchingItemErrorC2SEvt()
 					{}
 
-				MatchingItemErrorC2SEvt( MessageDataPtr &pMsg )
-					:MessageBase(pMsg)
+				MatchingItemErrorC2SEvt( MessageDataPtr &&pMsg )
+					: MessageBase(std::forward<MessageDataPtr>(pMsg))
 					{}
 
 					MessageUsage GetMessageUsage() { return MessageUsage_None; }
@@ -1160,10 +1160,10 @@ namespace SF
 				const uint16_t& GetRouteHopCount() const	{ return m_RouteHopCount; };
 				const MatchingQueueTicket& GetMatchingTicket() const	{ return m_MatchingTicket; };
 
-				static Result TraceOut(const char* prefix, MessageDataPtr& pMsg);
+				static Result TraceOut(const char* prefix, const MessageDataPtr& pMsg);
 
 				virtual Result ParseMessage( MessageData* pIMsg );
-				static Result ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr& pIMsg, MessageBase* &pMsgBase );
+				static Result ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr&& pIMsg, MessageBase* &pMsgBase );
 
 				static MessageData* Create( IHeap& memHeap, const RouteContext &InRouteContext, const uint16_t &InRouteHopCount, const MatchingQueueTicket &InMatchingTicket );
 

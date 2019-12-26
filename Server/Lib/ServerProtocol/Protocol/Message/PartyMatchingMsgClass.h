@@ -48,8 +48,8 @@ namespace SF
 				PartyGameMatchedS2CEvt()
 					{}
 
-				PartyGameMatchedS2CEvt( MessageDataPtr &pMsg )
-					:MessageBase(pMsg)
+				PartyGameMatchedS2CEvt( MessageDataPtr &&pMsg )
+					: MessageBase(std::forward<MessageDataPtr>(pMsg))
 					{}
 
 					MessageUsage GetMessageUsage() { return MessageUsage_None; }
@@ -57,10 +57,10 @@ namespace SF
 				const RouteContext& GetRouteContext() const	{ return m_RouteContext; };
 				const uint16_t& GetRouteHopCount() const	{ return m_RouteHopCount; };
 
-				static Result TraceOut(const char* prefix, MessageDataPtr& pMsg);
+				static Result TraceOut(const char* prefix, const MessageDataPtr& pMsg);
 
 				virtual Result ParseMessage( MessageData* pIMsg );
-				static Result ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr& pIMsg, MessageBase* &pMsgBase );
+				static Result ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr&& pIMsg, MessageBase* &pMsgBase );
 
 				static MessageData* Create( IHeap& memHeap, const RouteContext &InRouteContext, const uint16_t &InRouteHopCount );
 
@@ -98,8 +98,8 @@ namespace SF
 				PlayerGameMatchedS2CEvt()
 					{}
 
-				PlayerGameMatchedS2CEvt( MessageDataPtr &pMsg )
-					:MessageBase(pMsg)
+				PlayerGameMatchedS2CEvt( MessageDataPtr &&pMsg )
+					: MessageBase(std::forward<MessageDataPtr>(pMsg))
 					{}
 
 					MessageUsage GetMessageUsage() { return MessageUsage_None; }
@@ -110,10 +110,10 @@ namespace SF
 				const uint64_t& GetGameInsUID() const	{ return m_GameInsUID; };
 				const uint8_t& GetRequestedRole() const	{ return m_RequestedRole; };
 
-				static Result TraceOut(const char* prefix, MessageDataPtr& pMsg);
+				static Result TraceOut(const char* prefix, const MessageDataPtr& pMsg);
 
 				virtual Result ParseMessage( MessageData* pIMsg );
-				static Result ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr& pIMsg, MessageBase* &pMsgBase );
+				static Result ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr&& pIMsg, MessageBase* &pMsgBase );
 
 				static MessageData* Create( IHeap& memHeap, const RouteContext &InRouteContext, const uint16_t &InRouteHopCount, const PlayerID &InDestPlayerID, const uint64_t &InGameInsUID, const uint8_t &InRequestedRole );
 

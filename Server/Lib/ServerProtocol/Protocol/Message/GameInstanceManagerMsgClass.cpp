@@ -54,17 +54,17 @@ namespace SF
 			}; // Result CreateGameCmd::ParseMessage( MessageData* pIMsg )
 
 
-			Result CreateGameCmd::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
+			Result CreateGameCmd::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr&& pIMsg, MessageBase* &pMessageBase )
 			{
  				Result hr;
 
-				protocolMem(pMessageBase = new(memHeap) CreateGameCmd(pIMsg));
+				protocolMem(pMessageBase = new(memHeap) CreateGameCmd(std::forward<MessageDataPtr>(pIMsg)));
 				protocolChk(pMessageBase->ParseMsg());
 
 			Proc_End:
 				return hr;
 
-			}; // Result CreateGameCmd::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
+			}; // Result CreateGameCmd::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr&& pIMsg, MessageBase* &pMessageBase )
 
 			MessageData* CreateGameCmd::Create( IHeap& memHeap, const RouteContext &InRouteContext, const uint64_t &InTransactionID, const uint16_t &InRouteHopCount, const uint16_t &InNumberOfBotPlayer, const uint16_t &InMaxPlayer )
 			{
@@ -160,14 +160,14 @@ namespace SF
 
 			}; // Result CreateGameCmd::OverrideRouteInformation( EntityUID to, unsigned hopCount )
 
-			Result CreateGameCmd::TraceOut(const char* prefix, MessageDataPtr& pMsg)
+			Result CreateGameCmd::TraceOut(const char* prefix, const MessageDataPtr& pMsg)
 			{
  				CreateGameCmd parser;
 				parser.ParseMessage(*pMsg);
 				protocolTrace( Debug1, "CreateGame:{0}:{1} , RouteContext:{2}, TransactionID:{3}, RouteHopCount:{4}, NumberOfBotPlayer:{5}, MaxPlayer:{6}",
 						prefix, pMsg->GetMessageHeader()->Length, parser.GetRouteContext(), parser.GetTransactionID(), parser.GetRouteHopCount(), parser.GetNumberOfBotPlayer(), parser.GetMaxPlayer()); 
 				return ResultCode::SUCCESS;
-			}; // Result CreateGameCmd::TraceOut(const char* prefix, MessageDataPtr& pMsg)
+			}; // Result CreateGameCmd::TraceOut(const char* prefix, const MessageDataPtr& pMsg)
 
 			const MessageID CreateGameRes::MID = MessageID(MSGTYPE_RESULT, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_GAMEINSTANCEMANAGER, 0);
 			Result CreateGameRes::ParseMessage( MessageData* pIMsg )
@@ -194,17 +194,17 @@ namespace SF
 			}; // Result CreateGameRes::ParseMessage( MessageData* pIMsg )
 
 
-			Result CreateGameRes::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
+			Result CreateGameRes::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr&& pIMsg, MessageBase* &pMessageBase )
 			{
  				Result hr;
 
-				protocolMem(pMessageBase = new(memHeap) CreateGameRes(pIMsg));
+				protocolMem(pMessageBase = new(memHeap) CreateGameRes(std::forward<MessageDataPtr>(pIMsg)));
 				protocolChk(pMessageBase->ParseMsg());
 
 			Proc_End:
 				return hr;
 
-			}; // Result CreateGameRes::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
+			}; // Result CreateGameRes::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr&& pIMsg, MessageBase* &pMessageBase )
 
 			MessageData* CreateGameRes::Create( IHeap& memHeap, const RouteContext &InRouteContext, const uint64_t &InTransactionID, const Result &InResult )
 			{
@@ -294,14 +294,14 @@ namespace SF
 
 			}; // Result CreateGameRes::OverrideRouteInformation( EntityUID to, unsigned hopCount )
 
-			Result CreateGameRes::TraceOut(const char* prefix, MessageDataPtr& pMsg)
+			Result CreateGameRes::TraceOut(const char* prefix, const MessageDataPtr& pMsg)
 			{
  				CreateGameRes parser;
 				parser.ParseMessage(*pMsg);
 				protocolTrace( Debug1, "CreateGame:{0}:{1} , RouteContext:{2}, TransactionID:{3}, Result:{4:X8}",
 						prefix, pMsg->GetMessageHeader()->Length, parser.GetRouteContext(), parser.GetTransactionID(), parser.GetResult()); 
 				return ResultCode::SUCCESS;
-			}; // Result CreateGameRes::TraceOut(const char* prefix, MessageDataPtr& pMsg)
+			}; // Result CreateGameRes::TraceOut(const char* prefix, const MessageDataPtr& pMsg)
 
 			// C2S: Game instance notification of deletion
 			const MessageID GameDeletedC2SEvt::MID = MessageID(MSGTYPE_EVENT, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_GAMEINSTANCEMANAGER, 1);
@@ -328,17 +328,17 @@ namespace SF
 			}; // Result GameDeletedC2SEvt::ParseMessage( MessageData* pIMsg )
 
 
-			Result GameDeletedC2SEvt::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
+			Result GameDeletedC2SEvt::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr&& pIMsg, MessageBase* &pMessageBase )
 			{
  				Result hr;
 
-				protocolMem(pMessageBase = new(memHeap) GameDeletedC2SEvt(pIMsg));
+				protocolMem(pMessageBase = new(memHeap) GameDeletedC2SEvt(std::forward<MessageDataPtr>(pIMsg)));
 				protocolChk(pMessageBase->ParseMsg());
 
 			Proc_End:
 				return hr;
 
-			}; // Result GameDeletedC2SEvt::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
+			}; // Result GameDeletedC2SEvt::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr&& pIMsg, MessageBase* &pMessageBase )
 
 			MessageData* GameDeletedC2SEvt::Create( IHeap& memHeap, const RouteContext &InRouteContext, const uint16_t &InRouteHopCount )
 			{
@@ -427,14 +427,14 @@ namespace SF
 
 			}; // Result GameDeletedC2SEvt::OverrideRouteInformation( EntityUID to, unsigned hopCount )
 
-			Result GameDeletedC2SEvt::TraceOut(const char* prefix, MessageDataPtr& pMsg)
+			Result GameDeletedC2SEvt::TraceOut(const char* prefix, const MessageDataPtr& pMsg)
 			{
  				GameDeletedC2SEvt parser;
 				parser.ParseMessage(*pMsg);
 				protocolTrace( Debug1, "GameDeleted:{0}:{1} , RouteContext:{2}, RouteHopCount:{3}",
 						prefix, pMsg->GetMessageHeader()->Length, parser.GetRouteContext(), parser.GetRouteHopCount()); 
 				return ResultCode::SUCCESS;
-			}; // Result GameDeletedC2SEvt::TraceOut(const char* prefix, MessageDataPtr& pMsg)
+			}; // Result GameDeletedC2SEvt::TraceOut(const char* prefix, const MessageDataPtr& pMsg)
 
 
 

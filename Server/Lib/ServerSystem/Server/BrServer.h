@@ -368,7 +368,7 @@ namespace Svr {
 	// Initialize engine
 	void InitializeEngineForServer();
 
-	void InitializeEngineForStandaloneServer();
+	void InitializeEngineForPlayFabServer(uint32_t workerThreadCount, uint32_t netIOThreadCount);
 
 	void DeinitializeEngine();
 

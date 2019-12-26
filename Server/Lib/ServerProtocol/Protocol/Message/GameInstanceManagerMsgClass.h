@@ -50,8 +50,8 @@ namespace SF
 				CreateGameCmd()
 					{}
 
-				CreateGameCmd( MessageDataPtr &pMsg )
-					:MessageBase(pMsg)
+				CreateGameCmd( MessageDataPtr &&pMsg )
+					: MessageBase(std::forward<MessageDataPtr>(pMsg))
 					{}
 
 					MessageUsage GetMessageUsage() { return MessageUsage_None; }
@@ -62,10 +62,10 @@ namespace SF
 				const uint16_t& GetNumberOfBotPlayer() const	{ return m_NumberOfBotPlayer; };
 				const uint16_t& GetMaxPlayer() const	{ return m_MaxPlayer; };
 
-				static Result TraceOut(const char* prefix, MessageDataPtr& pMsg);
+				static Result TraceOut(const char* prefix, const MessageDataPtr& pMsg);
 
 				virtual Result ParseMessage( MessageData* pIMsg );
-				static Result ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr& pIMsg, MessageBase* &pMsgBase );
+				static Result ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr&& pIMsg, MessageBase* &pMsgBase );
 
 				static MessageData* Create( IHeap& memHeap, const RouteContext &InRouteContext, const uint64_t &InTransactionID, const uint16_t &InRouteHopCount, const uint16_t &InNumberOfBotPlayer, const uint16_t &InMaxPlayer );
 
@@ -100,8 +100,8 @@ namespace SF
 				CreateGameRes()
 					{}
 
-				CreateGameRes( MessageDataPtr &pMsg )
-					:MessageBase(pMsg)
+				CreateGameRes( MessageDataPtr &&pMsg )
+					: MessageBase(std::forward<MessageDataPtr>(pMsg))
 					{}
 
 					MessageUsage GetMessageUsage() { return MessageUsage_None; }
@@ -110,10 +110,10 @@ namespace SF
 				const uint64_t& GetTransactionID() const	{ return m_TransactionID; };
 				const Result& GetResult() const	{ return m_Result; };
 
-				static Result TraceOut(const char* prefix, MessageDataPtr& pMsg);
+				static Result TraceOut(const char* prefix, const MessageDataPtr& pMsg);
 
 				virtual Result ParseMessage( MessageData* pIMsg );
-				static Result ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr& pIMsg, MessageBase* &pMsgBase );
+				static Result ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr&& pIMsg, MessageBase* &pMsgBase );
 
 				static MessageData* Create( IHeap& memHeap, const RouteContext &InRouteContext, const uint64_t &InTransactionID, const Result &InResult );
 
@@ -148,8 +148,8 @@ namespace SF
 				GameDeletedC2SEvt()
 					{}
 
-				GameDeletedC2SEvt( MessageDataPtr &pMsg )
-					:MessageBase(pMsg)
+				GameDeletedC2SEvt( MessageDataPtr &&pMsg )
+					: MessageBase(std::forward<MessageDataPtr>(pMsg))
 					{}
 
 					MessageUsage GetMessageUsage() { return MessageUsage_None; }
@@ -157,10 +157,10 @@ namespace SF
 				const RouteContext& GetRouteContext() const	{ return m_RouteContext; };
 				const uint16_t& GetRouteHopCount() const	{ return m_RouteHopCount; };
 
-				static Result TraceOut(const char* prefix, MessageDataPtr& pMsg);
+				static Result TraceOut(const char* prefix, const MessageDataPtr& pMsg);
 
 				virtual Result ParseMessage( MessageData* pIMsg );
-				static Result ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr& pIMsg, MessageBase* &pMsgBase );
+				static Result ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr&& pIMsg, MessageBase* &pMsgBase );
 
 				static MessageData* Create( IHeap& memHeap, const RouteContext &InRouteContext, const uint16_t &InRouteHopCount );
 

@@ -48,8 +48,8 @@ namespace SF
 				GenericFailureCmd()
 					{}
 
-				GenericFailureCmd( MessageDataPtr &pMsg )
-					:MessageBase(pMsg)
+				GenericFailureCmd( MessageDataPtr &&pMsg )
+					: MessageBase(std::forward<MessageDataPtr>(pMsg))
 					{}
 
 					MessageUsage GetMessageUsage() { return MessageUsage_None; }
@@ -57,10 +57,10 @@ namespace SF
 				const RouteContext& GetRouteContext() const	{ return m_RouteContext; };
 				const uint64_t& GetTransactionID() const	{ return m_TransactionID; };
 
-				static Result TraceOut(const char* prefix, MessageDataPtr& pMsg);
+				static Result TraceOut(const char* prefix, const MessageDataPtr& pMsg);
 
 				virtual Result ParseMessage( MessageData* pIMsg );
-				static Result ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr& pIMsg, MessageBase* &pMsgBase );
+				static Result ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr&& pIMsg, MessageBase* &pMsgBase );
 
 				static MessageData* Create( IHeap& memHeap, const RouteContext &InRouteContext, const uint64_t &InTransactionID );
 
@@ -93,8 +93,8 @@ namespace SF
 				GenericFailureRes()
 					{}
 
-				GenericFailureRes( MessageDataPtr &pMsg )
-					:MessageBase(pMsg)
+				GenericFailureRes( MessageDataPtr &&pMsg )
+					: MessageBase(std::forward<MessageDataPtr>(pMsg))
 					{}
 
 					MessageUsage GetMessageUsage() { return MessageUsage_None; }
@@ -103,10 +103,10 @@ namespace SF
 				const uint64_t& GetTransactionID() const	{ return m_TransactionID; };
 				const Result& GetResult() const	{ return m_Result; };
 
-				static Result TraceOut(const char* prefix, MessageDataPtr& pMsg);
+				static Result TraceOut(const char* prefix, const MessageDataPtr& pMsg);
 
 				virtual Result ParseMessage( MessageData* pIMsg );
-				static Result ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr& pIMsg, MessageBase* &pMsgBase );
+				static Result ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr&& pIMsg, MessageBase* &pMsgBase );
 
 				static MessageData* Create( IHeap& memHeap, const RouteContext &InRouteContext, const uint64_t &InTransactionID, const Result &InResult );
 
@@ -141,8 +141,8 @@ namespace SF
 				ServerConnectedC2SEvt()
 					{}
 
-				ServerConnectedC2SEvt( MessageDataPtr &pMsg )
-					:MessageBase(pMsg)
+				ServerConnectedC2SEvt( MessageDataPtr &&pMsg )
+					: MessageBase(std::forward<MessageDataPtr>(pMsg))
 					{}
 
 					MessageUsage GetMessageUsage() { return MessageUsage_None; }
@@ -151,10 +151,10 @@ namespace SF
 				const uint32_t& GetStartUpTime() const	{ return m_StartUpTime; };
 				const NetAddress& GetPrivateAddress() const	{ return m_PrivateAddress; };
 
-				static Result TraceOut(const char* prefix, MessageDataPtr& pMsg);
+				static Result TraceOut(const char* prefix, const MessageDataPtr& pMsg);
 
 				virtual Result ParseMessage( MessageData* pIMsg );
-				static Result ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr& pIMsg, MessageBase* &pMsgBase );
+				static Result ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr&& pIMsg, MessageBase* &pMsgBase );
 
 				static MessageData* Create( IHeap& memHeap, const RouteContext &InRouteContext, const uint32_t &InStartUpTime, const NetAddress &InPrivateAddress );
 

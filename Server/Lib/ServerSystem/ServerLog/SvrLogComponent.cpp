@@ -50,7 +50,6 @@ namespace SF
 			LoadTraceConfig();
 		}
 
-
 		void SetMask(FixedString32 maskName, uint32_t maskValue)
 		{
 			switch (maskName)
@@ -183,6 +182,10 @@ namespace SF
 
 		void LoadTraceConfig()
 		{
+			// skip if there is no config file assigned
+			if (strlen(m_ConfigFilePath) == 0)
+				return;
+
 			std::string strCfgPath = Util::GetModulePath();
 			strCfgPath.append(m_ConfigFilePath);
 
@@ -275,7 +278,10 @@ namespace SF
 	ServerLogComponent::ServerLogComponent(const char* traceCfgPath)
 		: LibraryComponent("ServerLogComponent")
 	{
-		StrUtil::StringCopy(m_ConfigFilePath, traceCfgPath);
+		if(traceCfgPath != nullptr)
+			StrUtil::StringCopy(m_ConfigFilePath, traceCfgPath);
+		else
+			StrUtil::StringCopy(m_ConfigFilePath, "");
 	}
 
 	ServerLogComponent::~ServerLogComponent()

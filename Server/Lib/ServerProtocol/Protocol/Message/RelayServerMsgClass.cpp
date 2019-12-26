@@ -53,17 +53,17 @@ namespace SF
 			}; // Result CreateRelayInstanceCmd::ParseMessage( MessageData* pIMsg )
 
 
-			Result CreateRelayInstanceCmd::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
+			Result CreateRelayInstanceCmd::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr&& pIMsg, MessageBase* &pMessageBase )
 			{
  				Result hr;
 
-				protocolMem(pMessageBase = new(memHeap) CreateRelayInstanceCmd(pIMsg));
+				protocolMem(pMessageBase = new(memHeap) CreateRelayInstanceCmd(std::forward<MessageDataPtr>(pIMsg)));
 				protocolChk(pMessageBase->ParseMsg());
 
 			Proc_End:
 				return hr;
 
-			}; // Result CreateRelayInstanceCmd::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
+			}; // Result CreateRelayInstanceCmd::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr&& pIMsg, MessageBase* &pMessageBase )
 
 			MessageData* CreateRelayInstanceCmd::Create( IHeap& memHeap, const RouteContext &InRouteContext, const uint64_t &InTransactionID, const PlayerInformation &InPlayerInfo, const uint64_t &InRelayScore )
 			{
@@ -127,14 +127,14 @@ namespace SF
 			}; // Result CreateRelayInstanceCmd::OverrideRouteContextDestination( EntityUID to )
 
 
-			Result CreateRelayInstanceCmd::TraceOut(const char* prefix, MessageDataPtr& pMsg)
+			Result CreateRelayInstanceCmd::TraceOut(const char* prefix, const MessageDataPtr& pMsg)
 			{
  				CreateRelayInstanceCmd parser;
 				parser.ParseMessage(*pMsg);
 				protocolTrace( Debug1, "CreateRelayInstance:{0}:{1} , RouteContext:{2}, TransactionID:{3}, PlayerInfo:{4}, RelayScore:{5}",
 						prefix, pMsg->GetMessageHeader()->Length, parser.GetRouteContext(), parser.GetTransactionID(), parser.GetPlayerInfo(), parser.GetRelayScore()); 
 				return ResultCode::SUCCESS;
-			}; // Result CreateRelayInstanceCmd::TraceOut(const char* prefix, MessageDataPtr& pMsg)
+			}; // Result CreateRelayInstanceCmd::TraceOut(const char* prefix, const MessageDataPtr& pMsg)
 
 			const MessageID CreateRelayInstanceRes::MID = MessageID(MSGTYPE_RESULT, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_RELAYSERVER, 0);
 			Result CreateRelayInstanceRes::ParseMessage( MessageData* pIMsg )
@@ -162,17 +162,17 @@ namespace SF
 			}; // Result CreateRelayInstanceRes::ParseMessage( MessageData* pIMsg )
 
 
-			Result CreateRelayInstanceRes::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
+			Result CreateRelayInstanceRes::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr&& pIMsg, MessageBase* &pMessageBase )
 			{
  				Result hr;
 
-				protocolMem(pMessageBase = new(memHeap) CreateRelayInstanceRes(pIMsg));
+				protocolMem(pMessageBase = new(memHeap) CreateRelayInstanceRes(std::forward<MessageDataPtr>(pIMsg)));
 				protocolChk(pMessageBase->ParseMsg());
 
 			Proc_End:
 				return hr;
 
-			}; // Result CreateRelayInstanceRes::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
+			}; // Result CreateRelayInstanceRes::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr&& pIMsg, MessageBase* &pMessageBase )
 
 			MessageData* CreateRelayInstanceRes::Create( IHeap& memHeap, const RouteContext &InRouteContext, const uint64_t &InTransactionID, const Result &InResult, const uint32_t &InRelay )
 			{
@@ -236,14 +236,14 @@ namespace SF
 			}; // Result CreateRelayInstanceRes::OverrideRouteContextDestination( EntityUID to )
 
 
-			Result CreateRelayInstanceRes::TraceOut(const char* prefix, MessageDataPtr& pMsg)
+			Result CreateRelayInstanceRes::TraceOut(const char* prefix, const MessageDataPtr& pMsg)
 			{
  				CreateRelayInstanceRes parser;
 				parser.ParseMessage(*pMsg);
 				protocolTrace( Debug1, "CreateRelayInstance:{0}:{1} , RouteContext:{2}, TransactionID:{3}, Result:{4:X8}, Relay:{5}",
 						prefix, pMsg->GetMessageHeader()->Length, parser.GetRouteContext(), parser.GetTransactionID(), parser.GetResult(), parser.GetRelay()); 
 				return ResultCode::SUCCESS;
-			}; // Result CreateRelayInstanceRes::TraceOut(const char* prefix, MessageDataPtr& pMsg)
+			}; // Result CreateRelayInstanceRes::TraceOut(const char* prefix, const MessageDataPtr& pMsg)
 
 			// Cmd: Add a player to Relay
 			const MessageID AddPlayerCmd::MID = MessageID(MSGTYPE_COMMAND, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_RELAYSERVER, 1);
@@ -272,17 +272,17 @@ namespace SF
 			}; // Result AddPlayerCmd::ParseMessage( MessageData* pIMsg )
 
 
-			Result AddPlayerCmd::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
+			Result AddPlayerCmd::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr&& pIMsg, MessageBase* &pMessageBase )
 			{
  				Result hr;
 
-				protocolMem(pMessageBase = new(memHeap) AddPlayerCmd(pIMsg));
+				protocolMem(pMessageBase = new(memHeap) AddPlayerCmd(std::forward<MessageDataPtr>(pIMsg)));
 				protocolChk(pMessageBase->ParseMsg());
 
 			Proc_End:
 				return hr;
 
-			}; // Result AddPlayerCmd::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
+			}; // Result AddPlayerCmd::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr&& pIMsg, MessageBase* &pMessageBase )
 
 			MessageData* AddPlayerCmd::Create( IHeap& memHeap, const RouteContext &InRouteContext, const uint64_t &InTransactionID, const PlayerInformation &InPlayerInfo, const uint64_t &InRelayScore )
 			{
@@ -346,14 +346,14 @@ namespace SF
 			}; // Result AddPlayerCmd::OverrideRouteContextDestination( EntityUID to )
 
 
-			Result AddPlayerCmd::TraceOut(const char* prefix, MessageDataPtr& pMsg)
+			Result AddPlayerCmd::TraceOut(const char* prefix, const MessageDataPtr& pMsg)
 			{
  				AddPlayerCmd parser;
 				parser.ParseMessage(*pMsg);
 				protocolTrace( Debug1, "AddPlayer:{0}:{1} , RouteContext:{2}, TransactionID:{3}, PlayerInfo:{4}, RelayScore:{5}",
 						prefix, pMsg->GetMessageHeader()->Length, parser.GetRouteContext(), parser.GetTransactionID(), parser.GetPlayerInfo(), parser.GetRelayScore()); 
 				return ResultCode::SUCCESS;
-			}; // Result AddPlayerCmd::TraceOut(const char* prefix, MessageDataPtr& pMsg)
+			}; // Result AddPlayerCmd::TraceOut(const char* prefix, const MessageDataPtr& pMsg)
 
 			const MessageID AddPlayerRes::MID = MessageID(MSGTYPE_RESULT, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_RELAYSERVER, 1);
 			Result AddPlayerRes::ParseMessage( MessageData* pIMsg )
@@ -381,17 +381,17 @@ namespace SF
 			}; // Result AddPlayerRes::ParseMessage( MessageData* pIMsg )
 
 
-			Result AddPlayerRes::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
+			Result AddPlayerRes::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr&& pIMsg, MessageBase* &pMessageBase )
 			{
  				Result hr;
 
-				protocolMem(pMessageBase = new(memHeap) AddPlayerRes(pIMsg));
+				protocolMem(pMessageBase = new(memHeap) AddPlayerRes(std::forward<MessageDataPtr>(pIMsg)));
 				protocolChk(pMessageBase->ParseMsg());
 
 			Proc_End:
 				return hr;
 
-			}; // Result AddPlayerRes::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
+			}; // Result AddPlayerRes::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr&& pIMsg, MessageBase* &pMessageBase )
 
 			MessageData* AddPlayerRes::Create( IHeap& memHeap, const RouteContext &InRouteContext, const uint64_t &InTransactionID, const Result &InResult, const uint32_t &InRelay )
 			{
@@ -455,14 +455,14 @@ namespace SF
 			}; // Result AddPlayerRes::OverrideRouteContextDestination( EntityUID to )
 
 
-			Result AddPlayerRes::TraceOut(const char* prefix, MessageDataPtr& pMsg)
+			Result AddPlayerRes::TraceOut(const char* prefix, const MessageDataPtr& pMsg)
 			{
  				AddPlayerRes parser;
 				parser.ParseMessage(*pMsg);
 				protocolTrace( Debug1, "AddPlayer:{0}:{1} , RouteContext:{2}, TransactionID:{3}, Result:{4:X8}, Relay:{5}",
 						prefix, pMsg->GetMessageHeader()->Length, parser.GetRouteContext(), parser.GetTransactionID(), parser.GetResult(), parser.GetRelay()); 
 				return ResultCode::SUCCESS;
-			}; // Result AddPlayerRes::TraceOut(const char* prefix, MessageDataPtr& pMsg)
+			}; // Result AddPlayerRes::TraceOut(const char* prefix, const MessageDataPtr& pMsg)
 
 			// Cmd: Remove a player to Relay
 			const MessageID RemovePlayerCmd::MID = MessageID(MSGTYPE_COMMAND, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_RELAYSERVER, 2);
@@ -490,17 +490,17 @@ namespace SF
 			}; // Result RemovePlayerCmd::ParseMessage( MessageData* pIMsg )
 
 
-			Result RemovePlayerCmd::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
+			Result RemovePlayerCmd::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr&& pIMsg, MessageBase* &pMessageBase )
 			{
  				Result hr;
 
-				protocolMem(pMessageBase = new(memHeap) RemovePlayerCmd(pIMsg));
+				protocolMem(pMessageBase = new(memHeap) RemovePlayerCmd(std::forward<MessageDataPtr>(pIMsg)));
 				protocolChk(pMessageBase->ParseMsg());
 
 			Proc_End:
 				return hr;
 
-			}; // Result RemovePlayerCmd::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
+			}; // Result RemovePlayerCmd::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr&& pIMsg, MessageBase* &pMessageBase )
 
 			MessageData* RemovePlayerCmd::Create( IHeap& memHeap, const RouteContext &InRouteContext, const uint64_t &InTransactionID, const PlayerID &InPlayerID )
 			{
@@ -562,14 +562,14 @@ namespace SF
 			}; // Result RemovePlayerCmd::OverrideRouteContextDestination( EntityUID to )
 
 
-			Result RemovePlayerCmd::TraceOut(const char* prefix, MessageDataPtr& pMsg)
+			Result RemovePlayerCmd::TraceOut(const char* prefix, const MessageDataPtr& pMsg)
 			{
  				RemovePlayerCmd parser;
 				parser.ParseMessage(*pMsg);
 				protocolTrace( Debug1, "RemovePlayer:{0}:{1} , RouteContext:{2}, TransactionID:{3}, PlayerID:{4}",
 						prefix, pMsg->GetMessageHeader()->Length, parser.GetRouteContext(), parser.GetTransactionID(), parser.GetPlayerID()); 
 				return ResultCode::SUCCESS;
-			}; // Result RemovePlayerCmd::TraceOut(const char* prefix, MessageDataPtr& pMsg)
+			}; // Result RemovePlayerCmd::TraceOut(const char* prefix, const MessageDataPtr& pMsg)
 
 			const MessageID RemovePlayerRes::MID = MessageID(MSGTYPE_RESULT, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_RELAYSERVER, 2);
 			Result RemovePlayerRes::ParseMessage( MessageData* pIMsg )
@@ -596,17 +596,17 @@ namespace SF
 			}; // Result RemovePlayerRes::ParseMessage( MessageData* pIMsg )
 
 
-			Result RemovePlayerRes::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
+			Result RemovePlayerRes::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr&& pIMsg, MessageBase* &pMessageBase )
 			{
  				Result hr;
 
-				protocolMem(pMessageBase = new(memHeap) RemovePlayerRes(pIMsg));
+				protocolMem(pMessageBase = new(memHeap) RemovePlayerRes(std::forward<MessageDataPtr>(pIMsg)));
 				protocolChk(pMessageBase->ParseMsg());
 
 			Proc_End:
 				return hr;
 
-			}; // Result RemovePlayerRes::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
+			}; // Result RemovePlayerRes::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr&& pIMsg, MessageBase* &pMessageBase )
 
 			MessageData* RemovePlayerRes::Create( IHeap& memHeap, const RouteContext &InRouteContext, const uint64_t &InTransactionID, const Result &InResult )
 			{
@@ -668,14 +668,14 @@ namespace SF
 			}; // Result RemovePlayerRes::OverrideRouteContextDestination( EntityUID to )
 
 
-			Result RemovePlayerRes::TraceOut(const char* prefix, MessageDataPtr& pMsg)
+			Result RemovePlayerRes::TraceOut(const char* prefix, const MessageDataPtr& pMsg)
 			{
  				RemovePlayerRes parser;
 				parser.ParseMessage(*pMsg);
 				protocolTrace( Debug1, "RemovePlayer:{0}:{1} , RouteContext:{2}, TransactionID:{3}, Result:{4:X8}",
 						prefix, pMsg->GetMessageHeader()->Length, parser.GetRouteContext(), parser.GetTransactionID(), parser.GetResult()); 
 				return ResultCode::SUCCESS;
-			}; // Result RemovePlayerRes::TraceOut(const char* prefix, MessageDataPtr& pMsg)
+			}; // Result RemovePlayerRes::TraceOut(const char* prefix, const MessageDataPtr& pMsg)
 
 
 

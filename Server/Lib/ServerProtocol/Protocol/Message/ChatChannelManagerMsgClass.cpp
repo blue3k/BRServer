@@ -59,17 +59,17 @@ namespace SF
 			}; // Result CreateChannelCmd::ParseMessage( MessageData* pIMsg )
 
 
-			Result CreateChannelCmd::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
+			Result CreateChannelCmd::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr&& pIMsg, MessageBase* &pMessageBase )
 			{
  				Result hr;
 
-				protocolMem(pMessageBase = new(memHeap) CreateChannelCmd(pIMsg));
+				protocolMem(pMessageBase = new(memHeap) CreateChannelCmd(std::forward<MessageDataPtr>(pIMsg)));
 				protocolChk(pMessageBase->ParseMsg());
 
 			Proc_End:
 				return hr;
 
-			}; // Result CreateChannelCmd::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
+			}; // Result CreateChannelCmd::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr&& pIMsg, MessageBase* &pMessageBase )
 
 			MessageData* CreateChannelCmd::Create( IHeap& memHeap, const RouteContext &InRouteContext, const uint64_t &InTransactionID, const uint16_t &InRouteHopCount, const char* InChannelName, const char* InPasscode, const PlayerInformation &InCreator )
 			{
@@ -169,14 +169,14 @@ namespace SF
 
 			}; // Result CreateChannelCmd::OverrideRouteInformation( EntityUID to, unsigned hopCount )
 
-			Result CreateChannelCmd::TraceOut(const char* prefix, MessageDataPtr& pMsg)
+			Result CreateChannelCmd::TraceOut(const char* prefix, const MessageDataPtr& pMsg)
 			{
  				CreateChannelCmd parser;
 				parser.ParseMessage(*pMsg);
 				protocolTrace( Debug1, "CreateChannel:{0}:{1} , RouteContext:{2}, TransactionID:{3}, RouteHopCount:{4}, ChannelName:{5,60}, Passcode:{6,60}, Creator:{7}",
 						prefix, pMsg->GetMessageHeader()->Length, parser.GetRouteContext(), parser.GetTransactionID(), parser.GetRouteHopCount(), parser.GetChannelName(), parser.GetPasscode(), parser.GetCreator()); 
 				return ResultCode::SUCCESS;
-			}; // Result CreateChannelCmd::TraceOut(const char* prefix, MessageDataPtr& pMsg)
+			}; // Result CreateChannelCmd::TraceOut(const char* prefix, const MessageDataPtr& pMsg)
 
 			const MessageID CreateChannelRes::MID = MessageID(MSGTYPE_RESULT, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_CHATCHANNELMANAGER, 0);
 			Result CreateChannelRes::ParseMessage( MessageData* pIMsg )
@@ -204,17 +204,17 @@ namespace SF
 			}; // Result CreateChannelRes::ParseMessage( MessageData* pIMsg )
 
 
-			Result CreateChannelRes::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
+			Result CreateChannelRes::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr&& pIMsg, MessageBase* &pMessageBase )
 			{
  				Result hr;
 
-				protocolMem(pMessageBase = new(memHeap) CreateChannelRes(pIMsg));
+				protocolMem(pMessageBase = new(memHeap) CreateChannelRes(std::forward<MessageDataPtr>(pIMsg)));
 				protocolChk(pMessageBase->ParseMsg());
 
 			Proc_End:
 				return hr;
 
-			}; // Result CreateChannelRes::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
+			}; // Result CreateChannelRes::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr&& pIMsg, MessageBase* &pMessageBase )
 
 			MessageData* CreateChannelRes::Create( IHeap& memHeap, const RouteContext &InRouteContext, const uint64_t &InTransactionID, const Result &InResult, const uint64_t &InChannelUID )
 			{
@@ -307,14 +307,14 @@ namespace SF
 
 			}; // Result CreateChannelRes::OverrideRouteInformation( EntityUID to, unsigned hopCount )
 
-			Result CreateChannelRes::TraceOut(const char* prefix, MessageDataPtr& pMsg)
+			Result CreateChannelRes::TraceOut(const char* prefix, const MessageDataPtr& pMsg)
 			{
  				CreateChannelRes parser;
 				parser.ParseMessage(*pMsg);
 				protocolTrace( Debug1, "CreateChannel:{0}:{1} , RouteContext:{2}, TransactionID:{3}, Result:{4:X8}, ChannelUID:{5}",
 						prefix, pMsg->GetMessageHeader()->Length, parser.GetRouteContext(), parser.GetTransactionID(), parser.GetResult(), parser.GetChannelUID()); 
 				return ResultCode::SUCCESS;
-			}; // Result CreateChannelRes::TraceOut(const char* prefix, MessageDataPtr& pMsg)
+			}; // Result CreateChannelRes::TraceOut(const char* prefix, const MessageDataPtr& pMsg)
 
 			// Cmd: Find a channel instance with name
 			const MessageID FindChannelCmd::MID = MessageID(MSGTYPE_COMMAND, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_CHATCHANNELMANAGER, 1);
@@ -345,17 +345,17 @@ namespace SF
 			}; // Result FindChannelCmd::ParseMessage( MessageData* pIMsg )
 
 
-			Result FindChannelCmd::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
+			Result FindChannelCmd::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr&& pIMsg, MessageBase* &pMessageBase )
 			{
  				Result hr;
 
-				protocolMem(pMessageBase = new(memHeap) FindChannelCmd(pIMsg));
+				protocolMem(pMessageBase = new(memHeap) FindChannelCmd(std::forward<MessageDataPtr>(pIMsg)));
 				protocolChk(pMessageBase->ParseMsg());
 
 			Proc_End:
 				return hr;
 
-			}; // Result FindChannelCmd::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
+			}; // Result FindChannelCmd::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr&& pIMsg, MessageBase* &pMessageBase )
 
 			MessageData* FindChannelCmd::Create( IHeap& memHeap, const RouteContext &InRouteContext, const uint64_t &InTransactionID, const uint16_t &InRouteHopCount, const char* InChannelName )
 			{
@@ -450,14 +450,14 @@ namespace SF
 
 			}; // Result FindChannelCmd::OverrideRouteInformation( EntityUID to, unsigned hopCount )
 
-			Result FindChannelCmd::TraceOut(const char* prefix, MessageDataPtr& pMsg)
+			Result FindChannelCmd::TraceOut(const char* prefix, const MessageDataPtr& pMsg)
 			{
  				FindChannelCmd parser;
 				parser.ParseMessage(*pMsg);
 				protocolTrace( Debug1, "FindChannel:{0}:{1} , RouteContext:{2}, TransactionID:{3}, RouteHopCount:{4}, ChannelName:{5,60}",
 						prefix, pMsg->GetMessageHeader()->Length, parser.GetRouteContext(), parser.GetTransactionID(), parser.GetRouteHopCount(), parser.GetChannelName()); 
 				return ResultCode::SUCCESS;
-			}; // Result FindChannelCmd::TraceOut(const char* prefix, MessageDataPtr& pMsg)
+			}; // Result FindChannelCmd::TraceOut(const char* prefix, const MessageDataPtr& pMsg)
 
 			const MessageID FindChannelRes::MID = MessageID(MSGTYPE_RESULT, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_CHATCHANNELMANAGER, 1);
 			Result FindChannelRes::ParseMessage( MessageData* pIMsg )
@@ -485,17 +485,17 @@ namespace SF
 			}; // Result FindChannelRes::ParseMessage( MessageData* pIMsg )
 
 
-			Result FindChannelRes::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
+			Result FindChannelRes::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr&& pIMsg, MessageBase* &pMessageBase )
 			{
  				Result hr;
 
-				protocolMem(pMessageBase = new(memHeap) FindChannelRes(pIMsg));
+				protocolMem(pMessageBase = new(memHeap) FindChannelRes(std::forward<MessageDataPtr>(pIMsg)));
 				protocolChk(pMessageBase->ParseMsg());
 
 			Proc_End:
 				return hr;
 
-			}; // Result FindChannelRes::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
+			}; // Result FindChannelRes::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr&& pIMsg, MessageBase* &pMessageBase )
 
 			MessageData* FindChannelRes::Create( IHeap& memHeap, const RouteContext &InRouteContext, const uint64_t &InTransactionID, const Result &InResult, const uint64_t &InChannelUID )
 			{
@@ -588,14 +588,14 @@ namespace SF
 
 			}; // Result FindChannelRes::OverrideRouteInformation( EntityUID to, unsigned hopCount )
 
-			Result FindChannelRes::TraceOut(const char* prefix, MessageDataPtr& pMsg)
+			Result FindChannelRes::TraceOut(const char* prefix, const MessageDataPtr& pMsg)
 			{
  				FindChannelRes parser;
 				parser.ParseMessage(*pMsg);
 				protocolTrace( Debug1, "FindChannel:{0}:{1} , RouteContext:{2}, TransactionID:{3}, Result:{4:X8}, ChannelUID:{5}",
 						prefix, pMsg->GetMessageHeader()->Length, parser.GetRouteContext(), parser.GetTransactionID(), parser.GetResult(), parser.GetChannelUID()); 
 				return ResultCode::SUCCESS;
-			}; // Result FindChannelRes::TraceOut(const char* prefix, MessageDataPtr& pMsg)
+			}; // Result FindChannelRes::TraceOut(const char* prefix, const MessageDataPtr& pMsg)
 
 			// C2S: Notification that a chat channel instance has deleted
 			const MessageID ChatChannelDeletedC2SEvt::MID = MessageID(MSGTYPE_EVENT, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_CHATCHANNELMANAGER, 2);
@@ -622,17 +622,17 @@ namespace SF
 			}; // Result ChatChannelDeletedC2SEvt::ParseMessage( MessageData* pIMsg )
 
 
-			Result ChatChannelDeletedC2SEvt::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
+			Result ChatChannelDeletedC2SEvt::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr&& pIMsg, MessageBase* &pMessageBase )
 			{
  				Result hr;
 
-				protocolMem(pMessageBase = new(memHeap) ChatChannelDeletedC2SEvt(pIMsg));
+				protocolMem(pMessageBase = new(memHeap) ChatChannelDeletedC2SEvt(std::forward<MessageDataPtr>(pIMsg)));
 				protocolChk(pMessageBase->ParseMsg());
 
 			Proc_End:
 				return hr;
 
-			}; // Result ChatChannelDeletedC2SEvt::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
+			}; // Result ChatChannelDeletedC2SEvt::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr&& pIMsg, MessageBase* &pMessageBase )
 
 			MessageData* ChatChannelDeletedC2SEvt::Create( IHeap& memHeap, const RouteContext &InRouteContext, const uint16_t &InRouteHopCount )
 			{
@@ -721,14 +721,14 @@ namespace SF
 
 			}; // Result ChatChannelDeletedC2SEvt::OverrideRouteInformation( EntityUID to, unsigned hopCount )
 
-			Result ChatChannelDeletedC2SEvt::TraceOut(const char* prefix, MessageDataPtr& pMsg)
+			Result ChatChannelDeletedC2SEvt::TraceOut(const char* prefix, const MessageDataPtr& pMsg)
 			{
  				ChatChannelDeletedC2SEvt parser;
 				parser.ParseMessage(*pMsg);
 				protocolTrace( Debug1, "ChatChannelDeleted:{0}:{1} , RouteContext:{2}, RouteHopCount:{3}",
 						prefix, pMsg->GetMessageHeader()->Length, parser.GetRouteContext(), parser.GetRouteHopCount()); 
 				return ResultCode::SUCCESS;
-			}; // Result ChatChannelDeletedC2SEvt::TraceOut(const char* prefix, MessageDataPtr& pMsg)
+			}; // Result ChatChannelDeletedC2SEvt::TraceOut(const char* prefix, const MessageDataPtr& pMsg)
 
 
 

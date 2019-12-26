@@ -29,6 +29,7 @@
 #include "Component/SFConnectionManagerComponent.h"
 #include "Object/SFLibraryComponentAdapter.h"
 #include "ServerLog/SvrLogComponent.h"
+#include "ServerLog/SFLogOutputPlayFabGSDK.h"
 #include "Service/ServerService.h"
 #include "zookeeper.h"
 
@@ -104,7 +105,10 @@ namespace Svr {
 		// Config can be accessed after ServerConfigComponent is initialized
 		auto pMyConfig = Service::ServerConfig->FindGenericServer(Util::GetServiceName());
 		if (pMyConfig == nullptr)
+		{
+			assert(pMyConfig != nullptr);
 			return;
+		}
 
 
 		pEngine->AddComponent<SF::Net::NetSystem>(initParam.NetRecvBufferSize, initParam.NetSendBufferSize, pMyConfig->NetIOThreadCount, 1024);
@@ -116,28 +120,16 @@ namespace Svr {
 	}
 
 
-	void InitializeEngineForStandaloneServer()
+	void InitializeEngineForPlayFabServer(uint32_t workerThreadCount, uint32_t netIOThreadCount)
 	{
-		char strLogPath[1024];
-		auto logPath = ParameterSetting::GetSetting("logpath", "../log");
-		auto bAsService = StrUtil::StringCompairIgnoreCase(ParameterSetting::GetSetting("servicemode"), -1, "true", -1);
-		auto zkaddress = ParameterSetting::GetSetting("zkaddress", "127.0.0.1:2181");
-		auto zkconfig = ParameterSetting::GetSetting("zkconfig", "/ServerConfig");
 		SF::EngineInitParam initParam;
-
 
 		auto strServiceName = ParameterSetting::GetSetting("servicename");
 		if (!StrUtil::IsNullOrEmpty(strServiceName))
 			Util::SetServiceName(strServiceName);
 
-
 		auto modulePath = Util::GetModulePath();
-		StrUtil::Format(strLogPath, "{0}{1}", Util::GetModulePath(), logPath);
 
-		StrUtil::StringCat(strLogPath, "/");
-		StrUtil::StringCat(strLogPath, Util::GetServiceName());
-
-		initParam.LogFilePrefix = strLogPath;
 		initParam.LogOutputFile = LogChannelMask();
 
 		initParam.AsyncTaskThreadCount = 6;
@@ -149,31 +141,26 @@ namespace Svr {
 		initParam.NetRecvBufferSize = Net::Const::SVR_RECV_BUFFER_SIZE;
 		initParam.NetSendBufferSize = Net::Const::SVR_SEND_BUFFER_SIZE;
 
-		if (bAsService)
-			initParam.LogOutputConsole = { 0, };
+		// turn off output console
+		initParam.LogOutputConsole = { 0, };
+		initParam.LogOutputDebugger = { 0, };
+		initParam.LogOutputFile = { 0, };
 
+		initParam.EnableCrashDump = false;
 
 		auto pEngine = SF::Engine::Start(initParam);
 		if (pEngine == nullptr)
 			return;
 
+		pEngine->AddComponent<LogOutputPlayFabGSDKComponent>(initParam.LogOutputCommon);
+
 		pEngine->AddComponent<ServerNetComponent>();
-		pEngine->AddComponent<ServerLogComponent>("..\\Config\\traceConfig.cfg");
-		pEngine->AddComponent<ZooKeeperSessionComponent>(zkaddress, ZOO_LOG_LEVEL_DEBUG);
-		pEngine->AddComponent<ServerConfigComponent>(zkconfig);
+		pEngine->AddComponent<ServerLogComponent>(nullptr);
 
-		// Config can be accessed after ServerConfigComponent is initialized
-		auto pMyConfig = Service::ServerConfig->FindGenericServer(Util::GetServiceName());
-		if (pMyConfig == nullptr)
-			return;
-
-
-		pEngine->AddComponent<SF::Net::NetSystem>(initParam.NetRecvBufferSize, initParam.NetSendBufferSize, pMyConfig->NetIOThreadCount, 1024);
-		pEngine->AddComponent<ConnectionManagerComponent>(2048);
+		pEngine->AddComponent<SF::Net::NetSystem>(initParam.NetRecvBufferSize, initParam.NetSendBufferSize, netIOThreadCount, 1024);
 		pEngine->AddComponent<EntityTable>();
-		pEngine->AddComponent<LibraryComponentAdapter<EntityManager, uint>, IHeap&, uint>(GetSystemHeap(), pMyConfig->WorkerThreadCount);
-		pEngine->AddComponent<LibraryComponentAdapter<Svr::ServerEntityManager, uint>, IHeap&, uint>(GetSystemHeap(), pMyConfig->WorkerThreadCount);
-		pEngine->AddComponent<LibraryComponentAdapter<Svr::ClusterManagerServiceEntity>, IHeap&>(GetSystemHeap());
+		pEngine->AddComponent<LibraryComponentAdapter<EntityManager, uint>, IHeap&, uint>(GetSystemHeap(), workerThreadCount);
+		pEngine->AddComponent<LibraryComponentAdapter<Svr::ServerEntityManager, uint>, IHeap&, uint>(GetSystemHeap(), workerThreadCount);
 	}
 
 	void DeinitializeEngine()

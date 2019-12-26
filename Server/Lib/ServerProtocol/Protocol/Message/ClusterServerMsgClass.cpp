@@ -53,17 +53,17 @@ namespace SF
 			}; // Result GetClusterMemberListCmd::ParseMessage( MessageData* pIMsg )
 
 
-			Result GetClusterMemberListCmd::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
+			Result GetClusterMemberListCmd::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr&& pIMsg, MessageBase* &pMessageBase )
 			{
  				Result hr;
 
-				protocolMem(pMessageBase = new(memHeap) GetClusterMemberListCmd(pIMsg));
+				protocolMem(pMessageBase = new(memHeap) GetClusterMemberListCmd(std::forward<MessageDataPtr>(pIMsg)));
 				protocolChk(pMessageBase->ParseMsg());
 
 			Proc_End:
 				return hr;
 
-			}; // Result GetClusterMemberListCmd::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
+			}; // Result GetClusterMemberListCmd::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr&& pIMsg, MessageBase* &pMessageBase )
 
 			MessageData* GetClusterMemberListCmd::Create( IHeap& memHeap, const RouteContext &InRouteContext, const uint64_t &InTransactionID, const uint16_t &InRouteHopCount, const ClusterID &InClusterID )
 			{
@@ -157,14 +157,14 @@ namespace SF
 
 			}; // Result GetClusterMemberListCmd::OverrideRouteInformation( EntityUID to, unsigned hopCount )
 
-			Result GetClusterMemberListCmd::TraceOut(const char* prefix, MessageDataPtr& pMsg)
+			Result GetClusterMemberListCmd::TraceOut(const char* prefix, const MessageDataPtr& pMsg)
 			{
  				GetClusterMemberListCmd parser;
 				parser.ParseMessage(*pMsg);
 				protocolTrace( Debug2, "GetClusterMemberList:{0}:{1} , RouteContext:{2}, TransactionID:{3}, RouteHopCount:{4}, ClusterID:{5}",
 						prefix, pMsg->GetMessageHeader()->Length, parser.GetRouteContext(), parser.GetTransactionID(), parser.GetRouteHopCount(), parser.GetClusterID()); 
 				return ResultCode::SUCCESS;
-			}; // Result GetClusterMemberListCmd::TraceOut(const char* prefix, MessageDataPtr& pMsg)
+			}; // Result GetClusterMemberListCmd::TraceOut(const char* prefix, const MessageDataPtr& pMsg)
 
 			const MessageID GetClusterMemberListRes::MID = MessageID(MSGTYPE_RESULT, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_CLUSTERSERVER, 0);
 			Result GetClusterMemberListRes::ParseMessage( MessageData* pIMsg )
@@ -195,17 +195,17 @@ namespace SF
 			}; // Result GetClusterMemberListRes::ParseMessage( MessageData* pIMsg )
 
 
-			Result GetClusterMemberListRes::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
+			Result GetClusterMemberListRes::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr&& pIMsg, MessageBase* &pMessageBase )
 			{
  				Result hr;
 
-				protocolMem(pMessageBase = new(memHeap) GetClusterMemberListRes(pIMsg));
+				protocolMem(pMessageBase = new(memHeap) GetClusterMemberListRes(std::forward<MessageDataPtr>(pIMsg)));
 				protocolChk(pMessageBase->ParseMsg());
 
 			Proc_End:
 				return hr;
 
-			}; // Result GetClusterMemberListRes::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
+			}; // Result GetClusterMemberListRes::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr&& pIMsg, MessageBase* &pMessageBase )
 
 			MessageData* GetClusterMemberListRes::Create( IHeap& memHeap, const RouteContext &InRouteContext, const uint64_t &InTransactionID, const Result &InResult, const Array<ServiceInformation>& InMemberList )
 			{
@@ -301,14 +301,14 @@ namespace SF
 
 			}; // Result GetClusterMemberListRes::OverrideRouteInformation( EntityUID to, unsigned hopCount )
 
-			Result GetClusterMemberListRes::TraceOut(const char* prefix, MessageDataPtr& pMsg)
+			Result GetClusterMemberListRes::TraceOut(const char* prefix, const MessageDataPtr& pMsg)
 			{
  				GetClusterMemberListRes parser;
 				parser.ParseMessage(*pMsg);
 				protocolTrace( Debug2, "GetClusterMemberList:{0}:{1} , RouteContext:{2}, TransactionID:{3}, Result:{4:X8}, MemberList:{5,30}",
 						prefix, pMsg->GetMessageHeader()->Length, parser.GetRouteContext(), parser.GetTransactionID(), parser.GetResult(), parser.GetMemberList()); 
 				return ResultCode::SUCCESS;
-			}; // Result GetClusterMemberListRes::TraceOut(const char* prefix, MessageDataPtr& pMsg)
+			}; // Result GetClusterMemberListRes::TraceOut(const char* prefix, const MessageDataPtr& pMsg)
 
 			// Cmd: Join to the cluster
 			const MessageID RequestDataSyncCmd::MID = MessageID(MSGTYPE_COMMAND, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_CLUSTERSERVER, 1);
@@ -337,17 +337,17 @@ namespace SF
 			}; // Result RequestDataSyncCmd::ParseMessage( MessageData* pIMsg )
 
 
-			Result RequestDataSyncCmd::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
+			Result RequestDataSyncCmd::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr&& pIMsg, MessageBase* &pMessageBase )
 			{
  				Result hr;
 
-				protocolMem(pMessageBase = new(memHeap) RequestDataSyncCmd(pIMsg));
+				protocolMem(pMessageBase = new(memHeap) RequestDataSyncCmd(std::forward<MessageDataPtr>(pIMsg)));
 				protocolChk(pMessageBase->ParseMsg());
 
 			Proc_End:
 				return hr;
 
-			}; // Result RequestDataSyncCmd::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
+			}; // Result RequestDataSyncCmd::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr&& pIMsg, MessageBase* &pMessageBase )
 
 			MessageData* RequestDataSyncCmd::Create( IHeap& memHeap, const RouteContext &InRouteContext, const uint64_t &InTransactionID, const uint16_t &InRouteHopCount, const ClusterID &InClusterID )
 			{
@@ -441,14 +441,14 @@ namespace SF
 
 			}; // Result RequestDataSyncCmd::OverrideRouteInformation( EntityUID to, unsigned hopCount )
 
-			Result RequestDataSyncCmd::TraceOut(const char* prefix, MessageDataPtr& pMsg)
+			Result RequestDataSyncCmd::TraceOut(const char* prefix, const MessageDataPtr& pMsg)
 			{
  				RequestDataSyncCmd parser;
 				parser.ParseMessage(*pMsg);
 				protocolTrace( Debug2, "RequestDataSync:{0}:{1} , RouteContext:{2}, TransactionID:{3}, RouteHopCount:{4}, ClusterID:{5}",
 						prefix, pMsg->GetMessageHeader()->Length, parser.GetRouteContext(), parser.GetTransactionID(), parser.GetRouteHopCount(), parser.GetClusterID()); 
 				return ResultCode::SUCCESS;
-			}; // Result RequestDataSyncCmd::TraceOut(const char* prefix, MessageDataPtr& pMsg)
+			}; // Result RequestDataSyncCmd::TraceOut(const char* prefix, const MessageDataPtr& pMsg)
 
 			const MessageID RequestDataSyncRes::MID = MessageID(MSGTYPE_RESULT, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_CLUSTERSERVER, 1);
 			Result RequestDataSyncRes::ParseMessage( MessageData* pIMsg )
@@ -475,17 +475,17 @@ namespace SF
 			}; // Result RequestDataSyncRes::ParseMessage( MessageData* pIMsg )
 
 
-			Result RequestDataSyncRes::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
+			Result RequestDataSyncRes::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr&& pIMsg, MessageBase* &pMessageBase )
 			{
  				Result hr;
 
-				protocolMem(pMessageBase = new(memHeap) RequestDataSyncRes(pIMsg));
+				protocolMem(pMessageBase = new(memHeap) RequestDataSyncRes(std::forward<MessageDataPtr>(pIMsg)));
 				protocolChk(pMessageBase->ParseMsg());
 
 			Proc_End:
 				return hr;
 
-			}; // Result RequestDataSyncRes::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
+			}; // Result RequestDataSyncRes::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr&& pIMsg, MessageBase* &pMessageBase )
 
 			MessageData* RequestDataSyncRes::Create( IHeap& memHeap, const RouteContext &InRouteContext, const uint64_t &InTransactionID, const Result &InResult )
 			{
@@ -575,14 +575,14 @@ namespace SF
 
 			}; // Result RequestDataSyncRes::OverrideRouteInformation( EntityUID to, unsigned hopCount )
 
-			Result RequestDataSyncRes::TraceOut(const char* prefix, MessageDataPtr& pMsg)
+			Result RequestDataSyncRes::TraceOut(const char* prefix, const MessageDataPtr& pMsg)
 			{
  				RequestDataSyncRes parser;
 				parser.ParseMessage(*pMsg);
 				protocolTrace( Debug2, "RequestDataSync:{0}:{1} , RouteContext:{2}, TransactionID:{3}, Result:{4:X8}",
 						prefix, pMsg->GetMessageHeader()->Length, parser.GetRouteContext(), parser.GetTransactionID(), parser.GetResult()); 
 				return ResultCode::SUCCESS;
-			}; // Result RequestDataSyncRes::TraceOut(const char* prefix, MessageDataPtr& pMsg)
+			}; // Result RequestDataSyncRes::TraceOut(const char* prefix, const MessageDataPtr& pMsg)
 
 
 

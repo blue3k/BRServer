@@ -54,17 +54,17 @@ namespace SF
 			}; // Result CreatePartyCmd::ParseMessage( MessageData* pIMsg )
 
 
-			Result CreatePartyCmd::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
+			Result CreatePartyCmd::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr&& pIMsg, MessageBase* &pMessageBase )
 			{
  				Result hr;
 
-				protocolMem(pMessageBase = new(memHeap) CreatePartyCmd(pIMsg));
+				protocolMem(pMessageBase = new(memHeap) CreatePartyCmd(std::forward<MessageDataPtr>(pIMsg)));
 				protocolChk(pMessageBase->ParseMsg());
 
 			Proc_End:
 				return hr;
 
-			}; // Result CreatePartyCmd::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
+			}; // Result CreatePartyCmd::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr&& pIMsg, MessageBase* &pMessageBase )
 
 			MessageData* CreatePartyCmd::Create( IHeap& memHeap, const RouteContext &InRouteContext, const uint64_t &InTransactionID, const uint16_t &InRouteHopCount, const uint32_t &InGameID, const PlayerInformation &InCreator )
 			{
@@ -160,14 +160,14 @@ namespace SF
 
 			}; // Result CreatePartyCmd::OverrideRouteInformation( EntityUID to, unsigned hopCount )
 
-			Result CreatePartyCmd::TraceOut(const char* prefix, MessageDataPtr& pMsg)
+			Result CreatePartyCmd::TraceOut(const char* prefix, const MessageDataPtr& pMsg)
 			{
  				CreatePartyCmd parser;
 				parser.ParseMessage(*pMsg);
 				protocolTrace( Debug1, "CreateParty:{0}:{1} , RouteContext:{2}, TransactionID:{3}, RouteHopCount:{4}, GameID:{5}, Creator:{6}",
 						prefix, pMsg->GetMessageHeader()->Length, parser.GetRouteContext(), parser.GetTransactionID(), parser.GetRouteHopCount(), parser.GetGameID(), parser.GetCreator()); 
 				return ResultCode::SUCCESS;
-			}; // Result CreatePartyCmd::TraceOut(const char* prefix, MessageDataPtr& pMsg)
+			}; // Result CreatePartyCmd::TraceOut(const char* prefix, const MessageDataPtr& pMsg)
 
 			const MessageID CreatePartyRes::MID = MessageID(MSGTYPE_RESULT, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_GAMEPARTYMANAGER, 0);
 			Result CreatePartyRes::ParseMessage( MessageData* pIMsg )
@@ -194,17 +194,17 @@ namespace SF
 			}; // Result CreatePartyRes::ParseMessage( MessageData* pIMsg )
 
 
-			Result CreatePartyRes::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
+			Result CreatePartyRes::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr&& pIMsg, MessageBase* &pMessageBase )
 			{
  				Result hr;
 
-				protocolMem(pMessageBase = new(memHeap) CreatePartyRes(pIMsg));
+				protocolMem(pMessageBase = new(memHeap) CreatePartyRes(std::forward<MessageDataPtr>(pIMsg)));
 				protocolChk(pMessageBase->ParseMsg());
 
 			Proc_End:
 				return hr;
 
-			}; // Result CreatePartyRes::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
+			}; // Result CreatePartyRes::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr&& pIMsg, MessageBase* &pMessageBase )
 
 			MessageData* CreatePartyRes::Create( IHeap& memHeap, const RouteContext &InRouteContext, const uint64_t &InTransactionID, const Result &InResult )
 			{
@@ -294,14 +294,14 @@ namespace SF
 
 			}; // Result CreatePartyRes::OverrideRouteInformation( EntityUID to, unsigned hopCount )
 
-			Result CreatePartyRes::TraceOut(const char* prefix, MessageDataPtr& pMsg)
+			Result CreatePartyRes::TraceOut(const char* prefix, const MessageDataPtr& pMsg)
 			{
  				CreatePartyRes parser;
 				parser.ParseMessage(*pMsg);
 				protocolTrace( Debug1, "CreateParty:{0}:{1} , RouteContext:{2}, TransactionID:{3}, Result:{4:X8}",
 						prefix, pMsg->GetMessageHeader()->Length, parser.GetRouteContext(), parser.GetTransactionID(), parser.GetResult()); 
 				return ResultCode::SUCCESS;
-			}; // Result CreatePartyRes::TraceOut(const char* prefix, MessageDataPtr& pMsg)
+			}; // Result CreatePartyRes::TraceOut(const char* prefix, const MessageDataPtr& pMsg)
 
 			// C2S: Party instance notify of deletion. Sent by party instance
 			const MessageID PartyDeletedC2SEvt::MID = MessageID(MSGTYPE_EVENT, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_GAMEPARTYMANAGER, 1);
@@ -328,17 +328,17 @@ namespace SF
 			}; // Result PartyDeletedC2SEvt::ParseMessage( MessageData* pIMsg )
 
 
-			Result PartyDeletedC2SEvt::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
+			Result PartyDeletedC2SEvt::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr&& pIMsg, MessageBase* &pMessageBase )
 			{
  				Result hr;
 
-				protocolMem(pMessageBase = new(memHeap) PartyDeletedC2SEvt(pIMsg));
+				protocolMem(pMessageBase = new(memHeap) PartyDeletedC2SEvt(std::forward<MessageDataPtr>(pIMsg)));
 				protocolChk(pMessageBase->ParseMsg());
 
 			Proc_End:
 				return hr;
 
-			}; // Result PartyDeletedC2SEvt::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
+			}; // Result PartyDeletedC2SEvt::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr&& pIMsg, MessageBase* &pMessageBase )
 
 			MessageData* PartyDeletedC2SEvt::Create( IHeap& memHeap, const RouteContext &InRouteContext, const uint16_t &InRouteHopCount )
 			{
@@ -427,14 +427,14 @@ namespace SF
 
 			}; // Result PartyDeletedC2SEvt::OverrideRouteInformation( EntityUID to, unsigned hopCount )
 
-			Result PartyDeletedC2SEvt::TraceOut(const char* prefix, MessageDataPtr& pMsg)
+			Result PartyDeletedC2SEvt::TraceOut(const char* prefix, const MessageDataPtr& pMsg)
 			{
  				PartyDeletedC2SEvt parser;
 				parser.ParseMessage(*pMsg);
 				protocolTrace( Debug1, "PartyDeleted:{0}:{1} , RouteContext:{2}, RouteHopCount:{3}",
 						prefix, pMsg->GetMessageHeader()->Length, parser.GetRouteContext(), parser.GetRouteHopCount()); 
 				return ResultCode::SUCCESS;
-			}; // Result PartyDeletedC2SEvt::TraceOut(const char* prefix, MessageDataPtr& pMsg)
+			}; // Result PartyDeletedC2SEvt::TraceOut(const char* prefix, const MessageDataPtr& pMsg)
 
 
 

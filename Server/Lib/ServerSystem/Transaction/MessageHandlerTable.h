@@ -126,7 +126,7 @@ namespace Svr {
 
 		// Register a new message handler
 		template< class MessageClassType >
-		Result Register(const char* fileName, uint lineNumber, MessageHandlerType newHandler )
+		Result Register(const char* fileName, uint lineNumber, MessageHandlerType&& newHandler )
 		{
 			auto key = MessageClassType::MID.IDSeq.MsgID;
 			// prevent duplicated insert
@@ -142,7 +142,7 @@ namespace Svr {
 			}
 
 			TableItem *pNewItem = nullptr;
-			pNewItem = new(m_Allocator) TableItem(MessageClassType::MID, newHandler, fileName, lineNumber);
+			pNewItem = new(m_Allocator) TableItem(MessageClassType::MID, std::move(newHandler), fileName, lineNumber);
 			
 			if( pNewItem == nullptr )
 				return ResultCode::OUT_OF_MEMORY;
@@ -151,13 +151,13 @@ namespace Svr {
 		}
 
 		// Get message handler
-		SF_FORCEINLINE Result GetHandler( Message::MessageID msgID, MessageHandlerType &handler )
+		SF_FORCEINLINE Result GetHandler( Message::MessageID msgID, MessageHandlerType &outHandler )
 		{
 			typename HandlerTableType::iterator itHandler;
 			Result hr = m_HandlerTable.find(msgID.IDSeq.MsgID, itHandler);
 			if( !(hr) )
 				return hr;
-			handler = itHandler->Handler;
+			outHandler = itHandler->Handler;
 			return ResultCode::SUCCESS;
 		}
 

@@ -22,7 +22,7 @@
 
 namespace SF {
 namespace Net {
-	class ServerMUDP;
+	class RawUDP;
 }};
 
 
@@ -43,6 +43,7 @@ namespace SF {
 
 	private:
 
+		ServerConfig::GenericServer m_MyConfig;
 
 	protected:
 
@@ -78,18 +79,20 @@ namespace SF {
 
 		// create remote entity by class
 		virtual Result CreateServerEntity( NetClass netClass, Svr::ServerEntity* &pServerEntity ) override;
+
+
+		//////////////////////////////////////////////////////////////////////////
+		// GSDK callbacks
+		void OnShutdownRequested();
+		bool IsAlive();
+		void OnMaintenanceScheduled(tm t);
+
 	};
 
 
 	// Query Game server instance
 	inline RelayServer* GetMyServer() { return static_cast<RelayServer*>(Svr::BrServer::GetInstance()); }
 
-	// Query Loopback entity
-	//inline RelayServerEntity* GetLoopbackServerEntity()
-	//{
-	//	RelayServer* pSvr = GetMyServer();
-	//	return pSvr ? pSvr->GetLoopbackServerEntity() : nullptr;
-	//}
 
 
 

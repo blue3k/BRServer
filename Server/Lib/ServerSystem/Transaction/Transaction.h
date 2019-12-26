@@ -438,9 +438,9 @@ namespace Svr {
 
 		// Register message handler
 		template< class MessageClassType >
-		SF_FORCEINLINE Result RegisterMessageHandler(const char* fileName, uint lineNumber, MessageHandlerType newHandler )
+		SF_FORCEINLINE Result RegisterMessageHandler(const char* fileName, uint lineNumber, MessageHandlerType&& newHandler )
 		{
-			return m_Handlers.Register<MessageClassType>(fileName, lineNumber, newHandler);
+			return m_Handlers.Register<MessageClassType>(fileName, lineNumber, std::forward<MessageHandlerType>(newHandler));
 		}
 
 		// Caller handler 

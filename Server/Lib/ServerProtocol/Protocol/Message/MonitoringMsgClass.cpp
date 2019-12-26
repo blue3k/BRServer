@@ -50,17 +50,17 @@ namespace SF
 			}; // Result GetInstanceListCmd::ParseMessage( MessageData* pIMsg )
 
 
-			Result GetInstanceListCmd::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
+			Result GetInstanceListCmd::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr&& pIMsg, MessageBase* &pMessageBase )
 			{
  				Result hr;
 
-				protocolMem(pMessageBase = new(memHeap) GetInstanceListCmd(pIMsg));
+				protocolMem(pMessageBase = new(memHeap) GetInstanceListCmd(std::forward<MessageDataPtr>(pIMsg)));
 				protocolChk(pMessageBase->ParseMsg());
 
 			Proc_End:
 				return hr;
 
-			}; // Result GetInstanceListCmd::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
+			}; // Result GetInstanceListCmd::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr&& pIMsg, MessageBase* &pMessageBase )
 
 			MessageData* GetInstanceListCmd::Create( IHeap& memHeap, const uint64_t &InTransactionID )
 			{
@@ -93,14 +93,14 @@ namespace SF
 
 
 
-			Result GetInstanceListCmd::TraceOut(const char* prefix, MessageDataPtr& pMsg)
+			Result GetInstanceListCmd::TraceOut(const char* prefix, const MessageDataPtr& pMsg)
 			{
  				GetInstanceListCmd parser;
 				parser.ParseMessage(*pMsg);
 				protocolTrace( Debug1, "GetInstanceList:{0}:{1} , TransactionID:{2}",
 						prefix, pMsg->GetMessageHeader()->Length, parser.GetTransactionID()); 
 				return ResultCode::SUCCESS;
-			}; // Result GetInstanceListCmd::TraceOut(const char* prefix, MessageDataPtr& pMsg)
+			}; // Result GetInstanceListCmd::TraceOut(const char* prefix, const MessageDataPtr& pMsg)
 
 			const MessageID GetInstanceListRes::MID = MessageID(MSGTYPE_RESULT, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_MONITORING, 0);
 			Result GetInstanceListRes::ParseMessage( MessageData* pIMsg )
@@ -131,17 +131,17 @@ namespace SF
 			}; // Result GetInstanceListRes::ParseMessage( MessageData* pIMsg )
 
 
-			Result GetInstanceListRes::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
+			Result GetInstanceListRes::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr&& pIMsg, MessageBase* &pMessageBase )
 			{
  				Result hr;
 
-				protocolMem(pMessageBase = new(memHeap) GetInstanceListRes(pIMsg));
+				protocolMem(pMessageBase = new(memHeap) GetInstanceListRes(std::forward<MessageDataPtr>(pIMsg)));
 				protocolChk(pMessageBase->ParseMsg());
 
 			Proc_End:
 				return hr;
 
-			}; // Result GetInstanceListRes::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
+			}; // Result GetInstanceListRes::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr&& pIMsg, MessageBase* &pMessageBase )
 
 			MessageData* GetInstanceListRes::Create( IHeap& memHeap, const uint64_t &InTransactionID, const Result &InResult, const Array<PerformanceCounterInstanceInfo>& InCounterInstances, const uint32_t &InTotalInstanceCount )
 			{
@@ -182,14 +182,14 @@ namespace SF
 
 
 
-			Result GetInstanceListRes::TraceOut(const char* prefix, MessageDataPtr& pMsg)
+			Result GetInstanceListRes::TraceOut(const char* prefix, const MessageDataPtr& pMsg)
 			{
  				GetInstanceListRes parser;
 				parser.ParseMessage(*pMsg);
 				protocolTrace( Debug1, "GetInstanceList:{0}:{1} , TransactionID:{2}, Result:{3:X8}, CounterInstances:{4,30}, TotalInstanceCount:{5}",
 						prefix, pMsg->GetMessageHeader()->Length, parser.GetTransactionID(), parser.GetResult(), parser.GetCounterInstances(), parser.GetTotalInstanceCount()); 
 				return ResultCode::SUCCESS;
-			}; // Result GetInstanceListRes::TraceOut(const char* prefix, MessageDataPtr& pMsg)
+			}; // Result GetInstanceListRes::TraceOut(const char* prefix, const MessageDataPtr& pMsg)
 
 			// Cmd: [deprecated]
 			const MessageID RequestCounterValuesCmd::MID = MessageID(MSGTYPE_COMMAND, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_MONITORING, 1);
@@ -216,17 +216,17 @@ namespace SF
 			}; // Result RequestCounterValuesCmd::ParseMessage( MessageData* pIMsg )
 
 
-			Result RequestCounterValuesCmd::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
+			Result RequestCounterValuesCmd::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr&& pIMsg, MessageBase* &pMessageBase )
 			{
  				Result hr;
 
-				protocolMem(pMessageBase = new(memHeap) RequestCounterValuesCmd(pIMsg));
+				protocolMem(pMessageBase = new(memHeap) RequestCounterValuesCmd(std::forward<MessageDataPtr>(pIMsg)));
 				protocolChk(pMessageBase->ParseMsg());
 
 			Proc_End:
 				return hr;
 
-			}; // Result RequestCounterValuesCmd::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
+			}; // Result RequestCounterValuesCmd::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr&& pIMsg, MessageBase* &pMessageBase )
 
 			MessageData* RequestCounterValuesCmd::Create( IHeap& memHeap, const uint64_t &InTransactionID, const uint64_t &InInstanceUID )
 			{
@@ -261,14 +261,14 @@ namespace SF
 
 
 
-			Result RequestCounterValuesCmd::TraceOut(const char* prefix, MessageDataPtr& pMsg)
+			Result RequestCounterValuesCmd::TraceOut(const char* prefix, const MessageDataPtr& pMsg)
 			{
  				RequestCounterValuesCmd parser;
 				parser.ParseMessage(*pMsg);
 				protocolTrace( Debug1, "RequestCounterValues:{0}:{1} , TransactionID:{2}, InstanceUID:{3}",
 						prefix, pMsg->GetMessageHeader()->Length, parser.GetTransactionID(), parser.GetInstanceUID()); 
 				return ResultCode::SUCCESS;
-			}; // Result RequestCounterValuesCmd::TraceOut(const char* prefix, MessageDataPtr& pMsg)
+			}; // Result RequestCounterValuesCmd::TraceOut(const char* prefix, const MessageDataPtr& pMsg)
 
 			const MessageID RequestCounterValuesRes::MID = MessageID(MSGTYPE_RESULT, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_MONITORING, 1);
 			Result RequestCounterValuesRes::ParseMessage( MessageData* pIMsg )
@@ -299,17 +299,17 @@ namespace SF
 			}; // Result RequestCounterValuesRes::ParseMessage( MessageData* pIMsg )
 
 
-			Result RequestCounterValuesRes::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
+			Result RequestCounterValuesRes::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr&& pIMsg, MessageBase* &pMessageBase )
 			{
  				Result hr;
 
-				protocolMem(pMessageBase = new(memHeap) RequestCounterValuesRes(pIMsg));
+				protocolMem(pMessageBase = new(memHeap) RequestCounterValuesRes(std::forward<MessageDataPtr>(pIMsg)));
 				protocolChk(pMessageBase->ParseMsg());
 
 			Proc_End:
 				return hr;
 
-			}; // Result RequestCounterValuesRes::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
+			}; // Result RequestCounterValuesRes::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr&& pIMsg, MessageBase* &pMessageBase )
 
 			MessageData* RequestCounterValuesRes::Create( IHeap& memHeap, const uint64_t &InTransactionID, const Result &InResult, const uint64_t &InInstanceUID, const Array<uint64_t>& InCounterValues )
 			{
@@ -350,14 +350,14 @@ namespace SF
 
 
 
-			Result RequestCounterValuesRes::TraceOut(const char* prefix, MessageDataPtr& pMsg)
+			Result RequestCounterValuesRes::TraceOut(const char* prefix, const MessageDataPtr& pMsg)
 			{
  				RequestCounterValuesRes parser;
 				parser.ParseMessage(*pMsg);
 				protocolTrace( Debug1, "RequestCounterValues:{0}:{1} , TransactionID:{2}, Result:{3:X8}, InstanceUID:{4}, CounterValues:{5,30}",
 						prefix, pMsg->GetMessageHeader()->Length, parser.GetTransactionID(), parser.GetResult(), parser.GetInstanceUID(), parser.GetCounterValues()); 
 				return ResultCode::SUCCESS;
-			}; // Result RequestCounterValuesRes::TraceOut(const char* prefix, MessageDataPtr& pMsg)
+			}; // Result RequestCounterValuesRes::TraceOut(const char* prefix, const MessageDataPtr& pMsg)
 
 			// C2S: Message when new performance counter is added.
 			const MessageID PerformanceCounterNewC2SEvt::MID = MessageID(MSGTYPE_EVENT, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_MONITORING, 2);
@@ -390,17 +390,17 @@ namespace SF
 			}; // Result PerformanceCounterNewC2SEvt::ParseMessage( MessageData* pIMsg )
 
 
-			Result PerformanceCounterNewC2SEvt::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
+			Result PerformanceCounterNewC2SEvt::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr&& pIMsg, MessageBase* &pMessageBase )
 			{
  				Result hr;
 
-				protocolMem(pMessageBase = new(memHeap) PerformanceCounterNewC2SEvt(pIMsg));
+				protocolMem(pMessageBase = new(memHeap) PerformanceCounterNewC2SEvt(std::forward<MessageDataPtr>(pIMsg)));
 				protocolChk(pMessageBase->ParseMsg());
 
 			Proc_End:
 				return hr;
 
-			}; // Result PerformanceCounterNewC2SEvt::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
+			}; // Result PerformanceCounterNewC2SEvt::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr&& pIMsg, MessageBase* &pMessageBase )
 
 			MessageData* PerformanceCounterNewC2SEvt::Create( IHeap& memHeap, const char* InInstanceName, const uint64_t &InInstanceUID, const Array<PerformanceCounterInfo>& InNewCounters )
 			{
@@ -440,14 +440,14 @@ namespace SF
 
 
 
-			Result PerformanceCounterNewC2SEvt::TraceOut(const char* prefix, MessageDataPtr& pMsg)
+			Result PerformanceCounterNewC2SEvt::TraceOut(const char* prefix, const MessageDataPtr& pMsg)
 			{
  				PerformanceCounterNewC2SEvt parser;
 				parser.ParseMessage(*pMsg);
 				protocolTrace( Debug2, "PerformanceCounterNew:{0}:{1} , InstanceName:{2,60}, InstanceUID:{3}, NewCounters:{4,30}",
 						prefix, pMsg->GetMessageHeader()->Length, parser.GetInstanceName(), parser.GetInstanceUID(), parser.GetNewCounters()); 
 				return ResultCode::SUCCESS;
-			}; // Result PerformanceCounterNewC2SEvt::TraceOut(const char* prefix, MessageDataPtr& pMsg)
+			}; // Result PerformanceCounterNewC2SEvt::TraceOut(const char* prefix, const MessageDataPtr& pMsg)
 
 			// C2S: Counter instance is deleted
 			const MessageID PerformanceCounterFreeC2SEvt::MID = MessageID(MSGTYPE_EVENT, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_MONITORING, 3);
@@ -476,17 +476,17 @@ namespace SF
 			}; // Result PerformanceCounterFreeC2SEvt::ParseMessage( MessageData* pIMsg )
 
 
-			Result PerformanceCounterFreeC2SEvt::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
+			Result PerformanceCounterFreeC2SEvt::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr&& pIMsg, MessageBase* &pMessageBase )
 			{
  				Result hr;
 
-				protocolMem(pMessageBase = new(memHeap) PerformanceCounterFreeC2SEvt(pIMsg));
+				protocolMem(pMessageBase = new(memHeap) PerformanceCounterFreeC2SEvt(std::forward<MessageDataPtr>(pIMsg)));
 				protocolChk(pMessageBase->ParseMsg());
 
 			Proc_End:
 				return hr;
 
-			}; // Result PerformanceCounterFreeC2SEvt::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
+			}; // Result PerformanceCounterFreeC2SEvt::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr&& pIMsg, MessageBase* &pMessageBase )
 
 			MessageData* PerformanceCounterFreeC2SEvt::Create( IHeap& memHeap, const Array<uint64_t>& InFreeInstances )
 			{
@@ -521,14 +521,14 @@ namespace SF
 
 
 
-			Result PerformanceCounterFreeC2SEvt::TraceOut(const char* prefix, MessageDataPtr& pMsg)
+			Result PerformanceCounterFreeC2SEvt::TraceOut(const char* prefix, const MessageDataPtr& pMsg)
 			{
  				PerformanceCounterFreeC2SEvt parser;
 				parser.ParseMessage(*pMsg);
 				protocolTrace( Debug2, "PerformanceCounterFree:{0}:{1} , FreeInstances:{2,30}",
 						prefix, pMsg->GetMessageHeader()->Length, parser.GetFreeInstances()); 
 				return ResultCode::SUCCESS;
-			}; // Result PerformanceCounterFreeC2SEvt::TraceOut(const char* prefix, MessageDataPtr& pMsg)
+			}; // Result PerformanceCounterFreeC2SEvt::TraceOut(const char* prefix, const MessageDataPtr& pMsg)
 
 			// C2S: Counter update broadcast
 			const MessageID PerformanceCounterUpdateC2SEvt::MID = MessageID(MSGTYPE_EVENT, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_MONITORING, 4);
@@ -558,17 +558,17 @@ namespace SF
 			}; // Result PerformanceCounterUpdateC2SEvt::ParseMessage( MessageData* pIMsg )
 
 
-			Result PerformanceCounterUpdateC2SEvt::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
+			Result PerformanceCounterUpdateC2SEvt::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr&& pIMsg, MessageBase* &pMessageBase )
 			{
  				Result hr;
 
-				protocolMem(pMessageBase = new(memHeap) PerformanceCounterUpdateC2SEvt(pIMsg));
+				protocolMem(pMessageBase = new(memHeap) PerformanceCounterUpdateC2SEvt(std::forward<MessageDataPtr>(pIMsg)));
 				protocolChk(pMessageBase->ParseMsg());
 
 			Proc_End:
 				return hr;
 
-			}; // Result PerformanceCounterUpdateC2SEvt::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
+			}; // Result PerformanceCounterUpdateC2SEvt::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr&& pIMsg, MessageBase* &pMessageBase )
 
 			MessageData* PerformanceCounterUpdateC2SEvt::Create( IHeap& memHeap, const uint64_t &InInstanceUID, const Array<uint64_t>& InCounterValues )
 			{
@@ -605,14 +605,14 @@ namespace SF
 
 
 
-			Result PerformanceCounterUpdateC2SEvt::TraceOut(const char* prefix, MessageDataPtr& pMsg)
+			Result PerformanceCounterUpdateC2SEvt::TraceOut(const char* prefix, const MessageDataPtr& pMsg)
 			{
  				PerformanceCounterUpdateC2SEvt parser;
 				parser.ParseMessage(*pMsg);
 				protocolTrace( Debug2, "PerformanceCounterUpdate:{0}:{1} , InstanceUID:{2}, CounterValues:{3,30}",
 						prefix, pMsg->GetMessageHeader()->Length, parser.GetInstanceUID(), parser.GetCounterValues()); 
 				return ResultCode::SUCCESS;
-			}; // Result PerformanceCounterUpdateC2SEvt::TraceOut(const char* prefix, MessageDataPtr& pMsg)
+			}; // Result PerformanceCounterUpdateC2SEvt::TraceOut(const char* prefix, const MessageDataPtr& pMsg)
 
 			// S2C: Server will send this message to an instance to get performance counters.
 			const MessageID PerformanceCounterUpdateCounterInfoS2CEvt::MID = MessageID(MSGTYPE_EVENT, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_MONITORING, 5);
@@ -638,17 +638,17 @@ namespace SF
 			}; // Result PerformanceCounterUpdateCounterInfoS2CEvt::ParseMessage( MessageData* pIMsg )
 
 
-			Result PerformanceCounterUpdateCounterInfoS2CEvt::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
+			Result PerformanceCounterUpdateCounterInfoS2CEvt::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr&& pIMsg, MessageBase* &pMessageBase )
 			{
  				Result hr;
 
-				protocolMem(pMessageBase = new(memHeap) PerformanceCounterUpdateCounterInfoS2CEvt(pIMsg));
+				protocolMem(pMessageBase = new(memHeap) PerformanceCounterUpdateCounterInfoS2CEvt(std::forward<MessageDataPtr>(pIMsg)));
 				protocolChk(pMessageBase->ParseMsg());
 
 			Proc_End:
 				return hr;
 
-			}; // Result PerformanceCounterUpdateCounterInfoS2CEvt::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
+			}; // Result PerformanceCounterUpdateCounterInfoS2CEvt::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr&& pIMsg, MessageBase* &pMessageBase )
 
 			MessageData* PerformanceCounterUpdateCounterInfoS2CEvt::Create( IHeap& memHeap, const uint64_t &InInstanceUID )
 			{
@@ -681,14 +681,14 @@ namespace SF
 
 
 
-			Result PerformanceCounterUpdateCounterInfoS2CEvt::TraceOut(const char* prefix, MessageDataPtr& pMsg)
+			Result PerformanceCounterUpdateCounterInfoS2CEvt::TraceOut(const char* prefix, const MessageDataPtr& pMsg)
 			{
  				PerformanceCounterUpdateCounterInfoS2CEvt parser;
 				parser.ParseMessage(*pMsg);
 				protocolTrace( Debug2, "PerformanceCounterUpdateCounterInfo:{0}:{1} , InstanceUID:{2}",
 						prefix, pMsg->GetMessageHeader()->Length, parser.GetInstanceUID()); 
 				return ResultCode::SUCCESS;
-			}; // Result PerformanceCounterUpdateCounterInfoS2CEvt::TraceOut(const char* prefix, MessageDataPtr& pMsg)
+			}; // Result PerformanceCounterUpdateCounterInfoS2CEvt::TraceOut(const char* prefix, const MessageDataPtr& pMsg)
 
 
 

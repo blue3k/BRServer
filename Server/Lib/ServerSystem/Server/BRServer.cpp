@@ -441,12 +441,9 @@ Proc_End:
 
 		if( !( hr ) )
 		{
-			// TODO: more clean up
-
 			CloseNetPublic();
 			CloseNetPrivate();
 
-			// TODO
 			Service::EntityManager->Clear();
 
 			m_Components.TerminateComponents();
@@ -560,45 +557,43 @@ Proc_End:
 	// Initialize private Network
 	Result BrServer::InitializeNetPrivate()
 	{
-		Result hr = ResultCode::SUCCESS;
+		FunctionContext hr([this](Result result)
+		{
+			CloseNetPublic();
+			CloseNetPrivate();
+		});
 
 
-		svrChk( CloseNetPrivate() );
+		svrCheck( CloseNetPrivate() );
 
 		if( GetMyConfig() == nullptr )
 		{
 			svrTrace( Error, "No configuration is specified for this server {0}", typeid(*this).name() );
-			svrErr( ResultCode::UNEXPECTED );
+			svrCheck( ResultCode::UNEXPECTED );
 		}
 
-		// Create private network and open it
-		svrMem( m_pNetPrivate = new(GetHeap()) Net::ServerPeerTCP(GetMyConfig()->UID, GetNetClass()) );
-		m_pNetPrivate->RegisterToEngineObjectManager();
-
-		m_pNetPrivate->SetNewConnectionhandler([this](SharedPointerT<Net::Connection>& newConn)
+		// Skip private net if it is not set
+		if (GetMyConfig()->PrivateNet.IP.size() > 0)
 		{
-			SharedPointerAtomicT<Net::Connection> pConnAtomic;
-			pConnAtomic = std::forward<SharedPointerT<Net::Connection>>(newConn);
-			m_NewConnectionQueue.Enqueue(std::forward<SharedPointerAtomicT<Net::Connection>>(pConnAtomic));
-		});
+			// Create private network and open it
+			svrCheckMem(m_pNetPrivate = new(GetHeap()) Net::ServerPeerTCP(GetMyConfig()->UID, GetNetClass()));
+			m_pNetPrivate->RegisterToEngineObjectManager();
 
-		svrChk( m_pNetPrivate->HostOpen( GetNetClass(), GetMyConfig()->PrivateNet.IP, GetMyConfig()->PrivateNet.Port ) );
+			m_pNetPrivate->SetNewConnectionhandler([this](SharedPointerT<Net::Connection>& newConn)
+			{
+				SharedPointerAtomicT<Net::Connection> pConnAtomic;
+				pConnAtomic = std::forward<SharedPointerT<Net::Connection>>(newConn);
+				m_NewConnectionQueue.Enqueue(std::forward<SharedPointerAtomicT<Net::Connection>>(pConnAtomic));
+			});
+
+			svrCheck(m_pNetPrivate->HostOpen(GetNetClass(), GetMyConfig()->PrivateNet.IP, GetMyConfig()->PrivateNet.Port));
+		}
 
 		svrTrace( Info, "Initialize basic entities" );
 		hr = InitializeEntities();
-		if( !(hr) )
+		if(!(hr) )
 		{
 			svrTrace( Error, "Failed Initialize basic entities, hr={0:X8}", hr );
-			svrErr( hr );
-		}
-
-
-	Proc_End:
-
-		if( !(hr) )
-		{
-			CloseNetPublic();
-			CloseNetPrivate();
 		}
 
 		return hr;
@@ -665,14 +660,12 @@ Proc_End:
 	Result BrServer::TickUpdate(TimerAction *pAction)
 	{
 		Result hr = ResultCode::SUCCESS;
-		
 
 		// Process private network event
 		if( !(ProcessNewConnection()) )
 		{
 			svrTrace( SVR_DBGFAIL, "ProcessNewConnection : {0:X8}", hr );
 		}
-
 
 		if( !(ProcessPublicNetworkEvent()) )
 		{
@@ -689,9 +682,6 @@ Proc_End:
 		Service::EntityManager->Update();
 
 		MasterEntity::TickUpdate(pAction);
-
-
-	//Proc_End:
 
 		return hr;
 	}

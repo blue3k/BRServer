@@ -137,51 +137,50 @@ namespace Svr {
 			return ResultCode::SUCCESS;
 
 
-		auto numQueued = m_NewConnectionQueue.GetEnqueCount();
-		for (uint iQueue = 0; iQueue < numQueued; iQueue++)
-		{
-			SharedPointerAtomicT<Net::Connection> pConnAtomic;
+		//auto numQueued = m_NewConnectionQueue.GetEnqueCount();
+		//for (uint iQueue = 0; iQueue < numQueued; iQueue++)
+		//{
+		//	SharedPointerAtomicT<Net::Connection> pConnAtomic;
 
-			if (!m_NewConnectionQueue.Dequeue(pConnAtomic))
-				break;
+		//	if (!m_NewConnectionQueue.Dequeue(pConnAtomic))
+		//		break;
 
-			auto connectionState = pConnAtomic->GetConnectionState();
-			switch (connectionState)
-			{
-			case Net::ConnectionState::CONNECTING:
-				m_NewConnectionQueue.Enqueue(std::forward<SharedPointerAtomicT<Net::Connection>>(pConnAtomic));
-				break;
-			case Net::ConnectionState::CONNECTED:
-				break;
-			default:
-				assert(connectionState == Net::ConnectionState::DISCONNECTED); // I want to see when this happens
-				pConn = std::forward <SharedPointerAtomicT<Net::Connection>>(pConnAtomic);
-				Service::ConnectionManager->RemoveConnection(pConn);
-				pConn->DisconnectNRelease("Disconnected? before handed over to RelayService");
-				pConn = nullptr;
-				break;
-			}
+		//	auto connectionState = pConnAtomic->GetConnectionState();
+		//	switch (connectionState)
+		//	{
+		//	case Net::ConnectionState::CONNECTING:
+		//		m_NewConnectionQueue.Enqueue(std::forward<SharedPointerAtomicT<Net::Connection>>(pConnAtomic));
+		//		break;
+		//	case Net::ConnectionState::CONNECTED:
+		//		break;
+		//	default:
+		//		assert(connectionState == Net::ConnectionState::DISCONNECTED); // I want to see when this happens
+		//		pConn = std::forward <SharedPointerAtomicT<Net::Connection>>(pConnAtomic);
+		//		Service::ConnectionManager->RemoveConnection(pConn);
+		//		pConn->DisconnectNRelease("Disconnected? before handed over to RelayService");
+		//		pConn = nullptr;
+		//		break;
+		//	}
 
-			if (pConnAtomic == nullptr)
-				continue;
+		//	if (pConnAtomic == nullptr)
+		//		continue;
 
-			pConn = std::forward <SharedPointerAtomicT<Net::Connection>>(pConnAtomic);
+		//	pConn = std::forward <SharedPointerAtomicT<Net::Connection>>(pConnAtomic);
 
-			RelayPlayer *pRelayPlayer;
-			svrCheckMem(pRelayPlayer = new(GetHeap()) RelayPlayer(nullptr));
+		//	RelayPlayer *pRelayPlayer;
 
-			//if (!(pRelayPlayer->SetConnection(std::forward<Net::ConnectionPtr>(pConn))))
-			//{
-			//	// NOTE: We need to mark to close this
-			//	pRelayUser->ClearEntity();
-			//}
-			//else
-			//{
-			//	pConn = nullptr;
-			//}
+		//	//if (!(pRelayPlayer->SetConnection(std::forward<Net::ConnectionPtr>(pConn))))
+		//	//{
+		//	//	// NOTE: We need to mark to close this
+		//	//	pRelayUser->ClearEntity();
+		//	//}
+		//	//else
+		//	//{
+		//	//	pConn = nullptr;
+		//	//}
 
-			//pRelayUser = nullptr;
-		}
+		//	//pRelayUser = nullptr;
+		//}
 
 		return hr;
 	}

@@ -53,17 +53,17 @@ namespace SF
 			}; // Result PlayerJoinedToGameServerCmd::ParseMessage( MessageData* pIMsg )
 
 
-			Result PlayerJoinedToGameServerCmd::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
+			Result PlayerJoinedToGameServerCmd::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr&& pIMsg, MessageBase* &pMessageBase )
 			{
  				Result hr;
 
-				protocolMem(pMessageBase = new(memHeap) PlayerJoinedToGameServerCmd(pIMsg));
+				protocolMem(pMessageBase = new(memHeap) PlayerJoinedToGameServerCmd(std::forward<MessageDataPtr>(pIMsg)));
 				protocolChk(pMessageBase->ParseMsg());
 
 			Proc_End:
 				return hr;
 
-			}; // Result PlayerJoinedToGameServerCmd::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
+			}; // Result PlayerJoinedToGameServerCmd::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr&& pIMsg, MessageBase* &pMessageBase )
 
 			MessageData* PlayerJoinedToGameServerCmd::Create( IHeap& memHeap, const RouteContext &InRouteContext, const uint64_t &InTransactionID, const PlayerID &InPlayerID, const AuthTicket &InAuthTicket )
 			{
@@ -127,14 +127,14 @@ namespace SF
 			}; // Result PlayerJoinedToGameServerCmd::OverrideRouteContextDestination( EntityUID to )
 
 
-			Result PlayerJoinedToGameServerCmd::TraceOut(const char* prefix, MessageDataPtr& pMsg)
+			Result PlayerJoinedToGameServerCmd::TraceOut(const char* prefix, const MessageDataPtr& pMsg)
 			{
  				PlayerJoinedToGameServerCmd parser;
 				parser.ParseMessage(*pMsg);
 				protocolTrace( Debug1, "PlayerJoinedToGameServer:{0}:{1} , RouteContext:{2}, TransactionID:{3}, PlayerID:{4}, AuthTicket:{5}",
 						prefix, pMsg->GetMessageHeader()->Length, parser.GetRouteContext(), parser.GetTransactionID(), parser.GetPlayerID(), parser.GetAuthTicket()); 
 				return ResultCode::SUCCESS;
-			}; // Result PlayerJoinedToGameServerCmd::TraceOut(const char* prefix, MessageDataPtr& pMsg)
+			}; // Result PlayerJoinedToGameServerCmd::TraceOut(const char* prefix, const MessageDataPtr& pMsg)
 
 			const MessageID PlayerJoinedToGameServerRes::MID = MessageID(MSGTYPE_RESULT, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_LOGINSERVER, 0);
 			Result PlayerJoinedToGameServerRes::ParseMessage( MessageData* pIMsg )
@@ -161,17 +161,17 @@ namespace SF
 			}; // Result PlayerJoinedToGameServerRes::ParseMessage( MessageData* pIMsg )
 
 
-			Result PlayerJoinedToGameServerRes::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
+			Result PlayerJoinedToGameServerRes::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr&& pIMsg, MessageBase* &pMessageBase )
 			{
  				Result hr;
 
-				protocolMem(pMessageBase = new(memHeap) PlayerJoinedToGameServerRes(pIMsg));
+				protocolMem(pMessageBase = new(memHeap) PlayerJoinedToGameServerRes(std::forward<MessageDataPtr>(pIMsg)));
 				protocolChk(pMessageBase->ParseMsg());
 
 			Proc_End:
 				return hr;
 
-			}; // Result PlayerJoinedToGameServerRes::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
+			}; // Result PlayerJoinedToGameServerRes::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr&& pIMsg, MessageBase* &pMessageBase )
 
 			MessageData* PlayerJoinedToGameServerRes::Create( IHeap& memHeap, const RouteContext &InRouteContext, const uint64_t &InTransactionID, const Result &InResult )
 			{
@@ -233,14 +233,14 @@ namespace SF
 			}; // Result PlayerJoinedToGameServerRes::OverrideRouteContextDestination( EntityUID to )
 
 
-			Result PlayerJoinedToGameServerRes::TraceOut(const char* prefix, MessageDataPtr& pMsg)
+			Result PlayerJoinedToGameServerRes::TraceOut(const char* prefix, const MessageDataPtr& pMsg)
 			{
  				PlayerJoinedToGameServerRes parser;
 				parser.ParseMessage(*pMsg);
 				protocolTrace( Debug1, "PlayerJoinedToGameServer:{0}:{1} , RouteContext:{2}, TransactionID:{3}, Result:{4:X8}",
 						prefix, pMsg->GetMessageHeader()->Length, parser.GetRouteContext(), parser.GetTransactionID(), parser.GetResult()); 
 				return ResultCode::SUCCESS;
-			}; // Result PlayerJoinedToGameServerRes::TraceOut(const char* prefix, MessageDataPtr& pMsg)
+			}; // Result PlayerJoinedToGameServerRes::TraceOut(const char* prefix, const MessageDataPtr& pMsg)
 
 			// Cmd: Kick logged in player, used to kick player on other login server to prevent duplicated login.
 			const MessageID KickPlayerCmd::MID = MessageID(MSGTYPE_COMMAND, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_LOGINSERVER, 1);
@@ -268,17 +268,17 @@ namespace SF
 			}; // Result KickPlayerCmd::ParseMessage( MessageData* pIMsg )
 
 
-			Result KickPlayerCmd::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
+			Result KickPlayerCmd::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr&& pIMsg, MessageBase* &pMessageBase )
 			{
  				Result hr;
 
-				protocolMem(pMessageBase = new(memHeap) KickPlayerCmd(pIMsg));
+				protocolMem(pMessageBase = new(memHeap) KickPlayerCmd(std::forward<MessageDataPtr>(pIMsg)));
 				protocolChk(pMessageBase->ParseMsg());
 
 			Proc_End:
 				return hr;
 
-			}; // Result KickPlayerCmd::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
+			}; // Result KickPlayerCmd::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr&& pIMsg, MessageBase* &pMessageBase )
 
 			MessageData* KickPlayerCmd::Create( IHeap& memHeap, const RouteContext &InRouteContext, const uint64_t &InTransactionID, const PlayerID &InKickedPlayerID )
 			{
@@ -340,14 +340,14 @@ namespace SF
 			}; // Result KickPlayerCmd::OverrideRouteContextDestination( EntityUID to )
 
 
-			Result KickPlayerCmd::TraceOut(const char* prefix, MessageDataPtr& pMsg)
+			Result KickPlayerCmd::TraceOut(const char* prefix, const MessageDataPtr& pMsg)
 			{
  				KickPlayerCmd parser;
 				parser.ParseMessage(*pMsg);
 				protocolTrace( Debug1, "KickPlayer:{0}:{1} , RouteContext:{2}, TransactionID:{3}, KickedPlayerID:{4}",
 						prefix, pMsg->GetMessageHeader()->Length, parser.GetRouteContext(), parser.GetTransactionID(), parser.GetKickedPlayerID()); 
 				return ResultCode::SUCCESS;
-			}; // Result KickPlayerCmd::TraceOut(const char* prefix, MessageDataPtr& pMsg)
+			}; // Result KickPlayerCmd::TraceOut(const char* prefix, const MessageDataPtr& pMsg)
 
 			const MessageID KickPlayerRes::MID = MessageID(MSGTYPE_RESULT, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_LOGINSERVER, 1);
 			Result KickPlayerRes::ParseMessage( MessageData* pIMsg )
@@ -374,17 +374,17 @@ namespace SF
 			}; // Result KickPlayerRes::ParseMessage( MessageData* pIMsg )
 
 
-			Result KickPlayerRes::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
+			Result KickPlayerRes::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr&& pIMsg, MessageBase* &pMessageBase )
 			{
  				Result hr;
 
-				protocolMem(pMessageBase = new(memHeap) KickPlayerRes(pIMsg));
+				protocolMem(pMessageBase = new(memHeap) KickPlayerRes(std::forward<MessageDataPtr>(pIMsg)));
 				protocolChk(pMessageBase->ParseMsg());
 
 			Proc_End:
 				return hr;
 
-			}; // Result KickPlayerRes::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
+			}; // Result KickPlayerRes::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr&& pIMsg, MessageBase* &pMessageBase )
 
 			MessageData* KickPlayerRes::Create( IHeap& memHeap, const RouteContext &InRouteContext, const uint64_t &InTransactionID, const Result &InResult )
 			{
@@ -446,14 +446,14 @@ namespace SF
 			}; // Result KickPlayerRes::OverrideRouteContextDestination( EntityUID to )
 
 
-			Result KickPlayerRes::TraceOut(const char* prefix, MessageDataPtr& pMsg)
+			Result KickPlayerRes::TraceOut(const char* prefix, const MessageDataPtr& pMsg)
 			{
  				KickPlayerRes parser;
 				parser.ParseMessage(*pMsg);
 				protocolTrace( Debug1, "KickPlayer:{0}:{1} , RouteContext:{2}, TransactionID:{3}, Result:{4:X8}",
 						prefix, pMsg->GetMessageHeader()->Length, parser.GetRouteContext(), parser.GetTransactionID(), parser.GetResult()); 
 				return ResultCode::SUCCESS;
-			}; // Result KickPlayerRes::TraceOut(const char* prefix, MessageDataPtr& pMsg)
+			}; // Result KickPlayerRes::TraceOut(const char* prefix, const MessageDataPtr& pMsg)
 
 
 

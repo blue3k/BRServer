@@ -8,10 +8,7 @@
 //
 ////////////////////////////////////////////////////////////////////////////////
 
-#include "ModuleServerPCH.h"
-
-
-#include "ModuleServerPCH.h"
+#include "RelayServerPCH.h"
 #include "Util/SFTimeUtil.h"
 #include "SvrConst.h"
 #include "Server/BrServer.h"
@@ -33,23 +30,19 @@
 #include "Protocol/Policy/GameServerNetPolicy.h"
 #include "Protocol/Policy/GameInstanceNetPolicy.h"
 
-
 #include "Net/SFNetServerPeerTCP.h"
 #include "Net/SFNetSvrDef.h"
 #include "Net/SFNetServerUDP.h"
 #include "Entity/EntityManager.h"
 
-
-#include "SharedModuleSvrConst.h"
+#include "RelaySvrConst.h"
 #include "RelayServerClass.h"
-
-#include "Transaction/RelayServerTrans.h"
 
 #include "DB/GameConspiracyDB.h"
 #include "DB/AccountDB.h"
 
+#include "gsdk.h"
 
-#define PATH_DATABASE L"../../Data"
 
 
 
@@ -63,8 +56,18 @@ namespace SF {
 
 
 	RelayServer::RelayServer()
-		:BrServer(NetClass::Game)
+		: BrServer(NetClass::Game)
+		, m_MyConfig(GetEngineHeap())
 	{
+		// put default
+		m_MyConfig.Name = Util::GetServiceName();
+		m_MyConfig.UID = 1;
+
+		SetMyConfig(&m_MyConfig);
+
+		// handle gsdk config
+		const std::unordered_map<std::string, std::string>& config = Microsoft::Azure::Gaming::GSDK::getConfigSettings();
+
 	}
 
 
@@ -79,13 +82,34 @@ namespace SF {
 	{
 		Result hr = ResultCode::SUCCESS;
 
-
 		svrChk(Svr::BrServer::ApplyConfiguration() );
 
+		// Initializing PlayFab stuffs
+		Microsoft::Azure::Gaming::GSDK::start();
+		Microsoft::Azure::Gaming::GSDK::registerShutdownCallback([this]() { OnShutdownRequested(); });
+		Microsoft::Azure::Gaming::GSDK::registerHealthCallback([this]() { return IsAlive(); });
+		Microsoft::Azure::Gaming::GSDK::registerMaintenanceCallback([this](tm t) { OnMaintenanceScheduled(t); });
 
 	Proc_End:
 
 		return hr;
+	}
+
+	void RelayServer::OnShutdownRequested()
+	{
+		StopServer();
+	}
+
+	bool RelayServer::IsAlive()
+	{
+		return GetServerState() != Svr::ServerState::STOPED;
+	}
+
+	void RelayServer::OnMaintenanceScheduled(tm t)
+	{
+		// TODO:
+		//nextMaintenance = mktime(&t);
+		//isMaintenancedScheduled = true;
 	}
 
 
@@ -96,9 +120,8 @@ namespace SF {
 
 		svrChk(Svr::BrServer::InitializeServerResource() );
 
-		//svrChk( conspiracy::InitializeTable() );
-
 		svrChk( InitializeEntity( EntityID(EntityFaculty::Server,0) ) );
+
 
 	Proc_End:
 
@@ -114,34 +137,17 @@ namespace SF {
 
 		svrChk( TerminateEntity() );
 
-		svrChk(GameTable::TerminateTable() );
-
 	Proc_End:
 
 		return hr;
 	}
 
-
 	// Initialize private Network
 	Result RelayServer::InitializeNetPrivate()
 	{
 		Result hr = ResultCode::SUCCESS;
-		SockFamily privateNetSockFamily;
-
 
 		svrChk(Svr::BrServer::InitializeNetPrivate() );
-
-		GetMyServer()->GetNetPrivate()->SetIsEnableAccept(true);
-
-		privateNetSockFamily = GetMyServer()->GetNetPrivate()->GetLocalAddress().SocketFamily;
-
-		// push Startup transaction
-		{
-			TransactionPtr pProcess;
-			svrMem( pProcess = new(GetHeap()) RelayServerStartProcess(GetHeap()) );
-			svrChk( pProcess->InitializeTransaction(this) );
-			svrChk( PendingTransaction(ThisThread::GetThreadID(), pProcess) );
-		}
 
 
 	Proc_End:
@@ -157,13 +163,8 @@ namespace SF {
 
 		hr = Svr::BrServer::CloseNetPrivate();
 
-
-		// Server Entity Manager will clear this
-		SetLoopbackServerEntity( nullptr );
-
 		return hr;
 	}
-
 
 
 	// create remote entity by class

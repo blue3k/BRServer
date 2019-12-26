@@ -8,6 +8,8 @@ set(BR_LIB_FILES
 	RelayServer.h
     RelayServer.cpp
     RelayServerClass.cpp
+	NetRelayServer.cpp
+	NetRelayServer.h
   )
 
 

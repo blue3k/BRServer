@@ -51,17 +51,17 @@ namespace SF
 			}; // Result GenericFailureCmd::ParseMessage( MessageData* pIMsg )
 
 
-			Result GenericFailureCmd::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
+			Result GenericFailureCmd::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr&& pIMsg, MessageBase* &pMessageBase )
 			{
  				Result hr;
 
-				protocolMem(pMessageBase = new(memHeap) GenericFailureCmd(pIMsg));
+				protocolMem(pMessageBase = new(memHeap) GenericFailureCmd(std::forward<MessageDataPtr>(pIMsg)));
 				protocolChk(pMessageBase->ParseMsg());
 
 			Proc_End:
 				return hr;
 
-			}; // Result GenericFailureCmd::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
+			}; // Result GenericFailureCmd::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr&& pIMsg, MessageBase* &pMessageBase )
 
 			MessageData* GenericFailureCmd::Create( IHeap& memHeap, const RouteContext &InRouteContext, const uint64_t &InTransactionID )
 			{
@@ -121,14 +121,14 @@ namespace SF
 			}; // Result GenericFailureCmd::OverrideRouteContextDestination( EntityUID to )
 
 
-			Result GenericFailureCmd::TraceOut(const char* prefix, MessageDataPtr& pMsg)
+			Result GenericFailureCmd::TraceOut(const char* prefix, const MessageDataPtr& pMsg)
 			{
  				GenericFailureCmd parser;
 				parser.ParseMessage(*pMsg);
 				protocolTrace( Debug1, "GenericFailure:{0}:{1} , RouteContext:{2}, TransactionID:{3}",
 						prefix, pMsg->GetMessageHeader()->Length, parser.GetRouteContext(), parser.GetTransactionID()); 
 				return ResultCode::SUCCESS;
-			}; // Result GenericFailureCmd::TraceOut(const char* prefix, MessageDataPtr& pMsg)
+			}; // Result GenericFailureCmd::TraceOut(const char* prefix, const MessageDataPtr& pMsg)
 
 			const MessageID GenericFailureRes::MID = MessageID(MSGTYPE_RESULT, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_SERVER, 0);
 			Result GenericFailureRes::ParseMessage( MessageData* pIMsg )
@@ -155,17 +155,17 @@ namespace SF
 			}; // Result GenericFailureRes::ParseMessage( MessageData* pIMsg )
 
 
-			Result GenericFailureRes::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
+			Result GenericFailureRes::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr&& pIMsg, MessageBase* &pMessageBase )
 			{
  				Result hr;
 
-				protocolMem(pMessageBase = new(memHeap) GenericFailureRes(pIMsg));
+				protocolMem(pMessageBase = new(memHeap) GenericFailureRes(std::forward<MessageDataPtr>(pIMsg)));
 				protocolChk(pMessageBase->ParseMsg());
 
 			Proc_End:
 				return hr;
 
-			}; // Result GenericFailureRes::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
+			}; // Result GenericFailureRes::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr&& pIMsg, MessageBase* &pMessageBase )
 
 			MessageData* GenericFailureRes::Create( IHeap& memHeap, const RouteContext &InRouteContext, const uint64_t &InTransactionID, const Result &InResult )
 			{
@@ -227,14 +227,14 @@ namespace SF
 			}; // Result GenericFailureRes::OverrideRouteContextDestination( EntityUID to )
 
 
-			Result GenericFailureRes::TraceOut(const char* prefix, MessageDataPtr& pMsg)
+			Result GenericFailureRes::TraceOut(const char* prefix, const MessageDataPtr& pMsg)
 			{
  				GenericFailureRes parser;
 				parser.ParseMessage(*pMsg);
 				protocolTrace( Debug1, "GenericFailure:{0}:{1} , RouteContext:{2}, TransactionID:{3}, Result:{4:X8}",
 						prefix, pMsg->GetMessageHeader()->Length, parser.GetRouteContext(), parser.GetTransactionID(), parser.GetResult()); 
 				return ResultCode::SUCCESS;
-			}; // Result GenericFailureRes::TraceOut(const char* prefix, MessageDataPtr& pMsg)
+			}; // Result GenericFailureRes::TraceOut(const char* prefix, const MessageDataPtr& pMsg)
 
 			// C2S: Server Started or Connected
 			const MessageID ServerConnectedC2SEvt::MID = MessageID(MSGTYPE_EVENT, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_SERVER, 1);
@@ -262,17 +262,17 @@ namespace SF
 			}; // Result ServerConnectedC2SEvt::ParseMessage( MessageData* pIMsg )
 
 
-			Result ServerConnectedC2SEvt::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
+			Result ServerConnectedC2SEvt::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr&& pIMsg, MessageBase* &pMessageBase )
 			{
  				Result hr;
 
-				protocolMem(pMessageBase = new(memHeap) ServerConnectedC2SEvt(pIMsg));
+				protocolMem(pMessageBase = new(memHeap) ServerConnectedC2SEvt(std::forward<MessageDataPtr>(pIMsg)));
 				protocolChk(pMessageBase->ParseMsg());
 
 			Proc_End:
 				return hr;
 
-			}; // Result ServerConnectedC2SEvt::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
+			}; // Result ServerConnectedC2SEvt::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr&& pIMsg, MessageBase* &pMessageBase )
 
 			MessageData* ServerConnectedC2SEvt::Create( IHeap& memHeap, const RouteContext &InRouteContext, const uint32_t &InStartUpTime, const NetAddress &InPrivateAddress )
 			{
@@ -334,14 +334,14 @@ namespace SF
 			}; // Result ServerConnectedC2SEvt::OverrideRouteContextDestination( EntityUID to )
 
 
-			Result ServerConnectedC2SEvt::TraceOut(const char* prefix, MessageDataPtr& pMsg)
+			Result ServerConnectedC2SEvt::TraceOut(const char* prefix, const MessageDataPtr& pMsg)
 			{
  				ServerConnectedC2SEvt parser;
 				parser.ParseMessage(*pMsg);
 				protocolTrace( Debug2, "ServerConnected:{0}:{1} , RouteContext:{2}, StartUpTime:{3}, PrivateAddress:{4}",
 						prefix, pMsg->GetMessageHeader()->Length, parser.GetRouteContext(), parser.GetStartUpTime(), parser.GetPrivateAddress()); 
 				return ResultCode::SUCCESS;
-			}; // Result ServerConnectedC2SEvt::TraceOut(const char* prefix, MessageDataPtr& pMsg)
+			}; // Result ServerConnectedC2SEvt::TraceOut(const char* prefix, const MessageDataPtr& pMsg)
 
 
 

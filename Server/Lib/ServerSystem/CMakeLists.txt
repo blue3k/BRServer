@@ -65,6 +65,8 @@ set(BRSERVERSYSTEM_LIB_FILES
     ServerLog/SvrLog.h
     ServerLog/SvrLogComponent.h
     ServerLog/SvrTrace.h
+	ServerLog/SFLogOutputPlayFabGSDK.cpp
+	ServerLog/SFLogOutputPlayFabGSDK.h
     ServerService/ServerServiceBase.h
     Server/BrServer.h
     Server/BrServerUtil.h
@@ -211,8 +213,8 @@ set(BRSERVERSYSTEM_LIB_FILES
 	ServiceEntity/Relay/RelayServiceTrans.h
 	ServiceEntity/Relay/RelayPlayer.cpp
 	ServiceEntity/Relay/RelayPlayer.h
-	ServiceEntity/Relay/RelayGameInstance.cpp
-	ServiceEntity/Relay/RelayGameInstance.h
+	ServiceEntity/Relay/RelayInstance.cpp
+	ServiceEntity/Relay/RelayInstance.h
     ServiceEntity/ServiceEntity.cpp
     Service/ServerService.cpp
     String/ToStringSvr.cpp

@@ -19,6 +19,7 @@
 #include "RelayServer.h"
 #include "RelayServerClass.h"
 
+#include "gsdk.h"
 
 using namespace SF;
 
@@ -26,7 +27,6 @@ using namespace SF;
 #if SF_PLATFORM == SF_PLATFORM_WINDOWS
 int main(int numArg, const char* argc[])
 {
-
 #if _WIN32_WINNT >= 0x0400 & defined(_ATL_FREE_THREADED)
 	Result hRes = CoInitializeEx(NULL, COINIT_MULTITHREADED);
 #else
@@ -48,7 +48,9 @@ int main(int numArg, const char* argc[])
 
 	svrChk(Svr::Service::ServicePrepare());
 
-	SF::Svr::InitializeEngineForStandaloneServer();
+	uint32_t workerThreadCount = 1;
+	uint32_t netIOThreadCount = 2;
+	SF::Svr::InitializeEngineForPlayFabServer(workerThreadCount, netIOThreadCount);
 
 	pServerInstance = SharedPointerT<RelayServer>(new(GetSystemHeap()) RelayServer);
 

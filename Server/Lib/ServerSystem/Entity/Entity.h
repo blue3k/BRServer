@@ -155,10 +155,10 @@ namespace Svr{
 
 		// Register message handler helper
 		template< class MessageClassType >
-		Result RegisterMessageHandler(const char* fileName, uint lineNumber, MessageHandlerType newHandler )
+		Result RegisterMessageHandler(const char* fileName, uint lineNumber, MessageHandlerType&& newHandler )
 		{
 			//AssertRel(m_pHandlerTable);
-			return m_HandlerTable.Register<MessageClassType>(fileName, lineNumber, newHandler );
+			return m_HandlerTable.Register<MessageClassType>(fileName, lineNumber, std::forward<MessageHandlerType>(newHandler) );
 		}
 
 		Svr::MessageHandlerTable<MessageHandlerType>* GetMessageHandlerTable() { return &m_HandlerTable; }

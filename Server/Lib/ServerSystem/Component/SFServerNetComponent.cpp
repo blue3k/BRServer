@@ -56,6 +56,8 @@
 #include "Protocol/Message/ServerMsgDebug.h"
 #include "Protocol/Message/ServerMsgParsing.h"
 
+#include "Protocol/Message/RelayServerMsgDebug.h"
+#include "Protocol/Message/RelayServerMsgParsing.h"
 
 
 namespace SF
@@ -125,6 +127,8 @@ namespace SF
 		Protocol::RegisterDebugTraceServer();
 		Protocol::RegisterParserServer();
 
+		Protocol::RegisterDebugTraceRelayServer();
+		Protocol::RegisterParserRelayServer();
 
 
 		return result;
