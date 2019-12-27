@@ -16,6 +16,8 @@ set(SRC_FILES
     gsdk/cpp/cppsdk/gsdkUtils.cpp
 	gsdk/cpp/cppsdk/gsdkWindowsPch.h
     gsdk/cpp/cppsdk/gsdkWindowsPch.cpp
+	gsdk/cpp/cppsdk/gsdkConfig.cpp
+	gsdk/cpp/cppsdk/gsdkConfig.h
 )
 
 add_definitions(-DGSDK_WINDOWS)
