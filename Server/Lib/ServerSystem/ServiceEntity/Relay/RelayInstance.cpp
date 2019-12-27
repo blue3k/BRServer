@@ -139,7 +139,7 @@ namespace SF {
 	{
 		RelayPlayerID senderRelayID = message.GetSenderRelayID();
 
-		uint64_t targetMask = message.GetTargetRelayMask();
+		uint32_t targetMask = message.GetTargetRelayMask();
 		MessageDataPtr messageData = message.GetMessagePtr();
 		for (uint32_t iUser = 0; iUser < m_Users.size(); iUser++)
 		{
@@ -157,7 +157,7 @@ namespace SF {
 				continue;
 
 			// it is not targeted
-			if ((targetMask & relayIDTest.GetRelayPlayerID()) == 0)
+			if ((targetMask & relayID.GetRelayPlayerID()) == 0)
 				continue;
 
 			m_pNet->SendMsg(remoteAddr, messageData);
