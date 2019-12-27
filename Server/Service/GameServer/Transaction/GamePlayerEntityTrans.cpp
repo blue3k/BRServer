@@ -110,7 +110,7 @@ namespace GameServer {
 
 
 	PlayerTransJoinGameServer::PlayerTransJoinGameServer(IHeap& heap, MessageDataPtr &pIMsg )
-		: MessageTransaction(heap, pIMsg )
+		: MessageTransaction(heap, std::forward<MessageDataPtr>(pIMsg) )
 	{
 		SetExclusive(true);
 
@@ -438,7 +438,7 @@ namespace GameServer {
 	
 
 	PlayerTransGetGamePlayerInfo::PlayerTransGetGamePlayerInfo(IHeap& heap, MessageDataPtr &pIMsg )
-		:MessageTransaction( heap, pIMsg )
+		: MessageTransaction( heap, std::forward<MessageDataPtr>(pIMsg) )
 	{
 		SetExclusive(true);
 		BR_TRANS_MESSAGE(DB::QueryGetPlayerShardIDCmd, { return OnGetPlayerShardID(pRes); });
@@ -545,7 +545,7 @@ namespace GameServer {
 
 
 	PlayerTransGetComplitionState::PlayerTransGetComplitionState(IHeap& heap, MessageDataPtr &pIMsg)
-		: MessageTransaction(heap, pIMsg)
+		: MessageTransaction(heap, std::forward<MessageDataPtr>(pIMsg))
 	{
 		BR_TRANS_MESSAGE(DB::QueryGetComplitionStateCmd, { return OnGetComplitionState(pRes); });
 	}
@@ -603,7 +603,7 @@ namespace GameServer {
 
 
 	PlayerTransSetComplitionState::PlayerTransSetComplitionState(IHeap& heap, MessageDataPtr &pIMsg)
-		: MessageTransaction(heap, pIMsg)
+		: MessageTransaction(heap, std::forward<MessageDataPtr>(pIMsg))
 	{
 		BR_TRANS_MESSAGE(DB::QuerySetComplitionStateCmd, { return OnSetComplitionState(pRes); });
 	}
@@ -661,7 +661,7 @@ namespace GameServer {
 
 
 	PlayerTransRegisterGCM::PlayerTransRegisterGCM(IHeap& heap, MessageDataPtr &pIMsg )
-		:MessageTransaction(heap, pIMsg )
+		: MessageTransaction(heap, std::forward<MessageDataPtr>(pIMsg) )
 	{
 		BR_TRANS_MESSAGE( DB::QueryUpdateGCMKeysCmd, { return OnUpdated(pRes); });
 	}
@@ -703,7 +703,7 @@ namespace GameServer {
 
 
 	PlayerTransUnregisterGCM::PlayerTransUnregisterGCM(IHeap& heap, MessageDataPtr &pIMsg )
-		: MessageTransaction( heap, pIMsg )
+		: MessageTransaction( heap, std::forward<MessageDataPtr>(pIMsg) )
 	{
 		BR_TRANS_MESSAGE( DB::QueryUpdateGCMKeysCmd, { return OnUpdated(pRes); });
 	}
@@ -750,7 +750,7 @@ namespace GameServer {
 	//
 	
 	PlayerTransGetNotificationList::PlayerTransGetNotificationList(IHeap& heap, MessageDataPtr &pIMsg )
-		:MessageTransaction(heap, pIMsg )
+		: MessageTransaction(heap, std::forward<MessageDataPtr>(pIMsg) )
 	{
 		BR_TRANS_MESSAGE( DB::QueryNotification_GetListCmd, { return OnGetList(pRes); });
 	}
@@ -800,7 +800,7 @@ namespace GameServer {
 	
 	
 	PlayerTransDeleteNotification::PlayerTransDeleteNotification(IHeap& heap, MessageDataPtr &pIMsg )
-		: MessageTransaction(heap, pIMsg )
+		: MessageTransaction(heap, std::forward<MessageDataPtr>(pIMsg))
 	{
 		BR_TRANS_MESSAGE( DB::QueryNotification_RemoveCmd, { return OnDeletedNotification(pRes); });
 	}
@@ -840,7 +840,7 @@ namespace GameServer {
 
 
 	PlayerTransSetNotificationRead::PlayerTransSetNotificationRead(IHeap& heap, MessageDataPtr &pIMsg )
-		: MessageTransaction( heap, pIMsg )
+		: MessageTransaction( heap, std::forward<MessageDataPtr>(pIMsg))
 	{
 		BR_TRANS_MESSAGE( DB::QueryNotification_SetReadCmd, { return OnSetRead(pRes); });
 		BR_TRANS_MESSAGE( DB::QueryUpdateTickStatusCmd, { return OnUpdateStatus(pRes); });
@@ -919,7 +919,7 @@ namespace GameServer {
 
 
 	PlayerTransAcceptNotification::PlayerTransAcceptNotification(IHeap& heap, MessageDataPtr &pIMsg)
-		: MessageTransaction(heap, pIMsg)
+		: MessageTransaction(heap, std::forward<MessageDataPtr>(pIMsg))
 	{
 		BR_TRANS_MESSAGE(DB::QueryNotification_RemoveCmd, { return OnDeletedNotification(pRes); });
 	}
@@ -1007,7 +1007,7 @@ namespace GameServer {
 
 
 	PlayerTransSetNickName::PlayerTransSetNickName(IHeap& heap, MessageDataPtr &pIMsg )
-		: MessageTransaction(heap, pIMsg )
+		: MessageTransaction(heap, std::forward<MessageDataPtr>(pIMsg))
 	{
 		BR_TRANS_MESSAGE( DB::QuerySetNickNameCmd, { return OnNickChanged(pRes); });
 	}
@@ -1087,7 +1087,7 @@ namespace GameServer {
 	//
 
 	PlayerTransFindPlayerByEMail::PlayerTransFindPlayerByEMail(IHeap& heap, MessageDataPtr &pIMsg )
-		: MessageTransaction(heap, pIMsg )
+		: MessageTransaction(heap, std::forward<MessageDataPtr>(pIMsg))
 	{
 		BR_TRANS_MESSAGE(DB::QueryFindPlayerByEMailCmd, { return OnFindPlayer(pRes); });
 		BR_TRANS_MESSAGE(DB::QueryGetNickNameCmd, { return OnGetNickName(pRes); });
@@ -1160,7 +1160,7 @@ namespace GameServer {
 	
 
 	PlayerTransFindPlayerByPlayerID::PlayerTransFindPlayerByPlayerID(IHeap& heap, MessageDataPtr &pIMsg )
-		: MessageTransaction( heap, pIMsg )
+		: MessageTransaction(heap, std::forward<MessageDataPtr>(pIMsg))
 	{
 		BR_TRANS_MESSAGE(DB::QueryFindPlayerByPlayerIDCmd, { return OnFindPlayer(pRes); });
 		BR_TRANS_MESSAGE(DB::QueryGetNickNameCmd, { return OnGetNickName(pRes); });
@@ -1232,7 +1232,7 @@ namespace GameServer {
 	
 	
 	PlayerTransRequestPlayerStatusUpdate::PlayerTransRequestPlayerStatusUpdate(IHeap& heap, MessageDataPtr &pIMsg )
-		: MessageTransaction(heap, pIMsg )
+		: MessageTransaction(heap, std::forward<MessageDataPtr>(pIMsg))
 	{
 		BR_TRANS_MESSAGE(DB::QueryGetPlayerShardIDCmd, { return OnPlayerShardIDRes(pRes); });
 		BR_TRANS_MESSAGE(DB::QueryGetPlayerStatusCmd, { return OnPlayerStatusUpdateRes(pRes); });
@@ -1376,7 +1376,7 @@ namespace GameServer {
 
 
 	PlayerTransGetRankingList::PlayerTransGetRankingList(IHeap& heap, MessageDataPtr &pIMsg )
-		: MessageTransaction(heap, pIMsg )
+		: MessageTransaction(heap, std::forward<MessageDataPtr>(pIMsg))
 		, m_RankingList(heap)
 	{
 		BR_TRANS_MESSAGE( DB::QueryGetTotalRankingCmd, { return OnGetRankingListRes(pRes); });
@@ -1430,7 +1430,7 @@ namespace GameServer {
 
 
 	PlayerTransBuyShopItemPrepare::PlayerTransBuyShopItemPrepare(IHeap& heap, MessageDataPtr &pIMsg)
-		: MessageTransaction(heap, pIMsg)
+		: MessageTransaction(heap, std::forward<MessageDataPtr>(pIMsg))
 		, m_Signagure(heap)
 	{
 		BR_TRANS_MESSAGE(DB::QueryCheckPurchaseIDCmd, { return OnPurchaseIDChecked(pRes); });
@@ -1522,7 +1522,7 @@ namespace GameServer {
 
 
 	PlayerTransBuyShopItem::PlayerTransBuyShopItem(IHeap& heap, MessageDataPtr &pIMsg )
-		: MessageTransaction(heap, pIMsg )
+		: MessageTransaction(heap, std::forward<MessageDataPtr>(pIMsg) )
 		, m_SavedData(heap)
 	{
 		SetExclusive(true);
@@ -1730,7 +1730,7 @@ namespace GameServer {
 
 
 	PlayerTransGainGameResource::PlayerTransGainGameResource(IHeap& heap, MessageDataPtr &pIMsg )
-		:MessageTransaction( heap, pIMsg )
+		: MessageTransaction( heap, std::forward<MessageDataPtr>(pIMsg) )
 	{
 		BR_TRANS_MESSAGE( DB::QuerySetPlayerInfoCmd, { return OnSetPlayerInfoRes(pRes); } );
 	}

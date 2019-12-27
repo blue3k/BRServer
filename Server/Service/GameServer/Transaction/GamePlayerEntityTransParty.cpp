@@ -317,7 +317,7 @@ namespace GameServer {
 
 
 	PlayerTransCreateParty::PlayerTransCreateParty(IHeap& heap, MessageDataPtr &pIMsg )
-		:MessageTransaction(heap, pIMsg )
+		:MessageTransaction(heap, std::forward<MessageDataPtr>(pIMsg) )
 	{
 		BR_TRANS_MESSAGE( Message::GamePartyManager::CreatePartyRes, { return OnCreatePartyRes(pRes); } );
 	}
@@ -383,7 +383,7 @@ namespace GameServer {
 	
 
 	PlayerTransJoinParty::PlayerTransJoinParty(IHeap& heap, MessageDataPtr &pIMsg )
-		: MessageTransaction( heap, pIMsg )
+		: MessageTransaction( heap, std::forward<MessageDataPtr>(pIMsg) )
 		, m_ChatHistoryData(heap)
 	{
 		BR_TRANS_MESSAGE( Message::GameParty::JoinPartyRes, { return OnJoinPartyRes(pRes); } );
@@ -503,7 +503,7 @@ namespace GameServer {
 
 
 	PlayerTransLeaveParty::PlayerTransLeaveParty(IHeap& heap, MessageDataPtr &pIMsg )
-		:MessageTransaction( heap, pIMsg )
+		: MessageTransaction( heap, std::forward<MessageDataPtr>(pIMsg) )
 	{
 		BR_TRANS_MESSAGE( Message::GameParty::LeavePartyRes, { return OnLeavePartyRes(pRes); } );
 	}
@@ -591,7 +591,7 @@ namespace GameServer {
 	
 
 	PlayerTransPartyKickPlayer::PlayerTransPartyKickPlayer(IHeap& heap, MessageDataPtr &pIMsg )
-		:MessageTransaction( heap, pIMsg )
+		: MessageTransaction( heap, std::forward<MessageDataPtr>(pIMsg) )
 	{
 		BR_TRANS_MESSAGE( Message::GameParty::KickPlayerRes, { return OnPlayerKickRes(pRes); } );
 	}
@@ -671,7 +671,7 @@ namespace GameServer {
 
 	
 	PlayerTransPartyInvite::PlayerTransPartyInvite(IHeap& heap, MessageDataPtr &pIMsg )
-		: MessageTransaction(heap, pIMsg)
+		: MessageTransaction(heap, std::forward<MessageDataPtr>(pIMsg))
 	{
 		//BR_TRANS_MESSAGE( DB::QueryNotification_AddCmd, { return OnNotifyAdded(pRes); } );
 	}

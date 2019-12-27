@@ -500,9 +500,9 @@ namespace Svr {
 		SharedPointerT<Net::Connection> m_pConn;
 
 	public:
-		MessageTransaction(IHeap& memoryManager, MessageDataPtr &pIMsg )
+		MessageTransaction(IHeap& memoryManager, MessageDataPtr &&pIMsg )
 			: TransactionT<OwnerType>(memoryManager, TransactionID() )
-			, MessageClass( pIMsg )
+			, MessageClass(std::forward<MessageDataPtr>(pIMsg) )
 		{
 		}
 
@@ -571,7 +571,7 @@ namespace Svr {
 	{
 	protected:
 		UserTransactionS2SEvt(IHeap& memMgr, MessageDataPtr &pIMsg )
-			:MessageTransaction<OwnerEntityType, MessageClass>(memMgr, pIMsg )
+			:MessageTransaction<OwnerEntityType, MessageClass>(memMgr, std::forward<MessageDataPtr>(pIMsg) )
 		{
 		}
 
@@ -626,7 +626,7 @@ namespace Svr {
 
 	protected:
 		UserTransactionS2SCmd(IHeap& memMgr, MessageDataPtr &pIMsg )
-			: MessageTransaction<OwnerEntityType, MessageClass>(memMgr, pIMsg )
+			: MessageTransaction<OwnerEntityType, MessageClass>(memMgr, std::forward<MessageDataPtr>(pIMsg) )
 		{
 		}
 

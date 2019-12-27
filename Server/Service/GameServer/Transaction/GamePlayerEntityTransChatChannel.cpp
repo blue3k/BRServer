@@ -76,7 +76,7 @@ namespace GameServer {
 
 
 	PlayerTransCreateOrJoinChatChannel::PlayerTransCreateOrJoinChatChannel(IHeap& heap, MessageDataPtr &pIMsg )
-		:MessageTransaction(heap, pIMsg )
+		:MessageTransaction(heap, std::forward<MessageDataPtr>(pIMsg) )
 	{
 		BR_TRANS_MESSAGE( Message::ChatChannelManager::CreateChannelCmd, { return OnCreateRes(pRes); } );
 	}
@@ -135,7 +135,7 @@ namespace GameServer {
 
 
 	PlayerTransJoinChatChannel::PlayerTransJoinChatChannel(IHeap& heap, MessageDataPtr &pIMsg )
-		: MessageTransaction( heap, pIMsg )
+		: MessageTransaction( heap, std::forward<MessageDataPtr>(pIMsg) )
 	{
 		BR_TRANS_MESSAGE(Message::ChatChannel::JoinRes, { return OnJoinChatChannelRes(pRes); });
 		BR_TRANS_MESSAGE(Message::ChatChannelManager::CreateChannelRes, { return OnJoinChatChannelRes(pRes); });
@@ -251,7 +251,7 @@ namespace GameServer {
 
 
 	PlayerTransLeaveChatChannel::PlayerTransLeaveChatChannel(IHeap& heap, MessageDataPtr &pIMsg )
-		:MessageTransaction( heap, pIMsg )
+		:MessageTransaction( heap, std::forward<MessageDataPtr>(pIMsg) )
 	{
 		BR_TRANS_MESSAGE( Message::ChatChannel::LeaveRes, { return OnLeaveChatChannelRes(pRes); } );
 	}
@@ -339,7 +339,7 @@ namespace GameServer {
 	
 
 	PlayerTransChatChannelKickPlayer::PlayerTransChatChannelKickPlayer(IHeap& heap, MessageDataPtr &pIMsg )
-		:MessageTransaction( heap, pIMsg )
+		: MessageTransaction( heap, std::forward<MessageDataPtr>(pIMsg) )
 	{
 		BR_TRANS_MESSAGE( Message::ChatChannel::KickPlayerRes, { return OnPlayerKickRes(pRes); } );
 	}

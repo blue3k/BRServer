@@ -209,7 +209,7 @@ namespace GameServer {
 		typedef Svr::MessageTransaction< GamePlayerEntity, Message::Game::ChatMessageCmd> super;
 
 	public:
-		PlayerTransChatMessage( IHeap& heap, MessageDataPtr &pIMsg )  :MessageTransaction(heap,  pIMsg ) {}
+		PlayerTransChatMessage( IHeap& heap, MessageDataPtr &pIMsg )  :MessageTransaction(heap, std::forward<MessageDataPtr>(pIMsg) ) {}
 		virtual ~PlayerTransChatMessage() {}
 
 		// Start Transaction
@@ -601,7 +601,7 @@ namespace GameServer {
 		uint64_t m_TotalGameMoney;
 
 	public:
-		PlayerTransGamePlayerResetRank(IHeap& heap, MessageDataPtr &pIMsg) : MessageTransaction(heap, pIMsg) {}
+		PlayerTransGamePlayerResetRank(IHeap& heap, MessageDataPtr &pIMsg) : MessageTransaction(heap, std::forward<MessageDataPtr>(pIMsg)) {}
 		virtual ~PlayerTransGamePlayerResetRank() {}
 
 		// Start Transaction

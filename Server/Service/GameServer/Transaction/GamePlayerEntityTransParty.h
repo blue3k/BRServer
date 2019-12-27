@@ -299,7 +299,7 @@ namespace GameServer {
 	private:
 
 	public:
-		PlayerTransPartyChatMessage(IHeap& heap, MessageDataPtr &pIMsg )  :MessageTransaction(heap, pIMsg ) {}
+		PlayerTransPartyChatMessage(IHeap& heap, MessageDataPtr &pIMsg )  :MessageTransaction(heap, std::forward<MessageDataPtr>(pIMsg)) {}
 		virtual ~PlayerTransPartyChatMessage() {}
 
 		// Start Transaction
@@ -331,7 +331,7 @@ namespace GameServer {
 	private:
 
 	public:
-		PlayerTransPartyQuickChatMessage(IHeap& heap, MessageDataPtr &pIMsg )  : MessageTransaction(heap, pIMsg ) {}
+		PlayerTransPartyQuickChatMessage(IHeap& heap, MessageDataPtr &pIMsg )  : MessageTransaction(heap, std::forward<MessageDataPtr>(pIMsg)) {}
 		virtual ~PlayerTransPartyQuickChatMessage() {}
 
 		// Start Transaction

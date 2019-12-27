@@ -326,7 +326,7 @@ namespace Svr {
 	Result PerformanceCounterServer::HandleMessagePerformanceCounterNewC2SEvt(const sockaddr_storage& remoteAddr, MessageDataPtr &pMsg)
 	{
 		Result hr = ResultCode::SUCCESS;
-		Message::Monitoring::PerformanceCounterNewC2SEvt messageClass(pMsg);
+		Message::Monitoring::PerformanceCounterNewC2SEvt messageClass(std::forward<MessageDataPtr>(pMsg));
 		SharedPointerT<PerformanceCounterInstance> pInstance;
 
 		svrChk(messageClass.ParseMsg());
@@ -385,7 +385,7 @@ namespace Svr {
 	Result PerformanceCounterServer::HandleMessagePerformanceCounterFreeC2SEvt(const sockaddr_storage& remoteAddr, MessageDataPtr &pMsg)
 	{
 		Result hr = ResultCode::SUCCESS;
-		Message::Monitoring::PerformanceCounterFreeC2SEvt messageClass(pMsg);
+		Message::Monitoring::PerformanceCounterFreeC2SEvt messageClass(std::forward<MessageDataPtr>(pMsg));
 
 		svrChk(messageClass.ParseMsg());
 
@@ -409,7 +409,7 @@ namespace Svr {
 	Result PerformanceCounterServer::HandleMessagePerformanceCounterUpdateC2SEvt(const sockaddr_storage& remoteAddr, MessageDataPtr &pMsg)
 	{
 		Result hr = ResultCode::SUCCESS;
-		Message::Monitoring::PerformanceCounterUpdateC2SEvt messageClass(pMsg);
+		Message::Monitoring::PerformanceCounterUpdateC2SEvt messageClass(std::forward<MessageDataPtr>(pMsg));
 		SharedPointerT<PerformanceCounterInstance> pInstance;
 
 		svrChk(messageClass.ParseMsg());

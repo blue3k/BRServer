@@ -17,7 +17,7 @@
 #include "Task/ServerTaskEvent.h"
 #include "Task/ServerTask.h"
 #include "Task/ServerTaskManager.h"
-#include "Net/SFNetServerUDP.h"
+#include "Net/SFNetRawUDP.h"
 #include "Util/SFTimeUtil.h"
 #include "Types/SFEngineTypedefs.h"
 #include "ResultCode/SFResultCodeLibrary.h"
@@ -27,18 +27,18 @@
 #include "Protocol/Policy/GameNetPolicy.h"
 #include "Protocol/Message/GameMsgClass.h"
 
-#include "RelayGameInstance.h"
+#include "RelayInstance.h"
 
+#include "Protocol/Message/RelayMsgClass.h"
+#include "Protocol/Policy/RelayNetPolicy.h"
 
-
-SF_MEMORYPOOL_IMPLEMENT(SF::Svr::RelayGameInstance);
 
 
 
 
 namespace SF {
-namespace Svr {
 
+	const int32_t RelayInstance::RELAY_INSTANCE_TIMEOUT = 2 * 60 * 1000;
 
 	//////////////////////////////////////////////////////////////////////////
 	//
@@ -46,40 +46,123 @@ namespace Svr {
 	//
 
 
-	RelayGameInstance::RelayGameInstance(IHeap& heap, uint32_t instanceID)
-		: m_Users(heap)
+	RelayInstance::RelayInstance(IHeap& heap, Net::RawUDP* pNet, uint32_t instanceID)
+		: m_Heap("RelayInstance", heap)
+		, m_pNet(pNet)
+		, m_Users(heap)
 		, m_InstanceID(instanceID)
 	{
 	}
 
-	RelayGameInstance::~RelayGameInstance()
+	RelayInstance::~RelayInstance()
 	{
 		Clear();
 	}
 
 	// Initialize entity to proceed new connection
-	Result RelayGameInstance::InitializeGameInstance(GameID gameId, uint32_t maxUser)
+	Result RelayInstance::InitializeGameInstance(GameID gameId, uint32_t maxUser)
 	{
 		FunctionContext hr;
 
 		m_MaxUser = maxUser;
 		m_Users.resize(maxUser);
 
-		m_TimeToKill.SetTimer(DurationMS(Const::RELAY_GAMEINSTANCE_TIMEOUT));
+		m_TimeToKill.SetTimer(DurationMS(RELAY_INSTANCE_TIMEOUT));
 
 		return hr;
 	}
 
-	void RelayGameInstance::SetGameInstanceState(GameInstanceState newState)
+	void RelayInstance::SetGameInstanceState(GameInstanceState newState)
 	{
 		m_GameInstanceState = newState;
 	}
 
-	void RelayGameInstance::HeartBit()
+	void RelayInstance::HeartBit()
 	{
-		m_TimeToKill.SetTimer(DurationMS(Const::RELAY_GAMEINSTANCE_TIMEOUT));
+		m_TimeToKill.SetTimer(DurationMS(RELAY_INSTANCE_TIMEOUT));
 	}
 
+
+	Result RelayInstance::AddPlayer(const sockaddr_storage& remoteAddr, PlayerID playerID, const String playerIdentification, RelayPlayerID& relayPlayerID)
+	{
+		FunctionContext hr;
+		RelayPlayer *pPlayer = nullptr;
+
+		for (uint32_t iUser = 0; iUser < m_Users.size(); iUser++)
+		{
+			if (m_Users[iUser].GetPlayerID() == playerID)
+			{
+				pPlayer = &m_Users[iUser];
+				relayPlayerID.SetPlayerIndex(iUser);
+				break;
+			}
+		}
+
+		if (pPlayer == nullptr)
+		{
+			m_Users.push_back({});
+			relayPlayerID.SetPlayerIndex(static_cast<uint32_t>(m_Users.size() - 1));
+			pPlayer = &m_Users[relayPlayerID];
+		}
+
+		svrCheckPtr(pPlayer);
+
+		svrCheck(pPlayer->InitializePlayer(GetHeap(), this, remoteAddr, relayPlayerID, playerID, playerIdentification, "TestTemp"));
+
+		return hr;
+	}
+
+	Result RelayInstance::RemovePlayer(PlayerID playerID)
+	{
+		FunctionContext hr;
+		RelayPlayer* pPlayer = nullptr;
+
+		for (uint32_t iUser = 0; iUser < m_Users.size(); iUser++)
+		{
+			if (m_Users[iUser].GetPlayerID() == playerID)
+			{
+				pPlayer = &m_Users[iUser];
+				break;
+			}
+		}
+
+		if (pPlayer == nullptr)
+			return hr = ResultCode::INVALID_PLAYERID;
+
+		pPlayer->Clear();
+
+		return hr;
+	}
+
+	// Handle relay packet
+	void RelayInstance::OnRelayPacket(const sockaddr_storage& remoteAddr, const Message::Relay::RelayPacketC2SEvt& message)
+	{
+		RelayPlayerID senderRelayID = message.GetSenderRelayID();
+
+		uint64_t targetMask = message.GetTargetRelayMask();
+		MessageDataPtr messageData = message.GetMessagePtr();
+		for (uint32_t iUser = 0; iUser < m_Users.size(); iUser++)
+		{
+			if (m_Users[iUser].GetPlayerID() == 0)
+				continue;
+
+			auto relayID = m_Users[iUser].GetRelayPlayerID();
+
+#if defined(DEBUG)
+			RelayPlayerID relayIDTest;
+			relayIDTest.SetPlayerIndex(iUser);
+			assert(relayIDTest == relayID);
+#endif
+			if (senderRelayID == relayID)
+				continue;
+
+			// it is not targeted
+			if ((targetMask & relayIDTest.GetRelayPlayerID()) == 0)
+				continue;
+
+			m_pNet->SendMsg(remoteAddr, messageData);
+		}
+	}
 
 
 	//////////////////////////////////////////////////////////////////////////////////////////////////
@@ -88,13 +171,13 @@ namespace Svr {
 	//
 
 	// register message handlers
-	Result RelayGameInstance::RegisterMessageHandlers()
+	Result RelayInstance::RegisterMessageHandlers()
 	{
 		return ResultCode::SUCCESS;
 	}
 
 	// clear transaction
-	Result RelayGameInstance::Clear()
+	Result RelayInstance::Clear()
 	{
 		FunctionContext hr;
 
@@ -102,20 +185,20 @@ namespace Svr {
 	}
 
 	// Run the task
-	Result RelayGameInstance::TickUpdate()
+	Result RelayInstance::TickUpdate()
 	{
 		FunctionContext hr = ResultCode::SUCCESS;
 		auto curTime = Util::Time.GetTimeMs();
 
 
-		svrCheck( UpdateRelayGameInstances(curTime) );
+		svrCheck( UpdateRelayInstances(curTime) );
 
 		return hr;
 	}
 
 
 	// Update Game Player 
-	Result RelayGameInstance::UpdateRelayGameInstances( TimeStampMS ulCurTime )
+	Result RelayInstance::UpdateRelayInstances( TimeStampMS ulCurTime )
 	{
 		FunctionContext hr = ResultCode::SUCCESS;
 
@@ -130,7 +213,6 @@ namespace Svr {
 	
 
 
-}; // namespace Svr
 }; // namespace SF
 
 

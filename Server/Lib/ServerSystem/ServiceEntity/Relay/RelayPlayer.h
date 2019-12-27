@@ -14,6 +14,7 @@
 #include "SFTypedefs.h"
 
 #include "Util/SFTimeUtil.h"
+#include "Math/SFMathUtil.h"
 #include "Container/SFHashTable.h"
 #include "Memory/SFMemoryPool.h"
 #include "GameConst.h"
@@ -35,10 +36,32 @@ namespace Policy {
 
 
 namespace SF {
-namespace Svr {
 
 
 	class RelayInstance;
+
+
+	class RelayPlayerID
+	{
+	public:
+
+		RelayPlayerID() = default;
+		RelayPlayerID(uint32_t relayPlayerID) { SetRelayPlayerID(relayPlayerID); }
+
+		void SetRelayPlayerID(uint32_t relayPlayerID) { m_RelayPlayerIndex = Math::FindLSBIndex(relayPlayerID); }
+		uint32_t GetRelayPlayerID() const { return m_RelayPlayerIndex < 0 ? 0 : uint32_t(1) << m_RelayPlayerIndex; }
+
+		void SetPlayerIndex(uint32_t userIndex) { m_RelayPlayerIndex = userIndex; }
+		uint32_t GetPlayerIndex() const { return m_RelayPlayerIndex; };
+
+		operator uint32_t() const { return GetRelayPlayerID(); }
+
+	private:
+
+		uint32_t m_RelayPlayerIndex = -1;
+	};
+
+
 
 	//////////////////////////////////////////////////////////////////////////
 	//
@@ -62,11 +85,17 @@ namespace Svr {
 		// Relay instance
 		RelayInstance* m_RelayInstance = nullptr;
 
-		// Account Id
-		AccountID m_AccountID = 0;
+		// Socket address
+		sockaddr_storage m_Address{};
 
-		// String Account Identifier. 
-		String m_AccountIdentifier;
+		// player Id
+		PlayerID m_PlayerID = 0;
+
+		// Relay player id. unique in relay instance
+		RelayPlayerID m_RelayPlayerID;
+
+		// String player Identifier. 
+		String m_PlayerIdentifier;
 
 		// Player display name
 		char m_PlayerDisplayName[GameConst::MAX_NAME]{};
@@ -88,8 +117,12 @@ namespace Svr {
 		// clear 
 		void Clear();
 
-		AccountID GetAccountID() const { return m_AccountID; }
-		const String& GetAccountIdentifier() const { return m_AccountIdentifier; }
+		const sockaddr_storage& GetSocketAddress() const { return m_Address; }
+
+		PlayerID GetPlayerID() const { return m_PlayerID; }
+		const String& GetPlayerIdentifier() const { return m_PlayerIdentifier; }
+
+		RelayPlayerID GetRelayPlayerID() const { return m_RelayPlayerID; }
 
 		const Util::TimeStampTimer& GetTimeToKill() { return m_TimeToKill; }
 
@@ -97,10 +130,10 @@ namespace Svr {
 		void SetPlayerState(PlayerState newState);
 
 		// Initialize entity to proceed new connection
-		virtual Result InitializePlayer(IHeap& heap, RelayInstance* relayInstance, AccountID accountId, const String& accountIdentifier, const char* PlayerDisplayName);
+		virtual Result InitializePlayer(IHeap& heap, RelayInstance* relayInstance, const sockaddr_storage& remoteAddr, const RelayPlayerID& relayPlayerID, PlayerID playerID, const String& playerIdentifier, const char* PlayerDisplayName);
 
 		const char* GetPlayerDisplayName() { return m_PlayerDisplayName; }
-		void SetPlayerDisplayName(const char* PlayerName);
+		Result SetPlayerDisplayName(const char* playerName);
 
 
 
@@ -127,6 +160,5 @@ namespace Svr {
 
 
 
-}; // namespace Svr
 }; // namespace SF
 

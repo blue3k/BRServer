@@ -36,7 +36,7 @@ namespace Svr {
 
 		if (pMsg->GetMessageHeader()->msgID.GetMsgID() == Message::Monitoring::PerformanceCounterUpdateCounterInfoS2CEvt::MID.GetMsgID())
 		{
-			svrChk(m_CounterClient.HandleMessageUpdateCounterInfoS2CEvt(remoteAddr, pMsg));
+			svrChk(m_CounterClient.HandleMessageUpdateCounterInfoS2CEvt(remoteAddr, std::forward<MessageDataPtr>(pMsg)));
 		}
 
 	Proc_End:
@@ -341,10 +341,10 @@ namespace Svr {
 	}
 
 
-	Result PerformanceCounterClient::HandleMessageUpdateCounterInfoS2CEvt(const sockaddr_storage& remoteAddr, MessageDataPtr &pMsg)
+	Result PerformanceCounterClient::HandleMessageUpdateCounterInfoS2CEvt(const sockaddr_storage& remoteAddr, MessageDataPtr &&pMsg)
 	{
 		Result hr = ResultCode::SUCCESS;
-		Message::Monitoring::PerformanceCounterUpdateCounterInfoS2CEvt messageClass(pMsg);
+		Message::Monitoring::PerformanceCounterUpdateCounterInfoS2CEvt messageClass(std::forward<MessageDataPtr>(pMsg));
 		WeakPointerT<PerformanceCounterInstance> pFound;
 		SharedPointerT<PerformanceCounterInstance> pInstance;
 

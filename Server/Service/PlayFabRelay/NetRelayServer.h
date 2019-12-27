@@ -48,12 +48,14 @@ namespace SF {
 
 
 namespace SF {
-namespace Net {
 
-	class Entity;
-	class ServerEntity;
+
 	class RelayPlayer;
 	class RelayInstance;
+
+
+namespace Net {
+
 
 
 	///////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -66,7 +68,7 @@ namespace Net {
 	public:
 
 		//using MessageHandlerType = std::function<void(MessageDataPtr&)>;
-		typedef Result(RelayServer::*MessageHandlerType)(MessageDataPtr &&);
+		typedef Result(RelayServer::*MessageHandlerType)(const sockaddr_storage& remoteAddr, MessageDataPtr &&);
 		//using MessageHandlerType = MessageHandlerFunc;
 
 
@@ -74,6 +76,9 @@ namespace Net {
 
 		RelayServer(GameID gameID, uint32_t maximumRelayInstances);
 		~RelayServer();
+
+		IHeap& GetHeap() { return m_NetRawUDP.GetHeap(); }
+		GameID GetGameID() const { return m_GameID; }
 
 		Result InitializeNet(const NetAddress& listenAddr);
 		void TerminateNet();
@@ -90,9 +95,12 @@ namespace Net {
 		// Register message handlers
 		Result RegisterMessageHandlers();
 
-		Result OnJoinRelayInstanceC2SEvt(MessageDataPtr&& pMsgData);
-		Result OnLeaveRelayInstanceC2SEvt(MessageDataPtr&& pMsgData);
-		Result OnRelayPacketC2SEvt(MessageDataPtr&& pMsgData);
+		Result OnJoinRelayInstanceC2SEvt(const sockaddr_storage& remoteAddr, MessageDataPtr&& pMsgData);
+		Result OnLeaveRelayInstanceC2SEvt(const sockaddr_storage& remoteAddr, MessageDataPtr&& pMsgData);
+		Result OnRelayPacketC2SEvt(const sockaddr_storage& remoteAddr, MessageDataPtr&& pMsgData);
+
+		// send message
+		Result SendMsg(const sockaddr_storage& dest, SharedPointerT<Message::MessageData>& pMsg);
 
 		virtual Result OnRecv(const sockaddr_storage& remoteAddr, SharedPointerT<Message::MessageData>& pMsg) override;
 
@@ -110,7 +118,7 @@ namespace Net {
 		Net::RawUDP m_NetRawUDP;
 
 		//
-		HashTable<uint32_t, RelayInstance*> m_RealyInstanceByID;
+		HashTable<uint32_t, RelayInstance*> m_RelayInstanceByID;
 
 		// Message handler table
 		Svr::MessageHandlerTable<MessageHandlerType>	m_HandlerTable;

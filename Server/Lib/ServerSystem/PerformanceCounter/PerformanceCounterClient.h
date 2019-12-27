@@ -114,7 +114,7 @@ namespace SF {
 			void UpdateValues();
 
 
-			Result HandleMessageUpdateCounterInfoS2CEvt(const sockaddr_storage& remoteAddr, MessageDataPtr &pMsg);
+			Result HandleMessageUpdateCounterInfoS2CEvt(const sockaddr_storage& remoteAddr, MessageDataPtr &&pMsg);
 
 			virtual void Run() override;
 

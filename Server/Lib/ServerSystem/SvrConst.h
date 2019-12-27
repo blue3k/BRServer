@@ -85,7 +85,6 @@ namespace Const {
 
 	constexpr int32_t RELAY_PLAYER_JOIN_TIMEOUT = 1 * 60 * 1000;
 	constexpr int32_t RELAY_PLAYER_TIMEOUT = 30 * 1000;
-	constexpr int32_t RELAY_GAMEINSTANCE_TIMEOUT = 2 * 60 * 1000;
 
 }; // namespace Const
 }; // namespace Svr

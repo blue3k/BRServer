@@ -47,7 +47,7 @@ namespace ConspiracyGameInstanceServer {
 	public:
 		RoutedGamePlayerMessageTransaction(IHeap& heap, MessageDataPtr &pIMsg )
 			: super(heap, TransactionID() )
-			, MessageClass( pIMsg )
+			, MessageClass(std::forward<MessageDataPtr>(pIMsg))
 			, m_PlayerID(0)
 		{
 		}

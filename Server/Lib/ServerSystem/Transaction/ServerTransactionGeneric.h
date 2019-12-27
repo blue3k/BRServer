@@ -41,7 +41,7 @@ namespace Svr {
 		typedef MessageTransaction< ServerEntityType, MessageType> super;
 
 	public:
-		ServerStartedTrans( IHeap& memMgr, MessageDataPtr &pIMsg ) : super( memMgr, pIMsg )
+		ServerStartedTrans( IHeap& memMgr, MessageDataPtr &pIMsg ) : super( memMgr, std::forward<MessageDataPtr>(pIMsg) )
 		{
 		}
 

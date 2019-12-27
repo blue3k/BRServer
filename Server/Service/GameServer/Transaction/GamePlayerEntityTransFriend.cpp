@@ -69,7 +69,7 @@ namespace GameServer {
 
 	
 	PlayerTransInviteFriend::PlayerTransInviteFriend(IHeap& heap, MessageDataPtr &pIMsg )
-		:MessageTransaction( heap, pIMsg )
+		:MessageTransaction(heap, std::forward<MessageDataPtr>(pIMsg))
 	{
 		BR_TRANS_MESSAGE(DB::QueryGetPlayerShardIDCmd, { return OnGetPlayerShardID(pRes); });
 		BR_TRANS_MESSAGE(DB::QueryNotification_AddCmd, { return OnNotifyAdded(pRes); });
@@ -158,7 +158,7 @@ namespace GameServer {
 
 
 	PlayerTransFriendAccept::PlayerTransFriendAccept( IHeap& heap, MessageDataPtr &pIMsg )
-		:MessageTransaction(heap, pIMsg )
+		:MessageTransaction(heap, std::forward<MessageDataPtr>(pIMsg))
 	{
 		BR_TRANS_MESSAGE(DB::QueryAddFriendCmd, { return OnFriendAdded(pRes); });
 		BR_TRANS_MESSAGE(DB::QueryGetFriendSlotStatusCmd, { return OnFriendSlotStatus(pRes); });
@@ -420,7 +420,7 @@ namespace GameServer {
 
 
 	PlayerTransRemoveFriend::PlayerTransRemoveFriend( IHeap& heap, MessageDataPtr &pIMsg )
-		:MessageTransaction(heap, pIMsg )
+		:MessageTransaction(heap, std::forward<MessageDataPtr>(pIMsg))
 	{
 		BR_TRANS_MESSAGE( DB::QueryRemoveFriendCmd, { return OnRemoved(pRes); });
 	}
@@ -510,7 +510,7 @@ namespace GameServer {
 
 
 	PlayerTransGetFriendList::PlayerTransGetFriendList( IHeap& heap, MessageDataPtr &pIMsg )
-		: MessageTransaction(heap, pIMsg )
+		: MessageTransaction(heap, std::forward<MessageDataPtr>(pIMsg))
 		, m_Friends(heap)
 	{
 		BR_TRANS_MESSAGE(DB::QueryGetFriendListCmd, { return OnGetList(pRes); });
@@ -714,7 +714,7 @@ namespace GameServer {
 
 
 	PlayerTransGiveStamina::PlayerTransGiveStamina(IHeap& heap, MessageDataPtr &pIMsg )
-		: MessageTransaction(heap, pIMsg )
+		: MessageTransaction(heap, std::forward<MessageDataPtr>(pIMsg))
 	{
 		SetExclusive(true);
 		BR_TRANS_MESSAGE( DB::QueryUpdateTickStatusCmd, { return OnSavedToDB(pRes); });

@@ -134,7 +134,7 @@ namespace GameServer {
 
 
 	public:
-		PlayerTransGetUserGamePlayerInfo(IHeap& heap, MessageDataPtr &pIMsg ) : MessageTransaction( heap, pIMsg ) {}
+		PlayerTransGetUserGamePlayerInfo(IHeap& heap, MessageDataPtr &pIMsg ) : MessageTransaction( heap, std::forward<MessageDataPtr>(pIMsg) ) {}
 		virtual ~PlayerTransGetUserGamePlayerInfo() {}
 
 		// Start Transaction
@@ -285,7 +285,7 @@ namespace GameServer {
 
 	private:
 	public:
-		PlayerTransSetConfigPreset(IHeap& heap, MessageDataPtr &pIMsg )  :MessageTransaction( heap, pIMsg ) {}
+		PlayerTransSetConfigPreset(IHeap& heap, MessageDataPtr &pIMsg )  :MessageTransaction( heap, std::forward<MessageDataPtr>(pIMsg) ) {}
 		virtual ~PlayerTransSetConfigPreset() {}
 
 		// Start Transaction

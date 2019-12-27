@@ -201,7 +201,7 @@ namespace GameServer {
 	private:
 
 	public:
-		PlayerTransChatChannelChatMessage(IHeap& heap, MessageDataPtr &pIMsg )  :MessageTransaction(heap, pIMsg ) {}
+		PlayerTransChatChannelChatMessage(IHeap& heap, MessageDataPtr &pIMsg )  :MessageTransaction(heap, std::forward<MessageDataPtr>(pIMsg) ) {}
 		virtual ~PlayerTransChatChannelChatMessage() {}
 
 		// Start Transaction

@@ -72,7 +72,7 @@ namespace Svr {
 
 	template<class MessageClass>
 	LoginPlayerTransLoginBase<MessageClass>::LoginPlayerTransLoginBase(IHeap& memMgr, MessageDataPtr &pIMsg )
-		: super(memMgr, pIMsg)
+		: super(memMgr, std::forward<MessageDataPtr>(pIMsg))
 		, m_CreateRequestCount(0)
 	{
 		super::SetExclusive(true);
@@ -860,7 +860,7 @@ namespace Svr {
 	//
 
 	RankingUpdateScoreTrans::RankingUpdateScoreTrans(IHeap& memMgr, MessageDataPtr &pIMsg)
-		: MessageTransaction(memMgr, pIMsg)
+		: MessageTransaction(memMgr, std::forward<MessageDataPtr>(pIMsg))
 		, m_RankingList(memMgr)
 	{
 		BR_TRANS_MESSAGE(Message::RankingServer::UpdatePlayerScoreRes, { return OnScoreUpdated(pRes); });
@@ -946,7 +946,7 @@ namespace Svr {
 	std::atomic<uint32_t> LoginUserDataTestTrans::stm_TestCount(0);
 
 	LoginUserDataTestTrans::LoginUserDataTestTrans(IHeap& memMgr, MessageDataPtr &pIMsg)
-		: MessageTransaction(memMgr, pIMsg)
+		: MessageTransaction(memMgr, std::forward<MessageDataPtr>(pIMsg))
 		, m_Data(memMgr)
 	{
 	}
@@ -980,7 +980,7 @@ namespace Svr {
 
 
 	LoginUserDebugPrintALLRankingTrans::LoginUserDebugPrintALLRankingTrans(IHeap& memMgr, MessageDataPtr &pIMsg)
-		: MessageTransaction(memMgr, pIMsg)
+		: MessageTransaction(memMgr, std::forward<MessageDataPtr>(pIMsg))
 
 	{
 		BR_TRANS_MESSAGE(Message::RankingServer::DebugPrintALLRankingRes, { return OnPrintAllRankingRes(pRes); });

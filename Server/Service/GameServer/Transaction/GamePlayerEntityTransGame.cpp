@@ -115,7 +115,7 @@ namespace GameServer {
 
 
 	PlayerTransJoinGame::PlayerTransJoinGame( IHeap& heap, MessageDataPtr &pIMsg )
-		:MessageTransaction(heap, pIMsg )
+		:MessageTransaction(heap, std::forward<MessageDataPtr>(pIMsg))
 	{
 		m_Role = PlayerRole::None;
 		m_Dead = true;
@@ -283,7 +283,7 @@ namespace GameServer {
 
 
 	PlayerTransLeaveGame::PlayerTransLeaveGame(IHeap& heap, MessageDataPtr &pIMsg )
-		:MessageTransaction(heap,  pIMsg )
+		:MessageTransaction(heap, std::forward<MessageDataPtr>(pIMsg))
 	{
 		BR_TRANS_MESSAGE( Message::GameInstance::LeaveGameRes, { return OnLeaveGameRes(pRes); } );
 	}
@@ -378,7 +378,7 @@ namespace GameServer {
 
 
 	PlayerTransKickPlayer::PlayerTransKickPlayer(IHeap& heap, MessageDataPtr &pIMsg )
-		:MessageTransaction(heap, pIMsg )
+		:MessageTransaction(heap, std::forward<MessageDataPtr>(pIMsg))
 	{
 		BR_TRANS_MESSAGE( Message::GameInstance::KickPlayerRes, { return OnKickPlayerRes(pRes); } );
 	}
@@ -465,7 +465,7 @@ namespace GameServer {
 
 
 	PlayerTransAssignRole::PlayerTransAssignRole(IHeap& heap, MessageDataPtr &pIMsg )
-		:MessageTransaction(heap, pIMsg )
+		:MessageTransaction(heap, std::forward<MessageDataPtr>(pIMsg))
 	{
 		BR_TRANS_MESSAGE( Message::GameInstance::AssignRoleRes, { return OnAssignRoleRes(pRes); } );
 	}
@@ -598,7 +598,7 @@ namespace GameServer {
 
 
 	PlayerTransVoteGameAdvance::PlayerTransVoteGameAdvance(IHeap& heap, MessageDataPtr &pIMsg )
-		:MessageTransaction(heap, pIMsg )
+		:MessageTransaction(heap, std::forward<MessageDataPtr>(pIMsg))
 	{
 		BR_TRANS_MESSAGE( Message::GameInstance::VoteGameAdvanceRes, { return OnVoteRes(pRes); } );
 	}
@@ -670,7 +670,7 @@ namespace GameServer {
 
 	
 	PlayerTransVote::PlayerTransVote(IHeap& heap, MessageDataPtr &pIMsg )
-		:MessageTransaction(heap, pIMsg )
+		:MessageTransaction(heap, std::forward<MessageDataPtr>(pIMsg))
 	{
 		BR_TRANS_MESSAGE( Message::GameInstance::VoteRes, { return OnVoteRes(pRes); } );
 	}
@@ -766,7 +766,7 @@ namespace GameServer {
 
 
 	PlayerTransAdvanceGame::PlayerTransAdvanceGame(IHeap& heap, MessageDataPtr &pIMsg )
-		:MessageTransaction(heap, pIMsg )
+		:MessageTransaction(heap, std::forward<MessageDataPtr>(pIMsg))
 	{
 		BR_TRANS_MESSAGE( Message::GameInstance::AdvanceGameRes, { return OnAdvanceGameRes(pRes); } );
 	}
@@ -950,7 +950,7 @@ namespace GameServer {
 
 
 	PlayerTransRequestGameMatch::PlayerTransRequestGameMatch(IHeap& heap, MessageDataPtr &pIMsg )
-		: MessageTransaction( heap, pIMsg )
+		: MessageTransaction( heap, std::forward<MessageDataPtr>(pIMsg))
 	{
 		BR_TRANS_MESSAGE( Message::GameParty::StartGameMatchRes, { return OnRequestPartyMatchingRes(pRes); } );
 		BR_TRANS_MESSAGE( Message::PartyMatchingQueue::RegisterPlayerMatchingRes, { return OnRequestPlayerMatchingRes(pRes); } );
@@ -1078,7 +1078,7 @@ namespace GameServer {
 
 
 	PlayerTransCancelGameMatch::PlayerTransCancelGameMatch(IHeap& heap, MessageDataPtr &pIMsg )
-		: MessageTransaction( heap, pIMsg )
+		: MessageTransaction( heap, std::forward<MessageDataPtr>(pIMsg))
 	{
 		BR_TRANS_MESSAGE( Message::GameParty::CancelGameMatchRes, { return OnCancelPartyMatchingRes(pRes); } );
 		BR_TRANS_MESSAGE( Message::PartyMatchingQueue::UnregisterMatchingRes, { return OnCancelPlayerMatchingRes(pRes); } );
@@ -1231,7 +1231,7 @@ namespace GameServer {
 
 
 	PlayerTransPlayAgain::PlayerTransPlayAgain(IHeap& heap, MessageDataPtr &pIMsg)
-		:MessageTransaction(heap, pIMsg)
+		:MessageTransaction(heap, std::forward<MessageDataPtr>(pIMsg))
 	{
 		BR_TRANS_MESSAGE(Message::GameInstance::GamePlayAgainRes, { return OnPlayAgainRes(pRes); });
 		BR_TRANS_MESSAGE(Message::GamePartyManager::CreatePartyRes, { return OnCreatePartyRes(pRes); });
@@ -1453,7 +1453,7 @@ namespace GameServer {
 
 
 	PlayerTransGameRevealPlayer::PlayerTransGameRevealPlayer(IHeap& heap, MessageDataPtr &pIMsg)
-		: MessageTransaction(heap, pIMsg)
+		: MessageTransaction(heap, std::forward<MessageDataPtr>(pIMsg))
 		, m_RevealedPlayerID(heap)
 		, m_RevealedPlayerRole(heap)
 	{
@@ -1557,7 +1557,7 @@ namespace GameServer {
 
 
 	PlayerTransGamePlayerRevive::PlayerTransGamePlayerRevive(IHeap& heap, MessageDataPtr &pIMsg)
-		:MessageTransaction(heap, pIMsg)
+		:MessageTransaction(heap, std::forward<MessageDataPtr>(pIMsg))
 	{
 		BR_TRANS_MESSAGE(DB::QueryUpdateTickStatusCmd, { return OnUpdatePlayerRes(pRes); });
 		BR_TRANS_MESSAGE(Message::GameInstance::GamePlayerReviveRes, { return OnGamePlayerReviveRes(pRes); });

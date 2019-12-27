@@ -31,11 +31,7 @@
 
 
 
-
-
-
 namespace SF {
-namespace Svr {
 
 
 
@@ -55,17 +51,19 @@ namespace Svr {
 	}
 
 	// Initialize entity to proceed new connection
-	Result RelayPlayer::InitializePlayer(IHeap& heap, RelayInstance* relayInstance, AccountID accountId, const String& accountIdentifier, const char* PlayerDisplayName)
+	Result RelayPlayer::InitializePlayer(IHeap& heap, RelayInstance* relayInstance, const sockaddr_storage& remoteAddr, const RelayPlayerID& relayPlayerID, PlayerID playerID, const String& playerIdentifier, const char* PlayerDisplayName)
 	{
 		FunctionContext hr;
 
-		m_AccountIdentifier.SetHeap(heap);
+		m_Address = remoteAddr;
+		m_PlayerIdentifier.SetHeap(heap);
 		m_RelayInstance = relayInstance;
-		m_AccountID = accountId;
-		m_AccountIdentifier = accountIdentifier;
+		m_PlayerID = playerID;
+		m_PlayerIdentifier = playerIdentifier;
+		m_RelayPlayerID = relayPlayerID;
 		SetPlayerDisplayName(PlayerDisplayName);
 
-		m_TimeToKill.SetTimer(DurationMS(Const::RELAY_PLAYER_JOIN_TIMEOUT));
+		m_TimeToKill.SetTimer(DurationMS(Svr::Const::RELAY_PLAYER_JOIN_TIMEOUT));
 
 		return hr;
 	}
@@ -77,14 +75,14 @@ namespace Svr {
 
 	void RelayPlayer::HeartBit()
 	{
-		m_TimeToKill.SetTimer(DurationMS(Const::RELAY_PLAYER_TIMEOUT));
+		m_TimeToKill.SetTimer(DurationMS(Svr::Const::RELAY_PLAYER_TIMEOUT));
 	}
 
 
 
-	void RelayPlayer::SetPlayerDisplayName(const char* PlayerName)
+	Result RelayPlayer::SetPlayerDisplayName(const char* playerName)
 	{
-		StrUtil::StringCopy(m_PlayerDisplayName, PlayerName);
+		return StrUtil::StringCopy(m_PlayerDisplayName, playerName);
 	}
 
 
@@ -117,7 +115,6 @@ namespace Svr {
 	
 
 
-}; // namespace Svr
 }; // namespace SF
 
 

@@ -57,7 +57,7 @@ namespace Svr {
 	public:
 		ServerEntityMessageTransaction(IHeap& memoryManager, MessageDataPtr &pIMsg )
 			:superTrans( memoryManager, TransactionID() )
-			,MessageClass( pIMsg )
+			,MessageClass( std::forward<MessageDataPtr>(pIMsg) )
 			,m_WorkOnServerEntity(true)
 		{
 		}
