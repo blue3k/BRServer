@@ -29,39 +29,20 @@ namespace Svr {
 	PerformanceCounterServer *PerformanceCounterServer::stm_pInstance = nullptr;
 
 
-	PerformanceCounterServer::MessageHandler::MessageHandler(IHeap& memMgr, PerformanceCounterServer *CounterServer)
-		: m_CounterServer(*CounterServer)
-		, m_HandlerTable(memMgr)
-	{
-		BR_MESSAGE_HANDLER(PerformanceCounterNewC2SEvt, Enqueue);
-		BR_MESSAGE_HANDLER(PerformanceCounterFreeC2SEvt, Enqueue);
-		BR_MESSAGE_HANDLER(PerformanceCounterUpdateC2SEvt, PerformanceCounterUpdateC2SEvt);
-	}
 
-	Result PerformanceCounterServer::MessageHandler::OnRecv(const sockaddr_storage& remoteAddr, SharedPointerT<Message::MessageData>& pMsg)
-	{
-		Result hr = ResultCode::SUCCESS;
-		MessageHandlerType handler;
-		svrChkPtr(pMsg);
-
-		svrChk(m_HandlerTable.GetHandler(pMsg->GetMessageHeader()->msgID, handler));
-
-		((&m_CounterServer)->*handler)(remoteAddr, pMsg);
-
-	Proc_End:
-
-		return hr;
-	}
 
 	PerformanceCounterServer::PerformanceCounterServer()
 		: m_Heap("PerformanceCounterServer", GetSystemHeap())
 		, m_RawUDP(nullptr)
-		, m_MessageHandler(GetHeap(), this)
+		, m_HandlerTable(GetHeap())
 		, m_NewDeleteQueue(GetHeap())
 		, m_UpdateQueue(GetHeap())
 		, m_TimedOutQueue(GetHeap())
 		, m_InstanceMap(GetHeap())
 	{
+		BR_MESSAGE_HANDLER(PerformanceCounterNewC2SEvt, Enqueue);
+		BR_MESSAGE_HANDLER(PerformanceCounterFreeC2SEvt, Enqueue);
+		BR_MESSAGE_HANDLER(PerformanceCounterUpdateC2SEvt, PerformanceCounterUpdateC2SEvt);
 	}
 
 	PerformanceCounterServer::~PerformanceCounterServer()
@@ -162,30 +143,41 @@ namespace Svr {
 
 	Result PerformanceCounterServer::Initialize(const NetAddress& serverAddress)
 	{
-		Result hr = ResultCode::SUCCESS;
 		NetAddress localAddress;
 		auto pRawUDP = new(GetSystemHeap()) Net::RawUDP();
-		svrChkPtr(pRawUDP);
+
+		FunctionContext hr([&pRawUDP](Result result)
+		{
+			if (pRawUDP != nullptr)
+			{
+				pRawUDP->TerminateNet();
+				Util::SafeDelete(pRawUDP);
+			}
+
+			Terminate();
+		});
+
+		svrCheckPtr(pRawUDP);
 
 		stm_pInstance = new(GetSystemHeap()) PerformanceCounterServer();
 
-		svrChk(pRawUDP->InitializeNet(serverAddress, &stm_pInstance->m_MessageHandler));
+		svrCheck(pRawUDP->InitializeNet(serverAddress, [](const sockaddr_storage& remoteAddr, SharedPointerT<Message::MessageData>& pMsg)-> Result
+		{
+			FunctionContext hr;
+			MessageHandlerType handler;
+			svrCheckPtr(pMsg);
+
+			svrCheck(stm_pInstance->m_HandlerTable.GetHandler(pMsg->GetMessageHeader()->msgID, handler));
+
+			(stm_pInstance->*handler)(remoteAddr, pMsg);
+
+			return hr;
+		}));
 
 		stm_pInstance->m_RawUDP = pRawUDP;
 		pRawUDP = nullptr;
 
 		stm_pInstance->Start();
-
-	Proc_End:
-
-		if (pRawUDP != nullptr)
-		{
-			pRawUDP->TerminateNet();
-			Util::SafeDelete(pRawUDP);
-		}
-
-		if (!(hr))
-			Terminate();
 
 		return hr;
 	}

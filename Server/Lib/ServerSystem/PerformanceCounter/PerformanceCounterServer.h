@@ -41,27 +41,13 @@ namespace Svr {
 				TIMER_TIMOUT = 10 * 1000
 			};
 
-			class MessageHandler : public Net::RawUDP::MessageHandler
-			{
-			private:
-				PerformanceCounterServer &m_CounterServer;
-
-				typedef Result(PerformanceCounterServer::*MessageHandlerType)(const sockaddr_storage& from, MessageDataPtr &);
-				MessageHandlerTable<MessageHandlerType>	m_HandlerTable;
-
-			public:
-				MessageHandler(IHeap& memMgr, PerformanceCounterServer *CounterServer);
-
-				virtual Result OnRecv(const sockaddr_storage& remoteAddr, SharedPointerT<Message::MessageData>& pMsg) override;
-			};
+			typedef Result(PerformanceCounterServer::*MessageHandlerType)(const sockaddr_storage& from, MessageDataPtr &);
 
 		private:
 
 			Heap m_Heap;
 
-			Net::RawUDP* m_RawUDP;
-
-			MessageHandler m_MessageHandler;
+			Net::RawUDP* m_RawUDP = nullptr;
 
 			struct PacketInfo
 			{
@@ -88,6 +74,8 @@ namespace Svr {
 				bool operator == (const PacketInfo& src) const { return pMessage == src.pMessage; }
 				bool operator != (const PacketInfo& src) const { return pMessage != src.pMessage; }
 			};
+
+			MessageHandlerTable<MessageHandlerType>	m_HandlerTable;
 
 			PageQueue<PacketInfo> m_NewDeleteQueue;
 

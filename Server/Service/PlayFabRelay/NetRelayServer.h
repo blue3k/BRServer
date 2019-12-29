@@ -63,7 +63,7 @@ namespace Net {
 	//	RelayServiceEntity class
 	//
 
-	class RelayServer : public Net::RawUDP::MessageHandler
+	class RelayServer
 	{
 	public:
 
@@ -86,6 +86,11 @@ namespace Net {
 		// TickUpdate 
 		virtual Result TickUpdate();
 
+		// send message
+		Result SendMsg(const sockaddr_storage& dest, SharedPointerT<Message::MessageData>& pMsg);
+
+
+	private:
 
 		////////////////////////////////////////////////////////////////////////////////////
 		//
@@ -99,12 +104,7 @@ namespace Net {
 		Result OnLeaveRelayInstanceC2SEvt(const sockaddr_storage& remoteAddr, MessageDataPtr&& pMsgData);
 		Result OnRelayPacketC2SEvt(const sockaddr_storage& remoteAddr, MessageDataPtr&& pMsgData);
 
-		// send message
-		Result SendMsg(const sockaddr_storage& dest, SharedPointerT<Message::MessageData>& pMsg);
-
-		virtual Result OnRecv(const sockaddr_storage& remoteAddr, SharedPointerT<Message::MessageData>& pMsg) override;
-
-
+		Result OnRecv(const sockaddr_storage& remoteAddr, SharedPointerT<Message::MessageData>& pMsg);
 
 	private:
 

@@ -61,7 +61,7 @@ namespace Svr {
 	//	RelayServiceEntity class
 	//
 
-	class RelayServiceEntity : public LoadbalanceClusterServiceEntity, public Net::RawUDP::MessageHandler
+	class RelayServiceEntity : public LoadbalanceClusterServiceEntity
 	{
 	public:
 		typedef LoadbalanceClusterServiceEntity super;
@@ -107,7 +107,7 @@ namespace Svr {
 		//	Network handling
 		//
 
-		virtual Result OnRecv(const sockaddr_storage& remoteAddr, SharedPointerT<Message::MessageData>& pMsg) override;
+		Result OnRecv(const sockaddr_storage& remoteAddr, SharedPointerT<Message::MessageData>& pMsg);
 
 
 		// Process network event

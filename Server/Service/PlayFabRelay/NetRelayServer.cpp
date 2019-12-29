@@ -37,7 +37,6 @@
 #include "ServiceEntity/Relay/RelayPlayer.h"
 
 #include "Protocol/Message/RelayMsgClass.h"
-#include "Protocol/Policy/RelayNetPolicy.h"
 #include "ServiceEntity/Relay/RelayInstance.h"
 
 
@@ -66,11 +65,12 @@ namespace Net {
 
 	Result RelayServer::InitializeNet(const NetAddress& listenAddr)
 	{
-		Result hr = ResultCode::SUCCESS;
+		FunctionContext hr;
 
-		svrChk(m_NetRawUDP.InitializeNet(listenAddr, this));
-
-	Proc_End:
+		svrCheck(m_NetRawUDP.InitializeNet(listenAddr, [this](const sockaddr_storage& remoteAddr, SharedPointerT<Message::MessageData>& pMsg) -> Result
+		{
+			return OnRecv(remoteAddr, pMsg);
+		}));
 
 		return hr;
 	}
@@ -145,7 +145,7 @@ namespace Net {
 
 			RelayPlayerInfo playerInfo;
 			playerInfo.RelayPlayerID = relayPlayerID;
-			playerInfo.PlayerID = relayPlayer.GetPlayerID();
+			playerInfo.EndpointID = relayPlayer.GetPlayerID();
 			userInfos.push_back(playerInfo);
 		});
 

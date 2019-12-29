@@ -30,29 +30,27 @@ namespace Svr {
 
 	PerformanceCounterClient *PerformanceCounterClient::stm_pInstance = nullptr;
 
-	Result PerformanceCounterClient::MessageHandler::OnRecv(const sockaddr_storage& remoteAddr, MessageDataPtr &pMsg)
-	{
-		Result hr = ResultCode::SUCCESS;
+	//Result PerformanceCounterClient::MessageHandler::OnRecv(const sockaddr_storage& remoteAddr, MessageDataPtr &pMsg)
+	//{
+	//	Result hr = ResultCode::SUCCESS;
 
-		if (pMsg->GetMessageHeader()->msgID.GetMsgID() == Message::Monitoring::PerformanceCounterUpdateCounterInfoS2CEvt::MID.GetMsgID())
-		{
-			svrChk(m_CounterClient.HandleMessageUpdateCounterInfoS2CEvt(remoteAddr, std::forward<MessageDataPtr>(pMsg)));
-		}
+	//	if (pMsg->GetMessageHeader()->msgID.GetMsgID() == Message::Monitoring::PerformanceCounterUpdateCounterInfoS2CEvt::MID.GetMsgID())
+	//	{
+	//		svrChk(m_CounterClient.HandleMessageUpdateCounterInfoS2CEvt(remoteAddr, std::forward<MessageDataPtr>(pMsg)));
+	//	}
 
-	Proc_End:
+	//Proc_End:
 
-		return hr;
-	}
+	//	return hr;
+	//}
 
 
 	PerformanceCounterClient::PerformanceCounterClient()
 		: m_Heap("PerformanceCounterClient",GetSystemHeap())
-		, m_MessageHandler(this)
 		, m_FreeInstanceQueue(m_Heap)
 		, m_NewInstanceQueue(m_Heap)
 		, m_CounterInstanceMap(m_Heap)
 	{
-
 	}
 
 	PerformanceCounterClient::~PerformanceCounterClient()
@@ -253,10 +251,20 @@ namespace Svr {
 
 	Result PerformanceCounterClient::Initialize(uint serverID, const NetAddress& serverAddress)
 	{
-		Result hr = ResultCode::SUCCESS;
 		NetAddress localAddress;
 		auto pRawUDP = new(GetSystemHeap()) Net::RawUDP();
-		svrChkPtr(pRawUDP);
+
+		FunctionContext hr([&pRawUDP](Result result) {
+			if (pRawUDP != nullptr)
+			{
+				pRawUDP->TerminateNet();
+				delete pRawUDP;
+			}
+
+			Terminate();
+		});
+
+		svrCheckPtr(pRawUDP);
 
 		stm_pInstance = new(GetSystemHeap()) PerformanceCounterClient();
 
@@ -266,25 +274,23 @@ namespace Svr {
 		stm_pInstance->m_ServerID = serverID;
 
 		// use same network family
-		svrChk(Net::GetLocalAddress(serverAddress.SocketFamily, localAddress));
+		svrCheck(Net::GetLocalAddress(serverAddress.SocketFamily, localAddress));
 
-		svrChk(pRawUDP->InitializeNet(localAddress, &stm_pInstance->m_MessageHandler));
+		svrCheck(pRawUDP->InitializeNet(localAddress, 
+			[](const sockaddr_storage& remoteAddr, SharedPointerT<Message::MessageData>& pMsg)
+			{
+				if (pMsg->GetMessageHeader()->msgID.GetMsgID() == Message::Monitoring::PerformanceCounterUpdateCounterInfoS2CEvt::MID.GetMsgID())
+				{
+					stm_pInstance->HandleMessageUpdateCounterInfoS2CEvt(remoteAddr, std::forward<MessageDataPtr>(pMsg));
+				}
+				return ResultCode::SUCCESS;
+			})
+		);
 
 		stm_pInstance->m_RawUDP = pRawUDP;
 		pRawUDP = nullptr;
 
 		stm_pInstance->Start();
-
-	Proc_End:
-
-		if (pRawUDP != nullptr)
-		{
-			pRawUDP->TerminateNet();
-			Util::SafeDelete(pRawUDP);
-		}
-
-		if (!(hr))
-			Terminate();
 
 		return hr;
 	}

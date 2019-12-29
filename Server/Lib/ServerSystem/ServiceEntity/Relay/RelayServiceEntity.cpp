@@ -76,7 +76,12 @@ namespace Svr {
 
 		svrMem(m_pNetPublic = new(GetHeap()) Net::RawUDP);
 
-		svrChk(m_pNetPublic->InitializeNet(NetAddress(m_PublicNetSocket->ListenIP, m_PublicNetSocket->Port), this));
+		svrChk(m_pNetPublic->InitializeNet(NetAddress(m_PublicNetSocket->ListenIP, m_PublicNetSocket->Port), 
+			[this](const sockaddr_storage& remoteAddr, SharedPointerT<Message::MessageData>& pMsg)
+			{
+				return OnRecv(remoteAddr, pMsg);
+			})
+		);
 
 	Proc_End:
 

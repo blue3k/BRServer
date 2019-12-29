@@ -41,18 +41,6 @@ namespace SF {
 		{
 		public:
 
-			class MessageHandler : public Net::RawUDP::MessageHandler
-			{
-			private:
-				PerformanceCounterClient &m_CounterClient;
-
-			public:
-				MessageHandler(PerformanceCounterClient *CounterServer)
-					: m_CounterClient(*CounterServer)
-				{}
-
-				virtual Result OnRecv(const sockaddr_storage& remoteAddr, MessageDataPtr &pMsg) override;
-			};
 
 		private:
 
@@ -62,8 +50,6 @@ namespace SF {
 			sockaddr_storage m_RemoteSockAddress;
 
 			Net::RawUDP* m_RawUDP = nullptr;
-
-			MessageHandler m_MessageHandler;
 
 			uint m_ServerID = 0;
 

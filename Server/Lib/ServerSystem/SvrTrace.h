@@ -42,9 +42,9 @@ namespace SF {
 // Default trace module
 //
 
-#define svrCheck(Op) CheckResult(Svr,Op)
-#define svrCheckMem(Op) CheckMem(Svr,Op)
-#define svrCheckPtr(Op) CheckPtr(Svr,Op)
+#define svrCheck(Op) SFCheckResult(Svr,Op)
+#define svrCheckMem(Op) SFCheckMem(Svr,Op)
+#define svrCheckPtr(Op) SFCheckPtr(Svr,Op)
 
 // Legacy - gradually deprecated
 

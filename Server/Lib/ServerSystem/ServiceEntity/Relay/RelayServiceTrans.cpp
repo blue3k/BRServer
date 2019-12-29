@@ -17,8 +17,6 @@
 #include "GameConst.h"
 
 #include "Protocol/Message/GameInstanceManagerMsgClass.h"
-//#include "Protocol/Message/RelayMsgClass.h"
-//#include "Protocol/Policy/RelayNetPolicy.h"
 
 
 #include "Server/BrServerUtil.h"

@@ -137,9 +137,9 @@ namespace SF {
 	// Handle relay packet
 	void RelayInstance::OnRelayPacket(const sockaddr_storage& remoteAddr, const Message::Relay::RelayPacketC2SEvt& message)
 	{
-		RelayPlayerID senderRelayID = message.GetSenderRelayID();
+		RelayPlayerID senderRelayID = message.GetSenderEndpointID();
 
-		uint32_t targetMask = message.GetTargetRelayMask();
+		uint32_t targetMask = message.GetTargetEndpointMask();
 		MessageDataPtr messageData = message.GetMessagePtr();
 		for (uint32_t iUser = 0; iUser < m_Users.size(); iUser++)
 		{
