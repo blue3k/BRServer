@@ -15,12 +15,18 @@ set(SRC_FILES
 	gsdk/cpp/cppsdk/gsdkUtils.h
     gsdk/cpp/cppsdk/gsdkUtils.cpp
 	gsdk/cpp/cppsdk/gsdkWindowsPch.h
-    gsdk/cpp/cppsdk/gsdkWindowsPch.cpp
+	gsdk/cpp/cppsdk/gsdkLinuxPch.h
 	gsdk/cpp/cppsdk/gsdkConfig.cpp
 	gsdk/cpp/cppsdk/gsdkConfig.h
 )
 
-add_definitions(-DGSDK_WINDOWS)
+
+
+if(WIN32)
+	add_definitions(-DGSDK_WINDOWS)
+elseif(UNIX)
+	add_definitions(-DGSDK_LINUX)
+endif()
 
 include_directories(BEFORE 
 	../../../StormForge/3rdParties/src/PlayFab/XPlatCppSdk/code/include
