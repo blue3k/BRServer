@@ -160,7 +160,7 @@ namespace Svr {
 		void StartThread();
 		void StopThread();
 
-		virtual bool OnStart();
+		virtual Result OnStart();
 		void Run(Thread* pThread);
 		bool OnEnd();
 
@@ -241,7 +241,11 @@ namespace Svr {
 		//	virtual interface definition
 		//
 
-		Result CreateServerInstanceZK(const char* nodeName);
+		virtual Result CreateServerInstanceZK(const char* nodeName);
+
+		virtual Result SetupConfiguration();
+
+		virtual Result CreateEntityManager();
 
 		// Apply configuration
 		virtual Result ApplyConfiguration();

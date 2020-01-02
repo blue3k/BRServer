@@ -59,15 +59,6 @@ namespace SF {
 		: BrServer(NetClass::Game)
 		, m_MyConfig(GetEngineHeap())
 	{
-		// put default
-		m_MyConfig.Name = Util::GetServiceName();
-		m_MyConfig.UID = 1;
-
-		SetMyConfig(&m_MyConfig);
-
-		// handle gsdk config
-		const std::unordered_map<std::string, std::string>& config = Microsoft::Azure::Gaming::GSDK::getConfigSettings();
-
 	}
 
 
@@ -77,22 +68,41 @@ namespace SF {
 
 
 
+	Result RelayServer::SetupConfiguration()
+	{
+		// put default
+		m_MyConfig.Name = Util::GetServiceName();
+		m_MyConfig.UID = 1;
+
+		SetMyConfig(&m_MyConfig);
+
+		// handle gsdk config
+		const std::unordered_map<std::string, std::string>& config = Microsoft::Azure::Gaming::GSDK::getConfigSettings();
+
+		return ResultCode::SUCCESS;
+	}
+
 	// Apply configuration
 	Result RelayServer::ApplyConfiguration()
 	{
-		Result hr = ResultCode::SUCCESS;
+		FunctionContext hr;
 
-		svrChk(Svr::BrServer::ApplyConfiguration() );
+		svrCheck(Svr::BrServer::ApplyConfiguration() );
 
 		// Initializing PlayFab stuffs
 		Microsoft::Azure::Gaming::GSDK::start();
+
 		Microsoft::Azure::Gaming::GSDK::registerShutdownCallback([this]() { OnShutdownRequested(); });
 		Microsoft::Azure::Gaming::GSDK::registerHealthCallback([this]() { return IsAlive(); });
 		Microsoft::Azure::Gaming::GSDK::registerMaintenanceCallback([this](tm t) { OnMaintenanceScheduled(t); });
 
-	Proc_End:
-
 		return hr;
+	}
+
+	Result RelayServer::InitializeMonitoring()
+	{
+		// Skip monitoring setup
+		return ResultCode::SUCCESS;
 	}
 
 	void RelayServer::OnShutdownRequested()
@@ -102,6 +112,7 @@ namespace SF {
 
 	bool RelayServer::IsAlive()
 	{
+		svrTrace(Info, "IsAlive")
 		return GetServerState() != Svr::ServerState::STOPED;
 	}
 
@@ -112,18 +123,24 @@ namespace SF {
 		//isMaintenancedScheduled = true;
 	}
 
+	Result RelayServer::CreateEntityManager()
+	{
+		return ResultCode::SUCCESS;
+	}
+
+	Result RelayServer::CreateServerInstanceZK(const char* nodeName)
+	{
+		return ResultCode::SUCCESS;
+	}
 
 	// Initialize server resource
 	Result RelayServer::InitializeServerResource()
 	{
-		Result hr = ResultCode::SUCCESS;
+		FunctionContext hr;
 
-		svrChk(Svr::BrServer::InitializeServerResource() );
+		svrCheck(Svr::BrServer::InitializeServerResource() );
 
-		svrChk( InitializeEntity( EntityID(EntityFaculty::Server,0) ) );
-
-
-	Proc_End:
+		svrCheck( InitializeEntity( EntityID(EntityFaculty::Server,0) ) );
 
 		return hr;
 	}
@@ -131,13 +148,11 @@ namespace SF {
 	// Close server and release resource
 	Result RelayServer::CloseServerResource()
 	{
-		Result hr = ResultCode::SUCCESS;
+		FunctionContext hr;
 
-		svrChk(Svr::BrServer::CloseServerResource() );
+		svrCheck(Svr::BrServer::CloseServerResource() );
 
-		svrChk( TerminateEntity() );
-
-	Proc_End:
+		svrCheck( TerminateEntity() );
 
 		return hr;
 	}
@@ -145,12 +160,13 @@ namespace SF {
 	// Initialize private Network
 	Result RelayServer::InitializeNetPrivate()
 	{
-		Result hr = ResultCode::SUCCESS;
+		FunctionContext hr;
 
-		svrChk(Svr::BrServer::InitializeNetPrivate() );
+		svrCheck(Svr::BrServer::InitializeNetPrivate() );
 
-
-	Proc_End:
+		svrTrace(Info, "readyForPlayers ");
+		Microsoft::Azure::Gaming::GSDK::readyForPlayers();
+		svrTrace(Info, "readyForPlayers end");
 
 		return hr;
 	}
@@ -159,7 +175,7 @@ namespace SF {
 	// Close Private Network
 	Result RelayServer::CloseNetPrivate()
 	{
-		Result hr = ResultCode::SUCCESS;
+		FunctionContext hr;
 
 		hr = Svr::BrServer::CloseNetPrivate();
 

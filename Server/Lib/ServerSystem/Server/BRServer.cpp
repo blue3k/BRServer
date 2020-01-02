@@ -258,6 +258,18 @@ Proc_End:
 	//	virtual Thread interface
 	//
 
+	Result BrServer::SetupConfiguration()
+	{
+		SetMyConfig(Service::ServerConfig->FindGenericServer(Util::GetServiceName()));
+		return GetMyConfig() != nullptr ? ResultCode::SUCCESS : ResultCode::UNEXPECTED;
+	}
+
+	Result BrServer::CreateEntityManager()
+	{
+		return Service::EntityManager->AddEntity(
+			EntityID(EntityFaculty::Service, (uint)ClusterID::ClusterManager),
+			dynamic_cast<Svr::ClusterManagerServiceEntity*>(*Service::ClusterManager));
+	}
 
 	// Apply configuration
 	Result BrServer::ApplyConfiguration()
@@ -299,6 +311,11 @@ Proc_End:
 		Result hr = ResultCode::SUCCESS;
 		ServerEntity *pEntity = nullptr;
 
+		if (GetNetPrivate() == nullptr)
+		{
+			// If net private hasn't initialized. we don't need entity system.
+			return ResultCode::SUCCESS;
+		}
 
 		// Add loop back entity
 		svrMem(pEntity = CreateLoopbackEntity() );
@@ -376,70 +393,9 @@ Proc_End:
 	}
 
 
-	bool BrServer::OnStart()
+	Result BrServer::OnStart()
 	{
-		Result hr = ResultCode::SUCCESS;
-
-		SetServerState( ServerState::STARTING );
-
-		m_ServerUpUTCTIme = Util::Time.GetTimeUTCSec();
-
-		svrTrace( Info, "Starting Server" );
-
-		svrTrace( Info, "Apply configuration" );
-
-		SetMyConfig(Service::ServerConfig->FindGenericServer(Util::GetServiceName()));
-		svrChkPtr(GetMyConfig());
-
-		// Register cluster manager as entity
-		svrChk(Service::EntityManager->AddEntity(
-			EntityID(EntityFaculty::Service, (uint)ClusterID::ClusterManager),
-			dynamic_cast<Svr::ClusterManagerServiceEntity*>(*Service::ClusterManager)));
-
-
-		// Apply configuration
-		hr = ApplyConfiguration();
-		if( !(hr) )
-		{
-			svrTrace( Error, "Failed Apply configuration, hr={0:X8}", hr );
-			svrErr( hr );
-		}
-
-		hr = InitializeMonitoring();
-		if (!(hr))
-		{
-			svrTrace(Error, "Failed Apply configuration, hr={0:X8}", hr);
-			svrErr(hr);
-		}
-
-		// Initialize server resource
-		svrTrace( Info, "Initialize server resource" );
-		hr = InitializeServerResource();
-		if( !(hr) )
-		{
-			svrTrace( Error, "Failed Initialize resource, hr={0:X8}", hr );
-			svrErr( hr );
-		}
-
-		// Initialize Network
-		svrTrace( Info, "Initialize Private network" );
-		hr = InitializeNetPrivate();
-		if( !(hr) )
-		{
-			svrTrace( Error, "Failed Initialize Private Network, hr={0:X8}", hr );
-			svrErr( hr );
-		}
-
-		svrChk( InitializeComponents() );
-
-		svrChk(InitializeNetPublic());
-
-		svrChk(CreateServerInstanceZK(Util::GetServiceName()));
-
-	Proc_End:
-
-
-		if( !( hr ) )
+		FunctionContext hr([this](Result result) 
 		{
 			CloseNetPublic();
 			CloseNetPrivate();
@@ -451,17 +407,75 @@ Proc_End:
 
 			Service::EntityManager->FlushDeletedEntity();
 
-			SetServerState( ServerState::STOPED );
-			svrTrace( Info, "Start failed hr:{0:X8}", hr );
-		}
-		else
+			SetServerState(ServerState::STOPED);
+			svrTrace(Info, "Start failed hr:{0:X8}", result);
+		});
+
+		SetServerState( ServerState::STARTING );
+
+		m_ServerUpUTCTIme = Util::Time.GetTimeUTCSec();
+
+		svrTrace( Info, "Starting Server" );
+
+		svrTrace(Info, "Setup configuration");
+		svrCheck(SetupConfiguration());
+		
+		svrCheckPtr(GetMyConfig());
+
+		// Register cluster manager as entity
+		svrTrace(Info, "Initialize Cluster manager");
+		svrCheck(CreateEntityManager());
+
+
+		// Apply configuration
+		svrTrace(Info, "Applying Configuration");
+		hr = ApplyConfiguration();
+		if( !(hr) )
 		{
-			svrTrace( Info, "Start process done" );
+			svrTrace( Error, "Failed Apply configuration, hr={0:X8}", hr );
+			return hr;
 		}
 
-		return (hr);
-	}
+		
+		svrTrace(Info, "initializing Monitoring");
+		hr = InitializeMonitoring();
+		if (!(hr))
+		{
+			svrTrace(Error, "Failed Apply configuration, hr={0:X8}", hr);
+			return hr;
+		}
 
+		// Initialize server resource
+		svrTrace( Info, "Initialize server resource" );
+		hr = InitializeServerResource();
+		if( !(hr) )
+		{
+			svrTrace( Error, "Failed Initialize resource, hr={0:X8}", hr );
+			return hr;
+		}
+
+		// Initialize Network
+		svrTrace( Info, "Initialize Private network" );
+		hr = InitializeNetPrivate();
+		if( !(hr) )
+		{
+			svrTrace( Error, "Failed Initialize Private Network, hr={0:X8}", hr );
+			return hr;
+		}
+
+		svrTrace(Error, "initializing Components");
+		svrCheck( InitializeComponents() );
+
+		svrTrace(Error, "initializing NetPublic");
+		svrCheck(InitializeNetPublic());
+
+		svrTrace(Error, "initializing ZK");
+		svrCheck(CreateServerInstanceZK(Util::GetServiceName()));
+
+		svrTrace( Info, "Start process done" );
+
+		return hr;
+	}
 
 	void BrServer::Run(Thread* pThread)
 	{
@@ -589,7 +603,7 @@ Proc_End:
 			svrCheck(m_pNetPrivate->HostOpen(GetNetClass(), GetMyConfig()->PrivateNet.IP, GetMyConfig()->PrivateNet.Port));
 		}
 
-		svrTrace( Info, "Initialize basic entities" );
+		svrTrace( Info, "Initialize entities" );
 		hr = InitializeEntities();
 		if(!(hr) )
 		{

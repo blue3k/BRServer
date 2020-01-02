@@ -58,7 +58,7 @@ namespace ServerInstanceLauncher {
 
 		virtual Svr::ServerEntity* CreateLoopbackEntity() override;
 
-		virtual bool OnStart() override;
+		virtual Result OnStart() override;
 
 		virtual Result TickUpdate(TimerAction *pAction = nullptr) override;
 

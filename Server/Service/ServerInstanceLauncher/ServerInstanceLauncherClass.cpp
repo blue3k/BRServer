@@ -64,7 +64,7 @@ namespace ServerInstanceLauncher {
 	//	Public Network event handling
 	//
 
-	bool ServerInstanceLauncher::OnStart()
+	Result ServerInstanceLauncher::OnStart()
 	{
 		Result hr = ResultCode::SUCCESS;
 		char instanceName[512];

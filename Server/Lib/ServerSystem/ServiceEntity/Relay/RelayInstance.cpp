@@ -153,6 +153,7 @@ namespace SF {
 			relayIDTest.SetPlayerIndex(iUser);
 			assert(relayIDTest == relayID);
 #endif
+			// Skip sender
 			if (senderRelayID == relayID)
 				continue;
 

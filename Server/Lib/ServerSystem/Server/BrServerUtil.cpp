@@ -135,14 +135,15 @@ namespace Svr {
 		initParam.AsyncTaskThreadCount = 6;
 		initParam.NetworkThreadCount = 0; // Net module will be initialized manually
 
-		// for test
-		//initParam.EnableMemoryLeakDetection = true;
+		// disable memory leak detection for now
+		initParam.EnableMemoryLeakDetection = false;
 
 		initParam.NetRecvBufferSize = Net::Const::SVR_RECV_BUFFER_SIZE;
 		initParam.NetSendBufferSize = Net::Const::SVR_SEND_BUFFER_SIZE;
 
 		// turn off output console
-		initParam.LogOutputConsole = { 0, };
+		initParam.LogOutputConsole = { 0xFFFFFFFFL };
+		initParam.LogOutputCommon = { 0xFFFFFFFFL };
 		initParam.LogOutputDebugger = { 0, };
 		initParam.LogOutputFile = { 0, };
 
@@ -152,10 +153,10 @@ namespace Svr {
 		if (pEngine == nullptr)
 			return;
 
-		pEngine->AddComponent<LogOutputPlayFabGSDKComponent>(initParam.LogOutputCommon);
-
 		pEngine->AddComponent<ServerNetComponent>();
 		pEngine->AddComponent<ServerLogComponent>(nullptr);
+
+		pEngine->AddComponent<LogOutputPlayFabGSDKComponent>(initParam.LogOutputCommon);
 
 		pEngine->AddComponent<SF::Net::NetSystem>(initParam.NetRecvBufferSize, initParam.NetSendBufferSize, netIOThreadCount, 1024);
 		pEngine->AddComponent<EntityTable>();

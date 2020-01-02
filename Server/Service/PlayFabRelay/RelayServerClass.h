@@ -58,9 +58,14 @@ namespace SF {
 		//	Public Network event handling
 		//
 
+		virtual Result SetupConfiguration() override;
+
+		virtual Result CreateEntityManager() override;
 
 		// Apply configuration
 		virtual Result ApplyConfiguration() override;
+
+		virtual Result InitializeMonitoring() override;
 
 
 		// Initialize server resource
@@ -80,6 +85,7 @@ namespace SF {
 		// create remote entity by class
 		virtual Result CreateServerEntity( NetClass netClass, Svr::ServerEntity* &pServerEntity ) override;
 
+		virtual Result CreateServerInstanceZK(const char* nodeName) override;
 
 		//////////////////////////////////////////////////////////////////////////
 		// GSDK callbacks

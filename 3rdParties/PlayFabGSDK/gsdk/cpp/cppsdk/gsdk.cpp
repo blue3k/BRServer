@@ -16,6 +16,7 @@ namespace Microsoft
             volatile long long GSDKInternal::m_exitStatus = 0;
             std::mutex GSDKInternal::m_logLock;
             std::ofstream GSDKInternal::m_logFile;
+			std::string GSDKInternal::m_logFilePath;
             bool GSDKInternal::m_debug = false;
             std::unique_ptr<Configuration> GSDKInternal::testConfiguration = nullptr;
 
@@ -149,8 +150,8 @@ namespace Microsoft
                     logFolder = "";
                 }
 
-                std::string logPath = logFolder + logFile;
-                m_logFile.open(logPath.c_str(), std::ofstream::out);
+				m_logFilePath = logFolder + logFile;
+                m_logFile.open(m_logFilePath.c_str(), std::ofstream::out);
             }
 
             void GSDKInternal::heartbeatThreadFunc()

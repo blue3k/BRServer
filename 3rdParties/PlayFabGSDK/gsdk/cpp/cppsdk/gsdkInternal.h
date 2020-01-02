@@ -182,6 +182,7 @@ namespace Microsoft
                 static volatile long long m_exitStatus;
                 static std::mutex m_logLock;
                 static std::ofstream m_logFile;
+				static std::string m_logFilePath;
 
                 void heartbeatThreadFunc();
                 static size_t curlReceiveData(char *buffer, size_t blockSize, size_t blockCount, void *);
