@@ -60,7 +60,7 @@ namespace Microsoft
                     #ifdef GSDK_LINUX
                     return mkdir(path.c_str(), S_IRWXU | S_IRWXG | S_IROTH | S_IWOTH | S_IXOTH);
                     #else
-                    std::experimental::filesystem::create_directories(std::experimental::filesystem::path(path));
+                    std::filesystem::create_directories(std::filesystem::path(path));
                     return true;
                     #endif
                 }
