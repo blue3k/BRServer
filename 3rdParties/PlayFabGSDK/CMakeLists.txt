@@ -30,6 +30,7 @@ endif()
 
 include_directories(BEFORE 
 	../../../StormForge/3rdParties/src/PlayFab/XPlatCppSdk/code/include
+	../../../StormForge/3rdParties/src/jsoncpp/jsoncpp/include
 	)
 
 add_library(PlayFabGSDK ${SRC_FILES})

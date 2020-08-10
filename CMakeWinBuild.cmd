@@ -25,7 +25,7 @@ robocopy bin ..\..\Server\bin\%PROCESS_ARCHITECTUR%%CMAKE_BUILD_TYPE% /move
 
 
 
-set CMAKE_BUILD_TYPE=Release
+set CMAKE_BUILD_TYPE=RelWithDebInfo
 cmake --build . --parallel --target install -- /p:Configuration=Release 
 
 

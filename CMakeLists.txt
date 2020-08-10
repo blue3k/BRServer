@@ -89,7 +89,7 @@ if(WIN32)
 	
 	set(ARTECTURE x64)
 
-	set(PLATFORM_LIBS Ws2_32 Mswsock mysqlcppconn8-static libcrypto libssl)
+	set(PLATFORM_LIBS Ws2_32 Mswsock mysqlcppconn8-static libcrypto libssl Dnsapi)
 
 	link_directories(
 		../StormForge/build${CMAKE_SYSTEM_NAME}/${ARTECTURE}$(Configuration)/lib
