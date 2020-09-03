@@ -39,7 +39,6 @@
 #include "Table/conspiracy/ShopTbl.h"
 
 
-SF_MEMORYPOOL_IMPLEMENT(BR::GameServer::UserGamePlayerInfoSystem);
 
 
 namespace SF {

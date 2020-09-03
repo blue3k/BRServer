@@ -44,11 +44,6 @@
 
 
 
-SF_MEMORYPOOL_IMPLEMENT(SF::Svr::ChatChannelTransCloseInstance);
-SF_MEMORYPOOL_IMPLEMENT(SF::Svr::ChatChannelTransJoin);
-SF_MEMORYPOOL_IMPLEMENT(SF::Svr::ChatChannelTransLeave);
-SF_MEMORYPOOL_IMPLEMENT(SF::Svr::ChatChannelTransKickPlayer);
-SF_MEMORYPOOL_IMPLEMENT(SF::Svr::ChatChannelTransChatMessage);
 
 
 

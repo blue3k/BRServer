@@ -66,41 +66,6 @@
 
 
 
-SF_MEMORYPOOL_IMPLEMENT(BR::GameServer::PlayerTransJoinGame);
-SF_MEMORYPOOL_IMPLEMENT(BR::GameServer::PlayerTransJoinedS2SEvt);
-SF_MEMORYPOOL_IMPLEMENT(BR::GameServer::PlayerTransLeaveGame);
-SF_MEMORYPOOL_IMPLEMENT(BR::GameServer::PlayerTransLeftS2SEvt);
-SF_MEMORYPOOL_IMPLEMENT(BR::GameServer::PlayerTransPlayerKickedS2SEvt);
-SF_MEMORYPOOL_IMPLEMENT(BR::GameServer::PlayerTransAssignRole);
-SF_MEMORYPOOL_IMPLEMENT(BR::GameServer::PlayerTransRoleAssignedS2SEvt);
-SF_MEMORYPOOL_IMPLEMENT(BR::GameServer::PlayerTransChatMessage);
-SF_MEMORYPOOL_IMPLEMENT(BR::GameServer::PlayerTransChatMessageFromOtherEntity);
-SF_MEMORYPOOL_IMPLEMENT(BR::GameServer::PlayerTransVoteGameAdvance);
-SF_MEMORYPOOL_IMPLEMENT(BR::GameServer::PlayerTransGameAdvanceVotedS2SEvt);
-SF_MEMORYPOOL_IMPLEMENT(BR::GameServer::PlayerTransVote);
-SF_MEMORYPOOL_IMPLEMENT(BR::GameServer::PlayerTransVoteEndS2SEvt);
-SF_MEMORYPOOL_IMPLEMENT(BR::GameServer::PlayerTransPlayerRevealedS2SEvt);
-SF_MEMORYPOOL_IMPLEMENT(BR::GameServer::PlayerTransAdvanceGame);
-SF_MEMORYPOOL_IMPLEMENT(BR::GameServer::PlayerTransGameAdvancedS2SEvt);
-SF_MEMORYPOOL_IMPLEMENT(BR::GameServer::PlayerTransGameEndedS2SEvt);
-SF_MEMORYPOOL_IMPLEMENT(BR::GameServer::PlayerTransPlayerKilledS2SEvt);
-SF_MEMORYPOOL_IMPLEMENT(BR::GameServer::PlayerTransPlayerVotedS2SEvt);
-
-SF_MEMORYPOOL_IMPLEMENT(BR::GameServer::PlayerTransRequestGameMatch);
-SF_MEMORYPOOL_IMPLEMENT(BR::GameServer::PlayerTransCancelGameMatch);
-
-SF_MEMORYPOOL_IMPLEMENT(BR::GameServer::PlayerTransPlayerMatchingCanceledS2CEvt);
-SF_MEMORYPOOL_IMPLEMENT(BR::GameServer::PlayerTransPlayerMatchingItemDequeuedS2CEvt);
-
-SF_MEMORYPOOL_IMPLEMENT(BR::GameServer::PlayerTransPlayAgain);
-SF_MEMORYPOOL_IMPLEMENT(BR::GameServer::PlayerTransPlayAgainS2SEvt);
-
-SF_MEMORYPOOL_IMPLEMENT(BR::GameServer::PlayerTransGameRevealPlayer);
-
-SF_MEMORYPOOL_IMPLEMENT(BR::GameServer::PlayerTransGamePlayerRevive);
-SF_MEMORYPOOL_IMPLEMENT(BR::GameServer::PlayerTransGamePlayerRevivedS2SEvt);
-
-SF_MEMORYPOOL_IMPLEMENT(BR::GameServer::PlayerTransGamePlayerResetRank);
 
 
 namespace SF {

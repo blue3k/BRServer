@@ -108,8 +108,11 @@ namespace Net {
 
 		FunctionContext hr([&pRelayInstance](Result result) 
 		{
-			if (pRelayInstance != nullptr)
-				delete pRelayInstance;
+			if (!result)
+			{
+				if (pRelayInstance != nullptr)
+					delete pRelayInstance;
+			}
 		});
 
 		Message::Relay::JoinRelayInstanceC2SEvt message(std::forward<MessageDataPtr>(pMsgData));

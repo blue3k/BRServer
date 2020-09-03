@@ -31,7 +31,6 @@
 #include "Protocol/Policy/ClusterServerNetPolicy.h"
 
 
-SF_MEMORYPOOL_IMPLEMENT(SF::Svr::ClusteredServiceEntity::ServiceTableItem);
 
 namespace SF {
 namespace Svr {

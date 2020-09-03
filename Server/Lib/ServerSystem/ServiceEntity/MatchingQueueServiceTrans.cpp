@@ -31,17 +31,6 @@
 #include "Protocol/ServerService/PartyMatchingQueueService.h"
 
 
-SF_MEMORYPOOL_IMPLEMENT(SF::Svr::RegisterPartyMatchingTrans);
-SF_MEMORYPOOL_IMPLEMENT(SF::Svr::RegisterPlayerMatchingTrans);
-SF_MEMORYPOOL_IMPLEMENT(SF::Svr::UpdateMatchingEntityUIDTrans);
-SF_MEMORYPOOL_IMPLEMENT(SF::Svr::UnregisterMatchingTrans);
-
-SF_MEMORYPOOL_IMPLEMENT(SF::Svr::ReserveItemTrans);
-SF_MEMORYPOOL_IMPLEMENT(SF::Svr::MatchingQueueReserveItemsTrans);
-SF_MEMORYPOOL_IMPLEMENT(SF::Svr::CancelReservationTrans);
-SF_MEMORYPOOL_IMPLEMENT(SF::Svr::DequeueItemTrans);
-SF_MEMORYPOOL_IMPLEMENT(SF::Svr::MatchingQueueTransMatchingItemError);
-
 
 namespace SF {
 namespace Svr {

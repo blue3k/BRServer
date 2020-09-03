@@ -26,8 +26,6 @@
 
 
 
-SF_MEMORYPOOL_IMPLEMENT(SF::Svr::ChatChannelManagerTransCreateChatChannel);
-SF_MEMORYPOOL_IMPLEMENT(SF::Svr::ChatChannelManagerTransChatChannelDeleted);
 
 
 namespace SF {

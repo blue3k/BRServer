@@ -19,7 +19,6 @@
 #include "Transaction/Transaction.h"
 
 
-SF_MEMORYPOOL_IMPLEMENT(SF::Svr::TimerActionTransaction);
 
 
 namespace SF {

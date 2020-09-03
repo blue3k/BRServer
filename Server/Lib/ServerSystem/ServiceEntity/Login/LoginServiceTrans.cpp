@@ -31,9 +31,6 @@
 
 
 
-SF_MEMORYPOOL_IMPLEMENT(SF::Svr::LoginPartyTrans);
-
-
 
 namespace SF {
 namespace Svr {

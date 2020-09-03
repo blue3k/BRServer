@@ -148,6 +148,9 @@ namespace Svr {
 
 		FunctionContext hr([&pRawUDP](Result result)
 		{
+			if (result)
+				return;
+
 			if (pRawUDP != nullptr)
 			{
 				pRawUDP->TerminateNet();

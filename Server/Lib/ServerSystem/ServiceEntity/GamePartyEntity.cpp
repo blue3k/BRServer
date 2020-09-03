@@ -28,8 +28,6 @@
 #include "ServiceEntity/GamePartyEntityTrans.h"
 
 
-SF_MEMORYPOOL_IMPLEMENT(SF::Svr::PartyPlayer);
-SF_MEMORYPOOL_IMPLEMENT(SF::Svr::GamePartyEntity);
 
 
 namespace SF {

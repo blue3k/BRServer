@@ -152,7 +152,7 @@ namespace Google {
 			{
 				// silently ignore it
 			}
-			else
+			else if (!result)
 			{
 				if (m_ResultBuffer.size() > 0)
 				{

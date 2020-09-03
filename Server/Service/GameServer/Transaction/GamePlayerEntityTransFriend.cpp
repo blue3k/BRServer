@@ -45,17 +45,6 @@
 
 
 
-
-SF_MEMORYPOOL_IMPLEMENT(BR::GameServer::PlayerTransInviteFriend);
-SF_MEMORYPOOL_IMPLEMENT(BR::GameServer::PlayerTransFriendAccept);
-SF_MEMORYPOOL_IMPLEMENT(BR::GameServer::PlayerTransFriendAcceptedS2S);
-SF_MEMORYPOOL_IMPLEMENT(BR::GameServer::PlayerTransRemoveFriend);
-SF_MEMORYPOOL_IMPLEMENT(BR::GameServer::PlayerTransFriendRemovedS2S);
-SF_MEMORYPOOL_IMPLEMENT(BR::GameServer::PlayerTransGetFriendList);
-
-SF_MEMORYPOOL_IMPLEMENT(BR::GameServer::PlayerTransGiveStamina);
-
-
 	
 namespace SF {
 namespace GameServer {

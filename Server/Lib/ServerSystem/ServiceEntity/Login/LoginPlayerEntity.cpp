@@ -38,9 +38,6 @@
 
 
 
-SF_MEMORYPOOL_IMPLEMENT(SF::Svr::LoginPlayerEntity);
-
-
 
 
 namespace SF {

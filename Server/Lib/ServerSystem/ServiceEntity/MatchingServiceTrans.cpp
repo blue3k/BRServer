@@ -38,9 +38,6 @@
 #include "Protocol/ServerService/GameInstanceManagerService.h"
 
 
-SF_MEMORYPOOL_IMPLEMENT(SF::Svr::MatchingTransGrabPlayer);
-SF_MEMORYPOOL_IMPLEMENT(SF::Svr::MatchingTransProcessMatchedItems);
-//SF_MEMORYPOOL_IMPLEMENT(SF::Svr::MatchingPartyTrans);
 
 
 

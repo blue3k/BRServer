@@ -29,7 +29,6 @@
 #include "GameInstance/GameInstanceEntity.h"
 
 
-SF_MEMORYPOOL_IMPLEMENT(SF::ConspiracyGameInstanceServer::ChattingLogSystem);
 
 
 namespace SF {

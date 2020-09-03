@@ -36,7 +36,6 @@
 #include "Table/conspiracy/LevelTbl.h"
 
 
-SF_MEMORYPOOL_IMPLEMENT(BR::GameServer::UserFriendSystem);
 
 
 namespace SF {

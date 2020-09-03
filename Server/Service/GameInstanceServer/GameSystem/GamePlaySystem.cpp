@@ -34,7 +34,6 @@
 #include "GameInstance/GameInstanceEntity.h"
 
 
-SF_MEMORYPOOL_IMPLEMENT(BR::ConspiracyGameInstanceServer::GamePlaySystem);
 
 
 namespace SF {

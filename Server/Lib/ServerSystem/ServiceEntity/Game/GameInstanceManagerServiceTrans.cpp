@@ -28,8 +28,6 @@
 
 
 
-SF_MEMORYPOOL_IMPLEMENT(SF::Svr::GameInstanceTransCreateGame);
-SF_MEMORYPOOL_IMPLEMENT(SF::Svr::GameInstanceTransGameDeleted);
 
 
 namespace SF {

@@ -67,36 +67,6 @@
 
 
 
-SF_MEMORYPOOL_IMPLEMENT(BR::GameServer::PlayerTransJoinGameServer);
-SF_MEMORYPOOL_IMPLEMENT(BR::GameServer::PlayerTransGetUserGamePlayerInfo);
-SF_MEMORYPOOL_IMPLEMENT(BR::GameServer::PlayerTransGetGamePlayerInfo);
-SF_MEMORYPOOL_IMPLEMENT(BR::GameServer::PlayerTransGetComplitionState);
-SF_MEMORYPOOL_IMPLEMENT(BR::GameServer::PlayerTransSetComplitionState);
-SF_MEMORYPOOL_IMPLEMENT(BR::GameServer::PlayerTransRegisterGCM);
-SF_MEMORYPOOL_IMPLEMENT(BR::GameServer::PlayerTransUnregisterGCM);
-
-SF_MEMORYPOOL_IMPLEMENT(BR::GameServer::PlayerTransGetNotificationList);
-SF_MEMORYPOOL_IMPLEMENT(BR::GameServer::PlayerTransDeleteNotification);
-SF_MEMORYPOOL_IMPLEMENT(BR::GameServer::PlayerTransAcceptNotification);
-SF_MEMORYPOOL_IMPLEMENT(BR::GameServer::PlayerTransNotifyS2S);
-SF_MEMORYPOOL_IMPLEMENT(BR::GameServer::PlayerTransSetNotificationRead);
-
-
-SF_MEMORYPOOL_IMPLEMENT(BR::GameServer::PlayerTransSetNickName);
-
-SF_MEMORYPOOL_IMPLEMENT(BR::GameServer::PlayerTransFindPlayerByEMail);
-SF_MEMORYPOOL_IMPLEMENT(BR::GameServer::PlayerTransFindPlayerByPlayerID);
-
-SF_MEMORYPOOL_IMPLEMENT(BR::GameServer::PlayerTransRequestPlayerStatusUpdate);
-SF_MEMORYPOOL_IMPLEMENT(BR::GameServer::PlayerTransRequestPlayerStatusUpdateS2S);
-SF_MEMORYPOOL_IMPLEMENT(BR::GameServer::PlayerTransNotifyPlayerStatusUpdatedS2S);
-
-SF_MEMORYPOOL_IMPLEMENT(BR::GameServer::PlayerTransGetRankingList);
-SF_MEMORYPOOL_IMPLEMENT(BR::GameServer::PlayerTransBuyShopItemPrepare);
-SF_MEMORYPOOL_IMPLEMENT(BR::GameServer::PlayerTransBuyShopItem);
-
-SF_MEMORYPOOL_IMPLEMENT(BR::GameServer::PlayerTransSetConfigPreset);
-SF_MEMORYPOOL_IMPLEMENT(BR::GameServer::PlayerTransGainGameResource);
 
 	
 namespace SF {

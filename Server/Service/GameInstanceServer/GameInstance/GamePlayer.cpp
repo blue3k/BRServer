@@ -35,7 +35,6 @@
 
 
 
-SF_MEMORYPOOL_IMPLEMENT(BR::ConspiracyGameInstanceServer::GamePlayer);
 
 
 

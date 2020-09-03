@@ -29,7 +29,6 @@
 
 
 
-SF_MEMORYPOOL_IMPLEMENT(SF::Svr::RelayInstanceTrans);
 
 
 

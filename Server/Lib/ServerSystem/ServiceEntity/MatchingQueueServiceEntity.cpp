@@ -33,8 +33,6 @@
 
 #include "ServiceEntity/MatchingServiceUtil.h"
 
-SF_MEMORYPOOL_IMPLEMENT(SF::Svr::MatchingQueueServiceEntity::QueueItem);
-
 
 namespace SF {
 namespace Svr {

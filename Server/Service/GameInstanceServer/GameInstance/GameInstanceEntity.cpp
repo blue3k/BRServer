@@ -48,7 +48,6 @@
 
 
 
-SF_MEMORYPOOL_IMPLEMENT(BR::ConspiracyGameInstanceServer::GameInstanceEntity);
 
 
 namespace SF {

@@ -30,7 +30,6 @@
 
 
 
-SF_MEMORYPOOL_IMPLEMENT(SF::Svr::PlayerManagerServiceEntity::PlayerTableItem);
 
 
 namespace SF {

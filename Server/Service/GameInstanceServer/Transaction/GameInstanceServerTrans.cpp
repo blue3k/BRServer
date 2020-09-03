@@ -33,7 +33,6 @@
 #include "GameInstanceServerTrans.h"
 
 
-SF_MEMORYPOOL_IMPLEMENT(BR::ConspiracyGameInstanceServer::GameInstanceServerStartProcess);
 
 
 namespace SF {

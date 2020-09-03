@@ -135,7 +135,6 @@ namespace Svr {
 	Result RelayServiceEntity::ProcessNewConnection()
 	{
 		FunctionContext hr;
-		//FunctionContext hr([]() {});
 		SharedPointerT<Net::Connection> pConn;
 
 		if (m_pNetPublic == nullptr)

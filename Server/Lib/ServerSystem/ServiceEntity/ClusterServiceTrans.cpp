@@ -30,16 +30,6 @@
 
 
 
-SF_MEMORYPOOL_IMPLEMENT(SF::Svr::ClusterInitializationTrans);
-SF_MEMORYPOOL_IMPLEMENT(SF::Svr::RequestDataSyncTrans);
-SF_MEMORYPOOL_IMPLEMENT(SF::Svr::ClusterMasterAssignedTrans);
-SF_MEMORYPOOL_IMPLEMENT(SF::Svr::ClusterMasterVoteTrans);
-SF_MEMORYPOOL_IMPLEMENT(SF::Svr::ClusterUpdateStatusTrans);
-SF_MEMORYPOOL_IMPLEMENT(SF::Svr::ClusterUpdateWorkloadTrans);
-SF_MEMORYPOOL_IMPLEMENT(SF::Svr::GetLowestWorkloadClusterMemberTrans);
-SF_MEMORYPOOL_IMPLEMENT(SF::Svr::ClusterNewServerServiceJoinedC2SEvtTrans);
-SF_MEMORYPOOL_IMPLEMENT(SF::Svr::ClusterNewServerServiceJoinedC2SEvtEntityTrans);
-
 
 
 namespace SF {

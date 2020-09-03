@@ -45,20 +45,6 @@
 #include "DB/LoginSessionQuery.h"
 
 
-SF_MEMORYPOOL_IMPLEMENT(SF::Svr::LoginPlayerTransLogin);
-
-SF_MEMORYPOOL_IMPLEMENT(SF::Svr::LoginPlayerTransLoginByFacebook);
-SF_MEMORYPOOL_IMPLEMENT(SF::Svr::LoginPlayerTransCreateRandomUser);
-
-SF_MEMORYPOOL_IMPLEMENT(SF::Svr::LoginPlayerTransCloseInstance);
-
-SF_MEMORYPOOL_IMPLEMENT(SF::Svr::LoginPlayerJoinedToGameServerTrans);
-SF_MEMORYPOOL_IMPLEMENT(SF::Svr::LoginPlayerKickPlayerTrans);
-
-SF_MEMORYPOOL_IMPLEMENT(SF::Svr::RankingUpdateScoreTrans);
-SF_MEMORYPOOL_IMPLEMENT(SF::Svr::LoginUserDataTestTrans);
-SF_MEMORYPOOL_IMPLEMENT(SF::Svr::LoginUserDebugPrintALLRankingTrans);
-
 
 	
 namespace SF {

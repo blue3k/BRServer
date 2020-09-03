@@ -54,19 +54,6 @@
 
 
 
-SF_MEMORYPOOL_IMPLEMENT(SF::Svr::PartyTransCloseInstance);
-//SF_MEMORYPOOL_IMPLEMENT(SF::Svr::PartyTransCreateParty);
-SF_MEMORYPOOL_IMPLEMENT(SF::Svr::PartyTransJoinParty);
-SF_MEMORYPOOL_IMPLEMENT(SF::Svr::PartyTransLeaveParty);
-SF_MEMORYPOOL_IMPLEMENT(SF::Svr::PartyTransKickPlayer);
-SF_MEMORYPOOL_IMPLEMENT(SF::Svr::PartyTransChatMessage);
-SF_MEMORYPOOL_IMPLEMENT(SF::Svr::PartyTransQuickChatMessage);
-SF_MEMORYPOOL_IMPLEMENT(SF::Svr::PartyTransStartGameMatchCmd);
-SF_MEMORYPOOL_IMPLEMENT(SF::Svr::PartyTransCancelGameMatchCmd);
-SF_MEMORYPOOL_IMPLEMENT(SF::Svr::PartyTransPartyMatchingCanceled);
-SF_MEMORYPOOL_IMPLEMENT(SF::Svr::PartyTransMatchingItemDequeued);
-SF_MEMORYPOOL_IMPLEMENT(SF::Svr::PartyTransPartyGameMatchedS2CEvt);
-
 
 
 namespace SF {

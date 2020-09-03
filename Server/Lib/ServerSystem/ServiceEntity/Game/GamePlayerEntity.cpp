@@ -35,7 +35,6 @@
 #include "DB/GameTransactionDB.h"
 
 
-SF_MEMORYPOOL_IMPLEMENT(SF::Svr::GamePlayerEntity);
 
 
 

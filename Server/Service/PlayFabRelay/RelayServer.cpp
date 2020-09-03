@@ -50,7 +50,7 @@ int main(int numArg, const char* argc[])
 
 	FunctionContext hr([&pServerInstance](Result result)
 	{
-		if (pServerInstance != nullptr)
+		if (!result && pServerInstance != nullptr)
 		{
 			pServerInstance->TerminateEntity();
 			pServerInstance->OnRemovedFromTaskManager(nullptr);

@@ -36,9 +36,6 @@
 
 #include "DB/RankingDB.h"
 
-SF_MEMORYPOOL_IMPLEMENT(SF::Svr::RankingServerAddPlayerTrans);
-SF_MEMORYPOOL_IMPLEMENT(SF::Svr::RankingServerUpdatePlayerScoreTrans);
-SF_MEMORYPOOL_IMPLEMENT(SF::Svr::RankingServerDebugPrintALLRankingTrans);
 
 
 

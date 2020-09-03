@@ -397,6 +397,9 @@ Proc_End:
 	{
 		FunctionContext hr([this](Result result) 
 		{
+			if (result)
+				return;
+
 			CloseNetPublic();
 			CloseNetPrivate();
 
@@ -573,6 +576,9 @@ Proc_End:
 	{
 		FunctionContext hr([this](Result result)
 		{
+			if (result)
+				return;
+
 			CloseNetPublic();
 			CloseNetPrivate();
 		});
@@ -618,7 +624,6 @@ Proc_End:
 	{
 		Result hr = ResultCode::SUCCESS;
 
-
 		// Terminate remote entity manager
 		Service::ServerEntityManager->Clear();
 		Service::ClusterManager->Clear();
@@ -631,8 +636,6 @@ Proc_End:
 			hr = m_pNetPrivate->HostClose();
 			m_pNetPrivate = nullptr;
 		}
-
-	//Proc_End:
 
 		return hr;
 	}

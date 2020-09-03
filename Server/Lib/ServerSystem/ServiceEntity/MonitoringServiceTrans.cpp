@@ -33,8 +33,6 @@
 #include "ServerSystem/PerformanceCounter/PerformanceCounterServer.h"
 
 
-SF_MEMORYPOOL_IMPLEMENT(SF::Svr::MonitoringTransGetInstanceList);
-SF_MEMORYPOOL_IMPLEMENT(SF::Svr::MonitoringTransRequestCounterValues);
 
 
 

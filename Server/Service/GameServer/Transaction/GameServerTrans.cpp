@@ -33,7 +33,6 @@
 #include "GameServerTrans.h"
 
 
-SF_MEMORYPOOL_IMPLEMENT(BR::GameServer::GameServerStartProcess);
 
 
 namespace SF {
@@ -59,14 +58,18 @@ namespace GameServer {
 
 	Result GameServerStartProcess::OnTimer(Svr::TransactionResult* pRes)
 	{
-		Result hr = ResultCode::SUCCESS;
+		SF::FunctionContext hr([this](Result hr)
+			{
+				if (!hr)
+					CloseTransaction(hr);
+			});
 
 		switch( m_Step )
 		{
 		case StartingStep::WaitEntityServer:
 			if( Service::ClusterManager->GetIsInitialized() )
 			{
-				svrChk( InitializeServices() );
+				svrChkReturn( InitializeServices() );
 				m_Step = StartingStep::WaitInitializeComponents;
 			}
 			SetTimer(DurationMS(500));
@@ -83,11 +86,6 @@ namespace GameServer {
 			break;
 		}
 
-	Proc_End:
-
-		if( !(hr) )
-			CloseTransaction(hr);
-
 		return hr;
 	}
 
@@ -95,9 +93,7 @@ namespace GameServer {
 	{
 		Result hr = ResultCode::SUCCESS;
 		
-		svrChk( Service::ClusterManager->InitializeNotInitializedClusterEntities() );
-
-	Proc_End:
+		svrChkReturn( Service::ClusterManager->InitializeNotInitializedClusterEntities() );
 
 		return hr;
 	}
@@ -107,12 +103,10 @@ namespace GameServer {
 	{
 		Result hr = ResultCode::SUCCESS;
 
-		svrChk( super::StartTransaction() );
+		svrChkReturn( super::StartTransaction() );
 
 		m_Step = StartingStep::WaitEntityServer;
 		SetTimer(DurationMS(500) );
-
-	Proc_End:
 
 		return hr;
 	}

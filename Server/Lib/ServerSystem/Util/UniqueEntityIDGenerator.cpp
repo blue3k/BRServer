@@ -13,7 +13,6 @@
 #include "Util/UniqueEntityIDGenerator.h"
 
 
-SF_MEMORYPOOL_IMPLEMENT(SF::UniqueEntityIDGenerator::Item);
 
 
 namespace SF {

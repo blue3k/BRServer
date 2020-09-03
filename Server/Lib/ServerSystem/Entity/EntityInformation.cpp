@@ -16,7 +16,6 @@
 #include "Protocol/ServerService/ServerService.h"
 #include "ServerEntity/ServerEntity.h"
 
-SF_MEMORYPOOL_IMPLEMENT(SF::Svr::UserEntityInformation);
 
 
 namespace SF {

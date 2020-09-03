@@ -35,7 +35,6 @@
 
 
 
-SF_MEMORYPOOL_IMPLEMENT(BR::GameServer::UserNotifySystem);
 
 
 namespace SF {

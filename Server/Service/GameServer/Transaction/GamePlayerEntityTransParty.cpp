@@ -50,26 +50,6 @@
 #include "DB/GameConspiracyQuery.h"
 
 
-SF_MEMORYPOOL_IMPLEMENT(BR::GameServer::PlayerTransGameMatchedS2SEvt);
-SF_MEMORYPOOL_IMPLEMENT(BR::GameServer::PlayerTransPartyQueuedGameMatchingS2CEvt);
-SF_MEMORYPOOL_IMPLEMENT(BR::GameServer::PlayerTransPartyCanceledGameMatchingS2CEvt);
-SF_MEMORYPOOL_IMPLEMENT(BR::GameServer::PlayerTransPartyMatchingItemDequeuedS2CEvt);
-
-SF_MEMORYPOOL_IMPLEMENT(BR::GameServer::PlayerTransCreateParty);
-SF_MEMORYPOOL_IMPLEMENT(BR::GameServer::PlayerTransJoinParty);
-SF_MEMORYPOOL_IMPLEMENT(BR::GameServer::PlayerTransPartyPlayerJoinedS2SEvt);
-SF_MEMORYPOOL_IMPLEMENT(BR::GameServer::PlayerTransPartyLeaderChangedS2SEvt);
-SF_MEMORYPOOL_IMPLEMENT(BR::GameServer::PlayerTransLeaveParty);
-SF_MEMORYPOOL_IMPLEMENT(BR::GameServer::PlayerTransPartyPlayerLeftS2SEvt);
-SF_MEMORYPOOL_IMPLEMENT(BR::GameServer::PlayerTransPartyKickPlayer);
-SF_MEMORYPOOL_IMPLEMENT(BR::GameServer::PlayerTransPartyPlayerKickedS2SEvt);
-SF_MEMORYPOOL_IMPLEMENT(BR::GameServer::PlayerTransPartyInvite);
-SF_MEMORYPOOL_IMPLEMENT(BR::GameServer::PlayerTransNotifyPartyInviteS2SEvt);
-SF_MEMORYPOOL_IMPLEMENT(BR::GameServer::PlayerTransPartyChatMessage);
-SF_MEMORYPOOL_IMPLEMENT(BR::GameServer::PlayerTransPartyChatMessageS2CEvt);
-SF_MEMORYPOOL_IMPLEMENT(BR::GameServer::PlayerTransPartyQuickChatMessage);
-SF_MEMORYPOOL_IMPLEMENT(BR::GameServer::PlayerTransPartyQuickChatMessageS2CEvt);
-
 
 
 

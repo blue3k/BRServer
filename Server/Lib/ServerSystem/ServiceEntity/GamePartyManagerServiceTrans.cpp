@@ -26,9 +26,6 @@
 
 
 
-SF_MEMORYPOOL_IMPLEMENT(SF::Svr::PartyManagerTransCreateParty);
-SF_MEMORYPOOL_IMPLEMENT(SF::Svr::PartyManagerTransPartyDeleted);
-
 
 namespace SF {
 namespace Svr {

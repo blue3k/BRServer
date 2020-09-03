@@ -31,7 +31,6 @@
 
 
 
-SF_MEMORYPOOL_IMPLEMENT(SF::Svr::GamePartyTrans);
 
 
 

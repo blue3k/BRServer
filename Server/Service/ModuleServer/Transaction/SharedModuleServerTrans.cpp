@@ -28,7 +28,6 @@
 #include "SharedModuleServerTrans.h"
 
 
-SF_MEMORYPOOL_IMPLEMENT(BR::SharedModuleServer::SharedModuleServerStartProcess);
 
 
 namespace SF {
@@ -54,15 +53,18 @@ namespace SharedModuleServer {
 
 	Result SharedModuleServerStartProcess::OnTimer(Svr::TransactionResult* pRes)
 	{
-		Result hr = ResultCode::SUCCESS;
-		//Svr::ServerEntity *pServer = nullptr;
+		SF::FunctionContext hr([this](Result hr)
+			{
+				if (!hr)
+					CloseTransaction(hr);
+			});
 
 		switch( m_Step )
 		{
 		case StartingStep::WaitEntityServer:
 			if( Service::ClusterManager->GetIsInitialized() )
 			{
-				svrChk( InitializeServices() );
+				svrChkReturn( InitializeServices() );
 				m_Step = StartingStep::WaitInitializeComponents;
 			}
 			SetTimer(DurationMS(500));
@@ -79,27 +81,14 @@ namespace SharedModuleServer {
 			break;
 		}
 
-	Proc_End:
-
-		if( !(hr) )
-			CloseTransaction(hr);
-
 		return hr;
 	}
 
 	Result SharedModuleServerStartProcess::InitializeServices()
 	{
 		Result hr = ResultCode::SUCCESS;
-		//uint componentID = 0;
 		
-		svrChk( Service::ClusterManager->InitializeNotInitializedClusterEntities() );
-
-		
-		// Initialize all cluster entities which is not initialized by ClusterManagerServiceEntity
-
-
-
-	Proc_End:
+		svrChkReturn( Service::ClusterManager->InitializeNotInitializedClusterEntities() );
 
 		return hr;
 	}
@@ -109,14 +98,10 @@ namespace SharedModuleServer {
 	{
 		Result hr = ResultCode::SUCCESS;
 
-		svrChk(super::StartTransaction() );
+		svrChkReturn(super::StartTransaction() );
 
 		m_Step = StartingStep::WaitEntityServer;
 		SetTimer(DurationMS(500) );
-
-	Proc_End:
-
-		return hr;
 	}
 
 	Result SharedModuleServerStartProcess::OnCloseTransaction( Result hrRes )

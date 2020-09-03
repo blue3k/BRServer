@@ -255,6 +255,9 @@ namespace Svr {
 		auto pRawUDP = new(GetSystemHeap()) Net::RawUDP();
 
 		FunctionContext hr([&pRawUDP](Result result) {
+			if (result)
+				return;
+
 			if (pRawUDP != nullptr)
 			{
 				pRawUDP->TerminateNet();

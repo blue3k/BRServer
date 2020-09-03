@@ -28,8 +28,6 @@
 #include "ServiceEntity/Chat/ChatChannelEntityTrans.h"
 
 
-SF_MEMORYPOOL_IMPLEMENT(SF::Svr::ChatChannelPlayer);
-SF_MEMORYPOOL_IMPLEMENT(SF::Svr::ChatChannelEntity);
 
 
 namespace SF {

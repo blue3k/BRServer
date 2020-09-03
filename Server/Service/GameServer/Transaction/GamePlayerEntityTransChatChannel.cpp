@@ -50,20 +50,6 @@
 #include "DB/GameConspiracyQuery.h"
 
 
-SF_MEMORYPOOL_IMPLEMENT(BR::GameServer::PlayerTransCreateOrJoinChatChannel);
-SF_MEMORYPOOL_IMPLEMENT(BR::GameServer::PlayerTransJoinChatChannel);
-SF_MEMORYPOOL_IMPLEMENT(BR::GameServer::PlayerTransChatChannelPlayerJoinedS2SEvt);
-SF_MEMORYPOOL_IMPLEMENT(BR::GameServer::PlayerTransChatChannelLeaderChangedS2SEvt);
-SF_MEMORYPOOL_IMPLEMENT(BR::GameServer::PlayerTransLeaveChatChannel);
-SF_MEMORYPOOL_IMPLEMENT(BR::GameServer::PlayerTransChatChannelPlayerLeftS2SEvt);
-SF_MEMORYPOOL_IMPLEMENT(BR::GameServer::PlayerTransChatChannelKickPlayer);
-SF_MEMORYPOOL_IMPLEMENT(BR::GameServer::PlayerTransChatChannelPlayerKickedS2SEvt);
-SF_MEMORYPOOL_IMPLEMENT(BR::GameServer::PlayerTransChatChannelChatMessage);
-SF_MEMORYPOOL_IMPLEMENT(BR::GameServer::PlayerTransChatChannelChatMessageS2CEvt);
-
-
-
-
 namespace SF {
 namespace GameServer {
 

@@ -26,9 +26,6 @@
 #include "zlib.h"
 
 
-SF_MEMORYPOOL_IMPLEMENT(SF::Svr::GCMHttpExternalTransaction);
-SF_MEMORYPOOL_IMPLEMENT(SF::Svr::ExternalTransactionGoogleAndroidReceiptCheck);
-SF_MEMORYPOOL_IMPLEMENT(SF::Svr::ExternalTransactionIOSRecepitCheck);
 
 
 namespace SF {

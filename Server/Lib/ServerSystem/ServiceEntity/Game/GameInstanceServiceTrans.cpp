@@ -30,7 +30,6 @@
 #include "ServiceEntity/Game/GameInstanceServiceEntity.h"
 #include "GameInstanceServiceTrans.h"
 
-SF_MEMORYPOOL_IMPLEMENT(SF::Svr::GameInstanceTrans);
 
 
 
