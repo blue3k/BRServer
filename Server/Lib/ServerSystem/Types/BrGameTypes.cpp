@@ -54,7 +54,7 @@ namespace SF
 		return hr;
     }
 
-	
+
     GameLogGameStateChange::GameLogGameStateChange(TimeStampSec timeStamp)
         :GameLogItem(GameLogType::GameStateChange,timeStamp,sizeof(GameLogGameStateChange))
     {
@@ -65,7 +65,7 @@ namespace SF
         GameState = gameState;
     }
 
-	
+
     GameLogVote::GameLogVote(TimeStampSec timeStamp, uint numVoter)
 		: GameLogItem(GameLogType::Vote,timeStamp,sizeof(GameLogVote) + sizeof(VoteInfo)*std::min((uint)GameConst::MAX_GAMEPLAYER,numVoter-1))
 		,NumberOfVoter((decltype(NumberOfVoter))numVoter)
@@ -108,7 +108,7 @@ namespace SF
     }
 
 
-	
+
     GameLogVoteResult::GameLogVoteResult(TimeStampSec timeStamp, uint numRankers)
 		: GameLogItem(GameLogType::VoteResult,timeStamp,sizeof(GameLogVoteResult) + sizeof(PlayerID)*std::min((uint)GameConst::MAX_GAMEPLAYER,numRankers-1))
 		, NumberOfRanker(numRankers)
@@ -124,7 +124,7 @@ namespace SF
         memcpy( VotedRankers, ranker, sizeof(PlayerID)*numRankers );
     }
 
-	
+
     GameLogPlayerKilled::GameLogPlayerKilled(TimeStampSec timeStamp)
 		: GameLogItem(GameLogType::PlayerKilled,timeStamp,sizeof(GameLogPlayerKilled))
     {

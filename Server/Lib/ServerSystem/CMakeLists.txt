@@ -16,7 +16,16 @@ set(BRSERVERSYSTEM_LIB_FILES
     Server/BrServer.inl
     Server/BrServerUtil.inl
     ServiceEntity/ClusteredServiceEntity.inl
-    ServiceEntity/GamePartyEntity.inl
+    ServiceEntity/Party/GamePartyEntity.inl
+    ServiceEntity/Party/GamePartyEntity.h
+    ServiceEntity/Party/GamePartyEntityTrans.h
+    ServiceEntity/Party/GamePartyManagerServiceEntity.h
+    ServiceEntity/Party/GamePartyManagerServiceTrans.h
+    ServiceEntity/Party/GamePartyTransaction.h
+    ServiceEntity/Party/GamePartyEntity.cpp
+    ServiceEntity/Party/GamePartyEntityTrans.cpp
+    ServiceEntity/Party/GamePartyManagerServiceEntity.cpp
+    ServiceEntity/Party/GamePartyManagerServiceTrans.cpp
     ServiceEntity/Game/GameInstanceEntity.inl
     ServiceEntity/Game/GameInstancePlayer.inl
     ServiceEntity/Game/GamePlayerEntity.inl
@@ -80,11 +89,6 @@ set(BRSERVERSYSTEM_LIB_FILES
     ServiceEntity/ClusteredServiceEntity.h
     ServiceEntity/ClusterManagerServiceEntity.h
     ServiceEntity/ClusterServiceTrans.h
-    ServiceEntity/GamePartyEntity.h
-    ServiceEntity/GamePartyEntityTrans.h
-    ServiceEntity/GamePartyManagerServiceEntity.h
-    ServiceEntity/GamePartyManagerServiceTrans.h
-    ServiceEntity/GamePartyTransaction.h
     ServiceEntity/Game/PlayerManagerServiceEntity.h
     ServiceEntity/Game/GameInstanceEntity.h
     ServiceEntity/Game/GameInstanceManagerServiceEntity.h
@@ -180,10 +184,6 @@ set(BRSERVERSYSTEM_LIB_FILES
     ServiceEntity/ClusteredServiceEntity.cpp
     ServiceEntity/ClusterManagerServiceEntity.cpp
     ServiceEntity/ClusterServiceTrans.cpp
-    ServiceEntity/GamePartyEntity.cpp
-    ServiceEntity/GamePartyEntityTrans.cpp
-    ServiceEntity/GamePartyManagerServiceEntity.cpp
-    ServiceEntity/GamePartyManagerServiceTrans.cpp
     ServiceEntity/Game/PlayerManagerServiceEntity.cpp
     ServiceEntity/Game/GameInstanceEntity.cpp
     ServiceEntity/Game/GameInstanceManagerServiceEntity.cpp
