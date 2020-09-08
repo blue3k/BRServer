@@ -276,7 +276,7 @@ namespace Svr {
 	}
 
 
-	Result ClusterServiceInfo_Impl::AddServiceInfo(const char* nodeName, FixedString nodeNameCrc)
+	Result ClusterServiceInfo_Impl::AddServiceInfo(const char* nodeName, StringCrc64 nodeNameCrc)
 	{
 		Result hr;
 		String nodePath(GetHeap());
@@ -346,7 +346,7 @@ namespace Svr {
 			return;
 		}
 
-		SortedSet<FixedString> listAlreadyHave(GetHeap(), static_cast<int>(Services.size()));
+		SortedSet<StringCrc64> listAlreadyHave(GetHeap(), static_cast<int>(Services.size()));
 		for (auto itService : Services)
 		{
 			listAlreadyHave.Insert(itService->GetNodeNameCrc());
@@ -355,7 +355,7 @@ namespace Svr {
 		// This should be getchildren list because that's the only thing have string list result
 		for (auto& nodeName : pTask.ResultStrings)
 		{
-			FixedString nodeNameCrc = (const char*)nodeName;
+			StringCrc64 nodeNameCrc = (const char*)nodeName;
 			ServerServiceInformation* pFound = nullptr;
 			Services.Find(nodeNameCrc, pFound);
 			if (pFound != nullptr)
@@ -433,7 +433,7 @@ namespace Svr {
 	//	Entity informations
 	//
 
-	constexpr FixedString ClusterManagerServiceEntity::TypeName;
+	constexpr StringCrc64 ClusterManagerServiceEntity::TypeName;
 
 
 	ClusterManagerServiceEntity::ClusterManagerServiceEntity()

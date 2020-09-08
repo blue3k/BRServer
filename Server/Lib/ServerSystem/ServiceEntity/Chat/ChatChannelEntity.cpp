@@ -40,7 +40,7 @@ namespace Svr {
 	//
 
 
-	ChatChannelEntity::ChatChannelEntity(const FixedString& chatChannelName)
+	ChatChannelEntity::ChatChannelEntity(const StringCrc64& chatChannelName)
 		: MasterEntity(64, 64)
 		, m_ChatChannelPlayerByUID(GetHeap())
 		, m_ChatChannelName(chatChannelName)

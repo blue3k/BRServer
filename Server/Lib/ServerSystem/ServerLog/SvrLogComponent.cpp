@@ -50,7 +50,7 @@ namespace SF
 			LoadTraceConfig();
 		}
 
-		void SetMask(FixedString32 maskName, uint32_t maskValue)
+		void SetMask(StringCrc32 maskName, uint32_t maskValue)
 		{
 			switch (maskName)
 			{
@@ -69,7 +69,7 @@ namespace SF
 			}
 		}
 
-		void SetMask(FixedString32 maskName, FixedString32 channelName)
+		void SetMask(StringCrc32 maskName, StringCrc32 channelName)
 		{
 			uint32_t mask = 0;
 			switch (channelName)
@@ -225,7 +225,7 @@ namespace SF
 						continue; // invalid line
 				}
 
-				FixedString32 nameCrc = nameStart;
+				StringCrc32 nameCrc = nameStart;
 				SetMask(nameCrc, (uint)0);
 
 				auto curValueStart = SkipSpace(endChar + 1);

@@ -30,7 +30,7 @@ namespace SF
 	{
 	public:
 
-		static constexpr FixedString TypeName = "SFServerNetComponent";
+		static constexpr StringCrc64 TypeName = "SFServerNetComponent";
 
 	private:
 
@@ -45,7 +45,7 @@ namespace SF
 		// Heap
 		IHeap& GetHeap() { return m_Heap; }
 
-		virtual const FixedString& GetTypeName() override { return TypeName; }
+		virtual const StringCrc64& GetTypeName() override { return TypeName; }
 
 		// Initialize component
 		virtual Result InitializeComponent() override;

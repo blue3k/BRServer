@@ -30,6 +30,27 @@ set(BRSERVERSYSTEM_LIB_FILES
     ServiceEntity/Game/GameInstancePlayer.inl
     ServiceEntity/Game/GamePlayerEntity.inl
     ServiceEntity/Game/GameSystem.inl
+    ServiceEntity/Game/PlayerManagerServiceEntity.h
+    ServiceEntity/Game/GameInstanceEntity.h
+    ServiceEntity/Game/GameInstanceManagerServiceEntity.h
+    ServiceEntity/Game/GameInstanceManagerServiceTrans.h
+    ServiceEntity/Game/GameInstancePlayer.h
+    ServiceEntity/Game/GameInstanceServiceEntity.h
+    ServiceEntity/Game/GameInstanceServiceTrans.h
+    ServiceEntity/Game/GamePlayerEntity.h
+    ServiceEntity/Game/GameServiceEntity.h
+    ServiceEntity/Game/GameServiceTrans.h
+    ServiceEntity/Game/GameSystem.h
+    ServiceEntity/Game/PlayerManagerServiceEntity.cpp
+    ServiceEntity/Game/GameInstanceEntity.cpp
+    ServiceEntity/Game/GameInstanceManagerServiceEntity.cpp
+    ServiceEntity/Game/GameInstanceManagerServiceTrans.cpp
+    ServiceEntity/Game/GameInstancePlayer.cpp
+    ServiceEntity/Game/GameInstanceServiceEntity.cpp
+    ServiceEntity/Game/GameInstanceServiceTrans.cpp
+    ServiceEntity/Game/GamePlayerEntity.cpp
+    ServiceEntity/Game/GameServiceEntity.cpp
+    ServiceEntity/Game/GameServiceTrans.cpp
     Task/ServerTask.inl
     Task/ServerTaskEvent.inl
     Task/ServerTaskManager.inl
@@ -81,25 +102,24 @@ set(BRSERVERSYSTEM_LIB_FILES
     Server/BrServerUtil.h
     Server/BrService.h
     Server/ParameterSetting.h
+    ServiceEntity/Character/CharacterData.h
+    ServiceEntity/Character/CharacterDataTransaction.h
+    ServiceEntity/Character/CharacterDataManagerServiceTrans.h
+    ServiceEntity/Character/CharacterDataManagerServiceTrans.cpp
+    ServiceEntity/Character/CharacterDataManagerServiceEntity.h
+    ServiceEntity/Character/CharacterDataManagerServiceEntity.cpp
     ServiceEntity/Chat/ChatChannelEntity.h
     ServiceEntity/Chat/ChatChannelEntityTrans.h
     ServiceEntity/Chat/ChatChannelManagerServiceEntity.h
     ServiceEntity/Chat/ChatChannelManagerServiceTrans.h
     ServiceEntity/Chat/ChatChannelTransaction.h
+    ServiceEntity/Chat/ChatChannelEntity.cpp
+    ServiceEntity/Chat/ChatChannelEntityTrans.cpp
+    ServiceEntity/Chat/ChatChannelManagerServiceEntity.cpp
+    ServiceEntity/Chat/ChatChannelManagerServiceTrans.cpp
     ServiceEntity/ClusteredServiceEntity.h
     ServiceEntity/ClusterManagerServiceEntity.h
     ServiceEntity/ClusterServiceTrans.h
-    ServiceEntity/Game/PlayerManagerServiceEntity.h
-    ServiceEntity/Game/GameInstanceEntity.h
-    ServiceEntity/Game/GameInstanceManagerServiceEntity.h
-    ServiceEntity/Game/GameInstanceManagerServiceTrans.h
-    ServiceEntity/Game/GameInstancePlayer.h
-    ServiceEntity/Game/GameInstanceServiceEntity.h
-    ServiceEntity/Game/GameInstanceServiceTrans.h
-    ServiceEntity/Game/GamePlayerEntity.h
-    ServiceEntity/Game/GameServiceEntity.h
-    ServiceEntity/Game/GameServiceTrans.h
-    ServiceEntity/Game/GameSystem.h
     ServiceEntity/Login/LoginPlayerEntity.h
     ServiceEntity/Login/LoginPlayerEntityTrans.h
     ServiceEntity/Login/LoginServiceEntity.h
@@ -177,23 +197,9 @@ set(BRSERVERSYSTEM_LIB_FILES
     Server/BRService.linux.cpp
     Server/BRService.win64.cpp
     Server/ParameterSetting.cpp
-    ServiceEntity/Chat/ChatChannelEntity.cpp
-    ServiceEntity/Chat/ChatChannelEntityTrans.cpp
-    ServiceEntity/Chat/ChatChannelManagerServiceEntity.cpp
-    ServiceEntity/Chat/ChatChannelManagerServiceTrans.cpp
     ServiceEntity/ClusteredServiceEntity.cpp
     ServiceEntity/ClusterManagerServiceEntity.cpp
     ServiceEntity/ClusterServiceTrans.cpp
-    ServiceEntity/Game/PlayerManagerServiceEntity.cpp
-    ServiceEntity/Game/GameInstanceEntity.cpp
-    ServiceEntity/Game/GameInstanceManagerServiceEntity.cpp
-    ServiceEntity/Game/GameInstanceManagerServiceTrans.cpp
-    ServiceEntity/Game/GameInstancePlayer.cpp
-    ServiceEntity/Game/GameInstanceServiceEntity.cpp
-    ServiceEntity/Game/GameInstanceServiceTrans.cpp
-    ServiceEntity/Game/GamePlayerEntity.cpp
-    ServiceEntity/Game/GameServiceEntity.cpp
-    ServiceEntity/Game/GameServiceTrans.cpp
     ServiceEntity/Login/LoginPlayerEntity.cpp
     ServiceEntity/Login/LoginPlayerEntityTrans.cpp
     ServiceEntity/Login/LoginServiceEntity.cpp

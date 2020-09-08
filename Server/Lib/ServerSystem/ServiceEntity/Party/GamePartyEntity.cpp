@@ -23,9 +23,9 @@
 #include "Protocol/Policy/GamePartyNetPolicy.h"
 
 #include "Transaction/MessageRoute.h"
-#include "ServiceEntity/GamePartyEntity.h"
+#include "ServiceEntity/Party/GamePartyEntity.h"
 
-#include "ServiceEntity/GamePartyEntityTrans.h"
+#include "ServiceEntity/Party/GamePartyEntityTrans.h"
 
 
 

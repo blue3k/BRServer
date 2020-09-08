@@ -136,7 +136,7 @@ namespace SF {
 	// update process running status
 	void ProcessManager::UpdateProcessStatus()
 	{
-		StaticArray<FixedString, 128> removed(GetHeap());
+		StaticArray<StringCrc64, 128> removed(GetHeap());
 
 		for (auto& itProc : m_ProcesseInfos)
 		{

@@ -26,7 +26,7 @@ namespace SF {
 namespace Svr {
 
 
-	constexpr FixedString EntityTable::TypeName;
+	constexpr StringCrc64 EntityTable::TypeName;
 
 	EntityTable::EntityTable()
 		: LibraryComponent("EntityTable")

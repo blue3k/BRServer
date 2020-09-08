@@ -31,7 +31,7 @@ namespace SF
 	class ServerConfigComponent : public LibraryComponent
 	{
 	public:
-		static constexpr FixedString TypeName = "ServerConfig";
+		static constexpr StringCrc64 TypeName = "ServerConfig";
 
 	private:
 
@@ -50,7 +50,7 @@ namespace SF
 
 
 
-		virtual const FixedString& GetTypeName() override { return TypeName; }
+		virtual const StringCrc64& GetTypeName() override { return TypeName; }
 
 		// Initialize component
 		virtual Result InitializeComponent() override;

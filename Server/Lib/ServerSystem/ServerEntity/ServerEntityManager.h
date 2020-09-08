@@ -42,7 +42,7 @@ namespace Svr
 	{
 	public:
 
-		static constexpr FixedString TypeName = "ServerEntityManager";
+		static constexpr StringCrc64 TypeName = "ServerEntityManager";
 
 		typedef HashTable2<ServerID, ServerEntity* > ServerIDMap;
 

@@ -80,9 +80,9 @@ namespace Svr {
 		//
 
 		// Add new Entity
-		virtual Result CreateChatChannel( const FixedString& name, const PlayerInformation& creator, EntityUID playerUID, ServerEntity *pServerEntity, EntityUID &ChatChannelUID );
+		virtual Result CreateChatChannel( const StringCrc64& name, const PlayerInformation& creator, EntityUID playerUID, ServerEntity *pServerEntity, EntityUID &ChatChannelUID );
 
-		virtual Result FindChatChannel(const FixedString& name, EntityUID &ChatChannelUID);
+		virtual Result FindChatChannel(const StringCrc64& name, EntityUID &ChatChannelUID);
 
 		// Called when a game ChatChannel is deleted
 		virtual Result FreeChatChannel( EntityUID ChatChannelUID );

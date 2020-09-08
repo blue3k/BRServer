@@ -37,7 +37,7 @@ namespace Svr {
 	//	Game entity manager
 	//
 
-	constexpr FixedString EntityManager::TypeName;
+	constexpr StringCrc64 EntityManager::TypeName;
 
 
 	// Constructor/Destructor

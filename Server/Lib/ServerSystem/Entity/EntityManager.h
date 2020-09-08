@@ -35,7 +35,7 @@ namespace Svr {
 	class EntityManager : public TickTaskManager, public EntityManagerService
 	{
 	public:
-		static constexpr FixedString TypeName = "EntityManager";
+		static constexpr StringCrc64 TypeName = "EntityManager";
 
 
 	private:

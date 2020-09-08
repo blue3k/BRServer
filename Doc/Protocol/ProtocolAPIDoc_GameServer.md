@@ -1,6 +1,6 @@
 ﻿***
  
- CopyRight (c) 2019 StormForge
+ CopyRight (c) 2020 StormForge
  
  Description : GameServer Message Protocol API Document
 

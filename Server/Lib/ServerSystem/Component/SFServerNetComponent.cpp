@@ -11,7 +11,7 @@
 
 
 #include "ServerSystemPCH.h"
-#include "String/SFFixedString32.h"
+#include "String/SFStringCrc32.h"
 #include "SFEngine.h"
 #include "Service/ServerService.h"
 #include "Component/SFServerNetComponent.h"

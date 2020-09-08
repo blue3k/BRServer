@@ -59,7 +59,7 @@ namespace Svr {
 
 		// Cluster ID
 		ClusterID m_ClusterID;
-		FixedString m_ClusterName;
+		StringCrc64 m_ClusterName;
 
 		bool m_ActivelyConnectRemote = false;
 
@@ -110,8 +110,8 @@ namespace Svr {
 		ClusterID GetClusterID() const { return m_ClusterID; }
 		//void SetClusterID(ClusterID value) { m_ClusterID = value; }
 
-		FixedString GetClusterName() const { return m_ClusterName; }
-		//void SetClusterName(FixedString value) { m_ClusterName = value; }
+		StringCrc64 GetClusterName() const { return m_ClusterName; }
+		//void SetClusterName(StringCrc64 value) { m_ClusterName = value; }
 
 		ClusterType GetClusterType() const { return m_ClusterType; }
 		void SetClusterType(ClusterType value) { m_ClusterType = value; }

@@ -13,7 +13,7 @@
 
 #include "SFTypedefs.h"
 #include "Object/SFSharedPointer.h"
-#include "String/SFFixedStringDB.h"
+#include "String/SFStringCrcDB.h"
 
 
 

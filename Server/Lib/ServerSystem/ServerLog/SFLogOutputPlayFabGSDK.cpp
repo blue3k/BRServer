@@ -27,7 +27,7 @@ namespace SF {
 
 
 
-	constexpr FixedString LogOutputPlayFabGSDKComponent::TypeName;
+	constexpr StringCrc64 LogOutputPlayFabGSDKComponent::TypeName;
 
 	LogOutputPlayFabGSDKComponent::LogOutputPlayFabGSDKComponent(const LogChannelMask& logMask)
 		: LibraryComponent(TypeName)

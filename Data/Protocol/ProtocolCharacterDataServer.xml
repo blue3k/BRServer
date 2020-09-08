@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Protocols xmlns="http://www.StormForge.com/XMLProtocol" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.StormForge.com/XMLProtocol ../../../StormForge/Engine/Data/Protocol/ProtocolDef.xsd">
+	<ProtocolGroup Name="CharacterDataServer" GenParameterRouteContext="true" IsMobile="false" IsServer="true" Desc="CharacterData Server Protocol">
+
+    <!-- ============================  Character Data Server ============================================ -->
+
+    <Command Name="AddCharacterData" Reliable="true" Crypto="No" Trace="Debug1" Desc="Add character data to the account">
+		  <Cmd>
+			<Params Type="PlayerID" Name="PlayerID" Desc="Owner PlayerID"/>
+			<Params Type="StringCrc32" Name="CharacterName" Desc="CharacterName"/> 
+			<Params Type="NamedValue" Name="Attributes" IsArray="true" Desc="Character attributes"/> 
+		</Cmd>
+		  <Res>
+	  	</Res>
+	  </Command>
+
+    <Command Name="RemoveCharacterData" Reliable="true" Crypto="No" Trace="Debug1" Desc="Remove character data">
+		<Cmd>
+			<Params Type="PlayerID" Name="PlayerID" Desc="Owner PlayerID"/>
+			<Params Type="StringCrc32" Name="CharacterName" Desc="CharacterName"/> 
+		</Cmd>
+    	<Res>
+	  	</Res>
+	  </Command>
+
+    <Command Name="GetCharacterData" Reliable="true" Crypto="No" Trace="Debug1" Desc="Get character data">
+		<Cmd>
+			<Params Type="PlayerID" Name="PlayerID" Desc="Owner PlayerID"/>
+			<Params Type="StringCrc32" Name="CharacterName" Desc="CharacterName"/> 
+		</Cmd>
+		  <Res>
+			  <Params Type="StringCrc32" Name="CharacterName" Desc="CharacterName"/> 
+              <Params Type="NamedValue" Name="Attributes" IsArray="true" Desc="Character attributes"/> 
+		</Res>
+	</Command>
+
+    <Command Name="SetAttribute" Reliable="true" Crypto="No" Trace="Debug1" Desc="Set(add or update) attribute value">
+      <Cmd>
+			<Params Type="PlayerID" Name="PlayerID" Desc="Owner PlayerID"/>
+			<Params Type="StringCrc32" Name="CharacterName" Desc="CharacterName"/> 
+            <Params Type="NamedValue" Name="Attributes" IsArray="true" Desc="Character attributes"/> 
+      </Cmd>
+      <Res>
+      </Res>
+    </Command>
+
+    <Command Name="RemoveAttribute" Reliable="true" Crypto="No" Trace="Debug1" Desc="Remove an attribute value">
+      <Cmd>
+			<Params Type="PlayerID" Name="PlayerID" Desc="Owner PlayerID"/>
+			<Params Type="StringCrc32" Name="CharacterName" Desc="CharacterName"/> 
+            <Params Type="StringCrc32" Name="AttributeNames" IsArray="true" Desc="attributes to remove"/>
+      </Cmd>
+      <Res>
+      </Res>
+    </Command>
+
+    <Command Name="AttributeValueAdd" Reliable="true" Crypto="No" Trace="Debug1" Desc="Attribute add">
+      <Cmd>
+			<Params Type="PlayerID" Name="PlayerID" Desc="Owner PlayerID"/>
+			<Params Type="StringCrc32" Name="CharacterName" Desc="CharacterName"/> 
+            <Params Type="StringCrc32" Name="AttributeName" Desc="attributes name"/>
+	        <Params Type="FLOAT" Name="Value" Desc="value to add"/>
+      </Cmd>
+      <Res>
+      </Res>
+    </Command>
+
+    <Command Name="AttributeValueSub" Reliable="true" Crypto="No" Trace="Debug1" Desc="Attribute subtract">
+      <Cmd>
+			<Params Type="PlayerID" Name="PlayerID" Desc="Owner PlayerID"/>
+			<Params Type="StringCrc32" Name="CharacterName" Desc="CharacterName"/> 
+            <Params Type="StringCrc32" Name="AttributeName" Desc="attributes name"/>
+	        <Params Type="FLOAT" Name="Value" Desc="value to subtract"/>
+      </Cmd>
+      <Res>
+      </Res>
+    </Command>
+
+    <Command Name="AttributeValueCAS" Reliable="true" Crypto="No" Trace="Debug1" Desc="Compare and exchange attribute value">
+      <Cmd>
+			<Params Type="PlayerID" Name="PlayerID" Desc="Owner PlayerID"/>
+			<Params Type="StringCrc32" Name="CharacterName" Desc="CharacterName"/> 
+            <Params Type="StringCrc32" Name="AttributeName" Desc="attributes name"/>
+		    <Params Type="StringCrc32" Name="AttributeType" Desc="attributes type"/>
+		    <Params Type="uint64" Name="Expected" Desc="Expected Attribute value"/>
+	        <Params Type="uint64" Name="NewValue" Desc="Attribute value to set"/>
+      </Cmd>
+      <Res>
+      </Res>
+    </Command>
+
+
+    <!-- =============================  ======================================= -->
+
+	</ProtocolGroup>
+</Protocols>

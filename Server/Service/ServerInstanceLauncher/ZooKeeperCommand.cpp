@@ -121,10 +121,10 @@ namespace ServerInstanceLauncher {
 			//assert(false);
 			return;
 		}
-		DynamicArray<FixedString> listNewCommands(GetHeap());
+		DynamicArray<StringCrc64> listNewCommands(GetHeap());
 		listNewCommands.reserve(static_cast<int>(m_CommandNodes.size()));
 
-		SortedSet<FixedString> listAlreadyHave(GetHeap());
+		SortedSet<StringCrc64> listAlreadyHave(GetHeap());
 		for (auto itCommand : m_CommandNodes)
 		{
 			listAlreadyHave.Insert(itCommand);
@@ -133,7 +133,7 @@ namespace ServerInstanceLauncher {
 		// This should be get children list because that's the only thing have string list result
 		for (auto& nodeName : pTask.ResultStrings)
 		{
-			FixedString nodeNameCrc = Service::StringDB->AddNGetString(nodeName);
+			StringCrc64 nodeNameCrc = Service::StringDB->AddNGetString(nodeName);
 			
 			if (m_CommandNodes.Find(nodeNameCrc))
 			{

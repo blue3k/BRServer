@@ -49,7 +49,8 @@
 
 #include "ServiceEntity/MatchingQueueServiceEntity.h"
 #include "ServiceEntity/MatchingServiceEntity.h"
-#include "ServiceEntity/GamePartyManagerServiceEntity.h"
+#include "ServiceEntity/Party/GamePartyManagerServiceEntity.h"
+#include "ServiceEntity/Character/GameCharacterDataManagerServiceEntity.h"
 #include "ServiceEntity/RankingServiceEntity.h"
 #include "ServiceEntity/MonitoringServiceEntity.h"
 #include "ServiceEntity/Relay/RelayServiceEntity.h"
@@ -736,7 +737,7 @@ Proc_End:
 	{
 		Result hr = ResultCode::SUCCESS;
 		char strRelativePath[1024];
-		FixedString32 moduleName = (const char*)module->ModuleName;
+		StringCrc32 moduleName = (const char*)module->ModuleName;
 		svrChkPtr(module);
 
 		switch (moduleName)
@@ -779,6 +780,10 @@ Proc_End:
 
 		case "ModGamePartyManager"_crc:
 			svrChk(AddServiceEntityComponent<Svr::GamePartyManagerServiceEntity>(GetServerGameID()));
+			break;
+
+		case "ModGameCharacterDataManager"_crc:
+			svrChk(AddServiceEntityComponent<Svr::GameCharacterDataManagerServiceEntity>(GetServerGameID()));
 			break;
 
 		case "ModMatching_Game_4"_crc:

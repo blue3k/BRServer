@@ -89,7 +89,7 @@ namespace ServerInstanceLauncher {
 		svrChk(RegisterRunningServices());
 
 
-		m_CommandWatcher.SetNewCommandHandler( [this](const FixedString& command)
+		m_CommandWatcher.SetNewCommandHandler( [this](const StringCrc64& command)
 		{
 			m_NewCommands.Enqueue(command);
 		});
@@ -182,7 +182,7 @@ namespace ServerInstanceLauncher {
 	{
 		Result hr;
 
-		FixedString commandNodeNameCrc;
+		StringCrc64 commandNodeNameCrc;
 
 		while (m_NewCommands.Dequeue(commandNodeNameCrc))
 		{
@@ -209,7 +209,7 @@ namespace ServerInstanceLauncher {
 
 			auto commandName = commandValue.get("Command", "");
 
-			FixedString commandNameCrc = commandName.asCString();
+			StringCrc64 commandNameCrc = commandName.asCString();
 			switch (commandNameCrc)
 			{
 			case "ReloadConfig"_hash64:

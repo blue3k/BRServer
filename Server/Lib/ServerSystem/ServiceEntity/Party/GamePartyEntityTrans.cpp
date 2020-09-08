@@ -37,7 +37,7 @@
 #include "Protocol/ServerService/GamePartyManagerService.h"
 #include "Protocol/ServerService/GameInstanceManagerService.h"
 
-#include "ServiceEntity/GamePartyManagerServiceEntity.h"
+#include "ServiceEntity/Party/GamePartyManagerServiceEntity.h"
 #include "ServiceEntity/Game/GameInstanceManagerServiceEntity.h"
 
 
@@ -45,8 +45,8 @@
 
 #include "Entity/EntityManager.h"
 #include "ServerEntity/ServerEntityManager.h"
-#include "ServiceEntity/GamePartyEntity.h"
-#include "ServiceEntity/GamePartyEntityTrans.h"
+#include "ServiceEntity/Party/GamePartyEntity.h"
+#include "ServiceEntity/Party/GamePartyEntityTrans.h"
 
 //#include "DB/GameDB.h"
 #include "DB/AccountDB.h"

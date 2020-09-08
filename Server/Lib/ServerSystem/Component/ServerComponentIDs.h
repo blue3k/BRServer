@@ -44,6 +44,8 @@ namespace Svr {
 		ServerComponentID_GamePartyManagerService,
 		ServerComponentID_PartyManagerService,
 
+		ServerComponentID_CharacterManagerService,
+
 		ServerComponentID_MatchingWatcherService_4,
 		ServerComponentID_MatchingWatcherService_8,
 

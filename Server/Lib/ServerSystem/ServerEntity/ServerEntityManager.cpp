@@ -41,7 +41,7 @@ namespace Svr
 	//	ServerEntityManager class
 	//
 
-	constexpr FixedString ServerEntityManager::TypeName;
+	constexpr StringCrc64 ServerEntityManager::TypeName;
 
 	ServerEntityManager::ServerEntityManager(uint threadCount)
 		: m_Heap("ServerEntityManager", GetSystemHeap())

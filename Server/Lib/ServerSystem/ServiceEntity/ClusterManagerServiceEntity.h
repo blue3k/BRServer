@@ -91,7 +91,7 @@ namespace Svr {
 
 		Result ParseNetPrivate(const Json::Value& json, NetAddress& privateNet);
 
-		Result AddServiceInfo(const char* nodeName, FixedString nodeNameCrc);
+		Result AddServiceInfo(const char* nodeName, StringCrc64 nodeNameCrc);
 
 
 		void AddLocalServiceInfoToServer(ServerServiceInformation* pLocalServiceInfo);
@@ -137,7 +137,7 @@ namespace Svr {
 
 		typedef ServiceEntity super;
 
-		static constexpr FixedString TypeName = "ClusterManagerService";
+		static constexpr StringCrc64 TypeName = "ClusterManagerService";
 
 
 		// Server Entity table

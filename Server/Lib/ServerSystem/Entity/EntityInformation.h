@@ -48,7 +48,7 @@ namespace Svr {
 
 		// Entity name
 		String	m_NodeName;
-		FixedString m_NodeNameCrc;
+		StringCrc64 m_NodeNameCrc;
 
 	public:
 		EntityInformation(const EntityUID& entityUID);
@@ -66,7 +66,7 @@ namespace Svr {
 
 		// Entity Name
 		const String& GetNodeName() const { return m_NodeName; }
-		FixedString GetNodeNameCrc() const { return m_NodeNameCrc; }
+		StringCrc64 GetNodeNameCrc() const { return m_NodeNameCrc; }
 		void SetNodeName(const char* strName) { m_NodeName = strName; m_NodeNameCrc = strName; }
 
 	};
@@ -194,8 +194,6 @@ namespace Svr {
 		inline void SetAuthTicket( AuthTicket ticket );
 
 	};
-
-
 
 
 #include "EntityInformation.inl"

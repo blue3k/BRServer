@@ -92,7 +92,7 @@ namespace Svr {
 		//	Chat channel
 		//
 
-		FixedString m_ChatChannelName;
+		StringCrc64 m_ChatChannelName;
 
 		// Chatting channel Leader ID
 		PlayerID m_LeaderID;
@@ -109,10 +109,10 @@ namespace Svr {
 		//	Game ChatChannel
 		//
 
-		ChatChannelEntity(const FixedString& chatChannelName);
+		ChatChannelEntity(const StringCrc64& chatChannelName);
 		~ChatChannelEntity();
 
-		const FixedString& GetChatChannelName() const { return m_ChatChannelName; }
+		const StringCrc64& GetChatChannelName() const { return m_ChatChannelName; }
 
 		PlayerID GetLeaderID() { return m_LeaderID; }
 		void SetLeaderID(PlayerID value) { m_LeaderID = value; }

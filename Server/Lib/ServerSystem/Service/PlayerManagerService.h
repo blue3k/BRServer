@@ -12,7 +12,7 @@
 #pragma once 
 
 #include "SFTypedefs.h"
-#include "String/SFFixedStringDB.h"
+#include "String/SFStringCrcDB.h"
 
 
 

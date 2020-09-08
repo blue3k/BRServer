@@ -27,7 +27,7 @@ namespace SF {
 	class LogOutputPlayFabGSDKComponent : public LibraryComponent
 	{
 	public:
-		static constexpr FixedString TypeName = "LogOutputPlayFabGSDK";
+		static constexpr StringCrc64 TypeName = "LogOutputPlayFabGSDK";
 
 	private:
 
@@ -51,7 +51,7 @@ namespace SF {
 		LogOutputPlayFabGSDKComponent(const LogChannelMask& logMask);
 		~LogOutputPlayFabGSDKComponent();
 
-		virtual const FixedString& GetTypeName() override { return TypeName; }
+		virtual const StringCrc64& GetTypeName() override { return TypeName; }
 
 		MyOutputHandler& GetHandler() { return m_Handler; }
 

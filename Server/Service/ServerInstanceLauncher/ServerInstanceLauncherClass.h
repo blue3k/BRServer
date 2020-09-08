@@ -38,7 +38,7 @@ namespace ServerInstanceLauncher {
 		NetAddress m_MyIPV4Address;
 		NetAddress m_MyIPV6Address;
 
-		CircularPageQueue<FixedString> m_NewCommands;
+		CircularPageQueue<StringCrc64> m_NewCommands;
 
 		CommandWatcher m_CommandWatcher;
 		ProcessManager m_ProcessManager;

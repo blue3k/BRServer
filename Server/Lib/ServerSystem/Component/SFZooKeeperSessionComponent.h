@@ -32,7 +32,7 @@ namespace SF
 	{
 	public:
 
-		static constexpr FixedString TypeName = "ZooKeeperSessionComponent";
+		static constexpr StringCrc64 TypeName = "ZooKeeperSessionComponent";
 
 	private:
 
@@ -54,7 +54,7 @@ namespace SF
 
 		virtual ZooKeeper* GetZooKeeperSession() override;
 
-		virtual const FixedString& GetTypeName() override { return TypeName; }
+		virtual const StringCrc64& GetTypeName() override { return TypeName; }
 
 		// Initialize component
 		virtual Result InitializeComponent() override;

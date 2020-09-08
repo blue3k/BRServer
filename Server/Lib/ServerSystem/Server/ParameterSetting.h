@@ -23,7 +23,7 @@ namespace SF {
 	{
 	private:
 
-		struct LinkedListNode : public OrderedLinkedList<FixedString>::Node
+		struct LinkedListNode : public OrderedLinkedList<StringCrc64>::Node
 		{
 			const char* Value;
 		};
@@ -31,7 +31,7 @@ namespace SF {
 		static int m_BufferUsedOffset;
 		static char m_SettingBuffer[128 * 1024];
 
-		static OrderedLinkedList<FixedString> m_Settings;
+		static OrderedLinkedList<StringCrc64> m_Settings;
 
 	private:
 

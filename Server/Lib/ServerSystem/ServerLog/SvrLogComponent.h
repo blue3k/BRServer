@@ -30,14 +30,14 @@ namespace SF {
 		SharedPointerT<ServerLogObject> m_LogObject;
 
 	public:
-		static constexpr FixedString TypeName = "ServerLogModule";
+		static constexpr StringCrc64 TypeName = "ServerLogModule";
 
 		ServerLogComponent(const char* traceCfgPath);
 		~ServerLogComponent();
 
 
 
-		virtual const FixedString& GetTypeName() override { return TypeName; }
+		virtual const StringCrc64& GetTypeName() override { return TypeName; }
 
 		// Initialize server component
 		virtual Result InitializeComponent() override;

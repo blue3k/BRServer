@@ -102,7 +102,7 @@ namespace Svr {
 	//
 
 	// Add new Entity
-	Result ChatChannelManagerServiceEntity::CreateChatChannel(const FixedString& name, const PlayerInformation& creator, EntityUID playerUID, ServerEntity *pServerEntity, EntityUID &ChatChannelUID )
+	Result ChatChannelManagerServiceEntity::CreateChatChannel(const StringCrc64& name, const PlayerInformation& creator, EntityUID playerUID, ServerEntity *pServerEntity, EntityUID &ChatChannelUID )
 	{
 		Result hr = ResultCode::SUCCESS;
 		ChatChannelEntity *pChatChannel = nullptr;
@@ -131,7 +131,7 @@ namespace Svr {
 		return hr;
 	}
 
-	Result ChatChannelManagerServiceEntity::FindChatChannel( const FixedString& name, EntityUID &ChatChannelUID )
+	Result ChatChannelManagerServiceEntity::FindChatChannel( const StringCrc64& name, EntityUID &ChatChannelUID )
 	{
 		Result hr = ResultCode::SUCCESS;
 		ChatChannelEntity *pChatChannel = nullptr;

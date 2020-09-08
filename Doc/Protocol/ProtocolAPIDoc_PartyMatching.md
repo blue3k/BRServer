@@ -1,6 +1,6 @@
 ﻿***
  
- CopyRight (c) 2019 StormForge
+ CopyRight (c) 2020 StormForge
  
  Description : PartyMatching Message Protocol API Document
 

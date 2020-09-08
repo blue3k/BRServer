@@ -12,7 +12,7 @@
 #pragma once 
 
 #include "SFTypedefs.h"
-#include "String/SFFixedStringDB.h"
+#include "String/SFStringCrcDB.h"
 
 
 
@@ -29,7 +29,7 @@ namespace SF {
 	// ClusterService information
 	struct ClusterServiceInfo
 	{
-		SortedArray<FixedString, Svr::ServerServiceInformation*> Services;
+		SortedArray<StringCrc64, Svr::ServerServiceInformation*> Services;
 		DynamicArray<SharedPointerT<Svr::ClusteredServiceEntity>> LocalServiceEntites;
 
 		ClusterServiceInfo(IHeap& heap)

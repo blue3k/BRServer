@@ -39,7 +39,7 @@ namespace SF {
 
 		struct ProcessInfo
 		{
-			FixedString Name;
+			StringCrc64 Name;
 
 			NativeHandle ProcessHandle;
 			intptr_t ProcessID;
@@ -53,7 +53,7 @@ namespace SF {
 		IHeap& m_Heap;
 
 		// Child Process list managed by this class
-		SortedArray<FixedString, ProcessInfo> m_ProcesseInfos;
+		SortedArray<StringCrc64, ProcessInfo> m_ProcesseInfos;
 
 		ProcessEndHandler m_OnEndHandler = [](const ProcessInfo&) {};
 
