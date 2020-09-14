@@ -28,17 +28,15 @@ namespace SF
  		// Cmd: Register a party for matching
 		Result NetPolicyPartyMatchingQueue::RegisterPartyMatchingCmd( const RouteContext &InRouteContext, const uint64_t &InTransactionID, const uint16_t &InRouteHopCount, const Array<MatchingPlayerInformation>& InPlayers )
 		{
- 			Result hr;
+ 			FunctionContext hr;
 
 			 MessageDataPtr pMessage;
-			 protocolChkPtr(m_pConnection);
+			 protocolCheckPtr(m_pConnection);
 
 			 pMessage = SF::Message::PartyMatchingQueue::RegisterPartyMatchingCmd::Create(m_pConnection->GetIOHeap(), InRouteContext, InTransactionID, InRouteHopCount, InPlayers);
-			 protocolChkPtr(*pMessage);
+			 protocolCheckPtr(*pMessage);
 
 			 return m_pConnection->Send( pMessage );
-
-		Proc_End:
 
 			return hr;
 
@@ -46,17 +44,15 @@ namespace SF
 		// Cmd: Register a player for matching
 		Result NetPolicyPartyMatchingQueue::RegisterPlayerMatchingCmd( const RouteContext &InRouteContext, const uint64_t &InTransactionID, const uint16_t &InRouteHopCount, const PlayerID &InPlayerID )
 		{
- 			Result hr;
+ 			FunctionContext hr;
 
 			 MessageDataPtr pMessage;
-			 protocolChkPtr(m_pConnection);
+			 protocolCheckPtr(m_pConnection);
 
 			 pMessage = SF::Message::PartyMatchingQueue::RegisterPlayerMatchingCmd::Create(m_pConnection->GetIOHeap(), InRouteContext, InTransactionID, InRouteHopCount, InPlayerID);
-			 protocolChkPtr(*pMessage);
+			 protocolCheckPtr(*pMessage);
 
 			 return m_pConnection->Send( pMessage );
-
-		Proc_End:
 
 			return hr;
 
@@ -64,17 +60,15 @@ namespace SF
 		// Cmd: [Deprecated] update registration information
 		Result NetPolicyPartyMatchingQueue::UpdateMatchingEntityUIDCmd( const RouteContext &InRouteContext, const uint64_t &InTransactionID, const uint16_t &InRouteHopCount, const MatchingQueueTicket &InMatchingTicket, const uint64_t &InPreviousUID )
 		{
- 			Result hr;
+ 			FunctionContext hr;
 
 			 MessageDataPtr pMessage;
-			 protocolChkPtr(m_pConnection);
+			 protocolCheckPtr(m_pConnection);
 
 			 pMessage = SF::Message::PartyMatchingQueue::UpdateMatchingEntityUIDCmd::Create(m_pConnection->GetIOHeap(), InRouteContext, InTransactionID, InRouteHopCount, InMatchingTicket, InPreviousUID);
-			 protocolChkPtr(*pMessage);
+			 protocolCheckPtr(*pMessage);
 
 			 return m_pConnection->Send( pMessage );
-
-		Proc_End:
 
 			return hr;
 
@@ -82,17 +76,15 @@ namespace SF
 		// Cmd: calcel registration
 		Result NetPolicyPartyMatchingQueue::UnregisterMatchingCmd( const RouteContext &InRouteContext, const uint64_t &InTransactionID, const uint16_t &InRouteHopCount, const MatchingQueueTicket &InMatchingTicket )
 		{
- 			Result hr;
+ 			FunctionContext hr;
 
 			 MessageDataPtr pMessage;
-			 protocolChkPtr(m_pConnection);
+			 protocolCheckPtr(m_pConnection);
 
 			 pMessage = SF::Message::PartyMatchingQueue::UnregisterMatchingCmd::Create(m_pConnection->GetIOHeap(), InRouteContext, InTransactionID, InRouteHopCount, InMatchingTicket);
-			 protocolChkPtr(*pMessage);
+			 protocolCheckPtr(*pMessage);
 
 			 return m_pConnection->Send( pMessage );
-
-		Proc_End:
 
 			return hr;
 
@@ -100,17 +92,15 @@ namespace SF
 		// Cmd: Reserve a item
 		Result NetPolicyPartyMatchingQueue::ReserveItemCmd( const RouteContext &InRouteContext, const uint64_t &InTransactionID, const uint16_t &InRouteHopCount )
 		{
- 			Result hr;
+ 			FunctionContext hr;
 
 			 MessageDataPtr pMessage;
-			 protocolChkPtr(m_pConnection);
+			 protocolCheckPtr(m_pConnection);
 
 			 pMessage = SF::Message::PartyMatchingQueue::ReserveItemCmd::Create(m_pConnection->GetIOHeap(), InRouteContext, InTransactionID, InRouteHopCount);
-			 protocolChkPtr(*pMessage);
+			 protocolCheckPtr(*pMessage);
 
 			 return m_pConnection->Send( pMessage );
-
-		Proc_End:
 
 			return hr;
 
@@ -118,17 +108,15 @@ namespace SF
 		// Cmd: Reserve a item
 		Result NetPolicyPartyMatchingQueue::ReserveItemsCmd( const RouteContext &InRouteContext, const uint64_t &InTransactionID, const uint16_t &InRouteHopCount, const uint32_t &InNumberOfItemsToReserve )
 		{
- 			Result hr;
+ 			FunctionContext hr;
 
 			 MessageDataPtr pMessage;
-			 protocolChkPtr(m_pConnection);
+			 protocolCheckPtr(m_pConnection);
 
 			 pMessage = SF::Message::PartyMatchingQueue::ReserveItemsCmd::Create(m_pConnection->GetIOHeap(), InRouteContext, InTransactionID, InRouteHopCount, InNumberOfItemsToReserve);
-			 protocolChkPtr(*pMessage);
+			 protocolCheckPtr(*pMessage);
 
 			 return m_pConnection->Send( pMessage );
-
-		Proc_End:
 
 			return hr;
 
@@ -136,17 +124,15 @@ namespace SF
 		// Cmd: Cancel reservation
 		Result NetPolicyPartyMatchingQueue::CancelReservationCmd( const RouteContext &InRouteContext, const uint64_t &InTransactionID, const uint16_t &InRouteHopCount, const MatchingQueueTicket &InTicketToCancel )
 		{
- 			Result hr;
+ 			FunctionContext hr;
 
 			 MessageDataPtr pMessage;
-			 protocolChkPtr(m_pConnection);
+			 protocolCheckPtr(m_pConnection);
 
 			 pMessage = SF::Message::PartyMatchingQueue::CancelReservationCmd::Create(m_pConnection->GetIOHeap(), InRouteContext, InTransactionID, InRouteHopCount, InTicketToCancel);
-			 protocolChkPtr(*pMessage);
+			 protocolCheckPtr(*pMessage);
 
 			 return m_pConnection->Send( pMessage );
-
-		Proc_End:
 
 			return hr;
 
@@ -154,17 +140,15 @@ namespace SF
 		// Cmd: Cancel reservation
 		Result NetPolicyPartyMatchingQueue::CancelReservationsCmd( const RouteContext &InRouteContext, const uint64_t &InTransactionID, const uint16_t &InRouteHopCount, const Array<MatchingQueueTicket>& InTicketToCancel )
 		{
- 			Result hr;
+ 			FunctionContext hr;
 
 			 MessageDataPtr pMessage;
-			 protocolChkPtr(m_pConnection);
+			 protocolCheckPtr(m_pConnection);
 
 			 pMessage = SF::Message::PartyMatchingQueue::CancelReservationsCmd::Create(m_pConnection->GetIOHeap(), InRouteContext, InTransactionID, InRouteHopCount, InTicketToCancel);
-			 protocolChkPtr(*pMessage);
+			 protocolCheckPtr(*pMessage);
 
 			 return m_pConnection->Send( pMessage );
-
-		Proc_End:
 
 			return hr;
 
@@ -172,17 +156,15 @@ namespace SF
 		// Cmd: Dequeue a reserved item
 		Result NetPolicyPartyMatchingQueue::DequeueItemCmd( const RouteContext &InRouteContext, const uint64_t &InTransactionID, const uint16_t &InRouteHopCount, const MatchingQueueTicket &InMatchingTicket )
 		{
- 			Result hr;
+ 			FunctionContext hr;
 
 			 MessageDataPtr pMessage;
-			 protocolChkPtr(m_pConnection);
+			 protocolCheckPtr(m_pConnection);
 
 			 pMessage = SF::Message::PartyMatchingQueue::DequeueItemCmd::Create(m_pConnection->GetIOHeap(), InRouteContext, InTransactionID, InRouteHopCount, InMatchingTicket);
-			 protocolChkPtr(*pMessage);
+			 protocolCheckPtr(*pMessage);
 
 			 return m_pConnection->Send( pMessage );
-
-		Proc_End:
 
 			return hr;
 
@@ -190,17 +172,15 @@ namespace SF
 		// C2S: Item error you should delete it
 		Result NetPolicyPartyMatchingQueue::MatchingItemErrorC2SEvt( const RouteContext &InRouteContext, const uint16_t &InRouteHopCount, const MatchingQueueTicket &InMatchingTicket )
 		{
- 			Result hr;
+ 			FunctionContext hr;
 
 			 MessageDataPtr pMessage;
-			 protocolChkPtr(m_pConnection);
+			 protocolCheckPtr(m_pConnection);
 
 			 pMessage = SF::Message::PartyMatchingQueue::MatchingItemErrorC2SEvt::Create(m_pConnection->GetIOHeap(), InRouteContext, InRouteHopCount, InMatchingTicket);
-			 protocolChkPtr(*pMessage);
+			 protocolCheckPtr(*pMessage);
 
 			 return m_pConnection->Send( pMessage );
-
-		Proc_End:
 
 			return hr;
 
@@ -210,17 +190,15 @@ namespace SF
 		// Cmd: Register a party for matching
 		Result NetSvrPolicyPartyMatchingQueue::RegisterPartyMatchingRes( const RouteContext &InRouteContext, const uint64_t &InTransactionID, const Result &InResult, const MatchingQueueTicket &InMatchingTicket )
 		{
- 			Result hr;
+ 			FunctionContext hr;
 
 			 MessageDataPtr pMessage;
-			 protocolChkPtr(m_pConnection);
+			 protocolCheckPtr(m_pConnection);
 
 			 pMessage = SF::Message::PartyMatchingQueue::RegisterPartyMatchingRes::Create(m_pConnection->GetIOHeap(), InRouteContext, InTransactionID, InResult, InMatchingTicket);
-			 protocolChkPtr(*pMessage);
+			 protocolCheckPtr(*pMessage);
 
 			 return m_pConnection->Send( pMessage );
-
-		Proc_End:
 
 			return hr;
 
@@ -228,17 +206,15 @@ namespace SF
 		// Cmd: Register a player for matching
 		Result NetSvrPolicyPartyMatchingQueue::RegisterPlayerMatchingRes( const RouteContext &InRouteContext, const uint64_t &InTransactionID, const Result &InResult, const MatchingQueueTicket &InMatchingTicket )
 		{
- 			Result hr;
+ 			FunctionContext hr;
 
 			 MessageDataPtr pMessage;
-			 protocolChkPtr(m_pConnection);
+			 protocolCheckPtr(m_pConnection);
 
 			 pMessage = SF::Message::PartyMatchingQueue::RegisterPlayerMatchingRes::Create(m_pConnection->GetIOHeap(), InRouteContext, InTransactionID, InResult, InMatchingTicket);
-			 protocolChkPtr(*pMessage);
+			 protocolCheckPtr(*pMessage);
 
 			 return m_pConnection->Send( pMessage );
-
-		Proc_End:
 
 			return hr;
 
@@ -246,17 +222,15 @@ namespace SF
 		// Cmd: [Deprecated] update registration information
 		Result NetSvrPolicyPartyMatchingQueue::UpdateMatchingEntityUIDRes( const RouteContext &InRouteContext, const uint64_t &InTransactionID, const Result &InResult )
 		{
- 			Result hr;
+ 			FunctionContext hr;
 
 			 MessageDataPtr pMessage;
-			 protocolChkPtr(m_pConnection);
+			 protocolCheckPtr(m_pConnection);
 
 			 pMessage = SF::Message::PartyMatchingQueue::UpdateMatchingEntityUIDRes::Create(m_pConnection->GetIOHeap(), InRouteContext, InTransactionID, InResult);
-			 protocolChkPtr(*pMessage);
+			 protocolCheckPtr(*pMessage);
 
 			 return m_pConnection->Send( pMessage );
-
-		Proc_End:
 
 			return hr;
 
@@ -264,17 +238,15 @@ namespace SF
 		// Cmd: calcel registration
 		Result NetSvrPolicyPartyMatchingQueue::UnregisterMatchingRes( const RouteContext &InRouteContext, const uint64_t &InTransactionID, const Result &InResult )
 		{
- 			Result hr;
+ 			FunctionContext hr;
 
 			 MessageDataPtr pMessage;
-			 protocolChkPtr(m_pConnection);
+			 protocolCheckPtr(m_pConnection);
 
 			 pMessage = SF::Message::PartyMatchingQueue::UnregisterMatchingRes::Create(m_pConnection->GetIOHeap(), InRouteContext, InTransactionID, InResult);
-			 protocolChkPtr(*pMessage);
+			 protocolCheckPtr(*pMessage);
 
 			 return m_pConnection->Send( pMessage );
-
-		Proc_End:
 
 			return hr;
 
@@ -282,17 +254,15 @@ namespace SF
 		// S2C: Event when the matching is canceled, for party
 		Result NetSvrPolicyPartyMatchingQueue::PartyMatchingCanceledS2CEvt( const RouteContext &InRouteContext, const uint16_t &InRouteHopCount, const uint64_t &InDestPartyUID, const MatchingQueueTicket &InMatchingTicket )
 		{
- 			Result hr;
+ 			FunctionContext hr;
 
 			 MessageDataPtr pMessage;
-			 protocolChkPtr(m_pConnection);
+			 protocolCheckPtr(m_pConnection);
 
 			 pMessage = SF::Message::PartyMatchingQueue::PartyMatchingCanceledS2CEvt::Create(m_pConnection->GetIOHeap(), InRouteContext, InRouteHopCount, InDestPartyUID, InMatchingTicket);
-			 protocolChkPtr(*pMessage);
+			 protocolCheckPtr(*pMessage);
 
 			 return m_pConnection->Send( pMessage );
-
-		Proc_End:
 
 			return hr;
 
@@ -300,17 +270,15 @@ namespace SF
 		// S2C: Event whan the matching is canceled, for a player
 		Result NetSvrPolicyPartyMatchingQueue::PlayerMatchingCanceledS2CEvt( const RouteContext &InRouteContext, const uint16_t &InRouteHopCount, const PlayerID &InDestPlayerID, const MatchingQueueTicket &InMatchingTicket )
 		{
- 			Result hr;
+ 			FunctionContext hr;
 
 			 MessageDataPtr pMessage;
-			 protocolChkPtr(m_pConnection);
+			 protocolCheckPtr(m_pConnection);
 
 			 pMessage = SF::Message::PartyMatchingQueue::PlayerMatchingCanceledS2CEvt::Create(m_pConnection->GetIOHeap(), InRouteContext, InRouteHopCount, InDestPlayerID, InMatchingTicket);
-			 protocolChkPtr(*pMessage);
+			 protocolCheckPtr(*pMessage);
 
 			 return m_pConnection->Send( pMessage );
-
-		Proc_End:
 
 			return hr;
 
@@ -318,17 +286,15 @@ namespace SF
 		// S2C: Matching item has been dequeued for matching
 		Result NetSvrPolicyPartyMatchingQueue::PartyMatchingItemDequeuedS2CEvt( const RouteContext &InRouteContext, const uint16_t &InRouteHopCount, const MatchingQueueTicket &InMatchingTicket )
 		{
- 			Result hr;
+ 			FunctionContext hr;
 
 			 MessageDataPtr pMessage;
-			 protocolChkPtr(m_pConnection);
+			 protocolCheckPtr(m_pConnection);
 
 			 pMessage = SF::Message::PartyMatchingQueue::PartyMatchingItemDequeuedS2CEvt::Create(m_pConnection->GetIOHeap(), InRouteContext, InRouteHopCount, InMatchingTicket);
-			 protocolChkPtr(*pMessage);
+			 protocolCheckPtr(*pMessage);
 
 			 return m_pConnection->Send( pMessage );
-
-		Proc_End:
 
 			return hr;
 
@@ -336,17 +302,15 @@ namespace SF
 		// S2C: Matching item has been dequeued for matching
 		Result NetSvrPolicyPartyMatchingQueue::PlayerMatchingItemDequeuedS2CEvt( const RouteContext &InRouteContext, const uint16_t &InRouteHopCount, const MatchingQueueTicket &InMatchingTicket )
 		{
- 			Result hr;
+ 			FunctionContext hr;
 
 			 MessageDataPtr pMessage;
-			 protocolChkPtr(m_pConnection);
+			 protocolCheckPtr(m_pConnection);
 
 			 pMessage = SF::Message::PartyMatchingQueue::PlayerMatchingItemDequeuedS2CEvt::Create(m_pConnection->GetIOHeap(), InRouteContext, InRouteHopCount, InMatchingTicket);
-			 protocolChkPtr(*pMessage);
+			 protocolCheckPtr(*pMessage);
 
 			 return m_pConnection->Send( pMessage );
-
-		Proc_End:
 
 			return hr;
 
@@ -354,17 +318,15 @@ namespace SF
 		// Cmd: Reserve a item
 		Result NetSvrPolicyPartyMatchingQueue::ReserveItemRes( const RouteContext &InRouteContext, const uint64_t &InTransactionID, const Result &InResult, const uint32_t &InNumberOfPlayersInTheItem, const MatchingQueueTicket &InMatchingTicket )
 		{
- 			Result hr;
+ 			FunctionContext hr;
 
 			 MessageDataPtr pMessage;
-			 protocolChkPtr(m_pConnection);
+			 protocolCheckPtr(m_pConnection);
 
 			 pMessage = SF::Message::PartyMatchingQueue::ReserveItemRes::Create(m_pConnection->GetIOHeap(), InRouteContext, InTransactionID, InResult, InNumberOfPlayersInTheItem, InMatchingTicket);
-			 protocolChkPtr(*pMessage);
+			 protocolCheckPtr(*pMessage);
 
 			 return m_pConnection->Send( pMessage );
-
-		Proc_End:
 
 			return hr;
 
@@ -372,17 +334,15 @@ namespace SF
 		// Cmd: Reserve a item
 		Result NetSvrPolicyPartyMatchingQueue::ReserveItemsRes( const RouteContext &InRouteContext, const uint64_t &InTransactionID, const Result &InResult, const Array<uint32_t>& InNumberOfPlayersInTheItem, const Array<MatchingQueueTicket>& InMatchingTicket )
 		{
- 			Result hr;
+ 			FunctionContext hr;
 
 			 MessageDataPtr pMessage;
-			 protocolChkPtr(m_pConnection);
+			 protocolCheckPtr(m_pConnection);
 
 			 pMessage = SF::Message::PartyMatchingQueue::ReserveItemsRes::Create(m_pConnection->GetIOHeap(), InRouteContext, InTransactionID, InResult, InNumberOfPlayersInTheItem, InMatchingTicket);
-			 protocolChkPtr(*pMessage);
+			 protocolCheckPtr(*pMessage);
 
 			 return m_pConnection->Send( pMessage );
-
-		Proc_End:
 
 			return hr;
 
@@ -390,17 +350,15 @@ namespace SF
 		// Cmd: Cancel reservation
 		Result NetSvrPolicyPartyMatchingQueue::CancelReservationRes( const RouteContext &InRouteContext, const uint64_t &InTransactionID, const Result &InResult )
 		{
- 			Result hr;
+ 			FunctionContext hr;
 
 			 MessageDataPtr pMessage;
-			 protocolChkPtr(m_pConnection);
+			 protocolCheckPtr(m_pConnection);
 
 			 pMessage = SF::Message::PartyMatchingQueue::CancelReservationRes::Create(m_pConnection->GetIOHeap(), InRouteContext, InTransactionID, InResult);
-			 protocolChkPtr(*pMessage);
+			 protocolCheckPtr(*pMessage);
 
 			 return m_pConnection->Send( pMessage );
-
-		Proc_End:
 
 			return hr;
 
@@ -408,17 +366,15 @@ namespace SF
 		// Cmd: Cancel reservation
 		Result NetSvrPolicyPartyMatchingQueue::CancelReservationsRes( const RouteContext &InRouteContext, const uint64_t &InTransactionID, const Result &InResult )
 		{
- 			Result hr;
+ 			FunctionContext hr;
 
 			 MessageDataPtr pMessage;
-			 protocolChkPtr(m_pConnection);
+			 protocolCheckPtr(m_pConnection);
 
 			 pMessage = SF::Message::PartyMatchingQueue::CancelReservationsRes::Create(m_pConnection->GetIOHeap(), InRouteContext, InTransactionID, InResult);
-			 protocolChkPtr(*pMessage);
+			 protocolCheckPtr(*pMessage);
 
 			 return m_pConnection->Send( pMessage );
-
-		Proc_End:
 
 			return hr;
 
@@ -426,17 +382,15 @@ namespace SF
 		// Cmd: Dequeue a reserved item
 		Result NetSvrPolicyPartyMatchingQueue::DequeueItemRes( const RouteContext &InRouteContext, const uint64_t &InTransactionID, const Result &InResult, const MatchingQueueTicket &InMatchingTicket, const uint64_t &InRegisterUID, const PlayerID &InRegisterID, const Array<MatchingPlayerInformation>& InPlayers )
 		{
- 			Result hr;
+ 			FunctionContext hr;
 
 			 MessageDataPtr pMessage;
-			 protocolChkPtr(m_pConnection);
+			 protocolCheckPtr(m_pConnection);
 
 			 pMessage = SF::Message::PartyMatchingQueue::DequeueItemRes::Create(m_pConnection->GetIOHeap(), InRouteContext, InTransactionID, InResult, InMatchingTicket, InRegisterUID, InRegisterID, InPlayers);
-			 protocolChkPtr(*pMessage);
+			 protocolCheckPtr(*pMessage);
 
 			 return m_pConnection->Send( pMessage );
-
-		Proc_End:
 
 			return hr;
 

@@ -59,8 +59,8 @@ namespace GameServer {
 		PlayerRole m_Role;
 		bool m_Dead;
 
-		ExternalBufferArray<uint8_t> m_ChatHistoryData;
-		ExternalBufferArray<uint8_t> m_GameLogData;
+		ArrayView<uint8_t> m_ChatHistoryData;
+		ArrayView<uint8_t> m_GameLogData;
 
 	public:
 		PlayerTransJoinGame( IHeap& heap, MessageDataPtr &pIMsg );

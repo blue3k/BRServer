@@ -30,21 +30,19 @@ namespace SF
 			const MessageID PartyGameMatchedS2CEvt::MID = MessageID(MSGTYPE_EVENT, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_PARTYMATCHING, 0);
 			Result PartyGameMatchedS2CEvt::ParseMessage( MessageData* pIMsg )
 			{
- 				Result hr;
-
-				int iMsgSize;
-				uint8_t* pCur;
-
-				protocolChkPtr(pIMsg);
-
-				iMsgSize = (int)((size_t)pIMsg->GetMessageSize() - sizeof(MessageHeader));
-				pCur = pIMsg->GetMessageData();
-
-				protocolChk( Protocol::StreamParamCopy( &m_RouteContext, pCur, iMsgSize, sizeof(RouteContext) ) );
-				protocolChk( Protocol::StreamParamCopy( &m_RouteHopCount, pCur, iMsgSize, sizeof(uint16_t) ) );
+ 				FunctionContext hr;
 
 
-			Proc_End:
+				protocolCheckPtr(pIMsg);
+
+				size_t MsgDataSize = ((size_t)pIMsg->GetMessageSize() - sizeof(MessageHeader));
+				ArrayView<uint8_t> bufferView(MsgDataSize, pIMsg->GetMessageData());
+				InputMemoryStream inputStream(bufferView);
+				auto* input = inputStream.ToInputStream();
+				uint16_t ArrayLen = 0;
+
+				protocolCheck(input->Read(m_RouteContext));
+				protocolCheck(input->Read(m_RouteHopCount));
 
 				return hr;
 
@@ -53,12 +51,11 @@ namespace SF
 
 			Result PartyGameMatchedS2CEvt::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr&& pIMsg, MessageBase* &pMessageBase )
 			{
- 				Result hr;
+ 				FunctionContext hr;
 
-				protocolMem(pMessageBase = new(memHeap) PartyGameMatchedS2CEvt(std::forward<MessageDataPtr>(pIMsg)));
-				protocolChk(pMessageBase->ParseMsg());
+				protocolCheckMem(pMessageBase = new(memHeap) PartyGameMatchedS2CEvt(std::forward<MessageDataPtr>(pIMsg)));
+				protocolCheck(pMessageBase->ParseMsg());
 
-			Proc_End:
 				return hr;
 
 			}; // Result PartyGameMatchedS2CEvt::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr&& pIMsg, MessageBase* &pMessageBase )
@@ -66,55 +63,56 @@ namespace SF
 			MessageData* PartyGameMatchedS2CEvt::Create( IHeap& memHeap, const RouteContext &InRouteContext, const uint16_t &InRouteHopCount )
 			{
  				MessageData *pNewMsg = nullptr;
-				Result hr;
+				FunctionContext hr([pNewMsg](Result hr) -> MessageData*
+				{
+ 					if(!hr && pNewMsg != nullptr)
+					{
+ 						delete pNewMsg;
+						return nullptr;
+					}
+					return pNewMsg;
+				});
 
 				uint8_t *pMsgData = nullptr;
 
 				unsigned __uiMessageSize = (unsigned)(sizeof(MessageHeader) 
-					+ sizeof(RouteContext)
-					+ sizeof(uint16_t));
+					, SerializedSizeOf(InRouteContext)
+					, SerializedSizeOf(InRouteHopCount)
+				);
 
+				protocolCheckMem( pNewMsg = MessageData::NewMessage( memHeap, PartyMatching::PartyGameMatchedS2CEvt::MID, __uiMessageSize ) );
+				size_t MsgDataSize = (int)((size_t)pNewMsg->GetMessageSize() - sizeof(MessageHeader));
+				ArrayView<uint8_t> BufferView(MsgDataSize, pNewMsg->GetMessageData());
+				OutputMemoryStream outputStream(BufferView);
+				auto* output = outputStream.ToOutputStream();
 
-				protocolMem( pNewMsg = MessageData::NewMessage( memHeap, PartyMatching::PartyGameMatchedS2CEvt::MID, __uiMessageSize ) );
+				protocolCheck(output->Write(InRouteContext));
+				protocolCheck(output->Write(InRouteHopCount));
 
-				pMsgData = pNewMsg->GetMessageData();
-
-				Protocol::PackParamCopy( pMsgData, &InRouteContext, sizeof(RouteContext));
-				Protocol::PackParamCopy( pMsgData, &InRouteHopCount, sizeof(uint16_t));
-
-
-			Proc_End:
-
-				if(!hr)
-				{
- 					if(pNewMsg != nullptr) delete pNewMsg;
-					pNewMsg = nullptr;
-				}
-				return pNewMsg;
-
+				return hr;
 			}; // MessageData* PartyGameMatchedS2CEvt::Create( IHeap& memHeap, const RouteContext &InRouteContext, const uint16_t &InRouteHopCount )
 
 			Result PartyGameMatchedS2CEvt::OverrideRouteContextDestination( EntityUID to )
 			{
- 				Result hr;
+ 				FunctionContext hr;
 
-				int iMsgSize;
-				uint8_t* pCur;
 				MessageData* pIMsg = GetMessage();
 				RouteContext routeContext;
 
-				protocolChkPtr(pIMsg);
+				protocolCheckPtr(pIMsg);
 
-				iMsgSize = (int)((size_t)pIMsg->GetMessageSize() - sizeof(MessageHeader));
-				pCur = pIMsg->GetMessageData();
+				size_t MsgDataSize = (int)((size_t)pIMsg->GetMessageSize() - sizeof(MessageHeader));
+				ArrayView<uint8_t> bufferView(MsgDataSize, pIMsg->GetMessageData());
+				InputMemoryStream inputStream(bufferView);
+				auto* input = inputStream.ToInputStream();
+				uint16_t ArrayLen = 0;
+				uint8_t* pCur = nullptr;
 
-				Assert( iMsgSize >= (INT)sizeof(RouteContext) );
+				pCur = input->GetBufferPtr() + input->GetPosition();
+				Assert(input->GetRemainSize() >= sizeof(RouteContext));
 				memcpy( &routeContext, pCur, sizeof(RouteContext) );
 				routeContext.Components.To = to;
 				memcpy( pCur, &routeContext, sizeof(RouteContext) );
-
-
-			Proc_End:
 
 				return hr;
 
@@ -122,29 +120,30 @@ namespace SF
 
 			Result PartyGameMatchedS2CEvt::OverrideRouteInformation( EntityUID to, unsigned hopCount )
 			{
- 				Result hr;
+ 				FunctionContext hr;
 
-				int iMsgSize;
-				uint8_t* pCur;
 				MessageData* pIMsg = GetMessage();
 				RouteContext routeContext;
 
-				protocolChkPtr(pIMsg);
+				protocolCheckPtr(pIMsg);
 
-				iMsgSize = (int)((size_t)pIMsg->GetMessageSize() - sizeof(MessageHeader));
-				pCur = pIMsg->GetMessageData();
+				size_t iMsgSize = ((size_t)pIMsg->GetMessageSize() - sizeof(MessageHeader));
+				ArrayView<uint8_t> bufferView(MsgDataSize, pIMsg->GetMessageData());
+				InputMemoryStream inputStream(bufferView);
+				auto* input = inputStream.ToOutputStream();
+				uint16_t ArrayLen = 0;
+				uint8_t* pCur = nullptr;
 
-				Assert( iMsgSize >= (INT)sizeof(RouteContext) );
+				pCur = input->GetBufferPtr() + input->GetPosition();
+				Assert(input->GetRemainSize() >= sizeof(RouteContext));
 				memcpy( &routeContext, pCur, sizeof(RouteContext) );
 				routeContext.Components.To = to;
 				memcpy( pCur, &routeContext, sizeof(RouteContext) );
-				pCur += sizeof(RouteContext); iMsgSize -= sizeof(RouteContext);
-				Assert( iMsgSize >= (INT)sizeof(uint16_t) );
+				protocolCheck(input->Skip(sizeof(RouteContext);
+				Assert(input->GetRemainSize() >= sizeof(uint16_t));
+				pCur = input->GetBufferPtr() + input->GetPosition();
 				*(uint16_t*)pCur = hopCount;
-				pCur += sizeof(uint16_t); iMsgSize -= sizeof(uint16_t);
-
-
-			Proc_End:
+				protocolCheck(input->Skip(sizeof(uint16_t);
 
 				return hr;
 
@@ -163,24 +162,22 @@ namespace SF
 			const MessageID PlayerGameMatchedS2CEvt::MID = MessageID(MSGTYPE_EVENT, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_PARTYMATCHING, 1);
 			Result PlayerGameMatchedS2CEvt::ParseMessage( MessageData* pIMsg )
 			{
- 				Result hr;
-
-				int iMsgSize;
-				uint8_t* pCur;
-
-				protocolChkPtr(pIMsg);
-
-				iMsgSize = (int)((size_t)pIMsg->GetMessageSize() - sizeof(MessageHeader));
-				pCur = pIMsg->GetMessageData();
-
-				protocolChk( Protocol::StreamParamCopy( &m_RouteContext, pCur, iMsgSize, sizeof(RouteContext) ) );
-				protocolChk( Protocol::StreamParamCopy( &m_RouteHopCount, pCur, iMsgSize, sizeof(uint16_t) ) );
-				protocolChk( Protocol::StreamParamCopy( &m_DestPlayerID, pCur, iMsgSize, sizeof(PlayerID) ) );
-				protocolChk( Protocol::StreamParamCopy( &m_GameInsUID, pCur, iMsgSize, sizeof(uint64_t) ) );
-				protocolChk( Protocol::StreamParamCopy( &m_RequestedRole, pCur, iMsgSize, sizeof(uint8_t) ) );
+ 				FunctionContext hr;
 
 
-			Proc_End:
+				protocolCheckPtr(pIMsg);
+
+				size_t MsgDataSize = ((size_t)pIMsg->GetMessageSize() - sizeof(MessageHeader));
+				ArrayView<uint8_t> bufferView(MsgDataSize, pIMsg->GetMessageData());
+				InputMemoryStream inputStream(bufferView);
+				auto* input = inputStream.ToInputStream();
+				uint16_t ArrayLen = 0;
+
+				protocolCheck(input->Read(m_RouteContext));
+				protocolCheck(input->Read(m_RouteHopCount));
+				protocolCheck(input->Read(m_DestPlayerID));
+				protocolCheck(input->Read(m_GameInsUID));
+				protocolCheck(input->Read(m_RequestedRole));
 
 				return hr;
 
@@ -189,12 +186,11 @@ namespace SF
 
 			Result PlayerGameMatchedS2CEvt::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr&& pIMsg, MessageBase* &pMessageBase )
 			{
- 				Result hr;
+ 				FunctionContext hr;
 
-				protocolMem(pMessageBase = new(memHeap) PlayerGameMatchedS2CEvt(std::forward<MessageDataPtr>(pIMsg)));
-				protocolChk(pMessageBase->ParseMsg());
+				protocolCheckMem(pMessageBase = new(memHeap) PlayerGameMatchedS2CEvt(std::forward<MessageDataPtr>(pIMsg)));
+				protocolCheck(pMessageBase->ParseMsg());
 
-			Proc_End:
 				return hr;
 
 			}; // Result PlayerGameMatchedS2CEvt::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr&& pIMsg, MessageBase* &pMessageBase )
@@ -202,61 +198,62 @@ namespace SF
 			MessageData* PlayerGameMatchedS2CEvt::Create( IHeap& memHeap, const RouteContext &InRouteContext, const uint16_t &InRouteHopCount, const PlayerID &InDestPlayerID, const uint64_t &InGameInsUID, const uint8_t &InRequestedRole )
 			{
  				MessageData *pNewMsg = nullptr;
-				Result hr;
+				FunctionContext hr([pNewMsg](Result hr) -> MessageData*
+				{
+ 					if(!hr && pNewMsg != nullptr)
+					{
+ 						delete pNewMsg;
+						return nullptr;
+					}
+					return pNewMsg;
+				});
 
 				uint8_t *pMsgData = nullptr;
 
 				unsigned __uiMessageSize = (unsigned)(sizeof(MessageHeader) 
-					+ sizeof(RouteContext)
-					+ sizeof(uint16_t)
-					+ sizeof(PlayerID)
-					+ sizeof(uint64_t)
-					+ sizeof(uint8_t));
+					, SerializedSizeOf(InRouteContext)
+					, SerializedSizeOf(InRouteHopCount)
+					, SerializedSizeOf(InDestPlayerID)
+					, SerializedSizeOf(InGameInsUID)
+					, SerializedSizeOf(InRequestedRole)
+				);
 
+				protocolCheckMem( pNewMsg = MessageData::NewMessage( memHeap, PartyMatching::PlayerGameMatchedS2CEvt::MID, __uiMessageSize ) );
+				size_t MsgDataSize = (int)((size_t)pNewMsg->GetMessageSize() - sizeof(MessageHeader));
+				ArrayView<uint8_t> BufferView(MsgDataSize, pNewMsg->GetMessageData());
+				OutputMemoryStream outputStream(BufferView);
+				auto* output = outputStream.ToOutputStream();
 
-				protocolMem( pNewMsg = MessageData::NewMessage( memHeap, PartyMatching::PlayerGameMatchedS2CEvt::MID, __uiMessageSize ) );
+				protocolCheck(output->Write(InRouteContext));
+				protocolCheck(output->Write(InRouteHopCount));
+				protocolCheck(output->Write(InDestPlayerID));
+				protocolCheck(output->Write(InGameInsUID));
+				protocolCheck(output->Write(InRequestedRole));
 
-				pMsgData = pNewMsg->GetMessageData();
-
-				Protocol::PackParamCopy( pMsgData, &InRouteContext, sizeof(RouteContext));
-				Protocol::PackParamCopy( pMsgData, &InRouteHopCount, sizeof(uint16_t));
-				Protocol::PackParamCopy( pMsgData, &InDestPlayerID, sizeof(PlayerID));
-				Protocol::PackParamCopy( pMsgData, &InGameInsUID, sizeof(uint64_t));
-				Protocol::PackParamCopy( pMsgData, &InRequestedRole, sizeof(uint8_t));
-
-
-			Proc_End:
-
-				if(!hr)
-				{
- 					if(pNewMsg != nullptr) delete pNewMsg;
-					pNewMsg = nullptr;
-				}
-				return pNewMsg;
-
+				return hr;
 			}; // MessageData* PlayerGameMatchedS2CEvt::Create( IHeap& memHeap, const RouteContext &InRouteContext, const uint16_t &InRouteHopCount, const PlayerID &InDestPlayerID, const uint64_t &InGameInsUID, const uint8_t &InRequestedRole )
 
 			Result PlayerGameMatchedS2CEvt::OverrideRouteContextDestination( EntityUID to )
 			{
- 				Result hr;
+ 				FunctionContext hr;
 
-				int iMsgSize;
-				uint8_t* pCur;
 				MessageData* pIMsg = GetMessage();
 				RouteContext routeContext;
 
-				protocolChkPtr(pIMsg);
+				protocolCheckPtr(pIMsg);
 
-				iMsgSize = (int)((size_t)pIMsg->GetMessageSize() - sizeof(MessageHeader));
-				pCur = pIMsg->GetMessageData();
+				size_t MsgDataSize = (int)((size_t)pIMsg->GetMessageSize() - sizeof(MessageHeader));
+				ArrayView<uint8_t> bufferView(MsgDataSize, pIMsg->GetMessageData());
+				InputMemoryStream inputStream(bufferView);
+				auto* input = inputStream.ToInputStream();
+				uint16_t ArrayLen = 0;
+				uint8_t* pCur = nullptr;
 
-				Assert( iMsgSize >= (INT)sizeof(RouteContext) );
+				pCur = input->GetBufferPtr() + input->GetPosition();
+				Assert(input->GetRemainSize() >= sizeof(RouteContext));
 				memcpy( &routeContext, pCur, sizeof(RouteContext) );
 				routeContext.Components.To = to;
 				memcpy( pCur, &routeContext, sizeof(RouteContext) );
-
-
-			Proc_End:
 
 				return hr;
 
@@ -264,29 +261,30 @@ namespace SF
 
 			Result PlayerGameMatchedS2CEvt::OverrideRouteInformation( EntityUID to, unsigned hopCount )
 			{
- 				Result hr;
+ 				FunctionContext hr;
 
-				int iMsgSize;
-				uint8_t* pCur;
 				MessageData* pIMsg = GetMessage();
 				RouteContext routeContext;
 
-				protocolChkPtr(pIMsg);
+				protocolCheckPtr(pIMsg);
 
-				iMsgSize = (int)((size_t)pIMsg->GetMessageSize() - sizeof(MessageHeader));
-				pCur = pIMsg->GetMessageData();
+				size_t iMsgSize = ((size_t)pIMsg->GetMessageSize() - sizeof(MessageHeader));
+				ArrayView<uint8_t> bufferView(MsgDataSize, pIMsg->GetMessageData());
+				InputMemoryStream inputStream(bufferView);
+				auto* input = inputStream.ToOutputStream();
+				uint16_t ArrayLen = 0;
+				uint8_t* pCur = nullptr;
 
-				Assert( iMsgSize >= (INT)sizeof(RouteContext) );
+				pCur = input->GetBufferPtr() + input->GetPosition();
+				Assert(input->GetRemainSize() >= sizeof(RouteContext));
 				memcpy( &routeContext, pCur, sizeof(RouteContext) );
 				routeContext.Components.To = to;
 				memcpy( pCur, &routeContext, sizeof(RouteContext) );
-				pCur += sizeof(RouteContext); iMsgSize -= sizeof(RouteContext);
-				Assert( iMsgSize >= (INT)sizeof(uint16_t) );
+				protocolCheck(input->Skip(sizeof(RouteContext);
+				Assert(input->GetRemainSize() >= sizeof(uint16_t));
+				pCur = input->GetBufferPtr() + input->GetPosition();
 				*(uint16_t*)pCur = hopCount;
-				pCur += sizeof(uint16_t); iMsgSize -= sizeof(uint16_t);
-
-
-			Proc_End:
+				protocolCheck(input->Skip(sizeof(uint16_t);
 
 				return hr;
 

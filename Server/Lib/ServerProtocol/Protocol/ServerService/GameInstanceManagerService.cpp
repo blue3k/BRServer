@@ -34,12 +34,10 @@ namespace SF
 		// Cmd: Create a game instance
 		Result GameInstanceManagerService::CreateGameCmd( const uint64_t &InTransactionID, const uint16_t &InRouteHopCount, const uint16_t &InNumberOfBotPlayer, const uint16_t &InMaxPlayer )
 		{
- 			Result hr;
+ 			FunctionContext hr;
 
 			RouteContext InRouteContext( EntityUID(GetMyServerID(),TransactionID(InTransactionID).GetEntityID()), GetServiceEntityUID() );
 			svrChk(Policy::NetPolicyGameInstanceManager(GetConnection()).CreateGameCmd( InRouteContext, InTransactionID, InRouteHopCount, InNumberOfBotPlayer, InMaxPlayer ) );
-
-		Proc_End:
 
 			return hr;
 
@@ -47,12 +45,10 @@ namespace SF
 		// C2S: Game instance notification of deletion
 		Result GameInstanceManagerService::GameDeletedC2SEvt( const EntityID &InSenderEntityID, const uint16_t &InRouteHopCount )
 		{
- 			Result hr;
+ 			FunctionContext hr;
 
 			RouteContext InRouteContext( EntityUID(GetMyServerID(),InSenderEntityID), GetServiceEntityUID() );
 			svrChk(Policy::NetPolicyGameInstanceManager(GetConnection()).GameDeletedC2SEvt( InRouteContext, InRouteHopCount ) );
-
-		Proc_End:
 
 			return hr;
 

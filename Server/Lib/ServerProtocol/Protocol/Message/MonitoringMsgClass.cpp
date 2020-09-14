@@ -30,20 +30,18 @@ namespace SF
 			const MessageID GetInstanceListCmd::MID = MessageID(MSGTYPE_COMMAND, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_MONITORING, 0);
 			Result GetInstanceListCmd::ParseMessage( MessageData* pIMsg )
 			{
- 				Result hr;
-
-				int iMsgSize;
-				uint8_t* pCur;
-
-				protocolChkPtr(pIMsg);
-
-				iMsgSize = (int)((size_t)pIMsg->GetMessageSize() - sizeof(MessageHeader));
-				pCur = pIMsg->GetMessageData();
-
-				protocolChk( Protocol::StreamParamCopy( &m_TransactionID, pCur, iMsgSize, sizeof(uint64_t) ) );
+ 				FunctionContext hr;
 
 
-			Proc_End:
+				protocolCheckPtr(pIMsg);
+
+				size_t MsgDataSize = ((size_t)pIMsg->GetMessageSize() - sizeof(MessageHeader));
+				ArrayView<uint8_t> bufferView(MsgDataSize, pIMsg->GetMessageData());
+				InputMemoryStream inputStream(bufferView);
+				auto* input = inputStream.ToInputStream();
+				uint16_t ArrayLen = 0;
+
+				protocolCheck(input->Read(m_TransactionID));
 
 				return hr;
 
@@ -52,12 +50,11 @@ namespace SF
 
 			Result GetInstanceListCmd::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr&& pIMsg, MessageBase* &pMessageBase )
 			{
- 				Result hr;
+ 				FunctionContext hr;
 
-				protocolMem(pMessageBase = new(memHeap) GetInstanceListCmd(std::forward<MessageDataPtr>(pIMsg)));
-				protocolChk(pMessageBase->ParseMsg());
+				protocolCheckMem(pMessageBase = new(memHeap) GetInstanceListCmd(std::forward<MessageDataPtr>(pIMsg)));
+				protocolCheck(pMessageBase->ParseMsg());
 
-			Proc_End:
 				return hr;
 
 			}; // Result GetInstanceListCmd::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr&& pIMsg, MessageBase* &pMessageBase )
@@ -65,30 +62,31 @@ namespace SF
 			MessageData* GetInstanceListCmd::Create( IHeap& memHeap, const uint64_t &InTransactionID )
 			{
  				MessageData *pNewMsg = nullptr;
-				Result hr;
+				FunctionContext hr([pNewMsg](Result hr) -> MessageData*
+				{
+ 					if(!hr && pNewMsg != nullptr)
+					{
+ 						delete pNewMsg;
+						return nullptr;
+					}
+					return pNewMsg;
+				});
 
 				uint8_t *pMsgData = nullptr;
 
 				unsigned __uiMessageSize = (unsigned)(sizeof(MessageHeader) 
-					+ sizeof(uint64_t));
+					, SerializedSizeOf(InTransactionID)
+				);
 
+				protocolCheckMem( pNewMsg = MessageData::NewMessage( memHeap, Monitoring::GetInstanceListCmd::MID, __uiMessageSize ) );
+				size_t MsgDataSize = (int)((size_t)pNewMsg->GetMessageSize() - sizeof(MessageHeader));
+				ArrayView<uint8_t> BufferView(MsgDataSize, pNewMsg->GetMessageData());
+				OutputMemoryStream outputStream(BufferView);
+				auto* output = outputStream.ToOutputStream();
 
-				protocolMem( pNewMsg = MessageData::NewMessage( memHeap, Monitoring::GetInstanceListCmd::MID, __uiMessageSize ) );
+				protocolCheck(output->Write(InTransactionID));
 
-				pMsgData = pNewMsg->GetMessageData();
-
-				Protocol::PackParamCopy( pMsgData, &InTransactionID, sizeof(uint64_t));
-
-
-			Proc_End:
-
-				if(!hr)
-				{
- 					if(pNewMsg != nullptr) delete pNewMsg;
-					pNewMsg = nullptr;
-				}
-				return pNewMsg;
-
+				return hr;
 			}; // MessageData* GetInstanceListCmd::Create( IHeap& memHeap, const uint64_t &InTransactionID )
 
 
@@ -105,26 +103,24 @@ namespace SF
 			const MessageID GetInstanceListRes::MID = MessageID(MSGTYPE_RESULT, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_MONITORING, 0);
 			Result GetInstanceListRes::ParseMessage( MessageData* pIMsg )
 			{
- 				Result hr;
-
-				int iMsgSize;
-				uint8_t* pCur;
-				uint16_t numberofCounterInstances = 0; PerformanceCounterInstanceInfo* pCounterInstances = nullptr;
-
-				protocolChkPtr(pIMsg);
-
-				iMsgSize = (int)((size_t)pIMsg->GetMessageSize() - sizeof(MessageHeader));
-				pCur = pIMsg->GetMessageData();
-
-				protocolChk( Protocol::StreamParamCopy( &m_TransactionID, pCur, iMsgSize, sizeof(uint64_t) ) );
-				protocolChk( Protocol::StreamParamCopy( &m_Result, pCur, iMsgSize, sizeof(Result) ) );
-				protocolChk( Protocol::StreamParamCopy( &numberofCounterInstances, pCur, iMsgSize, sizeof(uint16_t) ) );
-				protocolChk( Protocol::StreamParamLnk( pCounterInstances, pCur, iMsgSize, sizeof(PerformanceCounterInstanceInfo)*numberofCounterInstances ) );
-				m_CounterInstances.SetLinkedBuffer(numberofCounterInstances, numberofCounterInstances, pCounterInstances);
-				protocolChk( Protocol::StreamParamCopy( &m_TotalInstanceCount, pCur, iMsgSize, sizeof(uint32_t) ) );
+ 				FunctionContext hr;
 
 
-			Proc_End:
+				protocolCheckPtr(pIMsg);
+
+				size_t MsgDataSize = ((size_t)pIMsg->GetMessageSize() - sizeof(MessageHeader));
+				ArrayView<uint8_t> bufferView(MsgDataSize, pIMsg->GetMessageData());
+				InputMemoryStream inputStream(bufferView);
+				auto* input = inputStream.ToInputStream();
+				uint16_t ArrayLen = 0;
+
+				protocolCheck(input->Read(m_TransactionID));
+				protocolCheck(input->Read(m_Result));
+				protocolCheck(input->Read(ArrayLen));
+				PerformanceCounterInstanceInfo* CounterInstancesPtr = nullptr;
+				protocolCheck(input->ReadLink(CounterInstancesPtr, ArrayLen * sizeof(PerformanceCounterInstanceInfo)));
+				m_CounterInstances.SetLinkedBuffer(ArrayLen, CounterInstancesPtr);
+				protocolCheck(input->Read(m_TotalInstanceCount));
 
 				return hr;
 
@@ -133,12 +129,11 @@ namespace SF
 
 			Result GetInstanceListRes::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr&& pIMsg, MessageBase* &pMessageBase )
 			{
- 				Result hr;
+ 				FunctionContext hr;
 
-				protocolMem(pMessageBase = new(memHeap) GetInstanceListRes(std::forward<MessageDataPtr>(pIMsg)));
-				protocolChk(pMessageBase->ParseMsg());
+				protocolCheckMem(pMessageBase = new(memHeap) GetInstanceListRes(std::forward<MessageDataPtr>(pIMsg)));
+				protocolCheck(pMessageBase->ParseMsg());
 
-			Proc_End:
 				return hr;
 
 			}; // Result GetInstanceListRes::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr&& pIMsg, MessageBase* &pMessageBase )
@@ -146,38 +141,38 @@ namespace SF
 			MessageData* GetInstanceListRes::Create( IHeap& memHeap, const uint64_t &InTransactionID, const Result &InResult, const Array<PerformanceCounterInstanceInfo>& InCounterInstances, const uint32_t &InTotalInstanceCount )
 			{
  				MessageData *pNewMsg = nullptr;
-				Result hr;
+				FunctionContext hr([pNewMsg](Result hr) -> MessageData*
+				{
+ 					if(!hr && pNewMsg != nullptr)
+					{
+ 						delete pNewMsg;
+						return nullptr;
+					}
+					return pNewMsg;
+				});
 
 				uint8_t *pMsgData = nullptr;
 
-				unsigned __uiMessageSize = (unsigned)(sizeof(MessageHeader) 
-					+ sizeof(uint64_t)
-					+ sizeof(Result)
-					+ sizeof(PerformanceCounterInstanceInfo)*InCounterInstances.size() + sizeof(uint16_t)
-					+ sizeof(uint32_t));
-
-
 				uint16_t numberOfInCounterInstances = (uint16_t)InCounterInstances.size(); 
-				protocolMem( pNewMsg = MessageData::NewMessage( memHeap, Monitoring::GetInstanceListRes::MID, __uiMessageSize ) );
+				unsigned __uiMessageSize = (unsigned)(sizeof(MessageHeader) 
+					, SerializedSizeOf(InTransactionID)
+					, SerializedSizeOf(InResult)
+					, SerializedSizeOf(InCounterInstances)
+					, SerializedSizeOf(InTotalInstanceCount)
+				);
 
-				pMsgData = pNewMsg->GetMessageData();
+				protocolCheckMem( pNewMsg = MessageData::NewMessage( memHeap, Monitoring::GetInstanceListRes::MID, __uiMessageSize ) );
+				size_t MsgDataSize = (int)((size_t)pNewMsg->GetMessageSize() - sizeof(MessageHeader));
+				ArrayView<uint8_t> BufferView(MsgDataSize, pNewMsg->GetMessageData());
+				OutputMemoryStream outputStream(BufferView);
+				auto* output = outputStream.ToOutputStream();
 
-				Protocol::PackParamCopy( pMsgData, &InTransactionID, sizeof(uint64_t));
-				Protocol::PackParamCopy( pMsgData, &InResult, sizeof(Result));
-				Protocol::PackParamCopy( pMsgData, &numberOfInCounterInstances, sizeof(uint16_t)); 
-				Protocol::PackParamCopy( pMsgData, InCounterInstances.data(), (INT)(sizeof(PerformanceCounterInstanceInfo)*InCounterInstances.size())); 
-				Protocol::PackParamCopy( pMsgData, &InTotalInstanceCount, sizeof(uint32_t));
+				protocolCheck(output->Write(InTransactionID));
+				protocolCheck(output->Write(InResult));
+				protocolCheck(output->Write(InCounterInstances));
+				protocolCheck(output->Write(InTotalInstanceCount));
 
-
-			Proc_End:
-
-				if(!hr)
-				{
- 					if(pNewMsg != nullptr) delete pNewMsg;
-					pNewMsg = nullptr;
-				}
-				return pNewMsg;
-
+				return hr;
 			}; // MessageData* GetInstanceListRes::Create( IHeap& memHeap, const uint64_t &InTransactionID, const Result &InResult, const Array<PerformanceCounterInstanceInfo>& InCounterInstances, const uint32_t &InTotalInstanceCount )
 
 
@@ -195,21 +190,19 @@ namespace SF
 			const MessageID RequestCounterValuesCmd::MID = MessageID(MSGTYPE_COMMAND, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_MONITORING, 1);
 			Result RequestCounterValuesCmd::ParseMessage( MessageData* pIMsg )
 			{
- 				Result hr;
-
-				int iMsgSize;
-				uint8_t* pCur;
-
-				protocolChkPtr(pIMsg);
-
-				iMsgSize = (int)((size_t)pIMsg->GetMessageSize() - sizeof(MessageHeader));
-				pCur = pIMsg->GetMessageData();
-
-				protocolChk( Protocol::StreamParamCopy( &m_TransactionID, pCur, iMsgSize, sizeof(uint64_t) ) );
-				protocolChk( Protocol::StreamParamCopy( &m_InstanceUID, pCur, iMsgSize, sizeof(uint64_t) ) );
+ 				FunctionContext hr;
 
 
-			Proc_End:
+				protocolCheckPtr(pIMsg);
+
+				size_t MsgDataSize = ((size_t)pIMsg->GetMessageSize() - sizeof(MessageHeader));
+				ArrayView<uint8_t> bufferView(MsgDataSize, pIMsg->GetMessageData());
+				InputMemoryStream inputStream(bufferView);
+				auto* input = inputStream.ToInputStream();
+				uint16_t ArrayLen = 0;
+
+				protocolCheck(input->Read(m_TransactionID));
+				protocolCheck(input->Read(m_InstanceUID));
 
 				return hr;
 
@@ -218,12 +211,11 @@ namespace SF
 
 			Result RequestCounterValuesCmd::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr&& pIMsg, MessageBase* &pMessageBase )
 			{
- 				Result hr;
+ 				FunctionContext hr;
 
-				protocolMem(pMessageBase = new(memHeap) RequestCounterValuesCmd(std::forward<MessageDataPtr>(pIMsg)));
-				protocolChk(pMessageBase->ParseMsg());
+				protocolCheckMem(pMessageBase = new(memHeap) RequestCounterValuesCmd(std::forward<MessageDataPtr>(pIMsg)));
+				protocolCheck(pMessageBase->ParseMsg());
 
-			Proc_End:
 				return hr;
 
 			}; // Result RequestCounterValuesCmd::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr&& pIMsg, MessageBase* &pMessageBase )
@@ -231,32 +223,33 @@ namespace SF
 			MessageData* RequestCounterValuesCmd::Create( IHeap& memHeap, const uint64_t &InTransactionID, const uint64_t &InInstanceUID )
 			{
  				MessageData *pNewMsg = nullptr;
-				Result hr;
+				FunctionContext hr([pNewMsg](Result hr) -> MessageData*
+				{
+ 					if(!hr && pNewMsg != nullptr)
+					{
+ 						delete pNewMsg;
+						return nullptr;
+					}
+					return pNewMsg;
+				});
 
 				uint8_t *pMsgData = nullptr;
 
 				unsigned __uiMessageSize = (unsigned)(sizeof(MessageHeader) 
-					+ sizeof(uint64_t)
-					+ sizeof(uint64_t));
+					, SerializedSizeOf(InTransactionID)
+					, SerializedSizeOf(InInstanceUID)
+				);
 
+				protocolCheckMem( pNewMsg = MessageData::NewMessage( memHeap, Monitoring::RequestCounterValuesCmd::MID, __uiMessageSize ) );
+				size_t MsgDataSize = (int)((size_t)pNewMsg->GetMessageSize() - sizeof(MessageHeader));
+				ArrayView<uint8_t> BufferView(MsgDataSize, pNewMsg->GetMessageData());
+				OutputMemoryStream outputStream(BufferView);
+				auto* output = outputStream.ToOutputStream();
 
-				protocolMem( pNewMsg = MessageData::NewMessage( memHeap, Monitoring::RequestCounterValuesCmd::MID, __uiMessageSize ) );
+				protocolCheck(output->Write(InTransactionID));
+				protocolCheck(output->Write(InInstanceUID));
 
-				pMsgData = pNewMsg->GetMessageData();
-
-				Protocol::PackParamCopy( pMsgData, &InTransactionID, sizeof(uint64_t));
-				Protocol::PackParamCopy( pMsgData, &InInstanceUID, sizeof(uint64_t));
-
-
-			Proc_End:
-
-				if(!hr)
-				{
- 					if(pNewMsg != nullptr) delete pNewMsg;
-					pNewMsg = nullptr;
-				}
-				return pNewMsg;
-
+				return hr;
 			}; // MessageData* RequestCounterValuesCmd::Create( IHeap& memHeap, const uint64_t &InTransactionID, const uint64_t &InInstanceUID )
 
 
@@ -273,26 +266,24 @@ namespace SF
 			const MessageID RequestCounterValuesRes::MID = MessageID(MSGTYPE_RESULT, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_MONITORING, 1);
 			Result RequestCounterValuesRes::ParseMessage( MessageData* pIMsg )
 			{
- 				Result hr;
-
-				int iMsgSize;
-				uint8_t* pCur;
-				uint16_t numberofCounterValues = 0; uint64_t* pCounterValues = nullptr;
-
-				protocolChkPtr(pIMsg);
-
-				iMsgSize = (int)((size_t)pIMsg->GetMessageSize() - sizeof(MessageHeader));
-				pCur = pIMsg->GetMessageData();
-
-				protocolChk( Protocol::StreamParamCopy( &m_TransactionID, pCur, iMsgSize, sizeof(uint64_t) ) );
-				protocolChk( Protocol::StreamParamCopy( &m_Result, pCur, iMsgSize, sizeof(Result) ) );
-				protocolChk( Protocol::StreamParamCopy( &m_InstanceUID, pCur, iMsgSize, sizeof(uint64_t) ) );
-				protocolChk( Protocol::StreamParamCopy( &numberofCounterValues, pCur, iMsgSize, sizeof(uint16_t) ) );
-				protocolChk( Protocol::StreamParamLnk( pCounterValues, pCur, iMsgSize, sizeof(uint64_t)*numberofCounterValues ) );
-				m_CounterValues.SetLinkedBuffer(numberofCounterValues, numberofCounterValues, pCounterValues);
+ 				FunctionContext hr;
 
 
-			Proc_End:
+				protocolCheckPtr(pIMsg);
+
+				size_t MsgDataSize = ((size_t)pIMsg->GetMessageSize() - sizeof(MessageHeader));
+				ArrayView<uint8_t> bufferView(MsgDataSize, pIMsg->GetMessageData());
+				InputMemoryStream inputStream(bufferView);
+				auto* input = inputStream.ToInputStream();
+				uint16_t ArrayLen = 0;
+
+				protocolCheck(input->Read(m_TransactionID));
+				protocolCheck(input->Read(m_Result));
+				protocolCheck(input->Read(m_InstanceUID));
+				protocolCheck(input->Read(ArrayLen));
+				uint64_t* CounterValuesPtr = nullptr;
+				protocolCheck(input->ReadLink(CounterValuesPtr, ArrayLen * sizeof(uint64_t)));
+				m_CounterValues.SetLinkedBuffer(ArrayLen, CounterValuesPtr);
 
 				return hr;
 
@@ -301,12 +292,11 @@ namespace SF
 
 			Result RequestCounterValuesRes::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr&& pIMsg, MessageBase* &pMessageBase )
 			{
- 				Result hr;
+ 				FunctionContext hr;
 
-				protocolMem(pMessageBase = new(memHeap) RequestCounterValuesRes(std::forward<MessageDataPtr>(pIMsg)));
-				protocolChk(pMessageBase->ParseMsg());
+				protocolCheckMem(pMessageBase = new(memHeap) RequestCounterValuesRes(std::forward<MessageDataPtr>(pIMsg)));
+				protocolCheck(pMessageBase->ParseMsg());
 
-			Proc_End:
 				return hr;
 
 			}; // Result RequestCounterValuesRes::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr&& pIMsg, MessageBase* &pMessageBase )
@@ -314,38 +304,38 @@ namespace SF
 			MessageData* RequestCounterValuesRes::Create( IHeap& memHeap, const uint64_t &InTransactionID, const Result &InResult, const uint64_t &InInstanceUID, const Array<uint64_t>& InCounterValues )
 			{
  				MessageData *pNewMsg = nullptr;
-				Result hr;
+				FunctionContext hr([pNewMsg](Result hr) -> MessageData*
+				{
+ 					if(!hr && pNewMsg != nullptr)
+					{
+ 						delete pNewMsg;
+						return nullptr;
+					}
+					return pNewMsg;
+				});
 
 				uint8_t *pMsgData = nullptr;
 
-				unsigned __uiMessageSize = (unsigned)(sizeof(MessageHeader) 
-					+ sizeof(uint64_t)
-					+ sizeof(Result)
-					+ sizeof(uint64_t)
-					+ sizeof(uint64_t)*InCounterValues.size() + sizeof(uint16_t));
-
-
 				uint16_t numberOfInCounterValues = (uint16_t)InCounterValues.size(); 
-				protocolMem( pNewMsg = MessageData::NewMessage( memHeap, Monitoring::RequestCounterValuesRes::MID, __uiMessageSize ) );
+				unsigned __uiMessageSize = (unsigned)(sizeof(MessageHeader) 
+					, SerializedSizeOf(InTransactionID)
+					, SerializedSizeOf(InResult)
+					, SerializedSizeOf(InInstanceUID)
+					, SerializedSizeOf(InCounterValues)
+				);
 
-				pMsgData = pNewMsg->GetMessageData();
+				protocolCheckMem( pNewMsg = MessageData::NewMessage( memHeap, Monitoring::RequestCounterValuesRes::MID, __uiMessageSize ) );
+				size_t MsgDataSize = (int)((size_t)pNewMsg->GetMessageSize() - sizeof(MessageHeader));
+				ArrayView<uint8_t> BufferView(MsgDataSize, pNewMsg->GetMessageData());
+				OutputMemoryStream outputStream(BufferView);
+				auto* output = outputStream.ToOutputStream();
 
-				Protocol::PackParamCopy( pMsgData, &InTransactionID, sizeof(uint64_t));
-				Protocol::PackParamCopy( pMsgData, &InResult, sizeof(Result));
-				Protocol::PackParamCopy( pMsgData, &InInstanceUID, sizeof(uint64_t));
-				Protocol::PackParamCopy( pMsgData, &numberOfInCounterValues, sizeof(uint16_t)); 
-				Protocol::PackParamCopy( pMsgData, InCounterValues.data(), (INT)(sizeof(uint64_t)*InCounterValues.size())); 
+				protocolCheck(output->Write(InTransactionID));
+				protocolCheck(output->Write(InResult));
+				protocolCheck(output->Write(InInstanceUID));
+				protocolCheck(output->Write(InCounterValues));
 
-
-			Proc_End:
-
-				if(!hr)
-				{
- 					if(pNewMsg != nullptr) delete pNewMsg;
-					pNewMsg = nullptr;
-				}
-				return pNewMsg;
-
+				return hr;
 			}; // MessageData* RequestCounterValuesRes::Create( IHeap& memHeap, const uint64_t &InTransactionID, const Result &InResult, const uint64_t &InInstanceUID, const Array<uint64_t>& InCounterValues )
 
 
@@ -363,27 +353,24 @@ namespace SF
 			const MessageID PerformanceCounterNewC2SEvt::MID = MessageID(MSGTYPE_EVENT, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_MONITORING, 2);
 			Result PerformanceCounterNewC2SEvt::ParseMessage( MessageData* pIMsg )
 			{
- 				Result hr;
-
-				int iMsgSize;
-				uint8_t* pCur;
-				uint16_t uiSizeOfInstanceName = 0;
-				uint16_t numberofNewCounters = 0; PerformanceCounterInfo* pNewCounters = nullptr;
-
-				protocolChkPtr(pIMsg);
-
-				iMsgSize = (int)((size_t)pIMsg->GetMessageSize() - sizeof(MessageHeader));
-				pCur = pIMsg->GetMessageData();
-
-				protocolChk( Protocol::StreamParamCopy( &uiSizeOfInstanceName, pCur, iMsgSize, sizeof(uint16_t) ) );
-				protocolChk( Protocol::StreamParamLnk( m_InstanceName, pCur, iMsgSize, sizeof(char)*uiSizeOfInstanceName ) );
-				protocolChk( Protocol::StreamParamCopy( &m_InstanceUID, pCur, iMsgSize, sizeof(uint64_t) ) );
-				protocolChk( Protocol::StreamParamCopy( &numberofNewCounters, pCur, iMsgSize, sizeof(uint16_t) ) );
-				protocolChk( Protocol::StreamParamLnk( pNewCounters, pCur, iMsgSize, sizeof(PerformanceCounterInfo)*numberofNewCounters ) );
-				m_NewCounters.SetLinkedBuffer(numberofNewCounters, numberofNewCounters, pNewCounters);
+ 				FunctionContext hr;
 
 
-			Proc_End:
+				protocolCheckPtr(pIMsg);
+
+				size_t MsgDataSize = ((size_t)pIMsg->GetMessageSize() - sizeof(MessageHeader));
+				ArrayView<uint8_t> bufferView(MsgDataSize, pIMsg->GetMessageData());
+				InputMemoryStream inputStream(bufferView);
+				auto* input = inputStream.ToInputStream();
+				uint16_t ArrayLen = 0;
+
+				protocolCheck(input->Read(ArrayLen));
+				protocolCheck(input->ReadLink(m_InstanceName, ArrayLen * sizeof(char)));
+				protocolCheck(input->Read(m_InstanceUID));
+				protocolCheck(input->Read(ArrayLen));
+				PerformanceCounterInfo* NewCountersPtr = nullptr;
+				protocolCheck(input->ReadLink(NewCountersPtr, ArrayLen * sizeof(PerformanceCounterInfo)));
+				m_NewCounters.SetLinkedBuffer(ArrayLen, NewCountersPtr);
 
 				return hr;
 
@@ -392,12 +379,11 @@ namespace SF
 
 			Result PerformanceCounterNewC2SEvt::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr&& pIMsg, MessageBase* &pMessageBase )
 			{
- 				Result hr;
+ 				FunctionContext hr;
 
-				protocolMem(pMessageBase = new(memHeap) PerformanceCounterNewC2SEvt(std::forward<MessageDataPtr>(pIMsg)));
-				protocolChk(pMessageBase->ParseMsg());
+				protocolCheckMem(pMessageBase = new(memHeap) PerformanceCounterNewC2SEvt(std::forward<MessageDataPtr>(pIMsg)));
+				protocolCheck(pMessageBase->ParseMsg());
 
-			Proc_End:
 				return hr;
 
 			}; // Result PerformanceCounterNewC2SEvt::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr&& pIMsg, MessageBase* &pMessageBase )
@@ -405,37 +391,36 @@ namespace SF
 			MessageData* PerformanceCounterNewC2SEvt::Create( IHeap& memHeap, const char* InInstanceName, const uint64_t &InInstanceUID, const Array<PerformanceCounterInfo>& InNewCounters )
 			{
  				MessageData *pNewMsg = nullptr;
-				Result hr;
+				FunctionContext hr([pNewMsg](Result hr) -> MessageData*
+				{
+ 					if(!hr && pNewMsg != nullptr)
+					{
+ 						delete pNewMsg;
+						return nullptr;
+					}
+					return pNewMsg;
+				});
 
 				uint8_t *pMsgData = nullptr;
 
-				uint16_t __uiInInstanceNameLength = InInstanceName ? (uint16_t)(strlen(InInstanceName)+1) : 1;
-				unsigned __uiMessageSize = (unsigned)(sizeof(MessageHeader) +  + sizeof(uint16_t) + __uiInInstanceNameLength 
-					+ sizeof(uint64_t)
-					+ sizeof(PerformanceCounterInfo)*InNewCounters.size() + sizeof(uint16_t));
-
-
 				uint16_t numberOfInNewCounters = (uint16_t)InNewCounters.size(); 
-				protocolMem( pNewMsg = MessageData::NewMessage( memHeap, Monitoring::PerformanceCounterNewC2SEvt::MID, __uiMessageSize ) );
+				unsigned __uiMessageSize = (unsigned)(sizeof(MessageHeader) 
+					, SerializedSizeOf(InInstanceName)
+					, SerializedSizeOf(InInstanceUID)
+					, SerializedSizeOf(InNewCounters)
+				);
 
-				pMsgData = pNewMsg->GetMessageData();
+				protocolCheckMem( pNewMsg = MessageData::NewMessage( memHeap, Monitoring::PerformanceCounterNewC2SEvt::MID, __uiMessageSize ) );
+				size_t MsgDataSize = (int)((size_t)pNewMsg->GetMessageSize() - sizeof(MessageHeader));
+				ArrayView<uint8_t> BufferView(MsgDataSize, pNewMsg->GetMessageData());
+				OutputMemoryStream outputStream(BufferView);
+				auto* output = outputStream.ToOutputStream();
 
-				Protocol::PackParamCopy( pMsgData, &__uiInInstanceNameLength, sizeof(uint16_t) );
-				Protocol::PackParamCopy( pMsgData, InInstanceName ? InInstanceName : "", __uiInInstanceNameLength );
-				Protocol::PackParamCopy( pMsgData, &InInstanceUID, sizeof(uint64_t));
-				Protocol::PackParamCopy( pMsgData, &numberOfInNewCounters, sizeof(uint16_t)); 
-				Protocol::PackParamCopy( pMsgData, InNewCounters.data(), (INT)(sizeof(PerformanceCounterInfo)*InNewCounters.size())); 
+				protocolCheck(output->Write(InInstanceName));
+				protocolCheck(output->Write(InInstanceUID));
+				protocolCheck(output->Write(InNewCounters));
 
-
-			Proc_End:
-
-				if(!hr)
-				{
- 					if(pNewMsg != nullptr) delete pNewMsg;
-					pNewMsg = nullptr;
-				}
-				return pNewMsg;
-
+				return hr;
 			}; // MessageData* PerformanceCounterNewC2SEvt::Create( IHeap& memHeap, const char* InInstanceName, const uint64_t &InInstanceUID, const Array<PerformanceCounterInfo>& InNewCounters )
 
 
@@ -453,23 +438,21 @@ namespace SF
 			const MessageID PerformanceCounterFreeC2SEvt::MID = MessageID(MSGTYPE_EVENT, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_MONITORING, 3);
 			Result PerformanceCounterFreeC2SEvt::ParseMessage( MessageData* pIMsg )
 			{
- 				Result hr;
-
-				int iMsgSize;
-				uint8_t* pCur;
-				uint16_t numberofFreeInstances = 0; uint64_t* pFreeInstances = nullptr;
-
-				protocolChkPtr(pIMsg);
-
-				iMsgSize = (int)((size_t)pIMsg->GetMessageSize() - sizeof(MessageHeader));
-				pCur = pIMsg->GetMessageData();
-
-				protocolChk( Protocol::StreamParamCopy( &numberofFreeInstances, pCur, iMsgSize, sizeof(uint16_t) ) );
-				protocolChk( Protocol::StreamParamLnk( pFreeInstances, pCur, iMsgSize, sizeof(uint64_t)*numberofFreeInstances ) );
-				m_FreeInstances.SetLinkedBuffer(numberofFreeInstances, numberofFreeInstances, pFreeInstances);
+ 				FunctionContext hr;
 
 
-			Proc_End:
+				protocolCheckPtr(pIMsg);
+
+				size_t MsgDataSize = ((size_t)pIMsg->GetMessageSize() - sizeof(MessageHeader));
+				ArrayView<uint8_t> bufferView(MsgDataSize, pIMsg->GetMessageData());
+				InputMemoryStream inputStream(bufferView);
+				auto* input = inputStream.ToInputStream();
+				uint16_t ArrayLen = 0;
+
+				protocolCheck(input->Read(ArrayLen));
+				uint64_t* FreeInstancesPtr = nullptr;
+				protocolCheck(input->ReadLink(FreeInstancesPtr, ArrayLen * sizeof(uint64_t)));
+				m_FreeInstances.SetLinkedBuffer(ArrayLen, FreeInstancesPtr);
 
 				return hr;
 
@@ -478,12 +461,11 @@ namespace SF
 
 			Result PerformanceCounterFreeC2SEvt::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr&& pIMsg, MessageBase* &pMessageBase )
 			{
- 				Result hr;
+ 				FunctionContext hr;
 
-				protocolMem(pMessageBase = new(memHeap) PerformanceCounterFreeC2SEvt(std::forward<MessageDataPtr>(pIMsg)));
-				protocolChk(pMessageBase->ParseMsg());
+				protocolCheckMem(pMessageBase = new(memHeap) PerformanceCounterFreeC2SEvt(std::forward<MessageDataPtr>(pIMsg)));
+				protocolCheck(pMessageBase->ParseMsg());
 
-			Proc_End:
 				return hr;
 
 			}; // Result PerformanceCounterFreeC2SEvt::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr&& pIMsg, MessageBase* &pMessageBase )
@@ -491,32 +473,32 @@ namespace SF
 			MessageData* PerformanceCounterFreeC2SEvt::Create( IHeap& memHeap, const Array<uint64_t>& InFreeInstances )
 			{
  				MessageData *pNewMsg = nullptr;
-				Result hr;
+				FunctionContext hr([pNewMsg](Result hr) -> MessageData*
+				{
+ 					if(!hr && pNewMsg != nullptr)
+					{
+ 						delete pNewMsg;
+						return nullptr;
+					}
+					return pNewMsg;
+				});
 
 				uint8_t *pMsgData = nullptr;
 
-				unsigned __uiMessageSize = (unsigned)(sizeof(MessageHeader) 
-					+ sizeof(uint64_t)*InFreeInstances.size() + sizeof(uint16_t));
-
-
 				uint16_t numberOfInFreeInstances = (uint16_t)InFreeInstances.size(); 
-				protocolMem( pNewMsg = MessageData::NewMessage( memHeap, Monitoring::PerformanceCounterFreeC2SEvt::MID, __uiMessageSize ) );
+				unsigned __uiMessageSize = (unsigned)(sizeof(MessageHeader) 
+					, SerializedSizeOf(InFreeInstances)
+				);
 
-				pMsgData = pNewMsg->GetMessageData();
+				protocolCheckMem( pNewMsg = MessageData::NewMessage( memHeap, Monitoring::PerformanceCounterFreeC2SEvt::MID, __uiMessageSize ) );
+				size_t MsgDataSize = (int)((size_t)pNewMsg->GetMessageSize() - sizeof(MessageHeader));
+				ArrayView<uint8_t> BufferView(MsgDataSize, pNewMsg->GetMessageData());
+				OutputMemoryStream outputStream(BufferView);
+				auto* output = outputStream.ToOutputStream();
 
-				Protocol::PackParamCopy( pMsgData, &numberOfInFreeInstances, sizeof(uint16_t)); 
-				Protocol::PackParamCopy( pMsgData, InFreeInstances.data(), (INT)(sizeof(uint64_t)*InFreeInstances.size())); 
+				protocolCheck(output->Write(InFreeInstances));
 
-
-			Proc_End:
-
-				if(!hr)
-				{
- 					if(pNewMsg != nullptr) delete pNewMsg;
-					pNewMsg = nullptr;
-				}
-				return pNewMsg;
-
+				return hr;
 			}; // MessageData* PerformanceCounterFreeC2SEvt::Create( IHeap& memHeap, const Array<uint64_t>& InFreeInstances )
 
 
@@ -534,24 +516,22 @@ namespace SF
 			const MessageID PerformanceCounterUpdateC2SEvt::MID = MessageID(MSGTYPE_EVENT, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_MONITORING, 4);
 			Result PerformanceCounterUpdateC2SEvt::ParseMessage( MessageData* pIMsg )
 			{
- 				Result hr;
-
-				int iMsgSize;
-				uint8_t* pCur;
-				uint16_t numberofCounterValues = 0; uint64_t* pCounterValues = nullptr;
-
-				protocolChkPtr(pIMsg);
-
-				iMsgSize = (int)((size_t)pIMsg->GetMessageSize() - sizeof(MessageHeader));
-				pCur = pIMsg->GetMessageData();
-
-				protocolChk( Protocol::StreamParamCopy( &m_InstanceUID, pCur, iMsgSize, sizeof(uint64_t) ) );
-				protocolChk( Protocol::StreamParamCopy( &numberofCounterValues, pCur, iMsgSize, sizeof(uint16_t) ) );
-				protocolChk( Protocol::StreamParamLnk( pCounterValues, pCur, iMsgSize, sizeof(uint64_t)*numberofCounterValues ) );
-				m_CounterValues.SetLinkedBuffer(numberofCounterValues, numberofCounterValues, pCounterValues);
+ 				FunctionContext hr;
 
 
-			Proc_End:
+				protocolCheckPtr(pIMsg);
+
+				size_t MsgDataSize = ((size_t)pIMsg->GetMessageSize() - sizeof(MessageHeader));
+				ArrayView<uint8_t> bufferView(MsgDataSize, pIMsg->GetMessageData());
+				InputMemoryStream inputStream(bufferView);
+				auto* input = inputStream.ToInputStream();
+				uint16_t ArrayLen = 0;
+
+				protocolCheck(input->Read(m_InstanceUID));
+				protocolCheck(input->Read(ArrayLen));
+				uint64_t* CounterValuesPtr = nullptr;
+				protocolCheck(input->ReadLink(CounterValuesPtr, ArrayLen * sizeof(uint64_t)));
+				m_CounterValues.SetLinkedBuffer(ArrayLen, CounterValuesPtr);
 
 				return hr;
 
@@ -560,12 +540,11 @@ namespace SF
 
 			Result PerformanceCounterUpdateC2SEvt::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr&& pIMsg, MessageBase* &pMessageBase )
 			{
- 				Result hr;
+ 				FunctionContext hr;
 
-				protocolMem(pMessageBase = new(memHeap) PerformanceCounterUpdateC2SEvt(std::forward<MessageDataPtr>(pIMsg)));
-				protocolChk(pMessageBase->ParseMsg());
+				protocolCheckMem(pMessageBase = new(memHeap) PerformanceCounterUpdateC2SEvt(std::forward<MessageDataPtr>(pIMsg)));
+				protocolCheck(pMessageBase->ParseMsg());
 
-			Proc_End:
 				return hr;
 
 			}; // Result PerformanceCounterUpdateC2SEvt::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr&& pIMsg, MessageBase* &pMessageBase )
@@ -573,34 +552,34 @@ namespace SF
 			MessageData* PerformanceCounterUpdateC2SEvt::Create( IHeap& memHeap, const uint64_t &InInstanceUID, const Array<uint64_t>& InCounterValues )
 			{
  				MessageData *pNewMsg = nullptr;
-				Result hr;
+				FunctionContext hr([pNewMsg](Result hr) -> MessageData*
+				{
+ 					if(!hr && pNewMsg != nullptr)
+					{
+ 						delete pNewMsg;
+						return nullptr;
+					}
+					return pNewMsg;
+				});
 
 				uint8_t *pMsgData = nullptr;
 
-				unsigned __uiMessageSize = (unsigned)(sizeof(MessageHeader) 
-					+ sizeof(uint64_t)
-					+ sizeof(uint64_t)*InCounterValues.size() + sizeof(uint16_t));
-
-
 				uint16_t numberOfInCounterValues = (uint16_t)InCounterValues.size(); 
-				protocolMem( pNewMsg = MessageData::NewMessage( memHeap, Monitoring::PerformanceCounterUpdateC2SEvt::MID, __uiMessageSize ) );
+				unsigned __uiMessageSize = (unsigned)(sizeof(MessageHeader) 
+					, SerializedSizeOf(InInstanceUID)
+					, SerializedSizeOf(InCounterValues)
+				);
 
-				pMsgData = pNewMsg->GetMessageData();
+				protocolCheckMem( pNewMsg = MessageData::NewMessage( memHeap, Monitoring::PerformanceCounterUpdateC2SEvt::MID, __uiMessageSize ) );
+				size_t MsgDataSize = (int)((size_t)pNewMsg->GetMessageSize() - sizeof(MessageHeader));
+				ArrayView<uint8_t> BufferView(MsgDataSize, pNewMsg->GetMessageData());
+				OutputMemoryStream outputStream(BufferView);
+				auto* output = outputStream.ToOutputStream();
 
-				Protocol::PackParamCopy( pMsgData, &InInstanceUID, sizeof(uint64_t));
-				Protocol::PackParamCopy( pMsgData, &numberOfInCounterValues, sizeof(uint16_t)); 
-				Protocol::PackParamCopy( pMsgData, InCounterValues.data(), (INT)(sizeof(uint64_t)*InCounterValues.size())); 
+				protocolCheck(output->Write(InInstanceUID));
+				protocolCheck(output->Write(InCounterValues));
 
-
-			Proc_End:
-
-				if(!hr)
-				{
- 					if(pNewMsg != nullptr) delete pNewMsg;
-					pNewMsg = nullptr;
-				}
-				return pNewMsg;
-
+				return hr;
 			}; // MessageData* PerformanceCounterUpdateC2SEvt::Create( IHeap& memHeap, const uint64_t &InInstanceUID, const Array<uint64_t>& InCounterValues )
 
 
@@ -618,20 +597,18 @@ namespace SF
 			const MessageID PerformanceCounterUpdateCounterInfoS2CEvt::MID = MessageID(MSGTYPE_EVENT, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_MONITORING, 5);
 			Result PerformanceCounterUpdateCounterInfoS2CEvt::ParseMessage( MessageData* pIMsg )
 			{
- 				Result hr;
-
-				int iMsgSize;
-				uint8_t* pCur;
-
-				protocolChkPtr(pIMsg);
-
-				iMsgSize = (int)((size_t)pIMsg->GetMessageSize() - sizeof(MessageHeader));
-				pCur = pIMsg->GetMessageData();
-
-				protocolChk( Protocol::StreamParamCopy( &m_InstanceUID, pCur, iMsgSize, sizeof(uint64_t) ) );
+ 				FunctionContext hr;
 
 
-			Proc_End:
+				protocolCheckPtr(pIMsg);
+
+				size_t MsgDataSize = ((size_t)pIMsg->GetMessageSize() - sizeof(MessageHeader));
+				ArrayView<uint8_t> bufferView(MsgDataSize, pIMsg->GetMessageData());
+				InputMemoryStream inputStream(bufferView);
+				auto* input = inputStream.ToInputStream();
+				uint16_t ArrayLen = 0;
+
+				protocolCheck(input->Read(m_InstanceUID));
 
 				return hr;
 
@@ -640,12 +617,11 @@ namespace SF
 
 			Result PerformanceCounterUpdateCounterInfoS2CEvt::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr&& pIMsg, MessageBase* &pMessageBase )
 			{
- 				Result hr;
+ 				FunctionContext hr;
 
-				protocolMem(pMessageBase = new(memHeap) PerformanceCounterUpdateCounterInfoS2CEvt(std::forward<MessageDataPtr>(pIMsg)));
-				protocolChk(pMessageBase->ParseMsg());
+				protocolCheckMem(pMessageBase = new(memHeap) PerformanceCounterUpdateCounterInfoS2CEvt(std::forward<MessageDataPtr>(pIMsg)));
+				protocolCheck(pMessageBase->ParseMsg());
 
-			Proc_End:
 				return hr;
 
 			}; // Result PerformanceCounterUpdateCounterInfoS2CEvt::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr&& pIMsg, MessageBase* &pMessageBase )
@@ -653,30 +629,31 @@ namespace SF
 			MessageData* PerformanceCounterUpdateCounterInfoS2CEvt::Create( IHeap& memHeap, const uint64_t &InInstanceUID )
 			{
  				MessageData *pNewMsg = nullptr;
-				Result hr;
+				FunctionContext hr([pNewMsg](Result hr) -> MessageData*
+				{
+ 					if(!hr && pNewMsg != nullptr)
+					{
+ 						delete pNewMsg;
+						return nullptr;
+					}
+					return pNewMsg;
+				});
 
 				uint8_t *pMsgData = nullptr;
 
 				unsigned __uiMessageSize = (unsigned)(sizeof(MessageHeader) 
-					+ sizeof(uint64_t));
+					, SerializedSizeOf(InInstanceUID)
+				);
 
+				protocolCheckMem( pNewMsg = MessageData::NewMessage( memHeap, Monitoring::PerformanceCounterUpdateCounterInfoS2CEvt::MID, __uiMessageSize ) );
+				size_t MsgDataSize = (int)((size_t)pNewMsg->GetMessageSize() - sizeof(MessageHeader));
+				ArrayView<uint8_t> BufferView(MsgDataSize, pNewMsg->GetMessageData());
+				OutputMemoryStream outputStream(BufferView);
+				auto* output = outputStream.ToOutputStream();
 
-				protocolMem( pNewMsg = MessageData::NewMessage( memHeap, Monitoring::PerformanceCounterUpdateCounterInfoS2CEvt::MID, __uiMessageSize ) );
+				protocolCheck(output->Write(InInstanceUID));
 
-				pMsgData = pNewMsg->GetMessageData();
-
-				Protocol::PackParamCopy( pMsgData, &InInstanceUID, sizeof(uint64_t));
-
-
-			Proc_End:
-
-				if(!hr)
-				{
- 					if(pNewMsg != nullptr) delete pNewMsg;
-					pNewMsg = nullptr;
-				}
-				return pNewMsg;
-
+				return hr;
 			}; // MessageData* PerformanceCounterUpdateCounterInfoS2CEvt::Create( IHeap& memHeap, const uint64_t &InInstanceUID )
 
 

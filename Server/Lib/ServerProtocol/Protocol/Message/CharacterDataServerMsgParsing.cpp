@@ -43,8 +43,8 @@ namespace SF
 			MessageParseToMessageBaseMap.insert(std::make_pair(Message::CharacterDataServer::SetAttributeCmd::MID.IDSeq.MsgID,&Message::CharacterDataServer::SetAttributeCmd::ParseMessageToMessageBase));
 			MessageParseToMessageBaseMap.insert(std::make_pair(Message::CharacterDataServer::SetAttributeRes::MID.IDSeq.MsgID,&Message::CharacterDataServer::SetAttributeRes::ParseMessageToMessageBase));
 			// Cmd: Remove an attribute value
-			MessageParseToMessageBaseMap.insert(std::make_pair(Message::CharacterDataServer::RemoveAttributeCmd::MID.IDSeq.MsgID,&Message::CharacterDataServer::RemoveAttributeCmd::ParseMessageToMessageBase));
-			MessageParseToMessageBaseMap.insert(std::make_pair(Message::CharacterDataServer::RemoveAttributeRes::MID.IDSeq.MsgID,&Message::CharacterDataServer::RemoveAttributeRes::ParseMessageToMessageBase));
+			MessageParseToMessageBaseMap.insert(std::make_pair(Message::CharacterDataServer::RemoveAttributesCmd::MID.IDSeq.MsgID,&Message::CharacterDataServer::RemoveAttributesCmd::ParseMessageToMessageBase));
+			MessageParseToMessageBaseMap.insert(std::make_pair(Message::CharacterDataServer::RemoveAttributesRes::MID.IDSeq.MsgID,&Message::CharacterDataServer::RemoveAttributesRes::ParseMessageToMessageBase));
 			// Cmd: Attribute add
 			MessageParseToMessageBaseMap.insert(std::make_pair(Message::CharacterDataServer::AttributeValueAddCmd::MID.IDSeq.MsgID,&Message::CharacterDataServer::AttributeValueAddCmd::ParseMessageToMessageBase));
 			MessageParseToMessageBaseMap.insert(std::make_pair(Message::CharacterDataServer::AttributeValueAddRes::MID.IDSeq.MsgID,&Message::CharacterDataServer::AttributeValueAddRes::ParseMessageToMessageBase));

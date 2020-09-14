@@ -28,17 +28,15 @@ namespace SF
  		// Cmd: Cluster member list query
 		Result NetPolicyClusterServer::GetClusterMemberListCmd( const RouteContext &InRouteContext, const uint64_t &InTransactionID, const uint16_t &InRouteHopCount, const ClusterID &InClusterID )
 		{
- 			Result hr;
+ 			FunctionContext hr;
 
 			 MessageDataPtr pMessage;
-			 protocolChkPtr(m_pConnection);
+			 protocolCheckPtr(m_pConnection);
 
 			 pMessage = SF::Message::ClusterServer::GetClusterMemberListCmd::Create(m_pConnection->GetIOHeap(), InRouteContext, InTransactionID, InRouteHopCount, InClusterID);
-			 protocolChkPtr(*pMessage);
+			 protocolCheckPtr(*pMessage);
 
 			 return m_pConnection->Send( pMessage );
-
-		Proc_End:
 
 			return hr;
 
@@ -46,17 +44,15 @@ namespace SF
 		// Cmd: Join to the cluster
 		Result NetPolicyClusterServer::RequestDataSyncCmd( const RouteContext &InRouteContext, const uint64_t &InTransactionID, const uint16_t &InRouteHopCount, const ClusterID &InClusterID )
 		{
- 			Result hr;
+ 			FunctionContext hr;
 
 			 MessageDataPtr pMessage;
-			 protocolChkPtr(m_pConnection);
+			 protocolCheckPtr(m_pConnection);
 
 			 pMessage = SF::Message::ClusterServer::RequestDataSyncCmd::Create(m_pConnection->GetIOHeap(), InRouteContext, InTransactionID, InRouteHopCount, InClusterID);
-			 protocolChkPtr(*pMessage);
+			 protocolCheckPtr(*pMessage);
 
 			 return m_pConnection->Send( pMessage );
-
-		Proc_End:
 
 			return hr;
 
@@ -66,17 +62,15 @@ namespace SF
 		// Cmd: Cluster member list query
 		Result NetSvrPolicyClusterServer::GetClusterMemberListRes( const RouteContext &InRouteContext, const uint64_t &InTransactionID, const Result &InResult, const Array<ServiceInformation>& InMemberList )
 		{
- 			Result hr;
+ 			FunctionContext hr;
 
 			 MessageDataPtr pMessage;
-			 protocolChkPtr(m_pConnection);
+			 protocolCheckPtr(m_pConnection);
 
 			 pMessage = SF::Message::ClusterServer::GetClusterMemberListRes::Create(m_pConnection->GetIOHeap(), InRouteContext, InTransactionID, InResult, InMemberList);
-			 protocolChkPtr(*pMessage);
+			 protocolCheckPtr(*pMessage);
 
 			 return m_pConnection->Send( pMessage );
-
-		Proc_End:
 
 			return hr;
 
@@ -84,17 +78,15 @@ namespace SF
 		// Cmd: Join to the cluster
 		Result NetSvrPolicyClusterServer::RequestDataSyncRes( const RouteContext &InRouteContext, const uint64_t &InTransactionID, const Result &InResult )
 		{
- 			Result hr;
+ 			FunctionContext hr;
 
 			 MessageDataPtr pMessage;
-			 protocolChkPtr(m_pConnection);
+			 protocolCheckPtr(m_pConnection);
 
 			 pMessage = SF::Message::ClusterServer::RequestDataSyncRes::Create(m_pConnection->GetIOHeap(), InRouteContext, InTransactionID, InResult);
-			 protocolChkPtr(*pMessage);
+			 protocolCheckPtr(*pMessage);
 
 			 return m_pConnection->Send( pMessage );
-
-		Proc_End:
 
 			return hr;
 

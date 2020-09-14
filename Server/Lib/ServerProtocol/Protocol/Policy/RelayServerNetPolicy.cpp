@@ -28,17 +28,15 @@ namespace SF
  		// Cmd: Relay Instance
 		Result NetPolicyRelayServer::CreateRelayInstanceCmd( const RouteContext &InRouteContext, const uint64_t &InTransactionID, const PlayerInformation &InPlayerInfo, const uint64_t &InRelayScore )
 		{
- 			Result hr;
+ 			FunctionContext hr;
 
 			 MessageDataPtr pMessage;
-			 protocolChkPtr(m_pConnection);
+			 protocolCheckPtr(m_pConnection);
 
 			 pMessage = SF::Message::RelayServer::CreateRelayInstanceCmd::Create(m_pConnection->GetIOHeap(), InRouteContext, InTransactionID, InPlayerInfo, InRelayScore);
-			 protocolChkPtr(*pMessage);
+			 protocolCheckPtr(*pMessage);
 
 			 return m_pConnection->Send( pMessage );
-
-		Proc_End:
 
 			return hr;
 
@@ -46,17 +44,15 @@ namespace SF
 		// Cmd: Add a player to Relay
 		Result NetPolicyRelayServer::AddPlayerCmd( const RouteContext &InRouteContext, const uint64_t &InTransactionID, const PlayerInformation &InPlayerInfo, const uint64_t &InRelayScore )
 		{
- 			Result hr;
+ 			FunctionContext hr;
 
 			 MessageDataPtr pMessage;
-			 protocolChkPtr(m_pConnection);
+			 protocolCheckPtr(m_pConnection);
 
 			 pMessage = SF::Message::RelayServer::AddPlayerCmd::Create(m_pConnection->GetIOHeap(), InRouteContext, InTransactionID, InPlayerInfo, InRelayScore);
-			 protocolChkPtr(*pMessage);
+			 protocolCheckPtr(*pMessage);
 
 			 return m_pConnection->Send( pMessage );
-
-		Proc_End:
 
 			return hr;
 
@@ -64,17 +60,15 @@ namespace SF
 		// Cmd: Remove a player to Relay
 		Result NetPolicyRelayServer::RemovePlayerCmd( const RouteContext &InRouteContext, const uint64_t &InTransactionID, const PlayerID &InPlayerID )
 		{
- 			Result hr;
+ 			FunctionContext hr;
 
 			 MessageDataPtr pMessage;
-			 protocolChkPtr(m_pConnection);
+			 protocolCheckPtr(m_pConnection);
 
 			 pMessage = SF::Message::RelayServer::RemovePlayerCmd::Create(m_pConnection->GetIOHeap(), InRouteContext, InTransactionID, InPlayerID);
-			 protocolChkPtr(*pMessage);
+			 protocolCheckPtr(*pMessage);
 
 			 return m_pConnection->Send( pMessage );
-
-		Proc_End:
 
 			return hr;
 
@@ -84,17 +78,15 @@ namespace SF
 		// Cmd: Relay Instance
 		Result NetSvrPolicyRelayServer::CreateRelayInstanceRes( const RouteContext &InRouteContext, const uint64_t &InTransactionID, const Result &InResult, const uint32_t &InRelay )
 		{
- 			Result hr;
+ 			FunctionContext hr;
 
 			 MessageDataPtr pMessage;
-			 protocolChkPtr(m_pConnection);
+			 protocolCheckPtr(m_pConnection);
 
 			 pMessage = SF::Message::RelayServer::CreateRelayInstanceRes::Create(m_pConnection->GetIOHeap(), InRouteContext, InTransactionID, InResult, InRelay);
-			 protocolChkPtr(*pMessage);
+			 protocolCheckPtr(*pMessage);
 
 			 return m_pConnection->Send( pMessage );
-
-		Proc_End:
 
 			return hr;
 
@@ -102,17 +94,15 @@ namespace SF
 		// Cmd: Add a player to Relay
 		Result NetSvrPolicyRelayServer::AddPlayerRes( const RouteContext &InRouteContext, const uint64_t &InTransactionID, const Result &InResult, const uint32_t &InRelay )
 		{
- 			Result hr;
+ 			FunctionContext hr;
 
 			 MessageDataPtr pMessage;
-			 protocolChkPtr(m_pConnection);
+			 protocolCheckPtr(m_pConnection);
 
 			 pMessage = SF::Message::RelayServer::AddPlayerRes::Create(m_pConnection->GetIOHeap(), InRouteContext, InTransactionID, InResult, InRelay);
-			 protocolChkPtr(*pMessage);
+			 protocolCheckPtr(*pMessage);
 
 			 return m_pConnection->Send( pMessage );
-
-		Proc_End:
 
 			return hr;
 
@@ -120,17 +110,15 @@ namespace SF
 		// Cmd: Remove a player to Relay
 		Result NetSvrPolicyRelayServer::RemovePlayerRes( const RouteContext &InRouteContext, const uint64_t &InTransactionID, const Result &InResult )
 		{
- 			Result hr;
+ 			FunctionContext hr;
 
 			 MessageDataPtr pMessage;
-			 protocolChkPtr(m_pConnection);
+			 protocolCheckPtr(m_pConnection);
 
 			 pMessage = SF::Message::RelayServer::RemovePlayerRes::Create(m_pConnection->GetIOHeap(), InRouteContext, InTransactionID, InResult);
-			 protocolChkPtr(*pMessage);
+			 protocolCheckPtr(*pMessage);
 
 			 return m_pConnection->Send( pMessage );
-
-		Proc_End:
 
 			return hr;
 

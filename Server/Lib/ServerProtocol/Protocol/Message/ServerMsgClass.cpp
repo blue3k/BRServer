@@ -30,21 +30,19 @@ namespace SF
 			const MessageID GenericFailureCmd::MID = MessageID(MSGTYPE_COMMAND, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_SERVER, 0);
 			Result GenericFailureCmd::ParseMessage( MessageData* pIMsg )
 			{
- 				Result hr;
-
-				int iMsgSize;
-				uint8_t* pCur;
-
-				protocolChkPtr(pIMsg);
-
-				iMsgSize = (int)((size_t)pIMsg->GetMessageSize() - sizeof(MessageHeader));
-				pCur = pIMsg->GetMessageData();
-
-				protocolChk( Protocol::StreamParamCopy( &m_RouteContext, pCur, iMsgSize, sizeof(RouteContext) ) );
-				protocolChk( Protocol::StreamParamCopy( &m_TransactionID, pCur, iMsgSize, sizeof(uint64_t) ) );
+ 				FunctionContext hr;
 
 
-			Proc_End:
+				protocolCheckPtr(pIMsg);
+
+				size_t MsgDataSize = ((size_t)pIMsg->GetMessageSize() - sizeof(MessageHeader));
+				ArrayView<uint8_t> bufferView(MsgDataSize, pIMsg->GetMessageData());
+				InputMemoryStream inputStream(bufferView);
+				auto* input = inputStream.ToInputStream();
+				uint16_t ArrayLen = 0;
+
+				protocolCheck(input->Read(m_RouteContext));
+				protocolCheck(input->Read(m_TransactionID));
 
 				return hr;
 
@@ -53,12 +51,11 @@ namespace SF
 
 			Result GenericFailureCmd::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr&& pIMsg, MessageBase* &pMessageBase )
 			{
- 				Result hr;
+ 				FunctionContext hr;
 
-				protocolMem(pMessageBase = new(memHeap) GenericFailureCmd(std::forward<MessageDataPtr>(pIMsg)));
-				protocolChk(pMessageBase->ParseMsg());
+				protocolCheckMem(pMessageBase = new(memHeap) GenericFailureCmd(std::forward<MessageDataPtr>(pIMsg)));
+				protocolCheck(pMessageBase->ParseMsg());
 
-			Proc_End:
 				return hr;
 
 			}; // Result GenericFailureCmd::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr&& pIMsg, MessageBase* &pMessageBase )
@@ -66,55 +63,56 @@ namespace SF
 			MessageData* GenericFailureCmd::Create( IHeap& memHeap, const RouteContext &InRouteContext, const uint64_t &InTransactionID )
 			{
  				MessageData *pNewMsg = nullptr;
-				Result hr;
+				FunctionContext hr([pNewMsg](Result hr) -> MessageData*
+				{
+ 					if(!hr && pNewMsg != nullptr)
+					{
+ 						delete pNewMsg;
+						return nullptr;
+					}
+					return pNewMsg;
+				});
 
 				uint8_t *pMsgData = nullptr;
 
 				unsigned __uiMessageSize = (unsigned)(sizeof(MessageHeader) 
-					+ sizeof(RouteContext)
-					+ sizeof(uint64_t));
+					, SerializedSizeOf(InRouteContext)
+					, SerializedSizeOf(InTransactionID)
+				);
 
+				protocolCheckMem( pNewMsg = MessageData::NewMessage( memHeap, Server::GenericFailureCmd::MID, __uiMessageSize ) );
+				size_t MsgDataSize = (int)((size_t)pNewMsg->GetMessageSize() - sizeof(MessageHeader));
+				ArrayView<uint8_t> BufferView(MsgDataSize, pNewMsg->GetMessageData());
+				OutputMemoryStream outputStream(BufferView);
+				auto* output = outputStream.ToOutputStream();
 
-				protocolMem( pNewMsg = MessageData::NewMessage( memHeap, Server::GenericFailureCmd::MID, __uiMessageSize ) );
+				protocolCheck(output->Write(InRouteContext));
+				protocolCheck(output->Write(InTransactionID));
 
-				pMsgData = pNewMsg->GetMessageData();
-
-				Protocol::PackParamCopy( pMsgData, &InRouteContext, sizeof(RouteContext));
-				Protocol::PackParamCopy( pMsgData, &InTransactionID, sizeof(uint64_t));
-
-
-			Proc_End:
-
-				if(!hr)
-				{
- 					if(pNewMsg != nullptr) delete pNewMsg;
-					pNewMsg = nullptr;
-				}
-				return pNewMsg;
-
+				return hr;
 			}; // MessageData* GenericFailureCmd::Create( IHeap& memHeap, const RouteContext &InRouteContext, const uint64_t &InTransactionID )
 
 			Result GenericFailureCmd::OverrideRouteContextDestination( EntityUID to )
 			{
- 				Result hr;
+ 				FunctionContext hr;
 
-				int iMsgSize;
-				uint8_t* pCur;
 				MessageData* pIMsg = GetMessage();
 				RouteContext routeContext;
 
-				protocolChkPtr(pIMsg);
+				protocolCheckPtr(pIMsg);
 
-				iMsgSize = (int)((size_t)pIMsg->GetMessageSize() - sizeof(MessageHeader));
-				pCur = pIMsg->GetMessageData();
+				size_t MsgDataSize = (int)((size_t)pIMsg->GetMessageSize() - sizeof(MessageHeader));
+				ArrayView<uint8_t> bufferView(MsgDataSize, pIMsg->GetMessageData());
+				InputMemoryStream inputStream(bufferView);
+				auto* input = inputStream.ToInputStream();
+				uint16_t ArrayLen = 0;
+				uint8_t* pCur = nullptr;
 
-				Assert( iMsgSize >= (INT)sizeof(RouteContext) );
+				pCur = input->GetBufferPtr() + input->GetPosition();
+				Assert(input->GetRemainSize() >= sizeof(RouteContext));
 				memcpy( &routeContext, pCur, sizeof(RouteContext) );
 				routeContext.Components.To = to;
 				memcpy( pCur, &routeContext, sizeof(RouteContext) );
-
-
-			Proc_End:
 
 				return hr;
 
@@ -133,22 +131,20 @@ namespace SF
 			const MessageID GenericFailureRes::MID = MessageID(MSGTYPE_RESULT, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_SERVER, 0);
 			Result GenericFailureRes::ParseMessage( MessageData* pIMsg )
 			{
- 				Result hr;
-
-				int iMsgSize;
-				uint8_t* pCur;
-
-				protocolChkPtr(pIMsg);
-
-				iMsgSize = (int)((size_t)pIMsg->GetMessageSize() - sizeof(MessageHeader));
-				pCur = pIMsg->GetMessageData();
-
-				protocolChk( Protocol::StreamParamCopy( &m_RouteContext, pCur, iMsgSize, sizeof(RouteContext) ) );
-				protocolChk( Protocol::StreamParamCopy( &m_TransactionID, pCur, iMsgSize, sizeof(uint64_t) ) );
-				protocolChk( Protocol::StreamParamCopy( &m_Result, pCur, iMsgSize, sizeof(Result) ) );
+ 				FunctionContext hr;
 
 
-			Proc_End:
+				protocolCheckPtr(pIMsg);
+
+				size_t MsgDataSize = ((size_t)pIMsg->GetMessageSize() - sizeof(MessageHeader));
+				ArrayView<uint8_t> bufferView(MsgDataSize, pIMsg->GetMessageData());
+				InputMemoryStream inputStream(bufferView);
+				auto* input = inputStream.ToInputStream();
+				uint16_t ArrayLen = 0;
+
+				protocolCheck(input->Read(m_RouteContext));
+				protocolCheck(input->Read(m_TransactionID));
+				protocolCheck(input->Read(m_Result));
 
 				return hr;
 
@@ -157,12 +153,11 @@ namespace SF
 
 			Result GenericFailureRes::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr&& pIMsg, MessageBase* &pMessageBase )
 			{
- 				Result hr;
+ 				FunctionContext hr;
 
-				protocolMem(pMessageBase = new(memHeap) GenericFailureRes(std::forward<MessageDataPtr>(pIMsg)));
-				protocolChk(pMessageBase->ParseMsg());
+				protocolCheckMem(pMessageBase = new(memHeap) GenericFailureRes(std::forward<MessageDataPtr>(pIMsg)));
+				protocolCheck(pMessageBase->ParseMsg());
 
-			Proc_End:
 				return hr;
 
 			}; // Result GenericFailureRes::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr&& pIMsg, MessageBase* &pMessageBase )
@@ -170,57 +165,58 @@ namespace SF
 			MessageData* GenericFailureRes::Create( IHeap& memHeap, const RouteContext &InRouteContext, const uint64_t &InTransactionID, const Result &InResult )
 			{
  				MessageData *pNewMsg = nullptr;
-				Result hr;
+				FunctionContext hr([pNewMsg](Result hr) -> MessageData*
+				{
+ 					if(!hr && pNewMsg != nullptr)
+					{
+ 						delete pNewMsg;
+						return nullptr;
+					}
+					return pNewMsg;
+				});
 
 				uint8_t *pMsgData = nullptr;
 
 				unsigned __uiMessageSize = (unsigned)(sizeof(MessageHeader) 
-					+ sizeof(RouteContext)
-					+ sizeof(uint64_t)
-					+ sizeof(Result));
+					, SerializedSizeOf(InRouteContext)
+					, SerializedSizeOf(InTransactionID)
+					, SerializedSizeOf(InResult)
+				);
 
+				protocolCheckMem( pNewMsg = MessageData::NewMessage( memHeap, Server::GenericFailureRes::MID, __uiMessageSize ) );
+				size_t MsgDataSize = (int)((size_t)pNewMsg->GetMessageSize() - sizeof(MessageHeader));
+				ArrayView<uint8_t> BufferView(MsgDataSize, pNewMsg->GetMessageData());
+				OutputMemoryStream outputStream(BufferView);
+				auto* output = outputStream.ToOutputStream();
 
-				protocolMem( pNewMsg = MessageData::NewMessage( memHeap, Server::GenericFailureRes::MID, __uiMessageSize ) );
+				protocolCheck(output->Write(InRouteContext));
+				protocolCheck(output->Write(InTransactionID));
+				protocolCheck(output->Write(InResult));
 
-				pMsgData = pNewMsg->GetMessageData();
-
-				Protocol::PackParamCopy( pMsgData, &InRouteContext, sizeof(RouteContext));
-				Protocol::PackParamCopy( pMsgData, &InTransactionID, sizeof(uint64_t));
-				Protocol::PackParamCopy( pMsgData, &InResult, sizeof(Result));
-
-
-			Proc_End:
-
-				if(!hr)
-				{
- 					if(pNewMsg != nullptr) delete pNewMsg;
-					pNewMsg = nullptr;
-				}
-				return pNewMsg;
-
+				return hr;
 			}; // MessageData* GenericFailureRes::Create( IHeap& memHeap, const RouteContext &InRouteContext, const uint64_t &InTransactionID, const Result &InResult )
 
 			Result GenericFailureRes::OverrideRouteContextDestination( EntityUID to )
 			{
- 				Result hr;
+ 				FunctionContext hr;
 
-				int iMsgSize;
-				uint8_t* pCur;
 				MessageData* pIMsg = GetMessage();
 				RouteContext routeContext;
 
-				protocolChkPtr(pIMsg);
+				protocolCheckPtr(pIMsg);
 
-				iMsgSize = (int)((size_t)pIMsg->GetMessageSize() - sizeof(MessageHeader));
-				pCur = pIMsg->GetMessageData();
+				size_t MsgDataSize = (int)((size_t)pIMsg->GetMessageSize() - sizeof(MessageHeader));
+				ArrayView<uint8_t> bufferView(MsgDataSize, pIMsg->GetMessageData());
+				InputMemoryStream inputStream(bufferView);
+				auto* input = inputStream.ToInputStream();
+				uint16_t ArrayLen = 0;
+				uint8_t* pCur = nullptr;
 
-				Assert( iMsgSize >= (INT)sizeof(RouteContext) );
+				pCur = input->GetBufferPtr() + input->GetPosition();
+				Assert(input->GetRemainSize() >= sizeof(RouteContext));
 				memcpy( &routeContext, pCur, sizeof(RouteContext) );
 				routeContext.Components.To = to;
 				memcpy( pCur, &routeContext, sizeof(RouteContext) );
-
-
-			Proc_End:
 
 				return hr;
 
@@ -240,22 +236,20 @@ namespace SF
 			const MessageID ServerConnectedC2SEvt::MID = MessageID(MSGTYPE_EVENT, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_SERVER, 1);
 			Result ServerConnectedC2SEvt::ParseMessage( MessageData* pIMsg )
 			{
- 				Result hr;
-
-				int iMsgSize;
-				uint8_t* pCur;
-
-				protocolChkPtr(pIMsg);
-
-				iMsgSize = (int)((size_t)pIMsg->GetMessageSize() - sizeof(MessageHeader));
-				pCur = pIMsg->GetMessageData();
-
-				protocolChk( Protocol::StreamParamCopy( &m_RouteContext, pCur, iMsgSize, sizeof(RouteContext) ) );
-				protocolChk( Protocol::StreamParamCopy( &m_StartUpTime, pCur, iMsgSize, sizeof(uint32_t) ) );
-				protocolChk( Protocol::StreamParamCopy( &m_PrivateAddress, pCur, iMsgSize, sizeof(NetAddress) ) );
+ 				FunctionContext hr;
 
 
-			Proc_End:
+				protocolCheckPtr(pIMsg);
+
+				size_t MsgDataSize = ((size_t)pIMsg->GetMessageSize() - sizeof(MessageHeader));
+				ArrayView<uint8_t> bufferView(MsgDataSize, pIMsg->GetMessageData());
+				InputMemoryStream inputStream(bufferView);
+				auto* input = inputStream.ToInputStream();
+				uint16_t ArrayLen = 0;
+
+				protocolCheck(input->Read(m_RouteContext));
+				protocolCheck(input->Read(m_StartUpTime));
+				protocolCheck(input->Read(m_PrivateAddress));
 
 				return hr;
 
@@ -264,12 +258,11 @@ namespace SF
 
 			Result ServerConnectedC2SEvt::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr&& pIMsg, MessageBase* &pMessageBase )
 			{
- 				Result hr;
+ 				FunctionContext hr;
 
-				protocolMem(pMessageBase = new(memHeap) ServerConnectedC2SEvt(std::forward<MessageDataPtr>(pIMsg)));
-				protocolChk(pMessageBase->ParseMsg());
+				protocolCheckMem(pMessageBase = new(memHeap) ServerConnectedC2SEvt(std::forward<MessageDataPtr>(pIMsg)));
+				protocolCheck(pMessageBase->ParseMsg());
 
-			Proc_End:
 				return hr;
 
 			}; // Result ServerConnectedC2SEvt::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr&& pIMsg, MessageBase* &pMessageBase )
@@ -277,57 +270,58 @@ namespace SF
 			MessageData* ServerConnectedC2SEvt::Create( IHeap& memHeap, const RouteContext &InRouteContext, const uint32_t &InStartUpTime, const NetAddress &InPrivateAddress )
 			{
  				MessageData *pNewMsg = nullptr;
-				Result hr;
+				FunctionContext hr([pNewMsg](Result hr) -> MessageData*
+				{
+ 					if(!hr && pNewMsg != nullptr)
+					{
+ 						delete pNewMsg;
+						return nullptr;
+					}
+					return pNewMsg;
+				});
 
 				uint8_t *pMsgData = nullptr;
 
 				unsigned __uiMessageSize = (unsigned)(sizeof(MessageHeader) 
-					+ sizeof(RouteContext)
-					+ sizeof(uint32_t)
-					+ sizeof(NetAddress));
+					, SerializedSizeOf(InRouteContext)
+					, SerializedSizeOf(InStartUpTime)
+					, SerializedSizeOf(InPrivateAddress)
+				);
 
+				protocolCheckMem( pNewMsg = MessageData::NewMessage( memHeap, Server::ServerConnectedC2SEvt::MID, __uiMessageSize ) );
+				size_t MsgDataSize = (int)((size_t)pNewMsg->GetMessageSize() - sizeof(MessageHeader));
+				ArrayView<uint8_t> BufferView(MsgDataSize, pNewMsg->GetMessageData());
+				OutputMemoryStream outputStream(BufferView);
+				auto* output = outputStream.ToOutputStream();
 
-				protocolMem( pNewMsg = MessageData::NewMessage( memHeap, Server::ServerConnectedC2SEvt::MID, __uiMessageSize ) );
+				protocolCheck(output->Write(InRouteContext));
+				protocolCheck(output->Write(InStartUpTime));
+				protocolCheck(output->Write(InPrivateAddress));
 
-				pMsgData = pNewMsg->GetMessageData();
-
-				Protocol::PackParamCopy( pMsgData, &InRouteContext, sizeof(RouteContext));
-				Protocol::PackParamCopy( pMsgData, &InStartUpTime, sizeof(uint32_t));
-				Protocol::PackParamCopy( pMsgData, &InPrivateAddress, sizeof(NetAddress));
-
-
-			Proc_End:
-
-				if(!hr)
-				{
- 					if(pNewMsg != nullptr) delete pNewMsg;
-					pNewMsg = nullptr;
-				}
-				return pNewMsg;
-
+				return hr;
 			}; // MessageData* ServerConnectedC2SEvt::Create( IHeap& memHeap, const RouteContext &InRouteContext, const uint32_t &InStartUpTime, const NetAddress &InPrivateAddress )
 
 			Result ServerConnectedC2SEvt::OverrideRouteContextDestination( EntityUID to )
 			{
- 				Result hr;
+ 				FunctionContext hr;
 
-				int iMsgSize;
-				uint8_t* pCur;
 				MessageData* pIMsg = GetMessage();
 				RouteContext routeContext;
 
-				protocolChkPtr(pIMsg);
+				protocolCheckPtr(pIMsg);
 
-				iMsgSize = (int)((size_t)pIMsg->GetMessageSize() - sizeof(MessageHeader));
-				pCur = pIMsg->GetMessageData();
+				size_t MsgDataSize = (int)((size_t)pIMsg->GetMessageSize() - sizeof(MessageHeader));
+				ArrayView<uint8_t> bufferView(MsgDataSize, pIMsg->GetMessageData());
+				InputMemoryStream inputStream(bufferView);
+				auto* input = inputStream.ToInputStream();
+				uint16_t ArrayLen = 0;
+				uint8_t* pCur = nullptr;
 
-				Assert( iMsgSize >= (INT)sizeof(RouteContext) );
+				pCur = input->GetBufferPtr() + input->GetPosition();
+				Assert(input->GetRemainSize() >= sizeof(RouteContext));
 				memcpy( &routeContext, pCur, sizeof(RouteContext) );
 				routeContext.Components.To = to;
 				memcpy( pCur, &routeContext, sizeof(RouteContext) );
-
-
-			Proc_End:
 
 				return hr;
 

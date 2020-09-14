@@ -34,12 +34,10 @@ namespace SF
 		// Cmd: Request to join chat channel
 		Result ChatChannelService::JoinCmd( const uint64_t &InTransactionID, const char* InPasscode, const PlayerInformation &InJoiningPlayer )
 		{
- 			Result hr;
+ 			FunctionContext hr;
 
 			RouteContext InRouteContext( EntityUID(GetMyServerID(),TransactionID(InTransactionID).GetEntityID()), GetServiceEntityUID() );
 			svrChk(Policy::NetPolicyChatChannel(GetConnection()).JoinCmd( InRouteContext, InTransactionID, InPasscode, InJoiningPlayer ) );
-
-		Proc_End:
 
 			return hr;
 
@@ -47,12 +45,10 @@ namespace SF
 		// Cmd: Leave chat channel
 		Result ChatChannelService::LeaveCmd( const uint64_t &InTransactionID, const PlayerID &InPlayerID )
 		{
- 			Result hr;
+ 			FunctionContext hr;
 
 			RouteContext InRouteContext( EntityUID(GetMyServerID(),TransactionID(InTransactionID).GetEntityID()), GetServiceEntityUID() );
 			svrChk(Policy::NetPolicyChatChannel(GetConnection()).LeaveCmd( InRouteContext, InTransactionID, InPlayerID ) );
-
-		Proc_End:
 
 			return hr;
 
@@ -60,12 +56,10 @@ namespace SF
 		// Cmd: Kick a player
 		Result ChatChannelService::KickPlayerCmd( const uint64_t &InTransactionID, const PlayerID &InPlayerID, const PlayerID &InPlayerToKick )
 		{
- 			Result hr;
+ 			FunctionContext hr;
 
 			RouteContext InRouteContext( EntityUID(GetMyServerID(),TransactionID(InTransactionID).GetEntityID()), GetServiceEntityUID() );
 			svrChk(Policy::NetPolicyChatChannel(GetConnection()).KickPlayerCmd( InRouteContext, InTransactionID, InPlayerID, InPlayerToKick ) );
-
-		Proc_End:
 
 			return hr;
 
@@ -73,12 +67,10 @@ namespace SF
 		// C2S: Sending a chatting message
 		Result ChatChannelService::ChatMessageC2SEvt( const EntityID &InSenderEntityID, const PlayerID &InSenderID, const char* InChatMessage )
 		{
- 			Result hr;
+ 			FunctionContext hr;
 
 			RouteContext InRouteContext( EntityUID(GetMyServerID(),InSenderEntityID), GetServiceEntityUID() );
 			svrChk(Policy::NetPolicyChatChannel(GetConnection()).ChatMessageC2SEvt( InRouteContext, InSenderID, InChatMessage ) );
-
-		Proc_End:
 
 			return hr;
 

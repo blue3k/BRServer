@@ -13,6 +13,7 @@
 #include "Protocol/SFProtocol.h"
 #include "Net/SFMessage.h"
 #include "Types/SFEngineTypedefs.h"
+#include "Container/SFArray.h"
 #include "Protocol/SvrProtocol.h"
 
 
@@ -147,8 +148,8 @@ namespace SF
 				uint8_t m_Role;
 				uint8_t m_Dead;
 				uint8_t m_IsNewJoin;
-				ExternalBufferArray<uint8_t> m_ChatHistoryData;
-				ExternalBufferArray<uint8_t> m_GameLogData;
+				ArrayView<uint8_t> m_ChatHistoryData;
+				ArrayView<uint8_t> m_GameLogData;
 			public:
 				JoinGameRes()
 					{}
@@ -1252,7 +1253,7 @@ namespace SF
 				uint64_t GetSender() { return 0; }
 			private:
 				RouteContext m_RouteContext;
-				ExternalBufferArray<PlayerID> m_Voted;
+				ArrayView<PlayerID> m_Voted;
 			public:
 				VoteEndS2CEvt()
 					{}
@@ -1543,7 +1544,7 @@ namespace SF
 				RouteContext m_RouteContext;
 				uint64_t m_TransactionID;
 				PlayerID m_PlayerID;
-				ExternalBufferArray<PlayerID> m_TargetPlayerID;
+				ArrayView<PlayerID> m_TargetPlayerID;
 			public:
 				GameRevealPlayerCmd()
 					{}
@@ -1591,8 +1592,8 @@ namespace SF
 				RouteContext m_RouteContext;
 				uint64_t m_TransactionID;
 				Result m_Result;
-				ExternalBufferArray<PlayerID> m_RevealedPlayerID;
-				ExternalBufferArray<uint8_t> m_RevealedRole;
+				ArrayView<PlayerID> m_RevealedPlayerID;
+				ArrayView<uint8_t> m_RevealedRole;
 			public:
 				GameRevealPlayerRes()
 					{}

@@ -13,6 +13,7 @@
 #include "Protocol/SFProtocol.h"
 #include "Net/SFMessage.h"
 #include "Types/SFEngineTypedefs.h"
+#include "Container/SFArray.h"
 #include "Protocol/SvrProtocol.h"
 
 
@@ -86,7 +87,7 @@ namespace SF
 			private:
 				uint64_t m_TransactionID;
 				Result m_Result;
-				ExternalBufferArray<PerformanceCounterInstanceInfo> m_CounterInstances;
+				ArrayView<PerformanceCounterInstanceInfo> m_CounterInstances;
 				uint32_t m_TotalInstanceCount;
 			public:
 				GetInstanceListRes()
@@ -178,7 +179,7 @@ namespace SF
 				uint64_t m_TransactionID;
 				Result m_Result;
 				uint64_t m_InstanceUID;
-				ExternalBufferArray<uint64_t> m_CounterValues;
+				ArrayView<uint64_t> m_CounterValues;
 			public:
 				RequestCounterValuesRes()
 					{}
@@ -226,7 +227,7 @@ namespace SF
 			private:
 				const char* m_InstanceName;
 				uint64_t m_InstanceUID;
-				ExternalBufferArray<PerformanceCounterInfo> m_NewCounters;
+				ArrayView<PerformanceCounterInfo> m_NewCounters;
 			public:
 				PerformanceCounterNewC2SEvt()
 				:m_InstanceName(nullptr)
@@ -273,7 +274,7 @@ namespace SF
 				uint32_t GetRouteHopCount() { return 0; }
 				uint64_t GetSender() { return 0; }
 			private:
-				ExternalBufferArray<uint64_t> m_FreeInstances;
+				ArrayView<uint64_t> m_FreeInstances;
 			public:
 				PerformanceCounterFreeC2SEvt()
 					{}
@@ -317,7 +318,7 @@ namespace SF
 				uint64_t GetSender() { return 0; }
 			private:
 				uint64_t m_InstanceUID;
-				ExternalBufferArray<uint64_t> m_CounterValues;
+				ArrayView<uint64_t> m_CounterValues;
 			public:
 				PerformanceCounterUpdateC2SEvt()
 					{}

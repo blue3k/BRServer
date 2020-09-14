@@ -19,7 +19,7 @@ Add character data to the account
 
 1. Command interface
 
-        Result AddCharacterDataCmd(const RouteContext &InRouteContext, const uint64_t &InTransactionID, const PlayerID &InPlayerID, const StringCrc32 &InCharacterName, const Array<NamedBoxedValue>& InAttributes)
+        Result AddCharacterDataCmd(const RouteContext &InRouteContext, const uint64_t &InTransactionID, const PlayerID &InPlayerID, const StringCrc32 &InCharacterName, const VariableTable &InAttributes)
 
 		- OutInRouteContext: RouteContext type. 
 
@@ -29,7 +29,7 @@ Add character data to the account
 
 		- OutInCharacterName: StringCrc32 type. CharacterName
 
-		- OutInAttributes: NamedValue type. Character attributes
+		- OutInAttributes: VariableTable type. Character attributes
 
 2. Result interface
 
@@ -98,7 +98,7 @@ C++: Cast message to GetCharacterDataRes to access values
 
 		- OutCharacterName: StringCrc32 type. CharacterName
 
-		- OutAttributes: NamedValue type. Character attributes
+		- OutAttributes: VariableTable type. Character attributes
 
 
 ## SetAttribute Request
@@ -106,7 +106,7 @@ Set(add or update) attribute value
 
 1. Command interface
 
-        Result SetAttributeCmd(const RouteContext &InRouteContext, const uint64_t &InTransactionID, const PlayerID &InPlayerID, const StringCrc32 &InCharacterName, const Array<NamedBoxedValue>& InAttributes)
+        Result SetAttributeCmd(const RouteContext &InRouteContext, const uint64_t &InTransactionID, const PlayerID &InPlayerID, const StringCrc32 &InCharacterName, const VariableTable &InAttributes)
 
 		- OutInRouteContext: RouteContext type. 
 
@@ -116,7 +116,7 @@ Set(add or update) attribute value
 
 		- OutInCharacterName: StringCrc32 type. CharacterName
 
-		- OutInAttributes: NamedValue type. Character attributes
+		- OutInAttributes: VariableTable type. Character attributes
 
 2. Result interface
 
@@ -130,12 +130,12 @@ C++: Cast message to SetAttributeRes to access values
 		- OutResult: Result type. 
 
 
-## RemoveAttribute Request
+## RemoveAttributes Request
 Remove an attribute value
 
 1. Command interface
 
-        Result RemoveAttributeCmd(const RouteContext &InRouteContext, const uint64_t &InTransactionID, const PlayerID &InPlayerID, const StringCrc32 &InCharacterName, const Array<StringCrc32>& InAttributeNames)
+        Result RemoveAttributesCmd(const RouteContext &InRouteContext, const uint64_t &InTransactionID, const PlayerID &InPlayerID, const StringCrc32 &InCharacterName, const Array<StringCrc32>& InAttributeNames)
 
 		- OutInRouteContext: RouteContext type. 
 
@@ -149,7 +149,7 @@ Remove an attribute value
 
 2. Result interface
 
-C++: Cast message to RemoveAttributeRes to access values
+C++: Cast message to RemoveAttributesRes to access values
 
 
 		- OutRouteContext: RouteContext type. 

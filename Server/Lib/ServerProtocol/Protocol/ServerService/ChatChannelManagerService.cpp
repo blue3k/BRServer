@@ -34,12 +34,10 @@ namespace SF
 		// Cmd: Create a channel instance
 		Result ChatChannelManagerService::CreateChannelCmd( const uint64_t &InTransactionID, const uint16_t &InRouteHopCount, const char* InChannelName, const char* InPasscode, const PlayerInformation &InCreator )
 		{
- 			Result hr;
+ 			FunctionContext hr;
 
 			RouteContext InRouteContext( EntityUID(GetMyServerID(),TransactionID(InTransactionID).GetEntityID()), GetServiceEntityUID() );
 			svrChk(Policy::NetPolicyChatChannelManager(GetConnection()).CreateChannelCmd( InRouteContext, InTransactionID, InRouteHopCount, InChannelName, InPasscode, InCreator ) );
-
-		Proc_End:
 
 			return hr;
 
@@ -47,12 +45,10 @@ namespace SF
 		// Cmd: Find a channel instance with name
 		Result ChatChannelManagerService::FindChannelCmd( const uint64_t &InTransactionID, const uint16_t &InRouteHopCount, const char* InChannelName )
 		{
- 			Result hr;
+ 			FunctionContext hr;
 
 			RouteContext InRouteContext( EntityUID(GetMyServerID(),TransactionID(InTransactionID).GetEntityID()), GetServiceEntityUID() );
 			svrChk(Policy::NetPolicyChatChannelManager(GetConnection()).FindChannelCmd( InRouteContext, InTransactionID, InRouteHopCount, InChannelName ) );
-
-		Proc_End:
 
 			return hr;
 
@@ -60,12 +56,10 @@ namespace SF
 		// C2S: Notification that a chat channel instance has deleted
 		Result ChatChannelManagerService::ChatChannelDeletedC2SEvt( const EntityID &InSenderEntityID, const uint16_t &InRouteHopCount )
 		{
- 			Result hr;
+ 			FunctionContext hr;
 
 			RouteContext InRouteContext( EntityUID(GetMyServerID(),InSenderEntityID), GetServiceEntityUID() );
 			svrChk(Policy::NetPolicyChatChannelManager(GetConnection()).ChatChannelDeletedC2SEvt( InRouteContext, InRouteHopCount ) );
-
-		Proc_End:
 
 			return hr;
 

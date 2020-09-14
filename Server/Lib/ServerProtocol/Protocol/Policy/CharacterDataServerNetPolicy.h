@@ -32,15 +32,15 @@ namespace SF
 			{}
 
 			// Cmd: Add character data to the account
-			Result AddCharacterDataCmd( const RouteContext &InRouteContext, const uint64_t &InTransactionID, const PlayerID &InPlayerID, const StringCrc32 &InCharacterName, const Array<NamedBoxedValue>& InAttributes );
+			Result AddCharacterDataCmd( const RouteContext &InRouteContext, const uint64_t &InTransactionID, const PlayerID &InPlayerID, const StringCrc32 &InCharacterName, const VariableTable &InAttributes );
 			// Cmd: Remove character data
 			Result RemoveCharacterDataCmd( const RouteContext &InRouteContext, const uint64_t &InTransactionID, const PlayerID &InPlayerID, const StringCrc32 &InCharacterName );
 			// Cmd: Get character data
 			Result GetCharacterDataCmd( const RouteContext &InRouteContext, const uint64_t &InTransactionID, const PlayerID &InPlayerID, const StringCrc32 &InCharacterName );
 			// Cmd: Set(add or update) attribute value
-			Result SetAttributeCmd( const RouteContext &InRouteContext, const uint64_t &InTransactionID, const PlayerID &InPlayerID, const StringCrc32 &InCharacterName, const Array<NamedBoxedValue>& InAttributes );
+			Result SetAttributeCmd( const RouteContext &InRouteContext, const uint64_t &InTransactionID, const PlayerID &InPlayerID, const StringCrc32 &InCharacterName, const VariableTable &InAttributes );
 			// Cmd: Remove an attribute value
-			Result RemoveAttributeCmd( const RouteContext &InRouteContext, const uint64_t &InTransactionID, const PlayerID &InPlayerID, const StringCrc32 &InCharacterName, const Array<StringCrc32>& InAttributeNames );
+			Result RemoveAttributesCmd( const RouteContext &InRouteContext, const uint64_t &InTransactionID, const PlayerID &InPlayerID, const StringCrc32 &InCharacterName, const Array<StringCrc32>& InAttributeNames );
 			// Cmd: Attribute add
 			Result AttributeValueAddCmd( const RouteContext &InRouteContext, const uint64_t &InTransactionID, const PlayerID &InPlayerID, const StringCrc32 &InCharacterName, const StringCrc32 &InAttributeName, const FLOAT &InValue );
 			// Cmd: Attribute subtract
@@ -67,11 +67,11 @@ namespace SF
 			// Cmd: Remove character data
 			Result RemoveCharacterDataRes( const RouteContext &InRouteContext, const uint64_t &InTransactionID, const Result &InResult );
 			// Cmd: Get character data
-			Result GetCharacterDataRes( const RouteContext &InRouteContext, const uint64_t &InTransactionID, const Result &InResult, const StringCrc32 &InCharacterName, const Array<NamedBoxedValue>& InAttributes );
+			Result GetCharacterDataRes( const RouteContext &InRouteContext, const uint64_t &InTransactionID, const Result &InResult, const StringCrc32 &InCharacterName, const VariableTable &InAttributes );
 			// Cmd: Set(add or update) attribute value
 			Result SetAttributeRes( const RouteContext &InRouteContext, const uint64_t &InTransactionID, const Result &InResult );
 			// Cmd: Remove an attribute value
-			Result RemoveAttributeRes( const RouteContext &InRouteContext, const uint64_t &InTransactionID, const Result &InResult );
+			Result RemoveAttributesRes( const RouteContext &InRouteContext, const uint64_t &InTransactionID, const Result &InResult );
 			// Cmd: Attribute add
 			Result AttributeValueAddRes( const RouteContext &InRouteContext, const uint64_t &InTransactionID, const Result &InResult );
 			// Cmd: Attribute subtract

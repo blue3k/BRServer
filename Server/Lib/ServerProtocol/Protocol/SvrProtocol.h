@@ -15,4 +15,5 @@
 #include "String/ToStringSvr.h"
 #include "ProtocolTrace.h"
 #include "Protocol/SFProtocolHelper.h"
+#include "Variable/SFNamedVariableBox.h"
 

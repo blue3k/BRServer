@@ -29,15 +29,15 @@ namespace SF
 			CharacterDataServerService ( ServerServiceInformation* pService );
 
 			// Cmd: Add character data to the account
-			Result AddCharacterDataCmd( const uint64_t &InTransactionID, const PlayerID &InPlayerID, const StringCrc32 &InCharacterName, const Array<NamedBoxedValue>& InAttributes );
+			Result AddCharacterDataCmd( const uint64_t &InTransactionID, const PlayerID &InPlayerID, const StringCrc32 &InCharacterName, const VariableTable &InAttributes );
 			// Cmd: Remove character data
 			Result RemoveCharacterDataCmd( const uint64_t &InTransactionID, const PlayerID &InPlayerID, const StringCrc32 &InCharacterName );
 			// Cmd: Get character data
 			Result GetCharacterDataCmd( const uint64_t &InTransactionID, const PlayerID &InPlayerID, const StringCrc32 &InCharacterName );
 			// Cmd: Set(add or update) attribute value
-			Result SetAttributeCmd( const uint64_t &InTransactionID, const PlayerID &InPlayerID, const StringCrc32 &InCharacterName, const Array<NamedBoxedValue>& InAttributes );
+			Result SetAttributeCmd( const uint64_t &InTransactionID, const PlayerID &InPlayerID, const StringCrc32 &InCharacterName, const VariableTable &InAttributes );
 			// Cmd: Remove an attribute value
-			Result RemoveAttributeCmd( const uint64_t &InTransactionID, const PlayerID &InPlayerID, const StringCrc32 &InCharacterName, const Array<StringCrc32>& InAttributeNames );
+			Result RemoveAttributesCmd( const uint64_t &InTransactionID, const PlayerID &InPlayerID, const StringCrc32 &InCharacterName, const Array<StringCrc32>& InAttributeNames );
 			// Cmd: Attribute add
 			Result AttributeValueAddCmd( const uint64_t &InTransactionID, const PlayerID &InPlayerID, const StringCrc32 &InCharacterName, const StringCrc32 &InAttributeName, const FLOAT &InValue );
 			// Cmd: Attribute subtract

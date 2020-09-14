@@ -34,12 +34,10 @@ namespace SF
 		// Cmd: Add a player to ranking
 		Result RankingServerService::AddPlayerCmd( const uint64_t &InTransactionID, const PlayerInformation &InPlayerInfo, const uint64_t &InRankingScore )
 		{
- 			Result hr;
+ 			FunctionContext hr;
 
 			RouteContext InRouteContext( EntityUID(GetMyServerID(),TransactionID(InTransactionID).GetEntityID()), GetServiceEntityUID() );
 			svrChk(Policy::NetPolicyRankingServer(GetConnection()).AddPlayerCmd( InRouteContext, InTransactionID, InPlayerInfo, InRankingScore ) );
-
-		Proc_End:
 
 			return hr;
 
@@ -47,12 +45,10 @@ namespace SF
 		// Cmd: Remove a player to ranking
 		Result RankingServerService::RemovePlayerCmd( const uint64_t &InTransactionID, const PlayerID &InPlayerID )
 		{
- 			Result hr;
+ 			FunctionContext hr;
 
 			RouteContext InRouteContext( EntityUID(GetMyServerID(),TransactionID(InTransactionID).GetEntityID()), GetServiceEntityUID() );
 			svrChk(Policy::NetPolicyRankingServer(GetConnection()).RemovePlayerCmd( InRouteContext, InTransactionID, InPlayerID ) );
-
-		Proc_End:
 
 			return hr;
 
@@ -60,12 +56,10 @@ namespace SF
 		// Cmd: Get player to ranking
 		Result RankingServerService::GetPlayerRankingCmd( const uint64_t &InTransactionID, const PlayerID &InPlayerID )
 		{
- 			Result hr;
+ 			FunctionContext hr;
 
 			RouteContext InRouteContext( EntityUID(GetMyServerID(),TransactionID(InTransactionID).GetEntityID()), GetServiceEntityUID() );
 			svrChk(Policy::NetPolicyRankingServer(GetConnection()).GetPlayerRankingCmd( InRouteContext, InTransactionID, InPlayerID ) );
-
-		Proc_End:
 
 			return hr;
 
@@ -73,12 +67,10 @@ namespace SF
 		// Cmd: Update a player to ranking
 		Result RankingServerService::UpdatePlayerScoreCmd( const uint64_t &InTransactionID, const uint64_t &InRankingScore, const PlayerInformation &InPlayerInfo, const uint16_t &InCount )
 		{
- 			Result hr;
+ 			FunctionContext hr;
 
 			RouteContext InRouteContext( EntityUID(GetMyServerID(),TransactionID(InTransactionID).GetEntityID()), GetServiceEntityUID() );
 			svrChk(Policy::NetPolicyRankingServer(GetConnection()).UpdatePlayerScoreCmd( InRouteContext, InTransactionID, InRankingScore, InPlayerInfo, InCount ) );
-
-		Proc_End:
 
 			return hr;
 
@@ -86,12 +78,10 @@ namespace SF
 		// Cmd: Get ranking list
 		Result RankingServerService::GetRankingCmd( const uint64_t &InTransactionID, const RankingType &InRankingType, const uint16_t &InBaseRanking, const uint16_t &InCount )
 		{
- 			Result hr;
+ 			FunctionContext hr;
 
 			RouteContext InRouteContext( EntityUID(GetMyServerID(),TransactionID(InTransactionID).GetEntityID()), GetServiceEntityUID() );
 			svrChk(Policy::NetPolicyRankingServer(GetConnection()).GetRankingCmd( InRouteContext, InTransactionID, InRankingType, InBaseRanking, InCount ) );
-
-		Proc_End:
 
 			return hr;
 
@@ -99,12 +89,10 @@ namespace SF
 		// Cmd: Debug test
 		Result RankingServerService::DebugPrintALLRankingCmd( const uint64_t &InTransactionID, const char* InFileName )
 		{
- 			Result hr;
+ 			FunctionContext hr;
 
 			RouteContext InRouteContext( EntityUID(GetMyServerID(),TransactionID(InTransactionID).GetEntityID()), GetServiceEntityUID() );
 			svrChk(Policy::NetPolicyRankingServer(GetConnection()).DebugPrintALLRankingCmd( InRouteContext, InTransactionID, InFileName ) );
-
-		Proc_End:
 
 			return hr;
 

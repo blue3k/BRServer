@@ -41,8 +41,8 @@ namespace SF
 			MessageDebugTraceMap.insert(std::make_pair(Message::CharacterDataServer::SetAttributeCmd::MID.IDSeq.MsgID,&Message::CharacterDataServer::SetAttributeCmd::TraceOut));
 			MessageDebugTraceMap.insert(std::make_pair(Message::CharacterDataServer::SetAttributeRes::MID.IDSeq.MsgID,&Message::CharacterDataServer::SetAttributeRes::TraceOut));
 			// Cmd: Remove an attribute value
-			MessageDebugTraceMap.insert(std::make_pair(Message::CharacterDataServer::RemoveAttributeCmd::MID.IDSeq.MsgID,&Message::CharacterDataServer::RemoveAttributeCmd::TraceOut));
-			MessageDebugTraceMap.insert(std::make_pair(Message::CharacterDataServer::RemoveAttributeRes::MID.IDSeq.MsgID,&Message::CharacterDataServer::RemoveAttributeRes::TraceOut));
+			MessageDebugTraceMap.insert(std::make_pair(Message::CharacterDataServer::RemoveAttributesCmd::MID.IDSeq.MsgID,&Message::CharacterDataServer::RemoveAttributesCmd::TraceOut));
+			MessageDebugTraceMap.insert(std::make_pair(Message::CharacterDataServer::RemoveAttributesRes::MID.IDSeq.MsgID,&Message::CharacterDataServer::RemoveAttributesRes::TraceOut));
 			// Cmd: Attribute add
 			MessageDebugTraceMap.insert(std::make_pair(Message::CharacterDataServer::AttributeValueAddCmd::MID.IDSeq.MsgID,&Message::CharacterDataServer::AttributeValueAddCmd::TraceOut));
 			MessageDebugTraceMap.insert(std::make_pair(Message::CharacterDataServer::AttributeValueAddRes::MID.IDSeq.MsgID,&Message::CharacterDataServer::AttributeValueAddRes::TraceOut));

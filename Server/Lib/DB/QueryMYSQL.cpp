@@ -88,7 +88,7 @@ namespace DB {
 		case mysqlx::Value::RAW:
 		{
 			auto bytes = std::forward<mysqlx::bytes>(src.get<mysqlx::bytes>());
-			dest.SetValue(ExternalBufferArray<uint8_t>(bytes.second, bytes.first));
+			dest.SetValue(ArrayView<uint8_t>(bytes.second, bytes.first));
 			break;
 		}
 		case mysqlx::Value::DOCUMENT: // fall through

@@ -13,6 +13,7 @@
 #include "Protocol/SFProtocol.h"
 #include "Net/SFMessage.h"
 #include "Types/SFEngineTypedefs.h"
+#include "Container/SFArray.h"
 #include "Protocol/SvrProtocol.h"
 
 
@@ -45,7 +46,7 @@ namespace SF
 				uint64_t m_TransactionID;
 				PlayerID m_PlayerID;
 				StringCrc32 m_CharacterName;
-				ExternalBufferArray<NamedBoxedValue> m_Attributes;
+				VariableTable m_Attributes;
 			public:
 				AddCharacterDataCmd()
 					{}
@@ -60,14 +61,14 @@ namespace SF
 				const uint64_t& GetTransactionID() const	{ return m_TransactionID; };
 				const PlayerID& GetPlayerID() const	{ return m_PlayerID; };
 				const StringCrc32& GetCharacterName() const	{ return m_CharacterName; };
-				const Array<NamedBoxedValue>& GetAttributes() const	{ return m_Attributes; };
+				const VariableTable& GetAttributes() const	{ return m_Attributes; };
 
 				static Result TraceOut(const char* prefix, const MessageDataPtr& pMsg);
 
 				virtual Result ParseMessage( MessageData* pIMsg );
 				static Result ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr&& pIMsg, MessageBase* &pMsgBase );
 
-				static MessageData* Create( IHeap& memHeap, const RouteContext &InRouteContext, const uint64_t &InTransactionID, const PlayerID &InPlayerID, const StringCrc32 &InCharacterName, const Array<NamedBoxedValue>& InAttributes );
+				static MessageData* Create( IHeap& memHeap, const RouteContext &InRouteContext, const uint64_t &InTransactionID, const PlayerID &InPlayerID, const StringCrc32 &InCharacterName, const VariableTable &InAttributes );
 
 				Result OverrideRouteContextDestination( EntityUID to );
 
@@ -283,7 +284,7 @@ namespace SF
 				uint64_t m_TransactionID;
 				Result m_Result;
 				StringCrc32 m_CharacterName;
-				ExternalBufferArray<NamedBoxedValue> m_Attributes;
+				VariableTable m_Attributes;
 			public:
 				GetCharacterDataRes()
 					{}
@@ -298,14 +299,14 @@ namespace SF
 				const uint64_t& GetTransactionID() const	{ return m_TransactionID; };
 				const Result& GetResult() const	{ return m_Result; };
 				const StringCrc32& GetCharacterName() const	{ return m_CharacterName; };
-				const Array<NamedBoxedValue>& GetAttributes() const	{ return m_Attributes; };
+				const VariableTable& GetAttributes() const	{ return m_Attributes; };
 
 				static Result TraceOut(const char* prefix, const MessageDataPtr& pMsg);
 
 				virtual Result ParseMessage( MessageData* pIMsg );
 				static Result ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr&& pIMsg, MessageBase* &pMsgBase );
 
-				static MessageData* Create( IHeap& memHeap, const RouteContext &InRouteContext, const uint64_t &InTransactionID, const Result &InResult, const StringCrc32 &InCharacterName, const Array<NamedBoxedValue>& InAttributes );
+				static MessageData* Create( IHeap& memHeap, const RouteContext &InRouteContext, const uint64_t &InTransactionID, const Result &InResult, const StringCrc32 &InCharacterName, const VariableTable &InAttributes );
 
 				Result OverrideRouteContextDestination( EntityUID to );
 
@@ -333,7 +334,7 @@ namespace SF
 				uint64_t m_TransactionID;
 				PlayerID m_PlayerID;
 				StringCrc32 m_CharacterName;
-				ExternalBufferArray<NamedBoxedValue> m_Attributes;
+				VariableTable m_Attributes;
 			public:
 				SetAttributeCmd()
 					{}
@@ -348,14 +349,14 @@ namespace SF
 				const uint64_t& GetTransactionID() const	{ return m_TransactionID; };
 				const PlayerID& GetPlayerID() const	{ return m_PlayerID; };
 				const StringCrc32& GetCharacterName() const	{ return m_CharacterName; };
-				const Array<NamedBoxedValue>& GetAttributes() const	{ return m_Attributes; };
+				const VariableTable& GetAttributes() const	{ return m_Attributes; };
 
 				static Result TraceOut(const char* prefix, const MessageDataPtr& pMsg);
 
 				virtual Result ParseMessage( MessageData* pIMsg );
 				static Result ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr&& pIMsg, MessageBase* &pMsgBase );
 
-				static MessageData* Create( IHeap& memHeap, const RouteContext &InRouteContext, const uint64_t &InTransactionID, const PlayerID &InPlayerID, const StringCrc32 &InCharacterName, const Array<NamedBoxedValue>& InAttributes );
+				static MessageData* Create( IHeap& memHeap, const RouteContext &InRouteContext, const uint64_t &InTransactionID, const PlayerID &InPlayerID, const StringCrc32 &InCharacterName, const VariableTable &InAttributes );
 
 				Result OverrideRouteContextDestination( EntityUID to );
 
@@ -408,7 +409,7 @@ namespace SF
 			}; // class SetAttributeRes : public MessageBase
 
 			// Cmd: Remove an attribute value
-			class RemoveAttributeCmd : public MessageBase
+			class RemoveAttributesCmd : public MessageBase
 			{
  			public:
 				static const MessageID MID;
@@ -429,12 +430,12 @@ namespace SF
 				uint64_t m_TransactionID;
 				PlayerID m_PlayerID;
 				StringCrc32 m_CharacterName;
-				ExternalBufferArray<StringCrc32> m_AttributeNames;
+				ArrayView<StringCrc32> m_AttributeNames;
 			public:
-				RemoveAttributeCmd()
+				RemoveAttributesCmd()
 					{}
 
-				RemoveAttributeCmd( MessageDataPtr &&pMsg )
+				RemoveAttributesCmd( MessageDataPtr &&pMsg )
 					: MessageBase(std::forward<MessageDataPtr>(pMsg))
 					{}
 
@@ -455,9 +456,9 @@ namespace SF
 
 				Result OverrideRouteContextDestination( EntityUID to );
 
-			}; // class RemoveAttributeCmd : public MessageBase
+			}; // class RemoveAttributesCmd : public MessageBase
 
-			class RemoveAttributeRes : public MessageBase
+			class RemoveAttributesRes : public MessageBase
 			{
  			public:
 				static const MessageID MID;
@@ -479,10 +480,10 @@ namespace SF
 				uint64_t m_TransactionID;
 				Result m_Result;
 			public:
-				RemoveAttributeRes()
+				RemoveAttributesRes()
 					{}
 
-				RemoveAttributeRes( MessageDataPtr &&pMsg )
+				RemoveAttributesRes( MessageDataPtr &&pMsg )
 					: MessageBase(std::forward<MessageDataPtr>(pMsg))
 					{}
 
@@ -501,7 +502,7 @@ namespace SF
 
 				Result OverrideRouteContextDestination( EntityUID to );
 
-			}; // class RemoveAttributeRes : public MessageBase
+			}; // class RemoveAttributesRes : public MessageBase
 
 			// Cmd: Attribute add
 			class AttributeValueAddCmd : public MessageBase

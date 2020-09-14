@@ -17,7 +17,6 @@
 #include "String/SFToString.h"
 #include "String/SFToStringEngineTypes.h"
 
-
 namespace SF {
 
 	Result _ToString(ToStringContext& context, const EntityUID& Data);

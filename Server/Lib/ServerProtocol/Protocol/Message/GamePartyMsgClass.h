@@ -13,6 +13,7 @@
 #include "Protocol/SFProtocol.h"
 #include "Net/SFMessage.h"
 #include "Types/SFEngineTypedefs.h"
+#include "Container/SFArray.h"
 #include "Protocol/SvrProtocol.h"
 
 
@@ -94,7 +95,7 @@ namespace SF
 				uint64_t m_TransactionID;
 				Result m_Result;
 				PlayerID m_PartyLeaderID;
-				ExternalBufferArray<uint8_t> m_ChatHistoryData;
+				ArrayView<uint8_t> m_ChatHistoryData;
 			public:
 				JoinPartyRes()
 					{}

@@ -15,7 +15,7 @@
 #include "Util/SFLogComponent.h"
 #include "Util/SFTimeUtil.h"
 #include "Util/SFUtility.h"
-#include "String/SFFixedString.h"
+#include "String/SFStringCrc64.h"
 #include "Service/SFService.h"
 #include "ServerLog/SFLogOutputPlayFabGSDK.h"
 

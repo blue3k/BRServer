@@ -16,7 +16,6 @@
 #include "Util/SFUtility.h"
 #include "String/SFStrParserUtil.h"
 #include "String/SFStrUtil.h"
-#include "String/SFFixedString.h"
 #include "ServerSystem/SvrTrace.h"
 #include "Server/ParameterSetting.h"
 

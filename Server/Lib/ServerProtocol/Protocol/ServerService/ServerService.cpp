@@ -34,12 +34,10 @@ namespace SF
 		// Cmd: Generic failure message
 		Result ServerService::GenericFailureCmd( const uint64_t &InTransactionID )
 		{
- 			Result hr;
+ 			FunctionContext hr;
 
 			RouteContext InRouteContext( EntityUID(GetMyServerID(),TransactionID(InTransactionID).GetEntityID()), GetServiceEntityUID() );
 			svrChk(Policy::NetPolicyServer(GetConnection()).GenericFailureCmd( InRouteContext, InTransactionID ) );
-
-		Proc_End:
 
 			return hr;
 
@@ -47,12 +45,10 @@ namespace SF
 		// C2S: Server Started or Connected
 		Result ServerService::ServerConnectedC2SEvt( const EntityID &InSenderEntityID, const uint32_t &InStartUpTime, const NetAddress &InPrivateAddress )
 		{
- 			Result hr;
+ 			FunctionContext hr;
 
 			RouteContext InRouteContext( EntityUID(GetMyServerID(),InSenderEntityID), GetServiceEntityUID() );
 			svrChk(Policy::NetPolicyServer(GetConnection()).ServerConnectedC2SEvt( InRouteContext, InStartUpTime, InPrivateAddress ) );
-
-		Proc_End:
 
 			return hr;
 

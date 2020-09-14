@@ -8,7 +8,7 @@
 		  <Cmd>
 			<Params Type="PlayerID" Name="PlayerID" Desc="Owner PlayerID"/>
 			<Params Type="StringCrc32" Name="CharacterName" Desc="CharacterName"/> 
-			<Params Type="NamedValue" Name="Attributes" IsArray="true" Desc="Character attributes"/> 
+			<Params Type="VariableTable" Name="Attributes" Desc="Character attributes"/> 
 		</Cmd>
 		  <Res>
 	  	</Res>
@@ -30,7 +30,7 @@
 		</Cmd>
 		  <Res>
 			  <Params Type="StringCrc32" Name="CharacterName" Desc="CharacterName"/> 
-              <Params Type="NamedValue" Name="Attributes" IsArray="true" Desc="Character attributes"/> 
+              <Params Type="VariableTable" Name="Attributes" Desc="Character attributes"/> 
 		</Res>
 	</Command>
 
@@ -38,13 +38,13 @@
       <Cmd>
 			<Params Type="PlayerID" Name="PlayerID" Desc="Owner PlayerID"/>
 			<Params Type="StringCrc32" Name="CharacterName" Desc="CharacterName"/> 
-            <Params Type="NamedValue" Name="Attributes" IsArray="true" Desc="Character attributes"/> 
+            <Params Type="VariableTable" Name="Attributes" Desc="Character attributes"/> 
       </Cmd>
       <Res>
       </Res>
     </Command>
 
-    <Command Name="RemoveAttribute" Reliable="true" Crypto="No" Trace="Debug1" Desc="Remove an attribute value">
+    <Command Name="RemoveAttributes" Reliable="true" Crypto="No" Trace="Debug1" Desc="Remove an attribute value">
       <Cmd>
 			<Params Type="PlayerID" Name="PlayerID" Desc="Owner PlayerID"/>
 			<Params Type="StringCrc32" Name="CharacterName" Desc="CharacterName"/> 

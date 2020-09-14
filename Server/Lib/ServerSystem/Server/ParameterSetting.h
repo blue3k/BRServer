@@ -13,7 +13,7 @@
 
 #include "SFTypedefs.h"
 #include "Container/SFOrderedLinkedList.h"
-#include "String/SFFixedString.h"
+#include "String/SFStringCrc64.h"
 
 
 namespace SF {
@@ -39,7 +39,7 @@ namespace SF {
 
 	public:
 
-		// Prcess parameter
+		// Process parameter
 		static Result ProcessParameter(int numArg, const char* argc[]);
 		static Result ProcessParameter(const char* arg);
 

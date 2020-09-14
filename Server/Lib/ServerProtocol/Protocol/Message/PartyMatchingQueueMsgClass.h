@@ -13,6 +13,7 @@
 #include "Protocol/SFProtocol.h"
 #include "Net/SFMessage.h"
 #include "Types/SFEngineTypedefs.h"
+#include "Container/SFArray.h"
 #include "Protocol/SvrProtocol.h"
 
 
@@ -44,7 +45,7 @@ namespace SF
 				RouteContext m_RouteContext;
 				uint64_t m_TransactionID;
 				uint16_t m_RouteHopCount;
-				ExternalBufferArray<MatchingPlayerInformation> m_Players;
+				ArrayView<MatchingPlayerInformation> m_Players;
 			public:
 				RegisterPartyMatchingCmd()
 					{}
@@ -791,8 +792,8 @@ namespace SF
 				RouteContext m_RouteContext;
 				uint64_t m_TransactionID;
 				Result m_Result;
-				ExternalBufferArray<uint32_t> m_NumberOfPlayersInTheItem;
-				ExternalBufferArray<MatchingQueueTicket> m_MatchingTicket;
+				ArrayView<uint32_t> m_NumberOfPlayersInTheItem;
+				ArrayView<MatchingQueueTicket> m_MatchingTicket;
 			public:
 				ReserveItemsRes()
 					{}
@@ -941,7 +942,7 @@ namespace SF
 				RouteContext m_RouteContext;
 				uint64_t m_TransactionID;
 				uint16_t m_RouteHopCount;
-				ExternalBufferArray<MatchingQueueTicket> m_TicketToCancel;
+				ArrayView<MatchingQueueTicket> m_TicketToCancel;
 			public:
 				CancelReservationsCmd()
 					{}
@@ -1092,7 +1093,7 @@ namespace SF
 				MatchingQueueTicket m_MatchingTicket;
 				uint64_t m_RegisterUID;
 				PlayerID m_RegisterID;
-				ExternalBufferArray<MatchingPlayerInformation> m_Players;
+				ArrayView<MatchingPlayerInformation> m_Players;
 			public:
 				DequeueItemRes()
 					{}

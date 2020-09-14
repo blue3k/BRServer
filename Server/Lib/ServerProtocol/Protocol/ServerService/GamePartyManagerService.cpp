@@ -34,12 +34,10 @@ namespace SF
 		// Cmd: Create a party instance
 		Result GamePartyManagerService::CreatePartyCmd( const uint64_t &InTransactionID, const uint16_t &InRouteHopCount, const uint32_t &InGameID, const PlayerInformation &InCreator )
 		{
- 			Result hr;
+ 			FunctionContext hr;
 
 			RouteContext InRouteContext( EntityUID(GetMyServerID(),TransactionID(InTransactionID).GetEntityID()), GetServiceEntityUID() );
 			svrChk(Policy::NetPolicyGamePartyManager(GetConnection()).CreatePartyCmd( InRouteContext, InTransactionID, InRouteHopCount, InGameID, InCreator ) );
-
-		Proc_End:
 
 			return hr;
 
@@ -47,12 +45,10 @@ namespace SF
 		// C2S: Party instance notify of deletion. Sent by party instance
 		Result GamePartyManagerService::PartyDeletedC2SEvt( const EntityID &InSenderEntityID, const uint16_t &InRouteHopCount )
 		{
- 			Result hr;
+ 			FunctionContext hr;
 
 			RouteContext InRouteContext( EntityUID(GetMyServerID(),InSenderEntityID), GetServiceEntityUID() );
 			svrChk(Policy::NetPolicyGamePartyManager(GetConnection()).PartyDeletedC2SEvt( InRouteContext, InRouteHopCount ) );
-
-		Proc_End:
 
 			return hr;
 

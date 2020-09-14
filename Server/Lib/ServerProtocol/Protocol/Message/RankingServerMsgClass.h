@@ -13,6 +13,7 @@
 #include "Protocol/SFProtocol.h"
 #include "Net/SFMessage.h"
 #include "Types/SFEngineTypedefs.h"
+#include "Container/SFArray.h"
 #include "Protocol/SvrProtocol.h"
 
 
@@ -378,7 +379,7 @@ namespace SF
 				RouteContext m_RouteContext;
 				uint64_t m_TransactionID;
 				Result m_Result;
-				ExternalBufferArray<TotalRankingPlayerInformation> m_Ranking;
+				ArrayView<TotalRankingPlayerInformation> m_Ranking;
 			public:
 				UpdatePlayerScoreRes()
 					{}
@@ -477,7 +478,7 @@ namespace SF
 				RouteContext m_RouteContext;
 				uint64_t m_TransactionID;
 				Result m_Result;
-				ExternalBufferArray<TotalRankingPlayerInformation> m_Ranking;
+				ArrayView<TotalRankingPlayerInformation> m_Ranking;
 			public:
 				GetRankingRes()
 					{}

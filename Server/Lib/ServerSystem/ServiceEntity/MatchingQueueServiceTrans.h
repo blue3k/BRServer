@@ -192,7 +192,7 @@ namespace Svr {
 		virtual Result StartTransaction();
 
 
-		BR_SVR_MSGTRANS_CLOSE_ARGS(Policy::NetSvrPolicyPartyMatchingQueue, DequeueItemRes, GetRouteContext().GetSwaped(), GetMatchingTicket(), m_matchingQueueItem.RegisterUID, m_matchingQueueItem.RegisterID, ExternalBufferArray<MatchingPlayerInformation>((uint)countof(m_matchingQueueItem.Players), m_matchingQueueItem.NumPlayers, m_matchingQueueItem.Players));
+		BR_SVR_MSGTRANS_CLOSE_ARGS(Policy::NetSvrPolicyPartyMatchingQueue, DequeueItemRes, GetRouteContext().GetSwaped(), GetMatchingTicket(), m_matchingQueueItem.RegisterUID, m_matchingQueueItem.RegisterID, ArrayView<MatchingPlayerInformation>((uint)countof(m_matchingQueueItem.Players), m_matchingQueueItem.NumPlayers, m_matchingQueueItem.Players));
 	};
 
 

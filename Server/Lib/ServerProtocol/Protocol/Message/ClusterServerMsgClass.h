@@ -13,6 +13,7 @@
 #include "Protocol/SFProtocol.h"
 #include "Net/SFMessage.h"
 #include "Types/SFEngineTypedefs.h"
+#include "Container/SFArray.h"
 #include "Protocol/SvrProtocol.h"
 
 
@@ -94,7 +95,7 @@ namespace SF
 				RouteContext m_RouteContext;
 				uint64_t m_TransactionID;
 				Result m_Result;
-				ExternalBufferArray<ServiceInformation> m_MemberList;
+				ArrayView<ServiceInformation> m_MemberList;
 			public:
 				GetClusterMemberListRes()
 					{}

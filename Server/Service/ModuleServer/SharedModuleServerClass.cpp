@@ -23,7 +23,7 @@
 
 #include "ServiceEntity/MatchingQueueServiceEntity.h"
 #include "ServiceEntity/MatchingServiceEntity.h"
-#include "ServiceEntity/GamePartyManagerServiceEntity.h"
+#include "ServiceEntity/Party/GamePartyManagerServiceEntity.h"
 
 #include "Table/TableSystem.h"
 

@@ -50,7 +50,7 @@
 #include "ServiceEntity/MatchingQueueServiceEntity.h"
 #include "ServiceEntity/MatchingServiceEntity.h"
 #include "ServiceEntity/Party/GamePartyManagerServiceEntity.h"
-#include "ServiceEntity/Character/GameCharacterDataManagerServiceEntity.h"
+#include "ServiceEntity/Character/CharacterDataManagerServiceEntity.h"
 #include "ServiceEntity/RankingServiceEntity.h"
 #include "ServiceEntity/MonitoringServiceEntity.h"
 #include "ServiceEntity/Relay/RelayServiceEntity.h"
