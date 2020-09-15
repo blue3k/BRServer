@@ -23,7 +23,7 @@ ServiceInformation::ServiceInformation()
 	, Membership(ClusterMembership::Slave)
 	, Status(ServiceStatus::Offline)
 	, ServerClass(NetClass::Unknown)
-	, ServerUpTime(TimeStampSec::max())
+	, ServerUpTime(UTCTimeStampSec::max())
 	, Workload(0)
 {
 }
@@ -33,7 +33,7 @@ ServiceInformation::ServiceInformation( const ServiceInformation& src )
 {
 }
 
-ServiceInformation::ServiceInformation( EntityUID entityUID, ClusterMembership membership, ServiceStatus status, NetClass netClass, const NetAddress& address, TimeStampSec serverUpTime, uint32_t workload )
+ServiceInformation::ServiceInformation( EntityUID entityUID, ClusterMembership membership, ServiceStatus status, NetClass netClass, const NetAddress& address, UTCTimeStampSec serverUpTime, uint32_t workload )
 {
 	UID = entityUID;
 	Membership = membership;
@@ -52,7 +52,7 @@ ServiceInformation::ServiceInformation( int initValue )
 	ServerClass = NetClass::Unknown;
 	Status = ServiceStatus::Offline;
 	ServerAddress = NetAddress(0);
-	ServerUpTime = TimeStampSec::min();
+	ServerUpTime = UTCTimeStampSec::min();
 	Workload = 0;
 }
 

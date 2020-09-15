@@ -18,6 +18,8 @@
 
 namespace SF {
 
+	constexpr CounterType GlobalUIDGenerator::MAX_INDEX_DIFF;
+
 	GlobalUIDGenerator::GlobalUIDGenerator()
 		:m_ServerID(0)
 	{
@@ -25,6 +27,12 @@ namespace SF {
 		Assert(m_ServerID <= 255)
 
 		m_time = Util::Time.GetRawUTCSec();
+	}
+
+	void GlobalUIDGenerator::SetServerID(uint serverID)
+	{
+		m_ServerID = serverID;
+		AssertRel(serverID < 256); // we have assumption
 	}
 
 	// Generate New ID
@@ -41,14 +49,14 @@ namespace SF {
 			CounterType indexDiff = 0;
 			do {
 				indexDiff = myIndex - m_GeneratorSync.load(std::memory_order_relaxed);
-				if (indexDiff == UPDATE_TIME_DIFF)
+				if (indexDiff == MAX_INDEX_DIFF)
 				{
 					// update index sync
-					TimeStampSec newTime = Util::Time.GetRawUTCSec();
-					while (newTime == m_time) // we have to stall until we are on the same time stamp
+					UTCTimeStampSec newTime = Util::Time.GetRawUTCSec();
+					while (newTime == m_time) // we have to stall until we have new time stamp
 					{
 						// Maximum GUID for this sec, sleep a little before retry
-						defTrace(Debug1, "GlobalUIDGenerator: Maximum GUID for this sec, sleep a little before retry");
+						//defTrace(Debug1, "GlobalUIDGenerator: Maximum GUID for this sec, sleep a little before retry");
 						// Do some other thread's job
 						ThisThread::SleepFor(DurationMS(0));
 						newTime = Util::Time.GetRawUTCSec();
@@ -58,13 +66,13 @@ namespace SF {
 					m_time = newTime;
 					m_GeneratorSync.store(myIndex, std::memory_order_release);
 				}
-				else if (indexDiff > UPDATE_TIME_DIFF)
+				else if (indexDiff > MAX_INDEX_DIFF)
 				{
 					// too far away
 					// we need to check difference again
 					ThisThread::SleepFor(DurationMS(4));
 				}
-			} while (indexDiff > UPDATE_TIME_DIFF);
+			} while (indexDiff > MAX_INDEX_DIFF);
 
 			uid.ID = ((uint32_t)myIndex) & 0xFFFFFF;
 
@@ -83,7 +91,7 @@ namespace SF {
 		return uid;
 	}
 
-}; // namespace BR
+}; // namespace SF
 
 
 

@@ -89,7 +89,7 @@ namespace Svr{
 	BrServer::BrServer( NetClass netClass )
 		: m_Components(GetHeap())
 		, m_NetClass(netClass )
-		, m_ServerUpUTCTIme(TimeStampSec::min())
+		, m_ServerUpUTCTIme(UTCTimeStampSec::min())
 		, m_NumberServicesToWait(0)
 		, m_DBManagers(GetHeap())
 		, m_NewConnectionQueue(GetHeap())
@@ -783,7 +783,7 @@ Proc_End:
 			break;
 
 		case "ModGameCharacterDataManager"_crc:
-			svrChk(AddServiceEntityComponent<Svr::GameCharacterDataManagerServiceEntity>(GetServerGameID()));
+			svrChk(AddServiceEntityComponent<Svr::CharacterDataManagerServiceEntity>(GetServerGameID()));
 			break;
 
 		case "ModMatching_Game_4"_crc:

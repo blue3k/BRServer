@@ -58,7 +58,7 @@ namespace Svr {
 		virtual void TerminateLog() override;
 
 		// Add chatting log
-		virtual Result AddChattingLog(TimeStampSec timeStamp, PlayerID player, uint8_t playerStatus, ChatType type, const char* message );
+		virtual Result AddChattingLog(UTCTimeStampSec timeStamp, PlayerID player, uint8_t playerStatus, ChatType type, const char* message );
 
 		//// Get chatting binary
 		//Result GetChattingBinary( OutputMemoryStream& stream, uint startIndex, uint count );

@@ -325,7 +325,7 @@ namespace Svr {
 			svrChkPtr(pServiceInfo = Service::ClusterManager->GetClusterInfo(pMyOwner->GetGameID(), pMyOwner->GetClusterID()));
 			for(auto itService : pServiceInfo->Services)
 			{
-				auto pService = itService;
+				auto pService = itService.GetValue();
 				if( pService->GetEntityUID() == pMyOwner->GetEntityUID() )
 					continue;
 

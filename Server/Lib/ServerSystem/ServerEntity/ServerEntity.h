@@ -63,7 +63,7 @@ namespace Svr {
 		NetAddress				m_NetPrivate;
 
 		// Server up time in UTC
-		TimeStampSec m_ServerUpTime;
+		UTCTimeStampSec m_ServerUpTime;
 		
 		// Connection to remote
 		SharedPointerAtomicT<SF::Net::Connection>	m_pConnRemote;
@@ -86,8 +86,8 @@ namespace Svr {
 		bool GetReceivedServerStatus() { return m_ReceivedServerStatus; }
 		void SetReceivedServerStatus(bool value) { m_ReceivedServerStatus = value; }
 
-		TimeStampSec GetServerUpTime() { return m_ServerUpTime; }
-		void SetServerUpTime(TimeStampSec value) { m_ServerUpTime = value; }
+		UTCTimeStampSec GetServerUpTime() { return m_ServerUpTime; }
+		void SetServerUpTime(UTCTimeStampSec value) { m_ServerUpTime = value; }
 
 		// return about initial connection or not
 		inline bool IsInitialConnection();

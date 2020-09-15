@@ -25,7 +25,7 @@
 #include "Server/BrServer.h"
 #include "ServerEntity/ServerEntityManager.h"
 
-#include "ServiceEntity/GamePartyManagerServiceEntity.h"
+#include "ServiceEntity/Party/GamePartyManagerServiceEntity.h"
 #include "Protocol/ServerService/GamePartyManagerService.h"
 #include "ServiceEntity/Game/PlayerManagerServiceEntity.h"
 

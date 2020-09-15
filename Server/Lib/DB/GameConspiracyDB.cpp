@@ -117,8 +117,8 @@ namespace DB {
 																			int32_t	LosePlaySC, int32_t LosePlaySM, int32_t LosePlaySS,
 																			int32_t	WinPlayNC, int32_t WinPlayNM, int32_t WinPlayNS,
 																			int32_t	LosePlayNC, int32_t LosePlayNM, int32_t LosePlayNS,
-		TimeStampSec	LatestActiveTime,
-		TimeStampSec	LatestTickTime
+		UTCTimeStampSec	LatestActiveTime,
+		UTCTimeStampSec	LatestTickTime
 																			)
 	{
 		Result hr = ResultCode::SUCCESS;
@@ -179,8 +179,8 @@ namespace DB {
 		int16_t	AddedFriendSlot,
 		const Array<uint8_t>& purchaseID,
 		const char* purchasePlatform, const char* purchaseToken,
-		TimeStampSec	LatestActiveTime,
-		TimeStampSec	LatestTickTime
+		UTCTimeStampSec	LatestActiveTime,
+		UTCTimeStampSec	LatestTickTime
 		)
 	{
 		Result hr = ResultCode::SUCCESS;
@@ -314,7 +314,7 @@ namespace DB {
 																			int32_t	LosePlaySC, int32_t LosePlaySM, int32_t LosePlaySS,
 																			int32_t	WinPlayNC, int32_t WinPlayNM, int32_t WinPlayNS,
 																			int32_t	LosePlayNC, int32_t LosePlayNM, int32_t LosePlayNS,
-																			TimeStampSec	LatestActiveTime
+																			UTCTimeStampSec	LatestActiveTime
 																			)
 	{
 		Result hr = ResultCode::SUCCESS;
@@ -363,8 +363,8 @@ namespace DB {
 																			int64_t	Gem,
 																			int16_t	Stamina,
 																			int16_t	PlayerState,
-																			TimeStampSec	LatestActiveTime,
-																			TimeStampSec	LatestTickTime
+																			UTCTimeStampSec	LatestActiveTime,
+																			UTCTimeStampSec	LatestTickTime
 																			)
 	{
 		Result hr = ResultCode::SUCCESS;
@@ -402,8 +402,8 @@ namespace DB {
 																			int64_t	Gem,
 																			int16_t	Stamina,
 																			int16_t	PlayerState,
-																			TimeStampSec	LatestActiveTime,
-																			TimeStampSec	LatestTickTime
+																			UTCTimeStampSec	LatestActiveTime,
+																			UTCTimeStampSec	LatestTickTime
 																			)
 	{
 		Result hr = ResultCode::SUCCESS;
@@ -660,7 +660,7 @@ namespace DB {
 		return hr;
 	}
 
-	Result GameConspiracyDB::UpdateFriendStaminaTime(TransactionID Sender, uint shardID, PlayerID accountID, PlayerID FriendUID, TimeStampSec timeStamp)
+	Result GameConspiracyDB::UpdateFriendStaminaTime(TransactionID Sender, uint shardID, PlayerID accountID, PlayerID FriendUID, UTCTimeStampSec timeStamp)
 	{
 		Result hr = ResultCode::SUCCESS;
 		QueryUpdateFriendStaminaTimeCmd *pQuery = nullptr;
@@ -688,7 +688,7 @@ namespace DB {
 
 
 	// Notifications
-	Result GameConspiracyDB::Notification_Add(TransactionID Sender, uint shardID, PlayerID ToUserID, bool isCollapsable, NotificationType messageID, int64_t messageParam0, int64_t messageParam1, const char* messageText, TimeStampSec timeStamp)
+	Result GameConspiracyDB::Notification_Add(TransactionID Sender, uint shardID, PlayerID ToUserID, bool isCollapsable, NotificationType messageID, int64_t messageParam0, int64_t messageParam1, const char* messageText, UTCTimeStampSec timeStamp)
 	{
 		Result hr = ResultCode::SUCCESS;
 		QueryNotification_AddCmd *pQuery = nullptr;

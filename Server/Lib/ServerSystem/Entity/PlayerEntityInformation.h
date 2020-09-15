@@ -41,7 +41,7 @@ namespace Svr {
 		// Player's UID
 		PlayerInformation m_PlayerInfo;
 
-		TimeStampSec m_LatestServerUpTime;
+		UTCTimeStampSec m_LatestServerUpTime;
 
 		ServerEntity* m_ServerEntity;
 
@@ -56,7 +56,7 @@ namespace Svr {
 		virtual ~PlayerEntityInformation();
 
 		const PlayerInformation& GetPlayerInformation() const	{ return m_PlayerInfo; }
-		const TimeStampSec& GetLatestServerUpTime() const { return m_LatestServerUpTime; }
+		const UTCTimeStampSec& GetLatestServerUpTime() const { return m_LatestServerUpTime; }
 		ServerEntity* GetServerEntity() const { return m_ServerEntity; }
 		const EntityUID& GetPlayerEntityUID() const { return m_PlayerEntityUID; }
 		bool GetIsActivePlayer() const { return m_IsActivePlayer; }

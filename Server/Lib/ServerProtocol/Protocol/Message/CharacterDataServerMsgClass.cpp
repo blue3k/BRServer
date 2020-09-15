@@ -43,8 +43,10 @@ namespace SF
 
 				protocolCheck(input->Read(m_RouteContext));
 				protocolCheck(input->Read(m_TransactionID));
+				protocolCheck(input->Read(m_RouteHopCount));
 				protocolCheck(input->Read(m_PlayerID));
-				protocolCheck(input->Read(m_CharacterName));
+				protocolCheck(input->Read(ArrayLen));
+				protocolCheck(input->ReadLink(m_CharacterName, ArrayLen * sizeof(char)));
 				protocolCheck(input->Read(m_Attributes));
 
 				return hr;
@@ -63,7 +65,7 @@ namespace SF
 
 			}; // Result AddCharacterDataCmd::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr&& pIMsg, MessageBase* &pMessageBase )
 
-			MessageData* AddCharacterDataCmd::Create( IHeap& memHeap, const RouteContext &InRouteContext, const uint64_t &InTransactionID, const PlayerID &InPlayerID, const StringCrc32 &InCharacterName, const VariableTable &InAttributes )
+			MessageData* AddCharacterDataCmd::Create( IHeap& memHeap, const RouteContext &InRouteContext, const uint64_t &InTransactionID, const uint16_t &InRouteHopCount, const PlayerID &InPlayerID, const char* InCharacterName, const VariableTable &InAttributes )
 			{
  				MessageData *pNewMsg = nullptr;
 				FunctionContext hr([pNewMsg](Result hr) -> MessageData*
@@ -81,6 +83,7 @@ namespace SF
 				unsigned __uiMessageSize = (unsigned)(sizeof(MessageHeader) 
 					, SerializedSizeOf(InRouteContext)
 					, SerializedSizeOf(InTransactionID)
+					, SerializedSizeOf(InRouteHopCount)
 					, SerializedSizeOf(InPlayerID)
 					, SerializedSizeOf(InCharacterName)
 					, SerializedSizeOf(InAttributes)
@@ -94,12 +97,13 @@ namespace SF
 
 				protocolCheck(output->Write(InRouteContext));
 				protocolCheck(output->Write(InTransactionID));
+				protocolCheck(output->Write(InRouteHopCount));
 				protocolCheck(output->Write(InPlayerID));
 				protocolCheck(output->Write(InCharacterName));
 				protocolCheck(output->Write(InAttributes));
 
 				return hr;
-			}; // MessageData* AddCharacterDataCmd::Create( IHeap& memHeap, const RouteContext &InRouteContext, const uint64_t &InTransactionID, const PlayerID &InPlayerID, const StringCrc32 &InCharacterName, const VariableTable &InAttributes )
+			}; // MessageData* AddCharacterDataCmd::Create( IHeap& memHeap, const RouteContext &InRouteContext, const uint64_t &InTransactionID, const uint16_t &InRouteHopCount, const PlayerID &InPlayerID, const char* InCharacterName, const VariableTable &InAttributes )
 
 			Result AddCharacterDataCmd::OverrideRouteContextDestination( EntityUID to )
 			{
@@ -127,13 +131,44 @@ namespace SF
 
 			}; // Result AddCharacterDataCmd::OverrideRouteContextDestination( EntityUID to )
 
+			Result AddCharacterDataCmd::OverrideRouteInformation( EntityUID to, unsigned hopCount )
+			{
+ 				FunctionContext hr;
+
+				MessageData* pIMsg = GetMessage();
+				RouteContext routeContext;
+
+				protocolCheckPtr(pIMsg);
+
+				size_t MsgDataSize = ((size_t)pIMsg->GetMessageSize() - sizeof(MessageHeader));
+				ArrayView<uint8_t> bufferView(MsgDataSize, pIMsg->GetMessageData());
+				InputMemoryStream inputStream(bufferView);
+				auto* input = inputStream.ToInputStream();
+				uint16_t ArrayLen = 0;
+				uint8_t* pCur = nullptr;
+
+				pCur = input->GetBufferPtr() + input->GetPosition();
+				Assert(input->GetRemainSize() >= sizeof(RouteContext));
+				memcpy( &routeContext, pCur, sizeof(RouteContext) );
+				routeContext.Components.To = to;
+				memcpy( pCur, &routeContext, sizeof(RouteContext) );
+				protocolCheck(input->Skip(sizeof(RouteContext)));
+				protocolCheck(input->Skip(sizeof(uint64_t)));
+				Assert(input->GetRemainSize() >= sizeof(uint16_t));
+				pCur = input->GetBufferPtr() + input->GetPosition();
+				*(uint16_t*)pCur = hopCount;
+				protocolCheck(input->Skip(sizeof(uint16_t)));
+
+				return hr;
+
+			}; // Result AddCharacterDataCmd::OverrideRouteInformation( EntityUID to, unsigned hopCount )
 
 			Result AddCharacterDataCmd::TraceOut(const char* prefix, const MessageDataPtr& pMsg)
 			{
  				AddCharacterDataCmd parser;
 				parser.ParseMessage(*pMsg);
-				protocolTrace( Debug1, "AddCharacterData:{0}:{1} , RouteContext:{2}, TransactionID:{3}, PlayerID:{4}, CharacterName:{5}, Attributes:{6}",
-						prefix, pMsg->GetMessageHeader()->Length, parser.GetRouteContext(), parser.GetTransactionID(), parser.GetPlayerID(), parser.GetCharacterName(), parser.GetAttributes()); 
+				protocolTrace( Debug1, "AddCharacterData:{0}:{1} , RouteContext:{2}, TransactionID:{3}, RouteHopCount:{4}, PlayerID:{5}, CharacterName:{6,60}, Attributes:{7}",
+						prefix, pMsg->GetMessageHeader()->Length, parser.GetRouteContext(), parser.GetTransactionID(), parser.GetRouteHopCount(), parser.GetPlayerID(), parser.GetCharacterName(), parser.GetAttributes()); 
 				return ResultCode::SUCCESS;
 			}; // Result AddCharacterDataCmd::TraceOut(const char* prefix, const MessageDataPtr& pMsg)
 
@@ -154,6 +189,7 @@ namespace SF
 				protocolCheck(input->Read(m_RouteContext));
 				protocolCheck(input->Read(m_TransactionID));
 				protocolCheck(input->Read(m_Result));
+				protocolCheck(input->Read(m_CharacterUID));
 
 				return hr;
 
@@ -171,7 +207,7 @@ namespace SF
 
 			}; // Result AddCharacterDataRes::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr&& pIMsg, MessageBase* &pMessageBase )
 
-			MessageData* AddCharacterDataRes::Create( IHeap& memHeap, const RouteContext &InRouteContext, const uint64_t &InTransactionID, const Result &InResult )
+			MessageData* AddCharacterDataRes::Create( IHeap& memHeap, const RouteContext &InRouteContext, const uint64_t &InTransactionID, const Result &InResult, const uint64_t &InCharacterUID )
 			{
  				MessageData *pNewMsg = nullptr;
 				FunctionContext hr([pNewMsg](Result hr) -> MessageData*
@@ -190,6 +226,7 @@ namespace SF
 					, SerializedSizeOf(InRouteContext)
 					, SerializedSizeOf(InTransactionID)
 					, SerializedSizeOf(InResult)
+					, SerializedSizeOf(InCharacterUID)
 				);
 
 				protocolCheckMem( pNewMsg = MessageData::NewMessage( memHeap, CharacterDataServer::AddCharacterDataRes::MID, __uiMessageSize ) );
@@ -201,9 +238,10 @@ namespace SF
 				protocolCheck(output->Write(InRouteContext));
 				protocolCheck(output->Write(InTransactionID));
 				protocolCheck(output->Write(InResult));
+				protocolCheck(output->Write(InCharacterUID));
 
 				return hr;
-			}; // MessageData* AddCharacterDataRes::Create( IHeap& memHeap, const RouteContext &InRouteContext, const uint64_t &InTransactionID, const Result &InResult )
+			}; // MessageData* AddCharacterDataRes::Create( IHeap& memHeap, const RouteContext &InRouteContext, const uint64_t &InTransactionID, const Result &InResult, const uint64_t &InCharacterUID )
 
 			Result AddCharacterDataRes::OverrideRouteContextDestination( EntityUID to )
 			{
@@ -231,13 +269,42 @@ namespace SF
 
 			}; // Result AddCharacterDataRes::OverrideRouteContextDestination( EntityUID to )
 
+			Result AddCharacterDataRes::OverrideRouteInformation( EntityUID to, unsigned hopCount )
+			{
+ 				FunctionContext hr;
+
+				MessageData* pIMsg = GetMessage();
+				RouteContext routeContext;
+
+				protocolCheckPtr(pIMsg);
+
+				size_t MsgDataSize = ((size_t)pIMsg->GetMessageSize() - sizeof(MessageHeader));
+				ArrayView<uint8_t> bufferView(MsgDataSize, pIMsg->GetMessageData());
+				InputMemoryStream inputStream(bufferView);
+				auto* input = inputStream.ToInputStream();
+				uint16_t ArrayLen = 0;
+				uint8_t* pCur = nullptr;
+
+				pCur = input->GetBufferPtr() + input->GetPosition();
+				Assert(input->GetRemainSize() >= sizeof(RouteContext));
+				memcpy( &routeContext, pCur, sizeof(RouteContext) );
+				routeContext.Components.To = to;
+				memcpy( pCur, &routeContext, sizeof(RouteContext) );
+				protocolCheck(input->Skip(sizeof(RouteContext)));
+				protocolCheck(input->Skip(sizeof(uint64_t)));
+				protocolCheck(input->Skip(sizeof(Result)));
+				protocolCheck(input->Skip(sizeof(uint64_t)));
+
+				return hr;
+
+			}; // Result AddCharacterDataRes::OverrideRouteInformation( EntityUID to, unsigned hopCount )
 
 			Result AddCharacterDataRes::TraceOut(const char* prefix, const MessageDataPtr& pMsg)
 			{
  				AddCharacterDataRes parser;
 				parser.ParseMessage(*pMsg);
-				protocolTrace( Debug1, "AddCharacterData:{0}:{1} , RouteContext:{2}, TransactionID:{3}, Result:{4:X8}",
-						prefix, pMsg->GetMessageHeader()->Length, parser.GetRouteContext(), parser.GetTransactionID(), parser.GetResult()); 
+				protocolTrace( Debug1, "AddCharacterData:{0}:{1} , RouteContext:{2}, TransactionID:{3}, Result:{4:X8}, CharacterUID:{5}",
+						prefix, pMsg->GetMessageHeader()->Length, parser.GetRouteContext(), parser.GetTransactionID(), parser.GetResult(), parser.GetCharacterUID()); 
 				return ResultCode::SUCCESS;
 			}; // Result AddCharacterDataRes::TraceOut(const char* prefix, const MessageDataPtr& pMsg)
 
@@ -258,6 +325,7 @@ namespace SF
 
 				protocolCheck(input->Read(m_RouteContext));
 				protocolCheck(input->Read(m_TransactionID));
+				protocolCheck(input->Read(m_RouteHopCount));
 				protocolCheck(input->Read(m_PlayerID));
 				protocolCheck(input->Read(m_CharacterName));
 
@@ -277,7 +345,7 @@ namespace SF
 
 			}; // Result RemoveCharacterDataCmd::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr&& pIMsg, MessageBase* &pMessageBase )
 
-			MessageData* RemoveCharacterDataCmd::Create( IHeap& memHeap, const RouteContext &InRouteContext, const uint64_t &InTransactionID, const PlayerID &InPlayerID, const StringCrc32 &InCharacterName )
+			MessageData* RemoveCharacterDataCmd::Create( IHeap& memHeap, const RouteContext &InRouteContext, const uint64_t &InTransactionID, const uint16_t &InRouteHopCount, const PlayerID &InPlayerID, const StringCrc32 &InCharacterName )
 			{
  				MessageData *pNewMsg = nullptr;
 				FunctionContext hr([pNewMsg](Result hr) -> MessageData*
@@ -295,6 +363,7 @@ namespace SF
 				unsigned __uiMessageSize = (unsigned)(sizeof(MessageHeader) 
 					, SerializedSizeOf(InRouteContext)
 					, SerializedSizeOf(InTransactionID)
+					, SerializedSizeOf(InRouteHopCount)
 					, SerializedSizeOf(InPlayerID)
 					, SerializedSizeOf(InCharacterName)
 				);
@@ -307,11 +376,12 @@ namespace SF
 
 				protocolCheck(output->Write(InRouteContext));
 				protocolCheck(output->Write(InTransactionID));
+				protocolCheck(output->Write(InRouteHopCount));
 				protocolCheck(output->Write(InPlayerID));
 				protocolCheck(output->Write(InCharacterName));
 
 				return hr;
-			}; // MessageData* RemoveCharacterDataCmd::Create( IHeap& memHeap, const RouteContext &InRouteContext, const uint64_t &InTransactionID, const PlayerID &InPlayerID, const StringCrc32 &InCharacterName )
+			}; // MessageData* RemoveCharacterDataCmd::Create( IHeap& memHeap, const RouteContext &InRouteContext, const uint64_t &InTransactionID, const uint16_t &InRouteHopCount, const PlayerID &InPlayerID, const StringCrc32 &InCharacterName )
 
 			Result RemoveCharacterDataCmd::OverrideRouteContextDestination( EntityUID to )
 			{
@@ -339,13 +409,44 @@ namespace SF
 
 			}; // Result RemoveCharacterDataCmd::OverrideRouteContextDestination( EntityUID to )
 
+			Result RemoveCharacterDataCmd::OverrideRouteInformation( EntityUID to, unsigned hopCount )
+			{
+ 				FunctionContext hr;
+
+				MessageData* pIMsg = GetMessage();
+				RouteContext routeContext;
+
+				protocolCheckPtr(pIMsg);
+
+				size_t MsgDataSize = ((size_t)pIMsg->GetMessageSize() - sizeof(MessageHeader));
+				ArrayView<uint8_t> bufferView(MsgDataSize, pIMsg->GetMessageData());
+				InputMemoryStream inputStream(bufferView);
+				auto* input = inputStream.ToInputStream();
+				uint16_t ArrayLen = 0;
+				uint8_t* pCur = nullptr;
+
+				pCur = input->GetBufferPtr() + input->GetPosition();
+				Assert(input->GetRemainSize() >= sizeof(RouteContext));
+				memcpy( &routeContext, pCur, sizeof(RouteContext) );
+				routeContext.Components.To = to;
+				memcpy( pCur, &routeContext, sizeof(RouteContext) );
+				protocolCheck(input->Skip(sizeof(RouteContext)));
+				protocolCheck(input->Skip(sizeof(uint64_t)));
+				Assert(input->GetRemainSize() >= sizeof(uint16_t));
+				pCur = input->GetBufferPtr() + input->GetPosition();
+				*(uint16_t*)pCur = hopCount;
+				protocolCheck(input->Skip(sizeof(uint16_t)));
+
+				return hr;
+
+			}; // Result RemoveCharacterDataCmd::OverrideRouteInformation( EntityUID to, unsigned hopCount )
 
 			Result RemoveCharacterDataCmd::TraceOut(const char* prefix, const MessageDataPtr& pMsg)
 			{
  				RemoveCharacterDataCmd parser;
 				parser.ParseMessage(*pMsg);
-				protocolTrace( Debug1, "RemoveCharacterData:{0}:{1} , RouteContext:{2}, TransactionID:{3}, PlayerID:{4}, CharacterName:{5}",
-						prefix, pMsg->GetMessageHeader()->Length, parser.GetRouteContext(), parser.GetTransactionID(), parser.GetPlayerID(), parser.GetCharacterName()); 
+				protocolTrace( Debug1, "RemoveCharacterData:{0}:{1} , RouteContext:{2}, TransactionID:{3}, RouteHopCount:{4}, PlayerID:{5}, CharacterName:{6}",
+						prefix, pMsg->GetMessageHeader()->Length, parser.GetRouteContext(), parser.GetTransactionID(), parser.GetRouteHopCount(), parser.GetPlayerID(), parser.GetCharacterName()); 
 				return ResultCode::SUCCESS;
 			}; // Result RemoveCharacterDataCmd::TraceOut(const char* prefix, const MessageDataPtr& pMsg)
 
@@ -443,6 +544,34 @@ namespace SF
 
 			}; // Result RemoveCharacterDataRes::OverrideRouteContextDestination( EntityUID to )
 
+			Result RemoveCharacterDataRes::OverrideRouteInformation( EntityUID to, unsigned hopCount )
+			{
+ 				FunctionContext hr;
+
+				MessageData* pIMsg = GetMessage();
+				RouteContext routeContext;
+
+				protocolCheckPtr(pIMsg);
+
+				size_t MsgDataSize = ((size_t)pIMsg->GetMessageSize() - sizeof(MessageHeader));
+				ArrayView<uint8_t> bufferView(MsgDataSize, pIMsg->GetMessageData());
+				InputMemoryStream inputStream(bufferView);
+				auto* input = inputStream.ToInputStream();
+				uint16_t ArrayLen = 0;
+				uint8_t* pCur = nullptr;
+
+				pCur = input->GetBufferPtr() + input->GetPosition();
+				Assert(input->GetRemainSize() >= sizeof(RouteContext));
+				memcpy( &routeContext, pCur, sizeof(RouteContext) );
+				routeContext.Components.To = to;
+				memcpy( pCur, &routeContext, sizeof(RouteContext) );
+				protocolCheck(input->Skip(sizeof(RouteContext)));
+				protocolCheck(input->Skip(sizeof(uint64_t)));
+				protocolCheck(input->Skip(sizeof(Result)));
+
+				return hr;
+
+			}; // Result RemoveCharacterDataRes::OverrideRouteInformation( EntityUID to, unsigned hopCount )
 
 			Result RemoveCharacterDataRes::TraceOut(const char* prefix, const MessageDataPtr& pMsg)
 			{
@@ -453,8 +582,290 @@ namespace SF
 				return ResultCode::SUCCESS;
 			}; // Result RemoveCharacterDataRes::TraceOut(const char* prefix, const MessageDataPtr& pMsg)
 
+			// Cmd: Get character list
+			const MessageID GetCharacterDataListCmd::MID = MessageID(MSGTYPE_COMMAND, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_CHARACTERDATASERVER, 2);
+			Result GetCharacterDataListCmd::ParseMessage( MessageData* pIMsg )
+			{
+ 				FunctionContext hr;
+
+
+				protocolCheckPtr(pIMsg);
+
+				size_t MsgDataSize = ((size_t)pIMsg->GetMessageSize() - sizeof(MessageHeader));
+				ArrayView<uint8_t> bufferView(MsgDataSize, pIMsg->GetMessageData());
+				InputMemoryStream inputStream(bufferView);
+				auto* input = inputStream.ToInputStream();
+				uint16_t ArrayLen = 0;
+
+				protocolCheck(input->Read(m_RouteContext));
+				protocolCheck(input->Read(m_TransactionID));
+				protocolCheck(input->Read(m_RouteHopCount));
+				protocolCheck(input->Read(m_PlayerID));
+				protocolCheck(input->Read(m_CharacterName));
+
+				return hr;
+
+			}; // Result GetCharacterDataListCmd::ParseMessage( MessageData* pIMsg )
+
+
+			Result GetCharacterDataListCmd::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr&& pIMsg, MessageBase* &pMessageBase )
+			{
+ 				FunctionContext hr;
+
+				protocolCheckMem(pMessageBase = new(memHeap) GetCharacterDataListCmd(std::forward<MessageDataPtr>(pIMsg)));
+				protocolCheck(pMessageBase->ParseMsg());
+
+				return hr;
+
+			}; // Result GetCharacterDataListCmd::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr&& pIMsg, MessageBase* &pMessageBase )
+
+			MessageData* GetCharacterDataListCmd::Create( IHeap& memHeap, const RouteContext &InRouteContext, const uint64_t &InTransactionID, const uint16_t &InRouteHopCount, const PlayerID &InPlayerID, const StringCrc32 &InCharacterName )
+			{
+ 				MessageData *pNewMsg = nullptr;
+				FunctionContext hr([pNewMsg](Result hr) -> MessageData*
+				{
+ 					if(!hr && pNewMsg != nullptr)
+					{
+ 						delete pNewMsg;
+						return nullptr;
+					}
+					return pNewMsg;
+				});
+
+				uint8_t *pMsgData = nullptr;
+
+				unsigned __uiMessageSize = (unsigned)(sizeof(MessageHeader) 
+					, SerializedSizeOf(InRouteContext)
+					, SerializedSizeOf(InTransactionID)
+					, SerializedSizeOf(InRouteHopCount)
+					, SerializedSizeOf(InPlayerID)
+					, SerializedSizeOf(InCharacterName)
+				);
+
+				protocolCheckMem( pNewMsg = MessageData::NewMessage( memHeap, CharacterDataServer::GetCharacterDataListCmd::MID, __uiMessageSize ) );
+				size_t MsgDataSize = (int)((size_t)pNewMsg->GetMessageSize() - sizeof(MessageHeader));
+				ArrayView<uint8_t> BufferView(MsgDataSize, pNewMsg->GetMessageData());
+				OutputMemoryStream outputStream(BufferView);
+				auto* output = outputStream.ToOutputStream();
+
+				protocolCheck(output->Write(InRouteContext));
+				protocolCheck(output->Write(InTransactionID));
+				protocolCheck(output->Write(InRouteHopCount));
+				protocolCheck(output->Write(InPlayerID));
+				protocolCheck(output->Write(InCharacterName));
+
+				return hr;
+			}; // MessageData* GetCharacterDataListCmd::Create( IHeap& memHeap, const RouteContext &InRouteContext, const uint64_t &InTransactionID, const uint16_t &InRouteHopCount, const PlayerID &InPlayerID, const StringCrc32 &InCharacterName )
+
+			Result GetCharacterDataListCmd::OverrideRouteContextDestination( EntityUID to )
+			{
+ 				FunctionContext hr;
+
+				MessageData* pIMsg = GetMessage();
+				RouteContext routeContext;
+
+				protocolCheckPtr(pIMsg);
+
+				size_t MsgDataSize = (int)((size_t)pIMsg->GetMessageSize() - sizeof(MessageHeader));
+				ArrayView<uint8_t> bufferView(MsgDataSize, pIMsg->GetMessageData());
+				InputMemoryStream inputStream(bufferView);
+				auto* input = inputStream.ToInputStream();
+				uint16_t ArrayLen = 0;
+				uint8_t* pCur = nullptr;
+
+				pCur = input->GetBufferPtr() + input->GetPosition();
+				Assert(input->GetRemainSize() >= sizeof(RouteContext));
+				memcpy( &routeContext, pCur, sizeof(RouteContext) );
+				routeContext.Components.To = to;
+				memcpy( pCur, &routeContext, sizeof(RouteContext) );
+
+				return hr;
+
+			}; // Result GetCharacterDataListCmd::OverrideRouteContextDestination( EntityUID to )
+
+			Result GetCharacterDataListCmd::OverrideRouteInformation( EntityUID to, unsigned hopCount )
+			{
+ 				FunctionContext hr;
+
+				MessageData* pIMsg = GetMessage();
+				RouteContext routeContext;
+
+				protocolCheckPtr(pIMsg);
+
+				size_t MsgDataSize = ((size_t)pIMsg->GetMessageSize() - sizeof(MessageHeader));
+				ArrayView<uint8_t> bufferView(MsgDataSize, pIMsg->GetMessageData());
+				InputMemoryStream inputStream(bufferView);
+				auto* input = inputStream.ToInputStream();
+				uint16_t ArrayLen = 0;
+				uint8_t* pCur = nullptr;
+
+				pCur = input->GetBufferPtr() + input->GetPosition();
+				Assert(input->GetRemainSize() >= sizeof(RouteContext));
+				memcpy( &routeContext, pCur, sizeof(RouteContext) );
+				routeContext.Components.To = to;
+				memcpy( pCur, &routeContext, sizeof(RouteContext) );
+				protocolCheck(input->Skip(sizeof(RouteContext)));
+				protocolCheck(input->Skip(sizeof(uint64_t)));
+				Assert(input->GetRemainSize() >= sizeof(uint16_t));
+				pCur = input->GetBufferPtr() + input->GetPosition();
+				*(uint16_t*)pCur = hopCount;
+				protocolCheck(input->Skip(sizeof(uint16_t)));
+
+				return hr;
+
+			}; // Result GetCharacterDataListCmd::OverrideRouteInformation( EntityUID to, unsigned hopCount )
+
+			Result GetCharacterDataListCmd::TraceOut(const char* prefix, const MessageDataPtr& pMsg)
+			{
+ 				GetCharacterDataListCmd parser;
+				parser.ParseMessage(*pMsg);
+				protocolTrace( Debug1, "GetCharacterDataList:{0}:{1} , RouteContext:{2}, TransactionID:{3}, RouteHopCount:{4}, PlayerID:{5}, CharacterName:{6}",
+						prefix, pMsg->GetMessageHeader()->Length, parser.GetRouteContext(), parser.GetTransactionID(), parser.GetRouteHopCount(), parser.GetPlayerID(), parser.GetCharacterName()); 
+				return ResultCode::SUCCESS;
+			}; // Result GetCharacterDataListCmd::TraceOut(const char* prefix, const MessageDataPtr& pMsg)
+
+			const MessageID GetCharacterDataListRes::MID = MessageID(MSGTYPE_RESULT, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_CHARACTERDATASERVER, 2);
+			Result GetCharacterDataListRes::ParseMessage( MessageData* pIMsg )
+			{
+ 				FunctionContext hr;
+
+
+				protocolCheckPtr(pIMsg);
+
+				size_t MsgDataSize = ((size_t)pIMsg->GetMessageSize() - sizeof(MessageHeader));
+				ArrayView<uint8_t> bufferView(MsgDataSize, pIMsg->GetMessageData());
+				InputMemoryStream inputStream(bufferView);
+				auto* input = inputStream.ToInputStream();
+				uint16_t ArrayLen = 0;
+
+				protocolCheck(input->Read(m_RouteContext));
+				protocolCheck(input->Read(m_TransactionID));
+				protocolCheck(input->Read(m_Result));
+				protocolCheck(input->Read(m_CharacterName));
+				protocolCheck(input->Read(m_Attributes));
+
+				return hr;
+
+			}; // Result GetCharacterDataListRes::ParseMessage( MessageData* pIMsg )
+
+
+			Result GetCharacterDataListRes::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr&& pIMsg, MessageBase* &pMessageBase )
+			{
+ 				FunctionContext hr;
+
+				protocolCheckMem(pMessageBase = new(memHeap) GetCharacterDataListRes(std::forward<MessageDataPtr>(pIMsg)));
+				protocolCheck(pMessageBase->ParseMsg());
+
+				return hr;
+
+			}; // Result GetCharacterDataListRes::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr&& pIMsg, MessageBase* &pMessageBase )
+
+			MessageData* GetCharacterDataListRes::Create( IHeap& memHeap, const RouteContext &InRouteContext, const uint64_t &InTransactionID, const Result &InResult, const StringCrc32 &InCharacterName, const VariableTable &InAttributes )
+			{
+ 				MessageData *pNewMsg = nullptr;
+				FunctionContext hr([pNewMsg](Result hr) -> MessageData*
+				{
+ 					if(!hr && pNewMsg != nullptr)
+					{
+ 						delete pNewMsg;
+						return nullptr;
+					}
+					return pNewMsg;
+				});
+
+				uint8_t *pMsgData = nullptr;
+
+				unsigned __uiMessageSize = (unsigned)(sizeof(MessageHeader) 
+					, SerializedSizeOf(InRouteContext)
+					, SerializedSizeOf(InTransactionID)
+					, SerializedSizeOf(InResult)
+					, SerializedSizeOf(InCharacterName)
+					, SerializedSizeOf(InAttributes)
+				);
+
+				protocolCheckMem( pNewMsg = MessageData::NewMessage( memHeap, CharacterDataServer::GetCharacterDataListRes::MID, __uiMessageSize ) );
+				size_t MsgDataSize = (int)((size_t)pNewMsg->GetMessageSize() - sizeof(MessageHeader));
+				ArrayView<uint8_t> BufferView(MsgDataSize, pNewMsg->GetMessageData());
+				OutputMemoryStream outputStream(BufferView);
+				auto* output = outputStream.ToOutputStream();
+
+				protocolCheck(output->Write(InRouteContext));
+				protocolCheck(output->Write(InTransactionID));
+				protocolCheck(output->Write(InResult));
+				protocolCheck(output->Write(InCharacterName));
+				protocolCheck(output->Write(InAttributes));
+
+				return hr;
+			}; // MessageData* GetCharacterDataListRes::Create( IHeap& memHeap, const RouteContext &InRouteContext, const uint64_t &InTransactionID, const Result &InResult, const StringCrc32 &InCharacterName, const VariableTable &InAttributes )
+
+			Result GetCharacterDataListRes::OverrideRouteContextDestination( EntityUID to )
+			{
+ 				FunctionContext hr;
+
+				MessageData* pIMsg = GetMessage();
+				RouteContext routeContext;
+
+				protocolCheckPtr(pIMsg);
+
+				size_t MsgDataSize = (int)((size_t)pIMsg->GetMessageSize() - sizeof(MessageHeader));
+				ArrayView<uint8_t> bufferView(MsgDataSize, pIMsg->GetMessageData());
+				InputMemoryStream inputStream(bufferView);
+				auto* input = inputStream.ToInputStream();
+				uint16_t ArrayLen = 0;
+				uint8_t* pCur = nullptr;
+
+				pCur = input->GetBufferPtr() + input->GetPosition();
+				Assert(input->GetRemainSize() >= sizeof(RouteContext));
+				memcpy( &routeContext, pCur, sizeof(RouteContext) );
+				routeContext.Components.To = to;
+				memcpy( pCur, &routeContext, sizeof(RouteContext) );
+
+				return hr;
+
+			}; // Result GetCharacterDataListRes::OverrideRouteContextDestination( EntityUID to )
+
+			Result GetCharacterDataListRes::OverrideRouteInformation( EntityUID to, unsigned hopCount )
+			{
+ 				FunctionContext hr;
+
+				MessageData* pIMsg = GetMessage();
+				RouteContext routeContext;
+
+				protocolCheckPtr(pIMsg);
+
+				size_t MsgDataSize = ((size_t)pIMsg->GetMessageSize() - sizeof(MessageHeader));
+				ArrayView<uint8_t> bufferView(MsgDataSize, pIMsg->GetMessageData());
+				InputMemoryStream inputStream(bufferView);
+				auto* input = inputStream.ToInputStream();
+				uint16_t ArrayLen = 0;
+				uint8_t* pCur = nullptr;
+
+				pCur = input->GetBufferPtr() + input->GetPosition();
+				Assert(input->GetRemainSize() >= sizeof(RouteContext));
+				memcpy( &routeContext, pCur, sizeof(RouteContext) );
+				routeContext.Components.To = to;
+				memcpy( pCur, &routeContext, sizeof(RouteContext) );
+				protocolCheck(input->Skip(sizeof(RouteContext)));
+				protocolCheck(input->Skip(sizeof(uint64_t)));
+				protocolCheck(input->Skip(sizeof(Result)));
+				protocolCheck(input->Skip(sizeof(StringCrc32)));
+				protocolCheck(input->Skip(sizeof(VariableTable)));
+
+				return hr;
+
+			}; // Result GetCharacterDataListRes::OverrideRouteInformation( EntityUID to, unsigned hopCount )
+
+			Result GetCharacterDataListRes::TraceOut(const char* prefix, const MessageDataPtr& pMsg)
+			{
+ 				GetCharacterDataListRes parser;
+				parser.ParseMessage(*pMsg);
+				protocolTrace( Debug1, "GetCharacterDataList:{0}:{1} , RouteContext:{2}, TransactionID:{3}, Result:{4:X8}, CharacterName:{5}, Attributes:{6}",
+						prefix, pMsg->GetMessageHeader()->Length, parser.GetRouteContext(), parser.GetTransactionID(), parser.GetResult(), parser.GetCharacterName(), parser.GetAttributes()); 
+				return ResultCode::SUCCESS;
+			}; // Result GetCharacterDataListRes::TraceOut(const char* prefix, const MessageDataPtr& pMsg)
+
 			// Cmd: Get character data
-			const MessageID GetCharacterDataCmd::MID = MessageID(MSGTYPE_COMMAND, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_CHARACTERDATASERVER, 2);
+			const MessageID GetCharacterDataCmd::MID = MessageID(MSGTYPE_COMMAND, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_CHARACTERDATASERVER, 3);
 			Result GetCharacterDataCmd::ParseMessage( MessageData* pIMsg )
 			{
  				FunctionContext hr;
@@ -470,6 +881,7 @@ namespace SF
 
 				protocolCheck(input->Read(m_RouteContext));
 				protocolCheck(input->Read(m_TransactionID));
+				protocolCheck(input->Read(m_RouteHopCount));
 				protocolCheck(input->Read(m_PlayerID));
 				protocolCheck(input->Read(m_CharacterName));
 
@@ -489,7 +901,7 @@ namespace SF
 
 			}; // Result GetCharacterDataCmd::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr&& pIMsg, MessageBase* &pMessageBase )
 
-			MessageData* GetCharacterDataCmd::Create( IHeap& memHeap, const RouteContext &InRouteContext, const uint64_t &InTransactionID, const PlayerID &InPlayerID, const StringCrc32 &InCharacterName )
+			MessageData* GetCharacterDataCmd::Create( IHeap& memHeap, const RouteContext &InRouteContext, const uint64_t &InTransactionID, const uint16_t &InRouteHopCount, const PlayerID &InPlayerID, const StringCrc32 &InCharacterName )
 			{
  				MessageData *pNewMsg = nullptr;
 				FunctionContext hr([pNewMsg](Result hr) -> MessageData*
@@ -507,6 +919,7 @@ namespace SF
 				unsigned __uiMessageSize = (unsigned)(sizeof(MessageHeader) 
 					, SerializedSizeOf(InRouteContext)
 					, SerializedSizeOf(InTransactionID)
+					, SerializedSizeOf(InRouteHopCount)
 					, SerializedSizeOf(InPlayerID)
 					, SerializedSizeOf(InCharacterName)
 				);
@@ -519,11 +932,12 @@ namespace SF
 
 				protocolCheck(output->Write(InRouteContext));
 				protocolCheck(output->Write(InTransactionID));
+				protocolCheck(output->Write(InRouteHopCount));
 				protocolCheck(output->Write(InPlayerID));
 				protocolCheck(output->Write(InCharacterName));
 
 				return hr;
-			}; // MessageData* GetCharacterDataCmd::Create( IHeap& memHeap, const RouteContext &InRouteContext, const uint64_t &InTransactionID, const PlayerID &InPlayerID, const StringCrc32 &InCharacterName )
+			}; // MessageData* GetCharacterDataCmd::Create( IHeap& memHeap, const RouteContext &InRouteContext, const uint64_t &InTransactionID, const uint16_t &InRouteHopCount, const PlayerID &InPlayerID, const StringCrc32 &InCharacterName )
 
 			Result GetCharacterDataCmd::OverrideRouteContextDestination( EntityUID to )
 			{
@@ -551,17 +965,48 @@ namespace SF
 
 			}; // Result GetCharacterDataCmd::OverrideRouteContextDestination( EntityUID to )
 
+			Result GetCharacterDataCmd::OverrideRouteInformation( EntityUID to, unsigned hopCount )
+			{
+ 				FunctionContext hr;
+
+				MessageData* pIMsg = GetMessage();
+				RouteContext routeContext;
+
+				protocolCheckPtr(pIMsg);
+
+				size_t MsgDataSize = ((size_t)pIMsg->GetMessageSize() - sizeof(MessageHeader));
+				ArrayView<uint8_t> bufferView(MsgDataSize, pIMsg->GetMessageData());
+				InputMemoryStream inputStream(bufferView);
+				auto* input = inputStream.ToInputStream();
+				uint16_t ArrayLen = 0;
+				uint8_t* pCur = nullptr;
+
+				pCur = input->GetBufferPtr() + input->GetPosition();
+				Assert(input->GetRemainSize() >= sizeof(RouteContext));
+				memcpy( &routeContext, pCur, sizeof(RouteContext) );
+				routeContext.Components.To = to;
+				memcpy( pCur, &routeContext, sizeof(RouteContext) );
+				protocolCheck(input->Skip(sizeof(RouteContext)));
+				protocolCheck(input->Skip(sizeof(uint64_t)));
+				Assert(input->GetRemainSize() >= sizeof(uint16_t));
+				pCur = input->GetBufferPtr() + input->GetPosition();
+				*(uint16_t*)pCur = hopCount;
+				protocolCheck(input->Skip(sizeof(uint16_t)));
+
+				return hr;
+
+			}; // Result GetCharacterDataCmd::OverrideRouteInformation( EntityUID to, unsigned hopCount )
 
 			Result GetCharacterDataCmd::TraceOut(const char* prefix, const MessageDataPtr& pMsg)
 			{
  				GetCharacterDataCmd parser;
 				parser.ParseMessage(*pMsg);
-				protocolTrace( Debug1, "GetCharacterData:{0}:{1} , RouteContext:{2}, TransactionID:{3}, PlayerID:{4}, CharacterName:{5}",
-						prefix, pMsg->GetMessageHeader()->Length, parser.GetRouteContext(), parser.GetTransactionID(), parser.GetPlayerID(), parser.GetCharacterName()); 
+				protocolTrace( Debug1, "GetCharacterData:{0}:{1} , RouteContext:{2}, TransactionID:{3}, RouteHopCount:{4}, PlayerID:{5}, CharacterName:{6}",
+						prefix, pMsg->GetMessageHeader()->Length, parser.GetRouteContext(), parser.GetTransactionID(), parser.GetRouteHopCount(), parser.GetPlayerID(), parser.GetCharacterName()); 
 				return ResultCode::SUCCESS;
 			}; // Result GetCharacterDataCmd::TraceOut(const char* prefix, const MessageDataPtr& pMsg)
 
-			const MessageID GetCharacterDataRes::MID = MessageID(MSGTYPE_RESULT, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_CHARACTERDATASERVER, 2);
+			const MessageID GetCharacterDataRes::MID = MessageID(MSGTYPE_RESULT, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_CHARACTERDATASERVER, 3);
 			Result GetCharacterDataRes::ParseMessage( MessageData* pIMsg )
 			{
  				FunctionContext hr;
@@ -661,6 +1106,36 @@ namespace SF
 
 			}; // Result GetCharacterDataRes::OverrideRouteContextDestination( EntityUID to )
 
+			Result GetCharacterDataRes::OverrideRouteInformation( EntityUID to, unsigned hopCount )
+			{
+ 				FunctionContext hr;
+
+				MessageData* pIMsg = GetMessage();
+				RouteContext routeContext;
+
+				protocolCheckPtr(pIMsg);
+
+				size_t MsgDataSize = ((size_t)pIMsg->GetMessageSize() - sizeof(MessageHeader));
+				ArrayView<uint8_t> bufferView(MsgDataSize, pIMsg->GetMessageData());
+				InputMemoryStream inputStream(bufferView);
+				auto* input = inputStream.ToInputStream();
+				uint16_t ArrayLen = 0;
+				uint8_t* pCur = nullptr;
+
+				pCur = input->GetBufferPtr() + input->GetPosition();
+				Assert(input->GetRemainSize() >= sizeof(RouteContext));
+				memcpy( &routeContext, pCur, sizeof(RouteContext) );
+				routeContext.Components.To = to;
+				memcpy( pCur, &routeContext, sizeof(RouteContext) );
+				protocolCheck(input->Skip(sizeof(RouteContext)));
+				protocolCheck(input->Skip(sizeof(uint64_t)));
+				protocolCheck(input->Skip(sizeof(Result)));
+				protocolCheck(input->Skip(sizeof(StringCrc32)));
+				protocolCheck(input->Skip(sizeof(VariableTable)));
+
+				return hr;
+
+			}; // Result GetCharacterDataRes::OverrideRouteInformation( EntityUID to, unsigned hopCount )
 
 			Result GetCharacterDataRes::TraceOut(const char* prefix, const MessageDataPtr& pMsg)
 			{
@@ -672,7 +1147,7 @@ namespace SF
 			}; // Result GetCharacterDataRes::TraceOut(const char* prefix, const MessageDataPtr& pMsg)
 
 			// Cmd: Set(add or update) attribute value
-			const MessageID SetAttributeCmd::MID = MessageID(MSGTYPE_COMMAND, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_CHARACTERDATASERVER, 3);
+			const MessageID SetAttributeCmd::MID = MessageID(MSGTYPE_COMMAND, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_CHARACTERDATASERVER, 4);
 			Result SetAttributeCmd::ParseMessage( MessageData* pIMsg )
 			{
  				FunctionContext hr;
@@ -688,6 +1163,7 @@ namespace SF
 
 				protocolCheck(input->Read(m_RouteContext));
 				protocolCheck(input->Read(m_TransactionID));
+				protocolCheck(input->Read(m_RouteHopCount));
 				protocolCheck(input->Read(m_PlayerID));
 				protocolCheck(input->Read(m_CharacterName));
 				protocolCheck(input->Read(m_Attributes));
@@ -708,7 +1184,7 @@ namespace SF
 
 			}; // Result SetAttributeCmd::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr&& pIMsg, MessageBase* &pMessageBase )
 
-			MessageData* SetAttributeCmd::Create( IHeap& memHeap, const RouteContext &InRouteContext, const uint64_t &InTransactionID, const PlayerID &InPlayerID, const StringCrc32 &InCharacterName, const VariableTable &InAttributes )
+			MessageData* SetAttributeCmd::Create( IHeap& memHeap, const RouteContext &InRouteContext, const uint64_t &InTransactionID, const uint16_t &InRouteHopCount, const PlayerID &InPlayerID, const StringCrc32 &InCharacterName, const VariableTable &InAttributes )
 			{
  				MessageData *pNewMsg = nullptr;
 				FunctionContext hr([pNewMsg](Result hr) -> MessageData*
@@ -726,6 +1202,7 @@ namespace SF
 				unsigned __uiMessageSize = (unsigned)(sizeof(MessageHeader) 
 					, SerializedSizeOf(InRouteContext)
 					, SerializedSizeOf(InTransactionID)
+					, SerializedSizeOf(InRouteHopCount)
 					, SerializedSizeOf(InPlayerID)
 					, SerializedSizeOf(InCharacterName)
 					, SerializedSizeOf(InAttributes)
@@ -739,12 +1216,13 @@ namespace SF
 
 				protocolCheck(output->Write(InRouteContext));
 				protocolCheck(output->Write(InTransactionID));
+				protocolCheck(output->Write(InRouteHopCount));
 				protocolCheck(output->Write(InPlayerID));
 				protocolCheck(output->Write(InCharacterName));
 				protocolCheck(output->Write(InAttributes));
 
 				return hr;
-			}; // MessageData* SetAttributeCmd::Create( IHeap& memHeap, const RouteContext &InRouteContext, const uint64_t &InTransactionID, const PlayerID &InPlayerID, const StringCrc32 &InCharacterName, const VariableTable &InAttributes )
+			}; // MessageData* SetAttributeCmd::Create( IHeap& memHeap, const RouteContext &InRouteContext, const uint64_t &InTransactionID, const uint16_t &InRouteHopCount, const PlayerID &InPlayerID, const StringCrc32 &InCharacterName, const VariableTable &InAttributes )
 
 			Result SetAttributeCmd::OverrideRouteContextDestination( EntityUID to )
 			{
@@ -772,17 +1250,48 @@ namespace SF
 
 			}; // Result SetAttributeCmd::OverrideRouteContextDestination( EntityUID to )
 
+			Result SetAttributeCmd::OverrideRouteInformation( EntityUID to, unsigned hopCount )
+			{
+ 				FunctionContext hr;
+
+				MessageData* pIMsg = GetMessage();
+				RouteContext routeContext;
+
+				protocolCheckPtr(pIMsg);
+
+				size_t MsgDataSize = ((size_t)pIMsg->GetMessageSize() - sizeof(MessageHeader));
+				ArrayView<uint8_t> bufferView(MsgDataSize, pIMsg->GetMessageData());
+				InputMemoryStream inputStream(bufferView);
+				auto* input = inputStream.ToInputStream();
+				uint16_t ArrayLen = 0;
+				uint8_t* pCur = nullptr;
+
+				pCur = input->GetBufferPtr() + input->GetPosition();
+				Assert(input->GetRemainSize() >= sizeof(RouteContext));
+				memcpy( &routeContext, pCur, sizeof(RouteContext) );
+				routeContext.Components.To = to;
+				memcpy( pCur, &routeContext, sizeof(RouteContext) );
+				protocolCheck(input->Skip(sizeof(RouteContext)));
+				protocolCheck(input->Skip(sizeof(uint64_t)));
+				Assert(input->GetRemainSize() >= sizeof(uint16_t));
+				pCur = input->GetBufferPtr() + input->GetPosition();
+				*(uint16_t*)pCur = hopCount;
+				protocolCheck(input->Skip(sizeof(uint16_t)));
+
+				return hr;
+
+			}; // Result SetAttributeCmd::OverrideRouteInformation( EntityUID to, unsigned hopCount )
 
 			Result SetAttributeCmd::TraceOut(const char* prefix, const MessageDataPtr& pMsg)
 			{
  				SetAttributeCmd parser;
 				parser.ParseMessage(*pMsg);
-				protocolTrace( Debug1, "SetAttribute:{0}:{1} , RouteContext:{2}, TransactionID:{3}, PlayerID:{4}, CharacterName:{5}, Attributes:{6}",
-						prefix, pMsg->GetMessageHeader()->Length, parser.GetRouteContext(), parser.GetTransactionID(), parser.GetPlayerID(), parser.GetCharacterName(), parser.GetAttributes()); 
+				protocolTrace( Debug1, "SetAttribute:{0}:{1} , RouteContext:{2}, TransactionID:{3}, RouteHopCount:{4}, PlayerID:{5}, CharacterName:{6}, Attributes:{7}",
+						prefix, pMsg->GetMessageHeader()->Length, parser.GetRouteContext(), parser.GetTransactionID(), parser.GetRouteHopCount(), parser.GetPlayerID(), parser.GetCharacterName(), parser.GetAttributes()); 
 				return ResultCode::SUCCESS;
 			}; // Result SetAttributeCmd::TraceOut(const char* prefix, const MessageDataPtr& pMsg)
 
-			const MessageID SetAttributeRes::MID = MessageID(MSGTYPE_RESULT, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_CHARACTERDATASERVER, 3);
+			const MessageID SetAttributeRes::MID = MessageID(MSGTYPE_RESULT, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_CHARACTERDATASERVER, 4);
 			Result SetAttributeRes::ParseMessage( MessageData* pIMsg )
 			{
  				FunctionContext hr;
@@ -876,6 +1385,34 @@ namespace SF
 
 			}; // Result SetAttributeRes::OverrideRouteContextDestination( EntityUID to )
 
+			Result SetAttributeRes::OverrideRouteInformation( EntityUID to, unsigned hopCount )
+			{
+ 				FunctionContext hr;
+
+				MessageData* pIMsg = GetMessage();
+				RouteContext routeContext;
+
+				protocolCheckPtr(pIMsg);
+
+				size_t MsgDataSize = ((size_t)pIMsg->GetMessageSize() - sizeof(MessageHeader));
+				ArrayView<uint8_t> bufferView(MsgDataSize, pIMsg->GetMessageData());
+				InputMemoryStream inputStream(bufferView);
+				auto* input = inputStream.ToInputStream();
+				uint16_t ArrayLen = 0;
+				uint8_t* pCur = nullptr;
+
+				pCur = input->GetBufferPtr() + input->GetPosition();
+				Assert(input->GetRemainSize() >= sizeof(RouteContext));
+				memcpy( &routeContext, pCur, sizeof(RouteContext) );
+				routeContext.Components.To = to;
+				memcpy( pCur, &routeContext, sizeof(RouteContext) );
+				protocolCheck(input->Skip(sizeof(RouteContext)));
+				protocolCheck(input->Skip(sizeof(uint64_t)));
+				protocolCheck(input->Skip(sizeof(Result)));
+
+				return hr;
+
+			}; // Result SetAttributeRes::OverrideRouteInformation( EntityUID to, unsigned hopCount )
 
 			Result SetAttributeRes::TraceOut(const char* prefix, const MessageDataPtr& pMsg)
 			{
@@ -887,7 +1424,7 @@ namespace SF
 			}; // Result SetAttributeRes::TraceOut(const char* prefix, const MessageDataPtr& pMsg)
 
 			// Cmd: Remove an attribute value
-			const MessageID RemoveAttributesCmd::MID = MessageID(MSGTYPE_COMMAND, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_CHARACTERDATASERVER, 4);
+			const MessageID RemoveAttributesCmd::MID = MessageID(MSGTYPE_COMMAND, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_CHARACTERDATASERVER, 5);
 			Result RemoveAttributesCmd::ParseMessage( MessageData* pIMsg )
 			{
  				FunctionContext hr;
@@ -903,6 +1440,7 @@ namespace SF
 
 				protocolCheck(input->Read(m_RouteContext));
 				protocolCheck(input->Read(m_TransactionID));
+				protocolCheck(input->Read(m_RouteHopCount));
 				protocolCheck(input->Read(m_PlayerID));
 				protocolCheck(input->Read(m_CharacterName));
 				protocolCheck(input->Read(ArrayLen));
@@ -926,7 +1464,7 @@ namespace SF
 
 			}; // Result RemoveAttributesCmd::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr&& pIMsg, MessageBase* &pMessageBase )
 
-			MessageData* RemoveAttributesCmd::Create( IHeap& memHeap, const RouteContext &InRouteContext, const uint64_t &InTransactionID, const PlayerID &InPlayerID, const StringCrc32 &InCharacterName, const Array<StringCrc32>& InAttributeNames )
+			MessageData* RemoveAttributesCmd::Create( IHeap& memHeap, const RouteContext &InRouteContext, const uint64_t &InTransactionID, const uint16_t &InRouteHopCount, const PlayerID &InPlayerID, const StringCrc32 &InCharacterName, const Array<StringCrc32>& InAttributeNames )
 			{
  				MessageData *pNewMsg = nullptr;
 				FunctionContext hr([pNewMsg](Result hr) -> MessageData*
@@ -945,6 +1483,7 @@ namespace SF
 				unsigned __uiMessageSize = (unsigned)(sizeof(MessageHeader) 
 					, SerializedSizeOf(InRouteContext)
 					, SerializedSizeOf(InTransactionID)
+					, SerializedSizeOf(InRouteHopCount)
 					, SerializedSizeOf(InPlayerID)
 					, SerializedSizeOf(InCharacterName)
 					, SerializedSizeOf(InAttributeNames)
@@ -958,12 +1497,13 @@ namespace SF
 
 				protocolCheck(output->Write(InRouteContext));
 				protocolCheck(output->Write(InTransactionID));
+				protocolCheck(output->Write(InRouteHopCount));
 				protocolCheck(output->Write(InPlayerID));
 				protocolCheck(output->Write(InCharacterName));
 				protocolCheck(output->Write(InAttributeNames));
 
 				return hr;
-			}; // MessageData* RemoveAttributesCmd::Create( IHeap& memHeap, const RouteContext &InRouteContext, const uint64_t &InTransactionID, const PlayerID &InPlayerID, const StringCrc32 &InCharacterName, const Array<StringCrc32>& InAttributeNames )
+			}; // MessageData* RemoveAttributesCmd::Create( IHeap& memHeap, const RouteContext &InRouteContext, const uint64_t &InTransactionID, const uint16_t &InRouteHopCount, const PlayerID &InPlayerID, const StringCrc32 &InCharacterName, const Array<StringCrc32>& InAttributeNames )
 
 			Result RemoveAttributesCmd::OverrideRouteContextDestination( EntityUID to )
 			{
@@ -991,17 +1531,48 @@ namespace SF
 
 			}; // Result RemoveAttributesCmd::OverrideRouteContextDestination( EntityUID to )
 
+			Result RemoveAttributesCmd::OverrideRouteInformation( EntityUID to, unsigned hopCount )
+			{
+ 				FunctionContext hr;
+
+				MessageData* pIMsg = GetMessage();
+				RouteContext routeContext;
+
+				protocolCheckPtr(pIMsg);
+
+				size_t MsgDataSize = ((size_t)pIMsg->GetMessageSize() - sizeof(MessageHeader));
+				ArrayView<uint8_t> bufferView(MsgDataSize, pIMsg->GetMessageData());
+				InputMemoryStream inputStream(bufferView);
+				auto* input = inputStream.ToInputStream();
+				uint16_t ArrayLen = 0;
+				uint8_t* pCur = nullptr;
+
+				pCur = input->GetBufferPtr() + input->GetPosition();
+				Assert(input->GetRemainSize() >= sizeof(RouteContext));
+				memcpy( &routeContext, pCur, sizeof(RouteContext) );
+				routeContext.Components.To = to;
+				memcpy( pCur, &routeContext, sizeof(RouteContext) );
+				protocolCheck(input->Skip(sizeof(RouteContext)));
+				protocolCheck(input->Skip(sizeof(uint64_t)));
+				Assert(input->GetRemainSize() >= sizeof(uint16_t));
+				pCur = input->GetBufferPtr() + input->GetPosition();
+				*(uint16_t*)pCur = hopCount;
+				protocolCheck(input->Skip(sizeof(uint16_t)));
+
+				return hr;
+
+			}; // Result RemoveAttributesCmd::OverrideRouteInformation( EntityUID to, unsigned hopCount )
 
 			Result RemoveAttributesCmd::TraceOut(const char* prefix, const MessageDataPtr& pMsg)
 			{
  				RemoveAttributesCmd parser;
 				parser.ParseMessage(*pMsg);
-				protocolTrace( Debug1, "RemoveAttributes:{0}:{1} , RouteContext:{2}, TransactionID:{3}, PlayerID:{4}, CharacterName:{5}, AttributeNames:{6,30}",
-						prefix, pMsg->GetMessageHeader()->Length, parser.GetRouteContext(), parser.GetTransactionID(), parser.GetPlayerID(), parser.GetCharacterName(), parser.GetAttributeNames()); 
+				protocolTrace( Debug1, "RemoveAttributes:{0}:{1} , RouteContext:{2}, TransactionID:{3}, RouteHopCount:{4}, PlayerID:{5}, CharacterName:{6}, AttributeNames:{7,30}",
+						prefix, pMsg->GetMessageHeader()->Length, parser.GetRouteContext(), parser.GetTransactionID(), parser.GetRouteHopCount(), parser.GetPlayerID(), parser.GetCharacterName(), parser.GetAttributeNames()); 
 				return ResultCode::SUCCESS;
 			}; // Result RemoveAttributesCmd::TraceOut(const char* prefix, const MessageDataPtr& pMsg)
 
-			const MessageID RemoveAttributesRes::MID = MessageID(MSGTYPE_RESULT, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_CHARACTERDATASERVER, 4);
+			const MessageID RemoveAttributesRes::MID = MessageID(MSGTYPE_RESULT, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_CHARACTERDATASERVER, 5);
 			Result RemoveAttributesRes::ParseMessage( MessageData* pIMsg )
 			{
  				FunctionContext hr;
@@ -1095,6 +1666,34 @@ namespace SF
 
 			}; // Result RemoveAttributesRes::OverrideRouteContextDestination( EntityUID to )
 
+			Result RemoveAttributesRes::OverrideRouteInformation( EntityUID to, unsigned hopCount )
+			{
+ 				FunctionContext hr;
+
+				MessageData* pIMsg = GetMessage();
+				RouteContext routeContext;
+
+				protocolCheckPtr(pIMsg);
+
+				size_t MsgDataSize = ((size_t)pIMsg->GetMessageSize() - sizeof(MessageHeader));
+				ArrayView<uint8_t> bufferView(MsgDataSize, pIMsg->GetMessageData());
+				InputMemoryStream inputStream(bufferView);
+				auto* input = inputStream.ToInputStream();
+				uint16_t ArrayLen = 0;
+				uint8_t* pCur = nullptr;
+
+				pCur = input->GetBufferPtr() + input->GetPosition();
+				Assert(input->GetRemainSize() >= sizeof(RouteContext));
+				memcpy( &routeContext, pCur, sizeof(RouteContext) );
+				routeContext.Components.To = to;
+				memcpy( pCur, &routeContext, sizeof(RouteContext) );
+				protocolCheck(input->Skip(sizeof(RouteContext)));
+				protocolCheck(input->Skip(sizeof(uint64_t)));
+				protocolCheck(input->Skip(sizeof(Result)));
+
+				return hr;
+
+			}; // Result RemoveAttributesRes::OverrideRouteInformation( EntityUID to, unsigned hopCount )
 
 			Result RemoveAttributesRes::TraceOut(const char* prefix, const MessageDataPtr& pMsg)
 			{
@@ -1106,7 +1705,7 @@ namespace SF
 			}; // Result RemoveAttributesRes::TraceOut(const char* prefix, const MessageDataPtr& pMsg)
 
 			// Cmd: Attribute add
-			const MessageID AttributeValueAddCmd::MID = MessageID(MSGTYPE_COMMAND, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_CHARACTERDATASERVER, 5);
+			const MessageID AttributeValueAddCmd::MID = MessageID(MSGTYPE_COMMAND, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_CHARACTERDATASERVER, 6);
 			Result AttributeValueAddCmd::ParseMessage( MessageData* pIMsg )
 			{
  				FunctionContext hr;
@@ -1122,6 +1721,7 @@ namespace SF
 
 				protocolCheck(input->Read(m_RouteContext));
 				protocolCheck(input->Read(m_TransactionID));
+				protocolCheck(input->Read(m_RouteHopCount));
 				protocolCheck(input->Read(m_PlayerID));
 				protocolCheck(input->Read(m_CharacterName));
 				protocolCheck(input->Read(m_AttributeName));
@@ -1143,7 +1743,7 @@ namespace SF
 
 			}; // Result AttributeValueAddCmd::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr&& pIMsg, MessageBase* &pMessageBase )
 
-			MessageData* AttributeValueAddCmd::Create( IHeap& memHeap, const RouteContext &InRouteContext, const uint64_t &InTransactionID, const PlayerID &InPlayerID, const StringCrc32 &InCharacterName, const StringCrc32 &InAttributeName, const FLOAT &InValue )
+			MessageData* AttributeValueAddCmd::Create( IHeap& memHeap, const RouteContext &InRouteContext, const uint64_t &InTransactionID, const uint16_t &InRouteHopCount, const PlayerID &InPlayerID, const StringCrc32 &InCharacterName, const StringCrc32 &InAttributeName, const FLOAT &InValue )
 			{
  				MessageData *pNewMsg = nullptr;
 				FunctionContext hr([pNewMsg](Result hr) -> MessageData*
@@ -1161,6 +1761,7 @@ namespace SF
 				unsigned __uiMessageSize = (unsigned)(sizeof(MessageHeader) 
 					, SerializedSizeOf(InRouteContext)
 					, SerializedSizeOf(InTransactionID)
+					, SerializedSizeOf(InRouteHopCount)
 					, SerializedSizeOf(InPlayerID)
 					, SerializedSizeOf(InCharacterName)
 					, SerializedSizeOf(InAttributeName)
@@ -1175,13 +1776,14 @@ namespace SF
 
 				protocolCheck(output->Write(InRouteContext));
 				protocolCheck(output->Write(InTransactionID));
+				protocolCheck(output->Write(InRouteHopCount));
 				protocolCheck(output->Write(InPlayerID));
 				protocolCheck(output->Write(InCharacterName));
 				protocolCheck(output->Write(InAttributeName));
 				protocolCheck(output->Write(InValue));
 
 				return hr;
-			}; // MessageData* AttributeValueAddCmd::Create( IHeap& memHeap, const RouteContext &InRouteContext, const uint64_t &InTransactionID, const PlayerID &InPlayerID, const StringCrc32 &InCharacterName, const StringCrc32 &InAttributeName, const FLOAT &InValue )
+			}; // MessageData* AttributeValueAddCmd::Create( IHeap& memHeap, const RouteContext &InRouteContext, const uint64_t &InTransactionID, const uint16_t &InRouteHopCount, const PlayerID &InPlayerID, const StringCrc32 &InCharacterName, const StringCrc32 &InAttributeName, const FLOAT &InValue )
 
 			Result AttributeValueAddCmd::OverrideRouteContextDestination( EntityUID to )
 			{
@@ -1209,17 +1811,48 @@ namespace SF
 
 			}; // Result AttributeValueAddCmd::OverrideRouteContextDestination( EntityUID to )
 
+			Result AttributeValueAddCmd::OverrideRouteInformation( EntityUID to, unsigned hopCount )
+			{
+ 				FunctionContext hr;
+
+				MessageData* pIMsg = GetMessage();
+				RouteContext routeContext;
+
+				protocolCheckPtr(pIMsg);
+
+				size_t MsgDataSize = ((size_t)pIMsg->GetMessageSize() - sizeof(MessageHeader));
+				ArrayView<uint8_t> bufferView(MsgDataSize, pIMsg->GetMessageData());
+				InputMemoryStream inputStream(bufferView);
+				auto* input = inputStream.ToInputStream();
+				uint16_t ArrayLen = 0;
+				uint8_t* pCur = nullptr;
+
+				pCur = input->GetBufferPtr() + input->GetPosition();
+				Assert(input->GetRemainSize() >= sizeof(RouteContext));
+				memcpy( &routeContext, pCur, sizeof(RouteContext) );
+				routeContext.Components.To = to;
+				memcpy( pCur, &routeContext, sizeof(RouteContext) );
+				protocolCheck(input->Skip(sizeof(RouteContext)));
+				protocolCheck(input->Skip(sizeof(uint64_t)));
+				Assert(input->GetRemainSize() >= sizeof(uint16_t));
+				pCur = input->GetBufferPtr() + input->GetPosition();
+				*(uint16_t*)pCur = hopCount;
+				protocolCheck(input->Skip(sizeof(uint16_t)));
+
+				return hr;
+
+			}; // Result AttributeValueAddCmd::OverrideRouteInformation( EntityUID to, unsigned hopCount )
 
 			Result AttributeValueAddCmd::TraceOut(const char* prefix, const MessageDataPtr& pMsg)
 			{
  				AttributeValueAddCmd parser;
 				parser.ParseMessage(*pMsg);
-				protocolTrace( Debug1, "AttributeValueAdd:{0}:{1} , RouteContext:{2}, TransactionID:{3}, PlayerID:{4}, CharacterName:{5}, AttributeName:{6}, Value:{7}",
-						prefix, pMsg->GetMessageHeader()->Length, parser.GetRouteContext(), parser.GetTransactionID(), parser.GetPlayerID(), parser.GetCharacterName(), parser.GetAttributeName(), parser.GetValue()); 
+				protocolTrace( Debug1, "AttributeValueAdd:{0}:{1} , RouteContext:{2}, TransactionID:{3}, RouteHopCount:{4}, PlayerID:{5}, CharacterName:{6}, AttributeName:{7}, Value:{8}",
+						prefix, pMsg->GetMessageHeader()->Length, parser.GetRouteContext(), parser.GetTransactionID(), parser.GetRouteHopCount(), parser.GetPlayerID(), parser.GetCharacterName(), parser.GetAttributeName(), parser.GetValue()); 
 				return ResultCode::SUCCESS;
 			}; // Result AttributeValueAddCmd::TraceOut(const char* prefix, const MessageDataPtr& pMsg)
 
-			const MessageID AttributeValueAddRes::MID = MessageID(MSGTYPE_RESULT, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_CHARACTERDATASERVER, 5);
+			const MessageID AttributeValueAddRes::MID = MessageID(MSGTYPE_RESULT, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_CHARACTERDATASERVER, 6);
 			Result AttributeValueAddRes::ParseMessage( MessageData* pIMsg )
 			{
  				FunctionContext hr;
@@ -1313,6 +1946,34 @@ namespace SF
 
 			}; // Result AttributeValueAddRes::OverrideRouteContextDestination( EntityUID to )
 
+			Result AttributeValueAddRes::OverrideRouteInformation( EntityUID to, unsigned hopCount )
+			{
+ 				FunctionContext hr;
+
+				MessageData* pIMsg = GetMessage();
+				RouteContext routeContext;
+
+				protocolCheckPtr(pIMsg);
+
+				size_t MsgDataSize = ((size_t)pIMsg->GetMessageSize() - sizeof(MessageHeader));
+				ArrayView<uint8_t> bufferView(MsgDataSize, pIMsg->GetMessageData());
+				InputMemoryStream inputStream(bufferView);
+				auto* input = inputStream.ToInputStream();
+				uint16_t ArrayLen = 0;
+				uint8_t* pCur = nullptr;
+
+				pCur = input->GetBufferPtr() + input->GetPosition();
+				Assert(input->GetRemainSize() >= sizeof(RouteContext));
+				memcpy( &routeContext, pCur, sizeof(RouteContext) );
+				routeContext.Components.To = to;
+				memcpy( pCur, &routeContext, sizeof(RouteContext) );
+				protocolCheck(input->Skip(sizeof(RouteContext)));
+				protocolCheck(input->Skip(sizeof(uint64_t)));
+				protocolCheck(input->Skip(sizeof(Result)));
+
+				return hr;
+
+			}; // Result AttributeValueAddRes::OverrideRouteInformation( EntityUID to, unsigned hopCount )
 
 			Result AttributeValueAddRes::TraceOut(const char* prefix, const MessageDataPtr& pMsg)
 			{
@@ -1324,7 +1985,7 @@ namespace SF
 			}; // Result AttributeValueAddRes::TraceOut(const char* prefix, const MessageDataPtr& pMsg)
 
 			// Cmd: Attribute subtract
-			const MessageID AttributeValueSubCmd::MID = MessageID(MSGTYPE_COMMAND, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_CHARACTERDATASERVER, 6);
+			const MessageID AttributeValueSubCmd::MID = MessageID(MSGTYPE_COMMAND, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_CHARACTERDATASERVER, 7);
 			Result AttributeValueSubCmd::ParseMessage( MessageData* pIMsg )
 			{
  				FunctionContext hr;
@@ -1340,6 +2001,7 @@ namespace SF
 
 				protocolCheck(input->Read(m_RouteContext));
 				protocolCheck(input->Read(m_TransactionID));
+				protocolCheck(input->Read(m_RouteHopCount));
 				protocolCheck(input->Read(m_PlayerID));
 				protocolCheck(input->Read(m_CharacterName));
 				protocolCheck(input->Read(m_AttributeName));
@@ -1361,7 +2023,7 @@ namespace SF
 
 			}; // Result AttributeValueSubCmd::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr&& pIMsg, MessageBase* &pMessageBase )
 
-			MessageData* AttributeValueSubCmd::Create( IHeap& memHeap, const RouteContext &InRouteContext, const uint64_t &InTransactionID, const PlayerID &InPlayerID, const StringCrc32 &InCharacterName, const StringCrc32 &InAttributeName, const FLOAT &InValue )
+			MessageData* AttributeValueSubCmd::Create( IHeap& memHeap, const RouteContext &InRouteContext, const uint64_t &InTransactionID, const uint16_t &InRouteHopCount, const PlayerID &InPlayerID, const StringCrc32 &InCharacterName, const StringCrc32 &InAttributeName, const FLOAT &InValue )
 			{
  				MessageData *pNewMsg = nullptr;
 				FunctionContext hr([pNewMsg](Result hr) -> MessageData*
@@ -1379,6 +2041,7 @@ namespace SF
 				unsigned __uiMessageSize = (unsigned)(sizeof(MessageHeader) 
 					, SerializedSizeOf(InRouteContext)
 					, SerializedSizeOf(InTransactionID)
+					, SerializedSizeOf(InRouteHopCount)
 					, SerializedSizeOf(InPlayerID)
 					, SerializedSizeOf(InCharacterName)
 					, SerializedSizeOf(InAttributeName)
@@ -1393,13 +2056,14 @@ namespace SF
 
 				protocolCheck(output->Write(InRouteContext));
 				protocolCheck(output->Write(InTransactionID));
+				protocolCheck(output->Write(InRouteHopCount));
 				protocolCheck(output->Write(InPlayerID));
 				protocolCheck(output->Write(InCharacterName));
 				protocolCheck(output->Write(InAttributeName));
 				protocolCheck(output->Write(InValue));
 
 				return hr;
-			}; // MessageData* AttributeValueSubCmd::Create( IHeap& memHeap, const RouteContext &InRouteContext, const uint64_t &InTransactionID, const PlayerID &InPlayerID, const StringCrc32 &InCharacterName, const StringCrc32 &InAttributeName, const FLOAT &InValue )
+			}; // MessageData* AttributeValueSubCmd::Create( IHeap& memHeap, const RouteContext &InRouteContext, const uint64_t &InTransactionID, const uint16_t &InRouteHopCount, const PlayerID &InPlayerID, const StringCrc32 &InCharacterName, const StringCrc32 &InAttributeName, const FLOAT &InValue )
 
 			Result AttributeValueSubCmd::OverrideRouteContextDestination( EntityUID to )
 			{
@@ -1427,17 +2091,48 @@ namespace SF
 
 			}; // Result AttributeValueSubCmd::OverrideRouteContextDestination( EntityUID to )
 
+			Result AttributeValueSubCmd::OverrideRouteInformation( EntityUID to, unsigned hopCount )
+			{
+ 				FunctionContext hr;
+
+				MessageData* pIMsg = GetMessage();
+				RouteContext routeContext;
+
+				protocolCheckPtr(pIMsg);
+
+				size_t MsgDataSize = ((size_t)pIMsg->GetMessageSize() - sizeof(MessageHeader));
+				ArrayView<uint8_t> bufferView(MsgDataSize, pIMsg->GetMessageData());
+				InputMemoryStream inputStream(bufferView);
+				auto* input = inputStream.ToInputStream();
+				uint16_t ArrayLen = 0;
+				uint8_t* pCur = nullptr;
+
+				pCur = input->GetBufferPtr() + input->GetPosition();
+				Assert(input->GetRemainSize() >= sizeof(RouteContext));
+				memcpy( &routeContext, pCur, sizeof(RouteContext) );
+				routeContext.Components.To = to;
+				memcpy( pCur, &routeContext, sizeof(RouteContext) );
+				protocolCheck(input->Skip(sizeof(RouteContext)));
+				protocolCheck(input->Skip(sizeof(uint64_t)));
+				Assert(input->GetRemainSize() >= sizeof(uint16_t));
+				pCur = input->GetBufferPtr() + input->GetPosition();
+				*(uint16_t*)pCur = hopCount;
+				protocolCheck(input->Skip(sizeof(uint16_t)));
+
+				return hr;
+
+			}; // Result AttributeValueSubCmd::OverrideRouteInformation( EntityUID to, unsigned hopCount )
 
 			Result AttributeValueSubCmd::TraceOut(const char* prefix, const MessageDataPtr& pMsg)
 			{
  				AttributeValueSubCmd parser;
 				parser.ParseMessage(*pMsg);
-				protocolTrace( Debug1, "AttributeValueSub:{0}:{1} , RouteContext:{2}, TransactionID:{3}, PlayerID:{4}, CharacterName:{5}, AttributeName:{6}, Value:{7}",
-						prefix, pMsg->GetMessageHeader()->Length, parser.GetRouteContext(), parser.GetTransactionID(), parser.GetPlayerID(), parser.GetCharacterName(), parser.GetAttributeName(), parser.GetValue()); 
+				protocolTrace( Debug1, "AttributeValueSub:{0}:{1} , RouteContext:{2}, TransactionID:{3}, RouteHopCount:{4}, PlayerID:{5}, CharacterName:{6}, AttributeName:{7}, Value:{8}",
+						prefix, pMsg->GetMessageHeader()->Length, parser.GetRouteContext(), parser.GetTransactionID(), parser.GetRouteHopCount(), parser.GetPlayerID(), parser.GetCharacterName(), parser.GetAttributeName(), parser.GetValue()); 
 				return ResultCode::SUCCESS;
 			}; // Result AttributeValueSubCmd::TraceOut(const char* prefix, const MessageDataPtr& pMsg)
 
-			const MessageID AttributeValueSubRes::MID = MessageID(MSGTYPE_RESULT, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_CHARACTERDATASERVER, 6);
+			const MessageID AttributeValueSubRes::MID = MessageID(MSGTYPE_RESULT, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_CHARACTERDATASERVER, 7);
 			Result AttributeValueSubRes::ParseMessage( MessageData* pIMsg )
 			{
  				FunctionContext hr;
@@ -1531,6 +2226,34 @@ namespace SF
 
 			}; // Result AttributeValueSubRes::OverrideRouteContextDestination( EntityUID to )
 
+			Result AttributeValueSubRes::OverrideRouteInformation( EntityUID to, unsigned hopCount )
+			{
+ 				FunctionContext hr;
+
+				MessageData* pIMsg = GetMessage();
+				RouteContext routeContext;
+
+				protocolCheckPtr(pIMsg);
+
+				size_t MsgDataSize = ((size_t)pIMsg->GetMessageSize() - sizeof(MessageHeader));
+				ArrayView<uint8_t> bufferView(MsgDataSize, pIMsg->GetMessageData());
+				InputMemoryStream inputStream(bufferView);
+				auto* input = inputStream.ToInputStream();
+				uint16_t ArrayLen = 0;
+				uint8_t* pCur = nullptr;
+
+				pCur = input->GetBufferPtr() + input->GetPosition();
+				Assert(input->GetRemainSize() >= sizeof(RouteContext));
+				memcpy( &routeContext, pCur, sizeof(RouteContext) );
+				routeContext.Components.To = to;
+				memcpy( pCur, &routeContext, sizeof(RouteContext) );
+				protocolCheck(input->Skip(sizeof(RouteContext)));
+				protocolCheck(input->Skip(sizeof(uint64_t)));
+				protocolCheck(input->Skip(sizeof(Result)));
+
+				return hr;
+
+			}; // Result AttributeValueSubRes::OverrideRouteInformation( EntityUID to, unsigned hopCount )
 
 			Result AttributeValueSubRes::TraceOut(const char* prefix, const MessageDataPtr& pMsg)
 			{
@@ -1542,7 +2265,7 @@ namespace SF
 			}; // Result AttributeValueSubRes::TraceOut(const char* prefix, const MessageDataPtr& pMsg)
 
 			// Cmd: Compare and exchange attribute value
-			const MessageID AttributeValueCASCmd::MID = MessageID(MSGTYPE_COMMAND, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_CHARACTERDATASERVER, 7);
+			const MessageID AttributeValueCASCmd::MID = MessageID(MSGTYPE_COMMAND, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_CHARACTERDATASERVER, 8);
 			Result AttributeValueCASCmd::ParseMessage( MessageData* pIMsg )
 			{
  				FunctionContext hr;
@@ -1558,6 +2281,7 @@ namespace SF
 
 				protocolCheck(input->Read(m_RouteContext));
 				protocolCheck(input->Read(m_TransactionID));
+				protocolCheck(input->Read(m_RouteHopCount));
 				protocolCheck(input->Read(m_PlayerID));
 				protocolCheck(input->Read(m_CharacterName));
 				protocolCheck(input->Read(m_AttributeName));
@@ -1581,7 +2305,7 @@ namespace SF
 
 			}; // Result AttributeValueCASCmd::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr&& pIMsg, MessageBase* &pMessageBase )
 
-			MessageData* AttributeValueCASCmd::Create( IHeap& memHeap, const RouteContext &InRouteContext, const uint64_t &InTransactionID, const PlayerID &InPlayerID, const StringCrc32 &InCharacterName, const StringCrc32 &InAttributeName, const StringCrc32 &InAttributeType, const uint64_t &InExpected, const uint64_t &InNewValue )
+			MessageData* AttributeValueCASCmd::Create( IHeap& memHeap, const RouteContext &InRouteContext, const uint64_t &InTransactionID, const uint16_t &InRouteHopCount, const PlayerID &InPlayerID, const StringCrc32 &InCharacterName, const StringCrc32 &InAttributeName, const StringCrc32 &InAttributeType, const uint64_t &InExpected, const uint64_t &InNewValue )
 			{
  				MessageData *pNewMsg = nullptr;
 				FunctionContext hr([pNewMsg](Result hr) -> MessageData*
@@ -1599,6 +2323,7 @@ namespace SF
 				unsigned __uiMessageSize = (unsigned)(sizeof(MessageHeader) 
 					, SerializedSizeOf(InRouteContext)
 					, SerializedSizeOf(InTransactionID)
+					, SerializedSizeOf(InRouteHopCount)
 					, SerializedSizeOf(InPlayerID)
 					, SerializedSizeOf(InCharacterName)
 					, SerializedSizeOf(InAttributeName)
@@ -1615,6 +2340,7 @@ namespace SF
 
 				protocolCheck(output->Write(InRouteContext));
 				protocolCheck(output->Write(InTransactionID));
+				protocolCheck(output->Write(InRouteHopCount));
 				protocolCheck(output->Write(InPlayerID));
 				protocolCheck(output->Write(InCharacterName));
 				protocolCheck(output->Write(InAttributeName));
@@ -1623,7 +2349,7 @@ namespace SF
 				protocolCheck(output->Write(InNewValue));
 
 				return hr;
-			}; // MessageData* AttributeValueCASCmd::Create( IHeap& memHeap, const RouteContext &InRouteContext, const uint64_t &InTransactionID, const PlayerID &InPlayerID, const StringCrc32 &InCharacterName, const StringCrc32 &InAttributeName, const StringCrc32 &InAttributeType, const uint64_t &InExpected, const uint64_t &InNewValue )
+			}; // MessageData* AttributeValueCASCmd::Create( IHeap& memHeap, const RouteContext &InRouteContext, const uint64_t &InTransactionID, const uint16_t &InRouteHopCount, const PlayerID &InPlayerID, const StringCrc32 &InCharacterName, const StringCrc32 &InAttributeName, const StringCrc32 &InAttributeType, const uint64_t &InExpected, const uint64_t &InNewValue )
 
 			Result AttributeValueCASCmd::OverrideRouteContextDestination( EntityUID to )
 			{
@@ -1651,17 +2377,48 @@ namespace SF
 
 			}; // Result AttributeValueCASCmd::OverrideRouteContextDestination( EntityUID to )
 
+			Result AttributeValueCASCmd::OverrideRouteInformation( EntityUID to, unsigned hopCount )
+			{
+ 				FunctionContext hr;
+
+				MessageData* pIMsg = GetMessage();
+				RouteContext routeContext;
+
+				protocolCheckPtr(pIMsg);
+
+				size_t MsgDataSize = ((size_t)pIMsg->GetMessageSize() - sizeof(MessageHeader));
+				ArrayView<uint8_t> bufferView(MsgDataSize, pIMsg->GetMessageData());
+				InputMemoryStream inputStream(bufferView);
+				auto* input = inputStream.ToInputStream();
+				uint16_t ArrayLen = 0;
+				uint8_t* pCur = nullptr;
+
+				pCur = input->GetBufferPtr() + input->GetPosition();
+				Assert(input->GetRemainSize() >= sizeof(RouteContext));
+				memcpy( &routeContext, pCur, sizeof(RouteContext) );
+				routeContext.Components.To = to;
+				memcpy( pCur, &routeContext, sizeof(RouteContext) );
+				protocolCheck(input->Skip(sizeof(RouteContext)));
+				protocolCheck(input->Skip(sizeof(uint64_t)));
+				Assert(input->GetRemainSize() >= sizeof(uint16_t));
+				pCur = input->GetBufferPtr() + input->GetPosition();
+				*(uint16_t*)pCur = hopCount;
+				protocolCheck(input->Skip(sizeof(uint16_t)));
+
+				return hr;
+
+			}; // Result AttributeValueCASCmd::OverrideRouteInformation( EntityUID to, unsigned hopCount )
 
 			Result AttributeValueCASCmd::TraceOut(const char* prefix, const MessageDataPtr& pMsg)
 			{
  				AttributeValueCASCmd parser;
 				parser.ParseMessage(*pMsg);
-				protocolTrace( Debug1, "AttributeValueCAS:{0}:{1} , RouteContext:{2}, TransactionID:{3}, PlayerID:{4}, CharacterName:{5}, AttributeName:{6}, AttributeType:{7}, Expected:{8}, NewValue:{9}",
-						prefix, pMsg->GetMessageHeader()->Length, parser.GetRouteContext(), parser.GetTransactionID(), parser.GetPlayerID(), parser.GetCharacterName(), parser.GetAttributeName(), parser.GetAttributeType(), parser.GetExpected(), parser.GetNewValue()); 
+				protocolTrace( Debug1, "AttributeValueCAS:{0}:{1} , RouteContext:{2}, TransactionID:{3}, RouteHopCount:{4}, PlayerID:{5}, CharacterName:{6}, AttributeName:{7}, AttributeType:{8}, Expected:{9}, NewValue:{10}",
+						prefix, pMsg->GetMessageHeader()->Length, parser.GetRouteContext(), parser.GetTransactionID(), parser.GetRouteHopCount(), parser.GetPlayerID(), parser.GetCharacterName(), parser.GetAttributeName(), parser.GetAttributeType(), parser.GetExpected(), parser.GetNewValue()); 
 				return ResultCode::SUCCESS;
 			}; // Result AttributeValueCASCmd::TraceOut(const char* prefix, const MessageDataPtr& pMsg)
 
-			const MessageID AttributeValueCASRes::MID = MessageID(MSGTYPE_RESULT, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_CHARACTERDATASERVER, 7);
+			const MessageID AttributeValueCASRes::MID = MessageID(MSGTYPE_RESULT, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_CHARACTERDATASERVER, 8);
 			Result AttributeValueCASRes::ParseMessage( MessageData* pIMsg )
 			{
  				FunctionContext hr;
@@ -1755,6 +2512,34 @@ namespace SF
 
 			}; // Result AttributeValueCASRes::OverrideRouteContextDestination( EntityUID to )
 
+			Result AttributeValueCASRes::OverrideRouteInformation( EntityUID to, unsigned hopCount )
+			{
+ 				FunctionContext hr;
+
+				MessageData* pIMsg = GetMessage();
+				RouteContext routeContext;
+
+				protocolCheckPtr(pIMsg);
+
+				size_t MsgDataSize = ((size_t)pIMsg->GetMessageSize() - sizeof(MessageHeader));
+				ArrayView<uint8_t> bufferView(MsgDataSize, pIMsg->GetMessageData());
+				InputMemoryStream inputStream(bufferView);
+				auto* input = inputStream.ToInputStream();
+				uint16_t ArrayLen = 0;
+				uint8_t* pCur = nullptr;
+
+				pCur = input->GetBufferPtr() + input->GetPosition();
+				Assert(input->GetRemainSize() >= sizeof(RouteContext));
+				memcpy( &routeContext, pCur, sizeof(RouteContext) );
+				routeContext.Components.To = to;
+				memcpy( pCur, &routeContext, sizeof(RouteContext) );
+				protocolCheck(input->Skip(sizeof(RouteContext)));
+				protocolCheck(input->Skip(sizeof(uint64_t)));
+				protocolCheck(input->Skip(sizeof(Result)));
+
+				return hr;
+
+			}; // Result AttributeValueCASRes::OverrideRouteInformation( EntityUID to, unsigned hopCount )
 
 			Result AttributeValueCASRes::TraceOut(const char* prefix, const MessageDataPtr& pMsg)
 			{

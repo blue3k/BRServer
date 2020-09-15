@@ -37,7 +37,7 @@ namespace SF
  			FunctionContext hr;
 
 			RouteContext InRouteContext( EntityUID(GetMyServerID(),TransactionID(InTransactionID).GetEntityID()), GetServiceEntityUID() );
-			svrChk(Policy::NetPolicyRelayServer(GetConnection()).CreateRelayInstanceCmd( InRouteContext, InTransactionID, InPlayerInfo, InRelayScore ) );
+			svrCheck(Policy::NetPolicyRelayServer(GetConnection()).CreateRelayInstanceCmd( InRouteContext, InTransactionID, InPlayerInfo, InRelayScore ) );
 
 			return hr;
 
@@ -48,7 +48,7 @@ namespace SF
  			FunctionContext hr;
 
 			RouteContext InRouteContext( EntityUID(GetMyServerID(),TransactionID(InTransactionID).GetEntityID()), GetServiceEntityUID() );
-			svrChk(Policy::NetPolicyRelayServer(GetConnection()).AddPlayerCmd( InRouteContext, InTransactionID, InPlayerInfo, InRelayScore ) );
+			svrCheck(Policy::NetPolicyRelayServer(GetConnection()).AddPlayerCmd( InRouteContext, InTransactionID, InPlayerInfo, InRelayScore ) );
 
 			return hr;
 
@@ -59,7 +59,7 @@ namespace SF
  			FunctionContext hr;
 
 			RouteContext InRouteContext( EntityUID(GetMyServerID(),TransactionID(InTransactionID).GetEntityID()), GetServiceEntityUID() );
-			svrChk(Policy::NetPolicyRelayServer(GetConnection()).RemovePlayerCmd( InRouteContext, InTransactionID, InPlayerID ) );
+			svrCheck(Policy::NetPolicyRelayServer(GetConnection()).RemovePlayerCmd( InRouteContext, InTransactionID, InPlayerID ) );
 
 			return hr;
 

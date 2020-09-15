@@ -127,10 +127,10 @@ namespace SF
 
 				protocolCheckPtr(pIMsg);
 
-				size_t iMsgSize = ((size_t)pIMsg->GetMessageSize() - sizeof(MessageHeader));
+				size_t MsgDataSize = ((size_t)pIMsg->GetMessageSize() - sizeof(MessageHeader));
 				ArrayView<uint8_t> bufferView(MsgDataSize, pIMsg->GetMessageData());
 				InputMemoryStream inputStream(bufferView);
-				auto* input = inputStream.ToOutputStream();
+				auto* input = inputStream.ToInputStream();
 				uint16_t ArrayLen = 0;
 				uint8_t* pCur = nullptr;
 
@@ -139,11 +139,11 @@ namespace SF
 				memcpy( &routeContext, pCur, sizeof(RouteContext) );
 				routeContext.Components.To = to;
 				memcpy( pCur, &routeContext, sizeof(RouteContext) );
-				protocolCheck(input->Skip(sizeof(RouteContext);
+				protocolCheck(input->Skip(sizeof(RouteContext)));
 				Assert(input->GetRemainSize() >= sizeof(uint16_t));
 				pCur = input->GetBufferPtr() + input->GetPosition();
 				*(uint16_t*)pCur = hopCount;
-				protocolCheck(input->Skip(sizeof(uint16_t);
+				protocolCheck(input->Skip(sizeof(uint16_t)));
 
 				return hr;
 
@@ -268,10 +268,10 @@ namespace SF
 
 				protocolCheckPtr(pIMsg);
 
-				size_t iMsgSize = ((size_t)pIMsg->GetMessageSize() - sizeof(MessageHeader));
+				size_t MsgDataSize = ((size_t)pIMsg->GetMessageSize() - sizeof(MessageHeader));
 				ArrayView<uint8_t> bufferView(MsgDataSize, pIMsg->GetMessageData());
 				InputMemoryStream inputStream(bufferView);
-				auto* input = inputStream.ToOutputStream();
+				auto* input = inputStream.ToInputStream();
 				uint16_t ArrayLen = 0;
 				uint8_t* pCur = nullptr;
 
@@ -280,11 +280,11 @@ namespace SF
 				memcpy( &routeContext, pCur, sizeof(RouteContext) );
 				routeContext.Components.To = to;
 				memcpy( pCur, &routeContext, sizeof(RouteContext) );
-				protocolCheck(input->Skip(sizeof(RouteContext);
+				protocolCheck(input->Skip(sizeof(RouteContext)));
 				Assert(input->GetRemainSize() >= sizeof(uint16_t));
 				pCur = input->GetBufferPtr() + input->GetPosition();
 				*(uint16_t*)pCur = hopCount;
-				protocolCheck(input->Skip(sizeof(uint16_t);
+				protocolCheck(input->Skip(sizeof(uint16_t)));
 
 				return hr;
 

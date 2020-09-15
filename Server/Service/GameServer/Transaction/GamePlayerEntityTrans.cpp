@@ -197,7 +197,7 @@ namespace GameServer {
 		{
 			svrTrace(SVR_TRANSACTION, "Latest tick time PlayerID:{0}. {1}", GetMyOwner()->GetPlayerID(), (uint64_t)playerData.LatestTickTime);
 
-			GetMyOwner()->SetLatestUpdateTime(TimeStampSec(DurationSec(playerData.LatestTickTime)));
+			GetMyOwner()->SetLatestUpdateTime(UTCTimeStampSec(DurationSec(playerData.LatestTickTime)));
 		}
 
 		GetMyOwner()->AddGameTransactionLog(TransLogCategory::Account, 1, 0, 0, "Login");

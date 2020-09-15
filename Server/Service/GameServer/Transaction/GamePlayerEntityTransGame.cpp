@@ -30,7 +30,7 @@
 #include "ServiceEntity/Game/PlayerManagerServiceEntity.h"
 #include "ServiceEntity/MatchingServiceUtil.h"
 #include "Protocol/ServerService/GamePartyManagerService.h"
-#include "ServiceEntity/GamePartyManagerServiceEntity.h"
+#include "ServiceEntity/Party/GamePartyManagerServiceEntity.h"
 
 
 

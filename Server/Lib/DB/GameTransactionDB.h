@@ -55,7 +55,7 @@ namespace DB {
 
 		// Transaction log must be closed safely
 		// Add game log
-		Result AddGameLog(uint shardID, const PlayerID &playerID, TimeStampSec gameTime, TransLogCategory LogCategory, INT consume, INT gain, uint64_t totalValue, const char* logMessage);
+		Result AddGameLog(uint shardID, const PlayerID &playerID, UTCTimeStampSec gameTime, TransLogCategory LogCategory, INT consume, INT gain, uint64_t totalValue, const char* logMessage);
 
 	};
 

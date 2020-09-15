@@ -103,7 +103,7 @@ namespace Svr {
 		const ServerConfig::GenericServer	*m_pMyConfig = nullptr;
 
 		// Server execution time stamp
-		TimeStampSec					m_ServerUpUTCTIme;
+		UTCTimeStampSec					m_ServerUpUTCTIme;
 
 		// Loopback ServerEntity
 		SharedPointerT<ServerEntity>	m_pLoopbackServerEntity;
@@ -199,7 +199,7 @@ namespace Svr {
 		//inline uint GetClusterID();
 		
 		// Get Server start up time, UTC
-		inline TimeStampSec GetServerUpTime();
+		inline UTCTimeStampSec GetServerUpTime();
 
 		// Get main server instance
 		static inline BrServer* GetInstance();

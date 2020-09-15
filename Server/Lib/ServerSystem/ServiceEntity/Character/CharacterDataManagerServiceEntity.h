@@ -18,7 +18,8 @@
 #include "Memory/SFMemory.h"
 #include "Types/BrSvrTypes.h"
 #include "Container/SFPageQueue.h"
-#include "Util/LocalUIDGenerator.h"
+#include "Util/GlobalUIDGenerator.h"
+#include "Variable/SFVariableTable.h"
 #include "Entity/Entity.h"
 #include "Component/ServerComponent.h"
 #include "ServerService/ServerServiceBase.h"
@@ -43,18 +44,50 @@ namespace Svr {
 
 	///////////////////////////////////////////////////////////////////////////////////////////////////////
 	//
-	//	CharacterDataManagerServiceEntity class
+	//	CharacterData class
 	//
 
-	class CharacterDataManagerServiceEntity : public LoadbalanceClusterServiceEntity
+	class CharacterData
 	{
 	public:
 
-		typedef LoadbalanceClusterServiceEntity super;
+		CharacterData(IHeap& heap, GameID gameID, PlayerID playerID, CharacterDataUID characterUID);
+
+	public:
+
+		GameID m_GameID;
+		PlayerID m_PlayerID;
+
+		// Character UID;
+		CharacterDataUID m_CharacterUID;
+
+		// Modification serial
+		uint32_t m_SavedSerial{};
+		uint32_t m_UpdateSerial{};
+
+		// Attributes
+		VariableTable m_Attributes;
+	};
+
+
+	///////////////////////////////////////////////////////////////////////////////////////////////////////
+	//
+	//	CharacterDataManagerServiceEntity class
+	//
+
+	class CharacterDataManagerServiceEntity : public ShardedClusterServiceEntity
+	{
+	public:
+
+		typedef ShardedClusterServiceEntity super;
 
 		static constexpr ServerComponentID ComponentID = ServerComponentID_CharacterManagerService;
 
 	private:
+
+		SortedArray<EntityUID, CharacterData*> m_CharacterDataMap;
+
+		static GlobalUIDGenerator stm_CharacterIDGenerator;
 
 		PerformanceCounterRaw<uint64_t> m_CharacterDataCount;
 
@@ -76,16 +109,19 @@ namespace Svr {
 
 		virtual Result RegisterServiceMessageHandler(ServerEntity *pServerEntity) override;
 
+
 		//////////////////////////////////////////////////////////////////////////
 		//
 		//	Game CharacterData operations
 		//
 
 		// Add new Entity
-		virtual Result CreateGameCharacterData( GameID gameID, PlayerUID playerUID, ServerEntity *pServerEntity, CharacterDataUID &CharacterDataUID );
+		virtual Result CreateCharacterData( GameID gameID, PlayerID playerID, CharacterDataUID characterUID, CharacterData*& pCharacterData );
 
-		// Called when a game CharacterData is deleted
-		virtual Result FreeGameCharacterData( CharacterDataUID CharacterDataUID );
+		// Called when a CharacterData is deleted
+		virtual Result FreeCharacterData( CharacterDataUID characterUID);
+
+
 
 		// Initialize server component
 		Result InitializeComponent() { return ResultCode::SUCCESS; }

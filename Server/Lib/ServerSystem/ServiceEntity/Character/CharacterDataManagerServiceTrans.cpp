@@ -69,6 +69,24 @@ namespace Svr {
 
 
 	// Start Transaction
+	Result CharacterDataManagerTransGetCharacterDataList::StartTransaction()
+	{
+		Result hr = ResultCode::SUCCESS;
+
+		svrChk(super::StartTransaction());
+
+		//svrChk(GetMyOwner()->CreateGameCharacterData((GameID)GetGameID(), GetCreator(), GetRouteContext().GetFrom(), GetServerEntity<ServerEntity>(), m_CharacterDataUID));
+
+	Proc_End:
+
+		CloseTransaction(hr);
+
+		return hr;
+	}
+
+
+
+	// Start Transaction
 	Result CharacterDataManagerTransGetCharacterData::StartTransaction()
 	{
 		Result hr = ResultCode::SUCCESS;

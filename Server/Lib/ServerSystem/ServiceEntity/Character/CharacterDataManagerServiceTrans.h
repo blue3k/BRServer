@@ -72,6 +72,26 @@ namespace Svr {
 
 
 
+	class CharacterDataManagerTransGetCharacterDataList : public CharacterDataMessageTransaction<Message::CharacterDataServer::GetCharacterDataListCmd>
+	{
+	public:
+		typedef CharacterDataMessageTransaction<Message::CharacterDataServer::GetCharacterDataListCmd> super;
+
+	private:
+		CharacterDataUID	m_CharacterDataUID;
+
+	public:
+		CharacterDataManagerTransGetCharacterDataList(IHeap& heap, MessageDataPtr& pIMsg) : CharacterDataMessageTransaction(heap, pIMsg) {}
+		virtual ~CharacterDataManagerTransGetCharacterDataList() {}
+
+		// Start Transaction
+		virtual Result StartTransaction();
+
+
+		//BR_SVR_MSGTRANS_CLOSE(Policy::NetSvrPolicyGameCharacterDataManager, CreateCharacterDataRes, RouteContext(m_CharacterDataUID,GetRouteContext().GetFrom()));
+	};
+
+
 	class CharacterDataManagerTransGetCharacterData : public CharacterDataMessageTransaction<Message::CharacterDataServer::GetCharacterDataCmd>
 	{
 	public:
@@ -114,10 +134,10 @@ namespace Svr {
 
 
 
-	class CharacterDataManagerTransRemoveAttribute : public CharacterDataMessageTransaction<Message::CharacterDataServer::RemoveAttributeCmd>
+	class CharacterDataManagerTransRemoveAttribute : public CharacterDataMessageTransaction<Message::CharacterDataServer::RemoveAttributesCmd>
 	{
 	public:
-		typedef CharacterDataMessageTransaction<Message::CharacterDataServer::RemoveAttributeCmd> super;
+		typedef CharacterDataMessageTransaction<Message::CharacterDataServer::RemoveAttributesCmd> super;
 
 	private:
 		CharacterDataUID	m_CharacterDataUID;

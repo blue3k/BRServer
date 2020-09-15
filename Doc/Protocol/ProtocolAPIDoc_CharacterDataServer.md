@@ -19,15 +19,17 @@ Add character data to the account
 
 1. Command interface
 
-        Result AddCharacterDataCmd(const RouteContext &InRouteContext, const uint64_t &InTransactionID, const PlayerID &InPlayerID, const StringCrc32 &InCharacterName, const VariableTable &InAttributes)
+        Result AddCharacterDataCmd(const RouteContext &InRouteContext, const uint64_t &InTransactionID, const uint16_t &InRouteHopCount, const PlayerID &InPlayerID, const char* InCharacterName, const VariableTable &InAttributes)
 
 		- OutInRouteContext: RouteContext type. 
 
 		- OutInTransactionID: TransactionID type. 
 
+		- OutInRouteHopCount: uint16 type. 
+
 		- OutInPlayerID: PlayerID type. Owner PlayerID
 
-		- OutInCharacterName: StringCrc32 type. CharacterName
+		- OutInCharacterName: String type. CharacterName
 
 		- OutInAttributes: VariableTable type. Character attributes
 
@@ -42,17 +44,21 @@ C++: Cast message to AddCharacterDataRes to access values
 
 		- OutResult: Result type. 
 
+		- OutCharacterUID: EntityUID type. Owner PlayerID
+
 
 ## RemoveCharacterData Request
 Remove character data
 
 1. Command interface
 
-        Result RemoveCharacterDataCmd(const RouteContext &InRouteContext, const uint64_t &InTransactionID, const PlayerID &InPlayerID, const StringCrc32 &InCharacterName)
+        Result RemoveCharacterDataCmd(const RouteContext &InRouteContext, const uint64_t &InTransactionID, const uint16_t &InRouteHopCount, const PlayerID &InPlayerID, const StringCrc32 &InCharacterName)
 
 		- OutInRouteContext: RouteContext type. 
 
 		- OutInTransactionID: TransactionID type. 
+
+		- OutInRouteHopCount: uint16 type. 
 
 		- OutInPlayerID: PlayerID type. Owner PlayerID
 
@@ -70,16 +76,51 @@ C++: Cast message to RemoveCharacterDataRes to access values
 		- OutResult: Result type. 
 
 
+## GetCharacterDataList Request
+Get character list
+
+1. Command interface
+
+        Result GetCharacterDataListCmd(const RouteContext &InRouteContext, const uint64_t &InTransactionID, const uint16_t &InRouteHopCount, const PlayerID &InPlayerID, const StringCrc32 &InCharacterName)
+
+		- OutInRouteContext: RouteContext type. 
+
+		- OutInTransactionID: TransactionID type. 
+
+		- OutInRouteHopCount: uint16 type. 
+
+		- OutInPlayerID: PlayerID type. Owner PlayerID
+
+		- OutInCharacterName: StringCrc32 type. CharacterName
+
+2. Result interface
+
+C++: Cast message to GetCharacterDataListRes to access values
+
+
+		- OutRouteContext: RouteContext type. 
+
+		- OutTransactionID: TransactionID type. 
+
+		- OutResult: Result type. 
+
+		- OutCharacterName: StringCrc32 type. CharacterName
+
+		- OutAttributes: VariableTable type. Character attributes
+
+
 ## GetCharacterData Request
 Get character data
 
 1. Command interface
 
-        Result GetCharacterDataCmd(const RouteContext &InRouteContext, const uint64_t &InTransactionID, const PlayerID &InPlayerID, const StringCrc32 &InCharacterName)
+        Result GetCharacterDataCmd(const RouteContext &InRouteContext, const uint64_t &InTransactionID, const uint16_t &InRouteHopCount, const PlayerID &InPlayerID, const StringCrc32 &InCharacterName)
 
 		- OutInRouteContext: RouteContext type. 
 
 		- OutInTransactionID: TransactionID type. 
+
+		- OutInRouteHopCount: uint16 type. 
 
 		- OutInPlayerID: PlayerID type. Owner PlayerID
 
@@ -106,11 +147,13 @@ Set(add or update) attribute value
 
 1. Command interface
 
-        Result SetAttributeCmd(const RouteContext &InRouteContext, const uint64_t &InTransactionID, const PlayerID &InPlayerID, const StringCrc32 &InCharacterName, const VariableTable &InAttributes)
+        Result SetAttributeCmd(const RouteContext &InRouteContext, const uint64_t &InTransactionID, const uint16_t &InRouteHopCount, const PlayerID &InPlayerID, const StringCrc32 &InCharacterName, const VariableTable &InAttributes)
 
 		- OutInRouteContext: RouteContext type. 
 
 		- OutInTransactionID: TransactionID type. 
+
+		- OutInRouteHopCount: uint16 type. 
 
 		- OutInPlayerID: PlayerID type. Owner PlayerID
 
@@ -135,11 +178,13 @@ Remove an attribute value
 
 1. Command interface
 
-        Result RemoveAttributesCmd(const RouteContext &InRouteContext, const uint64_t &InTransactionID, const PlayerID &InPlayerID, const StringCrc32 &InCharacterName, const Array<StringCrc32>& InAttributeNames)
+        Result RemoveAttributesCmd(const RouteContext &InRouteContext, const uint64_t &InTransactionID, const uint16_t &InRouteHopCount, const PlayerID &InPlayerID, const StringCrc32 &InCharacterName, const Array<StringCrc32>& InAttributeNames)
 
 		- OutInRouteContext: RouteContext type. 
 
 		- OutInTransactionID: TransactionID type. 
+
+		- OutInRouteHopCount: uint16 type. 
 
 		- OutInPlayerID: PlayerID type. Owner PlayerID
 
@@ -164,11 +209,13 @@ Attribute add
 
 1. Command interface
 
-        Result AttributeValueAddCmd(const RouteContext &InRouteContext, const uint64_t &InTransactionID, const PlayerID &InPlayerID, const StringCrc32 &InCharacterName, const StringCrc32 &InAttributeName, const FLOAT &InValue)
+        Result AttributeValueAddCmd(const RouteContext &InRouteContext, const uint64_t &InTransactionID, const uint16_t &InRouteHopCount, const PlayerID &InPlayerID, const StringCrc32 &InCharacterName, const StringCrc32 &InAttributeName, const FLOAT &InValue)
 
 		- OutInRouteContext: RouteContext type. 
 
 		- OutInTransactionID: TransactionID type. 
+
+		- OutInRouteHopCount: uint16 type. 
 
 		- OutInPlayerID: PlayerID type. Owner PlayerID
 
@@ -195,11 +242,13 @@ Attribute subtract
 
 1. Command interface
 
-        Result AttributeValueSubCmd(const RouteContext &InRouteContext, const uint64_t &InTransactionID, const PlayerID &InPlayerID, const StringCrc32 &InCharacterName, const StringCrc32 &InAttributeName, const FLOAT &InValue)
+        Result AttributeValueSubCmd(const RouteContext &InRouteContext, const uint64_t &InTransactionID, const uint16_t &InRouteHopCount, const PlayerID &InPlayerID, const StringCrc32 &InCharacterName, const StringCrc32 &InAttributeName, const FLOAT &InValue)
 
 		- OutInRouteContext: RouteContext type. 
 
 		- OutInTransactionID: TransactionID type. 
+
+		- OutInRouteHopCount: uint16 type. 
 
 		- OutInPlayerID: PlayerID type. Owner PlayerID
 
@@ -226,11 +275,13 @@ Compare and exchange attribute value
 
 1. Command interface
 
-        Result AttributeValueCASCmd(const RouteContext &InRouteContext, const uint64_t &InTransactionID, const PlayerID &InPlayerID, const StringCrc32 &InCharacterName, const StringCrc32 &InAttributeName, const StringCrc32 &InAttributeType, const uint64_t &InExpected, const uint64_t &InNewValue)
+        Result AttributeValueCASCmd(const RouteContext &InRouteContext, const uint64_t &InTransactionID, const uint16_t &InRouteHopCount, const PlayerID &InPlayerID, const StringCrc32 &InCharacterName, const StringCrc32 &InAttributeName, const StringCrc32 &InAttributeType, const uint64_t &InExpected, const uint64_t &InNewValue)
 
 		- OutInRouteContext: RouteContext type. 
 
 		- OutInTransactionID: TransactionID type. 
+
+		- OutInRouteHopCount: uint16 type. 
 
 		- OutInPlayerID: PlayerID type. Owner PlayerID
 

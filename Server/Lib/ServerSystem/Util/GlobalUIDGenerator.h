@@ -29,16 +29,13 @@ namespace SF {
 	{
 	public:
 
-		enum { 
-			LIMIT_TIME_DIFF		= 1 << GlobalUID::BIT_ID,
-			UPDATE_TIME_DIFF	= 1 << (GlobalUID::BIT_ID-2),
-		};
+		static constexpr CounterType MAX_INDEX_DIFF = 1 << (GlobalUID::BIT_ID - 2);
 
 	private:
 		uint m_ServerID;
 
 		// Cached Time
-		mutable TimeStampSec m_time;
+		mutable UTCTimeStampSec m_time;
 
 		// circular counter
 		mutable SyncCounter m_CounterForID;
@@ -48,7 +45,7 @@ namespace SF {
 
 		GlobalUIDGenerator();
 
-		inline void SetServerID( uint serverID ) { m_ServerID = serverID; AssertRel( serverID < 256 ); }
+		void SetServerID(uint serverID);
 
 		// Generate New ID
 		GlobalUID NewUID() const;

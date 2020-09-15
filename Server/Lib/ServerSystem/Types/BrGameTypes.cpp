@@ -22,7 +22,7 @@ namespace SF
 {
 
 	
-	GameLogItem::GameLogItem(GameLogType logType, TimeStampSec timeStamp, size_t logItemSize)
+	GameLogItem::GameLogItem(GameLogType logType, UTCTimeStampSec timeStamp, size_t logItemSize)
 		: LogType(logType), LogItemSize((uint16_t)logItemSize), TimeStamp(timeStamp)
 	{
 	}
@@ -31,7 +31,7 @@ namespace SF
 
 
 	
-    GameLogChatMessage::GameLogChatMessage(TimeStampSec timeStamp, uint messageBufferSize)
+    GameLogChatMessage::GameLogChatMessage(UTCTimeStampSec timeStamp, uint messageBufferSize)
         : GameLogItem(GameLogType::ChatMessage, timeStamp, sizeof(GameLogChatMessage)+messageBufferSize)
 		,MessageBufferSize((decltype(MessageBufferSize))messageBufferSize)
     {
@@ -55,7 +55,7 @@ namespace SF
     }
 
 
-    GameLogGameStateChange::GameLogGameStateChange(TimeStampSec timeStamp)
+    GameLogGameStateChange::GameLogGameStateChange(UTCTimeStampSec timeStamp)
         :GameLogItem(GameLogType::GameStateChange,timeStamp,sizeof(GameLogGameStateChange))
     {
     }
@@ -66,7 +66,7 @@ namespace SF
     }
 
 
-    GameLogVote::GameLogVote(TimeStampSec timeStamp, uint numVoter)
+    GameLogVote::GameLogVote(UTCTimeStampSec timeStamp, uint numVoter)
 		: GameLogItem(GameLogType::Vote,timeStamp,sizeof(GameLogVote) + sizeof(VoteInfo)*std::min((uint)GameConst::MAX_GAMEPLAYER,numVoter-1))
 		,NumberOfVoter((decltype(NumberOfVoter))numVoter)
     {
@@ -109,7 +109,7 @@ namespace SF
 
 
 
-    GameLogVoteResult::GameLogVoteResult(TimeStampSec timeStamp, uint numRankers)
+    GameLogVoteResult::GameLogVoteResult(UTCTimeStampSec timeStamp, uint numRankers)
 		: GameLogItem(GameLogType::VoteResult,timeStamp,sizeof(GameLogVoteResult) + sizeof(PlayerID)*std::min((uint)GameConst::MAX_GAMEPLAYER,numRankers-1))
 		, NumberOfRanker(numRankers)
     {
@@ -125,7 +125,7 @@ namespace SF
     }
 
 
-    GameLogPlayerKilled::GameLogPlayerKilled(TimeStampSec timeStamp)
+    GameLogPlayerKilled::GameLogPlayerKilled(UTCTimeStampSec timeStamp)
 		: GameLogItem(GameLogType::PlayerKilled,timeStamp,sizeof(GameLogPlayerKilled))
     {
     }
@@ -139,7 +139,7 @@ namespace SF
 
 
 	
-    GameLogGameEnd::GameLogGameEnd(TimeStampSec timeStamp)
+    GameLogGameEnd::GameLogGameEnd(UTCTimeStampSec timeStamp)
 		: GameLogItem(GameLogType::GameEnd,timeStamp,sizeof(GameLogGameEnd))
     {
     }

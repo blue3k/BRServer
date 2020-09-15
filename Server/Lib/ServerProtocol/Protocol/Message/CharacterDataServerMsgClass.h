@@ -35,32 +35,35 @@ namespace SF
  					HasPlayerID = 1,
 					HasTransactionID = 1,
 					HasRouteContext = 1,
-					HasRouteHopCount = 0,
+					HasRouteHopCount = 1,
 					HasSender = 0,
 				}; // enum ParameterTypeInfo
 			public:
-				uint32_t GetRouteHopCount() { return 0; }
 				uint64_t GetSender() { return 0; }
 			private:
 				RouteContext m_RouteContext;
 				uint64_t m_TransactionID;
+				uint16_t m_RouteHopCount;
 				PlayerID m_PlayerID;
-				StringCrc32 m_CharacterName;
+				const char* m_CharacterName;
 				VariableTable m_Attributes;
 			public:
 				AddCharacterDataCmd()
+				:m_CharacterName(nullptr)
 					{}
 
 				AddCharacterDataCmd( MessageDataPtr &&pMsg )
 					: MessageBase(std::forward<MessageDataPtr>(pMsg))
+				,m_CharacterName(nullptr)
 					{}
 
 					MessageUsage GetMessageUsage() { return MessageUsage_None; }
 
 				const RouteContext& GetRouteContext() const	{ return m_RouteContext; };
 				const uint64_t& GetTransactionID() const	{ return m_TransactionID; };
+				const uint16_t& GetRouteHopCount() const	{ return m_RouteHopCount; };
 				const PlayerID& GetPlayerID() const	{ return m_PlayerID; };
-				const StringCrc32& GetCharacterName() const	{ return m_CharacterName; };
+				const char* GetCharacterName() const	{ return m_CharacterName; };
 				const VariableTable& GetAttributes() const	{ return m_Attributes; };
 
 				static Result TraceOut(const char* prefix, const MessageDataPtr& pMsg);
@@ -68,9 +71,11 @@ namespace SF
 				virtual Result ParseMessage( MessageData* pIMsg );
 				static Result ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr&& pIMsg, MessageBase* &pMsgBase );
 
-				static MessageData* Create( IHeap& memHeap, const RouteContext &InRouteContext, const uint64_t &InTransactionID, const PlayerID &InPlayerID, const StringCrc32 &InCharacterName, const VariableTable &InAttributes );
+				static MessageData* Create( IHeap& memHeap, const RouteContext &InRouteContext, const uint64_t &InTransactionID, const uint16_t &InRouteHopCount, const PlayerID &InPlayerID, const char* InCharacterName, const VariableTable &InAttributes );
 
 				Result OverrideRouteContextDestination( EntityUID to );
+
+				Result OverrideRouteInformation( EntityUID to, unsigned hopCount );
 
 			}; // class AddCharacterDataCmd : public MessageBase
 
@@ -95,6 +100,7 @@ namespace SF
 				RouteContext m_RouteContext;
 				uint64_t m_TransactionID;
 				Result m_Result;
+				uint64_t m_CharacterUID;
 			public:
 				AddCharacterDataRes()
 					{}
@@ -108,15 +114,18 @@ namespace SF
 				const RouteContext& GetRouteContext() const	{ return m_RouteContext; };
 				const uint64_t& GetTransactionID() const	{ return m_TransactionID; };
 				const Result& GetResult() const	{ return m_Result; };
+				const uint64_t& GetCharacterUID() const	{ return m_CharacterUID; };
 
 				static Result TraceOut(const char* prefix, const MessageDataPtr& pMsg);
 
 				virtual Result ParseMessage( MessageData* pIMsg );
 				static Result ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr&& pIMsg, MessageBase* &pMsgBase );
 
-				static MessageData* Create( IHeap& memHeap, const RouteContext &InRouteContext, const uint64_t &InTransactionID, const Result &InResult );
+				static MessageData* Create( IHeap& memHeap, const RouteContext &InRouteContext, const uint64_t &InTransactionID, const Result &InResult, const uint64_t &InCharacterUID );
 
 				Result OverrideRouteContextDestination( EntityUID to );
+
+				Result OverrideRouteInformation( EntityUID to, unsigned hopCount );
 
 			}; // class AddCharacterDataRes : public MessageBase
 
@@ -131,15 +140,15 @@ namespace SF
  					HasPlayerID = 1,
 					HasTransactionID = 1,
 					HasRouteContext = 1,
-					HasRouteHopCount = 0,
+					HasRouteHopCount = 1,
 					HasSender = 0,
 				}; // enum ParameterTypeInfo
 			public:
-				uint32_t GetRouteHopCount() { return 0; }
 				uint64_t GetSender() { return 0; }
 			private:
 				RouteContext m_RouteContext;
 				uint64_t m_TransactionID;
+				uint16_t m_RouteHopCount;
 				PlayerID m_PlayerID;
 				StringCrc32 m_CharacterName;
 			public:
@@ -154,6 +163,7 @@ namespace SF
 
 				const RouteContext& GetRouteContext() const	{ return m_RouteContext; };
 				const uint64_t& GetTransactionID() const	{ return m_TransactionID; };
+				const uint16_t& GetRouteHopCount() const	{ return m_RouteHopCount; };
 				const PlayerID& GetPlayerID() const	{ return m_PlayerID; };
 				const StringCrc32& GetCharacterName() const	{ return m_CharacterName; };
 
@@ -162,9 +172,11 @@ namespace SF
 				virtual Result ParseMessage( MessageData* pIMsg );
 				static Result ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr&& pIMsg, MessageBase* &pMsgBase );
 
-				static MessageData* Create( IHeap& memHeap, const RouteContext &InRouteContext, const uint64_t &InTransactionID, const PlayerID &InPlayerID, const StringCrc32 &InCharacterName );
+				static MessageData* Create( IHeap& memHeap, const RouteContext &InRouteContext, const uint64_t &InTransactionID, const uint16_t &InRouteHopCount, const PlayerID &InPlayerID, const StringCrc32 &InCharacterName );
 
 				Result OverrideRouteContextDestination( EntityUID to );
+
+				Result OverrideRouteInformation( EntityUID to, unsigned hopCount );
 
 			}; // class RemoveCharacterDataCmd : public MessageBase
 
@@ -212,7 +224,112 @@ namespace SF
 
 				Result OverrideRouteContextDestination( EntityUID to );
 
+				Result OverrideRouteInformation( EntityUID to, unsigned hopCount );
+
 			}; // class RemoveCharacterDataRes : public MessageBase
+
+			// Cmd: Get character list
+			class GetCharacterDataListCmd : public MessageBase
+			{
+ 			public:
+				static const MessageID MID;
+				// Parameter type informations for template
+				enum ParameterTypeInfo
+				{
+ 					HasPlayerID = 1,
+					HasTransactionID = 1,
+					HasRouteContext = 1,
+					HasRouteHopCount = 1,
+					HasSender = 0,
+				}; // enum ParameterTypeInfo
+			public:
+				uint64_t GetSender() { return 0; }
+			private:
+				RouteContext m_RouteContext;
+				uint64_t m_TransactionID;
+				uint16_t m_RouteHopCount;
+				PlayerID m_PlayerID;
+				StringCrc32 m_CharacterName;
+			public:
+				GetCharacterDataListCmd()
+					{}
+
+				GetCharacterDataListCmd( MessageDataPtr &&pMsg )
+					: MessageBase(std::forward<MessageDataPtr>(pMsg))
+					{}
+
+					MessageUsage GetMessageUsage() { return MessageUsage_None; }
+
+				const RouteContext& GetRouteContext() const	{ return m_RouteContext; };
+				const uint64_t& GetTransactionID() const	{ return m_TransactionID; };
+				const uint16_t& GetRouteHopCount() const	{ return m_RouteHopCount; };
+				const PlayerID& GetPlayerID() const	{ return m_PlayerID; };
+				const StringCrc32& GetCharacterName() const	{ return m_CharacterName; };
+
+				static Result TraceOut(const char* prefix, const MessageDataPtr& pMsg);
+
+				virtual Result ParseMessage( MessageData* pIMsg );
+				static Result ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr&& pIMsg, MessageBase* &pMsgBase );
+
+				static MessageData* Create( IHeap& memHeap, const RouteContext &InRouteContext, const uint64_t &InTransactionID, const uint16_t &InRouteHopCount, const PlayerID &InPlayerID, const StringCrc32 &InCharacterName );
+
+				Result OverrideRouteContextDestination( EntityUID to );
+
+				Result OverrideRouteInformation( EntityUID to, unsigned hopCount );
+
+			}; // class GetCharacterDataListCmd : public MessageBase
+
+			class GetCharacterDataListRes : public MessageBase
+			{
+ 			public:
+				static const MessageID MID;
+				// Parameter type informations for template
+				enum ParameterTypeInfo
+				{
+ 					HasPlayerID = 0,
+					HasTransactionID = 1,
+					HasRouteContext = 1,
+					HasRouteHopCount = 0,
+					HasSender = 0,
+				}; // enum ParameterTypeInfo
+			public:
+				uint64_t GetPlayerID() { return 0; }
+				uint32_t GetRouteHopCount() { return 0; }
+				uint64_t GetSender() { return 0; }
+			private:
+				RouteContext m_RouteContext;
+				uint64_t m_TransactionID;
+				Result m_Result;
+				StringCrc32 m_CharacterName;
+				VariableTable m_Attributes;
+			public:
+				GetCharacterDataListRes()
+					{}
+
+				GetCharacterDataListRes( MessageDataPtr &&pMsg )
+					: MessageBase(std::forward<MessageDataPtr>(pMsg))
+					{}
+
+					MessageUsage GetMessageUsage() { return MessageUsage_None; }
+
+				const RouteContext& GetRouteContext() const	{ return m_RouteContext; };
+				const uint64_t& GetTransactionID() const	{ return m_TransactionID; };
+				const Result& GetResult() const	{ return m_Result; };
+				const StringCrc32& GetCharacterName() const	{ return m_CharacterName; };
+				const VariableTable& GetAttributes() const	{ return m_Attributes; };
+
+				static Result TraceOut(const char* prefix, const MessageDataPtr& pMsg);
+
+				virtual Result ParseMessage( MessageData* pIMsg );
+				static Result ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr&& pIMsg, MessageBase* &pMsgBase );
+
+				static MessageData* Create( IHeap& memHeap, const RouteContext &InRouteContext, const uint64_t &InTransactionID, const Result &InResult, const StringCrc32 &InCharacterName, const VariableTable &InAttributes );
+
+				Result OverrideRouteContextDestination( EntityUID to );
+
+				Result OverrideRouteInformation( EntityUID to, unsigned hopCount );
+
+			}; // class GetCharacterDataListRes : public MessageBase
 
 			// Cmd: Get character data
 			class GetCharacterDataCmd : public MessageBase
@@ -225,15 +342,15 @@ namespace SF
  					HasPlayerID = 1,
 					HasTransactionID = 1,
 					HasRouteContext = 1,
-					HasRouteHopCount = 0,
+					HasRouteHopCount = 1,
 					HasSender = 0,
 				}; // enum ParameterTypeInfo
 			public:
-				uint32_t GetRouteHopCount() { return 0; }
 				uint64_t GetSender() { return 0; }
 			private:
 				RouteContext m_RouteContext;
 				uint64_t m_TransactionID;
+				uint16_t m_RouteHopCount;
 				PlayerID m_PlayerID;
 				StringCrc32 m_CharacterName;
 			public:
@@ -248,6 +365,7 @@ namespace SF
 
 				const RouteContext& GetRouteContext() const	{ return m_RouteContext; };
 				const uint64_t& GetTransactionID() const	{ return m_TransactionID; };
+				const uint16_t& GetRouteHopCount() const	{ return m_RouteHopCount; };
 				const PlayerID& GetPlayerID() const	{ return m_PlayerID; };
 				const StringCrc32& GetCharacterName() const	{ return m_CharacterName; };
 
@@ -256,9 +374,11 @@ namespace SF
 				virtual Result ParseMessage( MessageData* pIMsg );
 				static Result ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr&& pIMsg, MessageBase* &pMsgBase );
 
-				static MessageData* Create( IHeap& memHeap, const RouteContext &InRouteContext, const uint64_t &InTransactionID, const PlayerID &InPlayerID, const StringCrc32 &InCharacterName );
+				static MessageData* Create( IHeap& memHeap, const RouteContext &InRouteContext, const uint64_t &InTransactionID, const uint16_t &InRouteHopCount, const PlayerID &InPlayerID, const StringCrc32 &InCharacterName );
 
 				Result OverrideRouteContextDestination( EntityUID to );
+
+				Result OverrideRouteInformation( EntityUID to, unsigned hopCount );
 
 			}; // class GetCharacterDataCmd : public MessageBase
 
@@ -310,6 +430,8 @@ namespace SF
 
 				Result OverrideRouteContextDestination( EntityUID to );
 
+				Result OverrideRouteInformation( EntityUID to, unsigned hopCount );
+
 			}; // class GetCharacterDataRes : public MessageBase
 
 			// Cmd: Set(add or update) attribute value
@@ -323,15 +445,15 @@ namespace SF
  					HasPlayerID = 1,
 					HasTransactionID = 1,
 					HasRouteContext = 1,
-					HasRouteHopCount = 0,
+					HasRouteHopCount = 1,
 					HasSender = 0,
 				}; // enum ParameterTypeInfo
 			public:
-				uint32_t GetRouteHopCount() { return 0; }
 				uint64_t GetSender() { return 0; }
 			private:
 				RouteContext m_RouteContext;
 				uint64_t m_TransactionID;
+				uint16_t m_RouteHopCount;
 				PlayerID m_PlayerID;
 				StringCrc32 m_CharacterName;
 				VariableTable m_Attributes;
@@ -347,6 +469,7 @@ namespace SF
 
 				const RouteContext& GetRouteContext() const	{ return m_RouteContext; };
 				const uint64_t& GetTransactionID() const	{ return m_TransactionID; };
+				const uint16_t& GetRouteHopCount() const	{ return m_RouteHopCount; };
 				const PlayerID& GetPlayerID() const	{ return m_PlayerID; };
 				const StringCrc32& GetCharacterName() const	{ return m_CharacterName; };
 				const VariableTable& GetAttributes() const	{ return m_Attributes; };
@@ -356,9 +479,11 @@ namespace SF
 				virtual Result ParseMessage( MessageData* pIMsg );
 				static Result ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr&& pIMsg, MessageBase* &pMsgBase );
 
-				static MessageData* Create( IHeap& memHeap, const RouteContext &InRouteContext, const uint64_t &InTransactionID, const PlayerID &InPlayerID, const StringCrc32 &InCharacterName, const VariableTable &InAttributes );
+				static MessageData* Create( IHeap& memHeap, const RouteContext &InRouteContext, const uint64_t &InTransactionID, const uint16_t &InRouteHopCount, const PlayerID &InPlayerID, const StringCrc32 &InCharacterName, const VariableTable &InAttributes );
 
 				Result OverrideRouteContextDestination( EntityUID to );
+
+				Result OverrideRouteInformation( EntityUID to, unsigned hopCount );
 
 			}; // class SetAttributeCmd : public MessageBase
 
@@ -406,6 +531,8 @@ namespace SF
 
 				Result OverrideRouteContextDestination( EntityUID to );
 
+				Result OverrideRouteInformation( EntityUID to, unsigned hopCount );
+
 			}; // class SetAttributeRes : public MessageBase
 
 			// Cmd: Remove an attribute value
@@ -419,15 +546,15 @@ namespace SF
  					HasPlayerID = 1,
 					HasTransactionID = 1,
 					HasRouteContext = 1,
-					HasRouteHopCount = 0,
+					HasRouteHopCount = 1,
 					HasSender = 0,
 				}; // enum ParameterTypeInfo
 			public:
-				uint32_t GetRouteHopCount() { return 0; }
 				uint64_t GetSender() { return 0; }
 			private:
 				RouteContext m_RouteContext;
 				uint64_t m_TransactionID;
+				uint16_t m_RouteHopCount;
 				PlayerID m_PlayerID;
 				StringCrc32 m_CharacterName;
 				ArrayView<StringCrc32> m_AttributeNames;
@@ -443,6 +570,7 @@ namespace SF
 
 				const RouteContext& GetRouteContext() const	{ return m_RouteContext; };
 				const uint64_t& GetTransactionID() const	{ return m_TransactionID; };
+				const uint16_t& GetRouteHopCount() const	{ return m_RouteHopCount; };
 				const PlayerID& GetPlayerID() const	{ return m_PlayerID; };
 				const StringCrc32& GetCharacterName() const	{ return m_CharacterName; };
 				const Array<StringCrc32>& GetAttributeNames() const	{ return m_AttributeNames; };
@@ -452,9 +580,11 @@ namespace SF
 				virtual Result ParseMessage( MessageData* pIMsg );
 				static Result ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr&& pIMsg, MessageBase* &pMsgBase );
 
-				static MessageData* Create( IHeap& memHeap, const RouteContext &InRouteContext, const uint64_t &InTransactionID, const PlayerID &InPlayerID, const StringCrc32 &InCharacterName, const Array<StringCrc32>& InAttributeNames );
+				static MessageData* Create( IHeap& memHeap, const RouteContext &InRouteContext, const uint64_t &InTransactionID, const uint16_t &InRouteHopCount, const PlayerID &InPlayerID, const StringCrc32 &InCharacterName, const Array<StringCrc32>& InAttributeNames );
 
 				Result OverrideRouteContextDestination( EntityUID to );
+
+				Result OverrideRouteInformation( EntityUID to, unsigned hopCount );
 
 			}; // class RemoveAttributesCmd : public MessageBase
 
@@ -502,6 +632,8 @@ namespace SF
 
 				Result OverrideRouteContextDestination( EntityUID to );
 
+				Result OverrideRouteInformation( EntityUID to, unsigned hopCount );
+
 			}; // class RemoveAttributesRes : public MessageBase
 
 			// Cmd: Attribute add
@@ -515,15 +647,15 @@ namespace SF
  					HasPlayerID = 1,
 					HasTransactionID = 1,
 					HasRouteContext = 1,
-					HasRouteHopCount = 0,
+					HasRouteHopCount = 1,
 					HasSender = 0,
 				}; // enum ParameterTypeInfo
 			public:
-				uint32_t GetRouteHopCount() { return 0; }
 				uint64_t GetSender() { return 0; }
 			private:
 				RouteContext m_RouteContext;
 				uint64_t m_TransactionID;
+				uint16_t m_RouteHopCount;
 				PlayerID m_PlayerID;
 				StringCrc32 m_CharacterName;
 				StringCrc32 m_AttributeName;
@@ -540,6 +672,7 @@ namespace SF
 
 				const RouteContext& GetRouteContext() const	{ return m_RouteContext; };
 				const uint64_t& GetTransactionID() const	{ return m_TransactionID; };
+				const uint16_t& GetRouteHopCount() const	{ return m_RouteHopCount; };
 				const PlayerID& GetPlayerID() const	{ return m_PlayerID; };
 				const StringCrc32& GetCharacterName() const	{ return m_CharacterName; };
 				const StringCrc32& GetAttributeName() const	{ return m_AttributeName; };
@@ -550,9 +683,11 @@ namespace SF
 				virtual Result ParseMessage( MessageData* pIMsg );
 				static Result ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr&& pIMsg, MessageBase* &pMsgBase );
 
-				static MessageData* Create( IHeap& memHeap, const RouteContext &InRouteContext, const uint64_t &InTransactionID, const PlayerID &InPlayerID, const StringCrc32 &InCharacterName, const StringCrc32 &InAttributeName, const FLOAT &InValue );
+				static MessageData* Create( IHeap& memHeap, const RouteContext &InRouteContext, const uint64_t &InTransactionID, const uint16_t &InRouteHopCount, const PlayerID &InPlayerID, const StringCrc32 &InCharacterName, const StringCrc32 &InAttributeName, const FLOAT &InValue );
 
 				Result OverrideRouteContextDestination( EntityUID to );
+
+				Result OverrideRouteInformation( EntityUID to, unsigned hopCount );
 
 			}; // class AttributeValueAddCmd : public MessageBase
 
@@ -600,6 +735,8 @@ namespace SF
 
 				Result OverrideRouteContextDestination( EntityUID to );
 
+				Result OverrideRouteInformation( EntityUID to, unsigned hopCount );
+
 			}; // class AttributeValueAddRes : public MessageBase
 
 			// Cmd: Attribute subtract
@@ -613,15 +750,15 @@ namespace SF
  					HasPlayerID = 1,
 					HasTransactionID = 1,
 					HasRouteContext = 1,
-					HasRouteHopCount = 0,
+					HasRouteHopCount = 1,
 					HasSender = 0,
 				}; // enum ParameterTypeInfo
 			public:
-				uint32_t GetRouteHopCount() { return 0; }
 				uint64_t GetSender() { return 0; }
 			private:
 				RouteContext m_RouteContext;
 				uint64_t m_TransactionID;
+				uint16_t m_RouteHopCount;
 				PlayerID m_PlayerID;
 				StringCrc32 m_CharacterName;
 				StringCrc32 m_AttributeName;
@@ -638,6 +775,7 @@ namespace SF
 
 				const RouteContext& GetRouteContext() const	{ return m_RouteContext; };
 				const uint64_t& GetTransactionID() const	{ return m_TransactionID; };
+				const uint16_t& GetRouteHopCount() const	{ return m_RouteHopCount; };
 				const PlayerID& GetPlayerID() const	{ return m_PlayerID; };
 				const StringCrc32& GetCharacterName() const	{ return m_CharacterName; };
 				const StringCrc32& GetAttributeName() const	{ return m_AttributeName; };
@@ -648,9 +786,11 @@ namespace SF
 				virtual Result ParseMessage( MessageData* pIMsg );
 				static Result ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr&& pIMsg, MessageBase* &pMsgBase );
 
-				static MessageData* Create( IHeap& memHeap, const RouteContext &InRouteContext, const uint64_t &InTransactionID, const PlayerID &InPlayerID, const StringCrc32 &InCharacterName, const StringCrc32 &InAttributeName, const FLOAT &InValue );
+				static MessageData* Create( IHeap& memHeap, const RouteContext &InRouteContext, const uint64_t &InTransactionID, const uint16_t &InRouteHopCount, const PlayerID &InPlayerID, const StringCrc32 &InCharacterName, const StringCrc32 &InAttributeName, const FLOAT &InValue );
 
 				Result OverrideRouteContextDestination( EntityUID to );
+
+				Result OverrideRouteInformation( EntityUID to, unsigned hopCount );
 
 			}; // class AttributeValueSubCmd : public MessageBase
 
@@ -698,6 +838,8 @@ namespace SF
 
 				Result OverrideRouteContextDestination( EntityUID to );
 
+				Result OverrideRouteInformation( EntityUID to, unsigned hopCount );
+
 			}; // class AttributeValueSubRes : public MessageBase
 
 			// Cmd: Compare and exchange attribute value
@@ -711,15 +853,15 @@ namespace SF
  					HasPlayerID = 1,
 					HasTransactionID = 1,
 					HasRouteContext = 1,
-					HasRouteHopCount = 0,
+					HasRouteHopCount = 1,
 					HasSender = 0,
 				}; // enum ParameterTypeInfo
 			public:
-				uint32_t GetRouteHopCount() { return 0; }
 				uint64_t GetSender() { return 0; }
 			private:
 				RouteContext m_RouteContext;
 				uint64_t m_TransactionID;
+				uint16_t m_RouteHopCount;
 				PlayerID m_PlayerID;
 				StringCrc32 m_CharacterName;
 				StringCrc32 m_AttributeName;
@@ -738,6 +880,7 @@ namespace SF
 
 				const RouteContext& GetRouteContext() const	{ return m_RouteContext; };
 				const uint64_t& GetTransactionID() const	{ return m_TransactionID; };
+				const uint16_t& GetRouteHopCount() const	{ return m_RouteHopCount; };
 				const PlayerID& GetPlayerID() const	{ return m_PlayerID; };
 				const StringCrc32& GetCharacterName() const	{ return m_CharacterName; };
 				const StringCrc32& GetAttributeName() const	{ return m_AttributeName; };
@@ -750,9 +893,11 @@ namespace SF
 				virtual Result ParseMessage( MessageData* pIMsg );
 				static Result ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr&& pIMsg, MessageBase* &pMsgBase );
 
-				static MessageData* Create( IHeap& memHeap, const RouteContext &InRouteContext, const uint64_t &InTransactionID, const PlayerID &InPlayerID, const StringCrc32 &InCharacterName, const StringCrc32 &InAttributeName, const StringCrc32 &InAttributeType, const uint64_t &InExpected, const uint64_t &InNewValue );
+				static MessageData* Create( IHeap& memHeap, const RouteContext &InRouteContext, const uint64_t &InTransactionID, const uint16_t &InRouteHopCount, const PlayerID &InPlayerID, const StringCrc32 &InCharacterName, const StringCrc32 &InAttributeName, const StringCrc32 &InAttributeType, const uint64_t &InExpected, const uint64_t &InNewValue );
 
 				Result OverrideRouteContextDestination( EntityUID to );
+
+				Result OverrideRouteInformation( EntityUID to, unsigned hopCount );
 
 			}; // class AttributeValueCASCmd : public MessageBase
 
@@ -799,6 +944,8 @@ namespace SF
 				static MessageData* Create( IHeap& memHeap, const RouteContext &InRouteContext, const uint64_t &InTransactionID, const Result &InResult );
 
 				Result OverrideRouteContextDestination( EntityUID to );
+
+				Result OverrideRouteInformation( EntityUID to, unsigned hopCount );
 
 			}; // class AttributeValueCASRes : public MessageBase
 

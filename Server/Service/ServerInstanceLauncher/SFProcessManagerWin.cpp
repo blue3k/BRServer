@@ -15,6 +15,7 @@
 #include "SvrTrace.h"
 #include "ServerConfig/SFServerConfig.h"
 #include "Util/SFTimeUtil.h"
+#include "String/SFStringFormat.h"
 
 #include "SFProcessManager.h"
 
@@ -140,23 +141,25 @@ namespace SF {
 
 		for (auto& itProc : m_ProcesseInfos)
 		{
-			auto waitResult = WaitForSingleObject(itProc.ProcessHandle, 0);
+			auto& ProcInfo = itProc.GetValue();
+
+			auto waitResult = WaitForSingleObject(ProcInfo.ProcessHandle, 0);
 			switch (waitResult)
 			{
 			case WAIT_FAILED:
-				svrTrace(Error, "Process handle check is failed, {0}, hr:{1}", itProc.Name, GetLastResultCode());
+				svrTrace(Error, "Process handle check is failed, {0}, hr:{1}", ProcInfo.Name, GetLastResultCode());
 			case WAIT_ABANDONED:
 				// Error, let's consider as process termination
 			case WAIT_OBJECT_0:
-				CloseHandle(itProc.ProcessHandle);
-				itProc.LatestActionTime = Util::Time.GetTimeUTCSec();
+				CloseHandle(ProcInfo.ProcessHandle);
+				ProcInfo.LatestActionTime = Util::Time.GetTimeUTCSec();
 
-				m_OnEndHandler(itProc);
+				m_OnEndHandler(ProcInfo);
 
-				itProc.ProcessHandle = 0;
-				itProc.ProcessID = 0;
+				ProcInfo.ProcessHandle = 0;
+				ProcInfo.ProcessID = 0;
 
-				removed.push_back(itProc.Name);
+				removed.push_back(ProcInfo.Name);
 				break;
 			}
 			

@@ -52,9 +52,6 @@ namespace Svr {
 	GamePlayerEntity::GamePlayerEntity()
 		: m_PlayerState(PlayerState_None)
 		, m_GameInsUID(0)
-		, m_LatestUpdateTime(TimeStampSec(DurationSec(0)))
-		, m_LatestActiveTime(TimeStampSec(DurationSec(0)))
-		, m_LatestDBSyncTime(TimeStampSec(DurationSec(0)))
 	{
 		memset(m_UserName, 0, sizeof(m_UserName));
 		memset(m_GCMKeys, 0, sizeof(m_GCMKeys));
@@ -87,7 +84,7 @@ namespace Svr {
 		m_GCMKeys[0] = '\0';
 
 		SetLatestActiveTime(Util::Time.GetTimeUTCSec());
-		m_LatestUpdateTime = TimeStampSec(DurationSec(0));
+		m_LatestUpdateTime = {};
 
 
 
@@ -187,12 +184,12 @@ namespace Svr {
 	Result GamePlayerEntity::OnNewUserTranscation()
 	{
 		// m_LatestUpdateTime is used as a valid character data signal
-		if (m_LatestUpdateTime == TimeStampSec::min())
+		if (m_LatestUpdateTime == UTCTimeStampSec::min())
 			return ResultCode::SUCCESS_FALSE;
 
 		SetLatestActiveTime(Util::Time.GetTimeUTCSec());
 
-		if (m_LatestDBSyncTime == TimeStampSec::min() || Util::TimeSinceUTC(m_LatestDBSyncTime) > DurationSec(GameConst::PLAYER_UPDATE_STATUS_TIME))
+		if (m_LatestDBSyncTime == UTCTimeStampSec::min() || Util::TimeSinceUTC(m_LatestDBSyncTime) > DurationSec(GameConst::PLAYER_UPDATE_STATUS_TIME))
 		{
 			UpdateDBSync();
 		}

@@ -54,12 +54,12 @@ namespace SF {
 		ServiceStatus		Status;
 		NetClass			ServerClass;
 		NetAddress			ServerAddress;
-		TimeStampSec		ServerUpTime;
+		UTCTimeStampSec		ServerUpTime;
 		uint32_t				Workload;
 
 		inline ServiceInformation();
 		inline ServiceInformation( const ServiceInformation& src );
-		inline ServiceInformation( EntityUID entityUID, ClusterMembership membership, ServiceStatus status, NetClass netClass, const NetAddress& address, TimeStampSec serverUpTime, uint32_t workload );
+		inline ServiceInformation( EntityUID entityUID, ClusterMembership membership, ServiceStatus status, NetClass netClass, const NetAddress& address, UTCTimeStampSec serverUpTime, uint32_t workload );
 		inline ServiceInformation( int initValue );
 
 		inline ServiceInformation& operator = ( const ServiceInformation& src );

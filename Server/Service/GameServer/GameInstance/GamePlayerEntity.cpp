@@ -146,7 +146,7 @@ namespace GameServer {
 	}
 
 
-	void GamePlayerEntity::SetLatestActiveTime(TimeStampSec latestActiveTime)
+	void GamePlayerEntity::SetLatestActiveTime(UTCTimeStampSec latestActiveTime)
 	{
 		auto pGameConfig = GetMyServer()->GetPresetGameConfig();
 		if (pGameConfig != nullptr)
@@ -197,7 +197,7 @@ namespace GameServer {
 		Result hr = ResultCode::SUCCESS;
 
 		// m_LatestUpdateTime will be initialized when character data is loaded
-		if (GetLatestUpdateTime() == TimeStampSec::min())
+		if (GetLatestUpdateTime() == UTCTimeStampSec::min())
 		{
 			return ResultCode::FAIL;
 		}
@@ -205,7 +205,7 @@ namespace GameServer {
 		auto playerInfoSystem = GetComponent<UserGamePlayerInfoSystem>();
 
 		auto tickTime = GetMyServer()->GetPresetGameConfig()->StaminaRecoveryTime;
-		TimeStampSec curUTCSec = Util::Time.GetTimeUTCSec();
+		auto curUTCSec = Util::Time.GetTimeUTCSec();
 		DurationSec timeDiff = curUTCSec - GetLatestUpdateTime();
 		auto numberOfTicks = timeDiff.count() / tickTime;
 		DurationSec remainTime = timeDiff % tickTime;

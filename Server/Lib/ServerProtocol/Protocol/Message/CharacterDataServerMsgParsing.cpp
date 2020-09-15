@@ -36,6 +36,9 @@ namespace SF
 			// Cmd: Remove character data
 			MessageParseToMessageBaseMap.insert(std::make_pair(Message::CharacterDataServer::RemoveCharacterDataCmd::MID.IDSeq.MsgID,&Message::CharacterDataServer::RemoveCharacterDataCmd::ParseMessageToMessageBase));
 			MessageParseToMessageBaseMap.insert(std::make_pair(Message::CharacterDataServer::RemoveCharacterDataRes::MID.IDSeq.MsgID,&Message::CharacterDataServer::RemoveCharacterDataRes::ParseMessageToMessageBase));
+			// Cmd: Get character list
+			MessageParseToMessageBaseMap.insert(std::make_pair(Message::CharacterDataServer::GetCharacterDataListCmd::MID.IDSeq.MsgID,&Message::CharacterDataServer::GetCharacterDataListCmd::ParseMessageToMessageBase));
+			MessageParseToMessageBaseMap.insert(std::make_pair(Message::CharacterDataServer::GetCharacterDataListRes::MID.IDSeq.MsgID,&Message::CharacterDataServer::GetCharacterDataListRes::ParseMessageToMessageBase));
 			// Cmd: Get character data
 			MessageParseToMessageBaseMap.insert(std::make_pair(Message::CharacterDataServer::GetCharacterDataCmd::MID.IDSeq.MsgID,&Message::CharacterDataServer::GetCharacterDataCmd::ParseMessageToMessageBase));
 			MessageParseToMessageBaseMap.insert(std::make_pair(Message::CharacterDataServer::GetCharacterDataRes::MID.IDSeq.MsgID,&Message::CharacterDataServer::GetCharacterDataRes::ParseMessageToMessageBase));

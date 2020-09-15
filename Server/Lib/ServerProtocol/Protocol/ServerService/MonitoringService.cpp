@@ -36,7 +36,7 @@ namespace SF
 		{
  			FunctionContext hr;
 
-			 svrChk(Policy::NetPolicyMonitoring(GetConnection()).GetInstanceListCmd( InTransactionID ) );
+			 svrCheck(Policy::NetPolicyMonitoring(GetConnection()).GetInstanceListCmd( InTransactionID ) );
 
 			return hr;
 
@@ -46,7 +46,7 @@ namespace SF
 		{
  			FunctionContext hr;
 
-			 svrChk(Policy::NetPolicyMonitoring(GetConnection()).RequestCounterValuesCmd( InTransactionID, InInstanceUID ) );
+			 svrCheck(Policy::NetPolicyMonitoring(GetConnection()).RequestCounterValuesCmd( InTransactionID, InInstanceUID ) );
 
 			return hr;
 
@@ -56,7 +56,7 @@ namespace SF
 		{
  			FunctionContext hr;
 
-			 svrChk(Policy::NetPolicyMonitoring(GetConnection()).PerformanceCounterNewC2SEvt( InInstanceName, InInstanceUID, InNewCounters ) );
+			 svrCheck(Policy::NetPolicyMonitoring(GetConnection()).PerformanceCounterNewC2SEvt( InInstanceName, InInstanceUID, InNewCounters ) );
 
 			return hr;
 
@@ -66,7 +66,7 @@ namespace SF
 		{
  			FunctionContext hr;
 
-			 svrChk(Policy::NetPolicyMonitoring(GetConnection()).PerformanceCounterFreeC2SEvt( InFreeInstances ) );
+			 svrCheck(Policy::NetPolicyMonitoring(GetConnection()).PerformanceCounterFreeC2SEvt( InFreeInstances ) );
 
 			return hr;
 
@@ -76,7 +76,7 @@ namespace SF
 		{
  			FunctionContext hr;
 
-			 svrChk(Policy::NetPolicyMonitoring(GetConnection()).PerformanceCounterUpdateC2SEvt( InInstanceUID, InCounterValues ) );
+			 svrCheck(Policy::NetPolicyMonitoring(GetConnection()).PerformanceCounterUpdateC2SEvt( InInstanceUID, InCounterValues ) );
 
 			return hr;
 

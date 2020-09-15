@@ -84,7 +84,7 @@ namespace ConspiracyGameInstanceServer {
 	}
 
 	// Add log items
-	Result GameLogSystem::AddGameStateChange(TimeStampSec timeStamp, GameStateID gameState )
+	Result GameLogSystem::AddGameStateChange(UTCTimeStampSec timeStamp, GameStateID gameState )
 	{
 		Result hr = ResultCode::SUCCESS;
 		GameLogGameStateChange *pLogItem;
@@ -106,7 +106,7 @@ namespace ConspiracyGameInstanceServer {
 		return hr;
 	}
 
-	Result GameLogSystem::AddGameVote( TimeStampSec timeStamp, GameVoteType type, uint voterCount )
+	Result GameLogSystem::AddGameVote( UTCTimeStampSec timeStamp, GameVoteType type, uint voterCount )
 	{
 		Result hr = ResultCode::SUCCESS;
 		GameLogVote *logItem;
@@ -152,7 +152,7 @@ namespace ConspiracyGameInstanceServer {
 		return hr;
 	}
 
-	Result GameLogSystem::AddGameVoteResult(TimeStampSec timeStamp, uint numRankers, const PlayerID* ranker )
+	Result GameLogSystem::AddGameVoteResult(UTCTimeStampSec timeStamp, uint numRankers, const PlayerID* ranker )
 	{
 		Result hr = ResultCode::SUCCESS;
 		GameLogVoteResult *logItem;
@@ -186,7 +186,7 @@ namespace ConspiracyGameInstanceServer {
 		return hr;
 	}
 	
-	Result GameLogSystem::AddGamePlayerKilled(TimeStampSec timeStamp, PlayerKilledReason reason, PlayerID killedPlayerID )
+	Result GameLogSystem::AddGamePlayerKilled(UTCTimeStampSec timeStamp, PlayerKilledReason reason, PlayerID killedPlayerID )
 	{
 		Result hr = ResultCode::SUCCESS;
 		GameLogPlayerKilled *logItem;
@@ -205,7 +205,7 @@ namespace ConspiracyGameInstanceServer {
 		return hr;
 	}
 
-	Result GameLogSystem::AddGameEnd(TimeStampSec timeStamp, GameWinner winner )
+	Result GameLogSystem::AddGameEnd(UTCTimeStampSec timeStamp, GameWinner winner )
 	{
 		Result hr = ResultCode::SUCCESS;
 		GameLogGameEnd *logItem;

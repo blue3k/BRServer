@@ -79,7 +79,7 @@ namespace Svr {
 
 			super::GetMyOwner()->SetPrivateNetAddress(super::GetPrivateAddress());
 
-			super::GetMyOwner()->SetServerUpTime(TimeStampSec(DurationSec(super::GetStartUpTime())) );
+			super::GetMyOwner()->SetServerUpTime(UTCTimeStampSec(DurationSec(super::GetStartUpTime())) );
 
 		Proc_End:
 

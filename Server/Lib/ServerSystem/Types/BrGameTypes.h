@@ -60,10 +60,10 @@ namespace SF
 	// Game log item base item
 	struct GameLogItem {
 		GameLogType		LogType;		// Log type
-		uint16_t			LogItemSize;	// Actual log item size
-		TimeStampSec	TimeStamp;		// time32_t
+		uint16_t		LogItemSize;	// Actual log item size
+        UTCTimeStampSec	TimeStamp;		// 32bit UTC time
 
-		GameLogItem(GameLogType logType, TimeStampSec timeStamp, size_t logItemSize);
+		GameLogItem(GameLogType logType, UTCTimeStampSec timeStamp, size_t logItemSize);
 	};
 
     struct GameLogChatMessage : GameLogItem
@@ -75,7 +75,7 @@ namespace SF
 		uint16_t MessageBufferSize;
         char MessageText[1];
 
-        GameLogChatMessage(TimeStampSec timeStamp, uint messageBufferSize);
+        GameLogChatMessage(UTCTimeStampSec timeStamp, uint messageBufferSize);
         
         Result SetChatMessage( PlayerID player, uint8_t playerStatus, ChatType type, const char* message);
     };
@@ -85,7 +85,7 @@ namespace SF
     {
         GameStateID GameState;
 
-        GameLogGameStateChange(TimeStampSec timeStamp);
+        GameLogGameStateChange(UTCTimeStampSec timeStamp);
 
         void SetState( GameStateID gameState );
     };
@@ -102,7 +102,7 @@ namespace SF
         };
         VoteInfo VoteStatus[1];
 
-        GameLogVote(TimeStampSec timeStamp, uint numVoter);
+        GameLogVote(UTCTimeStampSec timeStamp, uint numVoter);
 
         Result InitializeVote(GameVoteType type, int voterCount);
 
@@ -114,7 +114,7 @@ namespace SF
 		uint32_t NumberOfRanker;
         PlayerID VotedRankers[1];
 
-        GameLogVoteResult(TimeStampSec timeStamp, uint numRankers);
+        GameLogVoteResult(UTCTimeStampSec timeStamp, uint numRankers);
 
         void SetVotedRankers(uint numRankers, const PlayerID* ranker);
     };
@@ -124,7 +124,7 @@ namespace SF
         PlayerID KilledPlayerID;
 		PlayerKilledReason killedReason;
 
-        GameLogPlayerKilled(TimeStampSec timeStamp);
+        GameLogPlayerKilled(UTCTimeStampSec timeStamp);
 
         void SetPlayerKilled(PlayerKilledReason reason, PlayerID killedPlayerID);
     };
@@ -133,7 +133,7 @@ namespace SF
     {
         GameWinner Winner;
 
-        GameLogGameEnd(TimeStampSec timeStamp);
+        GameLogGameEnd(UTCTimeStampSec timeStamp);
 
         void SetWinner( GameWinner winner );
     }; 

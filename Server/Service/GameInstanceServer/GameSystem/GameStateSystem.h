@@ -45,8 +45,7 @@ namespace ConspiracyGameInstanceServer {
 		GameStateID m_GameState;
 
 		// State start time
-		TimeStampMS m_StateStartTime;
-		TimeStampSec m_StateStartTimeUTC;
+		UTCTimeStampMS m_StateStartTimeUTC;
 
 	
 
@@ -54,7 +53,6 @@ namespace ConspiracyGameInstanceServer {
 		GamePlayState(GameInstanceEntity* Owner, GameStateID gameState)
 			: m_Owner(Owner)
 			, m_GameState(gameState)
-			, m_StateStartTime(TimeStampMS(DurationMS(0)))
 		{}
 		virtual ~GamePlayState() {}
 
@@ -64,8 +62,8 @@ namespace ConspiracyGameInstanceServer {
 
 
 		// Get time in this state in ms
-		DurationMS GetTimeInState()						{ return Util::TimeSince(m_StateStartTime); }
-		TimeStampSec GetStateTimeUTC()					{ return m_StateStartTimeUTC; }
+		DurationMS GetTimeInState()						{ return Util::TimeSinceUTC(m_StateStartTimeUTC); }
+		UTCTimeStampMS GetStateTimeUTC()					{ return m_StateStartTimeUTC; }
 
 		GamePlaySystem& GetGamePlaySystem();
 		GameStateSystem& GetGameStateSystem();

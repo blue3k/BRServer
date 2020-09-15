@@ -15,15 +15,15 @@
 #include "SvrTrace.h"
 #include "SvrConst.h"
 #include "String/SFStrUtil.h"
+#include "Server/BrServer.h"
 #include "ServerLog/SvrLog.h"
 #include "Thread/SFThread.h"
 #include "Memory/SFMemory.h"
 #include "Net/SFNetDef.h"
 #include "Entity/Entity.h"
-#include "Component/ServerComponent.h"
+#include "String/SFStringFormat.h"
 #include "ServerService/ServerServiceBase.h"
 #include "ServerEntity/ServerEntity.h"
-#include "Entity/EntityManager.h"
 #include "ServiceEntity/Character/CharacterData.h"
 #include "ServiceEntity/Character/CharacterDataManagerServiceEntity.h"
 #include "ServiceEntity/Character/CharacterDataManagerServiceTrans.h"
@@ -40,18 +40,38 @@ namespace SF {
 namespace Svr {
 
 
+
+	CharacterData::CharacterData(IHeap& heap, GameID gameID, PlayerID playerID, CharacterDataUID characterUID)
+		: m_GameID(gameID)
+		, m_PlayerID(playerID)
+		, m_CharacterUID(characterUID)
+		, m_Attributes(heap)
+	{
+	}
+
+
 	//////////////////////////////////////////////////////////////////////////
 	//
 	//	Entity informations
 	//
 
+	GlobalUIDGenerator CharacterDataManagerServiceEntity::stm_CharacterIDGenerator;
+
 	CharacterDataManagerServiceEntity::CharacterDataManagerServiceEntity(GameID gameID, ClusterMembership initialMembership)
 		: super(gameID, ClusterID::CharacterData, initialMembership )
+		, m_CharacterDataMap(GetHeap())
 		, m_CharacterDataCount("CharacterDataCount")
 	{
 		// Game CharacterData manager transactions
 		BR_ENTITY_MESSAGE(Message::CharacterDataServer::AddCharacterDataCmd)		{ svrMemReturn(pNewTrans = new(GetHeap()) CharacterDataManagerTransAddCharacterData(GetHeap(), pMsgData)); return ResultCode::SUCCESS; } );
 		BR_ENTITY_MESSAGE(Message::CharacterDataServer::RemoveCharacterDataCmd)		{ svrMemReturn(pNewTrans = new(GetHeap()) CharacterDataManagerTransRemoveCharacterData(GetHeap(), pMsgData)); return ResultCode::SUCCESS; } );
+		BR_ENTITY_MESSAGE(Message::CharacterDataServer::GetCharacterDataListCmd)	{ svrMemReturn(pNewTrans = new(GetHeap()) CharacterDataManagerTransGetCharacterDataList(GetHeap(), pMsgData)); return ResultCode::SUCCESS; } );
+		BR_ENTITY_MESSAGE(Message::CharacterDataServer::GetCharacterDataCmd)		{ svrMemReturn(pNewTrans = new(GetHeap()) CharacterDataManagerTransGetCharacterData(GetHeap(), pMsgData)); return ResultCode::SUCCESS; } );
+		BR_ENTITY_MESSAGE(Message::CharacterDataServer::SetAttributeCmd)			{ svrMemReturn(pNewTrans = new(GetHeap()) CharacterDataManagerTransSetAttribute(GetHeap(), pMsgData)); return ResultCode::SUCCESS; } );
+		BR_ENTITY_MESSAGE(Message::CharacterDataServer::RemoveAttributesCmd)		{ svrMemReturn(pNewTrans = new(GetHeap()) CharacterDataManagerTransRemoveAttribute(GetHeap(), pMsgData)); return ResultCode::SUCCESS; } );
+		BR_ENTITY_MESSAGE(Message::CharacterDataServer::AttributeValueAddCmd)		{ svrMemReturn(pNewTrans = new(GetHeap()) CharacterDataManagerTransAttributeValueAdd(GetHeap(), pMsgData)); return ResultCode::SUCCESS; } );
+		BR_ENTITY_MESSAGE(Message::CharacterDataServer::AttributeValueSubCmd)		{ svrMemReturn(pNewTrans = new(GetHeap()) CharacterDataManagerTransAttributeValueSub(GetHeap(), pMsgData)); return ResultCode::SUCCESS; } );
+		BR_ENTITY_MESSAGE(Message::CharacterDataServer::AttributeValueCASCmd)		{ svrMemReturn(pNewTrans = new(GetHeap()) CharacterDataManagerTransAttributeValueCAS(GetHeap(), pMsgData)); return ResultCode::SUCCESS; } );
 
 	}
 
@@ -61,7 +81,7 @@ namespace Svr {
 
 	Result CharacterDataManagerServiceEntity::InitializeEntity(EntityID newEntityID)
 	{
-		Result hr = ResultCode::SUCCESS;
+		FunctionContext hr = ResultCode::SUCCESS;
 
 		auto pInstance = PerformanceCounterClient::GetDefaultCounterInstance();
 		if (pInstance != nullptr)
@@ -69,41 +89,21 @@ namespace Svr {
 			pInstance->AddCounter(&m_CharacterDataCount);
 		}
 
-		svrChk(super::InitializeEntity(newEntityID));
+		svrCheck(super::InitializeEntity(newEntityID));
 
-		svrChk(Service::ClusterManager->RegisterClustereWatchers(GetGameID(), ClusterID::MatchingQueue_Game_4x1, ClusterID::MatchingQueue_Game_4x1W));
-		svrChk(Service::ClusterManager->RegisterClustereWatchers(GetGameID(), ClusterID::MatchingQueue_Game_8x1, ClusterID::MatchingQueue_Game_8x1W));
-
-
-	Proc_End:
+		stm_CharacterIDGenerator.SetServerID(Svr::BrServer::GetInstance()->GetServerUID());
 
 		return hr;
 	}
 
 	Result CharacterDataManagerServiceEntity::RegisterServiceMessageHandler( ServerEntity *pServerEntity )
 	{
-		Result hr = ResultCode::SUCCESS;
+		FunctionContext hr = ResultCode::SUCCESS;
 
-		svrChk(super::RegisterServiceMessageHandler( pServerEntity ) );
+		svrCheck(super::RegisterServiceMessageHandler( pServerEntity ) );
 
 		// Game CharacterData manager transactions
-		pServerEntity->BR_ENTITY_MESSAGE(Message::CharacterDataServer::CreateCharacterDataCmd)						{ svrMemReturn(pNewTrans = new(GetHeap()) CharacterDataManagerTransCreateCharacterData(GetHeap(), pMsgData)); return ResultCode::SUCCESS; } );
-		pServerEntity->BR_ENTITY_MESSAGE(Message::CharacterDataServer::CharacterDataDeletedC2SEvt)					{ svrMemReturn(pNewTrans = new(GetHeap()) CharacterDataManagerTransCharacterDataDeleted(GetHeap(), pMsgData)); return ResultCode::SUCCESS; } );
-
-		// Game CharacterData instance transactions
-		pServerEntity->BR_ENTITY_MESSAGE(Message::GameCharacterData::JoinCharacterDataCmd)								{ svrMemReturn(pNewTrans = new(GetHeap()) CharacterDataTransJoinCharacterData(GetHeap(), pMsgData)); return ResultCode::SUCCESS; } );
-		pServerEntity->BR_ENTITY_MESSAGE(Message::GameCharacterData::LeaveCharacterDataCmd)								{ svrMemReturn(pNewTrans = new(GetHeap()) CharacterDataTransLeaveCharacterData(GetHeap(), pMsgData)); return ResultCode::SUCCESS; } );
-		pServerEntity->BR_ENTITY_MESSAGE(Message::GameCharacterData::KickPlayerCmd)										{ svrMemReturn(pNewTrans = new(GetHeap()) CharacterDataTransKickPlayer(GetHeap(), pMsgData)); return ResultCode::SUCCESS; } );
-		pServerEntity->BR_ENTITY_MESSAGE(Message::GameCharacterData::ChatMessageC2SEvt)									{ svrMemReturn(pNewTrans = new(GetHeap()) CharacterDataTransChatMessage(GetHeap(), pMsgData)); return ResultCode::SUCCESS; } );
-		pServerEntity->BR_ENTITY_MESSAGE(Message::GameCharacterData::QuickChatMessageC2SEvt)							{ svrMemReturn(pNewTrans = new(GetHeap()) CharacterDataTransQuickChatMessage(GetHeap(), pMsgData)); return ResultCode::SUCCESS; } );
-
-		pServerEntity->BR_ENTITY_MESSAGE(Message::GameCharacterData::StartGameMatchCmd)									{ svrMemReturn(pNewTrans = new(GetHeap()) CharacterDataTransStartGameMatchCmd(GetHeap(), pMsgData)); return ResultCode::SUCCESS; } );
-		pServerEntity->BR_ENTITY_MESSAGE(Message::GameCharacterData::CancelGameMatchCmd)								{ svrMemReturn(pNewTrans = new(GetHeap()) CharacterDataTransCancelGameMatchCmd(GetHeap(), pMsgData)); return ResultCode::SUCCESS; } );
-		pServerEntity->BR_ENTITY_MESSAGE(Message::CharacterDataMatchingQueue::CharacterDataMatchingCanceledS2CEvt)		{ svrMemReturn(pNewTrans = new(GetHeap()) CharacterDataTransCharacterDataMatchingCanceled(GetHeap(), pMsgData)); return ResultCode::SUCCESS; } );
-		pServerEntity->BR_ENTITY_MESSAGE(Message::CharacterDataMatchingQueue::CharacterDataMatchingItemDequeuedS2CEvt)	{ svrMemReturn(pNewTrans = new(GetHeap()) CharacterDataTransMatchingItemDequeued(GetHeap(), pMsgData)); return ResultCode::SUCCESS; } );
-		pServerEntity->BR_ENTITY_MESSAGE(Message::CharacterDataMatching::CharacterDataGameMatchedS2CEvt)				{ svrMemReturn(pNewTrans = new(GetHeap()) CharacterDataTransCharacterDataGameMatchedS2CEvt(GetHeap(), pMsgData)); return ResultCode::SUCCESS; } );
-
-	Proc_End:
+		//pServerEntity->BR_ENTITY_MESSAGE(Message::CharacterDataServer::CreateCharacterDataCmd)						{ svrMemReturn(pNewTrans = new(GetHeap()) CharacterDataManagerTransCreateCharacterData(GetHeap(), pMsgData)); return ResultCode::SUCCESS; } );
 
 		return hr;
 	}
@@ -115,52 +115,40 @@ namespace Svr {
 	//
 
 	// Add new Entity
-	Result CharacterDataManagerServiceEntity::CreateGameCharacterData( GameID gameID, const PlayerInformation& creator, EntityUID playerUID, ServerEntity *pServerEntity, CharacterDataUID &CharacterDataUID )
+	Result CharacterDataManagerServiceEntity::CreateCharacterData(GameID gameID, PlayerID playerID, CharacterDataUID characterUID, CharacterData*& pCharacterData)
 	{
-		Result hr = ResultCode::SUCCESS;
-		GameCharacterDataEntity *pGameCharacterData = nullptr;
-		CharacterDataPlayer *pPlayer = nullptr;
+		FunctionContext hr([&pCharacterData](Result hr)
+			{
+				if (!hr && pCharacterData != nullptr)
+				{
+					delete pCharacterData;
+					pCharacterData = nullptr;
+				}
+			});
 
-		svrChkPtr( pGameCharacterData = new(GetHeap()) GameCharacterDataEntity(gameID) );
+		svrCheckMem(pCharacterData = new(GetHeap()) CharacterData(GetHeap(), gameID, playerID, characterUID));
 
-		svrChk(Service::EntityManager->AddEntity( EntityFaculty::CharacterData, pGameCharacterData ) );
 
-		svrMem( pPlayer = new(GetHeap()) CharacterDataPlayer( creator ) );
-		svrChk( pPlayer->SetServerEntity( pServerEntity, playerUID ) );
-		svrChk( pGameCharacterData->JoinPlayer( pPlayer ) );
-
-		CharacterDataUID = pGameCharacterData->GetEntityUID();
-		pGameCharacterData = nullptr;
+		svrCheck(m_CharacterDataMap.Insert(characterUID, pCharacterData));
+		pCharacterData = nullptr;
 
 		++m_CharacterDataCount;
-		m_LocalWorkload.fetch_add(1, std::memory_order_relaxed);
-
-	Proc_End:
-
-		// close CharacterData instance if it failed to initialize
-		if( pGameCharacterData )
-			pGameCharacterData->PendingCloseTransaction("Game CharacterData creation is failed");
 
 		return hr;
 	}
 
 	// Called when a game CharacterData is deleted
-	Result CharacterDataManagerServiceEntity::FreeGameCharacterData( CharacterDataUID CharacterDataUID )
+	Result CharacterDataManagerServiceEntity::FreeCharacterData( CharacterDataUID characterUID )
 	{
-		Result hr = ResultCode::SUCCESS;
+		FunctionContext hr = ResultCode::SUCCESS;
 
-		if (!(Service::EntityManager->RemoveEntity(CharacterDataUID.GetEntityID())))
-		{
-			svrTrace(Error, "Failed to delete CharacterData info {0}", CharacterDataUID);
-		}
-		else
-		{
-			--m_CharacterDataCount;
-			svrTrace(SVR_INFO, "CharacterData deleted {0}", CharacterDataUID);
-			m_LocalWorkload.fetch_sub(1, std::memory_order_relaxed);
-		}
+		CharacterData* pCharacterData = nullptr;
+		svrCheck(m_CharacterDataMap.Remove(characterUID, pCharacterData));
 
-	//Proc_End:
+		--m_CharacterDataCount;
+
+		delete pCharacterData;
+
 
 		return hr;
 	}

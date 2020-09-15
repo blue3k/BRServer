@@ -66,8 +66,7 @@ namespace ConspiracyGameInstanceServer {
 
 	Result GamePlayState::OnEnter()
 	{
-		m_StateStartTime = Util::Time.GetTimeMs();
-		m_StateStartTimeUTC = Util::Time.GetTimeUTCSec();
+		m_StateStartTimeUTC = Util::Time.GetRawUTCMs();
 
 		uint day = GetOwner().GetComponent<GameStateSystem>()->GetCurrentDay();
 		GetOwner().ForeachPlayerSvrGameInstance( [&]( GamePlayer* pPlayer, Policy::NetSvrPolicyGameInstance &pPolicy )->Result
@@ -75,7 +74,7 @@ namespace ConspiracyGameInstanceServer {
 			pPlayer->SetVotedGameAdvance(false);
 
 			if( pPlayer->GetPlayerEntityUID().UID != 0 )
-				pPolicy.GameAdvancedS2CEvt( RouteContext( GetOwner().GetEntityUID(), pPlayer->GetPlayerEntityUID()), m_StateStartTimeUTC.time_since_epoch().count(), (uint8_t)GetGameState(), (uint8_t)day );
+				pPolicy.GameAdvancedS2CEvt( RouteContext( GetOwner().GetEntityUID(), pPlayer->GetPlayerEntityUID()), DurationCast<DurationSec>(m_StateStartTimeUTC.time_since_epoch()).count(), (uint8_t)GetGameState(), (uint8_t)day );
 
 			return ResultCode::SUCCESS;
 		});

@@ -31,7 +31,7 @@ namespace Svr {
 	class CharacterDataMessageTransaction : public ClusterEntityMessageTransaction<CharacterDataManagerServiceEntity, MessageClass>
 	{
 	private:
-		typedef ServerEntityMessageTransaction<CharacterDataManagerServiceEntity, MessageClass> super;
+		typedef ClusterEntityMessageTransaction<CharacterDataManagerServiceEntity, MessageClass> super;
 	protected:
 		// Player Player ID
 		PlayerID	m_PlayerID;

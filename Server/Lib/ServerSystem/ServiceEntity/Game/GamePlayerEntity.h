@@ -97,12 +97,12 @@ namespace Svr {
 		char m_GCMKeys[GameConst::MAX_GCMKEYS];
 
 		// Latest update time in UTC time
-		TimeStampSec m_LatestUpdateTime = TimeStampSec(DurationSec(0));
+		UTCTimeStampSec m_LatestUpdateTime{};
 
 		// Latest active time in UTC time
-		TimeStampSec m_LatestActiveTime = TimeStampSec(DurationSec(0));
+		UTCTimeStampSec m_LatestActiveTime{};
 
-		TimeStampSec m_LatestDBSyncTime = TimeStampSec(DurationSec(0));
+		UTCTimeStampSec m_LatestDBSyncTime{};
 
 
 
@@ -163,15 +163,15 @@ namespace Svr {
 		const char* GetGCMKeys() const { return m_GCMKeys; }
 		void SetGCMKeys(const char* value) { StrUtil::StringCopy(m_GCMKeys, value); }
 
-		TimeStampSec GetLatestUpdateTime() const { return m_LatestUpdateTime; }
-		void SetLatestUpdateTime(TimeStampSec value) { m_LatestUpdateTime = value; }
+		UTCTimeStampSec GetLatestUpdateTime() const { return m_LatestUpdateTime; }
+		void SetLatestUpdateTime(UTCTimeStampSec value) { m_LatestUpdateTime = value; }
 
 
-		TimeStampSec GetLatestActiveTime() const { return m_LatestActiveTime; }
-		virtual void SetLatestActiveTime(TimeStampSec latestActiveTime) { m_LatestActiveTime = latestActiveTime; }
+		UTCTimeStampSec GetLatestActiveTime() const { return m_LatestActiveTime; }
+		virtual void SetLatestActiveTime(UTCTimeStampSec latestActiveTime) { m_LatestActiveTime = latestActiveTime; }
 
-		TimeStampSec GetLatestDBSyncTime() const { return m_LatestDBSyncTime; }
-		void SetLatestDBSyncTime(TimeStampSec value) { m_LatestDBSyncTime = value; }
+		UTCTimeStampSec GetLatestDBSyncTime() const { return m_LatestDBSyncTime; }
+		void SetLatestDBSyncTime(UTCTimeStampSec value) { m_LatestDBSyncTime = value; }
 
 
 		const char* GetUserName() const { return m_UserName; }

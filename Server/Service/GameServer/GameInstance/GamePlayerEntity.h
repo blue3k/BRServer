@@ -85,7 +85,7 @@ namespace GameServer {
 		virtual const ServerFriendInformation& GetFriendInformation() const override;
 
 
-		virtual void SetLatestActiveTime(TimeStampSec latestActiveTime) override;
+		virtual void SetLatestActiveTime(UTCTimeStampSec latestActiveTime) override;
 		virtual Result UpdateDBSync(TransactionID transID = TransactionID()) override;
 
 		virtual Result UpdateGameConfig() override;

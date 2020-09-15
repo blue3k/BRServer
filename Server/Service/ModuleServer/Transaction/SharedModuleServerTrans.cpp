@@ -96,12 +96,14 @@ namespace SharedModuleServer {
 	// Start Transaction
 	Result SharedModuleServerStartProcess::StartTransaction()
 	{
-		Result hr = ResultCode::SUCCESS;
+		FunctionContext hr = ResultCode::SUCCESS;
 
-		svrChkReturn(super::StartTransaction() );
+		svrCheck(super::StartTransaction() );
 
 		m_Step = StartingStep::WaitEntityServer;
-		SetTimer(DurationMS(500) );
+		SetTimer(DurationMS(500));
+
+		return hr;
 	}
 
 	Result SharedModuleServerStartProcess::OnCloseTransaction( Result hrRes )

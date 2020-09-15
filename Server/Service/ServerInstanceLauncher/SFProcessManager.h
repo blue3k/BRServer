@@ -44,7 +44,7 @@ namespace SF {
 			NativeHandle ProcessHandle;
 			intptr_t ProcessID;
 
-			TimeStampSec LatestActionTime; // Time stamp for started, or stopped
+			UTCTimeStampSec LatestActionTime; // Time stamp for started, or stopped
 		};
 
 		typedef std::function<void(const ProcessInfo&)> ProcessEndHandler;

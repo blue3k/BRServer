@@ -34,7 +34,7 @@ namespace Svr {
 
 	PlayerEntityInformation::PlayerEntityInformation( const PlayerInformation& player )
 		:m_PlayerInfo(player)
-		,m_LatestServerUpTime(TimeStampSec::min())
+		,m_LatestServerUpTime(UTCTimeStampSec::min())
 		,m_ServerEntity(nullptr)
 		,m_PlayerEntityUID(0)
 		,m_IsActivePlayer(true)

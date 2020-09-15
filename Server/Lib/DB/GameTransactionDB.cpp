@@ -47,7 +47,7 @@ namespace DB {
 	//
 
 	// Add game log
-	Result GameTransactionDB::AddGameLog(uint shardID, const PlayerID &playerID, TimeStampSec gameTime, TransLogCategory LogCategory, INT consume, INT gain, uint64_t totalValue, const char* logMessage)
+	Result GameTransactionDB::AddGameLog(uint shardID, const PlayerID &playerID, UTCTimeStampSec gameTime, TransLogCategory LogCategory, INT consume, INT gain, uint64_t totalValue, const char* logMessage)
 	{
 		Result hr = ResultCode::SUCCESS;
 		QueryAddGameLogCmd *pQuery = nullptr;

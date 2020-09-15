@@ -34,6 +34,9 @@ namespace SF
 			// Cmd: Remove character data
 			MessageDebugTraceMap.insert(std::make_pair(Message::CharacterDataServer::RemoveCharacterDataCmd::MID.IDSeq.MsgID,&Message::CharacterDataServer::RemoveCharacterDataCmd::TraceOut));
 			MessageDebugTraceMap.insert(std::make_pair(Message::CharacterDataServer::RemoveCharacterDataRes::MID.IDSeq.MsgID,&Message::CharacterDataServer::RemoveCharacterDataRes::TraceOut));
+			// Cmd: Get character list
+			MessageDebugTraceMap.insert(std::make_pair(Message::CharacterDataServer::GetCharacterDataListCmd::MID.IDSeq.MsgID,&Message::CharacterDataServer::GetCharacterDataListCmd::TraceOut));
+			MessageDebugTraceMap.insert(std::make_pair(Message::CharacterDataServer::GetCharacterDataListRes::MID.IDSeq.MsgID,&Message::CharacterDataServer::GetCharacterDataListRes::TraceOut));
 			// Cmd: Get character data
 			MessageDebugTraceMap.insert(std::make_pair(Message::CharacterDataServer::GetCharacterDataCmd::MID.IDSeq.MsgID,&Message::CharacterDataServer::GetCharacterDataCmd::TraceOut));
 			MessageDebugTraceMap.insert(std::make_pair(Message::CharacterDataServer::GetCharacterDataRes::MID.IDSeq.MsgID,&Message::CharacterDataServer::GetCharacterDataRes::TraceOut));

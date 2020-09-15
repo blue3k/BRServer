@@ -46,7 +46,7 @@ void BrServer::SetServerUID( uint uiUID )
 }
 
 // Get Server start up time, UTC
-TimeStampSec BrServer::GetServerUpTime()
+UTCTimeStampSec BrServer::GetServerUpTime()
 {
 	return m_ServerUpUTCTIme;
 }

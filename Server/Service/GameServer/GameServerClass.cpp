@@ -213,7 +213,7 @@ namespace GameServer {
 		//
 
 		// Queue items
-		for (ClusterID matchingQueueClusterID = ClusterID::MatchingQueue_Game_4x1; matchingQueueClusterID <= ClusterID::MatchingQueue_Max; matchingQueueClusterID++)
+		for (ClusterID matchingQueueClusterID = ClusterID::MatchingQueue_Game_4x1; static_cast<uint32_t>(matchingQueueClusterID) <= ClusterID_MatchingQueue_Max; matchingQueueClusterID++)
 		{
 			svrChk(Service::ClusterManager->SetWatchForCluster( Svr::GetServerGameID(), matchingQueueClusterID, true) );
 		}

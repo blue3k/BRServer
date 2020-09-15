@@ -48,7 +48,7 @@ namespace Svr {
 		, m_ServerID(0)
 		, m_bIsInitialConnect(true)
 		, m_ReceivedServerStatus(false)
-		, m_ServerUpTime(TimeStampSec::min())
+		, m_ServerUpTime(UTCTimeStampSec::min())
 		, m_LocalConnectionRetryWait(Svr::Const::REMOTE_CONNECTION_RETRY)
 	{
 	}
@@ -287,9 +287,9 @@ namespace Svr {
 		else
 		{
 			// Clear server up time if the connection is closed
-			if (GetServerUpTime() != TimeStampSec::min())
+			if (GetServerUpTime() != UTCTimeStampSec::min())
 			{
-				SetServerUpTime(TimeStampSec::min());
+				SetServerUpTime(UTCTimeStampSec::min());
 			}
 		}
 

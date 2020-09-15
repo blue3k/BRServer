@@ -51,7 +51,7 @@ namespace GameServer {
 		typedef Svr::MessageTransaction< GamePlayerEntity, Message::Game::InviteFriendCmd> super;
 
 	private:
-		TimeStampSec m_TimeStamp;
+		UTCTimeStampSec m_TimeStamp;
 
 	public:
 		PlayerTransInviteFriend(IHeap& heap, MessageDataPtr &pIMsg );//  :MessageTransaction( pIMsg ) {}
@@ -190,7 +190,7 @@ namespace GameServer {
 
 	private:
 		//Memento<UserGamePlayerInfoSystem::MEMENTO_SIZE> m_SavedData;
-		TimeStampSec m_TimeStamp;
+		UTCTimeStampSec m_TimeStamp;
 		INT m_WaitingQueries;
 
 	public:

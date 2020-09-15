@@ -22,6 +22,7 @@
 
 #include "SFTypedefs.h"
 #include "String/SFStrUtil.h"
+#include "String/SFStringFormat.h"
 #include "DBTrace.h"
 #include "DataSourceMYSQL.h"
 #include "SessionMYSQL.h"

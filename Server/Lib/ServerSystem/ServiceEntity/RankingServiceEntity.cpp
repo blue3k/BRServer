@@ -261,7 +261,7 @@ namespace Svr {
 
 		CommitChanges();
 
-		TimeStampSec nowTime = Util::Time.GetRawUTCSec();
+		auto nowTime = Util::Time.GetRawUTCSec();
 
 		time_t time = nowTime.time_since_epoch().count() + Util::Time.GetUTCSecOffset().count();
 		struct tm nowTimeTM = *gmtime(&time);

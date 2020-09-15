@@ -37,7 +37,7 @@ namespace Svr {
 	}
 
 	// Add chatting log
-	Result ChattingHistory::AddChattingLog( TimeStampSec timeStamp, PlayerID player, uint8_t playerStatus, ChatType type, const char* message )
+	Result ChattingHistory::AddChattingLog(UTCTimeStampSec timeStamp, PlayerID player, uint8_t playerStatus, ChatType type, const char* message )
 	{
 		Result hr = ResultCode::SUCCESS;
 		uint8_t* itemBuffer = nullptr;

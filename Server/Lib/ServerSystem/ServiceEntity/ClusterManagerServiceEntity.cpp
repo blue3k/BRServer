@@ -25,7 +25,7 @@
 #include "ServerEntity/ServerEntity.h"
 #include "SvrTrace.h"
 #include "Service/ServerService.h"
-
+#include "String/SFStringFormat.h"
 #include "Protocol/Message/ClusterServerMsgClass.h"
 #include "ServiceEntity/ClusterServiceTrans.h"
 #include "ServiceEntity/ClusterManagerServiceEntity.h"
@@ -68,7 +68,7 @@ namespace Svr {
 	{
 		for (auto itService : Services)
 		{
-			IHeap::Delete(itService);
+			delete itService.GetValue();
 		}
 		Services.Clear();
 
@@ -349,7 +349,7 @@ namespace Svr {
 		SortedSet<StringCrc64> listAlreadyHave(GetHeap(), static_cast<int>(Services.size()));
 		for (auto itService : Services)
 		{
-			listAlreadyHave.Insert(itService->GetNodeNameCrc());
+			listAlreadyHave.Insert(itService.GetValue()->GetNodeNameCrc());
 		}
 
 		// This should be getchildren list because that's the only thing have string list result

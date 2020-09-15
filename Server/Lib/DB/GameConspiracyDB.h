@@ -70,8 +70,8 @@ namespace DB {
 																				int32_t	LosePlaySC, int32_t LosePlaySM, int32_t LosePlaySS,
 																				int32_t	WinPlayNC, int32_t WinPlayNM, int32_t WinPlayNS,
 																				int32_t	LosePlayNC, int32_t LosePlayNM, int32_t LosePlayNS,
-			TimeStampSec	LatestActiveTime,
-			TimeStampSec	LatestTickTime
+			UTCTimeStampSec	LatestActiveTime,
+			UTCTimeStampSec	LatestTickTime
 																				);
 
 
@@ -84,8 +84,8 @@ namespace DB {
 																				int16_t	AddedFriendSlot,
 																				const Array<uint8_t>& purchaseID, 
 																				const char* purchasePlatform, const char* purchaseToken,
-			TimeStampSec	LatestActiveTime,
-			TimeStampSec	LatestTickTime
+			UTCTimeStampSec	LatestActiveTime,
+			UTCTimeStampSec	LatestTickTime
 																				);
 
 		Result CheckPurchaseID(TransactionID Sender, uint shardID, const Array<uint8_t>& purchaseID);
@@ -104,7 +104,7 @@ namespace DB {
 																				int32_t	LosePlaySC, int32_t LosePlaySM, int32_t LosePlaySS,
 																				int32_t	WinPlayNC, int32_t WinPlayNM, int32_t WinPlayNS,
 																				int32_t	LosePlayNC, int32_t LosePlayNM, int32_t LosePlayNS,
-																				TimeStampSec	LatestActiveTime
+																				UTCTimeStampSec	LatestActiveTime
 																				);
 		
 		// Save player info
@@ -112,18 +112,18 @@ namespace DB {
 																				int64_t	Gem,
 																				int16_t	Stamina,
 																				int16_t	PlayerState,
-																				TimeStampSec	LatestActiveTime,
-																				TimeStampSec	LatestTickTime
+			UTCTimeStampSec	LatestActiveTime,
+																				UTCTimeStampSec	LatestTickTime
 																				);
 
 		// Save player info
 		Result UpdateTickStatusCmd(TransactionID Sender, uint shardID, const PlayerID &playerID,
-																				int64_t	Gem,
-																				int16_t	Stamina,
-																				int16_t	PlayerState,
-																				TimeStampSec	LatestActiveTime,
-																				TimeStampSec	LatestTickTime
-																				);
+			int64_t	Gem,
+			int16_t	Stamina,
+			int16_t	PlayerState,
+			UTCTimeStampSec	LatestActiveTime,
+			UTCTimeStampSec	LatestTickTime
+			);
 
 		// Save player info
 		Result GetPlayerStatusCmd(TransactionID Sender, uint shardID, const PlayerID &playerID);
@@ -140,11 +140,11 @@ namespace DB {
 		Result AddFriend(TransactionID Sender, uint shardID, PlayerID accountID, PlayerID FriendUID, uint friendShardID, FacebookUID FriendFacebookUID);
 		Result RemoveFriend(TransactionID Sender, uint shardID, PlayerID accountID, PlayerID FriendUID);
 		Result GetFriendList(TransactionID Sender, uint shardID, PlayerID accountID);
-		Result UpdateFriendStaminaTime(TransactionID Sender, uint shardID, PlayerID accountID, PlayerID FriendUID, TimeStampSec timeStamp);
+		Result UpdateFriendStaminaTime(TransactionID Sender, uint shardID, PlayerID accountID, PlayerID FriendUID, UTCTimeStampSec timeStamp);
 
 
 		// Notifications
-		Result Notification_Add(TransactionID Sender, uint shardID, PlayerID ToUserID, bool isCollapsable, NotificationType messageID, int64_t messageParam0, int64_t messageParam1, const char* messageText, TimeStampSec timeStamp);
+		Result Notification_Add(TransactionID Sender, uint shardID, PlayerID ToUserID, bool isCollapsable, NotificationType messageID, int64_t messageParam0, int64_t messageParam1, const char* messageText, UTCTimeStampSec timeStamp);
 		Result Notification_GetList(TransactionID Sender, uint shardID, PlayerID UserID);
 		Result Notification_Remove(TransactionID Sender, uint shardID, PlayerID userID, int32_t notificationID);
 		Result Notification_RemoveByMessageID(TransactionID Sender, uint shardID, PlayerID UserID, int16_t messageID);

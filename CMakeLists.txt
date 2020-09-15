@@ -82,18 +82,18 @@ if(WIN32)
 
 	SET (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /EHsc")
 
-	include_directories(AFTER 
-		../StormForge/3rdParties/VulkanSDK/1.1.82.1/include
-		../StormForge/3rdParties/src/mysql/mysql-connector-c++-8.0.18-src/include
-	)
-	
 	set(ARTECTURE x64)
 
-	set(PLATFORM_LIBS Ws2_32 Mswsock mysqlcppconn8-static libcrypto libssl Dnsapi)
+	include_directories(AFTER 
+		../StormForge/3rdParties/VulkanSDK/1.1.82.1/include
+		../StormForge/3rdParties/src/mysql/buildWindows/${ARTECTURE}/include
+	)
+	
+	set(PLATFORM_LIBS Ws2_32 Mswsock mysqlcppconn8 libcrypto libssl Dnsapi)
 
 	link_directories(
 		../StormForge/build${CMAKE_SYSTEM_NAME}/${ARTECTURE}$(Configuration)/lib
-		../StormForge/3rdParties/src/mysql/buildWindows/x64/lib64/vs14/$(Configuration)
+		../StormForge/3rdParties/src/mysql/buildWindows/${ARTECTURE}/lib64/vs14
 		../StormForge/3rdParties/src/openssl/buildWindows/openssl/lib
 		Server/bin/lib/${ARTECTURE}$(Configuration)
 	)
