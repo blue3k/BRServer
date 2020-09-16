@@ -2,6 +2,7 @@
 
 
 set(BRDB_LIB_FILES
+	DBPch.h
     AccountDB.cpp
 	AccountDB.h
     AccountQuery.cpp

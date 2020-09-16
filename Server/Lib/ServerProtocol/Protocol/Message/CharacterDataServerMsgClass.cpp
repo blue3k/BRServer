@@ -1743,7 +1743,7 @@ namespace SF
 
 			}; // Result AttributeValueAddCmd::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr&& pIMsg, MessageBase* &pMessageBase )
 
-			MessageData* AttributeValueAddCmd::Create( IHeap& memHeap, const RouteContext &InRouteContext, const uint64_t &InTransactionID, const uint16_t &InRouteHopCount, const PlayerID &InPlayerID, const StringCrc32 &InCharacterName, const StringCrc32 &InAttributeName, const FLOAT &InValue )
+			MessageData* AttributeValueAddCmd::Create( IHeap& memHeap, const RouteContext &InRouteContext, const uint64_t &InTransactionID, const uint16_t &InRouteHopCount, const PlayerID &InPlayerID, const StringCrc32 &InCharacterName, const StringCrc32 &InAttributeName, const float &InValue )
 			{
  				MessageData *pNewMsg = nullptr;
 				FunctionContext hr([pNewMsg](Result hr) -> MessageData*
@@ -1783,7 +1783,7 @@ namespace SF
 				protocolCheck(output->Write(InValue));
 
 				return hr;
-			}; // MessageData* AttributeValueAddCmd::Create( IHeap& memHeap, const RouteContext &InRouteContext, const uint64_t &InTransactionID, const uint16_t &InRouteHopCount, const PlayerID &InPlayerID, const StringCrc32 &InCharacterName, const StringCrc32 &InAttributeName, const FLOAT &InValue )
+			}; // MessageData* AttributeValueAddCmd::Create( IHeap& memHeap, const RouteContext &InRouteContext, const uint64_t &InTransactionID, const uint16_t &InRouteHopCount, const PlayerID &InPlayerID, const StringCrc32 &InCharacterName, const StringCrc32 &InAttributeName, const float &InValue )
 
 			Result AttributeValueAddCmd::OverrideRouteContextDestination( EntityUID to )
 			{
@@ -2023,7 +2023,7 @@ namespace SF
 
 			}; // Result AttributeValueSubCmd::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr&& pIMsg, MessageBase* &pMessageBase )
 
-			MessageData* AttributeValueSubCmd::Create( IHeap& memHeap, const RouteContext &InRouteContext, const uint64_t &InTransactionID, const uint16_t &InRouteHopCount, const PlayerID &InPlayerID, const StringCrc32 &InCharacterName, const StringCrc32 &InAttributeName, const FLOAT &InValue )
+			MessageData* AttributeValueSubCmd::Create( IHeap& memHeap, const RouteContext &InRouteContext, const uint64_t &InTransactionID, const uint16_t &InRouteHopCount, const PlayerID &InPlayerID, const StringCrc32 &InCharacterName, const StringCrc32 &InAttributeName, const float &InValue )
 			{
  				MessageData *pNewMsg = nullptr;
 				FunctionContext hr([pNewMsg](Result hr) -> MessageData*
@@ -2063,7 +2063,7 @@ namespace SF
 				protocolCheck(output->Write(InValue));
 
 				return hr;
-			}; // MessageData* AttributeValueSubCmd::Create( IHeap& memHeap, const RouteContext &InRouteContext, const uint64_t &InTransactionID, const uint16_t &InRouteHopCount, const PlayerID &InPlayerID, const StringCrc32 &InCharacterName, const StringCrc32 &InAttributeName, const FLOAT &InValue )
+			}; // MessageData* AttributeValueSubCmd::Create( IHeap& memHeap, const RouteContext &InRouteContext, const uint64_t &InTransactionID, const uint16_t &InRouteHopCount, const PlayerID &InPlayerID, const StringCrc32 &InCharacterName, const StringCrc32 &InAttributeName, const float &InValue )
 
 			Result AttributeValueSubCmd::OverrideRouteContextDestination( EntityUID to )
 			{

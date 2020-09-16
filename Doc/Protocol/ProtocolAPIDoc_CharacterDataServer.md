@@ -209,7 +209,7 @@ Attribute add
 
 1. Command interface
 
-        Result AttributeValueAddCmd(const RouteContext &InRouteContext, const uint64_t &InTransactionID, const uint16_t &InRouteHopCount, const PlayerID &InPlayerID, const StringCrc32 &InCharacterName, const StringCrc32 &InAttributeName, const FLOAT &InValue)
+        Result AttributeValueAddCmd(const RouteContext &InRouteContext, const uint64_t &InTransactionID, const uint16_t &InRouteHopCount, const PlayerID &InPlayerID, const StringCrc32 &InCharacterName, const StringCrc32 &InAttributeName, const float &InValue)
 
 		- OutInRouteContext: RouteContext type. 
 
@@ -242,7 +242,7 @@ Attribute subtract
 
 1. Command interface
 
-        Result AttributeValueSubCmd(const RouteContext &InRouteContext, const uint64_t &InTransactionID, const uint16_t &InRouteHopCount, const PlayerID &InPlayerID, const StringCrc32 &InCharacterName, const StringCrc32 &InAttributeName, const FLOAT &InValue)
+        Result AttributeValueSubCmd(const RouteContext &InRouteContext, const uint64_t &InTransactionID, const uint16_t &InRouteHopCount, const PlayerID &InPlayerID, const StringCrc32 &InCharacterName, const StringCrc32 &InAttributeName, const float &InValue)
 
 		- OutInRouteContext: RouteContext type. 
 

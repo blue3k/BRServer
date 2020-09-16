@@ -19,7 +19,7 @@
 #include "DB/Session.h"
 #include "DB/Factory.h"
 #include "DB/Query.h"
-
+#include "String/SFStringFormat.h"
 
 namespace SF {
 namespace DB {

@@ -122,7 +122,7 @@ namespace SF
 
 		}; // Result NetPolicyCharacterDataServer::RemoveAttributesCmd( const RouteContext &InRouteContext, const uint64_t &InTransactionID, const uint16_t &InRouteHopCount, const PlayerID &InPlayerID, const StringCrc32 &InCharacterName, const Array<StringCrc32>& InAttributeNames )
 		// Cmd: Attribute add
-		Result NetPolicyCharacterDataServer::AttributeValueAddCmd( const RouteContext &InRouteContext, const uint64_t &InTransactionID, const uint16_t &InRouteHopCount, const PlayerID &InPlayerID, const StringCrc32 &InCharacterName, const StringCrc32 &InAttributeName, const FLOAT &InValue )
+		Result NetPolicyCharacterDataServer::AttributeValueAddCmd( const RouteContext &InRouteContext, const uint64_t &InTransactionID, const uint16_t &InRouteHopCount, const PlayerID &InPlayerID, const StringCrc32 &InCharacterName, const StringCrc32 &InAttributeName, const float &InValue )
 		{
  			FunctionContext hr;
 
@@ -136,9 +136,9 @@ namespace SF
 
 			return hr;
 
-		}; // Result NetPolicyCharacterDataServer::AttributeValueAddCmd( const RouteContext &InRouteContext, const uint64_t &InTransactionID, const uint16_t &InRouteHopCount, const PlayerID &InPlayerID, const StringCrc32 &InCharacterName, const StringCrc32 &InAttributeName, const FLOAT &InValue )
+		}; // Result NetPolicyCharacterDataServer::AttributeValueAddCmd( const RouteContext &InRouteContext, const uint64_t &InTransactionID, const uint16_t &InRouteHopCount, const PlayerID &InPlayerID, const StringCrc32 &InCharacterName, const StringCrc32 &InAttributeName, const float &InValue )
 		// Cmd: Attribute subtract
-		Result NetPolicyCharacterDataServer::AttributeValueSubCmd( const RouteContext &InRouteContext, const uint64_t &InTransactionID, const uint16_t &InRouteHopCount, const PlayerID &InPlayerID, const StringCrc32 &InCharacterName, const StringCrc32 &InAttributeName, const FLOAT &InValue )
+		Result NetPolicyCharacterDataServer::AttributeValueSubCmd( const RouteContext &InRouteContext, const uint64_t &InTransactionID, const uint16_t &InRouteHopCount, const PlayerID &InPlayerID, const StringCrc32 &InCharacterName, const StringCrc32 &InAttributeName, const float &InValue )
 		{
  			FunctionContext hr;
 
@@ -152,7 +152,7 @@ namespace SF
 
 			return hr;
 
-		}; // Result NetPolicyCharacterDataServer::AttributeValueSubCmd( const RouteContext &InRouteContext, const uint64_t &InTransactionID, const uint16_t &InRouteHopCount, const PlayerID &InPlayerID, const StringCrc32 &InCharacterName, const StringCrc32 &InAttributeName, const FLOAT &InValue )
+		}; // Result NetPolicyCharacterDataServer::AttributeValueSubCmd( const RouteContext &InRouteContext, const uint64_t &InTransactionID, const uint16_t &InRouteHopCount, const PlayerID &InPlayerID, const StringCrc32 &InCharacterName, const StringCrc32 &InAttributeName, const float &InValue )
 		// Cmd: Compare and exchange attribute value
 		Result NetPolicyCharacterDataServer::AttributeValueCASCmd( const RouteContext &InRouteContext, const uint64_t &InTransactionID, const uint16_t &InRouteHopCount, const PlayerID &InPlayerID, const StringCrc32 &InCharacterName, const StringCrc32 &InAttributeName, const StringCrc32 &InAttributeType, const uint64_t &InExpected, const uint64_t &InNewValue )
 		{

@@ -98,7 +98,7 @@ namespace SF
 
 		}; // Result CharacterDataServerService::RemoveAttributesCmd( const uint64_t &InTransactionID, const uint16_t &InRouteHopCount, const PlayerID &InPlayerID, const StringCrc32 &InCharacterName, const Array<StringCrc32>& InAttributeNames )
 		// Cmd: Attribute add
-		Result CharacterDataServerService::AttributeValueAddCmd( const uint64_t &InTransactionID, const uint16_t &InRouteHopCount, const PlayerID &InPlayerID, const StringCrc32 &InCharacterName, const StringCrc32 &InAttributeName, const FLOAT &InValue )
+		Result CharacterDataServerService::AttributeValueAddCmd( const uint64_t &InTransactionID, const uint16_t &InRouteHopCount, const PlayerID &InPlayerID, const StringCrc32 &InCharacterName, const StringCrc32 &InAttributeName, const float &InValue )
 		{
  			FunctionContext hr;
 
@@ -107,9 +107,9 @@ namespace SF
 
 			return hr;
 
-		}; // Result CharacterDataServerService::AttributeValueAddCmd( const uint64_t &InTransactionID, const uint16_t &InRouteHopCount, const PlayerID &InPlayerID, const StringCrc32 &InCharacterName, const StringCrc32 &InAttributeName, const FLOAT &InValue )
+		}; // Result CharacterDataServerService::AttributeValueAddCmd( const uint64_t &InTransactionID, const uint16_t &InRouteHopCount, const PlayerID &InPlayerID, const StringCrc32 &InCharacterName, const StringCrc32 &InAttributeName, const float &InValue )
 		// Cmd: Attribute subtract
-		Result CharacterDataServerService::AttributeValueSubCmd( const uint64_t &InTransactionID, const uint16_t &InRouteHopCount, const PlayerID &InPlayerID, const StringCrc32 &InCharacterName, const StringCrc32 &InAttributeName, const FLOAT &InValue )
+		Result CharacterDataServerService::AttributeValueSubCmd( const uint64_t &InTransactionID, const uint16_t &InRouteHopCount, const PlayerID &InPlayerID, const StringCrc32 &InCharacterName, const StringCrc32 &InAttributeName, const float &InValue )
 		{
  			FunctionContext hr;
 
@@ -118,7 +118,7 @@ namespace SF
 
 			return hr;
 
-		}; // Result CharacterDataServerService::AttributeValueSubCmd( const uint64_t &InTransactionID, const uint16_t &InRouteHopCount, const PlayerID &InPlayerID, const StringCrc32 &InCharacterName, const StringCrc32 &InAttributeName, const FLOAT &InValue )
+		}; // Result CharacterDataServerService::AttributeValueSubCmd( const uint64_t &InTransactionID, const uint16_t &InRouteHopCount, const PlayerID &InPlayerID, const StringCrc32 &InCharacterName, const StringCrc32 &InAttributeName, const float &InValue )
 		// Cmd: Compare and exchange attribute value
 		Result CharacterDataServerService::AttributeValueCASCmd( const uint64_t &InTransactionID, const uint16_t &InRouteHopCount, const PlayerID &InPlayerID, const StringCrc32 &InCharacterName, const StringCrc32 &InAttributeName, const StringCrc32 &InAttributeType, const uint64_t &InExpected, const uint64_t &InNewValue )
 		{

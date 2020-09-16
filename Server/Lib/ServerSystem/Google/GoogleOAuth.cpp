@@ -357,39 +357,53 @@ namespace Google {
 	// Authenticate
 	Result OAuth::Authenticate()
 	{
-		Result hr = ResultCode::SUCCESS;
 		std::string accessToken;
 		bool parsingSuccessful;
 
 		StaticArray<uint8_t, 2048> requestString(GetHeap());
 		Json::Value root;
-		Json::Reader reader;
+		Json::CharReaderBuilder builder;
+		Json::CharReader* pReader = builder.newCharReader();
+		std::string errors = "";;
+
+		FunctionContext hr([this, &pReader, &errors](Result hr)
+			{
+				if (pReader)
+					delete pReader;
+
+				if (!(hr))
+				{
+					svrTrace(Error, "Failed to Authorize google API hr:{0:X8}, account:{1}, {2}: {3}", hr, m_Account.c_str(), m_ResultBuffer.size() > 0 ? (char*)m_ResultBuffer.data() : "null", errors.c_str());
+				}
+				else
+				{
+					//svrTrace(Info, "Google API Authorization is updated hr:{0}, {1}", ArgHex32<uint32_t>(hr), (char*)m_ResultBuffer.data());
+				}
+			});
 
 		m_ResultBuffer.Clear();
 
-		svrChk(BuildAuthRequestString(m_Account.c_str(), m_Scopes.c_str(), requestString));
+		svrCheck(BuildAuthRequestString(m_Account.c_str(), m_Scopes.c_str(), requestString));
 
-		svrChk(ProcessAuthRequest(requestString));
+		svrCheck(ProcessAuthRequest(requestString));
 
-		svrChk(m_ResultBuffer.push_back('\0'));
+		svrCheck(m_ResultBuffer.push_back('\0'));
 
-		parsingSuccessful = reader.parse((char*)m_ResultBuffer.data(), root);
+		parsingSuccessful = pReader->parse((char*)m_ResultBuffer.data(), (char*)m_ResultBuffer.data() + m_ResultBuffer.size(), &root, &errors);
 		if (!parsingSuccessful)
 		{
 			// report to the user the failure and their locations in the document.
-			//std::cout << "Failed to parse configuration\n"
-			//	<< reader.getFormatedErrorMessages();
-			svrErr(ResultCode::FAIL);
+			svrCheck(ResultCode::FAIL);
 		}
 
 		{
 			auto value = root.get("access_token", "");
 			if (value.isNull() || value.isString() != true)
-				svrErr(ResultCode::FAIL);
+				svrCheck(ResultCode::FAIL);
 
 			accessToken = std::forward<std::string>(value.asString());
 			if (accessToken.length() == 0)
-				svrErr(ResultCode::FAIL);
+				svrCheck(ResultCode::FAIL);
 		}
 
 		m_AuthStringIndex++;
@@ -398,16 +412,6 @@ namespace Google {
 
 		m_AuthenticatedTime = Util::Time.GetTimeMs();
 
-	Proc_End:
-
-		if (!(hr))
-		{
-			svrTrace(Error, "Failed to Authorize google API hr:{0:X8}, account:{1}, {2}", hr, m_Account.c_str(), m_ResultBuffer.size() > 0 ? (char*)m_ResultBuffer.data() : "null");
-		}
-		else
-		{
-			//svrTrace(Info, "Google API Authorization is updated hr:{0}, {1}", ArgHex32<uint32_t>(hr), (char*)m_ResultBuffer.data());
-		}
 
 		return hr;
 	}
@@ -415,7 +419,7 @@ namespace Google {
 	// Refresh
 	Result OAuth::UpdateAuthentication(bool forceUpdate)
 	{
-		Result hr = ResultCode::SUCCESS;
+		FunctionContext hr = ResultCode::SUCCESS;
 
 		if (!forceUpdate
 			&& Util::TimeSince(m_AuthenticatedTime) <= DurationMS(AUTHTICKET_TIMEOUT))
@@ -427,9 +431,7 @@ namespace Google {
 			&& Util::TimeSince(m_AuthenticatedTime) <= DurationMS(AUTHTICKET_TIMEOUT))
 			return hr;
 
-		svrChk(Authenticate());
-
-	Proc_End:
+		svrCheck(Authenticate());
 
 		return hr;
 	}

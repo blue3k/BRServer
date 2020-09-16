@@ -103,17 +103,19 @@ namespace SF {
 
 			for (auto itProc : m_ProcesseInfos)
 			{
-				if (itProc.ProcessID != waitResult)
+				auto& Proc = itProc.GetValue();
+
+				if (Proc.ProcessID != waitResult)
 					continue;
 
-				itProc.LatestActionTime = Util::Time.GetTimeUTCSec();
+				Proc.LatestActionTime = Util::Time.GetTimeUTCSec();
 
-				m_OnEndHandler(itProc);
+				m_OnEndHandler(Proc);
 
-				itProc.ProcessHandle = 0;
-				itProc.ProcessID = 0;
+				Proc.ProcessHandle = 0;
+				Proc.ProcessID = 0;
 
-				removed.push_back(itProc.Name);
+				removed.push_back(Proc.Name);
 			}
 		}
 

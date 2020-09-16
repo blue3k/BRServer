@@ -659,7 +659,7 @@ namespace SF
 				PlayerID m_PlayerID;
 				StringCrc32 m_CharacterName;
 				StringCrc32 m_AttributeName;
-				FLOAT m_Value;
+				float m_Value;
 			public:
 				AttributeValueAddCmd()
 					{}
@@ -676,14 +676,14 @@ namespace SF
 				const PlayerID& GetPlayerID() const	{ return m_PlayerID; };
 				const StringCrc32& GetCharacterName() const	{ return m_CharacterName; };
 				const StringCrc32& GetAttributeName() const	{ return m_AttributeName; };
-				const FLOAT& GetValue() const	{ return m_Value; };
+				const float& GetValue() const	{ return m_Value; };
 
 				static Result TraceOut(const char* prefix, const MessageDataPtr& pMsg);
 
 				virtual Result ParseMessage( MessageData* pIMsg );
 				static Result ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr&& pIMsg, MessageBase* &pMsgBase );
 
-				static MessageData* Create( IHeap& memHeap, const RouteContext &InRouteContext, const uint64_t &InTransactionID, const uint16_t &InRouteHopCount, const PlayerID &InPlayerID, const StringCrc32 &InCharacterName, const StringCrc32 &InAttributeName, const FLOAT &InValue );
+				static MessageData* Create( IHeap& memHeap, const RouteContext &InRouteContext, const uint64_t &InTransactionID, const uint16_t &InRouteHopCount, const PlayerID &InPlayerID, const StringCrc32 &InCharacterName, const StringCrc32 &InAttributeName, const float &InValue );
 
 				Result OverrideRouteContextDestination( EntityUID to );
 
@@ -762,7 +762,7 @@ namespace SF
 				PlayerID m_PlayerID;
 				StringCrc32 m_CharacterName;
 				StringCrc32 m_AttributeName;
-				FLOAT m_Value;
+				float m_Value;
 			public:
 				AttributeValueSubCmd()
 					{}
@@ -779,14 +779,14 @@ namespace SF
 				const PlayerID& GetPlayerID() const	{ return m_PlayerID; };
 				const StringCrc32& GetCharacterName() const	{ return m_CharacterName; };
 				const StringCrc32& GetAttributeName() const	{ return m_AttributeName; };
-				const FLOAT& GetValue() const	{ return m_Value; };
+				const float& GetValue() const	{ return m_Value; };
 
 				static Result TraceOut(const char* prefix, const MessageDataPtr& pMsg);
 
 				virtual Result ParseMessage( MessageData* pIMsg );
 				static Result ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr&& pIMsg, MessageBase* &pMsgBase );
 
-				static MessageData* Create( IHeap& memHeap, const RouteContext &InRouteContext, const uint64_t &InTransactionID, const uint16_t &InRouteHopCount, const PlayerID &InPlayerID, const StringCrc32 &InCharacterName, const StringCrc32 &InAttributeName, const FLOAT &InValue );
+				static MessageData* Create( IHeap& memHeap, const RouteContext &InRouteContext, const uint64_t &InTransactionID, const uint16_t &InRouteHopCount, const PlayerID &InPlayerID, const StringCrc32 &InCharacterName, const StringCrc32 &InAttributeName, const float &InValue );
 
 				Result OverrideRouteContextDestination( EntityUID to );
 

@@ -117,20 +117,23 @@ elseif(UNIX)
 	add_definitions(-DEPOLL)
 
 
+	set(ARTECTURE x64)
+
 	include_directories(AFTER 
-		/usr/local/mysql/connector-c++-8.0/include/
+		#../StormForge/3rdParties/src/mysql/linuxLib/include
+		/usr/include/mysql-cppconn-8/
+		#/usr/local/mysql/connector-c++-8.0/include/
 		#3rdParties/VulkanSDK/1.1.82.1/include
 	)
 	
-	#
-	set(ARTECTURE x64)
-
 	link_directories(
 		/usr/lib
-		/usr/local/mysql/connector-c++-8.0/lib64/debug
+		/usr/lib/x86_64-linux-gnu/
+		#/usr/local/mysql/connector-c++-8.0/lib64/debug
+		#../StormForge/3rdParties/src/mysql/linuxLib/lib64
 		../StormForge/build${CMAKE_SYSTEM_NAME}/${ARTECTURE}${CMAKE_BUILD_TYPE}/lib
 		)
-	
+
 	set(PLATFORM_LIBS mysqlcppconn8 rt m)
 
 endif()
