@@ -30,8 +30,20 @@ typedef unsigned int HRESULT;
 #define WIDECHAR(x) WIDE2(x)
 #define __WFUNCTION__ WIDECHAR(__func__)
 
-inline std::string WSTR2STR(const std::wstring &wstr) { return std::string(wstr.begin(), wstr.end()); }
-inline std::string WCHAR2STR(const wchar_t *wcharPtr) { std::wstring wstr(wcharPtr); return std::string(wstr.begin(), wstr.end()); }
+inline std::string WSTR2STR(const std::wstring &wstr)
+{
+	std::string res;
+	std::transform(wstr.begin(), wstr.end(), res.begin(), [](wchar_t x) { return static_cast<char>(x); });
+	return res;
+}
+
+inline std::string WCHAR2STR(const wchar_t* wcharPtr)
+{
+    std::string res;
+    if (wcharPtr == nullptr) return res;
+    std::transform(wcharPtr, wcharPtr + wcslen(wcharPtr), res.begin(), [](wchar_t x) { return static_cast<char>(x); });
+    return res;
+}
 inline std::wstring STR2WSTR(const std::string &str) { return std::wstring(str.begin(), str.end()); }
 inline std::wstring CHAR2WSTR(const char *charPtr) { std::string str(charPtr); return std::wstring(str.begin(), str.end()); }
 #define WSTR2CHAR( wstr ) WSTR2STR( wstr ).c_str()

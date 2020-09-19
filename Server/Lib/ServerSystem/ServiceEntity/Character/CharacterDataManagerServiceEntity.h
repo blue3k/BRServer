@@ -79,20 +79,19 @@ namespace Svr {
 	{
 	public:
 
-		typedef ShardedClusterServiceEntity super;
+		using super = ShardedClusterServiceEntity;
 
 		static constexpr ServerComponentID ComponentID = ServerComponentID_CharacterManagerService;
 
 	private:
 
-		SortedArray<EntityUID, CharacterData*> m_CharacterDataMap;
-
 		static GlobalUIDGenerator stm_CharacterIDGenerator;
 
+		// Cached Character data map
+		SortedArray<EntityUID, CharacterData*> m_CharacterDataMap;
+
+		// Perf counter for character data count
 		PerformanceCounterRaw<uint64_t> m_CharacterDataCount;
-
-	protected:
-
 
 	public:
 
