@@ -49,3 +49,5 @@ packages/
 Temp/
 obj/
 Intermediate/
+buildLinux/
+buildWindows/
