@@ -85,7 +85,7 @@ if(WIN32)
 	set(ARTECTURE x64)
 
 	include_directories(AFTER 
-		../StormForge/3rdParties/VulkanSDK/1.1.82.1/include
+		../VulkanSDK/1.1.82.1/include
 		../StormForge/3rdParties/src/mysql/buildWindows/${ARTECTURE}/include
 	)
 	
