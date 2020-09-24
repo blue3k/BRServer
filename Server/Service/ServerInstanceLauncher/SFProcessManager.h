@@ -14,7 +14,7 @@
 #include "SFTypedefs.h"
 #include "Server/BrServer.h"
 
-#include "ZooKeeper/SFZooKeeper.h"
+#include "Zookeeper/SFZookeeper.h"
 
 #if SF_PLATFORM == SF_PLATFORM_WINDOWS
 #include <Winternl.h>

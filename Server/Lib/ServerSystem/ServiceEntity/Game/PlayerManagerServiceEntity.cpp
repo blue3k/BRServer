@@ -86,7 +86,7 @@ namespace Svr {
 	Result PlayerManagerServiceEntity::InitializeEntity(EntityID newEntityID)
 	{
 		Result hr;
-		auto zkSession = Service::ZKSession->GetZooKeeperSession();
+		auto zkSession = Service::ZKSession->GetZookeeperSession();
 		char gamePath[512];
 
 		svrChk(super::InitializeEntity(newEntityID));
@@ -145,7 +145,7 @@ namespace Svr {
 		char nodePath[256];
 		bool bIsUpdate = false;
 		Json::Value nodeValue(Json::objectValue);
-		auto zkSession = Service::ZKSession->GetZooKeeperSession();
+		auto zkSession = Service::ZKSession->GetZookeeperSession();
 
 		if (playerID == 0 || entityUID.UID == 0) svrErr(ResultCode::INVALID_PLAYERID);
 
@@ -198,7 +198,7 @@ namespace Svr {
 		}
 
 		svrTrace(SVR_INFO, "Creating player entity PlayerID:{0}, EntityUID:{1}", playerID, entityUID);
-		zkSession->ACreate(nodePath, nodeValue, nullptr, ZooKeeper::NODE_FLAG_EPHEMERAL);
+		zkSession->ACreate(nodePath, nodeValue, nullptr, Zookeeper::NODE_FLAG_EPHEMERAL);
 
 
 	Proc_End:
@@ -211,7 +211,7 @@ namespace Svr {
 		Result hr;
 		PlayerIDMapIterator itPlayer;
 		char nodePath[256];
-		auto zkSession = Service::ZKSession->GetZooKeeperSession();
+		auto zkSession = Service::ZKSession->GetZookeeperSession();
 
 		if (!m_PlayerIDMap.find(playerID, itPlayer))
 		{
@@ -253,7 +253,7 @@ namespace Svr {
 		}
 
 
-		auto zkSession = Service::ZKSession->GetZooKeeperSession();
+		auto zkSession = Service::ZKSession->GetZookeeperSession();
 		if (zkSession == nullptr || !zkSession->IsConnected())
 		{
 			svrTrace(Error, "Zookeeper session server hasn't ready!");

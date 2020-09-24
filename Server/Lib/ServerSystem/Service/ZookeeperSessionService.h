@@ -19,18 +19,18 @@
 
 namespace SF {
 
-	class ZooKeeper;
+	class Zookeeper;
 	
 	/////////////////////////////////////////////////////////////////////////////////////////
 	//
-	//	ZooKeeper service
+	//	Zookeeper service
 	//
 
-	class ZooKeeperSessionService
+	class ZookeeperSessionService
 	{
 	public:
 
-		virtual ZooKeeper* GetZooKeeperSession() { return nullptr; }
+		virtual Zookeeper* GetZookeeperSession() { return nullptr; }
 
 	};
 

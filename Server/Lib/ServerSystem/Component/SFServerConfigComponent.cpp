@@ -15,8 +15,8 @@
 #include "SFEngine.h"
 #include "Service/ServerService.h"
 #include "Component/SFServerConfigComponent.h"
-#include "Component/SFZooKeeperSessionComponent.h"
-#include "ServerConfig/SFServerConfigZooKeeper.h"
+#include "Component/SFZookeeperSessionComponent.h"
+#include "ServerConfig/SFServerConfigZookeeper.h"
 #include "SvrTrace.h"
 
 
@@ -29,7 +29,7 @@ namespace SF
 		, m_Heap(GetSystemHeap())
 		, m_ConfigPath(GetHeap(), configPath)
 	{
-		AddDependency<ZooKeeperSessionComponent>();
+		AddDependency<ZookeeperSessionComponent>();
 	}
 
 	ServerConfigComponent::~ServerConfigComponent()
@@ -44,11 +44,11 @@ namespace SF
 		if (!result)
 			return result;
 
-		auto pZkSession = Service::ZKSession->GetZooKeeperSession();
+		auto pZkSession = Service::ZKSession->GetZookeeperSession();
 		if(pZkSession == nullptr)
 			return ResultCode::FAIL;
 
-		ServerConfigZooKeeper zkConfigLoader(**Service::ServerConfig, *pZkSession);
+		ServerConfigZookeeper zkConfigLoader(**Service::ServerConfig, *pZkSession);
 		result = zkConfigLoader.LoadConfig(m_ConfigPath);
 		if (!result)
 		{

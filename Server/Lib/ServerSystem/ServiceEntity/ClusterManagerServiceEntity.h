@@ -26,7 +26,7 @@
 
 #include "Entity/EntityInformation.h"
 #include "ServiceEntity/ClusteredServiceEntity.h"
-#include "ZooKeeper/SFZooKeeper.h"
+#include "Zookeeper/SFZookeeper.h"
 #include "json/json.h"
 
 
@@ -60,7 +60,7 @@ namespace Svr {
 
 
 	// Cluster service information implementation
-	class ClusterServiceInfo_Impl : public ZooKeeperWatcher, public ClusterServiceInfo
+	class ClusterServiceInfo_Impl : public ZookeeperWatcher, public ClusterServiceInfo
 	{
 	public:
 
@@ -72,7 +72,7 @@ namespace Svr {
 		String m_ClusterPath;
 		std::atomic<uint> m_LatestSelected;
 
-		SharedPointerT<ZooKeeperWatcher::StringsTask> m_GetChildrenTask;
+		SharedPointerT<ZookeeperWatcher::StringsTask> m_GetChildrenTask;
 
 		friend class ClusterManagerServiceEntity;
 
@@ -115,7 +115,7 @@ namespace Svr {
 		//
 
 		virtual Result OnNewEvent(const ZKEvent& eventOut) override;
-		virtual void OnComplition(ZooKeeperTask& pTask) override;
+		virtual void OnComplition(ZookeeperTask& pTask) override;
 		virtual void OnStatComplition(StatTask& pTask) override;
 		virtual void OnDataComplition(DataTask& pTask) override;
 		virtual void OnStringsComplition(StringsTask& pTask) override;
@@ -152,7 +152,7 @@ namespace Svr {
 
 	private:
 
-		Result CreateNodeForGameCluster(ZooKeeper* zkSession, const char* gameClusterID);
+		Result CreateNodeForGameCluster(Zookeeper* zkSession, const char* gameClusterID);
 
 	public:
 		// Constructor/Destructor

@@ -16,7 +16,7 @@
 #include "Server/ParameterSetting.h"
 #include "SvrTrace.h"
 #include "ServerConfig/SFServerConfig.h"
-#include "ServerConfig/SFServerConfigZooKeeper.h"
+#include "ServerConfig/SFServerConfigZookeeper.h"
 #include "Entity/EntityManager.h"
 #include "ServerEntity/ServerEntityManager.h"
 #include "ServiceEntity/ClusterManagerServiceEntity.h"
@@ -238,7 +238,7 @@ namespace ServerInstanceLauncher {
 
 	Result ServerInstanceLauncher::RegisterRunningServices()
 	{
-		auto zkSession = Service::ZKSession->GetZooKeeperSession();
+		auto zkSession = Service::ZKSession->GetZookeeperSession();
 		if (zkSession == nullptr || !zkSession->IsConnected())
 			return ResultCode::NOT_INITIALIZED;
 
@@ -283,25 +283,25 @@ namespace ServerInstanceLauncher {
 	//	Service launcher
 	//
 
-	Result ServerInstanceLauncher::ReloadConfig(ZooKeeper* pZkInstance, const Json::Value& commandValue)
+	Result ServerInstanceLauncher::ReloadConfig(Zookeeper* pZkInstance, const Json::Value& commandValue)
 	{
 		auto zkconfigPath = ParameterSetting::GetSetting("zkconfig", "/ServerConfig");
 		auto pServerConfig = *Service::ServerConfig;
 
 		svrTrace(Error, "Reloading configuration from {0}", zkconfigPath);
 
-		ServerConfigZooKeeper zkConfig(*pServerConfig, *pZkInstance);
+		ServerConfigZookeeper zkConfig(*pServerConfig, *pZkInstance);
 
 		return zkConfig.LoadConfig(zkconfigPath);
 	}
 
-	Result ServerInstanceLauncher::RestartServerInstance(ZooKeeper* pZkInstance, const Json::Value& commandValue)
+	Result ServerInstanceLauncher::RestartServerInstance(Zookeeper* pZkInstance, const Json::Value& commandValue)
 	{
 		StopServerInstance(pZkInstance, commandValue);
 		return StartServerInstance(pZkInstance, commandValue);
 	}
 
-	Result ServerInstanceLauncher::StartServerInstance(ZooKeeper* pZkInstance, const Json::Value& commandValue)
+	Result ServerInstanceLauncher::StartServerInstance(Zookeeper* pZkInstance, const Json::Value& commandValue)
 	{
 		auto serverInstanceName = commandValue.get("ServerInstanceName", "");
 		auto serverModuleName = commandValue.get("ServerExecutionModule", "");
@@ -356,7 +356,7 @@ namespace ServerInstanceLauncher {
 		return m_ProcessManager.StartProcess(serverInstanceName.asCString(), moduleNameParam, args);
 	}
 
-	Result ServerInstanceLauncher::StopServerInstance(ZooKeeper* pZkInstance, const Json::Value& commandValue)
+	Result ServerInstanceLauncher::StopServerInstance(Zookeeper* pZkInstance, const Json::Value& commandValue)
 	{
 		auto serverInstanceName = commandValue.get("ServerInstanceName", "");
 

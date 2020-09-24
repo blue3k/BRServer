@@ -64,7 +64,7 @@ set(BRSERVERSYSTEM_LIB_FILES
     Component/ServerComponentCarrier.h
     Component/SFServerConfigComponent.h
     Component/SFServerNetComponent.h
-    Component/SFZooKeeperSessionComponent.h
+    Component/SFZookeeperSessionComponent.h
     Entity/Entity.h
     Entity/EntityInformation.h
     Entity/EntityManager.h
@@ -167,7 +167,7 @@ set(BRSERVERSYSTEM_LIB_FILES
     Component/ServerComponent.cpp
     Component/SFServerConfigComponent.cpp
     Component/SFServerNetComponent.cpp
-    Component/SFZooKeeperSessionComponent.cpp
+    Component/SFZookeeperSessionComponent.cpp
     Entity/Entity.cpp
     Entity/EntityInformation.cpp
     Entity/EntityManager.cpp

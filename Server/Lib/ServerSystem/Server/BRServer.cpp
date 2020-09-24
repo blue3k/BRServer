@@ -221,7 +221,7 @@ Proc_End:
 		char nodePath[512];
 		NetAddress myIPV4Address;
 
-		auto pZKSession = Service::ZKSession->GetZooKeeperSession();
+		auto pZKSession = Service::ZKSession->GetZookeeperSession();
 		if (pZKSession == nullptr || !pZKSession->IsConnected())
 			return ResultCode::NOT_INITIALIZED;
 
@@ -248,7 +248,7 @@ Proc_End:
 		nodeValue["ProcessID"] = (uint)getpid();
 #endif
 
-		pZKSession->ACreate(nodePath, nodeValue, nullptr, ZooKeeper::NODE_FLAG_EPHEMERAL);
+		pZKSession->ACreate(nodePath, nodeValue, nullptr, Zookeeper::NODE_FLAG_EPHEMERAL);
 
 		return ResultCode::SUCCESS;
 	}

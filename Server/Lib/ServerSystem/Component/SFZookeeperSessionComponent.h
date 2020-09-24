@@ -13,42 +13,46 @@
 
 #include "SFTypedefs.h"
 #include "Types/SFEngineTypedefs.h"
-#include "String/SFStringCrc64.h"
+#include "String/SFStringCrc32.h"
 #include "String/SFString.h"
 #include "Object/SFLibraryComponent.h"
 
 #include "Service/ServerService.h"
 
 #include "Zookeeper/SFZookeeper.h"
-#include "ServerConfig/SFServerConfig.h"
 
 
 
 
 namespace SF
 {
+	
 
-	class ServerConfigComponent : public LibraryComponent
+	class ZookeeperSessionComponent : public LibraryComponent, public ZookeeperSessionService
 	{
 	public:
-		static constexpr StringCrc64 TypeName = "ServerConfig";
+
+		static constexpr StringCrc64 TypeName = "ZookeeperSessionComponent";
 
 	private:
 
 		IHeap& m_Heap;
+		String m_ServerAddresses;
+		Zookeeper m_zkInstance;
 
-		String m_ConfigPath;
+		SharedPointerT<class ZookeeperSessionObject> m_SessionObject;
 
 	public:
 
 		// Constructor
-		ServerConfigComponent(const char* configPath);
-		~ServerConfigComponent();
+		ZookeeperSessionComponent(const char* serverAddresses, uint32_t zkLogLevel);
+		~ZookeeperSessionComponent();
 
 		// Heap
 		IHeap& GetHeap() { return m_Heap; }
 
 
+		virtual Zookeeper* GetZookeeperSession() override;
 
 		virtual const StringCrc64& GetTypeName() override { return TypeName; }
 

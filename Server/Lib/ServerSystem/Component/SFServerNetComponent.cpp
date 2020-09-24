@@ -15,7 +15,7 @@
 #include "SFEngine.h"
 #include "Service/ServerService.h"
 #include "Component/SFServerNetComponent.h"
-#include "Component/SFZooKeeperSessionComponent.h"
+#include "Component/SFZookeeperSessionComponent.h"
 #include "SvrTrace.h"
 
 

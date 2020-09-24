@@ -6,13 +6,13 @@ set(BR_LIB_FILES
     ServerInstanceLauncher.h
     ServerInstanceLauncherClass.h
     SFProcessManager.h
-    ZooKeeperCommand.h
+    ZookeeperCommand.h
     ServerInstanceLauncher.cpp
     ServerInstanceLauncherClass.cpp
     SFProcessManager.cpp
     SFProcessManagerLinux.cpp
     SFProcessManagerWin.cpp
-    ZooKeeperCommand.cpp
+    ZookeeperCommand.cpp
   )
 
 

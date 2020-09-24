@@ -14,8 +14,8 @@
 #include "SFTypedefs.h"
 #include "Server/BrServer.h"
 
-#include "ZooKeeper/SFZooKeeper.h"
-#include "ZooKeeperCommand.h"
+#include "Zookeeper/SFZookeeper.h"
+#include "ZookeeperCommand.h"
 #include "SFProcessManager.h"
 
 namespace SF {
@@ -93,10 +93,10 @@ namespace ServerInstanceLauncher {
 		//	Service launcher
 		//
 
-		Result ReloadConfig(ZooKeeper* pZkInstance, const Json::Value& commandValue);
-		Result RestartServerInstance(ZooKeeper* pZkInstance, const Json::Value& commandValue);
-		Result StartServerInstance(ZooKeeper* pZkInstance, const Json::Value& commandValue);
-		Result StopServerInstance(ZooKeeper* pZkInstance, const Json::Value& commandValue);
+		Result ReloadConfig(Zookeeper* pZkInstance, const Json::Value& commandValue);
+		Result RestartServerInstance(Zookeeper* pZkInstance, const Json::Value& commandValue);
+		Result StartServerInstance(Zookeeper* pZkInstance, const Json::Value& commandValue);
+		Result StopServerInstance(Zookeeper* pZkInstance, const Json::Value& commandValue);
 
 
 	};

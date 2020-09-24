@@ -40,7 +40,7 @@ namespace SF {
 		extern ServiceInstance<EntityTableService> EntityTable;
 		extern ServiceInstance<EntityManagerService> EntityManager;
 		extern ServiceInstance<ServerEntityManagerService> ServerEntityManager;
-		extern ServiceInstance<ZooKeeperSessionService> ZKSession; // main zookeeper session
+		extern ServiceInstance<ZookeeperSessionService> ZKSession; // main zookeeper session
 		extern ServiceInstance<ClusterManagerService> ClusterManager;
 		extern ServiceInstance<PlayerManagerService> PlayerManager;
 	};

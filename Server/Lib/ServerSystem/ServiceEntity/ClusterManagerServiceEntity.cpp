@@ -44,7 +44,7 @@ namespace Svr {
 
 
 	ClusterServiceInfo_Impl::ClusterServiceInfo_Impl(IHeap& heap, GameID gameID, ClusterID clusterID, bool activelyConnect)
-		: ZooKeeperWatcher(heap)
+		: ZookeeperWatcher(heap)
 		, ClusterServiceInfo(heap)
 		, m_Heap(heap)
 		, m_ActivelyConnect(activelyConnect)
@@ -77,7 +77,7 @@ namespace Svr {
 
 	void ClusterServiceInfo_Impl::InitZK()
 	{
-		auto zkSession = Service::ZKSession->GetZooKeeperSession();
+		auto zkSession = Service::ZKSession->GetZookeeperSession();
 		if (zkSession == nullptr || !zkSession->IsConnected())
 			return;
 
@@ -99,7 +99,7 @@ namespace Svr {
 	Result ClusterServiceInfo_Impl::GetNodeValue(const String& nodePath, Json::Value& jsonValue)
 	{
 		StaticArray<uint8_t, 1024> valueBuffer(GetHeap());
-		auto zkSession = Service::ZKSession->GetZooKeeperSession();
+		auto zkSession = Service::ZKSession->GetZookeeperSession();
 		if (zkSession == nullptr || !zkSession->IsConnected())
 			return ResultCode::FAIL;
 
@@ -110,7 +110,7 @@ namespace Svr {
 
 	Result ClusterServiceInfo_Impl::SetNodeValue(const String& nodePath, const Json::Value& jsonValue)
 	{
-		auto zkSession = Service::ZKSession->GetZooKeeperSession();
+		auto zkSession = Service::ZKSession->GetZookeeperSession();
 		if (zkSession == nullptr || !zkSession->IsConnected())
 			return ResultCode::FAIL;
 
@@ -209,7 +209,7 @@ namespace Svr {
 
 	void ClusterServiceInfo_Impl::DownloadServiceInfo()
 	{
-		auto zkSession = Service::ZKSession->GetZooKeeperSession();
+		auto zkSession = Service::ZKSession->GetZookeeperSession();
 		if (zkSession == nullptr || !zkSession->IsConnected())
 			return;
 
@@ -220,7 +220,7 @@ namespace Svr {
 
 	void ClusterServiceInfo_Impl::UploadLocalServiceInfo()
 	{
-		auto zkSession = Service::ZKSession->GetZooKeeperSession();
+		auto zkSession = Service::ZKSession->GetZookeeperSession();
 		if (zkSession == nullptr || !zkSession->IsConnected())
 			return;
 
@@ -237,13 +237,13 @@ namespace Svr {
 	Result ClusterServiceInfo_Impl::OnNewEvent(const ZKEvent& eventOut)
 	{
 		svrTrace(Debug, "ZKEvent:{0}, GameID:{1} ClusterID:{2}", eventOut.Components.EventType, m_ClusterKey.Components.GameClusterID, Enum<ClusterID>().GetValueName(m_ClusterKey.Components.ServiceClusterID));
-		if (eventOut.Components.EventType == ZooKeeper::EVENT_CHILD)
+		if (eventOut.Components.EventType == Zookeeper::EVENT_CHILD)
 		{
 			DownloadServiceInfo();
 		}
-		else if (eventOut.Components.EventType == ZooKeeper::EVENT_SESSION)
+		else if (eventOut.Components.EventType == Zookeeper::EVENT_SESSION)
 		{
-			if (eventOut.Components.State == ZooKeeper::STATE_CONNECTED)
+			if (eventOut.Components.State == Zookeeper::STATE_CONNECTED)
 			{
 				DownloadServiceInfo();
 			}
@@ -256,7 +256,7 @@ namespace Svr {
 		return ResultCode::SUCCESS;
 	}
 
-	void ClusterServiceInfo_Impl::OnComplition(ZooKeeperTask& pTask)
+	void ClusterServiceInfo_Impl::OnComplition(ZookeeperTask& pTask)
 	{
 		if (!pTask.ZKResult)
 		{
@@ -320,7 +320,7 @@ namespace Svr {
 		NetAddress privateAddress;
 
 		// add to zk
-		auto zkSession = Service::ZKSession->GetZooKeeperSession();
+		auto zkSession = Service::ZKSession->GetZookeeperSession();
 		if (zkSession == nullptr || !zkSession->IsConnected())
 			return;
 
@@ -506,7 +506,7 @@ namespace Svr {
 		TransactionPtr pTrans;
 		String outPath(GetHeap());
 		String gameClusterPath(GetHeap());
-		auto zkSession = Service::ZKSession->GetZooKeeperSession();
+		auto zkSession = Service::ZKSession->GetZookeeperSession();
 
 		svrChk(super::InitializeEntity(newEntityID) );
 
@@ -554,7 +554,7 @@ namespace Svr {
 	}
 
 
-	Result ClusterManagerServiceEntity::CreateNodeForGameCluster(ZooKeeper* zkSession, const char* gameClusterID)
+	Result ClusterManagerServiceEntity::CreateNodeForGameCluster(Zookeeper* zkSession, const char* gameClusterID)
 	{
 		String gameClusterPath(GetHeap()), outPath(GetHeap());
 		gameClusterPath.Format("{0}/{1}", Const::ZK_SERVER_SERVICE_BASE, gameClusterID);
