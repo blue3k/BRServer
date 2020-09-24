@@ -792,7 +792,7 @@ namespace SF
 				protocolCheck(input->Read(m_Result));
 				protocolCheck(input->Read(ArrayLen));
 				TotalRankingPlayerInformation* RankingPtr = nullptr;
-				protocolCheck(input->ReadLink(RankingPtr, ArrayLen * sizeof(TotalRankingPlayerInformation)));
+				protocolCheck(input->ReadLink(RankingPtr, ArrayLen));
 				m_Ranking.SetLinkedBuffer(ArrayLen, RankingPtr);
 
 				return hr;
@@ -1014,7 +1014,7 @@ namespace SF
 				protocolCheck(input->Read(m_Result));
 				protocolCheck(input->Read(ArrayLen));
 				TotalRankingPlayerInformation* RankingPtr = nullptr;
-				protocolCheck(input->ReadLink(RankingPtr, ArrayLen * sizeof(TotalRankingPlayerInformation)));
+				protocolCheck(input->ReadLink(RankingPtr, ArrayLen));
 				m_Ranking.SetLinkedBuffer(ArrayLen, RankingPtr);
 
 				return hr;
@@ -1124,7 +1124,7 @@ namespace SF
 				protocolCheck(input->Read(m_RouteContext));
 				protocolCheck(input->Read(m_TransactionID));
 				protocolCheck(input->Read(ArrayLen));
-				protocolCheck(input->ReadLink(m_FileName, ArrayLen * sizeof(char)));
+				protocolCheck(input->ReadLink(m_FileName, ArrayLen));
 
 				return hr;
 

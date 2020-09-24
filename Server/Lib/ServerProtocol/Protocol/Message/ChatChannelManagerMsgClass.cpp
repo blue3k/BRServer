@@ -45,9 +45,9 @@ namespace SF
 				protocolCheck(input->Read(m_TransactionID));
 				protocolCheck(input->Read(m_RouteHopCount));
 				protocolCheck(input->Read(ArrayLen));
-				protocolCheck(input->ReadLink(m_ChannelName, ArrayLen * sizeof(char)));
+				protocolCheck(input->ReadLink(m_ChannelName, ArrayLen));
 				protocolCheck(input->Read(ArrayLen));
-				protocolCheck(input->ReadLink(m_Passcode, ArrayLen * sizeof(char)));
+				protocolCheck(input->ReadLink(m_Passcode, ArrayLen));
 				protocolCheck(input->Read(m_Creator));
 
 				return hr;
@@ -328,7 +328,7 @@ namespace SF
 				protocolCheck(input->Read(m_TransactionID));
 				protocolCheck(input->Read(m_RouteHopCount));
 				protocolCheck(input->Read(ArrayLen));
-				protocolCheck(input->ReadLink(m_ChannelName, ArrayLen * sizeof(char)));
+				protocolCheck(input->ReadLink(m_ChannelName, ArrayLen));
 
 				return hr;
 

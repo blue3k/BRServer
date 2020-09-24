@@ -262,11 +262,11 @@ namespace SF
 				protocolCheck(input->Read(m_IsNewJoin));
 				protocolCheck(input->Read(ArrayLen));
 				uint8_t* ChatHistoryDataPtr = nullptr;
-				protocolCheck(input->ReadLink(ChatHistoryDataPtr, ArrayLen * sizeof(uint8_t)));
+				protocolCheck(input->ReadLink(ChatHistoryDataPtr, ArrayLen));
 				m_ChatHistoryData.SetLinkedBuffer(ArrayLen, ChatHistoryDataPtr);
 				protocolCheck(input->Read(ArrayLen));
 				uint8_t* GameLogDataPtr = nullptr;
-				protocolCheck(input->ReadLink(GameLogDataPtr, ArrayLen * sizeof(uint8_t)));
+				protocolCheck(input->ReadLink(GameLogDataPtr, ArrayLen));
 				m_GameLogData.SetLinkedBuffer(ArrayLen, GameLogDataPtr);
 
 				return hr;
@@ -1552,7 +1552,7 @@ namespace SF
 				protocolCheck(input->Read(m_PlayerID));
 				protocolCheck(input->Read(m_Role));
 				protocolCheck(input->Read(ArrayLen));
-				protocolCheck(input->ReadLink(m_ChatMessage, ArrayLen * sizeof(char)));
+				protocolCheck(input->ReadLink(m_ChatMessage, ArrayLen));
 
 				return hr;
 
@@ -2722,7 +2722,7 @@ namespace SF
 				protocolCheck(input->Read(m_RouteContext));
 				protocolCheck(input->Read(ArrayLen));
 				PlayerID* VotedPtr = nullptr;
-				protocolCheck(input->ReadLink(VotedPtr, ArrayLen * sizeof(PlayerID)));
+				protocolCheck(input->ReadLink(VotedPtr, ArrayLen));
 				m_Voted.SetLinkedBuffer(ArrayLen, VotedPtr);
 
 				return hr;
@@ -3366,7 +3366,7 @@ namespace SF
 				protocolCheck(input->Read(m_PlayerID));
 				protocolCheck(input->Read(ArrayLen));
 				PlayerID* TargetPlayerIDPtr = nullptr;
-				protocolCheck(input->ReadLink(TargetPlayerIDPtr, ArrayLen * sizeof(PlayerID)));
+				protocolCheck(input->ReadLink(TargetPlayerIDPtr, ArrayLen));
 				m_TargetPlayerID.SetLinkedBuffer(ArrayLen, TargetPlayerIDPtr);
 
 				return hr;
@@ -3477,11 +3477,11 @@ namespace SF
 				protocolCheck(input->Read(m_Result));
 				protocolCheck(input->Read(ArrayLen));
 				PlayerID* RevealedPlayerIDPtr = nullptr;
-				protocolCheck(input->ReadLink(RevealedPlayerIDPtr, ArrayLen * sizeof(PlayerID)));
+				protocolCheck(input->ReadLink(RevealedPlayerIDPtr, ArrayLen));
 				m_RevealedPlayerID.SetLinkedBuffer(ArrayLen, RevealedPlayerIDPtr);
 				protocolCheck(input->Read(ArrayLen));
 				uint8_t* RevealedRolePtr = nullptr;
-				protocolCheck(input->ReadLink(RevealedRolePtr, ArrayLen * sizeof(uint8_t)));
+				protocolCheck(input->ReadLink(RevealedRolePtr, ArrayLen));
 				m_RevealedRole.SetLinkedBuffer(ArrayLen, RevealedRolePtr);
 
 				return hr;

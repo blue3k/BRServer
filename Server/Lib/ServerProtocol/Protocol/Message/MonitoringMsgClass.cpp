@@ -118,7 +118,7 @@ namespace SF
 				protocolCheck(input->Read(m_Result));
 				protocolCheck(input->Read(ArrayLen));
 				PerformanceCounterInstanceInfo* CounterInstancesPtr = nullptr;
-				protocolCheck(input->ReadLink(CounterInstancesPtr, ArrayLen * sizeof(PerformanceCounterInstanceInfo)));
+				protocolCheck(input->ReadLink(CounterInstancesPtr, ArrayLen));
 				m_CounterInstances.SetLinkedBuffer(ArrayLen, CounterInstancesPtr);
 				protocolCheck(input->Read(m_TotalInstanceCount));
 
@@ -282,7 +282,7 @@ namespace SF
 				protocolCheck(input->Read(m_InstanceUID));
 				protocolCheck(input->Read(ArrayLen));
 				uint64_t* CounterValuesPtr = nullptr;
-				protocolCheck(input->ReadLink(CounterValuesPtr, ArrayLen * sizeof(uint64_t)));
+				protocolCheck(input->ReadLink(CounterValuesPtr, ArrayLen));
 				m_CounterValues.SetLinkedBuffer(ArrayLen, CounterValuesPtr);
 
 				return hr;
@@ -365,11 +365,11 @@ namespace SF
 				uint16_t ArrayLen = 0;
 
 				protocolCheck(input->Read(ArrayLen));
-				protocolCheck(input->ReadLink(m_InstanceName, ArrayLen * sizeof(char)));
+				protocolCheck(input->ReadLink(m_InstanceName, ArrayLen));
 				protocolCheck(input->Read(m_InstanceUID));
 				protocolCheck(input->Read(ArrayLen));
 				PerformanceCounterInfo* NewCountersPtr = nullptr;
-				protocolCheck(input->ReadLink(NewCountersPtr, ArrayLen * sizeof(PerformanceCounterInfo)));
+				protocolCheck(input->ReadLink(NewCountersPtr, ArrayLen));
 				m_NewCounters.SetLinkedBuffer(ArrayLen, NewCountersPtr);
 
 				return hr;
@@ -451,7 +451,7 @@ namespace SF
 
 				protocolCheck(input->Read(ArrayLen));
 				uint64_t* FreeInstancesPtr = nullptr;
-				protocolCheck(input->ReadLink(FreeInstancesPtr, ArrayLen * sizeof(uint64_t)));
+				protocolCheck(input->ReadLink(FreeInstancesPtr, ArrayLen));
 				m_FreeInstances.SetLinkedBuffer(ArrayLen, FreeInstancesPtr);
 
 				return hr;
@@ -530,7 +530,7 @@ namespace SF
 				protocolCheck(input->Read(m_InstanceUID));
 				protocolCheck(input->Read(ArrayLen));
 				uint64_t* CounterValuesPtr = nullptr;
-				protocolCheck(input->ReadLink(CounterValuesPtr, ArrayLen * sizeof(uint64_t)));
+				protocolCheck(input->ReadLink(CounterValuesPtr, ArrayLen));
 				m_CounterValues.SetLinkedBuffer(ArrayLen, CounterValuesPtr);
 
 				return hr;

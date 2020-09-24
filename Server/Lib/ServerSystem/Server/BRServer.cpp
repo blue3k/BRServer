@@ -50,7 +50,7 @@
 #include "ServiceEntity/MatchingQueueServiceEntity.h"
 #include "ServiceEntity/MatchingServiceEntity.h"
 #include "ServiceEntity/Party/GamePartyManagerServiceEntity.h"
-#include "ServiceEntity/Character/CharacterDataManagerServiceEntity.h"
+//#include "ServiceEntity/Character/CharacterDataManagerServiceEntity.h"
 #include "ServiceEntity/RankingServiceEntity.h"
 #include "ServiceEntity/MonitoringServiceEntity.h"
 #include "ServiceEntity/Relay/RelayServiceEntity.h"
@@ -782,9 +782,9 @@ Proc_End:
 			svrChk(AddServiceEntityComponent<Svr::GamePartyManagerServiceEntity>(GetServerGameID()));
 			break;
 
-		case "ModGameCharacterDataManager"_crc:
-			svrChk(AddServiceEntityComponent<Svr::CharacterDataManagerServiceEntity>(GetServerGameID()));
-			break;
+		//case "ModGameCharacterDataManager"_crc:
+		//	svrChk(AddServiceEntityComponent<Svr::CharacterDataManagerServiceEntity>(GetServerGameID()));
+		//	break;
 
 		case "ModMatching_Game_4"_crc:
 		{

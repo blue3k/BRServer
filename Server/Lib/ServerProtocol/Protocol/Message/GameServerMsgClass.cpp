@@ -158,9 +158,9 @@ namespace SF
 				protocolCheck(input->Read(m_TransactionID));
 				protocolCheck(input->Read(m_Result));
 				protocolCheck(input->Read(ArrayLen));
-				protocolCheck(input->ReadLink(m_PublicAddress, ArrayLen * sizeof(char)));
+				protocolCheck(input->ReadLink(m_PublicAddress, ArrayLen));
 				protocolCheck(input->Read(ArrayLen));
-				protocolCheck(input->ReadLink(m_PublicAddressV6, ArrayLen * sizeof(char)));
+				protocolCheck(input->ReadLink(m_PublicAddressV6, ArrayLen));
 				protocolCheck(input->Read(m_Port));
 
 				return hr;
@@ -489,9 +489,9 @@ namespace SF
 				protocolCheck(input->Read(m_SenderID));
 				protocolCheck(input->Read(m_Role));
 				protocolCheck(input->Read(ArrayLen));
-				protocolCheck(input->ReadLink(m_SenderName, ArrayLen * sizeof(char)));
+				protocolCheck(input->ReadLink(m_SenderName, ArrayLen));
 				protocolCheck(input->Read(ArrayLen));
-				protocolCheck(input->ReadLink(m_ChatMessage, ArrayLen * sizeof(char)));
+				protocolCheck(input->ReadLink(m_ChatMessage, ArrayLen));
 
 				return hr;
 
@@ -605,7 +605,7 @@ namespace SF
 				protocolCheck(input->Read(m_MessageParam0));
 				protocolCheck(input->Read(m_MessageParam1));
 				protocolCheck(input->Read(ArrayLen));
-				protocolCheck(input->ReadLink(m_MessageText, ArrayLen * sizeof(char)));
+				protocolCheck(input->ReadLink(m_MessageText, ArrayLen));
 				protocolCheck(input->Read(m_TimeStamp));
 
 				return hr;
@@ -1146,7 +1146,7 @@ namespace SF
 				protocolCheck(input->Read(m_DestPlayerID));
 				protocolCheck(input->Read(m_InviterID));
 				protocolCheck(input->Read(ArrayLen));
-				protocolCheck(input->ReadLink(m_InviterName, ArrayLen * sizeof(char)));
+				protocolCheck(input->ReadLink(m_InviterName, ArrayLen));
 				protocolCheck(input->Read(m_PartyUID));
 
 				return hr;

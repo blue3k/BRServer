@@ -184,7 +184,7 @@ namespace SF
 				protocolCheck(input->Read(m_Result));
 				protocolCheck(input->Read(ArrayLen));
 				ServiceInformation* MemberListPtr = nullptr;
-				protocolCheck(input->ReadLink(MemberListPtr, ArrayLen * sizeof(ServiceInformation)));
+				protocolCheck(input->ReadLink(MemberListPtr, ArrayLen));
 				m_MemberList.SetLinkedBuffer(ArrayLen, MemberListPtr);
 
 				return hr;

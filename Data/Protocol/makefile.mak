@@ -34,9 +34,7 @@ SOURCES=ProtocolClusterServer.xml \
 	ProtocolServer.xml \
 	ProtocolChatChannel.xml \
 	ProtocolChatChannelManager.xml \
-	ProtocolRelayServer.xml \
-	ProtocolCharacterDataServer.xml 
-
+	ProtocolRelayServer.xml 
 
 SOURCES_POSTFIXED=$(SOURCES:.xml=.h)
 TARGET_FILES=$(SOURCES_POSTFIXED:%=$(OUTPUT_PATH)/%)

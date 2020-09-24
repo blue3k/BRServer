@@ -16,17 +16,6 @@ set(BRSERVERPROTOCOL_LIB_FILES
     Protocol/Message/ClusterServerMsgClass.h
     Protocol/Message/ClusterServerMsgDebug.h
     Protocol/Message/ClusterServerMsgParsing.h
-    Protocol/Message/CharacterDataServerMsgClass.cpp
-    Protocol/Message/CharacterDataServerMsgClass.h
-    Protocol/Message/CharacterDataServerMsgDebug.cpp
-    Protocol/Message/CharacterDataServerMsgDebug.h
-    Protocol/Message/CharacterDataServerMsgParsing.h
-    Protocol/Message/CharacterDataServerMsgParsing.cpp
-    Protocol/Message/ProtocolCharacterDataServer.h
-    Protocol/Policy/CharacterDataServerNetPolicy.h
-    Protocol/Policy/CharacterDataServerNetPolicy.cpp
-    Protocol/ServerService/CharacterDataServerService.h
-    Protocol/ServerService/CharacterDataServerService.cpp
     Protocol/Message/GameInstanceManagerMsgClass.h
     Protocol/Message/GameInstanceManagerMsgDebug.h
     Protocol/Message/GameInstanceManagerMsgParsing.h

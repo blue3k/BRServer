@@ -154,7 +154,7 @@ namespace SF
 				protocolCheck(input->Read(m_PartyLeaderID));
 				protocolCheck(input->Read(ArrayLen));
 				uint8_t* ChatHistoryDataPtr = nullptr;
-				protocolCheck(input->ReadLink(ChatHistoryDataPtr, ArrayLen * sizeof(uint8_t)));
+				protocolCheck(input->ReadLink(ChatHistoryDataPtr, ArrayLen));
 				m_ChatHistoryData.SetLinkedBuffer(ArrayLen, ChatHistoryDataPtr);
 
 				return hr;
@@ -1095,7 +1095,7 @@ namespace SF
 				protocolCheck(input->Read(m_RouteContext));
 				protocolCheck(input->Read(m_PlayerID));
 				protocolCheck(input->Read(ArrayLen));
-				protocolCheck(input->ReadLink(m_ChatMessage, ArrayLen * sizeof(char)));
+				protocolCheck(input->ReadLink(m_ChatMessage, ArrayLen));
 
 				return hr;
 
@@ -1201,9 +1201,9 @@ namespace SF
 				protocolCheck(input->Read(m_RouteContext));
 				protocolCheck(input->Read(m_SenderID));
 				protocolCheck(input->Read(ArrayLen));
-				protocolCheck(input->ReadLink(m_SenderName, ArrayLen * sizeof(char)));
+				protocolCheck(input->ReadLink(m_SenderName, ArrayLen));
 				protocolCheck(input->Read(ArrayLen));
-				protocolCheck(input->ReadLink(m_ChatMessage, ArrayLen * sizeof(char)));
+				protocolCheck(input->ReadLink(m_ChatMessage, ArrayLen));
 
 				return hr;
 

@@ -46,7 +46,7 @@ namespace SF
 				protocolCheck(input->Read(m_RouteHopCount));
 				protocolCheck(input->Read(ArrayLen));
 				MatchingPlayerInformation* PlayersPtr = nullptr;
-				protocolCheck(input->ReadLink(PlayersPtr, ArrayLen * sizeof(MatchingPlayerInformation)));
+				protocolCheck(input->ReadLink(PlayersPtr, ArrayLen));
 				m_Players.SetLinkedBuffer(ArrayLen, PlayersPtr);
 
 				return hr;
@@ -2105,11 +2105,11 @@ namespace SF
 				protocolCheck(input->Read(m_Result));
 				protocolCheck(input->Read(ArrayLen));
 				uint32_t* NumberOfPlayersInTheItemPtr = nullptr;
-				protocolCheck(input->ReadLink(NumberOfPlayersInTheItemPtr, ArrayLen * sizeof(uint32_t)));
+				protocolCheck(input->ReadLink(NumberOfPlayersInTheItemPtr, ArrayLen));
 				m_NumberOfPlayersInTheItem.SetLinkedBuffer(ArrayLen, NumberOfPlayersInTheItemPtr);
 				protocolCheck(input->Read(ArrayLen));
 				MatchingQueueTicket* MatchingTicketPtr = nullptr;
-				protocolCheck(input->ReadLink(MatchingTicketPtr, ArrayLen * sizeof(MatchingQueueTicket)));
+				protocolCheck(input->ReadLink(MatchingTicketPtr, ArrayLen));
 				m_MatchingTicket.SetLinkedBuffer(ArrayLen, MatchingTicketPtr);
 
 				return hr;
@@ -2527,7 +2527,7 @@ namespace SF
 				protocolCheck(input->Read(m_RouteHopCount));
 				protocolCheck(input->Read(ArrayLen));
 				MatchingQueueTicket* TicketToCancelPtr = nullptr;
-				protocolCheck(input->ReadLink(TicketToCancelPtr, ArrayLen * sizeof(MatchingQueueTicket)));
+				protocolCheck(input->ReadLink(TicketToCancelPtr, ArrayLen));
 				m_TicketToCancel.SetLinkedBuffer(ArrayLen, TicketToCancelPtr);
 
 				return hr;
@@ -2943,7 +2943,7 @@ namespace SF
 				protocolCheck(input->Read(m_RegisterID));
 				protocolCheck(input->Read(ArrayLen));
 				MatchingPlayerInformation* PlayersPtr = nullptr;
-				protocolCheck(input->ReadLink(PlayersPtr, ArrayLen * sizeof(MatchingPlayerInformation)));
+				protocolCheck(input->ReadLink(PlayersPtr, ArrayLen));
 				m_Players.SetLinkedBuffer(ArrayLen, PlayersPtr);
 
 				return hr;

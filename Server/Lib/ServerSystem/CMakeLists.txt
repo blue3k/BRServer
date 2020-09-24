@@ -102,12 +102,6 @@ set(BRSERVERSYSTEM_LIB_FILES
     Server/BrServerUtil.h
     Server/BrService.h
     Server/ParameterSetting.h
-    ServiceEntity/Character/CharacterData.h
-    ServiceEntity/Character/CharacterDataTransaction.h
-    ServiceEntity/Character/CharacterDataManagerServiceTrans.h
-    ServiceEntity/Character/CharacterDataManagerServiceTrans.cpp
-    ServiceEntity/Character/CharacterDataManagerServiceEntity.h
-    ServiceEntity/Character/CharacterDataManagerServiceEntity.cpp
     ServiceEntity/Chat/ChatChannelEntity.h
     ServiceEntity/Chat/ChatChannelEntityTrans.h
     ServiceEntity/Chat/ChatChannelManagerServiceEntity.h
