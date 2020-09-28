@@ -225,6 +225,8 @@ set(BRSERVERSYSTEM_LIB_FILES
 	ServiceEntity/Game/Transaction/GamePlayerEntityTransFriend.cpp
 	ServiceEntity/Game/Transaction/GamePlayerEntityTransParty.h
 	ServiceEntity/Game/Transaction/GamePlayerEntityTransParty.cpp
+	ServiceEntity/Game/Transaction/GamePlayerEntityTransMatchMaking.h
+	ServiceEntity/Game/Transaction/GamePlayerEntityTransMatchMaking.cpp
 	ServiceEntity/Game/Subsystem/UserFriendSystem.h
     ServiceEntity/Game/Subsystem/UserFriendSystem.cpp
 	ServiceEntity/Game/Subsystem/UserNotificationSystem.h

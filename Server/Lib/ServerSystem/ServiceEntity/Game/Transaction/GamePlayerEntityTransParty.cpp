@@ -59,97 +59,70 @@ namespace Svr {
 	//	Party
 	//
 
-	//PlayerTransGameMatchedS2SEvt::PlayerTransGameMatchedS2SEvt(IHeap& heap, MessageDataPtr &pIMsg)
-	//  : UserTransactionS2SEvt( heap, pIMsg )
-	//{
-	//	BR_TRANS_MESSAGE( Message::GameInstance::JoinGameRes, { return OnJoinGameRes(pRes); } );
-	//	BR_TRANS_MESSAGE( DB::QueryUpdateJoinGameCmd, { return OnUpdateDBRes(pRes); } );
-	//	BR_TRANS_MESSAGE(Message::GameParty::LeavePartyRes, { return OnLeavePartyRes(pRes); });
-	//}
+	PlayerTransGameMatchedS2SEvt::PlayerTransGameMatchedS2SEvt(IHeap& heap, MessageDataPtr &pIMsg)
+	  : UserTransactionS2SEvt( heap, pIMsg )
+	{
+		BR_TRANS_MESSAGE( Message::GameInstance::JoinGameRes, { return OnJoinGameRes(pRes); } );
+		BR_TRANS_MESSAGE( DB::QueryUpdateJoinGameCmd, { return OnUpdateDBRes(pRes); } );
+		BR_TRANS_MESSAGE(Message::GameParty::LeavePartyRes, { return OnLeavePartyRes(pRes); });
+	}
 
-	//Result PlayerTransGameMatchedS2SEvt::OnJoinGameRes( Svr::TransactionResult* &pRes )
-	//{
-	//	FunctionContext hr([this](Result hr)
-	//		{
-	//			if (!hr)
-	//				CloseTransaction(hr);
-	//		});
-	//	Svr::MessageResult *pMsgRes = (Svr::MessageResult*)pRes;
-	//	Message::GameInstance::JoinGameRes joinRes;
+	Result PlayerTransGameMatchedS2SEvt::OnJoinGameRes( Svr::TransactionResult* &pRes )
+	{
+		FunctionContext hr([this](Result hr)
+			{
+				if (!hr)
+					CloseTransaction(hr);
+			});
+		Svr::MessageResult *pMsgRes = (Svr::MessageResult*)pRes;
+		Message::GameInstance::JoinGameRes joinRes;
 
-	//	if( !(pRes->GetResult()) )
-	//	{
-	//		Policy::NetSvrPolicyGame(GetMyOwner()->GetConnection()).GameMatchFailedS2CEvt(pRes->GetResult());
-	//		goto Proc_End;
-	//	}
+		if( !(pRes->GetResult()) )
+		{
+			Policy::NetSvrPolicyGame(GetMyOwner()->GetConnection()).GameMatchFailedS2CEvt(pRes->GetResult());
+			goto Proc_End;
+		}
 
-	//	svrCheck( joinRes.ParseMessage( *pMsgRes->GetMessage() ) );
+		svrCheck( joinRes.ParseMessage( *pMsgRes->GetMessage() ) );
 
-	//	//svrCheckPtr(pPlayerInfoSystem = GetMyOwner()->GetComponent<UserGamePlayerInfoSystem>());
+		//svrCheckPtr(pPlayerInfoSystem = GetMyOwner()->GetComponent<UserGamePlayerInfoSystem>());
 
-	//	GetMyOwner()->SetGameInsUID( joinRes.GetRouteContext().GetFrom());
-
-
-	//	// Consume cost
-	//	if ((PlayerRole)GetRequestedRole() != PlayerRole::None)
-	//	{
-	//		conspiracy::OrganicTbl::OrganicItem *pCostItem = nullptr;
-	//		auto pPlayerInfoSystem = GetMyOwner()->GetComponent<UserGamePlayerInfoSystem>();
-	//		GetMyOwner()->UpdateGamePlayer();
-
-	//		// Apply regardless of its error
-	//		if ((conspiracy::OrganicTbl::FindItem((int)conspiracy::OrganicTbl::EItemEffect::Enum::RoleChoice, pCostItem)))
-	//		{
-	//			pPlayerInfoSystem->ApplyCost(pCostItem, TransLogCategory::Buy, "RoleSelection");
-	//		}
-	//	}
-
-	//	m_WaitingQueires = 0;
-	//	if( joinRes.GetIsNewJoin() && GetMyServer()->GetPresetGameConfig() != nullptr )
-	//	{
-	//		GetMyOwner()->UpdateGamePlayer();
-	//		GetMyOwner()->GetComponent<UserGamePlayerInfoSystem>()->GainStamina( -GetMyServer()->GetPresetGameConfig()->StaminaForGame );
-
-	//		if ((Svr::GetServerComponent<DB::GameConspiracyDB>()->UpdateJoinGameCmd(GetTransID(), GetMyOwner()->GetShardID(), GetMyOwner()->GetPlayerID(),
-	//			pPlayerInfoSystem->GetGem(), pPlayerInfoSystem->GetStamina(),
-	//			GetMyOwner()->GetIsInGame() != 0 ? 1 : 0,
-	//			GetMyOwner()->GetLatestActiveTime(),
-	//			GetMyOwner()->GetLatestUpdateTime())))
-	//		{
-	//			m_WaitingQueires++;
-	//		}
-	//	}
+		GetMyOwner()->SetGameInsUID( joinRes.GetRouteContext().GetFrom());
 
 
-	//	Policy::NetSvrPolicyGame(GetMyOwner()->GetConnection()).GameMatchedS2CEvt(GetGameInsUID(), joinRes.GetTimeStamp(), joinRes.GetGameState(), joinRes.GetDay(), joinRes.GetMaxPlayer(),
-	//		joinRes.GetPlayerIndex(), joinRes.GetPlayerCharacter(), joinRes.GetRole(), joinRes.GetDead(),
-	//		joinRes.GetChatHistoryData(), joinRes.GetGameLogData(),
-	//		pPlayerInfoSystem->GetStamina(), pPlayerInfoSystem->GetGem(), pPlayerInfoSystem->GetGameMoney());
+		// Consume cost
+		m_WaitingQueires = 0;
+
+		Policy::NetSvrPolicyGame(GetMyOwner()->GetConnection()).GameMatchedS2CEvt(GetGameInsUID(), joinRes.GetTimeStamp(), joinRes.GetGameState(), joinRes.GetDay(), joinRes.GetMaxPlayer(),
+			joinRes.GetPlayerIndex(), joinRes.GetPlayerCharacter(), joinRes.GetRole(), joinRes.GetDead(),
+			joinRes.GetChatHistoryData(), joinRes.GetGameLogData(),
+			0, 0, 0
+			/*pPlayerInfoSystem->GetStamina(), pPlayerInfoSystem->GetGem(), pPlayerInfoSystem->GetGameMoney()*/);
 
 
-	//	if (GetMyOwner()->GetPartyUID().UID != 0)
-	//	{
-	//		Svr::ServerEntity *pServerEntity = nullptr;
+		if (GetMyOwner()->GetPartyUID().UID != 0)
+		{
+			Svr::ServerEntity *pServerEntity = nullptr;
 
-	//		svrCheck(Service::ServerEntityManager->GetServerEntity(GetMyOwner()->GetPartyUID().GetServerID(), pServerEntity));
+			svrCheck(Service::ServerEntityManager->GetServerEntity(GetMyOwner()->GetPartyUID().GetServerID(), pServerEntity));
 
-	//		svrCheck(Policy::NetPolicyGameParty(pServerEntity->GetConnection()).LeavePartyCmd(RouteContext(GetOwnerEntityUID(), GetMyOwner()->GetPartyUID()), GetTransID(), GetMyOwner()->GetPlayerID()) );
+			svrCheck(Policy::NetPolicyGameParty(pServerEntity->GetConnection()).LeavePartyCmd(RouteContext(GetOwnerEntityUID(), GetMyOwner()->GetPartyUID()), GetTransID(), GetMyOwner()->GetPlayerID()) );
 
-	//		m_WaitingQueires++;
-	//	}
+			m_WaitingQueires++;
+		}
 
-	//	if (m_WaitingQueires == 0)
-	//	{
-	//		CloseTransaction( hr );
-	//	}
+		if (m_WaitingQueires == 0)
+		{
+			CloseTransaction( hr );
+		}
 
-	//Proc_End:
+	Proc_End:
 
-	//	if( !(hr) )
-	//		CloseTransaction( hr );
+		if( !(hr) )
+			CloseTransaction( hr );
 
-	//	return ResultCode::SUCCESS;
-	//}
+		return ResultCode::SUCCESS;
+	}
 
 	Result PlayerTransGameMatchedS2SEvt::OnLeavePartyRes(Svr::TransactionResult* &pRes)
 	{

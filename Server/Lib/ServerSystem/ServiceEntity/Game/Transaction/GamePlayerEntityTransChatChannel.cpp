@@ -387,6 +387,49 @@ namespace Svr {
 	}
 	
 
+	// Start Transaction
+	Result PlayerTransChatChannelChatMessage::StartTransaction()
+	{
+		FunctionContext hr([this](Result hr)
+			{
+				if (!hr)
+					CloseTransaction(hr);
+			});
+
+		Svr::ServerEntity* pServerEntity = nullptr;
+
+		svrCheck(super::StartTransaction());
+
+		// Can't do any ChatChannel operations while you are in matching queue
+		if (GetMyOwner()->GetChatChannelUID().UID != EntityUID())
+			svrError(ResultCode::INVALID_ENTITY);
+
+		svrCheck(Service::ServerEntityManager->GetServerEntity(EntityUID(GetChatUID()).GetServerID(), pServerEntity));
+
+		svrCheck(Policy::NetPolicyChatChannel(pServerEntity->GetConnection()).ChatMessageC2SEvt(RouteContext(GetOwnerEntityUID(), GetChatUID()), GetMyOwner()->GetPlayerID(),
+			GetChatMessage()));
+
+		return hr;
+	}
+
+	// Start Transaction
+	Result PlayerTransChatChannelChatMessageS2CEvt::StartTransaction()
+	{
+		FunctionContext hr([this](Result hr)
+			{
+				CloseTransaction(hr);
+			});
+
+		svrCheck(super::StartTransaction());
+
+		if (GetMyOwner()->GetChatChannelUID() != GetRouteContext().GetFrom())
+			svrErrorClose(ResultCode::INVALID_ENTITY);
+
+		svrCheck(Policy::NetSvrPolicyGame(GetMyOwner()->GetConnection()).ChatChannelChatMessageS2CEvt(GetSenderID(), GetSenderName(), GetChatMessage()));
+
+		return ResultCode::SUCCESS;
+	}
+
 
 }// namespace Svr 
 }// namespace SF 

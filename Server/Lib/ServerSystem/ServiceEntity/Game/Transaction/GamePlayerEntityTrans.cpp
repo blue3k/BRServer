@@ -1225,7 +1225,7 @@ namespace Svr {
 	
 	
 	// Start Transaction
-	Result PlayerTransRequestPlayerStatusUpdateS2S::StartTransaction()
+	Result PlayerTransRequestPlayerStatusUpdateC2S::StartTransaction()
 	{
 		FunctionContext hr([this](Result hr)
 			{

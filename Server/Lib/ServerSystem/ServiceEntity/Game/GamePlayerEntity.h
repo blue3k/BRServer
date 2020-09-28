@@ -64,6 +64,8 @@ namespace Svr {
 	{
 	public:
 
+		using super = SimpleUserEntity;
+
 		// Player state
 		enum PlayerState
 		{
@@ -191,7 +193,9 @@ namespace Svr {
 
 
 		// Initialize entity to proceed new connection
-		virtual Result InitializeEntity(EntityID newEntityID);
+		virtual Result InitializeEntity(EntityID newEntityID) override;
+
+		Result RegisterMessageHandlers() override;
 
 		// Set connection for pilot
 		virtual Result SetConnection(SharedPointerT<Net::Connection>&& pCon) override;

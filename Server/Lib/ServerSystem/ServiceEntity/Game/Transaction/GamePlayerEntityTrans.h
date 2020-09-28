@@ -457,14 +457,14 @@ namespace Svr {
 		BR_IMPLEMENT_USERMSGTRANS_CLOSE(Policy::NetSvrPolicyGame, RequestPlayerStatusUpdateRes);
 	};
 	
-	class PlayerTransRequestPlayerStatusUpdateS2S : public Svr::UserTransactionS2SEvt< GamePlayerEntity, Message::GameServer::RequestPlayerStatusUpdateC2SEvt>
+	class PlayerTransRequestPlayerStatusUpdateC2S : public Svr::UserTransactionS2SEvt< GamePlayerEntity, Message::GameServer::RequestPlayerStatusUpdateC2SEvt>
 	{
 	public:
 		typedef Svr::UserTransactionS2SEvt< GamePlayerEntity, Message::GameServer::RequestPlayerStatusUpdateC2SEvt> super;
 
 	public:
-		PlayerTransRequestPlayerStatusUpdateS2S(IHeap& heap, MessageDataPtr &pIMsg ):UserTransactionS2SEvt(heap, pIMsg) {}
-		virtual ~PlayerTransRequestPlayerStatusUpdateS2S() {}
+		PlayerTransRequestPlayerStatusUpdateC2S(IHeap& heap, MessageDataPtr &pIMsg ):UserTransactionS2SEvt(heap, pIMsg) {}
+		virtual ~PlayerTransRequestPlayerStatusUpdateC2S() {}
 
 		// Start Transaction
 		virtual Result StartTransaction();

@@ -40,6 +40,8 @@
 #include "Transaction/GamePlayerEntityTransParty.h"
 #include "Transaction/GamePlayerEntityTransFriend.h"
 #include "Transaction/GamePlayerEntityTransClose.h"
+#include "Transaction/GamePlayerEntityTransChatChannel.h"
+#include "Transaction/GamePlayerEntityTransMatchMaking.h"
 
 
 
@@ -65,23 +67,6 @@ namespace Svr {
 		memset(m_UserName, 0, sizeof(m_UserName));
 		memset(m_GCMKeys, 0, sizeof(m_GCMKeys));
 
-		// RegisterPlayerToJoinGameServerCmd can send to player entity when previously logged in
-		RegisterMessageHandler<GameServerTransRegisterPlayerToJoinGameServer<GamePlayerEntity>>();
-		RegisterMessageHandler<PlayerTransRegisterPlayerToJoinGameServerOnPlayerEntity>();
-
-		// Use chat channel
-		//RegisterMessageHandler<PlayerTransChatMessageFromOtherEntity>();
-		//BR_ENTITY_MESSAGE(Message::GameServer::ChatMessageC2SEvt)									{ svrMemReturn(pNewTrans = new(GetHeap()) PlayerTransChatMessageFromOtherEntity(GetHeap(),  pMsgData)); return ResultCode::SUCCESS; } );
-
-		////////////////////////////////////////////////////////////////////////////////////////////////////
-		// Game Player
-
-		RegisterMessageHandler<PlayerTransFriendAcceptedS2S>();
-		RegisterMessageHandler<PlayerTransFriendRemovedS2S>();
-		RegisterMessageHandler<PlayerTransNotifyS2S>();
-		RegisterMessageHandler<PlayerTransRequestPlayerStatusUpdateS2S>();
-		RegisterMessageHandler<PlayerTransNotifyPlayerStatusUpdatedS2S>();
-		RegisterMessageHandler<PlayerTransNotifyPartyInviteS2SEvt>();
 	}
 
 	GamePlayerEntity::~GamePlayerEntity()
@@ -122,6 +107,116 @@ namespace Svr {
 		return hr;
 	}
 
+	Result GamePlayerEntity::RegisterMessageHandlers()
+	{
+		FunctionContext hr;
+
+		svrCheck(super::RegisterMessageHandlers());
+
+
+
+		// RegisterPlayerToJoinGameServerCmd can send to player entity when previously logged in
+		RegisterMessageHandler<GameServerTransRegisterPlayerToJoinGameServer<GamePlayerEntity>>();
+		RegisterMessageHandler<PlayerTransRegisterPlayerToJoinGameServerOnPlayerEntity>();
+
+		// Use chat channel
+		//RegisterMessageHandler<PlayerTransChatMessageFromOtherEntity>();
+		//BR_ENTITY_MESSAGE(Message::GameServer::ChatMessageC2SEvt)									{ svrMemReturn(pNewTrans = new(GetHeap()) PlayerTransChatMessageFromOtherEntity(GetHeap(),  pMsgData)); return ResultCode::SUCCESS; } );
+
+		////////////////////////////////////////////////////////////////////////////////////////////////////
+		// Game Player
+
+		RegisterMessageHandler<Message::Game::HeartBitC2SEvt>(__FILE__, __LINE__,
+			[&](Net::Connection* pConn, MessageDataPtr& pMsgData, SF::TransactionPtr& pNewTrans)->Result
+			{
+				pNewTrans = nullptr; return OnNewUserTranscation();
+			});
+		RegisterMessageHandler<PlayerTransJoinGameServer>();
+		RegisterMessageHandler<PlayerTransGetUserGamePlayerInfo>();
+		RegisterMessageHandler<PlayerTransGetUserGamePlayerInfo>();
+		RegisterMessageHandler<PlayerTransGetGamePlayerInfo>();
+
+		RegisterMessageHandler<PlayerTransGetComplitionState>();
+		RegisterMessageHandler<PlayerTransSetComplitionState>();
+		RegisterMessageHandler<PlayerTransRegisterGCM>();
+		RegisterMessageHandler<PlayerTransUnregisterGCM>();
+
+
+		RegisterMessageHandler<PlayerTransSetNickName>();
+		RegisterMessageHandler<PlayerTransFindPlayerByEMail>();
+		RegisterMessageHandler<PlayerTransFindPlayerByPlayerID>();
+
+		// Presence
+		RegisterMessageHandler<PlayerTransRequestPlayerStatusUpdate>();
+		RegisterMessageHandler<PlayerTransRequestPlayerStatusUpdateC2S>();
+		RegisterMessageHandler<PlayerTransNotifyPlayerStatusUpdatedS2S>();
+
+
+		// shop
+		RegisterMessageHandler<PlayerTransBuyShopItemPrepare>();
+		RegisterMessageHandler<PlayerTransBuyShopItem>();
+
+		// Chat channel
+		RegisterMessageHandler<PlayerTransCreateOrJoinChatChannel>();
+		RegisterMessageHandler<PlayerTransJoinChatChannel>();
+		RegisterMessageHandler<PlayerTransChatChannelPlayerJoinedS2SEvt>();
+		RegisterMessageHandler<PlayerTransChatChannelLeaderChangedS2SEvt>();
+		RegisterMessageHandler<PlayerTransLeaveChatChannel>();
+		RegisterMessageHandler<PlayerTransChatChannelPlayerLeftS2SEvt>();
+		RegisterMessageHandler<PlayerTransChatChannelKickPlayer>();
+		RegisterMessageHandler<PlayerTransChatChannelPlayerKickedS2SEvt>();
+		RegisterMessageHandler<PlayerTransChatChannelChatMessage>();
+		RegisterMessageHandler<PlayerTransChatChannelChatMessageS2CEvt>();
+
+		// Friends
+		RegisterMessageHandler<PlayerTransInviteFriend>();
+		RegisterMessageHandler<PlayerTransFriendAccept>();
+		RegisterMessageHandler<PlayerTransRemoveFriend>();
+		RegisterMessageHandler<PlayerTransGetFriendList>();
+		RegisterMessageHandler<PlayerTransFriendAcceptedS2S>();
+		RegisterMessageHandler<PlayerTransFriendRemovedS2S>();
+
+		// notification
+		RegisterMessageHandler<PlayerTransGetNotificationList>();
+		RegisterMessageHandler<PlayerTransDeleteNotification>();
+		RegisterMessageHandler<PlayerTransAcceptNotification>();
+		RegisterMessageHandler<PlayerTransSetNotificationRead>();
+		RegisterMessageHandler<PlayerTransNotifyS2S>();
+
+
+		// party
+		RegisterMessageHandler<PlayerTransCreateParty>();
+		RegisterMessageHandler<PlayerTransJoinParty>();
+		RegisterMessageHandler<PlayerTransLeaveParty>();
+		RegisterMessageHandler<PlayerTransPartyKickPlayer>();
+		RegisterMessageHandler<PlayerTransPartyInvite>();
+		RegisterMessageHandler<PlayerTransPartyChatMessage>();
+		RegisterMessageHandler<PlayerTransPartyQuickChatMessage>();
+		RegisterMessageHandler<PlayerTransNotifyPartyInviteS2SEvt>();
+
+		RegisterMessageHandler<PlayerTransPartyPlayerJoinedS2SEvt>();
+		RegisterMessageHandler<PlayerTransPartyLeaderChangedS2SEvt>();
+		RegisterMessageHandler<PlayerTransPartyPlayerLeftS2SEvt>();
+		RegisterMessageHandler<PlayerTransPartyPlayerKickedS2SEvt>();
+		RegisterMessageHandler<PlayerTransPartyChatMessageS2CEvt>();
+		RegisterMessageHandler<PlayerTransPartyQuickChatMessageS2CEvt>();
+
+
+		// Match making
+		RegisterMessageHandler<PlayerTransRequestGameMatch>();
+		RegisterMessageHandler<PlayerTransCancelGameMatch>();
+		RegisterMessageHandler<PlayerTransPlayerMatchingCanceledS2CEvt>();
+		RegisterMessageHandler<PlayerTransPlayerMatchingItemDequeuedS2CEvt>();
+		RegisterMessageHandler<PlayerTransPartyQueuedGameMatchingS2CEvt>();
+		RegisterMessageHandler<PlayerTransPartyCanceledGameMatchingS2CEvt>();
+		RegisterMessageHandler<PlayerTransPartyMatchingItemDequeuedS2CEvt>();
+		RegisterMessageHandler<PlayerTransGameMatchedS2SEvt>();
+
+		// Ranking
+		RegisterMessageHandler<PlayerTransGetRankingList>();
+
+		return hr;
+	}
 
 	// Set connection for pilot
 	Result GamePlayerEntity::SetConnection(SharedPointerT<Net::Connection>&& pCon)
