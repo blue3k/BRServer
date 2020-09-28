@@ -353,6 +353,257 @@ namespace SF {
 	};
 
 
+	// Using hashed name to maintain components
+	class ComponentManager
+	{
+	public:
+
+	private:
+
+		IHeap& m_Heap;
+
+		// component array
+		SortedArray<StringCrc32,Component*> m_Components;
+
+	public:
+		ComponentManager(IHeap& heap)
+			: m_Heap(heap)
+			, m_Components(m_Heap)
+		{
+		}
+
+		virtual ~ComponentManager()
+		{
+			for (auto itComponent : m_Components)
+			{
+				if (itComponent.GetValue())
+					itComponent.GetValue()->TerminateComponent();
+				delete itComponent.GetValue();
+			}
+			m_Components.Clear();
+		}
+
+		IHeap& GetHeap() { return m_Heap; }
+
+		// Clear components
+		virtual void ClearComponents()
+		{
+			for (auto itComponent : m_Components)
+			{
+				if (itComponent.GetValue())
+					itComponent.GetValue()->TerminateComponent();
+				delete itComponent.GetValue();
+			}
+			m_Components.Clear();
+		}
+
+		// Initialize components
+		virtual Result InitializeComponents()
+		{
+			FunctionContext hr = ResultCode::SUCCESS;
+			size_t iComponent = 0;
+			for (auto itComponent : m_Components)
+			{
+				auto pComponent = itComponent.GetValue();
+				if (pComponent)
+				{
+					if (pComponent->GetIsInitialized())
+						pComponent->TerminateComponent();
+
+					hr = pComponent->InitializeComponent();
+					if (!hr) return hr;
+				}
+			}
+
+			return hr;
+		}
+
+		Result TerminateComponents()
+		{
+			FunctionContext hr = ResultCode::SUCCESS;
+			// Terminate in reverse order
+			for (auto itComponent : m_Components)
+			{
+				auto pComponent = itComponent.GetValue();
+				if (pComponent != nullptr)
+				{
+					pComponent->TerminateComponent();
+				}
+			}
+
+			return hr;
+		}
+
+		// Add component
+		Component* RemoveComponent(StringCrc32 name)
+		{
+			Component* pComponent = nullptr;
+			m_Components.Remove(name, pComponent);
+
+			if (pComponent != nullptr)
+			{
+				pComponent->TerminateComponent();
+			}
+
+			
+			return pComponent;
+		}
+
+		template< class ComponentType >
+		ComponentType* RemoveComponent()
+		{
+			return RemoveComponent(ComponentType::ComponentID);
+		}
+
+		// Add component
+		template< class ComponentType >
+		Result AddComponent(bool bAllowDuplicatedComponent = false)
+		{
+			if (!bAllowDuplicatedComponent && GetComponent<ComponentType>() != nullptr)
+			{
+				// already inserted
+				return ResultCode::SUCCESS_FALSE;
+			}
+
+			ComponentType* newComponent = new(m_Heap) ComponentType;
+			if (newComponent == nullptr)
+				return ResultCode::OUT_OF_MEMORY;
+
+			Result hr = AddComponent(newComponent);
+			if (!(hr))
+			{
+				IHeap::Delete(newComponent);
+			}
+
+			return hr;
+		}
+
+		template< class ComponentType, class ParamType0 >
+		Result AddComponent(ParamType0 p0, bool bAllowDuplicatedComponent = false)
+		{
+			if (!bAllowDuplicatedComponent && GetComponent<ComponentType>() != nullptr)
+			{
+				// already inserted
+				return ResultCode::SUCCESS_FALSE;
+			}
+
+			ComponentType* newComponent = new(m_Heap) ComponentType(p0);
+			if (newComponent == nullptr)
+				return ResultCode::OUT_OF_MEMORY;
+
+			Result hr = AddComponent(newComponent);
+			if (!hr)
+			{
+				delete newComponent;
+			}
+
+			return hr;
+		}
+
+		template< class ComponentType, class ParamType0, class ParamType1 >
+		Result AddComponent(ParamType0 p0, ParamType1 p1, bool bAllowDuplicatedComponent = false)
+		{
+			if (!bAllowDuplicatedComponent && GetComponent<ComponentType>() != nullptr)
+			{
+				// already inserted
+				return ResultCode::SUCCESS_FALSE;
+			}
+
+			ComponentType* newComponent = new(m_Heap) ComponentType(p0, p1);
+			if (newComponent == nullptr)
+				return ResultCode::OUT_OF_MEMORY;
+
+			Result hr = AddComponent(newComponent);
+			if (!hr)
+			{
+				delete newComponent;
+			}
+
+			return hr;
+		}
+
+		template< class ComponentType, class ParamType0, class ParamType1, class ParamType2 >
+		Result AddComponent(ParamType0 p0, ParamType1 p1, ParamType2 p2)
+		{
+			if (GetComponent<ComponentType>() != nullptr)
+			{
+				// already inserted
+				return ResultCode::SUCCESS_FALSE;
+			}
+
+			ComponentType* newComponent = new(m_Heap) ComponentType(p0, p1, p2);
+			if (newComponent == nullptr)
+				return ResultCode::OUT_OF_MEMORY;
+
+			Result hr = AddComponent(newComponent);
+			if (!hr)
+			{
+				delete newComponent;
+			}
+
+			return hr;
+		}
+
+
+		template< class ComponentType >
+		Result AddComponent(ComponentType*& newComponent)
+		{
+			if (m_Components.find(newComponent->GetComponentID()) != nullptr)
+			{
+				// already registered
+				return ResultCode::DUPLICATED_COMPONENT;
+			}
+
+			m_Components.Insert(ComponentType::ComponentID, newComponent);
+
+			OnAddComponent(newComponent);
+
+			newComponent = nullptr;
+
+			return ResultCode::SUCCESS;
+		}
+
+		virtual void OnAddComponent(Component* newComponent) {}
+
+		// Get component with its ID
+		Component* GetComponent(StringCrc32 ID)
+		{
+			return m_Components.find(ID);
+		}
+
+		template< class ComponentType >
+		ComponentType* GetComponent(StringCrc32 ID)
+		{
+			return m_Components.find(ID);
+		}
+
+
+		// Get component with its type
+		template< class ComponentType >
+		ComponentType* GetComponent()
+		{
+			return static_cast<ComponentType*>(GetComponent(ComponentType::ComponentID));
+		}
+
+		// Get component with its type
+		template< class ComponentType >
+		const ComponentType* GetComponent() const
+		{
+			return GetComponent(ComponentType::ComponentID);
+		}
+
+		// iterate all component
+		void ForeachComponent(std::function<void(Component*)> functor)
+		{
+			for (auto itComponent : m_Components)
+			{
+				if (itComponent.GetValue() != nullptr)
+					functor(itComponent.GetValue());
+			}
+		}
+
+	};
+
 
 
 } // namespace SF

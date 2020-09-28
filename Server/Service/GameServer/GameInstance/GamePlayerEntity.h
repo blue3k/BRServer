@@ -81,6 +81,7 @@ namespace GameServer {
 		const ComponentType* GetComponent() const { return m_ComponentCarrier.GetComponent<ComponentType>(); }
 
 
+
 		virtual const PlayerInformation& GetPlayerInformation() const override;
 		virtual const ServerFriendInformation& GetFriendInformation() const override;
 

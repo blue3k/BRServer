@@ -65,7 +65,7 @@ namespace Svr {
 	{
 	public:
 
-		typedef Svr::ServerEntityMessageTransaction< ProcessEntity, Message::GameServer::RegisterPlayerToJoinGameServerCmd> super;
+		using super = Svr::ServerEntityMessageTransaction< ProcessEntity, Message::GameServer::RegisterPlayerToJoinGameServerCmd>;
 
 	private:
 		const char* m_PublicAddress;

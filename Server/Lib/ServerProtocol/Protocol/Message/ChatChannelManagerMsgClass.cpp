@@ -66,6 +66,7 @@ namespace SF
 
 			}; // Result CreateChannelCmd::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr&& pIMsg, MessageBase* &pMessageBase )
 
+
 			MessageData* CreateChannelCmd::Create( IHeap& memHeap, const RouteContext &InRouteContext, const uint64_t &InTransactionID, const uint16_t &InRouteHopCount, const char* InChannelName, const char* InPasscode, const PlayerInformation &InCreator )
 			{
  				MessageData *pNewMsg = nullptr;
@@ -82,12 +83,12 @@ namespace SF
 				uint8_t *pMsgData = nullptr;
 
 				unsigned __uiMessageSize = (unsigned)(sizeof(MessageHeader) 
-					, SerializedSizeOf(InRouteContext)
-					, SerializedSizeOf(InTransactionID)
-					, SerializedSizeOf(InRouteHopCount)
-					, SerializedSizeOf(InChannelName)
-					, SerializedSizeOf(InPasscode)
-					, SerializedSizeOf(InCreator)
+					+ SerializedSizeOf(InRouteContext)
+					+ SerializedSizeOf(InTransactionID)
+					+ SerializedSizeOf(InRouteHopCount)
+					+ SerializedSizeOf(InChannelName)
+					+ SerializedSizeOf(InPasscode)
+					+ SerializedSizeOf(InCreator)
 				);
 
 				protocolCheckMem( pNewMsg = MessageData::NewMessage( memHeap, ChatChannelManager::CreateChannelCmd::MID, __uiMessageSize ) );
@@ -208,6 +209,7 @@ namespace SF
 
 			}; // Result CreateChannelRes::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr&& pIMsg, MessageBase* &pMessageBase )
 
+
 			MessageData* CreateChannelRes::Create( IHeap& memHeap, const RouteContext &InRouteContext, const uint64_t &InTransactionID, const Result &InResult, const uint64_t &InChannelUID )
 			{
  				MessageData *pNewMsg = nullptr;
@@ -224,10 +226,10 @@ namespace SF
 				uint8_t *pMsgData = nullptr;
 
 				unsigned __uiMessageSize = (unsigned)(sizeof(MessageHeader) 
-					, SerializedSizeOf(InRouteContext)
-					, SerializedSizeOf(InTransactionID)
-					, SerializedSizeOf(InResult)
-					, SerializedSizeOf(InChannelUID)
+					+ SerializedSizeOf(InRouteContext)
+					+ SerializedSizeOf(InTransactionID)
+					+ SerializedSizeOf(InResult)
+					+ SerializedSizeOf(InChannelUID)
 				);
 
 				protocolCheckMem( pNewMsg = MessageData::NewMessage( memHeap, ChatChannelManager::CreateChannelRes::MID, __uiMessageSize ) );
@@ -346,6 +348,7 @@ namespace SF
 
 			}; // Result FindChannelCmd::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr&& pIMsg, MessageBase* &pMessageBase )
 
+
 			MessageData* FindChannelCmd::Create( IHeap& memHeap, const RouteContext &InRouteContext, const uint64_t &InTransactionID, const uint16_t &InRouteHopCount, const char* InChannelName )
 			{
  				MessageData *pNewMsg = nullptr;
@@ -362,10 +365,10 @@ namespace SF
 				uint8_t *pMsgData = nullptr;
 
 				unsigned __uiMessageSize = (unsigned)(sizeof(MessageHeader) 
-					, SerializedSizeOf(InRouteContext)
-					, SerializedSizeOf(InTransactionID)
-					, SerializedSizeOf(InRouteHopCount)
-					, SerializedSizeOf(InChannelName)
+					+ SerializedSizeOf(InRouteContext)
+					+ SerializedSizeOf(InTransactionID)
+					+ SerializedSizeOf(InRouteHopCount)
+					+ SerializedSizeOf(InChannelName)
 				);
 
 				protocolCheckMem( pNewMsg = MessageData::NewMessage( memHeap, ChatChannelManager::FindChannelCmd::MID, __uiMessageSize ) );
@@ -484,6 +487,7 @@ namespace SF
 
 			}; // Result FindChannelRes::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr&& pIMsg, MessageBase* &pMessageBase )
 
+
 			MessageData* FindChannelRes::Create( IHeap& memHeap, const RouteContext &InRouteContext, const uint64_t &InTransactionID, const Result &InResult, const uint64_t &InChannelUID )
 			{
  				MessageData *pNewMsg = nullptr;
@@ -500,10 +504,10 @@ namespace SF
 				uint8_t *pMsgData = nullptr;
 
 				unsigned __uiMessageSize = (unsigned)(sizeof(MessageHeader) 
-					, SerializedSizeOf(InRouteContext)
-					, SerializedSizeOf(InTransactionID)
-					, SerializedSizeOf(InResult)
-					, SerializedSizeOf(InChannelUID)
+					+ SerializedSizeOf(InRouteContext)
+					+ SerializedSizeOf(InTransactionID)
+					+ SerializedSizeOf(InResult)
+					+ SerializedSizeOf(InChannelUID)
 				);
 
 				protocolCheckMem( pNewMsg = MessageData::NewMessage( memHeap, ChatChannelManager::FindChannelRes::MID, __uiMessageSize ) );
@@ -619,6 +623,7 @@ namespace SF
 
 			}; // Result ChatChannelDeletedC2SEvt::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr&& pIMsg, MessageBase* &pMessageBase )
 
+
 			MessageData* ChatChannelDeletedC2SEvt::Create( IHeap& memHeap, const RouteContext &InRouteContext, const uint16_t &InRouteHopCount )
 			{
  				MessageData *pNewMsg = nullptr;
@@ -635,8 +640,8 @@ namespace SF
 				uint8_t *pMsgData = nullptr;
 
 				unsigned __uiMessageSize = (unsigned)(sizeof(MessageHeader) 
-					, SerializedSizeOf(InRouteContext)
-					, SerializedSizeOf(InRouteHopCount)
+					+ SerializedSizeOf(InRouteContext)
+					+ SerializedSizeOf(InRouteHopCount)
 				);
 
 				protocolCheckMem( pNewMsg = MessageData::NewMessage( memHeap, ChatChannelManager::ChatChannelDeletedC2SEvt::MID, __uiMessageSize ) );

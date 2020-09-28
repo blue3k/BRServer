@@ -59,6 +59,7 @@ namespace SF
 
 			}; // Result GetInstanceListCmd::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr&& pIMsg, MessageBase* &pMessageBase )
 
+
 			MessageData* GetInstanceListCmd::Create( IHeap& memHeap, const uint64_t &InTransactionID )
 			{
  				MessageData *pNewMsg = nullptr;
@@ -75,7 +76,7 @@ namespace SF
 				uint8_t *pMsgData = nullptr;
 
 				unsigned __uiMessageSize = (unsigned)(sizeof(MessageHeader) 
-					, SerializedSizeOf(InTransactionID)
+					+ SerializedSizeOf(InTransactionID)
 				);
 
 				protocolCheckMem( pNewMsg = MessageData::NewMessage( memHeap, Monitoring::GetInstanceListCmd::MID, __uiMessageSize ) );
@@ -138,6 +139,7 @@ namespace SF
 
 			}; // Result GetInstanceListRes::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr&& pIMsg, MessageBase* &pMessageBase )
 
+
 			MessageData* GetInstanceListRes::Create( IHeap& memHeap, const uint64_t &InTransactionID, const Result &InResult, const Array<PerformanceCounterInstanceInfo>& InCounterInstances, const uint32_t &InTotalInstanceCount )
 			{
  				MessageData *pNewMsg = nullptr;
@@ -155,10 +157,10 @@ namespace SF
 
 				uint16_t numberOfInCounterInstances = (uint16_t)InCounterInstances.size(); 
 				unsigned __uiMessageSize = (unsigned)(sizeof(MessageHeader) 
-					, SerializedSizeOf(InTransactionID)
-					, SerializedSizeOf(InResult)
-					, SerializedSizeOf(InCounterInstances)
-					, SerializedSizeOf(InTotalInstanceCount)
+					+ SerializedSizeOf(InTransactionID)
+					+ SerializedSizeOf(InResult)
+					+ SerializedSizeOf(InCounterInstances)
+					+ SerializedSizeOf(InTotalInstanceCount)
 				);
 
 				protocolCheckMem( pNewMsg = MessageData::NewMessage( memHeap, Monitoring::GetInstanceListRes::MID, __uiMessageSize ) );
@@ -220,6 +222,7 @@ namespace SF
 
 			}; // Result RequestCounterValuesCmd::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr&& pIMsg, MessageBase* &pMessageBase )
 
+
 			MessageData* RequestCounterValuesCmd::Create( IHeap& memHeap, const uint64_t &InTransactionID, const uint64_t &InInstanceUID )
 			{
  				MessageData *pNewMsg = nullptr;
@@ -236,8 +239,8 @@ namespace SF
 				uint8_t *pMsgData = nullptr;
 
 				unsigned __uiMessageSize = (unsigned)(sizeof(MessageHeader) 
-					, SerializedSizeOf(InTransactionID)
-					, SerializedSizeOf(InInstanceUID)
+					+ SerializedSizeOf(InTransactionID)
+					+ SerializedSizeOf(InInstanceUID)
 				);
 
 				protocolCheckMem( pNewMsg = MessageData::NewMessage( memHeap, Monitoring::RequestCounterValuesCmd::MID, __uiMessageSize ) );
@@ -301,6 +304,7 @@ namespace SF
 
 			}; // Result RequestCounterValuesRes::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr&& pIMsg, MessageBase* &pMessageBase )
 
+
 			MessageData* RequestCounterValuesRes::Create( IHeap& memHeap, const uint64_t &InTransactionID, const Result &InResult, const uint64_t &InInstanceUID, const Array<uint64_t>& InCounterValues )
 			{
  				MessageData *pNewMsg = nullptr;
@@ -318,10 +322,10 @@ namespace SF
 
 				uint16_t numberOfInCounterValues = (uint16_t)InCounterValues.size(); 
 				unsigned __uiMessageSize = (unsigned)(sizeof(MessageHeader) 
-					, SerializedSizeOf(InTransactionID)
-					, SerializedSizeOf(InResult)
-					, SerializedSizeOf(InInstanceUID)
-					, SerializedSizeOf(InCounterValues)
+					+ SerializedSizeOf(InTransactionID)
+					+ SerializedSizeOf(InResult)
+					+ SerializedSizeOf(InInstanceUID)
+					+ SerializedSizeOf(InCounterValues)
 				);
 
 				protocolCheckMem( pNewMsg = MessageData::NewMessage( memHeap, Monitoring::RequestCounterValuesRes::MID, __uiMessageSize ) );
@@ -388,6 +392,7 @@ namespace SF
 
 			}; // Result PerformanceCounterNewC2SEvt::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr&& pIMsg, MessageBase* &pMessageBase )
 
+
 			MessageData* PerformanceCounterNewC2SEvt::Create( IHeap& memHeap, const char* InInstanceName, const uint64_t &InInstanceUID, const Array<PerformanceCounterInfo>& InNewCounters )
 			{
  				MessageData *pNewMsg = nullptr;
@@ -405,9 +410,9 @@ namespace SF
 
 				uint16_t numberOfInNewCounters = (uint16_t)InNewCounters.size(); 
 				unsigned __uiMessageSize = (unsigned)(sizeof(MessageHeader) 
-					, SerializedSizeOf(InInstanceName)
-					, SerializedSizeOf(InInstanceUID)
-					, SerializedSizeOf(InNewCounters)
+					+ SerializedSizeOf(InInstanceName)
+					+ SerializedSizeOf(InInstanceUID)
+					+ SerializedSizeOf(InNewCounters)
 				);
 
 				protocolCheckMem( pNewMsg = MessageData::NewMessage( memHeap, Monitoring::PerformanceCounterNewC2SEvt::MID, __uiMessageSize ) );
@@ -470,6 +475,7 @@ namespace SF
 
 			}; // Result PerformanceCounterFreeC2SEvt::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr&& pIMsg, MessageBase* &pMessageBase )
 
+
 			MessageData* PerformanceCounterFreeC2SEvt::Create( IHeap& memHeap, const Array<uint64_t>& InFreeInstances )
 			{
  				MessageData *pNewMsg = nullptr;
@@ -487,7 +493,7 @@ namespace SF
 
 				uint16_t numberOfInFreeInstances = (uint16_t)InFreeInstances.size(); 
 				unsigned __uiMessageSize = (unsigned)(sizeof(MessageHeader) 
-					, SerializedSizeOf(InFreeInstances)
+					+ SerializedSizeOf(InFreeInstances)
 				);
 
 				protocolCheckMem( pNewMsg = MessageData::NewMessage( memHeap, Monitoring::PerformanceCounterFreeC2SEvt::MID, __uiMessageSize ) );
@@ -549,6 +555,7 @@ namespace SF
 
 			}; // Result PerformanceCounterUpdateC2SEvt::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr&& pIMsg, MessageBase* &pMessageBase )
 
+
 			MessageData* PerformanceCounterUpdateC2SEvt::Create( IHeap& memHeap, const uint64_t &InInstanceUID, const Array<uint64_t>& InCounterValues )
 			{
  				MessageData *pNewMsg = nullptr;
@@ -566,8 +573,8 @@ namespace SF
 
 				uint16_t numberOfInCounterValues = (uint16_t)InCounterValues.size(); 
 				unsigned __uiMessageSize = (unsigned)(sizeof(MessageHeader) 
-					, SerializedSizeOf(InInstanceUID)
-					, SerializedSizeOf(InCounterValues)
+					+ SerializedSizeOf(InInstanceUID)
+					+ SerializedSizeOf(InCounterValues)
 				);
 
 				protocolCheckMem( pNewMsg = MessageData::NewMessage( memHeap, Monitoring::PerformanceCounterUpdateC2SEvt::MID, __uiMessageSize ) );
@@ -626,6 +633,7 @@ namespace SF
 
 			}; // Result PerformanceCounterUpdateCounterInfoS2CEvt::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr&& pIMsg, MessageBase* &pMessageBase )
 
+
 			MessageData* PerformanceCounterUpdateCounterInfoS2CEvt::Create( IHeap& memHeap, const uint64_t &InInstanceUID )
 			{
  				MessageData *pNewMsg = nullptr;
@@ -642,7 +650,7 @@ namespace SF
 				uint8_t *pMsgData = nullptr;
 
 				unsigned __uiMessageSize = (unsigned)(sizeof(MessageHeader) 
-					, SerializedSizeOf(InInstanceUID)
+					+ SerializedSizeOf(InInstanceUID)
 				);
 
 				protocolCheckMem( pNewMsg = MessageData::NewMessage( memHeap, Monitoring::PerformanceCounterUpdateCounterInfoS2CEvt::MID, __uiMessageSize ) );

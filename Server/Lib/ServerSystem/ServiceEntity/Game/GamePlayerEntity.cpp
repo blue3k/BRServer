@@ -30,10 +30,16 @@
 
 #include "ServiceEntity/Game/GamePlayerEntity.h"
 #include "ServiceEntity/Game/GameServiceTrans.h"
+#include "ServiceEntity/Game/Subsystem/UserFriendSystem.h"
+#include "ServiceEntity/Game/Subsystem/UserNotificationSystem.h"
 
 #include "DB/GameConspiracyDB.h"
 #include "DB/GameTransactionDB.h"
 
+#include "Transaction/GamePlayerEntityTrans.h"
+#include "Transaction/GamePlayerEntityTransParty.h"
+#include "Transaction/GamePlayerEntityTransFriend.h"
+#include "Transaction/GamePlayerEntityTransClose.h"
 
 
 
@@ -52,13 +58,30 @@ namespace Svr {
 	GamePlayerEntity::GamePlayerEntity()
 		: m_PlayerState(PlayerState_None)
 		, m_GameInsUID(0)
+		, m_PlayerData(GetHeap())
+		, m_CharacterData(GetHeap())
+		, m_ComponentManger(GetHeap())
 	{
 		memset(m_UserName, 0, sizeof(m_UserName));
 		memset(m_GCMKeys, 0, sizeof(m_GCMKeys));
 
 		// RegisterPlayerToJoinGameServerCmd can send to player entity when previously logged in
-		BR_ENTITY_MESSAGE(Message::GameServer::RegisterPlayerToJoinGameServerCmd) { svrMemReturn(pNewTrans = new(GetHeap()) GameServerTransRegisterPlayerToJoinGameServer<GamePlayerEntity>(GetHeap(), pMsgData)); return ResultCode::SUCCESS; } );
-		BR_ENTITY_MESSAGE(Message::GameServer::RegisterPlayerToJoinGameServerOnPlayerEntityCmd) { svrMemReturn(pNewTrans = new(GetHeap()) PlayerTransRegisterPlayerToJoinGameServerOnPlayerEntity(GetHeap(), pMsgData)); return ResultCode::SUCCESS; } );
+		RegisterMessageHandler<GameServerTransRegisterPlayerToJoinGameServer<GamePlayerEntity>>();
+		RegisterMessageHandler<PlayerTransRegisterPlayerToJoinGameServerOnPlayerEntity>();
+
+		// Use chat channel
+		//RegisterMessageHandler<PlayerTransChatMessageFromOtherEntity>();
+		//BR_ENTITY_MESSAGE(Message::GameServer::ChatMessageC2SEvt)									{ svrMemReturn(pNewTrans = new(GetHeap()) PlayerTransChatMessageFromOtherEntity(GetHeap(),  pMsgData)); return ResultCode::SUCCESS; } );
+
+		////////////////////////////////////////////////////////////////////////////////////////////////////
+		// Game Player
+
+		RegisterMessageHandler<PlayerTransFriendAcceptedS2S>();
+		RegisterMessageHandler<PlayerTransFriendRemovedS2S>();
+		RegisterMessageHandler<PlayerTransNotifyS2S>();
+		RegisterMessageHandler<PlayerTransRequestPlayerStatusUpdateS2S>();
+		RegisterMessageHandler<PlayerTransNotifyPlayerStatusUpdatedS2S>();
+		RegisterMessageHandler<PlayerTransNotifyPartyInviteS2SEvt>();
 	}
 
 	GamePlayerEntity::~GamePlayerEntity()
@@ -68,9 +91,9 @@ namespace Svr {
 	// Initialize entity to proceed new connection
 	Result GamePlayerEntity::InitializeEntity(EntityID newEntityID)
 	{
-		Result hr = ResultCode::SUCCESS;
+		FunctionContext hr;
 
-		svrChk(Svr::SimpleUserEntity::InitializeEntity(newEntityID));
+		svrCheck(Svr::SimpleUserEntity::InitializeEntity(newEntityID));
 
 		m_GameInsUID = 0;
 		m_PartyUID = 0;
@@ -86,9 +109,14 @@ namespace Svr {
 		SetLatestActiveTime(Util::Time.GetTimeUTCSec());
 		m_LatestUpdateTime = {};
 
+		uint32_t PlayerAutoLogout = 2 * 60; // TODO: move to constant
+		GetTimeToKill().SetTimer(DurationMS(PlayerAutoLogout * 1000));
 
+		svrCheck(GetComponentManager().AddComponent<UserFriendSystem>(this));
+		//svrCheck(GetComponentManager().AddComponent<UserGamePlayerInfoSystem>(this));
+		svrCheck(GetComponentManager().AddComponent<UserNotificationSystem>(this));
 
-	Proc_End:
+		svrCheck(GetComponentManager().InitializeComponents());
 
 
 		return hr;

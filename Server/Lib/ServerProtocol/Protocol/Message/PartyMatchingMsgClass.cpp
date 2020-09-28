@@ -60,6 +60,7 @@ namespace SF
 
 			}; // Result PartyGameMatchedS2CEvt::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr&& pIMsg, MessageBase* &pMessageBase )
 
+
 			MessageData* PartyGameMatchedS2CEvt::Create( IHeap& memHeap, const RouteContext &InRouteContext, const uint16_t &InRouteHopCount )
 			{
  				MessageData *pNewMsg = nullptr;
@@ -76,8 +77,8 @@ namespace SF
 				uint8_t *pMsgData = nullptr;
 
 				unsigned __uiMessageSize = (unsigned)(sizeof(MessageHeader) 
-					, SerializedSizeOf(InRouteContext)
-					, SerializedSizeOf(InRouteHopCount)
+					+ SerializedSizeOf(InRouteContext)
+					+ SerializedSizeOf(InRouteHopCount)
 				);
 
 				protocolCheckMem( pNewMsg = MessageData::NewMessage( memHeap, PartyMatching::PartyGameMatchedS2CEvt::MID, __uiMessageSize ) );
@@ -195,6 +196,7 @@ namespace SF
 
 			}; // Result PlayerGameMatchedS2CEvt::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr&& pIMsg, MessageBase* &pMessageBase )
 
+
 			MessageData* PlayerGameMatchedS2CEvt::Create( IHeap& memHeap, const RouteContext &InRouteContext, const uint16_t &InRouteHopCount, const PlayerID &InDestPlayerID, const uint64_t &InGameInsUID, const uint8_t &InRequestedRole )
 			{
  				MessageData *pNewMsg = nullptr;
@@ -211,11 +213,11 @@ namespace SF
 				uint8_t *pMsgData = nullptr;
 
 				unsigned __uiMessageSize = (unsigned)(sizeof(MessageHeader) 
-					, SerializedSizeOf(InRouteContext)
-					, SerializedSizeOf(InRouteHopCount)
-					, SerializedSizeOf(InDestPlayerID)
-					, SerializedSizeOf(InGameInsUID)
-					, SerializedSizeOf(InRequestedRole)
+					+ SerializedSizeOf(InRouteContext)
+					+ SerializedSizeOf(InRouteHopCount)
+					+ SerializedSizeOf(InDestPlayerID)
+					+ SerializedSizeOf(InGameInsUID)
+					+ SerializedSizeOf(InRequestedRole)
 				);
 
 				protocolCheckMem( pNewMsg = MessageData::NewMessage( memHeap, PartyMatching::PlayerGameMatchedS2CEvt::MID, __uiMessageSize ) );

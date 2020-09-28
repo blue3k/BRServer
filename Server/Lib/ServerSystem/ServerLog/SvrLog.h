@@ -189,6 +189,26 @@ namespace SF {
 	}while(0);\
 
 
+#define trcCheckCondition(condi) \
+				do{ \
+					if( !(condi) ) {\
+					defTrace( Assert, "{0}({1}): Assert occure : {2}", __FILE__, __LINE__, #condi );  SF::Service::LogModule->Flush();\
+						Assert(condi);\
+						return hr = ResultCode::UNEXPECTED;\
+					}\
+				}while(0) \
+
+
+// Assert with expression
+#define trcCheckConditionExp(condi,expr) \
+				do{ \
+					if( !(condi) ) {\
+						defTrace( Assert, "{0}({1}): Assert occure : {2} : {3}", __FILE__, __LINE__, #condi, expr ); SF::Service::LogModule->Flush();\
+						Assert(condi);\
+						return hr = ResultCode::UNEXPECTED;\
+					}\
+				}while(0) \
+
 
 // Assert
 #define trcAssert(condi) \

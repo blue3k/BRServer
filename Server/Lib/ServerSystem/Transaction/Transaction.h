@@ -495,6 +495,10 @@ namespace Svr {
 	template< class OwnerType, class MessageClass >
 	class MessageTransaction : public TransactionT<OwnerType>, public MessageClass
 	{
+	public: 
+
+		using MessageClassType = MessageClass;
+
 	protected:
 		// Policy
 		SharedPointerT<Net::Connection> m_pConn;

@@ -22,7 +22,7 @@
 #include "Entity/Entity.h"
 #include "Entity/SimpleUserEntity.h"
 #include "ServiceEntity/Game/GameSystem.h"
-
+#include "Variable/SFVariableTable.h"
 
 
 namespace SF {
@@ -35,6 +35,10 @@ namespace Policy {
 };
 };
 
+namespace ServerConfig
+{
+	struct NetPublic;
+}
 
 
 namespace SF {
@@ -114,6 +118,14 @@ namespace Svr {
 		// Player Name
 		char m_UserName[GameConst::MAX_NAME];
 
+		// Player data
+		VariableTable m_PlayerData;
+
+		// Character data
+		VariableTable m_CharacterData;
+
+		// Component manager
+		ComponentManager m_ComponentManger;
 
 	protected:
 
@@ -186,6 +198,9 @@ namespace Svr {
 
 
 
+		VariableTable& GetPlayerData() { return m_PlayerData; }
+
+		VariableTable& GetCharacterData() { return m_CharacterData; }
 
 
 		//////////////////////////////////////////////////////////////////////////////////////////////////
@@ -219,6 +234,22 @@ namespace Svr {
 
 		// Update Game Player 
 		virtual Result UpdateGamePlayer() = 0;
+
+
+
+		//////////////////////////////////////////////////////////////////////////////////////////////////
+		//
+		//	Component manager
+		//
+
+		ComponentManager& GetComponentManager() { return m_ComponentManger; }
+
+		template< class ComponentType >
+		ComponentType* GetComponent() { return m_ComponentManger.GetComponent<ComponentType>(); }
+
+		// Get component with its type
+		template< class ComponentType >
+		const ComponentType* GetComponent() const { return m_ComponentManger.GetComponent<ComponentType>(); }
 
 
 		//////////////////////////////////////////////////////////////////////////////////////////////////
@@ -258,7 +289,5 @@ namespace Svr {
 
 	};
 
-#include "GamePlayerEntity.inl"
-
-}; // namespace GameServer
-}; // namespace SF
+} // namespace Svr
+} // namespace SF

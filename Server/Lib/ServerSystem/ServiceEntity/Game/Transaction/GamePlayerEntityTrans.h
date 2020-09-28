@@ -31,12 +31,10 @@
 
 #include "Transaction/MessageRoute.h"
 
-#include "GameServerClass.h"
-
-#include "GameInstance/GamePlayerEntity.h"
+#include "ServiceEntity/Game/GamePlayerEntity.h"
 #include "Net/SFMessage.h"
 
-#include "GameSystem/UserGamePlayerInfoSystem.h"
+//#include "GameSystem/UserGamePlayerInfoSystem.h"
 
 
 namespace SF {
@@ -45,7 +43,7 @@ namespace SF {
 		struct QueryGetPlayerInfoData;
 	};
 
-namespace GameServer {
+namespace Svr {
 
 
 
@@ -108,6 +106,7 @@ namespace GameServer {
 		typedef Svr::MessageTransaction< GamePlayerEntity, Message::Game::GetUserGamePlayerInfoCmd> super;
 
 	private:
+		
 		VariableTable m_Result;
 
 
@@ -202,7 +201,7 @@ namespace GameServer {
 	class PlayerTransSetConfigPreset : public Svr::MessageTransaction< GamePlayerEntity, Message::Game::SetPresetGameConfigIDCmd>
 	{
 	public:
-		using super = Svr::MessageTransaction< GamePlayerEntity, Message::Game::SetPresetGameConfigIDCmd> ;
+		typedef Svr::MessageTransaction< GamePlayerEntity, Message::Game::SetPresetGameConfigIDCmd> super;
 
 	private:
 	public:
@@ -215,24 +214,6 @@ namespace GameServer {
 		BR_IMPLEMENT_USERMSGTRANS_CLOSE(Policy::NetSvrPolicyGame, SetPresetGameConfigIDRes);
 	};
 	
-	class PlayerTransGainGameResource : public Svr::MessageTransaction< GamePlayerEntity, Message::Game::GainGameResourceCmd>
-	{
-	public:
-		typedef Svr::MessageTransaction< GamePlayerEntity, Message::Game::GainGameResourceCmd> super;
-
-	private:
-	public:
-		PlayerTransGainGameResource(IHeap& heap, MessageDataPtr &pIMsg );
-		virtual ~PlayerTransGainGameResource() {}
-
-		Result OnSetPlayerInfoRes(  Svr::TransactionResult* &pRes );
-
-		// Start Transaction
-		virtual Result StartTransaction();
-
-		BR_IMPLEMENT_USERMSGTRANS_CLOSE(Policy::NetSvrPolicyGame, GainGameResourceRes);
-	};
-
 
 	/////////////////////////////////////////////////////////////////////////////
 	//
@@ -557,10 +538,13 @@ namespace GameServer {
 	class PlayerTransBuyShopItem : public Svr::MessageTransaction< GamePlayerEntity, Message::Game::BuyShopItemCmd>
 	{
 	public:
-		typedef Svr::MessageTransaction< GamePlayerEntity, Message::Game::BuyShopItemCmd> super;
+
+		using super = Svr::MessageTransaction< GamePlayerEntity, Message::Game::BuyShopItemCmd>;
+
+		static constexpr size_t MEMENTO_SIZE = 2048;
 
 	private:
-		Memento<UserGamePlayerInfoSystem::MEMENTO_SIZE> m_SavedData;
+		Memento<MEMENTO_SIZE> m_SavedData;
 		conspiracy::ShopTbl::ShopItem *m_pShopItem;
 
 	public:

@@ -28,7 +28,6 @@ set(BRSERVERSYSTEM_LIB_FILES
     ServiceEntity/Party/GamePartyManagerServiceTrans.cpp
     ServiceEntity/Game/GameInstanceEntity.inl
     ServiceEntity/Game/GameInstancePlayer.inl
-    ServiceEntity/Game/GamePlayerEntity.inl
     ServiceEntity/Game/GameSystem.inl
     ServiceEntity/Game/PlayerManagerServiceEntity.h
     ServiceEntity/Game/GameInstanceEntity.h
@@ -216,6 +215,20 @@ set(BRSERVERSYSTEM_LIB_FILES
 	ServiceEntity/Relay/RelayInstance.cpp
 	ServiceEntity/Relay/RelayInstance.h
     ServiceEntity/ServiceEntity.cpp
+	ServiceEntity/Game/Transaction/GamePlayerEntityTrans.h
+	ServiceEntity/Game/Transaction/GamePlayerEntityTrans.cpp
+	ServiceEntity/Game/Transaction/GamePlayerEntityTransChatChannel.h
+	ServiceEntity/Game/Transaction/GamePlayerEntityTransChatChannel.cpp
+	ServiceEntity/Game/Transaction/GamePlayerEntityTransClose.h
+	ServiceEntity/Game/Transaction/GamePlayerEntityTransClose.cpp
+	ServiceEntity/Game/Transaction/GamePlayerEntityTransFriend.h
+	ServiceEntity/Game/Transaction/GamePlayerEntityTransFriend.cpp
+	ServiceEntity/Game/Transaction/GamePlayerEntityTransParty.h
+	ServiceEntity/Game/Transaction/GamePlayerEntityTransParty.cpp
+	ServiceEntity/Game/Subsystem/UserFriendSystem.h
+    ServiceEntity/Game/Subsystem/UserFriendSystem.cpp
+	ServiceEntity/Game/Subsystem/UserNotificationSystem.h
+    ServiceEntity/Game/Subsystem/UserNotificationSystem.cpp
     Service/ServerService.cpp
     String/ToStringSvr.cpp
     Task/ServerTask.cpp

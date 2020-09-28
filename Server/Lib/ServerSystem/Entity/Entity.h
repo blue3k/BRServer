@@ -161,6 +161,19 @@ namespace Svr{
 			return m_HandlerTable.Register<MessageClassType>(fileName, lineNumber, std::forward<MessageHandlerType>(newHandler) );
 		}
 
+
+		template<class TransactionType>
+		Result RegisterMessageHandler()
+		{
+			return m_HandlerTable.Register<typename TransactionType::MessageClassType>(__FILE__, __LINE__,
+				[this](Net::Connection* pConnection, MessageDataPtr& pMsg, TransactionPtr& pNewTrans)->Result
+				{
+					svrMemReturn(pNewTrans = new(GetHeap()) TransactionType(GetHeap(), pMsg));
+					return ResultCode::SUCCESS;
+				}
+			);
+		}
+
 		Svr::MessageHandlerTable<MessageHandlerType>* GetMessageHandlerTable() { return &m_HandlerTable; }
 
 

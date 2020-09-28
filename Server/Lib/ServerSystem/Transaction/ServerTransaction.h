@@ -48,7 +48,9 @@ namespace Svr {
 	class ServerEntityMessageTransaction : public TransactionT<OwnerEntityType>, public MessageClass
 	{
 	public:
-		typedef TransactionT<OwnerEntityType> superTrans;
+
+		using MessageClassType = MessageClass;
+		using superTrans = TransactionT<OwnerEntityType>;
 
 	protected:
 		// Select which entity will work
