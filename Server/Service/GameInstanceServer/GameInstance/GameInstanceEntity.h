@@ -93,9 +93,12 @@ namespace ConspiracyGameInstanceServer
 		//	Game info
 		//
 
+		// Number of bot
+		uint m_NumBot = 0;
 
-		uint m_RoleRequestSeer;
-		uint m_RoleRequestWerewolf;
+
+		uint m_RoleRequestSeer = 0;
+		uint m_RoleRequestWerewolf = 0;
 
 		conspiracy::BotTalkTbl::BotTalkTblItem *m_pBotTalk;
 
@@ -124,6 +127,8 @@ namespace ConspiracyGameInstanceServer
 
 		uint GetRoleRequestWerewolf() { return m_RoleRequestWerewolf; }
 		void SetRoleRequestWerewolf(uint value) { m_RoleRequestWerewolf = value; }
+
+		uint GetNumBot() { return m_NumBot; }
 
 		//// Get server instance
 		//GameInstanceServer* GetMyOwner();

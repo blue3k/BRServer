@@ -54,9 +54,7 @@ namespace Svr {
 
 		svrCheck(super::InitializeEntity(newEntityID) );
 
-		m_CurrentProcessingNumberofMember = 0;
-
-		m_LastRankingFailed = false;
+		// TODO: Add components
 
 		svrCheck(GetComponentManager().InitializeComponents());
 
@@ -67,6 +65,8 @@ namespace Svr {
 	Result GameInstanceServiceEntity::ClearEntity()
 	{
 		FunctionContext hr;
+
+		svrCheck(GetComponentManager().TerminateComponents());
 
 		svrCheck(super::ClearEntity() );
 

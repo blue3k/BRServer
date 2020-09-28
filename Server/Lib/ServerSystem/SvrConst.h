@@ -70,7 +70,7 @@ namespace Const {
 	constexpr DurationMS		LOGIN_TIME_WAIT_PLAYER_JOIN = DurationMS(2 * 60 * 1000);  // This is DB maximum, see spRegisterAuthTicket
 #endif
 
-	constexpr DurationMS		GAMEINSTANCE_TICK_TIME = DurationMS(3 * 1000);
+	constexpr DurationMS		GAMEINSTANCE_TICK_TIME = DurationMS(1000);
 	constexpr DurationMS		GAMEINSTANCE_EMPTYINSTANCE_KILL_TIMEOUT = DurationMS(60 * 1000);
 
 

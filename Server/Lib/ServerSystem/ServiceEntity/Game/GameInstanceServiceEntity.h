@@ -51,12 +51,6 @@ namespace Svr {
 
 	private:
 
-		// Currently processing number of members
-		uint m_CurrentProcessingNumberofMember = 0;
-
-		bool m_LastRankingFailed = false;
-		Util::TimeStampTimer m_RankingCheckTimer;
-
 		// Component manager
 		ComponentManager m_ComponentManger;
 
@@ -66,11 +60,9 @@ namespace Svr {
 		GameInstanceServiceEntity(GameID gameID, ClusterMembership initialMembership = ClusterMembership::Slave);
 		~GameInstanceServiceEntity();
 
-		bool GetLastRankingFailed() { return m_LastRankingFailed; }
-
 		// We are not going to use hashed key
 		virtual uint KeyHash( uint64_t key ) { return (uint)key; }
-		
+
 
 		//////////////////////////////////////////////////////////////////////////////////////////////////
 		//

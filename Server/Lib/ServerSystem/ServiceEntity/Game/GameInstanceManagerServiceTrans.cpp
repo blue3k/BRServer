@@ -39,26 +39,25 @@ namespace Svr {
 	// Start Transaction
 	Result GameInstanceTransCreateGame::StartTransaction()
 	{
-		Result hr = ResultCode::SUCCESS;
+		FunctionContext hr([this](Result hr)
+			{
+				CloseTransaction(hr);
+			});
 		Entity *pEntity = nullptr;
 		GameInstanceEntity* pGameInstance = nullptr;
 
-		svrChk( super::StartTransaction() );
+		svrCheck( super::StartTransaction() );
 
-		svrChk(Service::EntityManager->CreateEntity( ClusterID::GameInstanceManager, EntityFaculty::GameInstance, pEntity ) );
+		svrCheck(Service::EntityManager->CreateEntity( ClusterID::GameInstanceManager, EntityFaculty::GameInstance, pEntity ) );
 
-		svrChkPtr(pGameInstance = dynamic_cast<GameInstanceEntity*>(pEntity));
-		svrChk(pGameInstance->InitializeGameEntity(GetNumberOfBotPlayer(), GetMaxPlayer()));
+		svrCheckPtr(pGameInstance = dynamic_cast<GameInstanceEntity*>(pEntity));
+		svrCheck(pGameInstance->InitializeGameEntity(GetNumberOfBotPlayer(), GetMaxPlayer()));
 
-		svrChk(GetMyOwner()->OnNewInstance(pGameInstance));
+		svrCheck(GetMyOwner()->OnNewInstance(pGameInstance));
 
 		m_GameInsUID = pEntity->GetEntityUID();
 
 		svrTrace(SVR_INFO, "CreateGameInstance:{0}, numBot:{1}, maxPlayer:{2}", pGameInstance->GetEntityUID(), GetNumberOfBotPlayer(), GetMaxPlayer());
-
-	Proc_End:
-
-		CloseTransaction(hr);
 
 		return hr;
 	}
@@ -67,15 +66,14 @@ namespace Svr {
 	// Start Transaction
 	Result GameInstanceTransGameDeleted::StartTransaction()
 	{
-		Result hr = ResultCode::SUCCESS;
+		FunctionContext hr([this](Result hr)
+			{
+				CloseTransaction(hr);
+			});
 
-		svrChk(super::StartTransaction());
+		svrCheck(super::StartTransaction());
 
-		svrChk(GetMyOwner()->FreeGameInstance(GetRouteContext().GetFrom()));
-
-	Proc_End:
-
-		CloseTransaction(hr);
+		svrCheck(GetMyOwner()->FreeGameInstance(GetRouteContext().GetFrom()));
 
 		return hr;
 	}

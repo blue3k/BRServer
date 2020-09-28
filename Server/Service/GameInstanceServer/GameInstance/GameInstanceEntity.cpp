@@ -202,9 +202,6 @@ namespace ConspiracyGameInstanceServer {
 
 
 
-
-
-
 	////////////////////////////////////////////////////////////
 	//
 	//	Game entity
@@ -214,7 +211,7 @@ namespace ConspiracyGameInstanceServer {
 	Result GameInstanceEntity::InitializeGameEntity(uint numBot, uint maxPlayer)
 	{
 		Result hr = ResultCode::SUCCESS;
-		GamePlayer *pPlayer = nullptr;
+		Svr::GameInstancePlayer* pPlayer = nullptr;
 
 		// initialize
 		memset(m_PlayerCharacter, 0xFF, sizeof(m_PlayerCharacter));
@@ -235,12 +232,32 @@ namespace ConspiracyGameInstanceServer {
 			}
 		}
 
+		if (numBot > maxPlayer)
+		{
+			// Too many boot number
+			svrTrace(Error, "Too many bot number numBot:{0} -> {1}, maxPlayer:{2}", numBot, maxPlayer - 1, maxPlayer);
+			numBot = maxPlayer - 1;
+		}
+
+		m_NumBot = numBot;
 
 		m_RoleRequestSeer = 0;
 		m_RoleRequestWerewolf = 0;
 
 		svrChk(super::InitializeGameEntity(numBot, maxPlayer));
 
+
+		// add fake bot player
+		for (uint iBot = 0; iBot < m_NumBot; iBot++)
+		{
+			PlayerInformation playerInfo;
+			playerInfo.PlayerID = iBot + 1;
+			playerInfo.Level = 1;
+			StrUtil::Format(playerInfo.NickName, "Bot{0}", iBot);
+			svrChk(CreatePlayerInstance(playerInfo, pPlayer));
+			pPlayer->SetIsBot(true);
+			svrChk(AddPlayerToJoin(pPlayer));
+		}
 
 	Proc_End:
 

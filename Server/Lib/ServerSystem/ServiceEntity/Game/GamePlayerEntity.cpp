@@ -113,8 +113,6 @@ namespace Svr {
 
 		svrCheck(super::RegisterMessageHandlers());
 
-
-
 		// RegisterPlayerToJoinGameServerCmd can send to player entity when previously logged in
 		RegisterMessageHandler<GameServerTransRegisterPlayerToJoinGameServer<GamePlayerEntity>>();
 		RegisterMessageHandler<PlayerTransRegisterPlayerToJoinGameServerOnPlayerEntity>();
@@ -221,7 +219,7 @@ namespace Svr {
 	// Set connection for pilot
 	Result GamePlayerEntity::SetConnection(SharedPointerT<Net::Connection>&& pCon)
 	{
-		Result hr = ResultCode::SUCCESS;
+		FunctionContext hr;
 
 		if (*pCon == *GetConnection())
 			return hr;
@@ -233,10 +231,7 @@ namespace Svr {
 
 		Service::ConnectionManager->AddConnection(pCon);
 
-		svrChk(Svr::SimpleUserEntity::SetConnection(std::forward<SharedPointerT<Net::Connection>>(pCon)));
-
-
-	Proc_End:
+		svrCheck(Svr::SimpleUserEntity::SetConnection(std::forward<SharedPointerT<Net::Connection>>(pCon)));
 
 		return hr;
 	}
@@ -259,18 +254,25 @@ namespace Svr {
 
 	Result GamePlayerEntity::OnJoinGameServerInitialize(AuthTicket authTicket, FacebookUID fbUID)
 	{
-		Result hr = ResultCode::SUCCESS;
 		Net::ConnectionPtr pConnection;
+		FunctionContext hr([this, &pConnection](Result hr)
+			{
+				if (pConnection != nullptr && pConnection->GetCID() != 0)
+				{
+					Service::ConnectionManager->FreeCID((uint)pConnection->GetCID());
+					pConnection->SetCID(0);
+				}
+			});
 		Net::PeerInfo local, remote;
 
-		svrChkPtr(m_ServerNet);
+		svrCheckPtr(m_ServerNet);
 
 		ReleaseConnection("JoinGameServer releasing old connection");
 
 		SetAuthTicket(authTicket);
 		SetFacebookUID(fbUID);
 
-		svrChkPtr(pConnection = new(GetSystemHeap()) Net::ConnectionMUDPServer(GetSystemHeap(), m_ServerNet->GetSocketIO()));
+		svrCheckPtr(pConnection = new(GetSystemHeap()) Net::ConnectionMUDPServer(GetSystemHeap(), m_ServerNet->GetSocketIO()));
 
 		local.SetInfo(GetServerNet()->GetNetClass(), m_ServerNet->GetLocalAddress(), BrServer::GetInstance()->GetServerUID());
 		remote.SetInfo(NetClass::Client, authTicket);
@@ -278,28 +280,20 @@ namespace Svr {
 		pConnection->SetCID(Service::ConnectionManager->NewCID());
 		pConnection->SetRemoteID(authTicket);
 
-		svrChk(pConnection->InitConnection(local, remote));
+		svrCheck(pConnection->InitConnection(local, remote));
 
 		svrTrace(SVR_INFO, "Initialize connection CID:{0}, Addr:{1}", pConnection->GetCID(), pConnection->GetRemoteInfo().PeerAddress);
 
 		// All players are already logged in, we don't need address map
-		// All player connection in game service will be routed with peerid
+		// All player connection in game service will be routed with peer id
 		pConnection->SetUseAddressMap(false);
 
 		// replace previous connection first
-		svrChk(SetConnection(std::forward<Net::ConnectionPtr>(pConnection)));
+		svrCheck(SetConnection(std::forward<Net::ConnectionPtr>(pConnection)));
 
 		SetLatestActiveTime(Util::Time.GetTimeUTCSec());
 
 		AddGameTransactionLog(TransLogCategory::Account, 2, 0, 0, "Entity Initialize");
-
-	Proc_End:
-
-		if (pConnection != nullptr && pConnection->GetCID() != 0)
-		{
-			Service::ConnectionManager->FreeCID((uint)pConnection->GetCID());
-			pConnection->SetCID(0);
-		}
 
 		return hr;
 	}
@@ -323,13 +317,13 @@ namespace Svr {
 	// clear transaction
 	Result GamePlayerEntity::ClearEntity()
 	{
-		Result hr = ResultCode::SUCCESS;
+		FunctionContext hr;
 
 		ReleaseConnection("Clearing game player entity");
 
-		svrChk(Svr::SimpleUserEntity::ClearEntity());
+		svrCheck(Svr::SimpleUserEntity::ClearEntity());
 
-	Proc_End:
+		GetComponentManager().TerminateComponents();
 
 		return hr;
 	}
@@ -337,7 +331,7 @@ namespace Svr {
 	// Run the task
 	Result GamePlayerEntity::TickUpdate(TimerAction *pAction)
 	{
-		Result hr = ResultCode::SUCCESS;
+		FunctionContext hr;
 
 		hr = Svr::SimpleUserEntity::TickUpdate(pAction);
 		if (hr == Result(ResultCode::SUCCESS_FALSE))
@@ -348,15 +342,15 @@ namespace Svr {
 		//	UpdateDBSync();
 		//}
 
-
 		if (m_TimeToKill.CheckTimer()
 			&& GetEntityState() == EntityState::WORKING)
 		{
-			PendingCloseTransaction("Player heartbit timeout");
+			PendingCloseTransaction("Player heart bit timeout");
 		}
-
-	Proc_End:
-
+		else
+		{
+			GetComponentManager().TickUpdate();
+		}
 
 		return hr;
 	}
@@ -394,22 +388,21 @@ namespace Svr {
 	// Send push notify
 	Result GamePlayerEntity::SendPushNotify(const char* strMessage, uint64_t param)
 	{
-		Result hr = ResultCode::SUCCESS;
+		FunctionContext hr;
 
 		// Send GCM push notify
 		if (GetGCMKeys() != nullptr && GetGCMKeys()[0] != '\0')
 		{
 			Svr::ExternalTransactionManager *pExternal = Svr::GetServerComponent<Svr::ExternalTransactionManager>();
-			svrChkPtr(pExternal);
-			svrChk(pExternal->SendGCMNotify(0, GetGCMKeys(), strMessage, param));
+			svrCheckPtr(pExternal);
+			svrCheck(pExternal->SendGCMNotify(0, GetGCMKeys(), strMessage, param));
 		}
-	Proc_End:
 
 		return hr;
 	}
 
 
-}; // namespace Svr
-}; // namespace SF
+} // namespace Svr
+} // namespace SF
 
 

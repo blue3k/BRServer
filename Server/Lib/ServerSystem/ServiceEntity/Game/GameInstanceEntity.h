@@ -101,11 +101,10 @@ namespace Svr
 		// Total joined player since game instance is created
 		uint m_TotalJoinedPlayer;
 
-		// Number of bot
-		uint m_NumBot;
-
 		DurationMS m_EmptyInstanceKillTimeOut;
 
+		// Component manager
+		ComponentManager m_ComponentManger;
 
 	public:
 		//////////////////////////////////////////////////////////////////////////////////////////////////
@@ -124,7 +123,6 @@ namespace Svr
 
 		uint GetMaxPlayer() { return m_MaxPlayer; }
 		uint GetTotalJoinedPlayer() { return m_TotalJoinedPlayer; }
-		uint GetNumBot() { return m_NumBot; }
 
 		DurationMS GetEmptyInstanceKillTimeOut() { return m_EmptyInstanceKillTimeOut; }
 		void SetEmptyInstanceKillTimeOut(DurationMS value) { m_EmptyInstanceKillTimeOut = value; }
@@ -164,19 +162,20 @@ namespace Svr
 
 
 
-		////////////////////////////////////////////////////////////////////////////////////////////
-		////
-		////	foreach implementations
-		////
 
-		//// foreach game player
-		//template< class Func >
-		//Result ForeachPlayer(Func func);
-		////Result ForeachPlayer( std::function<Result(GamePlayer* pPlayer)> func );
+		//////////////////////////////////////////////////////////////////////////////////////////////////
+		//
+		//	Component manager
+		//
 
-		//Result ForeachPlayerGameServer( std::function<Result(GamePlayer* pPlayer, Policy::NetPolicyGameServer *pPolicy)> func );
+		ComponentManager& GetComponentManager() { return m_ComponentManger; }
 
-		//Result ForeachPlayerSvrGameInstance( std::function<Result(GamePlayer* pPlayer, Policy::NetSvrPolicyGameInstance *pPolicy)> func );
+		template< class ComponentType >
+		ComponentType* GetComponent() { return m_ComponentManger.GetComponent<ComponentType>(); }
+
+		// Get component with its type
+		template< class ComponentType >
+		const ComponentType* GetComponent() const { return m_ComponentManger.GetComponent<ComponentType>(); }
 
 
 
