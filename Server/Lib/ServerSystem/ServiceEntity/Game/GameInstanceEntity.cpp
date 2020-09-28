@@ -263,10 +263,9 @@ namespace Svr {
 	{
 		FunctionContext hr;
 		GameInstancePlayer* pFound = nullptr;
-//		uint playerIndex;
 
 		svrCheckPtr( pPlayer );
-		if ((m_GamePlayerByUID.Find(pPlayer->GetPlayerID(), pFound)))
+		if (m_GamePlayerByUID.Find(pPlayer->GetPlayerID(), pFound))
 		{
 			svrError(ResultCode::GAME_ALREADY_IN_GAME);
 		}
@@ -292,7 +291,6 @@ namespace Svr {
 		pPlayer->SetServerEntity(nullptr,0);
 
 		// We will leave him as an inactive player so the clean-up and any notify aren't needed
-
 
 		svrTrace(SVR_INFO, "LeavePlayer, remain:{0}", m_GamePlayerByUID.size());
 

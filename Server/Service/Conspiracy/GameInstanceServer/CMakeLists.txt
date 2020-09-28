@@ -44,14 +44,14 @@ include_directories(./)
 
 
 
-add_executable(BRGameInstanceServer ${BRGAMEINSTANCESERVER_LIB_FILES})
+add_executable(BRGameInstanceServerConspiracy ${BRGAMEINSTANCESERVER_LIB_FILES})
 
-add_dependencies(BRGameInstanceServer BRDB BRServerSystem BRServerProtocol BRTable)
+add_dependencies(BRGameInstanceServerConspiracy BRDB BRServerSystem BRServerProtocol BRTable)
 
-target_link_libraries(BRGameInstanceServer ${ENGINE_LINK_LIBS} ${PLATFORM_LIBS})
+target_link_libraries(BRGameInstanceServerConspiracy ${ENGINE_LINK_LIBS} ${PLATFORM_LIBS})
 
 
-install (TARGETS BRGameInstanceServer
+install (TARGETS BRGameInstanceServerConspiracy
          ARCHIVE DESTINATION lib COMPONENT BRServer
          LIBRARY DESTINATION lib COMPONENT BRServer
          RUNTIME DESTINATION bin COMPONENT BRServer)

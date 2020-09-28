@@ -86,27 +86,14 @@ namespace Svr {
 		if( BrServer::GetInstance()->GetServerState() != ServerState::RUNNING )
 			return hr;
 
-
 		m_ComponentManger.TickUpdate();
 
 		return hr;
 	}
 
 
-
-	//////////////////////////////////////////////////////////////////////////
-	//
-	//	
-	//
-
-
-
-
-
-
-
-}; // namespace Svr {
-}; // namespace SF {
+} // namespace Svr {
+} // namespace SF {
 
 
 
