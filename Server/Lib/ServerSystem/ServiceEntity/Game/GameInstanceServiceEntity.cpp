@@ -40,6 +40,7 @@ namespace Svr {
 
 	GameInstanceServiceEntity::GameInstanceServiceEntity(GameID gameID, ClusterMembership initialMembership)
 		: super(gameID, ClusterID::GameInstanceManager, initialMembership)
+		, m_ComponentManger(GetHeap())
 	{
 	}
 
@@ -49,15 +50,15 @@ namespace Svr {
 
 	Result GameInstanceServiceEntity::InitializeEntity( EntityID newEntityID )
 	{
-		Result hr = ResultCode::SUCCESS;
+		FunctionContext hr;
 
-		svrChk(super::InitializeEntity(newEntityID) );
+		svrCheck(super::InitializeEntity(newEntityID) );
 
 		m_CurrentProcessingNumberofMember = 0;
 
 		m_LastRankingFailed = false;
 
-	Proc_End:
+		svrCheck(GetComponentManager().InitializeComponents());
 
 		return hr;
 	}
@@ -65,30 +66,28 @@ namespace Svr {
 	// clear transaction
 	Result GameInstanceServiceEntity::ClearEntity()
 	{
-		Result hr = ResultCode::SUCCESS;
+		FunctionContext hr;
 
-		svrChk(super::ClearEntity() );
-
-	Proc_End:
+		svrCheck(super::ClearEntity() );
 
 		return hr;
 	}
 
 	Result GameInstanceServiceEntity::TickUpdate(TimerAction *pAction)
 	{
-		Result hr = ResultCode::SUCCESS;
+		FunctionContext hr;
 
-		svrChk(super::TickUpdate(pAction) );
+		svrCheck(super::TickUpdate(pAction) );
 
 		// check below only if we are working
 		if( GetEntityState() != EntityState::WORKING )
-			goto Proc_End;
+			return hr;
 
 		if( BrServer::GetInstance()->GetServerState() != ServerState::RUNNING )
-			goto Proc_End;
+			return hr;
 
 
-	Proc_End:
+		m_ComponentManger.TickUpdate();
 
 		return hr;
 	}

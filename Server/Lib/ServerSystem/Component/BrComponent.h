@@ -47,6 +47,8 @@ namespace SF {
 		virtual Result InitializeComponent() { m_IsInitialized = true; return ResultCode::SUCCESS; }
 		// Terminate server component
 		virtual void TerminateComponent() { m_IsInitialized = false;  }
+
+		virtual void TickUpdate() {}
 	};
 
 
@@ -602,6 +604,15 @@ namespace SF {
 			}
 		}
 
+
+		virtual void TickUpdate()
+		{
+			for (auto itComponent : m_Components)
+			{
+				if (itComponent.GetValue() != nullptr)
+					itComponent.GetValue()->TickUpdate();
+			}
+		}
 	};
 
 
