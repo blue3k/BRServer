@@ -214,24 +214,6 @@ namespace GameServer {
 
 		BR_IMPLEMENT_USERMSGTRANS_CLOSE(Policy::NetSvrPolicyGame, SetPresetGameConfigIDRes);
 	};
-	
-	class PlayerTransGainGameResource : public Svr::MessageTransaction< GamePlayerEntity, Message::Game::GainGameResourceCmd>
-	{
-	public:
-		typedef Svr::MessageTransaction< GamePlayerEntity, Message::Game::GainGameResourceCmd> super;
-
-	private:
-	public:
-		PlayerTransGainGameResource(IHeap& heap, MessageDataPtr &pIMsg );
-		virtual ~PlayerTransGainGameResource() {}
-
-		Result OnSetPlayerInfoRes(  Svr::TransactionResult* &pRes );
-
-		// Start Transaction
-		virtual Result StartTransaction();
-
-		BR_IMPLEMENT_USERMSGTRANS_CLOSE(Policy::NetSvrPolicyGame, GainGameResourceRes);
-	};
 
 
 	/////////////////////////////////////////////////////////////////////////////

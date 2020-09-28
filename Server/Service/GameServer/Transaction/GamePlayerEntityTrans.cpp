@@ -1700,74 +1700,7 @@ namespace GameServer {
 
 
 
-	PlayerTransGainGameResource::PlayerTransGainGameResource(IHeap& heap, MessageDataPtr &pIMsg )
-		: MessageTransaction( heap, std::forward<MessageDataPtr>(pIMsg) )
-	{
-		BR_TRANS_MESSAGE( DB::QuerySetPlayerInfoCmd, { return OnSetPlayerInfoRes(pRes); } );
-	}
 
-	Result PlayerTransGainGameResource::OnSetPlayerInfoRes(  Svr::TransactionResult* &pRes )
-	{
-		Result hr = ResultCode::SUCCESS;
-
-		svrChk( pRes->GetResult() );
-		//DB::QuerySetPlayerInfoCmd *pMsgRes = (DB::QuerySetPlayerInfoCmd*)pRes;
-
-
-	Proc_End:
-
-		CloseTransaction(hr);
-
-		return ResultCode::SUCCESS;
-	}
-
-	// Start Transaction
-	Result PlayerTransGainGameResource::StartTransaction()
-	{
-		Result hr = ResultCode::SUCCESS;
-		UserGamePlayerInfoSystem *pPlayerInfoSystem = nullptr;
-		DebugGameResource res = (DebugGameResource)GetResource();
-
-		svrChk( super::StartTransaction() );
-
-		if( GetResource() < 0 || GetResource() >= (int)DebugGameResource::Max )
-			svrErrClose(ResultCode::INVALID_ARG);
-
-		GetMyOwner()->AddGameTransactionLog(TransLogCategory::DbgGain, GetValue(), 0, GetResource());
-
-		switch( res )
-		{
-		case DebugGameResource::Gem:
-			svrChk( GetMyOwner()->GetComponent<UserGamePlayerInfoSystem>()->GainGem( GetValue() ) );
-			break;
-		case DebugGameResource::GameMoney:
-			svrChk( GetMyOwner()->GetComponent<UserGamePlayerInfoSystem>()->GainGameMoney( GetValue() ) );
-			break;
-		case DebugGameResource::Stamina:
-			svrChk( GetMyOwner()->GetComponent<UserGamePlayerInfoSystem>()->GainStamina( GetValue() ) );
-			break;
-		default:
-			svrErrClose(ResultCode::INVALID_ARG);
-			break;
-		}
-
-		svrChkPtr( pPlayerInfoSystem = GetMyOwner()->GetComponent<UserGamePlayerInfoSystem>() );
-
-		// Save player data
-		svrChk(pPlayerInfoSystem->SavePlayerInfoToDB(GetTransID()));
-
-
-	Proc_End:
-
-		if( !(hr) )
-			CloseTransaction( hr );
-
-		return hr;
-	}
-	
-
-
-
-};// namespace GameServer 
-};// namespace SF 
+}// namespace GameServer 
+}// namespace SF 
 

@@ -359,7 +359,6 @@ namespace GameServer {
 		BR_ENTITY_MESSAGE(Message::Game::CancelGameMatchCmd) { pNewTrans = new(GetHeap()) PlayerTransCancelGameMatch(GetHeap(), pMsgData); return OnNewUserTranscation(); } );
 
 		BR_ENTITY_MESSAGE(Message::Game::SetPresetGameConfigIDCmd) { pNewTrans = new(GetHeap()) PlayerTransSetConfigPreset(GetHeap(), pMsgData); return OnNewUserTranscation(); } );
-		BR_ENTITY_MESSAGE(Message::Game::GainGameResourceCmd) { pNewTrans = new(GetHeap()) PlayerTransGainGameResource(GetHeap(), pMsgData); return OnNewUserTranscation(); } );
 
 		return ResultCode::SUCCESS;
 	}
