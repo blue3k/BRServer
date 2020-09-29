@@ -46,6 +46,7 @@ namespace SF {
 #define svrCheckMem(Op) SFCheckMem(Svr,Op)
 #define svrCheckPtr(Op) SFCheckPtr(Svr,Op)
 #define svrError(e)		SFCheckResult(Svr,e)
+#define svrCheckCloseError(ErrCode,e)	{ do{ Result hRes = (e); if( !hRes ) { CloseTransaction(ErrCode); return hr;} } while(0); }
 
 #define svrCheckCondition(e)				trcCheckCondition(e)
 #define svrCheckConditionExp(e,expr)		trcCheckConditionExp(e,expr)

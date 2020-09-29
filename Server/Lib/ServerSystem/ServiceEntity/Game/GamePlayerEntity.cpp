@@ -131,7 +131,6 @@ namespace Svr {
 			});
 		RegisterMessageHandler<PlayerTransJoinGameServer>();
 		RegisterMessageHandler<PlayerTransGetUserGamePlayerInfo>();
-		RegisterMessageHandler<PlayerTransGetUserGamePlayerInfo>();
 		RegisterMessageHandler<PlayerTransGetGamePlayerInfo>();
 
 		RegisterMessageHandler<PlayerTransGetComplitionState>();
