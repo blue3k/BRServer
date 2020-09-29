@@ -55,8 +55,9 @@ namespace Svr {
 		svrCheck(super::InitializeEntity(newEntityID) );
 
 		// TODO: Add components
+		
 
-		svrCheck(GetComponentManager().InitializeComponents());
+		svrCheck(m_ComponentManger.InitializeComponents());
 
 		return hr;
 	}
@@ -94,6 +95,4 @@ namespace Svr {
 
 } // namespace Svr {
 } // namespace SF {
-
-
 

@@ -4,7 +4,7 @@
 set CMAKE_SYSTEM_NAME=Windows
 set PROCESS_ARCHITECTUR=x64
 
-call ..\StormForge3rdParties\3rdParties\FindVC.cmd
+call ..\StormForge\3rdParties\FindVC.cmd
 
 if not exist build%CMAKE_SYSTEM_NAME% mkdir build%CMAKE_SYSTEM_NAME%
 set BUILD_DIR=build%CMAKE_SYSTEM_NAME%\%PROCESS_ARCHITECTUR%
