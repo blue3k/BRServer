@@ -36,3 +36,7 @@ robocopy ..\%PROCESS_ARCHITECTUR%%CMAKE_BUILD_TYPE%\bin ..\..\Server\bin\%PROCES
 
 
 :exit
+
+cd %~dp0
+
+if not "%1" == "nopause" pause

@@ -30,7 +30,6 @@
 #include "Transaction/Transaction.h"
 #include "ServerConfig/SFServerConfig.h"
 #include "DB/Factory.h"
-#include "Table/TableSystem.h"
 #include "Service/ServerService.h"
 #include "Thread/SFThread.h"
 
@@ -55,7 +54,6 @@
 #include "ServiceEntity/MonitoringServiceEntity.h"
 #include "ServiceEntity/Relay/RelayServiceEntity.h"
 
-#include "Table/TableSystem.h"
 
 #include "Transaction/ExternalTransactionManager.h"
 
@@ -69,7 +67,6 @@
 #include "Entity/EntityManager.h"
 
 
-#include "DB/GameConspiracyDB.h"
 #include "DB/AccountDB.h"
 
 
@@ -695,7 +692,8 @@ Proc_End:
 			itMgr->Update();
 		}
 
-		GameTable::Update();
+		// TODO: FIXME
+		//GameTable::Update();
 
 		Service::EntityManager->Update();
 

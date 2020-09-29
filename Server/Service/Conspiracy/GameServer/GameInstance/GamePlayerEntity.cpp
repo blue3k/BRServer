@@ -34,8 +34,6 @@
 
 #include "Transaction/GamePlayerEntityTrans.h"
 #include "Transaction/GamePlayerEntityTransGame.h"
-#include "Transaction/GamePlayerEntityTransParty.h"
-#include "Transaction/GamePlayerEntityTransFriend.h"
 #include "Transaction/GamePlayerEntityTransClose.h"
 
 #include "GamePlayerEntity.h"
@@ -43,7 +41,7 @@
 #include "GameSystem/UserNotifySystem.h"
 #include "GameSystem/UserGamePlayerInfoSystem.h"
 
-#include "DB/GameConspiracyDB.h"
+#include "GameConspiracyDB.h"
 #include "DB/GameTransactionDB.h"
 
 
@@ -176,7 +174,7 @@ namespace GameServer {
 		SetLatestDBSyncTime(Util::Time.GetTimeUTCSec());
 		auto pPlayerInfoSystem = GetComponent<UserGamePlayerInfoSystem>();
 
-		svrChk(Svr::GetServerComponent<DB::GameConspiracyDB>()->UpdateTickStatusCmd(transID, GetShardID(), GetPlayerID(),
+		svrChk(Svr::GetServerComponent<conspiracy::GameConspiracyDB>()->UpdateTickStatusCmd(transID, GetShardID(), GetPlayerID(),
 			pPlayerInfoSystem->GetGem(), pPlayerInfoSystem->GetStamina(), GetIsInGame() ? 1 : 0,
 			GetLatestActiveTime(),
 			GetLatestUpdateTime()));
@@ -312,7 +310,7 @@ namespace GameServer {
 		//BR_ENTITY_MESSAGE(Message::Game::AcceptFriendRequestCmd) { pNewTrans = new(GetHeap()) PlayerTransFriendAccept(GetHeap(), pMsgData); return OnNewUserTranscation(); } );
 		//BR_ENTITY_MESSAGE(Message::Game::RemoveFriendCmd) { pNewTrans = new(GetHeap()) PlayerTransRemoveFriend(GetHeap(), pMsgData); return OnNewUserTranscation(); } );
 		//BR_ENTITY_MESSAGE(Message::Game::GetFriendListCmd) { pNewTrans = new(GetHeap()) PlayerTransGetFriendList(GetHeap(), pMsgData); return OnNewUserTranscation(); } );
-		BR_ENTITY_MESSAGE(Message::Game::GiveStaminaCmd) { pNewTrans = new(GetHeap()) PlayerTransGiveStamina(GetHeap(), pMsgData); return OnNewUserTranscation(); } );
+		//BR_ENTITY_MESSAGE(Message::Game::GiveStaminaCmd) { pNewTrans = new(GetHeap()) PlayerTransGiveStamina(GetHeap(), pMsgData); return OnNewUserTranscation(); } );
 
 		//BR_ENTITY_MESSAGE(Message::Game::GetNotificationListCmd) { pNewTrans = new(GetHeap()) PlayerTransGetNotificationList(GetHeap(), pMsgData); return OnNewUserTranscation(); } );
 		//BR_ENTITY_MESSAGE(Message::Game::DeleteNotificationCmd) { pNewTrans = new(GetHeap()) PlayerTransDeleteNotification(GetHeap(), pMsgData); return OnNewUserTranscation(); } );

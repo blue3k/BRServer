@@ -31,6 +31,7 @@
 #include "GameInstance/GamePlayerEntity.h"
 #include "Net/SFMessage.h"
 
+#include "ServiceEntity/Game/Transaction/GamePlayerEntityTransClose.h"
 //#include "PlayerInfoManager.h"
 
 
@@ -39,27 +40,15 @@ namespace GameServer {
 
 
 	// Close zone instance
-	class PlayerTransCloseInstance : public Svr::TransactionT<GamePlayerEntity>
+	class PlayerTransCloseInstance : public Svr::PlayerTransCloseInstance
 	{
 	private:
-		typedef Svr::TransactionT<GamePlayerEntity> super;
-
-		INT m_WaitingTransactions;
+		using super = Svr::PlayerTransCloseInstance;
 
 	public:
 		PlayerTransCloseInstance(IHeap& heap);
 		virtual ~PlayerTransCloseInstance() {}
 
-		Result UpdateDBRes(Svr::TransactionResult* &pRes);
-		Result DeleteLoginSessionRes(Svr::TransactionResult* &pRes);
-		Result UnregisterMatchingRes(Svr::TransactionResult* &pRes);
-		Result LeaveGameRes(Svr::TransactionResult* &pRes);
-		Result LeavePartyRes(Svr::TransactionResult* &pRes);
-
-		// Start Transaction
-		virtual Result StartTransaction();
-
-		virtual Result OnCloseTransaction( Result hrRes );
 
 	};
 	

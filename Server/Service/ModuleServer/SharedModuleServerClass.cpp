@@ -25,8 +25,6 @@
 #include "ServiceEntity/MatchingServiceEntity.h"
 #include "ServiceEntity/Party/GamePartyManagerServiceEntity.h"
 
-#include "Table/TableSystem.h"
-
 #include "ServerEntity/GenericServerEntity.h"
 
 #include "Protocol/Policy/GameServerNetPolicy.h"
@@ -44,7 +42,6 @@
 
 #include "Transaction/SharedModuleServerTrans.h"
 
-#include "DB/GameConspiracyDB.h"
 #include "DB/AccountDB.h"
 
 
@@ -110,15 +107,11 @@ namespace SharedModuleServer {
 	// Close server and release resource
 	Result SharedModuleServer::CloseServerResource()
 	{
-		Result hr = ResultCode::SUCCESS;
+		FunctionContext hr;
 
-		svrChk(Svr::BrServer::CloseServerResource() );
+		svrCheck(Svr::BrServer::CloseServerResource() );
 
-		svrChk( TerminateEntity() );
-
-		svrChk(GameTable::TerminateTable() );
-
-	Proc_End:
+		svrCheck( TerminateEntity() );
 
 		return hr;
 	}
@@ -127,11 +120,10 @@ namespace SharedModuleServer {
 	// Initialize private Network
 	Result SharedModuleServer::InitializeNetPrivate()
 	{
-		Result hr = ResultCode::SUCCESS;
+		FunctionContext hr;
 		SockFamily privateNetSockFamily;
 
-
-		svrChk(Svr::BrServer::InitializeNetPrivate() );
+		svrCheck(Svr::BrServer::InitializeNetPrivate() );
 
 		GetMyServer()->GetNetPrivate()->SetIsEnableAccept(true);
 
@@ -140,13 +132,10 @@ namespace SharedModuleServer {
 		// push Startup transaction
 		{
 			TransactionPtr pProcess;
-			svrMem( pProcess = new(GetHeap()) SharedModuleServerStartProcess(GetHeap()) );
-			svrChk( pProcess->InitializeTransaction(this) );
-			svrChk( PendingTransaction(ThisThread::GetThreadID(), pProcess) );
+			svrCheckMem( pProcess = new(GetHeap()) SharedModuleServerStartProcess(GetHeap()) );
+			svrCheck( pProcess->InitializeTransaction(this) );
+			svrCheck( PendingTransaction(ThisThread::GetThreadID(), pProcess) );
 		}
-
-
-	Proc_End:
 
 		return hr;
 	}

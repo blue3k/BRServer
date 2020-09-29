@@ -95,9 +95,8 @@ namespace ConspiracyGameInstanceServer {
 	class GameStateSystem : public Svr::GameSystem<GameInstanceEntity,GameStateSystem>
 	{
 	public:
-		enum {
-			ComponentID = GameSystemComponentID_GameState,
-		};
+		
+		static constexpr StringCrc32 ComponentID = "GameStateSystem"_crc32c;
 
 
 	private:

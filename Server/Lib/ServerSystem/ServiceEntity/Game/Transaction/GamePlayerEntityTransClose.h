@@ -40,7 +40,7 @@ namespace Svr {
 	class PlayerTransCloseInstance : public Svr::TransactionT<GamePlayerEntity>
 	{
 	private:
-		typedef Svr::TransactionT<GamePlayerEntity> super;
+		using super = Svr::TransactionT<GamePlayerEntity>;
 
 		INT m_WaitingTransactions;
 

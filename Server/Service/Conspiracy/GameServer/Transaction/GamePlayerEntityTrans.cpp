@@ -54,13 +54,13 @@
 
 #include "DB/AccountDB.h"
 #include "DB/AccountQuery.h"
-#include "DB/GameConspiracyDB.h"
-#include "DB/GameConspiracyQuery.h"
+#include "GameConspiracyDB.h"
+#include "GameConspiracyQuery.h"
 #include "DB/RankingDB.h"
 #include "DB/RankingDBQuery.h"
 
-#include "Table/conspiracy/GameConfigTbl.h"
-#include "Table/conspiracy/OrganicTbl.h"
+#include "conspiracy/GameConfigTbl.h"
+#include "conspiracy/OrganicTbl.h"
 
 //#include "openssl/sha.h"
 #define 	SHA256_DIGEST_LENGTH   32
@@ -102,7 +102,7 @@ namespace GameServer {
 		// succeeded to create
 		svrChk( RegisterToPlayerManager() );
 
-		svrChk(Svr::GetServerComponent<DB::GameConspiracyDB>()->GetPlayerInfoCmd(GetTransID(), GetMyOwner()->GetShardID(), GetMyOwner()->GetPlayerID()));
+		svrChk(Svr::GetServerComponent<conspiracy::GameConspiracyDB>()->GetPlayerInfoCmd(GetTransID(), GetMyOwner()->GetShardID(), GetMyOwner()->GetPlayerID()));
 
 	Proc_End:
 
@@ -279,7 +279,7 @@ namespace GameServer {
 			conspiracy::GameConfigTbl::GameConfigItem *pConfig = GetMyServer()->GetPresetGameConfig();
 			svrChkPtr(pConfig);
 
-			svrChk(Svr::GetServerComponent<DB::GameConspiracyDB>()->CreatePlayerInfoCmd(GetTransID(), GetMyOwner()->GetShardID(), GetMyOwner()->GetPlayerID(), pConfig->DefaultStamina));
+			svrChk(Svr::GetServerComponent<conspiracy::GameConspiracyDB>()->CreatePlayerInfoCmd(GetTransID(), GetMyOwner()->GetShardID(), GetMyOwner()->GetPlayerID(), pConfig->DefaultStamina));
 			goto Proc_End;
 		}
 
@@ -428,7 +428,7 @@ namespace GameServer {
 			svrErr(ResultCode::GAME_INVALID_PLAYER);
 		}
 
-		svrChk(Svr::GetServerComponent<DB::GameConspiracyDB>()->GetPlayerInfoCmd(GetTransID(), pDBRes->ShardID, GetPlayerID()));
+		svrChk(Svr::GetServerComponent<conspiracy::GameConspiracyDB>()->GetPlayerInfoCmd(GetTransID(), pDBRes->ShardID, GetPlayerID()));
 
 
 	Proc_End:
@@ -559,7 +559,7 @@ namespace GameServer {
 			svrErrClose(ResultCode::INVALID_TICKET);
 		}
 
-		svrChk(Svr::GetServerComponent<DB::GameConspiracyDB>()->GetComplitionState(GetTransID(), GetMyOwner()->GetShardID(), GetMyOwner()->GetPlayerID()));
+		svrChk(Svr::GetServerComponent<conspiracy::GameConspiracyDB>()->GetComplitionState(GetTransID(), GetMyOwner()->GetShardID(), GetMyOwner()->GetPlayerID()));
 
 
 	Proc_End:
@@ -612,7 +612,7 @@ namespace GameServer {
 			svrErrClose(ResultCode::INVALID_TICKET);
 		}
 
-		svrChk(Svr::GetServerComponent<DB::GameConspiracyDB>()->SetComplitionState(GetTransID(), GetMyOwner()->GetShardID(), GetMyOwner()->GetPlayerID(), GetComplitionState()));
+		svrChk(Svr::GetServerComponent<conspiracy::GameConspiracyDB>()->SetComplitionState(GetTransID(), GetMyOwner()->GetShardID(), GetMyOwner()->GetPlayerID(), GetComplitionState()));
 
 
 	Proc_End:
@@ -759,7 +759,7 @@ namespace GameServer {
 
 		svrChk( super::StartTransaction() );
 
-		svrChk(Svr::GetServerComponent<DB::GameConspiracyDB>()->Notification_GetList(GetTransID(), GetMyOwner()->GetShardID(), GetMyOwner()->GetAccountID()));
+		svrChk(Svr::GetServerComponent<conspiracy::GameConspiracyDB>()->Notification_GetList(GetTransID(), GetMyOwner()->GetShardID(), GetMyOwner()->GetAccountID()));
 
 	Proc_End:
 
@@ -799,7 +799,7 @@ namespace GameServer {
 
 		svrChk( super::StartTransaction() );
 
-		svrChk(Svr::GetServerComponent<DB::GameConspiracyDB>()->Notification_Remove(GetTransID(), GetMyOwner()->GetShardID(), GetMyOwner()->GetPlayerID(), GetNotificationID()));
+		svrChk(Svr::GetServerComponent<conspiracy::GameConspiracyDB>()->Notification_Remove(GetTransID(), GetMyOwner()->GetShardID(), GetMyOwner()->GetPlayerID(), GetNotificationID()));
 
 	Proc_End:
 
@@ -814,7 +814,7 @@ namespace GameServer {
 		: MessageTransaction( heap, std::forward<MessageDataPtr>(pIMsg))
 	{
 		BR_TRANS_MESSAGE( DB::QueryNotification_SetReadCmd, { return OnSetRead(pRes); });
-		BR_TRANS_MESSAGE( DB::QueryUpdateTickStatusCmd, { return OnUpdateStatus(pRes); });
+		BR_TRANS_MESSAGE( conspiracy::QueryUpdateTickStatusCmd, { return OnUpdateStatus(pRes); });
 	}
 
 	Result PlayerTransSetNotificationRead::OnSetRead( Svr::TransactionResult* &pRes )
@@ -878,7 +878,7 @@ namespace GameServer {
 		if( GetMyOwner()->GetComponent<UserNotifySystem>()->GetNotification(GetNotificationID()) == nullptr )
 			svrErrClose(ResultCode::INVALID_NOTIFICATIONID);
 
-		svrChk(Svr::GetServerComponent<DB::GameConspiracyDB>()->Notification_SetRead(GetTransID(), GetMyOwner()->GetShardID(), GetMyOwner()->GetPlayerID(), GetNotificationID()));
+		svrChk(Svr::GetServerComponent<conspiracy::GameConspiracyDB>()->Notification_SetRead(GetTransID(), GetMyOwner()->GetShardID(), GetMyOwner()->GetPlayerID(), GetNotificationID()));
 
 	Proc_End:
 
@@ -938,7 +938,7 @@ namespace GameServer {
 
 		svrChk(super::StartTransaction());
 
-		svrChk(Svr::GetServerComponent<DB::GameConspiracyDB>()->Notification_Remove(GetTransID(), GetMyOwner()->GetShardID(), GetMyOwner()->GetPlayerID(), GetNotificationID()));
+		svrChk(Svr::GetServerComponent<conspiracy::GameConspiracyDB>()->Notification_Remove(GetTransID(), GetMyOwner()->GetShardID(), GetMyOwner()->GetPlayerID(), GetNotificationID()));
 
 	Proc_End:
 
@@ -1038,7 +1038,7 @@ namespace GameServer {
 			svrChkCloseErr(ResultCode::GAME_NOTENOUGH_RESOURCE, pPlayerInfoSystem->CheckCost(pCostItem));
 		}
 
-		svrChk(Svr::GetServerComponent<DB::GameConspiracyDB>()->SetNickName(GetTransID(), GetMyOwner()->GetShardID(), GetMyOwner()->GetPlayerID(), GetNickName()));
+		svrChk(Svr::GetServerComponent<conspiracy::GameConspiracyDB>()->SetNickName(GetTransID(), GetMyOwner()->GetShardID(), GetMyOwner()->GetPlayerID(), GetNickName()));
 
 	Proc_End:
 
@@ -1078,7 +1078,7 @@ namespace GameServer {
 		m_Player.FBUID = pDBRes->FacebookUID;
 		m_PlayerShardID = pDBRes->ShardID;
 
-		svrChk(Svr::GetServerComponent<DB::GameConspiracyDB>()->GetNickName(GetTransID(), m_PlayerShardID, m_Player.PlayerID));
+		svrChk(Svr::GetServerComponent<conspiracy::GameConspiracyDB>()->GetNickName(GetTransID(), m_PlayerShardID, m_Player.PlayerID));
 
 	Proc_End:
 
@@ -1153,7 +1153,7 @@ namespace GameServer {
 		m_Player.FBUID = pDBRes->FacebookUID;
 		m_PlayerShardID = pDBRes->ShardID;
 
-		svrChk(Svr::GetServerComponent<DB::GameConspiracyDB>()->GetNickName(GetTransID(), m_PlayerShardID, m_Player.PlayerID));
+		svrChk(Svr::GetServerComponent<conspiracy::GameConspiracyDB>()->GetNickName(GetTransID(), m_PlayerShardID, m_Player.PlayerID));
 
 	Proc_End:
 
@@ -1219,7 +1219,7 @@ namespace GameServer {
 
 		svrChk(pRes->GetResult());
 
-		svrChk(Svr::GetServerComponent<DB::GameConspiracyDB>()->GetPlayerStatusCmd(GetTransID(), pDBRes->ShardID, pDBRes->UserID));
+		svrChk(Svr::GetServerComponent<conspiracy::GameConspiracyDB>()->GetPlayerStatusCmd(GetTransID(), pDBRes->ShardID, pDBRes->UserID));
 		m_PlayerStatusQueryCount++;
 
 	Proc_End:
@@ -1272,7 +1272,7 @@ namespace GameServer {
 				auto pFriend = GetMyOwner()->GetComponent<UserFriendSystem>()->GetFriend(targetPlayerID[iPlayer]);
 				if (pFriend != nullptr)
 				{
-					svrChk(Svr::GetServerComponent<DB::GameConspiracyDB>()->GetPlayerStatusCmd(GetTransID(), pFriend->ShardID, targetPlayerID[iPlayer]));
+					svrChk(Svr::GetServerComponent<conspiracy::GameConspiracyDB>()->GetPlayerStatusCmd(GetTransID(), pFriend->ShardID, targetPlayerID[iPlayer]));
 				}
 				else
 				{
@@ -1461,7 +1461,7 @@ namespace GameServer {
 		svrChk(Util::SHA256Hash(dataBuffer.size(), dataBuffer.data(), hash));
 		svrChk(Util::Base64URLEncode(hash.size(), hash.data(), m_Signagure));
 
-		svrChk(Svr::GetServerComponent<DB::GameConspiracyDB>()->CheckPurchaseID(GetTransID(), GetMyOwner()->GetShardID(), hash));
+		svrChk(Svr::GetServerComponent<conspiracy::GameConspiracyDB>()->CheckPurchaseID(GetTransID(), GetMyOwner()->GetShardID(), hash));
 
 	Proc_End:
 

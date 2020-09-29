@@ -12,11 +12,8 @@ set(BR_LIB_FILES
     GameSystem/UserNotifySystem.h
     GameSystem/UserSystemComponentIDs.h
     Transaction/GamePlayerEntityTrans.h
-    Transaction/GamePlayerEntityTransChatChannel.h
     Transaction/GamePlayerEntityTransClose.h
-    Transaction/GamePlayerEntityTransFriend.h
     Transaction/GamePlayerEntityTransGame.h
-    Transaction/GamePlayerEntityTransParty.h
     Transaction/GameServerTrans.h
 	GameServerClass.inl
     GameInstance/GamePlayerEntity.cpp
@@ -26,26 +23,23 @@ set(BR_LIB_FILES
     GameSystem/UserGamePlayerInfoSystem.cpp
     GameSystem/UserNotifySystem.cpp
     Transaction/GamePlayerEntityTrans.cpp
-    Transaction/GamePlayerEntityTransChatChannel.cpp
     Transaction/GamePlayerEntityTransClose.cpp
-    Transaction/GamePlayerEntityTransFriend.cpp
     Transaction/GamePlayerEntityTransGame.cpp
-    Transaction/GamePlayerEntityTransParty.cpp
     Transaction/GameServerTrans.cpp
   )
 
 
 
 
-include_directories(./)
+include_directories(./ ../GameDB ../GameTable)
 
 
 
 add_executable(BRConspriacyGameServer ${BR_LIB_FILES})
 
-add_dependencies(BRConspriacyGameServer BRDB BRServerSystem BRServerProtocol BRTable)
+add_dependencies(BRConspriacyGameServer BRDB BRServerSystem BRServerProtocol BRConspiracyGameTable BRConspiracyGameDB)
 
-target_link_libraries(BRConspriacyGameServer ${ENGINE_LINK_LIBS} ${PLATFORM_LIBS})
+target_link_libraries(BRConspriacyGameServer ${ENGINE_LINK_LIBS} ${PLATFORM_LIBS} BRConspiracyGameTable BRConspiracyGameDB)
 
 
 install (TARGETS BRConspriacyGameServer

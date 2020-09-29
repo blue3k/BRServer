@@ -64,7 +64,7 @@ namespace Svr
 	{
 	public:
 
-		//typedef ::conspiracy::GameConfigTbl::GameConfigItem GameConfigType;
+		//typedef conspiracy::GameConfigTbl::GameConfigItem GameConfigType;
 
 		typedef SortedMap<PlayerID,GameInstancePlayer*>
 				GamePlayerUIDMap;

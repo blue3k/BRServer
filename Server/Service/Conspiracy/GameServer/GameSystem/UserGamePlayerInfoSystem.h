@@ -20,9 +20,9 @@
 
 #include "GameConst.h"
 #include "UserSystemComponentIDs.h"
-#include "Table/conspiracy/LevelTbl.h"
-#include "Table/conspiracy/ShopTbl.h"
-#include "Table/conspiracy/OrganicTbl.h"
+#include "conspiracy/LevelTbl.h"
+#include "conspiracy/ShopTbl.h"
+#include "conspiracy/OrganicTbl.h"
 
 
 namespace SF {

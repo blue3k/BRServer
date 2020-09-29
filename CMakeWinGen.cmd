@@ -21,4 +21,6 @@ cmake ../../ -G %VCCMAKEGENERATOR% -A %PROCESS_ARCHITECTUR% ^
 	-DCMAKE_INSTALL_PREFIX=../../build%CMAKE_SYSTEM_NAME%/%PROCESS_ARCHITECTUR% 
 
 
+cd %~dp0
 
+if not "%1" == "nopause" pause

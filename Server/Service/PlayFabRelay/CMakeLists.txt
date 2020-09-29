@@ -21,7 +21,7 @@ include_directories(./)
 
 add_executable(BRRelayServer ${BR_LIB_FILES})
 
-add_dependencies(BRRelayServer BRDB BRServerSystem BRServerProtocol BRTable PlayFabGSDK)
+add_dependencies(BRRelayServer BRDB BRServerSystem BRServerProtocol PlayFabGSDK)
 
 target_link_libraries(BRRelayServer ${ENGINE_LINK_LIBS} ${PLATFORM_LIBS})
 

@@ -51,13 +51,10 @@
 
 #include "DB/AccountDB.h"
 #include "DB/AccountQuery.h"
-#include "DB/GameConspiracyDB.h"
-#include "DB/GameConspiracyQuery.h"
+#include "Game/GameDB.h"
+#include "Game/GameQuery.h"
 #include "DB/RankingDB.h"
 #include "DB/RankingDBQuery.h"
-
-#include "Table/conspiracy/GameConfigTbl.h"
-#include "Table/conspiracy/OrganicTbl.h"
 
 //#include "openssl/sha.h"
 #define 	SHA256_DIGEST_LENGTH   32
@@ -83,8 +80,8 @@ namespace Svr {
 
 		BR_TRANS_MESSAGE(DB::QueryCreatePlayerInfoCmd, { return OnCreatePlayerGameDataRes(pRes); });
 		BR_TRANS_MESSAGE(DB::QueryGetPlayerInfoCmd, { return OnGetPlayerGameDataRes(pRes); });
-		BR_TRANS_MESSAGE( Message::LoginServer::PlayerJoinedToGameServerRes, { return OnGameServerJoined(pRes); });
-		BR_TRANS_MESSAGE( Message::GameParty::JoinPartyRes, { return OnJoinPartyRes(pRes); });
+		BR_TRANS_MESSAGE(Message::LoginServer::PlayerJoinedToGameServerRes, { return OnGameServerJoined(pRes); });
+		BR_TRANS_MESSAGE(Message::GameParty::JoinPartyRes, { return OnJoinPartyRes(pRes); });
 	}
 
 	Result PlayerTransJoinGameServer::OnGameServerJoined( Svr::TransactionResult* &pRes )
@@ -99,7 +96,7 @@ namespace Svr {
 		// succeeded to create
 		svrCheck( RegisterToPlayerManager() );
 
-		svrCheck(Svr::GetServerComponent<DB::GameConspiracyDB>()->GetPlayerInfoCmd(GetTransID(), GetMyOwner()->GetShardID(), GetMyOwner()->GetPlayerID()));
+		svrCheck(Svr::GetServerComponent<DB::GameDB>()->GetPlayerInfoCmd(GetTransID(), GetMyOwner()->GetShardID(), GetMyOwner()->GetPlayerID()));
 
 	Proc_End:
 
@@ -255,7 +252,7 @@ namespace Svr {
 			//conspiracy::GameConfigTbl::GameConfigItem *pConfig = GetMyServer()->GetPresetGameConfig();
 			//svrCheckPtr(pConfig);
 
-			svrCheck(Svr::GetServerComponent<DB::GameConspiracyDB>()->CreatePlayerInfoCmd(GetTransID(), GetMyOwner()->GetShardID(), GetMyOwner()->GetPlayerID(), 100/*pConfig->DefaultStamina*/));
+			svrCheck(Svr::GetServerComponent<DB::GameDB>()->CreatePlayerInfoCmd(GetTransID(), GetMyOwner()->GetShardID(), GetMyOwner()->GetPlayerID(), 100/*pConfig->DefaultStamina*/));
 			return hr;
 		}
 
@@ -394,7 +391,7 @@ namespace Svr {
 			svrError(ResultCode::GAME_INVALID_PLAYER);
 		}
 
-		svrCheck(Svr::GetServerComponent<DB::GameConspiracyDB>()->GetPlayerInfoCmd(GetTransID(), pDBRes->ShardID, GetPlayerID()));
+		svrCheck(Svr::GetServerComponent<DB::GameDB>()->GetPlayerInfoCmd(GetTransID(), pDBRes->ShardID, GetPlayerID()));
 
 
 		return ResultCode::SUCCESS;
@@ -521,7 +518,7 @@ namespace Svr {
 			svrErrorClose(ResultCode::INVALID_TICKET);
 		}
 
-		svrCheck(Svr::GetServerComponent<DB::GameConspiracyDB>()->GetComplitionState(GetTransID(), GetMyOwner()->GetShardID(), GetMyOwner()->GetPlayerID()));
+		svrCheck(Svr::GetServerComponent<DB::GameDB>()->GetComplitionState(GetTransID(), GetMyOwner()->GetShardID(), GetMyOwner()->GetPlayerID()));
 
 		return hr;
 	}
@@ -571,7 +568,7 @@ namespace Svr {
 			svrErrorClose(ResultCode::INVALID_TICKET);
 		}
 
-		svrCheck(Svr::GetServerComponent<DB::GameConspiracyDB>()->SetComplitionState(GetTransID(), GetMyOwner()->GetShardID(), GetMyOwner()->GetPlayerID(), GetComplitionState()));
+		svrCheck(Svr::GetServerComponent<DB::GameDB>()->SetComplitionState(GetTransID(), GetMyOwner()->GetShardID(), GetMyOwner()->GetPlayerID(), GetComplitionState()));
 
 		return hr;
 	}
@@ -706,7 +703,7 @@ namespace Svr {
 
 		svrCheck( super::StartTransaction() );
 
-		svrCheck(Svr::GetServerComponent<DB::GameConspiracyDB>()->Notification_GetList(GetTransID(), GetMyOwner()->GetShardID(), GetMyOwner()->GetAccountID()));
+		svrCheck(Svr::GetServerComponent<DB::GameDB>()->Notification_GetList(GetTransID(), GetMyOwner()->GetShardID(), GetMyOwner()->GetAccountID()));
 
 		return hr;
 	}
@@ -744,7 +741,7 @@ namespace Svr {
 
 		svrCheck(super::StartTransaction());
 
-		svrCheck(Svr::GetServerComponent<DB::GameConspiracyDB>()->Notification_Remove(GetTransID(), GetMyOwner()->GetShardID(), GetMyOwner()->GetPlayerID(), GetNotificationID()));
+		svrCheck(Svr::GetServerComponent<DB::GameDB>()->Notification_Remove(GetTransID(), GetMyOwner()->GetShardID(), GetMyOwner()->GetPlayerID(), GetNotificationID()));
 
 		return hr;
 	}
@@ -754,7 +751,7 @@ namespace Svr {
 		: MessageTransaction( heap, std::forward<MessageDataPtr>(pIMsg))
 	{
 		BR_TRANS_MESSAGE( DB::QueryNotification_SetReadCmd, { return OnSetRead(pRes); });
-		BR_TRANS_MESSAGE( DB::QueryUpdateTickStatusCmd, { return OnUpdateStatus(pRes); });
+		//BR_TRANS_MESSAGE( DB::QueryUpdateTickStatusCmd, { return OnUpdateStatus(pRes); });
 	}
 
 	Result PlayerTransSetNotificationRead::OnSetRead( Svr::TransactionResult* &pRes )
@@ -818,7 +815,7 @@ namespace Svr {
 		if( GetMyOwner()->GetComponent<UserNotificationSystem>()->GetNotification(GetNotificationID()) == nullptr )
 			svrErrorClose(ResultCode::INVALID_NOTIFICATIONID);
 
-		svrCheck(Svr::GetServerComponent<DB::GameConspiracyDB>()->Notification_SetRead(GetTransID(), GetMyOwner()->GetShardID(), GetMyOwner()->GetPlayerID(), GetNotificationID()));
+		svrCheck(Svr::GetServerComponent<DB::GameDB>()->Notification_SetRead(GetTransID(), GetMyOwner()->GetShardID(), GetMyOwner()->GetPlayerID(), GetNotificationID()));
 
 		return hr;
 	}
@@ -879,7 +876,7 @@ namespace Svr {
 
 		svrCheck(super::StartTransaction());
 
-		svrCheck(Svr::GetServerComponent<DB::GameConspiracyDB>()->Notification_Remove(GetTransID(), GetMyOwner()->GetShardID(), GetMyOwner()->GetPlayerID(), GetNotificationID()));
+		svrCheck(Svr::GetServerComponent<DB::GameDB>()->Notification_Remove(GetTransID(), GetMyOwner()->GetShardID(), GetMyOwner()->GetPlayerID(), GetNotificationID()));
 
 		return hr;
 	}
@@ -928,7 +925,7 @@ namespace Svr {
 
 		auto pDBRes = (DB::QuerySetNickNameCmd*)pRes;
 		//UserGamePlayerInfoSystem* pPlayerInfoSystem = nullptr;
-		conspiracy::OrganicTbl::OrganicItem *pCostItem = nullptr;
+		//conspiracy::OrganicTbl::OrganicItem *pCostItem = nullptr;
 
 		svrCheck(pRes->GetResult());
 
@@ -962,7 +959,7 @@ namespace Svr {
 					CloseTransaction(hr);
 			});
 
-		conspiracy::OrganicTbl::OrganicItem *pCostItem = nullptr;
+		//conspiracy::OrganicTbl::OrganicItem *pCostItem = nullptr;
 		//UserGamePlayerInfoSystem* pPlayerInfoSystem = nullptr;
 
 		m_TotalGem = 0;
@@ -978,7 +975,7 @@ namespace Svr {
 		//	svrChkCloseErr(ResultCode::GAME_NOTENOUGH_RESOURCE, pPlayerInfoSystem->CheckCost(pCostItem));
 		//}
 
-		svrCheck(Svr::GetServerComponent<DB::GameConspiracyDB>()->SetNickName(GetTransID(), GetMyOwner()->GetShardID(), GetMyOwner()->GetPlayerID(), GetNickName()));
+		svrCheck(Svr::GetServerComponent<DB::GameDB>()->SetNickName(GetTransID(), GetMyOwner()->GetShardID(), GetMyOwner()->GetPlayerID(), GetNickName()));
 
 		return hr;
 	}
@@ -1016,7 +1013,7 @@ namespace Svr {
 		m_Player.FBUID = pDBRes->FacebookUID;
 		m_PlayerShardID = pDBRes->ShardID;
 
-		svrCheck(Svr::GetServerComponent<DB::GameConspiracyDB>()->GetNickName(GetTransID(), m_PlayerShardID, m_Player.PlayerID));
+		svrCheck(Svr::GetServerComponent<DB::GameDB>()->GetNickName(GetTransID(), m_PlayerShardID, m_Player.PlayerID));
 
 		return ResultCode::SUCCESS; 
 	}
@@ -1089,7 +1086,7 @@ namespace Svr {
 		m_Player.FBUID = pDBRes->FacebookUID;
 		m_PlayerShardID = pDBRes->ShardID;
 
-		svrCheck(Svr::GetServerComponent<DB::GameConspiracyDB>()->GetNickName(GetTransID(), m_PlayerShardID, m_Player.PlayerID));
+		svrCheck(Svr::GetServerComponent<DB::GameDB>()->GetNickName(GetTransID(), m_PlayerShardID, m_Player.PlayerID));
 
 		return ResultCode::SUCCESS;
 	}
@@ -1154,7 +1151,7 @@ namespace Svr {
 
 		svrCheck(pRes->GetResult());
 
-		svrCheck(Svr::GetServerComponent<DB::GameConspiracyDB>()->GetPlayerStatusCmd(GetTransID(), pDBRes->ShardID, pDBRes->UserID));
+		svrCheck(Svr::GetServerComponent<DB::GameDB>()->GetPlayerStatusCmd(GetTransID(), pDBRes->ShardID, pDBRes->UserID));
 		m_PlayerStatusQueryCount++;
 
 		return ResultCode::SUCCESS;
@@ -1205,7 +1202,7 @@ namespace Svr {
 				auto pFriend = GetMyOwner()->GetComponent<UserFriendSystem>()->GetFriend(targetPlayerID[iPlayer]);
 				if (pFriend != nullptr)
 				{
-					svrCheck(Svr::GetServerComponent<DB::GameConspiracyDB>()->GetPlayerStatusCmd(GetTransID(), pFriend->ShardID, targetPlayerID[iPlayer]));
+					svrCheck(Svr::GetServerComponent<DB::GameDB>()->GetPlayerStatusCmd(GetTransID(), pFriend->ShardID, targetPlayerID[iPlayer]));
 				}
 				else
 				{
@@ -1387,7 +1384,7 @@ namespace Svr {
 		svrCheck(Util::SHA256Hash(dataBuffer.size(), dataBuffer.data(), hash));
 		svrCheck(Util::Base64URLEncode(hash.size(), hash.data(), m_Signagure));
 
-		svrCheck(Svr::GetServerComponent<DB::GameConspiracyDB>()->CheckPurchaseID(GetTransID(), GetMyOwner()->GetShardID(), hash));
+		svrCheck(Svr::GetServerComponent<DB::GameDB>()->CheckPurchaseID(GetTransID(), GetMyOwner()->GetShardID(), hash));
 
 
 		return hr;
@@ -1538,20 +1535,20 @@ namespace Svr {
 			svrErrorClose(ResultCode::SVR_INVALID_PURCHASE_INFO);
 		}
 
-		if( !( conspiracy::ShopTbl::FindItem( GetShopItemID(), m_pShopItem ) ) )
-		{
-			svrErrorClose(ResultCode::GAME_INVALID_SHOPITEMID);
-		}
+		//if( !( conspiracy::ShopTbl::FindItem( GetShopItemID(), m_pShopItem ) ) )
+		//{
+		//	svrErrorClose(ResultCode::GAME_INVALID_SHOPITEMID);
+		//}
 
 		svrCheckPtr(pExtMgr = Svr::GetServerComponent<Svr::ExternalTransactionManager>());
 
-		if (strlen(m_pShopItem->AndroidItemID) == 0 || strlen(m_pShopItem->iOSItemID) == 0)
-		{
-			StaticArray<uint8_t,1024> pruchaseID(GetHeap());
+		// TODO:FIXME
+		//if (strlen(m_pShopItem->AndroidItemID) == 0 || strlen(m_pShopItem->iOSItemID) == 0)
+		//{
+		//	StaticArray<uint8_t,1024> pruchaseID(GetHeap());
 
-			svrCheck( Util::Base64URLDecode(strlen(GetPurchaseTransactionID()), (uint8_t*)GetPurchaseTransactionID(), pruchaseID) );
+		//	svrCheck( Util::Base64URLDecode(strlen(GetPurchaseTransactionID()), (uint8_t*)GetPurchaseTransactionID(), pruchaseID) );
 
-			// TODO:FIXME
 			//svrCheckPtr(pPlayerInfoSystem = GetMyOwner()->GetComponent<UserGamePlayerInfoSystem>());
 
 			//svrCheck(pPlayerInfoSystem->SaveStatToMemento(m_SavedData));
@@ -1559,25 +1556,25 @@ namespace Svr {
 			//svrCheckClose(pPlayerInfoSystem->ApplyItem(m_pShopItem));
 
 			//svrCheck(pPlayerInfoSystem->SavePurchaseInfoToDB(GetTransID(), pruchaseID, GetPlatform(), GetPurchaseTransactionID()));
-		}
-		else
-		{
-			if (StrUtil::StringCompairIgnoreCase("android", -1, GetPlatform(), -1)
-				|| StrUtil::StringCompairIgnoreCase("windows", -1, GetPlatform(), -1))
-			{
-				// The last byte must be null, null terminate
-				svrCheck(pExtMgr->AndroidCheckReceipt(GetTransID(), GetPackageName(), m_pShopItem->AndroidItemID, GetPurchaseTransactionID()));
-			}
-			else
-			{
-				if (GetPurchaseToken().size() == 0)
-				{
-					svrErrorClose(ResultCode::SVR_INVALID_PURCHASE_INFO);
-				}
+		//}
+		//else
+		//{
+		//	if (StrUtil::StringCompairIgnoreCase("android", -1, GetPlatform(), -1)
+		//		|| StrUtil::StringCompairIgnoreCase("windows", -1, GetPlatform(), -1))
+		//	{
+		//		// The last byte must be null, null terminate
+		//		svrCheck(pExtMgr->AndroidCheckReceipt(GetTransID(), GetPackageName(), m_pShopItem->AndroidItemID, GetPurchaseTransactionID()));
+		//	}
+		//	else
+		//	{
+		//		if (GetPurchaseToken().size() == 0)
+		//		{
+		//			svrErrorClose(ResultCode::SVR_INVALID_PURCHASE_INFO);
+		//		}
 
-				svrCheck(pExtMgr->IOSCheckReceipt(GetTransID(), GetPackageName(), m_pShopItem->iOSItemID, GetPurchaseTransactionID(), GetPurchaseToken()));
-			}
-		}
+		//		svrCheck(pExtMgr->IOSCheckReceipt(GetTransID(), GetPackageName(), m_pShopItem->iOSItemID, GetPurchaseTransactionID(), GetPurchaseToken()));
+		//	}
+		//}
 
 
 		return hr;

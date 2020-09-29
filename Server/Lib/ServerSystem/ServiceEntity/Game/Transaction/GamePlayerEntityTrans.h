@@ -27,8 +27,6 @@
 
 
 
-#include "Table/conspiracy/ShopTbl.h"
-
 #include "Transaction/MessageRoute.h"
 
 #include "ServiceEntity/Game/GamePlayerEntity.h"
@@ -545,7 +543,8 @@ namespace Svr {
 
 	private:
 		Memento<MEMENTO_SIZE> m_SavedData;
-		conspiracy::ShopTbl::ShopItem *m_pShopItem;
+		// TODO: FIXME
+		void /*conspiracy::ShopTbl::ShopItem*/ *m_pShopItem;
 
 	public:
 		PlayerTransBuyShopItem(IHeap& heap, MessageDataPtr &pIMsg );

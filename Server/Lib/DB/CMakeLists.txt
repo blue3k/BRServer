@@ -3,6 +3,10 @@
 
 set(BRDB_LIB_FILES
 	DBPch.h
+	Game/GameDB.h
+	Game/GameDB.cpp
+	Game/GameQuery.h
+	Game/GameQuery.cpp
     AccountDB.cpp
 	AccountDB.h
     AccountQuery.cpp
@@ -21,10 +25,6 @@ set(BRDB_LIB_FILES
 	FactoryMYSQL.h
     FactoryOLEDB.cpp
 	FactoryOLEDB.h
-    GameConspiracyDB.cpp
-	GameConspiracyDB.h
-    GameConspiracyQuery.cpp
-	GameConspiracyQuery.h
     GameTransactionDB.cpp
 	GameTransactionDB.h
     GameTransactionDBQuery.cpp

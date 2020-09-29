@@ -43,8 +43,8 @@
 
 #include "DB/AccountDB.h"
 #include "DB/AccountQuery.h"
-#include "DB/GameConspiracyDB.h"
-#include "DB/GameConspiracyQuery.h"
+#include "DB/Game/GameDB.h"
+#include "DB/Game/GameQuery.h"
 
 
 
@@ -63,7 +63,8 @@ namespace Svr {
 	  : UserTransactionS2SEvt( heap, pIMsg )
 	{
 		BR_TRANS_MESSAGE( Message::GameInstance::JoinGameRes, { return OnJoinGameRes(pRes); } );
-		BR_TRANS_MESSAGE( DB::QueryUpdateJoinGameCmd, { return OnUpdateDBRes(pRes); } );
+		// TODO: FIXME
+		//BR_TRANS_MESSAGE( DB::QueryUpdateJoinGameCmd, { return OnUpdateDBRes(pRes); } );
 		BR_TRANS_MESSAGE(Message::GameParty::LeavePartyRes, { return OnLeavePartyRes(pRes); });
 	}
 

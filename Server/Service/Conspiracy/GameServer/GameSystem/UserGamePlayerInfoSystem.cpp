@@ -31,12 +31,12 @@
 #include "GameSystem/UserGamePlayerInfoSystem.h"
 #include "GameInstance/GamePlayerEntity.h"
 
-#include "DB/GameConspiracyDB.h"
+#include "GameConspiracyDB.h"
 
 
-#include "Table/conspiracy/RewardTbl.h"
-#include "Table/conspiracy/LevelTbl.h"
-#include "Table/conspiracy/ShopTbl.h"
+#include "conspiracy/RewardTbl.h"
+#include "conspiracy/LevelTbl.h"
+#include "conspiracy/ShopTbl.h"
 
 
 
@@ -512,7 +512,7 @@ namespace GameServer {
 		if (purchasePlatform == nullptr || purchaseToken == nullptr)
 			return ResultCode::INVALID_ARG;
 
-		return Svr::GetServerComponent<DB::GameConspiracyDB>()->SavePurchaseInfoToDB(transID, GetOwner().GetShardID(), GetOwner().GetPlayerID(),
+		return Svr::GetServerComponent<conspiracy::GameConspiracyDB>()->SavePurchaseInfoToDB(transID, GetOwner().GetShardID(), GetOwner().GetPlayerID(),
 			GetLevel(), GetExp(),
 			GetGameMoney(), GetGem(), GetStamina(), GetAddedFriendSlot(),
 			purchaseID,
@@ -523,7 +523,7 @@ namespace GameServer {
 
 	Result UserGamePlayerInfoSystem::SavePlayerInfoToDB(TransactionID transID)
 	{
-		return Svr::GetServerComponent<DB::GameConspiracyDB>()->SetPlayerInfoCmd(transID, GetOwner().GetShardID(), GetOwner().GetPlayerID(),
+		return Svr::GetServerComponent<conspiracy::GameConspiracyDB>()->SetPlayerInfoCmd(transID, GetOwner().GetShardID(), GetOwner().GetPlayerID(),
 			GetLevel(), GetExp(),
 			GetGameMoney(), GetGem(), GetStamina(), GetAddedFriendSlot(),
 			GetTotalPlayed(),

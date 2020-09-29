@@ -39,6 +39,8 @@ namespace ConspiracyGameInstanceServer {
 	//	GamePlaySystem class
 	//
 
+	constexpr StringCrc32 GameLogSystem::ComponentID;
+
 	// Constructor 
 	GameLogSystem::GameLogSystem( GameInstanceEntity* pEntity )
 		: GameSystem(pEntity)

@@ -27,7 +27,7 @@
 
 
 
-#include "Table/conspiracy/ShopTbl.h"
+#include "conspiracy/ShopTbl.h"
 
 #include "Transaction/MessageRoute.h"
 

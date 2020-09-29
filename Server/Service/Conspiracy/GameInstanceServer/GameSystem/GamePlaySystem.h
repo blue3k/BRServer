@@ -37,11 +37,9 @@ namespace ConspiracyGameInstanceServer {
 	class GamePlaySystem : public Svr::GameSystem<GameInstanceEntity,GamePlaySystem>
 	{
 	public:
-		enum {
-			ComponentID = GameSystemComponentID_GamePlay,
-
-			MAX_WEREWOLF = 2,
-		};
+		
+		static constexpr StringCrc32 ComponentID = "GamePlaySystem"_crc32c;
+		static constexpr int MAX_WEREWOLF = 2;
 
 
 		// vote filter functor
@@ -72,7 +70,7 @@ namespace ConspiracyGameInstanceServer {
 		PlayerID m_Owlman;
 		PlayerID m_OwlmansChoice;
 
-		// List of werewolfes
+		// List of werewolves
 		StaticArray<GamePlayer*,MAX_WEREWOLF> m_Werewolves;
 
 	public:

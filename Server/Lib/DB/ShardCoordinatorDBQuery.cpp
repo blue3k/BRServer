@@ -12,4 +12,8 @@
 #include "ShardCoordinatorDBQuery.h"
 
 
-BRDB_DEFINE_QUERY_IMPL(QueryGetShardList);
+namespace SF {
+	namespace DB {
+		BRDB_DEFINE_QUERY_IMPL(QueryGetShardList);
+	}
+}

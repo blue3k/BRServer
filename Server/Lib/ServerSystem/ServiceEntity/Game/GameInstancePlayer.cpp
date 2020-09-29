@@ -85,7 +85,7 @@ namespace Svr {
 
 
 
-}; // ConspiracyGameInstanceServer
+}; // Svr
 }; // namespace SF
 
 

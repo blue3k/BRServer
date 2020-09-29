@@ -26,17 +26,14 @@
 #include "ServiceEntity/Game/GameInstanceManagerServiceEntity.h"
 #include "ServiceEntity/Game/GameServiceEntity.h"
 
-
-#include "Table/TableSystem.h"
+#include "TableSystem.h"
 
 #include "ServerEntity/GenericServerEntity.h"
 
 #include "Protocol/Policy/GameServerNetPolicy.h"
 #include "Protocol/Policy/GameInstanceNetPolicy.h"
 
-
 #include "GameInstance/GamePlayerEntity.h"
-
 
 #include "Net/SFNetServerPeerTCP.h"
 #include "Net/SFNetSvrDef.h"
@@ -49,7 +46,7 @@
 #include "Transaction/GameServerTrans.h"
 #include "ServiceEntity/Game/PlayerManagerServiceEntity.h"
 
-#include "DB/GameConspiracyDB.h"
+#include "GameConspiracyDB.h"
 #include "DB/GameTransactionDB.h"
 #include "DB/AccountDB.h"
 #include "DB/RankingDB.h"
@@ -93,7 +90,7 @@ namespace GameServer {
 		Result hr = ResultCode::SUCCESS;
 
 		GameConfigType *pGameConfig = nullptr;
-		svrChk( ::conspiracy::GameConfigTbl::FindItem(configPresetID, pGameConfig ) );
+		svrChk( conspiracy::GameConfigTbl::FindItem(configPresetID, pGameConfig ) );
 
 		// set value only if it succeeded
 		m_TableVersion = GameTable::GetTableVersion();
@@ -191,7 +188,7 @@ namespace GameServer {
 
 		// Game DB initialize
 		svrChkPtr(GetGameClusterInfo());
-		svrChk(AddDBCluster<DB::GameConspiracyDB>(GetGameClusterInfo()->FindDBCluster("GameDB")));
+		svrChk(AddDBCluster<conspiracy::GameConspiracyDB>(GetGameClusterInfo()->FindDBCluster("GameDB")));
 
 		svrChk(AddDBCluster<DB::GameTransactionDB>(GetGameClusterInfo()->FindDBCluster("GameTransactionLogDB")));
 

@@ -189,6 +189,45 @@ namespace SF {
 	}while(0);\
 
 
+#define trcCheck(checkState) \
+	do{\
+		hr = checkState;\
+		if( !(hr) )\
+		{\
+			defTrace( Error, "{0}({1}): {2}", __FILE__, __LINE__, hr ); \
+			return hr;\
+		}\
+	}while(0)\
+
+#define trcError(errVal) \
+	do{\
+		defTrace( Error, "{0}({1}): {2}", __FILE__, __LINE__, hr ); \
+		hr = errVal;\
+		return hr;\
+	}while(0)\
+
+
+#define trcCheckPtr(checkPointer) \
+	do{\
+		if( (checkPointer) == nullptr )\
+		{\
+			defTrace( Error, "{0}({1}): Invalid Pointer", __FILE__, __LINE__ ); \
+			hr = ResultCode::INVALID_POINTER;\
+			return hr;\
+		}\
+	}while(0);\
+
+#define trcCheckMem(checkPointer) \
+	do{\
+		auto pResult = checkPointer;\
+		if( pResult == nullptr )\
+		{\
+			defTrace( Error, "{0}({1}): Invalid Pointer", __FILE__, __LINE__ ); \
+			hr = ResultCode::INVALID_POINTER;\
+			return hr;\
+		}\
+	}while(0);\
+
 #define trcCheckCondition(condi) \
 				do{ \
 					if( !(condi) ) {\
@@ -387,6 +426,12 @@ namespace SF {
 // Default trace module
 //
 
+
+#define defError(e)			trcError(e)
+#define defCheck(e)			trcCheck(e)
+#define defCheckError(ErrCode,exp)			{ do{ Result hRes = exp; if( !(hRes) ) TrcErrJmp(Svr,ErrCode,hr); } while(0); }
+#define defCheckMem(a)			trcCheckMem(a)
+#define defChkPtr(a)		trcChkPtr(a)
 
 
 #define defErr(e)			trcErr(e)

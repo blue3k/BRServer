@@ -26,9 +26,7 @@
 #include "ServerEntity/GenericServerEntity.h"
 #include "GameInstance/GameInstanceManager.h"
 
-
-#include "Table/TableSystem.h"
-
+#include "TableSystem.h"
 
 #include "Protocol/Policy/GameServerNetPolicy.h"
 #include "Protocol/Policy/GameInstanceNetPolicy.h"
@@ -44,7 +42,7 @@
 #include "Transaction/GameInstanceServerTrans.h"
 
 
-#include "DB/GameConspiracyDB.h"
+#include "GameConspiracyDB.h"
 #include "DB/AccountDB.h"
 
 

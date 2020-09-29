@@ -38,11 +38,7 @@ namespace ConspiracyGameInstanceServer {
 	class GameLogSystem : public Svr::GameSystem<GameInstanceEntity,GameLogSystem>, public Svr::GameLog<GameConst::MAX_GAMELOG_BUFFER,GameConst::MAX_GAMELOG>
 	{
 	public:
-		enum {
-			ComponentID = GameSystemComponentID_GameLog,
-
-			
-		};
+		static constexpr StringCrc32 ComponentID = "GameLog"_crc32c;
 
 	private:
 		typedef Svr::GameSystem<GameInstanceEntity, GameLogSystem> superGameSystem;

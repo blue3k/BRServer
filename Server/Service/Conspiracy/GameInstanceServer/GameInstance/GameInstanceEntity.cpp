@@ -26,9 +26,6 @@
 #include "ConspiracyGameInstanceSvrConst.h"
 #include "ConspiracyGameInstanceServerClass.h"
 
-//#include "Protocol/Policy/GameNetPolicy.h"
-
-
 #include "GameInstanceEntity.h"
 
 #include "GameSystem/GamePlaySystem.h"
@@ -41,8 +38,8 @@
 #include "GamePlayer.h"
 #include "Protocol/ServerService/GameInstanceManagerService.h"
 #include "ServiceEntity/Game/GameInstanceManagerServiceEntity.h"
-#include "Table/conspiracy/BotTalkTbl.h"
-#include "Table/TableSystem.h"
+#include "conspiracy/BotTalkTbl.h"
+#include "TableSystem.h"
 #include "Protocol/Message/GameInstanceMsgClass.h"
 #include "Transaction/GameInstanceTransPlayer.h"
 
@@ -61,8 +58,7 @@ namespace ConspiracyGameInstanceServer {
 
 
 	GameInstanceEntity::GameInstanceEntity()
-		: m_ComponentCarrier(GetHeap())
-		, m_TableVersion(-1)
+		: m_TableVersion(-1)
 		, m_PresetGameConfigID(1) // 1 is default
 		, m_PresetGameConfig(nullptr)
 		, m_pBotTalk(nullptr)
@@ -99,12 +95,10 @@ namespace ConspiracyGameInstanceServer {
 
 		svrChk(UpdateGameTable() );
 
-		svrChk( GetComponentCarrier().AddComponent<GamePlaySystem>( this, false ) );
-		svrChk( GetComponentCarrier().AddComponent<GameStateSystem>( this, false ) );
-		svrChk( GetComponentCarrier().AddComponent<GameLogSystem>( this, false ) );
-		svrChk( GetComponentCarrier().AddComponent<ChattingLogSystem>( this, false ) );
-
-		svrChk(GetComponentCarrier().InitializeComponents() );
+		svrChk( GetComponentManager().AddComponent<GamePlaySystem>( this, false ) );
+		svrChk( GetComponentManager().AddComponent<GameStateSystem>( this, false ) );
+		svrChk( GetComponentManager().AddComponent<GameLogSystem>( this, false ) );
+		svrChk( GetComponentManager().AddComponent<ChattingLogSystem>( this, false ) );
 
 	Proc_End:
 
@@ -163,8 +157,6 @@ namespace ConspiracyGameInstanceServer {
 
 		svrChk(super::TerminateEntity());
 
-		GetComponentCarrier().ClearComponents();
-
 	Proc_End:
 
 
@@ -191,8 +183,6 @@ namespace ConspiracyGameInstanceServer {
 
 		// Call check timer to update
 		svrChk(super::UpdateGameStatus(ulCurTime));
-
-		svrChk(GetComponentCarrier().GetComponent<GameStateSystem>()->UpdateSystem() );
 
 	Proc_End:
 
@@ -389,8 +379,8 @@ namespace ConspiracyGameInstanceServer {
 		// update exit status
 		svrChk(super::OnPlayerGetOutOfGame(pPlayer));
 
-		svrChk(GetComponentCarrier().GetComponent<GamePlaySystem>()->OnPlayerGetOutOfGame((GamePlayer*)pPlayer) );
-		svrChk(GetComponentCarrier().GetComponent<GameStateSystem>()->OnPlayerGetOutOfGame((GamePlayer*)pPlayer) );
+		svrChk(GetComponentManager().GetComponent<GamePlaySystem>()->OnPlayerGetOutOfGame((GamePlayer*)pPlayer));
+		svrChk(GetComponentManager().GetComponent<GameStateSystem>()->OnPlayerGetOutOfGame((GamePlayer*)pPlayer));
 
 	Proc_End:
 

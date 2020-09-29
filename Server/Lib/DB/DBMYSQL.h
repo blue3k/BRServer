@@ -144,7 +144,7 @@ namespace DB {
 
 	// execute
 	#define BRDB_DEFINE_QUERY_IMPL(QueryClass)										\
-				const SF::Message::MessageID SF::DB::QueryClass##Cmd::MID = Message::MessageID(Message::MSGTYPE_COMMAND, Message::MSGTYPE_RELIABLE, false, DB::QueryClass##Cmd::MESSAGE_POLICY, MCODE_##QueryClass ); \
+				const SF::Message::MessageID QueryClass##Cmd::MID = Message::MessageID(Message::MSGTYPE_COMMAND, Message::MSGTYPE_RELIABLE, false, QueryClass##Cmd::MESSAGE_POLICY, MCODE_##QueryClass ); \
 
 
 
@@ -181,7 +181,7 @@ namespace DB {
 
 
 	#define BRDB_COLUMN_ENTRY(member)												\
-			AddRowsetBinding(ParameterInfo(#member,ParamIO::Output,BoxingByReference(member)));
+			AddRowsetBinding(ParameterInfo(#member,SF::DB::ParamIO::Output,BoxingByReference(member)));
 
 
 	#define BRDB_END_RESULT_MAP()		}

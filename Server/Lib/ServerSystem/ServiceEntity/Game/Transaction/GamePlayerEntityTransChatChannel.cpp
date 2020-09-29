@@ -43,8 +43,6 @@
 
 #include "DB/AccountDB.h"
 #include "DB/AccountQuery.h"
-#include "DB/GameConspiracyDB.h"
-#include "DB/GameConspiracyQuery.h"
 
 
 namespace SF {

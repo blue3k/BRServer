@@ -37,9 +37,7 @@ namespace ConspiracyGameInstanceServer {
 	class ChattingLogSystem : public Svr::GameSystem<GameInstanceEntity,ChattingLogSystem>, public Svr::ChattingHistory
 	{
 	public:
-		enum {
-			ComponentID = GameSystemComponentID_ChattingLog,
-		};
+		static constexpr StringCrc32 ComponentID = "ChattingLog"_crc32c;
 
 	private:
 		

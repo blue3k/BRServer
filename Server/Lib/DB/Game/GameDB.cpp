@@ -1,7 +1,7 @@
 
 ////////////////////////////////////////////////////////////////////////////////
 // 
-// CopyRight (c) 2013 The Braves
+// CopyRight (c) 2020 The Braves
 // 
 // Author: Kyungkun Ko
 //
@@ -12,8 +12,8 @@
 #include "DBPch.h"
 #include "SFTypedefs.h"
 
-#include "DB/GameConspiracyDB.h"
-#include "DB/GameConspiracyQuery.h"
+#include "GameDB.h"
+#include "GameQuery.h"
 
 
 
@@ -23,19 +23,19 @@ namespace DB {
 	
 	//////////////////////////////////////////////////////////////////////////////////
 	//
-	//	GameConspiracyDB Class 
+	//	GameDB Class 
 	//
 	
 	// constructor / destructor
-	GameConspiracyDB::GameConspiracyDB()
+	GameDB::GameDB()
 	{
 	}
 
-	GameConspiracyDB::~GameConspiracyDB()
+	GameDB::~GameDB()
 	{
 	}
 
-	void GameConspiracyDB::TerminateComponent()
+	void GameDB::TerminateComponent()
 	{
 		TerminateDB();
 	}
@@ -46,7 +46,7 @@ namespace DB {
 	//	Game DB Interface
 	//
 
-	Result GameConspiracyDB::CreatePlayerInfoCmd(TransactionID Sender, uint shardID, const PlayerID &playerID, INT initialStamina)
+	Result GameDB::CreatePlayerInfoCmd(TransactionID Sender, uint shardID, const PlayerID &playerID, INT initialStamina)
 	{
 		Result hr = ResultCode::SUCCESS;
 		QueryCreatePlayerInfoCmd *pQuery = nullptr;
@@ -75,7 +75,7 @@ namespace DB {
 		return hr;
 	}
 
-	Result GameConspiracyDB::GetPlayerInfoCmd(TransactionID Sender, uint shardID, const PlayerID &playerID)
+	Result GameDB::GetPlayerInfoCmd(TransactionID Sender, uint shardID, const PlayerID &playerID)
 	{
 		Result hr = ResultCode::SUCCESS;
 		QueryGetPlayerInfoCmd *pQuery = nullptr;
@@ -105,7 +105,7 @@ namespace DB {
 
 
 	// Save player info
-	Result GameConspiracyDB::SetPlayerInfoCmd(TransactionID Sender, uint shardID, const PlayerID &playerID,
+	Result GameDB::SetPlayerInfoCmd(TransactionID Sender, uint shardID, const PlayerID &playerID,
 																			int16_t	Level,
 																			int64_t	Exp,
 																			int64_t	GameMoney,
@@ -169,7 +169,8 @@ namespace DB {
 
 		return hr;
 	}
-	Result GameConspiracyDB::SavePurchaseInfoToDB(
+
+	Result GameDB::SavePurchaseInfoToDB(
 		TransactionID Sender, uint shardID, const PlayerID &playerID,
 		int16_t	Level,
 		int64_t	Exp,
@@ -222,7 +223,7 @@ namespace DB {
 		return hr;
 	}
 
-	Result GameConspiracyDB::CheckPurchaseID(TransactionID Sender, uint shardID, const Array<uint8_t>& purchaseID)
+	Result GameDB::CheckPurchaseID(TransactionID Sender, uint shardID, const Array<uint8_t>& purchaseID)
 	{
 		Result hr = ResultCode::SUCCESS;
 		QueryCheckPurchaseIDCmd *pQuery = nullptr;
@@ -251,7 +252,7 @@ namespace DB {
 		return hr;
 	}
 
-	Result GameConspiracyDB::SetNickName(TransactionID Sender, uint shardID, PlayerID playerID, const char* nickName)
+	Result GameDB::SetNickName(TransactionID Sender, uint shardID, PlayerID playerID, const char* nickName)
 	{
 		Result hr = ResultCode::SUCCESS;
 		QuerySetNickNameCmd *pQuery = nullptr;
@@ -278,7 +279,7 @@ namespace DB {
 	}
 
 
-	Result GameConspiracyDB::GetNickName(TransactionID Sender, uint shardID, PlayerID playerID)
+	Result GameDB::GetNickName(TransactionID Sender, uint shardID, PlayerID playerID)
 	{
 		Result hr = ResultCode::SUCCESS;
 		QueryGetNickNameCmd *pQuery = nullptr;
@@ -304,139 +305,139 @@ namespace DB {
 	}
 
 
-	// Save player info
-	Result GameConspiracyDB::UpdateGameEndCmd(TransactionID Sender, uint shardID, const PlayerID &playerID,
-																			int16_t	Level,
-																			int64_t	Exp,
-																			int64_t	GameMoney,
-																			int32_t	TotalPlayed,
-																			int32_t	WinPlaySC, int32_t WinPlaySM, int32_t WinPlaySS,
-																			int32_t	LosePlaySC, int32_t LosePlaySM, int32_t LosePlaySS,
-																			int32_t	WinPlayNC, int32_t WinPlayNM, int32_t WinPlayNS,
-																			int32_t	LosePlayNC, int32_t LosePlayNM, int32_t LosePlayNS,
-																			UTCTimeStampSec	LatestActiveTime
-																			)
-	{
-		Result hr = ResultCode::SUCCESS;
-		QueryUpdateGameEndCmd *pQuery = nullptr;
+	//// Save player info
+	//Result GameDB::UpdateGameEndCmd(TransactionID Sender, uint shardID, const PlayerID &playerID,
+	//																		int16_t	Level,
+	//																		int64_t	Exp,
+	//																		int64_t	GameMoney,
+	//																		int32_t	TotalPlayed,
+	//																		int32_t	WinPlaySC, int32_t WinPlaySM, int32_t WinPlaySS,
+	//																		int32_t	LosePlaySC, int32_t LosePlaySM, int32_t LosePlaySS,
+	//																		int32_t	WinPlayNC, int32_t WinPlayNM, int32_t WinPlayNS,
+	//																		int32_t	LosePlayNC, int32_t LosePlayNM, int32_t LosePlayNS,
+	//																		UTCTimeStampSec	LatestActiveTime
+	//																		)
+	//{
+	//	Result hr = ResultCode::SUCCESS;
+	//	QueryUpdateGameEndCmd *pQuery = nullptr;
 
-		dbMem( pQuery = new(GetHeap()) QueryUpdateGameEndCmd(GetHeap()));
+	//	dbMem( pQuery = new(GetHeap()) QueryUpdateGameEndCmd(GetHeap()));
 
-		pQuery->SetPartitioningKey(shardID);
+	//	pQuery->SetPartitioningKey(shardID);
 
-		pQuery->PlayerID = playerID;
-		pQuery->Result = 0;
+	//	pQuery->PlayerID = playerID;
+	//	pQuery->Result = 0;
 
-		pQuery->Level = Level;
-		pQuery->Exp = Exp;
-		pQuery->GameMoney = GameMoney;
-		pQuery->TotalPlayed = TotalPlayed;
-		pQuery->WinPlaySC = WinPlaySC;
-		pQuery->WinPlaySM = WinPlaySM;
-		pQuery->WinPlaySS = WinPlaySS;
-		pQuery->LosePlaySC = LosePlaySC;
-		pQuery->LosePlaySM = LosePlaySM;
-		pQuery->LosePlaySS = LosePlaySS;
-		pQuery->WinPlayNC = WinPlayNC;
-		pQuery->WinPlayNM = WinPlayNM;
-		pQuery->WinPlayNS = WinPlayNS;
-		pQuery->LosePlayNC = LosePlayNC;
-		pQuery->LosePlayNM = LosePlayNM;
-		pQuery->LosePlayNS = LosePlayNS;
-		pQuery->LatestActiveTime = LatestActiveTime.time_since_epoch().count();
+	//	pQuery->Level = Level;
+	//	pQuery->Exp = Exp;
+	//	pQuery->GameMoney = GameMoney;
+	//	pQuery->TotalPlayed = TotalPlayed;
+	//	pQuery->WinPlaySC = WinPlaySC;
+	//	pQuery->WinPlaySM = WinPlaySM;
+	//	pQuery->WinPlaySS = WinPlaySS;
+	//	pQuery->LosePlaySC = LosePlaySC;
+	//	pQuery->LosePlaySM = LosePlaySM;
+	//	pQuery->LosePlaySS = LosePlaySS;
+	//	pQuery->WinPlayNC = WinPlayNC;
+	//	pQuery->WinPlayNM = WinPlayNM;
+	//	pQuery->WinPlayNS = WinPlayNS;
+	//	pQuery->LosePlayNC = LosePlayNC;
+	//	pQuery->LosePlayNM = LosePlayNM;
+	//	pQuery->LosePlayNS = LosePlayNS;
+	//	pQuery->LatestActiveTime = LatestActiveTime.time_since_epoch().count();
 
-		pQuery->SetTransaction( Sender );
+	//	pQuery->SetTransaction( Sender );
 
-		dbChk( RequestQuery( pQuery ) );
-		pQuery = nullptr;
+	//	dbChk( RequestQuery( pQuery ) );
+	//	pQuery = nullptr;
 
-	Proc_End:
+	//Proc_End:
 
-		IHeap::Delete(pQuery);
+	//	IHeap::Delete(pQuery);
 
-		return hr;
-	}
-
-
-	// Save player info
-	Result GameConspiracyDB::UpdateJoinGameCmd(TransactionID Sender, uint shardID, const PlayerID &playerID,
-																			int64_t	Gem,
-																			int16_t	Stamina,
-																			int16_t	PlayerState,
-																			UTCTimeStampSec	LatestActiveTime,
-																			UTCTimeStampSec	LatestTickTime
-																			)
-	{
-		Result hr = ResultCode::SUCCESS;
-		QueryUpdateJoinGameCmd *pQuery = nullptr;
-
-		dbMem( pQuery = new(GetHeap()) QueryUpdateJoinGameCmd(GetHeap()));
-
-		pQuery->SetPartitioningKey(shardID);
-
-		pQuery->PlayerID = playerID;
-		pQuery->Result = 0;
-
-		pQuery->Gem = Gem;
-		pQuery->Stamina = Stamina;
-		pQuery->PlayerState = PlayerState;
-		pQuery->LatestActiveTime = LatestActiveTime.time_since_epoch().count();
-		pQuery->LatestTickTime = LatestTickTime.time_since_epoch().count();
+	//	return hr;
+	//}
 
 
-		pQuery->SetTransaction( Sender );
+	//// Save player info
+	//Result GameDB::UpdateJoinGameCmd(TransactionID Sender, uint shardID, const PlayerID &playerID,
+	//																		int64_t	Gem,
+	//																		int16_t	Stamina,
+	//																		int16_t	PlayerState,
+	//																		UTCTimeStampSec	LatestActiveTime,
+	//																		UTCTimeStampSec	LatestTickTime
+	//																		)
+	//{
+	//	Result hr = ResultCode::SUCCESS;
+	//	QueryUpdateJoinGameCmd *pQuery = nullptr;
 
-		dbChk( RequestQuery( pQuery ) );
-		pQuery = nullptr;
+	//	dbMem( pQuery = new(GetHeap()) QueryUpdateJoinGameCmd(GetHeap()));
 
-	Proc_End:
+	//	pQuery->SetPartitioningKey(shardID);
 
-		IHeap::Delete(pQuery);
+	//	pQuery->PlayerID = playerID;
+	//	pQuery->Result = 0;
 
-		return hr;
-	}
+	//	pQuery->Gem = Gem;
+	//	pQuery->Stamina = Stamina;
+	//	pQuery->PlayerState = PlayerState;
+	//	pQuery->LatestActiveTime = LatestActiveTime.time_since_epoch().count();
+	//	pQuery->LatestTickTime = LatestTickTime.time_since_epoch().count();
 
 
-	// Save player info
-	Result GameConspiracyDB::UpdateTickStatusCmd(TransactionID Sender, uint shardID, const PlayerID &playerID,
-																			int64_t	Gem,
-																			int16_t	Stamina,
-																			int16_t	PlayerState,
-																			UTCTimeStampSec	LatestActiveTime,
-																			UTCTimeStampSec	LatestTickTime
-																			)
-	{
-		Result hr = ResultCode::SUCCESS;
-		QueryUpdateTickStatusCmd *pQuery = nullptr;
+	//	pQuery->SetTransaction( Sender );
 
-		dbMem( pQuery = new(GetHeap()) QueryUpdateTickStatusCmd(GetHeap()));
+	//	dbChk( RequestQuery( pQuery ) );
+	//	pQuery = nullptr;
 
-		pQuery->SetPartitioningKey(shardID);
+	//Proc_End:
 
-		pQuery->PlayerID = playerID;
-		pQuery->Result = 0;
+	//	IHeap::Delete(pQuery);
 
-		pQuery->Gem = Gem;
-		pQuery->Stamina = Stamina;
-		pQuery->PlayerState = PlayerState;
-		pQuery->LatestActiveTime = LatestActiveTime.time_since_epoch().count();
-		pQuery->LatestTickTime = LatestTickTime.time_since_epoch().count();
+	//	return hr;
+	//}
 
-		pQuery->SetTransaction( Sender );
 
-		dbChk( RequestQuery( pQuery ) );
-		pQuery = nullptr;
+	//// Save player info
+	//Result GameDB::UpdateTickStatusCmd(TransactionID Sender, uint shardID, const PlayerID &playerID,
+	//																		int64_t	Gem,
+	//																		int16_t	Stamina,
+	//																		int16_t	PlayerState,
+	//																		UTCTimeStampSec	LatestActiveTime,
+	//																		UTCTimeStampSec	LatestTickTime
+	//																		)
+	//{
+	//	Result hr = ResultCode::SUCCESS;
+	//	QueryUpdateTickStatusCmd *pQuery = nullptr;
 
-	Proc_End:
+	//	dbMem( pQuery = new(GetHeap()) QueryUpdateTickStatusCmd(GetHeap()));
 
-		IHeap::Delete(pQuery);
+	//	pQuery->SetPartitioningKey(shardID);
 
-		return hr;
-	}
+	//	pQuery->PlayerID = playerID;
+	//	pQuery->Result = 0;
+
+	//	pQuery->Gem = Gem;
+	//	pQuery->Stamina = Stamina;
+	//	pQuery->PlayerState = PlayerState;
+	//	pQuery->LatestActiveTime = LatestActiveTime.time_since_epoch().count();
+	//	pQuery->LatestTickTime = LatestTickTime.time_since_epoch().count();
+
+	//	pQuery->SetTransaction( Sender );
+
+	//	dbChk( RequestQuery( pQuery ) );
+	//	pQuery = nullptr;
+
+	//Proc_End:
+
+	//	IHeap::Delete(pQuery);
+
+	//	return hr;
+	//}
 
 	
 	// Save player info
-	Result GameConspiracyDB::GetPlayerStatusCmd(TransactionID Sender, uint shardID, const PlayerID &playerID)
+	Result GameDB::GetPlayerStatusCmd(TransactionID Sender, uint shardID, const PlayerID &playerID)
 	{
 		Result hr = ResultCode::SUCCESS;
 		QueryGetPlayerStatusCmd *pQuery = nullptr;
@@ -464,7 +465,7 @@ namespace DB {
 	
 	
 	// Save player info
-	Result GameConspiracyDB::GetPlayerQuickInfoCmd(TransactionID Sender, uint shardID, PlayerID playerID)
+	Result GameDB::GetPlayerQuickInfoCmd(TransactionID Sender, uint shardID, PlayerID playerID)
 	{
 		Result hr = ResultCode::SUCCESS;
 		QueryGetPlayerQuickInfoCmd *pQuery = nullptr;
@@ -494,7 +495,7 @@ namespace DB {
 
 
 	// Save player info
-	Result GameConspiracyDB::GetFriendQuickInfoCmd(TransactionID Sender, uint shardID, PlayerID playerID)
+	Result GameDB::GetFriendQuickInfoCmd(TransactionID Sender, uint shardID, PlayerID playerID)
 	{
 		Result hr = ResultCode::SUCCESS;
 		QueryGetFriendQuickInfoCmd *pQuery = nullptr;
@@ -525,7 +526,7 @@ namespace DB {
 
 
 	// Save player info
-	Result GameConspiracyDB::GetFriendQuickInfoWithNickCmd(TransactionID Sender, uint shardID, PlayerID playerID)
+	Result GameDB::GetFriendQuickInfoWithNickCmd(TransactionID Sender, uint shardID, PlayerID playerID)
 	{
 		Result hr = ResultCode::SUCCESS;
 		QueryGetFriendQuickInfoWithNickCmd *pQuery = nullptr;
@@ -558,7 +559,7 @@ namespace DB {
 
 
 	// Save player info
-	Result GameConspiracyDB::GetFriendSlotStatus(TransactionID Sender, uint shardID, PlayerID playerID)
+	Result GameDB::GetFriendSlotStatus(TransactionID Sender, uint shardID, PlayerID playerID)
 	{
 		Result hr = ResultCode::SUCCESS;
 		QueryGetFriendSlotStatusCmd *pQuery = nullptr;
@@ -585,7 +586,7 @@ namespace DB {
 		return hr;
 	}
 
-	Result GameConspiracyDB::AddFriend(TransactionID Sender, uint shardID, PlayerID accountID, PlayerID FriendUID, uint friendShardID, FacebookUID FriendFacebookUID)
+	Result GameDB::AddFriend(TransactionID Sender, uint shardID, PlayerID accountID, PlayerID FriendUID, uint friendShardID, FacebookUID FriendFacebookUID)
 	{
 		Result hr = ResultCode::SUCCESS;
 		QueryAddFriendCmd *pQuery = nullptr;
@@ -612,7 +613,7 @@ namespace DB {
 		return hr;
 	}
 
-	Result GameConspiracyDB::RemoveFriend(TransactionID Sender, uint shardID, PlayerID accountID, PlayerID FriendUID)
+	Result GameDB::RemoveFriend(TransactionID Sender, uint shardID, PlayerID accountID, PlayerID FriendUID)
 	{
 		Result hr = ResultCode::SUCCESS;
 		QueryRemoveFriendCmd *pQuery = nullptr;
@@ -637,7 +638,7 @@ namespace DB {
 		return hr;
 	}
 
-	Result GameConspiracyDB::GetFriendList(TransactionID Sender, uint shardID, PlayerID accountID)
+	Result GameDB::GetFriendList(TransactionID Sender, uint shardID, PlayerID accountID)
 	{
 		Result hr = ResultCode::SUCCESS;
 		QueryGetFriendListCmd *pQuery = nullptr;
@@ -660,35 +661,9 @@ namespace DB {
 		return hr;
 	}
 
-	Result GameConspiracyDB::UpdateFriendStaminaTime(TransactionID Sender, uint shardID, PlayerID accountID, PlayerID FriendUID, UTCTimeStampSec timeStamp)
-	{
-		Result hr = ResultCode::SUCCESS;
-		QueryUpdateFriendStaminaTimeCmd *pQuery = nullptr;
-
-		dbMem(pQuery = new(GetHeap()) QueryUpdateFriendStaminaTimeCmd(GetHeap()));
-
-		pQuery->SetPartitioningKey(shardID);
-
-		pQuery->SetTransaction(Sender);
-		pQuery->UserID = accountID;
-		pQuery->FriendUID = FriendUID;
-		pQuery->TimeStamp = timeStamp.time_since_epoch().count();
-		pQuery->Result = 0;
-
-		dbChk(RequestQuery(pQuery));
-
-		pQuery = nullptr;
-
-	Proc_End:
-
-		IHeap::Delete(pQuery);
-
-		return hr;
-	}
-
 
 	// Notifications
-	Result GameConspiracyDB::Notification_Add(TransactionID Sender, uint shardID, PlayerID ToUserID, bool isCollapsable, NotificationType messageID, int64_t messageParam0, int64_t messageParam1, const char* messageText, UTCTimeStampSec timeStamp)
+	Result GameDB::Notification_Add(TransactionID Sender, uint shardID, PlayerID ToUserID, bool isCollapsable, NotificationType messageID, int64_t messageParam0, int64_t messageParam1, const char* messageText, UTCTimeStampSec timeStamp)
 	{
 		Result hr = ResultCode::SUCCESS;
 		QueryNotification_AddCmd *pQuery = nullptr;
@@ -719,7 +694,7 @@ namespace DB {
 		return hr;
 	}
 
-	Result GameConspiracyDB::Notification_GetList(TransactionID Sender, uint shardID, PlayerID UserID)
+	Result GameDB::Notification_GetList(TransactionID Sender, uint shardID, PlayerID UserID)
 	{
 		Result hr = ResultCode::SUCCESS;
 		QueryNotification_GetListCmd *pQuery = nullptr;
@@ -748,7 +723,7 @@ namespace DB {
 		return hr;
 	}
 
-	Result GameConspiracyDB::Notification_Remove(TransactionID Sender, uint shardID, PlayerID userID, int32_t notificationID)
+	Result GameDB::Notification_Remove(TransactionID Sender, uint shardID, PlayerID userID, int32_t notificationID)
 	{
 		Result hr = ResultCode::SUCCESS;
 		QueryNotification_RemoveCmd *pQuery = nullptr;
@@ -775,7 +750,7 @@ namespace DB {
 		return hr;
 	}
 
-	Result GameConspiracyDB::Notification_RemoveByMessageID(TransactionID Sender, uint shardID, PlayerID UserID, int16_t messageID)
+	Result GameDB::Notification_RemoveByMessageID(TransactionID Sender, uint shardID, PlayerID UserID, int16_t messageID)
 	{
 		Result hr = ResultCode::SUCCESS;
 		QueryNotification_RemoveByMessageIDCmd *pQuery = nullptr;
@@ -801,7 +776,7 @@ namespace DB {
 		return hr;
 	}
 
-	Result GameConspiracyDB::Notification_SetRead(TransactionID Sender, uint shardID, PlayerID userID, int32_t notificationID)
+	Result GameDB::Notification_SetRead(TransactionID Sender, uint shardID, PlayerID userID, int32_t notificationID)
 	{
 		Result hr = ResultCode::SUCCESS;
 		QueryNotification_SetReadCmd *pQuery = nullptr;
@@ -828,7 +803,7 @@ namespace DB {
 		return hr;
 	}
 
-	Result GameConspiracyDB::SetComplitionState(TransactionID Sender, uint shardID, PlayerID userID, const char* complitionState)
+	Result GameDB::SetComplitionState(TransactionID Sender, uint shardID, PlayerID userID, const char* complitionState)
 	{
 		Result hr = ResultCode::SUCCESS;
 		QuerySetComplitionStateCmd *pQuery = nullptr;
@@ -855,7 +830,7 @@ namespace DB {
 		return hr;
 	}
 
-	Result GameConspiracyDB::GetComplitionState(TransactionID Sender, uint shardID, PlayerID userID)
+	Result GameDB::GetComplitionState(TransactionID Sender, uint shardID, PlayerID userID)
 	{
 		Result hr = ResultCode::SUCCESS;
 		QueryGetComplitionStateCmd *pQuery = nullptr;

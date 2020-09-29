@@ -17,6 +17,10 @@
 
 
 
+namespace SF {
+	namespace DB {
 
-BRDB_DEFINE_QUERY_IMPL(QueryAddGameLog);
+		BRDB_DEFINE_QUERY_IMPL(QueryAddGameLog);
 
+	}
+}

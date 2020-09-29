@@ -16,7 +16,7 @@
 #include "Entity/Entity.h"
 #include "Transaction/Transaction.h"
 
-#include "Table/conspiracy/GameConfigTbl.h"
+#include "conspiracy/GameConfigTbl.h"
 
 
 
@@ -44,7 +44,7 @@ namespace GameServer
 	class GameServer : public Svr::BrServer
 	{
 	public:
-		typedef ::conspiracy::GameConfigTbl::GameConfigItem GameConfigType;
+		using GameConfigType = conspiracy::GameConfigTbl::GameConfigItem ;
 
 	private:
 		// Public network interface

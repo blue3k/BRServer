@@ -33,7 +33,7 @@
 
 #include "GameInstance/GamePlayerEntity.h"
 
-#include "Table/conspiracy/LevelTbl.h"
+#include "conspiracy/LevelTbl.h"
 
 
 

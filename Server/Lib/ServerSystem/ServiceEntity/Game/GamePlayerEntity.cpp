@@ -33,7 +33,6 @@
 #include "ServiceEntity/Game/Subsystem/UserFriendSystem.h"
 #include "ServiceEntity/Game/Subsystem/UserNotificationSystem.h"
 
-#include "DB/GameConspiracyDB.h"
 #include "DB/GameTransactionDB.h"
 
 #include "Transaction/GamePlayerEntityTrans.h"

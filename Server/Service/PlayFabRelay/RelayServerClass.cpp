@@ -23,8 +23,6 @@
 #include "ServiceEntity/MatchingServiceEntity.h"
 #include "ServiceEntity/Party/GamePartyManagerServiceEntity.h"
 
-#include "Table/TableSystem.h"
-
 #include "ServerEntity/GenericServerEntity.h"
 
 #include "Protocol/Policy/GameServerNetPolicy.h"
@@ -38,7 +36,6 @@
 #include "RelaySvrConst.h"
 #include "RelayServerClass.h"
 
-#include "DB/GameConspiracyDB.h"
 #include "DB/AccountDB.h"
 
 #include "gsdk.h"

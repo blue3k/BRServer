@@ -57,10 +57,10 @@
 
 #include "DB/AccountDB.h"
 #include "DB/AccountQuery.h"
-#include "DB/GameConspiracyDB.h"
-#include "DB/GameConspiracyQuery.h"
+#include "GameConspiracyDB.h"
+#include "GameConspiracyQuery.h"
 
-#include "Table/conspiracy/OrganicTbl.h"
+#include "conspiracy/OrganicTbl.h"
 
 
 
@@ -812,7 +812,7 @@ namespace GameServer {
 		:UserTransactionS2SEvt(heap, pIMsg )
 	{
 		//BR_TRANS_MESSAGE( DB::QuerySetPlayerInfoCmd, { return OnUpdateDBRes(pRes); } );
-		BR_TRANS_MESSAGE( DB::QueryUpdateGameEndCmd, { return OnUpdateDBRes(pRes); } );
+		BR_TRANS_MESSAGE( conspiracy::QueryUpdateGameEndCmd, { return OnUpdateDBRes(pRes); } );
 	}
 
 	Result PlayerTransGameEndedS2SEvt::OnUpdateDBRes(  Svr::TransactionResult* &pRes )
@@ -852,7 +852,7 @@ namespace GameServer {
 		pPlayerInfoSystem->AchivedWin( (PlayerRole)GetPlayedRole(), GetIsWon() != 0 );
 
 		// Save player record
-		svrChk(Svr::GetServerComponent<DB::GameConspiracyDB>()->UpdateGameEndCmd(GetTransID(), GetMyOwner()->GetShardID(), GetMyOwner()->GetPlayerID(),
+		svrChk(Svr::GetServerComponent<conspiracy::GameConspiracyDB>()->UpdateGameEndCmd(GetTransID(), GetMyOwner()->GetShardID(), GetMyOwner()->GetPlayerID(),
 			pPlayerInfoSystem->GetLevel(), 
 			pPlayerInfoSystem->GetExp(), pPlayerInfoSystem->GetGameMoney(), 
 			pPlayerInfoSystem->GetTotalPlayed(), 
@@ -1144,7 +1144,7 @@ namespace GameServer {
 		, m_RevealedPlayerID(heap)
 		, m_RevealedPlayerRole(heap)
 	{
-		BR_TRANS_MESSAGE(DB::QueryUpdateTickStatusCmd, { return OnUpdatePlayerRes(pRes); });
+		BR_TRANS_MESSAGE(conspiracy::QueryUpdateTickStatusCmd, { return OnUpdatePlayerRes(pRes); });
 		BR_TRANS_MESSAGE(Message::GameInstance::GameRevealPlayerRes, { return OnGameRevealPlayerRes(pRes); });
 	}
 
@@ -1246,7 +1246,7 @@ namespace GameServer {
 	PlayerTransGamePlayerRevive::PlayerTransGamePlayerRevive(IHeap& heap, MessageDataPtr &pIMsg)
 		:MessageTransaction(heap, std::forward<MessageDataPtr>(pIMsg))
 	{
-		BR_TRANS_MESSAGE(DB::QueryUpdateTickStatusCmd, { return OnUpdatePlayerRes(pRes); });
+		BR_TRANS_MESSAGE(conspiracy::QueryUpdateTickStatusCmd, { return OnUpdatePlayerRes(pRes); });
 		BR_TRANS_MESSAGE(Message::GameInstance::GamePlayerReviveRes, { return OnGamePlayerReviveRes(pRes); });
 	}
 

@@ -180,31 +180,6 @@ namespace Svr {
 	};
 
 	
-	
-	class PlayerTransGiveStamina : public Svr::MessageTransaction< GamePlayerEntity, Message::Game::GiveStaminaCmd>
-	{
-	public:
-		typedef Svr::MessageTransaction< GamePlayerEntity, Message::Game::GiveStaminaCmd> super;
-
-	private:
-		//Memento<UserGamePlayerInfoSystem::MEMENTO_SIZE> m_SavedData;
-		UTCTimeStampSec m_TimeStamp;
-		INT m_WaitingQueries;
-
-	public:
-		PlayerTransGiveStamina(IHeap& heap, MessageDataPtr &pIMsg );//  :MessageTransaction( pIMsg ) {}
-		virtual ~PlayerTransGiveStamina() {}
-
-		Result OnSavedToDB( Svr::TransactionResult* &pRes );
-		Result OnUpdateTime( Svr::TransactionResult* &pRes );
-		Result OnNotifyAdded(  Svr::TransactionResult* &pRes );
-
-		// Start Transaction
-		virtual Result StartTransaction();
-
-		BR_IMPLEMENT_USERMSGTRANS_CLOSE_ARGS(Policy::NetSvrPolicyGame, GiveStaminaRes, GetTargetPlayer(), m_TimeStamp.time_since_epoch().count());
-	};
-
 
 } // namespace GameServer 
 } // namespace SF 

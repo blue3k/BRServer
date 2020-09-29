@@ -35,10 +35,10 @@
 //#include "GameSystem/UserGamePlayerInfoSystem.h"
 
 
+#include "DB/Game/GameDB.h"
+#include "DB/Game/GameQuery.h"
 #include "DB/AccountDB.h"
 #include "DB/AccountQuery.h"
-#include "DB/GameConspiracyDB.h"
-#include "DB/GameConspiracyQuery.h"
 
 
 
@@ -76,7 +76,7 @@ namespace Svr {
 
 		if(pMsgRes->Result == 0)
 		{
-			svrCheck(Svr::GetServerComponent<DB::GameConspiracyDB>()->Notification_Add(GetTransID(), pMsgRes->ShardID, GetFriendID(), true, NotificationType::FriendRequest, GetMyOwner()->GetPlayerID(), GetMyOwner()->GetFacebookUID(), GetMyOwner()->GetNickName(), m_TimeStamp));
+			svrCheck(Svr::GetServerComponent<DB::GameDB>()->Notification_Add(GetTransID(), pMsgRes->ShardID, GetFriendID(), true, NotificationType::FriendRequest, GetMyOwner()->GetPlayerID(), GetMyOwner()->GetFacebookUID(), GetMyOwner()->GetNickName(), m_TimeStamp));
 		}
 		else
 		{
@@ -164,7 +164,7 @@ namespace Svr {
 
 		m_NewFriend.ShardID = pDBRes->ShardID;
 
-		svrCheck(Svr::GetServerComponent<DB::GameConspiracyDB>()->GetFriendSlotStatus(GetTransID(), m_NewFriend.ShardID, GetInviterID()));
+		svrCheck(Svr::GetServerComponent<DB::GameDB>()->GetFriendSlotStatus(GetTransID(), m_NewFriend.ShardID, GetInviterID()));
 
 		return hr;
 	}
@@ -198,8 +198,8 @@ namespace Svr {
 
 			// add db 
 			m_WaitingResultCount = 0;
-			svrCheck(Svr::GetServerComponent<DB::GameConspiracyDB>()->AddFriend(GetTransID(), myShardID, GetMyOwner()->GetAccountID(), GetInviterID(), m_NewFriend.ShardID, GetInviterFacebookUID())); m_WaitingResultCount++;
-			svrCheck(Svr::GetServerComponent<DB::GameConspiracyDB>()->AddFriend(GetTransID(), m_NewFriend.ShardID, GetInviterID(), GetMyOwner()->GetAccountID(), myShardID, GetMyOwner()->GetFacebookUID())); m_WaitingResultCount++;
+			svrCheck(Svr::GetServerComponent<DB::GameDB>()->AddFriend(GetTransID(), myShardID, GetMyOwner()->GetAccountID(), GetInviterID(), m_NewFriend.ShardID, GetInviterFacebookUID())); m_WaitingResultCount++;
+			svrCheck(Svr::GetServerComponent<DB::GameDB>()->AddFriend(GetTransID(), m_NewFriend.ShardID, GetInviterID(), GetMyOwner()->GetAccountID(), myShardID, GetMyOwner()->GetFacebookUID())); m_WaitingResultCount++;
 		}
 
 		return hr;
@@ -219,7 +219,7 @@ namespace Svr {
 					{
 						m_WaitingResultCount = 0;
 
-						if ((Svr::GetServerComponent<DB::GameConspiracyDB>()->GetFriendQuickInfoWithNickCmd(GetTransID(), m_NewFriend.ShardID, m_NewFriend.PlayerID)))
+						if ((Svr::GetServerComponent<DB::GameDB>()->GetFriendQuickInfoWithNickCmd(GetTransID(), m_NewFriend.ShardID, m_NewFriend.PlayerID)))
 							m_WaitingResultCount++;
 					}
 					else
@@ -444,8 +444,8 @@ namespace Svr {
 		}
 
 		// Reset 
-		svrCheck(Svr::GetServerComponent<DB::GameConspiracyDB>()->RemoveFriend(GetTransID(), GetMyOwner()->GetShardID(), GetMyOwner()->GetAccountID(), GetFriendID())); m_WaitingResultCount++;
-		svrCheck(Svr::GetServerComponent<DB::GameConspiracyDB>()->RemoveFriend(GetTransID(), pFriendInfo->ShardID, GetFriendID(), GetMyOwner()->GetAccountID())); m_WaitingResultCount++;
+		svrCheck(Svr::GetServerComponent<DB::GameDB>()->RemoveFriend(GetTransID(), GetMyOwner()->GetShardID(), GetMyOwner()->GetAccountID(), GetFriendID())); m_WaitingResultCount++;
+		svrCheck(Svr::GetServerComponent<DB::GameDB>()->RemoveFriend(GetTransID(), pFriendInfo->ShardID, GetFriendID(), GetMyOwner()->GetAccountID())); m_WaitingResultCount++;
 
 		return hr;
 	}
@@ -520,7 +520,7 @@ namespace Svr {
 				return;
 			}
 
-			if ((Svr::GetServerComponent<DB::GameConspiracyDB>()->GetFriendQuickInfoWithNickCmd(GetTransID(), info.ShardID, info.PlayerID)))
+			if ((Svr::GetServerComponent<DB::GameDB>()->GetFriendQuickInfoWithNickCmd(GetTransID(), info.ShardID, info.PlayerID)))
 				m_WaitingCount++;
 		});
 
@@ -627,7 +627,7 @@ namespace Svr {
 		m_TotalNumberOfFriends = (decltype(m_TotalNumberOfFriends))friendSystem->GetNumberOfFriends();
 		if (m_TotalNumberOfFriends == 0)
 		{
-			svrCheck(Svr::GetServerComponent<DB::GameConspiracyDB>()->GetFriendList(GetTransID(), GetMyOwner()->GetShardID(), GetMyOwner()->GetAccountID()));
+			svrCheck(Svr::GetServerComponent<DB::GameDB>()->GetFriendList(GetTransID(), GetMyOwner()->GetShardID(), GetMyOwner()->GetAccountID()));
 		}
 		else
 		{
@@ -635,7 +635,7 @@ namespace Svr {
 			{
 				friendSystem->ForeachFriends(0, m_TotalNumberOfFriends, [&](const ServerFriendInformation &friendInfo)
 				{
-					if ((Svr::GetServerComponent<DB::GameConspiracyDB>()->GetFriendQuickInfoWithNickCmd(GetTransID(), friendInfo.ShardID, friendInfo.PlayerID)))
+					if ((Svr::GetServerComponent<DB::GameDB>()->GetFriendQuickInfoWithNickCmd(GetTransID(), friendInfo.ShardID, friendInfo.PlayerID)))
 						m_WaitingCount++;
 					return ResultCode::SUCCESS;
 				});
@@ -672,198 +672,6 @@ namespace Svr {
 	}
 
 
-
-
-	PlayerTransGiveStamina::PlayerTransGiveStamina(IHeap& heap, MessageDataPtr &pIMsg )
-		: MessageTransaction(heap, std::forward<MessageDataPtr>(pIMsg))
-	{
-		SetExclusive(true);
-		BR_TRANS_MESSAGE( DB::QueryUpdateTickStatusCmd, { return OnSavedToDB(pRes); });
-		BR_TRANS_MESSAGE( DB::QueryUpdateFriendStaminaTimeCmd, { return OnUpdateTime(pRes); });
-		BR_TRANS_MESSAGE( DB::QueryNotification_AddCmd, { return OnNotifyAdded(pRes); } );
-	}
-
-
-	Result PlayerTransGiveStamina::OnSavedToDB( Svr::TransactionResult* &pRes )
-	{
-		Result hr = ResultCode::SUCCESS;
-
-		m_WaitingQueries--;
-
-		// if failed to write to DB, rollback the changes
-		if(!hr)
-		{
-			svrTrace( Error, "Failed to save give stamina result PlayerID:{0}, Dest:{1}, hr:{2:X8}", GetMyOwner()->GetPlayerID(), GetTargetPlayer(), hr );
-			CloseTransaction(hr);
-		}
-
-		if (m_WaitingQueries <= 0)
-			CloseTransaction(hr);
-
-		return ResultCode::SUCCESS; 
-	}
-	
-	Result PlayerTransGiveStamina::OnUpdateTime( Svr::TransactionResult* &pRes )
-	{
-		FunctionContext hr([this](Result hr)
-			{
-				// if failed to write to DB, rollback the changes
-				if (!hr)
-				{
-					svrTrace(Error, "Failed to save give-stamina timestamp PlayerID:{0}, Dest:{1}", GetMyOwner()->GetPlayerID(), GetTargetPlayer());
-				}
-
-				m_WaitingQueries--;
-				if (m_WaitingQueries <= 0)
-				{
-					CloseTransaction(hr);
-				}
-			});
-
-		svrCheck(pRes->GetResult());
-
-		return ResultCode::SUCCESS; 
-	}
-
-	Result PlayerTransGiveStamina::OnNotifyAdded(  Svr::TransactionResult* &pRes )
-	{
-		FunctionContext hr([this](Result hr)
-			{
-				m_WaitingQueries--;
-				if (m_WaitingQueries <= 0)
-				{
-					CloseTransaction(hr);
-				}
-			});
-
-		Svr::ServerEntity *pServerEntity = nullptr;
-		EntityUID playerUID;
-		DB::QueryNotification_AddCmd *pMsgRes = (DB::QueryNotification_AddCmd*)pRes;
-
-		svrCheckClose( pRes->GetResult() );
-
-		if( ( Service::PlayerManager->FindPlayer( GetTargetPlayer(), playerUID )) )
-		{
-			svrCheck( Service::ServerEntityManager->GetServerEntity( playerUID.GetServerID(), pServerEntity ) );
-			Policy::NetPolicyGameServer(pServerEntity->GetConnection()).NotifyC2SEvt( RouteContext(GetOwnerEntityUID(),playerUID),
-				GetTargetPlayer(), pMsgRes->NotificationID, NotificationType::GiftStamina, GetMyOwner()->GetPlayerID(), GetMyOwner()->GetFacebookUID(), GetMyOwner()->GetNickName(), m_TimeStamp.time_since_epoch().count());
-		}
-
-		return ResultCode::SUCCESS;
-		
-	}
-
-
-	// Start Transaction
-	Result PlayerTransGiveStamina::StartTransaction()
-	{
-		FunctionContext hr([this](Result hr)
-			{
-				if (!hr || m_WaitingQueries == 0)
-				{
-					CloseTransaction(hr);
-				}
-			});
-		//UserGamePlayerInfoSystem *pPlayerInfoSystem = nullptr;
-		ServerFriendInformation* pFriend = nullptr;
-		EntityUID playerUID;
-
-		m_WaitingQueries = 0;
-		m_TimeStamp = Util::Time.GetTimeUTCSec();
-
-		svrCheck( super::StartTransaction() );
-
-		//svrCheckPtr( pPlayerInfoSystem = GetMyOwner()->GetComponent<UserGamePlayerInfoSystem>() );
-
-		//GetMyOwner()->UpdateGamePlayer();
-
-		//if( pPlayerInfoSystem->GetStamina() <= 0 )
-		//	svrErrorClose(ResultCode::GAME_NOTENOUGH_RESOURCE);
-
-
-		pFriend = GetMyOwner()->GetComponent<UserFriendSystem>()->GetFriend(GetTargetPlayer());
-		if( pFriend == nullptr )
-			svrErrorClose(ResultCode::SVR_PLAYER_NOT_FOUND);
-
-		//svrCheck( pPlayerInfoSystem->GainStamina( -1 ) );
-
-		//GetMyOwner()->AddGameTransactionLog(TransLogCategory::Give, -1, 0, GetTargetPlayer());
-
-
-		//// Save my status
-		//if ((GetMyOwner()->UpdateDBSync(GetTransID())))
-		//	m_WaitingQueries++;
-
-
-		//Update give stamina time
-		svrCheck(Svr::GetServerComponent<DB::GameConspiracyDB>()->UpdateFriendStaminaTime(GetTransID(), GetMyOwner()->GetShardID(), GetMyOwner()->GetPlayerID(), GetTargetPlayer(), m_TimeStamp));
-		pFriend->LastStaminaSent = m_TimeStamp.time_since_epoch().count();
-		m_WaitingQueries++;
-
-
-		// Add stamina notification
-		svrCheck(Svr::GetServerComponent<DB::GameConspiracyDB>()->Notification_Add(GetTransID(), pFriend->ShardID, pFriend->PlayerID, true, NotificationType::GiftStamina, GetMyOwner()->GetPlayerID(), GetMyOwner()->GetFacebookUID(), GetMyOwner()->GetNickName(), m_TimeStamp));
-		m_WaitingQueries++;
-
-		return hr;
-	}
-
-
-
-	//PlayerTransGiveStaminaS2S::PlayerTransGiveStaminaS2S( IHeap& heap, MessageDataPtr &pIMsg )
-	//	:UserTransactionS2SEvt(pIMsg)
-	//{
-	//	SetExclusive(true);
-	//	BR_TRANS_MESSAGE( DB::QueryUpdateTickStatusCmd, { return OnSavedToDB(pRes); });
-	//}
-
-
-	//Result PlayerTransGiveStaminaS2S::OnSavedToDB( Svr::TransactionResult* &pRes )
-	//{
-	//	Result hr = ResultCode::SUCCESS;
-	//	DB::QueryUpdateTickStatusCmd *pDBRes = (DB::QueryUpdateTickStatusCmd*)pRes;
-	//	svrCheck(pRes->GetResult());
-
-
-	//Proc_End:
-
-	//	if( !(hr) )
-	//	{
-	//		svrTrace( Error, "Failed to save received stamina result PlayerID:{0}, Sender:{1}", GetDestPlayerID(), GetSenderID() );
-	//	}
-
-	//	CloseTransaction(hr);
-
-	//	return ResultCode::SUCCESS; 
-	//}
-
-
-	//// Start Transaction
-	//Result PlayerTransGiveStaminaS2S::StartTransaction()
-	//{
-	//	Result hr = ResultCode::SUCCESS;
-	//	UserGamePlayerInfoSystem *pPlayerInfoSystem = nullptr;
-
-	//	svrCheck( super::StartTransaction() );
-
-	//	if( GetMyOwner()->GetPlayerID() != GetDestPlayerID() )
-	//		svrErrorClose(ResultCode::INVALID_PLAYERID);
-
-	//	svrCheckPtr( pPlayerInfoSystem = GetMyOwner()->GetComponent<UserGamePlayerInfoSystem>() );
-
-	//	svrCheck( pPlayerInfoSystem->GainStamina( 1 ) );
-
-	//	svrCheck(GetMyOwner()->UpdateDBSync(GetTransID()));
-
-	//Proc_End:
-
-	//	if( !(hr) )
-	//	{
-	//		CloseTransaction( hr );
-	//	}
-
-	//	return hr;
-	//}
 
 
 	

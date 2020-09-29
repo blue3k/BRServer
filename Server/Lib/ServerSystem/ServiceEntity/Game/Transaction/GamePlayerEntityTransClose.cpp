@@ -43,8 +43,6 @@
 
 #include "ServiceEntity/Game/Subsystem/UserFriendSystem.h"
 
-#include "DB/GameConspiracyDB.h"
-#include "DB/GameConspiracyQuery.h"
 #include "DB/LoginSessionDB.h"
 #include "DB/LoginSessionQuery.h"
 
@@ -60,7 +58,9 @@ namespace Svr {
 		: TransactionT(heap, TransactionID() )
 	{
 		SetExclusive(true);
-		BR_TRANS_MESSAGE(DB::QueryUpdateTickStatusCmd, { return UpdateDBRes(pRes); });
+
+		// TODO: DB transaction id is defined in each game.
+		//BR_TRANS_MESSAGE(DB::QueryUpdateTickStatusCmd, { return UpdateDBRes(pRes); });
 		BR_TRANS_MESSAGE(DB::QueryDeleteLoginSessionCmd, { return DeleteLoginSessionRes(pRes); });
 		BR_TRANS_MESSAGE(Message::PartyMatchingQueue::UnregisterMatchingRes, { return UnregisterMatchingRes(pRes); });
 		BR_TRANS_MESSAGE(Message::GameInstance::LeaveGameRes, { return LeaveGameRes(pRes); });

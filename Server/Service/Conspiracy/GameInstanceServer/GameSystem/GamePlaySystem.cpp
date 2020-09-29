@@ -70,6 +70,9 @@ namespace ConspiracyGameInstanceServer {
 	//	GamePlaySystem class
 	//
 
+	constexpr StringCrc32 GamePlaySystem::ComponentID;
+	constexpr int GamePlaySystem::MAX_WEREWOLF;
+
 	// Constructor 
 	GamePlaySystem::GamePlaySystem( GameInstanceEntity* pEntity )
 		: GameSystem(pEntity)

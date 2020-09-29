@@ -40,6 +40,8 @@ namespace ConspiracyGameInstanceServer {
 	//	GamePlaySystem class
 	//
 
+	constexpr StringCrc32 ChattingLogSystem::ComponentID;
+
 	// Constructor 
 	ChattingLogSystem::ChattingLogSystem( GameInstanceEntity* pEntity )
 		: GameSystem(pEntity)

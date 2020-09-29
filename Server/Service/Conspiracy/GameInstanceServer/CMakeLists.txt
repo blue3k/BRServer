@@ -40,15 +40,15 @@ set(BRGAMEINSTANCESERVER_LIB_FILES
 
 
 
-include_directories(./)
+include_directories(./ ../GameDB ../GameTable)
 
 
 
 add_executable(BRConspiracyGameInstance ${BRGAMEINSTANCESERVER_LIB_FILES})
 
-add_dependencies(BRConspiracyGameInstance BRDB BRServerSystem BRServerProtocol BRTable)
+add_dependencies(BRConspiracyGameInstance BRDB BRServerSystem BRServerProtocol BRConspiracyGameTable BRConspiracyGameDB)
 
-target_link_libraries(BRConspiracyGameInstance ${ENGINE_LINK_LIBS} ${PLATFORM_LIBS})
+target_link_libraries(BRConspiracyGameInstance ${ENGINE_LINK_LIBS} ${PLATFORM_LIBS} BRConspiracyGameTable BRConspiracyGameDB)
 
 
 install (TARGETS BRConspiracyGameInstance

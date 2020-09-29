@@ -32,8 +32,8 @@
 #include "Protocol/Policy/GameServerNetPolicy.h"
 #include "Protocol/Policy/GameInstanceNetPolicy.h"
 
-#include "Table/conspiracy/GameConfigTbl.h"
-#include "Table/conspiracy/BotTalkTbl.h"
+#include "conspiracy/GameConfigTbl.h"
+#include "conspiracy/BotTalkTbl.h"
 
 
 namespace SF{ 
@@ -70,12 +70,10 @@ namespace ConspiracyGameInstanceServer
 	{
 	public:
 
-		typedef ::conspiracy::GameConfigTbl::GameConfigItem GameConfigType;
+		typedef conspiracy::GameConfigTbl::GameConfigItem GameConfigType;
 
 	private:
 		typedef Svr::GameInstanceEntity super;
-
-		ComponentCarrier<GameSystemComponentID_Max> m_ComponentCarrier;
 
 		// Player by index
 		GamePlayer*				m_PlayerByIndex[GameConst::MAX_GAMEPLAYER];
@@ -112,12 +110,6 @@ namespace ConspiracyGameInstanceServer
 
 		GameInstanceEntity();
 		~GameInstanceEntity();
-
-		ComponentCarrier<GameSystemComponentID_Max>& GetComponentCarrier() { return m_ComponentCarrier; }
-
-		// Get component with its type
-		template< class ComponentType >
-		ComponentType* GetComponent() { return m_ComponentCarrier.GetComponent<ComponentType>(); }
 
 
 		GameConfigType* GetPresetGameConfig() { return m_PresetGameConfig; }

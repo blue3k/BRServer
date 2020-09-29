@@ -34,7 +34,7 @@
 #include "GameSystem/GameVote.h"
 #include "GameInstance/GameInstanceEntity.h"
 
-#include "Table/conspiracy/RewardTbl.h"
+#include "conspiracy/RewardTbl.h"
 
 
 

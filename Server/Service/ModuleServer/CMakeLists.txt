@@ -22,7 +22,7 @@ include_directories(./)
 
 add_executable(BRModuleServer ${BR_LIB_FILES})
 
-add_dependencies(BRModuleServer BRDB BRServerSystem BRServerProtocol BRTable)
+add_dependencies(BRModuleServer BRDB BRServerSystem BRServerProtocol)
 
 target_link_libraries(BRModuleServer ${ENGINE_LINK_LIBS} ${PLATFORM_LIBS})
 
