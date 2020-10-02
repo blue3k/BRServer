@@ -28,7 +28,7 @@ namespace SF
 		{
  			// C2S: Nitify that a game instance is deleted. Game instance send this message to manager before it destroy itself.
 			const MessageID DeleteGameC2SEvt::MID = MessageID(MSGTYPE_EVENT, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_GAMEINSTANCE, 0);
-			Result DeleteGameC2SEvt::ParseMessage( MessageData* pIMsg )
+			Result DeleteGameC2SEvt::ParseMessage(const MessageData* pIMsg)
 			{
  				FunctionContext hr;
 
@@ -45,7 +45,7 @@ namespace SF
 
 				return hr;
 
-			}; // Result DeleteGameC2SEvt::ParseMessage( MessageData* pIMsg )
+			}; // Result DeleteGameC2SEvt::ParseMessage(const MessageData* pIMsg)
 
 
 			Result DeleteGameC2SEvt::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr&& pIMsg, MessageBase* &pMessageBase )
@@ -128,7 +128,7 @@ namespace SF
 
 			// Cmd: Join to a game instance. You can call multiple times, but it would be waste
 			const MessageID JoinGameCmd::MID = MessageID(MSGTYPE_COMMAND, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_GAMEINSTANCE, 1);
-			Result JoinGameCmd::ParseMessage( MessageData* pIMsg )
+			Result JoinGameCmd::ParseMessage(const MessageData* pIMsg)
 			{
  				FunctionContext hr;
 
@@ -148,7 +148,7 @@ namespace SF
 
 				return hr;
 
-			}; // Result JoinGameCmd::ParseMessage( MessageData* pIMsg )
+			}; // Result JoinGameCmd::ParseMessage(const MessageData* pIMsg)
 
 
 			Result JoinGameCmd::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr&& pIMsg, MessageBase* &pMessageBase )
@@ -236,7 +236,7 @@ namespace SF
 			}; // Result JoinGameCmd::TraceOut(const char* prefix, const MessageDataPtr& pMsg)
 
 			const MessageID JoinGameRes::MID = MessageID(MSGTYPE_RESULT, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_GAMEINSTANCE, 1);
-			Result JoinGameRes::ParseMessage( MessageData* pIMsg )
+			Result JoinGameRes::ParseMessage(const MessageData* pIMsg)
 			{
  				FunctionContext hr;
 
@@ -273,7 +273,7 @@ namespace SF
 
 				return hr;
 
-			}; // Result JoinGameRes::ParseMessage( MessageData* pIMsg )
+			}; // Result JoinGameRes::ParseMessage(const MessageData* pIMsg)
 
 
 			Result JoinGameRes::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr&& pIMsg, MessageBase* &pMessageBase )
@@ -386,7 +386,7 @@ namespace SF
 
 			// S2C: Player joined event. This event is brocasted when a player joined
 			const MessageID PlayerJoinedS2CEvt::MID = MessageID(MSGTYPE_EVENT, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_GAMEINSTANCE, 2);
-			Result PlayerJoinedS2CEvt::ParseMessage( MessageData* pIMsg )
+			Result PlayerJoinedS2CEvt::ParseMessage(const MessageData* pIMsg)
 			{
  				FunctionContext hr;
 
@@ -408,7 +408,7 @@ namespace SF
 
 				return hr;
 
-			}; // Result PlayerJoinedS2CEvt::ParseMessage( MessageData* pIMsg )
+			}; // Result PlayerJoinedS2CEvt::ParseMessage(const MessageData* pIMsg)
 
 
 			Result PlayerJoinedS2CEvt::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr&& pIMsg, MessageBase* &pMessageBase )
@@ -501,7 +501,7 @@ namespace SF
 
 			// C2S: For debug purpose, change configue preset. There is a game setting table. you can switch between those setting value.
 			const MessageID SetConfigPresetC2SEvt::MID = MessageID(MSGTYPE_EVENT, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_GAMEINSTANCE, 3);
-			Result SetConfigPresetC2SEvt::ParseMessage( MessageData* pIMsg )
+			Result SetConfigPresetC2SEvt::ParseMessage(const MessageData* pIMsg)
 			{
  				FunctionContext hr;
 
@@ -519,7 +519,7 @@ namespace SF
 
 				return hr;
 
-			}; // Result SetConfigPresetC2SEvt::ParseMessage( MessageData* pIMsg )
+			}; // Result SetConfigPresetC2SEvt::ParseMessage(const MessageData* pIMsg)
 
 
 			Result SetConfigPresetC2SEvt::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr&& pIMsg, MessageBase* &pMessageBase )
@@ -604,7 +604,7 @@ namespace SF
 
 			// Cmd: Leave game instance.
 			const MessageID LeaveGameCmd::MID = MessageID(MSGTYPE_COMMAND, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_GAMEINSTANCE, 4);
-			Result LeaveGameCmd::ParseMessage( MessageData* pIMsg )
+			Result LeaveGameCmd::ParseMessage(const MessageData* pIMsg)
 			{
  				FunctionContext hr;
 
@@ -623,7 +623,7 @@ namespace SF
 
 				return hr;
 
-			}; // Result LeaveGameCmd::ParseMessage( MessageData* pIMsg )
+			}; // Result LeaveGameCmd::ParseMessage(const MessageData* pIMsg)
 
 
 			Result LeaveGameCmd::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr&& pIMsg, MessageBase* &pMessageBase )
@@ -709,7 +709,7 @@ namespace SF
 			}; // Result LeaveGameCmd::TraceOut(const char* prefix, const MessageDataPtr& pMsg)
 
 			const MessageID LeaveGameRes::MID = MessageID(MSGTYPE_RESULT, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_GAMEINSTANCE, 4);
-			Result LeaveGameRes::ParseMessage( MessageData* pIMsg )
+			Result LeaveGameRes::ParseMessage(const MessageData* pIMsg)
 			{
  				FunctionContext hr;
 
@@ -728,7 +728,7 @@ namespace SF
 
 				return hr;
 
-			}; // Result LeaveGameRes::ParseMessage( MessageData* pIMsg )
+			}; // Result LeaveGameRes::ParseMessage(const MessageData* pIMsg)
 
 
 			Result LeaveGameRes::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr&& pIMsg, MessageBase* &pMessageBase )
@@ -815,7 +815,7 @@ namespace SF
 
 			// S2C: Player left event.
 			const MessageID PlayerLeftS2CEvt::MID = MessageID(MSGTYPE_EVENT, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_GAMEINSTANCE, 5);
-			Result PlayerLeftS2CEvt::ParseMessage( MessageData* pIMsg )
+			Result PlayerLeftS2CEvt::ParseMessage(const MessageData* pIMsg)
 			{
  				FunctionContext hr;
 
@@ -833,7 +833,7 @@ namespace SF
 
 				return hr;
 
-			}; // Result PlayerLeftS2CEvt::ParseMessage( MessageData* pIMsg )
+			}; // Result PlayerLeftS2CEvt::ParseMessage(const MessageData* pIMsg)
 
 
 			Result PlayerLeftS2CEvt::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr&& pIMsg, MessageBase* &pMessageBase )
@@ -918,7 +918,7 @@ namespace SF
 
 			// Cmd: Kick player with given ID
 			const MessageID KickPlayerCmd::MID = MessageID(MSGTYPE_COMMAND, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_GAMEINSTANCE, 6);
-			Result KickPlayerCmd::ParseMessage( MessageData* pIMsg )
+			Result KickPlayerCmd::ParseMessage(const MessageData* pIMsg)
 			{
  				FunctionContext hr;
 
@@ -938,7 +938,7 @@ namespace SF
 
 				return hr;
 
-			}; // Result KickPlayerCmd::ParseMessage( MessageData* pIMsg )
+			}; // Result KickPlayerCmd::ParseMessage(const MessageData* pIMsg)
 
 
 			Result KickPlayerCmd::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr&& pIMsg, MessageBase* &pMessageBase )
@@ -1026,7 +1026,7 @@ namespace SF
 			}; // Result KickPlayerCmd::TraceOut(const char* prefix, const MessageDataPtr& pMsg)
 
 			const MessageID KickPlayerRes::MID = MessageID(MSGTYPE_RESULT, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_GAMEINSTANCE, 6);
-			Result KickPlayerRes::ParseMessage( MessageData* pIMsg )
+			Result KickPlayerRes::ParseMessage(const MessageData* pIMsg)
 			{
  				FunctionContext hr;
 
@@ -1045,7 +1045,7 @@ namespace SF
 
 				return hr;
 
-			}; // Result KickPlayerRes::ParseMessage( MessageData* pIMsg )
+			}; // Result KickPlayerRes::ParseMessage(const MessageData* pIMsg)
 
 
 			Result KickPlayerRes::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr&& pIMsg, MessageBase* &pMessageBase )
@@ -1132,7 +1132,7 @@ namespace SF
 
 			// S2C: Player kicked event. this event will be brocasted when a player kicked.
 			const MessageID PlayerKickedS2CEvt::MID = MessageID(MSGTYPE_EVENT, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_GAMEINSTANCE, 7);
-			Result PlayerKickedS2CEvt::ParseMessage( MessageData* pIMsg )
+			Result PlayerKickedS2CEvt::ParseMessage(const MessageData* pIMsg)
 			{
  				FunctionContext hr;
 
@@ -1150,7 +1150,7 @@ namespace SF
 
 				return hr;
 
-			}; // Result PlayerKickedS2CEvt::ParseMessage( MessageData* pIMsg )
+			}; // Result PlayerKickedS2CEvt::ParseMessage(const MessageData* pIMsg)
 
 
 			Result PlayerKickedS2CEvt::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr&& pIMsg, MessageBase* &pMessageBase )
@@ -1235,7 +1235,7 @@ namespace SF
 
 			// Cmd: Assign new roles to all players.
 			const MessageID AssignRoleCmd::MID = MessageID(MSGTYPE_COMMAND, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_GAMEINSTANCE, 8);
-			Result AssignRoleCmd::ParseMessage( MessageData* pIMsg )
+			Result AssignRoleCmd::ParseMessage(const MessageData* pIMsg)
 			{
  				FunctionContext hr;
 
@@ -1254,7 +1254,7 @@ namespace SF
 
 				return hr;
 
-			}; // Result AssignRoleCmd::ParseMessage( MessageData* pIMsg )
+			}; // Result AssignRoleCmd::ParseMessage(const MessageData* pIMsg)
 
 
 			Result AssignRoleCmd::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr&& pIMsg, MessageBase* &pMessageBase )
@@ -1340,7 +1340,7 @@ namespace SF
 			}; // Result AssignRoleCmd::TraceOut(const char* prefix, const MessageDataPtr& pMsg)
 
 			const MessageID AssignRoleRes::MID = MessageID(MSGTYPE_RESULT, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_GAMEINSTANCE, 8);
-			Result AssignRoleRes::ParseMessage( MessageData* pIMsg )
+			Result AssignRoleRes::ParseMessage(const MessageData* pIMsg)
 			{
  				FunctionContext hr;
 
@@ -1359,7 +1359,7 @@ namespace SF
 
 				return hr;
 
-			}; // Result AssignRoleRes::ParseMessage( MessageData* pIMsg )
+			}; // Result AssignRoleRes::ParseMessage(const MessageData* pIMsg)
 
 
 			Result AssignRoleRes::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr&& pIMsg, MessageBase* &pMessageBase )
@@ -1446,7 +1446,7 @@ namespace SF
 
 			// S2C: Event for role assigned
 			const MessageID RoleAssignedS2CEvt::MID = MessageID(MSGTYPE_EVENT, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_GAMEINSTANCE, 9);
-			Result RoleAssignedS2CEvt::ParseMessage( MessageData* pIMsg )
+			Result RoleAssignedS2CEvt::ParseMessage(const MessageData* pIMsg)
 			{
  				FunctionContext hr;
 
@@ -1464,7 +1464,7 @@ namespace SF
 
 				return hr;
 
-			}; // Result RoleAssignedS2CEvt::ParseMessage( MessageData* pIMsg )
+			}; // Result RoleAssignedS2CEvt::ParseMessage(const MessageData* pIMsg)
 
 
 			Result RoleAssignedS2CEvt::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr&& pIMsg, MessageBase* &pMessageBase )
@@ -1549,7 +1549,7 @@ namespace SF
 
 			// C2S: in-game chatting message.
 			const MessageID ChatMessageC2SEvt::MID = MessageID(MSGTYPE_EVENT, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_GAMEINSTANCE, 10);
-			Result ChatMessageC2SEvt::ParseMessage( MessageData* pIMsg )
+			Result ChatMessageC2SEvt::ParseMessage(const MessageData* pIMsg)
 			{
  				FunctionContext hr;
 
@@ -1570,7 +1570,7 @@ namespace SF
 
 				return hr;
 
-			}; // Result ChatMessageC2SEvt::ParseMessage( MessageData* pIMsg )
+			}; // Result ChatMessageC2SEvt::ParseMessage(const MessageData* pIMsg)
 
 
 			Result ChatMessageC2SEvt::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr&& pIMsg, MessageBase* &pMessageBase )
@@ -1659,7 +1659,7 @@ namespace SF
 
 			// Cmd: Advance game
 			const MessageID AdvanceGameCmd::MID = MessageID(MSGTYPE_COMMAND, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_GAMEINSTANCE, 11);
-			Result AdvanceGameCmd::ParseMessage( MessageData* pIMsg )
+			Result AdvanceGameCmd::ParseMessage(const MessageData* pIMsg)
 			{
  				FunctionContext hr;
 
@@ -1678,7 +1678,7 @@ namespace SF
 
 				return hr;
 
-			}; // Result AdvanceGameCmd::ParseMessage( MessageData* pIMsg )
+			}; // Result AdvanceGameCmd::ParseMessage(const MessageData* pIMsg)
 
 
 			Result AdvanceGameCmd::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr&& pIMsg, MessageBase* &pMessageBase )
@@ -1764,7 +1764,7 @@ namespace SF
 			}; // Result AdvanceGameCmd::TraceOut(const char* prefix, const MessageDataPtr& pMsg)
 
 			const MessageID AdvanceGameRes::MID = MessageID(MSGTYPE_RESULT, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_GAMEINSTANCE, 11);
-			Result AdvanceGameRes::ParseMessage( MessageData* pIMsg )
+			Result AdvanceGameRes::ParseMessage(const MessageData* pIMsg)
 			{
  				FunctionContext hr;
 
@@ -1783,7 +1783,7 @@ namespace SF
 
 				return hr;
 
-			}; // Result AdvanceGameRes::ParseMessage( MessageData* pIMsg )
+			}; // Result AdvanceGameRes::ParseMessage(const MessageData* pIMsg)
 
 
 			Result AdvanceGameRes::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr&& pIMsg, MessageBase* &pMessageBase )
@@ -1870,7 +1870,7 @@ namespace SF
 
 			// S2C: The game state is advanced
 			const MessageID GameAdvancedS2CEvt::MID = MessageID(MSGTYPE_EVENT, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_GAMEINSTANCE, 12);
-			Result GameAdvancedS2CEvt::ParseMessage( MessageData* pIMsg )
+			Result GameAdvancedS2CEvt::ParseMessage(const MessageData* pIMsg)
 			{
  				FunctionContext hr;
 
@@ -1890,7 +1890,7 @@ namespace SF
 
 				return hr;
 
-			}; // Result GameAdvancedS2CEvt::ParseMessage( MessageData* pIMsg )
+			}; // Result GameAdvancedS2CEvt::ParseMessage(const MessageData* pIMsg)
 
 
 			Result GameAdvancedS2CEvt::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr&& pIMsg, MessageBase* &pMessageBase )
@@ -1979,7 +1979,7 @@ namespace SF
 
 			// S2C: Game is ended
 			const MessageID GameEndedS2CEvt::MID = MessageID(MSGTYPE_EVENT, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_GAMEINSTANCE, 13);
-			Result GameEndedS2CEvt::ParseMessage( MessageData* pIMsg )
+			Result GameEndedS2CEvt::ParseMessage(const MessageData* pIMsg)
 			{
  				FunctionContext hr;
 
@@ -2001,7 +2001,7 @@ namespace SF
 
 				return hr;
 
-			}; // Result GameEndedS2CEvt::ParseMessage( MessageData* pIMsg )
+			}; // Result GameEndedS2CEvt::ParseMessage(const MessageData* pIMsg)
 
 
 			Result GameEndedS2CEvt::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr&& pIMsg, MessageBase* &pMessageBase )
@@ -2094,7 +2094,7 @@ namespace SF
 
 			// Cmd: *Vote game advance
 			const MessageID VoteGameAdvanceCmd::MID = MessageID(MSGTYPE_COMMAND, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_GAMEINSTANCE, 14);
-			Result VoteGameAdvanceCmd::ParseMessage( MessageData* pIMsg )
+			Result VoteGameAdvanceCmd::ParseMessage(const MessageData* pIMsg)
 			{
  				FunctionContext hr;
 
@@ -2113,7 +2113,7 @@ namespace SF
 
 				return hr;
 
-			}; // Result VoteGameAdvanceCmd::ParseMessage( MessageData* pIMsg )
+			}; // Result VoteGameAdvanceCmd::ParseMessage(const MessageData* pIMsg)
 
 
 			Result VoteGameAdvanceCmd::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr&& pIMsg, MessageBase* &pMessageBase )
@@ -2199,7 +2199,7 @@ namespace SF
 			}; // Result VoteGameAdvanceCmd::TraceOut(const char* prefix, const MessageDataPtr& pMsg)
 
 			const MessageID VoteGameAdvanceRes::MID = MessageID(MSGTYPE_RESULT, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_GAMEINSTANCE, 14);
-			Result VoteGameAdvanceRes::ParseMessage( MessageData* pIMsg )
+			Result VoteGameAdvanceRes::ParseMessage(const MessageData* pIMsg)
 			{
  				FunctionContext hr;
 
@@ -2218,7 +2218,7 @@ namespace SF
 
 				return hr;
 
-			}; // Result VoteGameAdvanceRes::ParseMessage( MessageData* pIMsg )
+			}; // Result VoteGameAdvanceRes::ParseMessage(const MessageData* pIMsg)
 
 
 			Result VoteGameAdvanceRes::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr&& pIMsg, MessageBase* &pMessageBase )
@@ -2305,7 +2305,7 @@ namespace SF
 
 			// S2C: *GameAdvance is Voted
 			const MessageID GameAdvanceVotedS2CEvt::MID = MessageID(MSGTYPE_EVENT, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_GAMEINSTANCE, 15);
-			Result GameAdvanceVotedS2CEvt::ParseMessage( MessageData* pIMsg )
+			Result GameAdvanceVotedS2CEvt::ParseMessage(const MessageData* pIMsg)
 			{
  				FunctionContext hr;
 
@@ -2323,7 +2323,7 @@ namespace SF
 
 				return hr;
 
-			}; // Result GameAdvanceVotedS2CEvt::ParseMessage( MessageData* pIMsg )
+			}; // Result GameAdvanceVotedS2CEvt::ParseMessage(const MessageData* pIMsg)
 
 
 			Result GameAdvanceVotedS2CEvt::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr&& pIMsg, MessageBase* &pMessageBase )
@@ -2408,7 +2408,7 @@ namespace SF
 
 			// Cmd: Assign role
 			const MessageID VoteCmd::MID = MessageID(MSGTYPE_COMMAND, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_GAMEINSTANCE, 16);
-			Result VoteCmd::ParseMessage( MessageData* pIMsg )
+			Result VoteCmd::ParseMessage(const MessageData* pIMsg)
 			{
  				FunctionContext hr;
 
@@ -2429,7 +2429,7 @@ namespace SF
 
 				return hr;
 
-			}; // Result VoteCmd::ParseMessage( MessageData* pIMsg )
+			}; // Result VoteCmd::ParseMessage(const MessageData* pIMsg)
 
 
 			Result VoteCmd::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr&& pIMsg, MessageBase* &pMessageBase )
@@ -2519,7 +2519,7 @@ namespace SF
 			}; // Result VoteCmd::TraceOut(const char* prefix, const MessageDataPtr& pMsg)
 
 			const MessageID VoteRes::MID = MessageID(MSGTYPE_RESULT, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_GAMEINSTANCE, 16);
-			Result VoteRes::ParseMessage( MessageData* pIMsg )
+			Result VoteRes::ParseMessage(const MessageData* pIMsg)
 			{
  				FunctionContext hr;
 
@@ -2538,7 +2538,7 @@ namespace SF
 
 				return hr;
 
-			}; // Result VoteRes::ParseMessage( MessageData* pIMsg )
+			}; // Result VoteRes::ParseMessage(const MessageData* pIMsg)
 
 
 			Result VoteRes::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr&& pIMsg, MessageBase* &pMessageBase )
@@ -2625,7 +2625,7 @@ namespace SF
 
 			// S2C: Player Voted
 			const MessageID VotedS2CEvt::MID = MessageID(MSGTYPE_EVENT, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_GAMEINSTANCE, 17);
-			Result VotedS2CEvt::ParseMessage( MessageData* pIMsg )
+			Result VotedS2CEvt::ParseMessage(const MessageData* pIMsg)
 			{
  				FunctionContext hr;
 
@@ -2644,7 +2644,7 @@ namespace SF
 
 				return hr;
 
-			}; // Result VotedS2CEvt::ParseMessage( MessageData* pIMsg )
+			}; // Result VotedS2CEvt::ParseMessage(const MessageData* pIMsg)
 
 
 			Result VotedS2CEvt::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr&& pIMsg, MessageBase* &pMessageBase )
@@ -2731,7 +2731,7 @@ namespace SF
 
 			// S2C: Player Voted
 			const MessageID VoteEndS2CEvt::MID = MessageID(MSGTYPE_EVENT, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_GAMEINSTANCE, 18);
-			Result VoteEndS2CEvt::ParseMessage( MessageData* pIMsg )
+			Result VoteEndS2CEvt::ParseMessage(const MessageData* pIMsg)
 			{
  				FunctionContext hr;
 
@@ -2752,7 +2752,7 @@ namespace SF
 
 				return hr;
 
-			}; // Result VoteEndS2CEvt::ParseMessage( MessageData* pIMsg )
+			}; // Result VoteEndS2CEvt::ParseMessage(const MessageData* pIMsg)
 
 
 			Result VoteEndS2CEvt::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr&& pIMsg, MessageBase* &pMessageBase )
@@ -2838,7 +2838,7 @@ namespace SF
 
 			// S2C: Player Voted
 			const MessageID PlayerRevealedS2CEvt::MID = MessageID(MSGTYPE_EVENT, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_GAMEINSTANCE, 19);
-			Result PlayerRevealedS2CEvt::ParseMessage( MessageData* pIMsg )
+			Result PlayerRevealedS2CEvt::ParseMessage(const MessageData* pIMsg)
 			{
  				FunctionContext hr;
 
@@ -2858,7 +2858,7 @@ namespace SF
 
 				return hr;
 
-			}; // Result PlayerRevealedS2CEvt::ParseMessage( MessageData* pIMsg )
+			}; // Result PlayerRevealedS2CEvt::ParseMessage(const MessageData* pIMsg)
 
 
 			Result PlayerRevealedS2CEvt::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr&& pIMsg, MessageBase* &pMessageBase )
@@ -2947,7 +2947,7 @@ namespace SF
 
 			// S2C: Player Killed
 			const MessageID PlayerKilledS2CEvt::MID = MessageID(MSGTYPE_EVENT, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_GAMEINSTANCE, 20);
-			Result PlayerKilledS2CEvt::ParseMessage( MessageData* pIMsg )
+			Result PlayerKilledS2CEvt::ParseMessage(const MessageData* pIMsg)
 			{
  				FunctionContext hr;
 
@@ -2966,7 +2966,7 @@ namespace SF
 
 				return hr;
 
-			}; // Result PlayerKilledS2CEvt::ParseMessage( MessageData* pIMsg )
+			}; // Result PlayerKilledS2CEvt::ParseMessage(const MessageData* pIMsg)
 
 
 			Result PlayerKilledS2CEvt::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr&& pIMsg, MessageBase* &pMessageBase )
@@ -3053,7 +3053,7 @@ namespace SF
 
 			// Cmd: Play again with the current players
 			const MessageID GamePlayAgainCmd::MID = MessageID(MSGTYPE_COMMAND, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_GAMEINSTANCE, 21);
-			Result GamePlayAgainCmd::ParseMessage( MessageData* pIMsg )
+			Result GamePlayAgainCmd::ParseMessage(const MessageData* pIMsg)
 			{
  				FunctionContext hr;
 
@@ -3073,7 +3073,7 @@ namespace SF
 
 				return hr;
 
-			}; // Result GamePlayAgainCmd::ParseMessage( MessageData* pIMsg )
+			}; // Result GamePlayAgainCmd::ParseMessage(const MessageData* pIMsg)
 
 
 			Result GamePlayAgainCmd::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr&& pIMsg, MessageBase* &pMessageBase )
@@ -3161,7 +3161,7 @@ namespace SF
 			}; // Result GamePlayAgainCmd::TraceOut(const char* prefix, const MessageDataPtr& pMsg)
 
 			const MessageID GamePlayAgainRes::MID = MessageID(MSGTYPE_RESULT, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_GAMEINSTANCE, 21);
-			Result GamePlayAgainRes::ParseMessage( MessageData* pIMsg )
+			Result GamePlayAgainRes::ParseMessage(const MessageData* pIMsg)
 			{
  				FunctionContext hr;
 
@@ -3181,7 +3181,7 @@ namespace SF
 
 				return hr;
 
-			}; // Result GamePlayAgainRes::ParseMessage( MessageData* pIMsg )
+			}; // Result GamePlayAgainRes::ParseMessage(const MessageData* pIMsg)
 
 
 			Result GamePlayAgainRes::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr&& pIMsg, MessageBase* &pMessageBase )
@@ -3270,7 +3270,7 @@ namespace SF
 
 			// S2C: Somebody pressed play again. Only one of PartyUID and GameInsUID can have a value
 			const MessageID GamePlayAgainS2CEvt::MID = MessageID(MSGTYPE_EVENT, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_GAMEINSTANCE, 22);
-			Result GamePlayAgainS2CEvt::ParseMessage( MessageData* pIMsg )
+			Result GamePlayAgainS2CEvt::ParseMessage(const MessageData* pIMsg)
 			{
  				FunctionContext hr;
 
@@ -3290,7 +3290,7 @@ namespace SF
 
 				return hr;
 
-			}; // Result GamePlayAgainS2CEvt::ParseMessage( MessageData* pIMsg )
+			}; // Result GamePlayAgainS2CEvt::ParseMessage(const MessageData* pIMsg)
 
 
 			Result GamePlayAgainS2CEvt::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr&& pIMsg, MessageBase* &pMessageBase )
@@ -3379,7 +3379,7 @@ namespace SF
 
 			// Cmd: Player. revive himself
 			const MessageID GameRevealPlayerCmd::MID = MessageID(MSGTYPE_COMMAND, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_GAMEINSTANCE, 23);
-			Result GameRevealPlayerCmd::ParseMessage( MessageData* pIMsg )
+			Result GameRevealPlayerCmd::ParseMessage(const MessageData* pIMsg)
 			{
  				FunctionContext hr;
 
@@ -3402,7 +3402,7 @@ namespace SF
 
 				return hr;
 
-			}; // Result GameRevealPlayerCmd::ParseMessage( MessageData* pIMsg )
+			}; // Result GameRevealPlayerCmd::ParseMessage(const MessageData* pIMsg)
 
 
 			Result GameRevealPlayerCmd::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr&& pIMsg, MessageBase* &pMessageBase )
@@ -3491,7 +3491,7 @@ namespace SF
 			}; // Result GameRevealPlayerCmd::TraceOut(const char* prefix, const MessageDataPtr& pMsg)
 
 			const MessageID GameRevealPlayerRes::MID = MessageID(MSGTYPE_RESULT, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_GAMEINSTANCE, 23);
-			Result GameRevealPlayerRes::ParseMessage( MessageData* pIMsg )
+			Result GameRevealPlayerRes::ParseMessage(const MessageData* pIMsg)
 			{
  				FunctionContext hr;
 
@@ -3518,7 +3518,7 @@ namespace SF
 
 				return hr;
 
-			}; // Result GameRevealPlayerRes::ParseMessage( MessageData* pIMsg )
+			}; // Result GameRevealPlayerRes::ParseMessage(const MessageData* pIMsg)
 
 
 			Result GameRevealPlayerRes::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr&& pIMsg, MessageBase* &pMessageBase )
@@ -3611,7 +3611,7 @@ namespace SF
 
 			// Cmd: Player. revive himself
 			const MessageID GamePlayerReviveCmd::MID = MessageID(MSGTYPE_COMMAND, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_GAMEINSTANCE, 24);
-			Result GamePlayerReviveCmd::ParseMessage( MessageData* pIMsg )
+			Result GamePlayerReviveCmd::ParseMessage(const MessageData* pIMsg)
 			{
  				FunctionContext hr;
 
@@ -3630,7 +3630,7 @@ namespace SF
 
 				return hr;
 
-			}; // Result GamePlayerReviveCmd::ParseMessage( MessageData* pIMsg )
+			}; // Result GamePlayerReviveCmd::ParseMessage(const MessageData* pIMsg)
 
 
 			Result GamePlayerReviveCmd::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr&& pIMsg, MessageBase* &pMessageBase )
@@ -3716,7 +3716,7 @@ namespace SF
 			}; // Result GamePlayerReviveCmd::TraceOut(const char* prefix, const MessageDataPtr& pMsg)
 
 			const MessageID GamePlayerReviveRes::MID = MessageID(MSGTYPE_RESULT, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_GAMEINSTANCE, 24);
-			Result GamePlayerReviveRes::ParseMessage( MessageData* pIMsg )
+			Result GamePlayerReviveRes::ParseMessage(const MessageData* pIMsg)
 			{
  				FunctionContext hr;
 
@@ -3735,7 +3735,7 @@ namespace SF
 
 				return hr;
 
-			}; // Result GamePlayerReviveRes::ParseMessage( MessageData* pIMsg )
+			}; // Result GamePlayerReviveRes::ParseMessage(const MessageData* pIMsg)
 
 
 			Result GamePlayerReviveRes::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr&& pIMsg, MessageBase* &pMessageBase )
@@ -3822,7 +3822,7 @@ namespace SF
 
 			// S2C: Player is revived
 			const MessageID GamePlayerRevivedS2CEvt::MID = MessageID(MSGTYPE_EVENT, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_GAMEINSTANCE, 25);
-			Result GamePlayerRevivedS2CEvt::ParseMessage( MessageData* pIMsg )
+			Result GamePlayerRevivedS2CEvt::ParseMessage(const MessageData* pIMsg)
 			{
  				FunctionContext hr;
 
@@ -3840,7 +3840,7 @@ namespace SF
 
 				return hr;
 
-			}; // Result GamePlayerRevivedS2CEvt::ParseMessage( MessageData* pIMsg )
+			}; // Result GamePlayerRevivedS2CEvt::ParseMessage(const MessageData* pIMsg)
 
 
 			Result GamePlayerRevivedS2CEvt::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr&& pIMsg, MessageBase* &pMessageBase )

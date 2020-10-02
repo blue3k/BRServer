@@ -28,7 +28,7 @@ namespace SF
 		{
  			// Cmd: Request to join chat channel
 			const MessageID JoinCmd::MID = MessageID(MSGTYPE_COMMAND, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_CHATCHANNEL, 0);
-			Result JoinCmd::ParseMessage( MessageData* pIMsg )
+			Result JoinCmd::ParseMessage(const MessageData* pIMsg)
 			{
  				FunctionContext hr;
 
@@ -49,7 +49,7 @@ namespace SF
 
 				return hr;
 
-			}; // Result JoinCmd::ParseMessage( MessageData* pIMsg )
+			}; // Result JoinCmd::ParseMessage(const MessageData* pIMsg)
 
 
 			Result JoinCmd::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr&& pIMsg, MessageBase* &pMessageBase )
@@ -137,7 +137,7 @@ namespace SF
 			}; // Result JoinCmd::TraceOut(const char* prefix, const MessageDataPtr& pMsg)
 
 			const MessageID JoinRes::MID = MessageID(MSGTYPE_RESULT, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_CHATCHANNEL, 0);
-			Result JoinRes::ParseMessage( MessageData* pIMsg )
+			Result JoinRes::ParseMessage(const MessageData* pIMsg)
 			{
  				FunctionContext hr;
 
@@ -157,7 +157,7 @@ namespace SF
 
 				return hr;
 
-			}; // Result JoinRes::ParseMessage( MessageData* pIMsg )
+			}; // Result JoinRes::ParseMessage(const MessageData* pIMsg)
 
 
 			Result JoinRes::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr&& pIMsg, MessageBase* &pMessageBase )
@@ -246,7 +246,7 @@ namespace SF
 
 			// S2C: Server envent to notify joined player information
 			const MessageID PlayerJoinedS2CEvt::MID = MessageID(MSGTYPE_EVENT, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_CHATCHANNEL, 1);
-			Result PlayerJoinedS2CEvt::ParseMessage( MessageData* pIMsg )
+			Result PlayerJoinedS2CEvt::ParseMessage(const MessageData* pIMsg)
 			{
  				FunctionContext hr;
 
@@ -264,7 +264,7 @@ namespace SF
 
 				return hr;
 
-			}; // Result PlayerJoinedS2CEvt::ParseMessage( MessageData* pIMsg )
+			}; // Result PlayerJoinedS2CEvt::ParseMessage(const MessageData* pIMsg)
 
 
 			Result PlayerJoinedS2CEvt::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr&& pIMsg, MessageBase* &pMessageBase )
@@ -349,7 +349,7 @@ namespace SF
 
 			// S2C: Chat channel leader changed
 			const MessageID LeaderChangedS2CEvt::MID = MessageID(MSGTYPE_EVENT, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_CHATCHANNEL, 2);
-			Result LeaderChangedS2CEvt::ParseMessage( MessageData* pIMsg )
+			Result LeaderChangedS2CEvt::ParseMessage(const MessageData* pIMsg)
 			{
  				FunctionContext hr;
 
@@ -367,7 +367,7 @@ namespace SF
 
 				return hr;
 
-			}; // Result LeaderChangedS2CEvt::ParseMessage( MessageData* pIMsg )
+			}; // Result LeaderChangedS2CEvt::ParseMessage(const MessageData* pIMsg)
 
 
 			Result LeaderChangedS2CEvt::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr&& pIMsg, MessageBase* &pMessageBase )
@@ -452,7 +452,7 @@ namespace SF
 
 			// Cmd: Leave chat channel
 			const MessageID LeaveCmd::MID = MessageID(MSGTYPE_COMMAND, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_CHATCHANNEL, 3);
-			Result LeaveCmd::ParseMessage( MessageData* pIMsg )
+			Result LeaveCmd::ParseMessage(const MessageData* pIMsg)
 			{
  				FunctionContext hr;
 
@@ -471,7 +471,7 @@ namespace SF
 
 				return hr;
 
-			}; // Result LeaveCmd::ParseMessage( MessageData* pIMsg )
+			}; // Result LeaveCmd::ParseMessage(const MessageData* pIMsg)
 
 
 			Result LeaveCmd::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr&& pIMsg, MessageBase* &pMessageBase )
@@ -557,7 +557,7 @@ namespace SF
 			}; // Result LeaveCmd::TraceOut(const char* prefix, const MessageDataPtr& pMsg)
 
 			const MessageID LeaveRes::MID = MessageID(MSGTYPE_RESULT, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_CHATCHANNEL, 3);
-			Result LeaveRes::ParseMessage( MessageData* pIMsg )
+			Result LeaveRes::ParseMessage(const MessageData* pIMsg)
 			{
  				FunctionContext hr;
 
@@ -576,7 +576,7 @@ namespace SF
 
 				return hr;
 
-			}; // Result LeaveRes::ParseMessage( MessageData* pIMsg )
+			}; // Result LeaveRes::ParseMessage(const MessageData* pIMsg)
 
 
 			Result LeaveRes::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr&& pIMsg, MessageBase* &pMessageBase )
@@ -663,7 +663,7 @@ namespace SF
 
 			// S2C: Notification event when a player left
 			const MessageID PlayerLeftS2CEvt::MID = MessageID(MSGTYPE_EVENT, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_CHATCHANNEL, 4);
-			Result PlayerLeftS2CEvt::ParseMessage( MessageData* pIMsg )
+			Result PlayerLeftS2CEvt::ParseMessage(const MessageData* pIMsg)
 			{
  				FunctionContext hr;
 
@@ -681,7 +681,7 @@ namespace SF
 
 				return hr;
 
-			}; // Result PlayerLeftS2CEvt::ParseMessage( MessageData* pIMsg )
+			}; // Result PlayerLeftS2CEvt::ParseMessage(const MessageData* pIMsg)
 
 
 			Result PlayerLeftS2CEvt::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr&& pIMsg, MessageBase* &pMessageBase )
@@ -766,7 +766,7 @@ namespace SF
 
 			// Cmd: Kick a player
 			const MessageID KickPlayerCmd::MID = MessageID(MSGTYPE_COMMAND, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_CHATCHANNEL, 5);
-			Result KickPlayerCmd::ParseMessage( MessageData* pIMsg )
+			Result KickPlayerCmd::ParseMessage(const MessageData* pIMsg)
 			{
  				FunctionContext hr;
 
@@ -786,7 +786,7 @@ namespace SF
 
 				return hr;
 
-			}; // Result KickPlayerCmd::ParseMessage( MessageData* pIMsg )
+			}; // Result KickPlayerCmd::ParseMessage(const MessageData* pIMsg)
 
 
 			Result KickPlayerCmd::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr&& pIMsg, MessageBase* &pMessageBase )
@@ -874,7 +874,7 @@ namespace SF
 			}; // Result KickPlayerCmd::TraceOut(const char* prefix, const MessageDataPtr& pMsg)
 
 			const MessageID KickPlayerRes::MID = MessageID(MSGTYPE_RESULT, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_CHATCHANNEL, 5);
-			Result KickPlayerRes::ParseMessage( MessageData* pIMsg )
+			Result KickPlayerRes::ParseMessage(const MessageData* pIMsg)
 			{
  				FunctionContext hr;
 
@@ -893,7 +893,7 @@ namespace SF
 
 				return hr;
 
-			}; // Result KickPlayerRes::ParseMessage( MessageData* pIMsg )
+			}; // Result KickPlayerRes::ParseMessage(const MessageData* pIMsg)
 
 
 			Result KickPlayerRes::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr&& pIMsg, MessageBase* &pMessageBase )
@@ -980,7 +980,7 @@ namespace SF
 
 			// S2C: Notification event when a player kicked
 			const MessageID PlayerKickedS2CEvt::MID = MessageID(MSGTYPE_EVENT, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_CHATCHANNEL, 6);
-			Result PlayerKickedS2CEvt::ParseMessage( MessageData* pIMsg )
+			Result PlayerKickedS2CEvt::ParseMessage(const MessageData* pIMsg)
 			{
  				FunctionContext hr;
 
@@ -998,7 +998,7 @@ namespace SF
 
 				return hr;
 
-			}; // Result PlayerKickedS2CEvt::ParseMessage( MessageData* pIMsg )
+			}; // Result PlayerKickedS2CEvt::ParseMessage(const MessageData* pIMsg)
 
 
 			Result PlayerKickedS2CEvt::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr&& pIMsg, MessageBase* &pMessageBase )
@@ -1083,7 +1083,7 @@ namespace SF
 
 			// C2S: Sending a chatting message
 			const MessageID ChatMessageC2SEvt::MID = MessageID(MSGTYPE_EVENT, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_CHATCHANNEL, 7);
-			Result ChatMessageC2SEvt::ParseMessage( MessageData* pIMsg )
+			Result ChatMessageC2SEvt::ParseMessage(const MessageData* pIMsg)
 			{
  				FunctionContext hr;
 
@@ -1103,7 +1103,7 @@ namespace SF
 
 				return hr;
 
-			}; // Result ChatMessageC2SEvt::ParseMessage( MessageData* pIMsg )
+			}; // Result ChatMessageC2SEvt::ParseMessage(const MessageData* pIMsg)
 
 
 			Result ChatMessageC2SEvt::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr&& pIMsg, MessageBase* &pMessageBase )
@@ -1190,7 +1190,7 @@ namespace SF
 
 			// S2C: brocasting event for a chatting message
 			const MessageID ChatMessageS2CEvt::MID = MessageID(MSGTYPE_EVENT, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_CHATCHANNEL, 8);
-			Result ChatMessageS2CEvt::ParseMessage( MessageData* pIMsg )
+			Result ChatMessageS2CEvt::ParseMessage(const MessageData* pIMsg)
 			{
  				FunctionContext hr;
 
@@ -1212,7 +1212,7 @@ namespace SF
 
 				return hr;
 
-			}; // Result ChatMessageS2CEvt::ParseMessage( MessageData* pIMsg )
+			}; // Result ChatMessageS2CEvt::ParseMessage(const MessageData* pIMsg)
 
 
 			Result ChatMessageS2CEvt::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr&& pIMsg, MessageBase* &pMessageBase )

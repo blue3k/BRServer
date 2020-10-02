@@ -28,7 +28,7 @@ namespace SF
 		{
  			// Cmd: Create a party instance
 			const MessageID CreatePartyCmd::MID = MessageID(MSGTYPE_COMMAND, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_GAMEPARTYMANAGER, 0);
-			Result CreatePartyCmd::ParseMessage( MessageData* pIMsg )
+			Result CreatePartyCmd::ParseMessage(const MessageData* pIMsg)
 			{
  				FunctionContext hr;
 
@@ -49,7 +49,7 @@ namespace SF
 
 				return hr;
 
-			}; // Result CreatePartyCmd::ParseMessage( MessageData* pIMsg )
+			}; // Result CreatePartyCmd::ParseMessage(const MessageData* pIMsg)
 
 
 			Result CreatePartyCmd::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr&& pIMsg, MessageBase* &pMessageBase )
@@ -170,7 +170,7 @@ namespace SF
 			}; // Result CreatePartyCmd::TraceOut(const char* prefix, const MessageDataPtr& pMsg)
 
 			const MessageID CreatePartyRes::MID = MessageID(MSGTYPE_RESULT, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_GAMEPARTYMANAGER, 0);
-			Result CreatePartyRes::ParseMessage( MessageData* pIMsg )
+			Result CreatePartyRes::ParseMessage(const MessageData* pIMsg)
 			{
  				FunctionContext hr;
 
@@ -189,7 +189,7 @@ namespace SF
 
 				return hr;
 
-			}; // Result CreatePartyRes::ParseMessage( MessageData* pIMsg )
+			}; // Result CreatePartyRes::ParseMessage(const MessageData* pIMsg)
 
 
 			Result CreatePartyRes::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr&& pIMsg, MessageBase* &pMessageBase )
@@ -304,7 +304,7 @@ namespace SF
 
 			// C2S: Party instance notify of deletion. Sent by party instance
 			const MessageID PartyDeletedC2SEvt::MID = MessageID(MSGTYPE_EVENT, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_GAMEPARTYMANAGER, 1);
-			Result PartyDeletedC2SEvt::ParseMessage( MessageData* pIMsg )
+			Result PartyDeletedC2SEvt::ParseMessage(const MessageData* pIMsg)
 			{
  				FunctionContext hr;
 
@@ -322,7 +322,7 @@ namespace SF
 
 				return hr;
 
-			}; // Result PartyDeletedC2SEvt::ParseMessage( MessageData* pIMsg )
+			}; // Result PartyDeletedC2SEvt::ParseMessage(const MessageData* pIMsg)
 
 
 			Result PartyDeletedC2SEvt::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr&& pIMsg, MessageBase* &pMessageBase )

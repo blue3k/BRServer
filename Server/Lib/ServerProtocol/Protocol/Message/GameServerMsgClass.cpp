@@ -28,7 +28,7 @@ namespace SF
 		{
  			// Cmd: Register player so that the player can connection and join to the game server.
 			const MessageID RegisterPlayerToJoinGameServerCmd::MID = MessageID(MSGTYPE_COMMAND, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_GAMESERVER, 0);
-			Result RegisterPlayerToJoinGameServerCmd::ParseMessage( MessageData* pIMsg )
+			Result RegisterPlayerToJoinGameServerCmd::ParseMessage(const MessageData* pIMsg)
 			{
  				FunctionContext hr;
 
@@ -50,7 +50,7 @@ namespace SF
 
 				return hr;
 
-			}; // Result RegisterPlayerToJoinGameServerCmd::ParseMessage( MessageData* pIMsg )
+			}; // Result RegisterPlayerToJoinGameServerCmd::ParseMessage(const MessageData* pIMsg)
 
 
 			Result RegisterPlayerToJoinGameServerCmd::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr&& pIMsg, MessageBase* &pMessageBase )
@@ -142,7 +142,7 @@ namespace SF
 			}; // Result RegisterPlayerToJoinGameServerCmd::TraceOut(const char* prefix, const MessageDataPtr& pMsg)
 
 			const MessageID RegisterPlayerToJoinGameServerRes::MID = MessageID(MSGTYPE_RESULT, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_GAMESERVER, 0);
-			Result RegisterPlayerToJoinGameServerRes::ParseMessage( MessageData* pIMsg )
+			Result RegisterPlayerToJoinGameServerRes::ParseMessage(const MessageData* pIMsg)
 			{
  				FunctionContext hr;
 
@@ -166,7 +166,7 @@ namespace SF
 
 				return hr;
 
-			}; // Result RegisterPlayerToJoinGameServerRes::ParseMessage( MessageData* pIMsg )
+			}; // Result RegisterPlayerToJoinGameServerRes::ParseMessage(const MessageData* pIMsg)
 
 
 			Result RegisterPlayerToJoinGameServerRes::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr&& pIMsg, MessageBase* &pMessageBase )
@@ -259,7 +259,7 @@ namespace SF
 
 			// Cmd: Same to RegisterPlayerToJoinGameServer, but can run on player entity. only works when the player entity exists. If player disconnected for some reason, you can run this method to connect.
 			const MessageID RegisterPlayerToJoinGameServerOnPlayerEntityCmd::MID = MessageID(MSGTYPE_COMMAND, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_GAMESERVER, 1);
-			Result RegisterPlayerToJoinGameServerOnPlayerEntityCmd::ParseMessage( MessageData* pIMsg )
+			Result RegisterPlayerToJoinGameServerOnPlayerEntityCmd::ParseMessage(const MessageData* pIMsg)
 			{
  				FunctionContext hr;
 
@@ -280,7 +280,7 @@ namespace SF
 
 				return hr;
 
-			}; // Result RegisterPlayerToJoinGameServerOnPlayerEntityCmd::ParseMessage( MessageData* pIMsg )
+			}; // Result RegisterPlayerToJoinGameServerOnPlayerEntityCmd::ParseMessage(const MessageData* pIMsg)
 
 
 			Result RegisterPlayerToJoinGameServerOnPlayerEntityCmd::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr&& pIMsg, MessageBase* &pMessageBase )
@@ -370,7 +370,7 @@ namespace SF
 			}; // Result RegisterPlayerToJoinGameServerOnPlayerEntityCmd::TraceOut(const char* prefix, const MessageDataPtr& pMsg)
 
 			const MessageID RegisterPlayerToJoinGameServerOnPlayerEntityRes::MID = MessageID(MSGTYPE_RESULT, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_GAMESERVER, 1);
-			Result RegisterPlayerToJoinGameServerOnPlayerEntityRes::ParseMessage( MessageData* pIMsg )
+			Result RegisterPlayerToJoinGameServerOnPlayerEntityRes::ParseMessage(const MessageData* pIMsg)
 			{
  				FunctionContext hr;
 
@@ -389,7 +389,7 @@ namespace SF
 
 				return hr;
 
-			}; // Result RegisterPlayerToJoinGameServerOnPlayerEntityRes::ParseMessage( MessageData* pIMsg )
+			}; // Result RegisterPlayerToJoinGameServerOnPlayerEntityRes::ParseMessage(const MessageData* pIMsg)
 
 
 			Result RegisterPlayerToJoinGameServerOnPlayerEntityRes::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr&& pIMsg, MessageBase* &pMessageBase )
@@ -476,7 +476,7 @@ namespace SF
 
 			// C2S: Chatting message event.
 			const MessageID ChatMessageC2SEvt::MID = MessageID(MSGTYPE_EVENT, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_GAMESERVER, 2);
-			Result ChatMessageC2SEvt::ParseMessage( MessageData* pIMsg )
+			Result ChatMessageC2SEvt::ParseMessage(const MessageData* pIMsg)
 			{
  				FunctionContext hr;
 
@@ -499,7 +499,7 @@ namespace SF
 
 				return hr;
 
-			}; // Result ChatMessageC2SEvt::ParseMessage( MessageData* pIMsg )
+			}; // Result ChatMessageC2SEvt::ParseMessage(const MessageData* pIMsg)
 
 
 			Result ChatMessageC2SEvt::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr&& pIMsg, MessageBase* &pMessageBase )
@@ -590,7 +590,7 @@ namespace SF
 
 			// C2S: Notification event for P2P
 			const MessageID NotifyC2SEvt::MID = MessageID(MSGTYPE_EVENT, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_GAMESERVER, 3);
-			Result NotifyC2SEvt::ParseMessage( MessageData* pIMsg )
+			Result NotifyC2SEvt::ParseMessage(const MessageData* pIMsg)
 			{
  				FunctionContext hr;
 
@@ -615,7 +615,7 @@ namespace SF
 
 				return hr;
 
-			}; // Result NotifyC2SEvt::ParseMessage( MessageData* pIMsg )
+			}; // Result NotifyC2SEvt::ParseMessage(const MessageData* pIMsg)
 
 
 			Result NotifyC2SEvt::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr&& pIMsg, MessageBase* &pMessageBase )
@@ -712,7 +712,7 @@ namespace SF
 
 			// C2S: Friend Accepted
 			const MessageID FriendAcceptedC2SEvt::MID = MessageID(MSGTYPE_EVENT, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_GAMESERVER, 4);
-			Result FriendAcceptedC2SEvt::ParseMessage( MessageData* pIMsg )
+			Result FriendAcceptedC2SEvt::ParseMessage(const MessageData* pIMsg)
 			{
  				FunctionContext hr;
 
@@ -731,7 +731,7 @@ namespace SF
 
 				return hr;
 
-			}; // Result FriendAcceptedC2SEvt::ParseMessage( MessageData* pIMsg )
+			}; // Result FriendAcceptedC2SEvt::ParseMessage(const MessageData* pIMsg)
 
 
 			Result FriendAcceptedC2SEvt::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr&& pIMsg, MessageBase* &pMessageBase )
@@ -818,7 +818,7 @@ namespace SF
 
 			// C2S: Friend Remove
 			const MessageID FriendRemovedC2SEvt::MID = MessageID(MSGTYPE_EVENT, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_GAMESERVER, 5);
-			Result FriendRemovedC2SEvt::ParseMessage( MessageData* pIMsg )
+			Result FriendRemovedC2SEvt::ParseMessage(const MessageData* pIMsg)
 			{
  				FunctionContext hr;
 
@@ -837,7 +837,7 @@ namespace SF
 
 				return hr;
 
-			}; // Result FriendRemovedC2SEvt::ParseMessage( MessageData* pIMsg )
+			}; // Result FriendRemovedC2SEvt::ParseMessage(const MessageData* pIMsg)
 
 
 			Result FriendRemovedC2SEvt::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr&& pIMsg, MessageBase* &pMessageBase )
@@ -924,7 +924,7 @@ namespace SF
 
 			// C2S: Request Player Status Update
 			const MessageID RequestPlayerStatusUpdateC2SEvt::MID = MessageID(MSGTYPE_EVENT, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_GAMESERVER, 6);
-			Result RequestPlayerStatusUpdateC2SEvt::ParseMessage( MessageData* pIMsg )
+			Result RequestPlayerStatusUpdateC2SEvt::ParseMessage(const MessageData* pIMsg)
 			{
  				FunctionContext hr;
 
@@ -943,7 +943,7 @@ namespace SF
 
 				return hr;
 
-			}; // Result RequestPlayerStatusUpdateC2SEvt::ParseMessage( MessageData* pIMsg )
+			}; // Result RequestPlayerStatusUpdateC2SEvt::ParseMessage(const MessageData* pIMsg)
 
 
 			Result RequestPlayerStatusUpdateC2SEvt::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr&& pIMsg, MessageBase* &pMessageBase )
@@ -1030,7 +1030,7 @@ namespace SF
 
 			// C2S: Notify Player Status Updated
 			const MessageID NotifyPlayerStatusUpdatedC2SEvt::MID = MessageID(MSGTYPE_EVENT, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_GAMESERVER, 7);
-			Result NotifyPlayerStatusUpdatedC2SEvt::ParseMessage( MessageData* pIMsg )
+			Result NotifyPlayerStatusUpdatedC2SEvt::ParseMessage(const MessageData* pIMsg)
 			{
  				FunctionContext hr;
 
@@ -1050,7 +1050,7 @@ namespace SF
 
 				return hr;
 
-			}; // Result NotifyPlayerStatusUpdatedC2SEvt::ParseMessage( MessageData* pIMsg )
+			}; // Result NotifyPlayerStatusUpdatedC2SEvt::ParseMessage(const MessageData* pIMsg)
 
 
 			Result NotifyPlayerStatusUpdatedC2SEvt::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr&& pIMsg, MessageBase* &pMessageBase )
@@ -1139,7 +1139,7 @@ namespace SF
 
 			// C2S: Party invite Notification
 			const MessageID NotifyPartyInviteC2SEvt::MID = MessageID(MSGTYPE_EVENT, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_GAMESERVER, 8);
-			Result NotifyPartyInviteC2SEvt::ParseMessage( MessageData* pIMsg )
+			Result NotifyPartyInviteC2SEvt::ParseMessage(const MessageData* pIMsg)
 			{
  				FunctionContext hr;
 
@@ -1161,7 +1161,7 @@ namespace SF
 
 				return hr;
 
-			}; // Result NotifyPartyInviteC2SEvt::ParseMessage( MessageData* pIMsg )
+			}; // Result NotifyPartyInviteC2SEvt::ParseMessage(const MessageData* pIMsg)
 
 
 			Result NotifyPartyInviteC2SEvt::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr&& pIMsg, MessageBase* &pMessageBase )

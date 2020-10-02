@@ -28,7 +28,7 @@ namespace SF
 		{
  			// Cmd: [deprecated]
 			const MessageID GetInstanceListCmd::MID = MessageID(MSGTYPE_COMMAND, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_MONITORING, 0);
-			Result GetInstanceListCmd::ParseMessage( MessageData* pIMsg )
+			Result GetInstanceListCmd::ParseMessage(const MessageData* pIMsg)
 			{
  				FunctionContext hr;
 
@@ -45,7 +45,7 @@ namespace SF
 
 				return hr;
 
-			}; // Result GetInstanceListCmd::ParseMessage( MessageData* pIMsg )
+			}; // Result GetInstanceListCmd::ParseMessage(const MessageData* pIMsg)
 
 
 			Result GetInstanceListCmd::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr&& pIMsg, MessageBase* &pMessageBase )
@@ -102,7 +102,7 @@ namespace SF
 			}; // Result GetInstanceListCmd::TraceOut(const char* prefix, const MessageDataPtr& pMsg)
 
 			const MessageID GetInstanceListRes::MID = MessageID(MSGTYPE_RESULT, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_MONITORING, 0);
-			Result GetInstanceListRes::ParseMessage( MessageData* pIMsg )
+			Result GetInstanceListRes::ParseMessage(const MessageData* pIMsg)
 			{
  				FunctionContext hr;
 
@@ -125,7 +125,7 @@ namespace SF
 
 				return hr;
 
-			}; // Result GetInstanceListRes::ParseMessage( MessageData* pIMsg )
+			}; // Result GetInstanceListRes::ParseMessage(const MessageData* pIMsg)
 
 
 			Result GetInstanceListRes::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr&& pIMsg, MessageBase* &pMessageBase )
@@ -190,7 +190,7 @@ namespace SF
 
 			// Cmd: [deprecated]
 			const MessageID RequestCounterValuesCmd::MID = MessageID(MSGTYPE_COMMAND, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_MONITORING, 1);
-			Result RequestCounterValuesCmd::ParseMessage( MessageData* pIMsg )
+			Result RequestCounterValuesCmd::ParseMessage(const MessageData* pIMsg)
 			{
  				FunctionContext hr;
 
@@ -208,7 +208,7 @@ namespace SF
 
 				return hr;
 
-			}; // Result RequestCounterValuesCmd::ParseMessage( MessageData* pIMsg )
+			}; // Result RequestCounterValuesCmd::ParseMessage(const MessageData* pIMsg)
 
 
 			Result RequestCounterValuesCmd::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr&& pIMsg, MessageBase* &pMessageBase )
@@ -267,7 +267,7 @@ namespace SF
 			}; // Result RequestCounterValuesCmd::TraceOut(const char* prefix, const MessageDataPtr& pMsg)
 
 			const MessageID RequestCounterValuesRes::MID = MessageID(MSGTYPE_RESULT, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_MONITORING, 1);
-			Result RequestCounterValuesRes::ParseMessage( MessageData* pIMsg )
+			Result RequestCounterValuesRes::ParseMessage(const MessageData* pIMsg)
 			{
  				FunctionContext hr;
 
@@ -290,7 +290,7 @@ namespace SF
 
 				return hr;
 
-			}; // Result RequestCounterValuesRes::ParseMessage( MessageData* pIMsg )
+			}; // Result RequestCounterValuesRes::ParseMessage(const MessageData* pIMsg)
 
 
 			Result RequestCounterValuesRes::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr&& pIMsg, MessageBase* &pMessageBase )
@@ -355,7 +355,7 @@ namespace SF
 
 			// C2S: Message when new performance counter is added.
 			const MessageID PerformanceCounterNewC2SEvt::MID = MessageID(MSGTYPE_EVENT, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_MONITORING, 2);
-			Result PerformanceCounterNewC2SEvt::ParseMessage( MessageData* pIMsg )
+			Result PerformanceCounterNewC2SEvt::ParseMessage(const MessageData* pIMsg)
 			{
  				FunctionContext hr;
 
@@ -378,7 +378,7 @@ namespace SF
 
 				return hr;
 
-			}; // Result PerformanceCounterNewC2SEvt::ParseMessage( MessageData* pIMsg )
+			}; // Result PerformanceCounterNewC2SEvt::ParseMessage(const MessageData* pIMsg)
 
 
 			Result PerformanceCounterNewC2SEvt::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr&& pIMsg, MessageBase* &pMessageBase )
@@ -441,7 +441,7 @@ namespace SF
 
 			// C2S: Counter instance is deleted
 			const MessageID PerformanceCounterFreeC2SEvt::MID = MessageID(MSGTYPE_EVENT, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_MONITORING, 3);
-			Result PerformanceCounterFreeC2SEvt::ParseMessage( MessageData* pIMsg )
+			Result PerformanceCounterFreeC2SEvt::ParseMessage(const MessageData* pIMsg)
 			{
  				FunctionContext hr;
 
@@ -461,7 +461,7 @@ namespace SF
 
 				return hr;
 
-			}; // Result PerformanceCounterFreeC2SEvt::ParseMessage( MessageData* pIMsg )
+			}; // Result PerformanceCounterFreeC2SEvt::ParseMessage(const MessageData* pIMsg)
 
 
 			Result PerformanceCounterFreeC2SEvt::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr&& pIMsg, MessageBase* &pMessageBase )
@@ -520,7 +520,7 @@ namespace SF
 
 			// C2S: Counter update broadcast
 			const MessageID PerformanceCounterUpdateC2SEvt::MID = MessageID(MSGTYPE_EVENT, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_MONITORING, 4);
-			Result PerformanceCounterUpdateC2SEvt::ParseMessage( MessageData* pIMsg )
+			Result PerformanceCounterUpdateC2SEvt::ParseMessage(const MessageData* pIMsg)
 			{
  				FunctionContext hr;
 
@@ -541,7 +541,7 @@ namespace SF
 
 				return hr;
 
-			}; // Result PerformanceCounterUpdateC2SEvt::ParseMessage( MessageData* pIMsg )
+			}; // Result PerformanceCounterUpdateC2SEvt::ParseMessage(const MessageData* pIMsg)
 
 
 			Result PerformanceCounterUpdateC2SEvt::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr&& pIMsg, MessageBase* &pMessageBase )
@@ -602,7 +602,7 @@ namespace SF
 
 			// S2C: Server will send this message to an instance to get performance counters.
 			const MessageID PerformanceCounterUpdateCounterInfoS2CEvt::MID = MessageID(MSGTYPE_EVENT, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_MONITORING, 5);
-			Result PerformanceCounterUpdateCounterInfoS2CEvt::ParseMessage( MessageData* pIMsg )
+			Result PerformanceCounterUpdateCounterInfoS2CEvt::ParseMessage(const MessageData* pIMsg)
 			{
  				FunctionContext hr;
 
@@ -619,7 +619,7 @@ namespace SF
 
 				return hr;
 
-			}; // Result PerformanceCounterUpdateCounterInfoS2CEvt::ParseMessage( MessageData* pIMsg )
+			}; // Result PerformanceCounterUpdateCounterInfoS2CEvt::ParseMessage(const MessageData* pIMsg)
 
 
 			Result PerformanceCounterUpdateCounterInfoS2CEvt::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr&& pIMsg, MessageBase* &pMessageBase )

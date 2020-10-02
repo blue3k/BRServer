@@ -28,7 +28,7 @@ namespace SF
 		{
  			// Cmd: Register a party for matching
 			const MessageID RegisterPartyMatchingCmd::MID = MessageID(MSGTYPE_COMMAND, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_PARTYMATCHINGQUEUE, 0);
-			Result RegisterPartyMatchingCmd::ParseMessage( MessageData* pIMsg )
+			Result RegisterPartyMatchingCmd::ParseMessage(const MessageData* pIMsg)
 			{
  				FunctionContext hr;
 
@@ -51,7 +51,7 @@ namespace SF
 
 				return hr;
 
-			}; // Result RegisterPartyMatchingCmd::ParseMessage( MessageData* pIMsg )
+			}; // Result RegisterPartyMatchingCmd::ParseMessage(const MessageData* pIMsg)
 
 
 			Result RegisterPartyMatchingCmd::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr&& pIMsg, MessageBase* &pMessageBase )
@@ -171,7 +171,7 @@ namespace SF
 			}; // Result RegisterPartyMatchingCmd::TraceOut(const char* prefix, const MessageDataPtr& pMsg)
 
 			const MessageID RegisterPartyMatchingRes::MID = MessageID(MSGTYPE_RESULT, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_PARTYMATCHINGQUEUE, 0);
-			Result RegisterPartyMatchingRes::ParseMessage( MessageData* pIMsg )
+			Result RegisterPartyMatchingRes::ParseMessage(const MessageData* pIMsg)
 			{
  				FunctionContext hr;
 
@@ -191,7 +191,7 @@ namespace SF
 
 				return hr;
 
-			}; // Result RegisterPartyMatchingRes::ParseMessage( MessageData* pIMsg )
+			}; // Result RegisterPartyMatchingRes::ParseMessage(const MessageData* pIMsg)
 
 
 			Result RegisterPartyMatchingRes::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr&& pIMsg, MessageBase* &pMessageBase )
@@ -309,7 +309,7 @@ namespace SF
 
 			// Cmd: Register a player for matching
 			const MessageID RegisterPlayerMatchingCmd::MID = MessageID(MSGTYPE_COMMAND, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_PARTYMATCHINGQUEUE, 1);
-			Result RegisterPlayerMatchingCmd::ParseMessage( MessageData* pIMsg )
+			Result RegisterPlayerMatchingCmd::ParseMessage(const MessageData* pIMsg)
 			{
  				FunctionContext hr;
 
@@ -329,7 +329,7 @@ namespace SF
 
 				return hr;
 
-			}; // Result RegisterPlayerMatchingCmd::ParseMessage( MessageData* pIMsg )
+			}; // Result RegisterPlayerMatchingCmd::ParseMessage(const MessageData* pIMsg)
 
 
 			Result RegisterPlayerMatchingCmd::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr&& pIMsg, MessageBase* &pMessageBase )
@@ -448,7 +448,7 @@ namespace SF
 			}; // Result RegisterPlayerMatchingCmd::TraceOut(const char* prefix, const MessageDataPtr& pMsg)
 
 			const MessageID RegisterPlayerMatchingRes::MID = MessageID(MSGTYPE_RESULT, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_PARTYMATCHINGQUEUE, 1);
-			Result RegisterPlayerMatchingRes::ParseMessage( MessageData* pIMsg )
+			Result RegisterPlayerMatchingRes::ParseMessage(const MessageData* pIMsg)
 			{
  				FunctionContext hr;
 
@@ -468,7 +468,7 @@ namespace SF
 
 				return hr;
 
-			}; // Result RegisterPlayerMatchingRes::ParseMessage( MessageData* pIMsg )
+			}; // Result RegisterPlayerMatchingRes::ParseMessage(const MessageData* pIMsg)
 
 
 			Result RegisterPlayerMatchingRes::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr&& pIMsg, MessageBase* &pMessageBase )
@@ -586,7 +586,7 @@ namespace SF
 
 			// Cmd: [Deprecated] update registration information
 			const MessageID UpdateMatchingEntityUIDCmd::MID = MessageID(MSGTYPE_COMMAND, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_PARTYMATCHINGQUEUE, 2);
-			Result UpdateMatchingEntityUIDCmd::ParseMessage( MessageData* pIMsg )
+			Result UpdateMatchingEntityUIDCmd::ParseMessage(const MessageData* pIMsg)
 			{
  				FunctionContext hr;
 
@@ -607,7 +607,7 @@ namespace SF
 
 				return hr;
 
-			}; // Result UpdateMatchingEntityUIDCmd::ParseMessage( MessageData* pIMsg )
+			}; // Result UpdateMatchingEntityUIDCmd::ParseMessage(const MessageData* pIMsg)
 
 
 			Result UpdateMatchingEntityUIDCmd::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr&& pIMsg, MessageBase* &pMessageBase )
@@ -728,7 +728,7 @@ namespace SF
 			}; // Result UpdateMatchingEntityUIDCmd::TraceOut(const char* prefix, const MessageDataPtr& pMsg)
 
 			const MessageID UpdateMatchingEntityUIDRes::MID = MessageID(MSGTYPE_RESULT, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_PARTYMATCHINGQUEUE, 2);
-			Result UpdateMatchingEntityUIDRes::ParseMessage( MessageData* pIMsg )
+			Result UpdateMatchingEntityUIDRes::ParseMessage(const MessageData* pIMsg)
 			{
  				FunctionContext hr;
 
@@ -747,7 +747,7 @@ namespace SF
 
 				return hr;
 
-			}; // Result UpdateMatchingEntityUIDRes::ParseMessage( MessageData* pIMsg )
+			}; // Result UpdateMatchingEntityUIDRes::ParseMessage(const MessageData* pIMsg)
 
 
 			Result UpdateMatchingEntityUIDRes::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr&& pIMsg, MessageBase* &pMessageBase )
@@ -862,7 +862,7 @@ namespace SF
 
 			// Cmd: calcel registration
 			const MessageID UnregisterMatchingCmd::MID = MessageID(MSGTYPE_COMMAND, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_PARTYMATCHINGQUEUE, 3);
-			Result UnregisterMatchingCmd::ParseMessage( MessageData* pIMsg )
+			Result UnregisterMatchingCmd::ParseMessage(const MessageData* pIMsg)
 			{
  				FunctionContext hr;
 
@@ -882,7 +882,7 @@ namespace SF
 
 				return hr;
 
-			}; // Result UnregisterMatchingCmd::ParseMessage( MessageData* pIMsg )
+			}; // Result UnregisterMatchingCmd::ParseMessage(const MessageData* pIMsg)
 
 
 			Result UnregisterMatchingCmd::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr&& pIMsg, MessageBase* &pMessageBase )
@@ -1001,7 +1001,7 @@ namespace SF
 			}; // Result UnregisterMatchingCmd::TraceOut(const char* prefix, const MessageDataPtr& pMsg)
 
 			const MessageID UnregisterMatchingRes::MID = MessageID(MSGTYPE_RESULT, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_PARTYMATCHINGQUEUE, 3);
-			Result UnregisterMatchingRes::ParseMessage( MessageData* pIMsg )
+			Result UnregisterMatchingRes::ParseMessage(const MessageData* pIMsg)
 			{
  				FunctionContext hr;
 
@@ -1020,7 +1020,7 @@ namespace SF
 
 				return hr;
 
-			}; // Result UnregisterMatchingRes::ParseMessage( MessageData* pIMsg )
+			}; // Result UnregisterMatchingRes::ParseMessage(const MessageData* pIMsg)
 
 
 			Result UnregisterMatchingRes::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr&& pIMsg, MessageBase* &pMessageBase )
@@ -1135,7 +1135,7 @@ namespace SF
 
 			// S2C: Event when the matching is canceled, for party
 			const MessageID PartyMatchingCanceledS2CEvt::MID = MessageID(MSGTYPE_EVENT, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_PARTYMATCHINGQUEUE, 4);
-			Result PartyMatchingCanceledS2CEvt::ParseMessage( MessageData* pIMsg )
+			Result PartyMatchingCanceledS2CEvt::ParseMessage(const MessageData* pIMsg)
 			{
  				FunctionContext hr;
 
@@ -1155,7 +1155,7 @@ namespace SF
 
 				return hr;
 
-			}; // Result PartyMatchingCanceledS2CEvt::ParseMessage( MessageData* pIMsg )
+			}; // Result PartyMatchingCanceledS2CEvt::ParseMessage(const MessageData* pIMsg)
 
 
 			Result PartyMatchingCanceledS2CEvt::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr&& pIMsg, MessageBase* &pMessageBase )
@@ -1274,7 +1274,7 @@ namespace SF
 
 			// S2C: Event whan the matching is canceled, for a player
 			const MessageID PlayerMatchingCanceledS2CEvt::MID = MessageID(MSGTYPE_EVENT, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_PARTYMATCHINGQUEUE, 5);
-			Result PlayerMatchingCanceledS2CEvt::ParseMessage( MessageData* pIMsg )
+			Result PlayerMatchingCanceledS2CEvt::ParseMessage(const MessageData* pIMsg)
 			{
  				FunctionContext hr;
 
@@ -1294,7 +1294,7 @@ namespace SF
 
 				return hr;
 
-			}; // Result PlayerMatchingCanceledS2CEvt::ParseMessage( MessageData* pIMsg )
+			}; // Result PlayerMatchingCanceledS2CEvt::ParseMessage(const MessageData* pIMsg)
 
 
 			Result PlayerMatchingCanceledS2CEvt::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr&& pIMsg, MessageBase* &pMessageBase )
@@ -1413,7 +1413,7 @@ namespace SF
 
 			// S2C: Matching item has been dequeued for matching
 			const MessageID PartyMatchingItemDequeuedS2CEvt::MID = MessageID(MSGTYPE_EVENT, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_PARTYMATCHINGQUEUE, 6);
-			Result PartyMatchingItemDequeuedS2CEvt::ParseMessage( MessageData* pIMsg )
+			Result PartyMatchingItemDequeuedS2CEvt::ParseMessage(const MessageData* pIMsg)
 			{
  				FunctionContext hr;
 
@@ -1432,7 +1432,7 @@ namespace SF
 
 				return hr;
 
-			}; // Result PartyMatchingItemDequeuedS2CEvt::ParseMessage( MessageData* pIMsg )
+			}; // Result PartyMatchingItemDequeuedS2CEvt::ParseMessage(const MessageData* pIMsg)
 
 
 			Result PartyMatchingItemDequeuedS2CEvt::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr&& pIMsg, MessageBase* &pMessageBase )
@@ -1549,7 +1549,7 @@ namespace SF
 
 			// S2C: Matching item has been dequeued for matching
 			const MessageID PlayerMatchingItemDequeuedS2CEvt::MID = MessageID(MSGTYPE_EVENT, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_PARTYMATCHINGQUEUE, 7);
-			Result PlayerMatchingItemDequeuedS2CEvt::ParseMessage( MessageData* pIMsg )
+			Result PlayerMatchingItemDequeuedS2CEvt::ParseMessage(const MessageData* pIMsg)
 			{
  				FunctionContext hr;
 
@@ -1568,7 +1568,7 @@ namespace SF
 
 				return hr;
 
-			}; // Result PlayerMatchingItemDequeuedS2CEvt::ParseMessage( MessageData* pIMsg )
+			}; // Result PlayerMatchingItemDequeuedS2CEvt::ParseMessage(const MessageData* pIMsg)
 
 
 			Result PlayerMatchingItemDequeuedS2CEvt::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr&& pIMsg, MessageBase* &pMessageBase )
@@ -1685,7 +1685,7 @@ namespace SF
 
 			// Cmd: Reserve a item
 			const MessageID ReserveItemCmd::MID = MessageID(MSGTYPE_COMMAND, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_PARTYMATCHINGQUEUE, 8);
-			Result ReserveItemCmd::ParseMessage( MessageData* pIMsg )
+			Result ReserveItemCmd::ParseMessage(const MessageData* pIMsg)
 			{
  				FunctionContext hr;
 
@@ -1704,7 +1704,7 @@ namespace SF
 
 				return hr;
 
-			}; // Result ReserveItemCmd::ParseMessage( MessageData* pIMsg )
+			}; // Result ReserveItemCmd::ParseMessage(const MessageData* pIMsg)
 
 
 			Result ReserveItemCmd::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr&& pIMsg, MessageBase* &pMessageBase )
@@ -1821,7 +1821,7 @@ namespace SF
 			}; // Result ReserveItemCmd::TraceOut(const char* prefix, const MessageDataPtr& pMsg)
 
 			const MessageID ReserveItemRes::MID = MessageID(MSGTYPE_RESULT, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_PARTYMATCHINGQUEUE, 8);
-			Result ReserveItemRes::ParseMessage( MessageData* pIMsg )
+			Result ReserveItemRes::ParseMessage(const MessageData* pIMsg)
 			{
  				FunctionContext hr;
 
@@ -1842,7 +1842,7 @@ namespace SF
 
 				return hr;
 
-			}; // Result ReserveItemRes::ParseMessage( MessageData* pIMsg )
+			}; // Result ReserveItemRes::ParseMessage(const MessageData* pIMsg)
 
 
 			Result ReserveItemRes::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr&& pIMsg, MessageBase* &pMessageBase )
@@ -1963,7 +1963,7 @@ namespace SF
 
 			// Cmd: Reserve a item
 			const MessageID ReserveItemsCmd::MID = MessageID(MSGTYPE_COMMAND, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_PARTYMATCHINGQUEUE, 9);
-			Result ReserveItemsCmd::ParseMessage( MessageData* pIMsg )
+			Result ReserveItemsCmd::ParseMessage(const MessageData* pIMsg)
 			{
  				FunctionContext hr;
 
@@ -1983,7 +1983,7 @@ namespace SF
 
 				return hr;
 
-			}; // Result ReserveItemsCmd::ParseMessage( MessageData* pIMsg )
+			}; // Result ReserveItemsCmd::ParseMessage(const MessageData* pIMsg)
 
 
 			Result ReserveItemsCmd::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr&& pIMsg, MessageBase* &pMessageBase )
@@ -2102,7 +2102,7 @@ namespace SF
 			}; // Result ReserveItemsCmd::TraceOut(const char* prefix, const MessageDataPtr& pMsg)
 
 			const MessageID ReserveItemsRes::MID = MessageID(MSGTYPE_RESULT, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_PARTYMATCHINGQUEUE, 9);
-			Result ReserveItemsRes::ParseMessage( MessageData* pIMsg )
+			Result ReserveItemsRes::ParseMessage(const MessageData* pIMsg)
 			{
  				FunctionContext hr;
 
@@ -2129,7 +2129,7 @@ namespace SF
 
 				return hr;
 
-			}; // Result ReserveItemsRes::ParseMessage( MessageData* pIMsg )
+			}; // Result ReserveItemsRes::ParseMessage(const MessageData* pIMsg)
 
 
 			Result ReserveItemsRes::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr&& pIMsg, MessageBase* &pMessageBase )
@@ -2254,7 +2254,7 @@ namespace SF
 
 			// Cmd: Cancel reservation
 			const MessageID CancelReservationCmd::MID = MessageID(MSGTYPE_COMMAND, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_PARTYMATCHINGQUEUE, 10);
-			Result CancelReservationCmd::ParseMessage( MessageData* pIMsg )
+			Result CancelReservationCmd::ParseMessage(const MessageData* pIMsg)
 			{
  				FunctionContext hr;
 
@@ -2274,7 +2274,7 @@ namespace SF
 
 				return hr;
 
-			}; // Result CancelReservationCmd::ParseMessage( MessageData* pIMsg )
+			}; // Result CancelReservationCmd::ParseMessage(const MessageData* pIMsg)
 
 
 			Result CancelReservationCmd::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr&& pIMsg, MessageBase* &pMessageBase )
@@ -2393,7 +2393,7 @@ namespace SF
 			}; // Result CancelReservationCmd::TraceOut(const char* prefix, const MessageDataPtr& pMsg)
 
 			const MessageID CancelReservationRes::MID = MessageID(MSGTYPE_RESULT, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_PARTYMATCHINGQUEUE, 10);
-			Result CancelReservationRes::ParseMessage( MessageData* pIMsg )
+			Result CancelReservationRes::ParseMessage(const MessageData* pIMsg)
 			{
  				FunctionContext hr;
 
@@ -2412,7 +2412,7 @@ namespace SF
 
 				return hr;
 
-			}; // Result CancelReservationRes::ParseMessage( MessageData* pIMsg )
+			}; // Result CancelReservationRes::ParseMessage(const MessageData* pIMsg)
 
 
 			Result CancelReservationRes::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr&& pIMsg, MessageBase* &pMessageBase )
@@ -2527,7 +2527,7 @@ namespace SF
 
 			// Cmd: Cancel reservation
 			const MessageID CancelReservationsCmd::MID = MessageID(MSGTYPE_COMMAND, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_PARTYMATCHINGQUEUE, 11);
-			Result CancelReservationsCmd::ParseMessage( MessageData* pIMsg )
+			Result CancelReservationsCmd::ParseMessage(const MessageData* pIMsg)
 			{
  				FunctionContext hr;
 
@@ -2550,7 +2550,7 @@ namespace SF
 
 				return hr;
 
-			}; // Result CancelReservationsCmd::ParseMessage( MessageData* pIMsg )
+			}; // Result CancelReservationsCmd::ParseMessage(const MessageData* pIMsg)
 
 
 			Result CancelReservationsCmd::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr&& pIMsg, MessageBase* &pMessageBase )
@@ -2670,7 +2670,7 @@ namespace SF
 			}; // Result CancelReservationsCmd::TraceOut(const char* prefix, const MessageDataPtr& pMsg)
 
 			const MessageID CancelReservationsRes::MID = MessageID(MSGTYPE_RESULT, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_PARTYMATCHINGQUEUE, 11);
-			Result CancelReservationsRes::ParseMessage( MessageData* pIMsg )
+			Result CancelReservationsRes::ParseMessage(const MessageData* pIMsg)
 			{
  				FunctionContext hr;
 
@@ -2689,7 +2689,7 @@ namespace SF
 
 				return hr;
 
-			}; // Result CancelReservationsRes::ParseMessage( MessageData* pIMsg )
+			}; // Result CancelReservationsRes::ParseMessage(const MessageData* pIMsg)
 
 
 			Result CancelReservationsRes::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr&& pIMsg, MessageBase* &pMessageBase )
@@ -2804,7 +2804,7 @@ namespace SF
 
 			// Cmd: Dequeue a reserved item
 			const MessageID DequeueItemCmd::MID = MessageID(MSGTYPE_COMMAND, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_PARTYMATCHINGQUEUE, 12);
-			Result DequeueItemCmd::ParseMessage( MessageData* pIMsg )
+			Result DequeueItemCmd::ParseMessage(const MessageData* pIMsg)
 			{
  				FunctionContext hr;
 
@@ -2824,7 +2824,7 @@ namespace SF
 
 				return hr;
 
-			}; // Result DequeueItemCmd::ParseMessage( MessageData* pIMsg )
+			}; // Result DequeueItemCmd::ParseMessage(const MessageData* pIMsg)
 
 
 			Result DequeueItemCmd::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr&& pIMsg, MessageBase* &pMessageBase )
@@ -2943,7 +2943,7 @@ namespace SF
 			}; // Result DequeueItemCmd::TraceOut(const char* prefix, const MessageDataPtr& pMsg)
 
 			const MessageID DequeueItemRes::MID = MessageID(MSGTYPE_RESULT, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_PARTYMATCHINGQUEUE, 12);
-			Result DequeueItemRes::ParseMessage( MessageData* pIMsg )
+			Result DequeueItemRes::ParseMessage(const MessageData* pIMsg)
 			{
  				FunctionContext hr;
 
@@ -2969,7 +2969,7 @@ namespace SF
 
 				return hr;
 
-			}; // Result DequeueItemRes::ParseMessage( MessageData* pIMsg )
+			}; // Result DequeueItemRes::ParseMessage(const MessageData* pIMsg)
 
 
 			Result DequeueItemRes::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr&& pIMsg, MessageBase* &pMessageBase )
@@ -3098,7 +3098,7 @@ namespace SF
 
 			// C2S: Item error you should delete it
 			const MessageID MatchingItemErrorC2SEvt::MID = MessageID(MSGTYPE_EVENT, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_PARTYMATCHINGQUEUE, 13);
-			Result MatchingItemErrorC2SEvt::ParseMessage( MessageData* pIMsg )
+			Result MatchingItemErrorC2SEvt::ParseMessage(const MessageData* pIMsg)
 			{
  				FunctionContext hr;
 
@@ -3117,7 +3117,7 @@ namespace SF
 
 				return hr;
 
-			}; // Result MatchingItemErrorC2SEvt::ParseMessage( MessageData* pIMsg )
+			}; // Result MatchingItemErrorC2SEvt::ParseMessage(const MessageData* pIMsg)
 
 
 			Result MatchingItemErrorC2SEvt::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr&& pIMsg, MessageBase* &pMessageBase )

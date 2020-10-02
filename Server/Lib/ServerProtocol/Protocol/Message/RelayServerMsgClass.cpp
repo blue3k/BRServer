@@ -28,7 +28,7 @@ namespace SF
 		{
  			// Cmd: Relay Instance
 			const MessageID CreateRelayInstanceCmd::MID = MessageID(MSGTYPE_COMMAND, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_RELAYSERVER, 0);
-			Result CreateRelayInstanceCmd::ParseMessage( MessageData* pIMsg )
+			Result CreateRelayInstanceCmd::ParseMessage(const MessageData* pIMsg)
 			{
  				FunctionContext hr;
 
@@ -48,7 +48,7 @@ namespace SF
 
 				return hr;
 
-			}; // Result CreateRelayInstanceCmd::ParseMessage( MessageData* pIMsg )
+			}; // Result CreateRelayInstanceCmd::ParseMessage(const MessageData* pIMsg)
 
 
 			Result CreateRelayInstanceCmd::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr&& pIMsg, MessageBase* &pMessageBase )
@@ -136,7 +136,7 @@ namespace SF
 			}; // Result CreateRelayInstanceCmd::TraceOut(const char* prefix, const MessageDataPtr& pMsg)
 
 			const MessageID CreateRelayInstanceRes::MID = MessageID(MSGTYPE_RESULT, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_RELAYSERVER, 0);
-			Result CreateRelayInstanceRes::ParseMessage( MessageData* pIMsg )
+			Result CreateRelayInstanceRes::ParseMessage(const MessageData* pIMsg)
 			{
  				FunctionContext hr;
 
@@ -156,7 +156,7 @@ namespace SF
 
 				return hr;
 
-			}; // Result CreateRelayInstanceRes::ParseMessage( MessageData* pIMsg )
+			}; // Result CreateRelayInstanceRes::ParseMessage(const MessageData* pIMsg)
 
 
 			Result CreateRelayInstanceRes::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr&& pIMsg, MessageBase* &pMessageBase )
@@ -245,7 +245,7 @@ namespace SF
 
 			// Cmd: Add a player to Relay
 			const MessageID AddPlayerCmd::MID = MessageID(MSGTYPE_COMMAND, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_RELAYSERVER, 1);
-			Result AddPlayerCmd::ParseMessage( MessageData* pIMsg )
+			Result AddPlayerCmd::ParseMessage(const MessageData* pIMsg)
 			{
  				FunctionContext hr;
 
@@ -265,7 +265,7 @@ namespace SF
 
 				return hr;
 
-			}; // Result AddPlayerCmd::ParseMessage( MessageData* pIMsg )
+			}; // Result AddPlayerCmd::ParseMessage(const MessageData* pIMsg)
 
 
 			Result AddPlayerCmd::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr&& pIMsg, MessageBase* &pMessageBase )
@@ -353,7 +353,7 @@ namespace SF
 			}; // Result AddPlayerCmd::TraceOut(const char* prefix, const MessageDataPtr& pMsg)
 
 			const MessageID AddPlayerRes::MID = MessageID(MSGTYPE_RESULT, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_RELAYSERVER, 1);
-			Result AddPlayerRes::ParseMessage( MessageData* pIMsg )
+			Result AddPlayerRes::ParseMessage(const MessageData* pIMsg)
 			{
  				FunctionContext hr;
 
@@ -373,7 +373,7 @@ namespace SF
 
 				return hr;
 
-			}; // Result AddPlayerRes::ParseMessage( MessageData* pIMsg )
+			}; // Result AddPlayerRes::ParseMessage(const MessageData* pIMsg)
 
 
 			Result AddPlayerRes::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr&& pIMsg, MessageBase* &pMessageBase )
@@ -462,7 +462,7 @@ namespace SF
 
 			// Cmd: Remove a player to Relay
 			const MessageID RemovePlayerCmd::MID = MessageID(MSGTYPE_COMMAND, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_RELAYSERVER, 2);
-			Result RemovePlayerCmd::ParseMessage( MessageData* pIMsg )
+			Result RemovePlayerCmd::ParseMessage(const MessageData* pIMsg)
 			{
  				FunctionContext hr;
 
@@ -481,7 +481,7 @@ namespace SF
 
 				return hr;
 
-			}; // Result RemovePlayerCmd::ParseMessage( MessageData* pIMsg )
+			}; // Result RemovePlayerCmd::ParseMessage(const MessageData* pIMsg)
 
 
 			Result RemovePlayerCmd::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr&& pIMsg, MessageBase* &pMessageBase )
@@ -567,7 +567,7 @@ namespace SF
 			}; // Result RemovePlayerCmd::TraceOut(const char* prefix, const MessageDataPtr& pMsg)
 
 			const MessageID RemovePlayerRes::MID = MessageID(MSGTYPE_RESULT, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_RELAYSERVER, 2);
-			Result RemovePlayerRes::ParseMessage( MessageData* pIMsg )
+			Result RemovePlayerRes::ParseMessage(const MessageData* pIMsg)
 			{
  				FunctionContext hr;
 
@@ -586,7 +586,7 @@ namespace SF
 
 				return hr;
 
-			}; // Result RemovePlayerRes::ParseMessage( MessageData* pIMsg )
+			}; // Result RemovePlayerRes::ParseMessage(const MessageData* pIMsg)
 
 
 			Result RemovePlayerRes::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr&& pIMsg, MessageBase* &pMessageBase )

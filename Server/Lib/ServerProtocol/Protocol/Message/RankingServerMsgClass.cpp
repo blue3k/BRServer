@@ -28,7 +28,7 @@ namespace SF
 		{
  			// Cmd: Add a player to ranking
 			const MessageID AddPlayerCmd::MID = MessageID(MSGTYPE_COMMAND, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_RANKINGSERVER, 0);
-			Result AddPlayerCmd::ParseMessage( MessageData* pIMsg )
+			Result AddPlayerCmd::ParseMessage(const MessageData* pIMsg)
 			{
  				FunctionContext hr;
 
@@ -48,7 +48,7 @@ namespace SF
 
 				return hr;
 
-			}; // Result AddPlayerCmd::ParseMessage( MessageData* pIMsg )
+			}; // Result AddPlayerCmd::ParseMessage(const MessageData* pIMsg)
 
 
 			Result AddPlayerCmd::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr&& pIMsg, MessageBase* &pMessageBase )
@@ -136,7 +136,7 @@ namespace SF
 			}; // Result AddPlayerCmd::TraceOut(const char* prefix, const MessageDataPtr& pMsg)
 
 			const MessageID AddPlayerRes::MID = MessageID(MSGTYPE_RESULT, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_RANKINGSERVER, 0);
-			Result AddPlayerRes::ParseMessage( MessageData* pIMsg )
+			Result AddPlayerRes::ParseMessage(const MessageData* pIMsg)
 			{
  				FunctionContext hr;
 
@@ -156,7 +156,7 @@ namespace SF
 
 				return hr;
 
-			}; // Result AddPlayerRes::ParseMessage( MessageData* pIMsg )
+			}; // Result AddPlayerRes::ParseMessage(const MessageData* pIMsg)
 
 
 			Result AddPlayerRes::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr&& pIMsg, MessageBase* &pMessageBase )
@@ -245,7 +245,7 @@ namespace SF
 
 			// Cmd: Remove a player to ranking
 			const MessageID RemovePlayerCmd::MID = MessageID(MSGTYPE_COMMAND, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_RANKINGSERVER, 1);
-			Result RemovePlayerCmd::ParseMessage( MessageData* pIMsg )
+			Result RemovePlayerCmd::ParseMessage(const MessageData* pIMsg)
 			{
  				FunctionContext hr;
 
@@ -264,7 +264,7 @@ namespace SF
 
 				return hr;
 
-			}; // Result RemovePlayerCmd::ParseMessage( MessageData* pIMsg )
+			}; // Result RemovePlayerCmd::ParseMessage(const MessageData* pIMsg)
 
 
 			Result RemovePlayerCmd::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr&& pIMsg, MessageBase* &pMessageBase )
@@ -350,7 +350,7 @@ namespace SF
 			}; // Result RemovePlayerCmd::TraceOut(const char* prefix, const MessageDataPtr& pMsg)
 
 			const MessageID RemovePlayerRes::MID = MessageID(MSGTYPE_RESULT, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_RANKINGSERVER, 1);
-			Result RemovePlayerRes::ParseMessage( MessageData* pIMsg )
+			Result RemovePlayerRes::ParseMessage(const MessageData* pIMsg)
 			{
  				FunctionContext hr;
 
@@ -369,7 +369,7 @@ namespace SF
 
 				return hr;
 
-			}; // Result RemovePlayerRes::ParseMessage( MessageData* pIMsg )
+			}; // Result RemovePlayerRes::ParseMessage(const MessageData* pIMsg)
 
 
 			Result RemovePlayerRes::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr&& pIMsg, MessageBase* &pMessageBase )
@@ -456,7 +456,7 @@ namespace SF
 
 			// Cmd: Get player to ranking
 			const MessageID GetPlayerRankingCmd::MID = MessageID(MSGTYPE_COMMAND, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_RANKINGSERVER, 2);
-			Result GetPlayerRankingCmd::ParseMessage( MessageData* pIMsg )
+			Result GetPlayerRankingCmd::ParseMessage(const MessageData* pIMsg)
 			{
  				FunctionContext hr;
 
@@ -475,7 +475,7 @@ namespace SF
 
 				return hr;
 
-			}; // Result GetPlayerRankingCmd::ParseMessage( MessageData* pIMsg )
+			}; // Result GetPlayerRankingCmd::ParseMessage(const MessageData* pIMsg)
 
 
 			Result GetPlayerRankingCmd::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr&& pIMsg, MessageBase* &pMessageBase )
@@ -561,7 +561,7 @@ namespace SF
 			}; // Result GetPlayerRankingCmd::TraceOut(const char* prefix, const MessageDataPtr& pMsg)
 
 			const MessageID GetPlayerRankingRes::MID = MessageID(MSGTYPE_RESULT, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_RANKINGSERVER, 2);
-			Result GetPlayerRankingRes::ParseMessage( MessageData* pIMsg )
+			Result GetPlayerRankingRes::ParseMessage(const MessageData* pIMsg)
 			{
  				FunctionContext hr;
 
@@ -581,7 +581,7 @@ namespace SF
 
 				return hr;
 
-			}; // Result GetPlayerRankingRes::ParseMessage( MessageData* pIMsg )
+			}; // Result GetPlayerRankingRes::ParseMessage(const MessageData* pIMsg)
 
 
 			Result GetPlayerRankingRes::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr&& pIMsg, MessageBase* &pMessageBase )
@@ -670,7 +670,7 @@ namespace SF
 
 			// Cmd: Update a player to ranking
 			const MessageID UpdatePlayerScoreCmd::MID = MessageID(MSGTYPE_COMMAND, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_RANKINGSERVER, 3);
-			Result UpdatePlayerScoreCmd::ParseMessage( MessageData* pIMsg )
+			Result UpdatePlayerScoreCmd::ParseMessage(const MessageData* pIMsg)
 			{
  				FunctionContext hr;
 
@@ -691,7 +691,7 @@ namespace SF
 
 				return hr;
 
-			}; // Result UpdatePlayerScoreCmd::ParseMessage( MessageData* pIMsg )
+			}; // Result UpdatePlayerScoreCmd::ParseMessage(const MessageData* pIMsg)
 
 
 			Result UpdatePlayerScoreCmd::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr&& pIMsg, MessageBase* &pMessageBase )
@@ -781,7 +781,7 @@ namespace SF
 			}; // Result UpdatePlayerScoreCmd::TraceOut(const char* prefix, const MessageDataPtr& pMsg)
 
 			const MessageID UpdatePlayerScoreRes::MID = MessageID(MSGTYPE_RESULT, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_RANKINGSERVER, 3);
-			Result UpdatePlayerScoreRes::ParseMessage( MessageData* pIMsg )
+			Result UpdatePlayerScoreRes::ParseMessage(const MessageData* pIMsg)
 			{
  				FunctionContext hr;
 
@@ -804,7 +804,7 @@ namespace SF
 
 				return hr;
 
-			}; // Result UpdatePlayerScoreRes::ParseMessage( MessageData* pIMsg )
+			}; // Result UpdatePlayerScoreRes::ParseMessage(const MessageData* pIMsg)
 
 
 			Result UpdatePlayerScoreRes::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr&& pIMsg, MessageBase* &pMessageBase )
@@ -894,7 +894,7 @@ namespace SF
 
 			// Cmd: Get ranking list
 			const MessageID GetRankingCmd::MID = MessageID(MSGTYPE_COMMAND, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_RANKINGSERVER, 4);
-			Result GetRankingCmd::ParseMessage( MessageData* pIMsg )
+			Result GetRankingCmd::ParseMessage(const MessageData* pIMsg)
 			{
  				FunctionContext hr;
 
@@ -915,7 +915,7 @@ namespace SF
 
 				return hr;
 
-			}; // Result GetRankingCmd::ParseMessage( MessageData* pIMsg )
+			}; // Result GetRankingCmd::ParseMessage(const MessageData* pIMsg)
 
 
 			Result GetRankingCmd::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr&& pIMsg, MessageBase* &pMessageBase )
@@ -1005,7 +1005,7 @@ namespace SF
 			}; // Result GetRankingCmd::TraceOut(const char* prefix, const MessageDataPtr& pMsg)
 
 			const MessageID GetRankingRes::MID = MessageID(MSGTYPE_RESULT, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_RANKINGSERVER, 4);
-			Result GetRankingRes::ParseMessage( MessageData* pIMsg )
+			Result GetRankingRes::ParseMessage(const MessageData* pIMsg)
 			{
  				FunctionContext hr;
 
@@ -1028,7 +1028,7 @@ namespace SF
 
 				return hr;
 
-			}; // Result GetRankingRes::ParseMessage( MessageData* pIMsg )
+			}; // Result GetRankingRes::ParseMessage(const MessageData* pIMsg)
 
 
 			Result GetRankingRes::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr&& pIMsg, MessageBase* &pMessageBase )
@@ -1118,7 +1118,7 @@ namespace SF
 
 			// Cmd: Debug test
 			const MessageID DebugPrintALLRankingCmd::MID = MessageID(MSGTYPE_COMMAND, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_RANKINGSERVER, 5);
-			Result DebugPrintALLRankingCmd::ParseMessage( MessageData* pIMsg )
+			Result DebugPrintALLRankingCmd::ParseMessage(const MessageData* pIMsg)
 			{
  				FunctionContext hr;
 
@@ -1138,7 +1138,7 @@ namespace SF
 
 				return hr;
 
-			}; // Result DebugPrintALLRankingCmd::ParseMessage( MessageData* pIMsg )
+			}; // Result DebugPrintALLRankingCmd::ParseMessage(const MessageData* pIMsg)
 
 
 			Result DebugPrintALLRankingCmd::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr&& pIMsg, MessageBase* &pMessageBase )
@@ -1224,7 +1224,7 @@ namespace SF
 			}; // Result DebugPrintALLRankingCmd::TraceOut(const char* prefix, const MessageDataPtr& pMsg)
 
 			const MessageID DebugPrintALLRankingRes::MID = MessageID(MSGTYPE_RESULT, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_RANKINGSERVER, 5);
-			Result DebugPrintALLRankingRes::ParseMessage( MessageData* pIMsg )
+			Result DebugPrintALLRankingRes::ParseMessage(const MessageData* pIMsg)
 			{
  				FunctionContext hr;
 
@@ -1243,7 +1243,7 @@ namespace SF
 
 				return hr;
 
-			}; // Result DebugPrintALLRankingRes::ParseMessage( MessageData* pIMsg )
+			}; // Result DebugPrintALLRankingRes::ParseMessage(const MessageData* pIMsg)
 
 
 			Result DebugPrintALLRankingRes::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr&& pIMsg, MessageBase* &pMessageBase )

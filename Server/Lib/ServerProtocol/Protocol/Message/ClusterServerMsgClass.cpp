@@ -28,7 +28,7 @@ namespace SF
 		{
  			// Cmd: Cluster member list query
 			const MessageID GetClusterMemberListCmd::MID = MessageID(MSGTYPE_COMMAND, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_CLUSTERSERVER, 0);
-			Result GetClusterMemberListCmd::ParseMessage( MessageData* pIMsg )
+			Result GetClusterMemberListCmd::ParseMessage(const MessageData* pIMsg)
 			{
  				FunctionContext hr;
 
@@ -48,7 +48,7 @@ namespace SF
 
 				return hr;
 
-			}; // Result GetClusterMemberListCmd::ParseMessage( MessageData* pIMsg )
+			}; // Result GetClusterMemberListCmd::ParseMessage(const MessageData* pIMsg)
 
 
 			Result GetClusterMemberListCmd::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr&& pIMsg, MessageBase* &pMessageBase )
@@ -167,7 +167,7 @@ namespace SF
 			}; // Result GetClusterMemberListCmd::TraceOut(const char* prefix, const MessageDataPtr& pMsg)
 
 			const MessageID GetClusterMemberListRes::MID = MessageID(MSGTYPE_RESULT, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_CLUSTERSERVER, 0);
-			Result GetClusterMemberListRes::ParseMessage( MessageData* pIMsg )
+			Result GetClusterMemberListRes::ParseMessage(const MessageData* pIMsg)
 			{
  				FunctionContext hr;
 
@@ -190,7 +190,7 @@ namespace SF
 
 				return hr;
 
-			}; // Result GetClusterMemberListRes::ParseMessage( MessageData* pIMsg )
+			}; // Result GetClusterMemberListRes::ParseMessage(const MessageData* pIMsg)
 
 
 			Result GetClusterMemberListRes::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr&& pIMsg, MessageBase* &pMessageBase )
@@ -310,7 +310,7 @@ namespace SF
 
 			// Cmd: Join to the cluster
 			const MessageID RequestDataSyncCmd::MID = MessageID(MSGTYPE_COMMAND, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_CLUSTERSERVER, 1);
-			Result RequestDataSyncCmd::ParseMessage( MessageData* pIMsg )
+			Result RequestDataSyncCmd::ParseMessage(const MessageData* pIMsg)
 			{
  				FunctionContext hr;
 
@@ -330,7 +330,7 @@ namespace SF
 
 				return hr;
 
-			}; // Result RequestDataSyncCmd::ParseMessage( MessageData* pIMsg )
+			}; // Result RequestDataSyncCmd::ParseMessage(const MessageData* pIMsg)
 
 
 			Result RequestDataSyncCmd::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr&& pIMsg, MessageBase* &pMessageBase )
@@ -449,7 +449,7 @@ namespace SF
 			}; // Result RequestDataSyncCmd::TraceOut(const char* prefix, const MessageDataPtr& pMsg)
 
 			const MessageID RequestDataSyncRes::MID = MessageID(MSGTYPE_RESULT, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_CLUSTERSERVER, 1);
-			Result RequestDataSyncRes::ParseMessage( MessageData* pIMsg )
+			Result RequestDataSyncRes::ParseMessage(const MessageData* pIMsg)
 			{
  				FunctionContext hr;
 
@@ -468,7 +468,7 @@ namespace SF
 
 				return hr;
 
-			}; // Result RequestDataSyncRes::ParseMessage( MessageData* pIMsg )
+			}; // Result RequestDataSyncRes::ParseMessage(const MessageData* pIMsg)
 
 
 			Result RequestDataSyncRes::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr&& pIMsg, MessageBase* &pMessageBase )

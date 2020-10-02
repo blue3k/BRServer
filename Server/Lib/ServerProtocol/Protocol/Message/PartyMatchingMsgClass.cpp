@@ -28,7 +28,7 @@ namespace SF
 		{
  			// S2C: Event message will be sent from matching srvice when the pary game mathcing has done.
 			const MessageID PartyGameMatchedS2CEvt::MID = MessageID(MSGTYPE_EVENT, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_PARTYMATCHING, 0);
-			Result PartyGameMatchedS2CEvt::ParseMessage( MessageData* pIMsg )
+			Result PartyGameMatchedS2CEvt::ParseMessage(const MessageData* pIMsg)
 			{
  				FunctionContext hr;
 
@@ -46,7 +46,7 @@ namespace SF
 
 				return hr;
 
-			}; // Result PartyGameMatchedS2CEvt::ParseMessage( MessageData* pIMsg )
+			}; // Result PartyGameMatchedS2CEvt::ParseMessage(const MessageData* pIMsg)
 
 
 			Result PartyGameMatchedS2CEvt::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr&& pIMsg, MessageBase* &pMessageBase )
@@ -161,7 +161,7 @@ namespace SF
 
 			// S2C: Event message will be sent when a player game matching has successfully finished.
 			const MessageID PlayerGameMatchedS2CEvt::MID = MessageID(MSGTYPE_EVENT, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_PARTYMATCHING, 1);
-			Result PlayerGameMatchedS2CEvt::ParseMessage( MessageData* pIMsg )
+			Result PlayerGameMatchedS2CEvt::ParseMessage(const MessageData* pIMsg)
 			{
  				FunctionContext hr;
 
@@ -182,7 +182,7 @@ namespace SF
 
 				return hr;
 
-			}; // Result PlayerGameMatchedS2CEvt::ParseMessage( MessageData* pIMsg )
+			}; // Result PlayerGameMatchedS2CEvt::ParseMessage(const MessageData* pIMsg)
 
 
 			Result PlayerGameMatchedS2CEvt::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr&& pIMsg, MessageBase* &pMessageBase )

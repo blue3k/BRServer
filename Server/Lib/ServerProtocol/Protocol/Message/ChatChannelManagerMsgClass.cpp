@@ -28,7 +28,7 @@ namespace SF
 		{
  			// Cmd: Create a channel instance
 			const MessageID CreateChannelCmd::MID = MessageID(MSGTYPE_COMMAND, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_CHATCHANNELMANAGER, 0);
-			Result CreateChannelCmd::ParseMessage( MessageData* pIMsg )
+			Result CreateChannelCmd::ParseMessage(const MessageData* pIMsg)
 			{
  				FunctionContext hr;
 
@@ -52,7 +52,7 @@ namespace SF
 
 				return hr;
 
-			}; // Result CreateChannelCmd::ParseMessage( MessageData* pIMsg )
+			}; // Result CreateChannelCmd::ParseMessage(const MessageData* pIMsg)
 
 
 			Result CreateChannelCmd::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr&& pIMsg, MessageBase* &pMessageBase )
@@ -175,7 +175,7 @@ namespace SF
 			}; // Result CreateChannelCmd::TraceOut(const char* prefix, const MessageDataPtr& pMsg)
 
 			const MessageID CreateChannelRes::MID = MessageID(MSGTYPE_RESULT, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_CHATCHANNELMANAGER, 0);
-			Result CreateChannelRes::ParseMessage( MessageData* pIMsg )
+			Result CreateChannelRes::ParseMessage(const MessageData* pIMsg)
 			{
  				FunctionContext hr;
 
@@ -195,7 +195,7 @@ namespace SF
 
 				return hr;
 
-			}; // Result CreateChannelRes::ParseMessage( MessageData* pIMsg )
+			}; // Result CreateChannelRes::ParseMessage(const MessageData* pIMsg)
 
 
 			Result CreateChannelRes::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr&& pIMsg, MessageBase* &pMessageBase )
@@ -313,7 +313,7 @@ namespace SF
 
 			// Cmd: Find a channel instance with name
 			const MessageID FindChannelCmd::MID = MessageID(MSGTYPE_COMMAND, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_CHATCHANNELMANAGER, 1);
-			Result FindChannelCmd::ParseMessage( MessageData* pIMsg )
+			Result FindChannelCmd::ParseMessage(const MessageData* pIMsg)
 			{
  				FunctionContext hr;
 
@@ -334,7 +334,7 @@ namespace SF
 
 				return hr;
 
-			}; // Result FindChannelCmd::ParseMessage( MessageData* pIMsg )
+			}; // Result FindChannelCmd::ParseMessage(const MessageData* pIMsg)
 
 
 			Result FindChannelCmd::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr&& pIMsg, MessageBase* &pMessageBase )
@@ -453,7 +453,7 @@ namespace SF
 			}; // Result FindChannelCmd::TraceOut(const char* prefix, const MessageDataPtr& pMsg)
 
 			const MessageID FindChannelRes::MID = MessageID(MSGTYPE_RESULT, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_CHATCHANNELMANAGER, 1);
-			Result FindChannelRes::ParseMessage( MessageData* pIMsg )
+			Result FindChannelRes::ParseMessage(const MessageData* pIMsg)
 			{
  				FunctionContext hr;
 
@@ -473,7 +473,7 @@ namespace SF
 
 				return hr;
 
-			}; // Result FindChannelRes::ParseMessage( MessageData* pIMsg )
+			}; // Result FindChannelRes::ParseMessage(const MessageData* pIMsg)
 
 
 			Result FindChannelRes::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr&& pIMsg, MessageBase* &pMessageBase )
@@ -591,7 +591,7 @@ namespace SF
 
 			// C2S: Notification that a chat channel instance has deleted
 			const MessageID ChatChannelDeletedC2SEvt::MID = MessageID(MSGTYPE_EVENT, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_CHATCHANNELMANAGER, 2);
-			Result ChatChannelDeletedC2SEvt::ParseMessage( MessageData* pIMsg )
+			Result ChatChannelDeletedC2SEvt::ParseMessage(const MessageData* pIMsg)
 			{
  				FunctionContext hr;
 
@@ -609,7 +609,7 @@ namespace SF
 
 				return hr;
 
-			}; // Result ChatChannelDeletedC2SEvt::ParseMessage( MessageData* pIMsg )
+			}; // Result ChatChannelDeletedC2SEvt::ParseMessage(const MessageData* pIMsg)
 
 
 			Result ChatChannelDeletedC2SEvt::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr&& pIMsg, MessageBase* &pMessageBase )

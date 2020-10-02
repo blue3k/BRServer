@@ -28,7 +28,7 @@ namespace SF
 		{
  			// Cmd: Create a game instance
 			const MessageID CreateGameCmd::MID = MessageID(MSGTYPE_COMMAND, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_GAMEINSTANCEMANAGER, 0);
-			Result CreateGameCmd::ParseMessage( MessageData* pIMsg )
+			Result CreateGameCmd::ParseMessage(const MessageData* pIMsg)
 			{
  				FunctionContext hr;
 
@@ -49,7 +49,7 @@ namespace SF
 
 				return hr;
 
-			}; // Result CreateGameCmd::ParseMessage( MessageData* pIMsg )
+			}; // Result CreateGameCmd::ParseMessage(const MessageData* pIMsg)
 
 
 			Result CreateGameCmd::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr&& pIMsg, MessageBase* &pMessageBase )
@@ -170,7 +170,7 @@ namespace SF
 			}; // Result CreateGameCmd::TraceOut(const char* prefix, const MessageDataPtr& pMsg)
 
 			const MessageID CreateGameRes::MID = MessageID(MSGTYPE_RESULT, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_GAMEINSTANCEMANAGER, 0);
-			Result CreateGameRes::ParseMessage( MessageData* pIMsg )
+			Result CreateGameRes::ParseMessage(const MessageData* pIMsg)
 			{
  				FunctionContext hr;
 
@@ -189,7 +189,7 @@ namespace SF
 
 				return hr;
 
-			}; // Result CreateGameRes::ParseMessage( MessageData* pIMsg )
+			}; // Result CreateGameRes::ParseMessage(const MessageData* pIMsg)
 
 
 			Result CreateGameRes::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr&& pIMsg, MessageBase* &pMessageBase )
@@ -304,7 +304,7 @@ namespace SF
 
 			// C2S: Game instance notification of deletion
 			const MessageID GameDeletedC2SEvt::MID = MessageID(MSGTYPE_EVENT, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_GAMEINSTANCEMANAGER, 1);
-			Result GameDeletedC2SEvt::ParseMessage( MessageData* pIMsg )
+			Result GameDeletedC2SEvt::ParseMessage(const MessageData* pIMsg)
 			{
  				FunctionContext hr;
 
@@ -322,7 +322,7 @@ namespace SF
 
 				return hr;
 
-			}; // Result GameDeletedC2SEvt::ParseMessage( MessageData* pIMsg )
+			}; // Result GameDeletedC2SEvt::ParseMessage(const MessageData* pIMsg)
 
 
 			Result GameDeletedC2SEvt::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr&& pIMsg, MessageBase* &pMessageBase )

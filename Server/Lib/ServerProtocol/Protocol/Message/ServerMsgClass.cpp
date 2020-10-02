@@ -28,7 +28,7 @@ namespace SF
 		{
  			// Cmd: Generic failure message
 			const MessageID GenericFailureCmd::MID = MessageID(MSGTYPE_COMMAND, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_SERVER, 0);
-			Result GenericFailureCmd::ParseMessage( MessageData* pIMsg )
+			Result GenericFailureCmd::ParseMessage(const MessageData* pIMsg)
 			{
  				FunctionContext hr;
 
@@ -46,7 +46,7 @@ namespace SF
 
 				return hr;
 
-			}; // Result GenericFailureCmd::ParseMessage( MessageData* pIMsg )
+			}; // Result GenericFailureCmd::ParseMessage(const MessageData* pIMsg)
 
 
 			Result GenericFailureCmd::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr&& pIMsg, MessageBase* &pMessageBase )
@@ -130,7 +130,7 @@ namespace SF
 			}; // Result GenericFailureCmd::TraceOut(const char* prefix, const MessageDataPtr& pMsg)
 
 			const MessageID GenericFailureRes::MID = MessageID(MSGTYPE_RESULT, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_SERVER, 0);
-			Result GenericFailureRes::ParseMessage( MessageData* pIMsg )
+			Result GenericFailureRes::ParseMessage(const MessageData* pIMsg)
 			{
  				FunctionContext hr;
 
@@ -149,7 +149,7 @@ namespace SF
 
 				return hr;
 
-			}; // Result GenericFailureRes::ParseMessage( MessageData* pIMsg )
+			}; // Result GenericFailureRes::ParseMessage(const MessageData* pIMsg)
 
 
 			Result GenericFailureRes::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr&& pIMsg, MessageBase* &pMessageBase )
@@ -236,7 +236,7 @@ namespace SF
 
 			// C2S: Server Started or Connected
 			const MessageID ServerConnectedC2SEvt::MID = MessageID(MSGTYPE_EVENT, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_SERVER, 1);
-			Result ServerConnectedC2SEvt::ParseMessage( MessageData* pIMsg )
+			Result ServerConnectedC2SEvt::ParseMessage(const MessageData* pIMsg)
 			{
  				FunctionContext hr;
 
@@ -255,7 +255,7 @@ namespace SF
 
 				return hr;
 
-			}; // Result ServerConnectedC2SEvt::ParseMessage( MessageData* pIMsg )
+			}; // Result ServerConnectedC2SEvt::ParseMessage(const MessageData* pIMsg)
 
 
 			Result ServerConnectedC2SEvt::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr&& pIMsg, MessageBase* &pMessageBase )

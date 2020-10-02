@@ -28,7 +28,7 @@ namespace SF
 		{
  			// Cmd: Join party
 			const MessageID JoinPartyCmd::MID = MessageID(MSGTYPE_COMMAND, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_GAMEPARTY, 0);
-			Result JoinPartyCmd::ParseMessage( MessageData* pIMsg )
+			Result JoinPartyCmd::ParseMessage(const MessageData* pIMsg)
 			{
  				FunctionContext hr;
 
@@ -48,7 +48,7 @@ namespace SF
 
 				return hr;
 
-			}; // Result JoinPartyCmd::ParseMessage( MessageData* pIMsg )
+			}; // Result JoinPartyCmd::ParseMessage(const MessageData* pIMsg)
 
 
 			Result JoinPartyCmd::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr&& pIMsg, MessageBase* &pMessageBase )
@@ -136,7 +136,7 @@ namespace SF
 			}; // Result JoinPartyCmd::TraceOut(const char* prefix, const MessageDataPtr& pMsg)
 
 			const MessageID JoinPartyRes::MID = MessageID(MSGTYPE_RESULT, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_GAMEPARTY, 0);
-			Result JoinPartyRes::ParseMessage( MessageData* pIMsg )
+			Result JoinPartyRes::ParseMessage(const MessageData* pIMsg)
 			{
  				FunctionContext hr;
 
@@ -160,7 +160,7 @@ namespace SF
 
 				return hr;
 
-			}; // Result JoinPartyRes::ParseMessage( MessageData* pIMsg )
+			}; // Result JoinPartyRes::ParseMessage(const MessageData* pIMsg)
 
 
 			Result JoinPartyRes::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr&& pIMsg, MessageBase* &pMessageBase )
@@ -252,7 +252,7 @@ namespace SF
 
 			// S2C: Player joined event.
 			const MessageID PlayerJoinedS2CEvt::MID = MessageID(MSGTYPE_EVENT, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_GAMEPARTY, 1);
-			Result PlayerJoinedS2CEvt::ParseMessage( MessageData* pIMsg )
+			Result PlayerJoinedS2CEvt::ParseMessage(const MessageData* pIMsg)
 			{
  				FunctionContext hr;
 
@@ -270,7 +270,7 @@ namespace SF
 
 				return hr;
 
-			}; // Result PlayerJoinedS2CEvt::ParseMessage( MessageData* pIMsg )
+			}; // Result PlayerJoinedS2CEvt::ParseMessage(const MessageData* pIMsg)
 
 
 			Result PlayerJoinedS2CEvt::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr&& pIMsg, MessageBase* &pMessageBase )
@@ -355,7 +355,7 @@ namespace SF
 
 			// S2C: Event for party leader is changed
 			const MessageID PartyLeaderChangedS2CEvt::MID = MessageID(MSGTYPE_EVENT, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_GAMEPARTY, 2);
-			Result PartyLeaderChangedS2CEvt::ParseMessage( MessageData* pIMsg )
+			Result PartyLeaderChangedS2CEvt::ParseMessage(const MessageData* pIMsg)
 			{
  				FunctionContext hr;
 
@@ -373,7 +373,7 @@ namespace SF
 
 				return hr;
 
-			}; // Result PartyLeaderChangedS2CEvt::ParseMessage( MessageData* pIMsg )
+			}; // Result PartyLeaderChangedS2CEvt::ParseMessage(const MessageData* pIMsg)
 
 
 			Result PartyLeaderChangedS2CEvt::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr&& pIMsg, MessageBase* &pMessageBase )
@@ -458,7 +458,7 @@ namespace SF
 
 			// Cmd: Event for player left.
 			const MessageID LeavePartyCmd::MID = MessageID(MSGTYPE_COMMAND, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_GAMEPARTY, 3);
-			Result LeavePartyCmd::ParseMessage( MessageData* pIMsg )
+			Result LeavePartyCmd::ParseMessage(const MessageData* pIMsg)
 			{
  				FunctionContext hr;
 
@@ -477,7 +477,7 @@ namespace SF
 
 				return hr;
 
-			}; // Result LeavePartyCmd::ParseMessage( MessageData* pIMsg )
+			}; // Result LeavePartyCmd::ParseMessage(const MessageData* pIMsg)
 
 
 			Result LeavePartyCmd::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr&& pIMsg, MessageBase* &pMessageBase )
@@ -563,7 +563,7 @@ namespace SF
 			}; // Result LeavePartyCmd::TraceOut(const char* prefix, const MessageDataPtr& pMsg)
 
 			const MessageID LeavePartyRes::MID = MessageID(MSGTYPE_RESULT, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_GAMEPARTY, 3);
-			Result LeavePartyRes::ParseMessage( MessageData* pIMsg )
+			Result LeavePartyRes::ParseMessage(const MessageData* pIMsg)
 			{
  				FunctionContext hr;
 
@@ -582,7 +582,7 @@ namespace SF
 
 				return hr;
 
-			}; // Result LeavePartyRes::ParseMessage( MessageData* pIMsg )
+			}; // Result LeavePartyRes::ParseMessage(const MessageData* pIMsg)
 
 
 			Result LeavePartyRes::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr&& pIMsg, MessageBase* &pMessageBase )
@@ -669,7 +669,7 @@ namespace SF
 
 			// S2C: Player left
 			const MessageID PlayerLeftS2CEvt::MID = MessageID(MSGTYPE_EVENT, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_GAMEPARTY, 4);
-			Result PlayerLeftS2CEvt::ParseMessage( MessageData* pIMsg )
+			Result PlayerLeftS2CEvt::ParseMessage(const MessageData* pIMsg)
 			{
  				FunctionContext hr;
 
@@ -687,7 +687,7 @@ namespace SF
 
 				return hr;
 
-			}; // Result PlayerLeftS2CEvt::ParseMessage( MessageData* pIMsg )
+			}; // Result PlayerLeftS2CEvt::ParseMessage(const MessageData* pIMsg)
 
 
 			Result PlayerLeftS2CEvt::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr&& pIMsg, MessageBase* &pMessageBase )
@@ -772,7 +772,7 @@ namespace SF
 
 			// Cmd: Kick player
 			const MessageID KickPlayerCmd::MID = MessageID(MSGTYPE_COMMAND, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_GAMEPARTY, 5);
-			Result KickPlayerCmd::ParseMessage( MessageData* pIMsg )
+			Result KickPlayerCmd::ParseMessage(const MessageData* pIMsg)
 			{
  				FunctionContext hr;
 
@@ -792,7 +792,7 @@ namespace SF
 
 				return hr;
 
-			}; // Result KickPlayerCmd::ParseMessage( MessageData* pIMsg )
+			}; // Result KickPlayerCmd::ParseMessage(const MessageData* pIMsg)
 
 
 			Result KickPlayerCmd::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr&& pIMsg, MessageBase* &pMessageBase )
@@ -880,7 +880,7 @@ namespace SF
 			}; // Result KickPlayerCmd::TraceOut(const char* prefix, const MessageDataPtr& pMsg)
 
 			const MessageID KickPlayerRes::MID = MessageID(MSGTYPE_RESULT, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_GAMEPARTY, 5);
-			Result KickPlayerRes::ParseMessage( MessageData* pIMsg )
+			Result KickPlayerRes::ParseMessage(const MessageData* pIMsg)
 			{
  				FunctionContext hr;
 
@@ -899,7 +899,7 @@ namespace SF
 
 				return hr;
 
-			}; // Result KickPlayerRes::ParseMessage( MessageData* pIMsg )
+			}; // Result KickPlayerRes::ParseMessage(const MessageData* pIMsg)
 
 
 			Result KickPlayerRes::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr&& pIMsg, MessageBase* &pMessageBase )
@@ -986,7 +986,7 @@ namespace SF
 
 			// S2C: Event for Player kicked.
 			const MessageID PlayerKickedS2CEvt::MID = MessageID(MSGTYPE_EVENT, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_GAMEPARTY, 6);
-			Result PlayerKickedS2CEvt::ParseMessage( MessageData* pIMsg )
+			Result PlayerKickedS2CEvt::ParseMessage(const MessageData* pIMsg)
 			{
  				FunctionContext hr;
 
@@ -1004,7 +1004,7 @@ namespace SF
 
 				return hr;
 
-			}; // Result PlayerKickedS2CEvt::ParseMessage( MessageData* pIMsg )
+			}; // Result PlayerKickedS2CEvt::ParseMessage(const MessageData* pIMsg)
 
 
 			Result PlayerKickedS2CEvt::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr&& pIMsg, MessageBase* &pMessageBase )
@@ -1089,7 +1089,7 @@ namespace SF
 
 			// C2S: Send chat message to server.
 			const MessageID ChatMessageC2SEvt::MID = MessageID(MSGTYPE_EVENT, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_GAMEPARTY, 7);
-			Result ChatMessageC2SEvt::ParseMessage( MessageData* pIMsg )
+			Result ChatMessageC2SEvt::ParseMessage(const MessageData* pIMsg)
 			{
  				FunctionContext hr;
 
@@ -1109,7 +1109,7 @@ namespace SF
 
 				return hr;
 
-			}; // Result ChatMessageC2SEvt::ParseMessage( MessageData* pIMsg )
+			}; // Result ChatMessageC2SEvt::ParseMessage(const MessageData* pIMsg)
 
 
 			Result ChatMessageC2SEvt::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr&& pIMsg, MessageBase* &pMessageBase )
@@ -1196,7 +1196,7 @@ namespace SF
 
 			// S2C: Brocast chatting message
 			const MessageID ChatMessageS2CEvt::MID = MessageID(MSGTYPE_EVENT, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_GAMEPARTY, 8);
-			Result ChatMessageS2CEvt::ParseMessage( MessageData* pIMsg )
+			Result ChatMessageS2CEvt::ParseMessage(const MessageData* pIMsg)
 			{
  				FunctionContext hr;
 
@@ -1218,7 +1218,7 @@ namespace SF
 
 				return hr;
 
-			}; // Result ChatMessageS2CEvt::ParseMessage( MessageData* pIMsg )
+			}; // Result ChatMessageS2CEvt::ParseMessage(const MessageData* pIMsg)
 
 
 			Result ChatMessageS2CEvt::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr&& pIMsg, MessageBase* &pMessageBase )
@@ -1307,7 +1307,7 @@ namespace SF
 
 			// C2S: Quick Chatting message
 			const MessageID QuickChatMessageC2SEvt::MID = MessageID(MSGTYPE_EVENT, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_GAMEPARTY, 9);
-			Result QuickChatMessageC2SEvt::ParseMessage( MessageData* pIMsg )
+			Result QuickChatMessageC2SEvt::ParseMessage(const MessageData* pIMsg)
 			{
  				FunctionContext hr;
 
@@ -1326,7 +1326,7 @@ namespace SF
 
 				return hr;
 
-			}; // Result QuickChatMessageC2SEvt::ParseMessage( MessageData* pIMsg )
+			}; // Result QuickChatMessageC2SEvt::ParseMessage(const MessageData* pIMsg)
 
 
 			Result QuickChatMessageC2SEvt::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr&& pIMsg, MessageBase* &pMessageBase )
@@ -1413,7 +1413,7 @@ namespace SF
 
 			// S2C: Quick Chatting message
 			const MessageID QuickChatMessageS2CEvt::MID = MessageID(MSGTYPE_EVENT, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_GAMEPARTY, 10);
-			Result QuickChatMessageS2CEvt::ParseMessage( MessageData* pIMsg )
+			Result QuickChatMessageS2CEvt::ParseMessage(const MessageData* pIMsg)
 			{
  				FunctionContext hr;
 
@@ -1432,7 +1432,7 @@ namespace SF
 
 				return hr;
 
-			}; // Result QuickChatMessageS2CEvt::ParseMessage( MessageData* pIMsg )
+			}; // Result QuickChatMessageS2CEvt::ParseMessage(const MessageData* pIMsg)
 
 
 			Result QuickChatMessageS2CEvt::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr&& pIMsg, MessageBase* &pMessageBase )
@@ -1519,7 +1519,7 @@ namespace SF
 
 			// Cmd: Start party game matching
 			const MessageID StartGameMatchCmd::MID = MessageID(MSGTYPE_COMMAND, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_GAMEPARTY, 11);
-			Result StartGameMatchCmd::ParseMessage( MessageData* pIMsg )
+			Result StartGameMatchCmd::ParseMessage(const MessageData* pIMsg)
 			{
  				FunctionContext hr;
 
@@ -1539,7 +1539,7 @@ namespace SF
 
 				return hr;
 
-			}; // Result StartGameMatchCmd::ParseMessage( MessageData* pIMsg )
+			}; // Result StartGameMatchCmd::ParseMessage(const MessageData* pIMsg)
 
 
 			Result StartGameMatchCmd::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr&& pIMsg, MessageBase* &pMessageBase )
@@ -1627,7 +1627,7 @@ namespace SF
 			}; // Result StartGameMatchCmd::TraceOut(const char* prefix, const MessageDataPtr& pMsg)
 
 			const MessageID StartGameMatchRes::MID = MessageID(MSGTYPE_RESULT, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_GAMEPARTY, 11);
-			Result StartGameMatchRes::ParseMessage( MessageData* pIMsg )
+			Result StartGameMatchRes::ParseMessage(const MessageData* pIMsg)
 			{
  				FunctionContext hr;
 
@@ -1646,7 +1646,7 @@ namespace SF
 
 				return hr;
 
-			}; // Result StartGameMatchRes::ParseMessage( MessageData* pIMsg )
+			}; // Result StartGameMatchRes::ParseMessage(const MessageData* pIMsg)
 
 
 			Result StartGameMatchRes::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr&& pIMsg, MessageBase* &pMessageBase )
@@ -1733,7 +1733,7 @@ namespace SF
 
 			// S2C: Event sent when the party is queued for game matching
 			const MessageID QueuedGameMatchingS2CEvt::MID = MessageID(MSGTYPE_EVENT, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_GAMEPARTY, 12);
-			Result QueuedGameMatchingS2CEvt::ParseMessage( MessageData* pIMsg )
+			Result QueuedGameMatchingS2CEvt::ParseMessage(const MessageData* pIMsg)
 			{
  				FunctionContext hr;
 
@@ -1751,7 +1751,7 @@ namespace SF
 
 				return hr;
 
-			}; // Result QueuedGameMatchingS2CEvt::ParseMessage( MessageData* pIMsg )
+			}; // Result QueuedGameMatchingS2CEvt::ParseMessage(const MessageData* pIMsg)
 
 
 			Result QueuedGameMatchingS2CEvt::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr&& pIMsg, MessageBase* &pMessageBase )
@@ -1836,7 +1836,7 @@ namespace SF
 
 			// Cmd: Cancel game matching
 			const MessageID CancelGameMatchCmd::MID = MessageID(MSGTYPE_COMMAND, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_GAMEPARTY, 13);
-			Result CancelGameMatchCmd::ParseMessage( MessageData* pIMsg )
+			Result CancelGameMatchCmd::ParseMessage(const MessageData* pIMsg)
 			{
  				FunctionContext hr;
 
@@ -1855,7 +1855,7 @@ namespace SF
 
 				return hr;
 
-			}; // Result CancelGameMatchCmd::ParseMessage( MessageData* pIMsg )
+			}; // Result CancelGameMatchCmd::ParseMessage(const MessageData* pIMsg)
 
 
 			Result CancelGameMatchCmd::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr&& pIMsg, MessageBase* &pMessageBase )
@@ -1941,7 +1941,7 @@ namespace SF
 			}; // Result CancelGameMatchCmd::TraceOut(const char* prefix, const MessageDataPtr& pMsg)
 
 			const MessageID CancelGameMatchRes::MID = MessageID(MSGTYPE_RESULT, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_GAMEPARTY, 13);
-			Result CancelGameMatchRes::ParseMessage( MessageData* pIMsg )
+			Result CancelGameMatchRes::ParseMessage(const MessageData* pIMsg)
 			{
  				FunctionContext hr;
 
@@ -1960,7 +1960,7 @@ namespace SF
 
 				return hr;
 
-			}; // Result CancelGameMatchRes::ParseMessage( MessageData* pIMsg )
+			}; // Result CancelGameMatchRes::ParseMessage(const MessageData* pIMsg)
 
 
 			Result CancelGameMatchRes::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr&& pIMsg, MessageBase* &pMessageBase )
@@ -2047,7 +2047,7 @@ namespace SF
 
 			// S2C: Event sent when the game matching is canceled
 			const MessageID CanceledGameMatchingS2CEvt::MID = MessageID(MSGTYPE_EVENT, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_GAMEPARTY, 14);
-			Result CanceledGameMatchingS2CEvt::ParseMessage( MessageData* pIMsg )
+			Result CanceledGameMatchingS2CEvt::ParseMessage(const MessageData* pIMsg)
 			{
  				FunctionContext hr;
 
@@ -2065,7 +2065,7 @@ namespace SF
 
 				return hr;
 
-			}; // Result CanceledGameMatchingS2CEvt::ParseMessage( MessageData* pIMsg )
+			}; // Result CanceledGameMatchingS2CEvt::ParseMessage(const MessageData* pIMsg)
 
 
 			Result CanceledGameMatchingS2CEvt::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr&& pIMsg, MessageBase* &pMessageBase )
@@ -2150,7 +2150,7 @@ namespace SF
 
 			// S2C: Event sent when the the matching has dequeued.
 			const MessageID MatchingItemDequeuedS2CEvt::MID = MessageID(MSGTYPE_EVENT, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_GAMEPARTY, 15);
-			Result MatchingItemDequeuedS2CEvt::ParseMessage( MessageData* pIMsg )
+			Result MatchingItemDequeuedS2CEvt::ParseMessage(const MessageData* pIMsg)
 			{
  				FunctionContext hr;
 
@@ -2168,7 +2168,7 @@ namespace SF
 
 				return hr;
 
-			}; // Result MatchingItemDequeuedS2CEvt::ParseMessage( MessageData* pIMsg )
+			}; // Result MatchingItemDequeuedS2CEvt::ParseMessage(const MessageData* pIMsg)
 
 
 			Result MatchingItemDequeuedS2CEvt::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr&& pIMsg, MessageBase* &pMessageBase )

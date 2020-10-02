@@ -28,7 +28,7 @@ namespace SF
 		{
  			// Cmd: Notify Login server that client is successfully connected and joined to game server so that login server clear the player information.
 			const MessageID PlayerJoinedToGameServerCmd::MID = MessageID(MSGTYPE_COMMAND, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_LOGINSERVER, 0);
-			Result PlayerJoinedToGameServerCmd::ParseMessage( MessageData* pIMsg )
+			Result PlayerJoinedToGameServerCmd::ParseMessage(const MessageData* pIMsg)
 			{
  				FunctionContext hr;
 
@@ -48,7 +48,7 @@ namespace SF
 
 				return hr;
 
-			}; // Result PlayerJoinedToGameServerCmd::ParseMessage( MessageData* pIMsg )
+			}; // Result PlayerJoinedToGameServerCmd::ParseMessage(const MessageData* pIMsg)
 
 
 			Result PlayerJoinedToGameServerCmd::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr&& pIMsg, MessageBase* &pMessageBase )
@@ -136,7 +136,7 @@ namespace SF
 			}; // Result PlayerJoinedToGameServerCmd::TraceOut(const char* prefix, const MessageDataPtr& pMsg)
 
 			const MessageID PlayerJoinedToGameServerRes::MID = MessageID(MSGTYPE_RESULT, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_LOGINSERVER, 0);
-			Result PlayerJoinedToGameServerRes::ParseMessage( MessageData* pIMsg )
+			Result PlayerJoinedToGameServerRes::ParseMessage(const MessageData* pIMsg)
 			{
  				FunctionContext hr;
 
@@ -155,7 +155,7 @@ namespace SF
 
 				return hr;
 
-			}; // Result PlayerJoinedToGameServerRes::ParseMessage( MessageData* pIMsg )
+			}; // Result PlayerJoinedToGameServerRes::ParseMessage(const MessageData* pIMsg)
 
 
 			Result PlayerJoinedToGameServerRes::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr&& pIMsg, MessageBase* &pMessageBase )
@@ -242,7 +242,7 @@ namespace SF
 
 			// Cmd: Kick logged in player, used to kick player on other login server to prevent duplicated login.
 			const MessageID KickPlayerCmd::MID = MessageID(MSGTYPE_COMMAND, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_LOGINSERVER, 1);
-			Result KickPlayerCmd::ParseMessage( MessageData* pIMsg )
+			Result KickPlayerCmd::ParseMessage(const MessageData* pIMsg)
 			{
  				FunctionContext hr;
 
@@ -261,7 +261,7 @@ namespace SF
 
 				return hr;
 
-			}; // Result KickPlayerCmd::ParseMessage( MessageData* pIMsg )
+			}; // Result KickPlayerCmd::ParseMessage(const MessageData* pIMsg)
 
 
 			Result KickPlayerCmd::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr&& pIMsg, MessageBase* &pMessageBase )
@@ -347,7 +347,7 @@ namespace SF
 			}; // Result KickPlayerCmd::TraceOut(const char* prefix, const MessageDataPtr& pMsg)
 
 			const MessageID KickPlayerRes::MID = MessageID(MSGTYPE_RESULT, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_LOGINSERVER, 1);
-			Result KickPlayerRes::ParseMessage( MessageData* pIMsg )
+			Result KickPlayerRes::ParseMessage(const MessageData* pIMsg)
 			{
  				FunctionContext hr;
 
@@ -366,7 +366,7 @@ namespace SF
 
 				return hr;
 
-			}; // Result KickPlayerRes::ParseMessage( MessageData* pIMsg )
+			}; // Result KickPlayerRes::ParseMessage(const MessageData* pIMsg)
 
 
 			Result KickPlayerRes::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr&& pIMsg, MessageBase* &pMessageBase )
