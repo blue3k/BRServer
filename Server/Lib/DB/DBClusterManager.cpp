@@ -322,7 +322,7 @@ Proc_End:
 
 	Result	DBClusterManager::UpdateResultQueries()
 	{
-		Result hr = ResultCode::SUCCESS;
+		FunctionContext hr;
 
 		Query* pQuery = nullptr;
 		auto numQueries = m_ResultQueries.GetEnqueCount();
@@ -349,7 +349,7 @@ Proc_End:
 							|| pDBSource->GetConnectionString() != ConnectionString)
 						{
 							dbTrace(Info, "Initializating DBSource {0}, Shard:{1} {2}, {3}", typeid(*this).name(), shardId,  ConnectionString, DBName);
-							dbChk(pDBSource->InitializeDBSource(ConnectionString, DBName, m_UserID, m_Password));
+							dbCheck(pDBSource->InitializeDBSource(ConnectionString, DBName, m_UserID, m_Password));
 						}
 					}
 					else
@@ -362,20 +362,22 @@ Proc_End:
 			else
 			{
 				// not handled query result
-				dbErr(ResultCode::NOT_IMPLEMENTED);
+				dbError(ResultCode::NOT_IMPLEMENTED);
 			}
 		}
-
-	Proc_End:
 
 		return hr;
 	}
 
 	Result	DBClusterManager::RequestQuery(UniquePtr<Query>& pQuery)
 	{
-		Result hr = ResultCode::SUCCESS;
-		Session * pSession = nullptr;
+		Session* pSession = nullptr;
 		DataSource *pDBSource = nullptr;
+		FunctionContext hr([&pSession](Result hr)
+			{
+				if (pSession != nullptr)
+					pSession->ReleaseSession();
+			});
 
 		pQuery->UpdateRequestedTime();
 		pQuery->SetQueryManager(this);
@@ -386,14 +388,14 @@ Proc_End:
 			dbTrace(Error, "QueryWorker failure: The sharding bucket is empty");
 			// It's not expected
 			pQuery->SetResult(ResultCode::UNEXPECTED);
-			dbErr(ResultCode::UNEXPECTED);
+			dbError(ResultCode::UNEXPECTED);
 		}
 
 		if (!pDBSource->GetOpened())
 		{
 			// DB source fail, put it in the local queue and try again when DB is ready
 			// This sometimes hides DB error.
-			dbChk(m_PendingQueries.Enqueue(pQuery.get()));
+			dbCheck(m_PendingQueries.Enqueue(pQuery.get()));
 			pQuery.release();
 			return ResultCode::SUCCESS;
 		}
@@ -404,7 +406,7 @@ Proc_End:
 			// It's not expected
 			pQuery->SetResult(ResultCode::UNEXPECTED);
 			dbTrace(Error, "Assigning query to a worker failed {0}, TransID:{1}", typeid(pQuery).name(), pQuery->GetTransID());
-			dbErr(ResultCode::UNEXPECTED);
+			dbError(ResultCode::UNEXPECTED);
 		}
 
 		// Open session if it isn't
@@ -415,7 +417,7 @@ Proc_End:
 				pQuery->SetResult(ResultCode::UNEXPECTED);
 				pSession->ReleaseSession();
 				dbTrace(Error, "Failed to open DB session {0}, TransID:{1}", typeid(pQuery).name(), pQuery->GetTransID());
-				dbErr(ResultCode::UNEXPECTED);
+				dbError(ResultCode::UNEXPECTED);
 			}
 		}
 
@@ -424,14 +426,7 @@ Proc_End:
 
 		dbTrace(TRC_QUERY, "Query pending transID:{0} msg:{1}", pQuery->GetTransID(), pQuery->GetMsgID());
 
-		dbChk(QueryWorkerManager::PendingQuery(pQuery));
-
-	Proc_End:
-
-		if (pSession != nullptr)
-		{
-			pSession->ReleaseSession();
-		}
+		dbCheck(QueryWorkerManager::PendingQuery(pQuery));
 
 		return hr;
 	}

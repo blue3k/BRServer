@@ -61,9 +61,6 @@ namespace Svr {
 		// MessageID for key
 		uint GetMessageCode() const { return m_MessageCode; }
 
-		const char* GetFileName() const { return m_FileName; }
-		uint GetFileLine() const { return m_FileLine; }
-
 		// Message Handler
 		MessageHandlerType	Handler;
 
