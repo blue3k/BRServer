@@ -28,36 +28,15 @@ namespace conspiracy {
 
 	enum 
 	{
-		MCODE_QueryConspiracyNull,
-		// Game
-		MCODE_QueryCreatePlayerInfo,
-		MCODE_QueryGetPlayerInfo,
-		MCODE_QuerySetPlayerInfo,
-		MCODE_QuerySavePurchaseInfoToDB,
+		MCODE_QuerySavePurchaseInfoToDB = DB::MCODE_QueryGameDB_Base,
 		MCODE_QueryCheckPurchaseID,
-		MCODE_QueryGetNickName,
-		MCODE_QuerySetNickName,
 		MCODE_QueryUpdateGameEnd,
 		MCODE_QueryUpdateJoinGame,
 		MCODE_QueryUpdateTickStatus,
-		MCODE_QueryGetPlayerStatus,
-		MCODE_QueryGetPlayerQuickInfo,
-		MCODE_QueryGetFriendQuickInfo,
-		MCODE_QueryGetFriendQuickInfoWithNick,
-		MCODE_QueryGetFriendSlotStatus,
-		MCODE_QueryAddFriend,
-		MCODE_QueryRemoveFriend,
-		MCODE_QueryGetFriendList,
 		MCODE_QueryUpdateFriendStaminaTime,
-		MCODE_QueryNotification_Add,
-		MCODE_QueryNotification_GetList,
-		MCODE_QueryNotification_Remove,
-		MCODE_QueryNotification_RemoveByMessageID,
-		MCODE_QueryNotification_SetRead,
-		MCODE_QuerySetComplitionState,
-		MCODE_QueryGetComplitionState,
 
 	}; // enum MsgCode
+
 
 
 
@@ -78,6 +57,22 @@ namespace conspiracy {
 		int32_t	LosePlayNS;
 	};
 
+	struct QueryGetPlayerInfoData : public PlayerGameScore
+	{
+		String  GameNick;
+		uint8_t	Grade;
+		int16_t	Level;
+		int64_t	Exp;
+		int64_t	GameMoney;
+		int64_t	Gem;
+		int16_t	Stamina;
+		int16_t	AddedFriendSlot;
+		int32_t	WeeklyPlayWin;
+		int32_t	WeeklyPlayLose;
+		int64_t	LatestTickTime;
+	};
+
+
 
 	class QuerySavePurchaseInfoToDB : public DB::QueryBase
 	{
@@ -90,7 +85,7 @@ namespace conspiracy {
 		int64_t	Gem;
 		int16_t	Stamina;
 		int16_t	AddedFriendSlot;
-		StaticArray<uint8_t,256>    PurchaseID;
+		StaticArray<uint8_t, 256>    PurchaseID;
 		String  PurchasePlatform;
 		String  PurchaseToken;
 		int32_t	LatestActiveTime;
@@ -114,7 +109,7 @@ namespace conspiracy {
 			BRDB_PARAM_ENTRY(DB::ParamIO::Input, LatestActiveTime)
 			BRDB_PARAM_ENTRY(DB::ParamIO::Input, LatestTickTime)
 			BRDB_PARAM_ENTRY(DB::ParamIO::Output, Result)
-		BRDB_END_PARAM_MAP()
+			BRDB_END_PARAM_MAP()
 
 	};
 
@@ -134,11 +129,16 @@ namespace conspiracy {
 		BRDB_BEGIN_PARAM_MAP(QueryCheckPurchaseID, "spCheckPurchaseID")
 			BRDB_PARAM_ENTRY(DB::ParamIO::Input, PurchaseID)
 			BRDB_PARAM_ENTRY(DB::ParamIO::Output, Result)
-		BRDB_END_PARAM_MAP()
+			BRDB_END_PARAM_MAP()
 
 	};
 
 	BRDB_DEFINE_QUERYCLASS(PROTOCOLID_GAMEDB, QueryCheckPurchaseID);
+
+
+
+
+
 
 
 

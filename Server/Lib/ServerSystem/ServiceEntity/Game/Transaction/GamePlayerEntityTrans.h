@@ -73,6 +73,8 @@ namespace Svr {
 		GameInsUID m_GameUID;
 		MatchingQueueTicket m_MatchingTicket;
 
+		bool m_HaveValidPlayerData = false;
+
 	public:
 		PlayerTransJoinGameServer(IHeap& heap, MessageDataPtr &pIMsg );
 		virtual ~PlayerTransJoinGameServer() {}
@@ -82,14 +84,21 @@ namespace Svr {
 
 
 
-		Result OnGameServerJoined( Svr::TransactionResult* &pRes );
-		Result OnJoinPartyRes( Svr::TransactionResult* &pRes );
-		Result OnCreatePlayerGameDataRes(Svr::TransactionResult* &pRes);
-		Result OnGetPlayerGameDataRes(Svr::TransactionResult* &pRes);
+		Result OnGameServerJoined( Svr::TransactionResult* pRes );
+		Result OnJoinPartyRes( Svr::TransactionResult* pRes );
+		Result OnCreatePlayerGameDataRes(Svr::TransactionResult* pRes);
+		Result OnGetPlayerGameDataRes(Svr::TransactionResult* pRes);
 
-		Result SetPlayerGameData(const DB::QueryGetPlayerInfoData &playerData);
+		Result SetPlayerGameData(const VariableTable &playerData);
 
 		Result RegisterToPlayerManager();
+
+		// Sub actions
+		Result NotifyLoginServer();
+		Result RequestPlayerInfoFromDB();
+		Result RequestPlayerInfoCreateDB();
+		Result RequestJoinPartyIfExist();
+		Result FinalizeSuccess();
 
 		// Start Transaction
 		virtual Result StartTransaction();
@@ -126,14 +135,18 @@ namespace Svr {
 		typedef Svr::MessageTransaction< GamePlayerEntity, Message::Game::GetGamePlayerInfoCmd> super;
 
 	private:
+		int32_t m_ShardId = 0;
 		VariableTable m_Result;
 
 	public:
 		PlayerTransGetGamePlayerInfo(IHeap& heap, MessageDataPtr &pIMsg );
 		virtual ~PlayerTransGetGamePlayerInfo() {}
 
-		Result OnGetPlayerShardID(Svr::TransactionResult* &pRes);
-		Result OnGetGamePlayerInfo( Svr::TransactionResult* &pRes );
+		Result RequestPlayerShardID();
+		Result OnGetPlayerShardID(Svr::TransactionResult* pRes);
+
+		Result RequestGamePlayerInfo();
+		Result OnGetGamePlayerInfo( Svr::TransactionResult* pRes );
 
 		// Start Transaction
 		virtual Result StartTransaction();
@@ -160,7 +173,7 @@ namespace Svr {
 		void SetComplitionState(const char* value) { StrUtil::StringCopy(m_ComplitionState, value); }
 
 
-		Result OnGetComplitionState(Svr::TransactionResult* &pRes);
+		Result OnGetComplitionState(Svr::TransactionResult* pRes);
 
 
 		// Start Transaction
@@ -180,7 +193,7 @@ namespace Svr {
 		PlayerTransSetComplitionState(IHeap& heap, MessageDataPtr &pIMsg);
 		virtual ~PlayerTransSetComplitionState() {}
 
-		Result OnSetComplitionState(Svr::TransactionResult* &pRes);
+		Result OnSetComplitionState(Svr::TransactionResult* pRes);
 
 		// Start Transaction
 		virtual Result StartTransaction();
@@ -228,7 +241,7 @@ namespace Svr {
 		PlayerTransRegisterGCM(IHeap& heap, MessageDataPtr &pIMsg );
 		virtual ~PlayerTransRegisterGCM() {}
 
-		Result OnUpdated( Svr::TransactionResult* &pRes );
+		Result OnUpdated( Svr::TransactionResult* pRes);
 
 		// Start Transaction
 		virtual Result StartTransaction();
@@ -247,7 +260,7 @@ namespace Svr {
 		PlayerTransUnregisterGCM(IHeap& heap, MessageDataPtr &pIMsg );
 		virtual ~PlayerTransUnregisterGCM() {}
 
-		Result OnUpdated( Svr::TransactionResult* &pRes );
+		Result OnUpdated( Svr::TransactionResult* pRes );
 
 		// Start Transaction
 		virtual Result StartTransaction();
@@ -273,7 +286,7 @@ namespace Svr {
 		PlayerTransGetNotificationList(IHeap& heap, MessageDataPtr &pIMsg );
 		virtual ~PlayerTransGetNotificationList() {}
 
-		Result OnGetList( Svr::TransactionResult* &pRes );
+		Result OnGetList( Svr::TransactionResult* pRes );
 
 		// Start Transaction
 		virtual Result StartTransaction();
@@ -310,8 +323,7 @@ namespace Svr {
 		PlayerTransSetNotificationRead(IHeap& heap, MessageDataPtr &pIMsg );
 		virtual ~PlayerTransSetNotificationRead() {}
 
-		Result OnSetRead( Svr::TransactionResult* &pRes );
-		Result OnUpdateStatus( Svr::TransactionResult* &pRes );
+		Result OnSetRead( Svr::TransactionResult* pRes );
 
 		// Start Transaction
 		virtual Result StartTransaction();
@@ -330,7 +342,7 @@ namespace Svr {
 		PlayerTransAcceptNotification(IHeap& heap, MessageDataPtr &pIMsg);
 		virtual ~PlayerTransAcceptNotification() {}
 
-		Result OnDeletedNotification(Svr::TransactionResult* &pRes);
+		Result OnDeletedNotification(Svr::TransactionResult* pRes);
 
 		// Start Transaction
 		virtual Result StartTransaction();
@@ -373,7 +385,7 @@ namespace Svr {
 		PlayerTransSetNickName(IHeap& heap, MessageDataPtr &pIMsg );
 		virtual ~PlayerTransSetNickName() {}
 
-		Result OnNickChanged( Svr::TransactionResult* &pRes );
+		Result OnNickChanged(Svr::TransactionResult* pRes);
 
 		// Start Transaction
 		virtual Result StartTransaction();
@@ -400,8 +412,8 @@ namespace Svr {
 		PlayerTransFindPlayerByEMail(IHeap& heap, MessageDataPtr &pIMsg );
 		virtual ~PlayerTransFindPlayerByEMail() {}
 
-		Result OnFindPlayer( Svr::TransactionResult* &pRes );
-		Result OnGetNickName(Svr::TransactionResult* &pRes);
+		Result OnFindPlayer( Svr::TransactionResult* pRes );
+		Result OnGetNickName(Svr::TransactionResult* pRes);
 
 		// Start Transaction
 		virtual Result StartTransaction();

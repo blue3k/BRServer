@@ -35,8 +35,6 @@ namespace SF
 		PROTOCOLID_MAX			,		// Max policy value
 	};
 
-
-
 }; // namespace SF
 
 

@@ -93,8 +93,8 @@ namespace Svr {
 			for (auto& itRowSet : pResult->RowsetResults)
 			{
 				int64_t playerRanking;
-				PlayerInformation playerInfo(itRowSet.PlayerID, itRowSet.FBUID, itRowSet.NickName, itRowSet.Level, false, 0);
-				svrCheck(UpdatePlayerScore(playerInfo, itRowSet.Score, playerRanking));
+				PlayerInformation playerInfo(itRowSet.GetValue<uint64_t>("PlayerID"_crc32c), itRowSet.GetValue<uint64_t>("FBUID"_crc32c), itRowSet.GetValue<String>("NickName"_crc32c), itRowSet.GetValue<int32_t>("Level"_crc32c), false, 0);
+				svrCheck(UpdatePlayerScore(playerInfo, itRowSet.GetValue<uint64_t>("Score"_crc32c), playerRanking));
 			}
 		}
 

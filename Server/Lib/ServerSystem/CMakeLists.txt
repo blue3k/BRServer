@@ -93,7 +93,6 @@ set(BRSERVERSYSTEM_LIB_FILES
     ServerEntity/SvrLoopbackConnection.h
     ServerLog/SvrLog.h
     ServerLog/SvrLogComponent.h
-    ServerLog/SvrTrace.h
 	ServerLog/SFLogOutputPlayFabGSDK.cpp
 	ServerLog/SFLogOutputPlayFabGSDK.h
     ServerService/ServerServiceBase.h
@@ -149,7 +148,7 @@ set(BRSERVERSYSTEM_LIB_FILES
     Transaction/ServerTransaction.h
     Transaction/ServerTransactionGeneric.h
     Transaction/Transaction.h
-    Transaction/TransactionSteper.h
+    Transaction/TransactionSubAction.h
     Transaction/TransactionUtil.h
     Types/BrGameTypes.h
     Types/BrSvrTypes.h

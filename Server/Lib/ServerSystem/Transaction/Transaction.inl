@@ -229,18 +229,6 @@ Result TransactionResult::GetResult() const
 }
 
 
-///////////////////////////////////////////////////////////////////////////////////////////////////////
-//
-//	Transaction network message result class
-//
-
-
-
-MessageDataPtr MessageResult::GetMessage()
-{
-	return *m_pIMsg;
-}
-
 
 
 

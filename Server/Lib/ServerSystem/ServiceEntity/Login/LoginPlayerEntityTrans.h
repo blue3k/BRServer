@@ -65,7 +65,7 @@ namespace Svr {
 
 		Result RegisterNewPlayerToJoinGameServer();
 
-		virtual Result OnGenericError(Svr::TransactionResult* &pRes) override;
+		virtual Result OnGenericError(Svr::TransactionResult* pRes) override;
 
 		// Start Transaction
 		virtual Result StartTransaction() override;

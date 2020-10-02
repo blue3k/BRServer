@@ -52,8 +52,6 @@ namespace Svr {
 	private:
 		// MessageID for key
 		uint				m_MessageCode;
-		const char*			m_FileName;
-		uint				m_FileLine;
 
 	public:
 		// Hash table mapping Item
@@ -70,10 +68,8 @@ namespace Svr {
 		MessageHandlerType	Handler;
 
 		// Constructor with constructor
-		MessageHandler_TableItem(SF::Message::MessageID MsgID, MessageHandlerType Handler, const char* fileName, uint lineNumber)
+		MessageHandler_TableItem(SF::Message::MessageID MsgID, MessageHandlerType Handler)
 			: m_MessageCode(MsgID.IDSeq.MsgID)
-			, m_FileName(fileName)
-			, m_FileLine(lineNumber)
 			, Handler(Handler)
 		{
 			memset(&TableNode, 0, sizeof(TableNode));
@@ -90,12 +86,12 @@ namespace Svr {
 	class MessageHandlerTable
 	{
 	public:
-		typedef MessageHandler_TableItem<MessageHandlerType> TableItem;
-		typedef StaticHashTable<	uint, TableItem,
+		using TableItem = MessageHandler_TableItem<MessageHandlerType>;
+		using HandlerTableType = StaticHashTable<uint, TableItem,
 										//ConstMemFunc<TableItem,uint,&TableItem::GetMessageCode>,
 										MapItemConverter<TableItem,typename TableItem::TableItemType,&TableItem::TableNode>,
 										NonUniqueKeyTrait, ThreadSyncTraitNone
-										> HandlerTableType;
+										>;
 	private:
 		HandlerTableType m_HandlerTable;
 
@@ -126,7 +122,7 @@ namespace Svr {
 
 		// Register a new message handler
 		template< class MessageClassType >
-		Result Register(const char* fileName, uint lineNumber, MessageHandlerType&& newHandler )
+		Result Register(MessageHandlerType&& newHandler )
 		{
 			auto key = MessageClassType::MID.IDSeq.MsgID;
 			// prevent duplicated insert
@@ -142,7 +138,7 @@ namespace Svr {
 			}
 
 			TableItem *pNewItem = nullptr;
-			pNewItem = new(m_Allocator) TableItem(MessageClassType::MID, std::move(newHandler), fileName, lineNumber);
+			pNewItem = new(m_Allocator) TableItem(MessageClassType::MID, std::move(newHandler));
 			
 			if( pNewItem == nullptr )
 				return ResultCode::OUT_OF_MEMORY;
@@ -214,10 +210,10 @@ namespace Svr {
 	};
 
 
-	#define	BR_ENTITY_MESSAGE(MessageType) RegisterMessageHandler<MessageType>( __FILE__, __LINE__, [&]( Net::Connection* pConn, MessageDataPtr &pMsgData, SF::TransactionPtr &pNewTrans)->Result 
+	#define	BR_ENTITY_MESSAGE(MessageType) RegisterMessageHandler<MessageType>([=]( Net::Connection* pConn, MessageDataPtr &pMsgData, SF::TransactionPtr &pNewTrans)->Result 
 
 	#define BR_TRANS_MESSAGE(MessageType,MessageHandlerImpl) \
-		RegisterMessageHandler<MessageType>( __FILE__, __LINE__, [&](::SF::Svr::TransactionResult* pRes)->Result MessageHandlerImpl );
+		RegisterMessageHandler<MessageType>([=](::SF::Svr::TransactionResult* pRes)->Result MessageHandlerImpl );
 
 
 	typedef std::function<Result(Net::Connection *, MessageDataPtr &, Transaction* &)>	EntityMessageHandlerItem;

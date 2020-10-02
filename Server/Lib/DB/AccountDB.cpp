@@ -19,334 +19,288 @@
 
 
 namespace SF {
-namespace DB { 
+	namespace DB {
 
 
-	//////////////////////////////////////////////////////////////////////////////////
-	//
-	//	AccountDB Class 
-	//
-	
-	// constructor / destructor
-	AccountDB::AccountDB()
-	{
-	}
+		//////////////////////////////////////////////////////////////////////////////////
+		//
+		//	AccountDB Class 
+		//
 
+		// constructor / destructor
+		AccountDB::AccountDB()
+		{
+		}
 
-	AccountDB::~AccountDB()
-	{
-	}
 
-	void AccountDB::TerminateComponent()
-	{
-		TerminateDB();
-	}
+		AccountDB::~AccountDB()
+		{
+		}
 
+		void AccountDB::TerminateComponent()
+		{
+			TerminateDB();
+		}
 
-	/////////////////////////////////////////////////////////////////////////////////
-	//
-	//	Account DB interface
-	//
 
-	Result AccountDB::FacebookCreateUser(TransactionID Sender, uint64_t facebookUID, const char* EMail, const char* cellPhone)
-	{
-		Result hr = ResultCode::SUCCESS;
-		QueryFacebookCreateUserCmd *pQuery = nullptr;
+		/////////////////////////////////////////////////////////////////////////////////
+		//
+		//	Account DB interface
+		//
 
-		dbMem( pQuery = new(GetHeap()) QueryFacebookCreateUserCmd(GetHeap()) );
+		Result AccountDB::FacebookCreateUser(TransactionID Sender, uint64_t facebookUID, const char* EMail, const char* cellPhone)
+		{
+			UniquePtr<QueryFacebookCreateUserCmd> pQuery;
+			FunctionContext hr;
 
-		pQuery->FBUserID = facebookUID;
-		pQuery->EMail = EMail;
-		pQuery->CellPhone = cellPhone;
-		pQuery->AccountID = 0;
-		pQuery->ShardID = 0;
-		pQuery->Result = 0;
+			pQuery.reset(new(GetHeap()) QueryFacebookCreateUserCmd(GetHeap()));
+			dbCheckMem(pQuery);
 
-		pQuery->SetTransaction( Sender );
+			pQuery->FBUserID = facebookUID;
+			pQuery->EMail = EMail;
+			pQuery->CellPhone = cellPhone;
+			pQuery->AccountID = 0;
+			pQuery->ShardID = 0;
+			pQuery->Result = 0;
 
-		dbChk( RequestQuery( pQuery ) );
-		pQuery = nullptr;
+			pQuery->SetTransaction(Sender);
 
-	Proc_End:
+			dbCheck(RequestQuery(pQuery));
+			pQuery = nullptr;
 
-		IHeap::Delete(pQuery);
+			return hr;
+		}
 
-		return hr;
-	}
+		Result AccountDB::FacebookLogIn(TransactionID Sender, uint64_t facebookUID)
+		{
+			UniquePtr<QueryFacebookLoginCmd> pQuery;
+			FunctionContext hr;
 
-	Result AccountDB::FacebookLogIn( TransactionID Sender, uint64_t facebookUID )
-	{
-		Result hr = ResultCode::SUCCESS;
-		QueryFacebookLoginCmd *pQuery = nullptr;
+			pQuery.reset(new(GetHeap()) QueryFacebookLoginCmd(GetHeap()));
+			dbCheckMem(pQuery);
 
-		dbMem( pQuery = new(GetHeap()) QueryFacebookLoginCmd(GetHeap()) );
+			pQuery->FBUserID = facebookUID;
+			pQuery->AccountID = 0;
+			pQuery->EMail = 0;
+			pQuery->CellPhone = 0;
+			pQuery->GCMKeys = 0;
+			pQuery->ShardID = 0;
+			pQuery->Result = 0;
 
-		pQuery->FBUserID = facebookUID;
-		pQuery->AccountID = 0;
-		pQuery->EMail = 0;
-		pQuery->CellPhone = 0;
-		pQuery->GCMKeys = 0;
-		pQuery->ShardID = 0;
-		pQuery->Result = 0;
+			pQuery->SetTransaction(Sender);
 
-		pQuery->SetTransaction( Sender );
+			dbCheck(RequestQuery(pQuery));
+			pQuery = nullptr;
 
-		dbChk( RequestQuery( pQuery ) );
-		pQuery = nullptr;
+			return hr;
+		}
 
-	Proc_End:
 
-		IHeap::Delete(pQuery);
+		Result AccountDB::CreateUser(TransactionID Sender, const char* UserName, const char* Password)
+		{
+			FunctionContext hr;
 
-		return hr;
-	}
+			UniquePtr<QueryCreateUserCmd> pQuery(new(GetHeap()) QueryCreateUserCmd(GetHeap()));
+			dbCheckMem(pQuery);
 
-	
-	Result AccountDB::CreateUser( TransactionID Sender, const char* UserName, const char* Password)
-	{
-		Result hr = ResultCode::SUCCESS;
-		QueryCreateUserCmd *pQuery = nullptr;
+			pQuery->UserName = UserName;
+			pQuery->Password = Password;
+			pQuery->Result = 0;
 
-		dbMem( pQuery = new(GetHeap()) QueryCreateUserCmd(GetHeap()));
+			pQuery->SetTransaction(Sender);
 
-		pQuery->UserName = UserName;
-		pQuery->Password = Password;
-		pQuery->Result = 0;
+			dbCheck(RequestQuery(pQuery));
+			pQuery = nullptr;
 
-		pQuery->SetTransaction( Sender );
+			return hr;
+		}
 
-		dbChk( RequestQuery( pQuery ) );
-		pQuery = nullptr;
+		Result AccountDB::LogIn(TransactionID Sender, const char* UserName, const char* Password)
+		{
+			FunctionContext hr;
 
-	Proc_End:
+			UniquePtr<QueryLoginCmd> pQuery(new(GetHeap()) QueryLoginCmd(GetHeap()));
+			dbCheckMem(pQuery);
 
-		delete pQuery;
+			pQuery->UserName, UserName;
+			pQuery->Password, Password;
+			pQuery->AccountID = 0;
+			pQuery->FBUserID = 0;
+			pQuery->ShardID = 0;
+			pQuery->Result = 0;
 
-		return hr;
-	}
+			pQuery->SetTransaction(Sender);
 
-	Result AccountDB::LogIn( TransactionID Sender, const char* UserName, const char* Password)
-	{
-		Result hr = ResultCode::SUCCESS;
-		QueryLoginCmd *pQuery = nullptr;
+			dbCheck(RequestQuery(pQuery));
+			pQuery = nullptr;
 
-		dbMem( pQuery = new(GetHeap()) QueryLoginCmd(GetHeap()));
+			return hr;
+		}
 
-		pQuery->UserName, UserName;
-		pQuery->Password, Password;
-		pQuery->AccountID = 0;
-		pQuery->FBUserID = 0;
-		pQuery->ShardID = 0;
-		pQuery->Result = 0;
+		Result AccountDB::LogOut(TransactionID Sender)
+		{
+			FunctionContext hr;
 
-		pQuery->SetTransaction( Sender );
+			UniquePtr<QueryLogoutCmd> pQuery(new(GetHeap()) QueryLogoutCmd(GetHeap()));
+			dbCheckMem(pQuery);
 
-		dbChk( RequestQuery( pQuery ) );
-		pQuery = nullptr;
+			pQuery->SetTransaction(Sender);
 
-	Proc_End:
+			dbCheck(RequestQuery(pQuery));
+			pQuery = nullptr;
 
-		IHeap::Delete(pQuery);
+			return hr;
+		}
 
-		return hr;
-	}
 
-	Result AccountDB::LogOut( TransactionID Sender)
-	{
-		Result hr = ResultCode::SUCCESS;
-		QueryLogoutCmd *pQuery = nullptr;
+		Result AccountDB::CreateRandomUser(TransactionID Sender, const char* userName, const char* cellPhone)
+		{
+			FunctionContext hr;
 
-		dbMem( pQuery = new(GetHeap()) QueryLogoutCmd(GetHeap()));
+			UniquePtr<QueryCreateRandomUserCmd> pQuery(new(GetHeap()) QueryCreateRandomUserCmd(GetHeap()));
+			dbCheckMem(pQuery);
 
-		pQuery->SetTransaction( Sender );
+			pQuery->UserName, userName;
+			pQuery->CellPhone, cellPhone;
+			pQuery->AccountID = 0;
+			pQuery->FBUserID = 0;
+			pQuery->ShardID = 0;
+			pQuery->Result = 0;
 
-		dbChk( RequestQuery( pQuery ) );
-		pQuery = nullptr;
+			pQuery->SetTransaction(Sender);
 
-	Proc_End:
+			dbCheck(RequestQuery(pQuery));
+			pQuery = nullptr;
 
-		IHeap::Delete(pQuery);
+			return hr;
+		}
 
-		return hr;
-	}
-	
+		Result AccountDB::UserList(TransactionID Sender)
+		{
+			FunctionContext hr;
 
-	Result AccountDB::CreateRandomUser(TransactionID Sender, const char* userName, const char* cellPhone)
-	{
-		Result hr = ResultCode::SUCCESS;
-		QueryCreateRandomUserCmd *pQuery = nullptr;
+			UniquePtr<QueryUserListCmd> pQuery(new(GetHeap()) QueryUserListCmd(GetHeap()));
+			dbCheckMem(pQuery);
 
-		dbMem(pQuery = new(GetHeap()) QueryCreateRandomUserCmd(GetHeap()));
+			pQuery->SetTransaction(Sender);
 
-		pQuery->UserName, userName;
-		pQuery->CellPhone, cellPhone;
-		pQuery->AccountID = 0;
-		pQuery->FBUserID = 0;
-		pQuery->ShardID = 0;
-		pQuery->Result = 0;
+			dbCheck(RequestQuery(pQuery));
+			pQuery = nullptr;
 
-		pQuery->SetTransaction(Sender);
+			return hr;
+		}
 
-		dbChk( RequestQuery( pQuery ) );
-		pQuery = nullptr;
+		Result AccountDB::UpdateGCMKeys(TransactionID Sender, AccountID accountID, const char* strGCMKeys)
+		{
+			FunctionContext hr;
 
-	Proc_End:
+			UniquePtr<QueryUpdateGCMKeysCmd> pQuery(new(GetHeap()) QueryUpdateGCMKeysCmd(GetHeap()));
+			dbCheckMem(pQuery);
 
-		IHeap::Delete(pQuery);
+			dbCheckPtr(strGCMKeys);
 
-		return hr;
-	}
+			pQuery->SetTransaction(Sender);
+			pQuery->UserUID = accountID;
+			pQuery->GCMKeys, strGCMKeys;
 
-	Result AccountDB::UserList( TransactionID Sender)
-	{
-		Result hr = ResultCode::SUCCESS;
-		QueryUserListCmd *pQuery = nullptr;
+			dbCheck(RequestQuery(pQuery));
 
-		dbMem( pQuery = new(GetHeap()) QueryUserListCmd(GetHeap()));
+			pQuery = nullptr;
 
-		pQuery->SetTransaction( Sender );
+			return hr;
+		}
 
-		dbChk( RequestQuery( pQuery ) );
-		pQuery = nullptr;
 
-	Proc_End:
+		Result AccountDB::UpdateUserContactInfo(TransactionID Sender, AccountID accountID, const char* strEMail, const char* strCellPhone)
+		{
+			FunctionContext hr;
 
-		IHeap::Delete(pQuery);
+			UniquePtr<QueryUpdateUserContactInfoCmd> pQuery(new(GetHeap()) QueryUpdateUserContactInfoCmd(GetHeap()));
+			dbCheckMem(pQuery);
 
-		return hr;
-	}
+			dbCheckPtr(strEMail);
 
-	Result AccountDB::UpdateGCMKeys( TransactionID Sender, AccountID accountID, const char* strGCMKeys )
-	{
-		Result hr = ResultCode::SUCCESS;
-		QueryUpdateGCMKeysCmd *pQuery = nullptr;
+			pQuery->SetTransaction(Sender);
+			pQuery->UserUID = accountID;
+			dbCheck(StrUtil::StringCopy(pQuery->EMail, strEMail));
+			dbCheck(StrUtil::StringCopy(pQuery->CellPhone, strCellPhone));
 
-		dbChkPtr( strGCMKeys );
+			dbCheck(RequestQuery(pQuery));
 
-		dbMem( pQuery = new(GetHeap()) QueryUpdateGCMKeysCmd(GetHeap()));
+			pQuery = nullptr;
 
-		pQuery->SetTransaction( Sender );
-		pQuery->UserUID = accountID;
-		pQuery->GCMKeys, strGCMKeys;
+			return hr;
+		}
 
-		dbChk( RequestQuery( pQuery ) );
+		// Find player
+		Result AccountDB::FindPlayerByEMail(TransactionID Sender, const char* email)
+		{
+			FunctionContext hr;
 
-		pQuery = nullptr;
+			UniquePtr<QueryFindPlayerByEMailCmd> pQuery(new(GetHeap()) QueryFindPlayerByEMailCmd(GetHeap()));
+			dbCheckMem(pQuery);
 
-	Proc_End:
+			pQuery->SetTransaction(Sender);
+			dbCheck(StrUtil::StringCopy(pQuery->EMail, email));
 
-		IHeap::Delete(pQuery);
+			pQuery->UserID = 0;
+			pQuery->ShardID = 0;
+			pQuery->FacebookUID = 0;
 
-		return hr;
-	}
+			pQuery->Result = 0;
 
+			dbCheck(RequestQuery(pQuery));
 
-	Result AccountDB::UpdateUserContactInfo(TransactionID Sender, AccountID accountID, const char* strEMail, const char* strCellPhone)
-	{
-		Result hr = ResultCode::SUCCESS;
-		QueryUpdateUserContactInfoCmd *pQuery = nullptr;
+			pQuery = nullptr;
 
-		dbChkPtr(strEMail);
+			return hr;
+		}
 
-		dbMem(pQuery = new(GetHeap()) QueryUpdateUserContactInfoCmd(GetHeap()));
+		Result AccountDB::FindPlayerByPlayerID(TransactionID Sender, AccountID accountID)
+		{
+			FunctionContext hr;
 
-		pQuery->SetTransaction( Sender );
-		pQuery->UserUID = accountID;
-		dbChk(StrUtil::StringCopy(pQuery->EMail, strEMail));
-		dbChk(StrUtil::StringCopy(pQuery->CellPhone, strCellPhone));
+			UniquePtr<QueryFindPlayerByPlayerIDCmd> pQuery(new(GetHeap()) QueryFindPlayerByPlayerIDCmd(GetHeap()));
+			dbCheckMem(pQuery);
 
-		dbChk( RequestQuery( pQuery ) );
+			pQuery->SetTransaction(Sender);
 
-		pQuery = nullptr;
+			pQuery->PlayerID = accountID;
+			pQuery->ShardID = 0;
+			pQuery->FacebookUID = 0;
 
-	Proc_End:
+			pQuery->Result = 0;
 
-		IHeap::Delete(pQuery);
+			dbCheck(RequestQuery(pQuery));
 
-		return hr;
-	}
+			pQuery = nullptr;
 
-	// Find player
-	Result AccountDB::FindPlayerByEMail( TransactionID Sender, const char* email )
-	{
-		Result hr = ResultCode::SUCCESS;
-		QueryFindPlayerByEMailCmd *pQuery = nullptr;
+			return hr;
+		}
 
-		dbMem( pQuery = new(GetHeap()) QueryFindPlayerByEMailCmd(GetHeap()));
 
-		pQuery->SetTransaction( Sender );
-		dbChk( StrUtil::StringCopy( pQuery->EMail, email ) );
+		// Player shard id
+		Result AccountDB::GetPlayerShardID(TransactionID Sender, AccountID accountID)
+		{
+			FunctionContext hr;
 
-		pQuery->UserID = 0;
-		pQuery->ShardID = 0;
-		pQuery->FacebookUID = 0;
+			UniquePtr<QueryGetPlayerShardIDCmd> pQuery(new(GetHeap()) QueryGetPlayerShardIDCmd(GetHeap()));
+			dbCheckMem(pQuery);
 
-		pQuery->Result = 0;
+			pQuery->SetTransaction(Sender);
 
-		dbChk( RequestQuery( pQuery ) );
+			pQuery->UserID = accountID;
+			pQuery->ShardID = 0;
+			pQuery->Result = 0;
 
-		pQuery = nullptr;
+			dbCheck(RequestQuery(pQuery));
 
-	Proc_End:
+			pQuery = nullptr;
 
-		IHeap::Delete(pQuery);
+			return hr;
+		}
 
-		return hr;
-	}
-
-	Result AccountDB::FindPlayerByPlayerID(TransactionID Sender, AccountID accountID)
-	{
-		Result hr = ResultCode::SUCCESS;
-		QueryFindPlayerByPlayerIDCmd *pQuery = nullptr;
-
-		dbMem(pQuery = new(GetHeap()) QueryFindPlayerByPlayerIDCmd(GetHeap()));
-
-		pQuery->SetTransaction(Sender);
-
-		pQuery->PlayerID = accountID;
-		pQuery->ShardID = 0;
-		pQuery->FacebookUID = 0;
-
-		pQuery->Result = 0;
-
-		dbChk(RequestQuery(pQuery));
-
-		pQuery = nullptr;
-
-	Proc_End:
-
-		IHeap::Delete(pQuery);
-
-		return hr;
-	}
-
-
-	// Player shard id
-	Result AccountDB::GetPlayerShardID(TransactionID Sender, AccountID accountID)
-	{
-		Result hr = ResultCode::SUCCESS;
-		QueryGetPlayerShardIDCmd *pQuery = nullptr;
-
-		dbMem(pQuery = new(GetHeap()) QueryGetPlayerShardIDCmd(GetHeap()));
-
-		pQuery->SetTransaction( Sender );
-
-		pQuery->UserID = accountID;
-		pQuery->ShardID = 0;
-		pQuery->Result = 0;
-
-		dbChk( RequestQuery( pQuery ) );
-
-		pQuery = nullptr;
-
-	Proc_End:
-
-		IHeap::Delete(pQuery);
-
-		return hr;
-	}
-
-} // namespace DB
+	} // namespace DB
 } // namespace SF
 
 

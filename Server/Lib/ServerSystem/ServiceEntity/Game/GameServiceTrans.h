@@ -78,7 +78,7 @@ namespace Svr {
 		GameServerTransRegisterPlayerToJoinGameServer(IHeap& heap, MessageDataPtr &pIMsg);
 		virtual ~GameServerTransRegisterPlayerToJoinGameServer() {}
 
-		Result OnPlayerRegisteredRes(Svr::TransactionResult* &pRes);
+		Result OnPlayerRegisteredRes(Svr::TransactionResult* pRes);
 
 		// Start Transaction
 		virtual Result StartTransaction() override;

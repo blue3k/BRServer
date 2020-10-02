@@ -16,6 +16,8 @@
 #include "Memory/SFMemoryPool.h"
 #include "Net/SFMessage.h"
 #include "DB/DBTrace.h"
+#include "Variable/SFNamedVariableBox.h"
+#include "Container/SFArray.h"
 
 
 #include <mysqlx/xdevapi.h>
@@ -34,6 +36,9 @@ namespace DB {
 	typedef uint64_t BRTIMESTAMP;
 	
 	typedef class QueryMYSQL QueryBase;
+
+	using RowsetType = VariableTable;
+	using RowsetList = DynamicArray<RowsetType>;
 
 
 	
@@ -68,14 +73,14 @@ namespace DB {
 	MYSQL_TYPE_FUNCTION(char			 , mysqlx::Type::TINYINT)
 
 
-	// Check weather this two type can be convertable or not
+	// Check weather this two type can be convertible or not
 	inline bool MYSQL_IsCompatibleType( mysqlx::Type type1, mysqlx::Type type2 )
 	{
 		return type1 == type2;
 	}
 
 	
-	// Check weather this two type can be convertable or not
+	// Check weather this two type can be convertible or not
 	inline bool MYSQL_IsArrayType( mysqlx::Type type )
 	{
 		switch( type )
@@ -129,16 +134,16 @@ namespace DB {
 
 
 	// define rowset query class
-	#define BRDB_DEFINE_ROWSETQUERYCLASS(Policy,QueryClass,QueryClassRowset) \
+	#define BRDB_DEFINE_ROWSETQUERYCLASS(Policy,QueryClass) \
 		class QueryClass##Cmd : public QueryClass	\
 		{																			\
 		public :																	\
 			enum { MESSAGE_POLICY = Policy };										\
-			using RowsetList = DynamicArray<QueryClassRowset>;						\
 			static const Message::MessageID MID;									\
 			QueryClass##Cmd(IHeap& heap) : QueryClass(heap, MID ), RowsetResults(heap) { }		\
-			DynamicArray<QueryClassRowset> RowsetResults;						\
-			virtual void AddRowset() override { RowsetResults.push_back(std::forward<QueryClassRowset>(*static_cast<QueryClassRowset*>(this))); } \
+			RowsetType Attributes;\
+			RowsetList RowsetResults;						\
+			virtual void AddRowset() override { RowsetResults.push_back(std::forward<RowsetType>(Attributes)); } \
 		};
 
 
@@ -168,7 +173,8 @@ namespace DB {
 
 
 	#define BRDB_PARAM_ENTRY(ioType, member)												\
-			AddParameterBinding(ParameterInfo(#member,ioType,BoxingByReference(member)));	
+			AddParameterBinding(#member,ioType,BoxingByReference(member));	
+
 
 
 

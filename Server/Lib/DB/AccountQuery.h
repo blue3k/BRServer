@@ -137,26 +137,20 @@ namespace DB {
 		int64_t m_FBUID;
 	};
 
-	class QueryUserList : public QueryUserListResultSet, public QueryBase
+	class QueryUserList : public QueryBase
 	{
 	public:
 		int32_t Result;
-
 
 	public:
 		BRDB_BEGIN_PARAM_MAP(QueryUserList,"spUserList")
 			BRDB_PARAM_ENTRY(ParamIO::Output, Result)
 		BRDB_END_PARAM_MAP()
 		
-		BRDB_BEGIN_RESULT_MAP(QueryUserList)
-			BRDB_COLUMN_ENTRY(m_PlayerUID)
-			BRDB_COLUMN_ENTRY(m_Name)
-			BRDB_COLUMN_ENTRY(m_FBUID)
-		BRDB_END_RESULT_MAP()
 
 	};
 
-	BRDB_DEFINE_ROWSETQUERYCLASS(PROTOCOLID_ACCOUNTDB,QueryUserList, QueryUserListResultSet);
+	BRDB_DEFINE_ROWSETQUERYCLASS(PROTOCOLID_ACCOUNTDB,QueryUserList);
 
 	
 	//////////////////////////////////////////////////////////////////////////////////

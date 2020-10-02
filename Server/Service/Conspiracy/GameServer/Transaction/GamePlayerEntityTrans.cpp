@@ -84,10 +84,8 @@ namespace GameServer {
 	{
 		SetExclusive(true);
 
-		BR_TRANS_MESSAGE(DB::QueryCreatePlayerInfoCmd, { return OnCreatePlayerGameDataRes(pRes); });
-		BR_TRANS_MESSAGE(DB::QueryGetPlayerInfoCmd, { return OnGetPlayerGameDataRes(pRes); });
-		BR_TRANS_MESSAGE( Message::LoginServer::PlayerJoinedToGameServerRes, { return OnGameServerJoined(pRes); });
-		BR_TRANS_MESSAGE( Message::GameParty::JoinPartyRes, { return OnJoinPartyRes(pRes); });
+		BR_TRANS_MESSAGE(conspiracy::QueryCreatePlayerInfoCmd, { return OnCreatePlayerGameDataRes(pRes); });
+		BR_TRANS_MESSAGE(conspiracy::QueryGetPlayerInfoCmd, { return OnGetPlayerGameDataRes(pRes); });
 	}
 
 	Result PlayerTransJoinGameServer::OnGameServerJoined( Svr::TransactionResult* &pRes )
@@ -279,7 +277,7 @@ namespace GameServer {
 			conspiracy::GameConfigTbl::GameConfigItem *pConfig = GetMyServer()->GetPresetGameConfig();
 			svrChkPtr(pConfig);
 
-			svrChk(Svr::GetServerComponent<conspiracy::GameConspiracyDB>()->CreatePlayerInfoCmd(GetTransID(), GetMyOwner()->GetShardID(), GetMyOwner()->GetPlayerID(), pConfig->DefaultStamina));
+			svrChk(Svr::GetServerComponent<conspiracy::GameConspiracyDB>()->CreateAccountInfoCmd(GetTransID(), GetMyOwner()->GetShardID(), GetMyOwner()->GetPlayerID(), pConfig->DefaultStamina));
 			goto Proc_End;
 		}
 

@@ -32,12 +32,6 @@ namespace DB {
 	class QueryMYSQL : public Query
 	{
 	public:
-
-
-
-	private:
-
-	public:
 		QueryMYSQL(IHeap& heap, Message::MessageID MsgID);
 		virtual ~QueryMYSQL();
 

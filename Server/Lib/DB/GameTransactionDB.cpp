@@ -49,10 +49,10 @@ namespace DB {
 	// Add game log
 	Result GameTransactionDB::AddGameLog(uint shardID, const PlayerID &playerID, UTCTimeStampSec gameTime, TransLogCategory LogCategory, INT consume, INT gain, uint64_t totalValue, const char* logMessage)
 	{
-		Result hr = ResultCode::SUCCESS;
-		QueryAddGameLogCmd *pQuery = nullptr;
+		FunctionContext hr;
 
-		dbMem(pQuery = new(GetHeap()) QueryAddGameLogCmd(GetHeap()));
+		UniquePtr<QueryAddGameLogCmd> pQuery(new(GetHeap()) QueryAddGameLogCmd(GetHeap()));
+		dbCheckMem(pQuery);
 
 		pQuery->SetPartitioningKey(shardID);
 
@@ -67,12 +67,7 @@ namespace DB {
 
 		pQuery->SetTransaction( TransactionID() );
 
-		dbChk( RequestQuery( pQuery ) );
-		pQuery = nullptr;
-
-	Proc_End:
-
-		IHeap::Delete(pQuery);
+		dbCheck( RequestQuery( pQuery ) );
 
 		return hr;
 	}

@@ -155,17 +155,17 @@ namespace Svr{
 
 		// Register message handler helper
 		template< class MessageClassType >
-		Result RegisterMessageHandler(const char* fileName, uint lineNumber, MessageHandlerType&& newHandler )
+		Result RegisterMessageHandler(MessageHandlerType&& newHandler )
 		{
 			//AssertRel(m_pHandlerTable);
-			return m_HandlerTable.Register<MessageClassType>(fileName, lineNumber, std::forward<MessageHandlerType>(newHandler) );
+			return m_HandlerTable.Register<MessageClassType>(std::forward<MessageHandlerType>(newHandler) );
 		}
 
 
 		template<class TransactionType>
 		Result RegisterMessageHandler()
 		{
-			return m_HandlerTable.Register<typename TransactionType::MessageClassType>(__FILE__, __LINE__,
+			return m_HandlerTable.Register<typename TransactionType::MessageClassType>(
 				[this](Net::Connection* pConnection, MessageDataPtr& pMsg, TransactionPtr& pNewTrans)->Result
 				{
 					svrMemReturn(pNewTrans = new(GetHeap()) TransactionType(GetHeap(), pMsg));

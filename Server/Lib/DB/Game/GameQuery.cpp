@@ -18,21 +18,17 @@
 
 namespace SF {
 	namespace DB {
+		//BRDB_DEFINE_QUERY_IMPL(QueryUpdateGameEnd);
+		//BRDB_DEFINE_QUERY_IMPL(QueryUpdateJoinGame);
+		//BRDB_DEFINE_QUERY_IMPL(QueryUpdateTickStatus);
 		BRDB_DEFINE_QUERY_IMPL(QueryCreatePlayerInfo);
 		BRDB_DEFINE_QUERY_IMPL(QueryGetPlayerInfo);
 		BRDB_DEFINE_QUERY_IMPL(QuerySetPlayerInfo);
 
-		BRDB_DEFINE_QUERY_IMPL(QuerySavePurchaseInfoToDB);
-		BRDB_DEFINE_QUERY_IMPL(QueryCheckPurchaseID);
-
-		//BRDB_DEFINE_QUERY_IMPL(QueryUpdateGameEnd);
-		//BRDB_DEFINE_QUERY_IMPL(QueryUpdateJoinGame);
-		//BRDB_DEFINE_QUERY_IMPL(QueryUpdateTickStatus);
-
-		BRDB_DEFINE_QUERY_IMPL(QueryGetPlayerStatus);
-
 		BRDB_DEFINE_QUERY_IMPL(QueryGetNickName);
 		BRDB_DEFINE_QUERY_IMPL(QuerySetNickName);
+
+		BRDB_DEFINE_QUERY_IMPL(QueryGetPlayerStatus);
 
 		BRDB_DEFINE_QUERY_IMPL(QueryGetPlayerQuickInfo);
 		BRDB_DEFINE_QUERY_IMPL(QueryGetFriendQuickInfo);

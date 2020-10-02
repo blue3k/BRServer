@@ -137,7 +137,8 @@ namespace DB {
 			return ResultCode::SUCCESS_FALSE;
 		}
 
-		auto pQuery = new(GetHeap()) QueryGetShardListCmd(GetHeap());
+		UniquePtr<QueryGetShardListCmd> pQuery;
+		pQuery.reset(new(GetHeap()) QueryGetShardListCmd(GetHeap()));
 
 		pQuery->SetPartitioningKey(0);
 		pQuery->SetTransaction(TransactionID());
@@ -294,7 +295,7 @@ Proc_End:
 				pSession = nullptr;
 			}
 
-			if (!(QueryWorkerManager::PendingQuery(pQuery)))
+			if (!m_PendingQueries.Enqueue(pQuery))
 			{
 				// It's not expected
 				pQuery->SetResult(ResultCode::UNEXPECTED);
@@ -338,18 +339,22 @@ Proc_End:
 				auto pDBRes = (QueryGetShardListCmd*)pQuery;
 				for (auto& rowRes : pDBRes->RowsetResults)
 				{
-					if ((unsigned)rowRes.ShardID < GetPartitioningCount() && (SelectDBByKey(rowRes.ShardID, pDBSource)))
+					auto shardId = rowRes.GetValue<int>("ShardID"_crc32c);
+					auto DBName = rowRes.GetValue<String>("DBName"_crc32c);
+					auto ConnectionString = rowRes.GetValue<String>("ConnectionString"_crc32c);
+
+					if ((unsigned)shardId < GetPartitioningCount() && (SelectDBByKey(shardId, pDBSource)))
 					{
-						if (pDBSource->GetDefaultDB() != rowRes.DBName
-							|| pDBSource->GetConnectionString() != rowRes.ConnectionString)
+						if (pDBSource->GetDefaultDB() != DBName
+							|| pDBSource->GetConnectionString() != ConnectionString)
 						{
-							dbTrace(Info, "Initializating DBSource {0}, Shard:{1} {2}, {3}", typeid(*this).name(), rowRes.ShardID,  rowRes.ConnectionString, rowRes.DBName);
-							dbChk(pDBSource->InitializeDBSource(rowRes.ConnectionString, rowRes.DBName, m_UserID, m_Password));
+							dbTrace(Info, "Initializating DBSource {0}, Shard:{1} {2}, {3}", typeid(*this).name(), shardId,  ConnectionString, DBName);
+							dbChk(pDBSource->InitializeDBSource(ConnectionString, DBName, m_UserID, m_Password));
 						}
 					}
 					else
 					{
-						AddDBSource(rowRes.ShardID, typeid(*this).name(), rowRes.ConnectionString, rowRes.DBName);
+						AddDBSource(shardId, typeid(*this).name(), ConnectionString, DBName);
 					}
 					
 				}
@@ -366,7 +371,7 @@ Proc_End:
 		return hr;
 	}
 
-	Result	DBClusterManager::RequestQuery(Query* pQuery)
+	Result	DBClusterManager::RequestQuery(UniquePtr<Query>& pQuery)
 	{
 		Result hr = ResultCode::SUCCESS;
 		Session * pSession = nullptr;
@@ -388,7 +393,8 @@ Proc_End:
 		{
 			// DB source fail, put it in the local queue and try again when DB is ready
 			// This sometimes hides DB error.
-			dbChk(m_PendingQueries.Enqueue(pQuery));
+			dbChk(m_PendingQueries.Enqueue(pQuery.get()));
+			pQuery.release();
 			return ResultCode::SUCCESS;
 		}
 
@@ -425,11 +431,6 @@ Proc_End:
 		if (pSession != nullptr)
 		{
 			pSession->ReleaseSession();
-		}
-
-		if (!hr && pQuery != nullptr)
-		{
-			delete pQuery;
 		}
 
 		return hr;

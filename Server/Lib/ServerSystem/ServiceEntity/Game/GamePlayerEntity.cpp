@@ -123,8 +123,7 @@ namespace Svr {
 		////////////////////////////////////////////////////////////////////////////////////////////////////
 		// Game Player
 
-		RegisterMessageHandler<Message::Game::HeartBitC2SEvt>(__FILE__, __LINE__,
-			[&](Net::Connection* pConn, MessageDataPtr& pMsgData, SF::TransactionPtr& pNewTrans)->Result
+		RegisterMessageHandler<Message::Game::HeartBitC2SEvt>([&](Net::Connection* pConn, MessageDataPtr& pMsgData, SF::TransactionPtr& pNewTrans)->Result
 			{
 				pNewTrans = nullptr; return OnNewUserTranscation();
 			});

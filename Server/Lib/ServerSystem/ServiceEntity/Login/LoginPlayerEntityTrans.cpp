@@ -74,7 +74,7 @@ namespace Svr {
 	}
 
 	template<class MessageClass>
-	Result LoginPlayerTransLoginBase<MessageClass>::OnGenericError(Svr::TransactionResult* &pRes)
+	Result LoginPlayerTransLoginBase<MessageClass>::OnGenericError(Svr::TransactionResult* pRes)
 	{
 		if (pRes->GetResult() == Result(ResultCode::INVALID_PLAYERID) || pRes->GetResult() == Result(ResultCode::SVR_INVALID_ENTITYUID))
 		{

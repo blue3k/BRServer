@@ -16,7 +16,6 @@
 #include "DB/DBConst.h"
 #include "DB/QueryConst.h"
 
-
 namespace SF {
 namespace DB {
 
@@ -33,9 +32,9 @@ namespace DB {
 		MCODE_QueryCreatePlayerInfo,
 		MCODE_QueryGetPlayerInfo,
 		MCODE_QuerySetPlayerInfo,
+		MCODE_QueryGetPlayerStatus,
 		MCODE_QueryGetNickName,
 		MCODE_QuerySetNickName,
-		MCODE_QueryGetPlayerStatus,
 		MCODE_QueryGetPlayerQuickInfo,
 		MCODE_QueryGetFriendQuickInfo,
 		MCODE_QueryGetFriendQuickInfoWithNick,
@@ -53,99 +52,36 @@ namespace DB {
 
 		MCODE_QueryGameDB_Base,
 
-		MCODE_QuerySavePurchaseInfoToDB = MCODE_QueryGameDB_Base,
-		MCODE_QueryCheckPurchaseID,
-		MCODE_QueryUpdateGameEnd,
-		MCODE_QueryUpdateJoinGame,
-		MCODE_QueryUpdateTickStatus,
-		MCODE_QueryUpdateFriendStaminaTime,
+		//MCODE_QuerySavePurchaseInfoToDB = MCODE_QueryGameDB_Base,
+		//MCODE_QueryCheckPurchaseID,
+		//MCODE_QueryUpdateGameEnd,
+		//MCODE_QueryUpdateJoinGame,
+		//MCODE_QueryUpdateTickStatus,
+		//MCODE_QueryUpdateFriendStaminaTime,
 
 	}; // enum MsgCode
 
 
 
-	struct PlayerGameScore
-	{
-		int32_t	TotalPlayed;
-		int32_t	WinPlaySC;
-		int32_t	WinPlaySM;
-		int32_t	WinPlaySS;
-		int32_t	LosePlaySC;
-		int32_t	LosePlaySM;
-		int32_t	LosePlaySS;
-		int32_t	WinPlayNC;
-		int32_t	WinPlayNM;
-		int32_t	WinPlayNS;
-		int32_t	LosePlayNC;
-		int32_t	LosePlayNM;
-		int32_t	LosePlayNS;
-	};
-
-	struct QueryGetPlayerInfoData : public PlayerGameScore
-	{
-		String  GameNick;
-		uint8_t	Grade;
-		int16_t	Level;
-		int64_t	Exp;
-		int64_t	GameMoney;
-		int64_t	Gem;
-		int16_t	Stamina;
-		int16_t	AddedFriendSlot;
-		int32_t	WeeklyPlayWin;
-		int32_t	WeeklyPlayLose;
-		int64_t	LatestTickTime;
-	};
-
-
-	class QueryCreatePlayerInfo : public QueryGetPlayerInfoData, public QueryBase
+	class QueryCreatePlayerInfo : public DB::QueryBase
 	{
 	public:
 		// Player ID
 		int64_t	PlayerID;
-		INT		InitialStamina;
 		// result
 		int32_t	Result;
 
 	public:
 		BRDB_BEGIN_PARAM_MAP(QueryCreatePlayerInfo, "spCreatePlayerInfo")
-			BRDB_PARAM_ENTRY(ParamIO::Input, PlayerID)
-			BRDB_PARAM_ENTRY(ParamIO::Input, InitialStamina)
-			BRDB_PARAM_ENTRY(ParamIO::Output, Result)
+			BRDB_PARAM_ENTRY(DB::ParamIO::Input, PlayerID)
+			BRDB_PARAM_ENTRY(DB::ParamIO::Output, Result)
 		BRDB_END_PARAM_MAP()
-
-
-		BRDB_BEGIN_RESULT_MAP(QueryGetPlayerInfoData)
-			BRDB_COLUMN_ENTRY(GameNick)
-			BRDB_COLUMN_ENTRY(Grade)
-			BRDB_COLUMN_ENTRY(Level)
-			BRDB_COLUMN_ENTRY(Exp)
-			BRDB_COLUMN_ENTRY(GameMoney)
-			BRDB_COLUMN_ENTRY(Gem)
-			BRDB_COLUMN_ENTRY(Stamina)
-			BRDB_COLUMN_ENTRY(AddedFriendSlot)
-			BRDB_COLUMN_ENTRY(TotalPlayed)
-			BRDB_COLUMN_ENTRY(WinPlaySC)
-			BRDB_COLUMN_ENTRY(WinPlaySM)
-			BRDB_COLUMN_ENTRY(WinPlaySS)
-			BRDB_COLUMN_ENTRY(LosePlaySC)
-			BRDB_COLUMN_ENTRY(LosePlaySM)
-			BRDB_COLUMN_ENTRY(LosePlaySS)
-			BRDB_COLUMN_ENTRY(WinPlayNC)
-			BRDB_COLUMN_ENTRY(WinPlayNM)
-			BRDB_COLUMN_ENTRY(WinPlayNS)
-			BRDB_COLUMN_ENTRY(LosePlayNC)
-			BRDB_COLUMN_ENTRY(LosePlayNM)
-			BRDB_COLUMN_ENTRY(LosePlayNS)
-			BRDB_COLUMN_ENTRY(WeeklyPlayWin)
-			BRDB_COLUMN_ENTRY(WeeklyPlayLose)
-			BRDB_COLUMN_ENTRY(LatestTickTime)
-		BRDB_END_RESULT_MAP()
 	};
 
-	BRDB_DEFINE_ROWSETQUERYCLASS(PROTOCOLID_GAMEDB, QueryCreatePlayerInfo, QueryGetPlayerInfoData);
+	BRDB_DEFINE_ROWSETQUERYCLASS(PROTOCOLID_GAMEDB, QueryCreatePlayerInfo);
 
 
-	class QueryGetPlayerInfo : public QueryGetPlayerInfoData, public QueryBase
+	class QueryGetPlayerInfo : public DB::QueryBase
 	{
 	public:
 		// Player ID
@@ -156,213 +92,43 @@ namespace DB {
 
 	public:
 		BRDB_BEGIN_PARAM_MAP(QueryGetPlayerInfo, "spGetPlayerInfo")
-			BRDB_PARAM_ENTRY(ParamIO::Input, PlayerID)
-			BRDB_PARAM_ENTRY(ParamIO::Output, Result)
-		BRDB_END_PARAM_MAP()
+			BRDB_PARAM_ENTRY(DB::ParamIO::Input, PlayerID)
+			BRDB_PARAM_ENTRY(DB::ParamIO::Output, Result)
+			BRDB_END_PARAM_MAP()
 
 
-		BRDB_BEGIN_RESULT_MAP(QueryGetPlayerInfoData)
-			BRDB_COLUMN_ENTRY(GameNick)
-			BRDB_COLUMN_ENTRY(Grade)
-			BRDB_COLUMN_ENTRY(Level)
-			BRDB_COLUMN_ENTRY(Exp)
-			BRDB_COLUMN_ENTRY(GameMoney)
-			BRDB_COLUMN_ENTRY(Gem)
-			BRDB_COLUMN_ENTRY(Stamina)
-			BRDB_COLUMN_ENTRY(AddedFriendSlot)
-			BRDB_COLUMN_ENTRY(TotalPlayed)
-			BRDB_COLUMN_ENTRY(WinPlaySC)
-			BRDB_COLUMN_ENTRY(WinPlaySM)
-			BRDB_COLUMN_ENTRY(WinPlaySS)
-			BRDB_COLUMN_ENTRY(LosePlaySC)
-			BRDB_COLUMN_ENTRY(LosePlaySM)
-			BRDB_COLUMN_ENTRY(LosePlaySS)
-			BRDB_COLUMN_ENTRY(WinPlayNC)
-			BRDB_COLUMN_ENTRY(WinPlayNM)
-			BRDB_COLUMN_ENTRY(WinPlayNS)
-			BRDB_COLUMN_ENTRY(LosePlayNC)
-			BRDB_COLUMN_ENTRY(LosePlayNM)
-			BRDB_COLUMN_ENTRY(LosePlayNS)
-			BRDB_COLUMN_ENTRY(WeeklyPlayWin)
-			BRDB_COLUMN_ENTRY(WeeklyPlayLose)
-			BRDB_COLUMN_ENTRY(LatestTickTime)
-		BRDB_END_RESULT_MAP()
 
 	};
 
-	BRDB_DEFINE_ROWSETQUERYCLASS(PROTOCOLID_GAMEDB, QueryGetPlayerInfo, QueryGetPlayerInfoData);
+	BRDB_DEFINE_ROWSETQUERYCLASS(PROTOCOLID_GAMEDB, QueryGetPlayerInfo);
 
 
-	
-	struct QuerySetPlayerInfoData : public PlayerGameScore
-	{
-		int16_t	Level;
-		int64_t	Exp;
-		int64_t	GameMoney;
-		int64_t	Gem;
-		int16_t	Stamina;
-		int16_t	AddedFriendSlot;
-		int32_t	LatestActiveTime;
-		int64_t	LatestTickTime;
-	};
 
-	class QuerySetPlayerInfo : public QuerySetPlayerInfoData, public QueryBase
+	class QuerySetPlayerInfo : public DB::QueryBase
 	{
 	public:
 		// Player ID
 		int64_t	PlayerID;
+		int32_t	LatestActiveTime;
+		int64_t	LatestTickTime;
+
+		DynamicArray<NamedVariableBox> Attributes;
 
 		// result
 		int32_t	Result;
 
 	public:
 		BRDB_BEGIN_PARAM_MAP(QuerySetPlayerInfo, "spSetPlayerInfo")
-			BRDB_PARAM_ENTRY(ParamIO::Input, PlayerID)
-			BRDB_PARAM_ENTRY(ParamIO::Input, Level)
-			BRDB_PARAM_ENTRY(ParamIO::Input, Exp)
-			BRDB_PARAM_ENTRY(ParamIO::Input, GameMoney)
-			BRDB_PARAM_ENTRY(ParamIO::Input, Gem)
-			BRDB_PARAM_ENTRY(ParamIO::Input, Stamina)
-			BRDB_PARAM_ENTRY(ParamIO::Input, AddedFriendSlot)
-			BRDB_PARAM_ENTRY(ParamIO::Input, TotalPlayed)
-			BRDB_PARAM_ENTRY(ParamIO::Input, WinPlaySC)
-			BRDB_PARAM_ENTRY(ParamIO::Input, WinPlaySM)
-			BRDB_PARAM_ENTRY(ParamIO::Input, WinPlaySS)
-			BRDB_PARAM_ENTRY(ParamIO::Input, LosePlaySC)
-			BRDB_PARAM_ENTRY(ParamIO::Input, LosePlaySM)
-			BRDB_PARAM_ENTRY(ParamIO::Input, LosePlaySS)
-			BRDB_PARAM_ENTRY(ParamIO::Input, WinPlayNC)
-			BRDB_PARAM_ENTRY(ParamIO::Input, WinPlayNM)
-			BRDB_PARAM_ENTRY(ParamIO::Input, WinPlayNS)
-			BRDB_PARAM_ENTRY(ParamIO::Input, LosePlayNC)
-			BRDB_PARAM_ENTRY(ParamIO::Input, LosePlayNM)
-			BRDB_PARAM_ENTRY(ParamIO::Input, LosePlayNS)
-			BRDB_PARAM_ENTRY(ParamIO::Input, LatestActiveTime)
-			BRDB_PARAM_ENTRY(ParamIO::Input, LatestTickTime)
-			BRDB_PARAM_ENTRY(ParamIO::Output, Result)
-		BRDB_END_PARAM_MAP()
+			BRDB_PARAM_ENTRY(DB::ParamIO::Input, PlayerID)
+			BRDB_PARAM_ENTRY(DB::ParamIO::Input, LatestActiveTime)
+			BRDB_PARAM_ENTRY(DB::ParamIO::Input, LatestTickTime)
+			BRDB_PARAM_ENTRY(DB::ParamIO::Input, Attributes)
+			BRDB_PARAM_ENTRY(DB::ParamIO::Output, Result)
+			BRDB_END_PARAM_MAP()
 
 	};
 
-	BRDB_DEFINE_QUERYCLASS(PROTOCOLID_GAMEDB,QuerySetPlayerInfo);
-
-
-
-	class QuerySavePurchaseInfoToDB : public QueryBase
-	{
-	public:
-		// Player ID
-		int64_t	PlayerID;
-		int16_t	Level;
-		int64_t	Exp;
-		int64_t	GameMoney;
-		int64_t	Gem;
-		int16_t	Stamina;
-		int16_t	AddedFriendSlot;
-		StaticArray<uint8_t,256>    PurchaseID;
-		String  PurchasePlatform;
-		String  PurchaseToken;
-		int32_t	LatestActiveTime;
-		int64_t	LatestTickTime;
-
-		// result
-		int32_t	Result;
-
-	public:
-		BRDB_BEGIN_PARAM_MAP(QuerySavePurchaseInfoToDB, "spSavePurchaseInfoToDB")
-			BRDB_PARAM_ENTRY(ParamIO::Input, PlayerID)
-			BRDB_PARAM_ENTRY(ParamIO::Input, Level)
-			BRDB_PARAM_ENTRY(ParamIO::Input, Exp)
-			BRDB_PARAM_ENTRY(ParamIO::Input, GameMoney)
-			BRDB_PARAM_ENTRY(ParamIO::Input, Gem)
-			BRDB_PARAM_ENTRY(ParamIO::Input, Stamina)
-			BRDB_PARAM_ENTRY(ParamIO::Input, AddedFriendSlot)
-			BRDB_PARAM_ENTRY(ParamIO::Input, PurchaseID)
-			BRDB_PARAM_ENTRY(ParamIO::Input, PurchasePlatform)
-			BRDB_PARAM_ENTRY(ParamIO::Input, PurchaseToken)
-			BRDB_PARAM_ENTRY(ParamIO::Input, LatestActiveTime)
-			BRDB_PARAM_ENTRY(ParamIO::Input, LatestTickTime)
-			BRDB_PARAM_ENTRY(ParamIO::Output, Result)
-		BRDB_END_PARAM_MAP()
-
-	};
-
-	BRDB_DEFINE_QUERYCLASS(PROTOCOLID_GAMEDB, QuerySavePurchaseInfoToDB);
-
-
-	class QueryCheckPurchaseID : public QueryBase
-	{
-	public:
-		// Player ID
-		DynamicArray<uint8_t>    PurchaseID;
-
-		// result
-		int32_t	Result;
-
-	public:
-		BRDB_BEGIN_PARAM_MAP(QueryCheckPurchaseID, "spCheckPurchaseID")
-			BRDB_PARAM_ENTRY(ParamIO::Input, PurchaseID)
-			BRDB_PARAM_ENTRY(ParamIO::Output, Result)
-		BRDB_END_PARAM_MAP()
-
-	};
-
-	BRDB_DEFINE_QUERYCLASS(PROTOCOLID_GAMEDB, QueryCheckPurchaseID);
-
-
-
-
-
-	//////////////////////////////////////////////////////////////////////////////////
-	//
-	//	QuerySetNickName class
-	//
-
-	class QuerySetNickName : public QueryBase
-	{
-	public:
-
-		int64_t PlayerID;
-
-		char NickName[Const::MAX_USERNAME];
-		int32_t Result;
-
-	public:
-		BRDB_BEGIN_PARAM_MAP(QuerySetNickName, "spSetNickName")
-			BRDB_PARAM_ENTRY(ParamIO::Input, PlayerID)
-			BRDB_PARAM_ENTRY(ParamIO::Input, NickName)
-			BRDB_PARAM_ENTRY(ParamIO::Output, Result)
-		BRDB_END_PARAM_MAP()
-	};
-
-	BRDB_DEFINE_QUERYCLASS(PROTOCOLID_GAMEDB, QuerySetNickName);
-
-
-
-	//////////////////////////////////////////////////////////////////////////////////
-	//
-	//	QueryGetNickName class
-	//
-
-	class QueryGetNickName : public QueryBase
-	{
-	public:
-
-		int64_t PlayerID;
-
-		char NickName[Const::MAX_USERNAME];
-		int32_t Result;
-
-	public:
-		BRDB_BEGIN_PARAM_MAP(QueryGetNickName, "spGetNickName")
-			BRDB_PARAM_ENTRY(ParamIO::Input, PlayerID)
-			BRDB_PARAM_ENTRY(ParamIO::Output, NickName)
-			BRDB_PARAM_ENTRY(ParamIO::Output, Result)
-		BRDB_END_PARAM_MAP()
-	};
-
-	BRDB_DEFINE_QUERYCLASS(PROTOCOLID_GAMEDB, QueryGetNickName);
-
+	BRDB_DEFINE_QUERYCLASS(PROTOCOLID_GAMEDB, QuerySetPlayerInfo);
 
 
 	class QueryGetPlayerStatus : public QueryBase
@@ -388,6 +154,56 @@ namespace DB {
 	BRDB_DEFINE_QUERYCLASS(PROTOCOLID_GAMEDB,QueryGetPlayerStatus);
 
 
+
+	//////////////////////////////////////////////////////////////////////////////////
+	//
+	//	QuerySetNickName class
+	//
+
+	class QuerySetNickName : public DB::QueryBase
+	{
+	public:
+
+		int64_t PlayerID;
+
+		char NickName[DB::Const::MAX_USERNAME];
+		int32_t Result;
+
+	public:
+		BRDB_BEGIN_PARAM_MAP(QuerySetNickName, "spSetNickName")
+			BRDB_PARAM_ENTRY(DB::ParamIO::Input, PlayerID)
+			BRDB_PARAM_ENTRY(DB::ParamIO::Input, NickName)
+			BRDB_PARAM_ENTRY(DB::ParamIO::Output, Result)
+			BRDB_END_PARAM_MAP()
+	};
+
+	BRDB_DEFINE_QUERYCLASS(PROTOCOLID_GAMEDB, QuerySetNickName);
+
+
+
+	//////////////////////////////////////////////////////////////////////////////////
+	//
+	//	QueryGetNickName class
+	//
+
+	class QueryGetNickName : public DB::QueryBase
+	{
+	public:
+
+		int64_t PlayerID;
+
+		char NickName[DB::Const::MAX_USERNAME];
+		int32_t Result;
+
+	public:
+		BRDB_BEGIN_PARAM_MAP(QueryGetNickName, "spGetNickName")
+			BRDB_PARAM_ENTRY(DB::ParamIO::Input, PlayerID)
+			BRDB_PARAM_ENTRY(DB::ParamIO::Output, NickName)
+			BRDB_PARAM_ENTRY(DB::ParamIO::Output, Result)
+			BRDB_END_PARAM_MAP()
+	};
+
+	BRDB_DEFINE_QUERYCLASS(PROTOCOLID_GAMEDB, QueryGetNickName);
 
 
 	//////////////////////////////////////////////////////////////////////////////////
@@ -583,22 +399,21 @@ namespace DB {
 	public:
 		int64_t UserID;
 
-
 	public:
 		BRDB_BEGIN_PARAM_MAP(QueryGetFriendList, "spFriend_List")
 			BRDB_PARAM_ENTRY(ParamIO::Input, UserID)
 		BRDB_END_PARAM_MAP()
 
-		BRDB_BEGIN_RESULT_MAP(QueryGetFriendList)
-			BRDB_COLUMN_ENTRY(FriendUID)
-			BRDB_COLUMN_ENTRY(FriendShardID)
-			BRDB_COLUMN_ENTRY(FriendFacebookUID)
-			BRDB_COLUMN_ENTRY(FriendStaminaTime)
-		BRDB_END_RESULT_MAP()
+		//BRDB_BEGIN_RESULT_MAP(QueryGetFriendList)
+		//	BRDB_COLUMN_ENTRY(FriendUID)
+		//	BRDB_COLUMN_ENTRY(FriendShardID)
+		//	BRDB_COLUMN_ENTRY(FriendFacebookUID)
+		//	BRDB_COLUMN_ENTRY(FriendStaminaTime)
+		//BRDB_END_RESULT_MAP()
 
 	};
 
-	BRDB_DEFINE_ROWSETQUERYCLASS(PROTOCOLID_GAMEDB, QueryGetFriendList, QueryGetFriendListSet);
+	BRDB_DEFINE_ROWSETQUERYCLASS(PROTOCOLID_GAMEDB, QueryGetFriendList);
 
 
 
@@ -640,18 +455,8 @@ namespace DB {
 	BRDB_DEFINE_QUERYCLASS(PROTOCOLID_GAMEDB, QueryNotification_Add);
 
 
-	struct QueryNotification_GetListSet
-	{
-		int32_t NotificationID;
-		int16_t MessageID;
-		int64_t MessageParam0;
-		int64_t MessageParam1;
-		String MessageText;
-		int64_t TimeStamp;
-		uint8_t IsRead;
-	};
 
-	class QueryNotification_GetList : public QueryNotification_GetListSet, public QueryBase
+	class QueryNotification_GetList : public QueryBase
 	{
 	public:
 		int64_t UserID;
@@ -664,19 +469,19 @@ namespace DB {
 			BRDB_PARAM_ENTRY(ParamIO::Output, Result)
 		BRDB_END_PARAM_MAP()
 
-		BRDB_BEGIN_RESULT_MAP(QueryNotification_GetList)
-			BRDB_COLUMN_ENTRY(NotificationID)
-			BRDB_COLUMN_ENTRY(MessageID)
-			BRDB_COLUMN_ENTRY(MessageParam0)
-			BRDB_COLUMN_ENTRY(MessageParam1)
-			BRDB_COLUMN_ENTRY(MessageText)
-			BRDB_COLUMN_ENTRY(IsRead)
-			BRDB_COLUMN_ENTRY(TimeStamp)
-		BRDB_END_RESULT_MAP()
+		//BRDB_BEGIN_RESULT_MAP(QueryNotification_GetList)
+		//	BRDB_COLUMN_ENTRY(NotificationID)
+		//	BRDB_COLUMN_ENTRY(MessageID)
+		//	BRDB_COLUMN_ENTRY(MessageParam0)
+		//	BRDB_COLUMN_ENTRY(MessageParam1)
+		//	BRDB_COLUMN_ENTRY(MessageText)
+		//	BRDB_COLUMN_ENTRY(IsRead)
+		//	BRDB_COLUMN_ENTRY(TimeStamp)
+		//BRDB_END_RESULT_MAP()
 
 	};
 
-	BRDB_DEFINE_ROWSETQUERYCLASS(PROTOCOLID_GAMEDB, QueryNotification_GetList, QueryNotification_GetListSet);
+	BRDB_DEFINE_ROWSETQUERYCLASS(PROTOCOLID_GAMEDB, QueryNotification_GetList);
 
 
 

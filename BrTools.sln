@@ -37,6 +37,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Atf.Gui.OpenGL", "..\ATF\Fr
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SFCoreSharp", "..\StormForge\Engine\Src\SFCoreSharp\SFCoreSharp.csproj", "{DE89B4BF-FEB7-4FEE-AB5F-85D286295BD7}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TableBuilder", "Tools\TableBuilder\TableBuilder\TableBuilder.csproj", "{334DDBB8-21B5-41F2-8428-DAF3F4B0691B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		All|Any CPU = All|Any CPU
@@ -300,6 +302,24 @@ Global
 		{DE89B4BF-FEB7-4FEE-AB5F-85D286295BD7}.Release|x64.Build.0 = Release|x64
 		{DE89B4BF-FEB7-4FEE-AB5F-85D286295BD7}.Release|x86.ActiveCfg = Release|Any CPU
 		{DE89B4BF-FEB7-4FEE-AB5F-85D286295BD7}.Release|x86.Build.0 = Release|Any CPU
+		{334DDBB8-21B5-41F2-8428-DAF3F4B0691B}.All|Any CPU.ActiveCfg = Debug|Any CPU
+		{334DDBB8-21B5-41F2-8428-DAF3F4B0691B}.All|Any CPU.Build.0 = Debug|Any CPU
+		{334DDBB8-21B5-41F2-8428-DAF3F4B0691B}.All|x64.ActiveCfg = Debug|Any CPU
+		{334DDBB8-21B5-41F2-8428-DAF3F4B0691B}.All|x64.Build.0 = Debug|Any CPU
+		{334DDBB8-21B5-41F2-8428-DAF3F4B0691B}.All|x86.ActiveCfg = Debug|Any CPU
+		{334DDBB8-21B5-41F2-8428-DAF3F4B0691B}.All|x86.Build.0 = Debug|Any CPU
+		{334DDBB8-21B5-41F2-8428-DAF3F4B0691B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{334DDBB8-21B5-41F2-8428-DAF3F4B0691B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{334DDBB8-21B5-41F2-8428-DAF3F4B0691B}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{334DDBB8-21B5-41F2-8428-DAF3F4B0691B}.Debug|x64.Build.0 = Debug|Any CPU
+		{334DDBB8-21B5-41F2-8428-DAF3F4B0691B}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{334DDBB8-21B5-41F2-8428-DAF3F4B0691B}.Debug|x86.Build.0 = Debug|Any CPU
+		{334DDBB8-21B5-41F2-8428-DAF3F4B0691B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{334DDBB8-21B5-41F2-8428-DAF3F4B0691B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{334DDBB8-21B5-41F2-8428-DAF3F4B0691B}.Release|x64.ActiveCfg = Release|Any CPU
+		{334DDBB8-21B5-41F2-8428-DAF3F4B0691B}.Release|x64.Build.0 = Release|Any CPU
+		{334DDBB8-21B5-41F2-8428-DAF3F4B0691B}.Release|x86.ActiveCfg = Release|Any CPU
+		{334DDBB8-21B5-41F2-8428-DAF3F4B0691B}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

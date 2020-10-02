@@ -69,11 +69,6 @@ namespace Svr {
 	}
 	
 
-
-
-
-
-
 	template<class ProcessEntity>
 	GameServerTransRegisterPlayerToJoinGameServer<ProcessEntity>::GameServerTransRegisterPlayerToJoinGameServer(IHeap& heap, MessageDataPtr &pIMsg)
 		: super(heap, pIMsg)
@@ -81,24 +76,22 @@ namespace Svr {
 		, m_PublicAddressIPV6(nullptr)
 		, m_Port(0)
 	{
-		super::template RegisterMessageHandler<Message::GameServer::RegisterPlayerToJoinGameServerOnPlayerEntityRes>(__FILE__, __LINE__, [&](::SF::Svr::TransactionResult* pRes)->Result { return OnPlayerRegisteredRes(pRes); });
+		super::template RegisterMessageHandler<Message::GameServer::RegisterPlayerToJoinGameServerOnPlayerEntityRes>(&GameServerTransRegisterPlayerToJoinGameServer::OnPlayerRegisteredRes);
 	}
 
 	template<class ProcessEntity>
-	Result GameServerTransRegisterPlayerToJoinGameServer<ProcessEntity>::OnPlayerRegisteredRes(Svr::TransactionResult* &pRes)
+	Result GameServerTransRegisterPlayerToJoinGameServer<ProcessEntity>::OnPlayerRegisteredRes(Svr::TransactionResult* pRes)
 	{
-		Result hr = ResultCode::SUCCESS;
+		FunctionContext hr([this](Result hr)
+			{
+				super::CloseTransaction(hr);
+			});
 
 		Svr::MessageResult *pMsgRes = (Svr::MessageResult*)pRes;
 		Message::GameServer::RegisterPlayerToJoinGameServerOnPlayerEntityRes res;
 
-		svrChk(pRes->GetResult());
-		svrChk(res.ParseMessage(*pMsgRes->GetMessage()));
-
-
-	Proc_End:
-
-		super::CloseTransaction(hr);
+		svrCheck(pRes->GetResult());
+		svrCheck(res.ParseMessage(*pMsgRes->GetMessage()));
 
 		return ResultCode::SUCCESS;
 	}
@@ -107,30 +100,34 @@ namespace Svr {
 	template<class ProcessEntity>
 	Result GameServerTransRegisterPlayerToJoinGameServer<ProcessEntity>::StartTransaction()
 	{
-		Result hr = ResultCode::SUCCESS;
+		FunctionContext hr([this](Result hr)
+			{
+				if (!hr)
+					super::CloseTransaction(hr);
+			});
 		SharedPointerT<Svr::Entity> pEntity;
 		GamePlayerEntity *pPlayerEntity = nullptr;
 		auto pMyOwner = super::GetMyOwner();
 
 		m_PlayerUID = 0;
 
-		svrChk(super::StartTransaction());
+		svrCheck(super::StartTransaction());
 
 		if (super::GetPlayerID() == 0)
 		{
-			svrErr(ResultCode::INVALID_PLAYERID);
+			svrError(ResultCode::INVALID_PLAYERID);
 		}
 
 		if ((Service::EntityTable->find(super::GetRouteContext().GetTo(), pEntity))
 			&& pEntity->GetEntityID().GetFacultyID() == (uint)EntityFaculty::User)
 		{
-			svrChkPtr(pPlayerEntity = dynamic_cast<GamePlayerEntity*>((Svr::Entity*)pEntity));
+			svrCheckPtr(pPlayerEntity = dynamic_cast<GamePlayerEntity*>((Svr::Entity*)pEntity));
 
 			// If a login server has invalid login session information from the DB. the player ID will not be match
 			if (pPlayerEntity->GetPlayerID() != super::GetPlayerID())
 			{
 				super::CloseTransaction(ResultCode::INVALID_PLAYERID);
-				goto Proc_End;
+				return hr;
 			}
 
 			svrTrace(SVR_ENTITY, "Reinitialize Player Entity UID:{0}", super::GetPlayerID());
@@ -141,9 +138,9 @@ namespace Svr {
 			Svr::Entity* pEntity = nullptr;
 			svrTrace(SVR_ENTITY, "Create new Player Entity UID:{0}", super::GetPlayerID());
 
-			svrChk(Service::EntityManager->CreateEntity(ClusterID::Game, EntityFaculty::User, pEntity));
-			svrChkPtr(pPlayerEntity = dynamic_cast<GamePlayerEntity*>(pEntity));
-			svrChk(Service::EntityManager->AddEntity(EntityFaculty::User, pEntity));
+			svrCheck(Service::EntityManager->CreateEntity(ClusterID::Game, EntityFaculty::User, pEntity));
+			svrCheckPtr(pPlayerEntity = dynamic_cast<GamePlayerEntity*>(pEntity));
+			svrCheck(Service::EntityManager->AddEntity(EntityFaculty::User, pEntity));
 
 			// Add Entity will Initialize entity so that AccountID is erased.
 			// SetAccountID need to be set after entity is added
@@ -161,22 +158,17 @@ namespace Svr {
 
 		if ((Svr::Entity*)pPlayerEntity == (Svr::Entity*)pMyOwner)
 		{
-			svrChk(pPlayerEntity->OnJoinGameServerInitialize(super::GetTicket(), super::GetFBUserID()));
+			svrCheck(pPlayerEntity->OnJoinGameServerInitialize(super::GetTicket(), super::GetFBUserID()));
 			super::CloseTransaction(hr);
 		}
 		else
 		{
 			// it's local player send message to local loop back entity
-			svrChk(Policy::NetPolicyGameServer(BrServer::GetInstance()->GetLoopbackServerEntity()->GetConnection()).RegisterPlayerToJoinGameServerOnPlayerEntityCmd(
+			svrCheck(Policy::NetPolicyGameServer(BrServer::GetInstance()->GetLoopbackServerEntity()->GetConnection()).RegisterPlayerToJoinGameServerOnPlayerEntityCmd(
 				RouteContext(super::GetOwnerEntityUID(), m_PlayerUID), super::GetTransID(),
 				super::GetPlayerID(), super::GetTicket(), super::GetFBUserID()));
 
 		}
-
-	Proc_End:
-
-		if (!(hr))
-			super::CloseTransaction(hr);
 
 		return hr;
 	}
@@ -193,13 +185,12 @@ namespace Svr {
 	// Start Transaction
 	Result PlayerTransRegisterPlayerToJoinGameServerOnPlayerEntity::StartTransaction()
 	{
-		Result hr = ResultCode::SUCCESS;
+		FunctionContext hr([this](Result hr)
+			{
+				CloseTransaction(hr);
+			});
 
-		svrChk(GetMyOwner()->OnJoinGameServerInitialize(GetTicket(), GetFBUserID()));
-
-	Proc_End:
-
-		CloseTransaction(hr);
+		svrCheck(GetMyOwner()->OnJoinGameServerInitialize(GetTicket(), GetFBUserID()));
 
 		return hr;
 	}

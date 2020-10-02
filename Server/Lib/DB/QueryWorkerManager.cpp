@@ -92,15 +92,15 @@ namespace DB {
 		}
 	}
 
-	Result	QueryWorkerManager::PendingQuery(Query* &pQuery)
+	Result	QueryWorkerManager::PendingQuery(UniquePtr<Query>& pQuery)
 	{
 		Result hr = ResultCode::SUCCESS;
 
 		if (stm_pInstance == nullptr)
 			dbErr(ResultCode::FAIL);
 
-		dbChk(stm_pInstance->m_PendingQueries.Enqueue(pQuery));
-		pQuery = nullptr;
+		dbChk(stm_pInstance->m_PendingQueries.Enqueue(pQuery.get()));
+		pQuery.release();
 
 		//stm_pInstance->m_QueryCounter.Release();
 

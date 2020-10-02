@@ -40,9 +40,10 @@ namespace Svr {
 		, m_TimedOutQueue(GetHeap())
 		, m_InstanceMap(GetHeap())
 	{
-		BR_MESSAGE_HANDLER(PerformanceCounterNewC2SEvt, Enqueue);
-		BR_MESSAGE_HANDLER(PerformanceCounterFreeC2SEvt, Enqueue);
-		BR_MESSAGE_HANDLER(PerformanceCounterUpdateC2SEvt, PerformanceCounterUpdateC2SEvt);
+		// TODO: Will be removed
+		//BR_MESSAGE_HANDLER(PerformanceCounterNewC2SEvt, Enqueue);
+		//BR_MESSAGE_HANDLER(PerformanceCounterFreeC2SEvt, Enqueue);
+		//BR_MESSAGE_HANDLER(PerformanceCounterUpdateC2SEvt, PerformanceCounterUpdateC2SEvt);
 	}
 
 	PerformanceCounterServer::~PerformanceCounterServer()

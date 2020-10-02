@@ -18,6 +18,8 @@
 #include "DBConst.h"
 #include "DB/DataSource.h"
 
+
+
 namespace SF {
 namespace DB {
 
@@ -83,8 +85,13 @@ namespace DB {
 
 	public:
 
+		template<typename QueryType,
+			typename = std::enable_if_t<std::is_base_of_v<Query, QueryType>>
+		>
+		Result RequestQuery(UniquePtr<QueryType>& pQuery) { return RequestQuery(UniquePtr<Query>(pQuery.get())); }
+
 		// Request a DB Query
-		Result	RequestQuery(Query* pQuery);
+		Result	RequestQuery(UniquePtr<Query>& pQuery);
 
 		// Route query result to entity
 		virtual Result RouteResult(Query* &pQuery);

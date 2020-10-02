@@ -35,8 +35,6 @@ namespace DB {
 			ComponentID = Svr::ServerComponentID_GameDB,
 		};
 
-	private:
-
 	public:
 		// constructor / destructor
 		GameDB();
@@ -52,78 +50,23 @@ namespace DB {
 		//	Game DB Interface
 		//
 
-		Result CreatePlayerInfoCmd(TransactionID Sender, uint shardID, const PlayerID &playerID, INT initialStamina);
 
-		// Query player info
-		Result GetPlayerInfoCmd(TransactionID Sender, uint shardID, const PlayerID &playerID);
+		virtual Result CreatePlayerInfoCmd(TransactionID Sender, uint shardID, const AccountID& playerID);
+
+		// Query account info
+		virtual Result GetPlayerInfoCmd(TransactionID Sender, uint shardID, const AccountID& playerID);
 
 		// Save player info
-		Result SetPlayerInfoCmd(TransactionID Sender, uint shardID, const PlayerID &playerID,
-																				int16_t	Level,
-																				int64_t	Exp,
-																				int64_t	GameMoney,
-																				int64_t	Gem,
-																				int16_t	Stamina,
-																				int16_t	AddedFriendSlot,
-																				int32_t	TotalPlayed,
-																				int32_t	WinPlaySC, int32_t WinPlaySM, int32_t WinPlaySS,
-																				int32_t	LosePlaySC, int32_t LosePlaySM, int32_t LosePlaySS,
-																				int32_t	WinPlayNC, int32_t WinPlayNM, int32_t WinPlayNS,
-																				int32_t	LosePlayNC, int32_t LosePlayNM, int32_t LosePlayNS,
-																				UTCTimeStampSec	LatestActiveTime,
-																				UTCTimeStampSec	LatestTickTime
-																				);
-
-
-		Result SavePurchaseInfoToDB(TransactionID Sender, uint shardID, const PlayerID& playerID,
-			int16_t	Level,
-			int64_t	Exp,
-			int64_t	GameMoney,
-			int64_t	Gem,
-			int16_t	Stamina,
-			int16_t	AddedFriendSlot,
-			const Array<uint8_t>& purchaseID,
-			const char* purchasePlatform, const char* purchaseToken,
+		virtual Result SetPlayerInfoCmd(TransactionID Sender, uint shardID, const AccountID& playerID,
 			UTCTimeStampSec	LatestActiveTime,
-			UTCTimeStampSec	LatestTickTime
-		);
+			UTCTimeStampSec	LatestTickTime,
+			const Array<NamedVariableBox>& Variables
+		) = 0;
 
-		Result CheckPurchaseID(TransactionID Sender, uint shardID, const Array<uint8_t>& purchaseID);
 
 		// Nick name
 		Result SetNickName(TransactionID Sender, uint shardID, PlayerID playerID, const char* nickName);
 		Result GetNickName(TransactionID Sender, uint shardID, PlayerID playerID);
-
-		//// Save player info
-		//Result UpdateGameEndCmd(TransactionID Sender, uint shardID, const PlayerID &playerID,
-		//																		int16_t	Level,
-		//																		int64_t	Exp,
-		//																		int64_t	GameMoney,
-		//																		int32_t	TotalPlayed,
-		//																		int32_t	WinPlaySC, int32_t WinPlaySM, int32_t WinPlaySS,
-		//																		int32_t	LosePlaySC, int32_t LosePlaySM, int32_t LosePlaySS,
-		//																		int32_t	WinPlayNC, int32_t WinPlayNM, int32_t WinPlayNS,
-		//																		int32_t	LosePlayNC, int32_t LosePlayNM, int32_t LosePlayNS,
-		//																		UTCTimeStampSec	LatestActiveTime
-		//																		);
-		
-		//// Save player info
-		//Result UpdateJoinGameCmd(TransactionID Sender, uint shardID, const PlayerID &playerID,
-		//																		int64_t	Gem,
-		//																		int16_t	Stamina,
-		//																		int16_t	PlayerState,
-		//																		UTCTimeStampSec	LatestActiveTime,
-		//																		UTCTimeStampSec	LatestTickTime
-		//																		);
-
-		//// Save player info
-		//Result UpdateTickStatusCmd(TransactionID Sender, uint shardID, const PlayerID &playerID,
-		//	int64_t	Gem,
-		//	int16_t	Stamina,
-		//	int16_t	PlayerState,
-		//	UTCTimeStampSec	LatestActiveTime,
-		//	UTCTimeStampSec	LatestTickTime
-		//	);
 
 		// Save player info
 		Result GetPlayerStatusCmd(TransactionID Sender, uint shardID, const PlayerID &playerID);

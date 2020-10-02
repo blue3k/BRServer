@@ -18,206 +18,176 @@
 
 
 namespace SF {
-namespace DB {
+	namespace DB {
 
-	
-	//////////////////////////////////////////////////////////////////////////////////
-	//
-	//	LoginSessionDB Class 
-	//
-	
-	// constructor / destructor
-	LoginSessionDB::LoginSessionDB()
-	{
-	}
 
-	LoginSessionDB::~LoginSessionDB()
-	{
-	}
+		//////////////////////////////////////////////////////////////////////////////////
+		//
+		//	LoginSessionDB Class 
+		//
 
-	void LoginSessionDB::TerminateComponent()
-	{
-		TerminateDB();
-	}
+		// constructor / destructor
+		LoginSessionDB::LoginSessionDB()
+		{
+		}
 
+		LoginSessionDB::~LoginSessionDB()
+		{
+		}
 
-	
-	/////////////////////////////////////////////////////////////////////////////////
-	//
-	//	DB Interface
-	//
+		void LoginSessionDB::TerminateComponent()
+		{
+			TerminateDB();
+		}
 
-	// Register authenticate ticket
-	Result LoginSessionDB::RegisterAuthTicket( TransactionID Sender, const PlayerID &playerID, const AuthTicket& authTicket, const EntityUID& loginEntityUID )
-	{
-		Result hr = ResultCode::SUCCESS;
-		QueryRegisterAuthTicketCmd *pQuery = nullptr;
 
-		dbMem( pQuery = new(GetHeap()) QueryRegisterAuthTicketCmd(GetHeap()));
 
-		pQuery->SetPartitioningKey((uint)playerID);
+		/////////////////////////////////////////////////////////////////////////////////
+		//
+		//	DB Interface
+		//
 
-		pQuery->PlayerID = playerID;
-		pQuery->AuthTicket = authTicket;
-		pQuery->LoginEntityUID = (int64_t)(Context)loginEntityUID;
-		pQuery->GameEntityUID = 0;
-//		pQuery->HeartbitTime = 0;
-		pQuery->Result = 0;
+		// Register authenticate ticket
+		Result LoginSessionDB::RegisterAuthTicket(TransactionID Sender, const PlayerID& playerID, const AuthTicket& authTicket, const EntityUID& loginEntityUID)
+		{
+			FunctionContext hr;
 
-		pQuery->SetTransaction( Sender );
+			UniquePtr<QueryRegisterAuthTicketCmd> pQuery(new(GetHeap()) QueryRegisterAuthTicketCmd(GetHeap()));
+			dbCheckMem(pQuery);
 
-		dbChk( RequestQuery( pQuery ) );
-		pQuery = nullptr;
+			pQuery->SetPartitioningKey((uint)playerID);
 
-	Proc_End:
+			pQuery->PlayerID = playerID;
+			pQuery->AuthTicket = authTicket;
+			pQuery->LoginEntityUID = (int64_t)(Context)loginEntityUID;
+			pQuery->GameEntityUID = 0;
+			//		pQuery->HeartbitTime = 0;
+			pQuery->Result = 0;
 
-		IHeap::Delete(pQuery);
+			pQuery->SetTransaction(Sender);
 
-		return hr;
-	}
-	
-	// Register authenticate ticket
-	Result LoginSessionDB::ReplaceLoginSession(TransactionID Sender, const PlayerID &playerID, const AuthTicket& oldAuthTicket, const AuthTicket& authTicket, const EntityUID& loginEntityUID)
-	{
-		Result hr = ResultCode::SUCCESS;
-		QueryReplaceLoginSessionCmd *pQuery = nullptr;
+			dbCheck(RequestQuery(pQuery));
 
-		dbMem(pQuery = new(GetHeap()) QueryReplaceLoginSessionCmd(GetHeap()));
+			return hr;
+		}
 
-		pQuery->SetPartitioningKey((uint)playerID);
+		// Register authenticate ticket
+		Result LoginSessionDB::ReplaceLoginSession(TransactionID Sender, const PlayerID& playerID, const AuthTicket& oldAuthTicket, const AuthTicket& authTicket, const EntityUID& loginEntityUID)
+		{
+			FunctionContext hr;
 
-		pQuery->PlayerID = playerID;
-		pQuery->OldAuthTicket = oldAuthTicket;
-		pQuery->AuthTicket = authTicket;
-		pQuery->LoginEntityUID = (int64_t)loginEntityUID.UID;
-		pQuery->Result = 0;
+			UniquePtr<QueryReplaceLoginSessionCmd> pQuery(new(GetHeap()) QueryReplaceLoginSessionCmd(GetHeap()));
+			dbCheckMem(pQuery);
 
-		pQuery->SetTransaction( Sender );
+			pQuery->SetPartitioningKey((uint)playerID);
 
-		dbChk( RequestQuery( pQuery ) );
-		pQuery = nullptr;
+			pQuery->PlayerID = playerID;
+			pQuery->OldAuthTicket = oldAuthTicket;
+			pQuery->AuthTicket = authTicket;
+			pQuery->LoginEntityUID = (int64_t)loginEntityUID.UID;
+			pQuery->Result = 0;
 
-	Proc_End:
+			pQuery->SetTransaction(Sender);
 
-		IHeap::Delete(pQuery);
+			dbCheck(RequestQuery(pQuery));
 
-		return hr;
-	}
+			return hr;
+		}
 
 
-	// Register authenticate ticket
-	Result LoginSessionDB::DeleteLoginSession( TransactionID Sender, const PlayerID &playerID, const AuthTicket& authTicket )
-	{
-		Result hr = ResultCode::SUCCESS;
-		QueryDeleteLoginSessionCmd *pQuery = nullptr;
+		// Register authenticate ticket
+		Result LoginSessionDB::DeleteLoginSession(TransactionID Sender, const PlayerID& playerID, const AuthTicket& authTicket)
+		{
+			FunctionContext hr;
 
-		dbMem( pQuery = new(GetHeap()) QueryDeleteLoginSessionCmd(GetHeap()));
+			UniquePtr<QueryDeleteLoginSessionCmd> pQuery(new(GetHeap()) QueryDeleteLoginSessionCmd(GetHeap()));
+			dbCheckMem(pQuery);
 
-		pQuery->SetPartitioningKey((uint)playerID);
+			pQuery->SetPartitioningKey((uint)playerID);
 
 
-		pQuery->PlayerID = playerID;
-		pQuery->AuthTicket = authTicket;
-		pQuery->Result = 0;
+			pQuery->PlayerID = playerID;
+			pQuery->AuthTicket = authTicket;
+			pQuery->Result = 0;
 
-		pQuery->SetTransaction( Sender );
+			pQuery->SetTransaction(Sender);
 
-		dbChk( RequestQuery( pQuery ) );
-		pQuery = nullptr;
+			dbCheck(RequestQuery(pQuery));
 
-	Proc_End:
+			return hr;
+		}
 
-		IHeap::Delete(pQuery);
+		// Joined game server
+		Result LoginSessionDB::ConnectedToGameServer(TransactionID Sender, const PlayerID& playerID, const AuthTicket& authTicket, const EntityUID& loginEntityUID, const EntityUID& gameEntityUID)
+		{
+			FunctionContext hr;
 
-		return hr;
-	}
+			UniquePtr<QueryConnectedToGameServerCmd> pQuery(new(GetHeap()) QueryConnectedToGameServerCmd(GetHeap()));
+			dbCheckMem(pQuery);
 
-	// Joined game server
-	Result LoginSessionDB::ConnectedToGameServer( TransactionID Sender, const PlayerID &playerID, const AuthTicket& authTicket, const EntityUID& loginEntityUID, const EntityUID& gameEntityUID )
-	{
-		Result hr = ResultCode::SUCCESS;
-		QueryConnectedToGameServerCmd *pQuery = nullptr;
+			pQuery->SetPartitioningKey((uint)playerID);
 
-		dbMem( pQuery = new(GetHeap()) QueryConnectedToGameServerCmd(GetHeap()));
+			pQuery->PlayerID = playerID;
+			pQuery->AuthTicket = authTicket;
+			pQuery->LoginEntityUID = (int64_t)(Context)loginEntityUID;
+			pQuery->GameEntityUID = (int64_t)(Context)gameEntityUID;
+			pQuery->Result = 0;
 
-		pQuery->SetPartitioningKey((uint)playerID);
+			pQuery->SetTransaction(Sender);
 
-		pQuery->PlayerID = playerID;
-		pQuery->AuthTicket = authTicket;
-		pQuery->LoginEntityUID = (int64_t)(Context)loginEntityUID;
-		pQuery->GameEntityUID = (int64_t)(Context)gameEntityUID;
-		pQuery->Result = 0;
+			dbCheck(RequestQuery(pQuery));
 
-		pQuery->SetTransaction( Sender );
+			return hr;
+		}
 
-		dbChk( RequestQuery( pQuery ) );
-		pQuery = nullptr;
 
-	Proc_End:
+		// Validate game server session
+		Result LoginSessionDB::ValidateGameServerSession(TransactionID Sender, const PlayerID& playerID, const AuthTicket& authTicket, const EntityUID& gameEntityUID)
+		{
+			FunctionContext hr;
 
-		IHeap::Delete(pQuery);
+			UniquePtr<QueryValidateGameServerSessionCmd> pQuery(new(GetHeap()) QueryValidateGameServerSessionCmd(GetHeap()));
+			dbCheckMem(pQuery);
 
-		return hr;
-	}
+			pQuery->SetPartitioningKey((uint)playerID);
 
+			pQuery->PlayerID = playerID;
+			pQuery->AuthTicket = authTicket;
+			pQuery->GameEntityUID = (int64_t)(Context)gameEntityUID;
+			pQuery->Result = 0;
 
-	// Validate game server session
-	Result LoginSessionDB::ValidateGameServerSession(TransactionID Sender, const PlayerID &playerID, const AuthTicket& authTicket, const EntityUID& gameEntityUID)
-	{
-		Result hr = ResultCode::SUCCESS;
-		QueryValidateGameServerSessionCmd *pQuery = nullptr;
+			pQuery->SetTransaction(Sender);
 
-		dbMem(pQuery = new(GetHeap()) QueryValidateGameServerSessionCmd(GetHeap()));
+			dbCheck(RequestQuery(pQuery));
 
-		pQuery->SetPartitioningKey((uint)playerID);
+			return hr;
+		}
 
-		pQuery->PlayerID = playerID;
-		pQuery->AuthTicket = authTicket;
-		pQuery->GameEntityUID = (int64_t)(Context)gameEntityUID;
-		pQuery->Result = 0;
+		// Game server heartbit
+		Result LoginSessionDB::GameServerHeartBit(TransactionID Sender, const PlayerID& playerID, const AuthTicket& authTicket, const EntityUID& gameEntityUID)
+		{
+			FunctionContext hr;
 
-		pQuery->SetTransaction( Sender );
+			UniquePtr<QueryGameServerHeartBitCmd> pQuery(new(GetHeap()) QueryGameServerHeartBitCmd(GetHeap()));
+			dbCheckMem(pQuery);
 
-		dbChk( RequestQuery( pQuery ) );
-		pQuery = nullptr;
+			pQuery->SetPartitioningKey((uint)playerID);
 
-	Proc_End:
+			pQuery->PlayerID = playerID;
+			pQuery->AuthTicket = authTicket;
+			pQuery->GameEntityUID = (int64_t)(Context)gameEntityUID;
+			pQuery->Result = 0;
 
-		IHeap::Delete(pQuery);
+			pQuery->SetTransaction(Sender);
 
-		return hr;
-	}
+			dbCheck(RequestQuery(pQuery));
 
-	// Game server heartbit
-	Result LoginSessionDB::GameServerHeartBit( TransactionID Sender, const PlayerID &playerID, const AuthTicket& authTicket, const EntityUID& gameEntityUID )
-	{
-		Result hr = ResultCode::SUCCESS;
-		QueryGameServerHeartBitCmd *pQuery = nullptr;
+			return hr;
+		}
 
-		dbMem( pQuery = new(GetHeap()) QueryGameServerHeartBitCmd(GetHeap()));
 
-		pQuery->SetPartitioningKey((uint)playerID);
 
-		pQuery->PlayerID = playerID;
-		pQuery->AuthTicket = authTicket;
-		pQuery->GameEntityUID = (int64_t)(Context)gameEntityUID;
-		pQuery->Result = 0;
 
-		pQuery->SetTransaction( Sender );
-
-		dbChk( RequestQuery( pQuery ) );
-		pQuery = nullptr;
-
-	Proc_End:
-
-		IHeap::Delete(pQuery);
-
-		return hr;
-	}
-
-	
-
-
-} //namespace DB
+	} //namespace DB
 } // namespace SF
 

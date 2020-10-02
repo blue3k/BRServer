@@ -108,6 +108,7 @@ namespace DB {
 		virtual void BuildParameters() = 0;
 		virtual void BuildQueryString(const char* spName, bool isSP = true);
 
+		Result AddParameterBinding(const char* name, ParamIO ioType, VariableBox&& variable) { return m_ParameterBinding.push_back(ParameterInfo(name, ioType, std::forward<VariableBox>(variable))); }
 		Result AddParameterBinding(ParameterInfo&& parameterInfo)	{ return m_ParameterBinding.push_back(parameterInfo); }
 		const Array<ParameterInfo>& GetParameterBinding() const		{ return m_ParameterBinding; }
 

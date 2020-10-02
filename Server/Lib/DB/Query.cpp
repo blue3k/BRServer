@@ -25,7 +25,7 @@ namespace SF {
 namespace DB {
 
 	Query::Query(IHeap& heap, Message::MessageID MsgID)
-		: Svr::TransactionResult(MsgID)
+		: Svr::TransactionResult(MsgID, Svr::TransactionResult::ResultType::DBQuery)
 		, m_ParameterBinding(heap)
 		, m_RowsetBinding(heap)
 	{
