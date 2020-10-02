@@ -310,12 +310,12 @@ namespace SF {
 			template<typename TransactionClassType
 				, typename = std::enable_if_t<std::is_base_of_v<Transaction, TransactionClassType>>
 			>
-			SF_FORCEINLINE Result AddSubAction(Result(TransactionClassType::* RequestFunc)())
+			SF_FORCEINLINE Result AddSubAction(Result(TransactionClassType::* requestFunc)())
 			{
-				auto newAction = new(GetHeap()) TransactionSubActionMemberT<TransactionClassType>(static_cast<TransactionClassType*>(this), RequestFunc, 0);
+				auto newAction = new(GetHeap()) TransactionSubActionMemberT<TransactionClassType>(static_cast<TransactionClassType*>(this), requestFunc, 0);
 				m_DynamicAction.push_back(newAction);
 
-				m_SubActionManager.AddAction(newAction);
+				return m_SubActionManager.AddAction(newAction);
 			}
 
 			template<typename MessageClassType, typename TransactionClassType
@@ -343,9 +343,9 @@ namespace SF {
 			template<typename TransactionClassType
 				, typename = std::enable_if_t<std::is_base_of_v<Transaction, TransactionClassType>>
 			>
-			SF_FORCEINLINE Result AddSubActionFront(Result(TransactionClassType::* RequestFunc)())
+			SF_FORCEINLINE Result AddSubActionFront(Result(TransactionClassType::* requestFunc)())
 			{
-				auto newAction = new(GetHeap()) TransactionSubActionMemberT<TransactionClassType>(static_cast<TransactionClassType*>(this), RequestFunc, 0);
+				auto newAction = new(GetHeap()) TransactionSubActionMemberT<TransactionClassType>(static_cast<TransactionClassType*>(this), requestFunc, 0);
 				m_DynamicAction.push_back(newAction);
 
 				return m_SubActionManager.AddActionFront(newAction);

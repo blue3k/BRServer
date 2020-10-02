@@ -523,16 +523,20 @@ namespace GameServer {
 
 	Result UserGamePlayerInfoSystem::SavePlayerInfoToDB(TransactionID transID)
 	{
+		// TODO: FIXME
+		DynamicArray<NamedVariableBox> Variables;
+
 		return Svr::GetServerComponent<conspiracy::GameConspiracyDB>()->SetPlayerInfoCmd(transID, GetOwner().GetShardID(), GetOwner().GetPlayerID(),
-			GetLevel(), GetExp(),
-			GetGameMoney(), GetGem(), GetStamina(), GetAddedFriendSlot(),
-			GetTotalPlayed(),
-			GetWinPlaySCitizen(), GetWinPlaySMonster(), GetWinPlaySSeer(),
-			GetLosePlaySCitizen(), GetLosePlaySMonster(), GetLosePlaySSeer(),
-			GetWinPlayNCitizen(), GetWinPlayNMonster(), GetWinPlayNSeer(),
-			GetLosePlayNCitizen(), GetLosePlayNMonster(), GetLosePlayNSeer(),
+			//GetLevel(), GetExp(),
+			//GetGameMoney(), GetGem(), GetStamina(), GetAddedFriendSlot(),
+			//GetTotalPlayed(),
+			//GetWinPlaySCitizen(), GetWinPlaySMonster(), GetWinPlaySSeer(),
+			//GetLosePlaySCitizen(), GetLosePlaySMonster(), GetLosePlaySSeer(),
+			//GetWinPlayNCitizen(), GetWinPlayNMonster(), GetWinPlayNSeer(),
+			//GetLosePlayNCitizen(), GetLosePlayNMonster(), GetLosePlayNSeer(),
 			GetOwner().GetLatestActiveTime(),
-			GetOwner().GetLatestUpdateTime());
+			GetOwner().GetLatestUpdateTime(),
+			Variables);
 	}
 
 }; // namespace GameServer

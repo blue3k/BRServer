@@ -28,9 +28,7 @@ namespace conspiracy {
 
 	enum 
 	{
-		MCODE_QuerySavePurchaseInfoToDB = DB::MCODE_QueryGameDB_Base,
-		MCODE_QueryCheckPurchaseID,
-		MCODE_QueryUpdateGameEnd,
+		MCODE_QueryUpdateGameEnd = DB::MCODE_QueryGameDB_Base,
 		MCODE_QueryUpdateJoinGame,
 		MCODE_QueryUpdateTickStatus,
 		MCODE_QueryUpdateFriendStaminaTime,
@@ -71,69 +69,6 @@ namespace conspiracy {
 		int32_t	WeeklyPlayLose;
 		int64_t	LatestTickTime;
 	};
-
-
-
-	class QuerySavePurchaseInfoToDB : public DB::QueryBase
-	{
-	public:
-		// Player ID
-		int64_t	PlayerID;
-		int16_t	Level;
-		int64_t	Exp;
-		int64_t	GameMoney;
-		int64_t	Gem;
-		int16_t	Stamina;
-		int16_t	AddedFriendSlot;
-		StaticArray<uint8_t, 256>    PurchaseID;
-		String  PurchasePlatform;
-		String  PurchaseToken;
-		int32_t	LatestActiveTime;
-		int64_t	LatestTickTime;
-
-		// result
-		int32_t	Result;
-
-	public:
-		BRDB_BEGIN_PARAM_MAP(QuerySavePurchaseInfoToDB, "spSavePurchaseInfoToDB")
-			BRDB_PARAM_ENTRY(DB::ParamIO::Input, PlayerID)
-			BRDB_PARAM_ENTRY(DB::ParamIO::Input, Level)
-			BRDB_PARAM_ENTRY(DB::ParamIO::Input, Exp)
-			BRDB_PARAM_ENTRY(DB::ParamIO::Input, GameMoney)
-			BRDB_PARAM_ENTRY(DB::ParamIO::Input, Gem)
-			BRDB_PARAM_ENTRY(DB::ParamIO::Input, Stamina)
-			BRDB_PARAM_ENTRY(DB::ParamIO::Input, AddedFriendSlot)
-			BRDB_PARAM_ENTRY(DB::ParamIO::Input, PurchaseID)
-			BRDB_PARAM_ENTRY(DB::ParamIO::Input, PurchasePlatform)
-			BRDB_PARAM_ENTRY(DB::ParamIO::Input, PurchaseToken)
-			BRDB_PARAM_ENTRY(DB::ParamIO::Input, LatestActiveTime)
-			BRDB_PARAM_ENTRY(DB::ParamIO::Input, LatestTickTime)
-			BRDB_PARAM_ENTRY(DB::ParamIO::Output, Result)
-			BRDB_END_PARAM_MAP()
-
-	};
-
-	BRDB_DEFINE_QUERYCLASS(PROTOCOLID_GAMEDB, QuerySavePurchaseInfoToDB);
-
-
-	class QueryCheckPurchaseID : public DB::QueryBase
-	{
-	public:
-		// Player ID
-		DynamicArray<uint8_t>    PurchaseID;
-
-		// result
-		int32_t	Result;
-
-	public:
-		BRDB_BEGIN_PARAM_MAP(QueryCheckPurchaseID, "spCheckPurchaseID")
-			BRDB_PARAM_ENTRY(DB::ParamIO::Input, PurchaseID)
-			BRDB_PARAM_ENTRY(DB::ParamIO::Output, Result)
-			BRDB_END_PARAM_MAP()
-
-	};
-
-	BRDB_DEFINE_QUERYCLASS(PROTOCOLID_GAMEDB, QueryCheckPurchaseID);
 
 
 

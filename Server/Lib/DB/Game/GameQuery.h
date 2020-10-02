@@ -15,6 +15,9 @@
 #include "DB/Query.h"
 #include "DB/DBConst.h"
 #include "DB/QueryConst.h"
+#include "Variable/SFNamedVariableBox.h"
+#include "Variable/SFVariableTable.h"
+
 
 namespace SF {
 namespace DB {
@@ -35,6 +38,8 @@ namespace DB {
 		MCODE_QueryGetPlayerStatus,
 		MCODE_QueryGetNickName,
 		MCODE_QuerySetNickName,
+		MCODE_QuerySavePurchaseInfoToDB,
+		MCODE_QueryCheckPurchaseID,
 		MCODE_QueryGetPlayerQuickInfo,
 		MCODE_QueryGetFriendQuickInfo,
 		MCODE_QueryGetFriendQuickInfoWithNick,
@@ -179,6 +184,74 @@ namespace DB {
 
 	BRDB_DEFINE_QUERYCLASS(PROTOCOLID_GAMEDB, QuerySetNickName);
 
+
+
+	//////////////////////////////////////////////////////////////////////////////////
+	//
+	//	Purchase 
+	//
+
+
+	class QuerySavePurchaseInfoToDB : public DB::QueryBase
+	{
+	public:
+		// Player ID
+		int64_t	PlayerID;
+		int16_t	Level;
+		int64_t	Exp;
+		int64_t	GameMoney;
+		int64_t	Gem;
+		int16_t	Stamina;
+		int16_t	AddedFriendSlot;
+		StaticArray<uint8_t, 256>    PurchaseID;
+		String  PurchasePlatform;
+		String  PurchaseToken;
+		int32_t	LatestActiveTime;
+		int64_t	LatestTickTime;
+
+		// result
+		int32_t	Result;
+
+	public:
+		BRDB_BEGIN_PARAM_MAP(QuerySavePurchaseInfoToDB, "spSavePurchaseInfoToDB")
+			BRDB_PARAM_ENTRY(DB::ParamIO::Input, PlayerID)
+			BRDB_PARAM_ENTRY(DB::ParamIO::Input, Level)
+			BRDB_PARAM_ENTRY(DB::ParamIO::Input, Exp)
+			BRDB_PARAM_ENTRY(DB::ParamIO::Input, GameMoney)
+			BRDB_PARAM_ENTRY(DB::ParamIO::Input, Gem)
+			BRDB_PARAM_ENTRY(DB::ParamIO::Input, Stamina)
+			BRDB_PARAM_ENTRY(DB::ParamIO::Input, AddedFriendSlot)
+			BRDB_PARAM_ENTRY(DB::ParamIO::Input, PurchaseID)
+			BRDB_PARAM_ENTRY(DB::ParamIO::Input, PurchasePlatform)
+			BRDB_PARAM_ENTRY(DB::ParamIO::Input, PurchaseToken)
+			BRDB_PARAM_ENTRY(DB::ParamIO::Input, LatestActiveTime)
+			BRDB_PARAM_ENTRY(DB::ParamIO::Input, LatestTickTime)
+			BRDB_PARAM_ENTRY(DB::ParamIO::Output, Result)
+		BRDB_END_PARAM_MAP()
+
+	};
+
+	BRDB_DEFINE_QUERYCLASS(PROTOCOLID_GAMEDB, QuerySavePurchaseInfoToDB);
+
+
+	class QueryCheckPurchaseID : public DB::QueryBase
+	{
+	public:
+		// Player ID
+		DynamicArray<uint8_t>    PurchaseID;
+
+		// result
+		int32_t	Result;
+
+	public:
+		BRDB_BEGIN_PARAM_MAP(QueryCheckPurchaseID, "spCheckPurchaseID")
+			BRDB_PARAM_ENTRY(DB::ParamIO::Input, PurchaseID)
+			BRDB_PARAM_ENTRY(DB::ParamIO::Output, Result)
+		BRDB_END_PARAM_MAP()
+
+	};
+
+	BRDB_DEFINE_QUERYCLASS(PROTOCOLID_GAMEDB, QueryCheckPurchaseID);
 
 
 	//////////////////////////////////////////////////////////////////////////////////

@@ -28,6 +28,9 @@ namespace SF {
 		BRDB_DEFINE_QUERY_IMPL(QueryGetNickName);
 		BRDB_DEFINE_QUERY_IMPL(QuerySetNickName);
 
+		BRDB_DEFINE_QUERY_IMPL(QuerySavePurchaseInfoToDB);
+		BRDB_DEFINE_QUERY_IMPL(QueryCheckPurchaseID);
+
 		BRDB_DEFINE_QUERY_IMPL(QueryGetPlayerStatus);
 
 		BRDB_DEFINE_QUERY_IMPL(QueryGetPlayerQuickInfo);

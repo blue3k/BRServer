@@ -22,7 +22,7 @@ namespace SF {
 namespace Message {
 
 		// S2C: Used for sending generic failure for not started transaction messages
-		Result FailResultS2CEvt::ParseMessage( MessageData* pIMsg )
+		Result FailResultS2CEvt::ParseMessage(const MessageData* pIMsg)
 		{
  			Result hr = ResultCode::SUCCESS;
 

@@ -28,6 +28,7 @@ namespace DB {
 		: Svr::TransactionResult(MsgID, Svr::TransactionResult::ResultType::DBQuery)
 		, m_ParameterBinding(heap)
 		, m_RowsetBinding(heap)
+		, RowsetResults(heap)
 	{
 	}
 

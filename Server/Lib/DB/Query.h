@@ -30,6 +30,9 @@ namespace DB {
 	class Session;
 	class DBClusterManager;
 
+	using RowsetType = VariableTable;
+	using RowsetList = DynamicArray<RowsetType>;
+
 
 	enum ParamIO : uint32_t
 	{
@@ -108,6 +111,8 @@ namespace DB {
 		virtual void BuildParameters() = 0;
 		virtual void BuildQueryString(const char* spName, bool isSP = true);
 
+		virtual void AddRowset() { RowsetResults.push_back(std::forward<RowsetType>(Attributes)); }
+
 		Result AddParameterBinding(const char* name, ParamIO ioType, VariableBox&& variable) { return m_ParameterBinding.push_back(ParameterInfo(name, ioType, std::forward<VariableBox>(variable))); }
 		Result AddParameterBinding(ParameterInfo&& parameterInfo)	{ return m_ParameterBinding.push_back(parameterInfo); }
 		const Array<ParameterInfo>& GetParameterBinding() const		{ return m_ParameterBinding; }
@@ -142,6 +147,11 @@ namespace DB {
 
 		// Rowset binding info
 		DynamicArray<ParameterInfo> m_RowsetBinding;
+
+		RowsetType Attributes;
+
+	public: // TODO: maybe
+		RowsetList RowsetResults;
 	};
 
 	

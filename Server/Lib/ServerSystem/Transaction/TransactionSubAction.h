@@ -85,10 +85,11 @@ namespace SF {
 			// Process 
 			Result Process()
 			{
+				Result hr;
 				while (!IsCompleted())
 				{
 					auto curAction = m_Actions[m_CurStep];
-					Result hr = curAction->Process();
+					hr = curAction->Process();
 					if (!hr)
 					{
 						svrTrace(Error, "Error, Failed transaction action, Step {0}", m_CurStep);

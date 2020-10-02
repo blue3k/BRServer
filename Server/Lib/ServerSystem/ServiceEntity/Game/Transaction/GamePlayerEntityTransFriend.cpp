@@ -504,29 +504,34 @@ namespace Svr {
 		pFriendSystem->ClearFriendList();
 
 		m_Friends.reserve( pDBRes->RowsetResults.size() );
-		std::for_each( pDBRes->RowsetResults.begin(), pDBRes->RowsetResults.end(), [&]( DB::QueryGetFriendListSet &set )
+		for (auto itRowset = pDBRes->RowsetResults.begin(); itRowset != pDBRes->RowsetResults.end(); ++itRowset)
 		{
-			ServerFriendInformation info(set.FriendUID, set.FriendShardID, set.FriendFacebookUID, "", 1, 0, 0, FALSE, 0, set.FriendStaminaTime);
+			int64_t FriendUID = itRowset->GetValue<int64_t>("FriendUID"_crc);
+			int32_t FriendShardID = itRowset->GetValue<int32_t>("FriendShardID"_crc);
+			int64_t FriendFacebookUID = itRowset->GetValue<int64_t>("FriendFacebookUID"_crc);
+			int64_t FriendStaminaTime = itRowset->GetValue<int64_t>("FriendStaminaTime"_crc);
 
-			Result hRes = pFriendSystem->AddFriend(info);
-			if (hRes == Result(ResultCode::MAX_FRIEND))
+			ServerFriendInformation info(FriendUID, FriendShardID, FriendFacebookUID, "", 1, 0, 0, FALSE, 0, FriendStaminaTime);
+
+			hr = pFriendSystem->AddFriend(info);
+			if (hr == Result(ResultCode::MAX_FRIEND))
 			{
-				svrTrace(Warning, "Failed to add friend. Max friends, PlayerID:{0} to friend system", set.FriendUID);
-				return;
+				svrTrace(Warning, "Failed to add friend. Max friends, PlayerID:{0} to friend system", FriendUID);
+				break;
 			}
-			else if (!(hr))
+			else if (!hr)
 			{
-				svrTrace(Error, "Failed to add friend PlayerID:{0} to friend system", set.FriendUID);
-				return;
+				svrTrace(Error, "Failed to add friend PlayerID:{0} to friend system", FriendUID);
+				break;
 			}
 
 			if ((Svr::GetServerComponent<DB::GameDB>()->GetFriendQuickInfoWithNickCmd(GetTransID(), info.ShardID, info.PlayerID)))
 				m_WaitingCount++;
-		});
+		}
 
 		m_TotalNumberOfFriends = (decltype(m_TotalNumberOfFriends))pFriendSystem->GetNumberOfFriends();
 
-		return ResultCode::SUCCESS; 
+		return hr;
 	}
 /*
 	Result PlayerTransGetFriendList::OnGetQuickInfo( Svr::TransactionResult* &pRes )

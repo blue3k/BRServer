@@ -37,9 +37,6 @@ namespace DB {
 	
 	typedef class QueryMYSQL QueryBase;
 
-	using RowsetType = VariableTable;
-	using RowsetList = DynamicArray<RowsetType>;
-
 
 	
 	/////////////////////////////////////////////////////////////////////////////////////////////
@@ -140,10 +137,7 @@ namespace DB {
 		public :																	\
 			enum { MESSAGE_POLICY = Policy };										\
 			static const Message::MessageID MID;									\
-			QueryClass##Cmd(IHeap& heap) : QueryClass(heap, MID ), RowsetResults(heap) { }		\
-			RowsetType Attributes;\
-			RowsetList RowsetResults;						\
-			virtual void AddRowset() override { RowsetResults.push_back(std::forward<RowsetType>(Attributes)); } \
+			QueryClass##Cmd(IHeap& heap) : QueryClass(heap, MID ) { }		\
 		};
 
 

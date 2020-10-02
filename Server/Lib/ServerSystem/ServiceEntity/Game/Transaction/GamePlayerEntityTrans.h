@@ -533,7 +533,7 @@ namespace Svr {
 		PlayerTransBuyShopItemPrepare(IHeap& heap, MessageDataPtr &pIMsg);
 		virtual ~PlayerTransBuyShopItemPrepare() {}
 
-		Result OnPurchaseIDChecked(Svr::TransactionResult* &pRes);
+		Result OnPurchaseIDChecked(Svr::TransactionResult* pRes);
 
 		Result GenerateSigunatureAndCheck();
 

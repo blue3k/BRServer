@@ -90,7 +90,6 @@ namespace Svr {
 		FunctionContext hr;
 		Message::LoginServer::PlayerJoinedToGameServerRes msgRes;
 
-		// TODO: We need to close this entity on error
 		svrCheckClose(pRes->GetResult());
 		svrCheck( msgRes.ParseMessage(pRes->GetResultData<Message::MessageData>()) );
 
@@ -181,7 +180,6 @@ namespace Svr {
 			{
 				// TODO: FIXME
 				//playerData.SetupDefaultStat();
-				playerInfoData.SetValue<int64_t>("LatestTickTime"_crc32c, Util::Time.GetTimeUTCSec().time_since_epoch().count());
 
 				svrTrace(SVR_DBGTRANS, "Player data created PlayerID:{0}", GetMyOwner()->GetPlayerID());
 			}
@@ -654,7 +652,7 @@ namespace Svr {
 		FunctionContext hr;
 		DB::RowsetList::iterator itNotification;
 		UserNotificationSystem* pNotifySystem = GetMyOwner()->GetComponent<UserNotificationSystem>();
-		DB::QueryNotification_GetListCmd *pDBRes = pRes->GetResultData<DB::QueryNotification_GetListCmd>();
+		auto*pDBRes = pRes->GetResultData<DB::QueryNotification_GetListCmd>();
 
 		svrCheck(pRes->GetResult());
 
@@ -1165,10 +1163,7 @@ namespace Svr {
 	// Start Transaction
 	Result PlayerTransRequestPlayerStatusUpdateC2S::StartTransaction()
 	{
-		FunctionContext hr([this](Result hr)
-			{
-				CloseTransaction(hr);
-			});
+		FunctionContext hr;
 		Svr::ServerEntity *pServerEntity = nullptr;
 		EntityUID playerUID;
 		bool bInGame;
@@ -1219,33 +1214,36 @@ namespace Svr {
 
 	Result PlayerTransGetRankingList::OnGetRankingListRes( Svr::TransactionResult* &pRes )
 	{
-		FunctionContext hr([this](Result hr)
-			{
-				CloseTransaction(hr);
-			});
-		DB::QueryGetTotalRankingCmd *pDBRes = (DB::QueryGetTotalRankingCmd*)pRes;
+		FunctionContext hr;
+		auto*pDBRes = pRes->GetResultData<DB::QueryGetTotalRankingCmd>();
 
 		svrCheck(pRes->GetResult());
 
 		m_RankingList.reserve( pDBRes->RowsetResults.size() );
-		std::for_each( pDBRes->RowsetResults.begin(), pDBRes->RowsetResults.end(), [&]( DB::QueryGetTotalRankingSet &set )
+		for (auto itRowSet = pDBRes->RowsetResults.begin(); itRowSet != pDBRes->RowsetResults.end(); ++itRowSet)
 		{
-			TotalRankingPlayerInformation info( set.RankingID, set.Ranking, set.PlayerID, set.FBUID, set.NickName, set.Level, set.Win, set.Lose );
+			auto RankingID = itRowSet->GetValue<int32_t>("RankingID"_crc);
+			auto Ranking = itRowSet->GetValue<int32_t>("Ranking"_crc);
+			auto WinRate = itRowSet->GetValue<float>("WinRate"_crc);
+			auto Win = itRowSet->GetValue<int32_t>("Win"_crc);
+			auto Lose = itRowSet->GetValue<int32_t>("Lose"_crc);
+			auto PlayerID = itRowSet->GetValue<int64_t>("PlayerID"_crc);
+			auto FBUID = itRowSet->GetValue<int64_t>("FBUID"_crc);
+			auto NickName = itRowSet->GetValue<String>("NickName"_crc);
+			auto Level = itRowSet->GetValue<int32_t>("Level"_crc);
+
+			TotalRankingPlayerInformation info( RankingID, Ranking, PlayerID, FBUID, NickName, Level, Win, Lose );
 
 			m_RankingList.push_back(info);
-		});
+		};
 
-		return ResultCode::SUCCESS; 
+		return hr; 
 	}
 
 	// Start Transaction
 	Result PlayerTransGetRankingList::StartTransaction()
 	{
-		FunctionContext hr([this](Result hr)
-			{
-				if (!hr)
-					CloseTransaction(hr);
-			});
+		FunctionContext hr;
 
 		svrCheck( super::StartTransaction() );
 
@@ -1262,265 +1260,265 @@ namespace Svr {
 
 
 
-	//PlayerTransBuyShopItemPrepare::PlayerTransBuyShopItemPrepare(IHeap& heap, MessageDataPtr &pIMsg)
-	//	: MessageTransaction(heap, std::forward<MessageDataPtr>(pIMsg))
-	//	, m_Signagure(heap)
-	//{
-	//	BR_TRANS_MESSAGE(DB::QueryCheckPurchaseIDCmd, { return OnPurchaseIDChecked(pRes); });
-	//	m_Signagure.push_back('\0');
-	//}
+	PlayerTransBuyShopItemPrepare::PlayerTransBuyShopItemPrepare(IHeap& heap, MessageDataPtr &pIMsg)
+		: MessageTransaction(heap, std::forward<MessageDataPtr>(pIMsg))
+		, m_Signagure(heap)
+	{
+		RegisterMessageHandler<DB::QueryCheckPurchaseIDCmd>(&PlayerTransBuyShopItemPrepare::OnPurchaseIDChecked);
+		m_Signagure.push_back('\0');
+	}
 
-	//Result PlayerTransBuyShopItemPrepare::OnPurchaseIDChecked(Svr::TransactionResult* &pRes)
-	//{
-	//	FunctionContext hr([this](Result hr)
-	//		{
-	//			if (!hr)
-	//				CloseTransaction(hr);
-	//		});
-	//	auto *pDBRes = (DB::QueryCheckPurchaseIDCmd*)pRes;
+	Result PlayerTransBuyShopItemPrepare::OnPurchaseIDChecked(Svr::TransactionResult* pRes)
+	{
+		FunctionContext hr([this](Result hr)
+			{
+				if (!hr)
+					CloseTransaction(hr);
+			});
+		auto *pDBRes = (DB::QueryCheckPurchaseIDCmd*)pRes;
 
-	//	svrCheck(pRes->GetResult());
+		svrCheck(pRes->GetResult());
 
-	//	if (pDBRes->Result < 0)
-	//	{
-	//		m_RetryCount++;
-	//		if (m_RetryCount > MAX_RETRY)
-	//		{
-	//			svrErrorClose(ResultCode::FAIL);
-	//		}
-	//		else
-	//		{
-	//			svrCheck(GenerateSigunatureAndCheck());
-	//		}
-	//	}
-	//	else
-	//	{
-	//		CloseTransaction(hr);
-	//	}
+		if (pDBRes->Result < 0)
+		{
+			m_RetryCount++;
+			if (m_RetryCount > MAX_RETRY)
+			{
+				svrErrorClose(ResultCode::FAIL);
+			}
+			else
+			{
+				svrCheck(GenerateSigunatureAndCheck());
+			}
+		}
+		else
+		{
+			CloseTransaction(hr);
+		}
 
-	//	return ResultCode::SUCCESS;
-	//}
+		return ResultCode::SUCCESS;
+	}
 
-	//Result PlayerTransBuyShopItemPrepare::GenerateSigunatureAndCheck()
-	//{
-	//	FunctionContext hr([this](Result hr)
-	//		{
-	//			m_Signagure.push_back('\0');
-	//		});
+	Result PlayerTransBuyShopItemPrepare::GenerateSigunatureAndCheck()
+	{
+		FunctionContext hr([this](Result hr)
+			{
+				m_Signagure.push_back('\0');
+			});
 
-	//	StaticArray<uint8_t, 1024> dataBuffer(GetHeap());
-	//	StaticArray<uint8_t, 128> hash(GetHeap());
-	//	//AuthTicket authTicket = GetMyOwner()->GetAuthTicket();
-	//	PlayerID playerID = GetMyOwner()->GetPlayerID();
-	//	auto time = Util::Time.GetTimeUTCSec();
-	//	auto time2 = Util::Time.GetTimeMs();
+		StaticArray<uint8_t, 1024> dataBuffer(GetHeap());
+		StaticArray<uint8_t, 128> hash(GetHeap());
+		//AuthTicket authTicket = GetMyOwner()->GetAuthTicket();
+		PlayerID playerID = GetMyOwner()->GetPlayerID();
+		auto time = Util::Time.GetTimeUTCSec();
+		auto time2 = Util::Time.GetTimeMs();
 
-	//	m_Signagure.Clear();
+		m_Signagure.Clear();
 
-	//	// Generate signature
-	//	svrCheck(dataBuffer.push_back(sizeof(playerID), (const uint8_t*)&playerID));
-	//	svrCheck(dataBuffer.push_back(sizeof(time), (const uint8_t*)&time));
-	//	svrCheck(dataBuffer.push_back(sizeof(time2), (const uint8_t*)&time2));
+		// Generate signature
+		svrCheck(dataBuffer.push_back(sizeof(playerID), (const uint8_t*)&playerID));
+		svrCheck(dataBuffer.push_back(sizeof(time), (const uint8_t*)&time));
+		svrCheck(dataBuffer.push_back(sizeof(time2), (const uint8_t*)&time2));
 
-	//	svrCheck(Util::SHA256Hash(dataBuffer.size(), dataBuffer.data(), hash));
-	//	svrCheck(Util::Base64URLEncode(hash.size(), hash.data(), m_Signagure));
+		svrCheck(Util::SHA256Hash(dataBuffer.size(), dataBuffer.data(), hash));
+		svrCheck(Util::Base64URLEncode(hash.size(), hash.data(), m_Signagure));
 
-	//	svrCheck(Svr::GetServerComponent<DB::GameDB>()->CheckPurchaseID(GetTransID(), GetMyOwner()->GetShardID(), hash));
-
-
-	//	return hr;
-	//}
-
-	//// Start Transaction
-	//Result PlayerTransBuyShopItemPrepare::StartTransaction()
-	//{
-	//	FunctionContext hr([this](Result hr)
-	//		{
-	//			if (!hr)
-	//			{
-	//				CloseTransaction(hr);
-	//			}
-	//		});
+		svrCheck(Svr::GetServerComponent<DB::GameDB>()->CheckPurchaseID(GetTransID(), GetMyOwner()->GetShardID(), hash));
 
 
-	//	svrCheck(super::StartTransaction());
+		return hr;
+	}
 
-	//	m_RetryCount = 0;
-
-	//	svrCheck(GenerateSigunatureAndCheck());
-
-	//	return hr;
-	//}
-
-
-	//constexpr size_t PlayerTransBuyShopItem::MEMENTO_SIZE;
-
-	//PlayerTransBuyShopItem::PlayerTransBuyShopItem(IHeap& heap, MessageDataPtr &pIMsg )
-	//	: MessageTransaction(heap, std::forward<MessageDataPtr>(pIMsg) )
-	//	, m_SavedData(heap)
-	//{
-	//	SetExclusive(true);
-
-	//	BR_TRANS_MESSAGE(Svr::ExternalTransactionGoogleAndroidReceiptCheck, { return OnPurchaseCheckedAndroid(pRes); });
-	//	BR_TRANS_MESSAGE(Svr::ExternalTransactionIOSRecepitCheck, { return OnPurchaseCheckedIOS(pRes); });
-	//	BR_TRANS_MESSAGE(DB::QuerySavePurchaseInfoToDBCmd, { return OnSavedToDB(pRes); });
-	//}
+	// Start Transaction
+	Result PlayerTransBuyShopItemPrepare::StartTransaction()
+	{
+		FunctionContext hr([this](Result hr)
+			{
+				if (!hr)
+				{
+					CloseTransaction(hr);
+				}
+			});
 
 
-	//Result PlayerTransBuyShopItem::OnPurchaseCheckedAndroid(Svr::TransactionResult* &pRes)
-	//{
-	//	FunctionContext hr([this](Result hr)
-	//		{
-	//			if (!hr)
-	//			{
-	//				CloseTransaction(hr);
-	//			}
-	//		});
+		svrCheck(super::StartTransaction());
 
-	//	auto *pCheckRes = (Svr::ExternalTransactionGoogleAndroidReceiptCheck*)pRes;
-	//	StaticArray<uint8_t, 512> purchaseID(GetHeap());
+		m_RetryCount = 0;
 
-	//	svrCheckClose(pRes->GetResult());
+		svrCheck(GenerateSigunatureAndCheck());
 
-	//	if (pCheckRes->GetDeveloperPayload().length() == 0)
-	//		svrErrorClose(ResultCode::SVR_INVALID_PURCHASE_INFO);
-
-	//	svrCheckCloseErr(ResultCode::SVR_INVALID_PURCHASE_INFO, Util::Base64URLDecode(pCheckRes->GetDeveloperPayload().length(), (const uint8_t*)pCheckRes->GetDeveloperPayload().c_str(), purchaseID));
-
-	//	if (purchaseID.size() != SHA256_DIGEST_LENGTH)
-	//		svrErrorClose(ResultCode::SVR_INVALID_PURCHASE_INFO);
-
-	//	auto& playerData = GetMyOwner()->GetPlayerData();
-
-	//	// TODO: FIXME
-	//	//svrCheck(pPlayerInfoSystem->SaveStatToMemento(m_SavedData));
-
-	//	//svrChkClose(pPlayerInfoSystem->ApplyItem(m_pShopItem));
-
-	//	//svrCheck(pPlayerInfoSystem->SavePurchaseInfoToDB(GetTransID(), purchaseID, GetPlatform(), GetPurchaseTransactionID()));
-
-	//	return ResultCode::SUCCESS;
-	//}
-
-	//Result PlayerTransBuyShopItem::OnPurchaseCheckedIOS(Svr::TransactionResult* &pRes)
-	//{
-	//	FunctionContext hr([this](Result hr)
-	//		{
-	//			if (!hr)
-	//			{
-	//				CloseTransaction(hr);
-	//			}
-	//		});
-	//	auto *pCheckRes = (Svr::ExternalTransactionIOSRecepitCheck*)pRes;
-
-	//	svrCheckClose(pRes->GetResult());
-
-	//	if (pCheckRes->GetPurchaseTransactionID().size() == 0
-	//		|| !StrUtil::StringCompair((const char*)pCheckRes->GetPurchaseTransactionID().data(), (INT)pCheckRes->GetPurchaseTransactionID().size(), GetPurchaseTransactionID(), -1))
-	//		svrErrorClose(ResultCode::SVR_INVALID_PURCHASE_INFO);
+		return hr;
+	}
 
 
-	//	auto& playerData = GetMyOwner()->GetPlayerData();
+	constexpr size_t PlayerTransBuyShopItem::MEMENTO_SIZE;
 
-	//	// TODO:FIXME
-	//	//svrCheck(pPlayerInfoSystem->SaveStatToMemento(m_SavedData));
+	PlayerTransBuyShopItem::PlayerTransBuyShopItem(IHeap& heap, MessageDataPtr &pIMsg )
+		: MessageTransaction(heap, std::forward<MessageDataPtr>(pIMsg) )
+		, m_SavedData(heap)
+	{
+		SetExclusive(true);
 
-	//	//svrCheckClose(pPlayerInfoSystem->ApplyItem(m_pShopItem));
-
-	//	//svrCheck(pPlayerInfoSystem->SavePurchaseInfoToDB(GetTransID(), pCheckRes->GetPurchaseTransactionID(), GetPlatform(), GetPurchaseTransactionID()));
-
-	//	return hr;
-	//}
-
-	//Result PlayerTransBuyShopItem::OnSavedToDB( Svr::TransactionResult* &pRes )
-	//{
-	//	FunctionContext hr([this](Result hr)
-	//		{
-	//			if (!hr)
-	//			{
-	//				m_SavedData.RestoreAllData();
-	//			}
-	//			CloseTransaction(hr);
-	//		});
-	//	auto *pDBRes = (DB::QuerySavePurchaseInfoToDBCmd*)pRes;
-
-	//	svrCheck(pRes->GetResult());
-
-	//	if (pDBRes->Result < 0)
-	//	{
-	//		svrErrorClose(ResultCode::SVR_INVALID_PURCHASE_DUPLICATED);
-	//	}
+		BR_TRANS_MESSAGE(Svr::ExternalTransactionGoogleAndroidReceiptCheck, { return OnPurchaseCheckedAndroid(pRes); });
+		BR_TRANS_MESSAGE(Svr::ExternalTransactionIOSRecepitCheck, { return OnPurchaseCheckedIOS(pRes); });
+		BR_TRANS_MESSAGE(DB::QuerySavePurchaseInfoToDBCmd, { return OnSavedToDB(pRes); });
+	}
 
 
-	//	return hr; 
-	//}
+	Result PlayerTransBuyShopItem::OnPurchaseCheckedAndroid(Svr::TransactionResult* &pRes)
+	{
+		FunctionContext hr([this](Result hr)
+			{
+				if (!hr)
+				{
+					CloseTransaction(hr);
+				}
+			});
 
-	//// Start Transaction
-	//Result PlayerTransBuyShopItem::StartTransaction()
-	//{
-	//	FunctionContext hr([this](Result hr)
-	//		{
-	//			if (!hr)
-	//			{
-	//				CloseTransaction(hr);
-	//			}
-	//		});
-	//	Svr::ExternalTransactionManager* pExtMgr = nullptr;
+		auto *pCheckRes = (Svr::ExternalTransactionGoogleAndroidReceiptCheck*)pRes;
+		StaticArray<uint8_t, 512> purchaseID(GetHeap());
 
-	//	m_pShopItem = nullptr;
+		svrCheckClose(pRes->GetResult());
 
-	//	svrCheck( super::StartTransaction() );
+		if (pCheckRes->GetDeveloperPayload().length() == 0)
+			svrErrorClose(ResultCode::SVR_INVALID_PURCHASE_INFO);
 
-	//	if (GetPurchaseTransactionID() == nullptr || GetPurchaseTransactionID()[0] == '\0')
-	//	{
-	//		svrErrorClose(ResultCode::SVR_INVALID_PURCHASE_INFO);
-	//	}
+		svrCheckCloseErr(ResultCode::SVR_INVALID_PURCHASE_INFO, Util::Base64URLDecode(pCheckRes->GetDeveloperPayload().length(), (const uint8_t*)pCheckRes->GetDeveloperPayload().c_str(), purchaseID));
 
-	//	//if( !( conspiracy::ShopTbl::FindItem( GetShopItemID(), m_pShopItem ) ) )
-	//	//{
-	//	//	svrErrorClose(ResultCode::GAME_INVALID_SHOPITEMID);
-	//	//}
+		if (purchaseID.size() != SHA256_DIGEST_LENGTH)
+			svrErrorClose(ResultCode::SVR_INVALID_PURCHASE_INFO);
 
-	//	svrCheckPtr(pExtMgr = Svr::GetServerComponent<Svr::ExternalTransactionManager>());
+		auto& playerData = GetMyOwner()->GetPlayerData();
 
-	//	// TODO:FIXME
-	//	//if (strlen(m_pShopItem->AndroidItemID) == 0 || strlen(m_pShopItem->iOSItemID) == 0)
-	//	//{
-	//	//	StaticArray<uint8_t,1024> pruchaseID(GetHeap());
+		// TODO: FIXME
+		//svrCheck(pPlayerInfoSystem->SaveStatToMemento(m_SavedData));
 
-	//	//	svrCheck( Util::Base64URLDecode(strlen(GetPurchaseTransactionID()), (uint8_t*)GetPurchaseTransactionID(), pruchaseID) );
+		//svrChkClose(pPlayerInfoSystem->ApplyItem(m_pShopItem));
 
-	//		//svrCheckPtr(pPlayerInfoSystem = GetMyOwner()->GetComponent<UserGamePlayerInfoSystem>());
+		//svrCheck(pPlayerInfoSystem->SavePurchaseInfoToDB(GetTransID(), purchaseID, GetPlatform(), GetPurchaseTransactionID()));
 
-	//		//svrCheck(pPlayerInfoSystem->SaveStatToMemento(m_SavedData));
+		return ResultCode::SUCCESS;
+	}
 
-	//		//svrCheckClose(pPlayerInfoSystem->ApplyItem(m_pShopItem));
+	Result PlayerTransBuyShopItem::OnPurchaseCheckedIOS(Svr::TransactionResult* &pRes)
+	{
+		FunctionContext hr([this](Result hr)
+			{
+				if (!hr)
+				{
+					CloseTransaction(hr);
+				}
+			});
+		auto *pCheckRes = (Svr::ExternalTransactionIOSRecepitCheck*)pRes;
 
-	//		//svrCheck(pPlayerInfoSystem->SavePurchaseInfoToDB(GetTransID(), pruchaseID, GetPlatform(), GetPurchaseTransactionID()));
-	//	//}
-	//	//else
-	//	//{
-	//	//	if (StrUtil::StringCompairIgnoreCase("android", -1, GetPlatform(), -1)
-	//	//		|| StrUtil::StringCompairIgnoreCase("windows", -1, GetPlatform(), -1))
-	//	//	{
-	//	//		// The last byte must be null, null terminate
-	//	//		svrCheck(pExtMgr->AndroidCheckReceipt(GetTransID(), GetPackageName(), m_pShopItem->AndroidItemID, GetPurchaseTransactionID()));
-	//	//	}
-	//	//	else
-	//	//	{
-	//	//		if (GetPurchaseToken().size() == 0)
-	//	//		{
-	//	//			svrErrorClose(ResultCode::SVR_INVALID_PURCHASE_INFO);
-	//	//		}
+		svrCheckClose(pRes->GetResult());
 
-	//	//		svrCheck(pExtMgr->IOSCheckReceipt(GetTransID(), GetPackageName(), m_pShopItem->iOSItemID, GetPurchaseTransactionID(), GetPurchaseToken()));
-	//	//	}
-	//	//}
+		if (pCheckRes->GetPurchaseTransactionID().size() == 0
+			|| !StrUtil::StringCompair((const char*)pCheckRes->GetPurchaseTransactionID().data(), (INT)pCheckRes->GetPurchaseTransactionID().size(), GetPurchaseTransactionID(), -1))
+			svrErrorClose(ResultCode::SVR_INVALID_PURCHASE_INFO);
 
 
-	//	return hr;
-	//}
-	//
+		auto& playerData = GetMyOwner()->GetPlayerData();
+
+		// TODO:FIXME
+		//svrCheck(pPlayerInfoSystem->SaveStatToMemento(m_SavedData));
+
+		//svrCheckClose(pPlayerInfoSystem->ApplyItem(m_pShopItem));
+
+		//svrCheck(pPlayerInfoSystem->SavePurchaseInfoToDB(GetTransID(), pCheckRes->GetPurchaseTransactionID(), GetPlatform(), GetPurchaseTransactionID()));
+
+		return hr;
+	}
+
+	Result PlayerTransBuyShopItem::OnSavedToDB( Svr::TransactionResult* &pRes )
+	{
+		FunctionContext hr([this](Result hr)
+			{
+				if (!hr)
+				{
+					m_SavedData.RestoreAllData();
+				}
+				CloseTransaction(hr);
+			});
+		auto *pDBRes = (DB::QuerySavePurchaseInfoToDBCmd*)pRes;
+
+		svrCheck(pRes->GetResult());
+
+		if (pDBRes->Result < 0)
+		{
+			svrErrorClose(ResultCode::SVR_INVALID_PURCHASE_DUPLICATED);
+		}
+
+
+		return hr; 
+	}
+
+	// Start Transaction
+	Result PlayerTransBuyShopItem::StartTransaction()
+	{
+		FunctionContext hr([this](Result hr)
+			{
+				if (!hr)
+				{
+					CloseTransaction(hr);
+				}
+			});
+		Svr::ExternalTransactionManager* pExtMgr = nullptr;
+
+		m_pShopItem = nullptr;
+
+		svrCheck( super::StartTransaction() );
+
+		if (GetPurchaseTransactionID() == nullptr || GetPurchaseTransactionID()[0] == '\0')
+		{
+			svrErrorClose(ResultCode::SVR_INVALID_PURCHASE_INFO);
+		}
+
+		//if( !( conspiracy::ShopTbl::FindItem( GetShopItemID(), m_pShopItem ) ) )
+		//{
+		//	svrErrorClose(ResultCode::GAME_INVALID_SHOPITEMID);
+		//}
+
+		svrCheckPtr(pExtMgr = Svr::GetServerComponent<Svr::ExternalTransactionManager>());
+
+		// TODO:FIXME
+		//if (strlen(m_pShopItem->AndroidItemID) == 0 || strlen(m_pShopItem->iOSItemID) == 0)
+		//{
+		//	StaticArray<uint8_t,1024> pruchaseID(GetHeap());
+
+		//	svrCheck( Util::Base64URLDecode(strlen(GetPurchaseTransactionID()), (uint8_t*)GetPurchaseTransactionID(), pruchaseID) );
+
+			//svrCheckPtr(pPlayerInfoSystem = GetMyOwner()->GetComponent<UserGamePlayerInfoSystem>());
+
+			//svrCheck(pPlayerInfoSystem->SaveStatToMemento(m_SavedData));
+
+			//svrCheckClose(pPlayerInfoSystem->ApplyItem(m_pShopItem));
+
+			//svrCheck(pPlayerInfoSystem->SavePurchaseInfoToDB(GetTransID(), pruchaseID, GetPlatform(), GetPurchaseTransactionID()));
+		//}
+		//else
+		//{
+		//	if (StrUtil::StringCompairIgnoreCase("android", -1, GetPlatform(), -1)
+		//		|| StrUtil::StringCompairIgnoreCase("windows", -1, GetPlatform(), -1))
+		//	{
+		//		// The last byte must be null, null terminate
+		//		svrCheck(pExtMgr->AndroidCheckReceipt(GetTransID(), GetPackageName(), m_pShopItem->AndroidItemID, GetPurchaseTransactionID()));
+		//	}
+		//	else
+		//	{
+		//		if (GetPurchaseToken().size() == 0)
+		//		{
+		//			svrErrorClose(ResultCode::SVR_INVALID_PURCHASE_INFO);
+		//		}
+
+		//		svrCheck(pExtMgr->IOSCheckReceipt(GetTransID(), GetPackageName(), m_pShopItem->iOSItemID, GetPurchaseTransactionID(), GetPurchaseToken()));
+		//	}
+		//}
+
+
+		return hr;
+	}
+	
 	
 
 

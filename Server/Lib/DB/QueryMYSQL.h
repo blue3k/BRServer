@@ -41,9 +41,6 @@ namespace DB {
 
 		virtual void ParseResult(mysqlx::SqlResult& queryResult);
 		virtual void ParseOutput(mysqlx::SqlResult& queryResult);
-
-		// add patched rowset value into array
-		virtual void AddRowset() {}
 	};
 
 

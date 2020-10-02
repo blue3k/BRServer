@@ -41,7 +41,7 @@ namespace Message {
 
 			void OutputMessage(const char* Prefix);
 
-			virtual Result ParseMessage( MessageData* pIMsg );
+			virtual Result ParseMessage(const MessageData* pIMsg);
 
 		}; // class FailResultS2CEvt : public SF::Net::MessageBase
 

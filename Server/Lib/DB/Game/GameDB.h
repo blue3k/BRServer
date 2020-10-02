@@ -61,12 +61,29 @@ namespace DB {
 			UTCTimeStampSec	LatestActiveTime,
 			UTCTimeStampSec	LatestTickTime,
 			const Array<NamedVariableBox>& Variables
-		) = 0;
+		);
 
 
 		// Nick name
 		Result SetNickName(TransactionID Sender, uint shardID, PlayerID playerID, const char* nickName);
 		Result GetNickName(TransactionID Sender, uint shardID, PlayerID playerID);
+
+
+		Result SavePurchaseInfoToDB(TransactionID Sender, uint shardID, const PlayerID& playerID,
+			int16_t	Level,
+			int64_t	Exp,
+			int64_t	GameMoney,
+			int64_t	Gem,
+			int16_t	Stamina,
+			int16_t	AddedFriendSlot,
+			const Array<uint8_t>& purchaseID,
+			const char* purchasePlatform, const char* purchaseToken,
+			UTCTimeStampSec	LatestActiveTime,
+			UTCTimeStampSec	LatestTickTime
+		);
+
+		Result CheckPurchaseID(TransactionID Sender, uint shardID, const Array<uint8_t>& purchaseID);
+
 
 		// Save player info
 		Result GetPlayerStatusCmd(TransactionID Sender, uint shardID, const PlayerID &playerID);

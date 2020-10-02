@@ -113,87 +113,76 @@ namespace SF {
 			return hr;
 		}
 
-		//Result GameDB::SavePurchaseInfoToDB(
-		//	TransactionID Sender, uint shardID, const PlayerID &playerID,
-		//	int16_t	Level,
-		//	int64_t	Exp,
-		//	int64_t	GameMoney,
-		//	int64_t	Gem,
-		//	int16_t	Stamina,
-		//	int16_t	AddedFriendSlot,
-		//	const Array<uint8_t>& purchaseID,
-		//	const char* purchasePlatform, const char* purchaseToken,
-		//	UTCTimeStampSec	LatestActiveTime,
-		//	UTCTimeStampSec	LatestTickTime
-		//	)
-		//{
-		//	Result hr = ResultCode::SUCCESS;
-		//	QuerySavePurchaseInfoToDBCmd *pQuery = nullptr;
+		Result GameDB::SavePurchaseInfoToDB(
+			TransactionID Sender, uint shardID, const PlayerID &playerID,
+			int16_t	Level,
+			int64_t	Exp,
+			int64_t	GameMoney,
+			int64_t	Gem,
+			int16_t	Stamina,
+			int16_t	AddedFriendSlot,
+			const Array<uint8_t>& purchaseID,
+			const char* purchasePlatform, const char* purchaseToken,
+			UTCTimeStampSec	LatestActiveTime,
+			UTCTimeStampSec	LatestTickTime
+			)
+		{
+			FunctionContext hr;
 
-		//	dbMem(pQuery = new(GetHeap()) QuerySavePurchaseInfoToDBCmd(GetHeap()));
+			UniquePtr<QuerySavePurchaseInfoToDBCmd> pQuery(new(GetHeap()) QuerySavePurchaseInfoToDBCmd(GetHeap()));
+			dbCheckMem(pQuery);
 
-		//	pQuery->SetPartitioningKey(shardID);
+			pQuery->SetPartitioningKey(shardID);
 
-		//	pQuery->PlayerID = playerID;
-		//	pQuery->Result = 0;
+			pQuery->PlayerID = playerID;
+			pQuery->Result = 0;
 
-		//	pQuery->Level = Level;
-		//	pQuery->Exp = Exp;
-		//	pQuery->GameMoney = GameMoney;
-		//	pQuery->Gem = Gem;
-		//	pQuery->Stamina = Stamina;
-		//	pQuery->AddedFriendSlot = AddedFriendSlot;
+			pQuery->Level = Level;
+			pQuery->Exp = Exp;
+			pQuery->GameMoney = GameMoney;
+			pQuery->Gem = Gem;
+			pQuery->Stamina = Stamina;
+			pQuery->AddedFriendSlot = AddedFriendSlot;
 
-		//	if (purchaseID.size() > sizeof(pQuery->PurchaseID))
-		//		dbErr(ResultCode::INVALID_ARG);
+			if (purchaseID.size() > sizeof(pQuery->PurchaseID))
+				dbError(ResultCode::INVALID_ARG);
 
-		//	pQuery->PurchaseID = purchaseID;
-		//	pQuery->PurchasePlatform, purchasePlatform;
-		//	pQuery->PurchaseToken, purchaseToken;
-		//	pQuery->LatestActiveTime = LatestActiveTime.time_since_epoch().count();
-		//	pQuery->LatestTickTime = LatestTickTime.time_since_epoch().count();
+			pQuery->PurchaseID = purchaseID;
+			pQuery->PurchasePlatform, purchasePlatform;
+			pQuery->PurchaseToken, purchaseToken;
+			pQuery->LatestActiveTime = LatestActiveTime.time_since_epoch().count();
+			pQuery->LatestTickTime = LatestTickTime.time_since_epoch().count();
 
 
-		//	pQuery->SetTransaction( Sender );
+			pQuery->SetTransaction( Sender );
 
-		//	dbChk( RequestQuery( pQuery ) );
-		//	pQuery = nullptr;
+			dbCheck( RequestQuery( pQuery ) );
 
-		//Proc_End:
+			return hr;
+		}
 
-		//	IHeap::Delete(pQuery);
+		Result GameDB::CheckPurchaseID(TransactionID Sender, uint shardID, const Array<uint8_t>& purchaseID)
+		{
+			FunctionContext hr;
 
-		//	return hr;
-		//}
+			UniquePtr<QueryCheckPurchaseIDCmd> pQuery(new(GetHeap()) QueryCheckPurchaseIDCmd(GetHeap()));
+			dbCheckMem(pQuery);
 
-		//Result GameDB::CheckPurchaseID(TransactionID Sender, uint shardID, const Array<uint8_t>& purchaseID)
-		//{
-		//	Result hr = ResultCode::SUCCESS;
-		//	QueryCheckPurchaseIDCmd *pQuery = nullptr;
+			pQuery->SetPartitioningKey(shardID);
 
-		//	dbMem(pQuery = new(GetHeap()) QueryCheckPurchaseIDCmd(GetHeap()));
+			pQuery->SetTransaction(Sender);
 
-		//	pQuery->SetPartitioningKey(shardID);
+			if (purchaseID.size() > sizeof(pQuery->PurchaseID))
+				dbError(ResultCode::INVALID_ARG);
 
-		//	pQuery->SetTransaction(Sender);
+			pQuery->PurchaseID = purchaseID;
 
-		//	if (purchaseID.size() > sizeof(pQuery->PurchaseID))
-		//		dbErr(ResultCode::INVALID_ARG);
+			pQuery->Result = 0;
 
-		//	pQuery->PurchaseID = purchaseID;
+			dbCheck(RequestQuery(pQuery));
 
-		//	pQuery->Result = 0;
-
-		//	dbChk(RequestQuery(pQuery));
-
-		//	pQuery = nullptr;
-
-		//Proc_End:
-
-		//	IHeap::Delete(pQuery);
-
-		//	return hr;
-		//}
+			return hr;
+		}
 
 		Result GameDB::SetNickName(TransactionID Sender, uint shardID, PlayerID playerID, const char* nickName)
 		{

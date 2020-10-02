@@ -92,9 +92,9 @@ namespace Net {
 
 	Result RelayServer::RegisterMessageHandlers()
 	{
-		m_HandlerTable.Register<Message::Relay::JoinRelayInstanceC2SEvt>(__FILE__, __LINE__, &RelayServer::OnJoinRelayInstanceC2SEvt);
-		m_HandlerTable.Register<Message::Relay::LeaveRelayInstanceC2SEvt>(__FILE__, __LINE__, &RelayServer::OnLeaveRelayInstanceC2SEvt);
-		m_HandlerTable.Register<Message::Relay::RelayPacketC2SEvt>(__FILE__, __LINE__, &RelayServer::OnRelayPacketC2SEvt);
+		m_HandlerTable.Register<Message::Relay::JoinRelayInstanceC2SEvt>(&RelayServer::OnJoinRelayInstanceC2SEvt);
+		m_HandlerTable.Register<Message::Relay::LeaveRelayInstanceC2SEvt>(&RelayServer::OnLeaveRelayInstanceC2SEvt);
+		m_HandlerTable.Register<Message::Relay::RelayPacketC2SEvt>(&RelayServer::OnRelayPacketC2SEvt);
 
 		return ResultCode::SUCCESS;
 	}
