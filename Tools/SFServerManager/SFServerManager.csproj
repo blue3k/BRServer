@@ -74,7 +74,7 @@
     <Compile Include="Command\StartServerInstances.cs" />
     <Compile Include="Command\StopServerInstances.cs" />
     <Compile Include="Command\UploadServerConfigXML2ZK.cs" />
-    <Compile Include="Command\ZookeeperCommand .cs" />
+    <Compile Include="Command\ZookeeperCommand.cs" />
     <Compile Include="Control\ServerConfigUploadControl.cs">
       <SubType>UserControl</SubType>
     </Compile>

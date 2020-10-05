@@ -32,4 +32,6 @@ install (TARGETS BRModuleServer
          LIBRARY DESTINATION lib COMPONENT BRServer
          RUNTIME DESTINATION bin COMPONENT BRServer)
 
-
+if(WIN32)
+	install (FILES $<TARGET_PDB_FILE:BRModuleServer> DESTINATION bin COMPONENT BRServer)
+endif()
