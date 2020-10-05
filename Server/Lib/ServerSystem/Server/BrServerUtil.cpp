@@ -156,8 +156,6 @@ namespace Svr {
 		pEngine->AddComponent<ServerNetComponent>();
 		pEngine->AddComponent<ServerLogComponent>(nullptr);
 
-		pEngine->AddComponent<LogOutputPlayFabGSDKComponent>(initParam.LogOutputCommon);
-
 		pEngine->AddComponent<SF::Net::NetSystem>(initParam.NetRecvBufferSize, initParam.NetSendBufferSize, netIOThreadCount, 1024);
 		pEngine->AddComponent<EntityTable>();
 		pEngine->AddComponent<LibraryComponentAdapter<EntityManager, uint>, IHeap&, uint>(GetSystemHeap(), workerThreadCount);

@@ -32,7 +32,7 @@ SET (CMAKE_C_FLAGS_DEBUG "${CMAKE_C_FLAGS_DEBUG} -DDEBUG")
 SET (CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -DDEBUG")
 
 
-set(ENGINE_LINK_LIBS BRDB BRServerSystem BRServerProtocol BRDB SFProtocol SFEngine  SFCore PlayFabGSDK curl iconv png mng jpeg tiff zookeeper jsoncpp mbedtls xml2 zlib)
+set(ENGINE_LINK_LIBS BRDB BRServerSystem BRServerProtocol BRDB SFProtocol SFEngine  SFCore curl iconv png mng jpeg tiff zookeeper jsoncpp mbedtls xml2 zlib)
 
 
 include_directories(AFTER 
@@ -49,7 +49,7 @@ include_directories(AFTER
 	../StormForge/Engine/Src/SFEngine
 	../StormForge/Engine/Src/Protocol
 #	../StormForge/3rdParties/src/mysql/mysql-8.0.15/include
-	3rdParties/PlayFabGSDK/gsdk/cpp/cppsdk
+	../gsdk/cpp/cppsdk
 	Server/Lib
 	Server/Lib/DB
 	Server/Lib/ServerProtocol

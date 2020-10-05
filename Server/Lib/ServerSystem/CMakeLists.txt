@@ -93,8 +93,8 @@ set(BRSERVERSYSTEM_LIB_FILES
     ServerEntity/SvrLoopbackConnection.h
     ServerLog/SvrLog.h
     ServerLog/SvrLogComponent.h
-	ServerLog/SFLogOutputPlayFabGSDK.cpp
-	ServerLog/SFLogOutputPlayFabGSDK.h
+	#ServerLog/SFLogOutputPlayFabGSDK.cpp
+	#ServerLog/SFLogOutputPlayFabGSDK.h
     ServerService/ServerServiceBase.h
     Server/BrServer.h
     Server/BrServerUtil.h

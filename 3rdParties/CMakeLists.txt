@@ -2,7 +2,7 @@
 
 
 
-add_subdirectory(PlayFabGSDK)
+#add_subdirectory(PlayFabGSDK)
 
 
 

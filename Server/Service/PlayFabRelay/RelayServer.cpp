@@ -72,6 +72,11 @@ int main(int numArg, const char* argc[])
 	uint32_t netIOThreadCount = 2;
 	SF::Svr::InitializeEngineForPlayFabServer(workerThreadCount, netIOThreadCount);
 
+	LogChannelMask LogOutputGSDK = { 0 };
+
+	if (SF::Engine::GetInstance())
+		SF::Engine::GetInstance()->AddComponent<LogOutputPlayFabGSDKComponent>(LogOutputGSDK);
+
 	printf("test 5\n");
 
 	pServerInstance = SharedPointerT<RelayServer>(new(GetSystemHeap()) RelayServer);
