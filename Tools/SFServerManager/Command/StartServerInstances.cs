@@ -28,7 +28,7 @@ using System.Runtime.Serialization.Json;
 namespace SFServerManager.Command
 {
     /// <summary>
-    /// Upload XML server config to ZooKeeper
+    /// Upload XML server config to Zookeeper
     /// </summary>
     [Export(typeof(StartServerInstances))]
     [Export(typeof(IContextMenuCommandProvider))]
@@ -92,7 +92,7 @@ namespace SFServerManager.Command
             if (m_Setting == null)
                 return false;
 
-            if (m_ZooKeeperSession == null || m_ZooKeeperSession.ZKInstance == null || !m_ZooKeeperSession.ZKInstance.IsConnected())
+            if (m_ZookeeperSession == null || m_ZookeeperSession.ZKInstance == null || !m_ZookeeperSession.ZKInstance.IsConnected())
                 return false;
 
             if (string.IsNullOrEmpty(m_Setting.CommandNodePath))
@@ -117,7 +117,7 @@ namespace SFServerManager.Command
             if (myCommand == null)
                 return;
 
-            if (m_ZooKeeperSession == null || m_ZooKeeperSession.ZKInstance == null || !m_ZooKeeperSession.ZKInstance.IsConnected())
+            if (m_ZookeeperSession == null || m_ZookeeperSession.ZKInstance == null || !m_ZookeeperSession.ZKInstance.IsConnected())
                 return;
 
             if (string.IsNullOrEmpty(m_Setting.CommandNodePath))
@@ -129,18 +129,18 @@ namespace SFServerManager.Command
             Outputs.WriteLine(OutputMessageType.Info, "Commencing Start Server Instances ");
 
             string modulePath = m_Setting.ModulePath;
-            SFZooKeeper zooKeeper = m_ZooKeeperSession.ZKInstance;
-            if (zooKeeper == null || !zooKeeper.IsConnected())
+            SFZookeeper zookeeper = m_ZookeeperSession.ZKInstance;
+            if (zookeeper == null || !zookeeper.IsConnected())
             {
-                Outputs.WriteLine(OutputMessageType.Error, "ZooKeeper is not connected");
+                Outputs.WriteLine(OutputMessageType.Error, "Zookeeper is not connected");
                 return;
             }
 
             // Create command root node if not exists
-            if (!zooKeeper.Exists(m_Setting.CommandNodePath))
-                zooKeeper.CreateNode(m_Setting.CommandNodePath, "");
+            if (!zookeeper.Exists(m_Setting.CommandNodePath))
+                zookeeper.CreateNode(m_Setting.CommandNodePath, "");
 
-            SFServerConfig serverConfig = m_ZooKeeperSession.ServerConfig;
+            SFServerConfig serverConfig = m_ZookeeperSession.ServerConfig;
             string commandNode = string.Format("{0}/{1}", m_Setting.CommandNodePath, "Start");
 
 
@@ -152,13 +152,13 @@ namespace SFServerManager.Command
                 var isGameInstanceServer = serverInstanceName.StartsWith("BRConspiracyGameInstanceServer");
                 string commandValue;
                 if(isGameServer)
-                    commandValue = ZooKeeperCommand.StartServerInstance(server.PrivateNet.IP, server.Name, "BRGameServer", modulePath);
+                    commandValue = ZookeeperCommand.StartServerInstance(server.PrivateNet.IP, server.Name, "BRGameServer", modulePath);
                 else if(isGameInstanceServer)
-                    commandValue = ZooKeeperCommand.StartServerInstance(server.PrivateNet.IP, server.Name, "BRGameInstanceServer", modulePath);
+                    commandValue = ZookeeperCommand.StartServerInstance(server.PrivateNet.IP, server.Name, "BRGameInstanceServer", modulePath);
                 else
-                    commandValue = ZooKeeperCommand.StartServerInstance(server.PrivateNet.IP, server.Name, "BRModuleServer", modulePath);
+                    commandValue = ZookeeperCommand.StartServerInstance(server.PrivateNet.IP, server.Name, "BRModuleServer", modulePath);
 
-                var result = zooKeeper.CreateNode(commandNode, commandValue, SFZooKeeper.NODE_FLAG_SEQUENCE);
+                var result = zookeeper.CreateNode(commandNode, commandValue, SFZookeeper.NODE_FLAG_SEQUENCE);
                 if (result != 0)
                 {
                     Outputs.WriteLine(OutputMessageType.Warning, "Failed to push command for {0}, result:{1:X8}", serverInstanceName, result);
@@ -207,7 +207,7 @@ namespace SFServerManager.Command
 
 
         [Import(AllowDefault = false)]
-        private ZooKeeperSession m_ZooKeeperSession = null;
+        private ZookeeperSession m_ZookeeperSession = null;
 
 
         [Import(AllowDefault = false)]

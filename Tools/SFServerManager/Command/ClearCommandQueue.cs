@@ -28,7 +28,7 @@ using System.Runtime.Serialization.Json;
 namespace SFServerManager.Command
 {
     /// <summary>
-    /// Upload XML server config to ZooKeeper
+    /// Upload XML server config to Zookeeper
     /// </summary>
     [Export(typeof(ClearCommandQueue))]
     [Export(typeof(IContextMenuCommandProvider))]
@@ -43,7 +43,7 @@ namespace SFServerManager.Command
                     StandardMenu.Edit,
                     StandardCommandGroup.EditGroup,
                     "Clear command queue".Localize(),
-                    "Clear ZooKeeper command queue".Localize(),
+                    "Clear Zookeeper command queue".Localize(),
                     Sce.Atf.Input.Keys.None,
                     Resources.DeleteImage,
                     CommandVisibility.Default),
@@ -92,7 +92,7 @@ namespace SFServerManager.Command
             if (m_Setting == null)
                 return false;
 
-            if (m_ZooKeeperSession == null || m_ZooKeeperSession.ZKInstance == null || !m_ZooKeeperSession.ZKInstance.IsConnected())
+            if (m_ZookeeperSession == null || m_ZookeeperSession.ZKInstance == null || !m_ZookeeperSession.ZKInstance.IsConnected())
                 return false;
 
             if (string.IsNullOrEmpty(m_Setting.CommandNodePath))
@@ -117,7 +117,7 @@ namespace SFServerManager.Command
             if (myCommand == null)
                 return;
 
-            if (m_ZooKeeperSession == null || m_ZooKeeperSession.ZKInstance == null || !m_ZooKeeperSession.ZKInstance.IsConnected())
+            if (m_ZookeeperSession == null || m_ZookeeperSession.ZKInstance == null || !m_ZookeeperSession.ZKInstance.IsConnected())
                 return;
 
             if (string.IsNullOrEmpty(m_Setting.CommandNodePath))
@@ -128,22 +128,22 @@ namespace SFServerManager.Command
 
             Outputs.WriteLine(OutputMessageType.Info, "Commencing Clear Command Queue");
 
-            SFZooKeeper zooKeeper = m_ZooKeeperSession.ZKInstance;
-            if (zooKeeper == null || !zooKeeper.IsConnected())
+            SFZookeeper zookeeper = m_ZookeeperSession.ZKInstance;
+            if (zookeeper == null || !zookeeper.IsConnected())
             {
-                Outputs.WriteLine(OutputMessageType.Error, "ZooKeeper is not connected");
+                Outputs.WriteLine(OutputMessageType.Error, "Zookeeper is not connected");
                 return;
             }
 
             // Create command root node if not exists
-            if (!zooKeeper.Exists(m_Setting.CommandNodePath))
-                zooKeeper.CreateNode(m_Setting.CommandNodePath, "");
+            if (!zookeeper.Exists(m_Setting.CommandNodePath))
+                zookeeper.CreateNode(m_Setting.CommandNodePath, "");
 
 
-            if (!zooKeeper.Exists(m_Setting.CommandNodePath))
-                zooKeeper.CreateNode(m_Setting.CommandNodePath, "");
+            if (!zookeeper.Exists(m_Setting.CommandNodePath))
+                zookeeper.CreateNode(m_Setting.CommandNodePath, "");
             else
-                zooKeeper.DeleteAllChildren(m_Setting.CommandNodePath);
+                zookeeper.DeleteAllChildren(m_Setting.CommandNodePath);
 
             Outputs.WriteLine(OutputMessageType.Info, "Command push process is done");
         }
@@ -184,7 +184,7 @@ namespace SFServerManager.Command
 
 
         [Import(AllowDefault = false)]
-        private ZooKeeperSession m_ZooKeeperSession = null;
+        private ZookeeperSession m_ZookeeperSession = null;
 
         [Import(AllowDefault = false)]
         private ServerManagerSetting m_Setting = null;

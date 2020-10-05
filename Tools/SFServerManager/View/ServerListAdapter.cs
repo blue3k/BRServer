@@ -56,7 +56,7 @@ namespace SFServerManager
 
 
         /// <summary>
-        /// ZooKeeper Server instance info
+        /// Zookeeper Server instance info
         /// </summary>
         [DataContract]
         class ServerInstanceInfo
@@ -86,7 +86,7 @@ namespace SFServerManager
             return DomNode.GetChildList(ServerInstanceTreeType.ChildNodeInfo);
         }
 
-        public void RefreshServerList(SFZooKeeper zooKeeper, SFServerConfig serverConfig)
+        public void RefreshServerList(SFZookeeper zooKeeper, SFServerConfig serverConfig)
         {
             var childList = DomNode.GetChildList(ServerInstanceTreeType.ChildNodeInfo);
             var alreadyExist = new Dictionary<string, ServerInstance>();

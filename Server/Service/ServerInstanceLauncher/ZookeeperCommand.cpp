@@ -163,12 +163,8 @@ namespace ServerInstanceLauncher {
 	}
 
 
-}; // namespace ServerInstanceLauncher
-}; // namespace SF
-
-
-
-
+} // namespace ServerInstanceLauncher
+} // namespace SF
 
 
 

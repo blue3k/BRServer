@@ -74,7 +74,7 @@
     <Compile Include="Command\StartServerInstances.cs" />
     <Compile Include="Command\StopServerInstances.cs" />
     <Compile Include="Command\UploadServerConfigXML2ZK.cs" />
-    <Compile Include="Command\ZooKeeperCommand.cs" />
+    <Compile Include="Command\ZookeeperCommand .cs" />
     <Compile Include="Control\ServerConfigUploadControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -82,7 +82,7 @@
       <DependentUpon>ServerConfigUploadControl.cs</DependentUpon>
     </Compile>
     <Compile Include="Object\ServerManagerSetting.cs" />
-    <Compile Include="Object\ZooKeeperSession.cs" />
+    <Compile Include="Object\ZookeeperSession.cs" />
     <Compile Include="SFServerManagerProgram.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="View\ServerConfigUploadView.cs" />

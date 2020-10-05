@@ -80,7 +80,7 @@ namespace SFServerManager
                 typeof(StandardLayoutCommands),         // standard Format menu layout commands
                                                         //typeof(StandardViewCommands),           // standard View menu commands
                 typeof(ServerManagerSetting),
-                typeof(ZooKeeperSession),
+                typeof(ZookeeperSession),
                 typeof(ServerConfigUploadView),
                 typeof(Command.StartServerInstances),
                 typeof(Command.StopServerInstances),

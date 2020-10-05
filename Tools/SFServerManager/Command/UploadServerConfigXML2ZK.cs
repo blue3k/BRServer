@@ -26,7 +26,7 @@ using SF;
 namespace SFServerManager.Command
 {
     /// <summary>
-    /// Upload XML server config to ZooKeeper
+    /// Upload XML server config to Zookeeper
     /// </summary>
     [Export(typeof(UploadServerConfigXML2ZK))]
     [Export(typeof(IContextMenuCommandProvider))]
@@ -39,8 +39,8 @@ namespace SFServerManager.Command
                     "UploadServerConfigXML2ZK".GetHashCode(),
                     StandardMenu.Edit,
                     StandardCommandGroup.EditGroup,
-                    "Upload XML ServerConfig to ZooKeeper".Localize(),
-                    "Upload XML ServerConfig to ZooKeeper".Localize(),
+                    "Upload XML ServerConfig to Zookeeper".Localize(),
+                    "Upload XML ServerConfig to Zookeeper".Localize(),
                     Sce.Atf.Input.Keys.None,
                     Resources.ArrowUpload,
                     CommandVisibility.Default),
@@ -92,7 +92,7 @@ namespace SFServerManager.Command
             if (m_Setting.XMLPaths.Count == 0)
                 return false;
 
-            if (m_ZooKeeperSession == null || m_ZooKeeperSession.ZKInstance == null || !m_ZooKeeperSession.ZKInstance.IsConnected())
+            if (m_ZookeeperSession == null || m_ZookeeperSession.ZKInstance == null || !m_ZookeeperSession.ZKInstance.IsConnected())
                 return false;
 
             if (string.IsNullOrEmpty(m_Setting.ConfigNodePath))
@@ -101,7 +101,7 @@ namespace SFServerManager.Command
             if (string.IsNullOrEmpty(m_Setting.CommandNodePath))
                 return false;
 
-            if(m_ZooKeeperSession.ServerConfig == null)
+            if(m_ZookeeperSession.ServerConfig == null)
                 return false;
 
 
@@ -126,7 +126,7 @@ namespace SFServerManager.Command
             if (m_Setting.XMLPaths.Count == 0)
                 return;
 
-            if (m_ZooKeeperSession == null || m_ZooKeeperSession.ZKInstance == null || !m_ZooKeeperSession.ZKInstance.IsConnected())
+            if (m_ZookeeperSession == null || m_ZookeeperSession.ZKInstance == null || !m_ZookeeperSession.ZKInstance.IsConnected())
                 return;
 
             if (string.IsNullOrEmpty(m_Setting.ConfigNodePath))
@@ -138,19 +138,19 @@ namespace SFServerManager.Command
             if (!myCommand.CommandTag.Equals("UploadServerConfigXML2ZK".GetHashCode()))
                 return;
 
-            Outputs.WriteLine(OutputMessageType.Info, "Connecting ZooKeeper server {0}", m_Setting.ConnectionString);
-            SFZooKeeper zooKeeper = m_ZooKeeperSession.ZKInstance;
-            if (zooKeeper == null || !zooKeeper.IsConnected())
+            Outputs.WriteLine(OutputMessageType.Info, "Connecting Zookeeper server {0}", m_Setting.ConnectionString);
+            SFZookeeper zookeeper = m_ZookeeperSession.ZKInstance;
+            if (zookeeper == null || !zookeeper.IsConnected())
             {
-                Outputs.WriteLine(OutputMessageType.Error, "ZooKeeper is not connected");
+                Outputs.WriteLine(OutputMessageType.Error, "Zookeeper is not connected");
                 return;
             }
 
             // Create command root node if not exists
-            if (!zooKeeper.Exists(m_Setting.CommandNodePath))
-                zooKeeper.CreateNode(m_Setting.CommandNodePath, "");
+            if (!zookeeper.Exists(m_Setting.CommandNodePath))
+                zookeeper.CreateNode(m_Setting.CommandNodePath, "");
 
-            SFServerConfig serverConfig = m_ZooKeeperSession.ServerConfig;
+            SFServerConfig serverConfig = m_ZookeeperSession.ServerConfig;
 
             // Load from xml
             Outputs.WriteLine(OutputMessageType.Info, "Loading XML server config");
@@ -161,12 +161,12 @@ namespace SFServerManager.Command
                 return;
             }
 
-            // Store to ZooKeeper
-            Outputs.WriteLine(OutputMessageType.Info, "Storing server config to ZooKeeper: node:{0}", m_Setting.ConfigNodePath);
-            result = serverConfig.StoreZooKeeper(zooKeeper, m_Setting.ConfigNodePath);
+            // Store to Zookeeper
+            Outputs.WriteLine(OutputMessageType.Info, "Storing server config to Zookeeper: node:{0}", m_Setting.ConfigNodePath);
+            result = serverConfig.StoreZookeeper(zookeeper, m_Setting.ConfigNodePath);
             if (result != 0)
             {
-                Outputs.WriteLine(OutputMessageType.Error, "Storing to ZooKeeper is failed {0:X8}", result);
+                Outputs.WriteLine(OutputMessageType.Error, "Storing to Zookeeper is failed {0:X8}", result);
                 return;
             }
 
@@ -184,9 +184,9 @@ namespace SFServerManager.Command
                     return;
 
                 commencedIPs.Add(serverIP);
-                var commandValue = ZooKeeperCommand.ReloadConfig(serverIP);
+                var commandValue = ZookeeperCommand.ReloadConfig(serverIP);
 
-                result = zooKeeper.CreateNode(commandNode, commandValue, SFZooKeeper.NODE_FLAG_SEQUENCE);
+                result = zookeeper.CreateNode(commandNode, commandValue, SFZookeeper.NODE_FLAG_SEQUENCE);
                 if (result != 0)
                 {
                     Outputs.WriteLine(OutputMessageType.Warning, "Failed to create command root for {0}, result:{1:X8}", serverInstanceName, result);
@@ -236,7 +236,7 @@ namespace SFServerManager.Command
 
 
         [Import(AllowDefault = false)]
-        private ZooKeeperSession m_ZooKeeperSession = null;
+        private ZookeeperSession m_ZookeeperSession = null;
 
         [Import(AllowDefault = false)]
         private ServerManagerSetting m_Setting = null;

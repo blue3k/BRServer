@@ -25,7 +25,7 @@ using SF;
 namespace SFServerManager.Command
 {
     /// <summary>
-    /// Upload XML server config to ZooKeeper
+    /// Upload XML server config to Zookeeper
     /// </summary>
     [Export(typeof(StopServerInstances))]
     [Export(typeof(IContextMenuCommandProvider))]
@@ -88,7 +88,7 @@ namespace SFServerManager.Command
             if (m_Setting == null)
                 return false;
 
-            if (m_ZooKeeperSession == null || m_ZooKeeperSession.ZKInstance == null || !m_ZooKeeperSession.ZKInstance.IsConnected())
+            if (m_ZookeeperSession == null || m_ZookeeperSession.ZKInstance == null || !m_ZookeeperSession.ZKInstance.IsConnected())
                 return false;
 
             if (string.IsNullOrEmpty(m_Setting.CommandNodePath))
@@ -113,7 +113,7 @@ namespace SFServerManager.Command
             if (myCommand == null)
                 return;
 
-            if (m_ZooKeeperSession == null || m_ZooKeeperSession.ZKInstance == null || !m_ZooKeeperSession.ZKInstance.IsConnected())
+            if (m_ZookeeperSession == null || m_ZookeeperSession.ZKInstance == null || !m_ZookeeperSession.ZKInstance.IsConnected())
                 return;
             
             if (string.IsNullOrEmpty(m_Setting.CommandNodePath))
@@ -122,10 +122,10 @@ namespace SFServerManager.Command
             if (!myCommand.CommandTag.Equals("StopServerInstancess".GetHashCode()))
                 return;
 
-            SFZooKeeper zooKeeper = m_ZooKeeperSession.ZKInstance;
+            SFZookeeper zooKeeper = m_ZookeeperSession.ZKInstance;
             if (zooKeeper == null || !zooKeeper.IsConnected())
             {
-                Outputs.WriteLine(OutputMessageType.Error, "ZooKeeper is not connected");
+                Outputs.WriteLine(OutputMessageType.Error, "Zookeeper is not connected");
                 return;
             }
 
@@ -135,16 +135,16 @@ namespace SFServerManager.Command
                 zooKeeper.CreateNode(m_Setting.CommandNodePath, "");
 
 
-            SFServerConfig serverConfig = m_ZooKeeperSession.ServerConfig;
+            SFServerConfig serverConfig = m_ZookeeperSession.ServerConfig;
             string commandNode = string.Format("{0}/{1}", m_Setting.CommandNodePath, "Stop");
 
 
             serverConfig.ForEachServer((SFServerConfig.GenericServer server) =>
             {
                 var serverInstanceName = server.Name;
-                var commandValue = ZooKeeperCommand.StopServerInstance(server.PrivateNet.IP, server.Name);
+                var commandValue = ZookeeperCommand.StopServerInstance(server.PrivateNet.IP, server.Name);
 
-                var result = zooKeeper.CreateNode(commandNode, commandValue, SFZooKeeper.NODE_FLAG_SEQUENCE);
+                var result = zooKeeper.CreateNode(commandNode, commandValue, SFZookeeper.NODE_FLAG_SEQUENCE);
                 if (result != 0)
                 {
                     Outputs.WriteLine(OutputMessageType.Warning, "Failed to push command for {0}, result:{1:X8}", serverInstanceName, result);
@@ -194,7 +194,7 @@ namespace SFServerManager.Command
 
 
         [Import(AllowDefault = false)]
-        private ZooKeeperSession m_ZooKeeperSession = null;
+        private ZookeeperSession m_ZookeeperSession = null;
 
         [Import(AllowDefault = false)]
         private ServerManagerSetting m_Setting = null;
