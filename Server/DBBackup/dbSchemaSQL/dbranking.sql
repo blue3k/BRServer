@@ -21,47 +21,47 @@ USE `dbConspiracyRanking`;
 DROP TABLE IF EXISTS `tblRankers`;
 
 CREATE TABLE `tblRankers` (
-  `RankingID` bigint(20) unsigned NOT NULL AUTO_INCREMENT COMMENT 'Ranking table PK',
-  `Score` bigint(20) unsigned NOT NULL,
-  `PlayerID` bigint(20) NOT NULL,
-  `FacebookUID` bigint(20) NOT NULL,
-  `NickName` varchar(64) NOT NULL,
-  `Level` int NOT NULL,
-  `LatestUpdated` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `RankingID` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT COMMENT 'Ranking table PK',
+  `Score` BIGINT UNSIGNED NOT NULL,
+  `PlayerID` BIGINT NOT NULL,
+  `FacebookUID` BIGINT NOT NULL,
+  `NickName` VARCHAR(64) NOT NULL,
+  `Level` INT NOT NULL,
+  `LatestUpdated` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`RankingID`),
   UNIQUE KEY `ByPlayerID` (`PlayerID`),
   KEY `ByUpdated` (`LatestUpdated`)
-) ENGINE=InnoDB AUTO_INCREMENT=149;
+) ENGINE=INNODB AUTO_INCREMENT=149;
 
 /*Table structure for table `tblShardInfo` */
 
 DROP TABLE IF EXISTS `tblShardInfo`;
 
 CREATE TABLE `tblShardInfo` (
-  `ShardID` int NOT NULL,
-  `ConnectionString` varchar(512) NOT NULL,
-  `DBName` varchar(128) NOT NULL,
+  `ShardID` INT NOT NULL,
+  `ConnectionString` VARCHAR(512) NOT NULL,
+  `DBName` VARCHAR(128) NOT NULL,
   PRIMARY KEY (`ShardID`)
-) ENGINE=InnoDB;
+) ENGINE=INNODB;
 
 /*Table structure for table `tblWeeklyRanking` */
 
 DROP TABLE IF EXISTS `tblWeeklyRanking`;
 
 CREATE TABLE `tblWeeklyRanking` (
-  `RankingID` int NOT NULL,
-  `Ranking` int NOT NULL,
-  `WinRate` float NOT NULL DEFAULT '0',
-  `Win` int(10) unsigned NOT NULL DEFAULT '0',
-  `Lose` int(10) unsigned NOT NULL DEFAULT '0',
-  `GameNick` varchar(64) NOT NULL DEFAULT '',
-  `PlayerID` bigint(20) NOT NULL DEFAULT '1',
-  `FacebookUID` bigint(20) DEFAULT '0',
-  `Level` int NOT NULL DEFAULT '1',
-  `DummyRank` int NOT NULL DEFAULT '0',
+  `RankingID` INT NOT NULL,
+  `Ranking` INT NOT NULL,
+  `WinRate` FLOAT NOT NULL DEFAULT '0',
+  `Win` INT UNSIGNED NOT NULL DEFAULT '0',
+  `Lose` INT UNSIGNED NOT NULL DEFAULT '0',
+  `GameNick` VARCHAR(64) NOT NULL DEFAULT '',
+  `PlayerID` BIGINT NOT NULL DEFAULT '1',
+  `FacebookUID` BIGINT DEFAULT '0',
+  `Level` INT NOT NULL DEFAULT '1',
+  `DummyRank` INT NOT NULL DEFAULT '0',
   PRIMARY KEY (`RankingID`),
   KEY `RankingKey` (`Ranking`)
-) ENGINE=MyISAM DEFAULT MAX_ROWS=1000;
+) ENGINE=MYISAM MAX_ROWS=1000;
 
 /*!50106 set global event_scheduler = 1*/;
 

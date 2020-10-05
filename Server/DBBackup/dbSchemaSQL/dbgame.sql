@@ -21,98 +21,98 @@ USE `dbConspiracy00`;
 DROP TABLE IF EXISTS `tblFriend`;
 
 CREATE TABLE `tblFriend` (
-  `UserUID` bigint(20) NOT NULL,
-  `FriendUID` bigint(20) NOT NULL,
-  `FriendFacebookUID` bigint(20) NOT NULL DEFAULT '0',
-  `FriendStaminaTime` bigint NOT NULL DEFAULT '0',
-  `FriendShardID` int NOT NULL,
+  `UserUID` BIGINT NOT NULL,
+  `FriendUID` BIGINT NOT NULL,
+  `FriendFacebookUID` BIGINT NOT NULL DEFAULT '0',
+  `FriendStaminaTime` BIGINT NOT NULL DEFAULT '0',
+  `FriendShardID` INT NOT NULL,
   PRIMARY KEY (`UserUID`,`FriendUID`),
   UNIQUE KEY `PK_Unique` (`UserUID`,`FriendUID`),
   KEY `PrimaryIndex` (`UserUID`,`FriendUID`),
   KEY `FriendID_Index` (`FriendUID`)
-) ENGINE=InnoDB;
+) ENGINE=INNODB;
 
 /*Table structure for table `tblNotification` */
 
 DROP TABLE IF EXISTS `tblNotification`;
 
 CREATE TABLE `tblNotification` (
-  `NotificationID` int NOT NULL AUTO_INCREMENT,
-  `UserUID` bigint(20) unsigned NOT NULL,
-  `MessageID` smallint(5) unsigned NOT NULL,
-  `MessageParam0` bigint(20) DEFAULT NULL,
-  `MessageParam1` bigint(20) DEFAULT NULL,
-  `MessageText` varchar(512) DEFAULT NULL,
-  `IssuedTime` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `Read` tinyint(4) NOT NULL DEFAULT '0',
-  `TimeStamp` bigint(20) unsigned NOT NULL DEFAULT '0',
+  `NotificationID` INT NOT NULL AUTO_INCREMENT,
+  `UserUID` BIGINT UNSIGNED NOT NULL,
+  `MessageID` SMALLINT UNSIGNED NOT NULL,
+  `MessageParam0` BIGINT DEFAULT NULL,
+  `MessageParam1` BIGINT DEFAULT NULL,
+  `MessageText` VARCHAR(512) DEFAULT NULL,
+  `IssuedTime` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `Read` TINYINT NOT NULL DEFAULT '0',
+  `TimeStamp` BIGINT UNSIGNED NOT NULL DEFAULT '0',
   PRIMARY KEY (`NotificationID`),
   UNIQUE KEY `NotificationID_UNIQUE` (`NotificationID`),
   KEY `UserID_KEY` (`UserUID`)
-) ENGINE=MyISAM AUTO_INCREMENT=7;
+) ENGINE=MYISAM AUTO_INCREMENT=7;
 
 /*Table structure for table `tblPlayer` */
 
 DROP TABLE IF EXISTS `tblPlayer`;
 
 CREATE TABLE `tblPlayer` (
-  `PlayerID` bigint(20) NOT NULL,
-  `Grade` tinyint(4) NOT NULL DEFAULT '0',
-  `Level` smallint(6) NOT NULL DEFAULT '1',
-  `Exp` bigint(20) NOT NULL DEFAULT '0',
-  `Money` bigint(20) NOT NULL DEFAULT '0',
-  `gem` bigint(20) NOT NULL DEFAULT '0',
-  `Stamina` smallint(6) NOT NULL DEFAULT '3',
-  `TotalPlayed` int NOT NULL DEFAULT '0',
-  `WinPlaySC` int NOT NULL DEFAULT '0',
-  `WinPlaySM` int NOT NULL DEFAULT '0',
-  `WinPlaySS` int NOT NULL DEFAULT '0',
-  `LosePlaySC` int NOT NULL DEFAULT '0',
-  `LosePlaySM` int NOT NULL DEFAULT '0',
-  `LosePlaySS` int NOT NULL DEFAULT '0',
-  `WinPlayNC` int NOT NULL DEFAULT '0',
-  `WinPlayNM` int NOT NULL DEFAULT '0',
-  `WInPlayNS` int NOT NULL DEFAULT '0',
-  `LosePlayNC` int NOT NULL DEFAULT '0',
-  `LosePlayNM` int NOT NULL DEFAULT '0',
-  `LosePlayNS` int NOT NULL DEFAULT '0',
-  `Updated` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `AddedFriendSlot` smallint(6) NOT NULL DEFAULT '0' COMMENT 'maximum friend slot',
-  `LatestTickTime` bigint(20) unsigned NOT NULL DEFAULT '0' COMMENT 'In game tick time(UTC sec)',
-  `LatestActiveTime` int(10) unsigned NOT NULL DEFAULT '0' COMMENT 'Lastest active time(UTCsec)',
-  `WeeklyWin` int(10) unsigned NOT NULL DEFAULT '0' COMMENT 'Weekly win count',
-  `WeeklyLose` int(10) unsigned NOT NULL DEFAULT '0' COMMENT 'Weekly lose count',
-  `PlayerState` smallint(20) unsigned NOT NULL DEFAULT '0' COMMENT 'Is in game?',
-  `GameNick` varchar(64) NOT NULL DEFAULT '' COMMENT 'Game nick name',
-  `ComplitionState` varchar(16) NOT NULL DEFAULT '' COMMENT 'ComplitionState',
+  `PlayerID` BIGINT NOT NULL,
+  `Grade` TINYINT NOT NULL DEFAULT '0',
+  `Level` SMALLINT NOT NULL DEFAULT '1',
+  `Exp` BIGINT NOT NULL DEFAULT '0',
+  `Money` BIGINT NOT NULL DEFAULT '0',
+  `gem` BIGINT NOT NULL DEFAULT '0',
+  `Stamina` SMALLINT NOT NULL DEFAULT '3',
+  `TotalPlayed` INT NOT NULL DEFAULT '0',
+  `WinPlaySC` INT NOT NULL DEFAULT '0',
+  `WinPlaySM` INT NOT NULL DEFAULT '0',
+  `WinPlaySS` INT NOT NULL DEFAULT '0',
+  `LosePlaySC` INT NOT NULL DEFAULT '0',
+  `LosePlaySM` INT NOT NULL DEFAULT '0',
+  `LosePlaySS` INT NOT NULL DEFAULT '0',
+  `WinPlayNC` INT NOT NULL DEFAULT '0',
+  `WinPlayNM` INT NOT NULL DEFAULT '0',
+  `WInPlayNS` INT NOT NULL DEFAULT '0',
+  `LosePlayNC` INT NOT NULL DEFAULT '0',
+  `LosePlayNM` INT NOT NULL DEFAULT '0',
+  `LosePlayNS` INT NOT NULL DEFAULT '0',
+  `Updated` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `AddedFriendSlot` SMALLINT NOT NULL DEFAULT '0' COMMENT 'maximum friend slot',
+  `LatestTickTime` BIGINT UNSIGNED NOT NULL DEFAULT '0' COMMENT 'In game tick time(UTC sec)',
+  `LatestActiveTime` INT UNSIGNED NOT NULL DEFAULT '0' COMMENT 'Lastest active time(UTCsec)',
+  `WeeklyWin` INT UNSIGNED NOT NULL DEFAULT '0' COMMENT 'Weekly win count',
+  `WeeklyLose` INT UNSIGNED NOT NULL DEFAULT '0' COMMENT 'Weekly lose count',
+  `PlayerState` SMALLINT UNSIGNED NOT NULL DEFAULT '0' COMMENT 'Is in game?',
+  `GameNick` VARCHAR(64) NOT NULL DEFAULT '' COMMENT 'Game nick name',
+  `ComplitionState` VARCHAR(16) NOT NULL DEFAULT '' COMMENT 'ComplitionState',
   PRIMARY KEY (`PlayerID`),
   UNIQUE KEY `PlayerID_UNIQUE` (`PlayerID`)
-) ENGINE=InnoDB;
+) ENGINE=INNODB;
 
 /*Table structure for table `tblShardInfo` */
 
 DROP TABLE IF EXISTS `tblShardInfo`;
 
 CREATE TABLE `tblShardInfo` (
-  `ShardID` int NOT NULL,
-  `ConnectionString` varchar(512) NOT NULL,
-  `DBName` varchar(128) NOT NULL,
+  `ShardID` INT NOT NULL,
+  `ConnectionString` VARCHAR(512) NOT NULL,
+  `DBName` VARCHAR(128) NOT NULL,
   PRIMARY KEY (`ShardID`)
-) ENGINE=InnoDB;
+) ENGINE=INNODB;
 
 /*Table structure for table `tblUsedPurchaseTokens` */
 
 DROP TABLE IF EXISTS `tblUsedPurchaseTokens`;
 
 CREATE TABLE `tblUsedPurchaseTokens` (
-  `PurchaseTime` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `PurchaseID` varbinary(64) NOT NULL,
-  `PurchaseToken` varchar(512) NOT NULL,
-  `PlayerID` bigint(20) NOT NULL,
+  `PurchaseTime` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `PurchaseID` VARBINARY(64) NOT NULL,
+  `PurchaseToken` VARCHAR(512) NOT NULL,
+  `PlayerID` BIGINT NOT NULL,
   PRIMARY KEY (`PurchaseID`),
   UNIQUE KEY `PurchaseIDIndex` (`PurchaseID`),
   KEY `PlayerIndex` (`PlayerID`)
-) ENGINE=InnoDB;
+) ENGINE=INNODB;
 
 /* Procedure structure for procedure `spCheckPurchaseID` */
 
@@ -168,7 +168,7 @@ BEGIN
 		WinPlayNC, WinPlayNM, WinPlayNS, LosePlayNC, LosePlayNM, LosePlayNS, 
 		WeeklyWin, WeeklyLose, LatestTickTime
 		FROM tblPlayer WHERE PlayerID = inPlayerID;
-	IF FOUND_ROWS() = 0 THEN
+	IF (SELECT COUNT(*) FROM tblPlayer WHERE PlayerID = inPlayerID) = 0 THEN
 	BEGIN
 		SET outResult = -1;
 	END;
@@ -298,7 +298,7 @@ BEGIN
 		FROM tblPlayer 
 		WHERE PlayerID = inPlayerID;
 		
-	IF FOUND_ROWS() = 0 THEN
+	IF (SELECT count(*) FROM tblPlayer WHERE PlayerID = inPlayerID) = 0 THEN
 	BEGIN
 		SET outResult = -1;
 	END;
@@ -354,7 +354,7 @@ BEGIN
 	set outResult = 0;
 	
 	select `Level`, `AddedFriendSlot` into outLevel, outAddedFriendSlot from tblPlayer where PlayerID = inPlayerID;
-	IF FOUND_ROWS() = 0 THEN
+	IF (select count(*) from tblPlayer where PlayerID = inPlayerID) = 0 THEN
 	BEGIN
 		SET outResult = -1;
 	END;
@@ -377,7 +377,7 @@ DELIMITER $$
 BEGIN
 	set outResult = 0;
 	select GameNick into outGameNick from tblPlayer where PlayerID = inPlayerID;
-	IF FOUND_ROWS() = 0 THEN
+	IF (select count(*) where PlayerID = inPlayerID) = 0 THEN
 	BEGIN
 		SET outResult = -1;
 	END;
@@ -404,7 +404,7 @@ BEGIN
 		WinPlayNC, WinPlayNM, WinPlayNS, LosePlayNC, LosePlayNM, LosePlayNS, 
 		WeeklyWin, WeeklyLose, LatestTickTime
 		from tblPlayer where PlayerID = inPlayerID;
-	if FOUND_ROWS() = 0 then
+	if (select count(*) from tblPlayer where PlayerID = inPlayerID) = 0 then
 	begin
 		set outResult = -1;
 	end;
@@ -452,7 +452,7 @@ BEGIN
 	SET outResult = 0;
 	SELECT LatestActiveTime, PlayerState into outLatestActiveTime, outPlayerState
 		FROM tblPlayer WHERE PlayerID = inPlayerID;
-	IF FOUND_ROWS() = 0 THEN
+	IF (select count(*) from tblPlayer where PlayerID = inPlayerID) = 0 THEN
 	BEGIN
 		SET outResult = -1;
 	END;

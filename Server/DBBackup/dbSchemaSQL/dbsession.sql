@@ -21,11 +21,11 @@ USE `dbSession00`;
 DROP TABLE IF EXISTS `tblSession`;
 
 CREATE TABLE `tblSession` (
-  `AuthTicket` bigint(20) unsigned NOT NULL,
-  `LoginEntityUID` bigint(20) unsigned NOT NULL DEFAULT '0',
-  `GameEntityUID` bigint(20) unsigned NOT NULL DEFAULT '0',
-  `Heartbit` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `PlayerID` bigint(20) NOT NULL,
+  `AuthTicket` BIGINT UNSIGNED NOT NULL,
+  `LoginEntityUID` BIGINT UNSIGNED NOT NULL DEFAULT '0',
+  `GameEntityUID` BIGINT UNSIGNED NOT NULL DEFAULT '0',
+  `Heartbit` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `PlayerID` BIGINT NOT NULL,
   PRIMARY KEY (`PlayerID`),
   KEY `PlayerIDIndex` (`AuthTicket`)
 ) ENGINE=MEMORY;

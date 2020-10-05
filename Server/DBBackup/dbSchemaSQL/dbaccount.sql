@@ -45,16 +45,16 @@ CREATE TABLE `tblShardInfo` (
 DROP TABLE IF EXISTS `tblUser`;
 
 CREATE TABLE `tblUser` (
-  `UserUID` BIGINT(20) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT 'User unique ID which is assigned by us',
+  `UserUID` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT COMMENT 'User unique ID which is assigned by us',
   `UserName` VARCHAR(128) DEFAULT NULL COMMENT 'User account name',
   `UserPassword` VARCHAR(128) DEFAULT NULL COMMENT 'Password',
-  `FBUserID` BIGINT(20) DEFAULT NULL COMMENT 'Facebook user ID',
+  `FBUserID` BIGINT DEFAULT NULL COMMENT 'Facebook user ID',
   `LatestLoggedIn` TIMESTAMP NULL DEFAULT NULL COMMENT 'Latest logged in time',
   `CreatedDate` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `LoginToken` VARCHAR(512) NOT NULL DEFAULT '0',
   `EMail` VARCHAR(45) DEFAULT NULL,
   `GCMKeys` VARCHAR(512) DEFAULT NULL,
-  `ShardID` INT(11) DEFAULT '0' COMMENT 'Sharding ID',
+  `ShardID` INT DEFAULT '0' COMMENT 'Sharding ID',
   `CellPhone` VARCHAR(64) NOT NULL DEFAULT '',
   PRIMARY KEY (`UserUID`),
   UNIQUE KEY `UserID_UNIQUE` (`UserUID`),

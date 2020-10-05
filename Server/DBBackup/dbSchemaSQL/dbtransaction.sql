@@ -21,25 +21,25 @@ USE `dbGameTransaction00`;
 DROP TABLE IF EXISTS `tblGameLog`;
 
 CREATE TABLE `tblGameLog` (
-  `LogTime` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `GameTime` int DEFAULT NULL,
-  `PlayerID` bigint(20) NOT NULL,
-  `LogCategory` char(1) NOT NULL,
-  `Consume` int(20) NOT NULL,
-  `Gain` int(20) NOT NULL,
-  `TotalValue` bigint(20) DEFAULT NULL,
-  `LogMessage` varchar(1024) NOT NULL,
+  `LogTime` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `GameTime` INT DEFAULT NULL,
+  `PlayerID` BIGINT NOT NULL,
+  `LogCategory` CHAR(1) NOT NULL,
+  `Consume` INT NOT NULL,
+  `Gain` INT NOT NULL,
+  `TotalValue` BIGINT DEFAULT NULL,
+  `LogMessage` VARCHAR(1024) NOT NULL,
   PRIMARY KEY (`LogTime`),
   KEY `PlayerByType` (`PlayerID`,`LogCategory`)
-) ENGINE=InnoDB;
+) ENGINE=INNODB;
 
 /*Table structure for table `tblShardInfo` */
 
 DROP TABLE IF EXISTS `tblShardInfo`;
 
 CREATE TABLE `tblShardInfo` (
-  `ShardID` int NOT NULL,
-  `ConnectionString` varchar(512) NOT NULL,
+  `ShardID` INT NOT NULL,
+  `ConnectionString` VARCHAR(512) NOT NULL,
   `DBName` varchar(128) NOT NULL,
   PRIMARY KEY (`ShardID`)
 ) ENGINE=InnoDB;
