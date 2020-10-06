@@ -339,7 +339,10 @@ namespace Svr {
 		// prepare service running
 		Result ServicePrepare()
 		{
-			SetCurrentDirectoryA(Util::GetModulePath());
+			if (ParameterSetting::GetSetting("UseModulePath"))
+			{
+				SetCurrentDirectoryA(Util::GetModulePath());
+			}
 
 			return ResultCode::SUCCESS;
 		}

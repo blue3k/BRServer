@@ -37,6 +37,7 @@ namespace Svr
 	ServerID GetMyServerID();
 
 
+	void InitializeEngine();
 
 	// Initialize and deinitialization
 	void InitializeEngineForServer();

@@ -17,13 +17,6 @@ using namespace SF;
 
 
 #if SF_PLATFORM == SF_PLATFORM_WINDOWS
-// int APIENTRY WinMain(HINSTANCE hInstance,
-	// HINSTANCE hPrevInstance,
-	// LPSTR    lpCmdLine,
-	// int       nCmdShow)
-// {
-	// UNREFERENCED_PARAMETER(hPrevInstance);
-	// UNREFERENCED_PARAMETER(lpCmdLine);
 int main(int numArg, const char* argc[])
 {
 
@@ -34,7 +27,6 @@ int main(int numArg, const char* argc[])
 #endif
 	_ASSERTE((hRes));
 
-	//ParameterSetting::ProcessParameter(lpCmdLine);
 	ParameterSetting::ProcessParameter(numArg, argc);
 
 #elif SF_PLATFORM == SF_PLATFORM_LINUX
@@ -43,18 +35,14 @@ int main(int numArg, const char* argc[])
 	ParameterSetting::ProcessParameter(numArg, argc);
 #endif
 
-
-
 	Result hr = ResultCode::SUCCESS;
 	SharedPointerT<ServerInstanceLauncher::ServerInstanceLauncher> pServerInstance;
 
 	svrChk(Svr::Service::ServicePrepare());
 
-	SF::Svr::InitializeEngineForServer();
-
+	SF::Svr::InitializeEngine();
 
 	pServerInstance = new(GetSystemHeap()) ServerInstanceLauncher::ServerInstanceLauncher;
-
 
 	svrChk(Svr::Service::ServiceRun((ServerInstanceLauncher::ServerInstanceLauncher*)pServerInstance));
 
@@ -70,8 +58,5 @@ Proc_End:
 
 	SF::Svr::DeinitializeEngine();
 
-
 	return (int)0;
 }
-
-

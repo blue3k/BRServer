@@ -52,10 +52,7 @@ namespace Svr {
 		return BrServer::GetInstance()->GetServerUID();
 	}
 
-
-
-	// Initialize and deinitialization
-	void InitializeEngineForServer()
+	void InitializeEngine()
 	{
 		char strLogPath[1024];
 		auto logPath = ParameterSetting::GetSetting("logpath", "../log");
@@ -64,15 +61,11 @@ namespace Svr {
 		auto zkconfig = ParameterSetting::GetSetting("zkconfig", "/ServerConfig");
 		SF::EngineInitParam initParam;
 
-
 		auto strServiceName = ParameterSetting::GetSetting("servicename");
 		if (!StrUtil::IsNullOrEmpty(strServiceName))
 			Util::SetServiceName(strServiceName);
 
-
-
-		auto modulePath = Util::GetModulePath();
-		StrUtil::Format(strLogPath, "{0}{1}", Util::GetModulePath(), logPath);
+		StrUtil::Format(strLogPath, "{0}", logPath);
 
 		StrUtil::StringCat(strLogPath, "/");
 		StrUtil::StringCat(strLogPath, Util::GetServiceName());
@@ -102,6 +95,13 @@ namespace Svr {
 		pEngine->AddComponent<ZookeeperSessionComponent>(zkaddress, ZOO_LOG_LEVEL_DEBUG);
 		pEngine->AddComponent<ServerConfigComponent>(zkconfig);
 
+	}
+
+	// Initialize and deinitialization
+	void InitializeEngineForServer()
+	{
+		InitializeEngine();
+
 		// Config can be accessed after ServerConfigComponent is initialized
 		auto pMyConfig = Service::ServerConfig->FindGenericServer(Util::GetServiceName());
 		if (pMyConfig == nullptr)
@@ -110,7 +110,11 @@ namespace Svr {
 			return;
 		}
 
+		auto pEngine = SF::Engine::GetInstance();
+		if (pEngine == nullptr)
+			return;
 
+		SF::EngineInitParam initParam;
 		pEngine->AddComponent<SF::Net::NetSystem>(initParam.NetRecvBufferSize, initParam.NetSendBufferSize, pMyConfig->NetIOThreadCount, 1024);
 		pEngine->AddComponent<ConnectionManagerComponent>(2048);
 		pEngine->AddComponent<EntityTable>();
@@ -128,7 +132,6 @@ namespace Svr {
 		if (!StrUtil::IsNullOrEmpty(strServiceName))
 			Util::SetServiceName(strServiceName);
 
-		auto modulePath = Util::GetModulePath();
 
 		initParam.LogOutputFile = LogChannelMask();
 

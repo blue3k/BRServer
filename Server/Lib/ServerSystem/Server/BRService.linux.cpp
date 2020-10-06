@@ -139,10 +139,13 @@ namespace Svr {
 		// prepare service running
 		Result ServicePrepare()
 		{
-			auto res = chdir(Util::GetModulePath());
-			if (res != 0)
+			if (ParameterSetting::GetSetting("UseModulePath"))
 			{
-				Assert(false);// failed to change directory
+				auto res = chdir(Util::GetModulePath());
+				if (res != 0)
+				{
+					Assert(false);// failed to change directory
+				}
 			}
 
 			auto serviceModeSetting = ParameterSetting::GetSetting("servicemode");
