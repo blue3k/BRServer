@@ -13,7 +13,7 @@
   <RankingDB ClusterType="Sharding" DBInstanceName="ranking" DBName="dbconspiracyranking" />
 
 
-  <ModuleServer UID="11" Name="BRLoginServer01" WorkerThreadCount="4" NetIOThreadCount="4">
+  <ModuleServer UID="11" Name="BRLoginServer01" Executable="BRModuleServer" WorkerThreadCount="4" NetIOThreadCount="4">
     <NetPrivate IP="192.168.0.6" Port="3010"/>
     <ModLogin>
       <NetPublic IPV4="192.168.0.6" IPV6="192.168.0.6" ListenIP="::" Port="21001" MaxConnection="200000"/>
@@ -26,7 +26,7 @@
     <GameDB ClusterType="Sharding" DBInstanceName="conspiracy00" DBName="dbconspiracy00" />
     <GameTransactionLogDB ClusterType="Sharding" DBInstanceName="gameTransactionLog00" DBName="dbgametransaction00" />
 
-    <ModuleServer UID="120" Name="BRMatchingQueue01" WorkerThreadCount="4" NetIOThreadCount="4" >
+    <ModuleServer UID="120" Name="BRMatchingQueue01" Executable="BRModuleServer" WorkerThreadCount="4" NetIOThreadCount="4" >
       <NetPrivate IP="192.168.0.6" Port="11000"/>
       <ModMatchingQueue_Game_4x1 />
       <ModMatchingQueue_Game_4x2 />
@@ -47,7 +47,7 @@
       <ModGamePartyManager/>
     </ModuleServer>
 
-    <Game UID="100" Name="BRConspiracyGameServer01" WorkerThreadCount="4" NetIOThreadCount="4">
+    <Game UID="100" Name="BRConspiracyGameServer01" Executable="BRGameServerConspriacy" WorkerThreadCount="4" NetIOThreadCount="4">
       <NetPrivate IP="192.168.0.6" Port="10000"/>
       <ModPurchaseValidateGoogle Account="35978052136-02p54tlecq40fnrurg3ci9enarpueadm@developer.gserviceaccount.com" P12KeyFile="conspiracy_google.p12" AuthScopes="https://www.googleapis.com/auth/androidpublisher"/>
       <ModPurchaseValidateIOS URL="https://buy.itunes.apple.com/verifyReceipt" AltURL="https://sandbox.itunes.apple.com/verifyReceipt"/>
@@ -56,7 +56,7 @@
       </ModGame>
     </Game>
 
-    <GameInstance UID="110" Name="BRConspiracyGameInstanceServer01" WorkerThreadCount="4" NetIOThreadCount="4" >
+    <GameInstance UID="110" Name="BRConspiracyGameInstanceServer01" Executable="BRGameInstanceServerConspiracy" WorkerThreadCount="4" NetIOThreadCount="4" >
       <NetPrivate IP="192.168.0.6" Port="10100"/>
     </GameInstance>
 

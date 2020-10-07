@@ -70,6 +70,12 @@ namespace SF {
 		si.cb = sizeof(si);
 		memset(&pi, 0, sizeof(pi));
 
+		char curDir[512]{};
+		DWORD dwLen = sizeof(curDir);
+
+		GetCurrentDirectoryA(dwLen, curDir);
+		svrTrace(Info, "Process dir:{0}", curDir);
+
 		if (!CreateProcessA(processPath,   // user process name as module name
 			(LPSTR)commandLine.data(),        // Command line
 			NULL,           // Process handle not inheritable

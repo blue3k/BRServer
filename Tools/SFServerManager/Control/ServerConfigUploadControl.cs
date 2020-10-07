@@ -36,7 +36,7 @@ namespace SFServerManager
                 textServerIP.Text = m_Setting.ConnectionString;
                 textConfigNodePath.Text = m_Setting.ConfigNodePath;
                 textCommandNodePath.Text = m_Setting.CommandNodePath;
-                textModulePath.Text = m_Setting.ModulePath;
+                comboBoxConfiguration.SelectedItem = m_Setting.Configuration;
 
                 for (int i = 0; i < m_Setting.XMLPaths.Count; i++)
                 {
@@ -139,7 +139,7 @@ namespace SFServerManager
 
         private void OnMoudlePathChanged(object sender, EventArgs e)
         {
-            m_Setting.ModulePath = textModulePath.Text;
+            m_Setting.Configuration = comboBoxConfiguration.SelectedItem as string;
         }
     }
 }

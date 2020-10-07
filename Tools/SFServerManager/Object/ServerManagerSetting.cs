@@ -80,8 +80,8 @@ namespace SFServerManager
         string m_CommandNodePath = "/BRServerCommand";
         public string CommandNodePath { get { return m_CommandNodePath; } set { m_CommandNodePath = value; } }
 
-        string m_ModulePath = "";
-        public string ModulePath { get { return m_ModulePath; } set { m_ModulePath = value; } }
+        string m_Configuration = "";
+        public string Configuration { get { return m_Configuration; } set { m_Configuration = value; } }
 
         [ImportingConstructor]
         public ServerManagerSetting(ISettingsService settingService)
@@ -113,22 +113,17 @@ namespace SFServerManager
                         "CommandNodePath".Localize(),
                         "ServerManager".Localize(),
                         "Zookeeper command node path".Localize()),
-                    new BoundPropertyDescriptor(this, () => ModulePath,
-                        "ModulePath".Localize(),
+                    new BoundPropertyDescriptor(this, () => Configuration,
+                        "Configuration".Localize(),
                         "ServerManager".Localize(),
-                        "Executable module path".Localize()),
+                        "Executable build configuration".Localize()),
                 };
                 m_SettingService.RegisterUserSettings("ServerManager", settings);
                 m_SettingService.RegisterSettings(this, settings);
             }
         }
 
-        
-
-
-
         ISettingsService m_SettingService = null;
     }
-
 
 }

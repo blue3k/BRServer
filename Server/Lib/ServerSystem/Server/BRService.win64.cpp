@@ -339,10 +339,17 @@ namespace Svr {
 		// prepare service running
 		Result ServicePrepare()
 		{
-			if (ParameterSetting::GetSetting("UseModulePath"))
+			if (!StrUtil::IsNullOrEmpty(ParameterSetting::GetSetting("UseModulePath")))
 			{
 				SetCurrentDirectoryA(Util::GetModulePath());
 			}
+
+			char curDir[512]{};
+			DWORD dwLen = sizeof(curDir);
+
+			GetCurrentDirectoryA(dwLen, curDir);
+			svrTrace(Info, "Process dir:{0}", curDir);
+
 
 			return ResultCode::SUCCESS;
 		}

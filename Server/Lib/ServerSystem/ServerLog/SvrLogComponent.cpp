@@ -186,18 +186,15 @@ namespace SF
 			if (strlen(m_ConfigFilePath) == 0)
 				return;
 
-			std::string strCfgPath = Util::GetModulePath();
-			strCfgPath.append(m_ConfigFilePath);
-
 			// Load when file time changed
 			struct stat st;
-			int ierr = stat(strCfgPath.c_str(), &st);
+			int ierr = stat(m_ConfigFilePath, &st);
 			if (m_LastConfigTimeStamp == st.st_mtime)
 				return;
 
 			m_LastConfigTimeStamp = st.st_mtime;
 
-			FILE *file = fopen(strCfgPath.c_str(), "r");
+			FILE *file = fopen(m_ConfigFilePath, "r");
 			if (file == nullptr)
 				return;
 

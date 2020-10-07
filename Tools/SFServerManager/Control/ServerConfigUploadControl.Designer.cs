@@ -48,7 +48,7 @@ namespace SFServerManager
             this.textCommandNodePath = new System.Windows.Forms.TextBox();
             this.textConfigNodePath = new System.Windows.Forms.TextBox();
             this.label5 = new System.Windows.Forms.Label();
-            this.textModulePath = new System.Windows.Forms.TextBox();
+            this.comboBoxConfiguration = new System.Windows.Forms.ComboBox();
             this.SuspendLayout();
             // 
             // listXMLFile
@@ -138,24 +138,27 @@ namespace SFServerManager
             this.label5.AutoSize = true;
             this.label5.Location = new System.Drawing.Point(15, 155);
             this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(64, 13);
+            this.label5.Size = new System.Drawing.Size(69, 13);
             this.label5.TabIndex = 10;
-            this.label5.Text = "ModulePath";
+            this.label5.Text = "Configuration";
             // 
-            // textModulePath
+            // comboBoxConfiguration
             // 
-            this.textModulePath.Location = new System.Drawing.Point(97, 152);
-            this.textModulePath.Name = "textModulePath";
-            this.textModulePath.Size = new System.Drawing.Size(548, 20);
-            this.textModulePath.TabIndex = 9;
-            this.textModulePath.TextChanged += new System.EventHandler(this.OnMoudlePathChanged);
+            this.comboBoxConfiguration.FormattingEnabled = true;
+            this.comboBoxConfiguration.Items.AddRange(new object[] {
+            "Debug",
+            "Release"});
+            this.comboBoxConfiguration.Location = new System.Drawing.Point(96, 155);
+            this.comboBoxConfiguration.Name = "comboBoxConfiguration";
+            this.comboBoxConfiguration.Size = new System.Drawing.Size(548, 21);
+            this.comboBoxConfiguration.TabIndex = 11;
             // 
             // ServerConfigUploadControl
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.Controls.Add(this.comboBoxConfiguration);
             this.Controls.Add(this.label5);
-            this.Controls.Add(this.textModulePath);
             this.Controls.Add(this.btnXMLBrowse);
             this.Controls.Add(this.label4);
             this.Controls.Add(this.textCommandNodePath);
@@ -185,6 +188,6 @@ namespace SFServerManager
         private System.Windows.Forms.TextBox textCommandNodePath;
         private System.Windows.Forms.TextBox textConfigNodePath;
         private System.Windows.Forms.Label label5;
-        private System.Windows.Forms.TextBox textModulePath;
+        private System.Windows.Forms.ComboBox comboBoxConfiguration;
     }
 }

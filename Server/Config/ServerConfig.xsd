@@ -103,6 +103,11 @@
 				<xs:documentation>Server Instance Name</xs:documentation>
 			</xs:annotation>
 		</xs:attribute>
+		<xs:attribute name="Executable" type="xs:string" use="required">
+			<xs:annotation>
+				<xs:documentation>Server executable</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
 		<xs:attribute name="WorkerThreadCount" type="xs:unsignedInt" use="required">
 			<xs:annotation>
 				<xs:documentation>Service Entity Thread count(Worker Thread count)</xs:documentation>

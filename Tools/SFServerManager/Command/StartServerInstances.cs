@@ -128,7 +128,7 @@ namespace SFServerManager.Command
 
             Outputs.WriteLine(OutputMessageType.Info, "Commencing Start Server Instances ");
 
-            string modulePath = m_Setting.ModulePath;
+            string configuration = m_Setting.Configuration;
             SFZookeeper zookeeper = m_ZookeeperSession.ZKInstance;
             if (zookeeper == null || !zookeeper.IsConnected())
             {
@@ -146,17 +146,9 @@ namespace SFServerManager.Command
 
             serverConfig.ForEachServer((SFServerConfig.GenericServer server) =>
             {
-                var serverInstanceName = server.Name;
-                // TODO: Better to have configuration
-                var isGameServer = serverInstanceName.StartsWith("BRConspiracyGameServer");
-                var isGameInstanceServer = serverInstanceName.StartsWith("BRConspiracyGameInstanceServer");
+                var serverInstanceName = server.Executable;
                 string commandValue;
-                if(isGameServer)
-                    commandValue = ZookeeperCommand.StartServerInstance(server.PrivateNet.IP, server.Name, "BRGameServer", modulePath);
-                else if(isGameInstanceServer)
-                    commandValue = ZookeeperCommand.StartServerInstance(server.PrivateNet.IP, server.Name, "BRGameInstanceServer", modulePath);
-                else
-                    commandValue = ZookeeperCommand.StartServerInstance(server.PrivateNet.IP, server.Name, "BRModuleServer", modulePath);
+                commandValue = ZookeeperCommand.StartServerInstance(server.PrivateNet.IP, server.Name, serverInstanceName, configuration);
 
                 var result = zookeeper.CreateNode(commandNode, commandValue, SFZookeeper.NODE_FLAG_SEQUENCE);
                 if (result != 0)

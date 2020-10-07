@@ -45,7 +45,7 @@ namespace SF
 	public:
 
 		// Constructor
-		ZookeeperSessionComponent(const char* serverAddresses, uint32_t zkLogLevel);
+		ZookeeperSessionComponent(const char* serverAddresses, uint32_t zkLogLevel = 4); // 4: ZOO_LOG_LEVEL_DEBUG
 		~ZookeeperSessionComponent();
 
 		// Heap

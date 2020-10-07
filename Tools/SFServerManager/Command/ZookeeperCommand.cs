@@ -84,10 +84,10 @@ namespace SFServerManager.Command
             public string ServerExecutionModule;
 
             /// <summary>
-            /// Module path
+            /// configuration
             /// </summary>
             [DataMember]
-            public string ModulePath;
+            public string Configuration;
         }
 
 
@@ -133,7 +133,7 @@ namespace SFServerManager.Command
             }
         }
 
-        static public string StartServerInstance(string ipAddress, string serverName, string serverExecutionModule, string modulePath)
+        static public string StartServerInstance(string ipAddress, string serverName, string serverExecutionModule, string configuration)
         {
             var valueObject = new ZKStartServerInstance()
             {
@@ -141,7 +141,7 @@ namespace SFServerManager.Command
                 IPAddress = ipAddress,
                 ServerInstanceName = serverName,
                 ServerExecutionModule = serverExecutionModule,
-                ModulePath = modulePath,
+                Configuration = configuration,
 
             };
 

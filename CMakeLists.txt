@@ -45,6 +45,8 @@ include_directories(AFTER
 	../StormForge/3rdParties/src/zlib/zlib-1.2.8
 	../StormForge/3rdParties/src/jsoncpp/jsoncpp/include
 	../StormForge/3rdParties/src/zookeeper/zookeeperConnector/include
+	../StormForge/3rdParties/src/rdkafka
+	../StormForge/3rdParties/src/rdkafka/librdkafka/src
 	../StormForge/Engine/Src/SFCore
 	../StormForge/Engine/Src/SFEngine
 	../StormForge/Engine/Src/Protocol
@@ -89,10 +91,10 @@ if(WIN32)
 		../StormForge/3rdParties/src/mysql/buildWindows/${ARTECTURE}/include
 	)
 	
-	set(PLATFORM_LIBS Ws2_32 Mswsock mysqlcppconn8 libcrypto libssl Dnsapi)
+	set(PLATFORM_LIBS Ws2_32 Mswsock Shlwapi mysqlcppconn8 libcrypto libssl Dnsapi)
 
 	link_directories(
-		../StormForge/build${CMAKE_SYSTEM_NAME}/${ARTECTURE}$(Configuration)/lib
+		#../StormForge/build${CMAKE_SYSTEM_NAME}/${ARTECTURE}$(Configuration)/lib
 		../StormForge/3rdParties/src/mysql/buildWindows/${ARTECTURE}/lib64/vs14
 		../StormForge/3rdParties/src/openssl/buildWindows/openssl/lib
 		Server/bin/lib/${ARTECTURE}$(Configuration)
@@ -141,6 +143,13 @@ endif()
 
 
 set(CMAKE_INSTALL_PREFIX ${CMAKE_CURRENT_SOURCE_DIR}/build${CMAKE_SYSTEM_NAME}/${ARTECTURE}${CMAKE_BUILD_TYPE})
+
+add_subdirectory(../StormForge/3rdParties SF3rdParties)
+add_subdirectory(../StormForge/Engine/Src/SFCore SFCore)
+add_subdirectory(../StormForge/Engine/Src/SFEngine SFEngine)
+add_subdirectory(../StormForge/Engine/Src/Protocol SFProtocol)
+add_subdirectory(../StormForge/Engine/Src/SFEngineDLL SFEngineDLL)
+add_subdirectory(../StormForge/Test SFTest)
 
 add_subdirectory(3rdParties)
 add_subdirectory(Server)

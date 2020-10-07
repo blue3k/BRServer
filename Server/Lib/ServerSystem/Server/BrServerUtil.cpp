@@ -21,6 +21,7 @@
 #include "ServerEntity/ServerEntityManager.h"
 #include "ServiceEntity/ClusterManagerServiceEntity.h"
 #include "Entity/EntityManager.h"
+#include "Util/SFPath.h"
 
 #include "SFEngine.h"
 #include "Component/SFServerNetComponent.h"
@@ -31,7 +32,7 @@
 #include "ServerLog/SvrLogComponent.h"
 #include "ServerLog/SFLogOutputPlayFabGSDK.h"
 #include "Service/ServerService.h"
-#include "zookeeper.h"
+
 
 namespace SF {
 namespace Svr {
@@ -65,10 +66,7 @@ namespace Svr {
 		if (!StrUtil::IsNullOrEmpty(strServiceName))
 			Util::SetServiceName(strServiceName);
 
-		StrUtil::Format(strLogPath, "{0}", logPath);
-
-		StrUtil::StringCat(strLogPath, "/");
-		StrUtil::StringCat(strLogPath, Util::GetServiceName());
+		StrUtil::Format(strLogPath, "{0}{1}{2}", logPath, Util::Path::DirectorySeparatorCharString, Util::GetServiceName());
 
 		initParam.LogFilePrefix = strLogPath;
 		initParam.LogOutputFile = LogChannelMask();
@@ -92,7 +90,7 @@ namespace Svr {
 
 		pEngine->AddComponent<ServerNetComponent>();
 		pEngine->AddComponent<ServerLogComponent>("..\\Config\\traceConfig.cfg");
-		pEngine->AddComponent<ZookeeperSessionComponent>(zkaddress, ZOO_LOG_LEVEL_DEBUG);
+		pEngine->AddComponent<ZookeeperSessionComponent>(zkaddress);
 		pEngine->AddComponent<ServerConfigComponent>(zkconfig);
 
 	}
