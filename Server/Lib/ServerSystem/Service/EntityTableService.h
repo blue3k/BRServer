@@ -62,7 +62,7 @@ namespace SF
 		virtual Result RouteTransaction(EntityID entityID, SharedPointerT<Svr::Transaction> &pTrans) { return ResultCode::FAIL; }
 
 		// Route Transaction result
-		virtual Result RouteTransactionResult(Svr::TransactionResult* &pRes) { return ResultCode::FAIL; }
+		virtual Result RouteTransactionResult(UniquePtr<Svr::TransactionResult> &pRes) { return ResultCode::FAIL; }
 	};
 
 	

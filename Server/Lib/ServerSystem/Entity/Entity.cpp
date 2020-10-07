@@ -315,7 +315,7 @@ namespace Svr
 	{
 		Result hr = ResultCode::SUCCESS;
 		MessageResult *pMsgRes = nullptr;
-		TransactionResult *pTransRes = nullptr;
+		UniquePtr<TransactionResult> pTransRes;
 		auto pMySvr = BrServer::GetInstance();
 		TransactionPtr pTransaction;
 
@@ -324,11 +324,12 @@ namespace Svr
 		svrChk( pMsgRes->SetMessage( pMsg ) );
 		pMsg = nullptr;
 
-		pTransRes = pMsgRes;
+		pTransRes.reset(pMsgRes);
+		pMsgRes = nullptr;
 
 		if (pTransRes->GetTransID().GetEntityID() != GetEntityID())
 		{
-			svrTrace(Warning, "Invalid message result routing Entity:{0}, msgID:{1} to Entity:{2}", GetEntityID(), pMsgRes->GetMsgID(), pTransRes->GetTransID().GetEntityID());
+			svrTrace(Warning, "Invalid message result routing Entity:{0}, msgID:{1} to Entity:{2}", GetEntityID(), pTransRes->GetMsgID(), pTransRes->GetTransID().GetEntityID());
 			goto Proc_End;
 		}
 		//assert(pTransRes->GetTransID().GetEntityID() == GetEntityID());
@@ -337,7 +338,7 @@ namespace Svr
 		{
 			if (!(FindActiveTransaction(pTransRes->GetTransID(), pTransaction)))
 			{
-				svrTrace(SVR_TRANSACTION, "Transaction result for TID:{0} is failed to route. msgid:{1}", pTransRes->GetTransID(), pMsgRes->GetMsgID());
+				svrTrace(SVR_TRANSACTION, "Transaction result for TID:{0} is failed to route. msgid:{1}", pTransRes->GetTransID(), pTransRes->GetMsgID());
 				goto Proc_End;// svrErr(ResultCode::FAIL);
 			}
 			svrChk(ProcessTransactionResult(pTransaction, pTransRes));
@@ -348,9 +349,6 @@ namespace Svr
 		}
 
 	Proc_End:
-
-
-		IHeap::Delete(pTransRes);
 
 		return hr;
 	}
@@ -443,12 +441,11 @@ namespace Svr
 		case Transaction::STATE_STARTED:
 			if (pTrans->CheckTimer())
 			{
-				TransactionResult *pTranRes = nullptr;
-				svrMem(pTranRes = new(GetHeap()) TimerResult);
+				UniquePtr<TransactionResult> pTranRes(new(GetHeap()) TimerResult);
+				svrMem(pTranRes);
 				pTrans->UpdateHeartBitTime();
 				pTrans->RecordTransactionHistory(pTranRes);
 				pTrans->ProcessTransaction(pTranRes);
-				IHeap::Delete(pTranRes);
 			}
 			else if (!(pTrans->CheckHeartBitTimeout()))// Transaction time out
 			{
@@ -493,7 +490,7 @@ namespace Svr
 	}
 
 	// Pending transaction result
-	Result Entity::PendingTransactionResult( TransactionResult* &pTransRes )
+	Result Entity::PendingTransactionResult(UniquePtr<TransactionResult>& pTransRes)
 	{
 		Result hr = ResultCode::SUCCESS;
 
@@ -502,13 +499,11 @@ namespace Svr
 
 		svrChkPtr( pTransRes );
 
-		svrChk(GetTaskManager()->AddEventTask(GetTaskGroupID(), ServerTaskEvent(this, pTransRes)));
-		pTransRes = nullptr;
+		// TODO: Use unique ptr in queue
+		svrChk(GetTaskManager()->AddEventTask(GetTaskGroupID(), ServerTaskEvent(this, pTransRes.get())));
+		pTransRes.release();
 		
 	Proc_End:
-
-		IHeap::Delete(pTransRes);
-		pTransRes = nullptr;
 
 		return hr;
 	}

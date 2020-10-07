@@ -291,9 +291,9 @@ namespace SF {
 			virtual Result StartTransaction();
 
 			// Process Transaction
-			virtual Result ProcessTransaction(TransactionResult*& pRes);
+			virtual Result ProcessTransaction(UniquePtr<TransactionResult>& pRes);
 
-			void	RecordTransactionHistory(TransactionResult* pRes);
+			void	RecordTransactionHistory(const UniquePtr<TransactionResult>& pRes);
 
 			virtual Result OnCloseTransaction(Result hrRes) { return ResultCode::SUCCESS; }
 
@@ -548,14 +548,18 @@ namespace SF {
 		//	SubTransaction + result
 		//
 
-		class SubTransactionWitResult : public SubTransaction, public TransactionResult
+		class SubTransactionWitResult : public SubTransaction
 		{
 		private:
 			bool	m_bFlushRes;
 
+			UniquePtr<TransactionResult> m_Result;
+
 		public:
 			SubTransactionWitResult(IHeap& memoryManager, TransactionID parentTransID, Message::MessageID MsgID);
 			virtual ~SubTransactionWitResult();
+
+			UniquePtr<TransactionResult>& GetResult() { return m_Result; }
 
 			// Get transaction ID
 			inline const TransactionID& GetTransID() const;

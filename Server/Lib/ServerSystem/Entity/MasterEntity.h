@@ -65,7 +65,7 @@ namespace Svr {
 		// Run the task
 		virtual Result TickUpdate(TimerAction *pAction = nullptr) override;
 
-		virtual Result ProcessTransactionResult(TransactionPtr &pCurTran, TransactionResult* &pTransRes) override;
+		virtual Result ProcessTransactionResult(TransactionPtr &pCurTran, UniquePtr<TransactionResult>& pTransRes) override;
 
 		virtual uint GetActiveTransactionCount() override;
 

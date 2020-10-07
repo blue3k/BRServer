@@ -293,7 +293,7 @@ namespace Svr
 		return hr;
 	}
 	
-	Result MasterEntity::ProcessTransactionResult(TransactionPtr &pCurTran, TransactionResult* &pTransRes)
+	Result MasterEntity::ProcessTransactionResult(TransactionPtr &pCurTran, UniquePtr<TransactionResult>& pTransRes)
 	{
 		Result hr = ResultCode::SUCCESS;
 		Result hrTem = ResultCode::SUCCESS;
@@ -344,9 +344,6 @@ namespace Svr
 
 	Proc_End:
 
-		IHeap::Delete(pTransRes);
-		pTransRes = nullptr;
-
 		return hr;
 	}
 
@@ -391,13 +388,14 @@ namespace Svr
 			{
 				if ((FindActiveTransaction(eventTask.EventData.pTransResultEvent->GetTransID(), pCurTran)))
 				{
-					ProcessTransactionResult(pCurTran, eventTask.EventData.pTransResultEvent);
+					UniquePtr<TransactionResult> pTransRes(std::forward<Svr::TransactionResult*>(eventTask.EventData.pTransResultEvent));
+					ProcessTransactionResult(pCurTran, pTransRes);
 				}
 				else
 				{
 					svrTrace(SVR_TRANSACTION, "Transaction result for TID:{0} is failed to route.", eventTask.EventData.pTransResultEvent->GetTransID());
 					auto pNonConstTransRes = const_cast<TransactionResult*>(eventTask.EventData.pTransResultEvent);
-					IHeap::Delete(pNonConstTransRes);
+					delete pNonConstTransRes;
 					svrErr(ResultCode::FAIL);
 				}
 			}

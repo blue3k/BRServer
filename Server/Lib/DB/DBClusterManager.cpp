@@ -436,42 +436,40 @@ Proc_End:
 	// Route query result to entity
 	Result	DBClusterManager::RouteResult(Query* &pQuery)
 	{
-		Result hr = ResultCode::SUCCESS;
-		Svr::TransactionResult *pRes = pQuery;
+		FunctionContext hr;
 
 		dbTrace(TRC_QUERY, "Query route result transID:{0} msg:{1}, class:{2}", pQuery->GetTransID(), pQuery->GetMsgID(), typeid(pQuery).name());
 
-		if( pRes->GetTransID() != TransactionID() )
+		if(pQuery->GetTransID() != TransactionID() )
 		{
+			UniquePtr<Svr::TransactionResult> pRes(pQuery);
+			pQuery = nullptr;
+
 			Svr::BrServer *pMyServer = Svr::BrServer::GetInstance();
-			dbChkPtr( pMyServer );
+			dbCheckPtr( pMyServer );
 
 			const char* queryName = typeid(*pRes).name();
 			auto msgID = pRes->GetMsgID();
 			auto entityID = pRes->GetTransID().GetEntityID();
 			hr = Service::EntityTable->RouteTransactionResult(pRes);
-			if (!(hr))
+			if (!hr)
 			{
 				dbTrace(TRC_ROUTING, "Failed to route a message hr:{0} msgID:{1}, target entityID:{2}, query:{3}", hr, msgID, entityID, queryName);
 				hr = ResultCode::INVALID_ENTITY;
-				goto Proc_End;
+				return hr;
 			}
 		}
 		else if (pQuery->GetMsgID().GetMsgID() == QueryGetShardListCmd::MID.GetMsgID())
 		{
-			m_ResultQueries.Enqueue(pQuery);
+			dbCheck(m_ResultQueries.Enqueue(pQuery));
 			pQuery = nullptr;
-			pRes = nullptr;
 		}
 		else
 		{
-			assert(pRes->GetTransID() == TransactionID()); // otherwise it's a lost transaction result
+			assert(pQuery->GetTransID() == TransactionID()); // otherwise it's a lost transaction result
+			delete pQuery;
+			pQuery = nullptr;
 		}
-
-	Proc_End:
-
-		pQuery = nullptr;
-		Util::SafeDelete( pRes );
 
 		return hr;
 	}

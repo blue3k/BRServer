@@ -126,7 +126,7 @@ namespace Svr {
 	}
 
 
-	Result SimpleEntity::ProcessTransactionResult(TransactionPtr &pCurTran, TransactionResult* &pTranRes)
+	Result SimpleEntity::ProcessTransactionResult(TransactionPtr &pCurTran, UniquePtr<TransactionResult>& pTranRes)
 	{
 		Result hr = ResultCode::SUCCESS;
 		Result hrTem = ResultCode::SUCCESS;
@@ -175,9 +175,6 @@ namespace Svr {
 		}
 
 	Proc_End:
-
-		IHeap::Delete(pTranRes);
-		pTranRes = nullptr;
 
 		return hr;
 	}

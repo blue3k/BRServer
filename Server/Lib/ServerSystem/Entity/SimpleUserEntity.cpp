@@ -402,13 +402,15 @@ namespace Svr
 			{
 				if ((FindActiveTransaction(eventTask.EventData.pTransResultEvent->GetTransID(), pCurTran)))
 				{
-					ProcessTransactionResult(pCurTran, eventTask.EventData.pTransResultEvent);
+					UniquePtr<TransactionResult> pTransRes(eventTask.EventData.pTransResultEvent);
+					eventTask.EventData.pTransResultEvent = nullptr;
+					ProcessTransactionResult(pCurTran, pTransRes);
 				}
 				else
 				{
 					svrTrace(Warning, "Transaction result for TID:{0} is failed to route.", eventTask.EventData.pTransResultEvent->GetTransID());
 					auto pRes = const_cast<TransactionResult*>(eventTask.EventData.pTransResultEvent);
-					IHeap::Delete(pRes);
+					delete pRes;
 					//svrErr(ResultCode::FAIL);
 				}
 			}

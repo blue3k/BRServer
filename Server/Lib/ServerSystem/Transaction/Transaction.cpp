@@ -135,7 +135,7 @@ namespace SF {
 			return hr;
 		}
 
-		void Transaction::RecordTransactionHistory(TransactionResult* pRes)
+		void Transaction::RecordTransactionHistory(const UniquePtr<TransactionResult>& pRes)
 		{
 			auto historyIndex = m_CurrentHistoryIdx++ % countof(m_History);
 			m_History[historyIndex].TimeStamp = Util::Time.GetTimeMs();
@@ -144,13 +144,13 @@ namespace SF {
 		}
 
 		// Process Transaction
-		Result Transaction::ProcessTransaction(TransactionResult*& pRes)
+		Result Transaction::ProcessTransaction(UniquePtr<TransactionResult>& pRes)
 		{
 			FunctionContext hr;
 
 			svrCheckPtr(pRes);
 
-			hr = m_Handlers.HandleMessage(pRes->GetMsgID(), pRes);
+			hr = m_Handlers.HandleMessage(pRes->GetMsgID(), pRes.get());
 			if (!hr)
 			{
 				if (hr == Result(ResultCode::SVR_NO_RESULT_HANDLER))
@@ -166,8 +166,6 @@ namespace SF {
 			{
 				hr = m_SubActionManager.Process();
 			}
-			delete pRes;
-
 
 			return hr;
 		}
@@ -242,11 +240,11 @@ namespace SF {
 		//
 
 		SubTransactionWitResult::SubTransactionWitResult(IHeap& memoryManager, TransactionID parentTransID, Message::MessageID MsgID)
-			:SubTransaction(memoryManager, parentTransID, MsgID),
-			m_bFlushRes(false)
+			:SubTransaction(memoryManager, parentTransID, MsgID)
+			, m_bFlushRes(false)
+			, m_Result(new TransactionResult(MsgID))
 		{
 			//SetDeleteByEntity(false);
-			TransactionResult::SetTransaction(parentTransID, MsgID);
 		}
 
 		SubTransactionWitResult::~SubTransactionWitResult()
@@ -255,23 +253,24 @@ namespace SF {
 
 		Result SubTransactionWitResult::CloseTransaction(Result hrRes)
 		{
-			Result hr = ResultCode::SUCCESS;
+			FunctionContext hr([this](Result hr)
+				{
+					SubTransaction::CloseTransaction(hr);
+				});
 
-			SetResult(hrRes);
+			if (m_Result)
+				m_Result->SetResult(hrRes);
 
 
 			if (IsClosed())
 			{
-				defErr(ResultCode::UNEXPECTED);
+				defError(ResultCode::UNEXPECTED);
 			}
 
-			if (!GetParentTransID().IsValid()) goto Proc_End;
+			if (!GetParentTransID().IsValid())
+				return hr;
 
 			m_bFlushRes = true;
-
-		Proc_End:
-
-			SubTransaction::CloseTransaction(hrRes);
 
 			return hr;
 		}
@@ -281,18 +280,14 @@ namespace SF {
 		// flush transaction result
 		Result SubTransactionWitResult::FlushTransaction()
 		{
-			Result hr = ResultCode::SUCCESS;
-			//TransactionResult *pRes = this;
+			FunctionContext hr;
 
 			SetClosed();
 
 			if (!m_bFlushRes)
-				goto Proc_End;
+				return hr;
 
 			m_bFlushRes = false;
-
-		Proc_End:
-
 
 			return hr;
 		}

@@ -140,7 +140,7 @@ namespace Svr {
 	}
 
 	// Route Transaction result
-	Result EntityTable::RouteTransactionResult( TransactionResult* &pRes )
+	Result EntityTable::RouteTransactionResult(UniquePtr<TransactionResult>& pRes)
 	{
 		Result hr = ResultCode::SUCCESS;
 		SharedPointerT<Entity> pEntity;
@@ -156,8 +156,6 @@ namespace Svr {
 		svrChk(pEntity->PendingTransactionResult(pRes));
 
 	Proc_End:
-
-		Util::SafeDelete(pRes);
 
 		return hr;
 	}

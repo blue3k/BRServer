@@ -198,9 +198,9 @@ namespace Svr{
 		virtual Result ProcessTransaction(TransactionPtr &pTrans);
 
 		// Pending transaction result
-		virtual Result PendingTransactionResult( TransactionResult* &pTransRes );
+		virtual Result PendingTransactionResult(UniquePtr<TransactionResult>& pTransRes);
 
-		virtual Result ProcessTransactionResult(TransactionPtr &pCurTran, TransactionResult* &pTransRes) = 0;
+		virtual Result ProcessTransactionResult(TransactionPtr &pCurTran, UniquePtr<TransactionResult>& pTransRes) = 0;
 
 
 	};

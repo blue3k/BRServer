@@ -38,6 +38,7 @@ namespace SF {
 
 namespace Svr{
 
+	// TODO: This is legacy task implementation. refactor to task
 
 	///////////////////////////////////////////////////////////////////////////////////////////////////////
 	//
@@ -123,9 +124,6 @@ namespace Svr{
 
 
 
-}; // namespace Svr
-}; // namespace SF
-
-
-
+} // namespace Svr
+} // namespace SF
 

@@ -84,11 +84,7 @@ namespace Svr
 
 				if (pTransaction->GetParentTransID() != TransactionID())
 				{
-					TransactionResult* pRes = pTransaction;
-					if ((Service::EntityTable->RouteTransactionResult(pRes)))
-					{
-						pTransaction = nullptr;
-					}
+					Service::EntityTable->RouteTransactionResult(pTransaction->GetResult());
 				}
 
 				if (pTransaction != nullptr)
