@@ -1,5 +1,5 @@
 
-cmake_minimum_required(VERSION 3.10)
+cmake_minimum_required(VERSION 3.16)
 
 set(CMAKE_C_COMPILER clang)
 #set(CMAKE_CXX_COMPILER clang++)
@@ -20,7 +20,8 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /std:c++17")
 endif(MSVC)
 
 
-
+add_definitions(-DTHREADED)
+add_definitions(-DUSE_STATIC_LIB)
 add_definitions(-DHAVE_CONFIG_H)
 add_definitions(-DCURL_STATICLIB)
 add_definitions(-DHAVE_STDDEF_H=1)

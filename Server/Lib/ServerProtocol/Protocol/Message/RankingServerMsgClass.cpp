@@ -41,10 +41,10 @@ namespace SF
 				auto* input = inputStream.ToInputStream();
 				uint16_t ArrayLen = 0;
 
-				protocolCheck(input->Read(m_RouteContext));
-				protocolCheck(input->Read(m_TransactionID));
-				protocolCheck(input->Read(m_PlayerInfo));
-				protocolCheck(input->Read(m_RankingScore));
+				protocolCheck(*input >> m_RouteContext);
+				protocolCheck(*input >> m_TransactionID);
+				protocolCheck(*input >> m_PlayerInfo);
+				protocolCheck(*input >> m_RankingScore);
 
 				return hr;
 
@@ -66,7 +66,7 @@ namespace SF
 			MessageData* AddPlayerCmd::Create( IHeap& memHeap, const RouteContext &InRouteContext, const uint64_t &InTransactionID, const PlayerInformation &InPlayerInfo, const uint64_t &InRankingScore )
 			{
  				MessageData *pNewMsg = nullptr;
-				FunctionContext hr([pNewMsg](Result hr) -> MessageData*
+				FunctionContext hr([&pNewMsg](Result hr) -> MessageData*
 				{
  					if(!hr && pNewMsg != nullptr)
 					{
@@ -86,15 +86,15 @@ namespace SF
 				);
 
 				protocolCheckMem( pNewMsg = MessageData::NewMessage( memHeap, RankingServer::AddPlayerCmd::MID, __uiMessageSize ) );
-				size_t MsgDataSize = (int)((size_t)pNewMsg->GetMessageSize() - sizeof(MessageHeader));
-				ArrayView<uint8_t> BufferView(MsgDataSize, pNewMsg->GetMessageData());
+				auto MsgDataSize = static_cast<uint>((size_t)pNewMsg->GetMessageSize() - sizeof(MessageHeader));
+				ArrayView<uint8_t> BufferView(MsgDataSize, 0, pNewMsg->GetMessageData());
 				OutputMemoryStream outputStream(BufferView);
 				auto* output = outputStream.ToOutputStream();
 
-				protocolCheck(output->Write(InRouteContext));
-				protocolCheck(output->Write(InTransactionID));
-				protocolCheck(output->Write(InPlayerInfo));
-				protocolCheck(output->Write(InRankingScore));
+				protocolCheck(*output << InRouteContext);
+				protocolCheck(*output << InTransactionID);
+				protocolCheck(*output << InPlayerInfo);
+				protocolCheck(*output << InRankingScore);
 
 				return hr;
 			}; // MessageData* AddPlayerCmd::Create( IHeap& memHeap, const RouteContext &InRouteContext, const uint64_t &InTransactionID, const PlayerInformation &InPlayerInfo, const uint64_t &InRankingScore )
@@ -149,10 +149,10 @@ namespace SF
 				auto* input = inputStream.ToInputStream();
 				uint16_t ArrayLen = 0;
 
-				protocolCheck(input->Read(m_RouteContext));
-				protocolCheck(input->Read(m_TransactionID));
-				protocolCheck(input->Read(m_Result));
-				protocolCheck(input->Read(m_Ranking));
+				protocolCheck(*input >> m_RouteContext);
+				protocolCheck(*input >> m_TransactionID);
+				protocolCheck(*input >> m_Result);
+				protocolCheck(*input >> m_Ranking);
 
 				return hr;
 
@@ -174,7 +174,7 @@ namespace SF
 			MessageData* AddPlayerRes::Create( IHeap& memHeap, const RouteContext &InRouteContext, const uint64_t &InTransactionID, const Result &InResult, const uint32_t &InRanking )
 			{
  				MessageData *pNewMsg = nullptr;
-				FunctionContext hr([pNewMsg](Result hr) -> MessageData*
+				FunctionContext hr([&pNewMsg](Result hr) -> MessageData*
 				{
  					if(!hr && pNewMsg != nullptr)
 					{
@@ -194,15 +194,15 @@ namespace SF
 				);
 
 				protocolCheckMem( pNewMsg = MessageData::NewMessage( memHeap, RankingServer::AddPlayerRes::MID, __uiMessageSize ) );
-				size_t MsgDataSize = (int)((size_t)pNewMsg->GetMessageSize() - sizeof(MessageHeader));
-				ArrayView<uint8_t> BufferView(MsgDataSize, pNewMsg->GetMessageData());
+				auto MsgDataSize = static_cast<uint>((size_t)pNewMsg->GetMessageSize() - sizeof(MessageHeader));
+				ArrayView<uint8_t> BufferView(MsgDataSize, 0, pNewMsg->GetMessageData());
 				OutputMemoryStream outputStream(BufferView);
 				auto* output = outputStream.ToOutputStream();
 
-				protocolCheck(output->Write(InRouteContext));
-				protocolCheck(output->Write(InTransactionID));
-				protocolCheck(output->Write(InResult));
-				protocolCheck(output->Write(InRanking));
+				protocolCheck(*output << InRouteContext);
+				protocolCheck(*output << InTransactionID);
+				protocolCheck(*output << InResult);
+				protocolCheck(*output << InRanking);
 
 				return hr;
 			}; // MessageData* AddPlayerRes::Create( IHeap& memHeap, const RouteContext &InRouteContext, const uint64_t &InTransactionID, const Result &InResult, const uint32_t &InRanking )
@@ -258,9 +258,9 @@ namespace SF
 				auto* input = inputStream.ToInputStream();
 				uint16_t ArrayLen = 0;
 
-				protocolCheck(input->Read(m_RouteContext));
-				protocolCheck(input->Read(m_TransactionID));
-				protocolCheck(input->Read(m_PlayerID));
+				protocolCheck(*input >> m_RouteContext);
+				protocolCheck(*input >> m_TransactionID);
+				protocolCheck(*input >> m_PlayerID);
 
 				return hr;
 
@@ -282,7 +282,7 @@ namespace SF
 			MessageData* RemovePlayerCmd::Create( IHeap& memHeap, const RouteContext &InRouteContext, const uint64_t &InTransactionID, const PlayerID &InPlayerID )
 			{
  				MessageData *pNewMsg = nullptr;
-				FunctionContext hr([pNewMsg](Result hr) -> MessageData*
+				FunctionContext hr([&pNewMsg](Result hr) -> MessageData*
 				{
  					if(!hr && pNewMsg != nullptr)
 					{
@@ -301,14 +301,14 @@ namespace SF
 				);
 
 				protocolCheckMem( pNewMsg = MessageData::NewMessage( memHeap, RankingServer::RemovePlayerCmd::MID, __uiMessageSize ) );
-				size_t MsgDataSize = (int)((size_t)pNewMsg->GetMessageSize() - sizeof(MessageHeader));
-				ArrayView<uint8_t> BufferView(MsgDataSize, pNewMsg->GetMessageData());
+				auto MsgDataSize = static_cast<uint>((size_t)pNewMsg->GetMessageSize() - sizeof(MessageHeader));
+				ArrayView<uint8_t> BufferView(MsgDataSize, 0, pNewMsg->GetMessageData());
 				OutputMemoryStream outputStream(BufferView);
 				auto* output = outputStream.ToOutputStream();
 
-				protocolCheck(output->Write(InRouteContext));
-				protocolCheck(output->Write(InTransactionID));
-				protocolCheck(output->Write(InPlayerID));
+				protocolCheck(*output << InRouteContext);
+				protocolCheck(*output << InTransactionID);
+				protocolCheck(*output << InPlayerID);
 
 				return hr;
 			}; // MessageData* RemovePlayerCmd::Create( IHeap& memHeap, const RouteContext &InRouteContext, const uint64_t &InTransactionID, const PlayerID &InPlayerID )
@@ -363,9 +363,9 @@ namespace SF
 				auto* input = inputStream.ToInputStream();
 				uint16_t ArrayLen = 0;
 
-				protocolCheck(input->Read(m_RouteContext));
-				protocolCheck(input->Read(m_TransactionID));
-				protocolCheck(input->Read(m_Result));
+				protocolCheck(*input >> m_RouteContext);
+				protocolCheck(*input >> m_TransactionID);
+				protocolCheck(*input >> m_Result);
 
 				return hr;
 
@@ -387,7 +387,7 @@ namespace SF
 			MessageData* RemovePlayerRes::Create( IHeap& memHeap, const RouteContext &InRouteContext, const uint64_t &InTransactionID, const Result &InResult )
 			{
  				MessageData *pNewMsg = nullptr;
-				FunctionContext hr([pNewMsg](Result hr) -> MessageData*
+				FunctionContext hr([&pNewMsg](Result hr) -> MessageData*
 				{
  					if(!hr && pNewMsg != nullptr)
 					{
@@ -406,14 +406,14 @@ namespace SF
 				);
 
 				protocolCheckMem( pNewMsg = MessageData::NewMessage( memHeap, RankingServer::RemovePlayerRes::MID, __uiMessageSize ) );
-				size_t MsgDataSize = (int)((size_t)pNewMsg->GetMessageSize() - sizeof(MessageHeader));
-				ArrayView<uint8_t> BufferView(MsgDataSize, pNewMsg->GetMessageData());
+				auto MsgDataSize = static_cast<uint>((size_t)pNewMsg->GetMessageSize() - sizeof(MessageHeader));
+				ArrayView<uint8_t> BufferView(MsgDataSize, 0, pNewMsg->GetMessageData());
 				OutputMemoryStream outputStream(BufferView);
 				auto* output = outputStream.ToOutputStream();
 
-				protocolCheck(output->Write(InRouteContext));
-				protocolCheck(output->Write(InTransactionID));
-				protocolCheck(output->Write(InResult));
+				protocolCheck(*output << InRouteContext);
+				protocolCheck(*output << InTransactionID);
+				protocolCheck(*output << InResult);
 
 				return hr;
 			}; // MessageData* RemovePlayerRes::Create( IHeap& memHeap, const RouteContext &InRouteContext, const uint64_t &InTransactionID, const Result &InResult )
@@ -469,9 +469,9 @@ namespace SF
 				auto* input = inputStream.ToInputStream();
 				uint16_t ArrayLen = 0;
 
-				protocolCheck(input->Read(m_RouteContext));
-				protocolCheck(input->Read(m_TransactionID));
-				protocolCheck(input->Read(m_PlayerID));
+				protocolCheck(*input >> m_RouteContext);
+				protocolCheck(*input >> m_TransactionID);
+				protocolCheck(*input >> m_PlayerID);
 
 				return hr;
 
@@ -493,7 +493,7 @@ namespace SF
 			MessageData* GetPlayerRankingCmd::Create( IHeap& memHeap, const RouteContext &InRouteContext, const uint64_t &InTransactionID, const PlayerID &InPlayerID )
 			{
  				MessageData *pNewMsg = nullptr;
-				FunctionContext hr([pNewMsg](Result hr) -> MessageData*
+				FunctionContext hr([&pNewMsg](Result hr) -> MessageData*
 				{
  					if(!hr && pNewMsg != nullptr)
 					{
@@ -512,14 +512,14 @@ namespace SF
 				);
 
 				protocolCheckMem( pNewMsg = MessageData::NewMessage( memHeap, RankingServer::GetPlayerRankingCmd::MID, __uiMessageSize ) );
-				size_t MsgDataSize = (int)((size_t)pNewMsg->GetMessageSize() - sizeof(MessageHeader));
-				ArrayView<uint8_t> BufferView(MsgDataSize, pNewMsg->GetMessageData());
+				auto MsgDataSize = static_cast<uint>((size_t)pNewMsg->GetMessageSize() - sizeof(MessageHeader));
+				ArrayView<uint8_t> BufferView(MsgDataSize, 0, pNewMsg->GetMessageData());
 				OutputMemoryStream outputStream(BufferView);
 				auto* output = outputStream.ToOutputStream();
 
-				protocolCheck(output->Write(InRouteContext));
-				protocolCheck(output->Write(InTransactionID));
-				protocolCheck(output->Write(InPlayerID));
+				protocolCheck(*output << InRouteContext);
+				protocolCheck(*output << InTransactionID);
+				protocolCheck(*output << InPlayerID);
 
 				return hr;
 			}; // MessageData* GetPlayerRankingCmd::Create( IHeap& memHeap, const RouteContext &InRouteContext, const uint64_t &InTransactionID, const PlayerID &InPlayerID )
@@ -574,10 +574,10 @@ namespace SF
 				auto* input = inputStream.ToInputStream();
 				uint16_t ArrayLen = 0;
 
-				protocolCheck(input->Read(m_RouteContext));
-				protocolCheck(input->Read(m_TransactionID));
-				protocolCheck(input->Read(m_Result));
-				protocolCheck(input->Read(m_Ranking));
+				protocolCheck(*input >> m_RouteContext);
+				protocolCheck(*input >> m_TransactionID);
+				protocolCheck(*input >> m_Result);
+				protocolCheck(*input >> m_Ranking);
 
 				return hr;
 
@@ -599,7 +599,7 @@ namespace SF
 			MessageData* GetPlayerRankingRes::Create( IHeap& memHeap, const RouteContext &InRouteContext, const uint64_t &InTransactionID, const Result &InResult, const uint32_t &InRanking )
 			{
  				MessageData *pNewMsg = nullptr;
-				FunctionContext hr([pNewMsg](Result hr) -> MessageData*
+				FunctionContext hr([&pNewMsg](Result hr) -> MessageData*
 				{
  					if(!hr && pNewMsg != nullptr)
 					{
@@ -619,15 +619,15 @@ namespace SF
 				);
 
 				protocolCheckMem( pNewMsg = MessageData::NewMessage( memHeap, RankingServer::GetPlayerRankingRes::MID, __uiMessageSize ) );
-				size_t MsgDataSize = (int)((size_t)pNewMsg->GetMessageSize() - sizeof(MessageHeader));
-				ArrayView<uint8_t> BufferView(MsgDataSize, pNewMsg->GetMessageData());
+				auto MsgDataSize = static_cast<uint>((size_t)pNewMsg->GetMessageSize() - sizeof(MessageHeader));
+				ArrayView<uint8_t> BufferView(MsgDataSize, 0, pNewMsg->GetMessageData());
 				OutputMemoryStream outputStream(BufferView);
 				auto* output = outputStream.ToOutputStream();
 
-				protocolCheck(output->Write(InRouteContext));
-				protocolCheck(output->Write(InTransactionID));
-				protocolCheck(output->Write(InResult));
-				protocolCheck(output->Write(InRanking));
+				protocolCheck(*output << InRouteContext);
+				protocolCheck(*output << InTransactionID);
+				protocolCheck(*output << InResult);
+				protocolCheck(*output << InRanking);
 
 				return hr;
 			}; // MessageData* GetPlayerRankingRes::Create( IHeap& memHeap, const RouteContext &InRouteContext, const uint64_t &InTransactionID, const Result &InResult, const uint32_t &InRanking )
@@ -683,11 +683,11 @@ namespace SF
 				auto* input = inputStream.ToInputStream();
 				uint16_t ArrayLen = 0;
 
-				protocolCheck(input->Read(m_RouteContext));
-				protocolCheck(input->Read(m_TransactionID));
-				protocolCheck(input->Read(m_RankingScore));
-				protocolCheck(input->Read(m_PlayerInfo));
-				protocolCheck(input->Read(m_Count));
+				protocolCheck(*input >> m_RouteContext);
+				protocolCheck(*input >> m_TransactionID);
+				protocolCheck(*input >> m_RankingScore);
+				protocolCheck(*input >> m_PlayerInfo);
+				protocolCheck(*input >> m_Count);
 
 				return hr;
 
@@ -709,7 +709,7 @@ namespace SF
 			MessageData* UpdatePlayerScoreCmd::Create( IHeap& memHeap, const RouteContext &InRouteContext, const uint64_t &InTransactionID, const uint64_t &InRankingScore, const PlayerInformation &InPlayerInfo, const uint16_t &InCount )
 			{
  				MessageData *pNewMsg = nullptr;
-				FunctionContext hr([pNewMsg](Result hr) -> MessageData*
+				FunctionContext hr([&pNewMsg](Result hr) -> MessageData*
 				{
  					if(!hr && pNewMsg != nullptr)
 					{
@@ -730,16 +730,16 @@ namespace SF
 				);
 
 				protocolCheckMem( pNewMsg = MessageData::NewMessage( memHeap, RankingServer::UpdatePlayerScoreCmd::MID, __uiMessageSize ) );
-				size_t MsgDataSize = (int)((size_t)pNewMsg->GetMessageSize() - sizeof(MessageHeader));
-				ArrayView<uint8_t> BufferView(MsgDataSize, pNewMsg->GetMessageData());
+				auto MsgDataSize = static_cast<uint>((size_t)pNewMsg->GetMessageSize() - sizeof(MessageHeader));
+				ArrayView<uint8_t> BufferView(MsgDataSize, 0, pNewMsg->GetMessageData());
 				OutputMemoryStream outputStream(BufferView);
 				auto* output = outputStream.ToOutputStream();
 
-				protocolCheck(output->Write(InRouteContext));
-				protocolCheck(output->Write(InTransactionID));
-				protocolCheck(output->Write(InRankingScore));
-				protocolCheck(output->Write(InPlayerInfo));
-				protocolCheck(output->Write(InCount));
+				protocolCheck(*output << InRouteContext);
+				protocolCheck(*output << InTransactionID);
+				protocolCheck(*output << InRankingScore);
+				protocolCheck(*output << InPlayerInfo);
+				protocolCheck(*output << InCount);
 
 				return hr;
 			}; // MessageData* UpdatePlayerScoreCmd::Create( IHeap& memHeap, const RouteContext &InRouteContext, const uint64_t &InTransactionID, const uint64_t &InRankingScore, const PlayerInformation &InPlayerInfo, const uint16_t &InCount )
@@ -794,9 +794,9 @@ namespace SF
 				auto* input = inputStream.ToInputStream();
 				uint16_t ArrayLen = 0;
 
-				protocolCheck(input->Read(m_RouteContext));
-				protocolCheck(input->Read(m_TransactionID));
-				protocolCheck(input->Read(m_Result));
+				protocolCheck(*input >> m_RouteContext);
+				protocolCheck(*input >> m_TransactionID);
+				protocolCheck(*input >> m_Result);
 				protocolCheck(input->Read(ArrayLen));
 				TotalRankingPlayerInformation* RankingPtr = nullptr;
 				protocolCheck(input->ReadLink(RankingPtr, ArrayLen));
@@ -822,7 +822,7 @@ namespace SF
 			MessageData* UpdatePlayerScoreRes::Create( IHeap& memHeap, const RouteContext &InRouteContext, const uint64_t &InTransactionID, const Result &InResult, const Array<TotalRankingPlayerInformation>& InRanking )
 			{
  				MessageData *pNewMsg = nullptr;
-				FunctionContext hr([pNewMsg](Result hr) -> MessageData*
+				FunctionContext hr([&pNewMsg](Result hr) -> MessageData*
 				{
  					if(!hr && pNewMsg != nullptr)
 					{
@@ -843,15 +843,15 @@ namespace SF
 				);
 
 				protocolCheckMem( pNewMsg = MessageData::NewMessage( memHeap, RankingServer::UpdatePlayerScoreRes::MID, __uiMessageSize ) );
-				size_t MsgDataSize = (int)((size_t)pNewMsg->GetMessageSize() - sizeof(MessageHeader));
-				ArrayView<uint8_t> BufferView(MsgDataSize, pNewMsg->GetMessageData());
+				auto MsgDataSize = static_cast<uint>((size_t)pNewMsg->GetMessageSize() - sizeof(MessageHeader));
+				ArrayView<uint8_t> BufferView(MsgDataSize, 0, pNewMsg->GetMessageData());
 				OutputMemoryStream outputStream(BufferView);
 				auto* output = outputStream.ToOutputStream();
 
-				protocolCheck(output->Write(InRouteContext));
-				protocolCheck(output->Write(InTransactionID));
-				protocolCheck(output->Write(InResult));
-				protocolCheck(output->Write(InRanking));
+				protocolCheck(*output << InRouteContext);
+				protocolCheck(*output << InTransactionID);
+				protocolCheck(*output << InResult);
+				protocolCheck(*output << InRanking);
 
 				return hr;
 			}; // MessageData* UpdatePlayerScoreRes::Create( IHeap& memHeap, const RouteContext &InRouteContext, const uint64_t &InTransactionID, const Result &InResult, const Array<TotalRankingPlayerInformation>& InRanking )
@@ -907,11 +907,11 @@ namespace SF
 				auto* input = inputStream.ToInputStream();
 				uint16_t ArrayLen = 0;
 
-				protocolCheck(input->Read(m_RouteContext));
-				protocolCheck(input->Read(m_TransactionID));
-				protocolCheck(input->Read(m_RankingType));
-				protocolCheck(input->Read(m_BaseRanking));
-				protocolCheck(input->Read(m_Count));
+				protocolCheck(*input >> m_RouteContext);
+				protocolCheck(*input >> m_TransactionID);
+				protocolCheck(*input >> m_RankingType);
+				protocolCheck(*input >> m_BaseRanking);
+				protocolCheck(*input >> m_Count);
 
 				return hr;
 
@@ -933,7 +933,7 @@ namespace SF
 			MessageData* GetRankingCmd::Create( IHeap& memHeap, const RouteContext &InRouteContext, const uint64_t &InTransactionID, const RankingType &InRankingType, const uint16_t &InBaseRanking, const uint16_t &InCount )
 			{
  				MessageData *pNewMsg = nullptr;
-				FunctionContext hr([pNewMsg](Result hr) -> MessageData*
+				FunctionContext hr([&pNewMsg](Result hr) -> MessageData*
 				{
  					if(!hr && pNewMsg != nullptr)
 					{
@@ -954,16 +954,16 @@ namespace SF
 				);
 
 				protocolCheckMem( pNewMsg = MessageData::NewMessage( memHeap, RankingServer::GetRankingCmd::MID, __uiMessageSize ) );
-				size_t MsgDataSize = (int)((size_t)pNewMsg->GetMessageSize() - sizeof(MessageHeader));
-				ArrayView<uint8_t> BufferView(MsgDataSize, pNewMsg->GetMessageData());
+				auto MsgDataSize = static_cast<uint>((size_t)pNewMsg->GetMessageSize() - sizeof(MessageHeader));
+				ArrayView<uint8_t> BufferView(MsgDataSize, 0, pNewMsg->GetMessageData());
 				OutputMemoryStream outputStream(BufferView);
 				auto* output = outputStream.ToOutputStream();
 
-				protocolCheck(output->Write(InRouteContext));
-				protocolCheck(output->Write(InTransactionID));
-				protocolCheck(output->Write(InRankingType));
-				protocolCheck(output->Write(InBaseRanking));
-				protocolCheck(output->Write(InCount));
+				protocolCheck(*output << InRouteContext);
+				protocolCheck(*output << InTransactionID);
+				protocolCheck(*output << InRankingType);
+				protocolCheck(*output << InBaseRanking);
+				protocolCheck(*output << InCount);
 
 				return hr;
 			}; // MessageData* GetRankingCmd::Create( IHeap& memHeap, const RouteContext &InRouteContext, const uint64_t &InTransactionID, const RankingType &InRankingType, const uint16_t &InBaseRanking, const uint16_t &InCount )
@@ -1018,9 +1018,9 @@ namespace SF
 				auto* input = inputStream.ToInputStream();
 				uint16_t ArrayLen = 0;
 
-				protocolCheck(input->Read(m_RouteContext));
-				protocolCheck(input->Read(m_TransactionID));
-				protocolCheck(input->Read(m_Result));
+				protocolCheck(*input >> m_RouteContext);
+				protocolCheck(*input >> m_TransactionID);
+				protocolCheck(*input >> m_Result);
 				protocolCheck(input->Read(ArrayLen));
 				TotalRankingPlayerInformation* RankingPtr = nullptr;
 				protocolCheck(input->ReadLink(RankingPtr, ArrayLen));
@@ -1046,7 +1046,7 @@ namespace SF
 			MessageData* GetRankingRes::Create( IHeap& memHeap, const RouteContext &InRouteContext, const uint64_t &InTransactionID, const Result &InResult, const Array<TotalRankingPlayerInformation>& InRanking )
 			{
  				MessageData *pNewMsg = nullptr;
-				FunctionContext hr([pNewMsg](Result hr) -> MessageData*
+				FunctionContext hr([&pNewMsg](Result hr) -> MessageData*
 				{
  					if(!hr && pNewMsg != nullptr)
 					{
@@ -1067,15 +1067,15 @@ namespace SF
 				);
 
 				protocolCheckMem( pNewMsg = MessageData::NewMessage( memHeap, RankingServer::GetRankingRes::MID, __uiMessageSize ) );
-				size_t MsgDataSize = (int)((size_t)pNewMsg->GetMessageSize() - sizeof(MessageHeader));
-				ArrayView<uint8_t> BufferView(MsgDataSize, pNewMsg->GetMessageData());
+				auto MsgDataSize = static_cast<uint>((size_t)pNewMsg->GetMessageSize() - sizeof(MessageHeader));
+				ArrayView<uint8_t> BufferView(MsgDataSize, 0, pNewMsg->GetMessageData());
 				OutputMemoryStream outputStream(BufferView);
 				auto* output = outputStream.ToOutputStream();
 
-				protocolCheck(output->Write(InRouteContext));
-				protocolCheck(output->Write(InTransactionID));
-				protocolCheck(output->Write(InResult));
-				protocolCheck(output->Write(InRanking));
+				protocolCheck(*output << InRouteContext);
+				protocolCheck(*output << InTransactionID);
+				protocolCheck(*output << InResult);
+				protocolCheck(*output << InRanking);
 
 				return hr;
 			}; // MessageData* GetRankingRes::Create( IHeap& memHeap, const RouteContext &InRouteContext, const uint64_t &InTransactionID, const Result &InResult, const Array<TotalRankingPlayerInformation>& InRanking )
@@ -1131,8 +1131,8 @@ namespace SF
 				auto* input = inputStream.ToInputStream();
 				uint16_t ArrayLen = 0;
 
-				protocolCheck(input->Read(m_RouteContext));
-				protocolCheck(input->Read(m_TransactionID));
+				protocolCheck(*input >> m_RouteContext);
+				protocolCheck(*input >> m_TransactionID);
 				protocolCheck(input->Read(ArrayLen));
 				protocolCheck(input->ReadLink(m_FileName, ArrayLen));
 
@@ -1156,7 +1156,7 @@ namespace SF
 			MessageData* DebugPrintALLRankingCmd::Create( IHeap& memHeap, const RouteContext &InRouteContext, const uint64_t &InTransactionID, const char* InFileName )
 			{
  				MessageData *pNewMsg = nullptr;
-				FunctionContext hr([pNewMsg](Result hr) -> MessageData*
+				FunctionContext hr([&pNewMsg](Result hr) -> MessageData*
 				{
  					if(!hr && pNewMsg != nullptr)
 					{
@@ -1175,14 +1175,14 @@ namespace SF
 				);
 
 				protocolCheckMem( pNewMsg = MessageData::NewMessage( memHeap, RankingServer::DebugPrintALLRankingCmd::MID, __uiMessageSize ) );
-				size_t MsgDataSize = (int)((size_t)pNewMsg->GetMessageSize() - sizeof(MessageHeader));
-				ArrayView<uint8_t> BufferView(MsgDataSize, pNewMsg->GetMessageData());
+				auto MsgDataSize = static_cast<uint>((size_t)pNewMsg->GetMessageSize() - sizeof(MessageHeader));
+				ArrayView<uint8_t> BufferView(MsgDataSize, 0, pNewMsg->GetMessageData());
 				OutputMemoryStream outputStream(BufferView);
 				auto* output = outputStream.ToOutputStream();
 
-				protocolCheck(output->Write(InRouteContext));
-				protocolCheck(output->Write(InTransactionID));
-				protocolCheck(output->Write(InFileName));
+				protocolCheck(*output << InRouteContext);
+				protocolCheck(*output << InTransactionID);
+				protocolCheck(*output << InFileName);
 
 				return hr;
 			}; // MessageData* DebugPrintALLRankingCmd::Create( IHeap& memHeap, const RouteContext &InRouteContext, const uint64_t &InTransactionID, const char* InFileName )
@@ -1237,9 +1237,9 @@ namespace SF
 				auto* input = inputStream.ToInputStream();
 				uint16_t ArrayLen = 0;
 
-				protocolCheck(input->Read(m_RouteContext));
-				protocolCheck(input->Read(m_TransactionID));
-				protocolCheck(input->Read(m_Result));
+				protocolCheck(*input >> m_RouteContext);
+				protocolCheck(*input >> m_TransactionID);
+				protocolCheck(*input >> m_Result);
 
 				return hr;
 
@@ -1261,7 +1261,7 @@ namespace SF
 			MessageData* DebugPrintALLRankingRes::Create( IHeap& memHeap, const RouteContext &InRouteContext, const uint64_t &InTransactionID, const Result &InResult )
 			{
  				MessageData *pNewMsg = nullptr;
-				FunctionContext hr([pNewMsg](Result hr) -> MessageData*
+				FunctionContext hr([&pNewMsg](Result hr) -> MessageData*
 				{
  					if(!hr && pNewMsg != nullptr)
 					{
@@ -1280,14 +1280,14 @@ namespace SF
 				);
 
 				protocolCheckMem( pNewMsg = MessageData::NewMessage( memHeap, RankingServer::DebugPrintALLRankingRes::MID, __uiMessageSize ) );
-				size_t MsgDataSize = (int)((size_t)pNewMsg->GetMessageSize() - sizeof(MessageHeader));
-				ArrayView<uint8_t> BufferView(MsgDataSize, pNewMsg->GetMessageData());
+				auto MsgDataSize = static_cast<uint>((size_t)pNewMsg->GetMessageSize() - sizeof(MessageHeader));
+				ArrayView<uint8_t> BufferView(MsgDataSize, 0, pNewMsg->GetMessageData());
 				OutputMemoryStream outputStream(BufferView);
 				auto* output = outputStream.ToOutputStream();
 
-				protocolCheck(output->Write(InRouteContext));
-				protocolCheck(output->Write(InTransactionID));
-				protocolCheck(output->Write(InResult));
+				protocolCheck(*output << InRouteContext);
+				protocolCheck(*output << InTransactionID);
+				protocolCheck(*output << InResult);
 
 				return hr;
 			}; // MessageData* DebugPrintALLRankingRes::Create( IHeap& memHeap, const RouteContext &InRouteContext, const uint64_t &InTransactionID, const Result &InResult )

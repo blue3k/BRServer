@@ -41,14 +41,14 @@ namespace SF
 				auto* input = inputStream.ToInputStream();
 				uint16_t ArrayLen = 0;
 
-				protocolCheck(input->Read(m_RouteContext));
-				protocolCheck(input->Read(m_TransactionID));
-				protocolCheck(input->Read(m_RouteHopCount));
+				protocolCheck(*input >> m_RouteContext);
+				protocolCheck(*input >> m_TransactionID);
+				protocolCheck(*input >> m_RouteHopCount);
 				protocolCheck(input->Read(ArrayLen));
 				protocolCheck(input->ReadLink(m_ChannelName, ArrayLen));
 				protocolCheck(input->Read(ArrayLen));
 				protocolCheck(input->ReadLink(m_Passcode, ArrayLen));
-				protocolCheck(input->Read(m_Creator));
+				protocolCheck(*input >> m_Creator);
 
 				return hr;
 
@@ -70,7 +70,7 @@ namespace SF
 			MessageData* CreateChannelCmd::Create( IHeap& memHeap, const RouteContext &InRouteContext, const uint64_t &InTransactionID, const uint16_t &InRouteHopCount, const char* InChannelName, const char* InPasscode, const PlayerInformation &InCreator )
 			{
  				MessageData *pNewMsg = nullptr;
-				FunctionContext hr([pNewMsg](Result hr) -> MessageData*
+				FunctionContext hr([&pNewMsg](Result hr) -> MessageData*
 				{
  					if(!hr && pNewMsg != nullptr)
 					{
@@ -92,17 +92,17 @@ namespace SF
 				);
 
 				protocolCheckMem( pNewMsg = MessageData::NewMessage( memHeap, ChatChannelManager::CreateChannelCmd::MID, __uiMessageSize ) );
-				size_t MsgDataSize = (int)((size_t)pNewMsg->GetMessageSize() - sizeof(MessageHeader));
-				ArrayView<uint8_t> BufferView(MsgDataSize, pNewMsg->GetMessageData());
+				auto MsgDataSize = static_cast<uint>((size_t)pNewMsg->GetMessageSize() - sizeof(MessageHeader));
+				ArrayView<uint8_t> BufferView(MsgDataSize, 0, pNewMsg->GetMessageData());
 				OutputMemoryStream outputStream(BufferView);
 				auto* output = outputStream.ToOutputStream();
 
-				protocolCheck(output->Write(InRouteContext));
-				protocolCheck(output->Write(InTransactionID));
-				protocolCheck(output->Write(InRouteHopCount));
-				protocolCheck(output->Write(InChannelName));
-				protocolCheck(output->Write(InPasscode));
-				protocolCheck(output->Write(InCreator));
+				protocolCheck(*output << InRouteContext);
+				protocolCheck(*output << InTransactionID);
+				protocolCheck(*output << InRouteHopCount);
+				protocolCheck(*output << InChannelName);
+				protocolCheck(*output << InPasscode);
+				protocolCheck(*output << InCreator);
 
 				return hr;
 			}; // MessageData* CreateChannelCmd::Create( IHeap& memHeap, const RouteContext &InRouteContext, const uint64_t &InTransactionID, const uint16_t &InRouteHopCount, const char* InChannelName, const char* InPasscode, const PlayerInformation &InCreator )
@@ -188,10 +188,10 @@ namespace SF
 				auto* input = inputStream.ToInputStream();
 				uint16_t ArrayLen = 0;
 
-				protocolCheck(input->Read(m_RouteContext));
-				protocolCheck(input->Read(m_TransactionID));
-				protocolCheck(input->Read(m_Result));
-				protocolCheck(input->Read(m_ChannelUID));
+				protocolCheck(*input >> m_RouteContext);
+				protocolCheck(*input >> m_TransactionID);
+				protocolCheck(*input >> m_Result);
+				protocolCheck(*input >> m_ChannelUID);
 
 				return hr;
 
@@ -213,7 +213,7 @@ namespace SF
 			MessageData* CreateChannelRes::Create( IHeap& memHeap, const RouteContext &InRouteContext, const uint64_t &InTransactionID, const Result &InResult, const uint64_t &InChannelUID )
 			{
  				MessageData *pNewMsg = nullptr;
-				FunctionContext hr([pNewMsg](Result hr) -> MessageData*
+				FunctionContext hr([&pNewMsg](Result hr) -> MessageData*
 				{
  					if(!hr && pNewMsg != nullptr)
 					{
@@ -233,15 +233,15 @@ namespace SF
 				);
 
 				protocolCheckMem( pNewMsg = MessageData::NewMessage( memHeap, ChatChannelManager::CreateChannelRes::MID, __uiMessageSize ) );
-				size_t MsgDataSize = (int)((size_t)pNewMsg->GetMessageSize() - sizeof(MessageHeader));
-				ArrayView<uint8_t> BufferView(MsgDataSize, pNewMsg->GetMessageData());
+				auto MsgDataSize = static_cast<uint>((size_t)pNewMsg->GetMessageSize() - sizeof(MessageHeader));
+				ArrayView<uint8_t> BufferView(MsgDataSize, 0, pNewMsg->GetMessageData());
 				OutputMemoryStream outputStream(BufferView);
 				auto* output = outputStream.ToOutputStream();
 
-				protocolCheck(output->Write(InRouteContext));
-				protocolCheck(output->Write(InTransactionID));
-				protocolCheck(output->Write(InResult));
-				protocolCheck(output->Write(InChannelUID));
+				protocolCheck(*output << InRouteContext);
+				protocolCheck(*output << InTransactionID);
+				protocolCheck(*output << InResult);
+				protocolCheck(*output << InChannelUID);
 
 				return hr;
 			}; // MessageData* CreateChannelRes::Create( IHeap& memHeap, const RouteContext &InRouteContext, const uint64_t &InTransactionID, const Result &InResult, const uint64_t &InChannelUID )
@@ -326,9 +326,9 @@ namespace SF
 				auto* input = inputStream.ToInputStream();
 				uint16_t ArrayLen = 0;
 
-				protocolCheck(input->Read(m_RouteContext));
-				protocolCheck(input->Read(m_TransactionID));
-				protocolCheck(input->Read(m_RouteHopCount));
+				protocolCheck(*input >> m_RouteContext);
+				protocolCheck(*input >> m_TransactionID);
+				protocolCheck(*input >> m_RouteHopCount);
 				protocolCheck(input->Read(ArrayLen));
 				protocolCheck(input->ReadLink(m_ChannelName, ArrayLen));
 
@@ -352,7 +352,7 @@ namespace SF
 			MessageData* FindChannelCmd::Create( IHeap& memHeap, const RouteContext &InRouteContext, const uint64_t &InTransactionID, const uint16_t &InRouteHopCount, const char* InChannelName )
 			{
  				MessageData *pNewMsg = nullptr;
-				FunctionContext hr([pNewMsg](Result hr) -> MessageData*
+				FunctionContext hr([&pNewMsg](Result hr) -> MessageData*
 				{
  					if(!hr && pNewMsg != nullptr)
 					{
@@ -372,15 +372,15 @@ namespace SF
 				);
 
 				protocolCheckMem( pNewMsg = MessageData::NewMessage( memHeap, ChatChannelManager::FindChannelCmd::MID, __uiMessageSize ) );
-				size_t MsgDataSize = (int)((size_t)pNewMsg->GetMessageSize() - sizeof(MessageHeader));
-				ArrayView<uint8_t> BufferView(MsgDataSize, pNewMsg->GetMessageData());
+				auto MsgDataSize = static_cast<uint>((size_t)pNewMsg->GetMessageSize() - sizeof(MessageHeader));
+				ArrayView<uint8_t> BufferView(MsgDataSize, 0, pNewMsg->GetMessageData());
 				OutputMemoryStream outputStream(BufferView);
 				auto* output = outputStream.ToOutputStream();
 
-				protocolCheck(output->Write(InRouteContext));
-				protocolCheck(output->Write(InTransactionID));
-				protocolCheck(output->Write(InRouteHopCount));
-				protocolCheck(output->Write(InChannelName));
+				protocolCheck(*output << InRouteContext);
+				protocolCheck(*output << InTransactionID);
+				protocolCheck(*output << InRouteHopCount);
+				protocolCheck(*output << InChannelName);
 
 				return hr;
 			}; // MessageData* FindChannelCmd::Create( IHeap& memHeap, const RouteContext &InRouteContext, const uint64_t &InTransactionID, const uint16_t &InRouteHopCount, const char* InChannelName )
@@ -466,10 +466,10 @@ namespace SF
 				auto* input = inputStream.ToInputStream();
 				uint16_t ArrayLen = 0;
 
-				protocolCheck(input->Read(m_RouteContext));
-				protocolCheck(input->Read(m_TransactionID));
-				protocolCheck(input->Read(m_Result));
-				protocolCheck(input->Read(m_ChannelUID));
+				protocolCheck(*input >> m_RouteContext);
+				protocolCheck(*input >> m_TransactionID);
+				protocolCheck(*input >> m_Result);
+				protocolCheck(*input >> m_ChannelUID);
 
 				return hr;
 
@@ -491,7 +491,7 @@ namespace SF
 			MessageData* FindChannelRes::Create( IHeap& memHeap, const RouteContext &InRouteContext, const uint64_t &InTransactionID, const Result &InResult, const uint64_t &InChannelUID )
 			{
  				MessageData *pNewMsg = nullptr;
-				FunctionContext hr([pNewMsg](Result hr) -> MessageData*
+				FunctionContext hr([&pNewMsg](Result hr) -> MessageData*
 				{
  					if(!hr && pNewMsg != nullptr)
 					{
@@ -511,15 +511,15 @@ namespace SF
 				);
 
 				protocolCheckMem( pNewMsg = MessageData::NewMessage( memHeap, ChatChannelManager::FindChannelRes::MID, __uiMessageSize ) );
-				size_t MsgDataSize = (int)((size_t)pNewMsg->GetMessageSize() - sizeof(MessageHeader));
-				ArrayView<uint8_t> BufferView(MsgDataSize, pNewMsg->GetMessageData());
+				auto MsgDataSize = static_cast<uint>((size_t)pNewMsg->GetMessageSize() - sizeof(MessageHeader));
+				ArrayView<uint8_t> BufferView(MsgDataSize, 0, pNewMsg->GetMessageData());
 				OutputMemoryStream outputStream(BufferView);
 				auto* output = outputStream.ToOutputStream();
 
-				protocolCheck(output->Write(InRouteContext));
-				protocolCheck(output->Write(InTransactionID));
-				protocolCheck(output->Write(InResult));
-				protocolCheck(output->Write(InChannelUID));
+				protocolCheck(*output << InRouteContext);
+				protocolCheck(*output << InTransactionID);
+				protocolCheck(*output << InResult);
+				protocolCheck(*output << InChannelUID);
 
 				return hr;
 			}; // MessageData* FindChannelRes::Create( IHeap& memHeap, const RouteContext &InRouteContext, const uint64_t &InTransactionID, const Result &InResult, const uint64_t &InChannelUID )
@@ -604,8 +604,8 @@ namespace SF
 				auto* input = inputStream.ToInputStream();
 				uint16_t ArrayLen = 0;
 
-				protocolCheck(input->Read(m_RouteContext));
-				protocolCheck(input->Read(m_RouteHopCount));
+				protocolCheck(*input >> m_RouteContext);
+				protocolCheck(*input >> m_RouteHopCount);
 
 				return hr;
 
@@ -627,7 +627,7 @@ namespace SF
 			MessageData* ChatChannelDeletedC2SEvt::Create( IHeap& memHeap, const RouteContext &InRouteContext, const uint16_t &InRouteHopCount )
 			{
  				MessageData *pNewMsg = nullptr;
-				FunctionContext hr([pNewMsg](Result hr) -> MessageData*
+				FunctionContext hr([&pNewMsg](Result hr) -> MessageData*
 				{
  					if(!hr && pNewMsg != nullptr)
 					{
@@ -645,13 +645,13 @@ namespace SF
 				);
 
 				protocolCheckMem( pNewMsg = MessageData::NewMessage( memHeap, ChatChannelManager::ChatChannelDeletedC2SEvt::MID, __uiMessageSize ) );
-				size_t MsgDataSize = (int)((size_t)pNewMsg->GetMessageSize() - sizeof(MessageHeader));
-				ArrayView<uint8_t> BufferView(MsgDataSize, pNewMsg->GetMessageData());
+				auto MsgDataSize = static_cast<uint>((size_t)pNewMsg->GetMessageSize() - sizeof(MessageHeader));
+				ArrayView<uint8_t> BufferView(MsgDataSize, 0, pNewMsg->GetMessageData());
 				OutputMemoryStream outputStream(BufferView);
 				auto* output = outputStream.ToOutputStream();
 
-				protocolCheck(output->Write(InRouteContext));
-				protocolCheck(output->Write(InRouteHopCount));
+				protocolCheck(*output << InRouteContext);
+				protocolCheck(*output << InRouteHopCount);
 
 				return hr;
 			}; // MessageData* ChatChannelDeletedC2SEvt::Create( IHeap& memHeap, const RouteContext &InRouteContext, const uint16_t &InRouteHopCount )

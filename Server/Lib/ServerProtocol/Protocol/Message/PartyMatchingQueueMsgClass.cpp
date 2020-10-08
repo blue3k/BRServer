@@ -41,9 +41,9 @@ namespace SF
 				auto* input = inputStream.ToInputStream();
 				uint16_t ArrayLen = 0;
 
-				protocolCheck(input->Read(m_RouteContext));
-				protocolCheck(input->Read(m_TransactionID));
-				protocolCheck(input->Read(m_RouteHopCount));
+				protocolCheck(*input >> m_RouteContext);
+				protocolCheck(*input >> m_TransactionID);
+				protocolCheck(*input >> m_RouteHopCount);
 				protocolCheck(input->Read(ArrayLen));
 				MatchingPlayerInformation* PlayersPtr = nullptr;
 				protocolCheck(input->ReadLink(PlayersPtr, ArrayLen));
@@ -69,7 +69,7 @@ namespace SF
 			MessageData* RegisterPartyMatchingCmd::Create( IHeap& memHeap, const RouteContext &InRouteContext, const uint64_t &InTransactionID, const uint16_t &InRouteHopCount, const Array<MatchingPlayerInformation>& InPlayers )
 			{
  				MessageData *pNewMsg = nullptr;
-				FunctionContext hr([pNewMsg](Result hr) -> MessageData*
+				FunctionContext hr([&pNewMsg](Result hr) -> MessageData*
 				{
  					if(!hr && pNewMsg != nullptr)
 					{
@@ -90,15 +90,15 @@ namespace SF
 				);
 
 				protocolCheckMem( pNewMsg = MessageData::NewMessage( memHeap, PartyMatchingQueue::RegisterPartyMatchingCmd::MID, __uiMessageSize ) );
-				size_t MsgDataSize = (int)((size_t)pNewMsg->GetMessageSize() - sizeof(MessageHeader));
-				ArrayView<uint8_t> BufferView(MsgDataSize, pNewMsg->GetMessageData());
+				auto MsgDataSize = static_cast<uint>((size_t)pNewMsg->GetMessageSize() - sizeof(MessageHeader));
+				ArrayView<uint8_t> BufferView(MsgDataSize, 0, pNewMsg->GetMessageData());
 				OutputMemoryStream outputStream(BufferView);
 				auto* output = outputStream.ToOutputStream();
 
-				protocolCheck(output->Write(InRouteContext));
-				protocolCheck(output->Write(InTransactionID));
-				protocolCheck(output->Write(InRouteHopCount));
-				protocolCheck(output->Write(InPlayers));
+				protocolCheck(*output << InRouteContext);
+				protocolCheck(*output << InTransactionID);
+				protocolCheck(*output << InRouteHopCount);
+				protocolCheck(*output << InPlayers);
 
 				return hr;
 			}; // MessageData* RegisterPartyMatchingCmd::Create( IHeap& memHeap, const RouteContext &InRouteContext, const uint64_t &InTransactionID, const uint16_t &InRouteHopCount, const Array<MatchingPlayerInformation>& InPlayers )
@@ -184,10 +184,10 @@ namespace SF
 				auto* input = inputStream.ToInputStream();
 				uint16_t ArrayLen = 0;
 
-				protocolCheck(input->Read(m_RouteContext));
-				protocolCheck(input->Read(m_TransactionID));
-				protocolCheck(input->Read(m_Result));
-				protocolCheck(input->Read(m_MatchingTicket));
+				protocolCheck(*input >> m_RouteContext);
+				protocolCheck(*input >> m_TransactionID);
+				protocolCheck(*input >> m_Result);
+				protocolCheck(*input >> m_MatchingTicket);
 
 				return hr;
 
@@ -209,7 +209,7 @@ namespace SF
 			MessageData* RegisterPartyMatchingRes::Create( IHeap& memHeap, const RouteContext &InRouteContext, const uint64_t &InTransactionID, const Result &InResult, const MatchingQueueTicket &InMatchingTicket )
 			{
  				MessageData *pNewMsg = nullptr;
-				FunctionContext hr([pNewMsg](Result hr) -> MessageData*
+				FunctionContext hr([&pNewMsg](Result hr) -> MessageData*
 				{
  					if(!hr && pNewMsg != nullptr)
 					{
@@ -229,15 +229,15 @@ namespace SF
 				);
 
 				protocolCheckMem( pNewMsg = MessageData::NewMessage( memHeap, PartyMatchingQueue::RegisterPartyMatchingRes::MID, __uiMessageSize ) );
-				size_t MsgDataSize = (int)((size_t)pNewMsg->GetMessageSize() - sizeof(MessageHeader));
-				ArrayView<uint8_t> BufferView(MsgDataSize, pNewMsg->GetMessageData());
+				auto MsgDataSize = static_cast<uint>((size_t)pNewMsg->GetMessageSize() - sizeof(MessageHeader));
+				ArrayView<uint8_t> BufferView(MsgDataSize, 0, pNewMsg->GetMessageData());
 				OutputMemoryStream outputStream(BufferView);
 				auto* output = outputStream.ToOutputStream();
 
-				protocolCheck(output->Write(InRouteContext));
-				protocolCheck(output->Write(InTransactionID));
-				protocolCheck(output->Write(InResult));
-				protocolCheck(output->Write(InMatchingTicket));
+				protocolCheck(*output << InRouteContext);
+				protocolCheck(*output << InTransactionID);
+				protocolCheck(*output << InResult);
+				protocolCheck(*output << InMatchingTicket);
 
 				return hr;
 			}; // MessageData* RegisterPartyMatchingRes::Create( IHeap& memHeap, const RouteContext &InRouteContext, const uint64_t &InTransactionID, const Result &InResult, const MatchingQueueTicket &InMatchingTicket )
@@ -322,10 +322,10 @@ namespace SF
 				auto* input = inputStream.ToInputStream();
 				uint16_t ArrayLen = 0;
 
-				protocolCheck(input->Read(m_RouteContext));
-				protocolCheck(input->Read(m_TransactionID));
-				protocolCheck(input->Read(m_RouteHopCount));
-				protocolCheck(input->Read(m_PlayerID));
+				protocolCheck(*input >> m_RouteContext);
+				protocolCheck(*input >> m_TransactionID);
+				protocolCheck(*input >> m_RouteHopCount);
+				protocolCheck(*input >> m_PlayerID);
 
 				return hr;
 
@@ -347,7 +347,7 @@ namespace SF
 			MessageData* RegisterPlayerMatchingCmd::Create( IHeap& memHeap, const RouteContext &InRouteContext, const uint64_t &InTransactionID, const uint16_t &InRouteHopCount, const PlayerID &InPlayerID )
 			{
  				MessageData *pNewMsg = nullptr;
-				FunctionContext hr([pNewMsg](Result hr) -> MessageData*
+				FunctionContext hr([&pNewMsg](Result hr) -> MessageData*
 				{
  					if(!hr && pNewMsg != nullptr)
 					{
@@ -367,15 +367,15 @@ namespace SF
 				);
 
 				protocolCheckMem( pNewMsg = MessageData::NewMessage( memHeap, PartyMatchingQueue::RegisterPlayerMatchingCmd::MID, __uiMessageSize ) );
-				size_t MsgDataSize = (int)((size_t)pNewMsg->GetMessageSize() - sizeof(MessageHeader));
-				ArrayView<uint8_t> BufferView(MsgDataSize, pNewMsg->GetMessageData());
+				auto MsgDataSize = static_cast<uint>((size_t)pNewMsg->GetMessageSize() - sizeof(MessageHeader));
+				ArrayView<uint8_t> BufferView(MsgDataSize, 0, pNewMsg->GetMessageData());
 				OutputMemoryStream outputStream(BufferView);
 				auto* output = outputStream.ToOutputStream();
 
-				protocolCheck(output->Write(InRouteContext));
-				protocolCheck(output->Write(InTransactionID));
-				protocolCheck(output->Write(InRouteHopCount));
-				protocolCheck(output->Write(InPlayerID));
+				protocolCheck(*output << InRouteContext);
+				protocolCheck(*output << InTransactionID);
+				protocolCheck(*output << InRouteHopCount);
+				protocolCheck(*output << InPlayerID);
 
 				return hr;
 			}; // MessageData* RegisterPlayerMatchingCmd::Create( IHeap& memHeap, const RouteContext &InRouteContext, const uint64_t &InTransactionID, const uint16_t &InRouteHopCount, const PlayerID &InPlayerID )
@@ -461,10 +461,10 @@ namespace SF
 				auto* input = inputStream.ToInputStream();
 				uint16_t ArrayLen = 0;
 
-				protocolCheck(input->Read(m_RouteContext));
-				protocolCheck(input->Read(m_TransactionID));
-				protocolCheck(input->Read(m_Result));
-				protocolCheck(input->Read(m_MatchingTicket));
+				protocolCheck(*input >> m_RouteContext);
+				protocolCheck(*input >> m_TransactionID);
+				protocolCheck(*input >> m_Result);
+				protocolCheck(*input >> m_MatchingTicket);
 
 				return hr;
 
@@ -486,7 +486,7 @@ namespace SF
 			MessageData* RegisterPlayerMatchingRes::Create( IHeap& memHeap, const RouteContext &InRouteContext, const uint64_t &InTransactionID, const Result &InResult, const MatchingQueueTicket &InMatchingTicket )
 			{
  				MessageData *pNewMsg = nullptr;
-				FunctionContext hr([pNewMsg](Result hr) -> MessageData*
+				FunctionContext hr([&pNewMsg](Result hr) -> MessageData*
 				{
  					if(!hr && pNewMsg != nullptr)
 					{
@@ -506,15 +506,15 @@ namespace SF
 				);
 
 				protocolCheckMem( pNewMsg = MessageData::NewMessage( memHeap, PartyMatchingQueue::RegisterPlayerMatchingRes::MID, __uiMessageSize ) );
-				size_t MsgDataSize = (int)((size_t)pNewMsg->GetMessageSize() - sizeof(MessageHeader));
-				ArrayView<uint8_t> BufferView(MsgDataSize, pNewMsg->GetMessageData());
+				auto MsgDataSize = static_cast<uint>((size_t)pNewMsg->GetMessageSize() - sizeof(MessageHeader));
+				ArrayView<uint8_t> BufferView(MsgDataSize, 0, pNewMsg->GetMessageData());
 				OutputMemoryStream outputStream(BufferView);
 				auto* output = outputStream.ToOutputStream();
 
-				protocolCheck(output->Write(InRouteContext));
-				protocolCheck(output->Write(InTransactionID));
-				protocolCheck(output->Write(InResult));
-				protocolCheck(output->Write(InMatchingTicket));
+				protocolCheck(*output << InRouteContext);
+				protocolCheck(*output << InTransactionID);
+				protocolCheck(*output << InResult);
+				protocolCheck(*output << InMatchingTicket);
 
 				return hr;
 			}; // MessageData* RegisterPlayerMatchingRes::Create( IHeap& memHeap, const RouteContext &InRouteContext, const uint64_t &InTransactionID, const Result &InResult, const MatchingQueueTicket &InMatchingTicket )
@@ -599,11 +599,11 @@ namespace SF
 				auto* input = inputStream.ToInputStream();
 				uint16_t ArrayLen = 0;
 
-				protocolCheck(input->Read(m_RouteContext));
-				protocolCheck(input->Read(m_TransactionID));
-				protocolCheck(input->Read(m_RouteHopCount));
-				protocolCheck(input->Read(m_MatchingTicket));
-				protocolCheck(input->Read(m_PreviousUID));
+				protocolCheck(*input >> m_RouteContext);
+				protocolCheck(*input >> m_TransactionID);
+				protocolCheck(*input >> m_RouteHopCount);
+				protocolCheck(*input >> m_MatchingTicket);
+				protocolCheck(*input >> m_PreviousUID);
 
 				return hr;
 
@@ -625,7 +625,7 @@ namespace SF
 			MessageData* UpdateMatchingEntityUIDCmd::Create( IHeap& memHeap, const RouteContext &InRouteContext, const uint64_t &InTransactionID, const uint16_t &InRouteHopCount, const MatchingQueueTicket &InMatchingTicket, const uint64_t &InPreviousUID )
 			{
  				MessageData *pNewMsg = nullptr;
-				FunctionContext hr([pNewMsg](Result hr) -> MessageData*
+				FunctionContext hr([&pNewMsg](Result hr) -> MessageData*
 				{
  					if(!hr && pNewMsg != nullptr)
 					{
@@ -646,16 +646,16 @@ namespace SF
 				);
 
 				protocolCheckMem( pNewMsg = MessageData::NewMessage( memHeap, PartyMatchingQueue::UpdateMatchingEntityUIDCmd::MID, __uiMessageSize ) );
-				size_t MsgDataSize = (int)((size_t)pNewMsg->GetMessageSize() - sizeof(MessageHeader));
-				ArrayView<uint8_t> BufferView(MsgDataSize, pNewMsg->GetMessageData());
+				auto MsgDataSize = static_cast<uint>((size_t)pNewMsg->GetMessageSize() - sizeof(MessageHeader));
+				ArrayView<uint8_t> BufferView(MsgDataSize, 0, pNewMsg->GetMessageData());
 				OutputMemoryStream outputStream(BufferView);
 				auto* output = outputStream.ToOutputStream();
 
-				protocolCheck(output->Write(InRouteContext));
-				protocolCheck(output->Write(InTransactionID));
-				protocolCheck(output->Write(InRouteHopCount));
-				protocolCheck(output->Write(InMatchingTicket));
-				protocolCheck(output->Write(InPreviousUID));
+				protocolCheck(*output << InRouteContext);
+				protocolCheck(*output << InTransactionID);
+				protocolCheck(*output << InRouteHopCount);
+				protocolCheck(*output << InMatchingTicket);
+				protocolCheck(*output << InPreviousUID);
 
 				return hr;
 			}; // MessageData* UpdateMatchingEntityUIDCmd::Create( IHeap& memHeap, const RouteContext &InRouteContext, const uint64_t &InTransactionID, const uint16_t &InRouteHopCount, const MatchingQueueTicket &InMatchingTicket, const uint64_t &InPreviousUID )
@@ -741,9 +741,9 @@ namespace SF
 				auto* input = inputStream.ToInputStream();
 				uint16_t ArrayLen = 0;
 
-				protocolCheck(input->Read(m_RouteContext));
-				protocolCheck(input->Read(m_TransactionID));
-				protocolCheck(input->Read(m_Result));
+				protocolCheck(*input >> m_RouteContext);
+				protocolCheck(*input >> m_TransactionID);
+				protocolCheck(*input >> m_Result);
 
 				return hr;
 
@@ -765,7 +765,7 @@ namespace SF
 			MessageData* UpdateMatchingEntityUIDRes::Create( IHeap& memHeap, const RouteContext &InRouteContext, const uint64_t &InTransactionID, const Result &InResult )
 			{
  				MessageData *pNewMsg = nullptr;
-				FunctionContext hr([pNewMsg](Result hr) -> MessageData*
+				FunctionContext hr([&pNewMsg](Result hr) -> MessageData*
 				{
  					if(!hr && pNewMsg != nullptr)
 					{
@@ -784,14 +784,14 @@ namespace SF
 				);
 
 				protocolCheckMem( pNewMsg = MessageData::NewMessage( memHeap, PartyMatchingQueue::UpdateMatchingEntityUIDRes::MID, __uiMessageSize ) );
-				size_t MsgDataSize = (int)((size_t)pNewMsg->GetMessageSize() - sizeof(MessageHeader));
-				ArrayView<uint8_t> BufferView(MsgDataSize, pNewMsg->GetMessageData());
+				auto MsgDataSize = static_cast<uint>((size_t)pNewMsg->GetMessageSize() - sizeof(MessageHeader));
+				ArrayView<uint8_t> BufferView(MsgDataSize, 0, pNewMsg->GetMessageData());
 				OutputMemoryStream outputStream(BufferView);
 				auto* output = outputStream.ToOutputStream();
 
-				protocolCheck(output->Write(InRouteContext));
-				protocolCheck(output->Write(InTransactionID));
-				protocolCheck(output->Write(InResult));
+				protocolCheck(*output << InRouteContext);
+				protocolCheck(*output << InTransactionID);
+				protocolCheck(*output << InResult);
 
 				return hr;
 			}; // MessageData* UpdateMatchingEntityUIDRes::Create( IHeap& memHeap, const RouteContext &InRouteContext, const uint64_t &InTransactionID, const Result &InResult )
@@ -875,10 +875,10 @@ namespace SF
 				auto* input = inputStream.ToInputStream();
 				uint16_t ArrayLen = 0;
 
-				protocolCheck(input->Read(m_RouteContext));
-				protocolCheck(input->Read(m_TransactionID));
-				protocolCheck(input->Read(m_RouteHopCount));
-				protocolCheck(input->Read(m_MatchingTicket));
+				protocolCheck(*input >> m_RouteContext);
+				protocolCheck(*input >> m_TransactionID);
+				protocolCheck(*input >> m_RouteHopCount);
+				protocolCheck(*input >> m_MatchingTicket);
 
 				return hr;
 
@@ -900,7 +900,7 @@ namespace SF
 			MessageData* UnregisterMatchingCmd::Create( IHeap& memHeap, const RouteContext &InRouteContext, const uint64_t &InTransactionID, const uint16_t &InRouteHopCount, const MatchingQueueTicket &InMatchingTicket )
 			{
  				MessageData *pNewMsg = nullptr;
-				FunctionContext hr([pNewMsg](Result hr) -> MessageData*
+				FunctionContext hr([&pNewMsg](Result hr) -> MessageData*
 				{
  					if(!hr && pNewMsg != nullptr)
 					{
@@ -920,15 +920,15 @@ namespace SF
 				);
 
 				protocolCheckMem( pNewMsg = MessageData::NewMessage( memHeap, PartyMatchingQueue::UnregisterMatchingCmd::MID, __uiMessageSize ) );
-				size_t MsgDataSize = (int)((size_t)pNewMsg->GetMessageSize() - sizeof(MessageHeader));
-				ArrayView<uint8_t> BufferView(MsgDataSize, pNewMsg->GetMessageData());
+				auto MsgDataSize = static_cast<uint>((size_t)pNewMsg->GetMessageSize() - sizeof(MessageHeader));
+				ArrayView<uint8_t> BufferView(MsgDataSize, 0, pNewMsg->GetMessageData());
 				OutputMemoryStream outputStream(BufferView);
 				auto* output = outputStream.ToOutputStream();
 
-				protocolCheck(output->Write(InRouteContext));
-				protocolCheck(output->Write(InTransactionID));
-				protocolCheck(output->Write(InRouteHopCount));
-				protocolCheck(output->Write(InMatchingTicket));
+				protocolCheck(*output << InRouteContext);
+				protocolCheck(*output << InTransactionID);
+				protocolCheck(*output << InRouteHopCount);
+				protocolCheck(*output << InMatchingTicket);
 
 				return hr;
 			}; // MessageData* UnregisterMatchingCmd::Create( IHeap& memHeap, const RouteContext &InRouteContext, const uint64_t &InTransactionID, const uint16_t &InRouteHopCount, const MatchingQueueTicket &InMatchingTicket )
@@ -1014,9 +1014,9 @@ namespace SF
 				auto* input = inputStream.ToInputStream();
 				uint16_t ArrayLen = 0;
 
-				protocolCheck(input->Read(m_RouteContext));
-				protocolCheck(input->Read(m_TransactionID));
-				protocolCheck(input->Read(m_Result));
+				protocolCheck(*input >> m_RouteContext);
+				protocolCheck(*input >> m_TransactionID);
+				protocolCheck(*input >> m_Result);
 
 				return hr;
 
@@ -1038,7 +1038,7 @@ namespace SF
 			MessageData* UnregisterMatchingRes::Create( IHeap& memHeap, const RouteContext &InRouteContext, const uint64_t &InTransactionID, const Result &InResult )
 			{
  				MessageData *pNewMsg = nullptr;
-				FunctionContext hr([pNewMsg](Result hr) -> MessageData*
+				FunctionContext hr([&pNewMsg](Result hr) -> MessageData*
 				{
  					if(!hr && pNewMsg != nullptr)
 					{
@@ -1057,14 +1057,14 @@ namespace SF
 				);
 
 				protocolCheckMem( pNewMsg = MessageData::NewMessage( memHeap, PartyMatchingQueue::UnregisterMatchingRes::MID, __uiMessageSize ) );
-				size_t MsgDataSize = (int)((size_t)pNewMsg->GetMessageSize() - sizeof(MessageHeader));
-				ArrayView<uint8_t> BufferView(MsgDataSize, pNewMsg->GetMessageData());
+				auto MsgDataSize = static_cast<uint>((size_t)pNewMsg->GetMessageSize() - sizeof(MessageHeader));
+				ArrayView<uint8_t> BufferView(MsgDataSize, 0, pNewMsg->GetMessageData());
 				OutputMemoryStream outputStream(BufferView);
 				auto* output = outputStream.ToOutputStream();
 
-				protocolCheck(output->Write(InRouteContext));
-				protocolCheck(output->Write(InTransactionID));
-				protocolCheck(output->Write(InResult));
+				protocolCheck(*output << InRouteContext);
+				protocolCheck(*output << InTransactionID);
+				protocolCheck(*output << InResult);
 
 				return hr;
 			}; // MessageData* UnregisterMatchingRes::Create( IHeap& memHeap, const RouteContext &InRouteContext, const uint64_t &InTransactionID, const Result &InResult )
@@ -1148,10 +1148,10 @@ namespace SF
 				auto* input = inputStream.ToInputStream();
 				uint16_t ArrayLen = 0;
 
-				protocolCheck(input->Read(m_RouteContext));
-				protocolCheck(input->Read(m_RouteHopCount));
-				protocolCheck(input->Read(m_DestPartyUID));
-				protocolCheck(input->Read(m_MatchingTicket));
+				protocolCheck(*input >> m_RouteContext);
+				protocolCheck(*input >> m_RouteHopCount);
+				protocolCheck(*input >> m_DestPartyUID);
+				protocolCheck(*input >> m_MatchingTicket);
 
 				return hr;
 
@@ -1173,7 +1173,7 @@ namespace SF
 			MessageData* PartyMatchingCanceledS2CEvt::Create( IHeap& memHeap, const RouteContext &InRouteContext, const uint16_t &InRouteHopCount, const uint64_t &InDestPartyUID, const MatchingQueueTicket &InMatchingTicket )
 			{
  				MessageData *pNewMsg = nullptr;
-				FunctionContext hr([pNewMsg](Result hr) -> MessageData*
+				FunctionContext hr([&pNewMsg](Result hr) -> MessageData*
 				{
  					if(!hr && pNewMsg != nullptr)
 					{
@@ -1193,15 +1193,15 @@ namespace SF
 				);
 
 				protocolCheckMem( pNewMsg = MessageData::NewMessage( memHeap, PartyMatchingQueue::PartyMatchingCanceledS2CEvt::MID, __uiMessageSize ) );
-				size_t MsgDataSize = (int)((size_t)pNewMsg->GetMessageSize() - sizeof(MessageHeader));
-				ArrayView<uint8_t> BufferView(MsgDataSize, pNewMsg->GetMessageData());
+				auto MsgDataSize = static_cast<uint>((size_t)pNewMsg->GetMessageSize() - sizeof(MessageHeader));
+				ArrayView<uint8_t> BufferView(MsgDataSize, 0, pNewMsg->GetMessageData());
 				OutputMemoryStream outputStream(BufferView);
 				auto* output = outputStream.ToOutputStream();
 
-				protocolCheck(output->Write(InRouteContext));
-				protocolCheck(output->Write(InRouteHopCount));
-				protocolCheck(output->Write(InDestPartyUID));
-				protocolCheck(output->Write(InMatchingTicket));
+				protocolCheck(*output << InRouteContext);
+				protocolCheck(*output << InRouteHopCount);
+				protocolCheck(*output << InDestPartyUID);
+				protocolCheck(*output << InMatchingTicket);
 
 				return hr;
 			}; // MessageData* PartyMatchingCanceledS2CEvt::Create( IHeap& memHeap, const RouteContext &InRouteContext, const uint16_t &InRouteHopCount, const uint64_t &InDestPartyUID, const MatchingQueueTicket &InMatchingTicket )
@@ -1287,10 +1287,10 @@ namespace SF
 				auto* input = inputStream.ToInputStream();
 				uint16_t ArrayLen = 0;
 
-				protocolCheck(input->Read(m_RouteContext));
-				protocolCheck(input->Read(m_RouteHopCount));
-				protocolCheck(input->Read(m_DestPlayerID));
-				protocolCheck(input->Read(m_MatchingTicket));
+				protocolCheck(*input >> m_RouteContext);
+				protocolCheck(*input >> m_RouteHopCount);
+				protocolCheck(*input >> m_DestPlayerID);
+				protocolCheck(*input >> m_MatchingTicket);
 
 				return hr;
 
@@ -1312,7 +1312,7 @@ namespace SF
 			MessageData* PlayerMatchingCanceledS2CEvt::Create( IHeap& memHeap, const RouteContext &InRouteContext, const uint16_t &InRouteHopCount, const PlayerID &InDestPlayerID, const MatchingQueueTicket &InMatchingTicket )
 			{
  				MessageData *pNewMsg = nullptr;
-				FunctionContext hr([pNewMsg](Result hr) -> MessageData*
+				FunctionContext hr([&pNewMsg](Result hr) -> MessageData*
 				{
  					if(!hr && pNewMsg != nullptr)
 					{
@@ -1332,15 +1332,15 @@ namespace SF
 				);
 
 				protocolCheckMem( pNewMsg = MessageData::NewMessage( memHeap, PartyMatchingQueue::PlayerMatchingCanceledS2CEvt::MID, __uiMessageSize ) );
-				size_t MsgDataSize = (int)((size_t)pNewMsg->GetMessageSize() - sizeof(MessageHeader));
-				ArrayView<uint8_t> BufferView(MsgDataSize, pNewMsg->GetMessageData());
+				auto MsgDataSize = static_cast<uint>((size_t)pNewMsg->GetMessageSize() - sizeof(MessageHeader));
+				ArrayView<uint8_t> BufferView(MsgDataSize, 0, pNewMsg->GetMessageData());
 				OutputMemoryStream outputStream(BufferView);
 				auto* output = outputStream.ToOutputStream();
 
-				protocolCheck(output->Write(InRouteContext));
-				protocolCheck(output->Write(InRouteHopCount));
-				protocolCheck(output->Write(InDestPlayerID));
-				protocolCheck(output->Write(InMatchingTicket));
+				protocolCheck(*output << InRouteContext);
+				protocolCheck(*output << InRouteHopCount);
+				protocolCheck(*output << InDestPlayerID);
+				protocolCheck(*output << InMatchingTicket);
 
 				return hr;
 			}; // MessageData* PlayerMatchingCanceledS2CEvt::Create( IHeap& memHeap, const RouteContext &InRouteContext, const uint16_t &InRouteHopCount, const PlayerID &InDestPlayerID, const MatchingQueueTicket &InMatchingTicket )
@@ -1426,9 +1426,9 @@ namespace SF
 				auto* input = inputStream.ToInputStream();
 				uint16_t ArrayLen = 0;
 
-				protocolCheck(input->Read(m_RouteContext));
-				protocolCheck(input->Read(m_RouteHopCount));
-				protocolCheck(input->Read(m_MatchingTicket));
+				protocolCheck(*input >> m_RouteContext);
+				protocolCheck(*input >> m_RouteHopCount);
+				protocolCheck(*input >> m_MatchingTicket);
 
 				return hr;
 
@@ -1450,7 +1450,7 @@ namespace SF
 			MessageData* PartyMatchingItemDequeuedS2CEvt::Create( IHeap& memHeap, const RouteContext &InRouteContext, const uint16_t &InRouteHopCount, const MatchingQueueTicket &InMatchingTicket )
 			{
  				MessageData *pNewMsg = nullptr;
-				FunctionContext hr([pNewMsg](Result hr) -> MessageData*
+				FunctionContext hr([&pNewMsg](Result hr) -> MessageData*
 				{
  					if(!hr && pNewMsg != nullptr)
 					{
@@ -1469,14 +1469,14 @@ namespace SF
 				);
 
 				protocolCheckMem( pNewMsg = MessageData::NewMessage( memHeap, PartyMatchingQueue::PartyMatchingItemDequeuedS2CEvt::MID, __uiMessageSize ) );
-				size_t MsgDataSize = (int)((size_t)pNewMsg->GetMessageSize() - sizeof(MessageHeader));
-				ArrayView<uint8_t> BufferView(MsgDataSize, pNewMsg->GetMessageData());
+				auto MsgDataSize = static_cast<uint>((size_t)pNewMsg->GetMessageSize() - sizeof(MessageHeader));
+				ArrayView<uint8_t> BufferView(MsgDataSize, 0, pNewMsg->GetMessageData());
 				OutputMemoryStream outputStream(BufferView);
 				auto* output = outputStream.ToOutputStream();
 
-				protocolCheck(output->Write(InRouteContext));
-				protocolCheck(output->Write(InRouteHopCount));
-				protocolCheck(output->Write(InMatchingTicket));
+				protocolCheck(*output << InRouteContext);
+				protocolCheck(*output << InRouteHopCount);
+				protocolCheck(*output << InMatchingTicket);
 
 				return hr;
 			}; // MessageData* PartyMatchingItemDequeuedS2CEvt::Create( IHeap& memHeap, const RouteContext &InRouteContext, const uint16_t &InRouteHopCount, const MatchingQueueTicket &InMatchingTicket )
@@ -1562,9 +1562,9 @@ namespace SF
 				auto* input = inputStream.ToInputStream();
 				uint16_t ArrayLen = 0;
 
-				protocolCheck(input->Read(m_RouteContext));
-				protocolCheck(input->Read(m_RouteHopCount));
-				protocolCheck(input->Read(m_MatchingTicket));
+				protocolCheck(*input >> m_RouteContext);
+				protocolCheck(*input >> m_RouteHopCount);
+				protocolCheck(*input >> m_MatchingTicket);
 
 				return hr;
 
@@ -1586,7 +1586,7 @@ namespace SF
 			MessageData* PlayerMatchingItemDequeuedS2CEvt::Create( IHeap& memHeap, const RouteContext &InRouteContext, const uint16_t &InRouteHopCount, const MatchingQueueTicket &InMatchingTicket )
 			{
  				MessageData *pNewMsg = nullptr;
-				FunctionContext hr([pNewMsg](Result hr) -> MessageData*
+				FunctionContext hr([&pNewMsg](Result hr) -> MessageData*
 				{
  					if(!hr && pNewMsg != nullptr)
 					{
@@ -1605,14 +1605,14 @@ namespace SF
 				);
 
 				protocolCheckMem( pNewMsg = MessageData::NewMessage( memHeap, PartyMatchingQueue::PlayerMatchingItemDequeuedS2CEvt::MID, __uiMessageSize ) );
-				size_t MsgDataSize = (int)((size_t)pNewMsg->GetMessageSize() - sizeof(MessageHeader));
-				ArrayView<uint8_t> BufferView(MsgDataSize, pNewMsg->GetMessageData());
+				auto MsgDataSize = static_cast<uint>((size_t)pNewMsg->GetMessageSize() - sizeof(MessageHeader));
+				ArrayView<uint8_t> BufferView(MsgDataSize, 0, pNewMsg->GetMessageData());
 				OutputMemoryStream outputStream(BufferView);
 				auto* output = outputStream.ToOutputStream();
 
-				protocolCheck(output->Write(InRouteContext));
-				protocolCheck(output->Write(InRouteHopCount));
-				protocolCheck(output->Write(InMatchingTicket));
+				protocolCheck(*output << InRouteContext);
+				protocolCheck(*output << InRouteHopCount);
+				protocolCheck(*output << InMatchingTicket);
 
 				return hr;
 			}; // MessageData* PlayerMatchingItemDequeuedS2CEvt::Create( IHeap& memHeap, const RouteContext &InRouteContext, const uint16_t &InRouteHopCount, const MatchingQueueTicket &InMatchingTicket )
@@ -1698,9 +1698,9 @@ namespace SF
 				auto* input = inputStream.ToInputStream();
 				uint16_t ArrayLen = 0;
 
-				protocolCheck(input->Read(m_RouteContext));
-				protocolCheck(input->Read(m_TransactionID));
-				protocolCheck(input->Read(m_RouteHopCount));
+				protocolCheck(*input >> m_RouteContext);
+				protocolCheck(*input >> m_TransactionID);
+				protocolCheck(*input >> m_RouteHopCount);
 
 				return hr;
 
@@ -1722,7 +1722,7 @@ namespace SF
 			MessageData* ReserveItemCmd::Create( IHeap& memHeap, const RouteContext &InRouteContext, const uint64_t &InTransactionID, const uint16_t &InRouteHopCount )
 			{
  				MessageData *pNewMsg = nullptr;
-				FunctionContext hr([pNewMsg](Result hr) -> MessageData*
+				FunctionContext hr([&pNewMsg](Result hr) -> MessageData*
 				{
  					if(!hr && pNewMsg != nullptr)
 					{
@@ -1741,14 +1741,14 @@ namespace SF
 				);
 
 				protocolCheckMem( pNewMsg = MessageData::NewMessage( memHeap, PartyMatchingQueue::ReserveItemCmd::MID, __uiMessageSize ) );
-				size_t MsgDataSize = (int)((size_t)pNewMsg->GetMessageSize() - sizeof(MessageHeader));
-				ArrayView<uint8_t> BufferView(MsgDataSize, pNewMsg->GetMessageData());
+				auto MsgDataSize = static_cast<uint>((size_t)pNewMsg->GetMessageSize() - sizeof(MessageHeader));
+				ArrayView<uint8_t> BufferView(MsgDataSize, 0, pNewMsg->GetMessageData());
 				OutputMemoryStream outputStream(BufferView);
 				auto* output = outputStream.ToOutputStream();
 
-				protocolCheck(output->Write(InRouteContext));
-				protocolCheck(output->Write(InTransactionID));
-				protocolCheck(output->Write(InRouteHopCount));
+				protocolCheck(*output << InRouteContext);
+				protocolCheck(*output << InTransactionID);
+				protocolCheck(*output << InRouteHopCount);
 
 				return hr;
 			}; // MessageData* ReserveItemCmd::Create( IHeap& memHeap, const RouteContext &InRouteContext, const uint64_t &InTransactionID, const uint16_t &InRouteHopCount )
@@ -1834,11 +1834,11 @@ namespace SF
 				auto* input = inputStream.ToInputStream();
 				uint16_t ArrayLen = 0;
 
-				protocolCheck(input->Read(m_RouteContext));
-				protocolCheck(input->Read(m_TransactionID));
-				protocolCheck(input->Read(m_Result));
-				protocolCheck(input->Read(m_NumberOfPlayersInTheItem));
-				protocolCheck(input->Read(m_MatchingTicket));
+				protocolCheck(*input >> m_RouteContext);
+				protocolCheck(*input >> m_TransactionID);
+				protocolCheck(*input >> m_Result);
+				protocolCheck(*input >> m_NumberOfPlayersInTheItem);
+				protocolCheck(*input >> m_MatchingTicket);
 
 				return hr;
 
@@ -1860,7 +1860,7 @@ namespace SF
 			MessageData* ReserveItemRes::Create( IHeap& memHeap, const RouteContext &InRouteContext, const uint64_t &InTransactionID, const Result &InResult, const uint32_t &InNumberOfPlayersInTheItem, const MatchingQueueTicket &InMatchingTicket )
 			{
  				MessageData *pNewMsg = nullptr;
-				FunctionContext hr([pNewMsg](Result hr) -> MessageData*
+				FunctionContext hr([&pNewMsg](Result hr) -> MessageData*
 				{
  					if(!hr && pNewMsg != nullptr)
 					{
@@ -1881,16 +1881,16 @@ namespace SF
 				);
 
 				protocolCheckMem( pNewMsg = MessageData::NewMessage( memHeap, PartyMatchingQueue::ReserveItemRes::MID, __uiMessageSize ) );
-				size_t MsgDataSize = (int)((size_t)pNewMsg->GetMessageSize() - sizeof(MessageHeader));
-				ArrayView<uint8_t> BufferView(MsgDataSize, pNewMsg->GetMessageData());
+				auto MsgDataSize = static_cast<uint>((size_t)pNewMsg->GetMessageSize() - sizeof(MessageHeader));
+				ArrayView<uint8_t> BufferView(MsgDataSize, 0, pNewMsg->GetMessageData());
 				OutputMemoryStream outputStream(BufferView);
 				auto* output = outputStream.ToOutputStream();
 
-				protocolCheck(output->Write(InRouteContext));
-				protocolCheck(output->Write(InTransactionID));
-				protocolCheck(output->Write(InResult));
-				protocolCheck(output->Write(InNumberOfPlayersInTheItem));
-				protocolCheck(output->Write(InMatchingTicket));
+				protocolCheck(*output << InRouteContext);
+				protocolCheck(*output << InTransactionID);
+				protocolCheck(*output << InResult);
+				protocolCheck(*output << InNumberOfPlayersInTheItem);
+				protocolCheck(*output << InMatchingTicket);
 
 				return hr;
 			}; // MessageData* ReserveItemRes::Create( IHeap& memHeap, const RouteContext &InRouteContext, const uint64_t &InTransactionID, const Result &InResult, const uint32_t &InNumberOfPlayersInTheItem, const MatchingQueueTicket &InMatchingTicket )
@@ -1976,10 +1976,10 @@ namespace SF
 				auto* input = inputStream.ToInputStream();
 				uint16_t ArrayLen = 0;
 
-				protocolCheck(input->Read(m_RouteContext));
-				protocolCheck(input->Read(m_TransactionID));
-				protocolCheck(input->Read(m_RouteHopCount));
-				protocolCheck(input->Read(m_NumberOfItemsToReserve));
+				protocolCheck(*input >> m_RouteContext);
+				protocolCheck(*input >> m_TransactionID);
+				protocolCheck(*input >> m_RouteHopCount);
+				protocolCheck(*input >> m_NumberOfItemsToReserve);
 
 				return hr;
 
@@ -2001,7 +2001,7 @@ namespace SF
 			MessageData* ReserveItemsCmd::Create( IHeap& memHeap, const RouteContext &InRouteContext, const uint64_t &InTransactionID, const uint16_t &InRouteHopCount, const uint32_t &InNumberOfItemsToReserve )
 			{
  				MessageData *pNewMsg = nullptr;
-				FunctionContext hr([pNewMsg](Result hr) -> MessageData*
+				FunctionContext hr([&pNewMsg](Result hr) -> MessageData*
 				{
  					if(!hr && pNewMsg != nullptr)
 					{
@@ -2021,15 +2021,15 @@ namespace SF
 				);
 
 				protocolCheckMem( pNewMsg = MessageData::NewMessage( memHeap, PartyMatchingQueue::ReserveItemsCmd::MID, __uiMessageSize ) );
-				size_t MsgDataSize = (int)((size_t)pNewMsg->GetMessageSize() - sizeof(MessageHeader));
-				ArrayView<uint8_t> BufferView(MsgDataSize, pNewMsg->GetMessageData());
+				auto MsgDataSize = static_cast<uint>((size_t)pNewMsg->GetMessageSize() - sizeof(MessageHeader));
+				ArrayView<uint8_t> BufferView(MsgDataSize, 0, pNewMsg->GetMessageData());
 				OutputMemoryStream outputStream(BufferView);
 				auto* output = outputStream.ToOutputStream();
 
-				protocolCheck(output->Write(InRouteContext));
-				protocolCheck(output->Write(InTransactionID));
-				protocolCheck(output->Write(InRouteHopCount));
-				protocolCheck(output->Write(InNumberOfItemsToReserve));
+				protocolCheck(*output << InRouteContext);
+				protocolCheck(*output << InTransactionID);
+				protocolCheck(*output << InRouteHopCount);
+				protocolCheck(*output << InNumberOfItemsToReserve);
 
 				return hr;
 			}; // MessageData* ReserveItemsCmd::Create( IHeap& memHeap, const RouteContext &InRouteContext, const uint64_t &InTransactionID, const uint16_t &InRouteHopCount, const uint32_t &InNumberOfItemsToReserve )
@@ -2115,9 +2115,9 @@ namespace SF
 				auto* input = inputStream.ToInputStream();
 				uint16_t ArrayLen = 0;
 
-				protocolCheck(input->Read(m_RouteContext));
-				protocolCheck(input->Read(m_TransactionID));
-				protocolCheck(input->Read(m_Result));
+				protocolCheck(*input >> m_RouteContext);
+				protocolCheck(*input >> m_TransactionID);
+				protocolCheck(*input >> m_Result);
 				protocolCheck(input->Read(ArrayLen));
 				uint32_t* NumberOfPlayersInTheItemPtr = nullptr;
 				protocolCheck(input->ReadLink(NumberOfPlayersInTheItemPtr, ArrayLen));
@@ -2147,7 +2147,7 @@ namespace SF
 			MessageData* ReserveItemsRes::Create( IHeap& memHeap, const RouteContext &InRouteContext, const uint64_t &InTransactionID, const Result &InResult, const Array<uint32_t>& InNumberOfPlayersInTheItem, const Array<MatchingQueueTicket>& InMatchingTicket )
 			{
  				MessageData *pNewMsg = nullptr;
-				FunctionContext hr([pNewMsg](Result hr) -> MessageData*
+				FunctionContext hr([&pNewMsg](Result hr) -> MessageData*
 				{
  					if(!hr && pNewMsg != nullptr)
 					{
@@ -2170,16 +2170,16 @@ namespace SF
 				);
 
 				protocolCheckMem( pNewMsg = MessageData::NewMessage( memHeap, PartyMatchingQueue::ReserveItemsRes::MID, __uiMessageSize ) );
-				size_t MsgDataSize = (int)((size_t)pNewMsg->GetMessageSize() - sizeof(MessageHeader));
-				ArrayView<uint8_t> BufferView(MsgDataSize, pNewMsg->GetMessageData());
+				auto MsgDataSize = static_cast<uint>((size_t)pNewMsg->GetMessageSize() - sizeof(MessageHeader));
+				ArrayView<uint8_t> BufferView(MsgDataSize, 0, pNewMsg->GetMessageData());
 				OutputMemoryStream outputStream(BufferView);
 				auto* output = outputStream.ToOutputStream();
 
-				protocolCheck(output->Write(InRouteContext));
-				protocolCheck(output->Write(InTransactionID));
-				protocolCheck(output->Write(InResult));
-				protocolCheck(output->Write(InNumberOfPlayersInTheItem));
-				protocolCheck(output->Write(InMatchingTicket));
+				protocolCheck(*output << InRouteContext);
+				protocolCheck(*output << InTransactionID);
+				protocolCheck(*output << InResult);
+				protocolCheck(*output << InNumberOfPlayersInTheItem);
+				protocolCheck(*output << InMatchingTicket);
 
 				return hr;
 			}; // MessageData* ReserveItemsRes::Create( IHeap& memHeap, const RouteContext &InRouteContext, const uint64_t &InTransactionID, const Result &InResult, const Array<uint32_t>& InNumberOfPlayersInTheItem, const Array<MatchingQueueTicket>& InMatchingTicket )
@@ -2267,10 +2267,10 @@ namespace SF
 				auto* input = inputStream.ToInputStream();
 				uint16_t ArrayLen = 0;
 
-				protocolCheck(input->Read(m_RouteContext));
-				protocolCheck(input->Read(m_TransactionID));
-				protocolCheck(input->Read(m_RouteHopCount));
-				protocolCheck(input->Read(m_TicketToCancel));
+				protocolCheck(*input >> m_RouteContext);
+				protocolCheck(*input >> m_TransactionID);
+				protocolCheck(*input >> m_RouteHopCount);
+				protocolCheck(*input >> m_TicketToCancel);
 
 				return hr;
 
@@ -2292,7 +2292,7 @@ namespace SF
 			MessageData* CancelReservationCmd::Create( IHeap& memHeap, const RouteContext &InRouteContext, const uint64_t &InTransactionID, const uint16_t &InRouteHopCount, const MatchingQueueTicket &InTicketToCancel )
 			{
  				MessageData *pNewMsg = nullptr;
-				FunctionContext hr([pNewMsg](Result hr) -> MessageData*
+				FunctionContext hr([&pNewMsg](Result hr) -> MessageData*
 				{
  					if(!hr && pNewMsg != nullptr)
 					{
@@ -2312,15 +2312,15 @@ namespace SF
 				);
 
 				protocolCheckMem( pNewMsg = MessageData::NewMessage( memHeap, PartyMatchingQueue::CancelReservationCmd::MID, __uiMessageSize ) );
-				size_t MsgDataSize = (int)((size_t)pNewMsg->GetMessageSize() - sizeof(MessageHeader));
-				ArrayView<uint8_t> BufferView(MsgDataSize, pNewMsg->GetMessageData());
+				auto MsgDataSize = static_cast<uint>((size_t)pNewMsg->GetMessageSize() - sizeof(MessageHeader));
+				ArrayView<uint8_t> BufferView(MsgDataSize, 0, pNewMsg->GetMessageData());
 				OutputMemoryStream outputStream(BufferView);
 				auto* output = outputStream.ToOutputStream();
 
-				protocolCheck(output->Write(InRouteContext));
-				protocolCheck(output->Write(InTransactionID));
-				protocolCheck(output->Write(InRouteHopCount));
-				protocolCheck(output->Write(InTicketToCancel));
+				protocolCheck(*output << InRouteContext);
+				protocolCheck(*output << InTransactionID);
+				protocolCheck(*output << InRouteHopCount);
+				protocolCheck(*output << InTicketToCancel);
 
 				return hr;
 			}; // MessageData* CancelReservationCmd::Create( IHeap& memHeap, const RouteContext &InRouteContext, const uint64_t &InTransactionID, const uint16_t &InRouteHopCount, const MatchingQueueTicket &InTicketToCancel )
@@ -2406,9 +2406,9 @@ namespace SF
 				auto* input = inputStream.ToInputStream();
 				uint16_t ArrayLen = 0;
 
-				protocolCheck(input->Read(m_RouteContext));
-				protocolCheck(input->Read(m_TransactionID));
-				protocolCheck(input->Read(m_Result));
+				protocolCheck(*input >> m_RouteContext);
+				protocolCheck(*input >> m_TransactionID);
+				protocolCheck(*input >> m_Result);
 
 				return hr;
 
@@ -2430,7 +2430,7 @@ namespace SF
 			MessageData* CancelReservationRes::Create( IHeap& memHeap, const RouteContext &InRouteContext, const uint64_t &InTransactionID, const Result &InResult )
 			{
  				MessageData *pNewMsg = nullptr;
-				FunctionContext hr([pNewMsg](Result hr) -> MessageData*
+				FunctionContext hr([&pNewMsg](Result hr) -> MessageData*
 				{
  					if(!hr && pNewMsg != nullptr)
 					{
@@ -2449,14 +2449,14 @@ namespace SF
 				);
 
 				protocolCheckMem( pNewMsg = MessageData::NewMessage( memHeap, PartyMatchingQueue::CancelReservationRes::MID, __uiMessageSize ) );
-				size_t MsgDataSize = (int)((size_t)pNewMsg->GetMessageSize() - sizeof(MessageHeader));
-				ArrayView<uint8_t> BufferView(MsgDataSize, pNewMsg->GetMessageData());
+				auto MsgDataSize = static_cast<uint>((size_t)pNewMsg->GetMessageSize() - sizeof(MessageHeader));
+				ArrayView<uint8_t> BufferView(MsgDataSize, 0, pNewMsg->GetMessageData());
 				OutputMemoryStream outputStream(BufferView);
 				auto* output = outputStream.ToOutputStream();
 
-				protocolCheck(output->Write(InRouteContext));
-				protocolCheck(output->Write(InTransactionID));
-				protocolCheck(output->Write(InResult));
+				protocolCheck(*output << InRouteContext);
+				protocolCheck(*output << InTransactionID);
+				protocolCheck(*output << InResult);
 
 				return hr;
 			}; // MessageData* CancelReservationRes::Create( IHeap& memHeap, const RouteContext &InRouteContext, const uint64_t &InTransactionID, const Result &InResult )
@@ -2540,9 +2540,9 @@ namespace SF
 				auto* input = inputStream.ToInputStream();
 				uint16_t ArrayLen = 0;
 
-				protocolCheck(input->Read(m_RouteContext));
-				protocolCheck(input->Read(m_TransactionID));
-				protocolCheck(input->Read(m_RouteHopCount));
+				protocolCheck(*input >> m_RouteContext);
+				protocolCheck(*input >> m_TransactionID);
+				protocolCheck(*input >> m_RouteHopCount);
 				protocolCheck(input->Read(ArrayLen));
 				MatchingQueueTicket* TicketToCancelPtr = nullptr;
 				protocolCheck(input->ReadLink(TicketToCancelPtr, ArrayLen));
@@ -2568,7 +2568,7 @@ namespace SF
 			MessageData* CancelReservationsCmd::Create( IHeap& memHeap, const RouteContext &InRouteContext, const uint64_t &InTransactionID, const uint16_t &InRouteHopCount, const Array<MatchingQueueTicket>& InTicketToCancel )
 			{
  				MessageData *pNewMsg = nullptr;
-				FunctionContext hr([pNewMsg](Result hr) -> MessageData*
+				FunctionContext hr([&pNewMsg](Result hr) -> MessageData*
 				{
  					if(!hr && pNewMsg != nullptr)
 					{
@@ -2589,15 +2589,15 @@ namespace SF
 				);
 
 				protocolCheckMem( pNewMsg = MessageData::NewMessage( memHeap, PartyMatchingQueue::CancelReservationsCmd::MID, __uiMessageSize ) );
-				size_t MsgDataSize = (int)((size_t)pNewMsg->GetMessageSize() - sizeof(MessageHeader));
-				ArrayView<uint8_t> BufferView(MsgDataSize, pNewMsg->GetMessageData());
+				auto MsgDataSize = static_cast<uint>((size_t)pNewMsg->GetMessageSize() - sizeof(MessageHeader));
+				ArrayView<uint8_t> BufferView(MsgDataSize, 0, pNewMsg->GetMessageData());
 				OutputMemoryStream outputStream(BufferView);
 				auto* output = outputStream.ToOutputStream();
 
-				protocolCheck(output->Write(InRouteContext));
-				protocolCheck(output->Write(InTransactionID));
-				protocolCheck(output->Write(InRouteHopCount));
-				protocolCheck(output->Write(InTicketToCancel));
+				protocolCheck(*output << InRouteContext);
+				protocolCheck(*output << InTransactionID);
+				protocolCheck(*output << InRouteHopCount);
+				protocolCheck(*output << InTicketToCancel);
 
 				return hr;
 			}; // MessageData* CancelReservationsCmd::Create( IHeap& memHeap, const RouteContext &InRouteContext, const uint64_t &InTransactionID, const uint16_t &InRouteHopCount, const Array<MatchingQueueTicket>& InTicketToCancel )
@@ -2683,9 +2683,9 @@ namespace SF
 				auto* input = inputStream.ToInputStream();
 				uint16_t ArrayLen = 0;
 
-				protocolCheck(input->Read(m_RouteContext));
-				protocolCheck(input->Read(m_TransactionID));
-				protocolCheck(input->Read(m_Result));
+				protocolCheck(*input >> m_RouteContext);
+				protocolCheck(*input >> m_TransactionID);
+				protocolCheck(*input >> m_Result);
 
 				return hr;
 
@@ -2707,7 +2707,7 @@ namespace SF
 			MessageData* CancelReservationsRes::Create( IHeap& memHeap, const RouteContext &InRouteContext, const uint64_t &InTransactionID, const Result &InResult )
 			{
  				MessageData *pNewMsg = nullptr;
-				FunctionContext hr([pNewMsg](Result hr) -> MessageData*
+				FunctionContext hr([&pNewMsg](Result hr) -> MessageData*
 				{
  					if(!hr && pNewMsg != nullptr)
 					{
@@ -2726,14 +2726,14 @@ namespace SF
 				);
 
 				protocolCheckMem( pNewMsg = MessageData::NewMessage( memHeap, PartyMatchingQueue::CancelReservationsRes::MID, __uiMessageSize ) );
-				size_t MsgDataSize = (int)((size_t)pNewMsg->GetMessageSize() - sizeof(MessageHeader));
-				ArrayView<uint8_t> BufferView(MsgDataSize, pNewMsg->GetMessageData());
+				auto MsgDataSize = static_cast<uint>((size_t)pNewMsg->GetMessageSize() - sizeof(MessageHeader));
+				ArrayView<uint8_t> BufferView(MsgDataSize, 0, pNewMsg->GetMessageData());
 				OutputMemoryStream outputStream(BufferView);
 				auto* output = outputStream.ToOutputStream();
 
-				protocolCheck(output->Write(InRouteContext));
-				protocolCheck(output->Write(InTransactionID));
-				protocolCheck(output->Write(InResult));
+				protocolCheck(*output << InRouteContext);
+				protocolCheck(*output << InTransactionID);
+				protocolCheck(*output << InResult);
 
 				return hr;
 			}; // MessageData* CancelReservationsRes::Create( IHeap& memHeap, const RouteContext &InRouteContext, const uint64_t &InTransactionID, const Result &InResult )
@@ -2817,10 +2817,10 @@ namespace SF
 				auto* input = inputStream.ToInputStream();
 				uint16_t ArrayLen = 0;
 
-				protocolCheck(input->Read(m_RouteContext));
-				protocolCheck(input->Read(m_TransactionID));
-				protocolCheck(input->Read(m_RouteHopCount));
-				protocolCheck(input->Read(m_MatchingTicket));
+				protocolCheck(*input >> m_RouteContext);
+				protocolCheck(*input >> m_TransactionID);
+				protocolCheck(*input >> m_RouteHopCount);
+				protocolCheck(*input >> m_MatchingTicket);
 
 				return hr;
 
@@ -2842,7 +2842,7 @@ namespace SF
 			MessageData* DequeueItemCmd::Create( IHeap& memHeap, const RouteContext &InRouteContext, const uint64_t &InTransactionID, const uint16_t &InRouteHopCount, const MatchingQueueTicket &InMatchingTicket )
 			{
  				MessageData *pNewMsg = nullptr;
-				FunctionContext hr([pNewMsg](Result hr) -> MessageData*
+				FunctionContext hr([&pNewMsg](Result hr) -> MessageData*
 				{
  					if(!hr && pNewMsg != nullptr)
 					{
@@ -2862,15 +2862,15 @@ namespace SF
 				);
 
 				protocolCheckMem( pNewMsg = MessageData::NewMessage( memHeap, PartyMatchingQueue::DequeueItemCmd::MID, __uiMessageSize ) );
-				size_t MsgDataSize = (int)((size_t)pNewMsg->GetMessageSize() - sizeof(MessageHeader));
-				ArrayView<uint8_t> BufferView(MsgDataSize, pNewMsg->GetMessageData());
+				auto MsgDataSize = static_cast<uint>((size_t)pNewMsg->GetMessageSize() - sizeof(MessageHeader));
+				ArrayView<uint8_t> BufferView(MsgDataSize, 0, pNewMsg->GetMessageData());
 				OutputMemoryStream outputStream(BufferView);
 				auto* output = outputStream.ToOutputStream();
 
-				protocolCheck(output->Write(InRouteContext));
-				protocolCheck(output->Write(InTransactionID));
-				protocolCheck(output->Write(InRouteHopCount));
-				protocolCheck(output->Write(InMatchingTicket));
+				protocolCheck(*output << InRouteContext);
+				protocolCheck(*output << InTransactionID);
+				protocolCheck(*output << InRouteHopCount);
+				protocolCheck(*output << InMatchingTicket);
 
 				return hr;
 			}; // MessageData* DequeueItemCmd::Create( IHeap& memHeap, const RouteContext &InRouteContext, const uint64_t &InTransactionID, const uint16_t &InRouteHopCount, const MatchingQueueTicket &InMatchingTicket )
@@ -2956,12 +2956,12 @@ namespace SF
 				auto* input = inputStream.ToInputStream();
 				uint16_t ArrayLen = 0;
 
-				protocolCheck(input->Read(m_RouteContext));
-				protocolCheck(input->Read(m_TransactionID));
-				protocolCheck(input->Read(m_Result));
-				protocolCheck(input->Read(m_MatchingTicket));
-				protocolCheck(input->Read(m_RegisterUID));
-				protocolCheck(input->Read(m_RegisterID));
+				protocolCheck(*input >> m_RouteContext);
+				protocolCheck(*input >> m_TransactionID);
+				protocolCheck(*input >> m_Result);
+				protocolCheck(*input >> m_MatchingTicket);
+				protocolCheck(*input >> m_RegisterUID);
+				protocolCheck(*input >> m_RegisterID);
 				protocolCheck(input->Read(ArrayLen));
 				MatchingPlayerInformation* PlayersPtr = nullptr;
 				protocolCheck(input->ReadLink(PlayersPtr, ArrayLen));
@@ -2987,7 +2987,7 @@ namespace SF
 			MessageData* DequeueItemRes::Create( IHeap& memHeap, const RouteContext &InRouteContext, const uint64_t &InTransactionID, const Result &InResult, const MatchingQueueTicket &InMatchingTicket, const uint64_t &InRegisterUID, const PlayerID &InRegisterID, const Array<MatchingPlayerInformation>& InPlayers )
 			{
  				MessageData *pNewMsg = nullptr;
-				FunctionContext hr([pNewMsg](Result hr) -> MessageData*
+				FunctionContext hr([&pNewMsg](Result hr) -> MessageData*
 				{
  					if(!hr && pNewMsg != nullptr)
 					{
@@ -3011,18 +3011,18 @@ namespace SF
 				);
 
 				protocolCheckMem( pNewMsg = MessageData::NewMessage( memHeap, PartyMatchingQueue::DequeueItemRes::MID, __uiMessageSize ) );
-				size_t MsgDataSize = (int)((size_t)pNewMsg->GetMessageSize() - sizeof(MessageHeader));
-				ArrayView<uint8_t> BufferView(MsgDataSize, pNewMsg->GetMessageData());
+				auto MsgDataSize = static_cast<uint>((size_t)pNewMsg->GetMessageSize() - sizeof(MessageHeader));
+				ArrayView<uint8_t> BufferView(MsgDataSize, 0, pNewMsg->GetMessageData());
 				OutputMemoryStream outputStream(BufferView);
 				auto* output = outputStream.ToOutputStream();
 
-				protocolCheck(output->Write(InRouteContext));
-				protocolCheck(output->Write(InTransactionID));
-				protocolCheck(output->Write(InResult));
-				protocolCheck(output->Write(InMatchingTicket));
-				protocolCheck(output->Write(InRegisterUID));
-				protocolCheck(output->Write(InRegisterID));
-				protocolCheck(output->Write(InPlayers));
+				protocolCheck(*output << InRouteContext);
+				protocolCheck(*output << InTransactionID);
+				protocolCheck(*output << InResult);
+				protocolCheck(*output << InMatchingTicket);
+				protocolCheck(*output << InRegisterUID);
+				protocolCheck(*output << InRegisterID);
+				protocolCheck(*output << InPlayers);
 
 				return hr;
 			}; // MessageData* DequeueItemRes::Create( IHeap& memHeap, const RouteContext &InRouteContext, const uint64_t &InTransactionID, const Result &InResult, const MatchingQueueTicket &InMatchingTicket, const uint64_t &InRegisterUID, const PlayerID &InRegisterID, const Array<MatchingPlayerInformation>& InPlayers )
@@ -3111,9 +3111,9 @@ namespace SF
 				auto* input = inputStream.ToInputStream();
 				uint16_t ArrayLen = 0;
 
-				protocolCheck(input->Read(m_RouteContext));
-				protocolCheck(input->Read(m_RouteHopCount));
-				protocolCheck(input->Read(m_MatchingTicket));
+				protocolCheck(*input >> m_RouteContext);
+				protocolCheck(*input >> m_RouteHopCount);
+				protocolCheck(*input >> m_MatchingTicket);
 
 				return hr;
 
@@ -3135,7 +3135,7 @@ namespace SF
 			MessageData* MatchingItemErrorC2SEvt::Create( IHeap& memHeap, const RouteContext &InRouteContext, const uint16_t &InRouteHopCount, const MatchingQueueTicket &InMatchingTicket )
 			{
  				MessageData *pNewMsg = nullptr;
-				FunctionContext hr([pNewMsg](Result hr) -> MessageData*
+				FunctionContext hr([&pNewMsg](Result hr) -> MessageData*
 				{
  					if(!hr && pNewMsg != nullptr)
 					{
@@ -3154,14 +3154,14 @@ namespace SF
 				);
 
 				protocolCheckMem( pNewMsg = MessageData::NewMessage( memHeap, PartyMatchingQueue::MatchingItemErrorC2SEvt::MID, __uiMessageSize ) );
-				size_t MsgDataSize = (int)((size_t)pNewMsg->GetMessageSize() - sizeof(MessageHeader));
-				ArrayView<uint8_t> BufferView(MsgDataSize, pNewMsg->GetMessageData());
+				auto MsgDataSize = static_cast<uint>((size_t)pNewMsg->GetMessageSize() - sizeof(MessageHeader));
+				ArrayView<uint8_t> BufferView(MsgDataSize, 0, pNewMsg->GetMessageData());
 				OutputMemoryStream outputStream(BufferView);
 				auto* output = outputStream.ToOutputStream();
 
-				protocolCheck(output->Write(InRouteContext));
-				protocolCheck(output->Write(InRouteHopCount));
-				protocolCheck(output->Write(InMatchingTicket));
+				protocolCheck(*output << InRouteContext);
+				protocolCheck(*output << InRouteHopCount);
+				protocolCheck(*output << InMatchingTicket);
 
 				return hr;
 			}; // MessageData* MatchingItemErrorC2SEvt::Create( IHeap& memHeap, const RouteContext &InRouteContext, const uint16_t &InRouteHopCount, const MatchingQueueTicket &InMatchingTicket )

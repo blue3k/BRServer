@@ -16,7 +16,7 @@
 #include "Types/BrGameTypes.h"
 #include "String/SFToStringEngineTypes.h"
 #include "Variable/SFVariableBoxing.h"
-
+#include "Types/BrSvrTypeSerialization.h"
 
 namespace SF {
 

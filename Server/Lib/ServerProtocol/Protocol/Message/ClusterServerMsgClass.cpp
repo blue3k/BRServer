@@ -41,10 +41,10 @@ namespace SF
 				auto* input = inputStream.ToInputStream();
 				uint16_t ArrayLen = 0;
 
-				protocolCheck(input->Read(m_RouteContext));
-				protocolCheck(input->Read(m_TransactionID));
-				protocolCheck(input->Read(m_RouteHopCount));
-				protocolCheck(input->Read(m_ClusterID));
+				protocolCheck(*input >> m_RouteContext);
+				protocolCheck(*input >> m_TransactionID);
+				protocolCheck(*input >> m_RouteHopCount);
+				protocolCheck(*input >> m_ClusterID);
 
 				return hr;
 
@@ -66,7 +66,7 @@ namespace SF
 			MessageData* GetClusterMemberListCmd::Create( IHeap& memHeap, const RouteContext &InRouteContext, const uint64_t &InTransactionID, const uint16_t &InRouteHopCount, const ClusterID &InClusterID )
 			{
  				MessageData *pNewMsg = nullptr;
-				FunctionContext hr([pNewMsg](Result hr) -> MessageData*
+				FunctionContext hr([&pNewMsg](Result hr) -> MessageData*
 				{
  					if(!hr && pNewMsg != nullptr)
 					{
@@ -86,15 +86,15 @@ namespace SF
 				);
 
 				protocolCheckMem( pNewMsg = MessageData::NewMessage( memHeap, ClusterServer::GetClusterMemberListCmd::MID, __uiMessageSize ) );
-				size_t MsgDataSize = (int)((size_t)pNewMsg->GetMessageSize() - sizeof(MessageHeader));
-				ArrayView<uint8_t> BufferView(MsgDataSize, pNewMsg->GetMessageData());
+				auto MsgDataSize = static_cast<uint>((size_t)pNewMsg->GetMessageSize() - sizeof(MessageHeader));
+				ArrayView<uint8_t> BufferView(MsgDataSize, 0, pNewMsg->GetMessageData());
 				OutputMemoryStream outputStream(BufferView);
 				auto* output = outputStream.ToOutputStream();
 
-				protocolCheck(output->Write(InRouteContext));
-				protocolCheck(output->Write(InTransactionID));
-				protocolCheck(output->Write(InRouteHopCount));
-				protocolCheck(output->Write(InClusterID));
+				protocolCheck(*output << InRouteContext);
+				protocolCheck(*output << InTransactionID);
+				protocolCheck(*output << InRouteHopCount);
+				protocolCheck(*output << InClusterID);
 
 				return hr;
 			}; // MessageData* GetClusterMemberListCmd::Create( IHeap& memHeap, const RouteContext &InRouteContext, const uint64_t &InTransactionID, const uint16_t &InRouteHopCount, const ClusterID &InClusterID )
@@ -180,9 +180,9 @@ namespace SF
 				auto* input = inputStream.ToInputStream();
 				uint16_t ArrayLen = 0;
 
-				protocolCheck(input->Read(m_RouteContext));
-				protocolCheck(input->Read(m_TransactionID));
-				protocolCheck(input->Read(m_Result));
+				protocolCheck(*input >> m_RouteContext);
+				protocolCheck(*input >> m_TransactionID);
+				protocolCheck(*input >> m_Result);
 				protocolCheck(input->Read(ArrayLen));
 				ServiceInformation* MemberListPtr = nullptr;
 				protocolCheck(input->ReadLink(MemberListPtr, ArrayLen));
@@ -208,7 +208,7 @@ namespace SF
 			MessageData* GetClusterMemberListRes::Create( IHeap& memHeap, const RouteContext &InRouteContext, const uint64_t &InTransactionID, const Result &InResult, const Array<ServiceInformation>& InMemberList )
 			{
  				MessageData *pNewMsg = nullptr;
-				FunctionContext hr([pNewMsg](Result hr) -> MessageData*
+				FunctionContext hr([&pNewMsg](Result hr) -> MessageData*
 				{
  					if(!hr && pNewMsg != nullptr)
 					{
@@ -229,15 +229,15 @@ namespace SF
 				);
 
 				protocolCheckMem( pNewMsg = MessageData::NewMessage( memHeap, ClusterServer::GetClusterMemberListRes::MID, __uiMessageSize ) );
-				size_t MsgDataSize = (int)((size_t)pNewMsg->GetMessageSize() - sizeof(MessageHeader));
-				ArrayView<uint8_t> BufferView(MsgDataSize, pNewMsg->GetMessageData());
+				auto MsgDataSize = static_cast<uint>((size_t)pNewMsg->GetMessageSize() - sizeof(MessageHeader));
+				ArrayView<uint8_t> BufferView(MsgDataSize, 0, pNewMsg->GetMessageData());
 				OutputMemoryStream outputStream(BufferView);
 				auto* output = outputStream.ToOutputStream();
 
-				protocolCheck(output->Write(InRouteContext));
-				protocolCheck(output->Write(InTransactionID));
-				protocolCheck(output->Write(InResult));
-				protocolCheck(output->Write(InMemberList));
+				protocolCheck(*output << InRouteContext);
+				protocolCheck(*output << InTransactionID);
+				protocolCheck(*output << InResult);
+				protocolCheck(*output << InMemberList);
 
 				return hr;
 			}; // MessageData* GetClusterMemberListRes::Create( IHeap& memHeap, const RouteContext &InRouteContext, const uint64_t &InTransactionID, const Result &InResult, const Array<ServiceInformation>& InMemberList )
@@ -323,10 +323,10 @@ namespace SF
 				auto* input = inputStream.ToInputStream();
 				uint16_t ArrayLen = 0;
 
-				protocolCheck(input->Read(m_RouteContext));
-				protocolCheck(input->Read(m_TransactionID));
-				protocolCheck(input->Read(m_RouteHopCount));
-				protocolCheck(input->Read(m_ClusterID));
+				protocolCheck(*input >> m_RouteContext);
+				protocolCheck(*input >> m_TransactionID);
+				protocolCheck(*input >> m_RouteHopCount);
+				protocolCheck(*input >> m_ClusterID);
 
 				return hr;
 
@@ -348,7 +348,7 @@ namespace SF
 			MessageData* RequestDataSyncCmd::Create( IHeap& memHeap, const RouteContext &InRouteContext, const uint64_t &InTransactionID, const uint16_t &InRouteHopCount, const ClusterID &InClusterID )
 			{
  				MessageData *pNewMsg = nullptr;
-				FunctionContext hr([pNewMsg](Result hr) -> MessageData*
+				FunctionContext hr([&pNewMsg](Result hr) -> MessageData*
 				{
  					if(!hr && pNewMsg != nullptr)
 					{
@@ -368,15 +368,15 @@ namespace SF
 				);
 
 				protocolCheckMem( pNewMsg = MessageData::NewMessage( memHeap, ClusterServer::RequestDataSyncCmd::MID, __uiMessageSize ) );
-				size_t MsgDataSize = (int)((size_t)pNewMsg->GetMessageSize() - sizeof(MessageHeader));
-				ArrayView<uint8_t> BufferView(MsgDataSize, pNewMsg->GetMessageData());
+				auto MsgDataSize = static_cast<uint>((size_t)pNewMsg->GetMessageSize() - sizeof(MessageHeader));
+				ArrayView<uint8_t> BufferView(MsgDataSize, 0, pNewMsg->GetMessageData());
 				OutputMemoryStream outputStream(BufferView);
 				auto* output = outputStream.ToOutputStream();
 
-				protocolCheck(output->Write(InRouteContext));
-				protocolCheck(output->Write(InTransactionID));
-				protocolCheck(output->Write(InRouteHopCount));
-				protocolCheck(output->Write(InClusterID));
+				protocolCheck(*output << InRouteContext);
+				protocolCheck(*output << InTransactionID);
+				protocolCheck(*output << InRouteHopCount);
+				protocolCheck(*output << InClusterID);
 
 				return hr;
 			}; // MessageData* RequestDataSyncCmd::Create( IHeap& memHeap, const RouteContext &InRouteContext, const uint64_t &InTransactionID, const uint16_t &InRouteHopCount, const ClusterID &InClusterID )
@@ -462,9 +462,9 @@ namespace SF
 				auto* input = inputStream.ToInputStream();
 				uint16_t ArrayLen = 0;
 
-				protocolCheck(input->Read(m_RouteContext));
-				protocolCheck(input->Read(m_TransactionID));
-				protocolCheck(input->Read(m_Result));
+				protocolCheck(*input >> m_RouteContext);
+				protocolCheck(*input >> m_TransactionID);
+				protocolCheck(*input >> m_Result);
 
 				return hr;
 
@@ -486,7 +486,7 @@ namespace SF
 			MessageData* RequestDataSyncRes::Create( IHeap& memHeap, const RouteContext &InRouteContext, const uint64_t &InTransactionID, const Result &InResult )
 			{
  				MessageData *pNewMsg = nullptr;
-				FunctionContext hr([pNewMsg](Result hr) -> MessageData*
+				FunctionContext hr([&pNewMsg](Result hr) -> MessageData*
 				{
  					if(!hr && pNewMsg != nullptr)
 					{
@@ -505,14 +505,14 @@ namespace SF
 				);
 
 				protocolCheckMem( pNewMsg = MessageData::NewMessage( memHeap, ClusterServer::RequestDataSyncRes::MID, __uiMessageSize ) );
-				size_t MsgDataSize = (int)((size_t)pNewMsg->GetMessageSize() - sizeof(MessageHeader));
-				ArrayView<uint8_t> BufferView(MsgDataSize, pNewMsg->GetMessageData());
+				auto MsgDataSize = static_cast<uint>((size_t)pNewMsg->GetMessageSize() - sizeof(MessageHeader));
+				ArrayView<uint8_t> BufferView(MsgDataSize, 0, pNewMsg->GetMessageData());
 				OutputMemoryStream outputStream(BufferView);
 				auto* output = outputStream.ToOutputStream();
 
-				protocolCheck(output->Write(InRouteContext));
-				protocolCheck(output->Write(InTransactionID));
-				protocolCheck(output->Write(InResult));
+				protocolCheck(*output << InRouteContext);
+				protocolCheck(*output << InTransactionID);
+				protocolCheck(*output << InResult);
 
 				return hr;
 			}; // MessageData* RequestDataSyncRes::Create( IHeap& memHeap, const RouteContext &InRouteContext, const uint64_t &InTransactionID, const Result &InResult )

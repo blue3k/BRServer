@@ -174,7 +174,7 @@ namespace Svr{
 			);
 		}
 
-		Svr::MessageHandlerTable<MessageHandlerType>* GetMessageHandlerTable() { return &m_HandlerTable; }
+		Svr::MessageHandlerTable<MessageHandlerType>& GetMessageHandlerTable() { return m_HandlerTable; }
 
 
 		// Process Message and release message after all processed

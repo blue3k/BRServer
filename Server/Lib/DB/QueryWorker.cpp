@@ -11,7 +11,6 @@
 
 
 #include "DBPch.h"
-//#include <atldbcli.h>
 #include "SFTypedefs.h"
 #include "String/SFStrUtil.h"
 #include "ResultCode/SFResultCodeDB.h"

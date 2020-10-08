@@ -41,8 +41,8 @@ namespace SF
 				auto* input = inputStream.ToInputStream();
 				uint16_t ArrayLen = 0;
 
-				protocolCheck(input->Read(m_RouteContext));
-				protocolCheck(input->Read(m_RouteHopCount));
+				protocolCheck(*input >> m_RouteContext);
+				protocolCheck(*input >> m_RouteHopCount);
 
 				return hr;
 
@@ -64,7 +64,7 @@ namespace SF
 			MessageData* PartyGameMatchedS2CEvt::Create( IHeap& memHeap, const RouteContext &InRouteContext, const uint16_t &InRouteHopCount )
 			{
  				MessageData *pNewMsg = nullptr;
-				FunctionContext hr([pNewMsg](Result hr) -> MessageData*
+				FunctionContext hr([&pNewMsg](Result hr) -> MessageData*
 				{
  					if(!hr && pNewMsg != nullptr)
 					{
@@ -82,13 +82,13 @@ namespace SF
 				);
 
 				protocolCheckMem( pNewMsg = MessageData::NewMessage( memHeap, PartyMatching::PartyGameMatchedS2CEvt::MID, __uiMessageSize ) );
-				size_t MsgDataSize = (int)((size_t)pNewMsg->GetMessageSize() - sizeof(MessageHeader));
-				ArrayView<uint8_t> BufferView(MsgDataSize, pNewMsg->GetMessageData());
+				auto MsgDataSize = static_cast<uint>((size_t)pNewMsg->GetMessageSize() - sizeof(MessageHeader));
+				ArrayView<uint8_t> BufferView(MsgDataSize, 0, pNewMsg->GetMessageData());
 				OutputMemoryStream outputStream(BufferView);
 				auto* output = outputStream.ToOutputStream();
 
-				protocolCheck(output->Write(InRouteContext));
-				protocolCheck(output->Write(InRouteHopCount));
+				protocolCheck(*output << InRouteContext);
+				protocolCheck(*output << InRouteHopCount);
 
 				return hr;
 			}; // MessageData* PartyGameMatchedS2CEvt::Create( IHeap& memHeap, const RouteContext &InRouteContext, const uint16_t &InRouteHopCount )
@@ -174,11 +174,11 @@ namespace SF
 				auto* input = inputStream.ToInputStream();
 				uint16_t ArrayLen = 0;
 
-				protocolCheck(input->Read(m_RouteContext));
-				protocolCheck(input->Read(m_RouteHopCount));
-				protocolCheck(input->Read(m_DestPlayerID));
-				protocolCheck(input->Read(m_GameInsUID));
-				protocolCheck(input->Read(m_RequestedRole));
+				protocolCheck(*input >> m_RouteContext);
+				protocolCheck(*input >> m_RouteHopCount);
+				protocolCheck(*input >> m_DestPlayerID);
+				protocolCheck(*input >> m_GameInsUID);
+				protocolCheck(*input >> m_RequestedRole);
 
 				return hr;
 
@@ -200,7 +200,7 @@ namespace SF
 			MessageData* PlayerGameMatchedS2CEvt::Create( IHeap& memHeap, const RouteContext &InRouteContext, const uint16_t &InRouteHopCount, const PlayerID &InDestPlayerID, const uint64_t &InGameInsUID, const uint8_t &InRequestedRole )
 			{
  				MessageData *pNewMsg = nullptr;
-				FunctionContext hr([pNewMsg](Result hr) -> MessageData*
+				FunctionContext hr([&pNewMsg](Result hr) -> MessageData*
 				{
  					if(!hr && pNewMsg != nullptr)
 					{
@@ -221,16 +221,16 @@ namespace SF
 				);
 
 				protocolCheckMem( pNewMsg = MessageData::NewMessage( memHeap, PartyMatching::PlayerGameMatchedS2CEvt::MID, __uiMessageSize ) );
-				size_t MsgDataSize = (int)((size_t)pNewMsg->GetMessageSize() - sizeof(MessageHeader));
-				ArrayView<uint8_t> BufferView(MsgDataSize, pNewMsg->GetMessageData());
+				auto MsgDataSize = static_cast<uint>((size_t)pNewMsg->GetMessageSize() - sizeof(MessageHeader));
+				ArrayView<uint8_t> BufferView(MsgDataSize, 0, pNewMsg->GetMessageData());
 				OutputMemoryStream outputStream(BufferView);
 				auto* output = outputStream.ToOutputStream();
 
-				protocolCheck(output->Write(InRouteContext));
-				protocolCheck(output->Write(InRouteHopCount));
-				protocolCheck(output->Write(InDestPlayerID));
-				protocolCheck(output->Write(InGameInsUID));
-				protocolCheck(output->Write(InRequestedRole));
+				protocolCheck(*output << InRouteContext);
+				protocolCheck(*output << InRouteHopCount);
+				protocolCheck(*output << InDestPlayerID);
+				protocolCheck(*output << InGameInsUID);
+				protocolCheck(*output << InRequestedRole);
 
 				return hr;
 			}; // MessageData* PlayerGameMatchedS2CEvt::Create( IHeap& memHeap, const RouteContext &InRouteContext, const uint16_t &InRouteHopCount, const PlayerID &InDestPlayerID, const uint64_t &InGameInsUID, const uint8_t &InRequestedRole )

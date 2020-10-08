@@ -24,6 +24,10 @@ namespace SF {
 
 #if !ANDROID
 
+	inline Result operator >> (IInputStream& input, mysqlx::Type& data) { return input.Read(&data, sizeof(data)); }
+	inline Result operator << (IOutputStream& output, const mysqlx::Type& data) { return output.Write(&data, sizeof(data)); }
+
+
 	inline Result _ToString(ToStringContext& context, const mysqlx::Type& Data)
 	{
 		const char* name = mysqlx::typeName(Data);

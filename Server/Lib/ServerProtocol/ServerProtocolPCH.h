@@ -11,6 +11,8 @@
 
 #include "Util/SFUtility.h"
 #include "String/SFStrUtil.h"
+#include "Types/SFEngineTypeSerialization.h"
+#include "Types/BrSvrTypeSerialization.h"
 #include "Net/SFMessage.h"
 #include "ServerLog/SvrLog.h"
 #include "Thread/SFSynchronization.h"

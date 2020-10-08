@@ -211,13 +211,12 @@ namespace Svr
 		case Message::MSGTYPE_COMMAND:
 		case Message::MSGTYPE_EVENT:
 		{
-			Assert(GetMessageHandlerTable());
-			if (!(GetMessageHandlerTable()->HandleMessage<TransactionPtr&>(pCon, pMsg, pNewTrans)))
+			if (!(GetMessageHandlerTable().HandleMessage<TransactionPtr&>(pCon, pMsg, pNewTrans)))
 			{
 				// If it couldn't find a handler in server entity handlers, looking for it in server loopback entity
 				MessageHandlerType handler;
 				assert(false);// this shouldn't be happened now. We route all message to destination entity
-				hr = GetLoopbackServerEntity()->GetMessageHandlerTable()->GetHandler(pMsg->GetMessageHeader()->msgID, handler);
+				hr = GetLoopbackServerEntity()->GetMessageHandlerTable().GetHandler(pMsg->GetMessageHeader()->msgID, handler);
 				if (!(hr))
 				{
 					assert(false);

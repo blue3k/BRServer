@@ -9,6 +9,7 @@
 
 #include "Types/BrSvrTypes.h"
 #include "Types/BrGameTypes.h"
+#include "Types/SFEngineTypeSerialization.h"
 #include "String/SFToStringBase.h"
 #include "String/SFToStringEngineTypes.h"
 #include "Variable/SFVariableBoxing.h"

@@ -76,43 +76,15 @@
     <Compile Include="GameSystem\ActorState\ActorStateShowRole.cs" />
     <Compile Include="GameSystem\ActorState\ActorStateSleep.cs" />
     <Compile Include="GameSystem\ActorState\ActorStateTumb.cs" />
-    <Compile Include="GameSystem\BRGame.cs" />
-    <Compile Include="GameSystem\ChatMessage.cs" />
-    <Compile Include="GameSystem\FriendManager.cs" />
-    <Compile Include="GameSystem\GameHistory.cs" />
-    <Compile Include="GameSystem\GameLogItem.cs" />
-    <Compile Include="GameSystem\GameManager.cs" />
-    <Compile Include="GameSystem\GameState\GameState.cs" />
-    <Compile Include="GameSystem\GameState\GameStateDefenceOfSuspects.cs" />
-    <Compile Include="GameSystem\GameState\GameStateEnd.cs" />
-    <Compile Include="GameSystem\GameState\GameStateFirstNightVote.cs" />
-    <Compile Include="GameSystem\GameState\GameStateFreeDebate.cs" />
     <Compile Include="GameSystem\GameState\GameStateInGame.cs" />
     <Compile Include="GameSystem\GameState\GameStateLoading.cs" />
-    <Compile Include="GameSystem\GameState\GameStateLobby.cs" />
-    <Compile Include="GameSystem\GameState\GameStateLogin.cs" />
-    <Compile Include="GameSystem\GameState\GameStateMatching.cs" />
-    <Compile Include="GameSystem\GameState\GameStateMorningDebate.cs" />
-    <Compile Include="GameSystem\GameState\GameStateMythomaniac.cs" />
-    <Compile Include="GameSystem\GameState\GameStateNightVote.cs" />
-    <Compile Include="GameSystem\GameState\GameStateNone.cs" />
     <Compile Include="GameSystem\GameState\GameStatePatching.cs" />
-    <Compile Include="GameSystem\GameState\GameStateSecondNightVote.cs" />
     <Compile Include="GameSystem\GameState\GameStateUITest.cs" />
     <Compile Include="GameSystem\GameState\GameStateVote.cs" />
-    <Compile Include="GameSystem\GameState\GameStateVoteForHanging.cs" />
-    <Compile Include="GameSystem\GameState\GameStateVoteForSuspects.cs" />
-    <Compile Include="GameSystem\GameSystemComponent.cs" />
     <Compile Include="GameSystem\MyInformationManager.cs" />
-    <Compile Include="GameSystem\NetManager.cs" />
-    <Compile Include="GameSystem\NotificationManager.cs" />
-    <Compile Include="GameSystem\PartyManager.cs" />
-    <Compile Include="GameSystem\PlatformInterface.cs" />
     <Compile Include="GameSystem\PlayerInfo.cs" />
-    <Compile Include="GameSystem\PlayerManager.cs" />
     <Compile Include="GameSystem\RankingManager.cs" />
     <Compile Include="GameSystem\ShopManager.cs" />
-    <Compile Include="GameSystem\Social\SocialInterface.cs" />
     <Compile Include="GameSystem\TableManager.cs" />
     <Compile Include="GameSystem\TableManagerTable.cs" />
     <Compile Include="GameSystem\UIManager.cs" />
@@ -122,20 +94,6 @@
     <Compile Include="MainForm.Designer.cs">
       <DependentUpon>MainForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="Memory\MemoryPool.cs" />
-    <Compile Include="Memory\MemoryPoolManager.cs" />
-    <Compile Include="Net\Connection.cs" />
-    <Compile Include="Net\ConnectionMUDP.cs" />
-    <Compile Include="Net\ConnectionMUDP_IOCP.cs" />
-    <Compile Include="Net\EventObjectPool.cs" />
-    <Compile Include="Net\MessageBufferPool.cs" />
-    <Compile Include="Net\MessageProcessor.cs" />
-    <Compile Include="Net\MessageWindow.cs" />
-    <Compile Include="Net\Message\NetCtrlClass.cs" />
-    <Compile Include="Net\Message\NetCtrlPolicy.cs" />
-    <Compile Include="Net\NetMessage.cs" />
-    <Compile Include="Net\NetPolicy.cs" />
-    <Compile Include="Net\ThreadQueue.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SystemType.cs" />
@@ -177,6 +135,9 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="GameSystem\Social\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

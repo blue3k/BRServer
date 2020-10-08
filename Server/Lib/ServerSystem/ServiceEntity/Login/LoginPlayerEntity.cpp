@@ -129,16 +129,18 @@ namespace Svr {
 	// register message handlers
 	Result LoginPlayerEntity::RegisterMessageHandlers()
 	{
-		BR_ENTITY_MESSAGE(Message::Login::HeartBitC2SEvt)					{ pNewTrans = nullptr; HeartBit(); return ResultCode::SUCCESS; } );
-		BR_ENTITY_MESSAGE(Message::Login::LoginCmd)							{ pNewTrans = new(GetHeap()) LoginPlayerTransLogin(GetHeap(), pMsgData); return ResultCode::SUCCESS; } );
-		BR_ENTITY_MESSAGE(Message::Login::LoginByFacebookCmd)				{ pNewTrans = new(GetHeap()) LoginPlayerTransLoginByFacebook(GetHeap(), pMsgData); return ResultCode::SUCCESS; } );
-		BR_ENTITY_MESSAGE(Message::Login::CreateRandomUserCmd)				{ pNewTrans = new(GetHeap()) LoginPlayerTransCreateRandomUser(GetHeap(), pMsgData); return ResultCode::SUCCESS; } );
-		BR_ENTITY_MESSAGE(Message::LoginServer::PlayerJoinedToGameServerCmd){ pNewTrans = new(GetHeap()) LoginPlayerJoinedToGameServerTrans(GetHeap(), pMsgData); return ResultCode::SUCCESS; } );
-		BR_ENTITY_MESSAGE(Message::LoginServer::KickPlayerCmd)				{ pNewTrans = new(GetHeap()) LoginPlayerKickPlayerTrans(GetHeap(), pMsgData); return ResultCode::SUCCESS; } );
+		BR_ENTITY_MESSAGE(Message::Login::HeartBitC2SEvt) { pNewTrans = nullptr; HeartBit(); return ResultCode::SUCCESS; } );
 
-		BR_ENTITY_MESSAGE(Message::Login::UpdateMyScoreCmd)					{ pNewTrans = new(GetHeap()) RankingUpdateScoreTrans(GetHeap(), pMsgData); return ResultCode::SUCCESS; } );
-		BR_ENTITY_MESSAGE(Message::Login::DataTestCmd)						{ pNewTrans = new(GetHeap()) LoginUserDataTestTrans(GetHeap(), pMsgData); return ResultCode::SUCCESS; } );
-		BR_ENTITY_MESSAGE(Message::Login::DebugPrintALLRankingCmd)			{ pNewTrans = new(GetHeap()) LoginUserDebugPrintALLRankingTrans(GetHeap(), pMsgData); return ResultCode::SUCCESS; } );
+		RegisterMessageHandler<LoginPlayerTransLogin>();
+		RegisterMessageHandler<LoginPlayerTransLoginByFacebook>();
+		RegisterMessageHandler<LoginPlayerTransCreateRandomUser>();
+		RegisterMessageHandler<LoginPlayerJoinedToGameServerTrans>();
+		RegisterMessageHandler<LoginPlayerKickPlayerTrans>();
+
+		RegisterMessageHandler<RankingUpdateScoreTrans>();
+		RegisterMessageHandler<LoginUserDataTestTrans>();
+		RegisterMessageHandler<LoginUserDebugPrintALLRankingTrans>();
+
 		return ResultCode::SUCCESS;
 	}
 

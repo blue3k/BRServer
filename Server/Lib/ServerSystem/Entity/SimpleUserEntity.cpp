@@ -172,7 +172,7 @@ namespace Svr
 		case Message::MSGTYPE_EVENT:
 		{
 			//Assert(m_pHandlerTable);
-			if (!(GetMessageHandlerTable()->HandleMessage<TransactionPtr&>(*GetConnection(), pIMsg, pNewTrans)))
+			if (!(GetMessageHandlerTable().HandleMessage<TransactionPtr&>(*GetConnection(), pIMsg, pNewTrans)))
 			{
 				svrTrace(Error, "Failed to handle remote message Entity:{0}:{1}, MsgID:{2}", typeid(*this).name(), GetEntityID(), pMsgHdr->msgID);
 				svrErr(ResultCode::SVR_NOTEXPECTED_MESSAGE);

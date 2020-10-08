@@ -12,6 +12,8 @@
 #include "ResultCode/SFResultCodeSvr.h"
 #include "Util/SFUtility.h"
 #include "String/SFStrUtil.h"
+#include "Types/SFEngineTypeSerialization.h"
+
 #include "String/SFToString.h"
 #include "Net/SFNetToString.h"
 #include "Net/SFMessage.h"
