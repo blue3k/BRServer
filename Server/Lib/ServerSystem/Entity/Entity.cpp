@@ -70,6 +70,14 @@ namespace Svr
 		ClearEntity();
 	}
 
+	void Entity::SetEntityUID(EntityUID entityUID)
+	{
+		assert(entityUID.GetEntityID() > 0);
+		assert(entityUID.GetServerID() > 0);
+		m_EntityUID = entityUID;
+	}
+
+
 	TimeStampMS Entity::SetBestScehdulingTime(Transaction* pTrans)
 	{
 		auto nextTick = Util::Time.GetTimeMs() + GetTickInterval();

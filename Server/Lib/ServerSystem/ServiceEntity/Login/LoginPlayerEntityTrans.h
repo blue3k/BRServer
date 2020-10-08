@@ -139,7 +139,7 @@ namespace Svr {
 		LoginPlayerTransCreateRandomUser(IHeap& memMgr, MessageDataPtr &pIMsg);
 		virtual ~LoginPlayerTransCreateRandomUser() {}
 
-		Result OnCreated(Svr::TransactionResult* &pRes);
+		Result OnCreated(Svr::TransactionResult* pRes);
 
 		// Start Transaction
 		virtual Result StartTransaction();

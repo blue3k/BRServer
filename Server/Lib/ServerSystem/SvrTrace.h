@@ -51,6 +51,10 @@ namespace SF {
 #define svrCheckCondition(e)				trcCheckCondition(e)
 #define svrCheckConditionExp(e,expr)		trcCheckConditionExp(e,expr)
 
+#define svrErrorClose(e)				{ do{ CloseTransaction(e); return hr = e; } while(0); }
+#define svrCheckClose(e)				{ do{ hr = e; if(!hr) { CloseTransaction(hr); return hr; } } while(0); }
+#define svrCheckCloseErr(ErrCode,e)		{ do{ hr = e; if(!hr) { CloseTransaction(ErrCode); return hr; } } while(0); }
+
 
 // Legacy - gradually deprecated
 
@@ -73,10 +77,6 @@ namespace SF {
 #define svrErrClose(e)				{ do{ CloseTransaction(e); goto Proc_End; } while(0); }
 #define svrChkClose(e)				{ do{ Result hRes = e; if( !(hRes) ) {CloseTransaction(hRes); goto Proc_End;} } while(0); }
 #define svrChkCloseErr(ErrCode,e)	{ do{ Result hRes = e; if( !(hRes) ) {CloseTransaction(ErrCode); goto Proc_End;} } while(0); }
-
-#define svrErrorClose(e)				{ do{ CloseTransaction(e); return hr; } while(0); }
-#define svrCheckClose(e)				{ do{ Result hRes = e; if( !(hRes) ) {CloseTransaction(hRes); return hr;} } while(0); }
-#define svrCheckCloseErr(ErrCode,e)		{ do{ Result hRes = e; if( !(hRes) ) {CloseTransaction(ErrCode); return hr;} } while(0); }
 
 
 // Transaction operations

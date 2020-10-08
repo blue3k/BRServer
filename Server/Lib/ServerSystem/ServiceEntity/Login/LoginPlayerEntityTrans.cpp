@@ -537,15 +537,19 @@ namespace Svr {
 	LoginPlayerTransCreateRandomUser::LoginPlayerTransCreateRandomUser(IHeap& memMgr, MessageDataPtr &pIMsg)
 		:LoginPlayerTransLoginBase(memMgr, pIMsg)
 	{
-		BR_TRANS_MESSAGE(DB::QueryCreateRandomUserCmd, { return OnCreated(pRes); });
+		RegisterMessageHandler<DB::QueryCreateRandomUserCmd>(&LoginPlayerTransCreateRandomUser::OnCreated);
 	}
 
-	Result LoginPlayerTransCreateRandomUser::OnCreated(Svr::TransactionResult* &pRes)
+	Result LoginPlayerTransCreateRandomUser::OnCreated(Svr::TransactionResult* pRes)
 	{
-		Result hr = ResultCode::SUCCESS;
-		auto* pDBRes = (DB::QueryCreateRandomUserCmd*)pRes;
+		FunctionContext hr([this](Result hr) 
+			{
+				if (!hr)
+					CloseTransaction(hr);
+			});
+		auto* pDBRes = pRes->GetResultData<DB::QueryCreateRandomUserCmd>();
 
-		svrChk(pRes->GetResult());
+		svrCheck(pRes->GetResult());
 
 		GetMyOwner()->HeartBit();
 
@@ -554,17 +558,12 @@ namespace Svr {
 		// succeeded to login
 		if (pDBRes->Result == 0)
 		{
-			svrChk(super::OnLogin(pRes->GetResult(), pDBRes->AccountID, pDBRes->FBUserID, pDBRes->ShardID));
+			svrCheck(super::OnLogin(pRes->GetResult(), pDBRes->AccountID, pDBRes->FBUserID, pDBRes->ShardID));
 		}
 		else
 		{
 			CloseTransaction(ResultCode::LOGIN_INVALID_SIGNATURE);
 		}
-
-	Proc_End:
-
-		if (!(hr))
-			CloseTransaction(hr);
 
 		return hr;
 	}
@@ -573,32 +572,29 @@ namespace Svr {
 	// Start Transaction
 	Result LoginPlayerTransCreateRandomUser::StartTransaction()
 	{
-		Result hr = ResultCode::SUCCESS;
+		FunctionContext hr([this](Result hr)
+			{
+				if (!hr)
+					CloseTransaction(hr);
+			});
 
-		svrChk(super::StartTransaction());
+		svrCheck(super::StartTransaction());
 
 		if (GetMyOwner()->GetAccountID() != 0)
 		{
-			svrErrClose(ResultCode::LOGIN_ALREADY_LOGGEDIN);
+			svrErrorClose(ResultCode::LOGIN_ALREADY_LOGGEDIN);
 		}
 
 		GetMyOwner()->HeartBit();
 
 		if (GetCellPhone() == nullptr || GetCellPhone()[0] == '\0')
 		{
-			svrErrClose(ResultCode::LOGIN_INVALID_SIGNATURE);
+			svrErrorClose(ResultCode::LOGIN_INVALID_SIGNATURE);
 		}
 
 		StrUtil::Format(m_UserID, "{0}", GetCellPhone());
 
-		svrChk(Svr::GetServerComponent<DB::AccountDB>()->CreateRandomUser(GetTransID(), m_UserID, GetCellPhone()));
-
-	Proc_End:
-
-		if (!(hr))
-		{
-			CloseTransaction(hr);
-		}
+		svrCheck(Svr::GetServerComponent<DB::AccountDB>()->CreateRandomUser(GetTransID(), m_UserID, GetCellPhone()));
 
 		return hr;
 	}

@@ -378,7 +378,7 @@ namespace Svr {
 		hr = GetMyOwner()->GetComponent<UserFriendSystem>()->AddFriend( GetAccepter() );
 		if (hr == ResultCode::MAX_FRIEND)
 		{
-			svrErrorClose(hr);
+			return hr;
 		}
 		else if (!hr)
 			return hr;

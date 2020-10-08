@@ -4,11 +4,6 @@
 
 set(BRSERVERSYSTEM_LIB_FILES
     Component/ServerComponent.inl
-    Entity/Entity.inl
-    Entity/EntityInformation.inl
-    Entity/MasterEntity.inl
-    Entity/PlayerEntityInformation.inl
-    Entity/SimpleUserEntity.inl
     GameLog/GameLog.inl
     PerformanceCounter/PerformanceCounter.inl
     PerformanceCounter/PerformanceCounterInstance.inl
@@ -73,6 +68,11 @@ set(BRSERVERSYSTEM_LIB_FILES
     Entity/PlayerEntityInformation.h
     Entity/SimpleEntity.h
     Entity/SimpleUserEntity.h
+    Entity/EntityInformation.inl
+    Entity/MasterEntity.inl
+    Entity/PlayerEntityInformation.inl
+    Entity/SimpleUserEntity.inl
+
     GameConst.h
     GameLog/ChattingHistory.h
     GameLog/GameLog.h

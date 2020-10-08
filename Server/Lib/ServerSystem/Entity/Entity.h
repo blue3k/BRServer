@@ -68,15 +68,15 @@ namespace Svr{
 
 
 		// Entity state
-		EntityState		m_State;
+		EntityState		m_State{};
 
 		// Entity UID, which is assigned by Entity Server
-		EntityUID		m_EntityUID;
+		EntityUID		m_EntityUID{};
 
 		// Entity Create Time
-		TimeStampMS			m_ulCreateTime;
+		TimeStampMS			m_ulCreateTime{};
 
-		// Latestly processed transaction index
+		// Lastly processed transaction index
 		mutable std::atomic<uint64_t>	m_lTransIdx;
 
 
@@ -110,28 +110,47 @@ namespace Svr{
 		EntityState GetEntityState() { return m_State; }
 
 		// Set Entity State
-		inline void SetEntityState( EntityState state );
+		inline void SetEntityState(EntityState state) {
+			m_State = state;
+		}
 
 
 		// Get Entity UID
 		EntityUID GetEntityUID() const { return m_EntityUID; }
 
 		// Set Entity UID
-		inline void SetEntityUID( EntityUID entityUID );
+		void SetEntityUID(EntityUID entityUID);
+
+		// Clear entity UID before destroy
+		void ClearEntityUID() {
+			m_EntityUID = EntityUID(0);
+		}
 
 
 		// Get Entity ID
-		inline EntityID GetEntityID() const;
+		inline EntityID GetEntityID() const {
+			return EntityID((uint32_t)GetTaskID());
+		}
 
 		// Set/Get Entity Create TIme
-		inline TimeStampMS GetEntityCreateTime();
-		inline void SetEntityCreateTime(TimeStampMS ulCreateTime);
+		inline TimeStampMS GetEntityCreateTime() { return m_ulCreateTime; }
+		inline void SetEntityCreateTime(TimeStampMS ulCreateTime) {
+			m_ulCreateTime = ulCreateTime;
+		}
 
 		// Get Entity transaction queue count
 		virtual CounterType GetPendingTransactionCount() const;
 
 		// Generate new transaction index
-		inline uint64_t GenTransIndex();
+		inline uint64_t GenTransIndex()
+		{
+			auto result = m_lTransIdx.fetch_add(1, std::memory_order_relaxed);
+			// 0 is reserved to none
+			if (result == 0) result = m_lTransIdx.fetch_add(1, std::memory_order_relaxed);
+
+			return result;
+		}
+
 
 
 		// Initialize entity to proceed new connection
@@ -206,14 +225,7 @@ namespace Svr{
 	};
 
 
-
-
-
-#include "Entity.inl"
-
-
-
-}; // namespace Svr
+} // namespace Svr
 
 //extern template class SharedPointerT<Svr::Entity>;
 extern template class WeakPointerT<Svr::Entity>;

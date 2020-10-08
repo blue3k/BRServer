@@ -122,8 +122,8 @@ namespace SF {
 			UniquePtr<QueryLoginCmd> pQuery(new(GetHeap()) QueryLoginCmd(GetHeap()));
 			dbCheckMem(pQuery);
 
-			pQuery->UserName, UserName;
-			pQuery->Password, Password;
+			pQuery->UserName = UserName;
+			pQuery->Password = Password;
 			pQuery->AccountID = 0;
 			pQuery->FBUserID = 0;
 			pQuery->ShardID = 0;
@@ -160,8 +160,8 @@ namespace SF {
 			UniquePtr<QueryCreateRandomUserCmd> pQuery(new(GetHeap()) QueryCreateRandomUserCmd(GetHeap()));
 			dbCheckMem(pQuery);
 
-			pQuery->UserName, userName;
-			pQuery->CellPhone, cellPhone;
+			pQuery->UserName = userName;
+			pQuery->CellPhone = cellPhone;
 			pQuery->AccountID = 0;
 			pQuery->FBUserID = 0;
 			pQuery->ShardID = 0;
@@ -201,7 +201,7 @@ namespace SF {
 
 			pQuery->SetTransaction(Sender);
 			pQuery->UserUID = accountID;
-			pQuery->GCMKeys, strGCMKeys;
+			pQuery->GCMKeys = strGCMKeys;
 
 			dbCheck(RequestQuery(pQuery));
 

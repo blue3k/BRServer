@@ -148,8 +148,8 @@ namespace SF {
 				dbError(ResultCode::INVALID_ARG);
 
 			pQuery->PurchaseID = purchaseID;
-			pQuery->PurchasePlatform, purchasePlatform;
-			pQuery->PurchaseToken, purchaseToken;
+			pQuery->PurchasePlatform = purchasePlatform;
+			pQuery->PurchaseToken = purchaseToken;
 			pQuery->LatestActiveTime = LatestActiveTime.time_since_epoch().count();
 			pQuery->LatestTickTime = LatestTickTime.time_since_epoch().count();
 

@@ -423,11 +423,6 @@ Proc_End:
 		
 		svrCheckPtr(GetMyConfig());
 
-		// Register cluster manager as entity
-		svrTrace(Info, "Initialize Cluster manager");
-		svrCheck(CreateEntityManager());
-
-
 		// Apply configuration
 		svrTrace(Info, "Applying Configuration");
 		hr = ApplyConfiguration();
@@ -437,7 +432,11 @@ Proc_End:
 			return hr;
 		}
 
-		
+		// Register cluster manager as entity
+		svrTrace(Info, "Initialize Cluster manager");
+		svrCheck(CreateEntityManager());
+
+
 		svrTrace(Info, "initializing Monitoring");
 		hr = InitializeMonitoring();
 		if (!(hr))

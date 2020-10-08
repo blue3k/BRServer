@@ -63,7 +63,7 @@ namespace DB {
 			BRDB_PARAM_ENTRY(ParamIO::Input, AuthTicket)
 			BRDB_PARAM_ENTRY(ParamIO::Input, LoginEntityUID)
 			BRDB_PARAM_ENTRY(ParamIO::Output, GameEntityUID)
-			BRDB_PARAM_ENTRY(ParamIO::Input, Result)
+			BRDB_PARAM_ENTRY(ParamIO::Output, Result)
 		BRDB_END_PARAM_MAP()
 	};
 

@@ -174,7 +174,7 @@ namespace Svr {
 			hr = ResultCode::SUCCESS_FALSE;
 			goto Proc_End;
 		}
-		pEntity->SetEntityUID(0);
+		pEntity->ClearEntityUID();
 
 		switch (pEntity->GetEntityState())
 		{
