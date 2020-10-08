@@ -632,7 +632,7 @@ namespace SF {
 			Result ParseMessage()
 			{
 				Result hr = MessageClass::ParseMsg();
-				if ((hr))
+				if (hr)
 				{
 					if (MessageClass::GetMessage()->GetMessageHeader()->msgID.IDs.Type == Message::MSGTYPE_COMMAND)
 					{

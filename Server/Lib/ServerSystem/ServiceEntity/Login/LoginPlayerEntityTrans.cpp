@@ -317,7 +317,7 @@ namespace Svr {
 
 	Proc_End:
 
-		if( !(hr) )
+		if( !hr )
 		{
 			CloseTransaction( hr );
 		}
