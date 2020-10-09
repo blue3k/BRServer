@@ -65,8 +65,6 @@ namespace Svr{
 
 	private:
 
-
-
 		// Entity state
 		EntityState		m_State{};
 
@@ -119,7 +117,7 @@ namespace Svr{
 		EntityUID GetEntityUID() const { return m_EntityUID; }
 
 		// Set Entity UID
-		void SetEntityUID(EntityUID entityUID);
+		void SetEntityUID(EntityUID entityUID, bool silenceAssert = false);
 
 		// Clear entity UID before destroy
 		void ClearEntityUID() {

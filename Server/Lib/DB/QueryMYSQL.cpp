@@ -74,7 +74,7 @@ namespace SF {
 			}
 		}
 
-		void AssignToSF(Variable& dest, const mysqlx::Value& src)
+		static void AssignToSF(Variable& dest, const mysqlx::Value& src)
 		{
 			switch (src.getType())
 			{
@@ -99,23 +99,73 @@ namespace SF {
 			}
 		}
 
+		static void AssignToSF(VariableTable& dest, StringCrc32 columnName, const mysqlx::Value& src)
+		{
+			switch (src.getType())
+			{
+			//case mysqlx::Value::VNULL: dest.SetValue(columnName, nullptr); break;
+			case mysqlx::Value::UINT64: dest.SetValue(columnName, src.get<uint64_t>()); break;
+			case mysqlx::Value::INT64: dest.SetValue(columnName, src.get<int64_t>()); break;
+			case mysqlx::Value::FLOAT: dest.SetValue(columnName, src.get<float>()); break;
+			case mysqlx::Value::DOUBLE: dest.SetValue(columnName, src.get<double>()); break;
+			case mysqlx::Value::BOOL: dest.SetValue(columnName, src.get<bool>()); break;
+			case mysqlx::Value::STRING: dest.SetValue(columnName, src.get<std::string>().c_str()); break;
+			case mysqlx::Value::RAW:
+			{
+				auto bytes = std::forward<mysqlx::bytes>(src.get<mysqlx::bytes>());
+				dest.SetValue(columnName, ArrayView<uint8_t>(bytes.second, bytes.first));
+				break;
+			}
+			case mysqlx::Value::DOCUMENT: [[fallthrough]];// fall through
+			case mysqlx::Value::ARRAY: [[fallthrough]];// fall through
+			default:
+				assert(false);// Unknown type
+				break;
+			}
+		}
+
 		void QueryMYSQL::ParseResult(mysqlx::SqlResult& queryResult)
 		{
-			if (GetRowsetBinding().size() == 0)
+			//if (GetRowsetBinding().size() == 0)
+			//	return;
+
+			if (queryResult.count() == 0)
 				return;
 
-			while (queryResult.count() > 0)
+			RowsetType Attributes;
+
+			DynamicArray<StringCrc32> columnNames(GetHeap());
+
+			auto& columnInfos = queryResult.getColumns();
+			for (auto& columnInfo : columnInfos)
 			{
-				int iOutput = 0;
+				std::string utf8Name;
+				auto& columnName = columnInfo.getColumnName();
+				StrUtil::WCSToUTF8(columnName, utf8Name);
+				columnNames.push_back(utf8Name.c_str());
+			}
+
+			RowsetResults.resize(queryResult.count());
+
+			for (uint iRow = 0; iRow < queryResult.count(); iRow++)
+			{
+				auto& rowResult = RowsetResults[iRow];
 				mysqlx::Row row = queryResult.fetchOne();
-				for (auto& itBinding : GetRowsetBinding())
+				auto numColumn = Util::Min((int)columnNames.size(), (int)row.colCount());
+				for (int iCol = 0; iCol < numColumn; iCol++)
 				{
-					auto& column = row[iOutput];
-					auto pVariable = itBinding.VariableRef.GetVariable();
-					AssignToSF(*pVariable, column);
-					iOutput++;
+					mysqlx::Value& columnValue = row[iCol];
+					AssignToSF(rowResult, columnNames[iCol], columnValue);
 				}
-				AddRowset();
+
+				//for (auto& itBinding : GetRowsetBinding())
+				//{
+				//	mysqlx::Value& column = row[iOutput];
+				//	auto pVariable = itBinding.VariableRef.GetVariable();
+				//	AssignToSF(*pVariable, column);
+				//	iOutput++;
+				//}
+				//AddRowset();
 			}
 		}
 

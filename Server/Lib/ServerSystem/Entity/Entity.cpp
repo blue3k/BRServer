@@ -70,10 +70,10 @@ namespace Svr
 		ClearEntity();
 	}
 
-	void Entity::SetEntityUID(EntityUID entityUID)
+	void Entity::SetEntityUID(EntityUID entityUID, bool silenceAssert)
 	{
-		assert(entityUID.GetEntityID() > 0);
-		assert(entityUID.GetServerID() > 0);
+		//assert(silenceAssert || entityUID.GetEntityID() > 0);
+		assert(silenceAssert || entityUID.GetServerID() > 0);
 		m_EntityUID = entityUID;
 	}
 

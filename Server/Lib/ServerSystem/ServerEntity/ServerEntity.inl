@@ -19,8 +19,6 @@ namespace SF {
 
 
 
-
-
 		// return about initial connection or not
 		bool ServerEntity::IsInitialConnection()
 		{

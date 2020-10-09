@@ -197,6 +197,8 @@ namespace Svr {
 		// Get Server UID
 		inline uint GetServerUID();
 		//inline uint GetClusterID();
+
+		EntityUID GetServerEntityUID() { return EntityUID(GetServerUID(), EntityID(EntityFaculty::Server, 0)); }
 		
 		// Get Server start up time, UTC
 		inline UTCTimeStampSec GetServerUpTime();

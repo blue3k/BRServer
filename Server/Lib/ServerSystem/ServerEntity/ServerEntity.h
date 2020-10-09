@@ -92,7 +92,6 @@ namespace Svr {
 		// return about initial connection or not
 		inline bool IsInitialConnection();
 
-
 		// set connection
 		Result SetRemoteConnection(SF::Net::Connection * pConn);
 		Result SetLocalConnection(SF::Net::Connection * pConn);

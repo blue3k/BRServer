@@ -57,7 +57,7 @@ namespace DB {
 
 	public:
 		BRDB_BEGIN_PARAM_MAP(QueryTableVersionTbl, "spGetTableVersion")
-			BRDB_PARAM_ENTRY(ParamIO::Input, TableVersion)
+			BRDB_PARAM_ENTRY(ParamIO::Output, TableVersion)
 		BRDB_END_PARAM_MAP()
 	};
 

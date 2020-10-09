@@ -226,7 +226,7 @@ namespace Svr {
 				svrTrace( SVR_DBGSVR, "Sending Server Connected to Entity Server from:{0}", myConfig->Name );
 
 				// This is a replication of a remote server. ServerID in EntityUID will have remote server id then local serverID
-				svrChk(Policy::NetPolicyServer(GetConnection()).ServerConnectedC2SEvt(RouteContext(Svr::BrServer::GetInstance()->GetServerUID(), 0),
+				svrChk(Policy::NetPolicyServer(GetConnection()).ServerConnectedC2SEvt(RouteContext(Svr::BrServer::GetInstance()->GetServerEntityUID(), 0),
 					BrServer::GetInstance()->GetServerUpTime().time_since_epoch().count(),
 					netPrivate->GetLocalAddress()));
 			}
