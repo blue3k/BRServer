@@ -43,7 +43,7 @@ namespace Svr {
 		virtual ~RegisterPartyMatchingTrans() {}
 
 		// Start Transaction
-		virtual Result StartTransaction();
+		virtual Result StartTransaction() override;
 
 		BR_SVR_MSGTRANS_CLOSE_ARGS(Policy::NetSvrPolicyPartyMatchingQueue, RegisterPartyMatchingRes, GetRouteContext().GetSwaped(), m_MatchingTicket);
 	};
@@ -62,7 +62,7 @@ namespace Svr {
 		virtual ~RegisterPlayerMatchingTrans() {}
 
 		// Start Transaction
-		virtual Result StartTransaction();
+		virtual Result StartTransaction() override;
 
 
 		BR_SVR_MSGTRANS_CLOSE_ARGS(Policy::NetSvrPolicyPartyMatchingQueue, RegisterPlayerMatchingRes, GetRouteContext().GetSwaped(), m_MatchingTicket);
@@ -81,7 +81,7 @@ namespace Svr {
 		virtual ~UpdateMatchingEntityUIDTrans() {}
 
 		// Start Transaction
-		virtual Result StartTransaction();
+		virtual Result StartTransaction() override;
 
 
 		BR_SVR_MSGTRANS_CLOSE(Policy::NetSvrPolicyPartyMatchingQueue, UpdateMatchingEntityUIDRes, GetRouteContext().GetSwaped());
@@ -101,7 +101,7 @@ namespace Svr {
 		virtual ~UnregisterMatchingTrans() {}
 
 		// Start Transaction
-		virtual Result StartTransaction();
+		virtual Result StartTransaction() override;
 
 		BR_SVR_MSGTRANS_CLOSE(Policy::NetSvrPolicyPartyMatchingQueue, UnregisterMatchingRes, GetRouteContext().GetSwaped());
 	};
@@ -123,7 +123,7 @@ namespace Svr {
 		virtual ~ReserveItemTrans() {}
 
 		// Start Transaction
-		virtual Result StartTransaction();
+		virtual Result StartTransaction() override;
 
 
 		BR_SVR_MSGTRANS_CLOSE_ARGS(Policy::NetSvrPolicyPartyMatchingQueue, ReserveItemRes, GetRouteContext().GetSwaped(), m_NumPlayersInTheTicket, m_MatchingTicket);
@@ -149,7 +149,7 @@ namespace Svr {
 		virtual ~MatchingQueueReserveItemsTrans() {}
 
 		// Start Transaction
-		virtual Result StartTransaction();
+		virtual Result StartTransaction() override;
 
 
 		BR_SVR_MSGTRANS_CLOSE_ARGS(Policy::NetSvrPolicyPartyMatchingQueue, ReserveItemsRes, GetRouteContext().GetSwaped(), m_NumPlayersInTheTicket, m_MatchingTicket);
@@ -169,7 +169,7 @@ namespace Svr {
 		virtual ~CancelReservationTrans() {}
 
 		// Start Transaction
-		virtual Result StartTransaction();
+		virtual Result StartTransaction() override;
 
 		
 		BR_SVR_MSGTRANS_CLOSE(Policy::NetSvrPolicyPartyMatchingQueue, CancelReservationRes, GetRouteContext().GetSwaped());
@@ -189,7 +189,7 @@ namespace Svr {
 		virtual ~DequeueItemTrans() {}
 
 		// Start Transaction
-		virtual Result StartTransaction();
+		virtual Result StartTransaction() override;
 
 
 		BR_SVR_MSGTRANS_CLOSE_ARGS(Policy::NetSvrPolicyPartyMatchingQueue, DequeueItemRes, GetRouteContext().GetSwaped(), GetMatchingTicket(), m_matchingQueueItem.RegisterUID, m_matchingQueueItem.RegisterID, ArrayView<MatchingPlayerInformation>((uint)countof(m_matchingQueueItem.Players), m_matchingQueueItem.NumPlayers, m_matchingQueueItem.Players));
@@ -209,7 +209,7 @@ namespace Svr {
 		virtual ~MatchingQueueTransMatchingItemError() {}
 
 		// Start Transaction
-		virtual Result StartTransaction();
+		virtual Result StartTransaction() override;
 
 	};
 

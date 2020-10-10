@@ -51,16 +51,16 @@ namespace DB {
 		virtual ~SessionMYSQL();
 
 		// return context value
-		virtual void* GetContext();
+		virtual void* GetContext() override;
 
 		// Process a query
-		virtual Result ProcessQuery( Query *pQuery );
+		virtual Result ProcessQuery( Query *pQuery ) override;
 
 		// Open session
-		virtual Result OpenSession();
+		virtual Result OpenSession() override;
 
 		// Close session
-		virtual Result CloseSession();
+		virtual Result CloseSession() override;
 
 		virtual Result Ping() override;
 	};

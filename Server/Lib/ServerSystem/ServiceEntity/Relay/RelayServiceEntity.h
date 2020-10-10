@@ -48,82 +48,73 @@ namespace SF {
 
 
 namespace SF {
-namespace Svr {
+	namespace Svr {
 
-	class Entity;
-	class ServerEntity;
-	class RelayPlayer;
-	class RelayGameInstance;
-
-
-	///////////////////////////////////////////////////////////////////////////////////////////////////////
-	//
-	//	RelayServiceEntity class
-	//
-
-	class RelayServiceEntity : public LoadbalanceClusterServiceEntity
-	{
-	public:
-		typedef LoadbalanceClusterServiceEntity super;
-
-	private:
-
-		GameID m_GameID;
-
-		uint32_t m_MaxInstances;
-
-		const ServerConfig::NetPublic*		m_PublicNetSocket = nullptr;
-		Net::RawUDP*						m_pNetPublic = nullptr;
-
-		PageQueue<SharedPointerAtomicT<Net::Connection>> m_NewConnectionQueue;
-
-	protected:
+		class Entity;
+		class ServerEntity;
+		class RelayPlayer;
+		class RelayGameInstance;
 
 
-	public:
-
-		RelayServiceEntity(GameID gameID, const ServerConfig::NetPublic& publicNetSocket, uint32_t maximumRelayInstances, ClusterMembership initialMembership = ClusterMembership::Slave);
-		~RelayServiceEntity();
-		
-
-		//////////////////////////////////////////////////////////////////////////
+		///////////////////////////////////////////////////////////////////////////////////////////////////////
 		//
-		//	Entity operations
+		//	RelayServiceEntity class
 		//
 
-		Result InitializeEntity( EntityID newEntityID );
+		class RelayServiceEntity : public LoadbalanceClusterServiceEntity
+		{
+		public:
+			typedef LoadbalanceClusterServiceEntity super;
 
-		// clear transaction
-		virtual Result ClearEntity();
+		private:
 
-		// TickUpdate 
-		virtual Result TickUpdate(TimerAction *pAction = nullptr) override;
+			GameID m_GameID;
 
-		// Get net public
-		Net::RawUDP* GetNetPublic() { return m_pNetPublic; }
+			uint32_t m_MaxInstances;
 
-		////////////////////////////////////////////////////////////////////////////////////
-		//
-		//	Network handling
-		//
+			const ServerConfig::NetPublic* m_PublicNetSocket = nullptr;
+			Net::RawUDP* m_pNetPublic = nullptr;
 
-		Result OnRecv(const sockaddr_storage& remoteAddr, SharedPointerT<Message::MessageData>& pMsg);
+			PageQueue<SharedPointerAtomicT<Net::Connection>> m_NewConnectionQueue;
 
-
-		// Process network event
-		Result ProcessNewConnection();
-	};
+		protected:
 
 
+		public:
+
+			RelayServiceEntity(GameID gameID, const ServerConfig::NetPublic& publicNetSocket, uint32_t maximumRelayInstances, ClusterMembership initialMembership = ClusterMembership::Slave);
+			~RelayServiceEntity();
 
 
+			//////////////////////////////////////////////////////////////////////////
+			//
+			//	Entity operations
+			//
+
+			virtual Result InitializeEntity(EntityID newEntityID) override;
+
+			// clear transaction
+			virtual Result ClearEntity() override;
+
+			// TickUpdate 
+			virtual Result TickUpdate(TimerAction* pAction = nullptr) override;
+
+			// Get net public
+			Net::RawUDP* GetNetPublic() { return m_pNetPublic; }
+
+			////////////////////////////////////////////////////////////////////////////////////
+			//
+			//	Network handling
+			//
+
+			Result OnRecv(const sockaddr_storage& remoteAddr, SharedPointerT<Message::MessageData>& pMsg);
 
 
+			// Process network event
+			Result ProcessNewConnection();
+		};
 
 
-}; // namespace Svr
-}; // namespace SF
-
-
-
+	} // namespace Svr
+} // namespace SF
 

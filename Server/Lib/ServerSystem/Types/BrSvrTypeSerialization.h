@@ -15,7 +15,7 @@
 #include "SFAssert.h"
 #include "String/SFStrUtil.h"
 #include "Types/SFEngineTypedefs.h"
-#include "Types/BRSvrTypes.h"
+#include "Types/BrSvrTypes.h"
 
 
 namespace SF {

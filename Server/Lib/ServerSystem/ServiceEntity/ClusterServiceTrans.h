@@ -103,7 +103,7 @@ namespace Svr {
 		virtual ~RequestDataSyncTrans() {}
 
 		// Start Transaction
-		virtual Result StartTransaction();
+		virtual Result StartTransaction() override;
 
 		BR_SVR_MSGTRANS_CLOSE(Policy::NetSvrPolicyClusterServer, RequestDataSyncRes,GetRouteContext().GetSwaped());
 	};
@@ -122,7 +122,7 @@ namespace Svr {
 	//	virtual ~ClusterMasterAssignedTrans() {}
 
 	//	// Start Transaction
-	//	virtual Result StartTransaction();
+	//	virtual Result StartTransaction() override;
 	//};
 
 
@@ -139,7 +139,7 @@ namespace Svr {
 	//	virtual ~ClusterMasterVoteTrans() {}
 
 	//	// Start Transaction
-	//	virtual Result StartTransaction();
+	//	virtual Result StartTransaction() override;
 	//};
 
 
@@ -155,7 +155,7 @@ namespace Svr {
 	//	virtual ~ClusterUpdateStatusTrans() {}
 
 	//	// Start Transaction
-	//	virtual Result StartTransaction();
+	//	virtual Result StartTransaction() override;
 	//};
 
 
@@ -172,7 +172,7 @@ namespace Svr {
 	//	virtual ~ClusterUpdateWorkloadTrans() {}
 
 	//	// Start Transaction
-	//	virtual Result StartTransaction();
+	//	virtual Result StartTransaction() override;
 	//};
 
 
@@ -193,7 +193,7 @@ namespace Svr {
 	//	virtual ~GetLowestWorkloadClusterMemberTrans() {}
 
 	//	// Start Transaction
-	//	virtual Result StartTransaction();
+	//	virtual Result StartTransaction() override;
 
 	//	BR_SVR_MSGTRANS_CLOSE_ARGS(Policy::NetSvrPolicyClusterServer, GetLowestWorkloadClusterMemberRes, GetRouteContext().GetSwaped(), m_LowestMemberInfo);
 	//};
@@ -212,7 +212,7 @@ namespace Svr {
 	//	virtual ~ClusterNewServerServiceJoinedC2SEvtEntityTrans() {}
 
 	//	// Start Transaction
-	//	virtual Result StartTransaction();
+	//	virtual Result StartTransaction() override;
 	//};
 
 
@@ -228,7 +228,7 @@ namespace Svr {
 	//	virtual ~ClusterNewServerServiceJoinedC2SEvtTrans() {}
 
 	//	// Start Transaction
-	//	virtual Result StartTransaction();
+	//	virtual Result StartTransaction() override;
 	//};
 
 

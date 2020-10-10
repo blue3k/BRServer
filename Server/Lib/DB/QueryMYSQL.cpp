@@ -91,8 +91,8 @@ namespace SF {
 				dest.SetValue(ArrayView<uint8_t>(bytes.second, bytes.first));
 				break;
 			}
-			case mysqlx::Value::DOCUMENT: // fall through
-			case mysqlx::Value::ARRAY:  // fall through
+			case mysqlx::Value::DOCUMENT: [[fallthrough]];// fall through
+			case mysqlx::Value::ARRAY: [[fallthrough]];// fall through
 			default:
 				assert(false);// Unknown type
 				break;
@@ -126,9 +126,6 @@ namespace SF {
 
 		void QueryMYSQL::ParseResult(mysqlx::SqlResult& queryResult)
 		{
-			//if (GetRowsetBinding().size() == 0)
-			//	return;
-
 			if (queryResult.count() == 0)
 				return;
 
@@ -137,12 +134,11 @@ namespace SF {
 			DynamicArray<StringCrc32> columnNames(GetHeap());
 
 			auto& columnInfos = queryResult.getColumns();
+			char utf8Name[256];
 			for (auto& columnInfo : columnInfos)
 			{
-				std::string utf8Name;
-				auto& columnName = columnInfo.getColumnName();
-				StrUtil::WCSToUTF8(columnName, utf8Name);
-				columnNames.push_back(utf8Name.c_str());
+				StrUtil::WCSToUTF8((const wchar_t*)columnInfo.getColumnName().c_str(), utf8Name);
+				columnNames.push_back(utf8Name);
 			}
 
 			RowsetResults.resize(queryResult.count());
@@ -157,15 +153,6 @@ namespace SF {
 					mysqlx::Value& columnValue = row[iCol];
 					AssignToSF(rowResult, columnNames[iCol], columnValue);
 				}
-
-				//for (auto& itBinding : GetRowsetBinding())
-				//{
-				//	mysqlx::Value& column = row[iOutput];
-				//	auto pVariable = itBinding.VariableRef.GetVariable();
-				//	AssignToSF(*pVariable, column);
-				//	iOutput++;
-				//}
-				//AddRowset();
 			}
 		}
 

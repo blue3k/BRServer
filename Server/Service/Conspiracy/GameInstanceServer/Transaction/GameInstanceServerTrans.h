@@ -21,44 +21,40 @@
 
 
 namespace SF {
-namespace ConspiracyGameInstanceServer {
+	namespace ConspiracyGameInstanceServer {
 
-	
-	class GameInstanceServerStartProcess : public Svr::TransactionT<GameInstanceServer>
-	{
-	private:
-		typedef Svr::TransactionT<GameInstanceServer> super;
 
-		enum class StartingStep 
+		class GameInstanceServerStartProcess : public Svr::TransactionT<GameInstanceServer>
 		{
-			WaitEntityServer,
-			WaitInitializeComponents,
-			Done
+		private:
+			typedef Svr::TransactionT<GameInstanceServer> super;
+
+			enum class StartingStep
+			{
+				WaitEntityServer,
+				WaitInitializeComponents,
+				Done
+			};
+
+			StartingStep m_Step;
+
+		public:
+			GameInstanceServerStartProcess(IHeap& heap);
+			~GameInstanceServerStartProcess();
+
+			// Override delete function
+			virtual void Release();
+
+			Result OnTimer(Svr::TransactionResult* pRes);
+
+			Result InitializeServices();
+
+			virtual Result OnCloseTransaction(Result hrRes) override;
+
+			// Start Transaction
+			virtual Result StartTransaction() override;
 		};
 
-		StartingStep m_Step;
-
-	public:
-		GameInstanceServerStartProcess(IHeap &heap);
-		~GameInstanceServerStartProcess();
-
-		// Override delete function
-		virtual void Release();
-
-		Result OnTimer(Svr::TransactionResult* pRes);
-
-		Result InitializeServices();
-
-		virtual Result OnCloseTransaction( Result hrRes ) override;
-
-		// Start Transaction
-		virtual Result StartTransaction();
-	};
-
-
-
-
-
-};// namespace ConspiracyGameInstanceServer 
-};// namespace SF 
+	}// namespace ConspiracyGameInstanceServer 
+}// namespace SF 
 

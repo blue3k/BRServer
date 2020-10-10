@@ -26,68 +26,68 @@
 
 
 namespace SF {
-namespace Svr {
+	namespace Svr {
 
 
-	class ChatChannelManagerTransCreateChatChannel : public ClusterEntityMessageTransaction< ChatChannelManagerServiceEntity, Message::ChatChannelManager::CreateChannelCmd>
-	{
-	public:
-		typedef ClusterEntityMessageTransaction< ChatChannelManagerServiceEntity, Message::ChatChannelManager::CreateChannelCmd> super;
+		class ChatChannelManagerTransCreateChatChannel : public ClusterEntityMessageTransaction< ChatChannelManagerServiceEntity, Message::ChatChannelManager::CreateChannelCmd>
+		{
+		public:
+			typedef ClusterEntityMessageTransaction< ChatChannelManagerServiceEntity, Message::ChatChannelManager::CreateChannelCmd> super;
 
-	private:
-		EntityUID	m_UID;
+		private:
+			EntityUID	m_UID;
 
-	public:
-		ChatChannelManagerTransCreateChatChannel(IHeap& heap, MessageDataPtr &pIMsg) : ClusterEntityMessageTransaction(heap, pIMsg) {}
-		virtual ~ChatChannelManagerTransCreateChatChannel() {}
+		public:
+			ChatChannelManagerTransCreateChatChannel(IHeap& heap, MessageDataPtr& pIMsg) : ClusterEntityMessageTransaction(heap, pIMsg) {}
+			virtual ~ChatChannelManagerTransCreateChatChannel() {}
 
-		// Start Transaction
-		virtual Result StartTransaction();
-
-
-		BR_SVR_MSGTRANS_CLOSE_ARGS(Policy::NetSvrPolicyChatChannelManager, CreateChannelRes, RouteContext(m_UID,GetRouteContext().GetFrom()), m_UID);
-	};
+			// Start Transaction
+			virtual Result StartTransaction() override;
 
 
-
-	class ChatChannelManagerTransFindChatChannel : public ClusterEntityMessageTransaction< ChatChannelManagerServiceEntity, Message::ChatChannelManager::FindChannelCmd>
-	{
-	public:
-		typedef ClusterEntityMessageTransaction< ChatChannelManagerServiceEntity, Message::ChatChannelManager::FindChannelCmd> super;
-
-	private:
-		EntityUID	m_UID;
-
-	public:
-		ChatChannelManagerTransFindChatChannel(IHeap& heap, MessageDataPtr &pIMsg) : ClusterEntityMessageTransaction(heap, pIMsg) {}
-		virtual ~ChatChannelManagerTransFindChatChannel() {}
-
-		// Start Transaction
-		virtual Result StartTransaction();
-
-
-		BR_SVR_MSGTRANS_CLOSE_ARGS(Policy::NetSvrPolicyChatChannelManager, FindChannelRes, RouteContext(m_UID, GetRouteContext().GetFrom()), m_UID);
-	};
+			BR_SVR_MSGTRANS_CLOSE_ARGS(Policy::NetSvrPolicyChatChannelManager, CreateChannelRes, RouteContext(m_UID, GetRouteContext().GetFrom()), m_UID);
+		};
 
 
 
+		class ChatChannelManagerTransFindChatChannel : public ClusterEntityMessageTransaction< ChatChannelManagerServiceEntity, Message::ChatChannelManager::FindChannelCmd>
+		{
+		public:
+			typedef ClusterEntityMessageTransaction< ChatChannelManagerServiceEntity, Message::ChatChannelManager::FindChannelCmd> super;
 
-	class ChatChannelManagerTransChatChannelDeleted : public ClusterEntityMessageTransaction< ChatChannelManagerServiceEntity, Message::ChatChannelManager::ChatChannelDeletedC2SEvt>
-	{
-	public:
-		typedef ClusterEntityMessageTransaction< ChatChannelManagerServiceEntity, Message::ChatChannelManager::ChatChannelDeletedC2SEvt> super;
+		private:
+			EntityUID	m_UID;
 
-	private:
+		public:
+			ChatChannelManagerTransFindChatChannel(IHeap& heap, MessageDataPtr& pIMsg) : ClusterEntityMessageTransaction(heap, pIMsg) {}
+			virtual ~ChatChannelManagerTransFindChatChannel() {}
 
-	public:
-		ChatChannelManagerTransChatChannelDeleted(IHeap& heap, MessageDataPtr &pIMsg) : ClusterEntityMessageTransaction(heap, pIMsg) {}
-		virtual ~ChatChannelManagerTransChatChannelDeleted() {}
+			// Start Transaction
+			virtual Result StartTransaction() override;
 
-		// Start Transaction
-		virtual Result StartTransaction();
-	};
 
-	
-} // namespace GameServer 
+			BR_SVR_MSGTRANS_CLOSE_ARGS(Policy::NetSvrPolicyChatChannelManager, FindChannelRes, RouteContext(m_UID, GetRouteContext().GetFrom()), m_UID);
+		};
+
+
+
+
+		class ChatChannelManagerTransChatChannelDeleted : public ClusterEntityMessageTransaction< ChatChannelManagerServiceEntity, Message::ChatChannelManager::ChatChannelDeletedC2SEvt>
+		{
+		public:
+			typedef ClusterEntityMessageTransaction< ChatChannelManagerServiceEntity, Message::ChatChannelManager::ChatChannelDeletedC2SEvt> super;
+
+		private:
+
+		public:
+			ChatChannelManagerTransChatChannelDeleted(IHeap& heap, MessageDataPtr& pIMsg) : ClusterEntityMessageTransaction(heap, pIMsg) {}
+			virtual ~ChatChannelManagerTransChatChannelDeleted() {}
+
+			// Start Transaction
+			virtual Result StartTransaction() override;
+		};
+
+
+	} // namespace GameServer 
 } // namespace SF 
 

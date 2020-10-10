@@ -74,14 +74,14 @@ namespace ServerInstanceLauncher {
 		//
 
 		// Apply configuration
-		virtual Result ApplyConfiguration();
+		virtual Result ApplyConfiguration() override;
 
 
 		// Initialize server resource
-		virtual Result InitializeServerResource();
+		virtual Result InitializeServerResource() override;
 
 		// Close server and release resource
-		virtual Result CloseServerResource();
+		virtual Result CloseServerResource() override;
 
 
 	public:

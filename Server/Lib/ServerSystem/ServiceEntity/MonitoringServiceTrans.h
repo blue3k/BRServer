@@ -26,60 +26,60 @@
 
 
 namespace SF {
-namespace Svr {
-
-	
-
-	class MonitoringTransGetInstanceList : public ServerEntityMessageTransaction< MonitoringServiceEntity, Message::Monitoring::GetInstanceListCmd>
-	{
-	public:
-		typedef ServerEntityMessageTransaction< MonitoringServiceEntity, Message::Monitoring::GetInstanceListCmd> super;
-
-	private:
-		StaticArray<PerformanceCounterInstanceInfo, 1024> m_InstanceList;
-		uint32_t m_TotalCounterInstance;
-
-	public:
-		MonitoringTransGetInstanceList(IHeap& memMgr, MessageDataPtr &pIMsg)
-			: ServerEntityMessageTransaction(memMgr, pIMsg)
-			, m_InstanceList(memMgr)
-		{}
-		virtual ~MonitoringTransGetInstanceList() {}
-
-		// Start Transaction
-		virtual Result StartTransaction();
-
-		BR_IMPLEMENT_MSGTRANS_CLOSE_ARGS(Policy::NetSvrPolicyMonitoring, GetInstanceListRes, m_InstanceList, m_TotalCounterInstance);
-	};
+	namespace Svr {
 
 
 
-	class MonitoringTransRequestCounterValues : public ServerEntityMessageTransaction< MonitoringServiceEntity, Message::Monitoring::RequestCounterValuesCmd>
-	{
-	public:
-		typedef ServerEntityMessageTransaction< MonitoringServiceEntity, Message::Monitoring::RequestCounterValuesCmd> super;
+		class MonitoringTransGetInstanceList : public ServerEntityMessageTransaction< MonitoringServiceEntity, Message::Monitoring::GetInstanceListCmd>
+		{
+		public:
+			typedef ServerEntityMessageTransaction< MonitoringServiceEntity, Message::Monitoring::GetInstanceListCmd> super;
 
-	private:
-		StaticArray<uint64_t, 1024> m_CounterValues;
+		private:
+			StaticArray<PerformanceCounterInstanceInfo, 1024> m_InstanceList;
+			uint32_t m_TotalCounterInstance;
 
-	public:
-		MonitoringTransRequestCounterValues(IHeap& memMgr, MessageDataPtr &pIMsg)
-			: ServerEntityMessageTransaction(memMgr, pIMsg)
-			, m_CounterValues(memMgr)
-		{}
-		virtual ~MonitoringTransRequestCounterValues() {}
+		public:
+			MonitoringTransGetInstanceList(IHeap& memMgr, MessageDataPtr& pIMsg)
+				: ServerEntityMessageTransaction(memMgr, pIMsg)
+				, m_InstanceList(memMgr)
+			{}
+			virtual ~MonitoringTransGetInstanceList() {}
 
-		// Start Transaction
-		virtual Result StartTransaction();
+			// Start Transaction
+			virtual Result StartTransaction() override;
 
-
-		BR_IMPLEMENT_MSGTRANS_CLOSE_ARGS(Policy::NetSvrPolicyMonitoring, RequestCounterValuesRes, GetInstanceUID(), m_CounterValues);
-	};
-
-
+			BR_IMPLEMENT_MSGTRANS_CLOSE_ARGS(Policy::NetSvrPolicyMonitoring, GetInstanceListRes, m_InstanceList, m_TotalCounterInstance);
+		};
 
 
 
-} // namespace GameServer 
+		class MonitoringTransRequestCounterValues : public ServerEntityMessageTransaction< MonitoringServiceEntity, Message::Monitoring::RequestCounterValuesCmd>
+		{
+		public:
+			typedef ServerEntityMessageTransaction< MonitoringServiceEntity, Message::Monitoring::RequestCounterValuesCmd> super;
+
+		private:
+			StaticArray<uint64_t, 1024> m_CounterValues;
+
+		public:
+			MonitoringTransRequestCounterValues(IHeap& memMgr, MessageDataPtr& pIMsg)
+				: ServerEntityMessageTransaction(memMgr, pIMsg)
+				, m_CounterValues(memMgr)
+			{}
+			virtual ~MonitoringTransRequestCounterValues() {}
+
+			// Start Transaction
+			virtual Result StartTransaction() override;
+
+
+			BR_IMPLEMENT_MSGTRANS_CLOSE_ARGS(Policy::NetSvrPolicyMonitoring, RequestCounterValuesRes, GetInstanceUID(), m_CounterValues);
+		};
+
+
+
+
+
+	} // namespace GameServer 
 } // namespace SF 
 

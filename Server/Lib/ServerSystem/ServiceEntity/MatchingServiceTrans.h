@@ -76,7 +76,7 @@ namespace Svr {
 		Result OnReserveItem(TransactionResult* pRes);
 
 		// Start Transaction
-		virtual Result StartTransaction();
+		virtual Result StartTransaction() override;
 
 		virtual Result OnCloseTransaction(Result hrRes) override;
 	};

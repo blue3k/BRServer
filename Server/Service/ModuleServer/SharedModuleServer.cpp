@@ -17,13 +17,6 @@ using namespace SF;
 
 
 #if SF_PLATFORM == SF_PLATFORM_WINDOWS
-// int APIENTRY WinMain(HINSTANCE hInstance,
-	// HINSTANCE hPrevInstance,
-	// LPSTR    lpCmdLine,
-	// int       nCmdShow)
-// {
-	// UNREFERENCED_PARAMETER(hPrevInstance);
-	// UNREFERENCED_PARAMETER(lpCmdLine);
 int main(int numArg, const char* argc[])
 {
 

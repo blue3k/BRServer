@@ -76,7 +76,7 @@ namespace Svr {
 		virtual ~ChatChannelTransJoin() {}
 
 		// Start Transaction
-		virtual Result StartTransaction();
+		virtual Result StartTransaction() override;
 
 		BR_SVR_MSGTRANS_CLOSE_ARGS(Policy::NetSvrPolicyChatChannel, JoinRes, GetRouteContext().GetSwaped(), m_LeaderID);
 	};
@@ -94,7 +94,7 @@ namespace Svr {
 		virtual ~ChatChannelTransLeave() {}
 
 		// Start Transaction
-		virtual Result StartTransaction();
+		virtual Result StartTransaction() override;
 
 		BR_SVR_MSGTRANS_CLOSE(Policy::NetSvrPolicyChatChannel, LeaveRes,GetRouteContext().GetSwaped());
 	};
@@ -113,7 +113,7 @@ namespace Svr {
 		virtual ~ChatChannelTransKickPlayer() {}
 
 		// Start Transaction
-		virtual Result StartTransaction();
+		virtual Result StartTransaction() override;
 
 		BR_SVR_MSGTRANS_CLOSE(Policy::NetSvrPolicyChatChannel, KickPlayerRes,GetRouteContext().GetSwaped());
 	};

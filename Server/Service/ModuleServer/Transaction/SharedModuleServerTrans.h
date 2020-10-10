@@ -21,44 +21,41 @@
 
 
 namespace SF {
-namespace SharedModuleServer {
+	namespace SharedModuleServer {
 
-	
-	class SharedModuleServerStartProcess : public Svr::TransactionT<SharedModuleServer>
-	{
-	private:
-		typedef Svr::TransactionT<SharedModuleServer> super;
 
-		enum class StartingStep 
+		class SharedModuleServerStartProcess : public Svr::TransactionT<SharedModuleServer>
 		{
-			WaitEntityServer,
-			WaitInitializeComponents,
-			Done
+		private:
+			typedef Svr::TransactionT<SharedModuleServer> super;
+
+			enum class StartingStep
+			{
+				WaitEntityServer,
+				WaitInitializeComponents,
+				Done
+			};
+
+			StartingStep m_Step;
+
+		public:
+			SharedModuleServerStartProcess(IHeap& heap);
+			~SharedModuleServerStartProcess();
+
+			// Override delete function
+			virtual void Release();
+
+			Result OnTimer(Svr::TransactionResult* pRes);
+
+			Result InitializeServices();
+
+			virtual Result OnCloseTransaction(Result hrRes) override;
+
+			// Start Transaction
+			virtual Result StartTransaction() override;
 		};
 
-		StartingStep m_Step;
 
-	public:
-		SharedModuleServerStartProcess(IHeap& heap);
-		~SharedModuleServerStartProcess();
-
-		// Override delete function
-		virtual void Release();
-
-		Result OnTimer(Svr::TransactionResult* pRes);
-
-		Result InitializeServices();
-
-		virtual Result OnCloseTransaction( Result hrRes ) override;
-
-		// Start Transaction
-		virtual Result StartTransaction();
-	};
-
-
-
-
-
-};// namespace SharedModuleServer 
-};// namespace SF 
+	} // namespace SharedModuleServer 
+} // namespace SF 
 

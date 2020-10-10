@@ -94,7 +94,7 @@ namespace Svr {
 		Result OnLogin( Svr::TransactionResult* &pRes );
 
 		// Start Transaction
-		virtual Result StartTransaction();
+		virtual Result StartTransaction() override;
 
 		BR_IMPLEMENT_USERMSGTRANS_CLOSE_ARGS(Policy::NetSvrPolicyLogin, LoginRes, m_GameServerAddr, m_GameServerAddrIPV4, GetMyOwner()->GetPlayerID(), GetMyOwner()->GetAuthTicket(), (Context)GetMyOwner()->GetEntityUID());
 	};
@@ -142,7 +142,7 @@ namespace Svr {
 		Result OnCreated(Svr::TransactionResult* pRes);
 
 		// Start Transaction
-		virtual Result StartTransaction();
+		virtual Result StartTransaction() override;
 
 		BR_IMPLEMENT_USERMSGTRANS_CLOSE_ARGS(Policy::NetSvrPolicyLogin, CreateRandomUserRes, m_GameServerAddr, m_GameServerAddrIPV4, GetMyOwner()->GetPlayerID(), GetMyOwner()->GetAuthTicket(), (Context)GetMyOwner()->GetEntityUID());
 	};
@@ -190,7 +190,7 @@ namespace Svr {
 		Result OnDeleteSession( Svr::TransactionResult *pRes );
 
 		// Start Transaction
-		virtual Result StartTransaction();
+		virtual Result StartTransaction() override;
 
 		BR_SVR_MSGTRANS_CLOSE(Policy::NetSvrPolicyLoginServer, KickPlayerRes,GetRouteContext().GetSwaped());
 	};
@@ -215,7 +215,7 @@ namespace Svr {
 		Result OnValidateGameServerSessionRes(Svr::TransactionResult* &pRes);
 
 		// Start Transaction
-		virtual Result StartTransaction();
+		virtual Result StartTransaction() override;
 
 		BR_SVR_MSGTRANS_CLOSE(Policy::NetSvrPolicyLoginServer, PlayerJoinedToGameServerRes,GetRouteContext().GetSwaped());
 	};

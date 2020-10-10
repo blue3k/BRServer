@@ -30,91 +30,91 @@
 
 
 namespace SF {
-namespace Svr {
+	namespace Svr {
 
 
-	////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	//
-	//	Matchmaking
-	//
-
-
-
-	class PlayerTransRequestGameMatch : public Svr::MessageTransaction< GamePlayerEntity, Message::Game::RequestGameMatchCmd>
-	{
-	public:
-		typedef Svr::MessageTransaction< GamePlayerEntity, Message::Game::RequestGameMatchCmd> super;
-
-	private:
-		uint64_t m_TotalGem;
-		uint64_t m_TotalGameMoney;
-
-	public:
-		PlayerTransRequestGameMatch(IHeap& heap, MessageDataPtr& pIMsg);
-		virtual ~PlayerTransRequestGameMatch() {}
-
-		Result OnRequestPartyMatchingRes(Svr::TransactionResult*& pRes);
-		Result OnRequestPlayerMatchingRes(Svr::TransactionResult*& pRes);
-
-		// Start Transaction
-		virtual Result StartTransaction();
-
-		BR_IMPLEMENT_USERMSGTRANS_CLOSE_ARGS(Policy::NetSvrPolicyGame, RequestGameMatchRes, m_TotalGem, m_TotalGameMoney);
-	};
-
-	class PlayerTransCancelGameMatch : public Svr::MessageTransaction< GamePlayerEntity, Message::Game::CancelGameMatchCmd>
-	{
-	public:
-		typedef Svr::MessageTransaction< GamePlayerEntity, Message::Game::CancelGameMatchCmd> super;
-
-	public:
-		PlayerTransCancelGameMatch(IHeap& heap, MessageDataPtr& pIMsg);
-		virtual ~PlayerTransCancelGameMatch() {}
-
-		Result OnCancelPartyMatchingRes(Svr::TransactionResult*& pRes);
-		Result OnCancelPlayerMatchingRes(Svr::TransactionResult*& pRes);
-
-		// Start Transaction
-		virtual Result StartTransaction();
-
-		BR_IMPLEMENT_USERMSGTRANS_CLOSE(Policy::NetSvrPolicyGame, CancelGameMatchRes);
-	};
+		////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+		//
+		//	Matchmaking
+		//
 
 
 
-	//////////////////////////////////////////////////////////////////////////////////////////
-	//
-	//	Matching queue
-	//
-	class PlayerTransPlayerMatchingCanceledS2CEvt : public Svr::UserTransactionS2SEvt< GamePlayerEntity, Message::PartyMatchingQueue::PlayerMatchingCanceledS2CEvt>
-	{
-	public:
-		typedef Svr::UserTransactionS2SEvt< GamePlayerEntity, Message::PartyMatchingQueue::PlayerMatchingCanceledS2CEvt> super;
+		class PlayerTransRequestGameMatch : public Svr::MessageTransaction< GamePlayerEntity, Message::Game::RequestGameMatchCmd>
+		{
+		public:
+			typedef Svr::MessageTransaction< GamePlayerEntity, Message::Game::RequestGameMatchCmd> super;
 
-	public:
-		PlayerTransPlayerMatchingCanceledS2CEvt(IHeap& heap, MessageDataPtr& pIMsg) :UserTransactionS2SEvt(heap, pIMsg) {}
-		virtual ~PlayerTransPlayerMatchingCanceledS2CEvt() {}
+		private:
+			uint64_t m_TotalGem;
+			uint64_t m_TotalGameMoney;
 
-		// Start Transaction
-		virtual Result StartTransaction();
-	};
+		public:
+			PlayerTransRequestGameMatch(IHeap& heap, MessageDataPtr& pIMsg);
+			virtual ~PlayerTransRequestGameMatch() {}
+
+			Result OnRequestPartyMatchingRes(Svr::TransactionResult*& pRes);
+			Result OnRequestPlayerMatchingRes(Svr::TransactionResult*& pRes);
+
+			// Start Transaction
+			virtual Result StartTransaction() override;
+
+			BR_IMPLEMENT_USERMSGTRANS_CLOSE_ARGS(Policy::NetSvrPolicyGame, RequestGameMatchRes, m_TotalGem, m_TotalGameMoney);
+		};
+
+		class PlayerTransCancelGameMatch : public Svr::MessageTransaction< GamePlayerEntity, Message::Game::CancelGameMatchCmd>
+		{
+		public:
+			typedef Svr::MessageTransaction< GamePlayerEntity, Message::Game::CancelGameMatchCmd> super;
+
+		public:
+			PlayerTransCancelGameMatch(IHeap& heap, MessageDataPtr& pIMsg);
+			virtual ~PlayerTransCancelGameMatch() {}
+
+			Result OnCancelPartyMatchingRes(Svr::TransactionResult*& pRes);
+			Result OnCancelPlayerMatchingRes(Svr::TransactionResult*& pRes);
+
+			// Start Transaction
+			virtual Result StartTransaction() override;
+
+			BR_IMPLEMENT_USERMSGTRANS_CLOSE(Policy::NetSvrPolicyGame, CancelGameMatchRes);
+		};
 
 
 
-	class PlayerTransPlayerMatchingItemDequeuedS2CEvt : public Svr::UserTransactionS2SEvt< GamePlayerEntity, Message::PartyMatchingQueue::PlayerMatchingItemDequeuedS2CEvt>
-	{
-	public:
-		typedef Svr::UserTransactionS2SEvt< GamePlayerEntity, Message::PartyMatchingQueue::PlayerMatchingItemDequeuedS2CEvt> super;
+		//////////////////////////////////////////////////////////////////////////////////////////
+		//
+		//	Matching queue
+		//
+		class PlayerTransPlayerMatchingCanceledS2CEvt : public Svr::UserTransactionS2SEvt< GamePlayerEntity, Message::PartyMatchingQueue::PlayerMatchingCanceledS2CEvt>
+		{
+		public:
+			typedef Svr::UserTransactionS2SEvt< GamePlayerEntity, Message::PartyMatchingQueue::PlayerMatchingCanceledS2CEvt> super;
 
-	public:
-		PlayerTransPlayerMatchingItemDequeuedS2CEvt(IHeap& heap, MessageDataPtr& pIMsg) :UserTransactionS2SEvt(heap, pIMsg) {}
-		virtual ~PlayerTransPlayerMatchingItemDequeuedS2CEvt() {}
+		public:
+			PlayerTransPlayerMatchingCanceledS2CEvt(IHeap& heap, MessageDataPtr& pIMsg) :UserTransactionS2SEvt(heap, pIMsg) {}
+			virtual ~PlayerTransPlayerMatchingCanceledS2CEvt() {}
 
-		// Start Transaction
-		virtual Result StartTransaction();
-	};
+			// Start Transaction
+			virtual Result StartTransaction() override;
+		};
 
-	
-} // namespace Svr
+
+
+		class PlayerTransPlayerMatchingItemDequeuedS2CEvt : public Svr::UserTransactionS2SEvt< GamePlayerEntity, Message::PartyMatchingQueue::PlayerMatchingItemDequeuedS2CEvt>
+		{
+		public:
+			typedef Svr::UserTransactionS2SEvt< GamePlayerEntity, Message::PartyMatchingQueue::PlayerMatchingItemDequeuedS2CEvt> super;
+
+		public:
+			PlayerTransPlayerMatchingItemDequeuedS2CEvt(IHeap& heap, MessageDataPtr& pIMsg) :UserTransactionS2SEvt(heap, pIMsg) {}
+			virtual ~PlayerTransPlayerMatchingItemDequeuedS2CEvt() {}
+
+			// Start Transaction
+			virtual Result StartTransaction() override;
+		};
+
+
+	} // namespace Svr
 } // namespace SF 
 

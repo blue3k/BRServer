@@ -62,10 +62,10 @@ namespace Svr {
 		//	Entity operations
 		//
 
-		Result InitializeEntity( EntityID newEntityID );
+		virtual Result InitializeEntity( EntityID newEntityID ) override;
 
 		// clear transaction
-		virtual Result ClearEntity();
+		virtual Result ClearEntity() override;
 
 		virtual Result RegisterServiceMessageHandler(ServerEntity *pServerEntity) override;
 

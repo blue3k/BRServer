@@ -323,9 +323,7 @@ namespace Svr {
 
 		return hr;
 	}
-	
 
-	
 
 	PlayerTransJoinParty::PlayerTransJoinParty(IHeap& heap, MessageDataPtr &pIMsg )
 		: MessageTransaction( heap, std::forward<MessageDataPtr>(pIMsg) )

@@ -41,539 +41,539 @@ namespace SF {
 		struct QueryGetPlayerInfoData;
 	};
 
-namespace Svr {
+	namespace Svr {
 
 
 
-	/////////////////////////////////////////////////////////////////////////////
-	//
-	//	Game command transaction
-	//
+		/////////////////////////////////////////////////////////////////////////////
+		//
+		//	Game command transaction
+		//
 
 
-	class PlayerTransJoinGameServer : public Svr::MessageTransaction< GamePlayerEntity, Message::Game::JoinGameServerCmd>
-	{
-	public:
-		typedef Svr::MessageTransaction< GamePlayerEntity, Message::Game::JoinGameServerCmd> super;
-
-	private:
-		
-		enum class Step
+		class PlayerTransJoinGameServer : public Svr::MessageTransaction< GamePlayerEntity, Message::Game::JoinGameServerCmd>
 		{
-			Begin,
-			GetPlayerGameData,
-			UpdatePartyMatching,
-			JoinParty,
-			Done,
-		} m_Step;
-		
+		public:
+			typedef Svr::MessageTransaction< GamePlayerEntity, Message::Game::JoinGameServerCmd> super;
 
-		char m_PlayerNick[GameConst::MAX_NAME];
-		PlayerID m_PartyLeaderID;
-		GameInsUID m_GameUID;
-		MatchingQueueTicket m_MatchingTicket;
+		private:
 
-		bool m_HaveValidPlayerData = false;
+			enum class Step
+			{
+				Begin,
+				GetPlayerGameData,
+				UpdatePartyMatching,
+				JoinParty,
+				Done,
+			} m_Step;
 
-	public:
-		PlayerTransJoinGameServer(IHeap& heap, MessageDataPtr &pIMsg );
-		virtual ~PlayerTransJoinGameServer() {}
 
-		const char* GetPlayerNick() { return m_PlayerNick; }
-		void SetPlayerNick(const char* value) { StrUtil::StringCopy(m_PlayerNick, value); }
+			char m_PlayerNick[GameConst::MAX_NAME];
+			PlayerID m_PartyLeaderID;
+			GameInsUID m_GameUID;
+			MatchingQueueTicket m_MatchingTicket;
 
+			bool m_HaveValidPlayerData = false;
 
+		public:
+			PlayerTransJoinGameServer(IHeap& heap, MessageDataPtr& pIMsg);
+			virtual ~PlayerTransJoinGameServer() {}
 
-		Result OnGameServerJoined( Svr::TransactionResult* pRes );
-		Result OnJoinPartyRes( Svr::TransactionResult* pRes );
-		Result OnCreatePlayerGameDataRes(Svr::TransactionResult* pRes);
-		Result OnGetPlayerGameDataRes(Svr::TransactionResult* pRes);
+			const char* GetPlayerNick() { return m_PlayerNick; }
+			void SetPlayerNick(const char* value) { StrUtil::StringCopy(m_PlayerNick, value); }
 
-		Result SetPlayerGameData(const VariableTable &playerData);
 
-		Result RegisterToPlayerManager();
 
-		// Sub actions
-		Result NotifyLoginServer();
-		Result RequestPlayerInfoFromDB();
-		Result RequestPlayerInfoCreateDB();
-		Result RequestJoinPartyIfExist();
-		Result FinalizeSuccess();
+			Result OnGameServerJoined(Svr::TransactionResult* pRes);
+			Result OnJoinPartyRes(Svr::TransactionResult* pRes);
+			Result OnCreatePlayerGameDataRes(Svr::TransactionResult* pRes);
+			Result OnGetPlayerGameDataRes(Svr::TransactionResult* pRes);
 
-		// Start Transaction
-		virtual Result StartTransaction();
+			Result SetPlayerGameData(const VariableTable& playerData);
 
-		BR_IMPLEMENT_USERMSGTRANS_CLOSE_ARGS(Policy::NetSvrPolicyGame, JoinGameServerRes, m_PlayerNick, m_GameUID, GetMyOwner()->GetPartyUID(), m_PartyLeaderID, m_MatchingTicket);
-	};
+			Result RegisterToPlayerManager();
 
-	
-	class PlayerTransGetUserGamePlayerInfo : public Svr::MessageTransaction< GamePlayerEntity, Message::Game::GetUserGamePlayerInfoCmd>
-	{
-	public:
-		typedef Svr::MessageTransaction< GamePlayerEntity, Message::Game::GetUserGamePlayerInfoCmd> super;
+			// Sub actions
+			Result NotifyLoginServer();
+			Result RequestPlayerInfoFromDB();
+			Result RequestPlayerInfoCreateDB();
+			Result RequestJoinPartyIfExist();
+			Result FinalizeSuccess();
 
-	private:
-		
-		VariableTable m_Result;
+			// Start Transaction
+			virtual Result StartTransaction() override;
 
+			BR_IMPLEMENT_USERMSGTRANS_CLOSE_ARGS(Policy::NetSvrPolicyGame, JoinGameServerRes, m_PlayerNick, m_GameUID, GetMyOwner()->GetPartyUID(), m_PartyLeaderID, m_MatchingTicket);
+		};
 
-	public:
-		PlayerTransGetUserGamePlayerInfo(IHeap& heap, MessageDataPtr &pIMsg ) : MessageTransaction( heap, std::forward<MessageDataPtr>(pIMsg) ) {}
-		virtual ~PlayerTransGetUserGamePlayerInfo() {}
 
-		// Start Transaction
-		virtual Result StartTransaction();
+		class PlayerTransGetUserGamePlayerInfo : public Svr::MessageTransaction< GamePlayerEntity, Message::Game::GetUserGamePlayerInfoCmd>
+		{
+		public:
+			typedef Svr::MessageTransaction< GamePlayerEntity, Message::Game::GetUserGamePlayerInfoCmd> super;
 
-		BR_IMPLEMENT_USERMSGTRANS_CLOSE_ARGS(Policy::NetSvrPolicyGame, GetUserGamePlayerInfoRes, m_Result);
-	};
-	
-	
-	
-	class PlayerTransGetGamePlayerInfo : public Svr::MessageTransaction< GamePlayerEntity, Message::Game::GetGamePlayerInfoCmd>
-	{
-	public:
-		typedef Svr::MessageTransaction< GamePlayerEntity, Message::Game::GetGamePlayerInfoCmd> super;
+		private:
 
-	private:
-		int32_t m_ShardId = 0;
-		VariableTable m_Result;
+			VariableTable m_Result;
 
-	public:
-		PlayerTransGetGamePlayerInfo(IHeap& heap, MessageDataPtr &pIMsg );
-		virtual ~PlayerTransGetGamePlayerInfo() {}
 
-		Result RequestPlayerShardID();
-		Result OnGetPlayerShardID(Svr::TransactionResult* pRes);
+		public:
+			PlayerTransGetUserGamePlayerInfo(IHeap& heap, MessageDataPtr& pIMsg) : MessageTransaction(heap, std::forward<MessageDataPtr>(pIMsg)) {}
+			virtual ~PlayerTransGetUserGamePlayerInfo() {}
 
-		Result RequestGamePlayerInfo();
-		Result OnGetGamePlayerInfo( Svr::TransactionResult* pRes );
+			// Start Transaction
+			virtual Result StartTransaction() override;
 
-		// Start Transaction
-		virtual Result StartTransaction();
+			BR_IMPLEMENT_USERMSGTRANS_CLOSE_ARGS(Policy::NetSvrPolicyGame, GetUserGamePlayerInfoRes, m_Result);
+		};
 
-		BR_IMPLEMENT_USERMSGTRANS_CLOSE_ARGS(Policy::NetSvrPolicyGame, GetGamePlayerInfoRes, GetPlayerID(), m_Result);
-	};
 
 
+		class PlayerTransGetGamePlayerInfo : public Svr::MessageTransaction< GamePlayerEntity, Message::Game::GetGamePlayerInfoCmd>
+		{
+		public:
+			typedef Svr::MessageTransaction< GamePlayerEntity, Message::Game::GetGamePlayerInfoCmd> super;
 
-	class PlayerTransGetComplitionState : public Svr::MessageTransaction< GamePlayerEntity, Message::Game::GetComplitionStateCmd>
-	{
-	public:
-		typedef Svr::MessageTransaction< GamePlayerEntity, Message::Game::GetComplitionStateCmd> super;
+		private:
+			int32_t m_ShardId = 0;
+			VariableTable m_Result;
 
-	private:
+		public:
+			PlayerTransGetGamePlayerInfo(IHeap& heap, MessageDataPtr& pIMsg);
+			virtual ~PlayerTransGetGamePlayerInfo() {}
 
-		char m_ComplitionState[GameConst::MAX_COMPLITIONSTATE];
+			Result RequestPlayerShardID();
+			Result OnGetPlayerShardID(Svr::TransactionResult* pRes);
 
-	public:
-		PlayerTransGetComplitionState(IHeap& heap, MessageDataPtr &pIMsg);// : MessageTransaction(pIMsg) {}
-		virtual ~PlayerTransGetComplitionState() {}
+			Result RequestGamePlayerInfo();
+			Result OnGetGamePlayerInfo(Svr::TransactionResult* pRes);
 
-		const char* GetComplitionState() { return m_ComplitionState; }
-		void SetComplitionState(const char* value) { StrUtil::StringCopy(m_ComplitionState, value); }
+			// Start Transaction
+			virtual Result StartTransaction() override;
 
+			BR_IMPLEMENT_USERMSGTRANS_CLOSE_ARGS(Policy::NetSvrPolicyGame, GetGamePlayerInfoRes, GetPlayerID(), m_Result);
+		};
 
-		Result OnGetComplitionState(Svr::TransactionResult* pRes);
 
 
-		// Start Transaction
-		virtual Result StartTransaction();
+		class PlayerTransGetComplitionState : public Svr::MessageTransaction< GamePlayerEntity, Message::Game::GetComplitionStateCmd>
+		{
+		public:
+			typedef Svr::MessageTransaction< GamePlayerEntity, Message::Game::GetComplitionStateCmd> super;
 
-		BR_IMPLEMENT_USERMSGTRANS_CLOSE_ARGS(Policy::NetSvrPolicyGame, GetComplitionStateRes, m_ComplitionState);
-	};
+		private:
 
+			char m_ComplitionState[GameConst::MAX_COMPLITIONSTATE];
 
+		public:
+			PlayerTransGetComplitionState(IHeap& heap, MessageDataPtr& pIMsg);// : MessageTransaction(pIMsg) {}
+			virtual ~PlayerTransGetComplitionState() {}
 
-	class PlayerTransSetComplitionState : public Svr::MessageTransaction< GamePlayerEntity, Message::Game::SetComplitionStateCmd>
-	{
-	public:
-		typedef Svr::MessageTransaction< GamePlayerEntity, Message::Game::SetComplitionStateCmd> super;
+			const char* GetComplitionState() { return m_ComplitionState; }
+			void SetComplitionState(const char* value) { StrUtil::StringCopy(m_ComplitionState, value); }
 
-	public:
-		PlayerTransSetComplitionState(IHeap& heap, MessageDataPtr &pIMsg);
-		virtual ~PlayerTransSetComplitionState() {}
 
-		Result OnSetComplitionState(Svr::TransactionResult* pRes);
+			Result OnGetComplitionState(Svr::TransactionResult* pRes);
 
-		// Start Transaction
-		virtual Result StartTransaction();
 
-		BR_IMPLEMENT_USERMSGTRANS_CLOSE(Policy::NetSvrPolicyGame, SetComplitionStateRes);
-	};
+			// Start Transaction
+			virtual Result StartTransaction() override;
 
+			BR_IMPLEMENT_USERMSGTRANS_CLOSE_ARGS(Policy::NetSvrPolicyGame, GetComplitionStateRes, m_ComplitionState);
+		};
 
 
 
-	/////////////////////////////////////////////////////////////////////////////
-	//
-	//  Debug messages
-	//
+		class PlayerTransSetComplitionState : public Svr::MessageTransaction< GamePlayerEntity, Message::Game::SetComplitionStateCmd>
+		{
+		public:
+			typedef Svr::MessageTransaction< GamePlayerEntity, Message::Game::SetComplitionStateCmd> super;
 
-	class PlayerTransSetConfigPreset : public Svr::MessageTransaction< GamePlayerEntity, Message::Game::SetPresetGameConfigIDCmd>
-	{
-	public:
-		typedef Svr::MessageTransaction< GamePlayerEntity, Message::Game::SetPresetGameConfigIDCmd> super;
+		public:
+			PlayerTransSetComplitionState(IHeap& heap, MessageDataPtr& pIMsg);
+			virtual ~PlayerTransSetComplitionState() {}
 
-	private:
-	public:
-		PlayerTransSetConfigPreset(IHeap& heap, MessageDataPtr &pIMsg )  :MessageTransaction( heap, std::forward<MessageDataPtr>(pIMsg) ) {}
-		virtual ~PlayerTransSetConfigPreset() {}
+			Result OnSetComplitionState(Svr::TransactionResult* pRes);
 
-		// Start Transaction
-		virtual Result StartTransaction();
+			// Start Transaction
+			virtual Result StartTransaction() override;
 
-		BR_IMPLEMENT_USERMSGTRANS_CLOSE(Policy::NetSvrPolicyGame, SetPresetGameConfigIDRes);
-	};
-	
+			BR_IMPLEMENT_USERMSGTRANS_CLOSE(Policy::NetSvrPolicyGame, SetComplitionStateRes);
+		};
 
-	/////////////////////////////////////////////////////////////////////////////
-	//
-	//	GCM register/unregister transaction
-	//
 
-	class PlayerTransRegisterGCM : public Svr::MessageTransaction< GamePlayerEntity, Message::Game::RegisterGCMCmd>
-	{
-	public:
-		typedef Svr::MessageTransaction< GamePlayerEntity, Message::Game::RegisterGCMCmd> super;
 
-	private:
-	public:
-		PlayerTransRegisterGCM(IHeap& heap, MessageDataPtr &pIMsg );
-		virtual ~PlayerTransRegisterGCM() {}
 
-		Result OnUpdated( Svr::TransactionResult* pRes);
+		/////////////////////////////////////////////////////////////////////////////
+		//
+		//  Debug messages
+		//
 
-		// Start Transaction
-		virtual Result StartTransaction();
+		class PlayerTransSetConfigPreset : public Svr::MessageTransaction< GamePlayerEntity, Message::Game::SetPresetGameConfigIDCmd>
+		{
+		public:
+			typedef Svr::MessageTransaction< GamePlayerEntity, Message::Game::SetPresetGameConfigIDCmd> super;
 
-		BR_IMPLEMENT_USERMSGTRANS_CLOSE(Policy::NetSvrPolicyGame, RegisterGCMRes);
-	};
+		private:
+		public:
+			PlayerTransSetConfigPreset(IHeap& heap, MessageDataPtr& pIMsg) :MessageTransaction(heap, std::forward<MessageDataPtr>(pIMsg)) {}
+			virtual ~PlayerTransSetConfigPreset() {}
 
+			// Start Transaction
+			virtual Result StartTransaction() override;
 
-	class PlayerTransUnregisterGCM : public Svr::MessageTransaction< GamePlayerEntity, Message::Game::UnregisterGCMCmd>
-	{
-	public:
-		typedef Svr::MessageTransaction< GamePlayerEntity, Message::Game::UnregisterGCMCmd> super;
+			BR_IMPLEMENT_USERMSGTRANS_CLOSE(Policy::NetSvrPolicyGame, SetPresetGameConfigIDRes);
+		};
 
-	private:
-	public:
-		PlayerTransUnregisterGCM(IHeap& heap, MessageDataPtr &pIMsg );
-		virtual ~PlayerTransUnregisterGCM() {}
 
-		Result OnUpdated( Svr::TransactionResult* pRes );
+		/////////////////////////////////////////////////////////////////////////////
+		//
+		//	GCM register/unregister transaction
+		//
 
-		// Start Transaction
-		virtual Result StartTransaction();
+		class PlayerTransRegisterGCM : public Svr::MessageTransaction< GamePlayerEntity, Message::Game::RegisterGCMCmd>
+		{
+		public:
+			typedef Svr::MessageTransaction< GamePlayerEntity, Message::Game::RegisterGCMCmd> super;
 
-		BR_IMPLEMENT_USERMSGTRANS_CLOSE(Policy::NetSvrPolicyGame, UnregisterGCMRes);
-	};
-	
+		private:
+		public:
+			PlayerTransRegisterGCM(IHeap& heap, MessageDataPtr& pIMsg);
+			virtual ~PlayerTransRegisterGCM() {}
 
+			Result OnUpdated(Svr::TransactionResult* pRes);
 
-	
-	/////////////////////////////////////////////////////////////////////////////
-	//
-	//	Notifications transaction
-	//
-	
-	class PlayerTransGetNotificationList : public Svr::MessageTransaction< GamePlayerEntity, Message::Game::GetNotificationListCmd>
-	{
-	public:
-		typedef Svr::MessageTransaction< GamePlayerEntity, Message::Game::GetNotificationListCmd> super;
+			// Start Transaction
+			virtual Result StartTransaction() override;
 
-	private:
-	public:
-		PlayerTransGetNotificationList(IHeap& heap, MessageDataPtr &pIMsg );
-		virtual ~PlayerTransGetNotificationList() {}
+			BR_IMPLEMENT_USERMSGTRANS_CLOSE(Policy::NetSvrPolicyGame, RegisterGCMRes);
+		};
 
-		Result OnGetList( Svr::TransactionResult* pRes );
 
-		// Start Transaction
-		virtual Result StartTransaction();
+		class PlayerTransUnregisterGCM : public Svr::MessageTransaction< GamePlayerEntity, Message::Game::UnregisterGCMCmd>
+		{
+		public:
+			typedef Svr::MessageTransaction< GamePlayerEntity, Message::Game::UnregisterGCMCmd> super;
 
-		BR_IMPLEMENT_USERMSGTRANS_CLOSE(Policy::NetSvrPolicyGame, GetNotificationListRes);
-	};
-	
-	class PlayerTransDeleteNotification : public Svr::MessageTransaction< GamePlayerEntity, Message::Game::DeleteNotificationCmd>
-	{
-	public:
-		typedef Svr::MessageTransaction< GamePlayerEntity, Message::Game::DeleteNotificationCmd> super;
+		private:
+		public:
+			PlayerTransUnregisterGCM(IHeap& heap, MessageDataPtr& pIMsg);
+			virtual ~PlayerTransUnregisterGCM() {}
 
-	private:
-	public:
-		PlayerTransDeleteNotification(IHeap& heap, MessageDataPtr &pIMsg );
-		virtual ~PlayerTransDeleteNotification() {}
+			Result OnUpdated(Svr::TransactionResult* pRes);
 
-		Result OnDeletedNotification( Svr::TransactionResult* &pRes );
+			// Start Transaction
+			virtual Result StartTransaction() override;
 
-		// Start Transaction
-		virtual Result StartTransaction();
+			BR_IMPLEMENT_USERMSGTRANS_CLOSE(Policy::NetSvrPolicyGame, UnregisterGCMRes);
+		};
 
-		BR_IMPLEMENT_USERMSGTRANS_CLOSE_ARGS(Policy::NetSvrPolicyGame, DeleteNotificationRes,GetNotificationID());
-	};
 
 
-	class PlayerTransSetNotificationRead : public Svr::MessageTransaction< GamePlayerEntity, Message::Game::SetNotificationReadCmd>
-	{
-	public:
-		typedef Svr::MessageTransaction< GamePlayerEntity, Message::Game::SetNotificationReadCmd> super;
 
-	private:
-	public:
-		PlayerTransSetNotificationRead(IHeap& heap, MessageDataPtr &pIMsg );
-		virtual ~PlayerTransSetNotificationRead() {}
+		/////////////////////////////////////////////////////////////////////////////
+		//
+		//	Notifications transaction
+		//
 
-		Result OnSetRead( Svr::TransactionResult* pRes );
+		class PlayerTransGetNotificationList : public Svr::MessageTransaction< GamePlayerEntity, Message::Game::GetNotificationListCmd>
+		{
+		public:
+			typedef Svr::MessageTransaction< GamePlayerEntity, Message::Game::GetNotificationListCmd> super;
 
-		// Start Transaction
-		virtual Result StartTransaction();
+		private:
+		public:
+			PlayerTransGetNotificationList(IHeap& heap, MessageDataPtr& pIMsg);
+			virtual ~PlayerTransGetNotificationList() {}
 
-		BR_IMPLEMENT_USERMSGTRANS_CLOSE_ARGS(Policy::NetSvrPolicyGame, SetNotificationReadRes, GetNotificationID());
-	};
+			Result OnGetList(Svr::TransactionResult* pRes);
 
+			// Start Transaction
+			virtual Result StartTransaction() override;
 
-	class PlayerTransAcceptNotification : public Svr::MessageTransaction< GamePlayerEntity, Message::Game::AcceptNotificationCmd>
-	{
-	public:
-		typedef Svr::MessageTransaction< GamePlayerEntity, Message::Game::AcceptNotificationCmd> super;
+			BR_IMPLEMENT_USERMSGTRANS_CLOSE(Policy::NetSvrPolicyGame, GetNotificationListRes);
+		};
 
-	private:
-	public:
-		PlayerTransAcceptNotification(IHeap& heap, MessageDataPtr &pIMsg);
-		virtual ~PlayerTransAcceptNotification() {}
+		class PlayerTransDeleteNotification : public Svr::MessageTransaction< GamePlayerEntity, Message::Game::DeleteNotificationCmd>
+		{
+		public:
+			typedef Svr::MessageTransaction< GamePlayerEntity, Message::Game::DeleteNotificationCmd> super;
 
-		Result OnDeletedNotification(Svr::TransactionResult* pRes);
+		private:
+		public:
+			PlayerTransDeleteNotification(IHeap& heap, MessageDataPtr& pIMsg);
+			virtual ~PlayerTransDeleteNotification() {}
 
-		// Start Transaction
-		virtual Result StartTransaction();
+			Result OnDeletedNotification(Svr::TransactionResult*& pRes);
 
-		BR_IMPLEMENT_USERMSGTRANS_CLOSE_ARGS(Policy::NetSvrPolicyGame, AcceptNotificationRes, GetNotificationID());
-	};
+			// Start Transaction
+			virtual Result StartTransaction() override;
 
+			BR_IMPLEMENT_USERMSGTRANS_CLOSE_ARGS(Policy::NetSvrPolicyGame, DeleteNotificationRes, GetNotificationID());
+		};
 
-	class PlayerTransNotifyS2S : public Svr::UserTransactionS2SEvt< GamePlayerEntity, Message::GameServer::NotifyC2SEvt>
-	{
-	public:
-		typedef Svr::UserTransactionS2SEvt< GamePlayerEntity, Message::GameServer::NotifyC2SEvt> super;
 
-	public:
-		PlayerTransNotifyS2S(IHeap& heap, MessageDataPtr &pIMsg ): UserTransactionS2SEvt(heap, pIMsg) {}
-		virtual ~PlayerTransNotifyS2S() {}
+		class PlayerTransSetNotificationRead : public Svr::MessageTransaction< GamePlayerEntity, Message::Game::SetNotificationReadCmd>
+		{
+		public:
+			typedef Svr::MessageTransaction< GamePlayerEntity, Message::Game::SetNotificationReadCmd> super;
 
-		// Start Transaction
-		virtual Result StartTransaction();
-	};
-	
+		private:
+		public:
+			PlayerTransSetNotificationRead(IHeap& heap, MessageDataPtr& pIMsg);
+			virtual ~PlayerTransSetNotificationRead() {}
 
-	
+			Result OnSetRead(Svr::TransactionResult* pRes);
 
-	/////////////////////////////////////////////////////////////////////////////
-	//
-	//	NickName transaction
-	//
+			// Start Transaction
+			virtual Result StartTransaction() override;
 
-	class PlayerTransSetNickName : public Svr::MessageTransaction< GamePlayerEntity, Message::Game::SetNickNameCmd>
-	{
-	public:
-		typedef Svr::MessageTransaction< GamePlayerEntity, Message::Game::SetNickNameCmd> super;
+			BR_IMPLEMENT_USERMSGTRANS_CLOSE_ARGS(Policy::NetSvrPolicyGame, SetNotificationReadRes, GetNotificationID());
+		};
 
-	private:
-		uint64_t m_TotalGem;
-		uint64_t m_TotalGameMoney;
 
-	public:
-		PlayerTransSetNickName(IHeap& heap, MessageDataPtr &pIMsg );
-		virtual ~PlayerTransSetNickName() {}
+		class PlayerTransAcceptNotification : public Svr::MessageTransaction< GamePlayerEntity, Message::Game::AcceptNotificationCmd>
+		{
+		public:
+			typedef Svr::MessageTransaction< GamePlayerEntity, Message::Game::AcceptNotificationCmd> super;
 
-		Result OnNickChanged(Svr::TransactionResult* pRes);
+		private:
+		public:
+			PlayerTransAcceptNotification(IHeap& heap, MessageDataPtr& pIMsg);
+			virtual ~PlayerTransAcceptNotification() {}
 
-		// Start Transaction
-		virtual Result StartTransaction();
+			Result OnDeletedNotification(Svr::TransactionResult* pRes);
 
-		BR_IMPLEMENT_USERMSGTRANS_CLOSE_ARGS(Policy::NetSvrPolicyGame, SetNickNameRes, m_TotalGem, m_TotalGameMoney);
-	};
-	
-	
-	/////////////////////////////////////////////////////////////////////////////
-	//
-	//	Find player transaction
-	//
+			// Start Transaction
+			virtual Result StartTransaction() override;
 
-	class PlayerTransFindPlayerByEMail : public Svr::MessageTransaction< GamePlayerEntity, Message::Game::FindPlayerByEMailCmd>
-	{
-	public:
-		typedef Svr::MessageTransaction< GamePlayerEntity, Message::Game::FindPlayerByEMailCmd> super;
+			BR_IMPLEMENT_USERMSGTRANS_CLOSE_ARGS(Policy::NetSvrPolicyGame, AcceptNotificationRes, GetNotificationID());
+		};
 
-	private:
-		PlayerInformation m_Player;
-		int m_PlayerShardID;
 
-	public:
-		PlayerTransFindPlayerByEMail(IHeap& heap, MessageDataPtr &pIMsg );
-		virtual ~PlayerTransFindPlayerByEMail() {}
+		class PlayerTransNotifyS2S : public Svr::UserTransactionS2SEvt< GamePlayerEntity, Message::GameServer::NotifyC2SEvt>
+		{
+		public:
+			typedef Svr::UserTransactionS2SEvt< GamePlayerEntity, Message::GameServer::NotifyC2SEvt> super;
 
-		Result OnFindPlayer( Svr::TransactionResult* pRes );
-		Result OnGetNickName(Svr::TransactionResult* pRes);
+		public:
+			PlayerTransNotifyS2S(IHeap& heap, MessageDataPtr& pIMsg) : UserTransactionS2SEvt(heap, pIMsg) {}
+			virtual ~PlayerTransNotifyS2S() {}
 
-		// Start Transaction
-		virtual Result StartTransaction();
+			// Start Transaction
+			virtual Result StartTransaction() override;
+		};
 
-		BR_IMPLEMENT_USERMSGTRANS_CLOSE_ARGS(Policy::NetSvrPolicyGame, FindPlayerByEMailRes,m_Player);
-	};
 
 
-	class PlayerTransFindPlayerByPlayerID : public Svr::MessageTransaction< GamePlayerEntity, Message::Game::FindPlayerByPlayerIDCmd>
-	{
-	public:
-		typedef Svr::MessageTransaction< GamePlayerEntity, Message::Game::FindPlayerByPlayerIDCmd> super;
 
-	private:
-		PlayerInformation m_Player;
-		int m_PlayerShardID;
+		/////////////////////////////////////////////////////////////////////////////
+		//
+		//	NickName transaction
+		//
 
-	public:
-		PlayerTransFindPlayerByPlayerID(IHeap& heap, MessageDataPtr &pIMsg );
-		virtual ~PlayerTransFindPlayerByPlayerID() {}
+		class PlayerTransSetNickName : public Svr::MessageTransaction< GamePlayerEntity, Message::Game::SetNickNameCmd>
+		{
+		public:
+			typedef Svr::MessageTransaction< GamePlayerEntity, Message::Game::SetNickNameCmd> super;
 
-		Result OnFindPlayer( Svr::TransactionResult* &pRes );
-		Result OnGetNickName(Svr::TransactionResult* &pRes);
+		private:
+			uint64_t m_TotalGem;
+			uint64_t m_TotalGameMoney;
 
-		// Start Transaction
-		virtual Result StartTransaction();
+		public:
+			PlayerTransSetNickName(IHeap& heap, MessageDataPtr& pIMsg);
+			virtual ~PlayerTransSetNickName() {}
 
-		BR_IMPLEMENT_USERMSGTRANS_CLOSE_ARGS(Policy::NetSvrPolicyGame, FindPlayerByPlayerIDRes,m_Player);
-	};
+			Result OnNickChanged(Svr::TransactionResult* pRes);
 
+			// Start Transaction
+			virtual Result StartTransaction() override;
 
-	class PlayerTransRequestPlayerStatusUpdate : public Svr::MessageTransaction< GamePlayerEntity, Message::Game::RequestPlayerStatusUpdateCmd>
-	{
-	public:
-		typedef Svr::MessageTransaction< GamePlayerEntity, Message::Game::RequestPlayerStatusUpdateCmd> super;
+			BR_IMPLEMENT_USERMSGTRANS_CLOSE_ARGS(Policy::NetSvrPolicyGame, SetNickNameRes, m_TotalGem, m_TotalGameMoney);
+		};
 
-	private:
 
-		uint m_PlayerStatusQueryCount;
+		/////////////////////////////////////////////////////////////////////////////
+		//
+		//	Find player transaction
+		//
 
-	public:
-		PlayerTransRequestPlayerStatusUpdate(IHeap& heap, MessageDataPtr &pIMsg );
-		virtual ~PlayerTransRequestPlayerStatusUpdate() {}
+		class PlayerTransFindPlayerByEMail : public Svr::MessageTransaction< GamePlayerEntity, Message::Game::FindPlayerByEMailCmd>
+		{
+		public:
+			typedef Svr::MessageTransaction< GamePlayerEntity, Message::Game::FindPlayerByEMailCmd> super;
 
-		Result OnPlayerShardIDRes(Svr::TransactionResult* &pRes);
-		Result OnPlayerStatusUpdateRes( Svr::TransactionResult* &pRes );
+		private:
+			PlayerInformation m_Player;
+			int m_PlayerShardID;
 
-		// Start Transaction
-		virtual Result StartTransaction();
+		public:
+			PlayerTransFindPlayerByEMail(IHeap& heap, MessageDataPtr& pIMsg);
+			virtual ~PlayerTransFindPlayerByEMail() {}
 
-		BR_IMPLEMENT_USERMSGTRANS_CLOSE(Policy::NetSvrPolicyGame, RequestPlayerStatusUpdateRes);
-	};
-	
-	class PlayerTransRequestPlayerStatusUpdateC2S : public Svr::UserTransactionS2SEvt< GamePlayerEntity, Message::GameServer::RequestPlayerStatusUpdateC2SEvt>
-	{
-	public:
-		typedef Svr::UserTransactionS2SEvt< GamePlayerEntity, Message::GameServer::RequestPlayerStatusUpdateC2SEvt> super;
+			Result OnFindPlayer(Svr::TransactionResult* pRes);
+			Result OnGetNickName(Svr::TransactionResult* pRes);
 
-	public:
-		PlayerTransRequestPlayerStatusUpdateC2S(IHeap& heap, MessageDataPtr &pIMsg ):UserTransactionS2SEvt(heap, pIMsg) {}
-		virtual ~PlayerTransRequestPlayerStatusUpdateC2S() {}
+			// Start Transaction
+			virtual Result StartTransaction() override;
 
-		// Start Transaction
-		virtual Result StartTransaction();
-	};
-	
-	class PlayerTransNotifyPlayerStatusUpdatedS2S : public Svr::UserTransactionS2SEvt< GamePlayerEntity, Message::GameServer::NotifyPlayerStatusUpdatedC2SEvt>
-	{
-	public:
-		typedef Svr::UserTransactionS2SEvt< GamePlayerEntity, Message::GameServer::NotifyPlayerStatusUpdatedC2SEvt> super;
+			BR_IMPLEMENT_USERMSGTRANS_CLOSE_ARGS(Policy::NetSvrPolicyGame, FindPlayerByEMailRes, m_Player);
+		};
 
-	public:
-		PlayerTransNotifyPlayerStatusUpdatedS2S(IHeap& heap, MessageDataPtr &pIMsg ):UserTransactionS2SEvt(heap, pIMsg) {}
-		virtual ~PlayerTransNotifyPlayerStatusUpdatedS2S() {}
 
-		// Start Transaction
-		virtual Result StartTransaction();
-	};
+		class PlayerTransFindPlayerByPlayerID : public Svr::MessageTransaction< GamePlayerEntity, Message::Game::FindPlayerByPlayerIDCmd>
+		{
+		public:
+			typedef Svr::MessageTransaction< GamePlayerEntity, Message::Game::FindPlayerByPlayerIDCmd> super;
 
+		private:
+			PlayerInformation m_Player;
+			int m_PlayerShardID;
 
+		public:
+			PlayerTransFindPlayerByPlayerID(IHeap& heap, MessageDataPtr& pIMsg);
+			virtual ~PlayerTransFindPlayerByPlayerID() {}
 
-	class PlayerTransGetRankingList : public Svr::MessageTransaction< GamePlayerEntity, Message::Game::GetRankingListCmd>
-	{
-	public:
-		typedef Svr::MessageTransaction< GamePlayerEntity, Message::Game::GetRankingListCmd> super;
+			Result OnFindPlayer(Svr::TransactionResult*& pRes);
+			Result OnGetNickName(Svr::TransactionResult*& pRes);
 
-	private:
+			// Start Transaction
+			virtual Result StartTransaction() override;
 
-		StaticArray<TotalRankingPlayerInformation, 100> m_RankingList;
+			BR_IMPLEMENT_USERMSGTRANS_CLOSE_ARGS(Policy::NetSvrPolicyGame, FindPlayerByPlayerIDRes, m_Player);
+		};
 
-	public:
-		PlayerTransGetRankingList(IHeap& heap, MessageDataPtr &pIMsg );
-		virtual ~PlayerTransGetRankingList() {}
 
-		Result OnGetRankingListRes( Svr::TransactionResult* &pRes );
+		class PlayerTransRequestPlayerStatusUpdate : public Svr::MessageTransaction< GamePlayerEntity, Message::Game::RequestPlayerStatusUpdateCmd>
+		{
+		public:
+			typedef Svr::MessageTransaction< GamePlayerEntity, Message::Game::RequestPlayerStatusUpdateCmd> super;
 
-		// Start Transaction
-		virtual Result StartTransaction();
+		private:
 
-		BR_IMPLEMENT_USERMSGTRANS_CLOSE_ARGS(Policy::NetSvrPolicyGame, GetRankingListRes, m_RankingList);
-	};
+			uint m_PlayerStatusQueryCount;
 
+		public:
+			PlayerTransRequestPlayerStatusUpdate(IHeap& heap, MessageDataPtr& pIMsg);
+			virtual ~PlayerTransRequestPlayerStatusUpdate() {}
 
+			Result OnPlayerShardIDRes(Svr::TransactionResult*& pRes);
+			Result OnPlayerStatusUpdateRes(Svr::TransactionResult*& pRes);
 
-	class PlayerTransBuyShopItemPrepare : public Svr::MessageTransaction< GamePlayerEntity, Message::Game::BuyShopItemPrepareCmd>
-	{
-	public:
-		typedef Svr::MessageTransaction< GamePlayerEntity, Message::Game::BuyShopItemPrepareCmd> super;
+			// Start Transaction
+			virtual Result StartTransaction() override;
 
-	private:
-		const uint MAX_RETRY = 3;
+			BR_IMPLEMENT_USERMSGTRANS_CLOSE(Policy::NetSvrPolicyGame, RequestPlayerStatusUpdateRes);
+		};
 
-		StaticArray<uint8_t, 1024> m_Signagure;
-		uint m_RetryCount;
+		class PlayerTransRequestPlayerStatusUpdateC2S : public Svr::UserTransactionS2SEvt< GamePlayerEntity, Message::GameServer::RequestPlayerStatusUpdateC2SEvt>
+		{
+		public:
+			typedef Svr::UserTransactionS2SEvt< GamePlayerEntity, Message::GameServer::RequestPlayerStatusUpdateC2SEvt> super;
 
-	public:
-		PlayerTransBuyShopItemPrepare(IHeap& heap, MessageDataPtr &pIMsg);
-		virtual ~PlayerTransBuyShopItemPrepare() {}
+		public:
+			PlayerTransRequestPlayerStatusUpdateC2S(IHeap& heap, MessageDataPtr& pIMsg) :UserTransactionS2SEvt(heap, pIMsg) {}
+			virtual ~PlayerTransRequestPlayerStatusUpdateC2S() {}
 
-		Result OnPurchaseIDChecked(Svr::TransactionResult* pRes);
+			// Start Transaction
+			virtual Result StartTransaction() override;
+		};
 
-		Result GenerateSigunatureAndCheck();
+		class PlayerTransNotifyPlayerStatusUpdatedS2S : public Svr::UserTransactionS2SEvt< GamePlayerEntity, Message::GameServer::NotifyPlayerStatusUpdatedC2SEvt>
+		{
+		public:
+			typedef Svr::UserTransactionS2SEvt< GamePlayerEntity, Message::GameServer::NotifyPlayerStatusUpdatedC2SEvt> super;
 
-		// Start Transaction
-		virtual Result StartTransaction();
+		public:
+			PlayerTransNotifyPlayerStatusUpdatedS2S(IHeap& heap, MessageDataPtr& pIMsg) :UserTransactionS2SEvt(heap, pIMsg) {}
+			virtual ~PlayerTransNotifyPlayerStatusUpdatedS2S() {}
 
-		BR_IMPLEMENT_USERMSGTRANS_CLOSE_ARGS(Policy::NetSvrPolicyGame, BuyShopItemPrepareRes, GetShopItemID(), (const char*)m_Signagure.data());
-	};
+			// Start Transaction
+			virtual Result StartTransaction() override;
+		};
 
 
 
-	class PlayerTransBuyShopItem : public Svr::MessageTransaction< GamePlayerEntity, Message::Game::BuyShopItemCmd>
-	{
-	public:
+		class PlayerTransGetRankingList : public Svr::MessageTransaction< GamePlayerEntity, Message::Game::GetRankingListCmd>
+		{
+		public:
+			typedef Svr::MessageTransaction< GamePlayerEntity, Message::Game::GetRankingListCmd> super;
 
-		using super = Svr::MessageTransaction< GamePlayerEntity, Message::Game::BuyShopItemCmd>;
+		private:
 
-		static constexpr size_t MEMENTO_SIZE = 2048;
+			StaticArray<TotalRankingPlayerInformation, 100> m_RankingList;
 
-	private:
-		Memento<MEMENTO_SIZE> m_SavedData;
-		// TODO: FIXME
-		void /*conspiracy::ShopTbl::ShopItem*/ *m_pShopItem;
+		public:
+			PlayerTransGetRankingList(IHeap& heap, MessageDataPtr& pIMsg);
+			virtual ~PlayerTransGetRankingList() {}
 
-	public:
-		PlayerTransBuyShopItem(IHeap& heap, MessageDataPtr &pIMsg );
-		virtual ~PlayerTransBuyShopItem() {}
+			Result OnGetRankingListRes(Svr::TransactionResult*& pRes);
 
-		Result OnPurchaseCheckedAndroid(Svr::TransactionResult* &pRes);
-		Result OnPurchaseCheckedIOS(Svr::TransactionResult* &pRes);
-		Result OnSavedToDB(Svr::TransactionResult* &pRes);
+			// Start Transaction
+			virtual Result StartTransaction() override;
 
-		// Start Transaction
-		virtual Result StartTransaction();
+			BR_IMPLEMENT_USERMSGTRANS_CLOSE_ARGS(Policy::NetSvrPolicyGame, GetRankingListRes, m_RankingList);
+		};
 
-		BR_IMPLEMENT_USERMSGTRANS_CLOSE_ARGS(Policy::NetSvrPolicyGame, BuyShopItemRes, GetShopItemID());
-	};
-	
 
 
-} // namespace GameServer 
+		class PlayerTransBuyShopItemPrepare : public Svr::MessageTransaction< GamePlayerEntity, Message::Game::BuyShopItemPrepareCmd>
+		{
+		public:
+			typedef Svr::MessageTransaction< GamePlayerEntity, Message::Game::BuyShopItemPrepareCmd> super;
+
+		private:
+			const uint MAX_RETRY = 3;
+
+			StaticArray<uint8_t, 1024> m_Signagure;
+			uint m_RetryCount;
+
+		public:
+			PlayerTransBuyShopItemPrepare(IHeap& heap, MessageDataPtr& pIMsg);
+			virtual ~PlayerTransBuyShopItemPrepare() {}
+
+			Result OnPurchaseIDChecked(Svr::TransactionResult* pRes);
+
+			Result GenerateSigunatureAndCheck();
+
+			// Start Transaction
+			virtual Result StartTransaction() override;
+
+			BR_IMPLEMENT_USERMSGTRANS_CLOSE_ARGS(Policy::NetSvrPolicyGame, BuyShopItemPrepareRes, GetShopItemID(), (const char*)m_Signagure.data());
+		};
+
+
+
+		class PlayerTransBuyShopItem : public Svr::MessageTransaction< GamePlayerEntity, Message::Game::BuyShopItemCmd>
+		{
+		public:
+
+			using super = Svr::MessageTransaction< GamePlayerEntity, Message::Game::BuyShopItemCmd>;
+
+			static constexpr size_t MEMENTO_SIZE = 2048;
+
+		private:
+			Memento<MEMENTO_SIZE> m_SavedData;
+			// TODO: FIXME
+			void /*conspiracy::ShopTbl::ShopItem*/* m_pShopItem;
+
+		public:
+			PlayerTransBuyShopItem(IHeap& heap, MessageDataPtr& pIMsg);
+			virtual ~PlayerTransBuyShopItem() {}
+
+			Result OnPurchaseCheckedAndroid(Svr::TransactionResult*& pRes);
+			Result OnPurchaseCheckedIOS(Svr::TransactionResult*& pRes);
+			Result OnSavedToDB(Svr::TransactionResult*& pRes);
+
+			// Start Transaction
+			virtual Result StartTransaction() override;
+
+			BR_IMPLEMENT_USERMSGTRANS_CLOSE_ARGS(Policy::NetSvrPolicyGame, BuyShopItemRes, GetShopItemID());
+		};
+
+
+
+	} // namespace GameServer 
 } // namespace SF 
 

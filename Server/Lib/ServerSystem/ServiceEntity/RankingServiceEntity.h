@@ -88,10 +88,10 @@ namespace Svr {
 		//	Entity operations
 		//
 
-		Result InitializeEntity( EntityID newEntityID );
+		virtual Result InitializeEntity( EntityID newEntityID ) override;
 
 		// clear transaction
-		virtual Result ClearEntity();
+		virtual Result ClearEntity() override;
 
 		// TickUpdate 
 		virtual Result TickUpdate(TimerAction *pAction = nullptr) override;

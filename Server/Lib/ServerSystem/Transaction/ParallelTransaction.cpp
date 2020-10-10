@@ -89,7 +89,7 @@ namespace Svr
 
 				if (pTransaction != nullptr)
 				{
-					SharedPointer(pTransaction);
+					SharedPointer localShared(pTransaction);
 				}
 			}
 

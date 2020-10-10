@@ -42,7 +42,7 @@ namespace Svr {
 		virtual ~PartyManagerTransCreateParty() {}
 
 		// Start Transaction
-		virtual Result StartTransaction();
+		virtual Result StartTransaction() override;
 
 
 		BR_SVR_MSGTRANS_CLOSE(Policy::NetSvrPolicyGamePartyManager, CreatePartyRes, RouteContext(m_PartyUID,GetRouteContext().GetFrom()));

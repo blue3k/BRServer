@@ -274,7 +274,11 @@ namespace Svr {
 		SF_FORCEINLINE FacebookUID GetFacebookUID() { return m_PlayerInformation.FBUID; }
 		SF_FORCEINLINE void SetFacebookUID(FacebookUID newUID) { m_PlayerInformation.FBUID = newUID; }
 
-		virtual Result SetAccountID(AccountID accID) { m_PlayerInformation.PlayerID = accID; return Svr::SimpleUserEntity::SetAccountID(accID); }
+		virtual Result SetAccountID(AccountID accID) override
+		{
+			m_PlayerInformation.PlayerID = accID;
+			return Svr::SimpleUserEntity::SetAccountID(accID);
+		}
 
 		template< class ...ArgTypes >
 		void AddGameTransactionLogT(TransLogCategory LogCategory, INT consume, INT gain, uint64_t totalValue, const char* strFormat, ArgTypes... args)

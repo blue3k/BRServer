@@ -26,7 +26,7 @@ namespace SF {
 
 		// User transaction close, just return Result by default
 #define BR_IMPLEMENT_USERMSGTRANS_CLOSE( PolicyClass, MessageName ) \
-	virtual Result OnCloseTransaction( Result hrRes )\
+	virtual Result OnCloseTransaction( Result hrRes ) override\
 		{\
 		Result hr = ResultCode::SUCCESS;\
 		if( IsClosed() ) return ResultCode::SUCCESS;\
@@ -41,7 +41,7 @@ namespace SF {
 		// User transaction close with argument, just return Result by default
 		// When OwnerEntity is nullptr, it should try to access input parameters
 #define BR_IMPLEMENT_USERMSGTRANS_CLOSE_ARGS( PolicyClass, MessageName, ... ) \
-	virtual Result OnCloseTransaction( Result hrRes )\
+	virtual Result OnCloseTransaction( Result hrRes ) override\
 		{\
 		Result hr = ResultCode::SUCCESS;\
 		if( IsClosed() ) return ResultCode::SUCCESS;\
@@ -57,7 +57,7 @@ namespace SF {
 
 		// Generic transaction close, return Context and Result by default
 #define BR_IMPLEMENT_MSGTRANS_CLOSE( PolicyClass, MessageName ) \
-	virtual Result OnCloseTransaction( Result hrRes )\
+	virtual Result OnCloseTransaction( Result hrRes ) override\
 		{\
 		Result hr = ResultCode::SUCCESS;\
 		PolicyClass _netPolicy(GetConnection());\
@@ -70,7 +70,7 @@ namespace SF {
 
 		// Generic transaction close with argument, return Context and Result by default
 #define BR_IMPLEMENT_MSGTRANS_CLOSE_ARGS( PolicyClass, MessageName, ... ) \
-	virtual Result OnCloseTransaction( Result hrRes )\
+	virtual Result OnCloseTransaction( Result hrRes ) override\
 		{\
 		Result hr = ResultCode::SUCCESS;\
 		PolicyClass _netPolicy(GetConnection());\
@@ -84,7 +84,7 @@ namespace SF {
 
 		// Generic transaction close with argument, return Context and Result by default
 #define BR_SVR_MSGTRANS_CLOSE( PolicyClass, MessageName, routeContext ) \
-	virtual Result OnCloseTransaction( Result hrRes )\
+	virtual Result OnCloseTransaction( Result hrRes ) override\
 		{\
 		Result hr = ResultCode::SUCCESS;\
 		PolicyClass _netPolicy(super::GetConnection());\
@@ -109,7 +109,7 @@ namespace SF {
 
 		// Event transaction close, no default arguemnt
 #define BR_IMPLEMENT_EVTTRANS_CLOSE( PolicyClass, MessageName ) \
-	virtual Result OnCloseTransaction( Result hrRes )\
+	virtual Result OnCloseTransaction( Result hrRes ) override\
 		{\
 		Result hr = ResultCode::SUCCESS;\
 		PolicyClass _netPolicy(GetConnection());\
@@ -122,7 +122,7 @@ namespace SF {
 
 		// Event transaction close with argument, no default arguemnt
 #define BR_IMPLEMENT_EVTTRANS_CLOSE_ARGS( PolicyClass, MessageName, ... ) \
-	virtual Result OnCloseTransaction( Result hrRes )\
+	virtual Result OnCloseTransaction( Result hrRes ) override\
 		{\
 		Result hr = ResultCode::SUCCESS;\
 		PolicyClass _netPolicy(GetConnection());\

@@ -299,7 +299,7 @@ namespace Svr {
 
 		svrChk(Services.Insert(nodeNameCrc, pNewServiceInfo));
 
-		svrTrace(Debug, "ZK ServiceInfo Added({0}), GameID:{1} ClusterID:{2}", nodeName, m_ClusterKey.Components.GameClusterID, Enum<ClusterID>().GetValueName(m_ClusterKey.Components.ServiceClusterID));
+		svrTrace(Info, "ZK ServiceInfo Added({0}), GameID:{1} ClusterID:{2}", nodeName, m_ClusterKey.Components.GameClusterID, Enum<ClusterID>().GetValueName(m_ClusterKey.Components.ServiceClusterID));
 
 		// Connect to the service entity
 		if (m_ActivelyConnect)
@@ -385,7 +385,7 @@ namespace Svr {
 				continue;
 			}
 
-			svrTrace(Debug, "ZK service removed ({0}), GameID:{1} ClusterID:{2}", pRemove->GetNodeName(), m_ClusterKey.Components.GameClusterID, Enum<ClusterID>().GetValueName(m_ClusterKey.Components.ServiceClusterID));
+			svrTrace(Info, "ZK service removed ({0}), GameID:{1} ClusterID:{2}", pRemove->GetNodeName(), m_ClusterKey.Components.GameClusterID, Enum<ClusterID>().GetValueName(m_ClusterKey.Components.ServiceClusterID));
 			Services.Remove(itRemove, pRemove);
 			if (pRemove != nullptr)
 			{

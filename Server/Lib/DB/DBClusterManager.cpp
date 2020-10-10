@@ -448,7 +448,7 @@ Proc_End:
 			Svr::BrServer *pMyServer = Svr::BrServer::GetInstance();
 			dbCheckPtr( pMyServer );
 
-			const char* queryName = typeid(*pRes).name();
+			auto& queryName = pQuery->GetQueryString();
 			auto msgID = pRes->GetMsgID();
 			auto entityID = pRes->GetTransID().GetEntityID();
 			hr = Service::EntityTable->RouteTransactionResult(pRes);

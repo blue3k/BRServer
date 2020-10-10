@@ -37,220 +37,222 @@
 
 
 namespace SF {
-namespace Svr {
+	namespace Svr {
 
-	class ServerEntity;
+		class ServerEntity;
 
 
 
-	// Close zone instance
-	class PartyTransCloseInstance : public Transaction 
-	{
-	private:
-		GameID m_GameID;
+		// Close zone instance
+		class PartyTransCloseInstance : public Transaction
+		{
+		private:
+			GameID m_GameID;
 
-	public:
-		PartyTransCloseInstance(IHeap& memMgr, GameID gameID)
-			: Svr::Transaction( memMgr, TransactionID() )
-			, m_GameID(gameID)
-		{ SetExclusive(true); }
-		virtual ~PartyTransCloseInstance() {}
+		public:
+			PartyTransCloseInstance(IHeap& memMgr, GameID gameID)
+				: Svr::Transaction(memMgr, TransactionID())
+				, m_GameID(gameID)
+			{
+				SetExclusive(true);
+			}
+			virtual ~PartyTransCloseInstance() {}
 
-		// Start Transaction
-		virtual Result StartTransaction();
-	};
+			// Start Transaction
+			virtual Result StartTransaction();
+		};
 
 
 
-	/////////////////////////////////////////////////////////////////////////////
-	//
-	//	Party transaction
-	//
+		/////////////////////////////////////////////////////////////////////////////
+		//
+		//	Party transaction
+		//
 
 
 
-	class PartyTransJoinParty : public GamePartyMessageTransaction< Message::GameParty::JoinPartyCmd>
-	{
-	public:
-		typedef GamePartyMessageTransaction< Message::GameParty::JoinPartyCmd> super;
+		class PartyTransJoinParty : public GamePartyMessageTransaction< Message::GameParty::JoinPartyCmd>
+		{
+		public:
+			typedef GamePartyMessageTransaction< Message::GameParty::JoinPartyCmd> super;
 
-	private:
-		PlayerID m_LeaderID;
-		StaticOutputMemoryStream<GameConst::MAX_CHATLOG_BUFFER> m_MessageBuffer;
+		private:
+			PlayerID m_LeaderID;
+			StaticOutputMemoryStream<GameConst::MAX_CHATLOG_BUFFER> m_MessageBuffer;
 
-	public:
-		PartyTransJoinParty( IHeap& memMgr, MessageDataPtr &pIMsg )
-			: GamePartyMessageTransaction( memMgr, pIMsg )
-			, m_MessageBuffer(memMgr)
-		{}
-		virtual ~PartyTransJoinParty() {}
+		public:
+			PartyTransJoinParty(IHeap& memMgr, MessageDataPtr& pIMsg)
+				: GamePartyMessageTransaction(memMgr, pIMsg)
+				, m_MessageBuffer(memMgr)
+			{}
+			virtual ~PartyTransJoinParty() {}
 
-		// Start Transaction
-		virtual Result StartTransaction();
+			// Start Transaction
+			virtual Result StartTransaction() override;
 
-		BR_SVR_MSGTRANS_CLOSE_ARGS(Policy::NetSvrPolicyGameParty, JoinPartyRes,GetRouteContext().GetSwaped(), m_LeaderID,m_MessageBuffer.GetBuffer());
-	};
-	
+			BR_SVR_MSGTRANS_CLOSE_ARGS(Policy::NetSvrPolicyGameParty, JoinPartyRes, GetRouteContext().GetSwaped(), m_LeaderID, m_MessageBuffer.GetBuffer());
+		};
 
-	class PartyTransLeaveParty : public GamePartyMessageTransaction< Message::GameParty::LeavePartyCmd>
-	{
-	public:
-		typedef GamePartyMessageTransaction< Message::GameParty::LeavePartyCmd> super;
 
-	private:
+		class PartyTransLeaveParty : public GamePartyMessageTransaction< Message::GameParty::LeavePartyCmd>
+		{
+		public:
+			typedef GamePartyMessageTransaction< Message::GameParty::LeavePartyCmd> super;
 
-	public:
-		PartyTransLeaveParty(IHeap& memHeap, MessageDataPtr &pIMsg ) : GamePartyMessageTransaction( memHeap, pIMsg ) {}
-		virtual ~PartyTransLeaveParty() {}
+		private:
 
-		// Start Transaction
-		virtual Result StartTransaction();
+		public:
+			PartyTransLeaveParty(IHeap& memHeap, MessageDataPtr& pIMsg) : GamePartyMessageTransaction(memHeap, pIMsg) {}
+			virtual ~PartyTransLeaveParty() {}
 
-		BR_SVR_MSGTRANS_CLOSE(Policy::NetSvrPolicyGameParty, LeavePartyRes,GetRouteContext().GetSwaped());
-	};
+			// Start Transaction
+			virtual Result StartTransaction() override;
 
-	
+			BR_SVR_MSGTRANS_CLOSE(Policy::NetSvrPolicyGameParty, LeavePartyRes, GetRouteContext().GetSwaped());
+		};
 
-	class PartyTransKickPlayer : public GamePartyMessageTransaction< Message::GameParty::KickPlayerCmd>
-	{
-	public:
-		typedef GamePartyMessageTransaction<Message::GameParty::KickPlayerCmd> super;
 
-	private:
 
-	public:
-		PartyTransKickPlayer(IHeap& memHeap, MessageDataPtr &pIMsg ) : GamePartyMessageTransaction(memHeap, pIMsg ) {}
-		virtual ~PartyTransKickPlayer() {}
+		class PartyTransKickPlayer : public GamePartyMessageTransaction< Message::GameParty::KickPlayerCmd>
+		{
+		public:
+			typedef GamePartyMessageTransaction<Message::GameParty::KickPlayerCmd> super;
 
-		// Start Transaction
-		virtual Result StartTransaction();
+		private:
 
-		BR_SVR_MSGTRANS_CLOSE(Policy::NetSvrPolicyGameParty, KickPlayerRes,GetRouteContext().GetSwaped());
-	};
-	
-	
+		public:
+			PartyTransKickPlayer(IHeap& memHeap, MessageDataPtr& pIMsg) : GamePartyMessageTransaction(memHeap, pIMsg) {}
+			virtual ~PartyTransKickPlayer() {}
 
-	class PartyTransChatMessage : public GamePartyMessageTransaction< Message::GameParty::ChatMessageC2SEvt>
-	{
-	public:
-		typedef GamePartyMessageTransaction< Message::GameParty::ChatMessageC2SEvt> super;
+			// Start Transaction
+			virtual Result StartTransaction() override;
 
-	private:
+			BR_SVR_MSGTRANS_CLOSE(Policy::NetSvrPolicyGameParty, KickPlayerRes, GetRouteContext().GetSwaped());
+		};
 
-	public:
-		PartyTransChatMessage(IHeap& memHeap, MessageDataPtr &pIMsg ) : GamePartyMessageTransaction(memHeap, pIMsg ) {}
-		virtual ~PartyTransChatMessage() {}
 
-		// Start Transaction
-		virtual Result StartTransaction();
-	};
 
-	
-	class PartyTransQuickChatMessage : public GamePartyMessageTransaction< Message::GameParty::QuickChatMessageC2SEvt>
-	{
-	public:
-		typedef GamePartyMessageTransaction< Message::GameParty::QuickChatMessageC2SEvt> super;
+		class PartyTransChatMessage : public GamePartyMessageTransaction< Message::GameParty::ChatMessageC2SEvt>
+		{
+		public:
+			typedef GamePartyMessageTransaction< Message::GameParty::ChatMessageC2SEvt> super;
 
-	private:
+		private:
 
-	public:
-		PartyTransQuickChatMessage(IHeap& memHeap, MessageDataPtr &pIMsg ) : GamePartyMessageTransaction(memHeap, pIMsg ) {}
-		virtual ~PartyTransQuickChatMessage() {}
+		public:
+			PartyTransChatMessage(IHeap& memHeap, MessageDataPtr& pIMsg) : GamePartyMessageTransaction(memHeap, pIMsg) {}
+			virtual ~PartyTransChatMessage() {}
 
-		// Start Transaction
-		virtual Result StartTransaction();
-	};
+			// Start Transaction
+			virtual Result StartTransaction() override;
+		};
 
 
-	// Player voted event
-	class PartyTransStartGameMatchCmd : public Svr::GamePartyMessageTransaction< Message::GameParty::StartGameMatchCmd>
-	{
-	public:
-		typedef Svr::GamePartyMessageTransaction< Message::GameParty::StartGameMatchCmd> super;
+		class PartyTransQuickChatMessage : public GamePartyMessageTransaction< Message::GameParty::QuickChatMessageC2SEvt>
+		{
+		public:
+			typedef GamePartyMessageTransaction< Message::GameParty::QuickChatMessageC2SEvt> super;
 
-	public:
-		PartyTransStartGameMatchCmd(IHeap& memHeap, MessageDataPtr &pIMsg );//  :GamePartyMessageTransaction( pIMsg ) {}
-		virtual ~PartyTransStartGameMatchCmd() {}
+		private:
 
-		Result OnPartyMatchingQueued( Svr::TransactionResult* &pRes );
-		Result OnCreateGame(TransactionResult* pRes);
+		public:
+			PartyTransQuickChatMessage(IHeap& memHeap, MessageDataPtr& pIMsg) : GamePartyMessageTransaction(memHeap, pIMsg) {}
+			virtual ~PartyTransQuickChatMessage() {}
 
-		// Start Transaction
-		virtual Result StartTransaction();
+			// Start Transaction
+			virtual Result StartTransaction() override;
+		};
 
-		BR_SVR_MSGTRANS_CLOSE(Policy::NetSvrPolicyGameParty, StartGameMatchRes,GetRouteContext().GetSwaped());
-	};
 
+		// Player voted event
+		class PartyTransStartGameMatchCmd : public Svr::GamePartyMessageTransaction< Message::GameParty::StartGameMatchCmd>
+		{
+		public:
+			typedef Svr::GamePartyMessageTransaction< Message::GameParty::StartGameMatchCmd> super;
 
-	// Player voted event
-	class PartyTransCancelGameMatchCmd : public Svr::GamePartyMessageTransaction< Message::GameParty::CancelGameMatchCmd>
-	{
-	public:
-		typedef Svr::GamePartyMessageTransaction< Message::GameParty::CancelGameMatchCmd> super;
+		public:
+			PartyTransStartGameMatchCmd(IHeap& memHeap, MessageDataPtr& pIMsg);//  :GamePartyMessageTransaction( pIMsg ) {}
+			virtual ~PartyTransStartGameMatchCmd() {}
 
-	public:
-		PartyTransCancelGameMatchCmd(IHeap& memHeap, MessageDataPtr &pIMsg );//  :GamePartyMessageTransaction( pIMsg ) {}
-		virtual ~PartyTransCancelGameMatchCmd() {}
+			Result OnPartyMatchingQueued(Svr::TransactionResult*& pRes);
+			Result OnCreateGame(TransactionResult* pRes);
 
-		Result OnPartyMatchingCanceled( Svr::TransactionResult* &pRes );
+			// Start Transaction
+			virtual Result StartTransaction() override;
 
-		// Start Transaction
-		virtual Result StartTransaction();
+			BR_SVR_MSGTRANS_CLOSE(Policy::NetSvrPolicyGameParty, StartGameMatchRes, GetRouteContext().GetSwaped());
+		};
 
-		BR_SVR_MSGTRANS_CLOSE(Policy::NetSvrPolicyGameParty, CancelGameMatchRes,GetRouteContext().GetSwaped());
-	};
 
-	
-	class PartyTransPartyMatchingCanceled : public GamePartyMessageTransaction< Message::PartyMatchingQueue::PartyMatchingCanceledS2CEvt>
-	{
-	public:
-		typedef GamePartyMessageTransaction< Message::PartyMatchingQueue::PartyMatchingCanceledS2CEvt> super;
+		// Player voted event
+		class PartyTransCancelGameMatchCmd : public Svr::GamePartyMessageTransaction< Message::GameParty::CancelGameMatchCmd>
+		{
+		public:
+			typedef Svr::GamePartyMessageTransaction< Message::GameParty::CancelGameMatchCmd> super;
 
-	private:
+		public:
+			PartyTransCancelGameMatchCmd(IHeap& memHeap, MessageDataPtr& pIMsg);//  :GamePartyMessageTransaction( pIMsg ) {}
+			virtual ~PartyTransCancelGameMatchCmd() {}
 
-	public:
-		PartyTransPartyMatchingCanceled(IHeap& memHeap, MessageDataPtr &pIMsg ) : GamePartyMessageTransaction(memHeap, pIMsg ) {}
-		virtual ~PartyTransPartyMatchingCanceled() {}
+			Result OnPartyMatchingCanceled(Svr::TransactionResult*& pRes);
 
-		// Start Transaction
-		virtual Result StartTransaction();
-	};
+			// Start Transaction
+			virtual Result StartTransaction() override;
 
+			BR_SVR_MSGTRANS_CLOSE(Policy::NetSvrPolicyGameParty, CancelGameMatchRes, GetRouteContext().GetSwaped());
+		};
 
-	class PartyTransMatchingItemDequeued : public GamePartyMessageTransaction< Message::PartyMatchingQueue::PartyMatchingItemDequeuedS2CEvt>
-	{
-	public:
-		typedef GamePartyMessageTransaction< Message::PartyMatchingQueue::PartyMatchingItemDequeuedS2CEvt> super;
 
-	private:
+		class PartyTransPartyMatchingCanceled : public GamePartyMessageTransaction< Message::PartyMatchingQueue::PartyMatchingCanceledS2CEvt>
+		{
+		public:
+			typedef GamePartyMessageTransaction< Message::PartyMatchingQueue::PartyMatchingCanceledS2CEvt> super;
 
-	public:
-		PartyTransMatchingItemDequeued(IHeap& memHeap, MessageDataPtr &pIMsg ) : GamePartyMessageTransaction(memHeap, pIMsg ) {}
-		virtual ~PartyTransMatchingItemDequeued() {}
+		private:
 
-		// Start Transaction
-		virtual Result StartTransaction();
-	};
-	
+		public:
+			PartyTransPartyMatchingCanceled(IHeap& memHeap, MessageDataPtr& pIMsg) : GamePartyMessageTransaction(memHeap, pIMsg) {}
+			virtual ~PartyTransPartyMatchingCanceled() {}
 
-	class PartyTransPartyGameMatchedS2CEvt : public GamePartyMessageTransaction< Message::PartyMatching::PartyGameMatchedS2CEvt>
-	{
-	public:
-		typedef GamePartyMessageTransaction< Message::PartyMatching::PartyGameMatchedS2CEvt> super;
+			// Start Transaction
+			virtual Result StartTransaction() override;
+		};
 
-	private:
 
-	public:
-		PartyTransPartyGameMatchedS2CEvt(IHeap& memHeap, MessageDataPtr &pIMsg ) : GamePartyMessageTransaction(memHeap, pIMsg ) {}
-		virtual ~PartyTransPartyGameMatchedS2CEvt() {}
+		class PartyTransMatchingItemDequeued : public GamePartyMessageTransaction< Message::PartyMatchingQueue::PartyMatchingItemDequeuedS2CEvt>
+		{
+		public:
+			typedef GamePartyMessageTransaction< Message::PartyMatchingQueue::PartyMatchingItemDequeuedS2CEvt> super;
 
-		// Start Transaction
-		virtual Result StartTransaction();
-	};
+		private:
 
+		public:
+			PartyTransMatchingItemDequeued(IHeap& memHeap, MessageDataPtr& pIMsg) : GamePartyMessageTransaction(memHeap, pIMsg) {}
+			virtual ~PartyTransMatchingItemDequeued() {}
 
+			// Start Transaction
+			virtual Result StartTransaction() override;
+		};
 
 
-} // namespace Svr 
+		class PartyTransPartyGameMatchedS2CEvt : public GamePartyMessageTransaction< Message::PartyMatching::PartyGameMatchedS2CEvt>
+		{
+		public:
+			typedef GamePartyMessageTransaction< Message::PartyMatching::PartyGameMatchedS2CEvt> super;
+
+		private:
+
+		public:
+			PartyTransPartyGameMatchedS2CEvt(IHeap& memHeap, MessageDataPtr& pIMsg) : GamePartyMessageTransaction(memHeap, pIMsg) {}
+			virtual ~PartyTransPartyGameMatchedS2CEvt() {}
+
+			// Start Transaction
+			virtual Result StartTransaction() override;
+		};
+
+
+
+
+	} // namespace Svr 
 } // namespace SF 
 
