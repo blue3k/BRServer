@@ -92,8 +92,8 @@ namespace ConspiracyGameInstanceServer {
 		virtual bool CanAdvanceToNext() override				{ return false; }
 		virtual bool CanBeEntered() override					{ return false; }
 
-		Result virtual OnEnter() { return GamePlayState::OnEnter(); }
-		Result virtual OnLeave() { return GamePlayState::OnLeave(); }
+		Result virtual OnEnter() override { return GamePlayState::OnEnter(); }
+		Result virtual OnLeave() override { return GamePlayState::OnLeave(); }
 	};
 
 	
@@ -107,17 +107,17 @@ namespace ConspiracyGameInstanceServer {
 		GamePlayState_TimeLimit(GameInstanceEntity* Owner,GameStateID state):GamePlayState(Owner,state) {}
 		virtual ~GamePlayState_TimeLimit() {}
 
-		virtual Result OnEnter()
+		virtual Result OnEnter() override
 		{
 			m_TimeToNext.SetTimer( DurationMS(3*60*1000) );
 			return GamePlayState::OnEnter();
 		}
-		virtual Result OnUpdate()
+		virtual Result OnUpdate() override
 		{
 			m_TimeToNext.CheckTimer();
 			return GamePlayState::OnUpdate();
 		}
-		virtual Result OnLeave()
+		virtual Result OnLeave() override
 		{
 			m_TimeToNext.ClearTimer();
 			return GamePlayState::OnLeave();
@@ -140,7 +140,7 @@ namespace ConspiracyGameInstanceServer {
 		GamePlayState_TimeLimitBotTalk(GameInstanceEntity* Owner, GameStateID state) :GamePlayState_TimeLimit(Owner, state) {}
 		virtual ~GamePlayState_TimeLimitBotTalk() {}
 
-		virtual Result OnEnter()
+		virtual Result OnEnter() override
 		{
 			m_BotIndex = 0;
 
@@ -149,7 +149,7 @@ namespace ConspiracyGameInstanceServer {
 			return GamePlayState_TimeLimit::OnEnter();
 		}
 
-		virtual Result OnUpdate()
+		virtual Result OnUpdate() override
 		{
 			if (m_TimeToNextBotTalk.CheckTimer())
 			{
@@ -161,7 +161,7 @@ namespace ConspiracyGameInstanceServer {
 			return GamePlayState_TimeLimit::OnUpdate();
 		}
 
-		virtual Result OnLeave()
+		virtual Result OnLeave() override
 		{
 			m_TimeToNextBotTalk.ClearTimer();
 			return GamePlayState_TimeLimit::OnLeave();
@@ -191,7 +191,7 @@ namespace ConspiracyGameInstanceServer {
 
 		virtual ~GamePlayState_FirstFreeDebate() {}
 
-		virtual Result OnEnter()
+		virtual Result OnEnter() override
 		{
 			Result hr = ResultCode::SUCCESS;
 
@@ -405,7 +405,7 @@ namespace ConspiracyGameInstanceServer {
 		virtual ~GamePlayState_VoteForSuspects() {}
 		
 		// Check whether it can be proceeded or not
-		virtual bool CanAdvanceToNext()		{ return m_vote.IsVoteEnd(); }
+		virtual bool CanAdvanceToNext() override { return m_vote.IsVoteEnd(); }
 
 		virtual Result Vote(GamePlayer* pVoter, GamePlayer* pVoteTarget ) override
 		{
@@ -1010,12 +1010,5 @@ namespace ConspiracyGameInstanceServer {
 		return hr;
 	}
 
-}; // namespace ConspiracyGameInstanceServer
-}; // namespace SF
-
-
-
-
-
-
-
+} // namespace ConspiracyGameInstanceServer
+} // namespace SF

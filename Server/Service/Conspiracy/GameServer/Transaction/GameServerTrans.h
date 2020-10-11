@@ -52,13 +52,13 @@ namespace GameServer {
 		virtual Result OnCloseTransaction( Result hrRes ) override;
 
 		// Start Transaction
-		virtual Result StartTransaction();
+		virtual Result StartTransaction() override;
 	};
 
 
 
 
 
-};// namespace GameServer 
-};// namespace SF 
+}// namespace GameServer 
+}// namespace SF 
 

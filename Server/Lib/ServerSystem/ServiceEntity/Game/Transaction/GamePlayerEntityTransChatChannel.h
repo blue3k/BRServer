@@ -58,7 +58,7 @@ namespace Svr {
 		Result OnCreateRes( Svr::TransactionResult* &pRes );
 
 		// Start Transaction
-		virtual Result StartTransaction();
+		virtual Result StartTransaction() override;
 
 		BR_IMPLEMENT_USERMSGTRANS_CLOSE_ARGS(Policy::NetSvrPolicyGame, CreateOrJoinChatChannelRes, m_ChatChannelUID);
 	};
@@ -82,7 +82,7 @@ namespace Svr {
 		Result OnJoinChatChannelRes( Svr::TransactionResult* &pRes );
 
 		// Start Transaction
-		virtual Result StartTransaction();
+		virtual Result StartTransaction() override;
 
 		BR_IMPLEMENT_USERMSGTRANS_CLOSE_ARGS(Policy::NetSvrPolicyGame, JoinChatChannelRes, m_LeaderID, m_ChatChannelID);
 	};
@@ -98,7 +98,7 @@ namespace Svr {
 		virtual ~PlayerTransChatChannelPlayerJoinedS2SEvt() {}
 
 		// Start Transaction
-		virtual Result StartTransaction();
+		virtual Result StartTransaction() override;
 	};
 	
 	
@@ -113,7 +113,7 @@ namespace Svr {
 		virtual ~PlayerTransChatChannelLeaderChangedS2SEvt() {}
 
 		// Start Transaction
-		virtual Result StartTransaction();
+		virtual Result StartTransaction() override;
 	};
 
 	
@@ -130,7 +130,7 @@ namespace Svr {
 		Result OnLeaveChatChannelRes( Svr::TransactionResult* &pRes );
 
 		// Start Transaction
-		virtual Result StartTransaction();
+		virtual Result StartTransaction() override;
 
 		BR_IMPLEMENT_USERMSGTRANS_CLOSE(Policy::NetSvrPolicyGame, LeaveChatChannelRes);
 	};
@@ -148,7 +148,7 @@ namespace Svr {
 		virtual ~PlayerTransChatChannelPlayerLeftS2SEvt() {}
 
 		// Start Transaction
-		virtual Result StartTransaction();
+		virtual Result StartTransaction() override;
 	};
 
 	
@@ -166,7 +166,7 @@ namespace Svr {
 		Result OnPlayerKickRes( Svr::TransactionResult* &pRes );
 
 		// Start Transaction
-		virtual Result StartTransaction();
+		virtual Result StartTransaction() override;
 
 		BR_IMPLEMENT_USERMSGTRANS_CLOSE(Policy::NetSvrPolicyGame, ChatChannelKickPlayerRes);
 	};
@@ -184,7 +184,7 @@ namespace Svr {
 		virtual ~PlayerTransChatChannelPlayerKickedS2SEvt() {}
 
 		// Start Transaction
-		virtual Result StartTransaction();
+		virtual Result StartTransaction() override;
 	};
 
 
@@ -203,7 +203,7 @@ namespace Svr {
 		virtual ~PlayerTransChatChannelChatMessage() {}
 
 		// Start Transaction
-		virtual Result StartTransaction();
+		virtual Result StartTransaction() override;
 
 		BR_IMPLEMENT_USERMSGTRANS_CLOSE(Policy::NetSvrPolicyGame, ChatChannelChatMessageRes);
 	};
@@ -219,7 +219,7 @@ namespace Svr {
 		virtual ~PlayerTransChatChannelChatMessageS2CEvt() {}
 
 		// Start Transaction
-		virtual Result StartTransaction();
+		virtual Result StartTransaction() override;
 	};
 	
 

@@ -326,7 +326,7 @@ namespace Svr {
 				CloseTransaction(hr);
 			});
 
-		memset(&m_Result, 0, sizeof(m_Result));
+		m_Result.Clear();
 
 		//auto userGamePlayerInfo = GetMyOwner()->GetComponent<UserGamePlayerInfoSystem>();
 
@@ -464,7 +464,7 @@ namespace Svr {
 	{
 		FunctionContext hr;
 
-		memset(&m_Result, 0, sizeof(m_Result));
+		m_Result.Clear();
 
 		if( GetMyOwner()->GetAccountID() == 0 )
 		{

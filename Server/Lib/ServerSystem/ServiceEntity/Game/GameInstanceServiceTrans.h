@@ -49,7 +49,7 @@ namespace Svr {
 		virtual ~GameInstanceTrans() {}
 
 		// Start Transaction
-		virtual Result StartTransaction();
+		virtual Result StartTransaction() override;
 
 	};
 

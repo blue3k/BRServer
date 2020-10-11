@@ -47,7 +47,7 @@ namespace ConspiracyGameInstanceServer {
 		virtual ~GameEntityTransDeleteGame() {}
 
 		// Start Transaction
-		virtual Result StartTransaction();
+		virtual Result StartTransaction() override;
 	};
 
 
@@ -81,7 +81,7 @@ namespace ConspiracyGameInstanceServer {
 		virtual ~GameEntityTransJoinGame() {}
 
 		// Start Transaction
-		virtual Result StartTransaction();
+		virtual Result StartTransaction() override;
 /*
 		virtual Result OnCloseTransaction(Result hrRes) override
 		{
@@ -121,7 +121,7 @@ namespace ConspiracyGameInstanceServer {
 		virtual ~GameEntityTransLeaveGame() {}
 
 		// Start Transaction
-		virtual Result StartTransaction();
+		virtual Result StartTransaction() override;
 
 		BR_SVR_MSGTRANS_CLOSE(Policy::NetSvrPolicyGameInstance, LeaveGameRes, GetRouteContext().GetSwaped());
 	};
@@ -138,7 +138,7 @@ namespace ConspiracyGameInstanceServer {
 		virtual ~GameEntityTransKickPlayer() {}
 
 		// Start Transaction
-		virtual Result StartTransaction();
+		virtual Result StartTransaction() override;
 
 		BR_SVR_MSGTRANS_CLOSE(Policy::NetSvrPolicyGameInstance, KickPlayerRes, GetRouteContext().GetSwaped());
 	};
@@ -157,7 +157,7 @@ namespace ConspiracyGameInstanceServer {
 		virtual ~GameEntityTransAssignRole() {}
 
 		// Start Transaction
-		virtual Result StartTransaction();
+		virtual Result StartTransaction() override;
 
 		BR_SVR_MSGTRANS_CLOSE(Policy::NetSvrPolicyGameInstance, AssignRoleRes, GetRouteContext().GetSwaped());
 	};
@@ -175,7 +175,7 @@ namespace ConspiracyGameInstanceServer {
 		virtual ~GameEntityTransChatMessage() {}
 
 		// Start Transaction
-		virtual Result StartTransaction();
+		virtual Result StartTransaction() override;
 
 	};
 
@@ -192,7 +192,7 @@ namespace ConspiracyGameInstanceServer {
 		virtual ~GameEntityTransVoteGameAdvance() {}
 
 		// Start Transaction
-		virtual Result StartTransaction();
+		virtual Result StartTransaction() override;
 
 		BR_SVR_MSGTRANS_CLOSE(Policy::NetSvrPolicyGameInstance, VoteGameAdvanceRes, GetRouteContext().GetSwaped());
 	};
@@ -211,7 +211,7 @@ namespace ConspiracyGameInstanceServer {
 		virtual ~GameEntityTransVote() {}
 
 		// Start Transaction
-		virtual Result StartTransaction();
+		virtual Result StartTransaction() override;
 
 		BR_SVR_MSGTRANS_CLOSE(Policy::NetSvrPolicyGameInstance, VoteRes, GetRouteContext().GetSwaped());
 	};
@@ -228,7 +228,7 @@ namespace ConspiracyGameInstanceServer {
 		virtual ~GameEntityTransAdvanceGame() {}
 
 		// Start Transaction
-		virtual Result StartTransaction();
+		virtual Result StartTransaction() override;
 
 		BR_SVR_MSGTRANS_CLOSE(Policy::NetSvrPolicyGameInstance, AdvanceGameRes, GetRouteContext().GetSwaped());
 	};
@@ -248,7 +248,7 @@ namespace ConspiracyGameInstanceServer {
 		virtual ~GameEntityTransGamePlayAgain() {}
 
 		// Start Transaction
-		virtual Result StartTransaction();
+		virtual Result StartTransaction() override;
 
 		BR_SVR_MSGTRANS_CLOSE_ARGS(Policy::NetSvrPolicyGameInstance, GamePlayAgainRes, GetRouteContext().GetSwaped(), m_MemberCount);
 	};
@@ -273,7 +273,7 @@ namespace ConspiracyGameInstanceServer {
 		virtual ~GameEntityTransGameRevealPlayer() {}
 
 		// Start Transaction
-		virtual Result StartTransaction();
+		virtual Result StartTransaction() override;
 
 		BR_SVR_MSGTRANS_CLOSE_ARGS(Policy::NetSvrPolicyGameInstance, GameRevealPlayerRes, GetRouteContext().GetSwaped(), m_RevealedPlayerID, m_RevealedPlayerRole);
 	};
@@ -292,7 +292,7 @@ namespace ConspiracyGameInstanceServer {
 		virtual ~GameEntityTransGamePlayerRevive() {}
 
 		// Start Transaction
-		virtual Result StartTransaction();
+		virtual Result StartTransaction() override;
 
 		BR_SVR_MSGTRANS_CLOSE(Policy::NetSvrPolicyGameInstance, GamePlayerReviveRes, GetRouteContext().GetSwaped());
 	};

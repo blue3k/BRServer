@@ -286,7 +286,7 @@ namespace Svr {
 
 		BrServer::GetInstance()->GetNumberServicesToWait().fetch_add(1, std::memory_order_relaxed);
 
-		svrTrace( SVR_CLUSTER, "Cluster Initialization Entity:{0}:{1}, ClusterID:{2},Type:{3},Membership:{4}", GetOwnerEntityUID(), typeid(*GetMyOwner()).name(), GetMyOwner()->GetClusterID(), GetMyOwner()->GetClusterType(), GetMyOwner()->GetClusterMembership() );
+		svrTrace( SVR_CLUSTER, "Cluster Initialization Entity:{0}:{1}, ClusterID:{2},Membership:{3}", GetOwnerEntityUID(), GetMyOwner()->GetClusterID(), GetMyOwner()->GetClusterType(), GetMyOwner()->GetClusterMembership() );
 
 		svrChk(RequestDataSync());
 		//svrChk(JoinCluster());

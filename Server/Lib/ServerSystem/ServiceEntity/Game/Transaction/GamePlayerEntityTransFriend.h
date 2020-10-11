@@ -59,7 +59,7 @@ namespace Svr {
 		Result OnNotifyAdded(Svr::TransactionResult* &pRes);
 
 		// Start Transaction
-		virtual Result StartTransaction();
+		virtual Result StartTransaction() override;
 
 		BR_IMPLEMENT_USERMSGTRANS_CLOSE(Policy::NetSvrPolicyGame, InviteFriendRes);
 	};
@@ -89,7 +89,7 @@ namespace Svr {
 		Result SendNotifyToInviter();
 
 		// Start Transaction
-		virtual Result StartTransaction();
+		virtual Result StartTransaction() override;
 
 		BR_IMPLEMENT_USERMSGTRANS_CLOSE_ARGS(Policy::NetSvrPolicyGame, AcceptFriendRequestRes,m_NewFriend);
 	};
@@ -105,7 +105,7 @@ namespace Svr {
 		virtual ~PlayerTransFriendAcceptedS2S() {}
 
 		// Start Transaction
-		virtual Result StartTransaction();
+		virtual Result StartTransaction() override;
 	};
 	
 
@@ -125,7 +125,7 @@ namespace Svr {
 		Result OnRemoved( Svr::TransactionResult* &pRes );
 
 		// Start Transaction
-		virtual Result StartTransaction();
+		virtual Result StartTransaction() override;
 
 		BR_IMPLEMENT_USERMSGTRANS_CLOSE_ARGS(Policy::NetSvrPolicyGame, RemoveFriendRes, GetFriendID());
 	};
@@ -142,7 +142,7 @@ namespace Svr {
 		virtual ~PlayerTransFriendRemovedS2S() {}
 
 		// Start Transaction
-		virtual Result StartTransaction();
+		virtual Result StartTransaction() override;
 	};
 
 
@@ -172,7 +172,7 @@ namespace Svr {
 		Result FlushNameRequestList();
 
 		// Start Transaction
-		virtual Result StartTransaction();
+		virtual Result StartTransaction() override;
 
 		virtual Result CloseTransaction( Result hr ) override;
 

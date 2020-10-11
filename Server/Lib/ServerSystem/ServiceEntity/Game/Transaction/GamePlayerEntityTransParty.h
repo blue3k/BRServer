@@ -126,7 +126,7 @@ namespace Svr {
 		Result OnCreatePartyRes( Svr::TransactionResult* &pRes );
 
 		// Start Transaction
-		virtual Result StartTransaction();
+		virtual Result StartTransaction() override;
 
 		BR_IMPLEMENT_USERMSGTRANS_CLOSE_ARGS(Policy::NetSvrPolicyGame, CreatePartyRes,m_PartyUID);
 	};
@@ -150,7 +150,7 @@ namespace Svr {
 		Result OnJoinPartyRes( Svr::TransactionResult* &pRes );
 
 		// Start Transaction
-		virtual Result StartTransaction();
+		virtual Result StartTransaction() override;
 
 		BR_IMPLEMENT_USERMSGTRANS_CLOSE_ARGS(Policy::NetSvrPolicyGame, JoinPartyRes,GetPartyUID(),m_LeaderID, m_ChatHistoryData);
 	};
@@ -166,7 +166,7 @@ namespace Svr {
 		virtual ~PlayerTransPartyPlayerJoinedS2SEvt() {}
 
 		// Start Transaction
-		virtual Result StartTransaction();
+		virtual Result StartTransaction() override;
 	};
 	
 	
@@ -181,7 +181,7 @@ namespace Svr {
 		virtual ~PlayerTransPartyLeaderChangedS2SEvt() {}
 
 		// Start Transaction
-		virtual Result StartTransaction();
+		virtual Result StartTransaction() override;
 	};
 
 	
@@ -198,7 +198,7 @@ namespace Svr {
 		Result OnLeavePartyRes( Svr::TransactionResult* &pRes );
 
 		// Start Transaction
-		virtual Result StartTransaction();
+		virtual Result StartTransaction() override;
 
 		BR_IMPLEMENT_USERMSGTRANS_CLOSE(Policy::NetSvrPolicyGame, LeavePartyRes);
 	};
@@ -216,7 +216,7 @@ namespace Svr {
 		virtual ~PlayerTransPartyPlayerLeftS2SEvt() {}
 
 		// Start Transaction
-		virtual Result StartTransaction();
+		virtual Result StartTransaction() override;
 	};
 
 	
@@ -234,7 +234,7 @@ namespace Svr {
 		Result OnPlayerKickRes( Svr::TransactionResult* &pRes );
 
 		// Start Transaction
-		virtual Result StartTransaction();
+		virtual Result StartTransaction() override;
 
 		BR_IMPLEMENT_USERMSGTRANS_CLOSE(Policy::NetSvrPolicyGame, PartyKickPlayerRes);
 	};
@@ -252,7 +252,7 @@ namespace Svr {
 		virtual ~PlayerTransPartyPlayerKickedS2SEvt() {}
 
 		// Start Transaction
-		virtual Result StartTransaction();
+		virtual Result StartTransaction() override;
 	};
 
 
@@ -268,7 +268,7 @@ namespace Svr {
 		virtual ~PlayerTransPartyInvite() {}
 
 		// Start Transaction
-		virtual Result StartTransaction();
+		virtual Result StartTransaction() override;
 
 		BR_IMPLEMENT_USERMSGTRANS_CLOSE(Policy::NetSvrPolicyGame, PartyInviteRes);
 	};
@@ -284,7 +284,7 @@ namespace Svr {
 		virtual ~PlayerTransNotifyPartyInviteS2SEvt() {}
 
 		// Start Transaction
-		virtual Result StartTransaction();
+		virtual Result StartTransaction() override;
 	};
 	
 
@@ -301,7 +301,7 @@ namespace Svr {
 		virtual ~PlayerTransPartyChatMessage() {}
 
 		// Start Transaction
-		virtual Result StartTransaction();
+		virtual Result StartTransaction() override;
 
 		BR_IMPLEMENT_USERMSGTRANS_CLOSE(Policy::NetSvrPolicyGame, PartyChatMessageRes);
 	};
@@ -317,7 +317,7 @@ namespace Svr {
 		virtual ~PlayerTransPartyChatMessageS2CEvt() {}
 
 		// Start Transaction
-		virtual Result StartTransaction();
+		virtual Result StartTransaction() override;
 	};
 	
 	
@@ -333,7 +333,7 @@ namespace Svr {
 		virtual ~PlayerTransPartyQuickChatMessage() {}
 
 		// Start Transaction
-		virtual Result StartTransaction();
+		virtual Result StartTransaction() override;
 
 		BR_IMPLEMENT_USERMSGTRANS_CLOSE(Policy::NetSvrPolicyGame, PartyQuickChatMessageRes);
 	};
@@ -349,7 +349,7 @@ namespace Svr {
 		virtual ~PlayerTransPartyQuickChatMessageS2CEvt() {}
 
 		// Start Transaction
-		virtual Result StartTransaction();
+		virtual Result StartTransaction() override;
 	};
 
 
