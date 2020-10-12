@@ -81,7 +81,7 @@ namespace SF
 			{}
 
 			// Cmd: Join to a game instance. You can call multiple times, but it would be waste
-			Result JoinGameInstanceRes( const RouteContext &InRouteContext, const uint64_t &InTransactionID, const Result &InResult, const NetAddress &InGameInsSvr, const uint32_t &InTimeStamp, const uint8_t &InGameState );
+			Result JoinGameInstanceRes( const RouteContext &InRouteContext, const uint64_t &InTransactionID, const Result &InResult, const NetAddress &InGameInsSvr, const uint32_t &InTimeStamp );
 			// S2C: Player joined event. This event is brocasted when a player joined
 			Result PlayerJoinedS2CEvt( const RouteContext &InRouteContext, const PlayerInformation &InJoinedPlayer );
 			// Cmd: Leave game instance.

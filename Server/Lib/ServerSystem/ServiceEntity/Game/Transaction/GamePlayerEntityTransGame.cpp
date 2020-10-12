@@ -25,8 +25,7 @@
 #include "ServiceEntity/MatchingQueueServiceEntity.h"
 #include "ServiceEntity/Game/PlayerManagerServiceEntity.h"
 #include "ServiceEntity/MatchingServiceUtil.h"
-#include "Protocol/ServerService/GamePartyManagerService.h"
-#include "ServiceEntity/Party/GamePartyManagerServiceEntity.h"
+#include "Protocol/ServerService/GameInstanceManagerService.h"
 
 #include "Protocol/Message/PartyMatchingQueueMsgClass.h"
 #include "Protocol/Message/GamePartyMsgClass.h"
@@ -34,6 +33,8 @@
 #include "Protocol/Message/GamePartyManagerMsgClass.h"
 #include "Protocol/Policy/GamePartyManagerNetPolicy.h"
 
+#include "Protocol/Message/GameInstanceManagerMsgClass.h"
+#include "Protocol/Policy/GameInstanceManagerNetPolicy.h"
 #include "Protocol/Message/GameInstanceMsgClass.h"
 #include "Protocol/Policy/GameInstanceNetPolicy.h"
 
@@ -57,24 +58,82 @@ namespace SF {
 		//
 
 
+		PlayerTransSearchGameInstance::PlayerTransSearchGameInstance(IHeap& heap, MessageDataPtr& pIMsg)
+			:MessageTransaction(heap, std::forward<MessageDataPtr>(pIMsg))
+		{
+			RegisterMessageHandler<Message::GameInstanceManager::SearchGameInstanceRes>(&PlayerTransSearchGameInstance::OnSearchGameInstanceRes);
+		}
+
+		Result PlayerTransSearchGameInstance::OnSearchGameInstanceRes(Svr::TransactionResult* pRes)
+		{
+			FunctionContext hr([this](Result hr)
+				{
+					CloseTransaction(hr);
+				});
+			Svr::MessageResult* pMsgRes = (Svr::MessageResult*)pRes;
+			Message::GameInstanceManager::SearchGameInstanceRes msgRes;
+
+			svrCheckClose(pRes->GetResult());
+
+			svrCheck(msgRes.ParseMessage(*pMsgRes->GetMessage()));
+
+			GetMyOwner()->SetGameInsUID(msgRes.GetRouteContext().GetFrom());
+
+			m_GameInstances = msgRes.GetGameInstances();
+			// TODO: query game info for client
+
+			return ResultCode::SUCCESS;
+		}
+
+		// Start Transaction
+		Result PlayerTransSearchGameInstance::StartTransaction()
+		{
+			FunctionContext hr([this](Result hr)
+				{
+					if (!hr)
+						CloseTransaction(hr);
+				});
+
+			Svr::ServerServiceInformation* pService = nullptr;
+
+			svrCheck(super::StartTransaction());
+
+			if (GetMyOwner()->GetMatchingTicket() != 0)
+				svrError(ResultCode::SVR_ALREADY_INQUEUE);
+
+			if (GetMyOwner()->GetPlayerID() != GetPlayerID())
+				svrError(ResultCode::INVALID_PLAYERID);
+
+			svrCheck(Service::ClusterManager->GetRandomService(Svr::GetServerGameID(), ClusterID::GameInstanceManager, pService));
+			svrCheck(pService->GetService<Svr::GameInstanceManagerService>()->SearchGameInstanceCmd(GetTransID(), 0,
+				GetSearchKeyword()));
+
+			return hr;
+		}
+
+
+
 		PlayerTransJoinGameInstance::PlayerTransJoinGameInstance(IHeap& heap, MessageDataPtr& pIMsg)
 			:MessageTransaction(heap, std::forward<MessageDataPtr>(pIMsg))
 		{
 			m_GameInsID = 0;
 
-			RegisterMessageHandler<Message::GameInstance::JoinGameRes>(&PlayerTransJoinGameInstance::OnJoinGameInstanceRes);
-			//RegisterMessageHandler<Message::GameParty::LeavePartyRes>(&PlayerTransJoinGameInstance::OnLeavePartyRes);
+			RegisterMessageHandler<Message::GameInstance::JoinGameInstanceRes>(&PlayerTransJoinGameInstance::OnJoinGameInstanceRes);
 		}
 
 		Result PlayerTransJoinGameInstance::OnJoinGameInstanceRes(Svr::TransactionResult* pRes)
 		{
-			Result hr = ResultCode::SUCCESS;
+			FunctionContext hr([this](Result hr)
+				{
+					if (!hr)
+						CloseTransaction(hr);
+				});
 			Svr::MessageResult* pMsgRes = (Svr::MessageResult*)pRes;
 			Message::GameInstance::JoinGameRes joinRes;
 
-			svrChkClose(pRes->GetResult());
+			svrCheckClose(pRes->GetResult());
 
-			svrChk(joinRes.ParseMessage(*pMsgRes->GetMessage()));
+			svrCheck(joinRes.ParseMessage(*pMsgRes->GetMessage()));
 
 			GetMyOwner()->AddGameTransactionLog(TransLogCategory::Game, 1, 0, joinRes.GetRouteContext().GetFrom().UID);
 
@@ -93,19 +152,14 @@ namespace SF {
 			{
 				Svr::ServerEntity* pServerEntity = nullptr;
 
-				svrChk(Service::ServerEntityManager->GetServerEntity(GetMyOwner()->GetPartyUID().GetServerID(), pServerEntity));
+				svrCheck(Service::ServerEntityManager->GetServerEntity(GetMyOwner()->GetPartyUID().GetServerID(), pServerEntity));
 
-				svrChk(Policy::NetPolicyGameParty(pServerEntity->GetConnection()).LeavePartyCmd(RouteContext(GetOwnerEntityUID(), GetMyOwner()->GetPartyUID()), GetTransID(), GetMyOwner()->GetPlayerID()));
+				svrCheck(Policy::NetPolicyGameParty(pServerEntity->GetConnection()).LeavePartyCmd(RouteContext(GetOwnerEntityUID(), GetMyOwner()->GetPartyUID()), GetTransID(), GetMyOwner()->GetPlayerID()));
 			}
 			else
 			{
 				CloseTransaction(hr);
 			}
-
-		Proc_End:
-
-			if (!(hr))
-				CloseTransaction(hr);
 
 			return ResultCode::SUCCESS;
 		}

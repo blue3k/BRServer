@@ -50,8 +50,6 @@ C++: Cast message to JoinGameInstanceRes to access values
 
 		- OutTimeStamp: uint32 type. Time stamp of game state
 
-		- OutGameState: GameStateID type. GameState ID
-
 
 ## PlayerJoinedS2CEvt
 Player joined event. This event is brocasted when a player joined

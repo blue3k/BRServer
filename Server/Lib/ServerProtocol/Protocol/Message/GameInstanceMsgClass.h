@@ -139,7 +139,6 @@ namespace SF
 				Result m_Result;
 				NetAddress m_GameInsSvr;
 				uint32_t m_TimeStamp;
-				uint8_t m_GameState;
 			public:
 				JoinGameInstanceRes()
 					{}
@@ -155,14 +154,13 @@ namespace SF
 				const Result& GetResult() const	{ return m_Result; };
 				const NetAddress& GetGameInsSvr() const	{ return m_GameInsSvr; };
 				const uint32_t& GetTimeStamp() const	{ return m_TimeStamp; };
-				const uint8_t& GetGameState() const	{ return m_GameState; };
 
 				static Result TraceOut(const char* prefix, const MessageDataPtr& pMsg);
 
 				virtual Result ParseMessage(const MessageData* pIMsg);
 				static Result ParseMessageToMessageBase(IHeap& memHeap, MessageDataPtr&& pIMsg, MessageBase* &pMsgBase);
 
-				static MessageData* Create( IHeap& memHeap, const RouteContext &InRouteContext, const uint64_t &InTransactionID, const Result &InResult, const NetAddress &InGameInsSvr, const uint32_t &InTimeStamp, const uint8_t &InGameState );
+				static MessageData* Create( IHeap& memHeap, const RouteContext &InRouteContext, const uint64_t &InTransactionID, const Result &InResult, const NetAddress &InGameInsSvr, const uint32_t &InTimeStamp );
 
 				Result OverrideRouteContextDestination( EntityUID to );
 

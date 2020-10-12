@@ -33,6 +33,9 @@ namespace SF
  			// Cmd: Create a game instance
 			MessageParseToMessageBaseMap.insert(std::make_pair(Message::GameInstanceManager::CreateGameCmd::MID.IDSeq.MsgID,&Message::GameInstanceManager::CreateGameCmd::ParseMessageToMessageBase));
 			MessageParseToMessageBaseMap.insert(std::make_pair(Message::GameInstanceManager::CreateGameRes::MID.IDSeq.MsgID,&Message::GameInstanceManager::CreateGameRes::ParseMessageToMessageBase));
+			// Cmd: Search game instance
+			MessageParseToMessageBaseMap.insert(std::make_pair(Message::GameInstanceManager::SearchGameInstanceCmd::MID.IDSeq.MsgID,&Message::GameInstanceManager::SearchGameInstanceCmd::ParseMessageToMessageBase));
+			MessageParseToMessageBaseMap.insert(std::make_pair(Message::GameInstanceManager::SearchGameInstanceRes::MID.IDSeq.MsgID,&Message::GameInstanceManager::SearchGameInstanceRes::ParseMessageToMessageBase));
 			// C2S: Game instance notification of deletion
 			MessageParseToMessageBaseMap.insert(std::make_pair(Message::GameInstanceManager::GameDeletedC2SEvt::MID.IDSeq.MsgID,&Message::GameInstanceManager::GameDeletedC2SEvt::ParseMessageToMessageBase));
 		}; // void RegisterParserGameInstanceManager()

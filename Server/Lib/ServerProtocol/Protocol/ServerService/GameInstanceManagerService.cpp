@@ -42,6 +42,17 @@ namespace SF
 			return hr;
 
 		}; // Result GameInstanceManagerService::CreateGameCmd( const uint64_t &InTransactionID, const uint16_t &InRouteHopCount, const uint16_t &InNumberOfBotPlayer, const uint16_t &InMaxPlayer )
+		// Cmd: Search game instance
+		Result GameInstanceManagerService::SearchGameInstanceCmd( const uint64_t &InTransactionID, const uint16_t &InRouteHopCount, const char* InSearchKeyword )
+		{
+ 			FunctionContext hr;
+
+			RouteContext InRouteContext( EntityUID(GetMyServerID(),TransactionID(InTransactionID).GetEntityID()), GetServiceEntityUID() );
+			svrCheck(Policy::NetPolicyGameInstanceManager(GetConnection()).SearchGameInstanceCmd( InRouteContext, InTransactionID, InRouteHopCount, InSearchKeyword ) );
+
+			return hr;
+
+		}; // Result GameInstanceManagerService::SearchGameInstanceCmd( const uint64_t &InTransactionID, const uint16_t &InRouteHopCount, const char* InSearchKeyword )
 		// C2S: Game instance notification of deletion
 		Result GameInstanceManagerService::GameDeletedC2SEvt( const EntityID &InSenderEntityID, const uint16_t &InRouteHopCount )
 		{

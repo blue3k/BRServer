@@ -6,18 +6,27 @@
 
 	<Command Name="CreateGame" Reliable="true" Crypto="No" Trace="Debug1" Desc="Create a game instance">
 		<Cmd>
-      <Params Type="uint16" Name="NumberOfBotPlayer" Desc="Number of bots."/>
-      <Params Type="uint16" Name="MaxPlayer" Desc="Total player count."/>
-    </Cmd>
+			<Params Type="uint16" Name="NumberOfBotPlayer" Desc="Number of bots."/>
+			<Params Type="uint16" Name="MaxPlayer" Desc="Total player count."/>
+		</Cmd>
 		<Res>
 		</Res>
 	</Command>
 
+	<Command Name="SearchGameInstance" Reliable="true" Crypto="No" Trace="Debug1" Desc="Search game instance">
+		<Cmd>
+			<Params Type="String" Name="SearchKeyword" Desc="Search keyword"/>
+		</Cmd>
+		<Res>
+			<Params Type="GameInsUID" IsArray="true" Name="GameInstances" Desc="Game instance ID"/>
+		</Res>
+	</Command>
 
-    <C2SEvent Name="GameDeleted" Reliable="true" Crypto="No" Trace="Debug1" Desc="Game instance notification of deletion">
-    </C2SEvent>
 
-    <!-- =============================  ======================================= -->
+	<C2SEvent Name="GameDeleted" Reliable="true" Crypto="No" Trace="Debug1" Desc="Game instance notification of deletion">
+	</C2SEvent>
 
-	</ProtocolGroup>
+	<!-- =============================  ======================================= -->
+
+</ProtocolGroup>
 </Protocols>

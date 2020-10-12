@@ -39,6 +39,27 @@ namespace SF {
 		//
 
 
+		class PlayerTransSearchGameInstance : public Svr::MessageTransaction<GamePlayerEntity, Message::Game::SearchGameInstanceCmd>
+		{
+		public:
+			using super = Svr::MessageTransaction<GamePlayerEntity, Message::Game::SearchGameInstanceCmd>;
+
+		private:
+			Array<uint64_t> m_GameInstances;
+
+		public:
+			PlayerTransSearchGameInstance(IHeap& heap, MessageDataPtr& pIMsg);
+			virtual ~PlayerTransSearchGameInstance() {}
+
+			Result OnSearchGameInstanceRes(Svr::TransactionResult* pRes);
+
+			// Start Transaction
+			virtual Result StartTransaction() override;
+
+			BR_IMPLEMENT_USERMSGTRANS_CLOSE_ARGS(Policy::NetSvrPolicyGame, SearchGameInstanceRes, m_GameInstances);
+		};
+
+
 		class PlayerTransJoinGameInstance : public Svr::MessageTransaction<GamePlayerEntity, Message::Game::JoinGameInstanceCmd>
 		{
 		public:

@@ -30,6 +30,8 @@ namespace SF
 
 			// Cmd: Create a game instance
 			Result CreateGameCmd( const uint64_t &InTransactionID, const uint16_t &InRouteHopCount, const uint16_t &InNumberOfBotPlayer, const uint16_t &InMaxPlayer );
+			// Cmd: Search game instance
+			Result SearchGameInstanceCmd( const uint64_t &InTransactionID, const uint16_t &InRouteHopCount, const char* InSearchKeyword );
 			// C2S: Game instance notification of deletion
 			Result GameDeletedC2SEvt( const EntityID &InSenderEntityID, const uint16_t &InRouteHopCount );
 

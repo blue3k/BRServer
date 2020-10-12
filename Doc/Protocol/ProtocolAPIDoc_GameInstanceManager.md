@@ -43,6 +43,35 @@ C++: Cast message to CreateGameRes to access values
 		- OutResult: Result type. 
 
 
+## SearchGameInstance Request
+Search game instance
+
+1. Command interface
+
+        Result SearchGameInstanceCmd(const RouteContext &InRouteContext, const uint64_t &InTransactionID, const uint16_t &InRouteHopCount, const char* InSearchKeyword)
+
+		- OutInRouteContext: RouteContext type. 
+
+		- OutInTransactionID: TransactionID type. 
+
+		- OutInRouteHopCount: uint16 type. 
+
+		- OutInSearchKeyword: String type. Search keyword
+
+2. Result interface
+
+C++: Cast message to SearchGameInstanceRes to access values
+
+
+		- OutRouteContext: RouteContext type. 
+
+		- OutTransactionID: TransactionID type. 
+
+		- OutResult: Result type. 
+
+		- OutGameInstances: GameInsUID type. Game instance ID
+
+
 ## GameDeletedC2SEvt
 Game instance notification of deletion
 

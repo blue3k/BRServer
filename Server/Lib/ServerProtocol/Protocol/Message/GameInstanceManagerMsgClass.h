@@ -125,6 +125,108 @@ namespace SF
 
 			}; // class CreateGameRes : public MessageBase
 
+			// Cmd: Search game instance
+			class SearchGameInstanceCmd : public MessageBase
+			{
+ 			public:
+				static const MessageID MID;
+				// Parameter type informations for template
+				enum ParameterTypeInfo
+				{
+ 					HasPlayerID = 0,
+					HasTransactionID = 1,
+					HasRouteContext = 1,
+					HasRouteHopCount = 1,
+					HasSender = 0,
+				}; // enum ParameterTypeInfo
+			public:
+				uint64_t GetPlayerID() { return 0; }
+				uint64_t GetSender() { return 0; }
+			private:
+				RouteContext m_RouteContext;
+				uint64_t m_TransactionID;
+				uint16_t m_RouteHopCount;
+				const char* m_SearchKeyword;
+			public:
+				SearchGameInstanceCmd()
+				:m_SearchKeyword(nullptr)
+					{}
+
+				SearchGameInstanceCmd( MessageDataPtr &&pMsg )
+					: MessageBase(std::forward<MessageDataPtr>(pMsg))
+				,m_SearchKeyword(nullptr)
+					{}
+
+					MessageUsage GetMessageUsage() { return MessageUsage_None; }
+
+				const RouteContext& GetRouteContext() const	{ return m_RouteContext; };
+				const uint64_t& GetTransactionID() const	{ return m_TransactionID; };
+				const uint16_t& GetRouteHopCount() const	{ return m_RouteHopCount; };
+				const char* GetSearchKeyword() const	{ return m_SearchKeyword; };
+
+				static Result TraceOut(const char* prefix, const MessageDataPtr& pMsg);
+
+				virtual Result ParseMessage(const MessageData* pIMsg);
+				static Result ParseMessageToMessageBase(IHeap& memHeap, MessageDataPtr&& pIMsg, MessageBase* &pMsgBase);
+
+				static MessageData* Create( IHeap& memHeap, const RouteContext &InRouteContext, const uint64_t &InTransactionID, const uint16_t &InRouteHopCount, const char* InSearchKeyword );
+
+				Result OverrideRouteContextDestination( EntityUID to );
+
+				Result OverrideRouteInformation( EntityUID to, unsigned hopCount );
+
+			}; // class SearchGameInstanceCmd : public MessageBase
+
+			class SearchGameInstanceRes : public MessageBase
+			{
+ 			public:
+				static const MessageID MID;
+				// Parameter type informations for template
+				enum ParameterTypeInfo
+				{
+ 					HasPlayerID = 0,
+					HasTransactionID = 1,
+					HasRouteContext = 1,
+					HasRouteHopCount = 0,
+					HasSender = 0,
+				}; // enum ParameterTypeInfo
+			public:
+				uint64_t GetPlayerID() { return 0; }
+				uint32_t GetRouteHopCount() { return 0; }
+				uint64_t GetSender() { return 0; }
+			private:
+				RouteContext m_RouteContext;
+				uint64_t m_TransactionID;
+				Result m_Result;
+				ArrayView<uint64_t> m_GameInstances;
+			public:
+				SearchGameInstanceRes()
+					{}
+
+				SearchGameInstanceRes( MessageDataPtr &&pMsg )
+					: MessageBase(std::forward<MessageDataPtr>(pMsg))
+					{}
+
+					MessageUsage GetMessageUsage() { return MessageUsage_None; }
+
+				const RouteContext& GetRouteContext() const	{ return m_RouteContext; };
+				const uint64_t& GetTransactionID() const	{ return m_TransactionID; };
+				const Result& GetResult() const	{ return m_Result; };
+				const Array<uint64_t>& GetGameInstances() const	{ return m_GameInstances; };
+
+				static Result TraceOut(const char* prefix, const MessageDataPtr& pMsg);
+
+				virtual Result ParseMessage(const MessageData* pIMsg);
+				static Result ParseMessageToMessageBase(IHeap& memHeap, MessageDataPtr&& pIMsg, MessageBase* &pMsgBase);
+
+				static MessageData* Create( IHeap& memHeap, const RouteContext &InRouteContext, const uint64_t &InTransactionID, const Result &InResult, const Array<uint64_t>& InGameInstances );
+
+				Result OverrideRouteContextDestination( EntityUID to );
+
+				Result OverrideRouteInformation( EntityUID to, unsigned hopCount );
+
+			}; // class SearchGameInstanceRes : public MessageBase
+
 			// C2S: Game instance notification of deletion
 			class GameDeletedC2SEvt : public MessageBase
 			{

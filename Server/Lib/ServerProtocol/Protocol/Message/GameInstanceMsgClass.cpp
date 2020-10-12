@@ -251,7 +251,6 @@ namespace SF
 				protocolCheck(*input >> m_Result);
 				protocolCheck(*input >> m_GameInsSvr);
 				protocolCheck(*input >> m_TimeStamp);
-				protocolCheck(*input >> m_GameState);
 
 				return hr;
 
@@ -270,7 +269,7 @@ namespace SF
 			}; // Result JoinGameInstanceRes::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr&& pIMsg, MessageBase* &pMessageBase )
 
 
-			MessageData* JoinGameInstanceRes::Create( IHeap& memHeap, const RouteContext &InRouteContext, const uint64_t &InTransactionID, const Result &InResult, const NetAddress &InGameInsSvr, const uint32_t &InTimeStamp, const uint8_t &InGameState )
+			MessageData* JoinGameInstanceRes::Create( IHeap& memHeap, const RouteContext &InRouteContext, const uint64_t &InTransactionID, const Result &InResult, const NetAddress &InGameInsSvr, const uint32_t &InTimeStamp )
 			{
  				MessageData *pNewMsg = nullptr;
 				FunctionContext hr([&pNewMsg](Result hr) -> MessageData*
@@ -291,7 +290,6 @@ namespace SF
 					+ SerializedSizeOf(InResult)
 					+ SerializedSizeOf(InGameInsSvr)
 					+ SerializedSizeOf(InTimeStamp)
-					+ SerializedSizeOf(InGameState)
 				);
 
 				protocolCheckMem( pNewMsg = MessageData::NewMessage( memHeap, GameInstance::JoinGameInstanceRes::MID, __uiMessageSize ) );
@@ -305,10 +303,9 @@ namespace SF
 				protocolCheck(*output << InResult);
 				protocolCheck(*output << InGameInsSvr);
 				protocolCheck(*output << InTimeStamp);
-				protocolCheck(*output << InGameState);
 
 				return hr;
-			}; // MessageData* JoinGameInstanceRes::Create( IHeap& memHeap, const RouteContext &InRouteContext, const uint64_t &InTransactionID, const Result &InResult, const NetAddress &InGameInsSvr, const uint32_t &InTimeStamp, const uint8_t &InGameState )
+			}; // MessageData* JoinGameInstanceRes::Create( IHeap& memHeap, const RouteContext &InRouteContext, const uint64_t &InTransactionID, const Result &InResult, const NetAddress &InGameInsSvr, const uint32_t &InTimeStamp )
 
 			Result JoinGameInstanceRes::OverrideRouteContextDestination( EntityUID to )
 			{
@@ -341,8 +338,8 @@ namespace SF
 			{
  				JoinGameInstanceRes parser;
 				parser.ParseMessage(*pMsg);
-				protocolTrace( Debug1, "JoinGameInstance:{0}:{1} , RouteContext:{2}, TransactionID:{3}, Result:{4:X8}, GameInsSvr:{5}, TimeStamp:{6}, GameState:{7}",
-						prefix, pMsg->GetMessageHeader()->Length, parser.GetRouteContext(), parser.GetTransactionID(), parser.GetResult(), parser.GetGameInsSvr(), parser.GetTimeStamp(), (int)parser.GetGameState()); 
+				protocolTrace( Debug1, "JoinGameInstance:{0}:{1} , RouteContext:{2}, TransactionID:{3}, Result:{4:X8}, GameInsSvr:{5}, TimeStamp:{6}",
+						prefix, pMsg->GetMessageHeader()->Length, parser.GetRouteContext(), parser.GetTransactionID(), parser.GetResult(), parser.GetGameInsSvr(), parser.GetTimeStamp()); 
 				return ResultCode::SUCCESS;
 			}; // Result JoinGameInstanceRes::TraceOut(const char* prefix, const MessageDataPtr& pMsg)
 

@@ -41,6 +41,22 @@ namespace SF
 			return hr;
 
 		}; // Result NetPolicyGameInstanceManager::CreateGameCmd( const RouteContext &InRouteContext, const uint64_t &InTransactionID, const uint16_t &InRouteHopCount, const uint16_t &InNumberOfBotPlayer, const uint16_t &InMaxPlayer )
+		// Cmd: Search game instance
+		Result NetPolicyGameInstanceManager::SearchGameInstanceCmd( const RouteContext &InRouteContext, const uint64_t &InTransactionID, const uint16_t &InRouteHopCount, const char* InSearchKeyword )
+		{
+ 			FunctionContext hr;
+
+			 MessageDataPtr pMessage;
+			 protocolCheckPtr(m_pConnection);
+
+			 pMessage = SF::Message::GameInstanceManager::SearchGameInstanceCmd::Create(m_pConnection->GetIOHeap(), InRouteContext, InTransactionID, InRouteHopCount, InSearchKeyword);
+			 protocolCheckPtr(*pMessage);
+
+			 return m_pConnection->Send( pMessage );
+
+			return hr;
+
+		}; // Result NetPolicyGameInstanceManager::SearchGameInstanceCmd( const RouteContext &InRouteContext, const uint64_t &InTransactionID, const uint16_t &InRouteHopCount, const char* InSearchKeyword )
 		// C2S: Game instance notification of deletion
 		Result NetPolicyGameInstanceManager::GameDeletedC2SEvt( const RouteContext &InRouteContext, const uint16_t &InRouteHopCount )
 		{
@@ -75,6 +91,22 @@ namespace SF
 			return hr;
 
 		}; // Result NetSvrPolicyGameInstanceManager::CreateGameRes( const RouteContext &InRouteContext, const uint64_t &InTransactionID, const Result &InResult )
+		// Cmd: Search game instance
+		Result NetSvrPolicyGameInstanceManager::SearchGameInstanceRes( const RouteContext &InRouteContext, const uint64_t &InTransactionID, const Result &InResult, const Array<uint64_t>& InGameInstances )
+		{
+ 			FunctionContext hr;
+
+			 MessageDataPtr pMessage;
+			 protocolCheckPtr(m_pConnection);
+
+			 pMessage = SF::Message::GameInstanceManager::SearchGameInstanceRes::Create(m_pConnection->GetIOHeap(), InRouteContext, InTransactionID, InResult, InGameInstances);
+			 protocolCheckPtr(*pMessage);
+
+			 return m_pConnection->Send( pMessage );
+
+			return hr;
+
+		}; // Result NetSvrPolicyGameInstanceManager::SearchGameInstanceRes( const RouteContext &InRouteContext, const uint64_t &InTransactionID, const Result &InResult, const Array<uint64_t>& InGameInstances )
 
 
 	}; // namespace Policy

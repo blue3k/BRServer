@@ -15,7 +15,6 @@
 			<Res>
 				<Params Type="NetAddress" Name="GameInsSvr" Desc="Game instance server address. Client will use this address to connect game server."/>
 				<Params Type="uint32" Name="TimeStamp" Desc="Time stamp of game state"/>
-				<Params Type="GameStateID" Name="GameState" Desc="GameState ID"/>
 			</Res>
 		</Command>
 
