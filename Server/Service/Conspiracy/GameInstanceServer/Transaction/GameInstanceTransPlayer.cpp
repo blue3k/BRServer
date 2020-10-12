@@ -139,7 +139,7 @@ namespace ConspiracyGameInstanceServer {
 			GetMyOwner()->ForeachPlayer([&](GamePlayer* pPlayer)->Result {
 
 				PlayerRole otherRole = GetMyOwner()->GetComponent<GamePlaySystem>()->GetRevealedRole(pMyPlayer, pPlayer);
-				pMyPolicy.PlayerJoinedS2CEvt(RouteContext(GetOwnerEntityUID(), pMyPlayer->GetPlayerEntityUID()), pPlayer->GetPlayerInformation(), (uint8_t)otherRole, (uint8_t)(pPlayer->GetPlayerState() != PlayerState::Playing), (uint8_t)pPlayer->GetIndex(), (uint8_t)pPlayer->GetCharacter());
+				pMyPolicy.PlayerJoinedS2CEvt(RouteContext(GetOwnerEntityUID(), pMyPlayer->GetPlayerEntityUID()), pPlayer->GetPlayerInformation()/*, (uint8_t)otherRole, (uint8_t)(pPlayer->GetPlayerState() != PlayerState::Playing), (uint8_t)pPlayer->GetIndex(), (uint8_t)pPlayer->GetCharacter()*/);
 
 				return ResultCode::SUCCESS;
 			});
@@ -150,7 +150,7 @@ namespace ConspiracyGameInstanceServer {
 			if( pMyPlayer != pPlayer && !pPlayer->GetIsBot())
 			{
 				PlayerRole myRoleToOther = GetMyOwner()->GetComponent<GamePlaySystem>()->GetRevealedRole( pPlayer, pMyPlayer );
-				pPolicy.PlayerJoinedS2CEvt( RouteContext( GetOwnerEntityUID(), pPlayer->GetPlayerEntityUID()), pMyPlayer->GetPlayerInformation(), (uint8_t)myRoleToOther, (uint8_t)(pMyPlayer->GetPlayerState() != PlayerState::Playing), (uint8_t)pMyPlayer->GetIndex(), (uint8_t)pMyPlayer->GetCharacter()  );
+				pPolicy.PlayerJoinedS2CEvt( RouteContext( GetOwnerEntityUID(), pPlayer->GetPlayerEntityUID()), pMyPlayer->GetPlayerInformation()/*, (uint8_t)myRoleToOther, (uint8_t)(pMyPlayer->GetPlayerState() != PlayerState::Playing), (uint8_t)pMyPlayer->GetIndex(), (uint8_t)pMyPlayer->GetCharacter()*/  );
 			}
 			return ResultCode::SUCCESS;
 		});

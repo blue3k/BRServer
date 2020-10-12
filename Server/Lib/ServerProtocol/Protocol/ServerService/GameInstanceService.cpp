@@ -43,16 +43,16 @@ namespace SF
 
 		}; // Result GameInstanceService::DeleteGameC2SEvt( const EntityID &InSenderEntityID )
 		// Cmd: Join to a game instance. You can call multiple times, but it would be waste
-		Result GameInstanceService::JoinGameCmd( const uint64_t &InTransactionID, const PlayerInformation &InPlayer, const uint8_t &InRequestedRole )
+		Result GameInstanceService::JoinGameInstanceCmd( const uint64_t &InTransactionID, const PlayerInformation &InPlayer )
 		{
  			FunctionContext hr;
 
 			RouteContext InRouteContext( EntityUID(GetMyServerID(),TransactionID(InTransactionID).GetEntityID()), GetServiceEntityUID() );
-			svrCheck(Policy::NetPolicyGameInstance(GetConnection()).JoinGameCmd( InRouteContext, InTransactionID, InPlayer, InRequestedRole ) );
+			svrCheck(Policy::NetPolicyGameInstance(GetConnection()).JoinGameInstanceCmd( InRouteContext, InTransactionID, InPlayer ) );
 
 			return hr;
 
-		}; // Result GameInstanceService::JoinGameCmd( const uint64_t &InTransactionID, const PlayerInformation &InPlayer, const uint8_t &InRequestedRole )
+		}; // Result GameInstanceService::JoinGameInstanceCmd( const uint64_t &InTransactionID, const PlayerInformation &InPlayer )
 		// C2S: For debug purpose, change configue preset. There is a game setting table. you can switch between those setting value.
 		Result GameInstanceService::SetConfigPresetC2SEvt( const EntityID &InSenderEntityID, const uint32_t &InPresetID )
 		{
@@ -65,16 +65,27 @@ namespace SF
 
 		}; // Result GameInstanceService::SetConfigPresetC2SEvt( const EntityID &InSenderEntityID, const uint32_t &InPresetID )
 		// Cmd: Leave game instance.
-		Result GameInstanceService::LeaveGameCmd( const uint64_t &InTransactionID, const PlayerID &InPlayerID )
+		Result GameInstanceService::LeaveGameInstanceCmd( const uint64_t &InTransactionID, const PlayerID &InPlayerID )
 		{
  			FunctionContext hr;
 
 			RouteContext InRouteContext( EntityUID(GetMyServerID(),TransactionID(InTransactionID).GetEntityID()), GetServiceEntityUID() );
-			svrCheck(Policy::NetPolicyGameInstance(GetConnection()).LeaveGameCmd( InRouteContext, InTransactionID, InPlayerID ) );
+			svrCheck(Policy::NetPolicyGameInstance(GetConnection()).LeaveGameInstanceCmd( InRouteContext, InTransactionID, InPlayerID ) );
 
 			return hr;
 
-		}; // Result GameInstanceService::LeaveGameCmd( const uint64_t &InTransactionID, const PlayerID &InPlayerID )
+		}; // Result GameInstanceService::LeaveGameInstanceCmd( const uint64_t &InTransactionID, const PlayerID &InPlayerID )
+		// C2S: Player Movement
+		Result GameInstanceService::PlayerMovementC2SEvt( const EntityID &InSenderEntityID, const uint64_t &InGameInsUID, const PlayerID &InPlayerID, const VariableTable &InAttributes )
+		{
+ 			FunctionContext hr;
+
+			RouteContext InRouteContext( EntityUID(GetMyServerID(),InSenderEntityID), GetServiceEntityUID() );
+			svrCheck(Policy::NetPolicyGameInstance(GetConnection()).PlayerMovementC2SEvt( InRouteContext, InGameInsUID, InPlayerID, InAttributes ) );
+
+			return hr;
+
+		}; // Result GameInstanceService::PlayerMovementC2SEvt( const EntityID &InSenderEntityID, const uint64_t &InGameInsUID, const PlayerID &InPlayerID, const VariableTable &InAttributes )
 		// Cmd: Kick player with given ID
 		Result GameInstanceService::KickPlayerCmd( const uint64_t &InTransactionID, const PlayerID &InPlayerID, const PlayerID &InPlayerToKick )
 		{
@@ -86,6 +97,17 @@ namespace SF
 			return hr;
 
 		}; // Result GameInstanceService::KickPlayerCmd( const uint64_t &InTransactionID, const PlayerID &InPlayerID, const PlayerID &InPlayerToKick )
+		// Cmd: Join to a game instance. You can call multiple times, but it would be waste
+		Result GameInstanceService::JoinGameCmd( const uint64_t &InTransactionID, const PlayerInformation &InPlayer, const uint8_t &InRequestedRole )
+		{
+ 			FunctionContext hr;
+
+			RouteContext InRouteContext( EntityUID(GetMyServerID(),TransactionID(InTransactionID).GetEntityID()), GetServiceEntityUID() );
+			svrCheck(Policy::NetPolicyGameInstance(GetConnection()).JoinGameCmd( InRouteContext, InTransactionID, InPlayer, InRequestedRole ) );
+
+			return hr;
+
+		}; // Result GameInstanceService::JoinGameCmd( const uint64_t &InTransactionID, const PlayerInformation &InPlayer, const uint8_t &InRequestedRole )
 		// Cmd: Assign new roles to all players.
 		Result GameInstanceService::AssignRoleCmd( const uint64_t &InTransactionID, const PlayerID &InPlayerID )
 		{

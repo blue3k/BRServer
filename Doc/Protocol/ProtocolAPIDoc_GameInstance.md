@@ -22,6 +22,157 @@ Nitify that a game instance is deleted. Game instance send this message to manag
 		- OutInRouteContext: RouteContext type. 
 
 
+## JoinGameInstance Request
+Join to a game instance. You can call multiple times, but it would be waste
+
+1. Command interface
+
+        Result JoinGameInstanceCmd(const RouteContext &InRouteContext, const uint64_t &InTransactionID, const PlayerInformation &InPlayer)
+
+		- OutInRouteContext: RouteContext type. 
+
+		- OutInTransactionID: TransactionID type. 
+
+		- OutInPlayer: PlayerInformation type. Player information who join
+
+2. Result interface
+
+C++: Cast message to JoinGameInstanceRes to access values
+
+
+		- OutRouteContext: RouteContext type. 
+
+		- OutTransactionID: TransactionID type. 
+
+		- OutResult: Result type. 
+
+		- OutGameInsSvr: NetAddress type. Game instance server address. Client will use this address to connect game server.
+
+		- OutTimeStamp: uint32 type. Time stamp of game state
+
+		- OutGameState: GameStateID type. GameState ID
+
+
+## PlayerJoinedS2CEvt
+Player joined event. This event is brocasted when a player joined
+
+        Result PlayerJoinedS2CEvt(const RouteContext &InRouteContext, const PlayerInformation &InJoinedPlayer)
+
+		- OutInRouteContext: RouteContext type. 
+
+		- OutInJoinedPlayer: PlayerInformation type. Joined player information
+
+
+## SetConfigPresetC2SEvt
+For debug purpose, change configue preset. There is a game setting table. you can switch between those setting value.
+
+        Result SetConfigPresetC2SEvt(const RouteContext &InRouteContext, const uint32_t &InPresetID)
+
+		- OutInRouteContext: RouteContext type. 
+
+		- OutInPresetID: uint32 type. Preset ID
+
+
+## LeaveGameInstance Request
+Leave game instance.
+
+1. Command interface
+
+        Result LeaveGameInstanceCmd(const RouteContext &InRouteContext, const uint64_t &InTransactionID, const PlayerID &InPlayerID)
+
+		- OutInRouteContext: RouteContext type. 
+
+		- OutInTransactionID: TransactionID type. 
+
+		- OutInPlayerID: PlayerID type. PlayID to leave
+
+2. Result interface
+
+C++: Cast message to LeaveGameInstanceRes to access values
+
+
+		- OutRouteContext: RouteContext type. 
+
+		- OutTransactionID: TransactionID type. 
+
+		- OutResult: Result type. 
+
+
+## PlayerLeftS2CEvt
+Player left event.
+
+        Result PlayerLeftS2CEvt(const RouteContext &InRouteContext, const PlayerID &InLeftPlayerID)
+
+		- OutInRouteContext: RouteContext type. 
+
+		- OutInLeftPlayerID: PlayerID type. Player ID who left.
+
+
+## PlayerMovementC2SEvt
+Player Movement
+
+        Result PlayerMovementC2SEvt(const RouteContext &InRouteContext, const uint64_t &InGameInsUID, const PlayerID &InPlayerID, const Array<uint8_t>& InAttributes)
+
+		- OutInRouteContext: RouteContext type. 
+
+		- OutInGameInsUID: GameInsUID type. Game instance UID
+
+		- OutInPlayerID: PlayerID type. Player Id
+
+		- OutInAttributes: VariableTable type. Movement attributes
+
+
+## PlayerMovementS2CEvt
+Player Movement
+
+        Result PlayerMovementS2CEvt(const RouteContext &InRouteContext, const uint64_t &InGameInsUID, const PlayerID &InPlayerID, const Array<uint8_t>& InAttributes)
+
+		- OutInRouteContext: RouteContext type. 
+
+		- OutInGameInsUID: GameInsUID type. Game instance UID
+
+		- OutInPlayerID: PlayerID type. Player Movement
+
+		- OutInAttributes: VariableTable type. Movement attributes
+
+
+## KickPlayer Request
+Kick player with given ID
+
+1. Command interface
+
+        Result KickPlayerCmd(const RouteContext &InRouteContext, const uint64_t &InTransactionID, const PlayerID &InPlayerID, const PlayerID &InPlayerToKick)
+
+		- OutInRouteContext: RouteContext type. 
+
+		- OutInTransactionID: TransactionID type. 
+
+		- OutInPlayerID: PlayerID type. Player who kick.
+
+		- OutInPlayerToKick: PlayerID type. Player who kicked.
+
+2. Result interface
+
+C++: Cast message to KickPlayerRes to access values
+
+
+		- OutRouteContext: RouteContext type. 
+
+		- OutTransactionID: TransactionID type. 
+
+		- OutResult: Result type. 
+
+
+## PlayerKickedS2CEvt
+Player kicked event. this event will be brocasted when a player kicked.
+
+        Result PlayerKickedS2CEvt(const RouteContext &InRouteContext, const PlayerID &InKickedPlayerID)
+
+		- OutInRouteContext: RouteContext type. 
+
+		- OutInKickedPlayerID: PlayerID type. Kicked player ID
+
+
 ## JoinGame Request
 Join to a game instance. You can call multiple times, but it would be waste
 
@@ -71,106 +222,6 @@ C++: Cast message to JoinGameRes to access values
 		- OutChatHistoryData: uint8 type. [optional].
 
 		- OutGameLogData: uint8 type. [Optional] you can send game status through this parameter.
-
-
-## PlayerJoinedS2CEvt
-Player joined event. This event is brocasted when a player joined
-
-        Result PlayerJoinedS2CEvt(const RouteContext &InRouteContext, const PlayerInformation &InJoinedPlayer, const uint8_t &InJoinedPlayerRole, const uint8_t &InJoinedPlayerDead, const uint8_t &InJoinedPlayerIndex, const uint8_t &InJoinedPlayerCharacter)
-
-		- OutInRouteContext: RouteContext type. 
-
-		- OutInJoinedPlayer: PlayerInformation type. Joined player information
-
-		- OutInJoinedPlayerRole: PlayerRole type. Joined Player Role
-
-		- OutInJoinedPlayerDead: uint8 type. Joined player state
-
-		- OutInJoinedPlayerIndex: uint8 type. [optional]Joined player index
-
-		- OutInJoinedPlayerCharacter: uint8 type. Joined player character, assigned by game instance.
-
-
-## SetConfigPresetC2SEvt
-For debug purpose, change configue preset. There is a game setting table. you can switch between those setting value.
-
-        Result SetConfigPresetC2SEvt(const RouteContext &InRouteContext, const uint32_t &InPresetID)
-
-		- OutInRouteContext: RouteContext type. 
-
-		- OutInPresetID: uint32 type. Preset ID
-
-
-## LeaveGame Request
-Leave game instance.
-
-1. Command interface
-
-        Result LeaveGameCmd(const RouteContext &InRouteContext, const uint64_t &InTransactionID, const PlayerID &InPlayerID)
-
-		- OutInRouteContext: RouteContext type. 
-
-		- OutInTransactionID: TransactionID type. 
-
-		- OutInPlayerID: PlayerID type. PlayID to leave
-
-2. Result interface
-
-C++: Cast message to LeaveGameRes to access values
-
-
-		- OutRouteContext: RouteContext type. 
-
-		- OutTransactionID: TransactionID type. 
-
-		- OutResult: Result type. 
-
-
-## PlayerLeftS2CEvt
-Player left event.
-
-        Result PlayerLeftS2CEvt(const RouteContext &InRouteContext, const PlayerID &InLeftPlayerID)
-
-		- OutInRouteContext: RouteContext type. 
-
-		- OutInLeftPlayerID: PlayerID type. Player ID who left.
-
-
-## KickPlayer Request
-Kick player with given ID
-
-1. Command interface
-
-        Result KickPlayerCmd(const RouteContext &InRouteContext, const uint64_t &InTransactionID, const PlayerID &InPlayerID, const PlayerID &InPlayerToKick)
-
-		- OutInRouteContext: RouteContext type. 
-
-		- OutInTransactionID: TransactionID type. 
-
-		- OutInPlayerID: PlayerID type. Player who kick.
-
-		- OutInPlayerToKick: PlayerID type. Player who kicked.
-
-2. Result interface
-
-C++: Cast message to KickPlayerRes to access values
-
-
-		- OutRouteContext: RouteContext type. 
-
-		- OutTransactionID: TransactionID type. 
-
-		- OutResult: Result type. 
-
-
-## PlayerKickedS2CEvt
-Player kicked event. this event will be brocasted when a player kicked.
-
-        Result PlayerKickedS2CEvt(const RouteContext &InRouteContext, const PlayerID &InKickedPlayerID)
-
-		- OutInRouteContext: RouteContext type. 
-
-		- OutInKickedPlayerID: PlayerID type. Kicked player ID
 
 
 ## AssignRole Request

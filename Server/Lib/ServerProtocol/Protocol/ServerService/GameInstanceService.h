@@ -31,13 +31,17 @@ namespace SF
 			// C2S: Nitify that a game instance is deleted. Game instance send this message to manager before it destroy itself.
 			Result DeleteGameC2SEvt( const EntityID &InSenderEntityID );
 			// Cmd: Join to a game instance. You can call multiple times, but it would be waste
-			Result JoinGameCmd( const uint64_t &InTransactionID, const PlayerInformation &InPlayer, const uint8_t &InRequestedRole );
+			Result JoinGameInstanceCmd( const uint64_t &InTransactionID, const PlayerInformation &InPlayer );
 			// C2S: For debug purpose, change configue preset. There is a game setting table. you can switch between those setting value.
 			Result SetConfigPresetC2SEvt( const EntityID &InSenderEntityID, const uint32_t &InPresetID );
 			// Cmd: Leave game instance.
-			Result LeaveGameCmd( const uint64_t &InTransactionID, const PlayerID &InPlayerID );
+			Result LeaveGameInstanceCmd( const uint64_t &InTransactionID, const PlayerID &InPlayerID );
+			// C2S: Player Movement
+			Result PlayerMovementC2SEvt( const EntityID &InSenderEntityID, const uint64_t &InGameInsUID, const PlayerID &InPlayerID, const VariableTable &InAttributes );
 			// Cmd: Kick player with given ID
 			Result KickPlayerCmd( const uint64_t &InTransactionID, const PlayerID &InPlayerID, const PlayerID &InPlayerToKick );
+			// Cmd: Join to a game instance. You can call multiple times, but it would be waste
+			Result JoinGameCmd( const uint64_t &InTransactionID, const PlayerInformation &InPlayer, const uint8_t &InRequestedRole );
 			// Cmd: Assign new roles to all players.
 			Result AssignRoleCmd( const uint64_t &InTransactionID, const PlayerID &InPlayerID );
 			// C2S: in-game chatting message.

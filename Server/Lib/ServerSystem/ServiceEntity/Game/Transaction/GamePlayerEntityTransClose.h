@@ -48,11 +48,11 @@ namespace Svr {
 		PlayerTransCloseInstance(IHeap& heap);
 		virtual ~PlayerTransCloseInstance() {}
 
-		Result UpdateDBRes(Svr::TransactionResult* &pRes);
-		Result DeleteLoginSessionRes(Svr::TransactionResult* &pRes);
-		Result UnregisterMatchingRes(Svr::TransactionResult* &pRes);
-		Result LeaveGameRes(Svr::TransactionResult* &pRes);
-		Result LeavePartyRes(Svr::TransactionResult* &pRes);
+		Result UpdateDBRes(Svr::TransactionResult* pRes);
+		Result DeleteLoginSessionRes(Svr::TransactionResult* pRes);
+		Result UnregisterMatchingRes(Svr::TransactionResult* pRes);
+		Result LeaveGameInstanceRes(Svr::TransactionResult* pRes);
+		Result LeavePartyRes(Svr::TransactionResult* pRes);
 
 		// Start Transaction
 		virtual Result StartTransaction() override;

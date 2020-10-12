@@ -109,10 +109,10 @@ namespace ConspiracyGameInstanceServer {
 	};
 
 
-	class GameEntityTransLeaveGame : public RoutedGamePlayerMessageTransaction< GameInstanceEntity, Message::GameInstance::LeaveGameCmd>
+	class GameEntityTransLeaveGame : public RoutedGamePlayerMessageTransaction< GameInstanceEntity, Message::GameInstance::LeaveGameInstanceCmd>
 	{
 	public:
-		typedef RoutedGamePlayerMessageTransaction< GameInstanceEntity, Message::GameInstance::LeaveGameCmd> super;
+		typedef RoutedGamePlayerMessageTransaction< GameInstanceEntity, Message::GameInstance::LeaveGameInstanceCmd> super;
 
 	private:
 
@@ -123,7 +123,7 @@ namespace ConspiracyGameInstanceServer {
 		// Start Transaction
 		virtual Result StartTransaction() override;
 
-		BR_SVR_MSGTRANS_CLOSE(Policy::NetSvrPolicyGameInstance, LeaveGameRes, GetRouteContext().GetSwaped());
+		BR_SVR_MSGTRANS_CLOSE(Policy::NetSvrPolicyGameInstance, LeaveGameInstanceRes, GetRouteContext().GetSwaped());
 	};
 
 	class GameEntityTransKickPlayer : public RoutedGamePlayerMessageTransaction< GameInstanceEntity, Message::GameInstance::KickPlayerCmd>

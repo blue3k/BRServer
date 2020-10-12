@@ -33,22 +33,29 @@ namespace SF
  			// C2S: Nitify that a game instance is deleted. Game instance send this message to manager before it destroy itself.
 			MessageParseToMessageBaseMap.insert(std::make_pair(Message::GameInstance::DeleteGameC2SEvt::MID.IDSeq.MsgID,&Message::GameInstance::DeleteGameC2SEvt::ParseMessageToMessageBase));
 			// Cmd: Join to a game instance. You can call multiple times, but it would be waste
-			MessageParseToMessageBaseMap.insert(std::make_pair(Message::GameInstance::JoinGameCmd::MID.IDSeq.MsgID,&Message::GameInstance::JoinGameCmd::ParseMessageToMessageBase));
-			MessageParseToMessageBaseMap.insert(std::make_pair(Message::GameInstance::JoinGameRes::MID.IDSeq.MsgID,&Message::GameInstance::JoinGameRes::ParseMessageToMessageBase));
+			MessageParseToMessageBaseMap.insert(std::make_pair(Message::GameInstance::JoinGameInstanceCmd::MID.IDSeq.MsgID,&Message::GameInstance::JoinGameInstanceCmd::ParseMessageToMessageBase));
+			MessageParseToMessageBaseMap.insert(std::make_pair(Message::GameInstance::JoinGameInstanceRes::MID.IDSeq.MsgID,&Message::GameInstance::JoinGameInstanceRes::ParseMessageToMessageBase));
 			// S2C: Player joined event. This event is brocasted when a player joined
 			MessageParseToMessageBaseMap.insert(std::make_pair(Message::GameInstance::PlayerJoinedS2CEvt::MID.IDSeq.MsgID,&Message::GameInstance::PlayerJoinedS2CEvt::ParseMessageToMessageBase));
 			// C2S: For debug purpose, change configue preset. There is a game setting table. you can switch between those setting value.
 			MessageParseToMessageBaseMap.insert(std::make_pair(Message::GameInstance::SetConfigPresetC2SEvt::MID.IDSeq.MsgID,&Message::GameInstance::SetConfigPresetC2SEvt::ParseMessageToMessageBase));
 			// Cmd: Leave game instance.
-			MessageParseToMessageBaseMap.insert(std::make_pair(Message::GameInstance::LeaveGameCmd::MID.IDSeq.MsgID,&Message::GameInstance::LeaveGameCmd::ParseMessageToMessageBase));
-			MessageParseToMessageBaseMap.insert(std::make_pair(Message::GameInstance::LeaveGameRes::MID.IDSeq.MsgID,&Message::GameInstance::LeaveGameRes::ParseMessageToMessageBase));
+			MessageParseToMessageBaseMap.insert(std::make_pair(Message::GameInstance::LeaveGameInstanceCmd::MID.IDSeq.MsgID,&Message::GameInstance::LeaveGameInstanceCmd::ParseMessageToMessageBase));
+			MessageParseToMessageBaseMap.insert(std::make_pair(Message::GameInstance::LeaveGameInstanceRes::MID.IDSeq.MsgID,&Message::GameInstance::LeaveGameInstanceRes::ParseMessageToMessageBase));
 			// S2C: Player left event.
 			MessageParseToMessageBaseMap.insert(std::make_pair(Message::GameInstance::PlayerLeftS2CEvt::MID.IDSeq.MsgID,&Message::GameInstance::PlayerLeftS2CEvt::ParseMessageToMessageBase));
+			// C2S: Player Movement
+			MessageParseToMessageBaseMap.insert(std::make_pair(Message::GameInstance::PlayerMovementC2SEvt::MID.IDSeq.MsgID,&Message::GameInstance::PlayerMovementC2SEvt::ParseMessageToMessageBase));
+			// S2C: Player Movement
+			MessageParseToMessageBaseMap.insert(std::make_pair(Message::GameInstance::PlayerMovementS2CEvt::MID.IDSeq.MsgID,&Message::GameInstance::PlayerMovementS2CEvt::ParseMessageToMessageBase));
 			// Cmd: Kick player with given ID
 			MessageParseToMessageBaseMap.insert(std::make_pair(Message::GameInstance::KickPlayerCmd::MID.IDSeq.MsgID,&Message::GameInstance::KickPlayerCmd::ParseMessageToMessageBase));
 			MessageParseToMessageBaseMap.insert(std::make_pair(Message::GameInstance::KickPlayerRes::MID.IDSeq.MsgID,&Message::GameInstance::KickPlayerRes::ParseMessageToMessageBase));
 			// S2C: Player kicked event. this event will be brocasted when a player kicked.
 			MessageParseToMessageBaseMap.insert(std::make_pair(Message::GameInstance::PlayerKickedS2CEvt::MID.IDSeq.MsgID,&Message::GameInstance::PlayerKickedS2CEvt::ParseMessageToMessageBase));
+			// Cmd: Join to a game instance. You can call multiple times, but it would be waste
+			MessageParseToMessageBaseMap.insert(std::make_pair(Message::GameInstance::JoinGameCmd::MID.IDSeq.MsgID,&Message::GameInstance::JoinGameCmd::ParseMessageToMessageBase));
+			MessageParseToMessageBaseMap.insert(std::make_pair(Message::GameInstance::JoinGameRes::MID.IDSeq.MsgID,&Message::GameInstance::JoinGameRes::ParseMessageToMessageBase));
 			// Cmd: Assign new roles to all players.
 			MessageParseToMessageBaseMap.insert(std::make_pair(Message::GameInstance::AssignRoleCmd::MID.IDSeq.MsgID,&Message::GameInstance::AssignRoleCmd::ParseMessageToMessageBase));
 			MessageParseToMessageBaseMap.insert(std::make_pair(Message::GameInstance::AssignRoleRes::MID.IDSeq.MsgID,&Message::GameInstance::AssignRoleRes::ParseMessageToMessageBase));

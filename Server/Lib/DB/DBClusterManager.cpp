@@ -438,7 +438,9 @@ Proc_End:
 	{
 		FunctionContext hr;
 
-		dbTrace(TRC_QUERY, "Query route result transID:{0} msg:{1}, class:{2}", pQuery->GetTransID(), pQuery->GetMsgID(), typeid(pQuery).name());
+		auto queryName = pQuery->GetQueryString();
+
+		dbTrace(TRC_QUERY, "Query route result transID:{0} msg:{1}, class:{2}", pQuery->GetTransID(), pQuery->GetMsgID(), queryName);
 
 		if(pQuery->GetTransID() != TransactionID() )
 		{
@@ -448,7 +450,6 @@ Proc_End:
 			Svr::BrServer *pMyServer = Svr::BrServer::GetInstance();
 			dbCheckPtr( pMyServer );
 
-			auto& queryName = pQuery->GetQueryString();
 			auto msgID = pRes->GetMsgID();
 			auto entityID = pRes->GetTransID().GetEntityID();
 			hr = Service::EntityTable->RouteTransactionResult(pRes);

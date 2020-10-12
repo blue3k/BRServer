@@ -237,7 +237,7 @@ namespace GameServer {
 		if( GetMyOwner()->GetGameInsUID() != GetRouteContext().GetFrom())
 			svrErrClose(ResultCode::INVALID_INSTANCEID);
 
-		svrChk( Policy::NetSvrPolicyGame(GetConnection()).PlayerJoinedS2CEvt( GetRouteContext().GetFrom(), GetJoinedPlayer(), GetJoinedPlayerRole(), GetJoinedPlayerDead(), GetJoinedPlayerIndex(), GetJoinedPlayerCharacter() ) );
+		svrChk( Policy::NetSvrPolicyGame(GetConnection()).PlayerJoinedS2CEvt( GetRouteContext().GetFrom(), GetJoinedPlayer() ) );
 
 	Proc_End:
 
@@ -250,14 +250,14 @@ namespace GameServer {
 	PlayerTransLeaveGame::PlayerTransLeaveGame(IHeap& heap, MessageDataPtr &pIMsg )
 		:MessageTransaction(heap, std::forward<MessageDataPtr>(pIMsg))
 	{
-		BR_TRANS_MESSAGE( Message::GameInstance::LeaveGameRes, { return OnLeaveGameRes(pRes); } );
+		BR_TRANS_MESSAGE( Message::GameInstance::LeaveGameInstanceRes, { return OnLeaveGameRes(pRes); } );
 	}
 
 	Result PlayerTransLeaveGame::OnLeaveGameRes( Svr::TransactionResult* & pRes )
 	{
 		Result hr = ResultCode::SUCCESS;
 		Svr::MessageResult *pMsgRes = (Svr::MessageResult*)pRes;
-		Message::GameInstance::LeaveGameRes leaveRes;
+		Message::GameInstance::LeaveGameInstanceRes leaveRes;
 
 		GetMyOwner()->AddGameTransactionLog(TransLogCategory::Game, -1, 0, GetMyOwner()->GetGameInsUID().UID);
 
@@ -310,7 +310,7 @@ namespace GameServer {
 		if( insUID.UID == 0 )
 			svrErrClose(ResultCode::INVALID_INSTANCEID);
 
-		svrChk(Policy::NetPolicyGameInstance(Service::ServerEntityManager->GetServerConnection(insUID.GetServerID())).LeaveGameCmd( 
+		svrChk(Policy::NetPolicyGameInstance(Service::ServerEntityManager->GetServerConnection(insUID.GetServerID())).LeaveGameInstanceCmd( 
 			RouteContext(GetOwnerEntityUID(),insUID), GetTransID(), GetMyOwner()->GetPlayerID() ) );
 
 	Proc_End:

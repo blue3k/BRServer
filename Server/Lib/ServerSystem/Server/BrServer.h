@@ -273,7 +273,7 @@ namespace Svr {
 		virtual Result CloseNetPrivate();
 
 		// create remote entity by class
-		virtual Result CreateServerEntity( NetClass netClass, ServerEntity* &pServerEntity ) = 0;
+		virtual Result CreateServerEntity(NetClass netClass, ServerEntity* &pServerEntity) = 0;
 
 		// Initialize private Network
 		virtual Result InitializeNetPublic();

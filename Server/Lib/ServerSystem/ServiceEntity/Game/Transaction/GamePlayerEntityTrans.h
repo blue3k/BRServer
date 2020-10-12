@@ -365,8 +365,6 @@ namespace SF {
 		};
 
 
-
-
 		/////////////////////////////////////////////////////////////////////////////
 		//
 		//	NickName transaction
@@ -571,8 +569,6 @@ namespace SF {
 
 			BR_IMPLEMENT_USERMSGTRANS_CLOSE_ARGS(Policy::NetSvrPolicyGame, BuyShopItemRes, GetShopItemID());
 		};
-
-
 
 	} // namespace GameServer 
 } // namespace SF 

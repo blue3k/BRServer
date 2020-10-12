@@ -38,13 +38,17 @@ namespace SF
 			// C2S: Nitify that a game instance is deleted. Game instance send this message to manager before it destroy itself.
 			Result DeleteGameC2SEvt( const RouteContext &InRouteContext );
 			// Cmd: Join to a game instance. You can call multiple times, but it would be waste
-			Result JoinGameCmd( const RouteContext &InRouteContext, const uint64_t &InTransactionID, const PlayerInformation &InPlayer, const uint8_t &InRequestedRole );
+			Result JoinGameInstanceCmd( const RouteContext &InRouteContext, const uint64_t &InTransactionID, const PlayerInformation &InPlayer );
 			// C2S: For debug purpose, change configue preset. There is a game setting table. you can switch between those setting value.
 			Result SetConfigPresetC2SEvt( const RouteContext &InRouteContext, const uint32_t &InPresetID );
 			// Cmd: Leave game instance.
-			Result LeaveGameCmd( const RouteContext &InRouteContext, const uint64_t &InTransactionID, const PlayerID &InPlayerID );
+			Result LeaveGameInstanceCmd( const RouteContext &InRouteContext, const uint64_t &InTransactionID, const PlayerID &InPlayerID );
+			// C2S: Player Movement
+			Result PlayerMovementC2SEvt( const RouteContext &InRouteContext, const uint64_t &InGameInsUID, const PlayerID &InPlayerID, const VariableTable &InAttributes );
 			// Cmd: Kick player with given ID
 			Result KickPlayerCmd( const RouteContext &InRouteContext, const uint64_t &InTransactionID, const PlayerID &InPlayerID, const PlayerID &InPlayerToKick );
+			// Cmd: Join to a game instance. You can call multiple times, but it would be waste
+			Result JoinGameCmd( const RouteContext &InRouteContext, const uint64_t &InTransactionID, const PlayerInformation &InPlayer, const uint8_t &InRequestedRole );
 			// Cmd: Assign new roles to all players.
 			Result AssignRoleCmd( const RouteContext &InRouteContext, const uint64_t &InTransactionID, const PlayerID &InPlayerID );
 			// C2S: in-game chatting message.
@@ -77,17 +81,21 @@ namespace SF
 			{}
 
 			// Cmd: Join to a game instance. You can call multiple times, but it would be waste
-			Result JoinGameRes( const RouteContext &InRouteContext, const uint64_t &InTransactionID, const Result &InResult, const NetAddress &InGameInsSvr, const uint32_t &InTimeStamp, const uint8_t &InGameState, const uint8_t &InDay, const uint8_t &InMaxPlayer, const uint8_t &InPlayerIndex, const uint8_t &InPlayerCharacter, const uint8_t &InRole, const uint8_t &InDead, const uint8_t &InIsNewJoin, const Array<uint8_t>& InChatHistoryData, const Array<uint8_t>& InGameLogData );
+			Result JoinGameInstanceRes( const RouteContext &InRouteContext, const uint64_t &InTransactionID, const Result &InResult, const NetAddress &InGameInsSvr, const uint32_t &InTimeStamp, const uint8_t &InGameState );
 			// S2C: Player joined event. This event is brocasted when a player joined
-			Result PlayerJoinedS2CEvt( const RouteContext &InRouteContext, const PlayerInformation &InJoinedPlayer, const uint8_t &InJoinedPlayerRole, const uint8_t &InJoinedPlayerDead, const uint8_t &InJoinedPlayerIndex, const uint8_t &InJoinedPlayerCharacter );
+			Result PlayerJoinedS2CEvt( const RouteContext &InRouteContext, const PlayerInformation &InJoinedPlayer );
 			// Cmd: Leave game instance.
-			Result LeaveGameRes( const RouteContext &InRouteContext, const uint64_t &InTransactionID, const Result &InResult );
+			Result LeaveGameInstanceRes( const RouteContext &InRouteContext, const uint64_t &InTransactionID, const Result &InResult );
 			// S2C: Player left event.
 			Result PlayerLeftS2CEvt( const RouteContext &InRouteContext, const PlayerID &InLeftPlayerID );
+			// S2C: Player Movement
+			Result PlayerMovementS2CEvt( const RouteContext &InRouteContext, const uint64_t &InGameInsUID, const PlayerID &InPlayerID, const VariableTable &InAttributes );
 			// Cmd: Kick player with given ID
 			Result KickPlayerRes( const RouteContext &InRouteContext, const uint64_t &InTransactionID, const Result &InResult );
 			// S2C: Player kicked event. this event will be brocasted when a player kicked.
 			Result PlayerKickedS2CEvt( const RouteContext &InRouteContext, const PlayerID &InKickedPlayerID );
+			// Cmd: Join to a game instance. You can call multiple times, but it would be waste
+			Result JoinGameRes( const RouteContext &InRouteContext, const uint64_t &InTransactionID, const Result &InResult, const NetAddress &InGameInsSvr, const uint32_t &InTimeStamp, const uint8_t &InGameState, const uint8_t &InDay, const uint8_t &InMaxPlayer, const uint8_t &InPlayerIndex, const uint8_t &InPlayerCharacter, const uint8_t &InRole, const uint8_t &InDead, const uint8_t &InIsNewJoin, const Array<uint8_t>& InChatHistoryData, const Array<uint8_t>& InGameLogData );
 			// Cmd: Assign new roles to all players.
 			Result AssignRoleRes( const RouteContext &InRouteContext, const uint64_t &InTransactionID, const Result &InResult );
 			// S2C: Event for role assigned

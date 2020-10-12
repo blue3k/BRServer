@@ -28,7 +28,6 @@ int main(int numArg, const char* argc[])
 	_ASSERTE((hRes));
 
 	ParameterSetting::SetSetting("config", "..\\..\\Config\\ServerConfig.xml");
-	//ParameterSetting::ProcessParameter(lpCmdLine);
 	ParameterSetting::ProcessParameter(numArg, argc);
 
 #elif SF_PLATFORM == SF_PLATFORM_LINUX
