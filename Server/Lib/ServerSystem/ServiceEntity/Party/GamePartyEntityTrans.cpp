@@ -246,7 +246,7 @@ namespace Svr {
 	{
 		SetExclusive(true);
 		BR_TRANS_MESSAGE( Message::PartyMatchingQueue::RegisterPartyMatchingRes, { return OnPartyMatchingQueued(pRes); } );
-		BR_TRANS_MESSAGE( Message::GameInstanceManager::CreateGameRes,			{ return OnCreateGame(pRes); });
+		BR_TRANS_MESSAGE( Message::GameInstanceManager::CreateGameInstanceRes,	{ return OnCreateGame(pRes); });
 	}
 
 	Result PartyTransStartGameMatchCmd::OnPartyMatchingQueued( Svr::TransactionResult* &pRes )
@@ -278,7 +278,7 @@ namespace Svr {
 	Result PartyTransStartGameMatchCmd::OnCreateGame(TransactionResult* pRes)
 	{
 		Result hr = ResultCode::SUCCESS;
-		Message::GameInstanceManager::CreateGameRes msgRes;
+		Message::GameInstanceManager::CreateGameInstanceRes msgRes;
 		GameInsUID gameUID;
 
 		svrChk(pRes->GetResult());
@@ -308,7 +308,7 @@ namespace Svr {
 	{
 		Result hr = ResultCode::SUCCESS;
 		Svr::ServerServiceInformation *pService = nullptr;
-		StaticArray<MatchingPlayerInformation,GameConst::MAX_GAMEPLAYER> m_matchingPlayers(GetHeap());
+		StaticArray<MatchingPlayerInformation, 16> m_matchingPlayers(GetHeap());
 
 		svrChk( super::StartTransaction() );
 
@@ -327,8 +327,10 @@ namespace Svr {
 			svrChk(Service::ClusterManager->GetRandomService(GetMyOwner()->GetGameID(), ClusterID::GameInstanceManager, pService));
 			//svrChk( GetServerComponent<GameInstanceManagerWatcherServiceEntity>()->GetService( pService ) );
 
+			VariableTable attributes(GetHeap());
+			attributes.SetValue("MaxPlayer"_crc, GetMaxGamePlayers());
 			// 2. Get service entity list in the cluster
-			svrChk( pService->GetService<GameInstanceManagerService>()->CreateGameCmd(GetTransID(), 0, 0, (uint16_t)GetMaxGamePlayers()) );
+			svrChk( pService->GetService<GameInstanceManagerService>()->CreateGameInstanceCmd(GetTransID(), 0, attributes) );
 
 			//CloseTransaction(hr);
 			goto Proc_End;

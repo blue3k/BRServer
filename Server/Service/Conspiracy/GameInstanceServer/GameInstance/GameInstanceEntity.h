@@ -76,15 +76,20 @@ namespace ConspiracyGameInstanceServer
 		typedef Svr::GameInstanceEntity super;
 
 		// Player by index
-		GamePlayer*				m_PlayerByIndex[GameConst::MAX_GAMEPLAYER];
+		GamePlayer* m_PlayerByIndex[GameLogItem::LEGACY_MAX_GAMEPLAYER]{};
 
 		// Player character table
-		uint8_t					m_PlayerCharacter[GameConst::MAX_GAMEPLAYER];
+		uint8_t m_PlayerCharacter[GameLogItem::LEGACY_MAX_GAMEPLAYER]{};
 
 		// Game configuration
-		int m_TableVersion;
-		uint					m_PresetGameConfigID;
-		GameConfigType* m_PresetGameConfig;
+		int m_TableVersion = -1;
+		uint m_PresetGameConfigID = 1;
+		GameConfigType* m_PresetGameConfig{};
+
+
+		// Team Leader UID
+		PlayerID m_LeaderUID{};
+
 
 		//////////////////////////////////////////////////////////////////////////////////////////////////
 		//
@@ -98,7 +103,7 @@ namespace ConspiracyGameInstanceServer
 		uint m_RoleRequestSeer = 0;
 		uint m_RoleRequestWerewolf = 0;
 
-		conspiracy::BotTalkTbl::BotTalkTblItem *m_pBotTalk;
+		conspiracy::BotTalkTbl::BotTalkTblItem* m_pBotTalk{};
 
 
 	public:
@@ -113,6 +118,9 @@ namespace ConspiracyGameInstanceServer
 
 
 		GameConfigType* GetPresetGameConfig() { return m_PresetGameConfig; }
+
+		PlayerID GetLeaderUID() { return m_LeaderUID; }
+		void SetLeaderUID(PlayerID value) { m_LeaderUID = value; }
 
 		uint GetRoleRequestSeer() { return m_RoleRequestSeer; }
 		void SetRoleRequestSeer(uint value) { m_RoleRequestSeer = value; }
@@ -179,7 +187,7 @@ namespace ConspiracyGameInstanceServer
 		//
 
 		// Initialize entity to proceed new connection
-		virtual Result InitializeGameEntity( uint numBot, uint maxPlayer) override;
+		virtual Result InitializeGameEntity(const VariableTable& attributes) override;
 
 
 

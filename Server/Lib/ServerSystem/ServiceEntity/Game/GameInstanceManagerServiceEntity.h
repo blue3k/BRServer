@@ -18,87 +18,90 @@
 #include "Memory/SFMemory.h"
 #include "Types/BrSvrTypes.h"
 #include "Container/SFPageQueue.h"
+#include "Container/SFHashTable.h"
+#include "Container/SFIndexing.h"
+#include "Container/SFSortedMap.h"
 #include "Util/LocalUIDGenerator.h"
 #include "Entity/Entity.h"
 #include "Component/ServerComponent.h"
 #include "ServerService/ServerServiceBase.h"
 #include "Transaction/MessageRoute.h"
-#include "Container/SFHashTable.h"
-#include "Container/SFIndexing.h"
 
 #include "Entity/EntityInformation.h"
 #include "ServiceEntity/ClusteredServiceEntity.h"
 #include "PerformanceCounter/PerformanceCounter.h"
-
+#include "Variable/SFVariableTable.h"
 
 
 namespace SF {
-namespace Svr {
+	namespace Svr {
 
-	class Entity;
-	class ServerEntity;
-	class GameInstanceEntity;
-
-
-	///////////////////////////////////////////////////////////////////////////////////////////////////////
-	//
-	//	GameInstanceManagerServiceEntity class
-	//
-
-	class GameInstanceManagerServiceEntity : public LoadbalanceClusterServiceEntity
-	{
-	public:
-
-		typedef LoadbalanceClusterServiceEntity super;
-
-		enum { ComponentID = ServerComponentID_GameInstanceManagerService };
-
-	protected:
-
-		Svr::PerformanceCounterRaw < uint64_t > m_NumberOfInstance;
-
-	public:
-
-		GameInstanceManagerServiceEntity(GameID gameID, ClusterID clusterID, ClusterMembership initialMembership = ClusterMembership::Slave);
-		~GameInstanceManagerServiceEntity();
+		class Entity;
+		class ServerEntity;
+		class GameInstanceEntity;
 
 
-		//////////////////////////////////////////////////////////////////////////
+		///////////////////////////////////////////////////////////////////////////////////////////////////////
 		//
-		//	Entity operations
+		//	GameInstanceManagerServiceEntity class
 		//
 
-		virtual Result InitializeEntity(EntityID newEntityID) override;
+		class GameInstanceManagerServiceEntity : public LoadbalanceClusterServiceEntity
+		{
+		public:
 
-		virtual Result RegisterServiceMessageHandler( ServerEntity *pServerEntity ) override;
+			typedef LoadbalanceClusterServiceEntity super;
 
-		//////////////////////////////////////////////////////////////////////////
-		//
-		//	Game Instance operations
-		//
+			enum { ComponentID = ServerComponentID_GameInstanceManagerService };
 
-		// Add new Entity
-		virtual Result OnNewInstance(GameInstanceEntity* pGameInstance);
+		protected:
 
-		// Called when a game instance is deleted
-		virtual Result FreeGameInstance( GameInsUID gameUID );
+			Svr::PerformanceCounterRaw < uint64_t > m_NumberOfInstance;
 
+		private:
+			SF::Mutex m_GameInstanceListLock;
+			// NOTE: We might need to use shared ptr
+			SortedMap<GameInsUID, GameInstanceEntity*> m_GameInstances;
 
-		// Initialize server component
-		Result InitializeComponent() { return ResultCode::SUCCESS; }
-		// Terminate server component
-		void TerminateComponent() {  }
+		public:
 
-
-	};
+			GameInstanceManagerServiceEntity(GameID gameID, ClusterID clusterID, ClusterMembership initialMembership = ClusterMembership::Slave);
+			~GameInstanceManagerServiceEntity();
 
 
+			//////////////////////////////////////////////////////////////////////////
+			//
+			//	Entity operations
+			//
+
+			virtual Result InitializeEntity(EntityID newEntityID) override;
+
+			virtual Result RegisterServiceMessageHandler(ServerEntity* pServerEntity) override;
+
+			//////////////////////////////////////////////////////////////////////////
+			//
+			//	Game Instance operations
+			//
+
+			// Added new game instance
+			virtual Result OnNewInstance(GameInstanceEntity* pGameInstance);
+
+			// Called when a game instance is deleted
+			virtual Result FreeGameInstance(GameInsUID gameUID);
+
+			// Search game instance
+			virtual Result SearchGameInstance(size_t maxSearch, const char* searchKeyword, Array<GameInstanceInfo>& outList);
 
 
+			// Initialize server component
+			Result InitializeComponent() { return ResultCode::SUCCESS; }
+			// Terminate server component
+			void TerminateComponent() {  }
 
-}; // namespace Svr
-}; // namespace SF
+
+		};
 
 
-
+	} // namespace Svr
+} // namespace SF
 

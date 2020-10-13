@@ -29,39 +29,58 @@ namespace SF {
 	namespace Svr {
 
 
-		class GameInstanceTransCreateGame : public ClusterEntityMessageTransaction< GameInstanceManagerServiceEntity, Message::GameInstanceManager::CreateGameCmd>
+		class GameInstanceTransCreateGameInstance : public ClusterEntityMessageTransaction< GameInstanceManagerServiceEntity, Message::GameInstanceManager::CreateGameInstanceCmd>
 		{
 		public:
-			typedef ClusterEntityMessageTransaction< GameInstanceManagerServiceEntity, Message::GameInstanceManager::CreateGameCmd> super;
+			using super = ClusterEntityMessageTransaction< GameInstanceManagerServiceEntity, Message::GameInstanceManager::CreateGameInstanceCmd>;
 
 		private:
 			GameInsUID	m_GameInsUID;
 
 		public:
-			GameInstanceTransCreateGame(IHeap& heap, MessageDataPtr& pIMsg) : ClusterEntityMessageTransaction(heap, pIMsg) {}
-			virtual ~GameInstanceTransCreateGame() {}
+			GameInstanceTransCreateGameInstance(IHeap& heap, MessageDataPtr& pIMsg) : ClusterEntityMessageTransaction(heap, pIMsg) {}
+			virtual ~GameInstanceTransCreateGameInstance() {}
 
 			// Start Transaction
 			virtual Result StartTransaction() override;
 
-			BR_SVR_MSGTRANS_CLOSE(Policy::NetSvrPolicyGameInstanceManager, CreateGameRes, RouteContext(m_GameInsUID, GetRouteContext().GetFrom()));
+			BR_SVR_MSGTRANS_CLOSE(Policy::NetSvrPolicyGameInstanceManager, CreateGameInstanceRes, RouteContext(m_GameInsUID, GetRouteContext().GetFrom()));
 		};
 
 
-		class GameInstanceTransGameDeleted : public ClusterEntityMessageTransaction< GameInstanceManagerServiceEntity, Message::GameInstanceManager::GameDeletedC2SEvt>
+		class GameInstanceTransGameInstanceDeleted : public ClusterEntityMessageTransaction< GameInstanceManagerServiceEntity, Message::GameInstanceManager::GameInstanceDeletedC2SEvt>
 		{
 		public:
-			typedef ClusterEntityMessageTransaction< GameInstanceManagerServiceEntity, Message::GameInstanceManager::GameDeletedC2SEvt> super;
+			using super = ClusterEntityMessageTransaction< GameInstanceManagerServiceEntity, Message::GameInstanceManager::GameInstanceDeletedC2SEvt>;
 
 		private:
 			GameInsUID	m_GameInsUID;
 
 		public:
-			GameInstanceTransGameDeleted(IHeap& heap, MessageDataPtr& pIMsg) : ClusterEntityMessageTransaction(heap, pIMsg) {}
-			virtual ~GameInstanceTransGameDeleted() {}
+			GameInstanceTransGameInstanceDeleted(IHeap& heap, MessageDataPtr& pIMsg) : ClusterEntityMessageTransaction(heap, pIMsg) {}
+			virtual ~GameInstanceTransGameInstanceDeleted() {}
 
 			// Start Transaction
 			virtual Result StartTransaction() override;
+		};
+
+
+		class GameInstanceTransSearchGameInstance : public ClusterEntityMessageTransaction< GameInstanceManagerServiceEntity, Message::GameInstanceManager::SearchGameInstanceCmd>
+		{
+		public:
+			using super = ClusterEntityMessageTransaction< GameInstanceManagerServiceEntity, Message::GameInstanceManager::SearchGameInstanceCmd>;
+
+		private:
+			GameInsUID	m_GameInsUID;
+
+		public:
+			GameInstanceTransSearchGameInstance(IHeap& heap, MessageDataPtr& pIMsg) : ClusterEntityMessageTransaction(heap, pIMsg) {}
+			virtual ~GameInstanceTransSearchGameInstance() {}
+
+			// Start Transaction
+			virtual Result StartTransaction() override;
+
+			BR_SVR_MSGTRANS_CLOSE(Policy::NetSvrPolicyGameInstanceManager, CreateGameInstanceRes, RouteContext(m_GameInsUID, GetRouteContext().GetFrom()));
 		};
 
 

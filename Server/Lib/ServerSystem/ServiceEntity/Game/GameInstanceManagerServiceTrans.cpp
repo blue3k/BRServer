@@ -31,54 +31,70 @@
 
 
 namespace SF {
-namespace Svr {
+	namespace Svr {
 
 
+		// Start Transaction
+		Result GameInstanceTransCreateGameInstance::StartTransaction()
+		{
+			FunctionContext hr([this](Result hr)
+				{
+					CloseTransaction(hr);
+				});
+			Entity* pEntity = nullptr;
+			GameInstanceEntity* pGameInstance = nullptr;
+
+			svrCheck(super::StartTransaction());
+
+			svrCheck(Service::EntityManager->CreateEntity(ClusterID::GameInstanceManager, EntityFaculty::GameInstance, pEntity));
+
+			svrCheckPtr(pGameInstance = static_cast<GameInstanceEntity*>(pEntity));
+			svrCheck(pGameInstance->InitializeGameEntity(GetAttributes()));
+
+			svrCheck(GetMyOwner()->OnNewInstance(pGameInstance));
+
+			m_GameInsUID = pEntity->GetEntityUID();
+
+			svrTrace(SVR_INFO, "CreateGameInstance:{0}", pGameInstance->GetEntityUID());
+
+			return hr;
+		}
 
 
-	// Start Transaction
-	Result GameInstanceTransCreateGame::StartTransaction()
-	{
-		FunctionContext hr([this](Result hr)
-			{
-				CloseTransaction(hr);
-			});
-		Entity *pEntity = nullptr;
-		GameInstanceEntity* pGameInstance = nullptr;
+		// Start Transaction
+		Result GameInstanceTransGameInstanceDeleted::StartTransaction()
+		{
+			FunctionContext hr([this](Result hr)
+				{
+					CloseTransaction(hr);
+				});
 
-		svrCheck( super::StartTransaction() );
+			svrCheck(super::StartTransaction());
 
-		svrCheck(Service::EntityManager->CreateEntity( ClusterID::GameInstanceManager, EntityFaculty::GameInstance, pEntity ) );
+			svrCheck(GetMyOwner()->FreeGameInstance(GetRouteContext().GetFrom()));
 
-		svrCheckPtr(pGameInstance = dynamic_cast<GameInstanceEntity*>(pEntity));
-		svrCheck(pGameInstance->InitializeGameEntity(GetNumberOfBotPlayer(), GetMaxPlayer()));
-
-		svrCheck(GetMyOwner()->OnNewInstance(pGameInstance));
-
-		m_GameInsUID = pEntity->GetEntityUID();
-
-		svrTrace(SVR_INFO, "CreateGameInstance:{0}, numBot:{1}, maxPlayer:{2}", pGameInstance->GetEntityUID(), GetNumberOfBotPlayer(), GetMaxPlayer());
-
-		return hr;
-	}
+			return hr;
+		}
 
 
-	// Start Transaction
-	Result GameInstanceTransGameDeleted::StartTransaction()
-	{
-		FunctionContext hr([this](Result hr)
-			{
-				CloseTransaction(hr);
-			});
+		// Start Transaction
+		Result GameInstanceTransSearchGameInstance::StartTransaction()
+		{
+			FunctionContext hr([this](Result hr)
+				{
+					CloseTransaction(hr);
+				});
 
-		svrCheck(super::StartTransaction());
+			svrCheck(super::StartTransaction());
 
-		svrCheck(GetMyOwner()->FreeGameInstance(GetRouteContext().GetFrom()));
+			svrCheck(GetMyOwner()->FreeGameInstance(GetRouteContext().GetFrom()));
 
-		return hr;
-	}
+			svrCheck(GetMyOwner()->FreeGameInstance(GetRouteContext().GetFrom()));
+
+			return hr;
+		}
 
 
-}// namespace Svr 
+	}// namespace Svr 
 }// namespace SF 
 

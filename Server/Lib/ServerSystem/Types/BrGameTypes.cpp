@@ -20,7 +20,7 @@
 
 namespace SF
 {
-
+    constexpr uint GameLogItem::LEGACY_MAX_GAMEPLAYER; // TODO: clean up
 	
 	GameLogItem::GameLogItem(GameLogType logType, UTCTimeStampSec timeStamp, size_t logItemSize)
 		: LogType(logType), LogItemSize((uint16_t)logItemSize), TimeStamp(timeStamp)
@@ -67,10 +67,10 @@ namespace SF
 
 
     GameLogVote::GameLogVote(UTCTimeStampSec timeStamp, uint numVoter)
-		: GameLogItem(GameLogType::Vote,timeStamp,sizeof(GameLogVote) + sizeof(VoteInfo)*std::min((uint)GameConst::MAX_GAMEPLAYER,numVoter-1))
+		: GameLogItem(GameLogType::Vote,timeStamp,sizeof(GameLogVote) + sizeof(VoteInfo)*std::min((uint)LEGACY_MAX_GAMEPLAYER,numVoter-1))
 		,NumberOfVoter((decltype(NumberOfVoter))numVoter)
     {
-		Assert(numVoter <= GameConst::MAX_GAMEPLAYER);
+		Assert(numVoter <= LEGACY_MAX_GAMEPLAYER);
     }
 
     Result GameLogVote::InitializeVote(GameVoteType type, int voterCount)
@@ -110,7 +110,7 @@ namespace SF
 
 
     GameLogVoteResult::GameLogVoteResult(UTCTimeStampSec timeStamp, uint numRankers)
-		: GameLogItem(GameLogType::VoteResult,timeStamp,sizeof(GameLogVoteResult) + sizeof(PlayerID)*std::min((uint)GameConst::MAX_GAMEPLAYER,numRankers-1))
+		: GameLogItem(GameLogType::VoteResult,timeStamp,sizeof(GameLogVoteResult) + sizeof(PlayerID)*std::min((uint)LEGACY_MAX_GAMEPLAYER,numRankers-1))
 		, NumberOfRanker(numRankers)
     {
     }

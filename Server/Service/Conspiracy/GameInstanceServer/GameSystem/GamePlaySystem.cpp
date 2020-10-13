@@ -47,7 +47,7 @@ namespace ConspiracyGameInstanceServer {
 	//	GamePlaySystem class
 	//
 
-	const PlayerRole GamePlaySystem::stm_PlayerRoleByCount[GameConst::MAX_GAMEPLAYER] = 
+	const PlayerRole GamePlaySystem::stm_PlayerRoleByCount[] =
 	{
 		PlayerRole::Villager,
 		PlayerRole::Villager,
@@ -155,12 +155,10 @@ namespace ConspiracyGameInstanceServer {
 	{
 		Result hr = ResultCode::SUCCESS;
 
-		bool ShufflingBuffer[GameConst::MAX_GAMEPLAYER];
+		bool ShufflingBuffer[GameLogItem::LEGACY_MAX_GAMEPLAYER]{};
 		size_t numPlayer = GetOwner().GetNumPlayer();
 
 		m_Werewolves.Clear();
-
-		memset( ShufflingBuffer, 0, sizeof(ShufflingBuffer) );
 
 		// assign requested player first
 		GetOwner().ForeachPlayer([&](GamePlayer* pPlayer) ->Result {
@@ -174,14 +172,14 @@ namespace ConspiracyGameInstanceServer {
 
 			// Find empty slot
 			int iSlot = 0;
-			for (; iSlot < GameConst::MAX_GAMEPLAYER; iSlot++)
+			for (; iSlot < GameLogItem::LEGACY_MAX_GAMEPLAYER; iSlot++)
 			{
 				if (pPlayer->GetRequestedRole() == GamePlaySystem::stm_PlayerRoleByCount[iSlot])
 					break;
 			}
 
 			// skip errnous player
-			if (iSlot >= GameConst::MAX_GAMEPLAYER)
+			if (iSlot >= GameLogItem::LEGACY_MAX_GAMEPLAYER)
 			{
 				svrTrace(Warning, "Failed to find requested role, player:{0}, requested:{1}", pPlayer->GetPlayerID(), (uint)pPlayer->GetRequestedRole());
 				return ResultCode::SUCCESS;
@@ -205,7 +203,7 @@ namespace ConspiracyGameInstanceServer {
 				return ResultCode::SUCCESS;
 
 			int iRandom = (int)(Util::Random.Rand() % numPlayer);
-			for( int count = 0; count < GameConst::MAX_GAMEPLAYER; count++, iRandom = (int)((iRandom+1)%numPlayer) )
+			for( int count = 0; count < GameLogItem::LEGACY_MAX_GAMEPLAYER; count++, iRandom = (int)((iRandom+1)%numPlayer) )
 			{
 				if( !ShufflingBuffer[iRandom] )
 				{

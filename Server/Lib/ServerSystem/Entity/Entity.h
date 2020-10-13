@@ -185,7 +185,9 @@ namespace Svr{
 			return m_HandlerTable.Register<typename TransactionType::MessageClassType>(
 				[this](Net::Connection* pConnection, MessageDataPtr& pMsg, TransactionPtr& pNewTrans)->Result
 				{
-					svrMemReturn(pNewTrans = new(GetHeap()) TransactionType(GetHeap(), pMsg));
+					pNewTrans = new(GetHeap()) TransactionType(GetHeap(), pMsg);
+					if (pNewTrans == nullptr)
+						return ResultCode::OUT_OF_MEMORY;
 					return ResultCode::SUCCESS;
 				}
 			);

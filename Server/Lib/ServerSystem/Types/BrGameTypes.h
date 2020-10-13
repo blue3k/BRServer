@@ -53,13 +53,14 @@ namespace SF
 
 
 
-
 #pragma pack(push)
 #pragma pack(2)
 
 	// Game log item base item
 	struct GameLogItem {
-		GameLogType		LogType;		// Log type
+		static constexpr uint LEGACY_MAX_GAMEPLAYER = 8; // TODO: clean up
+		
+        GameLogType		LogType;		// Log type
 		uint16_t		LogItemSize;	// Actual log item size
         UTCTimeStampSec	TimeStamp;		// 32bit UTC time
 

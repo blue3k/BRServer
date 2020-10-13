@@ -29,13 +29,13 @@ namespace SF
 		void RegisterDebugTraceGameInstanceManager()
 		{
  			// Cmd: Create a game instance
-			MessageDebugTraceMap.insert(std::make_pair(Message::GameInstanceManager::CreateGameCmd::MID.IDSeq.MsgID,&Message::GameInstanceManager::CreateGameCmd::TraceOut));
-			MessageDebugTraceMap.insert(std::make_pair(Message::GameInstanceManager::CreateGameRes::MID.IDSeq.MsgID,&Message::GameInstanceManager::CreateGameRes::TraceOut));
+			MessageDebugTraceMap.insert(std::make_pair(Message::GameInstanceManager::CreateGameInstanceCmd::MID.IDSeq.MsgID,&Message::GameInstanceManager::CreateGameInstanceCmd::TraceOut));
+			MessageDebugTraceMap.insert(std::make_pair(Message::GameInstanceManager::CreateGameInstanceRes::MID.IDSeq.MsgID,&Message::GameInstanceManager::CreateGameInstanceRes::TraceOut));
 			// Cmd: Search game instance
 			MessageDebugTraceMap.insert(std::make_pair(Message::GameInstanceManager::SearchGameInstanceCmd::MID.IDSeq.MsgID,&Message::GameInstanceManager::SearchGameInstanceCmd::TraceOut));
 			MessageDebugTraceMap.insert(std::make_pair(Message::GameInstanceManager::SearchGameInstanceRes::MID.IDSeq.MsgID,&Message::GameInstanceManager::SearchGameInstanceRes::TraceOut));
 			// C2S: Game instance notification of deletion
-			MessageDebugTraceMap.insert(std::make_pair(Message::GameInstanceManager::GameDeletedC2SEvt::MID.IDSeq.MsgID,&Message::GameInstanceManager::GameDeletedC2SEvt::TraceOut));
+			MessageDebugTraceMap.insert(std::make_pair(Message::GameInstanceManager::GameInstanceDeletedC2SEvt::MID.IDSeq.MsgID,&Message::GameInstanceManager::GameInstanceDeletedC2SEvt::TraceOut));
 		}; // void RegisterDebugTraceGameInstanceManager()
 
 

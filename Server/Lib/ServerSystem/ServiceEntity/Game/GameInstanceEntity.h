@@ -64,20 +64,20 @@ namespace Svr
 	{
 	public:
 
-		//typedef conspiracy::GameConfigTbl::GameConfigItem GameConfigType;
-
-		typedef SortedMap<PlayerID,GameInstancePlayer*>
-				GamePlayerUIDMap;
-
+		using GamePlayerUIDMap = SortedMap<PlayerID,GameInstancePlayer*>;
+		using super = Svr::MasterEntity;
 
 	protected:
-		typedef Svr::MasterEntity super;
 
 		// Player by PlayerID
 		GamePlayerUIDMap		m_GamePlayerByUID;
 
 		// Release array
 		PageQueue<PlayerID>		m_PendingReleasePlayer;
+
+		StringCrc32 m_InstanceType;
+
+		StringCrc32 m_DataID;
 
 
 		//////////////////////////////////////////////////////////////////////////////////////////////////
@@ -92,8 +92,6 @@ namespace Svr
 		// Is accept join?
 		bool m_AcceptJoin = false;
 
-		// Team Leader UID
-		PlayerID m_LeaderUID;
 
 		// Max player
 		uint m_MaxPlayer;
@@ -101,10 +99,13 @@ namespace Svr
 		// Total joined player since game instance is created
 		uint m_TotalJoinedPlayer;
 
+		// 
 		DurationMS m_EmptyInstanceKillTimeOut;
 
 		// Component manager
 		ComponentManager m_ComponentManger;
+
+
 
 	public:
 		//////////////////////////////////////////////////////////////////////////////////////////////////
@@ -115,11 +116,13 @@ namespace Svr
 		GameInstanceEntity();
 		~GameInstanceEntity();
 
+
+		StringCrc32 GetInstanceType() const { return m_InstanceType; }
+		StringCrc32 GetDataID() const { return m_DataID; }
+
+
 		const Util::TimeStampTimer& GetTimeToKill() { return m_TimeToKill; }
 		bool GetAcceptJoin() { return m_AcceptJoin; }
-
-		PlayerID GetLeaderUID() { return m_LeaderUID; }
-		void SetLeaderUID(PlayerID value) { m_LeaderUID = value; }
 
 		uint GetMaxPlayer() { return m_MaxPlayer; }
 		uint GetTotalJoinedPlayer() { return m_TotalJoinedPlayer; }
@@ -133,20 +136,6 @@ namespace Svr
 
 		// Get player count at this game
 		inline uint GetNumPlayer();
-
-		//conspiracy::BotTalkTbl::BotTalkTblItem *GetBotTalkTbl() { return m_pBotTalk; }
-
-
-		//////////////////////////////////////////////////////////////////////////////////////////////////
-		//
-		//	Game Systems
-		//
-
-		//// Initialize game system
-		//Result InitializeSystem();
-
-		//// Update game config
-		//Result UpdateGameConfig(uint configPresetID);
 
 
 	protected:
@@ -185,7 +174,7 @@ namespace Svr
 		//
 
 		// Initialize entity to proceed new connection
-		virtual Result InitializeGameEntity(uint numBot, uint maxPlayer);
+		virtual Result InitializeGameEntity(const VariableTable& attributes);
 
 
 		////////////////////////////////////////////////////////////
@@ -224,8 +213,6 @@ namespace Svr
 
 		virtual Result CreatePlayerInstance(const PlayerInformation& playerInfo, GameInstancePlayer* &pPlayer);
 
-		//Result GetPlayerIndex( PlayerID playerID, uint &playerIndex );
-		//Result GetPlayerByIndex( INT playerIndex, GamePlayer* &pGamePlayer );
 
 		// Register new player to join
 		virtual Result AddPlayerToJoin( GameInstancePlayer* &pPlayer );
@@ -238,7 +225,7 @@ namespace Svr
 		// Leave all player
 		Result LeaveAllPlayerForGameDelete();
 
-		// Find Player pilotid
+		// Find Player with player id
 		Result FindPlayer( PlayerID pltID, GameInstancePlayer* &pGamePlayer );
 
 		// Called when a player get out of game

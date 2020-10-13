@@ -945,7 +945,7 @@ namespace GameServer {
 		//	svrChk(RequestCreateParty()));
 		//}
 		//else
-		if (res.GetReplayMemberCount() > GameConst::MAX_GAMEPLAYER)
+		if (res.GetReplayMemberCount() > GameLogItem::LEGACY_MAX_GAMEPLAYER)
 			svrErr(ResultCode::GAME_INVALID_PLAYER_COUNT);
 
 

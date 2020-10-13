@@ -21,7 +21,7 @@
 template< class Func >
 Result GameInstanceEntity::ForeachPlayer(Func func)
 {
-	m_GamePlayerByUID.ForeachOrder(0, GameConst::MAX_GAMEPLAYER, [&](const PlayerID& playerID, Svr::GameInstancePlayer* pPlayer)-> bool
+	m_GamePlayerByUID.ForeachOrder(0, GameLogItem::LEGACY_MAX_GAMEPLAYER, [&](const PlayerID& playerID, Svr::GameInstancePlayer* pPlayer)-> bool
 	{
 		Result hrRes = func((GamePlayer*)pPlayer);
 		if (!(hrRes))
@@ -36,7 +36,7 @@ Result GameInstanceEntity::ForeachPlayer(Func func)
 template< class Func >
 inline Result GameInstanceEntity::ForeachPlayerGameServer(Func func)
 {
-	m_GamePlayerByUID.ForeachOrder(0, GameConst::MAX_GAMEPLAYER, [&](const PlayerID& playerID, Svr::GameInstancePlayer* pGameInsPlayer)-> bool
+	m_GamePlayerByUID.ForeachOrder(0, GameLogItem::LEGACY_MAX_GAMEPLAYER, [&](const PlayerID& playerID, Svr::GameInstancePlayer* pGameInsPlayer)-> bool
 	{
 		if (pGameInsPlayer == nullptr)
 			return true;
@@ -60,7 +60,7 @@ inline Result GameInstanceEntity::ForeachPlayerGameServer(Func func)
 template< class Func >
 inline Result GameInstanceEntity::ForeachPlayerSvrGameInstance(Func func)
 {
-	m_GamePlayerByUID.ForeachOrder(0, GameConst::MAX_GAMEPLAYER, [&](const PlayerID& playerID, Svr::GameInstancePlayer* pGameInsPlayer)-> bool
+	m_GamePlayerByUID.ForeachOrder(0, GameLogItem::LEGACY_MAX_GAMEPLAYER, [&](const PlayerID& playerID, Svr::GameInstancePlayer* pGameInsPlayer)-> bool
 	{
 		if (pGameInsPlayer == nullptr)
 			return true;

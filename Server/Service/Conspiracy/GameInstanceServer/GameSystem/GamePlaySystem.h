@@ -45,7 +45,7 @@ namespace ConspiracyGameInstanceServer {
 		// vote filter functor
 		typedef std::function<bool(GamePlayer*)> VoteFilterFunc;
 
-		static const PlayerRole stm_PlayerRoleByCount[GameConst::MAX_GAMEPLAYER];
+		static const PlayerRole stm_PlayerRoleByCount[GameLogItem::LEGACY_MAX_GAMEPLAYER];
 
 	private:
 		typedef Svr::GameSystem<GameInstanceEntity, GamePlaySystem> super;

@@ -59,7 +59,8 @@ namespace SF {
 
 
 		PlayerTransSearchGameInstance::PlayerTransSearchGameInstance(IHeap& heap, MessageDataPtr& pIMsg)
-			:MessageTransaction(heap, std::forward<MessageDataPtr>(pIMsg))
+			: MessageTransaction(heap, std::forward<MessageDataPtr>(pIMsg))
+			, m_GameInstances(GetHeap())
 		{
 			RegisterMessageHandler<Message::GameInstanceManager::SearchGameInstanceRes>(&PlayerTransSearchGameInstance::OnSearchGameInstanceRes);
 		}

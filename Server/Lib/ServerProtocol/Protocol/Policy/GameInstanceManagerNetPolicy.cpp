@@ -26,21 +26,21 @@ namespace SF
  	namespace Policy
 	{
  		// Cmd: Create a game instance
-		Result NetPolicyGameInstanceManager::CreateGameCmd( const RouteContext &InRouteContext, const uint64_t &InTransactionID, const uint16_t &InRouteHopCount, const uint16_t &InNumberOfBotPlayer, const uint16_t &InMaxPlayer )
+		Result NetPolicyGameInstanceManager::CreateGameInstanceCmd( const RouteContext &InRouteContext, const uint64_t &InTransactionID, const uint16_t &InRouteHopCount, const VariableTable &InAttributes )
 		{
  			FunctionContext hr;
 
 			 MessageDataPtr pMessage;
 			 protocolCheckPtr(m_pConnection);
 
-			 pMessage = SF::Message::GameInstanceManager::CreateGameCmd::Create(m_pConnection->GetIOHeap(), InRouteContext, InTransactionID, InRouteHopCount, InNumberOfBotPlayer, InMaxPlayer);
+			 pMessage = SF::Message::GameInstanceManager::CreateGameInstanceCmd::Create(m_pConnection->GetIOHeap(), InRouteContext, InTransactionID, InRouteHopCount, InAttributes);
 			 protocolCheckPtr(*pMessage);
 
 			 return m_pConnection->Send( pMessage );
 
 			return hr;
 
-		}; // Result NetPolicyGameInstanceManager::CreateGameCmd( const RouteContext &InRouteContext, const uint64_t &InTransactionID, const uint16_t &InRouteHopCount, const uint16_t &InNumberOfBotPlayer, const uint16_t &InMaxPlayer )
+		}; // Result NetPolicyGameInstanceManager::CreateGameInstanceCmd( const RouteContext &InRouteContext, const uint64_t &InTransactionID, const uint16_t &InRouteHopCount, const VariableTable &InAttributes )
 		// Cmd: Search game instance
 		Result NetPolicyGameInstanceManager::SearchGameInstanceCmd( const RouteContext &InRouteContext, const uint64_t &InTransactionID, const uint16_t &InRouteHopCount, const char* InSearchKeyword )
 		{
@@ -58,41 +58,41 @@ namespace SF
 
 		}; // Result NetPolicyGameInstanceManager::SearchGameInstanceCmd( const RouteContext &InRouteContext, const uint64_t &InTransactionID, const uint16_t &InRouteHopCount, const char* InSearchKeyword )
 		// C2S: Game instance notification of deletion
-		Result NetPolicyGameInstanceManager::GameDeletedC2SEvt( const RouteContext &InRouteContext, const uint16_t &InRouteHopCount )
+		Result NetPolicyGameInstanceManager::GameInstanceDeletedC2SEvt( const RouteContext &InRouteContext, const uint16_t &InRouteHopCount )
 		{
  			FunctionContext hr;
 
 			 MessageDataPtr pMessage;
 			 protocolCheckPtr(m_pConnection);
 
-			 pMessage = SF::Message::GameInstanceManager::GameDeletedC2SEvt::Create(m_pConnection->GetIOHeap(), InRouteContext, InRouteHopCount);
+			 pMessage = SF::Message::GameInstanceManager::GameInstanceDeletedC2SEvt::Create(m_pConnection->GetIOHeap(), InRouteContext, InRouteHopCount);
 			 protocolCheckPtr(*pMessage);
 
 			 return m_pConnection->Send( pMessage );
 
 			return hr;
 
-		}; // Result NetPolicyGameInstanceManager::GameDeletedC2SEvt( const RouteContext &InRouteContext, const uint16_t &InRouteHopCount )
+		}; // Result NetPolicyGameInstanceManager::GameInstanceDeletedC2SEvt( const RouteContext &InRouteContext, const uint16_t &InRouteHopCount )
 
 
 		// Cmd: Create a game instance
-		Result NetSvrPolicyGameInstanceManager::CreateGameRes( const RouteContext &InRouteContext, const uint64_t &InTransactionID, const Result &InResult )
+		Result NetSvrPolicyGameInstanceManager::CreateGameInstanceRes( const RouteContext &InRouteContext, const uint64_t &InTransactionID, const Result &InResult )
 		{
  			FunctionContext hr;
 
 			 MessageDataPtr pMessage;
 			 protocolCheckPtr(m_pConnection);
 
-			 pMessage = SF::Message::GameInstanceManager::CreateGameRes::Create(m_pConnection->GetIOHeap(), InRouteContext, InTransactionID, InResult);
+			 pMessage = SF::Message::GameInstanceManager::CreateGameInstanceRes::Create(m_pConnection->GetIOHeap(), InRouteContext, InTransactionID, InResult);
 			 protocolCheckPtr(*pMessage);
 
 			 return m_pConnection->Send( pMessage );
 
 			return hr;
 
-		}; // Result NetSvrPolicyGameInstanceManager::CreateGameRes( const RouteContext &InRouteContext, const uint64_t &InTransactionID, const Result &InResult )
+		}; // Result NetSvrPolicyGameInstanceManager::CreateGameInstanceRes( const RouteContext &InRouteContext, const uint64_t &InTransactionID, const Result &InResult )
 		// Cmd: Search game instance
-		Result NetSvrPolicyGameInstanceManager::SearchGameInstanceRes( const RouteContext &InRouteContext, const uint64_t &InTransactionID, const Result &InResult, const Array<uint64_t>& InGameInstances )
+		Result NetSvrPolicyGameInstanceManager::SearchGameInstanceRes( const RouteContext &InRouteContext, const uint64_t &InTransactionID, const Result &InResult, const Array<GameInstanceInfo>& InGameInstances )
 		{
  			FunctionContext hr;
 
@@ -106,7 +106,7 @@ namespace SF
 
 			return hr;
 
-		}; // Result NetSvrPolicyGameInstanceManager::SearchGameInstanceRes( const RouteContext &InRouteContext, const uint64_t &InTransactionID, const Result &InResult, const Array<uint64_t>& InGameInstances )
+		}; // Result NetSvrPolicyGameInstanceManager::SearchGameInstanceRes( const RouteContext &InRouteContext, const uint64_t &InTransactionID, const Result &InResult, const Array<GameInstanceInfo>& InGameInstances )
 
 
 	}; // namespace Policy

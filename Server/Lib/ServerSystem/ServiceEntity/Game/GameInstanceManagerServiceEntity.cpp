@@ -24,9 +24,11 @@
 #include "Entity/EntityManager.h"
 #include "ServiceEntity/Game/GameInstanceManagerServiceEntity.h"
 #include "ServiceEntity/Game/GameInstanceManagerServiceTrans.h"
+#include "ServiceEntity/Game/GameInstanceEntity.h"
 #include "SvrTrace.h"
 #include "SvrConst.h"
 #include "Service/ServerService.h"
+#include "Util/SFRandom.h"
 
 #include "Protocol/Message/GameInstanceManagerMsgClass.h"
 #include "PerformanceCounter/PerformanceCounterClient.h"
@@ -34,100 +36,127 @@
 
 
 namespace SF {
-namespace Svr {
+	namespace Svr {
 
 
-	//////////////////////////////////////////////////////////////////////////
-	//
-	//	Entity informations
-	//
+		//////////////////////////////////////////////////////////////////////////
+		//
+		//	Entity informations
+		//
 
-	GameInstanceManagerServiceEntity::GameInstanceManagerServiceEntity(GameID gameID, ClusterID clusterID, ClusterMembership initialMembership)
-		: super(gameID, clusterID, initialMembership )
-		, m_NumberOfInstance("NumberOfGameInstances")
-	{
-		BR_ENTITY_MESSAGE(Message::GameInstanceManager::CreateGameCmd)		{ svrMemReturn(pNewTrans = new(GetHeap()) GameInstanceTransCreateGame(GetHeap(), pMsgData)); return ResultCode::SUCCESS; } );
-		BR_ENTITY_MESSAGE(Message::GameInstanceManager::GameDeletedC2SEvt)	{ svrMemReturn(pNewTrans = new(GetHeap()) GameInstanceTransGameDeleted(GetHeap(), pMsgData)); return ResultCode::SUCCESS; } );
-	}
-
-	GameInstanceManagerServiceEntity::~GameInstanceManagerServiceEntity()
-	{
-	}
-
-	Result GameInstanceManagerServiceEntity::InitializeEntity(EntityID newEntityID)
-	{
-		Result hr = ResultCode::SUCCESS;
-		EntityUID entityUID;
-		PerformanceCounterInstance* pInstance = nullptr;
-
-		svrChk(super::InitializeEntity(newEntityID));
-
-		//entityUID = EntityUID(GetMyServerID(), Service::EntityTable->GenEntityID(EntityFaculty::Service));
-		pInstance = PerformanceCounterClient::GetDefaultCounterInstance();
-		if (pInstance != nullptr)
+		GameInstanceManagerServiceEntity::GameInstanceManagerServiceEntity(GameID gameID, ClusterID clusterID, ClusterMembership initialMembership)
+			: super(gameID, clusterID, initialMembership)
+			, m_NumberOfInstance("NumberOfGameInstances")
+			, m_GameInstances(GetHeap())
 		{
-			pInstance->AddCounter(&m_NumberOfInstance);
+			// Those are fallback handlers.
+			// ServerEntity will handle it
+			RegisterMessageHandler<GameInstanceTransCreateGameInstance>();
+			RegisterMessageHandler<GameInstanceTransGameInstanceDeleted>();
+			RegisterMessageHandler<GameInstanceTransSearchGameInstance>();
 		}
 
-	Proc_End:
-
-		return hr;
-	}
-
-	Result GameInstanceManagerServiceEntity::RegisterServiceMessageHandler( ServerEntity *pServerEntity )
-	{
-		Result hr = ResultCode::SUCCESS;
-
-		svrChk(super::RegisterServiceMessageHandler( pServerEntity ) );
-
-		pServerEntity->BR_ENTITY_MESSAGE(Message::GameInstanceManager::CreateGameCmd)				{ svrMemReturn(pNewTrans = new(GetHeap()) GameInstanceTransCreateGame(GetHeap(), pMsgData)); return ResultCode::SUCCESS; } );
-		pServerEntity->BR_ENTITY_MESSAGE(Message::GameInstanceManager::GameDeletedC2SEvt)			{ svrMemReturn(pNewTrans = new(GetHeap()) GameInstanceTransGameDeleted(GetHeap(), pMsgData)); return ResultCode::SUCCESS; } );
-
-	Proc_End:
-
-		return hr;
-	}
-
-	Result GameInstanceManagerServiceEntity::OnNewInstance(GameInstanceEntity* pGameInstance)
-	{
-		Result hr = ResultCode::SUCCESS;
-
-		svrChkPtr(pGameInstance);
-
-		if ((Service::EntityManager->AddEntity(EntityFaculty::GameInstance, (Entity*)pGameInstance)))
+		GameInstanceManagerServiceEntity::~GameInstanceManagerServiceEntity()
 		{
-			++m_NumberOfInstance;
-			m_LocalWorkload.fetch_add(1, std::memory_order_relaxed);
 		}
 
-	Proc_End:
-
-		return hr;
-	}
-
-	// Called when a game instance is deleted
-	Result GameInstanceManagerServiceEntity::FreeGameInstance(GameInsUID gameUID)
-	{
-		Result hr = ResultCode::SUCCESS;
-
-		if ((Service::EntityManager->RemoveEntity(gameUID.GetEntityID())))
+		Result GameInstanceManagerServiceEntity::InitializeEntity(EntityID newEntityID)
 		{
-			--m_NumberOfInstance;
-			m_LocalWorkload.fetch_sub(1, std::memory_order_relaxed);
+			FunctionContext hr;
+			EntityUID entityUID;
+			PerformanceCounterInstance* pInstance = nullptr;
+
+			svrCheck(super::InitializeEntity(newEntityID));
+
+			//entityUID = EntityUID(GetMyServerID(), Service::EntityTable->GenEntityID(EntityFaculty::Service));
+			pInstance = PerformanceCounterClient::GetDefaultCounterInstance();
+			if (pInstance != nullptr)
+			{
+				pInstance->AddCounter(&m_NumberOfInstance);
+			}
+
+			return hr;
 		}
 
-		//Proc_End:
+		Result GameInstanceManagerServiceEntity::RegisterServiceMessageHandler(ServerEntity* pServerEntity)
+		{
+			FunctionContext hr;
 
-		return hr;
-	}
+			svrCheck(super::RegisterServiceMessageHandler(pServerEntity));
+
+			// Let server entity handle it first
+			svrCheck(pServerEntity->RegisterMessageHandler<GameInstanceTransCreateGameInstance>());
+			svrCheck(pServerEntity->RegisterMessageHandler<GameInstanceTransGameInstanceDeleted>());
+			svrCheck(pServerEntity->RegisterMessageHandler<GameInstanceTransSearchGameInstance>());
+
+			return hr;
+		}
+
+		Result GameInstanceManagerServiceEntity::OnNewInstance(GameInstanceEntity* pGameInstance)
+		{
+			FunctionContext hr;
+
+			svrCheckPtr(pGameInstance);
+
+			if ((Service::EntityManager->AddEntity(EntityFaculty::GameInstance, (Entity*)pGameInstance)))
+			{
+				++m_NumberOfInstance;
+				m_LocalWorkload.fetch_add(1, std::memory_order_relaxed);
+			}
+
+			{
+				SF::MutexScopeLock scopeLock(m_GameInstanceListLock);
+				svrCheck(m_GameInstances.Insert(pGameInstance->GetEntityUID(), pGameInstance));
+			}
+
+			return hr;
+		}
+
+		// Called when a game instance is deleted
+		Result GameInstanceManagerServiceEntity::FreeGameInstance(GameInsUID gameUID)
+		{
+			FunctionContext hr;
+			GameInstanceEntity* pGameInstance = nullptr;
+
+			{
+				SF::MutexScopeLock scopeLock(m_GameInstanceListLock);
+				svrCheck(m_GameInstances.Remove(pGameInstance->GetEntityUID(), pGameInstance));
+			}
+
+			if ((Service::EntityManager->RemoveEntity(gameUID.GetEntityID())))
+			{
+				--m_NumberOfInstance;
+				m_LocalWorkload.fetch_sub(1, std::memory_order_relaxed);
+			}
+
+			return hr;
+		}
+
+		Result GameInstanceManagerServiceEntity::SearchGameInstance(size_t maxSearch, const char* searchKeyword, Array<GameInstanceInfo>& outList)
+		{
+			FunctionContext hr;
+
+			int maxOffset = Util::Max(0, (int)m_GameInstances.size() - (int)maxSearch - 1);
+
+			// TODO: search keyword
+			m_GameInstances.ForeachOrder(
+				Util::Random.Rand(maxOffset),
+				static_cast<uint>(maxSearch),
+				[this, &outList](GameInsUID key, GameInstanceEntity* value) -> Result
+				{
+					GameInstanceInfo instanceInfo;
+					instanceInfo.GameInstanceUID = key;
+					instanceInfo.TypeName = value->GetInstanceType();
+					instanceInfo.DataID = value->GetDataID();
+					outList.push_back(std::forward<GameInstanceInfo>(instanceInfo));
+					return ResultCode::SUCCESS;
+				});
+
+			return hr;
+		}
 
 
-
-
-
-
-}; // namespace Svr {
-}; // namespace SF {
-
+	} // namespace Svr {
+} // namespace SF {
 
 

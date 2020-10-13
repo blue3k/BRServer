@@ -230,7 +230,7 @@ namespace ConspiracyGameInstanceServer {
 		if( !m_IsInVoting )
 			return;
 
-		StaticArray<GamePlayer*, GameConst::MAX_GAMEPLAYER> voteTargets(GetOwner().GetHeap());
+		StaticArray<GamePlayer*, GameLogItem::LEGACY_MAX_GAMEPLAYER> voteTargets(GetOwner().GetHeap());
 
 		// Nothing to do
 		if( GatherVoteTarget(voteTargets) == 0 ) return;
@@ -252,7 +252,7 @@ namespace ConspiracyGameInstanceServer {
 		if( !m_IsInVoting )
 			return;
 		
-		StaticArray<GamePlayer*, GameConst::MAX_GAMEPLAYER> voteTargets(GetOwner().GetHeap());
+		StaticArray<GamePlayer*, GameLogItem::LEGACY_MAX_GAMEPLAYER> voteTargets(GetOwner().GetHeap());
 
 		// Nothing to do
 		if( GatherVoteTarget(voteTargets) == 0 ) return;
@@ -390,7 +390,7 @@ namespace ConspiracyGameInstanceServer {
 		if( !m_IsInVoting )
 			return;
 
-		StaticArray<GamePlayer*, GameConst::MAX_GAMEPLAYER> voteTargets(GetOwner().GetHeap());
+		StaticArray<GamePlayer*, GameLogItem::LEGACY_MAX_GAMEPLAYER> voteTargets(GetOwner().GetHeap());
 
 		// Nothing to do
 		if( GatherVoteTarget(voteTargets) == 0 ) return;
@@ -414,7 +414,7 @@ namespace ConspiracyGameInstanceServer {
 		if( !m_IsInVoting )
 			return;
 		
-		StaticArray<GamePlayer*, GameConst::MAX_GAMEPLAYER> voteTargets(GetOwner().GetHeap());
+		StaticArray<GamePlayer*, GameLogItem::LEGACY_MAX_GAMEPLAYER> voteTargets(GetOwner().GetHeap());
 
 		// Nothing to do
 		if( GatherVoteTarget(voteTargets) == 0 ) return;
@@ -654,7 +654,7 @@ namespace ConspiracyGameInstanceServer {
 		GamePlaySystem& gamePlaySystem = GetGamePlaySystem();
 		GamePlayer* pVoter = nullptr;
 
-		StaticArray<GamePlayer*, GameConst::MAX_GAMEPLAYER> voteTargets(GetOwner().GetHeap());
+		StaticArray<GamePlayer*, GameLogItem::LEGACY_MAX_GAMEPLAYER> voteTargets(GetOwner().GetHeap());
 
 		// Seer random vote
 		if( GetGamePlaySystem().GetSeer() != 0 && GetSeersChoice() == 0
@@ -711,7 +711,7 @@ namespace ConspiracyGameInstanceServer {
 		if( !m_IsInVoting )
 			return;
 
-		StaticArray<GamePlayer*, GameConst::MAX_GAMEPLAYER> voteTargets(GetOwner().GetHeap());
+		StaticArray<GamePlayer*, GameLogItem::LEGACY_MAX_GAMEPLAYER> voteTargets(GetOwner().GetHeap());
 
 		// Seer random vote
 		if( GetGamePlaySystem().GetSeer() != 0 && GetSeersChoice() == 0

@@ -37,8 +37,9 @@ namespace ConspiracyGameInstanceServer {
 	template< class OwnerType, class MessageClass >
 	class RoutedGamePlayerMessageTransaction : public Svr::TransactionT<OwnerType>, public MessageClass
 	{
-	private:
-		typedef Svr::TransactionT<OwnerType> super;
+	public:
+		using MessageClassType = MessageClass;
+		using super = Svr::TransactionT<OwnerType>;
 
 	protected:
 		// Player Player ID

@@ -14,12 +14,12 @@ namespace SF::Message::GameInstanceManager
 
 
 # Protocol interface class NetPolicyGameInstanceManager
-## CreateGame Request
+## CreateGameInstance Request
 Create a game instance
 
 1. Command interface
 
-        Result CreateGameCmd(const RouteContext &InRouteContext, const uint64_t &InTransactionID, const uint16_t &InRouteHopCount, const uint16_t &InNumberOfBotPlayer, const uint16_t &InMaxPlayer)
+        Result CreateGameInstanceCmd(const RouteContext &InRouteContext, const uint64_t &InTransactionID, const uint16_t &InRouteHopCount, const Array<uint8_t>& InAttributes)
 
 		- OutInRouteContext: RouteContext type. 
 
@@ -27,13 +27,11 @@ Create a game instance
 
 		- OutInRouteHopCount: uint16 type. 
 
-		- OutInNumberOfBotPlayer: uint16 type. Number of bots.
-
-		- OutInMaxPlayer: uint16 type. Total player count.
+		- OutInAttributes: VariableTable type. Instance attributes
 
 2. Result interface
 
-C++: Cast message to CreateGameRes to access values
+C++: Cast message to CreateGameInstanceRes to access values
 
 
 		- OutRouteContext: RouteContext type. 
@@ -69,13 +67,13 @@ C++: Cast message to SearchGameInstanceRes to access values
 
 		- OutResult: Result type. 
 
-		- OutGameInstances: GameInsUID type. Game instance ID
+		- OutGameInstances: GameInstanceInfo type. Game instance informations
 
 
-## GameDeletedC2SEvt
+## GameInstanceDeletedC2SEvt
 Game instance notification of deletion
 
-        Result GameDeletedC2SEvt(const RouteContext &InRouteContext, const uint16_t &InRouteHopCount)
+        Result GameInstanceDeletedC2SEvt(const RouteContext &InRouteContext, const uint16_t &InRouteHopCount)
 
 		- OutInRouteContext: RouteContext type. 
 

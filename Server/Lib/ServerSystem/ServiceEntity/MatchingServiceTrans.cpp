@@ -286,7 +286,7 @@ namespace Svr {
 		}
 
 		BR_TRANS_MESSAGE(Message::PartyMatchingQueue::DequeueItemRes, { return OnDequeueItem(pRes); });
-		BR_TRANS_MESSAGE(Message::GameInstanceManager::CreateGameRes, { return OnCreateGame(pRes); });
+		BR_TRANS_MESSAGE(Message::GameInstanceManager::CreateGameInstanceRes, { return OnCreateGame(pRes); });
 	}
 
 
@@ -372,20 +372,23 @@ namespace Svr {
 
 	Result MatchingTransProcessMatchedItems::CreateGame()
 	{
-		Result hr = ResultCode::SUCCESS;
+		FunctionContext hr([this](Result hr)
+			{
+				if (!hr)
+					SetTimer(DurationMS(1000));
+			});
 		ServerServiceInformation *pService = nullptr;
 
 		svrTrace(SVR_MATCHING, "Creating game Matching:{0}", GetTargetMatchingMemberCount());
 
-		svrChk(Service::ClusterManager->GetRandomService(GetServerGameID(), ClusterID::GameInstanceManager, pService));
+		svrCheck(Service::ClusterManager->GetRandomService(GetServerGameID(), ClusterID::GameInstanceManager, pService));
+
+		VariableTable attributes(GetHeap());
+		attributes.SetValue("NumBot"_crc, (uint16_t)(m_TargetMatchingMemberCount - m_DequeuedTotalMembers));
+		attributes.SetValue("MaxPlayer"_crc, m_TargetMatchingMemberCount);
 
 		// 2. Get service entity list in the cluster
-		svrChk(pService->GetService<GameInstanceManagerService>()->CreateGameCmd(GetTransID(), 0, (uint16_t)(m_TargetMatchingMemberCount - m_DequeuedTotalMembers), (uint16_t)m_TargetMatchingMemberCount));
-
-	Proc_End:
-
-		if (!(hr))
-			SetTimer(DurationMS(1000));
+		svrCheck(pService->GetService<GameInstanceManagerService>()->CreateGameInstanceCmd(GetTransID(), 0, attributes));
 
 		return hr;
 	}
@@ -393,7 +396,7 @@ namespace Svr {
 	Result MatchingTransProcessMatchedItems::OnCreateGame(TransactionResult* pRes)
 	{
 		Result hr = ResultCode::SUCCESS;
-		Message::GameInstanceManager::CreateGameRes msgRes;
+		Message::GameInstanceManager::CreateGameInstanceRes msgRes;
 		GameInsUID gameUID;
 		uint notifiedPlayerCount = 0;
 

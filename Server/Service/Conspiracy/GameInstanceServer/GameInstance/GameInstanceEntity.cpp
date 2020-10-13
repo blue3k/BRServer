@@ -58,30 +58,24 @@ namespace ConspiracyGameInstanceServer {
 
 
 	GameInstanceEntity::GameInstanceEntity()
-		: m_TableVersion(-1)
-		, m_PresetGameConfigID(1) // 1 is default
-		, m_PresetGameConfig(nullptr)
-		, m_pBotTalk(nullptr)
 	{
-		memset(m_PlayerByIndex,0, sizeof(m_PlayerByIndex));
 		SetTickInterval(DurationMS(ConspiracyGameInstanceServer::Const::GAMEINSTANCE_TICK_TIME));
 		SetEmptyInstanceKillTimeOut(DurationMS(Const::TIME_DELETE_GAMEINSTANCE_NOPLAYER));
 
-
 		////////////////////////////////////////////////////////////////////////////////////////////////////
 		// To game instance
-		BR_ENTITY_MESSAGE(Message::GameInstance::DeleteGameC2SEvt)				{ svrMemReturn(pNewTrans = new(GetHeap()) GameEntityTransDeleteGame(GetHeap(), pMsgData)); return ResultCode::SUCCESS; } );
-		BR_ENTITY_MESSAGE(Message::GameInstance::JoinGameCmd)					{ svrMemReturn(pNewTrans = new(GetHeap()) GameEntityTransJoinGame(GetHeap(), pMsgData)); return ResultCode::SUCCESS; } );
-		BR_ENTITY_MESSAGE(Message::GameInstance::LeaveGameInstanceCmd)			{ svrMemReturn(pNewTrans = new(GetHeap()) GameEntityTransLeaveGame(GetHeap(), pMsgData)); return ResultCode::SUCCESS; } );
-		BR_ENTITY_MESSAGE(Message::GameInstance::KickPlayerCmd)					{ svrMemReturn(pNewTrans = new(GetHeap()) GameEntityTransKickPlayer(GetHeap(), pMsgData)); return ResultCode::SUCCESS; } );
-		BR_ENTITY_MESSAGE(Message::GameInstance::AssignRoleCmd)					{ svrMemReturn(pNewTrans = new(GetHeap()) GameEntityTransAssignRole(GetHeap(), pMsgData)); return ResultCode::SUCCESS; } );
-		BR_ENTITY_MESSAGE(Message::GameInstance::ChatMessageC2SEvt)				{ svrMemReturn(pNewTrans = new(GetHeap()) GameEntityTransChatMessage(GetHeap(), pMsgData)); return ResultCode::SUCCESS; } );
-		BR_ENTITY_MESSAGE(Message::GameInstance::VoteGameAdvanceCmd)			{ svrMemReturn(pNewTrans = new(GetHeap()) GameEntityTransVoteGameAdvance(GetHeap(), pMsgData)); return ResultCode::SUCCESS; } );
-		BR_ENTITY_MESSAGE(Message::GameInstance::VoteCmd)						{ svrMemReturn(pNewTrans = new(GetHeap()) GameEntityTransVote(GetHeap(), pMsgData)); return ResultCode::SUCCESS; } );
-		BR_ENTITY_MESSAGE(Message::GameInstance::AdvanceGameCmd)				{ svrMemReturn(pNewTrans = new(GetHeap()) GameEntityTransAdvanceGame(GetHeap(), pMsgData)); return ResultCode::SUCCESS; } );
-		BR_ENTITY_MESSAGE(Message::GameInstance::GamePlayAgainCmd)				{ svrMemReturn(pNewTrans = new(GetHeap()) GameEntityTransGamePlayAgain(GetHeap(), pMsgData)); return ResultCode::SUCCESS; } );
-		BR_ENTITY_MESSAGE(Message::GameInstance::GameRevealPlayerCmd)			{ svrMemReturn(pNewTrans = new(GetHeap()) GameEntityTransGameRevealPlayer(GetHeap(), pMsgData)); return ResultCode::SUCCESS; } );
-		BR_ENTITY_MESSAGE(Message::GameInstance::GamePlayerReviveCmd)			{ svrMemReturn(pNewTrans = new(GetHeap()) GameEntityTransGamePlayerRevive(GetHeap(), pMsgData)); return ResultCode::SUCCESS; } );
+		RegisterMessageHandler<GameEntityTransDeleteGame>();
+		RegisterMessageHandler<GameEntityTransJoinGame>();
+		RegisterMessageHandler<GameEntityTransLeaveGame>();
+		RegisterMessageHandler<GameEntityTransKickPlayer>();
+		RegisterMessageHandler<GameEntityTransAssignRole>();
+		RegisterMessageHandler<GameEntityTransChatMessage>();
+		RegisterMessageHandler<GameEntityTransVoteGameAdvance>();
+		RegisterMessageHandler<GameEntityTransVote>();
+		RegisterMessageHandler<GameEntityTransAdvanceGame>();
+		RegisterMessageHandler<GameEntityTransGamePlayAgain>();
+		RegisterMessageHandler<GameEntityTransGameRevealPlayer>();
+		RegisterMessageHandler<GameEntityTransGamePlayerRevive>();
 	}
 
 	GameInstanceEntity::~GameInstanceEntity()
@@ -198,16 +192,19 @@ namespace ConspiracyGameInstanceServer {
 	//
 
 	// Initialize entity to proceed new connection
-	Result GameInstanceEntity::InitializeGameEntity(uint numBot, uint maxPlayer)
+	Result GameInstanceEntity::InitializeGameEntity(const VariableTable& attributes)
 	{
 		Result hr = ResultCode::SUCCESS;
 		Svr::GameInstancePlayer* pPlayer = nullptr;
+
+		uint numBot = attributes.GetValue<uint>("NumBot"_crc);
+		uint maxPlayer = attributes.GetValue<uint>("MaxPlayer"_crc);
 
 		// initialize
 		memset(m_PlayerCharacter, 0xFF, sizeof(m_PlayerCharacter));
 
 		// randomize player character
-		for (INT character = 0; character < GameConst::MAX_GAMEPLAYER; character++)
+		for (INT character = 0; character < GameLogItem::LEGACY_MAX_GAMEPLAYER; character++)
 		{
 			uint player = (uint)Util::Random.Rand() % maxPlayer;
 			for (uint iPlayer = 0; iPlayer < maxPlayer; iPlayer++)
@@ -234,7 +231,7 @@ namespace ConspiracyGameInstanceServer {
 		m_RoleRequestSeer = 0;
 		m_RoleRequestWerewolf = 0;
 
-		svrChk(super::InitializeGameEntity(numBot, maxPlayer));
+		svrChk(super::InitializeGameEntity(attributes));
 
 
 		// add fake bot player

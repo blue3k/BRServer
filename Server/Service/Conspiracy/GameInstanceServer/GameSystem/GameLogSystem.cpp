@@ -117,7 +117,7 @@ namespace ConspiracyGameInstanceServer {
 			return ResultCode::INVALID_ARG;
 
 
-		if( voterCount <= 0 || voterCount > GameConst::MAX_GAMEPLAYER )
+		if( voterCount <= 0 || voterCount > GameLogItem::LEGACY_MAX_GAMEPLAYER )
 		{
 			return ResultCode::GAME_INVALID_PLAYER_COUNT;
 		}
@@ -166,7 +166,7 @@ namespace ConspiracyGameInstanceServer {
 			return ResultCode::INVALID_POINTER;
 
 		Assert(numRankers > 0 );
-		if( numRankers <= 0 || numRankers > GameConst::MAX_GAMEPLAYER )
+		if( numRankers <= 0 || numRankers > GameLogItem::LEGACY_MAX_GAMEPLAYER )
 		{
 			return ResultCode::GAME_INVALID_PLAYER_COUNT;
 		}
