@@ -26,6 +26,7 @@
 #include "Component/ServerComponent.h"
 #include "ServerService/ServerServiceBase.h"
 #include "Transaction/MessageRoute.h"
+#include "ServerConfig/SFServerConfig.h"
 
 #include "Entity/EntityInformation.h"
 #include "ServiceEntity/ClusteredServiceEntity.h"
@@ -65,7 +66,7 @@ namespace SF {
 
 		public:
 
-			GameInstanceManagerServiceEntity(GameID gameID, ClusterID clusterID, ClusterMembership initialMembership = ClusterMembership::Slave);
+			GameInstanceManagerServiceEntity(GameID gameID, ServerConfig::ServerModuleGameInstanceManager* config, ClusterID clusterID, ClusterMembership initialMembership = ClusterMembership::Slave);
 			~GameInstanceManagerServiceEntity();
 
 

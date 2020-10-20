@@ -38,7 +38,6 @@ namespace SF {
 		//	Game command transaction
 		//
 
-
 		class PlayerTransSearchGameInstance : public Svr::MessageTransaction<GamePlayerEntity, Message::Game::SearchGameInstanceCmd>
 		{
 		public:

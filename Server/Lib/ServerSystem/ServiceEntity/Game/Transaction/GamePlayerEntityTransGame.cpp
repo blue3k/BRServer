@@ -136,7 +136,7 @@ namespace SF {
 
 			svrCheck(joinRes.ParseMessage(*pMsgRes->GetMessage()));
 
-			GetMyOwner()->AddGameTransactionLog(TransLogCategory::Game, 1, 0, joinRes.GetRouteContext().GetFrom().UID);
+			//GetMyOwner()->AddGameTransactionLog(TransLogCategory::Game, 1, 0, joinRes.GetRouteContext().GetFrom().UID);
 
 			GetMyOwner()->SetGameInsUID(joinRes.GetRouteContext().GetFrom());
 
@@ -242,7 +242,7 @@ namespace SF {
 			Svr::MessageResult* pMsgRes = (Svr::MessageResult*)pRes;
 			Message::GameInstance::LeaveGameInstanceRes leaveRes;
 
-			GetMyOwner()->AddGameTransactionLog(TransLogCategory::Game, -1, 0, GetMyOwner()->GetGameInsUID().UID);
+			//GetMyOwner()->AddGameTransactionLog(TransLogCategory::Game, -1, 0, GetMyOwner()->GetGameInsUID().UID);
 
 			if (pRes->GetResult() == Result(ResultCode::SVR_INVALID_ENTITYUID))
 			{

@@ -44,7 +44,7 @@ namespace SF {
 		//	Entity informations
 		//
 
-		GameInstanceManagerServiceEntity::GameInstanceManagerServiceEntity(GameID gameID, ClusterID clusterID, ClusterMembership initialMembership)
+		GameInstanceManagerServiceEntity::GameInstanceManagerServiceEntity(GameID gameID, ServerConfig::ServerModuleGameInstanceManager* config, ClusterID clusterID, ClusterMembership initialMembership)
 			: super(gameID, clusterID, initialMembership)
 			, m_NumberOfInstance("NumberOfGameInstances")
 			, m_GameInstances(GetHeap())

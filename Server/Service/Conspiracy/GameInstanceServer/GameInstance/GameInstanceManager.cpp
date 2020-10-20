@@ -43,8 +43,8 @@ namespace ConspiracyGameInstanceServer {
 
 
 	// Constructor/Destructor
-	GameInstanceManagerServiceEntity::GameInstanceManagerServiceEntity( GameID gameID, ClusterID clusterID, ClusterMembership initialMembership )
-		: Svr::GameInstanceManagerServiceEntity(gameID, clusterID, initialMembership)
+	GameInstanceManagerServiceEntity::GameInstanceManagerServiceEntity( GameID gameID, ServerConfig::ServerModuleGameInstanceManager* config, ClusterID clusterID, ClusterMembership initialMembership )
+		: Svr::GameInstanceManagerServiceEntity(gameID, config, clusterID, initialMembership)
 	{
 	}
 
@@ -52,9 +52,6 @@ namespace ConspiracyGameInstanceServer {
 	GameInstanceManagerServiceEntity::~GameInstanceManagerServiceEntity()
 	{
 	}
-
-
-
 
 	
 	Result GameInstanceManagerServiceEntity::RegisterServiceMessageHandler( Svr::ServerEntity *pServerEntity )

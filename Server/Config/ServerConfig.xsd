@@ -71,6 +71,7 @@
         <xs:element name="ModRanking" type="ModuleRanking"/>
         <xs:element name="ModChatting" type="ModuleChatting"/>
         <xs:element name="ModGame" type="ModuleGame"/>
+		<xs:element name="ModGameInstanceManager" type="ModuleGameInstanceManager"/>
         <xs:element name="ModInstanceManager" type="ModuleSimple"/>
         <xs:element name="ModMatching_Game_4" type="ModuleMatching"/>
         <xs:element name="ModMatching_Game_8" type="ModuleMatching"/>
@@ -246,6 +247,18 @@
   <xs:complexType name="ModuleGame">
     <xs:complexContent>
       <xs:extension base="ModuleSimple">
+        <xs:sequence>
+          <xs:element name="NetPublic" type="PublicNetSocket" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:complexType name="ModuleGameInstanceManager">
+    <xs:complexContent>
+      <xs:extension base="ModuleSimple">
+		<xs:attribute name="Name" type="xs:string" use="required"/>
+		<xs:attribute name="DataTable" type="xs:string" use="optional"/>
         <xs:sequence>
           <xs:element name="NetPublic" type="PublicNetSocket" />
         </xs:sequence>

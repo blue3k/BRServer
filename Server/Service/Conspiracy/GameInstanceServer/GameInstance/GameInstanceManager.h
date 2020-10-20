@@ -39,7 +39,7 @@ namespace ConspiracyGameInstanceServer {
 
 	public:
 		// Constructor/Destructor
-		GameInstanceManagerServiceEntity(GameID gameID, ClusterID clusterID, ClusterMembership initialMembership = ClusterMembership::Slave);
+		GameInstanceManagerServiceEntity(GameID gameID, ServerConfig::ServerModuleGameInstanceManager* config, ClusterID clusterID, ClusterMembership initialMembership = ClusterMembership::Slave);
 		virtual ~GameInstanceManagerServiceEntity();
 
 

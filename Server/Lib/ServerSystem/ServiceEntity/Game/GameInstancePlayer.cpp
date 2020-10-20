@@ -17,10 +17,8 @@
 #include "ResultCode/SFResultCodeLibrary.h"
 #include "ResultCode/SFResultCodeGame.h"
 
-
 #include "Protocol/Policy/GameServerNetPolicy.h"
 #include "Protocol/Policy/GameNetPolicy.h"
-
 
 #include "SvrConst.h"
 #include "SvrTrace.h"
@@ -30,62 +28,51 @@
 
 
 
-
-
-
-
 namespace SF {
-namespace Svr {
+	namespace Svr {
 
 
-	//////////////////////////////////////////////////////////////////////////
-	//
-	//	Entity server class
-	//
+		//////////////////////////////////////////////////////////////////////////
+		//
+		//	Entity server class
+		//
 
 
-	GameInstancePlayer::GameInstancePlayer(GameInstanceEntity* pGameOwner, const PlayerInformation& player)
-		: PlayerEntityInformation(player)
-		, m_GameOwner(pGameOwner)
-		, m_IsBot(false)
-	{
-	}
+		GameInstancePlayer::GameInstancePlayer(GameInstanceEntity* pGameOwner, const PlayerInformation& player)
+			: PlayerEntityInformation(player)
+			, m_GameOwner(pGameOwner)
+			, m_IsBot(false)
+		{
+		}
 
-	GameInstancePlayer::~GameInstancePlayer()
-	{
-	}
-
-
-	// Initialize player
-	Result GameInstancePlayer::InitializePlayer( GameInstanceEntity* pGameOwner, bool isBot )
-	{
-		Result hr = ResultCode::SUCCESS;
-
-		// disable, not implemented yet
-		svrChkPtr( m_GameOwner = pGameOwner );
-
-		m_IsBot = isBot;
-
-	Proc_End:
-
-		return hr;
-	}
+		GameInstancePlayer::~GameInstancePlayer()
+		{
+		}
 
 
+		// Initialize player
+		Result GameInstancePlayer::InitializePlayer(GameInstanceEntity* pGameOwner, bool isBot)
+		{
+			Result hr = ResultCode::SUCCESS;
 
-	// Update Game Player 
-	Result GameInstancePlayer::UpdateGamePlayer( TimeStampMS ulCurTime )
-	{
-		Result hr = ResultCode::SUCCESS;
+			// disable, not implemented yet
+			svrCheckPtr(m_GameOwner = pGameOwner);
 
-	//Proc_End:
+			m_IsBot = isBot;
 
-		return hr;
-	}
+			return hr;
+		}
 
 
 
-}; // Svr
-}; // namespace SF
+		// Update Game Player 
+		Result GameInstancePlayer::UpdateGamePlayer(TimeStampMS ulCurTime)
+		{
+			Result hr = ResultCode::SUCCESS;
 
+			return hr;
+		}
+
+	} // Svr
+} // namespace SF
 

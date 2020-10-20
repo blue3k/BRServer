@@ -75,8 +75,10 @@ namespace Svr
 		// Release array
 		PageQueue<PlayerID>		m_PendingReleasePlayer;
 
+		// Instance type
 		StringCrc32 m_InstanceType;
 
+		// data id
 		StringCrc32 m_DataID;
 
 

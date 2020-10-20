@@ -757,6 +757,14 @@ Proc_End:
 			break;
 		}
 
+		case "ModGameInstanceManager"_crc:
+		{
+			auto pGame = (ServerConfig::ServerModuleGameInstanceManager*)module;
+			svrChkPtr(AddServiceEntity<Svr::GameInstanceManagerServiceEntity>(GetGameID(), pGame, ClusterID::GameInstanceManager));
+			//svrChk(GetComponentCarrier().AddComponentWithAdapter(pGameInstanceManager));
+			break;
+		}
+
 		case "ModRanking"_crc:
 		{
 			svrChkPtr(AddServiceEntity<Svr::RankingServiceEntity>(GetServerGameID(), ClusterID::Ranking));
@@ -766,12 +774,6 @@ Proc_End:
 		case "ModChatting"_crc:
 		{
 			svrChkPtr(AddServiceEntity<Svr::ChatChannelManagerServiceEntity>(GetServerGameID()));
-			break;
-		}
-
-		case "ModGameInstanceManager"_crc:
-		{
-			svrChkPtr(AddServiceEntity<Svr::GameInstanceManagerServiceEntity>(GetServerGameID(), ClusterID::GameInstanceManager));
 			break;
 		}
 
