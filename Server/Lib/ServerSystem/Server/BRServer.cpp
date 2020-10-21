@@ -228,7 +228,6 @@ namespace SF {
 					if (!ThisServer->AddServiceEntity<Svr::GameServiceEntity>(gameID, &pGame->PublicNet))
 						return ResultCode::OUT_OF_MEMORY;
 					return ResultCode::SUCCESS;
-
 				});
 
 			m_ModuleConstructors.insert("ModGameInstanceManager"_crc, [](BrServer* ThisServer, GameID gameID, ServerConfig::ServerModule* config)
