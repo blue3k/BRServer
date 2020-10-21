@@ -13,6 +13,7 @@
 
 #include "String/SFStrUtil.h"
 #include "Container/SFArray.h"
+#include "Container/SFHashTable.h"
 #include "ResultCode/SFResultCodeDB.h"
 #include "Net/SFNetDef.h"
 #include "DB/DBClusterManager.h"
@@ -24,14 +25,8 @@
 #include "ServerConfig/SFServerConfig.h"
 #include "SvrTrace.h"
 #include "Service/ServerService.h"
+#include "ServerConfig/SFServerConfig.h"
 
-
-namespace SF {
-namespace Svr { 
-namespace Config { 
-
-	class ConfigData;
-}}}
 
 
 namespace SF {
@@ -75,8 +70,7 @@ namespace Svr {
 	{
 	public:
 
-
-		// Entity by ID map 
+		typedef Result (*ModuleContructorType)(BrServer* ThisServer, GameID gameID, ServerConfig::ServerModule* config);
 
 	private:
 
@@ -126,6 +120,9 @@ namespace Svr {
 		PageQueue<SharedPointerAtomicT<Net::Connection>> m_NewConnectionQueue;
 
 		Thread* m_MainServerThread = nullptr;
+
+		// Module constructor map
+		HashTable<StringCrc32, ModuleContructorType> m_ModuleConstructors;
 
 		// singleton instance
 		static BrServer *stm_pServerInstance;
@@ -223,6 +220,10 @@ namespace Svr {
 		template<class DBManagerType>
 		Result AddDBCluster(const ServerConfig::DBCluster *pDBClusterCfg);
 
+		// Emplace module constructor
+		Result EmplaceModuleConstructor(StringCrc32 moduleName, ModuleContructorType constructor);
+
+
 		//////////////////////////////////////////////////////////////////////////
 		//
 		//	virtual network process
@@ -238,10 +239,15 @@ namespace Svr {
 		virtual Result TerminateEntity() override;
 
 
+		// InitializeModuleFactory
+		Result InitializeModuleFactory();
+
+
 		//////////////////////////////////////////////////////////////////////////
 		//
 		//	virtual interface definition
 		//
+
 
 		virtual Result CreateServerInstanceZK(const char* nodeName);
 

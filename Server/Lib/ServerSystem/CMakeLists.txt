@@ -22,7 +22,6 @@ set(BRSERVERSYSTEM_LIB_FILES
     ServiceEntity/Party/GamePartyManagerServiceEntity.cpp
     ServiceEntity/Party/GamePartyManagerServiceTrans.cpp
     ServiceEntity/Game/GameInstanceEntity.inl
-    ServiceEntity/Game/GameInstancePlayer.inl
     ServiceEntity/Game/GameSystem.inl
     ServiceEntity/Game/PlayerManagerServiceEntity.h
     ServiceEntity/Game/GameInstanceEntity.h
