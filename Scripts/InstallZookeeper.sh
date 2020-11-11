@@ -27,4 +27,11 @@ sudo cp zookeeper.service /etc/systemd/system/zookeeper.service
 sudo vi /etc/systemd/system/zookeeper.service
 
 
+sudo systemctl edit zookeeper
+#/etc/systemd/system/zookeeper.service.d/override.conf:
+#[Service]
+#Environment="ZOO_LOG_DIR=/StreamDB/logs"
+
+
 sudo systemctl start zookeeper
+

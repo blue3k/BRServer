@@ -8,6 +8,8 @@ wget https://dev.mysql.com/get/Downloads/MySQL-8.0/mysql-server_8.0.21-1ubuntu20
 mkdir mysql_bundle
 tar -xvf mysql-server_8.0.21-1ubuntu20.04_amd64.deb-bundle.tar -C mysql_bundle
 
+cd mysql_bundle
+
 #install
 sudo apt install libmecab2
 sudo dpkg -i mysql-common_8.0.21-1ubuntu20.04_amd64.deb

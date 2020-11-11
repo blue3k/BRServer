@@ -6,7 +6,7 @@ After=network.target
 
 [Service]    
 Type=forking
-WorkingDirectory/etc/zookeeper
+WorkingDirectory=/etc/zookeeper
 User=<your user>
 Group=<your group>
 ExecStart=/etc/zookeeper/bin/zkServer.sh start /etc/zookeeper/conf/zoo.cfg
@@ -17,3 +17,4 @@ Restart=on-failure
 
 [Install]
 WantedBy=default.target
+

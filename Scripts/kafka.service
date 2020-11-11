@@ -1,0 +1,20 @@
+[Unit]
+Description=Kafka Daemon
+Documentation=http://kafka.apache.org
+Requires=network.target
+After=network.target
+
+[Service]    
+Type=simple
+WorkingDirectory=/etc/kafka
+User=<your user>
+Group=<your group>
+ExecStart=/etc/kafka/bin/kafka-server-start.sh /etc/kafka/config/server.properties
+ExecStop=/etc/kafka/bin/kafka-server-stop.sh
+ExecReload=/etc/kafka/bin/kafka-server-stop.sh ; /etc/kafka/bin/kafka-server-start.sh config/server.properties
+TimeoutSec=30
+Restart=on-failure
+
+[Install]
+WantedBy=default.target
+
