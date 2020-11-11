@@ -17,4 +17,9 @@ sudo dpkg-preconfigure mysql-community-server_8.0.21-1ubuntu20.04_amd64.deb
 sudo dpkg -i mysql-community-client-core_8.0.21-1ubuntu20.04_amd64.deb mysql-community-client_8.0.21-1ubuntu20.04_amd64.deb mysql-client_8.0.21-1ubuntu20.04_amd64.deb  
 sudo dpkg -i mysql-community-server-core_8.0.21-1ubuntu20.04_amd64.deb mysql-community-server_8.0.21-1ubuntu20.04_amd64.deb
 
-
+#remove
+# sudo apt-get remove --purge mysql-server mysql-client mysql-common -y
+# sudo apt-get autoremove -y
+# sudo apt-get autoclean
+# sudo rm -rf /etc/mysql
+# sudo find / -iname 'mysql*' -exec rm -rf {} \;
