@@ -19,77 +19,71 @@
 
 
 namespace SF {
-namespace Svr {
+	namespace Svr {
 
 
-	///////////////////////////////////////////////////////////////////////////////////////////////////////
-	//
-	//	Master Entity class with transaction manager
-	//		: Entity with high transaction load, multiple transaction opening is allowed
-	//
+		///////////////////////////////////////////////////////////////////////////////////////////////////////
+		//
+		//	Master Entity class with transaction manager
+		//		: Entity with high transaction load, multiple transaction opening is allowed
+		//
 
-	class MasterEntity : public Entity
-	{
-	public:
+		class MasterEntity : public Entity
+		{
+		public:
 
-		typedef DualSortedMap<uint, SharedPointerT<Transaction>>			TransactionList;
-
-
-	private:
-		// maximum active transaction count
-		uint							m_uiMaxActiveTransaction;
-
-		// Transaction manager
-		TimerScheduler					m_activeTransactionScheduler;
-		TransactionList					m_activeTrans;
-		SharedPointerT<Transaction>		m_pExclusiveTransaction;
+			typedef DualSortedMap<uint, SharedPointerT<Transaction>>			TransactionList;
 
 
-	public:
-		MasterEntity( uint uiTransQueueSize = 2048, uint TransResQueueSize = 2048 );
-		virtual ~MasterEntity();
+		private:
+			// maximum active transaction count
+			uint							m_uiMaxActiveTransaction;
 
-		virtual void ReleaseTransaction(TransactionPtr& pTrans) override;
-
-		void ValidateTransactionCount();
-
-		// change maximum active transaction
-		void SetMaxActiveTransaction( uint uiMaxActiveTransaction );
-
-		// clear transaction
-		virtual Result ClearEntity() override;
-
-		virtual Result FindActiveTransaction(const TransactionID& transID, TransactionPtr &pTransaction) override;
-
-		// Update entity process
-		// Run the task
-		virtual Result TickUpdate(TimerAction *pAction = nullptr) override;
-
-		virtual Result ProcessTransactionResult(TransactionPtr &pCurTran, UniquePtr<TransactionResult>& pTransRes) override;
-
-		virtual uint GetActiveTransactionCount() override;
-
-		void UpdateWorkingThreadID(ThreadID threadID);
+			// Transaction manager
+			TimerScheduler					m_activeTransactionScheduler;
+			TransactionList					m_activeTrans;
+			SharedPointerT<Transaction>		m_pExclusiveTransaction;
 
 
-		//virtual Result OnRoutedMessage(MessageDataPtr &pMsg) override { assert(false); return ResultCode::NOT_IMPLEMENTED; }
+		public:
+			MasterEntity(uint uiTransQueueSize = 2048, uint TransResQueueSize = 2048);
+			virtual ~MasterEntity();
 
-		/////////////////////////////////////////////////////////////////////////////////////
-		// Event task handling
+			virtual void ReleaseTransaction(TransactionPtr& pTrans) override;
 
-		virtual void OnAddedToTaskManager(TaskWorker *pWorker) override;
+			void ValidateTransactionCount();
 
-		virtual Result OnEventTask(ServerTaskEvent& eventTask) override;
+			// change maximum active transaction
+			void SetMaxActiveTransaction(uint uiMaxActiveTransaction);
 
-	};
+			// clear transaction
+			virtual Result ClearEntity() override;
+
+			virtual Result FindActiveTransaction(const TransactionID& transID, TransactionPtr& pTransaction) override;
+
+			// Update entity process
+			// Run the task
+			virtual Result TickUpdate(TimerAction* pAction = nullptr) override;
+
+			virtual Result ProcessTransactionResult(TransactionPtr& pCurTran, UniquePtr<TransactionResult>& pTransRes) override;
+
+			virtual uint GetActiveTransactionCount() override;
+
+			void UpdateWorkingThreadID(ThreadID threadID);
 
 
+			//virtual Result OnRoutedMessage(MessageDataPtr &pMsg) override { assert(false); return ResultCode::NOT_IMPLEMENTED; }
 
-#include "MasterEntity.inl"
+			/////////////////////////////////////////////////////////////////////////////////////
+			// Event task handling
 
+			virtual void OnAddedToTaskManager(TaskWorker* pWorker) override;
 
+			virtual Result OnEventTask(ServerTaskEvent& eventTask) override;
 
-}; // namespace Svr
+		};
+
+	} // namespace Svr
 
 	extern template class SharedPointerT<Svr::MasterEntity>;
 

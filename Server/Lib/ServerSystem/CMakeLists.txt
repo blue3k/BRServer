@@ -50,7 +50,6 @@ set(BRSERVERSYSTEM_LIB_FILES
     Transaction/ExternalTransactionManager.inl
     Transaction/MessageRoute.inl
     Transaction/Transaction.inl
-    Types/BrGameTypes.inl
     Types/BrSvrTypes.inl
     Component/BrComponent.h
     Component/ServerComponent.h
@@ -60,16 +59,15 @@ set(BRSERVERSYSTEM_LIB_FILES
     Component/SFZookeeperSessionComponent.h
     Entity/Entity.h
     Entity/EntityInformation.h
+    Entity/EntityInformation.inl
     Entity/EntityManager.h
     Entity/EntityTable.h
     Entity/EntityTimerActions.h
     Entity/MasterEntity.h
     Entity/PlayerEntityInformation.h
+    Entity/PlayerEntityInformation.inl
     Entity/SimpleEntity.h
     Entity/SimpleUserEntity.h
-    Entity/EntityInformation.inl
-    Entity/MasterEntity.inl
-    Entity/PlayerEntityInformation.inl
     Entity/SimpleUserEntity.inl
 
     GameConst.h
@@ -150,6 +148,8 @@ set(BRSERVERSYSTEM_LIB_FILES
     Transaction/TransactionSubAction.h
     Transaction/TransactionUtil.h
     Types/BrGameTypes.h
+    Types/BrGameTypes.inl
+    Types/BrGameTypes.cpp
     Types/BrSvrTypes.h
     Util/GlobalUIDGenerator.h
     Util/LocalUIDGenerator.h
@@ -240,7 +240,6 @@ set(BRSERVERSYSTEM_LIB_FILES
     Transaction/ExternalTransactionManager.cpp
     Transaction/ParallelTransaction.cpp
     Transaction/Transaction.cpp
-    Types/BrGameTypes.cpp
     Util/GlobalUIDGenerator.cpp
     Util/LocalUIDGenerator.cpp
     Util/UniqueEntityIDGenerator.cpp
