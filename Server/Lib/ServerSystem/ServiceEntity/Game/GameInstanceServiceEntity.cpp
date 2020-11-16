@@ -50,7 +50,7 @@ namespace Svr {
 
 	Result GameInstanceServiceEntity::InitializeEntity( EntityID newEntityID )
 	{
-		FunctionContext hr;
+		ScopeContext hr;
 
 		svrCheck(super::InitializeEntity(newEntityID) );
 
@@ -65,7 +65,7 @@ namespace Svr {
 	// clear transaction
 	Result GameInstanceServiceEntity::ClearEntity()
 	{
-		FunctionContext hr;
+		ScopeContext hr;
 
 		svrCheck(GetComponentManager().TerminateComponents());
 
@@ -76,7 +76,7 @@ namespace Svr {
 
 	Result GameInstanceServiceEntity::TickUpdate(TimerAction *pAction)
 	{
-		FunctionContext hr;
+		ScopeContext hr;
 
 		svrCheck(super::TickUpdate(pAction) );
 

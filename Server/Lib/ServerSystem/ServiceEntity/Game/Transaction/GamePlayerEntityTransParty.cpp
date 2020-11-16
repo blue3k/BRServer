@@ -70,7 +70,7 @@ namespace Svr {
 
 	Result PlayerTransGameMatchedS2SEvt::OnJoinGameRes( Svr::TransactionResult* &pRes )
 	{
-		FunctionContext hr([this](Result hr)
+		ScopeContext hr([this](Result hr)
 			{
 				if (!hr)
 					CloseTransaction(hr);
@@ -127,7 +127,7 @@ namespace Svr {
 
 	Result PlayerTransGameMatchedS2SEvt::OnLeavePartyRes(Svr::TransactionResult* &pRes)
 	{
-		FunctionContext hr([this](Result hr)
+		ScopeContext hr([this](Result hr)
 			{
 				m_WaitingQueires--;
 				if (m_WaitingQueires <= 0)
@@ -149,7 +149,7 @@ namespace Svr {
 
 	Result PlayerTransGameMatchedS2SEvt::OnUpdateDBRes(  Svr::TransactionResult* &pRes )
 	{
-		FunctionContext hr([this](Result hr)
+		ScopeContext hr([this](Result hr)
 			{
 				m_WaitingQueires--;
 				if (m_WaitingQueires <= 0)
@@ -167,7 +167,7 @@ namespace Svr {
 	// Start Transaction
 	Result PlayerTransGameMatchedS2SEvt::StartTransaction()
 	{
-		FunctionContext hr([this](Result hr)
+		ScopeContext hr([this](Result hr)
 			{
 				if (!hr)
 					CloseTransaction(hr);
@@ -200,7 +200,7 @@ namespace Svr {
 	// Start Transaction
 	Result PlayerTransPartyQueuedGameMatchingS2CEvt::StartTransaction()
 	{
-		FunctionContext hr([this](Result hr)
+		ScopeContext hr([this](Result hr)
 			{
 				CloseTransaction(hr);
 			});
@@ -222,7 +222,7 @@ namespace Svr {
 	// Start Transaction
 	Result PlayerTransPartyMatchingItemDequeuedS2CEvt::StartTransaction()
 	{
-		FunctionContext hr([this](Result hr)
+		ScopeContext hr([this](Result hr)
 			{
 				CloseTransaction(hr);
 			});
@@ -242,7 +242,7 @@ namespace Svr {
 	// Start Transaction
 	Result PlayerTransPartyCanceledGameMatchingS2CEvt::StartTransaction()
 	{
-		FunctionContext hr([this](Result hr)
+		ScopeContext hr([this](Result hr)
 			{
 				CloseTransaction(hr);
 			});
@@ -271,7 +271,7 @@ namespace Svr {
 
 	Result PlayerTransCreateParty::OnCreatePartyRes( Svr::TransactionResult* &pRes )
 	{
-		FunctionContext hr([this](Result hr)
+		ScopeContext hr([this](Result hr)
 			{
 				CloseTransaction(hr);
 			});
@@ -291,7 +291,7 @@ namespace Svr {
 	// Start Transaction
 	Result PlayerTransCreateParty::StartTransaction()
 	{
-		FunctionContext hr([this](Result hr)
+		ScopeContext hr([this](Result hr)
 			{
 				if (!hr)
 					CloseTransaction(hr);
@@ -334,7 +334,7 @@ namespace Svr {
 
 	Result PlayerTransJoinParty::OnJoinPartyRes( Svr::TransactionResult* &pRes )
 	{
-		FunctionContext hr([this](Result hr)
+		ScopeContext hr([this](Result hr)
 			{
 				CloseTransaction(hr);
 			});
@@ -361,7 +361,7 @@ namespace Svr {
 	// Start Transaction
 	Result PlayerTransJoinParty::StartTransaction()
 	{
-		FunctionContext hr([this](Result hr)
+		ScopeContext hr([this](Result hr)
 			{
 				if (!hr)
 					CloseTransaction(hr);
@@ -406,7 +406,7 @@ namespace Svr {
 	// Start Transaction
 	Result PlayerTransPartyPlayerJoinedS2SEvt::StartTransaction()
 	{
-		FunctionContext hr([this](Result hr)
+		ScopeContext hr([this](Result hr)
 			{
 				CloseTransaction(hr);
 			});
@@ -425,7 +425,7 @@ namespace Svr {
 	// Start Transaction
 	Result PlayerTransPartyLeaderChangedS2SEvt::StartTransaction()
 	{
-		FunctionContext hr([this](Result hr)
+		ScopeContext hr([this](Result hr)
 			{
 				CloseTransaction(hr);
 			});
@@ -450,7 +450,7 @@ namespace Svr {
 
 	Result PlayerTransLeaveParty::OnLeavePartyRes( Svr::TransactionResult* &pRes )
 	{
-		FunctionContext hr([this](Result hr)
+		ScopeContext hr([this](Result hr)
 			{
 				CloseTransaction(hr);
 			});
@@ -478,7 +478,7 @@ namespace Svr {
 	// Start Transaction
 	Result PlayerTransLeaveParty::StartTransaction()
 	{
-		FunctionContext hr([this](Result hr)
+		ScopeContext hr([this](Result hr)
 			{
 				if (!hr)
 					CloseTransaction(hr);
@@ -507,7 +507,7 @@ namespace Svr {
 	// Start Transaction
 	Result PlayerTransPartyPlayerLeftS2SEvt::StartTransaction()
 	{
-		FunctionContext hr([this](Result hr)
+		ScopeContext hr([this](Result hr)
 			{
 				CloseTransaction(hr);
 			});
@@ -535,7 +535,7 @@ namespace Svr {
 
 	Result PlayerTransPartyKickPlayer::OnPlayerKickRes( Svr::TransactionResult* &pRes )
 	{
-		FunctionContext hr([this](Result hr)
+		ScopeContext hr([this](Result hr)
 			{
 				CloseTransaction(hr);
 			});
@@ -552,7 +552,7 @@ namespace Svr {
 	// Start Transaction
 	Result PlayerTransPartyKickPlayer::StartTransaction()
 	{
-		FunctionContext hr([this](Result hr)
+		ScopeContext hr([this](Result hr)
 			{
 				if (!hr)
 					CloseTransaction(hr);
@@ -581,7 +581,7 @@ namespace Svr {
 	// Start Transaction
 	Result PlayerTransPartyPlayerKickedS2SEvt::StartTransaction()
 	{
-		FunctionContext hr([this](Result hr)
+		ScopeContext hr([this](Result hr)
 			{
 				CloseTransaction(hr);
 			});
@@ -614,7 +614,7 @@ namespace Svr {
 	// Start Transaction
 	Result PlayerTransPartyInvite::StartTransaction()
 	{
-		FunctionContext hr([this](Result hr)
+		ScopeContext hr([this](Result hr)
 			{
 				if (!hr)
 					CloseTransaction(hr);
@@ -657,7 +657,7 @@ namespace Svr {
 	// Start Transaction
 	Result PlayerTransNotifyPartyInviteS2SEvt::StartTransaction()
 	{
-		FunctionContext hr([this](Result hr)
+		ScopeContext hr([this](Result hr)
 			{
 				CloseTransaction(hr);
 			});
@@ -677,7 +677,7 @@ namespace Svr {
 	// Start Transaction
 	Result PlayerTransPartyChatMessage::StartTransaction()
 	{
-		FunctionContext hr([this](Result hr)
+		ScopeContext hr([this](Result hr)
 			{
 				svrTrace(SVR_INFO, "PartyChat PlayerID:{0}, hr:{1}", GetMyOwner()->GetPlayerID(), hr);
 
@@ -709,7 +709,7 @@ namespace Svr {
 	// Start Transaction
 	Result PlayerTransPartyChatMessageS2CEvt::StartTransaction()
 	{
-		FunctionContext hr([this](Result hr)
+		ScopeContext hr([this](Result hr)
 			{
 				svrTrace(SVR_INFO, "PartyChat Received PlayerID:{0}, FromPlayerID:{1} hr:{2}", GetMyOwner()->GetPlayerID(), GetSenderID(), hr);
 
@@ -729,7 +729,7 @@ namespace Svr {
 	// Start Transaction
 	Result PlayerTransPartyQuickChatMessage::StartTransaction()
 	{
-		FunctionContext hr([this](Result hr)
+		ScopeContext hr([this](Result hr)
 			{
 				CloseTransaction(hr);
 			});
@@ -758,7 +758,7 @@ namespace Svr {
 	// Start Transaction
 	Result PlayerTransPartyQuickChatMessageS2CEvt::StartTransaction()
 	{
-		FunctionContext hr([this](Result hr)
+		ScopeContext hr([this](Result hr)
 			{
 				CloseTransaction(hr);
 			});

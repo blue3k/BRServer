@@ -50,7 +50,7 @@ namespace SF {
 		// Register authenticate ticket
 		Result LoginSessionDB::RegisterAuthTicket(TransactionID Sender, const PlayerID& playerID, const AuthTicket& authTicket, const EntityUID& loginEntityUID)
 		{
-			FunctionContext hr;
+			ScopeContext hr;
 
 			UniquePtr<QueryRegisterAuthTicketCmd> pQuery(new(GetHeap()) QueryRegisterAuthTicketCmd(GetHeap()));
 			dbCheckMem(pQuery);
@@ -74,7 +74,7 @@ namespace SF {
 		// Register authenticate ticket
 		Result LoginSessionDB::ReplaceLoginSession(TransactionID Sender, const PlayerID& playerID, const AuthTicket& oldAuthTicket, const AuthTicket& authTicket, const EntityUID& loginEntityUID)
 		{
-			FunctionContext hr;
+			ScopeContext hr;
 
 			UniquePtr<QueryReplaceLoginSessionCmd> pQuery(new(GetHeap()) QueryReplaceLoginSessionCmd(GetHeap()));
 			dbCheckMem(pQuery);
@@ -98,7 +98,7 @@ namespace SF {
 		// Register authenticate ticket
 		Result LoginSessionDB::DeleteLoginSession(TransactionID Sender, const PlayerID& playerID, const AuthTicket& authTicket)
 		{
-			FunctionContext hr;
+			ScopeContext hr;
 
 			UniquePtr<QueryDeleteLoginSessionCmd> pQuery(new(GetHeap()) QueryDeleteLoginSessionCmd(GetHeap()));
 			dbCheckMem(pQuery);
@@ -120,7 +120,7 @@ namespace SF {
 		// Joined game server
 		Result LoginSessionDB::ConnectedToGameServer(TransactionID Sender, const PlayerID& playerID, const AuthTicket& authTicket, const EntityUID& loginEntityUID, const EntityUID& gameEntityUID)
 		{
-			FunctionContext hr;
+			ScopeContext hr;
 
 			UniquePtr<QueryConnectedToGameServerCmd> pQuery(new(GetHeap()) QueryConnectedToGameServerCmd(GetHeap()));
 			dbCheckMem(pQuery);
@@ -144,7 +144,7 @@ namespace SF {
 		// Validate game server session
 		Result LoginSessionDB::ValidateGameServerSession(TransactionID Sender, const PlayerID& playerID, const AuthTicket& authTicket, const EntityUID& gameEntityUID)
 		{
-			FunctionContext hr;
+			ScopeContext hr;
 
 			UniquePtr<QueryValidateGameServerSessionCmd> pQuery(new(GetHeap()) QueryValidateGameServerSessionCmd(GetHeap()));
 			dbCheckMem(pQuery);
@@ -166,7 +166,7 @@ namespace SF {
 		// Game server heartbit
 		Result LoginSessionDB::GameServerHeartBit(TransactionID Sender, const PlayerID& playerID, const AuthTicket& authTicket, const EntityUID& gameEntityUID)
 		{
-			FunctionContext hr;
+			ScopeContext hr;
 
 			UniquePtr<QueryGameServerHeartBitCmd> pQuery(new(GetHeap()) QueryGameServerHeartBitCmd(GetHeap()));
 			dbCheckMem(pQuery);

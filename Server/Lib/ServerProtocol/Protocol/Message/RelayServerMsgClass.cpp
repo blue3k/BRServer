@@ -30,7 +30,7 @@ namespace SF
 			const MessageID CreateRelayInstanceCmd::MID = MessageID(MSGTYPE_COMMAND, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_RELAYSERVER, 0);
 			Result CreateRelayInstanceCmd::ParseMessage(const MessageData* pIMsg)
 			{
- 				FunctionContext hr;
+ 				ScopeContext hr;
 
 
 				protocolCheckPtr(pIMsg);
@@ -53,7 +53,7 @@ namespace SF
 
 			Result CreateRelayInstanceCmd::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr&& pIMsg, MessageBase* &pMessageBase )
 			{
- 				FunctionContext hr;
+ 				ScopeContext hr;
 
 				protocolCheckMem(pMessageBase = new(memHeap) CreateRelayInstanceCmd(std::forward<MessageDataPtr>(pIMsg)));
 				protocolCheck(pMessageBase->ParseMsg());
@@ -66,7 +66,7 @@ namespace SF
 			MessageData* CreateRelayInstanceCmd::Create( IHeap& memHeap, const RouteContext &InRouteContext, const uint64_t &InTransactionID, const PlayerInformation &InPlayerInfo, const uint64_t &InRelayScore )
 			{
  				MessageData *pNewMsg = nullptr;
-				FunctionContext hr([&pNewMsg](Result hr) -> MessageData*
+				ScopeContext hr([&pNewMsg](Result hr) -> MessageData*
 				{
  					if(!hr && pNewMsg != nullptr)
 					{
@@ -101,7 +101,7 @@ namespace SF
 
 			Result CreateRelayInstanceCmd::OverrideRouteContextDestination( EntityUID to )
 			{
- 				FunctionContext hr;
+ 				ScopeContext hr;
 
 				MessageData* pIMsg = GetMessage();
 				RouteContext routeContext;
@@ -138,7 +138,7 @@ namespace SF
 			const MessageID CreateRelayInstanceRes::MID = MessageID(MSGTYPE_RESULT, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_RELAYSERVER, 0);
 			Result CreateRelayInstanceRes::ParseMessage(const MessageData* pIMsg)
 			{
- 				FunctionContext hr;
+ 				ScopeContext hr;
 
 
 				protocolCheckPtr(pIMsg);
@@ -161,7 +161,7 @@ namespace SF
 
 			Result CreateRelayInstanceRes::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr&& pIMsg, MessageBase* &pMessageBase )
 			{
- 				FunctionContext hr;
+ 				ScopeContext hr;
 
 				protocolCheckMem(pMessageBase = new(memHeap) CreateRelayInstanceRes(std::forward<MessageDataPtr>(pIMsg)));
 				protocolCheck(pMessageBase->ParseMsg());
@@ -174,7 +174,7 @@ namespace SF
 			MessageData* CreateRelayInstanceRes::Create( IHeap& memHeap, const RouteContext &InRouteContext, const uint64_t &InTransactionID, const Result &InResult, const uint32_t &InRelay )
 			{
  				MessageData *pNewMsg = nullptr;
-				FunctionContext hr([&pNewMsg](Result hr) -> MessageData*
+				ScopeContext hr([&pNewMsg](Result hr) -> MessageData*
 				{
  					if(!hr && pNewMsg != nullptr)
 					{
@@ -209,7 +209,7 @@ namespace SF
 
 			Result CreateRelayInstanceRes::OverrideRouteContextDestination( EntityUID to )
 			{
- 				FunctionContext hr;
+ 				ScopeContext hr;
 
 				MessageData* pIMsg = GetMessage();
 				RouteContext routeContext;
@@ -247,7 +247,7 @@ namespace SF
 			const MessageID AddPlayerCmd::MID = MessageID(MSGTYPE_COMMAND, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_RELAYSERVER, 1);
 			Result AddPlayerCmd::ParseMessage(const MessageData* pIMsg)
 			{
- 				FunctionContext hr;
+ 				ScopeContext hr;
 
 
 				protocolCheckPtr(pIMsg);
@@ -270,7 +270,7 @@ namespace SF
 
 			Result AddPlayerCmd::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr&& pIMsg, MessageBase* &pMessageBase )
 			{
- 				FunctionContext hr;
+ 				ScopeContext hr;
 
 				protocolCheckMem(pMessageBase = new(memHeap) AddPlayerCmd(std::forward<MessageDataPtr>(pIMsg)));
 				protocolCheck(pMessageBase->ParseMsg());
@@ -283,7 +283,7 @@ namespace SF
 			MessageData* AddPlayerCmd::Create( IHeap& memHeap, const RouteContext &InRouteContext, const uint64_t &InTransactionID, const PlayerInformation &InPlayerInfo, const uint64_t &InRelayScore )
 			{
  				MessageData *pNewMsg = nullptr;
-				FunctionContext hr([&pNewMsg](Result hr) -> MessageData*
+				ScopeContext hr([&pNewMsg](Result hr) -> MessageData*
 				{
  					if(!hr && pNewMsg != nullptr)
 					{
@@ -318,7 +318,7 @@ namespace SF
 
 			Result AddPlayerCmd::OverrideRouteContextDestination( EntityUID to )
 			{
- 				FunctionContext hr;
+ 				ScopeContext hr;
 
 				MessageData* pIMsg = GetMessage();
 				RouteContext routeContext;
@@ -355,7 +355,7 @@ namespace SF
 			const MessageID AddPlayerRes::MID = MessageID(MSGTYPE_RESULT, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_RELAYSERVER, 1);
 			Result AddPlayerRes::ParseMessage(const MessageData* pIMsg)
 			{
- 				FunctionContext hr;
+ 				ScopeContext hr;
 
 
 				protocolCheckPtr(pIMsg);
@@ -378,7 +378,7 @@ namespace SF
 
 			Result AddPlayerRes::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr&& pIMsg, MessageBase* &pMessageBase )
 			{
- 				FunctionContext hr;
+ 				ScopeContext hr;
 
 				protocolCheckMem(pMessageBase = new(memHeap) AddPlayerRes(std::forward<MessageDataPtr>(pIMsg)));
 				protocolCheck(pMessageBase->ParseMsg());
@@ -391,7 +391,7 @@ namespace SF
 			MessageData* AddPlayerRes::Create( IHeap& memHeap, const RouteContext &InRouteContext, const uint64_t &InTransactionID, const Result &InResult, const uint32_t &InRelay )
 			{
  				MessageData *pNewMsg = nullptr;
-				FunctionContext hr([&pNewMsg](Result hr) -> MessageData*
+				ScopeContext hr([&pNewMsg](Result hr) -> MessageData*
 				{
  					if(!hr && pNewMsg != nullptr)
 					{
@@ -426,7 +426,7 @@ namespace SF
 
 			Result AddPlayerRes::OverrideRouteContextDestination( EntityUID to )
 			{
- 				FunctionContext hr;
+ 				ScopeContext hr;
 
 				MessageData* pIMsg = GetMessage();
 				RouteContext routeContext;
@@ -464,7 +464,7 @@ namespace SF
 			const MessageID RemovePlayerCmd::MID = MessageID(MSGTYPE_COMMAND, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_RELAYSERVER, 2);
 			Result RemovePlayerCmd::ParseMessage(const MessageData* pIMsg)
 			{
- 				FunctionContext hr;
+ 				ScopeContext hr;
 
 
 				protocolCheckPtr(pIMsg);
@@ -486,7 +486,7 @@ namespace SF
 
 			Result RemovePlayerCmd::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr&& pIMsg, MessageBase* &pMessageBase )
 			{
- 				FunctionContext hr;
+ 				ScopeContext hr;
 
 				protocolCheckMem(pMessageBase = new(memHeap) RemovePlayerCmd(std::forward<MessageDataPtr>(pIMsg)));
 				protocolCheck(pMessageBase->ParseMsg());
@@ -499,7 +499,7 @@ namespace SF
 			MessageData* RemovePlayerCmd::Create( IHeap& memHeap, const RouteContext &InRouteContext, const uint64_t &InTransactionID, const PlayerID &InPlayerID )
 			{
  				MessageData *pNewMsg = nullptr;
-				FunctionContext hr([&pNewMsg](Result hr) -> MessageData*
+				ScopeContext hr([&pNewMsg](Result hr) -> MessageData*
 				{
  					if(!hr && pNewMsg != nullptr)
 					{
@@ -532,7 +532,7 @@ namespace SF
 
 			Result RemovePlayerCmd::OverrideRouteContextDestination( EntityUID to )
 			{
- 				FunctionContext hr;
+ 				ScopeContext hr;
 
 				MessageData* pIMsg = GetMessage();
 				RouteContext routeContext;
@@ -569,7 +569,7 @@ namespace SF
 			const MessageID RemovePlayerRes::MID = MessageID(MSGTYPE_RESULT, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_RELAYSERVER, 2);
 			Result RemovePlayerRes::ParseMessage(const MessageData* pIMsg)
 			{
- 				FunctionContext hr;
+ 				ScopeContext hr;
 
 
 				protocolCheckPtr(pIMsg);
@@ -591,7 +591,7 @@ namespace SF
 
 			Result RemovePlayerRes::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr&& pIMsg, MessageBase* &pMessageBase )
 			{
- 				FunctionContext hr;
+ 				ScopeContext hr;
 
 				protocolCheckMem(pMessageBase = new(memHeap) RemovePlayerRes(std::forward<MessageDataPtr>(pIMsg)));
 				protocolCheck(pMessageBase->ParseMsg());
@@ -604,7 +604,7 @@ namespace SF
 			MessageData* RemovePlayerRes::Create( IHeap& memHeap, const RouteContext &InRouteContext, const uint64_t &InTransactionID, const Result &InResult )
 			{
  				MessageData *pNewMsg = nullptr;
-				FunctionContext hr([&pNewMsg](Result hr) -> MessageData*
+				ScopeContext hr([&pNewMsg](Result hr) -> MessageData*
 				{
  					if(!hr && pNewMsg != nullptr)
 					{
@@ -637,7 +637,7 @@ namespace SF
 
 			Result RemovePlayerRes::OverrideRouteContextDestination( EntityUID to )
 			{
- 				FunctionContext hr;
+ 				ScopeContext hr;
 
 				MessageData* pIMsg = GetMessage();
 				RouteContext routeContext;

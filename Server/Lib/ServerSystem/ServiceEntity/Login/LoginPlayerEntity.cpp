@@ -41,184 +41,172 @@
 
 
 namespace SF {
-namespace Svr {
+	namespace Svr {
 
-	GlobalUIDGenerator LoginPlayerEntity::stm_AuthTicketGenerator;
-
-
-	//////////////////////////////////////////////////////////////////////////
-	//
-	//	Entity server class
-	//
+		GlobalUIDGenerator LoginPlayerEntity::stm_AuthTicketGenerator;
 
 
-	LoginPlayerEntity::LoginPlayerEntity()
-		: m_FacebookUID(0)
-		, m_AuthTicket(0)
-		, m_ShardID(0)
-		, m_IsTicketOwner(false)
-	{
-		m_UserName[0] = '\0';
-		m_GCMKeys[0] = '\0';
-		SetTickInterval(DurationMS(1000));
-	}
-
-	LoginPlayerEntity::~LoginPlayerEntity()
-	{
-	}
-
-	// Initialize entity to proceed new connection
-	Result LoginPlayerEntity::InitializeEntity( EntityID newEntityID )
-	{
-		Result hr = ResultCode::SUCCESS;
-
-		svrChk( super::InitializeEntity( newEntityID ) );
-
-		m_IsTicketOwner = false;
-		memset(m_GCMKeys, 0, sizeof(m_GCMKeys) );
-
-		m_TimeToKill.SetTimer(DurationMS(Const::LOGIN_TIME_WAIT_PLAYER_JOIN));
-
-	Proc_End:
+		//////////////////////////////////////////////////////////////////////////
+		//
+		//	Entity server class
+		//
 
 
-		return hr;
-	}
+		LoginPlayerEntity::LoginPlayerEntity()
+			: m_FacebookUID(0)
+			, m_AuthTicket(0)
+			, m_ShardID(0)
+			, m_IsTicketOwner(false)
+		{
+			m_UserName[0] = '\0';
+			m_GCMKeys[0] = '\0';
+			SetTickInterval(DurationMS(1000));
+		}
 
-	// Set connection for pilot
-	Result LoginPlayerEntity::SetConnection(SharedPointerT<Net::Connection>&& pCon )
-	{
-		Result hr = ResultCode::SUCCESS;
+		LoginPlayerEntity::~LoginPlayerEntity()
+		{
+		}
 
-		if( GetConnection() == (Net::Connection*)pCon )
+		// Initialize entity to proceed new connection
+		Result LoginPlayerEntity::InitializeEntity(EntityID newEntityID)
+		{
+			ScopeContext hr = ResultCode::SUCCESS;
+
+			svrCheck(super::InitializeEntity(newEntityID));
+
+			m_IsTicketOwner = false;
+			memset(m_GCMKeys, 0, sizeof(m_GCMKeys));
+
+			SetEntityKillTimer(DurationMS(Const::LOGIN_TIME_WAIT_PLAYER_JOIN));
+
 			return hr;
-
-		if( GetConnection() != nullptr )
-		{
-			ReleaseConnection("Replacing user connection");
 		}
 
-		svrChk( super::SetConnection(std::forward<SharedPointerT<Net::Connection>>(pCon)) );
-
-
-		pCon = nullptr;
-
-	Proc_End:
-
-		return hr;
-	}
-
-
-	void LoginPlayerEntity::HeartBit()
-	{
-		m_TimeToKill.SetTimer(DurationMS(Const::LOGIN_TIME_WAIT_PLAYER_JOIN));
-	}
-
-
-
-	void LoginPlayerEntity::SetUserName(const char* userName)
-	{
-		StrUtil::StringCopy(m_UserName, userName);
-	}
-
-	//////////////////////////////////////////////////////////////////////////////////////////////////
-	//
-	//	Entity process
-	//
-
-	// register message handlers
-	Result LoginPlayerEntity::RegisterMessageHandlers()
-	{
-		BR_ENTITY_MESSAGE(Message::Login::HeartBitC2SEvt) { pNewTrans = nullptr; HeartBit(); return ResultCode::SUCCESS; } );
-
-		RegisterMessageHandler<LoginPlayerTransLogin>();
-		RegisterMessageHandler<LoginPlayerTransLoginByFacebook>();
-		RegisterMessageHandler<LoginPlayerTransCreateRandomUser>();
-		RegisterMessageHandler<LoginPlayerJoinedToGameServerTrans>();
-		RegisterMessageHandler<LoginPlayerKickPlayerTrans>();
-
-		RegisterMessageHandler<RankingUpdateScoreTrans>();
-		RegisterMessageHandler<LoginUserDataTestTrans>();
-		RegisterMessageHandler<LoginUserDebugPrintALLRankingTrans>();
-
-		return ResultCode::SUCCESS;
-	}
-
-	// clear transaction
-	Result LoginPlayerEntity::ClearEntity()
-	{
-		Result hr = ResultCode::SUCCESS;
-
-		ReleaseConnection("Terminate login player entity");
-
-		svrChk( super::ClearEntity() );
-
-	Proc_End:
-
-		return hr;
-	}
-
-	// Run the task
-	Result LoginPlayerEntity::TickUpdate(TimerAction *pAction)
-	{
-		Result hr = ResultCode::SUCCESS;
-		auto curTime = Util::Time.GetTimeMs();
-
-		svrChk( super::TickUpdate(pAction) );
-
-		svrChk( UpdateLoginPlayer(curTime) );
-
-	Proc_End:
-
-		return hr;
-	}
-
-
-	// Update Game Player 
-	Result LoginPlayerEntity::UpdateLoginPlayer( TimeStampMS ulCurTime )
-	{
-		Result hr = ResultCode::SUCCESS;
-
-		auto& connection = GetConnection();
-
-		if( m_TimeToKill.CheckTimer() || connection == nullptr || connection->GetConnectionState() == Net::ConnectionState::DISCONNECTED)
+		// Set connection for pilot
+		Result LoginPlayerEntity::SetConnection(SharedPointerT<Net::Connection>&& pCon)
 		{
-			PendingCloseTransaction("Player heartbit timeout");
-		}
+			Result hr = ResultCode::SUCCESS;
 
-	//Proc_End:
+			if (GetConnection() == (Net::Connection*)pCon)
+				return hr;
 
-		return hr;
-	}
-	
-	Result LoginPlayerEntity::PendingCloseTransaction(const char* reason)
-	{
-		Result hr = ResultCode::SUCCESS;
-		TransactionPtr trans;
+			if (GetConnection() != nullptr)
+			{
+				ReleaseConnection("Replacing user connection");
+			}
 
-		if (m_ClosingPended)
+			svrChk(super::SetConnection(std::forward<SharedPointerT<Net::Connection>>(pCon)));
+
+
+			pCon = nullptr;
+
+		Proc_End:
+
 			return hr;
-
-		if (GetAccountID() > 0)
-		{
-			svrTrace(Debug1, "Closing silent login players AccID:{0}, reason:{1}", GetAccountID(), reason);
 		}
 
-		m_ClosingPended = true;
-		svrMem( trans = new(GetHeap()) LoginPlayerTransCloseInstance(GetHeap()) );
-		svrChk( trans->InitializeTransaction(this) );
-		svrChk(PendingTransaction(GetTaskWorker()->GetThreadID(), trans));
-
-	Proc_End:
-
-		if(trans != nullptr)
-			ReleaseTransaction(trans);
-
-		return hr;
-	}
 
 
-}; // namespace Svr
-}; // namespace SF
+
+		void LoginPlayerEntity::SetUserName(const char* userName)
+		{
+			StrUtil::StringCopy(m_UserName, userName);
+		}
+
+		//////////////////////////////////////////////////////////////////////////////////////////////////
+		//
+		//	Entity process
+		//
+
+		// register message handlers
+		Result LoginPlayerEntity::RegisterMessageHandlers()
+		{
+			RegisterMessageHandler<LoginPlayerTransLogin>();
+			RegisterMessageHandler<LoginPlayerTransLoginByFacebook>();
+			RegisterMessageHandler<LoginPlayerTransCreateRandomUser>();
+			RegisterMessageHandler<LoginPlayerJoinedToGameServerTrans>();
+			RegisterMessageHandler<LoginPlayerKickPlayerTrans>();
+
+			RegisterMessageHandler<RankingUpdateScoreTrans>();
+			RegisterMessageHandler<LoginUserDataTestTrans>();
+			RegisterMessageHandler<LoginUserDebugPrintALLRankingTrans>();
+
+			return ResultCode::SUCCESS;
+		}
+
+		// clear transaction
+		Result LoginPlayerEntity::ClearEntity()
+		{
+			Result hr = ResultCode::SUCCESS;
+
+			ReleaseConnection("Terminate login player entity");
+
+			svrChk(super::ClearEntity());
+
+		Proc_End:
+
+			return hr;
+		}
+
+		// Run the task
+		Result LoginPlayerEntity::TickUpdate(TimerAction* pAction)
+		{
+			Result hr = ResultCode::SUCCESS;
+			auto curTime = Util::Time.GetTimeMs();
+
+			svrChk(super::TickUpdate(pAction));
+
+			svrChk(UpdateLoginPlayer(curTime));
+
+		Proc_End:
+
+			return hr;
+		}
+
+
+		// Update Game Player 
+		Result LoginPlayerEntity::UpdateLoginPlayer(TimeStampMS ulCurTime)
+		{
+			Result hr = ResultCode::SUCCESS;
+
+			auto& connection = GetConnection();
+
+			if (connection == nullptr || connection->GetConnectionState() == Net::ConnectionState::DISCONNECTED)
+			{
+				PendingCloseTransaction("Player Disconnected");
+			}
+
+			return hr;
+		}
+
+		Result LoginPlayerEntity::PendingCloseTransaction(const char* reason)
+		{
+			Result hr = ResultCode::SUCCESS;
+			TransactionPtr trans;
+
+			if (m_ClosingPended)
+				return hr;
+
+			if (GetAccountID() > 0)
+			{
+				svrTrace(Debug1, "Closing silent login players AccID:{0}, reason:{1}", GetAccountID(), reason);
+			}
+
+			m_ClosingPended = true;
+			svrMem(trans = new(GetHeap()) LoginPlayerTransCloseInstance(GetHeap()));
+			svrChk(trans->InitializeTransaction(this));
+			svrChk(PendingTransaction(GetTaskWorker()->GetThreadID(), trans));
+
+		Proc_End:
+
+			if (trans != nullptr)
+				ReleaseTransaction(trans);
+
+			return hr;
+		}
+
+
+	} // namespace Svr
+} // namespace SF
 
 

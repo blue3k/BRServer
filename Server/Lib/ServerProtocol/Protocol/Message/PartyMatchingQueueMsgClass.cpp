@@ -30,7 +30,7 @@ namespace SF
 			const MessageID RegisterPartyMatchingCmd::MID = MessageID(MSGTYPE_COMMAND, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_PARTYMATCHINGQUEUE, 0);
 			Result RegisterPartyMatchingCmd::ParseMessage(const MessageData* pIMsg)
 			{
- 				FunctionContext hr;
+ 				ScopeContext hr;
 
 
 				protocolCheckPtr(pIMsg);
@@ -56,7 +56,7 @@ namespace SF
 
 			Result RegisterPartyMatchingCmd::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr&& pIMsg, MessageBase* &pMessageBase )
 			{
- 				FunctionContext hr;
+ 				ScopeContext hr;
 
 				protocolCheckMem(pMessageBase = new(memHeap) RegisterPartyMatchingCmd(std::forward<MessageDataPtr>(pIMsg)));
 				protocolCheck(pMessageBase->ParseMsg());
@@ -69,7 +69,7 @@ namespace SF
 			MessageData* RegisterPartyMatchingCmd::Create( IHeap& memHeap, const RouteContext &InRouteContext, const uint64_t &InTransactionID, const uint16_t &InRouteHopCount, const Array<MatchingPlayerInformation>& InPlayers )
 			{
  				MessageData *pNewMsg = nullptr;
-				FunctionContext hr([&pNewMsg](Result hr) -> MessageData*
+				ScopeContext hr([&pNewMsg](Result hr) -> MessageData*
 				{
  					if(!hr && pNewMsg != nullptr)
 					{
@@ -105,7 +105,7 @@ namespace SF
 
 			Result RegisterPartyMatchingCmd::OverrideRouteContextDestination( EntityUID to )
 			{
- 				FunctionContext hr;
+ 				ScopeContext hr;
 
 				MessageData* pIMsg = GetMessage();
 				RouteContext routeContext;
@@ -131,7 +131,7 @@ namespace SF
 
 			Result RegisterPartyMatchingCmd::OverrideRouteInformation( EntityUID to, unsigned hopCount )
 			{
- 				FunctionContext hr;
+ 				ScopeContext hr;
 
 				MessageData* pIMsg = GetMessage();
 				RouteContext routeContext;
@@ -173,7 +173,7 @@ namespace SF
 			const MessageID RegisterPartyMatchingRes::MID = MessageID(MSGTYPE_RESULT, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_PARTYMATCHINGQUEUE, 0);
 			Result RegisterPartyMatchingRes::ParseMessage(const MessageData* pIMsg)
 			{
- 				FunctionContext hr;
+ 				ScopeContext hr;
 
 
 				protocolCheckPtr(pIMsg);
@@ -196,7 +196,7 @@ namespace SF
 
 			Result RegisterPartyMatchingRes::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr&& pIMsg, MessageBase* &pMessageBase )
 			{
- 				FunctionContext hr;
+ 				ScopeContext hr;
 
 				protocolCheckMem(pMessageBase = new(memHeap) RegisterPartyMatchingRes(std::forward<MessageDataPtr>(pIMsg)));
 				protocolCheck(pMessageBase->ParseMsg());
@@ -209,7 +209,7 @@ namespace SF
 			MessageData* RegisterPartyMatchingRes::Create( IHeap& memHeap, const RouteContext &InRouteContext, const uint64_t &InTransactionID, const Result &InResult, const MatchingQueueTicket &InMatchingTicket )
 			{
  				MessageData *pNewMsg = nullptr;
-				FunctionContext hr([&pNewMsg](Result hr) -> MessageData*
+				ScopeContext hr([&pNewMsg](Result hr) -> MessageData*
 				{
  					if(!hr && pNewMsg != nullptr)
 					{
@@ -244,7 +244,7 @@ namespace SF
 
 			Result RegisterPartyMatchingRes::OverrideRouteContextDestination( EntityUID to )
 			{
- 				FunctionContext hr;
+ 				ScopeContext hr;
 
 				MessageData* pIMsg = GetMessage();
 				RouteContext routeContext;
@@ -270,7 +270,7 @@ namespace SF
 
 			Result RegisterPartyMatchingRes::OverrideRouteInformation( EntityUID to, unsigned hopCount )
 			{
- 				FunctionContext hr;
+ 				ScopeContext hr;
 
 				MessageData* pIMsg = GetMessage();
 				RouteContext routeContext;
@@ -311,7 +311,7 @@ namespace SF
 			const MessageID RegisterPlayerMatchingCmd::MID = MessageID(MSGTYPE_COMMAND, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_PARTYMATCHINGQUEUE, 1);
 			Result RegisterPlayerMatchingCmd::ParseMessage(const MessageData* pIMsg)
 			{
- 				FunctionContext hr;
+ 				ScopeContext hr;
 
 
 				protocolCheckPtr(pIMsg);
@@ -334,7 +334,7 @@ namespace SF
 
 			Result RegisterPlayerMatchingCmd::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr&& pIMsg, MessageBase* &pMessageBase )
 			{
- 				FunctionContext hr;
+ 				ScopeContext hr;
 
 				protocolCheckMem(pMessageBase = new(memHeap) RegisterPlayerMatchingCmd(std::forward<MessageDataPtr>(pIMsg)));
 				protocolCheck(pMessageBase->ParseMsg());
@@ -347,7 +347,7 @@ namespace SF
 			MessageData* RegisterPlayerMatchingCmd::Create( IHeap& memHeap, const RouteContext &InRouteContext, const uint64_t &InTransactionID, const uint16_t &InRouteHopCount, const PlayerID &InPlayerID )
 			{
  				MessageData *pNewMsg = nullptr;
-				FunctionContext hr([&pNewMsg](Result hr) -> MessageData*
+				ScopeContext hr([&pNewMsg](Result hr) -> MessageData*
 				{
  					if(!hr && pNewMsg != nullptr)
 					{
@@ -382,7 +382,7 @@ namespace SF
 
 			Result RegisterPlayerMatchingCmd::OverrideRouteContextDestination( EntityUID to )
 			{
- 				FunctionContext hr;
+ 				ScopeContext hr;
 
 				MessageData* pIMsg = GetMessage();
 				RouteContext routeContext;
@@ -408,7 +408,7 @@ namespace SF
 
 			Result RegisterPlayerMatchingCmd::OverrideRouteInformation( EntityUID to, unsigned hopCount )
 			{
- 				FunctionContext hr;
+ 				ScopeContext hr;
 
 				MessageData* pIMsg = GetMessage();
 				RouteContext routeContext;
@@ -450,7 +450,7 @@ namespace SF
 			const MessageID RegisterPlayerMatchingRes::MID = MessageID(MSGTYPE_RESULT, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_PARTYMATCHINGQUEUE, 1);
 			Result RegisterPlayerMatchingRes::ParseMessage(const MessageData* pIMsg)
 			{
- 				FunctionContext hr;
+ 				ScopeContext hr;
 
 
 				protocolCheckPtr(pIMsg);
@@ -473,7 +473,7 @@ namespace SF
 
 			Result RegisterPlayerMatchingRes::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr&& pIMsg, MessageBase* &pMessageBase )
 			{
- 				FunctionContext hr;
+ 				ScopeContext hr;
 
 				protocolCheckMem(pMessageBase = new(memHeap) RegisterPlayerMatchingRes(std::forward<MessageDataPtr>(pIMsg)));
 				protocolCheck(pMessageBase->ParseMsg());
@@ -486,7 +486,7 @@ namespace SF
 			MessageData* RegisterPlayerMatchingRes::Create( IHeap& memHeap, const RouteContext &InRouteContext, const uint64_t &InTransactionID, const Result &InResult, const MatchingQueueTicket &InMatchingTicket )
 			{
  				MessageData *pNewMsg = nullptr;
-				FunctionContext hr([&pNewMsg](Result hr) -> MessageData*
+				ScopeContext hr([&pNewMsg](Result hr) -> MessageData*
 				{
  					if(!hr && pNewMsg != nullptr)
 					{
@@ -521,7 +521,7 @@ namespace SF
 
 			Result RegisterPlayerMatchingRes::OverrideRouteContextDestination( EntityUID to )
 			{
- 				FunctionContext hr;
+ 				ScopeContext hr;
 
 				MessageData* pIMsg = GetMessage();
 				RouteContext routeContext;
@@ -547,7 +547,7 @@ namespace SF
 
 			Result RegisterPlayerMatchingRes::OverrideRouteInformation( EntityUID to, unsigned hopCount )
 			{
- 				FunctionContext hr;
+ 				ScopeContext hr;
 
 				MessageData* pIMsg = GetMessage();
 				RouteContext routeContext;
@@ -588,7 +588,7 @@ namespace SF
 			const MessageID UpdateMatchingEntityUIDCmd::MID = MessageID(MSGTYPE_COMMAND, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_PARTYMATCHINGQUEUE, 2);
 			Result UpdateMatchingEntityUIDCmd::ParseMessage(const MessageData* pIMsg)
 			{
- 				FunctionContext hr;
+ 				ScopeContext hr;
 
 
 				protocolCheckPtr(pIMsg);
@@ -612,7 +612,7 @@ namespace SF
 
 			Result UpdateMatchingEntityUIDCmd::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr&& pIMsg, MessageBase* &pMessageBase )
 			{
- 				FunctionContext hr;
+ 				ScopeContext hr;
 
 				protocolCheckMem(pMessageBase = new(memHeap) UpdateMatchingEntityUIDCmd(std::forward<MessageDataPtr>(pIMsg)));
 				protocolCheck(pMessageBase->ParseMsg());
@@ -625,7 +625,7 @@ namespace SF
 			MessageData* UpdateMatchingEntityUIDCmd::Create( IHeap& memHeap, const RouteContext &InRouteContext, const uint64_t &InTransactionID, const uint16_t &InRouteHopCount, const MatchingQueueTicket &InMatchingTicket, const uint64_t &InPreviousUID )
 			{
  				MessageData *pNewMsg = nullptr;
-				FunctionContext hr([&pNewMsg](Result hr) -> MessageData*
+				ScopeContext hr([&pNewMsg](Result hr) -> MessageData*
 				{
  					if(!hr && pNewMsg != nullptr)
 					{
@@ -662,7 +662,7 @@ namespace SF
 
 			Result UpdateMatchingEntityUIDCmd::OverrideRouteContextDestination( EntityUID to )
 			{
- 				FunctionContext hr;
+ 				ScopeContext hr;
 
 				MessageData* pIMsg = GetMessage();
 				RouteContext routeContext;
@@ -688,7 +688,7 @@ namespace SF
 
 			Result UpdateMatchingEntityUIDCmd::OverrideRouteInformation( EntityUID to, unsigned hopCount )
 			{
- 				FunctionContext hr;
+ 				ScopeContext hr;
 
 				MessageData* pIMsg = GetMessage();
 				RouteContext routeContext;
@@ -730,7 +730,7 @@ namespace SF
 			const MessageID UpdateMatchingEntityUIDRes::MID = MessageID(MSGTYPE_RESULT, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_PARTYMATCHINGQUEUE, 2);
 			Result UpdateMatchingEntityUIDRes::ParseMessage(const MessageData* pIMsg)
 			{
- 				FunctionContext hr;
+ 				ScopeContext hr;
 
 
 				protocolCheckPtr(pIMsg);
@@ -752,7 +752,7 @@ namespace SF
 
 			Result UpdateMatchingEntityUIDRes::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr&& pIMsg, MessageBase* &pMessageBase )
 			{
- 				FunctionContext hr;
+ 				ScopeContext hr;
 
 				protocolCheckMem(pMessageBase = new(memHeap) UpdateMatchingEntityUIDRes(std::forward<MessageDataPtr>(pIMsg)));
 				protocolCheck(pMessageBase->ParseMsg());
@@ -765,7 +765,7 @@ namespace SF
 			MessageData* UpdateMatchingEntityUIDRes::Create( IHeap& memHeap, const RouteContext &InRouteContext, const uint64_t &InTransactionID, const Result &InResult )
 			{
  				MessageData *pNewMsg = nullptr;
-				FunctionContext hr([&pNewMsg](Result hr) -> MessageData*
+				ScopeContext hr([&pNewMsg](Result hr) -> MessageData*
 				{
  					if(!hr && pNewMsg != nullptr)
 					{
@@ -798,7 +798,7 @@ namespace SF
 
 			Result UpdateMatchingEntityUIDRes::OverrideRouteContextDestination( EntityUID to )
 			{
- 				FunctionContext hr;
+ 				ScopeContext hr;
 
 				MessageData* pIMsg = GetMessage();
 				RouteContext routeContext;
@@ -824,7 +824,7 @@ namespace SF
 
 			Result UpdateMatchingEntityUIDRes::OverrideRouteInformation( EntityUID to, unsigned hopCount )
 			{
- 				FunctionContext hr;
+ 				ScopeContext hr;
 
 				MessageData* pIMsg = GetMessage();
 				RouteContext routeContext;
@@ -864,7 +864,7 @@ namespace SF
 			const MessageID UnregisterMatchingCmd::MID = MessageID(MSGTYPE_COMMAND, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_PARTYMATCHINGQUEUE, 3);
 			Result UnregisterMatchingCmd::ParseMessage(const MessageData* pIMsg)
 			{
- 				FunctionContext hr;
+ 				ScopeContext hr;
 
 
 				protocolCheckPtr(pIMsg);
@@ -887,7 +887,7 @@ namespace SF
 
 			Result UnregisterMatchingCmd::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr&& pIMsg, MessageBase* &pMessageBase )
 			{
- 				FunctionContext hr;
+ 				ScopeContext hr;
 
 				protocolCheckMem(pMessageBase = new(memHeap) UnregisterMatchingCmd(std::forward<MessageDataPtr>(pIMsg)));
 				protocolCheck(pMessageBase->ParseMsg());
@@ -900,7 +900,7 @@ namespace SF
 			MessageData* UnregisterMatchingCmd::Create( IHeap& memHeap, const RouteContext &InRouteContext, const uint64_t &InTransactionID, const uint16_t &InRouteHopCount, const MatchingQueueTicket &InMatchingTicket )
 			{
  				MessageData *pNewMsg = nullptr;
-				FunctionContext hr([&pNewMsg](Result hr) -> MessageData*
+				ScopeContext hr([&pNewMsg](Result hr) -> MessageData*
 				{
  					if(!hr && pNewMsg != nullptr)
 					{
@@ -935,7 +935,7 @@ namespace SF
 
 			Result UnregisterMatchingCmd::OverrideRouteContextDestination( EntityUID to )
 			{
- 				FunctionContext hr;
+ 				ScopeContext hr;
 
 				MessageData* pIMsg = GetMessage();
 				RouteContext routeContext;
@@ -961,7 +961,7 @@ namespace SF
 
 			Result UnregisterMatchingCmd::OverrideRouteInformation( EntityUID to, unsigned hopCount )
 			{
- 				FunctionContext hr;
+ 				ScopeContext hr;
 
 				MessageData* pIMsg = GetMessage();
 				RouteContext routeContext;
@@ -1003,7 +1003,7 @@ namespace SF
 			const MessageID UnregisterMatchingRes::MID = MessageID(MSGTYPE_RESULT, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_PARTYMATCHINGQUEUE, 3);
 			Result UnregisterMatchingRes::ParseMessage(const MessageData* pIMsg)
 			{
- 				FunctionContext hr;
+ 				ScopeContext hr;
 
 
 				protocolCheckPtr(pIMsg);
@@ -1025,7 +1025,7 @@ namespace SF
 
 			Result UnregisterMatchingRes::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr&& pIMsg, MessageBase* &pMessageBase )
 			{
- 				FunctionContext hr;
+ 				ScopeContext hr;
 
 				protocolCheckMem(pMessageBase = new(memHeap) UnregisterMatchingRes(std::forward<MessageDataPtr>(pIMsg)));
 				protocolCheck(pMessageBase->ParseMsg());
@@ -1038,7 +1038,7 @@ namespace SF
 			MessageData* UnregisterMatchingRes::Create( IHeap& memHeap, const RouteContext &InRouteContext, const uint64_t &InTransactionID, const Result &InResult )
 			{
  				MessageData *pNewMsg = nullptr;
-				FunctionContext hr([&pNewMsg](Result hr) -> MessageData*
+				ScopeContext hr([&pNewMsg](Result hr) -> MessageData*
 				{
  					if(!hr && pNewMsg != nullptr)
 					{
@@ -1071,7 +1071,7 @@ namespace SF
 
 			Result UnregisterMatchingRes::OverrideRouteContextDestination( EntityUID to )
 			{
- 				FunctionContext hr;
+ 				ScopeContext hr;
 
 				MessageData* pIMsg = GetMessage();
 				RouteContext routeContext;
@@ -1097,7 +1097,7 @@ namespace SF
 
 			Result UnregisterMatchingRes::OverrideRouteInformation( EntityUID to, unsigned hopCount )
 			{
- 				FunctionContext hr;
+ 				ScopeContext hr;
 
 				MessageData* pIMsg = GetMessage();
 				RouteContext routeContext;
@@ -1137,7 +1137,7 @@ namespace SF
 			const MessageID PartyMatchingCanceledS2CEvt::MID = MessageID(MSGTYPE_EVENT, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_PARTYMATCHINGQUEUE, 4);
 			Result PartyMatchingCanceledS2CEvt::ParseMessage(const MessageData* pIMsg)
 			{
- 				FunctionContext hr;
+ 				ScopeContext hr;
 
 
 				protocolCheckPtr(pIMsg);
@@ -1160,7 +1160,7 @@ namespace SF
 
 			Result PartyMatchingCanceledS2CEvt::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr&& pIMsg, MessageBase* &pMessageBase )
 			{
- 				FunctionContext hr;
+ 				ScopeContext hr;
 
 				protocolCheckMem(pMessageBase = new(memHeap) PartyMatchingCanceledS2CEvt(std::forward<MessageDataPtr>(pIMsg)));
 				protocolCheck(pMessageBase->ParseMsg());
@@ -1173,7 +1173,7 @@ namespace SF
 			MessageData* PartyMatchingCanceledS2CEvt::Create( IHeap& memHeap, const RouteContext &InRouteContext, const uint16_t &InRouteHopCount, const uint64_t &InDestPartyUID, const MatchingQueueTicket &InMatchingTicket )
 			{
  				MessageData *pNewMsg = nullptr;
-				FunctionContext hr([&pNewMsg](Result hr) -> MessageData*
+				ScopeContext hr([&pNewMsg](Result hr) -> MessageData*
 				{
  					if(!hr && pNewMsg != nullptr)
 					{
@@ -1208,7 +1208,7 @@ namespace SF
 
 			Result PartyMatchingCanceledS2CEvt::OverrideRouteContextDestination( EntityUID to )
 			{
- 				FunctionContext hr;
+ 				ScopeContext hr;
 
 				MessageData* pIMsg = GetMessage();
 				RouteContext routeContext;
@@ -1234,7 +1234,7 @@ namespace SF
 
 			Result PartyMatchingCanceledS2CEvt::OverrideRouteInformation( EntityUID to, unsigned hopCount )
 			{
- 				FunctionContext hr;
+ 				ScopeContext hr;
 
 				MessageData* pIMsg = GetMessage();
 				RouteContext routeContext;
@@ -1276,7 +1276,7 @@ namespace SF
 			const MessageID PlayerMatchingCanceledS2CEvt::MID = MessageID(MSGTYPE_EVENT, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_PARTYMATCHINGQUEUE, 5);
 			Result PlayerMatchingCanceledS2CEvt::ParseMessage(const MessageData* pIMsg)
 			{
- 				FunctionContext hr;
+ 				ScopeContext hr;
 
 
 				protocolCheckPtr(pIMsg);
@@ -1299,7 +1299,7 @@ namespace SF
 
 			Result PlayerMatchingCanceledS2CEvt::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr&& pIMsg, MessageBase* &pMessageBase )
 			{
- 				FunctionContext hr;
+ 				ScopeContext hr;
 
 				protocolCheckMem(pMessageBase = new(memHeap) PlayerMatchingCanceledS2CEvt(std::forward<MessageDataPtr>(pIMsg)));
 				protocolCheck(pMessageBase->ParseMsg());
@@ -1312,7 +1312,7 @@ namespace SF
 			MessageData* PlayerMatchingCanceledS2CEvt::Create( IHeap& memHeap, const RouteContext &InRouteContext, const uint16_t &InRouteHopCount, const PlayerID &InDestPlayerID, const MatchingQueueTicket &InMatchingTicket )
 			{
  				MessageData *pNewMsg = nullptr;
-				FunctionContext hr([&pNewMsg](Result hr) -> MessageData*
+				ScopeContext hr([&pNewMsg](Result hr) -> MessageData*
 				{
  					if(!hr && pNewMsg != nullptr)
 					{
@@ -1347,7 +1347,7 @@ namespace SF
 
 			Result PlayerMatchingCanceledS2CEvt::OverrideRouteContextDestination( EntityUID to )
 			{
- 				FunctionContext hr;
+ 				ScopeContext hr;
 
 				MessageData* pIMsg = GetMessage();
 				RouteContext routeContext;
@@ -1373,7 +1373,7 @@ namespace SF
 
 			Result PlayerMatchingCanceledS2CEvt::OverrideRouteInformation( EntityUID to, unsigned hopCount )
 			{
- 				FunctionContext hr;
+ 				ScopeContext hr;
 
 				MessageData* pIMsg = GetMessage();
 				RouteContext routeContext;
@@ -1415,7 +1415,7 @@ namespace SF
 			const MessageID PartyMatchingItemDequeuedS2CEvt::MID = MessageID(MSGTYPE_EVENT, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_PARTYMATCHINGQUEUE, 6);
 			Result PartyMatchingItemDequeuedS2CEvt::ParseMessage(const MessageData* pIMsg)
 			{
- 				FunctionContext hr;
+ 				ScopeContext hr;
 
 
 				protocolCheckPtr(pIMsg);
@@ -1437,7 +1437,7 @@ namespace SF
 
 			Result PartyMatchingItemDequeuedS2CEvt::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr&& pIMsg, MessageBase* &pMessageBase )
 			{
- 				FunctionContext hr;
+ 				ScopeContext hr;
 
 				protocolCheckMem(pMessageBase = new(memHeap) PartyMatchingItemDequeuedS2CEvt(std::forward<MessageDataPtr>(pIMsg)));
 				protocolCheck(pMessageBase->ParseMsg());
@@ -1450,7 +1450,7 @@ namespace SF
 			MessageData* PartyMatchingItemDequeuedS2CEvt::Create( IHeap& memHeap, const RouteContext &InRouteContext, const uint16_t &InRouteHopCount, const MatchingQueueTicket &InMatchingTicket )
 			{
  				MessageData *pNewMsg = nullptr;
-				FunctionContext hr([&pNewMsg](Result hr) -> MessageData*
+				ScopeContext hr([&pNewMsg](Result hr) -> MessageData*
 				{
  					if(!hr && pNewMsg != nullptr)
 					{
@@ -1483,7 +1483,7 @@ namespace SF
 
 			Result PartyMatchingItemDequeuedS2CEvt::OverrideRouteContextDestination( EntityUID to )
 			{
- 				FunctionContext hr;
+ 				ScopeContext hr;
 
 				MessageData* pIMsg = GetMessage();
 				RouteContext routeContext;
@@ -1509,7 +1509,7 @@ namespace SF
 
 			Result PartyMatchingItemDequeuedS2CEvt::OverrideRouteInformation( EntityUID to, unsigned hopCount )
 			{
- 				FunctionContext hr;
+ 				ScopeContext hr;
 
 				MessageData* pIMsg = GetMessage();
 				RouteContext routeContext;
@@ -1551,7 +1551,7 @@ namespace SF
 			const MessageID PlayerMatchingItemDequeuedS2CEvt::MID = MessageID(MSGTYPE_EVENT, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_PARTYMATCHINGQUEUE, 7);
 			Result PlayerMatchingItemDequeuedS2CEvt::ParseMessage(const MessageData* pIMsg)
 			{
- 				FunctionContext hr;
+ 				ScopeContext hr;
 
 
 				protocolCheckPtr(pIMsg);
@@ -1573,7 +1573,7 @@ namespace SF
 
 			Result PlayerMatchingItemDequeuedS2CEvt::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr&& pIMsg, MessageBase* &pMessageBase )
 			{
- 				FunctionContext hr;
+ 				ScopeContext hr;
 
 				protocolCheckMem(pMessageBase = new(memHeap) PlayerMatchingItemDequeuedS2CEvt(std::forward<MessageDataPtr>(pIMsg)));
 				protocolCheck(pMessageBase->ParseMsg());
@@ -1586,7 +1586,7 @@ namespace SF
 			MessageData* PlayerMatchingItemDequeuedS2CEvt::Create( IHeap& memHeap, const RouteContext &InRouteContext, const uint16_t &InRouteHopCount, const MatchingQueueTicket &InMatchingTicket )
 			{
  				MessageData *pNewMsg = nullptr;
-				FunctionContext hr([&pNewMsg](Result hr) -> MessageData*
+				ScopeContext hr([&pNewMsg](Result hr) -> MessageData*
 				{
  					if(!hr && pNewMsg != nullptr)
 					{
@@ -1619,7 +1619,7 @@ namespace SF
 
 			Result PlayerMatchingItemDequeuedS2CEvt::OverrideRouteContextDestination( EntityUID to )
 			{
- 				FunctionContext hr;
+ 				ScopeContext hr;
 
 				MessageData* pIMsg = GetMessage();
 				RouteContext routeContext;
@@ -1645,7 +1645,7 @@ namespace SF
 
 			Result PlayerMatchingItemDequeuedS2CEvt::OverrideRouteInformation( EntityUID to, unsigned hopCount )
 			{
- 				FunctionContext hr;
+ 				ScopeContext hr;
 
 				MessageData* pIMsg = GetMessage();
 				RouteContext routeContext;
@@ -1687,7 +1687,7 @@ namespace SF
 			const MessageID ReserveItemCmd::MID = MessageID(MSGTYPE_COMMAND, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_PARTYMATCHINGQUEUE, 8);
 			Result ReserveItemCmd::ParseMessage(const MessageData* pIMsg)
 			{
- 				FunctionContext hr;
+ 				ScopeContext hr;
 
 
 				protocolCheckPtr(pIMsg);
@@ -1709,7 +1709,7 @@ namespace SF
 
 			Result ReserveItemCmd::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr&& pIMsg, MessageBase* &pMessageBase )
 			{
- 				FunctionContext hr;
+ 				ScopeContext hr;
 
 				protocolCheckMem(pMessageBase = new(memHeap) ReserveItemCmd(std::forward<MessageDataPtr>(pIMsg)));
 				protocolCheck(pMessageBase->ParseMsg());
@@ -1722,7 +1722,7 @@ namespace SF
 			MessageData* ReserveItemCmd::Create( IHeap& memHeap, const RouteContext &InRouteContext, const uint64_t &InTransactionID, const uint16_t &InRouteHopCount )
 			{
  				MessageData *pNewMsg = nullptr;
-				FunctionContext hr([&pNewMsg](Result hr) -> MessageData*
+				ScopeContext hr([&pNewMsg](Result hr) -> MessageData*
 				{
  					if(!hr && pNewMsg != nullptr)
 					{
@@ -1755,7 +1755,7 @@ namespace SF
 
 			Result ReserveItemCmd::OverrideRouteContextDestination( EntityUID to )
 			{
- 				FunctionContext hr;
+ 				ScopeContext hr;
 
 				MessageData* pIMsg = GetMessage();
 				RouteContext routeContext;
@@ -1781,7 +1781,7 @@ namespace SF
 
 			Result ReserveItemCmd::OverrideRouteInformation( EntityUID to, unsigned hopCount )
 			{
- 				FunctionContext hr;
+ 				ScopeContext hr;
 
 				MessageData* pIMsg = GetMessage();
 				RouteContext routeContext;
@@ -1823,7 +1823,7 @@ namespace SF
 			const MessageID ReserveItemRes::MID = MessageID(MSGTYPE_RESULT, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_PARTYMATCHINGQUEUE, 8);
 			Result ReserveItemRes::ParseMessage(const MessageData* pIMsg)
 			{
- 				FunctionContext hr;
+ 				ScopeContext hr;
 
 
 				protocolCheckPtr(pIMsg);
@@ -1847,7 +1847,7 @@ namespace SF
 
 			Result ReserveItemRes::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr&& pIMsg, MessageBase* &pMessageBase )
 			{
- 				FunctionContext hr;
+ 				ScopeContext hr;
 
 				protocolCheckMem(pMessageBase = new(memHeap) ReserveItemRes(std::forward<MessageDataPtr>(pIMsg)));
 				protocolCheck(pMessageBase->ParseMsg());
@@ -1860,7 +1860,7 @@ namespace SF
 			MessageData* ReserveItemRes::Create( IHeap& memHeap, const RouteContext &InRouteContext, const uint64_t &InTransactionID, const Result &InResult, const uint32_t &InNumberOfPlayersInTheItem, const MatchingQueueTicket &InMatchingTicket )
 			{
  				MessageData *pNewMsg = nullptr;
-				FunctionContext hr([&pNewMsg](Result hr) -> MessageData*
+				ScopeContext hr([&pNewMsg](Result hr) -> MessageData*
 				{
  					if(!hr && pNewMsg != nullptr)
 					{
@@ -1897,7 +1897,7 @@ namespace SF
 
 			Result ReserveItemRes::OverrideRouteContextDestination( EntityUID to )
 			{
- 				FunctionContext hr;
+ 				ScopeContext hr;
 
 				MessageData* pIMsg = GetMessage();
 				RouteContext routeContext;
@@ -1923,7 +1923,7 @@ namespace SF
 
 			Result ReserveItemRes::OverrideRouteInformation( EntityUID to, unsigned hopCount )
 			{
- 				FunctionContext hr;
+ 				ScopeContext hr;
 
 				MessageData* pIMsg = GetMessage();
 				RouteContext routeContext;
@@ -1965,7 +1965,7 @@ namespace SF
 			const MessageID ReserveItemsCmd::MID = MessageID(MSGTYPE_COMMAND, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_PARTYMATCHINGQUEUE, 9);
 			Result ReserveItemsCmd::ParseMessage(const MessageData* pIMsg)
 			{
- 				FunctionContext hr;
+ 				ScopeContext hr;
 
 
 				protocolCheckPtr(pIMsg);
@@ -1988,7 +1988,7 @@ namespace SF
 
 			Result ReserveItemsCmd::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr&& pIMsg, MessageBase* &pMessageBase )
 			{
- 				FunctionContext hr;
+ 				ScopeContext hr;
 
 				protocolCheckMem(pMessageBase = new(memHeap) ReserveItemsCmd(std::forward<MessageDataPtr>(pIMsg)));
 				protocolCheck(pMessageBase->ParseMsg());
@@ -2001,7 +2001,7 @@ namespace SF
 			MessageData* ReserveItemsCmd::Create( IHeap& memHeap, const RouteContext &InRouteContext, const uint64_t &InTransactionID, const uint16_t &InRouteHopCount, const uint32_t &InNumberOfItemsToReserve )
 			{
  				MessageData *pNewMsg = nullptr;
-				FunctionContext hr([&pNewMsg](Result hr) -> MessageData*
+				ScopeContext hr([&pNewMsg](Result hr) -> MessageData*
 				{
  					if(!hr && pNewMsg != nullptr)
 					{
@@ -2036,7 +2036,7 @@ namespace SF
 
 			Result ReserveItemsCmd::OverrideRouteContextDestination( EntityUID to )
 			{
- 				FunctionContext hr;
+ 				ScopeContext hr;
 
 				MessageData* pIMsg = GetMessage();
 				RouteContext routeContext;
@@ -2062,7 +2062,7 @@ namespace SF
 
 			Result ReserveItemsCmd::OverrideRouteInformation( EntityUID to, unsigned hopCount )
 			{
- 				FunctionContext hr;
+ 				ScopeContext hr;
 
 				MessageData* pIMsg = GetMessage();
 				RouteContext routeContext;
@@ -2104,7 +2104,7 @@ namespace SF
 			const MessageID ReserveItemsRes::MID = MessageID(MSGTYPE_RESULT, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_PARTYMATCHINGQUEUE, 9);
 			Result ReserveItemsRes::ParseMessage(const MessageData* pIMsg)
 			{
- 				FunctionContext hr;
+ 				ScopeContext hr;
 
 
 				protocolCheckPtr(pIMsg);
@@ -2134,7 +2134,7 @@ namespace SF
 
 			Result ReserveItemsRes::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr&& pIMsg, MessageBase* &pMessageBase )
 			{
- 				FunctionContext hr;
+ 				ScopeContext hr;
 
 				protocolCheckMem(pMessageBase = new(memHeap) ReserveItemsRes(std::forward<MessageDataPtr>(pIMsg)));
 				protocolCheck(pMessageBase->ParseMsg());
@@ -2147,7 +2147,7 @@ namespace SF
 			MessageData* ReserveItemsRes::Create( IHeap& memHeap, const RouteContext &InRouteContext, const uint64_t &InTransactionID, const Result &InResult, const Array<uint32_t>& InNumberOfPlayersInTheItem, const Array<MatchingQueueTicket>& InMatchingTicket )
 			{
  				MessageData *pNewMsg = nullptr;
-				FunctionContext hr([&pNewMsg](Result hr) -> MessageData*
+				ScopeContext hr([&pNewMsg](Result hr) -> MessageData*
 				{
  					if(!hr && pNewMsg != nullptr)
 					{
@@ -2186,7 +2186,7 @@ namespace SF
 
 			Result ReserveItemsRes::OverrideRouteContextDestination( EntityUID to )
 			{
- 				FunctionContext hr;
+ 				ScopeContext hr;
 
 				MessageData* pIMsg = GetMessage();
 				RouteContext routeContext;
@@ -2212,7 +2212,7 @@ namespace SF
 
 			Result ReserveItemsRes::OverrideRouteInformation( EntityUID to, unsigned hopCount )
 			{
- 				FunctionContext hr;
+ 				ScopeContext hr;
 
 				MessageData* pIMsg = GetMessage();
 				RouteContext routeContext;
@@ -2256,7 +2256,7 @@ namespace SF
 			const MessageID CancelReservationCmd::MID = MessageID(MSGTYPE_COMMAND, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_PARTYMATCHINGQUEUE, 10);
 			Result CancelReservationCmd::ParseMessage(const MessageData* pIMsg)
 			{
- 				FunctionContext hr;
+ 				ScopeContext hr;
 
 
 				protocolCheckPtr(pIMsg);
@@ -2279,7 +2279,7 @@ namespace SF
 
 			Result CancelReservationCmd::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr&& pIMsg, MessageBase* &pMessageBase )
 			{
- 				FunctionContext hr;
+ 				ScopeContext hr;
 
 				protocolCheckMem(pMessageBase = new(memHeap) CancelReservationCmd(std::forward<MessageDataPtr>(pIMsg)));
 				protocolCheck(pMessageBase->ParseMsg());
@@ -2292,7 +2292,7 @@ namespace SF
 			MessageData* CancelReservationCmd::Create( IHeap& memHeap, const RouteContext &InRouteContext, const uint64_t &InTransactionID, const uint16_t &InRouteHopCount, const MatchingQueueTicket &InTicketToCancel )
 			{
  				MessageData *pNewMsg = nullptr;
-				FunctionContext hr([&pNewMsg](Result hr) -> MessageData*
+				ScopeContext hr([&pNewMsg](Result hr) -> MessageData*
 				{
  					if(!hr && pNewMsg != nullptr)
 					{
@@ -2327,7 +2327,7 @@ namespace SF
 
 			Result CancelReservationCmd::OverrideRouteContextDestination( EntityUID to )
 			{
- 				FunctionContext hr;
+ 				ScopeContext hr;
 
 				MessageData* pIMsg = GetMessage();
 				RouteContext routeContext;
@@ -2353,7 +2353,7 @@ namespace SF
 
 			Result CancelReservationCmd::OverrideRouteInformation( EntityUID to, unsigned hopCount )
 			{
- 				FunctionContext hr;
+ 				ScopeContext hr;
 
 				MessageData* pIMsg = GetMessage();
 				RouteContext routeContext;
@@ -2395,7 +2395,7 @@ namespace SF
 			const MessageID CancelReservationRes::MID = MessageID(MSGTYPE_RESULT, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_PARTYMATCHINGQUEUE, 10);
 			Result CancelReservationRes::ParseMessage(const MessageData* pIMsg)
 			{
- 				FunctionContext hr;
+ 				ScopeContext hr;
 
 
 				protocolCheckPtr(pIMsg);
@@ -2417,7 +2417,7 @@ namespace SF
 
 			Result CancelReservationRes::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr&& pIMsg, MessageBase* &pMessageBase )
 			{
- 				FunctionContext hr;
+ 				ScopeContext hr;
 
 				protocolCheckMem(pMessageBase = new(memHeap) CancelReservationRes(std::forward<MessageDataPtr>(pIMsg)));
 				protocolCheck(pMessageBase->ParseMsg());
@@ -2430,7 +2430,7 @@ namespace SF
 			MessageData* CancelReservationRes::Create( IHeap& memHeap, const RouteContext &InRouteContext, const uint64_t &InTransactionID, const Result &InResult )
 			{
  				MessageData *pNewMsg = nullptr;
-				FunctionContext hr([&pNewMsg](Result hr) -> MessageData*
+				ScopeContext hr([&pNewMsg](Result hr) -> MessageData*
 				{
  					if(!hr && pNewMsg != nullptr)
 					{
@@ -2463,7 +2463,7 @@ namespace SF
 
 			Result CancelReservationRes::OverrideRouteContextDestination( EntityUID to )
 			{
- 				FunctionContext hr;
+ 				ScopeContext hr;
 
 				MessageData* pIMsg = GetMessage();
 				RouteContext routeContext;
@@ -2489,7 +2489,7 @@ namespace SF
 
 			Result CancelReservationRes::OverrideRouteInformation( EntityUID to, unsigned hopCount )
 			{
- 				FunctionContext hr;
+ 				ScopeContext hr;
 
 				MessageData* pIMsg = GetMessage();
 				RouteContext routeContext;
@@ -2529,7 +2529,7 @@ namespace SF
 			const MessageID CancelReservationsCmd::MID = MessageID(MSGTYPE_COMMAND, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_PARTYMATCHINGQUEUE, 11);
 			Result CancelReservationsCmd::ParseMessage(const MessageData* pIMsg)
 			{
- 				FunctionContext hr;
+ 				ScopeContext hr;
 
 
 				protocolCheckPtr(pIMsg);
@@ -2555,7 +2555,7 @@ namespace SF
 
 			Result CancelReservationsCmd::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr&& pIMsg, MessageBase* &pMessageBase )
 			{
- 				FunctionContext hr;
+ 				ScopeContext hr;
 
 				protocolCheckMem(pMessageBase = new(memHeap) CancelReservationsCmd(std::forward<MessageDataPtr>(pIMsg)));
 				protocolCheck(pMessageBase->ParseMsg());
@@ -2568,7 +2568,7 @@ namespace SF
 			MessageData* CancelReservationsCmd::Create( IHeap& memHeap, const RouteContext &InRouteContext, const uint64_t &InTransactionID, const uint16_t &InRouteHopCount, const Array<MatchingQueueTicket>& InTicketToCancel )
 			{
  				MessageData *pNewMsg = nullptr;
-				FunctionContext hr([&pNewMsg](Result hr) -> MessageData*
+				ScopeContext hr([&pNewMsg](Result hr) -> MessageData*
 				{
  					if(!hr && pNewMsg != nullptr)
 					{
@@ -2604,7 +2604,7 @@ namespace SF
 
 			Result CancelReservationsCmd::OverrideRouteContextDestination( EntityUID to )
 			{
- 				FunctionContext hr;
+ 				ScopeContext hr;
 
 				MessageData* pIMsg = GetMessage();
 				RouteContext routeContext;
@@ -2630,7 +2630,7 @@ namespace SF
 
 			Result CancelReservationsCmd::OverrideRouteInformation( EntityUID to, unsigned hopCount )
 			{
- 				FunctionContext hr;
+ 				ScopeContext hr;
 
 				MessageData* pIMsg = GetMessage();
 				RouteContext routeContext;
@@ -2672,7 +2672,7 @@ namespace SF
 			const MessageID CancelReservationsRes::MID = MessageID(MSGTYPE_RESULT, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_PARTYMATCHINGQUEUE, 11);
 			Result CancelReservationsRes::ParseMessage(const MessageData* pIMsg)
 			{
- 				FunctionContext hr;
+ 				ScopeContext hr;
 
 
 				protocolCheckPtr(pIMsg);
@@ -2694,7 +2694,7 @@ namespace SF
 
 			Result CancelReservationsRes::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr&& pIMsg, MessageBase* &pMessageBase )
 			{
- 				FunctionContext hr;
+ 				ScopeContext hr;
 
 				protocolCheckMem(pMessageBase = new(memHeap) CancelReservationsRes(std::forward<MessageDataPtr>(pIMsg)));
 				protocolCheck(pMessageBase->ParseMsg());
@@ -2707,7 +2707,7 @@ namespace SF
 			MessageData* CancelReservationsRes::Create( IHeap& memHeap, const RouteContext &InRouteContext, const uint64_t &InTransactionID, const Result &InResult )
 			{
  				MessageData *pNewMsg = nullptr;
-				FunctionContext hr([&pNewMsg](Result hr) -> MessageData*
+				ScopeContext hr([&pNewMsg](Result hr) -> MessageData*
 				{
  					if(!hr && pNewMsg != nullptr)
 					{
@@ -2740,7 +2740,7 @@ namespace SF
 
 			Result CancelReservationsRes::OverrideRouteContextDestination( EntityUID to )
 			{
- 				FunctionContext hr;
+ 				ScopeContext hr;
 
 				MessageData* pIMsg = GetMessage();
 				RouteContext routeContext;
@@ -2766,7 +2766,7 @@ namespace SF
 
 			Result CancelReservationsRes::OverrideRouteInformation( EntityUID to, unsigned hopCount )
 			{
- 				FunctionContext hr;
+ 				ScopeContext hr;
 
 				MessageData* pIMsg = GetMessage();
 				RouteContext routeContext;
@@ -2806,7 +2806,7 @@ namespace SF
 			const MessageID DequeueItemCmd::MID = MessageID(MSGTYPE_COMMAND, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_PARTYMATCHINGQUEUE, 12);
 			Result DequeueItemCmd::ParseMessage(const MessageData* pIMsg)
 			{
- 				FunctionContext hr;
+ 				ScopeContext hr;
 
 
 				protocolCheckPtr(pIMsg);
@@ -2829,7 +2829,7 @@ namespace SF
 
 			Result DequeueItemCmd::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr&& pIMsg, MessageBase* &pMessageBase )
 			{
- 				FunctionContext hr;
+ 				ScopeContext hr;
 
 				protocolCheckMem(pMessageBase = new(memHeap) DequeueItemCmd(std::forward<MessageDataPtr>(pIMsg)));
 				protocolCheck(pMessageBase->ParseMsg());
@@ -2842,7 +2842,7 @@ namespace SF
 			MessageData* DequeueItemCmd::Create( IHeap& memHeap, const RouteContext &InRouteContext, const uint64_t &InTransactionID, const uint16_t &InRouteHopCount, const MatchingQueueTicket &InMatchingTicket )
 			{
  				MessageData *pNewMsg = nullptr;
-				FunctionContext hr([&pNewMsg](Result hr) -> MessageData*
+				ScopeContext hr([&pNewMsg](Result hr) -> MessageData*
 				{
  					if(!hr && pNewMsg != nullptr)
 					{
@@ -2877,7 +2877,7 @@ namespace SF
 
 			Result DequeueItemCmd::OverrideRouteContextDestination( EntityUID to )
 			{
- 				FunctionContext hr;
+ 				ScopeContext hr;
 
 				MessageData* pIMsg = GetMessage();
 				RouteContext routeContext;
@@ -2903,7 +2903,7 @@ namespace SF
 
 			Result DequeueItemCmd::OverrideRouteInformation( EntityUID to, unsigned hopCount )
 			{
- 				FunctionContext hr;
+ 				ScopeContext hr;
 
 				MessageData* pIMsg = GetMessage();
 				RouteContext routeContext;
@@ -2945,7 +2945,7 @@ namespace SF
 			const MessageID DequeueItemRes::MID = MessageID(MSGTYPE_RESULT, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_PARTYMATCHINGQUEUE, 12);
 			Result DequeueItemRes::ParseMessage(const MessageData* pIMsg)
 			{
- 				FunctionContext hr;
+ 				ScopeContext hr;
 
 
 				protocolCheckPtr(pIMsg);
@@ -2974,7 +2974,7 @@ namespace SF
 
 			Result DequeueItemRes::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr&& pIMsg, MessageBase* &pMessageBase )
 			{
- 				FunctionContext hr;
+ 				ScopeContext hr;
 
 				protocolCheckMem(pMessageBase = new(memHeap) DequeueItemRes(std::forward<MessageDataPtr>(pIMsg)));
 				protocolCheck(pMessageBase->ParseMsg());
@@ -2987,7 +2987,7 @@ namespace SF
 			MessageData* DequeueItemRes::Create( IHeap& memHeap, const RouteContext &InRouteContext, const uint64_t &InTransactionID, const Result &InResult, const MatchingQueueTicket &InMatchingTicket, const uint64_t &InRegisterUID, const PlayerID &InRegisterID, const Array<MatchingPlayerInformation>& InPlayers )
 			{
  				MessageData *pNewMsg = nullptr;
-				FunctionContext hr([&pNewMsg](Result hr) -> MessageData*
+				ScopeContext hr([&pNewMsg](Result hr) -> MessageData*
 				{
  					if(!hr && pNewMsg != nullptr)
 					{
@@ -3029,7 +3029,7 @@ namespace SF
 
 			Result DequeueItemRes::OverrideRouteContextDestination( EntityUID to )
 			{
- 				FunctionContext hr;
+ 				ScopeContext hr;
 
 				MessageData* pIMsg = GetMessage();
 				RouteContext routeContext;
@@ -3055,7 +3055,7 @@ namespace SF
 
 			Result DequeueItemRes::OverrideRouteInformation( EntityUID to, unsigned hopCount )
 			{
- 				FunctionContext hr;
+ 				ScopeContext hr;
 
 				MessageData* pIMsg = GetMessage();
 				RouteContext routeContext;
@@ -3100,7 +3100,7 @@ namespace SF
 			const MessageID MatchingItemErrorC2SEvt::MID = MessageID(MSGTYPE_EVENT, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_PARTYMATCHINGQUEUE, 13);
 			Result MatchingItemErrorC2SEvt::ParseMessage(const MessageData* pIMsg)
 			{
- 				FunctionContext hr;
+ 				ScopeContext hr;
 
 
 				protocolCheckPtr(pIMsg);
@@ -3122,7 +3122,7 @@ namespace SF
 
 			Result MatchingItemErrorC2SEvt::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr&& pIMsg, MessageBase* &pMessageBase )
 			{
- 				FunctionContext hr;
+ 				ScopeContext hr;
 
 				protocolCheckMem(pMessageBase = new(memHeap) MatchingItemErrorC2SEvt(std::forward<MessageDataPtr>(pIMsg)));
 				protocolCheck(pMessageBase->ParseMsg());
@@ -3135,7 +3135,7 @@ namespace SF
 			MessageData* MatchingItemErrorC2SEvt::Create( IHeap& memHeap, const RouteContext &InRouteContext, const uint16_t &InRouteHopCount, const MatchingQueueTicket &InMatchingTicket )
 			{
  				MessageData *pNewMsg = nullptr;
-				FunctionContext hr([&pNewMsg](Result hr) -> MessageData*
+				ScopeContext hr([&pNewMsg](Result hr) -> MessageData*
 				{
  					if(!hr && pNewMsg != nullptr)
 					{
@@ -3168,7 +3168,7 @@ namespace SF
 
 			Result MatchingItemErrorC2SEvt::OverrideRouteContextDestination( EntityUID to )
 			{
- 				FunctionContext hr;
+ 				ScopeContext hr;
 
 				MessageData* pIMsg = GetMessage();
 				RouteContext routeContext;
@@ -3194,7 +3194,7 @@ namespace SF
 
 			Result MatchingItemErrorC2SEvt::OverrideRouteInformation( EntityUID to, unsigned hopCount )
 			{
- 				FunctionContext hr;
+ 				ScopeContext hr;
 
 				MessageData* pIMsg = GetMessage();
 				RouteContext routeContext;

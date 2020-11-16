@@ -30,7 +30,7 @@ namespace SF
 			const MessageID PartyGameMatchedS2CEvt::MID = MessageID(MSGTYPE_EVENT, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_PARTYMATCHING, 0);
 			Result PartyGameMatchedS2CEvt::ParseMessage(const MessageData* pIMsg)
 			{
- 				FunctionContext hr;
+ 				ScopeContext hr;
 
 
 				protocolCheckPtr(pIMsg);
@@ -51,7 +51,7 @@ namespace SF
 
 			Result PartyGameMatchedS2CEvt::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr&& pIMsg, MessageBase* &pMessageBase )
 			{
- 				FunctionContext hr;
+ 				ScopeContext hr;
 
 				protocolCheckMem(pMessageBase = new(memHeap) PartyGameMatchedS2CEvt(std::forward<MessageDataPtr>(pIMsg)));
 				protocolCheck(pMessageBase->ParseMsg());
@@ -64,7 +64,7 @@ namespace SF
 			MessageData* PartyGameMatchedS2CEvt::Create( IHeap& memHeap, const RouteContext &InRouteContext, const uint16_t &InRouteHopCount )
 			{
  				MessageData *pNewMsg = nullptr;
-				FunctionContext hr([&pNewMsg](Result hr) -> MessageData*
+				ScopeContext hr([&pNewMsg](Result hr) -> MessageData*
 				{
  					if(!hr && pNewMsg != nullptr)
 					{
@@ -95,7 +95,7 @@ namespace SF
 
 			Result PartyGameMatchedS2CEvt::OverrideRouteContextDestination( EntityUID to )
 			{
- 				FunctionContext hr;
+ 				ScopeContext hr;
 
 				MessageData* pIMsg = GetMessage();
 				RouteContext routeContext;
@@ -121,7 +121,7 @@ namespace SF
 
 			Result PartyGameMatchedS2CEvt::OverrideRouteInformation( EntityUID to, unsigned hopCount )
 			{
- 				FunctionContext hr;
+ 				ScopeContext hr;
 
 				MessageData* pIMsg = GetMessage();
 				RouteContext routeContext;
@@ -163,7 +163,7 @@ namespace SF
 			const MessageID PlayerGameMatchedS2CEvt::MID = MessageID(MSGTYPE_EVENT, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_PARTYMATCHING, 1);
 			Result PlayerGameMatchedS2CEvt::ParseMessage(const MessageData* pIMsg)
 			{
- 				FunctionContext hr;
+ 				ScopeContext hr;
 
 
 				protocolCheckPtr(pIMsg);
@@ -187,7 +187,7 @@ namespace SF
 
 			Result PlayerGameMatchedS2CEvt::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr&& pIMsg, MessageBase* &pMessageBase )
 			{
- 				FunctionContext hr;
+ 				ScopeContext hr;
 
 				protocolCheckMem(pMessageBase = new(memHeap) PlayerGameMatchedS2CEvt(std::forward<MessageDataPtr>(pIMsg)));
 				protocolCheck(pMessageBase->ParseMsg());
@@ -200,7 +200,7 @@ namespace SF
 			MessageData* PlayerGameMatchedS2CEvt::Create( IHeap& memHeap, const RouteContext &InRouteContext, const uint16_t &InRouteHopCount, const PlayerID &InDestPlayerID, const uint64_t &InGameInsUID, const uint8_t &InRequestedRole )
 			{
  				MessageData *pNewMsg = nullptr;
-				FunctionContext hr([&pNewMsg](Result hr) -> MessageData*
+				ScopeContext hr([&pNewMsg](Result hr) -> MessageData*
 				{
  					if(!hr && pNewMsg != nullptr)
 					{
@@ -237,7 +237,7 @@ namespace SF
 
 			Result PlayerGameMatchedS2CEvt::OverrideRouteContextDestination( EntityUID to )
 			{
- 				FunctionContext hr;
+ 				ScopeContext hr;
 
 				MessageData* pIMsg = GetMessage();
 				RouteContext routeContext;
@@ -263,7 +263,7 @@ namespace SF
 
 			Result PlayerGameMatchedS2CEvt::OverrideRouteInformation( EntityUID to, unsigned hopCount )
 			{
- 				FunctionContext hr;
+ 				ScopeContext hr;
 
 				MessageData* pIMsg = GetMessage();
 				RouteContext routeContext;

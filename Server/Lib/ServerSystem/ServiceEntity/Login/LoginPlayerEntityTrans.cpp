@@ -542,7 +542,7 @@ namespace Svr {
 
 	Result LoginPlayerTransCreateRandomUser::OnCreated(Svr::TransactionResult* pRes)
 	{
-		FunctionContext hr([this](Result hr) 
+		ScopeContext hr([this](Result hr) 
 			{
 				if (!hr)
 					CloseTransaction(hr);
@@ -572,7 +572,7 @@ namespace Svr {
 	// Start Transaction
 	Result LoginPlayerTransCreateRandomUser::StartTransaction()
 	{
-		FunctionContext hr([this](Result hr)
+		ScopeContext hr([this](Result hr)
 			{
 				if (!hr)
 					CloseTransaction(hr);

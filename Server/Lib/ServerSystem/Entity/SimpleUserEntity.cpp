@@ -24,6 +24,9 @@
 #include "Task/ServerTaskEvent.h"
 #include "Net/SFConnectionUDP.h"
 
+#include "Protocol/Message/LoginMsgClass.h"
+#include "Protocol/Message/GameMsgClass.h"
+
 
 namespace SF {
 namespace Svr
@@ -36,16 +39,35 @@ namespace Svr
 
 
 	SimpleUserEntity::SimpleUserEntity()
-		:SimpleEntity(Const::ENTITY_SIMPLE_TRANS_QUEUE, Const::ENTITY_SIMPLE_TRANSRES_QUEUE),
-		m_pConnection(nullptr)
+		: SimpleEntity(Const::ENTITY_SIMPLE_TRANS_QUEUE, Const::ENTITY_SIMPLE_TRANSRES_QUEUE)
+		, m_pConnection(nullptr)
+		, m_ComponentManger(GetHeap())
 	{
 		SetTickInterval(DurationMS(Svr::Const::SIMPLEUSER_TICKTASK_INTERVAL));
+
+		RegisterMessageHandler<Message::Login::HeartBitC2SEvt>([this](Net::Connection*, MessageDataPtr&, TransactionPtr& pNewTrans) -> Result
+			{
+				pNewTrans = nullptr;
+				HeartBit();
+				return ResultCode::SUCCESS;
+			});
+
+		RegisterMessageHandler<Message::Game::HeartBitC2SEvt>([this](Net::Connection*, MessageDataPtr&, TransactionPtr& pNewTrans) -> Result
+			{
+				pNewTrans = nullptr;
+				HeartBit();
+				return ResultCode::SUCCESS;
+			});
 	}
 
 	SimpleUserEntity::~SimpleUserEntity()
 	{
 	}
 
+	void SimpleUserEntity::SetEntityKillTimer(DurationMS timeOut)
+	{
+		m_TimeToKill.SetTimer(timeOut);
+	}
 
 	// set connection
 	Result SimpleUserEntity::SetConnection(SharedPointerT<Net::Connection>&& pConn)
@@ -224,15 +246,33 @@ namespace Svr
 
 
 
+	void SimpleUserEntity::HeartBit()
+	{
+		m_TimeToKill.SetTimer(DurationMS(Const::LOGIN_TIME_WAIT_PLAYER_JOIN));
+	}
+
 	Result SimpleUserEntity::TickUpdate(TimerAction *pAction)
 	{
 		Result hr = ResultCode::SUCCESS;
 		MessageDataPtr pIMsg;
 		Net::ConnectionEvent conEvent;
 
-
 		if( GetEntityState() == EntityState::FREE )
 			return ResultCode::SUCCESS;
+
+		if (m_TimeToKill.CheckTimer()
+			&& GetEntityState() == EntityState::WORKING)
+		{
+			if (!m_PendingCloseHasCalled)
+			{
+				if (PendingCloseTransaction("Entity heart bit timeout"))
+					m_PendingCloseHasCalled = true;
+			}
+		}
+		else
+		{
+			GetComponentManager().TickUpdate();
+		}
 
 		// Update connection
 		// We need to make a copy here while m_pConnection can be changed on another thread
@@ -273,13 +313,12 @@ namespace Svr
 					if (!(pConn->GetRecvMessage(pIMsg)))
 						break;
 
-					ProcessMessageData(pIMsg );
+					ProcessMessageData(pIMsg);
 				}
 			}
 		}
 
 		svrChk(SimpleEntity::TickUpdate(pAction) );
-
 
 	Proc_End:
 

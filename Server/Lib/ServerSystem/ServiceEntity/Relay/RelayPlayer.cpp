@@ -53,7 +53,7 @@ namespace SF {
 	// Initialize entity to proceed new connection
 	Result RelayPlayer::InitializePlayer(IHeap& heap, RelayInstance* relayInstance, const sockaddr_storage& remoteAddr, const RelayPlayerID& relayPlayerID, PlayerID playerID, const String& playerIdentifier, const char* PlayerDisplayName)
 	{
-		FunctionContext hr;
+		ScopeContext hr;
 
 		m_Address = remoteAddr;
 		m_PlayerIdentifier.SetHeap(heap);
@@ -90,7 +90,7 @@ namespace SF {
 	// Run the task
 	Result RelayPlayer::TickUpdate()
 	{
-		FunctionContext hr;
+		ScopeContext hr;
 		auto curTime = Util::Time.GetTimeMs();
 
 
@@ -103,7 +103,7 @@ namespace SF {
 	// Update Game Player 
 	Result RelayPlayer::UpdateTimeout( TimeStampMS ulCurTime )
 	{
-		FunctionContext hr;
+		ScopeContext hr;
 
 		if( m_TimeToKill.CheckTimer())
 		{

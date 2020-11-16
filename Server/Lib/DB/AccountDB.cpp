@@ -51,7 +51,7 @@ namespace SF {
 		Result AccountDB::FacebookCreateUser(TransactionID Sender, uint64_t facebookUID, const char* EMail, const char* cellPhone)
 		{
 			UniquePtr<QueryFacebookCreateUserCmd> pQuery;
-			FunctionContext hr;
+			ScopeContext hr;
 
 			pQuery.reset(new(GetHeap()) QueryFacebookCreateUserCmd(GetHeap()));
 			dbCheckMem(pQuery);
@@ -74,7 +74,7 @@ namespace SF {
 		Result AccountDB::FacebookLogIn(TransactionID Sender, uint64_t facebookUID)
 		{
 			UniquePtr<QueryFacebookLoginCmd> pQuery;
-			FunctionContext hr;
+			ScopeContext hr;
 
 			pQuery.reset(new(GetHeap()) QueryFacebookLoginCmd(GetHeap()));
 			dbCheckMem(pQuery);
@@ -98,7 +98,7 @@ namespace SF {
 
 		Result AccountDB::CreateUser(TransactionID Sender, const char* UserName, const char* Password)
 		{
-			FunctionContext hr;
+			ScopeContext hr;
 
 			UniquePtr<QueryCreateUserCmd> pQuery(new(GetHeap()) QueryCreateUserCmd(GetHeap()));
 			dbCheckMem(pQuery);
@@ -117,7 +117,7 @@ namespace SF {
 
 		Result AccountDB::LogIn(TransactionID Sender, const char* UserName, const char* Password)
 		{
-			FunctionContext hr;
+			ScopeContext hr;
 
 			UniquePtr<QueryLoginCmd> pQuery(new(GetHeap()) QueryLoginCmd(GetHeap()));
 			dbCheckMem(pQuery);
@@ -139,7 +139,7 @@ namespace SF {
 
 		Result AccountDB::LogOut(TransactionID Sender)
 		{
-			FunctionContext hr;
+			ScopeContext hr;
 
 			UniquePtr<QueryLogoutCmd> pQuery(new(GetHeap()) QueryLogoutCmd(GetHeap()));
 			dbCheckMem(pQuery);
@@ -155,7 +155,7 @@ namespace SF {
 
 		Result AccountDB::CreateRandomUser(TransactionID Sender, const char* userName, const char* cellPhone)
 		{
-			FunctionContext hr;
+			ScopeContext hr;
 
 			UniquePtr<QueryCreateRandomUserCmd> pQuery(new(GetHeap()) QueryCreateRandomUserCmd(GetHeap()));
 			dbCheckMem(pQuery);
@@ -177,7 +177,7 @@ namespace SF {
 
 		Result AccountDB::UserList(TransactionID Sender)
 		{
-			FunctionContext hr;
+			ScopeContext hr;
 
 			UniquePtr<QueryUserListCmd> pQuery(new(GetHeap()) QueryUserListCmd(GetHeap()));
 			dbCheckMem(pQuery);
@@ -192,7 +192,7 @@ namespace SF {
 
 		Result AccountDB::UpdateGCMKeys(TransactionID Sender, AccountID accountID, const char* strGCMKeys)
 		{
-			FunctionContext hr;
+			ScopeContext hr;
 
 			UniquePtr<QueryUpdateGCMKeysCmd> pQuery(new(GetHeap()) QueryUpdateGCMKeysCmd(GetHeap()));
 			dbCheckMem(pQuery);
@@ -213,7 +213,7 @@ namespace SF {
 
 		Result AccountDB::UpdateUserContactInfo(TransactionID Sender, AccountID accountID, const char* strEMail, const char* strCellPhone)
 		{
-			FunctionContext hr;
+			ScopeContext hr;
 
 			UniquePtr<QueryUpdateUserContactInfoCmd> pQuery(new(GetHeap()) QueryUpdateUserContactInfoCmd(GetHeap()));
 			dbCheckMem(pQuery);
@@ -235,7 +235,7 @@ namespace SF {
 		// Find player
 		Result AccountDB::FindPlayerByEMail(TransactionID Sender, const char* email)
 		{
-			FunctionContext hr;
+			ScopeContext hr;
 
 			UniquePtr<QueryFindPlayerByEMailCmd> pQuery(new(GetHeap()) QueryFindPlayerByEMailCmd(GetHeap()));
 			dbCheckMem(pQuery);
@@ -258,7 +258,7 @@ namespace SF {
 
 		Result AccountDB::FindPlayerByPlayerID(TransactionID Sender, AccountID accountID)
 		{
-			FunctionContext hr;
+			ScopeContext hr;
 
 			UniquePtr<QueryFindPlayerByPlayerIDCmd> pQuery(new(GetHeap()) QueryFindPlayerByPlayerIDCmd(GetHeap()));
 			dbCheckMem(pQuery);
@@ -282,7 +282,7 @@ namespace SF {
 		// Player shard id
 		Result AccountDB::GetPlayerShardID(TransactionID Sender, AccountID accountID)
 		{
-			FunctionContext hr;
+			ScopeContext hr;
 
 			UniquePtr<QueryGetPlayerShardIDCmd> pQuery(new(GetHeap()) QueryGetPlayerShardIDCmd(GetHeap()));
 			dbCheckMem(pQuery);

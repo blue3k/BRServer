@@ -34,7 +34,7 @@ namespace SF
 		// Cmd: Register a party for matching
 		Result PartyMatchingQueueService::RegisterPartyMatchingCmd( const uint64_t &InTransactionID, const uint16_t &InRouteHopCount, const Array<MatchingPlayerInformation>& InPlayers )
 		{
- 			FunctionContext hr;
+ 			ScopeContext hr;
 
 			RouteContext InRouteContext( EntityUID(GetMyServerID(),TransactionID(InTransactionID).GetEntityID()), GetServiceEntityUID() );
 			svrCheck(Policy::NetPolicyPartyMatchingQueue(GetConnection()).RegisterPartyMatchingCmd( InRouteContext, InTransactionID, InRouteHopCount, InPlayers ) );
@@ -45,7 +45,7 @@ namespace SF
 		// Cmd: Register a player for matching
 		Result PartyMatchingQueueService::RegisterPlayerMatchingCmd( const uint64_t &InTransactionID, const uint16_t &InRouteHopCount, const PlayerID &InPlayerID )
 		{
- 			FunctionContext hr;
+ 			ScopeContext hr;
 
 			RouteContext InRouteContext( EntityUID(GetMyServerID(),TransactionID(InTransactionID).GetEntityID()), GetServiceEntityUID() );
 			svrCheck(Policy::NetPolicyPartyMatchingQueue(GetConnection()).RegisterPlayerMatchingCmd( InRouteContext, InTransactionID, InRouteHopCount, InPlayerID ) );
@@ -56,7 +56,7 @@ namespace SF
 		// Cmd: [Deprecated] update registration information
 		Result PartyMatchingQueueService::UpdateMatchingEntityUIDCmd( const uint64_t &InTransactionID, const uint16_t &InRouteHopCount, const MatchingQueueTicket &InMatchingTicket, const uint64_t &InPreviousUID )
 		{
- 			FunctionContext hr;
+ 			ScopeContext hr;
 
 			RouteContext InRouteContext( EntityUID(GetMyServerID(),TransactionID(InTransactionID).GetEntityID()), GetServiceEntityUID() );
 			svrCheck(Policy::NetPolicyPartyMatchingQueue(GetConnection()).UpdateMatchingEntityUIDCmd( InRouteContext, InTransactionID, InRouteHopCount, InMatchingTicket, InPreviousUID ) );
@@ -67,7 +67,7 @@ namespace SF
 		// Cmd: calcel registration
 		Result PartyMatchingQueueService::UnregisterMatchingCmd( const uint64_t &InTransactionID, const uint16_t &InRouteHopCount, const MatchingQueueTicket &InMatchingTicket )
 		{
- 			FunctionContext hr;
+ 			ScopeContext hr;
 
 			RouteContext InRouteContext( EntityUID(GetMyServerID(),TransactionID(InTransactionID).GetEntityID()), GetServiceEntityUID() );
 			svrCheck(Policy::NetPolicyPartyMatchingQueue(GetConnection()).UnregisterMatchingCmd( InRouteContext, InTransactionID, InRouteHopCount, InMatchingTicket ) );
@@ -78,7 +78,7 @@ namespace SF
 		// Cmd: Reserve a item
 		Result PartyMatchingQueueService::ReserveItemCmd( const uint64_t &InTransactionID, const uint16_t &InRouteHopCount )
 		{
- 			FunctionContext hr;
+ 			ScopeContext hr;
 
 			RouteContext InRouteContext( EntityUID(GetMyServerID(),TransactionID(InTransactionID).GetEntityID()), GetServiceEntityUID() );
 			svrCheck(Policy::NetPolicyPartyMatchingQueue(GetConnection()).ReserveItemCmd( InRouteContext, InTransactionID, InRouteHopCount ) );
@@ -89,7 +89,7 @@ namespace SF
 		// Cmd: Reserve a item
 		Result PartyMatchingQueueService::ReserveItemsCmd( const uint64_t &InTransactionID, const uint16_t &InRouteHopCount, const uint32_t &InNumberOfItemsToReserve )
 		{
- 			FunctionContext hr;
+ 			ScopeContext hr;
 
 			RouteContext InRouteContext( EntityUID(GetMyServerID(),TransactionID(InTransactionID).GetEntityID()), GetServiceEntityUID() );
 			svrCheck(Policy::NetPolicyPartyMatchingQueue(GetConnection()).ReserveItemsCmd( InRouteContext, InTransactionID, InRouteHopCount, InNumberOfItemsToReserve ) );
@@ -100,7 +100,7 @@ namespace SF
 		// Cmd: Cancel reservation
 		Result PartyMatchingQueueService::CancelReservationCmd( const uint64_t &InTransactionID, const uint16_t &InRouteHopCount, const MatchingQueueTicket &InTicketToCancel )
 		{
- 			FunctionContext hr;
+ 			ScopeContext hr;
 
 			RouteContext InRouteContext( EntityUID(GetMyServerID(),TransactionID(InTransactionID).GetEntityID()), GetServiceEntityUID() );
 			svrCheck(Policy::NetPolicyPartyMatchingQueue(GetConnection()).CancelReservationCmd( InRouteContext, InTransactionID, InRouteHopCount, InTicketToCancel ) );
@@ -111,7 +111,7 @@ namespace SF
 		// Cmd: Cancel reservation
 		Result PartyMatchingQueueService::CancelReservationsCmd( const uint64_t &InTransactionID, const uint16_t &InRouteHopCount, const Array<MatchingQueueTicket>& InTicketToCancel )
 		{
- 			FunctionContext hr;
+ 			ScopeContext hr;
 
 			RouteContext InRouteContext( EntityUID(GetMyServerID(),TransactionID(InTransactionID).GetEntityID()), GetServiceEntityUID() );
 			svrCheck(Policy::NetPolicyPartyMatchingQueue(GetConnection()).CancelReservationsCmd( InRouteContext, InTransactionID, InRouteHopCount, InTicketToCancel ) );
@@ -122,7 +122,7 @@ namespace SF
 		// Cmd: Dequeue a reserved item
 		Result PartyMatchingQueueService::DequeueItemCmd( const uint64_t &InTransactionID, const uint16_t &InRouteHopCount, const MatchingQueueTicket &InMatchingTicket )
 		{
- 			FunctionContext hr;
+ 			ScopeContext hr;
 
 			RouteContext InRouteContext( EntityUID(GetMyServerID(),TransactionID(InTransactionID).GetEntityID()), GetServiceEntityUID() );
 			svrCheck(Policy::NetPolicyPartyMatchingQueue(GetConnection()).DequeueItemCmd( InRouteContext, InTransactionID, InRouteHopCount, InMatchingTicket ) );
@@ -133,7 +133,7 @@ namespace SF
 		// C2S: Item error you should delete it
 		Result PartyMatchingQueueService::MatchingItemErrorC2SEvt( const EntityID &InSenderEntityID, const uint16_t &InRouteHopCount, const MatchingQueueTicket &InMatchingTicket )
 		{
- 			FunctionContext hr;
+ 			ScopeContext hr;
 
 			RouteContext InRouteContext( EntityUID(GetMyServerID(),InSenderEntityID), GetServiceEntityUID() );
 			svrCheck(Policy::NetPolicyPartyMatchingQueue(GetConnection()).MatchingItemErrorC2SEvt( InRouteContext, InRouteHopCount, InMatchingTicket ) );

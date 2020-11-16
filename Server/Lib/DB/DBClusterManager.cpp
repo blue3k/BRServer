@@ -322,7 +322,7 @@ Proc_End:
 
 	Result	DBClusterManager::UpdateResultQueries()
 	{
-		FunctionContext hr;
+		ScopeContext hr;
 
 		Query* pQuery = nullptr;
 		auto numQueries = m_ResultQueries.GetEnqueCount();
@@ -373,7 +373,7 @@ Proc_End:
 	{
 		Session* pSession = nullptr;
 		DataSource *pDBSource = nullptr;
-		FunctionContext hr([&pSession](Result hr)
+		ScopeContext hr([&pSession](Result hr)
 			{
 				if (pSession != nullptr)
 					pSession->ReleaseSession();
@@ -436,7 +436,7 @@ Proc_End:
 	// Route query result to entity
 	Result	DBClusterManager::RouteResult(Query* &pQuery)
 	{
-		FunctionContext hr;
+		ScopeContext hr;
 
 		auto queryName = pQuery->GetQueryString();
 

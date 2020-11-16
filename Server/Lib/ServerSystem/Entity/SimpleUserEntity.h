@@ -19,6 +19,7 @@
 #include "Net/SFNetDef.h"
 #include "Net/SFConnection.h"
 #include "Entity/SimpleEntity.h"
+#include "Component/BrComponent.h"
 
 
 namespace SF {
@@ -49,12 +50,21 @@ namespace Svr {
 		// Authenticate ticket
 		AuthTicket		m_AuthTicket;
 
+		// Component manager
+		ComponentManager m_ComponentManger;
+
+		bool m_PendingCloseHasCalled = false;
+
+		// Time for kill this instance
+		Util::TimeStampTimer m_TimeToKill;
+
 
 	public:
 
 		SimpleUserEntity();
 		virtual ~SimpleUserEntity();
 
+		void SetEntityKillTimer(DurationMS timeOut);
 
 		// set connection
 		virtual Result SetConnection( SharedPointerT<Net::Connection>&& pConn );
@@ -78,9 +88,32 @@ namespace Svr {
 		// Process Message and release message after all processed
 		Result ProcessMessageData(MessageDataPtr &pMsg);
 
+		virtual void HeartBit();
+
 		// Run entity
 		virtual Result TickUpdate(TimerAction *pAction = nullptr) override;
 
+
+		//////////////////////////////////////////////////////////////////////////////////////////////////
+		//
+		//	Component manager
+		//
+
+		virtual Result PendingCloseTransaction(const char* reason) = 0;
+
+		//////////////////////////////////////////////////////////////////////////////////////////////////
+		//
+		//	Component manager
+		//
+
+		ComponentManager& GetComponentManager() { return m_ComponentManger; }
+
+		template< class ComponentType >
+		ComponentType* GetComponent() { return m_ComponentManger.GetComponent<ComponentType>(); }
+
+		// Get component with its type
+		template< class ComponentType >
+		const ComponentType* GetComponent() const { return m_ComponentManger.GetComponent<ComponentType>(); }
 
 		////////////////////////////////////////////////////////////
 		//
@@ -98,6 +131,8 @@ namespace Svr {
 
 		// Set Auth ticket
 		inline void SetAuthTicket( AuthTicket authTicket );
+
+		Util::TimeStampTimer& GetTimeToKill() { return m_TimeToKill; }
 
 
 		// Called when this entity have a routed message

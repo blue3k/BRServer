@@ -58,7 +58,7 @@ namespace GameServer {
 
 	Result GameServerStartProcess::OnTimer(Svr::TransactionResult* pRes)
 	{
-		SF::FunctionContext hr([this](Result hr)
+		SF::ScopeContext hr([this](Result hr)
 			{
 				if (!hr)
 					CloseTransaction(hr);

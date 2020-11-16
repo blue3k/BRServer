@@ -28,7 +28,7 @@ namespace SF
  		// Cmd: Cluster member list query
 		Result NetPolicyClusterServer::GetClusterMemberListCmd( const RouteContext &InRouteContext, const uint64_t &InTransactionID, const uint16_t &InRouteHopCount, const ClusterID &InClusterID )
 		{
- 			FunctionContext hr;
+ 			ScopeContext hr;
 
 			 MessageDataPtr pMessage;
 			 protocolCheckPtr(m_pConnection);
@@ -44,7 +44,7 @@ namespace SF
 		// Cmd: Join to the cluster
 		Result NetPolicyClusterServer::RequestDataSyncCmd( const RouteContext &InRouteContext, const uint64_t &InTransactionID, const uint16_t &InRouteHopCount, const ClusterID &InClusterID )
 		{
- 			FunctionContext hr;
+ 			ScopeContext hr;
 
 			 MessageDataPtr pMessage;
 			 protocolCheckPtr(m_pConnection);
@@ -62,7 +62,7 @@ namespace SF
 		// Cmd: Cluster member list query
 		Result NetSvrPolicyClusterServer::GetClusterMemberListRes( const RouteContext &InRouteContext, const uint64_t &InTransactionID, const Result &InResult, const Array<ServiceInformation>& InMemberList )
 		{
- 			FunctionContext hr;
+ 			ScopeContext hr;
 
 			 MessageDataPtr pMessage;
 			 protocolCheckPtr(m_pConnection);
@@ -78,7 +78,7 @@ namespace SF
 		// Cmd: Join to the cluster
 		Result NetSvrPolicyClusterServer::RequestDataSyncRes( const RouteContext &InRouteContext, const uint64_t &InTransactionID, const Result &InResult )
 		{
- 			FunctionContext hr;
+ 			ScopeContext hr;
 
 			 MessageDataPtr pMessage;
 			 protocolCheckPtr(m_pConnection);

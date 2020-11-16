@@ -48,7 +48,7 @@ namespace SF {
 
 		Result GameDB::CreatePlayerInfoCmd(TransactionID Sender, uint shardID, const PlayerID& playerID)
 		{
-			FunctionContext hr;
+			ScopeContext hr;
 
 			UniquePtr<QueryCreatePlayerInfoCmd> pQuery(new(GetHeap()) QueryCreatePlayerInfoCmd(GetHeap()));
 			dbCheckMem(pQuery);
@@ -67,7 +67,7 @@ namespace SF {
 
 		Result GameDB::GetPlayerInfoCmd(TransactionID Sender, uint shardID, const PlayerID& playerID)
 		{
-			FunctionContext hr;
+			ScopeContext hr;
 
 			UniquePtr<QueryGetPlayerInfoCmd> pQuery(new(GetHeap()) QueryGetPlayerInfoCmd(GetHeap()));
 			dbCheckMem(pQuery);
@@ -92,7 +92,7 @@ namespace SF {
 			UTCTimeStampSec	LatestTickTime,
 			const Array<NamedVariableBox>& Variables)
 		{
-			FunctionContext hr;
+			ScopeContext hr;
 
 			UniquePtr<QuerySetPlayerInfoCmd> pQuery(new(GetHeap()) QuerySetPlayerInfoCmd(GetHeap()));
 			dbCheckMem(pQuery);
@@ -127,7 +127,7 @@ namespace SF {
 			UTCTimeStampSec	LatestTickTime
 			)
 		{
-			FunctionContext hr;
+			ScopeContext hr;
 
 			UniquePtr<QuerySavePurchaseInfoToDBCmd> pQuery(new(GetHeap()) QuerySavePurchaseInfoToDBCmd(GetHeap()));
 			dbCheckMem(pQuery);
@@ -163,7 +163,7 @@ namespace SF {
 
 		Result GameDB::CheckPurchaseID(TransactionID Sender, uint shardID, const Array<uint8_t>& purchaseID)
 		{
-			FunctionContext hr;
+			ScopeContext hr;
 
 			UniquePtr<QueryCheckPurchaseIDCmd> pQuery(new(GetHeap()) QueryCheckPurchaseIDCmd(GetHeap()));
 			dbCheckMem(pQuery);
@@ -186,7 +186,7 @@ namespace SF {
 
 		Result GameDB::SetNickName(TransactionID Sender, uint shardID, PlayerID playerID, const char* nickName)
 		{
-			FunctionContext hr;
+			ScopeContext hr;
 
 			UniquePtr<QuerySetNickNameCmd> pQuery(new(GetHeap()) QuerySetNickNameCmd(GetHeap()));
 			dbCheckMem(pQuery);
@@ -207,7 +207,7 @@ namespace SF {
 
 		Result GameDB::GetNickName(TransactionID Sender, uint shardID, PlayerID playerID)
 		{
-			FunctionContext hr;
+			ScopeContext hr;
 
 			UniquePtr<QueryGetNickNameCmd> pQuery(new(GetHeap()) QueryGetNickNameCmd(GetHeap()));
 			dbCheckMem(pQuery);
@@ -360,7 +360,7 @@ namespace SF {
 		Result GameDB::GetPlayerStatusCmd(TransactionID Sender, uint shardID, const PlayerID& playerID)
 		{
 			UniquePtr<QueryGetPlayerStatusCmd> pQuery;
-			FunctionContext hr;
+			ScopeContext hr;
 
 			pQuery.reset(new(GetHeap()) QueryGetPlayerStatusCmd(GetHeap()));
 			dbCheckMem(pQuery);
@@ -385,7 +385,7 @@ namespace SF {
 		Result GameDB::GetPlayerQuickInfoCmd(TransactionID Sender, uint shardID, PlayerID playerID)
 		{
 			UniquePtr<QueryGetPlayerQuickInfoCmd> pQuery;
-			FunctionContext hr;
+			ScopeContext hr;
 
 			pQuery.reset(new(GetHeap()) QueryGetPlayerQuickInfoCmd(GetHeap()));
 			dbCheckMem(pQuery);
@@ -412,7 +412,7 @@ namespace SF {
 		Result GameDB::GetFriendQuickInfoCmd(TransactionID Sender, uint shardID, PlayerID playerID)
 		{
 			UniquePtr<QueryGetFriendQuickInfoCmd> pQuery;
-			FunctionContext hr;
+			ScopeContext hr;
 
 			pQuery.reset(new(GetHeap()) QueryGetFriendQuickInfoCmd(GetHeap()));
 			dbCheckMem(pQuery);
@@ -440,7 +440,7 @@ namespace SF {
 		Result GameDB::GetFriendQuickInfoWithNickCmd(TransactionID Sender, uint shardID, PlayerID playerID)
 		{
 			UniquePtr<QueryGetFriendQuickInfoWithNickCmd> pQuery;
-			FunctionContext hr;
+			ScopeContext hr;
 
 			pQuery.reset(new(GetHeap()) QueryGetFriendQuickInfoWithNickCmd(GetHeap()));
 			dbCheckMem(pQuery);
@@ -470,7 +470,7 @@ namespace SF {
 		Result GameDB::GetFriendSlotStatus(TransactionID Sender, uint shardID, PlayerID playerID)
 		{
 			UniquePtr<QueryGetFriendSlotStatusCmd> pQuery;
-			FunctionContext hr;
+			ScopeContext hr;
 
 			pQuery.reset(new(GetHeap()) QueryGetFriendSlotStatusCmd(GetHeap()));
 			dbCheckMem(pQuery);
@@ -494,7 +494,7 @@ namespace SF {
 		Result GameDB::AddFriend(TransactionID Sender, uint shardID, PlayerID accountID, PlayerID FriendUID, uint friendShardID, FacebookUID FriendFacebookUID)
 		{
 			UniquePtr<QueryAddFriendCmd> pQuery;
-			FunctionContext hr;
+			ScopeContext hr;
 
 			pQuery.reset(new(GetHeap()) QueryAddFriendCmd(GetHeap()));
 			dbCheckMem(pQuery);
@@ -518,7 +518,7 @@ namespace SF {
 		Result GameDB::RemoveFriend(TransactionID Sender, uint shardID, PlayerID accountID, PlayerID FriendUID)
 		{
 			UniquePtr<QueryRemoveFriendCmd> pQuery;
-			FunctionContext hr;
+			ScopeContext hr;
 
 			pQuery.reset(new(GetHeap()) QueryRemoveFriendCmd(GetHeap()));
 			dbCheckMem(pQuery);
@@ -540,7 +540,7 @@ namespace SF {
 		Result GameDB::GetFriendList(TransactionID Sender, uint shardID, PlayerID accountID)
 		{
 			UniquePtr<QueryGetFriendListCmd> pQuery;
-			FunctionContext hr;
+			ScopeContext hr;
 
 			pQuery.reset(new(GetHeap()) QueryGetFriendListCmd(GetHeap()));
 			dbCheckMem(pQuery);
@@ -562,7 +562,7 @@ namespace SF {
 		Result GameDB::Notification_Add(TransactionID Sender, uint shardID, PlayerID ToUserID, bool isCollapsable, NotificationType messageID, int64_t messageParam0, int64_t messageParam1, const char* messageText, UTCTimeStampSec timeStamp)
 		{
 			UniquePtr<QueryNotification_AddCmd> pQuery;
-			FunctionContext hr;
+			ScopeContext hr;
 
 			pQuery.reset(new(GetHeap()) QueryNotification_AddCmd(GetHeap()));
 			dbCheckMem(pQuery);
@@ -590,7 +590,7 @@ namespace SF {
 		Result GameDB::Notification_GetList(TransactionID Sender, uint shardID, PlayerID UserID)
 		{
 			UniquePtr<QueryNotification_GetListCmd> pQuery;
-			FunctionContext hr;
+			ScopeContext hr;
 
 			pQuery.reset(new(GetHeap()) QueryNotification_GetListCmd(GetHeap()));
 			dbCheckMem(pQuery);
@@ -612,7 +612,7 @@ namespace SF {
 		Result GameDB::Notification_Remove(TransactionID Sender, uint shardID, PlayerID userID, int32_t notificationID)
 		{
 			UniquePtr<QueryNotification_RemoveCmd> pQuery;
-			FunctionContext hr;
+			ScopeContext hr;
 
 			pQuery.reset(new(GetHeap()) QueryNotification_RemoveCmd(GetHeap()));
 			dbCheckMem(pQuery);
@@ -636,7 +636,7 @@ namespace SF {
 		Result GameDB::Notification_RemoveByMessageID(TransactionID Sender, uint shardID, PlayerID UserID, int16_t messageID)
 		{
 			UniquePtr<QueryNotification_RemoveByMessageIDCmd> pQuery;
-			FunctionContext hr;
+			ScopeContext hr;
 
 			pQuery.reset(new(GetHeap()) QueryNotification_RemoveByMessageIDCmd(GetHeap()));
 			dbCheckMem(pQuery);
@@ -659,7 +659,7 @@ namespace SF {
 		Result GameDB::Notification_SetRead(TransactionID Sender, uint shardID, PlayerID userID, int32_t notificationID)
 		{
 			UniquePtr<QueryNotification_SetReadCmd> pQuery;
-			FunctionContext hr;
+			ScopeContext hr;
 
 			pQuery.reset(new(GetHeap()) QueryNotification_SetReadCmd(GetHeap()));
 			dbCheckMem(pQuery);
@@ -683,7 +683,7 @@ namespace SF {
 		Result GameDB::SetComplitionState(TransactionID Sender, uint shardID, PlayerID userID, const char* complitionState)
 		{
 			UniquePtr<QuerySetComplitionStateCmd> pQuery;
-			FunctionContext hr;
+			ScopeContext hr;
 
 			pQuery.reset(new(GetHeap()) QuerySetComplitionStateCmd(GetHeap()));
 			dbCheckMem(pQuery);
@@ -707,7 +707,7 @@ namespace SF {
 		Result GameDB::GetComplitionState(TransactionID Sender, uint shardID, PlayerID userID)
 		{
 			UniquePtr<QueryGetComplitionStateCmd> pQuery;
-			FunctionContext hr;
+			ScopeContext hr;
 
 			pQuery.reset(new(GetHeap()) QueryGetComplitionStateCmd(GetHeap()));
 			dbCheckMem(pQuery);

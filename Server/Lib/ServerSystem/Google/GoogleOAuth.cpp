@@ -366,7 +366,7 @@ namespace Google {
 		Json::CharReader* pReader = builder.newCharReader();
 		std::string errors = "";;
 
-		FunctionContext hr([this, &pReader, &errors](Result hr)
+		ScopeContext hr([this, &pReader, &errors](Result hr)
 			{
 				if (pReader)
 					delete pReader;
@@ -419,7 +419,7 @@ namespace Google {
 	// Refresh
 	Result OAuth::UpdateAuthentication(bool forceUpdate)
 	{
-		FunctionContext hr = ResultCode::SUCCESS;
+		ScopeContext hr = ResultCode::SUCCESS;
 
 		if (!forceUpdate
 			&& Util::TimeSince(m_AuthenticatedTime) <= DurationMS(AUTHTICKET_TIMEOUT))

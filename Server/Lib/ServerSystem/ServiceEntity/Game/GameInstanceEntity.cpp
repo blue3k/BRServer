@@ -61,7 +61,7 @@ namespace SF {
 		// Initialize entity to proceed new connection
 		Result GameInstanceEntity::InitializeEntity(EntityID newEntityID)
 		{
-			FunctionContext hr;
+			ScopeContext hr;
 
 			svrCheck(super::InitializeEntity(newEntityID));
 
@@ -77,7 +77,7 @@ namespace SF {
 		// Close entity and clear transaction
 		Result GameInstanceEntity::TerminateEntity()
 		{
-			FunctionContext hr;
+			ScopeContext hr;
 
 			if (GetEntityState() == EntityState::FREE)
 				return ResultCode::SUCCESS;
@@ -98,7 +98,7 @@ namespace SF {
 		// Run entity
 		Result GameInstanceEntity::TickUpdate(TimerAction* pAction)
 		{
-			FunctionContext hr;
+			ScopeContext hr;
 			auto CurTime = Util::Time.GetTimeMs();
 			StaticArray<PlayerID, 64> LeaverList(GetHeap());
 			GameInstancePlayer* pGamePlayer = nullptr;
@@ -157,7 +157,7 @@ namespace SF {
 		// Update Game status
 		Result GameInstanceEntity::UpdateGameStatus(TimeStampMS ulCurTime)
 		{
-			FunctionContext hr;
+			ScopeContext hr;
 
 			// Call check timer to update
 			m_TimeToKill.CheckTimer();
@@ -216,7 +216,7 @@ namespace SF {
 		// Initialize entity to proceed new connection
 		Result GameInstanceEntity::InitializeGameEntity(const VariableTable& attributes)
 		{
-			FunctionContext hr;
+			ScopeContext hr;
 			GameInstancePlayer* pPlayer = nullptr;
 
 			//uint numBot = attributes.GetValue<uint>("NumBot"_crc);
@@ -254,7 +254,7 @@ namespace SF {
 		// Register new player to join
 		Result GameInstanceEntity::AddPlayerToJoin(GameInstancePlayer*& pPlayer)
 		{
-			FunctionContext hr;
+			ScopeContext hr;
 			GameInstancePlayer* pFound = nullptr;
 
 			svrCheckPtr(pPlayer);
@@ -279,7 +279,7 @@ namespace SF {
 		// Player leave
 		Result GameInstanceEntity::LeavePlayer(GameInstancePlayer*& pPlayer)
 		{
-			FunctionContext hr;
+			ScopeContext hr;
 
 			pPlayer->SetServerEntity(nullptr, 0);
 
@@ -298,7 +298,7 @@ namespace SF {
 
 		Result GameInstanceEntity::LeavePlayer(PlayerID pltID)
 		{
-			FunctionContext hr;
+			ScopeContext hr;
 
 			svrCheck(m_PendingReleasePlayer.Enqueue(pltID));
 
@@ -328,7 +328,7 @@ namespace SF {
 		// Find Player id
 		Result GameInstanceEntity::FindPlayer(PlayerID pltID, GameInstancePlayer*& pGamePlayer)
 		{
-			FunctionContext hr;
+			ScopeContext hr;
 
 			if (!(m_GamePlayerByUID.Find(pltID, pGamePlayer)))
 			{
@@ -342,7 +342,7 @@ namespace SF {
 		// Called when a player get out of game
 		Result GameInstanceEntity::OnPlayerGetOutOfGame(GameInstancePlayer* pPlayer)
 		{
-			FunctionContext hr;
+			ScopeContext hr;
 
 			return hr;
 		}

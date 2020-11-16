@@ -28,7 +28,7 @@ namespace SF
  		// Cmd: Create a party instance
 		Result NetPolicyGamePartyManager::CreatePartyCmd( const RouteContext &InRouteContext, const uint64_t &InTransactionID, const uint16_t &InRouteHopCount, const uint32_t &InGameID, const PlayerInformation &InCreator )
 		{
- 			FunctionContext hr;
+ 			ScopeContext hr;
 
 			 MessageDataPtr pMessage;
 			 protocolCheckPtr(m_pConnection);
@@ -44,7 +44,7 @@ namespace SF
 		// C2S: Party instance notify of deletion. Sent by party instance
 		Result NetPolicyGamePartyManager::PartyDeletedC2SEvt( const RouteContext &InRouteContext, const uint16_t &InRouteHopCount )
 		{
- 			FunctionContext hr;
+ 			ScopeContext hr;
 
 			 MessageDataPtr pMessage;
 			 protocolCheckPtr(m_pConnection);
@@ -62,7 +62,7 @@ namespace SF
 		// Cmd: Create a party instance
 		Result NetSvrPolicyGamePartyManager::CreatePartyRes( const RouteContext &InRouteContext, const uint64_t &InTransactionID, const Result &InResult )
 		{
- 			FunctionContext hr;
+ 			ScopeContext hr;
 
 			 MessageDataPtr pMessage;
 			 protocolCheckPtr(m_pConnection);

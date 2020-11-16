@@ -372,7 +372,7 @@ namespace Svr {
 
 	Result MatchingTransProcessMatchedItems::CreateGame()
 	{
-		FunctionContext hr([this](Result hr)
+		ScopeContext hr([this](Result hr)
 			{
 				if (!hr)
 					SetTimer(DurationMS(1000));

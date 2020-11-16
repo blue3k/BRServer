@@ -49,7 +49,7 @@ namespace DB {
 	// Add game log
 	Result GameTransactionDB::AddGameLog(uint shardID, const PlayerID &playerID, UTCTimeStampSec gameTime, TransLogCategory LogCategory, INT consume, INT gain, uint64_t totalValue, const char* logMessage)
 	{
-		FunctionContext hr;
+		ScopeContext hr;
 
 		UniquePtr<QueryAddGameLogCmd> pQuery(new(GetHeap()) QueryAddGameLogCmd(GetHeap()));
 		dbCheckMem(pQuery);

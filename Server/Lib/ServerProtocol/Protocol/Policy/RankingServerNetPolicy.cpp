@@ -28,7 +28,7 @@ namespace SF
  		// Cmd: Add a player to ranking
 		Result NetPolicyRankingServer::AddPlayerCmd( const RouteContext &InRouteContext, const uint64_t &InTransactionID, const PlayerInformation &InPlayerInfo, const uint64_t &InRankingScore )
 		{
- 			FunctionContext hr;
+ 			ScopeContext hr;
 
 			 MessageDataPtr pMessage;
 			 protocolCheckPtr(m_pConnection);
@@ -44,7 +44,7 @@ namespace SF
 		// Cmd: Remove a player to ranking
 		Result NetPolicyRankingServer::RemovePlayerCmd( const RouteContext &InRouteContext, const uint64_t &InTransactionID, const PlayerID &InPlayerID )
 		{
- 			FunctionContext hr;
+ 			ScopeContext hr;
 
 			 MessageDataPtr pMessage;
 			 protocolCheckPtr(m_pConnection);
@@ -60,7 +60,7 @@ namespace SF
 		// Cmd: Get player to ranking
 		Result NetPolicyRankingServer::GetPlayerRankingCmd( const RouteContext &InRouteContext, const uint64_t &InTransactionID, const PlayerID &InPlayerID )
 		{
- 			FunctionContext hr;
+ 			ScopeContext hr;
 
 			 MessageDataPtr pMessage;
 			 protocolCheckPtr(m_pConnection);
@@ -76,7 +76,7 @@ namespace SF
 		// Cmd: Update a player to ranking
 		Result NetPolicyRankingServer::UpdatePlayerScoreCmd( const RouteContext &InRouteContext, const uint64_t &InTransactionID, const uint64_t &InRankingScore, const PlayerInformation &InPlayerInfo, const uint16_t &InCount )
 		{
- 			FunctionContext hr;
+ 			ScopeContext hr;
 
 			 MessageDataPtr pMessage;
 			 protocolCheckPtr(m_pConnection);
@@ -92,7 +92,7 @@ namespace SF
 		// Cmd: Get ranking list
 		Result NetPolicyRankingServer::GetRankingCmd( const RouteContext &InRouteContext, const uint64_t &InTransactionID, const RankingType &InRankingType, const uint16_t &InBaseRanking, const uint16_t &InCount )
 		{
- 			FunctionContext hr;
+ 			ScopeContext hr;
 
 			 MessageDataPtr pMessage;
 			 protocolCheckPtr(m_pConnection);
@@ -108,7 +108,7 @@ namespace SF
 		// Cmd: Debug test
 		Result NetPolicyRankingServer::DebugPrintALLRankingCmd( const RouteContext &InRouteContext, const uint64_t &InTransactionID, const char* InFileName )
 		{
- 			FunctionContext hr;
+ 			ScopeContext hr;
 
 			 MessageDataPtr pMessage;
 			 protocolCheckPtr(m_pConnection);
@@ -126,7 +126,7 @@ namespace SF
 		// Cmd: Add a player to ranking
 		Result NetSvrPolicyRankingServer::AddPlayerRes( const RouteContext &InRouteContext, const uint64_t &InTransactionID, const Result &InResult, const uint32_t &InRanking )
 		{
- 			FunctionContext hr;
+ 			ScopeContext hr;
 
 			 MessageDataPtr pMessage;
 			 protocolCheckPtr(m_pConnection);
@@ -142,7 +142,7 @@ namespace SF
 		// Cmd: Remove a player to ranking
 		Result NetSvrPolicyRankingServer::RemovePlayerRes( const RouteContext &InRouteContext, const uint64_t &InTransactionID, const Result &InResult )
 		{
- 			FunctionContext hr;
+ 			ScopeContext hr;
 
 			 MessageDataPtr pMessage;
 			 protocolCheckPtr(m_pConnection);
@@ -158,7 +158,7 @@ namespace SF
 		// Cmd: Get player to ranking
 		Result NetSvrPolicyRankingServer::GetPlayerRankingRes( const RouteContext &InRouteContext, const uint64_t &InTransactionID, const Result &InResult, const uint32_t &InRanking )
 		{
- 			FunctionContext hr;
+ 			ScopeContext hr;
 
 			 MessageDataPtr pMessage;
 			 protocolCheckPtr(m_pConnection);
@@ -174,7 +174,7 @@ namespace SF
 		// Cmd: Update a player to ranking
 		Result NetSvrPolicyRankingServer::UpdatePlayerScoreRes( const RouteContext &InRouteContext, const uint64_t &InTransactionID, const Result &InResult, const Array<TotalRankingPlayerInformation>& InRanking )
 		{
- 			FunctionContext hr;
+ 			ScopeContext hr;
 
 			 MessageDataPtr pMessage;
 			 protocolCheckPtr(m_pConnection);
@@ -190,7 +190,7 @@ namespace SF
 		// Cmd: Get ranking list
 		Result NetSvrPolicyRankingServer::GetRankingRes( const RouteContext &InRouteContext, const uint64_t &InTransactionID, const Result &InResult, const Array<TotalRankingPlayerInformation>& InRanking )
 		{
- 			FunctionContext hr;
+ 			ScopeContext hr;
 
 			 MessageDataPtr pMessage;
 			 protocolCheckPtr(m_pConnection);
@@ -206,7 +206,7 @@ namespace SF
 		// Cmd: Debug test
 		Result NetSvrPolicyRankingServer::DebugPrintALLRankingRes( const RouteContext &InRouteContext, const uint64_t &InTransactionID, const Result &InResult )
 		{
- 			FunctionContext hr;
+ 			ScopeContext hr;
 
 			 MessageDataPtr pMessage;
 			 protocolCheckPtr(m_pConnection);

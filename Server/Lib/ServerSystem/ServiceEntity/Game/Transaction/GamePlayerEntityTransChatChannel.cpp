@@ -64,7 +64,7 @@ namespace Svr {
 
 	Result PlayerTransCreateOrJoinChatChannel::OnCreateRes( Svr::TransactionResult* &pRes )
 	{
-		FunctionContext hr([this](Result hr)
+		ScopeContext hr([this](Result hr)
 			{
 				CloseTransaction(hr);
 			});
@@ -84,7 +84,7 @@ namespace Svr {
 	// Start Transaction
 	Result PlayerTransCreateOrJoinChatChannel::StartTransaction()
 	{
-		FunctionContext hr([this](Result hr)
+		ScopeContext hr([this](Result hr)
 			{
 				if (!hr)
 					CloseTransaction(hr);
@@ -122,7 +122,7 @@ namespace Svr {
 
 	Result PlayerTransJoinChatChannel::OnJoinChatChannelRes( Svr::TransactionResult* &pRes )
 	{
-		FunctionContext hr([this](Result hr)
+		ScopeContext hr([this](Result hr)
 			{
 				CloseTransaction(hr);
 			});
@@ -145,7 +145,7 @@ namespace Svr {
 	// Start Transaction
 	Result PlayerTransJoinChatChannel::StartTransaction()
 	{
-		FunctionContext hr([this](Result hr)
+		ScopeContext hr([this](Result hr)
 			{
 				if (!hr)
 					CloseTransaction(hr);
@@ -188,7 +188,7 @@ namespace Svr {
 	// Start Transaction
 	Result PlayerTransChatChannelPlayerJoinedS2SEvt::StartTransaction()
 	{
-		FunctionContext hr([this](Result hr)
+		ScopeContext hr([this](Result hr)
 			{
 				CloseTransaction(hr);
 			});
@@ -207,7 +207,7 @@ namespace Svr {
 	// Start Transaction
 	Result PlayerTransChatChannelLeaderChangedS2SEvt::StartTransaction()
 	{
-		FunctionContext hr([this](Result hr)
+		ScopeContext hr([this](Result hr)
 			{
 				CloseTransaction(hr);
 			});
@@ -232,7 +232,7 @@ namespace Svr {
 
 	Result PlayerTransLeaveChatChannel::OnLeaveChatChannelRes( Svr::TransactionResult* &pRes )
 	{
-		FunctionContext hr([this](Result hr)
+		ScopeContext hr([this](Result hr)
 			{
 				CloseTransaction(hr);
 			});
@@ -260,7 +260,7 @@ namespace Svr {
 	// Start Transaction
 	Result PlayerTransLeaveChatChannel::StartTransaction()
 	{
-		FunctionContext hr([this](Result hr)
+		ScopeContext hr([this](Result hr)
 			{
 				if (!hr)
 					CloseTransaction(hr);
@@ -289,7 +289,7 @@ namespace Svr {
 	// Start Transaction
 	Result PlayerTransChatChannelPlayerLeftS2SEvt::StartTransaction()
 	{
-		FunctionContext hr([this](Result hr)
+		ScopeContext hr([this](Result hr)
 			{
 				CloseTransaction(hr);
 			});
@@ -317,7 +317,7 @@ namespace Svr {
 
 	Result PlayerTransChatChannelKickPlayer::OnPlayerKickRes( Svr::TransactionResult* &pRes )
 	{
-		FunctionContext hr([this](Result hr)
+		ScopeContext hr([this](Result hr)
 			{
 				CloseTransaction(hr);
 			});
@@ -334,7 +334,7 @@ namespace Svr {
 	// Start Transaction
 	Result PlayerTransChatChannelKickPlayer::StartTransaction()
 	{
-		FunctionContext hr([this](Result hr)
+		ScopeContext hr([this](Result hr)
 			{
 				if (!hr)
 					CloseTransaction(hr);
@@ -363,7 +363,7 @@ namespace Svr {
 	// Start Transaction
 	Result PlayerTransChatChannelPlayerKickedS2SEvt::StartTransaction()
 	{
-		FunctionContext hr([this](Result hr)
+		ScopeContext hr([this](Result hr)
 			{
 				CloseTransaction(hr);
 			});
@@ -388,7 +388,7 @@ namespace Svr {
 	// Start Transaction
 	Result PlayerTransChatChannelChatMessage::StartTransaction()
 	{
-		FunctionContext hr([this](Result hr)
+		ScopeContext hr([this](Result hr)
 			{
 				if (!hr)
 					CloseTransaction(hr);
@@ -413,7 +413,7 @@ namespace Svr {
 	// Start Transaction
 	Result PlayerTransChatChannelChatMessageS2CEvt::StartTransaction()
 	{
-		FunctionContext hr([this](Result hr)
+		ScopeContext hr([this](Result hr)
 			{
 				CloseTransaction(hr);
 			});

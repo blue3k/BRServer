@@ -323,7 +323,7 @@ namespace SF {
 			>
 			SF_FORCEINLINE Result AddSubAction(Result(TransactionClassType::* requestFunc)(), Result(TransactionClassType::* handlerFunc)(TransactionResult*))
 			{
-				FunctionContext hr;
+				ScopeContext hr;
 				auto newAction = new(GetHeap()) TransactionSubActionMemberT<TransactionClassType>(static_cast<TransactionClassType*>(this), requestFunc, MessageClassType::MID.IDSeq.MsgID);
 				m_DynamicAction.push_back(newAction);
 
@@ -356,7 +356,7 @@ namespace SF {
 			>
 			SF_FORCEINLINE Result AddSubActionFront(Result(TransactionClassType::* requestFunc)(), Result(TransactionClassType::* handlerFunc)(TransactionResult*))
 			{
-				FunctionContext hr;
+				ScopeContext hr;
 				auto newAction = new(GetHeap()) TransactionSubActionMemberT<TransactionClassType>(static_cast<TransactionClassType*>(this), requestFunc, MessageClassType::MID.IDSeq.MsgID);
 				m_DynamicAction.push_back(newAction);
 
@@ -592,7 +592,7 @@ namespace SF {
 			// Message processor. When get result, just check result and close
 			Result OnMessageClose(Svr::TransactionResult*& pRes)
 			{
-				FunctionContext hr([this](Result hr)
+				ScopeContext hr([this](Result hr)
 					{
 						CloseTransaction(hr);
 					});

@@ -34,7 +34,7 @@ namespace SF
 		// Cmd: Notify Login server that client is successfully connected and joined to game server so that login server clear the player information.
 		Result LoginServerService::PlayerJoinedToGameServerCmd( const uint64_t &InTransactionID, const PlayerID &InPlayerID, const AuthTicket &InAuthTicket )
 		{
- 			FunctionContext hr;
+ 			ScopeContext hr;
 
 			RouteContext InRouteContext( EntityUID(GetMyServerID(),TransactionID(InTransactionID).GetEntityID()), GetServiceEntityUID() );
 			svrCheck(Policy::NetPolicyLoginServer(GetConnection()).PlayerJoinedToGameServerCmd( InRouteContext, InTransactionID, InPlayerID, InAuthTicket ) );
@@ -45,7 +45,7 @@ namespace SF
 		// Cmd: Kick logged in player, used to kick player on other login server to prevent duplicated login.
 		Result LoginServerService::KickPlayerCmd( const uint64_t &InTransactionID, const PlayerID &InKickedPlayerID )
 		{
- 			FunctionContext hr;
+ 			ScopeContext hr;
 
 			RouteContext InRouteContext( EntityUID(GetMyServerID(),TransactionID(InTransactionID).GetEntityID()), GetServiceEntityUID() );
 			svrCheck(Policy::NetPolicyLoginServer(GetConnection()).KickPlayerCmd( InRouteContext, InTransactionID, InKickedPlayerID ) );

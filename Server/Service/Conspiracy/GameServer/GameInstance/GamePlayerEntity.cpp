@@ -270,29 +270,27 @@ namespace GameServer {
 		return m_PlayerInformation;
 	}
 
-	void GamePlayerEntity::PendingCloseTransaction(const char* reason)
+	Result GamePlayerEntity::PendingCloseTransaction(const char* reason)
 	{
-		Result hr;
+		ScopeContext hr;
 		TransactionPtr trans;
 
 		unused(reason);
 
-		if (m_ClosingPended) return;
+		if (m_ClosingPended) return hr;
 		m_ClosingPended = true;
 
-		svrMem(trans = new(GetHeap()) PlayerTransCloseInstance(GetHeap()));
-		svrChk(trans->InitializeTransaction(this));
-		PendingTransaction(GetTaskWorker()->GetThreadID(), trans);
+		svrCheckMem(trans = new(GetHeap()) PlayerTransCloseInstance(GetHeap()));
+		svrCheck(trans->InitializeTransaction(this));
+		svrCheck(PendingTransaction(GetTaskWorker()->GetThreadID(), trans));
 
-	Proc_End:
-
-		return;
+		return hr;
 	}
 
 	// register message handlers
 	Result GamePlayerEntity::RegisterMessageHandlers()
 	{
-		FunctionContext hr;
+		ScopeContext hr;
 
 		svrCheck(super::RegisterMessageHandlers());
 

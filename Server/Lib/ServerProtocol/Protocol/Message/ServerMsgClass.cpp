@@ -30,7 +30,7 @@ namespace SF
 			const MessageID GenericFailureCmd::MID = MessageID(MSGTYPE_COMMAND, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_SERVER, 0);
 			Result GenericFailureCmd::ParseMessage(const MessageData* pIMsg)
 			{
- 				FunctionContext hr;
+ 				ScopeContext hr;
 
 
 				protocolCheckPtr(pIMsg);
@@ -51,7 +51,7 @@ namespace SF
 
 			Result GenericFailureCmd::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr&& pIMsg, MessageBase* &pMessageBase )
 			{
- 				FunctionContext hr;
+ 				ScopeContext hr;
 
 				protocolCheckMem(pMessageBase = new(memHeap) GenericFailureCmd(std::forward<MessageDataPtr>(pIMsg)));
 				protocolCheck(pMessageBase->ParseMsg());
@@ -64,7 +64,7 @@ namespace SF
 			MessageData* GenericFailureCmd::Create( IHeap& memHeap, const RouteContext &InRouteContext, const uint64_t &InTransactionID )
 			{
  				MessageData *pNewMsg = nullptr;
-				FunctionContext hr([&pNewMsg](Result hr) -> MessageData*
+				ScopeContext hr([&pNewMsg](Result hr) -> MessageData*
 				{
  					if(!hr && pNewMsg != nullptr)
 					{
@@ -95,7 +95,7 @@ namespace SF
 
 			Result GenericFailureCmd::OverrideRouteContextDestination( EntityUID to )
 			{
- 				FunctionContext hr;
+ 				ScopeContext hr;
 
 				MessageData* pIMsg = GetMessage();
 				RouteContext routeContext;
@@ -132,7 +132,7 @@ namespace SF
 			const MessageID GenericFailureRes::MID = MessageID(MSGTYPE_RESULT, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_SERVER, 0);
 			Result GenericFailureRes::ParseMessage(const MessageData* pIMsg)
 			{
- 				FunctionContext hr;
+ 				ScopeContext hr;
 
 
 				protocolCheckPtr(pIMsg);
@@ -154,7 +154,7 @@ namespace SF
 
 			Result GenericFailureRes::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr&& pIMsg, MessageBase* &pMessageBase )
 			{
- 				FunctionContext hr;
+ 				ScopeContext hr;
 
 				protocolCheckMem(pMessageBase = new(memHeap) GenericFailureRes(std::forward<MessageDataPtr>(pIMsg)));
 				protocolCheck(pMessageBase->ParseMsg());
@@ -167,7 +167,7 @@ namespace SF
 			MessageData* GenericFailureRes::Create( IHeap& memHeap, const RouteContext &InRouteContext, const uint64_t &InTransactionID, const Result &InResult )
 			{
  				MessageData *pNewMsg = nullptr;
-				FunctionContext hr([&pNewMsg](Result hr) -> MessageData*
+				ScopeContext hr([&pNewMsg](Result hr) -> MessageData*
 				{
  					if(!hr && pNewMsg != nullptr)
 					{
@@ -200,7 +200,7 @@ namespace SF
 
 			Result GenericFailureRes::OverrideRouteContextDestination( EntityUID to )
 			{
- 				FunctionContext hr;
+ 				ScopeContext hr;
 
 				MessageData* pIMsg = GetMessage();
 				RouteContext routeContext;
@@ -238,7 +238,7 @@ namespace SF
 			const MessageID ServerConnectedC2SEvt::MID = MessageID(MSGTYPE_EVENT, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_SERVER, 1);
 			Result ServerConnectedC2SEvt::ParseMessage(const MessageData* pIMsg)
 			{
- 				FunctionContext hr;
+ 				ScopeContext hr;
 
 
 				protocolCheckPtr(pIMsg);
@@ -260,7 +260,7 @@ namespace SF
 
 			Result ServerConnectedC2SEvt::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr&& pIMsg, MessageBase* &pMessageBase )
 			{
- 				FunctionContext hr;
+ 				ScopeContext hr;
 
 				protocolCheckMem(pMessageBase = new(memHeap) ServerConnectedC2SEvt(std::forward<MessageDataPtr>(pIMsg)));
 				protocolCheck(pMessageBase->ParseMsg());
@@ -273,7 +273,7 @@ namespace SF
 			MessageData* ServerConnectedC2SEvt::Create( IHeap& memHeap, const RouteContext &InRouteContext, const uint32_t &InStartUpTime, const NetAddress &InPrivateAddress )
 			{
  				MessageData *pNewMsg = nullptr;
-				FunctionContext hr([&pNewMsg](Result hr) -> MessageData*
+				ScopeContext hr([&pNewMsg](Result hr) -> MessageData*
 				{
  					if(!hr && pNewMsg != nullptr)
 					{
@@ -306,7 +306,7 @@ namespace SF
 
 			Result ServerConnectedC2SEvt::OverrideRouteContextDestination( EntityUID to )
 			{
- 				FunctionContext hr;
+ 				ScopeContext hr;
 
 				MessageData* pIMsg = GetMessage();
 				RouteContext routeContext;

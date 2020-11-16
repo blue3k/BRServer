@@ -30,7 +30,7 @@ namespace SF
 			const MessageID CreatePartyCmd::MID = MessageID(MSGTYPE_COMMAND, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_GAMEPARTYMANAGER, 0);
 			Result CreatePartyCmd::ParseMessage(const MessageData* pIMsg)
 			{
- 				FunctionContext hr;
+ 				ScopeContext hr;
 
 
 				protocolCheckPtr(pIMsg);
@@ -54,7 +54,7 @@ namespace SF
 
 			Result CreatePartyCmd::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr&& pIMsg, MessageBase* &pMessageBase )
 			{
- 				FunctionContext hr;
+ 				ScopeContext hr;
 
 				protocolCheckMem(pMessageBase = new(memHeap) CreatePartyCmd(std::forward<MessageDataPtr>(pIMsg)));
 				protocolCheck(pMessageBase->ParseMsg());
@@ -67,7 +67,7 @@ namespace SF
 			MessageData* CreatePartyCmd::Create( IHeap& memHeap, const RouteContext &InRouteContext, const uint64_t &InTransactionID, const uint16_t &InRouteHopCount, const uint32_t &InGameID, const PlayerInformation &InCreator )
 			{
  				MessageData *pNewMsg = nullptr;
-				FunctionContext hr([&pNewMsg](Result hr) -> MessageData*
+				ScopeContext hr([&pNewMsg](Result hr) -> MessageData*
 				{
  					if(!hr && pNewMsg != nullptr)
 					{
@@ -104,7 +104,7 @@ namespace SF
 
 			Result CreatePartyCmd::OverrideRouteContextDestination( EntityUID to )
 			{
- 				FunctionContext hr;
+ 				ScopeContext hr;
 
 				MessageData* pIMsg = GetMessage();
 				RouteContext routeContext;
@@ -130,7 +130,7 @@ namespace SF
 
 			Result CreatePartyCmd::OverrideRouteInformation( EntityUID to, unsigned hopCount )
 			{
- 				FunctionContext hr;
+ 				ScopeContext hr;
 
 				MessageData* pIMsg = GetMessage();
 				RouteContext routeContext;
@@ -172,7 +172,7 @@ namespace SF
 			const MessageID CreatePartyRes::MID = MessageID(MSGTYPE_RESULT, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_GAMEPARTYMANAGER, 0);
 			Result CreatePartyRes::ParseMessage(const MessageData* pIMsg)
 			{
- 				FunctionContext hr;
+ 				ScopeContext hr;
 
 
 				protocolCheckPtr(pIMsg);
@@ -194,7 +194,7 @@ namespace SF
 
 			Result CreatePartyRes::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr&& pIMsg, MessageBase* &pMessageBase )
 			{
- 				FunctionContext hr;
+ 				ScopeContext hr;
 
 				protocolCheckMem(pMessageBase = new(memHeap) CreatePartyRes(std::forward<MessageDataPtr>(pIMsg)));
 				protocolCheck(pMessageBase->ParseMsg());
@@ -207,7 +207,7 @@ namespace SF
 			MessageData* CreatePartyRes::Create( IHeap& memHeap, const RouteContext &InRouteContext, const uint64_t &InTransactionID, const Result &InResult )
 			{
  				MessageData *pNewMsg = nullptr;
-				FunctionContext hr([&pNewMsg](Result hr) -> MessageData*
+				ScopeContext hr([&pNewMsg](Result hr) -> MessageData*
 				{
  					if(!hr && pNewMsg != nullptr)
 					{
@@ -240,7 +240,7 @@ namespace SF
 
 			Result CreatePartyRes::OverrideRouteContextDestination( EntityUID to )
 			{
- 				FunctionContext hr;
+ 				ScopeContext hr;
 
 				MessageData* pIMsg = GetMessage();
 				RouteContext routeContext;
@@ -266,7 +266,7 @@ namespace SF
 
 			Result CreatePartyRes::OverrideRouteInformation( EntityUID to, unsigned hopCount )
 			{
- 				FunctionContext hr;
+ 				ScopeContext hr;
 
 				MessageData* pIMsg = GetMessage();
 				RouteContext routeContext;
@@ -306,7 +306,7 @@ namespace SF
 			const MessageID PartyDeletedC2SEvt::MID = MessageID(MSGTYPE_EVENT, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_GAMEPARTYMANAGER, 1);
 			Result PartyDeletedC2SEvt::ParseMessage(const MessageData* pIMsg)
 			{
- 				FunctionContext hr;
+ 				ScopeContext hr;
 
 
 				protocolCheckPtr(pIMsg);
@@ -327,7 +327,7 @@ namespace SF
 
 			Result PartyDeletedC2SEvt::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr&& pIMsg, MessageBase* &pMessageBase )
 			{
- 				FunctionContext hr;
+ 				ScopeContext hr;
 
 				protocolCheckMem(pMessageBase = new(memHeap) PartyDeletedC2SEvt(std::forward<MessageDataPtr>(pIMsg)));
 				protocolCheck(pMessageBase->ParseMsg());
@@ -340,7 +340,7 @@ namespace SF
 			MessageData* PartyDeletedC2SEvt::Create( IHeap& memHeap, const RouteContext &InRouteContext, const uint16_t &InRouteHopCount )
 			{
  				MessageData *pNewMsg = nullptr;
-				FunctionContext hr([&pNewMsg](Result hr) -> MessageData*
+				ScopeContext hr([&pNewMsg](Result hr) -> MessageData*
 				{
  					if(!hr && pNewMsg != nullptr)
 					{
@@ -371,7 +371,7 @@ namespace SF
 
 			Result PartyDeletedC2SEvt::OverrideRouteContextDestination( EntityUID to )
 			{
- 				FunctionContext hr;
+ 				ScopeContext hr;
 
 				MessageData* pIMsg = GetMessage();
 				RouteContext routeContext;
@@ -397,7 +397,7 @@ namespace SF
 
 			Result PartyDeletedC2SEvt::OverrideRouteInformation( EntityUID to, unsigned hopCount )
 			{
- 				FunctionContext hr;
+ 				ScopeContext hr;
 
 				MessageData* pIMsg = GetMessage();
 				RouteContext routeContext;

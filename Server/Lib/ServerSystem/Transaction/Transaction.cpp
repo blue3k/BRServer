@@ -146,7 +146,7 @@ namespace SF {
 		// Process Transaction
 		Result Transaction::ProcessTransaction(UniquePtr<TransactionResult>& pRes)
 		{
-			FunctionContext hr;
+			ScopeContext hr;
 
 			svrCheckPtr(pRes);
 
@@ -253,7 +253,7 @@ namespace SF {
 
 		Result SubTransactionWitResult::CloseTransaction(Result hrRes)
 		{
-			FunctionContext hr([this](Result hr)
+			ScopeContext hr([this](Result hr)
 				{
 					SubTransaction::CloseTransaction(hr);
 				});
@@ -280,7 +280,7 @@ namespace SF {
 		// flush transaction result
 		Result SubTransactionWitResult::FlushTransaction()
 		{
-			FunctionContext hr;
+			ScopeContext hr;
 
 			SetClosed();
 

@@ -28,7 +28,7 @@ namespace SF
  		// C2S: Nitify that a game instance is deleted. Game instance send this message to manager before it destroy itself.
 		Result NetPolicyGameInstance::DeleteGameC2SEvt( const RouteContext &InRouteContext )
 		{
- 			FunctionContext hr;
+ 			ScopeContext hr;
 
 			 MessageDataPtr pMessage;
 			 protocolCheckPtr(m_pConnection);
@@ -44,7 +44,7 @@ namespace SF
 		// Cmd: Join to a game instance. You can call multiple times, but it would be waste
 		Result NetPolicyGameInstance::JoinGameInstanceCmd( const RouteContext &InRouteContext, const uint64_t &InTransactionID, const PlayerInformation &InPlayer )
 		{
- 			FunctionContext hr;
+ 			ScopeContext hr;
 
 			 MessageDataPtr pMessage;
 			 protocolCheckPtr(m_pConnection);
@@ -60,7 +60,7 @@ namespace SF
 		// C2S: For debug purpose, change configue preset. There is a game setting table. you can switch between those setting value.
 		Result NetPolicyGameInstance::SetConfigPresetC2SEvt( const RouteContext &InRouteContext, const uint32_t &InPresetID )
 		{
- 			FunctionContext hr;
+ 			ScopeContext hr;
 
 			 MessageDataPtr pMessage;
 			 protocolCheckPtr(m_pConnection);
@@ -76,7 +76,7 @@ namespace SF
 		// Cmd: Leave game instance.
 		Result NetPolicyGameInstance::LeaveGameInstanceCmd( const RouteContext &InRouteContext, const uint64_t &InTransactionID, const PlayerID &InPlayerID )
 		{
- 			FunctionContext hr;
+ 			ScopeContext hr;
 
 			 MessageDataPtr pMessage;
 			 protocolCheckPtr(m_pConnection);
@@ -92,7 +92,7 @@ namespace SF
 		// C2S: Player Movement
 		Result NetPolicyGameInstance::PlayerMovementC2SEvt( const RouteContext &InRouteContext, const uint64_t &InGameInsUID, const PlayerID &InPlayerID, const VariableTable &InAttributes )
 		{
- 			FunctionContext hr;
+ 			ScopeContext hr;
 
 			 MessageDataPtr pMessage;
 			 protocolCheckPtr(m_pConnection);
@@ -108,7 +108,7 @@ namespace SF
 		// Cmd: Kick player with given ID
 		Result NetPolicyGameInstance::KickPlayerCmd( const RouteContext &InRouteContext, const uint64_t &InTransactionID, const PlayerID &InPlayerID, const PlayerID &InPlayerToKick )
 		{
- 			FunctionContext hr;
+ 			ScopeContext hr;
 
 			 MessageDataPtr pMessage;
 			 protocolCheckPtr(m_pConnection);
@@ -124,7 +124,7 @@ namespace SF
 		// Cmd: Join to a game instance. You can call multiple times, but it would be waste
 		Result NetPolicyGameInstance::JoinGameCmd( const RouteContext &InRouteContext, const uint64_t &InTransactionID, const PlayerInformation &InPlayer, const uint8_t &InRequestedRole )
 		{
- 			FunctionContext hr;
+ 			ScopeContext hr;
 
 			 MessageDataPtr pMessage;
 			 protocolCheckPtr(m_pConnection);
@@ -140,7 +140,7 @@ namespace SF
 		// Cmd: Assign new roles to all players.
 		Result NetPolicyGameInstance::AssignRoleCmd( const RouteContext &InRouteContext, const uint64_t &InTransactionID, const PlayerID &InPlayerID )
 		{
- 			FunctionContext hr;
+ 			ScopeContext hr;
 
 			 MessageDataPtr pMessage;
 			 protocolCheckPtr(m_pConnection);
@@ -156,7 +156,7 @@ namespace SF
 		// C2S: in-game chatting message.
 		Result NetPolicyGameInstance::ChatMessageC2SEvt( const RouteContext &InRouteContext, const PlayerID &InPlayerID, const uint8_t &InRole, const char* InChatMessage )
 		{
- 			FunctionContext hr;
+ 			ScopeContext hr;
 
 			 MessageDataPtr pMessage;
 			 protocolCheckPtr(m_pConnection);
@@ -172,7 +172,7 @@ namespace SF
 		// Cmd: Advance game
 		Result NetPolicyGameInstance::AdvanceGameCmd( const RouteContext &InRouteContext, const uint64_t &InTransactionID, const PlayerID &InPlayerID )
 		{
- 			FunctionContext hr;
+ 			ScopeContext hr;
 
 			 MessageDataPtr pMessage;
 			 protocolCheckPtr(m_pConnection);
@@ -188,7 +188,7 @@ namespace SF
 		// Cmd: *Vote game advance
 		Result NetPolicyGameInstance::VoteGameAdvanceCmd( const RouteContext &InRouteContext, const uint64_t &InTransactionID, const PlayerID &InPlayerID )
 		{
- 			FunctionContext hr;
+ 			ScopeContext hr;
 
 			 MessageDataPtr pMessage;
 			 protocolCheckPtr(m_pConnection);
@@ -204,7 +204,7 @@ namespace SF
 		// Cmd: Assign role
 		Result NetPolicyGameInstance::VoteCmd( const RouteContext &InRouteContext, const uint64_t &InTransactionID, const PlayerID &InPlayerID, const PlayerID &InVoteTarget, const uint32_t &InActionSerial )
 		{
- 			FunctionContext hr;
+ 			ScopeContext hr;
 
 			 MessageDataPtr pMessage;
 			 protocolCheckPtr(m_pConnection);
@@ -220,7 +220,7 @@ namespace SF
 		// Cmd: Play again with the current players
 		Result NetPolicyGameInstance::GamePlayAgainCmd( const RouteContext &InRouteContext, const uint64_t &InTransactionID, const PlayerID &InLeadPlayer, const uint64_t &InPartyUID )
 		{
- 			FunctionContext hr;
+ 			ScopeContext hr;
 
 			 MessageDataPtr pMessage;
 			 protocolCheckPtr(m_pConnection);
@@ -236,7 +236,7 @@ namespace SF
 		// Cmd: Player. revive himself
 		Result NetPolicyGameInstance::GameRevealPlayerCmd( const RouteContext &InRouteContext, const uint64_t &InTransactionID, const PlayerID &InPlayerID, const Array<PlayerID>& InTargetPlayerID )
 		{
- 			FunctionContext hr;
+ 			ScopeContext hr;
 
 			 MessageDataPtr pMessage;
 			 protocolCheckPtr(m_pConnection);
@@ -252,7 +252,7 @@ namespace SF
 		// Cmd: Player. revive himself
 		Result NetPolicyGameInstance::GamePlayerReviveCmd( const RouteContext &InRouteContext, const uint64_t &InTransactionID, const PlayerID &InPlayerID )
 		{
- 			FunctionContext hr;
+ 			ScopeContext hr;
 
 			 MessageDataPtr pMessage;
 			 protocolCheckPtr(m_pConnection);
@@ -270,7 +270,7 @@ namespace SF
 		// Cmd: Join to a game instance. You can call multiple times, but it would be waste
 		Result NetSvrPolicyGameInstance::JoinGameInstanceRes( const RouteContext &InRouteContext, const uint64_t &InTransactionID, const Result &InResult, const NetAddress &InGameInsSvr, const uint32_t &InTimeStamp )
 		{
- 			FunctionContext hr;
+ 			ScopeContext hr;
 
 			 MessageDataPtr pMessage;
 			 protocolCheckPtr(m_pConnection);
@@ -286,7 +286,7 @@ namespace SF
 		// S2C: Player joined event. This event is brocasted when a player joined
 		Result NetSvrPolicyGameInstance::PlayerJoinedS2CEvt( const RouteContext &InRouteContext, const PlayerInformation &InJoinedPlayer )
 		{
- 			FunctionContext hr;
+ 			ScopeContext hr;
 
 			 MessageDataPtr pMessage;
 			 protocolCheckPtr(m_pConnection);
@@ -302,7 +302,7 @@ namespace SF
 		// Cmd: Leave game instance.
 		Result NetSvrPolicyGameInstance::LeaveGameInstanceRes( const RouteContext &InRouteContext, const uint64_t &InTransactionID, const Result &InResult )
 		{
- 			FunctionContext hr;
+ 			ScopeContext hr;
 
 			 MessageDataPtr pMessage;
 			 protocolCheckPtr(m_pConnection);
@@ -318,7 +318,7 @@ namespace SF
 		// S2C: Player left event.
 		Result NetSvrPolicyGameInstance::PlayerLeftS2CEvt( const RouteContext &InRouteContext, const PlayerID &InLeftPlayerID )
 		{
- 			FunctionContext hr;
+ 			ScopeContext hr;
 
 			 MessageDataPtr pMessage;
 			 protocolCheckPtr(m_pConnection);
@@ -334,7 +334,7 @@ namespace SF
 		// S2C: Player Movement
 		Result NetSvrPolicyGameInstance::PlayerMovementS2CEvt( const RouteContext &InRouteContext, const uint64_t &InGameInsUID, const PlayerID &InPlayerID, const VariableTable &InAttributes )
 		{
- 			FunctionContext hr;
+ 			ScopeContext hr;
 
 			 MessageDataPtr pMessage;
 			 protocolCheckPtr(m_pConnection);
@@ -350,7 +350,7 @@ namespace SF
 		// Cmd: Kick player with given ID
 		Result NetSvrPolicyGameInstance::KickPlayerRes( const RouteContext &InRouteContext, const uint64_t &InTransactionID, const Result &InResult )
 		{
- 			FunctionContext hr;
+ 			ScopeContext hr;
 
 			 MessageDataPtr pMessage;
 			 protocolCheckPtr(m_pConnection);
@@ -366,7 +366,7 @@ namespace SF
 		// S2C: Player kicked event. this event will be brocasted when a player kicked.
 		Result NetSvrPolicyGameInstance::PlayerKickedS2CEvt( const RouteContext &InRouteContext, const PlayerID &InKickedPlayerID )
 		{
- 			FunctionContext hr;
+ 			ScopeContext hr;
 
 			 MessageDataPtr pMessage;
 			 protocolCheckPtr(m_pConnection);
@@ -382,7 +382,7 @@ namespace SF
 		// Cmd: Join to a game instance. You can call multiple times, but it would be waste
 		Result NetSvrPolicyGameInstance::JoinGameRes( const RouteContext &InRouteContext, const uint64_t &InTransactionID, const Result &InResult, const NetAddress &InGameInsSvr, const uint32_t &InTimeStamp, const uint8_t &InGameState, const uint8_t &InDay, const uint8_t &InMaxPlayer, const uint8_t &InPlayerIndex, const uint8_t &InPlayerCharacter, const uint8_t &InRole, const uint8_t &InDead, const uint8_t &InIsNewJoin, const Array<uint8_t>& InChatHistoryData, const Array<uint8_t>& InGameLogData )
 		{
- 			FunctionContext hr;
+ 			ScopeContext hr;
 
 			 MessageDataPtr pMessage;
 			 protocolCheckPtr(m_pConnection);
@@ -398,7 +398,7 @@ namespace SF
 		// Cmd: Assign new roles to all players.
 		Result NetSvrPolicyGameInstance::AssignRoleRes( const RouteContext &InRouteContext, const uint64_t &InTransactionID, const Result &InResult )
 		{
- 			FunctionContext hr;
+ 			ScopeContext hr;
 
 			 MessageDataPtr pMessage;
 			 protocolCheckPtr(m_pConnection);
@@ -414,7 +414,7 @@ namespace SF
 		// S2C: Event for role assigned
 		Result NetSvrPolicyGameInstance::RoleAssignedS2CEvt( const RouteContext &InRouteContext, const uint8_t &InRole )
 		{
- 			FunctionContext hr;
+ 			ScopeContext hr;
 
 			 MessageDataPtr pMessage;
 			 protocolCheckPtr(m_pConnection);
@@ -430,7 +430,7 @@ namespace SF
 		// Cmd: Advance game
 		Result NetSvrPolicyGameInstance::AdvanceGameRes( const RouteContext &InRouteContext, const uint64_t &InTransactionID, const Result &InResult )
 		{
- 			FunctionContext hr;
+ 			ScopeContext hr;
 
 			 MessageDataPtr pMessage;
 			 protocolCheckPtr(m_pConnection);
@@ -446,7 +446,7 @@ namespace SF
 		// S2C: The game state is advanced
 		Result NetSvrPolicyGameInstance::GameAdvancedS2CEvt( const RouteContext &InRouteContext, const uint32_t &InTimeStamp, const uint8_t &InGameState, const uint8_t &InDay )
 		{
- 			FunctionContext hr;
+ 			ScopeContext hr;
 
 			 MessageDataPtr pMessage;
 			 protocolCheckPtr(m_pConnection);
@@ -462,7 +462,7 @@ namespace SF
 		// S2C: Game is ended
 		Result NetSvrPolicyGameInstance::GameEndedS2CEvt( const RouteContext &InRouteContext, const uint8_t &InWinner, const uint32_t &InGainedExp, const uint32_t &InGainedGameMoney, const uint8_t &InPlayedRole, const uint8_t &InIsWon )
 		{
- 			FunctionContext hr;
+ 			ScopeContext hr;
 
 			 MessageDataPtr pMessage;
 			 protocolCheckPtr(m_pConnection);
@@ -478,7 +478,7 @@ namespace SF
 		// Cmd: *Vote game advance
 		Result NetSvrPolicyGameInstance::VoteGameAdvanceRes( const RouteContext &InRouteContext, const uint64_t &InTransactionID, const Result &InResult )
 		{
- 			FunctionContext hr;
+ 			ScopeContext hr;
 
 			 MessageDataPtr pMessage;
 			 protocolCheckPtr(m_pConnection);
@@ -494,7 +494,7 @@ namespace SF
 		// S2C: *GameAdvance is Voted
 		Result NetSvrPolicyGameInstance::GameAdvanceVotedS2CEvt( const RouteContext &InRouteContext, const PlayerID &InVoter )
 		{
- 			FunctionContext hr;
+ 			ScopeContext hr;
 
 			 MessageDataPtr pMessage;
 			 protocolCheckPtr(m_pConnection);
@@ -510,7 +510,7 @@ namespace SF
 		// Cmd: Assign role
 		Result NetSvrPolicyGameInstance::VoteRes( const RouteContext &InRouteContext, const uint64_t &InTransactionID, const Result &InResult )
 		{
- 			FunctionContext hr;
+ 			ScopeContext hr;
 
 			 MessageDataPtr pMessage;
 			 protocolCheckPtr(m_pConnection);
@@ -526,7 +526,7 @@ namespace SF
 		// S2C: Player Voted
 		Result NetSvrPolicyGameInstance::VotedS2CEvt( const RouteContext &InRouteContext, const PlayerID &InVoter, const PlayerID &InVotedTarget )
 		{
- 			FunctionContext hr;
+ 			ScopeContext hr;
 
 			 MessageDataPtr pMessage;
 			 protocolCheckPtr(m_pConnection);
@@ -542,7 +542,7 @@ namespace SF
 		// S2C: Player Voted
 		Result NetSvrPolicyGameInstance::VoteEndS2CEvt( const RouteContext &InRouteContext, const Array<PlayerID>& InVoted )
 		{
- 			FunctionContext hr;
+ 			ScopeContext hr;
 
 			 MessageDataPtr pMessage;
 			 protocolCheckPtr(m_pConnection);
@@ -558,7 +558,7 @@ namespace SF
 		// S2C: Player Voted
 		Result NetSvrPolicyGameInstance::PlayerRevealedS2CEvt( const RouteContext &InRouteContext, const PlayerID &InRevealedPlayerID, const uint8_t &InRole, const uint8_t &InReason )
 		{
- 			FunctionContext hr;
+ 			ScopeContext hr;
 
 			 MessageDataPtr pMessage;
 			 protocolCheckPtr(m_pConnection);
@@ -574,7 +574,7 @@ namespace SF
 		// S2C: Player Killed
 		Result NetSvrPolicyGameInstance::PlayerKilledS2CEvt( const RouteContext &InRouteContext, const PlayerID &InKilledPlayer, const uint8_t &InReason )
 		{
- 			FunctionContext hr;
+ 			ScopeContext hr;
 
 			 MessageDataPtr pMessage;
 			 protocolCheckPtr(m_pConnection);
@@ -590,7 +590,7 @@ namespace SF
 		// Cmd: Play again with the current players
 		Result NetSvrPolicyGameInstance::GamePlayAgainRes( const RouteContext &InRouteContext, const uint64_t &InTransactionID, const Result &InResult, const uint32_t &InReplayMemberCount )
 		{
- 			FunctionContext hr;
+ 			ScopeContext hr;
 
 			 MessageDataPtr pMessage;
 			 protocolCheckPtr(m_pConnection);
@@ -606,7 +606,7 @@ namespace SF
 		// S2C: Somebody pressed play again. Only one of PartyUID and GameInsUID can have a value
 		Result NetSvrPolicyGameInstance::GamePlayAgainS2CEvt( const RouteContext &InRouteContext, const PlayerID &InTargetPlayer, const uint64_t &InPartyUID, const PlayerID &InLeadPlayer )
 		{
- 			FunctionContext hr;
+ 			ScopeContext hr;
 
 			 MessageDataPtr pMessage;
 			 protocolCheckPtr(m_pConnection);
@@ -622,7 +622,7 @@ namespace SF
 		// Cmd: Player. revive himself
 		Result NetSvrPolicyGameInstance::GameRevealPlayerRes( const RouteContext &InRouteContext, const uint64_t &InTransactionID, const Result &InResult, const Array<PlayerID>& InRevealedPlayerID, const Array<uint8_t>& InRevealedRole )
 		{
- 			FunctionContext hr;
+ 			ScopeContext hr;
 
 			 MessageDataPtr pMessage;
 			 protocolCheckPtr(m_pConnection);
@@ -638,7 +638,7 @@ namespace SF
 		// Cmd: Player. revive himself
 		Result NetSvrPolicyGameInstance::GamePlayerReviveRes( const RouteContext &InRouteContext, const uint64_t &InTransactionID, const Result &InResult )
 		{
- 			FunctionContext hr;
+ 			ScopeContext hr;
 
 			 MessageDataPtr pMessage;
 			 protocolCheckPtr(m_pConnection);
@@ -654,7 +654,7 @@ namespace SF
 		// S2C: Player is revived
 		Result NetSvrPolicyGameInstance::GamePlayerRevivedS2CEvt( const RouteContext &InRouteContext, const PlayerID &InRevivedPlayerID )
 		{
- 			FunctionContext hr;
+ 			ScopeContext hr;
 
 			 MessageDataPtr pMessage;
 			 protocolCheckPtr(m_pConnection);

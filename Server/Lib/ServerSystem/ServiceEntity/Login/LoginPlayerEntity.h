@@ -66,9 +66,6 @@ namespace Svr {
 
 
 
-		// Time for kill this entity
-		Util::TimeStampTimer m_TimeToKill;
-
 		static GlobalUIDGenerator stm_AuthTicketGenerator;
 
 		bool m_ClosingPended = false;
@@ -105,8 +102,6 @@ namespace Svr {
 		bool GetIsTicketOwner() { return m_IsTicketOwner; }
 		void SetIsTicketOwner(bool value) { m_IsTicketOwner = value; }
 
-		const Util::TimeStampTimer& GetTimeToKill() { return m_TimeToKill; }
-
 
 		// Initialize entity to proceed new connection
 		virtual Result InitializeEntity( EntityID newEntityID ) override;
@@ -114,11 +109,9 @@ namespace Svr {
 		// Set connection for pilot
 		virtual Result SetConnection(SharedPointerT<Net::Connection>&& pCon ) override;
 
-		void HeartBit();
-
 
 		// pending close transaction
-		Result PendingCloseTransaction(const char* reason);
+		virtual Result PendingCloseTransaction(const char* reason) override;
 
 		//////////////////////////////////////////////////////////////////////////////////////////////////
 		//

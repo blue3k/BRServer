@@ -34,7 +34,7 @@ namespace SF
 		// Cmd: Request to join chat channel
 		Result ChatChannelService::JoinCmd( const uint64_t &InTransactionID, const char* InPasscode, const PlayerInformation &InJoiningPlayer )
 		{
- 			FunctionContext hr;
+ 			ScopeContext hr;
 
 			RouteContext InRouteContext( EntityUID(GetMyServerID(),TransactionID(InTransactionID).GetEntityID()), GetServiceEntityUID() );
 			svrCheck(Policy::NetPolicyChatChannel(GetConnection()).JoinCmd( InRouteContext, InTransactionID, InPasscode, InJoiningPlayer ) );
@@ -45,7 +45,7 @@ namespace SF
 		// Cmd: Leave chat channel
 		Result ChatChannelService::LeaveCmd( const uint64_t &InTransactionID, const PlayerID &InPlayerID )
 		{
- 			FunctionContext hr;
+ 			ScopeContext hr;
 
 			RouteContext InRouteContext( EntityUID(GetMyServerID(),TransactionID(InTransactionID).GetEntityID()), GetServiceEntityUID() );
 			svrCheck(Policy::NetPolicyChatChannel(GetConnection()).LeaveCmd( InRouteContext, InTransactionID, InPlayerID ) );
@@ -56,7 +56,7 @@ namespace SF
 		// Cmd: Kick a player
 		Result ChatChannelService::KickPlayerCmd( const uint64_t &InTransactionID, const PlayerID &InPlayerID, const PlayerID &InPlayerToKick )
 		{
- 			FunctionContext hr;
+ 			ScopeContext hr;
 
 			RouteContext InRouteContext( EntityUID(GetMyServerID(),TransactionID(InTransactionID).GetEntityID()), GetServiceEntityUID() );
 			svrCheck(Policy::NetPolicyChatChannel(GetConnection()).KickPlayerCmd( InRouteContext, InTransactionID, InPlayerID, InPlayerToKick ) );
@@ -67,7 +67,7 @@ namespace SF
 		// C2S: Sending a chatting message
 		Result ChatChannelService::ChatMessageC2SEvt( const EntityID &InSenderEntityID, const PlayerID &InSenderID, const char* InChatMessage )
 		{
- 			FunctionContext hr;
+ 			ScopeContext hr;
 
 			RouteContext InRouteContext( EntityUID(GetMyServerID(),InSenderEntityID), GetServiceEntityUID() );
 			svrCheck(Policy::NetPolicyChatChannel(GetConnection()).ChatMessageC2SEvt( InRouteContext, InSenderID, InChatMessage ) );

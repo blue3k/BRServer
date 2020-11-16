@@ -91,7 +91,7 @@ namespace Svr {
 	// clear transaction
 	Result RelayServiceEntity::ClearEntity()
 	{
-		FunctionContext hr;
+		ScopeContext hr;
 
 		svrCheck(super::ClearEntity());
 
@@ -107,7 +107,7 @@ namespace Svr {
 
 	Result RelayServiceEntity::TickUpdate(TimerAction *pAction)
 	{
-		FunctionContext hr;
+		ScopeContext hr;
 
 		svrCheck(super::TickUpdate(pAction) );
 
@@ -125,7 +125,7 @@ namespace Svr {
 
 	Result RelayServiceEntity::OnRecv(const sockaddr_storage& remoteAddr, SharedPointerT<Message::MessageData>& pMsg)
 	{
-		FunctionContext hr;
+		ScopeContext hr;
 
 		return hr;
 	}
@@ -134,7 +134,7 @@ namespace Svr {
 	// Process network event
 	Result RelayServiceEntity::ProcessNewConnection()
 	{
-		FunctionContext hr;
+		ScopeContext hr;
 		SharedPointerT<Net::Connection> pConn;
 
 		if (m_pNetPublic == nullptr)

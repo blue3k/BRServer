@@ -55,7 +55,7 @@ namespace SF {
 			UTCTimeStampSec	LatestActiveTime
 		)
 		{
-			FunctionContext hr;
+			ScopeContext hr;
 
 			UniquePtr<QueryUpdateGameEndCmd> pQuery(new(GetHeap()) QueryUpdateGameEndCmd(GetHeap()));
 			dbCheckMem(pQuery);
@@ -100,7 +100,7 @@ namespace SF {
 			UTCTimeStampSec	LatestTickTime
 		)
 		{
-			FunctionContext hr;
+			ScopeContext hr;
 
 			UniquePtr<QueryUpdateJoinGameCmd> pQuery(new(GetHeap()) QueryUpdateJoinGameCmd(GetHeap()));
 			dbCheckMem(pQuery);
@@ -134,7 +134,7 @@ namespace SF {
 			UTCTimeStampSec	LatestTickTime
 		)
 		{
-			FunctionContext hr;
+			ScopeContext hr;
 
 			UniquePtr<QueryUpdateTickStatusCmd> pQuery(new(GetHeap()) QueryUpdateTickStatusCmd(GetHeap()));
 			dbCheckMem(pQuery);
@@ -160,7 +160,7 @@ namespace SF {
 
 		Result GameConspiracyDB::UpdateFriendStaminaTime(TransactionID Sender, uint shardID, PlayerID accountID, PlayerID FriendUID, UTCTimeStampSec timeStamp)
 		{
-			FunctionContext hr;
+			ScopeContext hr;
 
 			UniquePtr<QueryUpdateFriendStaminaTimeCmd> pQuery(new(GetHeap()) QueryUpdateFriendStaminaTimeCmd(GetHeap()));
 			dbCheckMem(pQuery);

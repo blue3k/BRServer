@@ -37,7 +37,7 @@ namespace SF {
 		// Start Transaction
 		Result GameInstanceTransCreateGameInstance::StartTransaction()
 		{
-			FunctionContext hr([this](Result hr)
+			ScopeContext hr([this](Result hr)
 				{
 					CloseTransaction(hr);
 				});
@@ -64,7 +64,7 @@ namespace SF {
 		// Start Transaction
 		Result GameInstanceTransGameInstanceDeleted::StartTransaction()
 		{
-			FunctionContext hr([this](Result hr)
+			ScopeContext hr([this](Result hr)
 				{
 					CloseTransaction(hr);
 				});
@@ -80,7 +80,7 @@ namespace SF {
 		// Start Transaction
 		Result GameInstanceTransSearchGameInstance::StartTransaction()
 		{
-			FunctionContext hr([this](Result hr)
+			ScopeContext hr([this](Result hr)
 				{
 					CloseTransaction(hr);
 				});

@@ -34,7 +34,7 @@ namespace SF
 		// Cmd: [deprecated]
 		Result MonitoringService::GetInstanceListCmd( const uint64_t &InTransactionID )
 		{
- 			FunctionContext hr;
+ 			ScopeContext hr;
 
 			 svrCheck(Policy::NetPolicyMonitoring(GetConnection()).GetInstanceListCmd( InTransactionID ) );
 
@@ -44,7 +44,7 @@ namespace SF
 		// Cmd: [deprecated]
 		Result MonitoringService::RequestCounterValuesCmd( const uint64_t &InTransactionID, const uint64_t &InInstanceUID )
 		{
- 			FunctionContext hr;
+ 			ScopeContext hr;
 
 			 svrCheck(Policy::NetPolicyMonitoring(GetConnection()).RequestCounterValuesCmd( InTransactionID, InInstanceUID ) );
 
@@ -54,7 +54,7 @@ namespace SF
 		// C2S: Message when new performance counter is added.
 		Result MonitoringService::PerformanceCounterNewC2SEvt( const char* InInstanceName, const uint64_t &InInstanceUID, const Array<PerformanceCounterInfo>& InNewCounters )
 		{
- 			FunctionContext hr;
+ 			ScopeContext hr;
 
 			 svrCheck(Policy::NetPolicyMonitoring(GetConnection()).PerformanceCounterNewC2SEvt( InInstanceName, InInstanceUID, InNewCounters ) );
 
@@ -64,7 +64,7 @@ namespace SF
 		// C2S: Counter instance is deleted
 		Result MonitoringService::PerformanceCounterFreeC2SEvt( const Array<uint64_t>& InFreeInstances )
 		{
- 			FunctionContext hr;
+ 			ScopeContext hr;
 
 			 svrCheck(Policy::NetPolicyMonitoring(GetConnection()).PerformanceCounterFreeC2SEvt( InFreeInstances ) );
 
@@ -74,7 +74,7 @@ namespace SF
 		// C2S: Counter update broadcast
 		Result MonitoringService::PerformanceCounterUpdateC2SEvt( const uint64_t &InInstanceUID, const Array<uint64_t>& InCounterValues )
 		{
- 			FunctionContext hr;
+ 			ScopeContext hr;
 
 			 svrCheck(Policy::NetPolicyMonitoring(GetConnection()).PerformanceCounterUpdateC2SEvt( InInstanceUID, InCounterValues ) );
 

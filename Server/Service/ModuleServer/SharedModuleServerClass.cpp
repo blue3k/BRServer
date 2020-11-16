@@ -107,7 +107,7 @@ namespace SharedModuleServer {
 	// Close server and release resource
 	Result SharedModuleServer::CloseServerResource()
 	{
-		FunctionContext hr;
+		ScopeContext hr;
 
 		svrCheck(Svr::BrServer::CloseServerResource() );
 
@@ -120,7 +120,7 @@ namespace SharedModuleServer {
 	// Initialize private Network
 	Result SharedModuleServer::InitializeNetPrivate()
 	{
-		FunctionContext hr;
+		ScopeContext hr;
 		SockFamily privateNetSockFamily;
 
 		svrCheck(Svr::BrServer::InitializeNetPrivate() );

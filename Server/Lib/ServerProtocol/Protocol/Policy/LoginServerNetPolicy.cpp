@@ -28,7 +28,7 @@ namespace SF
  		// Cmd: Notify Login server that client is successfully connected and joined to game server so that login server clear the player information.
 		Result NetPolicyLoginServer::PlayerJoinedToGameServerCmd( const RouteContext &InRouteContext, const uint64_t &InTransactionID, const PlayerID &InPlayerID, const AuthTicket &InAuthTicket )
 		{
- 			FunctionContext hr;
+ 			ScopeContext hr;
 
 			 MessageDataPtr pMessage;
 			 protocolCheckPtr(m_pConnection);
@@ -44,7 +44,7 @@ namespace SF
 		// Cmd: Kick logged in player, used to kick player on other login server to prevent duplicated login.
 		Result NetPolicyLoginServer::KickPlayerCmd( const RouteContext &InRouteContext, const uint64_t &InTransactionID, const PlayerID &InKickedPlayerID )
 		{
- 			FunctionContext hr;
+ 			ScopeContext hr;
 
 			 MessageDataPtr pMessage;
 			 protocolCheckPtr(m_pConnection);
@@ -62,7 +62,7 @@ namespace SF
 		// Cmd: Notify Login server that client is successfully connected and joined to game server so that login server clear the player information.
 		Result NetSvrPolicyLoginServer::PlayerJoinedToGameServerRes( const RouteContext &InRouteContext, const uint64_t &InTransactionID, const Result &InResult )
 		{
- 			FunctionContext hr;
+ 			ScopeContext hr;
 
 			 MessageDataPtr pMessage;
 			 protocolCheckPtr(m_pConnection);
@@ -78,7 +78,7 @@ namespace SF
 		// Cmd: Kick logged in player, used to kick player on other login server to prevent duplicated login.
 		Result NetSvrPolicyLoginServer::KickPlayerRes( const RouteContext &InRouteContext, const uint64_t &InTransactionID, const Result &InResult )
 		{
- 			FunctionContext hr;
+ 			ScopeContext hr;
 
 			 MessageDataPtr pMessage;
 			 protocolCheckPtr(m_pConnection);

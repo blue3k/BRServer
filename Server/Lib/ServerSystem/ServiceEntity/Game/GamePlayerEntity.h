@@ -97,9 +97,6 @@ namespace Svr {
 
 		MatchingQueueTicket m_MatchingTicket;
 
-		// Time for kill this game
-		Util::TimeStampTimer m_TimeToKill;
-
 		char m_GCMKeys[GameConst::MAX_GCMKEYS];
 
 		// Latest update time in UTC time
@@ -125,9 +122,6 @@ namespace Svr {
 
 		// Character data
 		VariableTable m_CharacterData;
-
-		// Component manager
-		ComponentManager m_ComponentManger;
 
 	protected:
 
@@ -171,7 +165,6 @@ namespace Svr {
 		const MatchingQueueTicket& GetMatchingTicket() const { return m_MatchingTicket; }
 		void SetMatchingTicket(MatchingQueueTicket ticket);
 
-		Util::TimeStampTimer& GetTimeToKill() { return m_TimeToKill; }
 
 
 		const char* GetGCMKeys() const { return m_GCMKeys; }
@@ -213,7 +206,7 @@ namespace Svr {
 		//
 
 		Result OnJoinGameServerInitialize(AuthTicket authTicket, FacebookUID fbUID);
-
+		virtual void HeartBit() override;
 		Result OnNewUserTranscation();
 		virtual Result UpdateDBSync(TransactionID transID = TransactionID()) = 0;
 
@@ -226,7 +219,6 @@ namespace Svr {
 		// Run the task
 		virtual Result TickUpdate(TimerAction *pAction = nullptr) override;
 
-		virtual void PendingCloseTransaction(const char* reason) = 0;
 
 		//////////////////////////////////////////////////////////////////////////////////////////////////
 		//
@@ -240,20 +232,6 @@ namespace Svr {
 		virtual Result UpdateGamePlayer() = 0;
 
 
-
-		//////////////////////////////////////////////////////////////////////////////////////////////////
-		//
-		//	Component manager
-		//
-
-		ComponentManager& GetComponentManager() { return m_ComponentManger; }
-
-		template< class ComponentType >
-		ComponentType* GetComponent() { return m_ComponentManger.GetComponent<ComponentType>(); }
-
-		// Get component with its type
-		template< class ComponentType >
-		const ComponentType* GetComponent() const { return m_ComponentManger.GetComponent<ComponentType>(); }
 
 
 		//////////////////////////////////////////////////////////////////////////////////////////////////

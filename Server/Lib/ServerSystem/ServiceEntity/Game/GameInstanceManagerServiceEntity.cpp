@@ -62,7 +62,7 @@ namespace SF {
 
 		Result GameInstanceManagerServiceEntity::InitializeEntity(EntityID newEntityID)
 		{
-			FunctionContext hr;
+			ScopeContext hr;
 			EntityUID entityUID;
 			PerformanceCounterInstance* pInstance = nullptr;
 
@@ -80,7 +80,7 @@ namespace SF {
 
 		Result GameInstanceManagerServiceEntity::RegisterServiceMessageHandler(ServerEntity* pServerEntity)
 		{
-			FunctionContext hr;
+			ScopeContext hr;
 
 			svrCheck(super::RegisterServiceMessageHandler(pServerEntity));
 
@@ -94,7 +94,7 @@ namespace SF {
 
 		Result GameInstanceManagerServiceEntity::OnNewInstance(GameInstanceEntity* pGameInstance)
 		{
-			FunctionContext hr;
+			ScopeContext hr;
 
 			svrCheckPtr(pGameInstance);
 
@@ -115,7 +115,7 @@ namespace SF {
 		// Called when a game instance is deleted
 		Result GameInstanceManagerServiceEntity::FreeGameInstance(GameInsUID gameUID)
 		{
-			FunctionContext hr;
+			ScopeContext hr;
 			GameInstanceEntity* pGameInstance = nullptr;
 
 			{
@@ -134,7 +134,7 @@ namespace SF {
 
 		Result GameInstanceManagerServiceEntity::SearchGameInstance(size_t maxSearch, const char* searchKeyword, Array<GameInstanceInfo>& outList)
 		{
-			FunctionContext hr;
+			ScopeContext hr;
 
 			int maxOffset = Util::Max(0, (int)m_GameInstances.size() - (int)maxSearch - 1);
 

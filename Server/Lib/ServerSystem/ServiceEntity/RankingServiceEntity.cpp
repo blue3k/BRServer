@@ -60,7 +60,7 @@ namespace Svr {
 
 	Result RankingServiceEntity::InitializeEntity( EntityID newEntityID )
 	{
-		FunctionContext hr;
+		ScopeContext hr;
 		auto pServerInst = BrServer::GetInstance();
 		DB::RankingDB* pRankDB = nullptr;
 		int64_t baseIndex = 0;
@@ -109,7 +109,7 @@ namespace Svr {
 	// clear transaction
 	Result RankingServiceEntity::ClearEntity()
 	{
-		FunctionContext hr = ResultCode::SUCCESS;
+		ScopeContext hr = ResultCode::SUCCESS;
 
 		svrCheck(super::ClearEntity() );
 
@@ -118,7 +118,7 @@ namespace Svr {
 
 	Result RankingServiceEntity::TickUpdate(TimerAction *pAction)
 	{
-		FunctionContext hr = ResultCode::SUCCESS;
+		ScopeContext hr = ResultCode::SUCCESS;
 
 		svrCheck(super::TickUpdate(pAction) );
 
@@ -148,7 +148,7 @@ namespace Svr {
 
 	Result RankingServiceEntity::UpdatePlayerScore(const PlayerInformation& player, int64_t score, int64_t& playerRanking)
 	{
-		FunctionContext hr = ResultCode::SUCCESS;
+		ScopeContext hr = ResultCode::SUCCESS;
 		TotalRankingPlayerInformation *pPlayerRankInformation = nullptr;
 		TotalRankingPlayerInformation *pRemoved = nullptr;
 		RankingKey rankingKey;

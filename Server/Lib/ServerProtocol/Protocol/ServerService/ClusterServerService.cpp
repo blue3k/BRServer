@@ -34,7 +34,7 @@ namespace SF
 		// Cmd: Cluster member list query
 		Result ClusterServerService::GetClusterMemberListCmd( const uint64_t &InTransactionID, const uint16_t &InRouteHopCount, const ClusterID &InClusterID )
 		{
- 			FunctionContext hr;
+ 			ScopeContext hr;
 
 			RouteContext InRouteContext( EntityUID(GetMyServerID(),TransactionID(InTransactionID).GetEntityID()), GetServiceEntityUID() );
 			svrCheck(Policy::NetPolicyClusterServer(GetConnection()).GetClusterMemberListCmd( InRouteContext, InTransactionID, InRouteHopCount, InClusterID ) );
@@ -45,7 +45,7 @@ namespace SF
 		// Cmd: Join to the cluster
 		Result ClusterServerService::RequestDataSyncCmd( const uint64_t &InTransactionID, const uint16_t &InRouteHopCount, const ClusterID &InClusterID )
 		{
- 			FunctionContext hr;
+ 			ScopeContext hr;
 
 			RouteContext InRouteContext( EntityUID(GetMyServerID(),TransactionID(InTransactionID).GetEntityID()), GetServiceEntityUID() );
 			svrCheck(Policy::NetPolicyClusterServer(GetConnection()).RequestDataSyncCmd( InRouteContext, InTransactionID, InRouteHopCount, InClusterID ) );

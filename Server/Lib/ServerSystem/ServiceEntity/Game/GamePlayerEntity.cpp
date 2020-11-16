@@ -61,7 +61,6 @@ namespace Svr {
 		, m_GameInsUID(0)
 		, m_PlayerData(GetHeap())
 		, m_CharacterData(GetHeap())
-		, m_ComponentManger(GetHeap())
 	{
 		memset(m_UserName, 0, sizeof(m_UserName));
 		memset(m_GCMKeys, 0, sizeof(m_GCMKeys));
@@ -75,7 +74,7 @@ namespace Svr {
 	// Initialize entity to proceed new connection
 	Result GamePlayerEntity::InitializeEntity(EntityID newEntityID)
 	{
-		FunctionContext hr;
+		ScopeContext hr;
 
 		svrCheck(Svr::SimpleUserEntity::InitializeEntity(newEntityID));
 
@@ -108,7 +107,7 @@ namespace Svr {
 
 	Result GamePlayerEntity::RegisterMessageHandlers()
 	{
-		FunctionContext hr;
+		ScopeContext hr;
 
 		svrCheck(super::RegisterMessageHandlers());
 
@@ -123,10 +122,6 @@ namespace Svr {
 		////////////////////////////////////////////////////////////////////////////////////////////////////
 		// Game Player
 
-		RegisterMessageHandler<Message::Game::HeartBitC2SEvt>([&](Net::Connection* pConn, MessageDataPtr& pMsgData, SF::TransactionPtr& pNewTrans)->Result
-			{
-				pNewTrans = nullptr; return OnNewUserTranscation();
-			});
 		RegisterMessageHandler<PlayerTransJoinGameServer>();
 		RegisterMessageHandler<PlayerTransGetUserGamePlayerInfo>();
 		RegisterMessageHandler<PlayerTransGetGamePlayerInfo>();
@@ -216,7 +211,7 @@ namespace Svr {
 	// Set connection for pilot
 	Result GamePlayerEntity::SetConnection(SharedPointerT<Net::Connection>&& pCon)
 	{
-		FunctionContext hr;
+		ScopeContext hr;
 
 		if (*pCon == *GetConnection())
 			return hr;
@@ -252,7 +247,7 @@ namespace Svr {
 	Result GamePlayerEntity::OnJoinGameServerInitialize(AuthTicket authTicket, FacebookUID fbUID)
 	{
 		Net::ConnectionPtr pConnection;
-		FunctionContext hr([this, &pConnection](Result hr)
+		ScopeContext hr([this, &pConnection](Result hr)
 			{
 				if (pConnection != nullptr && pConnection->GetCID() != 0)
 				{
@@ -295,11 +290,18 @@ namespace Svr {
 		return hr;
 	}
 
+	void GamePlayerEntity::HeartBit()
+	{
+		OnNewUserTranscation();
+	}
+
 	Result GamePlayerEntity::OnNewUserTranscation()
 	{
 		// m_LatestUpdateTime is used as a valid character data signal
 		if (m_LatestUpdateTime == UTCTimeStampSec::min())
 			return ResultCode::SUCCESS_FALSE;
+
+		super::HeartBit();
 
 		SetLatestActiveTime(Util::Time.GetTimeUTCSec());
 
@@ -314,7 +316,7 @@ namespace Svr {
 	// clear transaction
 	Result GamePlayerEntity::ClearEntity()
 	{
-		FunctionContext hr;
+		ScopeContext hr;
 
 		ReleaseConnection("Clearing game player entity");
 
@@ -328,9 +330,9 @@ namespace Svr {
 	// Run the task
 	Result GamePlayerEntity::TickUpdate(TimerAction *pAction)
 	{
-		FunctionContext hr;
+		ScopeContext hr;
 
-		hr = Svr::SimpleUserEntity::TickUpdate(pAction);
+		hr = super::TickUpdate(pAction);
 		if (hr == Result(ResultCode::SUCCESS_FALSE))
 			return hr;
 
@@ -338,16 +340,6 @@ namespace Svr {
 		//{
 		//	UpdateDBSync();
 		//}
-
-		if (m_TimeToKill.CheckTimer()
-			&& GetEntityState() == EntityState::WORKING)
-		{
-			PendingCloseTransaction("Player heart bit timeout");
-		}
-		else
-		{
-			GetComponentManager().TickUpdate();
-		}
 
 		return hr;
 	}
@@ -385,7 +377,7 @@ namespace Svr {
 	// Send push notify
 	Result GamePlayerEntity::SendPushNotify(const char* strMessage, uint64_t param)
 	{
-		FunctionContext hr;
+		ScopeContext hr;
 
 		// Send GCM push notify
 		if (GetGCMKeys() != nullptr && GetGCMKeys()[0] != '\0')

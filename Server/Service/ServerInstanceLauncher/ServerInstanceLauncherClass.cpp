@@ -64,7 +64,7 @@ namespace SF {
 
 		Result ServerInstanceLauncher::OnStart()
 		{
-			FunctionContext hr([this](Result hr)
+			ScopeContext hr([this](Result hr)
 				{
 					if (!hr)
 					{
@@ -125,7 +125,7 @@ namespace SF {
 		// Apply configuration
 		Result ServerInstanceLauncher::ApplyConfiguration()
 		{
-			FunctionContext hr;
+			ScopeContext hr;
 
 			return hr;
 		}
@@ -134,7 +134,7 @@ namespace SF {
 		// Initialize server resource
 		Result ServerInstanceLauncher::InitializeServerResource()
 		{
-			FunctionContext hr;
+			ScopeContext hr;
 
 			svrCheck(Svr::BrServer::InitializeServerResource());
 
@@ -146,7 +146,7 @@ namespace SF {
 		// Close server and release resource
 		Result ServerInstanceLauncher::CloseServerResource()
 		{
-			FunctionContext hr;
+			ScopeContext hr;
 
 			svrCheck(Svr::BrServer::CloseServerResource());
 
@@ -168,7 +168,7 @@ namespace SF {
 
 		Result ServerInstanceLauncher::UpdateCommand()
 		{
-			FunctionContext hr;
+			ScopeContext hr;
 
 			StringCrc64 commandNodeNameCrc;
 

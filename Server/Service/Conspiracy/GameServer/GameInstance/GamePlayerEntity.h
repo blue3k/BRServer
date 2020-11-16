@@ -95,7 +95,7 @@ namespace GameServer {
 
 		virtual Result InitializeEntity(EntityID newEntityID) override;
 
-		virtual void PendingCloseTransaction(const char* reason) override;
+		virtual Result PendingCloseTransaction(const char* reason) override;
 
 		virtual Result RegisterMessageHandlers() override;
 	};

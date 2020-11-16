@@ -34,7 +34,7 @@ namespace SF
 		// Cmd: Create a game instance
 		Result GameInstanceManagerService::CreateGameInstanceCmd( const uint64_t &InTransactionID, const uint16_t &InRouteHopCount, const VariableTable &InAttributes )
 		{
- 			FunctionContext hr;
+ 			ScopeContext hr;
 
 			RouteContext InRouteContext( EntityUID(GetMyServerID(),TransactionID(InTransactionID).GetEntityID()), GetServiceEntityUID() );
 			svrCheck(Policy::NetPolicyGameInstanceManager(GetConnection()).CreateGameInstanceCmd( InRouteContext, InTransactionID, InRouteHopCount, InAttributes ) );
@@ -45,7 +45,7 @@ namespace SF
 		// Cmd: Search game instance
 		Result GameInstanceManagerService::SearchGameInstanceCmd( const uint64_t &InTransactionID, const uint16_t &InRouteHopCount, const char* InSearchKeyword )
 		{
- 			FunctionContext hr;
+ 			ScopeContext hr;
 
 			RouteContext InRouteContext( EntityUID(GetMyServerID(),TransactionID(InTransactionID).GetEntityID()), GetServiceEntityUID() );
 			svrCheck(Policy::NetPolicyGameInstanceManager(GetConnection()).SearchGameInstanceCmd( InRouteContext, InTransactionID, InRouteHopCount, InSearchKeyword ) );
@@ -56,7 +56,7 @@ namespace SF
 		// C2S: Game instance notification of deletion
 		Result GameInstanceManagerService::GameInstanceDeletedC2SEvt( const EntityID &InSenderEntityID, const uint16_t &InRouteHopCount )
 		{
- 			FunctionContext hr;
+ 			ScopeContext hr;
 
 			RouteContext InRouteContext( EntityUID(GetMyServerID(),InSenderEntityID), GetServiceEntityUID() );
 			svrCheck(Policy::NetPolicyGameInstanceManager(GetConnection()).GameInstanceDeletedC2SEvt( InRouteContext, InRouteHopCount ) );

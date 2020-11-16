@@ -402,7 +402,7 @@ namespace SF {
 		// Initialize components
 		virtual Result InitializeComponents()
 		{
-			FunctionContext hr = ResultCode::SUCCESS;
+			ScopeContext hr = ResultCode::SUCCESS;
 			size_t iComponent = 0;
 			for (auto itComponent : m_Components)
 			{
@@ -422,7 +422,7 @@ namespace SF {
 
 		Result TerminateComponents()
 		{
-			FunctionContext hr = ResultCode::SUCCESS;
+			ScopeContext hr = ResultCode::SUCCESS;
 			// Terminate in reverse order
 			for (auto itComponent : m_Components)
 			{

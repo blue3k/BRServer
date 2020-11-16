@@ -34,7 +34,7 @@ namespace SF
 		// C2S: Nitify that a game instance is deleted. Game instance send this message to manager before it destroy itself.
 		Result GameInstanceService::DeleteGameC2SEvt( const EntityID &InSenderEntityID )
 		{
- 			FunctionContext hr;
+ 			ScopeContext hr;
 
 			RouteContext InRouteContext( EntityUID(GetMyServerID(),InSenderEntityID), GetServiceEntityUID() );
 			svrCheck(Policy::NetPolicyGameInstance(GetConnection()).DeleteGameC2SEvt( InRouteContext ) );
@@ -45,7 +45,7 @@ namespace SF
 		// Cmd: Join to a game instance. You can call multiple times, but it would be waste
 		Result GameInstanceService::JoinGameInstanceCmd( const uint64_t &InTransactionID, const PlayerInformation &InPlayer )
 		{
- 			FunctionContext hr;
+ 			ScopeContext hr;
 
 			RouteContext InRouteContext( EntityUID(GetMyServerID(),TransactionID(InTransactionID).GetEntityID()), GetServiceEntityUID() );
 			svrCheck(Policy::NetPolicyGameInstance(GetConnection()).JoinGameInstanceCmd( InRouteContext, InTransactionID, InPlayer ) );
@@ -56,7 +56,7 @@ namespace SF
 		// C2S: For debug purpose, change configue preset. There is a game setting table. you can switch between those setting value.
 		Result GameInstanceService::SetConfigPresetC2SEvt( const EntityID &InSenderEntityID, const uint32_t &InPresetID )
 		{
- 			FunctionContext hr;
+ 			ScopeContext hr;
 
 			RouteContext InRouteContext( EntityUID(GetMyServerID(),InSenderEntityID), GetServiceEntityUID() );
 			svrCheck(Policy::NetPolicyGameInstance(GetConnection()).SetConfigPresetC2SEvt( InRouteContext, InPresetID ) );
@@ -67,7 +67,7 @@ namespace SF
 		// Cmd: Leave game instance.
 		Result GameInstanceService::LeaveGameInstanceCmd( const uint64_t &InTransactionID, const PlayerID &InPlayerID )
 		{
- 			FunctionContext hr;
+ 			ScopeContext hr;
 
 			RouteContext InRouteContext( EntityUID(GetMyServerID(),TransactionID(InTransactionID).GetEntityID()), GetServiceEntityUID() );
 			svrCheck(Policy::NetPolicyGameInstance(GetConnection()).LeaveGameInstanceCmd( InRouteContext, InTransactionID, InPlayerID ) );
@@ -78,7 +78,7 @@ namespace SF
 		// C2S: Player Movement
 		Result GameInstanceService::PlayerMovementC2SEvt( const EntityID &InSenderEntityID, const uint64_t &InGameInsUID, const PlayerID &InPlayerID, const VariableTable &InAttributes )
 		{
- 			FunctionContext hr;
+ 			ScopeContext hr;
 
 			RouteContext InRouteContext( EntityUID(GetMyServerID(),InSenderEntityID), GetServiceEntityUID() );
 			svrCheck(Policy::NetPolicyGameInstance(GetConnection()).PlayerMovementC2SEvt( InRouteContext, InGameInsUID, InPlayerID, InAttributes ) );
@@ -89,7 +89,7 @@ namespace SF
 		// Cmd: Kick player with given ID
 		Result GameInstanceService::KickPlayerCmd( const uint64_t &InTransactionID, const PlayerID &InPlayerID, const PlayerID &InPlayerToKick )
 		{
- 			FunctionContext hr;
+ 			ScopeContext hr;
 
 			RouteContext InRouteContext( EntityUID(GetMyServerID(),TransactionID(InTransactionID).GetEntityID()), GetServiceEntityUID() );
 			svrCheck(Policy::NetPolicyGameInstance(GetConnection()).KickPlayerCmd( InRouteContext, InTransactionID, InPlayerID, InPlayerToKick ) );
@@ -100,7 +100,7 @@ namespace SF
 		// Cmd: Join to a game instance. You can call multiple times, but it would be waste
 		Result GameInstanceService::JoinGameCmd( const uint64_t &InTransactionID, const PlayerInformation &InPlayer, const uint8_t &InRequestedRole )
 		{
- 			FunctionContext hr;
+ 			ScopeContext hr;
 
 			RouteContext InRouteContext( EntityUID(GetMyServerID(),TransactionID(InTransactionID).GetEntityID()), GetServiceEntityUID() );
 			svrCheck(Policy::NetPolicyGameInstance(GetConnection()).JoinGameCmd( InRouteContext, InTransactionID, InPlayer, InRequestedRole ) );
@@ -111,7 +111,7 @@ namespace SF
 		// Cmd: Assign new roles to all players.
 		Result GameInstanceService::AssignRoleCmd( const uint64_t &InTransactionID, const PlayerID &InPlayerID )
 		{
- 			FunctionContext hr;
+ 			ScopeContext hr;
 
 			RouteContext InRouteContext( EntityUID(GetMyServerID(),TransactionID(InTransactionID).GetEntityID()), GetServiceEntityUID() );
 			svrCheck(Policy::NetPolicyGameInstance(GetConnection()).AssignRoleCmd( InRouteContext, InTransactionID, InPlayerID ) );
@@ -122,7 +122,7 @@ namespace SF
 		// C2S: in-game chatting message.
 		Result GameInstanceService::ChatMessageC2SEvt( const EntityID &InSenderEntityID, const PlayerID &InPlayerID, const uint8_t &InRole, const char* InChatMessage )
 		{
- 			FunctionContext hr;
+ 			ScopeContext hr;
 
 			RouteContext InRouteContext( EntityUID(GetMyServerID(),InSenderEntityID), GetServiceEntityUID() );
 			svrCheck(Policy::NetPolicyGameInstance(GetConnection()).ChatMessageC2SEvt( InRouteContext, InPlayerID, InRole, InChatMessage ) );
@@ -133,7 +133,7 @@ namespace SF
 		// Cmd: Advance game
 		Result GameInstanceService::AdvanceGameCmd( const uint64_t &InTransactionID, const PlayerID &InPlayerID )
 		{
- 			FunctionContext hr;
+ 			ScopeContext hr;
 
 			RouteContext InRouteContext( EntityUID(GetMyServerID(),TransactionID(InTransactionID).GetEntityID()), GetServiceEntityUID() );
 			svrCheck(Policy::NetPolicyGameInstance(GetConnection()).AdvanceGameCmd( InRouteContext, InTransactionID, InPlayerID ) );
@@ -144,7 +144,7 @@ namespace SF
 		// Cmd: *Vote game advance
 		Result GameInstanceService::VoteGameAdvanceCmd( const uint64_t &InTransactionID, const PlayerID &InPlayerID )
 		{
- 			FunctionContext hr;
+ 			ScopeContext hr;
 
 			RouteContext InRouteContext( EntityUID(GetMyServerID(),TransactionID(InTransactionID).GetEntityID()), GetServiceEntityUID() );
 			svrCheck(Policy::NetPolicyGameInstance(GetConnection()).VoteGameAdvanceCmd( InRouteContext, InTransactionID, InPlayerID ) );
@@ -155,7 +155,7 @@ namespace SF
 		// Cmd: Assign role
 		Result GameInstanceService::VoteCmd( const uint64_t &InTransactionID, const PlayerID &InPlayerID, const PlayerID &InVoteTarget, const uint32_t &InActionSerial )
 		{
- 			FunctionContext hr;
+ 			ScopeContext hr;
 
 			RouteContext InRouteContext( EntityUID(GetMyServerID(),TransactionID(InTransactionID).GetEntityID()), GetServiceEntityUID() );
 			svrCheck(Policy::NetPolicyGameInstance(GetConnection()).VoteCmd( InRouteContext, InTransactionID, InPlayerID, InVoteTarget, InActionSerial ) );
@@ -166,7 +166,7 @@ namespace SF
 		// Cmd: Play again with the current players
 		Result GameInstanceService::GamePlayAgainCmd( const uint64_t &InTransactionID, const PlayerID &InLeadPlayer, const uint64_t &InPartyUID )
 		{
- 			FunctionContext hr;
+ 			ScopeContext hr;
 
 			RouteContext InRouteContext( EntityUID(GetMyServerID(),TransactionID(InTransactionID).GetEntityID()), GetServiceEntityUID() );
 			svrCheck(Policy::NetPolicyGameInstance(GetConnection()).GamePlayAgainCmd( InRouteContext, InTransactionID, InLeadPlayer, InPartyUID ) );
@@ -177,7 +177,7 @@ namespace SF
 		// Cmd: Player. revive himself
 		Result GameInstanceService::GameRevealPlayerCmd( const uint64_t &InTransactionID, const PlayerID &InPlayerID, const Array<PlayerID>& InTargetPlayerID )
 		{
- 			FunctionContext hr;
+ 			ScopeContext hr;
 
 			RouteContext InRouteContext( EntityUID(GetMyServerID(),TransactionID(InTransactionID).GetEntityID()), GetServiceEntityUID() );
 			svrCheck(Policy::NetPolicyGameInstance(GetConnection()).GameRevealPlayerCmd( InRouteContext, InTransactionID, InPlayerID, InTargetPlayerID ) );
@@ -188,7 +188,7 @@ namespace SF
 		// Cmd: Player. revive himself
 		Result GameInstanceService::GamePlayerReviveCmd( const uint64_t &InTransactionID, const PlayerID &InPlayerID )
 		{
- 			FunctionContext hr;
+ 			ScopeContext hr;
 
 			RouteContext InRouteContext( EntityUID(GetMyServerID(),TransactionID(InTransactionID).GetEntityID()), GetServiceEntityUID() );
 			svrCheck(Policy::NetPolicyGameInstance(GetConnection()).GamePlayerReviveCmd( InRouteContext, InTransactionID, InPlayerID ) );

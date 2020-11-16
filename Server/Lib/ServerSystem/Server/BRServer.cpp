@@ -578,7 +578,7 @@ namespace SF {
 
 		Result BrServer::OnStart()
 		{
-			FunctionContext hr([this](Result result)
+			ScopeContext hr([this](Result result)
 				{
 					if (result)
 						return;
@@ -756,7 +756,7 @@ namespace SF {
 		// Initialize private Network
 		Result BrServer::InitializeNetPrivate()
 		{
-			FunctionContext hr([this](Result result)
+			ScopeContext hr([this](Result result)
 				{
 					if (result)
 						return;
@@ -826,7 +826,7 @@ namespace SF {
 		{
 			ServerEntity* pLoopbackEntity = nullptr;
 			Svr::LoopbackConnection* pConn = nullptr;
-			FunctionContext hr([this, &pLoopbackEntity](Result hr)->ServerEntity*
+			ScopeContext hr([this, &pLoopbackEntity](Result hr)->ServerEntity*
 				{
 					return pLoopbackEntity;
 				});

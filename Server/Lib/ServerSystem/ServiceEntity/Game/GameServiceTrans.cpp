@@ -82,7 +82,7 @@ namespace Svr {
 	template<class ProcessEntity>
 	Result GameServerTransRegisterPlayerToJoinGameServer<ProcessEntity>::OnPlayerRegisteredRes(Svr::TransactionResult* pRes)
 	{
-		FunctionContext hr([this](Result hr)
+		ScopeContext hr([this](Result hr)
 			{
 				super::CloseTransaction(hr);
 			});
@@ -100,7 +100,7 @@ namespace Svr {
 	template<class ProcessEntity>
 	Result GameServerTransRegisterPlayerToJoinGameServer<ProcessEntity>::StartTransaction()
 	{
-		FunctionContext hr([this](Result hr)
+		ScopeContext hr([this](Result hr)
 			{
 				if (!hr)
 					super::CloseTransaction(hr);
@@ -185,7 +185,7 @@ namespace Svr {
 	// Start Transaction
 	Result PlayerTransRegisterPlayerToJoinGameServerOnPlayerEntity::StartTransaction()
 	{
-		FunctionContext hr([this](Result hr)
+		ScopeContext hr([this](Result hr)
 			{
 				CloseTransaction(hr);
 			});

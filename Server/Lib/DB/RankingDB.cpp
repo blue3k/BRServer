@@ -49,7 +49,7 @@ namespace SF {
 
 		Result RankingDB::GetRankingListCmd(TransactionID Sender, uint32_t minRanking, uint32_t rankingCount)
 		{
-			FunctionContext hr;
+			ScopeContext hr;
 
 			UniquePtr<QueryGetTotalRankingCmd> pQuery(new(GetHeap()) QueryGetTotalRankingCmd(GetHeap()));
 			dbCheckMem(pQuery);
@@ -68,7 +68,7 @@ namespace SF {
 
 		Result RankingDB::UpdateRankingScoreCmd(TransactionID Sender, int64_t playerID, int64_t fBUID, const char* nickName, int32_t level, uint64_t score)
 		{
-			FunctionContext hr;
+			ScopeContext hr;
 
 			UniquePtr<QueryUpdateRankingScoreCmd> pQuery(new(GetHeap()) QueryUpdateRankingScoreCmd(GetHeap()));
 			dbCheckMem(pQuery);
@@ -89,7 +89,7 @@ namespace SF {
 
 		QueryGetRankersCmd* RankingDB::GetRankers(int32_t baseIndex, int32_t requestCount)
 		{
-			FunctionContext hr;
+			ScopeContext hr;
 
 			UniquePtr<QueryGetRankersCmd> pQuery(new(GetHeap()) QueryGetRankersCmd(GetHeap()));
 			if (!pQuery)

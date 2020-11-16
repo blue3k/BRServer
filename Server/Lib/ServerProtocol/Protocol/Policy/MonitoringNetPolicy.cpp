@@ -28,7 +28,7 @@ namespace SF
  		// Cmd: [deprecated]
 		Result NetPolicyMonitoring::GetInstanceListCmd( const uint64_t &InTransactionID )
 		{
- 			FunctionContext hr;
+ 			ScopeContext hr;
 
 			 MessageDataPtr pMessage;
 			 protocolCheckPtr(m_pConnection);
@@ -44,7 +44,7 @@ namespace SF
 		// Cmd: [deprecated]
 		Result NetPolicyMonitoring::RequestCounterValuesCmd( const uint64_t &InTransactionID, const uint64_t &InInstanceUID )
 		{
- 			FunctionContext hr;
+ 			ScopeContext hr;
 
 			 MessageDataPtr pMessage;
 			 protocolCheckPtr(m_pConnection);
@@ -60,7 +60,7 @@ namespace SF
 		// C2S: Message when new performance counter is added.
 		Result NetPolicyMonitoring::PerformanceCounterNewC2SEvt( const char* InInstanceName, const uint64_t &InInstanceUID, const Array<PerformanceCounterInfo>& InNewCounters )
 		{
- 			FunctionContext hr;
+ 			ScopeContext hr;
 
 			 MessageDataPtr pMessage;
 			 protocolCheckPtr(m_pConnection);
@@ -76,7 +76,7 @@ namespace SF
 		// C2S: Counter instance is deleted
 		Result NetPolicyMonitoring::PerformanceCounterFreeC2SEvt( const Array<uint64_t>& InFreeInstances )
 		{
- 			FunctionContext hr;
+ 			ScopeContext hr;
 
 			 MessageDataPtr pMessage;
 			 protocolCheckPtr(m_pConnection);
@@ -92,7 +92,7 @@ namespace SF
 		// C2S: Counter update broadcast
 		Result NetPolicyMonitoring::PerformanceCounterUpdateC2SEvt( const uint64_t &InInstanceUID, const Array<uint64_t>& InCounterValues )
 		{
- 			FunctionContext hr;
+ 			ScopeContext hr;
 
 			 MessageDataPtr pMessage;
 			 protocolCheckPtr(m_pConnection);
@@ -110,7 +110,7 @@ namespace SF
 		// Cmd: [deprecated]
 		Result NetSvrPolicyMonitoring::GetInstanceListRes( const uint64_t &InTransactionID, const Result &InResult, const Array<PerformanceCounterInstanceInfo>& InCounterInstances, const uint32_t &InTotalInstanceCount )
 		{
- 			FunctionContext hr;
+ 			ScopeContext hr;
 
 			 MessageDataPtr pMessage;
 			 protocolCheckPtr(m_pConnection);
@@ -126,7 +126,7 @@ namespace SF
 		// Cmd: [deprecated]
 		Result NetSvrPolicyMonitoring::RequestCounterValuesRes( const uint64_t &InTransactionID, const Result &InResult, const uint64_t &InInstanceUID, const Array<uint64_t>& InCounterValues )
 		{
- 			FunctionContext hr;
+ 			ScopeContext hr;
 
 			 MessageDataPtr pMessage;
 			 protocolCheckPtr(m_pConnection);
@@ -142,7 +142,7 @@ namespace SF
 		// S2C: Server will send this message to an instance to get performance counters.
 		Result NetSvrPolicyMonitoring::PerformanceCounterUpdateCounterInfoS2CEvt( const uint64_t &InInstanceUID )
 		{
- 			FunctionContext hr;
+ 			ScopeContext hr;
 
 			 MessageDataPtr pMessage;
 			 protocolCheckPtr(m_pConnection);

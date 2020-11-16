@@ -28,7 +28,7 @@ namespace SF
  		// Cmd: Generic failure message
 		Result NetPolicyServer::GenericFailureCmd( const RouteContext &InRouteContext, const uint64_t &InTransactionID )
 		{
- 			FunctionContext hr;
+ 			ScopeContext hr;
 
 			 MessageDataPtr pMessage;
 			 protocolCheckPtr(m_pConnection);
@@ -44,7 +44,7 @@ namespace SF
 		// C2S: Server Started or Connected
 		Result NetPolicyServer::ServerConnectedC2SEvt( const RouteContext &InRouteContext, const uint32_t &InStartUpTime, const NetAddress &InPrivateAddress )
 		{
- 			FunctionContext hr;
+ 			ScopeContext hr;
 
 			 MessageDataPtr pMessage;
 			 protocolCheckPtr(m_pConnection);
@@ -62,7 +62,7 @@ namespace SF
 		// Cmd: Generic failure message
 		Result NetSvrPolicyServer::GenericFailureRes( const RouteContext &InRouteContext, const uint64_t &InTransactionID, const Result &InResult )
 		{
- 			FunctionContext hr;
+ 			ScopeContext hr;
 
 			 MessageDataPtr pMessage;
 			 protocolCheckPtr(m_pConnection);

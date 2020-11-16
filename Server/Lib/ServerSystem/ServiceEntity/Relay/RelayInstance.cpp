@@ -62,7 +62,7 @@ namespace SF {
 	// Initialize entity to proceed new connection
 	Result RelayInstance::InitializeGameInstance(GameID gameId, uint32_t maxUser)
 	{
-		FunctionContext hr;
+		ScopeContext hr;
 
 		m_MaxUser = maxUser;
 		m_Users.resize(maxUser);
@@ -85,7 +85,7 @@ namespace SF {
 
 	Result RelayInstance::AddPlayer(const sockaddr_storage& remoteAddr, PlayerID playerID, const String playerIdentification, RelayPlayerID& relayPlayerID)
 	{
-		FunctionContext hr;
+		ScopeContext hr;
 		RelayPlayer *pPlayer = nullptr;
 
 		for (uint32_t iUser = 0; iUser < m_Users.size(); iUser++)
@@ -114,7 +114,7 @@ namespace SF {
 
 	Result RelayInstance::RemovePlayer(PlayerID playerID)
 	{
-		FunctionContext hr;
+		ScopeContext hr;
 		RelayPlayer* pPlayer = nullptr;
 
 		for (uint32_t iUser = 0; iUser < m_Users.size(); iUser++)
@@ -180,7 +180,7 @@ namespace SF {
 	// clear transaction
 	Result RelayInstance::Clear()
 	{
-		FunctionContext hr;
+		ScopeContext hr;
 
 		return hr;
 	}
@@ -188,7 +188,7 @@ namespace SF {
 	// Run the task
 	Result RelayInstance::TickUpdate()
 	{
-		FunctionContext hr = ResultCode::SUCCESS;
+		ScopeContext hr = ResultCode::SUCCESS;
 		auto curTime = Util::Time.GetTimeMs();
 
 
@@ -201,7 +201,7 @@ namespace SF {
 	// Update Game Player 
 	Result RelayInstance::UpdateRelayInstances( TimeStampMS ulCurTime )
 	{
-		FunctionContext hr = ResultCode::SUCCESS;
+		ScopeContext hr = ResultCode::SUCCESS;
 
 		if( m_TimeToKill.CheckTimer())
 		{

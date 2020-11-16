@@ -67,7 +67,7 @@ namespace SF {
 
 		Result PlayerTransSearchGameInstance::OnSearchGameInstanceRes(Svr::TransactionResult* pRes)
 		{
-			FunctionContext hr([this](Result hr)
+			ScopeContext hr([this](Result hr)
 				{
 					CloseTransaction(hr);
 				});
@@ -89,7 +89,7 @@ namespace SF {
 		// Start Transaction
 		Result PlayerTransSearchGameInstance::StartTransaction()
 		{
-			FunctionContext hr([this](Result hr)
+			ScopeContext hr([this](Result hr)
 				{
 					if (!hr)
 						CloseTransaction(hr);
@@ -124,7 +124,7 @@ namespace SF {
 
 		Result PlayerTransJoinGameInstance::OnJoinGameInstanceRes(Svr::TransactionResult* pRes)
 		{
-			FunctionContext hr([this](Result hr)
+			ScopeContext hr([this](Result hr)
 				{
 					if (!hr)
 						CloseTransaction(hr);
@@ -168,7 +168,7 @@ namespace SF {
 		// Start Transaction
 		Result PlayerTransJoinGameInstance::StartTransaction()
 		{
-			FunctionContext hr([this](Result hr)
+			ScopeContext hr([this](Result hr)
 				{
 					if (!hr)
 						CloseTransaction(hr);
@@ -214,7 +214,7 @@ namespace SF {
 		// Start Transaction
 		Result PlayerTransJoinedS2SEvt::StartTransaction()
 		{
-			FunctionContext hr([this](Result hr)
+			ScopeContext hr([this](Result hr)
 				{
 					CloseTransaction(hr);
 				});
@@ -308,7 +308,7 @@ namespace SF {
 		// Start Transaction
 		Result PlayerTransPlayerMovementC2SEvt::StartTransaction()
 		{
-			FunctionContext hr([this](Result hr)
+			ScopeContext hr([this](Result hr)
 				{
 					CloseTransaction(hr);
 				});
@@ -327,7 +327,7 @@ namespace SF {
 		// Start Transaction
 		Result PlayerTransLeftS2SEvt::StartTransaction()
 		{
-			FunctionContext hr([this](Result hr)
+			ScopeContext hr([this](Result hr)
 				{
 					CloseTransaction(hr);
 				});

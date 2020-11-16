@@ -53,7 +53,7 @@ namespace SharedModuleServer {
 
 	Result SharedModuleServerStartProcess::OnTimer(Svr::TransactionResult* pRes)
 	{
-		SF::FunctionContext hr([this](Result hr)
+		SF::ScopeContext hr([this](Result hr)
 			{
 				if (!hr)
 					CloseTransaction(hr);
@@ -96,7 +96,7 @@ namespace SharedModuleServer {
 	// Start Transaction
 	Result SharedModuleServerStartProcess::StartTransaction()
 	{
-		FunctionContext hr = ResultCode::SUCCESS;
+		ScopeContext hr = ResultCode::SUCCESS;
 
 		svrCheck(super::StartTransaction() );
 

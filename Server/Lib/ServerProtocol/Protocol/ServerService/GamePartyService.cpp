@@ -34,7 +34,7 @@ namespace SF
 		// Cmd: Join party
 		Result GamePartyService::JoinPartyCmd( const uint64_t &InTransactionID, const PlayerID &InInviterID, const PlayerInformation &InInvitedPlayer )
 		{
- 			FunctionContext hr;
+ 			ScopeContext hr;
 
 			RouteContext InRouteContext( EntityUID(GetMyServerID(),TransactionID(InTransactionID).GetEntityID()), GetServiceEntityUID() );
 			svrCheck(Policy::NetPolicyGameParty(GetConnection()).JoinPartyCmd( InRouteContext, InTransactionID, InInviterID, InInvitedPlayer ) );
@@ -45,7 +45,7 @@ namespace SF
 		// Cmd: Event for player left.
 		Result GamePartyService::LeavePartyCmd( const uint64_t &InTransactionID, const PlayerID &InPlayerID )
 		{
- 			FunctionContext hr;
+ 			ScopeContext hr;
 
 			RouteContext InRouteContext( EntityUID(GetMyServerID(),TransactionID(InTransactionID).GetEntityID()), GetServiceEntityUID() );
 			svrCheck(Policy::NetPolicyGameParty(GetConnection()).LeavePartyCmd( InRouteContext, InTransactionID, InPlayerID ) );
@@ -56,7 +56,7 @@ namespace SF
 		// Cmd: Kick player
 		Result GamePartyService::KickPlayerCmd( const uint64_t &InTransactionID, const PlayerID &InPlayerID, const PlayerID &InPlayerToKick )
 		{
- 			FunctionContext hr;
+ 			ScopeContext hr;
 
 			RouteContext InRouteContext( EntityUID(GetMyServerID(),TransactionID(InTransactionID).GetEntityID()), GetServiceEntityUID() );
 			svrCheck(Policy::NetPolicyGameParty(GetConnection()).KickPlayerCmd( InRouteContext, InTransactionID, InPlayerID, InPlayerToKick ) );
@@ -67,7 +67,7 @@ namespace SF
 		// C2S: Send chat message to server.
 		Result GamePartyService::ChatMessageC2SEvt( const EntityID &InSenderEntityID, const PlayerID &InPlayerID, const char* InChatMessage )
 		{
- 			FunctionContext hr;
+ 			ScopeContext hr;
 
 			RouteContext InRouteContext( EntityUID(GetMyServerID(),InSenderEntityID), GetServiceEntityUID() );
 			svrCheck(Policy::NetPolicyGameParty(GetConnection()).ChatMessageC2SEvt( InRouteContext, InPlayerID, InChatMessage ) );
@@ -78,7 +78,7 @@ namespace SF
 		// C2S: Quick Chatting message
 		Result GamePartyService::QuickChatMessageC2SEvt( const EntityID &InSenderEntityID, const PlayerID &InPlayerID, const uint32_t &InQuickChatID )
 		{
- 			FunctionContext hr;
+ 			ScopeContext hr;
 
 			RouteContext InRouteContext( EntityUID(GetMyServerID(),InSenderEntityID), GetServiceEntityUID() );
 			svrCheck(Policy::NetPolicyGameParty(GetConnection()).QuickChatMessageC2SEvt( InRouteContext, InPlayerID, InQuickChatID ) );
@@ -89,7 +89,7 @@ namespace SF
 		// Cmd: Start party game matching
 		Result GamePartyService::StartGameMatchCmd( const uint64_t &InTransactionID, const PlayerID &InPlayerID, const uint32_t &InMaxGamePlayers )
 		{
- 			FunctionContext hr;
+ 			ScopeContext hr;
 
 			RouteContext InRouteContext( EntityUID(GetMyServerID(),TransactionID(InTransactionID).GetEntityID()), GetServiceEntityUID() );
 			svrCheck(Policy::NetPolicyGameParty(GetConnection()).StartGameMatchCmd( InRouteContext, InTransactionID, InPlayerID, InMaxGamePlayers ) );
@@ -100,7 +100,7 @@ namespace SF
 		// Cmd: Cancel game matching
 		Result GamePartyService::CancelGameMatchCmd( const uint64_t &InTransactionID, const PlayerID &InPlayerID )
 		{
- 			FunctionContext hr;
+ 			ScopeContext hr;
 
 			RouteContext InRouteContext( EntityUID(GetMyServerID(),TransactionID(InTransactionID).GetEntityID()), GetServiceEntityUID() );
 			svrCheck(Policy::NetPolicyGameParty(GetConnection()).CancelGameMatchCmd( InRouteContext, InTransactionID, InPlayerID ) );

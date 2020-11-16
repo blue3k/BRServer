@@ -146,7 +146,7 @@ namespace Google {
 		const char* authChar = m_OAuth->GetAuthString();
 		std::string errs;
 
-		FunctionContext hr([this, authChar, &errs](Result result)
+		ScopeContext hr([this, authChar, &errs](Result result)
 		{
 			if (result == ((Result)ResultCode::SVR_INVALID_EXTERNAL_AUTH))
 			{

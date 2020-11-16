@@ -87,7 +87,7 @@ namespace Svr {
 
 	Result PlayerTransJoinGameServer::OnGameServerJoined( Svr::TransactionResult* pRes )
 	{
-		FunctionContext hr;
+		ScopeContext hr;
 		Message::LoginServer::PlayerJoinedToGameServerRes msgRes;
 
 		svrCheckClose(pRes->GetResult());
@@ -98,7 +98,7 @@ namespace Svr {
 
 	Result PlayerTransJoinGameServer::OnJoinPartyRes( Svr::TransactionResult* pRes )
 	{
-		FunctionContext hr([this](Result hr)
+		ScopeContext hr([this](Result hr)
 			{
 				if (!hr)
 					GetMyOwner()->SetPartyUID(0);
@@ -122,7 +122,7 @@ namespace Svr {
 
 	Result PlayerTransJoinGameServer::SetPlayerGameData(const VariableTable& playerDataDB)
 	{
-		FunctionContext hr;
+		ScopeContext hr;
 		auto& playerData = GetMyOwner()->GetPlayerData();
 
 		// TODO: Need to change initial nick name setup process
@@ -159,7 +159,7 @@ namespace Svr {
 
 	Result PlayerTransJoinGameServer::OnCreatePlayerGameDataRes(Svr::TransactionResult* pRes)
 	{
-		FunctionContext hr;
+		ScopeContext hr;
 		auto pDBRes = pRes->GetResultData<DB::QueryCreatePlayerInfoCmd>();
 
 		svrCheck(pRes->GetResult());
@@ -192,7 +192,7 @@ namespace Svr {
 
 	Result PlayerTransJoinGameServer::OnGetPlayerGameDataRes(Svr::TransactionResult* pRes)
 	{
-		FunctionContext hr;
+		ScopeContext hr;
 		auto pDBRes = (DB::QueryGetPlayerInfoCmd*)pRes;
 
 		svrCheck(pRes->GetResult());
@@ -213,7 +213,7 @@ namespace Svr {
 
 	Result PlayerTransJoinGameServer::RegisterToPlayerManager()
 	{
-		FunctionContext hr;
+		ScopeContext hr;
 		EntityUID playerUID;
 
 		svrCheck(Service::PlayerManager->CreatePlayer( GetMyOwner()->GetPlayerID(), GetOwnerEntityUID() ) );
@@ -223,7 +223,7 @@ namespace Svr {
 
 	Result PlayerTransJoinGameServer::NotifyLoginServer()
 	{
-		FunctionContext hr;
+		ScopeContext hr;
 
 		EntityUID loginEntityUID(GetLoginEntityUID());
 
@@ -237,7 +237,7 @@ namespace Svr {
 
 	Result PlayerTransJoinGameServer::RequestPlayerInfoFromDB()
 	{
-		FunctionContext hr;
+		ScopeContext hr;
 		EntityUID playerUID;
 
 		// succeeded to create
@@ -250,7 +250,7 @@ namespace Svr {
 
 	Result PlayerTransJoinGameServer::RequestPlayerInfoCreateDB()
 	{
-		FunctionContext hr;
+		ScopeContext hr;
 
 		if (m_HaveValidPlayerData)
 			return ResultCode::SUCCESS_FALSE;
@@ -262,7 +262,7 @@ namespace Svr {
 
 	Result PlayerTransJoinGameServer::RequestJoinPartyIfExist()
 	{
-		FunctionContext hr;
+		ScopeContext hr;
 
 		if (GetMyOwner()->GetPartyUID().UID != 0)
 		{
@@ -283,7 +283,7 @@ namespace Svr {
 
 	Result PlayerTransJoinGameServer::FinalizeSuccess()
 	{
-		FunctionContext hr;
+		ScopeContext hr;
 
 		GetMyOwner()->UpdateDBSync();
 		CloseTransaction(hr);
@@ -294,7 +294,7 @@ namespace Svr {
 	// Start Transaction
 	Result PlayerTransJoinGameServer::StartTransaction()
 	{
-		FunctionContext hr;
+		ScopeContext hr;
 
 		m_GameUID = 0;
 		m_PartyLeaderID = 0;
@@ -321,7 +321,7 @@ namespace Svr {
 	// Start Transaction
 	Result PlayerTransGetUserGamePlayerInfo::StartTransaction()
 	{
-		FunctionContext hr([this](Result hr)
+		ScopeContext hr([this](Result hr)
 			{
 				CloseTransaction(hr);
 			});
@@ -380,7 +380,7 @@ namespace Svr {
 
 	Result PlayerTransGetGamePlayerInfo::RequestPlayerShardID()
 	{
-		FunctionContext hr;
+		ScopeContext hr;
 
 		svrCheck(Svr::GetServerComponent<DB::AccountDB>()->GetPlayerShardID(GetTransID(), GetPlayerID()));
 
@@ -389,7 +389,7 @@ namespace Svr {
 
 	Result PlayerTransGetGamePlayerInfo::OnGetPlayerShardID(Svr::TransactionResult* pRes)
 	{
-		FunctionContext hr;
+		ScopeContext hr;
 		auto* pDBRes = pRes->GetResultData<DB::QueryGetPlayerShardIDCmd>();
 
 		svrCheck(pRes->GetResult());
@@ -407,7 +407,7 @@ namespace Svr {
 
 	Result PlayerTransGetGamePlayerInfo::RequestGamePlayerInfo()
 	{
-		FunctionContext hr;
+		ScopeContext hr;
 
 		svrCheck(Svr::GetServerComponent<DB::GameDB>()->GetPlayerInfoCmd(GetTransID(), m_ShardId, GetPlayerID()));
 
@@ -416,7 +416,7 @@ namespace Svr {
 
 	Result PlayerTransGetGamePlayerInfo::OnGetGamePlayerInfo( Svr::TransactionResult* pRes )
 	{
-		FunctionContext hr;
+		ScopeContext hr;
 		auto pDBRes = (DB::QueryGetPlayerInfoCmd*)pRes;
 
 		svrCheck(pRes->GetResult());
@@ -462,7 +462,7 @@ namespace Svr {
 	// Start Transaction
 	Result PlayerTransGetGamePlayerInfo::StartTransaction()
 	{
-		FunctionContext hr;
+		ScopeContext hr;
 
 		m_Result.Clear();
 
@@ -486,7 +486,7 @@ namespace Svr {
 
 	Result PlayerTransGetComplitionState::OnGetComplitionState(Svr::TransactionResult* pRes)
 	{
-		FunctionContext hr;
+		ScopeContext hr;
 
 		auto* pDBRes = (DB::QueryGetComplitionStateCmd*)pRes;
 
@@ -507,7 +507,7 @@ namespace Svr {
 	// Start Transaction
 	Result PlayerTransGetComplitionState::StartTransaction()
 	{
-		FunctionContext hr;
+		ScopeContext hr;
 
 		memset(&m_ComplitionState, 0, sizeof(m_ComplitionState));
 
@@ -534,7 +534,7 @@ namespace Svr {
 
 	Result PlayerTransSetComplitionState::OnSetComplitionState(Svr::TransactionResult* pRes)
 	{
-		FunctionContext hr;
+		ScopeContext hr;
 
 		auto* pDBRes = (DB::QuerySetComplitionStateCmd*)pRes;
 
@@ -552,7 +552,7 @@ namespace Svr {
 	// Start Transaction
 	Result PlayerTransSetComplitionState::StartTransaction()
 	{
-		FunctionContext hr;
+		ScopeContext hr;
 
 		svrCheck(super::StartTransaction());
 
@@ -582,7 +582,7 @@ namespace Svr {
 
 	Result PlayerTransRegisterGCM::OnUpdated( Svr::TransactionResult* pRes )
 	{
-		FunctionContext hr;
+		ScopeContext hr;
 
 		svrCheck(pRes->GetResult());
 
@@ -592,7 +592,7 @@ namespace Svr {
 	// Start Transaction
 	Result PlayerTransRegisterGCM::StartTransaction()
 	{
-		FunctionContext hr;
+		ScopeContext hr;
 
 		svrCheck( super::StartTransaction() );
 
@@ -613,7 +613,7 @@ namespace Svr {
 
 	Result PlayerTransUnregisterGCM::OnUpdated( Svr::TransactionResult* pRes )
 	{
-		FunctionContext hr;
+		ScopeContext hr;
 
 		svrCheck(pRes->GetResult());
 
@@ -623,7 +623,7 @@ namespace Svr {
 	// Start Transaction
 	Result PlayerTransUnregisterGCM::StartTransaction()
 	{
-		FunctionContext hr;
+		ScopeContext hr;
 
 		svrCheck( super::StartTransaction() );
 
@@ -649,7 +649,7 @@ namespace Svr {
 	
 	Result PlayerTransGetNotificationList::OnGetList(Svr::TransactionResult* pRes)
 	{
-		FunctionContext hr;
+		ScopeContext hr;
 		DB::RowsetList::iterator itNotification;
 		UserNotificationSystem* pNotifySystem = GetMyOwner()->GetComponent<UserNotificationSystem>();
 		auto*pDBRes = pRes->GetResultData<DB::QueryNotification_GetListCmd>();
@@ -680,7 +680,7 @@ namespace Svr {
 	// Start Transaction
 	Result PlayerTransGetNotificationList::StartTransaction()
 	{
-		FunctionContext hr([this](Result hr)
+		ScopeContext hr([this](Result hr)
 			{
 				if (!(hr))
 					CloseTransaction(hr);
@@ -702,7 +702,7 @@ namespace Svr {
 
 	Result PlayerTransDeleteNotification::OnDeletedNotification( Svr::TransactionResult* &pRes )
 	{
-		FunctionContext hr;
+		ScopeContext hr;
 
 		svrCheck(pRes->GetResult());
 
@@ -714,7 +714,7 @@ namespace Svr {
 	// Start Transaction
 	Result PlayerTransDeleteNotification::StartTransaction()
 	{
-		FunctionContext hr([this](Result hr)
+		ScopeContext hr([this](Result hr)
 			{
 				if (!hr)
 					CloseTransaction(hr);
@@ -736,7 +736,7 @@ namespace Svr {
 
 	Result PlayerTransSetNotificationRead::OnSetRead( Svr::TransactionResult* pRes )
 	{
-		FunctionContext hr;
+		ScopeContext hr;
 
 		UserNotificationSystem::Notification *pNotify = nullptr;
 
@@ -764,7 +764,7 @@ namespace Svr {
 	// Start Transaction
 	Result PlayerTransSetNotificationRead::StartTransaction()
 	{
-		FunctionContext hr;
+		ScopeContext hr;
 
 		svrCheck( super::StartTransaction() );
 
@@ -785,7 +785,7 @@ namespace Svr {
 
 	Result PlayerTransAcceptNotification::OnDeletedNotification(Svr::TransactionResult* pRes)
 	{
-		FunctionContext hr;
+		ScopeContext hr;
 
 		auto notification = GetMyOwner()->GetComponent<UserNotificationSystem>()->GetNotification(GetNotificationID());
 
@@ -819,7 +819,7 @@ namespace Svr {
 	// Start Transaction
 	Result PlayerTransAcceptNotification::StartTransaction()
 	{
-		FunctionContext hr;
+		ScopeContext hr;
 
 		svrCheck(super::StartTransaction());
 
@@ -832,7 +832,7 @@ namespace Svr {
 	// Start Transaction
 	Result PlayerTransNotifyS2S::StartTransaction()
 	{
-		FunctionContext hr;
+		ScopeContext hr;
 
 		svrCheck( super::StartTransaction() );
 
@@ -860,7 +860,7 @@ namespace Svr {
 
 	Result PlayerTransSetNickName::OnNickChanged(Svr::TransactionResult* pRes)
 	{
-		FunctionContext hr;
+		ScopeContext hr;
 
 		auto pDBRes = pRes->GetResultData<DB::QuerySetNickNameCmd>();
 		//UserGamePlayerInfoSystem* pPlayerInfoSystem = nullptr;
@@ -892,7 +892,7 @@ namespace Svr {
 	// Start Transaction
 	Result PlayerTransSetNickName::StartTransaction()
 	{
-		FunctionContext hr([this](Result hr)
+		ScopeContext hr([this](Result hr)
 			{
 				if (!hr)
 					CloseTransaction(hr);
@@ -935,7 +935,7 @@ namespace Svr {
 
 	Result PlayerTransFindPlayerByEMail::OnFindPlayer( Svr::TransactionResult* pRes )
 	{
-		FunctionContext hr([this](Result hr)
+		ScopeContext hr([this](Result hr)
 			{
 				if (!hr)
 					CloseTransaction(hr);
@@ -959,7 +959,7 @@ namespace Svr {
 
 	Result PlayerTransFindPlayerByEMail::OnGetNickName(Svr::TransactionResult* pRes)
 	{
-		FunctionContext hr([this](Result hr)
+		ScopeContext hr([this](Result hr)
 			{
 				CloseTransaction(hr);
 			});
@@ -979,7 +979,7 @@ namespace Svr {
 	// Start Transaction
 	Result PlayerTransFindPlayerByEMail::StartTransaction()
 	{
-		FunctionContext hr([this](Result hr)
+		ScopeContext hr([this](Result hr)
 			{
 				if (!hr)
 					CloseTransaction(hr);
@@ -1006,7 +1006,7 @@ namespace Svr {
 
 	Result PlayerTransFindPlayerByPlayerID::OnFindPlayer(Svr::TransactionResult* &pRes)
 	{
-		FunctionContext hr([this](Result hr)
+		ScopeContext hr([this](Result hr)
 			{
 				if (!hr)
 					CloseTransaction(hr);
@@ -1052,7 +1052,7 @@ namespace Svr {
 	// Start Transaction
 	Result PlayerTransFindPlayerByPlayerID::StartTransaction()
 	{
-		FunctionContext hr([this](Result hr)
+		ScopeContext hr([this](Result hr)
 			{
 				if (!hr)
 					CloseTransaction(hr);
@@ -1077,7 +1077,7 @@ namespace Svr {
 
 	Result PlayerTransRequestPlayerStatusUpdate::OnPlayerShardIDRes(Svr::TransactionResult* &pRes)
 	{
-		FunctionContext hr([this](Result hr)
+		ScopeContext hr([this](Result hr)
 			{
 				if (m_PlayerStatusQueryCount == 0)
 					CloseTransaction(hr);
@@ -1098,7 +1098,7 @@ namespace Svr {
 
 	Result PlayerTransRequestPlayerStatusUpdate::OnPlayerStatusUpdateRes( Svr::TransactionResult* &pRes )
 	{
-		FunctionContext hr([this](Result hr)
+		ScopeContext hr([this](Result hr)
 			{
 				if (m_PlayerStatusQueryCount == 0)
 					CloseTransaction(hr);
@@ -1118,7 +1118,7 @@ namespace Svr {
 	// Start Transaction
 	Result PlayerTransRequestPlayerStatusUpdate::StartTransaction()
 	{
-		FunctionContext hr([this](Result hr)
+		ScopeContext hr([this](Result hr)
 			{
 				if (m_PlayerStatusQueryCount == 0)
 					CloseTransaction(hr);
@@ -1163,7 +1163,7 @@ namespace Svr {
 	// Start Transaction
 	Result PlayerTransRequestPlayerStatusUpdateC2S::StartTransaction()
 	{
-		FunctionContext hr;
+		ScopeContext hr;
 		Svr::ServerEntity *pServerEntity = nullptr;
 		EntityUID playerUID;
 		bool bInGame;
@@ -1190,7 +1190,7 @@ namespace Svr {
 	// Start Transaction
 	Result PlayerTransNotifyPlayerStatusUpdatedS2S::StartTransaction()
 	{
-		FunctionContext hr([this](Result hr)
+		ScopeContext hr([this](Result hr)
 			{
 				CloseTransaction(hr);
 			});
@@ -1214,7 +1214,7 @@ namespace Svr {
 
 	Result PlayerTransGetRankingList::OnGetRankingListRes( Svr::TransactionResult* &pRes )
 	{
-		FunctionContext hr;
+		ScopeContext hr;
 		auto*pDBRes = pRes->GetResultData<DB::QueryGetTotalRankingCmd>();
 
 		svrCheck(pRes->GetResult());
@@ -1243,7 +1243,7 @@ namespace Svr {
 	// Start Transaction
 	Result PlayerTransGetRankingList::StartTransaction()
 	{
-		FunctionContext hr;
+		ScopeContext hr;
 
 		svrCheck( super::StartTransaction() );
 
@@ -1270,7 +1270,7 @@ namespace Svr {
 
 	Result PlayerTransBuyShopItemPrepare::OnPurchaseIDChecked(Svr::TransactionResult* pRes)
 	{
-		FunctionContext hr([this](Result hr)
+		ScopeContext hr([this](Result hr)
 			{
 				if (!hr)
 					CloseTransaction(hr);
@@ -1301,7 +1301,7 @@ namespace Svr {
 
 	Result PlayerTransBuyShopItemPrepare::GenerateSigunatureAndCheck()
 	{
-		FunctionContext hr([this](Result hr)
+		ScopeContext hr([this](Result hr)
 			{
 				m_Signagure.push_back('\0');
 			});
@@ -1332,7 +1332,7 @@ namespace Svr {
 	// Start Transaction
 	Result PlayerTransBuyShopItemPrepare::StartTransaction()
 	{
-		FunctionContext hr([this](Result hr)
+		ScopeContext hr([this](Result hr)
 			{
 				if (!hr)
 				{
@@ -1367,7 +1367,7 @@ namespace Svr {
 
 	Result PlayerTransBuyShopItem::OnPurchaseCheckedAndroid(Svr::TransactionResult* &pRes)
 	{
-		FunctionContext hr([this](Result hr)
+		ScopeContext hr([this](Result hr)
 			{
 				if (!hr)
 				{
@@ -1402,7 +1402,7 @@ namespace Svr {
 
 	Result PlayerTransBuyShopItem::OnPurchaseCheckedIOS(Svr::TransactionResult* &pRes)
 	{
-		FunctionContext hr([this](Result hr)
+		ScopeContext hr([this](Result hr)
 			{
 				if (!hr)
 				{
@@ -1432,7 +1432,7 @@ namespace Svr {
 
 	Result PlayerTransBuyShopItem::OnSavedToDB( Svr::TransactionResult* &pRes )
 	{
-		FunctionContext hr([this](Result hr)
+		ScopeContext hr([this](Result hr)
 			{
 				if (!hr)
 				{
@@ -1456,7 +1456,7 @@ namespace Svr {
 	// Start Transaction
 	Result PlayerTransBuyShopItem::StartTransaction()
 	{
-		FunctionContext hr([this](Result hr)
+		ScopeContext hr([this](Result hr)
 			{
 				if (!hr)
 				{
@@ -1531,7 +1531,7 @@ namespace Svr {
 	// Start Transaction
 	Result PlayerTransSetConfigPreset::StartTransaction()
 	{
-		FunctionContext hr;
+		ScopeContext hr;
 		Policy::NetPolicyGameInstance *pPolicy = nullptr;
 		GameInsUID insUID;
 

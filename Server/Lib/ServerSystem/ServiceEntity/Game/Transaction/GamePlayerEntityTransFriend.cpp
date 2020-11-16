@@ -63,7 +63,7 @@ namespace Svr {
 
 	Result PlayerTransInviteFriend::OnGetPlayerShardID(Svr::TransactionResult* &pRes)
 	{
-		FunctionContext hr([this](Result hr)
+		ScopeContext hr([this](Result hr)
 			{
 				if (!hr)
 					CloseTransaction(hr);
@@ -89,7 +89,7 @@ namespace Svr {
 
 	Result PlayerTransInviteFriend::OnNotifyAdded(  Svr::TransactionResult* &pRes )
 	{
-		FunctionContext hr([this](Result hr)
+		ScopeContext hr([this](Result hr)
 			{
 				CloseTransaction(hr);
 			});
@@ -114,7 +114,7 @@ namespace Svr {
 	// Start Transaction
 	Result PlayerTransInviteFriend::StartTransaction()
 	{
-		FunctionContext hr([this](Result hr)
+		ScopeContext hr([this](Result hr)
 			{
 				if (!hr)
 					CloseTransaction(hr);
@@ -149,7 +149,7 @@ namespace Svr {
 
 	Result PlayerTransFriendAccept::OnGetPlayerShardID(Svr::TransactionResult* &pRes)
 	{
-		FunctionContext hr([this](Result hr)
+		ScopeContext hr([this](Result hr)
 			{
 				if (!hr)
 					CloseTransaction(hr);
@@ -171,7 +171,7 @@ namespace Svr {
 
 	Result PlayerTransFriendAccept::OnFriendSlotStatus(Svr::TransactionResult* &pRes)
 	{
-		FunctionContext hr([this](Result hr)
+		ScopeContext hr([this](Result hr)
 			{
 				if (!hr)
 					CloseTransaction(hr);
@@ -207,7 +207,7 @@ namespace Svr {
 
 	Result PlayerTransFriendAccept::OnFriendAdded(Svr::TransactionResult* &pRes)
 	{
-		FunctionContext hr([this](Result hr)
+		ScopeContext hr([this](Result hr)
 			{
 				m_WaitingResultCount--;
 				if (m_WaitingResultCount <= 0)
@@ -260,7 +260,7 @@ namespace Svr {
 
 	Result PlayerTransFriendAccept::OnFriendQuickInfo(Svr::TransactionResult* &pRes)
 	{
-		FunctionContext hr([this](Result hr)
+		ScopeContext hr([this](Result hr)
 			{
 				m_WaitingResultCount--;
 				if (m_WaitingResultCount <= 0)
@@ -319,7 +319,7 @@ namespace Svr {
 */
 	Result PlayerTransFriendAccept::SendNotifyToInviter()
 	{
-		FunctionContext hr;
+		ScopeContext hr;
 		Svr::ServerEntity *pServerEntity = nullptr;
 		EntityUID playerUID;
 
@@ -339,7 +339,7 @@ namespace Svr {
 	// Start Transaction
 	Result PlayerTransFriendAccept::StartTransaction()
 	{
-		FunctionContext hr([this](Result hr)
+		ScopeContext hr([this](Result hr)
 			{
 				if (!hr)
 					CloseTransaction(hr);
@@ -363,7 +363,7 @@ namespace Svr {
 	// Start Transaction
 	Result PlayerTransFriendAcceptedS2S::StartTransaction()
 	{
-		FunctionContext hr([this](Result hr)
+		ScopeContext hr([this](Result hr)
 			{
 				CloseTransaction(hr);
 			});
@@ -398,7 +398,7 @@ namespace Svr {
 
 	Result PlayerTransRemoveFriend::OnRemoved( Svr::TransactionResult* &pRes )
 	{
-		FunctionContext hr([this](Result hr)
+		ScopeContext hr([this](Result hr)
 			{
 				m_WaitingResultCount--;
 				if (m_WaitingResultCount <= 0)
@@ -417,7 +417,7 @@ namespace Svr {
 	// Start Transaction
 	Result PlayerTransRemoveFriend::StartTransaction()
 	{
-		FunctionContext hr([this](Result hr)
+		ScopeContext hr([this](Result hr)
 			{
 				if (!hr)
 					CloseTransaction(hr);
@@ -455,7 +455,7 @@ namespace Svr {
 	// Start Transaction
 	Result PlayerTransFriendRemovedS2S::StartTransaction()
 	{
-		FunctionContext hr([this](Result hr)
+		ScopeContext hr([this](Result hr)
 			{
 				CloseTransaction(hr);
 			});
@@ -487,7 +487,7 @@ namespace Svr {
 
 	Result PlayerTransGetFriendList::OnGetList( Svr::TransactionResult* &pRes )
 	{
-		FunctionContext hr([this](Result hr)
+		ScopeContext hr([this](Result hr)
 			{
 				if (!hr || m_WaitingCount <= 0)
 					CloseTransaction(hr);
@@ -577,7 +577,7 @@ namespace Svr {
 	{
 		DB::QueryGetFriendQuickInfoWithNickCmd* pDBRes = nullptr;
 		FriendInformation* pFriend = nullptr;
-		FunctionContext hr([this, pDBRes](Result hr)
+		ScopeContext hr([this, pDBRes](Result hr)
 			{
 				if (!(hr))
 				{
@@ -615,7 +615,7 @@ namespace Svr {
 	// Start Transaction
 	Result PlayerTransGetFriendList::StartTransaction()
 	{
-		FunctionContext hr([this](Result hr)
+		ScopeContext hr([this](Result hr)
 			{
 				if (!hr)
 					CloseTransaction(hr);

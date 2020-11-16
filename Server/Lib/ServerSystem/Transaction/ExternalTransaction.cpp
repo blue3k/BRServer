@@ -377,7 +377,7 @@ Proc_End:
 	{
 		char *resultString = nullptr;
 
-		FunctionContext hr([this, &resultString](Result result)
+		ScopeContext hr([this, &resultString](Result result)
 		{
 			if (!result && m_CurlResult != 0)
 			{

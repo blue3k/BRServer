@@ -65,7 +65,7 @@ namespace SF {
 
 		Result PlayerTransCloseInstance::UpdateDBRes(Svr::TransactionResult* pRes)
 		{
-			FunctionContext hr([this](Result hr)
+			ScopeContext hr([this](Result hr)
 				{
 					if (m_WaitingTransactions <= 0)
 						CloseTransaction(hr);
@@ -80,7 +80,7 @@ namespace SF {
 
 		Result PlayerTransCloseInstance::DeleteLoginSessionRes(Svr::TransactionResult* pRes)
 		{
-			FunctionContext hr([this](Result hr)
+			ScopeContext hr([this](Result hr)
 				{
 					if (m_WaitingTransactions <= 0)
 						CloseTransaction(hr);
@@ -95,7 +95,7 @@ namespace SF {
 
 		Result PlayerTransCloseInstance::UnregisterMatchingRes(Svr::TransactionResult* pRes)
 		{
-			FunctionContext hr([this](Result hr)
+			ScopeContext hr([this](Result hr)
 				{
 					if (m_WaitingTransactions <= 0)
 						CloseTransaction(hr);
@@ -117,7 +117,7 @@ namespace SF {
 
 		Result PlayerTransCloseInstance::LeaveGameInstanceRes(Svr::TransactionResult* pRes)
 		{
-			FunctionContext hr([this](Result hr)
+			ScopeContext hr([this](Result hr)
 				{
 					if (m_WaitingTransactions <= 0)
 						CloseTransaction(hr);
@@ -134,7 +134,7 @@ namespace SF {
 
 		Result PlayerTransCloseInstance::LeavePartyRes(Svr::TransactionResult* pRes)
 		{
-			FunctionContext hr([this](Result hr)
+			ScopeContext hr([this](Result hr)
 				{
 					if (m_WaitingTransactions <= 0)
 						CloseTransaction(hr);
@@ -151,7 +151,7 @@ namespace SF {
 
 		Result PlayerTransCloseInstance::StartTransaction()
 		{
-			FunctionContext hr([this](Result hr)
+			ScopeContext hr([this](Result hr)
 				{
 					if (!(hr) && hr != Result(ResultCode::INVALID_PLAYERID))
 					{
