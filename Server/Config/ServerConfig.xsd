@@ -8,27 +8,19 @@
 			<xs:sequence>
 				<xs:element name="DBInstances" type="DBInstance" maxOccurs="unbounded"/>
 
-				<xs:element name="TableDB" minOccurs="0" maxOccurs="1">
-				  <xs:complexType >
-					<xs:attribute name="DBInstanceName" type="xs:string" use="required"/>
-					<xs:attribute name="DBName" type="xs:string" use="required"/>
-				  </xs:complexType>
-				</xs:element>
-				<xs:element name="AccountDB" type="DBCluster" minOccurs="1" maxOccurs="1"/>
-				<xs:element name="LoginSessionDB" type="DBCluster"  minOccurs="0" maxOccurs="1"/>
-				<xs:element name="RankingDB" type="DBCluster"  minOccurs="0" maxOccurs="1"/>
-				
+				<xs:element name="DBCluster" type="DBCluster"  minOccurs="0" maxOccurs="unbounded"/>
+
 				<xs:element name="ModuleServer" type="GenericServer" minOccurs="0" maxOccurs="unbounded" />
-        
+
 				<xs:element name="GameCluster" minOccurs="0" maxOccurs="unbounded">
 					<xs:complexType>
 						<xs:sequence>
 							<xs:element name="GameDB" type="DBCluster" minOccurs="0" maxOccurs="1" />
 							<xs:element name="GameTransactionLogDB" type="DBCluster"  minOccurs="0" maxOccurs="1"/>
-							
+
 							<!-- Eventually we are going to use DBCluster and ModuleServer only -->
 							<xs:element name="ModuleServer" type="GenericServer" minOccurs="0" maxOccurs="unbounded" />
-							
+
 							<xs:element name="Game" type="GenericServer" minOccurs="0" maxOccurs="unbounded">
 								<xs:annotation>
 									<xs:documentation>Game server entity</xs:documentation>
@@ -41,15 +33,15 @@
 							</xs:element>
 						</xs:sequence>
 						<xs:attribute name="Name" type="xs:string" use="optional"/>
-            <xs:attribute name="GameID" type="xs:string" default="MyTownHero" />
-          </xs:complexType>
+						<xs:attribute name="GameID" type="xs:string" default="MyTownHero" />
+					</xs:complexType>
 				</xs:element>
 			</xs:sequence>
 		</xs:complexType>
 	</xs:element>
-  
-  
-  
+
+
+
 	<xs:complexType name="GenericServer">
 		<xs:annotation>
 			<xs:documentation>Server generic configuration</xs:documentation>
@@ -62,38 +54,40 @@
 					</xs:complexContent>
 				</xs:complexType>
 			</xs:element>
-      
-      <!-- Actually I want them have maximum one each without order -->
-      <xs:choice minOccurs="0" maxOccurs="unbounded">
-        <xs:element name="ModGamePartyManager" type="ModuleSimple"/>
-        <xs:element name="ModMonitoring" type="ModuleSimple"/>
-        <xs:element name="ModLogin" type="ModuleLogin"/>
-        <xs:element name="ModRanking" type="ModuleRanking"/>
-        <xs:element name="ModChatting" type="ModuleChatting"/>
-        <xs:element name="ModGame" type="ModuleGame"/>
-		<xs:element name="ModGameInstanceManager" type="ModuleGameInstanceManager"/>
-        <xs:element name="ModInstanceManager" type="ModuleSimple"/>
-        <xs:element name="ModMatching_Game_4" type="ModuleMatching"/>
-        <xs:element name="ModMatching_Game_8" type="ModuleMatching"/>
-        <xs:element name="ModMatchingQueue_Game_4x1" type="ModuleSimple"/>
-        <xs:element name="ModMatchingQueue_Game_4x2" type="ModuleSimple"/>
-        <xs:element name="ModMatchingQueue_Game_4x3" type="ModuleSimple"/>
-        <xs:element name="ModMatchingQueue_Game_4x1S" type="ModuleSimple"/>
-        <xs:element name="ModMatchingQueue_Game_4x1W" type="ModuleSimple"/>
-        <xs:element name="ModMatchingQueue_Game_8x1" type="ModuleSimple"/>
-        <xs:element name="ModMatchingQueue_Game_8x2" type="ModuleSimple"/>
-        <xs:element name="ModMatchingQueue_Game_8x3" type="ModuleSimple"/>
-        <xs:element name="ModMatchingQueue_Game_8x4" type="ModuleSimple"/>
-        <xs:element name="ModMatchingQueue_Game_8x5" type="ModuleSimple"/>
-        <xs:element name="ModMatchingQueue_Game_8x6" type="ModuleSimple"/>
-        <xs:element name="ModMatchingQueue_Game_8x7" type="ModuleSimple"/>
-        <xs:element name="ModMatchingQueue_Game_8x1S" type="ModuleSimple"/>
-        <xs:element name="ModMatchingQueue_Game_8x1W" type="ModuleSimple"/>
-        <xs:element name="ModPurchaseValidateGoogle" type="ModulePurchaseValidateGoogle"/>
-        <xs:element name="ModPurchaseValidateIOS" type="ModulePurchaseValidateIOS"/>
-      </xs:choice>
 
-    </xs:sequence>
+			<!-- Actually I want them have maximum one each without order -->
+			<xs:choice minOccurs="0" maxOccurs="unbounded">
+				<xs:element name="ModGamePartyManager" type="ModuleSimple"/>
+				<xs:element name="ModMonitoring" type="ModuleSimple"/>
+				<xs:element name="ModLogin" type="ModuleLogin"/>
+				<xs:element name="ModRanking" type="ModuleRanking"/>
+				<xs:element name="ModChatting" type="ModuleChatting"/>
+				<xs:element name="ModGame" type="ModuleGame"/>
+				<xs:element name="ModRelay" type="ModuleGenericPublic"/>
+				<xs:element name="ModStreamCollection" type="ModuleGenericPublic"/>
+				<xs:element name="ModGameInstanceManager" type="ModuleGameInstanceManager"/>
+				<xs:element name="ModInstanceManager" type="ModuleSimple"/>
+				<xs:element name="ModMatching_Game_4" type="ModuleMatching"/>
+				<xs:element name="ModMatching_Game_8" type="ModuleMatching"/>
+				<xs:element name="ModMatchingQueue_Game_4x1" type="ModuleSimple"/>
+				<xs:element name="ModMatchingQueue_Game_4x2" type="ModuleSimple"/>
+				<xs:element name="ModMatchingQueue_Game_4x3" type="ModuleSimple"/>
+				<xs:element name="ModMatchingQueue_Game_4x1S" type="ModuleSimple"/>
+				<xs:element name="ModMatchingQueue_Game_4x1W" type="ModuleSimple"/>
+				<xs:element name="ModMatchingQueue_Game_8x1" type="ModuleSimple"/>
+				<xs:element name="ModMatchingQueue_Game_8x2" type="ModuleSimple"/>
+				<xs:element name="ModMatchingQueue_Game_8x3" type="ModuleSimple"/>
+				<xs:element name="ModMatchingQueue_Game_8x4" type="ModuleSimple"/>
+				<xs:element name="ModMatchingQueue_Game_8x5" type="ModuleSimple"/>
+				<xs:element name="ModMatchingQueue_Game_8x6" type="ModuleSimple"/>
+				<xs:element name="ModMatchingQueue_Game_8x7" type="ModuleSimple"/>
+				<xs:element name="ModMatchingQueue_Game_8x1S" type="ModuleSimple"/>
+				<xs:element name="ModMatchingQueue_Game_8x1W" type="ModuleSimple"/>
+				<xs:element name="ModPurchaseValidateGoogle" type="ModulePurchaseValidateGoogle"/>
+				<xs:element name="ModPurchaseValidateIOS" type="ModulePurchaseValidateIOS"/>
+			</xs:choice>
+
+		</xs:sequence>
 		<xs:attribute name="UID" type="xs:unsignedInt" use="required">
 			<xs:annotation>
 				<xs:documentation>Server UID</xs:documentation>
@@ -122,29 +116,29 @@
 	</xs:complexType>
 
 
-  <xs:complexType name="PublicNetSocket">
-    <xs:attribute name="IPV6" type="xs:string" use="required"/>
-    <xs:attribute name="IPV4" type="xs:string" use="required"/>
-    <xs:attribute name="ListenIP" type="xs:string" use="required"/>
-    <xs:attribute name="Port" type="xs:unsignedInt" use="required"/>
-    <xs:attribute name="MaxConnection" type="xs:unsignedInt" default="1000000" use="optional"/>
-  </xs:complexType>
+	<xs:complexType name="PublicNetSocket">
+		<xs:attribute name="IPV6" type="xs:string" use="required"/>
+		<xs:attribute name="IPV4" type="xs:string" use="required"/>
+		<xs:attribute name="ListenIP" type="xs:string" use="required"/>
+		<xs:attribute name="Port" type="xs:unsignedInt" use="required"/>
+		<xs:attribute name="MaxConnection" type="xs:unsignedInt" default="1000000" use="optional"/>
+	</xs:complexType>
 
-  <xs:complexType name="NetSocket">
-    <xs:annotation>
-      <xs:documentation>Network socket info</xs:documentation>
-    </xs:annotation>
-    <xs:attribute name="IP" type="xs:string" use="required">
-      <xs:annotation>
-        <xs:documentation>IP address</xs:documentation>
-      </xs:annotation>
-    </xs:attribute>
-    <xs:attribute name="Port" type="xs:unsignedInt" use="required">
-      <xs:annotation>
-        <xs:documentation>Port</xs:documentation>
-      </xs:annotation>
-    </xs:attribute>
-  </xs:complexType>
+	<xs:complexType name="NetSocket">
+		<xs:annotation>
+			<xs:documentation>Network socket info</xs:documentation>
+		</xs:annotation>
+		<xs:attribute name="IP" type="xs:string" use="required">
+			<xs:annotation>
+				<xs:documentation>IP address</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="Port" type="xs:unsignedInt" use="required">
+			<xs:annotation>
+				<xs:documentation>Port</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+	</xs:complexType>
 
 
 	<xs:complexType name="DBInstance">
@@ -153,13 +147,14 @@
 		<xs:attribute name="UserID" type="xs:string" use="required"/>
 		<xs:attribute name="Password" type="xs:string" use="required"/>
 	</xs:complexType>
-  
+
 	<xs:complexType name="DBClusterInstance">
 		<xs:attribute name="DBInstanceName" type="xs:string" use="required"/>
 		<xs:attribute name="DBName" type="xs:string" use="required"/>
 	</xs:complexType>
-  
+
 	<xs:complexType name="DBCluster">
+		<xs:attribute name="ClusterName" type="xs:string" use="required" />
 		<xs:attribute name="ClusterType" use="required">
 			<xs:simpleType>
 				<xs:restriction base="xs:string">
@@ -168,10 +163,10 @@
 				</xs:restriction>
 			</xs:simpleType>
 		</xs:attribute>
-    <xs:attribute name="DBInstanceName" type="xs:string" use="required"/>
-    <xs:attribute name="DBName" type="xs:string" use="required"/>
-  </xs:complexType>
-  
+		<xs:attribute name="DBInstanceName" type="xs:string" use="required"/>
+		<xs:attribute name="DBName" type="xs:string" use="required"/>
+	</xs:complexType>
+
 	<xs:complexType name="DBServer">
 		<xs:annotation>
 			<xs:documentation>DB Server information</xs:documentation>
@@ -204,79 +199,88 @@
 	</xs:complexType>
 
 
-  <xs:complexType name="ModuleSimple">
-  </xs:complexType>
+	<xs:complexType name="ModuleSimple">
+	</xs:complexType>
 
-  <xs:complexType name="ModuleMatching">
-    <xs:complexContent>
-      <xs:extension base="ModuleSimple">
-        <xs:attribute name="UseBot" type="xs:boolean" use="required"/>
-      </xs:extension>
-    </xs:complexContent>
-  </xs:complexType>
+	<xs:complexType name="ModuleMatching">
+		<xs:complexContent>
+			<xs:extension base="ModuleSimple">
+				<xs:attribute name="UseBot" type="xs:boolean" use="required"/>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
 
-  <xs:complexType name="ModuleLogin">
-    <xs:complexContent>
-      <xs:extension base="ModuleSimple">
-        <xs:sequence>
-          <xs:element name="NetPublic" type="PublicNetSocket" />
-        </xs:sequence>
-      </xs:extension>
-    </xs:complexContent>
-  </xs:complexType>
+	<xs:complexType name="ModuleLogin">
+		<xs:complexContent>
+			<xs:extension base="ModuleSimple">
+				<xs:sequence>
+					<xs:element name="NetPublic" type="PublicNetSocket" />
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
 
-  <xs:complexType name="ModuleRanking">
-    <xs:complexContent>
-      <xs:extension base="ModuleSimple">
-        <xs:sequence>
-        </xs:sequence>
-      </xs:extension>
-    </xs:complexContent>
-  </xs:complexType>
+	<xs:complexType name="ModuleRanking">
+		<xs:complexContent>
+			<xs:extension base="ModuleSimple">
+				<xs:sequence>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
 
-  <xs:complexType name="ModuleChatting">
-    <xs:complexContent>
-      <xs:extension base="ModuleSimple">
-        <xs:sequence>
-        </xs:sequence>
-      </xs:extension>
-    </xs:complexContent>
-  </xs:complexType>
+	<xs:complexType name="ModuleChatting">
+		<xs:complexContent>
+			<xs:extension base="ModuleSimple">
+				<xs:sequence>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
 
-  
-  <xs:complexType name="ModuleGame">
-    <xs:complexContent>
-      <xs:extension base="ModuleSimple">
-        <xs:sequence>
-          <xs:element name="NetPublic" type="PublicNetSocket" />
-        </xs:sequence>
-      </xs:extension>
-    </xs:complexContent>
-  </xs:complexType>
 
-  <xs:complexType name="ModuleGameInstanceManager">
-    <xs:complexContent>
-      <xs:extension base="ModuleSimple">
-		<xs:attribute name="Name" type="xs:string" use="required"/>
-		<xs:attribute name="DataTable" type="xs:string" use="optional"/>
-        <xs:sequence>
-          <xs:element name="NetPublic" type="PublicNetSocket" />
-        </xs:sequence>
-      </xs:extension>
-    </xs:complexContent>
-  </xs:complexType>
+	<xs:complexType name="ModuleGame">
+		<xs:complexContent>
+			<xs:extension base="ModuleSimple">
+				<xs:sequence>
+					<xs:element name="NetPublic" type="PublicNetSocket" />
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
 
-  <xs:complexType name="ModulePurchaseValidateGoogle">
-    <xs:attribute name="Account" type="xs:string" use="required"/>
-    <xs:attribute name="P12KeyFile" type="xs:string" use="required"/>
-    <xs:attribute name="AuthScopes" type="xs:string" use="required"/>
-  </xs:complexType>
+	<xs:complexType name="ModuleGameInstanceManager">
+		<xs:complexContent>
+			<xs:extension base="ModuleSimple">
+				<xs:attribute name="Name" type="xs:string" use="required"/>
+				<xs:attribute name="DataTable" type="xs:string" use="optional"/>
+				<xs:sequence>
+					<xs:element name="NetPublic" type="PublicNetSocket" />
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
 
-  <xs:complexType name="ModulePurchaseValidateIOS">
-    <xs:attribute name="URL" type="xs:string" use="required"/>
-    <xs:attribute name="AltURL" type="xs:string" default="" use="optional"/>
-  </xs:complexType>
+	<xs:complexType name="ModulePurchaseValidateGoogle">
+		<xs:attribute name="Account" type="xs:string" use="required"/>
+		<xs:attribute name="P12KeyFile" type="xs:string" use="required"/>
+		<xs:attribute name="AuthScopes" type="xs:string" use="required"/>
+	</xs:complexType>
 
+	<xs:complexType name="ModulePurchaseValidateIOS">
+		<xs:attribute name="URL" type="xs:string" use="required"/>
+		<xs:attribute name="AltURL" type="xs:string" default="" use="optional"/>
+	</xs:complexType>
+
+	<xs:complexType name="ModuleGenericPublic">
+		<xs:complexContent>
+			<xs:extension base="ModuleSimple">
+				<xs:sequence>
+					<xs:element name="NetPublic" type="PublicNetSocket" />
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
 
 
 </xs:schema>

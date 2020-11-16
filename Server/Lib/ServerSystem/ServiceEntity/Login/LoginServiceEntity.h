@@ -63,11 +63,11 @@ namespace Svr {
 	class LoginServiceEntity : public ShardedClusterServiceEntity
 	{
 	public:
-		typedef ShardedClusterServiceEntity super;
+		using super = ShardedClusterServiceEntity;
 
 	private:
 
-		const ServerConfig::NetPublic *m_PublicNetSocket;
+		const ServerConfig::NetPublic *m_PublicNetSocket = nullptr;
 		SharedPointerT<Net::ServerMUDP>			m_pNetPublic;
 
 		PageQueue<SharedPointerAtomicT<Net::Connection>> m_NewConnectionQueue;

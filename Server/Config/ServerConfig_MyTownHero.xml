@@ -4,9 +4,9 @@
   <DBInstances InstanceName="session00" ConnectionString="192.168.0.9,21022" UserID="blue3k" Password="111" />
   <DBInstances InstanceName="ranking" ConnectionString="192.168.0.9,21022" UserID="blue3k" Password="111" />
 
-  <AccountDB ClusterType="Sharding" DBInstanceName="account00" DBName="dbaccount" />
-  <LoginSessionDB ClusterType="Sharding" DBInstanceName="session00" DBName="dbsession00" />
-  <RankingDB ClusterType="Sharding" DBInstanceName="ranking" DBName="dbconspiracyranking" />
+	<DBCluster ClusterName="AccountDB" ClusterType="Sharding" DBInstanceName="account00" DBName="dbaccount" />
+	<DBCluster ClusterName="LoginSessionDB" ClusterType="Sharding" DBInstanceName="session00" DBName="dbsession00" />
+	<DBCluster ClusterName="RankingDB" ClusterType="Sharding" DBInstanceName="ranking" DBName="dbconspiracyranking" />
 
 
   <ModuleServer UID="11" Name="BRLoginServer01" Executable="BRModuleServer" WorkerThreadCount="4" NetIOThreadCount="4">

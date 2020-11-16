@@ -207,14 +207,20 @@ namespace SF {
 			return MasterEntity::TerminateEntity();
 		}
 
+
+		void BrServer::AddModuleConstructor(StringCrc32 NameCrc, ModuleContructorType&& Constructor)
+		{
+			m_ModuleConstructors.insert(NameCrc, Constructor);
+		}
+
 		Result BrServer::InitializeModuleFactory()
 		{
-			m_ModuleConstructors.insert("ModMonitoring"_crc, [](BrServer* ThisServer, GameID gameID, ServerConfig::ServerModule* config)
+			AddModuleConstructor("ModMonitoring"_crc, [](BrServer* ThisServer, GameID gameID, ServerConfig::ServerModule* config)
 				{
 					return Service::EntityManager->AddEntity(EntityFaculty::Service, new(ThisServer->GetHeap()) Svr::MonitoringServiceEntity);
 				});
 
-			m_ModuleConstructors.insert("ModLogin"_crc, [](BrServer* ThisServer, GameID gameID, ServerConfig::ServerModule* config)
+			AddModuleConstructor("ModLogin"_crc, [](BrServer* ThisServer, GameID gameID, ServerConfig::ServerModule* config)
 				{
 					auto pLogin = (ServerConfig::ServerModulePublicService*)config;
 					if (!ThisServer->AddServiceEntity<Svr::LoginServiceEntity>(&pLogin->PublicNet))
@@ -222,7 +228,7 @@ namespace SF {
 					return ResultCode::SUCCESS;
 				});
 
-			m_ModuleConstructors.insert("ModGame"_crc, [](BrServer* ThisServer, GameID gameID, ServerConfig::ServerModule* config)
+			AddModuleConstructor("ModGame"_crc, [](BrServer* ThisServer, GameID gameID, ServerConfig::ServerModule* config)
 				{
 					auto pGame = (ServerConfig::ServerModulePublicService*)config;
 					if (!ThisServer->AddServiceEntity<Svr::GameServiceEntity>(gameID, &pGame->PublicNet))
@@ -230,7 +236,7 @@ namespace SF {
 					return ResultCode::SUCCESS;
 				});
 
-			m_ModuleConstructors.insert("ModGameInstanceManager"_crc, [](BrServer* ThisServer, GameID gameID, ServerConfig::ServerModule* config)
+			AddModuleConstructor("ModGameInstanceManager"_crc, [](BrServer* ThisServer, GameID gameID, ServerConfig::ServerModule* config)
 				{
 					auto pGame = (ServerConfig::ServerModuleGameInstanceManager*)config;
 					if (!ThisServer->AddServiceEntity<Svr::GameInstanceManagerServiceEntity>(gameID, pGame, ClusterID::GameInstanceManager))
@@ -239,28 +245,28 @@ namespace SF {
 					//svrChk(GetComponentCarrier().AddComponentWithAdapter(pGameInstanceManager)); // ?
 				});
 
-			m_ModuleConstructors.insert("ModRanking"_crc, [](BrServer* ThisServer, GameID gameID, ServerConfig::ServerModule* config)
+			AddModuleConstructor("ModRanking"_crc, [](BrServer* ThisServer, GameID gameID, ServerConfig::ServerModule* config)
 				{
 					if (!ThisServer->AddServiceEntity<Svr::RankingServiceEntity>(GetServerGameID(), ClusterID::Ranking))
 						return ResultCode::OUT_OF_MEMORY;
 					return ResultCode::SUCCESS;
 				});
 
-			m_ModuleConstructors.insert("ModChatting"_crc, [](BrServer* ThisServer, GameID gameID, ServerConfig::ServerModule* config)
+			AddModuleConstructor("ModChatting"_crc, [](BrServer* ThisServer, GameID gameID, ServerConfig::ServerModule* config)
 				{
 					if (!ThisServer->AddServiceEntity<Svr::ChatChannelManagerServiceEntity>(GetServerGameID()))
 						return ResultCode::OUT_OF_MEMORY;
 					return ResultCode::SUCCESS;
 				});
 
-			m_ModuleConstructors.insert("ModGamePartyManager"_crc, [](BrServer* ThisServer, GameID gameID, ServerConfig::ServerModule* config)
+			AddModuleConstructor("ModGamePartyManager"_crc, [](BrServer* ThisServer, GameID gameID, ServerConfig::ServerModule* config)
 				{
 					if (!ThisServer->AddServiceEntity<Svr::GamePartyManagerServiceEntity>(GetServerGameID()))
 						return ResultCode::OUT_OF_MEMORY;
 					return ResultCode::SUCCESS;
 				});
 
-			m_ModuleConstructors.insert("ModMatching_Game_4"_crc, [](BrServer* ThisServer, GameID gameID, ServerConfig::ServerModule* config)
+			AddModuleConstructor("ModMatching_Game_4"_crc, [](BrServer* ThisServer, GameID gameID, ServerConfig::ServerModule* config)
 				{
 					auto pMatching = (ServerConfig::ServerModuleMatching_4*)config;
 					if (!ThisServer->AddServiceEntity<Svr::MatchingServiceEntity>(GetServerGameID(), ClusterID::Matching_Game_4, pMatching->UseBot))
@@ -268,7 +274,7 @@ namespace SF {
 					return ResultCode::SUCCESS;
 				});
 
-			m_ModuleConstructors.insert("ModMatching_Game_8"_crc, [](BrServer* ThisServer, GameID gameID, ServerConfig::ServerModule* config)
+			AddModuleConstructor("ModMatching_Game_8"_crc, [](BrServer* ThisServer, GameID gameID, ServerConfig::ServerModule* config)
 				{
 					auto pMatching = (ServerConfig::ServerModuleMatching_8*)config;
 					if (!ThisServer->AddServiceEntity<Svr::MatchingServiceEntity>(GetServerGameID(), ClusterID::Matching_Game_8, pMatching->UseBot))
@@ -276,7 +282,7 @@ namespace SF {
 					return ResultCode::SUCCESS;
 				});
 
-			m_ModuleConstructors.insert("ModPurchaseValidateGoogle"_crc, [](BrServer* ThisServer, GameID gameID, ServerConfig::ServerModule* config)
+			AddModuleConstructor("ModPurchaseValidateGoogle"_crc, [](BrServer* ThisServer, GameID gameID, ServerConfig::ServerModule* config)
 				{
 					auto pModule = (ServerConfig::ServerModuleGooglePurchaseValidate*)config;
 					char strRelativePath[1024];
@@ -290,14 +296,14 @@ namespace SF {
 					return ResultCode::SUCCESS;
 				});
 
-			m_ModuleConstructors.insert("ModPurchaseValidateIOS"_crc, [](BrServer* ThisServer, GameID gameID, ServerConfig::ServerModule* config)
+			AddModuleConstructor("ModPurchaseValidateIOS"_crc, [](BrServer* ThisServer, GameID gameID, ServerConfig::ServerModule* config)
 				{
 					auto pModule = (ServerConfig::ServerModuleIOSPurchaseValidate*)config;
 					ThisServer->GetComponentCarrier().AddComponentWithAdapter<Svr::ExternalTransactionManager>();
 					return ThisServer->GetComponentCarrier().GetComponent<Svr::ExternalTransactionManager>()->InitializeManagerIOS(pModule->URL, pModule->AltURL);
 				});
 
-			m_ModuleConstructors.insert("ModRelay"_crc, [](BrServer* ThisServer, GameID gameID, ServerConfig::ServerModule* config)
+			AddModuleConstructor("ModRelay"_crc, [](BrServer* ThisServer, GameID gameID, ServerConfig::ServerModule* config)
 				{
 					auto pModule = (ServerConfig::ServerModuleRelayService*)config;
 					if (!ThisServer->AddServiceEntity<Svr::RelayServiceEntity>(GetServerGameID(), pModule->PublicNet, pModule->MaximumRelayInstances))
@@ -305,7 +311,7 @@ namespace SF {
 					return ResultCode::SUCCESS;
 				});
 
-			m_ModuleConstructors.insert("ModMatchingQueue_Game_8x1"_crc, [](BrServer* ThisServer, GameID gameID, ServerConfig::ServerModule* config)
+			AddModuleConstructor("ModMatchingQueue_Game_8x1"_crc, [](BrServer* ThisServer, GameID gameID, ServerConfig::ServerModule* config)
 				{
 					auto pModule = (ServerConfig::ServerModuleRelayService*)config;
 					if (!ThisServer->AddServiceEntity<Svr::MatchingQueueServiceEntity>(GetServerGameID(), ClusterID::MatchingQueue_Game_8x1, ClusterMembership::Slave))
@@ -313,7 +319,7 @@ namespace SF {
 					return ResultCode::SUCCESS;
 				});
 
-			m_ModuleConstructors.insert("ModMatchingQueue_Game_8x2"_crc, [](BrServer* ThisServer, GameID gameID, ServerConfig::ServerModule* config)
+			AddModuleConstructor("ModMatchingQueue_Game_8x2"_crc, [](BrServer* ThisServer, GameID gameID, ServerConfig::ServerModule* config)
 				{
 					auto pModule = (ServerConfig::ServerModuleRelayService*)config;
 					if (!ThisServer->AddServiceEntity<Svr::MatchingQueueServiceEntity>(GetServerGameID(), ClusterID::MatchingQueue_Game_8x2, ClusterMembership::Slave))
@@ -321,7 +327,7 @@ namespace SF {
 					return ResultCode::SUCCESS;
 				});
 
-			m_ModuleConstructors.insert("ModMatchingQueue_Game_8x3"_crc, [](BrServer* ThisServer, GameID gameID, ServerConfig::ServerModule* config)
+			AddModuleConstructor("ModMatchingQueue_Game_8x3"_crc, [](BrServer* ThisServer, GameID gameID, ServerConfig::ServerModule* config)
 				{
 					auto pModule = (ServerConfig::ServerModuleRelayService*)config;
 					if (!ThisServer->AddServiceEntity<Svr::MatchingQueueServiceEntity>(GetServerGameID(), ClusterID::MatchingQueue_Game_8x3, ClusterMembership::Slave))
@@ -329,67 +335,67 @@ namespace SF {
 					return ResultCode::SUCCESS;
 				});
 
-			m_ModuleConstructors.insert("ModMatchingQueue_Game_8x4"_crc, [](BrServer* ThisServer, GameID gameID, ServerConfig::ServerModule* config)
+			AddModuleConstructor("ModMatchingQueue_Game_8x4"_crc, [](BrServer* ThisServer, GameID gameID, ServerConfig::ServerModule* config)
 				{
 					auto pModule = (ServerConfig::ServerModuleRelayService*)config;
 					return ThisServer->AddServiceEntity<Svr::MatchingQueueServiceEntity>(GetServerGameID(), ClusterID::MatchingQueue_Game_8x4, ClusterMembership::Slave) == nullptr ? ResultCode::OUT_OF_MEMORY : ResultCode::SUCCESS;
 				});
 
-			m_ModuleConstructors.insert("ModMatchingQueue_Game_8x5"_crc, [](BrServer* ThisServer, GameID gameID, ServerConfig::ServerModule* config)
+			AddModuleConstructor("ModMatchingQueue_Game_8x5"_crc, [](BrServer* ThisServer, GameID gameID, ServerConfig::ServerModule* config)
 				{
 					auto pModule = (ServerConfig::ServerModuleRelayService*)config;
 					return ThisServer->AddServiceEntity<Svr::MatchingQueueServiceEntity>(GetServerGameID(), ClusterID::MatchingQueue_Game_8x5, ClusterMembership::Slave) == nullptr ? ResultCode::OUT_OF_MEMORY : ResultCode::SUCCESS;
 				});
 
-			m_ModuleConstructors.insert("ModMatchingQueue_Game_8x6"_crc, [](BrServer* ThisServer, GameID gameID, ServerConfig::ServerModule* config)
+			AddModuleConstructor("ModMatchingQueue_Game_8x6"_crc, [](BrServer* ThisServer, GameID gameID, ServerConfig::ServerModule* config)
 				{
 					auto pModule = (ServerConfig::ServerModuleRelayService*)config;
 					return ThisServer->AddServiceEntity<Svr::MatchingQueueServiceEntity>(GetServerGameID(), ClusterID::MatchingQueue_Game_8x6, ClusterMembership::Slave) == nullptr ? ResultCode::OUT_OF_MEMORY : ResultCode::SUCCESS;
 				});
 
-			m_ModuleConstructors.insert("ModMatchingQueue_Game_8x7"_crc, [](BrServer* ThisServer, GameID gameID, ServerConfig::ServerModule* config)
+			AddModuleConstructor("ModMatchingQueue_Game_8x7"_crc, [](BrServer* ThisServer, GameID gameID, ServerConfig::ServerModule* config)
 				{
 					auto pModule = (ServerConfig::ServerModuleRelayService*)config;
 					return ThisServer->AddServiceEntity<Svr::MatchingQueueServiceEntity>(GetServerGameID(), ClusterID::MatchingQueue_Game_8x7, ClusterMembership::Slave) == nullptr ? ResultCode::OUT_OF_MEMORY : ResultCode::SUCCESS;
 				});
 
-			m_ModuleConstructors.insert("ModMatchingQueue_Game_8x1S"_crc, [](BrServer* ThisServer, GameID gameID, ServerConfig::ServerModule* config)
+			AddModuleConstructor("ModMatchingQueue_Game_8x1S"_crc, [](BrServer* ThisServer, GameID gameID, ServerConfig::ServerModule* config)
 				{
 					auto pModule = (ServerConfig::ServerModuleRelayService*)config;
 					return ThisServer->AddServiceEntity<Svr::MatchingQueueServiceEntity>(GetServerGameID(), ClusterID::MatchingQueue_Game_8x1S, ClusterMembership::Slave) == nullptr ? ResultCode::OUT_OF_MEMORY : ResultCode::SUCCESS;
 				});
 
-			m_ModuleConstructors.insert("ModMatchingQueue_Game_8x1W"_crc, [](BrServer* ThisServer, GameID gameID, ServerConfig::ServerModule* config)
+			AddModuleConstructor("ModMatchingQueue_Game_8x1W"_crc, [](BrServer* ThisServer, GameID gameID, ServerConfig::ServerModule* config)
 				{
 					auto pModule = (ServerConfig::ServerModuleRelayService*)config;
 					return ThisServer->AddServiceEntity<Svr::MatchingQueueServiceEntity>(GetServerGameID(), ClusterID::MatchingQueue_Game_8x1W, ClusterMembership::Slave) == nullptr ? ResultCode::OUT_OF_MEMORY : ResultCode::SUCCESS;
 				});
 
-			m_ModuleConstructors.insert("ModMatchingQueue_Game_4x1"_crc, [](BrServer* ThisServer, GameID gameID, ServerConfig::ServerModule* config)
+			AddModuleConstructor("ModMatchingQueue_Game_4x1"_crc, [](BrServer* ThisServer, GameID gameID, ServerConfig::ServerModule* config)
 				{
 					auto pModule = (ServerConfig::ServerModuleRelayService*)config;
 					return ThisServer->AddServiceEntity<Svr::MatchingQueueServiceEntity>(GetServerGameID(), ClusterID::MatchingQueue_Game_4x1, ClusterMembership::Slave) == nullptr ? ResultCode::OUT_OF_MEMORY : ResultCode::SUCCESS;
 				});
 
-			m_ModuleConstructors.insert("ModMatchingQueue_Game_4x1S"_crc, [](BrServer* ThisServer, GameID gameID, ServerConfig::ServerModule* config)
+			AddModuleConstructor("ModMatchingQueue_Game_4x1S"_crc, [](BrServer* ThisServer, GameID gameID, ServerConfig::ServerModule* config)
 				{
 					auto pModule = (ServerConfig::ServerModuleRelayService*)config;
 					return ThisServer->AddServiceEntity<Svr::MatchingQueueServiceEntity>(GetServerGameID(), ClusterID::MatchingQueue_Game_4x1S, ClusterMembership::Slave) == nullptr ? ResultCode::OUT_OF_MEMORY : ResultCode::SUCCESS;
 				});
 
-			m_ModuleConstructors.insert("ModMatchingQueue_Game_4x1W"_crc, [](BrServer* ThisServer, GameID gameID, ServerConfig::ServerModule* config)
+			AddModuleConstructor("ModMatchingQueue_Game_4x1W"_crc, [](BrServer* ThisServer, GameID gameID, ServerConfig::ServerModule* config)
 				{
 					auto pModule = (ServerConfig::ServerModuleRelayService*)config;
 					return ThisServer->AddServiceEntity<Svr::MatchingQueueServiceEntity>(GetServerGameID(), ClusterID::MatchingQueue_Game_4x1W, ClusterMembership::Slave) == nullptr ? ResultCode::OUT_OF_MEMORY : ResultCode::SUCCESS;
 				});
 
-			m_ModuleConstructors.insert("ModMatchingQueue_Game_4x2"_crc, [](BrServer* ThisServer, GameID gameID, ServerConfig::ServerModule* config)
+			AddModuleConstructor("ModMatchingQueue_Game_4x2"_crc, [](BrServer* ThisServer, GameID gameID, ServerConfig::ServerModule* config)
 				{
 					auto pModule = (ServerConfig::ServerModuleRelayService*)config;
 					return ThisServer->AddServiceEntity<Svr::MatchingQueueServiceEntity>(GetServerGameID(), ClusterID::MatchingQueue_Game_4x2, ClusterMembership::Slave) == nullptr ? ResultCode::OUT_OF_MEMORY : ResultCode::SUCCESS;
 				});
 
-			m_ModuleConstructors.insert("ModMatchingQueue_Game_4x3"_crc, [](BrServer* ThisServer, GameID gameID, ServerConfig::ServerModule* config)
+			AddModuleConstructor("ModMatchingQueue_Game_4x3"_crc, [](BrServer* ThisServer, GameID gameID, ServerConfig::ServerModule* config)
 				{
 					auto pModule = (ServerConfig::ServerModuleRelayService*)config;
 					return ThisServer->AddServiceEntity<Svr::MatchingQueueServiceEntity>(GetServerGameID(), ClusterID::MatchingQueue_Game_4x3, ClusterMembership::Slave) == nullptr ? ResultCode::OUT_OF_MEMORY : ResultCode::SUCCESS;

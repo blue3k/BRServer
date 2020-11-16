@@ -67,21 +67,21 @@ namespace SF {
 
 		Result LoginServiceEntity::InitializeEntity(EntityID newEntityID)
 		{
-			Result hr = ResultCode::SUCCESS;
+			ScopeContext hr;
 			ClusteredServiceEntity* pClusteredEntity = nullptr;
 			auto pServerInst = BrServer::GetInstance();
 
-			svrChkPtr(pServerInst);
+			svrCheckPtr(pServerInst);
 
-			svrChk(super::InitializeEntity(newEntityID));
+			svrCheck(super::InitializeEntity(newEntityID));
 
 			LoginPlayerEntity::GetAuthTicketGenerator().SetServerID(pServerInst->GetServerUID());
 
 
 			// public network
-			svrChkPtr(m_PublicNetSocket);
+			svrCheckPtr(m_PublicNetSocket);
 
-			svrMem(m_pNetPublic = new(GetHeap()) Net::ServerMUDP(BrServer::GetInstance()->GetServerUID(), NetClass::Login));
+			svrCheckMem(m_pNetPublic = new(GetHeap()) Net::ServerMUDP(BrServer::GetInstance()->GetServerUID(), NetClass::Login));
 			m_pNetPublic->RegisterToEngineObjectManager();
 			m_pNetPublic->SetNewConnectionhandler([this](SharedPointerT<Net::Connection>& conn)
 				{
@@ -91,26 +91,23 @@ namespace SF {
 				});
 
 			svrTrace(Info, "Starting Login network service");
-			svrChk(m_pNetPublic->HostOpen(NetClass::Login, m_PublicNetSocket->ListenIP, m_PublicNetSocket->Port));
+			svrCheck(m_pNetPublic->HostOpen(NetClass::Login, m_PublicNetSocket->ListenIP, m_PublicNetSocket->Port));
 
 			// Account DB
-			svrChk(pServerInst->AddDBCluster<DB::AccountDB>(Service::ServerConfig->FindDBCluster("AccountDB")));
+			svrCheck(pServerInst->AddDBCluster<DB::AccountDB>(Service::ServerConfig->FindDBCluster("AccountDB")));
 
 			// Session DB initialize
-			svrChk(pServerInst->AddDBCluster<DB::LoginSessionDB>(Service::ServerConfig->FindDBCluster("LoginSessionDB")));
+			svrCheck(pServerInst->AddDBCluster<DB::LoginSessionDB>(Service::ServerConfig->FindDBCluster("LoginSessionDB")));
 
 
 			for (auto& itCluster : Service::ServerConfig->GetGameClusters())
 			{
-				svrChk(Service::ClusterManager->SetWatchForCluster(itCluster->GameClusterID, ClusterID::Game, true));
-				svrChk(Service::ClusterManager->SetWatchForCluster(itCluster->GameClusterID, ClusterID::Ranking, true));
+				svrCheck(Service::ClusterManager->SetWatchForCluster(itCluster->GameClusterID, ClusterID::Game, true));
+				svrCheck(Service::ClusterManager->SetWatchForCluster(itCluster->GameClusterID, ClusterID::Ranking, true));
 			}
 
 
-
 			m_pNetPublic->SetIsEnableAccept(true);
-
-		Proc_End:
 
 			return hr;
 		}
@@ -118,15 +115,12 @@ namespace SF {
 		// clear transaction
 		Result LoginServiceEntity::ClearEntity()
 		{
-			Result hr = ResultCode::SUCCESS;
+			ScopeContext hr = ResultCode::SUCCESS;
 
-			svrChk(super::ClearEntity());
+			svrCheck(super::ClearEntity());
 
 			if (m_pNetPublic != nullptr)
-				svrChk(m_pNetPublic->HostClose());
-
-		Proc_End:
-
+				m_pNetPublic->HostClose();
 			m_pNetPublic = nullptr;
 
 			return hr;
@@ -182,7 +176,6 @@ namespace SF {
 				case Net::ConnectionState::CONNECTED:
 					break;
 				default:
-					assert(connectionState == Net::ConnectionState::DISCONNECTED); // I want to see when this happens
 					pConn = std::forward <SharedPointerAtomicT<Net::Connection>>(pConnAtomic);
 					Service::ConnectionManager->RemoveConnection(pConn);
 					pConn->DisconnectNRelease("Disconnected? before handed over to LoginService");

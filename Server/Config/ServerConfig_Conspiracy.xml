@@ -7,10 +7,10 @@
   <DBInstances InstanceName="ranking" ConnectionString="192.168.0.9,21022" UserID="blue3k" Password="111" />
   <DBInstances InstanceName="gameTransactionLog00" ConnectionString="192.168.0.9,21022" UserID="blue3k" Password="111" />
 
-  <TableDB DBInstanceName="tabledb" DBName="dbconspiracytable" />
-  <AccountDB ClusterType="Sharding" DBInstanceName="account00" DBName="dbaccount" />
-  <LoginSessionDB ClusterType="Sharding" DBInstanceName="session00" DBName="dbsession00" />
-  <RankingDB ClusterType="Sharding" DBInstanceName="ranking" DBName="dbconspiracyranking" />
+  <DBCluster ClusterName="TableDB" DBInstanceName="tabledb" DBName="dbconspiracytable" />
+	<DBCluster ClusterName="AccountDB" ClusterType="Sharding" DBInstanceName="account00" DBName="dbaccount" />
+	<DBCluster ClusterName="LoginSessionDB" ClusterType="Sharding" DBInstanceName="session00" DBName="dbsession00" />
+	<DBCluster ClusterName="RankingDB" ClusterType="Sharding" DBInstanceName="ranking" DBName="dbconspiracyranking" />
 
 
   <ModuleServer UID="11" Name="BRLoginServer01" Executable="BRModuleServer" WorkerThreadCount="4" NetIOThreadCount="4">
@@ -23,8 +23,8 @@
 
   <GameCluster Name="First Game" GameID="Conspiracy" >
 
-    <GameDB ClusterType="Sharding" DBInstanceName="conspiracy00" DBName="dbconspiracy00" />
-    <GameTransactionLogDB ClusterType="Sharding" DBInstanceName="gameTransactionLog00" DBName="dbgametransaction00" />
+	  <DBCluster ClusterName="GameDB" ClusterType="Sharding" DBInstanceName="conspiracy00" DBName="dbconspiracy00" />
+	  <DBCluster ClusterName="GameTransactionLogDB" ClusterType="Sharding" DBInstanceName="gameTransactionLog00" DBName="dbgametransaction00" />
 
     <ModuleServer UID="120" Name="BRMatchingQueue01" Executable="BRModuleServer" WorkerThreadCount="4" NetIOThreadCount="4" >
       <NetPrivate IP="192.168.0.6" Port="11000"/>

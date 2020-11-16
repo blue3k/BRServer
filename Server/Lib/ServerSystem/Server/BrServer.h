@@ -239,8 +239,10 @@ namespace Svr {
 		virtual Result TerminateEntity() override;
 
 
+		void AddModuleConstructor(StringCrc32 NameCrc, ModuleContructorType&& Constructor);
+
 		// InitializeModuleFactory
-		Result InitializeModuleFactory();
+		virtual Result InitializeModuleFactory();
 
 
 		//////////////////////////////////////////////////////////////////////////
