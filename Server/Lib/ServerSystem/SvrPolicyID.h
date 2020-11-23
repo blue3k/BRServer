@@ -30,6 +30,8 @@ namespace SF
 		PROTOCOLID_GAMETRANSACTIONDB,					// game DB policy
 		PROTOCOLID_TABLEDB,								// Table DB policy
 
+		PROTOCOLID_STREAMDB,							// Stream DB policy
+
 		PROTOCOLID_SVR_SYSTEM		,					// entity server policy
 
 		PROTOCOLID_MAX			,		// Max policy value

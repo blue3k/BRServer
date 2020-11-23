@@ -34,6 +34,7 @@ namespace Svr {
 		ServerComponentID_GameDB,
 		ServerComponentID_GameTransactionDB,
 		ServerComponentID_RankingDB,
+		ServerComponentID_StreamCollectionDB,
 		ServerComponentID_ServerEntityManager,		               // Server
 		ServerComponentID_EntityManager,
 		ServerComponentID_ParallelTransactionManager,

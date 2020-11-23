@@ -49,18 +49,17 @@ namespace SF {
 	// cluster service information
 	struct ServiceInformation
 	{
-		EntityUID			UID;
-		ClusterMembership	Membership;
-		ServiceStatus		Status;
-		NetClass			ServerClass;
-		NetAddress			ServerAddress;
-		UTCTimeStampSec		ServerUpTime;
-		uint32_t				Workload;
+		EntityUID			UID = 0;
+		ClusterMembership	Membership = ClusterMembership::Slave;
+		ServiceStatus		Status = ServiceStatus::Offline;
+		NetClass			ServerClass = NetClass::Unknown;
+		NetAddress			ServerAddress{};
+		UTCTimeStampSec		ServerUpTime = UTCTimeStampSec::min();
+		uint32_t				Workload = 0;
 
 		inline ServiceInformation();
 		inline ServiceInformation( const ServiceInformation& src );
 		inline ServiceInformation( EntityUID entityUID, ClusterMembership membership, ServiceStatus status, NetClass netClass, const NetAddress& address, UTCTimeStampSec serverUpTime, uint32_t workload );
-		inline ServiceInformation( int initValue );
 
 		inline ServiceInformation& operator = ( const ServiceInformation& src );
 
@@ -81,7 +80,7 @@ namespace SF {
 			uint32_t		SvrID		: BIT_SERVERID;
 			uint32_t		ID			: BIT_ID;
 		};
-		uint64_t			UID;
+		uint64_t			UID = 0;
 
 		inline GlobalUID();
 		inline GlobalUID( const GlobalUID& src );

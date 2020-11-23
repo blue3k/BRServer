@@ -88,17 +88,17 @@ namespace DB {
 
 		IHeap& GetHeap() { return m_ParameterBinding.GetHeap(); }
 
-		SF_FORCEINLINE TimeStampMS GetRequestedTime()					{ return m_RequestedTime; }
+		SF_FORCEINLINE TimeStampMS GetRequestedTime() const { return m_RequestedTime; }
 		SF_FORCEINLINE void UpdateRequestedTime()						{ m_RequestedTime = Util::Time.GetTimeMs(); }
 
-		SF_FORCEINLINE DBClusterManager* GetQueryManager()				{ return m_pQueryManager; }
+		SF_FORCEINLINE DBClusterManager* GetQueryManager() const { return m_pQueryManager; }
 		SF_FORCEINLINE void SetQueryManager(DBClusterManager* pMgr)	{ m_pQueryManager = pMgr; }
 
-		SF_FORCEINLINE Session* GetSession()							{ return m_pSession; }
+		SF_FORCEINLINE Session* GetSession() const { return m_pSession; }
 		SF_FORCEINLINE void SetSession(Session* pSes) { m_pSession = pSes; }
 
 		// Sharding ID
-		SF_FORCEINLINE uint GetPartitioningKey()						{ return m_PartitioningKey; }
+		SF_FORCEINLINE uint GetPartitioningKey() const					{ return m_PartitioningKey; }
 		SF_FORCEINLINE void SetPartitioningKey( uint key )				{ m_PartitioningKey = key; }
 
 		uint GetOutputParameterCount() const									{ return m_OutputParameterCount; }

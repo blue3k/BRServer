@@ -44,18 +44,6 @@ ServiceInformation::ServiceInformation( EntityUID entityUID, ClusterMembership m
 	Workload = workload;
 }
 
-ServiceInformation::ServiceInformation( int initValue )
-{
-	Assert( initValue == 0 );
-	UID = 0;
-	Membership = ClusterMembership::Slave;
-	ServerClass = NetClass::Unknown;
-	Status = ServiceStatus::Offline;
-	ServerAddress = NetAddress(0);
-	ServerUpTime = UTCTimeStampSec::min();
-	Workload = 0;
-}
-
 ServiceInformation& ServiceInformation::operator = ( const ServiceInformation& src )
 {
 	UID = src.UID;
