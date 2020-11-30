@@ -72,7 +72,7 @@ namespace SF {
 		// clear
 		Result Clear();
 
-		IHeap& GetHeap() { return m_Heap; }
+		IHeap& GetHeap() { return *m_Heap.get(); }
 
 		GameID GetGameID() const { return m_GameID; }
 		uint32_t GetInstanceID() const { return m_InstanceID; }

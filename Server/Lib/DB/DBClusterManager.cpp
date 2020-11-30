@@ -37,9 +37,9 @@ namespace DB {
 	
 	DBClusterManager::DBClusterManager()
 		: m_Heap("DBClusterManager", GetSystemHeap())
-		, m_ShardingBucket(m_Heap)
-		, m_PendingQueries(m_Heap)
-		, m_ResultQueries(m_Heap)
+		, m_ShardingBucket(GetHeap())
+		, m_PendingQueries(GetHeap())
+		, m_ResultQueries(GetHeap())
 	{
 	}
 

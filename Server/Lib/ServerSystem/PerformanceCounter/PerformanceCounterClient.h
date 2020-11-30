@@ -91,7 +91,7 @@ namespace SF {
 
 		private:
 
-			IHeap& GetHeap() { return m_Heap; }
+			IHeap& GetHeap() { return *m_Heap.get(); }
 
 			void SendNewCounterPacket(PerformanceCounterInstance *newInstance);
 

@@ -98,7 +98,7 @@ namespace Svr {
 			PerformanceCounterServer();
 			~PerformanceCounterServer();
 
-			IHeap& GetHeap() { return m_Heap; }
+			IHeap& GetHeap() { return *m_Heap.get(); }
 
 			static Result Initialize(const char* serverAddress, uint port);
 			static Result Initialize(const NetAddress& serverAddress);

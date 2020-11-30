@@ -81,7 +81,7 @@ namespace Svr
 
 		virtual void Dispose() override;
 
-		IHeap& GetHeap() { return m_Heap; }
+		IHeap& GetHeap() { return *m_Heap.get(); }
 
 		// Clear all server entity
 		virtual void Clear() override;

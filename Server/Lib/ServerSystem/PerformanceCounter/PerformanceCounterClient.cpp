@@ -47,9 +47,9 @@ namespace Svr {
 
 	PerformanceCounterClient::PerformanceCounterClient()
 		: m_Heap("PerformanceCounterClient",GetSystemHeap())
-		, m_FreeInstanceQueue(m_Heap)
-		, m_NewInstanceQueue(m_Heap)
-		, m_CounterInstanceMap(m_Heap)
+		, m_FreeInstanceQueue(GetHeap())
+		, m_NewInstanceQueue(GetHeap())
+		, m_CounterInstanceMap(GetHeap())
 	{
 	}
 

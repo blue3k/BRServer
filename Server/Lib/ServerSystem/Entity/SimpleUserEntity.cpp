@@ -79,7 +79,7 @@ namespace Svr
 		{
 			m_pConnection->SetEventHandler(this);
 
-			// purge received guaranted messages
+			// purge received guaranteed messages
 			MessageDataPtr temp;
 			OnRecvMessage((Net::Connection*)m_pConnection, temp);
 
@@ -281,7 +281,7 @@ namespace Svr
 
 		if (pConn != nullptr)
 		{
-			if (pConn->GetActiveTickFlags() == 0 && pConn->GetRunningThreadID() != thisThreadID)
+			if (pConn->GetTickFlags() == 0 && pConn->GetRunningThreadID() != thisThreadID)
 			{
 				pConn->SetRunningThreadID(thisThreadID);
 			}
@@ -389,7 +389,7 @@ namespace Svr
 		{
 			if (pMyConn->GetRunningThreadID() != thisThreadID)
 			{
-				if (pMyConn->GetActiveTickFlags() == 0)
+				if (pMyConn->GetTickFlags() == 0)
 				{
 					pMyConn->SetRunningThreadID(thisThreadID);
 				}

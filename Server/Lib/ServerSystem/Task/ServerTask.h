@@ -69,7 +69,7 @@ namespace SF {
 		TickTask();
 		virtual ~TickTask();
 
-		IHeap& GetHeap() { return m_Heap; }
+		IHeap& GetHeap() { return *m_Heap.get(); }
 
 		// Get TickTask ID
 		inline uint32_t GetTaskID() const;

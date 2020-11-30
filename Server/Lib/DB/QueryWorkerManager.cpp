@@ -36,7 +36,7 @@ namespace DB {
 	
 	QueryWorkerManager::QueryWorkerManager()
 		: m_Heap("QueryWorkerManager", GetSystemHeap())
-		, m_PendingQueries(m_Heap)
+		, m_PendingQueries(GetHeap())
 	{
 		// create QueryWorkers
 		for (int i = 0; i< Const::QUERYWORKER_MAX; i++)

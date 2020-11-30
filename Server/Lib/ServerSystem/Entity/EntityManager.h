@@ -57,7 +57,7 @@ namespace Svr {
 		virtual ~EntityManager();
 
 
-		IHeap& GetHeap() { return m_Heap; }
+		IHeap& GetHeap() { return *m_Heap.get(); }
 
 		virtual void RegisterEntityCreator(const EntityCreator& creator) override;
 

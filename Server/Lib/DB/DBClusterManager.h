@@ -66,7 +66,7 @@ namespace DB {
 		DBClusterManager();
 		virtual ~DBClusterManager();
 
-		IHeap& GetHeap() { return m_Heap; }
+		IHeap& GetHeap() { return *m_Heap.get(); }
 
 		uint GetPartitioningCount() const { return m_PartitioningCount; }
 

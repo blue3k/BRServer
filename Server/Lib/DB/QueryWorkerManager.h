@@ -63,7 +63,7 @@ namespace DB {
 		QueryWorkerManager();
 		virtual ~QueryWorkerManager();
 
-		IHeap& GetHeap() { return m_Heap; }
+		IHeap& GetHeap() { return *m_Heap.get(); }
 
 		// Initialize DB
 		static Result InitializeDBWorkerManager();
@@ -71,7 +71,7 @@ namespace DB {
 		// Terminate DB module and close connections
 		static void TerminateDBWorkerManager();
 
-		// Request a DB Qurey
+		// Request a DB Query
 		static Result	PendingQuery(UniquePtr<Query>& pQuery);
 
 		// 
