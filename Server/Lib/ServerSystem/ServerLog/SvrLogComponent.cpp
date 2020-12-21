@@ -12,6 +12,8 @@
 
 #include "ServerSystemPCH.h"
 #include "SFAssert.h"
+#include "SvrTrace.h"
+#include "DBTrace.h"
 #include "Object/SFSharedPointer.h"
 #include "String/SFStringCrc32.h"
 #include "String/SFStringCrc64.h"
@@ -32,10 +34,9 @@ namespace SF
 		// config file path
 		char m_ConfigFilePath[256];
 		time_t m_LastConfigTimeStamp = 0;
-		LogChannelParameter m_Parameter;
-		LogChannelMask OutputConsole;
-		LogChannelMask OutputDebugger;
-		LogChannelMask OutputFile;
+		LogOutputMask OutputConsole;
+		LogOutputMask OutputDebugger;
+		LogOutputMask OutputFile;
 
 		TimeStampMS m_MaskUpdated;
 
@@ -55,14 +56,14 @@ namespace SF
 			switch (maskName)
 			{
 			case "default"_crc:
-			case "def"_crc:					m_Parameter.MainChannelMasks[(int)LogMainChannels::System] = maskValue; break;
-			case "net"_crc:					m_Parameter.MainChannelMasks[(int)LogMainChannels::Net] = maskValue; break;
-			case "db"_crc:					m_Parameter.MainChannelMasks[(int)LogMainChannels::DB] = maskValue; break;
-			case "svr"_crc:					m_Parameter.MainChannelMasks[(int)LogMainChannels::Svr] = maskValue; break;
-			case "protocol"_crc:			m_Parameter.MainChannelMasks[(int)LogMainChannels::Protocol] = maskValue; break;
-			case "outputdebugger"_crc:		OutputDebugger = maskValue; break;
-			case "outputconsole"_crc:		OutputConsole = maskValue; break;
-			case "outputfile"_crc:			OutputFile = maskValue; break;
+			case "def"_crc:					Log::System.ChannelMask = maskValue; break;
+			case "net"_crc:					Log::Net.ChannelMask = maskValue; break;
+			case "db"_crc:					Log::DB.ChannelMask = maskValue; break;
+			case "svr"_crc:					Log::Svr.ChannelMask = maskValue; break;
+			case "protocol"_crc:			Log::Protocol.ChannelMask = maskValue; break;
+			case "outputdebugger"_crc:		OutputDebugger.Composited = maskValue; break;
+			case "outputconsole"_crc:		OutputConsole.Composited = maskValue; break;
+			case "outputfile"_crc:			OutputFile.Composited = maskValue; break;
 			case "outputdbgfile"_crc:		break;
 			default:
 				break;
@@ -74,28 +75,28 @@ namespace SF
 			uint32_t mask = 0;
 			switch (channelName)
 			{
-			case "error"_crc:		mask = 1 << static_cast<int>(LogSubChannelType::Error); break;
-			case "warning"_crc:		mask = 1 << static_cast<int>(LogSubChannelType::Warning); break;
-			case "assert"_crc:		mask = 1 << static_cast<int>(LogSubChannelType::Assert); break;
-			case "info"_crc:		mask = 1 << static_cast<int>(LogSubChannelType::Info); break;
-			case "custom1"_crc:		mask = 1 << static_cast<int>(LogSubChannelType::Custom1); break;
-			case "custom2"_crc:		mask = 1 << static_cast<int>(LogSubChannelType::Custom2); break;
-			case "custom3"_crc:		mask = 1 << static_cast<int>(LogSubChannelType::Custom3); break;
-			case "custom4"_crc:		mask = 1 << static_cast<int>(LogSubChannelType::Custom4); break;
-			case "custom5"_crc:		mask = 1 << static_cast<int>(LogSubChannelType::Custom5); break;
-			case "custom6"_crc:		mask = 1 << static_cast<int>(LogSubChannelType::Custom6); break;
-			case "custom7"_crc:		mask = 1 << static_cast<int>(LogSubChannelType::Custom7); break;
-			case "custom8"_crc:		mask = 1 << static_cast<int>(LogSubChannelType::Custom8); break;
-			case "custom9"_crc:		mask = 1 << static_cast<int>(LogSubChannelType::Custom9); break;
-			case "custom10"_crc:	mask = 1 << static_cast<int>(LogSubChannelType::Custom10); break;
-			case "debug1"_crc:		mask = 1 << static_cast<int>(LogSubChannelType::Debug1); break;
-			case "debug2"_crc:		mask = 1 << static_cast<int>(LogSubChannelType::Debug2); break;
-			case "debug3"_crc:		mask = 1 << static_cast<int>(LogSubChannelType::Debug3); break;
-			case "debug4"_crc:		mask = 1 << static_cast<int>(LogSubChannelType::Debug4); break;
-			case "debug5"_crc:		mask = 1 << static_cast<int>(LogSubChannelType::Debug5); break;
-			case "debug6"_crc:		mask = 1 << static_cast<int>(LogSubChannelType::Debug6); break;
-			case "debug7"_crc:		mask = 1 << static_cast<int>(LogSubChannelType::Debug7); break;
-			case "debug8"_crc:		mask = 1 << static_cast<int>(LogSubChannelType::Debug8); break;
+			case "error"_crc:		mask = 1 << static_cast<uint32_t>(LogOutputType::Error); break;
+			case "warning"_crc:		mask = 1 << static_cast<uint32_t>(LogOutputType::Warning); break;
+			case "assert"_crc:		mask = 1 << static_cast<uint32_t>(LogOutputType::Assert); break;
+			case "info"_crc:		mask = 1 << static_cast<uint32_t>(LogOutputType::Info); break;
+			case "custom1"_crc:		mask = 1 << static_cast<uint32_t>(LogOutputType::Custom1); break;
+			case "custom2"_crc:		mask = 1 << static_cast<uint32_t>(LogOutputType::Custom2); break;
+			case "custom3"_crc:		mask = 1 << static_cast<uint32_t>(LogOutputType::Custom3); break;
+			case "custom4"_crc:		mask = 1 << static_cast<uint32_t>(LogOutputType::Custom4); break;
+			case "custom5"_crc:		mask = 1 << static_cast<uint32_t>(LogOutputType::Custom5); break;
+			case "custom6"_crc:		mask = 1 << static_cast<uint32_t>(LogOutputType::Custom6); break;
+			case "custom7"_crc:		mask = 1 << static_cast<uint32_t>(LogOutputType::Custom7); break;
+			case "custom8"_crc:		mask = 1 << static_cast<uint32_t>(LogOutputType::Custom8); break;
+			case "custom9"_crc:		mask = 1 << static_cast<uint32_t>(LogOutputType::Custom9); break;
+			case "custom10"_crc:	mask = 1 << static_cast<uint32_t>(LogOutputType::Custom10); break;
+			case "debug1"_crc:		mask = 1 << static_cast<uint32_t>(LogOutputType::Debug1); break;
+			case "debug2"_crc:		mask = 1 << static_cast<uint32_t>(LogOutputType::Debug2); break;
+			case "debug3"_crc:		mask = 1 << static_cast<uint32_t>(LogOutputType::Debug3); break;
+			case "debug4"_crc:		mask = 1 << static_cast<uint32_t>(LogOutputType::Debug4); break;
+			case "debug5"_crc:		mask = 1 << static_cast<uint32_t>(LogOutputType::Debug5); break;
+			case "debug6"_crc:		mask = 1 << static_cast<uint32_t>(LogOutputType::Debug6); break;
+			case "debug7"_crc:		mask = 1 << static_cast<uint32_t>(LogOutputType::Debug7); break;
+			case "debug8"_crc:		mask = 1 << static_cast<uint32_t>(LogOutputType::Debug8); break;
 			case "allgeneral"_crc:	mask = 0x000000FL; break;
 			case "allcustom"_crc:	mask = 0x0003FF0L; break;
 			case "alldebug"_crc:	mask = 0xFFFC000L; break;
@@ -106,11 +107,11 @@ namespace SF
 			switch (maskName)
 			{
 			case "default"_crc:
-			case "def"_crc:					m_Parameter.MainChannelMasks[(int)LogMainChannels::System].Composited |= mask; break;
-			case "net"_crc:					m_Parameter.MainChannelMasks[(int)LogMainChannels::Net].Composited |= mask; break;
-			case "db"_crc:					m_Parameter.MainChannelMasks[(int)LogMainChannels::DB].Composited |= mask; break;
-			case "svr"_crc:					m_Parameter.MainChannelMasks[(int)LogMainChannels::Svr].Composited |= mask; break;
-			case "protocol"_crc:			m_Parameter.MainChannelMasks[(int)LogMainChannels::Protocol].Composited |= mask; break;
+			case "def"_crc:					Log::System.ChannelMask.Composited |= mask; break;
+			case "net"_crc:					Log::Net.ChannelMask.Composited |= mask; break;
+			case "db"_crc:					Log::DB.ChannelMask.Composited |= mask; break;
+			case "svr"_crc:					Log::Svr.ChannelMask.Composited |= mask; break;
+			case "protocol"_crc:			Log::Protocol.ChannelMask.Composited |= mask; break;
 			case "outputdebugger"_crc:		OutputDebugger.Composited |= mask; break;
 			case "outputconsole"_crc:		OutputConsole.Composited |= mask; break;
 			case "outputfile"_crc:			OutputFile.Composited |= mask; break;
@@ -245,8 +246,6 @@ namespace SF
 
 		void ApplyMask()
 		{
-			Service::LogModule->SetPrintParameter(m_Parameter);
-
 			auto pConsole = Engine::GetEngineComponent<LogOutputConsoleComponent>();
 			if (pConsole != nullptr) pConsole->GetHandler().SetOutputMask(OutputConsole);
 

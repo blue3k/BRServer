@@ -34,7 +34,7 @@ namespace SF
 		// Cmd: Relay Instance
 		Result RelayServerService::CreateRelayInstanceCmd( const uint64_t &InTransactionID, const PlayerInformation &InPlayerInfo, const uint64_t &InRelayScore )
 		{
- 			FunctionContext hr;
+ 			ScopeContext hr;
 
 			RouteContext InRouteContext( EntityUID(GetMyServerID(),TransactionID(InTransactionID).GetEntityID()), GetServiceEntityUID() );
 			svrCheck(Policy::NetPolicyRelayServer(GetConnection()).CreateRelayInstanceCmd( InRouteContext, InTransactionID, InPlayerInfo, InRelayScore ) );
@@ -45,7 +45,7 @@ namespace SF
 		// Cmd: Add a player to Relay
 		Result RelayServerService::AddPlayerCmd( const uint64_t &InTransactionID, const PlayerInformation &InPlayerInfo, const uint64_t &InRelayScore )
 		{
- 			FunctionContext hr;
+ 			ScopeContext hr;
 
 			RouteContext InRouteContext( EntityUID(GetMyServerID(),TransactionID(InTransactionID).GetEntityID()), GetServiceEntityUID() );
 			svrCheck(Policy::NetPolicyRelayServer(GetConnection()).AddPlayerCmd( InRouteContext, InTransactionID, InPlayerInfo, InRelayScore ) );
@@ -56,7 +56,7 @@ namespace SF
 		// Cmd: Remove a player to Relay
 		Result RelayServerService::RemovePlayerCmd( const uint64_t &InTransactionID, const PlayerID &InPlayerID )
 		{
- 			FunctionContext hr;
+ 			ScopeContext hr;
 
 			RouteContext InRouteContext( EntityUID(GetMyServerID(),TransactionID(InTransactionID).GetEntityID()), GetServiceEntityUID() );
 			svrCheck(Policy::NetPolicyRelayServer(GetConnection()).RemovePlayerCmd( InRouteContext, InTransactionID, InPlayerID ) );

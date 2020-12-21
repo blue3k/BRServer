@@ -188,13 +188,9 @@ namespace Svr {
 		m_CounterInstanceMap.CommitChanges();
 		m_CounterInstanceMap.ForeachOrder(0, (uint)m_CounterInstanceMap.size(), [&](const intptr_t& key, const WeakPointerT<PerformanceCounterInstance>& value)
 		{
-			//auto pNode = (PerformanceCounterInstance::CounterListNode*)*itCounter;
-			//if (pNode == nullptr)
-			//	continue;
-
 			SharedPointerT<PerformanceCounterInstance> pInstance;
-			//pNode->CounterPointer.GetSharedPointer(pInstance);
-			value.GetSharedPointer(pInstance);
+
+			pInstance = value.AsSharedPtr();
 			if (pInstance == nullptr)
 				return true;
 
@@ -365,7 +361,7 @@ namespace Svr {
 			return hr;
 		}
 
-		pFound.GetSharedPointer(pInstance);
+		pInstance = pFound.AsSharedPtr();
 
 		if (pInstance != nullptr)
 		{

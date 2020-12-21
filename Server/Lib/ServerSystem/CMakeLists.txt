@@ -134,6 +134,7 @@ set(BRSERVERSYSTEM_LIB_FILES
     SvrConst.h
     SvrPolicyID.h
     SvrTrace.h
+    SvrTrace.cpp
     Task/ServerTask.h
     Task/ServerTaskEvent.h
     Task/ServerTaskManager.h

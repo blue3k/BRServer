@@ -43,22 +43,18 @@ namespace SF
 				uint64_t GetPlayerID() { return 0; }
 				uint64_t GetSender() { return 0; }
 			private:
-				RouteContext m_RouteContext;
-				uint64_t m_TransactionID;
-				uint16_t m_RouteHopCount;
-				const char* m_ChannelName;
-				const char* m_Passcode;
-				PlayerInformation m_Creator;
+				RouteContext m_RouteContext{};
+				uint64_t m_TransactionID{};
+				uint16_t m_RouteHopCount{};
+				const char* m_ChannelName{};
+				const char* m_Passcode{};
+				PlayerInformation m_Creator{};
 			public:
 				CreateChannelCmd()
-				:m_ChannelName(nullptr)
-				,m_Passcode(nullptr)
 					{}
 
 				CreateChannelCmd( MessageDataPtr &&pMsg )
 					: MessageBase(std::forward<MessageDataPtr>(pMsg))
-				,m_ChannelName(nullptr)
-				,m_Passcode(nullptr)
 					{}
 
 					MessageUsage GetMessageUsage() { return MessageUsage_None; }
@@ -101,10 +97,10 @@ namespace SF
 				uint32_t GetRouteHopCount() { return 0; }
 				uint64_t GetSender() { return 0; }
 			private:
-				RouteContext m_RouteContext;
-				uint64_t m_TransactionID;
-				Result m_Result;
-				uint64_t m_ChannelUID;
+				RouteContext m_RouteContext{};
+				uint64_t m_TransactionID{};
+				Result m_Result{};
+				uint64_t m_ChannelUID{};
 			public:
 				CreateChannelRes()
 					{}
@@ -151,18 +147,16 @@ namespace SF
 				uint64_t GetPlayerID() { return 0; }
 				uint64_t GetSender() { return 0; }
 			private:
-				RouteContext m_RouteContext;
-				uint64_t m_TransactionID;
-				uint16_t m_RouteHopCount;
-				const char* m_ChannelName;
+				RouteContext m_RouteContext{};
+				uint64_t m_TransactionID{};
+				uint16_t m_RouteHopCount{};
+				const char* m_ChannelName{};
 			public:
 				FindChannelCmd()
-				:m_ChannelName(nullptr)
 					{}
 
 				FindChannelCmd( MessageDataPtr &&pMsg )
 					: MessageBase(std::forward<MessageDataPtr>(pMsg))
-				,m_ChannelName(nullptr)
 					{}
 
 					MessageUsage GetMessageUsage() { return MessageUsage_None; }
@@ -203,10 +197,10 @@ namespace SF
 				uint32_t GetRouteHopCount() { return 0; }
 				uint64_t GetSender() { return 0; }
 			private:
-				RouteContext m_RouteContext;
-				uint64_t m_TransactionID;
-				Result m_Result;
-				uint64_t m_ChannelUID;
+				RouteContext m_RouteContext{};
+				uint64_t m_TransactionID{};
+				Result m_Result{};
+				uint64_t m_ChannelUID{};
 			public:
 				FindChannelRes()
 					{}
@@ -254,8 +248,8 @@ namespace SF
 				uint64_t GetTransactionID() { return 0; }
 				uint64_t GetSender() { return 0; }
 			private:
-				RouteContext m_RouteContext;
-				uint16_t m_RouteHopCount;
+				RouteContext m_RouteContext{};
+				uint16_t m_RouteHopCount{};
 			public:
 				ChatChannelDeletedC2SEvt()
 					{}

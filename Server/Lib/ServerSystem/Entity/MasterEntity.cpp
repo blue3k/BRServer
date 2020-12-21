@@ -376,11 +376,11 @@ namespace Svr
 			svrErr(ResultCode::NOT_IMPLEMENTED);
 			break;
 		case ServerTaskEvent::EventTypes::PACKET_MESSAGE_SYNC_EVENT:
-			eventTask.EventData.MessageEvent.pConn.GetSharedPointer(pMyConn);
+			pMyConn = std::forward<SharedPointerT<Net::Connection>>(eventTask.EventData.MessageEvent.pConn.AsSharedPtr<Net::Connection>());
 			if (pMyConn != nullptr) pMyConn->UpdateSendQueue();
 			break;
 		case ServerTaskEvent::EventTypes::PACKET_MESSAGE_SEND_EVENT:
-			eventTask.EventData.MessageEvent.pConn.GetSharedPointer(pMyConn);
+			pMyConn = std::forward<SharedPointerT<Net::Connection>>(eventTask.EventData.MessageEvent.pConn.AsSharedPtr<Net::Connection>());
 			if (pMyConn != nullptr) pMyConn->UpdateSendBufferQueue();
 			break;
 		case ServerTaskEvent::EventTypes::TRANSRESULT_EVENT:

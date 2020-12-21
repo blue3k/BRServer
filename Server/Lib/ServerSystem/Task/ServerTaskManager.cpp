@@ -232,7 +232,7 @@ namespace SF {
 				break;
 
 			SharedPointerT<TickTask> tickTask;
-			pEvtTask.TaskPtr.GetSharedPointer(tickTask);
+			tickTask = pEvtTask.TaskPtr.AsSharedPtr();
 			if (tickTask == nullptr)
 				continue;
 

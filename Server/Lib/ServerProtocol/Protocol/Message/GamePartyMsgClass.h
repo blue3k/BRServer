@@ -44,10 +44,10 @@ namespace SF
 				uint32_t GetRouteHopCount() { return 0; }
 				uint64_t GetSender() { return 0; }
 			private:
-				RouteContext m_RouteContext;
-				uint64_t m_TransactionID;
-				PlayerID m_InviterID;
-				PlayerInformation m_InvitedPlayer;
+				RouteContext m_RouteContext{};
+				uint64_t m_TransactionID{};
+				PlayerID m_InviterID{};
+				PlayerInformation m_InvitedPlayer{};
 			public:
 				JoinPartyCmd()
 					{}
@@ -92,10 +92,10 @@ namespace SF
 				uint32_t GetRouteHopCount() { return 0; }
 				uint64_t GetSender() { return 0; }
 			private:
-				RouteContext m_RouteContext;
-				uint64_t m_TransactionID;
-				Result m_Result;
-				PlayerID m_PartyLeaderID;
+				RouteContext m_RouteContext{};
+				uint64_t m_TransactionID{};
+				Result m_Result{};
+				PlayerID m_PartyLeaderID{};
 				ArrayView<uint8_t> m_ChatHistoryData;
 			public:
 				JoinPartyRes()
@@ -144,8 +144,8 @@ namespace SF
 				uint32_t GetRouteHopCount() { return 0; }
 				uint64_t GetSender() { return 0; }
 			private:
-				RouteContext m_RouteContext;
-				PlayerInformation m_JoinedPlayer;
+				RouteContext m_RouteContext{};
+				PlayerInformation m_JoinedPlayer{};
 			public:
 				PlayerJoinedS2CEvt()
 					{}
@@ -190,8 +190,8 @@ namespace SF
 				uint32_t GetRouteHopCount() { return 0; }
 				uint64_t GetSender() { return 0; }
 			private:
-				RouteContext m_RouteContext;
-				PlayerID m_NewLeaderID;
+				RouteContext m_RouteContext{};
+				PlayerID m_NewLeaderID{};
 			public:
 				PartyLeaderChangedS2CEvt()
 					{}
@@ -234,9 +234,9 @@ namespace SF
 				uint32_t GetRouteHopCount() { return 0; }
 				uint64_t GetSender() { return 0; }
 			private:
-				RouteContext m_RouteContext;
-				uint64_t m_TransactionID;
-				PlayerID m_PlayerID;
+				RouteContext m_RouteContext{};
+				uint64_t m_TransactionID{};
+				PlayerID m_PlayerID{};
 			public:
 				LeavePartyCmd()
 					{}
@@ -280,9 +280,9 @@ namespace SF
 				uint32_t GetRouteHopCount() { return 0; }
 				uint64_t GetSender() { return 0; }
 			private:
-				RouteContext m_RouteContext;
-				uint64_t m_TransactionID;
-				Result m_Result;
+				RouteContext m_RouteContext{};
+				uint64_t m_TransactionID{};
+				Result m_Result{};
 			public:
 				LeavePartyRes()
 					{}
@@ -328,8 +328,8 @@ namespace SF
 				uint32_t GetRouteHopCount() { return 0; }
 				uint64_t GetSender() { return 0; }
 			private:
-				RouteContext m_RouteContext;
-				PlayerID m_LeftPlayerID;
+				RouteContext m_RouteContext{};
+				PlayerID m_LeftPlayerID{};
 			public:
 				PlayerLeftS2CEvt()
 					{}
@@ -372,10 +372,10 @@ namespace SF
 				uint32_t GetRouteHopCount() { return 0; }
 				uint64_t GetSender() { return 0; }
 			private:
-				RouteContext m_RouteContext;
-				uint64_t m_TransactionID;
-				PlayerID m_PlayerID;
-				PlayerID m_PlayerToKick;
+				RouteContext m_RouteContext{};
+				uint64_t m_TransactionID{};
+				PlayerID m_PlayerID{};
+				PlayerID m_PlayerToKick{};
 			public:
 				KickPlayerCmd()
 					{}
@@ -420,9 +420,9 @@ namespace SF
 				uint32_t GetRouteHopCount() { return 0; }
 				uint64_t GetSender() { return 0; }
 			private:
-				RouteContext m_RouteContext;
-				uint64_t m_TransactionID;
-				Result m_Result;
+				RouteContext m_RouteContext{};
+				uint64_t m_TransactionID{};
+				Result m_Result{};
 			public:
 				KickPlayerRes()
 					{}
@@ -468,8 +468,8 @@ namespace SF
 				uint32_t GetRouteHopCount() { return 0; }
 				uint64_t GetSender() { return 0; }
 			private:
-				RouteContext m_RouteContext;
-				PlayerID m_KickedPlayerID;
+				RouteContext m_RouteContext{};
+				PlayerID m_KickedPlayerID{};
 			public:
 				PlayerKickedS2CEvt()
 					{}
@@ -513,17 +513,15 @@ namespace SF
 				uint32_t GetRouteHopCount() { return 0; }
 				uint64_t GetSender() { return 0; }
 			private:
-				RouteContext m_RouteContext;
-				PlayerID m_PlayerID;
-				const char* m_ChatMessage;
+				RouteContext m_RouteContext{};
+				PlayerID m_PlayerID{};
+				const char* m_ChatMessage{};
 			public:
 				ChatMessageC2SEvt()
-				:m_ChatMessage(nullptr)
 					{}
 
 				ChatMessageC2SEvt( MessageDataPtr &&pMsg )
 					: MessageBase(std::forward<MessageDataPtr>(pMsg))
-				,m_ChatMessage(nullptr)
 					{}
 
 					MessageUsage GetMessageUsage() { return MessageUsage_None; }
@@ -563,20 +561,16 @@ namespace SF
 				uint32_t GetRouteHopCount() { return 0; }
 				uint64_t GetSender() { return 0; }
 			private:
-				RouteContext m_RouteContext;
-				PlayerID m_SenderID;
-				const char* m_SenderName;
-				const char* m_ChatMessage;
+				RouteContext m_RouteContext{};
+				PlayerID m_SenderID{};
+				const char* m_SenderName{};
+				const char* m_ChatMessage{};
 			public:
 				ChatMessageS2CEvt()
-				:m_SenderName(nullptr)
-				,m_ChatMessage(nullptr)
 					{}
 
 				ChatMessageS2CEvt( MessageDataPtr &&pMsg )
 					: MessageBase(std::forward<MessageDataPtr>(pMsg))
-				,m_SenderName(nullptr)
-				,m_ChatMessage(nullptr)
 					{}
 
 					MessageUsage GetMessageUsage() { return MessageUsage_None; }
@@ -616,9 +610,9 @@ namespace SF
 				uint32_t GetRouteHopCount() { return 0; }
 				uint64_t GetSender() { return 0; }
 			private:
-				RouteContext m_RouteContext;
-				PlayerID m_PlayerID;
-				uint32_t m_QuickChatID;
+				RouteContext m_RouteContext{};
+				PlayerID m_PlayerID{};
+				uint32_t m_QuickChatID{};
 			public:
 				QuickChatMessageC2SEvt()
 					{}
@@ -664,9 +658,9 @@ namespace SF
 				uint32_t GetRouteHopCount() { return 0; }
 				uint64_t GetSender() { return 0; }
 			private:
-				RouteContext m_RouteContext;
-				PlayerID m_SenderID;
-				uint32_t m_QuickChatID;
+				RouteContext m_RouteContext{};
+				PlayerID m_SenderID{};
+				uint32_t m_QuickChatID{};
 			public:
 				QuickChatMessageS2CEvt()
 					{}
@@ -710,10 +704,10 @@ namespace SF
 				uint32_t GetRouteHopCount() { return 0; }
 				uint64_t GetSender() { return 0; }
 			private:
-				RouteContext m_RouteContext;
-				uint64_t m_TransactionID;
-				PlayerID m_PlayerID;
-				uint32_t m_MaxGamePlayers;
+				RouteContext m_RouteContext{};
+				uint64_t m_TransactionID{};
+				PlayerID m_PlayerID{};
+				uint32_t m_MaxGamePlayers{};
 			public:
 				StartGameMatchCmd()
 					{}
@@ -758,9 +752,9 @@ namespace SF
 				uint32_t GetRouteHopCount() { return 0; }
 				uint64_t GetSender() { return 0; }
 			private:
-				RouteContext m_RouteContext;
-				uint64_t m_TransactionID;
-				Result m_Result;
+				RouteContext m_RouteContext{};
+				uint64_t m_TransactionID{};
+				Result m_Result{};
 			public:
 				StartGameMatchRes()
 					{}
@@ -806,8 +800,8 @@ namespace SF
 				uint32_t GetRouteHopCount() { return 0; }
 				uint64_t GetSender() { return 0; }
 			private:
-				RouteContext m_RouteContext;
-				MatchingQueueTicket m_MatchingQueueTicket;
+				RouteContext m_RouteContext{};
+				MatchingQueueTicket m_MatchingQueueTicket{};
 			public:
 				QueuedGameMatchingS2CEvt()
 					{}
@@ -850,9 +844,9 @@ namespace SF
 				uint32_t GetRouteHopCount() { return 0; }
 				uint64_t GetSender() { return 0; }
 			private:
-				RouteContext m_RouteContext;
-				uint64_t m_TransactionID;
-				PlayerID m_PlayerID;
+				RouteContext m_RouteContext{};
+				uint64_t m_TransactionID{};
+				PlayerID m_PlayerID{};
 			public:
 				CancelGameMatchCmd()
 					{}
@@ -896,9 +890,9 @@ namespace SF
 				uint32_t GetRouteHopCount() { return 0; }
 				uint64_t GetSender() { return 0; }
 			private:
-				RouteContext m_RouteContext;
-				uint64_t m_TransactionID;
-				Result m_Result;
+				RouteContext m_RouteContext{};
+				uint64_t m_TransactionID{};
+				Result m_Result{};
 			public:
 				CancelGameMatchRes()
 					{}
@@ -944,8 +938,8 @@ namespace SF
 				uint32_t GetRouteHopCount() { return 0; }
 				uint64_t GetSender() { return 0; }
 			private:
-				RouteContext m_RouteContext;
-				MatchingQueueTicket m_MatchingQueueTicket;
+				RouteContext m_RouteContext{};
+				MatchingQueueTicket m_MatchingQueueTicket{};
 			public:
 				CanceledGameMatchingS2CEvt()
 					{}
@@ -990,8 +984,8 @@ namespace SF
 				uint32_t GetRouteHopCount() { return 0; }
 				uint64_t GetSender() { return 0; }
 			private:
-				RouteContext m_RouteContext;
-				MatchingQueueTicket m_MatchingTicket;
+				RouteContext m_RouteContext{};
+				MatchingQueueTicket m_MatchingTicket{};
 			public:
 				MatchingItemDequeuedS2CEvt()
 					{}

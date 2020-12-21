@@ -11,20 +11,24 @@
 
 #pragma once
 
-
+#include "Service/SFLogService.h"
 #include "ServerLog/SvrLog.h"
 #include "DB/DBToString.h"
 
 
 namespace SF {
 
-	namespace LogSubChannels
+	namespace Log
 	{
-		constexpr LogSubChannelType TRC_QUERYSTR		= SF::LogSubChannels::Debug1;
-		constexpr LogSubChannelType TRC_QUERY			= SF::LogSubChannels::Debug2;
-		constexpr LogSubChannelType TRC_ROUTING			= SF::LogSubChannels::Debug3;
-		constexpr LogSubChannelType TRC_DBINFO			= SF::LogSubChannels::Custom1;
+		extern LogChannel DB;
+
+
+		constexpr LogOutputType TRC_QUERYSTR = LogOutputType::Debug1;
+		constexpr LogOutputType TRC_QUERY = LogOutputType::Debug2;
+		constexpr LogOutputType TRC_ROUTING = LogOutputType::Debug3;
+		constexpr LogOutputType TRC_DBINFO = LogOutputType::Custom1;
 	}
+
 
 };
 
@@ -51,7 +55,7 @@ namespace SF {
 
 #define dbAssert(e)			trcAssert(e)
 #define dbAssertExp(e,expr)	trcAssertExp(e,expr)
-#define dbTrace(lModeMask, ...)				SFLog(DB,lModeMask,__VA_ARGS__)
+#define dbTrace(lModeMask, ...)				SFLog2(Log::DB, Log::lModeMask,__VA_ARGS__)
 
 #define dbErrSilent(e)		trcErrSilent(e)
 

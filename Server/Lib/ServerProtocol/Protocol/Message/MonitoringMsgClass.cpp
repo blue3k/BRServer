@@ -39,7 +39,7 @@ namespace SF
 				ArrayView<uint8_t> bufferView(MsgDataSize, pIMsg->GetMessageData());
 				InputMemoryStream inputStream(bufferView);
 				auto* input = inputStream.ToInputStream();
-				uint16_t ArrayLen = 0;
+				uint16_t ArrayLen = 0;(ArrayLen);
 
 				protocolCheck(*input >> m_TransactionID);
 
@@ -113,7 +113,7 @@ namespace SF
 				ArrayView<uint8_t> bufferView(MsgDataSize, pIMsg->GetMessageData());
 				InputMemoryStream inputStream(bufferView);
 				auto* input = inputStream.ToInputStream();
-				uint16_t ArrayLen = 0;
+				uint16_t ArrayLen = 0;(ArrayLen);
 
 				protocolCheck(*input >> m_TransactionID);
 				protocolCheck(*input >> m_Result);
@@ -201,7 +201,7 @@ namespace SF
 				ArrayView<uint8_t> bufferView(MsgDataSize, pIMsg->GetMessageData());
 				InputMemoryStream inputStream(bufferView);
 				auto* input = inputStream.ToInputStream();
-				uint16_t ArrayLen = 0;
+				uint16_t ArrayLen = 0;(ArrayLen);
 
 				protocolCheck(*input >> m_TransactionID);
 				protocolCheck(*input >> m_InstanceUID);
@@ -278,7 +278,7 @@ namespace SF
 				ArrayView<uint8_t> bufferView(MsgDataSize, pIMsg->GetMessageData());
 				InputMemoryStream inputStream(bufferView);
 				auto* input = inputStream.ToInputStream();
-				uint16_t ArrayLen = 0;
+				uint16_t ArrayLen = 0;(ArrayLen);
 
 				protocolCheck(*input >> m_TransactionID);
 				protocolCheck(*input >> m_Result);
@@ -366,9 +366,8 @@ namespace SF
 				ArrayView<uint8_t> bufferView(MsgDataSize, pIMsg->GetMessageData());
 				InputMemoryStream inputStream(bufferView);
 				auto* input = inputStream.ToInputStream();
-				uint16_t ArrayLen = 0;
+				uint16_t ArrayLen = 0;(ArrayLen);
 
-				protocolCheck(input->Read(ArrayLen));
 				protocolCheck(input->ReadLink(m_InstanceName, ArrayLen));
 				protocolCheck(*input >> m_InstanceUID);
 				protocolCheck(input->Read(ArrayLen));
@@ -452,7 +451,7 @@ namespace SF
 				ArrayView<uint8_t> bufferView(MsgDataSize, pIMsg->GetMessageData());
 				InputMemoryStream inputStream(bufferView);
 				auto* input = inputStream.ToInputStream();
-				uint16_t ArrayLen = 0;
+				uint16_t ArrayLen = 0;(ArrayLen);
 
 				protocolCheck(input->Read(ArrayLen));
 				uint64_t* FreeInstancesPtr = nullptr;
@@ -531,7 +530,7 @@ namespace SF
 				ArrayView<uint8_t> bufferView(MsgDataSize, pIMsg->GetMessageData());
 				InputMemoryStream inputStream(bufferView);
 				auto* input = inputStream.ToInputStream();
-				uint16_t ArrayLen = 0;
+				uint16_t ArrayLen = 0;(ArrayLen);
 
 				protocolCheck(*input >> m_InstanceUID);
 				protocolCheck(input->Read(ArrayLen));
@@ -613,7 +612,7 @@ namespace SF
 				ArrayView<uint8_t> bufferView(MsgDataSize, pIMsg->GetMessageData());
 				InputMemoryStream inputStream(bufferView);
 				auto* input = inputStream.ToInputStream();
-				uint16_t ArrayLen = 0;
+				uint16_t ArrayLen = 0;(ArrayLen);
 
 				protocolCheck(*input >> m_InstanceUID);
 

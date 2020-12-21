@@ -260,7 +260,7 @@ namespace GameServer {
 		svrChkPtr(GetGameConfig());
 
 		//svrMem(m_pNetPublic = new(GetHeap()) Net::ServerMUDP(GetMyConfig()->UID, GetNetClass()));
-		//m_pNetPublic->RegisterToEngineObjectManager();
+
 		//svrChk( m_pNetPublic->HostOpen( GetNetClass(), GetGameConfig()->PublicNet.ListenIP, GetGameConfig()->PublicNet.Port ) );
 
 		//// Game server only accept public connection with valid peerID(AuthTicket)

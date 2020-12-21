@@ -11,6 +11,7 @@
 
 #pragma once
 
+#include "Service/SFLogService.h"
 #include "ServerLog/SvrLog.h"
 #include "Net/SFNetToString.h"
 #include "String/ToStringSvr.h"
@@ -18,21 +19,23 @@
 
 namespace SF {
 
-	namespace LogSubChannels
+	namespace Log
 	{
-		constexpr LogSubChannelType SVR_INFO = LogSubChannelType::Custom1;
-		constexpr LogSubChannelType SVR_ENTITY = LogSubChannelType::Custom2;
-		constexpr LogSubChannelType SVR_TRANSACTION = LogSubChannelType::Custom3;
-		constexpr LogSubChannelType SVR_CLUSTER = LogSubChannelType::Custom4;
-		constexpr LogSubChannelType SVR_MATCHING = LogSubChannelType::Custom5;
-		constexpr LogSubChannelType SVR_GAME1 = LogSubChannelType::Custom6;
+		extern LogChannel Svr;
+
+		constexpr LogOutputType SVR_INFO = LogOutputType::Custom1;
+		constexpr LogOutputType SVR_ENTITY = LogOutputType::Custom2;
+		constexpr LogOutputType SVR_TRANSACTION = LogOutputType::Custom3;
+		constexpr LogOutputType SVR_CLUSTER = LogOutputType::Custom4;
+		constexpr LogOutputType SVR_MATCHING = LogOutputType::Custom5;
+		constexpr LogOutputType SVR_GAME1 = LogOutputType::Custom6;
 
 		// For debug
-		constexpr LogSubChannelType SVR_DBGFAIL = LogSubChannelType::Debug1;
-		constexpr LogSubChannelType SVR_DBGSVR = LogSubChannelType::Debug2;
-		constexpr LogSubChannelType SVR_DBGINFO = LogSubChannelType::Debug3;
-		constexpr LogSubChannelType SVR_DBGTRANS = LogSubChannelType::Debug4;
-		constexpr LogSubChannelType SVR_DBGMATCHING = LogSubChannelType::Debug5;
+		constexpr LogOutputType SVR_DBGFAIL = LogOutputType::Debug1;
+		constexpr LogOutputType SVR_DBGSVR = LogOutputType::Debug2;
+		constexpr LogOutputType SVR_DBGINFO = LogOutputType::Debug3;
+		constexpr LogOutputType SVR_DBGTRANS = LogOutputType::Debug4;
+		constexpr LogOutputType SVR_DBGMATCHING = LogOutputType::Debug5;
 	}
 };
 
@@ -68,7 +71,7 @@ namespace SF {
 #define svrAssert(e)				trcAssert(e)
 #define svrAssertExp(e,expr)		trcAssertExp(e,expr)
 
-#define svrTrace(lModeMask, ...)				SFLog(Svr,lModeMask,__VA_ARGS__)
+#define svrTrace(lModeMask, ...)				SFLog2(Log::Svr,Log::lModeMask,__VA_ARGS__)
 
 #define svrErrSilent(e)		trcErrSilent(e)
 

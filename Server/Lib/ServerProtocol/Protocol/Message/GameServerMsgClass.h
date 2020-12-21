@@ -43,12 +43,12 @@ namespace SF
 				uint32_t GetRouteHopCount() { return 0; }
 				uint64_t GetSender() { return 0; }
 			private:
-				RouteContext m_RouteContext;
-				uint64_t m_TransactionID;
-				PlayerID m_PlayerID;
-				AuthTicket m_Ticket;
-				FacebookUID m_FBUserID;
-				uint32_t m_ShardID;
+				RouteContext m_RouteContext{};
+				uint64_t m_TransactionID{};
+				PlayerID m_PlayerID{};
+				AuthTicket m_Ticket{};
+				FacebookUID m_FBUserID{};
+				uint32_t m_ShardID{};
 			public:
 				RegisterPlayerToJoinGameServerCmd()
 					{}
@@ -95,22 +95,18 @@ namespace SF
 				uint32_t GetRouteHopCount() { return 0; }
 				uint64_t GetSender() { return 0; }
 			private:
-				RouteContext m_RouteContext;
-				uint64_t m_TransactionID;
-				Result m_Result;
-				const char* m_PublicAddress;
-				const char* m_PublicAddressV6;
-				uint32_t m_Port;
+				RouteContext m_RouteContext{};
+				uint64_t m_TransactionID{};
+				Result m_Result{};
+				const char* m_PublicAddress{};
+				const char* m_PublicAddressV6{};
+				uint32_t m_Port{};
 			public:
 				RegisterPlayerToJoinGameServerRes()
-				:m_PublicAddress(nullptr)
-				,m_PublicAddressV6(nullptr)
 					{}
 
 				RegisterPlayerToJoinGameServerRes( MessageDataPtr &&pMsg )
 					: MessageBase(std::forward<MessageDataPtr>(pMsg))
-				,m_PublicAddress(nullptr)
-				,m_PublicAddressV6(nullptr)
 					{}
 
 					MessageUsage GetMessageUsage() { return MessageUsage_None; }
@@ -151,11 +147,11 @@ namespace SF
 				uint32_t GetRouteHopCount() { return 0; }
 				uint64_t GetSender() { return 0; }
 			private:
-				RouteContext m_RouteContext;
-				uint64_t m_TransactionID;
-				PlayerID m_PlayerID;
-				AuthTicket m_Ticket;
-				FacebookUID m_FBUserID;
+				RouteContext m_RouteContext{};
+				uint64_t m_TransactionID{};
+				PlayerID m_PlayerID{};
+				AuthTicket m_Ticket{};
+				FacebookUID m_FBUserID{};
 			public:
 				RegisterPlayerToJoinGameServerOnPlayerEntityCmd()
 					{}
@@ -201,9 +197,9 @@ namespace SF
 				uint32_t GetRouteHopCount() { return 0; }
 				uint64_t GetSender() { return 0; }
 			private:
-				RouteContext m_RouteContext;
-				uint64_t m_TransactionID;
-				Result m_Result;
+				RouteContext m_RouteContext{};
+				uint64_t m_TransactionID{};
+				Result m_Result{};
 			public:
 				RegisterPlayerToJoinGameServerOnPlayerEntityRes()
 					{}
@@ -249,21 +245,17 @@ namespace SF
 				uint32_t GetRouteHopCount() { return 0; }
 				uint64_t GetSender() { return 0; }
 			private:
-				RouteContext m_RouteContext;
-				AccountID m_SenderID;
-				uint8_t m_Role;
-				const char* m_SenderName;
-				const char* m_ChatMessage;
+				RouteContext m_RouteContext{};
+				AccountID m_SenderID{};
+				uint8_t m_Role{};
+				const char* m_SenderName{};
+				const char* m_ChatMessage{};
 			public:
 				ChatMessageC2SEvt()
-				:m_SenderName(nullptr)
-				,m_ChatMessage(nullptr)
 					{}
 
 				ChatMessageC2SEvt( MessageDataPtr &&pMsg )
 					: MessageBase(std::forward<MessageDataPtr>(pMsg))
-				,m_SenderName(nullptr)
-				,m_ChatMessage(nullptr)
 					{}
 
 					MessageUsage GetMessageUsage() { return MessageUsage_None; }
@@ -305,22 +297,20 @@ namespace SF
 				uint32_t GetRouteHopCount() { return 0; }
 				uint64_t GetSender() { return 0; }
 			private:
-				RouteContext m_RouteContext;
-				PlayerID m_DestPlayerID;
-				uint32_t m_NotificationID;
-				NotificationType m_MessageID;
-				uint64_t m_MessageParam0;
-				uint64_t m_MessageParam1;
-				const char* m_MessageText;
-				uint64_t m_TimeStamp;
+				RouteContext m_RouteContext{};
+				PlayerID m_DestPlayerID{};
+				uint32_t m_NotificationID{};
+				NotificationType m_MessageID{};
+				uint64_t m_MessageParam0{};
+				uint64_t m_MessageParam1{};
+				const char* m_MessageText{};
+				uint64_t m_TimeStamp{};
 			public:
 				NotifyC2SEvt()
-				:m_MessageText(nullptr)
 					{}
 
 				NotifyC2SEvt( MessageDataPtr &&pMsg )
 					: MessageBase(std::forward<MessageDataPtr>(pMsg))
-				,m_MessageText(nullptr)
 					{}
 
 					MessageUsage GetMessageUsage() { return MessageUsage_None; }
@@ -365,9 +355,9 @@ namespace SF
 				uint32_t GetRouteHopCount() { return 0; }
 				uint64_t GetSender() { return 0; }
 			private:
-				RouteContext m_RouteContext;
-				AccountID m_DestPlayerID;
-				ServerFriendInformation m_Accepter;
+				RouteContext m_RouteContext{};
+				AccountID m_DestPlayerID{};
+				ServerFriendInformation m_Accepter{};
 			public:
 				FriendAcceptedC2SEvt()
 					{}
@@ -413,9 +403,9 @@ namespace SF
 				uint32_t GetRouteHopCount() { return 0; }
 				uint64_t GetSender() { return 0; }
 			private:
-				RouteContext m_RouteContext;
-				AccountID m_DestPlayerID;
-				PlayerID m_RemoverID;
+				RouteContext m_RouteContext{};
+				AccountID m_DestPlayerID{};
+				PlayerID m_RemoverID{};
 			public:
 				FriendRemovedC2SEvt()
 					{}
@@ -461,9 +451,9 @@ namespace SF
 				uint32_t GetRouteHopCount() { return 0; }
 				uint64_t GetSender() { return 0; }
 			private:
-				RouteContext m_RouteContext;
-				AccountID m_DestPlayerID;
-				PlayerID m_RequesterID;
+				RouteContext m_RouteContext{};
+				AccountID m_DestPlayerID{};
+				PlayerID m_RequesterID{};
 			public:
 				RequestPlayerStatusUpdateC2SEvt()
 					{}
@@ -509,10 +499,10 @@ namespace SF
 				uint32_t GetRouteHopCount() { return 0; }
 				uint64_t GetSender() { return 0; }
 			private:
-				RouteContext m_RouteContext;
-				AccountID m_DestPlayerID;
-				uint32_t m_LatestActiveTime;
-				uint8_t m_IsInGame;
+				RouteContext m_RouteContext{};
+				AccountID m_DestPlayerID{};
+				uint32_t m_LatestActiveTime{};
+				uint8_t m_IsInGame{};
 			public:
 				NotifyPlayerStatusUpdatedC2SEvt()
 					{}
@@ -559,19 +549,17 @@ namespace SF
 				uint32_t GetRouteHopCount() { return 0; }
 				uint64_t GetSender() { return 0; }
 			private:
-				RouteContext m_RouteContext;
-				PlayerID m_DestPlayerID;
-				PlayerID m_InviterID;
-				const char* m_InviterName;
-				uint64_t m_PartyUID;
+				RouteContext m_RouteContext{};
+				PlayerID m_DestPlayerID{};
+				PlayerID m_InviterID{};
+				const char* m_InviterName{};
+				uint64_t m_PartyUID{};
 			public:
 				NotifyPartyInviteC2SEvt()
-				:m_InviterName(nullptr)
 					{}
 
 				NotifyPartyInviteC2SEvt( MessageDataPtr &&pMsg )
 					: MessageBase(std::forward<MessageDataPtr>(pMsg))
-				,m_InviterName(nullptr)
 					{}
 
 					MessageUsage GetMessageUsage() { return MessageUsage_None; }

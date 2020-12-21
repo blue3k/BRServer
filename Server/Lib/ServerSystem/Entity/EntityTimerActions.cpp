@@ -50,7 +50,7 @@ namespace Svr {
 	{
 		SharedPointerT<Transaction> pTransPtr;
 		TransactionPtr pTrans;
-		m_pTrans.GetSharedPointer(pTransPtr);
+		pTransPtr = std::forward<SharedPointerT<Transaction>>(m_pTrans.AsSharedPtr<Transaction>());
 
 		ClearTime();
 
@@ -78,7 +78,7 @@ namespace Svr {
 	{
 		SharedPointerT<Transaction> pTransPtr;
 		Transaction* pTrans;
-		m_pTrans.GetSharedPointer(pTransPtr);
+		pTransPtr = std::forward<SharedPointerT<Transaction>>(m_pTrans.AsSharedPtr<Transaction>());
 		pTrans = (Transaction*)pTransPtr;
 		if (pTrans != nullptr) return typeid(*pTrans).name();
 
@@ -86,6 +86,6 @@ namespace Svr {
 	}
 
 
-}; // namespace Svr
-}; // namespace SF
+} // namespace Svr
+} // namespace SF
 

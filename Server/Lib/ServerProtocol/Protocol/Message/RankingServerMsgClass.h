@@ -44,10 +44,10 @@ namespace SF
 				uint32_t GetRouteHopCount() { return 0; }
 				uint64_t GetSender() { return 0; }
 			private:
-				RouteContext m_RouteContext;
-				uint64_t m_TransactionID;
-				PlayerInformation m_PlayerInfo;
-				uint64_t m_RankingScore;
+				RouteContext m_RouteContext{};
+				uint64_t m_TransactionID{};
+				PlayerInformation m_PlayerInfo{};
+				uint64_t m_RankingScore{};
 			public:
 				AddPlayerCmd()
 					{}
@@ -92,10 +92,10 @@ namespace SF
 				uint32_t GetRouteHopCount() { return 0; }
 				uint64_t GetSender() { return 0; }
 			private:
-				RouteContext m_RouteContext;
-				uint64_t m_TransactionID;
-				Result m_Result;
-				uint32_t m_Ranking;
+				RouteContext m_RouteContext{};
+				uint64_t m_TransactionID{};
+				Result m_Result{};
+				uint32_t m_Ranking{};
 			public:
 				AddPlayerRes()
 					{}
@@ -140,9 +140,9 @@ namespace SF
 				uint32_t GetRouteHopCount() { return 0; }
 				uint64_t GetSender() { return 0; }
 			private:
-				RouteContext m_RouteContext;
-				uint64_t m_TransactionID;
-				PlayerID m_PlayerID;
+				RouteContext m_RouteContext{};
+				uint64_t m_TransactionID{};
+				PlayerID m_PlayerID{};
 			public:
 				RemovePlayerCmd()
 					{}
@@ -186,9 +186,9 @@ namespace SF
 				uint32_t GetRouteHopCount() { return 0; }
 				uint64_t GetSender() { return 0; }
 			private:
-				RouteContext m_RouteContext;
-				uint64_t m_TransactionID;
-				Result m_Result;
+				RouteContext m_RouteContext{};
+				uint64_t m_TransactionID{};
+				Result m_Result{};
 			public:
 				RemovePlayerRes()
 					{}
@@ -232,9 +232,9 @@ namespace SF
 				uint32_t GetRouteHopCount() { return 0; }
 				uint64_t GetSender() { return 0; }
 			private:
-				RouteContext m_RouteContext;
-				uint64_t m_TransactionID;
-				PlayerID m_PlayerID;
+				RouteContext m_RouteContext{};
+				uint64_t m_TransactionID{};
+				PlayerID m_PlayerID{};
 			public:
 				GetPlayerRankingCmd()
 					{}
@@ -278,10 +278,10 @@ namespace SF
 				uint32_t GetRouteHopCount() { return 0; }
 				uint64_t GetSender() { return 0; }
 			private:
-				RouteContext m_RouteContext;
-				uint64_t m_TransactionID;
-				Result m_Result;
-				uint32_t m_Ranking;
+				RouteContext m_RouteContext{};
+				uint64_t m_TransactionID{};
+				Result m_Result{};
+				uint32_t m_Ranking{};
 			public:
 				GetPlayerRankingRes()
 					{}
@@ -327,11 +327,11 @@ namespace SF
 				uint32_t GetRouteHopCount() { return 0; }
 				uint64_t GetSender() { return 0; }
 			private:
-				RouteContext m_RouteContext;
-				uint64_t m_TransactionID;
-				uint64_t m_RankingScore;
-				PlayerInformation m_PlayerInfo;
-				uint16_t m_Count;
+				RouteContext m_RouteContext{};
+				uint64_t m_TransactionID{};
+				uint64_t m_RankingScore{};
+				PlayerInformation m_PlayerInfo{};
+				uint16_t m_Count{};
 			public:
 				UpdatePlayerScoreCmd()
 					{}
@@ -377,9 +377,9 @@ namespace SF
 				uint32_t GetRouteHopCount() { return 0; }
 				uint64_t GetSender() { return 0; }
 			private:
-				RouteContext m_RouteContext;
-				uint64_t m_TransactionID;
-				Result m_Result;
+				RouteContext m_RouteContext{};
+				uint64_t m_TransactionID{};
+				Result m_Result{};
 				ArrayView<TotalRankingPlayerInformation> m_Ranking;
 			public:
 				UpdatePlayerScoreRes()
@@ -426,11 +426,11 @@ namespace SF
 				uint32_t GetRouteHopCount() { return 0; }
 				uint64_t GetSender() { return 0; }
 			private:
-				RouteContext m_RouteContext;
-				uint64_t m_TransactionID;
-				RankingType m_RankingType;
-				uint16_t m_BaseRanking;
-				uint16_t m_Count;
+				RouteContext m_RouteContext{};
+				uint64_t m_TransactionID{};
+				RankingType m_RankingType{};
+				uint16_t m_BaseRanking{};
+				uint16_t m_Count{};
 			public:
 				GetRankingCmd()
 					{}
@@ -476,9 +476,9 @@ namespace SF
 				uint32_t GetRouteHopCount() { return 0; }
 				uint64_t GetSender() { return 0; }
 			private:
-				RouteContext m_RouteContext;
-				uint64_t m_TransactionID;
-				Result m_Result;
+				RouteContext m_RouteContext{};
+				uint64_t m_TransactionID{};
+				Result m_Result{};
 				ArrayView<TotalRankingPlayerInformation> m_Ranking;
 			public:
 				GetRankingRes()
@@ -525,17 +525,15 @@ namespace SF
 				uint32_t GetRouteHopCount() { return 0; }
 				uint64_t GetSender() { return 0; }
 			private:
-				RouteContext m_RouteContext;
-				uint64_t m_TransactionID;
-				const char* m_FileName;
+				RouteContext m_RouteContext{};
+				uint64_t m_TransactionID{};
+				const char* m_FileName{};
 			public:
 				DebugPrintALLRankingCmd()
-				:m_FileName(nullptr)
 					{}
 
 				DebugPrintALLRankingCmd( MessageDataPtr &&pMsg )
 					: MessageBase(std::forward<MessageDataPtr>(pMsg))
-				,m_FileName(nullptr)
 					{}
 
 					MessageUsage GetMessageUsage() { return MessageUsage_None; }
@@ -573,9 +571,9 @@ namespace SF
 				uint32_t GetRouteHopCount() { return 0; }
 				uint64_t GetSender() { return 0; }
 			private:
-				RouteContext m_RouteContext;
-				uint64_t m_TransactionID;
-				Result m_Result;
+				RouteContext m_RouteContext{};
+				uint64_t m_TransactionID{};
+				Result m_Result{};
 			public:
 				DebugPrintALLRankingRes()
 					{}

@@ -43,11 +43,11 @@ namespace SF
 				uint64_t GetPlayerID() { return 0; }
 				uint64_t GetSender() { return 0; }
 			private:
-				RouteContext m_RouteContext;
-				uint64_t m_TransactionID;
-				uint16_t m_RouteHopCount;
-				uint32_t m_GameID;
-				PlayerInformation m_Creator;
+				RouteContext m_RouteContext{};
+				uint64_t m_TransactionID{};
+				uint16_t m_RouteHopCount{};
+				uint32_t m_GameID{};
+				PlayerInformation m_Creator{};
 			public:
 				CreatePartyCmd()
 					{}
@@ -95,9 +95,9 @@ namespace SF
 				uint32_t GetRouteHopCount() { return 0; }
 				uint64_t GetSender() { return 0; }
 			private:
-				RouteContext m_RouteContext;
-				uint64_t m_TransactionID;
-				Result m_Result;
+				RouteContext m_RouteContext{};
+				uint64_t m_TransactionID{};
+				Result m_Result{};
 			public:
 				CreatePartyRes()
 					{}
@@ -144,8 +144,8 @@ namespace SF
 				uint64_t GetTransactionID() { return 0; }
 				uint64_t GetSender() { return 0; }
 			private:
-				RouteContext m_RouteContext;
-				uint16_t m_RouteHopCount;
+				RouteContext m_RouteContext{};
+				uint16_t m_RouteHopCount{};
 			public:
 				PartyDeletedC2SEvt()
 					{}

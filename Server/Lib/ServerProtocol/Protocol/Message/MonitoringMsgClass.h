@@ -45,7 +45,7 @@ namespace SF
 				uint32_t GetRouteHopCount() { return 0; }
 				uint64_t GetSender() { return 0; }
 			private:
-				uint64_t m_TransactionID;
+				uint64_t m_TransactionID{};
 			public:
 				GetInstanceListCmd()
 					{}
@@ -86,10 +86,10 @@ namespace SF
 				uint32_t GetRouteHopCount() { return 0; }
 				uint64_t GetSender() { return 0; }
 			private:
-				uint64_t m_TransactionID;
-				Result m_Result;
+				uint64_t m_TransactionID{};
+				Result m_Result{};
 				ArrayView<PerformanceCounterInstanceInfo> m_CounterInstances;
-				uint32_t m_TotalInstanceCount;
+				uint32_t m_TotalInstanceCount{};
 			public:
 				GetInstanceListRes()
 					{}
@@ -134,8 +134,8 @@ namespace SF
 				uint32_t GetRouteHopCount() { return 0; }
 				uint64_t GetSender() { return 0; }
 			private:
-				uint64_t m_TransactionID;
-				uint64_t m_InstanceUID;
+				uint64_t m_TransactionID{};
+				uint64_t m_InstanceUID{};
 			public:
 				RequestCounterValuesCmd()
 					{}
@@ -177,9 +177,9 @@ namespace SF
 				uint32_t GetRouteHopCount() { return 0; }
 				uint64_t GetSender() { return 0; }
 			private:
-				uint64_t m_TransactionID;
-				Result m_Result;
-				uint64_t m_InstanceUID;
+				uint64_t m_TransactionID{};
+				Result m_Result{};
+				uint64_t m_InstanceUID{};
 				ArrayView<uint64_t> m_CounterValues;
 			public:
 				RequestCounterValuesRes()
@@ -226,17 +226,15 @@ namespace SF
 				uint32_t GetRouteHopCount() { return 0; }
 				uint64_t GetSender() { return 0; }
 			private:
-				const char* m_InstanceName;
-				uint64_t m_InstanceUID;
+				const char* m_InstanceName{};
+				uint64_t m_InstanceUID{};
 				ArrayView<PerformanceCounterInfo> m_NewCounters;
 			public:
 				PerformanceCounterNewC2SEvt()
-				:m_InstanceName(nullptr)
 					{}
 
 				PerformanceCounterNewC2SEvt( MessageDataPtr &&pMsg )
 					: MessageBase(std::forward<MessageDataPtr>(pMsg))
-				,m_InstanceName(nullptr)
 					{}
 
 					MessageUsage GetMessageUsage() { return MessageUsage_None; }
@@ -318,7 +316,7 @@ namespace SF
 				uint32_t GetRouteHopCount() { return 0; }
 				uint64_t GetSender() { return 0; }
 			private:
-				uint64_t m_InstanceUID;
+				uint64_t m_InstanceUID{};
 				ArrayView<uint64_t> m_CounterValues;
 			public:
 				PerformanceCounterUpdateC2SEvt()
@@ -363,7 +361,7 @@ namespace SF
 				uint32_t GetRouteHopCount() { return 0; }
 				uint64_t GetSender() { return 0; }
 			private:
-				uint64_t m_InstanceUID;
+				uint64_t m_InstanceUID{};
 			public:
 				PerformanceCounterUpdateCounterInfoS2CEvt()
 					{}

@@ -69,7 +69,7 @@ namespace Svr {
 		StrUtil::Format(strLogPath, "{0}{1}{2}", logPath, Util::Path::DirectorySeparatorCharString, Util::GetServiceName());
 
 		initParam.LogFilePrefix = strLogPath;
-		initParam.LogOutputFile = LogChannelMask();
+		initParam.LogOutputFile = LogOutputMask();
 
 		initParam.AsyncTaskThreadCount = 6;
 		initParam.NetworkThreadCount = 0; // Net module will be initialized manually
@@ -131,7 +131,7 @@ namespace Svr {
 			Util::SetServiceName(strServiceName);
 
 
-		initParam.LogOutputFile = LogChannelMask();
+		initParam.LogOutputFile = LogOutputMask();
 
 		initParam.AsyncTaskThreadCount = 6;
 		initParam.NetworkThreadCount = 0; // Net module will be initialized manually

@@ -1,0 +1,26 @@
+////////////////////////////////////////////////////////////////////////////////
+// 
+// CopyRight (c) The Braves 
+// 
+// Author: Kyungkun Ko
+//
+// Description : Server trace
+//	
+//
+////////////////////////////////////////////////////////////////////////////////
+
+
+#include "ServerSystemPCH.h"
+#include "SvrTrace.h"
+
+namespace SF
+{
+	namespace Log
+	{
+		LogChannel Svr("Svr", LogOutputType::Info);
+	}
+
+
+} // namespace SF
+
+

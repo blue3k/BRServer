@@ -29,7 +29,7 @@ namespace SF {
 
 	constexpr StringCrc64 LogOutputPlayFabGSDKComponent::TypeName;
 
-	LogOutputPlayFabGSDKComponent::LogOutputPlayFabGSDKComponent(const LogChannelMask& logMask)
+	LogOutputPlayFabGSDKComponent::LogOutputPlayFabGSDKComponent(const LogOutputMask& logMask)
 		: LibraryComponent(TypeName)
 		, m_Handler(logMask)
 	{
@@ -42,7 +42,7 @@ namespace SF {
 
 	}
 
-	LogOutputPlayFabGSDKComponent::MyOutputHandler::MyOutputHandler(const LogChannelMask& logMask)
+	LogOutputPlayFabGSDKComponent::MyOutputHandler::MyOutputHandler(const LogOutputMask& logMask)
 		: LogOutputHandler(logMask)
 	{
 	}

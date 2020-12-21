@@ -43,9 +43,9 @@ namespace SF
 				uint64_t GetPlayerID() { return 0; }
 				uint64_t GetSender() { return 0; }
 			private:
-				RouteContext m_RouteContext;
-				uint64_t m_TransactionID;
-				uint16_t m_RouteHopCount;
+				RouteContext m_RouteContext{};
+				uint64_t m_TransactionID{};
+				uint16_t m_RouteHopCount{};
 				ArrayView<uint8_t> m_AttributesRaw;
 				mutable bool m_AttributesHasParsed = false;
 				mutable VariableTable m_Attributes;
@@ -97,9 +97,9 @@ namespace SF
 				uint32_t GetRouteHopCount() { return 0; }
 				uint64_t GetSender() { return 0; }
 			private:
-				RouteContext m_RouteContext;
-				uint64_t m_TransactionID;
-				Result m_Result;
+				RouteContext m_RouteContext{};
+				uint64_t m_TransactionID{};
+				Result m_Result{};
 			public:
 				CreateGameInstanceRes()
 					{}
@@ -145,18 +145,16 @@ namespace SF
 				uint64_t GetPlayerID() { return 0; }
 				uint64_t GetSender() { return 0; }
 			private:
-				RouteContext m_RouteContext;
-				uint64_t m_TransactionID;
-				uint16_t m_RouteHopCount;
-				const char* m_SearchKeyword;
+				RouteContext m_RouteContext{};
+				uint64_t m_TransactionID{};
+				uint16_t m_RouteHopCount{};
+				const char* m_SearchKeyword{};
 			public:
 				SearchGameInstanceCmd()
-				:m_SearchKeyword(nullptr)
 					{}
 
 				SearchGameInstanceCmd( MessageDataPtr &&pMsg )
 					: MessageBase(std::forward<MessageDataPtr>(pMsg))
-				,m_SearchKeyword(nullptr)
 					{}
 
 					MessageUsage GetMessageUsage() { return MessageUsage_None; }
@@ -197,9 +195,9 @@ namespace SF
 				uint32_t GetRouteHopCount() { return 0; }
 				uint64_t GetSender() { return 0; }
 			private:
-				RouteContext m_RouteContext;
-				uint64_t m_TransactionID;
-				Result m_Result;
+				RouteContext m_RouteContext{};
+				uint64_t m_TransactionID{};
+				Result m_Result{};
 				ArrayView<GameInstanceInfo> m_GameInstances;
 			public:
 				SearchGameInstanceRes()
@@ -248,8 +246,8 @@ namespace SF
 				uint64_t GetTransactionID() { return 0; }
 				uint64_t GetSender() { return 0; }
 			private:
-				RouteContext m_RouteContext;
-				uint16_t m_RouteHopCount;
+				RouteContext m_RouteContext{};
+				uint16_t m_RouteHopCount{};
 			public:
 				GameInstanceDeletedC2SEvt()
 					{}

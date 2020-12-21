@@ -44,8 +44,8 @@ namespace SF
 				uint32_t GetRouteHopCount() { return 0; }
 				uint64_t GetSender() { return 0; }
 			private:
-				RouteContext m_RouteContext;
-				uint64_t m_TransactionID;
+				RouteContext m_RouteContext{};
+				uint64_t m_TransactionID{};
 			public:
 				GenericFailureCmd()
 					{}
@@ -88,9 +88,9 @@ namespace SF
 				uint32_t GetRouteHopCount() { return 0; }
 				uint64_t GetSender() { return 0; }
 			private:
-				RouteContext m_RouteContext;
-				uint64_t m_TransactionID;
-				Result m_Result;
+				RouteContext m_RouteContext{};
+				uint64_t m_TransactionID{};
+				Result m_Result{};
 			public:
 				GenericFailureRes()
 					{}
@@ -136,9 +136,9 @@ namespace SF
 				uint32_t GetRouteHopCount() { return 0; }
 				uint64_t GetSender() { return 0; }
 			private:
-				RouteContext m_RouteContext;
-				uint32_t m_StartUpTime;
-				NetAddress m_PrivateAddress;
+				RouteContext m_RouteContext{};
+				uint32_t m_StartUpTime{};
+				NetAddress m_PrivateAddress{};
 			public:
 				ServerConnectedC2SEvt()
 					{}

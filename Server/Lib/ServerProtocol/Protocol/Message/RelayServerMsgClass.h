@@ -44,10 +44,10 @@ namespace SF
 				uint32_t GetRouteHopCount() { return 0; }
 				uint64_t GetSender() { return 0; }
 			private:
-				RouteContext m_RouteContext;
-				uint64_t m_TransactionID;
-				PlayerInformation m_PlayerInfo;
-				uint64_t m_RelayScore;
+				RouteContext m_RouteContext{};
+				uint64_t m_TransactionID{};
+				PlayerInformation m_PlayerInfo{};
+				uint64_t m_RelayScore{};
 			public:
 				CreateRelayInstanceCmd()
 					{}
@@ -92,10 +92,10 @@ namespace SF
 				uint32_t GetRouteHopCount() { return 0; }
 				uint64_t GetSender() { return 0; }
 			private:
-				RouteContext m_RouteContext;
-				uint64_t m_TransactionID;
-				Result m_Result;
-				uint32_t m_Relay;
+				RouteContext m_RouteContext{};
+				uint64_t m_TransactionID{};
+				Result m_Result{};
+				uint32_t m_Relay{};
 			public:
 				CreateRelayInstanceRes()
 					{}
@@ -141,10 +141,10 @@ namespace SF
 				uint32_t GetRouteHopCount() { return 0; }
 				uint64_t GetSender() { return 0; }
 			private:
-				RouteContext m_RouteContext;
-				uint64_t m_TransactionID;
-				PlayerInformation m_PlayerInfo;
-				uint64_t m_RelayScore;
+				RouteContext m_RouteContext{};
+				uint64_t m_TransactionID{};
+				PlayerInformation m_PlayerInfo{};
+				uint64_t m_RelayScore{};
 			public:
 				AddPlayerCmd()
 					{}
@@ -189,10 +189,10 @@ namespace SF
 				uint32_t GetRouteHopCount() { return 0; }
 				uint64_t GetSender() { return 0; }
 			private:
-				RouteContext m_RouteContext;
-				uint64_t m_TransactionID;
-				Result m_Result;
-				uint32_t m_Relay;
+				RouteContext m_RouteContext{};
+				uint64_t m_TransactionID{};
+				Result m_Result{};
+				uint32_t m_Relay{};
 			public:
 				AddPlayerRes()
 					{}
@@ -237,9 +237,9 @@ namespace SF
 				uint32_t GetRouteHopCount() { return 0; }
 				uint64_t GetSender() { return 0; }
 			private:
-				RouteContext m_RouteContext;
-				uint64_t m_TransactionID;
-				PlayerID m_PlayerID;
+				RouteContext m_RouteContext{};
+				uint64_t m_TransactionID{};
+				PlayerID m_PlayerID{};
 			public:
 				RemovePlayerCmd()
 					{}
@@ -283,9 +283,9 @@ namespace SF
 				uint32_t GetRouteHopCount() { return 0; }
 				uint64_t GetSender() { return 0; }
 			private:
-				RouteContext m_RouteContext;
-				uint64_t m_TransactionID;
-				Result m_Result;
+				RouteContext m_RouteContext{};
+				uint64_t m_TransactionID{};
+				Result m_Result{};
 			public:
 				RemovePlayerRes()
 					{}

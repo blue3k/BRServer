@@ -43,10 +43,10 @@ namespace SF
 				uint64_t GetPlayerID() { return 0; }
 				uint64_t GetSender() { return 0; }
 			private:
-				RouteContext m_RouteContext;
-				uint64_t m_TransactionID;
-				uint16_t m_RouteHopCount;
-				ClusterID m_ClusterID;
+				RouteContext m_RouteContext{};
+				uint64_t m_TransactionID{};
+				uint16_t m_RouteHopCount{};
+				ClusterID m_ClusterID{};
 			public:
 				GetClusterMemberListCmd()
 					{}
@@ -93,9 +93,9 @@ namespace SF
 				uint32_t GetRouteHopCount() { return 0; }
 				uint64_t GetSender() { return 0; }
 			private:
-				RouteContext m_RouteContext;
-				uint64_t m_TransactionID;
-				Result m_Result;
+				RouteContext m_RouteContext{};
+				uint64_t m_TransactionID{};
+				Result m_Result{};
 				ArrayView<ServiceInformation> m_MemberList;
 			public:
 				GetClusterMemberListRes()
@@ -143,10 +143,10 @@ namespace SF
 				uint64_t GetPlayerID() { return 0; }
 				uint64_t GetSender() { return 0; }
 			private:
-				RouteContext m_RouteContext;
-				uint64_t m_TransactionID;
-				uint16_t m_RouteHopCount;
-				ClusterID m_ClusterID;
+				RouteContext m_RouteContext{};
+				uint64_t m_TransactionID{};
+				uint16_t m_RouteHopCount{};
+				ClusterID m_ClusterID{};
 			public:
 				RequestDataSyncCmd()
 					{}
@@ -193,9 +193,9 @@ namespace SF
 				uint32_t GetRouteHopCount() { return 0; }
 				uint64_t GetSender() { return 0; }
 			private:
-				RouteContext m_RouteContext;
-				uint64_t m_TransactionID;
-				Result m_Result;
+				RouteContext m_RouteContext{};
+				uint64_t m_TransactionID{};
+				Result m_Result{};
 			public:
 				RequestDataSyncRes()
 					{}

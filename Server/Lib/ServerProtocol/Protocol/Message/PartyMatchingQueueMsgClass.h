@@ -43,9 +43,9 @@ namespace SF
 				uint64_t GetPlayerID() { return 0; }
 				uint64_t GetSender() { return 0; }
 			private:
-				RouteContext m_RouteContext;
-				uint64_t m_TransactionID;
-				uint16_t m_RouteHopCount;
+				RouteContext m_RouteContext{};
+				uint64_t m_TransactionID{};
+				uint16_t m_RouteHopCount{};
 				ArrayView<MatchingPlayerInformation> m_Players;
 			public:
 				RegisterPartyMatchingCmd()
@@ -93,10 +93,10 @@ namespace SF
 				uint32_t GetRouteHopCount() { return 0; }
 				uint64_t GetSender() { return 0; }
 			private:
-				RouteContext m_RouteContext;
-				uint64_t m_TransactionID;
-				Result m_Result;
-				MatchingQueueTicket m_MatchingTicket;
+				RouteContext m_RouteContext{};
+				uint64_t m_TransactionID{};
+				Result m_Result{};
+				MatchingQueueTicket m_MatchingTicket{};
 			public:
 				RegisterPartyMatchingRes()
 					{}
@@ -142,10 +142,10 @@ namespace SF
 			public:
 				uint64_t GetSender() { return 0; }
 			private:
-				RouteContext m_RouteContext;
-				uint64_t m_TransactionID;
-				uint16_t m_RouteHopCount;
-				PlayerID m_PlayerID;
+				RouteContext m_RouteContext{};
+				uint64_t m_TransactionID{};
+				uint16_t m_RouteHopCount{};
+				PlayerID m_PlayerID{};
 			public:
 				RegisterPlayerMatchingCmd()
 					{}
@@ -192,10 +192,10 @@ namespace SF
 				uint32_t GetRouteHopCount() { return 0; }
 				uint64_t GetSender() { return 0; }
 			private:
-				RouteContext m_RouteContext;
-				uint64_t m_TransactionID;
-				Result m_Result;
-				MatchingQueueTicket m_MatchingTicket;
+				RouteContext m_RouteContext{};
+				uint64_t m_TransactionID{};
+				Result m_Result{};
+				MatchingQueueTicket m_MatchingTicket{};
 			public:
 				RegisterPlayerMatchingRes()
 					{}
@@ -242,11 +242,11 @@ namespace SF
 				uint64_t GetPlayerID() { return 0; }
 				uint64_t GetSender() { return 0; }
 			private:
-				RouteContext m_RouteContext;
-				uint64_t m_TransactionID;
-				uint16_t m_RouteHopCount;
-				MatchingQueueTicket m_MatchingTicket;
-				uint64_t m_PreviousUID;
+				RouteContext m_RouteContext{};
+				uint64_t m_TransactionID{};
+				uint16_t m_RouteHopCount{};
+				MatchingQueueTicket m_MatchingTicket{};
+				uint64_t m_PreviousUID{};
 			public:
 				UpdateMatchingEntityUIDCmd()
 					{}
@@ -294,9 +294,9 @@ namespace SF
 				uint32_t GetRouteHopCount() { return 0; }
 				uint64_t GetSender() { return 0; }
 			private:
-				RouteContext m_RouteContext;
-				uint64_t m_TransactionID;
-				Result m_Result;
+				RouteContext m_RouteContext{};
+				uint64_t m_TransactionID{};
+				Result m_Result{};
 			public:
 				UpdateMatchingEntityUIDRes()
 					{}
@@ -342,10 +342,10 @@ namespace SF
 				uint64_t GetPlayerID() { return 0; }
 				uint64_t GetSender() { return 0; }
 			private:
-				RouteContext m_RouteContext;
-				uint64_t m_TransactionID;
-				uint16_t m_RouteHopCount;
-				MatchingQueueTicket m_MatchingTicket;
+				RouteContext m_RouteContext{};
+				uint64_t m_TransactionID{};
+				uint16_t m_RouteHopCount{};
+				MatchingQueueTicket m_MatchingTicket{};
 			public:
 				UnregisterMatchingCmd()
 					{}
@@ -392,9 +392,9 @@ namespace SF
 				uint32_t GetRouteHopCount() { return 0; }
 				uint64_t GetSender() { return 0; }
 			private:
-				RouteContext m_RouteContext;
-				uint64_t m_TransactionID;
-				Result m_Result;
+				RouteContext m_RouteContext{};
+				uint64_t m_TransactionID{};
+				Result m_Result{};
 			public:
 				UnregisterMatchingRes()
 					{}
@@ -441,10 +441,10 @@ namespace SF
 				uint64_t GetTransactionID() { return 0; }
 				uint64_t GetSender() { return 0; }
 			private:
-				RouteContext m_RouteContext;
-				uint16_t m_RouteHopCount;
-				uint64_t m_DestPartyUID;
-				MatchingQueueTicket m_MatchingTicket;
+				RouteContext m_RouteContext{};
+				uint16_t m_RouteHopCount{};
+				uint64_t m_DestPartyUID{};
+				MatchingQueueTicket m_MatchingTicket{};
 			public:
 				PartyMatchingCanceledS2CEvt()
 					{}
@@ -492,10 +492,10 @@ namespace SF
 				uint64_t GetTransactionID() { return 0; }
 				uint64_t GetSender() { return 0; }
 			private:
-				RouteContext m_RouteContext;
-				uint16_t m_RouteHopCount;
-				PlayerID m_DestPlayerID;
-				MatchingQueueTicket m_MatchingTicket;
+				RouteContext m_RouteContext{};
+				uint16_t m_RouteHopCount{};
+				PlayerID m_DestPlayerID{};
+				MatchingQueueTicket m_MatchingTicket{};
 			public:
 				PlayerMatchingCanceledS2CEvt()
 					{}
@@ -543,9 +543,9 @@ namespace SF
 				uint64_t GetTransactionID() { return 0; }
 				uint64_t GetSender() { return 0; }
 			private:
-				RouteContext m_RouteContext;
-				uint16_t m_RouteHopCount;
-				MatchingQueueTicket m_MatchingTicket;
+				RouteContext m_RouteContext{};
+				uint16_t m_RouteHopCount{};
+				MatchingQueueTicket m_MatchingTicket{};
 			public:
 				PartyMatchingItemDequeuedS2CEvt()
 					{}
@@ -592,9 +592,9 @@ namespace SF
 				uint64_t GetTransactionID() { return 0; }
 				uint64_t GetSender() { return 0; }
 			private:
-				RouteContext m_RouteContext;
-				uint16_t m_RouteHopCount;
-				MatchingQueueTicket m_MatchingTicket;
+				RouteContext m_RouteContext{};
+				uint16_t m_RouteHopCount{};
+				MatchingQueueTicket m_MatchingTicket{};
 			public:
 				PlayerMatchingItemDequeuedS2CEvt()
 					{}
@@ -640,9 +640,9 @@ namespace SF
 				uint64_t GetPlayerID() { return 0; }
 				uint64_t GetSender() { return 0; }
 			private:
-				RouteContext m_RouteContext;
-				uint64_t m_TransactionID;
-				uint16_t m_RouteHopCount;
+				RouteContext m_RouteContext{};
+				uint64_t m_TransactionID{};
+				uint16_t m_RouteHopCount{};
 			public:
 				ReserveItemCmd()
 					{}
@@ -688,11 +688,11 @@ namespace SF
 				uint32_t GetRouteHopCount() { return 0; }
 				uint64_t GetSender() { return 0; }
 			private:
-				RouteContext m_RouteContext;
-				uint64_t m_TransactionID;
-				Result m_Result;
-				uint32_t m_NumberOfPlayersInTheItem;
-				MatchingQueueTicket m_MatchingTicket;
+				RouteContext m_RouteContext{};
+				uint64_t m_TransactionID{};
+				Result m_Result{};
+				uint32_t m_NumberOfPlayersInTheItem{};
+				MatchingQueueTicket m_MatchingTicket{};
 			public:
 				ReserveItemRes()
 					{}
@@ -740,10 +740,10 @@ namespace SF
 				uint64_t GetPlayerID() { return 0; }
 				uint64_t GetSender() { return 0; }
 			private:
-				RouteContext m_RouteContext;
-				uint64_t m_TransactionID;
-				uint16_t m_RouteHopCount;
-				uint32_t m_NumberOfItemsToReserve;
+				RouteContext m_RouteContext{};
+				uint64_t m_TransactionID{};
+				uint16_t m_RouteHopCount{};
+				uint32_t m_NumberOfItemsToReserve{};
 			public:
 				ReserveItemsCmd()
 					{}
@@ -790,9 +790,9 @@ namespace SF
 				uint32_t GetRouteHopCount() { return 0; }
 				uint64_t GetSender() { return 0; }
 			private:
-				RouteContext m_RouteContext;
-				uint64_t m_TransactionID;
-				Result m_Result;
+				RouteContext m_RouteContext{};
+				uint64_t m_TransactionID{};
+				Result m_Result{};
 				ArrayView<uint32_t> m_NumberOfPlayersInTheItem;
 				ArrayView<MatchingQueueTicket> m_MatchingTicket;
 			public:
@@ -842,10 +842,10 @@ namespace SF
 				uint64_t GetPlayerID() { return 0; }
 				uint64_t GetSender() { return 0; }
 			private:
-				RouteContext m_RouteContext;
-				uint64_t m_TransactionID;
-				uint16_t m_RouteHopCount;
-				MatchingQueueTicket m_TicketToCancel;
+				RouteContext m_RouteContext{};
+				uint64_t m_TransactionID{};
+				uint16_t m_RouteHopCount{};
+				MatchingQueueTicket m_TicketToCancel{};
 			public:
 				CancelReservationCmd()
 					{}
@@ -892,9 +892,9 @@ namespace SF
 				uint32_t GetRouteHopCount() { return 0; }
 				uint64_t GetSender() { return 0; }
 			private:
-				RouteContext m_RouteContext;
-				uint64_t m_TransactionID;
-				Result m_Result;
+				RouteContext m_RouteContext{};
+				uint64_t m_TransactionID{};
+				Result m_Result{};
 			public:
 				CancelReservationRes()
 					{}
@@ -940,9 +940,9 @@ namespace SF
 				uint64_t GetPlayerID() { return 0; }
 				uint64_t GetSender() { return 0; }
 			private:
-				RouteContext m_RouteContext;
-				uint64_t m_TransactionID;
-				uint16_t m_RouteHopCount;
+				RouteContext m_RouteContext{};
+				uint64_t m_TransactionID{};
+				uint16_t m_RouteHopCount{};
 				ArrayView<MatchingQueueTicket> m_TicketToCancel;
 			public:
 				CancelReservationsCmd()
@@ -990,9 +990,9 @@ namespace SF
 				uint32_t GetRouteHopCount() { return 0; }
 				uint64_t GetSender() { return 0; }
 			private:
-				RouteContext m_RouteContext;
-				uint64_t m_TransactionID;
-				Result m_Result;
+				RouteContext m_RouteContext{};
+				uint64_t m_TransactionID{};
+				Result m_Result{};
 			public:
 				CancelReservationsRes()
 					{}
@@ -1038,10 +1038,10 @@ namespace SF
 				uint64_t GetPlayerID() { return 0; }
 				uint64_t GetSender() { return 0; }
 			private:
-				RouteContext m_RouteContext;
-				uint64_t m_TransactionID;
-				uint16_t m_RouteHopCount;
-				MatchingQueueTicket m_MatchingTicket;
+				RouteContext m_RouteContext{};
+				uint64_t m_TransactionID{};
+				uint16_t m_RouteHopCount{};
+				MatchingQueueTicket m_MatchingTicket{};
 			public:
 				DequeueItemCmd()
 					{}
@@ -1088,12 +1088,12 @@ namespace SF
 				uint32_t GetRouteHopCount() { return 0; }
 				uint64_t GetSender() { return 0; }
 			private:
-				RouteContext m_RouteContext;
-				uint64_t m_TransactionID;
-				Result m_Result;
-				MatchingQueueTicket m_MatchingTicket;
-				uint64_t m_RegisterUID;
-				PlayerID m_RegisterID;
+				RouteContext m_RouteContext{};
+				uint64_t m_TransactionID{};
+				Result m_Result{};
+				MatchingQueueTicket m_MatchingTicket{};
+				uint64_t m_RegisterUID{};
+				PlayerID m_RegisterID{};
 				ArrayView<MatchingPlayerInformation> m_Players;
 			public:
 				DequeueItemRes()
@@ -1145,9 +1145,9 @@ namespace SF
 				uint64_t GetTransactionID() { return 0; }
 				uint64_t GetSender() { return 0; }
 			private:
-				RouteContext m_RouteContext;
-				uint16_t m_RouteHopCount;
-				MatchingQueueTicket m_MatchingTicket;
+				RouteContext m_RouteContext{};
+				uint16_t m_RouteHopCount{};
+				MatchingQueueTicket m_MatchingTicket{};
 			public:
 				MatchingItemErrorC2SEvt()
 					{}

@@ -56,6 +56,7 @@ set(BRDB_LIB_FILES
     ShardCoordinatorDBQuery.cpp
 	ShardCoordinatorDBQuery.h
 	DBTrace.h
+	DBTrace.cpp
 	DBToString.h
 	DBMYSQL.h
   )

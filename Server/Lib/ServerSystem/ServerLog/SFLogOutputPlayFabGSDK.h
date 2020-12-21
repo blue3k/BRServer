@@ -36,7 +36,7 @@ namespace SF {
 		private:
 
 		public:
-			MyOutputHandler(const LogChannelMask& logMask);
+			MyOutputHandler(const LogOutputMask& logMask);
 
 			virtual void PrintOutput(const Log::LogModule::LogItem* logMessage) override;
 
@@ -48,7 +48,7 @@ namespace SF {
 
 	public:
 
-		LogOutputPlayFabGSDKComponent(const LogChannelMask& logMask);
+		LogOutputPlayFabGSDKComponent(const LogOutputMask& logMask);
 		~LogOutputPlayFabGSDKComponent();
 
 		virtual const StringCrc64& GetTypeName() override { return TypeName; }

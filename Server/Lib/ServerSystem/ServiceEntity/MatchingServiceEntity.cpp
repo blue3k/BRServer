@@ -499,22 +499,20 @@ namespace Svr {
 	// clear transaction
 	Result MatchingServiceEntity::ClearEntity()
 	{
-		Result hr = ResultCode::SUCCESS;
+		ScopeContext hr;
 
-		svrChk(ShardedClusterServiceEntity::ClearEntity() );
+		svrCheck(ShardedClusterServiceEntity::ClearEntity() );
 
 		// we should close queue entity
 		if (m_pQueueEntity != nullptr)
 		{
 			SharedPointerT<Entity> queueEntity;
-			m_pQueueEntity.GetSharedPointer(queueEntity);
+			queueEntity = m_pQueueEntity.AsSharedPtr();
 			if (queueEntity != nullptr)
 			{
 				queueEntity->TerminateEntity();
 			}
 		}
-
-	Proc_End:
 
 		return hr;
 	}
@@ -545,7 +543,7 @@ namespace Svr {
 
 	Result MatchingServiceEntity::UpdateMatching()
 	{
-		Result hr = ResultCode::SUCCESS;
+		ScopeContext hr = ResultCode::SUCCESS;
 		TransactionPtr pTrans;
 		uint targetMatchingMemberCount = m_TargetMatchingMemberCount;
 		uint numPatterns = 0;
@@ -559,7 +557,7 @@ namespace Svr {
 
 		memset(itemCountPerQueue, 0, sizeof(itemCountPerQueue));
 
-		svrChk(GetMatchingPatterTable(targetMatchingMemberCount, numPatterns, pMatchingPatternTable));
+		svrCheck(GetMatchingPatterTable(targetMatchingMemberCount, numPatterns, pMatchingPatternTable));
 
 		// increase pattern offset after getting pattern table
 		m_ReservationStartFrom++;
@@ -576,7 +574,7 @@ namespace Svr {
 
 		// no itmes to match
 		if (numItemsInQueues == 0)
-			goto Proc_End;
+			return hr;
 
 		// Pick matching pattern
 		pCurMatchingPattern = pMatchingPatternTable;
@@ -630,11 +628,8 @@ namespace Svr {
 
 		++m_MatchedCount;
 		pTrans = new(GetHeap()) MatchingTransProcessMatchedItems(GetHeap(), targetMatchingMemberCount, grabbedItems);
-		svrMem(pTrans);
-		svrChk(PendingTransaction(GetTaskWorker()->GetThreadID(), pTrans));
-
-
-	Proc_End:
+		svrCheckMem(pTrans);
+		svrCheck(PendingTransaction(GetTaskWorker()->GetThreadID(), pTrans));
 
 		return hr;
 	}

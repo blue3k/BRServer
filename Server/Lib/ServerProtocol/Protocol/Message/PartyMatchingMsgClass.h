@@ -44,8 +44,8 @@ namespace SF
 				uint64_t GetTransactionID() { return 0; }
 				uint64_t GetSender() { return 0; }
 			private:
-				RouteContext m_RouteContext;
-				uint16_t m_RouteHopCount;
+				RouteContext m_RouteContext{};
+				uint16_t m_RouteHopCount{};
 			public:
 				PartyGameMatchedS2CEvt()
 					{}
@@ -91,11 +91,11 @@ namespace SF
 				uint64_t GetTransactionID() { return 0; }
 				uint64_t GetSender() { return 0; }
 			private:
-				RouteContext m_RouteContext;
-				uint16_t m_RouteHopCount;
-				PlayerID m_DestPlayerID;
-				uint64_t m_GameInsUID;
-				uint8_t m_RequestedRole;
+				RouteContext m_RouteContext{};
+				uint16_t m_RouteHopCount{};
+				PlayerID m_DestPlayerID{};
+				uint64_t m_GameInsUID{};
+				uint8_t m_RequestedRole{};
 			public:
 				PlayerGameMatchedS2CEvt()
 					{}
