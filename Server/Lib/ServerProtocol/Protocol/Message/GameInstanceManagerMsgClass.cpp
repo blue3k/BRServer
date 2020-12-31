@@ -49,7 +49,7 @@ namespace SF
 				ArrayView<uint8_t> bufferView(MsgDataSize, pIMsg->GetMessageData());
 				InputMemoryStream inputStream(bufferView);
 				auto* input = inputStream.ToInputStream();
-				uint16_t ArrayLen = 0;(ArrayLen);
+				uint16_t ArrayLen = 0;(void)(ArrayLen);
 
 				protocolCheck(*input >> m_RouteContext);
 				protocolCheck(*input >> m_TransactionID);
@@ -164,8 +164,8 @@ namespace SF
 				ArrayView<uint8_t> bufferView(MsgDataSize, pIMsg->GetMessageData());
 				InputMemoryStream inputStream(bufferView);
 				auto* input = inputStream.ToInputStream();
-				uint16_t ArrayLen = 0;(ArrayLen);
-				uint8_t* pCur = nullptr;(pCur);
+				uint16_t ArrayLen = 0;(void)(ArrayLen);
+				uint8_t* pCur = nullptr;(void)(pCur);
 
 				pCur = input->GetBufferPtr() + input->GetPosition();
 				Assert(input->GetRemainSize() >= sizeof(RouteContext));
@@ -190,8 +190,8 @@ namespace SF
 				ArrayView<uint8_t> bufferView(MsgDataSize, pIMsg->GetMessageData());
 				InputMemoryStream inputStream(bufferView);
 				auto* input = inputStream.ToInputStream();
-				uint16_t ArrayLen = 0;(ArrayLen);
-				uint8_t* pCur = nullptr;(pCur);
+				uint16_t ArrayLen = 0;(void)(ArrayLen);
+				uint8_t* pCur = nullptr;(void)(pCur);
 
 				pCur = input->GetBufferPtr() + input->GetPosition();
 				Assert(input->GetRemainSize() >= sizeof(RouteContext));
@@ -230,7 +230,7 @@ namespace SF
 				ArrayView<uint8_t> bufferView(MsgDataSize, pIMsg->GetMessageData());
 				InputMemoryStream inputStream(bufferView);
 				auto* input = inputStream.ToInputStream();
-				uint16_t ArrayLen = 0;(ArrayLen);
+				uint16_t ArrayLen = 0;(void)(ArrayLen);
 
 				protocolCheck(*input >> m_RouteContext);
 				protocolCheck(*input >> m_TransactionID);
@@ -300,8 +300,8 @@ namespace SF
 				ArrayView<uint8_t> bufferView(MsgDataSize, pIMsg->GetMessageData());
 				InputMemoryStream inputStream(bufferView);
 				auto* input = inputStream.ToInputStream();
-				uint16_t ArrayLen = 0;(ArrayLen);
-				uint8_t* pCur = nullptr;(pCur);
+				uint16_t ArrayLen = 0;(void)(ArrayLen);
+				uint8_t* pCur = nullptr;(void)(pCur);
 
 				pCur = input->GetBufferPtr() + input->GetPosition();
 				Assert(input->GetRemainSize() >= sizeof(RouteContext));
@@ -326,8 +326,8 @@ namespace SF
 				ArrayView<uint8_t> bufferView(MsgDataSize, pIMsg->GetMessageData());
 				InputMemoryStream inputStream(bufferView);
 				auto* input = inputStream.ToInputStream();
-				uint16_t ArrayLen = 0;(ArrayLen);
-				uint8_t* pCur = nullptr;(pCur);
+				uint16_t ArrayLen = 0;(void)(ArrayLen);
+				uint8_t* pCur = nullptr;(void)(pCur);
 
 				pCur = input->GetBufferPtr() + input->GetPosition();
 				Assert(input->GetRemainSize() >= sizeof(RouteContext));
@@ -364,7 +364,7 @@ namespace SF
 				ArrayView<uint8_t> bufferView(MsgDataSize, pIMsg->GetMessageData());
 				InputMemoryStream inputStream(bufferView);
 				auto* input = inputStream.ToInputStream();
-				uint16_t ArrayLen = 0;(ArrayLen);
+				uint16_t ArrayLen = 0;(void)(ArrayLen);
 
 				protocolCheck(*input >> m_RouteContext);
 				protocolCheck(*input >> m_TransactionID);
@@ -437,8 +437,8 @@ namespace SF
 				ArrayView<uint8_t> bufferView(MsgDataSize, pIMsg->GetMessageData());
 				InputMemoryStream inputStream(bufferView);
 				auto* input = inputStream.ToInputStream();
-				uint16_t ArrayLen = 0;(ArrayLen);
-				uint8_t* pCur = nullptr;(pCur);
+				uint16_t ArrayLen = 0;(void)(ArrayLen);
+				uint8_t* pCur = nullptr;(void)(pCur);
 
 				pCur = input->GetBufferPtr() + input->GetPosition();
 				Assert(input->GetRemainSize() >= sizeof(RouteContext));
@@ -463,8 +463,8 @@ namespace SF
 				ArrayView<uint8_t> bufferView(MsgDataSize, pIMsg->GetMessageData());
 				InputMemoryStream inputStream(bufferView);
 				auto* input = inputStream.ToInputStream();
-				uint16_t ArrayLen = 0;(ArrayLen);
-				uint8_t* pCur = nullptr;(pCur);
+				uint16_t ArrayLen = 0;(void)(ArrayLen);
+				uint8_t* pCur = nullptr;(void)(pCur);
 
 				pCur = input->GetBufferPtr() + input->GetPosition();
 				Assert(input->GetRemainSize() >= sizeof(RouteContext));
@@ -503,7 +503,7 @@ namespace SF
 				ArrayView<uint8_t> bufferView(MsgDataSize, pIMsg->GetMessageData());
 				InputMemoryStream inputStream(bufferView);
 				auto* input = inputStream.ToInputStream();
-				uint16_t ArrayLen = 0;(ArrayLen);
+				uint16_t ArrayLen = 0;(void)(ArrayLen);
 
 				protocolCheck(*input >> m_RouteContext);
 				protocolCheck(*input >> m_TransactionID);
@@ -580,8 +580,8 @@ namespace SF
 				ArrayView<uint8_t> bufferView(MsgDataSize, pIMsg->GetMessageData());
 				InputMemoryStream inputStream(bufferView);
 				auto* input = inputStream.ToInputStream();
-				uint16_t ArrayLen = 0;(ArrayLen);
-				uint8_t* pCur = nullptr;(pCur);
+				uint16_t ArrayLen = 0;(void)(ArrayLen);
+				uint8_t* pCur = nullptr;(void)(pCur);
 
 				pCur = input->GetBufferPtr() + input->GetPosition();
 				Assert(input->GetRemainSize() >= sizeof(RouteContext));
@@ -606,8 +606,8 @@ namespace SF
 				ArrayView<uint8_t> bufferView(MsgDataSize, pIMsg->GetMessageData());
 				InputMemoryStream inputStream(bufferView);
 				auto* input = inputStream.ToInputStream();
-				uint16_t ArrayLen = 0;(ArrayLen);
-				uint8_t* pCur = nullptr;(pCur);
+				uint16_t ArrayLen = 0;(void)(ArrayLen);
+				uint8_t* pCur = nullptr;(void)(pCur);
 
 				pCur = input->GetBufferPtr() + input->GetPosition();
 				Assert(input->GetRemainSize() >= sizeof(RouteContext));
@@ -646,7 +646,7 @@ namespace SF
 				ArrayView<uint8_t> bufferView(MsgDataSize, pIMsg->GetMessageData());
 				InputMemoryStream inputStream(bufferView);
 				auto* input = inputStream.ToInputStream();
-				uint16_t ArrayLen = 0;(ArrayLen);
+				uint16_t ArrayLen = 0;(void)(ArrayLen);
 
 				protocolCheck(*input >> m_RouteContext);
 				protocolCheck(*input >> m_RouteHopCount);
@@ -713,8 +713,8 @@ namespace SF
 				ArrayView<uint8_t> bufferView(MsgDataSize, pIMsg->GetMessageData());
 				InputMemoryStream inputStream(bufferView);
 				auto* input = inputStream.ToInputStream();
-				uint16_t ArrayLen = 0;(ArrayLen);
-				uint8_t* pCur = nullptr;(pCur);
+				uint16_t ArrayLen = 0;(void)(ArrayLen);
+				uint8_t* pCur = nullptr;(void)(pCur);
 
 				pCur = input->GetBufferPtr() + input->GetPosition();
 				Assert(input->GetRemainSize() >= sizeof(RouteContext));
@@ -739,8 +739,8 @@ namespace SF
 				ArrayView<uint8_t> bufferView(MsgDataSize, pIMsg->GetMessageData());
 				InputMemoryStream inputStream(bufferView);
 				auto* input = inputStream.ToInputStream();
-				uint16_t ArrayLen = 0;(ArrayLen);
-				uint8_t* pCur = nullptr;(pCur);
+				uint16_t ArrayLen = 0;(void)(ArrayLen);
+				uint8_t* pCur = nullptr;(void)(pCur);
 
 				pCur = input->GetBufferPtr() + input->GetPosition();
 				Assert(input->GetRemainSize() >= sizeof(RouteContext));

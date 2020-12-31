@@ -45,8 +45,8 @@ namespace Net {
 	//
 
 	
-	ServerMUDP::ServerMUDP(ServerID InServerID, NetClass localClass)
-		:ServerUDPBase(InServerID, localClass)
+	ServerMUDP::ServerMUDP(IHeap& heap, ServerID InServerID, NetClass localClass)
+		:ServerUDPBase(heap, InServerID, localClass)
 	{
 	}
 

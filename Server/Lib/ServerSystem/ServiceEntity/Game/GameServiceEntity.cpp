@@ -71,7 +71,7 @@ namespace Svr {
 		// public network
 		svrChkPtr(m_PublicNet);
 
-		svrMem(m_pNetPublic = new(GetHeap()) Net::ServerMUDP(BrServer::GetInstance()->GetServerUID(), NetClass::Game));
+		svrMem(m_pNetPublic = NewObject<Net::ServerMUDP>(GetHeap(), BrServer::GetInstance()->GetServerUID(), NetClass::Game));
 
 		m_pNetPublic->SetNewConnectionhandler([this](SharedPointerT<Net::Connection>& conn)
 		{

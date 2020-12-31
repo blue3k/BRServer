@@ -42,8 +42,8 @@ namespace SF
 
 	public:
 
-		ServerLogObject(const char* configFile)
-			: EngineObject(&GetEngineHeap(), "ServerLogObject")
+		ServerLogObject(IHeap& heap, const char* configFile)
+			: EngineObject(&heap, "ServerLogObject")
 		{
 			StrUtil::StringCopy(m_ConfigFilePath, configFile);
 
@@ -291,7 +291,7 @@ namespace SF
 		if (!(hr)) return hr;
 
 
-		auto pLogObject = new(GetEngineHeap()) ServerLogObject(m_ConfigFilePath);
+		auto pLogObject = NewObject<ServerLogObject>(GetEngineHeap(), m_ConfigFilePath);
 		m_LogObject = pLogObject;
 		pLogObject->SetTickGroup(EngineTaskTick::AsyncTick);
 

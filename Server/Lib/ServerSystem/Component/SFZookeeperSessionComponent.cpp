@@ -31,11 +31,12 @@ namespace SF
 		Zookeeper& m_zkInstance;
 
 	public:
-		ZookeeperSessionObject(const String& serverAddress, Zookeeper& zkInstance)
-			: EngineObject(&GetEngineHeap(), "ZookeeperSessionObject")
+		ZookeeperSessionObject(IHeap& heap, const String& serverAddress, Zookeeper* zkInstance)
+			: EngineObject(&heap, "ZookeeperSessionObject")
 			, m_ServerAddresses(serverAddress)
-			, m_zkInstance(zkInstance)
+			, m_zkInstance(*zkInstance)
 		{
+			Assert(zkInstance != nullptr);
 		}
 
 		// Object task
@@ -108,7 +109,7 @@ namespace SF
 			return ResultCode::FAIL;
 
 
-		m_SessionObject = new(GetEngineHeap()) ZookeeperSessionObject(m_ServerAddresses, m_zkInstance);
+		m_SessionObject = NewObject<ZookeeperSessionObject>(GetEngineHeap(), m_ServerAddresses, &m_zkInstance);
 		m_SessionObject->SetTickGroup(EngineTaskTick::AsyncTick);
 
 		return result;

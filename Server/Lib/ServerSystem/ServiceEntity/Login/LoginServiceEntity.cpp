@@ -81,7 +81,7 @@ namespace SF {
 			// public network
 			svrCheckPtr(m_PublicNetSocket);
 
-			svrCheckMem(m_pNetPublic = new(GetHeap()) Net::ServerMUDP(BrServer::GetInstance()->GetServerUID(), NetClass::Login));
+			svrCheckMem(m_pNetPublic = NewObject<Net::ServerMUDP>(GetHeap(), BrServer::GetInstance()->GetServerUID(), NetClass::Login));
 
 			m_pNetPublic->SetNewConnectionhandler([this](SharedPointerT<Net::Connection>& conn)
 				{

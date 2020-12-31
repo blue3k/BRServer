@@ -34,6 +34,6 @@ install (TARGETS BRServerLauncher
          LIBRARY DESTINATION lib COMPONENT BRServer
          RUNTIME DESTINATION bin COMPONENT BRServer)
 
-if(WIN32)
+if(WIN32 AND NOT ENABLE_CLANG)
 	install (FILES $<TARGET_PDB_FILE:BRServerLauncher> DESTINATION bin COMPONENT BRServer)
 endif()

@@ -784,7 +784,7 @@ namespace SF {
 			if (GetMyConfig()->PrivateNet.IP.size() > 0)
 			{
 				// Create private network and open it
-				svrCheckMem(m_pNetPrivate = new(GetHeap()) Net::ServerPeerTCP(GetMyConfig()->UID, GetNetClass()));
+				svrCheckMem(m_pNetPrivate = NewObject<Net::ServerPeerTCP>(GetHeap(), GetMyConfig()->UID, GetNetClass()));
 
 				m_pNetPrivate->SetNewConnectionhandler([this](SharedPointerT<Net::Connection>& newConn)
 					{

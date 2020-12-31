@@ -32,6 +32,6 @@ install (TARGETS BRModuleServer
          LIBRARY DESTINATION lib COMPONENT BRServer
          RUNTIME DESTINATION bin COMPONENT BRServer)
 
-if(WIN32)
+if(WIN32 AND NOT ENABLE_CLANG)
 	install (FILES $<TARGET_PDB_FILE:BRModuleServer> DESTINATION bin COMPONENT BRServer)
 endif()
