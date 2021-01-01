@@ -110,23 +110,22 @@ namespace Svr
 		if( GetEntityState() != EntityState::FREE )
 		{
 			Assert( 0 );
-			svrErr( ResultCode::UNEXPECTED );
+			svrCheck( ResultCode::UNEXPECTED );
 		}
 
 		// register message handlers
 		RegisterMessageHandlers();
 
 
-		svrChk( ClearEntity() );
+		svrCheck( ClearEntity() );
 
-		SetEntityUID( EntityUID(GetMyServerID(), newEntityID) );
+		auto serverId = GetMyServerID();
+		SetEntityUID( EntityUID(serverId, newEntityID) );
 		SetTaskID( newEntityID );
 
 		SetEntityState( EntityState::WORKING );
 
 		SetEntityCreateTime( Util::Time.GetTimeMs() );
-
-	Proc_End:
 
 		return hr;
 	}

@@ -138,7 +138,11 @@ namespace SF {
 
 			svrCheck(Svr::BrServer::InitializeServerResource());
 
-			svrCheck(InitializeEntity(EntityID(EntityFaculty::Server, 0)));
+			// TODO: something can avoid assert
+			SetServerUID(1);
+
+			EntityID entityId(EntityFaculty::Server, 0);
+			svrCheck(InitializeEntity(entityId));
 
 			return hr;
 		}

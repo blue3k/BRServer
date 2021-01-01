@@ -35,15 +35,23 @@ namespace BRTest
 		SyncCounter m_Counter;
 
 		// Route query result to entity
-		virtual Result RouteResult(Query* &pQuery)
+		virtual Result RouteResult(Query* &pQuery) override
 		{
-			Result hr = ResultCode::SUCCESS;
 			Svr::TransactionResult *pRes = (Svr::TransactionResult*)pQuery;
+
+			ScopeContext hr([&pRes, &pQuery](Result hr)
+				{
+					AssertRel(hr);
+
+					pQuery = nullptr;
+					IHeap::Delete(pRes);
+				});
+
 
 			m_Counter.fetch_sub(1,std::memory_order_relaxed);
 
 
-			defChk( pRes->GetResult() );
+			defCheck( pRes->GetResult() );
 
 			switch( pRes->GetMsgID().IDs.MsgCode )
 			{
@@ -74,12 +82,7 @@ namespace BRTest
 				break;
 			};
 
-		Proc_End:
 
-			AssertRel(hr);
-
-			pQuery = nullptr;
-			Util::SafeDelete( pRes );
 
 			return hr;
 		}

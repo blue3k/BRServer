@@ -18,7 +18,8 @@
 #include "Variable/SFVariableBoxing.h"
 #include "Types/BrSvrTypeSerialization.h"
 
-namespace SF {
+namespace SF
+{
 
 	Result _ToString(ToStringContext& context, const EntityUID& Data);
 	inline Result _ToString(ToStringContext& context, const EntityState& Data) { return _IToA(context, (uint32_t)Data); }
@@ -54,7 +55,6 @@ namespace SF {
 
 
 
-}; // namespace StrUtil
-
+} // namespace SF
 
 

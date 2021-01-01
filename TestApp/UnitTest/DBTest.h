@@ -25,7 +25,7 @@ namespace BRTest
 
 		SF::DB::DBClusterManager* m_pTestDB = nullptr;
 
-		String m_TestDBConnectionString = "127.0.0.1,33060";
+		String m_TestDBConnectionString = "SFTestDB.com,41170";
 		String m_TestDBUserId = "blue3k";
 		String m_TestDBPassword = "111";
 
