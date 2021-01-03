@@ -43,7 +43,7 @@ namespace Svr {
 
 	private:
 		// Memory log allocator
-		CircularHeap<MaxBufferSize,SF_ALIGN> m_LogAllocator;
+		CircularHeapT<MaxBufferSize> m_LogAllocator;
 
 		// Game log queue
 		CircularQueue<GameLogItem*,MaxLog> m_gameLogQueue;
