@@ -24,6 +24,8 @@
 #include "Util/GlobalUIDGenerator.h"
 #include "ServiceEntity/Relay/RelayPlayer.h"
 #include "Container/SFStaticDoubleLinkedList.h"
+#include "Protocol/Message/PlayInstanceMsgClass.h"
+#include "Protocol/Policy/PlayInstanceNetPolicy.h"
 
 
 namespace SF {
@@ -92,7 +94,7 @@ namespace SF {
 		Result RemovePlayer(PlayerID playerID);
 
 		// Handle relay packet
-		void OnRelayPacket(const sockaddr_storage& remoteAddr, const Message::Relay::RelayPacketC2SEvt& message);
+		void OnRelayPacket(const sockaddr_storage& remoteAddr, const Message::PlayInstance::PlayPacketC2SEvt& message);
 
 		template<typename Func>
 		void ForeachPlayer(const Func& func)

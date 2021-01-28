@@ -33,8 +33,7 @@ namespace SF {
 	};
 
 
-#pragma pack(push)
-#pragma pack(4)
+#pragma pack(push, 4)
 
 	// Cluster Service status
 	enum class ServiceStatus : uint32_t
@@ -159,6 +158,6 @@ namespace SF {
 #include "BrSvrTypes.inl"
 
 
-};
+}
 
 

@@ -53,8 +53,7 @@ namespace SF
 
 
 
-#pragma pack(push)
-#pragma pack(2)
+#pragma pack(push, 2)
 
 	// Game log item base item
 	struct GameLogItem {
@@ -156,6 +155,5 @@ namespace SF
 #include "BrGameTypes.inl"
 
 
-};
-
+}
 

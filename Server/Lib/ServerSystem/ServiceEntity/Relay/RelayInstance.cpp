@@ -29,8 +29,6 @@
 
 #include "RelayInstance.h"
 
-#include "Protocol/Message/RelayMsgClass.h"
-#include "Protocol/Policy/RelayNetPolicy.h"
 
 
 
@@ -135,7 +133,7 @@ namespace SF {
 	}
 
 	// Handle relay packet
-	void RelayInstance::OnRelayPacket(const sockaddr_storage& remoteAddr, const Message::Relay::RelayPacketC2SEvt& message)
+	void RelayInstance::OnRelayPacket(const sockaddr_storage& remoteAddr, const Message::PlayInstance::PlayPacketC2SEvt& message)
 	{
 		RelayPlayerID senderRelayID = message.GetSenderEndpointID();
 

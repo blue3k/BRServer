@@ -182,9 +182,6 @@ namespace SF {
 
 			m_GameInsID = 0;
 
-			if (GetMyOwner()->GetAuthTicket() != GetTicket())
-				svrError(ResultCode::INVALID_TICKET);
-
 			if (GetMyOwner()->GetPlayerID() != GetPlayerID())
 				svrError(ResultCode::INVALID_PLAYERID);
 
@@ -283,9 +280,6 @@ namespace SF {
 
 			svrChk(super::StartTransaction());
 
-			if (GetMyOwner()->GetAuthTicket() != GetTicket())
-				svrErr(ResultCode::INVALID_TICKET);
-
 			if (GetMyOwner()->GetPlayerID() != GetPlayerID())
 				svrErr(ResultCode::INVALID_PLAYERID);
 
@@ -300,25 +294,6 @@ namespace SF {
 
 			if (!(hr))
 				CloseTransaction(hr);
-
-			return hr;
-		}
-
-
-		// Start Transaction
-		Result PlayerTransPlayerMovementC2SEvt::StartTransaction()
-		{
-			ScopeContext hr([this](Result hr)
-				{
-					CloseTransaction(hr);
-				});
-
-			svrCheck(super::StartTransaction());
-
-			if (GetMyOwner()->GetGameInsUID() != GetRouteContext().GetFrom())
-				svrErrorClose(ResultCode::INVALID_INSTANCEID);
-
-			svrCheck(Policy::NetSvrPolicyGame(GetConnection()).PlayerMovementS2CEvt(GetRouteContext().GetFrom(), GetPlayerID(), GetAttributes()));
 
 			return hr;
 		}

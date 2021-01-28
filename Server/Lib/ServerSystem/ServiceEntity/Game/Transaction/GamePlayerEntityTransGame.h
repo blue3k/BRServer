@@ -66,6 +66,8 @@ namespace SF {
 
 		private:
 			GameInsUID m_GameInsID;
+			NetAddress m_GameInsAddress;
+			NetAddress m_GameInsAddress4;
 
 		public:
 			PlayerTransJoinGameInstance(IHeap& heap, MessageDataPtr& pIMsg);
@@ -78,7 +80,7 @@ namespace SF {
 
 			virtual Result CloseTransaction(Result hrRes) override;
 
-			BR_IMPLEMENT_USERMSGTRANS_CLOSE_ARGS(Policy::NetSvrPolicyGame, JoinGameInstanceRes, m_GameInsID);
+			BR_IMPLEMENT_USERMSGTRANS_CLOSE_ARGS(Policy::NetSvrPolicyGame, JoinGameInstanceRes, m_GameInsID, m_GameInsAddress, m_GameInsAddress4);
 		};
 
 
@@ -133,19 +135,6 @@ namespace SF {
 			virtual Result StartTransaction() override;
 		};
 
-
-		class PlayerTransPlayerMovementC2SEvt : public Svr::UserTransactionS2SEvt< GamePlayerEntity, Message::Game::PlayerMovementC2SEvt>
-		{
-		public:
-			using super = Svr::UserTransactionS2SEvt< GamePlayerEntity, Message::Game::PlayerMovementC2SEvt>;
-
-		public:
-			PlayerTransPlayerMovementC2SEvt(IHeap& heap, MessageDataPtr& pIMsg) :UserTransactionS2SEvt(heap, pIMsg) {}
-			virtual ~PlayerTransPlayerMovementC2SEvt() {}
-
-			// Start Transaction
-			virtual Result StartTransaction() override;
-		};
 
 
 
