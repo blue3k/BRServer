@@ -93,9 +93,6 @@ namespace Svr {
 		// Server net class
 		NetClass					m_NetClass;
 
-		// Server config
-		const ServerConfig::GenericServer	*m_pMyConfig = nullptr;
-
 		// Server execution time stamp
 		UTCTimeStampSec					m_ServerUpUTCTIme;
 
@@ -139,9 +136,6 @@ namespace Svr {
 
 		// Set main server instance
 		static void SetInstance( BrServer *pServerInstance );
-
-		// Set my config 
-		inline void SetMyConfig( const ServerConfig::GenericServer* pMyConfig );
 
 		// Create entity manager
 		virtual ServerEntity* CreateLoopbackEntity();
@@ -202,9 +196,6 @@ namespace Svr {
 
 		// Get main server instance
 		static inline BrServer* GetInstance();
-
-		// Get config
-		inline const ServerConfig::GenericServer* GetMyConfig();
 
 		// Get/Set Public network enable status
 		inline bool IsNetPublicEnabled();
@@ -390,8 +381,8 @@ namespace Svr {
 
 #include "BrServer.inl"
 
-}; // namespace SF
-}; // namespace Svr
+} // namespace SF
+} // namespace Svr
 
 
 

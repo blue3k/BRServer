@@ -1,6 +1,6 @@
 ////////////////////////////////////////////////////////////////////////////////
 // 
-// CopyRight (c) 2013 Kyungkun Ko
+// CopyRight (c) Kyungkun Ko
 // 
 // Author : KyungKun Ko
 //
@@ -89,7 +89,7 @@ namespace Svr {
 		auto zkSession = Service::ZKSession->GetZookeeperSession();
 		char gamePath[512];
 
-		svrChk(super::InitializeEntity(newEntityID));
+		svrCheck(super::InitializeEntity(newEntityID));
 
 		if (zkSession == nullptr || !zkSession->IsConnected())
 		{
@@ -103,14 +103,12 @@ namespace Svr {
 		}
 
 
-		for (auto& itCluster : Service::ServerConfig->GetGameClusters())
-		{
-			StrUtil::Format(gamePath, "{0}/{1}", ZKBasePath, itCluster->GameClusterIDName);
-			if (!zkSession->Exists(gamePath))
-				zkSession->ACreate(gamePath, Json::Value(Json::objectValue), nullptr, 0);
-		}
-
-	Proc_End:
+		//for (auto& itCluster : Service::ServerConfig->GetGameClusters())
+		//{
+		//	StrUtil::Format(gamePath, "{0}/{1}", ZKBasePath, itCluster->GameClusterIDName);
+		//	if (!zkSession->Exists(gamePath))
+		//		zkSession->ACreate(gamePath, Json::Value(Json::objectValue), nullptr, 0);
+		//}
 
 		return hr;
 	}
@@ -120,14 +118,12 @@ namespace Svr {
 	{
 		Result hr = ResultCode::SUCCESS;
 
-		svrChk(super::TickUpdate(pAction) );
+		svrCheck(super::TickUpdate(pAction) );
 
 		if( (SignedCounterType)m_NumberOfPlayerOnThisServer > 0 )
 		{
 			SetWorkload((uint)m_NumberOfPlayerOnThisServer);
 		}
-
-	Proc_End:
 
 		return hr;
 	}

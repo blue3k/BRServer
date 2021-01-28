@@ -50,15 +50,6 @@ namespace ConspiracyGameInstanceServer
 	class GameInstanceServer : public Svr::BrServer
 	{
 	public:
-
-	private:
-		// Game cluster config
-		const ServerConfig::GameCluster*	m_pGameClusterCfg;
-
-	protected:
-
-
-	public:
 		GameInstanceServer();
 		~GameInstanceServer();
 

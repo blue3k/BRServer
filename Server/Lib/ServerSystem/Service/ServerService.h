@@ -36,7 +36,7 @@ namespace SF {
 
 	namespace Service
 	{
-		extern ServiceInstance<SF::ServerConfig> ServerConfig;
+		extern ServiceInstance<ServerConfig::ServerService> ServerConfig;
 		extern ServiceInstance<EntityTableService> EntityTable;
 		extern ServiceInstance<EntityManagerService> EntityManager;
 		extern ServiceInstance<ServerEntityManagerService> ServerEntityManager;

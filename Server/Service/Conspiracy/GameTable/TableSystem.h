@@ -15,12 +15,10 @@
 
 namespace SF {
 
-	class ServerConfig;
-
 	namespace GameTable {
 
 		// Initialize tables
-		Result InitializeTable(const ServerConfig* config);
+		Result InitializeTable();
 
 		int GetTableVersion();
 

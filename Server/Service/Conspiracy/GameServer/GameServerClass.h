@@ -47,12 +47,6 @@ namespace GameServer
 		using GameConfigType = conspiracy::GameConfigTbl::GameConfigItem ;
 
 	private:
-		// Public network interface
-		//SharedPointerT<Net::ServerMUDP>			m_pNetPublic;
-
-		// Game cluster config
-		const ServerConfig::GameCluster*	m_pGameClusterCfg;
-
 		// game config preset
 		int m_TableVersion;
 		uint					m_PresetGameConfigID;
@@ -75,17 +69,6 @@ namespace GameServer
 		//
 		//	
 		//
-
-		// Get Login server config
-		inline const ServerConfig::GameServer* GetGameConfig();
-
-		const ServerConfig::GameCluster* GetGameClusterInfo() { return m_pGameClusterCfg; }
-
-		//const ServerConfig::NetPublic* GetPublicNetConfig() { return &GetGameConfig()->PublicNet; }
-
-
-		// Get net public
-		//inline SharedPointerT<Net::ServerMUDP>& GetNetPublic();
 
 		// Query Loopback entity
 		inline Svr::ServerEntity* GetLoopbackGameServerEntity();
@@ -150,8 +133,8 @@ namespace GameServer
 #include "GameServerClass.inl"
 
 
-}; // namespace GameServer
-}; // namespace SF
+} // namespace GameServer
+} // namespace SF
 
 
 

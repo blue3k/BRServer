@@ -70,7 +70,6 @@ namespace GameServer {
 	GameServer::GameServer()
 		: BrServer(NetClass::Game)
 		//, m_pNetPublic(nullptr)
-		, m_pGameClusterCfg(nullptr)
 		, m_TableVersion(0)
 		, m_PresetGameConfigID(1)
 		, m_PresetGameConfig(nullptr)
@@ -108,13 +107,7 @@ namespace GameServer {
 	{
 		Result hr = ResultCode::SUCCESS;
 
-		m_pGameClusterCfg = GetMyConfig()->pGameCluster;
-		svrChkPtr(m_pGameClusterCfg);
-
-		svrChk(Svr::BrServer::ApplyConfiguration() );
-
-
-	Proc_End:
+		svrCheck(Svr::BrServer::ApplyConfiguration() );
 
 		return hr;
 	}
@@ -127,7 +120,7 @@ namespace GameServer {
 
 		svrChk(Svr::BrServer::InitializeServerResource() );
 
-		svrChk(GameTable::InitializeTable(Service::ServerConfig) );
+		svrChk(GameTable::InitializeTable() );
 
 		svrChk( UpdateGameConfig(m_PresetGameConfigID) );
 
@@ -173,7 +166,7 @@ namespace GameServer {
 
 		Service::EntityManager->RegisterEntityCreator([this](ClusterID clusterID, EntityFaculty faculty) { return CreateEntity(clusterID, faculty); });
 
-		//Engine::GetInstance()->AddComponent<SF::GameServer::GameEntityManager>(GetMyConfig()->WorkerThreadCount);
+		//Engine::GetInstance()->AddComponent<SF::GameServer::GameEntityManager>(Service::ServerConfig->WorkerThreadCount);
 
 		svrChk(Svr::BrServer::InitializeNetPrivate() );
 
@@ -187,10 +180,9 @@ namespace GameServer {
 		svrChk(AddDBCluster<DB::LoginSessionDB>(Service::ServerConfig->FindDBCluster("LoginSessionDB")));
 
 		// Game DB initialize
-		svrChkPtr(GetGameClusterInfo());
-		svrChk(AddDBCluster<conspiracy::GameConspiracyDB>(GetGameClusterInfo()->FindDBCluster("GameDB")));
+		svrChk(AddDBCluster<conspiracy::GameConspiracyDB>(Service::ServerConfig->FindDBCluster("GameDB")));
 
-		svrChk(AddDBCluster<DB::GameTransactionDB>(GetGameClusterInfo()->FindDBCluster("GameTransactionLogDB")));
+		svrChk(AddDBCluster<DB::GameTransactionDB>(Service::ServerConfig->FindDBCluster("GameTransactionLogDB")));
 
 		// Ranking DB 
 		svrChk(AddDBCluster<DB::RankingDB>(Service::ServerConfig->FindDBCluster("RankingDB")) );
@@ -257,16 +249,14 @@ namespace GameServer {
 
 		svrChk( CloseNetPublic() );
 
-		svrChkPtr(GetGameConfig());
+		//svrMem(m_pNetPublic = new(GetHeap()) Net::ServerMUDP(Service::ServerConfig->UID, GetNetClass()));
 
-		//svrMem(m_pNetPublic = new(GetHeap()) Net::ServerMUDP(GetMyConfig()->UID, GetNetClass()));
-
-		//svrChk( m_pNetPublic->HostOpen( GetNetClass(), GetGameConfig()->PublicNet.ListenIP, GetGameConfig()->PublicNet.Port ) );
+		//svrChk( m_pNetPublic->HostOpen( GetNetClass(), Service::ServerConfig->PublicNet.ListenIP, Service::ServerConfig->PublicNet.Port ) );
 
 		//// Game server only accept public connection with valid peerID(AuthTicket)
 		//m_pNetPublic->SetUseAddressMap(false);
 
-		//m_PublicNetAddressIPv4 = NetAddress(SockFamily::IPV4, GetGameConfig()->NetPublic->IPV4.c_str(), GetGameConfig()->NetPublic->Port);
+		//m_PublicNetAddressIPv4 = NetAddress(SockFamily::IPV4, Service::ServerConfig->NetPublic->IPV4.c_str(), Service::ServerConfig->NetPublic->Port);
 		//svrChk(Net::CheckLocalAddress(SockFamily::IPV4, m_PublicNetAddressIPv4));
 
 	Proc_End:

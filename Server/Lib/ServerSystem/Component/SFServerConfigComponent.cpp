@@ -16,7 +16,7 @@
 #include "Service/ServerService.h"
 #include "Component/SFServerConfigComponent.h"
 #include "Component/SFZookeeperSessionComponent.h"
-#include "ServerConfig/SFServerConfigZookeeper.h"
+#include "ServerConfig/SFServerConfigJson.h"
 #include "SvrTrace.h"
 
 
@@ -44,12 +44,8 @@ namespace SF
 		if (!result)
 			return result;
 
-		auto pZkSession = Service::ZKSession->GetZookeeperSession();
-		if(pZkSession == nullptr)
-			return ResultCode::FAIL;
-
-		ServerConfigZookeeper zkConfigLoader(**Service::ServerConfig, *pZkSession);
-		result = zkConfigLoader.LoadConfig(m_ConfigPath);
+		ServerConfigJson loader(GetHeap());
+		result = loader.LoadConfig(m_ConfigPath, *Service::ServerConfig);
 		if (!result)
 		{
 			svrTrace(Info, "Failed to load server config hr:{0}", result);
@@ -61,7 +57,6 @@ namespace SF
 	// Terminate component
 	void ServerConfigComponent::DeinitializeComponent()
 	{
-
 		LibraryComponent::DeinitializeComponent();
 	}
 

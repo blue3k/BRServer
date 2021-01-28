@@ -217,7 +217,7 @@ namespace Svr {
 		case Net::ConnectionEvent::EVT_CONNECTION_RESULT:
 			if( conEvent.Components.hr )
 			{
-				auto myConfig = BrServer::GetInstance()->GetMyConfig();
+				auto myConfig = Service::ServerConfig;
 				auto netPrivate = Svr::BrServer::GetInstance()->GetNetPrivate();
 
 				svrChkPtr(myConfig);

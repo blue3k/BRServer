@@ -63,7 +63,6 @@ namespace ConspiracyGameInstanceServer {
 
 	GameInstanceServer::GameInstanceServer()
 		:BrServer(NetClass::Game)
-		,m_pGameClusterCfg(nullptr)
 	{
 	}
 
@@ -82,15 +81,7 @@ namespace ConspiracyGameInstanceServer {
 	{
 		Result hr = ResultCode::SUCCESS;
 
-		svrChkPtr(GetMyConfig());
-
-		m_pGameClusterCfg = GetMyConfig()->pGameCluster;
-		svrChkPtr( m_pGameClusterCfg );
-
-		svrChk(Svr::BrServer::ApplyConfiguration() );
-
-
-	Proc_End:
+		svrCheck(Svr::BrServer::ApplyConfiguration() );
 
 		return hr;
 	}
@@ -103,7 +94,7 @@ namespace ConspiracyGameInstanceServer {
 
 		svrChk(Svr::BrServer::InitializeServerResource() );
 
-		svrChk(GameTable::InitializeTable(Service::ServerConfig) );
+		svrChk(GameTable::InitializeTable() );
 
 		svrChk( InitializeEntity( EntityID(EntityFaculty::Server,0) ) );
 

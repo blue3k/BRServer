@@ -58,27 +58,6 @@ namespace SF
 	}
 
 
-	Result _ToString(ToStringContext& context, const RouteContext& Data)
-	{
-		if (!(StrUtil::StringCopyEx(context.StringBuffer, context.StringBufferLength, "(")))
-			return ResultCode::FAIL;
-
-		if (!(_ToString(context, Data.Components.From)))
-			return ResultCode::FAIL;
-
-		if (!(StrUtil::StringCopyEx(context.StringBuffer, context.StringBufferLength, ":")))
-			return ResultCode::FAIL;
-
-		if (!(_ToString(context, Data.Components.To)))
-			return ResultCode::FAIL;
-
-		if (!(StrUtil::StringCopyEx(context.StringBuffer, context.StringBufferLength, ")")))
-			return ResultCode::FAIL;
-
-		return ResultCode::SUCCESS;
-	}
-
-
 
 	Result _ToString(ToStringContext& context, const ClusterType& Data)
 	{

@@ -10,19 +10,6 @@
 
 
 
-const ServerConfig::GameServer* GameServer::GetGameConfig()
-{
-	return dynamic_cast<const ServerConfig::GameServer*>(GetMyConfig());
-}
-
-
-//// Get net public
-//SharedPointerT<Net::ServerMUDP>& GameServer::GetNetPublic()
-//{
-//	return m_pNetPublic;
-//}
-
-
 // Query Loopback entity
 Svr::ServerEntity* GameServer::GetLoopbackGameServerEntity()
 {

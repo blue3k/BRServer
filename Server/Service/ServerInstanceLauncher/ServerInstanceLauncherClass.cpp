@@ -16,7 +16,6 @@
 #include "Server/ParameterSetting.h"
 #include "SvrTrace.h"
 #include "ServerConfig/SFServerConfig.h"
-#include "ServerConfig/SFServerConfigZookeeper.h"
 #include "Entity/EntityManager.h"
 #include "ServerEntity/ServerEntityManager.h"
 #include "ServiceEntity/ClusterManagerServiceEntity.h"

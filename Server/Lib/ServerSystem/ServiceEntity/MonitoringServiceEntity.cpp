@@ -58,7 +58,7 @@ namespace Svr {
 	{
 		Result hr = ResultCode::SUCCESS;
 		NetAddress localAddr;
-		auto monitoringConfig = Service::ServerConfig->FindGenericServer("MonitoringServer");
+		auto monitoringConfig = Service::ServerConfig->MonitoringServer;
 
 		svrChk(ServiceEntity::InitializeEntity(newEntityID) );
 

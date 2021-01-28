@@ -508,7 +508,7 @@ namespace Svr {
 		String gameClusterPath(GetHeap());
 		auto zkSession = Service::ZKSession->GetZookeeperSession();
 
-		svrChk(super::InitializeEntity(newEntityID) );
+		svrCheck(super::InitializeEntity(newEntityID) );
 
 		if (zkSession == nullptr || !zkSession->IsConnected())
 		{
@@ -524,16 +524,10 @@ namespace Svr {
 		}
 
 
-		for (auto& itGameCluster : Service::ServerConfig->GetGameClusters())
-		{
-			CreateNodeForGameCluster(zkSession, itGameCluster->GameClusterIDName);
-		}
+		if (!Service::ServerConfig->GameClusterName.IsNullOrEmpty())
+			CreateNodeForGameCluster(zkSession, Service::ServerConfig->GameClusterName);
 
 		pTrans = nullptr;
-
-		
-
-	Proc_End:
 
 		return hr;
 	}

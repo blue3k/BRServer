@@ -26,7 +26,6 @@ namespace SF
 
 	Result _ToString(ToStringContext& context, const TransactionID& Data);
 	Result _ToString(ToStringContext& context, const ClusterID& Data);
-	Result _ToString(ToStringContext& context, const RouteContext& Data);
 	Result _ToString(ToStringContext& context, const ClusterType& Data);
 	Result _ToString(ToStringContext& context, const ClusterMembership& Data);
 	Result _ToString(ToStringContext& context, const ServiceStatus& Data);
@@ -42,7 +41,6 @@ namespace SF
 	DEFINE_BOXING_TEMPLETE_BYVALUE(EntityUID);
 	DEFINE_BOXING_TEMPLETE_BYVALUE(TransactionID);
 	DEFINE_BOXING_TEMPLETE_BYVALUE(ClusterID);
-	DEFINE_BOXING_TEMPLETE_BYVALUE(RouteContext);
 	DEFINE_BOXING_TEMPLETE_BYVALUE(ClusterType);
 	DEFINE_BOXING_TEMPLETE_BYVALUE(ClusterMembership);
 	DEFINE_BOXING_TEMPLETE_BYVALUE(ServiceStatus);

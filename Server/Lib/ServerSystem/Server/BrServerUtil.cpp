@@ -101,23 +101,16 @@ namespace Svr {
 		InitializeEngine();
 
 		// Config can be accessed after ServerConfigComponent is initialized
-		auto pMyConfig = Service::ServerConfig->FindGenericServer(Util::GetServiceName());
-		if (pMyConfig == nullptr)
-		{
-			assert(pMyConfig != nullptr);
-			return;
-		}
-
 		auto pEngine = SF::Engine::GetInstance();
 		if (pEngine == nullptr)
 			return;
 
 		SF::EngineInitParam initParam;
-		pEngine->AddComponent<SF::Net::NetSystem>(initParam.NetRecvBufferSize, initParam.NetSendBufferSize, pMyConfig->NetIOThreadCount, 1024);
+		pEngine->AddComponent<SF::Net::NetSystem>(initParam.NetRecvBufferSize, initParam.NetSendBufferSize, Service::ServerConfig->NetIOThreadCount, 1024);
 		pEngine->AddComponent<ConnectionManagerComponent>(2048);
 		pEngine->AddComponent<EntityTable>();
-		pEngine->AddComponent<LibraryComponentAdapter<EntityManager, uint>, IHeap&, uint>(GetSystemHeap(), pMyConfig->WorkerThreadCount);
-		pEngine->AddComponent<LibraryComponentAdapter<Svr::ServerEntityManager,uint>, IHeap&, uint>(GetSystemHeap(), pMyConfig->WorkerThreadCount);
+		pEngine->AddComponent<LibraryComponentAdapter<EntityManager, uint>, IHeap&, uint>(GetSystemHeap(), Service::ServerConfig->WorkerThreadCount);
+		pEngine->AddComponent<LibraryComponentAdapter<Svr::ServerEntityManager,uint>, IHeap&, uint>(GetSystemHeap(), Service::ServerConfig->WorkerThreadCount);
 		pEngine->AddComponent<LibraryComponentAdapter<Svr::ClusterManagerServiceEntity>, IHeap&>(GetSystemHeap());
 	}
 

@@ -1,6 +1,6 @@
 ////////////////////////////////////////////////////////////////////////////////
 // 
-// CopyRight (c) 2013 The Braves
+// CopyRight (c) The Braves
 // 
 // Author : KyungKun Ko
 //
@@ -51,23 +51,10 @@ UTCTimeStampSec BrServer::GetServerUpTime()
 	return m_ServerUpUTCTIme;
 }
 
-// Set my config 
-void BrServer::SetMyConfig( const ServerConfig::GenericServer* pMyConfig )
-{
-	m_pMyConfig = pMyConfig;
-}
-
-
 // Get net class
 NetClass BrServer::GetNetClass()
 {
 	return m_NetClass;
-}
-
-// Get config
-const ServerConfig::GenericServer* BrServer::GetMyConfig()
-{
-	return m_pMyConfig;
 }
 
 // Get/Set Public network enable status

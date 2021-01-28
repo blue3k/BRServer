@@ -449,8 +449,7 @@ namespace SF {
 
 		Result BrServer::SetupConfiguration()
 		{
-			SetMyConfig(Service::ServerConfig->FindGenericServer(Util::GetServiceName()));
-			return GetMyConfig() != nullptr ? ResultCode::SUCCESS : ResultCode::UNEXPECTED;
+			return ResultCode::SUCCESS;
 		}
 
 		Result BrServer::CreateEntityManager()
@@ -465,10 +464,9 @@ namespace SF {
 		{
 			Result hr = ResultCode::SUCCESS;
 
-			SetServerUID(GetMyConfig()->UID);
+			SetServerUID(Service::ServerConfig->UID);
 
-			if (GetMyConfig()->pGameCluster != nullptr)
-				m_GameID = GetMyConfig()->pGameCluster->GameClusterID;
+			m_GameID = Service::ServerConfig->GameClusterID;
 
 			//Proc_End:
 
@@ -479,7 +477,7 @@ namespace SF {
 		{
 			Result hr = ResultCode::SUCCESS;
 			NetAddress svrAddress;
-			auto monitoringConfig = Service::ServerConfig->FindGenericServer("MonitoringServer");
+			auto monitoringConfig = Service::ServerConfig->MonitoringServer;
 			// Skip if not specified
 			if (monitoringConfig == nullptr)
 				return hr;
@@ -525,21 +523,18 @@ namespace SF {
 		Result BrServer::InitializeComponents()
 		{
 			Result hr = ResultCode::SUCCESS;
-			svrChkPtr(GetMyConfig());
 
 			//////////////////////////////////////////////////////////////////////////////////////////
 			//
 			// Register service entities
 			//
 
-			for (auto& itModule : GetMyConfig()->Modules)
+			for (auto& itModule : Service::ServerConfig->Modules)
 			{
 				RegisterModule(itModule);
 			}
 
-			svrChk(m_Components.InitializeComponents());
-
-		Proc_End:
+			svrCheck(m_Components.InitializeComponents());
 
 			return hr;
 		}
@@ -612,7 +607,6 @@ namespace SF {
 			svrTrace(Info, "Setup configuration");
 			svrCheck(SetupConfiguration());
 
-			svrCheckPtr(GetMyConfig());
 
 			// Apply configuration
 			svrTrace(Info, "Applying Configuration");
@@ -774,17 +768,11 @@ namespace SF {
 
 			svrCheck(CloseNetPrivate());
 
-			if (GetMyConfig() == nullptr)
-			{
-				svrTrace(Error, "No configuration is specified for this server {0}", typeid(*this).name());
-				svrCheck(ResultCode::UNEXPECTED);
-			}
-
 			// Skip private net if it is not set
-			if (GetMyConfig()->PrivateNet.IP.size() > 0)
+			if (Service::ServerConfig->PrivateNet.IP.size() > 0)
 			{
 				// Create private network and open it
-				svrCheckMem(m_pNetPrivate = NewObject<Net::ServerPeerTCP>(GetHeap(), GetMyConfig()->UID, GetNetClass()));
+				svrCheckMem(m_pNetPrivate = NewObject<Net::ServerPeerTCP>(GetHeap(), Service::ServerConfig->UID, GetNetClass()));
 
 				m_pNetPrivate->SetNewConnectionhandler([this](SharedPointerT<Net::Connection>& newConn)
 					{
@@ -793,7 +781,7 @@ namespace SF {
 						m_NewConnectionQueue.Enqueue(std::forward<SharedPointerAtomicT<Net::Connection>>(pConnAtomic));
 					});
 
-				svrCheck(m_pNetPrivate->HostOpen(GetNetClass(), GetMyConfig()->PrivateNet.IP, GetMyConfig()->PrivateNet.Port));
+				svrCheck(m_pNetPrivate->HostOpen(GetNetClass(), Service::ServerConfig->PrivateNet.IP, Service::ServerConfig->PrivateNet.Port));
 			}
 
 			svrTrace(Info, "Initialize entities");

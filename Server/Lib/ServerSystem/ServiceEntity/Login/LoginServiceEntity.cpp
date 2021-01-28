@@ -100,11 +100,12 @@ namespace SF {
 			svrCheck(pServerInst->AddDBCluster<DB::LoginSessionDB>(Service::ServerConfig->FindDBCluster("LoginSessionDB")));
 
 
-			for (auto& itCluster : Service::ServerConfig->GetGameClusters())
-			{
-				svrCheck(Service::ClusterManager->SetWatchForCluster(itCluster->GameClusterID, ClusterID::Game, true));
-				svrCheck(Service::ClusterManager->SetWatchForCluster(itCluster->GameClusterID, ClusterID::Ranking, true));
-			}
+			// TODO: Cluster manager need to get those information from zookeeper
+			//for (auto& itCluster : Service::ServerConfig->GetGameClusters())
+			//{
+			//	svrCheck(Service::ClusterManager->SetWatchForCluster(itCluster->GameClusterID, ClusterID::Game, true));
+			//	svrCheck(Service::ClusterManager->SetWatchForCluster(itCluster->GameClusterID, ClusterID::Ranking, true));
+			//}
 
 
 			m_pNetPublic->SetIsEnableAccept(true);
