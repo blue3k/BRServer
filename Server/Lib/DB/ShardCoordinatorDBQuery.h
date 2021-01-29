@@ -44,7 +44,7 @@ namespace DB {
 	class QueryGetShardList : public QueryGetShardListSet, public QueryBase
 	{
 	public:
-		int32_t Dummy;
+		int32_t Dummy = 0;
 
 	public:
 		BRDB_BEGIN_PARAM_MAP(QueryGetShardList, "spGetShardList")

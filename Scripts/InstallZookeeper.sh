@@ -34,4 +34,5 @@ sudo systemctl edit zookeeper
 
 
 sudo systemctl start zookeeper
+sudo systemctl enable zookeeper
 

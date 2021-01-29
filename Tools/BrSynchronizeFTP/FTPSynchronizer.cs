@@ -202,7 +202,7 @@ namespace BR.FTPSync
 
             string[] files = Directory.GetFileSystemEntries(m_LocalPath, "*", SearchOption.AllDirectories);
 
-            // grep all remote information
+            // grab all remote information
             Log("Updating remote file list...");
             var remoteFileList = m_FTPClient.GetListing(m_RemotePath, FtpListOption.Recursive | FtpListOption.SizeModify);
             var remoteFileMap = new Dictionary<string, FtpListItem>();
@@ -242,7 +242,7 @@ namespace BR.FTPSync
                     {
                         FtpListItem remoteFileInfo;
                         var fileInfo = new FileInfo(fileFullPath);
-                        // remove miliscond from local modified time
+                        // remove milliseconds from local modified time
                         var localModified = new DateTime(fileInfo.LastWriteTimeUtc.Year, fileInfo.LastWriteTimeUtc.Month, fileInfo.LastWriteTimeUtc.Day, fileInfo.LastWriteTimeUtc.Hour, fileInfo.LastWriteTimeUtc.Minute, fileInfo.LastWriteTimeUtc.Second, DateTimeKind.Utc);
 
                         if (!remoteFileMap.TryGetValue(remotePath, out remoteFileInfo)

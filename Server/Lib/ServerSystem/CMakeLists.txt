@@ -54,7 +54,6 @@ set(BRSERVERSYSTEM_LIB_FILES
     Component/BrComponent.h
     Component/ServerComponent.h
     Component/ServerComponentCarrier.h
-    Component/SFServerConfigComponent.h
     Component/SFServerNetComponent.h
     Component/SFZookeeperSessionComponent.h
     Entity/Entity.h
@@ -90,8 +89,6 @@ set(BRSERVERSYSTEM_LIB_FILES
     ServerEntity/SvrLoopbackConnection.h
     ServerLog/SvrLog.h
     ServerLog/SvrLogComponent.h
-	#ServerLog/SFLogOutputPlayFabGSDK.cpp
-	#ServerLog/SFLogOutputPlayFabGSDK.h
     ServerService/ServerServiceBase.h
     Server/BrServer.h
     Server/BrServerUtil.h
@@ -157,7 +154,6 @@ set(BRSERVERSYSTEM_LIB_FILES
     Util/Memento.h
     Util/UniqueEntityIDGenerator.h
     Component/ServerComponent.cpp
-    Component/SFServerConfigComponent.cpp
     Component/SFServerNetComponent.cpp
     Component/SFZookeeperSessionComponent.cpp
     Entity/Entity.cpp
