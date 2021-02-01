@@ -73,7 +73,7 @@ namespace SF {
 		m_PlayerState = newState;
 	}
 
-	void RelayPlayer::HeartBit()
+	void RelayPlayer::Heartbeat()
 	{
 		m_TimeToKill.SetTimer(DurationMS(Svr::Const::RELAY_PLAYER_TIMEOUT));
 	}

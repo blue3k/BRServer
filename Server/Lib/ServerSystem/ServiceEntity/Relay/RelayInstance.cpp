@@ -75,7 +75,7 @@ namespace SF {
 		m_GameInstanceState = newState;
 	}
 
-	void RelayInstance::HeartBit()
+	void RelayInstance::Heartbeat()
 	{
 		m_TimeToKill.SetTimer(DurationMS(RELAY_INSTANCE_TIMEOUT));
 	}

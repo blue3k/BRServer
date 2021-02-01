@@ -45,17 +45,17 @@ namespace Svr
 	{
 		SetTickInterval(DurationMS(Svr::Const::SIMPLEUSER_TICKTASK_INTERVAL));
 
-		RegisterMessageHandler<Message::Login::HeartBitC2SEvt>([this](Net::Connection*, MessageDataPtr&, TransactionPtr& pNewTrans) -> Result
+		RegisterMessageHandler<Message::Login::HeartbeatC2SEvt>([this](Net::Connection*, MessageDataPtr&, TransactionPtr& pNewTrans) -> Result
 			{
 				pNewTrans = nullptr;
-				HeartBit();
+				Heartbeat();
 				return ResultCode::SUCCESS;
 			});
 
-		RegisterMessageHandler<Message::Game::HeartBitC2SEvt>([this](Net::Connection*, MessageDataPtr&, TransactionPtr& pNewTrans) -> Result
+		RegisterMessageHandler<Message::Game::HeartbeatC2SEvt>([this](Net::Connection*, MessageDataPtr&, TransactionPtr& pNewTrans) -> Result
 			{
 				pNewTrans = nullptr;
-				HeartBit();
+				Heartbeat();
 				return ResultCode::SUCCESS;
 			});
 	}
@@ -246,7 +246,7 @@ namespace Svr
 
 
 
-	void SimpleUserEntity::HeartBit()
+	void SimpleUserEntity::Heartbeat()
 	{
 		m_TimeToKill.SetTimer(DurationMS(Const::LOGIN_TIME_WAIT_PLAYER_JOIN));
 	}
@@ -265,7 +265,7 @@ namespace Svr
 		{
 			if (!m_PendingCloseHasCalled)
 			{
-				if (PendingCloseTransaction("Entity heart bit timeout"))
+				if (PendingCloseTransaction("Entity heartbeat timeout"))
 					m_PendingCloseHasCalled = true;
 			}
 		}

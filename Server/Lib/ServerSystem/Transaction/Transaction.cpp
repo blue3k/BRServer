@@ -50,7 +50,7 @@ namespace SF {
 			, m_MessageRouteContext(0)
 			, m_pOwner(nullptr)
 			, m_transID(0, 0)
-			, m_tHeartBitTimeout(DurationMS(5 * 60 * 1000))
+			, m_tHeartbeatTimeout(DurationMS(5 * 60 * 1000))
 			, m_TransactionStartTime(DurationMS(0))
 			, m_uiExpectedResultID(0)
 			, m_state(STATE_WAITSTART)
@@ -126,7 +126,7 @@ namespace SF {
 
 			m_state = STATE_STARTED;
 
-			UpdateHeartBitTime();
+			UpdateHeartbeatTime();
 
 			m_SubActionManager.Process();
 

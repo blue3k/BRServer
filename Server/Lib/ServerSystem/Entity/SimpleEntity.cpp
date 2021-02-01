@@ -142,7 +142,7 @@ namespace Svr {
 					pCurTran->GetTransID(), GetEntityUID(),
 					pTranRes->GetMsgID());
 			}
-			pCurTran->UpdateHeartBitTime();
+			pCurTran->UpdateHeartbeatTime();
 			if (pCurTran->IsTimerWorking()) pCurTran->ClearTimer();
 			pCurTran->RecordTransactionHistory(pTranRes);
 			hrTem = pCurTran->ProcessTransaction(pTranRes);

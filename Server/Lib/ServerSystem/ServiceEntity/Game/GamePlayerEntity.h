@@ -206,7 +206,7 @@ namespace Svr {
 		//
 
 		Result OnJoinGameServerInitialize(AuthTicket authTicket, FacebookUID fbUID);
-		virtual void HeartBit() override;
+		virtual void Heartbeat() override;
 		Result OnNewUserTranscation();
 		virtual Result UpdateDBSync(TransactionID transID = TransactionID()) = 0;
 

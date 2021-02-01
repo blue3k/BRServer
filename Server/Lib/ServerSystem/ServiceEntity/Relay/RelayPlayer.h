@@ -142,7 +142,7 @@ namespace SF {
 		//	
 		//
 
-		void HeartBit();
+		void Heartbeat();
 
 		// Run the task
 		Result TickUpdate();

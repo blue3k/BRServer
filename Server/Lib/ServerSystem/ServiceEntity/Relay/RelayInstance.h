@@ -87,7 +87,7 @@ namespace SF {
 		// Initialize entity to proceed new connection
 		virtual Result InitializeGameInstance(GameID gameId, uint32_t maxUser);
 
-		void HeartBit();
+		void Heartbeat();
 
 		// Add player and assign relay player ID
 		Result AddPlayer(const sockaddr_storage& remoteAddr, PlayerID playerID, const String playerIdentification, RelayPlayerID& relayPlayerID);

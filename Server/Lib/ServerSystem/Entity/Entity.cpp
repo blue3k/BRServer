@@ -84,7 +84,7 @@ namespace Svr
 		if (pTrans)
 		{
 			nextTick = Util::TimeMinNonZero(nextTick, pTrans->GetTimerExpireTime());
-			nextTick = Util::TimeMinNonZero(nextTick, pTrans->GetHeartBitTimeout());
+			nextTick = Util::TimeMinNonZero(nextTick, pTrans->GetHeartbeatTimeout());
 		}
 
 		Assert(nextTick != TimeStampMS::min() && nextTick != TimeStampMS::max());
@@ -449,11 +449,11 @@ namespace Svr
 			{
 				UniquePtr<TransactionResult> pTranRes(new(GetHeap()) TimerResult);
 				svrMem(pTranRes);
-				pTrans->UpdateHeartBitTime();
+				pTrans->UpdateHeartbeatTime();
 				pTrans->RecordTransactionHistory(pTranRes);
 				pTrans->ProcessTransaction(pTranRes);
 			}
-			else if (!(pTrans->CheckHeartBitTimeout()))// Transaction time out
+			else if (!(pTrans->CheckHeartbeatTimeout()))// Transaction time out
 			{
 				if (pTrans->IsPrintTrace())
 				{

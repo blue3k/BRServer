@@ -137,8 +137,8 @@ namespace SF {
 			// Transaction ID
 			TransactionID		m_transID;
 
-			// Transaction heart bit time, ms
-			TimeStampMS			m_tHeartBitTimeout;
+			// Transaction heartbeat time, ms
+			TimeStampMS			m_tHeartbeatTimeout;
 
 			// Transaction start time
 			TimeStampMS			m_TransactionStartTime;
@@ -225,7 +225,7 @@ namespace SF {
 
 			TimeStampMS GetTransactionStartTime() { return m_TransactionStartTime; }
 
-			TimeStampMS GetNextTickTime() { return Util::TimeMinNonZero(GetHeartBitTimeout(), GetTimerExpireTime()); }
+			TimeStampMS GetNextTickTime() { return Util::TimeMinNonZero(GetHeartbeatTimeout(), GetTimerExpireTime()); }
 
 			// Get Exclusive option
 			bool	IsExclusive() const;
@@ -260,15 +260,15 @@ namespace SF {
 			// Get transaction state
 			Transaction::State GetState();
 
-			// Get heart bit time, ms
-			//SF_FORCEINLINE uint64_t GetHeartBitTime();
+			// Get heartbeat time, ms
+			//SF_FORCEINLINE uint64_t GetHeartbeatTime();
 
-			// Update heart bit time, with timestamp
-			TimeStampMS UpdateHeartBitTime();
+			// Update heartbeat time, with timestamp
+			TimeStampMS UpdateHeartbeatTime();
 
 			// Check timeout with timestamp
-			Result CheckHeartBitTimeout();
-			TimeStampMS GetHeartBitTimeout();
+			Result CheckHeartbeatTimeout();
+			TimeStampMS GetHeartbeatTimeout();
 
 			// Timer
 			void SetTimer(DurationMS ms);

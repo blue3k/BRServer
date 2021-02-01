@@ -294,7 +294,7 @@ namespace GameServer {
 
 		svrCheck(super::RegisterMessageHandlers());
 
-		//BR_ENTITY_MESSAGE(Message::Game::HeartBitC2SEvt) { pNewTrans = nullptr; return OnNewUserTranscation(); } );
+		//BR_ENTITY_MESSAGE(Message::Game::HeartbeatC2SEvt) { pNewTrans = nullptr; return OnNewUserTranscation(); } );
 		//BR_ENTITY_MESSAGE(Message::Game::JoinGameServerCmd) { pNewTrans = new(GetHeap()) PlayerTransJoinGameServer(GetHeap(), pMsgData); return ResultCode::SUCCESS; } );
 		//BR_ENTITY_MESSAGE(Message::Game::GetUserGamePlayerInfoCmd) { pNewTrans = new(GetHeap()) PlayerTransGetUserGamePlayerInfo(GetHeap(), pMsgData); return OnNewUserTranscation(); } );
 		//BR_ENTITY_MESSAGE(Message::Game::GetGamePlayerInfoCmd) { pNewTrans = new(GetHeap()) PlayerTransGetGamePlayerInfo(GetHeap(), pMsgData); return OnNewUserTranscation(); } );

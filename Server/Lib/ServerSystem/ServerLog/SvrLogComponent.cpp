@@ -116,6 +116,7 @@ namespace SF
 			case "outputconsole"_crc:		OutputConsole.Composited |= mask; break;
 			case "outputfile"_crc:			OutputFile.Composited |= mask; break;
 			case "outputdbgfile"_crc:		break;
+			case "outputlogserver"_crc:		break;
 			default:
 				break;
 			}

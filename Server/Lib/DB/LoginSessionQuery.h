@@ -35,7 +35,7 @@ namespace DB {
 		MCODE_QueryDeleteLoginSession,
 		MCODE_QueryConnectedToGameServer,
 		MCODE_QueryValidateGameServerSession,
-		MCODE_QueryGameServerHeartBit,
+		MCODE_QueryGameServerHeartbeat,
 		MCODE_QueryFindPlayer,
 
 	}; // enum MsgCode
@@ -54,7 +54,7 @@ namespace DB {
 		int64_t AuthTicket;
 		int64_t LoginEntityUID;
 		int64_t GameEntityUID;
-		//uint64_t HeartbitTime;
+		//uint64_t HeartbeatTime;
 		int32_t Result;
 
 	public:
@@ -153,7 +153,7 @@ namespace DB {
 	BRDB_DEFINE_QUERYCLASS(PROTOCOLID_LOGINSESSIONDB, QueryValidateGameServerSession);
 
 
-	class QueryGameServerHeartBit : public QueryBase
+	class QueryGameServerHeartbeat : public QueryBase
 	{
 	public:
 		int64_t PlayerID;
@@ -162,7 +162,7 @@ namespace DB {
 		int32_t Result;
 
 	public:
-		BRDB_BEGIN_PARAM_MAP(QueryGameServerHeartBit, "spGameServerHeartBit")
+		BRDB_BEGIN_PARAM_MAP(QueryGameServerHeartbeat, "spGameServerHeartbeat")
 			BRDB_PARAM_ENTRY(ParamIO::Input, PlayerID)
 			BRDB_PARAM_ENTRY(ParamIO::Input, AuthTicket)
 			BRDB_PARAM_ENTRY(ParamIO::Input, GameEntityUID)
@@ -171,7 +171,7 @@ namespace DB {
 
 	};
 
-	BRDB_DEFINE_QUERYCLASS(PROTOCOLID_LOGINSESSIONDB, QueryGameServerHeartBit);
+	BRDB_DEFINE_QUERYCLASS(PROTOCOLID_LOGINSESSIONDB, QueryGameServerHeartbeat);
 	
 
 

@@ -24,7 +24,7 @@ CREATE TABLE `tblSession` (
   `AuthTicket` BIGINT UNSIGNED NOT NULL,
   `LoginEntityUID` BIGINT UNSIGNED NOT NULL DEFAULT '0',
   `GameEntityUID` BIGINT UNSIGNED NOT NULL DEFAULT '0',
-  `Heartbit` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `Heartbeat` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `PlayerID` BIGINT NOT NULL,
   PRIMARY KEY (`PlayerID`),
   KEY `PlayerIDIndex` (`AuthTicket`)
@@ -60,7 +60,7 @@ BEGIN
 		SET
 			`LoginEntityUID` = 0,
 			`GameEntityUID` = inGameEntityUID ,
-			`Heartbit` = CURRENT_TIMESTAMP()
+			`Heartbeat` = CURRENT_TIMESTAMP()
 		where inPlayerID = `PlayerID` and inAuthTicket = `AuthTicket` and inLoginEntityUID = `LoginEntityUID`;
 	IF ROW_COUNT()  = 0 THEN
 	begin
@@ -88,7 +88,7 @@ BEGIN
 		SET
 		`AuthTicket` = 0,
 		`LoginEntityUID` = 0,
-		`Heartbit` = NOW()
+		`Heartbeat` = NOW()
 		WHERE inPlayerID = `PlayerID` and inAuthTicket = `AuthTicket`;
 END */$$
 DELIMITER ;
@@ -115,13 +115,13 @@ BEGIN
 END */$$
 DELIMITER ;
 
-/* Procedure structure for procedure `spGameServerHeartBit` */
+/* Procedure structure for procedure `spGameServerHeartbeat` */
 
-/*!50003 DROP PROCEDURE IF EXISTS  `spGameServerHeartBit` */;
+/*!50003 DROP PROCEDURE IF EXISTS  `spGameServerHeartbeat` */;
 
 DELIMITER $$
 
-/*!50003 CREATE PROCEDURE `spGameServerHeartBit`(
+/*!50003 CREATE PROCEDURE `spGameServerHeartbeat`(
 	in inPlayerID bigint,
 	in inAuthTicket bigint,
 	in inGameEntityUID bigint,
@@ -131,7 +131,7 @@ BEGIN
 	set outResult = 0;
 	Update tblSession 
 		SET
-			`Heartbit` = CURRENT_TIMESTAMP()
+			`Heartbeat` = CURRENT_TIMESTAMP()
 		where inPlayerID = `PlayerID` and inAuthTicket = `AuthTicket` and inGameEntityUID = `GameEntityUID`;
 	IF ROW_COUNT()  = 0 THEN
 	begin
@@ -170,7 +170,7 @@ DELIMITER $$
 	-- OUT outAuthTicket BIGINT,
 	-- OUT outLoginEntityUID BIGINT,
 	out outGameEntityUID bigint,
-	-- OUT outHeartbit BIGINT,
+	-- OUT outHeartbeat BIGINT,
 	out outResult int
 )
 BEGIN
@@ -179,7 +179,7 @@ BEGIN
 	begin 
 		-- set outResult = -1;
 		
---		select `AuthTicket`, `LoginEntityUID`, `GameEntityUID`, `Heartbit` into outAuthTicket, outLoginEntityUID, outGameEntityUID, outHeartbit 
+--		select `AuthTicket`, `LoginEntityUID`, `GameEntityUID`, `Heartbeat` into outAuthTicket, outLoginEntityUID, outGameEntityUID, outHeartbeat 
 --			from tblSession 
 --			where `PlayerID` = inPlayerID;
 		UPDATE tblSession
@@ -187,7 +187,7 @@ BEGIN
 			`AuthTicket` = inAuthTicket,
 			-- `GameEntityUID` = 0,
 			`LoginEntityUID` = inLoginEntityUID,
-			`Heartbit` = NOW()
+			`Heartbeat` = NOW()
 			WHERE inPlayerID = `PlayerID`; -- and `GameEntityUID` = 0;
 		
 		IF ROW_COUNT() = 0 THEN 
@@ -227,7 +227,7 @@ BEGIN
 		`AuthTicket` = inAuthTicket,
 		-- `GameEntityUID` = 0,
 		`LoginEntityUID` = inLoginEntityUID,
-		`Heartbit` = Now()
+		`Heartbeat` = Now()
 		WHERE inPlayerID = `PlayerID` AND inOldAuthTicket = `AuthTicket`;
 		
 	if ROW_COUNT() = 0 then 
@@ -260,7 +260,7 @@ BEGIN
 --	UPDATE tblSession
 --		SET
 --		`LoginEntityUID` = 0,
---		`Heartbit` = NOW()
+--		`Heartbeat` = NOW()
 --		WHERE inPlayerID = `PlayerID` AND inAuthTicket = `AuthTicket` and inGameEntityUID = `GameEntityUID`;
 		
 --	IF ROW_COUNT() = 0 THEN 

@@ -66,8 +66,6 @@ set(BRSERVERSYSTEM_LIB_FILES
     Entity/PlayerEntityInformation.h
     Entity/PlayerEntityInformation.inl
     Entity/SimpleEntity.h
-    Entity/SimpleUserEntity.h
-    Entity/SimpleUserEntity.inl
 
     GameConst.h
     GameLog/ChattingHistory.h
@@ -164,6 +162,7 @@ set(BRSERVERSYSTEM_LIB_FILES
     Entity/MasterEntity.cpp
     Entity/PlayerEntityInformation.cpp
     Entity/SimpleEntity.cpp
+    Entity/SimpleUserEntity.h
     Entity/SimpleUserEntity.cpp
     GameLog/ChattingHistory.cpp
     Google/GoogleAndroidDeveloperAPI.cpp

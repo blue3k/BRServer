@@ -110,7 +110,7 @@ namespace Svr {
 
 		svrChkClose(hrRes);
 
-		super::GetMyOwner()->HeartBit();
+		super::GetMyOwner()->Heartbeat();
 
 		super::GetMyOwner()->SetIsTicketOwner(false);
 		super::GetMyOwner()->SetGameID((GameID)super::GetGameID());
@@ -149,7 +149,7 @@ namespace Svr {
 		super::GetMyOwner()->SetIsTicketOwner(pDBRes->Result != 0);
 		m_GameEntityUID = pDBRes->GameEntityUID;
 
-		super::GetMyOwner()->HeartBit();
+		super::GetMyOwner()->Heartbeat();
 
 		if (pConn != nullptr)
 		{
@@ -212,7 +212,7 @@ namespace Svr {
 			goto Proc_End;
 		}
 
-		super::GetMyOwner()->HeartBit();
+		super::GetMyOwner()->Heartbeat();
 
 		svrTrace(SVR_ENTITY, "Creating new Entity for PID:{0}, on svr:{1}", super::GetMyOwner()->GetPlayerID(), pService->GetEntityUID());
 
@@ -250,7 +250,7 @@ namespace Svr {
 		svrChk(pRes->GetResult());
 		svrChk( res.ParseMessage( *pMsgRes->GetMessage() ) );
 
-		super::GetMyOwner()->HeartBit();
+		super::GetMyOwner()->Heartbeat();
 
 		if (!StrUtil::IsNullOrEmpty(res.GetPublicAddressV6()))
 		{
@@ -278,7 +278,7 @@ namespace Svr {
 
 		svrChk(pRes->GetResult());
 
-		super::GetMyOwner()->HeartBit();
+		super::GetMyOwner()->Heartbeat();
 
 		// succeeded to create
 		if (pDBRes->Result == 0)
@@ -308,7 +308,7 @@ namespace Svr {
 
 		svrChk( super::StartTransaction() );
 
-		super::GetMyOwner()->HeartBit();
+		super::GetMyOwner()->Heartbeat();
 
 		if(super::GetMyOwner()->GetAccountID() != 0 )
 		{
@@ -353,7 +353,7 @@ namespace Svr {
 
 		svrChk(pRes->GetResult());
 
-		GetMyOwner()->HeartBit();
+		GetMyOwner()->Heartbeat();
 
 		GetMyOwner()->SetUserName(GetID());
 
@@ -396,7 +396,7 @@ namespace Svr {
 			svrErrClose(ResultCode::LOGIN_ALREADY_LOGGEDIN);
 		}
 
-		GetMyOwner()->HeartBit();
+		GetMyOwner()->Heartbeat();
 
 		StrUtil::StringCopy(m_UserID, GetID());
 
@@ -428,7 +428,7 @@ namespace Svr {
 
 		svrChk(pRes->GetResult());
 
-		GetMyOwner()->HeartBit();
+		GetMyOwner()->Heartbeat();
 
 		// succeeded to create
 		if( pDBRes->Result == 0 )
@@ -469,7 +469,7 @@ namespace Svr {
 		}
 
 
-		GetMyOwner()->HeartBit();
+		GetMyOwner()->Heartbeat();
 
 		// succeeded to login
 		if( pDBRes->Result == 0 )
@@ -513,7 +513,7 @@ namespace Svr {
 			svrErrClose(ResultCode::LOGIN_ALREADY_LOGGEDIN);
 		}
 
-		GetMyOwner()->HeartBit();
+		GetMyOwner()->Heartbeat();
 
 		StrUtil::Format(m_UserID, "{0}", GetUID());
 
@@ -551,7 +551,7 @@ namespace Svr {
 
 		svrCheck(pRes->GetResult());
 
-		GetMyOwner()->HeartBit();
+		GetMyOwner()->Heartbeat();
 
 		GetMyOwner()->SetUserName(GetCellPhone());
 
@@ -585,7 +585,7 @@ namespace Svr {
 			svrErrorClose(ResultCode::LOGIN_ALREADY_LOGGEDIN);
 		}
 
-		GetMyOwner()->HeartBit();
+		GetMyOwner()->Heartbeat();
 
 		if (GetCellPhone() == nullptr || GetCellPhone()[0] == '\0')
 		{
@@ -859,7 +859,7 @@ namespace Svr {
 
 		svrChk(res.ParseMessage(*pMsgRes->GetMessage()));
 
-		super::GetMyOwner()->HeartBit();
+		super::GetMyOwner()->Heartbeat();
 
 		for (auto itRank : res.GetRanking())
 		{
@@ -905,7 +905,7 @@ namespace Svr {
 		}
 
 		// update life time of this user entity
-		super::GetMyOwner()->HeartBit();
+		super::GetMyOwner()->Heartbeat();
 
 		svrChk(playerInfo.InitPlayerInformation(GetMyOwner()->GetAccountID(), GetMyOwner()->GetFacebookUID(), GetMyOwner()->GetUserName(), 0, 0, Util::Time.GetTimeUTCSec().time_since_epoch().count()));
 
@@ -941,7 +941,7 @@ namespace Svr {
 		svrChk(super::StartTransaction());
 
 		// update life time of this user entity
-		super::GetMyOwner()->HeartBit();
+		super::GetMyOwner()->Heartbeat();
 
 		m_Data.push_back(GetTestData().size(), GetTestData().data());
 		testCount = stm_TestCount.fetch_add(1, std::memory_order_relaxed);
@@ -1007,7 +1007,7 @@ namespace Svr {
 		}
 
 		// update life time of this user entity
-		super::GetMyOwner()->HeartBit();
+		super::GetMyOwner()->Heartbeat();
 
 
 		svrChk(pService->GetService<Svr::RankingServerService>()->DebugPrintALLRankingCmd(super::GetTransID(), GetFileName()));

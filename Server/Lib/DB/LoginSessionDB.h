@@ -65,8 +65,8 @@ namespace DB {
 		// Validate game server session
 		Result ValidateGameServerSession(TransactionID Sender, const PlayerID &playerID, const AuthTicket& authTicket, const EntityUID& gameEntityUID);
 
-		// Game server heartbit
-		Result GameServerHeartBit( TransactionID Sender, const PlayerID &playerID, const AuthTicket& authTicket, const EntityUID& gameEntityUID );
+		// Game server heartbeat
+		Result GameServerHeartbeat( TransactionID Sender, const PlayerID &playerID, const AuthTicket& authTicket, const EntityUID& gameEntityUID );
 
 
 	};

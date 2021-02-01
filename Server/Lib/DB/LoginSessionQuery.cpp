@@ -1,7 +1,7 @@
 
 ////////////////////////////////////////////////////////////////////////////////
 // 
-// CopyRight (c) 2013 The Braves
+// CopyRight (c) The Braves
 // 
 // Author: Kyungkun Ko
 //
@@ -25,7 +25,7 @@ namespace SF {
 
 		BRDB_DEFINE_QUERY_IMPL(QueryConnectedToGameServer);
 		BRDB_DEFINE_QUERY_IMPL(QueryValidateGameServerSession);
-		BRDB_DEFINE_QUERY_IMPL(QueryGameServerHeartBit);
+		BRDB_DEFINE_QUERY_IMPL(QueryGameServerHeartbeat);
 
 		BRDB_DEFINE_QUERY_IMPL(QueryFindPlayer);
 

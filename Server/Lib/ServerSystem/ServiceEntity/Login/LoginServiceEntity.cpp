@@ -19,6 +19,7 @@
 #include "GameConst.h"
 #include "Net/SFNetDef.h"
 #include "Net/SFNetServerUDP.h"
+#include "Net/SFNetServerTCP.h"
 #include "Entity/Entity.h"
 #include "Component/ServerComponent.h"
 #include "ServerService/ServerServiceBase.h"
@@ -81,7 +82,18 @@ namespace SF {
 			// public network
 			svrCheckPtr(m_PublicNetSocket);
 
-			svrCheckMem(m_pNetPublic = NewObject<Net::ServerMUDP>(GetHeap(), BrServer::GetInstance()->GetServerUID(), NetClass::Login));
+			if (m_PublicNetSocket->Protocol == "TCP")
+			{
+				svrCheckMem(m_pNetPublic = NewObject<Net::ServerTCP>(GetHeap(), BrServer::GetInstance()->GetServerUID(), NetClass::Login));
+			}
+			else if (m_PublicNetSocket->Protocol == "UDP")
+			{
+				svrCheckMem(m_pNetPublic = NewObject<Net::ServerUDP>(GetHeap(), BrServer::GetInstance()->GetServerUID(), NetClass::Login));
+			}
+			else // (m_PublicNetSocket->Protocol == "MRUDP")
+			{
+				svrCheckMem(m_pNetPublic = NewObject<Net::ServerMUDP>(GetHeap(), BrServer::GetInstance()->GetServerUID(), NetClass::Login));
+			}
 
 			m_pNetPublic->SetNewConnectionhandler([this](SharedPointerT<Net::Connection>& conn)
 				{

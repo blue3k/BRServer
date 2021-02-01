@@ -290,7 +290,7 @@ namespace Svr {
 		return hr;
 	}
 
-	void GamePlayerEntity::HeartBit()
+	void GamePlayerEntity::Heartbeat()
 	{
 		OnNewUserTranscation();
 	}
@@ -301,7 +301,7 @@ namespace Svr {
 		if (m_LatestUpdateTime == UTCTimeStampSec::min())
 			return ResultCode::SUCCESS_FALSE;
 
-		super::HeartBit();
+		super::Heartbeat();
 
 		SetLatestActiveTime(Util::Time.GetTimeUTCSec());
 

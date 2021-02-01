@@ -101,31 +101,31 @@ inline Transaction::State Transaction::GetState()
 	return m_state;
 }
 
-//// Get heart bit time, ms
-//uint64_t Transaction::GetHeartBitTime()
+//// Get heartbeat time, ms
+//uint64_t Transaction::GetHeartbeatTime()
 //{
-//	return m_tHeartBit;
+//	return m_tHeartbeat;
 //}
 
-// Update heart bit time, ms
-inline TimeStampMS Transaction::UpdateHeartBitTime()
+// Update heartbeat time, ms
+inline TimeStampMS Transaction::UpdateHeartbeatTime()
 {
-	m_tHeartBitTimeout = Util::Time.GetTimeMs() + Const::TRANSACTION_TIMEOUT;
-	return m_tHeartBitTimeout;
+	m_tHeartbeatTimeout = Util::Time.GetTimeMs() + Const::TRANSACTION_TIMEOUT;
+	return m_tHeartbeatTimeout;
 }
 
 // Check timeout, ms
-inline Result Transaction::CheckHeartBitTimeout()
+inline Result Transaction::CheckHeartbeatTimeout()
 {
-	if ((INT)(GetHeartBitTimeout() - Util::Time.GetTimeMs()).count() < 0)
+	if ((INT)(GetHeartbeatTimeout() - Util::Time.GetTimeMs()).count() < 0)
 		return ResultCode::SVR_TRANSACTION_TIMEOUT;
 
 	return ResultCode::SUCCESS;
 }
 
-inline TimeStampMS Transaction::GetHeartBitTimeout()
+inline TimeStampMS Transaction::GetHeartbeatTimeout()
 {
-	return m_tHeartBitTimeout;
+	return m_tHeartbeatTimeout;
 }
 
 // Timer

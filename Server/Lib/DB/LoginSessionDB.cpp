@@ -61,7 +61,7 @@ namespace SF {
 			pQuery->AuthTicket = authTicket;
 			pQuery->LoginEntityUID = (int64_t)(Context)loginEntityUID;
 			pQuery->GameEntityUID = 0;
-			//		pQuery->HeartbitTime = 0;
+			//		pQuery->HeartbeatTime = 0;
 			pQuery->Result = 0;
 
 			pQuery->SetTransaction(Sender);
@@ -163,12 +163,12 @@ namespace SF {
 			return hr;
 		}
 
-		// Game server heartbit
-		Result LoginSessionDB::GameServerHeartBit(TransactionID Sender, const PlayerID& playerID, const AuthTicket& authTicket, const EntityUID& gameEntityUID)
+		// Game server heartbeat
+		Result LoginSessionDB::GameServerHeartbeat(TransactionID Sender, const PlayerID& playerID, const AuthTicket& authTicket, const EntityUID& gameEntityUID)
 		{
 			ScopeContext hr;
 
-			UniquePtr<QueryGameServerHeartBitCmd> pQuery(new(GetHeap()) QueryGameServerHeartBitCmd(GetHeap()));
+			UniquePtr<QueryGameServerHeartbeatCmd> pQuery(new(GetHeap()) QueryGameServerHeartbeatCmd(GetHeap()));
 			dbCheckMem(pQuery);
 
 			pQuery->SetPartitioningKey((uint)playerID);

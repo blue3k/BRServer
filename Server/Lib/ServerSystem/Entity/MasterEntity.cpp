@@ -261,7 +261,7 @@ namespace Svr
 
 			if (m_pExclusiveTransaction != nullptr)
 			{
-				auto transTickTime = std::min(m_pExclusiveTransaction->GetTimerExpireTime(), m_pExclusiveTransaction->GetHeartBitTimeout());
+				auto transTickTime = std::min(m_pExclusiveTransaction->GetTimerExpireTime(), m_pExclusiveTransaction->GetHeartbeatTimeout());
 				nextTick = std::min(transTickTime, nextTick);
 			}
 		}
@@ -306,7 +306,7 @@ namespace Svr
 			svrTrace( SVR_DBGTRANS, "Trans Proc TID:{0}:{1}, Entity:{2}", pCurTran->GetTransID(), typeid(*pCurTran).name(), GetEntityUID() );
 		}
 
-		pCurTran->UpdateHeartBitTime();
+		pCurTran->UpdateHeartbeatTime();
 		if( pCurTran->IsTimerWorking() ) pCurTran->ClearTimer();
 		pCurTran->RecordTransactionHistory(pTransRes);
 		hrTem = pCurTran->ProcessTransaction(pTransRes);

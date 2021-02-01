@@ -57,40 +57,35 @@ namespace Net {
 	Result ServerMUDP::SendRaw(const sockaddr_storage& dstAddress, SharedPointerT<Message::MessageData> &pMsg)
 	{
 		Result hr = ResultCode::SUCCESS;
-		IOBUFFER_WRITE *pSendBuffer = nullptr;
+		UniquePtr<IOBUFFER_WRITE> pSendBuffer;
 
 		if (!GetSocketIO()->GetIsIORegistered())
 			return ResultCode::SUCCESS_FALSE;
+
+		netCheckPtr(pMsg);
+
+		pSendBuffer.reset(new(GetHeap()) IOBUFFER_WRITE);
+		netCheckMem(pSendBuffer.get());
+		pSendBuffer->SetupSendUDP(GetSocket(), dstAddress, std::forward<SharedPointerT<Message::MessageData>>(pMsg));
 
 		auto sendCount = GetSocketIO()->IncPendingSendCount();
 		unused(sendCount);
 		assert(sendCount >= 0);
 
-		netChkPtr(pMsg);
-
-		netMem(pSendBuffer = new(GetHeap()) IOBUFFER_WRITE);
-		pSendBuffer->SetupSendUDP(GetSocket(), dstAddress, std::forward<SharedPointerT<Message::MessageData>>(pMsg));
-
 		if (NetSystem::IsProactorSystem())
 		{
-			netChk(GetSocketIO()->WriteBuffer(pSendBuffer));
+			hr = GetSocketIO()->WriteBuffer(pSendBuffer.get());
 		}
 		else
 		{
-			netChk(GetSocketIO()->EnqueueBuffer(pSendBuffer));
+			hr = GetSocketIO()->EnqueueBuffer(pSendBuffer.get());
 		}
 		pMsg = nullptr;
-		pSendBuffer = nullptr;
 
-	Proc_End:
-
-		if (!hr)
+		if (hr)
+			pSendBuffer.release();
+		else
 			GetSocketIO()->DecPendingSendCount();
-
-		if (pSendBuffer != nullptr)
-		{
-			IHeap::Free(pSendBuffer);
-		}
 
 		return hr;
 	}
@@ -154,7 +149,7 @@ namespace Net {
 		{
 			if (pNetCtrl->msgID.GetMsgID() == PACKET_NETCTRL_CONNECT.GetMsgID()
 				|| pNetCtrl->msgID.GetMsgID() == PACKET_NETCTRL_SYNCRELIABLE.GetMsgID()
-				|| pNetCtrl->msgID.GetMsgID() == PACKET_NETCTRL_HEARTBIT.GetMsgID()
+				|| pNetCtrl->msgID.GetMsgID() == PACKET_NETCTRL_HEARTBEAT.GetMsgID()
 				|| pNetCtrl->msgID.GetMsgID() == PACKET_NETCTRL_TIMESYNC.GetMsgID())
 			{
 				// send disconnect
