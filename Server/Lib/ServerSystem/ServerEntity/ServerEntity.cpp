@@ -75,7 +75,7 @@ namespace Svr {
 			m_ServerID = (ServerID)pConn->GetRemoteInfo().PeerID;
 
 		// This connection will be updated with server entity
-		pConn->SetTickFlags(0);
+		pConn->SetTickGroup(EngineTaskTick::None);
 		pConn->SetRunningThreadID(ThreadID());
 
 	Proc_End:

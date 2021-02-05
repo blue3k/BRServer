@@ -108,7 +108,6 @@ namespace SF
 		if (!m_zkInstance.IsConnected())
 			return ResultCode::FAIL;
 
-
 		m_SessionObject = NewObject<ZookeeperSessionObject>(GetEngineHeap(), m_ServerAddresses, &m_zkInstance);
 		m_SessionObject->SetTickGroup(EngineTaskTick::AsyncTick);
 

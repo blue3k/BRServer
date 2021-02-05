@@ -99,6 +99,7 @@ namespace SF {
 				{
 					SharedPointerAtomicT<Net::Connection> pConTem;
 					pConTem = std::forward<SharedPointerT<Net::Connection>>(conn);
+					svrTrace(Debug3, "LoginServiceEntity: Received new connection");
 					m_NewConnectionQueue.Enqueue(pConTem);
 				});
 
@@ -184,11 +185,13 @@ namespace SF {
 				switch (connectionState)
 				{
 				case Net::ConnectionState::CONNECTING:
+					// We need to wait more
 					m_NewConnectionQueue.Enqueue(std::forward<SharedPointerAtomicT<Net::Connection>>(pConnAtomic));
 					break;
 				case Net::ConnectionState::CONNECTED:
 					break;
 				default:
+					svrTrace(Debug3, "LoginServiceEntity: Dropping disconnected connection");
 					pConn = std::forward <SharedPointerAtomicT<Net::Connection>>(pConnAtomic);
 					Service::ConnectionManager->RemoveConnection(pConn);
 					pConn->DisconnectNRelease("Disconnected? before handed over to LoginService");
@@ -198,6 +201,8 @@ namespace SF {
 
 				if (pConnAtomic == nullptr)
 					continue;
+
+				svrTrace(Debug3, "LoginServiceEntity: Handling connected connection");
 
 				pConn = std::forward <SharedPointerAtomicT<Net::Connection>>(pConnAtomic);
 

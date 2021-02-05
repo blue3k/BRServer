@@ -84,7 +84,7 @@ namespace Svr
 			OnRecvMessage((Net::Connection*)m_pConnection, temp);
 
 			// This connection will be updated with User entity
-			m_pConnection->SetTickFlags(0);
+			m_pConnection->SetTickGroup(EngineTaskTick::None);
 		}
 
 		return ResultCode::SUCCESS;

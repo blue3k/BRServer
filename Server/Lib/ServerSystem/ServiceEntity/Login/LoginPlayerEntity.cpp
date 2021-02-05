@@ -141,9 +141,7 @@ namespace SF {
 
 			ReleaseConnection("Terminate login player entity");
 
-			svrChk(super::ClearEntity());
-
-		Proc_End:
+			svrCheck(super::ClearEntity());
 
 			return hr;
 		}
@@ -154,11 +152,9 @@ namespace SF {
 			Result hr = ResultCode::SUCCESS;
 			auto curTime = Util::Time.GetTimeMs();
 
-			svrChk(super::TickUpdate(pAction));
+			svrCheck(super::TickUpdate(pAction));
 
-			svrChk(UpdateLoginPlayer(curTime));
-
-		Proc_End:
+			svrCheck(UpdateLoginPlayer(curTime));
 
 			return hr;
 		}
