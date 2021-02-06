@@ -18,10 +18,6 @@
 
 
 namespace SF {
-namespace Svr
-{
-	class Entity;
-	class EntityTable;
 	
 	//////////////////////////////////////////////////////////////////////////
 	//
@@ -48,8 +44,7 @@ namespace Svr
 #include "BrServerUtil.inl"
 
 
-}; // namespace SvrUtil
-}; // namespace SF
+} // namespace SF
 
 
 

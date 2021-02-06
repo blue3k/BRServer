@@ -30,7 +30,7 @@ namespace SF {
 		{\
 		Result hr = ResultCode::SUCCESS;\
 		if( IsClosed() ) return ResultCode::SUCCESS;\
-		PolicyClass _netPolicy(GetConnection());\
+		PolicyClass _netPolicy(GetRemoteEndpoint());\
 		svrChk( _netPolicy.MessageName( GetMessageContext(), hrRes ) );\
 	Proc_End:\
 		super::OnCloseTransaction(hrRes);\
@@ -46,7 +46,7 @@ namespace SF {
 		Result hr = ResultCode::SUCCESS;\
 		if( IsClosed() ) return ResultCode::SUCCESS;\
 		if(GetOwnerEntity() != nullptr) {\
-			PolicyClass _netPolicy(GetConnection());\
+			PolicyClass _netPolicy(GetRemoteEndpoint());\
 			svrChk( _netPolicy.MessageName( GetMessageContext(), hrRes, ##__VA_ARGS__ ) );\
 		}\
 	Proc_End:\
@@ -60,7 +60,7 @@ namespace SF {
 	virtual Result OnCloseTransaction( Result hrRes ) override\
 		{\
 		Result hr = ResultCode::SUCCESS;\
-		PolicyClass _netPolicy(GetConnection());\
+		PolicyClass _netPolicy(GetRemoteEndpoint());\
 		svrChk( _netPolicy.MessageName( GetTransactionID(), hrRes ) );\
 		Proc_End:\
 		super::OnCloseTransaction(hrRes);\
@@ -73,7 +73,7 @@ namespace SF {
 	virtual Result OnCloseTransaction( Result hrRes ) override\
 		{\
 		Result hr = ResultCode::SUCCESS;\
-		PolicyClass _netPolicy(GetConnection());\
+		PolicyClass _netPolicy(GetRemoteEndpoint());\
 		svrChk( _netPolicy.MessageName( GetTransactionID(), hrRes, ##__VA_ARGS__ ) );\
 		Proc_End:\
 		super::OnCloseTransaction(hrRes);\
@@ -87,7 +87,7 @@ namespace SF {
 	virtual Result OnCloseTransaction( Result hrRes ) override\
 		{\
 		Result hr = ResultCode::SUCCESS;\
-		PolicyClass _netPolicy(super::GetConnection());\
+		PolicyClass _netPolicy(super::GetRemoteEndpoint());\
 		svrChk( _netPolicy.MessageName( routeContext, GetTransactionID(), hrRes ) );\
 		Proc_End:\
 		super::OnCloseTransaction(hrRes);\
@@ -99,7 +99,7 @@ namespace SF {
 	virtual Result OnCloseTransaction( Result hrRes ) override\
 		{\
 		Result hr = ResultCode::SUCCESS;\
-		PolicyClass _netPolicy(super::GetConnection());\
+		PolicyClass _netPolicy(super::GetRemoteEndpoint());\
 		svrChk( _netPolicy.MessageName( routeContext, super::GetTransactionID(), hrRes, ##__VA_ARGS__ ) );\
 		Proc_End:\
 		super::OnCloseTransaction(hrRes);\

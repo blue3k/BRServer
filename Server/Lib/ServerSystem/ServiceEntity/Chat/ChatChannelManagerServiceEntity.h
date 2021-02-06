@@ -32,78 +32,69 @@
 #include "PerformanceCounter/PerformanceCounter.h"
 
 namespace SF {
-namespace Svr {
+	namespace Svr {
 
-	class Entity;
-	class ServerEntity;
-	class GameChatChannelEntity;
-
-
-	///////////////////////////////////////////////////////////////////////////////////////////////////////
-	//
-	//	ChatChannelManagerServiceEntity class
-	//
-
-	class ChatChannelManagerServiceEntity : public LoadbalanceClusterServiceEntity
-	{
-	public:
-
-		typedef LoadbalanceClusterServiceEntity super;
-
-		enum { ComponentID = ServerComponentID_ChatChannelManagerService };
-
-	private:
-
-		PerformanceCounterRaw<uint64_t> m_ChatChannelCount;
-
-	protected:
+		class Entity;
+		class ServerEntity;
+		class GameChatChannelEntity;
 
 
-	public:
-
-		ChatChannelManagerServiceEntity(GameID gameID, ClusterMembership initialMembership = ClusterMembership::Slave);
-		~ChatChannelManagerServiceEntity();
-
-
-		//////////////////////////////////////////////////////////////////////////
+		///////////////////////////////////////////////////////////////////////////////////////////////////////
 		//
-		//	Entity operations
+		//	ChatChannelManagerServiceEntity class
 		//
 
-		virtual Result InitializeEntity(EntityID newEntityID) override;
+		class ChatChannelManagerServiceEntity : public LoadbalanceClusterServiceEntity
+		{
+		public:
 
-		virtual Result RegisterServiceMessageHandler(ServerEntity *pServerEntity) override;
+			typedef LoadbalanceClusterServiceEntity super;
 
-		//////////////////////////////////////////////////////////////////////////
-		//
-		//	Game ChatChannel operations
-		//
+			enum { ComponentID = ServerComponentID_ChatChannelManagerService };
 
-		// Add new Entity
-		virtual Result CreateChatChannel( const StringCrc64& name, const PlayerInformation& creator, EntityUID playerUID, ServerEntity *pServerEntity, EntityUID &ChatChannelUID );
+		private:
 
-		virtual Result FindChatChannel(const StringCrc64& name, EntityUID &ChatChannelUID);
+			PerformanceCounterRaw<uint64_t> m_ChatChannelCount;
 
-		// Called when a game ChatChannel is deleted
-		virtual Result FreeChatChannel( EntityUID ChatChannelUID );
-
-		// Initialize server component
-		Result InitializeComponent() { return ResultCode::SUCCESS; }
-		// Terminate server component
-		void TerminateComponent() {  }
+		protected:
 
 
-	};
+		public:
+
+			ChatChannelManagerServiceEntity(GameID gameID, ClusterMembership initialMembership = ClusterMembership::Slave);
+			~ChatChannelManagerServiceEntity();
 
 
+			//////////////////////////////////////////////////////////////////////////
+			//
+			//	Entity operations
+			//
+
+			virtual Result InitializeEntity(EntityID newEntityID) override;
+
+			virtual Result RegisterServiceMessageHandler() override;
+
+			//////////////////////////////////////////////////////////////////////////
+			//
+			//	Game ChatChannel operations
+			//
+
+			// Add new Entity
+			virtual Result CreateChatChannel(const StringCrc64& name, const PlayerInformation& creator, EntityUID playerUID, const SharedPointerT<MessageEndpoint>& remoteEndpoint, EntityUID& ChatChannelUID);
+
+			virtual Result FindChatChannel(const StringCrc64& name, EntityUID& ChatChannelUID);
+
+			// Called when a game ChatChannel is deleted
+			virtual Result FreeChatChannel(EntityUID ChatChannelUID);
+
+			// Initialize server component
+			Result InitializeComponent() { return ResultCode::SUCCESS; }
+			// Terminate server component
+			void TerminateComponent() {  }
 
 
+		};
 
-
-
-}; // namespace Svr
-}; // namespace SF
-
-
-
+	} // namespace Svr
+} // namespace SF
 

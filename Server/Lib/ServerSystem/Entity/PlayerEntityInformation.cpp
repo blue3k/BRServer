@@ -35,7 +35,6 @@ namespace Svr {
 	PlayerEntityInformation::PlayerEntityInformation( const PlayerInformation& player )
 		:m_PlayerInfo(player)
 		,m_LatestServerUpTime(UTCTimeStampSec::min())
-		,m_ServerEntity(nullptr)
 		,m_PlayerEntityUID(0)
 		,m_IsActivePlayer(true)
 	{
@@ -47,17 +46,14 @@ namespace Svr {
 
 	
 	// Set game server entity
-	Result PlayerEntityInformation::SetServerEntity( ServerEntity* pServerEntity, EntityUID playerUID )
+	Result PlayerEntityInformation::SetRemoteEndpoint(const SharedPointerT<MessageEndpoint>& remoteEndpoint, EntityUID playerUID )
 	{
-		if( pServerEntity )
-			m_LatestServerUpTime = pServerEntity->GetServerUpTime();
-
-		m_ServerEntity = pServerEntity;
+		m_RemoteEndpoint = remoteEndpoint;
 
 		m_PlayerEntityUID = playerUID;
 
 		// Make the play inactive
-		if( m_ServerEntity == nullptr || m_PlayerEntityUID.UID == 0 )
+		if( m_PlayerEntityUID.UID == 0 )
 			m_IsActivePlayer = false;
 
 		return ResultCode::SUCCESS;

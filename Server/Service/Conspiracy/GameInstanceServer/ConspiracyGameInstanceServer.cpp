@@ -51,7 +51,7 @@ int main(int numArg, const char* argc[])
 	SharedPointerT<ConspiracyGameInstanceServer::GameInstanceServer> pServerInstance;
 
 	svrChk(Svr::Service::ServicePrepare());
-	SF::Svr::InitializeEngineForServer();
+	SF::InitializeEngineForServer();
 
 	pServerInstance = SharedPointerT<ConspiracyGameInstanceServer::GameInstanceServer>(new(GetSystemHeap()) ConspiracyGameInstanceServer::GameInstanceServer );
 
@@ -67,7 +67,7 @@ Proc_End:
 		pServerInstance = SharedPointerT<ConspiracyGameInstanceServer::GameInstanceServer>();
 	}
 
-	SF::Svr::DeinitializeEngine();
+	SF::DeinitializeEngine();
 
 	return 0;
 }

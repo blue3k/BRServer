@@ -41,7 +41,6 @@ namespace Svr {
 			:super( memMgr, pIMsg )
 			,m_PlayerID(0)
 		{
-			super::m_WorkOnServerEntity = false;
 		}
 		
 
@@ -62,8 +61,8 @@ namespace Svr {
 
 
 
-}; // Svr
-}; // SF
+} // Svr
+} // SF
 
 
 

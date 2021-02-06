@@ -56,7 +56,6 @@ namespace SF {
 			, m_state(STATE_WAITSTART)
 			//, m_TimerAction(nullptr)
 			, m_CurrentHistoryIdx(0)
-			, m_ServerEntity(nullptr)
 			, m_DynamicAction(m_Heap)
 			, m_SubActionManager(m_Heap)
 			, m_Handlers(m_Heap)
@@ -205,17 +204,6 @@ namespace SF {
 		}
 
 
-		///////////////////////////////////////////////////////////
-		// Helper functions
-
-		const SharedPointerAtomicT<Net::Connection>& Transaction::GetServerEntityConnection(ServerEntity* pServerEntity)
-		{
-			static const SharedPointerAtomicT<Net::Connection> Dummy;
-			if (pServerEntity == nullptr)
-				return Dummy;
-
-			return pServerEntity->GetConnection();
-		}
 
 
 		///////////////////////////////////////////////////////////////////////////////////////////////////////

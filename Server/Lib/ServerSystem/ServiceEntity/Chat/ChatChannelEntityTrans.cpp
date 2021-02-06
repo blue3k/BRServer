@@ -1,6 +1,6 @@
 ////////////////////////////////////////////////////////////////////////////////
 // 
-// CopyRight (c) 2013 The Braves
+// CopyRight (c) The Braves
 // 
 // Author : KyungKun Ko
 //
@@ -57,14 +57,12 @@ namespace Svr {
 		auto* pOwner = (ChatChannelEntity*)GetOwnerEntity();
 		ServerServiceInformation *pService = nullptr;
 
-		svrChk(Transaction::StartTransaction() );
+		svrCheck(Transaction::StartTransaction());
 
-		svrChk(Service::ClusterManager->GetRandomService(nullptr, ClusterID::ChatChannelManager, pService));
-		svrChk(pService->GetService<Svr::ChatChannelManagerService>()->ChatChannelDeletedC2SEvt(pOwner->GetEntityUID(), 0));
+		svrCheck(Service::ClusterManager->GetRandomService(nullptr, ClusterID::ChatChannelManager, pService));
+		svrCheck(pService->GetService<ChatChannelManagerService>()->ChatChannelDeletedC2SEvt(pOwner->GetEntityUID(), 0));
 
 		Service::EntityManager->RemoveEntity( pOwner );
-
-	Proc_End:
 
 		return hr;
 	}
@@ -76,48 +74,45 @@ namespace Svr {
 	Result ChatChannelTransJoin::StartTransaction()
 	{
 		Result hr = ResultCode::SUCCESS;
-		ChatChannelPlayer *pPlayer = nullptr;
+		UniquePtr<ChatChannelPlayer> pPlayer;
 
 		m_LeaderID = 0;
 
-		svrChk( super::StartTransaction() );
+		svrCheck( super::StartTransaction() );
 
 		if (StrUtil::StringCompair(GetMyOwner()->GetPasscode(), -1, GetPasscode(), -1))
-			svrChkClose(ResultCode::INVALID_PASSWORD);
+			svrCheckClose(ResultCode::INVALID_PASSWORD);
 
-		if(GetMyOwner()->FindPlayer(GetJoiningPlayer().PlayerID, pPlayer))
+		ChatChannelPlayer* pFound{};
+		if(GetMyOwner()->FindPlayer(GetJoiningPlayer().PlayerID, pFound))
 		{
 			// This should be rejoin by relogging
-			Policy::NetSvrPolicyChatChannel *pPolicy = nullptr;
+			NetSvrPolicyChatChannel *pPolicy = nullptr;
 
-			svrChk( pPlayer->SetServerEntity( GetServerEntity<Svr::ServerEntity>(), GetRouteContext().GetFrom()) );
+			svrCheck(pFound->SetRemoteEndpoint(GetRemoteEndpoint(), GetRouteContext().GetFrom()));
 
-			Policy::NetSvrPolicyChatChannel policy(pPlayer->GetConnection());
+			NetSvrPolicyChatChannel policy(pFound->GetRemoteEndpoint());
 
 			// Send others to joined
 			GetMyOwner()->ForeachPlayer( [&]( ChatChannelPlayer* pOtherPlayer )->Result {
-				if( pPlayer != pOtherPlayer )
+				if(pFound != pOtherPlayer )
 				{
-					policy.PlayerJoinedS2CEvt( pPlayer->GetRouteContext(GetOwnerEntityUID()), pOtherPlayer->GetPlayerInformation() );
+					policy.PlayerJoinedS2CEvt(pFound->GetRouteContext(GetOwnerEntityUID()), pOtherPlayer->GetPlayerInformation());
 				}
 				return ResultCode::SUCCESS;
 			});
-
-
-			pPlayer = nullptr;
 		}
 		else
 		{
-			svrMem( pPlayer = new(GetHeap()) ChatChannelPlayer( GetJoiningPlayer() ) );
-			svrChk( pPlayer->SetServerEntity( GetServerEntity<ServerEntity>(), GetRouteContext().GetFrom()) );
-			svrChk( GetMyOwner()->JoinPlayer( pPlayer, false ) );
+			pPlayer.reset(new(GetHeap()) ChatChannelPlayer(GetJoiningPlayer()));
+			svrCheckMem(pPlayer);
+			svrCheck( pPlayer->SetRemoteEndpoint( GetRemoteEndpoint(), GetRouteContext().GetFrom()) );
+			svrCheck( GetMyOwner()->JoinPlayer( pPlayer.get(), false ) );
+			pPlayer.release();
 		}
 
 		m_LeaderID = GetMyOwner()->GetLeaderID();
 
-	Proc_End:
-
-		Util::SafeDelete( pPlayer );
 		CloseTransaction( hr );
 
 		return hr;
@@ -127,18 +122,18 @@ namespace Svr {
 	// Start Transaction
 	Result ChatChannelTransLeave::StartTransaction()
 	{
-		Result hr = ResultCode::SUCCESS;
-		ChatChannelPlayer *pPlayer = nullptr;
+		ChatChannelPlayer* pPlayer = nullptr;
+		ScopeContext hr([&pPlayer](Result hr)
+			{
+				if (pPlayer)
+					delete pPlayer;
+			});
 
-		svrChk( super::StartTransaction() );
+		svrCheck( super::StartTransaction() );
 
-		svrChk( GetMyOwner()->FindPlayer( GetPlayerID(), pPlayer ) );
-		svrChk( GetMyOwner()->LeavePlayer( pPlayer, false ) );
-
-	Proc_End:
-
-		Util::SafeDelete( pPlayer );
-		CloseTransaction( hr );
+		svrCheck( GetMyOwner()->FindPlayer( GetPlayerID(), pPlayer ) );
+		svrCheck( GetMyOwner()->LeavePlayer( pPlayer, false ) );
+		pPlayer = nullptr;
 
 		return hr;
 	}
@@ -155,13 +150,14 @@ namespace Svr {
 
 		svrChkClose( GetMyOwner()->FindPlayer( GetPlayerToKick(), pPlayer ) );
 
-		GetMyOwner()->ForeachPlayerSvrChatChannel( [&]( ChatChannelPlayer* pOtherPlayer, Policy::NetSvrPolicyChatChannel &pPolicy )->Result
+		GetMyOwner()->ForeachPlayerSvrChatChannel( [&]( ChatChannelPlayer* pOtherPlayer, NetSvrPolicyChatChannel &pPolicy )->Result
 		{
 			pPolicy.PlayerKickedS2CEvt( pOtherPlayer->GetRouteContext(GetOwnerEntityUID()), GetPlayerToKick() );
 			return ResultCode::SUCCESS;
 		});
 
 		svrChk( GetMyOwner()->LeavePlayer( pPlayer, true ) );
+		pPlayer = nullptr;
 
 	Proc_End:
 
@@ -183,7 +179,7 @@ namespace Svr {
 		svrChk( GetMyOwner()->FindPlayer( GetPlayerID(), pPlayer ) );
 
 
-		GetMyOwner()->ForeachPlayerSvrChatChannel( [&]( ChatChannelPlayer* pOtherPlayer, Policy::NetSvrPolicyChatChannel &pPolicy )->Result {
+		GetMyOwner()->ForeachPlayerSvrChatChannel( [&]( ChatChannelPlayer* pOtherPlayer, NetSvrPolicyChatChannel &pPolicy )->Result {
 				pPolicy.ChatMessageS2CEvt( pOtherPlayer->GetRouteContext(GetOwnerEntityUID()), GetPlayerID(), pPlayer->GetPlayerName(), GetChatMessage() );
 				return ResultCode::SUCCESS;
 			});
@@ -197,6 +193,6 @@ namespace Svr {
 	
 
 
-};// namespace Svr 
-};// namespace SF 
+}// namespace Svr 
+}// namespace SF 
 

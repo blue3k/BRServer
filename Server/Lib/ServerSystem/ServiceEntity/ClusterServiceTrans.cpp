@@ -140,7 +140,7 @@ namespace Svr {
 	//	svrTrace( SVR_CLUSTER, "Cluster memberlist query Entity:{0}, ClusterID:{1},Type:{2},Membership:{3}", GetOwnerEntityUID(), GetMyOwner()->GetClusterID(), GetMyOwner()->GetClusterType(), GetMyOwner()->GetClusterMembership() );
 
 	//	// 2. Get service entity list in the cluster
-	//	svrChk(Policy::NetPolicyClusterServer(pMasterServerEntity->GetConnection()).JoinClusterCmd( RouteContext(GetOwnerEntityUID(),clusterManagerMasterUID), GetTransID(), 0,
+	//	svrChk(NetPolicyClusterServer(pMasterServerEntity->GetConnection()).JoinClusterCmd( RouteContext(GetOwnerEntityUID(),clusterManagerMasterUID), GetTransID(), 0,
 	//		GetOwnerEntityUID(), netPrivate->GetNetClass(), netPrivate->GetLocalAddress(),
 	//		GetMyOwner()->GetClusterID(), GetMyOwner()->GetClusterType(), membership));
 
@@ -194,8 +194,10 @@ namespace Svr {
 
 	Result ClusterInitializationTrans::RequestDataSync()
 	{
-		Result hr = ResultCode::SUCCESS;
-		ServerEntity *pServerEntity = nullptr;
+		ScopeContext hr([this](Result hr)
+			{
+				SetFailRetryTimer(hr);
+			});
 
 		if( m_currentMaster.UID.UID == 0 )
 		{
@@ -207,35 +209,30 @@ namespace Svr {
 
 			// 4. Request full data if replica
 			m_Step = Step_RequestDataSync;
-			svrChk( Service::ServerEntityManager->GetServerEntity( m_currentMaster.UID.GetServerID(), pServerEntity ) );
+			//svrChk( Service::ServerEntityManager->GetServerEntity( m_currentMaster.UID.GetServerID(), pServerEntity ) );
+			auto pEndpoint = Service::MessageEndpointManager->GetEndpoint(m_currentMaster.UID);
 
-			svrChk(Policy::NetPolicyClusterServer(pServerEntity->GetConnection()).RequestDataSyncCmd( 
+			svrCheck(NetPolicyClusterServer(pEndpoint).RequestDataSyncCmd(
 				RouteContext(GetMyOwner()->GetEntityUID(), m_currentMaster.UID), GetTransID(), 0,
 				GetMyOwner()->GetClusterID() ) );
 		}
-
-	Proc_End:
-
-		SetFailRetryTimer(hr);
 
 		return hr;
 	}
 
 	Result ClusterInitializationTrans::OnClusterDataSync(TransactionResult* pRes)
 	{
-		Result hr = ResultCode::SUCCESS;
-		//Message::ClusterServer::GetClusterMemberListRes msgRes;
+		ScopeContext hr([this](Result hr)
+			{
+				SetFailRetryTimer(hr);
+			});
 
-		svrChk(pRes->GetResult());
+		svrCheck(pRes->GetResult());
 
 		//svrChk( msgRes.ParseMessage( ((MessageResult*)pRes)->GetMessage() ) );
 		svrTrace( SVR_CLUSTER, "Cluster RequestDataSync Done Entity:{0}, ClusterID:{1},Type:{2},Membership:{3}", GetOwnerEntityUID(), GetMyOwner()->GetClusterID(), GetMyOwner()->GetClusterType(), GetMyOwner()->GetClusterMembership() );
 
 		CloseTransaction( hr );
-
-	Proc_End:
-
-		SetFailRetryTimer(hr);
 
 		return ResultCode::SUCCESS;
 	}
@@ -278,23 +275,22 @@ namespace Svr {
 	// Start Transaction
 	Result ClusterInitializationTrans::StartTransaction()
 	{
-		Result hr = ResultCode::SUCCESS;
+		ScopeContext hr([this](Result hr)
+			{
+				SetFailRetryTimer(hr);
+			});
 
 		m_hr = ResultCode::SUCCESS;
 
-		svrChk( super::StartTransaction() );
+		svrCheck( super::StartTransaction() );
 
 		BrServer::GetInstance()->GetNumberServicesToWait().fetch_add(1, std::memory_order_relaxed);
 
 		svrTrace( SVR_CLUSTER, "Cluster Initialization Entity:{0}:{1}, ClusterID:{2},Membership:{3}", GetOwnerEntityUID(), GetMyOwner()->GetClusterID(), GetMyOwner()->GetClusterType(), GetMyOwner()->GetClusterMembership() );
 
-		svrChk(RequestDataSync());
+		svrCheck(RequestDataSync());
 		//svrChk(JoinCluster());
 		//svrChk( GetClusterMemberList() );
-
-	Proc_End:
-
-		SetFailRetryTimer(hr);
 
 		return ResultCode::SUCCESS;
 	}
@@ -303,7 +299,7 @@ namespace Svr {
 	{
 		m_hr = hrRes;
 
-		if ((hrRes))
+		if (hrRes)
 			m_Step = Step_Done;
 
 		GetMyOwner()->SetInitialized((hrRes));

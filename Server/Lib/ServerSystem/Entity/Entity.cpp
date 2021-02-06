@@ -193,7 +193,7 @@ namespace Svr
 	}
 
 	// Process Message and release message after all processed
-	Result Entity::ProcessMessage(ServerEntity* pServerEntity, Net::Connection *pCon, MessageDataPtr &pMsg)
+	Result Entity::ProcessMessage(const SharedPointerT<MessageEndpoint>& remoteEndpoint, MessageDataPtr &pMsg)
 	{
 		Result hr = ResultCode::SUCCESS, hrRes;
 		EntityID entityID; // entity ID to route
@@ -218,7 +218,7 @@ namespace Svr
 		case Message::MSGTYPE_COMMAND:
 		case Message::MSGTYPE_EVENT:
 		{
-			if (!(GetMessageHandlerTable().HandleMessage<TransactionPtr&>(pCon, pMsg, pNewTrans)))
+			if (!(GetMessageHandlerTable().HandleMessage<TransactionPtr&>(pMsg, pNewTrans)))
 			{
 				// If it couldn't find a handler in server entity handlers, looking for it in server loopback entity
 				MessageHandlerType handler;
@@ -231,7 +231,7 @@ namespace Svr
 					svrErr(ResultCode::SVR_NO_MESSAGE_HANDLER);
 				}
 
-				svrChk(handler(pCon, pMsg, pNewTrans));
+				svrChk(handler(pMsg, pNewTrans));
 			}
 			break;
 		}
@@ -244,7 +244,7 @@ namespace Svr
 
 		if (pNewTrans != nullptr)
 		{
-			pNewTrans->SetServerEntity(pServerEntity);
+			pNewTrans->SetRemoteEndpoint(remoteEndpoint);
 
 			if (pNewTrans->GetOwnerEntity() == nullptr)
 			{
@@ -300,7 +300,7 @@ namespace Svr
 				svrTrace(Error, "Transaction initialization is failed {0} Entity:{1}, MsgID:{2}", typeid(*this).name(), GetEntityUID(), pMsgHdr->msgID);
 				if (pMsgHdr->msgID.IDs.Type == Message::MSGTYPE_COMMAND)
 				{
-					Policy::NetSvrPolicyServer(SharedPointerT<Net::Connection>(pCon)).GenericFailureRes(pNewTrans->GetMessageRouteContext().GetSwaped(), pNewTrans->GetParentTransID(), hr);
+					NetSvrPolicyServer(remoteEndpoint).GenericFailureRes(pNewTrans->GetMessageRouteContext().GetSwaped(), pNewTrans->GetParentTransID(), hr);
 				}
 			}
 

@@ -1,6 +1,6 @@
 ﻿////////////////////////////////////////////////////////////////////////////////
 // 
-// CopyRight (c) 2016 Kyungkun Ko
+// CopyRight (c) Kyungkun Ko
 // 
 // Author : Generated
 // 
@@ -20,19 +20,16 @@
 
 namespace SF
 {
- 	namespace Svr
+ 	class PartyMatchingService : public ServerServiceBase
 	{
- 		class PartyMatchingService : public ServerServiceBase
-		{
- 			public:
-			// Constructor
-			PartyMatchingService ( ServerServiceInformation* pService );
+ 		public:
+		// Constructor
+		PartyMatchingService ( ServerServiceInformation* pService );
 
 
-		}; // class PartyMatchingService : public ServerServiceBase
+	}; // class PartyMatchingService : public ServerServiceBase
 
 
-	}; // namespace Svr
 }; // namespace SF
 
 

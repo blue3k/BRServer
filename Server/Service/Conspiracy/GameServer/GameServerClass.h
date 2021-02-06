@@ -94,25 +94,15 @@ namespace GameServer
 
 
 		// Initialize private Network
-		virtual Result InitializeNetPrivate() override;
+		virtual Result InitializeEntities() override;
 
 		// Close Private Network
-		virtual Result CloseNetPrivate() override;
+		virtual Result CloseEntities() override;
 
 
 		// create remote entity by class
-		virtual Result CreateServerEntity( NetClass netClass, Svr::ServerEntity* &pServerEntity ) override;
+		virtual Result CreateServerEntity( Svr::ServerEntity* &pServerEntity ) override;
 
-
-		//Result InitializeAccountDB();
-		//Result InitializeGameDB(ServerConfig::DBCluster* pDBClusterCfg);
-
-
-		// Initialize private Network
-		virtual Result InitializeNetPublic() override;
-
-		// Close Public Network
-		virtual Result CloseNetPublic() override;
 
 		// Run the task
 		virtual Result TickUpdate(TimerAction *pAction = nullptr) override;

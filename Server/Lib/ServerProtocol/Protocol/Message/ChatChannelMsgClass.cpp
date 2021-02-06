@@ -43,6 +43,7 @@ namespace SF
 
 				protocolCheck(*input >> m_RouteContext);
 				protocolCheck(*input >> m_TransactionID);
+				protocolCheck(input->Read(ArrayLen));
 				protocolCheck(input->ReadLink(m_Passcode, ArrayLen));
 				protocolCheck(*input >> m_JoiningPlayer);
 
@@ -1097,6 +1098,7 @@ namespace SF
 
 				protocolCheck(*input >> m_RouteContext);
 				protocolCheck(*input >> m_SenderID);
+				protocolCheck(input->Read(ArrayLen));
 				protocolCheck(input->ReadLink(m_ChatMessage, ArrayLen));
 
 				return hr;
@@ -1203,7 +1205,9 @@ namespace SF
 
 				protocolCheck(*input >> m_RouteContext);
 				protocolCheck(*input >> m_SenderID);
+				protocolCheck(input->Read(ArrayLen));
 				protocolCheck(input->ReadLink(m_SenderName, ArrayLen));
+				protocolCheck(input->Read(ArrayLen));
 				protocolCheck(input->ReadLink(m_ChatMessage, ArrayLen));
 
 				return hr;

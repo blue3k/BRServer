@@ -1,10 +1,10 @@
 ﻿////////////////////////////////////////////////////////////////////////////////
 // 
-// CopyRight (c) 2016 Kyungkun Ko
+// CopyRight (c) Kyungkun Ko
 // 
 // Author : Generated
 // 
-// Description : GameParty Message debug implementations
+// Description : GameParty Server service
 // 
 ////////////////////////////////////////////////////////////////////////////////
 
@@ -12,10 +12,9 @@
 #include "ServerProtocolPCH.h"
 #include "SFTypedefs.h"
 #include "Protocol/SFProtocol.h"
-#include "ServerEntity/ServerEntity.h"
+#include "Net/SFMessageEndpoint.h"
 #include "Server/BrServer.h"
 #include "Server/BrServerUtil.h"
-#include "Entity/EntityInformation.h"
 #include "Protocol/ServerService/GamePartyService.h"
 #include "SvrTrace.h"
 
@@ -23,94 +22,91 @@
 
 namespace SF
 {
- 	namespace Svr
+ 	GamePartyService::GamePartyService( ServerServiceInformation* pService)
+		: ServerServiceBase(pService)
 	{
- 		GamePartyService::GamePartyService( ServerServiceInformation* pService)
-			: ServerServiceBase(pService)
-		{
-		}
+	}
 
 
-		// Cmd: Join party
-		Result GamePartyService::JoinPartyCmd( const uint64_t &InTransactionID, const PlayerID &InInviterID, const PlayerInformation &InInvitedPlayer )
-		{
- 			ScopeContext hr;
+	// Cmd: Join party
+	Result GamePartyService::JoinPartyCmd( const uint64_t &InTransactionID, const PlayerID &InInviterID, const PlayerInformation &InInvitedPlayer )
+	{
+ 		ScopeContext hr;
 
-			RouteContext InRouteContext( EntityUID(GetMyServerID(),TransactionID(InTransactionID).GetEntityID()), GetServiceEntityUID() );
-			svrCheck(Policy::NetPolicyGameParty(GetConnection()).JoinPartyCmd( InRouteContext, InTransactionID, InInviterID, InInvitedPlayer ) );
+		RouteContext InRouteContext( EntityUID(GetMyServerID(),TransactionID(InTransactionID).GetEntityID()), GetServiceEntityUID() );
+		svrCheck(NetPolicyGameParty(GetTargetEndpoint()).JoinPartyCmd( InRouteContext, InTransactionID, InInviterID, InInvitedPlayer ) );
 
-			return hr;
+		return hr;
 
-		}; // Result GamePartyService::JoinPartyCmd( const uint64_t &InTransactionID, const PlayerID &InInviterID, const PlayerInformation &InInvitedPlayer )
-		// Cmd: Event for player left.
-		Result GamePartyService::LeavePartyCmd( const uint64_t &InTransactionID, const PlayerID &InPlayerID )
-		{
- 			ScopeContext hr;
+	}; // Result GamePartyService::JoinPartyCmd( const uint64_t &InTransactionID, const PlayerID &InInviterID, const PlayerInformation &InInvitedPlayer )
+	// Cmd: Event for player left.
+	Result GamePartyService::LeavePartyCmd( const uint64_t &InTransactionID, const PlayerID &InPlayerID )
+	{
+ 		ScopeContext hr;
 
-			RouteContext InRouteContext( EntityUID(GetMyServerID(),TransactionID(InTransactionID).GetEntityID()), GetServiceEntityUID() );
-			svrCheck(Policy::NetPolicyGameParty(GetConnection()).LeavePartyCmd( InRouteContext, InTransactionID, InPlayerID ) );
+		RouteContext InRouteContext( EntityUID(GetMyServerID(),TransactionID(InTransactionID).GetEntityID()), GetServiceEntityUID() );
+		svrCheck(NetPolicyGameParty(GetTargetEndpoint()).LeavePartyCmd( InRouteContext, InTransactionID, InPlayerID ) );
 
-			return hr;
+		return hr;
 
-		}; // Result GamePartyService::LeavePartyCmd( const uint64_t &InTransactionID, const PlayerID &InPlayerID )
-		// Cmd: Kick player
-		Result GamePartyService::KickPlayerCmd( const uint64_t &InTransactionID, const PlayerID &InPlayerID, const PlayerID &InPlayerToKick )
-		{
- 			ScopeContext hr;
+	}; // Result GamePartyService::LeavePartyCmd( const uint64_t &InTransactionID, const PlayerID &InPlayerID )
+	// Cmd: Kick player
+	Result GamePartyService::KickPlayerCmd( const uint64_t &InTransactionID, const PlayerID &InPlayerID, const PlayerID &InPlayerToKick )
+	{
+ 		ScopeContext hr;
 
-			RouteContext InRouteContext( EntityUID(GetMyServerID(),TransactionID(InTransactionID).GetEntityID()), GetServiceEntityUID() );
-			svrCheck(Policy::NetPolicyGameParty(GetConnection()).KickPlayerCmd( InRouteContext, InTransactionID, InPlayerID, InPlayerToKick ) );
+		RouteContext InRouteContext( EntityUID(GetMyServerID(),TransactionID(InTransactionID).GetEntityID()), GetServiceEntityUID() );
+		svrCheck(NetPolicyGameParty(GetTargetEndpoint()).KickPlayerCmd( InRouteContext, InTransactionID, InPlayerID, InPlayerToKick ) );
 
-			return hr;
+		return hr;
 
-		}; // Result GamePartyService::KickPlayerCmd( const uint64_t &InTransactionID, const PlayerID &InPlayerID, const PlayerID &InPlayerToKick )
-		// C2S: Send chat message to server.
-		Result GamePartyService::ChatMessageC2SEvt( const EntityID &InSenderEntityID, const PlayerID &InPlayerID, const char* InChatMessage )
-		{
- 			ScopeContext hr;
+	}; // Result GamePartyService::KickPlayerCmd( const uint64_t &InTransactionID, const PlayerID &InPlayerID, const PlayerID &InPlayerToKick )
+	// C2S: Send chat message to server.
+	Result GamePartyService::ChatMessageC2SEvt( const EntityID &InSenderEntityID, const PlayerID &InPlayerID, const char* InChatMessage )
+	{
+ 		ScopeContext hr;
 
-			RouteContext InRouteContext( EntityUID(GetMyServerID(),InSenderEntityID), GetServiceEntityUID() );
-			svrCheck(Policy::NetPolicyGameParty(GetConnection()).ChatMessageC2SEvt( InRouteContext, InPlayerID, InChatMessage ) );
+		RouteContext InRouteContext( EntityUID(GetMyServerID(),InSenderEntityID), GetServiceEntityUID() );
+		svrCheck(NetPolicyGameParty(GetTargetEndpoint()).ChatMessageC2SEvt( InRouteContext, InPlayerID, InChatMessage ) );
 
-			return hr;
+		return hr;
 
-		}; // Result GamePartyService::ChatMessageC2SEvt( const EntityID &InSenderEntityID, const PlayerID &InPlayerID, const char* InChatMessage )
-		// C2S: Quick Chatting message
-		Result GamePartyService::QuickChatMessageC2SEvt( const EntityID &InSenderEntityID, const PlayerID &InPlayerID, const uint32_t &InQuickChatID )
-		{
- 			ScopeContext hr;
+	}; // Result GamePartyService::ChatMessageC2SEvt( const EntityID &InSenderEntityID, const PlayerID &InPlayerID, const char* InChatMessage )
+	// C2S: Quick Chatting message
+	Result GamePartyService::QuickChatMessageC2SEvt( const EntityID &InSenderEntityID, const PlayerID &InPlayerID, const uint32_t &InQuickChatID )
+	{
+ 		ScopeContext hr;
 
-			RouteContext InRouteContext( EntityUID(GetMyServerID(),InSenderEntityID), GetServiceEntityUID() );
-			svrCheck(Policy::NetPolicyGameParty(GetConnection()).QuickChatMessageC2SEvt( InRouteContext, InPlayerID, InQuickChatID ) );
+		RouteContext InRouteContext( EntityUID(GetMyServerID(),InSenderEntityID), GetServiceEntityUID() );
+		svrCheck(NetPolicyGameParty(GetTargetEndpoint()).QuickChatMessageC2SEvt( InRouteContext, InPlayerID, InQuickChatID ) );
 
-			return hr;
+		return hr;
 
-		}; // Result GamePartyService::QuickChatMessageC2SEvt( const EntityID &InSenderEntityID, const PlayerID &InPlayerID, const uint32_t &InQuickChatID )
-		// Cmd: Start party game matching
-		Result GamePartyService::StartGameMatchCmd( const uint64_t &InTransactionID, const PlayerID &InPlayerID, const uint32_t &InMaxGamePlayers )
-		{
- 			ScopeContext hr;
+	}; // Result GamePartyService::QuickChatMessageC2SEvt( const EntityID &InSenderEntityID, const PlayerID &InPlayerID, const uint32_t &InQuickChatID )
+	// Cmd: Start party game matching
+	Result GamePartyService::StartGameMatchCmd( const uint64_t &InTransactionID, const PlayerID &InPlayerID, const uint32_t &InMaxGamePlayers )
+	{
+ 		ScopeContext hr;
 
-			RouteContext InRouteContext( EntityUID(GetMyServerID(),TransactionID(InTransactionID).GetEntityID()), GetServiceEntityUID() );
-			svrCheck(Policy::NetPolicyGameParty(GetConnection()).StartGameMatchCmd( InRouteContext, InTransactionID, InPlayerID, InMaxGamePlayers ) );
+		RouteContext InRouteContext( EntityUID(GetMyServerID(),TransactionID(InTransactionID).GetEntityID()), GetServiceEntityUID() );
+		svrCheck(NetPolicyGameParty(GetTargetEndpoint()).StartGameMatchCmd( InRouteContext, InTransactionID, InPlayerID, InMaxGamePlayers ) );
 
-			return hr;
+		return hr;
 
-		}; // Result GamePartyService::StartGameMatchCmd( const uint64_t &InTransactionID, const PlayerID &InPlayerID, const uint32_t &InMaxGamePlayers )
-		// Cmd: Cancel game matching
-		Result GamePartyService::CancelGameMatchCmd( const uint64_t &InTransactionID, const PlayerID &InPlayerID )
-		{
- 			ScopeContext hr;
+	}; // Result GamePartyService::StartGameMatchCmd( const uint64_t &InTransactionID, const PlayerID &InPlayerID, const uint32_t &InMaxGamePlayers )
+	// Cmd: Cancel game matching
+	Result GamePartyService::CancelGameMatchCmd( const uint64_t &InTransactionID, const PlayerID &InPlayerID )
+	{
+ 		ScopeContext hr;
 
-			RouteContext InRouteContext( EntityUID(GetMyServerID(),TransactionID(InTransactionID).GetEntityID()), GetServiceEntityUID() );
-			svrCheck(Policy::NetPolicyGameParty(GetConnection()).CancelGameMatchCmd( InRouteContext, InTransactionID, InPlayerID ) );
+		RouteContext InRouteContext( EntityUID(GetMyServerID(),TransactionID(InTransactionID).GetEntityID()), GetServiceEntityUID() );
+		svrCheck(NetPolicyGameParty(GetTargetEndpoint()).CancelGameMatchCmd( InRouteContext, InTransactionID, InPlayerID ) );
 
-			return hr;
+		return hr;
 
-		}; // Result GamePartyService::CancelGameMatchCmd( const uint64_t &InTransactionID, const PlayerID &InPlayerID )
+	}; // Result GamePartyService::CancelGameMatchCmd( const uint64_t &InTransactionID, const PlayerID &InPlayerID )
 
 
-	}; // namespace Svr
 }; // namespace SF
 
 

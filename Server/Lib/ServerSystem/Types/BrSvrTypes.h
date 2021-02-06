@@ -51,14 +51,13 @@ namespace SF {
 		EntityUID			UID = 0;
 		ClusterMembership	Membership = ClusterMembership::Slave;
 		ServiceStatus		Status = ServiceStatus::Offline;
-		NetClass			ServerClass = NetClass::Unknown;
-		NetAddress			ServerAddress{};
+		char				RouteAddress[256]{};
 		UTCTimeStampSec		ServerUpTime = UTCTimeStampSec::min();
-		uint32_t				Workload = 0;
+		uint32_t			Workload = 0;
 
 		inline ServiceInformation();
 		inline ServiceInformation( const ServiceInformation& src );
-		inline ServiceInformation( EntityUID entityUID, ClusterMembership membership, ServiceStatus status, NetClass netClass, const NetAddress& address, UTCTimeStampSec serverUpTime, uint32_t workload );
+		inline ServiceInformation( EntityUID entityUID, ClusterMembership membership, ServiceStatus status, const char* routeAddress, UTCTimeStampSec serverUpTime, uint32_t workload );
 
 		inline ServiceInformation& operator = ( const ServiceInformation& src );
 

@@ -369,6 +369,7 @@ namespace SF
 				protocolCheck(*input >> m_RouteContext);
 				protocolCheck(*input >> m_TransactionID);
 				protocolCheck(*input >> m_RouteHopCount);
+				protocolCheck(input->Read(ArrayLen));
 				protocolCheck(input->ReadLink(m_SearchKeyword, ArrayLen));
 
 				return hr;

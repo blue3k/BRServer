@@ -41,7 +41,7 @@ namespace SF {
 		virtual void Clear() {}
 
 
-		virtual Result GetOrRegisterServer(ServerID serverID, NetClass netClass, const NetAddress& netAddress, Svr::ServerEntity* &pServerEntity) { return ResultCode::NOT_IMPLEMENTED; }
+		virtual Result GetOrRegisterServer(ServerID serverID, const String& eventRouterAddress, Svr::ServerEntity* &pServerEntity) { return ResultCode::NOT_IMPLEMENTED; }
 
 		// Get remote entity
 		virtual Result GetServerEntity(ServerID svrID, Svr::ServerEntity* &pServerEntity) { return ResultCode::NOT_IMPLEMENTED; }
@@ -51,9 +51,9 @@ namespace SF {
 
 
 		// Add new remote entity
-		virtual Result AddOrGetServerEntity(ServerID serverID, NetClass netClass, Svr::ServerEntity* &pServerEntity) { return ResultCode::NOT_IMPLEMENTED; }
+		virtual Result AddOrGetServerEntity(ServerID serverID, Svr::ServerEntity* pServerEntity) { return ResultCode::NOT_IMPLEMENTED; }
 
-		virtual const SharedPointerAtomicT<Net::Connection>& GetServerConnection(ServerID svrID) { static SharedPointerAtomicT<Net::Connection> Dummy; return Dummy; }
+		//virtual const SharedPointerAtomicT<Net::Connection>& GetServerConnection(ServerID svrID) { static SharedPointerAtomicT<Net::Connection> Dummy; return Dummy; }
 
 
 	};

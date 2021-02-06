@@ -78,16 +78,16 @@ namespace SF {
 			return hr;
 		}
 
-		Result GameInstanceManagerServiceEntity::RegisterServiceMessageHandler(ServerEntity* pServerEntity)
+		Result GameInstanceManagerServiceEntity::RegisterServiceMessageHandler()
 		{
 			ScopeContext hr;
 
-			svrCheck(super::RegisterServiceMessageHandler(pServerEntity));
+			svrCheck(super::RegisterServiceMessageHandler());
 
 			// Let server entity handle it first
-			svrCheck(pServerEntity->RegisterMessageHandler<GameInstanceTransCreateGameInstance>());
-			svrCheck(pServerEntity->RegisterMessageHandler<GameInstanceTransGameInstanceDeleted>());
-			svrCheck(pServerEntity->RegisterMessageHandler<GameInstanceTransSearchGameInstance>());
+			svrCheck(RegisterMessageHandler<GameInstanceTransCreateGameInstance>());
+			svrCheck(RegisterMessageHandler<GameInstanceTransGameInstanceDeleted>());
+			svrCheck(RegisterMessageHandler<GameInstanceTransSearchGameInstance>());
 
 			return hr;
 		}

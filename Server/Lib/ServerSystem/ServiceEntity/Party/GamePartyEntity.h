@@ -29,10 +29,10 @@
 #include "Entity/PlayerEntityInformation.h"
 
 namespace SF {
-namespace Policy {
+
 	class NetPolicyGameServer;
 	class NetSvrPolicyGameParty;
-};
+
 };
 
 namespace SF {
@@ -153,8 +153,8 @@ namespace Svr {
 		// foreach game player
 		Result ForeachPlayer( std::function<Result(PartyPlayer* pPlayer)> func );
 
-		Result ForeachPlayerGameServer( std::function<Result(PartyPlayer* pPlayer, Policy::NetPolicyGameServer &pPolicy)> func );
-		Result ForeachPlayerSvrGameParty( std::function<Result(PartyPlayer* pPlayer, Policy::NetSvrPolicyGameParty &pPolicy)> func );
+		Result ForeachPlayerGameServer( std::function<Result(PartyPlayer* pPlayer, NetPolicyGameServer &pPolicy)> func );
+		Result ForeachPlayerSvrGameParty( std::function<Result(PartyPlayer* pPlayer, NetSvrPolicyGameParty &pPolicy)> func );
 
 
 
@@ -188,5 +188,5 @@ namespace Svr {
 
 #include "GamePartyEntity.inl"
 
-}; // namespace Svr
-}; // namespace SF
+} // namespace Svr
+} // namespace SF

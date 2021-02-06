@@ -53,7 +53,7 @@ uint GameInstanceEntity::GetNumPlayer()
 
 //
 //// foreach game player with Game policy
-//inline Result GameInstanceEntity::ForeachPlayerGameServer(std::function<Result(GamePlayer* pPlayer, Policy::NetPolicyGameServer *pPolicy)> func)
+//inline Result GameInstanceEntity::ForeachPlayerGameServer(std::function<Result(GamePlayer* pPlayer, NetPolicyGameServer *pPolicy)> func)
 //{
 //	m_GamePlayerByUID.ForeachOrder(0, GameConst::MAX_GAMEPLAYER, [&](const PlayerID& playerID, GamePlayer* pGamePlayer)-> bool
 //	{
@@ -63,7 +63,7 @@ uint GameInstanceEntity::GetNumPlayer()
 //		if (pGamePlayer->GetPlayerState() == PlayerState::None)
 //			return true;
 //
-//		Policy::NetPolicyGameServer *pPolicy = pGamePlayer->GetInterface<Policy::NetPolicyGameServer>();
+//		NetPolicyGameServer *pPolicy = pGamePlayer->GetInterface<NetPolicyGameServer>();
 //		if (pPolicy)
 //		{
 //			Result hrRes = func(pGamePlayer, pPolicy);
@@ -76,7 +76,7 @@ uint GameInstanceEntity::GetNumPlayer()
 //}
 //
 //// foreach game player with Game policy
-//inline Result GameInstanceEntity::ForeachPlayerSvrGameInstance(std::function<Result(GamePlayer* pPlayer, Policy::NetSvrPolicyGameInstance *pPolicy)> func)
+//inline Result GameInstanceEntity::ForeachPlayerSvrGameInstance(std::function<Result(GamePlayer* pPlayer, NetSvrPolicyGameInstance *pPolicy)> func)
 //{
 //	m_GamePlayerByUID.ForeachOrder(0, GameConst::MAX_GAMEPLAYER, [&](const PlayerID& playerID, GamePlayer* pGamePlayer)-> bool
 //	{
@@ -86,7 +86,7 @@ uint GameInstanceEntity::GetNumPlayer()
 //		if (pGamePlayer->GetPlayerState() == PlayerState::None)
 //			return true;
 //
-//		Policy::NetSvrPolicyGameInstance *pPolicy = pGamePlayer->GetInterface<Policy::NetSvrPolicyGameInstance>();
+//		NetSvrPolicyGameInstance *pPolicy = pGamePlayer->GetInterface<NetSvrPolicyGameInstance>();
 //		if (pPolicy)
 //		{
 //			Result hrRes = func(pGamePlayer, pPolicy);

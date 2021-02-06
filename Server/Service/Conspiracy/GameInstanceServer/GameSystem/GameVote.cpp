@@ -198,7 +198,7 @@ namespace ConspiracyGameInstanceServer {
 		SetVoteRanker( pVoteTarget->GetPlayerID(), pVoteTarget->GetVoted() );
 
 		// broadcast vote result
-		GetOwner().ForeachPlayerSvrGameInstance( [&]( GamePlayer* pPlayer, Policy::NetSvrPolicyGameInstance &pPolicy )->Result {
+		GetOwner().ForeachPlayerSvrGameInstance( [&]( GamePlayer* pPlayer, NetSvrPolicyGameInstance &pPolicy )->Result {
 			if( pPlayer->GetPlayerEntityUID().UID != 0 )
 				pPolicy.VotedS2CEvt( RouteContext(GetOwner().GetEntityUID(),pPlayer->GetPlayerEntityUID()), pVoter->GetPlayerID(), pVoteTarget->GetPlayerID()  );
 
@@ -357,7 +357,7 @@ namespace ConspiracyGameInstanceServer {
 		}
 
 		// broadcast vote result
-		GetOwner().ForeachPlayerSvrGameInstance( [&]( GamePlayer* pPlayer, Policy::NetSvrPolicyGameInstance &pPolicy )->Result {
+		GetOwner().ForeachPlayerSvrGameInstance( [&]( GamePlayer* pPlayer, NetSvrPolicyGameInstance &pPolicy )->Result {
 			if( pPlayer->GetPlayerEntityUID().UID != 0 )
 				pPolicy.VotedS2CEvt( RouteContext(GetOwner().GetEntityUID(),pPlayer->GetPlayerEntityUID()), pVoter->GetPlayerID(), pVoteTarget->GetPlayerID()  );
 			return ResultCode::SUCCESS;
@@ -516,12 +516,12 @@ namespace ConspiracyGameInstanceServer {
 			pSeersChoice->SetRevealedBySeer(true);
 
 			if (pSeers->GetPlayerEntityUID().UID != 0)
-				Policy::NetSvrPolicyGameInstance(pSeers->GetConnection()).PlayerRevealedS2CEvt(RouteContext(GetOwner().GetEntityUID(), pSeers->GetPlayerEntityUID()), pSeersChoice->GetPlayerID(), (uint8_t)pSeersChoice->GetRole(), (uint8_t)PlayerRevealedReason::SeersChoice);
+				NetSvrPolicyGameInstance(pSeers->GetRemoteEndpoint()).PlayerRevealedS2CEvt(RouteContext(GetOwner().GetEntityUID(), pSeers->GetPlayerEntityUID()), pSeersChoice->GetPlayerID(), (uint8_t)pSeersChoice->GetRole(), (uint8_t)PlayerRevealedReason::SeersChoice);
 
 			return ResultCode::SUCCESS;
 		}
 
-		// Bodygard
+		// Bodyguard
 		if( IsFlagSet(BODYGUARD) && pVoter->GetPlayerID() == GetGamePlaySystem().GetBodyGuard() )
 		{
 			SetBodyGuardsChoice( pVoteTarget->GetPlayerID() );
@@ -544,7 +544,7 @@ namespace ConspiracyGameInstanceServer {
 		svrChk(GameVote::Vote(pVoter,pVoteTarget) );
 
 		// broadcast vote result
-		GetOwner().ForeachPlayerSvrGameInstance([&](GamePlayer* pPlayer, Policy::NetSvrPolicyGameInstance &pPolicy)->Result {
+		GetOwner().ForeachPlayerSvrGameInstance([&](GamePlayer* pPlayer, NetSvrPolicyGameInstance &pPolicy)->Result {
 			if (pPlayer->GetPlayerEntityUID().UID != 0
 				&& pPlayer->GetRole() == PlayerRole::Werewolf
 				&& pPlayer->GetPlayerID() != pVoter->GetPlayerID())

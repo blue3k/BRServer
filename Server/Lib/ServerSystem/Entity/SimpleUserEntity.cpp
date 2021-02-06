@@ -45,14 +45,14 @@ namespace Svr
 	{
 		SetTickInterval(DurationMS(Svr::Const::SIMPLEUSER_TICKTASK_INTERVAL));
 
-		RegisterMessageHandler<Message::Login::HeartbeatC2SEvt>([this](Net::Connection*, MessageDataPtr&, TransactionPtr& pNewTrans) -> Result
+		RegisterMessageHandler<Message::Login::HeartbeatC2SEvt>([this](MessageDataPtr&, TransactionPtr& pNewTrans) -> Result
 			{
 				pNewTrans = nullptr;
 				Heartbeat();
 				return ResultCode::SUCCESS;
 			});
 
-		RegisterMessageHandler<Message::Game::HeartbeatC2SEvt>([this](Net::Connection*, MessageDataPtr&, TransactionPtr& pNewTrans) -> Result
+		RegisterMessageHandler<Message::Game::HeartbeatC2SEvt>([this](MessageDataPtr&, TransactionPtr& pNewTrans) -> Result
 			{
 				pNewTrans = nullptr;
 				Heartbeat();
@@ -194,7 +194,7 @@ namespace Svr
 		case Message::MSGTYPE_EVENT:
 		{
 			//Assert(m_pHandlerTable);
-			if (!(GetMessageHandlerTable().HandleMessage<TransactionPtr&>(*GetConnection(), pIMsg, pNewTrans)))
+			if (!(GetMessageHandlerTable().HandleMessage<TransactionPtr&>(pIMsg, pNewTrans)))
 			{
 				svrTrace(Error, "Failed to handle remote message Entity:{0}:{1}, MsgID:{2}", typeid(*this).name(), GetEntityID(), pMsgHdr->msgID);
 				svrErr(ResultCode::SVR_NOTEXPECTED_MESSAGE);

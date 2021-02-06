@@ -16,57 +16,50 @@
 
 
 
-class VariableTable;
-
-
-
 namespace SF
 {
- 	namespace Policy
+    class MessageEndpoint;
+   class VariableTable;
+
+
+	class NetPolicyRelayServer 
 	{
- 		class NetPolicyRelayServer 
-		{
- 			private:
-				SharedPointerT<Net::Connection> m_pConnection;
-			public:
-			// Constructor
-			NetPolicyRelayServer ( const SharedPointerT<Net::Connection>& pConn ) : m_pConnection(pConn)
-			{}
-			NetPolicyRelayServer ( const SharedPointerAtomicT<Net::Connection>& pConn ) : m_pConnection(pConn)
-			{}
+ 		private:
+			SharedPointerT<MessageEndpoint> m_Endpoint;
+		public:
+		// Constructor
+		NetPolicyRelayServer (const SharedPointerT<MessageEndpoint>& pEndpoint ) : m_Endpoint(pEndpoint)
+		{}
 
-			// Cmd: Relay Instance
-			Result CreateRelayInstanceCmd( const RouteContext &InRouteContext, const uint64_t &InTransactionID, const PlayerInformation &InPlayerInfo, const uint64_t &InRelayScore );
-			// Cmd: Add a player to Relay
-			Result AddPlayerCmd( const RouteContext &InRouteContext, const uint64_t &InTransactionID, const PlayerInformation &InPlayerInfo, const uint64_t &InRelayScore );
-			// Cmd: Remove a player to Relay
-			Result RemovePlayerCmd( const RouteContext &InRouteContext, const uint64_t &InTransactionID, const PlayerID &InPlayerID );
+		// Cmd: Relay Instance
+		Result CreateRelayInstanceCmd( const RouteContext &InRouteContext, const uint64_t &InTransactionID, const PlayerInformation &InPlayerInfo, const uint64_t &InRelayScore );
+		// Cmd: Add a player to Relay
+		Result AddPlayerCmd( const RouteContext &InRouteContext, const uint64_t &InTransactionID, const PlayerInformation &InPlayerInfo, const uint64_t &InRelayScore );
+		// Cmd: Remove a player to Relay
+		Result RemovePlayerCmd( const RouteContext &InRouteContext, const uint64_t &InTransactionID, const PlayerID &InPlayerID );
 
-		}; // class NetPolicyRelayServer 
+	}; // class NetPolicyRelayServer 
 
 
-		class NetSvrPolicyRelayServer
-		{
- 			private:
-				SharedPointerT<Net::Connection> m_pConnection;
-			public:
-			// Constructor
-			NetSvrPolicyRelayServer ( const SharedPointerT<Net::Connection>& pConn ) : m_pConnection(pConn)
-			{}
-			NetSvrPolicyRelayServer ( const SharedPointerAtomicT<Net::Connection>& pConn ) : m_pConnection(pConn)
-			{}
+	class NetSvrPolicyRelayServer
+	{
+ 		private:
+			SharedPointerT<MessageEndpoint> m_Endpoint;
+		public:
+		// Constructor
+		NetSvrPolicyRelayServer ( const SharedPointerT<MessageEndpoint>& pEndpoint ) : m_Endpoint(pEndpoint)
+		{}
 
-			// Cmd: Relay Instance
-			Result CreateRelayInstanceRes( const RouteContext &InRouteContext, const uint64_t &InTransactionID, const Result &InResult, const uint32_t &InRelay );
-			// Cmd: Add a player to Relay
-			Result AddPlayerRes( const RouteContext &InRouteContext, const uint64_t &InTransactionID, const Result &InResult, const uint32_t &InRelay );
-			// Cmd: Remove a player to Relay
-			Result RemovePlayerRes( const RouteContext &InRouteContext, const uint64_t &InTransactionID, const Result &InResult );
+		// Cmd: Relay Instance
+		Result CreateRelayInstanceRes( const RouteContext &InRouteContext, const uint64_t &InTransactionID, const Result &InResult, const uint32_t &InRelay );
+		// Cmd: Add a player to Relay
+		Result AddPlayerRes( const RouteContext &InRouteContext, const uint64_t &InTransactionID, const Result &InResult, const uint32_t &InRelay );
+		// Cmd: Remove a player to Relay
+		Result RemovePlayerRes( const RouteContext &InRouteContext, const uint64_t &InTransactionID, const Result &InResult );
 
-		}; // class NetSvrPolicyRelayServer
+	}; // class NetSvrPolicyRelayServer
 
 
-	}; // namespace Policy
 }; // namespace SF
 
 

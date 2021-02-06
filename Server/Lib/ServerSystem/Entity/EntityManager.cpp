@@ -101,7 +101,7 @@ namespace Svr {
 		//	//AssertRel(pServiceEntity != nullptr);
 		//	if (pServiceEntity != nullptr)
 		//	{
-		//		pServiceEntity->RegisterServiceMessageHandler(GetLoopbackServerEntity());
+		//		pServiceEntity->RegisterServiceMessageHandler();
 		//	}
 		//}
 
@@ -132,7 +132,7 @@ namespace Svr {
 		//{
 		//	ClusteredServiceEntity* pClusterService = dynamic_cast<ClusteredServiceEntity*>(pEntity);
 		//	if( pClusterService != nullptr )
-		//		pClusterService->RegisterServiceMessageHandler( GetLoopbackServerEntity() );
+		//		pClusterService->RegisterServiceMessageHandler();
 		//}
 
 		svrChk( AddTickTask( pEntity ) );

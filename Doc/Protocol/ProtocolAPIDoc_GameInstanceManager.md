@@ -1,6 +1,6 @@
 ﻿***
  
- CopyRight (c) 2020 StormForge
+ CopyRight (c) 2021 StormForge
  
  Description : GameInstanceManager Message Protocol API Document
 

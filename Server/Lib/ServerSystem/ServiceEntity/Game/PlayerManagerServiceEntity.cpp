@@ -67,11 +67,11 @@ namespace Svr {
 	//	Player operations
 	//
 
-	Result PlayerManagerServiceEntity::RegisterServiceMessageHandler( ServerEntity *pServerEntity )
+	Result PlayerManagerServiceEntity::RegisterServiceMessageHandler()
 	{
 		Result hr = ResultCode::SUCCESS;
 
-		svrChk(super::RegisterServiceMessageHandler( pServerEntity ) );
+		svrChk(super::RegisterServiceMessageHandler() );
 
 		//pServerEntity->BR_ENTITY_MESSAGE(Message::ClusterServer::GamePlayerEntityCreatedC2SEvt)				{ svrMemReturn(pNewTrans = new(GetHeap()) GameServerTransGamePlayerEntityCreatedS2CEvt(GetHeap(), pMsgData)); return ResultCode::SUCCESS; } );
 		//pServerEntity->BR_ENTITY_MESSAGE(Message::ClusterServer::GamePlayerEntityDeletedC2SEvt)				{ svrMemReturn(pNewTrans = new(GetHeap()) GameServerTransGamePlayerEntityDeletedS2CEvt(GetHeap(), pMsgData)); return ResultCode::SUCCESS; } );

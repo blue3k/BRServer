@@ -29,9 +29,6 @@ namespace SF {
 	namespace Message {
 		class MessageData;
 	};
-	namespace Net {
-		class Connection;
-	};
 }
 
 namespace SF {
@@ -40,6 +37,8 @@ namespace SF {
 		template<class MessageHandlerType>
 		class MessageHandlerTable;
 	};
+
+	class MessageEndpoint;
 
 
 namespace Svr{
@@ -61,7 +60,7 @@ namespace Svr{
 	class Entity : public TickTask
 	{
 	public:
-		typedef std::function<Result(Net::Connection *, MessageDataPtr &, TransactionPtr &)>	MessageHandlerType;
+		typedef std::function<Result(MessageDataPtr &, TransactionPtr &)>	MessageHandlerType;
 
 	private:
 
@@ -151,7 +150,7 @@ namespace Svr{
 
 
 
-		// Initialize entity to proceed new connection
+		// Initialize entity to proceed 
 		virtual Result InitializeEntity( EntityID newEntityID );
 
 		// clear entity resources such as transactions
@@ -183,7 +182,7 @@ namespace Svr{
 		Result RegisterMessageHandler()
 		{
 			return m_HandlerTable.Register<typename TransactionType::MessageClassType>(
-				[this](Net::Connection* pConnection, MessageDataPtr& pMsg, TransactionPtr& pNewTrans)->Result
+				[this](MessageDataPtr& pMsg, TransactionPtr& pNewTrans)->Result
 				{
 					pNewTrans = new(GetHeap()) TransactionType(GetHeap(), pMsg);
 					if (pNewTrans == nullptr)
@@ -197,7 +196,7 @@ namespace Svr{
 
 
 		// Process Message and release message after all processed
-		virtual Result ProcessMessage(ServerEntity* pServerEntity, Net::Connection *pCon, MessageDataPtr &pMsg);
+		virtual Result ProcessMessage(const SharedPointerT<MessageEndpoint>& remoteEndpoint, MessageDataPtr &pMsg);
 
 		// Process result
 		virtual Result ProcessMessageResult(MessageDataPtr &pMsg );

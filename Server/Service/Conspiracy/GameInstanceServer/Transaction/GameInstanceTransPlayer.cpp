@@ -49,7 +49,6 @@ namespace ConspiracyGameInstanceServer {
 	GameEntityTransDeleteGame::GameEntityTransDeleteGame(IHeap& heap, MessageDataPtr &pIMsg)
 		: ServerEntityMessageTransaction(heap, pIMsg)
 	{
-		SetWorkOnServerEntity(false);
 		SetExclusive(true);
 	}
 
@@ -121,7 +120,7 @@ namespace ConspiracyGameInstanceServer {
 
 		m_PlayerIndex = pMyPlayer->GetIndex();
 
-		svrChk( pMyPlayer->SetServerEntity( GetServerEntity<Svr::ServerEntity>(), GetRouteContext().GetFrom()) );
+		svrChk( pMyPlayer->SetRemoteEndpoint( GetRemoteEndpoint(), GetRouteContext().GetFrom()) );
 
 		m_Role = pMyPlayer->GetRole();
 		m_Dead = pMyPlayer->GetPlayerState() != PlayerState::Playing;
@@ -135,7 +134,7 @@ namespace ConspiracyGameInstanceServer {
 
 		// Send all other player to me
 		{
-			Policy::NetSvrPolicyGameInstance pMyPolicy(GetConnection());
+			NetSvrPolicyGameInstance pMyPolicy(GetRemoteEndpoint());
 			GetMyOwner()->ForeachPlayer([&](GamePlayer* pPlayer)->Result {
 
 				PlayerRole otherRole = GetMyOwner()->GetComponent<GamePlaySystem>()->GetRevealedRole(pMyPlayer, pPlayer);
@@ -146,7 +145,7 @@ namespace ConspiracyGameInstanceServer {
 		}
 
 		// Send my info to others
-		GetMyOwner()->ForeachPlayerSvrGameInstance( [&]( GamePlayer* pPlayer, Policy::NetSvrPolicyGameInstance &pPolicy )->Result {
+		GetMyOwner()->ForeachPlayerSvrGameInstance( [&]( GamePlayer* pPlayer, NetSvrPolicyGameInstance &pPolicy )->Result {
 			if( pMyPlayer != pPlayer && !pPlayer->GetIsBot())
 			{
 				PlayerRole myRoleToOther = GetMyOwner()->GetComponent<GamePlaySystem>()->GetRevealedRole( pPlayer, pMyPlayer );
@@ -205,7 +204,7 @@ namespace ConspiracyGameInstanceServer {
 
 		if( GetPlayerToKick() == (PlayerID)(-1) )
 		{
-			svrChk( GetMyOwner()->ForeachPlayerSvrGameInstance( [&]( GamePlayer* pPlayer, Policy::NetSvrPolicyGameInstance &pPolicy )->Result {
+			svrChk( GetMyOwner()->ForeachPlayerSvrGameInstance( [&]( GamePlayer* pPlayer, NetSvrPolicyGameInstance &pPolicy )->Result {
 				if(!pPlayer->GetIsBot())
 					pPolicy.PlayerKickedS2CEvt( RouteContext( GetOwnerEntityUID(), pPlayer->GetPlayerEntityUID()), pPlayer->GetPlayerID()  );
 				return GetMyOwner()->LeavePlayer( pPlayer->GetPlayerID() );
@@ -217,7 +216,7 @@ namespace ConspiracyGameInstanceServer {
 
 			svrChk( GetMyOwner()->FindPlayer( GetPlayerToKick(), pPlayerToKick ) );
 			if(!pPlayerToKick->GetIsBot())
-				Policy::NetSvrPolicyGameInstance(pPlayerToKick->GetConnection()).PlayerKickedS2CEvt( RouteContext( GetOwnerEntityUID(), pPlayerToKick->GetPlayerEntityUID()), pPlayerToKick->GetPlayerID()  );
+				NetSvrPolicyGameInstance(pPlayerToKick->GetRemoteEndpoint()).PlayerKickedS2CEvt( RouteContext( GetOwnerEntityUID(), pPlayerToKick->GetPlayerEntityUID()), pPlayerToKick->GetPlayerID()  );
 			svrChk( GetMyOwner()->LeavePlayer( pPlayerToKick->GetPlayerID() ) );
 		}
 
@@ -292,7 +291,7 @@ namespace ConspiracyGameInstanceServer {
 		//charType = GetRole() != PlayerRole::None ? ChatType::Role : ChatType::Normal;
 		//svrChk( GetMyOwner()->GetComponent<ChattingLogSystem>()->AddChattingLog( Util::Time.GetTimeUTCSec(), pMyPlayer->GetPlayerID(), pMyPlayer->GetPlayerState() == PlayerState::Ghost, charType, GetChatMessage() ) );
 
-		//GetMyOwner()->ForeachPlayerGameServer( [&]( GamePlayer* pPlayer, Policy::NetPolicyGameServer *pPolicy )->Result {
+		//GetMyOwner()->ForeachPlayerGameServer( [&]( GamePlayer* pPlayer, NetPolicyGameServer *pPolicy )->Result {
 		//	if( GetRole() == PlayerRole::None || GetRole() == pPlayer->GetRole() )
 		//	{
 		//		message = GetChatMessage();
@@ -385,7 +384,7 @@ namespace ConspiracyGameInstanceServer {
 
 		svrChk(super::StartTransaction());
 
-		GetMyOwner()->ForeachPlayerSvrGameInstance([&](GamePlayer* pPlayer, Policy::NetSvrPolicyGameInstance &pPolicy)->Result
+		GetMyOwner()->ForeachPlayerSvrGameInstance([&](GamePlayer* pPlayer, NetSvrPolicyGameInstance &pPolicy)->Result
 		{
 			if (pPlayer->GetPlayerEntityUID().UID == 0)
 				return ResultCode::SUCCESS;

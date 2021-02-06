@@ -19,9 +19,9 @@
 
 namespace SF {
 
+	class ServerServiceInformation;
 	namespace Svr {
 		class ClusteredServiceEntity;
-		class ServerServiceInformation;
 	}
 	
 
@@ -29,12 +29,10 @@ namespace SF {
 	// ClusterService information
 	struct ClusterServiceInfo
 	{
-		SortedArray<StringCrc64, Svr::ServerServiceInformation*> Services;
-		DynamicArray<SharedPointerT<Svr::ClusteredServiceEntity>> LocalServiceEntites;
+		SortedArray<StringCrc64, ServerServiceInformation*> Services;
 
 		ClusterServiceInfo(IHeap& heap)
 			: Services(heap)
-			, LocalServiceEntites(heap)
 		{
 		}
 	};
@@ -71,16 +69,16 @@ namespace SF {
 		virtual ClusterServiceInfo* GetClusterInfo(GameID gameID, ClusterID clusterID) { return nullptr; }
 
 		// Get random cluster service
-		virtual Result GetRandomService(GameID gameID, ClusterID clusterID, Svr::ServerServiceInformation* &pServiceInfo) { return ResultCode::NOT_IMPLEMENTED; }
-		virtual Result GetShardService(GameID gameID, ClusterID clusterID, uint64_t shardKey, Svr::ServerServiceInformation* &pServiceInfo) { return ResultCode::NOT_IMPLEMENTED; }
-		virtual Result GetNextService(Svr::ServerServiceInformation* pServiceInfo, Svr::ServerServiceInformation* &pNextServiceInfo) { return ResultCode::NOT_IMPLEMENTED; }
+		virtual Result GetRandomService(GameID gameID, ClusterID clusterID, ServerServiceInformation* &pServiceInfo) { return ResultCode::NOT_IMPLEMENTED; }
+		virtual Result GetShardService(GameID gameID, ClusterID clusterID, uint64_t shardKey, ServerServiceInformation* &pServiceInfo) { return ResultCode::NOT_IMPLEMENTED; }
+		virtual Result GetNextService(ServerServiceInformation* pServiceInfo, ServerServiceInformation* &pNextServiceInfo) { return ResultCode::NOT_IMPLEMENTED; }
 
 		// Add cluster service entity
-		virtual Result AddClusterServiceEntity(Svr::ClusteredServiceEntity* pServiceEntity, Svr::ServerServiceInformation* &pServiceInfo) { return ResultCode::NOT_IMPLEMENTED; }
-		virtual Result AddClusterServiceEntity(Svr::ClusteredServiceEntity* pServiceEntity) { Svr::ServerServiceInformation* pServiceInfo = nullptr; return AddClusterServiceEntity(pServiceEntity, pServiceInfo); }
+		virtual Result AddClusterServiceEntity(Svr::ClusteredServiceEntity* pServiceEntity, ServerServiceInformation* &pServiceInfo) { return ResultCode::NOT_IMPLEMENTED; }
+		virtual Result AddClusterServiceEntity(Svr::ClusteredServiceEntity* pServiceEntity) { ServerServiceInformation* pServiceInfo = nullptr; return AddClusterServiceEntity(pServiceEntity, pServiceInfo); }
 
 		// Create a watcher for cluster, replacement for CreateWatcherForCluster
-		virtual Result SetWatchForCluster(GameID gameID, ClusterID clusterID, bool activelyConnect) { return ResultCode::NOT_IMPLEMENTED; }
+		virtual Result SetWatchForCluster(GameID gameID, ClusterID clusterID) { return ResultCode::NOT_IMPLEMENTED; }
 
 		virtual Result UpdateWorkLoad(Svr::ClusteredServiceEntity* pServiceEntity) { return ResultCode::NOT_IMPLEMENTED; }
 		virtual Result UpdateServiceStatus(Svr::ClusteredServiceEntity* pServiceEntity) { return ResultCode::NOT_IMPLEMENTED; }
@@ -93,7 +91,7 @@ namespace SF {
 			{
 				for (; (int)clusterID <= (int)clusterIDEnd; clusterID++)
 				{
-					hr = SetWatchForCluster(gameID, clusterID, true);
+					hr = SetWatchForCluster(gameID, clusterID);
 					if (!hr)
 						return hr;
 				}

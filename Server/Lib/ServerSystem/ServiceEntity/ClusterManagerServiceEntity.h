@@ -67,7 +67,6 @@ namespace Svr {
 	private:
 		IHeap& m_Heap;
 		bool m_ZKInitialized = false;
-		bool m_ActivelyConnect = false;
 		ClusterSearchKey m_ClusterKey;
 		String m_ClusterPath;
 		std::atomic<uint> m_LatestSelected;
@@ -75,9 +74,6 @@ namespace Svr {
 		SharedPointerT<ZookeeperWatcher::StringsTask> m_GetChildrenTask;
 
 		friend class ClusterManagerServiceEntity;
-
-	public:
-
 
 	private:
 
@@ -94,10 +90,8 @@ namespace Svr {
 		Result AddServiceInfo(const char* nodeName, StringCrc64 nodeNameCrc);
 
 
-		void AddLocalServiceInfoToServer(ServerServiceInformation* pLocalServiceInfo);
-
 	public:
-		ClusterServiceInfo_Impl(IHeap& heap, GameID gameID, ClusterID clusterID, bool activelyConnect);
+		ClusterServiceInfo_Impl(IHeap& heap, GameID gameID, ClusterID clusterID);
 		~ClusterServiceInfo_Impl();
 
 		IHeap& GetHeap() { return m_Heap; }
@@ -106,8 +100,6 @@ namespace Svr {
 
 		void DownloadServiceInfo();
 		void UploadLocalServiceInfo();
-
-		ServerServiceInformation* NewLocalService(ClusteredServiceEntity* pServiceEntity);
 
 		/////////////////////////////////////////////
 		//
@@ -135,24 +127,19 @@ namespace Svr {
 	{
 	public:
 
-		typedef ServiceEntity super;
+		using super = ServiceEntity;
 
 		static constexpr StringCrc64 TypeName = "ClusterManagerService";
 
-
 		// Server Entity table
-		typedef HashTable2<	uint64_t, ClusterServiceInfo_Impl* >  ClusterInfomationMap;
+		using ClusterInfomationMap = HashTable2<uint64_t, ClusterServiceInfo_Impl*>;
 
 
 	private:
 
-		// cluster information by ID map
+		// cluster information by clusterID
 		ClusterInfomationMap			m_ClusterInfoMap;
 
-
-	private:
-
-		Result CreateNodeForGameCluster(Zookeeper* zkSession, const char* gameClusterID);
 
 	public:
 		// Constructor/Destructor
@@ -170,14 +157,9 @@ namespace Svr {
 		// Clear resources and change entity state to closed
 		virtual Result TerminateEntity() override;
 
-		// Initialize not initialized cluster entities
-		// This need to be called after clusterManagerService is initialized
-		virtual Result InitializeNotInitializedClusterEntities() override;
-
-
 		// Set watch state for cluster
-		virtual Result SetWatchForCluster(GameID gameID, ClusterID clusterID, bool activelyConnect) override;
-		ClusterServiceInfo* GetOrSetWatchForCluster(GameID gameID, ClusterID clusterID, bool activelyConnect);
+		virtual Result SetWatchForCluster(GameID gameID, ClusterID clusterID) override;
+		ClusterServiceInfo* GetOrSetWatchForCluster(GameID gameID, ClusterID clusterID);
 
 
 		// Get cluster info
@@ -186,16 +168,9 @@ namespace Svr {
 		// Get random cluster service
 		virtual Result GetRandomService(GameID gameID, ClusterID clusterID, ServerServiceInformation* &pServiceInfo) override;
 		virtual Result GetShardService(GameID gameID, ClusterID clusterID, uint64_t shardKey, ServerServiceInformation* &pServiceInfo) override;
-		virtual Result GetNextService(Svr::ServerServiceInformation* pServiceInfo, Svr::ServerServiceInformation* &pNextServiceInfo) override;
+		virtual Result GetNextService(ServerServiceInformation* pServiceInfo, ServerServiceInformation* &pNextServiceInfo) override;
 
-		// Add cluster service entity
-		virtual Result AddClusterServiceEntity( ClusteredServiceEntity* pServiceEntity, ServerServiceInformation* &pServiceInfo) override;
-
-		virtual Result UpdateWorkLoad( ClusteredServiceEntity* pServiceEntity) override;
-		virtual Result UpdateServiceStatus(ClusteredServiceEntity* pServiceEntity) override;
-
-
-		virtual Result RegisterServiceMessageHandler( ServerEntity *pServerEntity ) override;
+		virtual Result RegisterServiceMessageHandler() override;
 
 
 		virtual Result TickUpdate(TimerAction *pAction = nullptr) override;
@@ -207,12 +182,6 @@ namespace Svr {
 
 	};
 
-
-
-
-}; // namespace Svr
-}; // namespace SF
-
-
-
+} // namespace Svr
+} // namespace SF
 

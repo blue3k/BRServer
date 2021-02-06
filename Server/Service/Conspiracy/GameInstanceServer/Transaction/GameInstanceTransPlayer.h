@@ -101,7 +101,7 @@ namespace SF {
 						return hr;
 					}
 			*/
-			BR_SVR_MSGTRANS_CLOSE_ARGS(Policy::NetSvrPolicyGameInstance, JoinGameRes, RouteContext(m_GameInsUID, GetRouteContext().GetFrom()), m_Addr, (uint32_t)(DurationCast<DurationSec>(m_TimeStamp.time_since_epoch()).count()), (uint8_t)m_GameState, (uint8_t)m_Day,
+			BR_SVR_MSGTRANS_CLOSE_ARGS(NetSvrPolicyGameInstance, JoinGameRes, RouteContext(m_GameInsUID, GetRouteContext().GetFrom()), m_Addr, (uint32_t)(DurationCast<DurationSec>(m_TimeStamp.time_since_epoch()).count()), (uint8_t)m_GameState, (uint8_t)m_Day,
 				(uint8_t)GetMyOwner()->GetMaxPlayer(),
 				(uint8_t)m_PlayerIndex, (uint8_t)m_PlayerCharacter, (uint8_t)m_Role, (uint8_t)m_Dead, (uint8_t)m_bIsFirstJoin,
 				m_ChatHistoryBuffer.GetBuffer(),
@@ -123,7 +123,7 @@ namespace SF {
 			// Start Transaction
 			virtual Result StartTransaction() override;
 
-			BR_SVR_MSGTRANS_CLOSE(Policy::NetSvrPolicyGameInstance, LeaveGameInstanceRes, GetRouteContext().GetSwaped());
+			BR_SVR_MSGTRANS_CLOSE(NetSvrPolicyGameInstance, LeaveGameInstanceRes, GetRouteContext().GetSwaped());
 		};
 
 		class GameEntityTransKickPlayer : public RoutedGamePlayerMessageTransaction< GameInstanceEntity, Message::GameInstance::KickPlayerCmd>
@@ -140,7 +140,7 @@ namespace SF {
 			// Start Transaction
 			virtual Result StartTransaction() override;
 
-			BR_SVR_MSGTRANS_CLOSE(Policy::NetSvrPolicyGameInstance, KickPlayerRes, GetRouteContext().GetSwaped());
+			BR_SVR_MSGTRANS_CLOSE(NetSvrPolicyGameInstance, KickPlayerRes, GetRouteContext().GetSwaped());
 		};
 
 
@@ -159,7 +159,7 @@ namespace SF {
 			// Start Transaction
 			virtual Result StartTransaction() override;
 
-			BR_SVR_MSGTRANS_CLOSE(Policy::NetSvrPolicyGameInstance, AssignRoleRes, GetRouteContext().GetSwaped());
+			BR_SVR_MSGTRANS_CLOSE(NetSvrPolicyGameInstance, AssignRoleRes, GetRouteContext().GetSwaped());
 		};
 
 
@@ -194,7 +194,7 @@ namespace SF {
 			// Start Transaction
 			virtual Result StartTransaction() override;
 
-			BR_SVR_MSGTRANS_CLOSE(Policy::NetSvrPolicyGameInstance, VoteGameAdvanceRes, GetRouteContext().GetSwaped());
+			BR_SVR_MSGTRANS_CLOSE(NetSvrPolicyGameInstance, VoteGameAdvanceRes, GetRouteContext().GetSwaped());
 		};
 
 
@@ -213,7 +213,7 @@ namespace SF {
 			// Start Transaction
 			virtual Result StartTransaction() override;
 
-			BR_SVR_MSGTRANS_CLOSE(Policy::NetSvrPolicyGameInstance, VoteRes, GetRouteContext().GetSwaped());
+			BR_SVR_MSGTRANS_CLOSE(NetSvrPolicyGameInstance, VoteRes, GetRouteContext().GetSwaped());
 		};
 
 		class GameEntityTransAdvanceGame : public RoutedGamePlayerMessageTransaction< GameInstanceEntity, Message::GameInstance::AdvanceGameCmd>
@@ -230,7 +230,7 @@ namespace SF {
 			// Start Transaction
 			virtual Result StartTransaction() override;
 
-			BR_SVR_MSGTRANS_CLOSE(Policy::NetSvrPolicyGameInstance, AdvanceGameRes, GetRouteContext().GetSwaped());
+			BR_SVR_MSGTRANS_CLOSE(NetSvrPolicyGameInstance, AdvanceGameRes, GetRouteContext().GetSwaped());
 		};
 
 
@@ -250,7 +250,7 @@ namespace SF {
 			// Start Transaction
 			virtual Result StartTransaction() override;
 
-			BR_SVR_MSGTRANS_CLOSE_ARGS(Policy::NetSvrPolicyGameInstance, GamePlayAgainRes, GetRouteContext().GetSwaped(), m_MemberCount);
+			BR_SVR_MSGTRANS_CLOSE_ARGS(NetSvrPolicyGameInstance, GamePlayAgainRes, GetRouteContext().GetSwaped(), m_MemberCount);
 		};
 
 
@@ -275,7 +275,7 @@ namespace SF {
 			// Start Transaction
 			virtual Result StartTransaction() override;
 
-			BR_SVR_MSGTRANS_CLOSE_ARGS(Policy::NetSvrPolicyGameInstance, GameRevealPlayerRes, GetRouteContext().GetSwaped(), m_RevealedPlayerID, m_RevealedPlayerRole);
+			BR_SVR_MSGTRANS_CLOSE_ARGS(NetSvrPolicyGameInstance, GameRevealPlayerRes, GetRouteContext().GetSwaped(), m_RevealedPlayerID, m_RevealedPlayerRole);
 		};
 
 
@@ -294,7 +294,7 @@ namespace SF {
 			// Start Transaction
 			virtual Result StartTransaction() override;
 
-			BR_SVR_MSGTRANS_CLOSE(Policy::NetSvrPolicyGameInstance, GamePlayerReviveRes, GetRouteContext().GetSwaped());
+			BR_SVR_MSGTRANS_CLOSE(NetSvrPolicyGameInstance, GamePlayerReviveRes, GetRouteContext().GetSwaped());
 		};
 
 

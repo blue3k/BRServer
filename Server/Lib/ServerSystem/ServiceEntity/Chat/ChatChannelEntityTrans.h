@@ -78,7 +78,7 @@ namespace Svr {
 		// Start Transaction
 		virtual Result StartTransaction() override;
 
-		BR_SVR_MSGTRANS_CLOSE_ARGS(Policy::NetSvrPolicyChatChannel, JoinRes, GetRouteContext().GetSwaped(), m_LeaderID);
+		BR_SVR_MSGTRANS_CLOSE_ARGS(NetSvrPolicyChatChannel, JoinRes, GetRouteContext().GetSwaped(), m_LeaderID);
 	};
 
 
@@ -96,7 +96,7 @@ namespace Svr {
 		// Start Transaction
 		virtual Result StartTransaction() override;
 
-		BR_SVR_MSGTRANS_CLOSE(Policy::NetSvrPolicyChatChannel, LeaveRes,GetRouteContext().GetSwaped());
+		BR_SVR_MSGTRANS_CLOSE(NetSvrPolicyChatChannel, LeaveRes,GetRouteContext().GetSwaped());
 	};
 
 	
@@ -115,7 +115,7 @@ namespace Svr {
 		// Start Transaction
 		virtual Result StartTransaction() override;
 
-		BR_SVR_MSGTRANS_CLOSE(Policy::NetSvrPolicyChatChannel, KickPlayerRes,GetRouteContext().GetSwaped());
+		BR_SVR_MSGTRANS_CLOSE(NetSvrPolicyChatChannel, KickPlayerRes,GetRouteContext().GetSwaped());
 	};
 	
 	

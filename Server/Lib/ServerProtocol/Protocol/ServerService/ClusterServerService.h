@@ -1,6 +1,6 @@
 ﻿////////////////////////////////////////////////////////////////////////////////
 // 
-// CopyRight (c) 2016 Kyungkun Ko
+// CopyRight (c) Kyungkun Ko
 // 
 // Author : Generated
 // 
@@ -20,23 +20,20 @@
 
 namespace SF
 {
- 	namespace Svr
+ 	class ClusterServerService : public ServerServiceBase
 	{
- 		class ClusterServerService : public ServerServiceBase
-		{
- 			public:
-			// Constructor
-			ClusterServerService ( ServerServiceInformation* pService );
+ 		public:
+		// Constructor
+		ClusterServerService ( ServerServiceInformation* pService );
 
-			// Cmd: Cluster member list query
-			Result GetClusterMemberListCmd( const uint64_t &InTransactionID, const uint16_t &InRouteHopCount, const ClusterID &InClusterID );
-			// Cmd: Join to the cluster
-			Result RequestDataSyncCmd( const uint64_t &InTransactionID, const uint16_t &InRouteHopCount, const ClusterID &InClusterID );
+		// Cmd: Cluster member list query
+		Result GetClusterMemberListCmd( const uint64_t &InTransactionID, const uint16_t &InRouteHopCount, const ClusterID &InClusterID );
+		// Cmd: Join to the cluster
+		Result RequestDataSyncCmd( const uint64_t &InTransactionID, const uint16_t &InRouteHopCount, const ClusterID &InClusterID );
 
-		}; // class ClusterServerService : public ServerServiceBase
+	}; // class ClusterServerService : public ServerServiceBase
 
 
-	}; // namespace Svr
 }; // namespace SF
 
 

@@ -41,7 +41,7 @@ namespace Svr {
 	}
 
 	// Send message to connected entity
-	Result LoopbackConnection::Send( MessageDataPtr &pMsg )
+	Result LoopbackConnection::Send(const  MessageDataPtr &pMsg )
 	{
 		Result hr = ResultCode::SUCCESS;
 
@@ -49,17 +49,17 @@ namespace Svr {
 
 		Protocol::PrintDebugMessage("LoopBackSend", pMsg);
 
-		svrChkPtr( m_pServerEntity );
-		if (m_pServerEntity->GetTaskWorker() != nullptr && m_pServerEntity->GetTaskWorker()->GetThreadID() != ThisThread::GetThreadID())
-		{
-			svrChk(m_pServerEntity->OnRecvMessage(this, pMsg));
-		}
-		else
-		{
-			svrChk(m_pServerEntity->ProcessMessage(m_pServerEntity, this, pMsg));
-		}
-
-		pMsg = nullptr;
+		assert(false);
+		// TODO: Delete or implementate new
+		//svrChkPtr( m_pServerEntity );
+		//if (m_pServerEntity->GetTaskWorker() != nullptr && m_pServerEntity->GetTaskWorker()->GetThreadID() != ThisThread::GetThreadID())
+		//{
+		//	svrChk(m_pServerEntity->OnRecvMessage(this, pMsg));
+		//}
+		//else
+		//{
+		//	svrChk(m_pServerEntity->ProcessMessage(m_pServerEntity, this, pMsg));
+		//}
 
 	Proc_End:
 
@@ -69,8 +69,8 @@ namespace Svr {
 
 
 
-}; // namespace Svr
-}; // namespace SF
+} // namespace Svr
+} // namespace SF
 
 
 

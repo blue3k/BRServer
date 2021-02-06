@@ -1,10 +1,10 @@
 ﻿////////////////////////////////////////////////////////////////////////////////
 // 
-// CopyRight (c) 2016 Kyungkun Ko
+// CopyRight (c) Kyungkun Ko
 // 
 // Author : Generated
 // 
-// Description : ChatChannel Message debug implementations
+// Description : ChatChannel Server service
 // 
 ////////////////////////////////////////////////////////////////////////////////
 
@@ -12,10 +12,9 @@
 #include "ServerProtocolPCH.h"
 #include "SFTypedefs.h"
 #include "Protocol/SFProtocol.h"
-#include "ServerEntity/ServerEntity.h"
+#include "Net/SFMessageEndpoint.h"
 #include "Server/BrServer.h"
 #include "Server/BrServerUtil.h"
-#include "Entity/EntityInformation.h"
 #include "Protocol/ServerService/ChatChannelService.h"
 #include "SvrTrace.h"
 
@@ -23,61 +22,58 @@
 
 namespace SF
 {
- 	namespace Svr
+ 	ChatChannelService::ChatChannelService( ServerServiceInformation* pService)
+		: ServerServiceBase(pService)
 	{
- 		ChatChannelService::ChatChannelService( ServerServiceInformation* pService)
-			: ServerServiceBase(pService)
-		{
-		}
+	}
 
 
-		// Cmd: Request to join chat channel
-		Result ChatChannelService::JoinCmd( const uint64_t &InTransactionID, const char* InPasscode, const PlayerInformation &InJoiningPlayer )
-		{
- 			ScopeContext hr;
+	// Cmd: Request to join chat channel
+	Result ChatChannelService::JoinCmd( const uint64_t &InTransactionID, const char* InPasscode, const PlayerInformation &InJoiningPlayer )
+	{
+ 		ScopeContext hr;
 
-			RouteContext InRouteContext( EntityUID(GetMyServerID(),TransactionID(InTransactionID).GetEntityID()), GetServiceEntityUID() );
-			svrCheck(Policy::NetPolicyChatChannel(GetConnection()).JoinCmd( InRouteContext, InTransactionID, InPasscode, InJoiningPlayer ) );
+		RouteContext InRouteContext( EntityUID(GetMyServerID(),TransactionID(InTransactionID).GetEntityID()), GetServiceEntityUID() );
+		svrCheck(NetPolicyChatChannel(GetTargetEndpoint()).JoinCmd( InRouteContext, InTransactionID, InPasscode, InJoiningPlayer ) );
 
-			return hr;
+		return hr;
 
-		}; // Result ChatChannelService::JoinCmd( const uint64_t &InTransactionID, const char* InPasscode, const PlayerInformation &InJoiningPlayer )
-		// Cmd: Leave chat channel
-		Result ChatChannelService::LeaveCmd( const uint64_t &InTransactionID, const PlayerID &InPlayerID )
-		{
- 			ScopeContext hr;
+	}; // Result ChatChannelService::JoinCmd( const uint64_t &InTransactionID, const char* InPasscode, const PlayerInformation &InJoiningPlayer )
+	// Cmd: Leave chat channel
+	Result ChatChannelService::LeaveCmd( const uint64_t &InTransactionID, const PlayerID &InPlayerID )
+	{
+ 		ScopeContext hr;
 
-			RouteContext InRouteContext( EntityUID(GetMyServerID(),TransactionID(InTransactionID).GetEntityID()), GetServiceEntityUID() );
-			svrCheck(Policy::NetPolicyChatChannel(GetConnection()).LeaveCmd( InRouteContext, InTransactionID, InPlayerID ) );
+		RouteContext InRouteContext( EntityUID(GetMyServerID(),TransactionID(InTransactionID).GetEntityID()), GetServiceEntityUID() );
+		svrCheck(NetPolicyChatChannel(GetTargetEndpoint()).LeaveCmd( InRouteContext, InTransactionID, InPlayerID ) );
 
-			return hr;
+		return hr;
 
-		}; // Result ChatChannelService::LeaveCmd( const uint64_t &InTransactionID, const PlayerID &InPlayerID )
-		// Cmd: Kick a player
-		Result ChatChannelService::KickPlayerCmd( const uint64_t &InTransactionID, const PlayerID &InPlayerID, const PlayerID &InPlayerToKick )
-		{
- 			ScopeContext hr;
+	}; // Result ChatChannelService::LeaveCmd( const uint64_t &InTransactionID, const PlayerID &InPlayerID )
+	// Cmd: Kick a player
+	Result ChatChannelService::KickPlayerCmd( const uint64_t &InTransactionID, const PlayerID &InPlayerID, const PlayerID &InPlayerToKick )
+	{
+ 		ScopeContext hr;
 
-			RouteContext InRouteContext( EntityUID(GetMyServerID(),TransactionID(InTransactionID).GetEntityID()), GetServiceEntityUID() );
-			svrCheck(Policy::NetPolicyChatChannel(GetConnection()).KickPlayerCmd( InRouteContext, InTransactionID, InPlayerID, InPlayerToKick ) );
+		RouteContext InRouteContext( EntityUID(GetMyServerID(),TransactionID(InTransactionID).GetEntityID()), GetServiceEntityUID() );
+		svrCheck(NetPolicyChatChannel(GetTargetEndpoint()).KickPlayerCmd( InRouteContext, InTransactionID, InPlayerID, InPlayerToKick ) );
 
-			return hr;
+		return hr;
 
-		}; // Result ChatChannelService::KickPlayerCmd( const uint64_t &InTransactionID, const PlayerID &InPlayerID, const PlayerID &InPlayerToKick )
-		// C2S: Sending a chatting message
-		Result ChatChannelService::ChatMessageC2SEvt( const EntityID &InSenderEntityID, const PlayerID &InSenderID, const char* InChatMessage )
-		{
- 			ScopeContext hr;
+	}; // Result ChatChannelService::KickPlayerCmd( const uint64_t &InTransactionID, const PlayerID &InPlayerID, const PlayerID &InPlayerToKick )
+	// C2S: Sending a chatting message
+	Result ChatChannelService::ChatMessageC2SEvt( const EntityID &InSenderEntityID, const PlayerID &InSenderID, const char* InChatMessage )
+	{
+ 		ScopeContext hr;
 
-			RouteContext InRouteContext( EntityUID(GetMyServerID(),InSenderEntityID), GetServiceEntityUID() );
-			svrCheck(Policy::NetPolicyChatChannel(GetConnection()).ChatMessageC2SEvt( InRouteContext, InSenderID, InChatMessage ) );
+		RouteContext InRouteContext( EntityUID(GetMyServerID(),InSenderEntityID), GetServiceEntityUID() );
+		svrCheck(NetPolicyChatChannel(GetTargetEndpoint()).ChatMessageC2SEvt( InRouteContext, InSenderID, InChatMessage ) );
 
-			return hr;
+		return hr;
 
-		}; // Result ChatChannelService::ChatMessageC2SEvt( const EntityID &InSenderEntityID, const PlayerID &InSenderID, const char* InChatMessage )
+	}; // Result ChatChannelService::ChatMessageC2SEvt( const EntityID &InSenderEntityID, const PlayerID &InSenderID, const char* InChatMessage )
 
 
-	}; // namespace Svr
 }; // namespace SF
 
 

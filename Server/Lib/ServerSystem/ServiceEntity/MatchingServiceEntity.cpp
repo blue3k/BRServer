@@ -436,7 +436,7 @@ namespace Svr {
 			break;
 		}
 
-		svrChk(Service::ClusterManager->SetWatchForCluster(GetGameID(), ClusterID::GameInstanceManager, true));
+		svrChk(Service::ClusterManager->SetWatchForCluster(GetGameID(), ClusterID::GameInstanceManager));
 
 
 		newQueueEntity = new(GetHeap()) MatchingServiceQueueEntity(m_TargetMatchingMemberCount, MIN_ITEM_RESERVATION, MAX_ITEM_RESERVATION);

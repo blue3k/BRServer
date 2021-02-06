@@ -126,7 +126,7 @@ namespace Svr {
 	}
 
 	// foreach game player with Game policy
-	Result ChatChannelEntity::ForeachPlayerGameServer( std::function<Result(ChatChannelPlayer* pPlayer, Policy::NetPolicyGameServer &pPolicy)> func )
+	Result ChatChannelEntity::ForeachPlayerGameServer( std::function<Result(ChatChannelPlayer* pPlayer, NetPolicyGameServer &pPolicy)> func )
 	{
 		for( auto itPlayer = m_ChatChannelPlayerByUID.begin(); itPlayer != m_ChatChannelPlayerByUID.end(); ++ itPlayer )
 		{
@@ -134,7 +134,7 @@ namespace Svr {
 			if( pChatChannelPlayer == nullptr )
 				continue;
 
-			Policy::NetPolicyGameServer netPolicy(pChatChannelPlayer->GetConnection());
+			NetPolicyGameServer netPolicy(pChatChannelPlayer->GetRemoteEndpoint());
 			Result hrRes = func( pChatChannelPlayer, netPolicy);
 			if( !(hrRes) )
 				return hrRes;
@@ -142,14 +142,14 @@ namespace Svr {
 		return ResultCode::SUCCESS;
 	}
 
-	Result ChatChannelEntity::ForeachPlayerSvrChatChannel( std::function<Result(ChatChannelPlayer* pPlayer, Policy::NetSvrPolicyChatChannel &pPolicy)> func )
+	Result ChatChannelEntity::ForeachPlayerSvrChatChannel( std::function<Result(ChatChannelPlayer* pPlayer, NetSvrPolicyChatChannel &pPolicy)> func )
 	{
 		for(auto itPlayer : m_ChatChannelPlayerByUID)
 		{
 			if(itPlayer == nullptr )
 				continue;
 
-			Policy::NetSvrPolicyChatChannel netPolicy(itPlayer->GetConnection());
+			NetSvrPolicyChatChannel netPolicy(itPlayer->GetRemoteEndpoint());
 			Result hrRes = func(itPlayer, netPolicy);
 			if (!(hrRes))
 				return hrRes;
@@ -166,7 +166,7 @@ namespace Svr {
 	//
 
 	// Register new player to join
-	Result ChatChannelEntity::JoinPlayer( ChatChannelPlayer* &pPlayer, bool bIsSilent )
+	Result ChatChannelEntity::JoinPlayer( ChatChannelPlayer* pPlayer, bool bIsSilent )
 	{
 		Result hr = ResultCode::SUCCESS;
 		ChatChannelPlayerUIDMap::iterator itLeader;
@@ -177,9 +177,9 @@ namespace Svr {
 		
 		if( !bIsSilent )
 		{
-			Policy::NetSvrPolicyChatChannel pJoindPolicy(pPlayer->GetConnection());
+			NetSvrPolicyChatChannel pJoindPolicy(pPlayer->GetRemoteEndpoint());
 
-			ForeachPlayerSvrChatChannel( [&]( ChatChannelPlayer* pOtherPlayer, Policy::NetSvrPolicyChatChannel &pOtherPolicy )->Result {
+			ForeachPlayerSvrChatChannel( [&]( ChatChannelPlayer* pOtherPlayer, NetSvrPolicyChatChannel &pOtherPolicy )->Result {
 				if( pPlayer != pOtherPlayer )
 				{
 					// Send others to joined
@@ -199,8 +199,6 @@ namespace Svr {
 			svrChk( SelectNewLeader(bIsSilent) );
 		}
 
-		pPlayer = nullptr;
-
 	Proc_End:
 
 		return hr;
@@ -208,7 +206,7 @@ namespace Svr {
 
 
 	// Player leave
-	Result ChatChannelEntity::LeavePlayer( ChatChannelPlayer* &pPlayer, bool bIsSilent )
+	Result ChatChannelEntity::LeavePlayer( ChatChannelPlayer* pPlayer, bool bIsSilent )
 	{
 		Result hr = ResultCode::SUCCESS;
 
@@ -216,7 +214,7 @@ namespace Svr {
 
 		if( !bIsSilent )
 		{
-			ForeachPlayerSvrChatChannel( [&]( ChatChannelPlayer* pOtherPlayer, Policy::NetSvrPolicyChatChannel &pPolicy )->Result {
+			ForeachPlayerSvrChatChannel( [&]( ChatChannelPlayer* pOtherPlayer, NetSvrPolicyChatChannel &pPolicy )->Result {
 				pPolicy.PlayerLeftS2CEvt( pOtherPlayer->GetRouteContext(GetEntityUID()), pPlayer->GetPlayerID() );
 				return ResultCode::SUCCESS;
 			});
@@ -248,7 +246,7 @@ namespace Svr {
 
 			if( !bIsSilent )
 			{
-				ForeachPlayerSvrChatChannel( [&]( ChatChannelPlayer* pOtherPlayer, Policy::NetSvrPolicyChatChannel &pPolicy )->Result {
+				ForeachPlayerSvrChatChannel( [&]( ChatChannelPlayer* pOtherPlayer, NetSvrPolicyChatChannel &pPolicy )->Result {
 					pPolicy.LeaderChangedS2CEvt( pOtherPlayer->GetRouteContext(GetEntityUID()), m_LeaderID );
 					return ResultCode::SUCCESS;
 				});
@@ -346,8 +344,7 @@ namespace Svr {
 	}
 
 
-
-}; // namespace Svr
-}; // namespace SF
+} // namespace Svr
+} // namespace SF
 
 

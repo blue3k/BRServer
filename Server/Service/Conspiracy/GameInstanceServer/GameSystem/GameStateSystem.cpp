@@ -69,7 +69,7 @@ namespace ConspiracyGameInstanceServer {
 		m_StateStartTimeUTC = Util::Time.GetRawUTCMs();
 
 		uint day = GetOwner().GetComponent<GameStateSystem>()->GetCurrentDay();
-		GetOwner().ForeachPlayerSvrGameInstance( [&]( GamePlayer* pPlayer, Policy::NetSvrPolicyGameInstance &pPolicy )->Result
+		GetOwner().ForeachPlayerSvrGameInstance( [&]( GamePlayer* pPlayer, NetSvrPolicyGameInstance &pPolicy )->Result
 		{
 			pPlayer->SetVotedGameAdvance(false);
 
@@ -258,7 +258,7 @@ namespace ConspiracyGameInstanceServer {
 			// Reveal to medium 
 			if( GetGamePlaySystem().GetLynchedPlayer() != 0 && GetGamePlaySystem().GetLynchedRole() != PlayerRole::None ) // except the first night, the lynched role will be specified
 			{
-				GetOwner().ForeachPlayerSvrGameInstance( [&]( GamePlayer* pPlayer, Policy::NetSvrPolicyGameInstance &pPolicy )->Result {
+				GetOwner().ForeachPlayerSvrGameInstance( [&]( GamePlayer* pPlayer, NetSvrPolicyGameInstance &pPolicy )->Result {
 					if( pPlayer->GetRole() != PlayerRole::Medium )
 						return ResultCode::SUCCESS;
 
@@ -296,7 +296,7 @@ namespace ConspiracyGameInstanceServer {
 			//	svrChk( GetOwner().FindPlayer( m_vote.GetSeersChoice(), pSeersChoice ) );
 
 			//	pSeersChoice->SetRevealedBySeer(true);
-			//	auto pPolicy = pSeers->GetInterface<Policy::NetSvrPolicyGameInstance>();
+			//	auto pPolicy = pSeers->GetInterface<NetSvrPolicyGameInstance>();
 			//	if( pSeers->GetPlayerEntityUID() != 0 pPolicy != nullptr)
 			//		pPolicy->PlayerRevealedS2CEvt( RouteContext( GetOwner().GetEntityUID(), pSeers->GetPlayerEntityUID()), pSeersChoice->GetPlayerID(), pSeersChoice->GetRole(), PlayerRevealedReason::SeersChoice );
 			//}
@@ -313,7 +313,7 @@ namespace ConspiracyGameInstanceServer {
 				// if he is protected by a boardguard
 				if( m_vote.IsFlagSet(GameVoteNight::BODYGUARD) && GetGamePlaySystem().GetBodyGuard() != 0 && m_vote.GetBodyGuardsChoice() == m_vote.GetPlayerToKill() )
 				{
-					GetOwner().ForeachPlayerSvrGameInstance( [&]( GamePlayer* pPlayer, Policy::NetSvrPolicyGameInstance &pPolicy )->Result {
+					GetOwner().ForeachPlayerSvrGameInstance( [&]( GamePlayer* pPlayer, NetSvrPolicyGameInstance &pPolicy )->Result {
 						if( pPlayer->GetPlayerEntityUID().UID != 0 )
 							pPolicy.PlayerKilledS2CEvt( RouteContext( GetOwner().GetEntityUID(), pPlayer->GetPlayerEntityUID()), m_vote.GetPlayerToKill(), (uint8_t)PlayerKilledReason::BlockedByBodyguard );
 						return ResultCode::SUCCESS;
@@ -454,7 +454,7 @@ namespace ConspiracyGameInstanceServer {
 			rankers.push_back(m_vote.GetVoteRanker(0));
 			rankers.push_back(m_vote.GetVoteRanker(1));
 			//PlayerID rankers[2] = {m_vote.GetVoteRanker(0),m_vote.GetVoteRanker(1)};
-			GetOwner().ForeachPlayerSvrGameInstance( [&]( GamePlayer* pPlayer, Policy::NetSvrPolicyGameInstance &pPolicy )->Result {
+			GetOwner().ForeachPlayerSvrGameInstance( [&]( GamePlayer* pPlayer, NetSvrPolicyGameInstance &pPolicy )->Result {
 				if( pPlayer->GetPlayerEntityUID().UID != 0 )
 					pPolicy.VoteEndS2CEvt( RouteContext( GetOwner().GetEntityUID(), pPlayer->GetPlayerEntityUID()), rankers );
 				return ResultCode::SUCCESS;
@@ -610,7 +610,7 @@ namespace ConspiracyGameInstanceServer {
 			svrChk(GamePlayState::OnEnter() );
 
 			// Broad cast game end
-			GetOwner().ForeachPlayerSvrGameInstance( [&]( GamePlayer* pPlayer, Policy::NetSvrPolicyGameInstance &pPolicy )->Result {
+			GetOwner().ForeachPlayerSvrGameInstance( [&]( GamePlayer* pPlayer, NetSvrPolicyGameInstance &pPolicy )->Result {
 
 				uint expGain = 0;
 				bool isWinner = pPlayer->IsWinnerSide(winner);
@@ -890,7 +890,7 @@ namespace ConspiracyGameInstanceServer {
 
 		pVoter->SetVotedGameAdvance(true);
 		m_GameAdvanceVoted++;
-		GetOwner().ForeachPlayerSvrGameInstance( [&](GamePlayer *pPlayer, Policy::NetSvrPolicyGameInstance &pPolicy)
+		GetOwner().ForeachPlayerSvrGameInstance( [&](GamePlayer *pPlayer, NetSvrPolicyGameInstance &pPolicy)
 		{
 			pPolicy.GameAdvanceVotedS2CEvt( RouteContext(GetOwner().GetEntityUID(), pPlayer->GetPlayerEntityUID()), pVoter->GetPlayerID() );
 			return ResultCode::SUCCESS;

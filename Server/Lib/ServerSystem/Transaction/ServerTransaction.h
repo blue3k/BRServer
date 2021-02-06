@@ -52,26 +52,15 @@ namespace Svr {
 		using MessageClassType = MessageClass;
 		using superTrans = TransactionT<OwnerEntityType>;
 
-	protected:
-		// Select which entity will work
-		bool				m_WorkOnServerEntity;
-
 	public:
 		ServerEntityMessageTransaction(IHeap& memoryManager, MessageDataPtr &pIMsg )
-			:superTrans( memoryManager, TransactionID() )
-			,MessageClass( std::forward<MessageDataPtr>(pIMsg) )
-			,m_WorkOnServerEntity(true)
+			: superTrans( memoryManager, TransactionID() )
+			, MessageClass( std::forward<MessageDataPtr>(pIMsg) )
 		{
 		}
 
 		virtual ~ServerEntityMessageTransaction()
 		{
-		}
-
-		// 
-		inline void SetWorkOnServerEntity( bool workOnServerEntity )
-		{
-			m_WorkOnServerEntity = workOnServerEntity;
 		}
 
 		Result ParseMessage()
@@ -94,64 +83,29 @@ namespace Svr {
 			return hr;
 		}
 
-		// route function call
-		ServerEntity* GetServerEntity() { return superTrans::GetServerEntity(); }
-
-		const SharedPointerAtomicT<Net::Connection>& GetConnection()
-		{
-			static const SharedPointerAtomicT<Net::Connection> Dummy;
-			auto serverEntity = GetServerEntity();
-			if (serverEntity != nullptr)
-				return serverEntity->GetConnection();
-
-			return Dummy;
-		}
-
 		// Initialize Transaction
 		virtual Result InitializeTransaction( Svr::Entity* pOwner )
 		{
 			Result hr = ResultCode::SUCCESS;
 
-			svrChkPtr( pOwner );
+			svrCheckPtr( pOwner );
 
-			svrChk(ParseMessage());
+			svrCheck(ParseMessage());
 
-			assert(superTrans::GetServerEntity() != nullptr);
-			svrChkPtr(superTrans::GetServerEntity());
-
-			if( m_WorkOnServerEntity )
+			if(MessageClass::HasRouteContext)
 			{
-				svrAssert(dynamic_cast<OwnerEntityType*>(pOwner));
-				svrChk(superTrans::InitializeTransaction( pOwner ) );
+				assert(pOwner->GetEntityUID() == MessageClass::GetRouteContext().GetTo());
+				svrCheckPtr(dynamic_cast<OwnerEntityType*>(pOwner));
+				svrCheck(superTrans::InitializeTransaction(pOwner));
 			}
 			else
 			{
-				if(MessageClass::HasRouteContext)
-				{
-					assert(pOwner->GetEntityUID() == MessageClass::GetRouteContext().GetTo());
-					svrAssert(dynamic_cast<OwnerEntityType*>(pOwner));
-					svrChk(superTrans::InitializeTransaction(pOwner));
-				}
-				else
-				{
-					svrErr(ResultCode::NOT_IMPLEMENTED);
-				}
+				svrCheck(ResultCode::NOT_IMPLEMENTED);
 			}
-
-		Proc_End:
 
 			return hr;
 		}
 
-
-		template< class ServerEntityType >
-		ServerEntityType *GetServerEntity()
-		{
-			ServerEntityType *pSvrEnt = nullptr;
-			pSvrEnt = dynamic_cast<ServerEntityType*>(superTrans::GetServerEntity());
-			Assert(pSvrEnt);
-			return pSvrEnt;
-		}
 
 		SF_FORCEINLINE OwnerEntityType* GetMyOwner()
 		{
@@ -177,7 +131,6 @@ namespace Svr {
 		ClusterEntityMessageTransaction(IHeap& memMgr, MessageDataPtr &pIMsg )
 			:super( memMgr, pIMsg )
 		{
-			super::m_WorkOnServerEntity = false;
 		}
 
 		// 
@@ -202,15 +155,12 @@ namespace Svr {
 			if( pService->GetEntityUID() == pMyOwner->GetEntityUID() )
 				return hr;
 
-			auto& pConn = pService->GetServerEntity()->GetConnection();
-			if( pConn == nullptr )
+			auto remoteEndpoint = pService->GetTargetEndpoint();
+			if(remoteEndpoint == nullptr )
 			{
 				svrTrace( Error, "Failed routing a message({0}) for {1}", super::GetMessage()->GetMessageHeader()->msgID, typeid(*pMyOwner).name() );
 				svrErr(ResultCode::SVR_CLUSTER_NOTREADY);
 			}
-
-			if (pConn->GetConnectionState() != Net::ConnectionState::CONNECTED)
-				goto Proc_End;
 
 			MessageClass::OverrideRouteInformation( pService->GetEntityUID(), super::GetRouteHopCount() + 1 );
 
@@ -222,7 +172,7 @@ namespace Svr {
 			}
 
 			Assert(pClonedMessage->GetReferenceCount() == 1);
-			pConn->Send( pClonedMessage );
+			remoteEndpoint->Send( pClonedMessage );
 
 			//Util::SafeRelease( pClonedMessage );
 

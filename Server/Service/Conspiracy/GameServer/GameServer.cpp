@@ -51,7 +51,7 @@ int main(int numArg, const char* argc[])
 
 	svrChk(Svr::Service::ServicePrepare());
 
-	SF::Svr::InitializeEngineForServer();
+	SF::InitializeEngineForServer();
 
 
 	pServerInstance = SharedPointerT<GameServer::GameServer>(new(GetSystemHeap()) GameServer::GameServer);
@@ -69,7 +69,7 @@ Proc_End:
 	}
 
 
-	SF::Svr::DeinitializeEngine();
+	SF::DeinitializeEngine();
 
 	return 0;
 }

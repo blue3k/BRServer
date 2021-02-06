@@ -29,10 +29,8 @@
 #include "Entity/PlayerEntityInformation.h"
 
 namespace SF {
-namespace Policy {
 	class NetPolicyGameServer;
 	class NetSvrPolicyChatChannel;
-};
 };
 
 namespace SF {
@@ -140,8 +138,8 @@ namespace Svr {
 		// foreach game player
 		Result ForeachPlayer( std::function<Result(ChatChannelPlayer* pPlayer)> func );
 
-		Result ForeachPlayerGameServer( std::function<Result(ChatChannelPlayer* pPlayer, Policy::NetPolicyGameServer &pPolicy)> func );
-		Result ForeachPlayerSvrChatChannel( std::function<Result(ChatChannelPlayer* pPlayer, Policy::NetSvrPolicyChatChannel &pPolicy)> func );
+		Result ForeachPlayerGameServer( std::function<Result(ChatChannelPlayer*, NetPolicyGameServer &)> func );
+		Result ForeachPlayerSvrChatChannel( std::function<Result(ChatChannelPlayer*, NetSvrPolicyChatChannel &)> func );
 
 
 
@@ -152,10 +150,10 @@ namespace Svr {
 		//
 
 		// Join Player
-		Result JoinPlayer( ChatChannelPlayer* &pPlayer, bool bIsSilent = true );
+		Result JoinPlayer( ChatChannelPlayer* pPlayer, bool bIsSilent = true );
 
 		// Player leave
-		Result LeavePlayer( ChatChannelPlayer* &pPlayer, bool bIsSilent = true );
+		Result LeavePlayer( ChatChannelPlayer* pPlayer, bool bIsSilent = true );
 
 		// Select new leader
 		Result SelectNewLeader( bool bIsSilent = true );

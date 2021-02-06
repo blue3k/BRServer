@@ -262,19 +262,19 @@ namespace Svr {
 
 
 	// Register message handler for this component
-	Result MatchingQueueServiceEntity::RegisterServiceMessageHandler( ServerEntity *pServerEntity )
+	Result MatchingQueueServiceEntity::RegisterServiceMessageHandler()
 	{
-		super::RegisterServiceMessageHandler( pServerEntity );
+		super::RegisterServiceMessageHandler();
 
-		pServerEntity->BR_ENTITY_MESSAGE(Message::PartyMatchingQueue::RegisterPartyMatchingCmd)				{ svrMemReturn(pNewTrans = new(GetHeap()) RegisterPartyMatchingTrans(GetHeap(),pMsgData)); return ResultCode::SUCCESS; } );
-		pServerEntity->BR_ENTITY_MESSAGE(Message::PartyMatchingQueue::RegisterPlayerMatchingCmd)			{ svrMemReturn(pNewTrans = new(GetHeap()) RegisterPlayerMatchingTrans(GetHeap(), pMsgData)); return ResultCode::SUCCESS; } );
-		pServerEntity->BR_ENTITY_MESSAGE(Message::PartyMatchingQueue::UpdateMatchingEntityUIDCmd)			{ svrMemReturn(pNewTrans = new(GetHeap()) UpdateMatchingEntityUIDTrans(GetHeap(), pMsgData)); return ResultCode::SUCCESS; } );
-		pServerEntity->BR_ENTITY_MESSAGE(Message::PartyMatchingQueue::UnregisterMatchingCmd)				{ svrMemReturn(pNewTrans = new(GetHeap()) UnregisterMatchingTrans(GetHeap(), pMsgData)); return ResultCode::SUCCESS; } );
-		pServerEntity->BR_ENTITY_MESSAGE(Message::PartyMatchingQueue::ReserveItemCmd)						{ svrMemReturn(pNewTrans = new(GetHeap()) ReserveItemTrans(GetHeap(), pMsgData)); return ResultCode::SUCCESS; } );
-		pServerEntity->BR_ENTITY_MESSAGE(Message::PartyMatchingQueue::ReserveItemsCmd)						{ svrMemReturn(pNewTrans = new(GetHeap()) MatchingQueueReserveItemsTrans(GetHeap(), pMsgData)); return ResultCode::SUCCESS; } );
-		pServerEntity->BR_ENTITY_MESSAGE(Message::PartyMatchingQueue::CancelReservationCmd)					{ svrMemReturn(pNewTrans = new(GetHeap()) CancelReservationTrans(GetHeap(), pMsgData)); return ResultCode::SUCCESS; } );
-		pServerEntity->BR_ENTITY_MESSAGE(Message::PartyMatchingQueue::DequeueItemCmd)						{ svrMemReturn(pNewTrans = new(GetHeap()) DequeueItemTrans(GetHeap(), pMsgData)); return ResultCode::SUCCESS; } );
-		pServerEntity->BR_ENTITY_MESSAGE(Message::PartyMatchingQueue::MatchingItemErrorC2SEvt)				{ svrMemReturn(pNewTrans = new(GetHeap()) MatchingQueueTransMatchingItemError(GetHeap(), pMsgData)); return ResultCode::SUCCESS; } );
+		BR_ENTITY_MESSAGE(Message::PartyMatchingQueue::RegisterPartyMatchingCmd) { svrMemReturn(pNewTrans = new(GetHeap()) RegisterPartyMatchingTrans(GetHeap(), pMsgData)); return ResultCode::SUCCESS; } );
+		BR_ENTITY_MESSAGE(Message::PartyMatchingQueue::RegisterPlayerMatchingCmd) { svrMemReturn(pNewTrans = new(GetHeap()) RegisterPlayerMatchingTrans(GetHeap(), pMsgData)); return ResultCode::SUCCESS; } );
+		BR_ENTITY_MESSAGE(Message::PartyMatchingQueue::UpdateMatchingEntityUIDCmd) { svrMemReturn(pNewTrans = new(GetHeap()) UpdateMatchingEntityUIDTrans(GetHeap(), pMsgData)); return ResultCode::SUCCESS; } );
+		BR_ENTITY_MESSAGE(Message::PartyMatchingQueue::UnregisterMatchingCmd) { svrMemReturn(pNewTrans = new(GetHeap()) UnregisterMatchingTrans(GetHeap(), pMsgData)); return ResultCode::SUCCESS; } );
+		BR_ENTITY_MESSAGE(Message::PartyMatchingQueue::ReserveItemCmd) { svrMemReturn(pNewTrans = new(GetHeap()) ReserveItemTrans(GetHeap(), pMsgData)); return ResultCode::SUCCESS; } );
+		BR_ENTITY_MESSAGE(Message::PartyMatchingQueue::ReserveItemsCmd) { svrMemReturn(pNewTrans = new(GetHeap()) MatchingQueueReserveItemsTrans(GetHeap(), pMsgData)); return ResultCode::SUCCESS; } );
+		BR_ENTITY_MESSAGE(Message::PartyMatchingQueue::CancelReservationCmd) { svrMemReturn(pNewTrans = new(GetHeap()) CancelReservationTrans(GetHeap(), pMsgData)); return ResultCode::SUCCESS; } );
+		BR_ENTITY_MESSAGE(Message::PartyMatchingQueue::DequeueItemCmd) { svrMemReturn(pNewTrans = new(GetHeap()) DequeueItemTrans(GetHeap(), pMsgData)); return ResultCode::SUCCESS; } );
+		BR_ENTITY_MESSAGE(Message::PartyMatchingQueue::MatchingItemErrorC2SEvt) { svrMemReturn(pNewTrans = new(GetHeap()) MatchingQueueTransMatchingItemError(GetHeap(), pMsgData)); return ResultCode::SUCCESS; } );
 
 		return ResultCode::SUCCESS;
 	}
@@ -288,7 +288,7 @@ namespace Svr {
 	Result MatchingQueueServiceEntity::CancelItem(QueueItem *pItem)
 	{
 		Result hr = ResultCode::SUCCESS;
-		ServerEntity* pServerEntity = nullptr;
+		//ServerEntity* pServerEntity = nullptr;
 
 		if (pItem == nullptr)
 			return ResultCode::INVALID_ARG;
@@ -300,15 +300,16 @@ namespace Svr {
 		}
 
 		// If delete is required by canceling
-		svrChk((Service::ServerEntityManager->GetServerEntity(pItem->RegisterUID.GetServerID(), pServerEntity)));
+		auto requesterEndpoint = Service::MessageEndpointManager->GetEndpoint(pItem->RegisterUID);
+		//svrChk((Service::ServerEntityManager->GetServerEntity(pItem->RegisterUID.GetServerID(), pServerEntity)));
 		
 		if (pItem->NumPlayers > 1)
 		{
-			Policy::NetSvrPolicyPartyMatchingQueue(pServerEntity->GetConnection()).PartyMatchingCanceledS2CEvt(RouteContext(GetEntityUID(), pItem->RegisterUID), 0, pItem->RegisterUID, pItem->GetTicket(GetEntityUID()));
+			NetSvrPolicyPartyMatchingQueue(requesterEndpoint).PartyMatchingCanceledS2CEvt(RouteContext(GetEntityUID(), pItem->RegisterUID), 0, pItem->RegisterUID, pItem->GetTicket(GetEntityUID()));
 		}
 		else
 		{
-			Policy::NetSvrPolicyPartyMatchingQueue(pServerEntity->GetConnection()).PlayerMatchingCanceledS2CEvt(RouteContext(GetEntityUID(), pItem->RegisterUID), 0, pItem->RegisterID, pItem->GetTicket(GetEntityUID()));
+			NetSvrPolicyPartyMatchingQueue(requesterEndpoint).PlayerMatchingCanceledS2CEvt(RouteContext(GetEntityUID(), pItem->RegisterUID), 0, pItem->RegisterID, pItem->GetTicket(GetEntityUID()));
 		}
 
 	Proc_End:

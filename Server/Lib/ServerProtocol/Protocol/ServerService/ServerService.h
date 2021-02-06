@@ -1,6 +1,6 @@
 ﻿////////////////////////////////////////////////////////////////////////////////
 // 
-// CopyRight (c) 2016 Kyungkun Ko
+// CopyRight (c) Kyungkun Ko
 // 
 // Author : Generated
 // 
@@ -20,23 +20,20 @@
 
 namespace SF
 {
- 	namespace Svr
+ 	class ServerService : public ServerServiceBase
 	{
- 		class ServerService : public ServerServiceBase
-		{
- 			public:
-			// Constructor
-			ServerService ( ServerServiceInformation* pService );
+ 		public:
+		// Constructor
+		ServerService ( ServerServiceInformation* pService );
 
-			// Cmd: Generic failure message
-			Result GenericFailureCmd( const uint64_t &InTransactionID );
-			// C2S: Server Started or Connected
-			Result ServerConnectedC2SEvt( const EntityID &InSenderEntityID, const uint32_t &InStartUpTime, const NetAddress &InPrivateAddress );
+		// Cmd: Generic failure message
+		Result GenericFailureCmd( const uint64_t &InTransactionID );
+		// C2S: Server Started or Connected
+		Result ServerConnectedC2SEvt( const EntityID &InSenderEntityID, const uint32_t &InStartUpTime, const NetAddress &InPrivateAddress );
 
-		}; // class ServerService : public ServerServiceBase
+	}; // class ServerService : public ServerServiceBase
 
 
-	}; // namespace Svr
 }; // namespace SF
 
 

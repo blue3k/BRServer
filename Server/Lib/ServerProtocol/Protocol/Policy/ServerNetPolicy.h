@@ -16,51 +16,44 @@
 
 
 
-class VariableTable;
-
-
-
 namespace SF
 {
- 	namespace Policy
+    class MessageEndpoint;
+   class VariableTable;
+
+
+	class NetPolicyServer 
 	{
- 		class NetPolicyServer 
-		{
- 			private:
-				SharedPointerT<Net::Connection> m_pConnection;
-			public:
-			// Constructor
-			NetPolicyServer ( const SharedPointerT<Net::Connection>& pConn ) : m_pConnection(pConn)
-			{}
-			NetPolicyServer ( const SharedPointerAtomicT<Net::Connection>& pConn ) : m_pConnection(pConn)
-			{}
+ 		private:
+			SharedPointerT<MessageEndpoint> m_Endpoint;
+		public:
+		// Constructor
+		NetPolicyServer (const SharedPointerT<MessageEndpoint>& pEndpoint ) : m_Endpoint(pEndpoint)
+		{}
 
-			// Cmd: Generic failure message
-			Result GenericFailureCmd( const RouteContext &InRouteContext, const uint64_t &InTransactionID );
-			// C2S: Server Started or Connected
-			Result ServerConnectedC2SEvt( const RouteContext &InRouteContext, const uint32_t &InStartUpTime, const NetAddress &InPrivateAddress );
+		// Cmd: Generic failure message
+		Result GenericFailureCmd( const RouteContext &InRouteContext, const uint64_t &InTransactionID );
+		// C2S: Server Started or Connected
+		Result ServerConnectedC2SEvt( const RouteContext &InRouteContext, const uint32_t &InStartUpTime, const NetAddress &InPrivateAddress );
 
-		}; // class NetPolicyServer 
+	}; // class NetPolicyServer 
 
 
-		class NetSvrPolicyServer
-		{
- 			private:
-				SharedPointerT<Net::Connection> m_pConnection;
-			public:
-			// Constructor
-			NetSvrPolicyServer ( const SharedPointerT<Net::Connection>& pConn ) : m_pConnection(pConn)
-			{}
-			NetSvrPolicyServer ( const SharedPointerAtomicT<Net::Connection>& pConn ) : m_pConnection(pConn)
-			{}
+	class NetSvrPolicyServer
+	{
+ 		private:
+			SharedPointerT<MessageEndpoint> m_Endpoint;
+		public:
+		// Constructor
+		NetSvrPolicyServer ( const SharedPointerT<MessageEndpoint>& pEndpoint ) : m_Endpoint(pEndpoint)
+		{}
 
-			// Cmd: Generic failure message
-			Result GenericFailureRes( const RouteContext &InRouteContext, const uint64_t &InTransactionID, const Result &InResult );
+		// Cmd: Generic failure message
+		Result GenericFailureRes( const RouteContext &InRouteContext, const uint64_t &InTransactionID, const Result &InResult );
 
-		}; // class NetSvrPolicyServer
+	}; // class NetSvrPolicyServer
 
 
-	}; // namespace Policy
 }; // namespace SF
 
 

@@ -16,55 +16,48 @@
 
 
 
-class VariableTable;
-
-
-
 namespace SF
 {
- 	namespace Policy
+    class MessageEndpoint;
+   class VariableTable;
+
+
+	class NetPolicyChatChannelManager 
 	{
- 		class NetPolicyChatChannelManager 
-		{
- 			private:
-				SharedPointerT<Net::Connection> m_pConnection;
-			public:
-			// Constructor
-			NetPolicyChatChannelManager ( const SharedPointerT<Net::Connection>& pConn ) : m_pConnection(pConn)
-			{}
-			NetPolicyChatChannelManager ( const SharedPointerAtomicT<Net::Connection>& pConn ) : m_pConnection(pConn)
-			{}
+ 		private:
+			SharedPointerT<MessageEndpoint> m_Endpoint;
+		public:
+		// Constructor
+		NetPolicyChatChannelManager (const SharedPointerT<MessageEndpoint>& pEndpoint ) : m_Endpoint(pEndpoint)
+		{}
 
-			// Cmd: Create a channel instance
-			Result CreateChannelCmd( const RouteContext &InRouteContext, const uint64_t &InTransactionID, const uint16_t &InRouteHopCount, const char* InChannelName, const char* InPasscode, const PlayerInformation &InCreator );
-			// Cmd: Find a channel instance with name
-			Result FindChannelCmd( const RouteContext &InRouteContext, const uint64_t &InTransactionID, const uint16_t &InRouteHopCount, const char* InChannelName );
-			// C2S: Notification that a chat channel instance has deleted
-			Result ChatChannelDeletedC2SEvt( const RouteContext &InRouteContext, const uint16_t &InRouteHopCount );
+		// Cmd: Create a channel instance
+		Result CreateChannelCmd( const RouteContext &InRouteContext, const uint64_t &InTransactionID, const uint16_t &InRouteHopCount, const char* InChannelName, const char* InPasscode, const PlayerInformation &InCreator );
+		// Cmd: Find a channel instance with name
+		Result FindChannelCmd( const RouteContext &InRouteContext, const uint64_t &InTransactionID, const uint16_t &InRouteHopCount, const char* InChannelName );
+		// C2S: Notification that a chat channel instance has deleted
+		Result ChatChannelDeletedC2SEvt( const RouteContext &InRouteContext, const uint16_t &InRouteHopCount );
 
-		}; // class NetPolicyChatChannelManager 
+	}; // class NetPolicyChatChannelManager 
 
 
-		class NetSvrPolicyChatChannelManager
-		{
- 			private:
-				SharedPointerT<Net::Connection> m_pConnection;
-			public:
-			// Constructor
-			NetSvrPolicyChatChannelManager ( const SharedPointerT<Net::Connection>& pConn ) : m_pConnection(pConn)
-			{}
-			NetSvrPolicyChatChannelManager ( const SharedPointerAtomicT<Net::Connection>& pConn ) : m_pConnection(pConn)
-			{}
+	class NetSvrPolicyChatChannelManager
+	{
+ 		private:
+			SharedPointerT<MessageEndpoint> m_Endpoint;
+		public:
+		// Constructor
+		NetSvrPolicyChatChannelManager ( const SharedPointerT<MessageEndpoint>& pEndpoint ) : m_Endpoint(pEndpoint)
+		{}
 
-			// Cmd: Create a channel instance
-			Result CreateChannelRes( const RouteContext &InRouteContext, const uint64_t &InTransactionID, const Result &InResult, const uint64_t &InChannelUID );
-			// Cmd: Find a channel instance with name
-			Result FindChannelRes( const RouteContext &InRouteContext, const uint64_t &InTransactionID, const Result &InResult, const uint64_t &InChannelUID );
+		// Cmd: Create a channel instance
+		Result CreateChannelRes( const RouteContext &InRouteContext, const uint64_t &InTransactionID, const Result &InResult, const uint64_t &InChannelUID );
+		// Cmd: Find a channel instance with name
+		Result FindChannelRes( const RouteContext &InRouteContext, const uint64_t &InTransactionID, const Result &InResult, const uint64_t &InChannelUID );
 
-		}; // class NetSvrPolicyChatChannelManager
+	}; // class NetSvrPolicyChatChannelManager
 
 
-	}; // namespace Policy
 }; // namespace SF
 
 

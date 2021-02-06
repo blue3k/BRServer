@@ -83,9 +83,6 @@ namespace ConspiracyGameInstanceServer {
 
 			svrChk(ParseMessage());
 
-			assert(super::GetServerEntity()!= nullptr);
-			svrChkPtr(super::GetServerEntity());// = dynamic_cast<Svr::ServerEntity*>(pOwner) );
-
 			if(GetMyServer()->GetServerUID() != MessageClass::GetRouteContext().GetTo().GetServerID())
 			{
 				svrErr( ResultCode::SVR_INVALID_SERVERID );
@@ -106,25 +103,6 @@ namespace ConspiracyGameInstanceServer {
 			return hr;
 		}
 
-
-		template< class ServerEntityType >
-		ServerEntityType *GetServerEntity()
-		{
-			ServerEntityType *pSvrEnt = nullptr;
-			pSvrEnt = dynamic_cast<ServerEntityType*>(super::GetServerEntity());
-			Assert(pSvrEnt);
-			return pSvrEnt;
-		}
-
-
-		const SharedPointerAtomicT<Net::Connection>& GetConnection()
-		{
-			static const SharedPointerAtomicT<Net::Connection> Dummy;
-			if (super::GetServerEntity() == nullptr)
-				return Dummy;
-
-			return super::GetServerEntity()->GetConnection();
-		}
 
 		SF_FORCEINLINE GameInstanceEntity* GetMyOwner()
 		{

@@ -194,7 +194,7 @@ namespace Svr {
 
 
 		// Register message handler for this component
-		virtual Result RegisterServiceMessageHandler( ServerEntity *pServerEntity ) override;
+		virtual Result RegisterServiceMessageHandler() override;
 
 		////////////////////////////////////////////////////////////////////////////////////
 		virtual Result TickUpdate(TimerAction *pAction = nullptr) override;

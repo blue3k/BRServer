@@ -31,13 +31,10 @@
 #include "Object/SFLibraryComponentAdapter.h"
 #include "ServerLog/SvrLogComponent.h"
 #include "Service/ServerService.h"
+#include "Net/SFMessageEndpointManager.h"
 
 
 namespace SF {
-namespace Svr {
-
-
-
 
 	uint GetServerUID()
 	{
@@ -48,8 +45,8 @@ namespace Svr {
 	// Get server ID
 	ServerID GetMyServerID()
 	{
-		Assert(BrServer::GetInstance());
-		return BrServer::GetInstance()->GetServerUID();
+		Assert(Svr::BrServer::GetInstance());
+		return Svr::BrServer::GetInstance()->GetServerUID();
 	}
 
 	void InitializeEngine(SF::EngineInitParam& initParam = SF::EngineInitParam())
@@ -127,10 +124,11 @@ namespace Svr {
 
 		pEngine->AddComponent<SF::Net::NetSystem>(initParam.NetRecvBufferSize, initParam.NetSendBufferSize, Service::ServerConfig->NetIOThreadCount, 1024);
 		pEngine->AddComponent<ConnectionManagerComponent>(2048);
-		pEngine->AddComponent<EntityTable>();
-		pEngine->AddComponent<LibraryComponentAdapter<EntityManager, uint>, IHeap&, uint>(GetSystemHeap(), Service::ServerConfig->WorkerThreadCount);
-		pEngine->AddComponent<LibraryComponentAdapter<Svr::ServerEntityManager,uint>, IHeap&, uint>(GetSystemHeap(), Service::ServerConfig->WorkerThreadCount);
+		pEngine->AddComponent<Svr::EntityTable>();
+		pEngine->AddComponent<LibraryComponentAdapter<Svr::EntityManager, uint>, IHeap&, uint>(GetSystemHeap(), Service::ServerConfig->WorkerThreadCount);
+		//pEngine->AddComponent<LibraryComponentAdapter<Svr::ServerEntityManager,uint>, IHeap&, uint>(GetSystemHeap(), Service::ServerConfig->WorkerThreadCount);
 		pEngine->AddComponent<LibraryComponentAdapter<Svr::ClusterManagerServiceEntity>, IHeap&>(GetSystemHeap());
+		pEngine->AddComponent<LibraryComponentAdapter<MessageEndpointManager>, IHeap&>(GetSystemHeap());
 	}
 
 
@@ -140,6 +138,5 @@ namespace Svr {
 	}
 
 
-}
 }
 

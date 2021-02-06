@@ -7,7 +7,6 @@ set(BRSERVERSYSTEM_LIB_FILES
     GameLog/GameLog.inl
     PerformanceCounter/PerformanceCounter.inl
     PerformanceCounter/PerformanceCounterInstance.inl
-    ServerEntity/ServerEntity.inl
     Server/BrServer.inl
     Server/BrServerUtil.inl
     ServiceEntity/ClusteredServiceEntity.inl
@@ -113,8 +112,6 @@ set(BRSERVERSYSTEM_LIB_FILES
     ServiceEntity/MatchingServiceEntity.h
     ServiceEntity/MatchingServiceTrans.h
     ServiceEntity/MatchingServiceUtil.h
-    ServiceEntity/MonitoringServiceEntity.h
-    ServiceEntity/MonitoringServiceTrans.h
     ServiceEntity/RankingServiceEntity.h
     ServiceEntity/RankingServiceTrans.h
     ServiceEntity/ServiceEntity.h
@@ -122,6 +119,7 @@ set(BRSERVERSYSTEM_LIB_FILES
     Service/EntityManagerService.h
     Service/EntityTableService.h
     Service/PlayerManagerService.h
+	Service/MessageEndpointManagerService.h
     Service/ServerEntityManagerService.h
     Service/ServerService.h
     Service/ZookeeperSessionService.h
@@ -154,6 +152,8 @@ set(BRSERVERSYSTEM_LIB_FILES
     Component/ServerComponent.cpp
     Component/SFServerNetComponent.cpp
     Component/SFZookeeperSessionComponent.cpp
+	Component/SFServerConfigComponent.h
+	Component/SFServerConfigComponent.cpp
     Entity/Entity.cpp
     Entity/EntityInformation.cpp
     Entity/EntityManager.cpp
@@ -169,6 +169,10 @@ set(BRSERVERSYSTEM_LIB_FILES
     Google/GoogleOAuth.cpp
     Net/SFConnectionMUDPServer.cpp
     Net/SFNetServerMUDP.cpp
+    Net/SFMessageEndpoint.h
+    Net/SFMessageEndpoint.cpp
+	Net/SFMessageEndpointManager.h
+	Net/SFMessageEndpointManager.cpp
     PerformanceCounter/PerformanceCounter.cpp
     PerformanceCounter/PerformanceCounterClient.cpp
     PerformanceCounter/PerformanceCounterInstance.cpp
@@ -196,8 +200,6 @@ set(BRSERVERSYSTEM_LIB_FILES
     ServiceEntity/MatchingServiceEntity.cpp
     ServiceEntity/MatchingServiceTrans.cpp
     ServiceEntity/MatchingServiceUtil.cpp
-    ServiceEntity/MonitoringServiceEntity.cpp
-    ServiceEntity/MonitoringServiceTrans.cpp
     ServiceEntity/RankingServiceEntity.cpp
     ServiceEntity/RankingServiceTrans.cpp
 	ServiceEntity/Relay/RelayServiceEntity.cpp

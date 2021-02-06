@@ -89,7 +89,7 @@ namespace Svr {
 				if (!hr)
 					CloseTransaction(hr);
 			});
-		Svr::ServerServiceInformation *pService = nullptr;
+		ServerServiceInformation *pService = nullptr;
 
 		svrCheck( super::StartTransaction() );
 
@@ -105,7 +105,7 @@ namespace Svr {
 
 		svrCheck( Service::ClusterManager->GetRandomService(Svr::GetServerGameID(), ClusterID::ChatChannelManager, pService ) );
 
-		svrCheck( pService->GetService<Svr::ChatChannelManagerService>()->CreateChannelCmd(GetTransID(), 0, GetChannelName(), GetPasscode(), GetMyOwner()->GetPlayerInformation() ) );
+		svrCheck( pService->GetService<ChatChannelManagerService>()->CreateChannelCmd(GetTransID(), 0, GetChannelName(), GetPasscode(), GetMyOwner()->GetPlayerInformation() ) );
 
 		return hr;
 	}
@@ -176,10 +176,10 @@ namespace Svr {
 		//		svrErrorClose(ResultCode::GAME_NOTENOUGH_RESOURCE);
 		//}
 
-		svrCheck( Service::ServerEntityManager->GetServerEntity( EntityUID(GetChatUID()).GetServerID(), pServerEntity ) );
+		//svrCheck( Service::ServerEntityManager->GetServerEntity( EntityUID(GetChatUID()).GetServerID(), pServerEntity ) );
 
 		svrError(ResultCode::NOT_IMPLEMENTED);
-		//svrCheck(Policy::NetPolicyChatChannel(pServerEntity->GetConnection()).JoinChatChannelCmd(RouteContext(GetOwnerEntityUID(), GetChatUID()), GetTransID(), GetMyOwner()->GetPlayerInformation() ) );
+		//svrCheck(NetPolicyChatChannel(pServerEntity->GetConnection()).JoinChatChannelCmd(RouteContext(GetOwnerEntityUID(), GetChatUID()), GetTransID(), GetMyOwner()->GetPlayerInformation() ) );
 
 		return hr;
 	}
@@ -198,7 +198,7 @@ namespace Svr {
 		if( GetMyOwner()->GetChatChannelUID() != GetRouteContext().GetFrom())
 			svrErrorClose(ResultCode::INVALID_ENTITY);
 
-		svrCheck(Policy::NetSvrPolicyGame(GetMyOwner()->GetConnection()).ChatChannelPlayerJoinedS2CEvt( GetRouteContext().GetFrom(), GetJoinedPlayer() ) );
+		svrCheck(NetSvrPolicyGame(GetMyOwner()->GetConnection()->GetMessageEndpoint()).ChatChannelPlayerJoinedS2CEvt( GetRouteContext().GetFrom(), GetJoinedPlayer() ) );
 
 		return hr;
 	}
@@ -217,7 +217,7 @@ namespace Svr {
 		if( GetMyOwner()->GetChatChannelUID() != GetRouteContext().GetFrom())
 			svrErrorClose(ResultCode::INVALID_ENTITY);
 
-		svrCheck(Policy::NetSvrPolicyGame(GetMyOwner()->GetConnection()).ChatChannelLeaderChangedS2CEvt( GetRouteContext().GetFrom(), GetNewLeaderID() ) );
+		svrCheck(NetSvrPolicyGame(GetMyOwner()->GetConnection()->GetMessageEndpoint()).ChatChannelLeaderChangedS2CEvt( GetRouteContext().GetFrom(), GetNewLeaderID() ) );
 	
 		return hr;
 	}
@@ -276,9 +276,11 @@ namespace Svr {
 		if( GetMyOwner()->GetChatChannelUID() == EntityUID(0) )
 			svrError(ResultCode::INVALID_ENTITY);
 
-		svrCheck( Service::ServerEntityManager->GetServerEntity( EntityUID(GetChatUID()).GetServerID(), pServerEntity ) );
 
-		svrCheck(Policy::NetPolicyChatChannel(pServerEntity->GetConnection()).LeaveCmd( RouteContext(GetOwnerEntityUID(),GetMyOwner()->GetChatChannelUID()), GetTransID(),
+		auto chatServerEndpoint = Service::MessageEndpointManager->GetEndpoint(GetChatUID());
+		//svrCheck( Service::ServerEntityManager->GetServerEntity( EntityUID(GetChatUID()).GetServerID(), pServerEntity ) );
+
+		svrCheck(NetPolicyChatChannel(chatServerEndpoint).LeaveCmd( RouteContext(GetOwnerEntityUID(),GetMyOwner()->GetChatChannelUID()), GetTransID(),
 			GetMyOwner()->GetPlayerID() ) );
 	
 		return hr;
@@ -299,7 +301,7 @@ namespace Svr {
 		if( GetMyOwner()->GetChatChannelUID() != GetRouteContext().GetFrom())
 			svrErrorClose(ResultCode::INVALID_ENTITY);
 
-		svrCheck(Policy::NetSvrPolicyGame(GetMyOwner()->GetConnection()).ChatChannelPlayerLeftS2CEvt( GetRouteContext().GetFrom(), GetLeftPlayerID() ) );
+		svrCheck(NetSvrPolicyGame(GetMyOwner()->GetConnection()->GetMessageEndpoint()).ChatChannelPlayerLeftS2CEvt( GetRouteContext().GetFrom(), GetLeftPlayerID() ) );
 
 		return hr;
 	}
@@ -350,9 +352,10 @@ namespace Svr {
 		if( GetMyOwner()->GetChatChannelUID().UID != EntityUID() )
 			svrError(ResultCode::INVALID_ENTITY);
 
-		svrCheck( Service::ServerEntityManager->GetServerEntity( EntityUID(GetChatUID()).GetServerID(), pServerEntity ) );
+		auto chatServerEndpoint = Service::MessageEndpointManager->GetEndpoint(GetChatUID());
+		//svrCheck( Service::ServerEntityManager->GetServerEntity( EntityUID(GetChatUID()).GetServerID(), pServerEntity ) );
 
-		svrCheck(Policy::NetPolicyChatChannel(pServerEntity->GetConnection()).KickPlayerCmd( RouteContext(GetOwnerEntityUID(),GetChatUID()), GetTransID(),
+		svrCheck(NetPolicyChatChannel(chatServerEndpoint).KickPlayerCmd( RouteContext(GetOwnerEntityUID(),GetChatUID()), GetTransID(),
 			GetMyOwner()->GetPlayerID(), GetPlayerToKick() ) );
 
 		return hr;
@@ -373,7 +376,7 @@ namespace Svr {
 		if( GetMyOwner()->GetChatChannelUID() != GetRouteContext().GetFrom())
 			svrErrorClose(ResultCode::INVALID_ENTITY);
 
-		svrCheck( Policy::NetSvrPolicyGame(GetMyOwner()->GetConnection()).ChatChannelPlayerKickedS2CEvt( GetRouteContext().GetFrom(), GetKickedPlayerID() ) );
+		svrCheck( NetSvrPolicyGame(GetMyOwner()->GetConnection()->GetMessageEndpoint()).ChatChannelPlayerKickedS2CEvt( GetRouteContext().GetFrom(), GetKickedPlayerID() ) );
 
 		if( GetKickedPlayerID() == GetMyOwner()->GetPlayerID() )
 		{
@@ -402,9 +405,10 @@ namespace Svr {
 		if (GetMyOwner()->GetChatChannelUID().UID != EntityUID())
 			svrError(ResultCode::INVALID_ENTITY);
 
-		svrCheck(Service::ServerEntityManager->GetServerEntity(EntityUID(GetChatUID()).GetServerID(), pServerEntity));
+		auto chatServerEndpoint = Service::MessageEndpointManager->GetEndpoint(GetChatUID());
+		//svrCheck(Service::ServerEntityManager->GetServerEntity(EntityUID(GetChatUID()).GetServerID(), pServerEntity));
 
-		svrCheck(Policy::NetPolicyChatChannel(pServerEntity->GetConnection()).ChatMessageC2SEvt(RouteContext(GetOwnerEntityUID(), GetChatUID()), GetMyOwner()->GetPlayerID(),
+		svrCheck(NetPolicyChatChannel(chatServerEndpoint).ChatMessageC2SEvt(RouteContext(GetOwnerEntityUID(), GetChatUID()), GetMyOwner()->GetPlayerID(),
 			GetChatMessage()));
 
 		return hr;
@@ -423,7 +427,7 @@ namespace Svr {
 		if (GetMyOwner()->GetChatChannelUID() != GetRouteContext().GetFrom())
 			svrErrorClose(ResultCode::INVALID_ENTITY);
 
-		svrCheck(Policy::NetSvrPolicyGame(GetMyOwner()->GetConnection()).ChatChannelChatMessageS2CEvt(GetSenderID(), GetSenderName(), GetChatMessage()));
+		svrCheck(NetSvrPolicyGame(GetMyOwner()->GetConnection()->GetMessageEndpoint()).ChatChannelChatMessageS2CEvt(GetSenderID(), GetSenderName(), GetChatMessage()));
 
 		return ResultCode::SUCCESS;
 	}

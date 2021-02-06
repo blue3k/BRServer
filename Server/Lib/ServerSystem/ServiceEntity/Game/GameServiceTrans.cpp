@@ -163,10 +163,12 @@ namespace Svr {
 		}
 		else
 		{
+			assert(false);
+			// FIXME
 			// it's local player send message to local loop back entity
-			svrCheck(Policy::NetPolicyGameServer(BrServer::GetInstance()->GetLoopbackServerEntity()->GetConnection()).RegisterPlayerToJoinGameServerOnPlayerEntityCmd(
-				RouteContext(super::GetOwnerEntityUID(), m_PlayerUID), super::GetTransID(),
-				super::GetPlayerID(), super::GetTicket(), super::GetFBUserID()));
+			//svrCheck(NetPolicyGameServer(BrServer::GetInstance()->GetLoopbackServerEntity()->GetConnection()).RegisterPlayerToJoinGameServerOnPlayerEntityCmd(
+			//	RouteContext(super::GetOwnerEntityUID(), m_PlayerUID), super::GetTransID(),
+			//	super::GetPlayerID(), super::GetTicket(), super::GetFBUserID()));
 
 		}
 

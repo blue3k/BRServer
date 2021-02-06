@@ -62,7 +62,7 @@ namespace SharedModuleServer {
 
 
 	SharedModuleServer::SharedModuleServer()
-		:BrServer(NetClass::Game)
+		:BrServer()
 	{
 	}
 
@@ -118,16 +118,12 @@ namespace SharedModuleServer {
 
 
 	// Initialize private Network
-	Result SharedModuleServer::InitializeNetPrivate()
+	Result SharedModuleServer::InitializeEntities()
 	{
 		ScopeContext hr;
 		SockFamily privateNetSockFamily;
 
-		svrCheck(Svr::BrServer::InitializeNetPrivate() );
-
-		GetMyServer()->GetNetPrivate()->SetIsEnableAccept(true);
-
-		privateNetSockFamily = GetMyServer()->GetNetPrivate()->GetLocalAddress().SocketFamily;
+		svrCheck(Svr::BrServer::InitializeEntities() );
 
 		// push Startup transaction
 		{
@@ -142,31 +138,15 @@ namespace SharedModuleServer {
 
 
 	// Close Private Network
-	Result SharedModuleServer::CloseNetPrivate()
+	Result SharedModuleServer::CloseEntities()
 	{
 		Result hr = ResultCode::SUCCESS;
 
-		hr = Svr::BrServer::CloseNetPrivate();
-
-
-		// Server Entity Manager will clear this
-		SetLoopbackServerEntity( nullptr );
+		hr = Svr::BrServer::CloseEntities();
 
 		return hr;
 	}
 
-
-
-	// create remote entity by class
-	Result SharedModuleServer::CreateServerEntity( NetClass netClass, Svr::ServerEntity* &pServerEntity )
-	{
-		pServerEntity = new(GetHeap()) Svr::GenericServerEntity();
-
-		if( pServerEntity == nullptr )
-			return ResultCode::OUT_OF_MEMORY;
-
-		return ResultCode::SUCCESS;
-	}
 
 
 	//////////////////////////////////////////////////////////////////////////
@@ -175,8 +155,8 @@ namespace SharedModuleServer {
 	//
 
 
-}; // namespace SharedModuleServer
-}; // namespace SF
+} // namespace SharedModuleServer
+} // namespace SF
 
 
 

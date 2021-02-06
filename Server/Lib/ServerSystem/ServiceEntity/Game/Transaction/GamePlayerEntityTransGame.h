@@ -55,7 +55,7 @@ namespace SF {
 			// Start Transaction
 			virtual Result StartTransaction() override;
 
-			BR_IMPLEMENT_USERMSGTRANS_CLOSE_ARGS(Policy::NetSvrPolicyGame, SearchGameInstanceRes, m_GameInstances);
+			BR_IMPLEMENT_USERMSGTRANS_CLOSE_ARGS(NetSvrPolicyGame, SearchGameInstanceRes, m_GameInstances);
 		};
 
 
@@ -80,7 +80,7 @@ namespace SF {
 
 			virtual Result CloseTransaction(Result hrRes) override;
 
-			BR_IMPLEMENT_USERMSGTRANS_CLOSE_ARGS(Policy::NetSvrPolicyGame, JoinGameInstanceRes, m_GameInsID, m_GameInsAddress, m_GameInsAddress4);
+			BR_IMPLEMENT_USERMSGTRANS_CLOSE_ARGS(NetSvrPolicyGame, JoinGameInstanceRes, m_GameInsID, m_GameInsAddress, m_GameInsAddress4);
 		};
 
 
@@ -117,7 +117,7 @@ namespace SF {
 
 			virtual Result CloseTransaction(Result hrRes) override;
 
-			BR_IMPLEMENT_USERMSGTRANS_CLOSE(Policy::NetSvrPolicyGame, LeaveGameRes);
+			BR_IMPLEMENT_USERMSGTRANS_CLOSE(NetSvrPolicyGame, LeaveGameRes);
 		};
 
 

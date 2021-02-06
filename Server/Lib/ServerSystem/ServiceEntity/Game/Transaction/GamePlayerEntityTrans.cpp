@@ -227,8 +227,11 @@ namespace Svr {
 
 		EntityUID loginEntityUID(GetLoginEntityUID());
 
+
+		auto loginEndpoint = Service::MessageEndpointManager->GetEndpoint(loginEntityUID);
+
 		// TODO: We need to distinguish whether character data is updated or not
-		svrCheck(Policy::NetPolicyLoginServer(Service::ServerEntityManager->GetServerConnection(loginEntityUID.GetServerID())).PlayerJoinedToGameServerCmd(
+		svrCheck(NetPolicyLoginServer(loginEndpoint).PlayerJoinedToGameServerCmd(
 			RouteContext(GetOwnerEntityUID(), loginEntityUID), GetTransID(),
 			GetAccID(), GetTicket()));
 
@@ -268,7 +271,9 @@ namespace Svr {
 		{
 			PartyUID partyUID = GetMyOwner()->GetPartyUID();
 
-			svrCheck(Policy::NetPolicyGameParty(Service::ServerEntityManager->GetServerConnection(partyUID.GetServerID())).JoinPartyCmd(
+			auto partyEndpoint = Service::MessageEndpointManager->GetEndpoint(partyUID);
+
+			svrCheck(NetPolicyGameParty(partyEndpoint).JoinPartyCmd(
 				RouteContext(GetOwnerEntityUID(), partyUID), GetTransID(),
 				0, GetMyOwner()->GetPlayerInformation()));
 		}
@@ -671,7 +676,7 @@ namespace Svr {
 
 			svrCheck( pNotifySystem->AddNotification(NotificationID, MessageID, MessageParam0, MessageParam1, MessageText, IsRead, TimeStamp) );
 
-			Policy::NetSvrPolicyGame(GetConnection()).NotifyS2CEvt(NotificationID, (int32_t)MessageID, MessageParam0, MessageParam1, MessageText, IsRead, TimeStamp );
+			NetSvrPolicyGame(GetRemoteEndpoint()).NotifyS2CEvt(NotificationID, (int32_t)MessageID, MessageParam0, MessageParam1, MessageText, IsRead, TimeStamp );
 		}
 
 		return ResultCode::SUCCESS; 
@@ -840,7 +845,7 @@ namespace Svr {
 			svrError(ResultCode::GAME_INVALID_PLAYER);
 
 		svrCheck( GetMyOwner()->GetComponent<UserNotificationSystem>()->AddNotification(GetNotificationID(), (NotificationType)GetMessageID(), GetMessageParam0(), GetMessageParam1(), GetMessageText(), 0, GetTimeStamp() ) );
-		svrCheck(Policy::NetSvrPolicyGame(GetConnection()).NotifyS2CEvt(GetNotificationID(), (uint)GetMessageID(), GetMessageParam0(), GetMessageParam1(), GetMessageText(), 0, GetTimeStamp()));
+		svrCheck(NetSvrPolicyGame(GetRemoteEndpoint()).NotifyS2CEvt(GetNotificationID(), (uint)GetMessageID(), GetMessageParam0(), GetMessageParam1(), GetMessageText(), 0, GetTimeStamp()));
 
 		return hr;
 	}
@@ -1083,7 +1088,7 @@ namespace Svr {
 					CloseTransaction(hr);
 			});
 
-		//Policy::NetSvrPolicyGame *pPolicy = nullptr;
+		//NetSvrPolicyGame *pPolicy = nullptr;
 		auto *pDBRes = (DB::QueryGetPlayerShardIDCmd*)pRes;
 
 		m_PlayerStatusQueryCount--;
@@ -1103,14 +1108,14 @@ namespace Svr {
 				if (m_PlayerStatusQueryCount == 0)
 					CloseTransaction(hr);
 			});
-		Policy::NetSvrPolicyGame *pPolicy = nullptr;
+		NetSvrPolicyGame *pPolicy = nullptr;
 		DB::QueryGetPlayerStatusCmd *pDBRes = (DB::QueryGetPlayerStatusCmd*)pRes;
 
 		m_PlayerStatusQueryCount--;
 
 		svrCheck(pRes->GetResult());
 
-		svrCheck(Policy::NetSvrPolicyGame(GetConnection()).NotifyPlayerStatusUpdatedS2CEvt(pDBRes->PlayerID, pDBRes->LatestActiveTime, pDBRes->PlayerState != 0 ? 1 : 0));
+		svrCheck(NetSvrPolicyGame(GetRemoteEndpoint()).NotifyPlayerStatusUpdatedS2CEvt(pDBRes->PlayerID, pDBRes->LatestActiveTime, pDBRes->PlayerState != 0 ? 1 : 0));
 
 		return ResultCode::SUCCESS;
 	}
@@ -1124,7 +1129,7 @@ namespace Svr {
 					CloseTransaction(hr);
 			});
 		EntityUID playerUID;
-		Policy::NetSvrPolicyGame pPolicy(GetConnection());
+		NetSvrPolicyGame pPolicy(GetRemoteEndpoint());
 		auto& targetPlayerID = GetTargetPlayerID();
 		uint uiRequestMax = Util::Min((uint)targetPlayerID.size(), (uint)20);
 
@@ -1176,11 +1181,12 @@ namespace Svr {
 
 		playerUID = GetRouteContext().GetFrom();
 
-		svrCheck( Service::ServerEntityManager->GetServerEntity( playerUID.GetServerID(), pServerEntity ) );
+		auto playerEndpoint = Service::MessageEndpointManager->GetEndpoint(playerUID);
+		//svrCheck( Service::ServerEntityManager->GetServerEntity( playerUID.GetServerID(), pServerEntity ) );
 
 		bInGame = GetMyOwner()->GetGameInsUID().UID != 0 || GetMyOwner()->GetPartyUID().UID != 0;
 
-		svrCheck(Policy::NetPolicyGameServer(pServerEntity->GetConnection()).NotifyPlayerStatusUpdatedC2SEvt( 
+		svrCheck(NetPolicyGameServer(playerEndpoint).NotifyPlayerStatusUpdatedC2SEvt(
 			RouteContext(GetOwnerEntityUID(),playerUID), 
 			GetDestPlayerID(), GetMyOwner()->GetLatestActiveTime().time_since_epoch().count(), bInGame ? 1 : 0 ) );
 
@@ -1197,7 +1203,7 @@ namespace Svr {
 
 		svrCheck( super::StartTransaction() );
 
-		svrCheck(Policy::NetSvrPolicyGame(GetConnection()).NotifyPlayerStatusUpdatedS2CEvt( GetDestPlayerID(), GetLatestActiveTime(), GetIsInGame() ) );
+		svrCheck(NetSvrPolicyGame(GetRemoteEndpoint()).NotifyPlayerStatusUpdatedS2CEvt( GetDestPlayerID(), GetLatestActiveTime(), GetIsInGame() ) );
 
 		return hr;
 	}
@@ -1532,7 +1538,7 @@ namespace Svr {
 	Result PlayerTransSetConfigPreset::StartTransaction()
 	{
 		ScopeContext hr;
-		Policy::NetPolicyGameInstance *pPolicy = nullptr;
+		NetPolicyGameInstance *pPolicy = nullptr;
 		GameInsUID insUID;
 
 		svrCheck( super::StartTransaction() );
@@ -1545,7 +1551,8 @@ namespace Svr {
 		insUID = GetMyOwner()->GetGameInsUID();
 		if( insUID.UID != 0 )
 		{
-			svrCheck(Policy::NetPolicyGameInstance(Service::ServerEntityManager->GetServerConnection(insUID.GetServerID())).SetConfigPresetC2SEvt( RouteContext(GetOwnerEntityUID(),insUID), GetPresetID() ) );
+			auto gameEndpoint = Service::MessageEndpointManager->GetEndpoint(insUID);
+			svrCheck(NetPolicyGameInstance(gameEndpoint).SetConfigPresetC2SEvt( RouteContext(GetOwnerEntityUID(),insUID), GetPresetID() ) );
 		}
 
 		return hr;

@@ -2092,6 +2092,7 @@ namespace SF
 				protocolCheck(*input >> m_RouteContext);
 				protocolCheck(*input >> m_PlayerID);
 				protocolCheck(*input >> m_Role);
+				protocolCheck(input->Read(ArrayLen));
 				protocolCheck(input->ReadLink(m_ChatMessage, ArrayLen));
 
 				return hr;

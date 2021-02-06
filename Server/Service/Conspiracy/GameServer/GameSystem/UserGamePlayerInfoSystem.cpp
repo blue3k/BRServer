@@ -281,7 +281,7 @@ namespace GameServer {
 			m_Level++;
 
 			// Send level up to client
-			Policy::NetSvrPolicyGame(GetOwner().GetConnection()).LevelUpS2CEvt(m_Exp, m_Level);
+			NetSvrPolicyGame(GetOwner().GetConnection()->GetMessageEndpoint()).LevelUpS2CEvt(m_Exp, m_Level);
 
 			UpdateStatByLevel(pNextLevelInfo);
 

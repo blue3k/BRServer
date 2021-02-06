@@ -33,9 +33,6 @@
 
 
 
-
-
-
 namespace SF {
 	namespace Svr {
 
@@ -113,7 +110,7 @@ namespace SF {
 			m_GamePlayerByUID.ForeachOrder(0, m_MaxPlayer, 
 				[&CurTime, &playerCount](const PlayerID& playerID, GameInstancePlayer* pPlayer)-> bool
 				{
-					if (pPlayer->GetServerEntity() != nullptr)
+					if (pPlayer->GetRemoteEndpoint() != nullptr)
 						playerCount++;
 
 					pPlayer->UpdateGamePlayer(CurTime);
@@ -281,7 +278,7 @@ namespace SF {
 		{
 			ScopeContext hr;
 
-			pPlayer->SetServerEntity(nullptr, 0);
+			pPlayer->SetRemoteEndpoint(nullptr, 0);
 
 			// We will leave him as an inactive player so the clean-up and any notify aren't needed
 
@@ -311,7 +308,7 @@ namespace SF {
 			m_GamePlayerByUID.ForeachOrder(0, m_MaxPlayer, [&](const PlayerID& playerID, GameInstancePlayer* pPlayer)-> bool
 				{
 					if (pPlayer->GetPlayerEntityUID().UID != 0)
-						Policy::NetSvrPolicyGameInstance(pPlayer->GetConnection()).PlayerKickedS2CEvt(RouteContext(GetEntityUID(), pPlayer->GetPlayerEntityUID()), pPlayer->GetPlayerID());
+						NetSvrPolicyGameInstance(pPlayer->GetRemoteEndpoint()).PlayerKickedS2CEvt(RouteContext(GetEntityUID(), pPlayer->GetPlayerEntityUID()), pPlayer->GetPlayerID());
 
 					LeavePlayer(pPlayer);
 

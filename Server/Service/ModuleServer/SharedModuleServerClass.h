@@ -89,14 +89,11 @@ namespace SharedModuleServer
 
 
 		// Initialize private Network
-		virtual Result InitializeNetPrivate() override;
+		virtual Result InitializeEntities() override;
 
 		// Close Private Network
-		virtual Result CloseNetPrivate() override;
+		virtual Result CloseEntities() override;
 
-
-		// create remote entity by class
-		virtual Result CreateServerEntity( NetClass netClass, Svr::ServerEntity* &pServerEntity ) override;
 	};
 
 

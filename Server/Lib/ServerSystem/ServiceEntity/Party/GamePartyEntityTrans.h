@@ -90,7 +90,7 @@ namespace SF {
 			// Start Transaction
 			virtual Result StartTransaction() override;
 
-			BR_SVR_MSGTRANS_CLOSE_ARGS(Policy::NetSvrPolicyGameParty, JoinPartyRes, GetRouteContext().GetSwaped(), m_LeaderID, m_MessageBuffer.GetBuffer());
+			BR_SVR_MSGTRANS_CLOSE_ARGS(NetSvrPolicyGameParty, JoinPartyRes, GetRouteContext().GetSwaped(), m_LeaderID, m_MessageBuffer.GetBuffer());
 		};
 
 
@@ -108,7 +108,7 @@ namespace SF {
 			// Start Transaction
 			virtual Result StartTransaction() override;
 
-			BR_SVR_MSGTRANS_CLOSE(Policy::NetSvrPolicyGameParty, LeavePartyRes, GetRouteContext().GetSwaped());
+			BR_SVR_MSGTRANS_CLOSE(NetSvrPolicyGameParty, LeavePartyRes, GetRouteContext().GetSwaped());
 		};
 
 
@@ -127,7 +127,7 @@ namespace SF {
 			// Start Transaction
 			virtual Result StartTransaction() override;
 
-			BR_SVR_MSGTRANS_CLOSE(Policy::NetSvrPolicyGameParty, KickPlayerRes, GetRouteContext().GetSwaped());
+			BR_SVR_MSGTRANS_CLOSE(NetSvrPolicyGameParty, KickPlayerRes, GetRouteContext().GetSwaped());
 		};
 
 
@@ -180,7 +180,7 @@ namespace SF {
 			// Start Transaction
 			virtual Result StartTransaction() override;
 
-			BR_SVR_MSGTRANS_CLOSE(Policy::NetSvrPolicyGameParty, StartGameMatchRes, GetRouteContext().GetSwaped());
+			BR_SVR_MSGTRANS_CLOSE(NetSvrPolicyGameParty, StartGameMatchRes, GetRouteContext().GetSwaped());
 		};
 
 
@@ -199,7 +199,7 @@ namespace SF {
 			// Start Transaction
 			virtual Result StartTransaction() override;
 
-			BR_SVR_MSGTRANS_CLOSE(Policy::NetSvrPolicyGameParty, CancelGameMatchRes, GetRouteContext().GetSwaped());
+			BR_SVR_MSGTRANS_CLOSE(NetSvrPolicyGameParty, CancelGameMatchRes, GetRouteContext().GetSwaped());
 		};
 
 

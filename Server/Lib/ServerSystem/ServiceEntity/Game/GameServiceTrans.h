@@ -83,12 +83,12 @@ namespace Svr {
 		// Start Transaction
 		virtual Result StartTransaction() override;
 
-		//BR_SVR_MSGTRANS_CLOSE_ARGS(Policy::NetSvrPolicyGameServer, RegisterPlayerToJoinGameServerRes, RouteContext(m_PlayerUID, super::GetRouteContext().GetFrom()), m_PublicAddress, m_PublicAddressIPV6, m_Port);
+		//BR_SVR_MSGTRANS_CLOSE_ARGS(NetSvrPolicyGameServer, RegisterPlayerToJoinGameServerRes, RouteContext(m_PlayerUID, super::GetRouteContext().GetFrom()), m_PublicAddress, m_PublicAddressIPV6, m_Port);
 		virtual Result OnCloseTransaction(Result hrRes) override
 		{
 			Result hr = ResultCode::SUCCESS; 
 			RouteContext routeContext(m_PlayerUID, super::GetRouteContext().GetFrom());
-			svrChk(Policy::NetSvrPolicyGameServer(super::GetConnection()).RegisterPlayerToJoinGameServerRes(routeContext, super::GetTransactionID(), hrRes, m_PublicAddress, m_PublicAddressIPV6, m_Port));
+			svrChk(NetSvrPolicyGameServer(super::GetRemoteEndpoint()).RegisterPlayerToJoinGameServerRes(routeContext, super::GetTransactionID(), hrRes, m_PublicAddress, m_PublicAddressIPV6, m_Port));
 		Proc_End:
 			super::OnCloseTransaction(hrRes);
 		return hr;
@@ -115,7 +115,7 @@ namespace Svr {
 		// Start Transaction
 		virtual Result StartTransaction() override;
 
-		BR_SVR_MSGTRANS_CLOSE(Policy::NetSvrPolicyGameServer, RegisterPlayerToJoinGameServerOnPlayerEntityRes, GetRouteContext().GetSwaped());
+		BR_SVR_MSGTRANS_CLOSE(NetSvrPolicyGameServer, RegisterPlayerToJoinGameServerOnPlayerEntityRes, GetRouteContext().GetSwaped());
 	};
 
 

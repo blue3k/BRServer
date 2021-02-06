@@ -1,6 +1,6 @@
 ﻿////////////////////////////////////////////////////////////////////////////////
 // 
-// CopyRight (c) 2016 Kyungkun Ko
+// CopyRight (c) Kyungkun Ko
 // 
 // Author : Generated
 // 
@@ -20,23 +20,20 @@
 
 namespace SF
 {
- 	namespace Svr
+ 	class LoginServerService : public ServerServiceBase
 	{
- 		class LoginServerService : public ServerServiceBase
-		{
- 			public:
-			// Constructor
-			LoginServerService ( ServerServiceInformation* pService );
+ 		public:
+		// Constructor
+		LoginServerService ( ServerServiceInformation* pService );
 
-			// Cmd: Notify Login server that client is successfully connected and joined to game server so that login server clear the player information.
-			Result PlayerJoinedToGameServerCmd( const uint64_t &InTransactionID, const PlayerID &InPlayerID, const AuthTicket &InAuthTicket );
-			// Cmd: Kick logged in player, used to kick player on other login server to prevent duplicated login.
-			Result KickPlayerCmd( const uint64_t &InTransactionID, const PlayerID &InKickedPlayerID );
+		// Cmd: Notify Login server that client is successfully connected and joined to game server so that login server clear the player information.
+		Result PlayerJoinedToGameServerCmd( const uint64_t &InTransactionID, const PlayerID &InPlayerID, const AuthTicket &InAuthTicket );
+		// Cmd: Kick logged in player, used to kick player on other login server to prevent duplicated login.
+		Result KickPlayerCmd( const uint64_t &InTransactionID, const PlayerID &InKickedPlayerID );
 
-		}; // class LoginServerService : public ServerServiceBase
+	}; // class LoginServerService : public ServerServiceBase
 
 
-	}; // namespace Svr
 }; // namespace SF
 
 

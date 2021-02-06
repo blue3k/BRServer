@@ -79,7 +79,7 @@ namespace Svr {
 
 		virtual void Dispose() override;
 
-		virtual Result RegisterServiceMessageHandler( ServerEntity *pServerEntity ) override;
+		virtual Result RegisterServiceMessageHandler() override;
 
 
 		// Initialize entity to proceed new connection

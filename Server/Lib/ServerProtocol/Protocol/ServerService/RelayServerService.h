@@ -1,6 +1,6 @@
 ﻿////////////////////////////////////////////////////////////////////////////////
 // 
-// CopyRight (c) 2016 Kyungkun Ko
+// CopyRight (c) Kyungkun Ko
 // 
 // Author : Generated
 // 
@@ -20,25 +20,22 @@
 
 namespace SF
 {
- 	namespace Svr
+ 	class RelayServerService : public ServerServiceBase
 	{
- 		class RelayServerService : public ServerServiceBase
-		{
- 			public:
-			// Constructor
-			RelayServerService ( ServerServiceInformation* pService );
+ 		public:
+		// Constructor
+		RelayServerService ( ServerServiceInformation* pService );
 
-			// Cmd: Relay Instance
-			Result CreateRelayInstanceCmd( const uint64_t &InTransactionID, const PlayerInformation &InPlayerInfo, const uint64_t &InRelayScore );
-			// Cmd: Add a player to Relay
-			Result AddPlayerCmd( const uint64_t &InTransactionID, const PlayerInformation &InPlayerInfo, const uint64_t &InRelayScore );
-			// Cmd: Remove a player to Relay
-			Result RemovePlayerCmd( const uint64_t &InTransactionID, const PlayerID &InPlayerID );
+		// Cmd: Relay Instance
+		Result CreateRelayInstanceCmd( const uint64_t &InTransactionID, const PlayerInformation &InPlayerInfo, const uint64_t &InRelayScore );
+		// Cmd: Add a player to Relay
+		Result AddPlayerCmd( const uint64_t &InTransactionID, const PlayerInformation &InPlayerInfo, const uint64_t &InRelayScore );
+		// Cmd: Remove a player to Relay
+		Result RemovePlayerCmd( const uint64_t &InTransactionID, const PlayerID &InPlayerID );
 
-		}; // class RelayServerService : public ServerServiceBase
+	}; // class RelayServerService : public ServerServiceBase
 
 
-	}; // namespace Svr
 }; // namespace SF
 
 

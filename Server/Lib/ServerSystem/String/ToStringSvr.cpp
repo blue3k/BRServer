@@ -101,9 +101,6 @@ namespace SF
 		if (!(StrUtil::StringCopyEx(context.StringBuffer, context.StringBufferLength, ":C")))
 			return ResultCode::FAIL;
 
-		if (!(_ToString(context, (uint)Data.ServerClass)))
-			return ResultCode::FAIL;
-
 		if (!(StrUtil::StringCopyEx(context.StringBuffer, context.StringBufferLength, ":M")))
 			return ResultCode::FAIL;
 

@@ -170,22 +170,18 @@ namespace Svr {
 	Result ClusteredServiceEntity::StartInitializeTransaction()
 	{
 		Result hr = ResultCode::SUCCESS;
-		ClusterInitializationTrans *pInitTransaction = nullptr;
+		UniquePtr<ClusterInitializationTrans> pInitTransaction;
 		TransactionPtr pTrans;
 
 		// Push initialization transaction
-		svrMem( pInitTransaction = new(GetHeap()) ClusterInitializationTrans(GetHeap()));
-		svrChk( pInitTransaction->InitializeTransaction( this ) );
-		pTrans = pInitTransaction;
-		pInitTransaction = nullptr;
+		pInitTransaction.reset(new(GetHeap()) ClusterInitializationTrans(GetHeap()));
+		svrCheckMem(pInitTransaction.get());
+		svrCheck(pInitTransaction->InitializeTransaction( this ));
+		pTrans = pInitTransaction.release();
 
-		svrChk(PendingTransaction(ThisThread::GetThreadID(), pTrans));
+		svrCheck(PendingTransaction(ThisThread::GetThreadID(), pTrans));
 
 		pTrans = nullptr;
-
-	Proc_End:
-
-		Util::SafeDelete(pInitTransaction);
 
 		return hr;
 	}
@@ -247,9 +243,6 @@ namespace Svr {
 		//svrChkPtr( pService = pServiceInfo->GetService<ClusterServerService>() );
 		//svrChk( pService->ClusterUpdateWorkloadC2SEvt( GetEntityUID(), 0, GetEntityUID(), GetClusterID(), m_Workload ) );
 
-	Proc_End:
-
-
 		return hr;
 	}
 
@@ -273,9 +266,6 @@ namespace Svr {
 		////svrChk( Service::ClusterManager->GetService<ClusterServerService>(pService) );
 		//svrChkPtr( pService = pServiceInfo->GetService<ClusterServerService>() );
 		//svrChk( pService->ClusterUpdateStatusC2SEvt( GetEntityUID(), 0, GetEntityUID(), GetClusterID(), GetServiceStatus() ) );
-
-	Proc_End:
-
 
 		return hr;
 	}
@@ -303,8 +293,6 @@ namespace Svr {
 
 		m_MasterUID = entityUID;
 
-	Proc_End:
-
 		return hr;
 	}
 
@@ -318,7 +306,7 @@ namespace Svr {
 	//	// broadcast new master assignment
 	//	ForEach( [&](ServerServiceInformation *pService) 
 	//	{
-	//		Policy::NetSvrPolicyClusterServer(pService->GetConnection()).ClusterMasterAssignedS2CEvt( RouteContext( GetEntityUID(), pService->GetEntityUID() ), 0, GetEntityUID(), GetClusterID(), entityUID );
+	//		NetSvrPolicyClusterServer(pService->GetConnection()).ClusterMasterAssignedS2CEvt( RouteContext( GetEntityUID(), pService->GetEntityUID() ), 0, GetEntityUID(), GetClusterID(), entityUID );
 	//	});
 
 
@@ -339,7 +327,7 @@ namespace Svr {
 		//// broadcast new master assignment
 		//ForEach( [&](ServerServiceInformation *pService) 
 		//{
-		//	pService->GetConnection()->GetInterface<Policy::NetSvrPolicyClusterServer>()->ClusterMasterAssignedS2CEvt( RouteContext( GetEntityUID(), pService->GetEntityUID() ),1, GetClusterID(), entityUID );
+		//	pService->GetConnection()->GetInterface<NetSvrPolicyClusterServer>()->ClusterMasterAssignedS2CEvt( RouteContext( GetEntityUID(), pService->GetEntityUID() ),1, GetClusterID(), entityUID );
 		//});
 
 	//Proc_End:
@@ -361,20 +349,16 @@ namespace Svr {
 
 
 	// Register message handler for this component
-	Result ReplicaClusterServiceEntity::RegisterServiceMessageHandler( ServerEntity *pServerEntity )
+	Result ReplicaClusterServiceEntity::RegisterServiceMessageHandler()
 	{
-		ClusteredServiceEntity::RegisterServiceMessageHandler( pServerEntity );
-
-		return ResultCode::SUCCESS;
+		return ClusteredServiceEntity::RegisterServiceMessageHandler();
 	}
 
 	Result ReplicaClusterServiceEntity::TickUpdate(TimerAction *pAction)
 	{
 		Result hr = ResultCode::SUCCESS;
 		auto pClusterManager = Service::ClusterManager;
-		svrChk(ClusteredServiceEntity::TickUpdate(pAction) );
-
-	Proc_End:
+		svrCheck(ClusteredServiceEntity::TickUpdate(pAction) );
 
 		return hr;
 	}
@@ -433,11 +417,9 @@ namespace Svr {
 	{
 		Result hr = ResultCode::SUCCESS;
 
-		svrChk(ClusteredServiceEntity::InitializeEntity(newEntityID) );
+		svrCheck(ClusteredServiceEntity::InitializeEntity(newEntityID) );
 
 		m_WorkloadCheckTimer.SetTimer( DurationMS(Const::WORKLOAD_UPDATE_TIME) );
-
-	Proc_End:
 
 		return hr;
 	}
@@ -447,7 +429,7 @@ namespace Svr {
 	{
 		Result hr = ResultCode::SUCCESS;
 
-		svrChk(ClusteredServiceEntity::TickUpdate(pAction) );
+		svrCheck(ClusteredServiceEntity::TickUpdate(pAction) );
 
 		if( m_WorkloadCheckTimer.CheckTimer() )
 		{
@@ -456,14 +438,12 @@ namespace Svr {
 			SetWorkload( (uint)m_LocalWorkload.load(std::memory_order_relaxed) );
 		}
 
-	Proc_End:
-
 		return hr;
 	}
 
 
-}; // namespace Svr
-}; // namespace SF
+} // namespace Svr
+} // namespace SF
 
 
 

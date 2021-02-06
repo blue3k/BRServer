@@ -59,7 +59,7 @@ namespace SF {
 			// Start Transaction
 			virtual Result StartTransaction() override;
 
-			BR_IMPLEMENT_USERMSGTRANS_CLOSE_ARGS(Policy::NetSvrPolicyGame, RequestGameMatchRes, m_TotalGem, m_TotalGameMoney);
+			BR_IMPLEMENT_USERMSGTRANS_CLOSE_ARGS(NetSvrPolicyGame, RequestGameMatchRes, m_TotalGem, m_TotalGameMoney);
 		};
 
 		class PlayerTransCancelGameMatch : public Svr::MessageTransaction< GamePlayerEntity, Message::Game::CancelGameMatchCmd>
@@ -77,7 +77,7 @@ namespace SF {
 			// Start Transaction
 			virtual Result StartTransaction() override;
 
-			BR_IMPLEMENT_USERMSGTRANS_CLOSE(Policy::NetSvrPolicyGame, CancelGameMatchRes);
+			BR_IMPLEMENT_USERMSGTRANS_CLOSE(NetSvrPolicyGame, CancelGameMatchRes);
 		};
 
 

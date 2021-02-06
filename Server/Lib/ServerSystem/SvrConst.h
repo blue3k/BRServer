@@ -80,13 +80,12 @@ namespace Const {
 	constexpr int64_t RANKING_DB_MAX_REQUEST = 1000;
 	constexpr int64_t RANKING_MAX_PLAYER = 1000 * RANKING_DB_MAX_REQUEST;
 
-	constexpr const char* ZK_SERVER_SERVICE_BASE = "/BRServices";
-	constexpr const char* ZK_SERVER_INSTANCE_NODE = "/BRServices/ServerInstances";
+	constexpr const char* ZK_SERVER_INSTANCE_NODE = "BRServerInstances";
 
 	constexpr int32_t RELAY_PLAYER_JOIN_TIMEOUT = 1 * 60 * 1000;
 	constexpr int32_t RELAY_PLAYER_TIMEOUT = 30 * 1000;
 
-}; // namespace Const
-}; // namespace Svr
-}; // namespace SF
+} // namespace Const
+} // namespace Svr
+} // namespace SF
 

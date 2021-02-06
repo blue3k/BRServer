@@ -368,6 +368,7 @@ namespace SF
 				auto* input = inputStream.ToInputStream();
 				uint16_t ArrayLen = 0;(void)(ArrayLen);
 
+				protocolCheck(input->Read(ArrayLen));
 				protocolCheck(input->ReadLink(m_InstanceName, ArrayLen));
 				protocolCheck(*input >> m_InstanceUID);
 				protocolCheck(input->Read(ArrayLen));

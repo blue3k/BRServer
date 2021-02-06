@@ -187,8 +187,8 @@ namespace Svr {
 
 		svrChk(GetMyOwner()->DequeueItem(GetMatchingTicket(), m_matchingQueueItem));
 
-
-		svrChk(Service::ServerEntityManager->GetServerEntity( m_matchingQueueItem.RegisterUID.GetServerID(), pServerEntity ));
+		auto requesterEndpoint = Service::MessageEndpointManager->GetEndpoint(m_matchingQueueItem.RegisterUID);
+		//svrChk(Service::ServerEntityManager->GetServerEntity( m_matchingQueueItem.RegisterUID.GetServerID(), pServerEntity ));
 
 		if( m_matchingQueueItem.NumPlayers == 0 )
 			svrErrClose(ResultCode::SVR_INVALID_QUEUEITEM);
@@ -196,7 +196,7 @@ namespace Svr {
 		if( m_matchingQueueItem.NumPlayers > 1 || m_matchingQueueItem.Players[0].PlayerUID != m_matchingQueueItem.RegisterUID ) // This should be a party
 		{
 			
-			Policy::NetSvrPolicyPartyMatchingQueue(pServerEntity->GetConnection()).PartyMatchingItemDequeuedS2CEvt(
+			NetSvrPolicyPartyMatchingQueue(requesterEndpoint).PartyMatchingItemDequeuedS2CEvt(
 				RouteContext(GetOwnerEntityUID(),m_matchingQueueItem.RegisterUID), 0,
 				GetMatchingTicket() );
 		}
@@ -205,7 +205,7 @@ namespace Svr {
 			// This should be the player case
 			Assert( m_matchingQueueItem.Players[0].PlayerUID == m_matchingQueueItem.RegisterUID );
 
-			Policy::NetSvrPolicyPartyMatchingQueue(pServerEntity->GetConnection()).PlayerMatchingItemDequeuedS2CEvt(
+			NetSvrPolicyPartyMatchingQueue(requesterEndpoint).PlayerMatchingItemDequeuedS2CEvt(
 				RouteContext(GetOwnerEntityUID(),m_matchingQueueItem.RegisterUID), 0,
 				GetMatchingTicket() );
 		}
@@ -232,14 +232,15 @@ namespace Svr {
 		svrChk(GetMyOwner()->DeleteItem(GetMatchingTicket(), matchingQueueItem));
 
 
-		svrChk(Service::ServerEntityManager->GetServerEntity(matchingQueueItem.RegisterUID.GetServerID(), pServerEntity));
+		auto requesterEndpoint = Service::MessageEndpointManager->GetEndpoint(matchingQueueItem.RegisterUID);
+		//svrChk(Service::ServerEntityManager->GetServerEntity(matchingQueueItem.RegisterUID.GetServerID(), pServerEntity));
 
 		if (matchingQueueItem.NumPlayers == 0)
 			svrErrClose(ResultCode::SVR_INVALID_QUEUEITEM);
 
 		if (matchingQueueItem.NumPlayers > 1 || matchingQueueItem.Players[0].PlayerUID != matchingQueueItem.RegisterUID) // This should be a party
 		{
-			Policy::NetSvrPolicyPartyMatchingQueue(pServerEntity->GetConnection()).PartyMatchingItemDequeuedS2CEvt(
+			NetSvrPolicyPartyMatchingQueue(requesterEndpoint).PartyMatchingItemDequeuedS2CEvt(
 				RouteContext(GetOwnerEntityUID(), matchingQueueItem.RegisterUID), 0,
 				GetMatchingTicket());
 		}
@@ -248,7 +249,7 @@ namespace Svr {
 			// This should be the player case
 			Assert(matchingQueueItem.Players[0].PlayerUID == matchingQueueItem.RegisterUID);
 
-			Policy::NetSvrPolicyPartyMatchingQueue(pServerEntity->GetConnection()).PlayerMatchingItemDequeuedS2CEvt(
+			NetSvrPolicyPartyMatchingQueue(requesterEndpoint).PlayerMatchingItemDequeuedS2CEvt(
 				RouteContext(GetOwnerEntityUID(), matchingQueueItem.RegisterUID), 0,
 				GetMatchingTicket());
 		}
@@ -264,6 +265,6 @@ namespace Svr {
 
 	
 
-};// namespace Svr 
-};// namespace SF 
+}// namespace Svr 
+}// namespace SF 
 

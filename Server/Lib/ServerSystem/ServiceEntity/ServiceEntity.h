@@ -28,45 +28,41 @@
 
 
 namespace SF {
-namespace Svr {
+	namespace Svr {
 
-	class Entity;
-	class ServerEntity;
-
-
-	///////////////////////////////////////////////////////////////////////////////////////////////////////
-	//
-	//	ServiceEntity class
-	//		- Collection of service cluster server entity
-	//
+		class Entity;
+		class ServerEntity;
 
 
-	class ServiceEntity : public MasterEntity
-	{
-	public:
+		///////////////////////////////////////////////////////////////////////////////////////////////////////
+		//
+		//	ServiceEntity class
+		//		- Collection of service cluster server entity
+		//
 
-	private:
+		class ServiceEntity : public MasterEntity
+		{
+		public:
 
-	public:
+			using super = MasterEntity;
 
-	public:
-
-		ServiceEntity();
-		~ServiceEntity();
+		private:
 
 
-		// Register message handler for this component
-		virtual Result RegisterServiceMessageHandler( ServerEntity *pServerEntity )  { return ResultCode::SUCCESS; }
 
-	};
+		public:
 
+			ServiceEntity();
+			~ServiceEntity();
+
+			// Register message handler for this component
+			virtual Result RegisterServiceMessageHandler() { return ResultCode::SUCCESS; }
+		};
 
 
 
 
-}; // namespace Svr
-}; // namespace SF
 
-
-
+	} // namespace Svr
+} // namespace SF
 

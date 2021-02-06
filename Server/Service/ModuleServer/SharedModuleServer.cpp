@@ -43,7 +43,7 @@ int main(int numArg, const char* argc[])
 
 	svrChk(Svr::Service::ServicePrepare());
 
-	SF::Svr::InitializeEngineForServer();
+	SF::InitializeEngineForServer();
 
 
 	pServerInstance = SharedPointerT<SharedModuleServer::SharedModuleServer>(new(GetSystemHeap()) SharedModuleServer::SharedModuleServer );
@@ -62,7 +62,7 @@ Proc_End:
 		pServerInstance = SharedPointerT<SharedModuleServer::SharedModuleServer>();
 	}
 
-	SF::Svr::DeinitializeEngine();
+	SF::DeinitializeEngine();
 
 	return 0;
 }

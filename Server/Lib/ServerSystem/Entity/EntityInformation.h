@@ -27,8 +27,8 @@ namespace SF {
 		class Connection;
 	}
 
+	class MessageEndpoint;
 
-namespace Svr {
 
 	class ServerServiceBase;
 	class ServerService;
@@ -88,17 +88,15 @@ namespace Svr {
 		// Service Cluster ID
 		ClusterID m_ClusterID;
 
-		// Server entity which is the service is running
-		ServerEntity* m_ServerEntity = nullptr;
-
 		// Server service membership
 		ClusterMembership m_ClusterMembership = ClusterMembership::Slave;
 
 		// Server service membership
 		ServiceStatus m_ServiceStatus = ServiceStatus::Offline;
 
-		// Server Up time, this will be synced to the server entity when the service object is created or synchronized
-		//uint64_t, m_ServerUpTime;
+		// Message endpoint
+		SharedPointerT<MessageEndpoint> m_TargetEndpoint;
+
 
 		// workload
 		uint m_Workload = 0;
@@ -112,14 +110,14 @@ namespace Svr {
 
 
 	public:
-		ServerServiceInformation(GameID gameID, ClusterID clusterID, EntityUID entityUID, ServerEntity* pServerEntity, ClusterMembership membership);
+		ServerServiceInformation(GameID gameID, ClusterID clusterID, EntityUID entityUID, const SharedPointerT<MessageEndpoint> targetEndpoint, ClusterMembership membership);
 		~ServerServiceInformation();
 
 
 		ClusterID GetClusterID() const { return m_ClusterID; }
 		GameID GetGameID() const { return m_GameID; }
 
-		ServerEntity* GetServerEntity() const { return m_ServerEntity; }
+		const SharedPointerT<MessageEndpoint>& GetTargetEndpoint() const { return m_TargetEndpoint; }
 
 		ClusterMembership GetClusterMembership() const { return m_ClusterMembership; }
 		void SetClusterMembership(ClusterMembership value) { m_ClusterMembership = value; }
@@ -137,11 +135,8 @@ namespace Svr {
 		void SetServiceBase(ServerServiceBase* value) { m_ServiceBase = value; }
 
 
-		// Get connection
-		const SharedPointerAtomicT<Net::Connection>& GetConnection() const;
-
 		// Get service information
-		void GetServiceInformation( ServiceInformation & serviceInformation );
+		//void GetServiceInformation( ServiceInformation & serviceInformation );
 
 
 		// Setup route context from input transaction to the service entity
@@ -158,9 +153,6 @@ namespace Svr {
 
 			return (ServiceType*)m_ServiceBase;
 		}
-
-		// check whether this service is available or not
-		bool IsServiceAvailable() const;
 	};
 
 
@@ -198,7 +190,6 @@ namespace Svr {
 
 #include "EntityInformation.inl"
 
-} // namespace Svr
 } // namespace SF
 
 

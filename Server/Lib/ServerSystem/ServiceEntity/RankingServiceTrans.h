@@ -69,7 +69,7 @@ namespace SF {
 			virtual Result StartTransaction() override;
 
 
-			BR_SVR_MSGTRANS_CLOSE_ARGS(Policy::NetSvrPolicyRankingServer, UpdatePlayerScoreRes, GetRouteContext().GetSwaped(), m_RankingList);
+			BR_SVR_MSGTRANS_CLOSE_ARGS(NetSvrPolicyRankingServer, UpdatePlayerScoreRes, GetRouteContext().GetSwaped(), m_RankingList);
 		};
 
 
@@ -88,7 +88,7 @@ namespace SF {
 			// Start Transaction
 			virtual Result StartTransaction() override;
 
-			BR_SVR_MSGTRANS_CLOSE(Policy::NetSvrPolicyRankingServer, DebugPrintALLRankingRes, GetRouteContext().GetSwaped());
+			BR_SVR_MSGTRANS_CLOSE(NetSvrPolicyRankingServer, DebugPrintALLRankingRes, GetRouteContext().GetSwaped());
 		};
 
 

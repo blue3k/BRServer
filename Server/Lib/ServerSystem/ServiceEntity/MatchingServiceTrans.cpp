@@ -131,7 +131,7 @@ namespace Svr {
 		//if (pService->GetWorkload() > 0)
 		{
 			svrTrace(SVR_DBGMATCHING, "Try to make a reservation. Matching:{0}, TargetQueueCompo:{1}, expected {2}", m_MatchingMemberCount, m_TargetQueueClusterID, pService->GetWorkload());
-			svrChk(pService->GetService<Svr::PartyMatchingQueueService>()->ReserveItemsCmd(GetTransID(), 0, grabCount));
+			svrChk(pService->GetService<PartyMatchingQueueService>()->ReserveItemsCmd(GetTransID(), 0, grabCount));
 		}
 		//else
 		//{
@@ -163,10 +163,11 @@ namespace Svr {
 
 		svrTrace(SVR_MATCHING, "Request Delete item Matching:{0}, MatchingQueueID:{1}, MTicket:{2}", m_MatchingMemberCount, m_TargetQueueClusterID, ticket);
 
-		svrChk(Service::ServerEntityManager->GetServerEntity(ticket.QueueUID.GetServerID(), pServerEntity));
+		auto ticketEndpoint = Service::MessageEndpointManager->GetEndpoint(ticket.QueueUID);
+		//svrChk(Service::ServerEntityManager->GetServerEntity(ticket.QueueUID.GetServerID(), pServerEntity));
 
 		// 2. Get service entity list in the cluster
-		svrChk(Policy::NetPolicyPartyMatchingQueue(pServerEntity->GetConnection()).MatchingItemErrorC2SEvt(RouteContext(GetMyOwner()->GetEntityUID(), ticket.QueueUID), 0, ticket));
+		svrChk(NetPolicyPartyMatchingQueue(ticketEndpoint).MatchingItemErrorC2SEvt(RouteContext(GetMyOwner()->GetEntityUID(), ticket.QueueUID), 0, ticket));
 
 	Proc_End:
 
@@ -297,10 +298,11 @@ namespace Svr {
 
 		svrTrace(SVR_MATCHING, "Dequeue item Matching:{0}, MTicket:{1}", GetTargetMatchingMemberCount(), ticket);
 
-		svrChk(Service::ServerEntityManager->GetServerEntity(ticket.QueueUID.GetServerID(), pServerEntity));
+		auto ticketEndpoint = Service::MessageEndpointManager->GetEndpoint(ticket.QueueUID);
+		//svrChk(Service::ServerEntityManager->GetServerEntity(ticket.QueueUID.GetServerID(), pServerEntity));
 
 		// 2. Get service entity list in the cluster
-		svrChk(Policy::NetPolicyPartyMatchingQueue(pServerEntity->GetConnection()).DequeueItemCmd(RouteContext(GetMyOwner()->GetEntityUID(), ticket.QueueUID), GetTransID(), 0, ticket));
+		svrChk(NetPolicyPartyMatchingQueue(ticketEndpoint).DequeueItemCmd(RouteContext(GetMyOwner()->GetEntityUID(), ticket.QueueUID), GetTransID(), 0, ticket));
 
 		m_PendingDequeueItem++;
 
@@ -419,15 +421,17 @@ namespace Svr {
 			{
 				if (reservedMember.Players[member].PlayerUID == reservedMember.RegisterEntityUID) notifiedToRegister = true;
 
-				if (!(Service::ServerEntityManager->GetServerEntity(reservedMember.Players[member].PlayerUID.GetServerID(), pServerEntity)))
-				{
-					// skip this player
-					svrTrace(Error, "Failed to find Server entity({0}) while broadcasting for a player({1})", reservedMember.Players[member].PlayerUID.GetServerID(), reservedMember.Players[member].PlayerID);
-					continue;
-				}
+				// FIXME: player entity might be fails
+				auto playerEndpoint = Service::MessageEndpointManager->GetEndpoint(reservedMember.Players[member].PlayerUID);
+				//if (!(Service::ServerEntityManager->GetServerEntity(reservedMember.Players[member].PlayerUID.GetServerID(), pServerEntity)))
+				//{
+				//	// skip this player
+				//	svrTrace(Error, "Failed to find Server entity({0}) while broadcasting for a player({1})", reservedMember.Players[member].PlayerUID.GetServerID(), reservedMember.Players[member].PlayerID);
+				//	continue;
+				//}
 
 				notifiedPlayerCount++;
-				Policy::NetSvrPolicyPartyMatching(pServerEntity->GetConnection()).PlayerGameMatchedS2CEvt(
+				NetSvrPolicyPartyMatching(playerEndpoint).PlayerGameMatchedS2CEvt(
 					RouteContext(GetOwnerEntityUID(), reservedMember.Players[member].PlayerUID), 0,
 					reservedMember.Players[member].PlayerID, gameUID, (uint8_t)reservedMember.RequestedRole);
 			}
@@ -435,15 +439,17 @@ namespace Svr {
 			// this should be a party, or canceled item
 			if (!notifiedToRegister)
 			{
-				if (!(Service::ServerEntityManager->GetServerEntity(reservedMember.RegisterEntityUID.GetServerID(), pServerEntity)))
-				{
-					// skip this player
-					svrTrace(Error, "Failed to find Server entity({0}) while broadcasting", reservedMember.RegisterEntityUID.GetServerID());
-					continue;
-				}
+				auto requesterEndpoint = Service::MessageEndpointManager->GetEndpoint(reservedMember.RegisterEntityUID);
+
+				//if (!(Service::ServerEntityManager->GetServerEntity(reservedMember.RegisterEntityUID.GetServerID(), pServerEntity)))
+				//{
+				//	// skip this player
+				//	svrTrace(Error, "Failed to find Server entity({0}) while broadcasting", reservedMember.RegisterEntityUID.GetServerID());
+				//	continue;
+				//}
 
 				notifiedPlayerCount++;
-				Policy::NetSvrPolicyPartyMatching(pServerEntity->GetConnection()).PartyGameMatchedS2CEvt(
+				NetSvrPolicyPartyMatching(requesterEndpoint).PartyGameMatchedS2CEvt(
 					RouteContext(GetOwnerEntityUID(), reservedMember.RegisterEntityUID), 0);
 			}
 		}
@@ -454,10 +460,10 @@ namespace Svr {
 		// clean up empty game instance
 		if (notifiedPlayerCount == 0)
 		{
-			ServerEntity *pServerEntity = nullptr;
-			if ((Service::ServerEntityManager->GetServerEntity(gameUID.GetServerID(), pServerEntity)))
+			auto gameEndpoint = Service::MessageEndpointManager->GetEndpoint(gameUID);
+			if (gameEndpoint)
 			{
-				Policy::NetPolicyGameInstance(pServerEntity->GetConnection()).DeleteGameC2SEvt(RouteContext(GetOwnerEntityUID(), gameUID));
+				NetPolicyGameInstance(gameEndpoint).DeleteGameC2SEvt(RouteContext(GetOwnerEntityUID(), gameUID));
 			}
 
 		}
@@ -494,11 +500,6 @@ namespace Svr {
 		return hr;
 	}
 
-
-
-
-
-
-};// namespace Svr 
-};// namespace SF 
+}// namespace Svr 
+}// namespace SF 
 

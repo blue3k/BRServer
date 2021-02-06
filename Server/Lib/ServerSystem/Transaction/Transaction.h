@@ -167,10 +167,8 @@ namespace SF {
 			uint m_CurrentHistoryIdx;
 			TransactionHistory m_History[2];
 
-
-			// Server entity who issued this transaction
-			// This pointer will be valid for inter server messages
-			ServerEntity* m_ServerEntity;
+			// remote endpoint for return
+			SharedPointerT<MessageEndpoint> m_RemoteEndpoint;
 
 			// Dynamically created sub actions
 			DynamicArray<TransactionSubAction*> m_DynamicAction;
@@ -209,13 +207,12 @@ namespace SF {
 
 			IHeap& GetHeap() { return m_Heap; }
 
-			inline void SetServerEntity(ServerEntity* pServerEntity)
+			inline void SetRemoteEndpoint(const SharedPointerT<MessageEndpoint>& remoteEndpoint)
 			{
-				assert(pServerEntity != nullptr);
-				m_ServerEntity = pServerEntity;
+				m_RemoteEndpoint = remoteEndpoint;
 			}
 
-			ServerEntity* GetServerEntity() { return m_ServerEntity; }
+			const SharedPointerT<MessageEndpoint>& GetRemoteEndpoint() { return m_RemoteEndpoint; }
 
 			const RouteContext& GetMessageRouteContext() { return m_MessageRouteContext; }
 			void SetMessageRouteContext(const RouteContext& src) { m_MessageRouteContext = src; }
@@ -260,9 +257,6 @@ namespace SF {
 			// Get transaction state
 			Transaction::State GetState();
 
-			// Get heartbeat time, ms
-			//SF_FORCEINLINE uint64_t GetHeartbeatTime();
-
 			// Update heartbeat time, with timestamp
 			TimeStampMS UpdateHeartbeatTime();
 
@@ -303,8 +297,6 @@ namespace SF {
 
 			// flush transaction result
 			virtual Result FlushTransaction();
-
-
 
 
 			template<typename TransactionClassType
@@ -389,11 +381,6 @@ namespace SF {
 				return m_Handlers.Register<MessageClassType>([this, handlerFunc](TransactionResult* pRes) { return (static_cast<std::decay_t<TransactionClassType>*>(this)->*handlerFunc)(pRes); });
 			}
 
-
-			///////////////////////////////////////////////////////////
-			// Helper functions
-
-			const SharedPointerAtomicT<Net::Connection>& GetServerEntityConnection(ServerEntity* pServerEntity);
 		};
 
 
@@ -713,7 +700,7 @@ namespace SF {
 				hr = MessageTransaction<OwnerEntityType, MessageClass>::ParseMessage();
 				svrChk(hr);
 
-				if (MessageClass::GetRouteContext().GetTo().GetServerID() != Svr::GetMyServerID())
+				if (MessageClass::GetRouteContext().GetTo().GetServerID() != GetMyServerID())
 				{
 					svrTrace(Error, "Invalid ServerID {0} MsgID:{0}", typeid(*this).name(), MessageClass::GetMessage()->GetMessageHeader()->msgID);
 					svrErr(ResultCode::SVR_INVALID_SERVERID);
@@ -763,32 +750,22 @@ namespace SF {
 				OwnerEntityType* pOwnerEntity = nullptr;
 
 				hr = MessageTransaction<OwnerEntityType, MessageClass>::ParseMessage();
-				svrChk(hr);
+				svrCheck(hr);
 
 				if (!(Service::EntityTable->find(MessageClass::GetRouteContext().GetTo().GetEntityID(), entity)))
 				{
 					// Can't find target player entity, maybe logged out?
-					hr = ResultCode::SVR_INVALID_ENTITYUID;
-					goto Proc_End;
+					return hr = ResultCode::SVR_INVALID_ENTITYUID;
 				}
 
-				svrChkPtr(pOwnerEntity = static_cast<OwnerEntityType*>((Entity*)entity));
+				svrCheckPtr(pOwnerEntity = static_cast<OwnerEntityType*>((Entity*)entity));
 
-				assert(superTrans::GetServerEntity() != nullptr);
-				svrChkPtr(superTrans::GetServerEntity());
 				// S2S Communication so return policy owner is server entity
 				//svrChkPtr( m_ServerEntity = dynamic_cast<ServerEntity>( pOwner) );
 
-				svrChk(Transaction::InitializeTransaction(pOwnerEntity));
-
-			Proc_End:
+				svrCheck(Transaction::InitializeTransaction(pOwnerEntity));
 
 				return hr;
-			}
-
-			const SharedPointerAtomicT<Net::Connection>& GetConnection()
-			{
-				return Transaction::GetServerEntityConnection(superTrans::GetServerEntity());
 			}
 
 
@@ -824,7 +801,7 @@ namespace SF {
 
 
 
-}; // namespace SF
+} // namespace SF
 
 
 

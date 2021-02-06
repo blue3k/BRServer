@@ -51,24 +51,6 @@ UTCTimeStampSec BrServer::GetServerUpTime()
 	return m_ServerUpUTCTIme;
 }
 
-// Get net class
-NetClass BrServer::GetNetClass()
-{
-	return m_NetClass;
-}
-
-// Get/Set Public network enable status
-bool BrServer::IsNetPublicEnabled()
-{
-	return m_bIsNetPublicEnabled;
-}
-
-bool BrServer::EnableNetPublic( bool bIsEnable )
-{
-	m_bIsNetPublicEnabled = bIsEnable;
-	return m_bIsNetPublicEnabled;
-}
-
 // Get Server UID
 uint BrServer::GetServerUID()
 {

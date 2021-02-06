@@ -133,7 +133,7 @@ namespace Svr {
 		Result UpdateMatchigQueue();
 
 		// Register message handler for this component
-		virtual Result RegisterServiceMessageHandler( ServerEntity *pServerEntity ) override;
+		virtual Result RegisterServiceMessageHandler() override;
 
 	private:
 		//////////////////////////////////////////////////////////////////////////

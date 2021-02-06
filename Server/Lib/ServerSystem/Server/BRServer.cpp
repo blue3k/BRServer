@@ -1,6 +1,6 @@
 ////////////////////////////////////////////////////////////////////////////////
 // 
-// CopyRight (c) 2013 The Braves
+// CopyRight (c) The Braves
 // 
 // Author : KyungKun Ko
 //
@@ -24,6 +24,7 @@
 #include "Entity/EntityTable.h"
 #include "ServiceEntity/ClusterManagerServiceEntity.h"
 #include "ServerEntity/SvrLoopbackConnection.h"
+#include "ServerEntity/GenericServerEntity.h"
 #include "SvrConst.h"
 #include "Server/BrServerUtil.h"
 #include "PerformanceCounter/PerformanceCounterClient.h"
@@ -51,7 +52,7 @@
 #include "ServiceEntity/Party/GamePartyManagerServiceEntity.h"
 //#include "ServiceEntity/Character/CharacterDataManagerServiceEntity.h"
 #include "ServiceEntity/RankingServiceEntity.h"
-#include "ServiceEntity/MonitoringServiceEntity.h"
+//#include "ServiceEntity/MonitoringServiceEntity.h"
 #include "ServiceEntity/Relay/RelayServiceEntity.h"
 
 
@@ -83,14 +84,12 @@ namespace SF {
 		//
 		//	Server definition
 		//
-		BrServer::BrServer(NetClass netClass)
+		BrServer::BrServer()
 			: m_Components(GetHeap())
-			, m_NetClass(netClass)
 			, m_ServerUpUTCTIme(UTCTimeStampSec::min())
 			, m_NumberServicesToWait(0)
 			, m_DBManagers(GetHeap())
-			, m_NewConnectionQueue(GetHeap())
-			, m_ModuleConstructors(GetHeap())
+			, m_ModuleFactories(GetHeap())
 		{
 			SetInstance(this);
 
@@ -106,7 +105,6 @@ namespace SF {
 			InitializeModuleFactory();
 		}
 
-
 		BrServer::~BrServer()
 		{
 			m_pLoopbackServerEntity = nullptr;
@@ -114,92 +112,11 @@ namespace SF {
 			DB::Factory::TerminateDBFactory();
 		}
 
-
 		// Set server instance
 		void BrServer::SetInstance(BrServer* pServerInstance)
 		{
 			Assert(BrServer::stm_pServerInstance == NULL);
 			BrServer::stm_pServerInstance = pServerInstance;
-		}
-
-
-		// Process Private network event
-		Result BrServer::ProcessNewConnection()
-		{
-			Result hr = ResultCode::SUCCESS;
-			Svr::ServerEntity* pServerEntity = nullptr;
-			SharedPointerT<Net::Connection> pConn;
-
-			auto numQueued = m_NewConnectionQueue.GetEnqueCount();
-			for (uint iQueue = 0; iQueue < numQueued; iQueue++)
-			{
-				SharedPointerAtomicT<Net::Connection> pConnAtomic;
-
-				if (!m_NewConnectionQueue.Dequeue(pConnAtomic))
-					break;
-
-				auto connectionState = pConnAtomic->GetConnectionState();
-				switch (connectionState)
-				{
-				case Net::ConnectionState::CONNECTING:
-					m_NewConnectionQueue.Enqueue(std::forward<SharedPointerAtomicT<Net::Connection>>(pConnAtomic));
-					break;
-				case Net::ConnectionState::CONNECTED:
-					break;
-				default:
-					assert(connectionState == Net::ConnectionState::DISCONNECTED); // I want to see when this happens
-					pConn = std::forward <SharedPointerAtomicT<Net::Connection>>(pConnAtomic);
-					Service::ConnectionManager->RemoveConnection(pConn);
-					pConn->DisconnectNRelease("Disconnected(?) before handed over to BRServer");
-					pConn = nullptr;
-					break;
-				}
-
-				if (pConnAtomic == nullptr)
-					continue;
-
-				pConn = std::forward <SharedPointerAtomicT<Net::Connection>>(pConnAtomic);
-				auto& remoteInfo = pConn->GetRemoteInfo();
-				if ((Service::ServerEntityManager->AddOrGetServerEntity((ServerID)remoteInfo.PeerID, remoteInfo.PeerClass, pServerEntity)))
-				{
-					auto localConn = pServerEntity->GetLocalConnection();
-					auto oldConn = pServerEntity->GetRemoteConnection();
-					if (localConn == nullptr || localConn != (Net::Connection*)pConn)
-					{
-						//Assert(pConn->GetRefCount() == 0);
-						if (oldConn != nullptr)
-							oldConn->Disconnect("ProcessNewConnection, Disconnect old connection");
-						svrChk(pServerEntity->SetRemoteConnection((Net::Connection*)pConn));
-					}
-					pConn = nullptr;
-					pServerEntity = nullptr;
-					break;
-				}
-				else
-				{
-					// We need to handle this again
-					pConnAtomic = std::forward<SharedPointerT<Net::Connection>>(pConn);
-					m_NewConnectionQueue.Enqueue(std::forward<SharedPointerAtomicT<Net::Connection>>(pConnAtomic));
-				}
-			}
-
-
-		Proc_End:
-
-
-			Util::SafeDelete(pServerEntity);
-
-			return hr;
-		}
-
-
-
-		// Process Public network event
-		Result BrServer::ProcessPublicNetworkEvent()
-		{
-			Result hr = ResultCode::SUCCESS;
-
-			return hr;
 		}
 
 		Result BrServer::TerminateEntity()
@@ -210,15 +127,15 @@ namespace SF {
 
 		void BrServer::AddModuleConstructor(StringCrc32 NameCrc, ModuleContructorType&& Constructor)
 		{
-			m_ModuleConstructors.insert(NameCrc, Constructor);
+			m_ModuleFactories.insert(NameCrc, Constructor);
 		}
 
 		Result BrServer::InitializeModuleFactory()
 		{
-			AddModuleConstructor("ModMonitoring"_crc, [](BrServer* ThisServer, GameID gameID, ServerConfig::ServerModule* config)
-				{
-					return Service::EntityManager->AddEntity(EntityFaculty::Service, new(ThisServer->GetHeap()) Svr::MonitoringServiceEntity);
-				});
+			//AddModuleConstructor("ModMonitoring"_crc, [](BrServer* ThisServer, GameID gameID, ServerConfig::ServerModule* config)
+			//	{
+			//		return Service::EntityManager->AddEntity(EntityFaculty::Service, new(ThisServer->GetHeap()) Svr::MonitoringServiceEntity);
+			//	});
 
 			AddModuleConstructor("ModLogin"_crc, [](BrServer* ThisServer, GameID gameID, ServerConfig::ServerModule* config)
 				{
@@ -261,7 +178,7 @@ namespace SF {
 
 			AddModuleConstructor("ModGamePartyManager"_crc, [](BrServer* ThisServer, GameID gameID, ServerConfig::ServerModule* config)
 				{
-					if (!ThisServer->AddServiceEntity<Svr::GamePartyManagerServiceEntity>(GetServerGameID()))
+					if (!ThisServer->AddServiceEntity<GamePartyManagerServiceEntity>(GetServerGameID()))
 						return ResultCode::OUT_OF_MEMORY;
 					return ResultCode::SUCCESS;
 				});
@@ -407,20 +324,21 @@ namespace SF {
 		Result BrServer::CreateServerInstanceZK(const char* nodeName)
 		{
 			char nodePath[512];
+			char basePath[512];
 			NetAddress myIPV4Address;
 
 			auto pZKSession = Service::ZKSession->GetZookeeperSession();
 			if (pZKSession == nullptr || !pZKSession->IsConnected())
 				return ResultCode::NOT_INITIALIZED;
 
-			StrUtil::Format(nodePath, "{0}/{1}", Const::ZK_SERVER_INSTANCE_NODE, nodeName);
+			if (!pZKSession->Exists(Service::ServerConfig->DataCenterPath))
+				pZKSession->ACreate(Service::ServerConfig->DataCenterPath, Json::Value(Json::objectValue), nullptr, 0);
 
-			if (!pZKSession->Exists(Const::ZK_SERVER_SERVICE_BASE))
-				pZKSession->ACreate(Const::ZK_SERVER_SERVICE_BASE, Json::Value(Json::objectValue), nullptr, 0);
+			StrUtil::Format(basePath, "{0}/{1}", Service::ServerConfig->DataCenterPath, Const::ZK_SERVER_INSTANCE_NODE);
+			if (!pZKSession->Exists(basePath))
+				pZKSession->ACreate(basePath, Json::Value(Json::objectValue), nullptr, 0);
 
-			if (!pZKSession->Exists(Const::ZK_SERVER_INSTANCE_NODE))
-				pZKSession->ACreate(Const::ZK_SERVER_INSTANCE_NODE, Json::Value(Json::objectValue), nullptr, 0);
-
+			StrUtil::Format(nodePath, "{0}/{1}", basePath, nodeName);
 			if (pZKSession->Exists(nodePath))
 				pZKSession->Delete(nodePath);
 
@@ -476,18 +394,20 @@ namespace SF {
 		Result BrServer::InitializeMonitoring()
 		{
 			Result hr = ResultCode::SUCCESS;
-			NetAddress svrAddress;
-			auto monitoringConfig = Service::ServerConfig->MonitoringServer;
-			// Skip if not specified
-			if (monitoringConfig == nullptr)
-				return hr;
 
-			svrChk(Net::SetNetAddress(svrAddress, monitoringConfig->PrivateNet.IP, monitoringConfig->PrivateNet.Port));
+			// TODO: update to graphity
+			//NetAddress svrAddress;
+			//auto monitoringConfig = Service::ServerConfig->MonitoringServer;
+			//// Skip if not specified
+			//if (monitoringConfig == nullptr)
+			//	return hr;
 
-			Assert(GetServerUID() != 0);
-			svrChk(PerformanceCounterClient::Initialize(GetServerUID(), svrAddress));
+			//svrChk(Net::SetNetAddress(svrAddress, monitoringConfig->PrivateNet.IP, monitoringConfig->PrivateNet.Port));
 
-		Proc_End:
+			//Assert(GetServerUID() != 0);
+			//svrChk(PerformanceCounterClient::Initialize(GetServerUID(), svrAddress));
+
+		//Proc_End:
 
 			return hr;
 		}
@@ -496,26 +416,14 @@ namespace SF {
 		Result BrServer::InitializeEntities()
 		{
 			Result hr = ResultCode::SUCCESS;
-			ServerEntity* pEntity = nullptr;
-
-			if (GetNetPrivate() == nullptr)
-			{
-				// If net private hasn't initialized. we don't need entity system.
-				return ResultCode::SUCCESS;
-			}
+			//UniquePtr<ServerEntity> pEntity;
 
 			// Add loop back entity
-			svrMem(pEntity = CreateLoopbackEntity());
-			svrChk(Service::ServerEntityManager->AddOrGetServerEntity(GetServerUID(), GetNetClass(), pEntity));
+			//pEntity.reset(CreateLoopbackEntity());
+			//svrCheckMem(pEntity.get());
+			//svrCheck(Service::ServerEntityManager->AddOrGetServerEntity(GetServerUID(), pEntity.get()));
 
-			SetLoopbackServerEntity(pEntity);
-			pEntity = nullptr;
-
-
-
-		Proc_End:
-
-			Util::SafeDelete(pEntity);
+			//SetLoopbackServerEntity(pEntity.release());
 
 			return hr;
 		}
@@ -523,11 +431,6 @@ namespace SF {
 		Result BrServer::InitializeComponents()
 		{
 			Result hr = ResultCode::SUCCESS;
-
-			//////////////////////////////////////////////////////////////////////////////////////////
-			//
-			// Register service entities
-			//
 
 			for (auto& itModule : Service::ServerConfig->Modules)
 			{
@@ -584,9 +487,6 @@ namespace SF {
 					if (result)
 						return;
 
-					CloseNetPublic();
-					CloseNetPrivate();
-
 					Service::EntityManager->Clear();
 
 					m_Components.TerminateComponents();
@@ -640,19 +540,16 @@ namespace SF {
 			}
 
 			// Initialize Network
-			svrTrace(Info, "Initialize Private network");
-			hr = InitializeNetPrivate();
-			if (!(hr))
+			svrTrace(Info, "Initialize entities");
+			hr = InitializeEntities();
+			if (!hr)
 			{
-				svrTrace(Error, "Failed Initialize Private Network, hr={0:X8}", hr);
-				return hr;
+				svrTrace(Error, "Failed Initialize basic entities, hr={0:X8}", hr);
 			}
 
 			svrTrace(Error, "initializing Components");
 			svrCheck(InitializeComponents());
 
-			svrTrace(Error, "initializing NetPublic");
-			svrCheck(InitializeNetPublic());
 
 			svrTrace(Error, "initializing ZK");
 			svrCheck(CreateServerInstanceZK(Util::GetServiceName()));
@@ -689,8 +586,6 @@ namespace SF {
 						m_bIsKillSignaled = true;
 
 						SetServerState(ServerState::STOPING);
-
-						EnableNetPublic(false);
 					}
 				}
 				else // Waiting all connection closed and user entity close completed
@@ -724,7 +619,7 @@ namespace SF {
 
 			SetServerState(ServerState::STOPING);
 
-			hr = CloseNetPrivate();
+			hr = CloseEntities();
 			if (!(hr))
 			{
 				svrTrace(Error, "Failed Close Private Network, hr={0:X8}", hr);
@@ -753,66 +648,30 @@ namespace SF {
 
 
 
-		// Initialize private Network
-		Result BrServer::InitializeNetPrivate()
-		{
-			ScopeContext hr([this](Result result)
-				{
-					if (result)
-						return;
-
-					CloseNetPublic();
-					CloseNetPrivate();
-				});
-
-
-			svrCheck(CloseNetPrivate());
-
-			// Skip private net if it is not set
-			if (Service::ServerConfig->PrivateNet.IP.size() > 0)
-			{
-				// Create private network and open it
-				svrCheckMem(m_pNetPrivate = NewObject<Net::ServerPeerTCP>(GetHeap(), Service::ServerConfig->UID, GetNetClass()));
-
-				m_pNetPrivate->SetNewConnectionhandler([this](SharedPointerT<Net::Connection>& newConn)
-					{
-						SharedPointerAtomicT<Net::Connection> pConnAtomic;
-						pConnAtomic = std::forward<SharedPointerT<Net::Connection>>(newConn);
-						m_NewConnectionQueue.Enqueue(std::forward<SharedPointerAtomicT<Net::Connection>>(pConnAtomic));
-					});
-
-				svrCheck(m_pNetPrivate->HostOpen(GetNetClass(), Service::ServerConfig->PrivateNet.IP, Service::ServerConfig->PrivateNet.Port));
-			}
-
-			svrTrace(Info, "Initialize entities");
-			hr = InitializeEntities();
-			if (!(hr))
-			{
-				svrTrace(Error, "Failed Initialize basic entities, hr={0:X8}", hr);
-			}
-
-			return hr;
-		}
 
 		// Close Private Network
-		Result BrServer::CloseNetPrivate()
+		Result BrServer::CloseEntities()
 		{
 			Result hr = ResultCode::SUCCESS;
 
 			// Terminate remote entity manager
-			Service::ServerEntityManager->Clear();
+			//Service::ServerEntityManager->Clear();
 			Service::ClusterManager->Clear();
 			Service::EntityManager->Clear();
 			//Service::EntityTable->Clear();
 
-			// close private net
-			if (m_pNetPrivate != nullptr)
-			{
-				hr = m_pNetPrivate->HostClose();
-				m_pNetPrivate = nullptr;
-			}
-
 			return hr;
+		}
+
+		// create remote entity by class
+		Result BrServer::CreateServerEntity(Svr::ServerEntity*& pServerEntity)
+		{
+			pServerEntity = new(GetHeap()) GenericServerEntity();
+
+			if (pServerEntity == nullptr)
+				return ResultCode::OUT_OF_MEMORY;
+
+			return ResultCode::SUCCESS;
 		}
 
 		ServerEntity* BrServer::CreateLoopbackEntity()
@@ -829,11 +688,11 @@ namespace SF {
 			pLoopbackEntity->SetServerID(GetServerUID());
 			pLoopbackEntity->SetServerUpTime(GetServerUpTime());
 
-			svrCheckPtr(GetNetPrivate());
-			pLoopbackEntity->SetPrivateNetAddress(GetNetPrivate()->GetLocalAddress());
+			//svrCheckPtr(GetNetPrivate());
+			//pLoopbackEntity->SetPrivateNetAddress(GetNetPrivate()->GetLocalAddress());
 
-			svrCheckMem(pConn = new(GetHeap()) Svr::LoopbackConnection(GetNetClass(), pLoopbackEntity));
-			pLoopbackEntity->SetLocalConnection((Net::Connection*)pConn);
+			//svrCheckMem(pConn = new(GetHeap()) Svr::LoopbackConnection(GetNetClass(), pLoopbackEntity));
+			//pLoopbackEntity->SetLocalConnection((Net::Connection*)pConn);
 			pConn = nullptr;
 
 			return pLoopbackEntity;
@@ -841,36 +700,13 @@ namespace SF {
 
 		Result BrServer::EmplaceModuleConstructor(StringCrc32 moduleName, ModuleContructorType constructor)
 		{
-			return m_ModuleConstructors.emplace(moduleName, constructor);
-		}
-
-		// Initialize private Network
-		Result BrServer::InitializeNetPublic()
-		{
-			return ResultCode::SUCCESS;
-		}
-
-		// Close Public Network
-		Result BrServer::CloseNetPublic()
-		{
-			return ResultCode::SUCCESS;
+			return m_ModuleFactories.emplace(moduleName, constructor);
 		}
 
 
 		Result BrServer::TickUpdate(TimerAction* pAction)
 		{
 			Result hr = ResultCode::SUCCESS;
-
-			// Process private network event
-			if (!(ProcessNewConnection()))
-			{
-				svrTrace(SVR_DBGFAIL, "ProcessNewConnection : {0:X8}", hr);
-			}
-
-			if (!(ProcessPublicNetworkEvent()))
-			{
-				svrTrace(SVR_DBGFAIL, "ProcessPublicNetworkEvent : {0:X8}", hr);
-			}
 
 			for (auto itMgr : m_DBManagers)
 			{
@@ -920,8 +756,8 @@ namespace SF {
 		{
 			StringCrc32 moduleName = (const char*)module->ModuleName;
 
-			auto itFound = m_ModuleConstructors.find(moduleName);
-			if (itFound != m_ModuleConstructors.end())
+			auto itFound = m_ModuleFactories.find(moduleName);
+			if (itFound != m_ModuleFactories.end())
 			{
 				return (*itFound)(this, GetGameID(), module);
 			}

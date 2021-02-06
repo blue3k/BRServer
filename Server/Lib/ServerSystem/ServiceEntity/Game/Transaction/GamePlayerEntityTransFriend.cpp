@@ -102,9 +102,10 @@ namespace Svr {
 
 		if( ( Service::PlayerManager->FindPlayer( GetFriendID(), playerUID )) )
 		{
-			svrCheck( Service::ServerEntityManager->GetServerEntity( playerUID.GetServerID(), pServerEntity ) );
+			auto playerEndpoint = Service::MessageEndpointManager->GetEndpoint(playerUID);
+			//svrCheck( Service::ServerEntityManager->GetServerEntity( playerUID.GetServerID(), pServerEntity ) );
 
-			Policy::NetPolicyGameServer(pServerEntity->GetConnection()).NotifyC2SEvt( RouteContext(GetOwnerEntityUID(),playerUID),
+			NetPolicyGameServer(playerEndpoint).NotifyC2SEvt( RouteContext(GetOwnerEntityUID(),playerUID),
 				GetFriendID(), pMsgRes->NotificationID, NotificationType::FriendRequest, GetMyOwner()->GetPlayerID(), GetMyOwner()->GetFacebookUID(), GetMyOwner()->GetNickName(), m_TimeStamp.time_since_epoch().count() );
 		}
 
@@ -328,9 +329,10 @@ namespace Svr {
 			return hr;
 		}
 
-		svrCheck( Service::ServerEntityManager->GetServerEntity( playerUID.GetServerID(), pServerEntity ) );
+		auto playerEndpoint = Service::MessageEndpointManager->GetEndpoint(playerUID);
+		//svrCheck( Service::ServerEntityManager->GetServerEntity( playerUID.GetServerID(), pServerEntity ) );
 
-		svrCheck(Policy::NetPolicyGameServer(pServerEntity->GetConnection()).FriendAcceptedC2SEvt( RouteContext(GetOwnerEntityUID(),playerUID),
+		svrCheck(NetPolicyGameServer(playerEndpoint).FriendAcceptedC2SEvt( RouteContext(GetOwnerEntityUID(),playerUID),
 			GetInviterID(), GetMyOwner()->GetFriendInformation() ) );
 
 		return hr;
@@ -383,7 +385,7 @@ namespace Svr {
 		else if (!hr)
 			return hr;
 
-		svrCheck(Policy::NetSvrPolicyGame(GetConnection()).FriendRequestAcceptedS2CEvt(GetAccepter()));
+		svrCheck(NetSvrPolicyGame(GetRemoteEndpoint()).FriendRequestAcceptedS2CEvt(GetAccepter()));
 
 		return hr;
 	}
@@ -437,9 +439,10 @@ namespace Svr {
 		// Find player and notify to remove
 		if( (Service::PlayerManager->FindPlayer( GetFriendID(), playerUID )) )
 		{
-			svrCheck( Service::ServerEntityManager->GetServerEntity( playerUID.GetServerID(), pServerEntity ) );
+			auto playerEndpoint = Service::MessageEndpointManager->GetEndpoint(playerUID);
+			//svrCheck( Service::ServerEntityManager->GetServerEntity( playerUID.GetServerID(), pServerEntity ) );
 
-			svrCheck(Policy::NetPolicyGameServer(pServerEntity->GetConnection()).FriendRemovedC2SEvt( RouteContext(GetOwnerEntityUID(),playerUID),
+			svrCheck(NetPolicyGameServer(playerEndpoint).FriendRemovedC2SEvt( RouteContext(GetOwnerEntityUID(),playerUID),
 				GetFriendID(), GetMyOwner()->GetPlayerID() ) );
 		}
 
@@ -468,7 +471,7 @@ namespace Svr {
 		}
 
 		svrCheck( GetMyOwner()->GetComponent<UserFriendSystem>()->RemoveFriend( GetRemoverID() ) );
-		svrCheck(Policy::NetSvrPolicyGame(GetConnection()).FriendRemovedS2CEvt(GetRemoverID()));
+		svrCheck(NetSvrPolicyGame(GetRemoteEndpoint()).FriendRemovedS2CEvt(GetRemoverID()));
 
 		return hr;
 	}
@@ -677,11 +680,6 @@ namespace Svr {
 	}
 
 
-
-
-	
-
-
-};// namespace GameServer 
-};// namespace SF 
+}// namespace GameServer 
+}// namespace SF 
 

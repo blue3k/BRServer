@@ -141,7 +141,7 @@ namespace Svr {
 	{
 		Result hr = ResultCode::SUCCESS;
 		DB::QueryRegisterAuthTicketCmd* pDBRes = (DB::QueryRegisterAuthTicketCmd*)pRes;
-		Policy::NetPolicyGameServer *pGameServerPolicy = nullptr;
+		NetPolicyGameServer *pGameServerPolicy = nullptr;
 		SharedPointerT<SF::Net::Connection> pConn = super::GetMyOwner()->GetConnection();
 
 		svrChk(pRes->GetResult());
@@ -181,7 +181,8 @@ namespace Svr {
 			}
 			else
 			{
-				if (!(Policy::NetPolicyGameServer(Service::ServerEntityManager->GetServerConnection(m_GameEntityUID.GetServerID())).RegisterPlayerToJoinGameServerCmd(
+				auto gameEndpoint = Service::MessageEndpointManager->GetEndpoint(m_GameEntityUID);
+				if (!(NetPolicyGameServer(gameEndpoint).RegisterPlayerToJoinGameServerCmd(
 					RouteContext(super::GetOwnerEntityUID(), m_GameEntityUID), super::GetTransID(),
 					super::GetMyOwner()->GetPlayerID(), super::GetMyOwner()->GetAuthTicket(), super::GetMyOwner()->GetFacebookUID(), super::GetMyOwner()->GetShardID())))
 				{
@@ -192,7 +193,7 @@ namespace Svr {
 
 	Proc_End:
 
-		if( !(hr) )
+		if( !hr )
 			CloseTransaction(hr);
 
 		return ResultCode::SUCCESS;
@@ -202,7 +203,7 @@ namespace Svr {
 	Result LoginPlayerTransLoginBase<MessageClass>::RegisterNewPlayerToJoinGameServer()
 	{
 		Result hr = ResultCode::SUCCESS;
-		Svr::ServerServiceInformation *pService = nullptr;
+		ServerServiceInformation *pService = nullptr;
 
 		// Find new game server for this player
 		svrChk(Service::ClusterManager->GetRandomService(super::GetMyOwner()->GetGameID(), ClusterID::Game, pService));
@@ -216,7 +217,7 @@ namespace Svr {
 
 		svrTrace(SVR_ENTITY, "Creating new Entity for PID:{0}, on svr:{1}", super::GetMyOwner()->GetPlayerID(), pService->GetEntityUID());
 
-		svrChk( pService->GetService<Svr::GameServerService>()->RegisterPlayerToJoinGameServerCmd(super::GetTransID(),
+		svrChk( pService->GetService<GameServerService>()->RegisterPlayerToJoinGameServerCmd(super::GetTransID(),
 			super::GetMyOwner()->GetPlayerID(), super::GetMyOwner()->GetAuthTicket(), super::GetMyOwner()->GetFacebookUID(), super::GetMyOwner()->GetShardID()));
 	Proc_End:
 
@@ -882,7 +883,7 @@ namespace Svr {
 		Result hr = ResultCode::SUCCESS;
 		PlayerInformation playerInfo;
 		Svr::ClusteredServiceEntity *pServiceEntity = nullptr;
-		Svr::ServerServiceInformation *pService = nullptr;
+		ServerServiceInformation *pService = nullptr;
 
 		svrChk(super::StartTransaction());
 
@@ -909,7 +910,7 @@ namespace Svr {
 
 		svrChk(playerInfo.InitPlayerInformation(GetMyOwner()->GetAccountID(), GetMyOwner()->GetFacebookUID(), GetMyOwner()->GetUserName(), 0, 0, Util::Time.GetTimeUTCSec().time_since_epoch().count()));
 
-		svrChk(pService->GetService<Svr::RankingServerService>()->UpdatePlayerScoreCmd(super::GetTransID(), GetRankingScore(), playerInfo, GetCount()));
+		svrChk(pService->GetService<RankingServerService>()->UpdatePlayerScoreCmd(super::GetTransID(), GetRankingScore(), playerInfo, GetCount()));
 
 
 	Proc_End:
@@ -991,7 +992,7 @@ namespace Svr {
 		Result hr = ResultCode::SUCCESS;
 		PlayerInformation playerInfo;
 		//Svr::ClusteredServiceEntity *pServiceEntity = nullptr;
-		Svr::ServerServiceInformation *pService = nullptr;
+		ServerServiceInformation *pService = nullptr;
 
 		svrChk(super::StartTransaction());
 
@@ -1010,7 +1011,7 @@ namespace Svr {
 		super::GetMyOwner()->Heartbeat();
 
 
-		svrChk(pService->GetService<Svr::RankingServerService>()->DebugPrintALLRankingCmd(super::GetTransID(), GetFileName()));
+		svrChk(pService->GetService<RankingServerService>()->DebugPrintALLRankingCmd(super::GetTransID(), GetFileName()));
 
 
 	Proc_End:

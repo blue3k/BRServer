@@ -18,7 +18,7 @@
 
 
 namespace SF {
-namespace Svr {
+
 
 
 	class ServerEntity;
@@ -46,14 +46,13 @@ namespace Svr {
 
 		SF_FORCEINLINE EntityUID GetServiceEntityUID() { return m_ServerServiceInformation->GetEntityUID(); }
 
-		SF_FORCEINLINE const SharedPointerAtomicT<Net::Connection>& GetConnection() { return m_ServerServiceInformation->GetConnection(); }
+		// TODO: I may need to add new one
+		SF_FORCEINLINE const SharedPointerT<MessageEndpoint>& GetTargetEndpoint() { return m_ServerServiceInformation->GetTargetEndpoint(); }
 
 	};
 
 
-
-}; // namespace Svr
-}; // namespace SF
+} // namespace SF
 
 
 

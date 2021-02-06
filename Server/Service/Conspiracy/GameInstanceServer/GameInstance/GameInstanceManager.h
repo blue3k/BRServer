@@ -49,7 +49,7 @@ namespace ConspiracyGameInstanceServer {
 		//
 
 
-		virtual Result RegisterServiceMessageHandler(Svr::ServerEntity *pServerEntity) override;
+		virtual Result RegisterServiceMessageHandler() override;
 	};
 
 

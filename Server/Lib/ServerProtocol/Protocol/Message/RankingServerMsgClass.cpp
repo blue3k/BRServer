@@ -1133,6 +1133,7 @@ namespace SF
 
 				protocolCheck(*input >> m_RouteContext);
 				protocolCheck(*input >> m_TransactionID);
+				protocolCheck(input->Read(ArrayLen));
 				protocolCheck(input->ReadLink(m_FileName, ArrayLen));
 
 				return hr;

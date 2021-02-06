@@ -13,7 +13,7 @@
 #include "SFTypedefs.h"
 #include "Net/SFNetDef.h"
 #include "Net/SFMessage.h"
-#include "Net/SFConnection.h"
+#include "Net/SFMessageEndpoint.h"
 #include "Protocol/SvrProtocol.h"
 #include "Protocol/Policy/GamePartyManagerNetPolicy.h"
 #include "Protocol/Message/GamePartyManagerMsgClass.h"
@@ -23,61 +23,58 @@
 
 namespace SF
 {
- 	namespace Policy
+ 	// Cmd: Create a party instance
+	Result NetPolicyGamePartyManager::CreatePartyCmd( const RouteContext &InRouteContext, const uint64_t &InTransactionID, const uint16_t &InRouteHopCount, const uint32_t &InGameID, const PlayerInformation &InCreator )
 	{
- 		// Cmd: Create a party instance
-		Result NetPolicyGamePartyManager::CreatePartyCmd( const RouteContext &InRouteContext, const uint64_t &InTransactionID, const uint16_t &InRouteHopCount, const uint32_t &InGameID, const PlayerInformation &InCreator )
-		{
- 			ScopeContext hr;
+ 		ScopeContext hr;
 
-			 MessageDataPtr pMessage;
-			 protocolCheckPtr(m_pConnection);
+		 MessageDataPtr pMessage;
+		 protocolCheckPtr(m_Endpoint);
 
-			 pMessage = SF::Message::GamePartyManager::CreatePartyCmd::Create(m_pConnection->GetIOHeap(), InRouteContext, InTransactionID, InRouteHopCount, InGameID, InCreator);
-			 protocolCheckPtr(*pMessage);
+		 pMessage = SF::Message::GamePartyManager::CreatePartyCmd::Create(GetSystemHeap(), InRouteContext, InTransactionID, InRouteHopCount, InGameID, InCreator);
+		 protocolCheckPtr(*pMessage);
 
-			 return m_pConnection->Send( pMessage );
+		 return m_Endpoint->Send( pMessage );
 
-			return hr;
+		return hr;
 
-		}; // Result NetPolicyGamePartyManager::CreatePartyCmd( const RouteContext &InRouteContext, const uint64_t &InTransactionID, const uint16_t &InRouteHopCount, const uint32_t &InGameID, const PlayerInformation &InCreator )
-		// C2S: Party instance notify of deletion. Sent by party instance
-		Result NetPolicyGamePartyManager::PartyDeletedC2SEvt( const RouteContext &InRouteContext, const uint16_t &InRouteHopCount )
-		{
- 			ScopeContext hr;
+	}; // Result NetPolicyGamePartyManager::CreatePartyCmd( const RouteContext &InRouteContext, const uint64_t &InTransactionID, const uint16_t &InRouteHopCount, const uint32_t &InGameID, const PlayerInformation &InCreator )
+	// C2S: Party instance notify of deletion. Sent by party instance
+	Result NetPolicyGamePartyManager::PartyDeletedC2SEvt( const RouteContext &InRouteContext, const uint16_t &InRouteHopCount )
+	{
+ 		ScopeContext hr;
 
-			 MessageDataPtr pMessage;
-			 protocolCheckPtr(m_pConnection);
+		 MessageDataPtr pMessage;
+		 protocolCheckPtr(m_Endpoint);
 
-			 pMessage = SF::Message::GamePartyManager::PartyDeletedC2SEvt::Create(m_pConnection->GetIOHeap(), InRouteContext, InRouteHopCount);
-			 protocolCheckPtr(*pMessage);
+		 pMessage = SF::Message::GamePartyManager::PartyDeletedC2SEvt::Create(GetSystemHeap(), InRouteContext, InRouteHopCount);
+		 protocolCheckPtr(*pMessage);
 
-			 return m_pConnection->Send( pMessage );
+		 return m_Endpoint->Send( pMessage );
 
-			return hr;
+		return hr;
 
-		}; // Result NetPolicyGamePartyManager::PartyDeletedC2SEvt( const RouteContext &InRouteContext, const uint16_t &InRouteHopCount )
+	}; // Result NetPolicyGamePartyManager::PartyDeletedC2SEvt( const RouteContext &InRouteContext, const uint16_t &InRouteHopCount )
 
 
-		// Cmd: Create a party instance
-		Result NetSvrPolicyGamePartyManager::CreatePartyRes( const RouteContext &InRouteContext, const uint64_t &InTransactionID, const Result &InResult )
-		{
- 			ScopeContext hr;
+	// Cmd: Create a party instance
+	Result NetSvrPolicyGamePartyManager::CreatePartyRes( const RouteContext &InRouteContext, const uint64_t &InTransactionID, const Result &InResult )
+	{
+ 		ScopeContext hr;
 
-			 MessageDataPtr pMessage;
-			 protocolCheckPtr(m_pConnection);
+		 MessageDataPtr pMessage;
+		 protocolCheckPtr(m_Endpoint);
 
-			 pMessage = SF::Message::GamePartyManager::CreatePartyRes::Create(m_pConnection->GetIOHeap(), InRouteContext, InTransactionID, InResult);
-			 protocolCheckPtr(*pMessage);
+		 pMessage = SF::Message::GamePartyManager::CreatePartyRes::Create(GetSystemHeap(), InRouteContext, InTransactionID, InResult);
+		 protocolCheckPtr(*pMessage);
 
-			 return m_pConnection->Send( pMessage );
+		 return m_Endpoint->Send( pMessage );
 
-			return hr;
+		return hr;
 
-		}; // Result NetSvrPolicyGamePartyManager::CreatePartyRes( const RouteContext &InRouteContext, const uint64_t &InTransactionID, const Result &InResult )
+	}; // Result NetSvrPolicyGamePartyManager::CreatePartyRes( const RouteContext &InRouteContext, const uint64_t &InTransactionID, const Result &InResult )
 
 
-	}; // namespace Policy
 }; // namespace SF
 
 

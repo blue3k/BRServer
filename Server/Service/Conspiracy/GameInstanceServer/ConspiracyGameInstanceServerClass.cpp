@@ -62,7 +62,7 @@ namespace ConspiracyGameInstanceServer {
 
 
 	GameInstanceServer::GameInstanceServer()
-		:BrServer(NetClass::Game)
+		:BrServer()
 	{
 	}
 
@@ -130,18 +130,14 @@ namespace ConspiracyGameInstanceServer {
 	}
 
 	// Initialize private Network
-	Result GameInstanceServer::InitializeNetPrivate()
+	Result GameInstanceServer::InitializeEntities()
 	{
 		Result hr = ResultCode::SUCCESS;
 		SockFamily privateNetSockFamily;
 
 		Service::EntityManager->RegisterEntityCreator([this](ClusterID clusterID, EntityFaculty faculty) { return CreateEntity(clusterID, faculty); });
 
-		svrChk(Svr::BrServer::InitializeNetPrivate() );
-
-		GetMyServer()->GetNetPrivate()->SetIsEnableAccept(true);
-
-		privateNetSockFamily = GetMyServer()->GetNetPrivate()->GetLocalAddress().SocketFamily;
+		svrChk(Svr::BrServer::InitializeEntities() );
 
 
 
@@ -154,7 +150,6 @@ namespace ConspiracyGameInstanceServer {
 		GameInstanceManagerServiceEntity *pGameInstanceManager = nullptr;
 		svrMem( pGameInstanceManager = new(GetHeap()) GameInstanceManagerServiceEntity(Svr::GetServerGameID(), nullptr, ClusterID::GameInstanceManager, ClusterMembership::Slave) );
 		svrChk(Service::EntityManager->AddEntity( EntityFaculty::Service, pGameInstanceManager ) );
-		svrChk( Service::ClusterManager->AddClusterServiceEntity( pGameInstanceManager ) );
 		svrChk(GetComponentCarrier().AddComponentWithAdapter(pGameInstanceManager) );
 		}
 
@@ -176,31 +171,17 @@ namespace ConspiracyGameInstanceServer {
 
 
 	// Close Private Network
-	Result GameInstanceServer::CloseNetPrivate()
+	Result GameInstanceServer::CloseEntities()
 	{
 		Result hr = ResultCode::SUCCESS;
 
-		hr = Svr::BrServer::CloseNetPrivate();
+		hr = Svr::BrServer::CloseEntities();
 
-
-		// Server Entity Manager will clear this
-		SetLoopbackServerEntity( nullptr );
 
 		return hr;
 	}
 
 
-
-	// create remote entity by class
-	Result GameInstanceServer::CreateServerEntity( NetClass netClass, Svr::ServerEntity* &pServerEntity )
-	{
-		pServerEntity = new(GetHeap()) Svr::GenericServerEntity();
-
-		if( pServerEntity == nullptr )
-			return ResultCode::OUT_OF_MEMORY;
-
-		return ResultCode::SUCCESS;
-	}
 
 
 	//////////////////////////////////////////////////////////////////////////

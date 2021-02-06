@@ -45,7 +45,7 @@ namespace SF {
 			virtual Result StartTransaction() override;
 
 
-			BR_SVR_MSGTRANS_CLOSE_ARGS(Policy::NetSvrPolicyChatChannelManager, CreateChannelRes, RouteContext(m_UID, GetRouteContext().GetFrom()), m_UID);
+			BR_SVR_MSGTRANS_CLOSE_ARGS(NetSvrPolicyChatChannelManager, CreateChannelRes, RouteContext(m_UID, GetRouteContext().GetFrom()), m_UID);
 		};
 
 
@@ -66,7 +66,7 @@ namespace SF {
 			virtual Result StartTransaction() override;
 
 
-			BR_SVR_MSGTRANS_CLOSE_ARGS(Policy::NetSvrPolicyChatChannelManager, FindChannelRes, RouteContext(m_UID, GetRouteContext().GetFrom()), m_UID);
+			BR_SVR_MSGTRANS_CLOSE_ARGS(NetSvrPolicyChatChannelManager, FindChannelRes, RouteContext(m_UID, GetRouteContext().GetFrom()), m_UID);
 		};
 
 

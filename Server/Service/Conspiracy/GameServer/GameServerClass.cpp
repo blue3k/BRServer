@@ -68,7 +68,7 @@ namespace GameServer {
 
 
 	GameServer::GameServer()
-		: BrServer(NetClass::Game)
+		: BrServer()
 		//, m_pNetPublic(nullptr)
 		, m_TableVersion(0)
 		, m_PresetGameConfigID(1)
@@ -160,7 +160,7 @@ namespace GameServer {
 
 
 	// Initialize private Network
-	Result GameServer::InitializeNetPrivate()
+	Result GameServer::InitializeEntities()
 	{
 		Result hr = ResultCode::SUCCESS;
 
@@ -168,9 +168,7 @@ namespace GameServer {
 
 		//Engine::GetInstance()->AddComponent<SF::GameServer::GameEntityManager>(Service::ServerConfig->WorkerThreadCount);
 
-		svrChk(Svr::BrServer::InitializeNetPrivate() );
-
-		GetMyServer()->GetNetPrivate()->SetIsEnableAccept(true);
+		svrChk(Svr::BrServer::InitializeEntities() );
 
 
 
@@ -204,20 +202,20 @@ namespace GameServer {
 		// Queue items
 		for (ClusterID matchingQueueClusterID = ClusterID::MatchingQueue_Game_4x1; static_cast<uint32_t>(matchingQueueClusterID) <= ClusterID_MatchingQueue_Max; matchingQueueClusterID++)
 		{
-			svrChk(Service::ClusterManager->SetWatchForCluster( Svr::GetServerGameID(), matchingQueueClusterID, true) );
+			svrChk(Service::ClusterManager->SetWatchForCluster( Svr::GetServerGameID(), matchingQueueClusterID) );
 		}
 
 
 		// Adding matching entities
 		for( ClusterID matchingClusterID = ClusterID::Matching_Game_4; matchingClusterID <= ClusterID::Matching_Game_8; matchingClusterID++ )
 		{
-			svrChk(Service::ClusterManager->SetWatchForCluster(Svr::GetServerGameID(), matchingClusterID, true));
+			svrChk(Service::ClusterManager->SetWatchForCluster(Svr::GetServerGameID(), matchingClusterID));
 		}
 
 
 
-		svrChk(Service::ClusterManager->SetWatchForCluster(Svr::GetServerGameID(), ClusterID::GameInstanceManager, true));
-		svrChk(Service::ClusterManager->SetWatchForCluster(Svr::GetServerGameID(), ClusterID::GamePartyManager, true));
+		svrChk(Service::ClusterManager->SetWatchForCluster(Svr::GetServerGameID(), ClusterID::GameInstanceManager));
+		svrChk(Service::ClusterManager->SetWatchForCluster(Svr::GetServerGameID(), ClusterID::GamePartyManager));
 
 
 
@@ -229,58 +227,16 @@ namespace GameServer {
 
 
 	// Close Private Network
-	Result GameServer::CloseNetPrivate()
+	Result GameServer::CloseEntities()
 	{
 		Result hr = ResultCode::SUCCESS;
 
-		hr = Svr::BrServer::CloseNetPrivate();
-
-		// Server Entity Manager will clear this
-		SetLoopbackServerEntity( nullptr );
+		hr = Svr::BrServer::CloseEntities();
 
 		return hr;
 	}
 
 
-	// Initialize private Network
-	Result GameServer::InitializeNetPublic()
-	{
-		Result hr = ResultCode::SUCCESS;
-
-		svrChk( CloseNetPublic() );
-
-		//svrMem(m_pNetPublic = new(GetHeap()) Net::ServerMUDP(Service::ServerConfig->UID, GetNetClass()));
-
-		//svrChk( m_pNetPublic->HostOpen( GetNetClass(), Service::ServerConfig->PublicNet.ListenIP, Service::ServerConfig->PublicNet.Port ) );
-
-		//// Game server only accept public connection with valid peerID(AuthTicket)
-		//m_pNetPublic->SetUseAddressMap(false);
-
-		//m_PublicNetAddressIPv4 = NetAddress(SockFamily::IPV4, Service::ServerConfig->NetPublic->IPV4.c_str(), Service::ServerConfig->NetPublic->Port);
-		//svrChk(Net::CheckLocalAddress(SockFamily::IPV4, m_PublicNetAddressIPv4));
-
-	Proc_End:
-
-		return hr;
-	}
-
-
-	// Close Public Network
-	Result GameServer::CloseNetPublic()
-	{
-		Result hr = ResultCode::SUCCESS;
-
-		//if( m_pNetPublic == nullptr )
-		//	return ResultCode::SUCCESS;
-
-		//svrChk( m_pNetPublic->HostClose() );
-
-		//m_pNetPublic = nullptr;
-
-	Proc_End:
-
-		return hr;
-	}
 
 	// Run the task
 	Result GameServer::TickUpdate(TimerAction *pAction)
@@ -295,7 +251,7 @@ namespace GameServer {
 
 
 	// create remote entity by class
-	Result GameServer::CreateServerEntity( NetClass netClass, Svr::ServerEntity* &pServerEntity )
+	Result GameServer::CreateServerEntity( Svr::ServerEntity* &pServerEntity )
 	{
 		pServerEntity = new(GetHeap()) Svr::GenericServerEntity();
 

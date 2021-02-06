@@ -21,7 +21,7 @@ PROTO_BUILD_PARAM_DOC=+out=$(OUTPUT_DOC_PATH) +gen=MessageGithubDocBuilder
 
 
 SOURCES=ProtocolClusterServer.xml \
-	ProtocolGameInstance.xml \
+	ProtocolGameInstanceServer.xml \
 	ProtocolGameInstanceManager.xml \
 	ProtocolGameParty.xml \
 	ProtocolGamePartyManager.xml \

@@ -43,7 +43,7 @@ namespace Svr {
 
 		UTCTimeStampSec m_LatestServerUpTime;
 
-		ServerEntity* m_ServerEntity;
+		SharedPointerT<MessageEndpoint> m_RemoteEndpoint;
 
 		// User entity UID, this will be 0 if the user doesn't logged in.
 		EntityUID m_PlayerEntityUID;
@@ -57,7 +57,7 @@ namespace Svr {
 
 		const PlayerInformation& GetPlayerInformation() const	{ return m_PlayerInfo; }
 		const UTCTimeStampSec& GetLatestServerUpTime() const { return m_LatestServerUpTime; }
-		ServerEntity* GetServerEntity() const { return m_ServerEntity; }
+		const SharedPointerT<MessageEndpoint>& GetRemoteEndpoint() const { return m_RemoteEndpoint; }
 		const EntityUID& GetPlayerEntityUID() const { return m_PlayerEntityUID; }
 		bool GetIsActivePlayer() const { return m_IsActivePlayer; }
 
@@ -65,19 +65,14 @@ namespace Svr {
 		const char* GetPlayerName() const						{ return m_PlayerInfo.NickName; }
 		Result SetPlayerName( const char* newName)				{ return StrUtil::StringCopy( m_PlayerInfo.NickName, newName ); }
 
-		//FriendInformation GetFriendInformation() const			{ return FriendInformation(m_PlayerInfo.PlayerID, m_PlayerInfo.FacebookUID, m_PlayerInfo.NickName, m_PlayerInfo.Level, 0, 0, m_PlayerInfo.IsPlayingGame, m_PlayerInfo.LastActiveTime, 0); }
-
-		// Check server status
-		bool CheckServerStatus();
-
 		// Set game server entity
-		Result SetServerEntity( ServerEntity* pGameServerEntity, EntityUID playerUID );
+		Result SetRemoteEndpoint(const SharedPointerT<MessageEndpoint>& remoteEndpoint, EntityUID playerUID );
 
 		// Get route context
 		RouteContext GetRouteContext( EntityUID uidFrom );
 
 		// Query policy from game server entity
-		const SharedPointerAtomicT<Net::Connection>& GetConnection() const { static const SharedPointerAtomicT<Net::Connection> Dymmy;  return m_ServerEntity != nullptr ? m_ServerEntity->GetConnection() : Dymmy; }
+		//const SharedPointerAtomicT<Net::Connection>& GetConnection() const { static const SharedPointerAtomicT<Net::Connection> Dymmy;  return m_ServerEntity != nullptr ? m_ServerEntity->GetConnection() : Dymmy; }
 
 	};
 

@@ -77,7 +77,7 @@ namespace SF {
 
 			virtual Result InitializeEntity(EntityID newEntityID) override;
 
-			virtual Result RegisterServiceMessageHandler(ServerEntity* pServerEntity) override;
+			virtual Result RegisterServiceMessageHandler() override;
 
 			//////////////////////////////////////////////////////////////////////////
 			//

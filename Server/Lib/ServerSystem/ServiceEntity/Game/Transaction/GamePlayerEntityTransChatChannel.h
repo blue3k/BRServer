@@ -60,7 +60,7 @@ namespace Svr {
 		// Start Transaction
 		virtual Result StartTransaction() override;
 
-		BR_IMPLEMENT_USERMSGTRANS_CLOSE_ARGS(Policy::NetSvrPolicyGame, CreateOrJoinChatChannelRes, m_ChatChannelUID);
+		BR_IMPLEMENT_USERMSGTRANS_CLOSE_ARGS(NetSvrPolicyGame, CreateOrJoinChatChannelRes, m_ChatChannelUID);
 	};
 	
 	
@@ -84,7 +84,7 @@ namespace Svr {
 		// Start Transaction
 		virtual Result StartTransaction() override;
 
-		BR_IMPLEMENT_USERMSGTRANS_CLOSE_ARGS(Policy::NetSvrPolicyGame, JoinChatChannelRes, m_LeaderID, m_ChatChannelID);
+		BR_IMPLEMENT_USERMSGTRANS_CLOSE_ARGS(NetSvrPolicyGame, JoinChatChannelRes, m_LeaderID, m_ChatChannelID);
 	};
 	
 	// ChatChannel player joined
@@ -132,7 +132,7 @@ namespace Svr {
 		// Start Transaction
 		virtual Result StartTransaction() override;
 
-		BR_IMPLEMENT_USERMSGTRANS_CLOSE(Policy::NetSvrPolicyGame, LeaveChatChannelRes);
+		BR_IMPLEMENT_USERMSGTRANS_CLOSE(NetSvrPolicyGame, LeaveChatChannelRes);
 	};
 	
 	
@@ -168,7 +168,7 @@ namespace Svr {
 		// Start Transaction
 		virtual Result StartTransaction() override;
 
-		BR_IMPLEMENT_USERMSGTRANS_CLOSE(Policy::NetSvrPolicyGame, ChatChannelKickPlayerRes);
+		BR_IMPLEMENT_USERMSGTRANS_CLOSE(NetSvrPolicyGame, ChatChannelKickPlayerRes);
 	};
 	
 	
@@ -205,7 +205,7 @@ namespace Svr {
 		// Start Transaction
 		virtual Result StartTransaction() override;
 
-		BR_IMPLEMENT_USERMSGTRANS_CLOSE(Policy::NetSvrPolicyGame, ChatChannelChatMessageRes);
+		BR_IMPLEMENT_USERMSGTRANS_CLOSE(NetSvrPolicyGame, ChatChannelChatMessageRes);
 	};
 
 	// Chat message from other entity	

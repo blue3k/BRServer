@@ -16,53 +16,46 @@
 
 
 
-class VariableTable;
-
-
-
 namespace SF
 {
- 	namespace Policy
+    class MessageEndpoint;
+   class VariableTable;
+
+
+	class NetPolicyLoginServer 
 	{
- 		class NetPolicyLoginServer 
-		{
- 			private:
-				SharedPointerT<Net::Connection> m_pConnection;
-			public:
-			// Constructor
-			NetPolicyLoginServer ( const SharedPointerT<Net::Connection>& pConn ) : m_pConnection(pConn)
-			{}
-			NetPolicyLoginServer ( const SharedPointerAtomicT<Net::Connection>& pConn ) : m_pConnection(pConn)
-			{}
+ 		private:
+			SharedPointerT<MessageEndpoint> m_Endpoint;
+		public:
+		// Constructor
+		NetPolicyLoginServer (const SharedPointerT<MessageEndpoint>& pEndpoint ) : m_Endpoint(pEndpoint)
+		{}
 
-			// Cmd: Notify Login server that client is successfully connected and joined to game server so that login server clear the player information.
-			Result PlayerJoinedToGameServerCmd( const RouteContext &InRouteContext, const uint64_t &InTransactionID, const PlayerID &InPlayerID, const AuthTicket &InAuthTicket );
-			// Cmd: Kick logged in player, used to kick player on other login server to prevent duplicated login.
-			Result KickPlayerCmd( const RouteContext &InRouteContext, const uint64_t &InTransactionID, const PlayerID &InKickedPlayerID );
+		// Cmd: Notify Login server that client is successfully connected and joined to game server so that login server clear the player information.
+		Result PlayerJoinedToGameServerCmd( const RouteContext &InRouteContext, const uint64_t &InTransactionID, const PlayerID &InPlayerID, const AuthTicket &InAuthTicket );
+		// Cmd: Kick logged in player, used to kick player on other login server to prevent duplicated login.
+		Result KickPlayerCmd( const RouteContext &InRouteContext, const uint64_t &InTransactionID, const PlayerID &InKickedPlayerID );
 
-		}; // class NetPolicyLoginServer 
+	}; // class NetPolicyLoginServer 
 
 
-		class NetSvrPolicyLoginServer
-		{
- 			private:
-				SharedPointerT<Net::Connection> m_pConnection;
-			public:
-			// Constructor
-			NetSvrPolicyLoginServer ( const SharedPointerT<Net::Connection>& pConn ) : m_pConnection(pConn)
-			{}
-			NetSvrPolicyLoginServer ( const SharedPointerAtomicT<Net::Connection>& pConn ) : m_pConnection(pConn)
-			{}
+	class NetSvrPolicyLoginServer
+	{
+ 		private:
+			SharedPointerT<MessageEndpoint> m_Endpoint;
+		public:
+		// Constructor
+		NetSvrPolicyLoginServer ( const SharedPointerT<MessageEndpoint>& pEndpoint ) : m_Endpoint(pEndpoint)
+		{}
 
-			// Cmd: Notify Login server that client is successfully connected and joined to game server so that login server clear the player information.
-			Result PlayerJoinedToGameServerRes( const RouteContext &InRouteContext, const uint64_t &InTransactionID, const Result &InResult );
-			// Cmd: Kick logged in player, used to kick player on other login server to prevent duplicated login.
-			Result KickPlayerRes( const RouteContext &InRouteContext, const uint64_t &InTransactionID, const Result &InResult );
+		// Cmd: Notify Login server that client is successfully connected and joined to game server so that login server clear the player information.
+		Result PlayerJoinedToGameServerRes( const RouteContext &InRouteContext, const uint64_t &InTransactionID, const Result &InResult );
+		// Cmd: Kick logged in player, used to kick player on other login server to prevent duplicated login.
+		Result KickPlayerRes( const RouteContext &InRouteContext, const uint64_t &InTransactionID, const Result &InResult );
 
-		}; // class NetSvrPolicyLoginServer
+	}; // class NetSvrPolicyLoginServer
 
 
-	}; // namespace Policy
 }; // namespace SF
 
 

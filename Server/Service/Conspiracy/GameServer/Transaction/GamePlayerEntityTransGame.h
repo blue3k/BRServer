@@ -74,7 +74,7 @@ namespace GameServer {
 
 		virtual Result CloseTransaction(Result hrRes) override;
 
-		BR_IMPLEMENT_USERMSGTRANS_CLOSE_ARGS(Policy::NetSvrPolicyGame, JoinGameRes,m_GameInsID, m_TimeStamp, (uint8_t)m_GameState, m_Day, m_MaxPlayer,
+		BR_IMPLEMENT_USERMSGTRANS_CLOSE_ARGS(NetSvrPolicyGame, JoinGameRes,m_GameInsID, m_TimeStamp, (uint8_t)m_GameState, m_Day, m_MaxPlayer,
 			m_PlayerIndex, m_PlayerCharacter, (uint8_t)m_Role, m_Dead, m_ChatHistoryData, m_GameLogData );
 	};
 
@@ -112,7 +112,7 @@ namespace GameServer {
 
 		virtual Result CloseTransaction(Result hrRes) override;
 
-		BR_IMPLEMENT_USERMSGTRANS_CLOSE(Policy::NetSvrPolicyGame, LeaveGameRes);
+		BR_IMPLEMENT_USERMSGTRANS_CLOSE(NetSvrPolicyGame, LeaveGameRes);
 	};
 
 
@@ -149,7 +149,7 @@ namespace GameServer {
 
 		virtual Result CloseTransaction(Result hrRes) override;
 
-		BR_IMPLEMENT_USERMSGTRANS_CLOSE(Policy::NetSvrPolicyGame, KickPlayerRes);
+		BR_IMPLEMENT_USERMSGTRANS_CLOSE(NetSvrPolicyGame, KickPlayerRes);
 	};
 	
 	// game end event from game instance server
@@ -183,7 +183,7 @@ namespace GameServer {
 		// Start Transaction
 		virtual Result StartTransaction() override;
 
-		BR_IMPLEMENT_USERMSGTRANS_CLOSE(Policy::NetSvrPolicyGame, AssignRoleRes);
+		BR_IMPLEMENT_USERMSGTRANS_CLOSE(NetSvrPolicyGame, AssignRoleRes);
 	};
 
 	
@@ -215,7 +215,7 @@ namespace GameServer {
 		// Start Transaction
 		virtual Result StartTransaction() override;
 
-		BR_IMPLEMENT_USERMSGTRANS_CLOSE(Policy::NetSvrPolicyGame, ChatMessageRes);
+		BR_IMPLEMENT_USERMSGTRANS_CLOSE(NetSvrPolicyGame, ChatMessageRes);
 	};
 
 	// Chat message from other entity	
@@ -250,7 +250,7 @@ namespace GameServer {
 		// Start Transaction
 		virtual Result StartTransaction() override;
 
-		BR_IMPLEMENT_USERMSGTRANS_CLOSE(Policy::NetSvrPolicyGame, VoteGameAdvanceRes);
+		BR_IMPLEMENT_USERMSGTRANS_CLOSE(NetSvrPolicyGame, VoteGameAdvanceRes);
 	};
 	
 	// game end event from game instance server
@@ -284,7 +284,7 @@ namespace GameServer {
 		// Start Transaction
 		virtual Result StartTransaction() override;
 
-		BR_IMPLEMENT_USERMSGTRANS_CLOSE(Policy::NetSvrPolicyGame, VoteRes);
+		BR_IMPLEMENT_USERMSGTRANS_CLOSE(NetSvrPolicyGame, VoteRes);
 	};
 	
 	// game end event from game instance server
@@ -332,7 +332,7 @@ namespace GameServer {
 		// Start Transaction
 		virtual Result StartTransaction() override;
 
-		BR_IMPLEMENT_USERMSGTRANS_CLOSE(Policy::NetSvrPolicyGame, AdvanceGameRes);
+		BR_IMPLEMENT_USERMSGTRANS_CLOSE(NetSvrPolicyGame, AdvanceGameRes);
 	};
 	
 	// game advanced event from game instance server
@@ -419,7 +419,7 @@ namespace GameServer {
 		// Start Transaction
 		virtual Result StartTransaction() override;
 
-		BR_IMPLEMENT_USERMSGTRANS_CLOSE_ARGS(Policy::NetSvrPolicyGame, GamePlayAgainRes, m_TotalGem, m_TotalGameMoney);
+		BR_IMPLEMENT_USERMSGTRANS_CLOSE_ARGS(NetSvrPolicyGame, GamePlayAgainRes, m_TotalGem, m_TotalGameMoney);
 	};
 
 
@@ -442,7 +442,7 @@ namespace GameServer {
 		// Start Transaction
 		virtual Result StartTransaction() override;
 
-		//BR_IMPLEMENT_EVTTRANS_CLOSE_ARGS(Policy::NetSvrPolicyGame, GamePlayAgainS2CEvt, m_PartyUID, m_LeadPlayer);
+		//BR_IMPLEMENT_EVTTRANS_CLOSE_ARGS(NetSvrPolicyGame, GamePlayAgainS2CEvt, m_PartyUID, m_LeadPlayer);
 
 	};
 
@@ -470,7 +470,7 @@ namespace GameServer {
 		// Start Transaction
 		virtual Result StartTransaction() override;
 
-		BR_IMPLEMENT_USERMSGTRANS_CLOSE_ARGS(Policy::NetSvrPolicyGame, GameRevealPlayerRes, m_RevealedPlayerID, m_RevealedPlayerRole, m_TotalGem, m_TotalGameMoney);
+		BR_IMPLEMENT_USERMSGTRANS_CLOSE_ARGS(NetSvrPolicyGame, GameRevealPlayerRes, m_RevealedPlayerID, m_RevealedPlayerRole, m_TotalGem, m_TotalGameMoney);
 	};
 
 
@@ -495,7 +495,7 @@ namespace GameServer {
 		// Start Transaction
 		virtual Result StartTransaction() override;
 
-		BR_IMPLEMENT_USERMSGTRANS_CLOSE_ARGS(Policy::NetSvrPolicyGame, GamePlayerReviveRes, m_TotalGem, m_TotalGameMoney);
+		BR_IMPLEMENT_USERMSGTRANS_CLOSE_ARGS(NetSvrPolicyGame, GamePlayerReviveRes, m_TotalGem, m_TotalGameMoney);
 	};
 
 
@@ -532,7 +532,7 @@ namespace GameServer {
 		// Start Transaction
 		virtual Result StartTransaction() override;
 
-		BR_IMPLEMENT_USERMSGTRANS_CLOSE_ARGS(Policy::NetSvrPolicyGame, GamePlayerResetRankRes, m_TotalGem, m_TotalGameMoney);
+		BR_IMPLEMENT_USERMSGTRANS_CLOSE_ARGS(NetSvrPolicyGame, GamePlayerResetRankRes, m_TotalGem, m_TotalGameMoney);
 	};
 
 

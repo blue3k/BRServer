@@ -80,28 +80,28 @@ namespace SF {
 			return hr;
 		}
 
-		Result GamePartyManagerServiceEntity::RegisterServiceMessageHandler(ServerEntity* pServerEntity)
+		Result GamePartyManagerServiceEntity::RegisterServiceMessageHandler()
 		{
 			Result hr = ResultCode::SUCCESS;
 
-			svrCheck(super::RegisterServiceMessageHandler(pServerEntity));
+			svrCheck(super::RegisterServiceMessageHandler());
 
 			// Game party manager transactions
-			pServerEntity->RegisterMessageHandler<PartyManagerTransCreateParty>();
-			pServerEntity->RegisterMessageHandler<PartyManagerTransPartyDeleted>();
+			RegisterMessageHandler<PartyManagerTransCreateParty>();
+			RegisterMessageHandler<PartyManagerTransPartyDeleted>();
 
 			// Game party instance transactions
-			pServerEntity->RegisterMessageHandler<PartyTransJoinParty>();
-			pServerEntity->RegisterMessageHandler<PartyTransLeaveParty>();
-			pServerEntity->RegisterMessageHandler<PartyTransKickPlayer>();
-			pServerEntity->RegisterMessageHandler<PartyTransChatMessage>();
-			pServerEntity->RegisterMessageHandler<PartyTransQuickChatMessage>();
+			RegisterMessageHandler<PartyTransJoinParty>();
+			RegisterMessageHandler<PartyTransLeaveParty>();
+			RegisterMessageHandler<PartyTransKickPlayer>();
+			RegisterMessageHandler<PartyTransChatMessage>();
+			RegisterMessageHandler<PartyTransQuickChatMessage>();
 
-			pServerEntity->RegisterMessageHandler<PartyTransStartGameMatchCmd>();
-			pServerEntity->RegisterMessageHandler<PartyTransCancelGameMatchCmd>();
-			pServerEntity->RegisterMessageHandler<PartyTransPartyMatchingCanceled>();
-			pServerEntity->RegisterMessageHandler<PartyTransMatchingItemDequeued>();
-			pServerEntity->RegisterMessageHandler<PartyTransPartyGameMatchedS2CEvt>();
+			RegisterMessageHandler<PartyTransStartGameMatchCmd>();
+			RegisterMessageHandler<PartyTransCancelGameMatchCmd>();
+			RegisterMessageHandler<PartyTransPartyMatchingCanceled>();
+			RegisterMessageHandler<PartyTransMatchingItemDequeued>();
+			RegisterMessageHandler<PartyTransPartyGameMatchedS2CEvt>();
 
 		return hr;
 		}
@@ -113,7 +113,7 @@ namespace SF {
 		//
 
 		// Add new Entity
-		Result GamePartyManagerServiceEntity::CreateGameParty(GameID gameID, const PlayerInformation& creator, EntityUID playerUID, ServerEntity* pServerEntity, PartyUID& partyUID)
+		Result GamePartyManagerServiceEntity::CreateGameParty(GameID gameID, const PlayerInformation& creator, EntityUID playerUID, SharedPointerT<MessageEndpoint>& remoteEndpoint, PartyUID& partyUID)
 		{
 			Result hr = ResultCode::SUCCESS;
 			GamePartyEntity* pGameParty = nullptr;
@@ -124,7 +124,7 @@ namespace SF {
 			svrChk(Service::EntityManager->AddEntity(EntityFaculty::Party, pGameParty));
 
 			svrMem(pPlayer = new(GetHeap()) PartyPlayer(creator));
-			svrChk(pPlayer->SetServerEntity(pServerEntity, playerUID));
+			svrChk(pPlayer->SetRemoteEndpoint(remoteEndpoint, playerUID));
 			svrChk(pGameParty->JoinPlayer(pPlayer));
 
 			partyUID = pGameParty->GetEntityUID();

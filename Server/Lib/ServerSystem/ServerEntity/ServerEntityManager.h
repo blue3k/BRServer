@@ -71,7 +71,7 @@ namespace Svr
 		CriticalSection			m_ServerTableLock;
 
 	private:
-		Result AddServerEntity(NetClass netClass, ServerEntity* pServerEntity);
+		Result AddServerEntity(ServerEntity* pServerEntity);
 
 
 	public:
@@ -88,8 +88,8 @@ namespace Svr
 
 		// Register server
 		template<class ServerEntityType>
-		Result GetOrRegisterServer( ServerID serverID, NetClass netClass, const NetAddress& netAddress, ServerEntityType* &pServerEntity );
-		virtual Result GetOrRegisterServer(ServerID serverID, NetClass netClass, const NetAddress& netAddress, ServerEntity* &pServerEntity) override;
+		Result GetOrRegisterServer( ServerID serverID, const String& eventRouterAddress, ServerEntityType* &pServerEntity );
+		virtual Result GetOrRegisterServer(ServerID serverID, const String& eventRouterAddress, ServerEntity* &pServerEntity) override;
 
 		// Get remote entity
 		virtual Result GetServerEntity( ServerID svrID, ServerEntity* &pServerEntity ) override;
@@ -99,9 +99,9 @@ namespace Svr
 
 
 		// Add new remote entity
-		virtual Result AddOrGetServerEntity(ServerID serverID, NetClass netClass, ServerEntity* &pServerEntity) override;
+		virtual Result AddOrGetServerEntity(ServerID serverID, ServerEntity* pServerEntity) override;
 
-		virtual const SharedPointerAtomicT<Net::Connection>& GetServerConnection(ServerID svrID) override;
+		//virtual const SharedPointerAtomicT<Net::Connection>& GetServerConnection(ServerID svrID) override;
 
 		Result InitializeComponent() { return TickTaskManager::InitializeManager(m_ThreadCount); }
 		// Terminate component
@@ -112,11 +112,10 @@ namespace Svr
 	
 	// Register server
 	template<class ServerEntityType>
-	Result ServerEntityManager::GetOrRegisterServer(ServerID serverID, NetClass netClass, const NetAddress& netAddress, ServerEntityType* &pServerEntity)
+	Result ServerEntityManager::GetOrRegisterServer(ServerID serverID, const String& eventRouterAddress, ServerEntityType* &pServerEntity)
 	{
 		Result hr = ResultCode::SUCCESS;
 		ServerEntityType *pNewServerEntity = nullptr;
-		Net::ConnectionPtr pConnection;
 
 		MutexScopeLock localLock(m_ServerTableLock);
 
@@ -128,14 +127,14 @@ namespace Svr
 			return hr;
 		}
 
-		svrTrace( SVR_ENTITY, "Registering Server {0} SvrID:{1}, {2}", typeid(ServerEntityType).name(), serverID, netAddress);
+		svrTrace( SVR_ENTITY, "Registering Server {0} SvrID:{1}, {2}", typeid(ServerEntityType).name(), serverID, eventRouterAddress);
 
 		svrMem( pNewServerEntity = new(GetHeap()) ServerEntityType );
 
-		svrChk( BrServer::GetInstance()->GetNetPrivate()->RegisterServerConnection( serverID, netClass, netAddress, pConnection ) );
+		//svrChk( BrServer::GetInstance()->GetNetPrivate()->RegisterServerConnection( serverID, netClass, eventRouterAddress, pConnection ) );
 
 		pNewServerEntity->SetServerID( serverID );
-		pNewServerEntity->SetLocalConnection((Net::Connection*)pConnection);
+		//pNewServerEntity->SetLocalConnection((Net::Connection*)pConnection);
 
 		pServerEntity = pNewServerEntity;
 		pNewServerEntity = nullptr;
@@ -158,8 +157,8 @@ namespace Svr
 
 
 
-}; // namespace Svr
-}; // namespace SF
+} // namespace Svr
+} // namespace SF
 
 
 

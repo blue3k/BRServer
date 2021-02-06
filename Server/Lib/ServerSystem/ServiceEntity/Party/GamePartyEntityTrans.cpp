@@ -66,14 +66,12 @@ namespace Svr {
 		GamePartyEntity* pOwner = (GamePartyEntity*)GetOwnerEntity();
 		ServerServiceInformation *pService = nullptr;
 
-		svrChk(Transaction::StartTransaction() );
+		svrCheck(Transaction::StartTransaction() );
 
-		svrChk(Service::ClusterManager->GetRandomService(m_GameID, ClusterID::GamePartyManager, pService));
-		svrChk(pService->GetService<Svr::GamePartyManagerService>()->PartyDeletedC2SEvt(pOwner->GetEntityUID(), 0));
+		svrCheck(Service::ClusterManager->GetRandomService(m_GameID, ClusterID::GamePartyManager, pService));
+		svrCheck(pService->GetService<GamePartyManagerService>()->PartyDeletedC2SEvt(pOwner->GetEntityUID(), 0));
 
 		Service::EntityManager->RemoveEntity( pOwner );
-
-	Proc_End:
 
 		return hr;
 	}
@@ -95,12 +93,12 @@ namespace Svr {
 		if( GetInviterID() == 0 )
 		{
 			// This should be rejoin by relogging
-			Policy::NetSvrPolicyGameParty *pPolicy = nullptr;
+			NetSvrPolicyGameParty *pPolicy = nullptr;
 
 			svrChk( GetMyOwner()->FindPlayer( GetInvitedPlayer().PlayerID, pPlayer ) );
-			svrChk( pPlayer->SetServerEntity( GetServerEntity<Svr::ServerEntity>(), GetRouteContext().GetFrom()) );
+			svrChk( pPlayer->SetRemoteEndpoint(GetRemoteEndpoint(), GetRouteContext().GetFrom()) );
 
-			Policy::NetSvrPolicyGameParty policy(pPlayer->GetConnection());
+			NetSvrPolicyGameParty policy(pPlayer->GetRemoteEndpoint());
 
 			// Send others to joined
 			GetMyOwner()->ForeachPlayer( [&]( PartyPlayer* pOtherPlayer )->Result {
@@ -121,7 +119,7 @@ namespace Svr {
 				svrErrClose(ResultCode::SVR_ALREADY_INQUEUE);
 
 			svrMem( pPlayer = new(GetHeap()) PartyPlayer( GetInvitedPlayer() ) );
-			svrChk( pPlayer->SetServerEntity( GetServerEntity<ServerEntity>(), GetRouteContext().GetFrom()) );
+			svrChk( pPlayer->SetRemoteEndpoint(GetRemoteEndpoint(), GetRouteContext().GetFrom()));
 			svrChk( GetMyOwner()->JoinPlayer( pPlayer, false ) );
 		}
 
@@ -176,7 +174,7 @@ namespace Svr {
 
 		svrChkClose( GetMyOwner()->FindPlayer( GetPlayerToKick(), pPlayer ) );
 
-		GetMyOwner()->ForeachPlayerSvrGameParty( [&]( PartyPlayer* pOtherPlayer, Policy::NetSvrPolicyGameParty &pPolicy )->Result
+		GetMyOwner()->ForeachPlayerSvrGameParty( [&]( PartyPlayer* pOtherPlayer, NetSvrPolicyGameParty &pPolicy )->Result
 		{
 			pPolicy.PlayerKickedS2CEvt( pOtherPlayer->GetRouteContext(GetOwnerEntityUID()), GetPlayerToKick() );
 			return ResultCode::SUCCESS;
@@ -205,7 +203,7 @@ namespace Svr {
 
 		svrChk( GetMyOwner()->GetChatHistory().AddChattingLog( Util::Time.GetTimeUTCSec(), pPlayer->GetPlayerID(), 0, ChatType::Normal, GetChatMessage() ) );
 
-		GetMyOwner()->ForeachPlayerSvrGameParty( [&]( PartyPlayer* pOtherPlayer, Policy::NetSvrPolicyGameParty &pPolicy )->Result {
+		GetMyOwner()->ForeachPlayerSvrGameParty( [&]( PartyPlayer* pOtherPlayer, NetSvrPolicyGameParty &pPolicy )->Result {
 				pPolicy.ChatMessageS2CEvt( pOtherPlayer->GetRouteContext(GetOwnerEntityUID()), GetPlayerID(), pPlayer->GetPlayerName(), GetChatMessage() );
 				return ResultCode::SUCCESS;
 			});
@@ -228,7 +226,7 @@ namespace Svr {
 
 		svrChk( GetMyOwner()->FindPlayer( GetPlayerID(), pPlayer ) );
 
-		GetMyOwner()->ForeachPlayerSvrGameParty( [&]( PartyPlayer* pOtherPlayer, Policy::NetSvrPolicyGameParty &pPolicy )->Result {
+		GetMyOwner()->ForeachPlayerSvrGameParty( [&]( PartyPlayer* pOtherPlayer, NetSvrPolicyGameParty &pPolicy )->Result {
 				pPolicy.QuickChatMessageS2CEvt( pOtherPlayer->GetRouteContext(GetOwnerEntityUID()), GetPlayerID(), GetQuickChatID() );
 				return ResultCode::SUCCESS;
 			});
@@ -262,7 +260,7 @@ namespace Svr {
 		GetMyOwner()->SetMatchingQueueTicket( res.GetMatchingTicket() );
 		
 
-		GetMyOwner()->ForeachPlayerSvrGameParty( [&]( PartyPlayer* pOtherPlayer, Policy::NetSvrPolicyGameParty &pPolicy )->Result {
+		GetMyOwner()->ForeachPlayerSvrGameParty( [&]( PartyPlayer* pOtherPlayer, NetSvrPolicyGameParty &pPolicy )->Result {
 			pPolicy.QueuedGameMatchingS2CEvt( pOtherPlayer->GetRouteContext(GetOwnerEntityUID()), res.GetMatchingTicket() );
 			return ResultCode::SUCCESS;
 		});
@@ -291,9 +289,9 @@ namespace Svr {
 		CloseTransaction(hr);
 
 		GetMyOwner()->ForeachPlayer( [&]( PartyPlayer* pPlayer )->Result {
-			if( pPlayer->GetServerEntity() == nullptr ) return ResultCode::SUCCESS;
+			if( pPlayer->GetRemoteEndpoint() == nullptr ) return ResultCode::SUCCESS;
 
-			Policy::NetSvrPolicyPartyMatching pPolicy( pPlayer->GetConnection());
+			NetSvrPolicyPartyMatching pPolicy( pPlayer->GetRemoteEndpoint());
 			pPolicy.PlayerGameMatchedS2CEvt( RouteContext(GetOwnerEntityUID(), pPlayer->GetPlayerEntityUID()), 0, pPlayer->GetPlayerID(), gameUID, (uint8_t)PlayerRole::None );
 
 			return ResultCode::SUCCESS;
@@ -307,7 +305,7 @@ namespace Svr {
 	Result PartyTransStartGameMatchCmd::StartTransaction()
 	{
 		Result hr = ResultCode::SUCCESS;
-		Svr::ServerServiceInformation *pService = nullptr;
+		ServerServiceInformation *pService = nullptr;
 		StaticArray<MatchingPlayerInformation, 16> m_matchingPlayers(GetHeap());
 
 		svrChk( super::StartTransaction() );
@@ -355,7 +353,7 @@ namespace Svr {
 				return ResultCode::SUCCESS;
 			});
 
-			svrChk(pService->GetService<Svr::PartyMatchingQueueService>()->RegisterPartyMatchingCmd(GetTransID(), 0, m_matchingPlayers));
+			svrChk(pService->GetService<PartyMatchingQueueService>()->RegisterPartyMatchingCmd(GetTransID(), 0, m_matchingPlayers));
 		}
 
 		
@@ -391,7 +389,7 @@ namespace Svr {
 			break;
 		case (int32_t)ResultCode::SVR_QUEUEITEM_CANCELED:
 		case (int32_t)ResultCode::SVR_INVALID_QUEUEITEM:
-			GetMyOwner()->ForeachPlayerSvrGameParty( [&]( PartyPlayer* pOtherPlayer, Policy::NetSvrPolicyGameParty &pPolicy )->Result {
+			GetMyOwner()->ForeachPlayerSvrGameParty( [&]( PartyPlayer* pOtherPlayer, NetSvrPolicyGameParty &pPolicy )->Result {
 				pPolicy.CanceledGameMatchingS2CEvt( pOtherPlayer->GetRouteContext(GetOwnerEntityUID()), GetMyOwner()->GetMatchingQueueTicket() );
 				return ResultCode::SUCCESS;
 			});
@@ -400,7 +398,7 @@ namespace Svr {
 		default:
 			svrChk(pRes->GetResult());
 			svrChk( res.ParseMessage( *pMsgRes->GetMessage() ) );
-			GetMyOwner()->ForeachPlayerSvrGameParty( [&]( PartyPlayer* pOtherPlayer, Policy::NetSvrPolicyGameParty &pPolicy )->Result {
+			GetMyOwner()->ForeachPlayerSvrGameParty( [&]( PartyPlayer* pOtherPlayer, NetSvrPolicyGameParty &pPolicy )->Result {
 				pPolicy.CanceledGameMatchingS2CEvt( pOtherPlayer->GetRouteContext(GetOwnerEntityUID()), GetMyOwner()->GetMatchingQueueTicket() );
 				return ResultCode::SUCCESS;
 			});
@@ -418,26 +416,26 @@ namespace Svr {
 
 	Result PartyTransCancelGameMatchCmd::StartTransaction()
 	{
-		Result hr = ResultCode::SUCCESS;
-		ServerEntity *pServer = nullptr;
+		ScopeContext hr([this](Result hr) 
+			{
+				CloseTransaction(hr);
+			});
 
-		svrChk( super::StartTransaction() );
+		SharedPointerT<MessageEndpoint> pEndpoint;
+
+		svrCheck( super::StartTransaction() );
 
 		if( GetMyOwner()->GetMatchingQueueTicket() == 0 )
 		{
-			svrErrClose(ResultCode::SVR_INVALID_QUEUEITEM);
+			svrCheckClose(ResultCode::SVR_INVALID_QUEUEITEM);
 		}
 
+		pEndpoint = Service::MessageEndpointManager->GetEndpoint(GetMyOwner()->GetMatchingQueueTicket().QueueUID);
+		svrCheckPtr(pEndpoint);
+		//svrChk( Service::ServerEntityManager->GetServerEntity( GetMyOwner()->GetMatchingQueueTicket().QueueUID.GetServerID(), pServer ) );
 
-		svrChk( Service::ServerEntityManager->GetServerEntity( GetMyOwner()->GetMatchingQueueTicket().QueueUID.GetServerID(), pServer ) );
-
-		svrChk(Policy::NetPolicyPartyMatchingQueue(pServer->GetConnection()).UnregisterMatchingCmd( RouteContext(GetOwnerEntityUID(), GetMyOwner()->GetMatchingQueueTicket().QueueUID), GetTransID(), 0,
+		svrCheck(NetPolicyPartyMatchingQueue(pEndpoint).UnregisterMatchingCmd( RouteContext(GetOwnerEntityUID(), GetMyOwner()->GetMatchingQueueTicket().QueueUID), GetTransID(), 0,
 			GetMyOwner()->GetMatchingQueueTicket() ) );
-
-		
-	Proc_End:
-
-		CloseTransaction( hr );
 
 		return hr;
 	}
@@ -455,7 +453,7 @@ namespace Svr {
 			svrErrClose(ResultCode::SVR_INVALID_QUEUEITEM);
 		}
 
-		GetMyOwner()->ForeachPlayerSvrGameParty( [&]( PartyPlayer* pOtherPlayer, Policy::NetSvrPolicyGameParty &pPolicy )->Result {
+		GetMyOwner()->ForeachPlayerSvrGameParty( [&]( PartyPlayer* pOtherPlayer, NetSvrPolicyGameParty &pPolicy )->Result {
 			pPolicy.CanceledGameMatchingS2CEvt( pOtherPlayer->GetRouteContext(GetOwnerEntityUID()), GetMyOwner()->GetMatchingQueueTicket() );
 			return ResultCode::SUCCESS;
 		});
@@ -482,7 +480,7 @@ namespace Svr {
 			svrErrClose(ResultCode::SVR_INVALID_QUEUEITEM);
 		}
 
-		GetMyOwner()->ForeachPlayerSvrGameParty( [&]( PartyPlayer* pOtherPlayer, Policy::NetSvrPolicyGameParty &pPolicy )->Result {
+		GetMyOwner()->ForeachPlayerSvrGameParty( [&]( PartyPlayer* pOtherPlayer, NetSvrPolicyGameParty &pPolicy )->Result {
 			pPolicy.MatchingItemDequeuedS2CEvt( pOtherPlayer->GetRouteContext(GetOwnerEntityUID()), GetMyOwner()->GetMatchingQueueTicket() );
 			return ResultCode::SUCCESS;
 		});

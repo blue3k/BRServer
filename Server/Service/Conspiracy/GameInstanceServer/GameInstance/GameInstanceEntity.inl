@@ -46,7 +46,7 @@ inline Result GameInstanceEntity::ForeachPlayerGameServer(Func func)
 		if (pGamePlayer->GetPlayerState() == PlayerState::None)
 			return true;
 
-		Policy::NetPolicyGameServer netPolicy(pGamePlayer->GetConnection());
+		NetPolicyGameServer netPolicy(pGamePlayer->GetRemoteEndpoint());
 		Result hrRes = func(pGamePlayer, netPolicy);
 		if (!(hrRes))
 			return false;
@@ -70,7 +70,7 @@ inline Result GameInstanceEntity::ForeachPlayerSvrGameInstance(Func func)
 		if (pGamePlayer->GetPlayerState() == PlayerState::None)
 			return true;
 
-		Policy::NetSvrPolicyGameInstance netPolicy(pGamePlayer->GetConnection());
+		NetSvrPolicyGameInstance netPolicy(pGamePlayer->GetRemoteEndpoint());
 		Result hrRes = func(pGamePlayer, netPolicy);
 		if (!(hrRes))
 			return false;

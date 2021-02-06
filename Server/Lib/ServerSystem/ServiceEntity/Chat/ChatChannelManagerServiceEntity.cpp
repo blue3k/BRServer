@@ -1,6 +1,6 @@
 ////////////////////////////////////////////////////////////////////////////////
 // 
-// CopyRight (c) 2013 Kyungkun Ko
+// CopyRight (c) Kyungkun Ko
 // 
 // Author : KyungKun Ko
 //
@@ -79,18 +79,16 @@ namespace Svr {
 		return hr;
 	}
 
-	Result ChatChannelManagerServiceEntity::RegisterServiceMessageHandler( ServerEntity *pServerEntity )
+	Result ChatChannelManagerServiceEntity::RegisterServiceMessageHandler()
 	{
 		Result hr = ResultCode::SUCCESS;
 
-		svrChk(super::RegisterServiceMessageHandler( pServerEntity ) );
+		svrCheck(super::RegisterServiceMessageHandler() );
 
 		// Chat channel manager transactions
-		pServerEntity->BR_ENTITY_MESSAGE(Message::ChatChannelManager::CreateChannelCmd)						{ svrMemReturn(pNewTrans = new(GetHeap()) ChatChannelManagerTransCreateChatChannel(GetHeap(), pMsgData)); return ResultCode::SUCCESS; } );
-		pServerEntity->BR_ENTITY_MESSAGE(Message::ChatChannelManager::FindChannelCmd)						{ svrMemReturn(pNewTrans = new(GetHeap()) ChatChannelManagerTransFindChatChannel(GetHeap(), pMsgData)); return ResultCode::SUCCESS; } );
-		pServerEntity->BR_ENTITY_MESSAGE(Message::ChatChannelManager::ChatChannelDeletedC2SEvt)				{ svrMemReturn(pNewTrans = new(GetHeap()) ChatChannelManagerTransChatChannelDeleted(GetHeap(), pMsgData)); return ResultCode::SUCCESS; } );
-
-	Proc_End:
+		BR_ENTITY_MESSAGE(Message::ChatChannelManager::CreateChannelCmd)			{ svrMemReturn(pNewTrans = new(GetHeap()) ChatChannelManagerTransCreateChatChannel(GetHeap(), pMsgData)); return ResultCode::SUCCESS; } );
+		BR_ENTITY_MESSAGE(Message::ChatChannelManager::FindChannelCmd)				{ svrMemReturn(pNewTrans = new(GetHeap()) ChatChannelManagerTransFindChatChannel(GetHeap(), pMsgData)); return ResultCode::SUCCESS; } );
+		BR_ENTITY_MESSAGE(Message::ChatChannelManager::ChatChannelDeletedC2SEvt)	{ svrMemReturn(pNewTrans = new(GetHeap()) ChatChannelManagerTransChatChannelDeleted(GetHeap(), pMsgData)); return ResultCode::SUCCESS; } );
 
 		return hr;
 	}
@@ -102,7 +100,7 @@ namespace Svr {
 	//
 
 	// Add new Entity
-	Result ChatChannelManagerServiceEntity::CreateChatChannel(const StringCrc64& name, const PlayerInformation& creator, EntityUID playerUID, ServerEntity *pServerEntity, EntityUID &ChatChannelUID )
+	Result ChatChannelManagerServiceEntity::CreateChatChannel(const StringCrc64& name, const PlayerInformation& creator, EntityUID playerUID, const SharedPointerT<MessageEndpoint>& remoteEndpoint, EntityUID &ChatChannelUID )
 	{
 		Result hr = ResultCode::SUCCESS;
 		ChatChannelEntity *pChatChannel = nullptr;
@@ -113,7 +111,7 @@ namespace Svr {
 		svrChk(Service::EntityManager->AddEntity( EntityFaculty::ChatChannel, pChatChannel ) );
 
 		svrMem( pPlayer = new(GetHeap()) ChatChannelPlayer( creator ) );
-		svrChk( pPlayer->SetServerEntity( pServerEntity, playerUID ) );
+		svrChk( pPlayer->SetRemoteEndpoint( remoteEndpoint, playerUID ) );
 		svrChk( pChatChannel->JoinPlayer( pPlayer ) );
 
 		ChatChannelUID = pChatChannel->GetEntityUID();

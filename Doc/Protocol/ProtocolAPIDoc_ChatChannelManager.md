@@ -1,6 +1,6 @@
 ﻿***
  
- CopyRight (c) 2020 StormForge
+ CopyRight (c) 2021 StormForge
  
  Description : ChatChannelManager Message Protocol API Document
 

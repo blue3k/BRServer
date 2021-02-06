@@ -15,11 +15,10 @@
 #include "EntityInformation.h"
 #include "Protocol/ServerService/ServerService.h"
 #include "ServerEntity/ServerEntity.h"
-
+#include "Server/BrServerUtil.h"
 
 
 namespace SF {
-namespace Svr {
 
 
 
@@ -47,13 +46,13 @@ namespace Svr {
 	// ServerServiceInformation
 	//
 
-	ServerServiceInformation::ServerServiceInformation(GameID gameID, ClusterID clusterID, EntityUID entityUID, ServerEntity* pServerEntity, ClusterMembership membership )
+	ServerServiceInformation::ServerServiceInformation(GameID gameID, ClusterID clusterID, EntityUID entityUID, const SharedPointerT<MessageEndpoint> targetEndpoint, ClusterMembership membership )
 		: EntityInformation(entityUID)
 		, m_GameID(gameID)
 		, m_ClusterID(clusterID)
-		, m_ServerEntity(pServerEntity)
 		, m_ClusterMembership(membership)
 		, m_ServiceStatus(ServiceStatus::Offline)
+		, m_TargetEndpoint(targetEndpoint)
 		, m_Workload(0)
 		, m_VotedCount(0)
 		, m_ServiceBase(nullptr)
@@ -69,46 +68,22 @@ namespace Svr {
 	{
 	}
 	
-	// Get service information
-	void ServerServiceInformation::GetServiceInformation( ServiceInformation & serviceInformation )
-	{
-		auto &remoteInfo = GetServerEntity()->GetConnection()->GetRemoteInfo();
-		Assert(remoteInfo.PeerClass != NetClass::Unknown);
-
-		new(&serviceInformation) ServiceInformation( 
-			GetEntityUID(), 
-			GetClusterMembership(), 
-			GetServiceStatus(), 
-			remoteInfo.PeerClass,
-			remoteInfo.PeerAddress,
-			GetServerEntity()->GetServerUpTime(), 
-			GetWorkload() );
-	}
+	//// Get service information
+	//void ServerServiceInformation::GetServiceInformation( ServiceInformation& serviceInformation )
+	//{
+	//	new(&serviceInformation) ServiceInformation( 
+	//		GetEntityUID(), 
+	//		GetClusterMembership(), 
+	//		GetServiceStatus(), 
+	//		routeAddress,
+	//		GetServerEntity()->GetServerUpTime(), 
+	//		GetWorkload() );
+	//}
 
 	RouteContext ServerServiceInformation::RouteContextFrom(TransactionID fromTrans)
 	{
-		if (m_ServerEntity == nullptr)
-			return RouteContext();
-
-		return RouteContext(EntityUID(GetMyServerID(), fromTrans.GetEntityID()), m_ServerEntity->GetEntityUID());
+		return RouteContext(EntityUID(GetMyServerID(), fromTrans.GetEntityID()), GetEntityUID());
 	}
-
-	const SharedPointerAtomicT<Net::Connection>& ServerServiceInformation::GetConnection() const
-	{
-		const static SharedPointerAtomicT<Net::Connection> Dummy;
-		if (m_ServerEntity == nullptr) return Dummy;
-
-		return m_ServerEntity->GetConnection();
-	}
-
-	// check whether this service is available or not
-	bool ServerServiceInformation::IsServiceAvailable() const
-	{
-		Assert(m_ServerEntity);
-		auto& pConn = GetConnection();
-		return pConn != nullptr && pConn->GetConnectionState() == Net::ConnectionState::CONNECTED;
-	}
-
 
 
 
@@ -130,12 +105,5 @@ namespace Svr {
 	}
 	
 
-
-}; // namespace Svr
-}; // namespace SF
-
-
-
-
-
+} // namespace SF
 

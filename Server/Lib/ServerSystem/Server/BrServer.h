@@ -82,16 +82,7 @@ namespace Svr {
 		// UID of this server
 		uint32_t			m_uiUID = 0;
 
-		// Network address
-		NetAddress					m_AddrPrivate;
-
-		// ServerPeer host interfaces
-		SharedPointerT<Net::ServerPeerTCP>			m_pNetPrivate;
-
 		GameID m_GameID;
-
-		// Server net class
-		NetClass					m_NetClass;
 
 		// Server execution time stamp
 		UTCTimeStampSec					m_ServerUpUTCTIme;
@@ -114,12 +105,10 @@ namespace Svr {
 		bool m_bStartTransaction = false;
 
 
-		PageQueue<SharedPointerAtomicT<Net::Connection>> m_NewConnectionQueue;
-
 		Thread* m_MainServerThread = nullptr;
 
 		// Module constructor map
-		HashTable<StringCrc32, ModuleContructorType> m_ModuleConstructors;
+		HashTable<StringCrc32, ModuleContructorType> m_ModuleFactories;
 
 		// singleton instance
 		static BrServer *stm_pServerInstance;
@@ -164,7 +153,7 @@ namespace Svr {
 		//virtual Result ProcessPrivateMessage( pIMsg
 
 	public:
-		BrServer( NetClass svrNetClass );
+		BrServer();
 		virtual ~BrServer();
 
 		GameID GetGameID() { return m_GameID; }
@@ -197,14 +186,6 @@ namespace Svr {
 		// Get main server instance
 		static inline BrServer* GetInstance();
 
-		// Get/Set Public network enable status
-		inline bool IsNetPublicEnabled();
-		inline virtual bool EnableNetPublic( bool bIsEnable );
-
-
-		// Get net private
-		inline Net::ServerPeerTCP* GetNetPrivate()								{ return *m_pNetPrivate; }
-
 		ServerComponentCarrier& GetComponentCarrier() { return m_Components; }
 
 
@@ -219,13 +200,6 @@ namespace Svr {
 		//
 		//	virtual network process
 		//
-
-		// Process Private network event
-		virtual Result ProcessNewConnection();
-
-		// Process Public network event
-		virtual Result ProcessPublicNetworkEvent();
-
 
 		virtual Result TerminateEntity() override;
 
@@ -256,6 +230,8 @@ namespace Svr {
 		// Initialize server basic entities
 		virtual Result InitializeEntities();
 
+		virtual Result CloseEntities();
+
 		virtual Result InitializeComponents();
 
 		// Initialize server resource
@@ -264,22 +240,8 @@ namespace Svr {
 		// Close server and release resource
 		virtual Result CloseServerResource();
 
-
-		// Initialize private Network
-		virtual Result InitializeNetPrivate();
-
-		// Close Private Network
-		virtual Result CloseNetPrivate();
-
 		// create remote entity by class
-		virtual Result CreateServerEntity(NetClass netClass, ServerEntity* &pServerEntity) = 0;
-
-		// Initialize private Network
-		virtual Result InitializeNetPublic();
-
-		// Close Public Network
-		virtual Result CloseNetPublic();
-
+		virtual Result CreateServerEntity(ServerEntity*& pServerEntity);
 
 		// Run the task
 		virtual Result TickUpdate(TimerAction *pAction = nullptr) override;
@@ -324,14 +286,15 @@ namespace Svr {
 		Result hr = ResultCode::SUCCESS;
 		ServiceEntityType* pServiceEntity = nullptr;
 
-		svrMem(pServiceEntity = new(GetHeap()) ServiceEntityType(constructorArgs...));
+		pServiceEntity = new(GetHeap()) ServiceEntityType(constructorArgs...);
+		if(pServiceEntity == nullptr);
+			return nullptr;
 
-		svrChk(Service::EntityManager->AddEntity(EntityFaculty::Service, pServiceEntity));
-
-		svrChk(Service::ClusterManager->AddClusterServiceEntity(pServiceEntity));
-
-
-	Proc_End:
+		if (!Service::EntityManager->AddEntity(EntityFaculty::Service, pServiceEntity))
+		{
+			delete pServiceEntity;
+			return nullptr;
+		}
 
 		return pServiceEntity;
 	}
@@ -370,6 +333,13 @@ namespace Svr {
 
 
 
+
+#include "BrServer.inl"
+
+} // namespace Svr
+
+
+
 	// Initialize engine
 	void InitializeEngineForServer();
 
@@ -377,12 +347,7 @@ namespace Svr {
 
 	void DeinitializeEngine();
 
-
-
-#include "BrServer.inl"
-
 } // namespace SF
-} // namespace Svr
 
 
 

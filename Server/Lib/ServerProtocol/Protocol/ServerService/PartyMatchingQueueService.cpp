@@ -1,10 +1,10 @@
 ﻿////////////////////////////////////////////////////////////////////////////////
 // 
-// CopyRight (c) 2016 Kyungkun Ko
+// CopyRight (c) Kyungkun Ko
 // 
 // Author : Generated
 // 
-// Description : PartyMatchingQueue Message debug implementations
+// Description : PartyMatchingQueue Server service
 // 
 ////////////////////////////////////////////////////////////////////////////////
 
@@ -12,10 +12,9 @@
 #include "ServerProtocolPCH.h"
 #include "SFTypedefs.h"
 #include "Protocol/SFProtocol.h"
-#include "ServerEntity/ServerEntity.h"
+#include "Net/SFMessageEndpoint.h"
 #include "Server/BrServer.h"
 #include "Server/BrServerUtil.h"
-#include "Entity/EntityInformation.h"
 #include "Protocol/ServerService/PartyMatchingQueueService.h"
 #include "SvrTrace.h"
 
@@ -23,127 +22,124 @@
 
 namespace SF
 {
- 	namespace Svr
+ 	PartyMatchingQueueService::PartyMatchingQueueService( ServerServiceInformation* pService)
+		: ServerServiceBase(pService)
 	{
- 		PartyMatchingQueueService::PartyMatchingQueueService( ServerServiceInformation* pService)
-			: ServerServiceBase(pService)
-		{
-		}
+	}
 
 
-		// Cmd: Register a party for matching
-		Result PartyMatchingQueueService::RegisterPartyMatchingCmd( const uint64_t &InTransactionID, const uint16_t &InRouteHopCount, const Array<MatchingPlayerInformation>& InPlayers )
-		{
- 			ScopeContext hr;
+	// Cmd: Register a party for matching
+	Result PartyMatchingQueueService::RegisterPartyMatchingCmd( const uint64_t &InTransactionID, const uint16_t &InRouteHopCount, const Array<MatchingPlayerInformation>& InPlayers )
+	{
+ 		ScopeContext hr;
 
-			RouteContext InRouteContext( EntityUID(GetMyServerID(),TransactionID(InTransactionID).GetEntityID()), GetServiceEntityUID() );
-			svrCheck(Policy::NetPolicyPartyMatchingQueue(GetConnection()).RegisterPartyMatchingCmd( InRouteContext, InTransactionID, InRouteHopCount, InPlayers ) );
+		RouteContext InRouteContext( EntityUID(GetMyServerID(),TransactionID(InTransactionID).GetEntityID()), GetServiceEntityUID() );
+		svrCheck(NetPolicyPartyMatchingQueue(GetTargetEndpoint()).RegisterPartyMatchingCmd( InRouteContext, InTransactionID, InRouteHopCount, InPlayers ) );
 
-			return hr;
+		return hr;
 
-		}; // Result PartyMatchingQueueService::RegisterPartyMatchingCmd( const uint64_t &InTransactionID, const uint16_t &InRouteHopCount, const Array<MatchingPlayerInformation>& InPlayers )
-		// Cmd: Register a player for matching
-		Result PartyMatchingQueueService::RegisterPlayerMatchingCmd( const uint64_t &InTransactionID, const uint16_t &InRouteHopCount, const PlayerID &InPlayerID )
-		{
- 			ScopeContext hr;
+	}; // Result PartyMatchingQueueService::RegisterPartyMatchingCmd( const uint64_t &InTransactionID, const uint16_t &InRouteHopCount, const Array<MatchingPlayerInformation>& InPlayers )
+	// Cmd: Register a player for matching
+	Result PartyMatchingQueueService::RegisterPlayerMatchingCmd( const uint64_t &InTransactionID, const uint16_t &InRouteHopCount, const PlayerID &InPlayerID )
+	{
+ 		ScopeContext hr;
 
-			RouteContext InRouteContext( EntityUID(GetMyServerID(),TransactionID(InTransactionID).GetEntityID()), GetServiceEntityUID() );
-			svrCheck(Policy::NetPolicyPartyMatchingQueue(GetConnection()).RegisterPlayerMatchingCmd( InRouteContext, InTransactionID, InRouteHopCount, InPlayerID ) );
+		RouteContext InRouteContext( EntityUID(GetMyServerID(),TransactionID(InTransactionID).GetEntityID()), GetServiceEntityUID() );
+		svrCheck(NetPolicyPartyMatchingQueue(GetTargetEndpoint()).RegisterPlayerMatchingCmd( InRouteContext, InTransactionID, InRouteHopCount, InPlayerID ) );
 
-			return hr;
+		return hr;
 
-		}; // Result PartyMatchingQueueService::RegisterPlayerMatchingCmd( const uint64_t &InTransactionID, const uint16_t &InRouteHopCount, const PlayerID &InPlayerID )
-		// Cmd: [Deprecated] update registration information
-		Result PartyMatchingQueueService::UpdateMatchingEntityUIDCmd( const uint64_t &InTransactionID, const uint16_t &InRouteHopCount, const MatchingQueueTicket &InMatchingTicket, const uint64_t &InPreviousUID )
-		{
- 			ScopeContext hr;
+	}; // Result PartyMatchingQueueService::RegisterPlayerMatchingCmd( const uint64_t &InTransactionID, const uint16_t &InRouteHopCount, const PlayerID &InPlayerID )
+	// Cmd: [Deprecated] update registration information
+	Result PartyMatchingQueueService::UpdateMatchingEntityUIDCmd( const uint64_t &InTransactionID, const uint16_t &InRouteHopCount, const MatchingQueueTicket &InMatchingTicket, const uint64_t &InPreviousUID )
+	{
+ 		ScopeContext hr;
 
-			RouteContext InRouteContext( EntityUID(GetMyServerID(),TransactionID(InTransactionID).GetEntityID()), GetServiceEntityUID() );
-			svrCheck(Policy::NetPolicyPartyMatchingQueue(GetConnection()).UpdateMatchingEntityUIDCmd( InRouteContext, InTransactionID, InRouteHopCount, InMatchingTicket, InPreviousUID ) );
+		RouteContext InRouteContext( EntityUID(GetMyServerID(),TransactionID(InTransactionID).GetEntityID()), GetServiceEntityUID() );
+		svrCheck(NetPolicyPartyMatchingQueue(GetTargetEndpoint()).UpdateMatchingEntityUIDCmd( InRouteContext, InTransactionID, InRouteHopCount, InMatchingTicket, InPreviousUID ) );
 
-			return hr;
+		return hr;
 
-		}; // Result PartyMatchingQueueService::UpdateMatchingEntityUIDCmd( const uint64_t &InTransactionID, const uint16_t &InRouteHopCount, const MatchingQueueTicket &InMatchingTicket, const uint64_t &InPreviousUID )
-		// Cmd: calcel registration
-		Result PartyMatchingQueueService::UnregisterMatchingCmd( const uint64_t &InTransactionID, const uint16_t &InRouteHopCount, const MatchingQueueTicket &InMatchingTicket )
-		{
- 			ScopeContext hr;
+	}; // Result PartyMatchingQueueService::UpdateMatchingEntityUIDCmd( const uint64_t &InTransactionID, const uint16_t &InRouteHopCount, const MatchingQueueTicket &InMatchingTicket, const uint64_t &InPreviousUID )
+	// Cmd: calcel registration
+	Result PartyMatchingQueueService::UnregisterMatchingCmd( const uint64_t &InTransactionID, const uint16_t &InRouteHopCount, const MatchingQueueTicket &InMatchingTicket )
+	{
+ 		ScopeContext hr;
 
-			RouteContext InRouteContext( EntityUID(GetMyServerID(),TransactionID(InTransactionID).GetEntityID()), GetServiceEntityUID() );
-			svrCheck(Policy::NetPolicyPartyMatchingQueue(GetConnection()).UnregisterMatchingCmd( InRouteContext, InTransactionID, InRouteHopCount, InMatchingTicket ) );
+		RouteContext InRouteContext( EntityUID(GetMyServerID(),TransactionID(InTransactionID).GetEntityID()), GetServiceEntityUID() );
+		svrCheck(NetPolicyPartyMatchingQueue(GetTargetEndpoint()).UnregisterMatchingCmd( InRouteContext, InTransactionID, InRouteHopCount, InMatchingTicket ) );
 
-			return hr;
+		return hr;
 
-		}; // Result PartyMatchingQueueService::UnregisterMatchingCmd( const uint64_t &InTransactionID, const uint16_t &InRouteHopCount, const MatchingQueueTicket &InMatchingTicket )
-		// Cmd: Reserve a item
-		Result PartyMatchingQueueService::ReserveItemCmd( const uint64_t &InTransactionID, const uint16_t &InRouteHopCount )
-		{
- 			ScopeContext hr;
+	}; // Result PartyMatchingQueueService::UnregisterMatchingCmd( const uint64_t &InTransactionID, const uint16_t &InRouteHopCount, const MatchingQueueTicket &InMatchingTicket )
+	// Cmd: Reserve a item
+	Result PartyMatchingQueueService::ReserveItemCmd( const uint64_t &InTransactionID, const uint16_t &InRouteHopCount )
+	{
+ 		ScopeContext hr;
 
-			RouteContext InRouteContext( EntityUID(GetMyServerID(),TransactionID(InTransactionID).GetEntityID()), GetServiceEntityUID() );
-			svrCheck(Policy::NetPolicyPartyMatchingQueue(GetConnection()).ReserveItemCmd( InRouteContext, InTransactionID, InRouteHopCount ) );
+		RouteContext InRouteContext( EntityUID(GetMyServerID(),TransactionID(InTransactionID).GetEntityID()), GetServiceEntityUID() );
+		svrCheck(NetPolicyPartyMatchingQueue(GetTargetEndpoint()).ReserveItemCmd( InRouteContext, InTransactionID, InRouteHopCount ) );
 
-			return hr;
+		return hr;
 
-		}; // Result PartyMatchingQueueService::ReserveItemCmd( const uint64_t &InTransactionID, const uint16_t &InRouteHopCount )
-		// Cmd: Reserve a item
-		Result PartyMatchingQueueService::ReserveItemsCmd( const uint64_t &InTransactionID, const uint16_t &InRouteHopCount, const uint32_t &InNumberOfItemsToReserve )
-		{
- 			ScopeContext hr;
+	}; // Result PartyMatchingQueueService::ReserveItemCmd( const uint64_t &InTransactionID, const uint16_t &InRouteHopCount )
+	// Cmd: Reserve a item
+	Result PartyMatchingQueueService::ReserveItemsCmd( const uint64_t &InTransactionID, const uint16_t &InRouteHopCount, const uint32_t &InNumberOfItemsToReserve )
+	{
+ 		ScopeContext hr;
 
-			RouteContext InRouteContext( EntityUID(GetMyServerID(),TransactionID(InTransactionID).GetEntityID()), GetServiceEntityUID() );
-			svrCheck(Policy::NetPolicyPartyMatchingQueue(GetConnection()).ReserveItemsCmd( InRouteContext, InTransactionID, InRouteHopCount, InNumberOfItemsToReserve ) );
+		RouteContext InRouteContext( EntityUID(GetMyServerID(),TransactionID(InTransactionID).GetEntityID()), GetServiceEntityUID() );
+		svrCheck(NetPolicyPartyMatchingQueue(GetTargetEndpoint()).ReserveItemsCmd( InRouteContext, InTransactionID, InRouteHopCount, InNumberOfItemsToReserve ) );
 
-			return hr;
+		return hr;
 
-		}; // Result PartyMatchingQueueService::ReserveItemsCmd( const uint64_t &InTransactionID, const uint16_t &InRouteHopCount, const uint32_t &InNumberOfItemsToReserve )
-		// Cmd: Cancel reservation
-		Result PartyMatchingQueueService::CancelReservationCmd( const uint64_t &InTransactionID, const uint16_t &InRouteHopCount, const MatchingQueueTicket &InTicketToCancel )
-		{
- 			ScopeContext hr;
+	}; // Result PartyMatchingQueueService::ReserveItemsCmd( const uint64_t &InTransactionID, const uint16_t &InRouteHopCount, const uint32_t &InNumberOfItemsToReserve )
+	// Cmd: Cancel reservation
+	Result PartyMatchingQueueService::CancelReservationCmd( const uint64_t &InTransactionID, const uint16_t &InRouteHopCount, const MatchingQueueTicket &InTicketToCancel )
+	{
+ 		ScopeContext hr;
 
-			RouteContext InRouteContext( EntityUID(GetMyServerID(),TransactionID(InTransactionID).GetEntityID()), GetServiceEntityUID() );
-			svrCheck(Policy::NetPolicyPartyMatchingQueue(GetConnection()).CancelReservationCmd( InRouteContext, InTransactionID, InRouteHopCount, InTicketToCancel ) );
+		RouteContext InRouteContext( EntityUID(GetMyServerID(),TransactionID(InTransactionID).GetEntityID()), GetServiceEntityUID() );
+		svrCheck(NetPolicyPartyMatchingQueue(GetTargetEndpoint()).CancelReservationCmd( InRouteContext, InTransactionID, InRouteHopCount, InTicketToCancel ) );
 
-			return hr;
+		return hr;
 
-		}; // Result PartyMatchingQueueService::CancelReservationCmd( const uint64_t &InTransactionID, const uint16_t &InRouteHopCount, const MatchingQueueTicket &InTicketToCancel )
-		// Cmd: Cancel reservation
-		Result PartyMatchingQueueService::CancelReservationsCmd( const uint64_t &InTransactionID, const uint16_t &InRouteHopCount, const Array<MatchingQueueTicket>& InTicketToCancel )
-		{
- 			ScopeContext hr;
+	}; // Result PartyMatchingQueueService::CancelReservationCmd( const uint64_t &InTransactionID, const uint16_t &InRouteHopCount, const MatchingQueueTicket &InTicketToCancel )
+	// Cmd: Cancel reservation
+	Result PartyMatchingQueueService::CancelReservationsCmd( const uint64_t &InTransactionID, const uint16_t &InRouteHopCount, const Array<MatchingQueueTicket>& InTicketToCancel )
+	{
+ 		ScopeContext hr;
 
-			RouteContext InRouteContext( EntityUID(GetMyServerID(),TransactionID(InTransactionID).GetEntityID()), GetServiceEntityUID() );
-			svrCheck(Policy::NetPolicyPartyMatchingQueue(GetConnection()).CancelReservationsCmd( InRouteContext, InTransactionID, InRouteHopCount, InTicketToCancel ) );
+		RouteContext InRouteContext( EntityUID(GetMyServerID(),TransactionID(InTransactionID).GetEntityID()), GetServiceEntityUID() );
+		svrCheck(NetPolicyPartyMatchingQueue(GetTargetEndpoint()).CancelReservationsCmd( InRouteContext, InTransactionID, InRouteHopCount, InTicketToCancel ) );
 
-			return hr;
+		return hr;
 
-		}; // Result PartyMatchingQueueService::CancelReservationsCmd( const uint64_t &InTransactionID, const uint16_t &InRouteHopCount, const Array<MatchingQueueTicket>& InTicketToCancel )
-		// Cmd: Dequeue a reserved item
-		Result PartyMatchingQueueService::DequeueItemCmd( const uint64_t &InTransactionID, const uint16_t &InRouteHopCount, const MatchingQueueTicket &InMatchingTicket )
-		{
- 			ScopeContext hr;
+	}; // Result PartyMatchingQueueService::CancelReservationsCmd( const uint64_t &InTransactionID, const uint16_t &InRouteHopCount, const Array<MatchingQueueTicket>& InTicketToCancel )
+	// Cmd: Dequeue a reserved item
+	Result PartyMatchingQueueService::DequeueItemCmd( const uint64_t &InTransactionID, const uint16_t &InRouteHopCount, const MatchingQueueTicket &InMatchingTicket )
+	{
+ 		ScopeContext hr;
 
-			RouteContext InRouteContext( EntityUID(GetMyServerID(),TransactionID(InTransactionID).GetEntityID()), GetServiceEntityUID() );
-			svrCheck(Policy::NetPolicyPartyMatchingQueue(GetConnection()).DequeueItemCmd( InRouteContext, InTransactionID, InRouteHopCount, InMatchingTicket ) );
+		RouteContext InRouteContext( EntityUID(GetMyServerID(),TransactionID(InTransactionID).GetEntityID()), GetServiceEntityUID() );
+		svrCheck(NetPolicyPartyMatchingQueue(GetTargetEndpoint()).DequeueItemCmd( InRouteContext, InTransactionID, InRouteHopCount, InMatchingTicket ) );
 
-			return hr;
+		return hr;
 
-		}; // Result PartyMatchingQueueService::DequeueItemCmd( const uint64_t &InTransactionID, const uint16_t &InRouteHopCount, const MatchingQueueTicket &InMatchingTicket )
-		// C2S: Item error you should delete it
-		Result PartyMatchingQueueService::MatchingItemErrorC2SEvt( const EntityID &InSenderEntityID, const uint16_t &InRouteHopCount, const MatchingQueueTicket &InMatchingTicket )
-		{
- 			ScopeContext hr;
+	}; // Result PartyMatchingQueueService::DequeueItemCmd( const uint64_t &InTransactionID, const uint16_t &InRouteHopCount, const MatchingQueueTicket &InMatchingTicket )
+	// C2S: Item error you should delete it
+	Result PartyMatchingQueueService::MatchingItemErrorC2SEvt( const EntityID &InSenderEntityID, const uint16_t &InRouteHopCount, const MatchingQueueTicket &InMatchingTicket )
+	{
+ 		ScopeContext hr;
 
-			RouteContext InRouteContext( EntityUID(GetMyServerID(),InSenderEntityID), GetServiceEntityUID() );
-			svrCheck(Policy::NetPolicyPartyMatchingQueue(GetConnection()).MatchingItemErrorC2SEvt( InRouteContext, InRouteHopCount, InMatchingTicket ) );
+		RouteContext InRouteContext( EntityUID(GetMyServerID(),InSenderEntityID), GetServiceEntityUID() );
+		svrCheck(NetPolicyPartyMatchingQueue(GetTargetEndpoint()).MatchingItemErrorC2SEvt( InRouteContext, InRouteHopCount, InMatchingTicket ) );
 
-			return hr;
+		return hr;
 
-		}; // Result PartyMatchingQueueService::MatchingItemErrorC2SEvt( const EntityID &InSenderEntityID, const uint16_t &InRouteHopCount, const MatchingQueueTicket &InMatchingTicket )
+	}; // Result PartyMatchingQueueService::MatchingItemErrorC2SEvt( const EntityID &InSenderEntityID, const uint16_t &InRouteHopCount, const MatchingQueueTicket &InMatchingTicket )
 
 
-	}; // namespace Svr
 }; // namespace SF
 
 

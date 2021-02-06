@@ -19,7 +19,8 @@
 #include "Service/EntityManagerService.h"
 #include "Service/ZookeeperSessionService.h"
 #include "Service/ClusterManagerService.h"
-#include "Service/ServerEntityManagerService.h"
+//#include "Service/ServerEntityManagerService.h"
+#include "Service/MessageEndpointManagerService.h"
 #include "Service/PlayerManagerService.h"
 
 
@@ -39,7 +40,8 @@ namespace SF {
 		extern ServiceInstance<ServerConfig::ServerService> ServerConfig;
 		extern ServiceInstance<EntityTableService> EntityTable;
 		extern ServiceInstance<EntityManagerService> EntityManager;
-		extern ServiceInstance<ServerEntityManagerService> ServerEntityManager;
+		//extern ServiceInstance<ServerEntityManagerService> ServerEntityManager;
+		extern ServiceInstance<MessageEndpointManagerService> MessageEndpointManager;
 		extern ServiceInstance<ZookeeperSessionService> ZKSession; // main zookeeper session
 		extern ServiceInstance<ClusterManagerService> ClusterManager;
 		extern ServiceInstance<PlayerManagerService> PlayerManager;

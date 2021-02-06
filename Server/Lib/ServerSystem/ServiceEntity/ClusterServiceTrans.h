@@ -105,7 +105,7 @@ namespace Svr {
 		// Start Transaction
 		virtual Result StartTransaction() override;
 
-		BR_SVR_MSGTRANS_CLOSE(Policy::NetSvrPolicyClusterServer, RequestDataSyncRes,GetRouteContext().GetSwaped());
+		BR_SVR_MSGTRANS_CLOSE(NetSvrPolicyClusterServer, RequestDataSyncRes,GetRouteContext().GetSwaped());
 	};
 
 
@@ -195,7 +195,7 @@ namespace Svr {
 	//	// Start Transaction
 	//	virtual Result StartTransaction() override;
 
-	//	BR_SVR_MSGTRANS_CLOSE_ARGS(Policy::NetSvrPolicyClusterServer, GetLowestWorkloadClusterMemberRes, GetRouteContext().GetSwaped(), m_LowestMemberInfo);
+	//	BR_SVR_MSGTRANS_CLOSE_ARGS(NetSvrPolicyClusterServer, GetLowestWorkloadClusterMemberRes, GetRouteContext().GetSwaped(), m_LowestMemberInfo);
 	//};
 
 

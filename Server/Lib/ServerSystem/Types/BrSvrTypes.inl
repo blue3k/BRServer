@@ -22,24 +22,29 @@ ServiceInformation::ServiceInformation()
 	: UID(0)
 	, Membership(ClusterMembership::Slave)
 	, Status(ServiceStatus::Offline)
-	, ServerClass(NetClass::Unknown)
 	, ServerUpTime(UTCTimeStampSec::max())
 	, Workload(0)
 {
 }
 
 ServiceInformation::ServiceInformation( const ServiceInformation& src )
-	:UID(src.UID),Membership(src.Membership),Status(src.Status),ServerClass(src.ServerClass), ServerAddress(src.ServerAddress),ServerUpTime(src.ServerUpTime), Workload(src.Workload)
+	: UID(src.UID)
+	, Membership(src.Membership)
+	, Status(src.Status)
+	//, RouteAddress(src.RouteAddress)
+	, ServerUpTime(src.ServerUpTime)
+	, Workload(src.Workload)
 {
+	StrUtil::StringCopy(RouteAddress, src.RouteAddress);
 }
 
-ServiceInformation::ServiceInformation( EntityUID entityUID, ClusterMembership membership, ServiceStatus status, NetClass netClass, const NetAddress& address, UTCTimeStampSec serverUpTime, uint32_t workload )
+ServiceInformation::ServiceInformation( EntityUID entityUID, ClusterMembership membership, ServiceStatus status, const char* routeAddress, UTCTimeStampSec serverUpTime, uint32_t workload )
 {
 	UID = entityUID;
 	Membership = membership;
 	Status = status;
-	ServerClass = netClass;
-	ServerAddress = address;
+	//RouteAddress = routeAddress;
+	StrUtil::StringCopy(RouteAddress, routeAddress);
 	ServerUpTime = serverUpTime;
 	Workload = workload;
 }
@@ -49,8 +54,7 @@ ServiceInformation& ServiceInformation::operator = ( const ServiceInformation& s
 	UID = src.UID;
 	Membership = src.Membership;
 	Status = src.Status;
-	ServerClass = src.ServerClass;
-	ServerAddress = src.ServerAddress;
+	StrUtil::StringCopy(RouteAddress, src.RouteAddress);
 	ServerUpTime = src.ServerUpTime;
 	Workload = src.Workload;
 	return *this;
@@ -58,7 +62,10 @@ ServiceInformation& ServiceInformation::operator = ( const ServiceInformation& s
 
 bool ServiceInformation::operator == ( const ServiceInformation& op ) const
 {
-	return UID == op.UID && Membership == op.Membership && Status == op.Status && ServerClass == op.ServerClass && ServerAddress == op.ServerAddress && ServerUpTime == op.ServerUpTime && Workload == op.Workload;
+	return UID == op.UID && Membership == op.Membership && Status == op.Status
+		&& StrUtil::StringCompairIgnoreCase(RouteAddress, op.RouteAddress)
+		&& ServerUpTime == op.ServerUpTime
+		&& Workload == op.Workload;
 }
 
 

@@ -61,7 +61,7 @@ namespace Svr {
 		// Start Transaction
 		virtual Result StartTransaction() override;
 
-		BR_IMPLEMENT_USERMSGTRANS_CLOSE(Policy::NetSvrPolicyGame, InviteFriendRes);
+		BR_IMPLEMENT_USERMSGTRANS_CLOSE(NetSvrPolicyGame, InviteFriendRes);
 	};
 
 
@@ -91,7 +91,7 @@ namespace Svr {
 		// Start Transaction
 		virtual Result StartTransaction() override;
 
-		BR_IMPLEMENT_USERMSGTRANS_CLOSE_ARGS(Policy::NetSvrPolicyGame, AcceptFriendRequestRes,m_NewFriend);
+		BR_IMPLEMENT_USERMSGTRANS_CLOSE_ARGS(NetSvrPolicyGame, AcceptFriendRequestRes,m_NewFriend);
 	};
 
 
@@ -127,7 +127,7 @@ namespace Svr {
 		// Start Transaction
 		virtual Result StartTransaction() override;
 
-		BR_IMPLEMENT_USERMSGTRANS_CLOSE_ARGS(Policy::NetSvrPolicyGame, RemoveFriendRes, GetFriendID());
+		BR_IMPLEMENT_USERMSGTRANS_CLOSE_ARGS(NetSvrPolicyGame, RemoveFriendRes, GetFriendID());
 	};
 
 
@@ -176,7 +176,7 @@ namespace Svr {
 
 		virtual Result CloseTransaction( Result hr ) override;
 
-		BR_IMPLEMENT_USERMSGTRANS_CLOSE_ARGS(Policy::NetSvrPolicyGame, GetFriendListRes, m_MaxFriendSlot, m_TotalNumberOfFriends, GetStartIndex(), m_Friends);
+		BR_IMPLEMENT_USERMSGTRANS_CLOSE_ARGS(NetSvrPolicyGame, GetFriendListRes, m_MaxFriendSlot, m_TotalNumberOfFriends, GetStartIndex(), m_Friends);
 	};
 
 	

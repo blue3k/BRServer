@@ -158,7 +158,9 @@ namespace SF
 				protocolCheck(*input >> m_RouteContext);
 				protocolCheck(*input >> m_TransactionID);
 				protocolCheck(*input >> m_Result);
+				protocolCheck(input->Read(ArrayLen));
 				protocolCheck(input->ReadLink(m_PublicAddress, ArrayLen));
+				protocolCheck(input->Read(ArrayLen));
 				protocolCheck(input->ReadLink(m_PublicAddressV6, ArrayLen));
 				protocolCheck(*input >> m_Port);
 
@@ -490,7 +492,9 @@ namespace SF
 				protocolCheck(*input >> m_RouteContext);
 				protocolCheck(*input >> m_SenderID);
 				protocolCheck(*input >> m_Role);
+				protocolCheck(input->Read(ArrayLen));
 				protocolCheck(input->ReadLink(m_SenderName, ArrayLen));
+				protocolCheck(input->Read(ArrayLen));
 				protocolCheck(input->ReadLink(m_ChatMessage, ArrayLen));
 
 				return hr;
@@ -605,6 +609,7 @@ namespace SF
 				protocolCheck(*input >> m_MessageID);
 				protocolCheck(*input >> m_MessageParam0);
 				protocolCheck(*input >> m_MessageParam1);
+				protocolCheck(input->Read(ArrayLen));
 				protocolCheck(input->ReadLink(m_MessageText, ArrayLen));
 				protocolCheck(*input >> m_TimeStamp);
 
@@ -1150,6 +1155,7 @@ namespace SF
 				protocolCheck(*input >> m_RouteContext);
 				protocolCheck(*input >> m_DestPlayerID);
 				protocolCheck(*input >> m_InviterID);
+				protocolCheck(input->Read(ArrayLen));
 				protocolCheck(input->ReadLink(m_InviterName, ArrayLen));
 				protocolCheck(*input >> m_PartyUID);
 

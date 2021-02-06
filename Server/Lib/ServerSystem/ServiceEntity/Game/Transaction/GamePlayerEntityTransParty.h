@@ -128,7 +128,7 @@ namespace Svr {
 		// Start Transaction
 		virtual Result StartTransaction() override;
 
-		BR_IMPLEMENT_USERMSGTRANS_CLOSE_ARGS(Policy::NetSvrPolicyGame, CreatePartyRes,m_PartyUID);
+		BR_IMPLEMENT_USERMSGTRANS_CLOSE_ARGS(NetSvrPolicyGame, CreatePartyRes,m_PartyUID);
 	};
 	
 	
@@ -152,7 +152,7 @@ namespace Svr {
 		// Start Transaction
 		virtual Result StartTransaction() override;
 
-		BR_IMPLEMENT_USERMSGTRANS_CLOSE_ARGS(Policy::NetSvrPolicyGame, JoinPartyRes,GetPartyUID(),m_LeaderID, m_ChatHistoryData);
+		BR_IMPLEMENT_USERMSGTRANS_CLOSE_ARGS(NetSvrPolicyGame, JoinPartyRes,GetPartyUID(),m_LeaderID, m_ChatHistoryData);
 	};
 	
 	// Party player joined
@@ -200,7 +200,7 @@ namespace Svr {
 		// Start Transaction
 		virtual Result StartTransaction() override;
 
-		BR_IMPLEMENT_USERMSGTRANS_CLOSE(Policy::NetSvrPolicyGame, LeavePartyRes);
+		BR_IMPLEMENT_USERMSGTRANS_CLOSE(NetSvrPolicyGame, LeavePartyRes);
 	};
 	
 	
@@ -236,7 +236,7 @@ namespace Svr {
 		// Start Transaction
 		virtual Result StartTransaction() override;
 
-		BR_IMPLEMENT_USERMSGTRANS_CLOSE(Policy::NetSvrPolicyGame, PartyKickPlayerRes);
+		BR_IMPLEMENT_USERMSGTRANS_CLOSE(NetSvrPolicyGame, PartyKickPlayerRes);
 	};
 	
 	
@@ -270,7 +270,7 @@ namespace Svr {
 		// Start Transaction
 		virtual Result StartTransaction() override;
 
-		BR_IMPLEMENT_USERMSGTRANS_CLOSE(Policy::NetSvrPolicyGame, PartyInviteRes);
+		BR_IMPLEMENT_USERMSGTRANS_CLOSE(NetSvrPolicyGame, PartyInviteRes);
 	};
 	
 	
@@ -303,7 +303,7 @@ namespace Svr {
 		// Start Transaction
 		virtual Result StartTransaction() override;
 
-		BR_IMPLEMENT_USERMSGTRANS_CLOSE(Policy::NetSvrPolicyGame, PartyChatMessageRes);
+		BR_IMPLEMENT_USERMSGTRANS_CLOSE(NetSvrPolicyGame, PartyChatMessageRes);
 	};
 
 	// Chat message from other entity	
@@ -335,7 +335,7 @@ namespace Svr {
 		// Start Transaction
 		virtual Result StartTransaction() override;
 
-		BR_IMPLEMENT_USERMSGTRANS_CLOSE(Policy::NetSvrPolicyGame, PartyQuickChatMessageRes);
+		BR_IMPLEMENT_USERMSGTRANS_CLOSE(NetSvrPolicyGame, PartyQuickChatMessageRes);
 	};
 
 	// Chat message from other entity	

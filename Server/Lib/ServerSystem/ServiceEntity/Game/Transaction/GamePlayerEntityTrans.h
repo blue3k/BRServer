@@ -103,7 +103,7 @@ namespace SF {
 			// Start Transaction
 			virtual Result StartTransaction() override;
 
-			BR_IMPLEMENT_USERMSGTRANS_CLOSE_ARGS(Policy::NetSvrPolicyGame, JoinGameServerRes, m_PlayerNick, m_GameUID, GetMyOwner()->GetPartyUID(), m_PartyLeaderID, m_MatchingTicket);
+			BR_IMPLEMENT_USERMSGTRANS_CLOSE_ARGS(NetSvrPolicyGame, JoinGameServerRes, m_PlayerNick, m_GameUID, GetMyOwner()->GetPartyUID(), m_PartyLeaderID, m_MatchingTicket);
 		};
 
 
@@ -124,7 +124,7 @@ namespace SF {
 			// Start Transaction
 			virtual Result StartTransaction() override;
 
-			BR_IMPLEMENT_USERMSGTRANS_CLOSE_ARGS(Policy::NetSvrPolicyGame, GetUserGamePlayerInfoRes, m_Result);
+			BR_IMPLEMENT_USERMSGTRANS_CLOSE_ARGS(NetSvrPolicyGame, GetUserGamePlayerInfoRes, m_Result);
 		};
 
 
@@ -151,7 +151,7 @@ namespace SF {
 			// Start Transaction
 			virtual Result StartTransaction() override;
 
-			BR_IMPLEMENT_USERMSGTRANS_CLOSE_ARGS(Policy::NetSvrPolicyGame, GetGamePlayerInfoRes, GetPlayerID(), m_Result);
+			BR_IMPLEMENT_USERMSGTRANS_CLOSE_ARGS(NetSvrPolicyGame, GetGamePlayerInfoRes, GetPlayerID(), m_Result);
 		};
 
 
@@ -179,7 +179,7 @@ namespace SF {
 			// Start Transaction
 			virtual Result StartTransaction() override;
 
-			BR_IMPLEMENT_USERMSGTRANS_CLOSE_ARGS(Policy::NetSvrPolicyGame, GetComplitionStateRes, m_ComplitionState);
+			BR_IMPLEMENT_USERMSGTRANS_CLOSE_ARGS(NetSvrPolicyGame, GetComplitionStateRes, m_ComplitionState);
 		};
 
 
@@ -198,7 +198,7 @@ namespace SF {
 			// Start Transaction
 			virtual Result StartTransaction() override;
 
-			BR_IMPLEMENT_USERMSGTRANS_CLOSE(Policy::NetSvrPolicyGame, SetComplitionStateRes);
+			BR_IMPLEMENT_USERMSGTRANS_CLOSE(NetSvrPolicyGame, SetComplitionStateRes);
 		};
 
 
@@ -222,7 +222,7 @@ namespace SF {
 			// Start Transaction
 			virtual Result StartTransaction() override;
 
-			BR_IMPLEMENT_USERMSGTRANS_CLOSE(Policy::NetSvrPolicyGame, SetPresetGameConfigIDRes);
+			BR_IMPLEMENT_USERMSGTRANS_CLOSE(NetSvrPolicyGame, SetPresetGameConfigIDRes);
 		};
 
 
@@ -246,7 +246,7 @@ namespace SF {
 			// Start Transaction
 			virtual Result StartTransaction() override;
 
-			BR_IMPLEMENT_USERMSGTRANS_CLOSE(Policy::NetSvrPolicyGame, RegisterGCMRes);
+			BR_IMPLEMENT_USERMSGTRANS_CLOSE(NetSvrPolicyGame, RegisterGCMRes);
 		};
 
 
@@ -265,7 +265,7 @@ namespace SF {
 			// Start Transaction
 			virtual Result StartTransaction() override;
 
-			BR_IMPLEMENT_USERMSGTRANS_CLOSE(Policy::NetSvrPolicyGame, UnregisterGCMRes);
+			BR_IMPLEMENT_USERMSGTRANS_CLOSE(NetSvrPolicyGame, UnregisterGCMRes);
 		};
 
 
@@ -291,7 +291,7 @@ namespace SF {
 			// Start Transaction
 			virtual Result StartTransaction() override;
 
-			BR_IMPLEMENT_USERMSGTRANS_CLOSE(Policy::NetSvrPolicyGame, GetNotificationListRes);
+			BR_IMPLEMENT_USERMSGTRANS_CLOSE(NetSvrPolicyGame, GetNotificationListRes);
 		};
 
 		class PlayerTransDeleteNotification : public Svr::MessageTransaction< GamePlayerEntity, Message::Game::DeleteNotificationCmd>
@@ -309,7 +309,7 @@ namespace SF {
 			// Start Transaction
 			virtual Result StartTransaction() override;
 
-			BR_IMPLEMENT_USERMSGTRANS_CLOSE_ARGS(Policy::NetSvrPolicyGame, DeleteNotificationRes, GetNotificationID());
+			BR_IMPLEMENT_USERMSGTRANS_CLOSE_ARGS(NetSvrPolicyGame, DeleteNotificationRes, GetNotificationID());
 		};
 
 
@@ -328,7 +328,7 @@ namespace SF {
 			// Start Transaction
 			virtual Result StartTransaction() override;
 
-			BR_IMPLEMENT_USERMSGTRANS_CLOSE_ARGS(Policy::NetSvrPolicyGame, SetNotificationReadRes, GetNotificationID());
+			BR_IMPLEMENT_USERMSGTRANS_CLOSE_ARGS(NetSvrPolicyGame, SetNotificationReadRes, GetNotificationID());
 		};
 
 
@@ -347,7 +347,7 @@ namespace SF {
 			// Start Transaction
 			virtual Result StartTransaction() override;
 
-			BR_IMPLEMENT_USERMSGTRANS_CLOSE_ARGS(Policy::NetSvrPolicyGame, AcceptNotificationRes, GetNotificationID());
+			BR_IMPLEMENT_USERMSGTRANS_CLOSE_ARGS(NetSvrPolicyGame, AcceptNotificationRes, GetNotificationID());
 		};
 
 
@@ -388,7 +388,7 @@ namespace SF {
 			// Start Transaction
 			virtual Result StartTransaction() override;
 
-			BR_IMPLEMENT_USERMSGTRANS_CLOSE_ARGS(Policy::NetSvrPolicyGame, SetNickNameRes, m_TotalGem, m_TotalGameMoney);
+			BR_IMPLEMENT_USERMSGTRANS_CLOSE_ARGS(NetSvrPolicyGame, SetNickNameRes, m_TotalGem, m_TotalGameMoney);
 		};
 
 
@@ -416,7 +416,7 @@ namespace SF {
 			// Start Transaction
 			virtual Result StartTransaction() override;
 
-			BR_IMPLEMENT_USERMSGTRANS_CLOSE_ARGS(Policy::NetSvrPolicyGame, FindPlayerByEMailRes, m_Player);
+			BR_IMPLEMENT_USERMSGTRANS_CLOSE_ARGS(NetSvrPolicyGame, FindPlayerByEMailRes, m_Player);
 		};
 
 
@@ -439,7 +439,7 @@ namespace SF {
 			// Start Transaction
 			virtual Result StartTransaction() override;
 
-			BR_IMPLEMENT_USERMSGTRANS_CLOSE_ARGS(Policy::NetSvrPolicyGame, FindPlayerByPlayerIDRes, m_Player);
+			BR_IMPLEMENT_USERMSGTRANS_CLOSE_ARGS(NetSvrPolicyGame, FindPlayerByPlayerIDRes, m_Player);
 		};
 
 
@@ -462,7 +462,7 @@ namespace SF {
 			// Start Transaction
 			virtual Result StartTransaction() override;
 
-			BR_IMPLEMENT_USERMSGTRANS_CLOSE(Policy::NetSvrPolicyGame, RequestPlayerStatusUpdateRes);
+			BR_IMPLEMENT_USERMSGTRANS_CLOSE(NetSvrPolicyGame, RequestPlayerStatusUpdateRes);
 		};
 
 		class PlayerTransRequestPlayerStatusUpdateC2S : public Svr::UserTransactionS2SEvt< GamePlayerEntity, Message::GameServer::RequestPlayerStatusUpdateC2SEvt>
@@ -511,7 +511,7 @@ namespace SF {
 			// Start Transaction
 			virtual Result StartTransaction() override;
 
-			BR_IMPLEMENT_USERMSGTRANS_CLOSE_ARGS(Policy::NetSvrPolicyGame, GetRankingListRes, m_RankingList);
+			BR_IMPLEMENT_USERMSGTRANS_CLOSE_ARGS(NetSvrPolicyGame, GetRankingListRes, m_RankingList);
 		};
 
 
@@ -538,7 +538,7 @@ namespace SF {
 			// Start Transaction
 			virtual Result StartTransaction() override;
 
-			BR_IMPLEMENT_USERMSGTRANS_CLOSE_ARGS(Policy::NetSvrPolicyGame, BuyShopItemPrepareRes, GetShopItemID(), (const char*)m_Signagure.data());
+			BR_IMPLEMENT_USERMSGTRANS_CLOSE_ARGS(NetSvrPolicyGame, BuyShopItemPrepareRes, GetShopItemID(), (const char*)m_Signagure.data());
 		};
 
 
@@ -567,7 +567,7 @@ namespace SF {
 			// Start Transaction
 			virtual Result StartTransaction() override;
 
-			BR_IMPLEMENT_USERMSGTRANS_CLOSE_ARGS(Policy::NetSvrPolicyGame, BuyShopItemRes, GetShopItemID());
+			BR_IMPLEMENT_USERMSGTRANS_CLOSE_ARGS(NetSvrPolicyGame, BuyShopItemRes, GetShopItemID());
 		};
 
 	} // namespace GameServer 

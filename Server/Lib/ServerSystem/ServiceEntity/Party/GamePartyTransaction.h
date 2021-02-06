@@ -38,10 +38,9 @@ namespace Svr {
 
 	public:
 		GamePartyMessageTransaction( IHeap& memMgr, MessageDataPtr &pIMsg )
-			:super( memMgr, pIMsg )
-			,m_PlayerID(0)
+			: super( memMgr, pIMsg )
+			, m_PlayerID(0)
 		{
-			super::m_WorkOnServerEntity = false;
 		}
 		
 
@@ -62,8 +61,8 @@ namespace Svr {
 
 
 
-}; // Svr
-}; // SF
+} // Svr
+} // SF
 
 
 

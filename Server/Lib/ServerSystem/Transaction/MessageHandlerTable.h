@@ -34,6 +34,8 @@ namespace SF {
 
 namespace SF {
 
+	class MessageEndpoint;
+
 namespace Svr {
 
 	class SimpleUserEntity;
@@ -190,6 +192,31 @@ namespace Svr {
 			return handler( pCon, pMsg, param1 );
 		}
 		
+
+		template<class Param1>
+		Result HandleMessage(const SharedPointerT<MessageEndpoint>& remoteEndpoint, MessageDataPtr &pMsg, Param1 param1 )
+		{
+			Result hr = ResultCode::SUCCESS;
+			MessageHandlerType handler;
+
+			hr = GetHandler(pMsg->GetMessageHeader()->msgID,handler);
+			if( !(hr) ) return ResultCode::SVR_NO_MESSAGE_HANDLER;
+
+			return handler(remoteEndpoint, pMsg, param1);
+		}
+
+		template<class Param1>
+		Result HandleMessage(MessageDataPtr& pMsg, Param1 param1)
+		{
+			Result hr = ResultCode::SUCCESS;
+			MessageHandlerType handler;
+
+			hr = GetHandler(pMsg->GetMessageHeader()->msgID, handler);
+			if (!(hr)) return ResultCode::SVR_NO_MESSAGE_HANDLER;
+
+			return handler(pMsg, param1);
+		}
+
 		template<class Param1, class Param2>
 		Result HandleMessage(MessageDataPtr &pMsg, Param1 param1, Param2 param2 )
 		{
@@ -207,19 +234,19 @@ namespace Svr {
 	};
 
 
-	#define	BR_ENTITY_MESSAGE(MessageType) RegisterMessageHandler<MessageType>([=]( Net::Connection* pConn, MessageDataPtr &pMsgData, SF::TransactionPtr &pNewTrans)->Result 
+	#define	BR_ENTITY_MESSAGE(MessageType) RegisterMessageHandler<MessageType>([=](MessageDataPtr &pMsgData, SF::TransactionPtr &pNewTrans)->Result 
 
 	#define BR_TRANS_MESSAGE(MessageType,MessageHandlerImpl) \
 		RegisterMessageHandler<MessageType>([=](::SF::Svr::TransactionResult* pRes)->Result MessageHandlerImpl );
 
 
-	typedef std::function<Result(Net::Connection *, MessageDataPtr &, Transaction* &)>	EntityMessageHandlerItem;
+	typedef std::function<Result(const SharedPointerT<MessageEndpoint>& , MessageDataPtr &, Transaction* &)>	EntityMessageHandlerItem;
 
 
 
 
-}; // namespace Svr
-}; // namespace SF
+} // namespace Svr
+} // namespace SF
 
 
 

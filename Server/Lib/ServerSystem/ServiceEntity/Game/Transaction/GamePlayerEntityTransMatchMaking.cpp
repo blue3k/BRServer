@@ -97,7 +97,7 @@ namespace Svr {
 
 		GetMyOwner()->SetMatchingTicket(res.GetMatchingTicket());
 
-		Policy::NetSvrPolicyGame(GetConnection()).GameMatchingStartedS2CEvt();
+		NetSvrPolicyGame(GetRemoteEndpoint()).GameMatchingStartedS2CEvt();
 
 	Proc_End:
 
@@ -113,7 +113,7 @@ namespace Svr {
 	Result PlayerTransRequestGameMatch::StartTransaction()
 	{
 		Result hr = ResultCode::SUCCESS;
-		Svr::ServerServiceInformation* pService = nullptr;
+		ServerServiceInformation* pService = nullptr;
 
 		m_TotalGem = 0;
 		m_TotalGameMoney = 0;
@@ -135,16 +135,17 @@ namespace Svr {
 		if (GetMyOwner()->GetPartyUID().UID == 0)
 		{
 			// Player isn't in a party, just do it alone
-			Svr::ServerServiceInformation* pWatcherService = nullptr;
+			ServerServiceInformation* pWatcherService = nullptr;
 			auto queueClusterID = Svr::MatchingUtil::GetQueueClusterID(GetNumPlayer(), 1, (PlayerRole)GetRequestRole());
 
 			svrChk(Service::ClusterManager->GetRandomService(Svr::GetServerGameID(), queueClusterID, pService));
-			svrChk(pService->GetService<Svr::PartyMatchingQueueService>()->RegisterPlayerMatchingCmd(GetTransID(), 0, GetMyOwner()->GetPlayerID()));
+			svrChk(pService->GetService<PartyMatchingQueueService>()->RegisterPlayerMatchingCmd(GetTransID(), 0, GetMyOwner()->GetPlayerID()));
 		}
 		else
 		{
 			// Let the party handle this
-			svrChk(Policy::NetPolicyGameParty(Service::ServerEntityManager->GetServerConnection(GetMyOwner()->GetPartyUID().GetServerID())).StartGameMatchCmd(
+			auto serverEndpoint = Service::MessageEndpointManager->GetEndpoint(GetMyOwner()->GetPartyUID());
+			svrChk(NetPolicyGameParty(serverEndpoint).StartGameMatchCmd(
 				RouteContext(GetOwnerEntityUID(), GetMyOwner()->GetPartyUID()), GetTransID(), GetMyOwner()->GetPlayerID(), GetNumPlayer()));
 		}
 
@@ -178,7 +179,7 @@ namespace Svr {
 		// This means it just pended for canceling. yo have to wait canceled event from matching queue
 		//GetMyOwner()->SetMatchingTicket(0);
 
-		//Policy::NetSvrPolicyGame(GetConnection()).GameMatchingCanceledS2CEvt();
+		//NetSvrPolicyGame(GetConnection()).GameMatchingCanceledS2CEvt();
 
 	Proc_End:
 
@@ -238,13 +239,15 @@ namespace Svr {
 		if (GetMyOwner()->GetPartyUID().UID == 0)
 		{
 			// Player isn't in a party, just do it alone
-			svrChk(Policy::NetPolicyPartyMatchingQueue(Service::ServerEntityManager->GetServerConnection(GetMyOwner()->GetMatchingTicket().QueueUID.GetServerID())).UnregisterMatchingCmd(
+			auto serverEndpoint = Service::MessageEndpointManager->GetEndpoint(GetMyOwner()->GetMatchingTicket().QueueUID);
+			svrChk(NetPolicyPartyMatchingQueue(serverEndpoint).UnregisterMatchingCmd(
 				RouteContext(GetOwnerEntityUID(), GetMyOwner()->GetMatchingTicket().QueueUID), GetTransID(), 0, GetMyOwner()->GetMatchingTicket()));
 		}
 		else
 		{
 			// Let the party handle this
-			svrChk(Policy::NetPolicyGameParty(Service::ServerEntityManager->GetServerConnection(GetMyOwner()->GetPartyUID().GetServerID())).CancelGameMatchCmd(
+			auto serverEndpoint = Service::MessageEndpointManager->GetEndpoint(GetMyOwner()->GetPartyUID());
+			svrChk(NetPolicyGameParty(serverEndpoint).CancelGameMatchCmd(
 				RouteContext(GetOwnerEntityUID(), GetMyOwner()->GetPartyUID()), GetTransID(), GetMyOwner()->GetPlayerID()));
 		}
 
@@ -278,7 +281,7 @@ namespace Svr {
 
 		GetMyOwner()->SetMatchingTicket(0);
 
-		svrChk(Policy::NetSvrPolicyGame(GetConnection()).GameMatchingCanceledS2CEvt());
+		svrChk(NetSvrPolicyGame(GetRemoteEndpoint()).GameMatchingCanceledS2CEvt());
 
 	Proc_End:
 

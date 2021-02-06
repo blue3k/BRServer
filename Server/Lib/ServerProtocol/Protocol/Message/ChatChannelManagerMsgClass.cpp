@@ -44,7 +44,9 @@ namespace SF
 				protocolCheck(*input >> m_RouteContext);
 				protocolCheck(*input >> m_TransactionID);
 				protocolCheck(*input >> m_RouteHopCount);
+				protocolCheck(input->Read(ArrayLen));
 				protocolCheck(input->ReadLink(m_ChannelName, ArrayLen));
+				protocolCheck(input->Read(ArrayLen));
 				protocolCheck(input->ReadLink(m_Passcode, ArrayLen));
 				protocolCheck(*input >> m_Creator);
 
@@ -327,6 +329,7 @@ namespace SF
 				protocolCheck(*input >> m_RouteContext);
 				protocolCheck(*input >> m_TransactionID);
 				protocolCheck(*input >> m_RouteHopCount);
+				protocolCheck(input->Read(ArrayLen));
 				protocolCheck(input->ReadLink(m_ChannelName, ArrayLen));
 
 				return hr;
