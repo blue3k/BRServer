@@ -640,25 +640,24 @@ namespace SF {
 			virtual Result InitializeTransaction(Entity* pOwner)
 			{
 				Result hr = ResultCode::SUCCESS;
-				//OwnerType *pOwnerEntity = nullptr;
 
-				svrChkPtr(pOwner);
+				svrCheckPtr(pOwner);
 
-				svrChk(ParseMessage());
+				svrCheck(ParseMessage());
 
-				//pOwnerEntity = dynamic_cast<OwnerType*>(pOwner);
+				if (Transaction::GetRemoteEndpoint() == nullptr && MessageClass::GetRouteContext().GetFrom().UID != 0)
+				{
+					Transaction::SetRemoteEndpoint(Service::MessageEndpointManager->GetEndpoint(MessageClass::GetRouteContext().GetFrom()));
+				}
 
 
 				hr = TransactionT<OwnerType>::InitializeTransaction(pOwner);
-				svrChk(hr);
+				svrCheck(hr);
 
-			Proc_End:
 				return hr;
 			}
 
-			virtual ~MessageTransaction()
-			{
-			}
+			virtual ~MessageTransaction() = default;
 
 			virtual const SharedPointerAtomicT<Net::Connection>& GetConnection()
 			{

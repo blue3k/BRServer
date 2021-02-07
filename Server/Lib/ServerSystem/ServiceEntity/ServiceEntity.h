@@ -29,7 +29,7 @@
 
 namespace SF {
 
-	class StreamDBProducer;
+	class StreamDBConsumer;
 	class Entity;
 
 
@@ -59,7 +59,7 @@ namespace SF {
 
 		bool m_Initialized = false;
 
-		SharedPointerT<StreamDBProducer> m_ListenEndpoint;
+		SharedPointerT<StreamDBConsumer> m_ListenEndpoint;
 
 		ServerConfig::MessageEndpoint m_MessageEndpointConfig;
 
@@ -81,7 +81,7 @@ namespace SF {
 		const ServerConfig::MessageEndpoint& GetMessageEndpointConfig() const { return m_MessageEndpointConfig; }
 
 		// Get message endpoint
-		const SharedPointerT<StreamDBProducer>& GetListenEndpoint() const { return m_ListenEndpoint; }
+		const SharedPointerT<StreamDBConsumer>& GetListenEndpoint() const { return m_ListenEndpoint; }
 
 		// start initialization
 		virtual Result StartInitialization();

@@ -300,7 +300,9 @@ namespace Svr
 				svrTrace(Error, "Transaction initialization is failed {0} Entity:{1}, MsgID:{2}", typeid(*this).name(), GetEntityUID(), pMsgHdr->msgID);
 				if (pMsgHdr->msgID.IDs.Type == Message::MSGTYPE_COMMAND)
 				{
-					NetSvrPolicyServer(remoteEndpoint).GenericFailureRes(pNewTrans->GetMessageRouteContext().GetSwaped(), pNewTrans->GetParentTransID(), hr);
+					auto senderEndpoint = pNewTrans->GetRemoteEndpoint();
+					if (senderEndpoint != nullptr)
+						NetSvrPolicyServer(senderEndpoint).GenericFailureRes(pNewTrans->GetMessageRouteContext().GetSwaped(), pNewTrans->GetParentTransID(), hr);
 				}
 			}
 

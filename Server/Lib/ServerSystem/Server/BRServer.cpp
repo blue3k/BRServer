@@ -727,7 +727,8 @@ namespace SF {
 
 			m_LocalServiceEntities.push_back(pServiceEntity);
 
-			Service::ServiceDirectory->RegisterLocalService(pServiceEntity);
+			// It is done in ServiceEntity
+			//Service::ServiceDirectory->RegisterLocalService(pServiceEntity);
 
 			return hr;
 		}

@@ -174,6 +174,7 @@ namespace GameServer {
 	{
 		Result hr = ResultCode::SUCCESS;
 		GameInsUID insUID;
+		MessageEndpoint* serverEndpoint{};
 
 		svrChk( super::StartTransaction() );
 
@@ -209,7 +210,7 @@ namespace GameServer {
 
 		insUID = GetInsUID();
 
-		auto serverEndpoint = Service::MessageEndpointManager->GetEndpoint(insUID);
+		serverEndpoint = Service::MessageEndpointManager->GetEndpoint(insUID);
 
 		svrChk(NetPolicyGameInstance(serverEndpoint).JoinGameCmd(
 			RouteContext(GetOwnerEntityUID(),insUID), GetTransID(),
@@ -300,6 +301,7 @@ namespace GameServer {
 		Result hr = ResultCode::SUCCESS;
 		GameInsUID insUID;
 		NetPolicyGameInstance *pPolicy = nullptr;
+		MessageEndpoint* serverEndpoint{};
 
 		svrChk( super::StartTransaction() );
 
@@ -313,7 +315,7 @@ namespace GameServer {
 		if( insUID.UID == 0 )
 			svrErrClose(ResultCode::INVALID_INSTANCEID);
 
-		auto serverEndpoint = Service::MessageEndpointManager->GetEndpoint(insUID);
+		serverEndpoint = Service::MessageEndpointManager->GetEndpoint(insUID);
 
 		svrChk(NetPolicyGameInstance(serverEndpoint).LeaveGameInstanceCmd(
 			RouteContext(GetOwnerEntityUID(),insUID), GetTransID(), GetMyOwner()->GetPlayerID() ) );
@@ -383,6 +385,7 @@ namespace GameServer {
 		Result hr = ResultCode::SUCCESS;
 		GameInsUID insUID;
 		NetPolicyGameInstance *pPolicy = nullptr;
+		MessageEndpoint* serverEndpoint{};
 
 		svrChk( super::StartTransaction() );
 
@@ -396,7 +399,7 @@ namespace GameServer {
 		if( insUID.UID == 0 )
 			svrErrClose(ResultCode::INVALID_INSTANCEID);
 
-		auto serverEndpoint = Service::MessageEndpointManager->GetEndpoint(insUID);
+		serverEndpoint = Service::MessageEndpointManager->GetEndpoint(insUID);
 
 		svrChk(NetPolicyGameInstance(serverEndpoint).KickPlayerCmd(
 			RouteContext(GetOwnerEntityUID(), insUID.GetServerID()), GetTransID(),
@@ -465,6 +468,7 @@ namespace GameServer {
 		Result hr = ResultCode::SUCCESS;
 		GameInsUID insUID;
 		NetPolicyGameInstance *pPolicy = nullptr;
+		MessageEndpoint* serverEndpoint{};
 
 		svrChk( super::StartTransaction() );
 
@@ -478,7 +482,7 @@ namespace GameServer {
 		if( insUID.UID == 0 )
 			svrErrClose(ResultCode::INVALID_INSTANCEID);
 
-		auto serverEndpoint = Service::MessageEndpointManager->GetEndpoint(insUID);
+		serverEndpoint = Service::MessageEndpointManager->GetEndpoint(insUID);
 
 		svrChk(NetPolicyGameInstance(serverEndpoint).AssignRoleCmd( 
 			RouteContext(GetOwnerEntityUID(),insUID), GetTransID(),
@@ -522,6 +526,7 @@ namespace GameServer {
 		Result hr = ResultCode::SUCCESS;
 		GameInsUID insUID;
 		NetPolicyGameInstance *pPolicy = nullptr;
+		MessageEndpoint* serverEndpoint{};
 
 		svrChk( super::StartTransaction() );
 
@@ -535,7 +540,7 @@ namespace GameServer {
 		if( insUID.UID == 0 )
 			svrErrClose(ResultCode::INVALID_INSTANCEID);
 
-		auto serverEndpoint = Service::MessageEndpointManager->GetEndpoint(insUID);
+		serverEndpoint = Service::MessageEndpointManager->GetEndpoint(insUID);
 
 		svrChk(NetPolicyGameInstance(serverEndpoint).ChatMessageC2SEvt( 
 			RouteContext(GetOwnerEntityUID(),insUID),
@@ -601,6 +606,7 @@ namespace GameServer {
 		Result hr = ResultCode::SUCCESS;
 		GameInsUID insUID;
 		NetPolicyGameInstance *pPolicy = nullptr;
+		MessageEndpoint* serverEndpoint{};
 
 		svrChk( super::StartTransaction() );
 
@@ -614,7 +620,7 @@ namespace GameServer {
 		if( insUID.UID == 0 )
 			svrErrClose(ResultCode::INVALID_INSTANCEID);
 
-		auto serverEndpoint = Service::MessageEndpointManager->GetEndpoint(insUID);
+		serverEndpoint = Service::MessageEndpointManager->GetEndpoint(insUID);
 
 		svrChk(NetPolicyGameInstance(serverEndpoint).VoteGameAdvanceCmd( 
 			RouteContext(GetOwnerEntityUID(),insUID), GetTransID(), GetMyOwner()->GetPlayerID() ));
@@ -677,6 +683,7 @@ namespace GameServer {
 		Result hr = ResultCode::SUCCESS;
 		GameInsUID insUID;
 		NetPolicyGameInstance *pPolicy = nullptr;
+		MessageEndpoint* serverEndpoint{};
 
 		svrChk( super::StartTransaction() );
 
@@ -690,7 +697,7 @@ namespace GameServer {
 		if( insUID.UID == 0 )
 			svrErrClose(ResultCode::INVALID_INSTANCEID);
 
-		auto serverEndpoint = Service::MessageEndpointManager->GetEndpoint(insUID);
+		serverEndpoint = Service::MessageEndpointManager->GetEndpoint(insUID);
 
 		svrChk(NetPolicyGameInstance(serverEndpoint).VoteCmd( 
 			RouteContext(GetOwnerEntityUID(),insUID), GetTransID(),
@@ -775,6 +782,7 @@ namespace GameServer {
 		Result hr = ResultCode::SUCCESS;
 		GameInsUID insUID;
 		NetPolicyGameInstance *pPolicy = nullptr;
+		MessageEndpoint* serverEndpoint{};
 
 		svrChk( super::StartTransaction() );
 
@@ -788,7 +796,7 @@ namespace GameServer {
 		if( insUID.UID == 0 )
 			svrErrClose(ResultCode::INVALID_INSTANCEID);
 
-		auto serverEndpoint = Service::MessageEndpointManager->GetEndpoint(insUID);
+		serverEndpoint = Service::MessageEndpointManager->GetEndpoint(insUID);
 
 		svrChk(NetPolicyGameInstance(serverEndpoint).AdvanceGameCmd( 
 			RouteContext(GetOwnerEntityUID(),insUID), GetTransID(),
@@ -1010,13 +1018,14 @@ namespace GameServer {
 	{
 		Result hr = ResultCode::SUCCESS;
 		GameInsUID insUID = GetMyOwner()->GetGameInsUID();
+		MessageEndpoint* serverEndpoint{};
 
 		if (insUID.UID == 0)
 		{
 			svrErr(ResultCode::SVR_INVALID_ENTITYUID);
 		}
 
-		auto serverEndpoint = Service::MessageEndpointManager->GetEndpoint(insUID);
+		serverEndpoint = Service::MessageEndpointManager->GetEndpoint(insUID);
 
 		svrChk(NetPolicyGameInstance(serverEndpoint).GamePlayAgainCmd(
 			RouteContext(GetOwnerEntityUID(), insUID), GetTransID(), GetMyOwner()->GetPlayerID(), GetMyOwner()->GetPartyUID()));
@@ -1172,6 +1181,7 @@ namespace GameServer {
 	Result PlayerTransGameRevealPlayer::OnUpdatePlayerRes(Svr::TransactionResult* &pRes)
 	{
 		Result hr = ResultCode::SUCCESS;
+		MessageEndpoint* serverEndpoint{};
 		GameInsUID insUID = GetMyOwner()->GetGameInsUID();
 
 		//auto *pDBRes = (DB::QueryUpdateTickStatusCmd*)pRes;
@@ -1184,7 +1194,7 @@ namespace GameServer {
 			svrErr(ResultCode::SVR_INVALID_ENTITYUID);
 		}
 
-		auto serverEndpoint = Service::MessageEndpointManager->GetEndpoint(insUID);
+		serverEndpoint = Service::MessageEndpointManager->GetEndpoint(insUID);
 
 		svrChk(NetPolicyGameInstance(serverEndpoint).GameRevealPlayerCmd(
 			RouteContext(GetOwnerEntityUID(), insUID), GetTransID(), GetMyOwner()->GetPlayerID(), GetTargetPlayerID()));
@@ -1276,6 +1286,8 @@ namespace GameServer {
 	Result PlayerTransGamePlayerRevive::OnUpdatePlayerRes(Svr::TransactionResult* &pRes)
 	{
 		Result hr = ResultCode::SUCCESS;
+		MessageEndpoint* serverEndpoint{};
+
 		GameInsUID insUID = GetMyOwner()->GetGameInsUID();
 
 		//auto *pDBRes = (DB::QueryUpdateTickStatusCmd*)pRes;
@@ -1288,7 +1300,7 @@ namespace GameServer {
 			svrErr(ResultCode::SVR_INVALID_ENTITYUID);
 		}
 
-		auto serverEndpoint = Service::MessageEndpointManager->GetEndpoint(insUID);
+		serverEndpoint = Service::MessageEndpointManager->GetEndpoint(insUID);
 
 		svrChk(NetPolicyGameInstance(serverEndpoint).GamePlayerReviveCmd(
 			RouteContext(GetOwnerEntityUID(), insUID), GetTransID(), GetMyOwner()->GetPlayerID()));
