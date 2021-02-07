@@ -139,7 +139,7 @@ namespace Svr
 		pServerEntity = pNewServerEntity;
 		pNewServerEntity = nullptr;
 
-		svrChk(AddServerEntity(netClass, pServerEntity));
+		svrChk(AddServerEntity(pServerEntity));
 
 	Proc_End:
 

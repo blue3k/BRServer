@@ -266,7 +266,7 @@ namespace Svr {
 
 		svrCheckPtr(pConnection = new(GetSystemHeap()) Net::ConnectionMUDPServer(GetSystemHeap(), m_ServerNet->GetSocketIO()));
 
-		local.SetInfo(GetServerNet()->GetNetClass(), m_ServerNet->GetLocalAddress(), BrServer::GetInstance()->GetServerUID());
+		local.SetInfo(GetServerNet()->GetNetClass(), m_ServerNet->GetLocalAddress(), Service::ServerConfig->UID);
 		remote.SetInfo(NetClass::Client, authTicket);
 
 		pConnection->SetCID(Service::ConnectionManager->NewCID());

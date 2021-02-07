@@ -71,8 +71,9 @@ namespace SF {
 
 			svrChk(super::InitializeEntity(newEntityID));
 
-			svrChk(Service::ClusterManager->RegisterClustereWatchers(GetGameID(), ClusterID::MatchingQueue_Game_4x1, ClusterID::MatchingQueue_Game_4x1W));
-			svrChk(Service::ClusterManager->RegisterClustereWatchers(GetGameID(), ClusterID::MatchingQueue_Game_8x1, ClusterID::MatchingQueue_Game_8x1W));
+			// TODO: We will use stream db queue later
+			//svrChk(Service::ServiceDirectory->WatchForService(GetGameID(), ClusterID::MatchingQueue_Game_4x1, ClusterID::MatchingQueue_Game_4x1W));
+			//svrChk(Service::ServiceDirectory->WatchForService(GetGameID(), ClusterID::MatchingQueue_Game_8x1, ClusterID::MatchingQueue_Game_8x1W));
 
 
 		Proc_End:
@@ -113,7 +114,7 @@ namespace SF {
 		//
 
 		// Add new Entity
-		Result GamePartyManagerServiceEntity::CreateGameParty(GameID gameID, const PlayerInformation& creator, EntityUID playerUID, SharedPointerT<MessageEndpoint>& remoteEndpoint, PartyUID& partyUID)
+		Result GamePartyManagerServiceEntity::CreateGameParty(GameID gameID, const PlayerInformation& creator, EntityUID playerUID, const SharedPointerT<MessageEndpoint>& remoteEndpoint, PartyUID& partyUID)
 		{
 			Result hr = ResultCode::SUCCESS;
 			GamePartyEntity* pGameParty = nullptr;

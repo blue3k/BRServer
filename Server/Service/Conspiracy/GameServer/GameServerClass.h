@@ -82,10 +82,6 @@ namespace GameServer
 		//
 
 
-		// Apply configuration
-		virtual Result ApplyConfiguration() override;
-
-
 		// Initialize server resource
 		virtual Result InitializeServerResource() override;
 

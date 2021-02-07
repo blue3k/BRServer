@@ -61,8 +61,8 @@ namespace SharedModuleServer {
 
 		switch( m_Step )
 		{
-		case StartingStep::WaitEntityServer:
-			if( Service::ClusterManager->GetIsInitialized() )
+		case StartingStep::StartInitialization:
+			//if( Service::ServiceDirectory->GetIsInitialized() )
 			{
 				svrChkReturn( InitializeServices() );
 				m_Step = StartingStep::WaitInitializeComponents;
@@ -87,8 +87,12 @@ namespace SharedModuleServer {
 	Result SharedModuleServerStartProcess::InitializeServices()
 	{
 		Result hr = ResultCode::SUCCESS;
-		
-		svrChkReturn( Service::ClusterManager->InitializeNotInitializedClusterEntities() );
+
+		for (auto& itService : GetMyOwner()->GetLocalServiceEntities())
+		{
+			if (!itService->GetInitialized())
+				itService->StartInitialization();
+		}
 
 		return hr;
 	}
@@ -100,7 +104,7 @@ namespace SharedModuleServer {
 
 		svrCheck(super::StartTransaction() );
 
-		m_Step = StartingStep::WaitEntityServer;
+		m_Step = StartingStep::StartInitialization;
 		SetTimer(DurationMS(500));
 
 		return hr;

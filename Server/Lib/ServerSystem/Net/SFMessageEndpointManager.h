@@ -31,6 +31,7 @@ namespace SF {
 
 		CriticalSection m_TableLock;
 		DualSortedMap<uint64_t, MessageEndpoint*> m_MessageEndpointByUID;
+		DualSortedMap<uint32_t, MessageEndpoint*> m_MessageEndpointByServerID;
 
 	public:
 
@@ -44,7 +45,7 @@ namespace SF {
 		Result DeinitializeComponent();
 
 
-		virtual Result AddOrGetRemoteEndpoint(const EntityUID& entityUID, const String& messageRouterAddress, const String& channelName, MessageEndpoint*& pEndpoint) override;
+		virtual Result AddOrGetRemoteEndpoint(const EntityUID& entityUID, const ServerConfig::MessageEndpoint& messageEndpoint, MessageEndpoint*& pEndpoint) override;
 
 		virtual MessageEndpoint* GetEndpoint(const EntityUID& entityUID) override;
 	};

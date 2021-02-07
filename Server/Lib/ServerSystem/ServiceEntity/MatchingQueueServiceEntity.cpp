@@ -288,7 +288,7 @@ namespace Svr {
 	Result MatchingQueueServiceEntity::CancelItem(QueueItem *pItem)
 	{
 		Result hr = ResultCode::SUCCESS;
-		//ServerEntity* pServerEntity = nullptr;
+		MessageEndpoint* requesterEndpoint{};
 
 		if (pItem == nullptr)
 			return ResultCode::INVALID_ARG;
@@ -300,8 +300,7 @@ namespace Svr {
 		}
 
 		// If delete is required by canceling
-		auto requesterEndpoint = Service::MessageEndpointManager->GetEndpoint(pItem->RegisterUID);
-		//svrChk((Service::ServerEntityManager->GetServerEntity(pItem->RegisterUID.GetServerID(), pServerEntity)));
+		requesterEndpoint = Service::MessageEndpointManager->GetEndpoint(pItem->RegisterUID);
 		
 		if (pItem->NumPlayers > 1)
 		{

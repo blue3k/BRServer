@@ -39,23 +39,12 @@ ServerEntity* BrServer::GetLoopbackServerEntity()
 	return *m_pLoopbackServerEntity;
 }
 
-// Set server UID
-void BrServer::SetServerUID( uint uiUID )
-{
-	m_uiUID = uiUID;
-}
-
 // Get Server start up time, UTC
 UTCTimeStampSec BrServer::GetServerUpTime()
 {
 	return m_ServerUpUTCTIme;
 }
 
-// Get Server UID
-uint BrServer::GetServerUID()
-{
-	return m_uiUID;
-}
 
 // Get server instance
 BrServer* BrServer::GetInstance()

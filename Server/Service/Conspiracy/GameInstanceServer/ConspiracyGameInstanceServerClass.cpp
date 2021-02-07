@@ -72,21 +72,6 @@ namespace ConspiracyGameInstanceServer {
 	}
 
 
-
-
-
-
-	// Apply configuration
-	Result GameInstanceServer::ApplyConfiguration()
-	{
-		Result hr = ResultCode::SUCCESS;
-
-		svrCheck(Svr::BrServer::ApplyConfiguration() );
-
-		return hr;
-	}
-
-
 	// Initialize server resource
 	Result GameInstanceServer::InitializeServerResource()
 	{
@@ -148,7 +133,7 @@ namespace ConspiracyGameInstanceServer {
 
 		{
 		GameInstanceManagerServiceEntity *pGameInstanceManager = nullptr;
-		svrMem( pGameInstanceManager = new(GetHeap()) GameInstanceManagerServiceEntity(Svr::GetServerGameID(), nullptr, ClusterID::GameInstanceManager, ClusterMembership::Slave) );
+		svrMem( pGameInstanceManager = new(GetHeap()) GameInstanceManagerServiceEntity(Service::ServerConfig->GameClusterID, nullptr, ClusterID::GameInstanceManager, ClusterMembership::Slave) );
 		svrChk(Service::EntityManager->AddEntity( EntityFaculty::Service, pGameInstanceManager ) );
 		svrChk(GetComponentCarrier().AddComponentWithAdapter(pGameInstanceManager) );
 		}

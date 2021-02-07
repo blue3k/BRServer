@@ -67,7 +67,7 @@ namespace GameServer {
 		switch( m_Step )
 		{
 		case StartingStep::WaitEntityServer:
-			if( Service::ClusterManager->GetIsInitialized() )
+			//if( Service::ClusterManager->GetIsInitialized() )
 			{
 				svrChkReturn( InitializeServices() );
 				m_Step = StartingStep::WaitInitializeComponents;
@@ -93,7 +93,7 @@ namespace GameServer {
 	{
 		Result hr = ResultCode::SUCCESS;
 		
-		svrChkReturn( Service::ClusterManager->InitializeNotInitializedClusterEntities() );
+		//svrChkReturn( Service::ClusterManager->InitializeNotInitializedClusterEntities() );
 
 		return hr;
 	}

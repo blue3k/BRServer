@@ -30,6 +30,7 @@ namespace SF {
 
 	MessageEndpointManager::MessageEndpointManager()
 		: m_MessageEndpointByUID(GetSystemHeap())
+		, m_MessageEndpointByServerID(GetSystemHeap())
 	{
 
 	}
@@ -65,7 +66,7 @@ namespace SF {
 	}
 
 
-	Result MessageEndpointManager::AddOrGetRemoteEndpoint(const EntityUID& entityUID, const String& messageRouterAddress, const String& channelName, MessageEndpoint*& pEndpoint)
+	Result MessageEndpointManager::AddOrGetRemoteEndpoint(const EntityUID& entityUID, const ServerConfig::MessageEndpoint& messageEndpoint, MessageEndpoint*& pEndpoint)
 	{
 		MutexScopeLock lock(m_TableLock);
 
@@ -79,7 +80,7 @@ namespace SF {
 		{
 			auto pStreamEndpoint = new(GetEngineHeap()) MessageEndpointStreamDB();
 			SharedReferenceInc inc(pStreamEndpoint);
-			pStreamEndpoint->InitializeEndpoint(messageRouterAddress, channelName);
+			pStreamEndpoint->InitializeEndpoint(messageEndpoint.MessageServer, messageEndpoint.Channel);
 			auto res = m_MessageEndpointByUID.Insert(entityUID, pStreamEndpoint);
 			if (!res)
 			{
@@ -87,6 +88,9 @@ namespace SF {
 				return ResultCode::OUT_OF_MEMORY;
 			}
 			m_MessageEndpointByUID.CommitChanges();
+
+			m_MessageEndpointByServerID.Insert(entityUID.GetServerID(), pStreamEndpoint);
+			m_MessageEndpointByServerID.CommitChanges();
 
 			pEndpoint = pStreamEndpoint;
 		}
@@ -97,7 +101,11 @@ namespace SF {
 	MessageEndpoint* MessageEndpointManager::GetEndpoint(const EntityUID& entityUID)
 	{
 		MessageEndpoint* pEndpoint{};
-		m_MessageEndpointByUID.Find(entityUID, pEndpoint);
+		if (!m_MessageEndpointByUID.Find(entityUID, pEndpoint)) // search with entityUID first
+		{
+			// If we fail the UID should be non-service entity. search with server ID
+			m_MessageEndpointByServerID.Find(entityUID.GetServerID(), pEndpoint);
+		}
 		return pEndpoint;
 	}
 

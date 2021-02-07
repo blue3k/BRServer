@@ -123,11 +123,11 @@ namespace Svr {
 	//	ClusterManagerServiceEntity class
 	//
 
-	class ClusterManagerServiceEntity : public ServiceEntity, public ClusterManagerService
+	class ClusterManagerServiceEntity : public MasterEntity, public ClusterManagerService
 	{
 	public:
 
-		using super = ServiceEntity;
+		using super = MasterEntity;
 
 		static constexpr StringCrc64 TypeName = "ClusterManagerService";
 
@@ -158,7 +158,7 @@ namespace Svr {
 		virtual Result TerminateEntity() override;
 
 		// Set watch state for cluster
-		virtual Result SetWatchForCluster(GameID gameID, ClusterID clusterID) override;
+		virtual Result WatchForService(GameID gameID, ClusterID clusterID) override;
 		ClusterServiceInfo* GetOrSetWatchForCluster(GameID gameID, ClusterID clusterID);
 
 
@@ -170,8 +170,7 @@ namespace Svr {
 		virtual Result GetShardService(GameID gameID, ClusterID clusterID, uint64_t shardKey, ServerServiceInformation* &pServiceInfo) override;
 		virtual Result GetNextService(ServerServiceInformation* pServiceInfo, ServerServiceInformation* &pNextServiceInfo) override;
 
-		virtual Result RegisterServiceMessageHandler() override;
-
+		virtual Result RegisterServiceMessageHandler();
 
 		virtual Result TickUpdate(TimerAction *pAction = nullptr) override;
 

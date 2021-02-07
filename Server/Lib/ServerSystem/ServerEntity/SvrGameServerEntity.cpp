@@ -53,7 +53,7 @@ namespace Svr {
 
 		svrChk(ServerEntity::InitializeEntity( newEntityID ) );
 
-		BR_ENTITY_MESSAGE(Message::Server::ServerConnectedC2SEvt) { svrMemReturn(pNewTrans = new(GetHeap()) Svr::GenericServerStartedTrans(GetHeap(), pMsgData)); return ResultCode::SUCCESS; } );
+		//BR_ENTITY_MESSAGE(Message::Server::ServerConnectedC2SEvt) { svrMemReturn(pNewTrans = new(GetHeap()) Svr::GenericServerStartedTrans(GetHeap(), pMsgData)); return ResultCode::SUCCESS; } );
 
 	Proc_End:
 
@@ -62,8 +62,8 @@ namespace Svr {
 
 
 
-}; // namespace Svr
-}; // namespace SF
+} // namespace Svr
+} // namespace SF
 
 
 

@@ -1,6 +1,6 @@
 ////////////////////////////////////////////////////////////////////////////////
 // 
-// CopyRight (c) 2013 The Braves
+// CopyRight (c) The Braves
 // 
 // Author : KyungKun Ko
 //
@@ -25,44 +25,73 @@
 #include "Container/SFIndexing.h"
 #include "Entity/MasterEntity.h"
 #include "Entity/EntityInformation.h"
-
+#include "ServerConfig/SFServerConfig.h"
 
 namespace SF {
-	namespace Svr {
 
-		class Entity;
-		class ServerEntity;
-
-
-		///////////////////////////////////////////////////////////////////////////////////////////////////////
-		//
-		//	ServiceEntity class
-		//		- Collection of service cluster server entity
-		//
-
-		class ServiceEntity : public MasterEntity
-		{
-		public:
-
-			using super = MasterEntity;
-
-		private:
+	class StreamDBProducer;
+	class Entity;
 
 
+	///////////////////////////////////////////////////////////////////////////////////////////////////////
+	//
+	//	ServiceEntity class
+	//		- Collection of service cluster server entity
+	//
 
-		public:
+	class ServiceEntity : public Svr::MasterEntity
+	{
+	public:
 
-			ServiceEntity();
-			~ServiceEntity();
+		using super = Svr::MasterEntity;
 
-			// Register message handler for this component
-			virtual Result RegisterServiceMessageHandler() { return ResultCode::SUCCESS; }
-		};
+	private:
+
+		// Game id
+		GameID m_GameID;
+
+		// Cluster ID
+		ClusterID m_ClusterID;
+
+		StringCrc64 m_ClusterName;
+
+		String m_DataCenterPath;
+
+		bool m_Initialized = false;
+
+		SharedPointerT<StreamDBProducer> m_ListenEndpoint;
+
+		ServerConfig::MessageEndpoint m_MessageEndpointConfig;
+
+	public:
+
+		ServiceEntity(GameID gameID, ClusterID clusterID, const ServerConfig::MessageEndpoint& endpoint = {});
+		~ServiceEntity();
+
+		// Initialized
+		bool GetInitialized() { return m_Initialized; }
+		void SetInitialized(bool value) { m_Initialized = value; }
+
+		GameID GetGameID() const { return m_GameID; }
+
+		ClusterID GetClusterID() const { return m_ClusterID; }
+
+		StringCrc64 GetClusterName() const { return m_ClusterName; }
+
+		const ServerConfig::MessageEndpoint& GetMessageEndpointConfig() const { return m_MessageEndpointConfig; }
+
+		// Get message endpoint
+		const SharedPointerT<StreamDBProducer>& GetListenEndpoint() const { return m_ListenEndpoint; }
+
+		// start initialization
+		virtual Result StartInitialization();
+
+		// Register message handler for this component
+		virtual Result RegisterServiceMessageHandler() { return ResultCode::SUCCESS; }
+
+		virtual Result TickUpdate(TimerAction* pAction) override;
+	};
 
 
-
-
-
-	} // namespace Svr
 } // namespace SF
 

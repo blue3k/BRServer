@@ -1,6 +1,6 @@
 ////////////////////////////////////////////////////////////////////////////////
 // 
-// CopyRight (c) 2013 Blue3k
+// CopyRight (c) Blue3k
 // 
 // Author : KyungKun Ko
 //
@@ -45,7 +45,10 @@ namespace SF {
 
 
 namespace SF {
-namespace Svr {
+
+	class ServiceEntity;
+
+	namespace Svr {
 
 	class ServerEntityManager;
 	class ServerEntity;
@@ -70,19 +73,17 @@ namespace Svr {
 	{
 	public:
 
-		typedef Result (*ModuleContructorType)(BrServer* ThisServer, GameID gameID, ServerConfig::ServerModule* config);
+		typedef Result (*ModuleFactoryFuncType)(BrServer* ThisServer, GameID gameID, ServerConfig::ServerModule* config);
 
 	private:
 
 		ServerComponentCarrier m_Components;
 
+		// local service entities
+		DynamicArray<ServiceEntity*> m_LocalServiceEntities;
+
 		// Server state
 		ServerState		m_State = ServerState::STOPED;
-
-		// UID of this server
-		uint32_t			m_uiUID = 0;
-
-		GameID m_GameID;
 
 		// Server execution time stamp
 		UTCTimeStampSec					m_ServerUpUTCTIme;
@@ -108,7 +109,7 @@ namespace Svr {
 		Thread* m_MainServerThread = nullptr;
 
 		// Module constructor map
-		HashTable<StringCrc32, ModuleContructorType> m_ModuleFactories;
+		HashTable<StringCrc32, ModuleFactoryFuncType> m_ModuleFactories;
 
 		// singleton instance
 		static BrServer *stm_pServerInstance;
@@ -118,10 +119,6 @@ namespace Svr {
 
 		// Set Loopback entity
 		inline void SetLoopbackServerEntity( ServerEntity* pLoopback );
-
-		// Set server UID
-		inline void SetServerUID( uint uiUID );
-		//inline void SetClusterID( uint uiUID );
 
 		// Set main server instance
 		static void SetInstance( BrServer *pServerInstance );
@@ -156,12 +153,6 @@ namespace Svr {
 		BrServer();
 		virtual ~BrServer();
 
-		GameID GetGameID() { return m_GameID; }
-		
-		// Get net class
-		inline NetClass GetNetClass();
-
-
 		// Set server state
 		inline void SetServerState( ServerState state );
 
@@ -174,11 +165,7 @@ namespace Svr {
 		// Get Loopback entity
 		inline ServerEntity* GetLoopbackServerEntity();
 
-		// Get Server UID
-		inline uint GetServerUID();
-		//inline uint GetClusterID();
-
-		EntityUID GetServerEntityUID() { return EntityUID(GetServerUID(), EntityID(EntityFaculty::Server, 0)); }
+		EntityUID GetServerEntityUID() { return EntityUID(Service::ServerConfig->UID, EntityID(EntityFaculty::Server, 0)); }
 		
 		// Get Server start up time, UTC
 		inline UTCTimeStampSec GetServerUpTime();
@@ -189,11 +176,13 @@ namespace Svr {
 		ServerComponentCarrier& GetComponentCarrier() { return m_Components; }
 
 
+		const Array<ServiceEntity*>& GetLocalServiceEntities() const { return m_LocalServiceEntities; }
+
 		template<class DBManagerType>
 		Result AddDBCluster(const ServerConfig::DBCluster *pDBClusterCfg);
 
 		// Emplace module constructor
-		Result EmplaceModuleConstructor(StringCrc32 moduleName, ModuleContructorType constructor);
+		Result EmplaceModuleFactory(StringCrc32 moduleName, ModuleFactoryFuncType constructor);
 
 
 		//////////////////////////////////////////////////////////////////////////
@@ -204,7 +193,7 @@ namespace Svr {
 		virtual Result TerminateEntity() override;
 
 
-		void AddModuleConstructor(StringCrc32 NameCrc, ModuleContructorType&& Constructor);
+		void AddModuleFactory(StringCrc32 NameCrc, ModuleFactoryFuncType&& Constructor);
 
 		// InitializeModuleFactory
 		virtual Result InitializeModuleFactory();
@@ -219,11 +208,6 @@ namespace Svr {
 		virtual Result CreateServerInstanceZK(const char* nodeName);
 
 		virtual Result SetupConfiguration();
-
-		virtual Result CreateEntityManager();
-
-		// Apply configuration
-		virtual Result ApplyConfiguration();
 
 		virtual Result InitializeMonitoring();
 
@@ -263,9 +247,7 @@ namespace Svr {
 		template< class ServiceEntityType, typename... ConstructorArgs >
 		ServiceEntityType* AddServiceEntity(ConstructorArgs... constructorArgs);
 
-		template< class ServiceEntityType, typename... ConstructorArgs >
-		Result AddServiceEntityComponent(ConstructorArgs... constructorArgs);
-
+		Result AddServiceEntity(ServiceEntity* pServiceEntity);
 
 		// Register server module
 		Result RegisterModule(ServerConfig::ServerModule* module);
@@ -287,10 +269,10 @@ namespace Svr {
 		ServiceEntityType* pServiceEntity = nullptr;
 
 		pServiceEntity = new(GetHeap()) ServiceEntityType(constructorArgs...);
-		if(pServiceEntity == nullptr);
+		if(pServiceEntity == nullptr)
 			return nullptr;
 
-		if (!Service::EntityManager->AddEntity(EntityFaculty::Service, pServiceEntity))
+		if (!AddServiceEntity(pServiceEntity))
 		{
 			delete pServiceEntity;
 			return nullptr;
@@ -300,21 +282,6 @@ namespace Svr {
 	}
 
 
-	template< class ServiceEntityType, typename... ConstructorArgs >
-	Result BrServer::AddServiceEntityComponent(ConstructorArgs... constructorArgs)
-	{
-		Result hr = ResultCode::SUCCESS;
-
-		auto pServiceEntity = AddServiceEntity<ServiceEntityType>(constructorArgs...);
-		if (pServiceEntity == nullptr)
-			return ResultCode::FAIL;
-
-		svrChk(GetComponentCarrier().AddComponentWithAdapter(pServiceEntity));
-
-	Proc_End:
-
-		return hr;
-	}
 
 	///////////////////////////////////////////////////////////////////////////////
 	//
@@ -327,11 +294,6 @@ namespace Svr {
 
 	template< class ComponentType >
 	ComponentType* GetServerComponent();
-
-	inline GameID GetServerGameID() { if (BrServer::GetInstance() == nullptr) return nullptr; return BrServer::GetInstance()->GetGameID(); }
-
-
-
 
 
 #include "BrServer.inl"

@@ -317,9 +317,9 @@ namespace Svr {
 		//	svrErrorClose(ResultCode::GAME_LOW_STAMINA);
 		//}
 
-		svrCheck( Service::ClusterManager->GetRandomService(Svr::GetServerGameID(), ClusterID::GamePartyManager, pService ) );
+		svrCheck( Service::ServiceDirectory->GetRandomService(Service::ServerConfig->GameClusterID, ClusterID::GamePartyManager, pService ) );
 
-		svrCheck( pService->GetService<GamePartyManagerService>()->CreatePartyCmd(GetTransID(), 0, (uint32_t)Svr::GetServerGameID(), GetMyOwner()->GetPlayerInformation() ) );
+		svrCheck( pService->GetService<GamePartyManagerService>()->CreatePartyCmd(GetTransID(), 0, (uint32_t)Service::ServerConfig->GameClusterID, GetMyOwner()->GetPlayerInformation() ) );
 
 		return hr;
 	}

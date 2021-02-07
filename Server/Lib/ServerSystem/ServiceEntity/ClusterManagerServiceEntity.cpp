@@ -53,11 +53,11 @@ namespace Svr {
 	{
 		if (m_ClusterKey.Components.GameClusterID != nullptr)
 		{
-			m_ClusterPath.Format("{0}/{1}/{2}", Service::ServerConfig->DataCenterPath, gameID, Enum<ClusterID>().GetValueName(clusterID));
+			m_ClusterPath.Format("{0}/{1}/{2}", Service::ServerConfig->DataCenter.Path, gameID, Enum<ClusterID>().GetValueName(clusterID));
 		}
 		else
 		{
-			m_ClusterPath.Format("{0}/{1}", Service::ServerConfig->DataCenterPath, Enum<ClusterID>().GetValueName(clusterID));
+			m_ClusterPath.Format("{0}/{1}", Service::ServerConfig->DataCenter.Path, Enum<ClusterID>().GetValueName(clusterID));
 		}
 
 		InitZK();
@@ -226,11 +226,10 @@ namespace Svr {
 		svrCheck(GetNodeValue(nodePath, jsonValue));
 
 		auto endpointAddress = jsonValue.get("EndpointAddress", "");
-		auto channel = jsonValue.get("Channel", "");
 		entityUID.UID = jsonValue.get("EntityUID", Json::Value(0)).asUInt64();
 
 		MessageEndpoint* pEndpoint{};
-		svrCheck(Service::MessageEndpointManager->AddOrGetRemoteEndpoint(entityUID, endpointAddress.asCString(), channel.asCString(), pEndpoint));
+		//svrCheck(Service::MessageEndpointManager->AddOrGetRemoteEndpoint(entityUID, endpointAddress.asCString(), channel.asCString(), pEndpoint));
 		//svrCheck(Service::ServerEntityManager->GetOrRegisterServer(entityUID.GetServerID(), eventRouterAddress.asCString(), pServerEntity));
 
 		svrCheckMem(pNewServiceInfo = new(GetHeap()) ServerServiceInformation(m_ClusterKey.Components.GameClusterID, m_ClusterKey.Components.ServiceClusterID, entityUID, pEndpoint, ClusterMembership::Slave));
@@ -334,7 +333,7 @@ namespace Svr {
 
 
 	ClusterManagerServiceEntity::ClusterManagerServiceEntity()
-		: ServiceEntity()
+		: MasterEntity()
 		, m_ClusterInfoMap(GetHeap())
 	{
 		// only entity has some special operations
@@ -357,13 +356,13 @@ namespace Svr {
 		//BR_ENTITY_MESSAGE(Message::ClusterServer::ClusterUpdateStatusC2SEvt)				{ svrMemReturn(pNewTrans = new(GetHeap()) ClusterUpdateStatusTrans(GetHeap(), pMsgData)); return ResultCode::SUCCESS; } );
 		//BR_ENTITY_MESSAGE(Message::ClusterServer::ClusterUpdateWorkloadC2SEvt)				{ svrMemReturn(pNewTrans = new(GetHeap()) ClusterUpdateWorkloadTrans(GetHeap(), pMsgData)); return ResultCode::SUCCESS; } );
 
-		Service::ClusterManager = this;
+		//Service::ClusterManager = this;
 	}
 
 
 	ClusterManagerServiceEntity::~ClusterManagerServiceEntity()
 	{
-		Service::ClusterManager = nullptr;
+		//Service::ClusterManager = nullptr;
 	}
 
 	void ClusterManagerServiceEntity::Dispose()
@@ -413,10 +412,10 @@ namespace Svr {
 			return ResultCode::UNEXPECTED;
 		}
 
-		if (!zkSession->Exists(Service::ServerConfig->DataCenterPath))
+		if (!zkSession->Exists(Service::ServerConfig->DataCenter.Path))
 		{
 			// Create game cluster path if not exist
-			zkSession->Create(Service::ServerConfig->DataCenterPath, Json::Value(Json::objectValue), nullptr, 0, outPath);
+			zkSession->Create(Service::ServerConfig->DataCenter.Path, Json::Value(Json::objectValue), nullptr, 0, outPath);
 		}
 
 		pTrans = nullptr;
@@ -450,7 +449,7 @@ namespace Svr {
 	}
 
 	// Set watch state for cluster
-	Result ClusterManagerServiceEntity::SetWatchForCluster(GameID gameID, ClusterID clusterID)
+	Result ClusterManagerServiceEntity::WatchForService(GameID gameID, ClusterID clusterID)
 	{
 		ClusterServiceInfo_Impl* pServiceInfo = static_cast<ClusterServiceInfo_Impl*>(GetOrSetWatchForCluster(gameID, clusterID));
 

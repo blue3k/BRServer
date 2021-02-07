@@ -62,7 +62,7 @@ namespace SF {
 
 		SharedPointerT<TickTaskTimerAction>			m_TimerAction;
 
-
+		bool m_UseDesignatedThread =  false;
 
 	public:
 		// Constructor
@@ -78,6 +78,9 @@ namespace SF {
 		// Get TickTask group
 		inline SysUInt GetTaskGroupID() const;
 		inline void SetTaskGroupID( SysUInt uiTaskGroupIdx );
+
+		bool UseDesignatedThread() const { return m_UseDesignatedThread; }
+		void SetUseDesignatedThread(bool bValue) { m_UseDesignatedThread = bValue; }
 
 		// Get TickTask group
 		TickTaskManager* GetTaskManager();

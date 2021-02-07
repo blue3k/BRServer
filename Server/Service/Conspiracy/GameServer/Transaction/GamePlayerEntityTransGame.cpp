@@ -1031,9 +1031,9 @@ namespace GameServer {
 		Result hr = ResultCode::SUCCESS;
 		ServerServiceInformation *pService = nullptr;
 
-		svrChk(Service::ClusterManager->GetRandomService(Svr::GetServerGameID(), ClusterID::GamePartyManager, pService));
+		svrChk(Service::ServiceDirectory->GetRandomService(Service::ServerConfig->GameClusterID, ClusterID::GamePartyManager, pService));
 
-		svrChk(pService->GetService<GamePartyManagerService>()->CreatePartyCmd(GetTransID(), 0, (uint32_t)Svr::GetServerGameID(), GetMyOwner()->GetPlayerInformation()));
+		svrChk(pService->GetService<GamePartyManagerService>()->CreatePartyCmd(GetTransID(), 0, (uint32_t)Service::ServerConfig->GameClusterID, GetMyOwner()->GetPlayerInformation()));
 
 	Proc_End:
 

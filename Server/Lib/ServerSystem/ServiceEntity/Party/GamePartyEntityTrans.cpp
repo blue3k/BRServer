@@ -68,7 +68,7 @@ namespace Svr {
 
 		svrCheck(Transaction::StartTransaction() );
 
-		svrCheck(Service::ClusterManager->GetRandomService(m_GameID, ClusterID::GamePartyManager, pService));
+		svrCheck(Service::ServiceDirectory->GetRandomService(m_GameID, ClusterID::GamePartyManager, pService));
 		svrCheck(pService->GetService<GamePartyManagerService>()->PartyDeletedC2SEvt(pOwner->GetEntityUID(), 0));
 
 		Service::EntityManager->RemoveEntity( pOwner );
@@ -322,7 +322,7 @@ namespace Svr {
 			// We already have full member, just create game and let them know to join
 			ServerServiceInformation *pService = nullptr;
 
-			svrChk(Service::ClusterManager->GetRandomService(GetMyOwner()->GetGameID(), ClusterID::GameInstanceManager, pService));
+			svrChk(Service::ServiceDirectory->GetRandomService(GetMyOwner()->GetGameID(), ClusterID::GameInstanceManager, pService));
 			//svrChk( GetServerComponent<GameInstanceManagerWatcherServiceEntity>()->GetService( pService ) );
 
 			VariableTable attributes(GetHeap());
@@ -338,7 +338,7 @@ namespace Svr {
 			ClusteredServiceEntity *matchingQueueService = nullptr;
 			auto queueClusterID = Svr::MatchingUtil::GetQueueClusterID(GetMaxGamePlayers(), GetMyOwner()->GetNumPlayer(), PlayerRole::None);
 
-			svrChk(Service::ClusterManager->GetRandomService(GetServerGameID(), queueClusterID, pService));
+			svrChk(Service::ServiceDirectory->GetRandomService(Service::ServerConfig->GameClusterID, queueClusterID, pService));
 
 			//auto matchingCompID = Svr::MatchingUtil::GetQueueComponentID(GetMaxGamePlayers(), GetMyOwner()->GetNumPlayer(), PlayerRole::None);
 			//auto matchingQueueService = Svr::GetServerComponent<Svr::RingClusterServiceEntity>(matchingCompID);

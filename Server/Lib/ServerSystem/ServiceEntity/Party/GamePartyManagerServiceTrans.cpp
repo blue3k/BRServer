@@ -40,7 +40,7 @@ namespace Svr {
 
 		svrChk( super::StartTransaction() );
 
-		svrChk( GetMyOwner()->CreateGameParty( (GameID)GetGameID(), GetCreator(), GetRouteContext().GetFrom(), GetServerEntity<ServerEntity>(), m_PartyUID ) );
+		svrChk( GetMyOwner()->CreateGameParty( (GameID)GetGameID(), GetCreator(), GetRouteContext().GetFrom(), GetRemoteEndpoint(), m_PartyUID ) );
 
 	Proc_End:
 

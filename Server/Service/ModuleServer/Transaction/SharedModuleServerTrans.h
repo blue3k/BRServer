@@ -31,7 +31,7 @@ namespace SF {
 
 			enum class StartingStep
 			{
-				WaitEntityServer,
+				StartInitialization,
 				WaitInitializeComponents,
 				Done
 			};

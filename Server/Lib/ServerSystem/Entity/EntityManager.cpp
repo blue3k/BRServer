@@ -92,7 +92,7 @@ namespace Svr {
 	{
 		Result hr = ResultCode::SUCCESS;
 
-		svrChk( pEntity->InitializeEntity(Service::EntityTable->GenEntityID(faculty) ) );
+		svrCheck(pEntity->InitializeEntity(Service::EntityTable->GenEntityID(faculty)));
 
 		// Disable ServiceMessage handler
 		//if( faculty == EntityFaculty::Service )
@@ -107,13 +107,11 @@ namespace Svr {
 
 		m_SharedObjectManager.RegisterSharedObject(pEntity);
 
-		svrChk( AddTickTask( pEntity ) );
+		svrCheck( AddTickTask( pEntity ) );
 
-		svrChk(Service::EntityTable->insert(pEntity));
+		svrCheck(Service::EntityTable->insert(pEntity));
 
 		OnEntityAdded(pEntity);
-
-	Proc_End:
 
 		return hr;
 	}
@@ -123,25 +121,23 @@ namespace Svr {
 	{
 		Result hr = ResultCode::SUCCESS;
 
-		svrChk(Service::EntityTable->ReserveEntityID( entityID ) );
+		svrCheck(Service::EntityTable->ReserveEntityID( entityID ));
 
-		svrChk( pEntity->InitializeEntity( entityID ) );
+		svrCheck(pEntity->InitializeEntity( entityID ));
 
 		// Disable ServiceMessage handler
-		//if( entityID.GetFacultyID() == (uint)EntityFaculty::Service )
+		//if(entityID.GetFacultyID() == (uint)EntityFaculty::Service)
 		//{
-		//	ClusteredServiceEntity* pClusterService = dynamic_cast<ClusteredServiceEntity*>(pEntity);
+		//	auto* pClusterService = dynamic_cast<ClusteredServiceEntity*>(pEntity);
 		//	if( pClusterService != nullptr )
 		//		pClusterService->RegisterServiceMessageHandler();
 		//}
 
-		svrChk( AddTickTask( pEntity ) );
+		svrCheck( AddTickTask( pEntity ) );
 
-		svrChk(Service::EntityTable->insert(pEntity));
+		svrCheck(Service::EntityTable->insert(pEntity));
 
 		OnEntityAdded(pEntity);
-
-	Proc_End:
 
 		return hr;
 	}

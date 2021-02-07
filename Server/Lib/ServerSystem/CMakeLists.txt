@@ -43,6 +43,9 @@ set(BRSERVERSYSTEM_LIB_FILES
     ServiceEntity/Game/GamePlayerEntity.cpp
     ServiceEntity/Game/GameServiceEntity.cpp
     ServiceEntity/Game/GameServiceTrans.cpp
+    ServiceEntity/ServiceDirectoryManager.h
+    ServiceEntity/ServiceDirectoryManager.cpp
+    Service/ServiceDirectoryService.h
     Task/ServerTask.inl
     Task/ServerTaskEvent.inl
     Task/ServerTaskManager.inl
@@ -169,8 +172,6 @@ set(BRSERVERSYSTEM_LIB_FILES
     Google/GoogleOAuth.cpp
     Net/SFConnectionMUDPServer.cpp
     Net/SFNetServerMUDP.cpp
-    Net/SFMessageEndpoint.h
-    Net/SFMessageEndpoint.cpp
 	Net/SFMessageEndpointManager.h
 	Net/SFMessageEndpointManager.cpp
     PerformanceCounter/PerformanceCounter.cpp

@@ -423,20 +423,22 @@ namespace Svr {
 		m_ReservationStartFrom = 1;
 		m_WaitingBotMatchingStart = TimeStampMS::min();
 
-		switch (m_TargetMatchingMemberCount)
-		{
-		case 4:
-			svrChk(Service::ClusterManager->RegisterClustereWatchers(GetGameID(), ClusterID::MatchingQueue_Game_4x1, ClusterID::MatchingQueue_Game_4x1W));
-			break;
-		case 8:
-			svrChk(Service::ClusterManager->RegisterClustereWatchers(GetGameID(), ClusterID::MatchingQueue_Game_8x1, ClusterID::MatchingQueue_Game_8x1W));
-			break;
-		default:
-			assert(false); // not supported
-			break;
-		}
+		assert(false);
+		// TODO: Change to stream DB
+		//switch (m_TargetMatchingMemberCount)
+		//{
+		//case 4:
+		//	svrChk(Service::ServiceDirectory->RegisterClustereWatchers(GetGameID(), ClusterID::MatchingQueue_Game_4x1, ClusterID::MatchingQueue_Game_4x1W));
+		//	break;
+		//case 8:
+		//	svrChk(Service::ServiceDirectory->RegisterClustereWatchers(GetGameID(), ClusterID::MatchingQueue_Game_8x1, ClusterID::MatchingQueue_Game_8x1W));
+		//	break;
+		//default:
+		//	assert(false); // not supported
+		//	break;
+		//}
 
-		svrChk(Service::ClusterManager->SetWatchForCluster(GetGameID(), ClusterID::GameInstanceManager));
+		svrChk(Service::ServiceDirectory->WatchForService(GetGameID(), ClusterID::GameInstanceManager));
 
 
 		newQueueEntity = new(GetHeap()) MatchingServiceQueueEntity(m_TargetMatchingMemberCount, MIN_ITEM_RESERVATION, MAX_ITEM_RESERVATION);

@@ -18,7 +18,11 @@
 
 namespace SF {
 
-	class MessageEndpoint;
+	namespace ServerConfig
+	{
+		struct MessageEndpoint;
+	}
+
 
 	/////////////////////////////////////////////////////////////////////////////////////////
 	//
@@ -29,11 +33,9 @@ namespace SF {
 	{
 	public:
 
-		virtual Result AddOrGetRemoteEndpoint(const EntityUID& entityUID, const String& messageRouterAddress, const String& channelName, MessageEndpoint*& pEndpoint) { pEndpoint = nullptr;  return ResultCode::NOT_IMPLEMENTED; }
+		virtual Result AddOrGetRemoteEndpoint(const EntityUID& entityUID, const ServerConfig::MessageEndpoint& messageEndpoint, MessageEndpoint*& pEndpoint) { pEndpoint = nullptr;  return ResultCode::NOT_IMPLEMENTED; }
 
 		virtual MessageEndpoint* GetEndpoint(const EntityUID& entityUID) { return nullptr; }
 	};
 
-	
 } // namespace SF
-

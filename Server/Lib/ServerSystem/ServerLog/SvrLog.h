@@ -431,6 +431,7 @@ namespace SF {
 #define defCheck(e)			trcCheck(e)
 #define defCheckError(ErrCode,exp)			{ do{ Result hRes = exp; if( !(hRes) ) TrcErrJmp(Svr,ErrCode,hr); } while(0); }
 #define defCheckMem(a)			trcCheckMem(a)
+#define defCheckPtr(a)			trcCheckMem(a)
 #define defChkPtr(a)		trcChkPtr(a)
 
 

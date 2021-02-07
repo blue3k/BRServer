@@ -19,7 +19,7 @@ GameInsID GameInstanceEntity::GetInstanceID()
 
 GameInsUID GameInstanceEntity::GetInstanceUID()
 {
-	return GameInsUID( BrServer::GetInstance()->GetServerUID(), GetEntityID() );
+	return GameInsUID(Service::ServerConfig->UID, GetEntityID() );
 }
 
 

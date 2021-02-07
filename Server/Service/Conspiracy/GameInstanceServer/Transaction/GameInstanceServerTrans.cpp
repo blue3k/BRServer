@@ -63,7 +63,7 @@ namespace ConspiracyGameInstanceServer {
 		switch( m_Step )
 		{
 		case StartingStep::WaitEntityServer:
-			if( Service::ClusterManager->GetIsInitialized() )
+			//if( Service::ClusterManager->GetIsInitialized() )
 			{
 				svrChk( InitializeServices() );
 				m_Step = StartingStep::WaitInitializeComponents;
@@ -94,7 +94,7 @@ namespace ConspiracyGameInstanceServer {
 	{
 		Result hr = ResultCode::SUCCESS;
 		
-		svrChk( Service::ClusterManager->InitializeNotInitializedClusterEntities() );
+		//svrChk( Service::ClusterManager->InitializeNotInitializedClusterEntities() );
 		
 
 	Proc_End:

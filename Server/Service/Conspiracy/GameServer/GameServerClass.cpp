@@ -101,18 +101,6 @@ namespace GameServer {
 		return hr;
 	}
 
-
-	// Apply configuration
-	Result GameServer::ApplyConfiguration()
-	{
-		Result hr = ResultCode::SUCCESS;
-
-		svrCheck(Svr::BrServer::ApplyConfiguration() );
-
-		return hr;
-	}
-
-
 	// Initialize server resource
 	Result GameServer::InitializeServerResource()
 	{
@@ -202,20 +190,20 @@ namespace GameServer {
 		// Queue items
 		for (ClusterID matchingQueueClusterID = ClusterID::MatchingQueue_Game_4x1; static_cast<uint32_t>(matchingQueueClusterID) <= ClusterID_MatchingQueue_Max; matchingQueueClusterID++)
 		{
-			svrChk(Service::ClusterManager->SetWatchForCluster( Svr::GetServerGameID(), matchingQueueClusterID) );
+			svrChk(Service::ServiceDirectory->WatchForService( Service::ServerConfig->GameClusterID, matchingQueueClusterID) );
 		}
 
 
 		// Adding matching entities
 		for( ClusterID matchingClusterID = ClusterID::Matching_Game_4; matchingClusterID <= ClusterID::Matching_Game_8; matchingClusterID++ )
 		{
-			svrChk(Service::ClusterManager->SetWatchForCluster(Svr::GetServerGameID(), matchingClusterID));
+			svrChk(Service::ServiceDirectory->WatchForService(Service::ServerConfig->GameClusterID, matchingClusterID));
 		}
 
 
 
-		svrChk(Service::ClusterManager->SetWatchForCluster(Svr::GetServerGameID(), ClusterID::GameInstanceManager));
-		svrChk(Service::ClusterManager->SetWatchForCluster(Svr::GetServerGameID(), ClusterID::GamePartyManager));
+		svrChk(Service::ServiceDirectory->WatchForService(Service::ServerConfig->GameClusterID, ClusterID::GameInstanceManager));
+		svrChk(Service::ServiceDirectory->WatchForService(Service::ServerConfig->GameClusterID, ClusterID::GamePartyManager));
 
 
 

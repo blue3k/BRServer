@@ -103,7 +103,7 @@ namespace Svr {
 		if( GetMyOwner()->GetChatChannelUID().UID != 0 )
 			svrErrorClose(ResultCode::GAME_ALREADY_IN_CHAT);
 
-		svrCheck( Service::ClusterManager->GetRandomService(Svr::GetServerGameID(), ClusterID::ChatChannelManager, pService ) );
+		svrCheck( Service::ServiceDirectory->GetRandomService(Service::ServerConfig->GameClusterID, ClusterID::ChatChannelManager, pService ) );
 
 		svrCheck( pService->GetService<ChatChannelManagerService>()->CreateChannelCmd(GetTransID(), 0, GetChannelName(), GetPasscode(), GetMyOwner()->GetPlayerInformation() ) );
 

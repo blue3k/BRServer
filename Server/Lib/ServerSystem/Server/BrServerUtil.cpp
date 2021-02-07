@@ -20,6 +20,7 @@
 #include "Server/ParameterSetting.h"
 #include "ServerEntity/ServerEntityManager.h"
 #include "ServiceEntity/ClusterManagerServiceEntity.h"
+#include "ServiceEntity/ServiceDirectoryManager.h"
 #include "Entity/EntityManager.h"
 #include "Util/SFPath.h"
 #include "ServerConfig/SFServerConfigJson.h"
@@ -38,18 +39,16 @@ namespace SF {
 
 	uint GetServerUID()
 	{
-		return Svr::BrServer::GetInstance()->GetServerUID();
+		return Service::ServerConfig->UID;
 	}
-
 
 	// Get server ID
 	ServerID GetMyServerID()
 	{
-		Assert(Svr::BrServer::GetInstance());
-		return Svr::BrServer::GetInstance()->GetServerUID();
+		return Service::ServerConfig->UID;
 	}
 
-	void InitializeEngine(SF::EngineInitParam& initParam = SF::EngineInitParam())
+	void InitializeEngine(SF::EngineInitParam& initParam)
 	{
 		auto configPath = ParameterSetting::GetSetting("config", "../config/SampleLogin.cfg");
 		auto bAsService = StrUtil::StringCompairIgnoreCase(ParameterSetting::GetSetting("servicemode"), -1, "true", -1);
@@ -105,7 +104,7 @@ namespace SF {
 
 		pEngine->AddComponent<ServerNetComponent>();
 		pEngine->AddComponent<ServerLogComponent>(traceConfigPath);
-		pEngine->AddComponent<ZookeeperSessionComponent>(Service::ServerConfig->DataCenter);
+		pEngine->AddComponent<ZookeeperSessionComponent>(Service::ServerConfig->DataCenter.Server);
 
 		svrTrace(Info, "Engine Initialized");
 	}
@@ -127,7 +126,8 @@ namespace SF {
 		pEngine->AddComponent<Svr::EntityTable>();
 		pEngine->AddComponent<LibraryComponentAdapter<Svr::EntityManager, uint>, IHeap&, uint>(GetSystemHeap(), Service::ServerConfig->WorkerThreadCount);
 		//pEngine->AddComponent<LibraryComponentAdapter<Svr::ServerEntityManager,uint>, IHeap&, uint>(GetSystemHeap(), Service::ServerConfig->WorkerThreadCount);
-		pEngine->AddComponent<LibraryComponentAdapter<Svr::ClusterManagerServiceEntity>, IHeap&>(GetSystemHeap());
+		//pEngine->AddComponent<LibraryComponentAdapter<Svr::ClusterManagerServiceEntity>, IHeap&>(GetSystemHeap());
+		pEngine->AddComponent<LibraryComponentAdapter<ServiceDirectoryManager>, IHeap&>(GetSystemHeap());
 		pEngine->AddComponent<LibraryComponentAdapter<MessageEndpointManager>, IHeap&>(GetSystemHeap());
 	}
 

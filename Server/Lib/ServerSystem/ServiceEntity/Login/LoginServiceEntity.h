@@ -28,7 +28,7 @@
 #include "Container/SFIndexing.h"
 
 #include "Entity/EntityInformation.h"
-#include "ServiceEntity/ClusteredServiceEntity.h"
+#include "ServiceEntity/ServiceEntity.h"
 
 
 
@@ -39,19 +39,13 @@ namespace SF {
 		class ServerMUDP;
 	};
 
-	namespace Policy {
-		class ISvrPolicyLogin;
-	};
+	class ISvrPolicyLogin;
 };
 
 
 
 
 namespace SF {
-namespace Svr {
-
-	class Entity;
-	class ServerEntity;
 
 
 
@@ -60,15 +54,15 @@ namespace Svr {
 	//	ServerServiceComponentEntity class
 	//
 
-	class LoginServiceEntity : public ShardedClusterServiceEntity
+	class LoginServiceEntity : public ServiceEntity
 	{
 	public:
-		using super = ShardedClusterServiceEntity;
+		using super = ServiceEntity;
 
 	private:
 
 		const ServerConfig::NetPublic *m_PublicNetSocket = nullptr;
-		SharedPointerT<Net::ServerMUDP>			m_pNetPublic;
+		SharedPointerT<Net::ServerNet> m_pNetPublic;
 
 		PageQueue<SharedPointerAtomicT<Net::Connection>> m_NewConnectionQueue;
 
@@ -77,12 +71,12 @@ namespace Svr {
 
 	public:
 
-		LoginServiceEntity(const ServerConfig::NetPublic *publicNetSocket, ClusterMembership initialMembership = ClusterMembership::Slave);
+		LoginServiceEntity(const ServerConfig::NetPublic *publicNetSocket, const ServerConfig::MessageEndpoint& endpoint);
 		~LoginServiceEntity();
 
 		// We are not going to use hashed key
 		virtual uint KeyHash( uint64_t key ) { return (uint)key; }
-		
+
 
 		//////////////////////////////////////////////////////////////////////////
 		//
@@ -104,22 +98,11 @@ namespace Svr {
 		//
 
 		// Get net public
-		Net::ServerMUDP* GetNetPublic() { return *m_pNetPublic; }
+		Net::ServerNet* GetNetPublic() { return *m_pNetPublic; }
 
 		// Process network event
 		Result ProcessNewConnection();
 	};
 
 
-
-
-
-
-
-
-}; // namespace Svr
-}; // namespace SF
-
-
-
-
+} // namespace SF

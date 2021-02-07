@@ -71,7 +71,7 @@ namespace Svr {
 		// public network
 		svrChkPtr(m_PublicNet);
 
-		svrMem(m_pNetPublic = NewObject<Net::ServerMUDP>(GetHeap(), BrServer::GetInstance()->GetServerUID(), NetClass::Game));
+		svrMem(m_pNetPublic = NewObject<Net::ServerMUDP>(GetHeap(), Service::ServerConfig->UID, NetClass::Game));
 
 		m_pNetPublic->SetNewConnectionhandler([this](SharedPointerT<Net::Connection>& conn)
 		{
@@ -86,9 +86,10 @@ namespace Svr {
 		// Register game cluster as a slave
 		svrChkPtr(BrServer::GetInstance()->AddServiceEntity<Svr::PlayerManagerServiceEntity>());
 
-		svrChk(Service::ClusterManager->SetWatchForCluster(GetServerGameID(), ClusterID::GameInstanceManager));
-		svrChk(Service::ClusterManager->RegisterClustereWatchers(GetGameID(), ClusterID::MatchingQueue_Game_4x1, ClusterID::MatchingQueue_Game_4x1W));
-		svrChk(Service::ClusterManager->RegisterClustereWatchers(GetGameID(), ClusterID::MatchingQueue_Game_8x1, ClusterID::MatchingQueue_Game_8x1W));
+		svrChk(Service::ServiceDirectory->WatchForService(Service::ServerConfig->GameClusterID, ClusterID::GameInstanceManager));
+		// TODO: change to stream db
+		//svrChk(Service::ServiceDirectory->RegisterClustereWatchers(GetGameID(), ClusterID::MatchingQueue_Game_4x1, ClusterID::MatchingQueue_Game_4x1W));
+		//svrChk(Service::ServiceDirectory->RegisterClustereWatchers(GetGameID(), ClusterID::MatchingQueue_Game_8x1, ClusterID::MatchingQueue_Game_8x1W));
 
 
 	Proc_End:

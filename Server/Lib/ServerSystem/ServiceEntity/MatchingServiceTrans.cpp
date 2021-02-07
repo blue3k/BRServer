@@ -122,7 +122,7 @@ namespace Svr {
 		ServerServiceInformation *pService = nullptr;
 		ClusteredServiceEntity *pServiceEntity = nullptr;
 
-		if(!Service::ClusterManager->GetRandomService(GetServerGameID(), m_TargetQueueClusterID, pService))
+		if(!Service::ServiceDirectory->GetRandomService(Service::ServerConfig->GameClusterID, m_TargetQueueClusterID, pService))
 		{
 			return ResultCode::SVR_CLUSTER_NOTREADY;
 		}
@@ -383,7 +383,7 @@ namespace Svr {
 
 		svrTrace(SVR_MATCHING, "Creating game Matching:{0}", GetTargetMatchingMemberCount());
 
-		svrCheck(Service::ClusterManager->GetRandomService(GetServerGameID(), ClusterID::GameInstanceManager, pService));
+		svrCheck(Service::ServiceDirectory->GetRandomService(Service::ServerConfig->GameClusterID, ClusterID::GameInstanceManager, pService));
 
 		VariableTable attributes(GetHeap());
 		attributes.SetValue("NumBot"_crc, (uint16_t)(m_TargetMatchingMemberCount - m_DequeuedTotalMembers));

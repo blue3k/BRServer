@@ -83,7 +83,7 @@ namespace ConspiracyGameInstanceServer {
 
 			svrChk(ParseMessage());
 
-			if(GetMyServer()->GetServerUID() != MessageClass::GetRouteContext().GetTo().GetServerID())
+			if(Service::ServerConfig->UID != MessageClass::GetRouteContext().GetTo().GetServerID())
 			{
 				svrErr( ResultCode::SVR_INVALID_SERVERID );
 			}
@@ -127,8 +127,8 @@ namespace ConspiracyGameInstanceServer {
 
 
 
-}; // GameServer
-}; // BR
+} // GameServer
+} // SF
 
 
 

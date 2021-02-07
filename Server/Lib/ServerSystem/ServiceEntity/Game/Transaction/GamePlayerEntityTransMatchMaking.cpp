@@ -138,7 +138,7 @@ namespace Svr {
 			ServerServiceInformation* pWatcherService = nullptr;
 			auto queueClusterID = Svr::MatchingUtil::GetQueueClusterID(GetNumPlayer(), 1, (PlayerRole)GetRequestRole());
 
-			svrChk(Service::ClusterManager->GetRandomService(Svr::GetServerGameID(), queueClusterID, pService));
+			svrChk(Service::ServiceDirectory->GetRandomService(Service::ServerConfig->GameClusterID, queueClusterID, pService));
 			svrChk(pService->GetService<PartyMatchingQueueService>()->RegisterPlayerMatchingCmd(GetTransID(), 0, GetMyOwner()->GetPlayerID()));
 		}
 		else

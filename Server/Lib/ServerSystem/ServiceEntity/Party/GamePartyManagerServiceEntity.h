@@ -80,7 +80,7 @@ namespace Svr {
 		//
 
 		// Add new Entity
-		virtual Result CreateGameParty( GameID gameID, const PlayerInformation& creator, EntityUID playerUID, SharedPointerT<MessageEndpoint>& remoteEndpoint, PartyUID &partyUID );
+		virtual Result CreateGameParty( GameID gameID, const PlayerInformation& creator, EntityUID playerUID, const SharedPointerT<MessageEndpoint>& remoteEndpoint, PartyUID &partyUID );
 
 		// Called when a game party is deleted
 		virtual Result FreeGameParty( PartyUID partyUID );

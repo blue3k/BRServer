@@ -24,7 +24,7 @@ namespace SF {
 	//	Utility helper function
 	//
 
-
+	struct EngineInitParam;
 
 	// Get Server UID
 	uint GetServerUID();
@@ -33,7 +33,7 @@ namespace SF {
 	ServerID GetMyServerID();
 
 
-	void InitializeEngine();
+	void InitializeEngine(EngineInitParam& initParam);
 
 	// Initialize and deinitialization
 	void InitializeEngineForServer();

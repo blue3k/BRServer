@@ -13,13 +13,12 @@
 
 #include "ServerSystemPCH.h"
 #include "ServerLog/SvrLog.h"
+#include "SvrTrace.h"
 #include "ResultCode/SFResultCodeSvr.h"
 #include "Thread/SFThread.h"
 #include "Util/SFTimeUtil.h"
 #include "Task/ServerTaskManager.h"
-//#include "Common/SvrConst.h"
 #include "Task/ServerTaskEvent.h"
-//#include "Task/EntityTimerActions.h"
 
 
 namespace SF {
@@ -28,7 +27,7 @@ namespace SF {
 
 	////////////////////////////////////////////////////////////////////////////////////////
 	//
-	//	TickTask exection Group class -  interface for task operation
+	//	TickTask execution Group class -  interface for task operation
 	//
 
 
@@ -98,7 +97,7 @@ namespace SF {
 				Assert(pTask->GetTaskID() != 0);
 				if (pTask->GetTaskID() == 0)
 				{
-					defTrace(Error, "Failed to insert a tick task:{0}", pTask->GetTaskID());
+					svrTrace(Error, "Failed to insert a tick task:{0}", pTask->GetTaskID());
 				}
 
 				SharedPointerT<TickTask> pFound;
@@ -112,7 +111,7 @@ namespace SF {
 					}
 
 					// maximum retry is exceeded, just add
-					defTrace(Warning, "Failed to insert a unique task:{0}, task already exists, douplicated task will be exists", pTask->GetTaskID());
+					svrTrace(Warning, "Failed to insert a unique task:{0}, task already exists, douplicated task will be exists", pTask->GetTaskID());
 				}
 
 				pTask->ResetRetryCount();
@@ -150,7 +149,7 @@ namespace SF {
 				{
 					if (!(m_TaskList.Remove(pTask->GetTaskID(), pFound)))
 					{
-						defTrace(Error, "Failed to remove a task:{0}", pTask->GetTaskID());
+						svrTrace(Error, "Failed to remove a task:{0}", pTask->GetTaskID());
 					}
 					else if (pTask != pFound)
 					{
@@ -163,12 +162,12 @@ namespace SF {
 
 							// pending again
 							m_PendingRemoveTask.Enqueue(pTask);
-							defTrace(Debug1, "Remove is failed, retry task:{0}", pTask->GetTaskID());
+							svrTrace(Debug1, "Remove is failed, retry task:{0}", pTask->GetTaskID());
 							continue;
 						}
 						else
 						{
-							defTrace(Error, "Remove is failed, delete the task:{0}", pTask->GetTaskID());
+							svrTrace(Error, "Remove is failed, delete the task:{0}", pTask->GetTaskID());
 							// throw it away, delete can cause crash
 							continue;
 						}
@@ -185,12 +184,12 @@ namespace SF {
 					{
 						pTask->IncRetryCount();
 						m_PendingRemoveTask.Dequeue(pTask);
-						defTrace(Debug1, "Remove is failed, retry task:{0}", pTask->GetTaskID());
+						svrTrace(Debug1, "Remove is failed, retry task:{0}", pTask->GetTaskID());
 						continue;
 					}
 					else
 					{
-						defTrace(Error, "Try to remove not-existing task:{0}, taskgroup:{1}, from taskgroup:{2}", pTask->GetTaskID(), pTask->GetTaskGroupID(), GetGroupID());
+						svrTrace(Error, "Try to remove not-existing task:{0}, taskgroup:{1}, from taskgroup:{2}", pTask->GetTaskID(), pTask->GetTaskGroupID(), GetGroupID());
 						// throw it away, delete can cause crash
 					}
 				}
@@ -247,7 +246,7 @@ namespace SF {
 
 			if (!(tickTask->OnEventTask(pEvtTask)))
 			{
-				defTrace(Error, "ServerTaskEvent is failed, Evt:{0}", (uint)pEvtTask.EventType.load(std::memory_order_relaxed))
+				svrTrace(Error, "ServerTaskEvent is failed, Evt:{0}", (uint)pEvtTask.EventType.load(std::memory_order_relaxed))
 			}
 
 			m_TimeScheduler.Reschedul(threadID, tickTask->GetTimerAction());
@@ -293,6 +292,21 @@ namespace SF {
 	}
 
 
+	//////////////////////////////////////////////////////////
+	// Single task worker
+
+	SingleTaskWorker::SingleTaskWorker(TickTask* pTask)
+		: m_pTask(pTask)
+	{
+	}
+
+	bool SingleTaskWorker::Tick()
+	{
+		if (m_pTask)
+			m_pTask->TickUpdate();
+
+		return true;
+	}
 
 
 
@@ -309,6 +323,7 @@ namespace SF {
 	// Constructor/Destructor
 	TickTaskManager::TickTaskManager()
 		: m_TaskGroups(GetSystemHeap())
+		, m_SingleTaskWorkers(GetSystemHeap())
 	{
 	}
 
@@ -330,13 +345,11 @@ namespace SF {
 		{
 			TaskWorker *pGroup = nullptr;
 
-			defMem( pGroup = new(GetSystemHeap()) TaskWorker(this) );
+			svrCheckMem( pGroup = new(GetSystemHeap()) TaskWorker(this) );
 
 			pGroup->SetGroupID(iGroup + 1);
 			m_TaskGroups.push_back(pGroup);
 		}
-
-	Proc_End:
 
 		return hr;
 	}
@@ -359,16 +372,25 @@ namespace SF {
 	// Terminate TickTaskManager
 	Result TickTaskManager::TerminateManager()
 	{
-
-		m_TaskGroups.for_each([](TaskWorker *pTaskWorker)
+		for (auto itThread : m_TaskGroups)
 		{
-			if (pTaskWorker->GetThreadID() != ThreadID())
-				pTaskWorker->Stop(true);
-			IHeap::Delete(pTaskWorker);
-			return ResultCode::SUCCESS;
-		});
+			if (itThread->GetThreadID() != ThreadID())
+				itThread->Stop(true);
 
+			delete itThread;
+		}
 		m_TaskGroups.Clear();
+
+
+		for (auto itThread : m_SingleTaskWorkers)
+		{
+			if (itThread->GetThreadID() != ThreadID())
+				itThread->Stop(true);
+
+			delete itThread;
+		}
+		m_SingleTaskWorkers.Clear();
+
 
 		return ResultCode::SUCCESS;
 	}
@@ -384,46 +406,53 @@ namespace SF {
 			return ResultCode::SVR_INVALID_TASK_GROUPID;
 		}
 
-		defChk(m_TaskGroups[groupID - 1]->AddEventTask(std::forward<ServerTaskEvent>(pEvtTask)));
-
-	Proc_End:
+		svrCheck(m_TaskGroups[groupID - 1]->AddEventTask(std::forward<ServerTaskEvent>(pEvtTask)));
 
 		return hr;
 	}
 
 	// Add TickTask
-	Result TickTaskManager::AddTickTask( TickTask* pTask )
+	Result TickTaskManager::AddTickTask(TickTask* pTask)
 	{
 		Result hr = ResultCode::SUCCESS;
-		SysUInt BestGroupLoad = (SysUInt)-1;
-		TaskWorker *pBestGroup = nullptr;
 
-		// search best match
-		m_TaskGroups.for_each([&](TaskWorker *pTaskWorker)
+		if (pTask->UseDesignatedThread())
 		{
-			if (pTaskWorker == nullptr)
-				return ResultCode::SUCCESS;
-
-			SysUInt GroupLoad = pTaskWorker->GetGroupWorkLoad();
-			if( GroupLoad < BestGroupLoad )
-			{
-				BestGroupLoad = GroupLoad;
-				pBestGroup = pTaskWorker;
-			}
-			return ResultCode::SUCCESS;
-		});
-
-
-		if( pBestGroup == nullptr && m_TaskGroups.size() )
-		{
-			pBestGroup = m_TaskGroups[0];
+			auto newThread = new(GetSystemHeap()) SingleTaskWorker(pTask);
+			svrCheckPtr(newThread);
+			newThread->Start();
+			m_SingleTaskWorkers.push_back(newThread);
 		}
+		else
+		{
+			SysUInt BestGroupLoad = (SysUInt)-1;
+			TaskWorker* pBestGroup = nullptr;
 
-		defChkPtr(pBestGroup);
+			// search best match
+			m_TaskGroups.for_each([&](TaskWorker* pTaskWorker)
+				{
+					if (pTaskWorker == nullptr)
+						return ResultCode::SUCCESS;
 
-		defChk( pBestGroup->PendingAddTask( pTask ) );
+					SysUInt GroupLoad = pTaskWorker->GetGroupWorkLoad();
+					if (GroupLoad < BestGroupLoad)
+					{
+						BestGroupLoad = GroupLoad;
+						pBestGroup = pTaskWorker;
+					}
+					return ResultCode::SUCCESS;
+				});
 
-	Proc_End:
+
+			if (pBestGroup == nullptr && m_TaskGroups.size())
+			{
+				pBestGroup = m_TaskGroups[0];
+			}
+
+			svrCheckPtr(pBestGroup);
+
+			svrCheck(pBestGroup->PendingAddTask(pTask));
+		}
 
 		return hr;
 	}
@@ -434,24 +463,16 @@ namespace SF {
 		Result hr = ResultCode::SUCCESS;
 		SysUInt groupID;
 
-		defChkPtr(pTask);
+		svrCheckPtr(pTask);
 
 		groupID = pTask->GetTaskGroupID();
 		if (groupID <= 0 || groupID > m_TaskGroups.size())
 			return ResultCode::UNEXPECTED;
 
-		defChk(m_TaskGroups[groupID - 1]->PendingRemoveTask(pTask));
-
-	Proc_End:
+		svrCheck(m_TaskGroups[groupID - 1]->PendingRemoveTask(pTask));
 
 		return hr;
 	}
 
-
-
-
-
-
-
-}; // namespace SF
+} // namespace SF
 

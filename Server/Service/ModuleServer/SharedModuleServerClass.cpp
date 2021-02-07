@@ -72,22 +72,6 @@ namespace SharedModuleServer {
 	}
 
 
-
-	// Apply configuration
-	Result SharedModuleServer::ApplyConfiguration()
-	{
-		Result hr = ResultCode::SUCCESS;
-
-
-		svrChk(Svr::BrServer::ApplyConfiguration() );
-
-
-	Proc_End:
-
-		return hr;
-	}
-
-
 	// Initialize server resource
 	Result SharedModuleServer::InitializeServerResource()
 	{

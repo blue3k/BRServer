@@ -1,6 +1,6 @@
 ////////////////////////////////////////////////////////////////////////////////
 // 
-// CopyRight (c) 2018 The Braves
+// CopyRight (c) The Braves
 // 
 // Author : KyungKun Ko
 //
@@ -41,7 +41,7 @@ namespace Svr {
 
 		svrChk( super::StartTransaction() );
 
-		svrChk( GetMyOwner()->CreateChatChannel( GetChannelName(), GetCreator(), GetRouteContext().GetFrom(), GetServerEntity<ServerEntity>(), m_UID ) );
+		svrChk( GetMyOwner()->CreateChatChannel( GetChannelName(), GetCreator(), GetRouteContext().GetFrom(), GetRemoteEndpoint(), m_UID ) );
 
 	Proc_End:
 

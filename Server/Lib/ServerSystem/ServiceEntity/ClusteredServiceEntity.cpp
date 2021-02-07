@@ -43,7 +43,8 @@ namespace Svr {
 
 
 	ClusteredServiceEntity::ClusteredServiceEntity(ClusterType clusterType, GameID gameID, ClusterID clusterID, ClusterMembership initialMembership, ServerEntity* pServerEntity )
-		: m_MasterUID(0)
+		: ServiceEntity(gameID, clusterID)
+		, m_MasterUID(0)
 		, m_GameID(gameID)
 		, m_ClusterID(clusterID)
 		, m_ClusterType(clusterType )
@@ -167,7 +168,7 @@ namespace Svr {
 		return hr;
 	}
 
-	Result ClusteredServiceEntity::StartInitializeTransaction()
+	Result ClusteredServiceEntity::StartInitialization()
 	{
 		Result hr = ResultCode::SUCCESS;
 		UniquePtr<ClusterInitializationTrans> pInitTransaction;
@@ -238,7 +239,7 @@ namespace Svr {
 
 		m_Workload = workload;
 
-		Service::ClusterManager->UpdateWorkLoad(this);
+		//Service::ClusterManager->UpdateWorkLoad(this);
 		//svrChk( Service::ClusterManager->FindRandomService( pServiceInfo ) );
 		//svrChkPtr( pService = pServiceInfo->GetService<ClusterServerService>() );
 		//svrChk( pService->ClusterUpdateWorkloadC2SEvt( GetEntityUID(), 0, GetEntityUID(), GetClusterID(), m_Workload ) );
@@ -260,7 +261,7 @@ namespace Svr {
 			return ResultCode::SUCCESS_FALSE;
 		}
 
-		Service::ClusterManager->UpdateServiceStatus(this);
+		//Service::ClusterManager->UpdateServiceStatus(this);
 		//// Ask to the cluster manager master to update status
 		//svrChk( Service::ClusterManager->FindRandomService( pServiceInfo ) );
 		////svrChk( Service::ClusterManager->GetService<ClusterServerService>(pService) );
@@ -357,7 +358,7 @@ namespace Svr {
 	Result ReplicaClusterServiceEntity::TickUpdate(TimerAction *pAction)
 	{
 		Result hr = ResultCode::SUCCESS;
-		auto pClusterManager = Service::ClusterManager;
+
 		svrCheck(ClusteredServiceEntity::TickUpdate(pAction) );
 
 		return hr;

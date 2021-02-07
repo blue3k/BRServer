@@ -230,7 +230,7 @@ namespace Svr{
 extern template class WeakPointerT<Svr::Entity>;
 
 
-}; // namespace SF
+} // namespace SF
 
 
 

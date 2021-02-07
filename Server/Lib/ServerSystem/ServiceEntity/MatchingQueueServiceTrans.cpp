@@ -181,14 +181,13 @@ namespace Svr {
 	Result DequeueItemTrans::StartTransaction()
 	{
 		Result hr = ResultCode::SUCCESS;
-		ServerEntity *pServerEntity = nullptr;
+		MessageEndpoint* requesterEndpoint{};
 
 		svrChk( super::StartTransaction() );
 
 		svrChk(GetMyOwner()->DequeueItem(GetMatchingTicket(), m_matchingQueueItem));
 
-		auto requesterEndpoint = Service::MessageEndpointManager->GetEndpoint(m_matchingQueueItem.RegisterUID);
-		//svrChk(Service::ServerEntityManager->GetServerEntity( m_matchingQueueItem.RegisterUID.GetServerID(), pServerEntity ));
+		requesterEndpoint = Service::MessageEndpointManager->GetEndpoint(m_matchingQueueItem.RegisterUID);
 
 		if( m_matchingQueueItem.NumPlayers == 0 )
 			svrErrClose(ResultCode::SVR_INVALID_QUEUEITEM);
@@ -224,7 +223,7 @@ namespace Svr {
 	Result MatchingQueueTransMatchingItemError::StartTransaction()
 	{
 		Result hr = ResultCode::SUCCESS;
-		ServerEntity *pServerEntity = nullptr;
+		MessageEndpoint* requesterEndpoint{};
 		MatchingQueueItem matchingQueueItem;
 
 		svrChk(super::StartTransaction());
@@ -232,8 +231,7 @@ namespace Svr {
 		svrChk(GetMyOwner()->DeleteItem(GetMatchingTicket(), matchingQueueItem));
 
 
-		auto requesterEndpoint = Service::MessageEndpointManager->GetEndpoint(matchingQueueItem.RegisterUID);
-		//svrChk(Service::ServerEntityManager->GetServerEntity(matchingQueueItem.RegisterUID.GetServerID(), pServerEntity));
+		requesterEndpoint = Service::MessageEndpointManager->GetEndpoint(matchingQueueItem.RegisterUID);
 
 		if (matchingQueueItem.NumPlayers == 0)
 			svrErrClose(ResultCode::SVR_INVALID_QUEUEITEM);

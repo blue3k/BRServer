@@ -116,6 +116,20 @@ namespace SF {
 	};
 
 
+	//////////////////////////////////////////////////////////
+	// Single task worker
+	class SingleTaskWorker : public Thread
+	{
+	private:
+
+		TickTask* m_pTask{};
+
+	public:
+
+		SingleTaskWorker(TickTask* pTask);
+
+		virtual bool Tick() override;
+	};
 
 
 	////////////////////////////////////////////////////////////////////////////////////////
@@ -137,6 +151,9 @@ namespace SF {
 
 		// TickTask groups
 		DynamicArray<TaskWorker*>	m_TaskGroups;
+
+		// thread only take care single thread
+		DynamicArray<SingleTaskWorker*>	m_SingleTaskWorkers;
 
 	public:
 		// Constructor/Destructor

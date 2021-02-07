@@ -61,10 +61,6 @@ namespace SF {
 
 		virtual void Clear() {}
 
-		// Initialize not initialized cluster entities
-		// This need to be called after clusterManagerService is initialized
-		virtual Result InitializeNotInitializedClusterEntities() { return ResultCode::NOT_IMPLEMENTED; }
-
 		// Get cluster info
 		virtual ClusterServiceInfo* GetClusterInfo(GameID gameID, ClusterID clusterID) { return nullptr; }
 
@@ -78,7 +74,7 @@ namespace SF {
 		virtual Result AddClusterServiceEntity(Svr::ClusteredServiceEntity* pServiceEntity) { ServerServiceInformation* pServiceInfo = nullptr; return AddClusterServiceEntity(pServiceEntity, pServiceInfo); }
 
 		// Create a watcher for cluster, replacement for CreateWatcherForCluster
-		virtual Result SetWatchForCluster(GameID gameID, ClusterID clusterID) { return ResultCode::NOT_IMPLEMENTED; }
+		virtual Result WatchForService(GameID gameID, ClusterID clusterID) { return ResultCode::NOT_IMPLEMENTED; }
 
 		virtual Result UpdateWorkLoad(Svr::ClusteredServiceEntity* pServiceEntity) { return ResultCode::NOT_IMPLEMENTED; }
 		virtual Result UpdateServiceStatus(Svr::ClusteredServiceEntity* pServiceEntity) { return ResultCode::NOT_IMPLEMENTED; }
@@ -91,7 +87,7 @@ namespace SF {
 			{
 				for (; (int)clusterID <= (int)clusterIDEnd; clusterID++)
 				{
-					hr = SetWatchForCluster(gameID, clusterID);
+					hr = WatchForService(gameID, clusterID);
 					if (!hr)
 						return hr;
 				}

@@ -41,7 +41,7 @@ namespace Svr {
 	//
 
 
-	class ClusteredServiceEntity : public ServiceEntity
+	class ClusteredServiceEntity : public SF::ServiceEntity
 	{
 	public:
 
@@ -147,7 +147,7 @@ namespace Svr {
 		// Initialize entity to proceed new connection
 		virtual Result InitializeEntity( EntityID newEntityID ) override;
 
-		virtual Result StartInitializeTransaction();
+		virtual Result StartInitialization() override;
 
 		// clear transaction
 		virtual Result ClearEntity() override;

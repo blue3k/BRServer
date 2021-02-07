@@ -33,8 +33,7 @@ namespace SF {
 		virtual Zookeeper* GetZookeeperSession() { return nullptr; }
 
 	};
-
 	
 
-}; // namespace SF
+} // namespace SF
 

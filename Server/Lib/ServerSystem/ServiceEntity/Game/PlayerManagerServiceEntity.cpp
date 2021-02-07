@@ -42,7 +42,7 @@ namespace Svr {
 	//
 
 	PlayerManagerServiceEntity::PlayerManagerServiceEntity()
-		: super(GetServerGameID(), ClusterID::PlayerManager, ClusterMembership::Slave)
+		: super(Service::ServerConfig->GameClusterID, ClusterID::PlayerManager, ClusterMembership::Slave)
 		, m_PlayerIDMap(GetHeap())
 	{
 		//BR_ENTITY_MESSAGE(Message::ClusterServer::GamePlayerEntityCreatedC2SEvt) { svrMemReturn(pNewTrans = new(GetHeap()) GameServerTransGamePlayerEntityCreatedS2CEvt(GetHeap(), pMsgData)); return ResultCode::SUCCESS; } );
@@ -272,17 +272,17 @@ namespace Svr {
 	// Use server gameID for search
 	Result PlayerManagerServiceEntity::CreatePlayer(PlayerID playerID, EntityUID entityUID)
 	{
-		return CreatePlayer(Svr::GetServerGameID(), playerID, entityUID);
+		return CreatePlayer(Service::ServerConfig->GameClusterID, playerID, entityUID);
 	}
 
 	Result PlayerManagerServiceEntity::DeletePlayer(PlayerID playerID)
 	{
-		return DeletePlayer(Svr::GetServerGameID(), playerID);
+		return DeletePlayer(Service::ServerConfig->GameClusterID, playerID);
 	}
 
 	Result PlayerManagerServiceEntity::FindPlayer(PlayerID playerID, EntityUID& entityUID)
 	{
-		return FindPlayer(Svr::GetServerGameID(), playerID, entityUID);
+		return FindPlayer(Service::ServerConfig->GameClusterID, playerID, entityUID);
 	}
 
 

@@ -19,7 +19,6 @@
 #include "SvrConst.h"
 #include "ServerEntity/ServerEntityManager.h"
 #include "Transaction/Transaction.h"
-//#include "ServerSystem/PlugIn.h"
 #include "Server/BrServer.h"
 #include "Server/BrServerUtil.h"
 #include "Entity/EntityTable.h"
