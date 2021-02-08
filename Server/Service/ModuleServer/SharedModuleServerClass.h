@@ -1,6 +1,6 @@
 ////////////////////////////////////////////////////////////////////////////////
 // 
-// CopyRight (c) 2013 The Braves
+// CopyRight (c) The Braves
 // 
 // Author : KyungKun Ko
 //
@@ -55,59 +55,25 @@ namespace SharedModuleServer
 		SharedModuleServer();
 		~SharedModuleServer();
 
-
-
 		///////////////////////////////////////////////////////////////////////////////////
 		//
 		//	
 		//
-
-		// Query Loopback entity
-		inline SharedModuleServerEntity* GetLoopbackGameServerEntity();
-		
-		//////////////////////////////////////////////////////////////////////////
-		//
-		//	virtual network process
-		//
-
-
-		//////////////////////////////////////////////////////////////////////////
-		//
-		//	Public Network event handling
-		//
-
-
-		// Initialize server resource
-		virtual Result InitializeServerResource() override;
-
-		// Close server and release resource
-		virtual Result CloseServerResource() override;
-
 
 		// Initialize private Network
 		virtual Result InitializeEntities() override;
 
 		// Close Private Network
 		virtual Result CloseEntities() override;
-
 	};
 
 
 	// Query Game server instance
-	inline SharedModuleServer* GetMyServer();
-
-	// Query Loopback entity
-	inline SharedModuleServerEntity* GetLoopbackGameServerEntity();
-
-	// Get Entity Server
-	//EntityServerEntity* GetEntityServer();
+	inline SharedModuleServer* GetMyServer() { return dynamic_cast<SharedModuleServer*>(Svr::BrServer::GetInstance()); }
 
 
-#include "SharedModuleServerClass.inl"
-
-
-}; // namespace SharedModuleServer
-}; // namespace SF
+} // namespace SharedModuleServer
+} // namespace SF
 
 
 

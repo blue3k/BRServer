@@ -57,6 +57,8 @@ namespace Svr
 		, m_transactionQueue(GetHeap(), uiTransQueueSize)
 		, m_HandlerTable(GetHeap())
 	{
+		assert(&m_transactionQueue.GetHeap() == &GetHeap());
+		assert(&m_HandlerTable.GetHeap() == &GetHeap());
 	}
 
 	Entity::~Entity()

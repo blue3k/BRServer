@@ -42,23 +42,23 @@ namespace SF {
 		Heap m_Heap;
 
 		// Work load for
-		SysUInt		m_TaskLoad;
+		SysUInt		m_TaskLoad = 1;
 
 		// TickTask Group index
-		SysUInt		m_TaskGroupIdx;
+		SysUInt		m_TaskGroupIdx = 0;
 
 		// TickTask manager pointer
-		TickTaskManager	*m_pTaskManager;
-		TaskWorker	*m_pTaskWorker;
+		TickTaskManager* m_pTaskManager{};
+		TaskWorker* m_pTaskWorker{};
 
 		// TickTask UID
-		uint32_t		m_TaskID;
+		uint32_t		m_TaskID = 0;
 
 		// task retry count
-		uint		m_RetryCount;
+		uint		m_RetryCount = 0;
 
 		// Task tick interval(maximum)
-		DurationMS		m_TickInterval;
+		DurationMS		m_TickInterval = DurationMS(DEFAULT_TICKTASK_INTERVAL);
 
 		SharedPointerT<TickTaskTimerAction>			m_TimerAction;
 
@@ -67,6 +67,7 @@ namespace SF {
 	public:
 		// Constructor
 		TickTask();
+		TickTask(IHeap& heap);
 		virtual ~TickTask();
 
 		IHeap& GetHeap() { return *m_Heap.get(); }

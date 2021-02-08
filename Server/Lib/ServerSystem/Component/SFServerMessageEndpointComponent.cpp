@@ -16,6 +16,10 @@
 #include "EngineObject/SFEngineObject.h"
 #include "Entity/Entity.h"
 #include "SvrTrace.h"
+#include "String/SFStringFormat.h"
+
+#include "rdkafka/rdkafkacpp.h"
+
 
 namespace SF
 {
@@ -45,6 +49,15 @@ namespace SF
 		// Object task
 		virtual bool Tick() override
 		{
+			if (m_ListenEndpoint == nullptr)
+				return ResultCode::SUCCESS;
+
+			if (!m_ListenEndpoint->IsDateRequested())
+			{
+				if (!m_ListenEndpoint->RequestData(StreamDB::OFFSET_END))
+					return ResultCode::NO_DATA_EXIST;
+			}
+
 			// This is designated thread tick function
 			// I don't sleep except waiting on the date.
 			UniquePtr<StreamDBConsumer::StreamMessageData> receivedMessageData;
@@ -123,13 +136,28 @@ namespace SF
 		Result hr;
 		svrCheck(LibraryComponent::InitializeComponent());
 
+		auto serverEndpointAddress = Service::ServerConfig->ServerEndpointAddress;
+
+		String serverChannel;
+		serverChannel.Format("{0}_{1:X4}", serverEndpointAddress.Channel, Service::ServerConfig->UID);
+		serverEndpointAddress.Channel = serverChannel;
+
+		m_ServerEndpoint = new(GetHeap()) StreamDBConsumer;
+		svrCheckPtr(m_ServerEndpoint);
+		svrCheck(m_ServerEndpoint->Initialize(serverEndpointAddress.MessageServer, serverEndpointAddress.Channel));
+
+		std::string errstr;
+		m_ServerEndpoint->GetTopicConfig()->set("offset.store.method", "broker", errstr);
+		m_ServerEndpoint->GetTopicConfig()->set("auto.offset.reset", "earliest", errstr);
+
+		m_ServerEndpoint->RequestData(StreamDB::OFFSET_END);
+
 		m_MessageConsumeWorker = new(GetHeap()) MessageConsumeWorker(GetHeap(), m_ServerEndpoint);
 		svrCheckPtr(m_MessageConsumeWorker);
 
 		m_MessageConsumeWorker->Start();
 
 		// register server endpoint so that others can find it
-		auto serverEndpointAddress = Service::ServerConfig->ServerEndpointAddress;
 		auto gameId = Service::ServerConfig->GameClusterID;
 		auto serverEntityUID = EntityUID(Service::ServerConfig->UID, 0);
 

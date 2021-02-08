@@ -17,25 +17,19 @@
 #include "SvrTrace.h"
 #include "Service/ServerService.h"
 #include "ServerEntity/ServerEntityManager.h"
-//#include "ServiceEntity/EntityManagerServiceEntity.h"
-
 #include "ServiceEntity/Game/PlayerManagerServiceEntity.h"
-
 #include "ServiceEntity/MatchingQueueServiceEntity.h"
 #include "ServiceEntity/MatchingServiceEntity.h"
 #include "ServiceEntity/Party/GamePartyManagerServiceEntity.h"
-
 #include "ServerEntity/GenericServerEntity.h"
 
 #include "Protocol/Policy/GameServerNetPolicy.h"
 #include "Protocol/Policy/GameInstanceNetPolicy.h"
 
-
 #include "Net/SFNetServerPeerTCP.h"
 #include "Net/SFNetSvrDef.h"
 #include "Net/SFNetServerUDP.h"
 #include "Entity/EntityManager.h"
-
 
 #include "SharedModuleSvrConst.h"
 #include "SharedModuleServerClass.h"
@@ -45,14 +39,9 @@
 #include "DB/AccountDB.h"
 
 
-#define PATH_DATABASE L"../../Data"
-
-
 
 namespace SF {
 namespace SharedModuleServer {
-
-	
 
 
 	//////////////////////////////////////////////////////////////////////////
@@ -66,40 +55,9 @@ namespace SharedModuleServer {
 	{
 	}
 
-
 	SharedModuleServer::~SharedModuleServer()
 	{
 	}
-
-
-	// Initialize server resource
-	Result SharedModuleServer::InitializeServerResource()
-	{
-		Result hr = ResultCode::SUCCESS;
-
-		svrChk(Svr::BrServer::InitializeServerResource() );
-
-		//svrChk( conspiracy::InitializeTable() );
-
-		svrChk( InitializeEntity( EntityID(EntityFaculty::Server,0) ) );
-
-	Proc_End:
-
-		return hr;
-	}
-
-	// Close server and release resource
-	Result SharedModuleServer::CloseServerResource()
-	{
-		ScopeContext hr;
-
-		svrCheck(Svr::BrServer::CloseServerResource() );
-
-		svrCheck( TerminateEntity() );
-
-		return hr;
-	}
-
 
 	// Initialize private Network
 	Result SharedModuleServer::InitializeEntities()
@@ -120,7 +78,6 @@ namespace SharedModuleServer {
 		return hr;
 	}
 
-
 	// Close Private Network
 	Result SharedModuleServer::CloseEntities()
 	{
@@ -130,7 +87,6 @@ namespace SharedModuleServer {
 
 		return hr;
 	}
-
 
 
 	//////////////////////////////////////////////////////////////////////////

@@ -27,6 +27,7 @@
 #include "SvrTrace.h"
 #include "Task/ServerTaskEvent.h"
 #include "String/SFStringFormat.h"
+#include "rdkafka/rdkafkacpp.h"
 
 
 namespace SF {
@@ -44,7 +45,7 @@ namespace SF {
 		// Update channel path to yours
 		m_MessageEndpointConfig.MessageServer = endpoint.MessageServer;
 		if (!m_MessageEndpointConfig.MessageServer.IsNullOrEmpty())
-			m_MessageEndpointConfig.Channel.Format("{0}/{1}/{2}", endpoint.Channel, gameID, clusterID);
+			m_MessageEndpointConfig.Channel.Format("{0}_{1}_{2}", endpoint.Channel, gameID, clusterID);
 
 		// This entity will be updated on designated thread rather than shared thicker thread
 		SetUseDesignatedThread(true);
@@ -62,7 +63,12 @@ namespace SF {
 		{
 			m_ListenEndpoint = new(GetHeap()) StreamDBConsumer;
 			svrCheck(m_ListenEndpoint->Initialize(m_MessageEndpointConfig.MessageServer, m_MessageEndpointConfig.Channel));
-			svrCheck(m_ListenEndpoint->RequestData(StreamDB::OFFSET_STORED));
+
+			std::string errstr;
+			m_ListenEndpoint->GetTopicConfig()->set("offset.store.method", "broker", errstr);
+			m_ListenEndpoint->GetTopicConfig()->set("auto.offset.reset", "earliest", errstr);
+
+			svrCheck(m_ListenEndpoint->RequestData(StreamDB::OFFSET_END));
 		}
 
 		svrCheck(Service::ServiceDirectory->RegisterLocalService(m_GameID, m_ClusterID, GetEntityUID(), m_MessageEndpointConfig));
@@ -70,16 +76,21 @@ namespace SF {
 		return hr;
 	}
 
-	Result ServiceEntity::TickUpdate(TimerAction* pAction)
+	Result ServiceEntity::UpdateListenEndpoint()
 	{
-		Result hr;
+		if (m_ListenEndpoint == nullptr)
+			return ResultCode::SUCCESS;
 
-		svrCheck(super::TickUpdate(pAction));
+		if (!m_ListenEndpoint->IsDateRequested())
+		{
+			if (!m_ListenEndpoint->RequestData(StreamDB::OFFSET_END))
+				return ResultCode::NO_DATA_EXIST;
+		}
 
 		// This is designated thread tick function
 		// I don't sleep except waiting on the date.
 		UniquePtr<StreamDBConsumer::StreamMessageData> receivedMessageData;
-		hr = m_ListenEndpoint->PollData(receivedMessageData, 500);
+		Result hr = m_ListenEndpoint->PollData(receivedMessageData, 500);
 		if (!hr)
 		{
 			if (hr == ResultCode::NO_DATA_EXIST || hr == ResultCode::END_OF_STREAM)
@@ -91,18 +102,29 @@ namespace SF {
 			{
 				svrTrace(Error, "ServiceEntity: failed to fetch data from message endpoint hr:{0}", hr);
 			}
-		}
-		else
-		{
-			SharedPointerT<Message::MessageData> pMsg;
-			if (receivedMessageData->size() < sizeof(Message::MessageHeader))
-				return ResultCode::INVALID_FORMAT;
 
-			auto* pMsgHeader = reinterpret_cast<Message::MessageHeader*>(receivedMessageData->data());
-			svrCheckPtr(pMsg = Message::MessageData::NewMessage(GetHeap(), pMsgHeader->msgID.ID, pMsgHeader->Length, receivedMessageData->data()));
-
-			hr = ProcessMessage(nullptr, pMsg);
+			return hr;
 		}
+
+		SharedPointerT<Message::MessageData> pMsg;
+		if (receivedMessageData->size() < sizeof(Message::MessageHeader))
+			return ResultCode::INVALID_FORMAT;
+
+		auto* pMsgHeader = reinterpret_cast<Message::MessageHeader*>(receivedMessageData->data());
+		svrCheckPtr(pMsg = Message::MessageData::NewMessage(GetHeap(), pMsgHeader->msgID.ID, pMsgHeader->Length, receivedMessageData->data()));
+
+		hr = ProcessMessage(nullptr, pMsg);
+
+		return hr;
+	}
+
+	Result ServiceEntity::TickUpdate(TimerAction* pAction)
+	{
+		Result hr;
+
+		svrCheck(super::TickUpdate(pAction));
+
+		UpdateListenEndpoint();
 
 		return hr;
 

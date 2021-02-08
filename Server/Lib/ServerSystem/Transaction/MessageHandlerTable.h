@@ -92,13 +92,15 @@ namespace Svr {
 										NonUniqueKeyTrait, ThreadSyncTraitNone
 										>;
 	private:
+		IHeap& m_Heap;
+
 		HandlerTableType m_HandlerTable;
 
 	public:
 		
 		MessageHandlerTable( IHeap &allocator )
 			: m_HandlerTable(allocator)
-			, m_Allocator(allocator)
+			, m_Heap(allocator)
 		{
 		}
 
@@ -118,6 +120,7 @@ namespace Svr {
 			}
 		}
 
+		IHeap& GetHeap() { return m_Heap; }
 
 		// Register a new message handler
 		template< class MessageClassType >
@@ -137,7 +140,7 @@ namespace Svr {
 			}
 
 			TableItem *pNewItem = nullptr;
-			pNewItem = new(m_Allocator) TableItem(MessageClassType::MID, std::move(newHandler));
+			pNewItem = new(GetHeap()) TableItem(MessageClassType::MID, std::move(newHandler));
 			
 			if( pNewItem == nullptr )
 				return ResultCode::OUT_OF_MEMORY;
@@ -229,8 +232,6 @@ namespace Svr {
 			return handler( pMsg, param1, param2 );
 		}
 
-	private:
-		IHeap			&m_Allocator;
 	};
 
 

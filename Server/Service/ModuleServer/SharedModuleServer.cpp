@@ -27,13 +27,13 @@ int main(int numArg, const char* argc[])
 #endif
 	_ASSERTE((hRes));
 
-	ParameterSetting::SetSetting("config", "..\\..\\Config\\ServerConfig.xml");
+	//ParameterSetting::SetSetting("config", "..\\..\\Config\\ServerConfig.xml");
 	ParameterSetting::ProcessParameter(numArg, argc);
 
 #elif SF_PLATFORM == SF_PLATFORM_LINUX
 int main(int numArg, const char* argc[])
 {
-	ParameterSetting::SetSetting("config", "../../Config/ServerConfig_linux.xml");
+	//ParameterSetting::SetSetting("config", "../../Config/ServerConfig_linux.xml");
 	ParameterSetting::ProcessParameter(numArg, argc);
 #endif
 

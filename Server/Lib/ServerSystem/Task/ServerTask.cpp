@@ -35,13 +35,12 @@ namespace SF {
 	// Constructor
 	TickTask::TickTask()
 		: m_Heap("TickTask", GetSystemHeap())
-		, m_TaskLoad(1)
-		, m_TaskGroupIdx(0)
-		, m_pTaskManager(nullptr)
-		, m_pTaskWorker(nullptr)
-		, m_TaskID(0)
-		, m_RetryCount(0)
-		, m_TickInterval(DEFAULT_TICKTASK_INTERVAL) // default task tick interval is 1sec
+	{
+		m_TimerAction = new(GetHeap()) TickTaskTimerAction(this);
+	}
+
+	TickTask::TickTask(IHeap& heap)
+		: m_Heap("TickTask", heap)
 	{
 		m_TimerAction = new(GetHeap()) TickTaskTimerAction(this);
 	}

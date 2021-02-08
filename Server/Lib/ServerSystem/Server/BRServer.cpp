@@ -426,14 +426,21 @@ namespace SF {
 		// Initialize server resource
 		Result BrServer::InitializeServerResource()
 		{
-			return ResultCode::SUCCESS;
+			Result hr;
+
+			svrCheck(InitializeEntity(EntityID(EntityFaculty::Server, 0)));
+
+			return hr;
 		}
 
 		// Close server and release resource
 		Result BrServer::CloseServerResource()
 		{
+			Result hr;
 
-			return ResultCode::SUCCESS;
+			svrCheck(TerminateEntity());
+
+			return hr;
 		}
 
 

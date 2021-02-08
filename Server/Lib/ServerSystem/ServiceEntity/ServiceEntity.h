@@ -89,6 +89,7 @@ namespace SF {
 		// Register message handler for this component
 		virtual Result RegisterServiceMessageHandler() { return ResultCode::SUCCESS; }
 
+		Result UpdateListenEndpoint();
 		virtual Result TickUpdate(TimerAction* pAction) override;
 	};
 

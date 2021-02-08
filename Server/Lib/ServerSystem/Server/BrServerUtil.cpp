@@ -125,10 +125,10 @@ namespace SF {
 		pEngine->AddComponent<SF::Net::NetSystem>(initParam.NetRecvBufferSize, initParam.NetSendBufferSize, Service::ServerConfig->NetIOThreadCount, 1024);
 		pEngine->AddComponent<ConnectionManagerComponent>(2048);
 		pEngine->AddComponent<Svr::EntityTable>();
-		pEngine->AddComponent<ServerMessageEndpointComponent>();
 		pEngine->AddComponent<LibraryComponentAdapter<Svr::EntityManager, uint>, IHeap&, uint>(GetSystemHeap(), Service::ServerConfig->WorkerThreadCount);
 		pEngine->AddComponent<LibraryComponentAdapter<ServiceDirectoryManager>, IHeap&>(GetSystemHeap());
 		pEngine->AddComponent<LibraryComponentAdapter<MessageEndpointManager>, IHeap&>(GetSystemHeap());
+		pEngine->AddComponent<ServerMessageEndpointComponent>();
 	}
 
 

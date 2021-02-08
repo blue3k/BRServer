@@ -347,7 +347,7 @@ namespace SF {
 		}
 
 		String gameClusterPath;
-		gameClusterPath.Format("{0}/{1}", Service::ServerConfig->DataCenter.Path, Service::ServerConfig->GameClusterName);
+		gameClusterPath.Format("{0}/{1}", Service::ServerConfig->DataCenter.Path, Service::ServerConfig->GameClusterID);
 		if (!zkSession->Exists(gameClusterPath))
 		{
 			// Create game cluster path if not exist
@@ -488,7 +488,7 @@ namespace SF {
 		String outPath;
 		if (!zkSession->Exists(clusterPath))
 		{
-			zkSession->Create(clusterPath, Json::Value(Json::objectValue), nullptr, 0, outPath);
+			svrCheck(zkSession->Create(clusterPath, Json::Value(Json::objectValue), nullptr, 0, outPath));
 		}
 
 		Json::Value attributes(Json::objectValue);
@@ -505,7 +505,11 @@ namespace SF {
 
 		plocalInfo->NodePath.Format("{0}/{1:X}", clusterPath, entityUID);
 
-		return zkSession->Create(plocalInfo->NodePath, plocalInfo->JsonAttributes, nullptr, Zookeeper::NODE_FLAG_EPHEMERAL, outPath);
+		hr = zkSession->Create(plocalInfo->NodePath, plocalInfo->JsonAttributes, nullptr, Zookeeper::NODE_FLAG_EPHEMERAL, outPath);
+		if (!hr)
+			return hr;
+
+		return hr;
 	}
 
 	Result ServiceDirectoryManager::RegisterLocalService(ServiceEntity* pServiceEntity)
