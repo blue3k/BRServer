@@ -30,7 +30,6 @@ namespace SF {
 
 	MessageEndpointManager::MessageEndpointManager()
 		: m_MessageEndpointByUID(GetSystemHeap())
-		, m_MessageEndpointByServerID(GetSystemHeap())
 	{
 
 	}
@@ -56,7 +55,7 @@ namespace SF {
 		m_MessageEndpointByUID.ForeachOrder(0, m_MessageEndpointByUID.size(), 
 			[](uint64_t key, MessageEndpoint*& value)
 			{
-				delete value;
+				SharedReferenceDec dec(value);
 				return true;
 			});
 
@@ -66,15 +65,18 @@ namespace SF {
 	}
 
 
-	Result MessageEndpointManager::AddOrGetRemoteEndpoint(const EntityUID& entityUID, const ServerConfig::MessageEndpoint& messageEndpoint, MessageEndpoint*& pEndpoint)
+	Result MessageEndpointManager::AddOrGetRemoteEndpoint(const EntityUID& entityUID, const EndpointAddress& messageEndpoint, MessageEndpoint*& pEndpoint)
 	{
 		MutexScopeLock lock(m_TableLock);
 
 		pEndpoint = nullptr;
 		if (m_MessageEndpointByUID.Find(entityUID, pEndpoint))
 		{
-			// TODO: validate whether they are same
-			assert(pEndpoint);
+			if (pEndpoint->IsSameEndpoint(messageEndpoint))
+				return ResultCode::SUCCESS;
+
+			m_MessageEndpointByUID.Remove(entityUID, pEndpoint);
+			SharedReferenceDec dec(pEndpoint);
 		}
 		else
 		{
@@ -89,9 +91,6 @@ namespace SF {
 			}
 			m_MessageEndpointByUID.CommitChanges();
 
-			m_MessageEndpointByServerID.Insert(entityUID.GetServerID(), pStreamEndpoint);
-			m_MessageEndpointByServerID.CommitChanges();
-
 			pEndpoint = pStreamEndpoint;
 		}
 
@@ -103,8 +102,10 @@ namespace SF {
 		MessageEndpoint* pEndpoint{};
 		if (!m_MessageEndpointByUID.Find(entityUID, pEndpoint)) // search with entityUID first
 		{
+			auto entityUIDTemp = entityUID;
+			entityUIDTemp.Components.EntID = 0;
 			// If we fail the UID should be non-service entity. search with server ID
-			m_MessageEndpointByServerID.Find(entityUID.GetServerID(), pEndpoint);
+			m_MessageEndpointByUID.Find(entityUIDTemp, pEndpoint);
 		}
 		return pEndpoint;
 	}

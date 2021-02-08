@@ -1,6 +1,6 @@
 ////////////////////////////////////////////////////////////////////////////////
 // 
-// CopyRight (c) 2013 The Braves
+// CopyRight (c) The Braves
 // 
 // Author : KyungKun Ko
 //
@@ -27,19 +27,16 @@
 
 
 namespace SF {
-namespace Net {
-	class Connection;
-};
+	namespace Net {
+		class Connection;
+	};
 
-namespace Policy {
 	class ISvrPolicyLogin;
-};
 };
 
 
 
 namespace SF {
-namespace Svr {
 
 
 
@@ -48,12 +45,12 @@ namespace Svr {
 	//	Game Instance entity class
 	//
 
-	class LoginPlayerEntity : public SimpleUserEntity
+	class LoginPlayerEntity : public Svr::SimpleUserEntity
 	{
 	public:
+		using super = Svr::SimpleUserEntity;
 
 	private:
-		typedef Svr::SimpleUserEntity super;
 
 		GameID m_GameID = nullptr;
 		FacebookUID m_FacebookUID;
@@ -65,19 +62,10 @@ namespace Svr {
 		char m_GCMKeys[GameConst::MAX_GCMKEYS];
 
 
-
+		// shared login authenticate ticket generator
 		static GlobalUIDGenerator stm_AuthTicketGenerator;
 
 		bool m_ClosingPended = false;
-
-		//////////////////////////////////////////////////////////////////////////////////////////////////
-		//
-		//	Player Info
-		//
-
-
-	protected:
-
 
 	public:
 
@@ -152,8 +140,5 @@ namespace Svr {
 
 	};
 
-
-
-} // namespace Svr
 } // namespace SF
 

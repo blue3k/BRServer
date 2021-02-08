@@ -157,6 +157,8 @@ set(BRSERVERSYSTEM_LIB_FILES
     Component/SFZookeeperSessionComponent.cpp
 	Component/SFServerConfigComponent.h
 	Component/SFServerConfigComponent.cpp
+    Component/SFServerMessageEndpointComponent.h
+    Component/SFServerMessageEndpointComponent.cpp
     Entity/Entity.cpp
     Entity/EntityInformation.cpp
     Entity/EntityManager.cpp

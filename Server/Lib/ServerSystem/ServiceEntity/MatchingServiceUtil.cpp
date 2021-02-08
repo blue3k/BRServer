@@ -113,7 +113,7 @@ namespace MatchingUtil {
 
 	ClusterID GetQueueClusterID(uint matchingMemberCount, uint partyMemberCount, PlayerRole playerRole)
 	{
-		int minClusterID = (int)ClusterID::Invalid;
+		int minClusterID = (int)ClusterID::None;
 		switch (matchingMemberCount)
 		{
 		case 4:
@@ -126,7 +126,7 @@ namespace MatchingUtil {
 
 		default:
 			assert(false);
-			return ClusterID::Invalid;
+			return ClusterID::None;
 		};
 
 

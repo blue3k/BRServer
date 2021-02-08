@@ -122,7 +122,7 @@ namespace SF {
 		return zkSession->Set(nodePath, stringValue);
 	}
 
-	Result ServiceCluster::ParseMessageEndpoint(const Json::Value& jsonObject, const char* keyName, ServerConfig::MessageEndpoint& outMessageEndpoint)
+	Result ServiceCluster::ParseMessageEndpoint(const Json::Value& jsonObject, const char* keyName, EndpointAddress& outMessageEndpoint)
 	{
 		auto stringValue = jsonObject.get(keyName, Json::Value(Json::stringValue));
 		auto splitIndex = StrUtil::Indexof(stringValue.asCString(), '/');
@@ -210,7 +210,7 @@ namespace SF {
 
 		svrCheck(GetNodeValue(nodePath, jsonValue));
 
-		ServerConfig::MessageEndpoint messageEndpointConfig;
+		EndpointAddress messageEndpointConfig;
 		svrCheck(ParseMessageEndpoint(jsonValue, "Endpoint", messageEndpointConfig));
 		entityUID.UID = jsonValue.get("EntityUID", Json::Value(0)).asUInt64();
 
@@ -367,6 +367,9 @@ namespace SF {
 				}
 			});
 
+		// Always watch for server endpoints
+		WatchForService(Service::ServerConfig->GameClusterID, ClusterID::None);
+
 		return ResultCode::SUCCESS;
 	}
 	// Terminate component
@@ -467,7 +470,7 @@ namespace SF {
 		return hr;
 	}
 
-	Result ServiceDirectoryManager::RegisterLocalService(GameID gameID, ClusterID clusterID, EntityUID entityUID, const ServerConfig::MessageEndpoint& endpoint)
+	Result ServiceDirectoryManager::RegisterLocalService(GameID gameID, ClusterID clusterID, EntityUID entityUID, const EndpointAddress& endpoint)
 	{
 		Result hr;
 
@@ -538,7 +541,7 @@ namespace SF {
 		return hr;
 	}
 
-	Result ServiceDirectoryManager::ToJsonMessageEndpoint(Json::Value& jsonObject, const char* keyName, const ServerConfig::MessageEndpoint& messageEndpoint)
+	Result ServiceDirectoryManager::ToJsonMessageEndpoint(Json::Value& jsonObject, const char* keyName, const EndpointAddress& messageEndpoint)
 	{
 		String messageEndpointrString;
 		messageEndpointrString.Format("{0}/{1}", messageEndpoint.MessageServer, messageEndpoint.Channel);

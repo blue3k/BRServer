@@ -83,7 +83,7 @@ namespace SF {
 		{
 			Result hr = ResultCode::SUCCESS;
 
-			if (clusterID != ClusterID::Invalid && clusterIDEnd != ClusterID::Invalid)
+			if (clusterID != ClusterID::None && clusterIDEnd != ClusterID::None)
 			{
 				for (; (int)clusterID <= (int)clusterIDEnd; clusterID++)
 				{

@@ -51,7 +51,7 @@ namespace SF {
 		virtual Result WatchForService(GameID gameID, ClusterID clusterID) { return ResultCode::NOT_IMPLEMENTED; }
 
 		// register local service to directory
-		virtual Result RegisterLocalService(GameID gameID, ClusterID clusterID, EntityUID entityUID, const ServerConfig::MessageEndpoint& endpoint) { return ResultCode::NOT_IMPLEMENTED; }
+		virtual Result RegisterLocalService(GameID gameID, ClusterID clusterID, EntityUID entityUID, const EndpointAddress& endpoint) { return ResultCode::NOT_IMPLEMENTED; }
 		virtual Result RegisterLocalService(ServiceEntity* pServiceEntity) { return ResultCode::NOT_IMPLEMENTED; }
 	};
 

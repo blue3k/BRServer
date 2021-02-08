@@ -650,7 +650,6 @@ namespace SF {
 					Transaction::SetRemoteEndpoint(Service::MessageEndpointManager->GetEndpoint(MessageClass::GetRouteContext().GetFrom()));
 				}
 
-
 				hr = TransactionT<OwnerType>::InitializeTransaction(pOwner);
 				svrCheck(hr);
 

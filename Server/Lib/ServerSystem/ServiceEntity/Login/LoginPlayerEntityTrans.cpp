@@ -1,6 +1,6 @@
 ////////////////////////////////////////////////////////////////////////////////
 // 
-// CopyRight (c) 2013 The Braves
+// CopyRight (c) The Braves
 // 
 // Author : KyungKun Ko
 //
@@ -48,7 +48,6 @@
 
 	
 namespace SF {
-namespace Svr {
 
 
 	/////////////////////////////////////////////////////////////////////////////
@@ -1027,6 +1026,5 @@ namespace Svr {
 		return hr;
 	}
 
-}// namespace Svr 
 }// namespace SF 
 

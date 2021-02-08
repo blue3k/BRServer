@@ -1,6 +1,6 @@
 ////////////////////////////////////////////////////////////////////////////////
 // 
-// CopyRight (c) 2013 The Braves
+// CopyRight (c) The Braves
 // 
 // Author : KyungKun Ko
 //
@@ -33,7 +33,6 @@
 
 
 namespace SF {
-namespace Svr {
 
 
 	template<class MessageClass>
@@ -301,6 +300,5 @@ namespace Svr {
 
 
 
-} // namespace Svr 
 } // namespace SF 
 

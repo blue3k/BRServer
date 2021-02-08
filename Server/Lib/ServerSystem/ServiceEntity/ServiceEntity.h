@@ -61,11 +61,11 @@ namespace SF {
 
 		SharedPointerT<StreamDBConsumer> m_ListenEndpoint;
 
-		ServerConfig::MessageEndpoint m_MessageEndpointConfig;
+		EndpointAddress m_MessageEndpointConfig;
 
 	public:
 
-		ServiceEntity(GameID gameID, ClusterID clusterID, const ServerConfig::MessageEndpoint& endpoint = {});
+		ServiceEntity(GameID gameID, ClusterID clusterID, const EndpointAddress& endpoint = {});
 		~ServiceEntity();
 
 		// Initialized
@@ -78,7 +78,7 @@ namespace SF {
 
 		StringCrc64 GetClusterName() const { return m_ClusterName; }
 
-		const ServerConfig::MessageEndpoint& GetMessageEndpointConfig() const { return m_MessageEndpointConfig; }
+		const EndpointAddress& GetMessageEndpointConfig() const { return m_MessageEndpointConfig; }
 
 		// Get message endpoint
 		const SharedPointerT<StreamDBConsumer>& GetListenEndpoint() const { return m_ListenEndpoint; }

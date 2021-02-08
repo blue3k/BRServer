@@ -41,7 +41,6 @@
 
 
 namespace SF {
-	namespace Svr {
 
 		GlobalUIDGenerator LoginPlayerEntity::stm_AuthTicketGenerator;
 
@@ -77,7 +76,7 @@ namespace SF {
 			m_IsTicketOwner = false;
 			memset(m_GCMKeys, 0, sizeof(m_GCMKeys));
 
-			SetEntityKillTimer(DurationMS(Const::LOGIN_TIME_WAIT_PLAYER_JOIN));
+			SetEntityKillTimer(DurationMS(Svr::Const::LOGIN_TIME_WAIT_PLAYER_JOIN));
 
 			return hr;
 		}
@@ -202,7 +201,6 @@ namespace SF {
 		}
 
 
-	} // namespace Svr
 } // namespace SF
 
 

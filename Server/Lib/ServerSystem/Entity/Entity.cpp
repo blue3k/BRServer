@@ -249,7 +249,7 @@ namespace Svr
 			if (pNewTrans->GetOwnerEntity() == nullptr)
 			{
 				hr = pNewTrans->InitializeTransaction(this);
-				if (!(hr)) goto Proc_End;
+				if (!hr) goto Proc_End;
 			}
 
 			if (pNewTrans->IsDirectProcess())
@@ -285,7 +285,7 @@ namespace Svr
 
 				if (pNewTrans != nullptr && BrServer::GetInstance())
 				{
-					assert(false); // This shouldn't be happend now
+					assert(false); // This shouldn't be happened now
 					svrChk(Service::EntityTable->RouteTransaction(pNewTrans->GetTransID().GetEntityID(), pNewTrans));
 				}
 			}
@@ -295,7 +295,7 @@ namespace Svr
 
 		if (pNewTrans != nullptr)
 		{
-			if (!(hr))
+			if (!hr)
 			{
 				svrTrace(Error, "Transaction initialization is failed {0} Entity:{1}, MsgID:{2}", typeid(*this).name(), GetEntityUID(), pMsgHdr->msgID);
 				if (pMsgHdr->msgID.IDs.Type == Message::MSGTYPE_COMMAND)
@@ -314,7 +314,6 @@ namespace Svr
 
 			ReleaseTransaction(pNewTrans);
 		}
-
 
 		return ResultCode::SUCCESS;
 	}

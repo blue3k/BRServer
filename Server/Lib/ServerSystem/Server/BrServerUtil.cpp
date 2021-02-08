@@ -29,6 +29,7 @@
 #include "Component/SFServerNetComponent.h"
 #include "Component/SFZookeeperSessionComponent.h"
 #include "Component/SFConnectionManagerComponent.h"
+#include "Component/SFServerMessageEndpointComponent.h"
 #include "Object/SFLibraryComponentAdapter.h"
 #include "ServerLog/SvrLogComponent.h"
 #include "Service/ServerService.h"
@@ -124,9 +125,8 @@ namespace SF {
 		pEngine->AddComponent<SF::Net::NetSystem>(initParam.NetRecvBufferSize, initParam.NetSendBufferSize, Service::ServerConfig->NetIOThreadCount, 1024);
 		pEngine->AddComponent<ConnectionManagerComponent>(2048);
 		pEngine->AddComponent<Svr::EntityTable>();
+		pEngine->AddComponent<ServerMessageEndpointComponent>();
 		pEngine->AddComponent<LibraryComponentAdapter<Svr::EntityManager, uint>, IHeap&, uint>(GetSystemHeap(), Service::ServerConfig->WorkerThreadCount);
-		//pEngine->AddComponent<LibraryComponentAdapter<Svr::ServerEntityManager,uint>, IHeap&, uint>(GetSystemHeap(), Service::ServerConfig->WorkerThreadCount);
-		//pEngine->AddComponent<LibraryComponentAdapter<Svr::ClusterManagerServiceEntity>, IHeap&>(GetSystemHeap());
 		pEngine->AddComponent<LibraryComponentAdapter<ServiceDirectoryManager>, IHeap&>(GetSystemHeap());
 		pEngine->AddComponent<LibraryComponentAdapter<MessageEndpointManager>, IHeap&>(GetSystemHeap());
 	}

@@ -37,7 +37,7 @@ namespace SF {
 	//	ClusteredServiceEntity class
 	//
 
-	ServiceEntity::ServiceEntity(GameID gameID, ClusterID clusterID, const ServerConfig::MessageEndpoint& endpoint)
+	ServiceEntity::ServiceEntity(GameID gameID, ClusterID clusterID, const EndpointAddress& endpoint)
 		: m_GameID(gameID)
 		, m_ClusterID(clusterID)
 	{
@@ -87,6 +87,10 @@ namespace SF {
 				// ignore those error
 				hr = ResultCode::SUCCESS;
 			}
+			else
+			{
+				svrTrace(Error, "ServiceEntity: failed to fetch data from message endpoint hr:{0}", hr);
+			}
 		}
 		else
 		{
@@ -97,7 +101,7 @@ namespace SF {
 			auto* pMsgHeader = reinterpret_cast<Message::MessageHeader*>(receivedMessageData->data());
 			svrCheckPtr(pMsg = Message::MessageData::NewMessage(GetHeap(), pMsgHeader->msgID.ID, pMsgHeader->Length, receivedMessageData->data()));
 
-			//hr = OnRecv(pMsg);
+			hr = ProcessMessage(nullptr, pMsg);
 		}
 
 		return hr;

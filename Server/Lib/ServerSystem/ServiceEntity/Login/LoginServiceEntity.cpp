@@ -52,7 +52,7 @@ namespace SF {
 	//
 
 
-	LoginServiceEntity::LoginServiceEntity(const ServerConfig::NetPublic* publicNetSocket, const ServerConfig::MessageEndpoint& endpoint)
+	LoginServiceEntity::LoginServiceEntity(const ServerConfig::NetPublic* publicNetSocket, const EndpointAddress& endpoint)
 		: super(nullptr, ClusterID::Login, endpoint)
 		, m_PublicNetSocket(publicNetSocket)
 		, m_pNetPublic(nullptr)
@@ -74,7 +74,7 @@ namespace SF {
 
 		svrCheck(super::InitializeEntity(newEntityID));
 
-		Svr::LoginPlayerEntity::GetAuthTicketGenerator().SetServerID(Service::ServerConfig->UID);
+		LoginPlayerEntity::GetAuthTicketGenerator().SetServerID(Service::ServerConfig->UID);
 
 
 		// public network
@@ -158,7 +158,7 @@ namespace SF {
 	Result LoginServiceEntity::ProcessNewConnection()
 	{
 		Result hr = ResultCode::SUCCESS;
-		SharedPointerT<Svr::LoginPlayerEntity> pLoginPlayerEntity;
+		SharedPointerT<LoginPlayerEntity> pLoginPlayerEntity;
 		SharedPointerT<Net::Connection> pConn;
 
 		if (m_pNetPublic == nullptr)
@@ -198,7 +198,7 @@ namespace SF {
 
 			pConn = std::forward <SharedPointerAtomicT<Net::Connection>>(pConnAtomic);
 
-			svrCheckMem(pLoginPlayerEntity = new(GetHeap()) Svr::LoginPlayerEntity);
+			svrCheckMem(pLoginPlayerEntity = new(GetHeap()) LoginPlayerEntity);
 
 			svrCheck(Service::EntityManager->AddEntity(EntityFaculty::User, *pLoginPlayerEntity));
 

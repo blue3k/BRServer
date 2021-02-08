@@ -56,7 +56,7 @@ namespace Svr {
 
 		// target queue member count
 		uint m_TargetQueueMemberCount;
-		ClusterID m_TargetQueueClusterID = ClusterID::Invalid;
+		ClusterID m_TargetQueueClusterID = ClusterID::None;
 		uint m_MatchingMemberCount;
 		PlayerRole m_RequestRole;
 

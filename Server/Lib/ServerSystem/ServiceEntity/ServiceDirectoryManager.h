@@ -86,7 +86,7 @@ namespace SF {
 		static Result GetNodeValue(const String& nodePath, Json::Value& jsonValue);
 		static Result SetNodeValue(const String& nodePath, const Json::Value& jsonValue);
 
-		static Result ParseMessageEndpoint(const Json::Value& jsonObject, const char* keyName, ServerConfig::MessageEndpoint& outMessageEndpoint);
+		static Result ParseMessageEndpoint(const Json::Value& jsonObject, const char* keyName, EndpointAddress& outMessageEndpoint);
 
 		Result AddServiceInfo(const char* nodeName, StringCrc64 nodeNameCrc);
 
@@ -144,7 +144,7 @@ namespace SF {
 			GameID GameID;
 			ClusterID ClusterID;
 			EntityUID EntityUID;
-			ServerConfig::MessageEndpoint Endpoint;
+			EndpointAddress Endpoint;
 			String NodePath;
 			Json::Value JsonAttributes;
 		};
@@ -159,7 +159,7 @@ namespace SF {
 
 	private:
 
-		static Result ToJsonMessageEndpoint(Json::Value& jsonObject, const char* keyName, const ServerConfig::MessageEndpoint& messageEndpoint);
+		static Result ToJsonMessageEndpoint(Json::Value& jsonObject, const char* keyName, const EndpointAddress& messageEndpoint);
 
 		Result RegisterLocalServices();
 
@@ -180,7 +180,7 @@ namespace SF {
 		// Set watch state for cluster
 		virtual Result WatchForService(GameID gameID, ClusterID clusterID) override;
 
-		virtual Result RegisterLocalService(GameID gameID, ClusterID clusterID, EntityUID entityUID, const ServerConfig::MessageEndpoint& endpoint) override;
+		virtual Result RegisterLocalService(GameID gameID, ClusterID clusterID, EntityUID entityUID, const EndpointAddress& endpoint) override;
 		virtual Result RegisterLocalService(ServiceEntity* pServiceEntity) override;
 
 	};
