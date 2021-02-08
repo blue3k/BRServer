@@ -44,14 +44,6 @@ namespace SharedModuleServer
 	class SharedModuleServer : public Svr::BrServer
 	{
 	public:
-
-	private:
-
-
-	protected:
-
-
-	public:
 		SharedModuleServer();
 		~SharedModuleServer();
 
