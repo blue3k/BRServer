@@ -1,6 +1,6 @@
 ////////////////////////////////////////////////////////////////////////////////
 // 
-// CopyRight (c) 2013 The Braves
+// CopyRight (c) The Braves
 // 
 // Author : KyungKun Ko
 //
@@ -27,7 +27,7 @@
 #include "Container/SFIndexing.h"
 
 #include "Entity/EntityInformation.h"
-#include "ServiceEntity/ClusteredServiceEntity.h"
+#include "ServiceEntity/ServiceEntity.h"
 
 
 
@@ -35,18 +35,15 @@
 namespace SF {
 	namespace Net {
 		class Connection;
-		class ServerMUDP;
+		class ServerNet;
 	};
 
-	namespace Policy {
-		class ISvrPolicyGame;
-	};
+	class ISvrPolicyGame;
 };
 
 
 
 namespace SF {
-namespace Svr {
 
 	class Entity;
 	class ServerEntity;
@@ -58,16 +55,15 @@ namespace Svr {
 	//	ServerServiceComponentEntity class
 	//
 
-	class GameServiceEntity : public ShardedClusterServiceEntity
+	class GameServiceEntity : public ServiceEntity
 	{
 	public:
 
-		typedef ShardedClusterServiceEntity super;
+		using super = ServiceEntity;
 
 	private:
-		const ServerConfig::NetPublic*	m_PublicNet;
-		SharedPointerT<Net::ServerMUDP>			m_pNetPublic;
-		GameID						m_GameID;
+		const ServerConfig::NetPublic* m_PublicNetConfig{};
+		SharedPointerT<Net::ServerNet>	m_pNetPublic;
 
 		PageQueue<SharedPointerAtomicT<Net::Connection>> m_NewConnectionQueue;
 
@@ -76,14 +72,14 @@ namespace Svr {
 
 	public:
 
-		GameServiceEntity(GameID gameID, const ServerConfig::NetPublic *publicNetSocket, ClusterMembership initialMembership = ClusterMembership::Slave);
+		GameServiceEntity(GameID gameID, const ServerConfig::NetPublic *publicNetSocket, const EndpointAddress& endpoint);
 		~GameServiceEntity();
 
 		// We are not going to use hashed key
 		virtual uint KeyHash( uint64_t key ) { return (uint)key; }
 		
-		Net::ServerMUDP* GetServerNet() { return *m_pNetPublic; }
-		const ServerConfig::NetPublic* GetPublicNetConfig() { return m_PublicNet;  }
+		Net::ServerNet* GetServerNet() { return *m_pNetPublic; }
+		const ServerConfig::NetPublic* GetPublicNetConfig() { return m_PublicNetConfig;  }
 
 		//////////////////////////////////////////////////////////////////////////
 		//
@@ -109,13 +105,7 @@ namespace Svr {
 		
 	};
 
-
-
-
-
-
-}; // namespace Svr
-}; // namespace SF
+} // namespace SF
 
 
 

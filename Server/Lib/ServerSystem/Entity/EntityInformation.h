@@ -18,7 +18,11 @@
 #include "Server/BrServerUtil.h"
 //#include "ServerEntity/ServerEntity.h"
 //#include "ServerService/ServerService.h"
+#include "Variable/SFVariableTable.h"
 
+namespace Json {
+	class Value;
+}
 
 namespace SF {
 
@@ -89,14 +93,13 @@ namespace SF {
 		ClusterID m_ClusterID;
 
 		// Server service membership
-		ClusterMembership m_ClusterMembership = ClusterMembership::Slave;
-
-		// Server service membership
 		ServiceStatus m_ServiceStatus = ServiceStatus::Offline;
 
 		// Message endpoint
 		SharedPointerT<MessageEndpoint> m_TargetEndpoint;
 
+
+		VariableTable m_CustomAttributes;
 
 		// workload
 		uint m_Workload = 0;
@@ -110,17 +113,16 @@ namespace SF {
 
 
 	public:
-		ServerServiceInformation(GameID gameID, ClusterID clusterID, EntityUID entityUID, const SharedPointerT<MessageEndpoint> targetEndpoint, ClusterMembership membership);
+		ServerServiceInformation(GameID gameID, ClusterID clusterID, EntityUID entityUID, const SharedPointerT<MessageEndpoint> targetEndpoint, const Json::Value& customAttributes);
 		~ServerServiceInformation();
 
 
 		ClusterID GetClusterID() const { return m_ClusterID; }
 		GameID GetGameID() const { return m_GameID; }
 
-		const SharedPointerT<MessageEndpoint>& GetTargetEndpoint() const { return m_TargetEndpoint; }
+		const VariableTable& GetCustomAttributes() const { return m_CustomAttributes; }
 
-		ClusterMembership GetClusterMembership() const { return m_ClusterMembership; }
-		void SetClusterMembership(ClusterMembership value) { m_ClusterMembership = value; }
+		const SharedPointerT<MessageEndpoint>& GetTargetEndpoint() const { return m_TargetEndpoint; }
 
 		ServiceStatus GetServiceStatus() const { return m_ServiceStatus; }
 		void SetServiceStatus(ServiceStatus value) { m_ServiceStatus = value; }
@@ -133,11 +135,6 @@ namespace SF {
 
 		ServerServiceBase* GetServiceBase() const { return m_ServiceBase; }
 		void SetServiceBase(ServerServiceBase* value) { m_ServiceBase = value; }
-
-
-		// Get service information
-		//void GetServiceInformation( ServiceInformation & serviceInformation );
-
 
 		// Setup route context from input transaction to the service entity
 		RouteContext RouteContextFrom(TransactionID fromTrans);

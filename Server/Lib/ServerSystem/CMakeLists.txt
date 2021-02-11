@@ -22,7 +22,8 @@ set(BRSERVERSYSTEM_LIB_FILES
     ServiceEntity/Party/GamePartyManagerServiceTrans.cpp
     ServiceEntity/Game/GameInstanceEntity.inl
     ServiceEntity/Game/GameSystem.inl
-    ServiceEntity/Game/PlayerManagerServiceEntity.h
+    ServiceEntity/Game/PlayerDirectoryManager.h
+	ServiceEntity/Game/PlayerDirectoryManager.cpp
     ServiceEntity/Game/GameInstanceEntity.h
     ServiceEntity/Game/GameInstanceManagerServiceEntity.h
     ServiceEntity/Game/GameInstanceManagerServiceTrans.h
@@ -33,7 +34,6 @@ set(BRSERVERSYSTEM_LIB_FILES
     ServiceEntity/Game/GameServiceEntity.h
     ServiceEntity/Game/GameServiceTrans.h
     ServiceEntity/Game/GameSystem.h
-    ServiceEntity/Game/PlayerManagerServiceEntity.cpp
     ServiceEntity/Game/GameInstanceEntity.cpp
     ServiceEntity/Game/GameInstanceManagerServiceEntity.cpp
     ServiceEntity/Game/GameInstanceManagerServiceTrans.cpp

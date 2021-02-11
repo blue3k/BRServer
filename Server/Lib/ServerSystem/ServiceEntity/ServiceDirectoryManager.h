@@ -160,6 +160,7 @@ namespace SF {
 	private:
 
 		static Result ToJsonMessageEndpoint(Json::Value& jsonObject, const char* keyName, const EndpointAddress& messageEndpoint);
+		static Result ToJson(Json::Value& jsonObject, const char* keyName, const VariableTable& customAttributes);
 
 		Result RegisterLocalServices();
 
@@ -180,7 +181,7 @@ namespace SF {
 		// Set watch state for cluster
 		virtual Result WatchForService(GameID gameID, ClusterID clusterID) override;
 
-		virtual Result RegisterLocalService(GameID gameID, ClusterID clusterID, EntityUID entityUID, const EndpointAddress& endpoint) override;
+		virtual Result RegisterLocalService(GameID gameID, ClusterID clusterID, EntityUID entityUID, const EndpointAddress& endpoint, const VariableTable& customAttributes) override;
 		virtual Result RegisterLocalService(ServiceEntity* pServiceEntity) override;
 
 	};

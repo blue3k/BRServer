@@ -27,7 +27,7 @@
       </Res>
     </Command>
 
-	<!-- Need to refactor as generalized JSON -->
+		<!-- Need to refactor as generalized JSON -->
     <C2SEvent Name="ChatMessage" Reliable="true" Crypto="No" Trace="Debug1" Desc="Chatting message event.">
 		<Params Type="AccountID" Name="SenderID" Desc="AccountID is player ID for now"/>
 		<Params Type="PlayerRole" Name="Role" Desc="Role filter"/>

@@ -26,7 +26,7 @@
 
 #include "Protocol/ServerService/PartyMatchingQueueService.h"
 #include "ServiceEntity/MatchingQueueServiceEntity.h"
-#include "ServiceEntity/Game/PlayerManagerServiceEntity.h"
+#include "ServiceEntity/Game/PlayerDirectoryManager.h"
 
 #include "Protocol/Message/PartyMatchingQueueMsgClass.h"
 

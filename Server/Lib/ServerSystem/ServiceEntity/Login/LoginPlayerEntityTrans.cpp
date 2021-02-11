@@ -66,8 +66,8 @@ namespace SF {
 		//BR_TRANS_MESSAGE( DB::QueryDeleteLoginSessionCmd, { return OnSessionDeleted(pRes); });
 		//BR_TRANS_MESSAGE( DB::QueryReplaceLoginSessionCmd, { return OnSessionReplaced(pRes); });
 		//BR_TRANS_MESSAGE( Message::LoginServer::KickPlayerRes, { return OnKickedPlyaer(pRes); });
-		super::template BR_TRANS_MESSAGE( Message::GameServer::RegisterPlayerToJoinGameServerRes, { return OnRegisterPlayerToJoinGameServer(pRes); });
-		super::template BR_TRANS_MESSAGE(DB::QueryConnectedToGameServerCmd, { return OnConnectToGameServerRes(pRes); });
+		//super::template BR_TRANS_MESSAGE( Message::GameServer::RegisterPlayerToJoinGameServerRes, { return OnRegisterPlayerToJoinGameServer(pRes); });
+		//super::template BR_TRANS_MESSAGE(DB::QueryConnectedToGameServerCmd, { return OnConnectToGameServerRes(pRes); });
 
 		m_UserID[0] = '\0';
 	}
@@ -77,18 +77,18 @@ namespace SF {
 	{
 		if (pRes->GetResult() == Result(ResultCode::INVALID_PLAYERID) || pRes->GetResult() == Result(ResultCode::SVR_INVALID_ENTITYUID))
 		{
-			if (super::GetMyOwner()->GetPlayerID() != 0 && m_CreateRequestCount == 0)
-			{
-				m_CreateRequestCount++;
-				// Garbage login session information will lead process to here. Ignore it and create new one
-				svrTrace(SVR_ENTITY, "Garbage login session information will lead process to here. Ignore it and create new one UID:{0} ticket:{1}",
-					super::GetMyOwner()->GetPlayerID(), super::GetMyOwner()->GetAuthTicket());
-				if (!(RegisterNewPlayerToJoinGameServer()))
-				{
-					return super::OnGenericError(pRes);
-				}
-			}
-			else
+			//if (super::GetMyOwner()->GetPlayerID() != 0 && m_CreateRequestCount == 0)
+			//{
+			//	m_CreateRequestCount++;
+				//// Garbage login session information will lead process to here. Ignore it and create new one
+				//svrTrace(SVR_ENTITY, "Garbage login session information will lead process to here. Ignore it and create new one UID:{0} ticket:{1}",
+				//	super::GetMyOwner()->GetPlayerID(), super::GetMyOwner()->GetAuthTicket());
+				//if (!(RegisterNewPlayerToJoinGameServer()))
+				//{
+					//return super::OnGenericError(pRes);
+				//}
+			//}
+			//else
 			{
 				return super::OnGenericError(pRes);
 			}
@@ -138,12 +138,16 @@ namespace SF {
 	template<class MessageClass>
 	Result LoginPlayerTransLoginBase<MessageClass>::OnSessionRegistered( Svr::TransactionResult* &pRes )
 	{
-		Result hr = ResultCode::SUCCESS;
+		ScopeContext hr([this](Result hr)
+			{
+				CloseTransaction(hr);
+			});
+
 		DB::QueryRegisterAuthTicketCmd* pDBRes = (DB::QueryRegisterAuthTicketCmd*)pRes;
 		NetPolicyGameServer *pGameServerPolicy = nullptr;
 		SharedPointerT<SF::Net::Connection> pConn = super::GetMyOwner()->GetConnection();
 
-		svrChk(pRes->GetResult());
+		svrCheck(pRes->GetResult());
 
 		super::GetMyOwner()->SetIsTicketOwner(pDBRes->Result != 0);
 		m_GameEntityUID = pDBRes->GameEntityUID;
@@ -158,171 +162,42 @@ namespace SF {
 		// if someone already logged in
 		if (pDBRes->Result != 0)
 		{
-			svrErrClose(ResultCode::LOGIN_ALREADY_LOGGEDIN_OTHERPLACE);
+			svrCheckClose(ResultCode::LOGIN_ALREADY_LOGGEDIN_OTHERPLACE);
+			return hr;
 		}
-		else
+
+		ServerServiceInformation* pServiceInfo{};
+		Service::ServiceDirectory->GetRandomService(super::GetMyOwner()->GetGameID(), ClusterID::Game, pServiceInfo);
+		if (pServiceInfo != nullptr)
 		{
-			ServerServiceInformation* pServiceInfo{};
-			Service::ServiceDirectory->GetRandomService(super::GetMyOwner()->GetGameID(), ClusterID::Game, pServiceInfo);
-
-			//ClusterServiceInfo* pClusterServiceInfo = nullptr;
-			//// To accommodate login only services, allow login without game server
-			//svrChkPtr(pClusterServiceInfo = Service::ServiceDirectory->GetClusterInfo(super::GetMyOwner()->GetGameID(), ClusterID::Game));
-			//if(pClusterServiceInfo->Services.size() == 0)
-			if (pServiceInfo == nullptr)
-			{
-				// Login is succeeded, but there is no game cluster for the game or no available game service
-				CloseTransaction(hr);
-				goto Proc_End;
-			}
-
-			if( m_GameEntityUID.UID == 0 )
-			{
-				svrTrace(SVR_ENTITY, "No login session, create new one");
-				svrChk( RegisterNewPlayerToJoinGameServer() );
-			}
-			else
-			{
-				auto gameEndpoint = Service::MessageEndpointManager->GetEndpoint(m_GameEntityUID);
-				if (!(NetPolicyGameServer(gameEndpoint).RegisterPlayerToJoinGameServerCmd(
-					RouteContext(super::GetOwnerEntityUID(), m_GameEntityUID), super::GetTransID(),
-					super::GetMyOwner()->GetPlayerID(), super::GetMyOwner()->GetAuthTicket(), super::GetMyOwner()->GetFacebookUID(), super::GetMyOwner()->GetShardID())))
-				{
-					svrChk(RegisterNewPlayerToJoinGameServer());
-				}
-			}
+			m_GameServerAddrIPV4 = pServiceInfo->GetCustomAttributes().GetValue<const char*>("PublicIPV4");
+			m_GameServerAddr = pServiceInfo->GetCustomAttributes().GetValue<const char*>("PublicIPV6");
+			auto port = pServiceInfo->GetCustomAttributes().GetValue<uint>("PublicPort");
+			m_GameServerAddrIPV4.Port = port;
+			m_GameServerAddr.Port = port;
 		}
 
-	Proc_End:
-
-		if( !hr )
-			CloseTransaction(hr);
-
-		return ResultCode::SUCCESS;
-	}
-
-	template<class MessageClass>
-	Result LoginPlayerTransLoginBase<MessageClass>::RegisterNewPlayerToJoinGameServer()
-	{
-		Result hr = ResultCode::SUCCESS;
-		ServerServiceInformation *pService = nullptr;
-
-		// Find new game server for this player
-		svrChk(Service::ServiceDirectory->GetRandomService(super::GetMyOwner()->GetGameID(), ClusterID::Game, pService));
-		if (!hr)
-		{
-			svrTrace(Error, "Failed to find cluster service entity for game:{0} PlayerID:{1}", Enum<GameID>().GetValueName(super::GetMyOwner()->GetGameID()), super::GetMyOwner()->GetPlayerID());
-			goto Proc_End;
-		}
-
-		super::GetMyOwner()->Heartbeat();
-
-		svrTrace(SVR_ENTITY, "Creating new Entity for PID:{0}, on svr:{1}", super::GetMyOwner()->GetPlayerID(), pService->GetEntityUID());
-
-		svrChk( pService->GetService<GameServerService>()->RegisterPlayerToJoinGameServerCmd(super::GetTransID(),
-			super::GetMyOwner()->GetPlayerID(), super::GetMyOwner()->GetAuthTicket(), super::GetMyOwner()->GetFacebookUID(), super::GetMyOwner()->GetShardID()));
-	Proc_End:
-
-		return hr; 
-	}
-
-	template<class MessageClass>
-	Result LoginPlayerTransLoginBase<MessageClass>::OnRegisterPlayerToJoinGameServer( Svr::TransactionResult* &pRes )
-	{
-		Result hr = ResultCode::SUCCESS;
-
-		Svr::MessageResult *pMsgRes = (Svr::MessageResult*)pRes;
-		Message::GameServer::RegisterPlayerToJoinGameServerRes res;
-
-		if( pRes->GetResult() == Result(ResultCode::INVALID_PLAYERID) || pRes->GetResult() == Result(ResultCode::SVR_INVALID_ENTITYUID))
-		{
-			if (super::GetMyOwner()->GetPlayerID() == 0)
-			{
-				hr = pRes->GetResult();
-			}
-			else
-			{
-				// Garbage login session information will lead process to here. Ignore it and create new one
-				svrTrace(SVR_ENTITY, "Garbage login session information will lead process to here. Ignore it and create new one UID:{0} ticket:{1}", 
-					super::GetMyOwner()->GetPlayerID(), super::GetMyOwner()->GetAuthTicket());
-				svrChkSilent( RegisterNewPlayerToJoinGameServer() );
-			}
-			goto Proc_End;
-		}
-
-		svrChk(pRes->GetResult());
-		svrChk( res.ParseMessage( *pMsgRes->GetMessage() ) );
-
-		super::GetMyOwner()->Heartbeat();
-
-		if (!StrUtil::IsNullOrEmpty(res.GetPublicAddressV6()))
-		{
-			svrChk(Net::SetNetAddress(m_GameServerAddr, res.GetPublicAddressV6(), (uint16_t)res.GetPort()));
-		}
-		svrChk(Net::SetNetAddress(m_GameServerAddrIPV4, res.GetPublicAddress(), (uint16_t)res.GetPort()));
-		m_GameEntityUID = res.GetRouteContext().GetFrom();
-
-		svrChk(Svr::GetServerComponent<DB::LoginSessionDB>()->ConnectedToGameServer(super::GetTransID(), super::GetMyOwner()->GetPlayerID(), super::GetMyOwner()->GetAuthTicket(), super::GetOwnerEntityUID(), m_GameEntityUID));
-
-
-	Proc_End:
-
-		if( !(hr) )
-			CloseTransaction(hr);
-
-		return ResultCode::SUCCESS; 
-	}
-
-	template<class MessageClass>
-	Result LoginPlayerTransLoginBase<MessageClass>::OnConnectToGameServerRes(Svr::TransactionResult* &pRes)
-	{
-		Result hr = ResultCode::SUCCESS;
-		DB::QueryConnectedToGameServerCmd* pDBRes = (DB::QueryConnectedToGameServerCmd*)pRes;
-
-		svrChk(pRes->GetResult());
-
-		super::GetMyOwner()->Heartbeat();
-
-		// succeeded to create
-		if (pDBRes->Result == 0)
-		{
-			super::GetMyOwner()->SetIsTicketOwner(false);
-		}
-		else
-		{
-			svrErrClose(ResultCode::LOGIN_ALREADY_LOGGEDIN_OTHERPLACE);
-		}
-
-	Proc_End:
-
-		CloseTransaction(hr);
-
-		return ResultCode::SUCCESS;
+		return hr;
 	}
 
 	// Start Transaction
 	template<class MessageClass>
 	Result LoginPlayerTransLoginBase<MessageClass>::StartTransaction()
 	{
-		Result hr = ResultCode::SUCCESS;
+		ScopeContext hr([this](Result hr) 
+			{
+				if (!hr) CloseTransaction(hr);
+			});
 
-		//m_RegisterTryCount = 0;
 		m_GameEntityUID = 0;
 
-		svrChk( super::StartTransaction() );
+		svrCheck( super::StartTransaction() );
 
 		super::GetMyOwner()->Heartbeat();
 
 		if(super::GetMyOwner()->GetAccountID() != 0 )
 		{
-			svrErrClose(ResultCode::LOGIN_ALREADY_LOGGEDIN);
-		}
-
-	Proc_End:
-
-		if( !hr )
-		{
-			CloseTransaction( hr );
+			svrCheckClose(ResultCode::LOGIN_ALREADY_LOGGEDIN);
 		}
 
 		return hr;
@@ -407,7 +282,7 @@ namespace SF {
 
 	Proc_End:
 
-		if( !(hr) )
+		if( !hr )
 		{
 			CloseTransaction( hr );
 		}

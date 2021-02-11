@@ -23,7 +23,6 @@
 
 #include "Protocol/ServerService/PartyMatchingQueueService.h"
 #include "ServiceEntity/MatchingQueueServiceEntity.h"
-#include "ServiceEntity/Game/PlayerManagerServiceEntity.h"
 #include "ServiceEntity/MatchingServiceUtil.h"
 #include "Protocol/ServerService/GameInstanceManagerService.h"
 
@@ -57,9 +56,8 @@ namespace SF {
 		//	Game command transaction
 		//
 
-
 		PlayerTransSearchGameInstance::PlayerTransSearchGameInstance(IHeap& heap, MessageDataPtr& pIMsg)
-			: MessageTransaction(heap, std::forward<MessageDataPtr>(pIMsg))
+			: MessageTransaction(heap, Forward<MessageDataPtr>(pIMsg))
 			, m_GameInstances(GetHeap())
 		{
 			RegisterMessageHandler<Message::GameInstanceManager::SearchGameInstanceRes>(&PlayerTransSearchGameInstance::OnSearchGameInstanceRes);
@@ -136,8 +134,6 @@ namespace SF {
 
 			svrCheck(joinRes.ParseMessage(*pMsgRes->GetMessage()));
 
-			//GetMyOwner()->AddGameTransactionLog(TransLogCategory::Game, 1, 0, joinRes.GetRouteContext().GetFrom().UID);
-
 			GetMyOwner()->SetGameInsUID(joinRes.GetRouteContext().GetFrom());
 
 			m_GameInsID = joinRes.GetRouteContext().GetFrom();
@@ -152,7 +148,6 @@ namespace SF {
 			if (GetMyOwner()->GetPartyUID().UID != 0)
 			{
 				auto serverEndpoint = Service::MessageEndpointManager->GetEndpoint(GetMyOwner()->GetPartyUID());
-				//svrCheck(Service::ServerEntityManager->GetServerEntity(GetMyOwner()->GetPartyUID().GetServerID(), pServerEntity));
 
 				svrCheck(NetPolicyGameParty(serverEndpoint).LeavePartyCmd(RouteContext(GetOwnerEntityUID(), GetMyOwner()->GetPartyUID()), GetTransID(), GetMyOwner()->GetPlayerID()));
 			}
@@ -241,9 +236,7 @@ namespace SF {
 			Svr::MessageResult* pMsgRes = (Svr::MessageResult*)pRes;
 			Message::GameInstance::LeaveGameInstanceRes leaveRes;
 
-			//GetMyOwner()->AddGameTransactionLog(TransLogCategory::Game, -1, 0, GetMyOwner()->GetGameInsUID().UID);
-
-			if (pRes->GetResult() == Result(ResultCode::SVR_INVALID_ENTITYUID))
+			if (pRes->GetResult() == ResultCode::SVR_INVALID_ENTITYUID)
 			{
 
 				GetMyOwner()->SetGameInsUID(0);

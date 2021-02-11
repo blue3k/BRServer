@@ -1,6 +1,6 @@
 ////////////////////////////////////////////////////////////////////////////////
 // 
-// CopyRight (c) 2013 The Braves
+// CopyRight (c) The Braves
 // 
 // Author : KyungKun Ko
 //
@@ -54,7 +54,7 @@ namespace SF {
 		class PlayerTransJoinGameServer : public Svr::MessageTransaction< GamePlayerEntity, Message::Game::JoinGameServerCmd>
 		{
 		public:
-			typedef Svr::MessageTransaction< GamePlayerEntity, Message::Game::JoinGameServerCmd> super;
+			using super = Svr::MessageTransaction< GamePlayerEntity, Message::Game::JoinGameServerCmd>;
 
 		private:
 
@@ -83,7 +83,6 @@ namespace SF {
 			void SetPlayerNick(const char* value) { StrUtil::StringCopy(m_PlayerNick, value); }
 
 
-
 			Result OnGameServerJoined(Svr::TransactionResult* pRes);
 			Result OnJoinPartyRes(Svr::TransactionResult* pRes);
 			Result OnCreatePlayerGameDataRes(Svr::TransactionResult* pRes);
@@ -91,9 +90,10 @@ namespace SF {
 
 			Result SetPlayerGameData(const VariableTable& playerData);
 
-			Result RegisterToPlayerManager();
-
 			// Sub actions
+			Result ConnectedToGameServerDB();
+			Result OnConnectedToGameServerDB(Svr::TransactionResult* pRes);
+
 			Result NotifyLoginServer();
 			Result RequestPlayerInfoFromDB();
 			Result RequestPlayerInfoCreateDB();

@@ -30,14 +30,6 @@
 
 
 namespace SF {
-namespace Net {
-	class ServerPeer;
-	class ServerPeerTCP;
-}
-};
-
-
-namespace SF {
 	namespace DB {
 		class DBClusterManager;
 	}
@@ -48,14 +40,6 @@ namespace SF {
 
 	class ServiceEntity;
 
-	namespace Svr {
-
-	class ServerEntityManager;
-	class ServerEntity;
-	class SimpleUserEntity;
-	class Transaction;
-	class EntityManager;
-
 
 	// Server running state
 	enum class ServerState {
@@ -64,6 +48,15 @@ namespace SF {
 		RUNNING,
 		STOPING,
 	};
+
+	namespace Svr {
+
+	class ServerEntityManager;
+	class ServerEntity;
+	class SimpleUserEntity;
+	class Transaction;
+	class EntityManager;
+
 
 	//////////////////////////////////////////////////////////////////////////
 	//
@@ -226,6 +219,8 @@ namespace SF {
 
 		// create remote entity by class
 		virtual Result CreateServerEntity(ServerEntity*& pServerEntity);
+
+		virtual Result InitializingServices();
 
 		// Run the task
 		virtual Result TickUpdate(TimerAction *pAction = nullptr) override;

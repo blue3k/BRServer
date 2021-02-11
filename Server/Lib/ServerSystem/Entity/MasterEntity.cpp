@@ -376,11 +376,11 @@ namespace Svr
 			svrErr(ResultCode::NOT_IMPLEMENTED);
 			break;
 		case ServerTaskEvent::EventTypes::PACKET_MESSAGE_SYNC_EVENT:
-			pMyConn = std::forward<SharedPointerT<Net::Connection>>(eventTask.EventData.MessageEvent.pConn.AsSharedPtr<Net::Connection>());
+			pMyConn = std::forward<SharedPointerT<Net::Connection>>(eventTask.EventData.MessageEvent.pObject.AsSharedPtr<Net::Connection>());
 			if (pMyConn != nullptr) pMyConn->UpdateSendQueue();
 			break;
 		case ServerTaskEvent::EventTypes::PACKET_MESSAGE_SEND_EVENT:
-			pMyConn = std::forward<SharedPointerT<Net::Connection>>(eventTask.EventData.MessageEvent.pConn.AsSharedPtr<Net::Connection>());
+			pMyConn = std::forward<SharedPointerT<Net::Connection>>(eventTask.EventData.MessageEvent.pObject.AsSharedPtr<Net::Connection>());
 			if (pMyConn != nullptr) pMyConn->UpdateSendBufferQueue();
 			break;
 		case ServerTaskEvent::EventTypes::TRANSRESULT_EVENT:
@@ -418,8 +418,6 @@ namespace Svr
 		return (uint)m_activeTrans.size() + (m_pExclusiveTransaction == nullptr ? 0 : 1);
 	}
 
-}; // namespace Svr
-}; // namespace SF
-
-
+} // namespace Svr
+} // namespace SF
 

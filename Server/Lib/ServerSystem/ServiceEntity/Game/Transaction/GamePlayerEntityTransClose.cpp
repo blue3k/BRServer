@@ -23,7 +23,6 @@
 
 #include "Protocol/ServerService/PartyMatchingQueueService.h"
 #include "ServiceEntity/MatchingQueueServiceEntity.h"
-#include "ServiceEntity/Game/PlayerManagerServiceEntity.h"
 
 #include "Protocol/Message/PartyMatchingQueueMsgClass.h"
 

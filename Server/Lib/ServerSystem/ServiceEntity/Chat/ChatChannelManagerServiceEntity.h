@@ -44,11 +44,11 @@ namespace SF {
 		//	ChatChannelManagerServiceEntity class
 		//
 
-		class ChatChannelManagerServiceEntity : public LoadbalanceClusterServiceEntity
+		class ChatChannelManagerServiceEntity : public ServiceEntity
 		{
 		public:
 
-			typedef LoadbalanceClusterServiceEntity super;
+			using super = ServiceEntity;
 
 			enum { ComponentID = ServerComponentID_ChatChannelManagerService };
 
@@ -61,7 +61,7 @@ namespace SF {
 
 		public:
 
-			ChatChannelManagerServiceEntity(GameID gameID, ClusterMembership initialMembership = ClusterMembership::Slave);
+			ChatChannelManagerServiceEntity(GameID gameID, const EndpointAddress& endpoint);
 			~ChatChannelManagerServiceEntity();
 
 

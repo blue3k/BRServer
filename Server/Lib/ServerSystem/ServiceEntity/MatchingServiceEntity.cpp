@@ -808,7 +808,7 @@ namespace Svr {
 			return hr;
 
 		// don't update query when the server isn't running
-		if (BrServer::GetInstance()->GetServerState() != Svr::ServerState::RUNNING)
+		if (BrServer::GetInstance()->GetServerState() != ServerState::RUNNING)
 			return hr;
 
 		if (GetPendingTransactionCount() == 0 && GetActiveTransactionCount() < (m_MatchingMemberCount-1))

@@ -18,15 +18,18 @@
 #include "Types/SFEngineTypedefs.h"
 #include "GameConst.h"
 #include "Net/SFMessage.h"
-#include "Protocol/Message/ClusterServerMsgClass.h"
-#include "Protocol/Policy/ClusterServerNetPolicy.h"
 #include "Transaction/MessageRoute.h"
 #include "ServiceEntity/Game/GameServiceEntity.h"
 #include "ServiceEntity/Game/GamePlayerEntity.h"
 #include "Transaction/ServerTransaction.h"
 #include "Protocol/Message/GameServerMsgClass.h"
 #include "Protocol/Policy/GameServerNetPolicy.h"
+#include "Protocol/Message/GameMsgClass.h"
+#include "Protocol/Policy/GameNetPolicy.h"
 
+// deprecated
+#include "Protocol/Message/ClusterServerMsgClass.h"
+#include "Protocol/Policy/ClusterServerNetPolicy.h"
 
 namespace SF {
 namespace Svr {
@@ -88,8 +91,8 @@ namespace Svr {
 		{
 			Result hr = ResultCode::SUCCESS; 
 			RouteContext routeContext(m_PlayerUID, super::GetRouteContext().GetFrom());
-			svrChk(NetSvrPolicyGameServer(super::GetRemoteEndpoint()).RegisterPlayerToJoinGameServerRes(routeContext, super::GetTransactionID(), hrRes, m_PublicAddress, m_PublicAddressIPV6, m_Port));
-		Proc_End:
+			svrCheck(NetSvrPolicyGameServer(super::GetRemoteEndpoint()).RegisterPlayerToJoinGameServerRes(routeContext, super::GetTransactionID(), hrRes, m_PublicAddress, m_PublicAddressIPV6, m_Port));
+
 			super::OnCloseTransaction(hrRes);
 		return hr;
 		}
@@ -97,7 +100,7 @@ namespace Svr {
 	};
 
 
-	extern template class GameServerTransRegisterPlayerToJoinGameServer<Svr::GameServiceEntity>;
+	extern template class GameServerTransRegisterPlayerToJoinGameServer<GameServiceEntity>;
 	extern template class GameServerTransRegisterPlayerToJoinGameServer<Svr::GamePlayerEntity>;
 
 
@@ -121,6 +124,8 @@ namespace Svr {
 
 
 
-} // namespace GameServer 
+
+
+} // namespace Svr
 } // namespace SF 
 

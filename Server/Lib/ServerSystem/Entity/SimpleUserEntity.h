@@ -85,7 +85,7 @@ namespace SF {
 			virtual Result ProcessConnectionEvent(const Net::ConnectionEvent& conEvent);
 
 			// Process Message and release message after all processed
-			Result ProcessMessageData(MessageDataPtr& pMsg);
+			virtual Result ProcessMessage(const SharedPointerT<MessageEndpoint>& remoteEndpoint, MessageDataPtr& pMsg) override;
 
 			virtual void Heartbeat();
 
@@ -122,7 +122,7 @@ namespace SF {
 			// Get Account ID
 			AccountID GetAccountID() const { return m_AccountID; }
 
-			// Set Account ID, this will update Account ID table
+			// Set Account ID
 			virtual Result SetAccountID(AccountID accID);
 
 			// Get Auth ticket

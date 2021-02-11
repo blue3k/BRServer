@@ -1,6 +1,6 @@
 ////////////////////////////////////////////////////////////////////////////////
 // 
-// CopyRight (c) 2016 Blue3k
+// CopyRight (c) The Braves
 // 
 // Author : KyungKun Ko
 //
@@ -30,9 +30,7 @@ namespace Net {
 	class Connection;
 };
 
-namespace Policy {
 	class ISvrPolicyGame;
-};
 };
 
 namespace ServerConfig
@@ -75,10 +73,8 @@ namespace Svr {
 
 	private:
 
-
 		// Player state
 		PlayerState m_PlayerState = PlayerState_None;
-
 
 		// Game instance UID
 		GameInsUID m_GameInsUID = 0;
@@ -86,7 +82,6 @@ namespace Svr {
 		Net::ServerNet* m_ServerNet = nullptr;
 
 		const ServerConfig::NetPublic*	m_PublicNet = nullptr;
-
 
 		PartyUID m_PartyUID = 0;
 		uint m_ShardID = 0;
@@ -128,6 +123,7 @@ namespace Svr {
 		// Cached player information
 		mutable ServerFriendInformation m_PlayerInformation;
 
+		bool m_ClosingPended = false;
 
 	public:
 
@@ -140,11 +136,7 @@ namespace Svr {
 		const ServerConfig::NetPublic* GetPublicNetConfig() { return m_PublicNet; }
 		void SetPublicNetConfig(const ServerConfig::NetPublic* value) { m_PublicNet = value; }
 
-
-
 		PlayerID GetPlayerID() { return GetAccountID(); }
-
-
 
 		PlayerState GetPlayerState() const { return m_PlayerState; }
 		void SetPlayerState(PlayerState value) { m_PlayerState = value; }
@@ -164,7 +156,6 @@ namespace Svr {
 
 		const MatchingQueueTicket& GetMatchingTicket() const { return m_MatchingTicket; }
 		void SetMatchingTicket(MatchingQueueTicket ticket);
-
 
 
 		const char* GetGCMKeys() const { return m_GCMKeys; }
@@ -193,8 +184,6 @@ namespace Svr {
 		// Set connection for pilot
 		virtual Result SetConnection(SharedPointerT<Net::Connection>&& pCon) override;
 
-
-
 		VariableTable& GetPlayerData() { return m_PlayerData; }
 
 		VariableTable& GetCharacterData() { return m_CharacterData; }
@@ -208,7 +197,9 @@ namespace Svr {
 		Result OnJoinGameServerInitialize(AuthTicket authTicket, FacebookUID fbUID);
 		virtual void Heartbeat() override;
 		Result OnNewUserTranscation();
-		virtual Result UpdateDBSync(TransactionID transID = TransactionID()) = 0;
+		virtual Result UpdateDBSync(TransactionID transID = TransactionID()) { return ResultCode::SUCCESS; }
+
+		Result PendingCloseTransaction(const char* reason) override;
 
 		// register message handlers
 		//virtual Result RegisterMessageHandlers();
@@ -226,10 +217,10 @@ namespace Svr {
 		//
 
 		// Update game configuration
-		virtual Result UpdateGameConfig() = 0;
+		virtual Result UpdateGameConfig() { return ResultCode::SUCCESS; }
 
 		// Update Game Player 
-		virtual Result UpdateGamePlayer() = 0;
+		virtual Result UpdateGamePlayer() { return ResultCode::SUCCESS; }
 
 
 
@@ -243,8 +234,8 @@ namespace Svr {
 
 		void SetGameInsUID(const GameInsUID& gameInsID);
 
-		virtual const PlayerInformation& GetPlayerInformation() const = 0;
-		virtual const ServerFriendInformation& GetFriendInformation() const = 0;
+		virtual const PlayerInformation& GetPlayerInformation() const;
+		virtual const ServerFriendInformation& GetFriendInformation() const;
 
 		SF_FORCEINLINE const char* GetNickName() { return m_PlayerInformation.NickName; }
 		SF_FORCEINLINE Result SetNickName(const char* newName) { return StrUtil::StringCopy(m_PlayerInformation.NickName, newName); }

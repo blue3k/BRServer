@@ -101,7 +101,6 @@ namespace Svr {
 
 		svrCheck(GetComponentManager().InitializeComponents());
 
-
 		return hr;
 	}
 
@@ -112,8 +111,8 @@ namespace Svr {
 		svrCheck(super::RegisterMessageHandlers());
 
 		// RegisterPlayerToJoinGameServerCmd can send to player entity when previously logged in
-		RegisterMessageHandler<GameServerTransRegisterPlayerToJoinGameServer<GamePlayerEntity>>();
-		RegisterMessageHandler<PlayerTransRegisterPlayerToJoinGameServerOnPlayerEntity>();
+		//RegisterMessageHandler<GameServerTransRegisterPlayerToJoinGameServer<GamePlayerEntity>>();
+		//RegisterMessageHandler<PlayerTransRegisterPlayerToJoinGameServerOnPlayerEntity>();
 
 		// Use chat channel
 		//RegisterMessageHandler<PlayerTransChatMessageFromOtherEntity>();
@@ -221,8 +220,6 @@ namespace Svr {
 			ReleaseConnection("Replacing game player connection");
 		}
 
-		Service::ConnectionManager->AddConnection(pCon);
-
 		svrCheck(Svr::SimpleUserEntity::SetConnection(std::forward<SharedPointerT<Net::Connection>>(pCon)));
 
 		return hr;
@@ -318,6 +315,10 @@ namespace Svr {
 	{
 		ScopeContext hr;
 
+		// make sure player information is cleaned up
+		if (GetPlayerID() != 0)
+			Service::PlayerManager->DeletePlayer(GetPlayerID(), GetEntityUID());
+
 		ReleaseConnection("Clearing game player entity");
 
 		svrCheck(Svr::SimpleUserEntity::ClearEntity());
@@ -363,15 +364,30 @@ namespace Svr {
 		m_PlayerInformation.IsPlayingGame = m_GameInsUID.UID != 0 ? TRUE : FALSE;
 	}
 
+	const PlayerInformation& GamePlayerEntity::GetPlayerInformation() const
+	{
+		return m_PlayerInformation;
+	}
+
+
+	const ServerFriendInformation& GamePlayerEntity::GetFriendInformation() const
+	{
+		m_PlayerInformation.ShardID = GetShardID();
+		m_PlayerInformation.LastActiveTime = GetLatestActiveTime().time_since_epoch().count();
+		m_PlayerInformation.IsPlayingGame = GetIsInGame();
+
+		return m_PlayerInformation;
+	}
+
 
 	void GamePlayerEntity::AddGameTransactionLog(TransLogCategory LogCategory, INT consume, INT gain, uint64_t totalValue, const char* logMessage)
 	{
-		Svr::GetServerComponent<DB::GameTransactionDB>()->AddGameLog(GetShardID(), GetPlayerID(), Util::Time.GetTimeUTCSec(), LogCategory, consume, gain, totalValue, logMessage);
+		//Svr::GetServerComponent<DB::GameTransactionDB>()->AddGameLog(GetShardID(), GetPlayerID(), Util::Time.GetTimeUTCSec(), LogCategory, consume, gain, totalValue, logMessage);
 	}
 
 	void GamePlayerEntity::AddGameTransactionLog(TransLogCategory LogCategory, INT consume, INT gain, uint64_t totalValue)
 	{
-		AddGameTransactionLog(LogCategory, consume, gain, totalValue, "");
+		//AddGameTransactionLog(LogCategory, consume, gain, totalValue, "");
 	}
 
 	// Send push notify
@@ -390,6 +406,26 @@ namespace Svr {
 		return hr;
 	}
 
+
+	Result GamePlayerEntity::PendingCloseTransaction(const char* reason)
+	{
+		ScopeContext hr;
+		TransactionPtr trans;
+
+		unused(reason);
+
+		if (m_ClosingPended) return hr;
+		m_ClosingPended = true;
+
+		trans = new(GetHeap()) PlayerTransCloseInstance(GetHeap());
+		if (trans == nullptr)
+			return hr;
+
+		if (!trans->InitializeTransaction(this))
+			return hr;
+
+		return PendingTransaction(GetTaskWorker()->GetThreadID(), trans);
+	}
 
 } // namespace Svr
 } // namespace SF

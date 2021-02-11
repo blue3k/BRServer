@@ -227,12 +227,11 @@ namespace Svr {
 
 		auto endpointAddress = jsonValue.get("EndpointAddress", "");
 		entityUID.UID = jsonValue.get("EntityUID", Json::Value(0)).asUInt64();
+		auto customAttributes = jsonValue["Custom"];
 
 		MessageEndpoint* pEndpoint{};
-		//svrCheck(Service::MessageEndpointManager->AddOrGetRemoteEndpoint(entityUID, endpointAddress.asCString(), channel.asCString(), pEndpoint));
-		//svrCheck(Service::ServerEntityManager->GetOrRegisterServer(entityUID.GetServerID(), eventRouterAddress.asCString(), pServerEntity));
 
-		svrCheckMem(pNewServiceInfo = new(GetHeap()) ServerServiceInformation(m_ClusterKey.Components.GameClusterID, m_ClusterKey.Components.ServiceClusterID, entityUID, pEndpoint, ClusterMembership::Slave));
+		svrCheckMem(pNewServiceInfo = new(GetHeap()) ServerServiceInformation(m_ClusterKey.Components.GameClusterID, m_ClusterKey.Components.ServiceClusterID, entityUID, pEndpoint, customAttributes));
 
 		svrCheck(Services.Insert(nodeNameCrc, pNewServiceInfo));
 

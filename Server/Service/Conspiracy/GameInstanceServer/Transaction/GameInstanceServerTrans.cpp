@@ -124,7 +124,7 @@ namespace ConspiracyGameInstanceServer {
 			// New connection will not be allowed.
 			// The only way to make new connection is registering from a login server by loggin
 			//GetMyServer()->GetNetPublic()->SetIsEnableAccept(true);
-			GetMyServer()->SetServerState(Svr::ServerState::RUNNING);
+			GetMyServer()->SetServerState(ServerState::RUNNING);
 		}
 
 		return super::OnCloseTransaction(hrRes);

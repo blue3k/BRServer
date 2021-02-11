@@ -16,7 +16,7 @@
 #include "Protocol/ServerService/ServerService.h"
 #include "ServerEntity/ServerEntity.h"
 #include "Server/BrServerUtil.h"
-
+#include "json/json.h"
 
 namespace SF {
 
@@ -46,13 +46,13 @@ namespace SF {
 	// ServerServiceInformation
 	//
 
-	ServerServiceInformation::ServerServiceInformation(GameID gameID, ClusterID clusterID, EntityUID entityUID, const SharedPointerT<MessageEndpoint> targetEndpoint, ClusterMembership membership )
+	ServerServiceInformation::ServerServiceInformation(GameID gameID, ClusterID clusterID, EntityUID entityUID, const SharedPointerT<MessageEndpoint> targetEndpoint, const Json::Value& customAttributes)
 		: EntityInformation(entityUID)
 		, m_GameID(gameID)
 		, m_ClusterID(clusterID)
-		, m_ClusterMembership(membership)
 		, m_ServiceStatus(ServiceStatus::Offline)
 		, m_TargetEndpoint(targetEndpoint)
+		, m_CustomAttributes(GetSystemHeap())
 		, m_Workload(0)
 		, m_VotedCount(0)
 		, m_ServiceBase(nullptr)
@@ -62,6 +62,34 @@ namespace SF {
 		SetNodeName(nodeName);
 
 		static_assert(sizeof(ServerService) <= sizeof(ServerServiceInformation::m_bufferForServiceBase), "Not enough buffer size for serverservice instance");
+
+		if (customAttributes.isObject())
+		{
+			for (Json::Value::const_iterator itr = customAttributes.begin(); itr != customAttributes.end(); itr++)
+			{
+				switch (itr->type())
+				{
+					case Json::intValue:
+						m_CustomAttributes.SetValue(itr.name().c_str(), itr->asInt());
+						break;
+					case Json::uintValue:
+						m_CustomAttributes.SetValue(itr.name().c_str(), itr->asUInt());
+						break;
+					case Json::realValue:
+						m_CustomAttributes.SetValue(itr.name().c_str(), itr->asDouble());
+						break;
+					case Json::stringValue:
+						m_CustomAttributes.SetValue(itr.name().c_str(), String(itr->asCString()));
+						break;
+					case Json::booleanValue:
+						m_CustomAttributes.SetValue(itr.name().c_str(), itr->asBool());
+						break;
+					case Json::nullValue:
+					default:
+						break;
+				}
+			}
+		}
 	}
 
 	ServerServiceInformation::~ServerServiceInformation()

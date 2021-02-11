@@ -69,7 +69,7 @@ namespace Svr {
 	//	ChatChannel entity class
 	//
 
-	class ChatChannelEntity : public Svr::MasterEntity
+	class ChatChannelEntity : public MasterEntity
 	{
 	public:
 

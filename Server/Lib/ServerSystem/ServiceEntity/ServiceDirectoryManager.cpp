@@ -28,7 +28,7 @@
 #include "ServiceEntity/ServiceDirectoryManager.h"
 #include "String/SFStringFormat.h"
 #include "ServerConfig/SFEnum.h"
-
+#include "Variable/SFVariableTable.h"
 
 
 namespace SF {
@@ -213,11 +213,12 @@ namespace SF {
 		EndpointAddress messageEndpointConfig;
 		svrCheck(ParseMessageEndpoint(jsonValue, "Endpoint", messageEndpointConfig));
 		entityUID.UID = jsonValue.get("EntityUID", Json::Value(0)).asUInt64();
+		Json::Value customValue = jsonValue.get("Custom", Json::Value(Json::objectValue));
 
 		MessageEndpoint* pEndpoint{};
 		svrCheck(Service::MessageEndpointManager->AddOrGetRemoteEndpoint(entityUID, messageEndpointConfig, pEndpoint));
 
-		svrCheckMem(pNewServiceInfo = new(GetHeap()) ServerServiceInformation(m_ClusterKey.Components.GameClusterID, m_ClusterKey.Components.ServiceClusterID, entityUID, pEndpoint, ClusterMembership::Slave));
+		svrCheckMem(pNewServiceInfo = new(GetHeap()) ServerServiceInformation(m_ClusterKey.Components.GameClusterID, m_ClusterKey.Components.ServiceClusterID, entityUID, pEndpoint, customValue));
 
 		svrCheck(m_Services.Insert(nodeNameCrc, pNewServiceInfo));
 
@@ -470,7 +471,7 @@ namespace SF {
 		return hr;
 	}
 
-	Result ServiceDirectoryManager::RegisterLocalService(GameID gameID, ClusterID clusterID, EntityUID entityUID, const EndpointAddress& endpoint)
+	Result ServiceDirectoryManager::RegisterLocalService(GameID gameID, ClusterID clusterID, EntityUID entityUID, const EndpointAddress& endpoint, const VariableTable& customAttributes)
 	{
 		Result hr;
 
@@ -491,9 +492,12 @@ namespace SF {
 			svrCheck(zkSession->Create(clusterPath, Json::Value(Json::objectValue), nullptr, 0, outPath));
 		}
 
+
+
 		Json::Value attributes(Json::objectValue);
 		svrCheck(ToJsonMessageEndpoint(attributes, "Endpoint", endpoint));
 		attributes["EntityUID"] = entityUID.UID;
+		svrCheck(ToJson(attributes, "Custom", customAttributes));
 
 		LocalServiceInformation* plocalInfo = new LocalServiceInformation;
 		plocalInfo->GameID = gameID;
@@ -521,7 +525,8 @@ namespace SF {
 			pServiceEntity->GetGameID(), 
 			pServiceEntity->GetClusterID(), 
 			pServiceEntity->GetEntityUID(), 
-			pServiceEntity->GetMessageEndpointConfig());
+			pServiceEntity->GetMessageEndpointConfig(),
+			pServiceEntity->CustomAttributes());
 	}
 
 	Result ServiceDirectoryManager::RegisterLocalServices()
@@ -551,6 +556,45 @@ namespace SF {
 		messageEndpointrString.Format("{0}/{1}", messageEndpoint.MessageServer, messageEndpoint.Channel);
 
 		jsonObject[keyName] = messageEndpointrString.data();
+
+		return ResultCode::SUCCESS;
+	}
+
+	Result ServiceDirectoryManager::ToJson(Json::Value& jsonObject, const char* keyName, const VariableTable& customAttributes)
+	{
+		if (customAttributes.size() == 0)
+			return ResultCode::SUCCESS;
+
+		Json::Value jsonObjectValue(Json::objectValue);
+
+		for (auto& itVariable : customAttributes)
+		{
+			switch (itVariable.GetValue()->GetTypeName())
+			{
+			case VariableBool::TYPE_NAME:
+				jsonObjectValue[itVariable.GetKey().ToString()] = Json::Value(itVariable.GetValue()->GetValueBool());
+				break;
+			case VariableResult::TYPE_NAME:
+			case VariableInt::TYPE_NAME:
+			case VariableInt64::TYPE_NAME:
+				jsonObjectValue[itVariable.GetKey().ToString()] = Json::Value(itVariable.GetValue()->GetValueInt32());
+				break;
+			case VariableVoidP::TYPE_NAME:
+			case VariableUInt64::TYPE_NAME:
+			case VariableUInt::TYPE_NAME:
+				jsonObjectValue[itVariable.GetKey().ToString()] = Json::Value(itVariable.GetValue()->GetValueUInt32());
+				break;
+			case VariableFloat::TYPE_NAME:
+			case VariableDouble::TYPE_NAME:
+				jsonObjectValue[itVariable.GetKey().ToString()] = Json::Value(itVariable.GetValue()->GetValueDouble());
+				break;
+			default:
+				jsonObjectValue[itVariable.GetKey().ToString()] = Json::Value(itVariable.GetValue()->GetValueString());
+				break;
+			}
+		}
+
+		jsonObject[keyName] = jsonObjectValue;
 
 		return ResultCode::SUCCESS;
 	}

@@ -4,7 +4,7 @@
 // 
 // Author : KyungKun Ko
 //
-// Description : Server service Component entity implementation
+// Description : Game service entity implementation
 //	
 //
 ////////////////////////////////////////////////////////////////////////////////
@@ -19,6 +19,7 @@
 #include "GameConst.h"
 #include "Net/SFNetDef.h"
 #include "Net/SFNetServerUDP.h"
+#include "Net/SFNetServerTCP.h"
 #include "Entity/Entity.h"
 #include "Component/ServerComponent.h"
 #include "ServerService/ServerServiceBase.h"
@@ -27,17 +28,17 @@
 #include "ServiceEntity/Game/GamePlayerEntity.h"
 #include "SvrTrace.h"
 #include "SvrConst.h"
-#include "ServiceEntity/Game/PlayerManagerServiceEntity.h"
+#include "ServiceEntity/Game/PlayerDirectoryManager.h"
 #include "ServiceEntity/Game/GameServiceTrans.h"
 #include "Entity/EntityManager.h"
 #include "Server/BrServer.h"
+#include "DB/LoginSessionDB.h"
 
 
 
 
 
 namespace SF {
-namespace Svr {
 
 
 	//////////////////////////////////////////////////////////////////////////
@@ -45,15 +46,12 @@ namespace Svr {
 	//	Entity informations
 	//
 
-	GameServiceEntity::GameServiceEntity(GameID gameID, const ServerConfig::NetPublic *publicNetSocket, ClusterMembership initialMembership)
-		: super(gameID, ClusterID::Game, initialMembership)
-		, m_PublicNet(publicNetSocket)
-		, m_GameID(gameID)
+	GameServiceEntity::GameServiceEntity(GameID gameID, const ServerConfig::NetPublic *publicNetSocket, const EndpointAddress& endpoint)
+		: super(gameID, ClusterID::Game, endpoint)
+		, m_PublicNetConfig(publicNetSocket)
 		, m_NewConnectionQueue(GetHeap())
 	{
 		AssertRel(publicNetSocket != nullptr);
-
-		BR_ENTITY_MESSAGE(Message::GameServer::RegisterPlayerToJoinGameServerCmd) { svrMemReturn(pNewTrans = new(GetHeap()) GameServerTransRegisterPlayerToJoinGameServer<GameServiceEntity>(GetHeap(), pMsgData)); return ResultCode::SUCCESS; } );
 	}
 
 	GameServiceEntity::~GameServiceEntity()
@@ -63,15 +61,33 @@ namespace Svr {
 	Result GameServiceEntity::InitializeEntity( EntityID newEntityID )
 	{
 		Result hr = ResultCode::SUCCESS;
-		PlayerManagerServiceEntity *pGameService = nullptr;
 		ServerServiceInformation* pServiceInfo = nullptr;
+		auto pServerInst = Svr::BrServer::GetInstance();
 
-		svrChk(super::InitializeEntity(newEntityID) );
+		svrCheckPtr(pServerInst);
+
+		svrCheck(super::InitializeEntity(newEntityID) );
 
 		// public network
-		svrChkPtr(m_PublicNet);
+		svrCheckPtr(m_PublicNetConfig);
 
-		svrMem(m_pNetPublic = NewObject<Net::ServerMUDP>(GetHeap(), Service::ServerConfig->UID, NetClass::Game));
+		auto serverID = Service::ServerConfig->UID;
+		if (m_PublicNetConfig->Protocol == "TCP")
+		{
+			svrCheckMem(m_pNetPublic = NewObject<Net::ServerTCP>(GetHeap(), serverID, NetClass::Game));
+		}
+		else if (m_PublicNetConfig->Protocol == "UDP")
+		{
+			svrCheckMem(m_pNetPublic = NewObject<Net::ServerUDP>(GetHeap(), serverID, NetClass::Game));
+		}
+		else // (m_PublicNetConfig->Protocol == "MRUDP")
+		{
+			svrCheckMem(m_pNetPublic = NewObject<Net::ServerMUDP>(GetHeap(), serverID, NetClass::Game));
+		}
+
+		CustomAttributes().SetValue("PublicIPV4", m_PublicNetConfig->IPV4);
+		CustomAttributes().SetValue("PublicIPV6", m_PublicNetConfig->IPV6);
+		CustomAttributes().SetValue("PublicPort", m_PublicNetConfig->Port);
 
 		m_pNetPublic->SetNewConnectionhandler([this](SharedPointerT<Net::Connection>& conn)
 		{
@@ -80,19 +96,17 @@ namespace Svr {
 			m_NewConnectionQueue.Enqueue(pConTem);
 		});
 
-		svrChk(m_pNetPublic->HostOpen(NetClass::Game, m_PublicNet->ListenIP, m_PublicNet->Port));
+		svrCheck(m_pNetPublic->HostOpen(NetClass::Game, m_PublicNetConfig->ListenIP, m_PublicNetConfig->Port));
 
+		svrCheck(pServerInst->AddDBCluster<DB::LoginSessionDB>(Service::ServerConfig->FindDBCluster("LoginSessionDB")));
 
-		// Register game cluster as a slave
-		svrChkPtr(BrServer::GetInstance()->AddServiceEntity<Svr::PlayerManagerServiceEntity>());
+		svrCheck(Service::ServiceDirectory->WatchForService(Service::ServerConfig->GameClusterID, ClusterID::GameInstanceManager));
 
-		svrChk(Service::ServiceDirectory->WatchForService(Service::ServerConfig->GameClusterID, ClusterID::GameInstanceManager));
-		// TODO: change to stream db
-		//svrChk(Service::ServiceDirectory->RegisterClustereWatchers(GetGameID(), ClusterID::MatchingQueue_Game_4x1, ClusterID::MatchingQueue_Game_4x1W));
-		//svrChk(Service::ServiceDirectory->RegisterClustereWatchers(GetGameID(), ClusterID::MatchingQueue_Game_8x1, ClusterID::MatchingQueue_Game_8x1W));
+		// FIXME: matching queue
+		//svrCheck(Service::ServiceDirectory->WatchForService(GetGameID(), ClusterID::MatchingQueue_Game_4x1, ClusterID::MatchingQueue_Game_4x1W));
+		//svrCheck(Service::ServiceDirectory->WatchForService(GetGameID(), ClusterID::MatchingQueue_Game_8x1, ClusterID::MatchingQueue_Game_8x1W));
 
-
-	Proc_End:
+		m_pNetPublic->SetIsEnableAccept(true);
 
 		return hr;
 	}
@@ -102,16 +116,13 @@ namespace Svr {
 	{
 		Result hr = ResultCode::SUCCESS;
 
-		svrChk(super::ClearEntity() );
+		svrCheck(super::ClearEntity() );
 
 		if (m_pNetPublic != nullptr)
 		{
-			svrChk(m_pNetPublic->HostClose());
+			svrCheck(m_pNetPublic->HostClose());
+			m_pNetPublic = nullptr;
 		}
-
-	Proc_End:
-
-		m_pNetPublic = nullptr;
 
 		return hr;
 	}
@@ -120,18 +131,16 @@ namespace Svr {
 	{
 		Result hr = ResultCode::SUCCESS;
 
-		svrChk(super::TickUpdate(pAction) );
+		svrCheck(super::TickUpdate(pAction) );
 
 		// check below only if we are working
-		if( GetEntityState() != EntityState::WORKING )
-			goto Proc_End;
+		if (GetEntityState() != EntityState::WORKING)
+			return hr;
 
-		if( BrServer::GetInstance()->GetServerState() != ServerState::RUNNING )
-			goto Proc_End;
+		if( Svr::BrServer::GetInstance()->GetServerState() != ServerState::RUNNING )
+			return hr;
 
-		svrChk(ProcessNewConnection());
-
-	Proc_End:
+		svrCheck(ProcessNewConnection());
 
 		return hr;
 	}
@@ -145,7 +154,7 @@ namespace Svr {
 		Result hr = ResultCode::SUCCESS;
 		Svr::ServerEntity *pServerEntity = nullptr;
 		Entity* pEntity = nullptr;
-		GamePlayerEntity* pGamePlayerEntity = nullptr;
+		UniquePtr<Svr::GamePlayerEntity> pGamePlayerEntity;
 		SharedPointerT<Net::Connection> pConn;
 
 		auto numQueued = m_NewConnectionQueue.GetEnqueCount();
@@ -176,36 +185,31 @@ namespace Svr {
 			if (pConnAtomic == nullptr)
 				continue;
 
-			pConn = std::forward <SharedPointerAtomicT<Net::Connection>>(pConnAtomic);
+			pConn = Forward<SharedPointerAtomicT<Net::Connection>>(pConnAtomic);
 
-			svrChkPtr(pConn);
+			svrCheckPtr(pConn);
 
-			svrChk(Service::EntityManager->CreateEntity(GetClusterID(), EntityFaculty::User, pEntity));
-			svrChkPtr(pGamePlayerEntity = dynamic_cast<GamePlayerEntity*>(pEntity));
+			svrCheck(Service::EntityManager->CreateEntity(GetClusterID(), EntityFaculty::User, pEntity));
+			pGamePlayerEntity.reset(dynamic_cast<Svr::GamePlayerEntity*>(pEntity));
+			svrCheckPtr(pGamePlayerEntity);
 
-			svrChk(Service::EntityManager->AddEntity(EntityFaculty::User, pGamePlayerEntity));
+			svrCheck(Service::EntityManager->AddEntity(EntityFaculty::User, pGamePlayerEntity.get()));
 
-			if (!(pGamePlayerEntity->SetConnection(std::forward<Net::ConnectionPtr>(pConn))))
+			// Assign connection after AddEntity, because InitializeEntity will clean up connection
+			if (!pGamePlayerEntity->SetConnection(Forward<Net::ConnectionPtr>(pConn)))
 			{
 				// NOTE: We need to mark to close this
 				pGamePlayerEntity->ClearEntity();
 			}
 
-			pGamePlayerEntity = nullptr;
+			pGamePlayerEntity.release();
 		}
 
-
-	Proc_End:
-
-		Util::SafeDelete(pGamePlayerEntity);
 
 		return ResultCode::SUCCESS;
 	}
 
 
 
-}; // namespace Svr {
-}; // namespace SF {
-
-
+} // namespace SF {
 

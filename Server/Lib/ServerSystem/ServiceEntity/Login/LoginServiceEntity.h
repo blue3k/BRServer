@@ -36,7 +36,7 @@
 namespace SF {
 	namespace Net {
 		class Connection;
-		class ServerMUDP;
+		class ServerNet;
 	};
 
 	class ISvrPolicyLogin;

@@ -21,6 +21,7 @@
 #include "ServerEntity/ServerEntityManager.h"
 #include "ServiceEntity/ClusterManagerServiceEntity.h"
 #include "ServiceEntity/ServiceDirectoryManager.h"
+#include "ServiceEntity/Game/PlayerDirectoryManager.h"
 #include "Entity/EntityManager.h"
 #include "Util/SFPath.h"
 #include "ServerConfig/SFServerConfigJson.h"
@@ -98,7 +99,6 @@ namespace SF {
 		if (bAsService)
 			initParam.LogOutputConsole = { 0, };
 
-
 		auto pEngine = SF::Engine::Start(initParam);
 		if (pEngine == nullptr)
 			return;
@@ -110,7 +110,7 @@ namespace SF {
 		svrTrace(Info, "Engine Initialized");
 	}
 
-	// Initialize and deinitialization
+	// Initialize server
 	void InitializeEngineForServer()
 	{
 		SF::EngineInitParam initParam;
@@ -129,8 +129,8 @@ namespace SF {
 		pEngine->AddComponent<LibraryComponentAdapter<ServiceDirectoryManager>, IHeap&>(GetSystemHeap());
 		pEngine->AddComponent<LibraryComponentAdapter<MessageEndpointManager>, IHeap&>(GetSystemHeap());
 		pEngine->AddComponent<ServerMessageEndpointComponent>();
+		pEngine->AddComponent<LibraryComponentAdapter<PlayerDirectoryManager>, IHeap&>(GetSystemHeap());
 	}
-
 
 	void DeinitializeEngine()
 	{

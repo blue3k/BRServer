@@ -24,7 +24,6 @@
 #include "SvrTrace.h"
 #include "ServerEntity/ServerEntityManager.h"
 
-#include "ServiceEntity/Game/PlayerManagerServiceEntity.h"
 #include "Transaction/ExternalTransaction.h"
 #include "Transaction/ExternalTransactionManager.h"
 
@@ -55,8 +54,10 @@
 #include "Game/GameQuery.h"
 #include "DB/RankingDB.h"
 #include "DB/RankingDBQuery.h"
+#include "DB/LoginSessionDB.h"
+#include "DB/LoginSessionQuery.h"
 
-//#include "openssl/sha.h"
+
 #define 	SHA256_DIGEST_LENGTH   32
 
 
@@ -74,15 +75,51 @@ namespace Svr {
 
 
 	PlayerTransJoinGameServer::PlayerTransJoinGameServer(IHeap& heap, MessageDataPtr &pIMsg )
-		: MessageTransaction(heap, std::forward<MessageDataPtr>(pIMsg) )
+		: MessageTransaction(heap, Forward<MessageDataPtr>(pIMsg) )
 	{
 		SetExclusive(true);
 
+		AddSubAction<DB::QueryConnectedToGameServerCmd>(&PlayerTransJoinGameServer::ConnectedToGameServerDB, &PlayerTransJoinGameServer::OnConnectedToGameServerDB);
+		AddSubAction<DB::QueryGetPlayerInfoCmd>(&PlayerTransJoinGameServer::RequestPlayerInfoFromDB, &PlayerTransJoinGameServer::OnGetPlayerGameDataRes);
 		AddSubAction<Message::LoginServer::PlayerJoinedToGameServerRes>(&PlayerTransJoinGameServer::NotifyLoginServer, &PlayerTransJoinGameServer::OnGameServerJoined);
 		AddSubAction<DB::QueryGetPlayerInfoCmd>(&PlayerTransJoinGameServer::RequestPlayerInfoFromDB, &PlayerTransJoinGameServer::OnGetPlayerGameDataRes);
 		AddSubAction<DB::QueryCreatePlayerInfoCmd>(&PlayerTransJoinGameServer::RequestPlayerInfoCreateDB, &PlayerTransJoinGameServer::OnCreatePlayerGameDataRes);
 		AddSubAction<Message::GameParty::JoinPartyRes>(&PlayerTransJoinGameServer::RequestJoinPartyIfExist, &PlayerTransJoinGameServer::OnJoinPartyRes);
 		AddSubAction(&PlayerTransJoinGameServer::FinalizeSuccess);
+	}
+
+	Result PlayerTransJoinGameServer::ConnectedToGameServerDB()
+	{
+		ScopeContext hr([this](Result hr)
+			{
+				if (!hr) CloseTransaction(hr);
+			});
+
+		svrCheck(Svr::GetServerComponent<DB::LoginSessionDB>()->ConnectedToGameServer(GetTransID(), GetAccID(), GetTicket(), GetLoginEntityUID(), GetOwnerEntityUID()));
+
+		return hr;
+	}
+
+	Result PlayerTransJoinGameServer::OnConnectedToGameServerDB(Svr::TransactionResult* pRes)
+	{
+		ScopeContext hr([this](Result hr)
+			{
+				if (!hr) CloseTransaction(hr);
+			});
+		auto* pDBRes = pRes->GetResultData<DB::QueryConnectedToGameServerCmd>();
+
+		svrCheck(pRes->GetResult());
+
+		// succeeded to login
+		if (pDBRes->Result == 0)
+		{
+		}
+		else
+		{
+			CloseTransaction(ResultCode::LOGIN_INVALID_SIGNATURE);
+		}
+
+		return hr;
 	}
 
 	Result PlayerTransJoinGameServer::OnGameServerJoined( Svr::TransactionResult* pRes )
@@ -211,16 +248,6 @@ namespace Svr {
 		return hr;
 	}
 
-	Result PlayerTransJoinGameServer::RegisterToPlayerManager()
-	{
-		ScopeContext hr;
-		EntityUID playerUID;
-
-		svrCheck(Service::PlayerManager->CreatePlayer( GetMyOwner()->GetPlayerID(), GetOwnerEntityUID() ) );
-
-		return hr;
-	}
-
 	Result PlayerTransJoinGameServer::NotifyLoginServer()
 	{
 		ScopeContext hr;
@@ -244,7 +271,7 @@ namespace Svr {
 		EntityUID playerUID;
 
 		// succeeded to create
-		svrCheck(RegisterToPlayerManager());
+		svrCheck(Service::PlayerManager->CreatePlayer(GetPlayerID(), GetOwnerEntityUID()));
 
 		svrCheck(Svr::GetServerComponent<DB::GameDB>()->GetPlayerInfoCmd(GetTransID(), GetMyOwner()->GetShardID(), GetMyOwner()->GetPlayerID()));
 
@@ -299,28 +326,43 @@ namespace Svr {
 	// Start Transaction
 	Result PlayerTransJoinGameServer::StartTransaction()
 	{
-		ScopeContext hr;
+		ScopeContext hr([this](Result hr)
+			{
+				if (!hr)
+					CloseTransaction(hr);
+			});
+
 
 		m_GameUID = 0;
 		m_PartyLeaderID = 0;
 		m_PlayerNick[0] = 0;
 		m_MatchingTicket = 0;
 
-		if( GetAccID() == 0 || GetMyOwner()->GetAccountID() == 0
-			|| GetMyOwner()->GetAccountID() != GetAccID() )
+		if (GetAccID() == 0)
 		{
-			svrError(ResultCode::INVALID_ACCOUNTID);
+			svrErrorClose(ResultCode::INVALID_ACCOUNTID);
 		}
 
-		if( GetTicket() != GetMyOwner()->GetAuthTicket() )
+		if (GetTicket() == 0)
 		{
 			svrErrorClose(ResultCode::INVALID_TICKET);
+		}
+
+		GetMyOwner()->SetAccountID(GetAccID());
+		GetMyOwner()->SetAuthTicket(GetTicket());
+
+		EntityUID currentPlayerUID;
+		if (Service::PlayerManager->FindPlayer(GetAccID(), currentPlayerUID))
+		{
+			svrCheck(ResultCode::GAME_ALREADY_IN_GAME);
+			return hr;
 		}
 
 		svrCheck(super::StartTransaction());
 
 		return hr;
 	}
+
 
 
 	// Start Transaction

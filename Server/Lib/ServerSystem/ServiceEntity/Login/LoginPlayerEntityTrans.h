@@ -59,10 +59,10 @@ namespace SF {
 
 		Result OnLogin( Result hrRes, AccountID accountID, FacebookUID FBUserID, INT shardID );
 		Result OnSessionRegistered( Svr::TransactionResult* &pRes );
-		Result OnRegisterPlayerToJoinGameServer( Svr::TransactionResult* &pRes );
-		Result OnConnectToGameServerRes(Svr::TransactionResult* &pRes);
+		//Result OnRegisterPlayerToJoinGameServer( Svr::TransactionResult* &pRes );
+		//Result OnConnectToGameServerRes(Svr::TransactionResult* &pRes);
 
-		Result RegisterNewPlayerToJoinGameServer();
+		//Result RegisterNewPlayerToJoinGameServer();
 
 		virtual Result OnGenericError(Svr::TransactionResult* pRes) override;
 

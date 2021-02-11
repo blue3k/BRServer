@@ -46,8 +46,8 @@ namespace Svr {
 	//	Entity informations
 	//
 
-	ChatChannelManagerServiceEntity::ChatChannelManagerServiceEntity(GameID gameID, ClusterMembership initialMembership)
-		: super(gameID, ClusterID::ChatChannelManager, initialMembership )
+	ChatChannelManagerServiceEntity::ChatChannelManagerServiceEntity(GameID gameID, const EndpointAddress& endpoint)
+		: super(gameID, ClusterID::ChatChannelManager, endpoint)
 		, m_ChatChannelCount("ChatChannelCount")
 	{
 		// Game ChatChannel manager transactions
@@ -70,11 +70,7 @@ namespace Svr {
 			pInstance->AddCounter(&m_ChatChannelCount);
 		}
 
-		svrChk(super::InitializeEntity(newEntityID));
-
-
-
-	Proc_End:
+		svrCheck(super::InitializeEntity(newEntityID));
 
 		return hr;
 	}
@@ -106,21 +102,18 @@ namespace Svr {
 		ChatChannelEntity *pChatChannel = nullptr;
 		ChatChannelPlayer *pPlayer = nullptr;
 
-		svrChkPtr( pChatChannel = new(GetHeap()) ChatChannelEntity(name) );
+		svrCheckPtr( pChatChannel = new(GetHeap()) ChatChannelEntity(name) );
 
-		svrChk(Service::EntityManager->AddEntity( EntityFaculty::ChatChannel, pChatChannel ) );
+		svrCheck(Service::EntityManager->AddEntity( EntityFaculty::ChatChannel, pChatChannel ) );
 
-		svrMem( pPlayer = new(GetHeap()) ChatChannelPlayer( creator ) );
-		svrChk( pPlayer->SetRemoteEndpoint( remoteEndpoint, playerUID ) );
-		svrChk( pChatChannel->JoinPlayer( pPlayer ) );
+		svrCheckMem( pPlayer = new(GetHeap()) ChatChannelPlayer( creator ) );
+		svrCheck( pPlayer->SetRemoteEndpoint( remoteEndpoint, playerUID ) );
+		svrCheck( pChatChannel->JoinPlayer( pPlayer ) );
 
 		ChatChannelUID = pChatChannel->GetEntityUID();
 		pChatChannel = nullptr;
 
 		++m_ChatChannelCount;
-		m_LocalWorkload.fetch_add(1, std::memory_order_relaxed);
-
-	Proc_End:
 
 		// close ChatChannel instance if it failed to initialize
 		if( pChatChannel )
@@ -135,12 +128,8 @@ namespace Svr {
 		ChatChannelEntity *pChatChannel = nullptr;
 		ChatChannelPlayer *pPlayer = nullptr;
 
-		// TODO: How can I find the channel while it's over multiple server
+		// TODO: We need to go to chat channel directory to find it
 		ChatChannelUID = pChatChannel->GetEntityUID();
-
-
-	Proc_End:
-
 
 		return hr;
 	}
@@ -158,10 +147,7 @@ namespace Svr {
 		{
 			--m_ChatChannelCount;
 			svrTrace(SVR_INFO, "ChatChannel deleted {0}", ChatChannelUID);
-			m_LocalWorkload.fetch_sub(1, std::memory_order_relaxed);
 		}
-
-	//Proc_End:
 
 		return hr;
 	}

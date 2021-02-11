@@ -118,7 +118,6 @@ namespace Svr
 		// register message handlers
 		RegisterMessageHandlers();
 
-
 		svrCheck( ClearEntity() );
 
 		auto serverId = GetMyServerID();
@@ -223,17 +222,18 @@ namespace Svr
 			if (!(GetMessageHandlerTable().HandleMessage<TransactionPtr&>(pMsg, pNewTrans)))
 			{
 				// If it couldn't find a handler in server entity handlers, looking for it in server loopback entity
-				MessageHandlerType handler;
+				//MessageHandlerType handler;
 				assert(false);// this shouldn't be happened now. We route all message to destination entity
-				hr = GetLoopbackServerEntity()->GetMessageHandlerTable().GetHandler(pMsg->GetMessageHeader()->msgID, handler);
-				if (!(hr))
-				{
-					assert(false);
-					svrTrace(Error, "No message handler {0}:{1}, MsgID:{2}", typeid(*this).name(), GetEntityUID(), pMsgHdr->msgID);
-					svrErr(ResultCode::SVR_NO_MESSAGE_HANDLER);
-				}
+				//hr = GetLoopbackServerEntity()->GetMessageHandlerTable().GetHandler(pMsg->GetMessageHeader()->msgID, handler);
+				//if (!(hr))
+				//{
+				//	assert(false);
+				//	svrTrace(Error, "No message handler {0}:{1}, MsgID:{2}", typeid(*this).name(), GetEntityUID(), pMsgHdr->msgID);
+				//	svrErr(ResultCode::SVR_NO_MESSAGE_HANDLER);
+				//}
 
-				svrChk(handler(pMsg, pNewTrans));
+				//svrChk(handler(pMsg, pNewTrans));
+				svrErr(ResultCode::SVR_NO_MESSAGE_HANDLER);
 			}
 			break;
 		}

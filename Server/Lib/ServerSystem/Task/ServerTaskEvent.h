@@ -19,7 +19,7 @@
 
 namespace SF {
 
-
+	class MessageEndpoint;
 	class TickTaskManager;
 
 	namespace Svr {
@@ -54,7 +54,7 @@ namespace SF {
 		{
 			Net::ConnectionEvent *pConnectionEvent;
 			struct {
-				WeakPointerT<Net::Connection> pConn;
+				WeakPointer pObject;
 				MessageDataPtr pMessage;
 			} MessageEvent;
 			Svr::TransactionResult* pTransResultEvent;
@@ -62,7 +62,7 @@ namespace SF {
 			void Clear()
 			{
 				pConnectionEvent = nullptr;
-				MessageEvent.pConn = WeakPointerT<Net::Connection>();
+				MessageEvent.pObject = WeakPointer();
 				MessageEvent.pMessage = nullptr;
 				pTransResultEvent = nullptr;
 			}
@@ -72,7 +72,7 @@ namespace SF {
 		ServerTaskEvent(ServerTaskEvent&& src);
 		ServerTaskEvent(TickTask* pTickTask); // poke ticking
 		ServerTaskEvent(TickTask* pTickTask, const Net::ConnectionEvent& connectionEvent);
-		ServerTaskEvent(TickTask* pTickTask, WeakPointerT<Net::Connection>&& pConn, SharedPointerT<Message::MessageData>& pMsg);
+		ServerTaskEvent(TickTask* pTickTask, WeakPointerT<MessageEndpoint>&& pEndpoint, SharedPointerT<Message::MessageData>& pMsg);
 		ServerTaskEvent(EventTypes eventType, TickTask* pTickTask, WeakPointerT<Net::Connection>&& pConn); // send buffer message
 		ServerTaskEvent(TickTask* pTickTask, Svr::TransactionResult* pTransRes);
 		~ServerTaskEvent();

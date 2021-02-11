@@ -18,7 +18,7 @@
 #include "Service/ServerService.h"
 #include "ServerEntity/ServerEntityManager.h"
 
-#include "ServiceEntity/Game/PlayerManagerServiceEntity.h"
+#include "ServiceEntity/Game/PlayerDirectoryManager.h"
 
 #include "ServiceEntity/MatchingQueueServiceEntity.h"
 #include "ServiceEntity/MatchingServiceEntity.h"
@@ -46,10 +46,6 @@
 #include "DB/AccountDB.h"
 
 
-#define PATH_DATABASE L"../../Data"
-
-
-
 namespace SF {
 namespace ConspiracyGameInstanceServer {
 
@@ -75,15 +71,11 @@ namespace ConspiracyGameInstanceServer {
 	// Initialize server resource
 	Result GameInstanceServer::InitializeServerResource()
 	{
-		Result hr = ResultCode::SUCCESS;
+		Result hr;
 
-		svrChk(Svr::BrServer::InitializeServerResource() );
+		svrCheck(Svr::BrServer::InitializeServerResource() );
 
-		svrChk(GameTable::InitializeTable() );
-
-		svrChk( InitializeEntity( EntityID(EntityFaculty::Server,0) ) );
-
-	Proc_End:
+		svrCheck(GameTable::InitializeTable() );
 
 		return hr;
 	}
@@ -91,15 +83,13 @@ namespace ConspiracyGameInstanceServer {
 	// Close server and release resource
 	Result GameInstanceServer::CloseServerResource()
 	{
-		Result hr = ResultCode::SUCCESS;
+		Result hr;
 
-		svrChk(Svr::BrServer::CloseServerResource() );
+		svrCheck(Svr::BrServer::CloseServerResource() );
 
-		svrChk( TerminateEntity() );
+		svrCheck( TerminateEntity() );
 
-		svrChk(GameTable::TerminateTable() );
-
-	Proc_End:
+		svrCheck(GameTable::TerminateTable() );
 
 		return hr;
 	}
@@ -117,13 +107,12 @@ namespace ConspiracyGameInstanceServer {
 	// Initialize private Network
 	Result GameInstanceServer::InitializeEntities()
 	{
-		Result hr = ResultCode::SUCCESS;
+		Result hr;
 		SockFamily privateNetSockFamily;
 
 		Service::EntityManager->RegisterEntityCreator([this](ClusterID clusterID, EntityFaculty faculty) { return CreateEntity(clusterID, faculty); });
 
-		svrChk(Svr::BrServer::InitializeEntities() );
-
+		svrCheck(Svr::BrServer::InitializeEntities() );
 
 
 		//////////////////////////////////////////////////////////////////////////////////////////
@@ -133,23 +122,19 @@ namespace ConspiracyGameInstanceServer {
 
 		{
 		GameInstanceManagerServiceEntity *pGameInstanceManager = nullptr;
-		svrMem( pGameInstanceManager = new(GetHeap()) GameInstanceManagerServiceEntity(Service::ServerConfig->GameClusterID, nullptr, ClusterID::GameInstanceManager, ClusterMembership::Slave) );
-		svrChk(Service::EntityManager->AddEntity( EntityFaculty::Service, pGameInstanceManager ) );
-		svrChk(GetComponentCarrier().AddComponentWithAdapter(pGameInstanceManager) );
+		svrCheckMem( pGameInstanceManager = new(GetHeap()) GameInstanceManagerServiceEntity(Service::ServerConfig->GameClusterID, nullptr, ClusterID::GameInstanceManager, ClusterMembership::Slave) );
+		svrCheck(Service::EntityManager->AddEntity( EntityFaculty::Service, pGameInstanceManager ) );
+		svrCheck(GetComponentCarrier().AddComponentWithAdapter(pGameInstanceManager) );
 		}
 
 
 		// push Startup transaction
 		{
 			TransactionPtr pProcess;
-			svrMem( pProcess = new(GetHeap()) GameInstanceServerStartProcess(GetHeap()) );
-			svrChk( pProcess->InitializeTransaction(this) );
-			svrChk(PendingTransaction(ThisThread::GetThreadID(), pProcess));
+			svrCheckMem( pProcess = new(GetHeap()) GameInstanceServerStartProcess(GetHeap()) );
+			svrCheck( pProcess->InitializeTransaction(this) );
+			svrCheck(PendingTransaction(ThisThread::GetThreadID(), pProcess));
 		}
-
-
-
-	Proc_End:
 
 		return hr;
 	}
@@ -162,23 +147,12 @@ namespace ConspiracyGameInstanceServer {
 
 		hr = Svr::BrServer::CloseEntities();
 
-
 		return hr;
 	}
 
 
-
-
-	//////////////////////////////////////////////////////////////////////////
-	//
-	//	virtual Entity interface
-	//
-
-
-
-
-}; // namespace ConspiracyGameInstanceServer
-}; // namespace SF
+} // namespace ConspiracyGameInstanceServer
+} // namespace SF
 
 
 

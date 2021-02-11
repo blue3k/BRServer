@@ -18,7 +18,7 @@
 #include "Service/ServerService.h"
 #include "ServerEntity/ServerEntityManager.h"
 
-#include "ServiceEntity/Game/PlayerManagerServiceEntity.h"
+#include "ServiceEntity/Game/PlayerDirectoryManager.h"
 
 #include "ServiceEntity/MatchingQueueServiceEntity.h"
 #include "ServiceEntity/MatchingServiceEntity.h"
@@ -34,17 +34,10 @@
 #include "Protocol/Policy/GameInstanceNetPolicy.h"
 
 #include "GameInstance/GamePlayerEntity.h"
-
-#include "Net/SFNetServerPeerTCP.h"
 #include "Net/SFNetSvrDef.h"
-#include "Net/SFNetServerUDP.h"
-
-
-
 #include "GameSvrConst.h"
 #include "GameServerClass.h"
 #include "Transaction/GameServerTrans.h"
-#include "ServiceEntity/Game/PlayerManagerServiceEntity.h"
 
 #include "GameConspiracyDB.h"
 #include "DB/GameTransactionDB.h"
@@ -112,7 +105,6 @@ namespace GameServer {
 
 		svrChk( UpdateGameConfig(m_PresetGameConfigID) );
 
-		svrChk( InitializeEntity( EntityID(EntityFaculty::Server,0) ) );
 
 	Proc_End:
 
@@ -157,8 +149,6 @@ namespace GameServer {
 		//Engine::GetInstance()->AddComponent<SF::GameServer::GameEntityManager>(Service::ServerConfig->WorkerThreadCount);
 
 		svrChk(Svr::BrServer::InitializeEntities() );
-
-
 
 		// Account DB
 		svrChk(AddDBCluster<DB::AccountDB>(Service::ServerConfig->FindDBCluster("AccountDB")));

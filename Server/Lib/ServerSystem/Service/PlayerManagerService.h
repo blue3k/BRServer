@@ -42,8 +42,6 @@ namespace SF {
 		{
 		}
 
-		virtual void Clear() {}
-
 		// Create or update player id
 		virtual Result CreatePlayer(GameID gameID, PlayerID playerID, EntityUID entityUID) { return ResultCode::NOT_IMPLEMENTED; }
 		virtual Result DeletePlayer(GameID gameID, PlayerID playerID) { return ResultCode::NOT_IMPLEMENTED; }

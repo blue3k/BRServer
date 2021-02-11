@@ -88,12 +88,6 @@ namespace SharedModuleServer {
 	{
 		Result hr = ResultCode::SUCCESS;
 
-		for (auto& itService : GetMyOwner()->GetLocalServiceEntities())
-		{
-			if (!itService->GetInitialized())
-				itService->StartInitialization();
-		}
-
 		return hr;
 	}
 
@@ -114,7 +108,7 @@ namespace SharedModuleServer {
 	{
 		if( (hrRes) )
 		{
-			GetMyServer()->SetServerState(Svr::ServerState::RUNNING);
+			GetMyServer()->SetServerState(ServerState::RUNNING);
 			// only accept allowed connections
 			//GetMyServer()->GetNetPrivate()->SetIsEnableAccept(true);
 		}
@@ -123,6 +117,6 @@ namespace SharedModuleServer {
 	}
 
 
-};// namespace SharedModuleServer 
-};// namespace SF 
+}// namespace SharedModuleServer 
+}// namespace SF 
 

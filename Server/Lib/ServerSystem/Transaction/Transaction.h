@@ -645,9 +645,16 @@ namespace SF {
 
 				svrCheck(ParseMessage());
 
-				if (Transaction::GetRemoteEndpoint() == nullptr && MessageClass::GetRouteContext().GetFrom().UID != 0)
+				if (Transaction::GetRemoteEndpoint() == nullptr)
 				{
-					Transaction::SetRemoteEndpoint(Service::MessageEndpointManager->GetEndpoint(MessageClass::GetRouteContext().GetFrom()));
+					if (MessageClass::GetRouteContext().GetFrom().UID != 0)
+					{
+						Transaction::SetRemoteEndpoint(Service::MessageEndpointManager->GetEndpoint(MessageClass::GetRouteContext().GetFrom()));
+					}
+					else
+					{
+						
+					}
 				}
 
 				hr = TransactionT<OwnerType>::InitializeTransaction(pOwner);
@@ -658,15 +665,15 @@ namespace SF {
 
 			virtual ~MessageTransaction() = default;
 
-			virtual const SharedPointerAtomicT<Net::Connection>& GetConnection()
-			{
-				const static SharedPointerAtomicT<Net::Connection> Dummy;
-				auto pOwnerEntity = TransactionT<OwnerType>::GetMyOwner();
-				if (pOwnerEntity == nullptr)
-					return Dummy;
+			//virtual const SharedPointerAtomicT<Net::Connection>& GetConnection()
+			//{
+			//	const static SharedPointerAtomicT<Net::Connection> Dummy;
+			//	auto pOwnerEntity = TransactionT<OwnerType>::GetMyOwner();
+			//	if (pOwnerEntity == nullptr)
+			//		return Dummy;
 
-				return pOwnerEntity->GetConnection();
-			}
+			//	return pOwnerEntity->GetConnection();
+			//}
 
 
 			TransactionID GetMessageContext() { return MessageClass::GetTransactionID(); }

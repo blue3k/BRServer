@@ -20,7 +20,6 @@
 #include "Server/BrServerUtil.h"
 #include "SvrTrace.h"
 #include "ServerEntity/ServerEntityManager.h"
-#include "ServiceEntity/Game/PlayerManagerServiceEntity.h"
 
 #include "Protocol/Message/GameInstanceMsgClass.h"
 #include "Protocol/Policy/GameInstanceNetPolicy.h"

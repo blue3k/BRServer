@@ -74,14 +74,14 @@ namespace Svr
 	{
 		MutexScopeLock localLock(m_ConnectionLock);
 
-		m_pConnection = std::forward<SharedPointerT<Net::Connection>>(pConn);
+		m_pConnection = Forward<SharedPointerT<Net::Connection>>(pConn);
 		if (m_pConnection != nullptr)
 		{
 			m_pConnection->SetEventHandler(this);
 
-			// purge received guaranteed messages
-			MessageDataPtr temp;
-			OnRecvMessage((Net::Connection*)m_pConnection, temp);
+			//// purge received guaranteed messages
+			//MessageDataPtr temp;
+			//OnRecvMessage((Net::Connection*)m_pConnection, temp);
 
 			// This connection will be updated with User entity
 			m_pConnection->SetTickGroup(EngineTaskTick::None);
@@ -170,9 +170,8 @@ namespace Svr
 		return hr;
 	}
 
-
 	// Process Message and release message after all processed
-	Result SimpleUserEntity::ProcessMessageData(MessageDataPtr &pIMsg)
+	Result SimpleUserEntity::ProcessMessage(const SharedPointerT<MessageEndpoint>& remoteEndpoint, MessageDataPtr& pIMsg)
 	{
 		Result hr = ResultCode::SUCCESS;
 		EntityID entityID; // entity ID to route
@@ -210,6 +209,8 @@ namespace Svr
 
 		if (pNewTrans != nullptr)
 		{
+			pNewTrans->SetRemoteEndpoint(remoteEndpoint);
+
 			if (pNewTrans->GetOwnerEntity() == nullptr)
 			{
 				svrChk(pNewTrans->InitializeTransaction(this));
@@ -243,8 +244,6 @@ namespace Svr
 		return ResultCode::SUCCESS;
 
 	}
-
-
 
 	void SimpleUserEntity::Heartbeat()
 	{
@@ -313,7 +312,7 @@ namespace Svr
 					if (!(pConn->GetRecvMessage(pIMsg)))
 						break;
 
-					ProcessMessageData(pIMsg);
+					ProcessMessage(pConn->GetMessageEndpoint(), pIMsg);
 				}
 			}
 		}
@@ -328,8 +327,6 @@ namespace Svr
 		return hr;
 	}
 
-
-	// Set Account ID, this will update Account ID table
 	Result SimpleUserEntity::SetAccountID( AccountID accID )
 	{
 		m_AccountID = accID;
@@ -360,7 +357,7 @@ namespace Svr
 
 	Result SimpleUserEntity::OnRecvMessage(Net::Connection* pConn, MessageDataPtr& pMsg)
 	{
-		return GetTaskManager()->AddEventTask(GetTaskGroupID(), ServerTaskEvent(this, WeakPointerT<Net::Connection>(pConn), pMsg));
+		return GetTaskManager()->AddEventTask(GetTaskGroupID(), ServerTaskEvent(this, pConn->GetMessageEndpoint(), pMsg));
 	}
 
 	Result SimpleUserEntity::OnNetSyncMessage(Net::Connection* pConn)
@@ -380,6 +377,7 @@ namespace Svr
 
 		TransactionPtr pCurTran;
 		MessageDataPtr pMsg;
+		SharedPointerT<MessageEndpoint> pEndpoint;
 		Net::ConnectionUDPBase* pConn = nullptr;
 		auto& pMyConn = GetConnection();
 		auto thisThreadID = ThisThread::GetThreadID();
@@ -419,15 +417,16 @@ namespace Svr
 			break;
 		case ServerTaskEvent::EventTypes::PACKET_MESSAGE_EVENT:
 			pMsg = std::forward<MessageDataPtr>(const_cast<ServerTaskEvent&>(eventTask).EventData.MessageEvent.pMessage);
+			pEndpoint = const_cast<ServerTaskEvent&>(eventTask).EventData.MessageEvent.pObject.AsSharedPtr<MessageEndpoint>();
 			if (pMsg != nullptr)
 			{
-				ProcessMessageData(pMsg);
+				ProcessMessage(pEndpoint, pMsg);
 			}
 			else
 			{
 				//pConn = dynamic_cast<Net::ConnectionUDPBase*>(*GetConnection());
 				//if (pConn != nullptr)
-				//	pConn->ProcGuarrentedMessageWindow([&](MessageDataPtr& pMsg){ ProcessMessageData(pMsg); });
+				//	pConn->ProcGuarrentedMessageWindow([&](MessageDataPtr& pMsg){ ProcessMessage(pMsg); });
 			}
 			break;
 		case ServerTaskEvent::EventTypes::PACKET_MESSAGE_SYNC_EVENT:

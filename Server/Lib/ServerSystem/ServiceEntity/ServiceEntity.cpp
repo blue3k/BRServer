@@ -1,6 +1,6 @@
 ////////////////////////////////////////////////////////////////////////////////
 // 
-// CopyRight (c) 2013 Kyungkun Ko
+// CopyRight (c) Kyungkun Ko
 // 
 // Author : KyungKun Ko
 //
@@ -41,6 +41,7 @@ namespace SF {
 	ServiceEntity::ServiceEntity(GameID gameID, ClusterID clusterID, const EndpointAddress& endpoint)
 		: m_GameID(gameID)
 		, m_ClusterID(clusterID)
+		, m_CustomAttributes(GetHeap())
 	{
 		// Update channel path to yours
 		m_MessageEndpointConfig.MessageServer = endpoint.MessageServer;
@@ -71,7 +72,7 @@ namespace SF {
 			svrCheck(m_ListenEndpoint->RequestData(StreamDB::OFFSET_END));
 		}
 
-		svrCheck(Service::ServiceDirectory->RegisterLocalService(m_GameID, m_ClusterID, GetEntityUID(), m_MessageEndpointConfig));
+		svrCheck(Service::ServiceDirectory->RegisterLocalService(m_GameID, m_ClusterID, GetEntityUID(), m_MessageEndpointConfig, CustomAttributes()));
 
 		return hr;
 	}

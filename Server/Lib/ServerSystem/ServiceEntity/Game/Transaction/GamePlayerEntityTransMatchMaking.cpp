@@ -24,7 +24,6 @@
 
 #include "ServiceEntity/Party/GamePartyManagerServiceEntity.h"
 #include "Protocol/ServerService/GamePartyManagerService.h"
-#include "ServiceEntity/Game/PlayerManagerServiceEntity.h"
 
 #include "Protocol/Message/GameInstanceMsgClass.h"
 #include "Protocol/Policy/GameInstanceNetPolicy.h"

@@ -54,9 +54,6 @@ namespace Svr {
 
 		static void daemonize()
 		{
-			//char lockFileName[1024];
-			//int lfp;
-			//char str[10];
 			if (getppid() == 1) return; /* already a daemon */
 			int folkRes = fork();
 			if (folkRes < 0)
@@ -68,7 +65,6 @@ namespace Svr {
 			if (folkRes > 0)
 			{
 				/* parent exits */
-				//printf("fork done parent exit\n");
 				exit(0);
 			}
 			else
@@ -91,27 +87,7 @@ namespace Svr {
 			//umask(027); /* set newly created file permissions */
 			//chdir(RUNNING_DIR); /* change running directory */
 
-			// Disable lock file check
-			//snprintf(lockFileName, sizeof(lockFileName), "%s.Lock", Util::GetModuleNameA());
-			//lfp = open(lockFileName, O_RDWR | O_CREAT, S_IRUSR | S_IWUSR | S_IRGRP);// 0640);
-			//if (lfp < 0)
-			//{
-			//	printf("Failed to get lock. pid:%d\n", getpid());
-			//	exit(1); /* can not open */
-			//}
-
-			//if (lockf(lfp, F_TLOCK, 0) < 0)
-			//{
-			//	printf("Failed to get lock2. pid:%d\n", getpid());
-			//	exit(0); /* can not lock */
-			//}
-												   /* first instance continues */
-			//sprintf(str, "%d\n", getpid());
-			//write(lfp, str, strlen(str)); /* record pid to lockfile */
-
 			m_StopSignaled = false;
-
-			//printf("Registering signals pid:%d\n", getpid());
 
 			signal(SIGCHLD, SIG_IGN); /* ignore child */
 			signal(SIGTSTP, SIG_IGN); /* ignore tty signals */
@@ -226,8 +202,8 @@ namespace Svr {
 
 
 
-}; // namespace SF {
-}; // namespace Svr {
+} // namespace SF {
+} // namespace Svr {
 
 
 #else

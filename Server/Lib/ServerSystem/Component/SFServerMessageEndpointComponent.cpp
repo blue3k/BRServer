@@ -87,7 +87,6 @@ namespace SF
 				SharedPointerT<Svr::Entity> pEntity;
 
 				svrCheckPtr(pMsg = Message::MessageData::NewMessage(GetHeap(), pMsgHeader->msgID.ID, pMsgHeader->Length, receivedMessageData->data()));
-				svrCheckPtr(pMsg);
 
 				// First try to route message
 				RouteContext routeContext = *(RouteContext*)pMsg->GetMessageData();
@@ -161,7 +160,7 @@ namespace SF
 		auto gameId = Service::ServerConfig->GameClusterID;
 		auto serverEntityUID = EntityUID(Service::ServerConfig->UID, 0);
 
-		svrCheck(Service::ServiceDirectory->RegisterLocalService(gameId, ClusterID::None, serverEntityUID, serverEndpointAddress));
+		svrCheck(Service::ServiceDirectory->RegisterLocalService(gameId, ClusterID::None, serverEntityUID, serverEndpointAddress, {}));
 
 		return hr;
 	}

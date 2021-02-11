@@ -31,7 +31,7 @@ namespace SF {
 		//, EventData(src.EventData)
 	{
 		EventData.pConnectionEvent = src.EventData.pConnectionEvent;
-		EventData.MessageEvent.pConn = std::forward<WeakPointerT<Net::Connection>>(src.EventData.MessageEvent.pConn);
+		EventData.MessageEvent.pObject = std::forward<WeakPointer>(src.EventData.MessageEvent.pObject);
 		EventData.MessageEvent.pMessage = src.EventData.MessageEvent.pMessage;
 		EventData.pTransResultEvent = src.EventData.pTransResultEvent;
 
@@ -59,19 +59,19 @@ namespace SF {
 		EventData.pConnectionEvent = (Net::ConnectionEvent*)DataBuffer;
 	}
 
-	ServerTaskEvent::ServerTaskEvent(TickTask* pTickTask, WeakPointerT<Net::Connection>&& pConn, SharedPointerT<Message::MessageData>& pMsg)
+	ServerTaskEvent::ServerTaskEvent(TickTask* pTickTask, WeakPointerT<MessageEndpoint>&& pEndpoint, SharedPointerT<Message::MessageData>& pMsg)
 		: EventType(EventTypes::PACKET_MESSAGE_EVENT)
 	{
 		TaskPtr.FromSharedObject(pTickTask);
-		EventData.MessageEvent.pConn = std::forward<WeakPointerT<Net::Connection>>(pConn);
+		EventData.MessageEvent.pObject = std::forward<WeakPointerT<MessageEndpoint>>(pEndpoint);
 		EventData.MessageEvent.pMessage = std::forward<SharedPointerT<Message::MessageData>&>(pMsg);
 	}
 
-	ServerTaskEvent::ServerTaskEvent(EventTypes eventType, TickTask* pTickTask, WeakPointerT<Net::Connection>&& pConn) // send buffer message
+	ServerTaskEvent::ServerTaskEvent(EventTypes eventType, TickTask* pTickTask, WeakPointerT<Net::Connection>&& pObject) // send buffer message
 		: EventType(eventType)
 	{
 		TaskPtr.FromSharedObject(pTickTask);
-		EventData.MessageEvent.pConn = std::forward<WeakPointerT<Net::Connection>>(pConn);
+		EventData.MessageEvent.pObject = std::forward<WeakPointerT<Net::Connection>>(pObject);
 		EventData.MessageEvent.pMessage = nullptr;
 	}
 
@@ -86,13 +86,13 @@ namespace SF {
 
 	ServerTaskEvent::~ServerTaskEvent()
 	{
-		EventData.MessageEvent.pConn = WeakPointerT<Net::Connection>();
+		EventData.MessageEvent.pObject = WeakPointerT<Net::Connection>();
 	}
 
 	ServerTaskEvent& ServerTaskEvent::operator = (const ServerTaskEvent& src)
 	{
 		EventData.pConnectionEvent = src.EventData.pConnectionEvent;
-		EventData.MessageEvent.pConn = src.EventData.MessageEvent.pConn;
+		EventData.MessageEvent.pObject = src.EventData.MessageEvent.pObject;
 		EventData.MessageEvent.pMessage = src.EventData.MessageEvent.pMessage;
 		EventData.pTransResultEvent = src.EventData.pTransResultEvent;
 
@@ -113,7 +113,7 @@ namespace SF {
 	ServerTaskEvent& ServerTaskEvent::operator = (ServerTaskEvent&& src)
 	{
 		EventData.pConnectionEvent = src.EventData.pConnectionEvent;
-		EventData.MessageEvent.pConn = std::forward<WeakPointerT<Net::Connection>>(src.EventData.MessageEvent.pConn);
+		EventData.MessageEvent.pObject = std::forward<WeakPointer>(src.EventData.MessageEvent.pObject);
 		EventData.MessageEvent.pMessage = src.EventData.MessageEvent.pMessage;
 		EventData.pTransResultEvent = src.EventData.pTransResultEvent;
 
@@ -131,7 +131,4 @@ namespace SF {
 		return *this;
 	}
 
-
-
-}; // namespace SF
-
+} // namespace SF

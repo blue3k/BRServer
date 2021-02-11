@@ -17,7 +17,7 @@
 #include "SvrTrace.h"
 #include "Service/ServerService.h"
 #include "ServerEntity/ServerEntityManager.h"
-#include "ServiceEntity/Game/PlayerManagerServiceEntity.h"
+#include "ServiceEntity/Game/PlayerDirectoryManager.h"
 #include "ServiceEntity/MatchingQueueServiceEntity.h"
 #include "ServiceEntity/MatchingServiceEntity.h"
 #include "ServiceEntity/Party/GamePartyManagerServiceEntity.h"
@@ -97,10 +97,4 @@ namespace SharedModuleServer {
 
 } // namespace SharedModuleServer
 } // namespace SF
-
-
-
-
-
-
 

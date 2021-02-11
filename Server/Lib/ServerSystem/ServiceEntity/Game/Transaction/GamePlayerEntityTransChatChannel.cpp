@@ -24,7 +24,6 @@
 
 #include "ServiceEntity/Chat/ChatChannelManagerServiceEntity.h"
 #include "Protocol/ServerService/ChatChannelManagerService.h"
-#include "ServiceEntity/Game/PlayerManagerServiceEntity.h"
 
 #include "Protocol/Message/GameInstanceMsgClass.h"
 #include "Protocol/Policy/GameInstanceNetPolicy.h"
@@ -53,8 +52,6 @@ namespace Svr {
 	//
 	//	ChatChannel
 	//
-
-
 
 	PlayerTransCreateOrJoinChatChannel::PlayerTransCreateOrJoinChatChannel(IHeap& heap, MessageDataPtr &pIMsg )
 		:MessageTransaction(heap, std::forward<MessageDataPtr>(pIMsg) )

@@ -165,7 +165,6 @@ namespace Svr{
 		//	Message handling
 		//
 
-
 		// register message handlers
 		virtual Result RegisterMessageHandlers();
 
@@ -176,7 +175,6 @@ namespace Svr{
 			//AssertRel(m_pHandlerTable);
 			return m_HandlerTable.Register<MessageClassType>(std::forward<MessageHandlerType>(newHandler) );
 		}
-
 
 		template<class TransactionType>
 		Result RegisterMessageHandler()

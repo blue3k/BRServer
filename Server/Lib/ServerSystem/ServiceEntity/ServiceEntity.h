@@ -26,6 +26,7 @@
 #include "Entity/MasterEntity.h"
 #include "Entity/EntityInformation.h"
 #include "ServerConfig/SFServerConfig.h"
+#include "Variable/SFVariableTable.h"
 
 namespace SF {
 
@@ -63,6 +64,8 @@ namespace SF {
 
 		EndpointAddress m_MessageEndpointConfig;
 
+		VariableTable m_CustomAttributes;
+
 	public:
 
 		ServiceEntity(GameID gameID, ClusterID clusterID, const EndpointAddress& endpoint = {});
@@ -79,6 +82,9 @@ namespace SF {
 		StringCrc64 GetClusterName() const { return m_ClusterName; }
 
 		const EndpointAddress& GetMessageEndpointConfig() const { return m_MessageEndpointConfig; }
+
+		const VariableTable& CustomAttributes() const { return m_CustomAttributes; }
+		VariableTable& CustomAttributes() { return m_CustomAttributes; }
 
 		// Get message endpoint
 		const SharedPointerT<StreamDBConsumer>& GetListenEndpoint() const { return m_ListenEndpoint; }

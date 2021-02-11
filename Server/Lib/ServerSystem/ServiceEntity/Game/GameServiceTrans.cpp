@@ -29,6 +29,8 @@
 #include "ServiceEntity/Game/GameServiceTrans.h"
 #include "ServiceEntity/Game/GameServiceEntity.h"
 
+#include "DB/LoginSessionDB.h"
+#include "DB/LoginSessionQuery.h"
 
 
 
@@ -176,7 +178,7 @@ namespace Svr {
 	}
 
 
-	template class GameServerTransRegisterPlayerToJoinGameServer<Svr::GameServiceEntity>;
+	template class GameServerTransRegisterPlayerToJoinGameServer<GameServiceEntity>;
 	template class GameServerTransRegisterPlayerToJoinGameServer<GamePlayerEntity>;
 
 
@@ -197,7 +199,10 @@ namespace Svr {
 		return hr;
 	}
 
+	//////////////////////////////////////////////////////////////////////////////////////////////////////
 
-};// namespace Svr 
-};// namespace SF 
+
+
+}// namespace Svr 
+}// namespace SF 
 

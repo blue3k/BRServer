@@ -144,7 +144,7 @@ namespace SF {
 		if (GetEntityState() != EntityState::WORKING)
 			return hr;
 
-		if (Svr::BrServer::GetInstance()->GetServerState() != Svr::ServerState::RUNNING)
+		if (Svr::BrServer::GetInstance()->GetServerState() != ServerState::RUNNING)
 			return hr;
 
 		svrCheck(ProcessNewConnection());

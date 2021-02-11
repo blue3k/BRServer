@@ -59,8 +59,11 @@ namespace Svr {
 
 		svrCheck(Transaction::StartTransaction());
 
-		svrCheck(Service::ServiceDirectory->GetRandomService(nullptr, ClusterID::ChatChannelManager, pService));
-		svrCheck(pService->GetService<ChatChannelManagerService>()->ChatChannelDeletedC2SEvt(pOwner->GetEntityUID(), 0));
+		// TODO: move to server instance 
+		//svrCheck(Service::ChatChannelManager->RemoveChannel(pOwner));
+		//svrCheck(Service::ServiceDirectory->RemoveLocalService(pOwner));
+		//svrCheck(Service::ServiceDirectory->GetRandomService(nullptr, ClusterID::ChatChannel, pService));
+		//svrCheck(pService->GetService<ChatChannelManagerService>()->ChatChannelDeletedC2SEvt(pOwner->GetEntityUID(), 0));
 
 		Service::EntityManager->RemoveEntity( pOwner );
 

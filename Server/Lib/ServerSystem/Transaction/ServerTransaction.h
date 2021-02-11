@@ -143,7 +143,7 @@ namespace Svr {
 		Result TossMessageToTarget( ServerServiceInformation* pService )
 		{
 			Result hr = ResultCode::SUCCESS;
-			ClusteredServiceEntity *pMyOwner = nullptr;
+			ServiceEntity *pMyOwner = nullptr;
 			MessageDataPtr pClonedMessage;
 			pMyOwner = super::GetMyOwner();
 
@@ -186,11 +186,11 @@ namespace Svr {
 		{
 			Result hr = ResultCode::SUCCESS;
 
-			ClusteredServiceEntity *pMyOwner = nullptr;
+			//ClusteredServiceEntity *pMyOwner = nullptr;
 
 			svrChkPtr(super::GetOwnerEntity());
 
-			pMyOwner = super::GetMyOwner();
+			//pMyOwner = super::GetMyOwner();
 
 			if(super::IsClosed() ) return hr;
 

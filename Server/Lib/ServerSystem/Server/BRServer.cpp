@@ -40,7 +40,7 @@
 
 
 
-#include "ServiceEntity/Game/PlayerManagerServiceEntity.h"
+#include "ServiceEntity/Game/PlayerDirectoryManager.h"
 #include "ServiceEntity/Game/GameInstanceManagerServiceEntity.h"
 #include "ServiceEntity/Login/LoginServiceEntity.h"
 #include "ServiceEntity/Game/GameServiceEntity.h"
@@ -140,7 +140,7 @@ namespace SF {
 			AddModuleFactory("ModLogin"_crc, [](BrServer* ThisServer, GameID gameID, ServerConfig::ServerModule* config)
 				{
 					auto pLogin = (ServerConfig::ServerModulePublicService*)config;
-					if (!ThisServer->AddServiceEntity<LoginServiceEntity>(&pLogin->PublicNet, pLogin->Endpoint))
+					if (!ThisServer->AddServiceEntity<LoginServiceEntity>(&pLogin->PublicNet, config->Endpoint))
 						return ResultCode::OUT_OF_MEMORY;
 					return ResultCode::SUCCESS;
 				});
@@ -148,7 +148,7 @@ namespace SF {
 			AddModuleFactory("ModGame"_crc, [](BrServer* ThisServer, GameID gameID, ServerConfig::ServerModule* config)
 				{
 					auto pGame = (ServerConfig::ServerModulePublicService*)config;
-					if (!ThisServer->AddServiceEntity<Svr::GameServiceEntity>(gameID, &pGame->PublicNet))
+					if (!ThisServer->AddServiceEntity<GameServiceEntity>(gameID, &pGame->PublicNet, config->Endpoint))
 						return ResultCode::OUT_OF_MEMORY;
 					return ResultCode::SUCCESS;
 				});
@@ -159,7 +159,6 @@ namespace SF {
 					if (!ThisServer->AddServiceEntity<Svr::GameInstanceManagerServiceEntity>(gameID, pGame, ClusterID::GameInstanceManager))
 						return ResultCode::OUT_OF_MEMORY;
 					return ResultCode::SUCCESS;
-					//svrChk(GetComponentCarrier().AddComponentWithAdapter(pGameInstanceManager)); // ?
 				});
 
 			AddModuleFactory("ModRanking"_crc, [](BrServer* ThisServer, GameID gameID, ServerConfig::ServerModule* config)
@@ -171,7 +170,7 @@ namespace SF {
 
 			AddModuleFactory("ModChatting"_crc, [](BrServer* ThisServer, GameID gameID, ServerConfig::ServerModule* config)
 				{
-					if (!ThisServer->AddServiceEntity<Svr::ChatChannelManagerServiceEntity>(Service::ServerConfig->GameClusterID))
+					if (!ThisServer->AddServiceEntity<Svr::ChatChannelManagerServiceEntity>(Service::ServerConfig->GameClusterID, config->Endpoint))
 						return ResultCode::OUT_OF_MEMORY;
 					return ResultCode::SUCCESS;
 				});
@@ -522,9 +521,10 @@ namespace SF {
 			svrTrace(Error, "initializing Components");
 			svrCheck(InitializeComponents());
 
-
 			svrTrace(Error, "initializing ZK");
 			svrCheck(CreateServerInstanceZK(Util::GetServiceName()));
+
+			svrCheck(InitializingServices());
 
 			svrTrace(Info, "Start process done");
 
@@ -627,10 +627,7 @@ namespace SF {
 			Result hr = ResultCode::SUCCESS;
 
 			// Terminate remote entity manager
-			//Service::ServerEntityManager->Clear();
-			//Service::ClusterManager->Clear();
 			Service::EntityManager->Clear();
-			//Service::EntityTable->Clear();
 
 			return hr;
 		}
@@ -644,6 +641,19 @@ namespace SF {
 				return ResultCode::OUT_OF_MEMORY;
 
 			return ResultCode::SUCCESS;
+		}
+
+		Result BrServer::InitializingServices()
+		{
+			Result hr;
+
+			for (auto& itService : GetLocalServiceEntities())
+			{
+				if (!itService->GetInitialized())
+					itService->StartInitialization();
+			}
+
+			return hr;
 		}
 
 		ServerEntity* BrServer::CreateLoopbackEntity()

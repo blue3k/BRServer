@@ -41,7 +41,7 @@ namespace Svr {
 
 
 	ChatChannelEntity::ChatChannelEntity(const StringCrc64& chatChannelName)
-		: MasterEntity(64, 64)
+		: MasterEntity(32, 32)
 		, m_ChatChannelPlayerByUID(GetHeap())
 		, m_ChatChannelName(chatChannelName)
 		, m_LeaderID(0)
@@ -71,13 +71,11 @@ namespace Svr {
 	{
 		Result hr = ResultCode::SUCCESS;
 
-		svrChk(MasterEntity::InitializeEntity( newEntityID ) );
+		svrCheck(MasterEntity::InitializeEntity( newEntityID ) );
 
 		m_ChatChannelPlayerByUID.clear();
 
 		m_LeaderID = 0;
-
-	Proc_End:	
 
 		return hr;
 	}
@@ -96,9 +94,7 @@ namespace Svr {
 		});
 		m_ChatChannelPlayerByUID.clear();
 
-		svrChk(MasterEntity::TerminateEntity() );
-
-	Proc_End:	
+		svrCheck(MasterEntity::TerminateEntity() );
 
 		return hr;
 	}
@@ -156,9 +152,6 @@ namespace Svr {
 		}
 		return ResultCode::SUCCESS;
 	}
-	
-
-
 
 	//////////////////////////////////////////////////////////////////////////////////////////
 	//
@@ -171,9 +164,9 @@ namespace Svr {
 		Result hr = ResultCode::SUCCESS;
 		ChatChannelPlayerUIDMap::iterator itLeader;
 
-		svrChkPtr( pPlayer );
+		svrCheckPtr( pPlayer );
 
-		svrChk( m_ChatChannelPlayerByUID.insert(pPlayer->GetPlayerID(), pPlayer ));
+		svrCheck( m_ChatChannelPlayerByUID.insert(pPlayer->GetPlayerID(), pPlayer ));
 		
 		if( !bIsSilent )
 		{
@@ -196,10 +189,8 @@ namespace Svr {
 		if( m_LeaderID == 0 || !(m_ChatChannelPlayerByUID.find( m_LeaderID, itLeader )) )
 		{
 			m_LeaderID = 0;
-			svrChk( SelectNewLeader(bIsSilent) );
+			svrCheck( SelectNewLeader(bIsSilent) );
 		}
-
-	Proc_End:
 
 		return hr;
 	}

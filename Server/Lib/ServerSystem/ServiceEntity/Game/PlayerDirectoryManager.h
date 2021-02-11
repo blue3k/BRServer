@@ -1,6 +1,6 @@
 ////////////////////////////////////////////////////////////////////////////////
 // 
-// CopyRight (c) 2013 The Braves
+// CopyRight (c) The Braves
 // 
 // Author : KyungKun Ko
 //
@@ -30,27 +30,21 @@
 
 
 namespace SF {
-namespace Svr {
 
 	class Entity;
-	class ServerEntity;
-
-
 
 	///////////////////////////////////////////////////////////////////////////////////////////////////////
 	//
-	//	PlayerManagerServiceEntity class
+	//	PlayerDirectoryManager class
 	//
 
-	class PlayerManagerServiceEntity : public ShardedClusterServiceEntity, public PlayerManagerService
+	class PlayerDirectoryManager : public PlayerManagerService, public SharedObject
 	{
 	public:
 
-		typedef ShardedClusterServiceEntity super;
+		static constexpr StringCrc64 TypeName = "PlayerDirectoryManager";
 
 		const char* ZKBasePath = "/BRPlayer";
-
-
 
 		typedef HashTable2< PlayerID, EntityUID,
 			UniqueKeyTrait, 
@@ -63,38 +57,43 @@ namespace Svr {
 
 	private:
 
+		CriticalSection m_PlayerLock;
+
 		// Player ID map. Locally created players
-		PlayerIDMap m_PlayerIDMap;
+		PlayerIDMap m_LocalPlayersByID;
 
 		// Number of player who exists on this server
-		SyncCounter m_NumberOfPlayerOnThisServer;
+		Atomic<int32_t> m_NumberOfPlayerOnThisServer;
 
+		// directory base path
+		String m_BasePath;
 
 		const ServerConfig::NetPublic*	m_PublicNetSocket;
 
+	private:
+
+		//virtual bool Tick() override;
+		void RegisterLocalPlayers();
+		void RegisterOrUpdatePlayer(GameID gameID, PlayerID playerID, EntityUID entityUID, bool bIsUpdate);
+
+
+
 	public:
 		// Constructor/Destructor
-		PlayerManagerServiceEntity();
-		virtual ~PlayerManagerServiceEntity();
-
-		virtual void Dispose() override;
-
-		virtual Result RegisterServiceMessageHandler() override;
+		PlayerDirectoryManager();
+		virtual ~PlayerDirectoryManager();
 
 
 		// Initialize entity to proceed new connection
-		virtual Result InitializeEntity(EntityID newEntityID) override;
+		Result InitializeComponent();
 
-
-		virtual Result TickUpdate(TimerAction *pAction = nullptr) override;
+		Result DeinitializeComponent();
 
 
 		//////////////////////////////////////////////////////////////////////////
 		//
 		//	Player operations
 		//
-
-		virtual void Clear() override;
 
 		// Create or update player id
 		virtual Result CreatePlayer(GameID gameID, PlayerID playerID, EntityUID entityUID) override;
@@ -108,11 +107,7 @@ namespace Svr {
 
 	};
 
-
-
-
-}; // namespace Svr
-}; // namespace SF
+} // namespace SF
 
 
 
