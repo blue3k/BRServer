@@ -81,8 +81,6 @@ namespace Svr {
 
 		AddSubAction<DB::QueryConnectedToGameServerCmd>(&PlayerTransJoinGameServer::ConnectedToGameServerDB, &PlayerTransJoinGameServer::OnConnectedToGameServerDB);
 		AddSubAction<DB::QueryGetPlayerInfoCmd>(&PlayerTransJoinGameServer::RequestPlayerInfoFromDB, &PlayerTransJoinGameServer::OnGetPlayerGameDataRes);
-		AddSubAction<Message::LoginServer::PlayerJoinedToGameServerRes>(&PlayerTransJoinGameServer::NotifyLoginServer, &PlayerTransJoinGameServer::OnGameServerJoined);
-		AddSubAction<DB::QueryGetPlayerInfoCmd>(&PlayerTransJoinGameServer::RequestPlayerInfoFromDB, &PlayerTransJoinGameServer::OnGetPlayerGameDataRes);
 		AddSubAction<DB::QueryCreatePlayerInfoCmd>(&PlayerTransJoinGameServer::RequestPlayerInfoCreateDB, &PlayerTransJoinGameServer::OnCreatePlayerGameDataRes);
 		AddSubAction<Message::GameParty::JoinPartyRes>(&PlayerTransJoinGameServer::RequestJoinPartyIfExist, &PlayerTransJoinGameServer::OnJoinPartyRes);
 		AddSubAction(&PlayerTransJoinGameServer::FinalizeSuccess);
@@ -122,16 +120,16 @@ namespace Svr {
 		return hr;
 	}
 
-	Result PlayerTransJoinGameServer::OnGameServerJoined( Svr::TransactionResult* pRes )
-	{
-		ScopeContext hr;
-		Message::LoginServer::PlayerJoinedToGameServerRes msgRes;
+	//Result PlayerTransJoinGameServer::OnGameServerJoined( Svr::TransactionResult* pRes )
+	//{
+	//	ScopeContext hr;
+	//	Message::LoginServer::PlayerJoinedToGameServerRes msgRes;
 
-		svrCheckClose(pRes->GetResult());
-		svrCheck( msgRes.ParseMessage(pRes->GetResultData<Message::MessageData>()) );
+	//	svrCheckClose(pRes->GetResult());
+	//	svrCheck( msgRes.ParseMessage(pRes->GetResultData<Message::MessageData>()) );
 
-		return hr; 
-	}
+	//	return hr; 
+	//}
 
 	Result PlayerTransJoinGameServer::OnJoinPartyRes( Svr::TransactionResult* pRes )
 	{
@@ -248,32 +246,31 @@ namespace Svr {
 		return hr;
 	}
 
-	Result PlayerTransJoinGameServer::NotifyLoginServer()
-	{
-		ScopeContext hr;
+	//Result PlayerTransJoinGameServer::NotifyLoginServer()
+	//{
+	//	ScopeContext hr;
 
-		EntityUID loginEntityUID(GetLoginEntityUID());
+	//	EntityUID loginEntityUID(GetLoginEntityUID());
 
 
-		auto loginEndpoint = Service::MessageEndpointManager->GetEndpoint(loginEntityUID);
+	//	auto loginEndpoint = Service::MessageEndpointManager->GetEndpoint(loginEntityUID);
 
-		// TODO: We need to distinguish whether character data is updated or not
-		svrCheck(NetPolicyLoginServer(loginEndpoint).PlayerJoinedToGameServerCmd(
-			RouteContext(GetOwnerEntityUID(), loginEntityUID), GetTransID(),
-			GetAccID(), GetTicket()));
+	//	// TODO: We need to distinguish whether character data is updated or not
+	//	svrCheck(NetPolicyLoginServer(loginEndpoint).PlayerJoinedToGameServerCmd(
+	//		RouteContext(GetOwnerEntityUID(), loginEntityUID), GetTransID(),
+	//		GetAccID(), GetTicket()));
 
-		return hr;
-	}
+	//	return hr;
+	//}
 
 	Result PlayerTransJoinGameServer::RequestPlayerInfoFromDB()
 	{
 		ScopeContext hr;
-		EntityUID playerUID;
 
 		// succeeded to create
-		svrCheck(Service::PlayerManager->CreatePlayer(GetPlayerID(), GetOwnerEntityUID()));
+		svrCheck(Service::PlayerManager->CreatePlayer(GetAccID(), GetOwnerEntityUID()));
 
-		svrCheck(Svr::GetServerComponent<DB::GameDB>()->GetPlayerInfoCmd(GetTransID(), GetMyOwner()->GetShardID(), GetMyOwner()->GetPlayerID()));
+		svrCheck(Svr::GetServerComponent<DB::GameDB>()->GetPlayerInfoCmd(GetTransID(), GetMyOwner()->GetShardID(), GetAccID()));
 
 		return hr;
 	}

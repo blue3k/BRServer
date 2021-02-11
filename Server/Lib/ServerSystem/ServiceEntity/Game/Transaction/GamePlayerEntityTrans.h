@@ -83,7 +83,7 @@ namespace SF {
 			void SetPlayerNick(const char* value) { StrUtil::StringCopy(m_PlayerNick, value); }
 
 
-			Result OnGameServerJoined(Svr::TransactionResult* pRes);
+			//Result OnGameServerJoined(Svr::TransactionResult* pRes);
 			Result OnJoinPartyRes(Svr::TransactionResult* pRes);
 			Result OnCreatePlayerGameDataRes(Svr::TransactionResult* pRes);
 			Result OnGetPlayerGameDataRes(Svr::TransactionResult* pRes);
@@ -94,7 +94,7 @@ namespace SF {
 			Result ConnectedToGameServerDB();
 			Result OnConnectedToGameServerDB(Svr::TransactionResult* pRes);
 
-			Result NotifyLoginServer();
+			//Result NotifyLoginServer();
 			Result RequestPlayerInfoFromDB();
 			Result RequestPlayerInfoCreateDB();
 			Result RequestJoinPartyIfExist();
