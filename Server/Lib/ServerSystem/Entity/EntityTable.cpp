@@ -127,35 +127,27 @@ namespace Svr {
 		Result hr = ResultCode::SUCCESS;
 		SharedPointerT<Entity> pEntity;
 
-		svrChk(m_EntityMap.find(entityID.ID, pEntity));
+		svrCheck(m_EntityMap.find(entityID.ID, pEntity));
 
-		svrChk(pEntity->PendingTransaction(ThisThread::GetThreadID(), pTrans));
-
-	Proc_End:
-
-		//ReleaseTransaction(pTrans);
-		//Util::SafeDelete(pTrans);
+		svrCheck(pEntity->PendingTransaction(ThisThread::GetThreadID(), pTrans));
 
 		return hr;
 	}
 
 	// Route Transaction result
-	Result EntityTable::RouteTransactionResult(UniquePtr<TransactionResult>& pRes)
+	Result EntityTable::RouteTransactionResult(SFUniquePtr<TransactionResult>& pRes)
 	{
 		Result hr = ResultCode::SUCCESS;
 		SharedPointerT<Entity> pEntity;
 
-		svrChkPtr( pRes );
+		svrCheckPtr( pRes );
 
 		if (!m_EntityMap.find(pRes->GetTransID().GetEntityID(), pEntity))
 		{
-			hr = ResultCode::INVALID_ENTITY;
-			goto Proc_End;
+			return hr = ResultCode::INVALID_ENTITY;
 		}
 
-		svrChk(pEntity->PendingTransactionResult(pRes));
-
-	Proc_End:
+		svrCheck(pEntity->PendingTransactionResult(pRes));
 
 		return hr;
 	}
@@ -170,9 +162,6 @@ namespace Svr {
 		return ResultCode::SUCCESS;
 	}
 
-
-}; // namespace SF {
-}; // namespace Svr {
-
-
+} // namespace SF {
+} // namespace Svr {
 

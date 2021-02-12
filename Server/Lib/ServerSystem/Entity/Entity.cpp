@@ -31,7 +31,7 @@
 #include "Net/SFMessage.h"
 #include "Service/ServerService.h"
 #include "Protocol/Policy/ServerNetPolicy.h"
-
+#include "Memory/SFIMemoryManager.h"
 
 
 namespace SF
@@ -324,7 +324,7 @@ namespace Svr
 	{
 		Result hr = ResultCode::SUCCESS;
 		MessageResult *pMsgRes = nullptr;
-		UniquePtr<TransactionResult> pTransRes;
+		SFUniquePtr<TransactionResult> pTransRes;
 		auto pMySvr = BrServer::GetInstance();
 		TransactionPtr pTransaction;
 
@@ -450,7 +450,7 @@ namespace Svr
 		case Transaction::STATE_STARTED:
 			if (pTrans->CheckTimer())
 			{
-				UniquePtr<TransactionResult> pTranRes(new(GetHeap()) TimerResult);
+				SFUniquePtr<TransactionResult> pTranRes(new(GetHeap()) TimerResult);
 				svrMem(pTranRes);
 				pTrans->UpdateHeartbeatTime();
 				pTrans->RecordTransactionHistory(pTranRes);
@@ -499,21 +499,19 @@ namespace Svr
 	}
 
 	// Pending transaction result
-	Result Entity::PendingTransactionResult(UniquePtr<TransactionResult>& pTransRes)
+	Result Entity::PendingTransactionResult(SFUniquePtr<TransactionResult>& pTransRes)
 	{
 		Result hr = ResultCode::SUCCESS;
 
 		if( GetEntityState() == EntityState::FREE )
 			return ResultCode::FAIL;
 
-		svrChkPtr( pTransRes );
+		svrCheckPtr( pTransRes );
 
 		// TODO: Use unique ptr in queue
-		svrChk(GetTaskManager()->AddEventTask(GetTaskGroupID(), ServerTaskEvent(this, pTransRes.get())));
+		svrCheck(GetTaskManager()->AddEventTask(GetTaskGroupID(), ServerTaskEvent(this, pTransRes.get())));
 		pTransRes.release();
 		
-	Proc_End:
-
 		return hr;
 	}
 

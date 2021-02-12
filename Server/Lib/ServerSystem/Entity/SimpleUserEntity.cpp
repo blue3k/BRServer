@@ -440,7 +440,7 @@ namespace Svr
 			{
 				if ((FindActiveTransaction(eventTask.EventData.pTransResultEvent->GetTransID(), pCurTran)))
 				{
-					UniquePtr<TransactionResult> pTransRes(eventTask.EventData.pTransResultEvent);
+					SFUniquePtr<TransactionResult> pTransRes(eventTask.EventData.pTransResultEvent);
 					eventTask.EventData.pTransResultEvent = nullptr;
 					ProcessTransactionResult(pCurTran, pTransRes);
 				}
@@ -448,7 +448,7 @@ namespace Svr
 				{
 					svrTrace(Warning, "Transaction result for TID:{0} is failed to route.", eventTask.EventData.pTransResultEvent->GetTransID());
 					auto pRes = const_cast<TransactionResult*>(eventTask.EventData.pTransResultEvent);
-					delete pRes;
+					IHeap::Delete(pRes);
 					//svrErr(ResultCode::FAIL);
 				}
 			}

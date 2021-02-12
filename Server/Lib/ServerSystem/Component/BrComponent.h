@@ -380,7 +380,7 @@ namespace SF {
 			{
 				if (itComponent.GetValue())
 					itComponent.GetValue()->TerminateComponent();
-				delete itComponent.GetValue();
+				IHeap::Delete(itComponent.GetValue());
 			}
 			m_Components.Clear();
 		}
@@ -394,7 +394,7 @@ namespace SF {
 			{
 				if (itComponent.GetValue())
 					itComponent.GetValue()->TerminateComponent();
-				delete itComponent.GetValue();
+				IHeap::Delete(itComponent.GetValue());
 			}
 			m_Components.Clear();
 		}
@@ -496,7 +496,7 @@ namespace SF {
 			Result hr = AddComponent(newComponent);
 			if (!hr)
 			{
-				delete newComponent;
+				IHeap::Delete(newComponent);
 			}
 
 			return hr;
@@ -518,7 +518,7 @@ namespace SF {
 			Result hr = AddComponent(newComponent);
 			if (!hr)
 			{
-				delete newComponent;
+				IHeap::Delete(newComponent);
 			}
 
 			return hr;
@@ -540,7 +540,7 @@ namespace SF {
 			Result hr = AddComponent(newComponent);
 			if (!hr)
 			{
-				delete newComponent;
+				IHeap::Delete(newComponent);
 			}
 
 			return hr;

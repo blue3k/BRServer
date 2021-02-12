@@ -105,12 +105,8 @@ namespace Svr {
 		virtual Result RouteTransaction( EntityID entityID, TransactionPtr &pTrans ) override;
 
 		// Route Transaction result
-		virtual Result RouteTransactionResult(UniquePtr<TransactionResult>& pRes) override;
+		virtual Result RouteTransactionResult(SFUniquePtr<TransactionResult>& pRes) override;
 	};
 
-
-
-}; // namespace Svr
-}; // namespace SF
-
-
+} // namespace Svr
+} // namespace SF

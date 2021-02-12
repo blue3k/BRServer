@@ -98,7 +98,7 @@ namespace Svr {
 		if (m_pNetPublic != nullptr)
 		{
 			m_pNetPublic->TerminateNet();
-			delete m_pNetPublic;
+			IHeap::Delete(m_pNetPublic);
 			m_pNetPublic = nullptr;
 		}
 

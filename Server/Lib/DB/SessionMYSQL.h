@@ -39,7 +39,7 @@ namespace DB {
 		DataSourceMYSQL *m_pMyDataSource = nullptr;
 
 		// My sql context
-		mysqlx::Session* m_pXSession = nullptr;
+		SFUniquePtr<mysqlx::Session> m_pXSession;
 
 		// true if thread initialization is required
 		CounterType m_Synced;

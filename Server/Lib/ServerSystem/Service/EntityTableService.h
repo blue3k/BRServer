@@ -27,8 +27,6 @@ namespace SF
 		class TransactionResult;
 	}
 
-
-
 	
 	/////////////////////////////////////////////////////////////////////////////////////////
 	//
@@ -62,10 +60,8 @@ namespace SF
 		virtual Result RouteTransaction(EntityID entityID, SharedPointerT<Svr::Transaction> &pTrans) { return ResultCode::FAIL; }
 
 		// Route Transaction result
-		virtual Result RouteTransactionResult(UniquePtr<Svr::TransactionResult> &pRes) { return ResultCode::FAIL; }
+		virtual Result RouteTransactionResult(SFUniquePtr<Svr::TransactionResult> &pRes) { return ResultCode::FAIL; }
 	};
 
-	
-
-}; // namespace SF
+} // namespace SF
 

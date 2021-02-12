@@ -257,7 +257,7 @@ namespace Svr {
 			if (pRawUDP != nullptr)
 			{
 				pRawUDP->TerminateNet();
-				delete pRawUDP;
+				IHeap::Delete(pRawUDP);
 			}
 
 			Terminate();

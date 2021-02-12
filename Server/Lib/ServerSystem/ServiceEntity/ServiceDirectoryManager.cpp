@@ -72,7 +72,7 @@ namespace SF {
 	{
 		for (auto itService : m_Services)
 		{
-			delete itService.GetValue();
+			IHeap::Delete(itService.GetValue());
 		}
 		m_Services.Clear();
 	}
@@ -394,7 +394,7 @@ namespace SF {
 		{
 			svrTrace(Error, "Failed to Add service watcher for cluster, GameID:{0} ClusterID:{1}, {2}", gameID, Enum<ClusterID>().GetValueName(clusterID), clusterID);
 
-			delete pServiceInfo;
+			IHeap::Delete(pServiceInfo);
 			return ResultCode::OUT_OF_MEMORY;
 		}
 
@@ -500,9 +500,9 @@ namespace SF {
 		svrCheck(ToJson(attributes, "Custom", customAttributes));
 
 		LocalServiceInformation* plocalInfo = new LocalServiceInformation;
-		plocalInfo->GameID = gameID;
-		plocalInfo->ClusterID = clusterID;
-		plocalInfo->EntityUID = entityUID;
+		plocalInfo->GameId = gameID;
+		plocalInfo->ClusterId = clusterID;
+		plocalInfo->EntityUid = entityUID;
 		plocalInfo->Endpoint = endpoint;
 		plocalInfo->JsonAttributes = attributes;
 		m_LocalServices.push_back(plocalInfo);

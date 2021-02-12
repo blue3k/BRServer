@@ -126,7 +126,7 @@ namespace Svr {
 	}
 
 
-	Result SimpleEntity::ProcessTransactionResult(TransactionPtr &pCurTran, UniquePtr<TransactionResult>& pTranRes)
+	Result SimpleEntity::ProcessTransactionResult(TransactionPtr &pCurTran, SFUniquePtr<TransactionResult>& pTranRes)
 	{
 		Result hr = ResultCode::SUCCESS;
 		Result hrTem = ResultCode::SUCCESS;

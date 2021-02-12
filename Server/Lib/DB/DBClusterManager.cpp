@@ -77,16 +77,14 @@ namespace DB {
 		for( uint part =0; part < m_PartitioningCount; part++)
 		{
 			DataSource *pDBSource = nullptr;
-			dbChk( Factory::GetInstance().CreateDataSource(GetHeap(), pDBSource) );
-			dbChk( m_ShardingBucket.push_back( pDBSource ) );
+			dbCheck( Factory::GetInstance().CreateDataSource(GetHeap(), pDBSource) );
+			dbCheck( m_ShardingBucket.push_back( pDBSource ) );
 		}
 
-		dbChk(QueryWorkerManager::InitializeDBWorkerManager());
+		dbCheck(QueryWorkerManager::InitializeDBWorkerManager());
 
 		// put initial DB shard information query
-		dbChk(RequestShardList());
-
-	Proc_End:
+		dbCheck(RequestShardList());
 
 		return hr;
 	}
@@ -98,7 +96,7 @@ namespace DB {
 			DB::Query* pQuery = nullptr;
 			m_PendingQueries.Dequeue(pQuery);
 			if (pQuery != nullptr)
-				delete pQuery;
+				IHeap::Delete(pQuery);
 		}
 
 		while (m_ResultQueries.GetEnqueCount() > 0)
@@ -106,14 +104,14 @@ namespace DB {
 			DB::Query* pQuery = nullptr;
 			m_ResultQueries.Dequeue(pQuery);
 			if (pQuery != nullptr)
-				delete pQuery;
+				IHeap::Delete(pQuery);
 		}
 
 		m_ShardingBucket.for_each([](DataSource* dataSource) -> Result {
 			if (dataSource != nullptr)
 			{
 				dataSource->CloseDBSource();
-				delete dataSource;
+				IHeap::Delete(dataSource);
 			}
 			return ResultCode::SUCCESS;
 		});
@@ -144,11 +142,9 @@ namespace DB {
 		pQuery->SetTransaction(TransactionID());
 		pQuery->ShardID = 0;
 
-		dbChk(RequestQuery(pQuery));
+		dbCheck(RequestQuery(pQuery));
 
 		m_GetShardListLockTimer.SetTimer(DurationMS(Const::DB_MANAGER_UPDATE_SHARDLIST_LIMIT));
-
-	Proc_End:
 
 		return hr;
 	}
@@ -167,7 +163,7 @@ namespace DB {
 		else password = m_Password;
 
 		if (userID.IsNullOrEmpty() || password.IsNullOrEmpty())
-			dbErr(ResultCode::DB_INVALID_CONFIG);
+			dbCheck(ResultCode::DB_INVALID_CONFIG);
 
 		while (m_ShardingBucket.size() <= partitioningID)
 		{
@@ -175,21 +171,18 @@ namespace DB {
 		}
 
 		pDBSource = m_ShardingBucket[partitioningID];
-		dbAssert(pDBSource == nullptr || !pDBSource->GetOpened());
+		if (pDBSource != nullptr && pDBSource->GetOpened())
+			dbCheck(ResultCode::ALREADY_EXIST);
 
 		dbTrace(Info, "Adding DBSource {0}, {1}, {2}", strInstanceName, strConnectionString, strDBName);
 
 		if (pDBSource == nullptr)
 		{
-			dbChk(Factory::GetInstance().CreateDataSource(GetHeap(), pDBSource));
+			dbCheck(Factory::GetInstance().CreateDataSource(GetHeap(), pDBSource));
 			m_ShardingBucket[partitioningID] = pDBSource;
 		}
 
-
-		dbChk(pDBSource->InitializeDBSource(strConnectionString, strDBName, userID, password));
-
-
-	Proc_End:
+		dbCheck(pDBSource->InitializeDBSource(strConnectionString, strDBName, userID, password));
 
 		return hr;
 	}
@@ -212,10 +205,7 @@ namespace DB {
 		// modulate by partitioning size
 		uint partition = (uint)(partitioningKey % m_ShardingBucket.size());
 
-		dbChkPtr( pDataSource = m_ShardingBucket[partition] );
-
-Proc_End:
-
+		dbCheckPtr( pDataSource = m_ShardingBucket[partition] );
 
 		return hr;
 	}
@@ -444,7 +434,7 @@ Proc_End:
 
 		if(pQuery->GetTransID() != TransactionID() )
 		{
-			UniquePtr<Svr::TransactionResult> pRes(pQuery);
+			SFUniquePtr<Svr::TransactionResult> pRes(pQuery);
 			pQuery = nullptr;
 
 			Svr::BrServer *pMyServer = Svr::BrServer::GetInstance();
@@ -468,7 +458,7 @@ Proc_End:
 		else
 		{
 			assert(pQuery->GetTransID() == TransactionID()); // otherwise it's a lost transaction result
-			delete pQuery;
+			IHeap::Delete(pQuery);
 			pQuery = nullptr;
 		}
 

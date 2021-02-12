@@ -57,7 +57,7 @@ namespace Const{
 	};
 
 
-}; // namespace Const
-}; // namespace GameServer
-}; // namespace SF
+} // namespace Const
+} // namespace GameServer
+} // namespace SF
 

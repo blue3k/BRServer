@@ -173,7 +173,7 @@ namespace SF {
 				{
 					if ((FindActiveTransaction(eventTask.EventData.pTransResultEvent->GetTransID(), pCurTran)))
 					{
-						UniquePtr<TransactionResult> pTransRes(eventTask.EventData.pTransResultEvent);
+						SFUniquePtr<TransactionResult> pTransRes(eventTask.EventData.pTransResultEvent);
 						eventTask.EventData.pTransResultEvent = nullptr;
 						ProcessTransactionResult(pCurTran, pTransRes);
 					}

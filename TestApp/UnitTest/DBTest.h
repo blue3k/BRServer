@@ -42,7 +42,7 @@ namespace BRTest
 			std::for_each( m_Threads.begin(), m_Threads.end(), []( Thread* pThread )
 			{
 				if( pThread ) pThread->Stop( true );
-				delete pThread;
+				IHeap::Delete(pThread);
 			});
 			m_Threads.clear();
 		}
@@ -64,7 +64,7 @@ namespace BRTest
 			if (m_pTestDB != nullptr)
 			{
 				m_pTestDB->TerminateDB();
-				delete m_pTestDB;
+				IHeap::Delete(m_pTestDB);
 			}
 			m_pTestDB = nullptr;
 

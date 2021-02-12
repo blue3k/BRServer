@@ -369,7 +369,7 @@ namespace Google {
 		ScopeContext hr([this, &pReader, &errors](Result hr)
 			{
 				if (pReader)
-					delete pReader;
+					IHeap::Delete(pReader);
 
 				if (!(hr))
 				{

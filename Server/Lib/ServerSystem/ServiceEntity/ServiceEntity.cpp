@@ -90,7 +90,7 @@ namespace SF {
 
 		// This is designated thread tick function
 		// I don't sleep except waiting on the date.
-		UniquePtr<StreamDBConsumer::StreamMessageData> receivedMessageData;
+		SFUniquePtr<StreamDBConsumer::StreamMessageData> receivedMessageData;
 		Result hr = m_ListenEndpoint->PollData(receivedMessageData, 500);
 		if (!hr)
 		{

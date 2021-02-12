@@ -269,7 +269,7 @@ namespace SF {
 
 		if (!AddServiceEntity(pServiceEntity))
 		{
-			delete pServiceEntity;
+			IHeap::Delete(pServiceEntity);
 			return nullptr;
 		}
 

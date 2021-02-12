@@ -89,13 +89,13 @@ namespace SF {
 
 		TaskWorker* GetTaskWorker();
 
-		TickTaskTimerAction* GetTimerAction()					{ return *m_TimerAction; }
+		TickTaskTimerAction* GetTimerAction() { return *m_TimerAction; }
 
 		// Get task Load
 		inline SysUInt GetTaskLoad() const;
 
 		DurationMS GetTickInterval() const;
-		inline void SetTickInterval(DurationMS tickInterval)							{ m_TickInterval = tickInterval; }
+		inline void SetTickInterval(DurationMS tickInterval) { m_TickInterval = tickInterval; }
 
 		TimeStampMS GetScheduledTickTime() const;
 		void SetNextScheduledTickTime(TimeStampMS tickNext);

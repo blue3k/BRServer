@@ -129,7 +129,7 @@ namespace Svr {
 		ScopeContext hr([&pPlayer](Result hr)
 			{
 				if (pPlayer)
-					delete pPlayer;
+					IHeap::Delete(pPlayer);
 			});
 
 		svrCheck( super::StartTransaction() );

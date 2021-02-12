@@ -67,7 +67,7 @@ namespace SF
 				{
  					if(!hr && pNewMsg != nullptr)
 					{
- 						delete pNewMsg;
+ 						IHeap::Delete(pNewMsg);
 						return nullptr;
 					}
 					return pNewMsg;
@@ -169,7 +169,7 @@ namespace SF
 				{
  					if(!hr && pNewMsg != nullptr)
 					{
- 						delete pNewMsg;
+ 						IHeap::Delete(pNewMsg);
 						return nullptr;
 					}
 					return pNewMsg;
@@ -276,7 +276,7 @@ namespace SF
 				{
  					if(!hr && pNewMsg != nullptr)
 					{
- 						delete pNewMsg;
+ 						IHeap::Delete(pNewMsg);
 						return nullptr;
 					}
 					return pNewMsg;
@@ -385,7 +385,7 @@ namespace SF
 				{
  					if(!hr && pNewMsg != nullptr)
 					{
- 						delete pNewMsg;
+ 						IHeap::Delete(pNewMsg);
 						return nullptr;
 					}
 					return pNewMsg;
@@ -488,7 +488,7 @@ namespace SF
 				{
  					if(!hr && pNewMsg != nullptr)
 					{
- 						delete pNewMsg;
+ 						IHeap::Delete(pNewMsg);
 						return nullptr;
 					}
 					return pNewMsg;
@@ -592,7 +592,7 @@ namespace SF
 				{
  					if(!hr && pNewMsg != nullptr)
 					{
- 						delete pNewMsg;
+ 						IHeap::Delete(pNewMsg);
 						return nullptr;
 					}
 					return pNewMsg;
@@ -697,7 +697,7 @@ namespace SF
 				{
  					if(!hr && pNewMsg != nullptr)
 					{
- 						delete pNewMsg;
+ 						IHeap::Delete(pNewMsg);
 						return nullptr;
 					}
 					return pNewMsg;
@@ -802,7 +802,7 @@ namespace SF
 				{
  					if(!hr && pNewMsg != nullptr)
 					{
- 						delete pNewMsg;
+ 						IHeap::Delete(pNewMsg);
 						return nullptr;
 					}
 					return pNewMsg;
@@ -919,7 +919,7 @@ namespace SF
 				{
  					if(!hr && pNewMsg != nullptr)
 					{
- 						delete pNewMsg;
+ 						IHeap::Delete(pNewMsg);
 						return nullptr;
 					}
 					return pNewMsg;
@@ -956,7 +956,7 @@ namespace SF
 				{
  					if(!hr && pNewMsg != nullptr)
 					{
- 						delete pNewMsg;
+ 						IHeap::Delete(pNewMsg);
 						return nullptr;
 					}
 					return pNewMsg;
@@ -1080,7 +1080,7 @@ namespace SF
 				{
  					if(!hr && pNewMsg != nullptr)
 					{
- 						delete pNewMsg;
+ 						IHeap::Delete(pNewMsg);
 						return nullptr;
 					}
 					return pNewMsg;
@@ -1117,7 +1117,7 @@ namespace SF
 				{
  					if(!hr && pNewMsg != nullptr)
 					{
- 						delete pNewMsg;
+ 						IHeap::Delete(pNewMsg);
 						return nullptr;
 					}
 					return pNewMsg;
@@ -1229,7 +1229,7 @@ namespace SF
 				{
  					if(!hr && pNewMsg != nullptr)
 					{
- 						delete pNewMsg;
+ 						IHeap::Delete(pNewMsg);
 						return nullptr;
 					}
 					return pNewMsg;
@@ -1336,7 +1336,7 @@ namespace SF
 				{
  					if(!hr && pNewMsg != nullptr)
 					{
- 						delete pNewMsg;
+ 						IHeap::Delete(pNewMsg);
 						return nullptr;
 					}
 					return pNewMsg;
@@ -1441,7 +1441,7 @@ namespace SF
 				{
  					if(!hr && pNewMsg != nullptr)
 					{
- 						delete pNewMsg;
+ 						IHeap::Delete(pNewMsg);
 						return nullptr;
 					}
 					return pNewMsg;
@@ -1546,7 +1546,7 @@ namespace SF
 				{
  					if(!hr && pNewMsg != nullptr)
 					{
- 						delete pNewMsg;
+ 						IHeap::Delete(pNewMsg);
 						return nullptr;
 					}
 					return pNewMsg;
@@ -1671,7 +1671,7 @@ namespace SF
 				{
  					if(!hr && pNewMsg != nullptr)
 					{
- 						delete pNewMsg;
+ 						IHeap::Delete(pNewMsg);
 						return nullptr;
 					}
 					return pNewMsg;
@@ -1803,7 +1803,7 @@ namespace SF
 				{
  					if(!hr && pNewMsg != nullptr)
 					{
- 						delete pNewMsg;
+ 						IHeap::Delete(pNewMsg);
 						return nullptr;
 					}
 					return pNewMsg;
@@ -1908,7 +1908,7 @@ namespace SF
 				{
  					if(!hr && pNewMsg != nullptr)
 					{
- 						delete pNewMsg;
+ 						IHeap::Delete(pNewMsg);
 						return nullptr;
 					}
 					return pNewMsg;
@@ -2013,7 +2013,7 @@ namespace SF
 				{
  					if(!hr && pNewMsg != nullptr)
 					{
- 						delete pNewMsg;
+ 						IHeap::Delete(pNewMsg);
 						return nullptr;
 					}
 					return pNewMsg;
@@ -2119,7 +2119,7 @@ namespace SF
 				{
  					if(!hr && pNewMsg != nullptr)
 					{
- 						delete pNewMsg;
+ 						IHeap::Delete(pNewMsg);
 						return nullptr;
 					}
 					return pNewMsg;
@@ -2227,7 +2227,7 @@ namespace SF
 				{
  					if(!hr && pNewMsg != nullptr)
 					{
- 						delete pNewMsg;
+ 						IHeap::Delete(pNewMsg);
 						return nullptr;
 					}
 					return pNewMsg;
@@ -2332,7 +2332,7 @@ namespace SF
 				{
  					if(!hr && pNewMsg != nullptr)
 					{
- 						delete pNewMsg;
+ 						IHeap::Delete(pNewMsg);
 						return nullptr;
 					}
 					return pNewMsg;
@@ -2439,7 +2439,7 @@ namespace SF
 				{
  					if(!hr && pNewMsg != nullptr)
 					{
- 						delete pNewMsg;
+ 						IHeap::Delete(pNewMsg);
 						return nullptr;
 					}
 					return pNewMsg;
@@ -2550,7 +2550,7 @@ namespace SF
 				{
  					if(!hr && pNewMsg != nullptr)
 					{
- 						delete pNewMsg;
+ 						IHeap::Delete(pNewMsg);
 						return nullptr;
 					}
 					return pNewMsg;
@@ -2662,7 +2662,7 @@ namespace SF
 				{
  					if(!hr && pNewMsg != nullptr)
 					{
- 						delete pNewMsg;
+ 						IHeap::Delete(pNewMsg);
 						return nullptr;
 					}
 					return pNewMsg;
@@ -2767,7 +2767,7 @@ namespace SF
 				{
  					if(!hr && pNewMsg != nullptr)
 					{
- 						delete pNewMsg;
+ 						IHeap::Delete(pNewMsg);
 						return nullptr;
 					}
 					return pNewMsg;
@@ -2872,7 +2872,7 @@ namespace SF
 				{
  					if(!hr && pNewMsg != nullptr)
 					{
- 						delete pNewMsg;
+ 						IHeap::Delete(pNewMsg);
 						return nullptr;
 					}
 					return pNewMsg;
@@ -2978,7 +2978,7 @@ namespace SF
 				{
  					if(!hr && pNewMsg != nullptr)
 					{
- 						delete pNewMsg;
+ 						IHeap::Delete(pNewMsg);
 						return nullptr;
 					}
 					return pNewMsg;
@@ -3087,7 +3087,7 @@ namespace SF
 				{
  					if(!hr && pNewMsg != nullptr)
 					{
- 						delete pNewMsg;
+ 						IHeap::Delete(pNewMsg);
 						return nullptr;
 					}
 					return pNewMsg;
@@ -3193,7 +3193,7 @@ namespace SF
 				{
  					if(!hr && pNewMsg != nullptr)
 					{
- 						delete pNewMsg;
+ 						IHeap::Delete(pNewMsg);
 						return nullptr;
 					}
 					return pNewMsg;
@@ -3301,7 +3301,7 @@ namespace SF
 				{
  					if(!hr && pNewMsg != nullptr)
 					{
- 						delete pNewMsg;
+ 						IHeap::Delete(pNewMsg);
 						return nullptr;
 					}
 					return pNewMsg;
@@ -3407,7 +3407,7 @@ namespace SF
 				{
  					if(!hr && pNewMsg != nullptr)
 					{
- 						delete pNewMsg;
+ 						IHeap::Delete(pNewMsg);
 						return nullptr;
 					}
 					return pNewMsg;
@@ -3515,7 +3515,7 @@ namespace SF
 				{
  					if(!hr && pNewMsg != nullptr)
 					{
- 						delete pNewMsg;
+ 						IHeap::Delete(pNewMsg);
 						return nullptr;
 					}
 					return pNewMsg;
@@ -3622,7 +3622,7 @@ namespace SF
 				{
  					if(!hr && pNewMsg != nullptr)
 					{
- 						delete pNewMsg;
+ 						IHeap::Delete(pNewMsg);
 						return nullptr;
 					}
 					return pNewMsg;
@@ -3730,7 +3730,7 @@ namespace SF
 				{
  					if(!hr && pNewMsg != nullptr)
 					{
- 						delete pNewMsg;
+ 						IHeap::Delete(pNewMsg);
 						return nullptr;
 					}
 					return pNewMsg;
@@ -3839,7 +3839,7 @@ namespace SF
 				{
  					if(!hr && pNewMsg != nullptr)
 					{
- 						delete pNewMsg;
+ 						IHeap::Delete(pNewMsg);
 						return nullptr;
 					}
 					return pNewMsg;
@@ -3951,7 +3951,7 @@ namespace SF
 				{
  					if(!hr && pNewMsg != nullptr)
 					{
- 						delete pNewMsg;
+ 						IHeap::Delete(pNewMsg);
 						return nullptr;
 					}
 					return pNewMsg;
@@ -4067,7 +4067,7 @@ namespace SF
 				{
  					if(!hr && pNewMsg != nullptr)
 					{
- 						delete pNewMsg;
+ 						IHeap::Delete(pNewMsg);
 						return nullptr;
 					}
 					return pNewMsg;
@@ -4179,7 +4179,7 @@ namespace SF
 				{
  					if(!hr && pNewMsg != nullptr)
 					{
- 						delete pNewMsg;
+ 						IHeap::Delete(pNewMsg);
 						return nullptr;
 					}
 					return pNewMsg;
@@ -4284,7 +4284,7 @@ namespace SF
 				{
  					if(!hr && pNewMsg != nullptr)
 					{
- 						delete pNewMsg;
+ 						IHeap::Delete(pNewMsg);
 						return nullptr;
 					}
 					return pNewMsg;
@@ -4389,7 +4389,7 @@ namespace SF
 				{
  					if(!hr && pNewMsg != nullptr)
 					{
- 						delete pNewMsg;
+ 						IHeap::Delete(pNewMsg);
 						return nullptr;
 					}
 					return pNewMsg;

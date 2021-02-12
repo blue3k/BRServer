@@ -41,16 +41,14 @@ namespace DB {
 	{
 		Result	hr = ResultCode::SUCCESS;
 
-		StackPool::Item *pItem = nullptr;
-		do{
+		StackPool::Item *pItem = m_SessionPool.Pop();
+		while (pItem != nullptr) 
+		{
+			IHeap::Delete((Session*)pItem);
 			pItem = m_SessionPool.Pop();
-			
-			delete (Session*)pItem;
-		} while( pItem != nullptr );
+		};
 
 		m_Opened = false;
-
-	//Proc_End:
 
 		return hr;
 	}

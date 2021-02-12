@@ -61,7 +61,7 @@ namespace SF {
 		if (pEvtTask.EventType == ServerTaskEvent::EventTypes::NONE)
 			return ResultCode::INVALID_ARG;
 
-		return m_EventTask.Enqueue(pEvtTask);
+		return m_EventTask.Enqueue(Forward<ServerTaskEvent>(pEvtTask));
 	}
 
 	// Add task
@@ -377,7 +377,7 @@ namespace SF {
 			if (itThread->GetThreadID() != ThreadID())
 				itThread->Stop(true);
 
-			delete itThread;
+			IHeap::Delete(itThread);
 		}
 		m_TaskGroups.Clear();
 
@@ -387,7 +387,7 @@ namespace SF {
 			if (itThread->GetThreadID() != ThreadID())
 				itThread->Stop(true);
 
-			delete itThread;
+			IHeap::Delete(itThread);
 		}
 		m_SingleTaskWorkers.Clear();
 

@@ -67,7 +67,7 @@ namespace Svr {
 	{
 		for (auto itService : Services)
 		{
-			delete itService.GetValue();
+			IHeap::Delete(itService.GetValue());
 		}
 		Services.Clear();
 	}

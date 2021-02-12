@@ -141,9 +141,9 @@ namespace SF {
 
 		struct LocalServiceInformation
 		{
-			GameID GameID;
-			ClusterID ClusterID;
-			EntityUID EntityUID;
+			GameID GameId;
+			ClusterID ClusterId;
+			EntityUID EntityUid;
 			EndpointAddress Endpoint;
 			String NodePath;
 			Json::Value JsonAttributes;

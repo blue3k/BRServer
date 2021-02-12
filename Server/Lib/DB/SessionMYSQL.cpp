@@ -1,6 +1,6 @@
 ////////////////////////////////////////////////////////////////////////////////
 // 
-// CopyRight (c) 2013 The Braves 
+// CopyRight (c) The Braves 
 // 
 // Author: Kyungkun Ko
 //
@@ -78,15 +78,14 @@ namespace DB {
 		if (m_pXSession)
 		{
 			m_pXSession->close();
-			delete m_pXSession;
-			m_pXSession = nullptr;
+			m_pXSession.reset();
 		}
 	}
 	
 	// return context value
 	void* SessionMYSQL::GetContext()
 	{
-		return m_pXSession;
+		return m_pXSession.get();
 	}
 
 	// Send a query
@@ -181,11 +180,11 @@ namespace DB {
 			auto userId = mysqlx::string(m_pMyDataSource->GetUserID().data());
 			auto password = mysqlx::string(m_pMyDataSource->GetPassword().data());
 
-			m_pXSession = new mysqlx::Session(
+			m_pXSession.reset(new(GetEngineHeap()) mysqlx::Session(
 				serverIP,
 				m_pMyDataSource->GetServerPort(), 
 				userId,
-				password);
+				password));
 
 			String useDB;
 			useDB.Format("USE {0};", m_pMyDataSource->GetDefaultDB());
@@ -223,8 +222,7 @@ namespace DB {
 		if (m_pXSession != nullptr)
 		{
 			m_pXSession->close();
-			delete m_pXSession;
-			m_pXSession = nullptr;
+			m_pXSession.reset();
 		}
 		
 		return ResultCode::SUCCESS;

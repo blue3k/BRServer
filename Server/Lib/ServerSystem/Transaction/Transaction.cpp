@@ -119,7 +119,7 @@ namespace SF {
 			Result hr = ResultCode::SUCCESS;
 
 			if (GetState() != Transaction::STATE_WAITSTART)
-				svrErr(ResultCode::SVR_TRANSACTION_INVALID_STATE);
+				svrCheck(ResultCode::SVR_TRANSACTION_INVALID_STATE);
 
 			m_TransactionStartTime = Util::Time.GetTimeMs();
 
@@ -129,12 +129,10 @@ namespace SF {
 
 			m_SubActionManager.Process();
 
-		Proc_End:
-
 			return hr;
 		}
 
-		void Transaction::RecordTransactionHistory(const UniquePtr<TransactionResult>& pRes)
+		void Transaction::RecordTransactionHistory(const SFUniquePtr<TransactionResult>& pRes)
 		{
 			auto historyIndex = m_CurrentHistoryIdx++ % countof(m_History);
 			m_History[historyIndex].TimeStamp = Util::Time.GetTimeMs();
@@ -143,7 +141,7 @@ namespace SF {
 		}
 
 		// Process Transaction
-		Result Transaction::ProcessTransaction(UniquePtr<TransactionResult>& pRes)
+		Result Transaction::ProcessTransaction(SFUniquePtr<TransactionResult>& pRes)
 		{
 			ScopeContext hr;
 
@@ -179,8 +177,6 @@ namespace SF {
 				return ResultCode::SUCCESS;
 
 			OnCloseTransaction(hrRes);
-
-			//Proc_End:
 
 			SetClosed();
 
