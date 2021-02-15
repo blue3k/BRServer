@@ -1,7 +1,7 @@
 
 ////////////////////////////////////////////////////////////////////////////////
 // 
-// CopyRight (c) 2020 The Braves
+// CopyRight (c) The Braves
 // 
 // Author: Kyungkun Ko
 //
@@ -18,15 +18,19 @@
 
 namespace SF {
 	namespace DB {
-		//BRDB_DEFINE_QUERY_IMPL(QueryUpdateGameEnd);
-		//BRDB_DEFINE_QUERY_IMPL(QueryUpdateJoinGame);
-		//BRDB_DEFINE_QUERY_IMPL(QueryUpdateTickStatus);
+
 		BRDB_DEFINE_QUERY_IMPL(QueryCreatePlayerInfo);
 		BRDB_DEFINE_QUERY_IMPL(QueryGetPlayerInfo);
 		BRDB_DEFINE_QUERY_IMPL(QuerySetPlayerInfo);
 
 		BRDB_DEFINE_QUERY_IMPL(QueryGetNickName);
 		BRDB_DEFINE_QUERY_IMPL(QuerySetNickName);
+
+		BRDB_DEFINE_QUERY_IMPL(QueryCreateCharacter);
+		BRDB_DEFINE_QUERY_IMPL(QueryDeleteCharacter);
+		BRDB_DEFINE_QUERY_IMPL(QueryGetCharacterList);
+		BRDB_DEFINE_QUERY_IMPL(QueryGetCharacter);
+		BRDB_DEFINE_QUERY_IMPL(QuerySaveCharacter);
 
 		BRDB_DEFINE_QUERY_IMPL(QuerySavePurchaseInfoToDB);
 		BRDB_DEFINE_QUERY_IMPL(QueryCheckPurchaseID);

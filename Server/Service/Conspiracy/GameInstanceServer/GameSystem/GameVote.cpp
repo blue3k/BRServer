@@ -690,15 +690,15 @@ namespace ConspiracyGameInstanceServer {
 		if( GatherVoteTargetForHunting(voteTargets) > 0 )
 		{
 			auto& werewolves = gamePlaySystem.GetWerewolves();
-			werewolves.for_each( [&](GamePlayer* pPlayer) -> Result {
+			for (GamePlayer* pPlayer : werewolves)
+			{
 				if( pPlayer->IsInGame() && pPlayer->GetVote() == 0
 					&& !pPlayer->GetIsActivePlayer()						// The seer must be inactive
 					)
 				{
 					VoteRandomTarget(pPlayer, voteTargets);
 				}
-				return ResultCode::SUCCESS;
-			});
+			}
 		}
 	}
 
@@ -744,14 +744,14 @@ namespace ConspiracyGameInstanceServer {
 		if( GatherVoteTargetForHunting(voteTargets) > 0 )
 		{
 			auto& werewolves = gamePlaySystem.GetWerewolves();
-			werewolves.for_each( [&](GamePlayer* pPlayer) -> Result {
+			for (GamePlayer* pPlayer : werewolves)
+			{
 				if( pPlayer->IsInGame() && pPlayer->GetVote() == 0
 					)
 				{
 					VoteRandomTarget(pPlayer, voteTargets);
 				}
-				return ResultCode::SUCCESS;
-			});
+			}
 		}
 	}
 

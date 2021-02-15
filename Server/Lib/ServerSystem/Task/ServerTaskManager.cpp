@@ -360,11 +360,10 @@ namespace SF {
 	{
 		SetWorkGroupCount( uiNumGroup );
 
-		m_TaskGroups.for_each([](TaskWorker *pTaskWorker)
+		for (TaskWorker* pTaskWorker : m_TaskGroups)
 		{
 			pTaskWorker->Start();
-			return ResultCode::SUCCESS;
-		});
+		}
 
 		return ResultCode::SUCCESS;
 	}
@@ -429,19 +428,18 @@ namespace SF {
 			TaskWorker* pBestGroup = nullptr;
 
 			// search best match
-			m_TaskGroups.for_each([&](TaskWorker* pTaskWorker)
-				{
-					if (pTaskWorker == nullptr)
-						return ResultCode::SUCCESS;
+			for (TaskWorker* pTaskWorker : m_TaskGroups)
+			{
+				if (pTaskWorker == nullptr)
+					continue;
 
-					SysUInt GroupLoad = pTaskWorker->GetGroupWorkLoad();
-					if (GroupLoad < BestGroupLoad)
-					{
-						BestGroupLoad = GroupLoad;
-						pBestGroup = pTaskWorker;
-					}
-					return ResultCode::SUCCESS;
-				});
+				SysUInt GroupLoad = pTaskWorker->GetGroupWorkLoad();
+				if (GroupLoad < BestGroupLoad)
+				{
+					BestGroupLoad = GroupLoad;
+					pBestGroup = pTaskWorker;
+				}
+			}
 
 
 			if (pBestGroup == nullptr && m_TaskGroups.size())

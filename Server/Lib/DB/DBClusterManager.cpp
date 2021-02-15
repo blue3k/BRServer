@@ -61,14 +61,14 @@ namespace DB {
 		// Clear if something is remain
 		if (m_ShardingBucket.size() > 0)
 		{
-			m_ShardingBucket.for_each([](DataSource* dataSource) -> Result {
+			for (DataSource* dataSource : m_ShardingBucket)
+			{
 				if (dataSource != nullptr)
 				{
 					dataSource->CloseDBSource();
 					IHeap::Delete(dataSource);
 				}
-				return ResultCode::SUCCESS;
-			});
+			}
 			m_ShardingBucket.Clear();
 		}
 
@@ -107,14 +107,14 @@ namespace DB {
 				IHeap::Delete(pQuery);
 		}
 
-		m_ShardingBucket.for_each([](DataSource* dataSource) -> Result {
+		for (DataSource* dataSource : m_ShardingBucket) 
+		{
 			if (dataSource != nullptr)
 			{
 				dataSource->CloseDBSource();
 				IHeap::Delete(dataSource);
 			}
-			return ResultCode::SUCCESS;
-		});
+		}
 		m_ShardingBucket.Clear();
 
 	}
@@ -135,7 +135,7 @@ namespace DB {
 			return ResultCode::SUCCESS_FALSE;
 		}
 
-		UniquePtr<QueryGetShardListCmd> pQuery;
+		SFUniquePtr<QueryGetShardListCmd> pQuery;
 		pQuery.reset(new(GetHeap()) QueryGetShardListCmd(GetHeap()));
 
 		pQuery->SetPartitioningKey(0);
@@ -359,7 +359,7 @@ namespace DB {
 		return hr;
 	}
 
-	Result	DBClusterManager::RequestQuery(UniquePtr<Query>& pQuery)
+	Result	DBClusterManager::RequestQuery(SFUniquePtr<Query>& pQuery)
 	{
 		Session* pSession = nullptr;
 		DataSource *pDBSource = nullptr;

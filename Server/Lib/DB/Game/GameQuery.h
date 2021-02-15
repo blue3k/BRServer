@@ -1,7 +1,7 @@
 
 ////////////////////////////////////////////////////////////////////////////////
 // 
-// CopyRight (c) 2013 The Braves
+// CopyRight (c) The Braves
 // 
 // Author: Kyungkun Ko
 //
@@ -38,6 +38,13 @@ namespace DB {
 		MCODE_QueryGetPlayerStatus,
 		MCODE_QueryGetNickName,
 		MCODE_QuerySetNickName,
+
+		MCODE_QueryCreateCharacter,
+		MCODE_QueryDeleteCharacter,
+		MCODE_QueryGetCharacterList,
+		MCODE_QueryGetCharacter,
+		MCODE_QuerySaveCharacter,
+
 		MCODE_QuerySavePurchaseInfoToDB,
 		MCODE_QueryCheckPurchaseID,
 		MCODE_QueryGetPlayerQuickInfo,
@@ -55,14 +62,8 @@ namespace DB {
 		MCODE_QuerySetComplitionState,
 		MCODE_QueryGetComplitionState,
 
-		MCODE_QueryGameDB_Base,
 
-		//MCODE_QuerySavePurchaseInfoToDB = MCODE_QueryGameDB_Base,
-		//MCODE_QueryCheckPurchaseID,
-		//MCODE_QueryUpdateGameEnd,
-		//MCODE_QueryUpdateJoinGame,
-		//MCODE_QueryUpdateTickStatus,
-		//MCODE_QueryUpdateFriendStaminaTime,
+		MCODE_QueryGameDB_Base,
 
 	}; // enum MsgCode
 
@@ -100,9 +101,6 @@ namespace DB {
 			BRDB_PARAM_ENTRY(DB::ParamIO::Input, PlayerID)
 			BRDB_PARAM_ENTRY(DB::ParamIO::Output, Result)
 			BRDB_END_PARAM_MAP()
-
-
-
 	};
 
 	BRDB_DEFINE_ROWSETQUERYCLASS(PROTOCOLID_GAMEDB, QueryGetPlayerInfo);
@@ -183,6 +181,122 @@ namespace DB {
 	};
 
 	BRDB_DEFINE_QUERYCLASS(PROTOCOLID_GAMEDB, QuerySetNickName);
+
+
+
+	//////////////////////////////////////////////////////////////////////////////////
+	//
+	//	Character 
+	//
+
+	class QueryCreateCharacter : public DB::QueryBase
+	{
+	public:
+		// Player ID
+		int64_t	PlayerId{};
+		String CharacterName;
+
+		// result
+		int32_t	CharacterId{};
+		int32_t	Result{};
+
+	public:
+		BRDB_BEGIN_PARAM_MAP(QueryCreateCharacter, "spCreateCreateCharacter")
+			BRDB_PARAM_ENTRY(DB::ParamIO::Input, PlayerId)
+			BRDB_PARAM_ENTRY(DB::ParamIO::Input, CharacterName)
+			BRDB_PARAM_ENTRY(DB::ParamIO::Output, CharacterId)
+			BRDB_PARAM_ENTRY(DB::ParamIO::Output, Result)
+		BRDB_END_PARAM_MAP()
+	};
+
+	BRDB_DEFINE_QUERYCLASS(PROTOCOLID_GAMEDB, QueryCreateCharacter);
+
+
+	class QueryDeleteCharacter : public DB::QueryBase
+	{
+	public:
+		int64_t	PlayerId{};
+		int64_t	CharacterId{};
+
+		// result
+		int32_t	Result{};
+
+	public:
+		BRDB_BEGIN_PARAM_MAP(QueryDeleteCharacter, "spDeleteCharacter")
+			BRDB_PARAM_ENTRY(DB::ParamIO::Input, PlayerId)
+			BRDB_PARAM_ENTRY(DB::ParamIO::Input, CharacterId)
+			BRDB_PARAM_ENTRY(DB::ParamIO::Output, Result)
+		BRDB_END_PARAM_MAP()
+	};
+
+	BRDB_DEFINE_QUERYCLASS(PROTOCOLID_GAMEDB, QueryDeleteCharacter);
+
+
+
+	class QueryGetCharacterList : public DB::QueryBase
+	{
+	public:
+		int64_t	PlayerId{};
+
+		// result
+		int32_t	Result{};
+
+	public:
+		BRDB_BEGIN_PARAM_MAP(QueryGetCharacterList, "spGetCharacterList")
+			BRDB_PARAM_ENTRY(DB::ParamIO::Input, PlayerId)
+			BRDB_PARAM_ENTRY(DB::ParamIO::Output, Result)
+		BRDB_END_PARAM_MAP()
+	};
+
+	BRDB_DEFINE_ROWSETQUERYCLASS(PROTOCOLID_GAMEDB, QueryGetCharacterList);
+
+
+	class QueryGetCharacter : public DB::QueryBase
+	{
+	public:
+		int64_t	PlayerId{};
+		int64_t	CharacterId{};
+
+		// result
+		int32_t	Result{};
+
+	public:
+		BRDB_BEGIN_PARAM_MAP(QueryGetCharacter, "spGetCharacter")
+			BRDB_PARAM_ENTRY(DB::ParamIO::Input, PlayerId)
+			BRDB_PARAM_ENTRY(DB::ParamIO::Input, CharacterId)
+			BRDB_PARAM_ENTRY(DB::ParamIO::Output, Result)
+		BRDB_END_PARAM_MAP()
+	};
+
+	BRDB_DEFINE_ROWSETQUERYCLASS(PROTOCOLID_GAMEDB, QueryGetCharacter);
+
+
+	class QuerySaveCharacter : public DB::QueryBase
+	{
+	public:
+		int64_t	PlayerId{};
+		int64_t	CharacterId{};
+		int16_t	Level{};
+		int64_t	Exp{};
+		int64_t	Gold{};
+		DynamicArray<uint8_t> BinData;
+
+		// result
+		int32_t	Result{};
+
+	public:
+		BRDB_BEGIN_PARAM_MAP(QuerySaveCharacter, "spSaveCharacter")
+			BRDB_PARAM_ENTRY(DB::ParamIO::Input, PlayerId)
+			BRDB_PARAM_ENTRY(DB::ParamIO::Input, CharacterId)
+			BRDB_PARAM_ENTRY(DB::ParamIO::Input, Level)
+			BRDB_PARAM_ENTRY(DB::ParamIO::Input, Exp)
+			BRDB_PARAM_ENTRY(DB::ParamIO::Input, Gold)
+			BRDB_PARAM_ENTRY(DB::ParamIO::Input, BinData)
+			BRDB_PARAM_ENTRY(DB::ParamIO::Output, Result)
+		BRDB_END_PARAM_MAP()
+	};
+
+	BRDB_DEFINE_ROWSETQUERYCLASS(PROTOCOLID_GAMEDB, QuerySaveCharacter);
 
 
 

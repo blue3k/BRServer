@@ -92,7 +92,7 @@ namespace DB {
 		}
 	}
 
-	Result	QueryWorkerManager::PendingQuery(UniquePtr<Query>& pQuery)
+	Result	QueryWorkerManager::PendingQuery(SFUniquePtr<Query>& pQuery)
 	{
 		Result hr = ResultCode::SUCCESS;
 

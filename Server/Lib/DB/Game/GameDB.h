@@ -1,7 +1,7 @@
 
 ////////////////////////////////////////////////////////////////////////////////
 // 
-// CopyRight (c) 2013 The Braves
+// CopyRight (c) The Braves
 // 
 // Author: Kyungkun Ko
 //
@@ -62,6 +62,12 @@ namespace DB {
 			UTCTimeStampSec	LatestTickTime,
 			const Array<NamedVariableBox>& Variables
 		);
+
+		Result CreateCharacter(TransactionID Sender, uint shardID, const PlayerID& playerId, const char* characterName);
+		Result DeleteCharacter(TransactionID Sender, uint shardID, const PlayerID& playerId, uint32_t characterId);
+		Result GetCharacterList(TransactionID Sender, uint shardID, const PlayerID& playerId);
+		Result GetCharacter(TransactionID Sender, uint shardID, const PlayerID& playerId, uint32_t characterId);
+		Result SaveCharacter(TransactionID Sender, uint shardID, const PlayerID& playerId, uint32_t characterId, const VariableTable& characterData);
 
 
 		// Nick name

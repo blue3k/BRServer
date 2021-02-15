@@ -51,7 +51,7 @@ namespace SF {
 		{
 			ScopeContext hr;
 
-			UniquePtr<QueryGetTotalRankingCmd> pQuery(new(GetHeap()) QueryGetTotalRankingCmd(GetHeap()));
+			SFUniquePtr<QueryGetTotalRankingCmd> pQuery(new(GetHeap()) QueryGetTotalRankingCmd(GetHeap()));
 			dbCheckMem(pQuery);
 
 			pQuery->MinRanking = minRanking;
@@ -70,7 +70,7 @@ namespace SF {
 		{
 			ScopeContext hr;
 
-			UniquePtr<QueryUpdateRankingScoreCmd> pQuery(new(GetHeap()) QueryUpdateRankingScoreCmd(GetHeap()));
+			SFUniquePtr<QueryUpdateRankingScoreCmd> pQuery(new(GetHeap()) QueryUpdateRankingScoreCmd(GetHeap()));
 			dbCheckMem(pQuery);
 
 			pQuery->PlayerID = playerID;
@@ -91,7 +91,7 @@ namespace SF {
 		{
 			ScopeContext hr;
 
-			UniquePtr<QueryGetRankersCmd> pQuery(new(GetHeap()) QueryGetRankersCmd(GetHeap()));
+			SFUniquePtr<QueryGetRankersCmd> pQuery(new(GetHeap()) QueryGetRankersCmd(GetHeap()));
 			if (!pQuery)
 				return nullptr;
 

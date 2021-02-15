@@ -216,6 +216,8 @@ set(BRSERVERSYSTEM_LIB_FILES
     ServiceEntity/ServiceEntity.cpp
 	ServiceEntity/Game/Transaction/GamePlayerEntityTrans.h
 	ServiceEntity/Game/Transaction/GamePlayerEntityTrans.cpp
+	ServiceEntity/Game/Transaction/GamePlayerEntityTransCharacter.h
+	ServiceEntity/Game/Transaction/GamePlayerEntityTransCharacter.cpp
 	ServiceEntity/Game/Transaction/GamePlayerEntityTransChatChannel.h
 	ServiceEntity/Game/Transaction/GamePlayerEntityTransChatChannel.cpp
 	ServiceEntity/Game/Transaction/GamePlayerEntityTransClose.h

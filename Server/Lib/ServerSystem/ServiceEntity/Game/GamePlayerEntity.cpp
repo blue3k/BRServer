@@ -232,6 +232,20 @@ namespace Svr {
 	//	Entity process
 	//
 
+	Result GamePlayerEntity::SetCharacterData(const VariableTable& characterData)
+	{
+		m_CharacterData.Clear();
+		m_CharacterData = characterData;
+
+		return ResultCode::SUCCESS;
+	}
+
+	void GamePlayerEntity::ClearCharacterData()
+	{
+		m_CharacterId = 0;
+		m_CharacterData.Clear();
+	}
+
 	void GamePlayerEntity::SetMatchingTicket(MatchingQueueTicket ticket)
 	{
 		if (ticket != 0)

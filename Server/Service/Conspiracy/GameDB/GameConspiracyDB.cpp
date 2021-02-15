@@ -57,7 +57,7 @@ namespace SF {
 		{
 			ScopeContext hr;
 
-			UniquePtr<QueryUpdateGameEndCmd> pQuery(new(GetHeap()) QueryUpdateGameEndCmd(GetHeap()));
+			SFUniquePtr<QueryUpdateGameEndCmd> pQuery(new(GetHeap()) QueryUpdateGameEndCmd(GetHeap()));
 			dbCheckMem(pQuery);
 
 			pQuery->SetPartitioningKey(shardID);
@@ -102,7 +102,7 @@ namespace SF {
 		{
 			ScopeContext hr;
 
-			UniquePtr<QueryUpdateJoinGameCmd> pQuery(new(GetHeap()) QueryUpdateJoinGameCmd(GetHeap()));
+			SFUniquePtr<QueryUpdateJoinGameCmd> pQuery(new(GetHeap()) QueryUpdateJoinGameCmd(GetHeap()));
 			dbCheckMem(pQuery);
 
 			pQuery->SetPartitioningKey(shardID);
@@ -136,7 +136,7 @@ namespace SF {
 		{
 			ScopeContext hr;
 
-			UniquePtr<QueryUpdateTickStatusCmd> pQuery(new(GetHeap()) QueryUpdateTickStatusCmd(GetHeap()));
+			SFUniquePtr<QueryUpdateTickStatusCmd> pQuery(new(GetHeap()) QueryUpdateTickStatusCmd(GetHeap()));
 			dbCheckMem(pQuery);
 
 			pQuery->SetPartitioningKey(shardID);
@@ -162,7 +162,7 @@ namespace SF {
 		{
 			ScopeContext hr;
 
-			UniquePtr<QueryUpdateFriendStaminaTimeCmd> pQuery(new(GetHeap()) QueryUpdateFriendStaminaTimeCmd(GetHeap()));
+			SFUniquePtr<QueryUpdateFriendStaminaTimeCmd> pQuery(new(GetHeap()) QueryUpdateFriendStaminaTimeCmd(GetHeap()));
 			dbCheckMem(pQuery);
 
 			pQuery->SetPartitioningKey(shardID);

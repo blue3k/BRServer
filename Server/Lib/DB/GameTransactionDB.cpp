@@ -51,7 +51,7 @@ namespace DB {
 	{
 		ScopeContext hr;
 
-		UniquePtr<QueryAddGameLogCmd> pQuery(new(GetHeap()) QueryAddGameLogCmd(GetHeap()));
+		SFUniquePtr<QueryAddGameLogCmd> pQuery(new(GetHeap()) QueryAddGameLogCmd(GetHeap()));
 		dbCheckMem(pQuery);
 
 		pQuery->SetPartitioningKey(shardID);

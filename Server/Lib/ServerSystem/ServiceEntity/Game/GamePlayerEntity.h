@@ -116,6 +116,7 @@ namespace Svr {
 		VariableTable m_PlayerData;
 
 		// Character data
+		uint32_t m_CharacterId{};
 		VariableTable m_CharacterData;
 
 	protected:
@@ -157,7 +158,6 @@ namespace Svr {
 		const MatchingQueueTicket& GetMatchingTicket() const { return m_MatchingTicket; }
 		void SetMatchingTicket(MatchingQueueTicket ticket);
 
-
 		const char* GetGCMKeys() const { return m_GCMKeys; }
 		void SetGCMKeys(const char* value) { StrUtil::StringCopy(m_GCMKeys, value); }
 
@@ -186,7 +186,12 @@ namespace Svr {
 
 		VariableTable& GetPlayerData() { return m_PlayerData; }
 
+		uint32_t GetCharacterID() const { return m_CharacterId; }
+		void SetCharacterID(uint32_t characterId) { m_CharacterId = characterId; }
+
 		VariableTable& GetCharacterData() { return m_CharacterData; }
+		Result SetCharacterData(const VariableTable& characterData);
+		void ClearCharacterData();
 
 
 		//////////////////////////////////////////////////////////////////////////////////////////////////

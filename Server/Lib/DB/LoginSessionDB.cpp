@@ -52,7 +52,7 @@ namespace SF {
 		{
 			ScopeContext hr;
 
-			UniquePtr<QueryRegisterAuthTicketCmd> pQuery(new(GetHeap()) QueryRegisterAuthTicketCmd(GetHeap()));
+			SFUniquePtr<QueryRegisterAuthTicketCmd> pQuery(new(GetHeap()) QueryRegisterAuthTicketCmd(GetHeap()));
 			dbCheckMem(pQuery);
 
 			pQuery->SetPartitioningKey((uint)playerID);
@@ -76,7 +76,7 @@ namespace SF {
 		{
 			ScopeContext hr;
 
-			UniquePtr<QueryReplaceLoginSessionCmd> pQuery(new(GetHeap()) QueryReplaceLoginSessionCmd(GetHeap()));
+			SFUniquePtr<QueryReplaceLoginSessionCmd> pQuery(new(GetHeap()) QueryReplaceLoginSessionCmd(GetHeap()));
 			dbCheckMem(pQuery);
 
 			pQuery->SetPartitioningKey((uint)playerID);
@@ -100,7 +100,7 @@ namespace SF {
 		{
 			ScopeContext hr;
 
-			UniquePtr<QueryDeleteLoginSessionCmd> pQuery(new(GetHeap()) QueryDeleteLoginSessionCmd(GetHeap()));
+			SFUniquePtr<QueryDeleteLoginSessionCmd> pQuery(new(GetHeap()) QueryDeleteLoginSessionCmd(GetHeap()));
 			dbCheckMem(pQuery);
 
 			pQuery->SetPartitioningKey((uint)playerID);
@@ -122,7 +122,7 @@ namespace SF {
 		{
 			ScopeContext hr;
 
-			UniquePtr<QueryConnectedToGameServerCmd> pQuery(new(GetHeap()) QueryConnectedToGameServerCmd(GetHeap()));
+			SFUniquePtr<QueryConnectedToGameServerCmd> pQuery(new(GetHeap()) QueryConnectedToGameServerCmd(GetHeap()));
 			dbCheckMem(pQuery);
 
 			pQuery->SetPartitioningKey((uint)playerID);
@@ -146,7 +146,7 @@ namespace SF {
 		{
 			ScopeContext hr;
 
-			UniquePtr<QueryValidateGameServerSessionCmd> pQuery(new(GetHeap()) QueryValidateGameServerSessionCmd(GetHeap()));
+			SFUniquePtr<QueryValidateGameServerSessionCmd> pQuery(new(GetHeap()) QueryValidateGameServerSessionCmd(GetHeap()));
 			dbCheckMem(pQuery);
 
 			pQuery->SetPartitioningKey((uint)playerID);
@@ -168,7 +168,7 @@ namespace SF {
 		{
 			ScopeContext hr;
 
-			UniquePtr<QueryGameServerHeartbeatCmd> pQuery(new(GetHeap()) QueryGameServerHeartbeatCmd(GetHeap()));
+			SFUniquePtr<QueryGameServerHeartbeatCmd> pQuery(new(GetHeap()) QueryGameServerHeartbeatCmd(GetHeap()));
 			dbCheckMem(pQuery);
 
 			pQuery->SetPartitioningKey((uint)playerID);

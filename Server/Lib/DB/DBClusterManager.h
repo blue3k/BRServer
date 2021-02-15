@@ -88,9 +88,9 @@ namespace DB {
 		template<typename QueryType,
 			typename = std::enable_if_t<std::is_base_of_v<Query, QueryType>>
 		>
-		Result RequestQuery(UniquePtr<QueryType>& pQuery)
+		Result RequestQuery(SFUniquePtr<QueryType>& pQuery)
 		{
-			UniquePtr<Query> temp(pQuery.get());
+			SFUniquePtr<Query> temp(pQuery.get());
 			auto hr = RequestQuery(temp);
 			if (hr)
 				pQuery.release();
@@ -99,7 +99,7 @@ namespace DB {
 		}
 
 		// Request a DB Query
-		Result	RequestQuery(UniquePtr<Query>& pQuery);
+		Result	RequestQuery(SFUniquePtr<Query>& pQuery);
 
 		// Route query result to entity
 		virtual Result RouteResult(Query* &pQuery);

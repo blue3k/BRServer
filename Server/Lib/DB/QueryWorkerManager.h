@@ -72,7 +72,7 @@ namespace DB {
 		static void TerminateDBWorkerManager();
 
 		// Request a DB Query
-		static Result	PendingQuery(UniquePtr<Query>& pQuery);
+		static Result	PendingQuery(SFUniquePtr<Query>& pQuery);
 
 		// 
 		Result	TryGetQuery(Query* &pQuery);
