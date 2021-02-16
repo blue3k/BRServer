@@ -102,7 +102,7 @@ namespace SF {
 			using super = Svr::MessageTransaction<GamePlayerEntity, Message::Game::GetCharacterListCmd>;
 
 		private:
-			DynamicArray<uint32_t> m_CharacterList;
+			DynamicArray<uint32_t> m_CharacterIdList;
 			DynamicArray<String> m_CharacterNames;
 
 		public:
@@ -114,7 +114,7 @@ namespace SF {
 			// Start Transaction
 			virtual Result StartTransaction() override;
 
-			BR_IMPLEMENT_USERMSGTRANS_CLOSE_ARGS(NetSvrPolicyGame, GetCharacterListRes, m_CharacterList, CStringArrayView(m_CharacterNames));
+			BR_IMPLEMENT_USERMSGTRANS_CLOSE_ARGS(NetSvrPolicyGame, GetCharacterListRes, m_CharacterIdList, CStringArrayView(m_CharacterNames));
 		};
 
 
@@ -138,7 +138,7 @@ namespace SF {
 			// Start Transaction
 			virtual Result StartTransaction() override;
 
-			BR_IMPLEMENT_USERMSGTRANS_CLOSE_ARGS(NetSvrPolicyGame, SelectCharacterRes, m_CharacterId);
+			BR_IMPLEMENT_USERMSGTRANS_CLOSE_ARGS(NetSvrPolicyGame, SelectCharacterRes, m_CharacterId, GetMyOwner()->GetCharacterData());
 		};
 
 

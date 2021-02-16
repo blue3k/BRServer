@@ -63,11 +63,11 @@ namespace DB {
 			const Array<NamedVariableBox>& Variables
 		);
 
-		Result CreateCharacter(TransactionID Sender, uint shardID, const PlayerID& playerId, const char* characterName);
+		Result CreateCharacter(TransactionID Sender, uint shardID, const PlayerID& playerId, const char* characterName, const VariableTable& visualData, const VariableTable& characterData);
 		Result DeleteCharacter(TransactionID Sender, uint shardID, const PlayerID& playerId, uint32_t characterId);
 		Result GetCharacterList(TransactionID Sender, uint shardID, const PlayerID& playerId);
 		Result GetCharacter(TransactionID Sender, uint shardID, const PlayerID& playerId, uint32_t characterId);
-		Result SaveCharacter(TransactionID Sender, uint shardID, const PlayerID& playerId, uint32_t characterId, const VariableTable& characterData);
+		Result SaveCharacter(TransactionID Sender, uint shardID, const PlayerID& playerId, uint32_t characterId, const VariableTable& visualData, const VariableTable& characterData);
 
 
 		// Nick name

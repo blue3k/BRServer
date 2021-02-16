@@ -45,6 +45,7 @@ namespace SF {
 			: MessageTransaction(heap, Forward<MessageDataPtr>(pIMsg))
 		{
 			AddSubAction<DB::QueryCreateCharacterCmd>(&PlayerTransCreateCharacter::RequestCreateCharacterDB, &PlayerTransCreateCharacter::OnCreateCharacterRes);
+			AddSubAction(&PlayerTransCreateCharacter::FinalizeSuccess);
 		}
 
 		Result PlayerTransCreateCharacter::RequestCreateCharacterDB()
@@ -54,7 +55,7 @@ namespace SF {
 					if (!hr) CloseTransaction(hr);
 				});
 
-			svrCheck(Svr::GetServerComponent<DB::GameDB>()->CreateCharacter(GetTransID(), GetMyOwner()->GetShardID(), GetMyOwner()->GetPlayerID(), GetCharacterName()));
+			svrCheck(Svr::GetServerComponent<DB::GameDB>()->CreateCharacter(GetTransID(), GetMyOwner()->GetShardID(), GetMyOwner()->GetPlayerID(), GetCharacterName(), GetVisualData(), GetAttributes()));
 
 			return hr;
 		}
@@ -73,7 +74,6 @@ namespace SF {
 			if (pDBRes->Result == 0)
 			{
 				m_CharacterId = pDBRes->CharacterId;
-				CloseTransaction(ResultCode::SUCCESS);
 			}
 			else
 			{
@@ -114,6 +114,7 @@ namespace SF {
 			: MessageTransaction(heap, Forward<MessageDataPtr>(pIMsg))
 		{
 			AddSubAction<DB::QueryDeleteCharacterCmd>(&PlayerTransDeleteCharacter::RequestDeleteCharacterDB, &PlayerTransDeleteCharacter::OnDeleteCharacterRes);
+			AddSubAction(&PlayerTransDeleteCharacter::FinalizeSuccess);
 		}
 
 		Result PlayerTransDeleteCharacter::RequestDeleteCharacterDB()
@@ -182,6 +183,7 @@ namespace SF {
 			: MessageTransaction(heap, Forward<MessageDataPtr>(pIMsg))
 		{
 			AddSubAction<DB::QueryGetCharacterCmd>(&PlayerTransGetCharacter::RequestGetCharacterDB, &PlayerTransGetCharacter::OnGetCharacterRes);
+			AddSubAction(&PlayerTransGetCharacter::FinalizeSuccess);
 		}
 
 		Result PlayerTransGetCharacter::RequestGetCharacterDB()
@@ -257,7 +259,8 @@ namespace SF {
 		PlayerTransGetCharacterList::PlayerTransGetCharacterList(IHeap& heap, MessageDataPtr& pIMsg)
 			: MessageTransaction(heap, Forward<MessageDataPtr>(pIMsg))
 		{
-			AddSubAction<DB::QueryGetCharacterCmd>(&PlayerTransGetCharacterList::RequestGetCharacterListDB, &PlayerTransGetCharacterList::OnGetCharacterListRes);
+			AddSubAction<DB::QueryGetCharacterListCmd>(&PlayerTransGetCharacterList::RequestGetCharacterListDB, &PlayerTransGetCharacterList::OnGetCharacterListRes);
+			AddSubAction(&PlayerTransGetCharacterList::FinalizeSuccess);
 		}
 
 		Result PlayerTransGetCharacterList::RequestGetCharacterListDB()
@@ -287,12 +290,14 @@ namespace SF {
 			{
 				if (pDBRes->RowsetResults.size() > 0)
 				{
-					m_CharacterList.Clear();
+					m_CharacterIdList.Clear();
+					m_CharacterNames.Clear();
 
 					for (auto& itRes : pDBRes->RowsetResults)
 					{
-						m_CharacterList.push_back(itRes.GetValue<uint32_t>("CharacterId"));
-						m_CharacterList.push_back(itRes.GetValue<uint32_t>("Name"));
+						m_CharacterIdList.push_back(itRes.GetValue<uint32_t>("CharacterId"));
+						m_CharacterNames.push_back(itRes.GetValue<String>("Name"));
+						// TODO: character list with variable table
 					}
 					CloseTransaction(ResultCode::SUCCESS);
 				}
@@ -336,6 +341,7 @@ namespace SF {
 		{
 			AddSubAction<DB::QuerySaveCharacterCmd>(&PlayerTransSelectCharacter::RequestSaveCharacterDB, &PlayerTransSelectCharacter::OnSaveCharacterRes);
 			AddSubAction<DB::QueryGetCharacterCmd>(&PlayerTransSelectCharacter::RequestGetCharacterDB, &PlayerTransSelectCharacter::OnGetCharacterRes);
+			AddSubAction(&PlayerTransSelectCharacter::FinalizeSuccess);
 		}
 
 		Result PlayerTransSelectCharacter::RequestSaveCharacterDB()
@@ -347,7 +353,11 @@ namespace SF {
 
 			if (GetMyOwner()->GetCharacterID() != 0)
 			{
-				svrCheck(Svr::GetServerComponent<DB::GameDB>()->SaveCharacter(GetTransID(), GetMyOwner()->GetShardID(), GetMyOwner()->GetPlayerID(), GetMyOwner()->GetCharacterID(), GetMyOwner()->GetCharacterData()));
+				svrCheck(Svr::GetServerComponent<DB::GameDB>()->SaveCharacter(GetTransID(), GetMyOwner()->GetShardID(), GetMyOwner()->GetPlayerID(), GetMyOwner()->GetCharacterID(), GetMyOwner()->GetCharacterVisualData(), GetMyOwner()->GetCharacterData()));
+			}
+			else
+			{
+				hr = ResultCode::SUCCESS_FALSE;
 			}
 
 			return hr;
@@ -366,15 +376,13 @@ namespace SF {
 			// succeeded to login
 			if (pDBRes->Result == 0)
 			{
+				GetMyOwner()->ClearCharacterData();
+
 				if (pDBRes->RowsetResults.size() > 0)
 				{
-					//GetMyOwner()->SetCharacterID(GetCharacterID());
-					//svrCheck(GetMyOwner()->SetCharacterData(pDBRes->RowsetResults[0]));
-					CloseTransaction(ResultCode::SUCCESS);
 				}
 				else
 				{
-					//GetMyOwner()->ClearCharacterData();
 					CloseTransaction(ResultCode::ENGINE_INVALID_CHARACTER);
 				}
 			}
@@ -419,8 +427,11 @@ namespace SF {
 			{
 				if (pDBRes->RowsetResults.size() > 0)
 				{
+					auto& characterData = pDBRes->RowsetResults[0];
+
 					GetMyOwner()->SetCharacterID(GetCharacterID());
-					svrCheck(GetMyOwner()->SetCharacterData(pDBRes->RowsetResults[0]));
+					svrCheck(GetMyOwner()->SetCharacterVisualData(characterData));
+					svrCheck(GetMyOwner()->SetCharacterData(characterData));
 					CloseTransaction(ResultCode::SUCCESS);
 				}
 				else

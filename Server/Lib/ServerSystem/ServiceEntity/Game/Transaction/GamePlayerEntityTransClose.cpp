@@ -152,7 +152,7 @@ namespace SF {
 		{
 			ScopeContext hr([this](Result hr)
 				{
-					if (!(hr) && hr != Result(ResultCode::INVALID_PLAYERID))
+					if (!hr && hr != Result(ResultCode::INVALID_PLAYERID))
 					{
 						svrTrace(Error, "Failed to close entity:{0}, hr:{1:X8}", GetOwnerEntityUID(), hr);
 					}
@@ -200,7 +200,10 @@ namespace SF {
 			if ((Svr::GetServerComponent<DB::LoginSessionDB>()->DeleteLoginSession(GetTransID(), GetMyOwner()->GetPlayerID(), GetMyOwner()->GetAuthTicket())))
 				m_WaitingTransactions++;
 
-			svrCheck(Service::PlayerManager->DeletePlayer(GetMyOwner()->GetPlayerID()));
+			if (GetMyOwner()->GetPlayerID() != 0)
+			{
+				svrCheck(Service::PlayerManager->DeletePlayer(GetMyOwner()->GetPlayerID()));
+			}
 
 			return hr;
 		}

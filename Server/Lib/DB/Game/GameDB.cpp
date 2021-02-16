@@ -184,7 +184,7 @@ namespace SF {
 			return hr;
 		}
 
-		Result GameDB::CreateCharacter(TransactionID Sender, uint shardID, const PlayerID& playerId, const char* characterName)
+		Result GameDB::CreateCharacter(TransactionID Sender, uint shardID, const PlayerID& playerId, const char* characterName, const VariableTable& visualData, const VariableTable& characterData)
 		{
 			ScopeContext hr;
 
@@ -196,6 +196,16 @@ namespace SF {
 			pQuery->SetTransaction(Sender);
 			pQuery->PlayerId = playerId;
 			pQuery->CharacterName = characterName;
+
+			{
+				OutputMemoryStream outputStream(pQuery->VisualData, true);
+				outputStream << visualData;
+			}
+
+			{
+				OutputMemoryStream outputStream(pQuery->BinData, true);
+				outputStream << characterData;
+			}
 
 			pQuery->Result = 0;
 
@@ -263,7 +273,7 @@ namespace SF {
 			return hr;
 		}
 
-		Result GameDB::SaveCharacter(TransactionID Sender, uint shardID, const PlayerID& playerId, uint32_t characterId, const VariableTable& characterData)
+		Result GameDB::SaveCharacter(TransactionID Sender, uint shardID, const PlayerID& playerId, uint32_t characterId, const VariableTable& visualData, const VariableTable& characterData)
 		{
 			ScopeContext hr;
 
@@ -277,8 +287,13 @@ namespace SF {
 			pQuery->CharacterId = characterId;
 
 			{
-				OutputMemoryStream inputStream(pQuery->BinData);
-				inputStream << characterData;
+				OutputMemoryStream outputStream(pQuery->VisualData, true);
+				outputStream << visualData;
+			}
+
+			{
+				OutputMemoryStream outputStream(pQuery->BinData, true);
+				outputStream << characterData;
 			}
 
 			pQuery->Result = 0;

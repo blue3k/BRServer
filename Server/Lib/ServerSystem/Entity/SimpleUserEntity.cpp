@@ -158,6 +158,7 @@ namespace Svr
 		case Net::ConnectionEvent::EVT_CONNECTION_RESULT:
 			break;
 		case Net::ConnectionEvent::EVT_DISCONNECTED:
+			PendingCloseTransaction("Connection disconnected");
 			break;
 		case Net::ConnectionEvent::EVT_STATE_CHANGE:
 			break;
@@ -315,6 +316,14 @@ namespace Svr
 					ProcessMessage(pConn->GetMessageEndpoint(), pIMsg);
 				}
 			}
+			else
+			{
+				PendingCloseTransaction("Disconnected");
+			}
+		}
+		else
+		{
+			PendingCloseTransaction("Null Connection maybe disconnected");
 		}
 
 		svrChk(SimpleEntity::TickUpdate(pAction) );
@@ -332,18 +341,6 @@ namespace Svr
 		m_AccountID = accID;
 		return ResultCode::SUCCESS;
 	}
-
-
-	//// Called when this entity have a routed message
-	//Result SimpleUserEntity::OnRoutedMessage(MessageDataPtr &pMsg)
-	//{
-	//	// TODO: Call process message directly when it runs on the same thread
-	//	Result hr = GetTaskManager()->AddEventTask(GetTaskGroupID(), ServerTaskEvent(this, WeakPointerT<Net::Connection>(), pMsg));
-	//	if ((hr))
-	//		pMsg = nullptr;
-
-	//	return hr;
-	//}
 
 	//////////////////////////////////////////////////////////////////////////////////////////////
 	// Overriding IConnectionEventHandler
@@ -467,8 +464,5 @@ namespace Svr
 	}
 
 
-}; // namespace Svr
-}; // namespace SF
-
-
-
+} // namespace Svr
+} // namespace SF

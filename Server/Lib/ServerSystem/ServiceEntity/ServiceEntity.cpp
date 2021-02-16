@@ -48,6 +48,17 @@ namespace SF {
 		if (!m_MessageEndpointConfig.MessageServer.IsNullOrEmpty())
 			m_MessageEndpointConfig.Channel.Format("{0}_{1}_{2}", endpoint.Channel, gameID, clusterID);
 
+		if (!m_MessageEndpointConfig.MessageServer.IsNullOrEmpty())
+		{
+			m_ListenEndpoint = new(GetHeap()) StreamDBConsumer;
+			m_ListenEndpoint->Initialize(m_MessageEndpointConfig.MessageServer, m_MessageEndpointConfig.Channel);
+
+			std::string errstr;
+			m_ListenEndpoint->GetTopicConfig()->set("offset.store.method", "broker", errstr);
+			m_ListenEndpoint->GetTopicConfig()->set("auto.offset.reset", "earliest", errstr);
+		}
+
+
 		// This entity will be updated on designated thread rather than shared thicker thread
 		SetUseDesignatedThread(true);
 	}
@@ -60,15 +71,8 @@ namespace SF {
 	{
 		Result hr;
 
-		if (!m_MessageEndpointConfig.MessageServer.IsNullOrEmpty())
+		if (m_ListenEndpoint != nullptr)
 		{
-			m_ListenEndpoint = new(GetHeap()) StreamDBConsumer;
-			svrCheck(m_ListenEndpoint->Initialize(m_MessageEndpointConfig.MessageServer, m_MessageEndpointConfig.Channel));
-
-			std::string errstr;
-			m_ListenEndpoint->GetTopicConfig()->set("offset.store.method", "broker", errstr);
-			m_ListenEndpoint->GetTopicConfig()->set("auto.offset.reset", "earliest", errstr);
-
 			svrCheck(m_ListenEndpoint->RequestData(StreamDB::OFFSET_END));
 		}
 

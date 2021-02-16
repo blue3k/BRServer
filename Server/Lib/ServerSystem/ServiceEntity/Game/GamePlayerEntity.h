@@ -118,6 +118,7 @@ namespace Svr {
 		// Character data
 		uint32_t m_CharacterId{};
 		VariableTable m_CharacterData;
+		VariableTable m_CharacterVisualData;
 
 	protected:
 
@@ -188,6 +189,9 @@ namespace Svr {
 
 		uint32_t GetCharacterID() const { return m_CharacterId; }
 		void SetCharacterID(uint32_t characterId) { m_CharacterId = characterId; }
+
+		VariableTable& GetCharacterVisualData() { return m_CharacterVisualData; }
+		Result SetCharacterVisualData(const VariableTable& characterVisualData);
 
 		VariableTable& GetCharacterData() { return m_CharacterData; }
 		Result SetCharacterData(const VariableTable& characterData);

@@ -98,7 +98,7 @@ namespace SF {
 			Result RequestPlayerInfoFromDB();
 			Result RequestPlayerInfoCreateDB();
 			Result RequestJoinPartyIfExist();
-			Result FinalizeSuccess();
+			Result FinalizeSuccess() override;
 
 			// Start Transaction
 			virtual Result StartTransaction() override;

@@ -1,6 +1,6 @@
 ////////////////////////////////////////////////////////////////////////////////
 // 
-// CopyRight (c) 2016 Blue3k
+// CopyRight (c) The Braves
 // 
 // Author : KyungKun Ko
 //
@@ -36,6 +36,7 @@
 #include "DB/GameTransactionDB.h"
 
 #include "Transaction/GamePlayerEntityTrans.h"
+#include "Transaction/GamePlayerEntityTransCharacter.h"
 #include "Transaction/GamePlayerEntityTransParty.h"
 #include "Transaction/GamePlayerEntityTransFriend.h"
 #include "Transaction/GamePlayerEntityTransClose.h"
@@ -61,6 +62,7 @@ namespace Svr {
 		, m_GameInsUID(0)
 		, m_PlayerData(GetHeap())
 		, m_CharacterData(GetHeap())
+		, m_CharacterVisualData(GetHeap())
 	{
 		memset(m_UserName, 0, sizeof(m_UserName));
 		memset(m_GCMKeys, 0, sizeof(m_GCMKeys));
@@ -110,13 +112,6 @@ namespace Svr {
 
 		svrCheck(super::RegisterMessageHandlers());
 
-		// RegisterPlayerToJoinGameServerCmd can send to player entity when previously logged in
-		//RegisterMessageHandler<GameServerTransRegisterPlayerToJoinGameServer<GamePlayerEntity>>();
-		//RegisterMessageHandler<PlayerTransRegisterPlayerToJoinGameServerOnPlayerEntity>();
-
-		// Use chat channel
-		//RegisterMessageHandler<PlayerTransChatMessageFromOtherEntity>();
-		//BR_ENTITY_MESSAGE(Message::GameServer::ChatMessageC2SEvt)									{ svrMemReturn(pNewTrans = new(GetHeap()) PlayerTransChatMessageFromOtherEntity(GetHeap(),  pMsgData)); return ResultCode::SUCCESS; } );
 
 		////////////////////////////////////////////////////////////////////////////////////////////////////
 		// Game Player
@@ -134,6 +129,12 @@ namespace Svr {
 		RegisterMessageHandler<PlayerTransSetNickName>();
 		RegisterMessageHandler<PlayerTransFindPlayerByEMail>();
 		RegisterMessageHandler<PlayerTransFindPlayerByPlayerID>();
+
+		RegisterMessageHandler<PlayerTransCreateCharacter>();
+		RegisterMessageHandler<PlayerTransDeleteCharacter>();
+		RegisterMessageHandler<PlayerTransGetCharacterList>();
+		RegisterMessageHandler<PlayerTransGetCharacter>();
+		RegisterMessageHandler<PlayerTransSelectCharacter>();
 
 		// Presence
 		RegisterMessageHandler<PlayerTransRequestPlayerStatusUpdate>();
@@ -232,10 +233,30 @@ namespace Svr {
 	//	Entity process
 	//
 
+	Result GamePlayerEntity::SetCharacterVisualData(const VariableTable& characterData)
+	{
+		m_CharacterVisualData.Clear();
+
+		auto& visualDataBLOB = characterData.GetValueBLOB("VisualData");
+		if (visualDataBLOB.size() > 0)
+		{
+			InputMemoryStream inStream(visualDataBLOB);
+			inStream >> m_CharacterVisualData;
+		}
+
+		return ResultCode::SUCCESS;
+	}
+
 	Result GamePlayerEntity::SetCharacterData(const VariableTable& characterData)
 	{
 		m_CharacterData.Clear();
-		m_CharacterData = characterData;
+
+		auto& binData = characterData.GetValueBLOB("BinData");
+		if (binData.size() > 0)
+		{
+			InputMemoryStream inStream(binData);
+			inStream >> m_CharacterData;
+		}
 
 		return ResultCode::SUCCESS;
 	}

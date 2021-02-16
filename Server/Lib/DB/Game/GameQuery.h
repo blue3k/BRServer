@@ -195,15 +195,19 @@ namespace DB {
 		// Player ID
 		int64_t	PlayerId{};
 		String CharacterName;
+		DynamicArray<uint8_t> VisualData;
+		DynamicArray<uint8_t> BinData;
 
 		// result
 		int32_t	CharacterId{};
 		int32_t	Result{};
 
 	public:
-		BRDB_BEGIN_PARAM_MAP(QueryCreateCharacter, "spCreateCreateCharacter")
+		BRDB_BEGIN_PARAM_MAP(QueryCreateCharacter, "spCreateCharacter")
 			BRDB_PARAM_ENTRY(DB::ParamIO::Input, PlayerId)
 			BRDB_PARAM_ENTRY(DB::ParamIO::Input, CharacterName)
+			BRDB_PARAM_ENTRY(DB::ParamIO::Input, VisualData)
+			BRDB_PARAM_ENTRY(DB::ParamIO::Input, BinData)
 			BRDB_PARAM_ENTRY(DB::ParamIO::Output, CharacterId)
 			BRDB_PARAM_ENTRY(DB::ParamIO::Output, Result)
 		BRDB_END_PARAM_MAP()
@@ -279,6 +283,7 @@ namespace DB {
 		int16_t	Level{};
 		int64_t	Exp{};
 		int64_t	Gold{};
+		DynamicArray<uint8_t> VisualData;
 		DynamicArray<uint8_t> BinData;
 
 		// result
@@ -291,6 +296,7 @@ namespace DB {
 			BRDB_PARAM_ENTRY(DB::ParamIO::Input, Level)
 			BRDB_PARAM_ENTRY(DB::ParamIO::Input, Exp)
 			BRDB_PARAM_ENTRY(DB::ParamIO::Input, Gold)
+			BRDB_PARAM_ENTRY(DB::ParamIO::Input, VisualData)
 			BRDB_PARAM_ENTRY(DB::ParamIO::Input, BinData)
 			BRDB_PARAM_ENTRY(DB::ParamIO::Output, Result)
 		BRDB_END_PARAM_MAP()

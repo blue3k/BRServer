@@ -44,7 +44,9 @@ namespace SF {
 				else
 				{
 					auto pVariable = itBinding.VariableRef.GetVariable();
-					switch (pVariable->GetTypeName())
+					auto typeNameCrc = pVariable->GetTypeName();
+					auto typeName = typeNameCrc.ToString();
+					switch (typeNameCrc)
 					{
 					case "double"_crc: statement.bind(pVariable->GetValueDouble()); break;
 					case "float"_crc: statement.bind(pVariable->GetValueFloat()); break;
@@ -56,6 +58,9 @@ namespace SF {
 					case "uint8_t"_crc: statement.bind(pVariable->GetValueUInt8()); break;
 					case "int16_t"_crc: statement.bind(pVariable->GetValueInt16()); break;
 					case "uint16_t"_crc: statement.bind(pVariable->GetValueUInt16()); break;
+					case "Array<uint8_t>"_crc: [[fallthrough]];
+					case "BLOB"_crc:
+						statement.bind(mysqlx::common::Value(pVariable->GetValueBLOB().data(), pVariable->GetValueBLOB().size())); break;
 					case "const char*"_crc:
 					case "String"_crc:
 					{
@@ -103,17 +108,18 @@ namespace SF {
 		{
 			switch (src.getType())
 			{
-			//case mysqlx::Value::VNULL: dest.SetValue(columnName, nullptr); break;
+			case mysqlx::Value::VNULL: break;
 			case mysqlx::Value::UINT64: dest.SetValue(columnName, src.get<uint64_t>()); break;
 			case mysqlx::Value::INT64: dest.SetValue(columnName, src.get<int64_t>()); break;
 			case mysqlx::Value::FLOAT: dest.SetValue(columnName, src.get<float>()); break;
 			case mysqlx::Value::DOUBLE: dest.SetValue(columnName, src.get<double>()); break;
 			case mysqlx::Value::BOOL: dest.SetValue(columnName, src.get<bool>()); break;
-			case mysqlx::Value::STRING: dest.SetValue(columnName, src.get<std::string>().c_str()); break;
+			case mysqlx::Value::STRING: dest.SetValue(columnName, String(src.get<std::string>().c_str())); break;
 			case mysqlx::Value::RAW:
 			{
 				auto bytes = std::forward<mysqlx::bytes>(src.get<mysqlx::bytes>());
-				dest.SetValue(columnName, ArrayView<uint8_t>(bytes.second, bytes.first));
+				SFUniquePtr<Variable> blobVar(new(GetEngineHeap()) VariableBLOB(ArrayView<uint8_t>(bytes.second, bytes.first)));
+				dest.SetVariable(columnName, blobVar);
 				break;
 			}
 			case mysqlx::Value::DOCUMENT: [[fallthrough]];// fall through
@@ -143,7 +149,7 @@ namespace SF {
 
 			RowsetResults.resize(queryResult.count());
 
-			for (uint iRow = 0; iRow < queryResult.count(); iRow++)
+			for (uint iRow = 0; queryResult.count() > 0; iRow++)
 			{
 				auto& rowResult = RowsetResults[iRow];
 				mysqlx::Row row = queryResult.fetchOne();

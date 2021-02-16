@@ -298,6 +298,7 @@ namespace SF {
 			// flush transaction result
 			virtual Result FlushTransaction();
 
+		protected:
 
 			template<typename TransactionClassType
 				, typename = std::enable_if_t<std::is_base_of_v<Transaction, TransactionClassType>>
@@ -365,6 +366,11 @@ namespace SF {
 				return m_SubActionManager.AddActionFront(pAction);
 			}
 
+			// Default finalize success implementation
+			virtual Result FinalizeSuccess()
+			{
+				return CloseTransaction(ResultCode::SUCCESS);
+			}
 
 			// Register message handler
 			template< typename MessageClassType >
