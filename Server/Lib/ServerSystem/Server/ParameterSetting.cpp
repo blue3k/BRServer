@@ -14,8 +14,8 @@
 #include "SFAssert.h"
 #include "ServerLog/SvrLog.h"
 #include "Util/SFUtility.h"
-#include "String/SFStrParserUtil.h"
-#include "String/SFStrUtil.h"
+#include "Util/SFStrParserUtil.h"
+#include "Util/SFStrUtil.h"
 #include "ServerSystem/SvrTrace.h"
 #include "Server/ParameterSetting.h"
 

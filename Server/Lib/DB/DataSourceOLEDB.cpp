@@ -17,7 +17,7 @@
 #ifdef BRDB_USE_OLEDB
 
 #include <atldbcli.h>
-#include "String/SFStrUtil.h"
+#include "Util/SFStrUtil.h"
 #include "DBTrace.h"
 #include "DataSourceOLEDB.h"
 #include "FactoryOLEDB.h"

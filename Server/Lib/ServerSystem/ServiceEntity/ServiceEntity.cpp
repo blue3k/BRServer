@@ -12,7 +12,7 @@
 
 
 #include "ServerSystemPCH.h"
-#include "String/SFStrUtil.h"
+#include "Util/SFStrUtil.h"
 #include "ServerLog/SvrLog.h"
 #include "Multithread/SFThread.h"
 #include "Net/SFNetDef.h"
@@ -26,7 +26,7 @@
 #include "ServerEntity/ServerEntityManager.h"
 #include "SvrTrace.h"
 #include "Task/ServerTaskEvent.h"
-#include "String/SFStringFormat.h"
+#include "Util/SFStringFormat.h"
 #include "rdkafka/rdkafkacpp.h"
 
 

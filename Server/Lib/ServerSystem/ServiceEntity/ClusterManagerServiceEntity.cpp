@@ -12,7 +12,7 @@
 
 
 #include "ServerSystemPCH.h"
-#include "String/SFStrUtil.h"
+#include "Util/SFStrUtil.h"
 #include "ServerLog/SvrLog.h"
 #include "Multithread/SFThread.h"
 #include "Types/BrSvrTypes.h"
@@ -25,7 +25,7 @@
 #include "ServerEntity/ServerEntity.h"
 #include "SvrTrace.h"
 #include "Service/ServerService.h"
-#include "String/SFStringFormat.h"
+#include "Util/SFStringFormat.h"
 #include "Protocol/Message/ClusterServerMsgClass.h"
 #include "ServiceEntity/ClusterServiceTrans.h"
 #include "ServiceEntity/ClusterManagerServiceEntity.h"

@@ -14,7 +14,7 @@
 #include "SFTypedefs.h"
 #include "Object/SFSharedPointer.h"
 #include "Types/SFEngineTypedefs.h"
-#include "String/SFString.h"
+#include "Util/SFString.h"
 
 namespace SF {
 

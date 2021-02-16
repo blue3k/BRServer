@@ -14,8 +14,8 @@
 #include "SFTypedefs.h"
 #include "Types/BrGameTypes.h"
 #include "MemoryManager/SFMemoryPool.h"
-#include "String/SFStringCrc32.h"
-#include "String/SFHasher32C.h"
+#include "Util/SFStringCrc32.h"
+#include "Util/SFHasher32C.h"
 #include "ServiceEntity/Game/GameSystem.h"
 
 #include "GameConst.h"

@@ -12,7 +12,7 @@
 #include "ServerSystemPCH.h"
 #include "Server/BrServer.h"
 #include "SvrTrace.h"
-#include "String/SFStrUtil.h"
+#include "Util/SFStrUtil.h"
 #include "Util/SFTimeUtil.h"
 #include "Util/SFRandom.h"
 #include "DB/DBClusterManager.h"

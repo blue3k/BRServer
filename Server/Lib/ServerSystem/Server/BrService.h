@@ -16,7 +16,7 @@
 #include "MemoryManager/SFMemory.h"
 #include "SFAssert.h"
 #include "Util/SFUtility.h"
-#include "String/SFStrUtil.h"
+#include "Util/SFStrUtil.h"
 #include "Server/BrServer.h"
 
 

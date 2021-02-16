@@ -11,12 +11,12 @@
 
 
 #include "ServerSystemPCH.h"
-#include "String/SFStringCrc64.h"
+#include "Util/SFStringCrc64.h"
 #include "Component/SFServerMessageEndpointComponent.h"
 #include "EngineObject/SFEngineObject.h"
 #include "Entity/Entity.h"
 #include "SvrTrace.h"
-#include "String/SFStringFormat.h"
+#include "Util/SFStringFormat.h"
 
 #include "rdkafka/rdkafkacpp.h"
 

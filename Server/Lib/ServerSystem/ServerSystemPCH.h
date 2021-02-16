@@ -11,10 +11,10 @@
 
 #include "ResultCode/SFResultCodeSvr.h"
 #include "Util/SFUtility.h"
-#include "String/SFStrUtil.h"
+#include "Util/SFStrUtil.h"
 #include "Types/SFEngineTypeSerialization.h"
 
-#include "String/SFToString.h"
+#include "Util/SFToString.h"
 #include "Net/SFNetToString.h"
 #include "Net/SFMessage.h"
 #include "ServerLog/SvrLog.h"
@@ -22,7 +22,7 @@
 #include "MemoryManager/SFMemory.h"
 #include "Types/BrSvrTypes.h"
 #include "Types/BrGameTypes.h"
-#include "String/SFToString.h"
-#include "String/SFToStringBase.h"
-#include "String/SFToStringEngineTypes.h"
+#include "Util/SFToString.h"
+#include "Util/SFToStringBase.h"
+#include "Util/SFToStringEngineTypes.h"
 

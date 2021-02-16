@@ -54,6 +54,7 @@ set(BRSERVERSYSTEM_LIB_FILES
     Transaction/ExternalTransactionManager.inl
     Transaction/MessageRoute.inl
     Transaction/Transaction.inl
+    Types/BrSvrTypeSerialization.h
     Types/BrSvrTypes.inl
     Component/BrComponent.h
     Component/ServerComponent.h
@@ -128,7 +129,7 @@ set(BRSERVERSYSTEM_LIB_FILES
     Service/ServerEntityManagerService.h
     Service/ServerService.h
     Service/ZookeeperSessionService.h
-    String/ToStringSvr.h
+    Util/ToStringSvr.h
     SvrConst.h
     SvrPolicyID.h
     SvrTrace.h
@@ -237,7 +238,7 @@ set(BRSERVERSYSTEM_LIB_FILES
 	ServiceEntity/Game/Subsystem/UserNotificationSystem.h
     ServiceEntity/Game/Subsystem/UserNotificationSystem.cpp
     Service/ServerService.cpp
-    String/ToStringSvr.cpp
+    Util/ToStringSvr.cpp
     Task/ServerTask.cpp
     Task/ServerTaskEvent.cpp
     Task/ServerTaskManager.cpp

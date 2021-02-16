@@ -15,7 +15,7 @@
 
 #include "Multithread/SFThread.h"
 #include "Container/SFStackPool.h"
-#include "String/SFString.h"
+#include "Util/SFString.h"
 
 
 namespace SF {

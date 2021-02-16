@@ -11,7 +11,7 @@
 
 
 #include "SFTypedefs.h"
-#include "String/SFStrUtil.h"
+#include "Util/SFStrUtil.h"
 #include "DBTrace.h"
 #include "DataSourceMYSQL.h"
 #include "SessionMYSQL.h"

@@ -12,7 +12,7 @@
 
 #include "ServerSystemPCH.h"
 #include "SvrTrace.h"
-#include "String/SFStrUtil.h"
+#include "Util/SFStrUtil.h"
 #include "Net/SFMessageEndpoint.h"
 #include "Net/SFMessageEndpointManager.h"
 #include "Service/ServerService.h"

@@ -11,7 +11,7 @@
 
 #include "DBPch.h"
 #include "SFTypedefs.h"
-#include "String/SFStrUtil.h"
+#include "Util/SFStrUtil.h"
 
 #include "DB/AccountDB.h"
 #include "DB/AccountQuery.h"

@@ -12,7 +12,7 @@
 
 
 #include "ServerSystemPCH.h"
-#include "String/SFStrUtil.h"
+#include "Util/SFStrUtil.h"
 #include "Util/SFUtility.h"
 #include "Util/SFTimeUtil.h"
 #include "ResultCode/SFResultCodeSvr.h"

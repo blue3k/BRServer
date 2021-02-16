@@ -12,10 +12,10 @@
 #pragma once
 
 #include "SFTypedefs.h"
-#include "String/SFStrUtil.h"
+#include "Util/SFStrUtil.h"
 #include "Util/SFTimeUtil.h"
 #include "Util/SFLog.h"
-#include "String/SFStrFormat.h"
+#include "Util/SFStrFormat.h"
 #include "ResultCode/SFResultCodeSystem.h"
 
 

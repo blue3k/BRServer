@@ -11,7 +11,7 @@
 
 #pragma once
 
-#include "String/SFStrUtil.h"
+#include "Util/SFStrUtil.h"
 
 #include "MemoryManager/SFMemory.h"
 #include "MemoryManager/SFCircularHeap.h"

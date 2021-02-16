@@ -12,14 +12,14 @@
 
 #include "DBPch.h"
 #include "SFTypedefs.h"
-#include "String/SFStrUtil.h"
-#include "String/SFString.h"
+#include "Util/SFStrUtil.h"
+#include "Util/SFString.h"
 #include "DB/DBTrace.h"
 #include "DB/DataSource.h"
 #include "DB/Session.h"
 #include "DB/Factory.h"
 #include "DB/Query.h"
-#include "String/SFStringFormat.h"
+#include "Util/SFStringFormat.h"
 
 namespace SF {
 namespace DB {

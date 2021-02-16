@@ -9,12 +9,12 @@
 
 #include "Types/BrSvrTypes.h"
 #include "Types/BrGameTypes.h"
-#include "String/SFToStringBase.h"
-#include "String/SFToStringEngineTypes.h"
+#include "Util/SFToStringBase.h"
+#include "Util/SFToStringEngineTypes.h"
 #include "Variable/SFVariableBoxing.h"
 #include "Variable/SFVariableTable.h"
 #include "Variable/SFVariableToString.h"
-#include "String/ToStringSvr.h"
+#include "Util/ToStringSvr.h"
 
 
 #if !ANDROID

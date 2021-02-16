@@ -12,7 +12,7 @@
 
 #include "DBPch.h"
 #include "SFTypedefs.h"
-#include "String/SFStrUtil.h"
+#include "Util/SFStrUtil.h"
 #include "DB/DBTrace.h"
 #include "DB/DataSource.h"
 #include "DB/Session.h"

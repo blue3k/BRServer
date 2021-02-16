@@ -16,7 +16,7 @@
 
 #ifdef BRDB_USE_MYSQL
 
-#include "String/SFStrUtil.h"
+#include "Util/SFStrUtil.h"
 #include "DBTrace.h"
 #include "Factory.h"
 #include "DataSourceMYSQL.h"

@@ -13,7 +13,7 @@
 
 #include "SFTypedefs.h"
 #include "SFAssert.h"
-#include "String/SFStrUtil.h"
+#include "Util/SFStrUtil.h"
 #include "Types/SFEngineTypedefs.h"
 #include "Types/BrGameTypes.h"
 

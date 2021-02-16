@@ -11,7 +11,7 @@
 
 #pragma once
 
-#include "String/SFStrUtil.h"
+#include "Util/SFStrUtil.h"
 
 #include "Types/SFEngineTypedefs.h"
 #include "Multithread/SFThread.h"
