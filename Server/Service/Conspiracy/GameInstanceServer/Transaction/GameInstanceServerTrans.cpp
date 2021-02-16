@@ -18,7 +18,7 @@
 #include "ServerEntity/ServerEntityManager.h"
 #include "Transaction/MessageRoute.h"
 #include "ConspiracyGameInstanceServerClass.h"
-#include "Memory/SFMemoryPool.h"
+#include "MemoryManager/SFMemoryPool.h"
 #include "Types/SFEngineTypedefs.h"
 #include "Protocol/Message/GameMsgClass.h"
 #include "Protocol/Policy/GameNetPolicy.h"

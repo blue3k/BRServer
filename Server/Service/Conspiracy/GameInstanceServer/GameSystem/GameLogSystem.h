@@ -13,7 +13,7 @@
 
 #include "SFTypedefs.h"
 #include "Types/BrGameTypes.h"
-#include "Memory/SFMemoryPool.h"
+#include "MemoryManager/SFMemoryPool.h"
 
 #include "ServiceEntity/Game/GameSystem.h"
 #include "ServerSystem/GameLog/GameLog.h"

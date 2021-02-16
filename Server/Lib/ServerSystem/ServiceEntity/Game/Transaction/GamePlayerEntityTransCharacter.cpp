@@ -15,7 +15,7 @@
 #include "ResultCode/SFResultCodeGame.h"
 #include "ResultCode/SFResultCodeLogin.h"
 #include "ResultCode/SFResultCodeEngine.h"
-#include "Memory/SFMemoryPool.h"
+#include "MemoryManager/SFMemoryPool.h"
 #include "Types/SFEngineTypedefs.h"
 #include "GameConst.h"
 

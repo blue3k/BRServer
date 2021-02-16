@@ -11,8 +11,8 @@
 #include "String/SFStrUtil.h"
 #include "Net/SFMessage.h"
 #include "ServerLog/SvrLog.h"
-#include "Thread/SFSynchronization.h"
-#include "Memory/SFMemory.h"
+#include "Multithread/SFSynchronization.h"
+#include "MemoryManager/SFMemory.h"
 #include "String/SFToString.h"
 #include "String/SFToStringBase.h"
 

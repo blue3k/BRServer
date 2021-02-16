@@ -32,7 +32,7 @@
 #include "ServerConfig/SFServerConfig.h"
 #include "DB/Factory.h"
 #include "Service/ServerService.h"
-#include "Thread/SFThread.h"
+#include "Multithread/SFThread.h"
 
 #include "Transaction/ExternalTransactionManager.h"
 #include "Service/ServerService.h"

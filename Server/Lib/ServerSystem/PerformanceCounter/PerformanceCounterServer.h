@@ -14,7 +14,7 @@
 #include "String/SFStrUtil.h"
 
 #include "Types/SFEngineTypedefs.h"
-#include "Thread/SFThread.h"
+#include "Multithread/SFThread.h"
 #include "Container/SFPageQueue.h"
 #include "Container/SFDualSortedMap.h"
 #include "Net/SFNetRawUDP.h"

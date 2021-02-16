@@ -17,7 +17,7 @@
 #include "Util/SFTimeUtil.h"
 #include "ResultCode/SFResultCodeSvr.h"
 #include "Net/SFNetDef.h"
-#include "Memory/SFMemoryPool.h"
+#include "MemoryManager/SFMemoryPool.h"
 #include "Net/SFMessage.h"
 #include "Types/BrSvrTypes.h"
 

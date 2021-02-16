@@ -3,6 +3,8 @@
 
 
 set(BRSERVERSYSTEM_LIB_FILES
+    ServerSystemPCH.h
+    Component/ServerComponentIDs.h
     Component/ServerComponent.inl
     GameLog/GameLog.inl
     PerformanceCounter/PerformanceCounter.inl

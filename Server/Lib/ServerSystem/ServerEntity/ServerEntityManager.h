@@ -18,7 +18,7 @@
 #include "Container/SFOrderedLinkedList.h"
 #include "Container/SFHashTable2.h"
 #include "Container/SFIndexing.h"
-#include "Thread/SFSystemSynchronization.h"
+#include "Multithread/SFSystemSynchronization.h"
 #include "Net/SFNetDef.h"
 #include "Net/SFNetServerPeerTCP.h"
 #include "Task/ServerTaskManager.h"

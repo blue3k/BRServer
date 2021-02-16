@@ -15,7 +15,7 @@
 #include "Task/SFTimerScheduler.h"
 #include "Entity/Entity.h"
 #include "Transaction/Transaction.h"
-#include "Memory/SFMemoryPool.h"
+#include "MemoryManager/SFMemoryPool.h"
 
 namespace SF {
 namespace Svr {

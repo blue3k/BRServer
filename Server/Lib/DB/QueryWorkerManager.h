@@ -12,10 +12,10 @@
 #pragma once
 	
 #include "Types/SFEngineTypedefs.h"
-#include "Thread/SFThread.h"
+#include "Multithread/SFThread.h"
 #include "Util/SFTimeUtil.h"
 #include "Container/SFPageQueue.h"
-#include "Thread/SFSystemSynchronization.h"
+#include "Multithread/SFSystemSynchronization.h"
 #include "DBConst.h"
 #include "DB/DataSource.h"
 

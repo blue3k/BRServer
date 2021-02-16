@@ -14,7 +14,7 @@
 
 
 #include "SFTypedefs.h"
-#include "Thread/SFThread.h"
+#include "Multithread/SFThread.h"
 #include "Net/SFNetDef.h"
 #include "Task/ServerTask.h"
 #include "Container/SFPageQueue.h"

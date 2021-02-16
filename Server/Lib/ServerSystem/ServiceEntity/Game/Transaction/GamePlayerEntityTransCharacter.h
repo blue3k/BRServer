@@ -13,7 +13,7 @@
 
 #include "SFTypedefs.h"
 #include "Transaction/Transaction.h"
-#include "Memory/SFMemoryPool.h"
+#include "MemoryManager/SFMemoryPool.h"
 #include "Util/Memento.h"
 #include "Container/SFArray.h"
 #include "Types/SFEngineTypedefs.h"
@@ -123,9 +123,6 @@ namespace SF {
 		public:
 			using super = Svr::MessageTransaction<GamePlayerEntity, Message::Game::SelectCharacterCmd>;
 
-		private:
-			uint32_t m_CharacterId{};
-
 		public:
 			PlayerTransSelectCharacter(IHeap& heap, MessageDataPtr& pIMsg);
 
@@ -138,7 +135,7 @@ namespace SF {
 			// Start Transaction
 			virtual Result StartTransaction() override;
 
-			BR_IMPLEMENT_USERMSGTRANS_CLOSE_ARGS(NetSvrPolicyGame, SelectCharacterRes, m_CharacterId, GetMyOwner()->GetCharacterData());
+			BR_IMPLEMENT_USERMSGTRANS_CLOSE_ARGS(NetSvrPolicyGame, SelectCharacterRes, GetMyOwner()->GetCharacterID(), GetMyOwner()->GetCharacterData());
 		};
 
 

@@ -15,7 +15,7 @@
 #include "Util/SFTimeUtil.h"
 #include "ResultCode/SFResultCodeLibrary.h"
 #include "ServerLog/SvrLog.h"
-#include "Thread/SFThread.h"
+#include "Multithread/SFThread.h"
 #include "SvrConst.h"
 #include "Entity/Entity.h"
 #include "Transaction/MessageRoute.h"

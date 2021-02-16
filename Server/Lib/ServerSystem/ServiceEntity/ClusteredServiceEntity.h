@@ -14,8 +14,8 @@
 
 
 #include "SFTypedefs.h"
-#include "Memory/SFMemory.h"
-#include "Memory/SFMemoryPool.h"
+#include "MemoryManager/SFMemory.h"
+#include "MemoryManager/SFMemoryPool.h"
 #include "Util/SFTimeUtil.h"
 #include "Types/BrSvrTypes.h"
 #include "ServiceEntity/ServiceEntity.h"

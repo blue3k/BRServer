@@ -12,7 +12,7 @@
 #include "ServerSystemPCH.h"
 #include "ResultCode/SFResultCodeLibrary.h"
 #include "ResultCode/SFResultCodeGame.h"
-#include "Memory/SFMemoryPool.h"
+#include "MemoryManager/SFMemoryPool.h"
 #include "Types/BrSvrTypes.h"
 
 #include "Protocol/Message/PartyMatchingQueueMsgClass.h"

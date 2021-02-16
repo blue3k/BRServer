@@ -3,6 +3,7 @@
 
 
 set(BR_LIB_FILES
+    GameServerPCH.h
     GameInstance/GamePlayerEntity.h
     GameServer.h
     GameServerClass.h

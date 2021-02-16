@@ -13,8 +13,8 @@
 #pragma once
 
 
-#include "Thread/SFThread.h"
-#include "Thread/SFSystemSynchronization.h"
+#include "Multithread/SFThread.h"
+#include "Multithread/SFSystemSynchronization.h"
 
 namespace SF {
 namespace DB {

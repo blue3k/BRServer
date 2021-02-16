@@ -12,7 +12,7 @@
 
 #include "SFTypedefs.h"
 #include "ServerLog/SvrLog.h"
-#include "Thread/SFSynchronization.h"
+#include "Multithread/SFSynchronization.h"
 #include "Types/BrSvrTypes.h"
 
 

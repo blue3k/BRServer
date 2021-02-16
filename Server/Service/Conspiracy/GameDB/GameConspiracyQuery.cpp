@@ -13,7 +13,7 @@
 #include "GameConspiracyDBPch.h"
 #include "GameConspiracyQuery.h"
 #include "DBTrace.h"
-#include "Memory/SFMemoryPool.h"
+#include "MemoryManager/SFMemoryPool.h"
 
 
 namespace SF {

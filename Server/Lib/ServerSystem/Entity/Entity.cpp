@@ -14,7 +14,7 @@
 #include "String/SFStrUtil.h"
 #include "Util/SFTimeUtil.h"
 #include "ServerLog/SvrLog.h"
-#include "Thread/SFThread.h"
+#include "Multithread/SFThread.h"
 #include "ResultCode/SFResultCodeSvr.h"
 #include "ResultCode/SFResultCodeSystem.h"
 #include "SvrConst.h"
@@ -31,7 +31,7 @@
 #include "Net/SFMessage.h"
 #include "Service/ServerService.h"
 #include "Protocol/Policy/ServerNetPolicy.h"
-#include "Memory/SFIMemoryManager.h"
+#include "MemoryManager/SFIMemoryManager.h"
 
 
 namespace SF

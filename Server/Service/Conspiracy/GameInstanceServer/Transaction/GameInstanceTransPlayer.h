@@ -13,7 +13,7 @@
 
 #include "SFTypedefs.h"
 #include "Transaction/Transaction.h"
-#include "Memory/SFMemoryPool.h"
+#include "MemoryManager/SFMemoryPool.h"
 #include "Types/SFEngineTypedefs.h"
 #include "Stream/SFMemoryStream.h"
 #include "Protocol/Message/GameMsgClass.h"

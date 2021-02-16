@@ -15,7 +15,7 @@
 
 #include "Util/SFTimeUtil.h"
 #include "Container/SFHashTable.h"
-#include "Memory/SFMemoryPool.h"
+#include "MemoryManager/SFMemoryPool.h"
 #include "Entity/Entity.h"
 #include "ServiceEntity/Game/GameSystem.h"
 #include "ServiceEntity/Game/GameInstancePlayer.h"

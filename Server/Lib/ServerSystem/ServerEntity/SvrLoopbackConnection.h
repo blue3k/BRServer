@@ -14,7 +14,7 @@
 
 #include "SFTypedefs.h"
 #include "Server/BrServer.h"
-#include "Memory/SFMemoryPool.h"
+#include "MemoryManager/SFMemoryPool.h"
 
 #include "Net/SFLoopbackConnection.h"
 

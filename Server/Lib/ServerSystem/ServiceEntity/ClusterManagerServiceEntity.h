@@ -15,7 +15,7 @@
 
 #include "SFTypedefs.h"
 
-#include "Memory/SFMemory.h"
+#include "MemoryManager/SFMemory.h"
 #include "Types/SFEngineTypedefs.h"
 #include "Types/BrSvrTypes.h"
 #include "Entity/Entity.h"

@@ -13,8 +13,8 @@
 
 #include "String/SFStrUtil.h"
 
-#include "Memory/SFMemory.h"
-#include "Memory/SFCircularHeap.h"
+#include "MemoryManager/SFMemory.h"
+#include "MemoryManager/SFCircularHeap.h"
 #include "Types/BrGameTypes.h"
 #include "GameConst.h"
 #include "Container/SFCircularQueue.h"

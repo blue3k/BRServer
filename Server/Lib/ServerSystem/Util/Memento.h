@@ -14,8 +14,8 @@
 #include "SFTypedefs.h"
 #include "ServerLog/SvrLog.h"
 #include "Container/SFStaticLinkedList.h"
-#include "Memory/SFMemory.h"
-#include "Thread/SFSynchronization.h"
+#include "MemoryManager/SFMemory.h"
+#include "Multithread/SFSynchronization.h"
 
 namespace SF {
 

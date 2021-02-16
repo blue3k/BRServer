@@ -14,7 +14,7 @@
 
 
 #include "SFTypedefs.h"
-#include "Memory/SFMemory.h"
+#include "MemoryManager/SFMemory.h"
 #include "Component/BrComponent.h"
 #include "Component/ServerComponent.h"
 

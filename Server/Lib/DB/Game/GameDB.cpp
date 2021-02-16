@@ -207,6 +207,20 @@ namespace SF {
 				outputStream << characterData;
 			}
 
+			// Serialization validation
+#if 0  // def DEBUG
+			VariableTable visualData2;
+			VariableTable binData2;
+			{
+				InputMemoryStream inStream(pQuery->VisualData);
+				inStream >> visualData2;
+			}
+
+			{
+				InputMemoryStream inStream(pQuery->BinData);
+				inStream >> binData2;
+			}
+#endif
 			pQuery->Result = 0;
 
 			dbCheck(RequestQuery(pQuery));

@@ -9,8 +9,8 @@
 #include "Net/SFNetToString.h"
 #include "Net/SFMessage.h"
 #include "ServerLog/SvrLog.h"
-#include "Thread/SFSynchronization.h"
-#include "Memory/SFMemory.h"
+#include "Multithread/SFSynchronization.h"
+#include "MemoryManager/SFMemory.h"
 #include <gtest/gtest.h>
 
 #if LINUX

@@ -3,6 +3,7 @@
 
 
 set(BRSERVERPROTOCOL_LIB_FILES
+    ServerProtocolPCH.h
     GenericMsgClass.h
     ProtocolTrace.h
     Protocol/Message/ChatChannelManagerMsgClass.h

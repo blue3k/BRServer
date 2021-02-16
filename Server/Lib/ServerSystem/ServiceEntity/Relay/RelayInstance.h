@@ -16,7 +16,7 @@
 #include "Util/SFTimeUtil.h"
 #include "Math/SFMathUtil.h"
 #include "Container/SFHashTable.h"
-#include "Memory/SFMemoryPool.h"
+#include "MemoryManager/SFMemoryPool.h"
 #include "Entity/Entity.h"
 #include "Transaction/MessageRoute.h"
 #include "GameConst.h"

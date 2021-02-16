@@ -3,6 +3,7 @@
 
 
 set(BRGAMEINSTANCESERVER_LIB_FILES
+    GameInstancePCH.h
     ConspiracyGameInstanceServerClass.h
     ConspiracyGameInstanceSvrConst.h
     GameInstance/GameInstanceEntity.h

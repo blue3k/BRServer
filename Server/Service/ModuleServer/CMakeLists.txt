@@ -4,6 +4,7 @@
 
 
 set(BR_LIB_FILES
+    ModuleServerPCH.h
     SharedModuleSvrConst.h
     SharedModuleServer.cpp
 	SharedModuleServerClass.h

@@ -12,7 +12,7 @@
 #pragma once
 	
 #include "Types/SFEngineTypedefs.h"
-#include "Thread/SFThread.h"
+#include "Multithread/SFThread.h"
 #include "Util/SFTimeUtil.h"
 #include "Container/SFPageQueue.h"
 #include "DBConst.h"

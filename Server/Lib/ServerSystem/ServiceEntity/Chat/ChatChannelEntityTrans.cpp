@@ -15,7 +15,7 @@
 #include "ResultCode/SFResultCodeGame.h"
 #include "ResultCode/SFResultCodeSvr.h"
 
-#include "Memory/SFMemoryPool.h"
+#include "MemoryManager/SFMemoryPool.h"
 #include "Types/BrSvrTypes.h"
 #include "GameConst.h"
 

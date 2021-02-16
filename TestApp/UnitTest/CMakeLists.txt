@@ -3,6 +3,7 @@
 
 
 set(SF_UNIT_TEST_FILES
+	../TestCommon/TestBaseCommon.h
 	TestApp.cpp
 	TestBase.cpp
 	TestBase.h

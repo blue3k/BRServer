@@ -14,7 +14,7 @@
 #include "ServerSystemPCH.h"
 #include "String/SFStrUtil.h"
 #include "ServerLog/SvrLog.h"
-#include "Thread/SFThread.h"
+#include "Multithread/SFThread.h"
 #include "Net/SFNetDef.h"
 #include "Entity/Entity.h"
 #include "Component/ServerComponent.h"

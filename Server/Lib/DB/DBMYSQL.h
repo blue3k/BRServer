@@ -13,7 +13,7 @@
 
 
 #include "SFTypedefs.h"
-#include "Memory/SFMemoryPool.h"
+#include "MemoryManager/SFMemoryPool.h"
 #include "Net/SFMessage.h"
 #include "DB/DBTrace.h"
 #include "Variable/SFNamedVariableBox.h"

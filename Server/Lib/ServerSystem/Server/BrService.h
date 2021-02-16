@@ -13,7 +13,7 @@
 #pragma once
 
 #include "SFTypedefs.h"
-#include "Memory/SFMemory.h"
+#include "MemoryManager/SFMemory.h"
 #include "SFAssert.h"
 #include "Util/SFUtility.h"
 #include "String/SFStrUtil.h"

@@ -15,7 +15,7 @@
 
 #include "Util/SFTimeUtil.h"
 #include "Container/SFHashTable.h"
-#include "Memory/SFMemoryPool.h"
+#include "MemoryManager/SFMemoryPool.h"
 #include "GameConst.h"
 #include "Types/BrGameTypes.h"
 

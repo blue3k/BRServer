@@ -14,9 +14,9 @@
 
 
 #include "SFTypedefs.h"
-#include "Thread/SFThread.h"
+#include "Multithread/SFThread.h"
 #include "Object/SFObjectPool.h"
-#include "Memory/SFMemory.h"
+#include "MemoryManager/SFMemory.h"
 #include "Net/SFNetDef.h"
 #include "Entity/SimpleEntity.h"
 #include "Transaction/Transaction.h"

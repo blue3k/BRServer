@@ -11,7 +11,7 @@
 
 
 #include "ServerSystemPCH.h"
-#include "Memory/SFMemoryManager.h"
+#include "MemoryManager/SFMemoryManager.h"
 #include "SvrTrace.h"
 #include "ServerSystem/GameLog/ChattingHistory.h"
 #include "GameConst.h"
