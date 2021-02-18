@@ -1679,8 +1679,6 @@ namespace SF
 
 				uint8_t *pMsgData = nullptr;
 
-				uint16_t numberOfInChatHistoryData = (uint16_t)InChatHistoryData.size(); 
-				uint16_t numberOfInGameLogData = (uint16_t)InGameLogData.size(); 
 				unsigned __uiMessageSize = (unsigned)(sizeof(MessageHeader) 
 					+ SerializedSizeOf(InRouteContext)
 					+ SerializedSizeOf(InTransactionID)
@@ -3309,7 +3307,6 @@ namespace SF
 
 				uint8_t *pMsgData = nullptr;
 
-				uint16_t numberOfInVoted = (uint16_t)InVoted.size(); 
 				unsigned __uiMessageSize = (unsigned)(sizeof(MessageHeader) 
 					+ SerializedSizeOf(InRouteContext)
 					+ SerializedSizeOf(InVoted)
@@ -3959,7 +3956,6 @@ namespace SF
 
 				uint8_t *pMsgData = nullptr;
 
-				uint16_t numberOfInTargetPlayerID = (uint16_t)InTargetPlayerID.size(); 
 				unsigned __uiMessageSize = (unsigned)(sizeof(MessageHeader) 
 					+ SerializedSizeOf(InRouteContext)
 					+ SerializedSizeOf(InTransactionID)
@@ -4075,8 +4071,6 @@ namespace SF
 
 				uint8_t *pMsgData = nullptr;
 
-				uint16_t numberOfInRevealedPlayerID = (uint16_t)InRevealedPlayerID.size(); 
-				uint16_t numberOfInRevealedRole = (uint16_t)InRevealedRole.size(); 
 				unsigned __uiMessageSize = (unsigned)(sizeof(MessageHeader) 
 					+ SerializedSizeOf(InRouteContext)
 					+ SerializedSizeOf(InTransactionID)

@@ -220,7 +220,6 @@ namespace SF
 
 				uint8_t *pMsgData = nullptr;
 
-				uint16_t numberOfInMemberList = (uint16_t)InMemberList.size(); 
 				unsigned __uiMessageSize = (unsigned)(sizeof(MessageHeader) 
 					+ SerializedSizeOf(InRouteContext)
 					+ SerializedSizeOf(InTransactionID)

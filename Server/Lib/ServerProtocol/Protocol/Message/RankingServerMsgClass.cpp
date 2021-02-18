@@ -834,7 +834,6 @@ namespace SF
 
 				uint8_t *pMsgData = nullptr;
 
-				uint16_t numberOfInRanking = (uint16_t)InRanking.size(); 
 				unsigned __uiMessageSize = (unsigned)(sizeof(MessageHeader) 
 					+ SerializedSizeOf(InRouteContext)
 					+ SerializedSizeOf(InTransactionID)
@@ -1058,7 +1057,6 @@ namespace SF
 
 				uint8_t *pMsgData = nullptr;
 
-				uint16_t numberOfInRanking = (uint16_t)InRanking.size(); 
 				unsigned __uiMessageSize = (unsigned)(sizeof(MessageHeader) 
 					+ SerializedSizeOf(InRouteContext)
 					+ SerializedSizeOf(InTransactionID)

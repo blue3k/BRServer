@@ -1,0 +1,22 @@
+////////////////////////////////////////////////////////////////////////////////
+// 
+// CopyRight (c) The Braves 
+// 
+// Author: Kyungkun Ko
+//
+// Description : Procees Requested DB Query
+//	
+//
+////////////////////////////////////////////////////////////////////////////////
+
+
+#include "DBPch.h"
+#include "SFTypedefs.h"
+#include "DBToString.h"
+
+
+
+namespace SF
+{
+	IMPLEMENT_BOXING_TEMPLETE_BYVALUE(mysqlx::Type);
+}

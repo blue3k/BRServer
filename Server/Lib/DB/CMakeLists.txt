@@ -58,6 +58,7 @@ set(BRDB_LIB_FILES
 	DBTrace.h
 	DBTrace.cpp
 	DBToString.h
+	DBToString.cpp
 	DBMYSQL.h
   )
 

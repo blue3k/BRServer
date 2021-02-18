@@ -546,7 +546,6 @@ namespace SF
 
 				uint8_t *pMsgData = nullptr;
 
-				uint16_t numberOfInGameInstances = (uint16_t)InGameInstances.size(); 
 				unsigned __uiMessageSize = (unsigned)(sizeof(MessageHeader) 
 					+ SerializedSizeOf(InRouteContext)
 					+ SerializedSizeOf(InTransactionID)

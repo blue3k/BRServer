@@ -290,14 +290,25 @@ namespace SF {
 			{
 				if (pDBRes->RowsetResults.size() > 0)
 				{
-					m_CharacterIdList.Clear();
-					m_CharacterNames.Clear();
-
+					m_Characters.Clear();
+					m_Characters.resize(pDBRes->RowsetResults.size());
+					int iChar = 0;
 					for (auto& itRes : pDBRes->RowsetResults)
 					{
-						m_CharacterIdList.push_back(itRes.GetValue<uint32_t>("CharacterId"));
-						m_CharacterNames.push_back(itRes.GetValue<String>("Name"));
-						// TODO: character list with variable table
+						auto& characterData = m_Characters[iChar];
+						auto* pVariable = itRes.GetVariable("CharacterId");
+						if (pVariable != nullptr)
+							characterData.SetVariable("CharacterId", *pVariable);
+
+						pVariable = itRes.GetVariable("Name");
+						if (pVariable != nullptr)
+							characterData.SetVariable("Name", *pVariable);
+
+						pVariable = itRes.GetVariable("VisualData");
+						if (pVariable != nullptr)
+							characterData.SetVariable("VisualData", *pVariable);
+
+						iChar++;
 					}
 					CloseTransaction(ResultCode::SUCCESS);
 				}

@@ -43,7 +43,7 @@ namespace SF {
 		return ResultCode::SUCCESS;
 	}
 
-	DEFINE_BOXING_TEMPLETE_BYVALUE(mysqlx::Type);
+	DECLARE_BOXING_TEMPLETE_BYVALUE(mysqlx::Type);
 
 #endif
 
