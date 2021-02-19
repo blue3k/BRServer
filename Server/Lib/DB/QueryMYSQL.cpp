@@ -140,11 +140,11 @@ namespace SF {
 			DynamicArray<StringCrc32> columnNames(GetHeap());
 
 			auto& columnInfos = queryResult.getColumns();
-			char utf8Name[256];
 			for (auto& columnInfo : columnInfos)
 			{
-				StrUtil::WCSToUTF8((const wchar_t*)columnInfo.getColumnName().c_str(), utf8Name);
-				columnNames.push_back(utf8Name);
+				std::string columnName = columnInfo.getColumnName(); // This assignment actually convert utf16 to utf8
+				dbTrace(Debug2, "Column:{0}", columnName);
+				columnNames.push_back(columnName.c_str());
 			}
 
 			RowsetResults.resize(queryResult.count());

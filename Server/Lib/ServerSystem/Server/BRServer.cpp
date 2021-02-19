@@ -121,7 +121,7 @@ namespace SF {
 
 		Result BrServer::TerminateEntity()
 		{
-			return MasterEntity::TerminateEntity();
+			return super::TerminateEntity();
 		}
 
 

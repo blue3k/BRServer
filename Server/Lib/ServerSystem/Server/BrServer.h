@@ -65,6 +65,7 @@ namespace SF {
 	class BrServer : public MasterEntity
 	{
 	public:
+		using super = MasterEntity;
 
 		typedef Result (*ModuleFactoryFuncType)(BrServer* ThisServer, GameID gameID, ServerConfig::ServerModule* config);
 

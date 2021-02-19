@@ -176,7 +176,7 @@ namespace Svr
 
 		SetEntityState( EntityState::FREE );
 
-		SetEntityUID(0);
+		SetEntityUID(0, true);
 
 		return ResultCode::SUCCESS;
 	}
