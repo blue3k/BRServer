@@ -59,13 +59,13 @@ namespace SF {
 		auto result = loader.LoadConfig(configPath, *Service::ServerConfig);
 		if (!result)
 		{
-			svrTrace(Error, "Failed to load server config hr:{0}", result);
+			printf("Failed to load server config modulepath:%s hr:%08X", Util::GetModulePath(), (uint32_t)result);
 			return;
 		}
 
 		if (StrUtil::IsNullOrEmpty(Service::ServerConfig->Name))
 		{
-			svrTrace(Error, "Service doesn't have name");
+			printf("Service doesn't have name hr:%08X", (uint32_t)result);
 			return;
 		}
 
