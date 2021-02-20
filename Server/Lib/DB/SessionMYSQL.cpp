@@ -108,6 +108,9 @@ namespace DB {
 
 		try
 		{
+			auto queryString = pMyQuery->GetQueryString().c_str();
+			defTrace(Debug2, "Sending DB query ... {0}", pMyQuery->GetQueryString());
+
 			mysqlx::SqlStatement statement = m_pXSession->sql(pMyQuery->GetQueryString());
 
 			pMyQuery->BindParameters(statement);
@@ -118,6 +121,9 @@ namespace DB {
 
 			if (pMyQuery->GetQueryOutputString().size() > 0)
 			{
+				auto queryOutputString = pMyQuery->GetQueryOutputString().c_str();
+				defTrace(Debug2, "DB query result string ... {0}", pMyQuery->GetQueryOutputString());
+
 				mysqlx::SqlResult outputResult = std::forward<mysqlx::SqlResult>(m_pXSession->sql(pMyQuery->GetQueryOutputString()).execute());
 
 				pMyQuery->ParseOutput(outputResult);
