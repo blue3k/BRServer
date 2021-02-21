@@ -24,6 +24,7 @@
 #include "PerformanceCounter/PerformanceCounterClient.h"
 #include "ServiceEntity/Login/LoginPlayerEntity.h"
 #include "ServiceEntity/Game/GamePlayerEntity.h"
+#include "ServiceEntity/Game/GameInstanceEntity.h"
 #include "Service/ServerService.h"
 
 
@@ -56,12 +57,21 @@ namespace Svr {
 					return new(GetHeap()) LoginPlayerEntity;
 				return nullptr;
 			});
+
 		RegisterEntityCreator([this](ClusterID clusterID, EntityFaculty faculty) -> Entity*
 			{
 				if (clusterID == ClusterID::Game && faculty == EntityFaculty::User)
 					return new(GetHeap()) Svr::GamePlayerEntity;
 				return nullptr;
 			});
+
+		RegisterEntityCreator([this](ClusterID clusterID, EntityFaculty faculty) -> Entity*
+			{
+				if (faculty == EntityFaculty::GameInstance)
+					return new(GetHeap()) Svr::GameInstanceEntity;
+				return nullptr;
+			});
+
 	}
 
 	EntityManager::~EntityManager()

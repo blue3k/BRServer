@@ -68,6 +68,8 @@ namespace SF {
 
 			svrCheck(super::InitializeEntity(newEntityID));
 
+			svrCheck(Service::DataTableManager->LoadDataTable("ZoneTable", "ZoneId", "gtbl_ZoneTable"));
+
 			//entityUID = EntityUID(GetMyServerID(), Service::EntityTable->GenEntityID(EntityFaculty::Service));
 			pInstance = PerformanceCounterClient::GetDefaultCounterInstance();
 			if (pInstance != nullptr)

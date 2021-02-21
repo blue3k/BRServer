@@ -108,7 +108,7 @@ namespace DB {
 
 	protected:
 
-		virtual void BuildParameters() = 0;
+		virtual void BuildParameters() {}
 		virtual void BuildQueryString(const char* spName, bool isSP = true);
 
 		//virtual void AddRowset() { RowsetResults.push_back(std::forward<RowsetType>(Attributes)); }
@@ -177,3 +177,34 @@ namespace DB {
 #error "DB type isn't specified"
 #endif
 
+
+
+namespace SF {
+	namespace DB {
+
+
+		/////////////////////////////////////////////////////////////////////////////////////////////
+		//
+		//	Query definitions 
+		//
+
+
+		class QueryWholeTable : public DB::QueryBase
+		{
+		public:
+			String m_QueryString;
+
+		public:
+
+			QueryWholeTable(IHeap & heap, Message::MessageID mid, const char* tableName)
+				: QueryBase(heap, mid)
+			{
+				m_QueryString.Format("select * from {0};", tableName);
+
+				BuildQueryString(m_QueryString, false);
+			}
+
+		};
+
+	} // namespace DB
+} // namespace SF

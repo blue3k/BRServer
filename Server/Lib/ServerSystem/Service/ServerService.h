@@ -1,6 +1,6 @@
 ﻿////////////////////////////////////////////////////////////////////////////////
 // 
-// CopyRight (c) 2016 StormForge
+// CopyRight (c) StormForge
 // 
 // Author : KyungKun Ko
 //
@@ -22,6 +22,7 @@
 #include "Service/ClusterManagerService.h"
 #include "Service/MessageEndpointManagerService.h"
 #include "Service/PlayerManagerService.h"
+#include "Service/DataTableManagerService.h"
 
 
 
@@ -46,6 +47,7 @@ namespace SF {
 		extern ServiceInstance<ZookeeperSessionService> ZKSession; // main zookeeper session
 		//extern ServiceInstance<ClusterManagerService> ClusterManager;
 		extern ServiceInstance<PlayerManagerService> PlayerManager;
+		extern ServiceInstance<DataTableManagerService> DataTableManager;
 	};
 
 

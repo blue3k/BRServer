@@ -6,6 +6,8 @@ set(BRSERVERSYSTEM_LIB_FILES
     ServerSystemPCH.h
     Component/ServerComponentIDs.h
     Component/ServerComponent.inl
+    Component/SFDBTableManagerComponent.h
+    Component/SFDBTableManagerComponent.cpp
     GameLog/GameLog.inl
     PerformanceCounter/PerformanceCounter.inl
     PerformanceCounter/PerformanceCounterInstance.inl
@@ -48,6 +50,8 @@ set(BRSERVERSYSTEM_LIB_FILES
     ServiceEntity/ServiceDirectoryManager.h
     ServiceEntity/ServiceDirectoryManager.cpp
     Service/ServiceDirectoryService.h
+    Service/DataTableManagerService.h
+    Service/DataTableManagerService.cpp
     Task/ServerTask.inl
     Task/ServerTaskEvent.inl
     Task/ServerTaskManager.inl

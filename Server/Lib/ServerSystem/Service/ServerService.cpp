@@ -31,6 +31,7 @@ namespace SF {
 		ServiceInstance<ZookeeperSessionService> ZKSession;
 		//ServiceInstance<ClusterManagerService> ClusterManager;
 		ServiceInstance<PlayerManagerService> PlayerManager;
+		ServiceInstance<DataTableManagerService> DataTableManager;
 	}
 
 

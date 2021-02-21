@@ -140,6 +140,15 @@ namespace DB {
 			QueryClass##Cmd(IHeap& heap) : QueryClass(heap, MID ) { }		\
 		};
 
+#define BRDB_DEFINE_TABLEQUERYCLASS(Policy,QueryClass, tableName) \
+		class QueryClass##Cmd : public DB::QueryWholeTable	\
+		{																			\
+		public :																	\
+			enum { MESSAGE_POLICY = Policy };										\
+			static const Message::MessageID MID;									\
+			QueryClass##Cmd(IHeap& heap) : QueryWholeTable(heap, MID, tableName) { }		\
+		};
+
 
 	// execute
 	#define BRDB_DEFINE_QUERY_IMPL(QueryClass)										\

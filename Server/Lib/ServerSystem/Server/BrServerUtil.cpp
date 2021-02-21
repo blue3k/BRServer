@@ -31,6 +31,7 @@
 #include "Component/SFZookeeperSessionComponent.h"
 #include "Component/SFConnectionManagerComponent.h"
 #include "Component/SFServerMessageEndpointComponent.h"
+#include "Component/SFDBTableManagerComponent.h"
 #include "Object/SFLibraryComponentAdapter.h"
 #include "ServerLog/SvrLogComponent.h"
 #include "Service/ServerService.h"
@@ -130,6 +131,7 @@ namespace SF {
 		pEngine->AddComponent<LibraryComponentAdapter<MessageEndpointManager>, IHeap&>(GetSystemHeap());
 		pEngine->AddComponent<ServerMessageEndpointComponent>();
 		pEngine->AddComponent<LibraryComponentAdapter<PlayerDirectoryManager>, IHeap&>(GetSystemHeap());
+		pEngine->AddComponent<DBTableManagerComponent>();
 	}
 
 	void DeinitializeEngine()

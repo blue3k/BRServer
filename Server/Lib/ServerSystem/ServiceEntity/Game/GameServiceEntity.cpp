@@ -102,6 +102,9 @@ namespace SF {
 
 		svrCheck(Service::ServiceDirectory->WatchForService(Service::ServerConfig->GameClusterID, ClusterID::GameInstanceManager));
 
+		// Register tables
+		svrCheck(Service::DataTableManager->LoadDataTable("ZoneTable", "ZoneId", "gtbl_ZoneTable"));
+
 		// FIXME: matching queue
 		//svrCheck(Service::ServiceDirectory->WatchForService(GetGameID(), ClusterID::MatchingQueue_Game_4x1, ClusterID::MatchingQueue_Game_4x1W));
 		//svrCheck(Service::ServiceDirectory->WatchForService(GetGameID(), ClusterID::MatchingQueue_Game_8x1, ClusterID::MatchingQueue_Game_8x1W));
