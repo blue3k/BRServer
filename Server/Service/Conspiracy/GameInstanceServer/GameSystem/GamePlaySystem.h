@@ -157,8 +157,8 @@ namespace ConspiracyGameInstanceServer {
 
 #include "GamePlaySystem.inl"
 
-}; // namespace ConspiracyGameInstanceServer
-}; // namespace SF
+} // namespace ConspiracyGameInstanceServer
+} // namespace SF
 
 
 

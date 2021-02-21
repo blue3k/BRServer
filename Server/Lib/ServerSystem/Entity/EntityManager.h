@@ -49,7 +49,7 @@ namespace Svr {
 		PerformanceCounterRaw < uint64_t > m_NumberOfTotalEntities;
 
 
-		DynamicArray<EntityCreator> m_EntityCretors;
+		DynamicArray<EntityCreator> m_EntityCreators;
 
 	public:
 		// Constructor/Destructor

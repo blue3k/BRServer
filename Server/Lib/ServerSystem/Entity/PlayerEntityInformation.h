@@ -1,6 +1,6 @@
 ////////////////////////////////////////////////////////////////////////////////
 // 
-// CopyRight (c) 2013 The Braves
+// CopyRight (c) The Braves
 // 
 // Author : KyungKun Ko
 //
@@ -41,14 +41,13 @@ namespace Svr {
 		// Player's UID
 		PlayerInformation m_PlayerInfo;
 
-		UTCTimeStampSec m_LatestServerUpTime;
-
 		SharedPointerT<MessageEndpoint> m_RemoteEndpoint;
 
 		// User entity UID, this will be 0 if the user doesn't logged in.
 		EntityUID m_PlayerEntityUID;
 
-		bool m_IsActivePlayer;
+		// if player disconnected and need to stay for a while
+		bool m_IsActivePlayer{};
 
 	public:
 
@@ -56,7 +55,6 @@ namespace Svr {
 		virtual ~PlayerEntityInformation();
 
 		const PlayerInformation& GetPlayerInformation() const	{ return m_PlayerInfo; }
-		const UTCTimeStampSec& GetLatestServerUpTime() const { return m_LatestServerUpTime; }
 		const SharedPointerT<MessageEndpoint>& GetRemoteEndpoint() const { return m_RemoteEndpoint; }
 		const EntityUID& GetPlayerEntityUID() const { return m_PlayerEntityUID; }
 		bool GetIsActivePlayer() const { return m_IsActivePlayer; }
@@ -69,15 +67,12 @@ namespace Svr {
 		Result SetRemoteEndpoint(const SharedPointerT<MessageEndpoint>& remoteEndpoint, EntityUID playerUID );
 
 		// Get route context
-		RouteContext GetRouteContext( EntityUID uidFrom );
-
-		// Query policy from game server entity
-		//const SharedPointerAtomicT<Net::Connection>& GetConnection() const { static const SharedPointerAtomicT<Net::Connection> Dymmy;  return m_ServerEntity != nullptr ? m_ServerEntity->GetConnection() : Dymmy; }
-
+		RouteContext GetRouteContext(EntityUID uidFrom) {
+			return RouteContext(uidFrom, m_PlayerEntityUID);
+		}
 	};
 
-#include "PlayerEntityInformation.inl"
 
-}; // namespace Svr
-}; // namespace SF
+} // namespace Svr
+} // namespace SF
 

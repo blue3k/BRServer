@@ -69,7 +69,6 @@ set(BRSERVERSYSTEM_LIB_FILES
     Entity/EntityTimerActions.h
     Entity/MasterEntity.h
     Entity/PlayerEntityInformation.h
-    Entity/PlayerEntityInformation.inl
     Entity/SimpleEntity.h
 
     GameConst.h

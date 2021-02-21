@@ -391,27 +391,10 @@ namespace Svr {
 
 		//m_Result.TotalPlayed = userGamePlayerInfo->GetTotalPlayed();
 
-		//m_Result.WinPlaySC = userGamePlayerInfo->GetWinPlaySCitizen();
-		//m_Result.WinPlaySM = userGamePlayerInfo->GetWinPlaySMonster();
-		//m_Result.WinPlaySS = userGamePlayerInfo->GetWinPlaySSeer();
-		//m_Result.LosePlaySC = userGamePlayerInfo->GetLosePlaySCitizen();
-		//m_Result.LosePlaySM = userGamePlayerInfo->GetLosePlaySMonster();
-		//m_Result.LosePlaySS = userGamePlayerInfo->GetLosePlaySSeer();
-
-		//m_Result.WinPlayNC = userGamePlayerInfo->GetWinPlayNCitizen();
-		//m_Result.WinPlayNM = userGamePlayerInfo->GetWinPlayNMonster();
-		//m_Result.WinPlayNS = userGamePlayerInfo->GetWinPlayNSeer();
-		//m_Result.LosePlayNC = userGamePlayerInfo->GetLosePlayNCitizen();
-		//m_Result.LosePlayNM = userGamePlayerInfo->GetLosePlayNMonster();
-		//m_Result.LosePlayNS = userGamePlayerInfo->GetLosePlayNSeer();
-
-		//m_Result.WeeklyWin = userGamePlayerInfo->GetWeeklyWin();
-		//m_Result.WeeklyLose = userGamePlayerInfo->GetWeeklyLose();
-
 		return hr;
 	}
-	
-	
+
+
 
 	PlayerTransGetGamePlayerInfo::PlayerTransGetGamePlayerInfo(IHeap& heap, MessageDataPtr &pIMsg )
 		: MessageTransaction( heap, std::forward<MessageDataPtr>(pIMsg) )

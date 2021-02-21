@@ -16,7 +16,6 @@
 
 
 namespace SF {
-	namespace ConspiracyGameInstanceServer {
 		namespace Const {
 
 
@@ -57,6 +56,5 @@ namespace SF {
 
 
 		} // namespace Const
-	} // namespace ConspiracyGameInstanceServer
 } // namespace SF
 

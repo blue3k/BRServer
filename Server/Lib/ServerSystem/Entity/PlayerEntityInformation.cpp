@@ -1,6 +1,6 @@
 ////////////////////////////////////////////////////////////////////////////////
 // 
-// CopyRight (c) 2013 The Braves
+// CopyRight (c) The Braves
 // 
 // Author : KyungKun Ko
 //
@@ -24,44 +24,42 @@
 
 
 namespace SF {
-namespace Svr {
+	namespace Svr {
 
 
-	//////////////////////////////////////////////////////////////////////////
-	//
-	//	Remote Player class
-	//
+		//////////////////////////////////////////////////////////////////////////
+		//
+		//	Remote Player class
+		//
 
-	PlayerEntityInformation::PlayerEntityInformation( const PlayerInformation& player )
-		:m_PlayerInfo(player)
-		,m_LatestServerUpTime(UTCTimeStampSec::min())
-		,m_PlayerEntityUID(0)
-		,m_IsActivePlayer(true)
-	{
-	}
+		PlayerEntityInformation::PlayerEntityInformation(const PlayerInformation& player)
+			:m_PlayerInfo(player)
+			, m_PlayerEntityUID(0)
+			, m_IsActivePlayer(true)
+		{
+		}
 
-	PlayerEntityInformation::~PlayerEntityInformation()
-	{
-	}
-
-	
-	// Set game server entity
-	Result PlayerEntityInformation::SetRemoteEndpoint(const SharedPointerT<MessageEndpoint>& remoteEndpoint, EntityUID playerUID )
-	{
-		m_RemoteEndpoint = remoteEndpoint;
-
-		m_PlayerEntityUID = playerUID;
-
-		// Make the play inactive
-		if( m_PlayerEntityUID.UID == 0 )
-			m_IsActivePlayer = false;
-
-		return ResultCode::SUCCESS;
-	}
-	
+		PlayerEntityInformation::~PlayerEntityInformation()
+		{
+		}
 
 
-}; // namespace Svr
-}; // namespace SF
+		// Set game server entity
+		Result PlayerEntityInformation::SetRemoteEndpoint(const SharedPointerT<MessageEndpoint>& remoteEndpoint, EntityUID playerUID)
+		{
+			m_RemoteEndpoint = remoteEndpoint;
 
+			m_PlayerEntityUID = playerUID;
+
+			// Make the play inactive
+			if (m_PlayerEntityUID.UID == 0)
+				m_IsActivePlayer = false;
+
+			return ResultCode::SUCCESS;
+		}
+
+
+
+	} // namespace Svr
+} // namespace SF
 

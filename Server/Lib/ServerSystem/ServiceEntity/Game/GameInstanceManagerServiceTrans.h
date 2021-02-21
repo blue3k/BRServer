@@ -83,7 +83,6 @@ namespace SF {
 			BR_SVR_MSGTRANS_CLOSE(NetSvrPolicyGameInstanceManager, CreateGameInstanceRes, RouteContext(m_GameInsUID, GetRouteContext().GetFrom()));
 		};
 
-
 	} // namespace GameServer 
 } // namespace SF 
 

@@ -59,7 +59,7 @@ namespace ConspiracyGameInstanceServer {
 
 	GameInstanceEntity::GameInstanceEntity()
 	{
-		SetTickInterval(DurationMS(ConspiracyGameInstanceServer::Const::GAMEINSTANCE_TICK_TIME));
+		SetTickInterval(DurationMS(Const::GAMEINSTANCE_TICK_TIME));
 		SetEmptyInstanceKillTimeOut(DurationMS(Const::TIME_DELETE_GAMEINSTANCE_NOPLAYER));
 
 		////////////////////////////////////////////////////////////////////////////////////////////////////

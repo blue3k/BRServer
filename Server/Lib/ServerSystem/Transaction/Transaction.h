@@ -671,17 +671,6 @@ namespace SF {
 
 			virtual ~MessageTransaction() = default;
 
-			//virtual const SharedPointerAtomicT<Net::Connection>& GetConnection()
-			//{
-			//	const static SharedPointerAtomicT<Net::Connection> Dummy;
-			//	auto pOwnerEntity = TransactionT<OwnerType>::GetMyOwner();
-			//	if (pOwnerEntity == nullptr)
-			//		return Dummy;
-
-			//	return pOwnerEntity->GetConnection();
-			//}
-
-
 			TransactionID GetMessageContext() { return MessageClass::GetTransactionID(); }
 		};
 
@@ -747,10 +736,9 @@ namespace SF {
 
 		protected:
 			UserTransactionS2SCmd(IHeap& memMgr, MessageDataPtr& pIMsg)
-				: MessageTransaction<OwnerEntityType, MessageClass>(memMgr, std::forward<MessageDataPtr>(pIMsg))
+				: MessageTransaction<OwnerEntityType, MessageClass>(memMgr, Forward<MessageDataPtr>(pIMsg))
 			{
 			}
-
 
 			// Initialize Transaction
 			virtual Result InitializeTransaction(Entity* pOwner)
@@ -770,9 +758,6 @@ namespace SF {
 				}
 
 				svrCheckPtr(pOwnerEntity = static_cast<OwnerEntityType*>((Entity*)entity));
-
-				// S2S Communication so return policy owner is server entity
-				//svrChkPtr( m_ServerEntity = dynamic_cast<ServerEntity>( pOwner) );
 
 				svrCheck(Transaction::InitializeTransaction(pOwnerEntity));
 

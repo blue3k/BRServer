@@ -47,8 +47,21 @@ namespace Svr {
 		, m_NumTaskGroup(numTaskGroup)
 		, m_NumberOfServices("NumberOfService")
 		, m_NumberOfTotalEntities("TotalEntities")
-		, m_EntityCretors(GetHeap())
+		, m_EntityCreators(GetHeap())
 	{
+
+		RegisterEntityCreator([this](ClusterID clusterID, EntityFaculty faculty) -> Entity*
+			{
+				if (clusterID == ClusterID::Login && faculty == EntityFaculty::User)
+					return new(GetHeap()) LoginPlayerEntity;
+				return nullptr;
+			});
+		RegisterEntityCreator([this](ClusterID clusterID, EntityFaculty faculty) -> Entity*
+			{
+				if (clusterID == ClusterID::Game && faculty == EntityFaculty::User)
+					return new(GetHeap()) Svr::GamePlayerEntity;
+				return nullptr;
+			});
 	}
 
 	EntityManager::~EntityManager()
@@ -57,31 +70,17 @@ namespace Svr {
 
 	void EntityManager::RegisterEntityCreator(const EntityCreator& creator)
 	{
-		m_EntityCretors.push_back(creator);
+		m_EntityCreators.push_back(creator);
 	}
 
 	Result EntityManager::CreateEntity(ClusterID clusterID, EntityFaculty faculty, Entity* &pEntity)
 	{
-		for (auto itCreator : m_EntityCretors)
+		// registered laster gets higher priority
+		for (int iItem = m_EntityCreators.size() - 1; iItem >= 0; --iItem)
 		{
-			pEntity = itCreator(clusterID, faculty);
+			pEntity = m_EntityCreators[iItem](clusterID, faculty);
 			if (pEntity != nullptr)
 				return ResultCode::SUCCESS;
-		}
-
-		if (faculty == EntityFaculty::User)
-		{
-			switch (clusterID)
-			{
-			case ClusterID::Login:
-				pEntity = new(GetHeap()) LoginPlayerEntity;
-				break;
-			case ClusterID::Game:
-				pEntity = new(GetHeap()) Svr::GamePlayerEntity;
-				break;
-			default:
-				return ResultCode::INVALID_ARG;
-			}
 		}
 
 		return pEntity != nullptr ? ResultCode::SUCCESS : ResultCode::OUT_OF_MEMORY;

@@ -26,7 +26,7 @@ namespace Net {
 
 
 namespace SF {
-namespace ConspiracyGameInstanceServer {
+	namespace ConspiracyGameInstanceServer {
 
 	class GamePlayer;
 	class GameInstanceEntity;
