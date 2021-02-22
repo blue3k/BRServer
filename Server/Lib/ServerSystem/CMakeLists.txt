@@ -24,28 +24,30 @@ set(BRSERVERSYSTEM_LIB_FILES
     ServiceEntity/Party/GamePartyEntityTrans.cpp
     ServiceEntity/Party/GamePartyManagerServiceEntity.cpp
     ServiceEntity/Party/GamePartyManagerServiceTrans.cpp
-    ServiceEntity/Game/GameInstanceEntity.inl
     ServiceEntity/Game/GameSystem.inl
     ServiceEntity/Game/PlayerDirectoryManager.h
 	ServiceEntity/Game/PlayerDirectoryManager.cpp
-    ServiceEntity/Game/GameInstanceEntity.h
-    ServiceEntity/Game/GameInstanceManagerServiceEntity.h
-    ServiceEntity/Game/GameInstanceManagerServiceTrans.h
-    ServiceEntity/Game/GameInstancePlayer.h
-    ServiceEntity/Game/GameInstanceServiceEntity.h
-    ServiceEntity/Game/GameInstanceServiceTrans.h
-    ServiceEntity/Game/GamePlayerEntity.h
-    ServiceEntity/Game/GameServiceEntity.h
-    ServiceEntity/Game/GameServiceTrans.h
     ServiceEntity/Game/GameSystem.h
+    ServiceEntity/Game/GameInstanceEntity.h
+    ServiceEntity/Game/GameInstanceEntity.inl
     ServiceEntity/Game/GameInstanceEntity.cpp
+    ServiceEntity/Game/StaticGameInstanceManagerServiceEntity.h
+    ServiceEntity/Game/StaticGameInstanceManagerServiceEntity.cpp
+    ServiceEntity/Game/GameInstanceManagerServiceEntity.h
     ServiceEntity/Game/GameInstanceManagerServiceEntity.cpp
+    ServiceEntity/Game/GameInstanceManagerServiceTrans.h
     ServiceEntity/Game/GameInstanceManagerServiceTrans.cpp
+    ServiceEntity/Game/GameInstancePlayer.h
     ServiceEntity/Game/GameInstancePlayer.cpp
+    ServiceEntity/Game/GameInstanceServiceEntity.h
     ServiceEntity/Game/GameInstanceServiceEntity.cpp
+    ServiceEntity/Game/GameInstanceServiceTrans.h
     ServiceEntity/Game/GameInstanceServiceTrans.cpp
+    ServiceEntity/Game/GamePlayerEntity.h
     ServiceEntity/Game/GamePlayerEntity.cpp
+    ServiceEntity/Game/GameServiceEntity.h
     ServiceEntity/Game/GameServiceEntity.cpp
+    ServiceEntity/Game/GameServiceTrans.h
     ServiceEntity/Game/GameServiceTrans.cpp
     ServiceEntity/ServiceDirectoryManager.h
     ServiceEntity/ServiceDirectoryManager.cpp

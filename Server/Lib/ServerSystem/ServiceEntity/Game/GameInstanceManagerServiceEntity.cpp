@@ -1,6 +1,6 @@
 ////////////////////////////////////////////////////////////////////////////////
 // 
-// CopyRight (c) 2013 Kyungkun Ko
+// CopyRight (c) Kyungkun Ko
 // 
 // Author : KyungKun Ko
 //
@@ -25,6 +25,7 @@
 #include "ServiceEntity/Game/GameInstanceManagerServiceEntity.h"
 #include "ServiceEntity/Game/GameInstanceManagerServiceTrans.h"
 #include "ServiceEntity/Game/GameInstanceEntity.h"
+#include "Object/SFLibraryComponentAdapter.h"
 #include "SvrTrace.h"
 #include "SvrConst.h"
 #include "Service/ServerService.h"
@@ -44,16 +45,11 @@ namespace SF {
 		//	Entity informations
 		//
 
-		GameInstanceManagerServiceEntity::GameInstanceManagerServiceEntity(GameID gameID, ServerConfig::ServerModuleGameInstanceManager* config, ClusterID clusterID, ClusterMembership initialMembership)
-			: super(gameID, clusterID, initialMembership)
+		GameInstanceManagerServiceEntity::GameInstanceManagerServiceEntity(GameID gameID, ServerConfig::ServerModuleGameInstanceManager* config, ClusterID clusterID, const EndpointAddress& endpoint)
+			: super(gameID, clusterID, endpoint)
 			, m_NumberOfInstance("NumberOfGameInstances")
 			, m_GameInstances(GetHeap())
 		{
-			// Those are fallback handlers.
-			// ServerEntity will handle it
-			RegisterMessageHandler<GameInstanceTransCreateGameInstance>();
-			RegisterMessageHandler<GameInstanceTransGameInstanceDeleted>();
-			RegisterMessageHandler<GameInstanceTransSearchGameInstance>();
 		}
 
 		GameInstanceManagerServiceEntity::~GameInstanceManagerServiceEntity()
@@ -70,12 +66,15 @@ namespace SF {
 
 			svrCheck(Service::DataTableManager->LoadDataTable("ZoneTable", "ZoneId", "gtbl_ZoneTable"));
 
-			//entityUID = EntityUID(GetMyServerID(), Service::EntityTable->GenEntityID(EntityFaculty::Service));
 			pInstance = PerformanceCounterClient::GetDefaultCounterInstance();
 			if (pInstance != nullptr)
 			{
 				pInstance->AddCounter(&m_NumberOfInstance);
 			}
+
+			auto pEngine = Engine::GetInstance();
+			if (pEngine)
+				pEngine->AddComponent(new(GetEngineHeap) LibraryComponentAdapter<GameInstanceManagerServiceEntity>(GetEngineHeap(), this));
 
 			return hr;
 		}
@@ -87,9 +86,7 @@ namespace SF {
 			svrCheck(super::RegisterServiceMessageHandler());
 
 			// Let server entity handle it first
-			svrCheck(RegisterMessageHandler<GameInstanceTransCreateGameInstance>());
-			svrCheck(RegisterMessageHandler<GameInstanceTransGameInstanceDeleted>());
-			svrCheck(RegisterMessageHandler<GameInstanceTransSearchGameInstance>());
+			svrCheck(RegisterMessageHandler<GameInstanceManagerTransCreateGameInstance>());
 
 			return hr;
 		}
@@ -103,7 +100,7 @@ namespace SF {
 			if ((Service::EntityManager->AddEntity(EntityFaculty::GameInstance, (Entity*)pGameInstance)))
 			{
 				++m_NumberOfInstance;
-				m_LocalWorkload.fetch_add(1, std::memory_order_relaxed);
+				//m_LocalWorkload.fetch_add(1, std::memory_order_relaxed);
 			}
 
 			{
@@ -128,7 +125,7 @@ namespace SF {
 			if ((Service::EntityManager->RemoveEntity(gameUID.GetEntityID())))
 			{
 				--m_NumberOfInstance;
-				m_LocalWorkload.fetch_sub(1, std::memory_order_relaxed);
+				//m_LocalWorkload.fetch_sub(1, std::memory_order_relaxed);
 			}
 
 			return hr;
@@ -160,5 +157,3 @@ namespace SF {
 
 	} // namespace Svr {
 } // namespace SF {
-
-

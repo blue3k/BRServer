@@ -60,29 +60,29 @@ namespace SF {
 			: MessageTransaction(heap, Forward<MessageDataPtr>(pIMsg))
 			, m_GameInstances(GetHeap())
 		{
-			RegisterMessageHandler<Message::GameInstanceManager::SearchGameInstanceRes>(&PlayerTransSearchGameInstance::OnSearchGameInstanceRes);
+			//RegisterMessageHandler<Message::GameInstanceManager::SearchGameInstanceRes>(&PlayerTransSearchGameInstance::OnSearchGameInstanceRes);
 		}
 
-		Result PlayerTransSearchGameInstance::OnSearchGameInstanceRes(Svr::TransactionResult* pRes)
-		{
-			ScopeContext hr([this](Result hr)
-				{
-					CloseTransaction(hr);
-				});
-			Svr::MessageResult* pMsgRes = (Svr::MessageResult*)pRes;
-			Message::GameInstanceManager::SearchGameInstanceRes msgRes;
+		//Result PlayerTransSearchGameInstance::OnSearchGameInstanceRes(Svr::TransactionResult* pRes)
+		//{
+		//	ScopeContext hr([this](Result hr)
+		//		{
+		//			CloseTransaction(hr);
+		//		});
+		//	Svr::MessageResult* pMsgRes = (Svr::MessageResult*)pRes;
+		//	Message::GameInstanceManager::SearchGameInstanceRes msgRes;
 
-			svrCheckClose(pRes->GetResult());
+		//	svrCheckClose(pRes->GetResult());
 
-			svrCheck(msgRes.ParseMessage(*pMsgRes->GetMessage()));
+		//	svrCheck(msgRes.ParseMessage(*pMsgRes->GetMessage()));
 
-			GetMyOwner()->SetGameInsUID(msgRes.GetRouteContext().GetFrom());
+		//	GetMyOwner()->SetGameInsUID(msgRes.GetRouteContext().GetFrom());
 
-			m_GameInstances = msgRes.GetGameInstances();
-			// TODO: query game info for client
+		//	m_GameInstances = msgRes.GetGameInstances();
+		//	// TODO: query game info for client
 
-			return ResultCode::SUCCESS;
-		}
+		//	return ResultCode::SUCCESS;
+		//}
 
 		// Start Transaction
 		Result PlayerTransSearchGameInstance::StartTransaction()
@@ -104,8 +104,10 @@ namespace SF {
 				svrError(ResultCode::INVALID_PLAYERID);
 
 			svrCheck(Service::ServiceDirectory->GetRandomService(Service::ServerConfig->GameClusterID, ClusterID::GameInstanceManager, pService));
-			svrCheck(pService->GetService<GameInstanceManagerService>()->SearchGameInstanceCmd(GetTransID(), 0,
-				GetSearchKeyword()));
+			assert(false);
+			// TODO:
+			//svrCheck(pService->GetService<GameInstanceManagerService>()->SearchGameInstanceCmd(GetTransID(), 0,
+			//	GetSearchKeyword()));
 
 			return hr;
 		}
@@ -205,25 +207,6 @@ namespace SF {
 		}
 
 
-		// Start Transaction
-		Result PlayerTransJoinedS2SEvt::StartTransaction()
-		{
-			ScopeContext hr([this](Result hr)
-				{
-					CloseTransaction(hr);
-				});
-
-			svrCheck(super::StartTransaction());
-
-			if (GetMyOwner()->GetGameInsUID() != GetRouteContext().GetFrom())
-				svrErrorClose(ResultCode::INVALID_INSTANCEID);
-
-			svrCheck(NetSvrPolicyGame(GetRemoteEndpoint()).PlayerJoinedS2CEvt(GetRouteContext().GetFrom(), GetJoinedPlayer()));
-
-			return hr;
-		}
-
-
 		PlayerTransLeaveGameInstance::PlayerTransLeaveGameInstance(IHeap& heap, MessageDataPtr& pIMsg)
 			:MessageTransaction(heap, std::forward<MessageDataPtr>(pIMsg))
 		{
@@ -295,28 +278,6 @@ namespace SF {
 
 			return hr;
 		}
-
-
-		// Start Transaction
-		Result PlayerTransLeftS2SEvt::StartTransaction()
-		{
-			ScopeContext hr([this](Result hr)
-				{
-					CloseTransaction(hr);
-				});
-
-			svrCheck(super::StartTransaction());
-
-			if (GetMyOwner()->GetGameInsUID() != GetRouteContext().GetFrom())
-				svrErrorClose(ResultCode::INVALID_INSTANCEID);
-
-			svrCheck(NetSvrPolicyGame(GetRemoteEndpoint()).PlayerLeftS2CEvt(GetRouteContext().GetFrom(), GetLeftPlayerID()));
-
-			return hr;
-		}
-
-
-
 
 	}// namespace Svr 
 }// namespace SF 

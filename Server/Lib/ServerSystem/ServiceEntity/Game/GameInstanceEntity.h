@@ -20,34 +20,16 @@
 #include "Transaction/MessageRoute.h"
 #include "Entity/Entity.h"
 #include "Server/BrServer.h"
-#include "ServiceEntity/Game/GameSystem.h"
+
 #include "ServerSystem/GameLog/ChattingHistory.h"
-//#include "GameSystem/GameSystemComponentIDs.h"
-//
-//#include "ConspiracyGameInstanceSvrConst.h"
+
+#include "ServiceEntity/Game/GameSystem.h"
 #include "ServiceEntity/Game/GameInstancePlayer.h"
 
 #include "Protocol/Policy/GameServerNetPolicy.h"
 #include "Protocol/Policy/GameInstanceNetPolicy.h"
 
-//#include "Table/conspiracy/GameConfigTbl.h"
-//#include "Table/conspiracy/BotTalkTbl.h"
 
-
-namespace SF{ 
-namespace Net {
-	class Connection;
-}}
-
-namespace SF
-{
-	namespace Policy
-	{
-		//interface ISvrPolicyGame;
-		class ISvrPolicyGameInstance;
-	};
-
-};
 
 namespace SF {
 namespace Svr

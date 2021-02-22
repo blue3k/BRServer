@@ -1,29 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- edited with XMLSpy v2008 sp1 (http://www.altova.com) by abc (abc) -->
 <Protocols xmlns="http://www.StormForge.com/XMLProtocol" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.StormForge.com/XMLProtocol ../../../StormForge/Engine/Data/Protocol/ProtocolDef.xsd">
 	<ProtocolGroup Name="GameInstanceManager" GenParameterRouteContext="true" GenParameterRouteHopCount="true" IsMobile="false" IsServer="true" Desc="Game Instance manager service Protocol">
 
-		<!-- ============================  Server Generic  ============================================ -->
+		<!-- ============================  Create Game Instance  ============================================ -->
 
 		<Command Name="CreateGameInstance" Reliable="true" Crypto="No" Trace="Debug1" Desc="Create a game instance">
 			<Cmd>
-				<Params Type="VariableTable" Name="Attributes" Desc="Instance attributes"/>
+				<Params Type="uint32" Name="ZoneTableId" Desc="Zone table Id"/>
+				<Params Type="VariableTable" Name="Attributes" Desc="creation parameters"/>
 			</Cmd>
 			<Res>
 			</Res>
 		</Command>
-
-		<Command Name="SearchGameInstance" Reliable="true" Crypto="No" Trace="Debug1" Desc="Search game instance">
-			<Cmd>
-				<Params Type="String" Name="SearchKeyword" Desc="Search keyword"/>
-			</Cmd>
-			<Res>
-				<Params Type="GameInstanceInfo" IsArray="true" Name="GameInstances" Desc="Game instance informations"/>
-			</Res>
-		</Command>
-
-		<C2SEvent Name="GameInstanceDeleted" Reliable="true" Crypto="No" Trace="Debug1" Desc="Game instance notification of deletion">
-		</C2SEvent>
 
 		<!-- =============================  ======================================= -->
 

@@ -74,9 +74,6 @@ namespace SF {
 		LoginServiceEntity(const ServerConfig::NetPublic *publicNetSocket, const EndpointAddress& endpoint);
 		~LoginServiceEntity();
 
-		// We are not going to use hashed key
-		virtual uint KeyHash( uint64_t key ) { return (uint)key; }
-
 
 		//////////////////////////////////////////////////////////////////////////
 		//

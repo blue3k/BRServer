@@ -26,108 +26,8 @@ namespace SF
 	{
  		namespace GameInstance
 		{
- 			// C2S: Nitify that a game instance is deleted. Game instance send this message to manager before it destroy itself.
-			const MessageID DeleteGameC2SEvt::MID = MessageID(MSGTYPE_EVENT, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_GAMEINSTANCE, 0);
-			Result DeleteGameC2SEvt::ParseMessage(const MessageData* pIMsg)
-			{
- 				ScopeContext hr;
-
-
-				protocolCheckPtr(pIMsg);
-
-				size_t MsgDataSize = ((size_t)pIMsg->GetMessageSize() - sizeof(MessageHeader));
-				ArrayView<uint8_t> bufferView(MsgDataSize, pIMsg->GetMessageData());
-				InputMemoryStream inputStream(bufferView);
-				auto* input = inputStream.ToInputStream();
-				uint16_t ArrayLen = 0;(void)(ArrayLen);
-
-				protocolCheck(*input >> m_RouteContext);
-
-				return hr;
-
-			}; // Result DeleteGameC2SEvt::ParseMessage(const MessageData* pIMsg)
-
-
-			Result DeleteGameC2SEvt::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr&& pIMsg, MessageBase* &pMessageBase )
-			{
- 				ScopeContext hr;
-
-				protocolCheckMem(pMessageBase = new(memHeap) DeleteGameC2SEvt(std::forward<MessageDataPtr>(pIMsg)));
-				protocolCheck(pMessageBase->ParseMsg());
-
-				return hr;
-
-			}; // Result DeleteGameC2SEvt::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr&& pIMsg, MessageBase* &pMessageBase )
-
-
-			MessageData* DeleteGameC2SEvt::Create( IHeap& memHeap, const RouteContext &InRouteContext )
-			{
- 				MessageData *pNewMsg = nullptr;
-				ScopeContext hr([&pNewMsg](Result hr) -> MessageData*
-				{
- 					if(!hr && pNewMsg != nullptr)
-					{
- 						IHeap::Delete(pNewMsg);
-						return nullptr;
-					}
-					return pNewMsg;
-				});
-
-				uint8_t *pMsgData = nullptr;
-
-				unsigned __uiMessageSize = (unsigned)(sizeof(MessageHeader) 
-					+ SerializedSizeOf(InRouteContext)
-				);
-
-				protocolCheckMem( pNewMsg = MessageData::NewMessage( memHeap, GameInstance::DeleteGameC2SEvt::MID, __uiMessageSize ) );
-				auto MsgDataSize = static_cast<uint>((size_t)pNewMsg->GetMessageSize() - sizeof(MessageHeader));
-				ArrayView<uint8_t> BufferView(MsgDataSize, 0, pNewMsg->GetMessageData());
-				OutputMemoryStream outputStream(BufferView);
-				auto* output = outputStream.ToOutputStream();
-
-				protocolCheck(*output << InRouteContext);
-
-				return hr;
-			}; // MessageData* DeleteGameC2SEvt::Create( IHeap& memHeap, const RouteContext &InRouteContext )
-
-			Result DeleteGameC2SEvt::OverrideRouteContextDestination( EntityUID to )
-			{
- 				ScopeContext hr;
-
-				MessageData* pIMsg = GetMessage();
-				RouteContext routeContext;
-
-				protocolCheckPtr(pIMsg);
-
-				size_t MsgDataSize = (int)((size_t)pIMsg->GetMessageSize() - sizeof(MessageHeader));
-				ArrayView<uint8_t> bufferView(MsgDataSize, pIMsg->GetMessageData());
-				InputMemoryStream inputStream(bufferView);
-				auto* input = inputStream.ToInputStream();
-				uint16_t ArrayLen = 0;(void)(ArrayLen);
-				uint8_t* pCur = nullptr;(void)(pCur);
-
-				pCur = input->GetBufferPtr() + input->GetPosition();
-				Assert(input->GetRemainSize() >= sizeof(RouteContext));
-				memcpy( &routeContext, pCur, sizeof(RouteContext) );
-				routeContext.Components.To = to;
-				memcpy( pCur, &routeContext, sizeof(RouteContext) );
-
-				return hr;
-
-			}; // Result DeleteGameC2SEvt::OverrideRouteContextDestination( EntityUID to )
-
-
-			Result DeleteGameC2SEvt::TraceOut(const char* prefix, const MessageDataPtr& pMsg)
-			{
- 				DeleteGameC2SEvt parser;
-				parser.ParseMessage(*pMsg);
-				protocolTrace( Debug1, "DeleteGame:{0}:{1} , RouteContext:{2}",
-						prefix, pMsg->GetMessageHeader()->Length, parser.GetRouteContext()); 
-				return ResultCode::SUCCESS;
-			}; // Result DeleteGameC2SEvt::TraceOut(const char* prefix, const MessageDataPtr& pMsg)
-
-			// Cmd: Join to a game instance. You can call multiple times, but it would be waste
-			const MessageID JoinGameInstanceCmd::MID = MessageID(MSGTYPE_COMMAND, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_GAMEINSTANCE, 1);
+ 			// Cmd: Join to a game instance. You can call multiple times, but it would be a waste
+			const MessageID JoinGameInstanceCmd::MID = MessageID(MSGTYPE_COMMAND, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_GAMEINSTANCE, 0);
 			Result JoinGameInstanceCmd::ParseMessage(const MessageData* pIMsg)
 			{
  				ScopeContext hr;
@@ -232,7 +132,7 @@ namespace SF
 				return ResultCode::SUCCESS;
 			}; // Result JoinGameInstanceCmd::TraceOut(const char* prefix, const MessageDataPtr& pMsg)
 
-			const MessageID JoinGameInstanceRes::MID = MessageID(MSGTYPE_RESULT, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_GAMEINSTANCE, 1);
+			const MessageID JoinGameInstanceRes::MID = MessageID(MSGTYPE_RESULT, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_GAMEINSTANCE, 0);
 			Result JoinGameInstanceRes::ParseMessage(const MessageData* pIMsg)
 			{
  				ScopeContext hr;
@@ -249,7 +149,8 @@ namespace SF
 				protocolCheck(*input >> m_RouteContext);
 				protocolCheck(*input >> m_TransactionID);
 				protocolCheck(*input >> m_Result);
-				protocolCheck(*input >> m_GameInsSvr);
+				protocolCheck(*input >> m_GameInsSvr4);
+				protocolCheck(*input >> m_GameInsSvr6);
 				protocolCheck(*input >> m_TimeStamp);
 
 				return hr;
@@ -269,7 +170,7 @@ namespace SF
 			}; // Result JoinGameInstanceRes::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr&& pIMsg, MessageBase* &pMessageBase )
 
 
-			MessageData* JoinGameInstanceRes::Create( IHeap& memHeap, const RouteContext &InRouteContext, const uint64_t &InTransactionID, const Result &InResult, const NetAddress &InGameInsSvr, const uint32_t &InTimeStamp )
+			MessageData* JoinGameInstanceRes::Create( IHeap& memHeap, const RouteContext &InRouteContext, const uint64_t &InTransactionID, const Result &InResult, const NetAddress &InGameInsSvr4, const NetAddress &InGameInsSvr6, const uint32_t &InTimeStamp )
 			{
  				MessageData *pNewMsg = nullptr;
 				ScopeContext hr([&pNewMsg](Result hr) -> MessageData*
@@ -288,7 +189,8 @@ namespace SF
 					+ SerializedSizeOf(InRouteContext)
 					+ SerializedSizeOf(InTransactionID)
 					+ SerializedSizeOf(InResult)
-					+ SerializedSizeOf(InGameInsSvr)
+					+ SerializedSizeOf(InGameInsSvr4)
+					+ SerializedSizeOf(InGameInsSvr6)
 					+ SerializedSizeOf(InTimeStamp)
 				);
 
@@ -301,11 +203,12 @@ namespace SF
 				protocolCheck(*output << InRouteContext);
 				protocolCheck(*output << InTransactionID);
 				protocolCheck(*output << InResult);
-				protocolCheck(*output << InGameInsSvr);
+				protocolCheck(*output << InGameInsSvr4);
+				protocolCheck(*output << InGameInsSvr6);
 				protocolCheck(*output << InTimeStamp);
 
 				return hr;
-			}; // MessageData* JoinGameInstanceRes::Create( IHeap& memHeap, const RouteContext &InRouteContext, const uint64_t &InTransactionID, const Result &InResult, const NetAddress &InGameInsSvr, const uint32_t &InTimeStamp )
+			}; // MessageData* JoinGameInstanceRes::Create( IHeap& memHeap, const RouteContext &InRouteContext, const uint64_t &InTransactionID, const Result &InResult, const NetAddress &InGameInsSvr4, const NetAddress &InGameInsSvr6, const uint32_t &InTimeStamp )
 
 			Result JoinGameInstanceRes::OverrideRouteContextDestination( EntityUID to )
 			{
@@ -338,219 +241,13 @@ namespace SF
 			{
  				JoinGameInstanceRes parser;
 				parser.ParseMessage(*pMsg);
-				protocolTrace( Debug1, "JoinGameInstance:{0}:{1} , RouteContext:{2}, TransactionID:{3}, Result:{4:X8}, GameInsSvr:{5}, TimeStamp:{6}",
-						prefix, pMsg->GetMessageHeader()->Length, parser.GetRouteContext(), parser.GetTransactionID(), parser.GetResult(), parser.GetGameInsSvr(), parser.GetTimeStamp()); 
+				protocolTrace( Debug1, "JoinGameInstance:{0}:{1} , RouteContext:{2}, TransactionID:{3}, Result:{4:X8}, GameInsSvr4:{5}, GameInsSvr6:{6}, TimeStamp:{7}",
+						prefix, pMsg->GetMessageHeader()->Length, parser.GetRouteContext(), parser.GetTransactionID(), parser.GetResult(), parser.GetGameInsSvr4(), parser.GetGameInsSvr6(), parser.GetTimeStamp()); 
 				return ResultCode::SUCCESS;
 			}; // Result JoinGameInstanceRes::TraceOut(const char* prefix, const MessageDataPtr& pMsg)
 
-			// S2C: Player joined event. This event is brocasted when a player joined
-			const MessageID PlayerJoinedS2CEvt::MID = MessageID(MSGTYPE_EVENT, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_GAMEINSTANCE, 2);
-			Result PlayerJoinedS2CEvt::ParseMessage(const MessageData* pIMsg)
-			{
- 				ScopeContext hr;
-
-
-				protocolCheckPtr(pIMsg);
-
-				size_t MsgDataSize = ((size_t)pIMsg->GetMessageSize() - sizeof(MessageHeader));
-				ArrayView<uint8_t> bufferView(MsgDataSize, pIMsg->GetMessageData());
-				InputMemoryStream inputStream(bufferView);
-				auto* input = inputStream.ToInputStream();
-				uint16_t ArrayLen = 0;(void)(ArrayLen);
-
-				protocolCheck(*input >> m_RouteContext);
-				protocolCheck(*input >> m_JoinedPlayer);
-
-				return hr;
-
-			}; // Result PlayerJoinedS2CEvt::ParseMessage(const MessageData* pIMsg)
-
-
-			Result PlayerJoinedS2CEvt::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr&& pIMsg, MessageBase* &pMessageBase )
-			{
- 				ScopeContext hr;
-
-				protocolCheckMem(pMessageBase = new(memHeap) PlayerJoinedS2CEvt(std::forward<MessageDataPtr>(pIMsg)));
-				protocolCheck(pMessageBase->ParseMsg());
-
-				return hr;
-
-			}; // Result PlayerJoinedS2CEvt::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr&& pIMsg, MessageBase* &pMessageBase )
-
-
-			MessageData* PlayerJoinedS2CEvt::Create( IHeap& memHeap, const RouteContext &InRouteContext, const PlayerInformation &InJoinedPlayer )
-			{
- 				MessageData *pNewMsg = nullptr;
-				ScopeContext hr([&pNewMsg](Result hr) -> MessageData*
-				{
- 					if(!hr && pNewMsg != nullptr)
-					{
- 						IHeap::Delete(pNewMsg);
-						return nullptr;
-					}
-					return pNewMsg;
-				});
-
-				uint8_t *pMsgData = nullptr;
-
-				unsigned __uiMessageSize = (unsigned)(sizeof(MessageHeader) 
-					+ SerializedSizeOf(InRouteContext)
-					+ SerializedSizeOf(InJoinedPlayer)
-				);
-
-				protocolCheckMem( pNewMsg = MessageData::NewMessage( memHeap, GameInstance::PlayerJoinedS2CEvt::MID, __uiMessageSize ) );
-				auto MsgDataSize = static_cast<uint>((size_t)pNewMsg->GetMessageSize() - sizeof(MessageHeader));
-				ArrayView<uint8_t> BufferView(MsgDataSize, 0, pNewMsg->GetMessageData());
-				OutputMemoryStream outputStream(BufferView);
-				auto* output = outputStream.ToOutputStream();
-
-				protocolCheck(*output << InRouteContext);
-				protocolCheck(*output << InJoinedPlayer);
-
-				return hr;
-			}; // MessageData* PlayerJoinedS2CEvt::Create( IHeap& memHeap, const RouteContext &InRouteContext, const PlayerInformation &InJoinedPlayer )
-
-			Result PlayerJoinedS2CEvt::OverrideRouteContextDestination( EntityUID to )
-			{
- 				ScopeContext hr;
-
-				MessageData* pIMsg = GetMessage();
-				RouteContext routeContext;
-
-				protocolCheckPtr(pIMsg);
-
-				size_t MsgDataSize = (int)((size_t)pIMsg->GetMessageSize() - sizeof(MessageHeader));
-				ArrayView<uint8_t> bufferView(MsgDataSize, pIMsg->GetMessageData());
-				InputMemoryStream inputStream(bufferView);
-				auto* input = inputStream.ToInputStream();
-				uint16_t ArrayLen = 0;(void)(ArrayLen);
-				uint8_t* pCur = nullptr;(void)(pCur);
-
-				pCur = input->GetBufferPtr() + input->GetPosition();
-				Assert(input->GetRemainSize() >= sizeof(RouteContext));
-				memcpy( &routeContext, pCur, sizeof(RouteContext) );
-				routeContext.Components.To = to;
-				memcpy( pCur, &routeContext, sizeof(RouteContext) );
-
-				return hr;
-
-			}; // Result PlayerJoinedS2CEvt::OverrideRouteContextDestination( EntityUID to )
-
-
-			Result PlayerJoinedS2CEvt::TraceOut(const char* prefix, const MessageDataPtr& pMsg)
-			{
- 				PlayerJoinedS2CEvt parser;
-				parser.ParseMessage(*pMsg);
-				protocolTrace( Debug1, "PlayerJoined:{0}:{1} , RouteContext:{2}, JoinedPlayer:{3}",
-						prefix, pMsg->GetMessageHeader()->Length, parser.GetRouteContext(), parser.GetJoinedPlayer()); 
-				return ResultCode::SUCCESS;
-			}; // Result PlayerJoinedS2CEvt::TraceOut(const char* prefix, const MessageDataPtr& pMsg)
-
-			// C2S: For debug purpose, change configue preset. There is a game setting table. you can switch between those setting value.
-			const MessageID SetConfigPresetC2SEvt::MID = MessageID(MSGTYPE_EVENT, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_GAMEINSTANCE, 3);
-			Result SetConfigPresetC2SEvt::ParseMessage(const MessageData* pIMsg)
-			{
- 				ScopeContext hr;
-
-
-				protocolCheckPtr(pIMsg);
-
-				size_t MsgDataSize = ((size_t)pIMsg->GetMessageSize() - sizeof(MessageHeader));
-				ArrayView<uint8_t> bufferView(MsgDataSize, pIMsg->GetMessageData());
-				InputMemoryStream inputStream(bufferView);
-				auto* input = inputStream.ToInputStream();
-				uint16_t ArrayLen = 0;(void)(ArrayLen);
-
-				protocolCheck(*input >> m_RouteContext);
-				protocolCheck(*input >> m_PresetID);
-
-				return hr;
-
-			}; // Result SetConfigPresetC2SEvt::ParseMessage(const MessageData* pIMsg)
-
-
-			Result SetConfigPresetC2SEvt::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr&& pIMsg, MessageBase* &pMessageBase )
-			{
- 				ScopeContext hr;
-
-				protocolCheckMem(pMessageBase = new(memHeap) SetConfigPresetC2SEvt(std::forward<MessageDataPtr>(pIMsg)));
-				protocolCheck(pMessageBase->ParseMsg());
-
-				return hr;
-
-			}; // Result SetConfigPresetC2SEvt::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr&& pIMsg, MessageBase* &pMessageBase )
-
-
-			MessageData* SetConfigPresetC2SEvt::Create( IHeap& memHeap, const RouteContext &InRouteContext, const uint32_t &InPresetID )
-			{
- 				MessageData *pNewMsg = nullptr;
-				ScopeContext hr([&pNewMsg](Result hr) -> MessageData*
-				{
- 					if(!hr && pNewMsg != nullptr)
-					{
- 						IHeap::Delete(pNewMsg);
-						return nullptr;
-					}
-					return pNewMsg;
-				});
-
-				uint8_t *pMsgData = nullptr;
-
-				unsigned __uiMessageSize = (unsigned)(sizeof(MessageHeader) 
-					+ SerializedSizeOf(InRouteContext)
-					+ SerializedSizeOf(InPresetID)
-				);
-
-				protocolCheckMem( pNewMsg = MessageData::NewMessage( memHeap, GameInstance::SetConfigPresetC2SEvt::MID, __uiMessageSize ) );
-				auto MsgDataSize = static_cast<uint>((size_t)pNewMsg->GetMessageSize() - sizeof(MessageHeader));
-				ArrayView<uint8_t> BufferView(MsgDataSize, 0, pNewMsg->GetMessageData());
-				OutputMemoryStream outputStream(BufferView);
-				auto* output = outputStream.ToOutputStream();
-
-				protocolCheck(*output << InRouteContext);
-				protocolCheck(*output << InPresetID);
-
-				return hr;
-			}; // MessageData* SetConfigPresetC2SEvt::Create( IHeap& memHeap, const RouteContext &InRouteContext, const uint32_t &InPresetID )
-
-			Result SetConfigPresetC2SEvt::OverrideRouteContextDestination( EntityUID to )
-			{
- 				ScopeContext hr;
-
-				MessageData* pIMsg = GetMessage();
-				RouteContext routeContext;
-
-				protocolCheckPtr(pIMsg);
-
-				size_t MsgDataSize = (int)((size_t)pIMsg->GetMessageSize() - sizeof(MessageHeader));
-				ArrayView<uint8_t> bufferView(MsgDataSize, pIMsg->GetMessageData());
-				InputMemoryStream inputStream(bufferView);
-				auto* input = inputStream.ToInputStream();
-				uint16_t ArrayLen = 0;(void)(ArrayLen);
-				uint8_t* pCur = nullptr;(void)(pCur);
-
-				pCur = input->GetBufferPtr() + input->GetPosition();
-				Assert(input->GetRemainSize() >= sizeof(RouteContext));
-				memcpy( &routeContext, pCur, sizeof(RouteContext) );
-				routeContext.Components.To = to;
-				memcpy( pCur, &routeContext, sizeof(RouteContext) );
-
-				return hr;
-
-			}; // Result SetConfigPresetC2SEvt::OverrideRouteContextDestination( EntityUID to )
-
-
-			Result SetConfigPresetC2SEvt::TraceOut(const char* prefix, const MessageDataPtr& pMsg)
-			{
- 				SetConfigPresetC2SEvt parser;
-				parser.ParseMessage(*pMsg);
-				protocolTrace( Debug1, "SetConfigPreset:{0}:{1} , RouteContext:{2}, PresetID:{3}",
-						prefix, pMsg->GetMessageHeader()->Length, parser.GetRouteContext(), parser.GetPresetID()); 
-				return ResultCode::SUCCESS;
-			}; // Result SetConfigPresetC2SEvt::TraceOut(const char* prefix, const MessageDataPtr& pMsg)
-
 			// Cmd: Leave game instance.
-			const MessageID LeaveGameInstanceCmd::MID = MessageID(MSGTYPE_COMMAND, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_GAMEINSTANCE, 4);
+			const MessageID LeaveGameInstanceCmd::MID = MessageID(MSGTYPE_COMMAND, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_GAMEINSTANCE, 1);
 			Result LeaveGameInstanceCmd::ParseMessage(const MessageData* pIMsg)
 			{
  				ScopeContext hr;
@@ -655,7 +352,7 @@ namespace SF
 				return ResultCode::SUCCESS;
 			}; // Result LeaveGameInstanceCmd::TraceOut(const char* prefix, const MessageDataPtr& pMsg)
 
-			const MessageID LeaveGameInstanceRes::MID = MessageID(MSGTYPE_RESULT, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_GAMEINSTANCE, 4);
+			const MessageID LeaveGameInstanceRes::MID = MessageID(MSGTYPE_RESULT, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_GAMEINSTANCE, 1);
 			Result LeaveGameInstanceRes::ParseMessage(const MessageData* pIMsg)
 			{
  				ScopeContext hr;
@@ -760,111 +457,8 @@ namespace SF
 				return ResultCode::SUCCESS;
 			}; // Result LeaveGameInstanceRes::TraceOut(const char* prefix, const MessageDataPtr& pMsg)
 
-			// S2C: Player left event.
-			const MessageID PlayerLeftS2CEvt::MID = MessageID(MSGTYPE_EVENT, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_GAMEINSTANCE, 5);
-			Result PlayerLeftS2CEvt::ParseMessage(const MessageData* pIMsg)
-			{
- 				ScopeContext hr;
-
-
-				protocolCheckPtr(pIMsg);
-
-				size_t MsgDataSize = ((size_t)pIMsg->GetMessageSize() - sizeof(MessageHeader));
-				ArrayView<uint8_t> bufferView(MsgDataSize, pIMsg->GetMessageData());
-				InputMemoryStream inputStream(bufferView);
-				auto* input = inputStream.ToInputStream();
-				uint16_t ArrayLen = 0;(void)(ArrayLen);
-
-				protocolCheck(*input >> m_RouteContext);
-				protocolCheck(*input >> m_LeftPlayerID);
-
-				return hr;
-
-			}; // Result PlayerLeftS2CEvt::ParseMessage(const MessageData* pIMsg)
-
-
-			Result PlayerLeftS2CEvt::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr&& pIMsg, MessageBase* &pMessageBase )
-			{
- 				ScopeContext hr;
-
-				protocolCheckMem(pMessageBase = new(memHeap) PlayerLeftS2CEvt(std::forward<MessageDataPtr>(pIMsg)));
-				protocolCheck(pMessageBase->ParseMsg());
-
-				return hr;
-
-			}; // Result PlayerLeftS2CEvt::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr&& pIMsg, MessageBase* &pMessageBase )
-
-
-			MessageData* PlayerLeftS2CEvt::Create( IHeap& memHeap, const RouteContext &InRouteContext, const PlayerID &InLeftPlayerID )
-			{
- 				MessageData *pNewMsg = nullptr;
-				ScopeContext hr([&pNewMsg](Result hr) -> MessageData*
-				{
- 					if(!hr && pNewMsg != nullptr)
-					{
- 						IHeap::Delete(pNewMsg);
-						return nullptr;
-					}
-					return pNewMsg;
-				});
-
-				uint8_t *pMsgData = nullptr;
-
-				unsigned __uiMessageSize = (unsigned)(sizeof(MessageHeader) 
-					+ SerializedSizeOf(InRouteContext)
-					+ SerializedSizeOf(InLeftPlayerID)
-				);
-
-				protocolCheckMem( pNewMsg = MessageData::NewMessage( memHeap, GameInstance::PlayerLeftS2CEvt::MID, __uiMessageSize ) );
-				auto MsgDataSize = static_cast<uint>((size_t)pNewMsg->GetMessageSize() - sizeof(MessageHeader));
-				ArrayView<uint8_t> BufferView(MsgDataSize, 0, pNewMsg->GetMessageData());
-				OutputMemoryStream outputStream(BufferView);
-				auto* output = outputStream.ToOutputStream();
-
-				protocolCheck(*output << InRouteContext);
-				protocolCheck(*output << InLeftPlayerID);
-
-				return hr;
-			}; // MessageData* PlayerLeftS2CEvt::Create( IHeap& memHeap, const RouteContext &InRouteContext, const PlayerID &InLeftPlayerID )
-
-			Result PlayerLeftS2CEvt::OverrideRouteContextDestination( EntityUID to )
-			{
- 				ScopeContext hr;
-
-				MessageData* pIMsg = GetMessage();
-				RouteContext routeContext;
-
-				protocolCheckPtr(pIMsg);
-
-				size_t MsgDataSize = (int)((size_t)pIMsg->GetMessageSize() - sizeof(MessageHeader));
-				ArrayView<uint8_t> bufferView(MsgDataSize, pIMsg->GetMessageData());
-				InputMemoryStream inputStream(bufferView);
-				auto* input = inputStream.ToInputStream();
-				uint16_t ArrayLen = 0;(void)(ArrayLen);
-				uint8_t* pCur = nullptr;(void)(pCur);
-
-				pCur = input->GetBufferPtr() + input->GetPosition();
-				Assert(input->GetRemainSize() >= sizeof(RouteContext));
-				memcpy( &routeContext, pCur, sizeof(RouteContext) );
-				routeContext.Components.To = to;
-				memcpy( pCur, &routeContext, sizeof(RouteContext) );
-
-				return hr;
-
-			}; // Result PlayerLeftS2CEvt::OverrideRouteContextDestination( EntityUID to )
-
-
-			Result PlayerLeftS2CEvt::TraceOut(const char* prefix, const MessageDataPtr& pMsg)
-			{
- 				PlayerLeftS2CEvt parser;
-				parser.ParseMessage(*pMsg);
-				protocolTrace( Debug1, "PlayerLeft:{0}:{1} , RouteContext:{2}, LeftPlayerID:{3}",
-						prefix, pMsg->GetMessageHeader()->Length, parser.GetRouteContext(), parser.GetLeftPlayerID()); 
-				return ResultCode::SUCCESS;
-			}; // Result PlayerLeftS2CEvt::TraceOut(const char* prefix, const MessageDataPtr& pMsg)
-
 			// C2S: Player Movement
-			const MessageID PlayerMovementC2SEvt::MID = MessageID(MSGTYPE_EVENT, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_GAMEINSTANCE, 6);
+			const MessageID PlayerMovementC2SEvt::MID = MessageID(MSGTYPE_EVENT, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_GAMEINSTANCE, 2);
 			const VariableTable& PlayerMovementC2SEvt::GetAttributes() const
 			{
  				if (!m_AttributesHasParsed)
@@ -1025,7 +619,7 @@ namespace SF
 			}; // Result PlayerMovementC2SEvt::TraceOut(const char* prefix, const MessageDataPtr& pMsg)
 
 			// S2C: Player Movement
-			const MessageID PlayerMovementS2CEvt::MID = MessageID(MSGTYPE_EVENT, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_GAMEINSTANCE, 7);
+			const MessageID PlayerMovementS2CEvt::MID = MessageID(MSGTYPE_EVENT, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_GAMEINSTANCE, 3);
 			const VariableTable& PlayerMovementS2CEvt::GetAttributes() const
 			{
  				if (!m_AttributesHasParsed)
@@ -1186,7 +780,7 @@ namespace SF
 			}; // Result PlayerMovementS2CEvt::TraceOut(const char* prefix, const MessageDataPtr& pMsg)
 
 			// Cmd: Kick player with given ID
-			const MessageID KickPlayerCmd::MID = MessageID(MSGTYPE_COMMAND, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_GAMEINSTANCE, 8);
+			const MessageID KickPlayerCmd::MID = MessageID(MSGTYPE_COMMAND, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_GAMEINSTANCE, 4);
 			Result KickPlayerCmd::ParseMessage(const MessageData* pIMsg)
 			{
  				ScopeContext hr;
@@ -1294,7 +888,7 @@ namespace SF
 				return ResultCode::SUCCESS;
 			}; // Result KickPlayerCmd::TraceOut(const char* prefix, const MessageDataPtr& pMsg)
 
-			const MessageID KickPlayerRes::MID = MessageID(MSGTYPE_RESULT, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_GAMEINSTANCE, 8);
+			const MessageID KickPlayerRes::MID = MessageID(MSGTYPE_RESULT, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_GAMEINSTANCE, 4);
 			Result KickPlayerRes::ParseMessage(const MessageData* pIMsg)
 			{
  				ScopeContext hr;
@@ -1400,7 +994,7 @@ namespace SF
 			}; // Result KickPlayerRes::TraceOut(const char* prefix, const MessageDataPtr& pMsg)
 
 			// S2C: Player kicked event. this event will be brocasted when a player kicked.
-			const MessageID PlayerKickedS2CEvt::MID = MessageID(MSGTYPE_EVENT, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_GAMEINSTANCE, 9);
+			const MessageID PlayerKickedS2CEvt::MID = MessageID(MSGTYPE_EVENT, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_GAMEINSTANCE, 5);
 			Result PlayerKickedS2CEvt::ParseMessage(const MessageData* pIMsg)
 			{
  				ScopeContext hr;
@@ -1503,7 +1097,7 @@ namespace SF
 			}; // Result PlayerKickedS2CEvt::TraceOut(const char* prefix, const MessageDataPtr& pMsg)
 
 			// Cmd: Join to a game instance. You can call multiple times, but it would be waste
-			const MessageID JoinGameCmd::MID = MessageID(MSGTYPE_COMMAND, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_GAMEINSTANCE, 10);
+			const MessageID JoinGameCmd::MID = MessageID(MSGTYPE_COMMAND, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_GAMEINSTANCE, 6);
 			Result JoinGameCmd::ParseMessage(const MessageData* pIMsg)
 			{
  				ScopeContext hr;
@@ -1611,7 +1205,7 @@ namespace SF
 				return ResultCode::SUCCESS;
 			}; // Result JoinGameCmd::TraceOut(const char* prefix, const MessageDataPtr& pMsg)
 
-			const MessageID JoinGameRes::MID = MessageID(MSGTYPE_RESULT, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_GAMEINSTANCE, 10);
+			const MessageID JoinGameRes::MID = MessageID(MSGTYPE_RESULT, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_GAMEINSTANCE, 6);
 			Result JoinGameRes::ParseMessage(const MessageData* pIMsg)
 			{
  				ScopeContext hr;
@@ -1759,7 +1353,7 @@ namespace SF
 			}; // Result JoinGameRes::TraceOut(const char* prefix, const MessageDataPtr& pMsg)
 
 			// Cmd: Assign new roles to all players.
-			const MessageID AssignRoleCmd::MID = MessageID(MSGTYPE_COMMAND, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_GAMEINSTANCE, 11);
+			const MessageID AssignRoleCmd::MID = MessageID(MSGTYPE_COMMAND, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_GAMEINSTANCE, 7);
 			Result AssignRoleCmd::ParseMessage(const MessageData* pIMsg)
 			{
  				ScopeContext hr;
@@ -1864,7 +1458,7 @@ namespace SF
 				return ResultCode::SUCCESS;
 			}; // Result AssignRoleCmd::TraceOut(const char* prefix, const MessageDataPtr& pMsg)
 
-			const MessageID AssignRoleRes::MID = MessageID(MSGTYPE_RESULT, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_GAMEINSTANCE, 11);
+			const MessageID AssignRoleRes::MID = MessageID(MSGTYPE_RESULT, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_GAMEINSTANCE, 7);
 			Result AssignRoleRes::ParseMessage(const MessageData* pIMsg)
 			{
  				ScopeContext hr;
@@ -1970,7 +1564,7 @@ namespace SF
 			}; // Result AssignRoleRes::TraceOut(const char* prefix, const MessageDataPtr& pMsg)
 
 			// S2C: Event for role assigned
-			const MessageID RoleAssignedS2CEvt::MID = MessageID(MSGTYPE_EVENT, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_GAMEINSTANCE, 12);
+			const MessageID RoleAssignedS2CEvt::MID = MessageID(MSGTYPE_EVENT, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_GAMEINSTANCE, 8);
 			Result RoleAssignedS2CEvt::ParseMessage(const MessageData* pIMsg)
 			{
  				ScopeContext hr;
@@ -2073,7 +1667,7 @@ namespace SF
 			}; // Result RoleAssignedS2CEvt::TraceOut(const char* prefix, const MessageDataPtr& pMsg)
 
 			// C2S: in-game chatting message.
-			const MessageID ChatMessageC2SEvt::MID = MessageID(MSGTYPE_EVENT, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_GAMEINSTANCE, 13);
+			const MessageID ChatMessageC2SEvt::MID = MessageID(MSGTYPE_EVENT, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_GAMEINSTANCE, 9);
 			Result ChatMessageC2SEvt::ParseMessage(const MessageData* pIMsg)
 			{
  				ScopeContext hr;
@@ -2183,7 +1777,7 @@ namespace SF
 			}; // Result ChatMessageC2SEvt::TraceOut(const char* prefix, const MessageDataPtr& pMsg)
 
 			// Cmd: Advance game
-			const MessageID AdvanceGameCmd::MID = MessageID(MSGTYPE_COMMAND, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_GAMEINSTANCE, 14);
+			const MessageID AdvanceGameCmd::MID = MessageID(MSGTYPE_COMMAND, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_GAMEINSTANCE, 10);
 			Result AdvanceGameCmd::ParseMessage(const MessageData* pIMsg)
 			{
  				ScopeContext hr;
@@ -2288,7 +1882,7 @@ namespace SF
 				return ResultCode::SUCCESS;
 			}; // Result AdvanceGameCmd::TraceOut(const char* prefix, const MessageDataPtr& pMsg)
 
-			const MessageID AdvanceGameRes::MID = MessageID(MSGTYPE_RESULT, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_GAMEINSTANCE, 14);
+			const MessageID AdvanceGameRes::MID = MessageID(MSGTYPE_RESULT, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_GAMEINSTANCE, 10);
 			Result AdvanceGameRes::ParseMessage(const MessageData* pIMsg)
 			{
  				ScopeContext hr;
@@ -2394,7 +1988,7 @@ namespace SF
 			}; // Result AdvanceGameRes::TraceOut(const char* prefix, const MessageDataPtr& pMsg)
 
 			// S2C: The game state is advanced
-			const MessageID GameAdvancedS2CEvt::MID = MessageID(MSGTYPE_EVENT, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_GAMEINSTANCE, 15);
+			const MessageID GameAdvancedS2CEvt::MID = MessageID(MSGTYPE_EVENT, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_GAMEINSTANCE, 11);
 			Result GameAdvancedS2CEvt::ParseMessage(const MessageData* pIMsg)
 			{
  				ScopeContext hr;
@@ -2503,7 +2097,7 @@ namespace SF
 			}; // Result GameAdvancedS2CEvt::TraceOut(const char* prefix, const MessageDataPtr& pMsg)
 
 			// S2C: Game is ended
-			const MessageID GameEndedS2CEvt::MID = MessageID(MSGTYPE_EVENT, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_GAMEINSTANCE, 16);
+			const MessageID GameEndedS2CEvt::MID = MessageID(MSGTYPE_EVENT, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_GAMEINSTANCE, 12);
 			Result GameEndedS2CEvt::ParseMessage(const MessageData* pIMsg)
 			{
  				ScopeContext hr;
@@ -2618,7 +2212,7 @@ namespace SF
 			}; // Result GameEndedS2CEvt::TraceOut(const char* prefix, const MessageDataPtr& pMsg)
 
 			// Cmd: *Vote game advance
-			const MessageID VoteGameAdvanceCmd::MID = MessageID(MSGTYPE_COMMAND, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_GAMEINSTANCE, 17);
+			const MessageID VoteGameAdvanceCmd::MID = MessageID(MSGTYPE_COMMAND, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_GAMEINSTANCE, 13);
 			Result VoteGameAdvanceCmd::ParseMessage(const MessageData* pIMsg)
 			{
  				ScopeContext hr;
@@ -2723,7 +2317,7 @@ namespace SF
 				return ResultCode::SUCCESS;
 			}; // Result VoteGameAdvanceCmd::TraceOut(const char* prefix, const MessageDataPtr& pMsg)
 
-			const MessageID VoteGameAdvanceRes::MID = MessageID(MSGTYPE_RESULT, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_GAMEINSTANCE, 17);
+			const MessageID VoteGameAdvanceRes::MID = MessageID(MSGTYPE_RESULT, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_GAMEINSTANCE, 13);
 			Result VoteGameAdvanceRes::ParseMessage(const MessageData* pIMsg)
 			{
  				ScopeContext hr;
@@ -2829,7 +2423,7 @@ namespace SF
 			}; // Result VoteGameAdvanceRes::TraceOut(const char* prefix, const MessageDataPtr& pMsg)
 
 			// S2C: *GameAdvance is Voted
-			const MessageID GameAdvanceVotedS2CEvt::MID = MessageID(MSGTYPE_EVENT, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_GAMEINSTANCE, 18);
+			const MessageID GameAdvanceVotedS2CEvt::MID = MessageID(MSGTYPE_EVENT, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_GAMEINSTANCE, 14);
 			Result GameAdvanceVotedS2CEvt::ParseMessage(const MessageData* pIMsg)
 			{
  				ScopeContext hr;
@@ -2932,7 +2526,7 @@ namespace SF
 			}; // Result GameAdvanceVotedS2CEvt::TraceOut(const char* prefix, const MessageDataPtr& pMsg)
 
 			// Cmd: Assign role
-			const MessageID VoteCmd::MID = MessageID(MSGTYPE_COMMAND, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_GAMEINSTANCE, 19);
+			const MessageID VoteCmd::MID = MessageID(MSGTYPE_COMMAND, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_GAMEINSTANCE, 15);
 			Result VoteCmd::ParseMessage(const MessageData* pIMsg)
 			{
  				ScopeContext hr;
@@ -3043,7 +2637,7 @@ namespace SF
 				return ResultCode::SUCCESS;
 			}; // Result VoteCmd::TraceOut(const char* prefix, const MessageDataPtr& pMsg)
 
-			const MessageID VoteRes::MID = MessageID(MSGTYPE_RESULT, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_GAMEINSTANCE, 19);
+			const MessageID VoteRes::MID = MessageID(MSGTYPE_RESULT, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_GAMEINSTANCE, 15);
 			Result VoteRes::ParseMessage(const MessageData* pIMsg)
 			{
  				ScopeContext hr;
@@ -3149,7 +2743,7 @@ namespace SF
 			}; // Result VoteRes::TraceOut(const char* prefix, const MessageDataPtr& pMsg)
 
 			// S2C: Player Voted
-			const MessageID VotedS2CEvt::MID = MessageID(MSGTYPE_EVENT, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_GAMEINSTANCE, 20);
+			const MessageID VotedS2CEvt::MID = MessageID(MSGTYPE_EVENT, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_GAMEINSTANCE, 16);
 			Result VotedS2CEvt::ParseMessage(const MessageData* pIMsg)
 			{
  				ScopeContext hr;
@@ -3255,7 +2849,7 @@ namespace SF
 			}; // Result VotedS2CEvt::TraceOut(const char* prefix, const MessageDataPtr& pMsg)
 
 			// S2C: Player Voted
-			const MessageID VoteEndS2CEvt::MID = MessageID(MSGTYPE_EVENT, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_GAMEINSTANCE, 21);
+			const MessageID VoteEndS2CEvt::MID = MessageID(MSGTYPE_EVENT, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_GAMEINSTANCE, 17);
 			Result VoteEndS2CEvt::ParseMessage(const MessageData* pIMsg)
 			{
  				ScopeContext hr;
@@ -3361,7 +2955,7 @@ namespace SF
 			}; // Result VoteEndS2CEvt::TraceOut(const char* prefix, const MessageDataPtr& pMsg)
 
 			// S2C: Player Voted
-			const MessageID PlayerRevealedS2CEvt::MID = MessageID(MSGTYPE_EVENT, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_GAMEINSTANCE, 22);
+			const MessageID PlayerRevealedS2CEvt::MID = MessageID(MSGTYPE_EVENT, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_GAMEINSTANCE, 18);
 			Result PlayerRevealedS2CEvt::ParseMessage(const MessageData* pIMsg)
 			{
  				ScopeContext hr;
@@ -3470,7 +3064,7 @@ namespace SF
 			}; // Result PlayerRevealedS2CEvt::TraceOut(const char* prefix, const MessageDataPtr& pMsg)
 
 			// S2C: Player Killed
-			const MessageID PlayerKilledS2CEvt::MID = MessageID(MSGTYPE_EVENT, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_GAMEINSTANCE, 23);
+			const MessageID PlayerKilledS2CEvt::MID = MessageID(MSGTYPE_EVENT, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_GAMEINSTANCE, 19);
 			Result PlayerKilledS2CEvt::ParseMessage(const MessageData* pIMsg)
 			{
  				ScopeContext hr;
@@ -3576,7 +3170,7 @@ namespace SF
 			}; // Result PlayerKilledS2CEvt::TraceOut(const char* prefix, const MessageDataPtr& pMsg)
 
 			// Cmd: Play again with the current players
-			const MessageID GamePlayAgainCmd::MID = MessageID(MSGTYPE_COMMAND, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_GAMEINSTANCE, 24);
+			const MessageID GamePlayAgainCmd::MID = MessageID(MSGTYPE_COMMAND, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_GAMEINSTANCE, 20);
 			Result GamePlayAgainCmd::ParseMessage(const MessageData* pIMsg)
 			{
  				ScopeContext hr;
@@ -3684,7 +3278,7 @@ namespace SF
 				return ResultCode::SUCCESS;
 			}; // Result GamePlayAgainCmd::TraceOut(const char* prefix, const MessageDataPtr& pMsg)
 
-			const MessageID GamePlayAgainRes::MID = MessageID(MSGTYPE_RESULT, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_GAMEINSTANCE, 24);
+			const MessageID GamePlayAgainRes::MID = MessageID(MSGTYPE_RESULT, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_GAMEINSTANCE, 20);
 			Result GamePlayAgainRes::ParseMessage(const MessageData* pIMsg)
 			{
  				ScopeContext hr;
@@ -3793,7 +3387,7 @@ namespace SF
 			}; // Result GamePlayAgainRes::TraceOut(const char* prefix, const MessageDataPtr& pMsg)
 
 			// S2C: Somebody pressed play again. Only one of PartyUID and GameInsUID can have a value
-			const MessageID GamePlayAgainS2CEvt::MID = MessageID(MSGTYPE_EVENT, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_GAMEINSTANCE, 25);
+			const MessageID GamePlayAgainS2CEvt::MID = MessageID(MSGTYPE_EVENT, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_GAMEINSTANCE, 21);
 			Result GamePlayAgainS2CEvt::ParseMessage(const MessageData* pIMsg)
 			{
  				ScopeContext hr;
@@ -3902,7 +3496,7 @@ namespace SF
 			}; // Result GamePlayAgainS2CEvt::TraceOut(const char* prefix, const MessageDataPtr& pMsg)
 
 			// Cmd: Player. revive himself
-			const MessageID GameRevealPlayerCmd::MID = MessageID(MSGTYPE_COMMAND, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_GAMEINSTANCE, 26);
+			const MessageID GameRevealPlayerCmd::MID = MessageID(MSGTYPE_COMMAND, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_GAMEINSTANCE, 22);
 			Result GameRevealPlayerCmd::ParseMessage(const MessageData* pIMsg)
 			{
  				ScopeContext hr;
@@ -4013,7 +3607,7 @@ namespace SF
 				return ResultCode::SUCCESS;
 			}; // Result GameRevealPlayerCmd::TraceOut(const char* prefix, const MessageDataPtr& pMsg)
 
-			const MessageID GameRevealPlayerRes::MID = MessageID(MSGTYPE_RESULT, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_GAMEINSTANCE, 26);
+			const MessageID GameRevealPlayerRes::MID = MessageID(MSGTYPE_RESULT, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_GAMEINSTANCE, 22);
 			Result GameRevealPlayerRes::ParseMessage(const MessageData* pIMsg)
 			{
  				ScopeContext hr;
@@ -4131,7 +3725,7 @@ namespace SF
 			}; // Result GameRevealPlayerRes::TraceOut(const char* prefix, const MessageDataPtr& pMsg)
 
 			// Cmd: Player. revive himself
-			const MessageID GamePlayerReviveCmd::MID = MessageID(MSGTYPE_COMMAND, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_GAMEINSTANCE, 27);
+			const MessageID GamePlayerReviveCmd::MID = MessageID(MSGTYPE_COMMAND, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_GAMEINSTANCE, 23);
 			Result GamePlayerReviveCmd::ParseMessage(const MessageData* pIMsg)
 			{
  				ScopeContext hr;
@@ -4236,7 +3830,7 @@ namespace SF
 				return ResultCode::SUCCESS;
 			}; // Result GamePlayerReviveCmd::TraceOut(const char* prefix, const MessageDataPtr& pMsg)
 
-			const MessageID GamePlayerReviveRes::MID = MessageID(MSGTYPE_RESULT, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_GAMEINSTANCE, 27);
+			const MessageID GamePlayerReviveRes::MID = MessageID(MSGTYPE_RESULT, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_GAMEINSTANCE, 23);
 			Result GamePlayerReviveRes::ParseMessage(const MessageData* pIMsg)
 			{
  				ScopeContext hr;
@@ -4342,7 +3936,7 @@ namespace SF
 			}; // Result GamePlayerReviveRes::TraceOut(const char* prefix, const MessageDataPtr& pMsg)
 
 			// S2C: Player is revived
-			const MessageID GamePlayerRevivedS2CEvt::MID = MessageID(MSGTYPE_EVENT, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_GAMEINSTANCE, 28);
+			const MessageID GamePlayerRevivedS2CEvt::MID = MessageID(MSGTYPE_EVENT, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_GAMEINSTANCE, 24);
 			Result GamePlayerRevivedS2CEvt::ParseMessage(const MessageData* pIMsg)
 			{
  				ScopeContext hr;

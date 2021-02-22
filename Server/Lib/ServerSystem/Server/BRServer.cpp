@@ -42,6 +42,7 @@
 
 #include "ServiceEntity/Game/PlayerDirectoryManager.h"
 #include "ServiceEntity/Game/GameInstanceManagerServiceEntity.h"
+#include "ServiceEntity/Game/StaticGameInstanceManagerServiceEntity.h"
 #include "ServiceEntity/Login/LoginServiceEntity.h"
 #include "ServiceEntity/Game/GameServiceEntity.h"
 #include "ServiceEntity/Game/GameInstanceServiceEntity.h"
@@ -140,7 +141,7 @@ namespace SF {
 			AddModuleFactory("ModLogin"_crc, [](BrServer* ThisServer, GameID gameID, ServerConfig::ServerModule* config)
 				{
 					auto pLogin = (ServerConfig::ServerModulePublicService*)config;
-					if (!ThisServer->AddServiceEntity<LoginServiceEntity>(&pLogin->PublicNet, config->Endpoint))
+					if (!ThisServer->AddServiceEntity<LoginServiceEntity>(&pLogin->PublicNet, config->ServiceListenEndpoint))
 						return ResultCode::OUT_OF_MEMORY;
 					return ResultCode::SUCCESS;
 				});
@@ -148,7 +149,15 @@ namespace SF {
 			AddModuleFactory("ModGame"_crc, [](BrServer* ThisServer, GameID gameID, ServerConfig::ServerModule* config)
 				{
 					auto pGame = (ServerConfig::ServerModulePublicService*)config;
-					if (!ThisServer->AddServiceEntity<GameServiceEntity>(gameID, &pGame->PublicNet, config->Endpoint))
+					if (!ThisServer->AddServiceEntity<GameServiceEntity>(gameID, &pGame->PublicNet, config->ServiceListenEndpoint))
+						return ResultCode::OUT_OF_MEMORY;
+					return ResultCode::SUCCESS;
+				});
+
+			AddModuleFactory("ModStaticGameInstanceManager"_crc, [](BrServer* ThisServer, GameID gameID, ServerConfig::ServerModule* config)
+				{
+					auto pGame = (ServerConfig::ServerModuleStaticGameInstanceManager*)config;
+					if (!ThisServer->AddServiceEntity<Svr::StaticGameInstanceManagerServiceEntity>(gameID, pGame, ClusterID::GameStaticInstanceManager, config->ServiceListenEndpoint))
 						return ResultCode::OUT_OF_MEMORY;
 					return ResultCode::SUCCESS;
 				});
@@ -156,7 +165,7 @@ namespace SF {
 			AddModuleFactory("ModGameInstanceManager"_crc, [](BrServer* ThisServer, GameID gameID, ServerConfig::ServerModule* config)
 				{
 					auto pGame = (ServerConfig::ServerModuleGameInstanceManager*)config;
-					if (!ThisServer->AddServiceEntity<Svr::GameInstanceManagerServiceEntity>(gameID, pGame, ClusterID::GameInstanceManager))
+					if (!ThisServer->AddServiceEntity<Svr::GameInstanceManagerServiceEntity>(gameID, pGame, ClusterID::GameInstanceManager, config->ServiceListenEndpoint))
 						return ResultCode::OUT_OF_MEMORY;
 					return ResultCode::SUCCESS;
 				});
@@ -170,7 +179,7 @@ namespace SF {
 
 			AddModuleFactory("ModChatting"_crc, [](BrServer* ThisServer, GameID gameID, ServerConfig::ServerModule* config)
 				{
-					if (!ThisServer->AddServiceEntity<Svr::ChatChannelManagerServiceEntity>(Service::ServerConfig->GameClusterID, config->Endpoint))
+					if (!ThisServer->AddServiceEntity<Svr::ChatChannelManagerServiceEntity>(Service::ServerConfig->GameClusterID, config->ServiceListenEndpoint))
 						return ResultCode::OUT_OF_MEMORY;
 					return ResultCode::SUCCESS;
 				});

@@ -30,20 +30,12 @@ namespace SF
 
 		void RegisterParserGameInstance()
 		{
- 			// C2S: Nitify that a game instance is deleted. Game instance send this message to manager before it destroy itself.
-			MessageParseToMessageBaseMap.insert(std::make_pair(Message::GameInstance::DeleteGameC2SEvt::MID.IDSeq.MsgID,&Message::GameInstance::DeleteGameC2SEvt::ParseMessageToMessageBase));
-			// Cmd: Join to a game instance. You can call multiple times, but it would be waste
+ 			// Cmd: Join to a game instance. You can call multiple times, but it would be a waste
 			MessageParseToMessageBaseMap.insert(std::make_pair(Message::GameInstance::JoinGameInstanceCmd::MID.IDSeq.MsgID,&Message::GameInstance::JoinGameInstanceCmd::ParseMessageToMessageBase));
 			MessageParseToMessageBaseMap.insert(std::make_pair(Message::GameInstance::JoinGameInstanceRes::MID.IDSeq.MsgID,&Message::GameInstance::JoinGameInstanceRes::ParseMessageToMessageBase));
-			// S2C: Player joined event. This event is brocasted when a player joined
-			MessageParseToMessageBaseMap.insert(std::make_pair(Message::GameInstance::PlayerJoinedS2CEvt::MID.IDSeq.MsgID,&Message::GameInstance::PlayerJoinedS2CEvt::ParseMessageToMessageBase));
-			// C2S: For debug purpose, change configue preset. There is a game setting table. you can switch between those setting value.
-			MessageParseToMessageBaseMap.insert(std::make_pair(Message::GameInstance::SetConfigPresetC2SEvt::MID.IDSeq.MsgID,&Message::GameInstance::SetConfigPresetC2SEvt::ParseMessageToMessageBase));
 			// Cmd: Leave game instance.
 			MessageParseToMessageBaseMap.insert(std::make_pair(Message::GameInstance::LeaveGameInstanceCmd::MID.IDSeq.MsgID,&Message::GameInstance::LeaveGameInstanceCmd::ParseMessageToMessageBase));
 			MessageParseToMessageBaseMap.insert(std::make_pair(Message::GameInstance::LeaveGameInstanceRes::MID.IDSeq.MsgID,&Message::GameInstance::LeaveGameInstanceRes::ParseMessageToMessageBase));
-			// S2C: Player left event.
-			MessageParseToMessageBaseMap.insert(std::make_pair(Message::GameInstance::PlayerLeftS2CEvt::MID.IDSeq.MsgID,&Message::GameInstance::PlayerLeftS2CEvt::ParseMessageToMessageBase));
 			// C2S: Player Movement
 			MessageParseToMessageBaseMap.insert(std::make_pair(Message::GameInstance::PlayerMovementC2SEvt::MID.IDSeq.MsgID,&Message::GameInstance::PlayerMovementC2SEvt::ParseMessageToMessageBase));
 			// S2C: Player Movement

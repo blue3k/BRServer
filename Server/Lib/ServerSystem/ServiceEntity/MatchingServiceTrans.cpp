@@ -390,7 +390,7 @@ namespace Svr {
 		attributes.SetValue("MaxPlayer"_crc, m_TargetMatchingMemberCount);
 
 		// 2. Get service entity list in the cluster
-		svrCheck(pService->GetService<GameInstanceManagerService>()->CreateGameInstanceCmd(GetTransID(), 0, attributes));
+		svrCheck(pService->GetService<GameInstanceManagerService>()->CreateGameInstanceCmd(GetTransID(), 0, 1, attributes));
 
 		return hr;
 	}
@@ -460,12 +460,12 @@ namespace Svr {
 		// clean up empty game instance
 		if (notifiedPlayerCount == 0)
 		{
-			auto gameEndpoint = Service::MessageEndpointManager->GetEndpoint(gameUID);
-			if (gameEndpoint)
-			{
-				NetPolicyGameInstance(gameEndpoint).DeleteGameC2SEvt(RouteContext(GetOwnerEntityUID(), gameUID));
-			}
-
+			// Not joined game instance will be cleaned up automatically with timeout
+			//auto gameEndpoint = Service::MessageEndpointManager->GetEndpoint(gameUID);
+			//if (gameEndpoint)
+			//{
+			//	NetPolicyGameInstance(gameEndpoint).DeleteGameC2SEvt(RouteContext(GetOwnerEntityUID(), gameUID));
+			//}
 		}
 
 		CloseTransaction(hr);

@@ -25,6 +25,8 @@
 #include "Protocol/Policy/GameInstanceNetPolicy.h"
 #include "Protocol/Message/PartyMatchingQueueMsgClass.h"
 #include "Protocol/Policy/PartyMatchingQueueNetPolicy.h"
+#include "Protocol/Message/PlayInstanceMsgClass.h"
+#include "Protocol/Policy/PlayInstanceNetPolicy.h"
 
 #include "Transaction/MessageRoute.h"
 
@@ -79,20 +81,6 @@ namespace GameServer {
 	};
 
 
-	// Chat message from other entity	
-	class PlayerTransJoinedS2SEvt : public Svr::UserTransactionS2SEvt< GamePlayerEntity, Message::GameInstance::PlayerJoinedS2CEvt>
-	{
-	public:
-		typedef Svr::UserTransactionS2SEvt< GamePlayerEntity,Message::GameInstance::PlayerJoinedS2CEvt> super;
-
-	public:
-		PlayerTransJoinedS2SEvt( IHeap& heap, MessageDataPtr &pIMsg )  :UserTransactionS2SEvt(heap,  pIMsg ) {}
-		virtual ~PlayerTransJoinedS2SEvt() {}
-
-		// Start Transaction
-		virtual Result StartTransaction() override;
-	};
-
 	
 	class PlayerTransLeaveGame : public Svr::MessageTransaction< GamePlayerEntity, Message::Game::LeaveGameCmd>
 	{
@@ -113,21 +101,6 @@ namespace GameServer {
 		virtual Result CloseTransaction(Result hrRes) override;
 
 		BR_IMPLEMENT_USERMSGTRANS_CLOSE(NetSvrPolicyGame, LeaveGameRes);
-	};
-
-
-	// Chat message from other entitity	
-	class PlayerTransLeftS2SEvt : public Svr::UserTransactionS2SEvt< GamePlayerEntity, Message::GameInstance::PlayerLeftS2CEvt>
-	{
-	public:
-		typedef Svr::UserTransactionS2SEvt< GamePlayerEntity, Message::GameInstance::PlayerLeftS2CEvt> super;
-
-	public:
-		PlayerTransLeftS2SEvt( IHeap& heap, MessageDataPtr &pIMsg )  :UserTransactionS2SEvt(heap,  pIMsg ) {}
-		virtual ~PlayerTransLeftS2SEvt() {}
-
-		// Start Transaction
-		virtual Result StartTransaction() override;
 	};
 
 

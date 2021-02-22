@@ -121,10 +121,11 @@ namespace ConspiracyGameInstanceServer {
 		//
 
 		{
-		GameInstanceManagerServiceEntity *pGameInstanceManager = nullptr;
-		svrCheckMem( pGameInstanceManager = new(GetHeap()) GameInstanceManagerServiceEntity(Service::ServerConfig->GameClusterID, nullptr, ClusterID::GameInstanceManager, ClusterMembership::Slave) );
-		svrCheck(Service::EntityManager->AddEntity( EntityFaculty::Service, pGameInstanceManager ) );
-		svrCheck(GetComponentCarrier().AddComponentWithAdapter(pGameInstanceManager) );
+			assert(false);
+			// FIXME: endpoint address has been refactored
+			GameInstanceManagerServiceEntity *pGameInstanceManager = nullptr;
+			svrCheckMem(pGameInstanceManager = new(GetHeap()) GameInstanceManagerServiceEntity(Service::ServerConfig->GameClusterID, nullptr, ClusterID::GameInstanceManager, {}));
+			svrCheck(Service::EntityManager->AddEntity( EntityFaculty::Service, pGameInstanceManager ) );
 		}
 
 

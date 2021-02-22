@@ -32,14 +32,13 @@
 namespace SF {
 namespace Svr {
 
-
 	//////////////////////////////////////////////////////////////////////////
 	//
 	//	Entity informations
 	//
 
-	GameInstanceServiceEntity::GameInstanceServiceEntity(GameID gameID, ClusterMembership initialMembership)
-		: super(gameID, ClusterID::GameInstanceManager, initialMembership)
+	GameInstanceServiceEntity::GameInstanceServiceEntity(GameID gameID, const EndpointAddress& endpoint)
+		: super(gameID, ClusterID::GameInstanceManager, endpoint)
 		, m_ComponentManger(GetHeap())
 	{
 	}
@@ -53,9 +52,6 @@ namespace Svr {
 		ScopeContext hr;
 
 		svrCheck(super::InitializeEntity(newEntityID) );
-
-		// TODO: Add components
-		
 
 		svrCheck(m_ComponentManger.InitializeComponents());
 
@@ -95,4 +91,3 @@ namespace Svr {
 
 } // namespace Svr {
 } // namespace SF {
-

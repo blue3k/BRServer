@@ -44,30 +44,31 @@ namespace SF {
 
 		///////////////////////////////////////////////////////////////////////////////////////////////////////
 		//
-		//	GameInstanceManagerServiceEntity class
+		//	StaticGameInstanceManagerServiceEntity class
 		//
 
-		class GameInstanceManagerServiceEntity : public ServiceEntity
+		class StaticGameInstanceManagerServiceEntity : public ServiceEntity
 		{
 		public:
 
 			using super = ServiceEntity;
 
-			static constexpr StringCrc64 TypeName = "GameInstanceManagerServiceEntity"_crc64;
+			static constexpr StringCrc64 TypeName = "StaticGameInstanceManagerServiceEntity"_crc64;
 
 		protected:
 
 			Svr::PerformanceCounterRaw < uint64_t > m_NumberOfInstance;
 
 		private:
+			// 
 			SF::Mutex m_GameInstanceListLock;
 			// NOTE: We might need to use shared ptr
 			SortedMap<GameInsUID, GameInstanceEntity*> m_GameInstances;
 
 		public:
 
-			GameInstanceManagerServiceEntity(GameID gameID, ServerConfig::ServerModuleGameInstanceManager* config, ClusterID clusterID, const EndpointAddress& endpoint);
-			~GameInstanceManagerServiceEntity();
+			StaticGameInstanceManagerServiceEntity(GameID gameID, ServerConfig::ServerModuleStaticGameInstanceManager* config, ClusterID clusterID, const EndpointAddress& endpoint);
+			~StaticGameInstanceManagerServiceEntity();
 
 
 			//////////////////////////////////////////////////////////////////////////
@@ -79,26 +80,11 @@ namespace SF {
 
 			virtual Result RegisterServiceMessageHandler() override;
 
-			//////////////////////////////////////////////////////////////////////////
-			//
-			//	Game Instance operations
-			//
-
-			// Added new game instance
-			virtual Result OnNewInstance(GameInstanceEntity* pGameInstance);
-
-			// Called when a game instance is deleted
-			virtual Result FreeGameInstance(GameInsUID gameUID);
-
-			// Search game instance
-			virtual Result SearchGameInstance(size_t maxSearch, const char* searchKeyword, Array<GameInstanceInfo>& outList);
-
 
 			// Initialize server component
 			Result InitializeComponent() { return ResultCode::SUCCESS; }
 			// Terminate server component
 			void DeinitializeComponent() {  }
-
 
 		};
 

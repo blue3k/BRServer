@@ -14,16 +14,8 @@ namespace SF::Message::GameInstance
 
 
 # Protocol interface class NetPolicyGameInstance
-## DeleteGameC2SEvt
-Nitify that a game instance is deleted. Game instance send this message to manager before it destroy itself.
-
-        Result DeleteGameC2SEvt(const RouteContext &InRouteContext)
-
-		- OutInRouteContext: RouteContext type. 
-
-
 ## JoinGameInstance Request
-Join to a game instance. You can call multiple times, but it would be waste
+Join to a game instance. You can call multiple times, but it would be a waste
 
 1. Command interface
 
@@ -46,29 +38,11 @@ C++: Cast message to JoinGameInstanceRes to access values
 
 		- OutResult: Result type. 
 
-		- OutGameInsSvr: NetAddress type. Game instance server address. Client will use this address to connect game server.
+		- OutGameInsSvr4: NetAddress type. Game instance server address. Client will use this address to connect game server.
+
+		- OutGameInsSvr6: NetAddress type. Game instance server address. Client will use this address to connect game server.
 
 		- OutTimeStamp: uint32 type. Time stamp of game state
-
-
-## PlayerJoinedS2CEvt
-Player joined event. This event is brocasted when a player joined
-
-        Result PlayerJoinedS2CEvt(const RouteContext &InRouteContext, const PlayerInformation &InJoinedPlayer)
-
-		- OutInRouteContext: RouteContext type. 
-
-		- OutInJoinedPlayer: PlayerInformation type. Joined player information
-
-
-## SetConfigPresetC2SEvt
-For debug purpose, change configue preset. There is a game setting table. you can switch between those setting value.
-
-        Result SetConfigPresetC2SEvt(const RouteContext &InRouteContext, const uint32_t &InPresetID)
-
-		- OutInRouteContext: RouteContext type. 
-
-		- OutInPresetID: uint32 type. Preset ID
 
 
 ## LeaveGameInstance Request
@@ -94,16 +68,6 @@ C++: Cast message to LeaveGameInstanceRes to access values
 		- OutTransactionID: TransactionID type. 
 
 		- OutResult: Result type. 
-
-
-## PlayerLeftS2CEvt
-Player left event.
-
-        Result PlayerLeftS2CEvt(const RouteContext &InRouteContext, const PlayerID &InLeftPlayerID)
-
-		- OutInRouteContext: RouteContext type. 
-
-		- OutInLeftPlayerID: PlayerID type. Player ID who left.
 
 
 ## PlayerMovementC2SEvt

@@ -35,21 +35,6 @@ namespace SF {
 	namespace ConspiracyGameInstanceServer {
 
 
-		class GameEntityTransDeleteGame : public Svr::ServerEntityMessageTransaction< GameInstanceEntity, Message::GameInstance::DeleteGameC2SEvt>
-		{
-		public:
-			using super = Svr::ServerEntityMessageTransaction< GameInstanceEntity, Message::GameInstance::DeleteGameC2SEvt>;
-
-		private:
-
-		public:
-			GameEntityTransDeleteGame(IHeap& heap, MessageDataPtr& pIMsg);// : ServerEntityMessageTransaction(pIMsg) {}
-			virtual ~GameEntityTransDeleteGame() {}
-
-			// Start Transaction
-			virtual Result StartTransaction() override;
-		};
-
 
 		class GameEntityTransJoinGame : public RoutedGamePlayerMessageTransaction< GameInstanceEntity, Message::GameInstance::JoinGameCmd>
 		{

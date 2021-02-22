@@ -27,11 +27,7 @@ namespace SF
 		GameInstanceManagerService ( ServerServiceInformation* pService );
 
 		// Cmd: Create a game instance
-		Result CreateGameInstanceCmd( const uint64_t &InTransactionID, const uint16_t &InRouteHopCount, const VariableTable &InAttributes );
-		// Cmd: Search game instance
-		Result SearchGameInstanceCmd( const uint64_t &InTransactionID, const uint16_t &InRouteHopCount, const char* InSearchKeyword );
-		// C2S: Game instance notification of deletion
-		Result GameInstanceDeletedC2SEvt( const EntityID &InSenderEntityID, const uint16_t &InRouteHopCount );
+		Result CreateGameInstanceCmd( const uint64_t &InTransactionID, const uint16_t &InRouteHopCount, const uint32_t &InZoneTableId, const VariableTable &InAttributes );
 
 	}; // class GameInstanceManagerService : public ServerServiceBase
 

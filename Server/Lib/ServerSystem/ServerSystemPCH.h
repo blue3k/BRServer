@@ -8,7 +8,7 @@
 #include "SFTypedefs.h"
 
 
-
+#include "SFEngine.h"
 #include "ResultCode/SFResultCodeSvr.h"
 #include "Util/SFUtility.h"
 #include "Util/SFStrUtil.h"

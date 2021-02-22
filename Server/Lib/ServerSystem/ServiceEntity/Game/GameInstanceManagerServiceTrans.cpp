@@ -1,10 +1,10 @@
 ////////////////////////////////////////////////////////////////////////////////
 // 
-// CopyRight (c) 2013 The Braves
+// CopyRight (c) The Braves
 // 
 // Author : KyungKun Ko
 //
-// Description : game player entity implementation
+// Description : game instance manager transactions
 //
 ////////////////////////////////////////////////////////////////////////////////
 
@@ -35,7 +35,7 @@ namespace SF {
 
 
 		// Start Transaction
-		Result GameInstanceTransCreateGameInstance::StartTransaction()
+		Result GameInstanceManagerTransCreateGameInstance::StartTransaction()
 		{
 			ScopeContext hr([this](Result hr)
 				{
@@ -46,7 +46,7 @@ namespace SF {
 
 			svrCheck(super::StartTransaction());
 
-			svrCheck(Service::EntityManager->CreateEntity(ClusterID::GameInstanceManager, EntityFaculty::GameInstance, pEntity));
+			svrCheck(Service::EntityManager->CreateEntity(ClusterID::GameInstance, EntityFaculty::GameInstance, pEntity));
 
 			svrCheckPtr(pGameInstance = static_cast<GameInstanceEntity*>(pEntity));
 			svrCheck(pGameInstance->InitializeGameEntity(GetAttributes()));
@@ -60,39 +60,6 @@ namespace SF {
 			return hr;
 		}
 
-
-		// Start Transaction
-		Result GameInstanceTransGameInstanceDeleted::StartTransaction()
-		{
-			ScopeContext hr([this](Result hr)
-				{
-					CloseTransaction(hr);
-				});
-
-			svrCheck(super::StartTransaction());
-
-			svrCheck(GetMyOwner()->FreeGameInstance(GetRouteContext().GetFrom()));
-
-			return hr;
-		}
-
-
-		// Start Transaction
-		Result GameInstanceTransSearchGameInstance::StartTransaction()
-		{
-			ScopeContext hr([this](Result hr)
-				{
-					CloseTransaction(hr);
-				});
-
-			svrCheck(super::StartTransaction());
-
-			svrCheck(GetMyOwner()->FreeGameInstance(GetRouteContext().GetFrom()));
-
-			svrCheck(GetMyOwner()->FreeGameInstance(GetRouteContext().GetFrom()));
-
-			return hr;
-		}
 
 
 	}// namespace Svr 

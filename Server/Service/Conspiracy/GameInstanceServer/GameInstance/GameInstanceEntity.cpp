@@ -64,7 +64,7 @@ namespace ConspiracyGameInstanceServer {
 
 		////////////////////////////////////////////////////////////////////////////////////////////////////
 		// To game instance
-		RegisterMessageHandler<GameEntityTransDeleteGame>();
+
 		RegisterMessageHandler<GameEntityTransJoinGame>();
 		RegisterMessageHandler<GameEntityTransLeaveGame>();
 		RegisterMessageHandler<GameEntityTransKickPlayer>();

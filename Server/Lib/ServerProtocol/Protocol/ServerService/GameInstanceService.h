@@ -26,12 +26,8 @@ namespace SF
 		// Constructor
 		GameInstanceService ( ServerServiceInformation* pService );
 
-		// C2S: Nitify that a game instance is deleted. Game instance send this message to manager before it destroy itself.
-		Result DeleteGameC2SEvt( const EntityID &InSenderEntityID );
-		// Cmd: Join to a game instance. You can call multiple times, but it would be waste
+		// Cmd: Join to a game instance. You can call multiple times, but it would be a waste
 		Result JoinGameInstanceCmd( const uint64_t &InTransactionID, const PlayerInformation &InPlayer );
-		// C2S: For debug purpose, change configue preset. There is a game setting table. you can switch between those setting value.
-		Result SetConfigPresetC2SEvt( const EntityID &InSenderEntityID, const uint32_t &InPresetID );
 		// Cmd: Leave game instance.
 		Result LeaveGameInstanceCmd( const uint64_t &InTransactionID, const PlayerID &InPlayerID );
 		// C2S: Player Movement

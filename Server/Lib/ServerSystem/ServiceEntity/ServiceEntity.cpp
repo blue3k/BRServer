@@ -45,6 +45,7 @@ namespace SF {
 	{
 		// Update channel path to yours
 		m_MessageEndpointConfig.MessageServer = endpoint.MessageServer;
+		// Same service with same clusterID will share same listening message queue
 		if (!m_MessageEndpointConfig.MessageServer.IsNullOrEmpty())
 			m_MessageEndpointConfig.Channel.Format("{0}_{1}_{2}", endpoint.Channel, gameID, clusterID);
 

@@ -74,9 +74,6 @@ namespace SF {
 
 		GameServiceEntity(GameID gameID, const ServerConfig::NetPublic *publicNetSocket, const EndpointAddress& endpoint);
 		~GameServiceEntity();
-
-		// We are not going to use hashed key
-		virtual uint KeyHash( uint64_t key ) { return (uint)key; }
 		
 		Net::ServerNet* GetServerNet() { return *m_pNetPublic; }
 		const ServerConfig::NetPublic* GetPublicNetConfig() { return m_PublicNetConfig;  }

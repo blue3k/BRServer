@@ -23,23 +23,7 @@
 
 namespace SF
 {
- 	// C2S: Nitify that a game instance is deleted. Game instance send this message to manager before it destroy itself.
-	Result NetPolicyGameInstance::DeleteGameC2SEvt( const RouteContext &InRouteContext )
-	{
- 		ScopeContext hr;
-
-		 MessageDataPtr pMessage;
-		 protocolCheckPtr(m_Endpoint);
-
-		 pMessage = SF::Message::GameInstance::DeleteGameC2SEvt::Create(GetSystemHeap(), InRouteContext);
-		 protocolCheckPtr(*pMessage);
-
-		 return m_Endpoint->Send( pMessage );
-
-		return hr;
-
-	}; // Result NetPolicyGameInstance::DeleteGameC2SEvt( const RouteContext &InRouteContext )
-	// Cmd: Join to a game instance. You can call multiple times, but it would be waste
+ 	// Cmd: Join to a game instance. You can call multiple times, but it would be a waste
 	Result NetPolicyGameInstance::JoinGameInstanceCmd( const RouteContext &InRouteContext, const uint64_t &InTransactionID, const PlayerInformation &InPlayer )
 	{
  		ScopeContext hr;
@@ -55,22 +39,6 @@ namespace SF
 		return hr;
 
 	}; // Result NetPolicyGameInstance::JoinGameInstanceCmd( const RouteContext &InRouteContext, const uint64_t &InTransactionID, const PlayerInformation &InPlayer )
-	// C2S: For debug purpose, change configue preset. There is a game setting table. you can switch between those setting value.
-	Result NetPolicyGameInstance::SetConfigPresetC2SEvt( const RouteContext &InRouteContext, const uint32_t &InPresetID )
-	{
- 		ScopeContext hr;
-
-		 MessageDataPtr pMessage;
-		 protocolCheckPtr(m_Endpoint);
-
-		 pMessage = SF::Message::GameInstance::SetConfigPresetC2SEvt::Create(GetSystemHeap(), InRouteContext, InPresetID);
-		 protocolCheckPtr(*pMessage);
-
-		 return m_Endpoint->Send( pMessage );
-
-		return hr;
-
-	}; // Result NetPolicyGameInstance::SetConfigPresetC2SEvt( const RouteContext &InRouteContext, const uint32_t &InPresetID )
 	// Cmd: Leave game instance.
 	Result NetPolicyGameInstance::LeaveGameInstanceCmd( const RouteContext &InRouteContext, const uint64_t &InTransactionID, const PlayerID &InPlayerID )
 	{
@@ -265,38 +233,22 @@ namespace SF
 	}; // Result NetPolicyGameInstance::GamePlayerReviveCmd( const RouteContext &InRouteContext, const uint64_t &InTransactionID, const PlayerID &InPlayerID )
 
 
-	// Cmd: Join to a game instance. You can call multiple times, but it would be waste
-	Result NetSvrPolicyGameInstance::JoinGameInstanceRes( const RouteContext &InRouteContext, const uint64_t &InTransactionID, const Result &InResult, const NetAddress &InGameInsSvr, const uint32_t &InTimeStamp )
+	// Cmd: Join to a game instance. You can call multiple times, but it would be a waste
+	Result NetSvrPolicyGameInstance::JoinGameInstanceRes( const RouteContext &InRouteContext, const uint64_t &InTransactionID, const Result &InResult, const NetAddress &InGameInsSvr4, const NetAddress &InGameInsSvr6, const uint32_t &InTimeStamp )
 	{
  		ScopeContext hr;
 
 		 MessageDataPtr pMessage;
 		 protocolCheckPtr(m_Endpoint);
 
-		 pMessage = SF::Message::GameInstance::JoinGameInstanceRes::Create(GetSystemHeap(), InRouteContext, InTransactionID, InResult, InGameInsSvr, InTimeStamp);
+		 pMessage = SF::Message::GameInstance::JoinGameInstanceRes::Create(GetSystemHeap(), InRouteContext, InTransactionID, InResult, InGameInsSvr4, InGameInsSvr6, InTimeStamp);
 		 protocolCheckPtr(*pMessage);
 
 		 return m_Endpoint->Send( pMessage );
 
 		return hr;
 
-	}; // Result NetSvrPolicyGameInstance::JoinGameInstanceRes( const RouteContext &InRouteContext, const uint64_t &InTransactionID, const Result &InResult, const NetAddress &InGameInsSvr, const uint32_t &InTimeStamp )
-	// S2C: Player joined event. This event is brocasted when a player joined
-	Result NetSvrPolicyGameInstance::PlayerJoinedS2CEvt( const RouteContext &InRouteContext, const PlayerInformation &InJoinedPlayer )
-	{
- 		ScopeContext hr;
-
-		 MessageDataPtr pMessage;
-		 protocolCheckPtr(m_Endpoint);
-
-		 pMessage = SF::Message::GameInstance::PlayerJoinedS2CEvt::Create(GetSystemHeap(), InRouteContext, InJoinedPlayer);
-		 protocolCheckPtr(*pMessage);
-
-		 return m_Endpoint->Send( pMessage );
-
-		return hr;
-
-	}; // Result NetSvrPolicyGameInstance::PlayerJoinedS2CEvt( const RouteContext &InRouteContext, const PlayerInformation &InJoinedPlayer )
+	}; // Result NetSvrPolicyGameInstance::JoinGameInstanceRes( const RouteContext &InRouteContext, const uint64_t &InTransactionID, const Result &InResult, const NetAddress &InGameInsSvr4, const NetAddress &InGameInsSvr6, const uint32_t &InTimeStamp )
 	// Cmd: Leave game instance.
 	Result NetSvrPolicyGameInstance::LeaveGameInstanceRes( const RouteContext &InRouteContext, const uint64_t &InTransactionID, const Result &InResult )
 	{
@@ -313,22 +265,6 @@ namespace SF
 		return hr;
 
 	}; // Result NetSvrPolicyGameInstance::LeaveGameInstanceRes( const RouteContext &InRouteContext, const uint64_t &InTransactionID, const Result &InResult )
-	// S2C: Player left event.
-	Result NetSvrPolicyGameInstance::PlayerLeftS2CEvt( const RouteContext &InRouteContext, const PlayerID &InLeftPlayerID )
-	{
- 		ScopeContext hr;
-
-		 MessageDataPtr pMessage;
-		 protocolCheckPtr(m_Endpoint);
-
-		 pMessage = SF::Message::GameInstance::PlayerLeftS2CEvt::Create(GetSystemHeap(), InRouteContext, InLeftPlayerID);
-		 protocolCheckPtr(*pMessage);
-
-		 return m_Endpoint->Send( pMessage );
-
-		return hr;
-
-	}; // Result NetSvrPolicyGameInstance::PlayerLeftS2CEvt( const RouteContext &InRouteContext, const PlayerID &InLeftPlayerID )
 	// S2C: Player Movement
 	Result NetSvrPolicyGameInstance::PlayerMovementS2CEvt( const RouteContext &InRouteContext, const uint64_t &InGameInsUID, const PlayerID &InPlayerID, const VariableTable &InAttributes )
 	{

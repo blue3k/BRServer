@@ -31,12 +31,8 @@ namespace SF
 		NetPolicyGameInstance (const SharedPointerT<MessageEndpoint>& pEndpoint ) : m_Endpoint(pEndpoint)
 		{}
 
-		// C2S: Nitify that a game instance is deleted. Game instance send this message to manager before it destroy itself.
-		Result DeleteGameC2SEvt( const RouteContext &InRouteContext );
-		// Cmd: Join to a game instance. You can call multiple times, but it would be waste
+		// Cmd: Join to a game instance. You can call multiple times, but it would be a waste
 		Result JoinGameInstanceCmd( const RouteContext &InRouteContext, const uint64_t &InTransactionID, const PlayerInformation &InPlayer );
-		// C2S: For debug purpose, change configue preset. There is a game setting table. you can switch between those setting value.
-		Result SetConfigPresetC2SEvt( const RouteContext &InRouteContext, const uint32_t &InPresetID );
 		// Cmd: Leave game instance.
 		Result LeaveGameInstanceCmd( const RouteContext &InRouteContext, const uint64_t &InTransactionID, const PlayerID &InPlayerID );
 		// C2S: Player Movement
@@ -74,14 +70,10 @@ namespace SF
 		NetSvrPolicyGameInstance ( const SharedPointerT<MessageEndpoint>& pEndpoint ) : m_Endpoint(pEndpoint)
 		{}
 
-		// Cmd: Join to a game instance. You can call multiple times, but it would be waste
-		Result JoinGameInstanceRes( const RouteContext &InRouteContext, const uint64_t &InTransactionID, const Result &InResult, const NetAddress &InGameInsSvr, const uint32_t &InTimeStamp );
-		// S2C: Player joined event. This event is brocasted when a player joined
-		Result PlayerJoinedS2CEvt( const RouteContext &InRouteContext, const PlayerInformation &InJoinedPlayer );
+		// Cmd: Join to a game instance. You can call multiple times, but it would be a waste
+		Result JoinGameInstanceRes( const RouteContext &InRouteContext, const uint64_t &InTransactionID, const Result &InResult, const NetAddress &InGameInsSvr4, const NetAddress &InGameInsSvr6, const uint32_t &InTimeStamp );
 		// Cmd: Leave game instance.
 		Result LeaveGameInstanceRes( const RouteContext &InRouteContext, const uint64_t &InTransactionID, const Result &InResult );
-		// S2C: Player left event.
-		Result PlayerLeftS2CEvt( const RouteContext &InRouteContext, const PlayerID &InLeftPlayerID );
 		// S2C: Player Movement
 		Result PlayerMovementS2CEvt( const RouteContext &InRouteContext, const uint64_t &InGameInsUID, const PlayerID &InPlayerID, const VariableTable &InAttributes );
 		// Cmd: Kick player with given ID

@@ -33,8 +33,10 @@ namespace SF {
 	{
 	public:
 
+		// Add or get endpoint for entity
 		virtual Result AddOrGetRemoteEndpoint(const EntityUID& entityUID, const EndpointAddress& messageEndpoint, MessageEndpoint*& pEndpoint) { pEndpoint = nullptr;  return ResultCode::NOT_IMPLEMENTED; }
 
+		// Get endpoint for entity
 		virtual MessageEndpoint* GetEndpoint(const EntityUID& entityUID) { return nullptr; }
 	};
 

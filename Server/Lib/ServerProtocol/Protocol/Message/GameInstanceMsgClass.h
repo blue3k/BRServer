@@ -25,51 +25,7 @@ namespace SF
 	{
  		namespace GameInstance
 		{
- 			// C2S: Nitify that a game instance is deleted. Game instance send this message to manager before it destroy itself.
-			class DeleteGameC2SEvt : public MessageBase
-			{
- 			public:
-				static const MessageID MID;
-				// Parameter type informations for template
-				enum ParameterTypeInfo
-				{
- 					HasPlayerID = 0,
-					HasTransactionID = 0,
-					HasRouteContext = 1,
-					HasRouteHopCount = 0,
-					HasSender = 0,
-				}; // enum ParameterTypeInfo
-			public:
-				uint64_t GetPlayerID() { return 0; }
-				uint64_t GetTransactionID() { return 0; }
-				uint32_t GetRouteHopCount() { return 0; }
-				uint64_t GetSender() { return 0; }
-			private:
-				RouteContext m_RouteContext{};
-			public:
-				DeleteGameC2SEvt()
-					{}
-
-				DeleteGameC2SEvt( MessageDataPtr &&pMsg )
-					: MessageBase(std::forward<MessageDataPtr>(pMsg))
-					{}
-
-					MessageUsage GetMessageUsage() { return MessageUsage_None; }
-
-				const RouteContext& GetRouteContext() const	{ return m_RouteContext; };
-
-				static Result TraceOut(const char* prefix, const MessageDataPtr& pMsg);
-
-				virtual Result ParseMessage(const MessageData* pIMsg);
-				static Result ParseMessageToMessageBase(IHeap& memHeap, MessageDataPtr&& pIMsg, MessageBase* &pMsgBase);
-
-				static MessageData* Create( IHeap& memHeap, const RouteContext &InRouteContext );
-
-				Result OverrideRouteContextDestination( EntityUID to );
-
-			}; // class DeleteGameC2SEvt : public MessageBase
-
-			// Cmd: Join to a game instance. You can call multiple times, but it would be waste
+ 			// Cmd: Join to a game instance. You can call multiple times, but it would be a waste
 			class JoinGameInstanceCmd : public MessageBase
 			{
  			public:
@@ -137,7 +93,8 @@ namespace SF
 				RouteContext m_RouteContext{};
 				uint64_t m_TransactionID{};
 				Result m_Result{};
-				NetAddress m_GameInsSvr{};
+				NetAddress m_GameInsSvr4{};
+				NetAddress m_GameInsSvr6{};
 				uint32_t m_TimeStamp{};
 			public:
 				JoinGameInstanceRes()
@@ -152,7 +109,8 @@ namespace SF
 				const RouteContext& GetRouteContext() const	{ return m_RouteContext; };
 				const uint64_t& GetTransactionID() const	{ return m_TransactionID; };
 				const Result& GetResult() const	{ return m_Result; };
-				const NetAddress& GetGameInsSvr() const	{ return m_GameInsSvr; };
+				const NetAddress& GetGameInsSvr4() const	{ return m_GameInsSvr4; };
+				const NetAddress& GetGameInsSvr6() const	{ return m_GameInsSvr6; };
 				const uint32_t& GetTimeStamp() const	{ return m_TimeStamp; };
 
 				static Result TraceOut(const char* prefix, const MessageDataPtr& pMsg);
@@ -160,103 +118,11 @@ namespace SF
 				virtual Result ParseMessage(const MessageData* pIMsg);
 				static Result ParseMessageToMessageBase(IHeap& memHeap, MessageDataPtr&& pIMsg, MessageBase* &pMsgBase);
 
-				static MessageData* Create( IHeap& memHeap, const RouteContext &InRouteContext, const uint64_t &InTransactionID, const Result &InResult, const NetAddress &InGameInsSvr, const uint32_t &InTimeStamp );
+				static MessageData* Create( IHeap& memHeap, const RouteContext &InRouteContext, const uint64_t &InTransactionID, const Result &InResult, const NetAddress &InGameInsSvr4, const NetAddress &InGameInsSvr6, const uint32_t &InTimeStamp );
 
 				Result OverrideRouteContextDestination( EntityUID to );
 
 			}; // class JoinGameInstanceRes : public MessageBase
-
-			// S2C: Player joined event. This event is brocasted when a player joined
-			class PlayerJoinedS2CEvt : public MessageBase
-			{
- 			public:
-				static const MessageID MID;
-				// Parameter type informations for template
-				enum ParameterTypeInfo
-				{
- 					HasPlayerID = 0,
-					HasTransactionID = 0,
-					HasRouteContext = 1,
-					HasRouteHopCount = 0,
-					HasSender = 0,
-				}; // enum ParameterTypeInfo
-			public:
-				uint64_t GetPlayerID() { return 0; }
-				uint64_t GetTransactionID() { return 0; }
-				uint32_t GetRouteHopCount() { return 0; }
-				uint64_t GetSender() { return 0; }
-			private:
-				RouteContext m_RouteContext{};
-				PlayerInformation m_JoinedPlayer{};
-			public:
-				PlayerJoinedS2CEvt()
-					{}
-
-				PlayerJoinedS2CEvt( MessageDataPtr &&pMsg )
-					: MessageBase(std::forward<MessageDataPtr>(pMsg))
-					{}
-
-					MessageUsage GetMessageUsage() { return MessageUsage_None; }
-
-				const RouteContext& GetRouteContext() const	{ return m_RouteContext; };
-				const PlayerInformation& GetJoinedPlayer() const	{ return m_JoinedPlayer; };
-
-				static Result TraceOut(const char* prefix, const MessageDataPtr& pMsg);
-
-				virtual Result ParseMessage(const MessageData* pIMsg);
-				static Result ParseMessageToMessageBase(IHeap& memHeap, MessageDataPtr&& pIMsg, MessageBase* &pMsgBase);
-
-				static MessageData* Create( IHeap& memHeap, const RouteContext &InRouteContext, const PlayerInformation &InJoinedPlayer );
-
-				Result OverrideRouteContextDestination( EntityUID to );
-
-			}; // class PlayerJoinedS2CEvt : public MessageBase
-
-			// C2S: For debug purpose, change configue preset. There is a game setting table. you can switch between those setting value.
-			class SetConfigPresetC2SEvt : public MessageBase
-			{
- 			public:
-				static const MessageID MID;
-				// Parameter type informations for template
-				enum ParameterTypeInfo
-				{
- 					HasPlayerID = 0,
-					HasTransactionID = 0,
-					HasRouteContext = 1,
-					HasRouteHopCount = 0,
-					HasSender = 0,
-				}; // enum ParameterTypeInfo
-			public:
-				uint64_t GetPlayerID() { return 0; }
-				uint64_t GetTransactionID() { return 0; }
-				uint32_t GetRouteHopCount() { return 0; }
-				uint64_t GetSender() { return 0; }
-			private:
-				RouteContext m_RouteContext{};
-				uint32_t m_PresetID{};
-			public:
-				SetConfigPresetC2SEvt()
-					{}
-
-				SetConfigPresetC2SEvt( MessageDataPtr &&pMsg )
-					: MessageBase(std::forward<MessageDataPtr>(pMsg))
-					{}
-
-					MessageUsage GetMessageUsage() { return MessageUsage_None; }
-
-				const RouteContext& GetRouteContext() const	{ return m_RouteContext; };
-				const uint32_t& GetPresetID() const	{ return m_PresetID; };
-
-				static Result TraceOut(const char* prefix, const MessageDataPtr& pMsg);
-
-				virtual Result ParseMessage(const MessageData* pIMsg);
-				static Result ParseMessageToMessageBase(IHeap& memHeap, MessageDataPtr&& pIMsg, MessageBase* &pMsgBase);
-
-				static MessageData* Create( IHeap& memHeap, const RouteContext &InRouteContext, const uint32_t &InPresetID );
-
-				Result OverrideRouteContextDestination( EntityUID to );
-
-			}; // class SetConfigPresetC2SEvt : public MessageBase
 
 			// Cmd: Leave game instance.
 			class LeaveGameInstanceCmd : public MessageBase
@@ -349,52 +215,6 @@ namespace SF
 				Result OverrideRouteContextDestination( EntityUID to );
 
 			}; // class LeaveGameInstanceRes : public MessageBase
-
-			// S2C: Player left event.
-			class PlayerLeftS2CEvt : public MessageBase
-			{
- 			public:
-				static const MessageID MID;
-				// Parameter type informations for template
-				enum ParameterTypeInfo
-				{
- 					HasPlayerID = 0,
-					HasTransactionID = 0,
-					HasRouteContext = 1,
-					HasRouteHopCount = 0,
-					HasSender = 0,
-				}; // enum ParameterTypeInfo
-			public:
-				uint64_t GetPlayerID() { return 0; }
-				uint64_t GetTransactionID() { return 0; }
-				uint32_t GetRouteHopCount() { return 0; }
-				uint64_t GetSender() { return 0; }
-			private:
-				RouteContext m_RouteContext{};
-				PlayerID m_LeftPlayerID{};
-			public:
-				PlayerLeftS2CEvt()
-					{}
-
-				PlayerLeftS2CEvt( MessageDataPtr &&pMsg )
-					: MessageBase(std::forward<MessageDataPtr>(pMsg))
-					{}
-
-					MessageUsage GetMessageUsage() { return MessageUsage_None; }
-
-				const RouteContext& GetRouteContext() const	{ return m_RouteContext; };
-				const PlayerID& GetLeftPlayerID() const	{ return m_LeftPlayerID; };
-
-				static Result TraceOut(const char* prefix, const MessageDataPtr& pMsg);
-
-				virtual Result ParseMessage(const MessageData* pIMsg);
-				static Result ParseMessageToMessageBase(IHeap& memHeap, MessageDataPtr&& pIMsg, MessageBase* &pMsgBase);
-
-				static MessageData* Create( IHeap& memHeap, const RouteContext &InRouteContext, const PlayerID &InLeftPlayerID );
-
-				Result OverrideRouteContextDestination( EntityUID to );
-
-			}; // class PlayerLeftS2CEvt : public MessageBase
 
 			// C2S: Player Movement
 			class PlayerMovementC2SEvt : public MessageBase

@@ -81,3 +81,28 @@ inline Result GameInstanceEntity::ForeachPlayerSvrGameInstance(Func func)
 	return ResultCode::SUCCESS;
 }
 
+// foreach game player with Game policy
+template< class Func >
+inline Result GameInstanceEntity::ForeachPlayerSvrPlayInstance(Func func)
+{
+	m_GamePlayerByUID.ForeachOrder(0, GameLogItem::LEGACY_MAX_GAMEPLAYER, [&](const PlayerID& playerID, Svr::GameInstancePlayer* pGameInsPlayer)-> bool
+		{
+			if (pGameInsPlayer == nullptr)
+				return true;
+
+			GamePlayer* pGamePlayer = (GamePlayer*)pGameInsPlayer;
+
+			if (pGamePlayer->GetPlayerState() == PlayerState::None)
+				return true;
+
+			NetSvrPolicyPlayInstance netPolicy(pGamePlayer->GetRemoteEndpoint());
+			Result hrRes = func(pGamePlayer, netPolicy);
+			if (!(hrRes))
+				return false;
+
+			return true;
+		});
+
+	return ResultCode::SUCCESS;
+}
+

@@ -28,18 +28,7 @@ namespace SF
 	}
 
 
-	// C2S: Nitify that a game instance is deleted. Game instance send this message to manager before it destroy itself.
-	Result GameInstanceService::DeleteGameC2SEvt( const EntityID &InSenderEntityID )
-	{
- 		ScopeContext hr;
-
-		RouteContext InRouteContext( EntityUID(GetMyServerID(),InSenderEntityID), GetServiceEntityUID() );
-		svrCheck(NetPolicyGameInstance(GetTargetEndpoint()).DeleteGameC2SEvt( InRouteContext ) );
-
-		return hr;
-
-	}; // Result GameInstanceService::DeleteGameC2SEvt( const EntityID &InSenderEntityID )
-	// Cmd: Join to a game instance. You can call multiple times, but it would be waste
+	// Cmd: Join to a game instance. You can call multiple times, but it would be a waste
 	Result GameInstanceService::JoinGameInstanceCmd( const uint64_t &InTransactionID, const PlayerInformation &InPlayer )
 	{
  		ScopeContext hr;
@@ -50,17 +39,6 @@ namespace SF
 		return hr;
 
 	}; // Result GameInstanceService::JoinGameInstanceCmd( const uint64_t &InTransactionID, const PlayerInformation &InPlayer )
-	// C2S: For debug purpose, change configue preset. There is a game setting table. you can switch between those setting value.
-	Result GameInstanceService::SetConfigPresetC2SEvt( const EntityID &InSenderEntityID, const uint32_t &InPresetID )
-	{
- 		ScopeContext hr;
-
-		RouteContext InRouteContext( EntityUID(GetMyServerID(),InSenderEntityID), GetServiceEntityUID() );
-		svrCheck(NetPolicyGameInstance(GetTargetEndpoint()).SetConfigPresetC2SEvt( InRouteContext, InPresetID ) );
-
-		return hr;
-
-	}; // Result GameInstanceService::SetConfigPresetC2SEvt( const EntityID &InSenderEntityID, const uint32_t &InPresetID )
 	// Cmd: Leave game instance.
 	Result GameInstanceService::LeaveGameInstanceCmd( const uint64_t &InTransactionID, const PlayerID &InPlayerID )
 	{

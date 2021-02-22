@@ -209,23 +209,6 @@ namespace SF {
 		//  Debug messages
 		//
 
-		class PlayerTransSetConfigPreset : public Svr::MessageTransaction< GamePlayerEntity, Message::Game::SetPresetGameConfigIDCmd>
-		{
-		public:
-			typedef Svr::MessageTransaction< GamePlayerEntity, Message::Game::SetPresetGameConfigIDCmd> super;
-
-		private:
-		public:
-			PlayerTransSetConfigPreset(IHeap& heap, MessageDataPtr& pIMsg) :MessageTransaction(heap, std::forward<MessageDataPtr>(pIMsg)) {}
-			virtual ~PlayerTransSetConfigPreset() {}
-
-			// Start Transaction
-			virtual Result StartTransaction() override;
-
-			BR_IMPLEMENT_USERMSGTRANS_CLOSE(NetSvrPolicyGame, SetPresetGameConfigIDRes);
-		};
-
-
 		/////////////////////////////////////////////////////////////////////////////
 		//
 		//	GCM register/unregister transaction

@@ -1556,30 +1556,6 @@ namespace Svr {
 	//
 
 
-	// Start Transaction
-	Result PlayerTransSetConfigPreset::StartTransaction()
-	{
-		ScopeContext hr;
-		NetPolicyGameInstance *pPolicy = nullptr;
-		GameInsUID insUID;
-
-		svrCheck( super::StartTransaction() );
-
-		// TODO: FIXME
-		//svrCheck( GetMyServer()->UpdateGameConfig(GetPresetID()) );
-
-		svrCheck( GetMyOwner()->UpdateGameConfig() );
-
-		insUID = GetMyOwner()->GetGameInsUID();
-		if( insUID.UID != 0 )
-		{
-			auto gameEndpoint = Service::MessageEndpointManager->GetEndpoint(insUID);
-			svrCheck(NetPolicyGameInstance(gameEndpoint).SetConfigPresetC2SEvt( RouteContext(GetOwnerEntityUID(),insUID), GetPresetID() ) );
-		}
-
-		return hr;
-	}
-
 
 
 

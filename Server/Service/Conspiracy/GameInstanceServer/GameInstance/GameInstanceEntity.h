@@ -179,6 +179,9 @@ namespace ConspiracyGameInstanceServer
 		template< class Func >
 		Result ForeachPlayerSvrGameInstance(Func func );
 
+		template< class Func >
+		Result ForeachPlayerSvrPlayInstance(Func func);
+
 
 
 		////////////////////////////////////////////////////////////

@@ -79,9 +79,6 @@ namespace Svr {
 		RankingServiceEntity(GameID gameID, ClusterID clusterID, ClusterMembership initialMembership = ClusterMembership::Slave);
 		~RankingServiceEntity();
 
-		// We are not going to use hashed key
-		virtual uint KeyHash( uint64_t key ) { return (uint)key; }
-
 
 		//////////////////////////////////////////////////////////////////////////
 		//

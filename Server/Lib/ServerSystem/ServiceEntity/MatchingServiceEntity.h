@@ -231,9 +231,6 @@ namespace Svr {
 		MatchingServiceEntity( GameID gameID, ClusterID clusterID, bool useBot = true, ClusterMembership initialMembership = ClusterMembership::Slave );
 		~MatchingServiceEntity();
 
-		// We are not going to use hashed key
-		virtual uint KeyHash( uint64_t key ) { return (uint)key; }
-
 		uint GetTargetMatchingMemberCount() { return m_TargetMatchingMemberCount; }
 		uint GetMaxMatchingQueue() { return m_MaxMatchingQueue; }
 

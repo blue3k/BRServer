@@ -27,7 +27,7 @@
 #include "Container/SFIndexing.h"
 
 #include "Entity/EntityInformation.h"
-#include "ServiceEntity/ClusteredServiceEntity.h"
+#include "ServiceEntity/ServiceEntity.h"
 
 
 namespace SF {
@@ -40,28 +40,24 @@ namespace Svr {
 
 	///////////////////////////////////////////////////////////////////////////////////////////////////////
 	//
-	//	ServerServiceComponentEntity class
+	//	GameInstanceServiceEntity class
 	//
 
-	class GameInstanceServiceEntity : public ShardedClusterServiceEntity
+	class GameInstanceServiceEntity : public ServiceEntity
 	{
 	public:
 
-		typedef ShardedClusterServiceEntity super;
+		using super = ServiceEntity;
 
 	private:
 
 		// Component manager
 		ComponentManager m_ComponentManger;
 
-
 	public:
 
-		GameInstanceServiceEntity(GameID gameID, ClusterMembership initialMembership = ClusterMembership::Slave);
+		GameInstanceServiceEntity(GameID gameID, const EndpointAddress& endpoint);
 		~GameInstanceServiceEntity();
-
-		// We are not going to use hashed key
-		virtual uint KeyHash( uint64_t key ) { return (uint)key; }
 
 
 		//////////////////////////////////////////////////////////////////////////////////////////////////
@@ -91,24 +87,11 @@ namespace Svr {
 
 		// TickUpdate 
 		virtual Result TickUpdate(TimerAction *pAction = nullptr) override;
-
-
-		//////////////////////////////////////////////////////////////////////////
-		//
-		//	
-		//
-
-		
 	};
 
 
-
-
-
-
-
-}; // namespace Svr
-}; // namespace SF
+} // namespace Svr
+} // namespace SF
 
 
 

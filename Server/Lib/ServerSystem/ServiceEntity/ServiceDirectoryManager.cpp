@@ -160,6 +160,7 @@ namespace SF {
 
 		if (eventOut.Components.EventType == Zookeeper::EVENT_CHILD)
 		{
+			// TODO: optimize with child path
 			DownloadServiceInfo();
 		}
 		else if (eventOut.Components.EventType == Zookeeper::EVENT_SESSION)

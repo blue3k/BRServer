@@ -50,7 +50,7 @@ namespace SF {
 			PlayerTransSearchGameInstance(IHeap& heap, MessageDataPtr& pIMsg);
 			virtual ~PlayerTransSearchGameInstance() {}
 
-			Result OnSearchGameInstanceRes(Svr::TransactionResult* pRes);
+			//Result OnSearchGameInstanceRes(Svr::TransactionResult* pRes);
 
 			// Start Transaction
 			virtual Result StartTransaction() override;
@@ -84,20 +84,6 @@ namespace SF {
 		};
 
 
-		// Chat message from other entity	
-		class PlayerTransJoinedS2SEvt : public Svr::UserTransactionS2SEvt< GamePlayerEntity, Message::GameInstance::PlayerJoinedS2CEvt>
-		{
-		public:
-			using super = Svr::UserTransactionS2SEvt< GamePlayerEntity, Message::GameInstance::PlayerJoinedS2CEvt>;
-
-		public:
-			PlayerTransJoinedS2SEvt(IHeap& heap, MessageDataPtr& pIMsg) :UserTransactionS2SEvt(heap, pIMsg) {}
-			virtual ~PlayerTransJoinedS2SEvt() {}
-
-			// Start Transaction
-			virtual Result StartTransaction() override;
-		};
-
 
 		class PlayerTransLeaveGameInstance : public Svr::MessageTransaction< GamePlayerEntity, Message::Game::LeaveGameInstanceCmd>
 		{
@@ -119,38 +105,6 @@ namespace SF {
 
 			BR_IMPLEMENT_USERMSGTRANS_CLOSE(NetSvrPolicyGame, LeaveGameRes);
 		};
-
-
-		// Chat message from other entitity	
-		class PlayerTransLeftS2SEvt : public Svr::UserTransactionS2SEvt< GamePlayerEntity, Message::GameInstance::PlayerLeftS2CEvt>
-		{
-		public:
-			using super =  Svr::UserTransactionS2SEvt< GamePlayerEntity, Message::GameInstance::PlayerLeftS2CEvt>;
-
-		public:
-			PlayerTransLeftS2SEvt(IHeap& heap, MessageDataPtr& pIMsg) :UserTransactionS2SEvt(heap, pIMsg) {}
-			virtual ~PlayerTransLeftS2SEvt() {}
-
-			// Start Transaction
-			virtual Result StartTransaction() override;
-		};
-
-
-
-
-		class PlayerTransPlayerMovementS2SEvt : public Svr::UserTransactionS2SEvt< GamePlayerEntity, Message::GameInstance::PlayerMovementS2CEvt>
-		{
-		public:
-			using super = Svr::UserTransactionS2SEvt< GamePlayerEntity, Message::GameInstance::PlayerMovementS2CEvt>;
-
-		public:
-			PlayerTransPlayerMovementS2SEvt(IHeap& heap, MessageDataPtr& pIMsg) :UserTransactionS2SEvt(heap, pIMsg) {}
-			virtual ~PlayerTransPlayerMovementS2SEvt() {}
-
-			// Start Transaction
-			virtual Result StartTransaction() override;
-		};
-
 
 
 	} // namespace Svr 

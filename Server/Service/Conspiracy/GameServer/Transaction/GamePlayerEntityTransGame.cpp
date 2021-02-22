@@ -231,25 +231,6 @@ namespace GameServer {
 		return result;
 	}
 
-	// Start Transaction
-	Result PlayerTransJoinedS2SEvt::StartTransaction()
-	{
-		Result hr = ResultCode::SUCCESS;
-
-		svrChk( super::StartTransaction() );
-
-		if( GetMyOwner()->GetGameInsUID() != GetRouteContext().GetFrom())
-			svrErrClose(ResultCode::INVALID_INSTANCEID);
-
-		svrChk( NetSvrPolicyGame(GetRemoteEndpoint()).PlayerJoinedS2CEvt( GetRouteContext().GetFrom(), GetJoinedPlayer() ) );
-
-	Proc_End:
-
-		CloseTransaction( hr );
-
-		return hr;
-	}
-
 
 	PlayerTransLeaveGame::PlayerTransLeaveGame(IHeap& heap, MessageDataPtr &pIMsg )
 		:MessageTransaction(heap, std::forward<MessageDataPtr>(pIMsg))
@@ -328,26 +309,6 @@ namespace GameServer {
 		return hr;
 	}
 	
-	// Start Transaction
-	Result PlayerTransLeftS2SEvt::StartTransaction()
-	{
-		Result hr = ResultCode::SUCCESS;
-
-		svrChk( super::StartTransaction() );
-
-		if( GetMyOwner()->GetGameInsUID() != GetRouteContext().GetFrom())
-			svrErrClose(ResultCode::INVALID_INSTANCEID);
-
-		svrChk( NetSvrPolicyGame(GetRemoteEndpoint()).PlayerLeftS2CEvt( GetRouteContext().GetFrom(), GetLeftPlayerID() ) );
-
-	Proc_End:
-
-		CloseTransaction( hr );
-
-		return hr;
-	}
-
-
 
 	PlayerTransKickPlayer::PlayerTransKickPlayer(IHeap& heap, MessageDataPtr &pIMsg )
 		:MessageTransaction(heap, std::forward<MessageDataPtr>(pIMsg))

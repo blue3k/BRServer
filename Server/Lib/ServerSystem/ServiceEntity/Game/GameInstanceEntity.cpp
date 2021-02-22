@@ -1,6 +1,6 @@
 ////////////////////////////////////////////////////////////////////////////////
 // 
-// CopyRight (c) 2013 The Braves
+// CopyRight (c) The Braves
 // 
 // Author : KyungKun Ko
 //
@@ -24,6 +24,7 @@
 #include "Entity/EntityManager.h"
 
 #include "Variable/SFVariableTable.h"
+#include "Object/SFLibraryComponentAdapter.h"
 
 #include "Server/BrServer.h"
 #include "ServiceEntity/Game/GameInstancePlayer.h"
@@ -199,7 +200,11 @@ namespace SF {
 
 
 			// 2. Get service entity list in the cluster
-			GetServerComponent<GameInstanceManagerServiceEntity>()->FreeGameInstance(GetEntityUID());
+			auto pGameInstanceManagerAdapter = Engine::GetEngineComponent<LibraryComponentAdapter<GameInstanceManagerServiceEntity>>();
+			if (pGameInstanceManagerAdapter)
+			{
+				(*pGameInstanceManagerAdapter)->FreeGameInstance(GetEntityUID());
+			}
 
 		}
 

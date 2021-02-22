@@ -43,9 +43,7 @@ namespace SF {
 		// Close entity and clear transaction
 		Result DeinitializeComponent();
 
-
 		virtual Result AddOrGetRemoteEndpoint(const EntityUID& entityUID, const EndpointAddress& messageEndpoint, MessageEndpoint*& pEndpoint) override;
-
 		virtual MessageEndpoint* GetEndpoint(const EntityUID& entityUID) override;
 	};
 

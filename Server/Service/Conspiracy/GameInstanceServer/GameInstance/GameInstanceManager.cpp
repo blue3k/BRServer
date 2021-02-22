@@ -43,8 +43,8 @@ namespace ConspiracyGameInstanceServer {
 
 
 	// Constructor/Destructor
-	GameInstanceManagerServiceEntity::GameInstanceManagerServiceEntity( GameID gameID, ServerConfig::ServerModuleGameInstanceManager* config, ClusterID clusterID, ClusterMembership initialMembership )
-		: Svr::GameInstanceManagerServiceEntity(gameID, config, clusterID, initialMembership)
+	GameInstanceManagerServiceEntity::GameInstanceManagerServiceEntity( GameID gameID, ServerConfig::ServerModuleGameInstanceManager* config, ClusterID clusterID, const EndpointAddress& endpoint)
+		: Svr::GameInstanceManagerServiceEntity(gameID, config, clusterID, endpoint)
 	{
 	}
 
@@ -64,7 +64,6 @@ namespace ConspiracyGameInstanceServer {
 		////////////////////////////////////////////////////////////////////////////////////////////////////
 		// We register message handler to server entity. the message transaction will be add to the game instance entity
 		// To game instance
-		BR_ENTITY_MESSAGE(Message::GameInstance::DeleteGameC2SEvt)				{ svrMemReturn(pNewTrans = new(GetHeap()) GameEntityTransDeleteGame(GetHeap(), pMsgData)); return ResultCode::SUCCESS; } );
 		BR_ENTITY_MESSAGE(Message::GameInstance::JoinGameCmd)					{ svrMemReturn(pNewTrans = new(GetHeap()) GameEntityTransJoinGame(GetHeap(), pMsgData)); return ResultCode::SUCCESS; } );
 		BR_ENTITY_MESSAGE(Message::GameInstance::LeaveGameInstanceCmd)			{ svrMemReturn(pNewTrans = new(GetHeap()) GameEntityTransLeaveGame(GetHeap(), pMsgData)); return ResultCode::SUCCESS; } );
 		BR_ENTITY_MESSAGE(Message::GameInstance::KickPlayerCmd)					{ svrMemReturn(pNewTrans = new(GetHeap()) GameEntityTransKickPlayer(GetHeap(), pMsgData)); return ResultCode::SUCCESS; } );
