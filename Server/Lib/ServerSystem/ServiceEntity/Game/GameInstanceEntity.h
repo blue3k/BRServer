@@ -29,6 +29,7 @@
 
 #include "Protocol/Policy/GameServerNetPolicy.h"
 #include "Protocol/Policy/GameInstanceNetPolicy.h"
+#include "Protocol/Policy/PlayInstanceNetPolicy.h"
 
 
 

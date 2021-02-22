@@ -74,7 +74,7 @@ namespace SF {
 
 			auto pEngine = Engine::GetInstance();
 			if (pEngine)
-				pEngine->AddComponent(new(GetEngineHeap) LibraryComponentAdapter<GameInstanceManagerServiceEntity>(GetEngineHeap(), this));
+				pEngine->AddComponent(new(GetEngineHeap()) LibraryComponentAdapter<GameInstanceManagerServiceEntity>(GetEngineHeap(), this));
 
 			return hr;
 		}

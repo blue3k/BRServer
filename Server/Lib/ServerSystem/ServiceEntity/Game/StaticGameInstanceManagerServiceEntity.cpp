@@ -77,7 +77,7 @@ namespace SF {
 
 			auto pEngine = Engine::GetInstance();
 			if (pEngine)
-				pEngine->AddComponent(new(GetEngineHeap) LibraryComponentAdapter<StaticGameInstanceManagerServiceEntity>(GetEngineHeap(), this));
+				pEngine->AddComponent(new(GetEngineHeap()) LibraryComponentAdapter<StaticGameInstanceManagerServiceEntity>(GetEngineHeap(), this));
 
 			svrCheck(Service::ServiceDirectory->WatchForService(Service::ServerConfig->GameClusterID, ClusterID::GameInstance));
 

@@ -37,76 +37,76 @@ namespace SF {
 namespace Net {
 
 
-	
-
-	////////////////////////////////////////////////////////////////////////////////
-	//
-	//	Server Mobile UDP Network connection class
-	//
-
-	// Constructor
-	ConnectionMUDPServer::ConnectionMUDPServer(IHeap& memoryManager, SocketIO* ioHandler)
-		: ConnectionMUDP(memoryManager, ioHandler)
-	{
-		SetNetCtrlAction(NetCtrlCode_SyncReliable, &m_HandleSyncReliable);
-
-		AddStateAction(ConnectionState::CONNECTED, &m_ActSync);
-	}
-
-	ConnectionMUDPServer::~ConnectionMUDPServer()
-	{
-
-	}
-/*
-	Result ConnectionMUDPServer::ProcSendReliable()
-	{
-		Result result = ConnectionMUDP::ProcSendReliable();
-#ifdef _DEBUG
-		if ((GetSendGuaQueue().size() + GetSendReliableWindow().GetMsgCount()) > 0)
-		{
-			if (m_SendQueueTime == TimeStampMS())
-			{
-				m_SendQueueTime = Util::Time.GetTimeMs();
-				m_Reported = false;
-			}
-
-			if (!m_Reported && Util::TimeSince(m_SendQueueTime) > DurationMS(30*1000))
-			{
-				m_Reported = true;
-			}
-
-		}
-		else
-		{
-			m_SendQueueTime = TimeStampMS();
-			m_Reported = false;
-		}
-#endif
-		return result;
-	}
-*/
-
-	Result ConnectionMUDPServer::UpdateSendQueue()
-	{
-		Result hr;
-		if (GetConnectionState() == ConnectionState::DISCONNECTED)
-			return ResultCode::SUCCESS;
-
-		MutexScopeLock localLock(GetUpdateLock());
-
-		// Force update send
-		m_ActSendReliableQueue.Run();
-		m_ActSendReliableRetry.Run();
-
-
-
-		// Flush sync message asap
-		SendFlush();
-
-		return hr;
-	}
-
-
+	// New linux clang compiler start having issue with location of the implementation. moving to header at the moment
+//
+//	////////////////////////////////////////////////////////////////////////////////
+//	//
+//	//	Server Mobile UDP Network connection class
+//	//
+//
+//	// Constructor
+//	ConnectionMUDPServer::ConnectionMUDPServer(IHeap& heap, SocketIO* ioHandler)
+//		: ConnectionMUDP(heap, ioHandler)
+//	{
+//		SetNetCtrlAction(NetCtrlCode_SyncReliable, &m_HandleSyncReliable);
+//
+//		AddStateAction(ConnectionState::CONNECTED, &m_ActSync);
+//	}
+//
+//	ConnectionMUDPServer::~ConnectionMUDPServer()
+//	{
+//
+//	}
+///*
+//	Result ConnectionMUDPServer::ProcSendReliable()
+//	{
+//		Result result = ConnectionMUDP::ProcSendReliable();
+//#ifdef _DEBUG
+//		if ((GetSendGuaQueue().size() + GetSendReliableWindow().GetMsgCount()) > 0)
+//		{
+//			if (m_SendQueueTime == TimeStampMS())
+//			{
+//				m_SendQueueTime = Util::Time.GetTimeMs();
+//				m_Reported = false;
+//			}
+//
+//			if (!m_Reported && Util::TimeSince(m_SendQueueTime) > DurationMS(30*1000))
+//			{
+//				m_Reported = true;
+//			}
+//
+//		}
+//		else
+//		{
+//			m_SendQueueTime = TimeStampMS();
+//			m_Reported = false;
+//		}
+//#endif
+//		return result;
+//	}
+//*/
+//
+//	Result ConnectionMUDPServer::UpdateSendQueue()
+//	{
+//		Result hr;
+//		if (GetConnectionState() == ConnectionState::DISCONNECTED)
+//			return ResultCode::SUCCESS;
+//
+//		MutexScopeLock localLock(GetUpdateLock());
+//
+//		// Force update send
+//		m_ActSendReliableQueue.Run();
+//		m_ActSendReliableRetry.Run();
+//
+//
+//
+//		// Flush sync message asap
+//		SendFlush();
+//
+//		return hr;
+//	}
+//
+//
 
 
 
