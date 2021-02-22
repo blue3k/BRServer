@@ -31,7 +31,7 @@
 #include "Protocol/ServerService/GameInstanceManagerService.h"
 #include "ServiceEntity/Game/GameInstanceEntity.h"
 #include "ServiceEntity/Game/GameInstanceManagerServiceEntity.h"
-
+#include "Service/ServerService.h"
 
 
 namespace SF {
@@ -43,7 +43,7 @@ namespace SF {
 		//
 
 		GameInstanceEntity::GameInstanceEntity()
-			: MasterEntity(64, 64)
+			: super(Service::ServerConfig->GameClusterID, ClusterID::GameInstance)
 			, m_GamePlayerByUID(GetHeap())
 			, m_PendingReleasePlayer(GetHeap())
 			, m_ComponentManger(GetHeap())
@@ -224,7 +224,7 @@ namespace SF {
 			//uint numBot = attributes.GetValue<uint>("NumBot"_crc);
 			uint maxPlayer = attributes.GetValue<uint>("MaxPlayer"_crc);
 			m_InstanceType = attributes.GetValue<StringCrc32>("Type"_crc);
-			m_DataID = attributes.GetValue<StringCrc32>("DataID"_crc);
+			m_ZoneTableID = attributes.GetValue<StringCrc32>("ZoneTableID"_crc);
 
 			m_TotalJoinedPlayer = 0;
 			m_MaxPlayer = maxPlayer;
@@ -246,15 +246,15 @@ namespace SF {
 		//
 
 
-		Result GameInstanceEntity::CreatePlayerInstance(const PlayerInformation& playerInfo, GameInstancePlayer*& pPlayer)
+		Result GameInstanceEntity::CreatePlayerInstance(const PlayerInformation& playerInfo, SFUniquePtr<Svr::GameInstancePlayer>& pPlayer)
 		{
-			pPlayer = new(GetHeap()) GameInstancePlayer(this, playerInfo);
+			pPlayer.reset(new(GetHeap()) GameInstancePlayer(this, playerInfo));
 
 			return pPlayer != nullptr ? ResultCode::SUCCESS : ResultCode::OUT_OF_MEMORY;
 		}
 
 		// Register new player to join
-		Result GameInstanceEntity::AddPlayerToJoin(GameInstancePlayer*& pPlayer)
+		Result GameInstanceEntity::AddPlayerToJoin(SFUniquePtr<Svr::GameInstancePlayer>& pPlayer)
 		{
 			ScopeContext hr;
 			GameInstancePlayer* pFound = nullptr;
@@ -267,12 +267,12 @@ namespace SF {
 
 			m_TotalJoinedPlayer++;
 
-			svrCheck(m_GamePlayerByUID.Insert(pPlayer->GetPlayerID(), pPlayer));
+			svrCheck(m_GamePlayerByUID.Insert(pPlayer->GetPlayerID(), pPlayer.get()));
 
 			// clear game killing timer
 			m_TimeToKill.ClearTimer();
 
-			pPlayer = nullptr;
+			pPlayer.release();
 
 			return hr;
 		}

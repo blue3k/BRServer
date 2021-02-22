@@ -59,7 +59,7 @@ namespace ConspiracyGameInstanceServer {
 	{
 		Result hr = ResultCode::SUCCESS;
 		GamePlayer *pMyPlayer = nullptr;
-		Svr::GameInstancePlayer* pNewInsPlayer = nullptr;
+		SFUniquePtr<Svr::GameInstancePlayer> pNewInsPlayer;
 		auto pGameStateSystem = GetMyOwner()->GetComponent<GameStateSystem>();
 
 		svrChk( super::StartTransaction() );
@@ -76,7 +76,7 @@ namespace ConspiracyGameInstanceServer {
 		if( !(GetMyOwner()->FindPlayer( GetPlayer().PlayerID, pMyPlayer )) )
 		{
 			svrChk(GetMyOwner()->CreatePlayerInstance(GetPlayer(), pNewInsPlayer));
-			pMyPlayer =  dynamic_cast<GamePlayer*>(pNewInsPlayer);
+			pMyPlayer =  dynamic_cast<GamePlayer*>(pNewInsPlayer.get());
 			svrChk(pMyPlayer->InitializePlayer( GetMyOwner() ) );
 			pMyPlayer->SetRequestedRole((PlayerRole)GetRequestedRole());
 
@@ -146,8 +146,6 @@ namespace ConspiracyGameInstanceServer {
 
 
 	Proc_End:
-
-		Util::SafeDelete(pNewInsPlayer);
 
 		CloseTransaction( hr );
 

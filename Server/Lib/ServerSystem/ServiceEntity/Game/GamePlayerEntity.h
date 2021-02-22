@@ -33,10 +33,7 @@ namespace Net {
 	class ISvrPolicyGame;
 };
 
-namespace ServerConfig
-{
-	struct NetPublic;
-}
+
 
 
 namespace SF {
@@ -78,10 +75,6 @@ namespace Svr {
 
 		// Game instance UID
 		GameInsUID m_GameInsUID = 0;
-
-		Net::ServerNet* m_ServerNet = nullptr;
-
-		const ServerConfig::NetPublic*	m_PublicNet = nullptr;
 
 		PartyUID m_PartyUID = 0;
 		uint m_ShardID = 0;
@@ -131,12 +124,6 @@ namespace Svr {
 
 		GamePlayerEntity();
 		virtual ~GamePlayerEntity();
-
-		Net::ServerNet* GetServerNet() { return m_ServerNet; }
-		void SetServerNet(Net::ServerNet* value) { m_ServerNet = value; }
-
-		const ServerConfig::NetPublic* GetPublicNetConfig() { return m_PublicNet; }
-		void SetPublicNetConfig(const ServerConfig::NetPublic* value) { m_PublicNet = value; }
 
 		PlayerID GetPlayerID() { return GetAccountID(); }
 

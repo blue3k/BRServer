@@ -195,7 +195,6 @@ namespace ConspiracyGameInstanceServer {
 	Result GameInstanceEntity::InitializeGameEntity(const VariableTable& attributes)
 	{
 		Result hr = ResultCode::SUCCESS;
-		Svr::GameInstancePlayer* pPlayer = nullptr;
 
 		uint numBot = attributes.GetValue<uint>("NumBot"_crc);
 		uint maxPlayer = attributes.GetValue<uint>("MaxPlayer"_crc);
@@ -231,24 +230,21 @@ namespace ConspiracyGameInstanceServer {
 		m_RoleRequestSeer = 0;
 		m_RoleRequestWerewolf = 0;
 
-		svrChk(super::InitializeGameEntity(attributes));
+		svrCheck(super::InitializeGameEntity(attributes));
 
 
 		// add fake bot player
 		for (uint iBot = 0; iBot < m_NumBot; iBot++)
 		{
+			SFUniquePtr<Svr::GameInstancePlayer> pPlayer;
 			PlayerInformation playerInfo;
 			playerInfo.PlayerID = iBot + 1;
 			playerInfo.Level = 1;
 			StrUtil::Format(playerInfo.NickName, "Bot{0}", iBot);
-			svrChk(CreatePlayerInstance(playerInfo, pPlayer));
+			svrCheck(CreatePlayerInstance(playerInfo, pPlayer));
 			pPlayer->SetIsBot(true);
-			svrChk(AddPlayerToJoin(pPlayer));
+			svrCheck(AddPlayerToJoin(pPlayer));
 		}
-
-	Proc_End:
-
-		Util::SafeDelete(pPlayer);
 
 		return hr;
 	}
@@ -283,16 +279,16 @@ namespace ConspiracyGameInstanceServer {
 	}
 
 
-	Result GameInstanceEntity::CreatePlayerInstance(const PlayerInformation& playerInfo, Svr::GameInstancePlayer* &pPlayer)
+	Result GameInstanceEntity::CreatePlayerInstance(const PlayerInformation& playerInfo, SFUniquePtr<Svr::GameInstancePlayer>& pPlayer)
 	{
-		pPlayer = new(GetHeap()) GamePlayer(this, playerInfo);
+		pPlayer.reset(new(GetHeap()) GamePlayer(this, playerInfo));
 
 		return pPlayer != nullptr ? ResultCode::SUCCESS : ResultCode::OUT_OF_MEMORY;
 	}
 
 
 	// Register new player to join
-	Result GameInstanceEntity::AddPlayerToJoin(Svr::GameInstancePlayer* &pInsPlayer)
+	Result GameInstanceEntity::AddPlayerToJoin(SFUniquePtr<Svr::GameInstancePlayer>& pInsPlayer)
 	{
 		Result hr = ResultCode::SUCCESS;
 		//GamePlayer* pFound = nullptr;
@@ -300,7 +296,7 @@ namespace ConspiracyGameInstanceServer {
 		uint playerIndex;
 
 
-		pPlayer = (GamePlayer*)pInsPlayer;
+		pPlayer = (GamePlayer*)pInsPlayer.get();
 
 		svrChk(super::AddPlayerToJoin(pInsPlayer));
 		pInsPlayer = nullptr;

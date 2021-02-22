@@ -147,16 +147,17 @@ namespace Svr {
 			// Add Entity will Initialize entity so that AccountID is erased.
 			// SetAccountID need to be set after entity is added
 			pPlayerEntity->SetAccountID(super::GetPlayerID());
-			pPlayerEntity->SetServerNet(pMyOwner->GetServerNet());
-			pPlayerEntity->SetPublicNetConfig(pMyOwner->GetPublicNetConfig());
+			//pPlayerEntity->SetServerNet(pMyOwner->GetServerNet());
+			//pPlayerEntity->SetPublicNetConfig(pMyOwner->GetPublicNetConfig());
 		}
 
 		pPlayerEntity->SetShardID(super::GetShardID());
 		m_PlayerUID = pPlayerEntity->GetEntityUID();
 
-		m_PublicAddress = pMyOwner->GetPublicNetConfig()->IPV4;
-		m_PublicAddressIPV6 = pMyOwner->GetPublicNetConfig()->IPV6;
-		m_Port = pMyOwner->GetPublicNetConfig()->Port;
+		assert(false);// TODO:
+		//m_PublicAddress = pMyOwner->GetPublicNetConfig()->IPV4;
+		//m_PublicAddressIPV6 = pMyOwner->GetPublicNetConfig()->IPV6;
+		//m_Port = pMyOwner->GetPublicNetConfig()->Port;
 
 		if ((Svr::Entity*)pPlayerEntity == (Svr::Entity*)pMyOwner)
 		{

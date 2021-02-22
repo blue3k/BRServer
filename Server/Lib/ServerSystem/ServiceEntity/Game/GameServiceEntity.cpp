@@ -85,9 +85,9 @@ namespace SF {
 			svrCheckMem(m_pNetPublic = NewObject<Net::ServerMUDP>(GetHeap(), serverID, NetClass::Game));
 		}
 
-		CustomAttributes().SetValue("PublicIPV4", m_PublicNetConfig->IPV4);
-		CustomAttributes().SetValue("PublicIPV6", m_PublicNetConfig->IPV6);
-		CustomAttributes().SetValue("PublicPort", m_PublicNetConfig->Port);
+		GetCustomAttributes().SetValue("PublicIPV4", m_PublicNetConfig->IPV4);
+		GetCustomAttributes().SetValue("PublicIPV6", m_PublicNetConfig->IPV6);
+		GetCustomAttributes().SetValue("PublicPort", m_PublicNetConfig->Port);
 
 		m_pNetPublic->SetNewConnectionhandler([this](SharedPointerT<Net::Connection>& conn)
 		{

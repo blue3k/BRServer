@@ -19,6 +19,7 @@
 
 #include "Transaction/MessageRoute.h"
 #include "Entity/Entity.h"
+#include "ServiceEntity/ServiceEntity.h"
 #include "Server/BrServer.h"
 
 #include "ServerSystem/GameLog/ChattingHistory.h"
@@ -42,12 +43,12 @@ namespace Svr
 	//	Game Instance entity class
 	//
 
-	class GameInstanceEntity : public MasterEntity
+	class GameInstanceEntity : public ServiceEntity
 	{
 	public:
 
 		using GamePlayerUIDMap = SortedMap<PlayerID,GameInstancePlayer*>;
-		using super = Svr::MasterEntity;
+		using super = ServiceEntity;
 
 	protected:
 
@@ -61,7 +62,7 @@ namespace Svr
 		StringCrc32 m_InstanceType;
 
 		// data id
-		StringCrc32 m_DataID;
+		uint32_t m_ZoneTableID{};
 
 
 		//////////////////////////////////////////////////////////////////////////////////////////////////
@@ -102,7 +103,7 @@ namespace Svr
 
 
 		StringCrc32 GetInstanceType() const { return m_InstanceType; }
-		StringCrc32 GetDataID() const { return m_DataID; }
+		uint32_t GetZoneTableID() const { return m_ZoneTableID; }
 
 
 		const Util::TimeStampTimer& GetTimeToKill() { return m_TimeToKill; }
@@ -195,11 +196,11 @@ namespace Svr
 		//	Game Player
 		//
 
-		virtual Result CreatePlayerInstance(const PlayerInformation& playerInfo, GameInstancePlayer* &pPlayer);
+		virtual Result CreatePlayerInstance(const PlayerInformation& playerInfo, SFUniquePtr<Svr::GameInstancePlayer> &pPlayer);
 
 
 		// Register new player to join
-		virtual Result AddPlayerToJoin( GameInstancePlayer* &pPlayer );
+		virtual Result AddPlayerToJoin(SFUniquePtr<Svr::GameInstancePlayer> &pPlayer );
 
 		// Player leave
 		virtual Result LeavePlayer(GameInstancePlayer* &pPlayer );

@@ -138,6 +138,7 @@ namespace SF {
 
 	void ServiceCluster::DownloadServiceInfo()
 	{
+		// We download full list on reconnect, just skip it
 		auto zkSession = Service::ZKSession->GetZookeeperSession();
 		if (zkSession == nullptr || !zkSession->IsConnected())
 			return;
@@ -145,6 +146,28 @@ namespace SF {
 		svrTrace(Debug, "ServiceCluster requesting service list, GameID:{0} ClusterID:{1}", m_ClusterKey.Components.GameClusterID, Enum<ClusterID>().GetValueName(m_ClusterKey.Components.ServiceClusterID));
 
 		zkSession->AGetChildren(m_ClusterPath, this);
+	}
+
+	void ServiceCluster::NodeUpdated(const String& nodePath)
+	{
+		// We download full list on reconnect, just skip it
+		auto zkSession = Service::ZKSession->GetZookeeperSession();
+		if (zkSession == nullptr || !zkSession->IsConnected())
+			return;
+
+		if (zkSession->Exists(nodePath))
+		{
+			svrTrace(Debug, "ServiceCluster updating service node state:{0}, removed", m_ClusterKey.Components.GameClusterID, nodePath);
+			ServerServiceInformation* pServiceInfo{};
+			m_Services.Remove(StringCrc64(nodePath), pServiceInfo);
+			if (pServiceInfo)
+				IHeap::Delete(pServiceInfo);
+		}
+		else
+		{
+			svrTrace(Debug, "ServiceCluster updating service node state:{0}, added", m_ClusterKey.Components.GameClusterID, nodePath);
+			AddServiceInfo(nodePath, StringCrc64(nodePath));
+		}
 	}
 
 
@@ -161,7 +184,8 @@ namespace SF {
 		if (eventOut.Components.EventType == Zookeeper::EVENT_CHILD)
 		{
 			// TODO: optimize with child path
-			DownloadServiceInfo();
+			//DownloadServiceInfo();
+			NodeUpdated(eventOut.Components.NodePath.ToString());
 		}
 		else if (eventOut.Components.EventType == Zookeeper::EVENT_SESSION)
 		{
@@ -402,6 +426,23 @@ namespace SF {
 		return pServiceInfo != nullptr ? ResultCode::SUCCESS : ResultCode::UNEXPECTED;
 	}
 
+	Result ServiceDirectoryManager::GetServiceList(GameID gameID, ClusterID clusterID, Array<ServerServiceInformation*>& outServices)
+	{
+		Result hr;
+		ServiceCluster* pServiceInfo = nullptr;
+		ServiceClusterSearchKey key(gameID, clusterID);
+
+		if (m_ClusterInfoMap.find(key, pServiceInfo))
+			return hr;
+
+		for (auto itService : *pServiceInfo)
+		{
+			outServices.push_back(itService.GetValue());
+		}
+
+		return hr;
+	}
+
 
 	// Get cluster service entity
 	Result ServiceDirectoryManager::GetRandomService(GameID gameID, ClusterID clusterID, ServerServiceInformation* &pServiceInfo )
@@ -527,7 +568,7 @@ namespace SF {
 			pServiceEntity->GetClusterID(), 
 			pServiceEntity->GetEntityUID(), 
 			pServiceEntity->GetMessageEndpointConfig(),
-			pServiceEntity->CustomAttributes());
+			pServiceEntity->GetCustomAttributes());
 	}
 
 	Result ServiceDirectoryManager::RegisterLocalServices()

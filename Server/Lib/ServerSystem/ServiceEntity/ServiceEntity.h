@@ -83,14 +83,17 @@ namespace SF {
 
 		const EndpointAddress& GetMessageEndpointConfig() const { return m_MessageEndpointConfig; }
 
-		const VariableTable& CustomAttributes() const { return m_CustomAttributes; }
-		VariableTable& CustomAttributes() { return m_CustomAttributes; }
+		const VariableTable& GetCustomAttributes() const { return m_CustomAttributes; }
+		VariableTable& GetCustomAttributes() { return m_CustomAttributes; }
 
 		// Get message endpoint
 		const SharedPointerT<StreamDBConsumer>& GetListenEndpoint() const { return m_ListenEndpoint; }
 
+		// Initialization called on transaction, if the entity is created after boot up. this method wouldn't be called
+		virtual Result StartInitialization() { return ResultCode::SUCCESS; }
+
 		// start initialization
-		virtual Result StartInitialization();
+		virtual Result InitializeEntity(EntityID newEntityID) override;
 
 		// Register message handler for this component
 		virtual Result RegisterServiceMessageHandler() { return ResultCode::SUCCESS; }

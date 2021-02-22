@@ -66,6 +66,9 @@ namespace SF {
 
 			svrCheck(Service::DataTableManager->LoadDataTable("ZoneTable", "ZoneId", "gtbl_ZoneTable"));
 
+			auto pZoneTable = Service::DataTableManager->GetDataTable("ZoneTable");
+			svrCheckPtr(pZoneTable);
+
 			pInstance = PerformanceCounterClient::GetDefaultCounterInstance();
 			if (pInstance != nullptr)
 			{
@@ -76,14 +79,54 @@ namespace SF {
 			if (pEngine)
 				pEngine->AddComponent(new(GetEngineHeap) LibraryComponentAdapter<StaticGameInstanceManagerServiceEntity>(GetEngineHeap(), this));
 
+			svrCheck(Service::ServiceDirectory->WatchForService(Service::ServerConfig->GameClusterID, ClusterID::GameInstance));
+
+			// first update delay
+			m_TimeToUpdate.SetTimer(DurationMS(2000));
+
+
 			return hr;
 		}
 
-		Result StaticGameInstanceManagerServiceEntity::RegisterServiceMessageHandler()
+		Result StaticGameInstanceManagerServiceEntity::TickUpdate(TimerAction* pAction)
 		{
-			ScopeContext hr;
+			Result hr;
 
-			svrCheck(super::RegisterServiceMessageHandler());
+			svrCheck(super::TickUpdate(pAction));
+
+			auto pServer = Svr::BrServer::GetInstance();
+			svrCheckPtr(pServer);
+			if (pServer->GetServerState() != ServerState::RUNNING)
+				return hr;
+
+			if (m_TimeToUpdate.CheckTimer())
+			{
+				UpdateStaticZone();
+
+				m_TimeToUpdate.SetTimer(DurationMS(1000));
+			}
+
+
+			return hr;
+		}
+
+		Result StaticGameInstanceManagerServiceEntity::UpdateStaticZone()
+		{
+			Result hr;
+			auto pZoneTable = Service::DataTableManager->GetDataTable("ZoneTable");
+			svrCheckPtr(pZoneTable);
+
+			Array<ServerServiceInformation*> services;
+
+			svrCheck(Service::ServiceDirectory->GetServiceList(Service::ServerConfig->GameClusterID, ClusterID::GameInstance, services));
+
+			for (auto itZone : *pZoneTable)
+			{
+				auto staticZoneCount = itZone.second->GetValue<int>("BaseStaticZoneCount");
+				if (staticZoneCount <= 0)
+					continue;
+
+			}
 
 			return hr;
 		}

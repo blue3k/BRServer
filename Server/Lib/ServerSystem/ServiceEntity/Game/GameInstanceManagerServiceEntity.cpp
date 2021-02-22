@@ -97,11 +97,8 @@ namespace SF {
 
 			svrCheckPtr(pGameInstance);
 
-			if ((Service::EntityManager->AddEntity(EntityFaculty::GameInstance, (Entity*)pGameInstance)))
-			{
-				++m_NumberOfInstance;
-				//m_LocalWorkload.fetch_add(1, std::memory_order_relaxed);
-			}
+			++m_NumberOfInstance;
+			//m_LocalWorkload.fetch_add(1, std::memory_order_relaxed);
 
 			{
 				SF::MutexScopeLock scopeLock(m_GameInstanceListLock);
@@ -122,11 +119,8 @@ namespace SF {
 				svrCheck(m_GameInstances.Remove(pGameInstance->GetEntityUID(), pGameInstance));
 			}
 
-			if ((Service::EntityManager->RemoveEntity(gameUID.GetEntityID())))
-			{
-				--m_NumberOfInstance;
-				//m_LocalWorkload.fetch_sub(1, std::memory_order_relaxed);
-			}
+			--m_NumberOfInstance;
+			//m_LocalWorkload.fetch_sub(1, std::memory_order_relaxed);
 
 			return hr;
 		}
@@ -146,7 +140,7 @@ namespace SF {
 					GameInstanceInfo instanceInfo;
 					instanceInfo.GameInstanceUID = key;
 					instanceInfo.TypeName = value->GetInstanceType();
-					instanceInfo.DataID = value->GetDataID();
+					instanceInfo.DataID = value->GetZoneTableID();
 					outList.push_back(std::forward<GameInstanceInfo>(instanceInfo));
 					return ResultCode::SUCCESS;
 				});

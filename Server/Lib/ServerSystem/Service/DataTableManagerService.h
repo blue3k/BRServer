@@ -40,6 +40,9 @@ namespace SF {
 		Result LoadTable(StringCrc32 keyColumnName, const Array<VariableTable>& rowList);
 
 		VariableTable* FindRow(uint64_t key);
+
+		auto begin() { return m_DataByRow.begin(); }
+		auto end() { return m_DataByRow.end(); }
 	};
 
 

@@ -51,6 +51,8 @@ namespace SF {
 		// Create a watcher for cluster, replacement for CreateWatcherForCluster
 		virtual Result WatchForService(GameID gameID, ClusterID clusterID) { return ResultCode::NOT_IMPLEMENTED; }
 
+		virtual Result GetServiceList(GameID gameID, ClusterID clusterID, Array<ServerServiceInformation*>& outServices) { return ResultCode::NOT_IMPLEMENTED; }
+
 		// register local service to directory
 		virtual Result RegisterLocalService(GameID gameID, ClusterID clusterID, EntityUID entityUID, const EndpointAddress& endpoint, const VariableTable& customAttributes) { return ResultCode::NOT_IMPLEMENTED; }
 		virtual Result RegisterLocalService(ServiceEntity* pServiceEntity) { return ResultCode::NOT_IMPLEMENTED; }

@@ -289,16 +289,14 @@ namespace Svr {
 			});
 		Net::PeerInfo local, remote;
 
-		svrCheckPtr(m_ServerNet);
-
 		ReleaseConnection("JoinGameServer releasing old connection");
 
 		SetAuthTicket(authTicket);
 		SetFacebookUID(fbUID);
 
-		svrCheckPtr(pConnection = new(GetSystemHeap()) Net::ConnectionMUDPServer(GetSystemHeap(), m_ServerNet->GetSocketIO()));
+		//svrCheckPtr(pConnection = new(GetSystemHeap()) Net::ConnectionMUDPServer(GetSystemHeap(), m_ServerNet->GetSocketIO()));
 
-		local.SetInfo(GetServerNet()->GetNetClass(), m_ServerNet->GetLocalAddress(), Service::ServerConfig->UID);
+		//local.SetInfo(GetServerNet()->GetNetClass(), m_ServerNet->GetLocalAddress(), Service::ServerConfig->UID);
 		remote.SetInfo(NetClass::Client, authTicket);
 
 		pConnection->SetCID(Service::ConnectionManager->NewCID());

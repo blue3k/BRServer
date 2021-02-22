@@ -53,6 +53,8 @@ namespace SF {
 
 			svrCheck(GetMyOwner()->OnNewInstance(pGameInstance));
 
+			svrCheck(Service::EntityManager->AddEntity(EntityFaculty::GameInstance, (Entity*)pGameInstance));
+
 			m_GameInsUID = pEntity->GetEntityUID();
 
 			svrTrace(SVR_INFO, "CreateGameInstance:{0}", pGameInstance->GetEntityUID());

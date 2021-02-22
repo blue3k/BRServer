@@ -100,7 +100,7 @@ namespace SF {
 		bool IsZKInitialized() { return m_ZKInitialized; }
 
 		void DownloadServiceInfo();
-
+		void NodeUpdated(const String& nodePath);
 
 		/////////////////////////////////////////////
 		//
@@ -117,9 +117,14 @@ namespace SF {
 //		virtual void OnACLComplition(ACLTask& pTask) override;
 
 
+		auto begin() { return m_Services.begin(); }
+		auto end() { return m_Services.end(); }
+
 		// Static helper functions
 
 		static String GetClusterPath(GameID gameID, ClusterID clusterID);
+
+
 	};
 
 
@@ -180,6 +185,8 @@ namespace SF {
 
 		// Set watch state for cluster
 		virtual Result WatchForService(GameID gameID, ClusterID clusterID) override;
+		virtual Result GetServiceList(GameID gameID, ClusterID clusterID, Array<ServerServiceInformation*>& outServices) override;
+
 
 		virtual Result RegisterLocalService(GameID gameID, ClusterID clusterID, EntityUID entityUID, const EndpointAddress& endpoint, const VariableTable& customAttributes) override;
 		virtual Result RegisterLocalService(ServiceEntity* pServiceEntity) override;

@@ -65,11 +65,16 @@ namespace SF {
 			// NOTE: We might need to use shared ptr
 			SortedMap<GameInsUID, GameInstanceEntity*> m_GameInstances;
 
+			Util::TimeStampTimer m_TimeToUpdate;
+
+
 		public:
 
 			StaticGameInstanceManagerServiceEntity(GameID gameID, ServerConfig::ServerModuleStaticGameInstanceManager* config, ClusterID clusterID, const EndpointAddress& endpoint);
 			~StaticGameInstanceManagerServiceEntity();
 
+
+			Result UpdateStaticZone();
 
 			//////////////////////////////////////////////////////////////////////////
 			//
@@ -78,7 +83,7 @@ namespace SF {
 
 			virtual Result InitializeEntity(EntityID newEntityID) override;
 
-			virtual Result RegisterServiceMessageHandler() override;
+			virtual Result TickUpdate(TimerAction* pAction) override;
 
 
 			// Initialize server component

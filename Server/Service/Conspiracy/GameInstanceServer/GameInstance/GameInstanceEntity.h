@@ -215,10 +215,10 @@ namespace ConspiracyGameInstanceServer
 		Result GetPlayerIndex( PlayerID playerID, uint &playerIndex );
 		Result GetPlayerByIndex( INT playerIndex, GamePlayer* &pGamePlayer );
 
-		virtual Result CreatePlayerInstance(const PlayerInformation& playerInfo, Svr::GameInstancePlayer* &pPlayer) override;
+		virtual Result CreatePlayerInstance(const PlayerInformation& playerInfo, SFUniquePtr<Svr::GameInstancePlayer>& pPlayer) override;
 
 		// Register new player to join
-		virtual Result AddPlayerToJoin(Svr::GameInstancePlayer* &pPlayer ) override;
+		virtual Result AddPlayerToJoin(SFUniquePtr<Svr::GameInstancePlayer>& pPlayer ) override;
 
 
 		// Leave all player

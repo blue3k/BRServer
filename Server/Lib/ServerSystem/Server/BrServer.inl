@@ -17,7 +17,7 @@
 
 
 // Set server state
-void BrServer::SetServerState( ServerState state )
+void BrServer::SetServerState(ServerState state)
 {
 	m_State = state;
 }
@@ -29,10 +29,11 @@ ServerState BrServer::GetServerState()
 }
 
 // Set Loopback entity
-void BrServer::SetLoopbackServerEntity( ServerEntity* pLoopback )
+void BrServer::SetLoopbackServerEntity(ServerEntity* pLoopback)
 {
 	m_pLoopbackServerEntity = pLoopback;
 }
+
 // Get Loopback entity
 ServerEntity* BrServer::GetLoopbackServerEntity()
 {
@@ -77,17 +78,12 @@ componentType* GetServerComponent(uint componentID)
 	return BrServer::GetInstance()->GetComponentCarrier().GetComponent<componentType>(componentID);
 }
 
-
-
-
 // Get Remote Entity Manager
 ServerEntity* GetLoopbackServerEntity()
 {
 	Assert( BrServer::GetInstance() );
 	return BrServer::GetInstance()->GetLoopbackServerEntity();
 }
-
-
 
 template<class DBManagerType>
 Result BrServer::AddDBCluster(const ServerConfig::DBCluster *pDBClusterCfg)
@@ -126,9 +122,7 @@ Result BrServer::AddDBCluster(const ServerConfig::DBCluster *pDBClusterCfg)
 
 	svrChk(m_Components.AddComponent( pDB ) );
 
-
 Proc_End:
-
 
 	return hr;
 }

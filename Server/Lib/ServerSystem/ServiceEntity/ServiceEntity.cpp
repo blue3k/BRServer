@@ -68,16 +68,18 @@ namespace SF {
 	{
 	}
 
-	Result ServiceEntity::StartInitialization()
+	Result ServiceEntity::InitializeEntity(EntityID newEntityID)
 	{
 		Result hr;
+
+		svrCheck(super::InitializeEntity(newEntityID));
 
 		if (m_ListenEndpoint != nullptr)
 		{
 			svrCheck(m_ListenEndpoint->RequestData(StreamDB::OFFSET_END));
 		}
 
-		svrCheck(Service::ServiceDirectory->RegisterLocalService(m_GameID, m_ClusterID, GetEntityUID(), m_MessageEndpointConfig, CustomAttributes()));
+		svrCheck(Service::ServiceDirectory->RegisterLocalService(m_GameID, m_ClusterID, GetEntityUID(), m_MessageEndpointConfig, GetCustomAttributes()));
 
 		return hr;
 	}
