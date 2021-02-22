@@ -222,12 +222,15 @@ namespace SF {
 			GameInstancePlayer* pPlayer = nullptr;
 
 			//uint numBot = attributes.GetValue<uint>("NumBot"_crc);
-			uint maxPlayer = attributes.GetValue<uint>("MaxPlayer"_crc);
+			m_MaxPlayer = attributes.GetValue<uint>("MaxPlayer"_crc);
 			m_InstanceType = attributes.GetValue<StringCrc32>("Type"_crc);
-			m_ZoneTableID = attributes.GetValue<StringCrc32>("ZoneTableID"_crc);
+			m_ZoneTableID = attributes.GetValue<uint32_t>("ZoneTableID"_crc);
+
+			GetCustomAttributes().SetValue("MaxPlayer", m_MaxPlayer);
+			GetCustomAttributes().SetValue("ZoneTableID", m_ZoneTableID);
+
 
 			m_TotalJoinedPlayer = 0;
-			m_MaxPlayer = maxPlayer;
 
 			// set kill timer
 			Assert(m_EmptyInstanceKillTimeOut.count() != 0);
