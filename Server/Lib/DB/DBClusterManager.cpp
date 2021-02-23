@@ -17,7 +17,7 @@
 #include "DB/Query.h"
 #include "DB/QueryWorker.h"
 #include "DB/DBClusterManager.h"
-#include "DB/Factory.h"
+#include "Service/ServerService.h"
 #include "DB/Session.h"
 #include "DB/ShardCoordinatorDBQuery.h"
 #include "DB/QueryWorkerManager.h"
@@ -77,7 +77,7 @@ namespace DB {
 		for( uint part =0; part < m_PartitioningCount; part++)
 		{
 			DataSource *pDBSource = nullptr;
-			dbCheck( Factory::GetInstance().CreateDataSource(GetHeap(), pDBSource) );
+			dbCheck(Service::Database->CreateDataSource(GetHeap(), pDBSource));
 			dbCheck( m_ShardingBucket.push_back( pDBSource ) );
 		}
 
@@ -178,7 +178,7 @@ namespace DB {
 
 		if (pDBSource == nullptr)
 		{
-			dbCheck(Factory::GetInstance().CreateDataSource(GetHeap(), pDBSource));
+			dbCheck(Service::Database->CreateDataSource(GetHeap(), pDBSource));
 			m_ShardingBucket[partitioningID] = pDBSource;
 		}
 

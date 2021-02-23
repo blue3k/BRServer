@@ -38,8 +38,6 @@ namespace DB {
 			ComponentID = Svr::ServerComponentID_AccountDB,
 		};
 
-	private:
-
 	public:
 		// constructor / destructor
 		AccountDB();

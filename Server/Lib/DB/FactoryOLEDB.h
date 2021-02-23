@@ -1,6 +1,6 @@
 ////////////////////////////////////////////////////////////////////////////////
 // 
-// CopyRight (c) 2013 The Braves 
+// CopyRight (c) The Braves 
 // 
 // Author: Kyungkun Ko
 //
@@ -14,7 +14,9 @@
 
 #include "SFTypedefs.h"
 #include "SFAssert.h"
-#include "DB/Factory.h"
+#include "Object/SFSharedObject.h"
+#include "Service/DatabaseService.h"
+
 
 namespace SF {
 namespace DB {
@@ -28,20 +30,17 @@ namespace DB {
 	//	DB Factory Class 
 	//
 
-	class FactoryOLEDB : public Factory
+	class FactoryOLEDB : public DatabaseService
 	{
 	public:
 
-		// Make this factory as the DB factory
-		static Result Instanciate();
-
-		virtual void ReportError( void* DBContext, Result hr, const char* className );
+		virtual void ReportError(void* DBContext, Result hr, const char* className) override;
 
 		// initialize DB source
-		virtual Result	CreateDataSource(IHeap& memMgr, DataSource* &pDBSource );
+		virtual Result	CreateDataSource(IHeap& memMgr, DataSource* &pDBSource) override;
 
 		// close DB source
-		virtual Result	CreateSession(IHeap& memMgr, DataSource* pDBSource, Session* &pSession );
+		virtual Result	CreateSession(IHeap& memMgr, DataSource* pDBSource, Session* &pSession) override;
 	};
 
 } // namespace DB

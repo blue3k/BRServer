@@ -43,7 +43,7 @@ namespace SF {
 		//
 
 		GameInstanceEntity::GameInstanceEntity()
-			: super(Service::ServerConfig->GameClusterID, ClusterID::GameInstance)
+			: super()
 			, m_GamePlayerByUID(GetHeap())
 			, m_PendingReleasePlayer(GetHeap())
 			, m_ComponentManger(GetHeap())
@@ -64,10 +64,15 @@ namespace SF {
 			svrCheck(super::InitializeEntity(newEntityID));
 
 			// TODO: add components
-
 			svrCheck(m_ComponentManger.InitializeComponents());
 
 			m_AcceptJoin = true;
+
+			VariableTable attributes;
+			attributes.SetValue("MaxPlayer", m_MaxPlayer);
+			attributes.SetValue("ZoneTableID", m_ZoneTableID);
+
+			svrCheck(Service::ServiceDirectory->RegisterLocalService(Service::ServerConfig->GameClusterID, ClusterID::GameInstance, GetEntityUID(), {}, attributes));
 
 			return hr;
 		}
@@ -175,37 +180,46 @@ namespace SF {
 		Result GameInstanceEntity::SetGameKillTimer(DurationMS ulWaitTime)
 		{
 			// Server Notice ?
-
-			return m_TimeToKill.SetTimer(ulWaitTime);
+			if (m_InstanceType != "Static")
+				return m_TimeToKill.SetTimer(ulWaitTime);
+			return ResultCode::SUCCESS;
 		}
 
 
 		// On Game Kill timer
 		void GameInstanceEntity::OnGameKillTimer()
 		{
+			// TODO: I should  push close entity task
 			CloseGameInstance();
 		}
 
 		// Close Game Instance
 		void GameInstanceEntity::CloseGameInstance()
 		{
+			if (GetEntityState() == EntityState::WORKING)
+				SetEntityState(EntityState::CLOSING);
+
+			m_AcceptJoin = false;
+
+
+			if (m_InstanceClosed)
+				return;
+
+			m_InstanceClosed = true;
+
+			// TODO: delete game instance?
 			svrTrace(SVR_INFO, "CloseGameInstance:{0}", GetEntityUID());
 
 			LeaveAllPlayerForGameDelete();
 
-			m_AcceptJoin = false;
+			Service::ServiceDirectory->RemoveLocalService(Service::ServerConfig->GameClusterID, ClusterID::GameInstance, GetEntityUID());
 
-			if (GetEntityState() == EntityState::WORKING)
-				SetEntityState(EntityState::CLOSING);
-
-
-			// 2. Get service entity list in the cluster
+			// Remove from local service provider
 			auto pGameInstanceManagerAdapter = Engine::GetEngineComponent<LibraryComponentAdapter<GameInstanceManagerServiceEntity>>();
 			if (pGameInstanceManagerAdapter)
 			{
 				(*pGameInstanceManagerAdapter)->FreeGameInstance(GetEntityUID());
 			}
-
 		}
 
 
@@ -221,21 +235,19 @@ namespace SF {
 			ScopeContext hr;
 			GameInstancePlayer* pPlayer = nullptr;
 
-			//uint numBot = attributes.GetValue<uint>("NumBot"_crc);
 			m_MaxPlayer = attributes.GetValue<uint>("MaxPlayer"_crc);
 			m_InstanceType = attributes.GetValue<StringCrc32>("Type"_crc);
 			m_ZoneTableID = attributes.GetValue<uint32_t>("ZoneTableID"_crc);
 
-			GetCustomAttributes().SetValue("MaxPlayer", m_MaxPlayer);
-			GetCustomAttributes().SetValue("ZoneTableID", m_ZoneTableID);
-
-
 			m_TotalJoinedPlayer = 0;
 
 			// set kill timer
-			Assert(m_EmptyInstanceKillTimeOut.count() != 0);
-			SetGameKillTimer(m_EmptyInstanceKillTimeOut);
-			m_TimeToKill.SetTimerFunc([&]() { OnGameKillTimer(); });
+			if (m_InstanceType != "Static")
+			{
+				Assert(m_EmptyInstanceKillTimeOut.count() != 0);
+				SetGameKillTimer(m_EmptyInstanceKillTimeOut);
+				m_TimeToKill.SetTimerFunc([&]() { OnGameKillTimer(); });
+			}
 
 			return hr;
 		}

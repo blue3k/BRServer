@@ -13,8 +13,7 @@
 
 #include "SFTypedefs.h"
 #include "MemoryManager/SFMemoryPool.h"
-#include "DB/Factory.h"
-
+#include "DB/DBConfig.h"
 #include "Types/BrSvrTypes.h"
 #include "Transaction/Transaction.h"
 #include "SvrPolicyID.h"
@@ -158,12 +157,11 @@ namespace DB {
 	//
 	//	DB Query string macro
 	//
-
-
-
 	
 } // namespace DB
 } // namespace SF
+
+
 
 #include "Variable/SFVariableBoxing.h"
 

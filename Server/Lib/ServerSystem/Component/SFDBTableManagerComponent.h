@@ -18,7 +18,7 @@
 #include "Object/SFLibraryComponent.h"
 #include "Service/DataTableManagerService.h"
 #include "DB/DataSource.h"
-#include "DB/Factory.h"
+#include "DB/DBConfig.h"
 #include "DB/Session.h"
 
 

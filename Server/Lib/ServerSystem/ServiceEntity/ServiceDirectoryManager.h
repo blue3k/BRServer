@@ -160,6 +160,7 @@ namespace SF {
 		// cluster information by clusterID
 		ClusterInfomationMap			m_ClusterInfoMap;
 
+		CriticalSection m_ServiceLock;
 		DynamicArray<LocalServiceInformation*> m_LocalServices;
 
 	private:
@@ -173,6 +174,8 @@ namespace SF {
 		// Constructor/Destructor
 		ServiceDirectoryManager();
 		virtual ~ServiceDirectoryManager();
+
+		IHeap& GetHeap() { return GetSystemHeap(); }
 
 		Result InitializeComponent();
 		// Terminate component
@@ -191,6 +194,8 @@ namespace SF {
 		virtual Result RegisterLocalService(GameID gameID, ClusterID clusterID, EntityUID entityUID, const EndpointAddress& endpoint, const VariableTable& customAttributes) override;
 		virtual Result RegisterLocalService(ServiceEntity* pServiceEntity) override;
 
+		virtual Result RemoveLocalService(GameID gameID, ClusterID clusterID, EntityUID entityUID) override;
+		virtual Result RemoveLocalService(ServiceEntity* pServiceEntity) override;
 	};
 
 } // namespace SF

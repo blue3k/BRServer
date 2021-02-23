@@ -17,7 +17,7 @@
 #include "DB/Query.h"
 #include "DB/QueryWorker.h"
 #include "DB/QueryWorkerManager.h"
-#include "DB/Factory.h"
+#include "Service/ServerService.h"
 #include "DB/Session.h"
 #include "DB/ShardCoordinatorDBQuery.h"
 #include "Server/BrServer.h"

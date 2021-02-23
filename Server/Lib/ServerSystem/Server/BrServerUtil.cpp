@@ -36,7 +36,7 @@
 #include "ServerLog/SvrLogComponent.h"
 #include "Service/ServerService.h"
 #include "Net/SFMessageEndpointManager.h"
-
+#include "DB/DatabaseServiceComponent.h"
 
 namespace SF {
 
@@ -107,6 +107,7 @@ namespace SF {
 		pEngine->AddComponent<ServerNetComponent>();
 		pEngine->AddComponent<ServerLogComponent>(traceConfigPath);
 		pEngine->AddComponent<ZookeeperSessionComponent>(Service::ServerConfig->DataCenter.Server);
+		pEngine->AddComponent<DatabaseServiceComponent>();
 
 		svrTrace(Info, "Engine Initialized");
 	}

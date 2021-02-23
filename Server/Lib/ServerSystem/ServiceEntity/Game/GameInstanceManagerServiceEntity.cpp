@@ -50,6 +50,7 @@ namespace SF {
 			, m_NumberOfInstance("NumberOfGameInstances")
 			, m_GameInstances(GetHeap())
 		{
+			RegisterMessageHandler<GameInstanceManagerTransCreateGameInstance>();
 		}
 
 		GameInstanceManagerServiceEntity::~GameInstanceManagerServiceEntity()
@@ -79,18 +80,6 @@ namespace SF {
 			return hr;
 		}
 
-		Result GameInstanceManagerServiceEntity::RegisterServiceMessageHandler()
-		{
-			ScopeContext hr;
-
-			svrCheck(super::RegisterServiceMessageHandler());
-
-			// Let server entity handle it first
-			svrCheck(RegisterMessageHandler<GameInstanceManagerTransCreateGameInstance>());
-
-			return hr;
-		}
-
 		Result GameInstanceManagerServiceEntity::OnNewInstance(GameInstanceEntity* pGameInstance)
 		{
 			ScopeContext hr;
@@ -111,16 +100,15 @@ namespace SF {
 		// Called when a game instance is deleted
 		Result GameInstanceManagerServiceEntity::FreeGameInstance(GameInsUID gameUID)
 		{
-			ScopeContext hr;
 			GameInstanceEntity* pGameInstance = nullptr;
+			ScopeContext hr;
 
 			{
 				SF::MutexScopeLock scopeLock(m_GameInstanceListLock);
-				svrCheck(m_GameInstances.Remove(pGameInstance->GetEntityUID(), pGameInstance));
+				svrCheck(m_GameInstances.Remove(gameUID, pGameInstance));
 			}
 
 			--m_NumberOfInstance;
-			//m_LocalWorkload.fetch_sub(1, std::memory_order_relaxed);
 
 			return hr;
 		}

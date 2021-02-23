@@ -5,7 +5,6 @@
 
 #include "DBPch.h"
 #include "SFTypedefs.h"
-#include "Factory.h"
 
 #ifdef BRDB_USE_MYSQL
 

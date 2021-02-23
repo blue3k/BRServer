@@ -23,6 +23,7 @@
 #include "Service/MessageEndpointManagerService.h"
 #include "Service/PlayerManagerService.h"
 #include "Service/DataTableManagerService.h"
+#include "Service/DatabaseService.h"
 
 
 
@@ -48,6 +49,7 @@ namespace SF {
 		//extern ServiceInstance<ClusterManagerService> ClusterManager;
 		extern ServiceInstance<PlayerManagerService> PlayerManager;
 		extern ServiceInstance<DataTableManagerService> DataTableManager;
+		extern ServiceInstance<DatabaseService> Database;
 	};
 
 

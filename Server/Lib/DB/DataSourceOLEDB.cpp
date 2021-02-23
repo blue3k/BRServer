@@ -12,7 +12,7 @@
 
 #include "DBPch.h"
 #include "SFTypedefs.h"
-#include "Factory.h"
+#include "DB/DBConfig.h"
 
 #ifdef BRDB_USE_OLEDB
 
@@ -21,6 +21,7 @@
 #include "DBTrace.h"
 #include "DataSourceOLEDB.h"
 #include "FactoryOLEDB.h"
+#include "Service/ServerService.h"
 
 
 namespace SF {
@@ -52,7 +53,7 @@ namespace DB {
 
 		if(!(hr))
 		{
-			Factory::ErrorLog( nullptr, hr, typeid(*this).name() );
+			Service::Database->ReportError( nullptr, hr, typeid(*this).name() );
 			m_DataSource.Close();
 		}
 

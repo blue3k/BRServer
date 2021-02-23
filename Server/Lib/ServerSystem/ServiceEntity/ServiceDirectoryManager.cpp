@@ -171,7 +171,6 @@ namespace SF {
 	}
 
 
-
 	/////////////////////////////////////////////
 	//
 	//	Overridable Event handling
@@ -179,13 +178,13 @@ namespace SF {
 
 	Result ServiceCluster::OnNewEvent(const ZKEvent& eventOut)
 	{
-		svrTrace(Info, "ServiceCluster ZKEvent:{0}, GameID:{1} ClusterID:{2}", Zookeeper::EventToString(eventOut.Components.EventType), m_ClusterKey.Components.GameClusterID, Enum<ClusterID>().GetValueName(m_ClusterKey.Components.ServiceClusterID));
+		svrTrace(Info, "ServiceCluster ZKEvent:{0}, GameID:{1} ClusterID:{2}, path:{3}", Zookeeper::EventToString(eventOut.Components.EventType), m_ClusterKey.Components.GameClusterID, Enum<ClusterID>().GetValueName(m_ClusterKey.Components.ServiceClusterID), eventOut.Components.NodePath);
 
 		if (eventOut.Components.EventType == Zookeeper::EVENT_CHILD)
 		{
 			// TODO: optimize with child path
-			//DownloadServiceInfo();
-			NodeUpdated(eventOut.Components.NodePath.ToString());
+			//NodeUpdated(eventOut.Components.NodePath.ToString());
+			DownloadServiceInfo();
 		}
 		else if (eventOut.Components.EventType == Zookeeper::EVENT_SESSION)
 		{
@@ -432,7 +431,7 @@ namespace SF {
 		ServiceCluster* pServiceInfo = nullptr;
 		ServiceClusterSearchKey key(gameID, clusterID);
 
-		if (m_ClusterInfoMap.find(key, pServiceInfo))
+		if (!m_ClusterInfoMap.find(key, pServiceInfo))
 			return hr;
 
 		for (auto itService : *pServiceInfo)
@@ -516,11 +515,30 @@ namespace SF {
 	Result ServiceDirectoryManager::RegisterLocalService(GameID gameID, ClusterID clusterID, EntityUID entityUID, const EndpointAddress& endpoint, const VariableTable& customAttributes)
 	{
 		Result hr;
+		String clusterPath = ServiceCluster::GetClusterPath(gameID, clusterID);
+
+		Json::Value attributes(Json::objectValue);
+		svrCheck(ToJsonMessageEndpoint(attributes, "Endpoint", endpoint));
+		attributes["EntityUID"] = entityUID.UID;
+		svrCheck(ToJson(attributes, "Custom", customAttributes));
+
+		LocalServiceInformation* plocalInfo = new(GetHeap()) LocalServiceInformation;
+		plocalInfo->GameId = gameID;
+		plocalInfo->ClusterId = clusterID;
+		plocalInfo->EntityUid = entityUID;
+		plocalInfo->Endpoint = endpoint;
+		plocalInfo->JsonAttributes = attributes;
+
+		{
+			MutexScopeLock lock(m_ServiceLock);
+			m_LocalServices.push_back(plocalInfo);
+		}
+
+		plocalInfo->NodePath.Format("{0}/{1:X}", clusterPath, entityUID);
+
 
 		auto zkSession = Service::ZKSession->GetZookeeperSession();
 		svrCheckPtr(zkSession);
-
-		String clusterPath = ServiceCluster::GetClusterPath(gameID, clusterID);
 
 		if (zkSession == nullptr || !zkSession->IsConnected())
 		{
@@ -534,24 +552,14 @@ namespace SF {
 			svrCheck(zkSession->Create(clusterPath, Json::Value(Json::objectValue), nullptr, 0, outPath));
 		}
 
-
-
-		Json::Value attributes(Json::objectValue);
-		svrCheck(ToJsonMessageEndpoint(attributes, "Endpoint", endpoint));
-		attributes["EntityUID"] = entityUID.UID;
-		svrCheck(ToJson(attributes, "Custom", customAttributes));
-
-		LocalServiceInformation* plocalInfo = new LocalServiceInformation;
-		plocalInfo->GameId = gameID;
-		plocalInfo->ClusterId = clusterID;
-		plocalInfo->EntityUid = entityUID;
-		plocalInfo->Endpoint = endpoint;
-		plocalInfo->JsonAttributes = attributes;
-		m_LocalServices.push_back(plocalInfo);
-
-		plocalInfo->NodePath.Format("{0}/{1:X}", clusterPath, entityUID);
-
 		hr = zkSession->Create(plocalInfo->NodePath, plocalInfo->JsonAttributes, nullptr, Zookeeper::NODE_FLAG_EPHEMERAL, outPath);
+		if (hr == ResultCode::ZK_ZNODEEXISTS)
+		{
+			svrTrace(Error, "RegisterLocalService: duplicated local service gameId:{0}, clusterId:{1}, entityUID:{2}", gameID, clusterID, entityUID);
+			// Probably from previous execution
+			zkSession->ADelete(plocalInfo->NodePath);
+			zkSession->Create(plocalInfo->NodePath, plocalInfo->JsonAttributes, nullptr, Zookeeper::NODE_FLAG_EPHEMERAL, outPath);
+		}
 		if (!hr)
 			return hr;
 
@@ -569,6 +577,54 @@ namespace SF {
 			pServiceEntity->GetEntityUID(), 
 			pServiceEntity->GetMessageEndpointConfig(),
 			pServiceEntity->GetCustomAttributes());
+	}
+
+	Result ServiceDirectoryManager::RemoveLocalService(GameID gameID, ClusterID clusterID, EntityUID entityUID)
+	{
+		Result hr;
+		MutexScopeLock lock(m_ServiceLock);
+		String nodePath;
+		int iService = 0;
+		for (int iService = 0; iService < m_LocalServices.size(); iService++)
+		{
+			auto itLocalService = m_LocalServices[iService];
+			if (itLocalService->ClusterId != clusterID
+				|| itLocalService->GameId != gameID
+				|| itLocalService->EntityUid != entityUID)
+				continue;
+
+			nodePath = itLocalService->NodePath;
+			IHeap::Delete(itLocalService);
+			m_LocalServices.RemoveAt(iService);
+			break;
+		}
+
+		if (iService >= m_LocalServices.size())
+			return ResultCode::SUCCESS_FALSE;
+
+		auto zkSession = Service::ZKSession->GetZookeeperSession();
+		svrCheckPtr(zkSession);
+
+		if (zkSession == nullptr || !zkSession->IsConnected())
+		{
+			svrTrace(Error, "RemoveLocalService: Zookeeper session is not ready! {0}", nodePath);
+			return ResultCode::UNEXPECTED;
+		}
+
+		zkSession->ADelete(nodePath);
+
+		return hr;
+	}
+
+	Result ServiceDirectoryManager::RemoveLocalService(ServiceEntity* pServiceEntity)
+	{
+		if (pServiceEntity == nullptr)
+			return ResultCode::INVALID_POINTER;
+
+		return RemoveLocalService(
+			pServiceEntity->GetGameID(),
+			pServiceEntity->GetClusterID(),
+			pServiceEntity->GetEntityUID());
 	}
 
 	Result ServiceDirectoryManager::RegisterLocalServices()

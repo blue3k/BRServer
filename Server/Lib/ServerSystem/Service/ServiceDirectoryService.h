@@ -54,7 +54,8 @@ namespace SF {
 		virtual Result GetServiceList(GameID gameID, ClusterID clusterID, Array<ServerServiceInformation*>& outServices) { return ResultCode::NOT_IMPLEMENTED; }
 
 		// register local service to directory
-		virtual Result RegisterLocalService(GameID gameID, ClusterID clusterID, EntityUID entityUID, const EndpointAddress& endpoint, const VariableTable& customAttributes) { return ResultCode::NOT_IMPLEMENTED; }
+		virtual Result RegisterLocalService(GameID gameID, ClusterID clusterID, EntityUID entityUID, const EndpointAddress& endpoint = {}, const VariableTable& customAttributes = {}) { return ResultCode::NOT_IMPLEMENTED; }
+		virtual Result RemoveLocalService(GameID gameID, ClusterID clusterID, EntityUID entityUID) { return ResultCode::NOT_IMPLEMENTED; }
 		virtual Result RegisterLocalService(ServiceEntity* pServiceEntity) { return ResultCode::NOT_IMPLEMENTED; }
 		virtual Result RemoveLocalService(ServiceEntity* pServiceEntity) { return ResultCode::NOT_IMPLEMENTED; }
 	};

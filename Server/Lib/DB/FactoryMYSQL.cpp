@@ -12,7 +12,7 @@
 
 #include "DBPch.h"
 #include "SFTypedefs.h"
-#include "Factory.h"
+#include "DB/DBConfig.h"
 
 #ifdef BRDB_USE_MYSQL
 
@@ -35,41 +35,18 @@ namespace DB {
 	FactoryMYSQL::~FactoryMYSQL()
 	{
 	}
-	
-	// Make this factory as the DB factory
-	Result FactoryMYSQL::Instanciate()
+
+	void FactoryMYSQL::ReportError(void* DBContext, Result hr, const char* className)
 	{
-		Result hr = ResultCode::SUCCESS;
-
-		dbMem( Factory::stm_pInstance = new FactoryMYSQL );
-
-	Proc_End:
-
-		return hr;
-	}
-
-	void FactoryMYSQL::ReportError( void* DBContext, Result hr, const char* className )
-	{
-		//MYSQL *pSql = DBContext ? (MYSQL*)DBContext : nullptr;
-
 		// Skip routing error
 		if (hr == Result(ResultCode::INVALID_ENTITY))
 			return;
 
-		//if( pSql )
-		//{
-		//	const char* errorString = mysql_error(pSql);
-		//	AssertRel(errorString!=nullptr);
-		//	dbTrace( Error, "DB Failed Error hr:{0:X8}, {1} : {2} ", hr, className, errorString );
-		//}
-		//else
-		{
-			dbTrace( Error, "DB Failed Error hr:{0:X8}, {1}", hr, className );
-		}
+		dbTrace( Error, "DB Failed Error hr:{0:X8}, {1}", hr, className );
 	}
 
 	// initialize DB source
-	Result	FactoryMYSQL::CreateDataSource(IHeap& memMgr, DataSource* &pDBSource )
+	Result	FactoryMYSQL::CreateDataSource(IHeap& memMgr, DataSource* &pDBSource)
 	{
 		if( (pDBSource = new(memMgr) DataSourceMYSQL(memMgr)) != nullptr )
 			return ResultCode::SUCCESS;
@@ -78,7 +55,7 @@ namespace DB {
 	}
 
 	// close DB source
-	Result	FactoryMYSQL::CreateSession(IHeap& memMgr, DataSource* pDBSource, Session* &pSession )
+	Result	FactoryMYSQL::CreateSession(IHeap& memMgr, DataSource* pDBSource, Session* &pSession)
 	{
 		if( (pSession = new(memMgr) SessionMYSQL(memMgr, (DataSourceMYSQL*)pDBSource)) != nullptr)
 			return ResultCode::SUCCESS;

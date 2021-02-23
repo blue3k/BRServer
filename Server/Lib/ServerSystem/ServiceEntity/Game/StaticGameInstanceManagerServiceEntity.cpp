@@ -80,6 +80,7 @@ namespace SF {
 				pEngine->AddComponent(new(GetEngineHeap()) LibraryComponentAdapter<StaticGameInstanceManagerServiceEntity>(GetEngineHeap(), this));
 
 			svrCheck(Service::ServiceDirectory->WatchForService(Service::ServerConfig->GameClusterID, ClusterID::GameInstance));
+			svrCheck(Service::ServiceDirectory->WatchForService(Service::ServerConfig->GameClusterID, ClusterID::GameInstanceManager));
 
 			// first update delay
 			m_TimeToUpdate.SetTimer(DurationMS(3000));
@@ -125,6 +126,7 @@ namespace SF {
 
 			int32_t usedCounter = 0;
 			svrCheck(zoneCountCounters.resize(services.size()));
+			memset(zoneCountCounters.data(), 0, sizeof(int32_t) * zoneCountCounters.size());
 
 			for (auto itZoneService : services)
 			{
@@ -154,7 +156,7 @@ namespace SF {
 					curCount = *pCount;
 				}
 
-				if (staticZoneCount >= curCount)
+				if (staticZoneCount <= curCount)
 					continue;
 
 				staticZoneCount -= curCount;

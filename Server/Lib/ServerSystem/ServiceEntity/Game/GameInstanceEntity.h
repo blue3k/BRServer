@@ -44,12 +44,12 @@ namespace Svr
 	//	Game Instance entity class
 	//
 
-	class GameInstanceEntity : public ServiceEntity
+	class GameInstanceEntity : public MasterEntity
 	{
 	public:
 
 		using GamePlayerUIDMap = SortedMap<PlayerID,GameInstancePlayer*>;
-		using super = ServiceEntity;
+		using super = MasterEntity;
 
 	protected:
 
@@ -71,13 +71,12 @@ namespace Svr
 		//	Game info
 		//
 
-
 		// Time for kill this game
 		Util::TimeStampTimer m_TimeToKill;
 
 		// Is accept join?
 		bool m_AcceptJoin = false;
-
+		bool m_InstanceClosed = false;
 
 		// Max player
 		uint m_MaxPlayer;
@@ -117,11 +116,18 @@ namespace Svr
 		void SetEmptyInstanceKillTimeOut(DurationMS value) { m_EmptyInstanceKillTimeOut = value; }
 
 		// Instance ID query
-		inline GameInsID GetInstanceID();
-		inline GameInsUID GetInstanceUID();
+		inline GameInsID GetInstanceID() {
+			return GameInsID(GetEntityID());
+		}
+
+		inline GameInsUID GetInstanceUID() {
+			return GameInsUID(Service::ServerConfig->UID, GetEntityID());
+		}
 
 		// Get player count at this game
-		inline uint GetNumPlayer();
+		inline uint GetNumPlayer() {
+			return static_cast<uint>(m_GamePlayerByUID.size());
+		}
 
 
 	protected:
@@ -218,7 +224,6 @@ namespace Svr
 		virtual Result OnPlayerGetOutOfGame(GameInstancePlayer *pPlayer );
 	};
 
-#include "GameInstanceEntity.inl"
 
-}; // namespace Svr
-}; // namespace SF
+} // namespace Svr
+} // namespace SF

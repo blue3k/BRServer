@@ -17,7 +17,7 @@
 #include "DB/DBTrace.h"
 #include "DB/DataSource.h"
 #include "DB/Session.h"
-#include "DB/Factory.h"
+#include "Service/ServerService.h"
 #include "DB/Query.h"
 #include "Util/SFStringFormat.h"
 

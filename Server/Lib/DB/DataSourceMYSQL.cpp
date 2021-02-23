@@ -12,13 +12,13 @@
 
 #include "DBPch.h"
 #include "SFTypedefs.h"
-#include "Factory.h"
+#include "DB/DBConfig.h"
 
 #ifdef BRDB_USE_MYSQL
 
 #include "Util/SFStrUtil.h"
 #include "DBTrace.h"
-#include "Factory.h"
+#include "Service/ServerService.h"
 #include "DataSourceMYSQL.h"
 
 
@@ -56,7 +56,7 @@ namespace DB {
 
 		if(!(hr))
 		{
-			Factory::ErrorLog( nullptr, hr, typeid(*this).name() );
+			Service::Database->ReportError( nullptr, hr, typeid(*this).name() );
 		}
 
 		return hr;

@@ -21,8 +21,7 @@
 #include "QueryWorkerManager.h"
 #include "Query.h"
 #include "Session.h"
-#include "Factory.h"
-
+#include "Service/ServerService.h"
 
 namespace SF {
 namespace DB {
@@ -83,7 +82,7 @@ namespace DB {
 		if( !(hr) )
 		{
 			if (pSession != nullptr)
-				Factory::ErrorLog(pSession->GetContext(), hr, pQuery ? typeid(*pQuery).name() : "");
+				Service::Database->ReportError(pSession->GetContext(), hr, pQuery ? typeid(*pQuery).name() : "");
 
 			// when some DB error happened, try to route result directly
 			if (pQuery && pQueryManager)

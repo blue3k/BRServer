@@ -15,7 +15,6 @@
 
 #include "DBPch.h"
 #include "SFTypedefs.h"
-#include "Factory.h"
 
 #ifdef BRDB_USE_MYSQL
 
@@ -30,6 +29,7 @@
 #include "QueryMYSQL.h"
 #include "ResultCode/SFResultCodeSvr.h"
 #include "ResultCode/SFResultCodeDB.h"
+#include "Service/ServerService.h"
 
 
 namespace SF {
@@ -213,7 +213,7 @@ namespace DB {
 
 		if( !(hr) )
 		{
-			Factory::ErrorLog(nullptr,hr,typeid(*this).name());
+			Service::Database->ReportError(nullptr,hr,typeid(*this).name());
 			CloseSession();
 		}
 

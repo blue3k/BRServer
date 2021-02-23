@@ -65,7 +65,7 @@ namespace SF
 
 		svrCheck(pSession->OpenSession());
 
-		pQuery.reset(new(GetHeap()) DB::QueryWholeTable(GetHeap(), QueryWholeTableCmd_MID, tableName));
+		pQuery.reset(new(GetHeap()) DB::QueryWholeTable(GetHeap(), QueryWholeTableCmd_MID, tableSrcPath));
 		svrCheckPtr(pQuery.get());
 
 		svrCheck(pSession->ProcessQuery(pQuery.get()));
@@ -99,7 +99,7 @@ namespace SF
 
 		if (m_pDataSource == nullptr)
 		{
-			svrCheck(DB::Factory::GetInstance().CreateDataSource(GetSystemHeap(), m_pDataSource));
+			svrCheck(Service::Database->CreateDataSource(GetSystemHeap(), m_pDataSource));
 		}
 
 		svrCheck(m_pDataSource->InitializeDBSource(tableDBInstance->ConnectionString, tableDBConfig->DBName, tableDBInstance->UserID, tableDBInstance->Password));

@@ -19,8 +19,7 @@ set(BRDB_LIB_FILES
 	DataSourceOLEDB.h
     DBClusterManager.cpp
 	DBClusterManager.h
-    Factory.cpp
-	Factory.h
+	DBConfig.h
     FactoryMYSQL.cpp
 	FactoryMYSQL.h
     FactoryOLEDB.cpp
@@ -55,6 +54,8 @@ set(BRDB_LIB_FILES
 	SessionOLEDB.h
     ShardCoordinatorDBQuery.cpp
 	ShardCoordinatorDBQuery.h
+	DatabaseServiceComponent.h
+	DatabaseServiceComponent.cpp
 	DBTrace.h
 	DBTrace.cpp
 	DBToString.h

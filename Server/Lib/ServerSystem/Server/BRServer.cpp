@@ -30,7 +30,6 @@
 #include "PerformanceCounter/PerformanceCounterClient.h"
 #include "Transaction/Transaction.h"
 #include "ServerConfig/SFServerConfig.h"
-#include "DB/Factory.h"
 #include "Service/ServerService.h"
 #include "Multithread/SFThread.h"
 
@@ -100,17 +99,12 @@ namespace SF {
 			// main server class has private thread for task
 			SetTickInterval(DurationMS(0));
 
-			// TODO: to component
-			DB::Factory::InitializeDBFactory();
-
 			InitializeModuleFactory();
 		}
 
 		BrServer::~BrServer()
 		{
 			m_pLoopbackServerEntity = nullptr;
-
-			DB::Factory::TerminateDBFactory();
 		}
 
 		// Set server instance

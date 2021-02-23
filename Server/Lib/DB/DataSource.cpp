@@ -17,8 +17,8 @@
 #include "DB/DBTrace.h"
 #include "DB/DataSource.h"
 #include "DB/Session.h"
-#include "DB/Factory.h"
-
+#include "DB/DBConfig.h"
+#include "Service/ServerService.h"
 
 namespace SF {
 namespace DB {
@@ -63,7 +63,7 @@ namespace DB {
 		auto pItem = m_SessionPool.Pop();
 		if( pItem == nullptr )
 		{
-			dbChk( Factory::GetInstance().CreateSession(GetHeap(), this,pSession) );
+			dbChk(Service::Database->CreateSession(GetHeap(), this,pSession));
 		}
 		else
 		{

@@ -29,7 +29,6 @@ set(BRSERVERSYSTEM_LIB_FILES
 	ServiceEntity/Game/PlayerDirectoryManager.cpp
     ServiceEntity/Game/GameSystem.h
     ServiceEntity/Game/GameInstanceEntity.h
-    ServiceEntity/Game/GameInstanceEntity.inl
     ServiceEntity/Game/GameInstanceEntity.cpp
     ServiceEntity/Game/StaticGameInstanceManagerServiceEntity.h
     ServiceEntity/Game/StaticGameInstanceManagerServiceEntity.cpp
@@ -51,6 +50,7 @@ set(BRSERVERSYSTEM_LIB_FILES
     ServiceEntity/Game/GameServiceTrans.cpp
     ServiceEntity/ServiceDirectoryManager.h
     ServiceEntity/ServiceDirectoryManager.cpp
+	Service/DatabaseService.h
     Service/ServiceDirectoryService.h
     Service/DataTableManagerService.h
     Service/DataTableManagerService.cpp

@@ -77,7 +77,6 @@ namespace SF {
 
 			virtual Result InitializeEntity(EntityID newEntityID) override;
 
-			virtual Result RegisterServiceMessageHandler() override;
 
 			//////////////////////////////////////////////////////////////////////////
 			//
@@ -93,13 +92,10 @@ namespace SF {
 			// Search game instance
 			virtual Result SearchGameInstance(size_t maxSearch, const char* searchKeyword, Array<GameInstanceInfo>& outList);
 
-
 			// Initialize server component
 			Result InitializeComponent() { return ResultCode::SUCCESS; }
 			// Terminate server component
 			void DeinitializeComponent() {  }
-
-
 		};
 
 

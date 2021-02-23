@@ -16,7 +16,7 @@
 #include "Variable/SFVariableTable.h"
 #include "Variable/SFVariableToString.h"
 #include "Util/ToStringSvr.h"
-
+#include "DB/DBConfig.h"
 
 #if !ANDROID
 #include <mysqlx/xdevapi.h>

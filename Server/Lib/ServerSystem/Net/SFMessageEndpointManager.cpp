@@ -80,6 +80,9 @@ namespace SF {
 		}
 		else
 		{
+			if (messageEndpoint.MessageServer.IsNullOrEmpty())
+				return ResultCode::SUCCESS;
+
 			auto pStreamEndpoint = new(GetEngineHeap()) MessageEndpointStreamDB();
 			SharedReferenceInc inc(pStreamEndpoint);
 			pStreamEndpoint->InitializeEndpoint(messageEndpoint.MessageServer, messageEndpoint.Channel);
@@ -89,10 +92,10 @@ namespace SF {
 				SharedReferenceDec dec(pStreamEndpoint);
 				return ResultCode::OUT_OF_MEMORY;
 			}
-			m_MessageEndpointByUID.CommitChanges();
 
 			pEndpoint = pStreamEndpoint;
 		}
+		m_MessageEndpointByUID.CommitChanges();
 
 		return ResultCode::SUCCESS;
 	}

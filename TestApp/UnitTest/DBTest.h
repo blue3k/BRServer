@@ -11,7 +11,7 @@
 
 
 #include "TestBase.h"
-#include "DB/Factory.h"
+#include "Service/ServerService.h"
 
 
 namespace BRTest
@@ -51,7 +51,6 @@ namespace BRTest
 		virtual void SetUp()
 		{
 			MyTestBase::SetUp();
-			SF::DB::Factory::InitializeDBFactory();
 		}
 
 		// TearDown() is invoked immediately after a test finishes.  Here we
@@ -67,8 +66,6 @@ namespace BRTest
 				IHeap::Delete(m_pTestDB);
 			}
 			m_pTestDB = nullptr;
-
-			DB::Factory::TerminateDBFactory();
 		}
 	};
 

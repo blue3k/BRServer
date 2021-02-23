@@ -18,7 +18,6 @@
 
 #include "TableSystem.h"
 #include "DB/DataSource.h"
-#include "DB/Factory.h"
 #include "DB/Session.h"
 #include "conspiracy/RewardTbl.h"
 #include "conspiracy/LevelTbl.h"
@@ -69,7 +68,7 @@ namespace GameTable {
 
 			if (m_pDataSource == nullptr)
 			{
-				defChk(DB::Factory::GetInstance().CreateDataSource(GetSystemHeap(), m_pDataSource));
+				defChk(Service::Database->CreateDataSource(GetSystemHeap(), m_pDataSource));
 			}
 
 			defChk(m_pDataSource->InitializeDBSource(strConnectionString, strDBName, strUserID, strPassword));

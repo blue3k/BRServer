@@ -32,6 +32,7 @@ namespace SF {
 		//ServiceInstance<ClusterManagerService> ClusterManager;
 		ServiceInstance<PlayerManagerService> PlayerManager;
 		ServiceInstance<DataTableManagerService> DataTableManager;
+		ServiceInstance<DatabaseService> Database;
 	}
 
 

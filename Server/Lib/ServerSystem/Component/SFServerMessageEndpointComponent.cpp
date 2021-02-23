@@ -98,7 +98,7 @@ namespace SF
 
 				if (!Service::EntityTable->find(routeContext.GetTo().GetEntityID(), pEntity))
 				{
-					svrTrace(Error, "ServerMessageConsumer: Can't find target entity");
+					svrTrace(Error, "ServerMessageConsumer: Can't find target entity, entityId:{0}", routeContext.GetTo());
 					return true;
 				}
 
