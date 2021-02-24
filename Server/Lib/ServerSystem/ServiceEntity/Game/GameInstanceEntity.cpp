@@ -71,6 +71,7 @@ namespace SF {
 			VariableTable attributes;
 			attributes.SetValue("MaxPlayer", m_MaxPlayer);
 			attributes.SetValue("ZoneTableID", m_ZoneTableID);
+			attributes.SetValue("InstanceType", m_InstanceType);
 
 			svrCheck(Service::ServiceDirectory->RegisterLocalService(Service::ServerConfig->GameClusterID, ClusterID::GameInstance, GetEntityUID(), {}, attributes));
 

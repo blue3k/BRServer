@@ -557,7 +557,7 @@ namespace SF {
 		{
 			svrTrace(Error, "RegisterLocalService: duplicated local service gameId:{0}, clusterId:{1}, entityUID:{2}", gameID, clusterID, entityUID);
 			// Probably from previous execution
-			zkSession->ADelete(plocalInfo->NodePath);
+			zkSession->Delete(plocalInfo->NodePath);
 			zkSession->Create(plocalInfo->NodePath, plocalInfo->JsonAttributes, nullptr, Zookeeper::NODE_FLAG_EPHEMERAL, outPath);
 		}
 		if (!hr)

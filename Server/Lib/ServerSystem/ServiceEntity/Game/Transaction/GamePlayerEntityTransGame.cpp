@@ -89,8 +89,7 @@ namespace SF {
 		{
 			ScopeContext hr([this](Result hr)
 				{
-					if (!hr)
-						CloseTransaction(hr);
+					CloseTransaction(hr);
 				});
 
 			ServerServiceInformation* pService = nullptr;
@@ -103,11 +102,21 @@ namespace SF {
 			if (GetMyOwner()->GetPlayerID() != GetPlayerID())
 				svrError(ResultCode::INVALID_PLAYERID);
 
-			svrCheck(Service::ServiceDirectory->GetRandomService(Service::ServerConfig->GameClusterID, ClusterID::GameInstanceManager, pService));
-			assert(false);
-			// TODO:
-			//svrCheck(pService->GetService<GameInstanceManagerService>()->SearchGameInstanceCmd(GetTransID(), 0,
-			//	GetSearchKeyword()));
+			// TODO: Need to use searchable nosql DB like mongo DB
+			DynamicArray<ServerServiceInformation*> services(GetHeap());
+			svrCheck(Service::ServiceDirectory->GetServiceList(Service::ServerConfig->GameClusterID, ClusterID::GameInstance, services));
+
+			for (auto itZoneService : services)
+			{
+				auto zoneTableID = itZoneService->GetCustomAttributes().GetValue<uint32_t>("ZoneTableID");
+				auto instanceType = itZoneService->GetCustomAttributes().GetValue<StringCrc32>("InstanceType");
+				if (instanceType != "Static"_crc)
+				{
+					continue;
+				}
+
+				 m_GameInstances.push_back(GameInstanceInfo(itZoneService->GetEntityUID(), instanceType, zoneTableID));
+			}
 
 			return hr;
 		}

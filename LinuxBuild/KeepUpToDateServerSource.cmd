@@ -1,2 +1,0 @@
-
-call KeepUpToDate.cmd Server

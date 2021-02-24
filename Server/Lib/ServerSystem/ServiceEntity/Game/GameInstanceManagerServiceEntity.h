@@ -89,9 +89,6 @@ namespace SF {
 			// Called when a game instance is deleted
 			virtual Result FreeGameInstance(GameInsUID gameUID);
 
-			// Search game instance
-			virtual Result SearchGameInstance(size_t maxSearch, const char* searchKeyword, Array<GameInstanceInfo>& outList);
-
 			// Initialize server component
 			Result InitializeComponent() { return ResultCode::SUCCESS; }
 			// Terminate server component

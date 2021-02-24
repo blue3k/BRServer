@@ -113,29 +113,6 @@ namespace SF {
 			return hr;
 		}
 
-		Result GameInstanceManagerServiceEntity::SearchGameInstance(size_t maxSearch, const char* searchKeyword, Array<GameInstanceInfo>& outList)
-		{
-			ScopeContext hr;
-
-			int maxOffset = Util::Max(0, (int)m_GameInstances.size() - (int)maxSearch - 1);
-
-			// TODO: search keyword
-			m_GameInstances.ForeachOrder(
-				Util::Random.Rand(maxOffset),
-				static_cast<uint>(maxSearch),
-				[this, &outList](GameInsUID key, GameInstanceEntity* value) -> Result
-				{
-					GameInstanceInfo instanceInfo;
-					instanceInfo.GameInstanceUID = key;
-					instanceInfo.TypeName = value->GetInstanceType();
-					instanceInfo.DataID = value->GetZoneTableID();
-					outList.push_back(std::forward<GameInstanceInfo>(instanceInfo));
-					return ResultCode::SUCCESS;
-				});
-
-			return hr;
-		}
-
 
 	} // namespace Svr {
 } // namespace SF {

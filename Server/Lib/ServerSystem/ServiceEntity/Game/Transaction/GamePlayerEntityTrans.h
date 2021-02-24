@@ -359,8 +359,8 @@ namespace SF {
 			typedef Svr::MessageTransaction< GamePlayerEntity, Message::Game::SetNickNameCmd> super;
 
 		private:
-			uint64_t m_TotalGem;
-			uint64_t m_TotalGameMoney;
+			uint64_t m_TotalGem{};
+			uint64_t m_TotalGameMoney{};
 
 		public:
 			PlayerTransSetNickName(IHeap& heap, MessageDataPtr& pIMsg);
@@ -386,8 +386,8 @@ namespace SF {
 			typedef Svr::MessageTransaction< GamePlayerEntity, Message::Game::FindPlayerByEMailCmd> super;
 
 		private:
-			PlayerInformation m_Player;
-			int m_PlayerShardID;
+			PlayerInformation m_Player{};
+			int m_PlayerShardID{};
 
 		public:
 			PlayerTransFindPlayerByEMail(IHeap& heap, MessageDataPtr& pIMsg);
@@ -410,7 +410,7 @@ namespace SF {
 
 		private:
 			PlayerInformation m_Player;
-			int m_PlayerShardID;
+			int m_PlayerShardID{};
 
 		public:
 			PlayerTransFindPlayerByPlayerID(IHeap& heap, MessageDataPtr& pIMsg);
@@ -433,7 +433,7 @@ namespace SF {
 
 		private:
 
-			uint m_PlayerStatusQueryCount;
+			uint m_PlayerStatusQueryCount{};
 
 		public:
 			PlayerTransRequestPlayerStatusUpdate(IHeap& heap, MessageDataPtr& pIMsg);
@@ -552,6 +552,9 @@ namespace SF {
 
 			BR_IMPLEMENT_USERMSGTRANS_CLOSE_ARGS(NetSvrPolicyGame, BuyShopItemRes, GetShopItemID());
 		};
+
+
+
 
 	} // namespace GameServer 
 } // namespace SF 

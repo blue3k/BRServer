@@ -98,7 +98,6 @@ namespace Svr {
 		GetTimeToKill().SetTimer(DurationMS(PlayerAutoLogout * 1000));
 
 		svrCheck(GetComponentManager().AddComponent<UserFriendSystem>(this));
-		//svrCheck(GetComponentManager().AddComponent<UserGamePlayerInfoSystem>(this));
 		svrCheck(GetComponentManager().AddComponent<UserNotificationSystem>(this));
 
 		svrCheck(GetComponentManager().InitializeComponents());
