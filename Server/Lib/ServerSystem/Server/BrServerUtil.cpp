@@ -37,6 +37,7 @@
 #include "Service/ServerService.h"
 #include "Net/SFMessageEndpointManager.h"
 #include "DB/DatabaseServiceComponent.h"
+#include "Mongo/SFMongoDBComponent.h"
 
 namespace SF {
 
@@ -105,6 +106,7 @@ namespace SF {
 			return;
 
 		pEngine->AddComponent<ServerNetComponent>();
+		pEngine->AddComponent<MongoDBComponent>();
 		pEngine->AddComponent<ServerLogComponent>(traceConfigPath);
 		pEngine->AddComponent<ZookeeperSessionComponent>(Service::ServerConfig->DataCenter.Server);
 		pEngine->AddComponent<DatabaseServiceComponent>();

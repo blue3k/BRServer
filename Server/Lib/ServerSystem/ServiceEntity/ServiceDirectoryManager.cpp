@@ -30,6 +30,8 @@
 #include "ServerConfig/SFEnum.h"
 #include "Variable/SFVariableTable.h"
 
+#include <bson/bson.h>
+
 
 namespace SF {
 
