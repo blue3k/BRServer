@@ -65,11 +65,14 @@ namespace SF {
 		auto pServerInst = Svr::BrServer::GetInstance();
 
 		svrCheckPtr(pServerInst);
+		svrCheckPtr(m_PublicNetConfig);
+
+		GetCustomAttributes().SetValue("PublicIPV4", m_PublicNetConfig->IPV4);
+		GetCustomAttributes().SetValue("PublicIPV6", m_PublicNetConfig->IPV6);
+		GetCustomAttributes().SetValue("PublicPort", m_PublicNetConfig->Port);
 
 		svrCheck(super::InitializeEntity(newEntityID) );
 
-		// public network
-		svrCheckPtr(m_PublicNetConfig);
 
 		auto serverID = Service::ServerConfig->UID;
 		if (m_PublicNetConfig->Protocol == "TCP")
@@ -84,10 +87,6 @@ namespace SF {
 		{
 			svrCheckMem(m_pNetPublic = NewObject<Net::ServerMUDP>(GetHeap(), serverID, NetClass::Game));
 		}
-
-		GetCustomAttributes().SetValue("PublicIPV4", m_PublicNetConfig->IPV4);
-		GetCustomAttributes().SetValue("PublicIPV6", m_PublicNetConfig->IPV6);
-		GetCustomAttributes().SetValue("PublicPort", m_PublicNetConfig->Port);
 
 		m_pNetPublic->SetNewConnectionhandler([this](SharedPointerT<Net::Connection>& conn)
 		{

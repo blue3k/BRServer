@@ -170,8 +170,15 @@ namespace SF {
 		Service::ServiceDirectory->GetRandomService(super::GetMyOwner()->GetGameID(), ClusterID::Game, pServiceInfo);
 		if (pServiceInfo != nullptr)
 		{
-			m_GameServerAddrIPV4 = pServiceInfo->GetCustomAttributes().GetValue<const char*>("PublicIPV4");
-			m_GameServerAddr = pServiceInfo->GetCustomAttributes().GetValue<const char*>("PublicIPV6");
+			auto IPV4Address = pServiceInfo->GetCustomAttributes().GetValue<const char*>("PublicIPV4");
+			auto IPV6Address = pServiceInfo->GetCustomAttributes().GetValue<const char*>("PublicIPV6");
+			if (StrUtil::IsNullOrEmpty(IPV4Address) || StrUtil::IsNullOrEmpty(IPV6Address))
+			{
+				svrCheckClose(ResultCode::SERVICE_NOT_AVAILABLE);
+				return hr;
+			}
+			m_GameServerAddrIPV4 = IPV4Address;
+			m_GameServerAddr = IPV6Address;
 			auto port = pServiceInfo->GetCustomAttributes().GetValue<uint>("PublicPort");
 			m_GameServerAddrIPV4.Port = port;
 			m_GameServerAddr.Port = port;
