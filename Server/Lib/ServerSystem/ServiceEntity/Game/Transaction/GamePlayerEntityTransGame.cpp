@@ -1,6 +1,6 @@
 ////////////////////////////////////////////////////////////////////////////////
 // 
-// CopyRight (c) 2020 The Braves
+// CopyRight (c) The Braves
 // 
 // Author : KyungKun Ko
 //
@@ -60,29 +60,7 @@ namespace SF {
 			: MessageTransaction(heap, Forward<MessageDataPtr>(pIMsg))
 			, m_GameInstances(GetHeap())
 		{
-			//RegisterMessageHandler<Message::GameInstanceManager::SearchGameInstanceRes>(&PlayerTransSearchGameInstance::OnSearchGameInstanceRes);
 		}
-
-		//Result PlayerTransSearchGameInstance::OnSearchGameInstanceRes(Svr::TransactionResult* pRes)
-		//{
-		//	ScopeContext hr([this](Result hr)
-		//		{
-		//			CloseTransaction(hr);
-		//		});
-		//	Svr::MessageResult* pMsgRes = (Svr::MessageResult*)pRes;
-		//	Message::GameInstanceManager::SearchGameInstanceRes msgRes;
-
-		//	svrCheckClose(pRes->GetResult());
-
-		//	svrCheck(msgRes.ParseMessage(*pMsgRes->GetMessage()));
-
-		//	GetMyOwner()->SetGameInsUID(msgRes.GetRouteContext().GetFrom());
-
-		//	m_GameInstances = msgRes.GetGameInstances();
-		//	// TODO: query game info for client
-
-		//	return ResultCode::SUCCESS;
-		//}
 
 		// Start Transaction
 		Result PlayerTransSearchGameInstance::StartTransaction()
@@ -91,8 +69,6 @@ namespace SF {
 				{
 					CloseTransaction(hr);
 				});
-
-			ServerServiceInformation* pService = nullptr;
 
 			svrCheck(super::StartTransaction());
 
@@ -111,19 +87,21 @@ namespace SF {
 
 			for (auto itZoneService : services)
 			{
+				VariableTable zoneInfo(GetHeap());
 				auto zoneTableID = itZoneService->GetCustomAttributes().GetValue<uint32_t>("ZoneTableID");
 				auto instanceType = itZoneService->GetCustomAttributes().GetValue<StringCrc32>("Type");
-				if (instanceType != "Static"_crc)
-				{
-					continue;
-				}
+				auto numPlayers = itZoneService->GetCustomAttributes().GetValue<int32_t>("NumPlayers");
 
-				 m_GameInstances.push_back(GameInstanceInfo(itZoneService->GetEntityUID(), instanceType, zoneTableID));
+				zoneInfo.SetValue("InstanceUID", itZoneService->GetEntityUID().UID);
+				zoneInfo.SetValue("ZoneTableID", zoneTableID);
+				zoneInfo.SetValue("Type", instanceType);
+				zoneInfo.SetValue("NumPlayers", numPlayers);
+
+				m_GameInstances.push_back(Forward<VariableTable>(zoneInfo));
 			}
 
 			return hr;
 		}
-
 
 
 		PlayerTransJoinGameInstance::PlayerTransJoinGameInstance(IHeap& heap, MessageDataPtr& pIMsg)

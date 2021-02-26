@@ -44,7 +44,7 @@ namespace SF {
 			using super = Svr::MessageTransaction<GamePlayerEntity, Message::Game::SearchGameInstanceCmd>;
 
 		private:
-			DynamicArray<GameInstanceInfo> m_GameInstances;
+			DynamicArray<VariableTable> m_GameInstances;
 
 		public:
 			PlayerTransSearchGameInstance(IHeap& heap, MessageDataPtr& pIMsg);

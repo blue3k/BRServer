@@ -296,9 +296,19 @@ namespace SF {
 		void TickUpdate();
 
 
+		///////////////////////////////////////////////////////////////////////////////////////////////
+		// Utility
+
+
 		MongoDBCollection* GetObjectCollection(GameID gameID, ClusterID clusterID);
 
 		bool UseObjectCluster(ClusterID clusterId) const;
+
+		Result CreateBsonAttribute(GameID gameID, ClusterID clusterID, EntityUID entityUID, const VariableTable& customAttributes, BsonUniquePtr& BsonAttributes);
+
+
+		///////////////////////////////////////////////////////////////////////////////////////////////
+		// Interface implementation
 
 		// Get random cluster service
 		virtual Result GetRandomService(GameID gameID, ClusterID clusterID, SharedPointerT<ServerServiceInformation>& pServiceInfo) override;
@@ -308,6 +318,7 @@ namespace SF {
 
 		virtual Result FindObjects(GameID gameID, ClusterID clusterID, const VariableTable& searchAttributes, Array<SharedPointerT<EntityInformation>>& foundObjects) override;
 
+		virtual Result PingObjectDirectory(GameID gameID, ClusterID clusterID, EntityUID entityUID, const VariableTable& customAttributes) override;
 
 		virtual Result RegisterLocalService(GameID gameID, ClusterID clusterID, EntityUID entityUID, const EndpointAddress& endpoint, const VariableTable& customAttributes) override;
 		virtual Result RegisterLocalService(ServiceEntity* pServiceEntity) override;

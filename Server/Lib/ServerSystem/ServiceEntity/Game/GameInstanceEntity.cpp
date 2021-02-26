@@ -68,12 +68,13 @@ namespace SF {
 
 			m_AcceptJoin = true;
 
-			VariableTable attributes;
-			attributes.SetValue("MaxPlayer", m_MaxPlayer);
-			attributes.SetValue("ZoneTableID", m_ZoneTableID);
-			attributes.SetValue("Type", m_InstanceType);
+			m_ObjectAttributes.Clear();
+			m_ObjectAttributes.SetValue("MaxPlayer", m_MaxPlayer);
+			m_ObjectAttributes.SetValue("ZoneTableID", m_ZoneTableID);
+			m_ObjectAttributes.SetValue("Type", m_InstanceType);
+			m_ObjectAttributes.SetValue("NumPlayers", int32_t(0));
 
-			svrCheck(Service::ServiceDirectory->RegisterLocalService(Service::ServerConfig->GameClusterID, ClusterID::GameInstance, GetEntityUID(), {}, attributes));
+			svrCheck(Service::ServiceDirectory->PingObjectDirectory(Service::ServerConfig->GameClusterID, ClusterID::GameInstance, GetEntityUID(), m_ObjectAttributes));
 
 			return hr;
 		}
@@ -145,6 +146,10 @@ namespace SF {
 			if (GetEntityState() == EntityState::FREE)
 				return ResultCode::SUCCESS_FALSE;
 
+			// Update registry
+			m_ObjectAttributes.SetValue("NumPlayers", int32_t(m_GamePlayerByUID.size()));
+			svrCheck(Service::ServiceDirectory->PingObjectDirectory(Service::ServerConfig->GameClusterID, ClusterID::GameInstance, GetEntityUID(), m_ObjectAttributes));
+
 			m_ComponentManger.TickUpdate();
 
 			return hr;
@@ -213,7 +218,7 @@ namespace SF {
 
 			LeaveAllPlayerForGameDelete();
 
-			Service::ServiceDirectory->RemoveLocalService(Service::ServerConfig->GameClusterID, ClusterID::GameInstance, GetEntityUID());
+			//Service::ServiceDirectory->RemoveLocalService(Service::ServerConfig->GameClusterID, ClusterID::GameInstance, GetEntityUID());
 
 			// Remove from local service provider
 			auto pGameInstanceManagerAdapter = Engine::GetEngineComponent<LibraryComponentAdapter<GameInstanceManagerServiceEntity>>();

@@ -53,6 +53,7 @@ namespace SF {
 		// Search object list
 		// works only for object cluster
 		virtual Result FindObjects(GameID gameID, ClusterID clusterID, const VariableTable& searchAttributes, Array<SharedPointerT<EntityInformation>>& foundObjects) { return ResultCode::NOT_IMPLEMENTED; }
+		virtual Result PingObjectDirectory(GameID gameID, ClusterID clusterID, EntityUID entityUID, const VariableTable& customAttributes = {}) { return ResultCode::NOT_IMPLEMENTED; }
 
 		// register local service to directory
 		virtual Result RegisterLocalService(GameID gameID, ClusterID clusterID, EntityUID entityUID, const EndpointAddress& endpoint = {}, const VariableTable& customAttributes = {}) { return ResultCode::NOT_IMPLEMENTED; }

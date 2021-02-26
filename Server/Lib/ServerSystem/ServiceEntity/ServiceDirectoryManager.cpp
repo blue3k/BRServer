@@ -35,6 +35,10 @@
 namespace SF {
 
 
+	static constexpr DurationMS ServiceDirectory_ObjectPingInterval(10000);
+	static constexpr DurationMS ServiceDirectory_ObjectRetryDelay(2000);
+	static constexpr DurationMSDouble ServiceDirectory_ObjectTimeout(30000);
+
 	//////////////////////////////////////////////////////////////////////////
 	//
 	//	 informations
@@ -527,7 +531,7 @@ namespace SF {
 		bson_init(&request);
 		BsonUniquePtr requestPtr(&request);
 
-		auto UTCTimeout = Util::Time.GetRawUTCMs().time_since_epoch().count() - DurationMSDouble(20 * 1000).count(); // 15sec timeout
+		auto UTCTimeout = Util::Time.GetRawUTCMs().time_since_epoch().count() - ServiceDirectory_ObjectTimeout.count();
 
 		bson_t* curBase = &request;
 		//bson_append_document_begin(&request, "match", -1, &requestmatch);
@@ -684,7 +688,7 @@ namespace SF {
 			svrTrace(Error, "RegisterLocalService: duplicated local service gameId:{0}, clusterId:{1}, entityUID:{2}", GameId, ClusterId, EntityUid);
 			// Probably from previous execution
 			zkSession->ADelete(NodePath);
-			ScheduleTickUpdate(DurationMS(200));
+			ScheduleTickUpdate(ServiceDirectory_ObjectRetryDelay);
 		}
 
 		return hr;
@@ -719,58 +723,7 @@ namespace SF {
 
 	Result ServiceDirectoryManager::LocalServiceMongo::CreateBsonAttribute()
 	{
-		// TODO: I just need to update time stamp
-		//if (BsonAttributes != nullptr)
-		//	return ResultCode::SUCCESS;
-
-		bson_t objectValue;
-		bson_t customValue;
-		auto UTCNow = Util::Time.GetRawUTCMs().time_since_epoch().count();
-
-		BsonAttributes.reset(bson_new());
-
-		//bson_append_document_begin(BsonAttributes.get(), "$set", -1, &objectValue);
-		bson_append_int64(BsonAttributes.get(), "_id", 3, (uint64_t)GetEntityUID());
-		bson_append_date_time(BsonAttributes.get(), "Updated", -1, UTCNow);
-		if (GetAttributes().size() > 0)
-		{
-			bson_append_document_begin(BsonAttributes.get(), "Custom", 6, &customValue);
-			for (auto& itVariable : GetAttributes())
-			{
-				auto keyString = itVariable.GetKey().ToString();
-				auto pVariable = itVariable.GetValue();
-				switch (itVariable.GetValue()->GetTypeName())
-				{
-				case VariableBool::TYPE_NAME:
-					bson_append_bool(&customValue, keyString, -1, pVariable->GetValueBool());
-					break;
-				case VariableResult::TYPE_NAME:
-				case VariableInt::TYPE_NAME:
-				case VariableUInt::TYPE_NAME:
-					bson_append_int32(&customValue, keyString, -1, pVariable->GetValueInt32());
-					break;
-				case VariableInt64::TYPE_NAME:
-				case VariableUInt64::TYPE_NAME:
-					bson_append_int64(&customValue, keyString, -1, pVariable->GetValueInt64());
-					break;
-				case VariableVoidP::TYPE_NAME:
-					// not supported value type
-					return ResultCode::NOT_SUPPORTED;
-					break;
-				case VariableFloat::TYPE_NAME:
-				case VariableDouble::TYPE_NAME:
-					bson_append_double(&customValue, keyString, -1, pVariable->GetValueDouble());
-					break;
-				default:
-					bson_append_utf8(&customValue, keyString, -1, pVariable->GetValueCharString(), -1);
-					break;
-				}
-			}
-			bson_append_document_end(BsonAttributes.get(), &customValue);
-		}
-		//bson_append_document_end(BsonAttributes.get(), &objectValue);
-
-		return ResultCode::SUCCESS;
+		return Owner.CreateBsonAttribute(GetGameID(), GetClusterID(), GetEntityUID(), GetAttributes(), BsonAttributes);
 	}
 
 	Result ServiceDirectoryManager::LocalServiceMongo::Register()
@@ -781,7 +734,7 @@ namespace SF {
 		if (pCollection == nullptr)
 		{
 			svrTrace(Error, "LocalServiceMongo::Register server hasn't ready!, GameId:{0}, clusterId:{1}", GetGameID(), GetClusterID());
-			ScheduleTickUpdate(DurationMS(2000));
+			ScheduleTickUpdate(ServiceDirectory_ObjectRetryDelay);
 			return ResultCode::FAIL;
 		}
 
@@ -789,14 +742,14 @@ namespace SF {
 		if (!hr)
 		{
 			svrTrace(Error, "LocalServiceMongo::Register failed to update record, GameId:{0}, clusterId:{1}", GetGameID(), GetClusterID());
-			ScheduleTickUpdate(DurationMS(2000));
+			ScheduleTickUpdate(ServiceDirectory_ObjectRetryDelay);
 			return hr;
 		}
 
 		svrTrace(Debug3, "LocalServiceMongo::Register GameId:{0}, clusterId:{1}, entity{2}", GetGameID(), GetClusterID(), GetEntityUID());
 
 		// schedule next update 
-		ScheduleTickUpdate(DurationMS(4000));
+		ScheduleTickUpdate(ServiceDirectory_ObjectPingInterval);
 
 		return hr;
 	}
@@ -1028,54 +981,88 @@ namespace SF {
 		return hr;
 	}
 
-	//// Get cluster service entity
-	//Result ServiceDirectoryManager::GetShardService(GameID gameID, ClusterID clusterID, uint64_t shardKey, ServerServiceInformation* &pServiceInfo)
-	//{
-	//	Result hr = ResultCode::SUCCESS;
-	//	ServiceCluster* pClusterServiceInfo = nullptr;
-	//	ServiceClusterSearchKey key(gameID, clusterID);
 
-	//	hr = m_ClusterInfoMap.find(key, pClusterServiceInfo);
-	//	if ((!hr))
-	//		return hr;
+	Result ServiceDirectoryManager::CreateBsonAttribute(GameID gameID, ClusterID clusterID, EntityUID entityUID, const VariableTable& customAttributes, BsonUniquePtr& bsonAttributes)
+	{
+		// TODO: I just need to update time stamp
+		//if (bsonAttributes != nullptr)
+		//	return ResultCode::SUCCESS;
 
-	//	if (pClusterServiceInfo->m_Services.size() == 0)
-	//		return ResultCode::FAIL;
+		bson_t objectValue;
+		bson_t customValue;
+		auto UTCNow = Util::Time.GetRawUTCMs().time_since_epoch().count();
 
-	//	pServiceInfo = pClusterServiceInfo->m_Services.GetValueAt(shardKey % pClusterServiceInfo->m_Services.size());
+		bsonAttributes.reset(bson_new());
 
-	//	return hr;
-	//}
+		//bson_append_document_begin(bsonAttributes.get(), "$set", -1, &objectValue);
+		bson_append_int64(bsonAttributes.get(), "_id", 3, (uint64_t)entityUID);
+		bson_append_date_time(bsonAttributes.get(), "Updated", -1, UTCNow);
+		if (customAttributes.size() > 0)
+		{
+			bson_append_document_begin(bsonAttributes.get(), "Custom", 6, &customValue);
+			for (auto& itVariable : customAttributes)
+			{
+				auto keyString = itVariable.GetKey().ToString();
+				auto pVariable = itVariable.GetValue();
+				switch (itVariable.GetValue()->GetTypeName())
+				{
+				case VariableBool::TYPE_NAME:
+					bson_append_bool(&customValue, keyString, -1, pVariable->GetValueBool());
+					break;
+				case VariableResult::TYPE_NAME:
+				case VariableInt::TYPE_NAME:
+				case VariableUInt::TYPE_NAME:
+					bson_append_int32(&customValue, keyString, -1, pVariable->GetValueInt32());
+					break;
+				case VariableInt64::TYPE_NAME:
+				case VariableUInt64::TYPE_NAME:
+					bson_append_int64(&customValue, keyString, -1, pVariable->GetValueInt64());
+					break;
+				case VariableVoidP::TYPE_NAME:
+					// not supported value type
+					return ResultCode::NOT_SUPPORTED;
+					break;
+				case VariableFloat::TYPE_NAME:
+				case VariableDouble::TYPE_NAME:
+					bson_append_double(&customValue, keyString, -1, pVariable->GetValueDouble());
+					break;
+				default:
+					bson_append_utf8(&customValue, keyString, -1, pVariable->GetValueCharString(), -1);
+					break;
+				}
+			}
+			bson_append_document_end(bsonAttributes.get(), &customValue);
+		}
+		//bson_append_document_end(bsonAttributes.get(), &objectValue);
 
-	//// Get cluster service entity
-	//Result ServiceDirectoryManager::GetNextService(ServerServiceInformation* pServiceInfo, ServerServiceInformation* &pNextServiceInfo)
-	//{
-	//	Result hr = ResultCode::SUCCESS;
-	//	ServiceCluster* pClusterServiceInfo = nullptr;
-	//	ServiceClusterSearchKey key(pServiceInfo->GetGameID(), pServiceInfo->GetClusterID());
+		return ResultCode::SUCCESS;
+	}
 
-	//	pNextServiceInfo = nullptr;
+	Result ServiceDirectoryManager::PingObjectDirectory(GameID gameID, ClusterID clusterID, EntityUID entityUID, const VariableTable& customAttributes)
+	{
+		Result hr;
 
-	//	hr = m_ClusterInfoMap.find(key, pClusterServiceInfo);
-	//	if (!hr)
-	//		return hr;
+		BsonUniquePtr bsonAttribute;
+		svrCheck(CreateBsonAttribute(gameID, clusterID, entityUID, customAttributes, bsonAttribute));
 
-	//	if (pClusterServiceInfo->m_Services.size() == 0)
-	//		return ResultCode::FAIL;
+		SharedPointerT<MongoDBCollection> pCollection = GetObjectCollection(gameID, clusterID);
+		if (pCollection == nullptr)
+		{
+			svrTrace(Error, "LocalServiceMongo::Register server hasn't ready!, GameId:{0}, clusterId:{1}", gameID, clusterID);
+			return ResultCode::FAIL;
+		}
 
-	//	pNextServiceInfo = pServiceInfo;
-	//	auto itService = pClusterServiceInfo->m_Services[pServiceInfo->GetNodeNameCrc()];
-	//	if (!itService.IsValid())
-	//	{
-	//		return ResultCode::UNEXPECTED;
-	//	}
+		hr = pCollection->AddOrUpdate(entityUID, bsonAttribute.get());
+		if (!hr)
+		{
+			svrTrace(Error, "LocalServiceMongo::Register failed to update record, GameId:{0}, clusterId:{1}", gameID, clusterID);
+			return hr;
+		}
 
-	//	auto selectedIndex = (itService.GetIndex() + 1 % pClusterServiceInfo->m_Services.size());
+		svrTrace(Debug3, "LocalServiceMongo::Register GameId:{0}, clusterId:{1}, entity{2}", gameID, clusterID, entityUID);
 
-	//	pNextServiceInfo = pClusterServiceInfo->m_Services.GetValueAt(selectedIndex);
-
-	//	return hr;
-	//}
+		return hr;
+	}
 
 	Result ServiceDirectoryManager::RegisterLocalService(GameID gameID, ClusterID clusterID, EntityUID entityUID, const EndpointAddress& endpoint, const VariableTable& customAttributes)
 	{
