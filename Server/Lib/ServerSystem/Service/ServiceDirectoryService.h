@@ -20,6 +20,7 @@
 namespace SF {
 
 	class ServerServiceInformation;
+	class EntityInformation;
 	class ServiceEntity;
 	class VariableTable;
 
@@ -44,14 +45,14 @@ namespace SF {
 		virtual ~ServiceDirectoryService() = default;
 
 		// Get random cluster service
-		virtual Result GetRandomService(GameID gameID, ClusterID clusterID, ServerServiceInformation* &pServiceInfo) { return ResultCode::NOT_IMPLEMENTED; }
-		virtual Result GetShardService(GameID gameID, ClusterID clusterID, uint64_t shardKey, ServerServiceInformation* &pServiceInfo) { return ResultCode::NOT_IMPLEMENTED; }
-		virtual Result GetNextService(ServerServiceInformation* pServiceInfo, ServerServiceInformation* &pNextServiceInfo) { return ResultCode::NOT_IMPLEMENTED; }
+		virtual Result GetRandomService(GameID gameID, ClusterID clusterID, SharedPointerT<ServerServiceInformation> &pServiceInfo) { return ResultCode::NOT_IMPLEMENTED; }
 
 		// Create a watcher for cluster, replacement for CreateWatcherForCluster
 		virtual Result WatchForService(GameID gameID, ClusterID clusterID) { return ResultCode::NOT_IMPLEMENTED; }
 
-		virtual Result GetServiceList(GameID gameID, ClusterID clusterID, Array<ServerServiceInformation*>& outServices) { return ResultCode::NOT_IMPLEMENTED; }
+		// Search object list
+		// works only for object cluster
+		virtual Result FindObjects(GameID gameID, ClusterID clusterID, const VariableTable& searchAttributes, Array<SharedPointerT<EntityInformation>>& foundObjects) { return ResultCode::NOT_IMPLEMENTED; }
 
 		// register local service to directory
 		virtual Result RegisterLocalService(GameID gameID, ClusterID clusterID, EntityUID entityUID, const EndpointAddress& endpoint = {}, const VariableTable& customAttributes = {}) { return ResultCode::NOT_IMPLEMENTED; }

@@ -58,7 +58,7 @@ namespace SF {
 	{
 		Assert(uiTaskID != 0);
 		m_TaskID = uiTaskID;
-		m_TimerAction->TimeData.Components.ObjectID = m_TaskID;
+		m_TimerAction->TimeData.Components.ObjectId = m_TaskID;
 	}
 
 
@@ -89,7 +89,7 @@ namespace SF {
 
 		m_pTaskWorker = pWorker;
 
-		m_TimerAction->TimeData.Components.ObjectID = GetTaskID();
+		m_TimerAction->TimeData.Components.ObjectId = GetTaskID();
 
 		if (GetTickInterval() > DurationMS(0))
 		{

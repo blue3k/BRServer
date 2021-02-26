@@ -112,7 +112,7 @@ namespace Svr {
 	Result PlayerTransRequestGameMatch::StartTransaction()
 	{
 		Result hr = ResultCode::SUCCESS;
-		ServerServiceInformation* pService = nullptr;
+		SharedPointerT<ServerServiceInformation> pService;
 
 		m_TotalGem = 0;
 		m_TotalGameMoney = 0;
@@ -134,7 +134,6 @@ namespace Svr {
 		if (GetMyOwner()->GetPartyUID().UID == 0)
 		{
 			// Player isn't in a party, just do it alone
-			ServerServiceInformation* pWatcherService = nullptr;
 			auto queueClusterID = Svr::MatchingUtil::GetQueueClusterID(GetNumPlayer(), 1, (PlayerRole)GetRequestRole());
 
 			svrChk(Service::ServiceDirectory->GetRandomService(Service::ServerConfig->GameClusterID, queueClusterID, pService));

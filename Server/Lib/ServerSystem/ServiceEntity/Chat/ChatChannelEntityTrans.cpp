@@ -55,7 +55,7 @@ namespace Svr {
 	{
 		Result hr = ResultCode::SUCCESS;
 		auto* pOwner = (ChatChannelEntity*)GetOwnerEntity();
-		ServerServiceInformation *pService = nullptr;
+		SharedPointerT<ServerServiceInformation> pService = nullptr;
 
 		svrCheck(Transaction::StartTransaction());
 

@@ -102,6 +102,9 @@ namespace Svr {
 
 		svrCheck(GetComponentManager().InitializeComponents());
 
+
+		Service::ServiceDirectory->RegisterLocalService(Service::ServerConfig->GameClusterID, ClusterID::GamePlayer, GetEntityUID());
+
 		return hr;
 	}
 
@@ -346,6 +349,11 @@ namespace Svr {
 	Result GamePlayerEntity::ClearEntity()
 	{
 		ScopeContext hr;
+
+		if (GetEntityUID().UID != 0)
+		{
+			Service::ServiceDirectory->RemoveLocalService(Service::ServerConfig->GameClusterID, ClusterID::GamePlayer, GetEntityUID());
+		}
 
 		// make sure player information is cleaned up
 		if (GetPlayerID() != 0)

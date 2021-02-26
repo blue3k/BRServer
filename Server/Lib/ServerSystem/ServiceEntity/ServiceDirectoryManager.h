@@ -23,11 +23,15 @@
 #include "ServerService/ServerServiceBase.h"
 #include "Container/SFHashTable.h"
 #include "Container/SFIndexing.h"
-
+#include "Object/SFSharedObject.h"
+#include "Object/SFSharedPointer.h"
 #include "Entity/EntityInformation.h"
 #include "Service/ServiceDirectoryService.h"
 #include "Zookeeper/SFZookeeper.h"
+#include "Mongo/SFMongoDB.h"
 #include "json/json.h"
+#include "Task/SFTimerScheduler.h"
+#include "Task/SFTimerSchedulerAction.h"
 
 
 namespace SF {
@@ -36,6 +40,7 @@ namespace SF {
 		class Entity;
 	}
 
+	class ServiceDirectoryManager;
 
 #pragma pack(push,4)
 	union ServiceClusterSearchKey
@@ -58,53 +63,78 @@ namespace SF {
 #pragma pack(pop)
 
 
+	class ServiceCluster
+	{
+	private:
+		IHeap& m_Heap;
+		ServiceClusterSearchKey m_ClusterKey;
+
+		friend class ServiceDirectoryManager;
+
+	protected:
+
+		static Result ParseMessageEndpoint(const Json::Value& jsonObject, const char* keyName, EndpointAddress& outMessageEndpoint);
+
+
+	public:
+
+		ServiceCluster(IHeap& heap, GameID gameID, ClusterID clusterID);
+		virtual ~ServiceCluster();
+
+		IHeap& GetHeap() { return m_Heap; }
+
+		const ServiceClusterSearchKey& GetClusterKey() const { return m_ClusterKey; }
+		GameID GetGameID() const { return m_ClusterKey.Components.GameClusterID; }
+		ClusterID GetClusterID() const { return m_ClusterKey.Components.ServiceClusterID; }
+
+		virtual SharedPointerT<ServerServiceInformation> GetRandomService() = 0;
+		virtual Result FindObjects(const VariableTable& searchAttributes, Array<SharedPointerT<EntityInformation>>& foundObjects) { return ResultCode::NOT_IMPLEMENTED; }
+	};
 
 	// Service cluster information
-	class ServiceCluster : public ZookeeperWatcher
+	class ServiceClusterZookeeper : public ServiceCluster, public ZookeeperWatcher
 	{
 
 	private:
-		IHeap& m_Heap;
 
 		bool m_ZKInitialized = false;
 
-		ServiceClusterSearchKey m_ClusterKey;
+		Atomic<uint> m_LatestSelected;
 		String m_ClusterPath;
 
-		Atomic<uint> m_LatestSelected;
+		SortedArray<StringCrc64, SharedPointerT<ServerServiceInformation>> m_Services;
 
 		SharedPointerT<ZookeeperWatcher::StringsTask> m_GetChildrenTask;
-
-		SortedArray<StringCrc64, ServerServiceInformation*> m_Services;
-
-		friend class ServiceDirectoryManager;
 
 	private:
 
 		void InitZK();
 
+		Result AddServiceInfo(const char* nodeName, StringCrc64 nodeNameCrc, const Json::Value& nodeValue);
+
 		static Result GetNodeValue(const String& nodePath, Json::Value& jsonValue);
 		static Result SetNodeValue(const String& nodePath, const Json::Value& jsonValue);
 
-		static Result ParseMessageEndpoint(const Json::Value& jsonObject, const char* keyName, EndpointAddress& outMessageEndpoint);
-
-		Result AddServiceInfo(const char* nodeName, StringCrc64 nodeNameCrc);
-
 
 	public:
-		ServiceCluster(IHeap& heap, GameID gameID, ClusterID clusterID);
-		~ServiceCluster();
+		ServiceClusterZookeeper(IHeap& heap, GameID gameID, ClusterID clusterID);
+		~ServiceClusterZookeeper();
 
-		IHeap& GetHeap() { return m_Heap; }
+		virtual SharedPointerT<ServerServiceInformation> GetRandomService() override;
 
 		bool IsZKInitialized() { return m_ZKInitialized; }
 
 		void DownloadServiceInfo();
-		void NodeUpdated(const String& nodePath);
+		//void NodeUpdated(const String& nodePath);
+
+		auto begin() { return m_Services.begin(); }
+		auto end() { return m_Services.end(); }
+
+		virtual Result FindObjects(const VariableTable& searchAttributes, Array<SharedPointerT<EntityInformation>>& foundObjects) override;
 
 		/////////////////////////////////////////////
 		//
-		//	Overridable Event handling
+		//	Event handling
 		//
 
 		virtual Result OnNewEvent(const ZKEvent& eventOut) override;
@@ -116,14 +146,31 @@ namespace SF {
 		virtual void OnStringComplition(StringTask& pTask) override;
 //		virtual void OnACLComplition(ACLTask& pTask) override;
 
-
-		auto begin() { return m_Services.begin(); }
-		auto end() { return m_Services.end(); }
-
+		
 		// Static helper functions
-
 		static String GetClusterPath(GameID gameID, ClusterID clusterID);
 
+	};
+
+	class ServiceClusterMongo : public ServiceCluster
+	{
+	private:
+
+		ServiceDirectoryManager& m_Owner;
+		SharedPointerT<MongoDBCollection> m_DBCollection;
+
+
+
+	public:
+		ServiceClusterMongo(ServiceDirectoryManager& owner, GameID gameID, ClusterID clusterID);
+		~ServiceClusterMongo();
+
+
+		Result ParseObject(const bson_t* object, SharedPointerT<ServerServiceInformation>& outParsed);
+
+		virtual SharedPointerT<ServerServiceInformation> GetRandomService() override;
+
+		virtual Result FindObjects(const VariableTable& searchAttributes, Array<SharedPointerT<EntityInformation>>& foundObjects) override;
 
 	};
 
@@ -144,16 +191,71 @@ namespace SF {
 		// Service Entity table
 		using ClusterInfomationMap = HashTable2<uint64_t, ServiceCluster*>;
 
-		struct LocalServiceInformation
+		class LocalService : public SharedObject
 		{
+		public:
+			ServiceDirectoryManager& Owner;
 			GameID GameId;
 			ClusterID ClusterId;
 			EntityUID EntityUid;
 			EndpointAddress Endpoint;
-			String NodePath;
-			Json::Value JsonAttributes;
+			VariableTable Attributes;
+
+		private:
+
+			TimeStampMS m_ExpectedTickTime;
+
+		public:
+			LocalService(ServiceDirectoryManager& owner, GameID gameID, ClusterID clusterID, EntityUID entityUID, const EndpointAddress& endpoint, const VariableTable& customAttributes);
+			virtual ~LocalService() = default;
+
+			GameID GetGameID() const { return GameId; }
+			ClusterID GetClusterID() const { return ClusterId; }
+			EntityUID GetEntityUID() const { return EntityUid; }
+			const VariableTable& GetAttributes() const { return Attributes; }
+
+			const TimeStampMS& GetExpectedTickTime() const { return m_ExpectedTickTime; }
+			Result ScheduleTickUpdate(DurationMS delay);
+
+			virtual Result Register() = 0;
+			virtual Result Deregister() = 0;
+
+			virtual bool OnTimerTick();
 		};
 
+
+		class LocalServiceZookeeper : public LocalService
+		{
+		public:
+			String NodePath;
+			Json::Value JsonAttributes;
+
+		public:
+			LocalServiceZookeeper(ServiceDirectoryManager& owner, GameID gameID, ClusterID clusterID, EntityUID entityUID, const EndpointAddress& endpoint, const VariableTable& customAttributes);
+			virtual ~LocalServiceZookeeper() = default;
+
+			virtual Result Register() override;
+			virtual Result Deregister() override;
+		};
+
+
+		class LocalServiceMongo : public LocalService
+		{
+		public:
+
+			using super = LocalService;
+
+			BsonUniquePtr BsonAttributes;
+
+		public:
+			LocalServiceMongo(ServiceDirectoryManager& owner, GameID gameID, ClusterID clusterID, EntityUID entityUID, const EndpointAddress& endpoint, const VariableTable& customAttributes);
+			virtual ~LocalServiceMongo() = default;
+
+			Result CreateBsonAttribute();
+
+			virtual Result Register() override;
+			virtual Result Deregister() override;
+		};
 
 	private:
 
@@ -161,7 +263,13 @@ namespace SF {
 		ClusterInfomationMap			m_ClusterInfoMap;
 
 		CriticalSection m_ServiceLock;
-		DynamicArray<LocalServiceInformation*> m_LocalServices;
+		DynamicArray<SharedPointerT<LocalService>> m_LocalServices;
+
+		SFUniquePtr<Thread> m_TickThread;
+		WeakPointerT<LocalService> m_LastTickItem;
+		CircularPageQueue<WeakPointerT<LocalService>> m_TickQueue;
+
+		SharedPointerT<MongoDB> m_MongoDB;
 
 	private:
 
@@ -169,6 +277,10 @@ namespace SF {
 		static Result ToJson(Json::Value& jsonObject, const char* keyName, const VariableTable& customAttributes);
 
 		Result RegisterLocalServices();
+		
+		void ScheduleTickUpdate(LocalService* localService);
+
+		friend class LocalService;
 
 	public:
 		// Constructor/Destructor
@@ -181,14 +293,20 @@ namespace SF {
 		// Terminate component
 		void DeinitializeComponent();
 
+		void TickUpdate();
+
+
+		MongoDBCollection* GetObjectCollection(GameID gameID, ClusterID clusterID);
+
+		bool UseObjectCluster(ClusterID clusterId) const;
+
 		// Get random cluster service
-		virtual Result GetRandomService(GameID gameID, ClusterID clusterID, ServerServiceInformation*& pServiceInfo) override;
-		virtual Result GetShardService(GameID gameID, ClusterID clusterID, uint64_t shardKey, ServerServiceInformation*& pServiceInfo) override;
-		virtual Result GetNextService(ServerServiceInformation* pServiceInfo, ServerServiceInformation*& pNextServiceInfo) override;
+		virtual Result GetRandomService(GameID gameID, ClusterID clusterID, SharedPointerT<ServerServiceInformation>& pServiceInfo) override;
 
 		// Set watch state for cluster
 		virtual Result WatchForService(GameID gameID, ClusterID clusterID) override;
-		virtual Result GetServiceList(GameID gameID, ClusterID clusterID, Array<ServerServiceInformation*>& outServices) override;
+
+		virtual Result FindObjects(GameID gameID, ClusterID clusterID, const VariableTable& searchAttributes, Array<SharedPointerT<EntityInformation>>& foundObjects) override;
 
 
 		virtual Result RegisterLocalService(GameID gameID, ClusterID clusterID, EntityUID entityUID, const EndpointAddress& endpoint, const VariableTable& customAttributes) override;

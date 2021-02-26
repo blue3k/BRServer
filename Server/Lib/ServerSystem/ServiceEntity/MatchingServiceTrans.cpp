@@ -119,7 +119,7 @@ namespace Svr {
 	Result MatchingTransGrabPlayer::ReserveItem(uint grabCount)
 	{
 		Result hr = ResultCode::SUCCESS;
-		ServerServiceInformation *pService = nullptr;
+		SharedPointerT<ServerServiceInformation> pService;
 		ClusteredServiceEntity *pServiceEntity = nullptr;
 
 		if(!Service::ServiceDirectory->GetRandomService(Service::ServerConfig->GameClusterID, m_TargetQueueClusterID, pService))
@@ -130,7 +130,7 @@ namespace Svr {
 		// NOTE: Workload bug, just try to grab
 		//if (pService->GetWorkload() > 0)
 		{
-			svrTrace(SVR_DBGMATCHING, "Try to make a reservation. Matching:{0}, TargetQueueCompo:{1}, expected {2}", m_MatchingMemberCount, m_TargetQueueClusterID, pService->GetWorkload());
+			svrTrace(SVR_DBGMATCHING, "Try to make a reservation. Matching:{0}, TargetQueueCompo:{1}", m_MatchingMemberCount, m_TargetQueueClusterID);
 			svrChk(pService->GetService<PartyMatchingQueueService>()->ReserveItemsCmd(GetTransID(), 0, grabCount));
 		}
 		//else
@@ -379,7 +379,7 @@ namespace Svr {
 				if (!hr)
 					SetTimer(DurationMS(1000));
 			});
-		ServerServiceInformation *pService = nullptr;
+		SharedPointerT<ServerServiceInformation> pService;
 
 		svrTrace(SVR_MATCHING, "Creating game Matching:{0}", GetTargetMatchingMemberCount());
 

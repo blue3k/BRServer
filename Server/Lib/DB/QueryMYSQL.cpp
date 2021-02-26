@@ -142,7 +142,7 @@ namespace SF {
 			for (auto& columnInfo : columnInfos)
 			{
 				std::string columnName = columnInfo.getColumnName(); // This assignment actually convert utf16 to utf8
-				dbTrace(Debug5, "Column:{0}", columnName);
+				dbTrace(Debug3, "Column:{0}", columnName);
 				columnNames.push_back(columnName.c_str());
 			}
 

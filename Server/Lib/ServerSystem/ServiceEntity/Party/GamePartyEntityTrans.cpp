@@ -64,7 +64,7 @@ namespace Svr {
 	{
 		Result hr = ResultCode::SUCCESS;
 		GamePartyEntity* pOwner = (GamePartyEntity*)GetOwnerEntity();
-		ServerServiceInformation *pService = nullptr;
+		SharedPointerT<ServerServiceInformation> pService;
 
 		svrCheck(Transaction::StartTransaction() );
 
@@ -310,7 +310,7 @@ namespace Svr {
 					CloseTransaction(hr);
 
 			});
-		ServerServiceInformation *pService = nullptr;
+		SharedPointerT<ServerServiceInformation> pService;
 		StaticArray<MatchingPlayerInformation, 16> m_matchingPlayers(GetHeap());
 
 		svrCheck( super::StartTransaction() );
@@ -325,7 +325,7 @@ namespace Svr {
 		else if( GetMaxGamePlayers() == GetMyOwner()->GetNumPlayer() )
 		{
 			// We already have full member, just create game and let them know to join
-			ServerServiceInformation *pService = nullptr;
+			SharedPointerT<ServerServiceInformation> pService;
 
 			svrCheck(Service::ServiceDirectory->GetRandomService(GetMyOwner()->GetGameID(), ClusterID::GameInstanceManager, pService));
 

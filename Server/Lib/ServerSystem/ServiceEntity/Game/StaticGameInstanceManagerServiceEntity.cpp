@@ -117,12 +117,15 @@ namespace SF {
 			auto pZoneTable = Service::DataTableManager->GetDataTable("ZoneTable");
 			svrCheckPtr(pZoneTable);
 
-			DynamicArray<ServerServiceInformation*> services(GetHeap());
+			DynamicArray<SharedPointerT<EntityInformation>> services(GetHeap());
 			DynamicArray<int32_t> zoneCountCounters(GetHeap());
 			HashTable2<uint32_t, int32_t*> zoneCount(GetHeap());
 
+			VariableTable attributes;
+			attributes.SetValue<String>("Custom.Type", "Static");
+
 			// Counting active static zones
-			svrCheck(Service::ServiceDirectory->GetServiceList(Service::ServerConfig->GameClusterID, ClusterID::GameInstance, services));
+			svrCheck(Service::ServiceDirectory->FindObjects(Service::ServerConfig->GameClusterID, ClusterID::GameInstance, attributes, services));
 
 			int32_t usedCounter = 0;
 			svrCheck(zoneCountCounters.resize(services.size()));
@@ -171,9 +174,8 @@ namespace SF {
 				for (int32_t iZone = 0; iZone < staticZoneCount; iZone++)
 				{
 					// Query new service instance per loop for better load balance
-					ServerServiceInformation* pInstanceMangerService{};
+					SharedPointerT<ServerServiceInformation> pInstanceMangerService{};
 					svrCheck(Service::ServiceDirectory->GetRandomService(GetGameID(), ClusterID::GameInstanceManager, pInstanceMangerService));
-
 					svrCheck(pInstanceMangerService->GetService<GameInstanceManagerService>()->CreateGameInstanceCmd(0, 0, zoneTableId, attributes));
 				}
 			}

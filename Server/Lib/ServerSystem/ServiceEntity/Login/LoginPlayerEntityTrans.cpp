@@ -166,7 +166,7 @@ namespace SF {
 			return hr;
 		}
 
-		ServerServiceInformation* pServiceInfo{};
+		SharedPointerT<ServerServiceInformation> pServiceInfo{};
 		Service::ServiceDirectory->GetRandomService(super::GetMyOwner()->GetGameID(), ClusterID::Game, pServiceInfo);
 		if (pServiceInfo != nullptr)
 		{
@@ -760,7 +760,7 @@ namespace SF {
 		Result hr = ResultCode::SUCCESS;
 		PlayerInformation playerInfo;
 		Svr::ClusteredServiceEntity *pServiceEntity = nullptr;
-		ServerServiceInformation *pService = nullptr;
+		SharedPointerT<ServerServiceInformation> pService;
 
 		svrChk(super::StartTransaction());
 
@@ -869,7 +869,7 @@ namespace SF {
 		Result hr = ResultCode::SUCCESS;
 		PlayerInformation playerInfo;
 		//Svr::ClusteredServiceEntity *pServiceEntity = nullptr;
-		ServerServiceInformation *pService = nullptr;
+		SharedPointerT<ServerServiceInformation> pService;
 
 		svrChk(super::StartTransaction());
 

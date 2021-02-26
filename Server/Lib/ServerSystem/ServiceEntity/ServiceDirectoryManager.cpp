@@ -27,7 +27,6 @@
 #include "Service/ServerService.h"
 #include "ServiceEntity/ServiceDirectoryManager.h"
 #include "Util/SFStringFormat.h"
-#include "ServerConfig/SFEnum.h"
 #include "Variable/SFVariableTable.h"
 
 #include <bson/bson.h>
@@ -41,26 +40,55 @@ namespace SF {
 	//	 informations
 	//
 
+	ServiceCluster::ServiceCluster(IHeap& heap, GameID gameID, ClusterID clusterID)
+		: m_Heap(heap)
+		, m_ClusterKey(gameID, clusterID)
+	{
+	}
 
-	String ServiceCluster::GetClusterPath(GameID gameID, ClusterID clusterID)
+	ServiceCluster::~ServiceCluster()
+	{
+	}
+
+
+	Result ServiceCluster::ParseMessageEndpoint(const Json::Value& jsonObject, const char* keyName, EndpointAddress& outMessageEndpoint)
+	{
+		auto stringValue = jsonObject.get(keyName, Json::Value(Json::stringValue));
+		auto splitIndex = StrUtil::Indexof(stringValue.asCString(), '/');
+		if (splitIndex < 0)
+			return ResultCode::FAIL;
+
+		String MessageEndpointrString = stringValue.asCString();
+		outMessageEndpoint.MessageServer = MessageEndpointrString.SubString(0, splitIndex);
+		outMessageEndpoint.Channel = MessageEndpointrString.SubString(splitIndex + 1, MessageEndpointrString.length());
+
+		return ResultCode::SUCCESS;
+	}
+
+
+	//////////////////////////////////////////////////////////////////////////
+	//
+	//	 informations
+	//
+
+	String ServiceClusterZookeeper::GetClusterPath(GameID gameID, ClusterID clusterID)
 	{
 		String clusterPath;
 		if (gameID != nullptr)
 		{
-			clusterPath.Format("{0}/{1}/{2}", Service::ServerConfig->DataCenter.Path, gameID, Enum<ClusterID>().GetValueName(clusterID));
+			clusterPath.Format("{0}/{1}/{2}", Service::ServerConfig->DataCenter.Path, gameID, ToString(clusterID));
 		}
 		else
 		{
-			clusterPath.Format("{0}/{1}", Service::ServerConfig->DataCenter.Path, Enum<ClusterID>().GetValueName(clusterID));
+			clusterPath.Format("{0}/{1}", Service::ServerConfig->DataCenter.Path, ToString(clusterID));
 		}
 
 		return Forward<String>(clusterPath);
 	}
 
-	ServiceCluster::ServiceCluster(IHeap& heap, GameID gameID, ClusterID clusterID)
-		: ZookeeperWatcher(heap)
-		, m_Heap(heap)
-		, m_ClusterKey(gameID, clusterID)
+	ServiceClusterZookeeper::ServiceClusterZookeeper(IHeap& heap, GameID gameID, ClusterID clusterID)
+		: ServiceCluster(heap, gameID, clusterID)
+		, ZookeeperWatcher(heap)
 		, m_ClusterPath(heap)
 		, m_LatestSelected(0)
 		, m_Services(GetHeap())
@@ -70,16 +98,53 @@ namespace SF {
 		InitZK();
 	}
 
-	ServiceCluster::~ServiceCluster()
+	ServiceClusterZookeeper::~ServiceClusterZookeeper()
 	{
 		for (auto itService : m_Services)
 		{
-			IHeap::Delete(itService.GetValue());
+			itService.GetValue()->Dispose();
 		}
 		m_Services.Clear();
 	}
 
-	void ServiceCluster::InitZK()
+
+	Result ServiceClusterZookeeper::AddServiceInfo(const char* nodeName, StringCrc64 nodeNameCrc, const Json::Value& nodeValue)
+	{
+		Result hr;
+		NetAddress netAddress;
+		EntityUID entityUID;
+		ServerServiceInformation* pNewServiceInfo = nullptr;
+		ServerEntity* pServerEntity = nullptr;
+
+
+		EndpointAddress messageEndpointConfig;
+		svrCheck(ParseMessageEndpoint(nodeValue, "Endpoint", messageEndpointConfig));
+		entityUID.UID = nodeValue.get("EntityUID", Json::Value(0)).asUInt64();
+		Json::Value customValue = nodeValue.get("Custom", Json::Value(Json::objectValue));
+
+		MessageEndpoint* pEndpoint{};
+		svrCheck(Service::MessageEndpointManager->AddOrGetRemoteEndpoint(entityUID, messageEndpointConfig, pEndpoint));
+
+		svrCheckMem(pNewServiceInfo = new(GetHeap()) ServerServiceInformation(GetGameID(), GetClusterID(), entityUID, pEndpoint, customValue));
+
+		svrCheck(m_Services.Insert(nodeNameCrc, pNewServiceInfo));
+
+		svrTrace(Info, "ServiceClusterZookeeper ServiceInfo Added({0}), GameID:{1} ClusterID:{2}, entityUID:{3}", nodeName, GetGameID(), ToString(GetClusterID()), entityUID);
+
+		return hr;
+	}
+
+	SharedPointerT<ServerServiceInformation> ServiceClusterZookeeper::GetRandomService()
+	{
+		if (m_Services.size() == 0)
+			return nullptr;
+
+		auto selected = m_LatestSelected.fetch_add(1, std::memory_order_relaxed);
+		return m_Services.GetValueAt(selected % m_Services.size());
+	}
+
+
+	void ServiceClusterZookeeper::InitZK()
 	{
 		auto zkSession = Service::ZKSession->GetZookeeperSession();
 		if (zkSession == nullptr || !zkSession->IsConnected())
@@ -99,7 +164,7 @@ namespace SF {
 		m_ZKInitialized = true;
 	}
 
-	Result ServiceCluster::GetNodeValue(const String& nodePath, Json::Value& jsonValue)
+	Result ServiceClusterZookeeper::GetNodeValue(const String& nodePath, Json::Value& jsonValue)
 	{
 		StaticArray<uint8_t, 1024> valueBuffer(GetSystemHeap());
 		auto zkSession = Service::ZKSession->GetZookeeperSession();
@@ -111,7 +176,7 @@ namespace SF {
 		return result;
 	}
 
-	Result ServiceCluster::SetNodeValue(const String& nodePath, const Json::Value& jsonValue)
+	Result ServiceClusterZookeeper::SetNodeValue(const String& nodePath, const Json::Value& jsonValue)
 	{
 		auto zkSession = Service::ZKSession->GetZookeeperSession();
 		if (zkSession == nullptr || !zkSession->IsConnected())
@@ -124,53 +189,54 @@ namespace SF {
 		return zkSession->Set(nodePath, stringValue);
 	}
 
-	Result ServiceCluster::ParseMessageEndpoint(const Json::Value& jsonObject, const char* keyName, EndpointAddress& outMessageEndpoint)
-	{
-		auto stringValue = jsonObject.get(keyName, Json::Value(Json::stringValue));
-		auto splitIndex = StrUtil::Indexof(stringValue.asCString(), '/');
-		if (splitIndex < 0)
-			return ResultCode::FAIL;
-
-		String MessageEndpointrString = stringValue.asCString();
-		outMessageEndpoint.MessageServer = MessageEndpointrString.SubString(0, splitIndex);
-		outMessageEndpoint.Channel = MessageEndpointrString.SubString(splitIndex + 1, MessageEndpointrString.length());
-
-		return ResultCode::SUCCESS;
-	}
-
-	void ServiceCluster::DownloadServiceInfo()
+	void ServiceClusterZookeeper::DownloadServiceInfo()
 	{
 		// We download full list on reconnect, just skip it
 		auto zkSession = Service::ZKSession->GetZookeeperSession();
 		if (zkSession == nullptr || !zkSession->IsConnected())
 			return;
 
-		svrTrace(Debug, "ServiceCluster requesting service list, GameID:{0} ClusterID:{1}", m_ClusterKey.Components.GameClusterID, Enum<ClusterID>().GetValueName(m_ClusterKey.Components.ServiceClusterID));
+		svrTrace(Debug, "ServiceClusterZookeeper requesting service list, GameID:{0} ClusterID:{1}", GetGameID(), ToString(GetClusterID()));
 
 		zkSession->AGetChildren(m_ClusterPath, this);
 	}
 
-	void ServiceCluster::NodeUpdated(const String& nodePath)
+	Result ServiceClusterZookeeper::FindObjects(const VariableTable& searchAttributes, Array<SharedPointerT<EntityInformation>>& foundObjects)
 	{
-		// We download full list on reconnect, just skip it
-		auto zkSession = Service::ZKSession->GetZookeeperSession();
-		if (zkSession == nullptr || !zkSession->IsConnected())
-			return;
+		// TODO: check search attributes
+		svrTrace(Warning, "ServiceClusterZookeeper:FindObjects not fully implemented, GameID:{0} ClusterID:{1}", GetGameID(), ToString(GetClusterID()));
 
-		if (zkSession->Exists(nodePath))
+		for (auto itService : m_Services)
 		{
-			svrTrace(Debug, "ServiceCluster updating service node state:{0}, removed", m_ClusterKey.Components.GameClusterID, nodePath);
-			ServerServiceInformation* pServiceInfo{};
-			m_Services.Remove(StringCrc64(nodePath), pServiceInfo);
-			if (pServiceInfo)
-				IHeap::Delete(pServiceInfo);
+			foundObjects.push_back(itService.GetValue().get());
 		}
-		else
-		{
-			svrTrace(Debug, "ServiceCluster updating service node state:{0}, added", m_ClusterKey.Components.GameClusterID, nodePath);
-			AddServiceInfo(nodePath, StringCrc64(nodePath));
-		}
+
+		return ResultCode::SUCCESS;
 	}
+
+
+
+	//void ServiceClusterZookeeper::NodeUpdated(const String& nodePath)
+	//{
+	//	// We download full list on reconnect, just skip it
+	//	auto zkSession = Service::ZKSession->GetZookeeperSession();
+	//	if (zkSession == nullptr || !zkSession->IsConnected())
+	//		return;
+
+	//	if (zkSession->Exists(nodePath))
+	//	{
+	//		svrTrace(Debug, "ServiceClusterZookeeper updating service node state:{0}, removed", GetClusterKey().Components.GameClusterID, nodePath);
+	//		ServerServiceInformation* pServiceInfo{};
+	//		m_Services.Remove(StringCrc64(nodePath), pServiceInfo);
+	//		if (pServiceInfo)
+	//			IHeap::Delete(pServiceInfo);
+	//	}
+	//	else
+	//	{
+	//		svrTrace(Debug, "ServiceClusterZookeeper updating service node state:{0}, added", GetClusterKey().Components.GameClusterID, nodePath);
+	//		AddServiceInfo(nodePath, StringCrc64(nodePath));
+	//	}
+	//}
 
 
 	/////////////////////////////////////////////
@@ -178,9 +244,9 @@ namespace SF {
 	//	Overridable Event handling
 	//
 
-	Result ServiceCluster::OnNewEvent(const ZKEvent& eventOut)
+	Result ServiceClusterZookeeper::OnNewEvent(const ZKEvent& eventOut)
 	{
-		svrTrace(Info, "ServiceCluster ZKEvent:{0}, GameID:{1} ClusterID:{2}, path:{3}", Zookeeper::EventToString(eventOut.Components.EventType), m_ClusterKey.Components.GameClusterID, Enum<ClusterID>().GetValueName(m_ClusterKey.Components.ServiceClusterID), eventOut.Components.NodePath);
+		svrTrace(Info, "ServiceClusterZookeeper ZKEvent:{0}, GameID:{1} ClusterID:{2}, path:{3}", Zookeeper::EventToString(eventOut.Components.EventType), GetGameID(), ToString(GetClusterID()), eventOut.Components.NodePath);
 
 		if (eventOut.Components.EventType == Zookeeper::EVENT_CHILD)
 		{
@@ -203,7 +269,7 @@ namespace SF {
 		return ResultCode::SUCCESS;
 	}
 
-	void ServiceCluster::OnComplition(ZookeeperTask& pTask)
+	void ServiceClusterZookeeper::OnComplition(ZookeeperTask& pTask)
 	{
 		if (!pTask.ZKResult)
 		{
@@ -212,48 +278,17 @@ namespace SF {
 		}
 	}
 
-	void ServiceCluster::OnStatComplition(StatTask& pTask)
+	void ServiceClusterZookeeper::OnStatComplition(StatTask& pTask)
 	{
 
 	}
 
-	void ServiceCluster::OnDataComplition(DataTask& pTask)
+	void ServiceClusterZookeeper::OnDataComplition(DataTask& pTask)
 	{
 
 	}
 
-	Result ServiceCluster::AddServiceInfo(const char* nodeName, StringCrc64 nodeNameCrc)
-	{
-		Result hr;
-		String nodePath(GetHeap());
-		Json::Value jsonValue(Json::objectValue);
-		NetAddress netAddress;
-		EntityUID entityUID;
-		ServerServiceInformation* pNewServiceInfo = nullptr;
-		ServerEntity *pServerEntity = nullptr;
-
-		nodePath.Format("{0}/{1}", m_ClusterPath, nodeName);
-
-		svrCheck(GetNodeValue(nodePath, jsonValue));
-
-		EndpointAddress messageEndpointConfig;
-		svrCheck(ParseMessageEndpoint(jsonValue, "Endpoint", messageEndpointConfig));
-		entityUID.UID = jsonValue.get("EntityUID", Json::Value(0)).asUInt64();
-		Json::Value customValue = jsonValue.get("Custom", Json::Value(Json::objectValue));
-
-		MessageEndpoint* pEndpoint{};
-		svrCheck(Service::MessageEndpointManager->AddOrGetRemoteEndpoint(entityUID, messageEndpointConfig, pEndpoint));
-
-		svrCheckMem(pNewServiceInfo = new(GetHeap()) ServerServiceInformation(m_ClusterKey.Components.GameClusterID, m_ClusterKey.Components.ServiceClusterID, entityUID, pEndpoint, customValue));
-
-		svrCheck(m_Services.Insert(nodeNameCrc, pNewServiceInfo));
-
-		svrTrace(Info, "ServiceCluster ServiceInfo Added({0}), GameID:{1} ClusterID:{2}, entityUID:{3}", nodeName, m_ClusterKey.Components.GameClusterID, Enum<ClusterID>().GetValueName(m_ClusterKey.Components.ServiceClusterID), entityUID);
-
-		return hr;
-	}
-
-	void ServiceCluster::OnStringsComplition(StringsTask& pTask)
+	void ServiceClusterZookeeper::OnStringsComplition(StringsTask& pTask)
 	{
 		if (!pTask.ZKResult)
 		{
@@ -271,7 +306,7 @@ namespace SF {
 		for (auto& nodeName : pTask.ResultStrings)
 		{
 			StringCrc64 nodeNameCrc = (const char*)nodeName;
-			ServerServiceInformation* pFound = nullptr;
+			SharedPointerT<ServerServiceInformation> pFound;
 			m_Services.Find(nodeNameCrc, pFound);
 			if (pFound != nullptr)
 			{
@@ -280,8 +315,14 @@ namespace SF {
 			}
 			else
 			{
+				Json::Value jsonValue;
+				String nodePath(GetHeap());
+				nodePath.Format("{0}/{1}", m_ClusterPath, nodeName);
+
+				GetNodeValue(nodePath, jsonValue);
+
 				// New Service I need to add this to the list
-				AddServiceInfo(nodeName, nodeNameCrc);
+				AddServiceInfo(nodeName, nodeNameCrc, jsonValue);
 			}
 		}
 
@@ -289,22 +330,20 @@ namespace SF {
 		auto serverID = GetServerUID();
 		for (auto itRemove : listAlreadyHave)
 		{
-			ServerServiceInformation* pRemove = nullptr;
+			SharedPointerT<ServerServiceInformation> pRemove;
 			if (!m_Services.Find(itRemove, pRemove))
 				continue;
 
-			svrTrace(Info, "ServiceCluster service removed ({0}), GameID:{1} ClusterID:{2}", pRemove->GetNodeName(), m_ClusterKey.Components.GameClusterID, Enum<ClusterID>().GetValueName(m_ClusterKey.Components.ServiceClusterID));
+			svrTrace(Info, "ServiceClusterZookeeper service removed ({0}), GameID:{1} ClusterID:{2}", pRemove->GetNodeName(), GetGameID(), ToString(GetClusterID()));
 			m_Services.Remove(itRemove, pRemove);
 			if (pRemove != nullptr)
-			{
-				IHeap::Delete(pRemove);
-			}
+				pRemove = nullptr;
 		}
 
 		m_GetChildrenTask = nullptr;
 	}
 
-	void ServiceCluster::OnStringsStatComplition(StringsStatTask& pTask)
+	void ServiceClusterZookeeper::OnStringsStatComplition(StringsStatTask& pTask)
 	{
 		if (!pTask.ZKResult)
 		{
@@ -315,7 +354,7 @@ namespace SF {
 
 	}
 
-	void ServiceCluster::OnStringComplition(StringTask& pTask)
+	void ServiceClusterZookeeper::OnStringComplition(StringTask& pTask)
 	{
 		if (!pTask.ZKResult)
 		{
@@ -327,13 +366,453 @@ namespace SF {
 
 	}
 
-	//void ServiceCluster::OnACLComplition(ACLTask& pTask)
+	//void ServiceClusterZookeeper::OnACLComplition(ACLTask& pTask)
 	//{
-
 	//}
 
 
 
+
+	ServiceClusterMongo::ServiceClusterMongo(ServiceDirectoryManager& owner, GameID gameID, ClusterID clusterID)
+		: ServiceCluster(owner.GetHeap(), gameID, clusterID)
+		, m_Owner(owner)
+	{
+		m_DBCollection = m_Owner.GetObjectCollection(gameID, clusterID);
+	}
+
+	ServiceClusterMongo::~ServiceClusterMongo()
+	{
+
+	}
+
+	Result ServiceClusterMongo::ParseObject(const bson_t* value, SharedPointerT<ServerServiceInformation>& outParsed)
+	{
+		Result hr;
+
+		if (value == nullptr)
+			return ResultCode::INVALID_ARG;
+
+		EntityUID entityUID;
+		EndpointAddress endpointAddress;
+		UTCTimeStampMS updatedTimeStamp{};
+		VariableTable attributes;
+		//bson_append_date_time()
+
+		bson_iter_t iter;
+		if (!bson_iter_init(&iter, value))
+		{
+			svrTrace(Error, "ServiceClusterMongo::ParseObject, failed bson parsing error");
+			return ResultCode::INVALID_FORMAT;
+		}
+
+		while (bson_iter_next(&iter))
+		{
+			bson_iter_t* curIter = &iter;
+			StringCrc32 key = bson_iter_key(curIter);
+			if (key == "_id"_crc)
+			{
+				entityUID = bson_iter_as_int64(curIter);
+			}
+			else if (key == "Updated"_crc)
+			{
+				updatedTimeStamp = UTCTimeStampMS(DurationMSDouble(bson_iter_date_time(curIter)));
+			}
+			else if (key == "Endpoint"_crc)
+			{
+				uint32_t strLen{};
+				endpointAddress = bson_iter_utf8(curIter, &strLen);
+			}
+			else if (key == "Custom"_crc)
+			{
+				bson_iter_t child;
+				if (BSON_ITER_HOLDS_DOCUMENT(curIter) && bson_iter_recurse(curIter, &child))
+				{
+					curIter = &child;
+					uint32_t strLen{};
+					while (bson_iter_next(curIter))
+					{
+						auto keyString = bson_iter_key(curIter);
+						switch (bson_iter_type(curIter))
+						{
+						case BSON_TYPE_BOOL:
+							attributes.SetValue(keyString, bson_iter_bool(curIter));
+							break;
+						case BSON_TYPE_INT32:
+							attributes.SetValue(keyString, bson_iter_int32(curIter));
+							break;
+						case BSON_TYPE_INT64:
+							attributes.SetValue(keyString, bson_iter_int64(curIter));
+							break;
+						case BSON_TYPE_DOUBLE:
+							attributes.SetValue(keyString, bson_iter_double(curIter));
+							break;
+						case BSON_TYPE_UTF8:
+							attributes.SetValue(keyString, bson_iter_utf8(curIter, &strLen));
+							break;
+						default:
+							svrTrace(Error, "Not handled bson value type: key:{0}, type:{1}", keyString, (uint32_t)bson_iter_type(curIter));
+							break;
+						}
+					}
+					curIter = &iter;
+				}
+			}
+		}
+
+		if (entityUID.UID == 0)
+		{
+			svrTrace(Error, "ServiceClusterMongo::ParseObject, failed bson parsing error, invalid entityUID");
+			return ResultCode::INVALID_FORMAT;
+		}
+
+		MessageEndpoint* endpoint{};
+		if (!endpointAddress.MessageServer.IsNullOrEmpty())
+		{
+			Service::MessageEndpointManager->AddOrGetRemoteEndpoint(entityUID, endpointAddress, endpoint);
+		}
+
+		outParsed = new(GetHeap()) ServerServiceInformation(GetGameID(), GetClusterID(), entityUID, endpoint, attributes);
+
+		return hr;
+	}
+
+	SharedPointerT<ServerServiceInformation> ServiceClusterMongo::GetRandomService()
+	{
+		if (m_DBCollection == nullptr)
+			return nullptr;
+
+		bson_t request;
+		bson_t requestmatch;
+		bson_t requestmatchRule;
+		bson_t requestSize;
+		bson_init(&request);
+		BsonUniquePtr requestPtr(&request);
+
+
+		auto UTCTimeout = Util::Time.GetRawUTCMs().time_since_epoch().count() - DurationMSDouble(15 * 1000).count(); // 15sec timeout
+
+		bson_append_document_begin(&request, "match", -1, &requestmatch);
+			bson_append_document_begin(&requestmatch, "Updated", -1, &requestmatchRule);
+				bson_append_int32(&requestmatchRule, "$gte", -1, UTCTimeout);
+			bson_append_document_end(&requestmatch, &requestmatchRule);
+		bson_append_document_end(&request, &requestmatch);
+
+		bson_append_document_begin(&request, "$sample", -1, &requestSize);
+			bson_append_int32(&requestSize, "size", -1, 1);
+		bson_append_document_end(&request, &requestSize);
+
+		MongoDBCursor cursor;
+		if (!m_DBCollection->Aggregate(&request, cursor))
+		{
+			svrTrace(Error, "ServiceClusterMongo::GetRandomService, failed get data from object directory");
+			return nullptr;
+		}
+
+		auto* value = cursor.Next();
+		SharedPointerT<ServerServiceInformation> service;
+		if (!ParseObject(value, service))
+			return nullptr;
+
+		return Forward<SharedPointerT<ServerServiceInformation>>(service);
+	}
+
+	Result ServiceClusterMongo::FindObjects(const VariableTable& searchAttributes, Array<SharedPointerT<EntityInformation>>& foundObjects)
+	{
+		Result hr;
+
+		bson_t request;
+		bson_t requestmatch;
+		bson_t requestmatchRule;
+		bson_t requestSize;
+		bson_init(&request);
+		BsonUniquePtr requestPtr(&request);
+
+		auto UTCTimeout = Util::Time.GetRawUTCMs().time_since_epoch().count() - DurationMSDouble(20 * 1000).count(); // 15sec timeout
+
+		bson_t* curBase = &request;
+		//bson_append_document_begin(&request, "match", -1, &requestmatch);
+		{
+			bson_append_document_begin(curBase, "Updated", -1, &requestmatch);
+			{
+				curBase = &requestmatch;
+				bson_append_date_time(curBase, "$gte", -1, UTCTimeout);
+				curBase = &request;
+			}
+			bson_append_document_end(curBase, &requestmatch);
+
+			for (auto itArrtibute : searchAttributes)
+			{
+				auto keyString = itArrtibute.GetKey().ToString();
+				auto pVariable = itArrtibute.GetValue();
+				switch (pVariable->GetTypeName())
+				{
+					case VariableBool::TYPE_NAME:
+						bson_append_bool(curBase, keyString, -1, pVariable->GetValueBool());
+						break;
+					case VariableResult::TYPE_NAME:
+					case VariableInt::TYPE_NAME:
+					case VariableUInt::TYPE_NAME:
+						bson_append_int32(curBase, keyString, -1, pVariable->GetValueInt32());
+						break;
+					case VariableInt64::TYPE_NAME:
+					case VariableUInt64::TYPE_NAME:
+						bson_append_int64(curBase, keyString, -1, pVariable->GetValueInt64());
+						break;
+					case VariableVoidP::TYPE_NAME:
+						// not supported value type
+						return ResultCode::NOT_SUPPORTED;
+						break;
+					case VariableFloat::TYPE_NAME:
+					case VariableDouble::TYPE_NAME:
+						bson_append_double(curBase, keyString, -1, pVariable->GetValueDouble());
+						break;
+					default:
+						bson_append_utf8(curBase, keyString, -1, pVariable->GetValueCharString(), -1);
+						break;
+				}
+			}
+		}
+		//bson_append_document_end(&request, &requestmatch);
+		//curBase = &request;
+
+
+		MongoDBCursor cursor;
+		if (!m_DBCollection->Find(&request, cursor))
+		{
+			svrTrace(Error, "ServiceClusterMongo::GetRandomService, failed get data from object directory");
+			return ResultCode::FAIL;
+		}
+
+		auto* value = cursor.Next();
+		while (value)
+		{
+			SharedPointerT<ServerServiceInformation> service;
+			if (ParseObject(value, service))
+			{
+				foundObjects.push_back(service.get());
+			}
+			value = cursor.Next();
+		}
+
+		return hr;
+	}
+
+	//////////////////////////////////////////////////////////////////////////
+	//
+	//	Local Service
+	//
+
+	ServiceDirectoryManager::LocalService::LocalService(ServiceDirectoryManager& owner, GameID gameID, ClusterID clusterID, EntityUID entityUID, const EndpointAddress& endpoint, const VariableTable& customAttributes)
+		: Owner(owner)
+		, GameId(gameID)
+		, ClusterId(clusterID)
+		, EntityUid(entityUID)
+		, Endpoint(endpoint)
+		, Attributes(owner.GetHeap())
+	{
+		Attributes = customAttributes;
+	}
+
+	Result ServiceDirectoryManager::LocalService::ScheduleTickUpdate(DurationMS delay)
+	{
+		m_ExpectedTickTime = Util::Time.GetRawTimeMs() + delay;
+
+		Owner.ScheduleTickUpdate(this);
+		return ResultCode::SUCCESS;
+	}
+
+	bool ServiceDirectoryManager::LocalService::OnTimerTick()
+	{
+		Register();
+		return false;
+	}
+
+	//////////////////////////////////////////////////////////////////////////
+	//
+	//	Local Service Zookeeper
+	//
+
+	ServiceDirectoryManager::LocalServiceZookeeper::LocalServiceZookeeper(ServiceDirectoryManager& owner, GameID gameID, ClusterID clusterID, EntityUID entityUID, const EndpointAddress& endpoint, const VariableTable& customAttributes)
+		: LocalService(owner, gameID, clusterID, entityUID, endpoint, customAttributes)
+	{
+		String clusterPath = ServiceClusterZookeeper::GetClusterPath(gameID, clusterID);
+
+		Result hr;
+		Json::Value attributes(Json::objectValue);
+		hr = ToJsonMessageEndpoint(attributes, "Endpoint", endpoint);
+		if (!hr)
+		{
+			svrTrace(Error, "ToJsonMessageEndpoint has failed {0}:{1}", endpoint.MessageServer, endpoint.Channel);
+		}
+
+		attributes["EntityUID"] = entityUID.UID;
+		hr = ToJson(attributes, "Custom", customAttributes);
+		if (!hr)
+		{
+			svrTrace(Error, "ToJsonMessageEndpoint has failed {0}:{1}", endpoint.MessageServer, endpoint.Channel);
+		}
+
+		JsonAttributes = attributes;
+
+		auto zkSession = Service::ZKSession->GetZookeeperSession();
+		if (zkSession != nullptr && !zkSession->Exists(clusterPath))
+		{
+			zkSession->ACreate(clusterPath, Json::Value(Json::objectValue), nullptr, 0);
+		}
+
+		NodePath.Format("{0}/{1:X}", clusterPath, entityUID);
+	}
+
+	//LocalServiceZookeeper::~LocalServiceZookeeper() = default;
+
+	Result ServiceDirectoryManager::LocalServiceZookeeper::Register()
+	{
+		Result hr;
+		auto zkSession = Service::ZKSession->GetZookeeperSession();
+		svrCheckPtr(zkSession);
+
+		if (zkSession == nullptr || !zkSession->IsConnected())
+		{
+			svrTrace(Error, "RegisterLocalService: Zookeeper session server hasn't ready!");
+			return ResultCode::UNEXPECTED;
+		}
+
+		String outPath;
+		hr = zkSession->Create(NodePath, JsonAttributes, nullptr, Zookeeper::NODE_FLAG_EPHEMERAL, outPath);
+		if (hr == ResultCode::ZK_ZNODEEXISTS)
+		{
+			svrTrace(Error, "RegisterLocalService: duplicated local service gameId:{0}, clusterId:{1}, entityUID:{2}", GameId, ClusterId, EntityUid);
+			// Probably from previous execution
+			zkSession->ADelete(NodePath);
+			ScheduleTickUpdate(DurationMS(200));
+		}
+
+		return hr;
+	}
+
+	Result ServiceDirectoryManager::LocalServiceZookeeper::Deregister()
+	{
+		Result hr;
+		auto zkSession = Service::ZKSession->GetZookeeperSession();
+		svrCheckPtr(zkSession);
+
+		if (zkSession == nullptr || !zkSession->IsConnected())
+		{
+			svrTrace(Error, "RemoveLocalService: Zookeeper session is not ready! {0}", NodePath);
+			return ResultCode::UNEXPECTED;
+		}
+
+		zkSession->ADelete(NodePath);
+
+		return hr;
+	}
+
+	//////////////////////////////////////////////////////////////////////////
+	//
+	//	MongoDB local service
+	//
+
+	ServiceDirectoryManager::LocalServiceMongo::LocalServiceMongo(ServiceDirectoryManager& owner, GameID gameID, ClusterID clusterID, EntityUID entityUID, const EndpointAddress& endpoint, const VariableTable& customAttributes)
+		: LocalService(owner, gameID, clusterID, entityUID, endpoint, customAttributes)
+	{
+	}
+
+	Result ServiceDirectoryManager::LocalServiceMongo::CreateBsonAttribute()
+	{
+		// TODO: I just need to update time stamp
+		//if (BsonAttributes != nullptr)
+		//	return ResultCode::SUCCESS;
+
+		bson_t objectValue;
+		bson_t customValue;
+		auto UTCNow = Util::Time.GetRawUTCMs().time_since_epoch().count();
+
+		BsonAttributes.reset(bson_new());
+
+		//bson_append_document_begin(BsonAttributes.get(), "$set", -1, &objectValue);
+		bson_append_int64(BsonAttributes.get(), "_id", 3, (uint64_t)GetEntityUID());
+		bson_append_date_time(BsonAttributes.get(), "Updated", -1, UTCNow);
+		if (GetAttributes().size() > 0)
+		{
+			bson_append_document_begin(BsonAttributes.get(), "Custom", 6, &customValue);
+			for (auto& itVariable : GetAttributes())
+			{
+				auto keyString = itVariable.GetKey().ToString();
+				auto pVariable = itVariable.GetValue();
+				switch (itVariable.GetValue()->GetTypeName())
+				{
+				case VariableBool::TYPE_NAME:
+					bson_append_bool(&customValue, keyString, -1, pVariable->GetValueBool());
+					break;
+				case VariableResult::TYPE_NAME:
+				case VariableInt::TYPE_NAME:
+				case VariableUInt::TYPE_NAME:
+					bson_append_int32(&customValue, keyString, -1, pVariable->GetValueInt32());
+					break;
+				case VariableInt64::TYPE_NAME:
+				case VariableUInt64::TYPE_NAME:
+					bson_append_int64(&customValue, keyString, -1, pVariable->GetValueInt64());
+					break;
+				case VariableVoidP::TYPE_NAME:
+					// not supported value type
+					return ResultCode::NOT_SUPPORTED;
+					break;
+				case VariableFloat::TYPE_NAME:
+				case VariableDouble::TYPE_NAME:
+					bson_append_double(&customValue, keyString, -1, pVariable->GetValueDouble());
+					break;
+				default:
+					bson_append_utf8(&customValue, keyString, -1, pVariable->GetValueCharString(), -1);
+					break;
+				}
+			}
+			bson_append_document_end(BsonAttributes.get(), &customValue);
+		}
+		//bson_append_document_end(BsonAttributes.get(), &objectValue);
+
+		return ResultCode::SUCCESS;
+	}
+
+	Result ServiceDirectoryManager::LocalServiceMongo::Register()
+	{
+		CreateBsonAttribute();
+
+		SharedPointerT<MongoDBCollection> pCollection = Owner.GetObjectCollection(GetGameID(), GetClusterID());
+		if (pCollection == nullptr)
+		{
+			svrTrace(Error, "LocalServiceMongo::Register server hasn't ready!, GameId:{0}, clusterId:{1}", GetGameID(), GetClusterID());
+			ScheduleTickUpdate(DurationMS(2000));
+			return ResultCode::FAIL;
+		}
+
+		Result hr = pCollection->AddOrUpdate(GetEntityUID(), BsonAttributes.get());
+		if (!hr)
+		{
+			svrTrace(Error, "LocalServiceMongo::Register failed to update record, GameId:{0}, clusterId:{1}", GetGameID(), GetClusterID());
+			ScheduleTickUpdate(DurationMS(2000));
+			return hr;
+		}
+
+		svrTrace(Debug3, "LocalServiceMongo::Register GameId:{0}, clusterId:{1}, entity{2}", GetGameID(), GetClusterID(), GetEntityUID());
+
+		// schedule next update 
+		ScheduleTickUpdate(DurationMS(4000));
+
+		return hr;
+	}
+
+	Result ServiceDirectoryManager::LocalServiceMongo::Deregister()
+	{
+		auto* pCollection = Owner.GetObjectCollection(GetGameID(), GetClusterID());
+		if (pCollection == nullptr)
+		{
+			// Timeout will help you
+			//RetryDeregister(DurationMS(2000));
+			return ResultCode::FAIL;
+		}
+
+		return pCollection->Remove(GetEntityUID());
+	}
 
 
 	//////////////////////////////////////////////////////////////////////////
@@ -346,6 +825,7 @@ namespace SF {
 
 	ServiceDirectoryManager::ServiceDirectoryManager()
 		: m_ClusterInfoMap(GetSystemHeap())
+		, m_TickQueue(GetSystemHeap(), 2048, 1024)
 	{
 		Service::ServiceDirectory = this;
 	}
@@ -358,6 +838,7 @@ namespace SF {
 
 	Result ServiceDirectoryManager::InitializeComponent()
 	{
+		Result hr;
 		auto zkSession = Service::ZKSession->GetZookeeperSession();
 
 		if (zkSession == nullptr || !zkSession->IsConnected())
@@ -394,14 +875,96 @@ namespace SF {
 				}
 			});
 
+		// Initialize mongo db
+		if (Service::ServerConfig->ObjectDirectory.IsNullOrEmpty())
+		{
+			svrTrace(Error, "Failed to initialize ObjectDirectory, no config found hr:{0}", hr);
+		}
+		else
+		{
+			m_MongoDB = new(GetHeap()) MongoDB(GetHeap());
+			hr = m_MongoDB->Initialize(Service::ServerConfig->ObjectDirectory);
+			if (!hr)
+			{
+				svrTrace(Error, "Failed to connect ObjectDirectory:{0}, hr:{1}", Service::ServerConfig->ObjectDirectory, hr);
+			}
+		}
+		
 		// Always watch for server endpoints
 		WatchForService(Service::ServerConfig->GameClusterID, ClusterID::None);
 
+		// Initializing thread
+		m_TickThread.reset(new FunctorTickThread([this](Thread* pThread) 
+			{
+				TickUpdate();
+				return true;
+			}));
+
+		m_TickThread->Start();
+
 		return ResultCode::SUCCESS;
 	}
+
 	// Terminate component
 	void ServiceDirectoryManager::DeinitializeComponent()
 	{
+		if (m_TickThread != nullptr)
+		{
+			m_TickThread->Stop(true);
+			m_TickThread.reset();
+		}
+	}
+
+	void ServiceDirectoryManager::TickUpdate()
+	{
+		if (m_LastTickItem == nullptr)
+			m_TickQueue.Dequeue(m_LastTickItem);
+
+
+		while (m_LastTickItem != nullptr)
+		{
+			auto localService = m_LastTickItem.AsSharedPtr<LocalService>();
+			if (localService == nullptr)
+			{
+				m_TickQueue.Dequeue(m_LastTickItem);
+				continue;
+			}
+
+			if (localService->GetExpectedTickTime() >= Util::Time.GetRawTimeMs())
+				break; // this isn't ideal, but will give reasonable update rate
+
+			localService->OnTimerTick();
+			m_LastTickItem.reset();
+			m_TickQueue.Dequeue(m_LastTickItem);
+		}
+
+		
+	}
+
+	MongoDBCollection* ServiceDirectoryManager::GetObjectCollection(GameID gameID, ClusterID clusterID)
+	{
+		String channelCollection;
+		channelCollection.Format("{0}_{1}", gameID.ToString(), ToString(clusterID));
+
+		// We need to create new one for every request because MongoDB client isn't thread safe
+		auto pCollection = new(GetHeap()) MongoDBCollection(GetHeap());
+		pCollection->Initialize(m_MongoDB->GetClientFromPool(), "ObjectDirectory", channelCollection);
+
+		return pCollection;
+	}
+
+	bool ServiceDirectoryManager::UseObjectCluster(ClusterID clusterId) const
+	{
+		switch (clusterId)
+		{
+		case ClusterID::GamePlayer:
+		case ClusterID::GameInstance:
+			return true;
+		default:
+			break;
+		}
+
+		return false;
 	}
 
 	// Set watch state for cluster
@@ -413,12 +976,19 @@ namespace SF {
 		if (m_ClusterInfoMap.find(key, pServiceInfo))
 			return ResultCode::SUCCESS;
 
-		svrTrace(Info, "Adding service watcher for cluster, GameID:{0} ClusterID:{1}, {2}", gameID, Enum<ClusterID>().GetValueName(clusterID), clusterID);
+		svrTrace(Info, "Adding service watcher for cluster, GameID:{0} ClusterID:{1}, {2}", gameID, ToString(clusterID), clusterID);
 
-		pServiceInfo = new(GetSystemHeap()) ServiceCluster(GetSystemHeap(), gameID, clusterID);
+		if (UseObjectCluster(clusterID))
+		{
+			pServiceInfo = new(GetSystemHeap()) ServiceClusterMongo(*this, gameID, clusterID);
+		}
+		else
+		{
+			pServiceInfo = new(GetSystemHeap()) ServiceClusterZookeeper(GetSystemHeap(), gameID, clusterID);
+		}
 		if (pServiceInfo == nullptr || !m_ClusterInfoMap.insert(key, pServiceInfo))
 		{
-			svrTrace(Error, "Failed to Add service watcher for cluster, GameID:{0} ClusterID:{1}, {2}", gameID, Enum<ClusterID>().GetValueName(clusterID), clusterID);
+			svrTrace(Error, "Failed to Add service watcher for cluster, GameID:{0} ClusterID:{1}, {2}", gameID, ToString(clusterID), clusterID);
 
 			IHeap::Delete(pServiceInfo);
 			return ResultCode::OUT_OF_MEMORY;
@@ -427,7 +997,7 @@ namespace SF {
 		return pServiceInfo != nullptr ? ResultCode::SUCCESS : ResultCode::UNEXPECTED;
 	}
 
-	Result ServiceDirectoryManager::GetServiceList(GameID gameID, ClusterID clusterID, Array<ServerServiceInformation*>& outServices)
+	Result ServiceDirectoryManager::FindObjects(GameID gameID, ClusterID clusterID, const VariableTable& searchAttributes, Array<SharedPointerT<EntityInformation>>& foundObjects)
 	{
 		Result hr;
 		ServiceCluster* pServiceInfo = nullptr;
@@ -436,17 +1006,14 @@ namespace SF {
 		if (!m_ClusterInfoMap.find(key, pServiceInfo))
 			return hr;
 
-		for (auto itService : *pServiceInfo)
-		{
-			outServices.push_back(itService.GetValue());
-		}
+		pServiceInfo->FindObjects(searchAttributes, foundObjects);
 
 		return hr;
 	}
 
 
 	// Get cluster service entity
-	Result ServiceDirectoryManager::GetRandomService(GameID gameID, ClusterID clusterID, ServerServiceInformation* &pServiceInfo )
+	Result ServiceDirectoryManager::GetRandomService(GameID gameID, ClusterID clusterID, SharedPointerT<ServerServiceInformation> &pServiceInfo )
 	{
 		Result hr = ResultCode::SUCCESS;
 		ServiceCluster* pClusterServiceInfo = nullptr;
@@ -456,114 +1023,83 @@ namespace SF {
 		if (!hr)
 			return hr;
 
-		if (pClusterServiceInfo->m_Services.size() == 0)
-			return ResultCode::FAIL;
-
-		auto selected = pClusterServiceInfo->m_LatestSelected.fetch_add(1, std::memory_order_relaxed);
-		pServiceInfo = pClusterServiceInfo->m_Services.GetValueAt(selected % pClusterServiceInfo->m_Services.size());
+		pServiceInfo = Forward<SharedPointerT<ServerServiceInformation>>(pClusterServiceInfo->GetRandomService());
 
 		return hr;
 	}
 
-	// Get cluster service entity
-	Result ServiceDirectoryManager::GetShardService(GameID gameID, ClusterID clusterID, uint64_t shardKey, ServerServiceInformation* &pServiceInfo)
-	{
-		Result hr = ResultCode::SUCCESS;
-		ServiceCluster* pClusterServiceInfo = nullptr;
-		ServiceClusterSearchKey key(gameID, clusterID);
+	//// Get cluster service entity
+	//Result ServiceDirectoryManager::GetShardService(GameID gameID, ClusterID clusterID, uint64_t shardKey, ServerServiceInformation* &pServiceInfo)
+	//{
+	//	Result hr = ResultCode::SUCCESS;
+	//	ServiceCluster* pClusterServiceInfo = nullptr;
+	//	ServiceClusterSearchKey key(gameID, clusterID);
 
-		hr = m_ClusterInfoMap.find(key, pClusterServiceInfo);
-		if ((!hr))
-			return hr;
+	//	hr = m_ClusterInfoMap.find(key, pClusterServiceInfo);
+	//	if ((!hr))
+	//		return hr;
 
-		if (pClusterServiceInfo->m_Services.size() == 0)
-			return ResultCode::FAIL;
+	//	if (pClusterServiceInfo->m_Services.size() == 0)
+	//		return ResultCode::FAIL;
 
-		pServiceInfo = pClusterServiceInfo->m_Services.GetValueAt(shardKey % pClusterServiceInfo->m_Services.size());
+	//	pServiceInfo = pClusterServiceInfo->m_Services.GetValueAt(shardKey % pClusterServiceInfo->m_Services.size());
 
-		return hr;
-	}
+	//	return hr;
+	//}
 
-	// Get cluster service entity
-	Result ServiceDirectoryManager::GetNextService(ServerServiceInformation* pServiceInfo, ServerServiceInformation* &pNextServiceInfo)
-	{
-		Result hr = ResultCode::SUCCESS;
-		ServiceCluster* pClusterServiceInfo = nullptr;
-		ServiceClusterSearchKey key(pServiceInfo->GetGameID(), pServiceInfo->GetClusterID());
+	//// Get cluster service entity
+	//Result ServiceDirectoryManager::GetNextService(ServerServiceInformation* pServiceInfo, ServerServiceInformation* &pNextServiceInfo)
+	//{
+	//	Result hr = ResultCode::SUCCESS;
+	//	ServiceCluster* pClusterServiceInfo = nullptr;
+	//	ServiceClusterSearchKey key(pServiceInfo->GetGameID(), pServiceInfo->GetClusterID());
 
-		pNextServiceInfo = nullptr;
+	//	pNextServiceInfo = nullptr;
 
-		hr = m_ClusterInfoMap.find(key, pClusterServiceInfo);
-		if (!hr)
-			return hr;
+	//	hr = m_ClusterInfoMap.find(key, pClusterServiceInfo);
+	//	if (!hr)
+	//		return hr;
 
-		if (pClusterServiceInfo->m_Services.size() == 0)
-			return ResultCode::FAIL;
+	//	if (pClusterServiceInfo->m_Services.size() == 0)
+	//		return ResultCode::FAIL;
 
-		pNextServiceInfo = pServiceInfo;
-		auto itService = pClusterServiceInfo->m_Services[pServiceInfo->GetNodeNameCrc()];
-		if (!itService.IsValid())
-		{
-			return ResultCode::UNEXPECTED;
-		}
+	//	pNextServiceInfo = pServiceInfo;
+	//	auto itService = pClusterServiceInfo->m_Services[pServiceInfo->GetNodeNameCrc()];
+	//	if (!itService.IsValid())
+	//	{
+	//		return ResultCode::UNEXPECTED;
+	//	}
 
-		auto selectedIndex = (itService.GetIndex() + 1 % pClusterServiceInfo->m_Services.size());
+	//	auto selectedIndex = (itService.GetIndex() + 1 % pClusterServiceInfo->m_Services.size());
 
-		pNextServiceInfo = pClusterServiceInfo->m_Services.GetValueAt(selectedIndex);
+	//	pNextServiceInfo = pClusterServiceInfo->m_Services.GetValueAt(selectedIndex);
 
-		return hr;
-	}
+	//	return hr;
+	//}
 
 	Result ServiceDirectoryManager::RegisterLocalService(GameID gameID, ClusterID clusterID, EntityUID entityUID, const EndpointAddress& endpoint, const VariableTable& customAttributes)
 	{
 		Result hr;
-		String clusterPath = ServiceCluster::GetClusterPath(gameID, clusterID);
 
-		Json::Value attributes(Json::objectValue);
-		svrCheck(ToJsonMessageEndpoint(attributes, "Endpoint", endpoint));
-		attributes["EntityUID"] = entityUID.UID;
-		svrCheck(ToJson(attributes, "Custom", customAttributes));
+		LocalService* pLocalInfo{};
+		if (UseObjectCluster(clusterID))
+		{
+			pLocalInfo = new(GetHeap()) LocalServiceMongo(*this, gameID, clusterID, entityUID, endpoint, customAttributes);
+		}
+		else
+		{
+			pLocalInfo = new(GetHeap()) LocalServiceZookeeper(*this, gameID, clusterID, entityUID, endpoint, customAttributes);
+		}
 
-		LocalServiceInformation* plocalInfo = new(GetHeap()) LocalServiceInformation;
-		plocalInfo->GameId = gameID;
-		plocalInfo->ClusterId = clusterID;
-		plocalInfo->EntityUid = entityUID;
-		plocalInfo->Endpoint = endpoint;
-		plocalInfo->JsonAttributes = attributes;
+		if (pLocalInfo == nullptr)
+			return ResultCode::OUT_OF_MEMORY;
 
 		{
 			MutexScopeLock lock(m_ServiceLock);
-			m_LocalServices.push_back(plocalInfo);
+			m_LocalServices.push_back(pLocalInfo);
 		}
 
-		plocalInfo->NodePath.Format("{0}/{1:X}", clusterPath, entityUID);
-
-
-		auto zkSession = Service::ZKSession->GetZookeeperSession();
-		svrCheckPtr(zkSession);
-
-		if (zkSession == nullptr || !zkSession->IsConnected())
-		{
-			svrTrace(Error, "RegisterLocalService: Zookeeper session server hasn't ready!");
-			return ResultCode::UNEXPECTED;
-		}
-
-		String outPath;
-		if (!zkSession->Exists(clusterPath))
-		{
-			svrCheck(zkSession->Create(clusterPath, Json::Value(Json::objectValue), nullptr, 0, outPath));
-		}
-
-		hr = zkSession->Create(plocalInfo->NodePath, plocalInfo->JsonAttributes, nullptr, Zookeeper::NODE_FLAG_EPHEMERAL, outPath);
-		if (hr == ResultCode::ZK_ZNODEEXISTS)
-		{
-			svrTrace(Error, "RegisterLocalService: duplicated local service gameId:{0}, clusterId:{1}, entityUID:{2}", gameID, clusterID, entityUID);
-			// Probably from previous execution
-			zkSession->Delete(plocalInfo->NodePath);
-			zkSession->Create(plocalInfo->NodePath, plocalInfo->JsonAttributes, nullptr, Zookeeper::NODE_FLAG_EPHEMERAL, outPath);
-		}
-		if (!hr)
-			return hr;
+		pLocalInfo->Register();
 
 		return hr;
 	}
@@ -585,7 +1121,6 @@ namespace SF {
 	{
 		Result hr;
 		MutexScopeLock lock(m_ServiceLock);
-		String nodePath;
 		int iService = 0;
 		for (int iService = 0; iService < m_LocalServices.size(); iService++)
 		{
@@ -595,25 +1130,14 @@ namespace SF {
 				|| itLocalService->EntityUid != entityUID)
 				continue;
 
-			nodePath = itLocalService->NodePath;
-			IHeap::Delete(itLocalService);
+			itLocalService->Deregister();
+
 			m_LocalServices.RemoveAt(iService);
 			break;
 		}
 
 		if (iService >= m_LocalServices.size())
 			return ResultCode::SUCCESS_FALSE;
-
-		auto zkSession = Service::ZKSession->GetZookeeperSession();
-		svrCheckPtr(zkSession);
-
-		if (zkSession == nullptr || !zkSession->IsConnected())
-		{
-			svrTrace(Error, "RemoveLocalService: Zookeeper session is not ready! {0}", nodePath);
-			return ResultCode::UNEXPECTED;
-		}
-
-		zkSession->ADelete(nodePath);
 
 		return hr;
 	}
@@ -637,17 +1161,19 @@ namespace SF {
 		String outPath;
 		for (auto itLocalService : m_LocalServices)
 		{
-			if (!zkSession->Exists(itLocalService->NodePath))
+			hr = itLocalService->Register();
+			if (!hr)
 			{
-				hr = zkSession->Create(itLocalService->NodePath, itLocalService->JsonAttributes, nullptr, Zookeeper::NODE_FLAG_EPHEMERAL, outPath);
-				if (!hr)
-				{
-					svrTrace(Error, "RegisterLocalServices: create failed:{0}", hr);
-				}
+				svrTrace(Error, "RegisterLocalServices: create failed:{0}, clusterId:{1}", hr, itLocalService->GetClusterID());
 			}
 		}
 
 		return hr;
+	}
+
+	void ServiceDirectoryManager::ScheduleTickUpdate(LocalService* localService)
+	{
+		m_TickQueue.Enqueue(localService);
 	}
 
 	Result ServiceDirectoryManager::ToJsonMessageEndpoint(Json::Value& jsonObject, const char* keyName, const EndpointAddress& messageEndpoint)

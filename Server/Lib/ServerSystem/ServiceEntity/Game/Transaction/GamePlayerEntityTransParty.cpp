@@ -295,7 +295,7 @@ namespace Svr {
 				if (!hr)
 					CloseTransaction(hr);
 			});
-		ServerServiceInformation *pService = nullptr;
+		SharedPointerT<ServerServiceInformation> pService;
 
 		svrCheck( super::StartTransaction() );
 

@@ -102,14 +102,17 @@ namespace SF {
 			if (GetMyOwner()->GetPlayerID() != GetPlayerID())
 				svrError(ResultCode::INVALID_PLAYERID);
 
+			VariableTable attributes;
+			attributes.SetValue<String>("Custom.Type", "Static");
+
 			// TODO: Need to use searchable nosql DB like mongo DB
-			DynamicArray<ServerServiceInformation*> services(GetHeap());
-			svrCheck(Service::ServiceDirectory->GetServiceList(Service::ServerConfig->GameClusterID, ClusterID::GameInstance, services));
+			DynamicArray<SharedPointerT<EntityInformation>> services(GetHeap());
+			svrCheck(Service::ServiceDirectory->FindObjects(Service::ServerConfig->GameClusterID, ClusterID::GameInstance, attributes, services));
 
 			for (auto itZoneService : services)
 			{
 				auto zoneTableID = itZoneService->GetCustomAttributes().GetValue<uint32_t>("ZoneTableID");
-				auto instanceType = itZoneService->GetCustomAttributes().GetValue<StringCrc32>("InstanceType");
+				auto instanceType = itZoneService->GetCustomAttributes().GetValue<StringCrc32>("Type");
 				if (instanceType != "Static"_crc)
 				{
 					continue;

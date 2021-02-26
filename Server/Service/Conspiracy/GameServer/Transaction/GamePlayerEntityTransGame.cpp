@@ -999,7 +999,7 @@ namespace GameServer {
 	Result PlayerTransPlayAgain::RequestCreateParty()
 	{
 		Result hr = ResultCode::SUCCESS;
-		ServerServiceInformation *pService = nullptr;
+		SharedPointerT<ServerServiceInformation> pService;
 
 		svrChk(Service::ServiceDirectory->GetRandomService(Service::ServerConfig->GameClusterID, ClusterID::GamePartyManager, pService));
 

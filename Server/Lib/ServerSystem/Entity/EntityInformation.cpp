@@ -34,6 +34,12 @@ namespace SF {
 	{
 	}
 
+	EntityInformation::EntityInformation(const EntityUID& entityUID, const VariableTable& customAttributes)
+		: m_UID(entityUID)
+		, m_CustomAttributes(GetEngineHeap(), customAttributes)
+	{
+	}
+
 	EntityInformation::~EntityInformation()
 	{
 	}
@@ -52,9 +58,6 @@ namespace SF {
 		, m_ClusterID(clusterID)
 		, m_ServiceStatus(ServiceStatus::Offline)
 		, m_TargetEndpoint(targetEndpoint)
-		, m_CustomAttributes(GetSystemHeap())
-		, m_Workload(0)
-		, m_VotedCount(0)
 		, m_ServiceBase(nullptr)
 	{
 		char nodeName[256];
@@ -90,6 +93,21 @@ namespace SF {
 				}
 			}
 		}
+	}
+
+	ServerServiceInformation::ServerServiceInformation(GameID gameID, ClusterID clusterID, EntityUID entityUID, const SharedPointerT<MessageEndpoint> targetEndpoint, const VariableTable& customAttributes)
+		: EntityInformation(entityUID, customAttributes)
+		, m_GameID(gameID)
+		, m_ClusterID(clusterID)
+		, m_ServiceStatus(ServiceStatus::Offline)
+		, m_TargetEndpoint(targetEndpoint)
+		, m_ServiceBase(nullptr)
+	{
+		char nodeName[256];
+		StrUtil::Format(nodeName, "{0}_{1}", GetEntityUID().GetServerID(), GetEntityUID().GetEntityID());
+		SetNodeName(nodeName);
+
+		static_assert(sizeof(ServerService) <= sizeof(ServerServiceInformation::m_bufferForServiceBase), "Not enough buffer size for serverservice instance");
 	}
 
 	ServerServiceInformation::~ServerServiceInformation()

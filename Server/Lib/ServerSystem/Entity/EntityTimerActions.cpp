@@ -32,7 +32,7 @@ namespace Svr {
 	TimerActionTransaction::TimerActionTransaction(SharedPointerT<Transaction>& pTrans)
 		: m_pTrans(pTrans)
 	{
-		TimeData.Components.ObjectID = pTrans->GetTransID().GetTransactionIndex();
+		TimeData.Components.ObjectId = pTrans->GetTransID().GetTransactionIndex();
 	}
 
 	TimerActionTransaction::~TimerActionTransaction()

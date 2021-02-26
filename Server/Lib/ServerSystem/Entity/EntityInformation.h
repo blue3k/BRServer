@@ -14,10 +14,7 @@
 
 #include "SFTypedefs.h"
 #include "MemoryManager/SFMemoryPool.h"
-//#include "Server/BrServer.h"
 #include "Server/BrServerUtil.h"
-//#include "ServerEntity/ServerEntity.h"
-//#include "ServerService/ServerService.h"
 #include "Variable/SFVariableTable.h"
 
 namespace Json {
@@ -44,7 +41,7 @@ namespace SF {
 	//	Entity Information class
 	//
 
-	class EntityInformation
+	class EntityInformation : public SharedObject
 	{
 	private:
 		// Entity UID
@@ -54,8 +51,12 @@ namespace SF {
 		String	m_NodeName;
 		StringCrc64 m_NodeNameCrc;
 
+	protected:
+		VariableTable m_CustomAttributes;
+
 	public:
 		EntityInformation(const EntityUID& entityUID);
+		EntityInformation(const EntityUID& entityUID, const VariableTable& customAttributes);
 		virtual ~EntityInformation();
 
 		////////////////////////////////////////////////////////////////////////
@@ -67,6 +68,9 @@ namespace SF {
 		inline EntityUID GetEntityUID() const;
 
 		inline ServerID GetServerID() const;
+
+		const VariableTable& GetCustomAttributes() const { return m_CustomAttributes; }
+
 
 		// Entity Name
 		const String& GetNodeName() const { return m_NodeName; }
@@ -99,14 +103,6 @@ namespace SF {
 		SharedPointerT<MessageEndpoint> m_TargetEndpoint;
 
 
-		VariableTable m_CustomAttributes;
-
-		// workload
-		uint m_Workload = 0;
-
-		// Voted count
-		uint m_VotedCount = 0;
-
 		// Service base cache
 		ServerServiceBase* m_ServiceBase = nullptr;
 		uint8_t	m_bufferForServiceBase[1024];
@@ -114,24 +110,18 @@ namespace SF {
 
 	public:
 		ServerServiceInformation(GameID gameID, ClusterID clusterID, EntityUID entityUID, const SharedPointerT<MessageEndpoint> targetEndpoint, const Json::Value& customAttributes);
+		ServerServiceInformation(GameID gameID, ClusterID clusterID, EntityUID entityUID, const SharedPointerT<MessageEndpoint> targetEndpoint, const VariableTable& customAttributes);
 		~ServerServiceInformation();
 
 
 		ClusterID GetClusterID() const { return m_ClusterID; }
 		GameID GetGameID() const { return m_GameID; }
 
-		const VariableTable& GetCustomAttributes() const { return m_CustomAttributes; }
 
 		const SharedPointerT<MessageEndpoint>& GetTargetEndpoint() const { return m_TargetEndpoint; }
 
 		ServiceStatus GetServiceStatus() const { return m_ServiceStatus; }
 		void SetServiceStatus(ServiceStatus value) { m_ServiceStatus = value; }
-
-		uint GetWorkload() const { return m_Workload; }
-		void SetWorkload(uint value) { m_Workload = value; }
-
-		uint GetVotedCount() const { return m_VotedCount; }
-		void SetVotedCount(uint value) { m_VotedCount = value; }
 
 		ServerServiceBase* GetServiceBase() const { return m_ServiceBase; }
 		void SetServiceBase(ServerServiceBase* value) { m_ServiceBase = value; }

@@ -53,11 +53,11 @@ namespace Svr {
 	{
 		if (m_ClusterKey.Components.GameClusterID != nullptr)
 		{
-			m_ClusterPath.Format("{0}/{1}/{2}", Service::ServerConfig->DataCenter.Path, gameID, Enum<ClusterID>().GetValueName(clusterID));
+			m_ClusterPath.Format("{0}/{1}/{2}", Service::ServerConfig->DataCenter.Path, gameID, ToString(clusterID));
 		}
 		else
 		{
-			m_ClusterPath.Format("{0}/{1}", Service::ServerConfig->DataCenter.Path, Enum<ClusterID>().GetValueName(clusterID));
+			m_ClusterPath.Format("{0}/{1}", Service::ServerConfig->DataCenter.Path, ToString(clusterID));
 		}
 
 		InitZK();
@@ -148,7 +148,7 @@ namespace Svr {
 		if (zkSession == nullptr || !zkSession->IsConnected())
 			return;
 
-		svrTrace(Debug, "ZK requesting service list, GameID:{0} ClusterID:{1}", m_ClusterKey.Components.GameClusterID, Enum<ClusterID>().GetValueName(m_ClusterKey.Components.ServiceClusterID));
+		svrTrace(Debug, "ZK requesting service list, GameID:{0} ClusterID:{1}", m_ClusterKey.Components.GameClusterID, ToString(m_ClusterKey.Components.ServiceClusterID));
 
 		zkSession->AGetChildren(m_ClusterPath, this);
 	}
@@ -171,7 +171,7 @@ namespace Svr {
 
 	Result ClusterServiceInfo_Impl::OnNewEvent(const ZKEvent& eventOut)
 	{
-		svrTrace(Debug, "ZKEvent:{0}, GameID:{1} ClusterID:{2}", eventOut.Components.EventType, m_ClusterKey.Components.GameClusterID, Enum<ClusterID>().GetValueName(m_ClusterKey.Components.ServiceClusterID));
+		svrTrace(Debug, "ZKEvent:{0}, GameID:{1} ClusterID:{2}", eventOut.Components.EventType, m_ClusterKey.Components.GameClusterID, ToString(m_ClusterKey.Components.ServiceClusterID));
 		if (eventOut.Components.EventType == Zookeeper::EVENT_CHILD)
 		{
 			DownloadServiceInfo();
@@ -235,7 +235,7 @@ namespace Svr {
 
 		svrCheck(Services.Insert(nodeNameCrc, pNewServiceInfo));
 
-		svrTrace(Info, "ClusterManager ServiceInfo Added({0}), GameID:{1} ClusterID:{2}, entityUID:{3}", nodeName, m_ClusterKey.Components.GameClusterID, Enum<ClusterID>().GetValueName(m_ClusterKey.Components.ServiceClusterID), entityUID);
+		svrTrace(Info, "ClusterManager ServiceInfo Added({0}), GameID:{1} ClusterID:{2}, entityUID:{3}", nodeName, m_ClusterKey.Components.GameClusterID, ToString(m_ClusterKey.Components.ServiceClusterID), entityUID);
 
 		return hr;
 	}
@@ -280,7 +280,7 @@ namespace Svr {
 			if (!Services.Find(itRemove, pRemove))
 				continue;
 
-			svrTrace(Info, "ZK service removed ({0}), GameID:{1} ClusterID:{2}", pRemove->GetNodeName(), m_ClusterKey.Components.GameClusterID, Enum<ClusterID>().GetValueName(m_ClusterKey.Components.ServiceClusterID));
+			svrTrace(Info, "ZK service removed ({0}), GameID:{1} ClusterID:{2}", pRemove->GetNodeName(), m_ClusterKey.Components.GameClusterID, ToString(m_ClusterKey.Components.ServiceClusterID));
 			Services.Remove(itRemove, pRemove);
 			if (pRemove != nullptr)
 			{
@@ -463,12 +463,12 @@ namespace Svr {
 		if (m_ClusterInfoMap.find(key, pServiceInfo))
 			return pServiceInfo;
 
-		svrTrace(Info, "Adding service watcher for cluster, GameID:{0} ClusterID:{1}, {2}", gameID, Enum<ClusterID>().GetValueName(clusterID), clusterID);
+		svrTrace(Info, "Adding service watcher for cluster, GameID:{0} ClusterID:{1}, {2}", gameID, ToString(clusterID), clusterID);
 
 		pServiceInfo = new(GetHeap()) ClusterServiceInfo_Impl(GetHeap(), gameID, clusterID);
 		if (pServiceInfo == nullptr || !m_ClusterInfoMap.insert(key, pServiceInfo))
 		{
-			svrTrace(Error, "Failed to Add service watcher for cluster, GameID:{0} ClusterID:{1}, {2}", gameID, Enum<ClusterID>().GetValueName(clusterID), clusterID);
+			svrTrace(Error, "Failed to Add service watcher for cluster, GameID:{0} ClusterID:{1}, {2}", gameID, ToString(clusterID), clusterID);
 			IHeap::Delete(pServiceInfo);
 			return nullptr;
 		}

@@ -263,7 +263,7 @@ namespace Svr {
 
 		auto nowTime = Util::Time.GetRawUTCSec();
 
-		time_t time = nowTime.time_since_epoch().count() + Util::Time.GetUTCSecOffset().count();
+		time_t time = nowTime.time_since_epoch().count();
 		struct tm nowTimeTM = *gmtime(&time);
 
 		char strFileName[MAX_PATH];
