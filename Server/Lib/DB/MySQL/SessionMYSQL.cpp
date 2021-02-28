@@ -58,7 +58,7 @@ namespace DB {
 	SessionMYSQL::~SessionMYSQL()
 	{
 	}
-	
+
 	// return context value
 	void* SessionMYSQL::GetContext()
 	{
