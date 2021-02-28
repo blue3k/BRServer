@@ -66,8 +66,8 @@ namespace SF {
 
 		private:
 			GameInsUID m_GameInsID;
-			NetAddress m_GameInsAddress;
 			NetAddress m_GameInsAddress4;
+			NetAddress m_GameInsAddress6;
 
 		public:
 			PlayerTransJoinGameInstance(IHeap& heap, MessageDataPtr& pIMsg);
@@ -80,7 +80,7 @@ namespace SF {
 
 			virtual Result CloseTransaction(Result hrRes) override;
 
-			BR_IMPLEMENT_USERMSGTRANS_CLOSE_ARGS(NetSvrPolicyGame, JoinGameInstanceRes, m_GameInsID, m_GameInsAddress, m_GameInsAddress4);
+			BR_IMPLEMENT_USERMSGTRANS_CLOSE_ARGS(NetSvrPolicyGame, JoinGameInstanceRes, m_GameInsID, m_GameInsAddress4, m_GameInsAddress6);
 		};
 
 

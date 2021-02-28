@@ -15,7 +15,7 @@
 
 #include "Entity/Entity.h"
 #include "Task/ServerTaskManager.h"
-#include "Object/SFLibraryComponent.h"
+#include "Component/SFLibraryComponent.h"
 #include "Object/SFSharedObjectManager.h"
 #include "Service/ServerService.h"
 #include "PerformanceCounter/PerformanceCounter.h"

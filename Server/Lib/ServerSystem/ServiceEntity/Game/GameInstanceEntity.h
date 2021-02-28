@@ -15,7 +15,7 @@
 #include "Types/SFEngineTypedefs.h"
 #include "Container/SFIndexing.h"
 #include "Container/SFHashTable.h"
-#include "Component/BrComponent.h"
+#include "Component/SFComponent.h"
 
 #include "Transaction/MessageRoute.h"
 #include "Entity/Entity.h"
@@ -52,6 +52,14 @@ namespace Svr
 		using super = MasterEntity;
 
 	protected:
+
+
+		NetAddress m_AddressIPV4;
+		NetAddress m_AddressIPV6;
+
+
+		VariableTable m_ObjectAttributes;
+
 
 		// Player by PlayerID
 		GamePlayerUIDMap		m_GamePlayerByUID;
@@ -91,8 +99,6 @@ namespace Svr
 		ComponentManager m_ComponentManger;
 
 
-		VariableTable m_ObjectAttributes;
-
 
 	public:
 		//////////////////////////////////////////////////////////////////////////////////////////////////
@@ -103,6 +109,9 @@ namespace Svr
 		GameInstanceEntity();
 		~GameInstanceEntity();
 
+
+		const NetAddress& GetAddressIPV4() const { return m_AddressIPV4; }
+		const NetAddress& GetAddressIPV6() const { return m_AddressIPV6; }
 
 		StringCrc32 GetInstanceType() const { return m_InstanceType; }
 		uint32_t GetZoneTableID() const { return m_ZoneTableID; }
@@ -168,7 +177,7 @@ namespace Svr
 		//
 
 		// Initialize entity to proceed new connection
-		virtual Result InitializeGameEntity(const VariableTable& attributes);
+		virtual Result InitializeGameEntity(const ServerConfig::NetPublic& netPublic, const VariableTable& attributes);
 
 
 		////////////////////////////////////////////////////////////
@@ -207,6 +216,8 @@ namespace Svr
 
 		virtual Result CreatePlayerInstance(const PlayerInformation& playerInfo, SFUniquePtr<Svr::GameInstancePlayer> &pPlayer);
 
+		// called by instance manager when the player is connected
+		Result PlayerConnected(PlayerID playerId, const SharedPointerT<MessageEndpoint>& endpoint);
 
 		// Register new player to join
 		virtual Result AddPlayerToJoin(SFUniquePtr<Svr::GameInstancePlayer> &pPlayer );

@@ -34,6 +34,8 @@ namespace SF
 			// Cmd: Leave game instance.
 			MessageDebugTraceMap.insert(std::make_pair(Message::GameInstance::LeaveGameInstanceCmd::MID.IDSeq.MsgID,&Message::GameInstance::LeaveGameInstanceCmd::TraceOut));
 			MessageDebugTraceMap.insert(std::make_pair(Message::GameInstance::LeaveGameInstanceRes::MID.IDSeq.MsgID,&Message::GameInstance::LeaveGameInstanceRes::TraceOut));
+			// S2C: Player left event.
+			MessageDebugTraceMap.insert(std::make_pair(Message::GameInstance::PlayerLeftS2CEvt::MID.IDSeq.MsgID,&Message::GameInstance::PlayerLeftS2CEvt::TraceOut));
 			// C2S: Player Movement
 			MessageDebugTraceMap.insert(std::make_pair(Message::GameInstance::PlayerMovementC2SEvt::MID.IDSeq.MsgID,&Message::GameInstance::PlayerMovementC2SEvt::TraceOut));
 			// S2C: Player Movement
@@ -41,8 +43,6 @@ namespace SF
 			// Cmd: Kick player with given ID
 			MessageDebugTraceMap.insert(std::make_pair(Message::GameInstance::KickPlayerCmd::MID.IDSeq.MsgID,&Message::GameInstance::KickPlayerCmd::TraceOut));
 			MessageDebugTraceMap.insert(std::make_pair(Message::GameInstance::KickPlayerRes::MID.IDSeq.MsgID,&Message::GameInstance::KickPlayerRes::TraceOut));
-			// S2C: Player kicked event. this event will be brocasted when a player kicked.
-			MessageDebugTraceMap.insert(std::make_pair(Message::GameInstance::PlayerKickedS2CEvt::MID.IDSeq.MsgID,&Message::GameInstance::PlayerKickedS2CEvt::TraceOut));
 			// Cmd: Join to a game instance. You can call multiple times, but it would be waste
 			MessageDebugTraceMap.insert(std::make_pair(Message::GameInstance::JoinGameCmd::MID.IDSeq.MsgID,&Message::GameInstance::JoinGameCmd::TraceOut));
 			MessageDebugTraceMap.insert(std::make_pair(Message::GameInstance::JoinGameRes::MID.IDSeq.MsgID,&Message::GameInstance::JoinGameRes::TraceOut));

@@ -28,6 +28,8 @@ set(BRSERVERSYSTEM_LIB_FILES
     ServiceEntity/Game/PlayerDirectoryManager.h
 	ServiceEntity/Game/PlayerDirectoryManager.cpp
     ServiceEntity/Game/GameSystem.h
+    ServiceEntity/Game/Transaction/GameInstanceTrans.h
+    ServiceEntity/Game/Transaction/GameInstanceTrans.cpp
     ServiceEntity/Game/GameInstanceEntity.h
     ServiceEntity/Game/GameInstanceEntity.cpp
     ServiceEntity/Game/StaticGameInstanceManagerServiceEntity.h
@@ -62,7 +64,6 @@ set(BRSERVERSYSTEM_LIB_FILES
     Transaction/Transaction.inl
     Types/BrSvrTypeSerialization.h
     Types/BrSvrTypes.inl
-    Component/BrComponent.h
     Component/ServerComponent.h
     Component/ServerComponentCarrier.h
     Component/SFServerNetComponent.h

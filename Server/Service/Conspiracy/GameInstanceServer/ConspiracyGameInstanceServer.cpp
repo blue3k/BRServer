@@ -2,7 +2,7 @@
 //
 
 #include "GameInstancePCH.h"
-#include "Object/SFLibraryComponent.h"
+#include "Component/SFLibraryComponent.h"
 #include "Util/SFTimeUtil.h"
 #include "ServerLog/SvrLogComponent.h"
 #include "Server/BrService.h"

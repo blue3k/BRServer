@@ -42,7 +42,7 @@
 #include "Transaction/GamePlayerEntityTransClose.h"
 #include "Transaction/GamePlayerEntityTransChatChannel.h"
 #include "Transaction/GamePlayerEntityTransMatchMaking.h"
-
+#include "Transaction/GamePlayerEntityTransGame.h"
 
 
 
@@ -131,6 +131,10 @@ namespace Svr {
 		RegisterMessageHandler<PlayerTransSetNickName>();
 		RegisterMessageHandler<PlayerTransFindPlayerByEMail>();
 		RegisterMessageHandler<PlayerTransFindPlayerByPlayerID>();
+
+		RegisterMessageHandler<PlayerTransJoinGameInstance>();
+		RegisterMessageHandler<PlayerTransLeaveGameInstance>();
+		RegisterMessageHandler<PlayerTransSearchGameInstance>();
 
 		RegisterMessageHandler<PlayerTransCreateCharacter>();
 		RegisterMessageHandler<PlayerTransDeleteCharacter>();

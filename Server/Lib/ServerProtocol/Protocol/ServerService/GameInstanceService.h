@@ -27,7 +27,7 @@ namespace SF
 		GameInstanceService ( ServerServiceInformation* pService );
 
 		// Cmd: Join to a game instance. You can call multiple times, but it would be a waste
-		Result JoinGameInstanceCmd( const uint64_t &InTransactionID, const PlayerInformation &InPlayer );
+		Result JoinGameInstanceCmd( const uint64_t &InTransactionID, const PlayerInformation &InPlayer, const VariableTable &InCharacterVisual, const VariableTable &InCharacterAttribute );
 		// Cmd: Leave game instance.
 		Result LeaveGameInstanceCmd( const uint64_t &InTransactionID, const PlayerID &InPlayerID );
 		// C2S: Player Movement

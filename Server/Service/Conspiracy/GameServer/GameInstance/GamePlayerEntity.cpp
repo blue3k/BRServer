@@ -67,7 +67,7 @@ namespace GameServer {
 		////////////////////////////////////////////////////////////////////////////////////////////////////
 		// Game instance server to player
 
-		RegisterMessageHandler<PlayerTransPlayerKickedS2SEvt>();
+		//RegisterMessageHandler<PlayerTransPlayerKickedS2SEvt>();
 		RegisterMessageHandler<PlayerTransRoleAssignedS2SEvt>();
 		RegisterMessageHandler<PlayerTransGameAdvanceVotedS2SEvt>();
 		RegisterMessageHandler<PlayerTransVoteEndS2SEvt>();

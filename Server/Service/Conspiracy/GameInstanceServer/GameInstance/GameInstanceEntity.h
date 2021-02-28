@@ -16,7 +16,7 @@
 #include "Types/SFEngineTypedefs.h"
 #include "Container/SFIndexing.h"
 #include "Container/SFHashTable.h"
-#include "Component/BrComponent.h"
+#include "Component/SFComponent.h"
 
 #include "Transaction/MessageRoute.h"
 #include "Entity/Entity.h"
@@ -190,7 +190,7 @@ namespace ConspiracyGameInstanceServer
 		//
 
 		// Initialize entity to proceed new connection
-		virtual Result InitializeGameEntity(const VariableTable& attributes) override;
+		virtual Result InitializeGameEntity(const ServerConfig::NetPublic& netPublic, const VariableTable& attributes) override;
 
 
 

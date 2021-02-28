@@ -192,7 +192,7 @@ namespace ConspiracyGameInstanceServer {
 	//
 
 	// Initialize entity to proceed new connection
-	Result GameInstanceEntity::InitializeGameEntity(const VariableTable& attributes)
+	Result GameInstanceEntity::InitializeGameEntity(const ServerConfig::NetPublic& netPublic, const VariableTable& attributes)
 	{
 		Result hr = ResultCode::SUCCESS;
 
@@ -230,7 +230,7 @@ namespace ConspiracyGameInstanceServer {
 		m_RoleRequestSeer = 0;
 		m_RoleRequestWerewolf = 0;
 
-		svrCheck(super::InitializeGameEntity(attributes));
+		svrCheck(super::InitializeGameEntity(netPublic, attributes));
 
 
 		// add fake bot player

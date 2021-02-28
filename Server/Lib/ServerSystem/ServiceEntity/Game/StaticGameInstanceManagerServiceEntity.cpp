@@ -25,7 +25,7 @@
 #include "ServiceEntity/Game/StaticGameInstanceManagerServiceEntity.h"
 #include "ServiceEntity/Game/GameInstanceManagerServiceTrans.h"
 #include "ServiceEntity/Game/GameInstanceEntity.h"
-#include "Object/SFLibraryComponentAdapter.h"
+#include "Component/SFLibraryComponentAdapter.h"
 #include "SvrTrace.h"
 #include "SvrConst.h"
 #include "Service/ServerService.h"

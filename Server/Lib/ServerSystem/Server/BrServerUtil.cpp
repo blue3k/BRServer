@@ -32,7 +32,7 @@
 #include "Component/SFConnectionManagerComponent.h"
 #include "Component/SFServerMessageEndpointComponent.h"
 #include "Component/SFDBTableManagerComponent.h"
-#include "Object/SFLibraryComponentAdapter.h"
+#include "Component/SFLibraryComponentAdapter.h"
 #include "ServerLog/SvrLogComponent.h"
 #include "Service/ServerService.h"
 #include "Net/SFMessageEndpointManager.h"

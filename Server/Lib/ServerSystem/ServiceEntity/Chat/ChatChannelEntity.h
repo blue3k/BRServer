@@ -19,7 +19,7 @@
 #include "Entity/Entity.h"
 #include "Server/BrServer.h"
 #include "ServiceEntity/Game/GameSystem.h"
-#include "Component/BrComponent.h"
+#include "Component/SFComponent.h"
 #include "ServerEntity/ServerEntity.h"
 
 

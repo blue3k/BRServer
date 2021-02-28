@@ -8,11 +8,13 @@
 		<Command Name="JoinGameInstance" Reliable="true" Crypto="No" Trace="Debug1" Desc="Join to a game instance. You can call multiple times, but it would be a waste">
 			<Cmd>
 				<Params Type="PlayerInformation" Name="Player" Desc="Player information who join"/>
+				<Params Type="VariableTable" Name="CharacterVisual" Desc="Character information who join"/>
+				<Params Type="VariableTable" Name="CharacterAttribute" Desc="Character information who join"/>
 			</Cmd>
 			<Res>
 				<Params Type="NetAddress" Name="GameInsSvr4" Desc="Game instance server address. Client will use this address to connect game server."/>
 				<Params Type="NetAddress" Name="GameInsSvr6" Desc="Game instance server address. Client will use this address to connect game server."/>
-				<Params Type="uint32" Name="TimeStamp" Desc="Time stamp of game state"/>
+				<Params Type="uint32" Name="TimeStamp" Desc="Time stamp of game"/>
 			</Res>
 		</Command>
 
@@ -28,9 +30,9 @@
 			</Res>
 		</Command>
 
-		<!--<S2CEvent Name="PlayerLeft" Reliable="true" Crypto="No" Trace="Debug1" Desc="Player left event.">
+		<S2CEvent Name="PlayerLeft" Reliable="true" Crypto="No" Trace="Debug1" Desc="Player left event.">
 			<Params Type="PlayerID" Name="LeftPlayerID" Desc="Player ID who left."/>
-		</S2CEvent>-->
+		</S2CEvent>
 
 
 		<C2SEvent Name="PlayerMovement" Reliable="true" Crypto="No" Trace="Debug1" Desc="Player Movement">

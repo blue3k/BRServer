@@ -36,6 +36,8 @@ namespace SF
 			// Cmd: Leave game instance.
 			MessageParseToMessageBaseMap.insert(std::make_pair(Message::GameInstance::LeaveGameInstanceCmd::MID.IDSeq.MsgID,&Message::GameInstance::LeaveGameInstanceCmd::ParseMessageToMessageBase));
 			MessageParseToMessageBaseMap.insert(std::make_pair(Message::GameInstance::LeaveGameInstanceRes::MID.IDSeq.MsgID,&Message::GameInstance::LeaveGameInstanceRes::ParseMessageToMessageBase));
+			// S2C: Player left event.
+			MessageParseToMessageBaseMap.insert(std::make_pair(Message::GameInstance::PlayerLeftS2CEvt::MID.IDSeq.MsgID,&Message::GameInstance::PlayerLeftS2CEvt::ParseMessageToMessageBase));
 			// C2S: Player Movement
 			MessageParseToMessageBaseMap.insert(std::make_pair(Message::GameInstance::PlayerMovementC2SEvt::MID.IDSeq.MsgID,&Message::GameInstance::PlayerMovementC2SEvt::ParseMessageToMessageBase));
 			// S2C: Player Movement
@@ -43,8 +45,6 @@ namespace SF
 			// Cmd: Kick player with given ID
 			MessageParseToMessageBaseMap.insert(std::make_pair(Message::GameInstance::KickPlayerCmd::MID.IDSeq.MsgID,&Message::GameInstance::KickPlayerCmd::ParseMessageToMessageBase));
 			MessageParseToMessageBaseMap.insert(std::make_pair(Message::GameInstance::KickPlayerRes::MID.IDSeq.MsgID,&Message::GameInstance::KickPlayerRes::ParseMessageToMessageBase));
-			// S2C: Player kicked event. this event will be brocasted when a player kicked.
-			MessageParseToMessageBaseMap.insert(std::make_pair(Message::GameInstance::PlayerKickedS2CEvt::MID.IDSeq.MsgID,&Message::GameInstance::PlayerKickedS2CEvt::ParseMessageToMessageBase));
 			// Cmd: Join to a game instance. You can call multiple times, but it would be waste
 			MessageParseToMessageBaseMap.insert(std::make_pair(Message::GameInstance::JoinGameCmd::MID.IDSeq.MsgID,&Message::GameInstance::JoinGameCmd::ParseMessageToMessageBase));
 			MessageParseToMessageBaseMap.insert(std::make_pair(Message::GameInstance::JoinGameRes::MID.IDSeq.MsgID,&Message::GameInstance::JoinGameRes::ParseMessageToMessageBase));

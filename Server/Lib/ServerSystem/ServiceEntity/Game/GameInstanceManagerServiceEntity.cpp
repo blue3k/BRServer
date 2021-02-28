@@ -25,19 +25,29 @@
 #include "ServiceEntity/Game/GameInstanceManagerServiceEntity.h"
 #include "ServiceEntity/Game/GameInstanceManagerServiceTrans.h"
 #include "ServiceEntity/Game/GameInstanceEntity.h"
-#include "Object/SFLibraryComponentAdapter.h"
+#include "Component/SFLibraryComponentAdapter.h"
 #include "SvrTrace.h"
 #include "SvrConst.h"
 #include "Service/ServerService.h"
 #include "Util/SFRandom.h"
+#include "Net/SFNetServerTCP.h"
+#include "Net/SFNetServerUDP.h"
 
 #include "Protocol/Message/GameInstanceManagerMsgClass.h"
 #include "PerformanceCounter/PerformanceCounterClient.h"
-
+#include "Net/SFConnectionAction.h"
 
 
 namespace SF {
 	namespace Svr {
+
+		static DurationMS GameInstanceManagerServiceEntity_NotJoinedConnectionTimeout(60 * 1000);
+
+
+		//////////////////////////////////////////////////////////////////////////
+		//
+		//	Timeout connection
+		//
 
 
 		//////////////////////////////////////////////////////////////////////////
@@ -47,9 +57,13 @@ namespace SF {
 
 		GameInstanceManagerServiceEntity::GameInstanceManagerServiceEntity(GameID gameID, ServerConfig::ServerModuleGameInstanceManager* config, ClusterID clusterID, const EndpointAddress& endpoint)
 			: super(gameID, clusterID, endpoint)
+			, m_NetPublicConfig(GetHeap())
+			, m_NewConnectionQueue(GetHeap())
 			, m_NumberOfInstance("NumberOfGameInstances")
 			, m_GameInstances(GetHeap())
 		{
+			m_NetPublicConfig = config->PublicNet;
+
 			RegisterMessageHandler<GameInstanceManagerTransCreateGameInstance>();
 		}
 
@@ -72,6 +86,43 @@ namespace SF {
 			{
 				pInstance->AddCounter(&m_NumberOfInstance);
 			}
+
+			auto serverID = Service::ServerConfig->UID;
+			if (m_NetPublicConfig.Protocol == "TCP")
+			{
+				svrCheckMem(m_pNetPublic = NewObject<Net::ServerTCP>(GetHeap(), serverID, NetClass::GameInstance));
+			}
+			else if (m_NetPublicConfig.Protocol == "UDP")
+			{
+				svrCheckMem(m_pNetPublic = NewObject<Net::ServerUDP>(GetHeap(), serverID, NetClass::GameInstance));
+			}
+			else // (m_NetPublicConfig.Protocol == "MRUDP")
+			{
+				svrCheckMem(m_pNetPublic = NewObject<Net::ServerMUDP>(GetHeap(), serverID, NetClass::GameInstance));
+			}
+
+
+			m_pNetPublic->SetNewConnectionhandler([this](SharedPointerT<Net::Connection>& conn)
+				{
+					SharedPointerAtomicT<Net::Connection> pConTem;
+					pConTem = std::forward<SharedPointerT<Net::Connection>>(conn);
+
+					//pConTem->AddStateAction(Net::ConnectionState::CONNECTED, &GameInstanceManagerServiceEntity_JoinTimeoutAction);
+
+					pConTem->AddMessageDelegateUnique(uintptr_t(this), 
+						Message::PlayInstance::JoinGameInstanceCmd::MID.GetMsgID(),
+						[this, pCon = pConTem.get()](Net::Connection*, SharedPointerT<Message::MessageData>& pMsgData)
+						{
+							
+							return true;
+						});
+					m_NewConnectionQueue.Enqueue(pConTem);
+				});
+
+			svrCheck(m_pNetPublic->HostOpen(NetClass::Game, m_NetPublicConfig.ListenIP, m_NetPublicConfig.Port));
+
+			m_pNetPublic->SetIsEnableAccept(true);
+
 
 			auto pEngine = Engine::GetInstance();
 			if (pEngine)
@@ -111,6 +162,59 @@ namespace SF {
 			--m_NumberOfInstance;
 
 			return hr;
+		}
+
+		// Initialize server component
+		Result GameInstanceManagerServiceEntity::InitializeComponent()
+		{
+
+			return ResultCode::SUCCESS;
+		}
+
+		// Terminate server component
+		void GameInstanceManagerServiceEntity::DeinitializeComponent()
+		{
+			m_pNetPublic->HostClose();
+			m_pNetPublic.reset();
+
+		}
+
+		// Process network event
+		Result GameInstanceManagerServiceEntity::ProcessNewConnection()
+		{
+			Result hr = ResultCode::SUCCESS;
+			Entity* pEntity = nullptr;
+			SharedPointerT<Net::Connection> pConn;
+
+			auto numQueued = m_NewConnectionQueue.GetEnqueCount();
+			for (uint iQueue = 0; iQueue < numQueued; iQueue++)
+			{
+				SharedPointerAtomicT<Net::Connection> pConnAtomic;
+
+				if (!m_NewConnectionQueue.Dequeue(pConnAtomic))
+					break;
+
+				auto connectionState = pConnAtomic->GetConnectionState();
+				switch (connectionState)
+				{
+				case Net::ConnectionState::CONNECTING:
+					m_NewConnectionQueue.Enqueue(std::forward<SharedPointerAtomicT<Net::Connection>>(pConnAtomic));
+					break;
+				case Net::ConnectionState::CONNECTED:
+					
+				default:
+					assert(connectionState == Net::ConnectionState::DISCONNECTED); // I want to see when this happens
+					pConn = std::forward <SharedPointerAtomicT<Net::Connection>>(pConnAtomic);
+					Service::ConnectionManager->RemoveConnection(pConn);
+					pConn->DisconnectNRelease("Disconnected before handed over to GameService");
+					pConn = nullptr;
+					pConnAtomic = nullptr;
+					break;
+				}
+			}
+
+
+			return ResultCode::SUCCESS;
 		}
 
 

@@ -29,16 +29,16 @@ namespace SF
 
 
 	// Cmd: Join to a game instance. You can call multiple times, but it would be a waste
-	Result GameInstanceService::JoinGameInstanceCmd( const uint64_t &InTransactionID, const PlayerInformation &InPlayer )
+	Result GameInstanceService::JoinGameInstanceCmd( const uint64_t &InTransactionID, const PlayerInformation &InPlayer, const VariableTable &InCharacterVisual, const VariableTable &InCharacterAttribute )
 	{
  		ScopeContext hr;
 
 		RouteContext InRouteContext( EntityUID(GetMyServerID(),TransactionID(InTransactionID).GetEntityID()), GetServiceEntityUID() );
-		svrCheck(NetPolicyGameInstance(GetTargetEndpoint()).JoinGameInstanceCmd( InRouteContext, InTransactionID, InPlayer ) );
+		svrCheck(NetPolicyGameInstance(GetTargetEndpoint()).JoinGameInstanceCmd( InRouteContext, InTransactionID, InPlayer, InCharacterVisual, InCharacterAttribute ) );
 
 		return hr;
 
-	}; // Result GameInstanceService::JoinGameInstanceCmd( const uint64_t &InTransactionID, const PlayerInformation &InPlayer )
+	}; // Result GameInstanceService::JoinGameInstanceCmd( const uint64_t &InTransactionID, const PlayerInformation &InPlayer, const VariableTable &InCharacterVisual, const VariableTable &InCharacterAttribute )
 	// Cmd: Leave game instance.
 	Result GameInstanceService::LeaveGameInstanceCmd( const uint64_t &InTransactionID, const PlayerID &InPlayerID )
 	{

@@ -20,6 +20,8 @@
 #include "Net/SFMessage.h"
 #include "Protocol/Message/GameInstanceManagerMsgClass.h"
 #include "Protocol/Policy/GameInstanceManagerNetPolicy.h"
+#include "Protocol/Message/PlayInstanceMsgClass.h"
+#include "Protocol/Policy/PlayInstanceNetPolicy.h"
 #include "Transaction/MessageRoute.h"
 #include "ServiceEntity/Game/GameInstanceManagerServiceEntity.h"
 #include "Transaction/ServerTransaction.h"
@@ -53,6 +55,25 @@ namespace SF {
 				super::OnCloseTransaction(hrRes); 
 				return hr; 
 			}
+
+		};
+
+		class GameInstanceManagerTransJoinGameInstance : public MessageTransaction<GameInstanceManagerServiceEntity, Message::PlayInstance::JoinGameInstanceCmd>
+		{
+		public:
+			using super = MessageTransaction<GameInstanceManagerServiceEntity, Message::PlayInstance::JoinGameInstanceCmd>;
+
+		private:
+			GameInsUID	m_GameInsUID;
+
+		public:
+			GameInstanceManagerTransJoinGameInstance(IHeap& heap, MessageDataPtr& pIMsg) : super(heap, Forward<MessageDataPtr>(pIMsg)) {}
+			virtual ~GameInstanceManagerTransJoinGameInstance() {}
+
+			// Start Transaction
+			virtual Result StartTransaction() override;
+
+			BR_IMPLEMENT_USERMSGTRANS_CLOSE_ARGS(NetSvrPolicyPlayInstance, JoinGameInstanceRes, GetPlayInstanceID(), GetPlayerID());
 
 		};
 

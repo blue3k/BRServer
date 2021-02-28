@@ -48,12 +48,44 @@ namespace SF {
 
 			svrCheck(Service::EntityManager->CreateEntity(ClusterID::GameInstance, EntityFaculty::GameInstance, pEntity));
 
+			auto& netPublic = GetMyOwner()->GetNetPublicConfig();
+
 			svrCheckPtr(pGameInstance = static_cast<GameInstanceEntity*>(pEntity));
-			svrCheck(pGameInstance->InitializeGameEntity(GetAttributes()));
+			svrCheck(pGameInstance->InitializeGameEntity(netPublic, GetAttributes()));
 
 			svrCheck(GetMyOwner()->OnNewInstance(pGameInstance));
 
 			svrCheck(Service::EntityManager->AddEntity(EntityFaculty::GameInstance, (Entity*)pGameInstance));
+
+			m_GameInsUID = pEntity->GetEntityUID();
+
+			svrTrace(SVR_INFO, "CreateGameInstance:{0}", pGameInstance->GetEntityUID());
+
+			return hr;
+		}
+
+
+
+		Result GameInstanceManagerTransJoinGameInstance::StartTransaction()
+		{
+			ScopeContext hr([this](Result hr)
+				{
+					CloseTransaction(hr);
+				});
+			SharedPointerT<Entity> pEntity;
+
+			svrCheck(super::StartTransaction());
+
+			svrCheck(Service::EntityTable->find(EntityUID(GetPlayInstanceID()).GetEntityID(), pEntity));
+
+			if (pEntity->GetEntityID().GetFacultyID() != uint32_t(EntityFaculty::GameInstance))
+			{
+				svrCheckClose(ResultCode::SVR_INVALID_ENTITYUID);
+			}
+
+			auto pGameInstance = static_cast<GameInstanceEntity*>(pEntity.get());
+			svrCheck(pGameInstance->PlayerConnected(GetPlayerID(), GetRemoteEndpoint()));
+
 
 			m_GameInsUID = pEntity->GetEntityUID();
 

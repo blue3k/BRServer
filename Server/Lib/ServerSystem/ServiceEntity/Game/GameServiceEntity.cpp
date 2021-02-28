@@ -155,7 +155,6 @@ namespace SF {
 	Result GameServiceEntity::ProcessNewConnection()
 	{
 		Result hr = ResultCode::SUCCESS;
-		Svr::ServerEntity *pServerEntity = nullptr;
 		Entity* pEntity = nullptr;
 		UniquePtr<Svr::GamePlayerEntity> pGamePlayerEntity;
 		SharedPointerT<Net::Connection> pConn;

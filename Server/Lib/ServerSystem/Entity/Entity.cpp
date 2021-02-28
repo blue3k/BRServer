@@ -246,6 +246,7 @@ namespace Svr
 
 		if (pNewTrans != nullptr)
 		{
+			// Set received one(probably connection), it will be overridden in InitializeTransaction if necessary
 			pNewTrans->SetRemoteEndpoint(remoteEndpoint);
 
 			if (pNewTrans->GetOwnerEntity() == nullptr)

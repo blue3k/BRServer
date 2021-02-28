@@ -18,7 +18,7 @@
 #include "Net/SFNetDef.h"
 #include "Net/SFConnection.h"
 #include "Entity/SimpleEntity.h"
-#include "Component/BrComponent.h"
+#include "Component/SFComponent.h"
 
 
 namespace SF {

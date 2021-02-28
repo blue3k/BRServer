@@ -15,7 +15,7 @@
 
 #include "SFTypedefs.h"
 #include "MemoryManager/SFMemoryPool.h"
-#include "Component/BrComponent.h"
+#include "Component/SFComponent.h"
 
 
 namespace SF {

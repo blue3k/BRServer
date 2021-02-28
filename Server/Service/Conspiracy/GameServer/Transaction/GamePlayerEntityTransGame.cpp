@@ -373,30 +373,30 @@ namespace GameServer {
 
 		return hr;
 	}
-	
-	// Start Transaction
-	Result PlayerTransPlayerKickedS2SEvt::StartTransaction()
-	{
-		Result hr = ResultCode::SUCCESS;
+	//
+	//// Start Transaction
+	//Result PlayerTransPlayerKickedS2SEvt::StartTransaction()
+	//{
+	//	Result hr = ResultCode::SUCCESS;
 
-		svrChk( super::StartTransaction() );
+	//	svrChk( super::StartTransaction() );
 
-		if( GetMyOwner()->GetGameInsUID() != GetRouteContext().GetFrom())
-			svrErrClose(ResultCode::INVALID_INSTANCEID);
+	//	if( GetMyOwner()->GetGameInsUID() != GetRouteContext().GetFrom())
+	//		svrErrClose(ResultCode::INVALID_INSTANCEID);
 
-		if( GetKickedPlayerID() == GetMyOwner()->GetPlayerID() )
-		{
-			GetMyOwner()->SetGameInsUID(0);
-		}
+	//	if( GetKickedPlayerID() == GetMyOwner()->GetPlayerID() )
+	//	{
+	//		GetMyOwner()->SetGameInsUID(0);
+	//	}
 
-		svrChk( NetSvrPolicyGame(GetRemoteEndpoint()).PlayerKickedS2CEvt( GetRouteContext().GetFrom(), GetKickedPlayerID() ) );
+	//	svrChk( NetSvrPolicyGame(GetRemoteEndpoint()).PlayerKickedS2CEvt( GetRouteContext().GetFrom(), GetKickedPlayerID() ) );
 
-	Proc_End:
+	//Proc_End:
 
-		CloseTransaction( hr );
+	//	CloseTransaction( hr );
 
-		return hr;
-	}
+	//	return hr;
+	//}
 
 
 

@@ -24,12 +24,13 @@
 #include "Entity/EntityManager.h"
 
 #include "Variable/SFVariableTable.h"
-#include "Object/SFLibraryComponentAdapter.h"
+#include "Component/SFLibraryComponentAdapter.h"
 
 #include "Server/BrServer.h"
 #include "ServiceEntity/Game/GameInstancePlayer.h"
 #include "Protocol/ServerService/GameInstanceManagerService.h"
 #include "ServiceEntity/Game/GameInstanceEntity.h"
+#include "ServiceEntity/Game/Transaction/GameInstanceTrans.h"
 #include "ServiceEntity/Game/GameInstanceManagerServiceEntity.h"
 #include "Service/ServerService.h"
 
@@ -50,6 +51,12 @@ namespace SF {
 		{
 			SetTickInterval(Const::GAMEINSTANCE_TICK_TIME);
 			SetEmptyInstanceKillTimeOut(Const::GAMEINSTANCE_EMPTYINSTANCE_KILL_TIMEOUT);
+
+			////////////////////////////////////////////////////////////////////////////////////////////////////
+			// To game instance
+			RegisterMessageHandler<GameEntityTransJoinGameInstance>();
+			RegisterMessageHandler<GameEntityTransLeaveGameInstance>();
+
 		}
 
 		GameInstanceEntity::~GameInstanceEntity()
@@ -236,7 +243,7 @@ namespace SF {
 		//
 
 		// Initialize entity to proceed new connection
-		Result GameInstanceEntity::InitializeGameEntity(const VariableTable& attributes)
+		Result GameInstanceEntity::InitializeGameEntity(const ServerConfig::NetPublic& netPublic, const VariableTable& attributes)
 		{
 			ScopeContext hr;
 			GameInstancePlayer* pPlayer = nullptr;
@@ -244,6 +251,9 @@ namespace SF {
 			m_MaxPlayer = attributes.GetValue<uint>("MaxPlayer"_crc);
 			m_InstanceType = attributes.GetValue<StringCrc32>("Type"_crc);
 			m_ZoneTableID = attributes.GetValue<uint32_t>("ZoneTableID"_crc);
+
+			m_AddressIPV4.FromString(netPublic.IPV4, netPublic.Port);
+			m_AddressIPV6.FromString(netPublic.IPV6, netPublic.Port);
 
 			m_TotalJoinedPlayer = 0;
 
@@ -272,6 +282,15 @@ namespace SF {
 			pPlayer.reset(new(GetHeap()) GameInstancePlayer(this, playerInfo));
 
 			return pPlayer != nullptr ? ResultCode::SUCCESS : ResultCode::OUT_OF_MEMORY;
+		}
+
+		Result GameInstanceEntity::PlayerConnected(PlayerID playerId, const SharedPointerT<MessageEndpoint>& endpoint)
+		{
+			Result hr;
+
+
+
+			return hr;
 		}
 
 		// Register new player to join
@@ -333,8 +352,9 @@ namespace SF {
 		{
 			m_GamePlayerByUID.ForeachOrder(0, m_MaxPlayer, [&](const PlayerID& playerID, GameInstancePlayer* pPlayer)-> bool
 				{
-					if (pPlayer->GetPlayerEntityUID().UID != 0)
-						NetSvrPolicyGameInstance(pPlayer->GetRemoteEndpoint()).PlayerKickedS2CEvt(RouteContext(GetEntityUID(), pPlayer->GetPlayerEntityUID()), pPlayer->GetPlayerID());
+					// TODO:
+					//if (pPlayer->GetPlayerEntityUID().UID != 0)
+					//	NetSvrPolicyGameInstance(pPlayer->GetRemoteEndpoint()).PlayerKickedS2CEvt(RouteContext(GetEntityUID(), pPlayer->GetPlayerEntityUID()), pPlayer->GetPlayerID());
 
 					LeavePlayer(pPlayer);
 

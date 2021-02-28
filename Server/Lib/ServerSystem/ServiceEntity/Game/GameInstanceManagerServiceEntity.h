@@ -60,6 +60,13 @@ namespace SF {
 			Svr::PerformanceCounterRaw < uint64_t > m_NumberOfInstance;
 
 		private:
+
+			ServerConfig::NetPublic m_NetPublicConfig;
+
+			SharedPointerT<Net::ServerNet> m_pNetPublic;
+			PageQueue<SharedPointerAtomicT<Net::Connection>> m_NewConnectionQueue;
+
+
 			SF::Mutex m_GameInstanceListLock;
 			// NOTE: We might need to use shared ptr
 			SortedMap<GameInsUID, GameInstanceEntity*> m_GameInstances;
@@ -68,6 +75,8 @@ namespace SF {
 
 			GameInstanceManagerServiceEntity(GameID gameID, ServerConfig::ServerModuleGameInstanceManager* config, ClusterID clusterID, const EndpointAddress& endpoint);
 			~GameInstanceManagerServiceEntity();
+
+			const ServerConfig::NetPublic& GetNetPublicConfig() const { return m_NetPublicConfig; }
 
 
 			//////////////////////////////////////////////////////////////////////////
@@ -90,9 +99,12 @@ namespace SF {
 			virtual Result FreeGameInstance(GameInsUID gameUID);
 
 			// Initialize server component
-			Result InitializeComponent() { return ResultCode::SUCCESS; }
+			Result InitializeComponent();
 			// Terminate server component
-			void DeinitializeComponent() {  }
+			void DeinitializeComponent();
+
+
+			Result ProcessNewConnection();
 		};
 
 

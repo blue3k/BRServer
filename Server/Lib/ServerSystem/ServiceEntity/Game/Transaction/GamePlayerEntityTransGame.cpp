@@ -75,9 +75,6 @@ namespace SF {
 			if (GetMyOwner()->GetMatchingTicket() != 0)
 				svrError(ResultCode::SVR_ALREADY_INQUEUE);
 
-			if (GetMyOwner()->GetPlayerID() != GetPlayerID())
-				svrError(ResultCode::INVALID_PLAYERID);
-
 			VariableTable attributes;
 			attributes.SetValue<String>("Custom.Type", "Static");
 
@@ -120,33 +117,24 @@ namespace SF {
 						CloseTransaction(hr);
 				});
 			Svr::MessageResult* pMsgRes = (Svr::MessageResult*)pRes;
-			Message::GameInstance::JoinGameRes joinRes;
+			Message::GameInstance::JoinGameInstanceRes joinRes;
 
 			svrCheckClose(pRes->GetResult());
 
 			svrCheck(joinRes.ParseMessage(*pMsgRes->GetMessage()));
 
 			GetMyOwner()->SetGameInsUID(joinRes.GetRouteContext().GetFrom());
-
+			m_GameInsAddress4 = joinRes.GetGameInsSvr4();
+			m_GameInsAddress6 = joinRes.GetGameInsSvr6();
 			m_GameInsID = joinRes.GetRouteContext().GetFrom();
 
 			// We don't need to do it here
-			if (joinRes.GetIsNewJoin())
+			//if (joinRes.GetIsNewJoin())
 			{
 				GetMyOwner()->UpdateGamePlayer();
 			}
 
-			// Leave party when the player joined a party
-			if (GetMyOwner()->GetPartyUID().UID != 0)
-			{
-				auto serverEndpoint = Service::MessageEndpointManager->GetEndpoint(GetMyOwner()->GetPartyUID());
-
-				svrCheck(NetPolicyGameParty(serverEndpoint).LeavePartyCmd(RouteContext(GetOwnerEntityUID(), GetMyOwner()->GetPartyUID()), GetTransID(), GetMyOwner()->GetPlayerID()));
-			}
-			else
-			{
-				CloseTransaction(hr);
-			}
+			CloseTransaction(hr);
 
 			return ResultCode::SUCCESS;
 		}
@@ -169,8 +157,8 @@ namespace SF {
 
 			m_GameInsID = 0;
 
-			if (GetMyOwner()->GetPlayerID() != GetPlayerID())
-				svrError(ResultCode::INVALID_PLAYERID);
+			if (GetMyOwner()->GetCharacterID() == 0)
+				svrError(ResultCode::INVALID_CHANNELID);
 
 			if (GetMyOwner()->GetGameInsUID().UID != 0 && GetMyOwner()->GetGameInsUID().UID != GetInsUID())
 				svrError(ResultCode::GAME_ALREADY_IN_GAME);
@@ -184,7 +172,9 @@ namespace SF {
 
 			svrCheck(NetPolicyGameInstance(serverEndpoint).JoinGameInstanceCmd(
 				RouteContext(GetOwnerEntityUID(), insUID), GetTransID(),
-				GetMyOwner()->GetPlayerInformation()));
+				GetMyOwner()->GetPlayerInformation(), 
+				GetMyOwner()->GetCharacterVisualData(), 
+				GetMyOwner()->GetCharacterData()));
 
 			return hr;
 		}

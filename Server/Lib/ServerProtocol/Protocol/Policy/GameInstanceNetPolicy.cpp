@@ -24,21 +24,21 @@
 namespace SF
 {
  	// Cmd: Join to a game instance. You can call multiple times, but it would be a waste
-	Result NetPolicyGameInstance::JoinGameInstanceCmd( const RouteContext &InRouteContext, const uint64_t &InTransactionID, const PlayerInformation &InPlayer )
+	Result NetPolicyGameInstance::JoinGameInstanceCmd( const RouteContext &InRouteContext, const uint64_t &InTransactionID, const PlayerInformation &InPlayer, const VariableTable &InCharacterVisual, const VariableTable &InCharacterAttribute )
 	{
  		ScopeContext hr;
 
 		 MessageDataPtr pMessage;
 		 protocolCheckPtr(m_Endpoint);
 
-		 pMessage = SF::Message::GameInstance::JoinGameInstanceCmd::Create(GetSystemHeap(), InRouteContext, InTransactionID, InPlayer);
+		 pMessage = SF::Message::GameInstance::JoinGameInstanceCmd::Create(GetSystemHeap(), InRouteContext, InTransactionID, InPlayer, InCharacterVisual, InCharacterAttribute);
 		 protocolCheckPtr(*pMessage);
 
 		 return m_Endpoint->Send( pMessage );
 
 		return hr;
 
-	}; // Result NetPolicyGameInstance::JoinGameInstanceCmd( const RouteContext &InRouteContext, const uint64_t &InTransactionID, const PlayerInformation &InPlayer )
+	}; // Result NetPolicyGameInstance::JoinGameInstanceCmd( const RouteContext &InRouteContext, const uint64_t &InTransactionID, const PlayerInformation &InPlayer, const VariableTable &InCharacterVisual, const VariableTable &InCharacterAttribute )
 	// Cmd: Leave game instance.
 	Result NetPolicyGameInstance::LeaveGameInstanceCmd( const RouteContext &InRouteContext, const uint64_t &InTransactionID, const PlayerID &InPlayerID )
 	{
@@ -265,6 +265,22 @@ namespace SF
 		return hr;
 
 	}; // Result NetSvrPolicyGameInstance::LeaveGameInstanceRes( const RouteContext &InRouteContext, const uint64_t &InTransactionID, const Result &InResult )
+	// S2C: Player left event.
+	Result NetSvrPolicyGameInstance::PlayerLeftS2CEvt( const RouteContext &InRouteContext, const PlayerID &InLeftPlayerID )
+	{
+ 		ScopeContext hr;
+
+		 MessageDataPtr pMessage;
+		 protocolCheckPtr(m_Endpoint);
+
+		 pMessage = SF::Message::GameInstance::PlayerLeftS2CEvt::Create(GetSystemHeap(), InRouteContext, InLeftPlayerID);
+		 protocolCheckPtr(*pMessage);
+
+		 return m_Endpoint->Send( pMessage );
+
+		return hr;
+
+	}; // Result NetSvrPolicyGameInstance::PlayerLeftS2CEvt( const RouteContext &InRouteContext, const PlayerID &InLeftPlayerID )
 	// S2C: Player Movement
 	Result NetSvrPolicyGameInstance::PlayerMovementS2CEvt( const RouteContext &InRouteContext, const uint64_t &InGameInsUID, const PlayerID &InPlayerID, const VariableTable &InAttributes )
 	{
@@ -297,22 +313,6 @@ namespace SF
 		return hr;
 
 	}; // Result NetSvrPolicyGameInstance::KickPlayerRes( const RouteContext &InRouteContext, const uint64_t &InTransactionID, const Result &InResult )
-	// S2C: Player kicked event. this event will be brocasted when a player kicked.
-	Result NetSvrPolicyGameInstance::PlayerKickedS2CEvt( const RouteContext &InRouteContext, const PlayerID &InKickedPlayerID )
-	{
- 		ScopeContext hr;
-
-		 MessageDataPtr pMessage;
-		 protocolCheckPtr(m_Endpoint);
-
-		 pMessage = SF::Message::GameInstance::PlayerKickedS2CEvt::Create(GetSystemHeap(), InRouteContext, InKickedPlayerID);
-		 protocolCheckPtr(*pMessage);
-
-		 return m_Endpoint->Send( pMessage );
-
-		return hr;
-
-	}; // Result NetSvrPolicyGameInstance::PlayerKickedS2CEvt( const RouteContext &InRouteContext, const PlayerID &InKickedPlayerID )
 	// Cmd: Join to a game instance. You can call multiple times, but it would be waste
 	Result NetSvrPolicyGameInstance::JoinGameRes( const RouteContext &InRouteContext, const uint64_t &InTransactionID, const Result &InResult, const NetAddress &InGameInsSvr, const uint32_t &InTimeStamp, const uint8_t &InGameState, const uint8_t &InDay, const uint8_t &InMaxPlayer, const uint8_t &InPlayerIndex, const uint8_t &InPlayerCharacter, const uint8_t &InRole, const uint8_t &InDead, const uint8_t &InIsNewJoin, const Array<uint8_t>& InChatHistoryData, const Array<uint8_t>& InGameLogData )
 	{

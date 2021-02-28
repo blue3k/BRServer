@@ -28,6 +28,26 @@ namespace SF
 		{
  			// Cmd: Join to a game instance. You can call multiple times, but it would be a waste
 			const MessageID JoinGameInstanceCmd::MID = MessageID(MSGTYPE_COMMAND, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_GAMEINSTANCE, 0);
+			const VariableTable& JoinGameInstanceCmd::GetCharacterVisual() const
+			{
+ 				if (!m_CharacterVisualHasParsed)
+				{
+ 					m_CharacterVisualHasParsed = true;
+					InputMemoryStream CharacterVisual_ReadStream(m_CharacterVisualRaw);
+					*CharacterVisual_ReadStream.ToInputStream() >> m_CharacterVisual;
+				} // if (!m_CharacterVisualHasParsed)
+				return m_CharacterVisual;
+			} // const VariableTable& JoinGameInstanceCmd::GetCharacterVisual() const
+			const VariableTable& JoinGameInstanceCmd::GetCharacterAttribute() const
+			{
+ 				if (!m_CharacterAttributeHasParsed)
+				{
+ 					m_CharacterAttributeHasParsed = true;
+					InputMemoryStream CharacterAttribute_ReadStream(m_CharacterAttributeRaw);
+					*CharacterAttribute_ReadStream.ToInputStream() >> m_CharacterAttribute;
+				} // if (!m_CharacterAttributeHasParsed)
+				return m_CharacterAttribute;
+			} // const VariableTable& JoinGameInstanceCmd::GetCharacterAttribute() const
 			Result JoinGameInstanceCmd::ParseMessage(const MessageData* pIMsg)
 			{
  				ScopeContext hr;
@@ -44,6 +64,14 @@ namespace SF
 				protocolCheck(*input >> m_RouteContext);
 				protocolCheck(*input >> m_TransactionID);
 				protocolCheck(*input >> m_Player);
+				protocolCheck(input->Read(ArrayLen));
+				uint8_t* CharacterVisualPtr = nullptr;
+				protocolCheck(input->ReadLink(CharacterVisualPtr, ArrayLen));
+				m_CharacterVisualRaw.SetLinkedBuffer(ArrayLen, CharacterVisualPtr);
+				protocolCheck(input->Read(ArrayLen));
+				uint8_t* CharacterAttributePtr = nullptr;
+				protocolCheck(input->ReadLink(CharacterAttributePtr, ArrayLen));
+				m_CharacterAttributeRaw.SetLinkedBuffer(ArrayLen, CharacterAttributePtr);
 
 				return hr;
 
@@ -61,8 +89,7 @@ namespace SF
 
 			}; // Result JoinGameInstanceCmd::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr&& pIMsg, MessageBase* &pMessageBase )
 
-
-			MessageData* JoinGameInstanceCmd::Create( IHeap& memHeap, const RouteContext &InRouteContext, const uint64_t &InTransactionID, const PlayerInformation &InPlayer )
+			MessageData* JoinGameInstanceCmd::Create( IHeap& memHeap, const RouteContext &InRouteContext, const uint64_t &InTransactionID, const PlayerInformation &InPlayer, const Array<uint8_t>& InCharacterVisual, const Array<uint8_t>& InCharacterAttribute )
 			{
  				MessageData *pNewMsg = nullptr;
 				ScopeContext hr([&pNewMsg](Result hr) -> MessageData*
@@ -77,10 +104,14 @@ namespace SF
 
 				uint8_t *pMsgData = nullptr;
 
+				uint16_t serializedSizeOfInCharacterVisual = static_cast<uint16_t>(SerializedSizeOf(InCharacterVisual)); 
+				uint16_t serializedSizeOfInCharacterAttribute = static_cast<uint16_t>(SerializedSizeOf(InCharacterAttribute)); 
 				unsigned __uiMessageSize = (unsigned)(sizeof(MessageHeader) 
 					+ SerializedSizeOf(InRouteContext)
 					+ SerializedSizeOf(InTransactionID)
 					+ SerializedSizeOf(InPlayer)
+					+ serializedSizeOfInCharacterVisual
+					+ serializedSizeOfInCharacterAttribute
 				);
 
 				protocolCheckMem( pNewMsg = MessageData::NewMessage( memHeap, GameInstance::JoinGameInstanceCmd::MID, __uiMessageSize ) );
@@ -92,9 +123,55 @@ namespace SF
 				protocolCheck(*output << InRouteContext);
 				protocolCheck(*output << InTransactionID);
 				protocolCheck(*output << InPlayer);
+				protocolCheck(*output << InCharacterVisual);
+				protocolCheck(*output << InCharacterAttribute);
 
 				return hr;
-			}; // MessageData* JoinGameInstanceCmd::Create( IHeap& memHeap, const RouteContext &InRouteContext, const uint64_t &InTransactionID, const PlayerInformation &InPlayer )
+			}; // MessageData* JoinGameInstanceCmd::Create( IHeap& memHeap, const RouteContext &InRouteContext, const uint64_t &InTransactionID, const PlayerInformation &InPlayer, const Array<uint8_t>& InCharacterVisual, const Array<uint8_t>& InCharacterAttribute )
+
+			MessageData* JoinGameInstanceCmd::Create( IHeap& memHeap, const RouteContext &InRouteContext, const uint64_t &InTransactionID, const PlayerInformation &InPlayer, const VariableTable &InCharacterVisual, const VariableTable &InCharacterAttribute )
+			{
+ 				MessageData *pNewMsg = nullptr;
+				ScopeContext hr([&pNewMsg](Result hr) -> MessageData*
+				{
+ 					if(!hr && pNewMsg != nullptr)
+					{
+ 						IHeap::Delete(pNewMsg);
+						return nullptr;
+					}
+					return pNewMsg;
+				});
+
+				uint8_t *pMsgData = nullptr;
+
+				uint16_t serializedSizeOfInCharacterVisual = static_cast<uint16_t>(SerializedSizeOf(InCharacterVisual)); 
+				uint16_t serializedSizeOfInCharacterAttribute = static_cast<uint16_t>(SerializedSizeOf(InCharacterAttribute)); 
+				unsigned __uiMessageSize = (unsigned)(sizeof(MessageHeader) 
+					+ SerializedSizeOf(InRouteContext)
+					+ SerializedSizeOf(InTransactionID)
+					+ SerializedSizeOf(InPlayer)
+					+ sizeof(uint16_t)
+					+ serializedSizeOfInCharacterVisual
+					+ sizeof(uint16_t)
+					+ serializedSizeOfInCharacterAttribute
+				);
+
+				protocolCheckMem( pNewMsg = MessageData::NewMessage( memHeap, GameInstance::JoinGameInstanceCmd::MID, __uiMessageSize ) );
+				auto MsgDataSize = static_cast<uint>((size_t)pNewMsg->GetMessageSize() - sizeof(MessageHeader));
+				ArrayView<uint8_t> BufferView(MsgDataSize, 0, pNewMsg->GetMessageData());
+				OutputMemoryStream outputStream(BufferView);
+				auto* output = outputStream.ToOutputStream();
+
+				protocolCheck(*output << InRouteContext);
+				protocolCheck(*output << InTransactionID);
+				protocolCheck(*output << InPlayer);
+				protocolCheck(output->Write(serializedSizeOfInCharacterVisual));
+				protocolCheck(*output << InCharacterVisual);
+				protocolCheck(output->Write(serializedSizeOfInCharacterAttribute));
+				protocolCheck(*output << InCharacterAttribute);
+
+				return hr;
+			}; // MessageData* JoinGameInstanceCmd::Create( IHeap& memHeap, const RouteContext &InRouteContext, const uint64_t &InTransactionID, const PlayerInformation &InPlayer, const VariableTable &InCharacterVisual, const VariableTable &InCharacterAttribute )
 
 			Result JoinGameInstanceCmd::OverrideRouteContextDestination( EntityUID to )
 			{
@@ -127,8 +204,8 @@ namespace SF
 			{
  				JoinGameInstanceCmd parser;
 				parser.ParseMessage(*pMsg);
-				protocolTrace( Debug1, "JoinGameInstance:{0}:{1} , RouteContext:{2}, TransactionID:{3}, Player:{4}",
-						prefix, pMsg->GetMessageHeader()->Length, parser.GetRouteContext(), parser.GetTransactionID(), parser.GetPlayer()); 
+				protocolTrace( Debug1, "JoinGameInstance:{0}:{1} , RouteContext:{2}, TransactionID:{3}, Player:{4}, CharacterVisual:{5}, CharacterAttribute:{6}",
+						prefix, pMsg->GetMessageHeader()->Length, parser.GetRouteContext(), parser.GetTransactionID(), parser.GetPlayer(), parser.GetCharacterVisual(), parser.GetCharacterAttribute()); 
 				return ResultCode::SUCCESS;
 			}; // Result JoinGameInstanceCmd::TraceOut(const char* prefix, const MessageDataPtr& pMsg)
 
@@ -457,8 +534,111 @@ namespace SF
 				return ResultCode::SUCCESS;
 			}; // Result LeaveGameInstanceRes::TraceOut(const char* prefix, const MessageDataPtr& pMsg)
 
+			// S2C: Player left event.
+			const MessageID PlayerLeftS2CEvt::MID = MessageID(MSGTYPE_EVENT, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_GAMEINSTANCE, 2);
+			Result PlayerLeftS2CEvt::ParseMessage(const MessageData* pIMsg)
+			{
+ 				ScopeContext hr;
+
+
+				protocolCheckPtr(pIMsg);
+
+				size_t MsgDataSize = ((size_t)pIMsg->GetMessageSize() - sizeof(MessageHeader));
+				ArrayView<uint8_t> bufferView(MsgDataSize, pIMsg->GetMessageData());
+				InputMemoryStream inputStream(bufferView);
+				auto* input = inputStream.ToInputStream();
+				uint16_t ArrayLen = 0;(void)(ArrayLen);
+
+				protocolCheck(*input >> m_RouteContext);
+				protocolCheck(*input >> m_LeftPlayerID);
+
+				return hr;
+
+			}; // Result PlayerLeftS2CEvt::ParseMessage(const MessageData* pIMsg)
+
+
+			Result PlayerLeftS2CEvt::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr&& pIMsg, MessageBase* &pMessageBase )
+			{
+ 				ScopeContext hr;
+
+				protocolCheckMem(pMessageBase = new(memHeap) PlayerLeftS2CEvt(std::forward<MessageDataPtr>(pIMsg)));
+				protocolCheck(pMessageBase->ParseMsg());
+
+				return hr;
+
+			}; // Result PlayerLeftS2CEvt::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr&& pIMsg, MessageBase* &pMessageBase )
+
+
+			MessageData* PlayerLeftS2CEvt::Create( IHeap& memHeap, const RouteContext &InRouteContext, const PlayerID &InLeftPlayerID )
+			{
+ 				MessageData *pNewMsg = nullptr;
+				ScopeContext hr([&pNewMsg](Result hr) -> MessageData*
+				{
+ 					if(!hr && pNewMsg != nullptr)
+					{
+ 						IHeap::Delete(pNewMsg);
+						return nullptr;
+					}
+					return pNewMsg;
+				});
+
+				uint8_t *pMsgData = nullptr;
+
+				unsigned __uiMessageSize = (unsigned)(sizeof(MessageHeader) 
+					+ SerializedSizeOf(InRouteContext)
+					+ SerializedSizeOf(InLeftPlayerID)
+				);
+
+				protocolCheckMem( pNewMsg = MessageData::NewMessage( memHeap, GameInstance::PlayerLeftS2CEvt::MID, __uiMessageSize ) );
+				auto MsgDataSize = static_cast<uint>((size_t)pNewMsg->GetMessageSize() - sizeof(MessageHeader));
+				ArrayView<uint8_t> BufferView(MsgDataSize, 0, pNewMsg->GetMessageData());
+				OutputMemoryStream outputStream(BufferView);
+				auto* output = outputStream.ToOutputStream();
+
+				protocolCheck(*output << InRouteContext);
+				protocolCheck(*output << InLeftPlayerID);
+
+				return hr;
+			}; // MessageData* PlayerLeftS2CEvt::Create( IHeap& memHeap, const RouteContext &InRouteContext, const PlayerID &InLeftPlayerID )
+
+			Result PlayerLeftS2CEvt::OverrideRouteContextDestination( EntityUID to )
+			{
+ 				ScopeContext hr;
+
+				MessageData* pIMsg = GetMessage();
+				RouteContext routeContext;
+
+				protocolCheckPtr(pIMsg);
+
+				size_t MsgDataSize = (int)((size_t)pIMsg->GetMessageSize() - sizeof(MessageHeader));
+				ArrayView<uint8_t> bufferView(MsgDataSize, pIMsg->GetMessageData());
+				InputMemoryStream inputStream(bufferView);
+				auto* input = inputStream.ToInputStream();
+				uint16_t ArrayLen = 0;(void)(ArrayLen);
+				uint8_t* pCur = nullptr;(void)(pCur);
+
+				pCur = input->GetBufferPtr() + input->GetPosition();
+				Assert(input->GetRemainSize() >= sizeof(RouteContext));
+				memcpy( &routeContext, pCur, sizeof(RouteContext) );
+				routeContext.Components.To = to;
+				memcpy( pCur, &routeContext, sizeof(RouteContext) );
+
+				return hr;
+
+			}; // Result PlayerLeftS2CEvt::OverrideRouteContextDestination( EntityUID to )
+
+
+			Result PlayerLeftS2CEvt::TraceOut(const char* prefix, const MessageDataPtr& pMsg)
+			{
+ 				PlayerLeftS2CEvt parser;
+				parser.ParseMessage(*pMsg);
+				protocolTrace( Debug1, "PlayerLeft:{0}:{1} , RouteContext:{2}, LeftPlayerID:{3}",
+						prefix, pMsg->GetMessageHeader()->Length, parser.GetRouteContext(), parser.GetLeftPlayerID()); 
+				return ResultCode::SUCCESS;
+			}; // Result PlayerLeftS2CEvt::TraceOut(const char* prefix, const MessageDataPtr& pMsg)
+
 			// C2S: Player Movement
-			const MessageID PlayerMovementC2SEvt::MID = MessageID(MSGTYPE_EVENT, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_GAMEINSTANCE, 2);
+			const MessageID PlayerMovementC2SEvt::MID = MessageID(MSGTYPE_EVENT, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_GAMEINSTANCE, 3);
 			const VariableTable& PlayerMovementC2SEvt::GetAttributes() const
 			{
  				if (!m_AttributesHasParsed)
@@ -619,7 +799,7 @@ namespace SF
 			}; // Result PlayerMovementC2SEvt::TraceOut(const char* prefix, const MessageDataPtr& pMsg)
 
 			// S2C: Player Movement
-			const MessageID PlayerMovementS2CEvt::MID = MessageID(MSGTYPE_EVENT, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_GAMEINSTANCE, 3);
+			const MessageID PlayerMovementS2CEvt::MID = MessageID(MSGTYPE_EVENT, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_GAMEINSTANCE, 4);
 			const VariableTable& PlayerMovementS2CEvt::GetAttributes() const
 			{
  				if (!m_AttributesHasParsed)
@@ -780,7 +960,7 @@ namespace SF
 			}; // Result PlayerMovementS2CEvt::TraceOut(const char* prefix, const MessageDataPtr& pMsg)
 
 			// Cmd: Kick player with given ID
-			const MessageID KickPlayerCmd::MID = MessageID(MSGTYPE_COMMAND, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_GAMEINSTANCE, 4);
+			const MessageID KickPlayerCmd::MID = MessageID(MSGTYPE_COMMAND, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_GAMEINSTANCE, 5);
 			Result KickPlayerCmd::ParseMessage(const MessageData* pIMsg)
 			{
  				ScopeContext hr;
@@ -888,7 +1068,7 @@ namespace SF
 				return ResultCode::SUCCESS;
 			}; // Result KickPlayerCmd::TraceOut(const char* prefix, const MessageDataPtr& pMsg)
 
-			const MessageID KickPlayerRes::MID = MessageID(MSGTYPE_RESULT, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_GAMEINSTANCE, 4);
+			const MessageID KickPlayerRes::MID = MessageID(MSGTYPE_RESULT, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_GAMEINSTANCE, 5);
 			Result KickPlayerRes::ParseMessage(const MessageData* pIMsg)
 			{
  				ScopeContext hr;
@@ -992,109 +1172,6 @@ namespace SF
 						prefix, pMsg->GetMessageHeader()->Length, parser.GetRouteContext(), parser.GetTransactionID(), parser.GetResult()); 
 				return ResultCode::SUCCESS;
 			}; // Result KickPlayerRes::TraceOut(const char* prefix, const MessageDataPtr& pMsg)
-
-			// S2C: Player kicked event. this event will be brocasted when a player kicked.
-			const MessageID PlayerKickedS2CEvt::MID = MessageID(MSGTYPE_EVENT, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_GAMEINSTANCE, 5);
-			Result PlayerKickedS2CEvt::ParseMessage(const MessageData* pIMsg)
-			{
- 				ScopeContext hr;
-
-
-				protocolCheckPtr(pIMsg);
-
-				size_t MsgDataSize = ((size_t)pIMsg->GetMessageSize() - sizeof(MessageHeader));
-				ArrayView<uint8_t> bufferView(MsgDataSize, pIMsg->GetMessageData());
-				InputMemoryStream inputStream(bufferView);
-				auto* input = inputStream.ToInputStream();
-				uint16_t ArrayLen = 0;(void)(ArrayLen);
-
-				protocolCheck(*input >> m_RouteContext);
-				protocolCheck(*input >> m_KickedPlayerID);
-
-				return hr;
-
-			}; // Result PlayerKickedS2CEvt::ParseMessage(const MessageData* pIMsg)
-
-
-			Result PlayerKickedS2CEvt::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr&& pIMsg, MessageBase* &pMessageBase )
-			{
- 				ScopeContext hr;
-
-				protocolCheckMem(pMessageBase = new(memHeap) PlayerKickedS2CEvt(std::forward<MessageDataPtr>(pIMsg)));
-				protocolCheck(pMessageBase->ParseMsg());
-
-				return hr;
-
-			}; // Result PlayerKickedS2CEvt::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr&& pIMsg, MessageBase* &pMessageBase )
-
-
-			MessageData* PlayerKickedS2CEvt::Create( IHeap& memHeap, const RouteContext &InRouteContext, const PlayerID &InKickedPlayerID )
-			{
- 				MessageData *pNewMsg = nullptr;
-				ScopeContext hr([&pNewMsg](Result hr) -> MessageData*
-				{
- 					if(!hr && pNewMsg != nullptr)
-					{
- 						IHeap::Delete(pNewMsg);
-						return nullptr;
-					}
-					return pNewMsg;
-				});
-
-				uint8_t *pMsgData = nullptr;
-
-				unsigned __uiMessageSize = (unsigned)(sizeof(MessageHeader) 
-					+ SerializedSizeOf(InRouteContext)
-					+ SerializedSizeOf(InKickedPlayerID)
-				);
-
-				protocolCheckMem( pNewMsg = MessageData::NewMessage( memHeap, GameInstance::PlayerKickedS2CEvt::MID, __uiMessageSize ) );
-				auto MsgDataSize = static_cast<uint>((size_t)pNewMsg->GetMessageSize() - sizeof(MessageHeader));
-				ArrayView<uint8_t> BufferView(MsgDataSize, 0, pNewMsg->GetMessageData());
-				OutputMemoryStream outputStream(BufferView);
-				auto* output = outputStream.ToOutputStream();
-
-				protocolCheck(*output << InRouteContext);
-				protocolCheck(*output << InKickedPlayerID);
-
-				return hr;
-			}; // MessageData* PlayerKickedS2CEvt::Create( IHeap& memHeap, const RouteContext &InRouteContext, const PlayerID &InKickedPlayerID )
-
-			Result PlayerKickedS2CEvt::OverrideRouteContextDestination( EntityUID to )
-			{
- 				ScopeContext hr;
-
-				MessageData* pIMsg = GetMessage();
-				RouteContext routeContext;
-
-				protocolCheckPtr(pIMsg);
-
-				size_t MsgDataSize = (int)((size_t)pIMsg->GetMessageSize() - sizeof(MessageHeader));
-				ArrayView<uint8_t> bufferView(MsgDataSize, pIMsg->GetMessageData());
-				InputMemoryStream inputStream(bufferView);
-				auto* input = inputStream.ToInputStream();
-				uint16_t ArrayLen = 0;(void)(ArrayLen);
-				uint8_t* pCur = nullptr;(void)(pCur);
-
-				pCur = input->GetBufferPtr() + input->GetPosition();
-				Assert(input->GetRemainSize() >= sizeof(RouteContext));
-				memcpy( &routeContext, pCur, sizeof(RouteContext) );
-				routeContext.Components.To = to;
-				memcpy( pCur, &routeContext, sizeof(RouteContext) );
-
-				return hr;
-
-			}; // Result PlayerKickedS2CEvt::OverrideRouteContextDestination( EntityUID to )
-
-
-			Result PlayerKickedS2CEvt::TraceOut(const char* prefix, const MessageDataPtr& pMsg)
-			{
- 				PlayerKickedS2CEvt parser;
-				parser.ParseMessage(*pMsg);
-				protocolTrace( Debug1, "PlayerKicked:{0}:{1} , RouteContext:{2}, KickedPlayerID:{3}",
-						prefix, pMsg->GetMessageHeader()->Length, parser.GetRouteContext(), parser.GetKickedPlayerID()); 
-				return ResultCode::SUCCESS;
-			}; // Result PlayerKickedS2CEvt::TraceOut(const char* prefix, const MessageDataPtr& pMsg)
 
 			// Cmd: Join to a game instance. You can call multiple times, but it would be waste
 			const MessageID JoinGameCmd::MID = MessageID(MSGTYPE_COMMAND, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_GAMEINSTANCE, 6);

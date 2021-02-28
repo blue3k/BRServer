@@ -124,20 +124,20 @@ namespace GameServer {
 
 		BR_IMPLEMENT_USERMSGTRANS_CLOSE(NetSvrPolicyGame, KickPlayerRes);
 	};
-	
-	// game end event from game instance server
-	class PlayerTransPlayerKickedS2SEvt : public Svr::UserTransactionS2SEvt< GamePlayerEntity, Message::GameInstance::PlayerKickedS2CEvt>
-	{
-	public:
-		typedef Svr::UserTransactionS2SEvt< GamePlayerEntity, Message::GameInstance::PlayerKickedS2CEvt> super;
+	//
+	//// game end event from game instance server
+	//class PlayerTransPlayerKickedS2SEvt : public Svr::UserTransactionS2SEvt< GamePlayerEntity, Message::GameInstance::PlayerKickedS2CEvt>
+	//{
+	//public:
+	//	typedef Svr::UserTransactionS2SEvt< GamePlayerEntity, Message::GameInstance::PlayerKickedS2CEvt> super;
 
-	public:
-		PlayerTransPlayerKickedS2SEvt( IHeap& heap, MessageDataPtr &pIMsg )  :UserTransactionS2SEvt(heap,  pIMsg ) {}
-		virtual ~PlayerTransPlayerKickedS2SEvt() {}
+	//public:
+	//	PlayerTransPlayerKickedS2SEvt( IHeap& heap, MessageDataPtr &pIMsg )  :UserTransactionS2SEvt(heap,  pIMsg ) {}
+	//	virtual ~PlayerTransPlayerKickedS2SEvt() {}
 
-		// Start Transaction
-		virtual Result StartTransaction() override;
-	};
+	//	// Start Transaction
+	//	virtual Result StartTransaction() override;
+	//};
 
 	
 	class PlayerTransAssignRole : public Svr::MessageTransaction< GamePlayerEntity, Message::Game::AssignRoleCmd>

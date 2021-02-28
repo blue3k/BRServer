@@ -19,13 +19,17 @@ Join to a game instance. You can call multiple times, but it would be a waste
 
 1. Command interface
 
-        Result JoinGameInstanceCmd(const RouteContext &InRouteContext, const uint64_t &InTransactionID, const PlayerInformation &InPlayer)
+        Result JoinGameInstanceCmd(const RouteContext &InRouteContext, const uint64_t &InTransactionID, const PlayerInformation &InPlayer, const Array<uint8_t>& InCharacterVisual, const Array<uint8_t>& InCharacterAttribute)
 
 		- OutInRouteContext: RouteContext type. 
 
 		- OutInTransactionID: TransactionID type. 
 
 		- OutInPlayer: PlayerInformation type. Player information who join
+
+		- OutInCharacterVisual: VariableTable type. Character information who join
+
+		- OutInCharacterAttribute: VariableTable type. Character information who join
 
 2. Result interface
 
@@ -42,7 +46,7 @@ C++: Cast message to JoinGameInstanceRes to access values
 
 		- OutGameInsSvr6: NetAddress type. Game instance server address. Client will use this address to connect game server.
 
-		- OutTimeStamp: uint32 type. Time stamp of game state
+		- OutTimeStamp: uint32 type. Time stamp of game
 
 
 ## LeaveGameInstance Request
@@ -68,6 +72,16 @@ C++: Cast message to LeaveGameInstanceRes to access values
 		- OutTransactionID: TransactionID type. 
 
 		- OutResult: Result type. 
+
+
+## PlayerLeftS2CEvt
+Player left event.
+
+        Result PlayerLeftS2CEvt(const RouteContext &InRouteContext, const PlayerID &InLeftPlayerID)
+
+		- OutInRouteContext: RouteContext type. 
+
+		- OutInLeftPlayerID: PlayerID type. Player ID who left.
 
 
 ## PlayerMovementC2SEvt
@@ -123,16 +137,6 @@ C++: Cast message to KickPlayerRes to access values
 		- OutTransactionID: TransactionID type. 
 
 		- OutResult: Result type. 
-
-
-## PlayerKickedS2CEvt
-Player kicked event. this event will be brocasted when a player kicked.
-
-        Result PlayerKickedS2CEvt(const RouteContext &InRouteContext, const PlayerID &InKickedPlayerID)
-
-		- OutInRouteContext: RouteContext type. 
-
-		- OutInKickedPlayerID: PlayerID type. Kicked player ID
 
 
 ## JoinGame Request

@@ -183,7 +183,7 @@ namespace ConspiracyGameInstanceServer {
 		{
 			svrChk( GetMyOwner()->ForeachPlayerSvrGameInstance( [&]( GamePlayer* pPlayer, NetSvrPolicyGameInstance &pPolicy )->Result {
 				if(!pPlayer->GetIsBot())
-					pPolicy.PlayerKickedS2CEvt( RouteContext( GetOwnerEntityUID(), pPlayer->GetPlayerEntityUID()), pPlayer->GetPlayerID()  );
+					pPolicy.PlayerLeftS2CEvt( RouteContext( GetOwnerEntityUID(), pPlayer->GetPlayerEntityUID()), pPlayer->GetPlayerID()  );
 				return GetMyOwner()->LeavePlayer( pPlayer->GetPlayerID() );
 			}) );
 		}
@@ -193,7 +193,7 @@ namespace ConspiracyGameInstanceServer {
 
 			svrChk( GetMyOwner()->FindPlayer( GetPlayerToKick(), pPlayerToKick ) );
 			if(!pPlayerToKick->GetIsBot())
-				NetSvrPolicyGameInstance(pPlayerToKick->GetRemoteEndpoint()).PlayerKickedS2CEvt( RouteContext( GetOwnerEntityUID(), pPlayerToKick->GetPlayerEntityUID()), pPlayerToKick->GetPlayerID()  );
+				NetSvrPolicyGameInstance(pPlayerToKick->GetRemoteEndpoint()).PlayerLeftS2CEvt( RouteContext( GetOwnerEntityUID(), pPlayerToKick->GetPlayerEntityUID()), pPlayerToKick->GetPlayerID()  );
 			svrChk( GetMyOwner()->LeavePlayer( pPlayerToKick->GetPlayerID() ) );
 		}
 
