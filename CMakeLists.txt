@@ -29,5 +29,8 @@ add_subdirectory(3rdParties)
 add_subdirectory(Server)
 add_subdirectory(TestApp)
 
+#I am rewritting many parts of the system, I will revisit the example later
+#add_subdirectory(example)
+
 
 
