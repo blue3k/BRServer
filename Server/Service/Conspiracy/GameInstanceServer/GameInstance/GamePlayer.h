@@ -105,7 +105,7 @@ namespace ConspiracyGameInstanceServer {
 
 	public:
 
-		GamePlayer(GameInstanceEntity* pGameOwner, const PlayerInformation& player);
+		GamePlayer(GameInstanceEntity* pGameOwner, EntityUID playerEntityUID, const PlayerInformation& player);
 		virtual ~GamePlayer();
 
 		uint GetIndex() { return m_Index; }

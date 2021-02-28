@@ -124,8 +124,8 @@ namespace SF {
 
 			svrChk(Service::EntityManager->AddEntity(EntityFaculty::Party, pGameParty));
 
-			svrMem(pPlayer = new(GetHeap()) PartyPlayer(creator));
-			svrChk(pPlayer->SetRemoteEndpoint(remoteEndpoint, playerUID));
+			svrMem(pPlayer = new(GetHeap()) PartyPlayer(GetHeap(), playerUID, creator));
+			svrChk(pPlayer->SetRemoteEndpoint(playerUID, remoteEndpoint));
 			svrChk(pGameParty->JoinPlayer(pPlayer));
 
 			partyUID = pGameParty->GetEntityUID();

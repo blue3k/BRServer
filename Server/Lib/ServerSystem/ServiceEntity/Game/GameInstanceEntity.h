@@ -48,7 +48,7 @@ namespace Svr
 	{
 	public:
 
-		using GamePlayerUIDMap = SortedMap<PlayerID,GameInstancePlayer*>;
+		using GamePlayerByPlayerIDMap = SortedMap<PlayerID,GameInstancePlayer*>;
 		using super = MasterEntity;
 
 	protected:
@@ -62,7 +62,7 @@ namespace Svr
 
 
 		// Player by PlayerID
-		GamePlayerUIDMap		m_GamePlayerByUID;
+		GamePlayerByPlayerIDMap		m_GamePlayerByPlayerID;
 
 		// Release array
 		PageQueue<PlayerID>		m_PendingReleasePlayer;
@@ -137,7 +137,7 @@ namespace Svr
 
 		// Get player count at this game
 		inline uint GetNumPlayer() {
-			return static_cast<uint>(m_GamePlayerByUID.size());
+			return static_cast<uint>(m_GamePlayerByPlayerID.size());
 		}
 
 
@@ -214,13 +214,11 @@ namespace Svr
 		//	Game Player
 		//
 
-		virtual Result CreatePlayerInstance(const PlayerInformation& playerInfo, SFUniquePtr<Svr::GameInstancePlayer> &pPlayer);
-
 		// called by instance manager when the player is connected
-		Result PlayerConnected(PlayerID playerId, const SharedPointerT<MessageEndpoint>& endpoint);
+		Result PlayerConnected(PlayerID playerId, const SharedPointerT<Net::Connection>& connection);
 
 		// Register new player to join
-		virtual Result AddPlayerToJoin(SFUniquePtr<Svr::GameInstancePlayer> &pPlayer );
+		virtual Result AddPlayerToJoin(EntityUID playerEntityUID, const PlayerInformation& playerInfo, const VariableTable& characterVisual, const VariableTable& characterAttribute);
 
 		// Player leave
 		virtual Result LeavePlayer(GameInstancePlayer* &pPlayer );

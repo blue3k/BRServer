@@ -17,9 +17,9 @@
 #include "DB/DatabaseServiceComponent.h"
 
 #ifdef BRDB_USE_OLEDB
-	#include "DB/FactoryOLEDB.h"
+	#include "DB/OLEDB/FactoryOLEDB.h"
 #elif defined (BRDB_USE_MYSQL)
-	#include "DB/FactoryMYSQL.h"
+	#include "DB/MySQL/FactoryMYSQL.h"
 #else
 	#error "DB type must be specified"
 #endif

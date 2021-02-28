@@ -38,9 +38,11 @@ namespace SF {
 		//
 
 
-		GameInstancePlayer::GameInstancePlayer(GameInstanceEntity* pGameOwner, const PlayerInformation& player)
-			: PlayerEntityInformation(player)
+		GameInstancePlayer::GameInstancePlayer(GameInstanceEntity* pGameOwner, EntityUID playerEntityUID, const PlayerInformation& player)
+			: PlayerEntityInformation(pGameOwner->GetHeap(), playerEntityUID, player)
 			, m_GameOwner(pGameOwner)
+			, m_CharacterVisual(GetHeap())
+			, m_CharacterAttribute(GetHeap())
 			, m_IsBot(false)
 		{
 		}
@@ -63,7 +65,13 @@ namespace SF {
 			return hr;
 		}
 
+		Result GameInstancePlayer::SetCharacterData(const VariableTable& characterVisual, const VariableTable& characterAttribute)
+		{
+			m_CharacterVisual = characterVisual;
+			m_CharacterAttribute = characterAttribute;
 
+			return ResultCode::SUCCESS;
+		}
 
 		// Update Game Player 
 		Result GameInstancePlayer::UpdateGamePlayer(TimeStampMS ulCurTime)

@@ -38,9 +38,13 @@ namespace Svr {
 	class PlayerEntityInformation
 	{
 	private:
+
+		Heap m_Heap;
+
 		// Player's UID
 		PlayerInformation m_PlayerInfo;
 
+		SharedPointerT<Net::Connection> m_Connection;
 		SharedPointerT<MessageEndpoint> m_RemoteEndpoint;
 
 		// User entity UID, this will be 0 if the user doesn't logged in.
@@ -51,8 +55,10 @@ namespace Svr {
 
 	public:
 
-		PlayerEntityInformation( const PlayerInformation& player );
+		PlayerEntityInformation(IHeap& heap, EntityUID playerEntityUID, const PlayerInformation& player);
 		virtual ~PlayerEntityInformation();
+
+		IHeap& GetHeap() { return m_Heap; }
 
 		const PlayerInformation& GetPlayerInformation() const	{ return m_PlayerInfo; }
 		const SharedPointerT<MessageEndpoint>& GetRemoteEndpoint() const { return m_RemoteEndpoint; }
@@ -64,7 +70,10 @@ namespace Svr {
 		Result SetPlayerName( const char* newName)				{ return StrUtil::StringCopy( m_PlayerInfo.NickName, newName ); }
 
 		// Set game server entity
-		Result SetRemoteEndpoint(const SharedPointerT<MessageEndpoint>& remoteEndpoint, EntityUID playerUID );
+		Result SetRemoteEndpoint(EntityUID playerEntityUID, const SharedPointerT<MessageEndpoint>& remoteEndpoint);
+		Result SetRemoteConnection(const SharedPointerT<Net::Connection>& connection);
+
+		void ReleaseConnection(const char* reason);
 
 		// Get route context
 		RouteContext GetRouteContext(EntityUID uidFrom) {

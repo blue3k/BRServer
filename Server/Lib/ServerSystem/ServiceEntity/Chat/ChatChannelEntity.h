@@ -54,8 +54,8 @@ namespace Svr {
 	public:
 
 		// Constructor with constructor
-		ChatChannelPlayer( const PlayerInformation& player )
-			:PlayerEntityInformation(player)
+		ChatChannelPlayer(IHeap& heap, EntityUID playerEntityUID, const PlayerInformation& player )
+			:PlayerEntityInformation(heap, playerEntityUID, player)
 		{
 			memset(&TableNode, 0, sizeof(TableNode) );
 		}

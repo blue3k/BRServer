@@ -31,33 +31,49 @@ namespace DB {
 	{
 	}
 
+	DataSourceMYSQL::~DataSourceMYSQL()
+	{
+		if (m_Client)
+		{
+			m_Client->close();
+			IHeap::Delete(m_Client);
+			m_Client = nullptr;
+		}
+	}
+
 
 	// initialize DB source
 	Result	DataSourceMYSQL::InitializeDBSource( const String& strConnectionString, const String& strDBName, const String& strUserID, const String& strPassword )
 	{
-		Result hr = ResultCode::SUCCESS;
-		//const char *next_token = nullptr;
-		//const char *strPos = nullptr;
+		ScopeContext hr([](Result hr) 
+			{
+				if (!hr)
+				{
+					Service::Database->ReportError(nullptr, hr, "DataSourceMYSQL");
+				}
+			});
 		size_t idx;
 
-		dbChk(DataSource::InitializeDBSource( strConnectionString, strDBName, strUserID, strPassword ) );
+		dbCheck(DataSource::InitializeDBSource( strConnectionString, strDBName, strUserID, strPassword ) );
 
 		idx = strConnectionString.IndexOf( ',' );
 		m_ServerIP = strConnectionString.SubString( 0, (int)idx );
 
 		if( strConnectionString.size() <= (idx+1) )
 		{
-			dbErr(ResultCode::INVALID_ARG);
+			dbCheck(ResultCode::INVALID_ARG);
 		}
 
 		m_Port = atoi( strConnectionString.SubString((int)idx+1, (int)strConnectionString.size() ) );
 
-	Proc_End:
-
-		if(!(hr))
-		{
-			Service::Database->ReportError( nullptr, hr, typeid(*this).name() );
-		}
+		m_Client = new(GetHeap()) mysqlx::Client(
+			mysqlx::SessionOption::HOST, mysqlx::string(m_ServerIP.data()),
+			mysqlx::SessionOption::PORT, m_Port,
+			mysqlx::SessionOption::USER, mysqlx::string(strUserID.data()),
+			mysqlx::SessionOption::PWD, mysqlx::string(strPassword.data()),
+			mysqlx::SessionOption::DB, mysqlx::string(strDBName.data()),
+			mysqlx::ClientOption::POOLING, 1,
+			mysqlx::ClientOption::POOL_MAX_SIZE, 20); // TODO: move to config
 
 		return hr;
 	}
@@ -67,8 +83,6 @@ namespace DB {
 	{
 		Result hr = ResultCode::SUCCESS;
 
-	//Proc_End:
-
 		return hr;
 	}
 
@@ -76,6 +90,12 @@ namespace DB {
 	Result	DataSourceMYSQL::CloseDBSource()
 	{
 		m_ServerIP = String_Empty;
+		if (m_Client)
+		{
+			m_Client->close();
+			IHeap::Delete(m_Client);
+			m_Client = nullptr;
+		}
 		return DataSource::CloseDBSource();
 	}
 	

@@ -241,9 +241,9 @@ namespace ConspiracyGameInstanceServer {
 			playerInfo.PlayerID = iBot + 1;
 			playerInfo.Level = 1;
 			StrUtil::Format(playerInfo.NickName, "Bot{0}", iBot);
-			svrCheck(CreatePlayerInstance(playerInfo, pPlayer));
+			//svrCheck(CreatePlayerInstance(playerInfo, pPlayer));
 			pPlayer->SetIsBot(true);
-			svrCheck(AddPlayerToJoin(pPlayer));
+			//svrCheck(AddPlayerToJoin(pPlayer));
 		}
 
 		return hr;
@@ -279,71 +279,71 @@ namespace ConspiracyGameInstanceServer {
 	}
 
 
-	Result GameInstanceEntity::CreatePlayerInstance(const PlayerInformation& playerInfo, SFUniquePtr<Svr::GameInstancePlayer>& pPlayer)
-	{
-		pPlayer.reset(new(GetHeap()) GamePlayer(this, playerInfo));
+	//Result GameInstanceEntity::CreatePlayerInstance(const PlayerInformation& playerInfo, SFUniquePtr<Svr::GameInstancePlayer>& pPlayer)
+	//{
+	//	pPlayer.reset(new(GetHeap()) GamePlayer(this, playerInfo));
 
-		return pPlayer != nullptr ? ResultCode::SUCCESS : ResultCode::OUT_OF_MEMORY;
-	}
-
-
-	// Register new player to join
-	Result GameInstanceEntity::AddPlayerToJoin(SFUniquePtr<Svr::GameInstancePlayer>& pInsPlayer)
-	{
-		Result hr = ResultCode::SUCCESS;
-		//GamePlayer* pFound = nullptr;
-		GamePlayer* pPlayer = nullptr;
-		uint playerIndex;
+	//	return pPlayer != nullptr ? ResultCode::SUCCESS : ResultCode::OUT_OF_MEMORY;
+	//}
 
 
-		pPlayer = (GamePlayer*)pInsPlayer.get();
-
-		svrChk(super::AddPlayerToJoin(pInsPlayer));
-		pInsPlayer = nullptr;
-
-
-		// Check role availability
-		if (pPlayer->GetRequestedRole() != PlayerRole::None)
-		{
-			switch (pPlayer->GetRequestedRole())
-			{
-			case PlayerRole::Seer:
-				if (m_RoleRequestSeer == 0) m_RoleRequestSeer++;
-				else                        svrErr(ResultCode::GAME_INVALID_ROLE);
-				break;
-			case PlayerRole::Werewolf:
-				if (m_RoleRequestWerewolf < 2) m_RoleRequestWerewolf++;
-				else                           svrErr(ResultCode::GAME_INVALID_ROLE);
-				break;
-			default:
-				break;
-			}
-		}
+	//// Register new player to join
+	//Result GameInstanceEntity::AddPlayerToJoin(SFUniquePtr<Svr::GameInstancePlayer>& pInsPlayer)
+	//{
+	//	Result hr = ResultCode::SUCCESS;
+	//	//GamePlayer* pFound = nullptr;
+	//	GamePlayer* pPlayer = nullptr;
+	//	uint playerIndex;
 
 
-		// search empty player index from start
-		playerIndex = (uint)Util::Random.Rand() % GetMaxPlayer();
-		for( uint search = 0; search < GetMaxPlayer(); search++ )
-		{
-			if( m_PlayerByIndex[playerIndex] == nullptr )
-			{
-				m_PlayerByIndex[playerIndex] = pPlayer;
-				pPlayer->SetIndex(playerIndex);
-				break;
-			}
-			playerIndex++;
-			if( playerIndex >= GetMaxPlayer() ) playerIndex = 0;
-		}
+	//	pPlayer = (GamePlayer*)pInsPlayer.get();
 
-		pPlayer->SetPlayerState( PlayerState::Playing );
-		pPlayer->SetCharacter( m_PlayerCharacter[playerIndex] );
+	//	svrChk(super::AddPlayerToJoin(pInsPlayer));
+	//	pInsPlayer = nullptr;
 
 
-	Proc_End:
+	//	// Check role availability
+	//	if (pPlayer->GetRequestedRole() != PlayerRole::None)
+	//	{
+	//		switch (pPlayer->GetRequestedRole())
+	//		{
+	//		case PlayerRole::Seer:
+	//			if (m_RoleRequestSeer == 0) m_RoleRequestSeer++;
+	//			else                        svrErr(ResultCode::GAME_INVALID_ROLE);
+	//			break;
+	//		case PlayerRole::Werewolf:
+	//			if (m_RoleRequestWerewolf < 2) m_RoleRequestWerewolf++;
+	//			else                           svrErr(ResultCode::GAME_INVALID_ROLE);
+	//			break;
+	//		default:
+	//			break;
+	//		}
+	//	}
 
 
-		return hr;
-	}
+	//	// search empty player index from start
+	//	playerIndex = (uint)Util::Random.Rand() % GetMaxPlayer();
+	//	for( uint search = 0; search < GetMaxPlayer(); search++ )
+	//	{
+	//		if( m_PlayerByIndex[playerIndex] == nullptr )
+	//		{
+	//			m_PlayerByIndex[playerIndex] = pPlayer;
+	//			pPlayer->SetIndex(playerIndex);
+	//			break;
+	//		}
+	//		playerIndex++;
+	//		if( playerIndex >= GetMaxPlayer() ) playerIndex = 0;
+	//	}
+
+	//	pPlayer->SetPlayerState( PlayerState::Playing );
+	//	pPlayer->SetCharacter( m_PlayerCharacter[playerIndex] );
+
+
+	//Proc_End:
+
+
+	//	return hr;
+	//}
 
 
 

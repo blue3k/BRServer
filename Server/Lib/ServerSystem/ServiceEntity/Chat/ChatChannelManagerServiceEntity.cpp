@@ -106,8 +106,8 @@ namespace Svr {
 
 		svrCheck(Service::EntityManager->AddEntity( EntityFaculty::ChatChannel, pChatChannel ) );
 
-		svrCheckMem( pPlayer = new(GetHeap()) ChatChannelPlayer( creator ) );
-		svrCheck( pPlayer->SetRemoteEndpoint( remoteEndpoint, playerUID ) );
+		svrCheckMem( pPlayer = new(GetHeap()) ChatChannelPlayer(GetHeap(), playerUID, creator) );
+		svrCheck( pPlayer->SetRemoteEndpoint(playerUID, remoteEndpoint) );
 		svrCheck( pChatChannel->JoinPlayer( pPlayer ) );
 
 		ChatChannelUID = pChatChannel->GetEntityUID();

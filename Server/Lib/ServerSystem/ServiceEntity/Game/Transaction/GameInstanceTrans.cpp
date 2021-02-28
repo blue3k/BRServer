@@ -40,11 +40,8 @@ namespace SF {
 		// Start Transaction
 		Result GameEntityTransJoinGameInstance::StartTransaction()
 		{
-			Svr::GameInstancePlayer* pNewInsPlayer = nullptr;
-			ScopeContext hr([this, &pNewInsPlayer](Result hr)
+			ScopeContext hr([this](Result hr)
 				{
-					Util::SafeDelete(pNewInsPlayer);
-
 					CloseTransaction(hr);
 				});
 
@@ -54,6 +51,7 @@ namespace SF {
 			m_Addr6 = GetMyOwner()->GetAddressIPV6();
 			m_TimeStamp = Util::Time.GetRawUTCSec();
 
+			svrCheck(GetMyOwner()->AddPlayerToJoin(GetRouteContext().GetFrom(), GetPlayer(), GetCharacterVisual(), GetCharacterAttribute()));
 
 			return hr;
 		}

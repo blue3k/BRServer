@@ -96,7 +96,7 @@ namespace Svr {
 			NetSvrPolicyGameParty *pPolicy = nullptr;
 
 			svrChk( GetMyOwner()->FindPlayer( GetInvitedPlayer().PlayerID, pPlayer ) );
-			svrChk( pPlayer->SetRemoteEndpoint(GetRemoteEndpoint(), GetRouteContext().GetFrom()) );
+			svrChk( pPlayer->SetRemoteEndpoint(GetRouteContext().GetFrom(), GetRemoteEndpoint()) );
 
 			NetSvrPolicyGameParty policy(pPlayer->GetRemoteEndpoint());
 
@@ -118,8 +118,8 @@ namespace Svr {
 			if( GetMyOwner()->GetMatchingQueueTicket() != 0 )
 				svrErrClose(ResultCode::SVR_ALREADY_INQUEUE);
 
-			svrMem( pPlayer = new(GetHeap()) PartyPlayer( GetInvitedPlayer() ) );
-			svrChk( pPlayer->SetRemoteEndpoint(GetRemoteEndpoint(), GetRouteContext().GetFrom()));
+			svrMem( pPlayer = new(GetHeap()) PartyPlayer(GetMyOwner()->GetHeap(), GetRouteContext().GetFrom(), GetInvitedPlayer() ) );
+			svrChk( pPlayer->SetRemoteEndpoint(GetRouteContext().GetFrom(), GetRemoteEndpoint()));
 			svrChk( GetMyOwner()->JoinPlayer( pPlayer, false ) );
 		}
 

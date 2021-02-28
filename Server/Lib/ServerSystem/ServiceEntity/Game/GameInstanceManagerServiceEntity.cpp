@@ -46,9 +46,121 @@ namespace SF {
 
 		//////////////////////////////////////////////////////////////////////////
 		//
-		//	Timeout connection
+		//	New connection handler
 		//
 
+		class GameInstanceManager_NewConnectionHandler : public Component
+		{
+		public:
+
+			using super = Component;
+
+			static constexpr uint32_t ComponentID = "GameInstanceManager_NewConnectionHandler"_crc;
+
+
+			GameInstanceManager_NewConnectionHandler(GameInstanceManagerServiceEntity* owner, Net::Connection* pCon)
+				: Component(ComponentID)
+				, m_Manager(owner->AsSharedPtr<GameInstanceManagerServiceEntity>())
+				, m_Connection(pCon)
+			{
+			}
+			~GameInstanceManager_NewConnectionHandler() = default;
+
+			virtual Result InitializeComponent() override
+			{
+				super::InitializeComponent();
+
+				m_OldEventMode = m_Connection->GetEventFireMode();
+				m_Connection->SetEventFireMode(Net::Connection::EventFireMode::Immediate);
+
+				auto messageHandler = [this](Net::Connection* pConn, SharedPointerT<Message::MessageData>& pMsgData)
+				{
+					Message::PlayInstance::JoinGameInstanceCmd cmd(Forward<MessageDataPtr>(pMsgData));
+					if (!cmd.ParseMsg())
+						return;
+
+					EntityUID instanceUID = cmd.GetPlayInstanceID();
+					PlayerID playerID = cmd.GetPlayerID();
+
+					if (instanceUID.GetEntityID().GetFacultyID() != uint(EntityFaculty::GameInstance))
+						return;
+
+					SharedPointerT<Svr::Entity> pEntity;
+					if (!Service::EntityTable->find(instanceUID.GetEntityID(), pEntity))
+						return;
+
+					auto pInstance = pEntity.StaticCast<GameInstanceEntity>();
+					if (!pInstance->PlayerConnected(playerID, pConn))
+						return;
+
+					// PlayerConnected will change event fire mode, use new value for recovery value on exit
+					m_OldEventMode = pConn->GetEventFireMode();
+
+					svrTrace(SVR_INFO, "JoinGameInstance:{0}, player:{1}", instanceUID, playerID);
+
+					auto pThis = pConn->GetComponentManager().RemoveComponent<GameInstanceManager_NewConnectionHandler>();
+					IHeap::Delete(pThis);
+				};
+
+				m_Connection->AddMessageDelegateUnique(uintptr_t(this),
+					Message::PlayInstance::JoinGameInstanceCmd::MID.GetMsgID(),
+					messageHandler
+				);
+
+				auto eventHandler = [this](Net::Connection* pConn, const Net::ConnectionEvent& evt)
+				{
+					switch (evt.Components.EventType)
+					{
+					case Net::ConnectionEvent::EventTypes::EVT_STATE_CHANGE:
+						switch (evt.Components.State)
+						{
+						case Net::ConnectionState::CONNECTED:
+							m_Timer.SetTimer(GameInstanceManagerServiceEntity_NotJoinedConnectionTimeout);
+							break;
+						default:
+							break;
+						}
+					case Net::ConnectionEvent::EventTypes::EVT_DISCONNECTED:
+					default:
+						break;
+					}
+				};
+				m_Connection->GetConnectionEventDelegates().AddDelegateUnique(uintptr_t(this), eventHandler);
+
+				return ResultCode::SUCCESS;
+			}
+
+			virtual void TerminateComponent() override
+			{
+				m_Connection->RemoveMessageDelegate(uintptr_t(this), Message::PlayInstance::JoinGameInstanceCmd::MID.GetMsgID());
+				m_Connection->GetConnectionEventDelegates().RemoveDelegateAll(uintptr_t(this));
+				m_Connection->SetEventFireMode(m_OldEventMode);
+
+				super::TerminateComponent();
+			}
+
+			virtual void TickUpdate() override 
+			{
+				super::TickUpdate();
+
+				if (m_Timer.CheckTimer())
+				{
+					m_Connection->GetComponentManager().RemoveComponent<GameInstanceManager_NewConnectionHandler>();
+					m_Connection->DisconnectNRelease("Joining game instance has timed out");
+
+					IHeap::Delete(this);
+				}
+			}
+
+
+		private:
+
+			Net::Connection::EventFireMode m_OldEventMode = Net::Connection::EventFireMode::OnGameTick;
+			WeakPointerT<GameInstanceManagerServiceEntity> m_Manager;
+			Net::Connection* m_Connection{}; // this is your owner
+			Util::Timer m_Timer;
+
+		};
 
 		//////////////////////////////////////////////////////////////////////////
 		//
@@ -107,15 +219,8 @@ namespace SF {
 					SharedPointerAtomicT<Net::Connection> pConTem;
 					pConTem = std::forward<SharedPointerT<Net::Connection>>(conn);
 
-					//pConTem->AddStateAction(Net::ConnectionState::CONNECTED, &GameInstanceManagerServiceEntity_JoinTimeoutAction);
+					pConTem->GetComponentManager().AddComponent<GameInstanceManager_NewConnectionHandler>(this, pConTem.get());
 
-					pConTem->AddMessageDelegateUnique(uintptr_t(this), 
-						Message::PlayInstance::JoinGameInstanceCmd::MID.GetMsgID(),
-						[this, pCon = pConTem.get()](Net::Connection*, SharedPointerT<Message::MessageData>& pMsgData)
-						{
-							
-							return true;
-						});
 					m_NewConnectionQueue.Enqueue(pConTem);
 				});
 

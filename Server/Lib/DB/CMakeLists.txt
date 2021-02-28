@@ -13,17 +13,9 @@ set(BRDB_LIB_FILES
 	AccountQuery.h
     DataSource.cpp
 	DataSource.h
-    DataSourceMYSQL.cpp
-	DataSourceMYSQL.h
-    DataSourceOLEDB.cpp
-	DataSourceOLEDB.h
     DBClusterManager.cpp
 	DBClusterManager.h
 	DBConfig.h
-    FactoryMYSQL.cpp
-	FactoryMYSQL.h
-    FactoryOLEDB.cpp
-	FactoryOLEDB.h
     GameTransactionDB.cpp
 	GameTransactionDB.h
     GameTransactionDBQuery.cpp
@@ -35,9 +27,6 @@ set(BRDB_LIB_FILES
 	Query.cpp
 	Query.h
 	QueryConst.h
-    QueryMYSQL.cpp
-	QueryMYSQL.h
-	QueryOLEDB.h
     QueryWorker.cpp
 	QueryWorker.h
     QueryWorkerManager.cpp
@@ -48,10 +37,6 @@ set(BRDB_LIB_FILES
 	RankingDBQuery.h
     Session.cpp
     Session.h
-	SessionMYSQL.cpp
-	SessionMYSQL.h
-    SessionOLEDB.cpp
-	SessionOLEDB.h
     ShardCoordinatorDBQuery.cpp
 	ShardCoordinatorDBQuery.h
 	DatabaseServiceComponent.h
@@ -60,7 +45,23 @@ set(BRDB_LIB_FILES
 	DBTrace.cpp
 	DBToString.h
 	DBToString.cpp
-	DBMYSQL.h
+	MySQL/DBMYSQL.h
+    MySQL/DataSourceMYSQL.cpp
+	MySQL/DataSourceMYSQL.h
+    MySQL/FactoryMYSQL.cpp
+	MySQL/FactoryMYSQL.h
+    MySQL/QueryMYSQL.cpp
+	MySQL/QueryMYSQL.h
+	MySQL/SessionMYSQL.cpp
+	MySQL/SessionMYSQL.h
+	OLEDB/DBOLEDB.h
+    OLEDB/DataSourceOLEDB.cpp
+	OLEDB/DataSourceOLEDB.h
+    OLEDB/FactoryOLEDB.cpp
+	OLEDB/FactoryOLEDB.h
+	OLEDB/QueryOLEDB.h
+    OLEDB/SessionOLEDB.cpp
+	OLEDB/SessionOLEDB.h
   )
 
 

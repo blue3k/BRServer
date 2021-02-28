@@ -23,10 +23,10 @@
 #include "Util/SFStrUtil.h"
 #include "Util/SFStringFormat.h"
 #include "DBTrace.h"
-#include "MySQL/DataSourceMYSQL.h"
-#include "MySQL/SessionMYSQL.h"
+#include "DataSourceMYSQL.h"
+#include "SessionMYSQL.h"
 #include "Query.h"
-#include "MySQL/QueryMYSQL.h"
+#include "QueryMYSQL.h"
 #include "ResultCode/SFResultCodeSvr.h"
 #include "ResultCode/SFResultCodeDB.h"
 #include "Service/ServerService.h"
@@ -41,24 +41,6 @@ namespace DB {
 	//	Error handling
 	//
 
-	Result MYSQL_ToResult( int errorValue )
-	{
-		//switch( errorValue )
-		//{
-		//case 0:
-		//	return ResultCode::SUCCESS;
-		//case CR_SERVER_GONE_ERROR:
-		//case CR_SERVER_LOST:
-		//case CR_COMMANDS_OUT_OF_SYNC:
-		//	return ResultCode::DB_CONNECTION_LOST;
-		//case CR_OUT_OF_MEMORY:
-		//	return ResultCode::OUT_OF_MEMORY;
-		//};
-
-		return ResultCode::UNEXPECTED;
-	}
-
-	
 	
 	/////////////////////////////////////////////////////////////////////////////////////////////
 	//
@@ -75,27 +57,44 @@ namespace DB {
 
 	SessionMYSQL::~SessionMYSQL()
 	{
-		if (m_pXSession)
-		{
-			m_pXSession->close();
-			m_pXSession.reset();
-		}
 	}
 	
 	// return context value
 	void* SessionMYSQL::GetContext()
 	{
-		return m_pXSession.get();
+		return m_pMyDataSource;
 	}
 
 	// Send a query
 	Result SessionMYSQL::ProcessQuery( Query *pQuery )
 	{
-		Result hr = ResultCode::SUCCESS;
 		QueryMYSQL* pMyQuery = static_cast<QueryMYSQL*>(pQuery);
 
-		dbChkPtr(pMyQuery);
-		dbChkPtr(m_pXSession);
+		ScopeContext hr([this, &pMyQuery](Result hr)
+			{
+
+				if (!hr)
+				{
+					if (pMyQuery)
+					{
+						defTrace(Error, "Query failed hr:0x{0:X8} : {1}", hr, pMyQuery->GetQueryString().c_str());
+					}
+					else
+					{
+						defTrace(Error, "Query failed hr:0x{0:X8}", hr);
+					}
+				}
+
+				if (pMyQuery)
+					pMyQuery->SetResult(hr);
+
+			});
+
+		dbCheckPtr(pMyQuery);
+		dbCheckPtr(m_pMyDataSource);
+
+		auto* pClient = m_pMyDataSource->GetSQLClient();
+		dbCheckPtr(pClient);
 
 		if( m_Synced != m_InitSync )
 		{
@@ -111,7 +110,8 @@ namespace DB {
 			auto queryString = pMyQuery->GetQueryString().c_str();
 			defTrace(Debug3, "Sending DB query ... {0}", pMyQuery->GetQueryString());
 
-			mysqlx::SqlStatement statement = m_pXSession->sql(pMyQuery->GetQueryString());
+			auto XSession = pClient->getSession();
+			mysqlx::SqlStatement statement = XSession.sql(pMyQuery->GetQueryString());
 
 			pMyQuery->BindParameters(statement);
 
@@ -124,7 +124,7 @@ namespace DB {
 				auto queryOutputString = pMyQuery->GetQueryOutputString().c_str();
 				defTrace(Debug3, "DB query result string ... {0}", pMyQuery->GetQueryOutputString());
 
-				mysqlx::SqlResult outputResult = std::forward<mysqlx::SqlResult>(m_pXSession->sql(pMyQuery->GetQueryOutputString()).execute());
+				mysqlx::SqlResult outputResult = std::forward<mysqlx::SqlResult>(XSession.sql(pMyQuery->GetQueryOutputString()).execute());
 
 				pMyQuery->ParseOutput(outputResult);
 			}
@@ -137,34 +137,6 @@ namespace DB {
 		}
 
 
-	Proc_End:
-
-		if( !(hr) )
-		{
-			if( pMyQuery )
-			{
-				defTrace( Error, "Query failed hr:0x{0:X8} : {1}", hr, pMyQuery->GetQueryString().c_str() );
-			}
-			else
-			{
-				defTrace( Error, "Query failed hr:0x{0:X8}", hr );
-			}
-
-			if( hr == ((Result)ResultCode::DB_CONNECTION_LOST))
-			{
-				defTrace( Warning, "DB connection is lost, recovering the connection... " );
-				Result hrTem = OpenSession();
-				if( !(hrTem) )
-				{
-					defTrace( Error, "DB connection recovery is failed ... {0:X8}", hrTem );
-				}
-			}
-		}
-
-
-		if( pMyQuery )
-			pMyQuery->SetResult(hr);
-
 		return hr;
 	}
 
@@ -173,28 +145,17 @@ namespace DB {
 	{
 		Result hr = ResultCode::SUCCESS;
 
-		dbChkPtr(GetDataSource());
-		dbChkPtr( m_pMyDataSource = (DataSourceMYSQL*)GetDataSource() );
+		dbCheckPtr(GetDataSource());
+		dbCheckPtr(m_pMyDataSource = static_cast<DataSourceMYSQL*>(GetDataSource()));
+
+		auto* pClient = m_pMyDataSource->GetSQLClient();
+		dbCheckPtr(pClient);
 
 		try
 		{
 			CloseSession();
 
 			Session::OpenSession();
-
-			auto serverIP = mysqlx::string(m_pMyDataSource->GetServerIP().data());
-			auto userId = mysqlx::string(m_pMyDataSource->GetUserID().data());
-			auto password = mysqlx::string(m_pMyDataSource->GetPassword().data());
-
-			m_pXSession.reset(new(GetEngineHeap()) mysqlx::Session(
-				serverIP,
-				m_pMyDataSource->GetServerPort(), 
-				userId,
-				password));
-
-			String useDB;
-			useDB.Format("USE {0};", m_pMyDataSource->GetDefaultDB());
-			m_pXSession->sql(useDB.data()).execute();
 
 			// TODO:
 			//mysql_options(m_mySQL, MYSQL_SET_CHARSET_NAME, "utf8");
@@ -213,7 +174,7 @@ namespace DB {
 
 		if( !(hr) )
 		{
-			Service::Database->ReportError(nullptr,hr,typeid(*this).name());
+			dbTrace(Error, "SessionMYSQL: Failed to open a session", hr);
 			CloseSession();
 		}
 
@@ -224,12 +185,6 @@ namespace DB {
 	Result SessionMYSQL::CloseSession()
 	{
 		Session::CloseSession();
-
-		if (m_pXSession != nullptr)
-		{
-			m_pXSession->close();
-			m_pXSession.reset();
-		}
 		
 		return ResultCode::SUCCESS;
 	}
@@ -237,13 +192,6 @@ namespace DB {
 	Result SessionMYSQL::Ping()
 	{
 		Result hr = ResultCode::SUCCESS;
-
-		if (m_pXSession == nullptr)
-		{
-			dbChk(OpenSession());
-		}
-
-	Proc_End:
 
 		return hr;
 	}

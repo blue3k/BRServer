@@ -30,6 +30,9 @@ namespace SF
 {
 	class ServerLogObject : public EngineObject
 	{
+	public:
+		using super = EngineObject;
+
 	private:
 		// config file path
 		char m_ConfigFilePath[256];
@@ -260,6 +263,8 @@ namespace SF
 		// Object task
 		virtual Result OnTick(EngineTaskTick tick) override
 		{
+			super::OnTick(tick);
+
 			if (Util::TimeSince(m_MaskUpdated) > DurationMS(5 * 1000))
 			{
 				LoadTraceConfig();

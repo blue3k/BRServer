@@ -56,8 +56,8 @@ namespace Svr {
 	public:
 
 		// Constructor with constructor
-		PartyPlayer( const PlayerInformation& player )
-			:PlayerEntityInformation(player)
+		PartyPlayer(IHeap& heap, EntityUID playerEntityUID, const PlayerInformation& player )
+			:PlayerEntityInformation(heap, playerEntityUID, player)
 		{
 			memset(&TableNode, 0, sizeof(TableNode) );
 		}

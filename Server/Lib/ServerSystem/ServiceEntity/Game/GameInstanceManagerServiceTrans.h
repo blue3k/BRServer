@@ -58,24 +58,24 @@ namespace SF {
 
 		};
 
-		class GameInstanceManagerTransJoinGameInstance : public MessageTransaction<GameInstanceManagerServiceEntity, Message::PlayInstance::JoinGameInstanceCmd>
-		{
-		public:
-			using super = MessageTransaction<GameInstanceManagerServiceEntity, Message::PlayInstance::JoinGameInstanceCmd>;
+		//class GameInstanceManagerTransJoinGameInstance : public MessageTransaction<GameInstanceManagerServiceEntity, Message::PlayInstance::JoinGameInstanceCmd>
+		//{
+		//public:
+		//	using super = MessageTransaction<GameInstanceManagerServiceEntity, Message::PlayInstance::JoinGameInstanceCmd>;
 
-		private:
-			GameInsUID	m_GameInsUID;
+		//private:
+		//	GameInsUID	m_GameInsUID;
 
-		public:
-			GameInstanceManagerTransJoinGameInstance(IHeap& heap, MessageDataPtr& pIMsg) : super(heap, Forward<MessageDataPtr>(pIMsg)) {}
-			virtual ~GameInstanceManagerTransJoinGameInstance() {}
+		//public:
+		//	GameInstanceManagerTransJoinGameInstance(IHeap& heap, MessageDataPtr& pIMsg) : super(heap, Forward<MessageDataPtr>(pIMsg)) {}
+		//	virtual ~GameInstanceManagerTransJoinGameInstance() {}
 
-			// Start Transaction
-			virtual Result StartTransaction() override;
+		//	// Start Transaction
+		//	virtual Result StartTransaction() override;
 
-			BR_IMPLEMENT_USERMSGTRANS_CLOSE_ARGS(NetSvrPolicyPlayInstance, JoinGameInstanceRes, GetPlayInstanceID(), GetPlayerID());
+		//	BR_IMPLEMENT_USERMSGTRANS_CLOSE_ARGS(NetSvrPolicyPlayInstance, JoinGameInstanceRes, GetPlayInstanceID(), GetPlayerID());
 
-		};
+		//};
 
 
 	} // namespace Svr 

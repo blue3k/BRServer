@@ -26,6 +26,9 @@ namespace SF
 
 	class ZookeeperSessionObject : public EngineObject
 	{
+	public:
+		using super = EngineObject;
+
 	private:
 		String m_ServerAddresses;
 		Zookeeper& m_zkInstance;
@@ -42,6 +45,8 @@ namespace SF
 		// Object task
 		virtual Result OnTick(EngineTaskTick tick) override
 		{
+			super::OnTick(tick);
+
 			Zookeeper::ZKEvent zkEvent;
 			while (m_zkInstance.DequeueEvent(zkEvent))
 			{

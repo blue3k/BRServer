@@ -75,12 +75,12 @@ namespace ConspiracyGameInstanceServer {
 
 		if( !(GetMyOwner()->FindPlayer( GetPlayer().PlayerID, pMyPlayer )) )
 		{
-			svrChk(GetMyOwner()->CreatePlayerInstance(GetPlayer(), pNewInsPlayer));
+			//svrChk(GetMyOwner()->CreatePlayerInstance(GetPlayer(), pNewInsPlayer));
 			pMyPlayer =  dynamic_cast<GamePlayer*>(pNewInsPlayer.get());
 			svrChk(pMyPlayer->InitializePlayer( GetMyOwner() ) );
 			pMyPlayer->SetRequestedRole((PlayerRole)GetRequestedRole());
 
-			svrChk( GetMyOwner()->AddPlayerToJoin(pNewInsPlayer) );
+			//svrChk( GetMyOwner()->AddPlayerToJoin(pNewInsPlayer) );
 			pNewInsPlayer = nullptr;
 			svrTrace(SVR_INFO, "GameUID:{0} Join player {1}, NumPlayer:{2}, ", GetMyOwner()->GetEntityUID(), GetPlayer().PlayerID, GetMyOwner()->GetNumPlayer());
 
@@ -99,7 +99,7 @@ namespace ConspiracyGameInstanceServer {
 
 		m_PlayerIndex = pMyPlayer->GetIndex();
 
-		svrChk( pMyPlayer->SetRemoteEndpoint( GetRemoteEndpoint(), GetRouteContext().GetFrom()) );
+		svrChk( pMyPlayer->SetRemoteEndpoint(GetRouteContext().GetFrom(), GetRemoteEndpoint()) );
 
 		m_Role = pMyPlayer->GetRole();
 		m_Dead = pMyPlayer->GetPlayerState() != PlayerState::Playing;

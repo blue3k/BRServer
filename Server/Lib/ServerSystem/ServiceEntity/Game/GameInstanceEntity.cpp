@@ -45,7 +45,7 @@ namespace SF {
 
 		GameInstanceEntity::GameInstanceEntity()
 			: super()
-			, m_GamePlayerByUID(GetHeap())
+			, m_GamePlayerByPlayerID(GetHeap())
 			, m_PendingReleasePlayer(GetHeap())
 			, m_ComponentManger(GetHeap())
 		{
@@ -122,7 +122,7 @@ namespace SF {
 				return hr;
 
 			// Update Players
-			m_GamePlayerByUID.ForeachOrder(0, m_MaxPlayer, 
+			m_GamePlayerByPlayerID.ForeachOrder(0, m_MaxPlayer, 
 				[&CurTime, &playerCount](const PlayerID& playerID, GameInstancePlayer* pPlayer)-> bool
 				{
 					if (pPlayer->GetRemoteEndpoint() != nullptr)
@@ -137,7 +137,7 @@ namespace SF {
 			// Leave player
 			while ((m_PendingReleasePlayer.Dequeue(pltID)))
 			{
-				if ((m_GamePlayerByUID.Find(pltID, pGamePlayer)))
+				if ((m_GamePlayerByPlayerID.Find(pltID, pGamePlayer)))
 				{
 					playerCount--;
 					LeavePlayer(pGamePlayer);
@@ -154,7 +154,7 @@ namespace SF {
 				return ResultCode::SUCCESS_FALSE;
 
 			// Update registry
-			m_ObjectAttributes.SetValue("NumPlayers", int32_t(m_GamePlayerByUID.size()));
+			m_ObjectAttributes.SetValue("NumPlayers", int32_t(m_GamePlayerByPlayerID.size()));
 			svrCheck(Service::ServiceDirectory->PingObjectDirectory(Service::ServerConfig->GameClusterID, ClusterID::GameInstance, GetEntityUID(), m_ObjectAttributes));
 
 			m_ComponentManger.TickUpdate();
@@ -277,37 +277,43 @@ namespace SF {
 		//
 
 
-		Result GameInstanceEntity::CreatePlayerInstance(const PlayerInformation& playerInfo, SFUniquePtr<Svr::GameInstancePlayer>& pPlayer)
-		{
-			pPlayer.reset(new(GetHeap()) GameInstancePlayer(this, playerInfo));
-
-			return pPlayer != nullptr ? ResultCode::SUCCESS : ResultCode::OUT_OF_MEMORY;
-		}
-
-		Result GameInstanceEntity::PlayerConnected(PlayerID playerId, const SharedPointerT<MessageEndpoint>& endpoint)
+		Result GameInstanceEntity::PlayerConnected(PlayerID playerId, const SharedPointerT<Net::Connection>& connection)
 		{
 			Result hr;
 
+			GameInstancePlayer* pPlayer{};
 
+			svrCheck(m_GamePlayerByPlayerID.Find(playerId, pPlayer));
+
+			pPlayer->SetRemoteConnection(connection);
+
+			connection->SetEventFireMode(Net::Connection::EventFireMode::Immediate);
 
 			return hr;
 		}
 
 		// Register new player to join
-		Result GameInstanceEntity::AddPlayerToJoin(SFUniquePtr<Svr::GameInstancePlayer>& pPlayer)
+		Result GameInstanceEntity::AddPlayerToJoin(EntityUID playerEntityUID, const PlayerInformation& playerInfo, const VariableTable& characterVisual, const VariableTable& characterAttribute)
 		{
 			ScopeContext hr;
 			GameInstancePlayer* pFound = nullptr;
+			SFUniquePtr<Svr::GameInstancePlayer> pPlayer;
 
-			svrCheckPtr(pPlayer);
-			if (m_GamePlayerByUID.Find(pPlayer->GetPlayerID(), pFound))
+			if (m_GamePlayerByPlayerID.Find(pPlayer->GetPlayerID(), pFound))
 			{
 				svrError(ResultCode::GAME_ALREADY_IN_GAME);
 			}
 
+			pPlayer.reset(new(GetHeap()) GameInstancePlayer(this, playerEntityUID, playerInfo));
+			svrCheckPtr(pPlayer);
+
+			svrCheck(pPlayer->InitializePlayer(this));
+
+			pPlayer->SetCharacterData(characterVisual, characterAttribute);
+
 			m_TotalJoinedPlayer++;
 
-			svrCheck(m_GamePlayerByUID.Insert(pPlayer->GetPlayerID(), pPlayer.get()));
+			svrCheck(m_GamePlayerByPlayerID.Insert(pPlayer->GetPlayerID(), pPlayer.get()));
 
 			// clear game killing timer
 			m_TimeToKill.ClearTimer();
@@ -323,13 +329,13 @@ namespace SF {
 		{
 			ScopeContext hr;
 
-			pPlayer->SetRemoteEndpoint(nullptr, 0);
+			pPlayer->ReleaseConnection("Player left");
 
 			// We will leave him as an inactive player so the clean-up and any notify aren't needed
 
-			svrTrace(SVR_INFO, "LeavePlayer, remain:{0}", m_GamePlayerByUID.size());
+			svrTrace(SVR_INFO, "LeavePlayer, remain:{0}", m_GamePlayerByPlayerID.size());
 
-			if (m_GamePlayerByUID.size() == 0) // if no player remain
+			if (m_GamePlayerByPlayerID.size() == 0) // if no player remain
 			{
 				SetGameKillTimer(m_EmptyInstanceKillTimeOut);
 			}
@@ -350,7 +356,7 @@ namespace SF {
 		// Leave all player
 		Result GameInstanceEntity::LeaveAllPlayerForGameDelete()
 		{
-			m_GamePlayerByUID.ForeachOrder(0, m_MaxPlayer, [&](const PlayerID& playerID, GameInstancePlayer* pPlayer)-> bool
+			m_GamePlayerByPlayerID.ForeachOrder(0, m_MaxPlayer, [&](const PlayerID& playerID, GameInstancePlayer* pPlayer)-> bool
 				{
 					// TODO:
 					//if (pPlayer->GetPlayerEntityUID().UID != 0)
@@ -363,7 +369,7 @@ namespace SF {
 					return true;
 				});
 
-			m_GamePlayerByUID.ClearMap();
+			m_GamePlayerByPlayerID.ClearMap();
 
 			return ResultCode::SUCCESS;
 		}
@@ -373,7 +379,7 @@ namespace SF {
 		{
 			ScopeContext hr;
 
-			if (!(m_GamePlayerByUID.Find(pltID, pGamePlayer)))
+			if (!(m_GamePlayerByPlayerID.Find(pltID, pGamePlayer)))
 			{
 				return ResultCode::SVR_PLAYER_NOT_FOUND;
 			}

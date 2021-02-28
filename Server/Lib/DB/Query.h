@@ -166,11 +166,11 @@ namespace DB {
 #include "Variable/SFVariableBoxing.h"
 
 #ifdef BRDB_USE_OLEDB
-#include "DB/DBOLEDB.h"
-#include "DB/QueryOLEDB.h"
+#include "DB/OLEDB/DBOLEDB.h"
+#include "DB/OLEDB/QueryOLEDB.h"
 #elif defined(BRDB_USE_MYSQL)
-#include "DB/DBMYSQL.h"
-#include "DB/QueryMYSQL.h"
+#include "DB/MySQL/DBMYSQL.h"
+#include "DB/MySQL/QueryMYSQL.h"
 #else
 #error "DB type isn't specified"
 #endif

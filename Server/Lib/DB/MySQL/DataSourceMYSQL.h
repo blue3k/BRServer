@@ -15,6 +15,7 @@
 
 #include "DB/DataSource.h"
 
+#include <mysqlx/xdevapi.h>
 
 namespace SF {
 namespace DB {
@@ -34,12 +35,16 @@ namespace DB {
 		// server port
 		uint m_Port;
 
+		mysqlx::Client* m_Client{};
+
 	public:
 		DataSourceMYSQL(IHeap& memMgr);
-		virtual ~DataSourceMYSQL() { CloseDBSource(); }
+		virtual ~DataSourceMYSQL();
 
 		const String& GetServerIP()			{ return m_ServerIP; }
 		uint GetServerPort()						{ return m_Port; }
+
+		mysqlx::Client* GetSQLClient() { return m_Client; }
 
 		// initialize DB source
 		virtual Result	InitializeDBSource( const String& strConnectionString, const String& strDBName, const String& strUserID, const String& strPassword );
@@ -49,7 +54,6 @@ namespace DB {
 
 		// close DB source
 		virtual Result	CloseDBSource();
-
 	};
 
 } // namespace DB

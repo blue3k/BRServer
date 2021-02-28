@@ -52,6 +52,8 @@ namespace DB {
 
 		virtual Result Ping() = 0;
 
+		virtual void OneEndUse() {}
+
 	private:
 
 		// Is session opened?

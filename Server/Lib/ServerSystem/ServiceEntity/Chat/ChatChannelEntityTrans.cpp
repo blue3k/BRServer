@@ -92,7 +92,7 @@ namespace Svr {
 			// This should be rejoin by relogging
 			NetSvrPolicyChatChannel *pPolicy = nullptr;
 
-			svrCheck(pFound->SetRemoteEndpoint(GetRemoteEndpoint(), GetRouteContext().GetFrom()));
+			svrCheck(pFound->SetRemoteEndpoint(GetRouteContext().GetFrom(), GetRemoteEndpoint()));
 
 			NetSvrPolicyChatChannel policy(pFound->GetRemoteEndpoint());
 
@@ -107,9 +107,9 @@ namespace Svr {
 		}
 		else
 		{
-			pPlayer.reset(new(GetHeap()) ChatChannelPlayer(GetJoiningPlayer()));
+			pPlayer.reset(new(GetMyOwner()->GetHeap()) ChatChannelPlayer(GetMyOwner()->GetHeap(), GetRouteContext().GetFrom(), GetJoiningPlayer()));
 			svrCheckMem(pPlayer);
-			svrCheck( pPlayer->SetRemoteEndpoint( GetRemoteEndpoint(), GetRouteContext().GetFrom()) );
+			svrCheck( pPlayer->SetRemoteEndpoint(GetRouteContext().GetFrom(), GetRemoteEndpoint()) );
 			svrCheck( GetMyOwner()->JoinPlayer( pPlayer.get(), false ) );
 			pPlayer.release();
 		}

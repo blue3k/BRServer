@@ -61,7 +61,7 @@ namespace DB {
 		pSession = nullptr;
 
 		auto pItem = m_SessionPool.Pop();
-		if( pItem == nullptr )
+		if (pItem == nullptr)
 		{
 			dbChk(Service::Database->CreateSession(GetHeap(), this,pSession));
 		}
@@ -81,12 +81,11 @@ namespace DB {
 	{
 		Result	hr = ResultCode::SUCCESS;
 
-		dbChkPtr(pSession);
+		dbCheckPtr(pSession);
 
+		pSession->OneEndUse();
 		m_SessionPool.Push((StackPool::Item*)(pSession));
 		pSession = nullptr;
-
-	Proc_End:
 
 		return hr;
 	}

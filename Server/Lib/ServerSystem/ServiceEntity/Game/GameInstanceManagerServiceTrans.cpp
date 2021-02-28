@@ -27,9 +27,6 @@
 
 
 
-
-
-
 namespace SF {
 	namespace Svr {
 
@@ -66,33 +63,33 @@ namespace SF {
 
 
 
-		Result GameInstanceManagerTransJoinGameInstance::StartTransaction()
-		{
-			ScopeContext hr([this](Result hr)
-				{
-					CloseTransaction(hr);
-				});
-			SharedPointerT<Entity> pEntity;
+		//Result GameInstanceManagerTransJoinGameInstance::StartTransaction()
+		//{
+		//	ScopeContext hr([this](Result hr)
+		//		{
+		//			CloseTransaction(hr);
+		//		});
+		//	SharedPointerT<Entity> pEntity;
 
-			svrCheck(super::StartTransaction());
+		//	svrCheck(super::StartTransaction());
 
-			svrCheck(Service::EntityTable->find(EntityUID(GetPlayInstanceID()).GetEntityID(), pEntity));
+		//	svrCheck(Service::EntityTable->find(EntityUID(GetPlayInstanceID()).GetEntityID(), pEntity));
 
-			if (pEntity->GetEntityID().GetFacultyID() != uint32_t(EntityFaculty::GameInstance))
-			{
-				svrCheckClose(ResultCode::SVR_INVALID_ENTITYUID);
-			}
+		//	if (pEntity->GetEntityID().GetFacultyID() != uint32_t(EntityFaculty::GameInstance))
+		//	{
+		//		svrCheckClose(ResultCode::SVR_INVALID_ENTITYUID);
+		//	}
 
-			auto pGameInstance = static_cast<GameInstanceEntity*>(pEntity.get());
-			svrCheck(pGameInstance->PlayerConnected(GetPlayerID(), GetRemoteEndpoint()));
+		//	auto pGameInstance = static_cast<GameInstanceEntity*>(pEntity.get());
+		//	//svrCheck(pGameInstance->PlayerConnected(GetPlayerID(), GetRemoteEndpoint()));
 
 
-			m_GameInsUID = pEntity->GetEntityUID();
+		//	m_GameInsUID = pEntity->GetEntityUID();
 
-			svrTrace(SVR_INFO, "CreateGameInstance:{0}", pGameInstance->GetEntityUID());
+		//	svrTrace(SVR_INFO, "JoinGameInstance:{0}, player:{1}", pGameInstance->GetEntityUID(), GetPlayerID());
 
-			return hr;
-		}
+		//	return hr;
+		//}
 
 
 

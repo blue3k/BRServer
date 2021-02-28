@@ -58,21 +58,28 @@ namespace SF {
 		class GameInstancePlayer : public Svr::PlayerEntityInformation
 		{
 		public:
+			using super = Svr::PlayerEntityInformation;
 
 		private:
 
 			// Game instance that this player
 			GameInstanceEntity* m_GameOwner;
 
+			VariableTable m_CharacterVisual;
+			VariableTable m_CharacterAttribute;
+
 			bool m_IsBot;
 
 
 		public:
 
-			GameInstancePlayer(GameInstanceEntity* pGameOwner, const PlayerInformation& player);
+			GameInstancePlayer(GameInstanceEntity* pGameOwner, EntityUID playerEntityUID, const PlayerInformation& player);
 			virtual ~GameInstancePlayer();
 
 			GameInstanceEntity* GetGameOwner() { return m_GameOwner; }
+
+			const VariableTable& GetCharacterVisual() const { return m_CharacterVisual; }
+			const VariableTable& GetCharacterAttribute() const { return m_CharacterAttribute; }
 
 			bool GetIsBot() { return m_IsBot; }
 			void SetIsBot(bool value) { m_IsBot = value; }
@@ -80,6 +87,7 @@ namespace SF {
 			// Initialize player
 			Result InitializePlayer(GameInstanceEntity* pGameOwner, bool isBot = false);
 
+			Result SetCharacterData(const VariableTable& characterVisual, const VariableTable& characterAttribute);
 
 			//////////////////////////////////////////////////////////////////////////////////////////////////
 			//

@@ -49,8 +49,8 @@ namespace ConspiracyGameInstanceServer {
 	//
 
 
-	GamePlayer::GamePlayer(GameInstanceEntity* pGameOwner, const PlayerInformation& player)
-		: super(pGameOwner, player)
+	GamePlayer::GamePlayer(GameInstanceEntity* pGameOwner, EntityUID playerEntityUID, const PlayerInformation& player)
+		: super(pGameOwner, playerEntityUID, player)
 		, m_Index(0)
 		, m_Character(0)
 		, m_PlayerState(PlayerState::None)
