@@ -23,7 +23,7 @@ include_directories(
 add_executable(BRUnitTest ${SF_UNIT_TEST_FILES})
 
 
-add_dependencies(BRUnitTest BRServerSystem BRDB BRServerProtocol BRConspiracyGameTable BRConspiracyGameDB)
+add_dependencies(BRUnitTest BRServerSystem BRDB BRServerProtocol)
 
 
 target_link_libraries(BRUnitTest ${ENGINE_LINK_LIBS} ${PLATFORM_LIBS} gtest)
