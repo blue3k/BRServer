@@ -123,12 +123,17 @@ namespace SF {
 
 			// Update Players
 			m_GamePlayerByPlayerID.ForeachOrder(0, m_MaxPlayer, 
-				[&CurTime, &playerCount](const PlayerID& playerID, GameInstancePlayer* pPlayer)-> bool
+				[this, &CurTime, &playerCount](const PlayerID& playerID, GameInstancePlayer* pPlayer)-> bool
 				{
 					if (pPlayer->GetRemoteEndpoint() != nullptr)
 						playerCount++;
 
 					pPlayer->UpdateGamePlayer(CurTime);
+
+					if (pPlayer->GetRemoveTimer().CheckTimer())
+					{
+						LeavePlayer(pPlayer->GetPlayerID());
+					}
 					return true;
 				});
 
@@ -154,8 +159,12 @@ namespace SF {
 				return ResultCode::SUCCESS_FALSE;
 
 			// Update registry
-			m_ObjectAttributes.SetValue("NumPlayers", int32_t(m_GamePlayerByPlayerID.size()));
-			svrCheck(Service::ServiceDirectory->PingObjectDirectory(Service::ServerConfig->GameClusterID, ClusterID::GameInstance, GetEntityUID(), m_ObjectAttributes));
+			if (m_TimeToPing.CheckTimer())
+			{
+				m_ObjectAttributes.SetValue("NumPlayers", int32_t(m_GamePlayerByPlayerID.size()));
+				svrCheck(Service::ServiceDirectory->PingObjectDirectory(Service::ServerConfig->GameClusterID, ClusterID::GameInstance, GetEntityUID(), m_ObjectAttributes));
+				m_TimeToPing.SetTimer(Const::GAMEINSTANCE_PING_STATUS);
+			}
 
 			m_ComponentManger.TickUpdate();
 
@@ -265,6 +274,8 @@ namespace SF {
 				m_TimeToKill.SetTimerFunc([&]() { OnGameKillTimer(); });
 			}
 
+			m_TimeToPing.SetTimer(Const::GAMEINSTANCE_PING_STATUS);
+
 			return hr;
 		}
 
@@ -314,6 +325,8 @@ namespace SF {
 			m_TotalJoinedPlayer++;
 
 			svrCheck(m_GamePlayerByPlayerID.Insert(pPlayer->GetPlayerID(), pPlayer.get()));
+
+			pPlayer->GetRemoveTimer().SetTimer(Const::GAMEINSTANCE_PLAYER_REMOVE);
 
 			// clear game killing timer
 			m_TimeToKill.ClearTimer();

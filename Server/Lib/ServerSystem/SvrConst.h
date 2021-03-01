@@ -72,6 +72,8 @@ namespace Const {
 
 	constexpr DurationMS		GAMEINSTANCE_TICK_TIME = DurationMS(1000);
 	constexpr DurationMS		GAMEINSTANCE_EMPTYINSTANCE_KILL_TIMEOUT = DurationMS(60 * 1000);
+	constexpr DurationMS		GAMEINSTANCE_PING_STATUS = DurationMS(12 * 1000); // 
+	constexpr DurationMS		GAMEINSTANCE_PLAYER_REMOVE = DurationMS(2 * 60 * 1000); // Not joined player remove timer
 
 
 	constexpr DurationMS		TIME_INTERVAL_RANKING_UPDATE = DurationMS(10 * 1000);

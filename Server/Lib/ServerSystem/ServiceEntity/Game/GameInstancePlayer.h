@@ -70,6 +70,7 @@ namespace SF {
 
 			bool m_IsBot;
 
+			Util::TimeStampTimer m_TimeToRemove;
 
 		public:
 
@@ -88,6 +89,8 @@ namespace SF {
 			Result InitializePlayer(GameInstanceEntity* pGameOwner, bool isBot = false);
 
 			Result SetCharacterData(const VariableTable& characterVisual, const VariableTable& characterAttribute);
+
+			Util::TimeStampTimer& GetRemoveTimer() { return m_TimeToRemove; }
 
 			//////////////////////////////////////////////////////////////////////////////////////////////////
 			//

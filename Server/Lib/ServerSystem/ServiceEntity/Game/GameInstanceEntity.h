@@ -81,6 +81,8 @@ namespace Svr
 
 		// Time for kill this game
 		Util::TimeStampTimer m_TimeToKill;
+		Util::TimeStampTimer m_TimeToPing;
+
 
 		// Is accept join?
 		bool m_AcceptJoin = false;
