@@ -94,12 +94,12 @@ namespace Net {
 	Result ServerMUDP::SendNetCtrl( const sockaddr_storage& dstAddress, uint uiCtrlCode, uint uiSequence, Message::MessageID msgID, uint64_t UID )
 	{
 		Result hr = ResultCode::SUCCESS, hrTem = ResultCode::SUCCESS;
-		MsgMobileNetCtrl *pNetCtrl = nullptr;
+		MsgNetCtrl *pNetCtrl = nullptr;
 		MessageDataPtr pMsg;
 
-		netMem( pMsg = Message::MessageData::NewMessage(GetSocketIO()->GetIOHeap(), uiCtrlCode, sizeof(MsgMobileNetCtrl) ) );
+		netMem( pMsg = Message::MessageData::NewMessage(GetSocketIO()->GetIOHeap(), uiCtrlCode, sizeof(MsgNetCtrl) ) );
 
-		pNetCtrl = (MsgMobileNetCtrl*)pMsg->GetMessageBuff();
+		pNetCtrl = (MsgNetCtrl*)pMsg->GetMessageBuff();
 		pNetCtrl->PeerID = UID;
 		pNetCtrl->msgID.SetSequence(uiSequence);
 		pNetCtrl->rtnMsgID = msgID;
@@ -135,8 +135,8 @@ namespace Net {
 		if (pData == nullptr)
 			return ResultCode::INVALID_ARG;
 
-		MsgMobileNetCtrl *pNetCtrl = (MsgMobileNetCtrl*)pData;
-		if (pNetCtrl->Length != sizeof(MsgMobileNetCtrl) 
+		MsgNetCtrl *pNetCtrl = (MsgNetCtrl*)pData;
+		if (pNetCtrl->Length != sizeof(MsgNetCtrl) 
 			&& pNetCtrl->Length != sizeof(MsgMobileNetCtrlSync) 
 			&& pNetCtrl->Length != sizeof(Message::MobileMessageHeader))
 		{

@@ -174,10 +174,9 @@ namespace Svr {
 
 		SharedPointerT<Entity> pEntity;
 		hr = Service::EntityTable->erase(entityID, pEntity);
-		if (!(hr))
+		if (!hr)
 		{
-			hr = ResultCode::SUCCESS_FALSE;
-			goto Proc_End;
+			return hr = ResultCode::SUCCESS_FALSE;
 		}
 		pEntity->ClearEntityUID();
 
@@ -191,11 +190,9 @@ namespace Svr {
 			break;
 		};
 
-		svrChk(RemoveTickTask((Entity*)pEntity));
+		svrCheck(RemoveTickTask((Entity*)pEntity));
 
 		OnEntityRemoved((Entity*)pEntity);
-
-	Proc_End:
 
 		return hr;
 	}

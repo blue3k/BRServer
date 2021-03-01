@@ -210,7 +210,7 @@ namespace SF {
 
 		Result PlayerTransCloseInstance::OnCloseTransaction(Result hrRes)
 		{
-			GetMyOwner()->AddGameTransactionLog(TransLogCategory::Account, -2, 0, 0, "EntityClose");
+			//GetMyOwner()->AddGameTransactionLog(TransLogCategory::Account, -2, 0, 0, "EntityClose");
 
 			Service::EntityManager->RemoveEntity(GetMyOwner());
 

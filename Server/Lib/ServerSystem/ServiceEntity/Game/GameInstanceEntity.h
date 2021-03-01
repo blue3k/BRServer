@@ -221,7 +221,7 @@ namespace Svr
 		virtual Result AddPlayerToJoin(EntityUID playerEntityUID, const PlayerInformation& playerInfo, const VariableTable& characterVisual, const VariableTable& characterAttribute);
 
 		// Player leave
-		virtual Result LeavePlayer(GameInstancePlayer* &pPlayer );
+		virtual Result LeavePlayer(GameInstancePlayer* pPlayer );
 
 		virtual Result LeavePlayer( PlayerID pltID );
 

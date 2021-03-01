@@ -94,7 +94,7 @@ namespace Svr {
 		SetLatestActiveTime(Util::Time.GetTimeUTCSec());
 		m_LatestUpdateTime = {};
 
-		uint32_t PlayerAutoLogout = 2 * 60; // TODO: move to constant
+		uint32_t PlayerAutoLogout = 30; // TODO: move to constant
 		GetTimeToKill().SetTimer(DurationMS(PlayerAutoLogout * 1000));
 
 		svrCheck(GetComponentManager().AddComponent<UserFriendSystem>(this));

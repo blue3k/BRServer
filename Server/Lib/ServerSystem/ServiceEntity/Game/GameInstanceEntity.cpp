@@ -142,7 +142,7 @@ namespace SF {
 					playerCount--;
 					LeavePlayer(pGamePlayer);
 
-					if (playerCount <= 0)
+					if (playerCount <= 0 && GetInstanceType() != "Static"_crc)
 					{
 						CloseGameInstance();
 					}
@@ -299,7 +299,7 @@ namespace SF {
 			GameInstancePlayer* pFound = nullptr;
 			SFUniquePtr<Svr::GameInstancePlayer> pPlayer;
 
-			if (m_GamePlayerByPlayerID.Find(pPlayer->GetPlayerID(), pFound))
+			if (m_GamePlayerByPlayerID.Find(playerInfo.PlayerID, pFound))
 			{
 				svrError(ResultCode::GAME_ALREADY_IN_GAME);
 			}
@@ -325,21 +325,27 @@ namespace SF {
 
 
 		// Player leave
-		Result GameInstanceEntity::LeavePlayer(GameInstancePlayer*& pPlayer)
+		Result GameInstanceEntity::LeavePlayer(GameInstancePlayer* pPlayer)
 		{
 			ScopeContext hr;
 
 			pPlayer->ReleaseConnection("Player left");
 
+			GameInstancePlayer* pRemoved{};
+			m_GamePlayerByPlayerID.Remove(pPlayer->GetPlayerID(), pRemoved);
+			assert(pRemoved == pPlayer);
+
 			// We will leave him as an inactive player so the clean-up and any notify aren't needed
 
 			svrTrace(SVR_INFO, "LeavePlayer, remain:{0}", m_GamePlayerByPlayerID.size());
+
 
 			if (m_GamePlayerByPlayerID.size() == 0) // if no player remain
 			{
 				SetGameKillTimer(m_EmptyInstanceKillTimeOut);
 			}
 
+			IHeap::Delete(pPlayer);
 
 			return hr;
 		}
@@ -363,8 +369,6 @@ namespace SF {
 					//	NetSvrPolicyGameInstance(pPlayer->GetRemoteEndpoint()).PlayerKickedS2CEvt(RouteContext(GetEntityUID(), pPlayer->GetPlayerEntityUID()), pPlayer->GetPlayerID());
 
 					LeavePlayer(pPlayer);
-
-					Util::SafeDelete(pPlayer);
 
 					return true;
 				});
