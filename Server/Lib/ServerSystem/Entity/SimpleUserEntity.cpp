@@ -326,10 +326,7 @@ namespace Svr
 			PendingCloseTransaction("Null Connection maybe disconnected");
 		}
 
-		svrChk(SimpleEntity::TickUpdate(pAction) );
-
-	Proc_End:
-
+		svrCheck(SimpleEntity::TickUpdate(pAction) );
 
 		pIMsg = nullptr;
 

@@ -300,25 +300,47 @@ namespace SF {
 			return;
 		}
 
-		SortedSet<StringCrc64> listAlreadyHave(GetHeap(), static_cast<int>(m_Services.size()));
-		for (auto itService : m_Services)
-		{
-			listAlreadyHave.Insert(itService.GetValue()->GetNodeNameCrc());
-		}
+		SortedSet<StringCrc64> newSet(GetHeap(), static_cast<int>(pTask.ResultStrings.size()));
+		SortedSet<StringCrc64> removedSet(GetHeap(), static_cast<int>(m_Services.size()));
 
 		// This should be getchildren list because that's the only thing have string list result
 		for (auto& nodeName : pTask.ResultStrings)
 		{
 			StringCrc64 nodeNameCrc = (const char*)nodeName;
+			newSet.Insert(nodeNameCrc);
+		}
+
+		for (auto itService : m_Services)
+		{
+			int64_t order{};
+			if (!newSet.Find(itService.GetValue()->GetNodeNameCrc()))
+			{
+				removedSet.Insert(itService.GetValue()->GetNodeNameCrc());
+			}
+		}
+
+		for (auto itRemoved : removedSet)
+		{
+			SharedPointerT<ServerServiceInformation> pRemove;
+			if (m_Services.Remove(itRemoved, pRemove))
+			{
+				svrTrace(Info, "ServiceClusterZookeeper service removed gameid:{0}, clusterid:{1}, entityUID:{2}", pRemove->GetGameID(), pRemove->GetClusterID(), pRemove->GetEntityUID());
+			}
+		}
+
+		for (auto& nodeName : pTask.ResultStrings)
+		{
 			SharedPointerT<ServerServiceInformation> pFound;
+			StringCrc64 nodeNameCrc = (const char*)nodeName;
 			m_Services.Find(nodeNameCrc, pFound);
 			if (pFound != nullptr)
 			{
-				listAlreadyHave.Remove(nodeNameCrc);
 				continue;
 			}
 			else
 			{
+				svrTrace(Info, "ServiceClusterZookeeper service added ({0})", nodeName);
+
 				Json::Value jsonValue;
 				String nodePath(GetHeap());
 				nodePath.Format("{0}/{1}", m_ClusterPath, nodeName);
@@ -328,20 +350,6 @@ namespace SF {
 				// New Service I need to add this to the list
 				AddServiceInfo(nodeName, nodeNameCrc, jsonValue);
 			}
-		}
-
-		// If anything not in the list should be removed
-		auto serverID = GetServerUID();
-		for (auto itRemove : listAlreadyHave)
-		{
-			SharedPointerT<ServerServiceInformation> pRemove;
-			if (!m_Services.Find(itRemove, pRemove))
-				continue;
-
-			svrTrace(Info, "ServiceClusterZookeeper service removed ({0}), GameID:{1} ClusterID:{2}", pRemove->GetNodeName(), GetGameID(), ToString(GetClusterID()));
-			m_Services.Remove(itRemove, pRemove);
-			if (pRemove != nullptr)
-				pRemove = nullptr;
 		}
 
 		m_GetChildrenTask = nullptr;
