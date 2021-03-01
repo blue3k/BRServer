@@ -313,9 +313,9 @@ namespace SF {
 		for (auto itService : m_Services)
 		{
 			int64_t order{};
-			if (!newSet.Find(itService.GetValue()->GetNodeNameCrc()))
+			if (!newSet.Find(itService.GetKey()))
 			{
-				removedSet.Insert(itService.GetValue()->GetNodeNameCrc());
+				removedSet.Insert(itService.GetKey());
 			}
 		}
 
@@ -325,6 +325,11 @@ namespace SF {
 			if (m_Services.Remove(itRemoved, pRemove))
 			{
 				svrTrace(Info, "ServiceClusterZookeeper service removed gameid:{0}, clusterid:{1}, entityUID:{2}", pRemove->GetGameID(), pRemove->GetClusterID(), pRemove->GetEntityUID());
+			}
+			else
+			{
+				// the value should be exist
+				assert(false);
 			}
 		}
 
