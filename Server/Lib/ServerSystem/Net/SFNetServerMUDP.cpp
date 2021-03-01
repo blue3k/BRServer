@@ -97,18 +97,17 @@ namespace Net {
 		MsgNetCtrl *pNetCtrl = nullptr;
 		MessageDataPtr pMsg;
 
-		netMem( pMsg = Message::MessageData::NewMessage(GetSocketIO()->GetIOHeap(), uiCtrlCode, sizeof(MsgNetCtrl) ) );
+		netCheckMem( pMsg = Message::MessageData::NewMessage(GetSocketIO()->GetIOHeap(), uiCtrlCode, sizeof(MsgNetCtrl) ) );
 
 		pNetCtrl = (MsgNetCtrl*)pMsg->GetMessageBuff();
 		pNetCtrl->PeerID = UID;
 		pNetCtrl->msgID.SetSequence(uiSequence);
 		pNetCtrl->rtnMsgID = msgID;
 
-		pMsg->GetMessageHeader()->msgID.IDs.Mobile = true;
 		pMsg->UpdateChecksum();
 
 		hrTem = SendRaw(dstAddress, pMsg);
-		if( !(hrTem) )
+		if( !hrTem )
 		{
 			SFLog( Net, Error, "NetCtrl Send failed in direct: DstAddr:{0}, msg:{1:X8}, seq:{2}, hr={3:X8}", 
 							dstAddress, 
@@ -119,11 +118,9 @@ namespace Net {
 			// ignore io send fail except connection closed
 			if( hrTem == ResultCode::IO_CONNECTION_CLOSED )
 			{
-				goto Proc_End;
+				return hr;
 			}
 		}
-
-	Proc_End:
 
 		return hr;
 	}
