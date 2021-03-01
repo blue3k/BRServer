@@ -296,7 +296,7 @@ namespace SF {
 	{
 		if (!pTask.ZKResult)
 		{
-			//assert(false);
+			svrTrace(Info, "ServiceClusterZookeeper requesting service list failed gameid:{0}, clusterid:{1}, hr:{2}", GetGameID(), GetClusterID(), pTask.ZKResult);
 			return;
 		}
 
