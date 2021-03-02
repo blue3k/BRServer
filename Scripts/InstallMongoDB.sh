@@ -14,3 +14,9 @@ sudo apt-get update
 
 sudo apt-get install -y mongodb-org
 
+
+#change data path and ip/port setting
+#https://docs.mongodb.com/manual/reference/configuration-options/
+sudo vi /etc/mongod.conf
+
+
