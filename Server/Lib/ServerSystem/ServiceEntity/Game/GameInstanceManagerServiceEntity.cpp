@@ -85,13 +85,23 @@ namespace SF {
 					if (instanceUID.GetEntityID().GetFacultyID() != uint(EntityFaculty::GameInstance))
 						return;
 
+					MessageDataPtr pRes;
 					SharedPointerT<Svr::Entity> pEntity;
 					if (!Service::EntityTable->find(instanceUID.GetEntityID(), pEntity))
+					{
+						pRes = SF::Message::PlayInstance::JoinGameInstanceRes::Create(GetSystemHeap(), cmd.GetTransactionID(), ResultCode::INVALID_INSTANCEID, instanceUID, playerID);
+						pConn->Send(pRes);
 						return;
+					}
 
 					auto pInstance = pEntity.StaticCast<GameInstanceEntity>();
-					if (!pInstance->PlayerConnected(playerID, pConn))
+					Result hr = pInstance->PlayerConnected(playerID, pConn);
+					if (!hr)
+					{
+						pRes = SF::Message::PlayInstance::JoinGameInstanceRes::Create(GetSystemHeap(), cmd.GetTransactionID(), hr, instanceUID, playerID);
+						pConn->Send(pRes);
 						return;
+					}
 
 					// PlayerConnected will change event fire mode, use new value for recovery value on exit
 					m_OldEventMode = pConn->GetEventFireMode();
@@ -100,6 +110,9 @@ namespace SF {
 
 					auto pThis = pConn->GetComponentManager().RemoveComponent<GameInstanceManager_NewConnectionHandler>();
 					IHeap::Delete(pThis);
+
+					pRes = SF::Message::PlayInstance::JoinGameInstanceRes::Create(GetSystemHeap(), cmd.GetTransactionID(), hr, instanceUID, playerID);
+					pConn->Send(pRes);
 				};
 
 				m_Connection->AddMessageDelegateUnique(uintptr_t(this),
@@ -214,7 +227,7 @@ namespace SF {
 			}
 
 
-			m_pNetPublic->SetNewConnectionhandler([this](SharedPointerT<Net::Connection>& conn)
+			m_pNetPublic->SetNewConnectionhandler([this](SharedPointerT<Net::Connection> conn)
 				{
 					SharedPointerAtomicT<Net::Connection> pConTem;
 					pConTem = std::forward<SharedPointerT<Net::Connection>>(conn);
@@ -224,7 +237,7 @@ namespace SF {
 					m_NewConnectionQueue.Enqueue(pConTem);
 				});
 
-			svrCheck(m_pNetPublic->HostOpen(NetClass::Game, m_NetPublicConfig.ListenIP, m_NetPublicConfig.Port));
+			svrCheck(m_pNetPublic->HostOpen(NetClass::GameInstance, m_NetPublicConfig.ListenIP, m_NetPublicConfig.Port));
 
 			m_pNetPublic->SetIsEnableAccept(true);
 

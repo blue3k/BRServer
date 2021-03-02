@@ -88,7 +88,7 @@ namespace SF {
 			svrCheckMem(m_pNetPublic = NewObject<Net::ServerMUDP>(GetHeap(), serverID, NetClass::Game));
 		}
 
-		m_pNetPublic->SetNewConnectionhandler([this](SharedPointerT<Net::Connection>& conn)
+		m_pNetPublic->SetNewConnectionhandler([this](SharedPointerT<Net::Connection> conn)
 		{
 			SharedPointerAtomicT<Net::Connection> pConTem;
 			pConTem = std::forward<SharedPointerT<Net::Connection>>(conn);
