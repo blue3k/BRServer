@@ -3,6 +3,8 @@
 
 SF_PATH=$(dirname "$0")
 
+sudo apt install default-jdk
+
 #download deb package bundle
 wget http://apache.mirrors.hoobly.com/zookeeper/zookeeper-3.6.2/apache-zookeeper-3.6.2-bin.tar.gz
 sudo mkdir /etc/zookeeper
