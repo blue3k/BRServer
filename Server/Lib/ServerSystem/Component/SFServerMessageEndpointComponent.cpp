@@ -169,7 +169,7 @@ namespace SF
 	void ServerMessageEndpointComponent::DeinitializeComponent()
 	{
 		if (m_MessageConsumeWorker != nullptr)
-			m_MessageConsumeWorker->Stop();
+			m_MessageConsumeWorker->Stop(true);
 		IHeap::Delete(m_MessageConsumeWorker);
 
 		LibraryComponent::DeinitializeComponent();
