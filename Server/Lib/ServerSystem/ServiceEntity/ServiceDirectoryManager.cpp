@@ -860,7 +860,7 @@ namespace SF {
 		WatchForService(Service::ServerConfig->GameClusterID, ClusterID::None);
 
 		// Initializing thread
-		m_TickThread.reset(new FunctorTickThread([this](Thread* pThread) 
+		m_TickThread.reset(new(GetHeap()) FunctorTickThread([this](Thread* pThread) 
 			{
 				TickUpdate();
 				return true;
