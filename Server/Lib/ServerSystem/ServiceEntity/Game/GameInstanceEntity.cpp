@@ -56,7 +56,6 @@ namespace SF {
 			// To game instance
 			RegisterMessageHandler<GameEntityTransJoinGameInstance>();
 			RegisterMessageHandler<GameEntityTransLeaveGameInstance>();
-
 		}
 
 		GameInstanceEntity::~GameInstanceEntity()

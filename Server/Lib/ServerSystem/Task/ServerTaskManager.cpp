@@ -37,7 +37,7 @@ namespace SF {
 		, m_GroupWorkLoad(0)
 		, m_GroupWorkLoadDiff(0)
 		, m_GroupID(0)
-		, m_ulLoopInterval(20)
+		, m_ulLoopInterval(0)
 		, m_EventTask(GetSystemHeap())
 		, m_PendingAddTask(GetSystemHeap(), iQueuePageSize)
 		, m_PendingRemoveTask(GetSystemHeap(), iQueuePageSize)

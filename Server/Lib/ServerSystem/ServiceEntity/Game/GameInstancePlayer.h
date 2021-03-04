@@ -24,16 +24,10 @@
 #include "Entity/PlayerEntityInformation.h"
 
 
+
 namespace SF {
 	namespace Net {
 		class Connection;
-	}
-
-	namespace Policy {
-		class ISvrPolicyGame;
-		class IPolicyGameServer;
-		class ISvrPolicyGameInstance;
-		class ISvrPolicyGameServer;
 	}
 }
 
@@ -46,6 +40,24 @@ namespace SF {
 		class GameServer;
 		class GameServerEntity;
 		class GameInstanceEntity;
+
+
+
+		//////////////////////////////////////////////////////////////////////////
+		//
+		//	Game Instance entity class
+		//
+
+
+		class GameInstancePlayerComponentManager : public ComponentManager
+		{
+		public:
+			GameInstancePlayerComponentManager(IHeap& heap)
+				: ComponentManager(heap)
+			{
+			}
+
+		};
 
 
 		//////////////////////////////////////////////////////////////////////////
@@ -67,6 +79,8 @@ namespace SF {
 
 			VariableTable m_CharacterVisual;
 			VariableTable m_CharacterAttribute;
+
+			GameInstancePlayerComponentManager m_ComponentManager;
 
 			bool m_IsBot;
 

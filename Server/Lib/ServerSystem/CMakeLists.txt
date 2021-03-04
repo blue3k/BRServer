@@ -40,6 +40,8 @@ set(BRSERVERSYSTEM_LIB_FILES
     ServiceEntity/Game/GameInstanceManagerServiceTrans.cpp
     ServiceEntity/Game/GameInstancePlayer.h
     ServiceEntity/Game/GameInstancePlayer.cpp
+    ServiceEntity/Game/GameInstancePlayerComponent.h
+    ServiceEntity/Game/GameInstancePlayerComponent.cpp
     ServiceEntity/Game/GameInstanceServiceEntity.h
     ServiceEntity/Game/GameInstanceServiceEntity.cpp
     ServiceEntity/Game/GameInstanceServiceTrans.h

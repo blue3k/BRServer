@@ -1,6 +1,6 @@
 ////////////////////////////////////////////////////////////////////////////////
 // 
-// CopyRight (c) 2013 The Braves
+// CopyRight (c) The Braves
 // 
 // Author : KyungKun Ko
 //
@@ -25,6 +25,7 @@
 #include "Server/BrServerUtil.h"
 #include "ServiceEntity/Game/GameInstancePlayer.h"
 #include "ServiceEntity/Game/GameInstanceEntity.h"
+#include "ServiceEntity/Game/GameInstancePlayerComponent.h"
 
 
 
@@ -43,12 +44,14 @@ namespace SF {
 			, m_GameOwner(pGameOwner)
 			, m_CharacterVisual(GetHeap())
 			, m_CharacterAttribute(GetHeap())
+			, m_ComponentManager(GetHeap())
 			, m_IsBot(false)
 		{
 		}
 
 		GameInstancePlayer::~GameInstancePlayer()
 		{
+			m_ComponentManager.TerminateComponents();
 		}
 
 
@@ -59,6 +62,10 @@ namespace SF {
 
 			// disable, not implemented yet
 			svrCheckPtr(m_GameOwner = pGameOwner);
+
+			svrCheck(m_ComponentManager.AddComponent<GameInstancePlayerComponentMovement>(GetHeap(), this));
+
+			m_ComponentManager.InitializeComponents();
 
 			m_IsBot = isBot;
 
