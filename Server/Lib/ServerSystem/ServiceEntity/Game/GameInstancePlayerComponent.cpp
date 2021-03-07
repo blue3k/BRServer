@@ -35,7 +35,7 @@ namespace SF {
 
 		//////////////////////////////////////////////////////////////////////////
 		//
-		//	Entity server class
+		//	Game instance player component - movement
 		//
 
 		constexpr StringCrc32 GameInstancePlayerComponentMovement::ComponentID;
@@ -48,7 +48,16 @@ namespace SF {
 
 		void GameInstancePlayerComponentMovement::TickUpdate()
 		{
+			Result hr;
 			GameInstancePlayerComponent::TickUpdate();
+
+			 hr = m_ActorMovement.SimulateCurrentMove(GetOwner().GetMovementFrame(), GetOwner().GetLatestMovement());
+			 if (!hr)
+			 {
+				 svrTrace(Error, "Failed to update movement hr:{0}", hr);
+			 }
+
+			 
 		}
 
 

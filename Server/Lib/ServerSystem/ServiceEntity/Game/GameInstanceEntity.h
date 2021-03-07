@@ -100,7 +100,9 @@ namespace Svr
 		// Component manager
 		ComponentManager m_ComponentManger;
 
-
+		// movement frame
+		TimeStampMS m_LatestTickTime;
+		uint32_t m_MovementTick = 0;
 
 	public:
 		//////////////////////////////////////////////////////////////////////////////////////////////////
@@ -154,7 +156,7 @@ namespace Svr
 		// Run entity
 		virtual Result TickUpdate(TimerAction *pAction = nullptr) override;
 
-
+		uint32_t UpdateMovementTick(TimeStampMS newUpdateTimeStamp);
 
 
 		//////////////////////////////////////////////////////////////////////////////////////////////////

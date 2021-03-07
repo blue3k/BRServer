@@ -55,6 +55,8 @@ namespace SF {
 				, m_Owner(owner)
 			{
 			}
+
+			GameInstancePlayer& GetOwner() { return *m_Owner; }
 		};
 
 
@@ -70,6 +72,8 @@ namespace SF {
 		private:
 
 			IHeap& m_Heap;
+
+			ReceivedActorMovementManager m_ActorMovement;
 
 		public:
 

@@ -22,7 +22,7 @@
 #include "Entity/Entity.h"
 #include "ServiceEntity/Game/GameSystem.h"
 #include "Entity/PlayerEntityInformation.h"
-
+#include "Actor/Movement/SFActorMovement.h"
 
 
 namespace SF {
@@ -86,12 +86,22 @@ namespace SF {
 
 			Util::TimeStampTimer m_TimeToRemove;
 
+			TimeStampMS m_CurTime{};
+			uint32_t m_CurMovementFrame{};
+
+			ActorMovement m_LatestMovement;
+
+
 		public:
 
 			GameInstancePlayer(GameInstanceEntity* pGameOwner, EntityUID playerEntityUID, const PlayerInformation& player);
 			virtual ~GameInstancePlayer();
 
 			GameInstanceEntity* GetGameOwner() { return m_GameOwner; }
+
+			uint32_t GetMovementFrame() const { return m_CurMovementFrame; }
+			ActorMovement& GetLatestMovement() { return m_LatestMovement; }
+			const ActorMovement& GetLatestMovement() const { return m_LatestMovement; }
 
 			const VariableTable& GetCharacterVisual() const { return m_CharacterVisual; }
 			const VariableTable& GetCharacterAttribute() const { return m_CharacterAttribute; }
@@ -112,7 +122,7 @@ namespace SF {
 			//
 
 			// Update Game Player 
-			virtual Result UpdateGamePlayer(TimeStampMS CurTime);
+			virtual Result UpdateGamePlayer(TimeStampMS CurTime, uint32_t movementFrame);
 
 		};
 

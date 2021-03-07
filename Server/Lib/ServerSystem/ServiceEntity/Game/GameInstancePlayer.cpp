@@ -81,9 +81,18 @@ namespace SF {
 		}
 
 		// Update Game Player 
-		Result GameInstancePlayer::UpdateGamePlayer(TimeStampMS ulCurTime)
+		Result GameInstancePlayer::UpdateGamePlayer(TimeStampMS ulCurTime, uint32_t movementFrame)
 		{
 			Result hr = ResultCode::SUCCESS;
+
+			m_CurTime = ulCurTime;
+			m_CurMovementFrame = movementFrame;
+
+			for (auto itComponent : m_ComponentManager)
+			{
+				auto pComponent = static_cast<GameInstancePlayerComponent*>(itComponent.GetValue());
+				pComponent->TickUpdate();
+			}
 
 			return hr;
 		}

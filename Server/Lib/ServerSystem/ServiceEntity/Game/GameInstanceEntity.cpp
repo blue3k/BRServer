@@ -33,6 +33,7 @@
 #include "ServiceEntity/Game/Transaction/GameInstanceTrans.h"
 #include "ServiceEntity/Game/GameInstanceManagerServiceEntity.h"
 #include "Service/ServerService.h"
+#include "Actor/Movement/SFActorMovement.h"
 
 
 namespace SF {
@@ -74,6 +75,9 @@ namespace SF {
 
 			m_AcceptJoin = true;
 
+			m_LatestTickTime = Util::Time.GetRawTimeMs();
+			m_MovementTick = 0;
+
 			m_ObjectAttributes.Clear();
 			m_ObjectAttributes.SetValue("MaxPlayer", m_MaxPlayer);
 			m_ObjectAttributes.SetValue("ZoneTableID", m_ZoneTableID);
@@ -106,11 +110,22 @@ namespace SF {
 			return hr;
 		}
 
+		uint32_t GameInstanceEntity::UpdateMovementTick(TimeStampMS newUpdateTimeStamp)
+		{
+			auto deltaTime = newUpdateTimeStamp - m_LatestTickTime;
+			auto deltaFrames = deltaTime.count() / ActorMovement::DeltaMSPerFrame;
+
+			m_MovementTick += deltaFrames;
+			m_LatestTickTime += DurationMS(deltaFrames * ActorMovement::DeltaMSPerFrame);
+
+			return deltaFrames;
+		}
+
 		// Run entity
 		Result GameInstanceEntity::TickUpdate(TimerAction* pAction)
 		{
 			ScopeContext hr;
-			auto CurTime = Util::Time.GetTimeMs();
+			auto CurTime = Util::Time.GetRawTimeMs();
 			StaticArray<PlayerID, 64> LeaverList(GetHeap());
 			GameInstancePlayer* pGamePlayer = nullptr;
 			PlayerID pltID;
@@ -120,6 +135,8 @@ namespace SF {
 			if (!hr || hr == ResultCode::SUCCESS_FALSE)
 				return hr;
 
+			auto deltaFrames = UpdateMovementTick(CurTime);
+
 			// Update Players
 			m_GamePlayerByPlayerID.ForeachOrder(0, m_MaxPlayer, 
 				[this, &CurTime, &playerCount](const PlayerID& playerID, GameInstancePlayer* pPlayer)-> bool
@@ -127,12 +144,26 @@ namespace SF {
 					if (pPlayer->GetRemoteEndpoint() != nullptr)
 						playerCount++;
 
-					pPlayer->UpdateGamePlayer(CurTime);
+					pPlayer->UpdateGamePlayer(CurTime, m_MovementTick);
 
 					if (pPlayer->GetRemoveTimer().CheckTimer())
 					{
 						LeavePlayer(pPlayer->GetPlayerID());
 					}
+
+
+					m_GamePlayerByPlayerID.ForeachOrder(0, m_MaxPlayer, [this, pMyPlayer = pPlayer](const PlayerID& playerID, GameInstancePlayer* pPlayer)-> bool
+						{
+							if (pMyPlayer->GetPlayerID() == playerID)
+								return true;
+
+							if (pPlayer->GetRemoteEndpoint() == nullptr)
+								return true;
+
+							NetSvrPolicyPlayInstance policy(pPlayer->GetRemoteEndpoint());
+							policy.PlayerMovementS2CEvt(GetEntityUID(), pPlayer->GetPlayerID(), pMyPlayer->GetLatestMovement());
+
+						});
 					return true;
 				});
 
