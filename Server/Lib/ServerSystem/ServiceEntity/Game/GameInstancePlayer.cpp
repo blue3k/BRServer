@@ -67,6 +67,9 @@ namespace SF {
 
 			m_ComponentManager.InitializeComponents();
 
+			// cache component reference
+			m_pMovementManager = m_ComponentManager.GetComponent<GameInstancePlayerComponentMovement>();
+
 			m_IsBot = isBot;
 
 			return hr;

@@ -74,5 +74,22 @@ namespace SF {
 		}
 
 
+
+		// Start Transaction
+		Result GameEntityTransPlayerMovement::StartTransaction()
+		{
+			ScopeContext hr([this](Result hr)
+				{
+					CloseTransaction(hr);
+				});
+
+			svrCheck(super::StartTransaction());
+
+			svrCheck(GetMyOwner()->NewPlayerMovement(GetPlayerID(), GetMovement()));
+
+			return hr;
+		}
+
+
 }// namespace SF 
 

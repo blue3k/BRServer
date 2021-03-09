@@ -40,7 +40,7 @@ namespace SF {
 		class GameServer;
 		class GameServerEntity;
 		class GameInstanceEntity;
-
+		class GameInstancePlayerComponentMovement;
 
 
 		//////////////////////////////////////////////////////////////////////////
@@ -89,7 +89,9 @@ namespace SF {
 			TimeStampMS m_CurTime{};
 			uint32_t m_CurMovementFrame{};
 
+			//CriticalSection m_PlayerLock;
 			ActorMovement m_LatestMovement;
+			GameInstancePlayerComponentMovement* m_pMovementManager{};
 
 
 		public:
@@ -102,6 +104,7 @@ namespace SF {
 			uint32_t GetMovementFrame() const { return m_CurMovementFrame; }
 			ActorMovement& GetLatestMovement() { return m_LatestMovement; }
 			const ActorMovement& GetLatestMovement() const { return m_LatestMovement; }
+			GameInstancePlayerComponentMovement* GetMovementManager() { return m_pMovementManager; }
 
 			const VariableTable& GetCharacterVisual() const { return m_CharacterVisual; }
 			const VariableTable& GetCharacterAttribute() const { return m_CharacterAttribute; }

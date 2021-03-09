@@ -102,7 +102,7 @@ namespace Svr
 
 		// movement frame
 		TimeStampMS m_LatestTickTime;
-		uint32_t m_MovementTick = 0;
+		uint32_t m_MovementFrame = 0;
 
 	public:
 		//////////////////////////////////////////////////////////////////////////////////////////////////
@@ -129,6 +129,8 @@ namespace Svr
 
 		DurationMS GetEmptyInstanceKillTimeOut() { return m_EmptyInstanceKillTimeOut; }
 		void SetEmptyInstanceKillTimeOut(DurationMS value) { m_EmptyInstanceKillTimeOut = value; }
+
+		uint32_t GetMovementFrame() const { return m_MovementFrame; }
 
 		// Instance ID query
 		inline GameInsID GetInstanceID() {
@@ -237,6 +239,8 @@ namespace Svr
 
 		// Called when a player get out of game
 		virtual Result OnPlayerGetOutOfGame(GameInstancePlayer *pPlayer );
+
+		Result NewPlayerMovement(PlayerID playerId, const ActorMovement& newMovement);
 	};
 
 

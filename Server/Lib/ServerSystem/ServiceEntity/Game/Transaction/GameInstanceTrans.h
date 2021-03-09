@@ -16,10 +16,10 @@
 #include "MemoryManager/SFMemoryPool.h"
 #include "Types/SFEngineTypedefs.h"
 #include "Stream/SFMemoryStream.h"
-#include "Protocol/Message/GameMsgClass.h"
-#include "Protocol/Policy/GameNetPolicy.h"
 #include "Protocol/Message/GameInstanceMsgClass.h"
 #include "Protocol/Policy/GameInstanceNetPolicy.h"
+#include "Protocol/Message/PlayInstanceMsgClass.h"
+#include "Protocol/Policy/PlayInstanceNetPolicy.h"
 
 #include "Transaction/MessageRoute.h"
 #include "Transaction/ServerTransaction.h"
@@ -72,6 +72,22 @@ namespace SF {
 			virtual Result StartTransaction() override;
 
 			BR_SVR_MSGTRANS_CLOSE(NetSvrPolicyGameInstance, LeaveGameInstanceRes, GetRouteContext().GetSwaped());
+		};
+
+
+		class GameEntityTransPlayerMovement : public Svr::MessageTransaction<Svr::GameInstanceEntity, Message::PlayInstance::PlayerMovementC2SEvt>
+		{
+		public:
+			using super = MessageTransaction<Svr::GameInstanceEntity, Message::PlayInstance::PlayerMovementC2SEvt>;
+
+		private:
+
+		public:
+			GameEntityTransPlayerMovement(IHeap& heap, MessageDataPtr& pIMsg) :super(heap, Forward<MessageDataPtr>(pIMsg)) {}
+			virtual ~GameEntityTransPlayerMovement() {}
+
+			// Start Transaction
+			virtual Result StartTransaction() override;
 		};
 
 

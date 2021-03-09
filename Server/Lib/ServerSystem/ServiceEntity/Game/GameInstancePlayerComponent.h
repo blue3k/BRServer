@@ -81,6 +81,8 @@ namespace SF {
 
 			IHeap& GetHeap() { return m_Heap; }
 
+			ReceivedActorMovementManager& GetMovementManager() { return m_ActorMovement; }
+
 			virtual void TickUpdate() override;
 
 		};

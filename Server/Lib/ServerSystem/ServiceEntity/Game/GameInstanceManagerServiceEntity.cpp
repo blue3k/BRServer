@@ -79,7 +79,7 @@ namespace SF {
 					if (!cmd.ParseMsg())
 						return;
 
-					EntityUID instanceUID = cmd.GetPlayInstanceID();
+					EntityUID instanceUID = cmd.GetPlayInstanceUID();
 					PlayerID playerID = cmd.GetPlayerID();
 
 					if (instanceUID.GetEntityID().GetFacultyID() != uint(EntityFaculty::GameInstance))
@@ -89,7 +89,7 @@ namespace SF {
 					SharedPointerT<Svr::Entity> pEntity;
 					if (!Service::EntityTable->find(instanceUID.GetEntityID(), pEntity))
 					{
-						pRes = SF::Message::PlayInstance::JoinGameInstanceRes::Create(GetSystemHeap(), cmd.GetTransactionID(), ResultCode::INVALID_INSTANCEID, instanceUID, playerID);
+						pRes = SF::Message::PlayInstance::JoinGameInstanceRes::Create(GetSystemHeap(), cmd.GetTransactionID(), ResultCode::INVALID_INSTANCEID, instanceUID, playerID, 0);
 						pConn->Send(pRes);
 						return;
 					}
@@ -98,7 +98,7 @@ namespace SF {
 					Result hr = pInstance->PlayerConnected(playerID, pConn);
 					if (!hr)
 					{
-						pRes = SF::Message::PlayInstance::JoinGameInstanceRes::Create(GetSystemHeap(), cmd.GetTransactionID(), hr, instanceUID, playerID);
+						pRes = SF::Message::PlayInstance::JoinGameInstanceRes::Create(GetSystemHeap(), cmd.GetTransactionID(), hr, instanceUID, playerID, pInstance->GetMovementFrame());
 						pConn->Send(pRes);
 						return;
 					}
@@ -111,7 +111,7 @@ namespace SF {
 					auto pThis = pConn->GetComponentManager().RemoveComponent<GameInstanceManager_NewConnectionHandler>();
 					IHeap::Delete(pThis);
 
-					pRes = SF::Message::PlayInstance::JoinGameInstanceRes::Create(GetSystemHeap(), cmd.GetTransactionID(), hr, instanceUID, playerID);
+					pRes = SF::Message::PlayInstance::JoinGameInstanceRes::Create(GetSystemHeap(), cmd.GetTransactionID(), hr, instanceUID, playerID, pInstance->GetMovementFrame());
 					pConn->Send(pRes);
 				};
 

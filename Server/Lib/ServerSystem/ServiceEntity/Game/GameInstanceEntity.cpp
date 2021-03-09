@@ -34,6 +34,7 @@
 #include "ServiceEntity/Game/GameInstanceManagerServiceEntity.h"
 #include "Service/ServerService.h"
 #include "Actor/Movement/SFActorMovement.h"
+#include "ServiceEntity/Game/GameInstancePlayerComponent.h"
 
 
 namespace SF {
@@ -54,9 +55,11 @@ namespace SF {
 			SetEmptyInstanceKillTimeOut(Const::GAMEINSTANCE_EMPTYINSTANCE_KILL_TIMEOUT);
 
 			////////////////////////////////////////////////////////////////////////////////////////////////////
-			// To game instance
+			// game instance
 			RegisterMessageHandler<GameEntityTransJoinGameInstance>();
 			RegisterMessageHandler<GameEntityTransLeaveGameInstance>();
+
+			RegisterMessageHandler<GameEntityTransPlayerMovement>();
 		}
 
 		GameInstanceEntity::~GameInstanceEntity()
@@ -76,7 +79,7 @@ namespace SF {
 			m_AcceptJoin = true;
 
 			m_LatestTickTime = Util::Time.GetRawTimeMs();
-			m_MovementTick = 0;
+			m_MovementFrame = 0;
 
 			m_ObjectAttributes.Clear();
 			m_ObjectAttributes.SetValue("MaxPlayer", m_MaxPlayer);
@@ -115,7 +118,7 @@ namespace SF {
 			auto deltaTime = newUpdateTimeStamp - m_LatestTickTime;
 			auto deltaFrames = deltaTime.count() / ActorMovement::DeltaMSPerFrame;
 
-			m_MovementTick += deltaFrames;
+			m_MovementFrame += deltaFrames;
 			m_LatestTickTime += DurationMS(deltaFrames * ActorMovement::DeltaMSPerFrame);
 
 			return deltaFrames;
@@ -144,14 +147,15 @@ namespace SF {
 					if (pPlayer->GetRemoteEndpoint() != nullptr)
 						playerCount++;
 
-					pPlayer->UpdateGamePlayer(CurTime, m_MovementTick);
+					pPlayer->UpdateGamePlayer(CurTime, m_MovementFrame);
 
 					if (pPlayer->GetRemoveTimer().CheckTimer())
 					{
 						LeavePlayer(pPlayer->GetPlayerID());
 					}
 
-
+					// Broad cast movement
+					// TODO: Need to add spatial management
 					m_GamePlayerByPlayerID.ForeachOrder(0, m_MaxPlayer, [this, pMyPlayer = pPlayer](const PlayerID& playerID, GameInstancePlayer* pPlayer)-> bool
 						{
 							if (pMyPlayer->GetPlayerID() == playerID)
@@ -163,7 +167,9 @@ namespace SF {
 							NetSvrPolicyPlayInstance policy(pPlayer->GetRemoteEndpoint());
 							policy.PlayerMovementS2CEvt(GetEntityUID(), pPlayer->GetPlayerID(), pMyPlayer->GetLatestMovement());
 
+							return true;
 						});
+
 					return true;
 				});
 
@@ -439,6 +445,23 @@ namespace SF {
 		Result GameInstanceEntity::OnPlayerGetOutOfGame(GameInstancePlayer* pPlayer)
 		{
 			ScopeContext hr;
+
+			return hr;
+		}
+
+		Result GameInstanceEntity::NewPlayerMovement(PlayerID playerId, const ActorMovement& newMovement)
+		{
+			Result hr;
+			GameInstancePlayer* pPlayer{};
+
+			if (!m_GamePlayerByPlayerID.Find(playerId, pPlayer))
+			{
+				return ResultCode::SVR_PLAYER_NOT_FOUND;
+			}
+
+			svrCheckPtr(pPlayer->GetMovementManager());
+
+			svrCheck(pPlayer->GetMovementManager()->GetMovementManager().EnqueueMovement(newMovement));
 
 			return hr;
 		}
