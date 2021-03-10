@@ -138,8 +138,6 @@ namespace SF {
 		{
 			Result hr = ResultCode::SUCCESS;
 
-			ReleaseConnection("Terminate login player entity");
-
 			svrCheck(super::ClearEntity());
 
 			return hr;

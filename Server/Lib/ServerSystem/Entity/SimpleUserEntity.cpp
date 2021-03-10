@@ -138,9 +138,7 @@ namespace Svr
 			ReleaseConnection("Terminate user entity");
 		}
 
-		svrChk(SimpleEntity::TerminateEntity() );
-
-	Proc_End:
+		svrCheck(SimpleEntity::TerminateEntity() );
 
 		return hr;
 	}
@@ -163,8 +161,6 @@ namespace Svr
 		default:
 			break;
 		};
-
-	//Proc_End:
 
 		return hr;
 	}
