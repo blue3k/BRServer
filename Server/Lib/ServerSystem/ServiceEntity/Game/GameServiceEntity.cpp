@@ -195,14 +195,10 @@ namespace SF {
 			pGamePlayerEntity.reset(dynamic_cast<Svr::GamePlayerEntity*>(pEntity));
 			svrCheckPtr(pGamePlayerEntity);
 
-			svrCheck(Service::EntityManager->AddEntity(EntityFaculty::User, pGamePlayerEntity.get()));
-
 			// Assign connection after AddEntity, because InitializeEntity will clean up connection
-			if (!pGamePlayerEntity->SetConnection(Forward<Net::ConnectionPtr>(pConn)))
-			{
-				// NOTE: We need to mark to close this
-				pGamePlayerEntity->ClearEntity();
-			}
+			svrCheck(pGamePlayerEntity->SetConnection(Forward<Net::ConnectionPtr>(pConn)));
+
+			svrCheck(Service::EntityManager->AddEntity(EntityFaculty::User, pGamePlayerEntity.get()));
 
 			pGamePlayerEntity.release();
 		}
