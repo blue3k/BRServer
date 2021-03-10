@@ -358,8 +358,6 @@ namespace Svr {
 		if (GetPlayerID() != 0)
 			Service::PlayerManager->DeletePlayer(GetPlayerID(), GetEntityUID());
 
-		ReleaseConnection("Clearing game player entity");
-
 		svrCheck(Svr::SimpleUserEntity::ClearEntity());
 
 		GetComponentManager().TerminateComponents();
