@@ -115,9 +115,7 @@ namespace Svr
 		SetAccountID( 0 );
 		SetAuthTicket( 0 );
 
-		svrChk(SimpleEntity::InitializeEntity( newEntityID ) );
-
-	Proc_End:
+		svrCheck(SimpleEntity::InitializeEntity( newEntityID ) );
 
 		return hr;
 	}

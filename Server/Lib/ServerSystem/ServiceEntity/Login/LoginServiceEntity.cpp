@@ -200,9 +200,9 @@ namespace SF {
 
 			svrCheckMem(pLoginPlayerEntity = new(GetHeap()) LoginPlayerEntity);
 
-			svrCheck(Service::EntityManager->AddEntity(EntityFaculty::User, *pLoginPlayerEntity));
-
-			if (!(pLoginPlayerEntity->SetConnection(std::forward<Net::ConnectionPtr>(pConn))))
+			// Assign connection before add entity. 
+			// If entity tick kicked in before connection assignment, the entity considered as garbage and closed
+			if (!pLoginPlayerEntity->SetConnection(std::forward<Net::ConnectionPtr>(pConn)))
 			{
 				// NOTE: We need to mark to close this
 				pLoginPlayerEntity->ClearEntity();
@@ -211,6 +211,8 @@ namespace SF {
 			{
 				pConn = nullptr;
 			}
+
+			svrCheck(Service::EntityManager->AddEntity(EntityFaculty::User, *pLoginPlayerEntity));
 
 			pLoginPlayerEntity = nullptr;
 		}
