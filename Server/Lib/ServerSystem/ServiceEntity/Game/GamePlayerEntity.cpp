@@ -449,10 +449,10 @@ namespace Svr {
 		ScopeContext hr;
 		TransactionPtr trans;
 
-		unused(reason);
-
 		if (m_ClosingPended) return hr;
 		m_ClosingPended = true;
+
+		svrTrace(Debug, "Closing GamePlayerEntity: {0}", reason);
 
 		trans = new(GetHeap()) PlayerTransCloseInstance(GetHeap());
 		if (trans == nullptr)

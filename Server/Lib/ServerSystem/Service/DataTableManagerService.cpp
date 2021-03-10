@@ -23,6 +23,12 @@ namespace SF {
 	//	data table class
 	//
 
+
+	DataTable::DataTable()
+	{
+		assert(IHeap::CheckMemoryHeader(this));
+	}
+
 	DataTable::~DataTable()
 	{
 		for (auto itRow : m_DataByRow)
@@ -93,7 +99,7 @@ namespace SF {
 	{
 		for (auto itRow : m_DataTableByName)
 		{
-			delete itRow.second;
+			IHeap::Delete(itRow.second);
 		}
 		m_DataTableByName.clear();
 	}

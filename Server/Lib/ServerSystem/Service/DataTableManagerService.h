@@ -34,7 +34,7 @@ namespace SF {
 
 	public:
 
-		DataTable() = default;
+		DataTable();
 		virtual ~DataTable();
 
 		Result LoadTable(StringCrc32 keyColumnName, const Array<VariableTable>& rowList);
