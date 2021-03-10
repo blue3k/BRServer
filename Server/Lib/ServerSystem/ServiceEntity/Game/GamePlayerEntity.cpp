@@ -33,7 +33,7 @@
 #include "ServiceEntity/Game/Subsystem/UserFriendSystem.h"
 #include "ServiceEntity/Game/Subsystem/UserNotificationSystem.h"
 
-#include "DB/GameTransactionDB.h"
+//#include "DB/GameTransactionDB.h"
 
 #include "Transaction/GamePlayerEntityTrans.h"
 #include "Transaction/GamePlayerEntityTransCharacter.h"
@@ -321,7 +321,7 @@ namespace Svr {
 
 		SetLatestActiveTime(Util::Time.GetTimeUTCSec());
 
-		AddGameTransactionLog(TransLogCategory::Account, 2, 0, 0, "Entity Initialize");
+		//AddGameTransactionLog(TransLogCategory::Account, 2, 0, 0, "Entity Initialize");
 
 		return hr;
 	}

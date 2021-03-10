@@ -175,7 +175,7 @@ namespace Svr {
 			GetMyOwner()->SetLatestUpdateTime(UTCTimeStampSec(DurationSec(latestTick)));
 		}
 
-		GetMyOwner()->AddGameTransactionLog(TransLogCategory::Account, 1, 0, 0, "Login");
+		//GetMyOwner()->AddGameTransactionLog(TransLogCategory::Account, 1, 0, 0, "Login");
 
 		// copy to return information
 		StrUtil::StringCopy(m_PlayerNick, GetMyOwner()->GetNickName());
@@ -893,7 +893,7 @@ namespace Svr {
 		if (pDBRes->Result < 0)
 			svrErrorClose(ResultCode::INVALID_PLAYERID);
 
-		GetMyOwner()->AddGameTransactionLogT(TransLogCategory::Account, 0, 0, 0, "From {0} to {1}", GetMyOwner()->GetNickName(), GetNickName());
+		//GetMyOwner()->AddGameTransactionLogT(TransLogCategory::Account, 0, 0, 0, "From {0} to {1}", GetMyOwner()->GetNickName(), GetNickName());
 
 		svrCheck( GetMyOwner()->SetNickName( GetNickName() ) );
 

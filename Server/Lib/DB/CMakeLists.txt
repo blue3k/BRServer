@@ -16,10 +16,6 @@ set(BRDB_LIB_FILES
     DBClusterManager.cpp
 	DBClusterManager.h
 	DBConfig.h
-    GameTransactionDB.cpp
-	GameTransactionDB.h
-    GameTransactionDBQuery.cpp
-	GameTransactionDBQuery.h
     LoginSessionDB.cpp
 	LoginSessionDB.h
     LoginSessionQuery.cpp
