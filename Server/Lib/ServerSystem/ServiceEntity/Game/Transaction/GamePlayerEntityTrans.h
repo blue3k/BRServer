@@ -537,7 +537,7 @@ namespace SF {
 		private:
 			Memento<MEMENTO_SIZE> m_SavedData;
 			// TODO: FIXME
-			void /*conspiracy::ShopTbl::ShopItem*/* m_pShopItem;
+			void /*conspiracy::ShopTbl::ShopItem*/* m_pShopItem{};
 
 		public:
 			PlayerTransBuyShopItem(IHeap& heap, MessageDataPtr& pIMsg);

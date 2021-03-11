@@ -40,6 +40,64 @@
 namespace SF {
 	namespace Svr {
 
+
+		class PingObjectDirectoryComponent : public Component
+		{
+		public:
+			static constexpr StringCrc32 ComponentID = "PingObjectDirectoryComponent"_crc;
+
+			using super = Component;
+
+
+			PingObjectDirectoryComponent(GameInstanceEntity* owner)
+				: Component(ComponentID)
+				, m_Owner(owner)
+			{
+			}
+
+			virtual Result InitializeComponent()
+			{
+				Result hr;
+
+				m_TimeToPing.SetTimer(Const::GAMEINSTANCE_PING_STATUS);
+
+				m_ObjectAttributes.Clear();
+				m_ObjectAttributes.SetValue("MaxPlayer", m_Owner->GetMaxPlayer());
+				m_ObjectAttributes.SetValue("ZoneTableID", m_Owner->GetZoneTableID());
+				m_ObjectAttributes.SetValue("Type", m_Owner->GetInstanceType());
+				m_ObjectAttributes.SetValue("NumPlayers", int32_t(m_Owner->GetNumPlayer()));
+
+				svrCheck(Service::ServiceDirectory->PingObjectDirectory(Service::ServerConfig->GameClusterID, ClusterID::GameInstance, m_Owner->GetEntityUID(), m_ObjectAttributes));
+
+				svrCheck(super::InitializeComponent());
+
+				return hr;
+			}
+
+			virtual void TickUpdate() override
+			{
+				// Update registry
+				if (m_TimeToPing.CheckTimer())
+				{
+					m_ObjectAttributes.SetValue("NumPlayers", int32_t(m_Owner->GetNumPlayer()));
+					Service::ServiceDirectory->PingObjectDirectory(Service::ServerConfig->GameClusterID, ClusterID::GameInstance, m_Owner->GetEntityUID(), m_ObjectAttributes);
+					m_TimeToPing.SetTimer(Const::GAMEINSTANCE_PING_STATUS);
+				}
+
+			}
+
+		private:
+
+			GameInstanceEntity* m_Owner{};
+			Util::TimeStampTimer m_TimeToPing;
+			VariableTable m_ObjectAttributes;
+
+		};
+
+		constexpr StringCrc32 PingObjectDirectoryComponent::ComponentID;
+
+
+
 		//////////////////////////////////////////////////////////////////////////
 		//
 		//	Entity server class
@@ -73,7 +131,9 @@ namespace SF {
 
 			svrCheck(super::InitializeEntity(newEntityID));
 
-			// TODO: add components
+			// add components
+			m_ComponentManger.AddComponent<PingObjectDirectoryComponent>(this);
+
 			svrCheck(m_ComponentManger.InitializeComponents());
 
 			m_AcceptJoin = true;
@@ -81,13 +141,6 @@ namespace SF {
 			m_LatestTickTime = Util::Time.GetRawTimeMs();
 			m_MovementFrame = 0;
 
-			m_ObjectAttributes.Clear();
-			m_ObjectAttributes.SetValue("MaxPlayer", m_MaxPlayer);
-			m_ObjectAttributes.SetValue("ZoneTableID", m_ZoneTableID);
-			m_ObjectAttributes.SetValue("Type", m_InstanceType);
-			m_ObjectAttributes.SetValue("NumPlayers", int32_t(0));
-
-			svrCheck(Service::ServiceDirectory->PingObjectDirectory(Service::ServerConfig->GameClusterID, ClusterID::GameInstance, GetEntityUID(), m_ObjectAttributes));
 
 			return hr;
 		}
@@ -131,7 +184,6 @@ namespace SF {
 			auto CurTime = Util::Time.GetRawTimeMs();
 			StaticArray<PlayerID, 64> LeaverList(GetHeap());
 			GameInstancePlayer* pGamePlayer = nullptr;
-			PlayerID pltID;
 			int playerCount = 0;
 
 			hr = super::TickUpdate(pAction);
@@ -153,54 +205,35 @@ namespace SF {
 					{
 						LeavePlayer(pPlayer->GetPlayerID());
 					}
+					else
+					{
+						// Broad cast movement
+						// TODO: Need to add spatial management
+						m_GamePlayerByPlayerID.ForeachOrder(0, m_MaxPlayer, [this, pMyPlayer = pPlayer](const PlayerID& playerID, GameInstancePlayer* pPlayer)-> bool
+							{
+								//if (pMyPlayer->GetPlayerID() == playerID)
+								//	return true;
 
-					// Broad cast movement
-					// TODO: Need to add spatial management
-					m_GamePlayerByPlayerID.ForeachOrder(0, m_MaxPlayer, [this, pMyPlayer = pPlayer](const PlayerID& playerID, GameInstancePlayer* pPlayer)-> bool
-						{
-							if (pMyPlayer->GetPlayerID() == playerID)
+								if (pPlayer->GetRemoteEndpoint() == nullptr)
+									return true;
+
+								NetSvrPolicyPlayInstance policy(pPlayer->GetRemoteEndpoint());
+								policy.PlayerMovementS2CEvt(GetEntityUID(), pPlayer->GetPlayerID(), pMyPlayer->GetLatestMovement());
+
 								return true;
-
-							if (pPlayer->GetRemoteEndpoint() == nullptr)
-								return true;
-
-							NetSvrPolicyPlayInstance policy(pPlayer->GetRemoteEndpoint());
-							policy.PlayerMovementS2CEvt(GetEntityUID(), pPlayer->GetPlayerID(), pMyPlayer->GetLatestMovement());
-
-							return true;
-						});
+							});
+					}
 
 					return true;
 				});
 
 			UpdateGameStatus(CurTime);
 
-			// Leave player
-			while ((m_PendingReleasePlayer.Dequeue(pltID)))
-			{
-				if ((m_GamePlayerByPlayerID.Find(pltID, pGamePlayer)))
-				{
-					playerCount--;
-					LeavePlayer(pGamePlayer);
-
-					if (playerCount <= 0 && GetInstanceType() != "Static"_crc)
-					{
-						CloseGameInstance();
-					}
-
-				}
-			}
+			UpdateReleasedPlayers();
+			
 
 			if (GetEntityState() == EntityState::FREE)
 				return ResultCode::SUCCESS_FALSE;
-
-			// Update registry
-			if (m_TimeToPing.CheckTimer())
-			{
-				m_ObjectAttributes.SetValue("NumPlayers", int32_t(m_GamePlayerByPlayerID.size()));
-				svrCheck(Service::ServiceDirectory->PingObjectDirectory(Service::ServerConfig->GameClusterID, ClusterID::GameInstance, GetEntityUID(), m_ObjectAttributes));
-				m_TimeToPing.SetTimer(Const::GAMEINSTANCE_PING_STATUS);
-			}
 
 			m_ComponentManger.TickUpdate();
 
@@ -226,7 +259,26 @@ namespace SF {
 			return hr;
 		}
 
+		void GameInstanceEntity::UpdateReleasedPlayers()
+		{
+			PlayerID pltID{};
+			GameInstancePlayer* pGamePlayer = nullptr;
 
+			// Leave player
+			while ((m_PendingReleasePlayer.Dequeue(pltID)))
+			{
+				if (m_GamePlayerByPlayerID.Find(pltID, pGamePlayer))
+				{
+					LeavePlayer(pGamePlayer);
+
+					if (m_GamePlayerByPlayerID.size() <= 0 && GetInstanceType() != "Static"_crc)
+					{
+						CloseGameInstance();
+					}
+
+				}
+			}
+		}
 
 		////////////////////////////////////////////////////////////
 		//
@@ -310,7 +362,6 @@ namespace SF {
 				m_TimeToKill.SetTimerFunc([&]() { OnGameKillTimer(); });
 			}
 
-			m_TimeToPing.SetTimer(Const::GAMEINSTANCE_PING_STATUS);
 
 			return hr;
 		}

@@ -282,11 +282,7 @@ namespace SF {
 
 			UpdateEventTask();
 
-			//GetTimeScheduler().CommitChanges();
-
 			UpdateTimer();
-
-			//UpdateTickTask();
 
 		} // while
 	}

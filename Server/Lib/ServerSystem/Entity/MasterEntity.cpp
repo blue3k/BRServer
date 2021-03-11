@@ -110,7 +110,7 @@ namespace Svr
 	{
 #ifdef DEBUG
 		auto transactionCount = m_activeTrans.GetWriteItemCount() + (m_pExclusiveTransaction == nullptr ? 0 : 1);
-		Assert(m_activeTransactionScheduler.GetChangedItemCount() == transactionCount);
+		Assert(m_activeTransactionScheduler.GetScheduledItemCount() >= transactionCount);
 #endif
 	}
 

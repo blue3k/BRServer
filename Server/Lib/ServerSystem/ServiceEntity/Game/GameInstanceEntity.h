@@ -58,9 +58,6 @@ namespace Svr
 		NetAddress m_AddressIPV6;
 
 
-		VariableTable m_ObjectAttributes;
-
-
 		// Player by PlayerID
 		GamePlayerByPlayerIDMap		m_GamePlayerByPlayerID;
 
@@ -81,7 +78,6 @@ namespace Svr
 
 		// Time for kill this game
 		Util::TimeStampTimer m_TimeToKill;
-		Util::TimeStampTimer m_TimeToPing;
 
 
 		// Is accept join?
@@ -146,7 +142,6 @@ namespace Svr
 			return static_cast<uint>(m_GamePlayerByPlayerID.size());
 		}
 
-
 	protected:
 		// Initialize entity to proceed new connection
 		virtual Result InitializeEntity( EntityID newEntityID ) override;
@@ -159,6 +154,8 @@ namespace Svr
 		virtual Result TickUpdate(TimerAction *pAction = nullptr) override;
 
 		uint32_t UpdateMovementTick(TimeStampMS newUpdateTimeStamp);
+
+		void UpdateReleasedPlayers();
 
 
 		//////////////////////////////////////////////////////////////////////////////////////////////////
