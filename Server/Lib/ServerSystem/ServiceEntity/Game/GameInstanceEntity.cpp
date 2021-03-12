@@ -263,7 +263,7 @@ namespace SF {
 		{
 			ScopeContext hr;
 
-			// Call check timer to update
+			// Call check timer to update and timer function is called
 			m_TimeToKill.CheckTimer();
 
 			return hr;
