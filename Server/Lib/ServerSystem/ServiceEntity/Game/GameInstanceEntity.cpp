@@ -55,7 +55,7 @@ namespace SF {
 			{
 			}
 
-			virtual Result InitializeComponent()
+			virtual Result InitializeComponent() override
 			{
 				Result hr;
 
