@@ -72,7 +72,7 @@ namespace SF {
 		private:
 
 			IHeap& m_Heap;
-
+			ActorMovement m_LatestSimulatedMovement{};
 			ReceivedActorMovementManager m_ActorMovement;
 
 		public:

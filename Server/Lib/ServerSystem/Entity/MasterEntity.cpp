@@ -200,7 +200,7 @@ namespace Svr
 
 		// process pending queue
 		while (m_activeTrans.size() < m_uiMaxActiveTransaction 
-			&& m_pExclusiveTransaction == nullptr // No transaction will be issued if there is a active exclusive transaction.
+			&& m_pExclusiveTransaction == nullptr // No transaction will be issued if there is an active exclusive transaction.
 			&& (GetTransactionQueue().Dequeue(pNewTran))
 			)
 		{

@@ -200,15 +200,10 @@ namespace Svr
 		EntityID entityID; // entity ID to route
 		Message::MessageHeader *pMsgHdr = nullptr;
 		TransactionPtr pNewTrans;
-		RouteContext routeContext;
 		SharedPointerT<Entity> pEntity;
 
 		svrChkPtr(pMsg);
 		pMsgHdr = pMsg->GetMessageHeader();
-
-		// First try to route message
-		routeContext = *(RouteContext*)pMsg->GetMessageData();
-		assert(routeContext.GetTo().UID == 0 || routeContext.GetTo() == GetEntityUID());
 
 		switch (pMsgHdr->msgID.IDs.Type)
 		{
@@ -219,20 +214,9 @@ namespace Svr
 		case Message::MSGTYPE_COMMAND:
 		case Message::MSGTYPE_EVENT:
 		{
-			if (!(GetMessageHandlerTable().HandleMessage<TransactionPtr&>(pMsg, pNewTrans)))
+			if (!GetMessageHandlerTable().HandleMessage<TransactionPtr&>(pMsg, pNewTrans))
 			{
-				// If it couldn't find a handler in server entity handlers, looking for it in server loopback entity
-				//MessageHandlerType handler;
 				assert(false);// this shouldn't be happened now. We route all message to destination entity
-				//hr = GetLoopbackServerEntity()->GetMessageHandlerTable().GetHandler(pMsg->GetMessageHeader()->msgID, handler);
-				//if (!(hr))
-				//{
-				//	assert(false);
-				//	svrTrace(Error, "No message handler {0}:{1}, MsgID:{2}", typeid(*this).name(), GetEntityUID(), pMsgHdr->msgID);
-				//	svrErr(ResultCode::SVR_NO_MESSAGE_HANDLER);
-				//}
-
-				//svrChk(handler(pMsg, pNewTrans));
 				svrErr(ResultCode::SVR_NO_MESSAGE_HANDLER);
 			}
 			break;

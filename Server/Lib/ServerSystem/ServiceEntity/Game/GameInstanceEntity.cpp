@@ -186,9 +186,15 @@ namespace SF {
 			GameInstancePlayer* pGamePlayer = nullptr;
 			int playerCount = 0;
 
-			hr = super::TickUpdate(pAction);
-			if (!hr || hr == ResultCode::SUCCESS_FALSE)
-				return hr;
+			{
+				MutexScopeLock lock(m_UpdateLock); // Message and Transaction handling should be exclusive access
+
+				hr = super::TickUpdate(pAction);
+				if (!hr || hr == ResultCode::SUCCESS_FALSE)
+					return hr;
+
+				UpdateReleasedPlayers();
+			}
 
 			auto deltaFrames = UpdateMovementTick(CurTime);
 
@@ -207,21 +213,26 @@ namespace SF {
 					}
 					else
 					{
-						// Broad cast movement
-						// TODO: Need to add spatial management
-						m_GamePlayerByPlayerID.ForeachOrder(0, m_MaxPlayer, [this, pMyPlayer = pPlayer](const PlayerID& playerID, GameInstancePlayer* pPlayer)-> bool
-							{
-								//if (pMyPlayer->GetPlayerID() == playerID)
-								//	return true;
+						if ((pPlayer->GetBroadCastedMovementFrame() - pPlayer->GetLatestMovement().MoveFrame) > ActorMovement::MoveFrameTimeout)
+						{
+							pPlayer->SetBroadCastedMovementFrame(pPlayer->GetLatestMovement().MoveFrame);
 
-								if (pPlayer->GetRemoteEndpoint() == nullptr)
+							// Broad cast movement
+							// TODO: Need to add spatial management
+							m_GamePlayerByPlayerID.ForeachOrder(0, m_MaxPlayer, [this, pMyPlayer = pPlayer](const PlayerID& playerID, GameInstancePlayer* pPlayer)-> bool
+								{
+									//if (pMyPlayer->GetPlayerID() == playerID)
+									//	return true;
+
+									if (pPlayer->GetRemoteEndpoint() == nullptr)
+										return true;
+
+									NetSvrPolicyPlayInstance policy(pPlayer->GetRemoteEndpoint());
+									policy.PlayerMovementS2CEvt(GetEntityUID(), pPlayer->GetPlayerID(), pMyPlayer->GetLatestMovement());
+
 									return true;
-
-								NetSvrPolicyPlayInstance policy(pPlayer->GetRemoteEndpoint());
-								policy.PlayerMovementS2CEvt(GetEntityUID(), pPlayer->GetPlayerID(), pMyPlayer->GetLatestMovement());
-
-								return true;
-							});
+								});
+						}
 					}
 
 					return true;
@@ -229,7 +240,6 @@ namespace SF {
 
 			UpdateGameStatus(CurTime);
 
-			UpdateReleasedPlayers();
 			
 
 			if (GetEntityState() == EntityState::FREE)
@@ -384,6 +394,11 @@ namespace SF {
 			svrCheck(m_GamePlayerByPlayerID.Find(playerId, pPlayer));
 
 			pPlayer->SetRemoteConnection(connection);
+			connection->GetRecvMessageDelegates().AddDelegateUnique(uintptr_t(this), [this](Net::Connection* pCon, MessageDataPtr& pMsg)
+				{
+					MutexScopeLock lock(m_UpdateLock);
+					ProcessMessage(pCon->GetMessageEndpoint(), pMsg);
+				});
 
 			connection->SetEventFireMode(Net::Connection::EventFireMode::Immediate);
 

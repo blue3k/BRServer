@@ -57,6 +57,7 @@ namespace Svr
 		NetAddress m_AddressIPV4;
 		NetAddress m_AddressIPV6;
 
+		CriticalSection m_UpdateLock;
 
 		// Player by PlayerID
 		GamePlayerByPlayerIDMap		m_GamePlayerByPlayerID;

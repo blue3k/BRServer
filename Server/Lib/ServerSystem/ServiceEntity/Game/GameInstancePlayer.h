@@ -88,6 +88,7 @@ namespace SF {
 
 			TimeStampMS m_CurTime{};
 			uint32_t m_CurMovementFrame{};
+			uint32_t m_BroadcastedMovementFrame{};
 
 			//CriticalSection m_PlayerLock;
 			ActorMovement m_LatestMovement;
@@ -102,8 +103,13 @@ namespace SF {
 			GameInstanceEntity* GetGameOwner() { return m_GameOwner; }
 
 			uint32_t GetMovementFrame() const { return m_CurMovementFrame; }
-			ActorMovement& GetLatestMovement() { return m_LatestMovement; }
+
+			uint32_t GetBroadCastedMovementFrame() const { return m_BroadcastedMovementFrame; }
+			void SetBroadCastedMovementFrame(uint32_t newMovementFrame) { m_BroadcastedMovementFrame = newMovementFrame; }
+
 			const ActorMovement& GetLatestMovement() const { return m_LatestMovement; }
+			void SetLatestMovement(const ActorMovement& src) { m_LatestMovement = src; }
+
 			GameInstancePlayerComponentMovement* GetMovementManager() { return m_pMovementManager; }
 
 			const VariableTable& GetCharacterVisual() const { return m_CharacterVisual; }

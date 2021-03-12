@@ -51,12 +51,21 @@ namespace SF {
 			Result hr;
 			GameInstancePlayerComponent::TickUpdate();
 
-			 hr = m_ActorMovement.SimulateCurrentMove(GetOwner().GetMovementFrame(), GetOwner().GetLatestMovement());
-			 if (!hr)
-			 {
-				 svrTrace(Error, "Failed to update movement hr:{0}", hr);
-			 }
-
+			hr = m_ActorMovement.SimulateCurrentMove(GetOwner().GetMovementFrame(), m_LatestSimulatedMovement);
+			if (!hr)
+			{
+				svrTrace(Error, "Failed to update movement hr:{0}", hr);
+			}
+			else
+			{
+				if (!GetOwner().GetLatestMovement().CanMerge(&m_LatestSimulatedMovement))
+				{
+					// forcing broad casted frame timeout
+					GetOwner().SetBroadCastedMovementFrame(GetOwner().GetMovementFrame() - ActorMovement::MoveFrameTimeout);
+					// change frame
+					GetOwner().SetLatestMovement(m_LatestSimulatedMovement);
+				}
+			}
 			 
 		}
 
