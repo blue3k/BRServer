@@ -194,6 +194,7 @@ namespace SF {
 				if (!hr || hr == ResultCode::SUCCESS_FALSE)
 					return hr;
 
+				UpdateJoinedPlayers();
 				UpdateReleasedPlayers();
 			}
 
