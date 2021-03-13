@@ -244,7 +244,7 @@ namespace SF {
 				break;
 			};
 
-			if (!(tickTask->OnEventTask(pEvtTask)))
+			if (!tickTask->OnEventTask(pEvtTask))
 			{
 				svrTrace(Error, "ServerTaskEvent is failed, Evt:{0}", (uint)pEvtTask.EventType.load(std::memory_order_relaxed))
 			}

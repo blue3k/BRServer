@@ -107,6 +107,7 @@ namespace SF {
 			: super()
 			, m_GamePlayerByPlayerID(GetHeap())
 			, m_PendingReleasePlayer(GetHeap())
+			, m_PendingJoinedPlayer(GetHeap())
 			, m_ComponentManger(GetHeap())
 		{
 			SetTickInterval(Const::GAMEINSTANCE_TICK_TIME);
@@ -271,13 +272,13 @@ namespace SF {
 
 		void GameInstanceEntity::UpdateReleasedPlayers()
 		{
-			PlayerID pltID{};
+			PlayerID playerId{};
 			GameInstancePlayer* pGamePlayer = nullptr;
 
 			// Leave player
-			while ((m_PendingReleasePlayer.Dequeue(pltID)))
+			while (m_PendingReleasePlayer.Dequeue(playerId))
 			{
-				if (m_GamePlayerByPlayerID.Find(pltID, pGamePlayer))
+				if (m_GamePlayerByPlayerID.Find(playerId, pGamePlayer))
 				{
 					LeavePlayer(pGamePlayer);
 
@@ -287,6 +288,35 @@ namespace SF {
 					}
 
 				}
+			}
+		}
+
+		void GameInstanceEntity::UpdateJoinedPlayers()
+		{
+			PlayerID playerId{};
+			GameInstancePlayer* pJoinedPlayer = nullptr;
+
+			// Leave player
+			while (m_PendingJoinedPlayer.Dequeue(playerId))
+			{
+				if (!m_GamePlayerByPlayerID.Find(playerId, pJoinedPlayer))
+					continue;
+
+				m_GamePlayerByPlayerID.ForeachOrder(0, m_MaxPlayer, 
+					[this, pJoinedPlayer](const PlayerID& playerID, GameInstancePlayer* pPlayer)-> bool
+					{
+						if (pJoinedPlayer->GetPlayerID() == playerID)
+							return true;
+
+						if (pPlayer->GetRemoteEndpoint() == nullptr)
+							return true;
+
+						NetSvrPolicyPlayInstance policy(pPlayer->GetRemoteEndpoint());
+						policy.NewPlayerInViewS2CEvt(GetEntityUID(), pJoinedPlayer->GetPlayerID(), pJoinedPlayer->GetCharacterVisual());
+
+						return true;
+					});
+
 			}
 		}
 
@@ -389,16 +419,25 @@ namespace SF {
 		{
 			Result hr;
 
-			GameInstancePlayer* pPlayer{};
+			{
+				GameInstancePlayer* pPlayer{};
+				MutexScopeLock lock(m_UpdateLock);
 
-			svrCheck(m_GamePlayerByPlayerID.Find(playerId, pPlayer));
+				svrCheck(m_GamePlayerByPlayerID.Find(playerId, pPlayer));
 
-			pPlayer->SetRemoteConnection(connection);
-			connection->GetRecvMessageDelegates().AddDelegateUnique(uintptr_t(this), [this](Net::Connection* pCon, MessageDataPtr& pMsg)
+				pPlayer->SetRemoteConnection(connection);
+				pPlayer->SetJoined(true);
+			}
+
+			connection->GetRecvMessageDelegates().AddDelegateUnique(uintptr_t(this),
+				[this](Net::Connection* pCon, MessageDataPtr& pMsg)
 				{
 					MutexScopeLock lock(m_UpdateLock);
 					ProcessMessage(pCon->GetMessageEndpoint(), pMsg);
 				});
+
+
+			m_PendingJoinedPlayer.Enqueue(playerId);
 
 			connection->SetEventFireMode(Net::Connection::EventFireMode::Immediate);
 
@@ -451,6 +490,21 @@ namespace SF {
 			assert(pRemoved == pPlayer);
 
 			// We will leave him as an inactive player so the clean-up and any notify aren't needed
+
+			m_GamePlayerByPlayerID.ForeachOrder(0, m_MaxPlayer,
+				[this, pRemoved](const PlayerID& playerID, GameInstancePlayer* pPlayer)-> bool
+				{
+					if (pRemoved->GetPlayerID() == playerID)
+						return true;
+
+					if (pPlayer->GetRemoteEndpoint() == nullptr)
+						return true;
+
+					NetSvrPolicyPlayInstance policy(pPlayer->GetRemoteEndpoint());
+					policy.RemovePlayerFromViewS2CEvt(GetEntityUID(), pRemoved->GetPlayerID());
+
+					return true;
+				});
 
 			svrTrace(SVR_INFO, "LeavePlayer, remain:{0}", m_GamePlayerByPlayerID.size());
 

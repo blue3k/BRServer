@@ -83,6 +83,7 @@ namespace SF {
 			GameInstancePlayerComponentManager m_ComponentManager;
 
 			bool m_IsBot;
+			bool m_IsJoined{};
 
 			Util::TimeStampTimer m_TimeToRemove;
 
@@ -115,8 +116,11 @@ namespace SF {
 			const VariableTable& GetCharacterVisual() const { return m_CharacterVisual; }
 			const VariableTable& GetCharacterAttribute() const { return m_CharacterAttribute; }
 
-			bool GetIsBot() { return m_IsBot; }
+			bool GetIsBot() const { return m_IsBot; }
 			void SetIsBot(bool value) { m_IsBot = value; }
+
+			bool IsJoined() const { return m_IsJoined; }
+			void SetJoined(bool value) { m_IsJoined = value; }
 
 			// Initialize player
 			Result InitializePlayer(GameInstanceEntity* pGameOwner, bool isBot = false);

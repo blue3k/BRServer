@@ -64,6 +64,7 @@ namespace Svr
 
 		// Release array
 		PageQueue<PlayerID>		m_PendingReleasePlayer;
+		PageQueue<PlayerID>		m_PendingJoinedPlayer;
 
 		// Instance type
 		StringCrc32 m_InstanceType;
@@ -157,6 +158,7 @@ namespace Svr
 		uint32_t UpdateMovementTick(TimeStampMS newUpdateTimeStamp);
 
 		void UpdateReleasedPlayers();
+		void UpdateJoinedPlayers();
 
 
 		//////////////////////////////////////////////////////////////////////////////////////////////////
