@@ -211,7 +211,7 @@ namespace SF {
 
 					if (pPlayer->GetRemoveTimer().CheckTimer())
 					{
-						LeavePlayer(pPlayer->GetPlayerID());
+						PendingLeavePlayer(pPlayer->GetPlayerID());
 					}
 					else
 					{
@@ -221,7 +221,8 @@ namespace SF {
 
 							// Broad cast movement
 							// TODO: Need to add spatial management
-							m_GamePlayerByPlayerID.ForeachOrder(0, m_MaxPlayer, [this, pMyPlayer = pPlayer](const PlayerID& playerID, GameInstancePlayer* pPlayer)-> bool
+							m_GamePlayerByPlayerID.ForeachOrder(0, m_MaxPlayer, 
+								[this, pMyPlayer = pPlayer](const PlayerID& playerID, GameInstancePlayer* pPlayer)-> bool
 								{
 									//if (pMyPlayer->GetPlayerID() == playerID)
 									//	return true;
@@ -230,7 +231,7 @@ namespace SF {
 										return true;
 
 									NetSvrPolicyPlayInstance policy(pPlayer->GetRemoteEndpoint());
-									policy.PlayerMovementS2CEvt(GetEntityUID(), pPlayer->GetPlayerID(), pMyPlayer->GetLatestMovement());
+									policy.PlayerMovementS2CEvt(GetEntityUID(), pMyPlayer->GetPlayerID(), pMyPlayer->GetLatestMovement());
 
 									return true;
 								});
@@ -520,7 +521,7 @@ namespace SF {
 			return hr;
 		}
 
-		Result GameInstanceEntity::LeavePlayer(PlayerID pltID)
+		Result GameInstanceEntity::PendingLeavePlayer(PlayerID pltID)
 		{
 			ScopeContext hr;
 

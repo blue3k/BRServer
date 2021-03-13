@@ -229,7 +229,7 @@ namespace Svr
 		// Player leave
 		virtual Result LeavePlayer(GameInstancePlayer* pPlayer );
 
-		virtual Result LeavePlayer( PlayerID pltID );
+		virtual Result PendingLeavePlayer( PlayerID pltID );
 
 		// Leave all player
 		Result LeaveAllPlayerForGameDelete();

@@ -68,7 +68,7 @@ namespace SF {
 
 			svrCheck(super::StartTransaction());
 
-			svrCheck(GetMyOwner()->LeavePlayer(GetPlayerID()));
+			svrCheck(GetMyOwner()->PendingLeavePlayer(GetPlayerID()));
 
 			return hr;
 		}
