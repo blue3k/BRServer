@@ -37,7 +37,7 @@ namespace SF {
 namespace Svr
 {
 	class GameInstancePlayer;
-
+	class GameInstanceMapObject;
 
 	//////////////////////////////////////////////////////////////////////////
 	//
@@ -72,6 +72,8 @@ namespace Svr
 		// data id
 		uint32_t m_ZoneTableID{};
 
+		// map objects
+		SortedMap<StringCrc32, GameInstanceMapObject*> m_MapObjects;
 
 		//////////////////////////////////////////////////////////////////////////////////////////////////
 		//
@@ -143,6 +145,9 @@ namespace Svr
 		inline uint GetNumPlayer() {
 			return static_cast<uint>(m_GamePlayerByPlayerID.size());
 		}
+
+		// map object
+		Result GetMapObject(StringCrc32 mapObjectId, GameInstanceMapObject*& pMapObject);
 
 	protected:
 		// Initialize entity to proceed new connection

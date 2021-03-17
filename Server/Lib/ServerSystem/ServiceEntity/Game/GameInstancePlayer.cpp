@@ -53,6 +53,15 @@ namespace SF {
 			m_ComponentManager.TerminateComponents();
 		}
 
+		Result GameInstancePlayer::OccupyObject(StringCrc32 mapObjectId)
+		{
+			if (m_OccupiedObject != nullptr)
+				return ResultCode::BUSY;
+
+			m_OccupiedObject = mapObjectId;
+
+			return ResultCode::SUCCESS;
+		}
 
 		// Initialize player
 		Result GameInstancePlayer::InitializePlayer(GameInstanceEntity* pGameOwner)

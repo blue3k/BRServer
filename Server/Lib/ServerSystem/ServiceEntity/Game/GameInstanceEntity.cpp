@@ -108,6 +108,7 @@ namespace SF {
 			, m_GamePlayerByPlayerID(GetHeap())
 			, m_PendingReleasePlayer(GetHeap())
 			, m_PendingJoinedPlayer(GetHeap())
+			, m_MapObjects(GetHeap())
 			, m_ComponentManger(GetHeap())
 		{
 			SetTickInterval(Const::GAMEINSTANCE_TICK_TIME);
@@ -118,7 +119,11 @@ namespace SF {
 			RegisterMessageHandler<GameEntityTransJoinGameInstance>();
 			RegisterMessageHandler<GameEntityTransLeaveGameInstance>();
 
-			RegisterMessageHandler<GameEntityTransPlayerMovement>();
+			RegisterMessageHandler<GameInstanceTransPlayerMovement>();
+
+			RegisterMessageHandler<GameInstanceTransOccupyMapObject>();
+			RegisterMessageHandler<GameInstanceTransUnoccupyMapObject>();
+			RegisterMessageHandler<GameInstanceTransUseMapObject>();
 		}
 
 		GameInstanceEntity::~GameInstanceEntity()
@@ -128,6 +133,14 @@ namespace SF {
 		GameInstancePlayer* GameInstanceEntity::CreatePlayer(EntityUID playerEntityUID, const PlayerInformation& player)
 		{
 			return new(GetHeap()) GameInstancePlayer(this, playerEntityUID, player);
+		}
+
+		Result GameInstanceEntity::GetMapObject(StringCrc32 mapObjectId, GameInstanceMapObject*& pMapObject)
+		{
+			if (!m_MapObjects.Find(mapObjectId, pMapObject))
+				return ResultCode::MAPOBJECT_NOT_FOUND;
+
+			return ResultCode::SUCCESS;
 		}
 
 		// Initialize entity to proceed new connection

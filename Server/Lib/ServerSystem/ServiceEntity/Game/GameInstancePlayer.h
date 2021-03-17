@@ -82,6 +82,8 @@ namespace SF {
 
 			GameInstancePlayerComponentManager m_ComponentManager;
 
+			StringCrc32 m_OccupiedObject;
+
 			bool m_IsJoined{};
 			StringCrc32 m_PlayerState;
 
@@ -104,6 +106,9 @@ namespace SF {
 			GameInstanceEntity* GetGameOwner() { return m_GameOwner; }
 
 			GameInstancePlayerComponentManager& GetComponentManager() { return m_ComponentManager; }
+
+			StringCrc32 GetOccupiedObjectId() const { return m_OccupiedObject; }
+			Result OccupyObject(StringCrc32 mapObjectId);
 
 			// Player state accessor
 			StringCrc32 GetPlayerState() const { return m_PlayerState; }

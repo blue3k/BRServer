@@ -75,7 +75,7 @@ namespace SF {
 		};
 
 
-		class GameEntityTransPlayerMovement : public Svr::MessageTransaction<Svr::GameInstanceEntity, Message::PlayInstance::PlayerMovementC2SEvt>
+		class GameInstanceTransPlayerMovement : public Svr::MessageTransaction<Svr::GameInstanceEntity, Message::PlayInstance::PlayerMovementC2SEvt>
 		{
 		public:
 			using super = MessageTransaction<Svr::GameInstanceEntity, Message::PlayInstance::PlayerMovementC2SEvt>;
@@ -83,11 +83,90 @@ namespace SF {
 		private:
 
 		public:
-			GameEntityTransPlayerMovement(IHeap& heap, MessageDataPtr& pIMsg) :super(heap, Forward<MessageDataPtr>(pIMsg)) {}
-			virtual ~GameEntityTransPlayerMovement() {}
+			GameInstanceTransPlayerMovement(IHeap& heap, MessageDataPtr& pIMsg) :super(heap, Forward<MessageDataPtr>(pIMsg)) {}
+			virtual ~GameInstanceTransPlayerMovement() {}
 
 			// Start Transaction
 			virtual Result StartTransaction() override;
+		};
+
+
+
+
+		class GameInstanceTransOccupyMapObject : public Svr::MessageTransaction<Svr::GameInstanceEntity, Message::PlayInstance::OccupyMapObjectCmd>
+		{
+		public:
+			using super = MessageTransaction<Svr::GameInstanceEntity, Message::PlayInstance::OccupyMapObjectCmd>;
+
+		private:
+
+		public:
+			GameInstanceTransOccupyMapObject(IHeap& heap, MessageDataPtr& pIMsg) :super(heap, Forward<MessageDataPtr>(pIMsg)) {}
+			virtual ~GameInstanceTransOccupyMapObject() {}
+
+			// Start Transaction
+			virtual Result StartTransaction() override;
+
+			BR_SVR_MSGTRANS_CLOSE_ARGS(NetSvrPolicyPlayInstance, OccupyMapObjectRes, GetPlayInstanceUID(), GetPlayerID(), GetMapObjectId());
+		};
+
+		class GameInstanceTransUnoccupyMapObject : public Svr::MessageTransaction<Svr::GameInstanceEntity, Message::PlayInstance::UnoccupyMapObjectCmd>
+		{
+		public:
+			using super = MessageTransaction<Svr::GameInstanceEntity, Message::PlayInstance::UnoccupyMapObjectCmd>;
+
+		private:
+
+		public:
+			GameInstanceTransUnoccupyMapObject(IHeap& heap, MessageDataPtr& pIMsg) :super(heap, Forward<MessageDataPtr>(pIMsg)) {}
+			virtual ~GameInstanceTransUnoccupyMapObject() {}
+
+			// Start Transaction
+			virtual Result StartTransaction() override;
+
+			BR_SVR_MSGTRANS_CLOSE_ARGS(NetSvrPolicyPlayInstance, UnoccupyMapObjectRes, GetPlayInstanceUID(), GetPlayerID(), GetMapObjectId());
+		};
+
+		class GameInstanceTransUseMapObject : public Svr::MessageTransaction<Svr::GameInstanceEntity, Message::PlayInstance::UseMapObjectCmd>
+		{
+		public:
+			using super = MessageTransaction<Svr::GameInstanceEntity, Message::PlayInstance::UseMapObjectCmd>;
+
+		private:
+			VariableTable m_ResultAttributes;
+
+		public:
+			GameInstanceTransUseMapObject(IHeap& heap, MessageDataPtr& pIMsg)
+				: super(heap, Forward<MessageDataPtr>(pIMsg))
+				, m_ResultAttributes(heap)
+			{}
+			virtual ~GameInstanceTransUseMapObject() {}
+
+			// Start Transaction
+			virtual Result StartTransaction() override;
+
+			BR_SVR_MSGTRANS_CLOSE_ARGS(NetSvrPolicyPlayInstance, UseMapObjectRes, GetPlayInstanceUID(), GetPlayerID(), GetMapObjectId(), m_ResultAttributes);
+		};
+
+		class GameInstanceTransHarvest : public Svr::MessageTransaction<Svr::GameInstanceEntity, Message::PlayInstance::HarvestAreaCmd>
+		{
+		public:
+			using super = MessageTransaction<Svr::GameInstanceEntity, Message::PlayInstance::HarvestAreaCmd>;
+
+		private:
+			VariableTable m_ResultAttributes;
+
+		public:
+			GameInstanceTransHarvest(IHeap& heap, MessageDataPtr& pIMsg)
+				: super(heap, Forward<MessageDataPtr>(pIMsg))
+				, m_ResultAttributes(heap)
+			{}
+			virtual ~GameInstanceTransHarvest() {}
+
+			// Start Transaction
+			virtual Result StartTransaction() override;
+
+			BR_SVR_MSGTRANS_CLOSE_ARGS(NetSvrPolicyPlayInstance, HarvestAreaRes, GetPlayInstanceUID(), GetPlayerID(), GetAreaId(), m_ResultAttributes);
 		};
 
 
