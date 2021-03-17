@@ -148,6 +148,9 @@ namespace Svr
 		// Initialize entity to proceed new connection
 		virtual Result InitializeEntity( EntityID newEntityID ) override;
 
+		// create player instance
+		virtual GameInstancePlayer* CreatePlayer(EntityUID playerEntityUID, const PlayerInformation& player);
+
 	public:
 		// Close entity and clear transaction
 		virtual Result TerminateEntity() override;
@@ -227,18 +230,18 @@ namespace Svr
 		virtual Result AddPlayerToJoin(EntityUID playerEntityUID, const PlayerInformation& playerInfo, const VariableTable& characterVisual, const VariableTable& characterAttribute);
 
 		// Player leave
-		virtual Result LeavePlayer(GameInstancePlayer* pPlayer );
+		virtual Result LeavePlayer(GameInstancePlayer* pPlayer);
 
-		virtual Result PendingLeavePlayer( PlayerID pltID );
+		virtual Result PendingLeavePlayer(PlayerID pltID);
 
 		// Leave all player
 		Result LeaveAllPlayerForGameDelete();
 
 		// Find Player with player id
-		Result FindPlayer( PlayerID pltID, GameInstancePlayer* &pGamePlayer );
+		Result FindPlayer(PlayerID pltID, GameInstancePlayer* &pGamePlayer);
 
 		// Called when a player get out of game
-		virtual Result OnPlayerGetOutOfGame(GameInstancePlayer *pPlayer );
+		virtual Result OnPlayerGetOutOfGame(GameInstancePlayer *pPlayer);
 
 		Result NewPlayerMovement(PlayerID playerId, const ActorMovement& newMovement);
 	};

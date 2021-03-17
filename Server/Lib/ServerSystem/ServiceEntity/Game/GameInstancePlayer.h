@@ -82,8 +82,8 @@ namespace SF {
 
 			GameInstancePlayerComponentManager m_ComponentManager;
 
-			bool m_IsBot;
 			bool m_IsJoined{};
+			StringCrc32 m_PlayerState;
 
 			Util::TimeStampTimer m_TimeToRemove;
 
@@ -103,27 +103,37 @@ namespace SF {
 
 			GameInstanceEntity* GetGameOwner() { return m_GameOwner; }
 
+			GameInstancePlayerComponentManager& GetComponentManager() { return m_ComponentManager; }
+
+			// Player state accessor
+			StringCrc32 GetPlayerState() const { return m_PlayerState; }
+			void SetPlayerState(StringCrc32 newState) {
+				m_PlayerState = newState;
+			}
+
+			// Movement frame the play is on
 			uint32_t GetMovementFrame() const { return m_CurMovementFrame; }
 
+			// latest broad casted movement frame
 			uint32_t GetBroadCastedMovementFrame() const { return m_BroadcastedMovementFrame; }
 			void SetBroadCastedMovementFrame(uint32_t newMovementFrame) { m_BroadcastedMovementFrame = newMovementFrame; }
 
+			// latest movement
 			const ActorMovement& GetLatestMovement() const { return m_LatestMovement; }
 			void SetLatestMovement(const ActorMovement& src) { m_LatestMovement = src; }
 
+			// Quick access to component
 			GameInstancePlayerComponentMovement* GetMovementManager() { return m_pMovementManager; }
 
+			// Character information
 			const VariableTable& GetCharacterVisual() const { return m_CharacterVisual; }
 			const VariableTable& GetCharacterAttribute() const { return m_CharacterAttribute; }
-
-			bool GetIsBot() const { return m_IsBot; }
-			void SetIsBot(bool value) { m_IsBot = value; }
 
 			bool IsJoined() const { return m_IsJoined; }
 			void SetJoined(bool value) { m_IsJoined = value; }
 
 			// Initialize player
-			Result InitializePlayer(GameInstanceEntity* pGameOwner, bool isBot = false);
+			virtual Result InitializePlayer(GameInstanceEntity* pGameOwner);
 
 			Result SetCharacterData(const VariableTable& characterVisual, const VariableTable& characterAttribute);
 

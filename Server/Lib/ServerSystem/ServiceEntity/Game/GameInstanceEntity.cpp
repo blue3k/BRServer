@@ -125,6 +125,11 @@ namespace SF {
 		{
 		}
 
+		GameInstancePlayer* GameInstanceEntity::CreatePlayer(EntityUID playerEntityUID, const PlayerInformation& player)
+		{
+			return new(GetHeap()) GameInstancePlayer(this, playerEntityUID, player);
+		}
+
 		// Initialize entity to proceed new connection
 		Result GameInstanceEntity::InitializeEntity(EntityID newEntityID)
 		{
@@ -243,7 +248,6 @@ namespace SF {
 
 			UpdateGameStatus(CurTime);
 
-			
 
 			if (GetEntityState() == EntityState::FREE)
 				return ResultCode::SUCCESS_FALSE;
@@ -458,7 +462,7 @@ namespace SF {
 				svrError(ResultCode::GAME_ALREADY_IN_GAME);
 			}
 
-			pPlayer.reset(new(GetHeap()) GameInstancePlayer(this, playerEntityUID, playerInfo));
+			pPlayer.reset(CreatePlayer(playerEntityUID, playerInfo));
 			svrCheckPtr(pPlayer);
 
 			svrCheck(pPlayer->InitializePlayer(this));
@@ -566,7 +570,7 @@ namespace SF {
 		// Called when a player get out of game
 		Result GameInstanceEntity::OnPlayerGetOutOfGame(GameInstancePlayer* pPlayer)
 		{
-			ScopeContext hr;
+			Result hr;
 
 			return hr;
 		}

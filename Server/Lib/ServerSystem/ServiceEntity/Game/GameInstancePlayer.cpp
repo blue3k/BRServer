@@ -45,7 +45,6 @@ namespace SF {
 			, m_CharacterVisual(GetHeap())
 			, m_CharacterAttribute(GetHeap())
 			, m_ComponentManager(GetHeap())
-			, m_IsBot(false)
 		{
 		}
 
@@ -56,7 +55,7 @@ namespace SF {
 
 
 		// Initialize player
-		Result GameInstancePlayer::InitializePlayer(GameInstanceEntity* pGameOwner, bool isBot)
+		Result GameInstancePlayer::InitializePlayer(GameInstanceEntity* pGameOwner)
 		{
 			Result hr = ResultCode::SUCCESS;
 
@@ -69,8 +68,6 @@ namespace SF {
 
 			// cache component reference
 			m_pMovementManager = m_ComponentManager.GetComponent<GameInstancePlayerComponentMovement>();
-
-			m_IsBot = isBot;
 
 			return hr;
 		}
