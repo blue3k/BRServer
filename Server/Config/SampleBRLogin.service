@@ -1,0 +1,18 @@
+[Unit]
+Description=BRLogin Daemon
+Documentation=https://github.com/blue3k/BRServer
+Requires=network.target
+After=kafka
+
+[Service]
+Type=simple
+WorkingDirectory=/data/BR/FishingOnlineServer/buildLinux
+User=bravesadmin
+Group=braves
+ExecStart=/data/BR/FishingOnlineServer/buildLinux/x64Debug/bin/BRModuleServer -config:../../../Config/Login01.cfg
+TimeoutSec=30
+Restart=on-failure
+
+[Install]
+WantedBy=default.target
+
