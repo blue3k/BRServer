@@ -34,7 +34,6 @@ namespace SF {
 		//	Entity server class
 		//
 
-
 		GameInstanceMapObject::GameInstanceMapObject(GameInstanceEntity* pGameOwner, StringCrc32 mapObjectId)
 			: m_GameOwner(pGameOwner)
 			, m_MapObjectId(mapObjectId)

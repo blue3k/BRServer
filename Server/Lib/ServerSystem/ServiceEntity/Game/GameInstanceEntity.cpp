@@ -28,6 +28,7 @@
 
 #include "Server/BrServer.h"
 #include "ServiceEntity/Game/GameInstancePlayer.h"
+#include "ServiceEntity/Game/GameInstanceMapObject.h"
 #include "Protocol/ServerService/GameInstanceManagerService.h"
 #include "ServiceEntity/Game/GameInstanceEntity.h"
 #include "ServiceEntity/Game/Transaction/GameInstanceTrans.h"
@@ -133,6 +134,11 @@ namespace SF {
 		GameInstancePlayer* GameInstanceEntity::CreatePlayer(EntityUID playerEntityUID, const PlayerInformation& player)
 		{
 			return new(GetHeap()) GameInstancePlayer(this, playerEntityUID, player);
+		}
+
+		Svr::GameInstanceMapObject* GameInstanceEntity::CreateMapObject(StringCrc32 mapObjectId)
+		{
+			return new(GetHeap()) Svr::GameInstanceMapObject(this, mapObjectId);
 		}
 
 		Result GameInstanceEntity::GetMapObject(StringCrc32 mapObjectId, GameInstanceMapObject*& pMapObject)

@@ -155,6 +155,7 @@ namespace Svr
 
 		// create player instance
 		virtual GameInstancePlayer* CreatePlayer(EntityUID playerEntityUID, const PlayerInformation& player);
+		virtual Svr::GameInstanceMapObject* CreateMapObject(StringCrc32 mapObjectId);
 
 	public:
 		// Close entity and clear transaction

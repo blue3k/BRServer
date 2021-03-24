@@ -209,7 +209,8 @@ namespace SF {
 
 			svrCheck(super::StartTransaction());
 
-
+			// TODO:
+			hr = ResultCode::NOT_IMPLEMENTED;
 
 			return hr;
 		}

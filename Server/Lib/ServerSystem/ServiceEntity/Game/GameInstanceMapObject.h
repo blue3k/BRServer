@@ -42,9 +42,8 @@ namespace SF {
 
 		//////////////////////////////////////////////////////////////////////////
 		//
-		//	Game Instance entity class
+		//	Game Instance map object class
 		//
-
 
 
 		class GameInstanceMapObject
@@ -53,8 +52,14 @@ namespace SF {
 
 			// Game instance that this player
 			GameInstanceEntity* m_GameOwner{};
+
+			// Map object Id
 			StringCrc32 m_MapObjectId{};
+
+			// Occupied player Id
 			PlayerID m_OccupiedPlayerId{};
+
+			// Attribute
 			VariableTable m_Attributes;
 
 		public:

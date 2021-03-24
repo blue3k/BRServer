@@ -158,7 +158,7 @@ namespace SF {
 			m_GameInsID = 0;
 
 			if (GetMyOwner()->GetCharacterID() == 0)
-				svrError(ResultCode::INVALID_CHANNELID);
+				svrError(ResultCode::CHARACTER_NOT_SELECTED);
 
 			if (GetMyOwner()->GetGameInsUID().UID != 0 && GetMyOwner()->GetGameInsUID().UID != GetInsUID())
 				svrError(ResultCode::GAME_ALREADY_IN_GAME);
