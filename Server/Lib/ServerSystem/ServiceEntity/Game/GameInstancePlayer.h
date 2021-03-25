@@ -118,6 +118,7 @@ namespace SF {
 
 			// Movement frame the play is on
 			uint32_t GetMovementFrame() const { return m_CurMovementFrame; }
+			void SetMovementFrame(uint32_t newFrame) { m_CurMovementFrame = newFrame; }
 
 			// latest broad casted movement frame
 			uint32_t GetBroadCastedMovementFrame() const { return m_BroadcastedMovementFrame; }
