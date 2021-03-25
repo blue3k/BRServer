@@ -103,6 +103,7 @@ namespace Svr
 		// movement frame
 		TimeStampMS m_LatestTickTime;
 		uint32_t m_MovementFrame = 0;
+		ActorMovement m_StartMove{};
 
 	public:
 		//////////////////////////////////////////////////////////////////////////////////////////////////

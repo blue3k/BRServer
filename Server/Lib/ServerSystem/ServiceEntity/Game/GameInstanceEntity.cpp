@@ -166,7 +166,6 @@ namespace SF {
 			m_LatestTickTime = Util::Time.GetRawTimeMs();
 			m_MovementFrame = 0;
 
-
 			return hr;
 		}
 
@@ -428,6 +427,17 @@ namespace SF {
 			}
 
 
+			auto zoneTableRow = Service::DataTableManager->FindRow("ZoneTable", GetZoneTableID());
+			if (zoneTableRow)
+			{
+				m_StartMove.Position = Vector4(zoneTableRow->GetValue<float>("StartPosX"), zoneTableRow->GetValue<float>("StartPosY"), zoneTableRow->GetValue<float>("StartPosZ"));
+			}
+			else
+			{
+				svrTrace(Error, "No zone table entry for {0}", GetZoneTableID());
+			}
+
+
 			return hr;
 		}
 
@@ -492,6 +502,11 @@ namespace SF {
 
 			svrCheck(m_GamePlayerByPlayerID.Insert(pPlayer->GetPlayerID(), pPlayer.get()));
 
+			if (pPlayer->GetMovementManager())
+			{
+				m_StartMove.MoveFrame = GetMovementFrame();
+				pPlayer->GetMovementManager()->GetMovementManager().EnqueueMovement(m_StartMove);
+			}
 			pPlayer->GetRemoveTimer().SetTimer(Const::GAMEINSTANCE_PLAYER_REMOVE);
 
 			// clear game killing timer
