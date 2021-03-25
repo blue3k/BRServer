@@ -19,6 +19,7 @@
 #include "ResultCode/SFResultCodeGame.h"
 #include "Net/SFMessage.h"
 #include "Util/SFRandom.h"
+#include "Math/SF3DMathSerialization.h"
 
 #include "Server/BrServer.h"
 #include "Entity/EntityManager.h"
@@ -431,6 +432,7 @@ namespace SF {
 			if (zoneTableRow)
 			{
 				m_StartMove.Position = Vector4(zoneTableRow->GetValue<float>("StartPosX"), zoneTableRow->GetValue<float>("StartPosY"), zoneTableRow->GetValue<float>("StartPosZ"));
+				svrTrace(Error, "zone start pos for {0}, {1}", GetZoneTableID(), m_StartMove.Position);
 			}
 			else
 			{
