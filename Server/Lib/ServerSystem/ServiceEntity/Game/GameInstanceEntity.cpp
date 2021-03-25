@@ -431,7 +431,11 @@ namespace SF {
 			auto zoneTableRow = Service::DataTableManager->FindRow("ZoneTable", GetZoneTableID());
 			if (zoneTableRow)
 			{
-				m_StartMove.Position = Vector4(zoneTableRow->GetValue<float>("StartPosX"), zoneTableRow->GetValue<float>("StartPosY"), zoneTableRow->GetValue<float>("StartPosZ"));
+				m_StartMove.Position = Vector4(
+					zoneTableRow->GetValue<float>("StartPosX"), 
+					zoneTableRow->GetValue<float>("StartPosY"), 
+					zoneTableRow->GetValue<float>("StartPosZ"));
+
 				svrTrace(Error, "zone start pos for {0}, {1}", GetZoneTableID(), m_StartMove.Position);
 			}
 			else
