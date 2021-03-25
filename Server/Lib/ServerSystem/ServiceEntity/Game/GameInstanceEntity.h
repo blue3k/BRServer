@@ -231,7 +231,7 @@ namespace Svr
 		//
 
 		// called by instance manager when the player is connected
-		Result PlayerConnected(PlayerID playerId, const SharedPointerT<Net::Connection>& connection);
+		Result PlayerConnected(PlayerID playerId, const SharedPointerT<Net::Connection>& connection, ActorMovement& outMovement);
 
 		// Register new player to join
 		virtual Result AddPlayerToJoin(EntityUID playerEntityUID, const PlayerInformation& playerInfo, const VariableTable& characterVisual, const VariableTable& characterAttribute);

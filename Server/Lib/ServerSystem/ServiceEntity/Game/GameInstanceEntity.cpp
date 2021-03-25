@@ -450,7 +450,7 @@ namespace SF {
 		//
 
 
-		Result GameInstanceEntity::PlayerConnected(PlayerID playerId, const SharedPointerT<Net::Connection>& connection)
+		Result GameInstanceEntity::PlayerConnected(PlayerID playerId, const SharedPointerT<Net::Connection>& connection, ActorMovement& outMovement)
 		{
 			Result hr;
 
@@ -462,6 +462,10 @@ namespace SF {
 
 				pPlayer->SetRemoteConnection(connection);
 				pPlayer->SetJoined(true);
+
+				if (pPlayer->GetMovementManager())
+					outMovement = pPlayer->GetMovementManager()->GetMovementManager().GetLatestMovement();
+				outMovement.MoveFrame = GetMovementFrame();
 			}
 
 			connection->GetRecvMessageDelegates().AddDelegateUnique(uintptr_t(this),

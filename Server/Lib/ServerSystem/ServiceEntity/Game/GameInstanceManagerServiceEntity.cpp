@@ -85,20 +85,21 @@ namespace SF {
 					if (instanceUID.GetEntityID().GetFacultyID() != uint(EntityFaculty::GameInstance))
 						return;
 
+					ActorMovement movement{};
 					MessageDataPtr pRes;
 					SharedPointerT<Svr::Entity> pEntity;
 					if (!Service::EntityTable->find(instanceUID.GetEntityID(), pEntity))
 					{
-						pRes = SF::Message::PlayInstance::JoinGameInstanceRes::Create(GetSystemHeap(), cmd.GetTransactionID(), ResultCode::INVALID_INSTANCEID, instanceUID, playerID, 0);
+						pRes = SF::Message::PlayInstance::JoinGameInstanceRes::Create(GetSystemHeap(), cmd.GetTransactionID(), ResultCode::INVALID_INSTANCEID, instanceUID, playerID, movement);
 						pConn->Send(pRes);
 						return;
 					}
 
 					auto pInstance = pEntity.StaticCast<GameInstanceEntity>();
-					Result hr = pInstance->PlayerConnected(playerID, pConn);
+					Result hr = pInstance->PlayerConnected(playerID, pConn, movement);
 					if (!hr)
 					{
-						pRes = SF::Message::PlayInstance::JoinGameInstanceRes::Create(GetSystemHeap(), cmd.GetTransactionID(), hr, instanceUID, playerID, pInstance->GetMovementFrame());
+						pRes = SF::Message::PlayInstance::JoinGameInstanceRes::Create(GetSystemHeap(), cmd.GetTransactionID(), hr, instanceUID, playerID, movement);
 						pConn->Send(pRes);
 						return;
 					}
@@ -111,7 +112,7 @@ namespace SF {
 					auto pThis = pConn->GetComponentManager().RemoveComponent<GameInstanceManager_NewConnectionHandler>();
 					IHeap::Delete(pThis);
 
-					pRes = SF::Message::PlayInstance::JoinGameInstanceRes::Create(GetSystemHeap(), cmd.GetTransactionID(), hr, instanceUID, playerID, pInstance->GetMovementFrame());
+					pRes = SF::Message::PlayInstance::JoinGameInstanceRes::Create(GetSystemHeap(), cmd.GetTransactionID(), hr, instanceUID, playerID, movement);
 					pConn->Send(pRes);
 				};
 
