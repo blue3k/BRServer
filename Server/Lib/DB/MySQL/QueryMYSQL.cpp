@@ -110,7 +110,9 @@ namespace SF {
 			case mysqlx::Value::VNULL: break;
 			case mysqlx::Value::UINT64: dest.SetValue(columnName, src.get<uint64_t>()); break;
 			case mysqlx::Value::INT64: dest.SetValue(columnName, src.get<int64_t>()); break;
-			case mysqlx::Value::FLOAT: dest.SetValue(columnName, src.get<float>()); break;
+			case mysqlx::Value::FLOAT: dest.SetValue(columnName, src.get<float>()); 
+				dbTrace(Debug3, "Column:{0}, {1}", columnName, src.get<float>());
+				break;
 			case mysqlx::Value::DOUBLE: dest.SetValue(columnName, src.get<double>()); break;
 			case mysqlx::Value::BOOL: dest.SetValue(columnName, src.get<bool>()); break;
 			case mysqlx::Value::STRING: dest.SetValue(columnName, String(src.get<std::string>().c_str())); break;
@@ -142,7 +144,6 @@ namespace SF {
 			for (auto& columnInfo : columnInfos)
 			{
 				std::string columnName = columnInfo.getColumnName(); // This assignment actually convert utf16 to utf8
-				dbTrace(Debug3, "Column:{0}", columnName);
 				columnNames.push_back(columnName.c_str());
 			}
 
