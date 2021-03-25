@@ -46,6 +46,12 @@ namespace SF {
 		{
 		}
 
+		void GameInstancePlayerComponentMovement::ResetMovement(const ActorMovement& initialMovement)
+		{
+			m_ActorMovement.EnqueueMovement(initialMovement);
+			m_ActorMovement.SimulateCurrentMove(GetOwner().GetMovementFrame(), m_LatestSimulatedMovement);
+		}
+
 		void GameInstancePlayerComponentMovement::TickUpdate()
 		{
 			Result hr;

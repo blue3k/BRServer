@@ -464,7 +464,7 @@ namespace SF {
 				pPlayer->SetJoined(true);
 
 				if (pPlayer->GetMovementManager())
-					outMovement = pPlayer->GetMovementManager()->GetMovementManager().GetLatestMovement();
+					outMovement = pPlayer->GetMovementManager()->GetLatestSimulatedMovement();
 				outMovement.MoveFrame = GetMovementFrame();
 			}
 
@@ -508,8 +508,8 @@ namespace SF {
 
 			if (pPlayer->GetMovementManager())
 			{
-				m_StartMove.MoveFrame = GetMovementFrame();
-				pPlayer->GetMovementManager()->GetMovementManager().EnqueueMovement(m_StartMove);
+				m_StartMove.MoveFrame = GetMovementFrame() - 1;
+				pPlayer->GetMovementManager()->ResetMovement(m_StartMove);
 			}
 			pPlayer->GetRemoveTimer().SetTimer(Const::GAMEINSTANCE_PLAYER_REMOVE);
 

@@ -81,7 +81,11 @@ namespace SF {
 
 			IHeap& GetHeap() { return m_Heap; }
 
+			void ResetMovement(const ActorMovement& initialMovement);
+
 			ReceivedActorMovementManager& GetMovementManager() { return m_ActorMovement; }
+
+			const ActorMovement& GetLatestSimulatedMovement() const { return m_LatestSimulatedMovement; }
 
 			virtual void TickUpdate() override;
 
