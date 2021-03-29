@@ -1,6 +1,6 @@
 ﻿////////////////////////////////////////////////////////////////////////////////
 // 
-// CopyRight (c) 2016 Kyungkun Ko
+// CopyRight (c) StormForge
 // 
 // Author : Generated
 // 
@@ -15,6 +15,7 @@
 #include "Types/SFEngineTypedefs.h"
 #include "Variable/SFVariableTable.h"
 #include "Container/SFArray.h"
+#include "Actor/Movement/SFActorMovement.h"
 #include "Protocol/SvrProtocol.h"
 
 
@@ -53,8 +54,8 @@ namespace SF
 				RegisterPlayerToJoinGameServerCmd()
 					{}
 
-				RegisterPlayerToJoinGameServerCmd( MessageDataPtr &&pMsg )
-					: MessageBase(std::forward<MessageDataPtr>(pMsg))
+				RegisterPlayerToJoinGameServerCmd( const MessageDataPtr &pMsg )
+					: MessageBase(pMsg)
 					{}
 
 					MessageUsage GetMessageUsage() { return MessageUsage_None; }
@@ -69,7 +70,7 @@ namespace SF
 				static Result TraceOut(const char* prefix, const MessageDataPtr& pMsg);
 
 				virtual Result ParseMessage(const MessageData* pIMsg);
-				static Result ParseMessageToMessageBase(IHeap& memHeap, MessageDataPtr&& pIMsg, MessageBase* &pMsgBase);
+				static Result ParseMessageToMessageBase(IHeap& memHeap, const MessageDataPtr& pIMsg, MessageBase* &pMsgBase);
 
 				static MessageData* Create( IHeap& memHeap, const RouteContext &InRouteContext, const uint64_t &InTransactionID, const PlayerID &InPlayerID, const AuthTicket &InTicket, const FacebookUID &InFBUserID, const uint32_t &InShardID );
 
@@ -105,8 +106,8 @@ namespace SF
 				RegisterPlayerToJoinGameServerRes()
 					{}
 
-				RegisterPlayerToJoinGameServerRes( MessageDataPtr &&pMsg )
-					: MessageBase(std::forward<MessageDataPtr>(pMsg))
+				RegisterPlayerToJoinGameServerRes( const MessageDataPtr &pMsg )
+					: MessageBase(pMsg)
 					{}
 
 					MessageUsage GetMessageUsage() { return MessageUsage_None; }
@@ -121,7 +122,7 @@ namespace SF
 				static Result TraceOut(const char* prefix, const MessageDataPtr& pMsg);
 
 				virtual Result ParseMessage(const MessageData* pIMsg);
-				static Result ParseMessageToMessageBase(IHeap& memHeap, MessageDataPtr&& pIMsg, MessageBase* &pMsgBase);
+				static Result ParseMessageToMessageBase(IHeap& memHeap, const MessageDataPtr& pIMsg, MessageBase* &pMsgBase);
 
 				static MessageData* Create( IHeap& memHeap, const RouteContext &InRouteContext, const uint64_t &InTransactionID, const Result &InResult, const char* InPublicAddress, const char* InPublicAddressV6, const uint32_t &InPort );
 
@@ -156,8 +157,8 @@ namespace SF
 				RegisterPlayerToJoinGameServerOnPlayerEntityCmd()
 					{}
 
-				RegisterPlayerToJoinGameServerOnPlayerEntityCmd( MessageDataPtr &&pMsg )
-					: MessageBase(std::forward<MessageDataPtr>(pMsg))
+				RegisterPlayerToJoinGameServerOnPlayerEntityCmd( const MessageDataPtr &pMsg )
+					: MessageBase(pMsg)
 					{}
 
 					MessageUsage GetMessageUsage() { return MessageUsage_None; }
@@ -171,7 +172,7 @@ namespace SF
 				static Result TraceOut(const char* prefix, const MessageDataPtr& pMsg);
 
 				virtual Result ParseMessage(const MessageData* pIMsg);
-				static Result ParseMessageToMessageBase(IHeap& memHeap, MessageDataPtr&& pIMsg, MessageBase* &pMsgBase);
+				static Result ParseMessageToMessageBase(IHeap& memHeap, const MessageDataPtr& pIMsg, MessageBase* &pMsgBase);
 
 				static MessageData* Create( IHeap& memHeap, const RouteContext &InRouteContext, const uint64_t &InTransactionID, const PlayerID &InPlayerID, const AuthTicket &InTicket, const FacebookUID &InFBUserID );
 
@@ -204,8 +205,8 @@ namespace SF
 				RegisterPlayerToJoinGameServerOnPlayerEntityRes()
 					{}
 
-				RegisterPlayerToJoinGameServerOnPlayerEntityRes( MessageDataPtr &&pMsg )
-					: MessageBase(std::forward<MessageDataPtr>(pMsg))
+				RegisterPlayerToJoinGameServerOnPlayerEntityRes( const MessageDataPtr &pMsg )
+					: MessageBase(pMsg)
 					{}
 
 					MessageUsage GetMessageUsage() { return MessageUsage_None; }
@@ -217,7 +218,7 @@ namespace SF
 				static Result TraceOut(const char* prefix, const MessageDataPtr& pMsg);
 
 				virtual Result ParseMessage(const MessageData* pIMsg);
-				static Result ParseMessageToMessageBase(IHeap& memHeap, MessageDataPtr&& pIMsg, MessageBase* &pMsgBase);
+				static Result ParseMessageToMessageBase(IHeap& memHeap, const MessageDataPtr& pIMsg, MessageBase* &pMsgBase);
 
 				static MessageData* Create( IHeap& memHeap, const RouteContext &InRouteContext, const uint64_t &InTransactionID, const Result &InResult );
 
@@ -254,8 +255,8 @@ namespace SF
 				ChatMessageC2SEvt()
 					{}
 
-				ChatMessageC2SEvt( MessageDataPtr &&pMsg )
-					: MessageBase(std::forward<MessageDataPtr>(pMsg))
+				ChatMessageC2SEvt( const MessageDataPtr &pMsg )
+					: MessageBase(pMsg)
 					{}
 
 					MessageUsage GetMessageUsage() { return MessageUsage_None; }
@@ -269,7 +270,7 @@ namespace SF
 				static Result TraceOut(const char* prefix, const MessageDataPtr& pMsg);
 
 				virtual Result ParseMessage(const MessageData* pIMsg);
-				static Result ParseMessageToMessageBase(IHeap& memHeap, MessageDataPtr&& pIMsg, MessageBase* &pMsgBase);
+				static Result ParseMessageToMessageBase(IHeap& memHeap, const MessageDataPtr& pIMsg, MessageBase* &pMsgBase);
 
 				static MessageData* Create( IHeap& memHeap, const RouteContext &InRouteContext, const AccountID &InSenderID, const uint8_t &InRole, const char* InSenderName, const char* InChatMessage );
 
@@ -309,8 +310,8 @@ namespace SF
 				NotifyC2SEvt()
 					{}
 
-				NotifyC2SEvt( MessageDataPtr &&pMsg )
-					: MessageBase(std::forward<MessageDataPtr>(pMsg))
+				NotifyC2SEvt( const MessageDataPtr &pMsg )
+					: MessageBase(pMsg)
 					{}
 
 					MessageUsage GetMessageUsage() { return MessageUsage_None; }
@@ -327,7 +328,7 @@ namespace SF
 				static Result TraceOut(const char* prefix, const MessageDataPtr& pMsg);
 
 				virtual Result ParseMessage(const MessageData* pIMsg);
-				static Result ParseMessageToMessageBase(IHeap& memHeap, MessageDataPtr&& pIMsg, MessageBase* &pMsgBase);
+				static Result ParseMessageToMessageBase(IHeap& memHeap, const MessageDataPtr& pIMsg, MessageBase* &pMsgBase);
 
 				static MessageData* Create( IHeap& memHeap, const RouteContext &InRouteContext, const PlayerID &InDestPlayerID, const uint32_t &InNotificationID, const NotificationType &InMessageID, const uint64_t &InMessageParam0, const uint64_t &InMessageParam1, const char* InMessageText, const uint64_t &InTimeStamp );
 
@@ -362,8 +363,8 @@ namespace SF
 				FriendAcceptedC2SEvt()
 					{}
 
-				FriendAcceptedC2SEvt( MessageDataPtr &&pMsg )
-					: MessageBase(std::forward<MessageDataPtr>(pMsg))
+				FriendAcceptedC2SEvt( const MessageDataPtr &pMsg )
+					: MessageBase(pMsg)
 					{}
 
 					MessageUsage GetMessageUsage() { return MessageUsage_None; }
@@ -375,7 +376,7 @@ namespace SF
 				static Result TraceOut(const char* prefix, const MessageDataPtr& pMsg);
 
 				virtual Result ParseMessage(const MessageData* pIMsg);
-				static Result ParseMessageToMessageBase(IHeap& memHeap, MessageDataPtr&& pIMsg, MessageBase* &pMsgBase);
+				static Result ParseMessageToMessageBase(IHeap& memHeap, const MessageDataPtr& pIMsg, MessageBase* &pMsgBase);
 
 				static MessageData* Create( IHeap& memHeap, const RouteContext &InRouteContext, const AccountID &InDestPlayerID, const ServerFriendInformation &InAccepter );
 
@@ -410,8 +411,8 @@ namespace SF
 				FriendRemovedC2SEvt()
 					{}
 
-				FriendRemovedC2SEvt( MessageDataPtr &&pMsg )
-					: MessageBase(std::forward<MessageDataPtr>(pMsg))
+				FriendRemovedC2SEvt( const MessageDataPtr &pMsg )
+					: MessageBase(pMsg)
 					{}
 
 					MessageUsage GetMessageUsage() { return MessageUsage_None; }
@@ -423,7 +424,7 @@ namespace SF
 				static Result TraceOut(const char* prefix, const MessageDataPtr& pMsg);
 
 				virtual Result ParseMessage(const MessageData* pIMsg);
-				static Result ParseMessageToMessageBase(IHeap& memHeap, MessageDataPtr&& pIMsg, MessageBase* &pMsgBase);
+				static Result ParseMessageToMessageBase(IHeap& memHeap, const MessageDataPtr& pIMsg, MessageBase* &pMsgBase);
 
 				static MessageData* Create( IHeap& memHeap, const RouteContext &InRouteContext, const AccountID &InDestPlayerID, const PlayerID &InRemoverID );
 
@@ -458,8 +459,8 @@ namespace SF
 				RequestPlayerStatusUpdateC2SEvt()
 					{}
 
-				RequestPlayerStatusUpdateC2SEvt( MessageDataPtr &&pMsg )
-					: MessageBase(std::forward<MessageDataPtr>(pMsg))
+				RequestPlayerStatusUpdateC2SEvt( const MessageDataPtr &pMsg )
+					: MessageBase(pMsg)
 					{}
 
 					MessageUsage GetMessageUsage() { return MessageUsage_None; }
@@ -471,7 +472,7 @@ namespace SF
 				static Result TraceOut(const char* prefix, const MessageDataPtr& pMsg);
 
 				virtual Result ParseMessage(const MessageData* pIMsg);
-				static Result ParseMessageToMessageBase(IHeap& memHeap, MessageDataPtr&& pIMsg, MessageBase* &pMsgBase);
+				static Result ParseMessageToMessageBase(IHeap& memHeap, const MessageDataPtr& pIMsg, MessageBase* &pMsgBase);
 
 				static MessageData* Create( IHeap& memHeap, const RouteContext &InRouteContext, const AccountID &InDestPlayerID, const PlayerID &InRequesterID );
 
@@ -507,8 +508,8 @@ namespace SF
 				NotifyPlayerStatusUpdatedC2SEvt()
 					{}
 
-				NotifyPlayerStatusUpdatedC2SEvt( MessageDataPtr &&pMsg )
-					: MessageBase(std::forward<MessageDataPtr>(pMsg))
+				NotifyPlayerStatusUpdatedC2SEvt( const MessageDataPtr &pMsg )
+					: MessageBase(pMsg)
 					{}
 
 					MessageUsage GetMessageUsage() { return MessageUsage_None; }
@@ -521,7 +522,7 @@ namespace SF
 				static Result TraceOut(const char* prefix, const MessageDataPtr& pMsg);
 
 				virtual Result ParseMessage(const MessageData* pIMsg);
-				static Result ParseMessageToMessageBase(IHeap& memHeap, MessageDataPtr&& pIMsg, MessageBase* &pMsgBase);
+				static Result ParseMessageToMessageBase(IHeap& memHeap, const MessageDataPtr& pIMsg, MessageBase* &pMsgBase);
 
 				static MessageData* Create( IHeap& memHeap, const RouteContext &InRouteContext, const AccountID &InDestPlayerID, const uint32_t &InLatestActiveTime, const uint8_t &InIsInGame );
 
@@ -558,8 +559,8 @@ namespace SF
 				NotifyPartyInviteC2SEvt()
 					{}
 
-				NotifyPartyInviteC2SEvt( MessageDataPtr &&pMsg )
-					: MessageBase(std::forward<MessageDataPtr>(pMsg))
+				NotifyPartyInviteC2SEvt( const MessageDataPtr &pMsg )
+					: MessageBase(pMsg)
 					{}
 
 					MessageUsage GetMessageUsage() { return MessageUsage_None; }
@@ -573,7 +574,7 @@ namespace SF
 				static Result TraceOut(const char* prefix, const MessageDataPtr& pMsg);
 
 				virtual Result ParseMessage(const MessageData* pIMsg);
-				static Result ParseMessageToMessageBase(IHeap& memHeap, MessageDataPtr&& pIMsg, MessageBase* &pMsgBase);
+				static Result ParseMessageToMessageBase(IHeap& memHeap, const MessageDataPtr& pIMsg, MessageBase* &pMsgBase);
 
 				static MessageData* Create( IHeap& memHeap, const RouteContext &InRouteContext, const PlayerID &InDestPlayerID, const PlayerID &InInviterID, const char* InInviterName, const uint64_t &InPartyUID );
 

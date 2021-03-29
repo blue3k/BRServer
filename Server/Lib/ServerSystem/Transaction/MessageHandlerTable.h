@@ -161,7 +161,7 @@ namespace Svr {
 
 
 		// Call handler 
-		Result HandleMessage( MessageDataPtr &pMsg )
+		Result HandleMessage(const MessageDataPtr &pMsg)
 		{
 			Result hr = ResultCode::SUCCESS;
 			MessageHandlerType handler;
@@ -184,7 +184,7 @@ namespace Svr {
 		}
 
 		template<class Param1>
-		Result HandleMessage( Net::Connection * pCon, MessageDataPtr &pMsg, Param1 param1 )
+		Result HandleMessage( Net::Connection * pCon, const MessageDataPtr &pMsg, Param1 param1 )
 		{
 			Result hr = ResultCode::SUCCESS;
 			MessageHandlerType handler;
@@ -197,7 +197,7 @@ namespace Svr {
 		
 
 		template<class Param1>
-		Result HandleMessage(const SharedPointerT<MessageEndpoint>& remoteEndpoint, MessageDataPtr &pMsg, Param1 param1 )
+		Result HandleMessage(const SharedPointerT<MessageEndpoint>& remoteEndpoint, const MessageDataPtr &pMsg, Param1 param1 )
 		{
 			Result hr = ResultCode::SUCCESS;
 			MessageHandlerType handler;
@@ -209,7 +209,7 @@ namespace Svr {
 		}
 
 		template<class Param1>
-		Result HandleMessage(MessageDataPtr& pMsg, Param1 param1)
+		Result HandleMessage(const MessageDataPtr& pMsg, Param1 param1)
 		{
 			Result hr = ResultCode::SUCCESS;
 			MessageHandlerType handler;
@@ -221,7 +221,7 @@ namespace Svr {
 		}
 
 		template<class Param1, class Param2>
-		Result HandleMessage(MessageDataPtr &pMsg, Param1 param1, Param2 param2 )
+		Result HandleMessage(const MessageDataPtr &pMsg, Param1 param1, Param2 param2 )
 		{
 			Result hr = ResultCode::SUCCESS;
 			MessageHandlerType handler;
@@ -235,13 +235,13 @@ namespace Svr {
 	};
 
 
-	#define	BR_ENTITY_MESSAGE(MessageType) RegisterMessageHandler<MessageType>([=](MessageDataPtr &pMsgData, SF::TransactionPtr &pNewTrans)->Result 
+	#define	BR_ENTITY_MESSAGE(MessageType) RegisterMessageHandler<MessageType>([=](const MessageDataPtr &pMsgData, SF::TransactionPtr &pNewTrans)->Result 
 
 	#define BR_TRANS_MESSAGE(MessageType,MessageHandlerImpl) \
 		RegisterMessageHandler<MessageType>([=](::SF::Svr::TransactionResult* pRes)->Result MessageHandlerImpl );
 
 
-	typedef std::function<Result(const SharedPointerT<MessageEndpoint>& , MessageDataPtr &, Transaction* &)>	EntityMessageHandlerItem;
+	typedef std::function<Result(const SharedPointerT<MessageEndpoint>& , const MessageDataPtr &, Transaction* &)>	EntityMessageHandlerItem;
 
 
 

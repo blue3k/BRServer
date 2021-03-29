@@ -1,6 +1,6 @@
 ﻿////////////////////////////////////////////////////////////////////////////////
 // 
-// CopyRight (c) 2016 Kyungkun Ko
+// CopyRight (c) StormForge
 // 
 // Author : Generated
 // 
@@ -52,16 +52,16 @@ namespace SF
 			}; // Result JoinCmd::ParseMessage(const MessageData* pIMsg)
 
 
-			Result JoinCmd::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr&& pIMsg, MessageBase* &pMessageBase )
+			Result JoinCmd::ParseMessageToMessageBase( IHeap& memHeap, const MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
 			{
  				ScopeContext hr;
 
-				protocolCheckMem(pMessageBase = new(memHeap) JoinCmd(std::forward<MessageDataPtr>(pIMsg)));
+				protocolCheckMem(pMessageBase = new(memHeap) JoinCmd(pIMsg));
 				protocolCheck(pMessageBase->ParseMsg());
 
 				return hr;
 
-			}; // Result JoinCmd::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr&& pIMsg, MessageBase* &pMessageBase )
+			}; // Result JoinCmd::ParseMessageToMessageBase( IHeap& memHeap, const MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
 
 
 			MessageData* JoinCmd::Create( IHeap& memHeap, const RouteContext &InRouteContext, const uint64_t &InTransactionID, const char* InPasscode, const PlayerInformation &InJoiningPlayer )
@@ -160,16 +160,16 @@ namespace SF
 			}; // Result JoinRes::ParseMessage(const MessageData* pIMsg)
 
 
-			Result JoinRes::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr&& pIMsg, MessageBase* &pMessageBase )
+			Result JoinRes::ParseMessageToMessageBase( IHeap& memHeap, const MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
 			{
  				ScopeContext hr;
 
-				protocolCheckMem(pMessageBase = new(memHeap) JoinRes(std::forward<MessageDataPtr>(pIMsg)));
+				protocolCheckMem(pMessageBase = new(memHeap) JoinRes(pIMsg));
 				protocolCheck(pMessageBase->ParseMsg());
 
 				return hr;
 
-			}; // Result JoinRes::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr&& pIMsg, MessageBase* &pMessageBase )
+			}; // Result JoinRes::ParseMessageToMessageBase( IHeap& memHeap, const MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
 
 
 			MessageData* JoinRes::Create( IHeap& memHeap, const RouteContext &InRouteContext, const uint64_t &InTransactionID, const Result &InResult, const PlayerID &InChatChannelLeaderID )
@@ -267,16 +267,16 @@ namespace SF
 			}; // Result PlayerJoinedS2CEvt::ParseMessage(const MessageData* pIMsg)
 
 
-			Result PlayerJoinedS2CEvt::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr&& pIMsg, MessageBase* &pMessageBase )
+			Result PlayerJoinedS2CEvt::ParseMessageToMessageBase( IHeap& memHeap, const MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
 			{
  				ScopeContext hr;
 
-				protocolCheckMem(pMessageBase = new(memHeap) PlayerJoinedS2CEvt(std::forward<MessageDataPtr>(pIMsg)));
+				protocolCheckMem(pMessageBase = new(memHeap) PlayerJoinedS2CEvt(pIMsg));
 				protocolCheck(pMessageBase->ParseMsg());
 
 				return hr;
 
-			}; // Result PlayerJoinedS2CEvt::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr&& pIMsg, MessageBase* &pMessageBase )
+			}; // Result PlayerJoinedS2CEvt::ParseMessageToMessageBase( IHeap& memHeap, const MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
 
 
 			MessageData* PlayerJoinedS2CEvt::Create( IHeap& memHeap, const RouteContext &InRouteContext, const PlayerInformation &InJoinedPlayer )
@@ -370,16 +370,16 @@ namespace SF
 			}; // Result LeaderChangedS2CEvt::ParseMessage(const MessageData* pIMsg)
 
 
-			Result LeaderChangedS2CEvt::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr&& pIMsg, MessageBase* &pMessageBase )
+			Result LeaderChangedS2CEvt::ParseMessageToMessageBase( IHeap& memHeap, const MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
 			{
  				ScopeContext hr;
 
-				protocolCheckMem(pMessageBase = new(memHeap) LeaderChangedS2CEvt(std::forward<MessageDataPtr>(pIMsg)));
+				protocolCheckMem(pMessageBase = new(memHeap) LeaderChangedS2CEvt(pIMsg));
 				protocolCheck(pMessageBase->ParseMsg());
 
 				return hr;
 
-			}; // Result LeaderChangedS2CEvt::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr&& pIMsg, MessageBase* &pMessageBase )
+			}; // Result LeaderChangedS2CEvt::ParseMessageToMessageBase( IHeap& memHeap, const MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
 
 
 			MessageData* LeaderChangedS2CEvt::Create( IHeap& memHeap, const RouteContext &InRouteContext, const PlayerID &InNewLeaderID )
@@ -474,16 +474,16 @@ namespace SF
 			}; // Result LeaveCmd::ParseMessage(const MessageData* pIMsg)
 
 
-			Result LeaveCmd::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr&& pIMsg, MessageBase* &pMessageBase )
+			Result LeaveCmd::ParseMessageToMessageBase( IHeap& memHeap, const MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
 			{
  				ScopeContext hr;
 
-				protocolCheckMem(pMessageBase = new(memHeap) LeaveCmd(std::forward<MessageDataPtr>(pIMsg)));
+				protocolCheckMem(pMessageBase = new(memHeap) LeaveCmd(pIMsg));
 				protocolCheck(pMessageBase->ParseMsg());
 
 				return hr;
 
-			}; // Result LeaveCmd::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr&& pIMsg, MessageBase* &pMessageBase )
+			}; // Result LeaveCmd::ParseMessageToMessageBase( IHeap& memHeap, const MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
 
 
 			MessageData* LeaveCmd::Create( IHeap& memHeap, const RouteContext &InRouteContext, const uint64_t &InTransactionID, const PlayerID &InPlayerID )
@@ -579,16 +579,16 @@ namespace SF
 			}; // Result LeaveRes::ParseMessage(const MessageData* pIMsg)
 
 
-			Result LeaveRes::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr&& pIMsg, MessageBase* &pMessageBase )
+			Result LeaveRes::ParseMessageToMessageBase( IHeap& memHeap, const MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
 			{
  				ScopeContext hr;
 
-				protocolCheckMem(pMessageBase = new(memHeap) LeaveRes(std::forward<MessageDataPtr>(pIMsg)));
+				protocolCheckMem(pMessageBase = new(memHeap) LeaveRes(pIMsg));
 				protocolCheck(pMessageBase->ParseMsg());
 
 				return hr;
 
-			}; // Result LeaveRes::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr&& pIMsg, MessageBase* &pMessageBase )
+			}; // Result LeaveRes::ParseMessageToMessageBase( IHeap& memHeap, const MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
 
 
 			MessageData* LeaveRes::Create( IHeap& memHeap, const RouteContext &InRouteContext, const uint64_t &InTransactionID, const Result &InResult )
@@ -684,16 +684,16 @@ namespace SF
 			}; // Result PlayerLeftS2CEvt::ParseMessage(const MessageData* pIMsg)
 
 
-			Result PlayerLeftS2CEvt::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr&& pIMsg, MessageBase* &pMessageBase )
+			Result PlayerLeftS2CEvt::ParseMessageToMessageBase( IHeap& memHeap, const MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
 			{
  				ScopeContext hr;
 
-				protocolCheckMem(pMessageBase = new(memHeap) PlayerLeftS2CEvt(std::forward<MessageDataPtr>(pIMsg)));
+				protocolCheckMem(pMessageBase = new(memHeap) PlayerLeftS2CEvt(pIMsg));
 				protocolCheck(pMessageBase->ParseMsg());
 
 				return hr;
 
-			}; // Result PlayerLeftS2CEvt::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr&& pIMsg, MessageBase* &pMessageBase )
+			}; // Result PlayerLeftS2CEvt::ParseMessageToMessageBase( IHeap& memHeap, const MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
 
 
 			MessageData* PlayerLeftS2CEvt::Create( IHeap& memHeap, const RouteContext &InRouteContext, const PlayerID &InLeftPlayerID )
@@ -789,16 +789,16 @@ namespace SF
 			}; // Result KickPlayerCmd::ParseMessage(const MessageData* pIMsg)
 
 
-			Result KickPlayerCmd::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr&& pIMsg, MessageBase* &pMessageBase )
+			Result KickPlayerCmd::ParseMessageToMessageBase( IHeap& memHeap, const MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
 			{
  				ScopeContext hr;
 
-				protocolCheckMem(pMessageBase = new(memHeap) KickPlayerCmd(std::forward<MessageDataPtr>(pIMsg)));
+				protocolCheckMem(pMessageBase = new(memHeap) KickPlayerCmd(pIMsg));
 				protocolCheck(pMessageBase->ParseMsg());
 
 				return hr;
 
-			}; // Result KickPlayerCmd::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr&& pIMsg, MessageBase* &pMessageBase )
+			}; // Result KickPlayerCmd::ParseMessageToMessageBase( IHeap& memHeap, const MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
 
 
 			MessageData* KickPlayerCmd::Create( IHeap& memHeap, const RouteContext &InRouteContext, const uint64_t &InTransactionID, const PlayerID &InPlayerID, const PlayerID &InPlayerToKick )
@@ -896,16 +896,16 @@ namespace SF
 			}; // Result KickPlayerRes::ParseMessage(const MessageData* pIMsg)
 
 
-			Result KickPlayerRes::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr&& pIMsg, MessageBase* &pMessageBase )
+			Result KickPlayerRes::ParseMessageToMessageBase( IHeap& memHeap, const MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
 			{
  				ScopeContext hr;
 
-				protocolCheckMem(pMessageBase = new(memHeap) KickPlayerRes(std::forward<MessageDataPtr>(pIMsg)));
+				protocolCheckMem(pMessageBase = new(memHeap) KickPlayerRes(pIMsg));
 				protocolCheck(pMessageBase->ParseMsg());
 
 				return hr;
 
-			}; // Result KickPlayerRes::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr&& pIMsg, MessageBase* &pMessageBase )
+			}; // Result KickPlayerRes::ParseMessageToMessageBase( IHeap& memHeap, const MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
 
 
 			MessageData* KickPlayerRes::Create( IHeap& memHeap, const RouteContext &InRouteContext, const uint64_t &InTransactionID, const Result &InResult )
@@ -1001,16 +1001,16 @@ namespace SF
 			}; // Result PlayerKickedS2CEvt::ParseMessage(const MessageData* pIMsg)
 
 
-			Result PlayerKickedS2CEvt::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr&& pIMsg, MessageBase* &pMessageBase )
+			Result PlayerKickedS2CEvt::ParseMessageToMessageBase( IHeap& memHeap, const MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
 			{
  				ScopeContext hr;
 
-				protocolCheckMem(pMessageBase = new(memHeap) PlayerKickedS2CEvt(std::forward<MessageDataPtr>(pIMsg)));
+				protocolCheckMem(pMessageBase = new(memHeap) PlayerKickedS2CEvt(pIMsg));
 				protocolCheck(pMessageBase->ParseMsg());
 
 				return hr;
 
-			}; // Result PlayerKickedS2CEvt::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr&& pIMsg, MessageBase* &pMessageBase )
+			}; // Result PlayerKickedS2CEvt::ParseMessageToMessageBase( IHeap& memHeap, const MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
 
 
 			MessageData* PlayerKickedS2CEvt::Create( IHeap& memHeap, const RouteContext &InRouteContext, const PlayerID &InKickedPlayerID )
@@ -1106,16 +1106,16 @@ namespace SF
 			}; // Result ChatMessageC2SEvt::ParseMessage(const MessageData* pIMsg)
 
 
-			Result ChatMessageC2SEvt::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr&& pIMsg, MessageBase* &pMessageBase )
+			Result ChatMessageC2SEvt::ParseMessageToMessageBase( IHeap& memHeap, const MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
 			{
  				ScopeContext hr;
 
-				protocolCheckMem(pMessageBase = new(memHeap) ChatMessageC2SEvt(std::forward<MessageDataPtr>(pIMsg)));
+				protocolCheckMem(pMessageBase = new(memHeap) ChatMessageC2SEvt(pIMsg));
 				protocolCheck(pMessageBase->ParseMsg());
 
 				return hr;
 
-			}; // Result ChatMessageC2SEvt::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr&& pIMsg, MessageBase* &pMessageBase )
+			}; // Result ChatMessageC2SEvt::ParseMessageToMessageBase( IHeap& memHeap, const MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
 
 
 			MessageData* ChatMessageC2SEvt::Create( IHeap& memHeap, const RouteContext &InRouteContext, const PlayerID &InSenderID, const char* InChatMessage )
@@ -1215,16 +1215,16 @@ namespace SF
 			}; // Result ChatMessageS2CEvt::ParseMessage(const MessageData* pIMsg)
 
 
-			Result ChatMessageS2CEvt::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr&& pIMsg, MessageBase* &pMessageBase )
+			Result ChatMessageS2CEvt::ParseMessageToMessageBase( IHeap& memHeap, const MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
 			{
  				ScopeContext hr;
 
-				protocolCheckMem(pMessageBase = new(memHeap) ChatMessageS2CEvt(std::forward<MessageDataPtr>(pIMsg)));
+				protocolCheckMem(pMessageBase = new(memHeap) ChatMessageS2CEvt(pIMsg));
 				protocolCheck(pMessageBase->ParseMsg());
 
 				return hr;
 
-			}; // Result ChatMessageS2CEvt::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr&& pIMsg, MessageBase* &pMessageBase )
+			}; // Result ChatMessageS2CEvt::ParseMessageToMessageBase( IHeap& memHeap, const MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
 
 
 			MessageData* ChatMessageS2CEvt::Create( IHeap& memHeap, const RouteContext &InRouteContext, const PlayerID &InSenderID, const char* InSenderName, const char* InChatMessage )

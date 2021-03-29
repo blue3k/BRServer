@@ -1,6 +1,6 @@
 ﻿////////////////////////////////////////////////////////////////////////////////
 // 
-// CopyRight (c) 2016 Kyungkun Ko
+// CopyRight (c) StormForge
 // 
 // Author : Generated
 // 
@@ -15,6 +15,7 @@
 #include "Types/SFEngineTypedefs.h"
 #include "Variable/SFVariableTable.h"
 #include "Container/SFArray.h"
+#include "Actor/Movement/SFActorMovement.h"
 #include "Protocol/SvrProtocol.h"
 
 
@@ -50,8 +51,8 @@ namespace SF
 				GetInstanceListCmd()
 					{}
 
-				GetInstanceListCmd( MessageDataPtr &&pMsg )
-					: MessageBase(std::forward<MessageDataPtr>(pMsg))
+				GetInstanceListCmd( const MessageDataPtr &pMsg )
+					: MessageBase(pMsg)
 					{}
 
 					MessageUsage GetMessageUsage() { return MessageUsage_None; }
@@ -61,7 +62,7 @@ namespace SF
 				static Result TraceOut(const char* prefix, const MessageDataPtr& pMsg);
 
 				virtual Result ParseMessage(const MessageData* pIMsg);
-				static Result ParseMessageToMessageBase(IHeap& memHeap, MessageDataPtr&& pIMsg, MessageBase* &pMsgBase);
+				static Result ParseMessageToMessageBase(IHeap& memHeap, const MessageDataPtr& pIMsg, MessageBase* &pMsgBase);
 
 				static MessageData* Create( IHeap& memHeap, const uint64_t &InTransactionID );
 
@@ -94,8 +95,8 @@ namespace SF
 				GetInstanceListRes()
 					{}
 
-				GetInstanceListRes( MessageDataPtr &&pMsg )
-					: MessageBase(std::forward<MessageDataPtr>(pMsg))
+				GetInstanceListRes( const MessageDataPtr &pMsg )
+					: MessageBase(pMsg)
 					{}
 
 					MessageUsage GetMessageUsage() { return MessageUsage_None; }
@@ -108,7 +109,7 @@ namespace SF
 				static Result TraceOut(const char* prefix, const MessageDataPtr& pMsg);
 
 				virtual Result ParseMessage(const MessageData* pIMsg);
-				static Result ParseMessageToMessageBase(IHeap& memHeap, MessageDataPtr&& pIMsg, MessageBase* &pMsgBase);
+				static Result ParseMessageToMessageBase(IHeap& memHeap, const MessageDataPtr& pIMsg, MessageBase* &pMsgBase);
 
 				static MessageData* Create( IHeap& memHeap, const uint64_t &InTransactionID, const Result &InResult, const Array<PerformanceCounterInstanceInfo>& InCounterInstances, const uint32_t &InTotalInstanceCount );
 
@@ -140,8 +141,8 @@ namespace SF
 				RequestCounterValuesCmd()
 					{}
 
-				RequestCounterValuesCmd( MessageDataPtr &&pMsg )
-					: MessageBase(std::forward<MessageDataPtr>(pMsg))
+				RequestCounterValuesCmd( const MessageDataPtr &pMsg )
+					: MessageBase(pMsg)
 					{}
 
 					MessageUsage GetMessageUsage() { return MessageUsage_None; }
@@ -152,7 +153,7 @@ namespace SF
 				static Result TraceOut(const char* prefix, const MessageDataPtr& pMsg);
 
 				virtual Result ParseMessage(const MessageData* pIMsg);
-				static Result ParseMessageToMessageBase(IHeap& memHeap, MessageDataPtr&& pIMsg, MessageBase* &pMsgBase);
+				static Result ParseMessageToMessageBase(IHeap& memHeap, const MessageDataPtr& pIMsg, MessageBase* &pMsgBase);
 
 				static MessageData* Create( IHeap& memHeap, const uint64_t &InTransactionID, const uint64_t &InInstanceUID );
 
@@ -185,8 +186,8 @@ namespace SF
 				RequestCounterValuesRes()
 					{}
 
-				RequestCounterValuesRes( MessageDataPtr &&pMsg )
-					: MessageBase(std::forward<MessageDataPtr>(pMsg))
+				RequestCounterValuesRes( const MessageDataPtr &pMsg )
+					: MessageBase(pMsg)
 					{}
 
 					MessageUsage GetMessageUsage() { return MessageUsage_None; }
@@ -199,7 +200,7 @@ namespace SF
 				static Result TraceOut(const char* prefix, const MessageDataPtr& pMsg);
 
 				virtual Result ParseMessage(const MessageData* pIMsg);
-				static Result ParseMessageToMessageBase(IHeap& memHeap, MessageDataPtr&& pIMsg, MessageBase* &pMsgBase);
+				static Result ParseMessageToMessageBase(IHeap& memHeap, const MessageDataPtr& pIMsg, MessageBase* &pMsgBase);
 
 				static MessageData* Create( IHeap& memHeap, const uint64_t &InTransactionID, const Result &InResult, const uint64_t &InInstanceUID, const Array<uint64_t>& InCounterValues );
 
@@ -233,8 +234,8 @@ namespace SF
 				PerformanceCounterNewC2SEvt()
 					{}
 
-				PerformanceCounterNewC2SEvt( MessageDataPtr &&pMsg )
-					: MessageBase(std::forward<MessageDataPtr>(pMsg))
+				PerformanceCounterNewC2SEvt( const MessageDataPtr &pMsg )
+					: MessageBase(pMsg)
 					{}
 
 					MessageUsage GetMessageUsage() { return MessageUsage_None; }
@@ -246,7 +247,7 @@ namespace SF
 				static Result TraceOut(const char* prefix, const MessageDataPtr& pMsg);
 
 				virtual Result ParseMessage(const MessageData* pIMsg);
-				static Result ParseMessageToMessageBase(IHeap& memHeap, MessageDataPtr&& pIMsg, MessageBase* &pMsgBase);
+				static Result ParseMessageToMessageBase(IHeap& memHeap, const MessageDataPtr& pIMsg, MessageBase* &pMsgBase);
 
 				static MessageData* Create( IHeap& memHeap, const char* InInstanceName, const uint64_t &InInstanceUID, const Array<PerformanceCounterInfo>& InNewCounters );
 
@@ -278,8 +279,8 @@ namespace SF
 				PerformanceCounterFreeC2SEvt()
 					{}
 
-				PerformanceCounterFreeC2SEvt( MessageDataPtr &&pMsg )
-					: MessageBase(std::forward<MessageDataPtr>(pMsg))
+				PerformanceCounterFreeC2SEvt( const MessageDataPtr &pMsg )
+					: MessageBase(pMsg)
 					{}
 
 					MessageUsage GetMessageUsage() { return MessageUsage_None; }
@@ -289,7 +290,7 @@ namespace SF
 				static Result TraceOut(const char* prefix, const MessageDataPtr& pMsg);
 
 				virtual Result ParseMessage(const MessageData* pIMsg);
-				static Result ParseMessageToMessageBase(IHeap& memHeap, MessageDataPtr&& pIMsg, MessageBase* &pMsgBase);
+				static Result ParseMessageToMessageBase(IHeap& memHeap, const MessageDataPtr& pIMsg, MessageBase* &pMsgBase);
 
 				static MessageData* Create( IHeap& memHeap, const Array<uint64_t>& InFreeInstances );
 
@@ -322,8 +323,8 @@ namespace SF
 				PerformanceCounterUpdateC2SEvt()
 					{}
 
-				PerformanceCounterUpdateC2SEvt( MessageDataPtr &&pMsg )
-					: MessageBase(std::forward<MessageDataPtr>(pMsg))
+				PerformanceCounterUpdateC2SEvt( const MessageDataPtr &pMsg )
+					: MessageBase(pMsg)
 					{}
 
 					MessageUsage GetMessageUsage() { return MessageUsage_None; }
@@ -334,7 +335,7 @@ namespace SF
 				static Result TraceOut(const char* prefix, const MessageDataPtr& pMsg);
 
 				virtual Result ParseMessage(const MessageData* pIMsg);
-				static Result ParseMessageToMessageBase(IHeap& memHeap, MessageDataPtr&& pIMsg, MessageBase* &pMsgBase);
+				static Result ParseMessageToMessageBase(IHeap& memHeap, const MessageDataPtr& pIMsg, MessageBase* &pMsgBase);
 
 				static MessageData* Create( IHeap& memHeap, const uint64_t &InInstanceUID, const Array<uint64_t>& InCounterValues );
 
@@ -366,8 +367,8 @@ namespace SF
 				PerformanceCounterUpdateCounterInfoS2CEvt()
 					{}
 
-				PerformanceCounterUpdateCounterInfoS2CEvt( MessageDataPtr &&pMsg )
-					: MessageBase(std::forward<MessageDataPtr>(pMsg))
+				PerformanceCounterUpdateCounterInfoS2CEvt( const MessageDataPtr &pMsg )
+					: MessageBase(pMsg)
 					{}
 
 					MessageUsage GetMessageUsage() { return MessageUsage_None; }
@@ -377,7 +378,7 @@ namespace SF
 				static Result TraceOut(const char* prefix, const MessageDataPtr& pMsg);
 
 				virtual Result ParseMessage(const MessageData* pIMsg);
-				static Result ParseMessageToMessageBase(IHeap& memHeap, MessageDataPtr&& pIMsg, MessageBase* &pMsgBase);
+				static Result ParseMessageToMessageBase(IHeap& memHeap, const MessageDataPtr& pIMsg, MessageBase* &pMsgBase);
 
 				static MessageData* Create( IHeap& memHeap, const uint64_t &InInstanceUID );
 

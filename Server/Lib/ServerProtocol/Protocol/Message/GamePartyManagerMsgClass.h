@@ -1,6 +1,6 @@
 ﻿////////////////////////////////////////////////////////////////////////////////
 // 
-// CopyRight (c) 2016 Kyungkun Ko
+// CopyRight (c) StormForge
 // 
 // Author : Generated
 // 
@@ -15,6 +15,7 @@
 #include "Types/SFEngineTypedefs.h"
 #include "Variable/SFVariableTable.h"
 #include "Container/SFArray.h"
+#include "Actor/Movement/SFActorMovement.h"
 #include "Protocol/SvrProtocol.h"
 
 
@@ -52,8 +53,8 @@ namespace SF
 				CreatePartyCmd()
 					{}
 
-				CreatePartyCmd( MessageDataPtr &&pMsg )
-					: MessageBase(std::forward<MessageDataPtr>(pMsg))
+				CreatePartyCmd( const MessageDataPtr &pMsg )
+					: MessageBase(pMsg)
 					{}
 
 					MessageUsage GetMessageUsage() { return MessageUsage_None; }
@@ -67,7 +68,7 @@ namespace SF
 				static Result TraceOut(const char* prefix, const MessageDataPtr& pMsg);
 
 				virtual Result ParseMessage(const MessageData* pIMsg);
-				static Result ParseMessageToMessageBase(IHeap& memHeap, MessageDataPtr&& pIMsg, MessageBase* &pMsgBase);
+				static Result ParseMessageToMessageBase(IHeap& memHeap, const MessageDataPtr& pIMsg, MessageBase* &pMsgBase);
 
 				static MessageData* Create( IHeap& memHeap, const RouteContext &InRouteContext, const uint64_t &InTransactionID, const uint16_t &InRouteHopCount, const uint32_t &InGameID, const PlayerInformation &InCreator );
 
@@ -102,8 +103,8 @@ namespace SF
 				CreatePartyRes()
 					{}
 
-				CreatePartyRes( MessageDataPtr &&pMsg )
-					: MessageBase(std::forward<MessageDataPtr>(pMsg))
+				CreatePartyRes( const MessageDataPtr &pMsg )
+					: MessageBase(pMsg)
 					{}
 
 					MessageUsage GetMessageUsage() { return MessageUsage_None; }
@@ -115,7 +116,7 @@ namespace SF
 				static Result TraceOut(const char* prefix, const MessageDataPtr& pMsg);
 
 				virtual Result ParseMessage(const MessageData* pIMsg);
-				static Result ParseMessageToMessageBase(IHeap& memHeap, MessageDataPtr&& pIMsg, MessageBase* &pMsgBase);
+				static Result ParseMessageToMessageBase(IHeap& memHeap, const MessageDataPtr& pIMsg, MessageBase* &pMsgBase);
 
 				static MessageData* Create( IHeap& memHeap, const RouteContext &InRouteContext, const uint64_t &InTransactionID, const Result &InResult );
 
@@ -150,8 +151,8 @@ namespace SF
 				PartyDeletedC2SEvt()
 					{}
 
-				PartyDeletedC2SEvt( MessageDataPtr &&pMsg )
-					: MessageBase(std::forward<MessageDataPtr>(pMsg))
+				PartyDeletedC2SEvt( const MessageDataPtr &pMsg )
+					: MessageBase(pMsg)
 					{}
 
 					MessageUsage GetMessageUsage() { return MessageUsage_None; }
@@ -162,7 +163,7 @@ namespace SF
 				static Result TraceOut(const char* prefix, const MessageDataPtr& pMsg);
 
 				virtual Result ParseMessage(const MessageData* pIMsg);
-				static Result ParseMessageToMessageBase(IHeap& memHeap, MessageDataPtr&& pIMsg, MessageBase* &pMsgBase);
+				static Result ParseMessageToMessageBase(IHeap& memHeap, const MessageDataPtr& pIMsg, MessageBase* &pMsgBase);
 
 				static MessageData* Create( IHeap& memHeap, const RouteContext &InRouteContext, const uint16_t &InRouteHopCount );
 

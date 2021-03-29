@@ -37,7 +37,7 @@ namespace Svr {
 		PlayerID	m_PlayerID;
 
 	public:
-		ChatChannelMessageTransaction( IHeap& memMgr, MessageDataPtr &pIMsg )
+		ChatChannelMessageTransaction( IHeap& memMgr, const MessageDataPtr &pIMsg )
 			:super( memMgr, pIMsg )
 			,m_PlayerID(0)
 		{

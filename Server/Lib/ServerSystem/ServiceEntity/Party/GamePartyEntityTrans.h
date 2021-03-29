@@ -81,7 +81,7 @@ namespace SF {
 			StaticOutputMemoryStream<GameConst::MAX_CHATLOG_BUFFER> m_MessageBuffer;
 
 		public:
-			PartyTransJoinParty(IHeap& memMgr, MessageDataPtr& pIMsg)
+			PartyTransJoinParty(IHeap& memMgr, const MessageDataPtr& pIMsg)
 				: GamePartyMessageTransaction(memMgr, pIMsg)
 				, m_MessageBuffer(memMgr)
 			{}
@@ -102,7 +102,7 @@ namespace SF {
 		private:
 
 		public:
-			PartyTransLeaveParty(IHeap& memHeap, MessageDataPtr& pIMsg) : GamePartyMessageTransaction(memHeap, pIMsg) {}
+			PartyTransLeaveParty(IHeap& memHeap, const MessageDataPtr& pIMsg) : GamePartyMessageTransaction(memHeap, pIMsg) {}
 			virtual ~PartyTransLeaveParty() {}
 
 			// Start Transaction
@@ -121,7 +121,7 @@ namespace SF {
 		private:
 
 		public:
-			PartyTransKickPlayer(IHeap& memHeap, MessageDataPtr& pIMsg) : GamePartyMessageTransaction(memHeap, pIMsg) {}
+			PartyTransKickPlayer(IHeap& memHeap, const MessageDataPtr& pIMsg) : GamePartyMessageTransaction(memHeap, pIMsg) {}
 			virtual ~PartyTransKickPlayer() {}
 
 			// Start Transaction
@@ -140,7 +140,7 @@ namespace SF {
 		private:
 
 		public:
-			PartyTransChatMessage(IHeap& memHeap, MessageDataPtr& pIMsg) : GamePartyMessageTransaction(memHeap, pIMsg) {}
+			PartyTransChatMessage(IHeap& memHeap, const MessageDataPtr& pIMsg) : GamePartyMessageTransaction(memHeap, pIMsg) {}
 			virtual ~PartyTransChatMessage() {}
 
 			// Start Transaction
@@ -156,7 +156,7 @@ namespace SF {
 		private:
 
 		public:
-			PartyTransQuickChatMessage(IHeap& memHeap, MessageDataPtr& pIMsg) : GamePartyMessageTransaction(memHeap, pIMsg) {}
+			PartyTransQuickChatMessage(IHeap& memHeap, const MessageDataPtr& pIMsg) : GamePartyMessageTransaction(memHeap, pIMsg) {}
 			virtual ~PartyTransQuickChatMessage() {}
 
 			// Start Transaction
@@ -171,7 +171,7 @@ namespace SF {
 			typedef Svr::GamePartyMessageTransaction< Message::GameParty::StartGameMatchCmd> super;
 
 		public:
-			PartyTransStartGameMatchCmd(IHeap& memHeap, MessageDataPtr& pIMsg);//  :GamePartyMessageTransaction( pIMsg ) {}
+			PartyTransStartGameMatchCmd(IHeap& memHeap, const MessageDataPtr& pIMsg);//  :GamePartyMessageTransaction( pIMsg ) {}
 			virtual ~PartyTransStartGameMatchCmd() {}
 
 			Result OnPartyMatchingQueued(Svr::TransactionResult*& pRes);
@@ -191,7 +191,7 @@ namespace SF {
 			typedef Svr::GamePartyMessageTransaction< Message::GameParty::CancelGameMatchCmd> super;
 
 		public:
-			PartyTransCancelGameMatchCmd(IHeap& memHeap, MessageDataPtr& pIMsg);//  :GamePartyMessageTransaction( pIMsg ) {}
+			PartyTransCancelGameMatchCmd(IHeap& memHeap, const MessageDataPtr& pIMsg);//  :GamePartyMessageTransaction( pIMsg ) {}
 			virtual ~PartyTransCancelGameMatchCmd() {}
 
 			Result OnPartyMatchingCanceled(Svr::TransactionResult*& pRes);
@@ -211,7 +211,7 @@ namespace SF {
 		private:
 
 		public:
-			PartyTransPartyMatchingCanceled(IHeap& memHeap, MessageDataPtr& pIMsg) : GamePartyMessageTransaction(memHeap, pIMsg) {}
+			PartyTransPartyMatchingCanceled(IHeap& memHeap, const MessageDataPtr& pIMsg) : GamePartyMessageTransaction(memHeap, pIMsg) {}
 			virtual ~PartyTransPartyMatchingCanceled() {}
 
 			// Start Transaction
@@ -227,7 +227,7 @@ namespace SF {
 		private:
 
 		public:
-			PartyTransMatchingItemDequeued(IHeap& memHeap, MessageDataPtr& pIMsg) : GamePartyMessageTransaction(memHeap, pIMsg) {}
+			PartyTransMatchingItemDequeued(IHeap& memHeap, const MessageDataPtr& pIMsg) : GamePartyMessageTransaction(memHeap, pIMsg) {}
 			virtual ~PartyTransMatchingItemDequeued() {}
 
 			// Start Transaction
@@ -243,7 +243,7 @@ namespace SF {
 		private:
 
 		public:
-			PartyTransPartyGameMatchedS2CEvt(IHeap& memHeap, MessageDataPtr& pIMsg) : GamePartyMessageTransaction(memHeap, pIMsg) {}
+			PartyTransPartyGameMatchedS2CEvt(IHeap& memHeap, const MessageDataPtr& pIMsg) : GamePartyMessageTransaction(memHeap, pIMsg) {}
 			virtual ~PartyTransPartyGameMatchedS2CEvt() {}
 
 			// Start Transaction

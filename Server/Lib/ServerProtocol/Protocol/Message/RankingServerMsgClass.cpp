@@ -1,6 +1,6 @@
 ﻿////////////////////////////////////////////////////////////////////////////////
 // 
-// CopyRight (c) 2016 Kyungkun Ko
+// CopyRight (c) StormForge
 // 
 // Author : Generated
 // 
@@ -51,16 +51,16 @@ namespace SF
 			}; // Result AddPlayerCmd::ParseMessage(const MessageData* pIMsg)
 
 
-			Result AddPlayerCmd::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr&& pIMsg, MessageBase* &pMessageBase )
+			Result AddPlayerCmd::ParseMessageToMessageBase( IHeap& memHeap, const MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
 			{
  				ScopeContext hr;
 
-				protocolCheckMem(pMessageBase = new(memHeap) AddPlayerCmd(std::forward<MessageDataPtr>(pIMsg)));
+				protocolCheckMem(pMessageBase = new(memHeap) AddPlayerCmd(pIMsg));
 				protocolCheck(pMessageBase->ParseMsg());
 
 				return hr;
 
-			}; // Result AddPlayerCmd::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr&& pIMsg, MessageBase* &pMessageBase )
+			}; // Result AddPlayerCmd::ParseMessageToMessageBase( IHeap& memHeap, const MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
 
 
 			MessageData* AddPlayerCmd::Create( IHeap& memHeap, const RouteContext &InRouteContext, const uint64_t &InTransactionID, const PlayerInformation &InPlayerInfo, const uint64_t &InRankingScore )
@@ -159,16 +159,16 @@ namespace SF
 			}; // Result AddPlayerRes::ParseMessage(const MessageData* pIMsg)
 
 
-			Result AddPlayerRes::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr&& pIMsg, MessageBase* &pMessageBase )
+			Result AddPlayerRes::ParseMessageToMessageBase( IHeap& memHeap, const MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
 			{
  				ScopeContext hr;
 
-				protocolCheckMem(pMessageBase = new(memHeap) AddPlayerRes(std::forward<MessageDataPtr>(pIMsg)));
+				protocolCheckMem(pMessageBase = new(memHeap) AddPlayerRes(pIMsg));
 				protocolCheck(pMessageBase->ParseMsg());
 
 				return hr;
 
-			}; // Result AddPlayerRes::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr&& pIMsg, MessageBase* &pMessageBase )
+			}; // Result AddPlayerRes::ParseMessageToMessageBase( IHeap& memHeap, const MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
 
 
 			MessageData* AddPlayerRes::Create( IHeap& memHeap, const RouteContext &InRouteContext, const uint64_t &InTransactionID, const Result &InResult, const uint32_t &InRanking )
@@ -267,16 +267,16 @@ namespace SF
 			}; // Result RemovePlayerCmd::ParseMessage(const MessageData* pIMsg)
 
 
-			Result RemovePlayerCmd::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr&& pIMsg, MessageBase* &pMessageBase )
+			Result RemovePlayerCmd::ParseMessageToMessageBase( IHeap& memHeap, const MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
 			{
  				ScopeContext hr;
 
-				protocolCheckMem(pMessageBase = new(memHeap) RemovePlayerCmd(std::forward<MessageDataPtr>(pIMsg)));
+				protocolCheckMem(pMessageBase = new(memHeap) RemovePlayerCmd(pIMsg));
 				protocolCheck(pMessageBase->ParseMsg());
 
 				return hr;
 
-			}; // Result RemovePlayerCmd::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr&& pIMsg, MessageBase* &pMessageBase )
+			}; // Result RemovePlayerCmd::ParseMessageToMessageBase( IHeap& memHeap, const MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
 
 
 			MessageData* RemovePlayerCmd::Create( IHeap& memHeap, const RouteContext &InRouteContext, const uint64_t &InTransactionID, const PlayerID &InPlayerID )
@@ -372,16 +372,16 @@ namespace SF
 			}; // Result RemovePlayerRes::ParseMessage(const MessageData* pIMsg)
 
 
-			Result RemovePlayerRes::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr&& pIMsg, MessageBase* &pMessageBase )
+			Result RemovePlayerRes::ParseMessageToMessageBase( IHeap& memHeap, const MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
 			{
  				ScopeContext hr;
 
-				protocolCheckMem(pMessageBase = new(memHeap) RemovePlayerRes(std::forward<MessageDataPtr>(pIMsg)));
+				protocolCheckMem(pMessageBase = new(memHeap) RemovePlayerRes(pIMsg));
 				protocolCheck(pMessageBase->ParseMsg());
 
 				return hr;
 
-			}; // Result RemovePlayerRes::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr&& pIMsg, MessageBase* &pMessageBase )
+			}; // Result RemovePlayerRes::ParseMessageToMessageBase( IHeap& memHeap, const MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
 
 
 			MessageData* RemovePlayerRes::Create( IHeap& memHeap, const RouteContext &InRouteContext, const uint64_t &InTransactionID, const Result &InResult )
@@ -478,16 +478,16 @@ namespace SF
 			}; // Result GetPlayerRankingCmd::ParseMessage(const MessageData* pIMsg)
 
 
-			Result GetPlayerRankingCmd::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr&& pIMsg, MessageBase* &pMessageBase )
+			Result GetPlayerRankingCmd::ParseMessageToMessageBase( IHeap& memHeap, const MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
 			{
  				ScopeContext hr;
 
-				protocolCheckMem(pMessageBase = new(memHeap) GetPlayerRankingCmd(std::forward<MessageDataPtr>(pIMsg)));
+				protocolCheckMem(pMessageBase = new(memHeap) GetPlayerRankingCmd(pIMsg));
 				protocolCheck(pMessageBase->ParseMsg());
 
 				return hr;
 
-			}; // Result GetPlayerRankingCmd::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr&& pIMsg, MessageBase* &pMessageBase )
+			}; // Result GetPlayerRankingCmd::ParseMessageToMessageBase( IHeap& memHeap, const MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
 
 
 			MessageData* GetPlayerRankingCmd::Create( IHeap& memHeap, const RouteContext &InRouteContext, const uint64_t &InTransactionID, const PlayerID &InPlayerID )
@@ -584,16 +584,16 @@ namespace SF
 			}; // Result GetPlayerRankingRes::ParseMessage(const MessageData* pIMsg)
 
 
-			Result GetPlayerRankingRes::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr&& pIMsg, MessageBase* &pMessageBase )
+			Result GetPlayerRankingRes::ParseMessageToMessageBase( IHeap& memHeap, const MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
 			{
  				ScopeContext hr;
 
-				protocolCheckMem(pMessageBase = new(memHeap) GetPlayerRankingRes(std::forward<MessageDataPtr>(pIMsg)));
+				protocolCheckMem(pMessageBase = new(memHeap) GetPlayerRankingRes(pIMsg));
 				protocolCheck(pMessageBase->ParseMsg());
 
 				return hr;
 
-			}; // Result GetPlayerRankingRes::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr&& pIMsg, MessageBase* &pMessageBase )
+			}; // Result GetPlayerRankingRes::ParseMessageToMessageBase( IHeap& memHeap, const MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
 
 
 			MessageData* GetPlayerRankingRes::Create( IHeap& memHeap, const RouteContext &InRouteContext, const uint64_t &InTransactionID, const Result &InResult, const uint32_t &InRanking )
@@ -694,16 +694,16 @@ namespace SF
 			}; // Result UpdatePlayerScoreCmd::ParseMessage(const MessageData* pIMsg)
 
 
-			Result UpdatePlayerScoreCmd::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr&& pIMsg, MessageBase* &pMessageBase )
+			Result UpdatePlayerScoreCmd::ParseMessageToMessageBase( IHeap& memHeap, const MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
 			{
  				ScopeContext hr;
 
-				protocolCheckMem(pMessageBase = new(memHeap) UpdatePlayerScoreCmd(std::forward<MessageDataPtr>(pIMsg)));
+				protocolCheckMem(pMessageBase = new(memHeap) UpdatePlayerScoreCmd(pIMsg));
 				protocolCheck(pMessageBase->ParseMsg());
 
 				return hr;
 
-			}; // Result UpdatePlayerScoreCmd::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr&& pIMsg, MessageBase* &pMessageBase )
+			}; // Result UpdatePlayerScoreCmd::ParseMessageToMessageBase( IHeap& memHeap, const MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
 
 
 			MessageData* UpdatePlayerScoreCmd::Create( IHeap& memHeap, const RouteContext &InRouteContext, const uint64_t &InTransactionID, const uint64_t &InRankingScore, const PlayerInformation &InPlayerInfo, const uint16_t &InCount )
@@ -807,16 +807,16 @@ namespace SF
 			}; // Result UpdatePlayerScoreRes::ParseMessage(const MessageData* pIMsg)
 
 
-			Result UpdatePlayerScoreRes::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr&& pIMsg, MessageBase* &pMessageBase )
+			Result UpdatePlayerScoreRes::ParseMessageToMessageBase( IHeap& memHeap, const MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
 			{
  				ScopeContext hr;
 
-				protocolCheckMem(pMessageBase = new(memHeap) UpdatePlayerScoreRes(std::forward<MessageDataPtr>(pIMsg)));
+				protocolCheckMem(pMessageBase = new(memHeap) UpdatePlayerScoreRes(pIMsg));
 				protocolCheck(pMessageBase->ParseMsg());
 
 				return hr;
 
-			}; // Result UpdatePlayerScoreRes::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr&& pIMsg, MessageBase* &pMessageBase )
+			}; // Result UpdatePlayerScoreRes::ParseMessageToMessageBase( IHeap& memHeap, const MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
 
 
 			MessageData* UpdatePlayerScoreRes::Create( IHeap& memHeap, const RouteContext &InRouteContext, const uint64_t &InTransactionID, const Result &InResult, const Array<TotalRankingPlayerInformation>& InRanking )
@@ -917,16 +917,16 @@ namespace SF
 			}; // Result GetRankingCmd::ParseMessage(const MessageData* pIMsg)
 
 
-			Result GetRankingCmd::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr&& pIMsg, MessageBase* &pMessageBase )
+			Result GetRankingCmd::ParseMessageToMessageBase( IHeap& memHeap, const MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
 			{
  				ScopeContext hr;
 
-				protocolCheckMem(pMessageBase = new(memHeap) GetRankingCmd(std::forward<MessageDataPtr>(pIMsg)));
+				protocolCheckMem(pMessageBase = new(memHeap) GetRankingCmd(pIMsg));
 				protocolCheck(pMessageBase->ParseMsg());
 
 				return hr;
 
-			}; // Result GetRankingCmd::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr&& pIMsg, MessageBase* &pMessageBase )
+			}; // Result GetRankingCmd::ParseMessageToMessageBase( IHeap& memHeap, const MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
 
 
 			MessageData* GetRankingCmd::Create( IHeap& memHeap, const RouteContext &InRouteContext, const uint64_t &InTransactionID, const RankingType &InRankingType, const uint16_t &InBaseRanking, const uint16_t &InCount )
@@ -1030,16 +1030,16 @@ namespace SF
 			}; // Result GetRankingRes::ParseMessage(const MessageData* pIMsg)
 
 
-			Result GetRankingRes::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr&& pIMsg, MessageBase* &pMessageBase )
+			Result GetRankingRes::ParseMessageToMessageBase( IHeap& memHeap, const MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
 			{
  				ScopeContext hr;
 
-				protocolCheckMem(pMessageBase = new(memHeap) GetRankingRes(std::forward<MessageDataPtr>(pIMsg)));
+				protocolCheckMem(pMessageBase = new(memHeap) GetRankingRes(pIMsg));
 				protocolCheck(pMessageBase->ParseMsg());
 
 				return hr;
 
-			}; // Result GetRankingRes::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr&& pIMsg, MessageBase* &pMessageBase )
+			}; // Result GetRankingRes::ParseMessageToMessageBase( IHeap& memHeap, const MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
 
 
 			MessageData* GetRankingRes::Create( IHeap& memHeap, const RouteContext &InRouteContext, const uint64_t &InTransactionID, const Result &InResult, const Array<TotalRankingPlayerInformation>& InRanking )
@@ -1139,16 +1139,16 @@ namespace SF
 			}; // Result DebugPrintALLRankingCmd::ParseMessage(const MessageData* pIMsg)
 
 
-			Result DebugPrintALLRankingCmd::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr&& pIMsg, MessageBase* &pMessageBase )
+			Result DebugPrintALLRankingCmd::ParseMessageToMessageBase( IHeap& memHeap, const MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
 			{
  				ScopeContext hr;
 
-				protocolCheckMem(pMessageBase = new(memHeap) DebugPrintALLRankingCmd(std::forward<MessageDataPtr>(pIMsg)));
+				protocolCheckMem(pMessageBase = new(memHeap) DebugPrintALLRankingCmd(pIMsg));
 				protocolCheck(pMessageBase->ParseMsg());
 
 				return hr;
 
-			}; // Result DebugPrintALLRankingCmd::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr&& pIMsg, MessageBase* &pMessageBase )
+			}; // Result DebugPrintALLRankingCmd::ParseMessageToMessageBase( IHeap& memHeap, const MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
 
 
 			MessageData* DebugPrintALLRankingCmd::Create( IHeap& memHeap, const RouteContext &InRouteContext, const uint64_t &InTransactionID, const char* InFileName )
@@ -1244,16 +1244,16 @@ namespace SF
 			}; // Result DebugPrintALLRankingRes::ParseMessage(const MessageData* pIMsg)
 
 
-			Result DebugPrintALLRankingRes::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr&& pIMsg, MessageBase* &pMessageBase )
+			Result DebugPrintALLRankingRes::ParseMessageToMessageBase( IHeap& memHeap, const MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
 			{
  				ScopeContext hr;
 
-				protocolCheckMem(pMessageBase = new(memHeap) DebugPrintALLRankingRes(std::forward<MessageDataPtr>(pIMsg)));
+				protocolCheckMem(pMessageBase = new(memHeap) DebugPrintALLRankingRes(pIMsg));
 				protocolCheck(pMessageBase->ParseMsg());
 
 				return hr;
 
-			}; // Result DebugPrintALLRankingRes::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr&& pIMsg, MessageBase* &pMessageBase )
+			}; // Result DebugPrintALLRankingRes::ParseMessageToMessageBase( IHeap& memHeap, const MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
 
 
 			MessageData* DebugPrintALLRankingRes::Create( IHeap& memHeap, const RouteContext &InRouteContext, const uint64_t &InTransactionID, const Result &InResult )

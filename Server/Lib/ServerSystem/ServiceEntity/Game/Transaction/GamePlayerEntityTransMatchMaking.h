@@ -50,7 +50,7 @@ namespace SF {
 			uint64_t m_TotalGameMoney;
 
 		public:
-			PlayerTransRequestGameMatch(IHeap& heap, MessageDataPtr& pIMsg);
+			PlayerTransRequestGameMatch(IHeap& heap, const MessageDataPtr& pIMsg);
 			virtual ~PlayerTransRequestGameMatch() {}
 
 			Result OnRequestPartyMatchingRes(Svr::TransactionResult*& pRes);
@@ -68,7 +68,7 @@ namespace SF {
 			typedef Svr::MessageTransaction< GamePlayerEntity, Message::Game::CancelGameMatchCmd> super;
 
 		public:
-			PlayerTransCancelGameMatch(IHeap& heap, MessageDataPtr& pIMsg);
+			PlayerTransCancelGameMatch(IHeap& heap, const MessageDataPtr& pIMsg);
 			virtual ~PlayerTransCancelGameMatch() {}
 
 			Result OnCancelPartyMatchingRes(Svr::TransactionResult*& pRes);
@@ -92,7 +92,7 @@ namespace SF {
 			typedef Svr::UserTransactionS2SEvt< GamePlayerEntity, Message::PartyMatchingQueue::PlayerMatchingCanceledS2CEvt> super;
 
 		public:
-			PlayerTransPlayerMatchingCanceledS2CEvt(IHeap& heap, MessageDataPtr& pIMsg) :UserTransactionS2SEvt(heap, pIMsg) {}
+			PlayerTransPlayerMatchingCanceledS2CEvt(IHeap& heap, const MessageDataPtr& pIMsg) :UserTransactionS2SEvt(heap, pIMsg) {}
 			virtual ~PlayerTransPlayerMatchingCanceledS2CEvt() {}
 
 			// Start Transaction
@@ -107,7 +107,7 @@ namespace SF {
 			typedef Svr::UserTransactionS2SEvt< GamePlayerEntity, Message::PartyMatchingQueue::PlayerMatchingItemDequeuedS2CEvt> super;
 
 		public:
-			PlayerTransPlayerMatchingItemDequeuedS2CEvt(IHeap& heap, MessageDataPtr& pIMsg) :UserTransactionS2SEvt(heap, pIMsg) {}
+			PlayerTransPlayerMatchingItemDequeuedS2CEvt(IHeap& heap, const MessageDataPtr& pIMsg) :UserTransactionS2SEvt(heap, pIMsg) {}
 			virtual ~PlayerTransPlayerMatchingItemDequeuedS2CEvt() {}
 
 			// Start Transaction

@@ -41,8 +41,8 @@ namespace SF {
 		/////////////////////////////////////////////////////////////////////////////////////////////////
 		//
 
-		PlayerTransCreateCharacter::PlayerTransCreateCharacter(IHeap& heap, MessageDataPtr& pIMsg)
-			: MessageTransaction(heap, Forward<MessageDataPtr>(pIMsg))
+		PlayerTransCreateCharacter::PlayerTransCreateCharacter(IHeap& heap, const MessageDataPtr& pIMsg)
+			: MessageTransaction(heap, pIMsg)
 		{
 			AddSubAction<DB::QueryCreateCharacterCmd>(&PlayerTransCreateCharacter::RequestCreateCharacterDB, &PlayerTransCreateCharacter::OnCreateCharacterRes);
 			AddSubAction(&PlayerTransCreateCharacter::FinalizeSuccess);
@@ -110,8 +110,8 @@ namespace SF {
 		/////////////////////////////////////////////////////////////////////////////////////////////////
 		//
 
-		PlayerTransDeleteCharacter::PlayerTransDeleteCharacter(IHeap& heap, MessageDataPtr& pIMsg)
-			: MessageTransaction(heap, Forward<MessageDataPtr>(pIMsg))
+		PlayerTransDeleteCharacter::PlayerTransDeleteCharacter(IHeap& heap, const MessageDataPtr& pIMsg)
+			: MessageTransaction(heap, pIMsg)
 		{
 			AddSubAction<DB::QueryDeleteCharacterCmd>(&PlayerTransDeleteCharacter::RequestDeleteCharacterDB, &PlayerTransDeleteCharacter::OnDeleteCharacterRes);
 			AddSubAction(&PlayerTransDeleteCharacter::FinalizeSuccess);
@@ -179,8 +179,8 @@ namespace SF {
 		/////////////////////////////////////////////////////////////////////////////////////////////////
 		//
 
-		PlayerTransGetCharacter::PlayerTransGetCharacter(IHeap& heap, MessageDataPtr& pIMsg)
-			: MessageTransaction(heap, Forward<MessageDataPtr>(pIMsg))
+		PlayerTransGetCharacter::PlayerTransGetCharacter(IHeap& heap, const MessageDataPtr& pIMsg)
+			: MessageTransaction(heap, pIMsg)
 		{
 			AddSubAction<DB::QueryGetCharacterCmd>(&PlayerTransGetCharacter::RequestGetCharacterDB, &PlayerTransGetCharacter::OnGetCharacterRes);
 			AddSubAction(&PlayerTransGetCharacter::FinalizeSuccess);
@@ -256,8 +256,8 @@ namespace SF {
 		/////////////////////////////////////////////////////////////////////////////////////////////////
 		//
 
-		PlayerTransGetCharacterList::PlayerTransGetCharacterList(IHeap& heap, MessageDataPtr& pIMsg)
-			: MessageTransaction(heap, Forward<MessageDataPtr>(pIMsg))
+		PlayerTransGetCharacterList::PlayerTransGetCharacterList(IHeap& heap, const MessageDataPtr& pIMsg)
+			: MessageTransaction(heap, pIMsg)
 		{
 			AddSubAction<DB::QueryGetCharacterListCmd>(&PlayerTransGetCharacterList::RequestGetCharacterListDB, &PlayerTransGetCharacterList::OnGetCharacterListRes);
 			AddSubAction(&PlayerTransGetCharacterList::FinalizeSuccess);
@@ -347,8 +347,8 @@ namespace SF {
 		/////////////////////////////////////////////////////////////////////////////////////////////////
 		//
 
-		PlayerTransSelectCharacter::PlayerTransSelectCharacter(IHeap& heap, MessageDataPtr& pIMsg)
-			: MessageTransaction(heap, Forward<MessageDataPtr>(pIMsg))
+		PlayerTransSelectCharacter::PlayerTransSelectCharacter(IHeap& heap, const MessageDataPtr& pIMsg)
+			: MessageTransaction(heap, pIMsg)
 		{
 			AddSubAction<DB::QuerySaveCharacterCmd>(&PlayerTransSelectCharacter::RequestSaveCharacterDB, &PlayerTransSelectCharacter::OnSaveCharacterRes);
 			AddSubAction<DB::QueryGetCharacterCmd>(&PlayerTransSelectCharacter::RequestGetCharacterDB, &PlayerTransSelectCharacter::OnGetCharacterRes);

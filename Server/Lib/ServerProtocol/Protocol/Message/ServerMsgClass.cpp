@@ -1,6 +1,6 @@
 ﻿////////////////////////////////////////////////////////////////////////////////
 // 
-// CopyRight (c) 2016 Kyungkun Ko
+// CopyRight (c) StormForge
 // 
 // Author : Generated
 // 
@@ -49,16 +49,16 @@ namespace SF
 			}; // Result GenericFailureCmd::ParseMessage(const MessageData* pIMsg)
 
 
-			Result GenericFailureCmd::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr&& pIMsg, MessageBase* &pMessageBase )
+			Result GenericFailureCmd::ParseMessageToMessageBase( IHeap& memHeap, const MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
 			{
  				ScopeContext hr;
 
-				protocolCheckMem(pMessageBase = new(memHeap) GenericFailureCmd(std::forward<MessageDataPtr>(pIMsg)));
+				protocolCheckMem(pMessageBase = new(memHeap) GenericFailureCmd(pIMsg));
 				protocolCheck(pMessageBase->ParseMsg());
 
 				return hr;
 
-			}; // Result GenericFailureCmd::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr&& pIMsg, MessageBase* &pMessageBase )
+			}; // Result GenericFailureCmd::ParseMessageToMessageBase( IHeap& memHeap, const MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
 
 
 			MessageData* GenericFailureCmd::Create( IHeap& memHeap, const RouteContext &InRouteContext, const uint64_t &InTransactionID )
@@ -152,16 +152,16 @@ namespace SF
 			}; // Result GenericFailureRes::ParseMessage(const MessageData* pIMsg)
 
 
-			Result GenericFailureRes::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr&& pIMsg, MessageBase* &pMessageBase )
+			Result GenericFailureRes::ParseMessageToMessageBase( IHeap& memHeap, const MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
 			{
  				ScopeContext hr;
 
-				protocolCheckMem(pMessageBase = new(memHeap) GenericFailureRes(std::forward<MessageDataPtr>(pIMsg)));
+				protocolCheckMem(pMessageBase = new(memHeap) GenericFailureRes(pIMsg));
 				protocolCheck(pMessageBase->ParseMsg());
 
 				return hr;
 
-			}; // Result GenericFailureRes::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr&& pIMsg, MessageBase* &pMessageBase )
+			}; // Result GenericFailureRes::ParseMessageToMessageBase( IHeap& memHeap, const MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
 
 
 			MessageData* GenericFailureRes::Create( IHeap& memHeap, const RouteContext &InRouteContext, const uint64_t &InTransactionID, const Result &InResult )
@@ -258,16 +258,16 @@ namespace SF
 			}; // Result ServerConnectedC2SEvt::ParseMessage(const MessageData* pIMsg)
 
 
-			Result ServerConnectedC2SEvt::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr&& pIMsg, MessageBase* &pMessageBase )
+			Result ServerConnectedC2SEvt::ParseMessageToMessageBase( IHeap& memHeap, const MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
 			{
  				ScopeContext hr;
 
-				protocolCheckMem(pMessageBase = new(memHeap) ServerConnectedC2SEvt(std::forward<MessageDataPtr>(pIMsg)));
+				protocolCheckMem(pMessageBase = new(memHeap) ServerConnectedC2SEvt(pIMsg));
 				protocolCheck(pMessageBase->ParseMsg());
 
 				return hr;
 
-			}; // Result ServerConnectedC2SEvt::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr&& pIMsg, MessageBase* &pMessageBase )
+			}; // Result ServerConnectedC2SEvt::ParseMessageToMessageBase( IHeap& memHeap, const MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
 
 
 			MessageData* ServerConnectedC2SEvt::Create( IHeap& memHeap, const RouteContext &InRouteContext, const uint32_t &InStartUpTime, const NetAddress &InPrivateAddress )

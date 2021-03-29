@@ -1,6 +1,6 @@
 ﻿////////////////////////////////////////////////////////////////////////////////
 // 
-// CopyRight (c) 2016 Kyungkun Ko
+// CopyRight (c) StormForge
 // 
 // Author : Generated
 // 
@@ -48,16 +48,16 @@ namespace SF
 			}; // Result GetInstanceListCmd::ParseMessage(const MessageData* pIMsg)
 
 
-			Result GetInstanceListCmd::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr&& pIMsg, MessageBase* &pMessageBase )
+			Result GetInstanceListCmd::ParseMessageToMessageBase( IHeap& memHeap, const MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
 			{
  				ScopeContext hr;
 
-				protocolCheckMem(pMessageBase = new(memHeap) GetInstanceListCmd(std::forward<MessageDataPtr>(pIMsg)));
+				protocolCheckMem(pMessageBase = new(memHeap) GetInstanceListCmd(pIMsg));
 				protocolCheck(pMessageBase->ParseMsg());
 
 				return hr;
 
-			}; // Result GetInstanceListCmd::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr&& pIMsg, MessageBase* &pMessageBase )
+			}; // Result GetInstanceListCmd::ParseMessageToMessageBase( IHeap& memHeap, const MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
 
 
 			MessageData* GetInstanceListCmd::Create( IHeap& memHeap, const uint64_t &InTransactionID )
@@ -128,16 +128,16 @@ namespace SF
 			}; // Result GetInstanceListRes::ParseMessage(const MessageData* pIMsg)
 
 
-			Result GetInstanceListRes::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr&& pIMsg, MessageBase* &pMessageBase )
+			Result GetInstanceListRes::ParseMessageToMessageBase( IHeap& memHeap, const MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
 			{
  				ScopeContext hr;
 
-				protocolCheckMem(pMessageBase = new(memHeap) GetInstanceListRes(std::forward<MessageDataPtr>(pIMsg)));
+				protocolCheckMem(pMessageBase = new(memHeap) GetInstanceListRes(pIMsg));
 				protocolCheck(pMessageBase->ParseMsg());
 
 				return hr;
 
-			}; // Result GetInstanceListRes::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr&& pIMsg, MessageBase* &pMessageBase )
+			}; // Result GetInstanceListRes::ParseMessageToMessageBase( IHeap& memHeap, const MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
 
 
 			MessageData* GetInstanceListRes::Create( IHeap& memHeap, const uint64_t &InTransactionID, const Result &InResult, const Array<PerformanceCounterInstanceInfo>& InCounterInstances, const uint32_t &InTotalInstanceCount )
@@ -210,16 +210,16 @@ namespace SF
 			}; // Result RequestCounterValuesCmd::ParseMessage(const MessageData* pIMsg)
 
 
-			Result RequestCounterValuesCmd::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr&& pIMsg, MessageBase* &pMessageBase )
+			Result RequestCounterValuesCmd::ParseMessageToMessageBase( IHeap& memHeap, const MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
 			{
  				ScopeContext hr;
 
-				protocolCheckMem(pMessageBase = new(memHeap) RequestCounterValuesCmd(std::forward<MessageDataPtr>(pIMsg)));
+				protocolCheckMem(pMessageBase = new(memHeap) RequestCounterValuesCmd(pIMsg));
 				protocolCheck(pMessageBase->ParseMsg());
 
 				return hr;
 
-			}; // Result RequestCounterValuesCmd::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr&& pIMsg, MessageBase* &pMessageBase )
+			}; // Result RequestCounterValuesCmd::ParseMessageToMessageBase( IHeap& memHeap, const MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
 
 
 			MessageData* RequestCounterValuesCmd::Create( IHeap& memHeap, const uint64_t &InTransactionID, const uint64_t &InInstanceUID )
@@ -292,16 +292,16 @@ namespace SF
 			}; // Result RequestCounterValuesRes::ParseMessage(const MessageData* pIMsg)
 
 
-			Result RequestCounterValuesRes::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr&& pIMsg, MessageBase* &pMessageBase )
+			Result RequestCounterValuesRes::ParseMessageToMessageBase( IHeap& memHeap, const MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
 			{
  				ScopeContext hr;
 
-				protocolCheckMem(pMessageBase = new(memHeap) RequestCounterValuesRes(std::forward<MessageDataPtr>(pIMsg)));
+				protocolCheckMem(pMessageBase = new(memHeap) RequestCounterValuesRes(pIMsg));
 				protocolCheck(pMessageBase->ParseMsg());
 
 				return hr;
 
-			}; // Result RequestCounterValuesRes::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr&& pIMsg, MessageBase* &pMessageBase )
+			}; // Result RequestCounterValuesRes::ParseMessageToMessageBase( IHeap& memHeap, const MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
 
 
 			MessageData* RequestCounterValuesRes::Create( IHeap& memHeap, const uint64_t &InTransactionID, const Result &InResult, const uint64_t &InInstanceUID, const Array<uint64_t>& InCounterValues )
@@ -379,16 +379,16 @@ namespace SF
 			}; // Result PerformanceCounterNewC2SEvt::ParseMessage(const MessageData* pIMsg)
 
 
-			Result PerformanceCounterNewC2SEvt::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr&& pIMsg, MessageBase* &pMessageBase )
+			Result PerformanceCounterNewC2SEvt::ParseMessageToMessageBase( IHeap& memHeap, const MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
 			{
  				ScopeContext hr;
 
-				protocolCheckMem(pMessageBase = new(memHeap) PerformanceCounterNewC2SEvt(std::forward<MessageDataPtr>(pIMsg)));
+				protocolCheckMem(pMessageBase = new(memHeap) PerformanceCounterNewC2SEvt(pIMsg));
 				protocolCheck(pMessageBase->ParseMsg());
 
 				return hr;
 
-			}; // Result PerformanceCounterNewC2SEvt::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr&& pIMsg, MessageBase* &pMessageBase )
+			}; // Result PerformanceCounterNewC2SEvt::ParseMessageToMessageBase( IHeap& memHeap, const MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
 
 
 			MessageData* PerformanceCounterNewC2SEvt::Create( IHeap& memHeap, const char* InInstanceName, const uint64_t &InInstanceUID, const Array<PerformanceCounterInfo>& InNewCounters )
@@ -461,16 +461,16 @@ namespace SF
 			}; // Result PerformanceCounterFreeC2SEvt::ParseMessage(const MessageData* pIMsg)
 
 
-			Result PerformanceCounterFreeC2SEvt::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr&& pIMsg, MessageBase* &pMessageBase )
+			Result PerformanceCounterFreeC2SEvt::ParseMessageToMessageBase( IHeap& memHeap, const MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
 			{
  				ScopeContext hr;
 
-				protocolCheckMem(pMessageBase = new(memHeap) PerformanceCounterFreeC2SEvt(std::forward<MessageDataPtr>(pIMsg)));
+				protocolCheckMem(pMessageBase = new(memHeap) PerformanceCounterFreeC2SEvt(pIMsg));
 				protocolCheck(pMessageBase->ParseMsg());
 
 				return hr;
 
-			}; // Result PerformanceCounterFreeC2SEvt::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr&& pIMsg, MessageBase* &pMessageBase )
+			}; // Result PerformanceCounterFreeC2SEvt::ParseMessageToMessageBase( IHeap& memHeap, const MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
 
 
 			MessageData* PerformanceCounterFreeC2SEvt::Create( IHeap& memHeap, const Array<uint64_t>& InFreeInstances )
@@ -540,16 +540,16 @@ namespace SF
 			}; // Result PerformanceCounterUpdateC2SEvt::ParseMessage(const MessageData* pIMsg)
 
 
-			Result PerformanceCounterUpdateC2SEvt::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr&& pIMsg, MessageBase* &pMessageBase )
+			Result PerformanceCounterUpdateC2SEvt::ParseMessageToMessageBase( IHeap& memHeap, const MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
 			{
  				ScopeContext hr;
 
-				protocolCheckMem(pMessageBase = new(memHeap) PerformanceCounterUpdateC2SEvt(std::forward<MessageDataPtr>(pIMsg)));
+				protocolCheckMem(pMessageBase = new(memHeap) PerformanceCounterUpdateC2SEvt(pIMsg));
 				protocolCheck(pMessageBase->ParseMsg());
 
 				return hr;
 
-			}; // Result PerformanceCounterUpdateC2SEvt::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr&& pIMsg, MessageBase* &pMessageBase )
+			}; // Result PerformanceCounterUpdateC2SEvt::ParseMessageToMessageBase( IHeap& memHeap, const MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
 
 
 			MessageData* PerformanceCounterUpdateC2SEvt::Create( IHeap& memHeap, const uint64_t &InInstanceUID, const Array<uint64_t>& InCounterValues )
@@ -617,16 +617,16 @@ namespace SF
 			}; // Result PerformanceCounterUpdateCounterInfoS2CEvt::ParseMessage(const MessageData* pIMsg)
 
 
-			Result PerformanceCounterUpdateCounterInfoS2CEvt::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr&& pIMsg, MessageBase* &pMessageBase )
+			Result PerformanceCounterUpdateCounterInfoS2CEvt::ParseMessageToMessageBase( IHeap& memHeap, const MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
 			{
  				ScopeContext hr;
 
-				protocolCheckMem(pMessageBase = new(memHeap) PerformanceCounterUpdateCounterInfoS2CEvt(std::forward<MessageDataPtr>(pIMsg)));
+				protocolCheckMem(pMessageBase = new(memHeap) PerformanceCounterUpdateCounterInfoS2CEvt(pIMsg));
 				protocolCheck(pMessageBase->ParseMsg());
 
 				return hr;
 
-			}; // Result PerformanceCounterUpdateCounterInfoS2CEvt::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr&& pIMsg, MessageBase* &pMessageBase )
+			}; // Result PerformanceCounterUpdateCounterInfoS2CEvt::ParseMessageToMessageBase( IHeap& memHeap, const MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
 
 
 			MessageData* PerformanceCounterUpdateCounterInfoS2CEvt::Create( IHeap& memHeap, const uint64_t &InInstanceUID )

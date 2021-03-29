@@ -1,6 +1,6 @@
 ﻿////////////////////////////////////////////////////////////////////////////////
 // 
-// CopyRight (c) 2016 Kyungkun Ko
+// CopyRight (c) StormForge
 // 
 // Author : Generated
 // 
@@ -65,16 +65,16 @@ namespace SF
 			}; // Result CreateGameInstanceCmd::ParseMessage(const MessageData* pIMsg)
 
 
-			Result CreateGameInstanceCmd::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr&& pIMsg, MessageBase* &pMessageBase )
+			Result CreateGameInstanceCmd::ParseMessageToMessageBase( IHeap& memHeap, const MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
 			{
  				ScopeContext hr;
 
-				protocolCheckMem(pMessageBase = new(memHeap) CreateGameInstanceCmd(std::forward<MessageDataPtr>(pIMsg)));
+				protocolCheckMem(pMessageBase = new(memHeap) CreateGameInstanceCmd(pIMsg));
 				protocolCheck(pMessageBase->ParseMsg());
 
 				return hr;
 
-			}; // Result CreateGameInstanceCmd::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr&& pIMsg, MessageBase* &pMessageBase )
+			}; // Result CreateGameInstanceCmd::ParseMessageToMessageBase( IHeap& memHeap, const MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
 
 			MessageData* CreateGameInstanceCmd::Create( IHeap& memHeap, const RouteContext &InRouteContext, const uint64_t &InTransactionID, const uint16_t &InRouteHopCount, const uint32_t &InZoneTableId, const Array<uint8_t>& InAttributes )
 			{
@@ -246,16 +246,16 @@ namespace SF
 			}; // Result CreateGameInstanceRes::ParseMessage(const MessageData* pIMsg)
 
 
-			Result CreateGameInstanceRes::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr&& pIMsg, MessageBase* &pMessageBase )
+			Result CreateGameInstanceRes::ParseMessageToMessageBase( IHeap& memHeap, const MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
 			{
  				ScopeContext hr;
 
-				protocolCheckMem(pMessageBase = new(memHeap) CreateGameInstanceRes(std::forward<MessageDataPtr>(pIMsg)));
+				protocolCheckMem(pMessageBase = new(memHeap) CreateGameInstanceRes(pIMsg));
 				protocolCheck(pMessageBase->ParseMsg());
 
 				return hr;
 
-			}; // Result CreateGameInstanceRes::ParseMessageToMessageBase( IHeap& memHeap, MessageDataPtr&& pIMsg, MessageBase* &pMessageBase )
+			}; // Result CreateGameInstanceRes::ParseMessageToMessageBase( IHeap& memHeap, const MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
 
 
 			MessageData* CreateGameInstanceRes::Create( IHeap& memHeap, const RouteContext &InRouteContext, const uint64_t &InTransactionID, const Result &InResult )

@@ -44,10 +44,10 @@ set(BRSERVERSYSTEM_LIB_FILES
     ServiceEntity/Game/GameInstancePlayer.cpp
     ServiceEntity/Game/GameInstancePlayerComponent.h
     ServiceEntity/Game/GameInstancePlayerComponent.cpp
-    ServiceEntity/Game/GameInstanceServiceEntity.h
-    ServiceEntity/Game/GameInstanceServiceEntity.cpp
-    ServiceEntity/Game/GameInstanceServiceTrans.h
-    ServiceEntity/Game/GameInstanceServiceTrans.cpp
+    #ServiceEntity/Game/GameInstanceServiceEntity.h
+    #ServiceEntity/Game/GameInstanceServiceEntity.cpp
+    #ServiceEntity/Game/GameInstanceServiceTrans.h
+    #ServiceEntity/Game/GameInstanceServiceTrans.cpp
     ServiceEntity/Game/GamePlayerEntity.h
     ServiceEntity/Game/GamePlayerEntity.cpp
     ServiceEntity/Game/GameServiceEntity.h

@@ -69,8 +69,8 @@ namespace Svr {
 	//
 
 
-	PlayerTransJoinGameServer::PlayerTransJoinGameServer(IHeap& heap, MessageDataPtr &pIMsg )
-		: MessageTransaction(heap, Forward<MessageDataPtr>(pIMsg) )
+	PlayerTransJoinGameServer::PlayerTransJoinGameServer(IHeap& heap, const MessageDataPtr &pIMsg )
+		: MessageTransaction(heap, pIMsg )
 	{
 		SetExclusive(true);
 
@@ -391,8 +391,8 @@ namespace Svr {
 
 
 
-	PlayerTransGetGamePlayerInfo::PlayerTransGetGamePlayerInfo(IHeap& heap, MessageDataPtr &pIMsg )
-		: MessageTransaction( heap, std::forward<MessageDataPtr>(pIMsg) )
+	PlayerTransGetGamePlayerInfo::PlayerTransGetGamePlayerInfo(IHeap& heap, const MessageDataPtr &pIMsg )
+		: MessageTransaction( heap, pIMsg )
 	{
 		SetExclusive(true);
 
@@ -500,8 +500,8 @@ namespace Svr {
 
 
 
-	PlayerTransGetComplitionState::PlayerTransGetComplitionState(IHeap& heap, MessageDataPtr &pIMsg)
-		: MessageTransaction(heap, std::forward<MessageDataPtr>(pIMsg))
+	PlayerTransGetComplitionState::PlayerTransGetComplitionState(IHeap& heap, const MessageDataPtr &pIMsg)
+		: MessageTransaction(heap, pIMsg)
 	{
 		RegisterMessageHandler<DB::QueryGetComplitionStateCmd>(&PlayerTransGetComplitionState::OnGetComplitionState);
 	}
@@ -548,8 +548,8 @@ namespace Svr {
 
 
 
-	PlayerTransSetComplitionState::PlayerTransSetComplitionState(IHeap& heap, MessageDataPtr &pIMsg)
-		: MessageTransaction(heap, std::forward<MessageDataPtr>(pIMsg))
+	PlayerTransSetComplitionState::PlayerTransSetComplitionState(IHeap& heap, const MessageDataPtr &pIMsg)
+		: MessageTransaction(heap, pIMsg)
 	{
 		RegisterMessageHandler<DB::QuerySetComplitionStateCmd>(&PlayerTransSetComplitionState::OnSetComplitionState);
 	}
@@ -596,8 +596,8 @@ namespace Svr {
 	//
 
 
-	PlayerTransRegisterGCM::PlayerTransRegisterGCM(IHeap& heap, MessageDataPtr &pIMsg )
-		: MessageTransaction(heap, std::forward<MessageDataPtr>(pIMsg) )
+	PlayerTransRegisterGCM::PlayerTransRegisterGCM(IHeap& heap, const MessageDataPtr &pIMsg )
+		: MessageTransaction(heap, pIMsg )
 	{
 		RegisterMessageHandler<DB::QueryUpdateGCMKeysCmd>(&PlayerTransRegisterGCM::OnUpdated);
 	}
@@ -627,8 +627,8 @@ namespace Svr {
 	
 
 
-	PlayerTransUnregisterGCM::PlayerTransUnregisterGCM(IHeap& heap, MessageDataPtr &pIMsg )
-		: MessageTransaction( heap, std::forward<MessageDataPtr>(pIMsg) )
+	PlayerTransUnregisterGCM::PlayerTransUnregisterGCM(IHeap& heap, const MessageDataPtr &pIMsg )
+		: MessageTransaction( heap, pIMsg )
 	{
 		RegisterMessageHandler<DB::QueryUpdateGCMKeysCmd>(&PlayerTransUnregisterGCM::OnUpdated);
 	}
@@ -663,8 +663,8 @@ namespace Svr {
 	//	Notifications transaction
 	//
 	
-	PlayerTransGetNotificationList::PlayerTransGetNotificationList(IHeap& heap, MessageDataPtr &pIMsg)
-		: MessageTransaction(heap, std::forward<MessageDataPtr>(pIMsg) )
+	PlayerTransGetNotificationList::PlayerTransGetNotificationList(IHeap& heap, const MessageDataPtr &pIMsg)
+		: MessageTransaction(heap, pIMsg )
 	{
 		RegisterMessageHandler<DB::QueryNotification_GetListCmd>(&PlayerTransGetNotificationList::OnGetList);
 	}
@@ -716,8 +716,8 @@ namespace Svr {
 	}
 	
 	
-	PlayerTransDeleteNotification::PlayerTransDeleteNotification(IHeap& heap, MessageDataPtr &pIMsg )
-		: MessageTransaction(heap, std::forward<MessageDataPtr>(pIMsg))
+	PlayerTransDeleteNotification::PlayerTransDeleteNotification(IHeap& heap, const MessageDataPtr &pIMsg )
+		: MessageTransaction(heap, pIMsg)
 	{
 		BR_TRANS_MESSAGE( DB::QueryNotification_RemoveCmd, { return OnDeletedNotification(pRes); });
 	}
@@ -750,8 +750,8 @@ namespace Svr {
 	}
 
 
-	PlayerTransSetNotificationRead::PlayerTransSetNotificationRead(IHeap& heap, MessageDataPtr &pIMsg )
-		: MessageTransaction( heap, std::forward<MessageDataPtr>(pIMsg))
+	PlayerTransSetNotificationRead::PlayerTransSetNotificationRead(IHeap& heap, const MessageDataPtr &pIMsg )
+		: MessageTransaction( heap, pIMsg)
 	{
 		RegisterMessageHandler<DB::QueryNotification_SetReadCmd>(&PlayerTransSetNotificationRead::OnSetRead);
 	}
@@ -799,8 +799,8 @@ namespace Svr {
 	}
 
 
-	PlayerTransAcceptNotification::PlayerTransAcceptNotification(IHeap& heap, MessageDataPtr &pIMsg)
-		: MessageTransaction(heap, std::forward<MessageDataPtr>(pIMsg))
+	PlayerTransAcceptNotification::PlayerTransAcceptNotification(IHeap& heap, const MessageDataPtr &pIMsg)
+		: MessageTransaction(heap, pIMsg)
 	{
 		RegisterMessageHandler<DB::QueryNotification_RemoveCmd>(&PlayerTransAcceptNotification::OnDeletedNotification);
 	}
@@ -874,8 +874,8 @@ namespace Svr {
 	//
 
 
-	PlayerTransSetNickName::PlayerTransSetNickName(IHeap& heap, MessageDataPtr &pIMsg )
-		: MessageTransaction(heap, std::forward<MessageDataPtr>(pIMsg))
+	PlayerTransSetNickName::PlayerTransSetNickName(IHeap& heap, const MessageDataPtr &pIMsg )
+		: MessageTransaction(heap, pIMsg)
 	{
 		RegisterMessageHandler<DB::QuerySetNickNameCmd>(&PlayerTransSetNickName::OnNickChanged);
 	}
@@ -948,8 +948,8 @@ namespace Svr {
 	//	Find player transaction
 	//
 
-	PlayerTransFindPlayerByEMail::PlayerTransFindPlayerByEMail(IHeap& heap, MessageDataPtr &pIMsg )
-		: MessageTransaction(heap, std::forward<MessageDataPtr>(pIMsg))
+	PlayerTransFindPlayerByEMail::PlayerTransFindPlayerByEMail(IHeap& heap, const MessageDataPtr &pIMsg )
+		: MessageTransaction(heap, pIMsg)
 	{
 		RegisterMessageHandler<DB::QueryFindPlayerByEMailCmd>(&PlayerTransFindPlayerByEMail::OnFindPlayer);
 		RegisterMessageHandler<DB::QueryGetNickNameCmd>(&PlayerTransFindPlayerByEMail::OnGetNickName);
@@ -1019,8 +1019,8 @@ namespace Svr {
 	}
 	
 
-	PlayerTransFindPlayerByPlayerID::PlayerTransFindPlayerByPlayerID(IHeap& heap, MessageDataPtr &pIMsg )
-		: MessageTransaction(heap, std::forward<MessageDataPtr>(pIMsg))
+	PlayerTransFindPlayerByPlayerID::PlayerTransFindPlayerByPlayerID(IHeap& heap, const MessageDataPtr &pIMsg )
+		: MessageTransaction(heap, pIMsg)
 	{
 		BR_TRANS_MESSAGE(DB::QueryFindPlayerByPlayerIDCmd, { return OnFindPlayer(pRes); });
 		BR_TRANS_MESSAGE(DB::QueryGetNickNameCmd, { return OnGetNickName(pRes); });
@@ -1090,8 +1090,8 @@ namespace Svr {
 	}
 	
 	
-	PlayerTransRequestPlayerStatusUpdate::PlayerTransRequestPlayerStatusUpdate(IHeap& heap, MessageDataPtr &pIMsg )
-		: MessageTransaction(heap, std::forward<MessageDataPtr>(pIMsg))
+	PlayerTransRequestPlayerStatusUpdate::PlayerTransRequestPlayerStatusUpdate(IHeap& heap, const MessageDataPtr &pIMsg )
+		: MessageTransaction(heap, pIMsg)
 	{
 		BR_TRANS_MESSAGE(DB::QueryGetPlayerShardIDCmd, { return OnPlayerShardIDRes(pRes); });
 		BR_TRANS_MESSAGE(DB::QueryGetPlayerStatusCmd, { return OnPlayerStatusUpdateRes(pRes); });
@@ -1228,8 +1228,8 @@ namespace Svr {
 
 
 
-	PlayerTransGetRankingList::PlayerTransGetRankingList(IHeap& heap, MessageDataPtr &pIMsg )
-		: MessageTransaction(heap, std::forward<MessageDataPtr>(pIMsg))
+	PlayerTransGetRankingList::PlayerTransGetRankingList(IHeap& heap, const MessageDataPtr &pIMsg )
+		: MessageTransaction(heap, pIMsg)
 		, m_RankingList(heap)
 	{
 		BR_TRANS_MESSAGE( DB::QueryGetTotalRankingCmd, { return OnGetRankingListRes(pRes); });
@@ -1283,8 +1283,8 @@ namespace Svr {
 
 
 
-	PlayerTransBuyShopItemPrepare::PlayerTransBuyShopItemPrepare(IHeap& heap, MessageDataPtr &pIMsg)
-		: MessageTransaction(heap, std::forward<MessageDataPtr>(pIMsg))
+	PlayerTransBuyShopItemPrepare::PlayerTransBuyShopItemPrepare(IHeap& heap, const MessageDataPtr &pIMsg)
+		: MessageTransaction(heap, pIMsg)
 		, m_Signagure(heap)
 	{
 		RegisterMessageHandler<DB::QueryCheckPurchaseIDCmd>(&PlayerTransBuyShopItemPrepare::OnPurchaseIDChecked);
@@ -1376,8 +1376,8 @@ namespace Svr {
 
 	constexpr size_t PlayerTransBuyShopItem::MEMENTO_SIZE;
 
-	PlayerTransBuyShopItem::PlayerTransBuyShopItem(IHeap& heap, MessageDataPtr &pIMsg )
-		: MessageTransaction(heap, std::forward<MessageDataPtr>(pIMsg) )
+	PlayerTransBuyShopItem::PlayerTransBuyShopItem(IHeap& heap, const MessageDataPtr &pIMsg )
+		: MessageTransaction(heap, pIMsg)
 		, m_SavedData(heap)
 	{
 		SetExclusive(true);

@@ -239,7 +239,7 @@ namespace Svr {
 	}
 	
 
-	PartyTransStartGameMatchCmd::PartyTransStartGameMatchCmd(IHeap& memHeap, MessageDataPtr &pIMsg )
+	PartyTransStartGameMatchCmd::PartyTransStartGameMatchCmd(IHeap& memHeap, const MessageDataPtr &pIMsg )
 		:GamePartyMessageTransaction(memHeap, pIMsg )
 	{
 		SetExclusive(true);
@@ -366,7 +366,7 @@ namespace Svr {
 
 
 
-	PartyTransCancelGameMatchCmd::PartyTransCancelGameMatchCmd(IHeap& memHeap, MessageDataPtr &pIMsg )
+	PartyTransCancelGameMatchCmd::PartyTransCancelGameMatchCmd(IHeap& memHeap, const MessageDataPtr &pIMsg )
 		:GamePartyMessageTransaction(memHeap, pIMsg )
 	{
 		SetExclusive(true);

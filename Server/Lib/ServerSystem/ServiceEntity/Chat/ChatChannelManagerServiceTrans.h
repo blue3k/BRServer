@@ -38,7 +38,7 @@ namespace SF {
 			EntityUID	m_UID;
 
 		public:
-			ChatChannelManagerTransCreateChatChannel(IHeap& heap, MessageDataPtr& pIMsg) : ClusterEntityMessageTransaction(heap, pIMsg) {}
+			ChatChannelManagerTransCreateChatChannel(IHeap& heap, const MessageDataPtr& pIMsg) : ClusterEntityMessageTransaction(heap, pIMsg) {}
 			virtual ~ChatChannelManagerTransCreateChatChannel() {}
 
 			// Start Transaction
@@ -59,7 +59,7 @@ namespace SF {
 			EntityUID	m_UID;
 
 		public:
-			ChatChannelManagerTransFindChatChannel(IHeap& heap, MessageDataPtr& pIMsg) : ClusterEntityMessageTransaction(heap, pIMsg) {}
+			ChatChannelManagerTransFindChatChannel(IHeap& heap, const MessageDataPtr& pIMsg) : ClusterEntityMessageTransaction(heap, pIMsg) {}
 			virtual ~ChatChannelManagerTransFindChatChannel() {}
 
 			// Start Transaction
@@ -80,7 +80,7 @@ namespace SF {
 		private:
 
 		public:
-			ChatChannelManagerTransChatChannelDeleted(IHeap& heap, MessageDataPtr& pIMsg) : ClusterEntityMessageTransaction(heap, pIMsg) {}
+			ChatChannelManagerTransChatChannelDeleted(IHeap& heap, const MessageDataPtr& pIMsg) : ClusterEntityMessageTransaction(heap, pIMsg) {}
 			virtual ~ChatChannelManagerTransChatChannelDeleted() {}
 
 			// Start Transaction

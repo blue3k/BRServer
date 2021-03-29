@@ -524,7 +524,7 @@ namespace SF {
 			virtual ~MessageResult();
 
 			// Setup message result
-			Result SetMessage(MessageDataPtr& pIMsg);
+			Result SetMessage(const MessageDataPtr& pIMsg);
 
 			// Get message 
 			inline SF::MessageDataPtr GetMessage() const { return *m_pIMsg; }
@@ -616,9 +616,9 @@ namespace SF {
 			SharedPointerT<Net::Connection> m_pConn;
 
 		public:
-			MessageTransaction(IHeap& memoryManager, MessageDataPtr&& pIMsg)
+			MessageTransaction(IHeap& memoryManager, const MessageDataPtr& pIMsg)
 				: TransactionT<OwnerType>(memoryManager, TransactionID())
-				, MessageClass(std::forward<MessageDataPtr>(pIMsg))
+				, MessageClass(pIMsg)
 			{
 			}
 
@@ -680,8 +680,8 @@ namespace SF {
 		class UserTransactionS2SEvt : public MessageTransaction<OwnerEntityType, MessageClass>
 		{
 		protected:
-			UserTransactionS2SEvt(IHeap& memMgr, MessageDataPtr& pIMsg)
-				:MessageTransaction<OwnerEntityType, MessageClass>(memMgr, std::forward<MessageDataPtr>(pIMsg))
+			UserTransactionS2SEvt(IHeap& memMgr, const MessageDataPtr& pIMsg)
+				:MessageTransaction<OwnerEntityType, MessageClass>(memMgr, pIMsg)
 			{
 			}
 
@@ -735,8 +735,8 @@ namespace SF {
 			typedef MessageTransaction<OwnerEntityType, MessageClass> superTrans;
 
 		protected:
-			UserTransactionS2SCmd(IHeap& memMgr, MessageDataPtr& pIMsg)
-				: MessageTransaction<OwnerEntityType, MessageClass>(memMgr, Forward<MessageDataPtr>(pIMsg))
+			UserTransactionS2SCmd(IHeap& memMgr, const MessageDataPtr& pIMsg)
+				: MessageTransaction<OwnerEntityType, MessageClass>(memMgr, pIMsg)
 			{
 			}
 

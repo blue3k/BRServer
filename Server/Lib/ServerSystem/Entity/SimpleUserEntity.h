@@ -85,7 +85,7 @@ namespace SF {
 			virtual Result ProcessConnectionEvent(const Net::ConnectionEvent& conEvent);
 
 			// Process Message and release message after all processed
-			virtual Result ProcessMessage(const SharedPointerT<MessageEndpoint>& remoteEndpoint, MessageDataPtr& pMsg) override;
+			virtual Result ProcessMessage(const SharedPointerT<MessageEndpoint>& remoteEndpoint, const MessageDataPtr& pMsg) override;
 
 			virtual void Heartbeat();
 

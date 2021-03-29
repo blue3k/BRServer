@@ -44,7 +44,7 @@ namespace SF {
 			uint32_t m_CharacterId{};
 
 		public:
-			PlayerTransCreateCharacter(IHeap& heap, MessageDataPtr& pIMsg);
+			PlayerTransCreateCharacter(IHeap& heap, const MessageDataPtr& pIMsg);
 
 			Result RequestCreateCharacterDB();
 			Result OnCreateCharacterRes(Svr::TransactionResult* pRes);
@@ -63,7 +63,7 @@ namespace SF {
 			using super = Svr::MessageTransaction<GamePlayerEntity, Message::Game::DeleteCharacterCmd>;
 
 		public:
-			PlayerTransDeleteCharacter(IHeap& heap, MessageDataPtr& pIMsg);
+			PlayerTransDeleteCharacter(IHeap& heap, const MessageDataPtr& pIMsg);
 
 			Result RequestDeleteCharacterDB();
 			Result OnDeleteCharacterRes(Svr::TransactionResult* pRes);
@@ -84,7 +84,7 @@ namespace SF {
 			VariableTable m_CharacterData;
 
 		public:
-			PlayerTransGetCharacter(IHeap& heap, MessageDataPtr& pIMsg);
+			PlayerTransGetCharacter(IHeap& heap, const MessageDataPtr& pIMsg);
 
 			Result RequestGetCharacterDB();
 			Result OnGetCharacterRes(Svr::TransactionResult* pRes);
@@ -106,7 +106,7 @@ namespace SF {
 			
 
 		public:
-			PlayerTransGetCharacterList(IHeap& heap, MessageDataPtr& pIMsg);
+			PlayerTransGetCharacterList(IHeap& heap, const MessageDataPtr& pIMsg);
 
 			Result RequestGetCharacterListDB();
 			Result OnGetCharacterListRes(Svr::TransactionResult* pRes);
@@ -124,7 +124,7 @@ namespace SF {
 			using super = Svr::MessageTransaction<GamePlayerEntity, Message::Game::SelectCharacterCmd>;
 
 		public:
-			PlayerTransSelectCharacter(IHeap& heap, MessageDataPtr& pIMsg);
+			PlayerTransSelectCharacter(IHeap& heap, const MessageDataPtr& pIMsg);
 
 			Result RequestSaveCharacterDB();
 			Result OnSaveCharacterRes(Svr::TransactionResult* pRes);

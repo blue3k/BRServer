@@ -1,6 +1,6 @@
 ﻿////////////////////////////////////////////////////////////////////////////////
 // 
-// CopyRight (c) 2016 Kyungkun Ko
+// CopyRight (c) StormForge
 // 
 // Author : Generated
 // 
@@ -15,6 +15,7 @@
 #include "Types/SFEngineTypedefs.h"
 #include "Variable/SFVariableTable.h"
 #include "Container/SFArray.h"
+#include "Actor/Movement/SFActorMovement.h"
 #include "Protocol/SvrProtocol.h"
 
 
@@ -52,8 +53,8 @@ namespace SF
 				CreateRelayInstanceCmd()
 					{}
 
-				CreateRelayInstanceCmd( MessageDataPtr &&pMsg )
-					: MessageBase(std::forward<MessageDataPtr>(pMsg))
+				CreateRelayInstanceCmd( const MessageDataPtr &pMsg )
+					: MessageBase(pMsg)
 					{}
 
 					MessageUsage GetMessageUsage() { return MessageUsage_None; }
@@ -66,7 +67,7 @@ namespace SF
 				static Result TraceOut(const char* prefix, const MessageDataPtr& pMsg);
 
 				virtual Result ParseMessage(const MessageData* pIMsg);
-				static Result ParseMessageToMessageBase(IHeap& memHeap, MessageDataPtr&& pIMsg, MessageBase* &pMsgBase);
+				static Result ParseMessageToMessageBase(IHeap& memHeap, const MessageDataPtr& pIMsg, MessageBase* &pMsgBase);
 
 				static MessageData* Create( IHeap& memHeap, const RouteContext &InRouteContext, const uint64_t &InTransactionID, const PlayerInformation &InPlayerInfo, const uint64_t &InRelayScore );
 
@@ -100,8 +101,8 @@ namespace SF
 				CreateRelayInstanceRes()
 					{}
 
-				CreateRelayInstanceRes( MessageDataPtr &&pMsg )
-					: MessageBase(std::forward<MessageDataPtr>(pMsg))
+				CreateRelayInstanceRes( const MessageDataPtr &pMsg )
+					: MessageBase(pMsg)
 					{}
 
 					MessageUsage GetMessageUsage() { return MessageUsage_None; }
@@ -114,7 +115,7 @@ namespace SF
 				static Result TraceOut(const char* prefix, const MessageDataPtr& pMsg);
 
 				virtual Result ParseMessage(const MessageData* pIMsg);
-				static Result ParseMessageToMessageBase(IHeap& memHeap, MessageDataPtr&& pIMsg, MessageBase* &pMsgBase);
+				static Result ParseMessageToMessageBase(IHeap& memHeap, const MessageDataPtr& pIMsg, MessageBase* &pMsgBase);
 
 				static MessageData* Create( IHeap& memHeap, const RouteContext &InRouteContext, const uint64_t &InTransactionID, const Result &InResult, const uint32_t &InRelay );
 
@@ -149,8 +150,8 @@ namespace SF
 				AddPlayerCmd()
 					{}
 
-				AddPlayerCmd( MessageDataPtr &&pMsg )
-					: MessageBase(std::forward<MessageDataPtr>(pMsg))
+				AddPlayerCmd( const MessageDataPtr &pMsg )
+					: MessageBase(pMsg)
 					{}
 
 					MessageUsage GetMessageUsage() { return MessageUsage_None; }
@@ -163,7 +164,7 @@ namespace SF
 				static Result TraceOut(const char* prefix, const MessageDataPtr& pMsg);
 
 				virtual Result ParseMessage(const MessageData* pIMsg);
-				static Result ParseMessageToMessageBase(IHeap& memHeap, MessageDataPtr&& pIMsg, MessageBase* &pMsgBase);
+				static Result ParseMessageToMessageBase(IHeap& memHeap, const MessageDataPtr& pIMsg, MessageBase* &pMsgBase);
 
 				static MessageData* Create( IHeap& memHeap, const RouteContext &InRouteContext, const uint64_t &InTransactionID, const PlayerInformation &InPlayerInfo, const uint64_t &InRelayScore );
 
@@ -197,8 +198,8 @@ namespace SF
 				AddPlayerRes()
 					{}
 
-				AddPlayerRes( MessageDataPtr &&pMsg )
-					: MessageBase(std::forward<MessageDataPtr>(pMsg))
+				AddPlayerRes( const MessageDataPtr &pMsg )
+					: MessageBase(pMsg)
 					{}
 
 					MessageUsage GetMessageUsage() { return MessageUsage_None; }
@@ -211,7 +212,7 @@ namespace SF
 				static Result TraceOut(const char* prefix, const MessageDataPtr& pMsg);
 
 				virtual Result ParseMessage(const MessageData* pIMsg);
-				static Result ParseMessageToMessageBase(IHeap& memHeap, MessageDataPtr&& pIMsg, MessageBase* &pMsgBase);
+				static Result ParseMessageToMessageBase(IHeap& memHeap, const MessageDataPtr& pIMsg, MessageBase* &pMsgBase);
 
 				static MessageData* Create( IHeap& memHeap, const RouteContext &InRouteContext, const uint64_t &InTransactionID, const Result &InResult, const uint32_t &InRelay );
 
@@ -244,8 +245,8 @@ namespace SF
 				RemovePlayerCmd()
 					{}
 
-				RemovePlayerCmd( MessageDataPtr &&pMsg )
-					: MessageBase(std::forward<MessageDataPtr>(pMsg))
+				RemovePlayerCmd( const MessageDataPtr &pMsg )
+					: MessageBase(pMsg)
 					{}
 
 					MessageUsage GetMessageUsage() { return MessageUsage_None; }
@@ -257,7 +258,7 @@ namespace SF
 				static Result TraceOut(const char* prefix, const MessageDataPtr& pMsg);
 
 				virtual Result ParseMessage(const MessageData* pIMsg);
-				static Result ParseMessageToMessageBase(IHeap& memHeap, MessageDataPtr&& pIMsg, MessageBase* &pMsgBase);
+				static Result ParseMessageToMessageBase(IHeap& memHeap, const MessageDataPtr& pIMsg, MessageBase* &pMsgBase);
 
 				static MessageData* Create( IHeap& memHeap, const RouteContext &InRouteContext, const uint64_t &InTransactionID, const PlayerID &InPlayerID );
 
@@ -290,8 +291,8 @@ namespace SF
 				RemovePlayerRes()
 					{}
 
-				RemovePlayerRes( MessageDataPtr &&pMsg )
-					: MessageBase(std::forward<MessageDataPtr>(pMsg))
+				RemovePlayerRes( const MessageDataPtr &pMsg )
+					: MessageBase(pMsg)
 					{}
 
 					MessageUsage GetMessageUsage() { return MessageUsage_None; }
@@ -303,7 +304,7 @@ namespace SF
 				static Result TraceOut(const char* prefix, const MessageDataPtr& pMsg);
 
 				virtual Result ParseMessage(const MessageData* pIMsg);
-				static Result ParseMessageToMessageBase(IHeap& memHeap, MessageDataPtr&& pIMsg, MessageBase* &pMsgBase);
+				static Result ParseMessageToMessageBase(IHeap& memHeap, const MessageDataPtr& pIMsg, MessageBase* &pMsgBase);
 
 				static MessageData* Create( IHeap& memHeap, const RouteContext &InRouteContext, const uint64_t &InTransactionID, const Result &InResult );
 

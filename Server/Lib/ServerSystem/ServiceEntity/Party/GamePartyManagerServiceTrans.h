@@ -38,7 +38,7 @@ namespace Svr {
 		PartyUID	m_PartyUID;
 
 	public:
-		PartyManagerTransCreateParty(IHeap& heap, MessageDataPtr &pIMsg) : ClusterEntityMessageTransaction(heap, pIMsg) {}
+		PartyManagerTransCreateParty(IHeap& heap, const MessageDataPtr &pIMsg) : ClusterEntityMessageTransaction(heap, pIMsg) {}
 		virtual ~PartyManagerTransCreateParty() {}
 
 		// Start Transaction
@@ -59,7 +59,7 @@ namespace Svr {
 	private:
 
 	public:
-		PartyManagerTransPartyDeleted(IHeap& heap, MessageDataPtr &pIMsg) : ClusterEntityMessageTransaction(heap, pIMsg) {}
+		PartyManagerTransPartyDeleted(IHeap& heap, const MessageDataPtr &pIMsg) : ClusterEntityMessageTransaction(heap, pIMsg) {}
 		virtual ~PartyManagerTransPartyDeleted() {}
 
 		// Start Transaction

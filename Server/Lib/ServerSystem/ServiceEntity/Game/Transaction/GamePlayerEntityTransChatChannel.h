@@ -52,7 +52,7 @@ namespace Svr {
 		EntityUID m_ChatChannelUID;
 
 	public:
-		PlayerTransCreateOrJoinChatChannel(IHeap& heap, MessageDataPtr &pIMsg );
+		PlayerTransCreateOrJoinChatChannel(IHeap& heap, const MessageDataPtr &pIMsg );
 		virtual ~PlayerTransCreateOrJoinChatChannel() {}
 
 		Result OnCreateRes( Svr::TransactionResult* &pRes );
@@ -76,7 +76,7 @@ namespace Svr {
 
 
 	public:
-		PlayerTransJoinChatChannel(IHeap& heap, MessageDataPtr &pIMsg );
+		PlayerTransJoinChatChannel(IHeap& heap, const MessageDataPtr &pIMsg );
 		virtual ~PlayerTransJoinChatChannel() {}
 
 		Result OnJoinChatChannelRes( Svr::TransactionResult* &pRes );
@@ -94,7 +94,7 @@ namespace Svr {
 		typedef Svr::UserTransactionS2SEvt< GamePlayerEntity, Message::ChatChannel::PlayerJoinedS2CEvt> super;
 
 	public:
-		PlayerTransChatChannelPlayerJoinedS2SEvt(IHeap& heap, MessageDataPtr &pIMsg )  :UserTransactionS2SEvt( heap, pIMsg ) {}
+		PlayerTransChatChannelPlayerJoinedS2SEvt(IHeap& heap, const MessageDataPtr &pIMsg )  :UserTransactionS2SEvt( heap, pIMsg ) {}
 		virtual ~PlayerTransChatChannelPlayerJoinedS2SEvt() {}
 
 		// Start Transaction
@@ -109,7 +109,7 @@ namespace Svr {
 		typedef Svr::UserTransactionS2SEvt< GamePlayerEntity, Message::ChatChannel::LeaderChangedS2CEvt> super;
 
 	public:
-		PlayerTransChatChannelLeaderChangedS2SEvt(IHeap& heap, MessageDataPtr &pIMsg )  :UserTransactionS2SEvt( heap, pIMsg ) {}
+		PlayerTransChatChannelLeaderChangedS2SEvt(IHeap& heap, const MessageDataPtr &pIMsg )  :UserTransactionS2SEvt( heap, pIMsg ) {}
 		virtual ~PlayerTransChatChannelLeaderChangedS2SEvt() {}
 
 		// Start Transaction
@@ -124,7 +124,7 @@ namespace Svr {
 		typedef Svr::MessageTransaction< GamePlayerEntity, Message::Game::LeaveChatChannelCmd> super;
 
 	public:
-		PlayerTransLeaveChatChannel(IHeap& heap, MessageDataPtr &pIMsg );
+		PlayerTransLeaveChatChannel(IHeap& heap, const MessageDataPtr &pIMsg );
 		virtual ~PlayerTransLeaveChatChannel() {}
 
 		Result OnLeaveChatChannelRes( Svr::TransactionResult* &pRes );
@@ -144,7 +144,7 @@ namespace Svr {
 		typedef Svr::UserTransactionS2SEvt< GamePlayerEntity, Message::ChatChannel::PlayerLeftS2CEvt> super;
 
 	public:
-		PlayerTransChatChannelPlayerLeftS2SEvt(IHeap& heap, MessageDataPtr &pIMsg )  :UserTransactionS2SEvt(heap, pIMsg ) {}
+		PlayerTransChatChannelPlayerLeftS2SEvt(IHeap& heap, const MessageDataPtr &pIMsg )  :UserTransactionS2SEvt(heap, pIMsg ) {}
 		virtual ~PlayerTransChatChannelPlayerLeftS2SEvt() {}
 
 		// Start Transaction
@@ -160,7 +160,7 @@ namespace Svr {
 		typedef Svr::MessageTransaction< GamePlayerEntity, Message::Game::ChatChannelKickPlayerCmd> super;
 
 	public:
-		PlayerTransChatChannelKickPlayer(IHeap& heap, MessageDataPtr &pIMsg );
+		PlayerTransChatChannelKickPlayer(IHeap& heap, const MessageDataPtr &pIMsg );
 		virtual ~PlayerTransChatChannelKickPlayer() {}
 
 		Result OnPlayerKickRes( Svr::TransactionResult* &pRes );
@@ -180,7 +180,7 @@ namespace Svr {
 		typedef Svr::UserTransactionS2SEvt< GamePlayerEntity, Message::ChatChannel::PlayerKickedS2CEvt> super;
 
 	public:
-		PlayerTransChatChannelPlayerKickedS2SEvt(IHeap& heap, MessageDataPtr &pIMsg )  :UserTransactionS2SEvt( heap, pIMsg ) {}
+		PlayerTransChatChannelPlayerKickedS2SEvt(IHeap& heap, const MessageDataPtr &pIMsg )  :UserTransactionS2SEvt( heap, pIMsg ) {}
 		virtual ~PlayerTransChatChannelPlayerKickedS2SEvt() {}
 
 		// Start Transaction
@@ -199,7 +199,7 @@ namespace Svr {
 	private:
 
 	public:
-		PlayerTransChatChannelChatMessage(IHeap& heap, MessageDataPtr &pIMsg )  :MessageTransaction(heap, std::forward<MessageDataPtr>(pIMsg) ) {}
+		PlayerTransChatChannelChatMessage(IHeap& heap, const MessageDataPtr &pIMsg )  :MessageTransaction(heap, pIMsg ) {}
 		virtual ~PlayerTransChatChannelChatMessage() {}
 
 		// Start Transaction
@@ -215,7 +215,7 @@ namespace Svr {
 		typedef Svr::UserTransactionS2SEvt< GamePlayerEntity, Message::ChatChannel::ChatMessageS2CEvt> super;
 
 	public:
-		PlayerTransChatChannelChatMessageS2CEvt(IHeap& heap, MessageDataPtr &pIMsg )  :UserTransactionS2SEvt( heap, pIMsg ) {}
+		PlayerTransChatChannelChatMessageS2CEvt(IHeap& heap, const MessageDataPtr &pIMsg )  :UserTransactionS2SEvt( heap, pIMsg ) {}
 		virtual ~PlayerTransChatChannelChatMessageS2CEvt() {}
 
 		// Start Transaction

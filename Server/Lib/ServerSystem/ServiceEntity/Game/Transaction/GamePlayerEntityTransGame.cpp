@@ -56,8 +56,8 @@ namespace SF {
 		//	Game command transaction
 		//
 
-		PlayerTransSearchGameInstance::PlayerTransSearchGameInstance(IHeap& heap, MessageDataPtr& pIMsg)
-			: MessageTransaction(heap, Forward<MessageDataPtr>(pIMsg))
+		PlayerTransSearchGameInstance::PlayerTransSearchGameInstance(IHeap& heap, const MessageDataPtr& pIMsg)
+			: MessageTransaction(heap, pIMsg)
 			, m_GameInstances(GetHeap())
 		{
 		}
@@ -101,8 +101,8 @@ namespace SF {
 		}
 
 
-		PlayerTransJoinGameInstance::PlayerTransJoinGameInstance(IHeap& heap, MessageDataPtr& pIMsg)
-			:MessageTransaction(heap, std::forward<MessageDataPtr>(pIMsg))
+		PlayerTransJoinGameInstance::PlayerTransJoinGameInstance(IHeap& heap, const MessageDataPtr& pIMsg)
+			:MessageTransaction(heap, pIMsg)
 		{
 			m_GameInsID = 0;
 
@@ -187,8 +187,8 @@ namespace SF {
 		}
 
 
-		PlayerTransLeaveGameInstance::PlayerTransLeaveGameInstance(IHeap& heap, MessageDataPtr& pIMsg)
-			:MessageTransaction(heap, std::forward<MessageDataPtr>(pIMsg))
+		PlayerTransLeaveGameInstance::PlayerTransLeaveGameInstance(IHeap& heap, const MessageDataPtr& pIMsg)
+			:MessageTransaction(heap, pIMsg)
 		{
 			RegisterMessageHandler<Message::GameInstance::LeaveGameInstanceRes>(&PlayerTransLeaveGameInstance::OnLeaveGameInstanceRes);
 		}

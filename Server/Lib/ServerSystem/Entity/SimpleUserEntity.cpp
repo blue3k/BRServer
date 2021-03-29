@@ -45,14 +45,14 @@ namespace Svr
 	{
 		SetTickInterval(DurationMS(Svr::Const::SIMPLEUSER_TICKTASK_INTERVAL));
 
-		RegisterMessageHandler<Message::Login::HeartbeatC2SEvt>([this](MessageDataPtr&, TransactionPtr& pNewTrans) -> Result
+		RegisterMessageHandler<Message::Login::HeartbeatC2SEvt>([this](const MessageDataPtr&, TransactionPtr& pNewTrans) -> Result
 			{
 				pNewTrans = nullptr;
 				Heartbeat();
 				return ResultCode::SUCCESS;
 			});
 
-		RegisterMessageHandler<Message::Game::HeartbeatC2SEvt>([this](MessageDataPtr&, TransactionPtr& pNewTrans) -> Result
+		RegisterMessageHandler<Message::Game::HeartbeatC2SEvt>([this](const MessageDataPtr&, TransactionPtr& pNewTrans) -> Result
 			{
 				pNewTrans = nullptr;
 				Heartbeat();
@@ -166,7 +166,7 @@ namespace Svr
 	}
 
 	// Process Message and release message after all processed
-	Result SimpleUserEntity::ProcessMessage(const SharedPointerT<MessageEndpoint>& remoteEndpoint, MessageDataPtr& pIMsg)
+	Result SimpleUserEntity::ProcessMessage(const SharedPointerT<MessageEndpoint>& remoteEndpoint, const MessageDataPtr& pIMsg)
 	{
 		Result hr = ResultCode::SUCCESS;
 		EntityID entityID; // entity ID to route

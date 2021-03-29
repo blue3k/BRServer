@@ -36,15 +36,11 @@
 #include "Transaction/ExternalTransactionManager.h"
 #include "Service/ServerService.h"
 
-
-
-
 #include "ServiceEntity/Game/PlayerDirectoryManager.h"
 #include "ServiceEntity/Game/GameInstanceManagerServiceEntity.h"
 #include "ServiceEntity/Game/StaticGameInstanceManagerServiceEntity.h"
 #include "ServiceEntity/Login/LoginServiceEntity.h"
 #include "ServiceEntity/Game/GameServiceEntity.h"
-#include "ServiceEntity/Game/GameInstanceServiceEntity.h"
 #include "ServiceEntity/Chat/ChatChannelManagerServiceEntity.h"
 
 #include "ServiceEntity/MatchingQueueServiceEntity.h"

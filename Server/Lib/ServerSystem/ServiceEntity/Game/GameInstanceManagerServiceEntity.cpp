@@ -73,9 +73,9 @@ namespace SF {
 				m_OldEventMode = m_Connection->GetEventFireMode();
 				m_Connection->SetEventFireMode(Net::Connection::EventFireMode::Immediate);
 
-				auto messageHandler = [this](Net::Connection* pConn, SharedPointerT<Message::MessageData>& pMsgData)
+				auto messageHandler = [this](Net::Connection* pConn, const SharedPointerT<Message::MessageData>& pMsgData)
 				{
-					Message::PlayInstance::JoinGameInstanceCmd cmd(Forward<MessageDataPtr>(pMsgData));
+					Message::PlayInstance::JoinGameInstanceCmd cmd(pMsgData);
 					if (!cmd.ParseMsg())
 						return;
 

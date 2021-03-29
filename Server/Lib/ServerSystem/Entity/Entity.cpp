@@ -194,7 +194,7 @@ namespace Svr
 	}
 
 	// Process Message and release message after all processed
-	Result Entity::ProcessMessage(const SharedPointerT<MessageEndpoint>& remoteEndpoint, MessageDataPtr &pMsg)
+	Result Entity::ProcessMessage(const SharedPointerT<MessageEndpoint>& remoteEndpoint, const MessageDataPtr &pMsg)
 	{
 		Result hr = ResultCode::SUCCESS, hrRes;
 		EntityID entityID; // entity ID to route
@@ -305,7 +305,7 @@ namespace Svr
 		return ResultCode::SUCCESS;
 	}
 
-	Result Entity::ProcessMessageResult(MessageDataPtr &pMsg )
+	Result Entity::ProcessMessageResult(const MessageDataPtr &pMsg )
 	{
 		Result hr = ResultCode::SUCCESS;
 		MessageResult *pMsgRes = nullptr;
@@ -316,7 +316,6 @@ namespace Svr
 		svrChkPtr(pMySvr);
 		svrMem( pMsgRes = new(GetHeap()) MessageResult );
 		svrChk( pMsgRes->SetMessage( pMsg ) );
-		pMsg = nullptr;
 
 		pTransRes.reset(pMsgRes);
 		pMsgRes = nullptr;

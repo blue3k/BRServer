@@ -56,8 +56,8 @@ namespace SF {
 	//
 
 	template<class MessageClass>
-	LoginPlayerTransLoginBase<MessageClass>::LoginPlayerTransLoginBase(IHeap& memMgr, MessageDataPtr &pIMsg )
-		: super(memMgr, std::forward<MessageDataPtr>(pIMsg))
+	LoginPlayerTransLoginBase<MessageClass>::LoginPlayerTransLoginBase(IHeap& memMgr, const MessageDataPtr &pIMsg )
+		: super(memMgr, pIMsg)
 		, m_CreateRequestCount(0)
 	{
 		super::SetExclusive(true);
@@ -225,7 +225,7 @@ namespace SF {
 
 
 
-	LoginPlayerTransLogin::LoginPlayerTransLogin(IHeap& memMgr, MessageDataPtr &pIMsg )
+	LoginPlayerTransLogin::LoginPlayerTransLogin(IHeap& memMgr, const MessageDataPtr &pIMsg )
 		:LoginPlayerTransLoginBase(memMgr, pIMsg )
 	{
 		BR_TRANS_MESSAGE( DB::QueryLoginCmd, { return OnLogin(pRes); });
@@ -298,7 +298,7 @@ namespace SF {
 	}
 
 
-	LoginPlayerTransLoginByFacebook::LoginPlayerTransLoginByFacebook(IHeap& memMgr, MessageDataPtr &pIMsg )
+	LoginPlayerTransLoginByFacebook::LoginPlayerTransLoginByFacebook(IHeap& memMgr, const MessageDataPtr &pIMsg )
 		: LoginPlayerTransLoginBase(memMgr, pIMsg )
 	{
 		SetExclusive(true);
@@ -419,7 +419,7 @@ namespace SF {
 
 
 
-	LoginPlayerTransCreateRandomUser::LoginPlayerTransCreateRandomUser(IHeap& memMgr, MessageDataPtr &pIMsg)
+	LoginPlayerTransCreateRandomUser::LoginPlayerTransCreateRandomUser(IHeap& memMgr, const MessageDataPtr &pIMsg)
 		:LoginPlayerTransLoginBase(memMgr, pIMsg)
 	{
 		RegisterMessageHandler<DB::QueryCreateRandomUserCmd>(&LoginPlayerTransCreateRandomUser::OnCreated);
@@ -552,7 +552,7 @@ namespace SF {
 	// Login Server service
 	//
 
-	LoginPlayerKickPlayerTrans::LoginPlayerKickPlayerTrans(IHeap& memMgr, MessageDataPtr &pIMsg )
+	LoginPlayerKickPlayerTrans::LoginPlayerKickPlayerTrans(IHeap& memMgr, const MessageDataPtr &pIMsg )
 		: UserTransactionS2SCmd(memMgr, pIMsg)
 	{
 		BR_TRANS_MESSAGE( DB::QueryDeleteLoginSessionCmd, { return OnDeleteSession(pRes); } );
@@ -621,7 +621,7 @@ namespace SF {
 
 
 
-	LoginPlayerJoinedToGameServerTrans::LoginPlayerJoinedToGameServerTrans(IHeap& memMgr, MessageDataPtr &pIMsg )
+	LoginPlayerJoinedToGameServerTrans::LoginPlayerJoinedToGameServerTrans(IHeap& memMgr, const MessageDataPtr &pIMsg )
 		:UserTransactionS2SCmd(memMgr, pIMsg )
 	{
 		SetExclusive(true);
@@ -726,8 +726,8 @@ namespace SF {
 	// Ranking handling
 	//
 
-	RankingUpdateScoreTrans::RankingUpdateScoreTrans(IHeap& memMgr, MessageDataPtr &pIMsg)
-		: MessageTransaction(memMgr, std::forward<MessageDataPtr>(pIMsg))
+	RankingUpdateScoreTrans::RankingUpdateScoreTrans(IHeap& memMgr, const MessageDataPtr &pIMsg)
+		: MessageTransaction(memMgr, pIMsg)
 		, m_RankingList(memMgr)
 	{
 		BR_TRANS_MESSAGE(Message::RankingServer::UpdatePlayerScoreRes, { return OnScoreUpdated(pRes); });
@@ -812,8 +812,8 @@ namespace SF {
 
 	std::atomic<uint32_t> LoginUserDataTestTrans::stm_TestCount(0);
 
-	LoginUserDataTestTrans::LoginUserDataTestTrans(IHeap& memMgr, MessageDataPtr &pIMsg)
-		: MessageTransaction(memMgr, std::forward<MessageDataPtr>(pIMsg))
+	LoginUserDataTestTrans::LoginUserDataTestTrans(IHeap& memMgr, const MessageDataPtr &pIMsg)
+		: MessageTransaction(memMgr, pIMsg)
 		, m_Data(memMgr)
 	{
 	}
@@ -846,8 +846,8 @@ namespace SF {
 
 
 
-	LoginUserDebugPrintALLRankingTrans::LoginUserDebugPrintALLRankingTrans(IHeap& memMgr, MessageDataPtr &pIMsg)
-		: MessageTransaction(memMgr, std::forward<MessageDataPtr>(pIMsg))
+	LoginUserDebugPrintALLRankingTrans::LoginUserDebugPrintALLRankingTrans(IHeap& memMgr, const MessageDataPtr &pIMsg)
+		: MessageTransaction(memMgr, pIMsg)
 
 	{
 		BR_TRANS_MESSAGE(Message::RankingServer::DebugPrintALLRankingRes, { return OnPrintAllRankingRes(pRes); });

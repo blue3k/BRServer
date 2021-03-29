@@ -60,7 +60,7 @@ namespace Svr{
 	class Entity : public TickTask
 	{
 	public:
-		typedef std::function<Result(MessageDataPtr &, TransactionPtr &)>	MessageHandlerType;
+		typedef std::function<Result(const MessageDataPtr &, TransactionPtr &)>	MessageHandlerType;
 
 	private:
 
@@ -180,7 +180,7 @@ namespace Svr{
 		Result RegisterMessageHandler()
 		{
 			return m_HandlerTable.Register<typename TransactionType::MessageClassType>(
-				[this](MessageDataPtr& pMsg, TransactionPtr& pNewTrans)->Result
+				[this](const MessageDataPtr& pMsg, TransactionPtr& pNewTrans)->Result
 				{
 					pNewTrans = new(GetHeap()) TransactionType(GetHeap(), pMsg);
 					if (pNewTrans == nullptr)
@@ -194,10 +194,10 @@ namespace Svr{
 
 
 		// Process Message and release message after all processed
-		virtual Result ProcessMessage(const SharedPointerT<MessageEndpoint>& remoteEndpoint, MessageDataPtr &pMsg);
+		virtual Result ProcessMessage(const SharedPointerT<MessageEndpoint>& remoteEndpoint, const MessageDataPtr &pMsg);
 
 		// Process result
-		virtual Result ProcessMessageResult(MessageDataPtr &pMsg );
+		virtual Result ProcessMessageResult(const MessageDataPtr &pMsg );
 
 
 		//////////////////////////////////////////////////////////////////////////

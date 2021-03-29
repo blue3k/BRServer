@@ -70,7 +70,7 @@ namespace Svr {
 		PlayerID m_LeaderID;
 
 	public:
-		ChatChannelTransJoin( IHeap& memMgr, MessageDataPtr &pIMsg )
+		ChatChannelTransJoin( IHeap& memMgr, const MessageDataPtr &pIMsg )
 			: ChatChannelMessageTransaction( memMgr, pIMsg )
 		{}
 		virtual ~ChatChannelTransJoin() {}
@@ -90,7 +90,7 @@ namespace Svr {
 	private:
 
 	public:
-		ChatChannelTransLeave(IHeap& memHeap, MessageDataPtr &pIMsg ) : ChatChannelMessageTransaction( memHeap, pIMsg ) {}
+		ChatChannelTransLeave(IHeap& memHeap, const MessageDataPtr &pIMsg ) : ChatChannelMessageTransaction( memHeap, pIMsg ) {}
 		virtual ~ChatChannelTransLeave() {}
 
 		// Start Transaction
@@ -109,7 +109,7 @@ namespace Svr {
 	private:
 
 	public:
-		ChatChannelTransKickPlayer(IHeap& memHeap, MessageDataPtr &pIMsg ) : ChatChannelMessageTransaction(memHeap, pIMsg ) {}
+		ChatChannelTransKickPlayer(IHeap& memHeap, const MessageDataPtr &pIMsg ) : ChatChannelMessageTransaction(memHeap, pIMsg ) {}
 		virtual ~ChatChannelTransKickPlayer() {}
 
 		// Start Transaction
@@ -128,7 +128,7 @@ namespace Svr {
 	private:
 
 	public:
-		ChatChannelTransChatMessage(IHeap& memHeap, MessageDataPtr &pIMsg ) : ChatChannelMessageTransaction(memHeap, pIMsg ) {}
+		ChatChannelTransChatMessage(IHeap& memHeap, const MessageDataPtr &pIMsg ) : ChatChannelMessageTransaction(memHeap, pIMsg ) {}
 		virtual ~ChatChannelTransChatMessage() {}
 
 		// Start Transaction

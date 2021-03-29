@@ -95,7 +95,7 @@ namespace SF {
 
 
 			// Process Message and release message after all processed
-			virtual Result ProcessMessage(const SharedPointerT<MessageEndpoint>& remoteEndpoint, MessageDataPtr& pMsg) override;
+			virtual Result ProcessMessage(const SharedPointerT<MessageEndpoint>& remoteEndpoint, const MessageDataPtr& pMsg) override;
 
 			// Run entity
 			virtual Result TickUpdate(TimerAction* pAction = nullptr) override;

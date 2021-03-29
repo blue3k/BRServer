@@ -37,7 +37,7 @@ namespace Svr {
 		PlayerID	m_PlayerID;
 
 	public:
-		GamePartyMessageTransaction( IHeap& memMgr, MessageDataPtr &pIMsg )
+		GamePartyMessageTransaction( IHeap& memMgr, const MessageDataPtr &pIMsg )
 			: super( memMgr, pIMsg )
 			, m_PlayerID(0)
 		{

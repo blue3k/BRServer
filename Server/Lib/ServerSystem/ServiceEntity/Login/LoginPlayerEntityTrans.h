@@ -54,7 +54,7 @@ namespace SF {
 
 
 	public:
-		LoginPlayerTransLoginBase(IHeap& memMgr, MessageDataPtr &pIMsg );
+		LoginPlayerTransLoginBase(IHeap& memMgr, const MessageDataPtr &pIMsg );
 		virtual ~LoginPlayerTransLoginBase() {}
 
 		Result OnLogin( Result hrRes, AccountID accountID, FacebookUID FBUserID, INT shardID );
@@ -87,7 +87,7 @@ namespace SF {
 		typedef LoginPlayerTransLoginBase<Message::Login::LoginCmd> super;
 
 	public:
-		LoginPlayerTransLogin(IHeap& memMgr, MessageDataPtr &pIMsg );
+		LoginPlayerTransLogin(IHeap& memMgr, const MessageDataPtr &pIMsg );
 		virtual ~LoginPlayerTransLogin() {}
 
 		Result OnLogin( Svr::TransactionResult* &pRes );
@@ -110,7 +110,7 @@ namespace SF {
 		typedef LoginPlayerTransLoginBase<Message::Login::LoginByFacebookCmd> super;
 
 	public:
-		LoginPlayerTransLoginByFacebook(IHeap& memMgr, MessageDataPtr &pIMsg );
+		LoginPlayerTransLoginByFacebook(IHeap& memMgr, const MessageDataPtr &pIMsg );
 		virtual ~LoginPlayerTransLoginByFacebook() {}
 
 		Result OnUserCreated( Svr::TransactionResult* &pRes );
@@ -135,7 +135,7 @@ namespace SF {
 		typedef LoginPlayerTransLoginBase<Message::Login::CreateRandomUserCmd> super;
 
 	public:
-		LoginPlayerTransCreateRandomUser(IHeap& memMgr, MessageDataPtr &pIMsg);
+		LoginPlayerTransCreateRandomUser(IHeap& memMgr, const MessageDataPtr &pIMsg);
 		virtual ~LoginPlayerTransCreateRandomUser() {}
 
 		Result OnCreated(Svr::TransactionResult* pRes);
@@ -183,7 +183,7 @@ namespace SF {
 
 	public:
 
-		LoginPlayerKickPlayerTrans(IHeap& memMgr, MessageDataPtr &pIMsg );// : UserTransactionS2SCmd(pIMsg) {}
+		LoginPlayerKickPlayerTrans(IHeap& memMgr, const MessageDataPtr &pIMsg );// : UserTransactionS2SCmd(pIMsg) {}
 		virtual ~LoginPlayerKickPlayerTrans() {}
 
 		Result OnDeleteSession( Svr::TransactionResult *pRes );
@@ -207,7 +207,7 @@ namespace SF {
 
 	public:
 
-		LoginPlayerJoinedToGameServerTrans(IHeap& memMgr, MessageDataPtr &pIMsg );
+		LoginPlayerJoinedToGameServerTrans(IHeap& memMgr, const MessageDataPtr &pIMsg );
 		virtual ~LoginPlayerJoinedToGameServerTrans() {}
 
 		Result OnConnectToGameServerRes( Svr::TransactionResult* &pRes );
@@ -238,7 +238,7 @@ namespace SF {
 		StaticArray<TotalRankingPlayerInformation, 20> m_RankingList;
 
 	public:
-		RankingUpdateScoreTrans(IHeap& memMgr, MessageDataPtr &pIMsg);
+		RankingUpdateScoreTrans(IHeap& memMgr, const MessageDataPtr &pIMsg);
 		virtual ~RankingUpdateScoreTrans() {}
 
 		Result OnScoreUpdated(Svr::TransactionResult* &pRes);
@@ -267,7 +267,7 @@ namespace SF {
 		StaticArray<uint8_t, 30 * 1024> m_Data;
 
 	public:
-		LoginUserDataTestTrans(IHeap& memMgr, MessageDataPtr &pIMsg);
+		LoginUserDataTestTrans(IHeap& memMgr, const MessageDataPtr &pIMsg);
 		virtual ~LoginUserDataTestTrans() {}
 
 
@@ -286,7 +286,7 @@ namespace SF {
 
 
 	public:
-		LoginUserDebugPrintALLRankingTrans(IHeap& memMgr, MessageDataPtr &pIMsg);
+		LoginUserDebugPrintALLRankingTrans(IHeap& memMgr, const MessageDataPtr &pIMsg);
 		virtual ~LoginUserDebugPrintALLRankingTrans() {}
 
 		Result OnPrintAllRankingRes(Svr::TransactionResult* &pRes);

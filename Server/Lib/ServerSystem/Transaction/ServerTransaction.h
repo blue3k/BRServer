@@ -53,9 +53,9 @@ namespace Svr {
 		using superTrans = TransactionT<OwnerEntityType>;
 
 	public:
-		ServerEntityMessageTransaction(IHeap& memoryManager, MessageDataPtr &pIMsg )
+		ServerEntityMessageTransaction(IHeap& memoryManager, const MessageDataPtr &pIMsg )
 			: superTrans( memoryManager, TransactionID() )
-			, MessageClass( std::forward<MessageDataPtr>(pIMsg) )
+			, MessageClass( pIMsg )
 		{
 		}
 
@@ -128,7 +128,7 @@ namespace Svr {
 		typedef ServerEntityMessageTransaction<OwnerEntityType, MessageClass> super;
 
 	public:
-		ClusterEntityMessageTransaction(IHeap& memMgr, MessageDataPtr &pIMsg )
+		ClusterEntityMessageTransaction(IHeap& memMgr, const MessageDataPtr &pIMsg )
 			:super( memMgr, pIMsg )
 		{
 		}
@@ -328,9 +328,5 @@ namespace Svr {
 
 
 
-}; // namespace Svr
-}; // namespace SF
-
-
-
-
+} // namespace Svr
+} // namespace SF

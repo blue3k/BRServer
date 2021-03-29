@@ -52,7 +52,7 @@ namespace Svr {
 		UTCTimeStampSec m_TimeStamp;
 
 	public:
-		PlayerTransInviteFriend(IHeap& heap, MessageDataPtr &pIMsg );//  :MessageTransaction( pIMsg ) {}
+		PlayerTransInviteFriend(IHeap& heap, const MessageDataPtr &pIMsg );//  :MessageTransaction( pIMsg ) {}
 		virtual ~PlayerTransInviteFriend() {}
 
 		Result OnGetPlayerShardID(Svr::TransactionResult* &pRes);
@@ -77,7 +77,7 @@ namespace Svr {
 		ServerFriendInformation m_NewFriend;
 
 	public:
-		PlayerTransFriendAccept(IHeap& heap, MessageDataPtr &pIMsg );//  :MessageTransaction( pIMsg ) {}
+		PlayerTransFriendAccept(IHeap& heap, const MessageDataPtr &pIMsg );//  :MessageTransaction( pIMsg ) {}
 		virtual ~PlayerTransFriendAccept() {}
 
 		Result OnGetPlayerShardID(Svr::TransactionResult* &pRes);
@@ -101,7 +101,7 @@ namespace Svr {
 		typedef Svr::UserTransactionS2SEvt< GamePlayerEntity, Message::GameServer::FriendAcceptedC2SEvt> super;
 
 	public:
-		PlayerTransFriendAcceptedS2S(IHeap& heap, MessageDataPtr &pIMsg ):UserTransactionS2SEvt(heap, pIMsg) {}
+		PlayerTransFriendAcceptedS2S(IHeap& heap, const MessageDataPtr &pIMsg ):UserTransactionS2SEvt(heap, pIMsg) {}
 		virtual ~PlayerTransFriendAcceptedS2S() {}
 
 		// Start Transaction
@@ -119,7 +119,7 @@ namespace Svr {
 		int m_WaitingResultCount;
 
 	public:
-		PlayerTransRemoveFriend(IHeap& heap, MessageDataPtr &pIMsg );//  :MessageTransaction( pIMsg ) {}
+		PlayerTransRemoveFriend(IHeap& heap, const MessageDataPtr &pIMsg );//  :MessageTransaction( pIMsg ) {}
 		virtual ~PlayerTransRemoveFriend() {}
 
 		Result OnRemoved( Svr::TransactionResult* &pRes );
@@ -138,7 +138,7 @@ namespace Svr {
 		typedef Svr::UserTransactionS2SEvt< GamePlayerEntity, Message::GameServer::FriendRemovedC2SEvt> super;
 
 	public:
-		PlayerTransFriendRemovedS2S(IHeap& heap, MessageDataPtr &pIMsg ):UserTransactionS2SEvt(heap, pIMsg) {}
+		PlayerTransFriendRemovedS2S(IHeap& heap, const MessageDataPtr &pIMsg ):UserTransactionS2SEvt(heap, pIMsg) {}
 		virtual ~PlayerTransFriendRemovedS2S() {}
 
 		// Start Transaction
@@ -161,7 +161,7 @@ namespace Svr {
 
 
 	public:
-		PlayerTransGetFriendList(IHeap& heap, MessageDataPtr &pIMsg );//  :MessageTransaction( pIMsg ) {}
+		PlayerTransGetFriendList(IHeap& heap, const MessageDataPtr &pIMsg );//  :MessageTransaction( pIMsg ) {}
 		virtual ~PlayerTransGetFriendList() {}
 
 		Result OnGetList( Svr::TransactionResult* &pRes );

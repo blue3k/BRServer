@@ -76,7 +76,7 @@ namespace SF {
 			bool m_HaveValidPlayerData = false;
 
 		public:
-			PlayerTransJoinGameServer(IHeap& heap, MessageDataPtr& pIMsg);
+			PlayerTransJoinGameServer(IHeap& heap, const MessageDataPtr& pIMsg);
 			virtual ~PlayerTransJoinGameServer() {}
 
 			const char* GetPlayerNick() { return m_PlayerNick; }
@@ -118,7 +118,7 @@ namespace SF {
 
 
 		public:
-			PlayerTransGetUserGamePlayerInfo(IHeap& heap, MessageDataPtr& pIMsg) : MessageTransaction(heap, std::forward<MessageDataPtr>(pIMsg)) {}
+			PlayerTransGetUserGamePlayerInfo(IHeap& heap, const MessageDataPtr& pIMsg) : MessageTransaction(heap, pIMsg) {}
 			virtual ~PlayerTransGetUserGamePlayerInfo() {}
 
 			// Start Transaction
@@ -139,7 +139,7 @@ namespace SF {
 			VariableTable m_Result;
 
 		public:
-			PlayerTransGetGamePlayerInfo(IHeap& heap, MessageDataPtr& pIMsg);
+			PlayerTransGetGamePlayerInfo(IHeap& heap, const MessageDataPtr& pIMsg);
 			virtual ~PlayerTransGetGamePlayerInfo() {}
 
 			Result RequestPlayerShardID();
@@ -166,7 +166,7 @@ namespace SF {
 			char m_ComplitionState[GameConst::MAX_COMPLITIONSTATE];
 
 		public:
-			PlayerTransGetComplitionState(IHeap& heap, MessageDataPtr& pIMsg);// : MessageTransaction(pIMsg) {}
+			PlayerTransGetComplitionState(IHeap& heap, const MessageDataPtr& pIMsg);// : MessageTransaction(pIMsg) {}
 			virtual ~PlayerTransGetComplitionState() {}
 
 			const char* GetComplitionState() { return m_ComplitionState; }
@@ -190,7 +190,7 @@ namespace SF {
 			typedef Svr::MessageTransaction< GamePlayerEntity, Message::Game::SetComplitionStateCmd> super;
 
 		public:
-			PlayerTransSetComplitionState(IHeap& heap, MessageDataPtr& pIMsg);
+			PlayerTransSetComplitionState(IHeap& heap, const MessageDataPtr& pIMsg);
 			virtual ~PlayerTransSetComplitionState() {}
 
 			Result OnSetComplitionState(Svr::TransactionResult* pRes);
@@ -221,7 +221,7 @@ namespace SF {
 
 		private:
 		public:
-			PlayerTransRegisterGCM(IHeap& heap, MessageDataPtr& pIMsg);
+			PlayerTransRegisterGCM(IHeap& heap, const MessageDataPtr& pIMsg);
 			virtual ~PlayerTransRegisterGCM() {}
 
 			Result OnUpdated(Svr::TransactionResult* pRes);
@@ -240,7 +240,7 @@ namespace SF {
 
 		private:
 		public:
-			PlayerTransUnregisterGCM(IHeap& heap, MessageDataPtr& pIMsg);
+			PlayerTransUnregisterGCM(IHeap& heap, const MessageDataPtr& pIMsg);
 			virtual ~PlayerTransUnregisterGCM() {}
 
 			Result OnUpdated(Svr::TransactionResult* pRes);
@@ -266,7 +266,7 @@ namespace SF {
 
 		private:
 		public:
-			PlayerTransGetNotificationList(IHeap& heap, MessageDataPtr& pIMsg);
+			PlayerTransGetNotificationList(IHeap& heap, const MessageDataPtr& pIMsg);
 			virtual ~PlayerTransGetNotificationList() {}
 
 			Result OnGetList(Svr::TransactionResult* pRes);
@@ -284,7 +284,7 @@ namespace SF {
 
 		private:
 		public:
-			PlayerTransDeleteNotification(IHeap& heap, MessageDataPtr& pIMsg);
+			PlayerTransDeleteNotification(IHeap& heap, const MessageDataPtr& pIMsg);
 			virtual ~PlayerTransDeleteNotification() {}
 
 			Result OnDeletedNotification(Svr::TransactionResult*& pRes);
@@ -303,7 +303,7 @@ namespace SF {
 
 		private:
 		public:
-			PlayerTransSetNotificationRead(IHeap& heap, MessageDataPtr& pIMsg);
+			PlayerTransSetNotificationRead(IHeap& heap, const MessageDataPtr& pIMsg);
 			virtual ~PlayerTransSetNotificationRead() {}
 
 			Result OnSetRead(Svr::TransactionResult* pRes);
@@ -322,7 +322,7 @@ namespace SF {
 
 		private:
 		public:
-			PlayerTransAcceptNotification(IHeap& heap, MessageDataPtr& pIMsg);
+			PlayerTransAcceptNotification(IHeap& heap, const MessageDataPtr& pIMsg);
 			virtual ~PlayerTransAcceptNotification() {}
 
 			Result OnDeletedNotification(Svr::TransactionResult* pRes);
@@ -340,7 +340,7 @@ namespace SF {
 			typedef Svr::UserTransactionS2SEvt< GamePlayerEntity, Message::GameServer::NotifyC2SEvt> super;
 
 		public:
-			PlayerTransNotifyS2S(IHeap& heap, MessageDataPtr& pIMsg) : UserTransactionS2SEvt(heap, pIMsg) {}
+			PlayerTransNotifyS2S(IHeap& heap, const MessageDataPtr& pIMsg) : UserTransactionS2SEvt(heap, pIMsg) {}
 			virtual ~PlayerTransNotifyS2S() {}
 
 			// Start Transaction
@@ -363,7 +363,7 @@ namespace SF {
 			uint64_t m_TotalGameMoney{};
 
 		public:
-			PlayerTransSetNickName(IHeap& heap, MessageDataPtr& pIMsg);
+			PlayerTransSetNickName(IHeap& heap, const MessageDataPtr& pIMsg);
 			virtual ~PlayerTransSetNickName() {}
 
 			Result OnNickChanged(Svr::TransactionResult* pRes);
@@ -390,7 +390,7 @@ namespace SF {
 			int m_PlayerShardID{};
 
 		public:
-			PlayerTransFindPlayerByEMail(IHeap& heap, MessageDataPtr& pIMsg);
+			PlayerTransFindPlayerByEMail(IHeap& heap, const MessageDataPtr& pIMsg);
 			virtual ~PlayerTransFindPlayerByEMail() {}
 
 			Result OnFindPlayer(Svr::TransactionResult* pRes);
@@ -413,7 +413,7 @@ namespace SF {
 			int m_PlayerShardID{};
 
 		public:
-			PlayerTransFindPlayerByPlayerID(IHeap& heap, MessageDataPtr& pIMsg);
+			PlayerTransFindPlayerByPlayerID(IHeap& heap, const MessageDataPtr& pIMsg);
 			virtual ~PlayerTransFindPlayerByPlayerID() {}
 
 			Result OnFindPlayer(Svr::TransactionResult*& pRes);
@@ -436,7 +436,7 @@ namespace SF {
 			uint m_PlayerStatusQueryCount{};
 
 		public:
-			PlayerTransRequestPlayerStatusUpdate(IHeap& heap, MessageDataPtr& pIMsg);
+			PlayerTransRequestPlayerStatusUpdate(IHeap& heap, const MessageDataPtr& pIMsg);
 			virtual ~PlayerTransRequestPlayerStatusUpdate() {}
 
 			Result OnPlayerShardIDRes(Svr::TransactionResult*& pRes);
@@ -454,7 +454,7 @@ namespace SF {
 			typedef Svr::UserTransactionS2SEvt< GamePlayerEntity, Message::GameServer::RequestPlayerStatusUpdateC2SEvt> super;
 
 		public:
-			PlayerTransRequestPlayerStatusUpdateC2S(IHeap& heap, MessageDataPtr& pIMsg) :UserTransactionS2SEvt(heap, pIMsg) {}
+			PlayerTransRequestPlayerStatusUpdateC2S(IHeap& heap, const MessageDataPtr& pIMsg) :UserTransactionS2SEvt(heap, pIMsg) {}
 			virtual ~PlayerTransRequestPlayerStatusUpdateC2S() {}
 
 			// Start Transaction
@@ -467,7 +467,7 @@ namespace SF {
 			typedef Svr::UserTransactionS2SEvt< GamePlayerEntity, Message::GameServer::NotifyPlayerStatusUpdatedC2SEvt> super;
 
 		public:
-			PlayerTransNotifyPlayerStatusUpdatedS2S(IHeap& heap, MessageDataPtr& pIMsg) :UserTransactionS2SEvt(heap, pIMsg) {}
+			PlayerTransNotifyPlayerStatusUpdatedS2S(IHeap& heap, const MessageDataPtr& pIMsg) :UserTransactionS2SEvt(heap, pIMsg) {}
 			virtual ~PlayerTransNotifyPlayerStatusUpdatedS2S() {}
 
 			// Start Transaction
@@ -486,7 +486,7 @@ namespace SF {
 			StaticArray<TotalRankingPlayerInformation, 100> m_RankingList;
 
 		public:
-			PlayerTransGetRankingList(IHeap& heap, MessageDataPtr& pIMsg);
+			PlayerTransGetRankingList(IHeap& heap, const MessageDataPtr& pIMsg);
 			virtual ~PlayerTransGetRankingList() {}
 
 			Result OnGetRankingListRes(Svr::TransactionResult*& pRes);
@@ -511,7 +511,7 @@ namespace SF {
 			uint m_RetryCount;
 
 		public:
-			PlayerTransBuyShopItemPrepare(IHeap& heap, MessageDataPtr& pIMsg);
+			PlayerTransBuyShopItemPrepare(IHeap& heap, const MessageDataPtr& pIMsg);
 			virtual ~PlayerTransBuyShopItemPrepare() {}
 
 			Result OnPurchaseIDChecked(Svr::TransactionResult* pRes);
@@ -540,7 +540,7 @@ namespace SF {
 			void /*conspiracy::ShopTbl::ShopItem*/* m_pShopItem{};
 
 		public:
-			PlayerTransBuyShopItem(IHeap& heap, MessageDataPtr& pIMsg);
+			PlayerTransBuyShopItem(IHeap& heap, const MessageDataPtr& pIMsg);
 			virtual ~PlayerTransBuyShopItem() {}
 
 			Result OnPurchaseCheckedAndroid(Svr::TransactionResult*& pRes);

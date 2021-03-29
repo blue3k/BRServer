@@ -53,8 +53,8 @@ namespace Svr {
 	//	ChatChannel
 	//
 
-	PlayerTransCreateOrJoinChatChannel::PlayerTransCreateOrJoinChatChannel(IHeap& heap, MessageDataPtr &pIMsg )
-		:MessageTransaction(heap, std::forward<MessageDataPtr>(pIMsg) )
+	PlayerTransCreateOrJoinChatChannel::PlayerTransCreateOrJoinChatChannel(IHeap& heap, const MessageDataPtr &pIMsg )
+		:MessageTransaction(heap, pIMsg )
 	{
 		BR_TRANS_MESSAGE( Message::ChatChannelManager::CreateChannelCmd, { return OnCreateRes(pRes); } );
 	}
@@ -110,8 +110,8 @@ namespace Svr {
 
 
 
-	PlayerTransJoinChatChannel::PlayerTransJoinChatChannel(IHeap& heap, MessageDataPtr &pIMsg )
-		: MessageTransaction( heap, std::forward<MessageDataPtr>(pIMsg) )
+	PlayerTransJoinChatChannel::PlayerTransJoinChatChannel(IHeap& heap, const MessageDataPtr &pIMsg )
+		: MessageTransaction( heap, pIMsg )
 	{
 		BR_TRANS_MESSAGE(Message::ChatChannel::JoinRes, { return OnJoinChatChannelRes(pRes); });
 		BR_TRANS_MESSAGE(Message::ChatChannelManager::CreateChannelRes, { return OnJoinChatChannelRes(pRes); });
@@ -221,8 +221,8 @@ namespace Svr {
 
 
 
-	PlayerTransLeaveChatChannel::PlayerTransLeaveChatChannel(IHeap& heap, MessageDataPtr &pIMsg )
-		:MessageTransaction( heap, std::forward<MessageDataPtr>(pIMsg) )
+	PlayerTransLeaveChatChannel::PlayerTransLeaveChatChannel(IHeap& heap, const MessageDataPtr &pIMsg )
+		:MessageTransaction( heap, pIMsg )
 	{
 		BR_TRANS_MESSAGE( Message::ChatChannel::LeaveRes, { return OnLeaveChatChannelRes(pRes); } );
 	}
@@ -308,8 +308,8 @@ namespace Svr {
 	
 	
 
-	PlayerTransChatChannelKickPlayer::PlayerTransChatChannelKickPlayer(IHeap& heap, MessageDataPtr &pIMsg )
-		: MessageTransaction( heap, std::forward<MessageDataPtr>(pIMsg) )
+	PlayerTransChatChannelKickPlayer::PlayerTransChatChannelKickPlayer(IHeap& heap, const MessageDataPtr &pIMsg )
+		: MessageTransaction( heap, pIMsg )
 	{
 		BR_TRANS_MESSAGE( Message::ChatChannel::KickPlayerRes, { return OnPlayerKickRes(pRes); } );
 	}

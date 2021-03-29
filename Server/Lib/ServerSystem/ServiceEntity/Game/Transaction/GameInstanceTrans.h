@@ -43,8 +43,8 @@ namespace SF {
 			UTCTimeStampMS m_TimeStamp{};
 
 		public:
-			GameEntityTransJoinGameInstance(IHeap& heap, MessageDataPtr& pIMsg)
-				: super(heap, Forward<MessageDataPtr>(pIMsg))
+			GameEntityTransJoinGameInstance(IHeap& heap, const MessageDataPtr& pIMsg)
+				: super(heap, pIMsg)
 			{}
 			virtual ~GameEntityTransJoinGameInstance() = default;
 
@@ -65,7 +65,7 @@ namespace SF {
 		private:
 
 		public:
-			GameEntityTransLeaveGameInstance(IHeap& heap, MessageDataPtr& pIMsg) :super(heap, Forward<MessageDataPtr>(pIMsg)) {}
+			GameEntityTransLeaveGameInstance(IHeap& heap, const MessageDataPtr& pIMsg) :super(heap, pIMsg) {}
 			virtual ~GameEntityTransLeaveGameInstance() {}
 
 			// Start Transaction
@@ -83,7 +83,7 @@ namespace SF {
 		private:
 
 		public:
-			GameInstanceTransPlayerMovement(IHeap& heap, MessageDataPtr& pIMsg) :super(heap, Forward<MessageDataPtr>(pIMsg)) {}
+			GameInstanceTransPlayerMovement(IHeap& heap, const MessageDataPtr& pIMsg) :super(heap, pIMsg) {}
 			virtual ~GameInstanceTransPlayerMovement() {}
 
 			// Start Transaction
@@ -101,7 +101,7 @@ namespace SF {
 		private:
 
 		public:
-			GameInstanceTransOccupyMapObject(IHeap& heap, MessageDataPtr& pIMsg) :super(heap, Forward<MessageDataPtr>(pIMsg)) {}
+			GameInstanceTransOccupyMapObject(IHeap& heap, const MessageDataPtr& pIMsg) :super(heap, pIMsg) {}
 			virtual ~GameInstanceTransOccupyMapObject() {}
 
 			// Start Transaction
@@ -118,7 +118,7 @@ namespace SF {
 		private:
 
 		public:
-			GameInstanceTransUnoccupyMapObject(IHeap& heap, MessageDataPtr& pIMsg) :super(heap, Forward<MessageDataPtr>(pIMsg)) {}
+			GameInstanceTransUnoccupyMapObject(IHeap& heap, const MessageDataPtr& pIMsg) :super(heap, pIMsg) {}
 			virtual ~GameInstanceTransUnoccupyMapObject() {}
 
 			// Start Transaction
@@ -136,8 +136,8 @@ namespace SF {
 			VariableTable m_ResultAttributes;
 
 		public:
-			GameInstanceTransUseMapObject(IHeap& heap, MessageDataPtr& pIMsg)
-				: super(heap, Forward<MessageDataPtr>(pIMsg))
+			GameInstanceTransUseMapObject(IHeap& heap, const MessageDataPtr& pIMsg)
+				: super(heap, pIMsg)
 				, m_ResultAttributes(heap)
 			{}
 			virtual ~GameInstanceTransUseMapObject() {}
@@ -157,8 +157,8 @@ namespace SF {
 			VariableTable m_ResultAttributes;
 
 		public:
-			GameInstanceTransHarvest(IHeap& heap, MessageDataPtr& pIMsg)
-				: super(heap, Forward<MessageDataPtr>(pIMsg))
+			GameInstanceTransHarvest(IHeap& heap, const MessageDataPtr& pIMsg)
+				: super(heap, pIMsg)
 				, m_ResultAttributes(heap)
 			{}
 			virtual ~GameInstanceTransHarvest() {}
@@ -171,4 +171,3 @@ namespace SF {
 
 
 } // namespace SF 
-

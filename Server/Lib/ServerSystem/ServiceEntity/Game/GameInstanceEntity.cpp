@@ -475,7 +475,7 @@ namespace SF {
 			}
 
 			connection->GetRecvMessageDelegates().AddDelegateUnique(uintptr_t(this),
-				[this](Net::Connection* pCon, MessageDataPtr& pMsg)
+				[this](Net::Connection* pCon, const MessageDataPtr& pMsg)
 				{
 					MutexScopeLock lock(m_UpdateLock);
 					ProcessMessage(pCon->GetMessageEndpoint(), pMsg);
@@ -515,6 +515,7 @@ namespace SF {
 			if (pPlayer->GetMovementManager())
 			{
 				m_StartMove.MoveFrame = GetMovementFrame() - 1;
+				svrTrace(Error, "Player start pos for zone:{0}, player:{1}, pos:{2}", GetZoneTableID(), pPlayer->GetPlayerID(), m_StartMove.Position);
 				pPlayer->GetMovementManager()->ResetMovement(m_StartMove);
 			}
 			pPlayer->GetRemoveTimer().SetTimer(Const::GAMEINSTANCE_PLAYER_REMOVE);

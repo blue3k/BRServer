@@ -53,8 +53,8 @@ namespace Svr {
 	//
 
 	
-	PlayerTransInviteFriend::PlayerTransInviteFriend(IHeap& heap, MessageDataPtr &pIMsg )
-		:MessageTransaction(heap, std::forward<MessageDataPtr>(pIMsg))
+	PlayerTransInviteFriend::PlayerTransInviteFriend(IHeap& heap, const MessageDataPtr &pIMsg )
+		:MessageTransaction(heap, pIMsg)
 	{
 		BR_TRANS_MESSAGE(DB::QueryGetPlayerShardIDCmd, { return OnGetPlayerShardID(pRes); });
 		BR_TRANS_MESSAGE(DB::QueryNotification_AddCmd, { return OnNotifyAdded(pRes); });
@@ -137,8 +137,8 @@ namespace Svr {
 
 
 
-	PlayerTransFriendAccept::PlayerTransFriendAccept( IHeap& heap, MessageDataPtr &pIMsg )
-		:MessageTransaction(heap, std::forward<MessageDataPtr>(pIMsg))
+	PlayerTransFriendAccept::PlayerTransFriendAccept( IHeap& heap, const MessageDataPtr &pIMsg )
+		:MessageTransaction(heap, pIMsg)
 	{
 		BR_TRANS_MESSAGE(DB::QueryAddFriendCmd, { return OnFriendAdded(pRes); });
 		BR_TRANS_MESSAGE(DB::QueryGetFriendSlotStatusCmd, { return OnFriendSlotStatus(pRes); });
@@ -391,8 +391,8 @@ namespace Svr {
 
 
 
-	PlayerTransRemoveFriend::PlayerTransRemoveFriend( IHeap& heap, MessageDataPtr &pIMsg )
-		:MessageTransaction(heap, std::forward<MessageDataPtr>(pIMsg))
+	PlayerTransRemoveFriend::PlayerTransRemoveFriend( IHeap& heap, const MessageDataPtr &pIMsg )
+		:MessageTransaction(heap, pIMsg)
 	{
 		BR_TRANS_MESSAGE( DB::QueryRemoveFriendCmd, { return OnRemoved(pRes); });
 	}
@@ -477,8 +477,8 @@ namespace Svr {
 
 
 
-	PlayerTransGetFriendList::PlayerTransGetFriendList( IHeap& heap, MessageDataPtr &pIMsg )
-		: MessageTransaction(heap, std::forward<MessageDataPtr>(pIMsg))
+	PlayerTransGetFriendList::PlayerTransGetFriendList( IHeap& heap, const MessageDataPtr &pIMsg )
+		: MessageTransaction(heap, pIMsg)
 		, m_Friends(heap)
 	{
 		BR_TRANS_MESSAGE(DB::QueryGetFriendListCmd, { return OnGetList(pRes); });

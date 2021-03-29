@@ -47,7 +47,7 @@ namespace SF {
 			DynamicArray<VariableTable> m_GameInstances;
 
 		public:
-			PlayerTransSearchGameInstance(IHeap& heap, MessageDataPtr& pIMsg);
+			PlayerTransSearchGameInstance(IHeap& heap, const MessageDataPtr& pIMsg);
 			virtual ~PlayerTransSearchGameInstance() {}
 
 			//Result OnSearchGameInstanceRes(Svr::TransactionResult* pRes);
@@ -70,7 +70,7 @@ namespace SF {
 			NetAddress m_GameInsAddress6;
 
 		public:
-			PlayerTransJoinGameInstance(IHeap& heap, MessageDataPtr& pIMsg);
+			PlayerTransJoinGameInstance(IHeap& heap, const MessageDataPtr& pIMsg);
 			virtual ~PlayerTransJoinGameInstance() {}
 
 			Result OnJoinGameInstanceRes(Svr::TransactionResult* pRes);
@@ -93,7 +93,7 @@ namespace SF {
 		private:
 
 		public:
-			PlayerTransLeaveGameInstance(IHeap& heap, MessageDataPtr& pIMsg);//  :MessageTransaction(heap,  pIMsg ) {}
+			PlayerTransLeaveGameInstance(IHeap& heap, const MessageDataPtr& pIMsg);//  :MessageTransaction(heap,  pIMsg ) {}
 			virtual ~PlayerTransLeaveGameInstance() {}
 
 			Result OnLeaveGameInstanceRes(Svr::TransactionResult* pRes);

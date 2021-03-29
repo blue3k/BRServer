@@ -40,7 +40,7 @@ namespace SF {
 			GameInsUID	m_GameInsUID;
 
 		public:
-			GameInstanceManagerTransCreateGameInstance(IHeap& heap, MessageDataPtr& pIMsg) : super(heap, Forward<MessageDataPtr>(pIMsg)) {}
+			GameInstanceManagerTransCreateGameInstance(IHeap& heap, const MessageDataPtr& pIMsg) : super(heap, pIMsg) {}
 			virtual ~GameInstanceManagerTransCreateGameInstance() {}
 
 			// Start Transaction
@@ -67,7 +67,7 @@ namespace SF {
 		//	GameInsUID	m_GameInsUID;
 
 		//public:
-		//	GameInstanceManagerTransJoinGameInstance(IHeap& heap, MessageDataPtr& pIMsg) : super(heap, Forward<MessageDataPtr>(pIMsg)) {}
+		//	GameInstanceManagerTransJoinGameInstance(IHeap& heap, const MessageDataPtr& pIMsg) : super(heap, pIMsg) {}
 		//	virtual ~GameInstanceManagerTransJoinGameInstance() {}
 
 		//	// Start Transaction

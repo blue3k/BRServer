@@ -58,8 +58,8 @@ namespace Svr {
 	//
 
 
-	PlayerTransRequestGameMatch::PlayerTransRequestGameMatch(IHeap& heap, MessageDataPtr& pIMsg)
-		: MessageTransaction(heap, std::forward<MessageDataPtr>(pIMsg))
+	PlayerTransRequestGameMatch::PlayerTransRequestGameMatch(IHeap& heap, const MessageDataPtr& pIMsg)
+		: MessageTransaction(heap, pIMsg)
 	{
 		BR_TRANS_MESSAGE(Message::GameParty::StartGameMatchRes, { return OnRequestPartyMatchingRes(pRes); });
 		BR_TRANS_MESSAGE(Message::PartyMatchingQueue::RegisterPlayerMatchingRes, { return OnRequestPlayerMatchingRes(pRes); });
@@ -157,8 +157,8 @@ namespace Svr {
 
 
 
-	PlayerTransCancelGameMatch::PlayerTransCancelGameMatch(IHeap& heap, MessageDataPtr& pIMsg)
-		: MessageTransaction(heap, std::forward<MessageDataPtr>(pIMsg))
+	PlayerTransCancelGameMatch::PlayerTransCancelGameMatch(IHeap& heap, const MessageDataPtr& pIMsg)
+		: MessageTransaction(heap, pIMsg)
 	{
 		BR_TRANS_MESSAGE(Message::GameParty::CancelGameMatchRes, { return OnCancelPartyMatchingRes(pRes); });
 		BR_TRANS_MESSAGE(Message::PartyMatchingQueue::UnregisterMatchingRes, { return OnCancelPlayerMatchingRes(pRes); });

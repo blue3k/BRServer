@@ -96,7 +96,7 @@ namespace SF {
 		//}
 
 		// Process Message and release message after all processed
-		Result ServerEntity::ProcessMessage(const SharedPointerT<MessageEndpoint>& remoteEndpoint, MessageDataPtr& pMsg)
+		Result ServerEntity::ProcessMessage(const SharedPointerT<MessageEndpoint>& remoteEndpoint, const MessageDataPtr& pMsg)
 		{
 			RouteContext routeContext;
 			TransactionID transID;
@@ -115,7 +115,6 @@ namespace SF {
 				//if (pMsg->GetMessageHeader()->msgID.IDs.Type == Message::MSGTYPE_COMMAND)
 				//	NetSvrPolicyServer(SharedPointerT<Net::Connection>(pCon)).GenericFailureRes(routeContext.GetSwaped(), transID, ResultCode::SVR_INVALID_ENTITYUID);
 
-				pMsg = nullptr;
 				return ResultCode::SUCCESS_FALSE;
 			}
 

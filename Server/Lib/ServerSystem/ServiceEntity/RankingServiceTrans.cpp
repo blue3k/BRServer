@@ -44,7 +44,7 @@ namespace Svr {
 
 
 
-	RankingServerAddPlayerTrans::RankingServerAddPlayerTrans(IHeap& memMgr, MessageDataPtr &pIMsg)
+	RankingServerAddPlayerTrans::RankingServerAddPlayerTrans(IHeap& memMgr, const MessageDataPtr &pIMsg)
 		: ServerEntityMessageTransaction(memMgr, pIMsg)
 	{
 	}
@@ -68,7 +68,7 @@ namespace Svr {
 
 
 
-	RankingServerUpdatePlayerScoreTrans::RankingServerUpdatePlayerScoreTrans(IHeap& memMgr, MessageDataPtr &pIMsg)
+	RankingServerUpdatePlayerScoreTrans::RankingServerUpdatePlayerScoreTrans(IHeap& memMgr, const MessageDataPtr &pIMsg)
 		: super(memMgr, pIMsg)
 		, m_RankingList(memMgr)
 	{
@@ -232,7 +232,7 @@ namespace Svr {
 
 
 
-	RankingServerDebugPrintALLRankingTrans::RankingServerDebugPrintALLRankingTrans(IHeap& memMgr, MessageDataPtr &pIMsg)
+	RankingServerDebugPrintALLRankingTrans::RankingServerDebugPrintALLRankingTrans(IHeap& memMgr, const MessageDataPtr &pIMsg)
 		: super(memMgr, pIMsg)
 		, m_RankingList(memMgr)
 	{

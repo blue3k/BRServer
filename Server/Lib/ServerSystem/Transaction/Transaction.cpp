@@ -342,7 +342,7 @@ namespace SF {
 
 
 		// Setup message result
-		Result MessageResult::SetMessage(MessageDataPtr& pIMsg)
+		Result MessageResult::SetMessage(const MessageDataPtr& pIMsg)
 		{
 			if (pIMsg == nullptr)
 				return ResultCode::FAIL;
@@ -359,8 +359,7 @@ namespace SF {
 			SetTransaction(transID, pMsgRes->msgID);
 			SetResult(*phrRes);
 
-			m_pIMsg = std::forward<MessageDataPtr>(pIMsg);
-			pIMsg = nullptr;
+			m_pIMsg = pIMsg;
 
 			return ResultCode::SUCCESS;
 		}

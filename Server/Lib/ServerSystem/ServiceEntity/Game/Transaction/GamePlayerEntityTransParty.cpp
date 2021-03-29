@@ -58,7 +58,7 @@ namespace Svr {
 	//	Party
 	//
 
-	PlayerTransGameMatchedS2SEvt::PlayerTransGameMatchedS2SEvt(IHeap& heap, MessageDataPtr &pIMsg)
+	PlayerTransGameMatchedS2SEvt::PlayerTransGameMatchedS2SEvt(IHeap& heap, const MessageDataPtr &pIMsg)
 	  : UserTransactionS2SEvt( heap, pIMsg )
 	{
 		BR_TRANS_MESSAGE( Message::GameInstance::JoinGameRes, { return OnJoinGameRes(pRes); } );
@@ -262,8 +262,8 @@ namespace Svr {
 
 
 
-	PlayerTransCreateParty::PlayerTransCreateParty(IHeap& heap, MessageDataPtr &pIMsg )
-		:MessageTransaction(heap, std::forward<MessageDataPtr>(pIMsg) )
+	PlayerTransCreateParty::PlayerTransCreateParty(IHeap& heap, const MessageDataPtr &pIMsg )
+		:MessageTransaction(heap, pIMsg )
 	{
 		BR_TRANS_MESSAGE( Message::GamePartyManager::CreatePartyRes, { return OnCreatePartyRes(pRes); } );
 	}
@@ -324,8 +324,8 @@ namespace Svr {
 	}
 
 
-	PlayerTransJoinParty::PlayerTransJoinParty(IHeap& heap, MessageDataPtr &pIMsg )
-		: MessageTransaction( heap, std::forward<MessageDataPtr>(pIMsg) )
+	PlayerTransJoinParty::PlayerTransJoinParty(IHeap& heap, const MessageDataPtr &pIMsg )
+		: MessageTransaction( heap, pIMsg )
 		, m_ChatHistoryData(heap)
 	{
 		BR_TRANS_MESSAGE( Message::GameParty::JoinPartyRes, { return OnJoinPartyRes(pRes); } );
@@ -442,8 +442,8 @@ namespace Svr {
 
 
 
-	PlayerTransLeaveParty::PlayerTransLeaveParty(IHeap& heap, MessageDataPtr &pIMsg )
-		: MessageTransaction( heap, std::forward<MessageDataPtr>(pIMsg) )
+	PlayerTransLeaveParty::PlayerTransLeaveParty(IHeap& heap, const MessageDataPtr &pIMsg )
+		: MessageTransaction( heap, pIMsg )
 	{
 		BR_TRANS_MESSAGE( Message::GameParty::LeavePartyRes, { return OnLeavePartyRes(pRes); } );
 	}
@@ -528,8 +528,8 @@ namespace Svr {
 	
 	
 
-	PlayerTransPartyKickPlayer::PlayerTransPartyKickPlayer(IHeap& heap, MessageDataPtr &pIMsg )
-		: MessageTransaction( heap, std::forward<MessageDataPtr>(pIMsg) )
+	PlayerTransPartyKickPlayer::PlayerTransPartyKickPlayer(IHeap& heap, const MessageDataPtr &pIMsg )
+		: MessageTransaction( heap, pIMsg )
 	{
 		BR_TRANS_MESSAGE( Message::GameParty::KickPlayerRes, { return OnPlayerKickRes(pRes); } );
 	}
@@ -606,8 +606,8 @@ namespace Svr {
 	
 
 	
-	PlayerTransPartyInvite::PlayerTransPartyInvite(IHeap& heap, MessageDataPtr &pIMsg )
-		: MessageTransaction(heap, std::forward<MessageDataPtr>(pIMsg))
+	PlayerTransPartyInvite::PlayerTransPartyInvite(IHeap& heap, const MessageDataPtr &pIMsg )
+		: MessageTransaction(heap, pIMsg)
 	{
 		//BR_TRANS_MESSAGE( DB::QueryNotification_AddCmd, { return OnNotifyAdded(pRes); } );
 	}

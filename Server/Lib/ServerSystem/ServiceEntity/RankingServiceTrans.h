@@ -42,7 +42,7 @@ namespace SF {
 
 
 		public:
-			RankingServerAddPlayerTrans(IHeap& memMgr, MessageDataPtr& pIMsg);
+			RankingServerAddPlayerTrans(IHeap& memMgr, const MessageDataPtr& pIMsg);
 			virtual ~RankingServerAddPlayerTrans() {}
 
 			// Start Transaction
@@ -62,7 +62,7 @@ namespace SF {
 			StaticArray<TotalRankingPlayerInformation, 32> m_RankingList;
 
 		public:
-			RankingServerUpdatePlayerScoreTrans(IHeap& memMgr, MessageDataPtr& pIMsg);
+			RankingServerUpdatePlayerScoreTrans(IHeap& memMgr, const MessageDataPtr& pIMsg);
 			virtual ~RankingServerUpdatePlayerScoreTrans() {}
 
 			// Start Transaction
@@ -82,7 +82,7 @@ namespace SF {
 
 			StaticArray<TotalRankingPlayerInformation, 10000> m_RankingList;
 		public:
-			RankingServerDebugPrintALLRankingTrans(IHeap& memMgr, MessageDataPtr& pIMsg);
+			RankingServerDebugPrintALLRankingTrans(IHeap& memMgr, const MessageDataPtr& pIMsg);
 			virtual ~RankingServerDebugPrintALLRankingTrans() {}
 
 			// Start Transaction
