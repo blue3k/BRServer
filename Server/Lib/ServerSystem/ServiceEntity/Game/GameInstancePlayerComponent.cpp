@@ -52,6 +52,7 @@ namespace SF {
 			m_ActorMovement.EnqueueMovement(initialMovement);
 			m_ActorMovement.SimulateCurrentMove(GetOwner().GetMovementFrame(), m_LatestSimulatedMovement);
 			GetOwner().SetLatestMovement(m_LatestSimulatedMovement);
+			svrTrace(Debug2, "ResetMovement, PlayerId:{0}, init:{1}, simulated:{2}", GetOwner().GetPlayerID(), initialMovement, m_LatestSimulatedMovement);
 		}
 
 		void GameInstancePlayerComponentMovement::TickUpdate()
