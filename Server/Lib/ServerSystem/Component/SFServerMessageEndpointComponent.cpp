@@ -143,6 +143,7 @@ namespace SF
 
 		m_ServerEndpoint = new(GetHeap()) StreamDBConsumer;
 		svrCheckPtr(m_ServerEndpoint);
+		svrTrace(Info, "Initializing ServerMessageEndpoint {0}, {1}", serverEndpointAddress.MessageServer, serverEndpointAddress.Channel);
 		svrCheck(m_ServerEndpoint->Initialize(serverEndpointAddress.MessageServer, serverEndpointAddress.Channel));
 
 		std::string errstr;
