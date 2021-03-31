@@ -1072,7 +1072,7 @@ namespace SF {
 			return hr;
 		}
 
-		svrTrace(Debug3, "LocalServiceMongo::Register GameId:{0}, clusterId:{1}, entity{2}", gameID, clusterID, entityUID);
+		svrTrace(Debug4, "LocalServiceMongo::Register GameId:{0}, clusterId:{1}, entity{2}", gameID, clusterID, entityUID);
 
 		return hr;
 	}
