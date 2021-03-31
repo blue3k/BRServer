@@ -303,6 +303,8 @@ namespace SF {
 
 			UpdateEventTask();
 
+			UpdateTaskFunction();
+
 			UpdateTimer();
 
 		} // while
