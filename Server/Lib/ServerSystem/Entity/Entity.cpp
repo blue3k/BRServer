@@ -21,9 +21,7 @@
 #include "Entity/Entity.h"
 #include "Transaction/MessageRoute.h"
 #include "Transaction/Transaction.h"
-//#include "ServerSystem/PlugIn.h"
 #include "SvrTrace.h"
-#include "Task/ServerTaskEvent.h"
 #include "Entity/EntityTimerActions.h"
 #include "Server/BrServer.h"
 #include "Server/BrServerUtil.h"
@@ -396,7 +394,6 @@ namespace Svr
 				// We can't reschedule here, just poke it
 				// And a error can be happened during initialization, they will be rescheduled
 				// TODO: find better way
-				//GetTaskManager()->AddEventTask(GetTaskGroupID(), ServerTaskEvent(this));
 				WeakPointerT<Entity> pThisWeak = AsSharedPtr<Entity>();
 				return GetTaskManager()->RunOnTaskThread(GetTaskGroupID(), [pThisWeak]()
 					{
@@ -502,7 +499,6 @@ namespace Svr
 		svrCheckPtr( pTransRes );
 
 		// TODO: Use unique ptr in queue
-		//svrCheck(GetTaskManager()->AddEventTask(GetTaskGroupID(), ServerTaskEvent(this, pTransRes.get())));
 		WeakPointerT<Entity> pThisWeak = AsSharedPtr<Entity>();
 		svrCheck(GetTaskManager()->RunOnTaskThread(GetTaskGroupID(), [pThisWeak, pCapturedTransRes = pTransRes.release()]()
 			{

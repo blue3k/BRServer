@@ -61,7 +61,6 @@ set(BRSERVERSYSTEM_LIB_FILES
     Service/DataTableManagerService.h
     Service/DataTableManagerService.cpp
     Task/ServerTask.inl
-    Task/ServerTaskEvent.inl
     Task/ServerTaskManager.inl
     Transaction/ExternalTransactionManager.inl
     Transaction/MessageRoute.inl
@@ -145,7 +144,6 @@ set(BRSERVERSYSTEM_LIB_FILES
     SvrTrace.h
     SvrTrace.cpp
     Task/ServerTask.h
-    Task/ServerTaskEvent.h
     Task/ServerTaskManager.h
     Transaction/ExternalTransaction.h
     Transaction/ExternalTransactionManager.h
@@ -250,7 +248,6 @@ set(BRSERVERSYSTEM_LIB_FILES
     Service/ServerService.cpp
     Util/ToStringSvr.cpp
     Task/ServerTask.cpp
-    Task/ServerTaskEvent.cpp
     Task/ServerTaskManager.cpp
     Transaction/ExternalTransaction.cpp
     Transaction/ExternalTransactionManager.cpp

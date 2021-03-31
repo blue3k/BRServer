@@ -99,11 +99,6 @@ namespace SF {
 
 			// Run entity
 			virtual Result TickUpdate(TimerAction* pAction = nullptr) override;
-
-
-			/////////////////////////////////////////////////////////////////////////////////////
-			// Event task handling
-			virtual Result OnEventTask(ServerTaskEvent& eventTask) override;
 		};
 
 

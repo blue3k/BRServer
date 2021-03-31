@@ -25,7 +25,6 @@
 #include "ServiceEntity/ClusterServiceTrans.h"
 #include "Protocol/ServerService/ClusterServerService.h"
 #include "SvrTrace.h"
-#include "Task/ServerTaskEvent.h"
 #include "Server/BrServer.h"
 #include "ServerConfig/SFServerConfig.h"
 #include "Protocol/Policy/ClusterServerNetPolicy.h"

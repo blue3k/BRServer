@@ -21,7 +21,6 @@
 #include "Transaction/Transaction.h"
 #include "Server/BrServer.h"
 #include "SvrTrace.h"
-#include "Task/ServerTaskEvent.h"
 #include "Net/SFConnectionUDP.h"
 
 #include "Protocol/Message/LoginMsgClass.h"
@@ -345,7 +344,6 @@ namespace Svr
 
 	Result SimpleUserEntity::OnRecvMessage(Net::Connection* pConn, MessageDataPtr& pMsg)
 	{
-		//return GetTaskManager()->AddEventTask(GetTaskGroupID(), ServerTaskEvent(this, pConn->GetMessageEndpoint(), pMsg));
 		WeakPointerT<SimpleUserEntity> pThisWeak = AsSharedPtr<SimpleUserEntity>();
 		return GetTaskManager()->RunOnTaskThread(GetTaskGroupID(), [pThisWeak, pMsg = pMsg, pEndpoint = pConn->GetMessageEndpoint()]()
 			{
@@ -362,7 +360,6 @@ namespace Svr
 		if (pConn == nullptr)
 			return ResultCode::INVALID_POINTER;
 
-		//return GetTaskManager()->AddEventTask(GetTaskGroupID(), ServerTaskEvent(ServerTaskEvent::EventTypes::PACKET_MESSAGE_SYNC_EVENT, this, WeakPointerT<Net::Connection>(pConn)));
 		return GetTaskManager()->RunOnTaskThread(GetTaskGroupID(), [pConn = pConn->AsSharedPtr<Net::Connection>()]()
 		{
 			if (pConn != nullptr)
@@ -377,7 +374,6 @@ namespace Svr
 		if (pConn == nullptr)
 			return ResultCode::INVALID_POINTER;
 
-		//return GetTaskManager()->AddEventTask(GetTaskGroupID(), ServerTaskEvent(ServerTaskEvent::EventTypes::PACKET_MESSAGE_SEND_EVENT, this, WeakPointerT<Net::Connection>(pConn)));
 		return GetTaskManager()->RunOnTaskThread(GetTaskGroupID(), [pConn = pConn->AsSharedPtr<Net::Connection>()]()
 		{
 			if (pConn != nullptr)
@@ -385,102 +381,6 @@ namespace Svr
 				pConn->UpdateSendBufferQueue();
 			}
 		});
-	}
-
-
-	Result SimpleUserEntity::OnEventTask(ServerTaskEvent& eventTask)
-	{
-		Result hr = ResultCode::SUCCESS;
-
-		TransactionPtr pCurTran;
-		MessageDataPtr pMsg;
-		SharedPointerT<MessageEndpoint> pEndpoint;
-		Net::ConnectionUDPBase* pConn = nullptr;
-		auto& pMyConn = GetConnection();
-		auto thisThreadID = ThisThread::GetThreadID();
-
-
-		if (pMyConn != nullptr)
-		{
-			if (pMyConn->GetRunningThreadID() != thisThreadID)
-			{
-				if (pMyConn->GetTickFlags() == 0)
-				{
-					pMyConn->SetRunningThreadID(thisThreadID);
-				}
-				else
-				{
-					// We need to wait the control take over
-					// reschedule the event
-					switch (eventTask.EventType)
-					{
-					case ServerTaskEvent::EventTypes::PACKET_MESSAGE_SYNC_EVENT:
-					case ServerTaskEvent::EventTypes::PACKET_MESSAGE_SEND_EVENT:
-						GetTaskWorker()->AddEventTask(std::forward<ServerTaskEvent>(eventTask));
-						return hr;
-						break;
-					default:
-						break;
-					}
-				}
-
-			}
-		}
-
-		switch (eventTask.EventType)
-		{
-		case ServerTaskEvent::EventTypes::CONNECTION_EVENT:
-			ProcessConnectionEvent(*eventTask.EventData.pConnectionEvent);
-			break;
-		case ServerTaskEvent::EventTypes::PACKET_MESSAGE_EVENT:
-			pMsg = std::forward<MessageDataPtr>(const_cast<ServerTaskEvent&>(eventTask).EventData.MessageEvent.pMessage);
-			pEndpoint = const_cast<ServerTaskEvent&>(eventTask).EventData.MessageEvent.pObject.AsSharedPtr<MessageEndpoint>();
-			if (pMsg != nullptr)
-			{
-				ProcessMessage(pEndpoint, pMsg);
-			}
-			else
-			{
-				//pConn = dynamic_cast<Net::ConnectionUDPBase*>(*GetConnection());
-				//if (pConn != nullptr)
-				//	pConn->ProcGuarrentedMessageWindow([&](MessageDataPtr& pMsg){ ProcessMessage(pMsg); });
-			}
-			break;
-		case ServerTaskEvent::EventTypes::PACKET_MESSAGE_SYNC_EVENT:
-			if (pMyConn != nullptr) pMyConn->UpdateSendQueue();
-			break;
-		case ServerTaskEvent::EventTypes::PACKET_MESSAGE_SEND_EVENT:
-			if (pMyConn != nullptr) pMyConn->UpdateSendBufferQueue();
-			break;
-		case ServerTaskEvent::EventTypes::TRANSRESULT_EVENT:
-			if (eventTask.EventData.pTransResultEvent != nullptr)
-			{
-				if (FindActiveTransaction(eventTask.EventData.pTransResultEvent->GetTransID(), pCurTran))
-				{
-					SFUniquePtr<TransactionResult> pTransRes(eventTask.EventData.pTransResultEvent);
-					eventTask.EventData.pTransResultEvent = nullptr;
-					ProcessTransactionResult(pCurTran, pTransRes);
-				}
-				else
-				{
-					svrTrace(Warning, "Transaction result for TID:{0} is failed to route.", eventTask.EventData.pTransResultEvent->GetTransID());
-					auto pRes = const_cast<TransactionResult*>(eventTask.EventData.pTransResultEvent);
-					IHeap::Delete(pRes);
-					//svrErr(ResultCode::FAIL);
-				}
-			}
-			else
-			{
-				svrTrace(SVR_TRANSACTION, "Failed to process transaction result. null Transaction result.");
-			}
-			break;
-		default:
-			return ResultCode::UNEXPECTED;
-		}
-
-	//Proc_End:
-
-		return hr;
 	}
 
 

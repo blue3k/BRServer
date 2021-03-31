@@ -23,7 +23,6 @@
 #include "Server/BrServer.h"
 #include "SvrTrace.h"
 #include "SvrConst.h"
-#include "Task/ServerTaskEvent.h"
 #include "Entity/EntityTable.h"
 #include "Server/BrServerUtil.h"
 #include "Entity/EntityManager.h"
@@ -134,66 +133,6 @@ namespace SF {
 			svrCheck(MasterEntity::TickUpdate(pAction));
 			return hr;
 		}
-
-
-
-		Result ServerEntity::OnEventTask(ServerTaskEvent& eventTask)
-		{
-			TransactionPtr pCurTran;
-			MessageDataPtr pMsg;
-			SharedPointerT<Net::Connection> pMyConn;
-
-			switch (eventTask.EventType)
-			{
-			case ServerTaskEvent::EventTypes::CONNECTION_EVENT:
-				//ProcessConnectionEvent(*eventTask.EventData.pConnectionEvent);
-				break;
-			case ServerTaskEvent::EventTypes::PACKET_MESSAGE_EVENT:
-				pMsg = eventTask.EventData.MessageEvent.pMessage;
-				if (pMsg != nullptr)
-				{
-					ProcessMessage(nullptr, pMsg);
-				}
-				else
-				{
-					svrTrace(Error, "null message pointer in event taqsk");
-				}
-				break;
-			case ServerTaskEvent::EventTypes::PACKET_MESSAGE_SYNC_EVENT:
-				//pMyConn = eventTask.EventData.MessageEvent.pConn.AsSharedPtr();
-				//if (pMyConn != nullptr) pMyConn->UpdateSendQueue();
-				break;
-			case ServerTaskEvent::EventTypes::PACKET_MESSAGE_SEND_EVENT:
-				//pMyConn = eventTask.EventData.MessageEvent.pConn.AsSharedPtr();
-				//if (pMyConn != nullptr) pMyConn->UpdateSendBufferQueue();
-				break;
-			case ServerTaskEvent::EventTypes::TRANSRESULT_EVENT:
-				if (eventTask.EventData.pTransResultEvent != nullptr)
-				{
-					if ((FindActiveTransaction(eventTask.EventData.pTransResultEvent->GetTransID(), pCurTran)))
-					{
-						SFUniquePtr<TransactionResult> pTransRes(eventTask.EventData.pTransResultEvent);
-						eventTask.EventData.pTransResultEvent = nullptr;
-						ProcessTransactionResult(pCurTran, pTransRes);
-					}
-					else
-					{
-						auto pNonConst = const_cast<TransactionResult*>(eventTask.EventData.pTransResultEvent);
-						IHeap::Delete(pNonConst);
-					}
-				}
-				else
-				{
-					svrTrace(SVR_TRANSACTION, "Failed to process transaction result. null Transaction result.");
-				}
-				break;
-			default:
-				return ResultCode::UNEXPECTED;
-			}
-
-			return ResultCode::SUCCESS;
-		}
-
 
 
 	} // namespace Svr

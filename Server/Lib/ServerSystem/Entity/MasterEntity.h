@@ -79,8 +79,6 @@ namespace SF {
 
 			virtual void OnAddedToTaskManager(TaskWorker* pWorker) override;
 
-			virtual Result OnEventTask(ServerTaskEvent& eventTask) override;
-
 		};
 
 	} // namespace Svr

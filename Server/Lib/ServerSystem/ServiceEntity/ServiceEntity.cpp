@@ -25,7 +25,6 @@
 #include "ServiceEntity/ServiceEntity.h"
 #include "ServerEntity/ServerEntityManager.h"
 #include "SvrTrace.h"
-#include "Task/ServerTaskEvent.h"
 #include "Util/SFStringFormat.h"
 #include "rdkafka/rdkafkacpp.h"
 

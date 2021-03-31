@@ -18,7 +18,6 @@
 #include "Multithread/SFThread.h"
 #include "Util/SFTimeUtil.h"
 #include "Task/ServerTaskManager.h"
-#include "Task/ServerTaskEvent.h"
 
 
 namespace SF {
@@ -38,7 +37,6 @@ namespace SF {
 		, m_GroupWorkLoadDiff(0)
 		, m_GroupID(0)
 		, m_ulLoopInterval(3)
-		, m_EventTask(GetSystemHeap())
 		, m_TaskFunctions(GetSystemHeap())
 		, m_PendingAddTask(GetSystemHeap(), iQueuePageSize)
 		, m_PendingRemoveTask(GetSystemHeap(), iQueuePageSize)
@@ -54,15 +52,6 @@ namespace SF {
 		m_PendingRemoveTask.ClearQueue();
 
 		m_TaskList.ClearMap();
-	}
-
-	// Add event task
-	Result TaskWorker::AddEventTask(ServerTaskEvent&& pEvtTask)
-	{
-		if (pEvtTask.EventType == ServerTaskEvent::EventTypes::NONE)
-			return ResultCode::INVALID_ARG;
-
-		return m_EventTask.Enqueue(Forward<ServerTaskEvent>(pEvtTask));
 	}
 
 	Result TaskWorker::AddTaskFunction(std::function<void()>&& pTaskFunction)
@@ -226,41 +215,6 @@ namespace SF {
 		return ResultCode::SUCCESS;
 	}
 
-	Result TaskWorker::UpdateEventTask()
-	{
-		auto threadID = GetThreadID();
-		auto loopCount = m_EventTask.GetEnqueCount();
-		for (; loopCount > 0; loopCount--)
-		{
-			ServerTaskEvent pEvtTask;
-			if (!(m_EventTask.Dequeue(pEvtTask)))
-				break;
-
-			SharedPointerT<TickTask> tickTask;
-			tickTask = pEvtTask.TaskPtr.AsSharedPtr();
-			if (tickTask == nullptr)
-				continue;
-
-			switch (pEvtTask.EventType)
-			{
-			case ServerTaskEvent::EventTypes::POKE_TICK_EVENT:
-				tickTask->TickUpdate();
-				continue;
-			default:
-				break;
-			};
-
-			if (!tickTask->OnEventTask(pEvtTask))
-			{
-				svrTrace(Error, "ServerTaskEvent is failed, Evt:{0}", (uint)pEvtTask.EventType.load(std::memory_order_relaxed))
-			}
-
-			m_TimeScheduler.Reschedul(threadID, tickTask->GetTimerAction());
-		}
-
-		return ResultCode::SUCCESS;
-	}
-
 	Result TaskWorker::UpdateTaskFunction()
 	{
 		auto loopCount = m_TaskFunctions.GetEnqueCount();
@@ -300,8 +254,6 @@ namespace SF {
 			UpdateRemoveTickTaskQueue();
 
 			UpdateAddTickTaskQueue();
-
-			UpdateEventTask();
 
 			UpdateTaskFunction();
 
@@ -413,21 +365,6 @@ namespace SF {
 		return ResultCode::SUCCESS;
 	}
 
-
-	// Add event task
-	Result TickTaskManager::AddEventTask(SysUInt groupID, ServerTaskEvent&& pEvtTask)
-	{
-		Result hr = ResultCode::SUCCESS;
-
-		if (groupID <= 0 || groupID > m_TaskGroups.size())
-		{
-			return ResultCode::SVR_INVALID_TASK_GROUPID;
-		}
-
-		svrCheck(m_TaskGroups[groupID - 1]->AddEventTask(std::forward<ServerTaskEvent>(pEvtTask)));
-
-		return hr;
-	}
 
 	Result TickTaskManager::RunOnTaskThread(SysUInt groupID, std::function<void()>&& pTaskFunction)
 	{

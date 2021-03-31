@@ -14,7 +14,6 @@
 #include "SvrConst.h"
 #include "SvrTrace.h"
 #include "Server/BrServerUtil.h"
-#include "Task/ServerTaskEvent.h"
 #include "Task/ServerTask.h"
 #include "Task/ServerTaskManager.h"
 #include "Net/SFNetServerUDP.h"

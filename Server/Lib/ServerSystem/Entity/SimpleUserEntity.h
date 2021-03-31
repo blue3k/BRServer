@@ -141,7 +141,6 @@ namespace SF {
 			virtual Result OnNetSyncMessage(Net::Connection* pConn) override;
 			virtual Result OnNetSendReadyMessage(Net::Connection* pConn) override;
 
-			virtual Result OnEventTask(ServerTaskEvent& eventTask) override;
 		};
 
 

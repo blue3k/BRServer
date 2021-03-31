@@ -19,9 +19,7 @@
 #include "Entity/MasterEntity.h"
 #include "Transaction/MessageRoute.h"
 #include "Transaction/Transaction.h"
-//#include "ServerSystem/PlugIn.h"
 #include "SvrTrace.h"
-#include "Task/ServerTaskEvent.h"
 #include "Entity/EntityTimerActions.h"
 #include "Server/BrServer.h"
 #include "Net/SFMessage.h"
@@ -361,56 +359,6 @@ namespace Svr
 		}
 		UpdateWorkingThreadID(pWorker->GetThreadID());
 		Entity::OnAddedToTaskManager(pWorker);
-	}
-
-	Result MasterEntity::OnEventTask(ServerTaskEvent& eventTask)
-	{
-		Result hr = ResultCode::SUCCESS;
-		TransactionPtr pCurTran;
-		SharedPointerT<Net::Connection> pMyConn;
-
-		switch (eventTask.EventType)
-		{
-		case ServerTaskEvent::EventTypes::CONNECTION_EVENT:
-		case ServerTaskEvent::EventTypes::PACKET_MESSAGE_EVENT:
-			svrErr(ResultCode::NOT_IMPLEMENTED);
-			break;
-		case ServerTaskEvent::EventTypes::PACKET_MESSAGE_SYNC_EVENT:
-			pMyConn = std::forward<SharedPointerT<Net::Connection>>(eventTask.EventData.MessageEvent.pObject.AsSharedPtr<Net::Connection>());
-			if (pMyConn != nullptr) pMyConn->UpdateSendQueue();
-			break;
-		case ServerTaskEvent::EventTypes::PACKET_MESSAGE_SEND_EVENT:
-			pMyConn = std::forward<SharedPointerT<Net::Connection>>(eventTask.EventData.MessageEvent.pObject.AsSharedPtr<Net::Connection>());
-			if (pMyConn != nullptr) pMyConn->UpdateSendBufferQueue();
-			break;
-		case ServerTaskEvent::EventTypes::TRANSRESULT_EVENT:
-			if (eventTask.EventData.pTransResultEvent != nullptr)
-			{
-				if ((FindActiveTransaction(eventTask.EventData.pTransResultEvent->GetTransID(), pCurTran)))
-				{
-					SFUniquePtr<TransactionResult> pTransRes(std::forward<Svr::TransactionResult*>(eventTask.EventData.pTransResultEvent));
-					ProcessTransactionResult(pCurTran, pTransRes);
-				}
-				else
-				{
-					svrTrace(SVR_TRANSACTION, "Transaction result for TID:{0} is failed to route.", eventTask.EventData.pTransResultEvent->GetTransID());
-					auto pNonConstTransRes = const_cast<TransactionResult*>(eventTask.EventData.pTransResultEvent);
-					IHeap::Delete(pNonConstTransRes);
-					svrErr(ResultCode::FAIL);
-				}
-			}
-			else
-			{
-				svrTrace(SVR_TRANSACTION, "Failed to process transaction result. null Transaction result.");
-			}
-			break;
-		default:
-			svrErr(ResultCode::UNEXPECTED);
-		}
-
-	Proc_End:
-
-		return hr;
 	}
 
 	uint MasterEntity::GetActiveTransactionCount()

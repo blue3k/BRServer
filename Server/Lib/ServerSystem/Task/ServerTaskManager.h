@@ -30,7 +30,6 @@ namespace SF {
 
 
 	class TickTaskManager;
-	struct ServerTaskEvent;
 
 
 	////////////////////////////////////////////////////////////////////////////////////////
@@ -61,8 +60,6 @@ namespace SF {
 		// Base loop delay
 		DurationMS					m_ulLoopInterval;
 
-		PageQueue<ServerTaskEvent>		m_EventTask;
-
 		PageQueue<std::function<void()>>		m_TaskFunctions;
 	
 		// TickTask pending queue
@@ -81,7 +78,6 @@ namespace SF {
 		Result UpdateAddTickTaskQueue();
 		Result UpdateRemoveTickTaskQueue();
 		Result UpdateTickTask();
-		Result UpdateEventTask();
 		Result UpdateTaskFunction();
 		Result UpdateTimer();
 
@@ -104,9 +100,6 @@ namespace SF {
 		inline DurationMS GetBaseLoopInterval();
 
 		TimerScheduler& GetTimeScheduler()											{ return m_TimeScheduler; }
-
-		// Add event task
-		Result AddEventTask(ServerTaskEvent&& pEvtTask);
 
 		Result AddTaskFunction(std::function<void()>&& pTaskFunction);
 
@@ -174,9 +167,6 @@ namespace SF {
 
 		// Terminate TickTaskManager
 		virtual Result TerminateManager();
-
-		// Add event task
-		Result AddEventTask(SysUInt groupID, ServerTaskEvent&& pEvtTask);
 
 		Result RunOnTaskThread(SysUInt groupID, std::function<void()>&& pTaskFunction);
 

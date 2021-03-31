@@ -22,7 +22,6 @@ namespace SF {
 
 	class TickTaskManager;
 	class TaskWorker;
-	struct ServerTaskEvent;
 	class TimerAction;
 	class TickTaskTimerAction;
 
@@ -116,7 +115,6 @@ namespace SF {
 		virtual void OnAddedToTaskManager(TaskWorker *pWorker);
 		virtual void OnRemovedFromTaskManager(TaskWorker *pWorker);
 
-		virtual Result OnEventTask(ServerTaskEvent& eventTask) { Assert(false);  return ResultCode::NOT_IMPLEMENTED; }
 	};
 
 

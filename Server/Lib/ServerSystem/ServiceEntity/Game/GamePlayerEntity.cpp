@@ -14,7 +14,6 @@
 #include "SvrConst.h"
 #include "SvrTrace.h"
 #include "Server/BrServerUtil.h"
-#include "Task/ServerTaskEvent.h"
 #include "Transaction/ExternalTransactionManager.h"
 #include "Net/SFNetServerUDP.h"
 #include "Util/SFTimeUtil.h"
