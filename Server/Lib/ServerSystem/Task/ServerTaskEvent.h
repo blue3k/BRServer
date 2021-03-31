@@ -62,7 +62,7 @@ namespace SF {
 			void Clear()
 			{
 				pConnectionEvent = nullptr;
-				MessageEvent.pObject = WeakPointer();
+				MessageEvent.pObject.reset();
 				MessageEvent.pMessage = nullptr;
 				pTransResultEvent = nullptr;
 			}

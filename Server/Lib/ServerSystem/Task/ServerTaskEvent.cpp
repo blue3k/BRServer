@@ -86,7 +86,7 @@ namespace SF {
 
 	ServerTaskEvent::~ServerTaskEvent()
 	{
-		EventData.MessageEvent.pObject = WeakPointerT<Net::Connection>();
+		EventData.MessageEvent.pObject.reset();
 	}
 
 	ServerTaskEvent& ServerTaskEvent::operator = (const ServerTaskEvent& src)
