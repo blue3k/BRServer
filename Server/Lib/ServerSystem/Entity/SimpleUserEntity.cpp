@@ -345,17 +345,46 @@ namespace Svr
 
 	Result SimpleUserEntity::OnRecvMessage(Net::Connection* pConn, MessageDataPtr& pMsg)
 	{
-		return GetTaskManager()->AddEventTask(GetTaskGroupID(), ServerTaskEvent(this, pConn->GetMessageEndpoint(), pMsg));
+		//return GetTaskManager()->AddEventTask(GetTaskGroupID(), ServerTaskEvent(this, pConn->GetMessageEndpoint(), pMsg));
+		WeakPointerT<SimpleUserEntity> pThisWeak = AsSharedPtr<SimpleUserEntity>();
+		return GetTaskManager()->RunOnTaskThread(GetTaskGroupID(), [pThisWeak, pMsg = pMsg, pEndpoint = pConn->GetMessageEndpoint()]()
+			{
+				auto pThis = pThisWeak.AsSharedPtr<SimpleUserEntity>();
+				if (pThis != nullptr)
+				{
+					pThis->ProcessMessage(pEndpoint, pMsg);
+				}
+			});
 	}
 
 	Result SimpleUserEntity::OnNetSyncMessage(Net::Connection* pConn)
 	{
-		return GetTaskManager()->AddEventTask(GetTaskGroupID(), ServerTaskEvent(ServerTaskEvent::EventTypes::PACKET_MESSAGE_SYNC_EVENT, this, WeakPointerT<Net::Connection>(pConn)));
+		if (pConn == nullptr)
+			return ResultCode::INVALID_POINTER;
+
+		//return GetTaskManager()->AddEventTask(GetTaskGroupID(), ServerTaskEvent(ServerTaskEvent::EventTypes::PACKET_MESSAGE_SYNC_EVENT, this, WeakPointerT<Net::Connection>(pConn)));
+		return GetTaskManager()->RunOnTaskThread(GetTaskGroupID(), [pConn = pConn->AsSharedPtr<Net::Connection>()]()
+		{
+			if (pConn != nullptr)
+			{
+				pConn->UpdateSendQueue();
+			}
+		});
 	}
 
 	Result SimpleUserEntity::OnNetSendReadyMessage(Net::Connection* pConn)
 	{
-		return GetTaskManager()->AddEventTask(GetTaskGroupID(), ServerTaskEvent(ServerTaskEvent::EventTypes::PACKET_MESSAGE_SEND_EVENT, this, WeakPointerT<Net::Connection>(pConn)));
+		if (pConn == nullptr)
+			return ResultCode::INVALID_POINTER;
+
+		//return GetTaskManager()->AddEventTask(GetTaskGroupID(), ServerTaskEvent(ServerTaskEvent::EventTypes::PACKET_MESSAGE_SEND_EVENT, this, WeakPointerT<Net::Connection>(pConn)));
+		return GetTaskManager()->RunOnTaskThread(GetTaskGroupID(), [pConn = pConn->AsSharedPtr<Net::Connection>()]()
+		{
+			if (pConn != nullptr)
+			{
+				pConn->UpdateSendBufferQueue();
+			}
+		});
 	}
 
 
@@ -426,7 +455,7 @@ namespace Svr
 		case ServerTaskEvent::EventTypes::TRANSRESULT_EVENT:
 			if (eventTask.EventData.pTransResultEvent != nullptr)
 			{
-				if ((FindActiveTransaction(eventTask.EventData.pTransResultEvent->GetTransID(), pCurTran)))
+				if (FindActiveTransaction(eventTask.EventData.pTransResultEvent->GetTransID(), pCurTran))
 				{
 					SFUniquePtr<TransactionResult> pTransRes(eventTask.EventData.pTransResultEvent);
 					eventTask.EventData.pTransResultEvent = nullptr;

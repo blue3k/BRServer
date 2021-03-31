@@ -63,6 +63,8 @@ namespace SF {
 
 		PageQueue<ServerTaskEvent>		m_EventTask;
 
+		PageQueue<std::function<void()>>		m_TaskFunctions;
+	
 		// TickTask pending queue
 		PageQueue<SharedPointerT<TickTask>>		m_PendingAddTask;
 
@@ -80,6 +82,7 @@ namespace SF {
 		Result UpdateRemoveTickTaskQueue();
 		Result UpdateTickTask();
 		Result UpdateEventTask();
+		Result UpdateTaskFunction();
 		Result UpdateTimer();
 
 	public:
@@ -104,6 +107,8 @@ namespace SF {
 
 		// Add event task
 		Result AddEventTask(ServerTaskEvent&& pEvtTask);
+
+		Result AddTaskFunction(std::function<void()>&& pTaskFunction);
 
 		// Add task
 		Result PendingAddTask( TickTask* pTask );
@@ -172,6 +177,8 @@ namespace SF {
 
 		// Add event task
 		Result AddEventTask(SysUInt groupID, ServerTaskEvent&& pEvtTask);
+
+		Result RunOnTaskThread(SysUInt groupID, std::function<void()>&& pTaskFunction);
 
 		// Add TickTask
 		virtual Result AddTickTask( TickTask* pTask );

@@ -39,6 +39,7 @@ namespace SF {
 		, m_GroupID(0)
 		, m_ulLoopInterval(3)
 		, m_EventTask(GetSystemHeap())
+		, m_TaskFunctions(GetSystemHeap())
 		, m_PendingAddTask(GetSystemHeap(), iQueuePageSize)
 		, m_PendingRemoveTask(GetSystemHeap(), iQueuePageSize)
 		, m_TaskList(GetSystemHeap())
@@ -62,6 +63,11 @@ namespace SF {
 			return ResultCode::INVALID_ARG;
 
 		return m_EventTask.Enqueue(Forward<ServerTaskEvent>(pEvtTask));
+	}
+
+	Result TaskWorker::AddTaskFunction(std::function<void()>&& pTaskFunction)
+	{
+		return m_TaskFunctions.Enqueue(Forward<std::function<void()>>(pTaskFunction));
 	}
 
 	// Add task
@@ -255,6 +261,21 @@ namespace SF {
 		return ResultCode::SUCCESS;
 	}
 
+	Result TaskWorker::UpdateTaskFunction()
+	{
+		auto loopCount = m_TaskFunctions.GetEnqueCount();
+		for (; loopCount > 0; loopCount--)
+		{
+			std::function<void()> pTaskFunction;
+			if (!(m_TaskFunctions.Dequeue(pTaskFunction)))
+				break;
+
+			pTaskFunction();
+		}
+
+		return ResultCode::SUCCESS;
+	}
+
 	Result TaskWorker::UpdateTimer()
 	{
 		m_TimeScheduler.UpdateTick(std::this_thread::get_id());
@@ -402,6 +423,20 @@ namespace SF {
 		}
 
 		svrCheck(m_TaskGroups[groupID - 1]->AddEventTask(std::forward<ServerTaskEvent>(pEvtTask)));
+
+		return hr;
+	}
+
+	Result TickTaskManager::RunOnTaskThread(SysUInt groupID, std::function<void()>&& pTaskFunction)
+	{
+		Result hr = ResultCode::SUCCESS;
+
+		if (groupID <= 0 || groupID > m_TaskGroups.size())
+		{
+			return ResultCode::SVR_INVALID_TASK_GROUPID;
+		}
+
+		svrCheck(m_TaskGroups[groupID - 1]->AddTaskFunction(std::forward<std::function<void()>>(pTaskFunction)));
 
 		return hr;
 	}

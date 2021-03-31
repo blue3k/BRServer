@@ -396,7 +396,16 @@ namespace Svr
 				// We can't reschedule here, just poke it
 				// And a error can be happened during initialization, they will be rescheduled
 				// TODO: find better way
-				GetTaskManager()->AddEventTask(GetTaskGroupID(), ServerTaskEvent(this));
+				//GetTaskManager()->AddEventTask(GetTaskGroupID(), ServerTaskEvent(this));
+				WeakPointerT<Entity> pThisWeak = AsSharedPtr<Entity>();
+				return GetTaskManager()->RunOnTaskThread(GetTaskGroupID(), [pThisWeak]()
+					{
+						auto pThis = pThisWeak.AsSharedPtr<Entity>();
+						if (pThis != nullptr)
+						{
+							pThis->TickUpdate();
+						}
+					});
 			}
 		}
 
@@ -493,7 +502,26 @@ namespace Svr
 		svrCheckPtr( pTransRes );
 
 		// TODO: Use unique ptr in queue
-		svrCheck(GetTaskManager()->AddEventTask(GetTaskGroupID(), ServerTaskEvent(this, pTransRes.get())));
+		//svrCheck(GetTaskManager()->AddEventTask(GetTaskGroupID(), ServerTaskEvent(this, pTransRes.get())));
+		WeakPointerT<Entity> pThisWeak = AsSharedPtr<Entity>();
+		svrCheck(GetTaskManager()->RunOnTaskThread(GetTaskGroupID(), [pThisWeak, pCapturedTransRes = pTransRes.release()]()
+			{
+				SFUniquePtr<TransactionResult> pTransRes(pCapturedTransRes);
+				TransactionPtr pCurTran;
+				auto pThis = pThisWeak.AsSharedPtr<Entity>();
+				if (pThis != nullptr)
+				{
+					if (pThis->FindActiveTransaction(pTransRes->GetTransID(), pCurTran))
+					{
+						pThis->ProcessTransactionResult(pCurTran, pTransRes);
+					}
+					else
+					{
+						svrTrace(SVR_TRANSACTION, "Transaction result for TID:{0} is failed to route.", pTransRes->GetTransID());
+					}
+				}
+			}));
+
 		pTransRes.release();
 		
 		return hr;
