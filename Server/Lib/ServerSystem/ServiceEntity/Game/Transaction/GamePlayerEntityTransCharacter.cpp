@@ -55,7 +55,14 @@ namespace SF {
 					if (!hr) CloseTransaction(hr);
 				});
 
-			svrCheck(Svr::GetServerComponent<DB::GameDB>()->CreateCharacter(GetTransID(), GetMyOwner()->GetShardID(), GetMyOwner()->GetPlayerID(), GetCharacterName(), GetVisualData(), GetAttributes()));
+			auto visualData = GetVisualData();
+			auto requestAttributs = GetAttributes();
+
+			visualData.SetValue("level", 1);
+
+			requestAttributs.SetValue("exp", 0);
+
+			svrCheck(Svr::GetServerComponent<DB::GameDB>()->CreateCharacter(GetTransID(), GetMyOwner()->GetShardID(), GetMyOwner()->GetPlayerID(), GetCharacterName(), visualData, requestAttributs));
 
 			return hr;
 		}
@@ -438,11 +445,20 @@ namespace SF {
 			{
 				if (pDBRes->RowsetResults.size() > 0)
 				{
-					auto& characterData = pDBRes->RowsetResults[0];
+					m_CharacterDataAll = pDBRes->RowsetResults[0];
+
+					auto& visualData = GetMyOwner()->GetCharacterVisualData();
+					visualData.Clear();
+					visualData.FromBinData(m_CharacterDataAll.GetValueBLOB("VisualData"));
+
+					auto& charData = GetMyOwner()->GetCharacterData();
+					charData.Clear();
+					charData.FromBinData(m_CharacterDataAll.GetValueBLOB("BinData"));
 
 					GetMyOwner()->SetCharacterID(GetCharacterID());
-					svrCheck(GetMyOwner()->SetCharacterVisualData(characterData));
-					svrCheck(GetMyOwner()->SetCharacterData(characterData));
+
+					GetMyOwner()->OnCharacterDataLoaded();
+
 					CloseTransaction(ResultCode::SUCCESS);
 				}
 				else

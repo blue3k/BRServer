@@ -241,13 +241,7 @@ namespace Svr {
 	Result GamePlayerEntity::SetCharacterVisualData(const VariableTable& characterData)
 	{
 		m_CharacterVisualData.Clear();
-
-		auto& visualDataBLOB = characterData.GetValueBLOB("VisualData");
-		if (visualDataBLOB.size() > 0)
-		{
-			InputMemoryStream inStream(visualDataBLOB);
-			inStream >> m_CharacterVisualData;
-		}
+		m_CharacterVisualData = characterData;
 
 		return ResultCode::SUCCESS;
 	}
@@ -255,13 +249,7 @@ namespace Svr {
 	Result GamePlayerEntity::SetCharacterData(const VariableTable& characterData)
 	{
 		m_CharacterData.Clear();
-
-		auto& binData = characterData.GetValueBLOB("BinData");
-		if (binData.size() > 0)
-		{
-			InputMemoryStream inStream(binData);
-			inStream >> m_CharacterData;
-		}
+		m_CharacterData = characterData;
 
 		return ResultCode::SUCCESS;
 	}
@@ -269,7 +257,13 @@ namespace Svr {
 	void GamePlayerEntity::ClearCharacterData()
 	{
 		m_CharacterId = 0;
+		m_CharacterVisualData.Clear();
 		m_CharacterData.Clear();
+	}
+
+	Result GamePlayerEntity::OnCharacterDataLoaded()
+	{
+		return ResultCode::SUCCESS;
 	}
 
 	void GamePlayerEntity::SetMatchingTicket(MatchingQueueTicket ticket)

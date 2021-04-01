@@ -123,6 +123,8 @@ namespace SF {
 		public:
 			using super = Svr::MessageTransaction<GamePlayerEntity, Message::Game::SelectCharacterCmd>;
 
+			VariableTable m_CharacterDataAll;
+
 		public:
 			PlayerTransSelectCharacter(IHeap& heap, const MessageDataPtr& pIMsg);
 
@@ -135,7 +137,7 @@ namespace SF {
 			// Start Transaction
 			virtual Result StartTransaction() override;
 
-			BR_IMPLEMENT_USERMSGTRANS_CLOSE_ARGS(NetSvrPolicyGame, SelectCharacterRes, GetMyOwner()->GetCharacterID(), GetMyOwner()->GetCharacterData());
+			BR_IMPLEMENT_USERMSGTRANS_CLOSE_ARGS(NetSvrPolicyGame, SelectCharacterRes, GetMyOwner()->GetCharacterID(), m_CharacterDataAll);
 		};
 
 

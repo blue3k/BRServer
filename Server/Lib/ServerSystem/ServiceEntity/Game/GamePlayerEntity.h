@@ -184,6 +184,8 @@ namespace Svr {
 		Result SetCharacterData(const VariableTable& characterData);
 		void ClearCharacterData();
 
+		// called after character has loaded
+		virtual Result OnCharacterDataLoaded();
 
 		//////////////////////////////////////////////////////////////////////////////////////////////////
 		//
