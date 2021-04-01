@@ -103,7 +103,7 @@ namespace SF {
 
 			virtual Result CloseTransaction(Result hrRes) override;
 
-			BR_IMPLEMENT_USERMSGTRANS_CLOSE(NetSvrPolicyGame, LeaveGameRes);
+			BR_IMPLEMENT_USERMSGTRANS_CLOSE(NetSvrPolicyGame, LeaveGameInstanceRes);
 		};
 
 

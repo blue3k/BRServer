@@ -195,7 +195,10 @@ namespace SF {
 
 		Result PlayerTransLeaveGameInstance::OnLeaveGameInstanceRes(Svr::TransactionResult* pRes)
 		{
-			Result hr = ResultCode::SUCCESS;
+			ScopeContext hr([this](Result hr)
+				{
+					CloseTransaction(hr);
+				});
 			Svr::MessageResult* pMsgRes = (Svr::MessageResult*)pRes;
 			Message::GameInstance::LeaveGameInstanceRes leaveRes;
 
@@ -207,17 +210,13 @@ namespace SF {
 			}
 			else
 			{
-				svrChkClose(pRes->GetResult());
+				svrCheckClose(pRes->GetResult());
 
-				svrChk(leaveRes.ParseMessage(*pMsgRes->GetMessage()));
+				svrCheck(leaveRes.ParseMessage(*pMsgRes->GetMessage()));
 
 				GetMyOwner()->SetGameInsUID(0);
 				GetMyOwner()->UpdateDBSync();
 			}
-
-		Proc_End:
-
-			CloseTransaction(hr);
 
 			return ResultCode::SUCCESS;
 		}
@@ -232,29 +231,28 @@ namespace SF {
 		// Start Transaction
 		Result PlayerTransLeaveGameInstance::StartTransaction()
 		{
-			Result hr = ResultCode::SUCCESS;
+			ScopeContext hr([this](Result hr)
+				{
+					if (!hr)
+						CloseTransaction(hr);
+				});
 			GameInsUID insUID;
 			NetPolicyGameInstance* pPolicy = nullptr;
 			MessageEndpoint* serverEndpoint{};
 
-			svrChk(super::StartTransaction());
+			svrCheck(super::StartTransaction());
 
 			if (GetMyOwner()->GetPlayerID() != GetPlayerID())
-				svrErr(ResultCode::INVALID_PLAYERID);
+				svrError(ResultCode::INVALID_PLAYERID);
 
 			insUID = GetMyOwner()->GetGameInsUID();
 			if (insUID.UID == 0)
-				svrErrClose(ResultCode::INVALID_INSTANCEID);
+				svrCheckClose(ResultCode::INVALID_INSTANCEID);
 
 			serverEndpoint = Service::MessageEndpointManager->GetEndpoint(insUID);
 
-			svrChk(NetPolicyGameInstance(serverEndpoint).LeaveGameInstanceCmd(
+			svrCheck(NetPolicyGameInstance(serverEndpoint).LeaveGameInstanceCmd(
 				RouteContext(GetOwnerEntityUID(), insUID), GetTransID(), GetMyOwner()->GetPlayerID()));
-
-		Proc_End:
-
-			if (!(hr))
-				CloseTransaction(hr);
 
 			return hr;
 		}
