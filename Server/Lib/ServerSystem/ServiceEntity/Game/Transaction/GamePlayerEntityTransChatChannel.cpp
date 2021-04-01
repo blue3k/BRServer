@@ -23,16 +23,16 @@
 #include "ServerEntity/ServerEntityManager.h"
 
 #include "ServiceEntity/Chat/ChatChannelManagerServiceEntity.h"
-#include "Protocol/ServerService/ChatChannelManagerService.h"
+#include "Protocol/ChatChannelManagerService.h"
 
-#include "Protocol/Message/GameInstanceMsgClass.h"
-#include "Protocol/Policy/GameInstanceNetPolicy.h"
+#include "Protocol/GameInstanceMsgClass.h"
+#include "Protocol/GameInstanceNetPolicy.h"
 
-#include "Protocol/Message/ChatChannelManagerMsgClass.h"
-#include "Protocol/Policy/ChatChannelManagerNetPolicy.h"
+#include "Protocol/ChatChannelManagerMsgClass.h"
+#include "Protocol/ChatChannelManagerNetPolicy.h"
 
-#include "Protocol/Message/ChatChannelMsgClass.h"
-#include "Protocol/Policy/ChatChannelNetPolicy.h"
+#include "Protocol/ChatChannelMsgClass.h"
+#include "Protocol/ChatChannelNetPolicy.h"
 
 #include "GamePlayerEntityTransChatChannel.h"
 #include "ServiceEntity/Game/GamePlayerEntity.h"

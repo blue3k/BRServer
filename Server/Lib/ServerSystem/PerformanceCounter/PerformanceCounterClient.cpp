@@ -16,7 +16,7 @@
 #include "Server/BrServerUtil.h"
 #include "Entity/EntityTable.h"
 #include "Entity/EntityManager.h"
-#include "Protocol/Message/MonitoringMsgClass.h"
+#include "Protocol/MonitoringMsgClass.h"
 #include "PerformanceCounter/PerformanceCounterClient.h"
 #include "Service/ServerService.h"
 

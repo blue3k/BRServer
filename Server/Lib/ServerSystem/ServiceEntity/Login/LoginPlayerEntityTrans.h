@@ -19,10 +19,10 @@
 #include "Types/SFEngineTypedefs.h"
 #include "Net/SFMessage.h"
 
-#include "Protocol/Message/LoginMsgClass.h"
-#include "Protocol/Policy/LoginNetPolicy.h"
-#include "Protocol/Message/LoginServerMsgClass.h"
-#include "Protocol/Policy/LoginServerNetPolicy.h"
+#include "Protocol/LoginMsgClass.h"
+#include "Protocol/LoginNetPolicy.h"
+#include "Protocol/LoginServerMsgClass.h"
+#include "Protocol/LoginServerNetPolicy.h"
 
 #include "Transaction/MessageRoute.h"
 #include "ServerEntity/ServerEntity.h"

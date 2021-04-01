@@ -30,7 +30,7 @@
 #include "Server/BrServer.h"
 #include "ServiceEntity/Game/GameInstancePlayer.h"
 #include "ServiceEntity/Game/GameInstanceMapObject.h"
-#include "Protocol/ServerService/GameInstanceManagerService.h"
+#include "Protocol/GameInstanceManagerService.h"
 #include "ServiceEntity/Game/GameInstanceEntity.h"
 #include "ServiceEntity/Game/Transaction/GameInstanceTrans.h"
 #include "ServiceEntity/Game/GameInstanceManagerServiceEntity.h"

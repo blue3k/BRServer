@@ -22,14 +22,14 @@
 #include "ServiceEntity/Game/GameServiceEntity.h"
 #include "ServiceEntity/Game/GamePlayerEntity.h"
 #include "Transaction/ServerTransaction.h"
-#include "Protocol/Message/GameServerMsgClass.h"
-#include "Protocol/Policy/GameServerNetPolicy.h"
-#include "Protocol/Message/GameMsgClass.h"
-#include "Protocol/Policy/GameNetPolicy.h"
+#include "Protocol/GameServerMsgClass.h"
+#include "Protocol/GameServerNetPolicy.h"
+#include "Protocol/GameMsgClass.h"
+#include "Protocol/GameNetPolicy.h"
 
 // deprecated
-#include "Protocol/Message/ClusterServerMsgClass.h"
-#include "Protocol/Policy/ClusterServerNetPolicy.h"
+#include "Protocol/ClusterServerMsgClass.h"
+#include "Protocol/ClusterServerNetPolicy.h"
 
 namespace SF {
 namespace Svr {

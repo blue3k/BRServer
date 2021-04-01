@@ -23,8 +23,8 @@
 #include "ServiceEntity/Party/GamePartyManagerServiceEntity.h"
 #include "ServerEntity/GenericServerEntity.h"
 
-#include "Protocol/Policy/GameServerNetPolicy.h"
-#include "Protocol/Policy/GameInstanceNetPolicy.h"
+#include "Protocol/GameServerNetPolicy.h"
+#include "Protocol/GameInstanceNetPolicy.h"
 
 #include "Net/SFNetServerPeerTCP.h"
 #include "Net/SFNetSvrDef.h"

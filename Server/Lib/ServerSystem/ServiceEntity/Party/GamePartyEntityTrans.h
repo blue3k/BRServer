@@ -18,15 +18,15 @@
 #include "Types/SFEngineTypedefs.h"
 #include "GameConst.h"
 
-#include "Protocol/Message/GameMsgClass.h"
-#include "Protocol/Policy/GameNetPolicy.h"
-#include "Protocol/Message/GameServerMsgClass.h"
-#include "Protocol/Policy/GameServerNetPolicy.h"
-#include "Protocol/Message/GamePartyMsgClass.h"
-#include "Protocol/Policy/GamePartyNetPolicy.h"
+#include "Protocol/GameMsgClass.h"
+#include "Protocol/GameNetPolicy.h"
+#include "Protocol/GameServerMsgClass.h"
+#include "Protocol/GameServerNetPolicy.h"
+#include "Protocol/GamePartyMsgClass.h"
+#include "Protocol/GamePartyNetPolicy.h"
 
-#include "Protocol/Message/PartyMatchingQueueMsgClass.h"
-#include "Protocol/Message/PartyMatchingMsgClass.h"
+#include "Protocol/PartyMatchingQueueMsgClass.h"
+#include "Protocol/PartyMatchingMsgClass.h"
 
 
 #include "Transaction/MessageRoute.h"

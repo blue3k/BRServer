@@ -36,7 +36,7 @@
 #include "ServerConfig/SFServerConfig.h"
 #include "Service/ServerService.h"
 
-#include "Protocol/Message/LoginServerMsgClass.h"
+#include "Protocol/LoginServerMsgClass.h"
 
 #include "DB/AccountDB.h"
 #include "DB/LoginSessionDB.h"

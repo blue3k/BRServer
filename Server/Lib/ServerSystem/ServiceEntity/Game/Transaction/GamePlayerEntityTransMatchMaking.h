@@ -17,10 +17,10 @@
 #include "Container/SFArray.h"
 #include "Types/SFEngineTypedefs.h"
 #include "GameConst.h"
-#include "Protocol/Message/GameMsgClass.h"
-#include "Protocol/Policy/GameNetPolicy.h"
-#include "Protocol/Message/PartyMatchingMsgClass.h"
-#include "Protocol/Message/PartyMatchingQueueMsgClass.h"
+#include "Protocol/GameMsgClass.h"
+#include "Protocol/GameNetPolicy.h"
+#include "Protocol/PartyMatchingMsgClass.h"
+#include "Protocol/PartyMatchingQueueMsgClass.h"
 
 #include "Transaction/MessageRoute.h"
 

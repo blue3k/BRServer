@@ -1,6 +1,6 @@
 ////////////////////////////////////////////////////////////////////////////////
 // 
-// CopyRight (c) 2013 The Braves
+// CopyRight (c) The Braves
 // 
 // Author : KyungKun Ko
 //
@@ -13,7 +13,7 @@
 #include "ServerSystemPCH.h"
 #include "SFTypedefs.h"
 #include "EntityInformation.h"
-#include "Protocol/ServerService/ServerService.h"
+#include "Protocol/ServerService.h"
 #include "ServerEntity/ServerEntity.h"
 #include "Server/BrServerUtil.h"
 #include "json/json.h"

@@ -26,10 +26,10 @@
 #include "SvrTrace.h"
 #include "Service/ServerService.h"
 #include "Util/SFStringFormat.h"
-#include "Protocol/Message/ClusterServerMsgClass.h"
+#include "Protocol/ClusterServerMsgClass.h"
 #include "ServiceEntity/ClusterServiceTrans.h"
 #include "ServiceEntity/ClusterManagerServiceEntity.h"
-#include "Protocol/ServerService/ClusterServerService.h"
+#include "Protocol/ClusterServerService.h"
 
 
 namespace SF {

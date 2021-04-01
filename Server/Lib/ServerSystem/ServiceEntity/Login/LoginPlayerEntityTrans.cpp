@@ -24,15 +24,15 @@
 #include "Entity/EntityManager.h"
 
 
-#include "Protocol/ServerService/RankingServerService.h"
-#include "Protocol/ServerService/GameServerService.h"
-#include "Protocol/Message/RankingServerMsgClass.h"
+#include "Protocol/RankingServerService.h"
+#include "Protocol/GameServerService.h"
+#include "Protocol/RankingServerMsgClass.h"
 
 
-#include "Protocol/Message/LoginServerMsgClass.h"
-#include "Protocol/Policy/LoginServerNetPolicy.h"
-#include "Protocol/Message/GameServerMsgClass.h"
-#include "Protocol/Policy/GameServerNetPolicy.h"
+#include "Protocol/LoginServerMsgClass.h"
+#include "Protocol/LoginServerNetPolicy.h"
+#include "Protocol/GameServerMsgClass.h"
+#include "Protocol/GameServerNetPolicy.h"
 
 #include "ServiceEntity/Login/LoginPlayerEntityTrans.h"
 #include "ServiceEntity/Login/LoginPlayerEntity.h"

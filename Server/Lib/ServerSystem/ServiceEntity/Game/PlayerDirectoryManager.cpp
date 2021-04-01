@@ -21,12 +21,12 @@
 #include "ServerService/ServerServiceBase.h"
 #include "ServerEntity/ServerEntity.h"
 #include "ServiceEntity/Game/PlayerDirectoryManager.h"
-#include "Protocol/ServerService/ClusterServerService.h"
+#include "Protocol/ClusterServerService.h"
 #include "SvrTrace.h"
 #include "Server/BrServerUtil.h"
 #include "Service/ServerService.h"
 #include "Server/BrServer.h"
-#include "Protocol/Message/LoginServerMsgClass.h"
+#include "Protocol/LoginServerMsgClass.h"
 
 
 

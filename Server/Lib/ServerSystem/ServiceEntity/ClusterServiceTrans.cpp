@@ -16,10 +16,10 @@
 #include "MemoryManager/SFMemoryPool.h"
 #include "Types/BrSvrTypes.h"
 
-#include "Protocol/Message/ClusterServerMsgClass.h"
-#include "Protocol/Policy/ClusterServerNetPolicy.h"
+#include "Protocol/ClusterServerMsgClass.h"
+#include "Protocol/ClusterServerNetPolicy.h"
 
-#include "Protocol/ServerService/ClusterServerService.h"
+#include "Protocol/ClusterServerService.h"
 
 #include "Server/BrServerUtil.h"
 #include "SvrTrace.h"

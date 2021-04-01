@@ -21,11 +21,11 @@
 
 #include "Server/BrServerUtil.h"
 #include "SvrTrace.h"
-#include "Protocol/Message/GameServerMsgClass.h"
-#include "Protocol/Policy/GameServerNetPolicy.h"
-#include "Protocol/Message/ChatChannelMsgClass.h"
-#include "Protocol/Policy/ChatChannelNetPolicy.h"
-#include "Protocol/ServerService/ChatChannelManagerService.h"
+#include "Protocol/GameServerMsgClass.h"
+#include "Protocol/GameServerNetPolicy.h"
+#include "Protocol/ChatChannelMsgClass.h"
+#include "Protocol/ChatChannelNetPolicy.h"
+#include "Protocol/ChatChannelManagerService.h"
 
 #include "ServiceEntity/Chat/ChatChannelManagerServiceEntity.h"
 

@@ -19,45 +19,45 @@
 #include "SvrTrace.h"
 
 
-#include "Protocol/Message/ClusterServerMsgDebug.h"
-#include "Protocol/Message/ClusterServerMsgParsing.h"
+#include "Protocol/ClusterServerMsgDebug.h"
+#include "Protocol/ClusterServerMsgParsing.h"
 
 
-#include "Protocol/Message/GameInstanceManagerMsgDebug.h"
-#include "Protocol/Message/GameInstanceManagerMsgParsing.h"
+#include "Protocol/GameInstanceManagerMsgDebug.h"
+#include "Protocol/GameInstanceManagerMsgParsing.h"
 
-#include "Protocol/Message/GameInstanceMsgDebug.h"
-#include "Protocol/Message/GameInstanceMsgParsing.h"
+#include "Protocol/GameInstanceMsgDebug.h"
+#include "Protocol/GameInstanceMsgParsing.h"
 
-#include "Protocol/Message/GamePartyManagerMsgDebug.h"
-#include "Protocol/Message/GamePartyManagerMsgParsing.h"
+#include "Protocol/GamePartyManagerMsgDebug.h"
+#include "Protocol/GamePartyManagerMsgParsing.h"
 
-#include "Protocol/Message/GamePartyMsgDebug.h"
-#include "Protocol/Message/GamePartyMsgParsing.h"
+#include "Protocol/GamePartyMsgDebug.h"
+#include "Protocol/GamePartyMsgParsing.h"
 
-#include "Protocol/Message/GameServerMsgDebug.h"
-#include "Protocol/Message/GameServerMsgParsing.h"
+#include "Protocol/GameServerMsgDebug.h"
+#include "Protocol/GameServerMsgParsing.h"
 
-#include "Protocol/Message/LoginServerMsgDebug.h"
-#include "Protocol/Message/LoginServerMsgParsing.h"
+#include "Protocol/LoginServerMsgDebug.h"
+#include "Protocol/LoginServerMsgParsing.h"
 
-#include "Protocol/Message/MonitoringMsgDebug.h"
-#include "Protocol/Message/MonitoringMsgParsing.h"
+#include "Protocol/MonitoringMsgDebug.h"
+#include "Protocol/MonitoringMsgParsing.h"
 
-#include "Protocol/Message/PartyMatchingMsgDebug.h"
-#include "Protocol/Message/PartyMatchingMsgParsing.h"
+#include "Protocol/PartyMatchingMsgDebug.h"
+#include "Protocol/PartyMatchingMsgParsing.h"
 
-#include "Protocol/Message/PartyMatchingQueueMsgDebug.h"
-#include "Protocol/Message/PartyMatchingQueueMsgParsing.h"
+#include "Protocol/PartyMatchingQueueMsgDebug.h"
+#include "Protocol/PartyMatchingQueueMsgParsing.h"
 
-#include "Protocol/Message/RankingServerMsgDebug.h"
-#include "Protocol/Message/RankingServerMsgParsing.h"
+#include "Protocol/RankingServerMsgDebug.h"
+#include "Protocol/RankingServerMsgParsing.h"
 
-#include "Protocol/Message/ServerMsgDebug.h"
-#include "Protocol/Message/ServerMsgParsing.h"
+#include "Protocol/ServerMsgDebug.h"
+#include "Protocol/ServerMsgParsing.h"
 
-#include "Protocol/Message/RelayServerMsgDebug.h"
-#include "Protocol/Message/RelayServerMsgParsing.h"
+#include "Protocol/RelayServerMsgDebug.h"
+#include "Protocol/RelayServerMsgParsing.h"
 
 
 namespace SF

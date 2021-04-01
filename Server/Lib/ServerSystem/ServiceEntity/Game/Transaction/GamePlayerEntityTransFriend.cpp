@@ -21,8 +21,8 @@
 #include "SvrTrace.h"
 #include "ServerEntity/ServerEntityManager.h"
 
-#include "Protocol/Message/GameInstanceMsgClass.h"
-#include "Protocol/Policy/GameInstanceNetPolicy.h"
+#include "Protocol/GameInstanceMsgClass.h"
+#include "Protocol/GameInstanceNetPolicy.h"
 
 #include "GamePlayerEntityTransFriend.h"
 #include "ServiceEntity/Game/GamePlayerEntity.h"

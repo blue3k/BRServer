@@ -22,9 +22,9 @@
 #include "ResultCode/SFResultCodeLibrary.h"
 #include "ResultCode/SFResultCodeGame.h"
 
-#include "Protocol/Policy/GameServerNetPolicy.h"
-#include "Protocol/Policy/GameNetPolicy.h"
-#include "Protocol/Message/GameMsgClass.h"
+#include "Protocol/GameServerNetPolicy.h"
+#include "Protocol/GameNetPolicy.h"
+#include "Protocol/GameMsgClass.h"
 
 #include "RelayPlayer.h"
 

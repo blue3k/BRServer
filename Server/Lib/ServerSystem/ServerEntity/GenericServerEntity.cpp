@@ -22,7 +22,7 @@
 #include "ServerEntity/GenericServerEntity.h"
 #include "Transaction/ServerTransactionGeneric.h"
 
-#include "Protocol/Policy/GameServerNetPolicy.h"
+#include "Protocol/GameServerNetPolicy.h"
 
 
 

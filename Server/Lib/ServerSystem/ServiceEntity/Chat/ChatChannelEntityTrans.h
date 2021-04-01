@@ -18,8 +18,8 @@
 #include "Types/SFEngineTypedefs.h"
 #include "GameConst.h"
 
-#include "Protocol/Message/ChatChannelMsgClass.h"
-#include "Protocol/Policy/ChatChannelNetPolicy.h"
+#include "Protocol/ChatChannelMsgClass.h"
+#include "Protocol/ChatChannelNetPolicy.h"
 
 
 

@@ -28,7 +28,7 @@
 #include "Entity/EntityTable.h"
 #include "Net/SFMessage.h"
 #include "Service/ServerService.h"
-#include "Protocol/Policy/ServerNetPolicy.h"
+#include "Protocol/ServerNetPolicy.h"
 #include "MemoryManager/SFIMemoryManager.h"
 
 

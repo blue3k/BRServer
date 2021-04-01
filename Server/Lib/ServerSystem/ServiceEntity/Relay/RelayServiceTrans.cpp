@@ -16,7 +16,7 @@
 #include "Types/SFEngineTypedefs.h"
 #include "GameConst.h"
 
-#include "Protocol/Message/GameInstanceManagerMsgClass.h"
+#include "Protocol/GameInstanceManagerMsgClass.h"
 
 
 #include "Server/BrServerUtil.h"

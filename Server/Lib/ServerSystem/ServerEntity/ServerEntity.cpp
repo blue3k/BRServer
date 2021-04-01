@@ -1,6 +1,6 @@
 ////////////////////////////////////////////////////////////////////////////////
 // 
-// CopyRight (c) 2013 The Braves
+// CopyRight (c) The Braves
 // 
 // Author : KyungKun Ko
 //
@@ -27,7 +27,7 @@
 #include "Server/BrServerUtil.h"
 #include "Entity/EntityManager.h"
 
-#include "Protocol/Policy/ServerNetPolicy.h"
+#include "Protocol/ServerNetPolicy.h"
 
 #include "Service/SFEngineServices.h"
 

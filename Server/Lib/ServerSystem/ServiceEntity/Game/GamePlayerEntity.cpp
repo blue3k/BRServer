@@ -22,10 +22,10 @@
 #include "ResultCode/SFResultCodeGame.h"
 #include "Server/BrServer.h"
 
-#include "Protocol/Policy/GameServerNetPolicy.h"
-#include "Protocol/Policy/GameNetPolicy.h"
-#include "Protocol/Message/GameMsgClass.h"
-#include "Protocol/Message/GameServerMsgClass.h"
+#include "Protocol/GameServerNetPolicy.h"
+#include "Protocol/GameNetPolicy.h"
+#include "Protocol/GameMsgClass.h"
+#include "Protocol/GameServerMsgClass.h"
 
 #include "ServiceEntity/Game/GamePlayerEntity.h"
 #include "ServiceEntity/Game/GameServiceTrans.h"

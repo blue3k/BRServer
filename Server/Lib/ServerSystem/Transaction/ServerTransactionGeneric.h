@@ -18,8 +18,8 @@
 #include "Transaction/Transaction.h"
 #include "ServerEntity/ServerEntityManager.h"
 
-#include "Protocol/Message/ServerMsgClass.h"
-//#include "Protocol/Policy/ServerNetNetPolicy.h"
+#include "Protocol/ServerMsgClass.h"
+//#include "Protocol/ServerNetNetPolicy.h"
 
 
 

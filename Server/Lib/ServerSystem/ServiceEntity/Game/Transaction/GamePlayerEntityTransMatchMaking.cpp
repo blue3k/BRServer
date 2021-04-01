@@ -23,18 +23,18 @@
 #include "ServerEntity/ServerEntityManager.h"
 
 #include "ServiceEntity/Party/GamePartyManagerServiceEntity.h"
-#include "Protocol/ServerService/GamePartyManagerService.h"
+#include "Protocol/GamePartyManagerService.h"
 
-#include "Protocol/Message/GameInstanceMsgClass.h"
-#include "Protocol/Policy/GameInstanceNetPolicy.h"
+#include "Protocol/GameInstanceMsgClass.h"
+#include "Protocol/GameInstanceNetPolicy.h"
 
-#include "Protocol/Message/GamePartyManagerMsgClass.h"
-#include "Protocol/Policy/GamePartyManagerNetPolicy.h"
+#include "Protocol/GamePartyManagerMsgClass.h"
+#include "Protocol/GamePartyManagerNetPolicy.h"
 
-#include "Protocol/Message/GamePartyMsgClass.h"
-#include "Protocol/Policy/GamePartyNetPolicy.h"
+#include "Protocol/GamePartyMsgClass.h"
+#include "Protocol/GamePartyNetPolicy.h"
 
-#include "Protocol/ServerService/PartyMatchingQueueService.h"
+#include "Protocol/PartyMatchingQueueService.h"
 
 #include "GamePlayerEntityTransMatchMaking.h"
 #include "ServiceEntity/Game/GamePlayerEntity.h"

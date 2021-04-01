@@ -23,8 +23,8 @@
 #include "SvrTrace.h"
 #include "Net/SFConnectionUDP.h"
 
-#include "Protocol/Message/LoginMsgClass.h"
-#include "Protocol/Message/GameMsgClass.h"
+#include "Protocol/LoginMsgClass.h"
+#include "Protocol/GameMsgClass.h"
 
 
 namespace SF {

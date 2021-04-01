@@ -17,8 +17,8 @@
 #include "ResultCode/SFResultCodeLibrary.h"
 #include "ResultCode/SFResultCodeGame.h"
 
-#include "Protocol/Policy/GameServerNetPolicy.h"
-#include "Protocol/Policy/GameNetPolicy.h"
+#include "Protocol/GameServerNetPolicy.h"
+#include "Protocol/GameNetPolicy.h"
 
 #include "SvrConst.h"
 #include "SvrTrace.h"

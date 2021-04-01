@@ -13,7 +13,7 @@
 #include "Util/SFTimeUtil.h"
 #include "SvrTrace.h"
 #include "Net/SFNetRawUDP.h"
-#include "Protocol/Message/MonitoringMsgClass.h"
+#include "Protocol/MonitoringMsgClass.h"
 #include "PerformanceCounter/PerformanceCounter.h"
 #include "ServerSystem/PerformanceCounter/PerformanceCounterServer.h"
 

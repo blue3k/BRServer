@@ -16,11 +16,11 @@
 #include "Types/SFEngineTypedefs.h"
 #include "GameConst.h"
 
-#include "Protocol/Policy/GameInstanceNetPolicy.h"
-#include "Protocol/Message/GameInstanceManagerMsgClass.h"
-#include "Protocol/Message/PartyMatchingQueueMsgClass.h"
-#include "Protocol/Policy/PartyMatchingQueueNetPolicy.h"
-#include "Protocol/Policy/PartyMatchingNetPolicy.h"
+#include "Protocol/GameInstanceNetPolicy.h"
+#include "Protocol/GameInstanceManagerMsgClass.h"
+#include "Protocol/PartyMatchingQueueMsgClass.h"
+#include "Protocol/PartyMatchingQueueNetPolicy.h"
+#include "Protocol/PartyMatchingNetPolicy.h"
 
 #include "Server/BrServerUtil.h"
 #include "SvrTrace.h"
@@ -34,8 +34,8 @@
 #include "ServiceEntity/Game/GameInstanceManagerServiceEntity.h"
 
 
-#include "Protocol/ServerService/PartyMatchingQueueService.h"
-#include "Protocol/ServerService/GameInstanceManagerService.h"
+#include "Protocol/PartyMatchingQueueService.h"
+#include "Protocol/GameInstanceManagerService.h"
 
 
 

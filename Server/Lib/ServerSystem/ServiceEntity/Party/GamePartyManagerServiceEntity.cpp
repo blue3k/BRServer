@@ -31,8 +31,8 @@
 
 #include "PerformanceCounter/PerformanceCounterClient.h"
 
-#include "Protocol/Message/GamePartyManagerMsgClass.h"
-#include "Protocol/Message/GamePartyMsgClass.h"
+#include "Protocol/GamePartyManagerMsgClass.h"
+#include "Protocol/GamePartyMsgClass.h"
 
 
 

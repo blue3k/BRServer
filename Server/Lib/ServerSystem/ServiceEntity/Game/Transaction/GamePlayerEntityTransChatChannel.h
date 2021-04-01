@@ -17,12 +17,12 @@
 #include "Container/SFArray.h"
 #include "Types/SFEngineTypedefs.h"
 #include "GameConst.h"
-#include "Protocol/Message/GameMsgClass.h"
-#include "Protocol/Policy/GameNetPolicy.h"
-#include "Protocol/Message/GameServerMsgClass.h"
-#include "Protocol/Policy/GameServerNetPolicy.h"
-#include "Protocol/Message/ChatChannelMsgClass.h"
-#include "Protocol/Policy/ChatChannelNetPolicy.h"
+#include "Protocol/GameMsgClass.h"
+#include "Protocol/GameNetPolicy.h"
+#include "Protocol/GameServerMsgClass.h"
+#include "Protocol/GameServerNetPolicy.h"
+#include "Protocol/ChatChannelMsgClass.h"
+#include "Protocol/ChatChannelNetPolicy.h"
 
 
 #include "Transaction/MessageRoute.h"

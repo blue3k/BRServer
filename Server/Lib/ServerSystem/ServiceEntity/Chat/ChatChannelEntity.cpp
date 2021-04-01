@@ -19,8 +19,8 @@
 #include "ResultCode/SFResultCodeGame.h"
 #include "Net/SFMessage.h"
 
-#include "Protocol/Policy/GameServerNetPolicy.h"
-#include "Protocol/Policy/ChatChannelNetPolicy.h"
+#include "Protocol/GameServerNetPolicy.h"
+#include "Protocol/ChatChannelNetPolicy.h"
 
 #include "Transaction/MessageRoute.h"
 #include "ServiceEntity/Chat/ChatChannelEntity.h"

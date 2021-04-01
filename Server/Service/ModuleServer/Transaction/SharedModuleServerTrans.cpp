@@ -20,8 +20,8 @@
 #include "SharedModuleServerClass.h"
 #include "MemoryManager/SFMemoryPool.h"
 #include "Types/SFEngineTypedefs.h"
-#include "Protocol/Message/GameMsgClass.h"
-#include "Protocol/Policy/GameNetPolicy.h"
+#include "Protocol/GameMsgClass.h"
+#include "Protocol/GameNetPolicy.h"
 
 
 

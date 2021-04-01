@@ -22,14 +22,14 @@
 #include "ResultCode/SFResultCodeLibrary.h"
 #include "ResultCode/SFResultCodeGame.h"
 
-#include "Protocol/Policy/GameServerNetPolicy.h"
-#include "Protocol/Policy/GameNetPolicy.h"
-#include "Protocol/Message/GameMsgClass.h"
+#include "Protocol/GameServerNetPolicy.h"
+#include "Protocol/GameNetPolicy.h"
+#include "Protocol/GameMsgClass.h"
 
-#include "Protocol/Policy/LoginNetPolicy.h"
-#include "Protocol/Message/LoginMsgClass.h"
-#include "Protocol/Policy/LoginServerNetPolicy.h"
-#include "Protocol/Message/LoginServerMsgClass.h"
+#include "Protocol/LoginNetPolicy.h"
+#include "Protocol/LoginMsgClass.h"
+#include "Protocol/LoginServerNetPolicy.h"
+#include "Protocol/LoginServerMsgClass.h"
 
 
 #include "LoginPlayerEntityTrans.h"

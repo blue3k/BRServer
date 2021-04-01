@@ -18,9 +18,9 @@
 #include "Util/SFRandom.h"
 #include "IO/SFFile.h"
 
-#include "Protocol/Message/GameInstanceManagerMsgClass.h"
-#include "Protocol/Message/RankingServerMsgClass.h"
-#include "Protocol/Policy/RankingServerNetPolicy.h"
+#include "Protocol/GameInstanceManagerMsgClass.h"
+#include "Protocol/RankingServerMsgClass.h"
+#include "Protocol/RankingServerNetPolicy.h"
 
 
 #include "Server/BrServerUtil.h"
@@ -32,7 +32,7 @@
 #include "ServiceEntity/RankingServiceEntity.h"
 #include "ServiceEntity/Game/GameInstanceManagerServiceEntity.h"
 
-#include "Protocol/ServerService/GameInstanceManagerService.h"
+#include "Protocol/GameInstanceManagerService.h"
 
 #include "DB/RankingDB.h"
 

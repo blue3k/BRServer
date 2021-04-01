@@ -26,7 +26,7 @@
 #include "SvrTrace.h"
 #include "Types/BrSvrTypes.h"
 #include "MessageHandlerTable.h"
-#include "Protocol/Message/ServerMsgClass.h"
+#include "Protocol/ServerMsgClass.h"
 #include "Task/SFTimerSchedulerAction.h"
 #include "Net/SFConnection.h"
 #include "Server/BrServerUtil.h"

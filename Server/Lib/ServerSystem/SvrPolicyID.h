@@ -32,6 +32,9 @@ namespace SF
 
 		PROTOCOLID_STREAMDB,							// Stream DB policy
 
+		PROTOCOLID_FISHINGGAMESERVER,
+		PROTOCOLID_FISHINGGAMEINSTANCESERVER,
+
 		PROTOCOLID_SVR_SYSTEM		,					// entity server policy
 
 		PROTOCOLID_MAX			,		// Max policy value

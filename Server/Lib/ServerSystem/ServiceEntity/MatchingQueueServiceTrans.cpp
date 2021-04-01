@@ -15,8 +15,8 @@
 #include "MemoryManager/SFMemoryPool.h"
 #include "Types/BrSvrTypes.h"
 
-#include "Protocol/Message/PartyMatchingQueueMsgClass.h"
-#include "Protocol/Policy/PartyMatchingQueueNetPolicy.h"
+#include "Protocol/PartyMatchingQueueMsgClass.h"
+#include "Protocol/PartyMatchingQueueNetPolicy.h"
 
 #include "Server/BrServerUtil.h"
 #include "SvrTrace.h"
@@ -28,7 +28,7 @@
 #include "ServiceEntity/MatchingServiceEntity.h"
 #include "ServiceEntity/MatchingQueueServiceEntity.h"
 
-#include "Protocol/ServerService/PartyMatchingQueueService.h"
+#include "Protocol/PartyMatchingQueueService.h"
 
 
 

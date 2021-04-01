@@ -33,7 +33,7 @@
 #include "Net/SFNetServerTCP.h"
 #include "Net/SFNetServerUDP.h"
 
-#include "Protocol/Message/GameInstanceManagerMsgClass.h"
+#include "Protocol/GameInstanceManagerMsgClass.h"
 #include "PerformanceCounter/PerformanceCounterClient.h"
 #include "Net/SFConnectionAction.h"
 

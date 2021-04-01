@@ -24,8 +24,8 @@
 #include "Util/GlobalUIDGenerator.h"
 #include "ServiceEntity/Relay/RelayPlayer.h"
 #include "Container/SFStaticDoubleLinkedList.h"
-#include "Protocol/Message/PlayInstanceMsgClass.h"
-#include "Protocol/Policy/PlayInstanceNetPolicy.h"
+#include "Protocol/PlayInstanceMsgClass.h"
+#include "Protocol/PlayInstanceNetPolicy.h"
 
 
 namespace SF {

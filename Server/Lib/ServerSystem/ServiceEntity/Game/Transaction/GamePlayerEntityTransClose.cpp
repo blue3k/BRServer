@@ -21,15 +21,15 @@
 #include "SvrTrace.h"
 #include "ServerEntity/ServerEntityManager.h"
 
-#include "Protocol/ServerService/PartyMatchingQueueService.h"
+#include "Protocol/PartyMatchingQueueService.h"
 #include "ServiceEntity/MatchingQueueServiceEntity.h"
 
-#include "Protocol/Message/PartyMatchingQueueMsgClass.h"
+#include "Protocol/PartyMatchingQueueMsgClass.h"
 
-#include "Protocol/Message/GamePartyMsgClass.h"
-#include "Protocol/Policy/GamePartyNetPolicy.h"
-#include "Protocol/Message/GameInstanceMsgClass.h"
-#include "Protocol/Policy/GameInstanceNetPolicy.h"
+#include "Protocol/GamePartyMsgClass.h"
+#include "Protocol/GamePartyNetPolicy.h"
+#include "Protocol/GameInstanceMsgClass.h"
+#include "Protocol/GameInstanceNetPolicy.h"
 
 #include "GamePlayerEntityTransClose.h"
 #include "ServiceEntity/Game/GamePlayerEntity.h"

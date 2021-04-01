@@ -25,15 +25,15 @@
 #include "Transaction/ExternalTransaction.h"
 #include "Transaction/ExternalTransactionManager.h"
 
-#include "Protocol/Policy/LoginServerNetPolicy.h"
-#include "Protocol/Message/LoginServerMsgClass.h"
+#include "Protocol/LoginServerNetPolicy.h"
+#include "Protocol/LoginServerMsgClass.h"
 
-#include "Protocol/Message/GameInstanceMsgClass.h"
-#include "Protocol/Policy/GameInstanceNetPolicy.h"
-#include "Protocol/Message/GamePartyMsgClass.h"
-#include "Protocol/Policy/GamePartyNetPolicy.h"
-#include "Protocol/Message/PartyMatchingQueueMsgClass.h"
-#include "Protocol/Policy/PartyMatchingQueueNetPolicy.h"
+#include "Protocol/GameInstanceMsgClass.h"
+#include "Protocol/GameInstanceNetPolicy.h"
+#include "Protocol/GamePartyMsgClass.h"
+#include "Protocol/GamePartyNetPolicy.h"
+#include "Protocol/PartyMatchingQueueMsgClass.h"
+#include "Protocol/PartyMatchingQueueNetPolicy.h"
 
 #include "GamePlayerEntityTrans.h"
 #include "ServiceEntity/Game/GamePlayerEntity.h"

@@ -31,8 +31,8 @@
 
 #include "PerformanceCounter/PerformanceCounterClient.h"
 
-#include "Protocol/Message/ChatChannelManagerMsgClass.h"
-#include "Protocol/Message/ChatChannelMsgClass.h"
+#include "Protocol/ChatChannelManagerMsgClass.h"
+#include "Protocol/ChatChannelMsgClass.h"
 
 
 

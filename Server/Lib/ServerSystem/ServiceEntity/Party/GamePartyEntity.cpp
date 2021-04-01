@@ -19,8 +19,8 @@
 #include "ResultCode/SFResultCodeGame.h"
 #include "Net/SFMessage.h"
 
-#include "Protocol/Policy/GameServerNetPolicy.h"
-#include "Protocol/Policy/GamePartyNetPolicy.h"
+#include "Protocol/GameServerNetPolicy.h"
+#include "Protocol/GamePartyNetPolicy.h"
 
 #include "Transaction/MessageRoute.h"
 #include "ServiceEntity/Party/GamePartyEntity.h"

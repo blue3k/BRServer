@@ -18,8 +18,8 @@
 #include "Container/SFArray.h"
 #include "Types/SFEngineTypedefs.h"
 #include "GameConst.h"
-#include "Protocol/Message/GameMsgClass.h"
-#include "Protocol/Policy/GameNetPolicy.h"
+#include "Protocol/GameMsgClass.h"
+#include "Protocol/GameNetPolicy.h"
 
 #include "Transaction/MessageRoute.h"
 #include "ServiceEntity/Game/GamePlayerEntity.h"

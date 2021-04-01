@@ -2,21 +2,19 @@
 PROTO_BUILD=../../../StormForge/Bin/SFProtocolCompiler.exe
 
 
-OUTPUT_PATH=../../Server/Lib/ServerProtocol/Message
+
 OUTPUT_DOC_PATH=../../Doc/Protocol
 OUTPUT_SHARPCPP_PATH=../../Src/SFEngineDLL/Sharp
 OUTPUT_SHARP_PATH=../../Src/SFEngineDLL/Sharp
+
+OUTPUT_PATH=../../Server/Lib/ServerProtocol/Protocol
 OUTPUT_CPP_PATH=$(OUTPUT_PATH)
 
-
-OUTPUT_PATH=../../Server/Lib/ServerProtocol/Protocol/Message
-OUTPUT_CPP_PATH=$(OUTPUT_PATH)
-OUTPUT_CPP_SERVERSYSTEM_PATH=../../Server/Lib/ServerSystem/ServerService
 
 
 PROTO_BUILD_PARAM_CPP=+outCPP=$(OUTPUT_CPP_PATH) +pch=ServerProtocolPCH.h +LogFuncPrefix=protocolTrace\( +gen=MessageClassBuilder  +gen=MessageParsingMapBuilder  +gen=MessageDebugBuilder 
-PROTO_BUILD_PARAM_CPP_POLICY=+outCPP=../../Server/Lib/ServerProtocol/Protocol/Policy +pch=ServerProtocolPCH.h +LogFuncPrefix=protocolTrace\( +gen=MessageNetPolicyBuilder
-PROTO_BUILD_PARAM_CPP_SERVERSERVICE=+outCPP=../../Server/Lib/ServerProtocol/Protocol/ServerService +pch=ServerProtocolPCH.h +LogFuncPrefix=protocolTrace\( +gen=MessageServerServiceBuilder
+PROTO_BUILD_PARAM_CPP_POLICY=+outCPP=../../Server/Lib/ServerProtocol/Protocol +pch=ServerProtocolPCH.h +LogFuncPrefix=protocolTrace\( +gen=MessageNetPolicyBuilder
+PROTO_BUILD_PARAM_CPP_SERVERSERVICE=+outCPP=../../Server/Lib/ServerProtocol/Protocol +pch=ServerProtocolPCH.h +LogFuncPrefix=protocolTrace\( +gen=MessageServerServiceBuilder
 PROTO_BUILD_PARAM_DOC=+out=$(OUTPUT_DOC_PATH) +gen=MessageGithubDocBuilder
 
 

@@ -18,8 +18,8 @@
 #include "Types/SFEngineTypedefs.h"
 #include "GameConst.h"
 #include "Net/SFMessage.h"
-#include "Protocol/Message/ClusterServerMsgClass.h"
-#include "Protocol/Policy/ClusterServerNetPolicy.h"
+#include "Protocol/ClusterServerMsgClass.h"
+#include "Protocol/ClusterServerNetPolicy.h"
 #include "Transaction/MessageRoute.h"
 #include "ServiceEntity/ClusteredServiceEntity.h"
 

@@ -23,8 +23,8 @@
 #include "SvrTrace.h"
 #include "Server/BrServerUtil.h"
 
-#include "Protocol/Policy/GameInstanceNetPolicy.h"
-#include "Protocol/Policy/GameNetPolicy.h"
+#include "Protocol/GameInstanceNetPolicy.h"
+#include "Protocol/GameNetPolicy.h"
 
 #include "ServiceEntity/Game/Subsystem/UserNotificationSystem.h"
 

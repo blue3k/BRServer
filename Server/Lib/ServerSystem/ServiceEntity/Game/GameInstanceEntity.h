@@ -27,9 +27,9 @@
 #include "ServiceEntity/Game/GameSystem.h"
 #include "ServiceEntity/Game/GameInstancePlayer.h"
 
-#include "Protocol/Policy/GameServerNetPolicy.h"
-#include "Protocol/Policy/GameInstanceNetPolicy.h"
-#include "Protocol/Policy/PlayInstanceNetPolicy.h"
+#include "Protocol/GameServerNetPolicy.h"
+#include "Protocol/GameInstanceNetPolicy.h"
+#include "Protocol/PlayInstanceNetPolicy.h"
 
 
 

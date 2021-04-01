@@ -31,9 +31,9 @@
 #include "Service/ServerService.h"
 #include "Util/SFRandom.h"
 
-#include "Protocol/Message/GameInstanceManagerMsgClass.h"
+#include "Protocol/GameInstanceManagerMsgClass.h"
 #include "PerformanceCounter/PerformanceCounterClient.h"
-#include "Protocol/ServerService/GameInstanceManagerService.h"
+#include "Protocol/GameInstanceManagerService.h"
 
 
 namespace SF {

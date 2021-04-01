@@ -16,9 +16,9 @@
 #include "Types/SFEngineTypedefs.h"
 #include "GameConst.h"
 
-#include "Protocol/Message/GameInstanceManagerMsgClass.h"
-#include "Protocol/Message/GameMsgClass.h"
-#include "Protocol/Policy/GameNetPolicy.h"
+#include "Protocol/GameInstanceManagerMsgClass.h"
+#include "Protocol/GameMsgClass.h"
+#include "Protocol/GameNetPolicy.h"
 
 #include "Net/SFNetServerUDP.h"
 #include "Server/BrServerUtil.h"

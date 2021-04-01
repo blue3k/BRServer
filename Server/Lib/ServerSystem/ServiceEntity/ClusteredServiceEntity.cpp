@@ -23,11 +23,11 @@
 #include "ServerEntity/ServerEntityManager.h"
 #include "ServiceEntity/ClusteredServiceEntity.h"
 #include "ServiceEntity/ClusterServiceTrans.h"
-#include "Protocol/ServerService/ClusterServerService.h"
+#include "Protocol/ClusterServerService.h"
 #include "SvrTrace.h"
 #include "Server/BrServer.h"
 #include "ServerConfig/SFServerConfig.h"
-#include "Protocol/Policy/ClusterServerNetPolicy.h"
+#include "Protocol/ClusterServerNetPolicy.h"
 
 
 

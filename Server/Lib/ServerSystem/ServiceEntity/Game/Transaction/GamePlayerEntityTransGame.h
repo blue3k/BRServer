@@ -19,12 +19,12 @@
 #include "GameConst.h"
 #include "Net/SFMessage.h"
 
-#include "Protocol/Message/GameMsgClass.h"
-#include "Protocol/Policy/GameNetPolicy.h"
-#include "Protocol/Message/GameInstanceMsgClass.h"
-#include "Protocol/Policy/GameInstanceNetPolicy.h"
-#include "Protocol/Message/PartyMatchingQueueMsgClass.h"
-#include "Protocol/Policy/PartyMatchingQueueNetPolicy.h"
+#include "Protocol/GameMsgClass.h"
+#include "Protocol/GameNetPolicy.h"
+#include "Protocol/GameInstanceMsgClass.h"
+#include "Protocol/GameInstanceNetPolicy.h"
+#include "Protocol/PartyMatchingQueueMsgClass.h"
+#include "Protocol/PartyMatchingQueueNetPolicy.h"
 
 #include "Transaction/MessageRoute.h"
 
