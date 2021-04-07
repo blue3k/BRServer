@@ -61,7 +61,7 @@ namespace Svr {
 	PlayerTransGameMatchedS2SEvt::PlayerTransGameMatchedS2SEvt(IHeap& heap, const MessageDataPtr &pIMsg)
 	  : UserTransactionS2SEvt( heap, pIMsg )
 	{
-		BR_TRANS_MESSAGE( Message::GameInstance::JoinGameRes, { return OnJoinGameRes(pRes); } );
+		BR_TRANS_MESSAGE( Message::GameInstance::JoinGameInstanceRes, { return OnJoinGameRes(pRes); } );
 		// TODO: FIXME
 		//BR_TRANS_MESSAGE( DB::QueryUpdateJoinGameCmd, { return OnUpdateDBRes(pRes); } );
 		BR_TRANS_MESSAGE(Message::GameParty::LeavePartyRes, { return OnLeavePartyRes(pRes); });
@@ -75,7 +75,7 @@ namespace Svr {
 					CloseTransaction(hr);
 			});
 		Svr::MessageResult *pMsgRes = (Svr::MessageResult*)pRes;
-		Message::GameInstance::JoinGameRes joinRes;
+		Message::GameInstance::JoinGameInstanceRes joinRes;
 
 		if( !(pRes->GetResult()) )
 		{
@@ -93,9 +93,12 @@ namespace Svr {
 		// Consume cost
 		m_WaitingQueires = 0;
 
-		NetSvrPolicyGame(GetMyOwner()->GetConnection()->GetMessageEndpoint()).GameMatchedS2CEvt(GetGameInsUID(), joinRes.GetTimeStamp(), joinRes.GetGameState(), joinRes.GetDay(), joinRes.GetMaxPlayer(),
-			joinRes.GetPlayerIndex(), joinRes.GetPlayerCharacter(), joinRes.GetRole(), joinRes.GetDead(),
-			joinRes.GetChatHistoryData(), joinRes.GetGameLogData(),
+
+		// FIXME: 
+		NetSvrPolicyGame(GetMyOwner()->GetConnection()->GetMessageEndpoint()).GameMatchedS2CEvt(GetGameInsUID(), joinRes.GetTimeStamp(), 
+			0, 0, 10000,
+			0, {}, 0, 0,
+			{}, {},
 			0, 0, 0
 			/*pPlayerInfoSystem->GetStamina(), pPlayerInfoSystem->GetGem(), pPlayerInfoSystem->GetGameMoney()*/);
 
@@ -103,7 +106,6 @@ namespace Svr {
 		if (GetMyOwner()->GetPartyUID().UID != 0)
 		{
 			auto serverEndpoint = Service::MessageEndpointManager->GetEndpoint(GetMyOwner()->GetPartyUID());
-			//svrCheck(Service::ServerEntityManager->GetServerEntity(GetMyOwner()->GetPartyUID().GetServerID(), pServerEntity));
 
 			svrCheck(NetPolicyGameParty(serverEndpoint).LeavePartyCmd(RouteContext(GetOwnerEntityUID(), GetMyOwner()->GetPartyUID()), GetTransID(), GetMyOwner()->GetPlayerID()) );
 
@@ -190,8 +192,8 @@ namespace Svr {
 		insUID = GetGameInsUID();
 
 		auto serverEndpoint = Service::MessageEndpointManager->GetEndpoint(insUID);
-		svrCheck(NetPolicyGameInstance(serverEndpoint).JoinGameCmd( RouteContext(GetOwnerEntityUID(),insUID), GetTransID(),
-			GetMyOwner()->GetPlayerInformation(), GetRequestedRole()));
+		svrCheck(NetPolicyGameInstance(serverEndpoint).JoinGameInstanceCmd( RouteContext(GetOwnerEntityUID(),insUID), GetTransID(),
+			GetMyOwner()->GetPlayerInformation(), GetMyOwner()->GetCharacterVisualData(), GetMyOwner()->GetCharacterData()));
 
 		return ResultCode::SUCCESS;
 	}

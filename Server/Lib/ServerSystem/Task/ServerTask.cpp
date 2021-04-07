@@ -79,7 +79,6 @@ namespace SF {
 		m_TimerAction->SetNextTickTime(newTime);
 	}
 
-
 	void TickTask::OnAddedToTaskManager(TaskWorker *pWorker)
 	{
 		Assert(pWorker);

@@ -339,9 +339,11 @@ namespace SF {
 						NetSvrPolicyPlayInstance policy(pPlayer->GetRemoteEndpoint());
 						policy.NewPlayerInViewS2CEvt(GetEntityUID(), pJoinedPlayer->GetPlayerID(), pJoinedPlayer->GetCharacterVisual());
 
+						NetSvrPolicyPlayInstance policyJoined(pJoinedPlayer->GetRemoteEndpoint());
+						policyJoined.NewPlayerInViewS2CEvt(GetEntityUID(), pPlayer->GetPlayerID(), pPlayer->GetCharacterVisual());
+
 						return true;
 					});
-
 			}
 		}
 

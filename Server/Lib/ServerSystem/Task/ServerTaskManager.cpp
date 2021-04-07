@@ -375,7 +375,7 @@ namespace SF {
 			return ResultCode::SVR_INVALID_TASK_GROUPID;
 		}
 
-		svrCheck(m_TaskGroups[groupID - 1]->AddTaskFunction(std::forward<std::function<void()>>(pTaskFunction)));
+		svrCheck(m_TaskGroups[groupID - 1]->AddTaskFunction(Forward<std::function<void()>>(pTaskFunction)));
 
 		return hr;
 	}

@@ -99,7 +99,6 @@ namespace SF {
 		TimeStampMS GetScheduledTickTime() const;
 		void SetNextScheduledTickTime(TimeStampMS tickNext);
 
-
 		// retry count
 		inline uint GetRetryCount() const										{ return m_RetryCount;  }
 		inline void ResetRetryCount()											{ m_RetryCount = 0; }
