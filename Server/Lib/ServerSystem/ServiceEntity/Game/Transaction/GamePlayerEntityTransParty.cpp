@@ -96,7 +96,7 @@ namespace Svr {
 
 		// FIXME: 
 		NetSvrPolicyGame(GetMyOwner()->GetConnection()->GetMessageEndpoint()).GameMatchedS2CEvt(GetGameInsUID(), joinRes.GetTimeStamp(), 
-			0, 0, 10000,
+			0, 0, 100,
 			0, {}, 0, 0,
 			{}, {},
 			0, 0, 0
