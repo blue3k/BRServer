@@ -76,7 +76,43 @@ namespace Svr
 		m_pConnection = Forward<SharedPointerT<Net::Connection>>(pConn);
 		if (m_pConnection != nullptr)
 		{
-			m_pConnection->SetEventHandler(this);
+			m_pConnection->SetEventHandler(this); // TODO: Handle Net ready
+
+			WeakPointerT<SimpleUserEntity> pThisWeak = AsSharedPtr<SimpleUserEntity>();
+			m_pConnection->GetRecvMessageDelegates().AddDelegateUnique(uintptr_t(this), [pThisWeak, pTaskManager = GetTaskManager(), TaskGroupId = GetTaskGroupID()](Net::Connection* pConn, const SharedPointerT<Message::MessageData>& pMsg)
+				{
+					pTaskManager->RunOnTaskThread(TaskGroupId, [pThisWeak, pMsg = pMsg, pEndpoint = pConn->GetMessageEndpoint()]()
+					{
+						auto pThis = pThisWeak.AsSharedPtr<SimpleUserEntity>();
+						if (pThis != nullptr)
+						{
+							pThis->ProcessMessage(pEndpoint, pMsg);
+						}
+					});
+				});
+
+			m_pConnection->GetNetSyncMessageDelegates().AddDelegateUnique(uintptr_t(this), [pTaskManager = GetTaskManager(), TaskGroupId = GetTaskGroupID()](Net::Connection* pConn)
+			{
+				pTaskManager->RunOnTaskThread(TaskGroupId, [pConn = pConn->AsSharedPtr<Net::Connection>()]()
+				{
+					if (pConn != nullptr)
+					{
+						pConn->UpdateSendQueue();
+					}
+				});
+			});
+
+			m_pConnection->GetConnectionEventDelegates().AddDelegateUnique(uintptr_t(this), [pThisWeak, pTaskManager = GetTaskManager(), TaskGroupId = GetTaskGroupID()](Net::Connection* pConn, const ConnectionEvent& EventData)
+			{
+				pTaskManager->RunOnTaskThread(TaskGroupId, [pThisWeak, EventData = EventData]()
+				{
+					auto pThis = pThisWeak.AsSharedPtr<SimpleUserEntity>();
+					if (pThis != nullptr)
+					{
+						pThis->ProcessConnectionEvent(EventData);
+					}
+				});
+			});
 
 			//// purge received guaranteed messages
 			//MessageDataPtr temp;
@@ -97,11 +133,12 @@ namespace Svr
 		if( m_pConnection == nullptr )
 			return;
 
+		m_pConnection->GetRecvMessageDelegates().RemoveDelegateAll();
 		m_pConnection->SetEventHandler(nullptr);
 		SharedPointerT<Net::Connection> temp(m_pConnection);
 		Service::ConnectionManager->RemoveConnection(temp);
 		m_pConnection->DisconnectNRelease(reason);
-		m_pConnection = SharedPointerT<Net::Connection>();
+		m_pConnection.reset();
 	}
 
 
@@ -334,40 +371,40 @@ namespace Svr
 
 	//////////////////////////////////////////////////////////////////////////////////////////////
 	// Overriding IConnectionEventHandler
-	void SimpleUserEntity::OnConnectionEvent(Net::Connection* pConn, const Net::ConnectionEvent& evt)
-	{
-		Assert(pConn != nullptr);
-		Assert(evt.Components.EventType != Net::ConnectionEvent::EventTypes::EVT_NONE);
-		// this one is free to call on other thread
-		ProcessConnectionEvent(evt);
-	}
+	//void SimpleUserEntity::OnConnectionEvent(Net::Connection* pConn, const Net::ConnectionEvent& evt)
+	//{
+	//	Assert(pConn != nullptr);
+	//	Assert(evt.Components.EventType != Net::ConnectionEvent::EventTypes::EVT_NONE);
+	//	// this one is free to call on other thread
+	//	ProcessConnectionEvent(evt);
+	//}
 
-	Result SimpleUserEntity::OnRecvMessage(Net::Connection* pConn, MessageDataPtr& pMsg)
-	{
-		WeakPointerT<SimpleUserEntity> pThisWeak = AsSharedPtr<SimpleUserEntity>();
-		return GetTaskManager()->RunOnTaskThread(GetTaskGroupID(), [pThisWeak, pMsg = pMsg, pEndpoint = pConn->GetMessageEndpoint()]()
-			{
-				auto pThis = pThisWeak.AsSharedPtr<SimpleUserEntity>();
-				if (pThis != nullptr)
-				{
-					pThis->ProcessMessage(pEndpoint, pMsg);
-				}
-			});
-	}
+	//Result SimpleUserEntity::OnRecvMessage(Net::Connection* pConn, MessageDataPtr& pMsg)
+	//{
+	//	WeakPointerT<SimpleUserEntity> pThisWeak = AsSharedPtr<SimpleUserEntity>();
+	//	return GetTaskManager()->RunOnTaskThread(GetTaskGroupID(), [pThisWeak, pMsg = pMsg, pEndpoint = pConn->GetMessageEndpoint()]()
+	//		{
+	//			auto pThis = pThisWeak.AsSharedPtr<SimpleUserEntity>();
+	//			if (pThis != nullptr)
+	//			{
+	//				pThis->ProcessMessage(pEndpoint, pMsg);
+	//			}
+	//		});
+	//}
 
-	Result SimpleUserEntity::OnNetSyncMessage(Net::Connection* pConn)
-	{
-		if (pConn == nullptr)
-			return ResultCode::INVALID_POINTER;
+	//Result SimpleUserEntity::OnNetSyncMessage(Net::Connection* pConn)
+	//{
+	//	if (pConn == nullptr)
+	//		return ResultCode::INVALID_POINTER;
 
-		return GetTaskManager()->RunOnTaskThread(GetTaskGroupID(), [pConn = pConn->AsSharedPtr<Net::Connection>()]()
-		{
-			if (pConn != nullptr)
-			{
-				pConn->UpdateSendQueue();
-			}
-		});
-	}
+	//	return GetTaskManager()->RunOnTaskThread(GetTaskGroupID(), [pConn = pConn->AsSharedPtr<Net::Connection>()]()
+	//	{
+	//		if (pConn != nullptr)
+	//		{
+	//			pConn->UpdateSendQueue();
+	//		}
+	//	});
+	//}
 
 	Result SimpleUserEntity::OnNetSendReadyMessage(Net::Connection* pConn)
 	{

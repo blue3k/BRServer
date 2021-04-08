@@ -136,9 +136,9 @@ namespace SF {
 
 			//////////////////////////////////////////////////////////////////////////////////////////////
 			// Overriding IConnectionEventHandler
-			virtual void OnConnectionEvent(Net::Connection* pConn, const Net::ConnectionEvent& evt) override;
-			virtual Result OnRecvMessage(Net::Connection* pConn, MessageDataPtr& pMsg) override;
-			virtual Result OnNetSyncMessage(Net::Connection* pConn) override;
+			//virtual void OnConnectionEvent(Net::Connection* pConn, const Net::ConnectionEvent& evt) override;
+			//virtual Result OnRecvMessage(Net::Connection* pConn, MessageDataPtr& pMsg) override;
+			//virtual Result OnNetSyncMessage(Net::Connection* pConn) override;
 			virtual Result OnNetSendReadyMessage(Net::Connection* pConn) override;
 
 		};
