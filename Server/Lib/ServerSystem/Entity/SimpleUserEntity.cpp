@@ -77,6 +77,7 @@ namespace Svr
 		if (m_pConnection != nullptr)
 		{
 			//m_pConnection->SetEventHandler(this);
+			m_pConnection->SetEventFireMode(Net::Connection::EventFireMode::Immediate);
 
 			WeakPointerT<SimpleUserEntity> pThisWeak = AsSharedPtr<SimpleUserEntity>();
 			m_pConnection->GetRecvMessageDelegates().AddDelegateUnique(uintptr_t(this), [pThisWeak, pTaskManager = GetTaskManager(), TaskGroupId = GetTaskGroupID()](Net::Connection* pConn, const SharedPointerT<Message::MessageData>& pMsg)
@@ -87,6 +88,7 @@ namespace Svr
 						if (pThis != nullptr)
 						{
 							pThis->ProcessMessage(pEndpoint, pMsg);
+							pThis->KickTickUpdate();
 						}
 					});
 				});
@@ -110,6 +112,7 @@ namespace Svr
 					if (pThis != nullptr)
 					{
 						pThis->ProcessConnectionEvent(EventData);
+						pThis->KickTickUpdate();
 					}
 				});
 			});

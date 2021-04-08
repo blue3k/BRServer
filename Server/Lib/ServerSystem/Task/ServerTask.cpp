@@ -79,6 +79,13 @@ namespace SF {
 		m_TimerAction->SetNextTickTime(newTime);
 	}
 
+	void TickTask::KickTickUpdate()
+	{
+		SetNextScheduledTickTime(Util::Time.GetRawTimeMs());
+		if (GetTaskWorker())
+			GetTaskWorker()->GetTimeScheduler().KickTickUpdate(m_TimerAction.get());
+	}
+
 	void TickTask::OnAddedToTaskManager(TaskWorker *pWorker)
 	{
 		Assert(pWorker);

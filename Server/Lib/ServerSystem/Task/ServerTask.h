@@ -99,6 +99,9 @@ namespace SF {
 		TimeStampMS GetScheduledTickTime() const;
 		void SetNextScheduledTickTime(TimeStampMS tickNext);
 
+		// Kick the task so that it updated asap
+		void KickTickUpdate();
+
 		// retry count
 		inline uint GetRetryCount() const										{ return m_RetryCount;  }
 		inline void ResetRetryCount()											{ m_RetryCount = 0; }
