@@ -17,7 +17,6 @@ using ::testing::UnitTest;
 using namespace ::SF;
 
 
-namespace BRTest{
 
 // --gtest_catch_exceptions=0 --gtest_break_on_failure to disable exception catch and stop on failure
 //	--gtest_filter = ThreadTest.EntityTaskManager --gtest_catch_exceptions=0
@@ -30,6 +29,5 @@ namespace BRTest{
 
 
 
-};
 
 

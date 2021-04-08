@@ -9,6 +9,8 @@ set(SF_UNIT_TEST_FILES
 	TestBase.h
     DBTest.cpp
 	DBTest.h
+    UnitTest_Avro.cpp
+	UnitTest_Avro.h
 	UnitTestPch.h
   )
 
