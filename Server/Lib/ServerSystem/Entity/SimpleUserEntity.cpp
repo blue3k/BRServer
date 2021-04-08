@@ -76,7 +76,7 @@ namespace Svr
 		m_pConnection = Forward<SharedPointerT<Net::Connection>>(pConn);
 		if (m_pConnection != nullptr)
 		{
-			m_pConnection->SetEventHandler(this); // TODO: Handle Net ready
+			//m_pConnection->SetEventHandler(this);
 
 			WeakPointerT<SimpleUserEntity> pThisWeak = AsSharedPtr<SimpleUserEntity>();
 			m_pConnection->GetRecvMessageDelegates().AddDelegateUnique(uintptr_t(this), [pThisWeak, pTaskManager = GetTaskManager(), TaskGroupId = GetTaskGroupID()](Net::Connection* pConn, const SharedPointerT<Message::MessageData>& pMsg)
