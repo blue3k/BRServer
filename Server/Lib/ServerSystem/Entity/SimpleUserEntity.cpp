@@ -102,7 +102,7 @@ namespace Svr
 				});
 			});
 
-			m_pConnection->GetConnectionEventDelegates().AddDelegateUnique(uintptr_t(this), [pThisWeak, pTaskManager = GetTaskManager(), TaskGroupId = GetTaskGroupID()](Net::Connection* pConn, const ConnectionEvent& EventData)
+			m_pConnection->GetConnectionEventDelegates().AddDelegateUnique(uintptr_t(this), [pThisWeak, pTaskManager = GetTaskManager(), TaskGroupId = GetTaskGroupID()](Net::Connection* pConn, const Net::ConnectionEvent& EventData)
 			{
 				pTaskManager->RunOnTaskThread(TaskGroupId, [pThisWeak, EventData = EventData]()
 				{
