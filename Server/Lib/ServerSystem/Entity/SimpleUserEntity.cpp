@@ -80,9 +80,16 @@ namespace Svr
 			m_pConnection->SetEventFireMode(Net::Connection::EventFireMode::Immediate);
 
 			WeakPointerT<SimpleUserEntity> pThisWeak = AsSharedPtr<SimpleUserEntity>();
-			m_pConnection->GetRecvMessageDelegates().AddDelegateUnique(uintptr_t(this), [pThisWeak, pTaskManager = GetTaskManager(), TaskGroupId = GetTaskGroupID()](Net::Connection* pConn, const SharedPointerT<Message::MessageData>& pMsg)
+			m_pConnection->GetRecvMessageDelegates().AddDelegateUnique(uintptr_t(this), [pThisWeak](Net::Connection* pConn, const SharedPointerT<Message::MessageData>& pMsg)
 				{
-					pTaskManager->RunOnTaskThread(TaskGroupId, [pThisWeak, pMsg = pMsg, pEndpoint = pConn->GetMessageEndpoint()]()
+					auto pThis = pThisWeak.AsSharedPtr<SimpleUserEntity>();
+					if (pThis == nullptr)
+						return;
+
+					if (pThis->GetTaskManager() == nullptr)
+						return;
+
+					pThis->GetTaskManager()->RunOnTaskThread(pThis->GetTaskGroupID(), [pThisWeak, pMsg = pMsg, pEndpoint = pConn->GetMessageEndpoint()]()
 					{
 						auto pThis = pThisWeak.AsSharedPtr<SimpleUserEntity>();
 						if (pThis != nullptr)
@@ -93,9 +100,16 @@ namespace Svr
 					});
 				});
 
-			m_pConnection->GetNetSyncMessageDelegates().AddDelegateUnique(uintptr_t(this), [pTaskManager = GetTaskManager(), TaskGroupId = GetTaskGroupID()](Net::Connection* pConn)
+			m_pConnection->GetNetSyncMessageDelegates().AddDelegateUnique(uintptr_t(this), [pThisWeak](Net::Connection* pConn)
 			{
-				pTaskManager->RunOnTaskThread(TaskGroupId, [pConn = pConn->AsSharedPtr<Net::Connection>()]()
+				auto pThis = pThisWeak.AsSharedPtr<SimpleUserEntity>();
+				if (pThis == nullptr)
+					return;
+
+				if (pThis->GetTaskManager() == nullptr)
+					return;
+
+				pThis->GetTaskManager()->RunOnTaskThread(pThis->GetTaskGroupID(), [pConn = pConn->AsSharedPtr<Net::Connection>()]()
 				{
 					if (pConn != nullptr)
 					{
@@ -104,9 +118,16 @@ namespace Svr
 				});
 			});
 
-			m_pConnection->GetConnectionEventDelegates().AddDelegateUnique(uintptr_t(this), [pThisWeak, pTaskManager = GetTaskManager(), TaskGroupId = GetTaskGroupID()](Net::Connection* pConn, const Net::ConnectionEvent& EventData)
+			m_pConnection->GetConnectionEventDelegates().AddDelegateUnique(uintptr_t(this), [pThisWeak](Net::Connection* pConn, const Net::ConnectionEvent& EventData)
 			{
-				pTaskManager->RunOnTaskThread(TaskGroupId, [pThisWeak, EventData = EventData]()
+				auto pThis = pThisWeak.AsSharedPtr<SimpleUserEntity>();
+				if (pThis == nullptr)
+					return;
+
+				if (pThis->GetTaskManager() == nullptr)
+					return;
+
+				pThis->GetTaskManager()->RunOnTaskThread(pThis->GetTaskGroupID(), [pThisWeak, EventData = EventData]()
 				{
 					auto pThis = pThisWeak.AsSharedPtr<SimpleUserEntity>();
 					if (pThis != nullptr)
