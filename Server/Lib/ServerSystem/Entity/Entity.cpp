@@ -370,10 +370,9 @@ namespace Svr
 		pTrans->SetOwnerEntity( this );
 		pTrans->SetTransID( TransactionID( (uint32_t)GetEntityID(), (uint)GenTransIndex() ) ); 
 
-		svrChk( m_transactionQueue.Enqueue(pTrans) );
+		svrCheck( m_transactionQueue.Enqueue(pTrans) );
 
 		pTrans = nullptr;
-
 		{
 			// poke tick
 			auto pTimerAction = GetTimerAction();
@@ -393,22 +392,10 @@ namespace Svr
 			{
 				// We can't reschedule here, just poke it
 				// And a error can be happened during initialization, they will be rescheduled
-				// TODO: find better way
-				WeakPointerT<Entity> pThisWeak = AsSharedPtr<Entity>();
-				return GetTaskManager()->RunOnTaskThread(GetTaskGroupID(), [pThisWeak]()
-					{
-						auto pThis = pThisWeak.AsSharedPtr<Entity>();
-						if (pThis != nullptr)
-						{
-							pThis->TickUpdate();
-						}
-					});
+				if (GetTaskGroupID() > 0) // If the instance is in standalone mode(not belong to working group). we don't need to poke the update
+					KickTickUpdate();
 			}
 		}
-
-	Proc_End:
-
-		ReleaseTransaction(pTrans);
 
 		return hr;
 	}
