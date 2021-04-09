@@ -385,7 +385,7 @@ namespace Svr
 				if (pTimerAction->GetScheduledTime() == TimeStampMS::max() || Util::TimeSince(pTimerAction->GetScheduledTime()) <= DurationMS(0)) // next time this entity will tick
 				{
 					SetNextScheduledTickTime(Util::Time.GetTimeMs());
-					if (pTimerAction->GetScheduledTime() != TimeStampMS::max()) // Don't push when it isn't shceduled yet
+					if (pTimerAction->GetScheduledTime() != TimeStampMS::max()) // Don't push when it isn't scheduled yet
 						pWorker->GetTimeScheduler().Reschedul(thisThreadID, pTimerAction);
 				}
 			}

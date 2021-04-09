@@ -991,7 +991,7 @@ namespace SF {
 
 		pServiceInfo = Forward<SharedPointerT<ServerServiceInformation>>(pClusterServiceInfo->GetRandomService());
 
-		return hr;
+		return pServiceInfo != nullptr ? ResultCode::SUCCESS : ResultCode::SERVICE_NOT_AVAILABLE;
 	}
 
 
