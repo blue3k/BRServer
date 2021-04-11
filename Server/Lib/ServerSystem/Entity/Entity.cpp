@@ -311,9 +311,9 @@ namespace Svr
 		auto pMySvr = BrServer::GetInstance();
 		TransactionPtr pTransaction;
 
-		svrChkPtr(pMySvr);
-		svrMem( pMsgRes = new(GetHeap()) MessageResult );
-		svrChk( pMsgRes->SetMessage( pMsg ) );
+		svrCheckPtr(pMySvr);
+		svrCheckMem( pMsgRes = new(GetHeap()) MessageResult );
+		svrCheck( pMsgRes->SetMessage( pMsg ) );
 
 		pTransRes.reset(pMsgRes);
 		pMsgRes = nullptr;
@@ -321,25 +321,22 @@ namespace Svr
 		if (pTransRes->GetTransID().GetEntityID() != GetEntityID())
 		{
 			svrTrace(Warning, "Invalid message result routing Entity:{0}, msgID:{1} to Entity:{2}", GetEntityID(), pTransRes->GetMsgID(), pTransRes->GetTransID().GetEntityID());
-			goto Proc_End;
+			return hr;
 		}
-		//assert(pTransRes->GetTransID().GetEntityID() == GetEntityID());
 
 		if (GetTaskWorker()->GetThreadID() == ThisThread::GetThreadID())
 		{
 			if (!(FindActiveTransaction(pTransRes->GetTransID(), pTransaction)))
 			{
 				svrTrace(SVR_TRANSACTION, "Transaction result for TID:{0} is failed to route. msgid:{1}", pTransRes->GetTransID(), pTransRes->GetMsgID());
-				goto Proc_End;// svrErr(ResultCode::FAIL);
+				return hr;
 			}
-			svrChk(ProcessTransactionResult(pTransaction, pTransRes));
+			svrCheck(ProcessTransactionResult(pTransaction, pTransRes));
 		}
 		else
 		{
-			svrChk(PendingTransactionResult(pTransRes));
+			svrCheck(PendingTransactionResult(pTransRes));
 		}
-
-	Proc_End:
 
 		return hr;
 	}

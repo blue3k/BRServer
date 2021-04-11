@@ -384,12 +384,9 @@ namespace SF {
 
 			m_InstanceClosed = true;
 
-			// TODO: delete game instance?
 			svrTrace(SVR_INFO, "CloseGameInstance:{0}", GetEntityUID());
 
 			LeaveAllPlayerForGameDelete();
-
-			//Service::ServiceDirectory->RemoveLocalService(Service::ServerConfig->GameClusterID, ClusterID::GameInstance, GetEntityUID());
 
 			// Remove from local service provider
 			auto pGameInstanceManagerAdapter = Engine::GetEngineComponent<LibraryComponentAdapter<GameInstanceManagerServiceEntity>>();
@@ -470,6 +467,7 @@ namespace SF {
 
 				pPlayer->SetRemoteConnection(connection);
 				pPlayer->SetJoined(true);
+				pPlayer->GetRemoveTimer().ClearTimer();
 
 				if (pPlayer->GetMovementManager())
 					outMovement = pPlayer->GetMovementManager()->GetLatestSimulatedMovement();
