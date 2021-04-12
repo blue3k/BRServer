@@ -86,10 +86,7 @@ namespace Svr
 					if (pThis == nullptr)
 						return;
 
-					if (pThis->GetTaskManager() == nullptr)
-						return;
-
-					pThis->GetTaskManager()->RunOnTaskThread(pThis->GetTaskGroupID(), [pThisWeak, pMsg = pMsg, pEndpoint = pConn->GetMessageEndpoint()]()
+					Service::EntityManager->RunOnTaskThread(pThis->GetTaskGroupID(), [pThisWeak, pMsg = pMsg, pEndpoint = pConn->GetMessageEndpoint()]()
 					{
 						auto pThis = pThisWeak.AsSharedPtr<SimpleUserEntity>();
 						if (pThis != nullptr)
@@ -106,10 +103,7 @@ namespace Svr
 				if (pThis == nullptr)
 					return;
 
-				if (pThis->GetTaskManager() == nullptr)
-					return;
-
-				pThis->GetTaskManager()->RunOnTaskThread(pThis->GetTaskGroupID(), [pConn = pConn->AsSharedPtr<Net::Connection>()]()
+				Service::EntityManager->RunOnTaskThread(pThis->GetTaskGroupID(), [pConn = pConn->AsSharedPtr<Net::Connection>()]()
 				{
 					if (pConn != nullptr)
 					{
@@ -124,10 +118,7 @@ namespace Svr
 				if (pThis == nullptr)
 					return;
 
-				if (pThis->GetTaskManager() == nullptr)
-					return;
-
-				pThis->GetTaskManager()->RunOnTaskThread(pThis->GetTaskGroupID(), [pThisWeak, EventData = EventData]()
+				Service::EntityManager->RunOnTaskThread(pThis->GetTaskGroupID(), [pThisWeak, EventData = EventData]()
 				{
 					auto pThis = pThisWeak.AsSharedPtr<SimpleUserEntity>();
 					if (pThis != nullptr)

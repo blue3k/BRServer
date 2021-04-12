@@ -44,7 +44,6 @@
 #include "Server/BrServer.h"
 
 #include "Entity/EntityManager.h"
-#include "ServerEntity/ServerEntityManager.h"
 #include "ServiceEntity/Party/GamePartyEntity.h"
 #include "ServiceEntity/Party/GamePartyEntityTrans.h"
 

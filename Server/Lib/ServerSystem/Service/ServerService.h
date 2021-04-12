@@ -42,7 +42,6 @@ namespace SF {
 		extern ServiceInstance<ServerConfig::ServerService> ServerConfig;
 		extern ServiceInstance<EntityTableService> EntityTable;
 		extern ServiceInstance<EntityManagerService> EntityManager;
-		//extern ServiceInstance<ServerEntityManagerService> ServerEntityManager;
 		extern ServiceInstance<ServiceDirectoryService> ServiceDirectory;
 		extern ServiceInstance<MessageEndpointManagerService> MessageEndpointManager;
 		extern ServiceInstance<ZookeeperSessionService> ZKSession; // main zookeeper session

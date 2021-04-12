@@ -72,6 +72,9 @@ namespace SF {
 
 		virtual void Update() {}
 
+		virtual Result RunOnTaskThread(uint32_t groupID, std::function<void()>&& pTaskFunction) { return ResultCode::NOT_IMPLEMENTED; }
+
+
 	};
 
 	

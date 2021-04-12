@@ -15,15 +15,12 @@
 #include "Server/BrService.h"
 #include "SvrTrace.h"
 #include "Entity/EntityManager.h"
-#include "ServerEntity/ServerEntityManager.h"
 #include "Transaction/MessageRoute.h"
 #include "SharedModuleServerClass.h"
 #include "MemoryManager/SFMemoryPool.h"
 #include "Types/SFEngineTypedefs.h"
 #include "Protocol/GameMsgClass.h"
 #include "Protocol/GameNetPolicy.h"
-
-
 
 #include "SharedModuleServerTrans.h"
 

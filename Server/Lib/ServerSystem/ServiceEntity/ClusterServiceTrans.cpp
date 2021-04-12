@@ -24,7 +24,6 @@
 #include "Server/BrServerUtil.h"
 #include "SvrTrace.h"
 #include "Server/BrServer.h"
-#include "ServerEntity/ServerEntityManager.h"
 #include "Entity/EntityManager.h"
 #include "ServiceEntity/ClusterServiceTrans.h"
 

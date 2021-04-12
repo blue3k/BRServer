@@ -97,7 +97,6 @@ set(BRSERVERSYSTEM_LIB_FILES
     ServerEntity/SvrGameServerEntity.h
     ServerEntity/GenericServerEntity.h
     ServerEntity/ServerEntity.h
-    ServerEntity/ServerEntityManager.h
     ServerEntity/SvrLoopbackConnection.h
     ServerLog/SvrLog.h
     ServerLog/SvrLogComponent.h
@@ -135,7 +134,6 @@ set(BRSERVERSYSTEM_LIB_FILES
     Service/EntityTableService.h
     Service/PlayerManagerService.h
 	Service/MessageEndpointManagerService.h
-    Service/ServerEntityManagerService.h
     Service/ServerService.h
     Service/ZookeeperSessionService.h
     Util/ToStringSvr.h
@@ -194,7 +192,6 @@ set(BRSERVERSYSTEM_LIB_FILES
     ServerEntity/SvrGameServerEntity.cpp
     ServerEntity/GenericServerEntity.cpp
     ServerEntity/ServerEntity.cpp
-    ServerEntity/ServerEntityManager.cpp
     ServerEntity/SvrLoopbackConnection.cpp
     ServerLog/SvrLogComponent.cpp
     Server/BRServer.cpp

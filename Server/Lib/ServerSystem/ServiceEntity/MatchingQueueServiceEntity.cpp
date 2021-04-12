@@ -27,7 +27,6 @@
 #include "ServiceEntity/MatchingQueueServiceTrans.h"
 #include "SvrTrace.h"
 #include "SvrConst.h"
-#include "ServerEntity/ServerEntityManager.h"
 
 #include "PerformanceCounter/PerformanceCounterClient.h"
 

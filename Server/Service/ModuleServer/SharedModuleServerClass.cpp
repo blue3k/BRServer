@@ -16,7 +16,6 @@
 #include "Server/BrServer.h"
 #include "SvrTrace.h"
 #include "Service/ServerService.h"
-#include "ServerEntity/ServerEntityManager.h"
 #include "ServiceEntity/Game/PlayerDirectoryManager.h"
 #include "ServiceEntity/MatchingQueueServiceEntity.h"
 #include "ServiceEntity/MatchingServiceEntity.h"

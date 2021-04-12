@@ -83,6 +83,11 @@ namespace Svr {
 		m_EntityCreators.push_back(creator);
 	}
 
+	Result EntityManager::RunOnTaskThread(uint32_t groupID, std::function<void()>&& pTaskFunction)
+	{
+		return TickTaskManager::RunOnTaskThread(groupID, Forward<std::function<void()>>(pTaskFunction));
+	}
+
 	Result EntityManager::CreateEntity(ClusterID clusterID, EntityFaculty faculty, Entity* &pEntity)
 	{
 		// registered laster gets higher priority

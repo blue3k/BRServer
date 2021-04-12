@@ -20,7 +20,6 @@
 #include "Component/ServerComponent.h"
 #include "ServerService/ServerServiceBase.h"
 #include "ServerEntity/ServerEntity.h"
-#include "ServerEntity/ServerEntityManager.h"
 #include "ServiceEntity/ClusteredServiceEntity.h"
 #include "ServiceEntity/ClusterServiceTrans.h"
 #include "Protocol/ClusterServerService.h"

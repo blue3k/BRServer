@@ -20,7 +20,6 @@
 
 #include "Server/BrServerUtil.h"
 #include "SvrTrace.h"
-#include "ServerEntity/ServerEntityManager.h"
 
 #include "Transaction/ExternalTransaction.h"
 #include "Transaction/ExternalTransactionManager.h"

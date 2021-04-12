@@ -34,7 +34,6 @@
 #include "Server/BrServer.h"
 
 #include "Entity/EntityManager.h"
-#include "ServerEntity/ServerEntityManager.h"
 #include "ServiceEntity/Chat/ChatChannelEntity.h"
 #include "ServiceEntity/Chat/ChatChannelEntityTrans.h"
 

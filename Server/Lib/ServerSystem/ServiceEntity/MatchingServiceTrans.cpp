@@ -25,7 +25,6 @@
 #include "Server/BrServerUtil.h"
 #include "SvrTrace.h"
 #include "Server/BrServer.h"
-#include "ServerEntity/ServerEntityManager.h"
 #include "Entity/EntityManager.h"
 #include "ServiceEntity/MatchingServiceUtil.h"
 #include "ServiceEntity/MatchingServiceTrans.h"
@@ -423,12 +422,6 @@ namespace Svr {
 
 				// FIXME: player entity might be fails
 				auto playerEndpoint = Service::MessageEndpointManager->GetEndpoint(reservedMember.Players[member].PlayerUID);
-				//if (!(Service::ServerEntityManager->GetServerEntity(reservedMember.Players[member].PlayerUID.GetServerID(), pServerEntity)))
-				//{
-				//	// skip this player
-				//	svrTrace(Error, "Failed to find Server entity({0}) while broadcasting for a player({1})", reservedMember.Players[member].PlayerUID.GetServerID(), reservedMember.Players[member].PlayerID);
-				//	continue;
-				//}
 
 				notifiedPlayerCount++;
 				NetSvrPolicyPartyMatching(playerEndpoint).PlayerGameMatchedS2CEvt(

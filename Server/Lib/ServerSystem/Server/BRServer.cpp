@@ -19,7 +19,6 @@
 #include "Net/SFNetSvrDef.h"
 #include "Net/SFNetServerPeerTCP.h"
 #include "ServerEntity/ServerEntity.h"
-#include "ServerEntity/ServerEntityManager.h"
 #include "Entity/EntityManager.h"
 #include "Entity/EntityTable.h"
 #include "ServiceEntity/ClusterManagerServiceEntity.h"
@@ -394,15 +393,6 @@ namespace SF {
 		Result BrServer::InitializeEntities()
 		{
 			Result hr = ResultCode::SUCCESS;
-			//UniquePtr<ServerEntity> pEntity;
-
-			// Add loop back entity
-			//pEntity.reset(CreateLoopbackEntity());
-			//svrCheckMem(pEntity.get());
-			//svrCheck(Service::ServerEntityManager->AddOrGetServerEntity(GetServerUID(), pEntity.get()));
-
-			//SetLoopbackServerEntity(pEntity.release());
-
 			return hr;
 		}
 

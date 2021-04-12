@@ -51,7 +51,6 @@ namespace SF {
 
 	namespace Svr {
 
-	class ServerEntityManager;
 	class ServerEntity;
 	class SimpleUserEntity;
 	class Transaction;

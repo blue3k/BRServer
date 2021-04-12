@@ -18,7 +18,6 @@
 #include "Server/BrServer.h"
 #include "Server/BrServerUtil.h"
 #include "Server/ParameterSetting.h"
-#include "ServerEntity/ServerEntityManager.h"
 #include "ServiceEntity/ClusterManagerServiceEntity.h"
 #include "ServiceEntity/ServiceDirectoryManager.h"
 #include "ServiceEntity/Game/PlayerDirectoryManager.h"

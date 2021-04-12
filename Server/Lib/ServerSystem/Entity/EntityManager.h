@@ -66,6 +66,9 @@ namespace Svr {
 		// TickTask add/remove proving
 		//
 
+		virtual Result RunOnTaskThread(uint32_t groupID, std::function<void()>&& pTaskFunction) override;
+
+
 		virtual Result CreateEntity(ClusterID clusterID, EntityFaculty faculty, Entity* &pEntity) override;
 
 		// add entity to table

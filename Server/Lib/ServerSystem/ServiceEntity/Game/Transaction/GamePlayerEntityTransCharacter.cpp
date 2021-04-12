@@ -21,7 +21,6 @@
 
 #include "Server/BrServerUtil.h"
 #include "SvrTrace.h"
-#include "ServerEntity/ServerEntityManager.h"
 
 #include "GamePlayerEntityTrans.h"
 #include "ServiceEntity/Game/GamePlayerEntity.h"
