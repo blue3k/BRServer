@@ -337,10 +337,10 @@ namespace SF {
 							return true;
 
 						NetSvrPolicyPlayInstance policy(pPlayer->GetRemoteEndpoint());
-						policy.NewPlayerInViewS2CEvt(GetEntityUID(), pJoinedPlayer->GetPlayerID(), pJoinedPlayer->GetCharacterVisual());
+						policy.NewPlayerInViewS2CEvt(GetEntityUID(), pJoinedPlayer->GetPlayerID(), pJoinedPlayer->GetCharacterVisual(), pJoinedPlayer->GetLatestMovement());
 
 						NetSvrPolicyPlayInstance policyJoined(pJoinedPlayer->GetRemoteEndpoint());
-						policyJoined.NewPlayerInViewS2CEvt(GetEntityUID(), pPlayer->GetPlayerID(), pPlayer->GetCharacterVisual());
+						policyJoined.NewPlayerInViewS2CEvt(GetEntityUID(), pPlayer->GetPlayerID(), pPlayer->GetCharacterVisual(), pPlayer->GetLatestMovement());
 
 						return true;
 					});
