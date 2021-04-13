@@ -632,7 +632,7 @@ namespace SF {
 
 			svrCheckPtr(pPlayer->GetMovementManager());
 
-			svrCheck(pPlayer->GetMovementManager()->GetMovementManager().EnqueueMovement(newMovement));
+			pPlayer->GetMovementManager()->NewMovement(newMovement);
 
 			return hr;
 		}

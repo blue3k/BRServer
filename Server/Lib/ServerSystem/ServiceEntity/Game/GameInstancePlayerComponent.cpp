@@ -49,10 +49,36 @@ namespace SF {
 		void GameInstancePlayerComponentMovement::ResetMovement(const ActorMovement& initialMovement)
 		{
 			GetOwner().SetMovementFrame(initialMovement.MoveFrame);
-			m_ActorMovement.EnqueueMovement(initialMovement);
-			m_ActorMovement.SimulateCurrentMove(GetOwner().GetMovementFrame(), m_LatestSimulatedMovement);
+			m_ReceivedActorMovement = initialMovement;
+			m_ReceivedActorMovement.MoveFrame = GetOwner().GetMovementFrame();
+			m_LatestReceivedFrame = m_ReceivedActorMovement.MoveFrame;
+			m_LatestSimulatedMovement = m_ReceivedActorMovement;
+
 			GetOwner().SetLatestMovement(m_LatestSimulatedMovement);
+
 			svrTrace(Debug2, "ResetMovement, PlayerId:{0}, init:{1}, simulated:{2}", GetOwner().GetPlayerID(), initialMovement, m_LatestSimulatedMovement);
+		}
+
+
+		Result GameInstancePlayerComponentMovement::NewMovement(const ActorMovement& newMovement)
+		{
+			int32_t recvDeltaFrames(newMovement.MoveFrame - m_LatestReceivedFrame);
+			if (recvDeltaFrames < 0) // It is too old drop it
+			{
+				return ResultCode::INVALID_FRAME;
+			}
+
+			m_ReceivedActorMovement = newMovement;
+
+			int32_t deltaFrames((m_ReceivedActorMovement.MoveFrame - GetOwner().GetMovementFrame()));
+			if (deltaFrames < 0) // old packet arrived late
+			{
+				// Server was sending made up packets, so we can't go back
+				// replace move frame, and pretend it is current frame
+				m_ReceivedActorMovement.MoveFrame = GetOwner().GetMovementFrame();
+			}
+			
+			return ResultCode::SUCCESS;
 		}
 
 		void GameInstancePlayerComponentMovement::TickUpdate()
@@ -60,7 +86,7 @@ namespace SF {
 			Result hr;
 			GameInstancePlayerComponent::TickUpdate();
 
-			hr = m_ActorMovement.SimulateCurrentMove(GetOwner().GetMovementFrame(), m_LatestSimulatedMovement);
+			hr = m_ReceivedActorMovement.SimulateCurrentMove(GetOwner().GetMovementFrame(), m_LatestSimulatedMovement);
 			if (!hr)
 			{
 				svrTrace(Error, "Failed to update movement hr:{0}", hr);

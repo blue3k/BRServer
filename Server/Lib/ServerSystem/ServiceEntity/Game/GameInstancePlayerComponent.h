@@ -73,7 +73,8 @@ namespace SF {
 
 			IHeap& m_Heap;
 			ActorMovement m_LatestSimulatedMovement{};
-			ReceivedActorMovementManager m_ActorMovement;
+			uint32_t m_LatestReceivedFrame = 0;
+			ActorMovement m_ReceivedActorMovement;
 
 		public:
 
@@ -83,7 +84,9 @@ namespace SF {
 
 			void ResetMovement(const ActorMovement& initialMovement);
 
-			ReceivedActorMovementManager& GetMovementManager() { return m_ActorMovement; }
+			Result NewMovement(const ActorMovement& newMovement);
+
+			const ActorMovement& GetMovementManager() { return m_ReceivedActorMovement; }
 
 			const ActorMovement& GetLatestSimulatedMovement() const { return m_LatestSimulatedMovement; }
 
