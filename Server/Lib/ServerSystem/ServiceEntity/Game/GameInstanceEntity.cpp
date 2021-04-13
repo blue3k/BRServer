@@ -193,7 +193,7 @@ namespace SF {
 
 		uint32_t GameInstanceEntity::UpdateMovementTick(TimeStampMS newUpdateTimeStamp)
 		{
-			auto deltaTime = newUpdateTimeStamp - m_LatestTickTime;
+			DurationMS deltaTime = newUpdateTimeStamp - m_LatestTickTime;
 			auto deltaFrames = deltaTime.count() / ActorMovement::DeltaMSPerFrame;
 
 			m_MovementFrame += deltaFrames;
@@ -237,11 +237,10 @@ namespace SF {
 					{
 						PendingLeavePlayer(pPlayer->GetPlayerID());
 					}
-					else
+					else if (deltaFrames > 0)
 					{
 						int32_t diffFrame(pPlayer->GetLatestMovement().MoveFrame - pPlayer->GetBroadCastedMovementFrame());
-						if (deltaFrames > 0 
-							&& diffFrame >= ActorMovement::MoveFrameTimeout)
+						if (diffFrame >= ActorMovement::MoveFrameTimeout)
 						{
 							pPlayer->SetBroadCastedMovementFrame(pPlayer->GetLatestMovement().MoveFrame);
 
