@@ -98,7 +98,7 @@ namespace SF {
 					if (!GetOwner().GetLatestMovement().CanMerge(&m_LatestSimulatedMovement))
 					{
 						// forcing broad casted frame timeout
-						GetOwner().SetBroadCastedMovementFrame(GetOwner().GetMovementFrame() - ActorMovement::MoveFrameTimeout);
+						GetOwner().SetBroadCastedMovementFrame(GetOwner().GetMovementFrame() - ActorMovement::MoveFrameTimeout - 1);
 						// change frame
 						GetOwner().SetLatestMovement(m_LatestSimulatedMovement);
 					}

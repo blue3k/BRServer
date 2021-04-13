@@ -241,7 +241,7 @@ namespace SF {
 					{
 						int32_t diffFrame(pPlayer->GetLatestMovement().MoveFrame - pPlayer->GetBroadCastedMovementFrame());
 						if (deltaFrames > 0 
-							&& diffFrame > ActorMovement::MoveFrameTimeout)
+							&& diffFrame >= ActorMovement::MoveFrameTimeout)
 						{
 							pPlayer->SetBroadCastedMovementFrame(pPlayer->GetLatestMovement().MoveFrame);
 
