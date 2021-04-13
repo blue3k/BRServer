@@ -226,7 +226,7 @@ namespace SF {
 
 			// Update Players
 			m_GamePlayerByPlayerID.ForeachOrder(0, m_MaxPlayer, 
-				[this, &CurTime, &playerCount](const PlayerID& playerID, GameInstancePlayer* pPlayer)-> bool
+				[this, deltaFrames, &CurTime, &playerCount](const PlayerID& playerID, GameInstancePlayer* pPlayer)-> bool
 				{
 					if (pPlayer->GetRemoteEndpoint() != nullptr)
 						playerCount++;
@@ -239,7 +239,8 @@ namespace SF {
 					}
 					else
 					{
-						if ((pPlayer->GetBroadCastedMovementFrame() - pPlayer->GetLatestMovement().MoveFrame) > ActorMovement::MoveFrameTimeout)
+						if (deltaFrames > 0 
+							&& int32_t(pPlayer->GetLatestMovement().MoveFrame - pPlayer->GetBroadCastedMovementFrame()) > ActorMovement::MoveFrameTimeout)
 						{
 							pPlayer->SetBroadCastedMovementFrame(pPlayer->GetLatestMovement().MoveFrame);
 
@@ -632,7 +633,7 @@ namespace SF {
 
 			svrCheckPtr(pPlayer->GetMovementManager());
 
-			pPlayer->GetMovementManager()->NewMovement(newMovement);
+			svrCheck(pPlayer->GetMovementManager()->NewMovement(newMovement));
 
 			return hr;
 		}
