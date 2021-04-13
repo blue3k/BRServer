@@ -239,11 +239,11 @@ namespace SF {
 					}
 					else
 					{
-						int32_t diffFrame(pPlayer->GetMovementFrame() - pPlayer->GetBroadCastedMovementFrame());
+						int32_t diffFrame(pPlayer->GetLatestMovement().MoveFrame - pPlayer->GetBroadCastedMovementFrame());
 						if (deltaFrames > 0 
 							&& diffFrame > ActorMovement::MoveFrameTimeout)
 						{
-							pPlayer->SetBroadCastedMovementFrame(pPlayer->GetMovementFrame());
+							pPlayer->SetBroadCastedMovementFrame(pPlayer->GetLatestMovement().MoveFrame);
 
 							// Broad cast movement
 							// TODO: Need to add spatial management
