@@ -95,7 +95,7 @@ namespace SF {
 			Result hr = ResultCode::SUCCESS;
 
 			m_CurTime = ulCurTime;
-			m_CurMovementFrame = movementFrame;
+			SetMovementFrame(movementFrame);
 
 			for (auto itComponent : m_ComponentManager)
 			{
