@@ -90,8 +90,6 @@ namespace SF
 				return hr;
 			}; // MessageData* GetInstanceListCmd::Create( IHeap& memHeap, const uint64_t &InTransactionID )
 
-
-
 			Result GetInstanceListCmd::TraceOut(const char* prefix, const MessageDataPtr& pMsg)
 			{
  				GetInstanceListCmd parser;
@@ -176,8 +174,6 @@ namespace SF
 				return hr;
 			}; // MessageData* GetInstanceListRes::Create( IHeap& memHeap, const uint64_t &InTransactionID, const Result &InResult, const Array<PerformanceCounterInstanceInfo>& InCounterInstances, const uint32_t &InTotalInstanceCount )
 
-
-
 			Result GetInstanceListRes::TraceOut(const char* prefix, const MessageDataPtr& pMsg)
 			{
  				GetInstanceListRes parser;
@@ -253,8 +249,6 @@ namespace SF
 
 				return hr;
 			}; // MessageData* RequestCounterValuesCmd::Create( IHeap& memHeap, const uint64_t &InTransactionID, const uint64_t &InInstanceUID )
-
-
 
 			Result RequestCounterValuesCmd::TraceOut(const char* prefix, const MessageDataPtr& pMsg)
 			{
@@ -340,8 +334,6 @@ namespace SF
 				return hr;
 			}; // MessageData* RequestCounterValuesRes::Create( IHeap& memHeap, const uint64_t &InTransactionID, const Result &InResult, const uint64_t &InInstanceUID, const Array<uint64_t>& InCounterValues )
 
-
-
 			Result RequestCounterValuesRes::TraceOut(const char* prefix, const MessageDataPtr& pMsg)
 			{
  				RequestCounterValuesRes parser;
@@ -425,8 +417,6 @@ namespace SF
 				return hr;
 			}; // MessageData* PerformanceCounterNewC2SEvt::Create( IHeap& memHeap, const char* InInstanceName, const uint64_t &InInstanceUID, const Array<PerformanceCounterInfo>& InNewCounters )
 
-
-
 			Result PerformanceCounterNewC2SEvt::TraceOut(const char* prefix, const MessageDataPtr& pMsg)
 			{
  				PerformanceCounterNewC2SEvt parser;
@@ -502,8 +492,6 @@ namespace SF
 
 				return hr;
 			}; // MessageData* PerformanceCounterFreeC2SEvt::Create( IHeap& memHeap, const Array<uint64_t>& InFreeInstances )
-
-
 
 			Result PerformanceCounterFreeC2SEvt::TraceOut(const char* prefix, const MessageDataPtr& pMsg)
 			{
@@ -584,8 +572,6 @@ namespace SF
 				return hr;
 			}; // MessageData* PerformanceCounterUpdateC2SEvt::Create( IHeap& memHeap, const uint64_t &InInstanceUID, const Array<uint64_t>& InCounterValues )
 
-
-
 			Result PerformanceCounterUpdateC2SEvt::TraceOut(const char* prefix, const MessageDataPtr& pMsg)
 			{
  				PerformanceCounterUpdateC2SEvt parser;
@@ -658,8 +644,6 @@ namespace SF
 
 				return hr;
 			}; // MessageData* PerformanceCounterUpdateCounterInfoS2CEvt::Create( IHeap& memHeap, const uint64_t &InInstanceUID )
-
-
 
 			Result PerformanceCounterUpdateCounterInfoS2CEvt::TraceOut(const char* prefix, const MessageDataPtr& pMsg)
 			{

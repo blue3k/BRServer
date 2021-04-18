@@ -99,33 +99,6 @@ namespace SF
 				return hr;
 			}; // MessageData* AddPlayerCmd::Create( IHeap& memHeap, const RouteContext &InRouteContext, const uint64_t &InTransactionID, const PlayerInformation &InPlayerInfo, const uint64_t &InRankingScore )
 
-			Result AddPlayerCmd::OverrideRouteContextDestination( EntityUID to )
-			{
- 				ScopeContext hr;
-
-				MessageData* pIMsg = GetMessage();
-				RouteContext routeContext;
-
-				protocolCheckPtr(pIMsg);
-
-				size_t MsgDataSize = (int)((size_t)pIMsg->GetMessageSize() - sizeof(MessageHeader));
-				ArrayView<const uint8_t> bufferView(MsgDataSize, pIMsg->GetMessageData());
-				InputMemoryStream inputStream(bufferView);
-				auto* input = inputStream.ToInputStream();
-				uint16_t ArrayLen = 0;(void)(ArrayLen);
-				uint8_t* pCur = nullptr;(void)(pCur);
-
-				pCur = input->GetBufferPtr() + input->GetPosition();
-				Assert(input->GetRemainSize() >= sizeof(RouteContext));
-				memcpy( &routeContext, pCur, sizeof(RouteContext) );
-				routeContext.Components.To = to;
-				memcpy( pCur, &routeContext, sizeof(RouteContext) );
-
-				return hr;
-
-			}; // Result AddPlayerCmd::OverrideRouteContextDestination( EntityUID to )
-
-
 			Result AddPlayerCmd::TraceOut(const char* prefix, const MessageDataPtr& pMsg)
 			{
  				AddPlayerCmd parser;
@@ -207,33 +180,6 @@ namespace SF
 				return hr;
 			}; // MessageData* AddPlayerRes::Create( IHeap& memHeap, const RouteContext &InRouteContext, const uint64_t &InTransactionID, const Result &InResult, const uint32_t &InRanking )
 
-			Result AddPlayerRes::OverrideRouteContextDestination( EntityUID to )
-			{
- 				ScopeContext hr;
-
-				MessageData* pIMsg = GetMessage();
-				RouteContext routeContext;
-
-				protocolCheckPtr(pIMsg);
-
-				size_t MsgDataSize = (int)((size_t)pIMsg->GetMessageSize() - sizeof(MessageHeader));
-				ArrayView<const uint8_t> bufferView(MsgDataSize, pIMsg->GetMessageData());
-				InputMemoryStream inputStream(bufferView);
-				auto* input = inputStream.ToInputStream();
-				uint16_t ArrayLen = 0;(void)(ArrayLen);
-				uint8_t* pCur = nullptr;(void)(pCur);
-
-				pCur = input->GetBufferPtr() + input->GetPosition();
-				Assert(input->GetRemainSize() >= sizeof(RouteContext));
-				memcpy( &routeContext, pCur, sizeof(RouteContext) );
-				routeContext.Components.To = to;
-				memcpy( pCur, &routeContext, sizeof(RouteContext) );
-
-				return hr;
-
-			}; // Result AddPlayerRes::OverrideRouteContextDestination( EntityUID to )
-
-
 			Result AddPlayerRes::TraceOut(const char* prefix, const MessageDataPtr& pMsg)
 			{
  				AddPlayerRes parser;
@@ -313,33 +259,6 @@ namespace SF
 				return hr;
 			}; // MessageData* RemovePlayerCmd::Create( IHeap& memHeap, const RouteContext &InRouteContext, const uint64_t &InTransactionID, const PlayerID &InPlayerID )
 
-			Result RemovePlayerCmd::OverrideRouteContextDestination( EntityUID to )
-			{
- 				ScopeContext hr;
-
-				MessageData* pIMsg = GetMessage();
-				RouteContext routeContext;
-
-				protocolCheckPtr(pIMsg);
-
-				size_t MsgDataSize = (int)((size_t)pIMsg->GetMessageSize() - sizeof(MessageHeader));
-				ArrayView<const uint8_t> bufferView(MsgDataSize, pIMsg->GetMessageData());
-				InputMemoryStream inputStream(bufferView);
-				auto* input = inputStream.ToInputStream();
-				uint16_t ArrayLen = 0;(void)(ArrayLen);
-				uint8_t* pCur = nullptr;(void)(pCur);
-
-				pCur = input->GetBufferPtr() + input->GetPosition();
-				Assert(input->GetRemainSize() >= sizeof(RouteContext));
-				memcpy( &routeContext, pCur, sizeof(RouteContext) );
-				routeContext.Components.To = to;
-				memcpy( pCur, &routeContext, sizeof(RouteContext) );
-
-				return hr;
-
-			}; // Result RemovePlayerCmd::OverrideRouteContextDestination( EntityUID to )
-
-
 			Result RemovePlayerCmd::TraceOut(const char* prefix, const MessageDataPtr& pMsg)
 			{
  				RemovePlayerCmd parser;
@@ -417,33 +336,6 @@ namespace SF
 
 				return hr;
 			}; // MessageData* RemovePlayerRes::Create( IHeap& memHeap, const RouteContext &InRouteContext, const uint64_t &InTransactionID, const Result &InResult )
-
-			Result RemovePlayerRes::OverrideRouteContextDestination( EntityUID to )
-			{
- 				ScopeContext hr;
-
-				MessageData* pIMsg = GetMessage();
-				RouteContext routeContext;
-
-				protocolCheckPtr(pIMsg);
-
-				size_t MsgDataSize = (int)((size_t)pIMsg->GetMessageSize() - sizeof(MessageHeader));
-				ArrayView<const uint8_t> bufferView(MsgDataSize, pIMsg->GetMessageData());
-				InputMemoryStream inputStream(bufferView);
-				auto* input = inputStream.ToInputStream();
-				uint16_t ArrayLen = 0;(void)(ArrayLen);
-				uint8_t* pCur = nullptr;(void)(pCur);
-
-				pCur = input->GetBufferPtr() + input->GetPosition();
-				Assert(input->GetRemainSize() >= sizeof(RouteContext));
-				memcpy( &routeContext, pCur, sizeof(RouteContext) );
-				routeContext.Components.To = to;
-				memcpy( pCur, &routeContext, sizeof(RouteContext) );
-
-				return hr;
-
-			}; // Result RemovePlayerRes::OverrideRouteContextDestination( EntityUID to )
-
 
 			Result RemovePlayerRes::TraceOut(const char* prefix, const MessageDataPtr& pMsg)
 			{
@@ -523,33 +415,6 @@ namespace SF
 
 				return hr;
 			}; // MessageData* GetPlayerRankingCmd::Create( IHeap& memHeap, const RouteContext &InRouteContext, const uint64_t &InTransactionID, const PlayerID &InPlayerID )
-
-			Result GetPlayerRankingCmd::OverrideRouteContextDestination( EntityUID to )
-			{
- 				ScopeContext hr;
-
-				MessageData* pIMsg = GetMessage();
-				RouteContext routeContext;
-
-				protocolCheckPtr(pIMsg);
-
-				size_t MsgDataSize = (int)((size_t)pIMsg->GetMessageSize() - sizeof(MessageHeader));
-				ArrayView<const uint8_t> bufferView(MsgDataSize, pIMsg->GetMessageData());
-				InputMemoryStream inputStream(bufferView);
-				auto* input = inputStream.ToInputStream();
-				uint16_t ArrayLen = 0;(void)(ArrayLen);
-				uint8_t* pCur = nullptr;(void)(pCur);
-
-				pCur = input->GetBufferPtr() + input->GetPosition();
-				Assert(input->GetRemainSize() >= sizeof(RouteContext));
-				memcpy( &routeContext, pCur, sizeof(RouteContext) );
-				routeContext.Components.To = to;
-				memcpy( pCur, &routeContext, sizeof(RouteContext) );
-
-				return hr;
-
-			}; // Result GetPlayerRankingCmd::OverrideRouteContextDestination( EntityUID to )
-
 
 			Result GetPlayerRankingCmd::TraceOut(const char* prefix, const MessageDataPtr& pMsg)
 			{
@@ -631,33 +496,6 @@ namespace SF
 
 				return hr;
 			}; // MessageData* GetPlayerRankingRes::Create( IHeap& memHeap, const RouteContext &InRouteContext, const uint64_t &InTransactionID, const Result &InResult, const uint32_t &InRanking )
-
-			Result GetPlayerRankingRes::OverrideRouteContextDestination( EntityUID to )
-			{
- 				ScopeContext hr;
-
-				MessageData* pIMsg = GetMessage();
-				RouteContext routeContext;
-
-				protocolCheckPtr(pIMsg);
-
-				size_t MsgDataSize = (int)((size_t)pIMsg->GetMessageSize() - sizeof(MessageHeader));
-				ArrayView<const uint8_t> bufferView(MsgDataSize, pIMsg->GetMessageData());
-				InputMemoryStream inputStream(bufferView);
-				auto* input = inputStream.ToInputStream();
-				uint16_t ArrayLen = 0;(void)(ArrayLen);
-				uint8_t* pCur = nullptr;(void)(pCur);
-
-				pCur = input->GetBufferPtr() + input->GetPosition();
-				Assert(input->GetRemainSize() >= sizeof(RouteContext));
-				memcpy( &routeContext, pCur, sizeof(RouteContext) );
-				routeContext.Components.To = to;
-				memcpy( pCur, &routeContext, sizeof(RouteContext) );
-
-				return hr;
-
-			}; // Result GetPlayerRankingRes::OverrideRouteContextDestination( EntityUID to )
-
 
 			Result GetPlayerRankingRes::TraceOut(const char* prefix, const MessageDataPtr& pMsg)
 			{
@@ -744,33 +582,6 @@ namespace SF
 				return hr;
 			}; // MessageData* UpdatePlayerScoreCmd::Create( IHeap& memHeap, const RouteContext &InRouteContext, const uint64_t &InTransactionID, const uint64_t &InRankingScore, const PlayerInformation &InPlayerInfo, const uint16_t &InCount )
 
-			Result UpdatePlayerScoreCmd::OverrideRouteContextDestination( EntityUID to )
-			{
- 				ScopeContext hr;
-
-				MessageData* pIMsg = GetMessage();
-				RouteContext routeContext;
-
-				protocolCheckPtr(pIMsg);
-
-				size_t MsgDataSize = (int)((size_t)pIMsg->GetMessageSize() - sizeof(MessageHeader));
-				ArrayView<const uint8_t> bufferView(MsgDataSize, pIMsg->GetMessageData());
-				InputMemoryStream inputStream(bufferView);
-				auto* input = inputStream.ToInputStream();
-				uint16_t ArrayLen = 0;(void)(ArrayLen);
-				uint8_t* pCur = nullptr;(void)(pCur);
-
-				pCur = input->GetBufferPtr() + input->GetPosition();
-				Assert(input->GetRemainSize() >= sizeof(RouteContext));
-				memcpy( &routeContext, pCur, sizeof(RouteContext) );
-				routeContext.Components.To = to;
-				memcpy( pCur, &routeContext, sizeof(RouteContext) );
-
-				return hr;
-
-			}; // Result UpdatePlayerScoreCmd::OverrideRouteContextDestination( EntityUID to )
-
-
 			Result UpdatePlayerScoreCmd::TraceOut(const char* prefix, const MessageDataPtr& pMsg)
 			{
  				UpdatePlayerScoreCmd parser;
@@ -854,33 +665,6 @@ namespace SF
 
 				return hr;
 			}; // MessageData* UpdatePlayerScoreRes::Create( IHeap& memHeap, const RouteContext &InRouteContext, const uint64_t &InTransactionID, const Result &InResult, const Array<TotalRankingPlayerInformation>& InRanking )
-
-			Result UpdatePlayerScoreRes::OverrideRouteContextDestination( EntityUID to )
-			{
- 				ScopeContext hr;
-
-				MessageData* pIMsg = GetMessage();
-				RouteContext routeContext;
-
-				protocolCheckPtr(pIMsg);
-
-				size_t MsgDataSize = (int)((size_t)pIMsg->GetMessageSize() - sizeof(MessageHeader));
-				ArrayView<const uint8_t> bufferView(MsgDataSize, pIMsg->GetMessageData());
-				InputMemoryStream inputStream(bufferView);
-				auto* input = inputStream.ToInputStream();
-				uint16_t ArrayLen = 0;(void)(ArrayLen);
-				uint8_t* pCur = nullptr;(void)(pCur);
-
-				pCur = input->GetBufferPtr() + input->GetPosition();
-				Assert(input->GetRemainSize() >= sizeof(RouteContext));
-				memcpy( &routeContext, pCur, sizeof(RouteContext) );
-				routeContext.Components.To = to;
-				memcpy( pCur, &routeContext, sizeof(RouteContext) );
-
-				return hr;
-
-			}; // Result UpdatePlayerScoreRes::OverrideRouteContextDestination( EntityUID to )
-
 
 			Result UpdatePlayerScoreRes::TraceOut(const char* prefix, const MessageDataPtr& pMsg)
 			{
@@ -967,33 +751,6 @@ namespace SF
 				return hr;
 			}; // MessageData* GetRankingCmd::Create( IHeap& memHeap, const RouteContext &InRouteContext, const uint64_t &InTransactionID, const RankingType &InRankingType, const uint16_t &InBaseRanking, const uint16_t &InCount )
 
-			Result GetRankingCmd::OverrideRouteContextDestination( EntityUID to )
-			{
- 				ScopeContext hr;
-
-				MessageData* pIMsg = GetMessage();
-				RouteContext routeContext;
-
-				protocolCheckPtr(pIMsg);
-
-				size_t MsgDataSize = (int)((size_t)pIMsg->GetMessageSize() - sizeof(MessageHeader));
-				ArrayView<const uint8_t> bufferView(MsgDataSize, pIMsg->GetMessageData());
-				InputMemoryStream inputStream(bufferView);
-				auto* input = inputStream.ToInputStream();
-				uint16_t ArrayLen = 0;(void)(ArrayLen);
-				uint8_t* pCur = nullptr;(void)(pCur);
-
-				pCur = input->GetBufferPtr() + input->GetPosition();
-				Assert(input->GetRemainSize() >= sizeof(RouteContext));
-				memcpy( &routeContext, pCur, sizeof(RouteContext) );
-				routeContext.Components.To = to;
-				memcpy( pCur, &routeContext, sizeof(RouteContext) );
-
-				return hr;
-
-			}; // Result GetRankingCmd::OverrideRouteContextDestination( EntityUID to )
-
-
 			Result GetRankingCmd::TraceOut(const char* prefix, const MessageDataPtr& pMsg)
 			{
  				GetRankingCmd parser;
@@ -1078,33 +835,6 @@ namespace SF
 				return hr;
 			}; // MessageData* GetRankingRes::Create( IHeap& memHeap, const RouteContext &InRouteContext, const uint64_t &InTransactionID, const Result &InResult, const Array<TotalRankingPlayerInformation>& InRanking )
 
-			Result GetRankingRes::OverrideRouteContextDestination( EntityUID to )
-			{
- 				ScopeContext hr;
-
-				MessageData* pIMsg = GetMessage();
-				RouteContext routeContext;
-
-				protocolCheckPtr(pIMsg);
-
-				size_t MsgDataSize = (int)((size_t)pIMsg->GetMessageSize() - sizeof(MessageHeader));
-				ArrayView<const uint8_t> bufferView(MsgDataSize, pIMsg->GetMessageData());
-				InputMemoryStream inputStream(bufferView);
-				auto* input = inputStream.ToInputStream();
-				uint16_t ArrayLen = 0;(void)(ArrayLen);
-				uint8_t* pCur = nullptr;(void)(pCur);
-
-				pCur = input->GetBufferPtr() + input->GetPosition();
-				Assert(input->GetRemainSize() >= sizeof(RouteContext));
-				memcpy( &routeContext, pCur, sizeof(RouteContext) );
-				routeContext.Components.To = to;
-				memcpy( pCur, &routeContext, sizeof(RouteContext) );
-
-				return hr;
-
-			}; // Result GetRankingRes::OverrideRouteContextDestination( EntityUID to )
-
-
 			Result GetRankingRes::TraceOut(const char* prefix, const MessageDataPtr& pMsg)
 			{
  				GetRankingRes parser;
@@ -1185,33 +915,6 @@ namespace SF
 				return hr;
 			}; // MessageData* DebugPrintALLRankingCmd::Create( IHeap& memHeap, const RouteContext &InRouteContext, const uint64_t &InTransactionID, const char* InFileName )
 
-			Result DebugPrintALLRankingCmd::OverrideRouteContextDestination( EntityUID to )
-			{
- 				ScopeContext hr;
-
-				MessageData* pIMsg = GetMessage();
-				RouteContext routeContext;
-
-				protocolCheckPtr(pIMsg);
-
-				size_t MsgDataSize = (int)((size_t)pIMsg->GetMessageSize() - sizeof(MessageHeader));
-				ArrayView<const uint8_t> bufferView(MsgDataSize, pIMsg->GetMessageData());
-				InputMemoryStream inputStream(bufferView);
-				auto* input = inputStream.ToInputStream();
-				uint16_t ArrayLen = 0;(void)(ArrayLen);
-				uint8_t* pCur = nullptr;(void)(pCur);
-
-				pCur = input->GetBufferPtr() + input->GetPosition();
-				Assert(input->GetRemainSize() >= sizeof(RouteContext));
-				memcpy( &routeContext, pCur, sizeof(RouteContext) );
-				routeContext.Components.To = to;
-				memcpy( pCur, &routeContext, sizeof(RouteContext) );
-
-				return hr;
-
-			}; // Result DebugPrintALLRankingCmd::OverrideRouteContextDestination( EntityUID to )
-
-
 			Result DebugPrintALLRankingCmd::TraceOut(const char* prefix, const MessageDataPtr& pMsg)
 			{
  				DebugPrintALLRankingCmd parser;
@@ -1289,33 +992,6 @@ namespace SF
 
 				return hr;
 			}; // MessageData* DebugPrintALLRankingRes::Create( IHeap& memHeap, const RouteContext &InRouteContext, const uint64_t &InTransactionID, const Result &InResult )
-
-			Result DebugPrintALLRankingRes::OverrideRouteContextDestination( EntityUID to )
-			{
- 				ScopeContext hr;
-
-				MessageData* pIMsg = GetMessage();
-				RouteContext routeContext;
-
-				protocolCheckPtr(pIMsg);
-
-				size_t MsgDataSize = (int)((size_t)pIMsg->GetMessageSize() - sizeof(MessageHeader));
-				ArrayView<const uint8_t> bufferView(MsgDataSize, pIMsg->GetMessageData());
-				InputMemoryStream inputStream(bufferView);
-				auto* input = inputStream.ToInputStream();
-				uint16_t ArrayLen = 0;(void)(ArrayLen);
-				uint8_t* pCur = nullptr;(void)(pCur);
-
-				pCur = input->GetBufferPtr() + input->GetPosition();
-				Assert(input->GetRemainSize() >= sizeof(RouteContext));
-				memcpy( &routeContext, pCur, sizeof(RouteContext) );
-				routeContext.Components.To = to;
-				memcpy( pCur, &routeContext, sizeof(RouteContext) );
-
-				return hr;
-
-			}; // Result DebugPrintALLRankingRes::OverrideRouteContextDestination( EntityUID to )
-
 
 			Result DebugPrintALLRankingRes::TraceOut(const char* prefix, const MessageDataPtr& pMsg)
 			{

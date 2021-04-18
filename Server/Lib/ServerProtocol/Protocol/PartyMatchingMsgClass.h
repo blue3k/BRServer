@@ -67,10 +67,6 @@ namespace SF
 
 				static MessageData* Create( IHeap& memHeap, const RouteContext &InRouteContext, const uint16_t &InRouteHopCount );
 
-				Result OverrideRouteContextDestination( EntityUID to );
-
-				Result OverrideRouteInformation( EntityUID to, unsigned hopCount );
-
 			}; // class PartyGameMatchedS2CEvt : public MessageBase
 
 			// S2C: Event message will be sent when a player game matching has successfully finished.
@@ -119,10 +115,6 @@ namespace SF
 				static Result ParseMessageToMessageBase(IHeap& memHeap, const MessageDataPtr& pIMsg, MessageBase* &pMsgBase);
 
 				static MessageData* Create( IHeap& memHeap, const RouteContext &InRouteContext, const uint16_t &InRouteHopCount, const PlayerID &InDestPlayerID, const uint64_t &InGameInsUID, const uint8_t &InRequestedRole );
-
-				Result OverrideRouteContextDestination( EntityUID to );
-
-				Result OverrideRouteInformation( EntityUID to, unsigned hopCount );
 
 			}; // class PlayerGameMatchedS2CEvt : public MessageBase
 

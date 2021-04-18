@@ -156,64 +156,6 @@ namespace SF
 				return hr;
 			}; // MessageData* CreateGameInstanceCmd::Create( IHeap& memHeap, const RouteContext &InRouteContext, const uint64_t &InTransactionID, const uint16_t &InRouteHopCount, const uint32_t &InZoneTableId, const VariableTable &InAttributes )
 
-			Result CreateGameInstanceCmd::OverrideRouteContextDestination( EntityUID to )
-			{
- 				ScopeContext hr;
-
-				MessageData* pIMsg = GetMessage();
-				RouteContext routeContext;
-
-				protocolCheckPtr(pIMsg);
-
-				size_t MsgDataSize = (int)((size_t)pIMsg->GetMessageSize() - sizeof(MessageHeader));
-				ArrayView<const uint8_t> bufferView(MsgDataSize, pIMsg->GetMessageData());
-				InputMemoryStream inputStream(bufferView);
-				auto* input = inputStream.ToInputStream();
-				uint16_t ArrayLen = 0;(void)(ArrayLen);
-				uint8_t* pCur = nullptr;(void)(pCur);
-
-				pCur = input->GetBufferPtr() + input->GetPosition();
-				Assert(input->GetRemainSize() >= sizeof(RouteContext));
-				memcpy( &routeContext, pCur, sizeof(RouteContext) );
-				routeContext.Components.To = to;
-				memcpy( pCur, &routeContext, sizeof(RouteContext) );
-
-				return hr;
-
-			}; // Result CreateGameInstanceCmd::OverrideRouteContextDestination( EntityUID to )
-
-			Result CreateGameInstanceCmd::OverrideRouteInformation( EntityUID to, unsigned hopCount )
-			{
- 				ScopeContext hr;
-
-				MessageData* pIMsg = GetMessage();
-				RouteContext routeContext;
-
-				protocolCheckPtr(pIMsg);
-
-				size_t MsgDataSize = ((size_t)pIMsg->GetMessageSize() - sizeof(MessageHeader));
-				ArrayView<const uint8_t> bufferView(MsgDataSize, pIMsg->GetMessageData());
-				InputMemoryStream inputStream(bufferView);
-				auto* input = inputStream.ToInputStream();
-				uint16_t ArrayLen = 0;(void)(ArrayLen);
-				uint8_t* pCur = nullptr;(void)(pCur);
-
-				pCur = input->GetBufferPtr() + input->GetPosition();
-				Assert(input->GetRemainSize() >= sizeof(RouteContext));
-				memcpy( &routeContext, pCur, sizeof(RouteContext) );
-				routeContext.Components.To = to;
-				memcpy( pCur, &routeContext, sizeof(RouteContext) );
-				protocolCheck(input->Skip(sizeof(RouteContext)));
-				protocolCheck(input->Skip(sizeof(uint64_t)));
-				Assert(input->GetRemainSize() >= sizeof(uint16_t));
-				pCur = input->GetBufferPtr() + input->GetPosition();
-				*(uint16_t*)pCur = hopCount;
-				protocolCheck(input->Skip(sizeof(uint16_t)));
-
-				return hr;
-
-			}; // Result CreateGameInstanceCmd::OverrideRouteInformation( EntityUID to, unsigned hopCount )
-
 			Result CreateGameInstanceCmd::TraceOut(const char* prefix, const MessageDataPtr& pMsg)
 			{
  				CreateGameInstanceCmd parser;
@@ -291,61 +233,6 @@ namespace SF
 
 				return hr;
 			}; // MessageData* CreateGameInstanceRes::Create( IHeap& memHeap, const RouteContext &InRouteContext, const uint64_t &InTransactionID, const Result &InResult )
-
-			Result CreateGameInstanceRes::OverrideRouteContextDestination( EntityUID to )
-			{
- 				ScopeContext hr;
-
-				MessageData* pIMsg = GetMessage();
-				RouteContext routeContext;
-
-				protocolCheckPtr(pIMsg);
-
-				size_t MsgDataSize = (int)((size_t)pIMsg->GetMessageSize() - sizeof(MessageHeader));
-				ArrayView<const uint8_t> bufferView(MsgDataSize, pIMsg->GetMessageData());
-				InputMemoryStream inputStream(bufferView);
-				auto* input = inputStream.ToInputStream();
-				uint16_t ArrayLen = 0;(void)(ArrayLen);
-				uint8_t* pCur = nullptr;(void)(pCur);
-
-				pCur = input->GetBufferPtr() + input->GetPosition();
-				Assert(input->GetRemainSize() >= sizeof(RouteContext));
-				memcpy( &routeContext, pCur, sizeof(RouteContext) );
-				routeContext.Components.To = to;
-				memcpy( pCur, &routeContext, sizeof(RouteContext) );
-
-				return hr;
-
-			}; // Result CreateGameInstanceRes::OverrideRouteContextDestination( EntityUID to )
-
-			Result CreateGameInstanceRes::OverrideRouteInformation( EntityUID to, unsigned hopCount )
-			{
- 				ScopeContext hr;
-
-				MessageData* pIMsg = GetMessage();
-				RouteContext routeContext;
-
-				protocolCheckPtr(pIMsg);
-
-				size_t MsgDataSize = ((size_t)pIMsg->GetMessageSize() - sizeof(MessageHeader));
-				ArrayView<const uint8_t> bufferView(MsgDataSize, pIMsg->GetMessageData());
-				InputMemoryStream inputStream(bufferView);
-				auto* input = inputStream.ToInputStream();
-				uint16_t ArrayLen = 0;(void)(ArrayLen);
-				uint8_t* pCur = nullptr;(void)(pCur);
-
-				pCur = input->GetBufferPtr() + input->GetPosition();
-				Assert(input->GetRemainSize() >= sizeof(RouteContext));
-				memcpy( &routeContext, pCur, sizeof(RouteContext) );
-				routeContext.Components.To = to;
-				memcpy( pCur, &routeContext, sizeof(RouteContext) );
-				protocolCheck(input->Skip(sizeof(RouteContext)));
-				protocolCheck(input->Skip(sizeof(uint64_t)));
-				protocolCheck(input->Skip(sizeof(Result)));
-
-				return hr;
-
-			}; // Result CreateGameInstanceRes::OverrideRouteInformation( EntityUID to, unsigned hopCount )
 
 			Result CreateGameInstanceRes::TraceOut(const char* prefix, const MessageDataPtr& pMsg)
 			{

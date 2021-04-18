@@ -93,33 +93,6 @@ namespace SF
 				return hr;
 			}; // MessageData* GenericFailureCmd::Create( IHeap& memHeap, const RouteContext &InRouteContext, const uint64_t &InTransactionID )
 
-			Result GenericFailureCmd::OverrideRouteContextDestination( EntityUID to )
-			{
- 				ScopeContext hr;
-
-				MessageData* pIMsg = GetMessage();
-				RouteContext routeContext;
-
-				protocolCheckPtr(pIMsg);
-
-				size_t MsgDataSize = (int)((size_t)pIMsg->GetMessageSize() - sizeof(MessageHeader));
-				ArrayView<const uint8_t> bufferView(MsgDataSize, pIMsg->GetMessageData());
-				InputMemoryStream inputStream(bufferView);
-				auto* input = inputStream.ToInputStream();
-				uint16_t ArrayLen = 0;(void)(ArrayLen);
-				uint8_t* pCur = nullptr;(void)(pCur);
-
-				pCur = input->GetBufferPtr() + input->GetPosition();
-				Assert(input->GetRemainSize() >= sizeof(RouteContext));
-				memcpy( &routeContext, pCur, sizeof(RouteContext) );
-				routeContext.Components.To = to;
-				memcpy( pCur, &routeContext, sizeof(RouteContext) );
-
-				return hr;
-
-			}; // Result GenericFailureCmd::OverrideRouteContextDestination( EntityUID to )
-
-
 			Result GenericFailureCmd::TraceOut(const char* prefix, const MessageDataPtr& pMsg)
 			{
  				GenericFailureCmd parser;
@@ -197,33 +170,6 @@ namespace SF
 
 				return hr;
 			}; // MessageData* GenericFailureRes::Create( IHeap& memHeap, const RouteContext &InRouteContext, const uint64_t &InTransactionID, const Result &InResult )
-
-			Result GenericFailureRes::OverrideRouteContextDestination( EntityUID to )
-			{
- 				ScopeContext hr;
-
-				MessageData* pIMsg = GetMessage();
-				RouteContext routeContext;
-
-				protocolCheckPtr(pIMsg);
-
-				size_t MsgDataSize = (int)((size_t)pIMsg->GetMessageSize() - sizeof(MessageHeader));
-				ArrayView<const uint8_t> bufferView(MsgDataSize, pIMsg->GetMessageData());
-				InputMemoryStream inputStream(bufferView);
-				auto* input = inputStream.ToInputStream();
-				uint16_t ArrayLen = 0;(void)(ArrayLen);
-				uint8_t* pCur = nullptr;(void)(pCur);
-
-				pCur = input->GetBufferPtr() + input->GetPosition();
-				Assert(input->GetRemainSize() >= sizeof(RouteContext));
-				memcpy( &routeContext, pCur, sizeof(RouteContext) );
-				routeContext.Components.To = to;
-				memcpy( pCur, &routeContext, sizeof(RouteContext) );
-
-				return hr;
-
-			}; // Result GenericFailureRes::OverrideRouteContextDestination( EntityUID to )
-
 
 			Result GenericFailureRes::TraceOut(const char* prefix, const MessageDataPtr& pMsg)
 			{
@@ -303,33 +249,6 @@ namespace SF
 
 				return hr;
 			}; // MessageData* ServerConnectedC2SEvt::Create( IHeap& memHeap, const RouteContext &InRouteContext, const uint32_t &InStartUpTime, const NetAddress &InPrivateAddress )
-
-			Result ServerConnectedC2SEvt::OverrideRouteContextDestination( EntityUID to )
-			{
- 				ScopeContext hr;
-
-				MessageData* pIMsg = GetMessage();
-				RouteContext routeContext;
-
-				protocolCheckPtr(pIMsg);
-
-				size_t MsgDataSize = (int)((size_t)pIMsg->GetMessageSize() - sizeof(MessageHeader));
-				ArrayView<const uint8_t> bufferView(MsgDataSize, pIMsg->GetMessageData());
-				InputMemoryStream inputStream(bufferView);
-				auto* input = inputStream.ToInputStream();
-				uint16_t ArrayLen = 0;(void)(ArrayLen);
-				uint8_t* pCur = nullptr;(void)(pCur);
-
-				pCur = input->GetBufferPtr() + input->GetPosition();
-				Assert(input->GetRemainSize() >= sizeof(RouteContext));
-				memcpy( &routeContext, pCur, sizeof(RouteContext) );
-				routeContext.Components.To = to;
-				memcpy( pCur, &routeContext, sizeof(RouteContext) );
-
-				return hr;
-
-			}; // Result ServerConnectedC2SEvt::OverrideRouteContextDestination( EntityUID to )
-
 
 			Result ServerConnectedC2SEvt::TraceOut(const char* prefix, const MessageDataPtr& pMsg)
 			{

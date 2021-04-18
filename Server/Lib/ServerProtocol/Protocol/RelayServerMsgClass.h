@@ -71,8 +71,6 @@ namespace SF
 
 				static MessageData* Create( IHeap& memHeap, const RouteContext &InRouteContext, const uint64_t &InTransactionID, const PlayerInformation &InPlayerInfo, const uint64_t &InRelayScore );
 
-				Result OverrideRouteContextDestination( EntityUID to );
-
 			}; // class CreateRelayInstanceCmd : public MessageBase
 
 			class CreateRelayInstanceRes : public MessageBase
@@ -118,8 +116,6 @@ namespace SF
 				static Result ParseMessageToMessageBase(IHeap& memHeap, const MessageDataPtr& pIMsg, MessageBase* &pMsgBase);
 
 				static MessageData* Create( IHeap& memHeap, const RouteContext &InRouteContext, const uint64_t &InTransactionID, const Result &InResult, const uint32_t &InRelay );
-
-				Result OverrideRouteContextDestination( EntityUID to );
 
 			}; // class CreateRelayInstanceRes : public MessageBase
 
@@ -168,8 +164,6 @@ namespace SF
 
 				static MessageData* Create( IHeap& memHeap, const RouteContext &InRouteContext, const uint64_t &InTransactionID, const PlayerInformation &InPlayerInfo, const uint64_t &InRelayScore );
 
-				Result OverrideRouteContextDestination( EntityUID to );
-
 			}; // class AddPlayerCmd : public MessageBase
 
 			class AddPlayerRes : public MessageBase
@@ -216,8 +210,6 @@ namespace SF
 
 				static MessageData* Create( IHeap& memHeap, const RouteContext &InRouteContext, const uint64_t &InTransactionID, const Result &InResult, const uint32_t &InRelay );
 
-				Result OverrideRouteContextDestination( EntityUID to );
-
 			}; // class AddPlayerRes : public MessageBase
 
 			// Cmd: Remove a player to Relay
@@ -262,8 +254,6 @@ namespace SF
 
 				static MessageData* Create( IHeap& memHeap, const RouteContext &InRouteContext, const uint64_t &InTransactionID, const PlayerID &InPlayerID );
 
-				Result OverrideRouteContextDestination( EntityUID to );
-
 			}; // class RemovePlayerCmd : public MessageBase
 
 			class RemovePlayerRes : public MessageBase
@@ -307,8 +297,6 @@ namespace SF
 				static Result ParseMessageToMessageBase(IHeap& memHeap, const MessageDataPtr& pIMsg, MessageBase* &pMsgBase);
 
 				static MessageData* Create( IHeap& memHeap, const RouteContext &InRouteContext, const uint64_t &InTransactionID, const Result &InResult );
-
-				Result OverrideRouteContextDestination( EntityUID to );
 
 			}; // class RemovePlayerRes : public MessageBase
 

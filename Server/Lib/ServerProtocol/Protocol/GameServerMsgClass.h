@@ -74,8 +74,6 @@ namespace SF
 
 				static MessageData* Create( IHeap& memHeap, const RouteContext &InRouteContext, const uint64_t &InTransactionID, const PlayerID &InPlayerID, const AuthTicket &InTicket, const FacebookUID &InFBUserID, const uint32_t &InShardID );
 
-				Result OverrideRouteContextDestination( EntityUID to );
-
 			}; // class RegisterPlayerToJoinGameServerCmd : public MessageBase
 
 			class RegisterPlayerToJoinGameServerRes : public MessageBase
@@ -126,8 +124,6 @@ namespace SF
 
 				static MessageData* Create( IHeap& memHeap, const RouteContext &InRouteContext, const uint64_t &InTransactionID, const Result &InResult, const char* InPublicAddress, const char* InPublicAddressV6, const uint32_t &InPort );
 
-				Result OverrideRouteContextDestination( EntityUID to );
-
 			}; // class RegisterPlayerToJoinGameServerRes : public MessageBase
 
 			// Cmd: Same to RegisterPlayerToJoinGameServer, but can run on player entity. only works when the player entity exists. If player disconnected for some reason, you can run this method to connect.
@@ -176,8 +172,6 @@ namespace SF
 
 				static MessageData* Create( IHeap& memHeap, const RouteContext &InRouteContext, const uint64_t &InTransactionID, const PlayerID &InPlayerID, const AuthTicket &InTicket, const FacebookUID &InFBUserID );
 
-				Result OverrideRouteContextDestination( EntityUID to );
-
 			}; // class RegisterPlayerToJoinGameServerOnPlayerEntityCmd : public MessageBase
 
 			class RegisterPlayerToJoinGameServerOnPlayerEntityRes : public MessageBase
@@ -221,8 +215,6 @@ namespace SF
 				static Result ParseMessageToMessageBase(IHeap& memHeap, const MessageDataPtr& pIMsg, MessageBase* &pMsgBase);
 
 				static MessageData* Create( IHeap& memHeap, const RouteContext &InRouteContext, const uint64_t &InTransactionID, const Result &InResult );
-
-				Result OverrideRouteContextDestination( EntityUID to );
 
 			}; // class RegisterPlayerToJoinGameServerOnPlayerEntityRes : public MessageBase
 
@@ -273,8 +265,6 @@ namespace SF
 				static Result ParseMessageToMessageBase(IHeap& memHeap, const MessageDataPtr& pIMsg, MessageBase* &pMsgBase);
 
 				static MessageData* Create( IHeap& memHeap, const RouteContext &InRouteContext, const AccountID &InSenderID, const uint8_t &InRole, const char* InSenderName, const char* InChatMessage );
-
-				Result OverrideRouteContextDestination( EntityUID to );
 
 			}; // class ChatMessageC2SEvt : public MessageBase
 
@@ -332,8 +322,6 @@ namespace SF
 
 				static MessageData* Create( IHeap& memHeap, const RouteContext &InRouteContext, const PlayerID &InDestPlayerID, const uint32_t &InNotificationID, const NotificationType &InMessageID, const uint64_t &InMessageParam0, const uint64_t &InMessageParam1, const char* InMessageText, const uint64_t &InTimeStamp );
 
-				Result OverrideRouteContextDestination( EntityUID to );
-
 			}; // class NotifyC2SEvt : public MessageBase
 
 			// C2S: Friend Accepted
@@ -379,8 +367,6 @@ namespace SF
 				static Result ParseMessageToMessageBase(IHeap& memHeap, const MessageDataPtr& pIMsg, MessageBase* &pMsgBase);
 
 				static MessageData* Create( IHeap& memHeap, const RouteContext &InRouteContext, const AccountID &InDestPlayerID, const ServerFriendInformation &InAccepter );
-
-				Result OverrideRouteContextDestination( EntityUID to );
 
 			}; // class FriendAcceptedC2SEvt : public MessageBase
 
@@ -428,8 +414,6 @@ namespace SF
 
 				static MessageData* Create( IHeap& memHeap, const RouteContext &InRouteContext, const AccountID &InDestPlayerID, const PlayerID &InRemoverID );
 
-				Result OverrideRouteContextDestination( EntityUID to );
-
 			}; // class FriendRemovedC2SEvt : public MessageBase
 
 			// C2S: Request Player Status Update
@@ -475,8 +459,6 @@ namespace SF
 				static Result ParseMessageToMessageBase(IHeap& memHeap, const MessageDataPtr& pIMsg, MessageBase* &pMsgBase);
 
 				static MessageData* Create( IHeap& memHeap, const RouteContext &InRouteContext, const AccountID &InDestPlayerID, const PlayerID &InRequesterID );
-
-				Result OverrideRouteContextDestination( EntityUID to );
 
 			}; // class RequestPlayerStatusUpdateC2SEvt : public MessageBase
 
@@ -525,8 +507,6 @@ namespace SF
 				static Result ParseMessageToMessageBase(IHeap& memHeap, const MessageDataPtr& pIMsg, MessageBase* &pMsgBase);
 
 				static MessageData* Create( IHeap& memHeap, const RouteContext &InRouteContext, const AccountID &InDestPlayerID, const uint32_t &InLatestActiveTime, const uint8_t &InIsInGame );
-
-				Result OverrideRouteContextDestination( EntityUID to );
 
 			}; // class NotifyPlayerStatusUpdatedC2SEvt : public MessageBase
 
@@ -577,8 +557,6 @@ namespace SF
 				static Result ParseMessageToMessageBase(IHeap& memHeap, const MessageDataPtr& pIMsg, MessageBase* &pMsgBase);
 
 				static MessageData* Create( IHeap& memHeap, const RouteContext &InRouteContext, const PlayerID &InDestPlayerID, const PlayerID &InInviterID, const char* InInviterName, const uint64_t &InPartyUID );
-
-				Result OverrideRouteContextDestination( EntityUID to );
 
 			}; // class NotifyPartyInviteC2SEvt : public MessageBase
 

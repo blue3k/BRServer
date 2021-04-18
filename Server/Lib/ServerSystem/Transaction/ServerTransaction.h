@@ -139,47 +139,47 @@ namespace Svr {
 			return super::GetMessageUsage() == Message::MessageUsage_ClusterDataWrite || super::GetMessageUsage() == Message::MessageUsage_ClusterDataRead;
 		}
 
-		// Toss a message to a target
-		Result TossMessageToTarget( ServerServiceInformation* pService )
-		{
-			Result hr = ResultCode::SUCCESS;
-			ServiceEntity *pMyOwner = nullptr;
-			MessageDataPtr pClonedMessage;
-			pMyOwner = super::GetMyOwner();
+		//// Toss a message to a target
+		//Result TossMessageToTarget( ServerServiceInformation* pService )
+		//{
+		//	Result hr = ResultCode::SUCCESS;
+		//	ServiceEntity *pMyOwner = nullptr;
+		//	MessageDataPtr pClonedMessage;
+		//	pMyOwner = super::GetMyOwner();
 
 
-			if (pService == nullptr)
-				return hr;
+		//	if (pService == nullptr)
+		//		return hr;
 
-			// Skip unexpected message
-			if( pService->GetEntityUID() == pMyOwner->GetEntityUID() )
-				return hr;
+		//	// Skip unexpected message
+		//	if( pService->GetEntityUID() == pMyOwner->GetEntityUID() )
+		//		return hr;
 
-			auto remoteEndpoint = pService->GetTargetEndpoint();
-			if(remoteEndpoint == nullptr )
-			{
-				svrTrace( Error, "Failed routing a message({0}) for {1}", super::GetMessage()->GetMessageHeader()->msgID, typeid(*pMyOwner).name() );
-				svrErr(ResultCode::SVR_CLUSTER_NOTREADY);
-			}
+		//	auto remoteEndpoint = pService->GetTargetEndpoint();
+		//	if(remoteEndpoint == nullptr )
+		//	{
+		//		svrTrace( Error, "Failed routing a message({0}) for {1}", super::GetMessage()->GetMessageHeader()->msgID, typeid(*pMyOwner).name() );
+		//		svrErr(ResultCode::SVR_CLUSTER_NOTREADY);
+		//	}
 
-			MessageClass::OverrideRouteInformation( pService->GetEntityUID(), super::GetRouteHopCount() + 1 );
+		//	MessageClass::OverrideRouteInformation( pService->GetEntityUID(), super::GetRouteHopCount() + 1 );
 
-			pClonedMessage = super::GetMessage()->Clone(Transaction::GetHeap());
-			if( pClonedMessage == nullptr )
-			{
-				svrTrace( Error, "Failed routing a message({0}) for {1}, Out of memory", super::GetMessage()->GetMessageHeader()->msgID, typeid(*pMyOwner).name() );
-				goto Proc_End;
-			}
+		//	pClonedMessage = super::GetMessage()->Clone(Transaction::GetHeap());
+		//	if( pClonedMessage == nullptr )
+		//	{
+		//		svrTrace( Error, "Failed routing a message({0}) for {1}, Out of memory", super::GetMessage()->GetMessageHeader()->msgID, typeid(*pMyOwner).name() );
+		//		goto Proc_End;
+		//	}
 
-			Assert(pClonedMessage->GetReferenceCount() == 1);
-			remoteEndpoint->Send( pClonedMessage );
+		//	Assert(pClonedMessage->GetReferenceCount() == 1);
+		//	remoteEndpoint->Send( pClonedMessage );
 
-			//Util::SafeRelease( pClonedMessage );
+		//	//Util::SafeRelease( pClonedMessage );
 
-		Proc_End:
+		//Proc_End:
 
-			return hr;
-		}
+		//	return hr;
+		//}
 
 		// Override for the automatic broad cast
 		virtual Result CloseTransaction( Result hrRes )

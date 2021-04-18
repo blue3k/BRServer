@@ -74,10 +74,6 @@ namespace SF
 
 				static MessageData* Create( IHeap& memHeap, const RouteContext &InRouteContext, const uint64_t &InTransactionID, const uint16_t &InRouteHopCount, const char* InChannelName, const char* InPasscode, const PlayerInformation &InCreator );
 
-				Result OverrideRouteContextDestination( EntityUID to );
-
-				Result OverrideRouteInformation( EntityUID to, unsigned hopCount );
-
 			}; // class CreateChannelCmd : public MessageBase
 
 			class CreateChannelRes : public MessageBase
@@ -123,10 +119,6 @@ namespace SF
 				static Result ParseMessageToMessageBase(IHeap& memHeap, const MessageDataPtr& pIMsg, MessageBase* &pMsgBase);
 
 				static MessageData* Create( IHeap& memHeap, const RouteContext &InRouteContext, const uint64_t &InTransactionID, const Result &InResult, const uint64_t &InChannelUID );
-
-				Result OverrideRouteContextDestination( EntityUID to );
-
-				Result OverrideRouteInformation( EntityUID to, unsigned hopCount );
 
 			}; // class CreateChannelRes : public MessageBase
 
@@ -174,10 +166,6 @@ namespace SF
 
 				static MessageData* Create( IHeap& memHeap, const RouteContext &InRouteContext, const uint64_t &InTransactionID, const uint16_t &InRouteHopCount, const char* InChannelName );
 
-				Result OverrideRouteContextDestination( EntityUID to );
-
-				Result OverrideRouteInformation( EntityUID to, unsigned hopCount );
-
 			}; // class FindChannelCmd : public MessageBase
 
 			class FindChannelRes : public MessageBase
@@ -224,10 +212,6 @@ namespace SF
 
 				static MessageData* Create( IHeap& memHeap, const RouteContext &InRouteContext, const uint64_t &InTransactionID, const Result &InResult, const uint64_t &InChannelUID );
 
-				Result OverrideRouteContextDestination( EntityUID to );
-
-				Result OverrideRouteInformation( EntityUID to, unsigned hopCount );
-
 			}; // class FindChannelRes : public MessageBase
 
 			// C2S: Notification that a chat channel instance has deleted
@@ -270,10 +254,6 @@ namespace SF
 				static Result ParseMessageToMessageBase(IHeap& memHeap, const MessageDataPtr& pIMsg, MessageBase* &pMsgBase);
 
 				static MessageData* Create( IHeap& memHeap, const RouteContext &InRouteContext, const uint16_t &InRouteHopCount );
-
-				Result OverrideRouteContextDestination( EntityUID to );
-
-				Result OverrideRouteInformation( EntityUID to, unsigned hopCount );
 
 			}; // class ChatChannelDeletedC2SEvt : public MessageBase
 

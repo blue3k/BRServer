@@ -93,63 +93,6 @@ namespace SF
 				return hr;
 			}; // MessageData* PartyGameMatchedS2CEvt::Create( IHeap& memHeap, const RouteContext &InRouteContext, const uint16_t &InRouteHopCount )
 
-			Result PartyGameMatchedS2CEvt::OverrideRouteContextDestination( EntityUID to )
-			{
- 				ScopeContext hr;
-
-				MessageData* pIMsg = GetMessage();
-				RouteContext routeContext;
-
-				protocolCheckPtr(pIMsg);
-
-				size_t MsgDataSize = (int)((size_t)pIMsg->GetMessageSize() - sizeof(MessageHeader));
-				ArrayView<const uint8_t> bufferView(MsgDataSize, pIMsg->GetMessageData());
-				InputMemoryStream inputStream(bufferView);
-				auto* input = inputStream.ToInputStream();
-				uint16_t ArrayLen = 0;(void)(ArrayLen);
-				uint8_t* pCur = nullptr;(void)(pCur);
-
-				pCur = input->GetBufferPtr() + input->GetPosition();
-				Assert(input->GetRemainSize() >= sizeof(RouteContext));
-				memcpy( &routeContext, pCur, sizeof(RouteContext) );
-				routeContext.Components.To = to;
-				memcpy( pCur, &routeContext, sizeof(RouteContext) );
-
-				return hr;
-
-			}; // Result PartyGameMatchedS2CEvt::OverrideRouteContextDestination( EntityUID to )
-
-			Result PartyGameMatchedS2CEvt::OverrideRouteInformation( EntityUID to, unsigned hopCount )
-			{
- 				ScopeContext hr;
-
-				MessageData* pIMsg = GetMessage();
-				RouteContext routeContext;
-
-				protocolCheckPtr(pIMsg);
-
-				size_t MsgDataSize = ((size_t)pIMsg->GetMessageSize() - sizeof(MessageHeader));
-				ArrayView<const uint8_t> bufferView(MsgDataSize, pIMsg->GetMessageData());
-				InputMemoryStream inputStream(bufferView);
-				auto* input = inputStream.ToInputStream();
-				uint16_t ArrayLen = 0;(void)(ArrayLen);
-				uint8_t* pCur = nullptr;(void)(pCur);
-
-				pCur = input->GetBufferPtr() + input->GetPosition();
-				Assert(input->GetRemainSize() >= sizeof(RouteContext));
-				memcpy( &routeContext, pCur, sizeof(RouteContext) );
-				routeContext.Components.To = to;
-				memcpy( pCur, &routeContext, sizeof(RouteContext) );
-				protocolCheck(input->Skip(sizeof(RouteContext)));
-				Assert(input->GetRemainSize() >= sizeof(uint16_t));
-				pCur = input->GetBufferPtr() + input->GetPosition();
-				*(uint16_t*)pCur = hopCount;
-				protocolCheck(input->Skip(sizeof(uint16_t)));
-
-				return hr;
-
-			}; // Result PartyGameMatchedS2CEvt::OverrideRouteInformation( EntityUID to, unsigned hopCount )
-
 			Result PartyGameMatchedS2CEvt::TraceOut(const char* prefix, const MessageDataPtr& pMsg)
 			{
  				PartyGameMatchedS2CEvt parser;
@@ -234,63 +177,6 @@ namespace SF
 
 				return hr;
 			}; // MessageData* PlayerGameMatchedS2CEvt::Create( IHeap& memHeap, const RouteContext &InRouteContext, const uint16_t &InRouteHopCount, const PlayerID &InDestPlayerID, const uint64_t &InGameInsUID, const uint8_t &InRequestedRole )
-
-			Result PlayerGameMatchedS2CEvt::OverrideRouteContextDestination( EntityUID to )
-			{
- 				ScopeContext hr;
-
-				MessageData* pIMsg = GetMessage();
-				RouteContext routeContext;
-
-				protocolCheckPtr(pIMsg);
-
-				size_t MsgDataSize = (int)((size_t)pIMsg->GetMessageSize() - sizeof(MessageHeader));
-				ArrayView<const uint8_t> bufferView(MsgDataSize, pIMsg->GetMessageData());
-				InputMemoryStream inputStream(bufferView);
-				auto* input = inputStream.ToInputStream();
-				uint16_t ArrayLen = 0;(void)(ArrayLen);
-				uint8_t* pCur = nullptr;(void)(pCur);
-
-				pCur = input->GetBufferPtr() + input->GetPosition();
-				Assert(input->GetRemainSize() >= sizeof(RouteContext));
-				memcpy( &routeContext, pCur, sizeof(RouteContext) );
-				routeContext.Components.To = to;
-				memcpy( pCur, &routeContext, sizeof(RouteContext) );
-
-				return hr;
-
-			}; // Result PlayerGameMatchedS2CEvt::OverrideRouteContextDestination( EntityUID to )
-
-			Result PlayerGameMatchedS2CEvt::OverrideRouteInformation( EntityUID to, unsigned hopCount )
-			{
- 				ScopeContext hr;
-
-				MessageData* pIMsg = GetMessage();
-				RouteContext routeContext;
-
-				protocolCheckPtr(pIMsg);
-
-				size_t MsgDataSize = ((size_t)pIMsg->GetMessageSize() - sizeof(MessageHeader));
-				ArrayView<const uint8_t> bufferView(MsgDataSize, pIMsg->GetMessageData());
-				InputMemoryStream inputStream(bufferView);
-				auto* input = inputStream.ToInputStream();
-				uint16_t ArrayLen = 0;(void)(ArrayLen);
-				uint8_t* pCur = nullptr;(void)(pCur);
-
-				pCur = input->GetBufferPtr() + input->GetPosition();
-				Assert(input->GetRemainSize() >= sizeof(RouteContext));
-				memcpy( &routeContext, pCur, sizeof(RouteContext) );
-				routeContext.Components.To = to;
-				memcpy( pCur, &routeContext, sizeof(RouteContext) );
-				protocolCheck(input->Skip(sizeof(RouteContext)));
-				Assert(input->GetRemainSize() >= sizeof(uint16_t));
-				pCur = input->GetBufferPtr() + input->GetPosition();
-				*(uint16_t*)pCur = hopCount;
-				protocolCheck(input->Skip(sizeof(uint16_t)));
-
-				return hr;
-
-			}; // Result PlayerGameMatchedS2CEvt::OverrideRouteInformation( EntityUID to, unsigned hopCount )
 
 			Result PlayerGameMatchedS2CEvt::TraceOut(const char* prefix, const MessageDataPtr& pMsg)
 			{

@@ -71,8 +71,6 @@ namespace SF
 
 				static MessageData* Create( IHeap& memHeap, const RouteContext &InRouteContext, const uint64_t &InTransactionID, const PlayerInformation &InPlayerInfo, const uint64_t &InRankingScore );
 
-				Result OverrideRouteContextDestination( EntityUID to );
-
 			}; // class AddPlayerCmd : public MessageBase
 
 			class AddPlayerRes : public MessageBase
@@ -119,8 +117,6 @@ namespace SF
 
 				static MessageData* Create( IHeap& memHeap, const RouteContext &InRouteContext, const uint64_t &InTransactionID, const Result &InResult, const uint32_t &InRanking );
 
-				Result OverrideRouteContextDestination( EntityUID to );
-
 			}; // class AddPlayerRes : public MessageBase
 
 			// Cmd: Remove a player to ranking
@@ -164,8 +160,6 @@ namespace SF
 				static Result ParseMessageToMessageBase(IHeap& memHeap, const MessageDataPtr& pIMsg, MessageBase* &pMsgBase);
 
 				static MessageData* Create( IHeap& memHeap, const RouteContext &InRouteContext, const uint64_t &InTransactionID, const PlayerID &InPlayerID );
-
-				Result OverrideRouteContextDestination( EntityUID to );
 
 			}; // class RemovePlayerCmd : public MessageBase
 
@@ -211,8 +205,6 @@ namespace SF
 
 				static MessageData* Create( IHeap& memHeap, const RouteContext &InRouteContext, const uint64_t &InTransactionID, const Result &InResult );
 
-				Result OverrideRouteContextDestination( EntityUID to );
-
 			}; // class RemovePlayerRes : public MessageBase
 
 			// Cmd: Get player to ranking
@@ -256,8 +248,6 @@ namespace SF
 				static Result ParseMessageToMessageBase(IHeap& memHeap, const MessageDataPtr& pIMsg, MessageBase* &pMsgBase);
 
 				static MessageData* Create( IHeap& memHeap, const RouteContext &InRouteContext, const uint64_t &InTransactionID, const PlayerID &InPlayerID );
-
-				Result OverrideRouteContextDestination( EntityUID to );
 
 			}; // class GetPlayerRankingCmd : public MessageBase
 
@@ -304,8 +294,6 @@ namespace SF
 				static Result ParseMessageToMessageBase(IHeap& memHeap, const MessageDataPtr& pIMsg, MessageBase* &pMsgBase);
 
 				static MessageData* Create( IHeap& memHeap, const RouteContext &InRouteContext, const uint64_t &InTransactionID, const Result &InResult, const uint32_t &InRanking );
-
-				Result OverrideRouteContextDestination( EntityUID to );
 
 			}; // class GetPlayerRankingRes : public MessageBase
 
@@ -356,8 +344,6 @@ namespace SF
 
 				static MessageData* Create( IHeap& memHeap, const RouteContext &InRouteContext, const uint64_t &InTransactionID, const uint64_t &InRankingScore, const PlayerInformation &InPlayerInfo, const uint16_t &InCount );
 
-				Result OverrideRouteContextDestination( EntityUID to );
-
 			}; // class UpdatePlayerScoreCmd : public MessageBase
 
 			class UpdatePlayerScoreRes : public MessageBase
@@ -403,8 +389,6 @@ namespace SF
 				static Result ParseMessageToMessageBase(IHeap& memHeap, const MessageDataPtr& pIMsg, MessageBase* &pMsgBase);
 
 				static MessageData* Create( IHeap& memHeap, const RouteContext &InRouteContext, const uint64_t &InTransactionID, const Result &InResult, const Array<TotalRankingPlayerInformation>& InRanking );
-
-				Result OverrideRouteContextDestination( EntityUID to );
 
 			}; // class UpdatePlayerScoreRes : public MessageBase
 
@@ -455,8 +439,6 @@ namespace SF
 
 				static MessageData* Create( IHeap& memHeap, const RouteContext &InRouteContext, const uint64_t &InTransactionID, const RankingType &InRankingType, const uint16_t &InBaseRanking, const uint16_t &InCount );
 
-				Result OverrideRouteContextDestination( EntityUID to );
-
 			}; // class GetRankingCmd : public MessageBase
 
 			class GetRankingRes : public MessageBase
@@ -503,8 +485,6 @@ namespace SF
 
 				static MessageData* Create( IHeap& memHeap, const RouteContext &InRouteContext, const uint64_t &InTransactionID, const Result &InResult, const Array<TotalRankingPlayerInformation>& InRanking );
 
-				Result OverrideRouteContextDestination( EntityUID to );
-
 			}; // class GetRankingRes : public MessageBase
 
 			// Cmd: Debug test
@@ -550,8 +530,6 @@ namespace SF
 
 				static MessageData* Create( IHeap& memHeap, const RouteContext &InRouteContext, const uint64_t &InTransactionID, const char* InFileName );
 
-				Result OverrideRouteContextDestination( EntityUID to );
-
 			}; // class DebugPrintALLRankingCmd : public MessageBase
 
 			class DebugPrintALLRankingRes : public MessageBase
@@ -595,8 +573,6 @@ namespace SF
 				static Result ParseMessageToMessageBase(IHeap& memHeap, const MessageDataPtr& pIMsg, MessageBase* &pMsgBase);
 
 				static MessageData* Create( IHeap& memHeap, const RouteContext &InRouteContext, const uint64_t &InTransactionID, const Result &InResult );
-
-				Result OverrideRouteContextDestination( EntityUID to );
 
 			}; // class DebugPrintALLRankingRes : public MessageBase
 

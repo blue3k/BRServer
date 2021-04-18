@@ -72,10 +72,6 @@ namespace SF
 
 				static MessageData* Create( IHeap& memHeap, const RouteContext &InRouteContext, const uint64_t &InTransactionID, const uint16_t &InRouteHopCount, const uint32_t &InGameID, const PlayerInformation &InCreator );
 
-				Result OverrideRouteContextDestination( EntityUID to );
-
-				Result OverrideRouteInformation( EntityUID to, unsigned hopCount );
-
 			}; // class CreatePartyCmd : public MessageBase
 
 			class CreatePartyRes : public MessageBase
@@ -120,10 +116,6 @@ namespace SF
 
 				static MessageData* Create( IHeap& memHeap, const RouteContext &InRouteContext, const uint64_t &InTransactionID, const Result &InResult );
 
-				Result OverrideRouteContextDestination( EntityUID to );
-
-				Result OverrideRouteInformation( EntityUID to, unsigned hopCount );
-
 			}; // class CreatePartyRes : public MessageBase
 
 			// C2S: Party instance notify of deletion. Sent by party instance
@@ -166,10 +158,6 @@ namespace SF
 				static Result ParseMessageToMessageBase(IHeap& memHeap, const MessageDataPtr& pIMsg, MessageBase* &pMsgBase);
 
 				static MessageData* Create( IHeap& memHeap, const RouteContext &InRouteContext, const uint16_t &InRouteHopCount );
-
-				Result OverrideRouteContextDestination( EntityUID to );
-
-				Result OverrideRouteInformation( EntityUID to, unsigned hopCount );
 
 			}; // class PartyDeletedC2SEvt : public MessageBase
 

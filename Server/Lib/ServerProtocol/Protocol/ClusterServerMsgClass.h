@@ -70,10 +70,6 @@ namespace SF
 
 				static MessageData* Create( IHeap& memHeap, const RouteContext &InRouteContext, const uint64_t &InTransactionID, const uint16_t &InRouteHopCount, const ClusterID &InClusterID );
 
-				Result OverrideRouteContextDestination( EntityUID to );
-
-				Result OverrideRouteInformation( EntityUID to, unsigned hopCount );
-
 			}; // class GetClusterMemberListCmd : public MessageBase
 
 			class GetClusterMemberListRes : public MessageBase
@@ -119,10 +115,6 @@ namespace SF
 				static Result ParseMessageToMessageBase(IHeap& memHeap, const MessageDataPtr& pIMsg, MessageBase* &pMsgBase);
 
 				static MessageData* Create( IHeap& memHeap, const RouteContext &InRouteContext, const uint64_t &InTransactionID, const Result &InResult, const Array<ServiceInformation>& InMemberList );
-
-				Result OverrideRouteContextDestination( EntityUID to );
-
-				Result OverrideRouteInformation( EntityUID to, unsigned hopCount );
 
 			}; // class GetClusterMemberListRes : public MessageBase
 
@@ -170,10 +162,6 @@ namespace SF
 
 				static MessageData* Create( IHeap& memHeap, const RouteContext &InRouteContext, const uint64_t &InTransactionID, const uint16_t &InRouteHopCount, const ClusterID &InClusterID );
 
-				Result OverrideRouteContextDestination( EntityUID to );
-
-				Result OverrideRouteInformation( EntityUID to, unsigned hopCount );
-
 			}; // class RequestDataSyncCmd : public MessageBase
 
 			class RequestDataSyncRes : public MessageBase
@@ -217,10 +205,6 @@ namespace SF
 				static Result ParseMessageToMessageBase(IHeap& memHeap, const MessageDataPtr& pIMsg, MessageBase* &pMsgBase);
 
 				static MessageData* Create( IHeap& memHeap, const RouteContext &InRouteContext, const uint64_t &InTransactionID, const Result &InResult );
-
-				Result OverrideRouteContextDestination( EntityUID to );
-
-				Result OverrideRouteInformation( EntityUID to, unsigned hopCount );
 
 			}; // class RequestDataSyncRes : public MessageBase
 

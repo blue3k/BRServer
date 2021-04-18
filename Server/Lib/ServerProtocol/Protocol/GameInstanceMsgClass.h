@@ -80,8 +80,6 @@ namespace SF
 				static MessageData* Create( IHeap& memHeap, const RouteContext &InRouteContext, const uint64_t &InTransactionID, const PlayerInformation &InPlayer, const Array<uint8_t>& InCharacterVisual, const Array<uint8_t>& InCharacterAttribute );
 				static MessageData* Create( IHeap& memHeap, const RouteContext &InRouteContext, const uint64_t &InTransactionID, const PlayerInformation &InPlayer, const VariableTable &InCharacterVisual, const VariableTable &InCharacterAttribute );
 
-				Result OverrideRouteContextDestination( EntityUID to );
-
 			}; // class JoinGameInstanceCmd : public MessageBase
 
 			class JoinGameInstanceRes : public MessageBase
@@ -132,8 +130,6 @@ namespace SF
 
 				static MessageData* Create( IHeap& memHeap, const RouteContext &InRouteContext, const uint64_t &InTransactionID, const Result &InResult, const NetAddress &InGameInsSvr4, const NetAddress &InGameInsSvr6, const uint32_t &InTimeStamp );
 
-				Result OverrideRouteContextDestination( EntityUID to );
-
 			}; // class JoinGameInstanceRes : public MessageBase
 
 			// Cmd: Leave game instance.
@@ -177,8 +173,6 @@ namespace SF
 				static Result ParseMessageToMessageBase(IHeap& memHeap, const MessageDataPtr& pIMsg, MessageBase* &pMsgBase);
 
 				static MessageData* Create( IHeap& memHeap, const RouteContext &InRouteContext, const uint64_t &InTransactionID, const PlayerID &InPlayerID );
-
-				Result OverrideRouteContextDestination( EntityUID to );
 
 			}; // class LeaveGameInstanceCmd : public MessageBase
 
@@ -224,8 +218,6 @@ namespace SF
 
 				static MessageData* Create( IHeap& memHeap, const RouteContext &InRouteContext, const uint64_t &InTransactionID, const Result &InResult );
 
-				Result OverrideRouteContextDestination( EntityUID to );
-
 			}; // class LeaveGameInstanceRes : public MessageBase
 
 			// S2C: Player left event.
@@ -269,8 +261,6 @@ namespace SF
 				static Result ParseMessageToMessageBase(IHeap& memHeap, const MessageDataPtr& pIMsg, MessageBase* &pMsgBase);
 
 				static MessageData* Create( IHeap& memHeap, const RouteContext &InRouteContext, const PlayerID &InLeftPlayerID );
-
-				Result OverrideRouteContextDestination( EntityUID to );
 
 			}; // class PlayerLeftS2CEvt : public MessageBase
 
@@ -316,8 +306,6 @@ namespace SF
 
 				static MessageData* Create( IHeap& memHeap, const RouteContext &InRouteContext, const uint64_t &InTransactionID, const PlayerID &InPlayerID );
 
-				Result OverrideRouteContextDestination( EntityUID to );
-
 			}; // class GamePlayerReviveCmd : public MessageBase
 
 			class GamePlayerReviveRes : public MessageBase
@@ -362,8 +350,6 @@ namespace SF
 
 				static MessageData* Create( IHeap& memHeap, const RouteContext &InRouteContext, const uint64_t &InTransactionID, const Result &InResult );
 
-				Result OverrideRouteContextDestination( EntityUID to );
-
 			}; // class GamePlayerReviveRes : public MessageBase
 
 			// S2C: Player is revived
@@ -407,8 +393,6 @@ namespace SF
 				static Result ParseMessageToMessageBase(IHeap& memHeap, const MessageDataPtr& pIMsg, MessageBase* &pMsgBase);
 
 				static MessageData* Create( IHeap& memHeap, const RouteContext &InRouteContext, const PlayerID &InRevivedPlayerID );
-
-				Result OverrideRouteContextDestination( EntityUID to );
 
 			}; // class GamePlayerRevivedS2CEvt : public MessageBase
 

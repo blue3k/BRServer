@@ -70,8 +70,6 @@ namespace SF
 
 				static MessageData* Create( IHeap& memHeap, const RouteContext &InRouteContext, const uint64_t &InTransactionID, const PlayerID &InPlayerID, const AuthTicket &InAuthTicket );
 
-				Result OverrideRouteContextDestination( EntityUID to );
-
 			}; // class PlayerJoinedToGameServerCmd : public MessageBase
 
 			class PlayerJoinedToGameServerRes : public MessageBase
@@ -115,8 +113,6 @@ namespace SF
 				static Result ParseMessageToMessageBase(IHeap& memHeap, const MessageDataPtr& pIMsg, MessageBase* &pMsgBase);
 
 				static MessageData* Create( IHeap& memHeap, const RouteContext &InRouteContext, const uint64_t &InTransactionID, const Result &InResult );
-
-				Result OverrideRouteContextDestination( EntityUID to );
 
 			}; // class PlayerJoinedToGameServerRes : public MessageBase
 
@@ -163,8 +159,6 @@ namespace SF
 
 				static MessageData* Create( IHeap& memHeap, const RouteContext &InRouteContext, const uint64_t &InTransactionID, const PlayerID &InKickedPlayerID );
 
-				Result OverrideRouteContextDestination( EntityUID to );
-
 			}; // class KickPlayerCmd : public MessageBase
 
 			class KickPlayerRes : public MessageBase
@@ -208,8 +202,6 @@ namespace SF
 				static Result ParseMessageToMessageBase(IHeap& memHeap, const MessageDataPtr& pIMsg, MessageBase* &pMsgBase);
 
 				static MessageData* Create( IHeap& memHeap, const RouteContext &InRouteContext, const uint64_t &InTransactionID, const Result &InResult );
-
-				Result OverrideRouteContextDestination( EntityUID to );
 
 			}; // class KickPlayerRes : public MessageBase
 

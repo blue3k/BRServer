@@ -67,8 +67,6 @@ namespace SF
 
 				static MessageData* Create( IHeap& memHeap, const RouteContext &InRouteContext, const uint64_t &InTransactionID );
 
-				Result OverrideRouteContextDestination( EntityUID to );
-
 			}; // class GenericFailureCmd : public MessageBase
 
 			class GenericFailureRes : public MessageBase
@@ -112,8 +110,6 @@ namespace SF
 				static Result ParseMessageToMessageBase(IHeap& memHeap, const MessageDataPtr& pIMsg, MessageBase* &pMsgBase);
 
 				static MessageData* Create( IHeap& memHeap, const RouteContext &InRouteContext, const uint64_t &InTransactionID, const Result &InResult );
-
-				Result OverrideRouteContextDestination( EntityUID to );
 
 			}; // class GenericFailureRes : public MessageBase
 
@@ -160,8 +156,6 @@ namespace SF
 				static Result ParseMessageToMessageBase(IHeap& memHeap, const MessageDataPtr& pIMsg, MessageBase* &pMsgBase);
 
 				static MessageData* Create( IHeap& memHeap, const RouteContext &InRouteContext, const uint32_t &InStartUpTime, const NetAddress &InPrivateAddress );
-
-				Result OverrideRouteContextDestination( EntityUID to );
 
 			}; // class ServerConnectedC2SEvt : public MessageBase
 

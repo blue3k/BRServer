@@ -71,8 +71,6 @@ namespace SF
 
 				static MessageData* Create( IHeap& memHeap, const RouteContext &InRouteContext, const uint64_t &InTransactionID, const PlayerID &InInviterID, const PlayerInformation &InInvitedPlayer );
 
-				Result OverrideRouteContextDestination( EntityUID to );
-
 			}; // class JoinPartyCmd : public MessageBase
 
 			class JoinPartyRes : public MessageBase
@@ -121,8 +119,6 @@ namespace SF
 
 				static MessageData* Create( IHeap& memHeap, const RouteContext &InRouteContext, const uint64_t &InTransactionID, const Result &InResult, const PlayerID &InPartyLeaderID, const Array<uint8_t>& InChatHistoryData );
 
-				Result OverrideRouteContextDestination( EntityUID to );
-
 			}; // class JoinPartyRes : public MessageBase
 
 			// S2C: Player joined event.
@@ -166,8 +162,6 @@ namespace SF
 				static Result ParseMessageToMessageBase(IHeap& memHeap, const MessageDataPtr& pIMsg, MessageBase* &pMsgBase);
 
 				static MessageData* Create( IHeap& memHeap, const RouteContext &InRouteContext, const PlayerInformation &InJoinedPlayer );
-
-				Result OverrideRouteContextDestination( EntityUID to );
 
 			}; // class PlayerJoinedS2CEvt : public MessageBase
 
@@ -213,8 +207,6 @@ namespace SF
 
 				static MessageData* Create( IHeap& memHeap, const RouteContext &InRouteContext, const PlayerID &InNewLeaderID );
 
-				Result OverrideRouteContextDestination( EntityUID to );
-
 			}; // class PartyLeaderChangedS2CEvt : public MessageBase
 
 			// Cmd: Event for player left.
@@ -258,8 +250,6 @@ namespace SF
 				static Result ParseMessageToMessageBase(IHeap& memHeap, const MessageDataPtr& pIMsg, MessageBase* &pMsgBase);
 
 				static MessageData* Create( IHeap& memHeap, const RouteContext &InRouteContext, const uint64_t &InTransactionID, const PlayerID &InPlayerID );
-
-				Result OverrideRouteContextDestination( EntityUID to );
 
 			}; // class LeavePartyCmd : public MessageBase
 
@@ -305,8 +295,6 @@ namespace SF
 
 				static MessageData* Create( IHeap& memHeap, const RouteContext &InRouteContext, const uint64_t &InTransactionID, const Result &InResult );
 
-				Result OverrideRouteContextDestination( EntityUID to );
-
 			}; // class LeavePartyRes : public MessageBase
 
 			// S2C: Player left
@@ -350,8 +338,6 @@ namespace SF
 				static Result ParseMessageToMessageBase(IHeap& memHeap, const MessageDataPtr& pIMsg, MessageBase* &pMsgBase);
 
 				static MessageData* Create( IHeap& memHeap, const RouteContext &InRouteContext, const PlayerID &InLeftPlayerID );
-
-				Result OverrideRouteContextDestination( EntityUID to );
 
 			}; // class PlayerLeftS2CEvt : public MessageBase
 
@@ -399,8 +385,6 @@ namespace SF
 
 				static MessageData* Create( IHeap& memHeap, const RouteContext &InRouteContext, const uint64_t &InTransactionID, const PlayerID &InPlayerID, const PlayerID &InPlayerToKick );
 
-				Result OverrideRouteContextDestination( EntityUID to );
-
 			}; // class KickPlayerCmd : public MessageBase
 
 			class KickPlayerRes : public MessageBase
@@ -444,8 +428,6 @@ namespace SF
 				static Result ParseMessageToMessageBase(IHeap& memHeap, const MessageDataPtr& pIMsg, MessageBase* &pMsgBase);
 
 				static MessageData* Create( IHeap& memHeap, const RouteContext &InRouteContext, const uint64_t &InTransactionID, const Result &InResult );
-
-				Result OverrideRouteContextDestination( EntityUID to );
 
 			}; // class KickPlayerRes : public MessageBase
 
@@ -491,8 +473,6 @@ namespace SF
 
 				static MessageData* Create( IHeap& memHeap, const RouteContext &InRouteContext, const PlayerID &InKickedPlayerID );
 
-				Result OverrideRouteContextDestination( EntityUID to );
-
 			}; // class PlayerKickedS2CEvt : public MessageBase
 
 			// C2S: Send chat message to server.
@@ -537,8 +517,6 @@ namespace SF
 				static Result ParseMessageToMessageBase(IHeap& memHeap, const MessageDataPtr& pIMsg, MessageBase* &pMsgBase);
 
 				static MessageData* Create( IHeap& memHeap, const RouteContext &InRouteContext, const PlayerID &InPlayerID, const char* InChatMessage );
-
-				Result OverrideRouteContextDestination( EntityUID to );
 
 			}; // class ChatMessageC2SEvt : public MessageBase
 
@@ -588,8 +566,6 @@ namespace SF
 
 				static MessageData* Create( IHeap& memHeap, const RouteContext &InRouteContext, const PlayerID &InSenderID, const char* InSenderName, const char* InChatMessage );
 
-				Result OverrideRouteContextDestination( EntityUID to );
-
 			}; // class ChatMessageS2CEvt : public MessageBase
 
 			// C2S: Quick Chatting message
@@ -634,8 +610,6 @@ namespace SF
 				static Result ParseMessageToMessageBase(IHeap& memHeap, const MessageDataPtr& pIMsg, MessageBase* &pMsgBase);
 
 				static MessageData* Create( IHeap& memHeap, const RouteContext &InRouteContext, const PlayerID &InPlayerID, const uint32_t &InQuickChatID );
-
-				Result OverrideRouteContextDestination( EntityUID to );
 
 			}; // class QuickChatMessageC2SEvt : public MessageBase
 
@@ -683,8 +657,6 @@ namespace SF
 
 				static MessageData* Create( IHeap& memHeap, const RouteContext &InRouteContext, const PlayerID &InSenderID, const uint32_t &InQuickChatID );
 
-				Result OverrideRouteContextDestination( EntityUID to );
-
 			}; // class QuickChatMessageS2CEvt : public MessageBase
 
 			// Cmd: Start party game matching
@@ -731,8 +703,6 @@ namespace SF
 
 				static MessageData* Create( IHeap& memHeap, const RouteContext &InRouteContext, const uint64_t &InTransactionID, const PlayerID &InPlayerID, const uint32_t &InMaxGamePlayers );
 
-				Result OverrideRouteContextDestination( EntityUID to );
-
 			}; // class StartGameMatchCmd : public MessageBase
 
 			class StartGameMatchRes : public MessageBase
@@ -776,8 +746,6 @@ namespace SF
 				static Result ParseMessageToMessageBase(IHeap& memHeap, const MessageDataPtr& pIMsg, MessageBase* &pMsgBase);
 
 				static MessageData* Create( IHeap& memHeap, const RouteContext &InRouteContext, const uint64_t &InTransactionID, const Result &InResult );
-
-				Result OverrideRouteContextDestination( EntityUID to );
 
 			}; // class StartGameMatchRes : public MessageBase
 
@@ -823,8 +791,6 @@ namespace SF
 
 				static MessageData* Create( IHeap& memHeap, const RouteContext &InRouteContext, const MatchingQueueTicket &InMatchingQueueTicket );
 
-				Result OverrideRouteContextDestination( EntityUID to );
-
 			}; // class QueuedGameMatchingS2CEvt : public MessageBase
 
 			// Cmd: Cancel game matching
@@ -868,8 +834,6 @@ namespace SF
 				static Result ParseMessageToMessageBase(IHeap& memHeap, const MessageDataPtr& pIMsg, MessageBase* &pMsgBase);
 
 				static MessageData* Create( IHeap& memHeap, const RouteContext &InRouteContext, const uint64_t &InTransactionID, const PlayerID &InPlayerID );
-
-				Result OverrideRouteContextDestination( EntityUID to );
 
 			}; // class CancelGameMatchCmd : public MessageBase
 
@@ -915,8 +879,6 @@ namespace SF
 
 				static MessageData* Create( IHeap& memHeap, const RouteContext &InRouteContext, const uint64_t &InTransactionID, const Result &InResult );
 
-				Result OverrideRouteContextDestination( EntityUID to );
-
 			}; // class CancelGameMatchRes : public MessageBase
 
 			// S2C: Event sent when the game matching is canceled
@@ -961,8 +923,6 @@ namespace SF
 
 				static MessageData* Create( IHeap& memHeap, const RouteContext &InRouteContext, const MatchingQueueTicket &InMatchingQueueTicket );
 
-				Result OverrideRouteContextDestination( EntityUID to );
-
 			}; // class CanceledGameMatchingS2CEvt : public MessageBase
 
 			// S2C: Event sent when the the matching has dequeued.
@@ -1006,8 +966,6 @@ namespace SF
 				static Result ParseMessageToMessageBase(IHeap& memHeap, const MessageDataPtr& pIMsg, MessageBase* &pMsgBase);
 
 				static MessageData* Create( IHeap& memHeap, const RouteContext &InRouteContext, const MatchingQueueTicket &InMatchingTicket );
-
-				Result OverrideRouteContextDestination( EntityUID to );
 
 			}; // class MatchingItemDequeuedS2CEvt : public MessageBase
 

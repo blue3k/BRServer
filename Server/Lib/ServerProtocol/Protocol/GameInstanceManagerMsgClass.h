@@ -76,10 +76,6 @@ namespace SF
 				static MessageData* Create( IHeap& memHeap, const RouteContext &InRouteContext, const uint64_t &InTransactionID, const uint16_t &InRouteHopCount, const uint32_t &InZoneTableId, const Array<uint8_t>& InAttributes );
 				static MessageData* Create( IHeap& memHeap, const RouteContext &InRouteContext, const uint64_t &InTransactionID, const uint16_t &InRouteHopCount, const uint32_t &InZoneTableId, const VariableTable &InAttributes );
 
-				Result OverrideRouteContextDestination( EntityUID to );
-
-				Result OverrideRouteInformation( EntityUID to, unsigned hopCount );
-
 			}; // class CreateGameInstanceCmd : public MessageBase
 
 			class CreateGameInstanceRes : public MessageBase
@@ -123,10 +119,6 @@ namespace SF
 				static Result ParseMessageToMessageBase(IHeap& memHeap, const MessageDataPtr& pIMsg, MessageBase* &pMsgBase);
 
 				static MessageData* Create( IHeap& memHeap, const RouteContext &InRouteContext, const uint64_t &InTransactionID, const Result &InResult );
-
-				Result OverrideRouteContextDestination( EntityUID to );
-
-				Result OverrideRouteInformation( EntityUID to, unsigned hopCount );
 
 			}; // class CreateGameInstanceRes : public MessageBase
 
