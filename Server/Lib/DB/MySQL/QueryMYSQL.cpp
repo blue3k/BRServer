@@ -92,7 +92,7 @@ namespace SF {
 			case mysqlx::Value::RAW:
 			{
 				auto bytes = std::forward<mysqlx::bytes>(src.get<mysqlx::bytes>());
-				dest.SetValue(ArrayView<uint8_t>(bytes.second, bytes.first));
+				dest.SetValue(ArrayView<const uint8_t>(bytes.second, bytes.first));
 				break;
 			}
 			case mysqlx::Value::DOCUMENT: [[fallthrough]];// fall through
@@ -117,7 +117,7 @@ namespace SF {
 			case mysqlx::Value::RAW:
 			{
 				auto bytes = std::forward<mysqlx::bytes>(src.get<mysqlx::bytes>());
-				SFUniquePtr<Variable> blobVar(new(GetEngineHeap()) VariableBLOB(ArrayView<uint8_t>(bytes.second, bytes.first)));
+				SFUniquePtr<Variable> blobVar(new(GetEngineHeap()) VariableBLOB(ArrayView<const uint8_t>(bytes.second, bytes.first)));
 				dest.SetVariable(columnName, blobVar);
 				break;
 			}

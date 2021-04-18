@@ -83,7 +83,7 @@ namespace SF
 					return true;
 				}
 
-				auto* pMsgHeader = reinterpret_cast<Message::MessageHeader*>(receivedMessageData->data());
+				auto* pMsgHeader = reinterpret_cast<const Message::MessageHeader*>(receivedMessageData->data());
 				SharedPointerT<Svr::Entity> pEntity;
 
 				svrCheckPtr(pMsg = Message::MessageData::NewMessage(GetHeap(), pMsgHeader->msgID.ID, pMsgHeader->Length, receivedMessageData->data()));

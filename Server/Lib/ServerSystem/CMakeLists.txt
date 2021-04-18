@@ -4,6 +4,8 @@
 
 set(BRSERVERSYSTEM_LIB_FILES
     ServerSystemPCH.h
+    Avro/SFAvro.h
+    Avro/SFAvro.cpp
     Component/ServerComponentIDs.h
     Component/ServerComponent.inl
     Component/SFDBTableManagerComponent.h

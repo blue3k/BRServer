@@ -116,7 +116,7 @@ namespace SF {
 		if (receivedMessageData->size() < sizeof(Message::MessageHeader))
 			return ResultCode::INVALID_FORMAT;
 
-		auto* pMsgHeader = reinterpret_cast<Message::MessageHeader*>(receivedMessageData->data());
+		auto* pMsgHeader = reinterpret_cast<const Message::MessageHeader*>(receivedMessageData->data());
 		svrCheckPtr(pMsg = Message::MessageData::NewMessage(GetHeap(), pMsgHeader->msgID.ID, pMsgHeader->Length, receivedMessageData->data()));
 
 		hr = ProcessMessage(nullptr, pMsg);
