@@ -221,10 +221,11 @@ namespace SF {
 		for (; loopCount > 0; loopCount--)
 		{
 			std::function<void()> pTaskFunction;
-			if (!(m_TaskFunctions.Dequeue(pTaskFunction)))
+			if (!m_TaskFunctions.Dequeue(pTaskFunction))
 				break;
 
-			pTaskFunction();
+			if (pTaskFunction)
+				pTaskFunction();
 		}
 
 		return ResultCode::SUCCESS;
