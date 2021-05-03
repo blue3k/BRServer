@@ -67,6 +67,7 @@ set(BRSERVERSYSTEM_LIB_FILES
     Transaction/ExternalTransactionManager.inl
     Transaction/MessageRoute.inl
     Transaction/Transaction.inl
+    Types/BrGameTypesSerialization.h
     Types/BrSvrTypeSerialization.h
     Types/BrSvrTypes.inl
     Component/ServerComponent.h
