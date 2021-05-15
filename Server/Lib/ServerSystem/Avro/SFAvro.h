@@ -9,6 +9,7 @@
 //
 ////////////////////////////////////////////////////////////////////////////////
 
+#pragma once
 
 #include "SFTypedefs.h"
 #include "Util/SFLog.h"
@@ -54,18 +55,16 @@ namespace SF
 	class AvroSchema
 	{
 	public:
-		AvroSchema()
-		{
-		}
+		AvroSchema() {}
 
-		AvroSchema(const avro_schema_t& schema)
-			: m_Handle(schema)
-		{
-		}
-
+		AvroSchema(const avro_schema_t& schema);
+		AvroSchema(const AvroSchema& schema);
 		AvroSchema(const SF::Array<char>& schemaData);
 
 		~AvroSchema();
+
+		// initialize with schema string data
+		Result Init(const Array<char>& schemaData);
 
 		operator avro_schema_t() { return m_Handle; }
 		operator avro_schema_t() const { return m_Handle; }

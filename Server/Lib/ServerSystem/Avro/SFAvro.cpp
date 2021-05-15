@@ -43,15 +43,22 @@ namespace SF
 		}
 	}
 
-	
-	AvroSchema::AvroSchema(const SF::Array<char>& schemaData)
+
+	AvroSchema::AvroSchema(const avro_schema_t& schema)
+		: m_Handle(schema)
 	{
-		int res = avro_schema_from_json_length(schemaData.data(), schemaData.size(), &m_Handle);
-		if (res)
-		{
-			SFLog(System, Error, "Error parsing schema file: {0}", avro_strerror());
-			return;
-		}
+	}
+
+	AvroSchema::AvroSchema(const AvroSchema& schema)
+		: m_Handle(schema.m_Handle)
+	{
+		if (m_Handle != nullptr)
+			avro_schema_incref(m_Handle);
+	}
+	
+	AvroSchema::AvroSchema(const Array<char>& schemaData)
+	{
+		Init(schemaData);
 	}
 
 	AvroSchema::~AvroSchema()
@@ -60,7 +67,17 @@ namespace SF
 			avro_schema_decref(m_Handle);
 	}
 
+	Result AvroSchema::Init(const Array<char>& schemaData)
+	{
+		int res = avro_schema_from_json_length(schemaData.data(), schemaData.size(), &m_Handle);
+		if (res)
+		{
+			SFLog(System, Error, "Error parsing schema file: {0}", avro_strerror());
+			return ResultCode::FAIL;
+		}
 
+		return ResultCode::SUCCESS;
+	}
 
 
 
