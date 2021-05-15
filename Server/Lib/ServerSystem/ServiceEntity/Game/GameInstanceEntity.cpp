@@ -132,6 +132,11 @@ namespace SF {
 		{
 		}
 
+		void GameInstanceEntity::InitStartMovement()
+		{
+			m_StartMove.MoveFrame = GetMovementFrame() - 1;
+		}
+
 		GameInstancePlayer* GameInstanceEntity::CreatePlayer(EntityUID playerEntityUID, const PlayerInformation& player)
 		{
 			return new(GetHeap()) GameInstancePlayer(this, playerEntityUID, player);
@@ -428,22 +433,6 @@ namespace SF {
 			}
 
 
-			auto zoneTableRow = Service::DataTableManager->FindRow("ZoneTable", GetZoneTableID());
-			if (zoneTableRow)
-			{
-				m_StartMove.Position = Vector4(
-					zoneTableRow->GetValue<float>("StartPosX"), 
-					zoneTableRow->GetValue<float>("StartPosY"), 
-					zoneTableRow->GetValue<float>("StartPosZ"));
-
-				svrTrace(Error, "zone start pos for {0}, {1}", GetZoneTableID(), m_StartMove.Position);
-			}
-			else
-			{
-				svrTrace(Error, "No zone table entry for {0}", GetZoneTableID());
-			}
-
-
 			return hr;
 		}
 
@@ -515,8 +504,7 @@ namespace SF {
 
 			if (pPlayer->GetMovementManager())
 			{
-				m_StartMove.MoveFrame = GetMovementFrame() - 1;
-				svrTrace(Error, "Player start pos for zone:{0}, player:{1}, pos:{2}", GetZoneTableID(), pPlayer->GetPlayerID(), m_StartMove.Position);
+				InitStartMovement();
 				pPlayer->GetMovementManager()->ResetMovement(m_StartMove);
 			}
 			pPlayer->GetRemoveTimer().SetTimer(Const::GAMEINSTANCE_PLAYER_REMOVE);

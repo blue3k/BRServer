@@ -103,7 +103,9 @@ namespace Svr
 		// movement frame
 		TimeStampMS m_LatestTickTime;
 		uint32_t m_MovementFrame = 0;
-		ActorMovement m_StartMove{};
+
+		// Player start movement
+		mutable ActorMovement m_StartMove{};
 
 	public:
 		//////////////////////////////////////////////////////////////////////////////////////////////////
@@ -131,6 +133,7 @@ namespace Svr
 		DurationMS GetEmptyInstanceKillTimeOut() { return m_EmptyInstanceKillTimeOut; }
 		void SetEmptyInstanceKillTimeOut(DurationMS value) { m_EmptyInstanceKillTimeOut = value; }
 
+		virtual void InitStartMovement();
 		uint32_t GetMovementFrame() const { return m_MovementFrame; }
 
 		// Instance ID query
