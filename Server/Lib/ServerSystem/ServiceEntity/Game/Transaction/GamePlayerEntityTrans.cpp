@@ -1147,7 +1147,7 @@ namespace Svr {
 		EntityUID playerUID;
 		NetSvrPolicyGame pPolicy(GetRemoteEndpoint());
 		auto& targetPlayerID = GetTargetPlayerID();
-		uint uiRequestMax = Util::Min((uint)targetPlayerID.size(), (uint)20);
+		uint uiRequestMax = Math::Min((uint)targetPlayerID.size(), (uint)20);
 
 		m_PlayerStatusQueryCount = 0;
 

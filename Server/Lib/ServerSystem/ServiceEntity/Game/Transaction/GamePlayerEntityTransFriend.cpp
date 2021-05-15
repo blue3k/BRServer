@@ -667,7 +667,7 @@ namespace Svr {
 		m_MaxFriendSlot = 20;
 
 		m_Friends.Clear();
-		auto maxRequest = Util::Min(GetCount(), static_cast<uint16_t>(UserFriendSystem::MAX_FRIEND_REQUEST));
+		auto maxRequest = Math::Min(GetCount(), static_cast<uint16_t>(UserFriendSystem::MAX_FRIEND_REQUEST));
 		friendSystem->ForeachFriends(GetStartIndex(), maxRequest, [&](const FriendInformation& friendInfo)
 		{
 			m_Friends.push_back(friendInfo);

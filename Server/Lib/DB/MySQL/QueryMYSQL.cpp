@@ -151,7 +151,7 @@ namespace SF {
 			{
 				auto& rowResult = RowsetResults[iRow];
 				mysqlx::Row row = queryResult.fetchOne();
-				auto numColumn = Util::Min((int)columnNames.size(), (int)row.colCount());
+				auto numColumn = Math::Min((int)columnNames.size(), (int)row.colCount());
 				for (int iCol = 0; iCol < numColumn; iCol++)
 				{
 					mysqlx::Value& columnValue = row[iCol];
