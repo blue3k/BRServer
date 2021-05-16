@@ -106,7 +106,7 @@ namespace SF
 			{
  				CreatePartyCmd parser;
 				parser.ParseMessage(*pMsg);
-				protocolTrace( Debug1, "CreateParty:{0}:{1} , RouteContext:{2}, TransactionID:{3}, RouteHopCount:{4}, GameID:{5}, Creator:{6}",
+				SFLog(Net, Debug1, "CreateParty:{0}:{1} , RouteContext:{2}, TransactionID:{3}, RouteHopCount:{4}, GameID:{5}, Creator:{6}",
 						prefix, pMsg->GetMessageHeader()->Length, parser.GetRouteContext(), parser.GetTransactionID(), parser.GetRouteHopCount(), parser.GetGameID(), parser.GetCreator()); 
 				return ResultCode::SUCCESS;
 			}; // Result CreatePartyCmd::TraceOut(const char* prefix, const MessageDataPtr& pMsg)
@@ -184,7 +184,7 @@ namespace SF
 			{
  				CreatePartyRes parser;
 				parser.ParseMessage(*pMsg);
-				protocolTrace( Debug1, "CreateParty:{0}:{1} , RouteContext:{2}, TransactionID:{3}, Result:{4:X8}",
+				SFLog(Net, Debug1, "CreateParty:{0}:{1} , RouteContext:{2}, TransactionID:{3}, Result:{4:X8}",
 						prefix, pMsg->GetMessageHeader()->Length, parser.GetRouteContext(), parser.GetTransactionID(), parser.GetResult()); 
 				return ResultCode::SUCCESS;
 			}; // Result CreatePartyRes::TraceOut(const char* prefix, const MessageDataPtr& pMsg)
@@ -260,7 +260,7 @@ namespace SF
 			{
  				PartyDeletedC2SEvt parser;
 				parser.ParseMessage(*pMsg);
-				protocolTrace( Debug1, "PartyDeleted:{0}:{1} , RouteContext:{2}, RouteHopCount:{3}",
+				SFLog(Net, Debug1, "PartyDeleted:{0}:{1} , RouteContext:{2}, RouteHopCount:{3}",
 						prefix, pMsg->GetMessageHeader()->Length, parser.GetRouteContext(), parser.GetRouteHopCount()); 
 				return ResultCode::SUCCESS;
 			}; // Result PartyDeletedC2SEvt::TraceOut(const char* prefix, const MessageDataPtr& pMsg)

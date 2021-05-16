@@ -18,7 +18,6 @@
 #include "Protocol/SvrProtocol.h"
 #include "Protocol/ChatChannelManagerNetPolicy.h"
 #include "Protocol/ChatChannelManagerMsgClass.h"
-#include "ProtocolTrace.h"
 
 
 

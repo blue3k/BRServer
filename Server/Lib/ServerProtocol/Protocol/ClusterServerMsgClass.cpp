@@ -103,7 +103,7 @@ namespace SF
 			{
  				GetClusterMemberListCmd parser;
 				parser.ParseMessage(*pMsg);
-				protocolTrace( Debug2, "GetClusterMemberList:{0}:{1} , RouteContext:{2}, TransactionID:{3}, RouteHopCount:{4}, ClusterID:{5}",
+				SFLog(Net, Debug2, "GetClusterMemberList:{0}:{1} , RouteContext:{2}, TransactionID:{3}, RouteHopCount:{4}, ClusterID:{5}",
 						prefix, pMsg->GetMessageHeader()->Length, parser.GetRouteContext(), parser.GetTransactionID(), parser.GetRouteHopCount(), parser.GetClusterID()); 
 				return ResultCode::SUCCESS;
 			}; // Result GetClusterMemberListCmd::TraceOut(const char* prefix, const MessageDataPtr& pMsg)
@@ -187,7 +187,7 @@ namespace SF
 			{
  				GetClusterMemberListRes parser;
 				parser.ParseMessage(*pMsg);
-				protocolTrace( Debug2, "GetClusterMemberList:{0}:{1} , RouteContext:{2}, TransactionID:{3}, Result:{4:X8}, MemberList:{5,30}",
+				SFLog(Net, Debug2, "GetClusterMemberList:{0}:{1} , RouteContext:{2}, TransactionID:{3}, Result:{4:X8}, MemberList:{5,30}",
 						prefix, pMsg->GetMessageHeader()->Length, parser.GetRouteContext(), parser.GetTransactionID(), parser.GetResult(), parser.GetMemberList()); 
 				return ResultCode::SUCCESS;
 			}; // Result GetClusterMemberListRes::TraceOut(const char* prefix, const MessageDataPtr& pMsg)
@@ -269,7 +269,7 @@ namespace SF
 			{
  				RequestDataSyncCmd parser;
 				parser.ParseMessage(*pMsg);
-				protocolTrace( Debug2, "RequestDataSync:{0}:{1} , RouteContext:{2}, TransactionID:{3}, RouteHopCount:{4}, ClusterID:{5}",
+				SFLog(Net, Debug2, "RequestDataSync:{0}:{1} , RouteContext:{2}, TransactionID:{3}, RouteHopCount:{4}, ClusterID:{5}",
 						prefix, pMsg->GetMessageHeader()->Length, parser.GetRouteContext(), parser.GetTransactionID(), parser.GetRouteHopCount(), parser.GetClusterID()); 
 				return ResultCode::SUCCESS;
 			}; // Result RequestDataSyncCmd::TraceOut(const char* prefix, const MessageDataPtr& pMsg)
@@ -347,7 +347,7 @@ namespace SF
 			{
  				RequestDataSyncRes parser;
 				parser.ParseMessage(*pMsg);
-				protocolTrace( Debug2, "RequestDataSync:{0}:{1} , RouteContext:{2}, TransactionID:{3}, Result:{4:X8}",
+				SFLog(Net, Debug2, "RequestDataSync:{0}:{1} , RouteContext:{2}, TransactionID:{3}, Result:{4:X8}",
 						prefix, pMsg->GetMessageHeader()->Length, parser.GetRouteContext(), parser.GetTransactionID(), parser.GetResult()); 
 				return ResultCode::SUCCESS;
 			}; // Result RequestDataSyncRes::TraceOut(const char* prefix, const MessageDataPtr& pMsg)

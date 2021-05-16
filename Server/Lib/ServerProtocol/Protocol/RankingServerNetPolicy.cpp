@@ -18,7 +18,6 @@
 #include "Protocol/SvrProtocol.h"
 #include "Protocol/RankingServerNetPolicy.h"
 #include "Protocol/RankingServerMsgClass.h"
-#include "ProtocolTrace.h"
 
 
 

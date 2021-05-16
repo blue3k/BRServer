@@ -18,7 +18,6 @@
 #include "Protocol/SvrProtocol.h"
 #include "Protocol/GameServerNetPolicy.h"
 #include "Protocol/GameServerMsgClass.h"
-#include "ProtocolTrace.h"
 
 
 

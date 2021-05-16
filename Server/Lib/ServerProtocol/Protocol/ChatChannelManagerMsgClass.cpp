@@ -111,7 +111,7 @@ namespace SF
 			{
  				CreateChannelCmd parser;
 				parser.ParseMessage(*pMsg);
-				protocolTrace( Debug1, "CreateChannel:{0}:{1} , RouteContext:{2}, TransactionID:{3}, RouteHopCount:{4}, ChannelName:{5,60}, Passcode:{6,60}, Creator:{7}",
+				SFLog(Net, Debug1, "CreateChannel:{0}:{1} , RouteContext:{2}, TransactionID:{3}, RouteHopCount:{4}, ChannelName:{5,60}, Passcode:{6,60}, Creator:{7}",
 						prefix, pMsg->GetMessageHeader()->Length, parser.GetRouteContext(), parser.GetTransactionID(), parser.GetRouteHopCount(), parser.GetChannelName(), parser.GetPasscode(), parser.GetCreator()); 
 				return ResultCode::SUCCESS;
 			}; // Result CreateChannelCmd::TraceOut(const char* prefix, const MessageDataPtr& pMsg)
@@ -192,7 +192,7 @@ namespace SF
 			{
  				CreateChannelRes parser;
 				parser.ParseMessage(*pMsg);
-				protocolTrace( Debug1, "CreateChannel:{0}:{1} , RouteContext:{2}, TransactionID:{3}, Result:{4:X8}, ChannelUID:{5}",
+				SFLog(Net, Debug1, "CreateChannel:{0}:{1} , RouteContext:{2}, TransactionID:{3}, Result:{4:X8}, ChannelUID:{5}",
 						prefix, pMsg->GetMessageHeader()->Length, parser.GetRouteContext(), parser.GetTransactionID(), parser.GetResult(), parser.GetChannelUID()); 
 				return ResultCode::SUCCESS;
 			}; // Result CreateChannelRes::TraceOut(const char* prefix, const MessageDataPtr& pMsg)
@@ -275,7 +275,7 @@ namespace SF
 			{
  				FindChannelCmd parser;
 				parser.ParseMessage(*pMsg);
-				protocolTrace( Debug1, "FindChannel:{0}:{1} , RouteContext:{2}, TransactionID:{3}, RouteHopCount:{4}, ChannelName:{5,60}",
+				SFLog(Net, Debug1, "FindChannel:{0}:{1} , RouteContext:{2}, TransactionID:{3}, RouteHopCount:{4}, ChannelName:{5,60}",
 						prefix, pMsg->GetMessageHeader()->Length, parser.GetRouteContext(), parser.GetTransactionID(), parser.GetRouteHopCount(), parser.GetChannelName()); 
 				return ResultCode::SUCCESS;
 			}; // Result FindChannelCmd::TraceOut(const char* prefix, const MessageDataPtr& pMsg)
@@ -356,7 +356,7 @@ namespace SF
 			{
  				FindChannelRes parser;
 				parser.ParseMessage(*pMsg);
-				protocolTrace( Debug1, "FindChannel:{0}:{1} , RouteContext:{2}, TransactionID:{3}, Result:{4:X8}, ChannelUID:{5}",
+				SFLog(Net, Debug1, "FindChannel:{0}:{1} , RouteContext:{2}, TransactionID:{3}, Result:{4:X8}, ChannelUID:{5}",
 						prefix, pMsg->GetMessageHeader()->Length, parser.GetRouteContext(), parser.GetTransactionID(), parser.GetResult(), parser.GetChannelUID()); 
 				return ResultCode::SUCCESS;
 			}; // Result FindChannelRes::TraceOut(const char* prefix, const MessageDataPtr& pMsg)
@@ -432,7 +432,7 @@ namespace SF
 			{
  				ChatChannelDeletedC2SEvt parser;
 				parser.ParseMessage(*pMsg);
-				protocolTrace( Debug1, "ChatChannelDeleted:{0}:{1} , RouteContext:{2}, RouteHopCount:{3}",
+				SFLog(Net, Debug1, "ChatChannelDeleted:{0}:{1} , RouteContext:{2}, RouteHopCount:{3}",
 						prefix, pMsg->GetMessageHeader()->Length, parser.GetRouteContext(), parser.GetRouteHopCount()); 
 				return ResultCode::SUCCESS;
 			}; // Result ChatChannelDeletedC2SEvt::TraceOut(const char* prefix, const MessageDataPtr& pMsg)

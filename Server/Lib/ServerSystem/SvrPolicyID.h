@@ -22,7 +22,7 @@ namespace SF
 	enum tag_SvrPolicyID
 	{
 
-		PROTOCOLID_ACCOUNTDB = PROTOCOLID_NETMAX	,		// Account DB policy
+		PROTOCOLID_ACCOUNTDB = PROTOCOLID_CLIENTMAX,	// Account DB policy
 		PROTOCOLID_SHRDCOORDINATORDB,					// Shard Coordinator DB policy
 		PROTOCOLID_LOGINSESSIONDB,						// Login Session DB policy
 		PROTOCOLID_RANKINGDB					,		// Login Session DB policy

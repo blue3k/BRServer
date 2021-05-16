@@ -104,7 +104,7 @@ namespace SF
 			{
  				JoinCmd parser;
 				parser.ParseMessage(*pMsg);
-				protocolTrace( Debug1, "Join:{0}:{1} , RouteContext:{2}, TransactionID:{3}, Passcode:{4,60}, JoiningPlayer:{5}",
+				SFLog(Net, Debug1, "Join:{0}:{1} , RouteContext:{2}, TransactionID:{3}, Passcode:{4,60}, JoiningPlayer:{5}",
 						prefix, pMsg->GetMessageHeader()->Length, parser.GetRouteContext(), parser.GetTransactionID(), parser.GetPasscode(), parser.GetJoiningPlayer()); 
 				return ResultCode::SUCCESS;
 			}; // Result JoinCmd::TraceOut(const char* prefix, const MessageDataPtr& pMsg)
@@ -185,7 +185,7 @@ namespace SF
 			{
  				JoinRes parser;
 				parser.ParseMessage(*pMsg);
-				protocolTrace( Debug1, "Join:{0}:{1} , RouteContext:{2}, TransactionID:{3}, Result:{4:X8}, ChatChannelLeaderID:{5}",
+				SFLog(Net, Debug1, "Join:{0}:{1} , RouteContext:{2}, TransactionID:{3}, Result:{4:X8}, ChatChannelLeaderID:{5}",
 						prefix, pMsg->GetMessageHeader()->Length, parser.GetRouteContext(), parser.GetTransactionID(), parser.GetResult(), parser.GetChatChannelLeaderID()); 
 				return ResultCode::SUCCESS;
 			}; // Result JoinRes::TraceOut(const char* prefix, const MessageDataPtr& pMsg)
@@ -261,7 +261,7 @@ namespace SF
 			{
  				PlayerJoinedS2CEvt parser;
 				parser.ParseMessage(*pMsg);
-				protocolTrace( Debug1, "PlayerJoined:{0}:{1} , RouteContext:{2}, JoinedPlayer:{3}",
+				SFLog(Net, Debug1, "PlayerJoined:{0}:{1} , RouteContext:{2}, JoinedPlayer:{3}",
 						prefix, pMsg->GetMessageHeader()->Length, parser.GetRouteContext(), parser.GetJoinedPlayer()); 
 				return ResultCode::SUCCESS;
 			}; // Result PlayerJoinedS2CEvt::TraceOut(const char* prefix, const MessageDataPtr& pMsg)
@@ -337,7 +337,7 @@ namespace SF
 			{
  				LeaderChangedS2CEvt parser;
 				parser.ParseMessage(*pMsg);
-				protocolTrace( Debug1, "LeaderChanged:{0}:{1} , RouteContext:{2}, NewLeaderID:{3}",
+				SFLog(Net, Debug1, "LeaderChanged:{0}:{1} , RouteContext:{2}, NewLeaderID:{3}",
 						prefix, pMsg->GetMessageHeader()->Length, parser.GetRouteContext(), parser.GetNewLeaderID()); 
 				return ResultCode::SUCCESS;
 			}; // Result LeaderChangedS2CEvt::TraceOut(const char* prefix, const MessageDataPtr& pMsg)
@@ -416,7 +416,7 @@ namespace SF
 			{
  				LeaveCmd parser;
 				parser.ParseMessage(*pMsg);
-				protocolTrace( Debug1, "Leave:{0}:{1} , RouteContext:{2}, TransactionID:{3}, PlayerID:{4}",
+				SFLog(Net, Debug1, "Leave:{0}:{1} , RouteContext:{2}, TransactionID:{3}, PlayerID:{4}",
 						prefix, pMsg->GetMessageHeader()->Length, parser.GetRouteContext(), parser.GetTransactionID(), parser.GetPlayerID()); 
 				return ResultCode::SUCCESS;
 			}; // Result LeaveCmd::TraceOut(const char* prefix, const MessageDataPtr& pMsg)
@@ -494,7 +494,7 @@ namespace SF
 			{
  				LeaveRes parser;
 				parser.ParseMessage(*pMsg);
-				protocolTrace( Debug1, "Leave:{0}:{1} , RouteContext:{2}, TransactionID:{3}, Result:{4:X8}",
+				SFLog(Net, Debug1, "Leave:{0}:{1} , RouteContext:{2}, TransactionID:{3}, Result:{4:X8}",
 						prefix, pMsg->GetMessageHeader()->Length, parser.GetRouteContext(), parser.GetTransactionID(), parser.GetResult()); 
 				return ResultCode::SUCCESS;
 			}; // Result LeaveRes::TraceOut(const char* prefix, const MessageDataPtr& pMsg)
@@ -570,7 +570,7 @@ namespace SF
 			{
  				PlayerLeftS2CEvt parser;
 				parser.ParseMessage(*pMsg);
-				protocolTrace( Debug1, "PlayerLeft:{0}:{1} , RouteContext:{2}, LeftPlayerID:{3}",
+				SFLog(Net, Debug1, "PlayerLeft:{0}:{1} , RouteContext:{2}, LeftPlayerID:{3}",
 						prefix, pMsg->GetMessageHeader()->Length, parser.GetRouteContext(), parser.GetLeftPlayerID()); 
 				return ResultCode::SUCCESS;
 			}; // Result PlayerLeftS2CEvt::TraceOut(const char* prefix, const MessageDataPtr& pMsg)
@@ -652,7 +652,7 @@ namespace SF
 			{
  				KickPlayerCmd parser;
 				parser.ParseMessage(*pMsg);
-				protocolTrace( Debug1, "KickPlayer:{0}:{1} , RouteContext:{2}, TransactionID:{3}, PlayerID:{4}, PlayerToKick:{5}",
+				SFLog(Net, Debug1, "KickPlayer:{0}:{1} , RouteContext:{2}, TransactionID:{3}, PlayerID:{4}, PlayerToKick:{5}",
 						prefix, pMsg->GetMessageHeader()->Length, parser.GetRouteContext(), parser.GetTransactionID(), parser.GetPlayerID(), parser.GetPlayerToKick()); 
 				return ResultCode::SUCCESS;
 			}; // Result KickPlayerCmd::TraceOut(const char* prefix, const MessageDataPtr& pMsg)
@@ -730,7 +730,7 @@ namespace SF
 			{
  				KickPlayerRes parser;
 				parser.ParseMessage(*pMsg);
-				protocolTrace( Debug1, "KickPlayer:{0}:{1} , RouteContext:{2}, TransactionID:{3}, Result:{4:X8}",
+				SFLog(Net, Debug1, "KickPlayer:{0}:{1} , RouteContext:{2}, TransactionID:{3}, Result:{4:X8}",
 						prefix, pMsg->GetMessageHeader()->Length, parser.GetRouteContext(), parser.GetTransactionID(), parser.GetResult()); 
 				return ResultCode::SUCCESS;
 			}; // Result KickPlayerRes::TraceOut(const char* prefix, const MessageDataPtr& pMsg)
@@ -806,7 +806,7 @@ namespace SF
 			{
  				PlayerKickedS2CEvt parser;
 				parser.ParseMessage(*pMsg);
-				protocolTrace( Debug1, "PlayerKicked:{0}:{1} , RouteContext:{2}, KickedPlayerID:{3}",
+				SFLog(Net, Debug1, "PlayerKicked:{0}:{1} , RouteContext:{2}, KickedPlayerID:{3}",
 						prefix, pMsg->GetMessageHeader()->Length, parser.GetRouteContext(), parser.GetKickedPlayerID()); 
 				return ResultCode::SUCCESS;
 			}; // Result PlayerKickedS2CEvt::TraceOut(const char* prefix, const MessageDataPtr& pMsg)
@@ -886,7 +886,7 @@ namespace SF
 			{
  				ChatMessageC2SEvt parser;
 				parser.ParseMessage(*pMsg);
-				protocolTrace( Debug1, "ChatMessage:{0}:{1} , RouteContext:{2}, SenderID:{3}, ChatMessage:{4,60}",
+				SFLog(Net, Debug1, "ChatMessage:{0}:{1} , RouteContext:{2}, SenderID:{3}, ChatMessage:{4,60}",
 						prefix, pMsg->GetMessageHeader()->Length, parser.GetRouteContext(), parser.GetSenderID(), parser.GetChatMessage()); 
 				return ResultCode::SUCCESS;
 			}; // Result ChatMessageC2SEvt::TraceOut(const char* prefix, const MessageDataPtr& pMsg)
@@ -970,7 +970,7 @@ namespace SF
 			{
  				ChatMessageS2CEvt parser;
 				parser.ParseMessage(*pMsg);
-				protocolTrace( Debug1, "ChatMessage:{0}:{1} , RouteContext:{2}, SenderID:{3}, SenderName:{4,60}, ChatMessage:{5,60}",
+				SFLog(Net, Debug1, "ChatMessage:{0}:{1} , RouteContext:{2}, SenderID:{3}, SenderName:{4,60}, ChatMessage:{5,60}",
 						prefix, pMsg->GetMessageHeader()->Length, parser.GetRouteContext(), parser.GetSenderID(), parser.GetSenderName(), parser.GetChatMessage()); 
 				return ResultCode::SUCCESS;
 			}; // Result ChatMessageS2CEvt::TraceOut(const char* prefix, const MessageDataPtr& pMsg)

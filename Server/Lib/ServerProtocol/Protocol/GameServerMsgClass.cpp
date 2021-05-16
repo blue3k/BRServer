@@ -109,7 +109,7 @@ namespace SF
 			{
  				RegisterPlayerToJoinGameServerCmd parser;
 				parser.ParseMessage(*pMsg);
-				protocolTrace( Debug1, "RegisterPlayerToJoinGameServer:{0}:{1} , RouteContext:{2}, TransactionID:{3}, PlayerID:{4}, Ticket:{5}, FBUserID:{6}, ShardID:{7}",
+				SFLog(Net, Debug1, "RegisterPlayerToJoinGameServer:{0}:{1} , RouteContext:{2}, TransactionID:{3}, PlayerID:{4}, Ticket:{5}, FBUserID:{6}, ShardID:{7}",
 						prefix, pMsg->GetMessageHeader()->Length, parser.GetRouteContext(), parser.GetTransactionID(), parser.GetPlayerID(), parser.GetTicket(), parser.GetFBUserID(), parser.GetShardID()); 
 				return ResultCode::SUCCESS;
 			}; // Result RegisterPlayerToJoinGameServerCmd::TraceOut(const char* prefix, const MessageDataPtr& pMsg)
@@ -198,7 +198,7 @@ namespace SF
 			{
  				RegisterPlayerToJoinGameServerRes parser;
 				parser.ParseMessage(*pMsg);
-				protocolTrace( Debug1, "RegisterPlayerToJoinGameServer:{0}:{1} , RouteContext:{2}, TransactionID:{3}, Result:{4:X8}, PublicAddress:{5,60}, PublicAddressV6:{6,60}, Port:{7}",
+				SFLog(Net, Debug1, "RegisterPlayerToJoinGameServer:{0}:{1} , RouteContext:{2}, TransactionID:{3}, Result:{4:X8}, PublicAddress:{5,60}, PublicAddressV6:{6,60}, Port:{7}",
 						prefix, pMsg->GetMessageHeader()->Length, parser.GetRouteContext(), parser.GetTransactionID(), parser.GetResult(), parser.GetPublicAddress(), parser.GetPublicAddressV6(), parser.GetPort()); 
 				return ResultCode::SUCCESS;
 			}; // Result RegisterPlayerToJoinGameServerRes::TraceOut(const char* prefix, const MessageDataPtr& pMsg)
@@ -283,7 +283,7 @@ namespace SF
 			{
  				RegisterPlayerToJoinGameServerOnPlayerEntityCmd parser;
 				parser.ParseMessage(*pMsg);
-				protocolTrace( Debug1, "RegisterPlayerToJoinGameServerOnPlayerEntity:{0}:{1} , RouteContext:{2}, TransactionID:{3}, PlayerID:{4}, Ticket:{5}, FBUserID:{6}",
+				SFLog(Net, Debug1, "RegisterPlayerToJoinGameServerOnPlayerEntity:{0}:{1} , RouteContext:{2}, TransactionID:{3}, PlayerID:{4}, Ticket:{5}, FBUserID:{6}",
 						prefix, pMsg->GetMessageHeader()->Length, parser.GetRouteContext(), parser.GetTransactionID(), parser.GetPlayerID(), parser.GetTicket(), parser.GetFBUserID()); 
 				return ResultCode::SUCCESS;
 			}; // Result RegisterPlayerToJoinGameServerOnPlayerEntityCmd::TraceOut(const char* prefix, const MessageDataPtr& pMsg)
@@ -361,7 +361,7 @@ namespace SF
 			{
  				RegisterPlayerToJoinGameServerOnPlayerEntityRes parser;
 				parser.ParseMessage(*pMsg);
-				protocolTrace( Debug1, "RegisterPlayerToJoinGameServerOnPlayerEntity:{0}:{1} , RouteContext:{2}, TransactionID:{3}, Result:{4:X8}",
+				SFLog(Net, Debug1, "RegisterPlayerToJoinGameServerOnPlayerEntity:{0}:{1} , RouteContext:{2}, TransactionID:{3}, Result:{4:X8}",
 						prefix, pMsg->GetMessageHeader()->Length, parser.GetRouteContext(), parser.GetTransactionID(), parser.GetResult()); 
 				return ResultCode::SUCCESS;
 			}; // Result RegisterPlayerToJoinGameServerOnPlayerEntityRes::TraceOut(const char* prefix, const MessageDataPtr& pMsg)
@@ -448,7 +448,7 @@ namespace SF
 			{
  				ChatMessageC2SEvt parser;
 				parser.ParseMessage(*pMsg);
-				protocolTrace( Debug1, "ChatMessage:{0}:{1} , RouteContext:{2}, SenderID:{3}, Role:{4}, SenderName:{5,60}, ChatMessage:{6,60}",
+				SFLog(Net, Debug1, "ChatMessage:{0}:{1} , RouteContext:{2}, SenderID:{3}, Role:{4}, SenderName:{5,60}, ChatMessage:{6,60}",
 						prefix, pMsg->GetMessageHeader()->Length, parser.GetRouteContext(), parser.GetSenderID(), (int)parser.GetRole(), parser.GetSenderName(), parser.GetChatMessage()); 
 				return ResultCode::SUCCESS;
 			}; // Result ChatMessageC2SEvt::TraceOut(const char* prefix, const MessageDataPtr& pMsg)
@@ -543,7 +543,7 @@ namespace SF
 			{
  				NotifyC2SEvt parser;
 				parser.ParseMessage(*pMsg);
-				protocolTrace( Debug1, "Notify:{0}:{1} , RouteContext:{2}, DestPlayerID:{3}, NotificationID:{4}, MessageID:{5}, MessageParam0:{6}, MessageParam1:{7}, MessageText:{8,60}, TimeStamp:{9}",
+				SFLog(Net, Debug1, "Notify:{0}:{1} , RouteContext:{2}, DestPlayerID:{3}, NotificationID:{4}, MessageID:{5}, MessageParam0:{6}, MessageParam1:{7}, MessageText:{8,60}, TimeStamp:{9}",
 						prefix, pMsg->GetMessageHeader()->Length, parser.GetRouteContext(), parser.GetDestPlayerID(), parser.GetNotificationID(), parser.GetMessageID(), parser.GetMessageParam0(), parser.GetMessageParam1(), parser.GetMessageText(), parser.GetTimeStamp()); 
 				return ResultCode::SUCCESS;
 			}; // Result NotifyC2SEvt::TraceOut(const char* prefix, const MessageDataPtr& pMsg)
@@ -622,7 +622,7 @@ namespace SF
 			{
  				FriendAcceptedC2SEvt parser;
 				parser.ParseMessage(*pMsg);
-				protocolTrace( Debug1, "FriendAccepted:{0}:{1} , RouteContext:{2}, DestPlayerID:{3}, Accepter:{4}",
+				SFLog(Net, Debug1, "FriendAccepted:{0}:{1} , RouteContext:{2}, DestPlayerID:{3}, Accepter:{4}",
 						prefix, pMsg->GetMessageHeader()->Length, parser.GetRouteContext(), parser.GetDestPlayerID(), parser.GetAccepter()); 
 				return ResultCode::SUCCESS;
 			}; // Result FriendAcceptedC2SEvt::TraceOut(const char* prefix, const MessageDataPtr& pMsg)
@@ -701,7 +701,7 @@ namespace SF
 			{
  				FriendRemovedC2SEvt parser;
 				parser.ParseMessage(*pMsg);
-				protocolTrace( Debug1, "FriendRemoved:{0}:{1} , RouteContext:{2}, DestPlayerID:{3}, RemoverID:{4}",
+				SFLog(Net, Debug1, "FriendRemoved:{0}:{1} , RouteContext:{2}, DestPlayerID:{3}, RemoverID:{4}",
 						prefix, pMsg->GetMessageHeader()->Length, parser.GetRouteContext(), parser.GetDestPlayerID(), parser.GetRemoverID()); 
 				return ResultCode::SUCCESS;
 			}; // Result FriendRemovedC2SEvt::TraceOut(const char* prefix, const MessageDataPtr& pMsg)
@@ -780,7 +780,7 @@ namespace SF
 			{
  				RequestPlayerStatusUpdateC2SEvt parser;
 				parser.ParseMessage(*pMsg);
-				protocolTrace( Debug1, "RequestPlayerStatusUpdate:{0}:{1} , RouteContext:{2}, DestPlayerID:{3}, RequesterID:{4}",
+				SFLog(Net, Debug1, "RequestPlayerStatusUpdate:{0}:{1} , RouteContext:{2}, DestPlayerID:{3}, RequesterID:{4}",
 						prefix, pMsg->GetMessageHeader()->Length, parser.GetRouteContext(), parser.GetDestPlayerID(), parser.GetRequesterID()); 
 				return ResultCode::SUCCESS;
 			}; // Result RequestPlayerStatusUpdateC2SEvt::TraceOut(const char* prefix, const MessageDataPtr& pMsg)
@@ -862,7 +862,7 @@ namespace SF
 			{
  				NotifyPlayerStatusUpdatedC2SEvt parser;
 				parser.ParseMessage(*pMsg);
-				protocolTrace( Debug1, "NotifyPlayerStatusUpdated:{0}:{1} , RouteContext:{2}, DestPlayerID:{3}, LatestActiveTime:{4}, IsInGame:{5}",
+				SFLog(Net, Debug1, "NotifyPlayerStatusUpdated:{0}:{1} , RouteContext:{2}, DestPlayerID:{3}, LatestActiveTime:{4}, IsInGame:{5}",
 						prefix, pMsg->GetMessageHeader()->Length, parser.GetRouteContext(), parser.GetDestPlayerID(), parser.GetLatestActiveTime(), parser.GetIsInGame()); 
 				return ResultCode::SUCCESS;
 			}; // Result NotifyPlayerStatusUpdatedC2SEvt::TraceOut(const char* prefix, const MessageDataPtr& pMsg)
@@ -948,7 +948,7 @@ namespace SF
 			{
  				NotifyPartyInviteC2SEvt parser;
 				parser.ParseMessage(*pMsg);
-				protocolTrace( Debug1, "NotifyPartyInvite:{0}:{1} , RouteContext:{2}, DestPlayerID:{3}, InviterID:{4}, InviterName:{5,60}, PartyUID:{6}",
+				SFLog(Net, Debug1, "NotifyPartyInvite:{0}:{1} , RouteContext:{2}, DestPlayerID:{3}, InviterID:{4}, InviterName:{5,60}, PartyUID:{6}",
 						prefix, pMsg->GetMessageHeader()->Length, parser.GetRouteContext(), parser.GetDestPlayerID(), parser.GetInviterID(), parser.GetInviterName(), parser.GetPartyUID()); 
 				return ResultCode::SUCCESS;
 			}; // Result NotifyPartyInviteC2SEvt::TraceOut(const char* prefix, const MessageDataPtr& pMsg)

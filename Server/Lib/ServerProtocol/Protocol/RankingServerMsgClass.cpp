@@ -103,7 +103,7 @@ namespace SF
 			{
  				AddPlayerCmd parser;
 				parser.ParseMessage(*pMsg);
-				protocolTrace( Debug1, "AddPlayer:{0}:{1} , RouteContext:{2}, TransactionID:{3}, PlayerInfo:{4}, RankingScore:{5}",
+				SFLog(Net, Debug1, "AddPlayer:{0}:{1} , RouteContext:{2}, TransactionID:{3}, PlayerInfo:{4}, RankingScore:{5}",
 						prefix, pMsg->GetMessageHeader()->Length, parser.GetRouteContext(), parser.GetTransactionID(), parser.GetPlayerInfo(), parser.GetRankingScore()); 
 				return ResultCode::SUCCESS;
 			}; // Result AddPlayerCmd::TraceOut(const char* prefix, const MessageDataPtr& pMsg)
@@ -184,7 +184,7 @@ namespace SF
 			{
  				AddPlayerRes parser;
 				parser.ParseMessage(*pMsg);
-				protocolTrace( Debug1, "AddPlayer:{0}:{1} , RouteContext:{2}, TransactionID:{3}, Result:{4:X8}, Ranking:{5}",
+				SFLog(Net, Debug1, "AddPlayer:{0}:{1} , RouteContext:{2}, TransactionID:{3}, Result:{4:X8}, Ranking:{5}",
 						prefix, pMsg->GetMessageHeader()->Length, parser.GetRouteContext(), parser.GetTransactionID(), parser.GetResult(), parser.GetRanking()); 
 				return ResultCode::SUCCESS;
 			}; // Result AddPlayerRes::TraceOut(const char* prefix, const MessageDataPtr& pMsg)
@@ -263,7 +263,7 @@ namespace SF
 			{
  				RemovePlayerCmd parser;
 				parser.ParseMessage(*pMsg);
-				protocolTrace( Debug1, "RemovePlayer:{0}:{1} , RouteContext:{2}, TransactionID:{3}, PlayerID:{4}",
+				SFLog(Net, Debug1, "RemovePlayer:{0}:{1} , RouteContext:{2}, TransactionID:{3}, PlayerID:{4}",
 						prefix, pMsg->GetMessageHeader()->Length, parser.GetRouteContext(), parser.GetTransactionID(), parser.GetPlayerID()); 
 				return ResultCode::SUCCESS;
 			}; // Result RemovePlayerCmd::TraceOut(const char* prefix, const MessageDataPtr& pMsg)
@@ -341,7 +341,7 @@ namespace SF
 			{
  				RemovePlayerRes parser;
 				parser.ParseMessage(*pMsg);
-				protocolTrace( Debug1, "RemovePlayer:{0}:{1} , RouteContext:{2}, TransactionID:{3}, Result:{4:X8}",
+				SFLog(Net, Debug1, "RemovePlayer:{0}:{1} , RouteContext:{2}, TransactionID:{3}, Result:{4:X8}",
 						prefix, pMsg->GetMessageHeader()->Length, parser.GetRouteContext(), parser.GetTransactionID(), parser.GetResult()); 
 				return ResultCode::SUCCESS;
 			}; // Result RemovePlayerRes::TraceOut(const char* prefix, const MessageDataPtr& pMsg)
@@ -420,7 +420,7 @@ namespace SF
 			{
  				GetPlayerRankingCmd parser;
 				parser.ParseMessage(*pMsg);
-				protocolTrace( Debug1, "GetPlayerRanking:{0}:{1} , RouteContext:{2}, TransactionID:{3}, PlayerID:{4}",
+				SFLog(Net, Debug1, "GetPlayerRanking:{0}:{1} , RouteContext:{2}, TransactionID:{3}, PlayerID:{4}",
 						prefix, pMsg->GetMessageHeader()->Length, parser.GetRouteContext(), parser.GetTransactionID(), parser.GetPlayerID()); 
 				return ResultCode::SUCCESS;
 			}; // Result GetPlayerRankingCmd::TraceOut(const char* prefix, const MessageDataPtr& pMsg)
@@ -501,7 +501,7 @@ namespace SF
 			{
  				GetPlayerRankingRes parser;
 				parser.ParseMessage(*pMsg);
-				protocolTrace( Debug1, "GetPlayerRanking:{0}:{1} , RouteContext:{2}, TransactionID:{3}, Result:{4:X8}, Ranking:{5}",
+				SFLog(Net, Debug1, "GetPlayerRanking:{0}:{1} , RouteContext:{2}, TransactionID:{3}, Result:{4:X8}, Ranking:{5}",
 						prefix, pMsg->GetMessageHeader()->Length, parser.GetRouteContext(), parser.GetTransactionID(), parser.GetResult(), parser.GetRanking()); 
 				return ResultCode::SUCCESS;
 			}; // Result GetPlayerRankingRes::TraceOut(const char* prefix, const MessageDataPtr& pMsg)
@@ -586,7 +586,7 @@ namespace SF
 			{
  				UpdatePlayerScoreCmd parser;
 				parser.ParseMessage(*pMsg);
-				protocolTrace( Debug1, "UpdatePlayerScore:{0}:{1} , RouteContext:{2}, TransactionID:{3}, RankingScore:{4}, PlayerInfo:{5}, Count:{6}",
+				SFLog(Net, Debug1, "UpdatePlayerScore:{0}:{1} , RouteContext:{2}, TransactionID:{3}, RankingScore:{4}, PlayerInfo:{5}, Count:{6}",
 						prefix, pMsg->GetMessageHeader()->Length, parser.GetRouteContext(), parser.GetTransactionID(), parser.GetRankingScore(), parser.GetPlayerInfo(), parser.GetCount()); 
 				return ResultCode::SUCCESS;
 			}; // Result UpdatePlayerScoreCmd::TraceOut(const char* prefix, const MessageDataPtr& pMsg)
@@ -670,7 +670,7 @@ namespace SF
 			{
  				UpdatePlayerScoreRes parser;
 				parser.ParseMessage(*pMsg);
-				protocolTrace( Debug1, "UpdatePlayerScore:{0}:{1} , RouteContext:{2}, TransactionID:{3}, Result:{4:X8}, Ranking:{5,30}",
+				SFLog(Net, Debug1, "UpdatePlayerScore:{0}:{1} , RouteContext:{2}, TransactionID:{3}, Result:{4:X8}, Ranking:{5,30}",
 						prefix, pMsg->GetMessageHeader()->Length, parser.GetRouteContext(), parser.GetTransactionID(), parser.GetResult(), parser.GetRanking()); 
 				return ResultCode::SUCCESS;
 			}; // Result UpdatePlayerScoreRes::TraceOut(const char* prefix, const MessageDataPtr& pMsg)
@@ -755,7 +755,7 @@ namespace SF
 			{
  				GetRankingCmd parser;
 				parser.ParseMessage(*pMsg);
-				protocolTrace( Debug1, "GetRanking:{0}:{1} , RouteContext:{2}, TransactionID:{3}, RankingType:{4}, BaseRanking:{5}, Count:{6}",
+				SFLog(Net, Debug1, "GetRanking:{0}:{1} , RouteContext:{2}, TransactionID:{3}, RankingType:{4}, BaseRanking:{5}, Count:{6}",
 						prefix, pMsg->GetMessageHeader()->Length, parser.GetRouteContext(), parser.GetTransactionID(), (int)parser.GetRankingType(), parser.GetBaseRanking(), parser.GetCount()); 
 				return ResultCode::SUCCESS;
 			}; // Result GetRankingCmd::TraceOut(const char* prefix, const MessageDataPtr& pMsg)
@@ -839,7 +839,7 @@ namespace SF
 			{
  				GetRankingRes parser;
 				parser.ParseMessage(*pMsg);
-				protocolTrace( Debug1, "GetRanking:{0}:{1} , RouteContext:{2}, TransactionID:{3}, Result:{4:X8}, Ranking:{5,30}",
+				SFLog(Net, Debug1, "GetRanking:{0}:{1} , RouteContext:{2}, TransactionID:{3}, Result:{4:X8}, Ranking:{5,30}",
 						prefix, pMsg->GetMessageHeader()->Length, parser.GetRouteContext(), parser.GetTransactionID(), parser.GetResult(), parser.GetRanking()); 
 				return ResultCode::SUCCESS;
 			}; // Result GetRankingRes::TraceOut(const char* prefix, const MessageDataPtr& pMsg)
@@ -919,7 +919,7 @@ namespace SF
 			{
  				DebugPrintALLRankingCmd parser;
 				parser.ParseMessage(*pMsg);
-				protocolTrace( Debug1, "DebugPrintALLRanking:{0}:{1} , RouteContext:{2}, TransactionID:{3}, FileName:{4,60}",
+				SFLog(Net, Debug1, "DebugPrintALLRanking:{0}:{1} , RouteContext:{2}, TransactionID:{3}, FileName:{4,60}",
 						prefix, pMsg->GetMessageHeader()->Length, parser.GetRouteContext(), parser.GetTransactionID(), parser.GetFileName()); 
 				return ResultCode::SUCCESS;
 			}; // Result DebugPrintALLRankingCmd::TraceOut(const char* prefix, const MessageDataPtr& pMsg)
@@ -997,7 +997,7 @@ namespace SF
 			{
  				DebugPrintALLRankingRes parser;
 				parser.ParseMessage(*pMsg);
-				protocolTrace( Debug1, "DebugPrintALLRanking:{0}:{1} , RouteContext:{2}, TransactionID:{3}, Result:{4:X8}",
+				SFLog(Net, Debug1, "DebugPrintALLRanking:{0}:{1} , RouteContext:{2}, TransactionID:{3}, Result:{4:X8}",
 						prefix, pMsg->GetMessageHeader()->Length, parser.GetRouteContext(), parser.GetTransactionID(), parser.GetResult()); 
 				return ResultCode::SUCCESS;
 			}; // Result DebugPrintALLRankingRes::TraceOut(const char* prefix, const MessageDataPtr& pMsg)

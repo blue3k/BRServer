@@ -97,7 +97,7 @@ namespace SF
 			{
  				GenericFailureCmd parser;
 				parser.ParseMessage(*pMsg);
-				protocolTrace( Debug1, "GenericFailure:{0}:{1} , RouteContext:{2}, TransactionID:{3}",
+				SFLog(Net, Debug1, "GenericFailure:{0}:{1} , RouteContext:{2}, TransactionID:{3}",
 						prefix, pMsg->GetMessageHeader()->Length, parser.GetRouteContext(), parser.GetTransactionID()); 
 				return ResultCode::SUCCESS;
 			}; // Result GenericFailureCmd::TraceOut(const char* prefix, const MessageDataPtr& pMsg)
@@ -175,7 +175,7 @@ namespace SF
 			{
  				GenericFailureRes parser;
 				parser.ParseMessage(*pMsg);
-				protocolTrace( Debug1, "GenericFailure:{0}:{1} , RouteContext:{2}, TransactionID:{3}, Result:{4:X8}",
+				SFLog(Net, Debug1, "GenericFailure:{0}:{1} , RouteContext:{2}, TransactionID:{3}, Result:{4:X8}",
 						prefix, pMsg->GetMessageHeader()->Length, parser.GetRouteContext(), parser.GetTransactionID(), parser.GetResult()); 
 				return ResultCode::SUCCESS;
 			}; // Result GenericFailureRes::TraceOut(const char* prefix, const MessageDataPtr& pMsg)
@@ -254,7 +254,7 @@ namespace SF
 			{
  				ServerConnectedC2SEvt parser;
 				parser.ParseMessage(*pMsg);
-				protocolTrace( Debug2, "ServerConnected:{0}:{1} , RouteContext:{2}, StartUpTime:{3}, PrivateAddress:{4}",
+				SFLog(Net, Debug2, "ServerConnected:{0}:{1} , RouteContext:{2}, StartUpTime:{3}, PrivateAddress:{4}",
 						prefix, pMsg->GetMessageHeader()->Length, parser.GetRouteContext(), parser.GetStartUpTime(), parser.GetPrivateAddress()); 
 				return ResultCode::SUCCESS;
 			}; // Result ServerConnectedC2SEvt::TraceOut(const char* prefix, const MessageDataPtr& pMsg)

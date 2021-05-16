@@ -103,7 +103,7 @@ namespace SF
 			{
  				JoinPartyCmd parser;
 				parser.ParseMessage(*pMsg);
-				protocolTrace( Debug1, "JoinParty:{0}:{1} , RouteContext:{2}, TransactionID:{3}, InviterID:{4}, InvitedPlayer:{5}",
+				SFLog(Net, Debug1, "JoinParty:{0}:{1} , RouteContext:{2}, TransactionID:{3}, InviterID:{4}, InvitedPlayer:{5}",
 						prefix, pMsg->GetMessageHeader()->Length, parser.GetRouteContext(), parser.GetTransactionID(), parser.GetInviterID(), parser.GetInvitedPlayer()); 
 				return ResultCode::SUCCESS;
 			}; // Result JoinPartyCmd::TraceOut(const char* prefix, const MessageDataPtr& pMsg)
@@ -190,7 +190,7 @@ namespace SF
 			{
  				JoinPartyRes parser;
 				parser.ParseMessage(*pMsg);
-				protocolTrace( Debug1, "JoinParty:{0}:{1} , RouteContext:{2}, TransactionID:{3}, Result:{4:X8}, PartyLeaderID:{5}, ChatHistoryData:{6,30}",
+				SFLog(Net, Debug1, "JoinParty:{0}:{1} , RouteContext:{2}, TransactionID:{3}, Result:{4:X8}, PartyLeaderID:{5}, ChatHistoryData:{6,30}",
 						prefix, pMsg->GetMessageHeader()->Length, parser.GetRouteContext(), parser.GetTransactionID(), parser.GetResult(), parser.GetPartyLeaderID(), parser.GetChatHistoryData()); 
 				return ResultCode::SUCCESS;
 			}; // Result JoinPartyRes::TraceOut(const char* prefix, const MessageDataPtr& pMsg)
@@ -266,7 +266,7 @@ namespace SF
 			{
  				PlayerJoinedS2CEvt parser;
 				parser.ParseMessage(*pMsg);
-				protocolTrace( Debug1, "PlayerJoined:{0}:{1} , RouteContext:{2}, JoinedPlayer:{3}",
+				SFLog(Net, Debug1, "PlayerJoined:{0}:{1} , RouteContext:{2}, JoinedPlayer:{3}",
 						prefix, pMsg->GetMessageHeader()->Length, parser.GetRouteContext(), parser.GetJoinedPlayer()); 
 				return ResultCode::SUCCESS;
 			}; // Result PlayerJoinedS2CEvt::TraceOut(const char* prefix, const MessageDataPtr& pMsg)
@@ -342,7 +342,7 @@ namespace SF
 			{
  				PartyLeaderChangedS2CEvt parser;
 				parser.ParseMessage(*pMsg);
-				protocolTrace( Debug1, "PartyLeaderChanged:{0}:{1} , RouteContext:{2}, NewLeaderID:{3}",
+				SFLog(Net, Debug1, "PartyLeaderChanged:{0}:{1} , RouteContext:{2}, NewLeaderID:{3}",
 						prefix, pMsg->GetMessageHeader()->Length, parser.GetRouteContext(), parser.GetNewLeaderID()); 
 				return ResultCode::SUCCESS;
 			}; // Result PartyLeaderChangedS2CEvt::TraceOut(const char* prefix, const MessageDataPtr& pMsg)
@@ -421,7 +421,7 @@ namespace SF
 			{
  				LeavePartyCmd parser;
 				parser.ParseMessage(*pMsg);
-				protocolTrace( Debug1, "LeaveParty:{0}:{1} , RouteContext:{2}, TransactionID:{3}, PlayerID:{4}",
+				SFLog(Net, Debug1, "LeaveParty:{0}:{1} , RouteContext:{2}, TransactionID:{3}, PlayerID:{4}",
 						prefix, pMsg->GetMessageHeader()->Length, parser.GetRouteContext(), parser.GetTransactionID(), parser.GetPlayerID()); 
 				return ResultCode::SUCCESS;
 			}; // Result LeavePartyCmd::TraceOut(const char* prefix, const MessageDataPtr& pMsg)
@@ -499,7 +499,7 @@ namespace SF
 			{
  				LeavePartyRes parser;
 				parser.ParseMessage(*pMsg);
-				protocolTrace( Debug1, "LeaveParty:{0}:{1} , RouteContext:{2}, TransactionID:{3}, Result:{4:X8}",
+				SFLog(Net, Debug1, "LeaveParty:{0}:{1} , RouteContext:{2}, TransactionID:{3}, Result:{4:X8}",
 						prefix, pMsg->GetMessageHeader()->Length, parser.GetRouteContext(), parser.GetTransactionID(), parser.GetResult()); 
 				return ResultCode::SUCCESS;
 			}; // Result LeavePartyRes::TraceOut(const char* prefix, const MessageDataPtr& pMsg)
@@ -575,7 +575,7 @@ namespace SF
 			{
  				PlayerLeftS2CEvt parser;
 				parser.ParseMessage(*pMsg);
-				protocolTrace( Debug1, "PlayerLeft:{0}:{1} , RouteContext:{2}, LeftPlayerID:{3}",
+				SFLog(Net, Debug1, "PlayerLeft:{0}:{1} , RouteContext:{2}, LeftPlayerID:{3}",
 						prefix, pMsg->GetMessageHeader()->Length, parser.GetRouteContext(), parser.GetLeftPlayerID()); 
 				return ResultCode::SUCCESS;
 			}; // Result PlayerLeftS2CEvt::TraceOut(const char* prefix, const MessageDataPtr& pMsg)
@@ -657,7 +657,7 @@ namespace SF
 			{
  				KickPlayerCmd parser;
 				parser.ParseMessage(*pMsg);
-				protocolTrace( Debug1, "KickPlayer:{0}:{1} , RouteContext:{2}, TransactionID:{3}, PlayerID:{4}, PlayerToKick:{5}",
+				SFLog(Net, Debug1, "KickPlayer:{0}:{1} , RouteContext:{2}, TransactionID:{3}, PlayerID:{4}, PlayerToKick:{5}",
 						prefix, pMsg->GetMessageHeader()->Length, parser.GetRouteContext(), parser.GetTransactionID(), parser.GetPlayerID(), parser.GetPlayerToKick()); 
 				return ResultCode::SUCCESS;
 			}; // Result KickPlayerCmd::TraceOut(const char* prefix, const MessageDataPtr& pMsg)
@@ -735,7 +735,7 @@ namespace SF
 			{
  				KickPlayerRes parser;
 				parser.ParseMessage(*pMsg);
-				protocolTrace( Debug1, "KickPlayer:{0}:{1} , RouteContext:{2}, TransactionID:{3}, Result:{4:X8}",
+				SFLog(Net, Debug1, "KickPlayer:{0}:{1} , RouteContext:{2}, TransactionID:{3}, Result:{4:X8}",
 						prefix, pMsg->GetMessageHeader()->Length, parser.GetRouteContext(), parser.GetTransactionID(), parser.GetResult()); 
 				return ResultCode::SUCCESS;
 			}; // Result KickPlayerRes::TraceOut(const char* prefix, const MessageDataPtr& pMsg)
@@ -811,7 +811,7 @@ namespace SF
 			{
  				PlayerKickedS2CEvt parser;
 				parser.ParseMessage(*pMsg);
-				protocolTrace( Debug1, "PlayerKicked:{0}:{1} , RouteContext:{2}, KickedPlayerID:{3}",
+				SFLog(Net, Debug1, "PlayerKicked:{0}:{1} , RouteContext:{2}, KickedPlayerID:{3}",
 						prefix, pMsg->GetMessageHeader()->Length, parser.GetRouteContext(), parser.GetKickedPlayerID()); 
 				return ResultCode::SUCCESS;
 			}; // Result PlayerKickedS2CEvt::TraceOut(const char* prefix, const MessageDataPtr& pMsg)
@@ -891,7 +891,7 @@ namespace SF
 			{
  				ChatMessageC2SEvt parser;
 				parser.ParseMessage(*pMsg);
-				protocolTrace( Debug1, "ChatMessage:{0}:{1} , RouteContext:{2}, PlayerID:{3}, ChatMessage:{4,60}",
+				SFLog(Net, Debug1, "ChatMessage:{0}:{1} , RouteContext:{2}, PlayerID:{3}, ChatMessage:{4,60}",
 						prefix, pMsg->GetMessageHeader()->Length, parser.GetRouteContext(), parser.GetPlayerID(), parser.GetChatMessage()); 
 				return ResultCode::SUCCESS;
 			}; // Result ChatMessageC2SEvt::TraceOut(const char* prefix, const MessageDataPtr& pMsg)
@@ -975,7 +975,7 @@ namespace SF
 			{
  				ChatMessageS2CEvt parser;
 				parser.ParseMessage(*pMsg);
-				protocolTrace( Debug1, "ChatMessage:{0}:{1} , RouteContext:{2}, SenderID:{3}, SenderName:{4,60}, ChatMessage:{5,60}",
+				SFLog(Net, Debug1, "ChatMessage:{0}:{1} , RouteContext:{2}, SenderID:{3}, SenderName:{4,60}, ChatMessage:{5,60}",
 						prefix, pMsg->GetMessageHeader()->Length, parser.GetRouteContext(), parser.GetSenderID(), parser.GetSenderName(), parser.GetChatMessage()); 
 				return ResultCode::SUCCESS;
 			}; // Result ChatMessageS2CEvt::TraceOut(const char* prefix, const MessageDataPtr& pMsg)
@@ -1054,7 +1054,7 @@ namespace SF
 			{
  				QuickChatMessageC2SEvt parser;
 				parser.ParseMessage(*pMsg);
-				protocolTrace( Debug1, "QuickChatMessage:{0}:{1} , RouteContext:{2}, PlayerID:{3}, QuickChatID:{4}",
+				SFLog(Net, Debug1, "QuickChatMessage:{0}:{1} , RouteContext:{2}, PlayerID:{3}, QuickChatID:{4}",
 						prefix, pMsg->GetMessageHeader()->Length, parser.GetRouteContext(), parser.GetPlayerID(), parser.GetQuickChatID()); 
 				return ResultCode::SUCCESS;
 			}; // Result QuickChatMessageC2SEvt::TraceOut(const char* prefix, const MessageDataPtr& pMsg)
@@ -1133,7 +1133,7 @@ namespace SF
 			{
  				QuickChatMessageS2CEvt parser;
 				parser.ParseMessage(*pMsg);
-				protocolTrace( Debug1, "QuickChatMessage:{0}:{1} , RouteContext:{2}, SenderID:{3}, QuickChatID:{4}",
+				SFLog(Net, Debug1, "QuickChatMessage:{0}:{1} , RouteContext:{2}, SenderID:{3}, QuickChatID:{4}",
 						prefix, pMsg->GetMessageHeader()->Length, parser.GetRouteContext(), parser.GetSenderID(), parser.GetQuickChatID()); 
 				return ResultCode::SUCCESS;
 			}; // Result QuickChatMessageS2CEvt::TraceOut(const char* prefix, const MessageDataPtr& pMsg)
@@ -1215,7 +1215,7 @@ namespace SF
 			{
  				StartGameMatchCmd parser;
 				parser.ParseMessage(*pMsg);
-				protocolTrace( Debug1, "StartGameMatch:{0}:{1} , RouteContext:{2}, TransactionID:{3}, PlayerID:{4}, MaxGamePlayers:{5}",
+				SFLog(Net, Debug1, "StartGameMatch:{0}:{1} , RouteContext:{2}, TransactionID:{3}, PlayerID:{4}, MaxGamePlayers:{5}",
 						prefix, pMsg->GetMessageHeader()->Length, parser.GetRouteContext(), parser.GetTransactionID(), parser.GetPlayerID(), parser.GetMaxGamePlayers()); 
 				return ResultCode::SUCCESS;
 			}; // Result StartGameMatchCmd::TraceOut(const char* prefix, const MessageDataPtr& pMsg)
@@ -1293,7 +1293,7 @@ namespace SF
 			{
  				StartGameMatchRes parser;
 				parser.ParseMessage(*pMsg);
-				protocolTrace( Debug1, "StartGameMatch:{0}:{1} , RouteContext:{2}, TransactionID:{3}, Result:{4:X8}",
+				SFLog(Net, Debug1, "StartGameMatch:{0}:{1} , RouteContext:{2}, TransactionID:{3}, Result:{4:X8}",
 						prefix, pMsg->GetMessageHeader()->Length, parser.GetRouteContext(), parser.GetTransactionID(), parser.GetResult()); 
 				return ResultCode::SUCCESS;
 			}; // Result StartGameMatchRes::TraceOut(const char* prefix, const MessageDataPtr& pMsg)
@@ -1369,7 +1369,7 @@ namespace SF
 			{
  				QueuedGameMatchingS2CEvt parser;
 				parser.ParseMessage(*pMsg);
-				protocolTrace( Debug1, "QueuedGameMatching:{0}:{1} , RouteContext:{2}, MatchingQueueTicket:{3}",
+				SFLog(Net, Debug1, "QueuedGameMatching:{0}:{1} , RouteContext:{2}, MatchingQueueTicket:{3}",
 						prefix, pMsg->GetMessageHeader()->Length, parser.GetRouteContext(), parser.GetMatchingQueueTicket()); 
 				return ResultCode::SUCCESS;
 			}; // Result QueuedGameMatchingS2CEvt::TraceOut(const char* prefix, const MessageDataPtr& pMsg)
@@ -1448,7 +1448,7 @@ namespace SF
 			{
  				CancelGameMatchCmd parser;
 				parser.ParseMessage(*pMsg);
-				protocolTrace( Debug1, "CancelGameMatch:{0}:{1} , RouteContext:{2}, TransactionID:{3}, PlayerID:{4}",
+				SFLog(Net, Debug1, "CancelGameMatch:{0}:{1} , RouteContext:{2}, TransactionID:{3}, PlayerID:{4}",
 						prefix, pMsg->GetMessageHeader()->Length, parser.GetRouteContext(), parser.GetTransactionID(), parser.GetPlayerID()); 
 				return ResultCode::SUCCESS;
 			}; // Result CancelGameMatchCmd::TraceOut(const char* prefix, const MessageDataPtr& pMsg)
@@ -1526,7 +1526,7 @@ namespace SF
 			{
  				CancelGameMatchRes parser;
 				parser.ParseMessage(*pMsg);
-				protocolTrace( Debug1, "CancelGameMatch:{0}:{1} , RouteContext:{2}, TransactionID:{3}, Result:{4:X8}",
+				SFLog(Net, Debug1, "CancelGameMatch:{0}:{1} , RouteContext:{2}, TransactionID:{3}, Result:{4:X8}",
 						prefix, pMsg->GetMessageHeader()->Length, parser.GetRouteContext(), parser.GetTransactionID(), parser.GetResult()); 
 				return ResultCode::SUCCESS;
 			}; // Result CancelGameMatchRes::TraceOut(const char* prefix, const MessageDataPtr& pMsg)
@@ -1602,7 +1602,7 @@ namespace SF
 			{
  				CanceledGameMatchingS2CEvt parser;
 				parser.ParseMessage(*pMsg);
-				protocolTrace( Debug1, "CanceledGameMatching:{0}:{1} , RouteContext:{2}, MatchingQueueTicket:{3}",
+				SFLog(Net, Debug1, "CanceledGameMatching:{0}:{1} , RouteContext:{2}, MatchingQueueTicket:{3}",
 						prefix, pMsg->GetMessageHeader()->Length, parser.GetRouteContext(), parser.GetMatchingQueueTicket()); 
 				return ResultCode::SUCCESS;
 			}; // Result CanceledGameMatchingS2CEvt::TraceOut(const char* prefix, const MessageDataPtr& pMsg)
@@ -1678,7 +1678,7 @@ namespace SF
 			{
  				MatchingItemDequeuedS2CEvt parser;
 				parser.ParseMessage(*pMsg);
-				protocolTrace( Debug1, "MatchingItemDequeued:{0}:{1} , RouteContext:{2}, MatchingTicket:{3}",
+				SFLog(Net, Debug1, "MatchingItemDequeued:{0}:{1} , RouteContext:{2}, MatchingTicket:{3}",
 						prefix, pMsg->GetMessageHeader()->Length, parser.GetRouteContext(), parser.GetMatchingTicket()); 
 				return ResultCode::SUCCESS;
 			}; // Result MatchingItemDequeuedS2CEvt::TraceOut(const char* prefix, const MessageDataPtr& pMsg)

@@ -18,7 +18,6 @@
 #include "Protocol/SvrProtocol.h"
 #include "Protocol/ClusterServerNetPolicy.h"
 #include "Protocol/ClusterServerMsgClass.h"
-#include "ProtocolTrace.h"
 
 
 

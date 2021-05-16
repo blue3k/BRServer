@@ -94,7 +94,7 @@ namespace SF
 			{
  				GetInstanceListCmd parser;
 				parser.ParseMessage(*pMsg);
-				protocolTrace( Debug1, "GetInstanceList:{0}:{1} , TransactionID:{2}",
+				SFLog(Net, Debug1, "GetInstanceList:{0}:{1} , TransactionID:{2}",
 						prefix, pMsg->GetMessageHeader()->Length, parser.GetTransactionID()); 
 				return ResultCode::SUCCESS;
 			}; // Result GetInstanceListCmd::TraceOut(const char* prefix, const MessageDataPtr& pMsg)
@@ -178,7 +178,7 @@ namespace SF
 			{
  				GetInstanceListRes parser;
 				parser.ParseMessage(*pMsg);
-				protocolTrace( Debug1, "GetInstanceList:{0}:{1} , TransactionID:{2}, Result:{3:X8}, CounterInstances:{4,30}, TotalInstanceCount:{5}",
+				SFLog(Net, Debug1, "GetInstanceList:{0}:{1} , TransactionID:{2}, Result:{3:X8}, CounterInstances:{4,30}, TotalInstanceCount:{5}",
 						prefix, pMsg->GetMessageHeader()->Length, parser.GetTransactionID(), parser.GetResult(), parser.GetCounterInstances(), parser.GetTotalInstanceCount()); 
 				return ResultCode::SUCCESS;
 			}; // Result GetInstanceListRes::TraceOut(const char* prefix, const MessageDataPtr& pMsg)
@@ -254,7 +254,7 @@ namespace SF
 			{
  				RequestCounterValuesCmd parser;
 				parser.ParseMessage(*pMsg);
-				protocolTrace( Debug1, "RequestCounterValues:{0}:{1} , TransactionID:{2}, InstanceUID:{3}",
+				SFLog(Net, Debug1, "RequestCounterValues:{0}:{1} , TransactionID:{2}, InstanceUID:{3}",
 						prefix, pMsg->GetMessageHeader()->Length, parser.GetTransactionID(), parser.GetInstanceUID()); 
 				return ResultCode::SUCCESS;
 			}; // Result RequestCounterValuesCmd::TraceOut(const char* prefix, const MessageDataPtr& pMsg)
@@ -338,7 +338,7 @@ namespace SF
 			{
  				RequestCounterValuesRes parser;
 				parser.ParseMessage(*pMsg);
-				protocolTrace( Debug1, "RequestCounterValues:{0}:{1} , TransactionID:{2}, Result:{3:X8}, InstanceUID:{4}, CounterValues:{5,30}",
+				SFLog(Net, Debug1, "RequestCounterValues:{0}:{1} , TransactionID:{2}, Result:{3:X8}, InstanceUID:{4}, CounterValues:{5,30}",
 						prefix, pMsg->GetMessageHeader()->Length, parser.GetTransactionID(), parser.GetResult(), parser.GetInstanceUID(), parser.GetCounterValues()); 
 				return ResultCode::SUCCESS;
 			}; // Result RequestCounterValuesRes::TraceOut(const char* prefix, const MessageDataPtr& pMsg)
@@ -421,7 +421,7 @@ namespace SF
 			{
  				PerformanceCounterNewC2SEvt parser;
 				parser.ParseMessage(*pMsg);
-				protocolTrace( Debug2, "PerformanceCounterNew:{0}:{1} , InstanceName:{2,60}, InstanceUID:{3}, NewCounters:{4,30}",
+				SFLog(Net, Debug2, "PerformanceCounterNew:{0}:{1} , InstanceName:{2,60}, InstanceUID:{3}, NewCounters:{4,30}",
 						prefix, pMsg->GetMessageHeader()->Length, parser.GetInstanceName(), parser.GetInstanceUID(), parser.GetNewCounters()); 
 				return ResultCode::SUCCESS;
 			}; // Result PerformanceCounterNewC2SEvt::TraceOut(const char* prefix, const MessageDataPtr& pMsg)
@@ -497,7 +497,7 @@ namespace SF
 			{
  				PerformanceCounterFreeC2SEvt parser;
 				parser.ParseMessage(*pMsg);
-				protocolTrace( Debug2, "PerformanceCounterFree:{0}:{1} , FreeInstances:{2,30}",
+				SFLog(Net, Debug2, "PerformanceCounterFree:{0}:{1} , FreeInstances:{2,30}",
 						prefix, pMsg->GetMessageHeader()->Length, parser.GetFreeInstances()); 
 				return ResultCode::SUCCESS;
 			}; // Result PerformanceCounterFreeC2SEvt::TraceOut(const char* prefix, const MessageDataPtr& pMsg)
@@ -576,7 +576,7 @@ namespace SF
 			{
  				PerformanceCounterUpdateC2SEvt parser;
 				parser.ParseMessage(*pMsg);
-				protocolTrace( Debug2, "PerformanceCounterUpdate:{0}:{1} , InstanceUID:{2}, CounterValues:{3,30}",
+				SFLog(Net, Debug2, "PerformanceCounterUpdate:{0}:{1} , InstanceUID:{2}, CounterValues:{3,30}",
 						prefix, pMsg->GetMessageHeader()->Length, parser.GetInstanceUID(), parser.GetCounterValues()); 
 				return ResultCode::SUCCESS;
 			}; // Result PerformanceCounterUpdateC2SEvt::TraceOut(const char* prefix, const MessageDataPtr& pMsg)
@@ -649,7 +649,7 @@ namespace SF
 			{
  				PerformanceCounterUpdateCounterInfoS2CEvt parser;
 				parser.ParseMessage(*pMsg);
-				protocolTrace( Debug2, "PerformanceCounterUpdateCounterInfo:{0}:{1} , InstanceUID:{2}",
+				SFLog(Net, Debug2, "PerformanceCounterUpdateCounterInfo:{0}:{1} , InstanceUID:{2}",
 						prefix, pMsg->GetMessageHeader()->Length, parser.GetInstanceUID()); 
 				return ResultCode::SUCCESS;
 			}; // Result PerformanceCounterUpdateCounterInfoS2CEvt::TraceOut(const char* prefix, const MessageDataPtr& pMsg)

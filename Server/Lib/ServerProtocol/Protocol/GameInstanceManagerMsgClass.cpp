@@ -160,7 +160,7 @@ namespace SF
 			{
  				CreateGameInstanceCmd parser;
 				parser.ParseMessage(*pMsg);
-				protocolTrace( Debug1, "CreateGameInstance:{0}:{1} , RouteContext:{2}, TransactionID:{3}, RouteHopCount:{4}, ZoneTableId:{5}, Attributes:{6}",
+				SFLog(Net, Debug1, "CreateGameInstance:{0}:{1} , RouteContext:{2}, TransactionID:{3}, RouteHopCount:{4}, ZoneTableId:{5}, Attributes:{6}",
 						prefix, pMsg->GetMessageHeader()->Length, parser.GetRouteContext(), parser.GetTransactionID(), parser.GetRouteHopCount(), parser.GetZoneTableId(), parser.GetAttributes()); 
 				return ResultCode::SUCCESS;
 			}; // Result CreateGameInstanceCmd::TraceOut(const char* prefix, const MessageDataPtr& pMsg)
@@ -238,7 +238,7 @@ namespace SF
 			{
  				CreateGameInstanceRes parser;
 				parser.ParseMessage(*pMsg);
-				protocolTrace( Debug1, "CreateGameInstance:{0}:{1} , RouteContext:{2}, TransactionID:{3}, Result:{4:X8}",
+				SFLog(Net, Debug1, "CreateGameInstance:{0}:{1} , RouteContext:{2}, TransactionID:{3}, Result:{4:X8}",
 						prefix, pMsg->GetMessageHeader()->Length, parser.GetRouteContext(), parser.GetTransactionID(), parser.GetResult()); 
 				return ResultCode::SUCCESS;
 			}; // Result CreateGameInstanceRes::TraceOut(const char* prefix, const MessageDataPtr& pMsg)

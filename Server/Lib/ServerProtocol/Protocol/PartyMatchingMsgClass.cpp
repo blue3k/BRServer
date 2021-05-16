@@ -97,7 +97,7 @@ namespace SF
 			{
  				PartyGameMatchedS2CEvt parser;
 				parser.ParseMessage(*pMsg);
-				protocolTrace( Debug1, "PartyGameMatched:{0}:{1} , RouteContext:{2}, RouteHopCount:{3}",
+				SFLog(Net, Debug1, "PartyGameMatched:{0}:{1} , RouteContext:{2}, RouteHopCount:{3}",
 						prefix, pMsg->GetMessageHeader()->Length, parser.GetRouteContext(), parser.GetRouteHopCount()); 
 				return ResultCode::SUCCESS;
 			}; // Result PartyGameMatchedS2CEvt::TraceOut(const char* prefix, const MessageDataPtr& pMsg)
@@ -182,7 +182,7 @@ namespace SF
 			{
  				PlayerGameMatchedS2CEvt parser;
 				parser.ParseMessage(*pMsg);
-				protocolTrace( Debug1, "PlayerGameMatched:{0}:{1} , RouteContext:{2}, RouteHopCount:{3}, DestPlayerID:{4}, GameInsUID:{5}, RequestedRole:{6}",
+				SFLog(Net, Debug1, "PlayerGameMatched:{0}:{1} , RouteContext:{2}, RouteHopCount:{3}, DestPlayerID:{4}, GameInsUID:{5}, RequestedRole:{6}",
 						prefix, pMsg->GetMessageHeader()->Length, parser.GetRouteContext(), parser.GetRouteHopCount(), parser.GetDestPlayerID(), parser.GetGameInsUID(), (int)parser.GetRequestedRole()); 
 				return ResultCode::SUCCESS;
 			}; // Result PlayerGameMatchedS2CEvt::TraceOut(const char* prefix, const MessageDataPtr& pMsg)

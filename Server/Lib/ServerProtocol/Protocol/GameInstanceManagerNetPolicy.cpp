@@ -18,7 +18,6 @@
 #include "Protocol/SvrProtocol.h"
 #include "Protocol/GameInstanceManagerNetPolicy.h"
 #include "Protocol/GameInstanceManagerMsgClass.h"
-#include "ProtocolTrace.h"
 
 
 

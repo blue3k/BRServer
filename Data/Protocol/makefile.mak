@@ -12,9 +12,9 @@ OUTPUT_CPP_PATH=$(OUTPUT_PATH)
 
 
 
-PROTO_BUILD_PARAM_CPP=+outCPP=$(OUTPUT_CPP_PATH) +pch=ServerProtocolPCH.h +LogFuncPrefix=protocolTrace\( +gen=MessageClassBuilder  +gen=MessageParsingMapBuilder  +gen=MessageDebugBuilder 
-PROTO_BUILD_PARAM_CPP_POLICY=+outCPP=../../Server/Lib/ServerProtocol/Protocol +pch=ServerProtocolPCH.h +LogFuncPrefix=protocolTrace\( +gen=MessageNetPolicyBuilder
-PROTO_BUILD_PARAM_CPP_SERVERSERVICE=+outCPP=../../Server/Lib/ServerProtocol/Protocol +pch=ServerProtocolPCH.h +LogFuncPrefix=protocolTrace\( +gen=MessageServerServiceBuilder
+PROTO_BUILD_PARAM_CPP=+outCPP=$(OUTPUT_CPP_PATH) +pch=ServerProtocolPCH.h +gen=MessageClassBuilder  +gen=MessageParsingMapBuilder  +gen=MessageDebugBuilder 
+PROTO_BUILD_PARAM_CPP_POLICY=+outCPP=../../Server/Lib/ServerProtocol/Protocol +pch=ServerProtocolPCH.h +gen=MessageNetPolicyBuilder
+PROTO_BUILD_PARAM_CPP_SERVERSERVICE=+outCPP=../../Server/Lib/ServerProtocol/Protocol +pch=ServerProtocolPCH.h +gen=MessageServerServiceBuilder
 PROTO_BUILD_PARAM_DOC=+out=$(OUTPUT_DOC_PATH) +gen=MessageGithubDocBuilder
 
 

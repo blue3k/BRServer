@@ -177,7 +177,7 @@ namespace SF
 			{
  				JoinGameInstanceCmd parser;
 				parser.ParseMessage(*pMsg);
-				protocolTrace( Debug1, "JoinGameInstance:{0}:{1} , RouteContext:{2}, TransactionID:{3}, Player:{4}, CharacterVisual:{5}, CharacterAttribute:{6}",
+				SFLog(Net, Debug1, "JoinGameInstance:{0}:{1} , RouteContext:{2}, TransactionID:{3}, Player:{4}, CharacterVisual:{5}, CharacterAttribute:{6}",
 						prefix, pMsg->GetMessageHeader()->Length, parser.GetRouteContext(), parser.GetTransactionID(), parser.GetPlayer(), parser.GetCharacterVisual(), parser.GetCharacterAttribute()); 
 				return ResultCode::SUCCESS;
 			}; // Result JoinGameInstanceCmd::TraceOut(const char* prefix, const MessageDataPtr& pMsg)
@@ -264,7 +264,7 @@ namespace SF
 			{
  				JoinGameInstanceRes parser;
 				parser.ParseMessage(*pMsg);
-				protocolTrace( Debug1, "JoinGameInstance:{0}:{1} , RouteContext:{2}, TransactionID:{3}, Result:{4:X8}, GameInsSvr4:{5}, GameInsSvr6:{6}, TimeStamp:{7}",
+				SFLog(Net, Debug1, "JoinGameInstance:{0}:{1} , RouteContext:{2}, TransactionID:{3}, Result:{4:X8}, GameInsSvr4:{5}, GameInsSvr6:{6}, TimeStamp:{7}",
 						prefix, pMsg->GetMessageHeader()->Length, parser.GetRouteContext(), parser.GetTransactionID(), parser.GetResult(), parser.GetGameInsSvr4(), parser.GetGameInsSvr6(), parser.GetTimeStamp()); 
 				return ResultCode::SUCCESS;
 			}; // Result JoinGameInstanceRes::TraceOut(const char* prefix, const MessageDataPtr& pMsg)
@@ -343,7 +343,7 @@ namespace SF
 			{
  				LeaveGameInstanceCmd parser;
 				parser.ParseMessage(*pMsg);
-				protocolTrace( Debug1, "LeaveGameInstance:{0}:{1} , RouteContext:{2}, TransactionID:{3}, PlayerID:{4}",
+				SFLog(Net, Debug1, "LeaveGameInstance:{0}:{1} , RouteContext:{2}, TransactionID:{3}, PlayerID:{4}",
 						prefix, pMsg->GetMessageHeader()->Length, parser.GetRouteContext(), parser.GetTransactionID(), parser.GetPlayerID()); 
 				return ResultCode::SUCCESS;
 			}; // Result LeaveGameInstanceCmd::TraceOut(const char* prefix, const MessageDataPtr& pMsg)
@@ -421,7 +421,7 @@ namespace SF
 			{
  				LeaveGameInstanceRes parser;
 				parser.ParseMessage(*pMsg);
-				protocolTrace( Debug1, "LeaveGameInstance:{0}:{1} , RouteContext:{2}, TransactionID:{3}, Result:{4:X8}",
+				SFLog(Net, Debug1, "LeaveGameInstance:{0}:{1} , RouteContext:{2}, TransactionID:{3}, Result:{4:X8}",
 						prefix, pMsg->GetMessageHeader()->Length, parser.GetRouteContext(), parser.GetTransactionID(), parser.GetResult()); 
 				return ResultCode::SUCCESS;
 			}; // Result LeaveGameInstanceRes::TraceOut(const char* prefix, const MessageDataPtr& pMsg)
@@ -497,7 +497,7 @@ namespace SF
 			{
  				PlayerLeftS2CEvt parser;
 				parser.ParseMessage(*pMsg);
-				protocolTrace( Debug1, "PlayerLeft:{0}:{1} , RouteContext:{2}, LeftPlayerID:{3}",
+				SFLog(Net, Debug1, "PlayerLeft:{0}:{1} , RouteContext:{2}, LeftPlayerID:{3}",
 						prefix, pMsg->GetMessageHeader()->Length, parser.GetRouteContext(), parser.GetLeftPlayerID()); 
 				return ResultCode::SUCCESS;
 			}; // Result PlayerLeftS2CEvt::TraceOut(const char* prefix, const MessageDataPtr& pMsg)
@@ -576,7 +576,7 @@ namespace SF
 			{
  				GamePlayerReviveCmd parser;
 				parser.ParseMessage(*pMsg);
-				protocolTrace( Debug1, "GamePlayerRevive:{0}:{1} , RouteContext:{2}, TransactionID:{3}, PlayerID:{4}",
+				SFLog(Net, Debug1, "GamePlayerRevive:{0}:{1} , RouteContext:{2}, TransactionID:{3}, PlayerID:{4}",
 						prefix, pMsg->GetMessageHeader()->Length, parser.GetRouteContext(), parser.GetTransactionID(), parser.GetPlayerID()); 
 				return ResultCode::SUCCESS;
 			}; // Result GamePlayerReviveCmd::TraceOut(const char* prefix, const MessageDataPtr& pMsg)
@@ -654,7 +654,7 @@ namespace SF
 			{
  				GamePlayerReviveRes parser;
 				parser.ParseMessage(*pMsg);
-				protocolTrace( Debug1, "GamePlayerRevive:{0}:{1} , RouteContext:{2}, TransactionID:{3}, Result:{4:X8}",
+				SFLog(Net, Debug1, "GamePlayerRevive:{0}:{1} , RouteContext:{2}, TransactionID:{3}, Result:{4:X8}",
 						prefix, pMsg->GetMessageHeader()->Length, parser.GetRouteContext(), parser.GetTransactionID(), parser.GetResult()); 
 				return ResultCode::SUCCESS;
 			}; // Result GamePlayerReviveRes::TraceOut(const char* prefix, const MessageDataPtr& pMsg)
@@ -730,7 +730,7 @@ namespace SF
 			{
  				GamePlayerRevivedS2CEvt parser;
 				parser.ParseMessage(*pMsg);
-				protocolTrace( Debug1, "GamePlayerRevived:{0}:{1} , RouteContext:{2}, RevivedPlayerID:{3}",
+				SFLog(Net, Debug1, "GamePlayerRevived:{0}:{1} , RouteContext:{2}, RevivedPlayerID:{3}",
 						prefix, pMsg->GetMessageHeader()->Length, parser.GetRouteContext(), parser.GetRevivedPlayerID()); 
 				return ResultCode::SUCCESS;
 			}; // Result GamePlayerRevivedS2CEvt::TraceOut(const char* prefix, const MessageDataPtr& pMsg)

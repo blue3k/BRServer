@@ -13,7 +13,6 @@
 #include "Protocol/SFProtocol.h"
 #include "Protocol/SFProtocolHelper.h"
 #include "Net/SFNetDef.h"
-#include "ProtocolTrace.h"
 #include "Protocol/SFGenericMessageClass.h"
 
 
@@ -50,12 +49,11 @@ namespace Message {
 		void FailResultS2CEvt::OutputMessage(const char* Prefix)
 		{
  			unused(Prefix);
-			protocolTrace(Debug1, "{0}:FailResultS2CEvt: , Context:{1}, hrRes:{2:X8}",
+			SFLog(Protocol, Debug1, "{0}:FailResultS2CEvt: , Context:{1}, hrRes:{2:X8}",
 											Prefix, m_Context, m_hrRes); 
 		}; // VOID MsgFailResultS2CEvt::OutputMessage(const char* Prefix)
 
 
-}; // namespace Message
-}; // namespace SF
-
+} // namespace Message
+} // namespace SF
 

@@ -18,7 +18,6 @@
 #include "Protocol/SvrProtocol.h"
 #include "Protocol/PartyMatchingQueueNetPolicy.h"
 #include "Protocol/PartyMatchingQueueMsgClass.h"
-#include "ProtocolTrace.h"
 
 
 

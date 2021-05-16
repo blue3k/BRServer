@@ -103,7 +103,7 @@ namespace SF
 			{
  				PlayerJoinedToGameServerCmd parser;
 				parser.ParseMessage(*pMsg);
-				protocolTrace( Debug1, "PlayerJoinedToGameServer:{0}:{1} , RouteContext:{2}, TransactionID:{3}, PlayerID:{4}, AuthTicket:{5}",
+				SFLog(Net, Debug1, "PlayerJoinedToGameServer:{0}:{1} , RouteContext:{2}, TransactionID:{3}, PlayerID:{4}, AuthTicket:{5}",
 						prefix, pMsg->GetMessageHeader()->Length, parser.GetRouteContext(), parser.GetTransactionID(), parser.GetPlayerID(), parser.GetAuthTicket()); 
 				return ResultCode::SUCCESS;
 			}; // Result PlayerJoinedToGameServerCmd::TraceOut(const char* prefix, const MessageDataPtr& pMsg)
@@ -181,7 +181,7 @@ namespace SF
 			{
  				PlayerJoinedToGameServerRes parser;
 				parser.ParseMessage(*pMsg);
-				protocolTrace( Debug1, "PlayerJoinedToGameServer:{0}:{1} , RouteContext:{2}, TransactionID:{3}, Result:{4:X8}",
+				SFLog(Net, Debug1, "PlayerJoinedToGameServer:{0}:{1} , RouteContext:{2}, TransactionID:{3}, Result:{4:X8}",
 						prefix, pMsg->GetMessageHeader()->Length, parser.GetRouteContext(), parser.GetTransactionID(), parser.GetResult()); 
 				return ResultCode::SUCCESS;
 			}; // Result PlayerJoinedToGameServerRes::TraceOut(const char* prefix, const MessageDataPtr& pMsg)
@@ -260,7 +260,7 @@ namespace SF
 			{
  				KickPlayerCmd parser;
 				parser.ParseMessage(*pMsg);
-				protocolTrace( Debug1, "KickPlayer:{0}:{1} , RouteContext:{2}, TransactionID:{3}, KickedPlayerID:{4}",
+				SFLog(Net, Debug1, "KickPlayer:{0}:{1} , RouteContext:{2}, TransactionID:{3}, KickedPlayerID:{4}",
 						prefix, pMsg->GetMessageHeader()->Length, parser.GetRouteContext(), parser.GetTransactionID(), parser.GetKickedPlayerID()); 
 				return ResultCode::SUCCESS;
 			}; // Result KickPlayerCmd::TraceOut(const char* prefix, const MessageDataPtr& pMsg)
@@ -338,7 +338,7 @@ namespace SF
 			{
  				KickPlayerRes parser;
 				parser.ParseMessage(*pMsg);
-				protocolTrace( Debug1, "KickPlayer:{0}:{1} , RouteContext:{2}, TransactionID:{3}, Result:{4:X8}",
+				SFLog(Net, Debug1, "KickPlayer:{0}:{1} , RouteContext:{2}, TransactionID:{3}, Result:{4:X8}",
 						prefix, pMsg->GetMessageHeader()->Length, parser.GetRouteContext(), parser.GetTransactionID(), parser.GetResult()); 
 				return ResultCode::SUCCESS;
 			}; // Result KickPlayerRes::TraceOut(const char* prefix, const MessageDataPtr& pMsg)

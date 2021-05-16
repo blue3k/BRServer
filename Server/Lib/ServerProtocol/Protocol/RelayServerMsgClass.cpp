@@ -103,7 +103,7 @@ namespace SF
 			{
  				CreateRelayInstanceCmd parser;
 				parser.ParseMessage(*pMsg);
-				protocolTrace( Debug1, "CreateRelayInstance:{0}:{1} , RouteContext:{2}, TransactionID:{3}, PlayerInfo:{4}, RelayScore:{5}",
+				SFLog(Net, Debug1, "CreateRelayInstance:{0}:{1} , RouteContext:{2}, TransactionID:{3}, PlayerInfo:{4}, RelayScore:{5}",
 						prefix, pMsg->GetMessageHeader()->Length, parser.GetRouteContext(), parser.GetTransactionID(), parser.GetPlayerInfo(), parser.GetRelayScore()); 
 				return ResultCode::SUCCESS;
 			}; // Result CreateRelayInstanceCmd::TraceOut(const char* prefix, const MessageDataPtr& pMsg)
@@ -184,7 +184,7 @@ namespace SF
 			{
  				CreateRelayInstanceRes parser;
 				parser.ParseMessage(*pMsg);
-				protocolTrace( Debug1, "CreateRelayInstance:{0}:{1} , RouteContext:{2}, TransactionID:{3}, Result:{4:X8}, Relay:{5}",
+				SFLog(Net, Debug1, "CreateRelayInstance:{0}:{1} , RouteContext:{2}, TransactionID:{3}, Result:{4:X8}, Relay:{5}",
 						prefix, pMsg->GetMessageHeader()->Length, parser.GetRouteContext(), parser.GetTransactionID(), parser.GetResult(), parser.GetRelay()); 
 				return ResultCode::SUCCESS;
 			}; // Result CreateRelayInstanceRes::TraceOut(const char* prefix, const MessageDataPtr& pMsg)
@@ -266,7 +266,7 @@ namespace SF
 			{
  				AddPlayerCmd parser;
 				parser.ParseMessage(*pMsg);
-				protocolTrace( Debug1, "AddPlayer:{0}:{1} , RouteContext:{2}, TransactionID:{3}, PlayerInfo:{4}, RelayScore:{5}",
+				SFLog(Net, Debug1, "AddPlayer:{0}:{1} , RouteContext:{2}, TransactionID:{3}, PlayerInfo:{4}, RelayScore:{5}",
 						prefix, pMsg->GetMessageHeader()->Length, parser.GetRouteContext(), parser.GetTransactionID(), parser.GetPlayerInfo(), parser.GetRelayScore()); 
 				return ResultCode::SUCCESS;
 			}; // Result AddPlayerCmd::TraceOut(const char* prefix, const MessageDataPtr& pMsg)
@@ -347,7 +347,7 @@ namespace SF
 			{
  				AddPlayerRes parser;
 				parser.ParseMessage(*pMsg);
-				protocolTrace( Debug1, "AddPlayer:{0}:{1} , RouteContext:{2}, TransactionID:{3}, Result:{4:X8}, Relay:{5}",
+				SFLog(Net, Debug1, "AddPlayer:{0}:{1} , RouteContext:{2}, TransactionID:{3}, Result:{4:X8}, Relay:{5}",
 						prefix, pMsg->GetMessageHeader()->Length, parser.GetRouteContext(), parser.GetTransactionID(), parser.GetResult(), parser.GetRelay()); 
 				return ResultCode::SUCCESS;
 			}; // Result AddPlayerRes::TraceOut(const char* prefix, const MessageDataPtr& pMsg)
@@ -426,7 +426,7 @@ namespace SF
 			{
  				RemovePlayerCmd parser;
 				parser.ParseMessage(*pMsg);
-				protocolTrace( Debug1, "RemovePlayer:{0}:{1} , RouteContext:{2}, TransactionID:{3}, PlayerID:{4}",
+				SFLog(Net, Debug1, "RemovePlayer:{0}:{1} , RouteContext:{2}, TransactionID:{3}, PlayerID:{4}",
 						prefix, pMsg->GetMessageHeader()->Length, parser.GetRouteContext(), parser.GetTransactionID(), parser.GetPlayerID()); 
 				return ResultCode::SUCCESS;
 			}; // Result RemovePlayerCmd::TraceOut(const char* prefix, const MessageDataPtr& pMsg)
@@ -504,7 +504,7 @@ namespace SF
 			{
  				RemovePlayerRes parser;
 				parser.ParseMessage(*pMsg);
-				protocolTrace( Debug1, "RemovePlayer:{0}:{1} , RouteContext:{2}, TransactionID:{3}, Result:{4:X8}",
+				SFLog(Net, Debug1, "RemovePlayer:{0}:{1} , RouteContext:{2}, TransactionID:{3}, Result:{4:X8}",
 						prefix, pMsg->GetMessageHeader()->Length, parser.GetRouteContext(), parser.GetTransactionID(), parser.GetResult()); 
 				return ResultCode::SUCCESS;
 			}; // Result RemovePlayerRes::TraceOut(const char* prefix, const MessageDataPtr& pMsg)
