@@ -46,9 +46,9 @@ namespace BRGameSync
                 m_Watcher = new FolderWatcher();
                 m_Watcher.Initialize(m_VersionControl);
             }
-            catch (Exception)
+            catch (Exception exp)
             {
-
+                Console.Write(exp.Message);
             }
 
 

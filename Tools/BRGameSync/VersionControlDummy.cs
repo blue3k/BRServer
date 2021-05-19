@@ -9,12 +9,6 @@ namespace BR
 {
     public class VersionControlDummy : IVersionControl
     {
-        public override string LocalPath { get; }
-        public override string RemotePath { get; }
-
-        public override string ToLocalPath(string relativePath) { return relativePath; }
-
-        public override string ToRemotePath(string relativePath) { return relativePath; }
 
         public override IList<FileItem> GetFileList(string remotePath, ListOption listOption = ListOption.None) { return null; }
 
@@ -29,8 +23,7 @@ namespace BR
         public override Result SetChangeDescription(string description) { return new Result(ResultCode.NOT_IMPLEMENTED); }
         public override Result SubmitChanges() { return new Result(ResultCode.NOT_IMPLEMENTED); }
 
-        public override void SyncFull(bool bForce = false) { }
-        public override void SyncFolder() { }
+
 
     }
 
