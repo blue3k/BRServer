@@ -13,5 +13,16 @@ namespace BRGameSync
     /// </summary>
     public partial class App : Application
     {
+        protected override void OnStartup(StartupEventArgs e)
+        {
+            SF.GlobalEngine.Start("BRGameSync", SF.Tool.AppConfig.GetValue<string>("LogServer"));
+            base.OnStartup(e);
+        }
+
+        protected override void OnExit(ExitEventArgs e)
+        {
+            SF.GlobalEngine.Stop();
+            base.OnExit(e);
+        }
     }
 }

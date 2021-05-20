@@ -25,14 +25,17 @@ namespace BRGameSync
     {
         VersionControlClient m_VersionControl;
         FolderWatcher m_Watcher;
+
         public MainWindow()
         {
             var latestProfile = AppConfig.GetValue<string>("LatestProfile");
             var profileSet = AppConfig.GetValueSet(latestProfile);
+            string LocalPath = "";
+            string HostAddress = "";
             try
             {
-                string LocalPath = profileSet["Local"] as string;
-                string HostAddress = profileSet["Host"] as string;
+                LocalPath = profileSet["Local"] as string;
+                HostAddress = profileSet["Host"] as string;
                 var splitIndex = HostAddress.IndexOf('/');
                 string HostPath = "/";
                 if (splitIndex >= 0)
@@ -48,11 +51,30 @@ namespace BRGameSync
             }
             catch (Exception exp)
             {
-                Console.Write(exp.Message);
+                SF.Log.Error("{0} => {1}", exp.Message, exp.StackTrace.ToString());
             }
 
 
             InitializeComponent();
+
+            textLocal.Text = LocalPath;
+            textRemote.Text = HostAddress;
+        }
+
+
+        private void OnGetLatestClicked(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void OnReconcileClicked(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void OnCommitClicked(object sender, RoutedEventArgs e)
+        {
+
         }
     }
 }

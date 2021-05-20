@@ -11,11 +11,10 @@ namespace BR
         FileSystemWatcher m_FileSystemWatcher;
         VersionControlClient m_VersionControl;
 
-        bool m_Pause = false;
-        public bool Pause { get { return m_Pause; } set { m_Pause = value; } }
+        public bool Enabled { get { return m_FileSystemWatcher.EnableRaisingEvents; } set { m_FileSystemWatcher.EnableRaisingEvents = value; } }
 
         public delegate void delLogFunction(string format, params object[] args);
-        public delLogFunction Log = (format, args)=> { };
+        public delLogFunction Log = (format, args)=> { SF.Log.Info("FolderWatcher: " + format, args); };
 
         public void Initialize(VersionControlClient versionControl)
         {
@@ -34,39 +33,27 @@ namespace BR
 
             m_FileSystemWatcher.Created += (object sender, FileSystemEventArgs e) =>
             {
-                if (!m_Pause)
-                {
-                    m_VersionControl.AddUpdatedFile(e.FullPath);
-                    Log("Created:{0}", e.FullPath);
-                }
+                m_VersionControl.AddUpdatedFile(e.FullPath);
+                Log("Created:{0}", e.FullPath);
             };
 
             m_FileSystemWatcher.Deleted += (object sender, FileSystemEventArgs e) =>
             {
-                if (!m_Pause)
-                {
-                    m_VersionControl.AddDeletedFile(e.FullPath);
-                    Log("Deleted:{0}", e.FullPath);
-                }
+                m_VersionControl.AddDeletedFile(e.FullPath);
+                Log("Deleted:{0}", e.FullPath);
             };
 
             m_FileSystemWatcher.Changed += (object sender, FileSystemEventArgs e) =>
             {
-                if (!m_Pause)
-                {
-                    m_VersionControl.AddUpdatedFile(e.FullPath);
-                    Log("Changed:{0}", e.FullPath);
-                }
+                m_VersionControl.AddUpdatedFile(e.FullPath);
+                Log("Changed:{0}", e.FullPath);
             };
 
             m_FileSystemWatcher.Renamed += (object sender, RenamedEventArgs e) =>
             {
-                if (!m_Pause)
-                {
-                    m_VersionControl.AddDeletedFile(e.OldFullPath);
-                    m_VersionControl.AddUpdatedFile(e.FullPath);
-                    Log("Renamed:{0}", e.FullPath);
-                }
+                m_VersionControl.AddDeletedFile(e.OldFullPath);
+                m_VersionControl.AddUpdatedFile(e.FullPath);
+                Log("Renamed:{0}", e.FullPath);
             };
 
             m_FileSystemWatcher.EnableRaisingEvents = true;

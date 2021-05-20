@@ -45,10 +45,9 @@ namespace BR
                 conn = new MySqlConnection(m_ConnectionString);
                 conn.Open();
             }
-            catch (MySqlException ex)
+            catch (MySqlException exp)
             {
-                Console.WriteLine(ex.Message);
-                //MessageBox.Show(ex.Message);
+                SF.Log.Error("{0} => {1}", exp.Message, exp.StackTrace.ToString());
             }
 
             return conn;
@@ -91,9 +90,9 @@ namespace BR
                         }
                     }
                 }
-                catch(MySqlException ex)
+                catch(MySqlException exp)
                 {
-                    Console.WriteLine(ex.Message);
+                    Log.Error("{0} => {1}", exp.Message, exp.StackTrace.ToString());
                 }
 
             }
@@ -258,7 +257,7 @@ namespace BR
                 catch (Exception exp)
                 {
                     transaction.Rollback();
-                    Console.WriteLine(exp.Message);
+                    Log.Error("{0} => {1}", exp.Message, exp.StackTrace.ToString());
                     return false;
                 }
             }
@@ -389,8 +388,7 @@ namespace BR
             }
             catch(Exception exp)
             {
-                Console.WriteLine(exp.Message);
-                //exp.Message;
+                Log.Error("{0} => {1}", exp.Message, exp.StackTrace.ToString());
             }
         }
 
@@ -470,7 +468,8 @@ namespace BR
 
             m_Ignore.LoadIgnore(Path.Combine(m_PathControl.LocalBasePath, ".gitignore"));
 
-            //GetFileList(m_PathControl.RemoteBasePath, ListOption.Recursive);
+            // pushing it to connect
+            m_FileStorage.GetFileList(".git");
 
         }
 
