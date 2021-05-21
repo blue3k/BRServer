@@ -39,6 +39,9 @@ namespace BR
 
         public string NormalizeLocalPath(string localPath)
         {
+            if (localPath == null)
+                return null;
+
             localPath.Trim();
             if (Path.DirectorySeparatorChar != '/')
                 localPath.Replace('/', Path.DirectorySeparatorChar);
@@ -58,6 +61,9 @@ namespace BR
         }
         public string NormalizeRemotePath(string remotePath)
         {
+            if (remotePath == null)
+                return null;
+
             remotePath.Trim();
             remotePath.Replace('\\', '/');
 
@@ -83,6 +89,11 @@ namespace BR
             return NormalizeLocalPath(LocalBasePath + NormalizeRemotePath(remotePath));
         }
 
+
+        public string ToFullLocalPath(string localPath)
+        {
+            return Path.Combine(LocalBasePath, NormalizeLocalPath(localPath));
+        }
     }
 
 
@@ -95,7 +106,7 @@ namespace BR
             Recursive = 1,
         }
 
-        public class FileItem
+        public class FileInfo
         {
             public Int32 FileVersion;
             public string LocalFilePath;
@@ -103,11 +114,24 @@ namespace BR
             public long Size;
             public bool Deleted;
             public DateTimeOffset Modified;
+
+            public FileInfo Clone()
+            {
+                return MemberwiseClone() as FileInfo;
+            }
+        }
+
+        public class VersionInfo
+        {
+            public Int64 ChangeNumber;
+            public string Description;
+            public string User;
+            public DateTimeOffset Modified;
         }
 
 
 
-        public abstract IList<FileItem> GetFileList(string remotePath, ListOption listOption = ListOption.None);
+        public abstract IList<FileInfo> GetFileList(string remotePath, ListOption listOption = ListOption.None);
 
         public abstract bool FileExists(string remotePath);
 

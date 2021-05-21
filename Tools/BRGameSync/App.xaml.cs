@@ -15,7 +15,7 @@ namespace BRGameSync
     {
         protected override void OnStartup(StartupEventArgs e)
         {
-            SF.GlobalEngine.Start("BRGameSync", SF.Tool.AppConfig.GetValue<string>("LogServer"));
+            SF.GlobalEngine.Start("BRGameSync_"+ System.Environment.MachineName, SF.Tool.AppConfig.GetValue<string>("LogServer"));
             base.OnStartup(e);
         }
 

@@ -64,17 +64,19 @@ namespace BRGameSync
 
         private void OnGetLatestClicked(object sender, RoutedEventArgs e)
         {
-
+            m_Watcher.Enabled = false;
+            m_VersionControl.GetLatest();
+            m_Watcher.Enabled = true;
         }
 
         private void OnReconcileClicked(object sender, RoutedEventArgs e)
         {
-
+            m_VersionControl.ReconcileLocalChanges();
         }
 
         private void OnCommitClicked(object sender, RoutedEventArgs e)
         {
-
+            m_VersionControl.SubmitChanges("test submit");
         }
     }
 }

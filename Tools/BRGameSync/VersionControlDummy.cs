@@ -10,7 +10,7 @@ namespace BR
     public class VersionControlDummy : IVersionControl
     {
 
-        public override IList<FileItem> GetFileList(string remotePath, ListOption listOption = ListOption.None) { return null; }
+        public override IList<FileInfo> GetFileList(string remotePath, ListOption listOption = ListOption.None) { return null; }
 
         public override bool FileExists(string remotePath) { return false; }
 

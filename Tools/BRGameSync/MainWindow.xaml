@@ -7,12 +7,13 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
     <Grid>
-        <ListBox Margin="0,68,10,10"/>
-        <Button Content="GetLatest" HorizontalAlignment="Right" Margin="0,0,166,402" VerticalAlignment="Bottom" Click="OnGetLatestClicked"/>
-        <Button Content="Reconcile" HorizontalAlignment="Right" Margin="0,0,96,402" VerticalAlignment="Bottom" Click="OnReconcileClicked"/>
-        <Button Content="Commit" HorizontalAlignment="Right" Margin="0,0,35,402" VerticalAlignment="Bottom" Click="OnCommitClicked"/>
+        <ListBox Margin="249,68,10,10"/>
+        <Button Content="GetLatest" HorizontalAlignment="Left" Margin="489,24,0,0" VerticalAlignment="Top" Click="OnGetLatestClicked"/>
+        <Button Content="Reconcile" HorizontalAlignment="Left" Margin="572,24,0,0" VerticalAlignment="Top" Click="OnReconcileClicked"/>
+        <Button Content="Commit" HorizontalAlignment="Left" Margin="671,24,0,0" VerticalAlignment="Top" Click="OnCommitClicked"/>
         <TextBox x:Name="textRemote" HorizontalAlignment="Left" Margin="10,12,0,0" Text="TextBox" TextWrapping="Wrap" VerticalAlignment="Top" Width="385" IsEnabled="False"/>
         <TextBox x:Name="textLocal" HorizontalAlignment="Left" Margin="10,35,0,0" Text="TextBox" TextWrapping="Wrap" VerticalAlignment="Top" Width="385" IsEnabled="False"/>
+        <ListBox Margin="10,68,567,10"/>
 
     </Grid>
 </Window>
