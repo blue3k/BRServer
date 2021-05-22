@@ -14,9 +14,50 @@ using System.Data;
 using System.Text;
 using System.Threading.Tasks;
 using MySqlX.XDevAPI;
+using System.Collections.Specialized;
+using BRGameSync;
+using System.Collections.ObjectModel;
+using System.Windows;
 
 namespace BR
 {
+
+    public class VersionFileInfoCollection : Dictionary<string, VersionFileInfo>
+    {
+        public ObservableCollection<VersionFileInfo> FileInfoList { get; private set; }
+
+        public VersionFileInfoCollection()
+        {
+            FileInfoList = new ObservableCollection<VersionFileInfo>();
+        }
+
+        public new void Clear()
+        {
+            Application.Current.Dispatcher.BeginInvoke((Action)(() =>
+            {
+                FileInfoList.Clear();
+            }));
+            base.Clear();
+        }
+
+        public void Add(VersionFileInfo fileInfo)
+        {
+            Add(fileInfo.LocalFilePath, fileInfo);
+            Application.Current.Dispatcher.BeginInvoke((Action)(() =>
+            {
+                FileInfoList.Add(fileInfo);
+            }));
+        }
+
+        public void Remove(VersionFileInfo fileInfo)
+        {
+            Remove(fileInfo.LocalFilePath);
+            Application.Current.Dispatcher.BeginInvoke((Action)(() =>
+            {
+                FileInfoList.Remove(fileInfo);
+            }));
+        }
+    }
 
 
     /// <summary>
@@ -29,18 +70,14 @@ namespace BR
         VersionDB m_VersionDB;
         FileIgnoreList m_Ignore = new FileIgnoreList();
 
-
-        Dictionary<string, IVersionControl.FileInfo> m_ModifiedFiles = new Dictionary<string, IVersionControl.FileInfo>();
-        public Dictionary<string, IVersionControl.FileInfo> ModifiedFileList
+        VersionFileInfoCollection m_ModifiedFiles = new VersionFileInfoCollection();
+        public VersionFileInfoCollection ModifiedFileList
         {
             get
             {
                 return m_ModifiedFiles;
             }
         }
-
-        public delegate void delLogFunction(string fromat, params object[] args);
-        public delLogFunction Log;
 
         public VersionControlClient()
         {
@@ -82,7 +119,11 @@ namespace BR
                 {
                     var fileInfo = LocalFullPathToVersionFileInfo(fullPath);
                     if (fileInfo != null)
+                    {
                         m_LocalFileState.Add(fileInfo.LocalFilePath, fileInfo);
+                        if (!m_ModifiedFiles.ContainsKey(fileInfo.LocalFilePath))
+                            m_ModifiedFiles.Add(fileInfo);
+                    }
                 }
             }
 
@@ -97,14 +138,23 @@ namespace BR
 
             lock (m_LocalFileState)
             {
-                if (m_LocalFileState.ContainsKey(fileName))
+                VersionFileInfo fileInfo;
+                if (m_LocalFileState.TryGetValue(fileName, out fileInfo))
                 {
                     m_LocalFileState.Remove(fileName);
+                    fileInfo.Deleted = true;
+                    if (!m_ModifiedFiles.ContainsKey(fileInfo.LocalFilePath))
+                        m_ModifiedFiles.Add(fileInfo);
+                    else
+                    {
+                        if (fileInfo.FileVersion <= 1) // Added file has deleted
+                            m_ModifiedFiles.Remove(fileInfo);
+                    }
                 }
             }
         }
 
-        public IList<IVersionControl.FileInfo> GetFileList()
+        public IList<VersionFileInfo> GetFileList()
         {
             // Create a client that can authenticate using our token credential
             return m_VersionDB.GetFileList();
@@ -115,7 +165,7 @@ namespace BR
             return m_VersionDB.GetVersionList(minChangeNumber);
         }
 
-        IVersionControl.FileInfo LocalFullPathToVersionFileInfo(string localFullPath)
+        VersionFileInfo LocalFullPathToVersionFileInfo(string localFullPath)
         {
             var localFileInfo = new FileInfo(localFullPath);
             if (localFileInfo.Attributes == FileAttributes.Directory)
@@ -128,13 +178,13 @@ namespace BR
 
             var localModified = new DateTimeOffset(localFileInfo.LastWriteTimeUtc, new TimeSpan(0));
 
-            var fileItem = new IVersionControl.FileInfo();
+            var fileItem = new VersionFileInfo();
             fileItem.LocalFilePath = localNormalizedPath;
             fileItem.RemoteFilePath = m_PathControl.ToRemotePath(localNormalizedPath);
             fileItem.Modified = localModified;
             fileItem.Size = localFileInfo.Length;
 
-            IVersionControl.FileInfo remoteFileInfo;
+            VersionFileInfo remoteFileInfo;
             if (!m_RemoteFileState.TryGetValue(localNormalizedPath, out remoteFileInfo))
             {
                 fileItem.FileVersion = 1;
@@ -152,44 +202,66 @@ namespace BR
             return fileItem;
         }
 
-        Dictionary<string, IVersionControl.FileInfo> m_LocalFileState = new Dictionary<string, IVersionControl.FileInfo>();
-        void UpdateLocalFileInfo()
+        Dictionary<string, VersionFileInfo> m_LocalFileState = new Dictionary<string, VersionFileInfo>();
+        async Task UpdateLocalFileInfo()
         {
+            SF.Log.Info("Updating local file state");
             m_LocalFileState.Clear();
 
-            string[] localFiles = Directory.GetFileSystemEntries(m_PathControl.LocalBasePath, "*", SearchOption.AllDirectories);
-            foreach (var fileFullPath in localFiles)
+            var subTask = new Task(() =>
             {
-                var fileItem = LocalFullPathToVersionFileInfo(fileFullPath);
-                if (fileItem == null)
-                    continue;
+                string[] localFiles = Directory.GetFileSystemEntries(m_PathControl.LocalBasePath, "*", SearchOption.AllDirectories);
 
-                m_LocalFileState.Add(fileItem.LocalFilePath, fileItem);
-            }
+                foreach (var fileFullPath in localFiles)
+                {
+                    var fileItem = LocalFullPathToVersionFileInfo(fileFullPath);
+                    if (fileItem == null)
+                        continue;
+
+                    lock (m_LocalFileState)
+                        m_LocalFileState.Add(fileItem.LocalFilePath, fileItem);
+                }
+            });
+            subTask.Start();
+
+            SF.Log.Info("{0} local file info has updated", m_LocalFileState.Count);
+
+            await subTask;
+            return;
         }
 
-        Dictionary<string, IVersionControl.FileInfo> m_RemoteFileState = new Dictionary<string, IVersionControl.FileInfo>();
-        void UpdateRemoteFileState()
+        Dictionary<string, VersionFileInfo> m_RemoteFileState = new Dictionary<string, VersionFileInfo>();
+        async Task UpdateRemoteFileState()
         {
+            SF.Log.Info("Reading remote file status");
             m_RemoteFileState.Clear();
 
-            var remoteFileList = m_VersionDB.GetFileList();
-            foreach (var remoteFile in remoteFileList)
+            var subTask = new Task(() =>
             {
-                m_RemoteFileState.Add(remoteFile.LocalFilePath, remoteFile);
-            }
+                var remoteFileList = m_VersionDB.GetFileList();
+                foreach (var remoteFile in remoteFileList)
+                {
+                    lock(m_RemoteFileState)
+                        m_RemoteFileState.Add(remoteFile.LocalFilePath, remoteFile);
+                }
+            });
+            subTask.Start();
+
+            await subTask;
+
+            SF.Log.Info("{0} remote file info has received", m_RemoteFileState.Count);
         }
 
-        public void GetLatest()
+        public async Task<bool> GetLatestAsync()
         {
-            UpdateRemoteFileState();
-            UpdateLocalFileInfo();
+            await UpdateRemoteFileState();
+            await UpdateLocalFileInfo();
 
-            List<IVersionControl.FileInfo> downloadList = new List<IVersionControl.FileInfo>();
+            List<VersionFileInfo> downloadList = new List<VersionFileInfo>();
 
             foreach (var remoteFileInfo in m_RemoteFileState)
             {
-                IVersionControl.FileInfo localFileInfo;
+                VersionFileInfo localFileInfo;
                 if (m_LocalFileState.TryGetValue(remoteFileInfo.Value.LocalFilePath, out localFileInfo))
                 {
                     if (localFileInfo.FileVersion < remoteFileInfo.Value.FileVersion)
@@ -205,37 +277,43 @@ namespace BR
 
             if (downloadList.Count > 0)
             {
-                m_FileStorage.DownloadFiles(downloadList);
+                SF.Log.Info("Downloading {0} files", downloadList.Count);
+
+                await m_FileStorage.DownloadFiles(downloadList);
+
+                await UpdateLocalFileInfo();
                 SF.Log.Info("GetLatest done. {0} files are downloaded", downloadList.Count);
             }
             else
             {
                 SF.Log.Info("GetLatest done. Nothing to download", downloadList.Count);
             }
+
+            return true;
         }
 
-        public void ReconcileLocalChanges()
+        public async Task ReconcileLocalChanges()
         {
-            UpdateRemoteFileState();
-            UpdateLocalFileInfo();
+            await UpdateRemoteFileState();
+            await UpdateLocalFileInfo();
 
             m_ModifiedFiles.Clear();
 
             foreach (var remoteFileInfo in m_RemoteFileState)
             {
-                IVersionControl.FileInfo localFileInfo;
+                VersionFileInfo localFileInfo;
                 if (m_LocalFileState.TryGetValue(remoteFileInfo.Value.LocalFilePath, out localFileInfo))
                 {
                     if (localFileInfo.FileVersion > remoteFileInfo.Value.FileVersion)
                     {
-                        m_ModifiedFiles.Add(localFileInfo.LocalFilePath, localFileInfo);
+                        m_ModifiedFiles.Add(localFileInfo);
                     }
                 }
                 else
                 {
                     var fileInfo = remoteFileInfo.Value.Clone();
                     fileInfo.Deleted = true;
-                    m_ModifiedFiles.Add(fileInfo.LocalFilePath, fileInfo);
+                    m_ModifiedFiles.Add(fileInfo);
                 }
             }
 
@@ -245,29 +323,31 @@ namespace BR
                 if (m_RemoteFileState.ContainsKey(localFileInfo.Value.LocalFilePath))
                     continue;
 
-                m_ModifiedFiles.Add(localFileInfo.Key, localFileInfo.Value);
+                m_ModifiedFiles.Add(localFileInfo.Value);
             }
 
             SF.Log.Info("Reconcile done. You have {0} local changes", m_ModifiedFiles.Count);
         }
 
-        public Result SubmitChanges(string description)
+        public async Task<bool> SubmitChanges(string description)
         {
-            UpdateRemoteFileState();
+            await UpdateRemoteFileState();
+
+            SF.Log.Info("Validating changes before submition");
 
             // Validate changes
-            List<IVersionControl.FileInfo> fileList = new List<IVersionControl.FileInfo>();
+            List<VersionFileInfo> fileList = new List<VersionFileInfo>();
             foreach (var changedFileInfo in m_ModifiedFiles)
             {
                 var curFileInfo = changedFileInfo.Value;
-                IVersionControl.FileInfo remoteFileInfo;
+                VersionFileInfo remoteFileInfo;
 
                 if (m_RemoteFileState.TryGetValue(curFileInfo.LocalFilePath, out remoteFileInfo))
                 {
                     if (!curFileInfo.Deleted && curFileInfo.FileVersion <= remoteFileInfo.FileVersion)
                     {
                         SF.Log.Error("Submit failed: {0} has invalid file version!", curFileInfo.LocalFilePath, curFileInfo.FileVersion);
-                        return new Result(ResultCode.FAIL);
+                        return false;
                     }
                 }
                 else
@@ -275,7 +355,7 @@ namespace BR
                     if (curFileInfo.FileVersion != 1)
                     {
                         SF.Log.Error("Submit failed: {0} has invalid file version!", curFileInfo.LocalFilePath, curFileInfo.FileVersion);
-                        return new Result(ResultCode.FAIL);
+                        return false;
                     }
                 }
 
@@ -285,35 +365,47 @@ namespace BR
             if (fileList.Count == 0)
             {
                 SF.Log.Info("Submition has finished. Nothing to submit");
-                return new Result(ResultCode.SUCCESS);
+                return true;
             }
 
             Int64 changeNumber;
-            using (var session = m_VersionDB.OpenSession())
+            var subTask = new Task(() =>
             {
-                session.StartTransaction();
-                try
+                using (var session = m_VersionDB.OpenSession())
                 {
-                    m_VersionDB.UpdateFileLocks(session, fileList, true);
-                    m_FileStorage.UploadFiles(fileList);
-                    m_VersionDB.CommitChange(session, description, fileList, out changeNumber);
+                    session.StartTransaction();
+                    try
+                    {
+                        SF.Log.Info("Lock changed files");
+                        m_VersionDB.UpdateFileLocks(session, fileList, true);
 
-                    session.Commit();
-                    session.Close();
 
-                    m_ModifiedFiles.Clear();
+                        Task.WaitAll(m_FileStorage.UploadFiles(fileList));
 
-                    SF.Log.Info("Submition has finished. Change number {0}, {1} files are uploaded", changeNumber, fileList.Count);
+                        SF.Log.Info("Committing change");
+                        m_VersionDB.CommitChange(session, m_FileStorage.UserName, description, fileList, out changeNumber);
+
+                        session.Commit();
+                        session.Close();
+
+                        m_ModifiedFiles.Clear();
+
+                        SF.Log.Info("Submition has finished. Change number {0}, {1} files are uploaded", changeNumber, fileList.Count);
+                    }
+                    catch (Exception exp)
+                    {
+                        session.Rollback();
+                        SF.Log.Error("Submition has failed. {0} => {1}", exp.Message, exp.StackTrace.ToString());
+                        return;
+                    }
                 }
-                catch (Exception exp)
-                {
-                    session.Rollback();
-                    SF.Log.Error("Submition has failed. {0} => {1}", exp.Message, exp.StackTrace.ToString());
-                    return new Result(ResultCode.UNEXPECTED);
-                }
-            }
+            });
 
-            return new Result(ResultCode.SUCCESS);
+            subTask.Start();
+
+            await subTask;
+
+            return true;
         }
 
     }

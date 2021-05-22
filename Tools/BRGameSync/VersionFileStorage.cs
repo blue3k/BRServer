@@ -14,6 +14,9 @@ using System.Data;
 using System.Text;
 using System.Threading.Tasks;
 using MySqlX.XDevAPI;
+using System.IdentityModel.Tokens.Jwt;
+using System.Linq;
+using Azure;
 
 namespace BR
 {
@@ -33,17 +36,42 @@ namespace BR
 
         BlobContainerClient m_FileStorage;
 
+        public string UserName { get; private set; }
+
         public VersionFileStorage(VersionControlPath pathControl)
         {
             m_PathControl = pathControl;
             m_FileStorage = new BlobContainerClient(m_AccountUri, m_Credential);
 
             m_FileStorage.GetBlobs(prefix: ".git");// kick off connect&login by accessing something
+
+            var credential = new Azure.Identity.DefaultAzureCredential(m_CredentialOptions);
+            string[] scopes = new string[] { "https://graph.microsoft.com/.default" };
+            var cancelToken = new System.Threading.CancellationToken();
+            var token = credential.GetToken(new Azure.Core.TokenRequestContext(scopes), cancelToken);
+
+            var handler = new JwtSecurityTokenHandler();
+            var jsonToken = handler.ReadToken(token.Token) as JwtSecurityToken;
+
+            string userIdentity = "";
+            string[] IdentityItemNames = new string[] { "name"/*, "email"*/ };
+            foreach (var identityName in IdentityItemNames)
+            {
+                var identityItem = jsonToken.Claims.First(c => c.Type == identityName);
+                if (identityItem != null)
+                {
+                    if (userIdentity.Length > 0)
+                        userIdentity += ",";
+                    userIdentity += identityItem.Value;
+                }
+            }
+
+            UserName = userIdentity;
         }
 
-        public List<IVersionControl.FileInfo> GetFileList(string remotePrefix = null)
+        public List<VersionFileInfo> GetFileList(string remotePrefix = null)
         {
-            var result = new List<IVersionControl.FileInfo>();
+            var result = new List<VersionFileInfo>();
             Azure.Pageable<BlobItem> blobs;
             blobs = m_FileStorage.GetBlobs(prefix: remotePrefix);
             foreach (BlobItem blobItem in blobs)
@@ -51,7 +79,7 @@ namespace BR
                 if (blobItem.Deleted)
                     continue;
 
-                IVersionControl.FileInfo item = new IVersionControl.FileInfo();
+                VersionFileInfo item = new VersionFileInfo();
 
                 var splitIndex = blobItem.Name.LastIndexOf('_');
                 if (splitIndex >= 0)
@@ -70,49 +98,111 @@ namespace BR
             return result;
         }
 
-        public void UploadFiles(List<IVersionControl.FileInfo> fileInfos)
+        public async Task<bool> UploadFiles(List<VersionFileInfo> fileInfos)
         {
-            foreach(var fileInfo in fileInfos)
+            SF.Log.Info("Uploading {0} files", fileInfos.Count);
+
+            var fileStreamList = new List<FileStream>();
+            var uploadTasks = new List<Task<Response<BlobContentInfo>>>();
+
+            try
             {
-                if (string.IsNullOrEmpty(fileInfo.RemoteFilePath))
+                foreach (var fileInfo in fileInfos)
                 {
-                    throw new Exception("Invalid file path for uploading");
+                    if (string.IsNullOrEmpty(fileInfo.RemoteFilePath))
+                    {
+                        SF.Log.Error("Invalid remote path for uploading");
+                        return false;
+                    }
+
+                    if (fileInfo.Deleted)
+                        continue;
+
+                    SF.Log.Info("Uploading: {0},{1}", fileInfo.RemoteFilePath, fileInfo.FileVersion);
+
+                    var blobName = fileInfo.RemoteFilePath + "_" + fileInfo.FileVersion;
+                    m_FileStorage.DeleteBlobIfExists(blobName);
+                    var fileStream = File.OpenRead(m_PathControl.ToFullLocalPath(fileInfo.LocalFilePath));
+                    fileStreamList.Add(fileStream);
+                    var task = m_FileStorage.UploadBlobAsync(blobName, fileStream);
+                    uploadTasks.Add(task);
+
+                    if (uploadTasks.Count > 10)
+                    {
+                        SF.Log.Info("Flush uploading tasks");
+                        await Task.WhenAll(uploadTasks.ToArray());
+                        uploadTasks.Clear();
+                    }
                 }
 
-                if (fileInfo.Deleted)
-                    continue;
+                SF.Log.Info("Waiting upload tasks");
+                await Task.WhenAll(uploadTasks.ToArray());
+                SF.Log.Info("Upload finished");
 
-                var blobName = fileInfo.RemoteFilePath + "_" + fileInfo.FileVersion;
-                m_FileStorage.DeleteBlobIfExists(blobName);
-                m_FileStorage.UploadBlob(blobName, File.OpenRead(m_PathControl.ToFullLocalPath(fileInfo.LocalFilePath)));
             }
+            finally
+            {
+                foreach (var fileStream in fileStreamList)
+                {
+                    fileStream.Close();
+                    fileStream.Dispose();
+                }
+                fileStreamList.Clear();
+            }
+
+            return true;
         }
 
-        public void DownloadFiles(List<IVersionControl.FileInfo> fileInfos)
+        public async Task<bool> DownloadFiles(List<VersionFileInfo> fileInfos)
         {
-            List<Task<Azure.Response>> downloadTasks = new List<Task<Azure.Response>>();
+            var downloadTasks = new List<Task<Azure.Response>>();
+
             foreach (var fileInfo in fileInfos)
             {
                 if (string.IsNullOrEmpty(fileInfo.RemoteFilePath))
                 {
-                    throw new Exception("Invalid file path for uploading");
+                    SF.Log.Error("Invalid remote file path for downloading");
+                    return false;
                 }
+
+                SF.Log.Info("Downloading: {0},{1}", fileInfo.RemoteFilePath, fileInfo.FileVersion);
 
                 var blobName = fileInfo.RemoteFilePath + "_" + fileInfo.FileVersion;
 
                 var blobClient = m_FileStorage.GetBlobClient(blobName);
                 var downloadPath = m_PathControl.ToFullLocalPath(fileInfo.LocalFilePath);
+                var downloadDir = Path.GetDirectoryName(downloadPath);
+                if (!Directory.Exists(downloadDir))
+                {
+                    Directory.CreateDirectory(downloadDir);
+                }
+
                 downloadTasks.Add(blobClient.DownloadToAsync(downloadPath));
+
+                if (downloadTasks.Count > 10)
+                {
+                    SF.Log.Info("Flush download tasks");
+                    await Task.WhenAll(downloadTasks.ToArray());
+                    downloadTasks.Clear();
+                }
             }
 
-            Task.WaitAll(downloadTasks.ToArray());
+            SF.Log.Info("Waiting download tasks");
+
+            await Task.WhenAll(downloadTasks.ToArray());
+
+            SF.Log.Info("Download finished, updating file time");
 
             foreach (var fileInfo in fileInfos)
             {
                 var downloadPath = m_PathControl.ToFullLocalPath(fileInfo.LocalFilePath);
-                File.SetLastAccessTimeUtc(downloadPath, fileInfo.Modified.UtcDateTime);
+                File.SetLastAccessTimeUtc(downloadPath, fileInfo.Modified.UtcDateTime); // Not working mostly, just putting it here
                 File.SetLastWriteTimeUtc(downloadPath, fileInfo.Modified.UtcDateTime);
             }
+
+            SF.Log.Info("Download finished");
+
+            return true;
         }
     }
 
@@ -202,7 +292,7 @@ namespace BR
             catch (Exception)
             {
                 // maybe no local file, ignore it
-                return true;
+                return false;
             }
 
             return false;

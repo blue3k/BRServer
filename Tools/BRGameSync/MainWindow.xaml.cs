@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -26,8 +27,14 @@ namespace BRGameSync
         VersionControlClient m_VersionControl;
         FolderWatcher m_Watcher;
 
+        Task m_ExclusiveTask;
+
         public MainWindow()
         {
+            InitializeComponent();
+
+            SF.Log.LogHandler += PrintLog;
+
             var latestProfile = AppConfig.GetValue<string>("LatestProfile");
             var profileSet = AppConfig.GetValueSet(latestProfile);
             string LocalPath = "";
@@ -54,29 +61,64 @@ namespace BRGameSync
                 SF.Log.Error("{0} => {1}", exp.Message, exp.StackTrace.ToString());
             }
 
-
-            InitializeComponent();
-
             textLocal.Text = LocalPath;
             textRemote.Text = HostAddress;
+
+            listChangedFiles.VersionClient = m_VersionControl;
+            listChangedFiles.UpdateVersionList();
+
+            listLocalChanges.VersionClient = m_VersionControl;
+
+            m_ExclusiveTask = m_VersionControl.ReconcileLocalChanges();
         }
 
+        void PrintLog(SF.Log.Level level, string message)
+        {
+            var newLogEntry = new LogEntry();
+            newLogEntry.Message = string.Format("{0}:{1}", level, message);
+            Dispatcher.BeginInvoke((Action)(() => LogOutput.LogEntries.Add(newLogEntry)));
+        }
+
+        protected override void OnClosing(CancelEventArgs e)
+        {
+            SF.Log.LogHandler -= PrintLog;
+        }
+
+        async Task GetLatestAsync()
+        {
+            Dispatcher.Invoke(() => m_Watcher.Enabled = false);
+            await m_VersionControl.GetLatestAsync();
+            Dispatcher.Invoke(() => m_Watcher.Enabled = true);
+        }
 
         private void OnGetLatestClicked(object sender, RoutedEventArgs e)
         {
-            m_Watcher.Enabled = false;
-            m_VersionControl.GetLatest();
-            m_Watcher.Enabled = true;
+            if (m_ExclusiveTask != null && !m_ExclusiveTask.IsCompleted)
+            {
+                SF.Log.Error("Application is busy");
+                return;
+            }
+            m_ExclusiveTask = GetLatestAsync();
         }
 
         private void OnReconcileClicked(object sender, RoutedEventArgs e)
         {
-            m_VersionControl.ReconcileLocalChanges();
+            if (m_ExclusiveTask != null && !m_ExclusiveTask.IsCompleted)
+            {
+                SF.Log.Error("Application is busy");
+                return;
+            }
+            m_ExclusiveTask = m_VersionControl.ReconcileLocalChanges();
         }
 
         private void OnCommitClicked(object sender, RoutedEventArgs e)
         {
-            m_VersionControl.SubmitChanges("test submit");
+            if (m_ExclusiveTask != null && !m_ExclusiveTask.IsCompleted)
+            {
+                SF.Log.Error("Application is busy");
+                return;
+            }
+            m_ExclusiveTask = m_VersionControl.SubmitChanges("test submit");
         }
     }
 }

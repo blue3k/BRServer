@@ -5,17 +5,17 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:BRGameSync"
         mc:Ignorable="d"
-        Title="OpenConnection" Height="450" Width="800">
+        Title="OpenConnection" Height="436" Width="789">
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="80*"/>
             <ColumnDefinition Width="93*"/>
             <ColumnDefinition Width="627*"/>
         </Grid.ColumnDefinitions>
-        <Label Content="Profile" HorizontalAlignment="Left" Margin="0,54,0,0" VerticalAlignment="Top" Height="26" Width="34" Grid.Column="1"/>
+        <Label Content="Profile" HorizontalAlignment="Left" Margin="0,54,0,0" VerticalAlignment="Top" Height="26" Width="83" Grid.Column="1"/>
         <ComboBox x:Name="comboProfiles" HorizontalAlignment="Right" Margin="0,54,61,0" VerticalAlignment="Top" Width="541" Grid.Column="2" Height="22" IsEditable="True" SelectionChanged="OnProfileSelectionChanged"/>
-        <Label Content="Host" HorizontalAlignment="Left" Margin="0,103,0,0" VerticalAlignment="Top" Height="26" Width="34" Grid.Column="1"/>
-        <Label Content="LocalPath" HorizontalAlignment="Left" Margin="0,149,0,0" VerticalAlignment="Top" Height="26" Width="61" Grid.Column="1"/>
+        <Label Content="Host" HorizontalAlignment="Left" Margin="0,103,0,0" VerticalAlignment="Top" Height="26" Width="83" Grid.Column="1"/>
+        <Label Content="LocalPath" HorizontalAlignment="Left" Margin="0,149,0,0" VerticalAlignment="Top" Height="26" Width="83" Grid.Column="1"/>
         <Button Content="Connect" Grid.Column="2" HorizontalAlignment="Right" Margin="0,0,107,197" VerticalAlignment="Bottom" Height="20" Width="48" Click="OnConnectClicked"/>
         <TextBox x:Name="textHost" Grid.Column="2" HorizontalAlignment="Right" Margin="0,111,92,0" Text="build.bravesgames.com:2020/FishingOnline" TextWrapping="Wrap" VerticalAlignment="Top" Width="510" Height="18"/>
         <TextBox x:Name="textLocal" Grid.Column="2" HorizontalAlignment="Right" Margin="0,157,92,0" Text="c:\work\FishingOnline" TextWrapping="Wrap" VerticalAlignment="Top" Width="510" Height="18"/>

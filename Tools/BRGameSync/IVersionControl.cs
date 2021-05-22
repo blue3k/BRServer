@@ -5,7 +5,6 @@ using SF;
 
 namespace BR
 {
-
     public class VersionControlPath
     {
         string m_LocalBasePath, m_LocalBasePathLower;
@@ -97,6 +96,24 @@ namespace BR
     }
 
 
+    public class VersionFileInfo : PropertyChangedBase
+    {
+        public Int32 FileVersion { get; set; }
+        public string LocalFilePath { get; set; }
+        public string RemoteFilePath { get; set; }
+        public long Size { get; set; }
+        public bool Deleted { get; set; }
+        public DateTimeOffset Modified { get; set; }
+
+        public string FileVersionText => FileVersion.ToString();
+        public string StateText => Deleted ? "Deleted" : (FileVersion == 1 ? "Added" : "Modified");
+
+        public VersionFileInfo Clone()
+        {
+            return MemberwiseClone() as VersionFileInfo;
+        }
+    }
+
     public abstract class IVersionControl
     {
         [Flags]
@@ -104,21 +121,6 @@ namespace BR
         {
             None = 0,
             Recursive = 1,
-        }
-
-        public class FileInfo
-        {
-            public Int32 FileVersion;
-            public string LocalFilePath;
-            public string RemoteFilePath;
-            public long Size;
-            public bool Deleted;
-            public DateTimeOffset Modified;
-
-            public FileInfo Clone()
-            {
-                return MemberwiseClone() as FileInfo;
-            }
         }
 
         public class VersionInfo
@@ -131,7 +133,7 @@ namespace BR
 
 
 
-        public abstract IList<FileInfo> GetFileList(string remotePath, ListOption listOption = ListOption.None);
+        public abstract IList<VersionFileInfo> GetFileList(string remotePath, ListOption listOption = ListOption.None);
 
         public abstract bool FileExists(string remotePath);
 

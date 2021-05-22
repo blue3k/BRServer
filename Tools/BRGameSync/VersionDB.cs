@@ -75,10 +75,10 @@ namespace BR
 
                         var item = new IVersionControl.VersionInfo();
 
-                        item.ChangeNumber = (Int64)row["ChangeNumber"];
+                        item.ChangeNumber = (Int64)Convert.ChangeType(row["ChangeNumber"], typeof(Int64));
                         item.Description = row["Description"] as string;
                         item.User = row["User"] as string;
-                        item.Modified = (DateTimeOffset)Convert.ChangeType(row["DateTime"], typeof(DateTimeOffset));
+                        item.Modified = (DateTime)Convert.ChangeType(row["Commited"], typeof(DateTime));
 
                         result.Add(item);
                     }
@@ -94,11 +94,11 @@ namespace BR
             return result;
         }
 
-        public List<IVersionControl.FileInfo> GetFileList(string remotePrefix = null)
+        public List<VersionFileInfo> GetFileList(string remotePrefix = null)
         {
             string remotePath = m_PathControl.NormalizeRemotePath(remotePrefix);
 
-            var result = new List<IVersionControl.FileInfo>();
+            var result = new List<VersionFileInfo>();
 
             using (var session = OpenSession())
             {
@@ -114,7 +114,7 @@ namespace BR
                     {
                         var row = queryResult.Current;
 
-                        var item = new IVersionControl.FileInfo();
+                        var item = new VersionFileInfo();
 
                         item.RemoteFilePath = row["FilePath"] as string;
                         item.LocalFilePath = m_PathControl.ToLocalPath(item.RemoteFilePath);
@@ -136,7 +136,7 @@ namespace BR
             return result;
         }
 
-        public void UpdateFileLocks(List<IVersionControl.FileInfo> fileInfos, bool bIsLock)
+        public void UpdateFileLocks(List<VersionFileInfo> fileInfos, bool bIsLock)
         {
             using (var session = OpenSession())
             {
@@ -152,7 +152,8 @@ namespace BR
                 }
             }
         }
-        public void UpdateFileLocks(MySqlX.XDevAPI.Session session, List<IVersionControl.FileInfo> fileInfos, bool bIsLock)
+
+        public void UpdateFileLocks(MySqlX.XDevAPI.Session session, List<VersionFileInfo> fileInfos, bool bIsLock)
         {
             var lockUser = bIsLock ? AppConfig.GetValue<string>("DBUser") : null;
             
@@ -200,7 +201,7 @@ namespace BR
             }
         }
 
-        void UpdateFileInfo(MySqlX.XDevAPI.Session session, Int64 changeNumber, List<IVersionControl.FileInfo> fileInfos)
+        void UpdateFileInfo(MySqlX.XDevAPI.Session session, Int64 changeNumber, List<VersionFileInfo> fileInfos)
         {
             foreach (var fileInfo in fileInfos)
             {
@@ -218,7 +219,7 @@ namespace BR
         }
 
 
-        public bool CommitChange(string desc, List<IVersionControl.FileInfo> fileInfos, out Int64 changeNumber)
+        public bool CommitChange(string userName, string desc, List<VersionFileInfo> fileInfos, out Int64 changeNumber)
         {
             changeNumber = 0;
 
@@ -227,7 +228,7 @@ namespace BR
                 session.StartTransaction();
                 try
                 {
-                    CommitChange(session, desc, fileInfos, out changeNumber);
+                    CommitChange(session, userName, desc, fileInfos, out changeNumber);
 
                     session.Commit();
                     session.Close();
@@ -243,7 +244,7 @@ namespace BR
             return true;
         }
 
-        public bool CommitChange(MySqlX.XDevAPI.Session session, string desc, List<IVersionControl.FileInfo> fileInfos, out Int64 changeNumber)
+        public bool CommitChange(MySqlX.XDevAPI.Session session, string userName, string desc, List<VersionFileInfo> fileInfos, out Int64 changeNumber)
         {
             changeNumber = 0;
             StringBuilder fullDescription = new StringBuilder();
@@ -252,10 +253,10 @@ namespace BR
             fullDescription.Append("FileList\n");
             foreach (var fileInfo in fileInfos)
             {
-                fullDescription.AppendFormat("    {0}:{1} {2}\n", fileInfo.RemoteFilePath, fileInfo.FileVersion, fileInfo.FileVersion, fileInfo.Deleted ? "Deleted" : "");
+                fullDescription.AppendFormat(" {0}:{1} {2}\n", fileInfo.RemoteFilePath, fileInfo.FileVersion, fileInfo.Deleted ? "Deleted" : "");
             }
 
-            ReserveChangeNumber(session, fullDescription.ToString(), out changeNumber);
+            ReserveChangeNumber(session, userName, out changeNumber);
             UpdateFileInfo(session, changeNumber, fileInfos);
             UpdateCommitChange(session, fullDescription.ToString(), changeNumber);
 

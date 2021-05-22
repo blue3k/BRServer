@@ -4,16 +4,38 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:BRGameSync"
+        xmlns:BR="clr-namespace:BR"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
-    <Grid>
-        <ListBox Margin="249,68,10,10"/>
-        <Button Content="GetLatest" HorizontalAlignment="Left" Margin="489,24,0,0" VerticalAlignment="Top" Click="OnGetLatestClicked"/>
-        <Button Content="Reconcile" HorizontalAlignment="Left" Margin="572,24,0,0" VerticalAlignment="Top" Click="OnReconcileClicked"/>
-        <Button Content="Commit" HorizontalAlignment="Left" Margin="671,24,0,0" VerticalAlignment="Top" Click="OnCommitClicked"/>
-        <TextBox x:Name="textRemote" HorizontalAlignment="Left" Margin="10,12,0,0" Text="TextBox" TextWrapping="Wrap" VerticalAlignment="Top" Width="385" IsEnabled="False"/>
-        <TextBox x:Name="textLocal" HorizontalAlignment="Left" Margin="10,35,0,0" Text="TextBox" TextWrapping="Wrap" VerticalAlignment="Top" Width="385" IsEnabled="False"/>
-        <ListBox Margin="10,68,567,10"/>
+        Title="BRGameSync" Height="588" Width="920">
 
-    </Grid>
+    <DockPanel LastChildFill="True">
+        <StackPanel  Margin="15,4,15,4" DockPanel.Dock="Top" Height="Auto"  Orientation="Horizontal">
+            <StackPanel  Margin="15,4,15,4">
+                <TextBox x:Name="textRemote" HorizontalAlignment="Left" Margin="4,2,4,2" Text="TextBox" VerticalAlignment="Top" Width="400" IsEnabled="False"/>
+                <TextBox x:Name="textLocal" HorizontalAlignment="Left" Margin="4,2,4,2" Text="TextBox" VerticalAlignment="Top" Width="400" IsEnabled="False"/>
+            </StackPanel>
+            <StackPanel  Margin="15,4,15,4" Orientation="Horizontal">
+                <Button Content="GetLatest" HorizontalAlignment="Left" Margin="4,2,4,2" VerticalAlignment="Top" Click="OnGetLatestClicked"/>
+                <Button Content="Reconcile" HorizontalAlignment="Left" Margin="4,2,4,2" VerticalAlignment="Top" Click="OnReconcileClicked"/>
+                <Button Content="Commit" HorizontalAlignment="Left" Margin="4,2,4,2" VerticalAlignment="Top" Click="OnCommitClicked"/>
+            </StackPanel>
+        </StackPanel>
+
+        <local:LogViewControl x:Name="LogOutput" DockPanel.Dock="Bottom"  Margin="15,10,15,10" Height="200" VerticalAlignment="Bottom" />
+
+        <TabControl Margin="15,4,15,4" Grid.Row="1" Height="Auto" VerticalAlignment="Stretch">
+            <TabItem Header="ChangeList">
+                <Grid Background="#FFE5E5E5" Margin="5,0,5,0" Height="Auto">
+                    <local:ChangeListControl x:Name="listChangedFiles"/>
+                </Grid>
+            </TabItem>
+            <TabItem Header="Local Changes">
+                <Grid Background="#FFE5E5E5" Margin="5,0,5,0" Height="Auto">
+                    <local:VersionFileInfoListViewControl x:Name="listLocalChanges"/>
+                </Grid>
+            </TabItem>
+        </TabControl>
+
+    </DockPanel>
+
 </Window>
