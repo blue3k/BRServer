@@ -86,7 +86,7 @@ namespace BR
             m_VersionDB = new VersionDB(m_PathControl);
         }
 
-        public void Initialize(string localPath, string remotePath, string serverAddress)
+        public void Initialize(string localPath, string remotePath)
         {
             m_PathControl.LocalBasePath = localPath;
             m_PathControl.RemoteBasePath = remotePath;
@@ -329,11 +329,11 @@ namespace BR
             SF.Log.Info("Reconcile done. You have {0} local changes", m_ModifiedFiles.Count);
         }
 
-        public async Task<bool> SubmitChanges(string description)
+        public async Task<bool> CommitChanges(string description)
         {
             await UpdateRemoteFileState();
 
-            SF.Log.Info("Validating changes before submition");
+            SF.Log.Info("Validating changes before commit");
 
             // Validate changes
             List<VersionFileInfo> fileList = new List<VersionFileInfo>();
@@ -346,7 +346,7 @@ namespace BR
                 {
                     if (!curFileInfo.Deleted && curFileInfo.FileVersion <= remoteFileInfo.FileVersion)
                     {
-                        SF.Log.Error("Submit failed: {0} has invalid file version!", curFileInfo.LocalFilePath, curFileInfo.FileVersion);
+                        SF.Log.Error("Commit failed: {0} has invalid file version!", curFileInfo.LocalFilePath, curFileInfo.FileVersion);
                         return false;
                     }
                 }
@@ -354,7 +354,7 @@ namespace BR
                 {
                     if (curFileInfo.FileVersion != 1)
                     {
-                        SF.Log.Error("Submit failed: {0} has invalid file version!", curFileInfo.LocalFilePath, curFileInfo.FileVersion);
+                        SF.Log.Error("Commit failed: {0} has invalid file version!", curFileInfo.LocalFilePath, curFileInfo.FileVersion);
                         return false;
                     }
                 }
@@ -364,7 +364,7 @@ namespace BR
 
             if (fileList.Count == 0)
             {
-                SF.Log.Info("Submition has finished. Nothing to submit");
+                SF.Log.Info("Commit has finished. Nothing to commit");
                 return true;
             }
 
@@ -390,12 +390,12 @@ namespace BR
 
                         m_ModifiedFiles.Clear();
 
-                        SF.Log.Info("Submition has finished. Change number {0}, {1} files are uploaded", changeNumber, fileList.Count);
+                        SF.Log.Info("Commit has finished. Change number {0}, {1} files are uploaded", changeNumber, fileList.Count);
                     }
                     catch (Exception exp)
                     {
                         session.Rollback();
-                        SF.Log.Error("Submition has failed. {0} => {1}", exp.Message, exp.StackTrace.ToString());
+                        SF.Log.Error("Commit has failed. {0} => {1}", exp.Message, exp.StackTrace.ToString());
                         return;
                     }
                 }

@@ -25,12 +25,17 @@ namespace BR
     {
         static DefaultAzureCredentialOptions m_CredentialOptions = new DefaultAzureCredentialOptions()
         {
-            InteractiveBrowserTenantId = "909b5db3-4dbe-40eb-8f04-870b21991923",
+            //ExcludeEnvironmentCredential = true,
+            //ExcludeManagedIdentityCredential = true,
+            ExcludeSharedTokenCacheCredential = false,
             ExcludeInteractiveBrowserCredential = false,
-            ExcludeAzureCliCredential = false
+            ExcludeAzureCliCredential = true,
+            //ExcludeVisualStudioCredential = true,
+            //ExcludeVisualStudioCodeCredential = true,
+            //ExcludeAzurePowerShellCredential = true,
         };
-        TokenCredential m_Credential = new Azure.Identity.DefaultAzureCredential(m_CredentialOptions);
-        readonly Uri m_AccountUri = new Uri("https://bravesstorage.blob.core.windows.net/fishing");
+        TokenCredential m_Credential;
+        Uri m_AccountUri;
 
         VersionControlPath m_PathControl;
 
@@ -40,6 +45,10 @@ namespace BR
 
         public VersionFileStorage(VersionControlPath pathControl)
         {
+            m_CredentialOptions.InteractiveBrowserTenantId = AppConfig.GetValue<string>("AzureTenantId");
+            m_AccountUri = new Uri(AppConfig.GetValue<string>("AzureStorage"));
+
+            m_Credential = new Azure.Identity.DefaultAzureCredential(m_CredentialOptions);
             m_PathControl = pathControl;
             m_FileStorage = new BlobContainerClient(m_AccountUri, m_Credential);
 
@@ -66,7 +75,7 @@ namespace BR
                 }
             }
 
-            UserName = userIdentity;
+            UserName = userIdentity;// Environment.UserName;
         }
 
         public List<VersionFileInfo> GetFileList(string remotePrefix = null)

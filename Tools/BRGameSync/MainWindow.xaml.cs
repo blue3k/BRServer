@@ -52,7 +52,7 @@ namespace BRGameSync
                 }
 
                 m_VersionControl = new VersionControlClient();
-                m_VersionControl.Initialize(LocalPath, HostPath, HostAddress);
+                m_VersionControl.Initialize(LocalPath, HostPath);
                 m_Watcher = new FolderWatcher();
                 m_Watcher.Initialize(m_VersionControl);
             }
@@ -118,7 +118,21 @@ namespace BRGameSync
                 SF.Log.Error("Application is busy");
                 return;
             }
-            m_ExclusiveTask = m_VersionControl.SubmitChanges("test submit");
+
+            if (m_VersionControl.ModifiedFileList.Count == 0)
+            {
+                SF.Log.Error("Nothing to commit");
+                return;
+            }
+
+            var commitWindow = new CommitWindow();
+            commitWindow.FileList = m_VersionControl.ModifiedFileList.FileInfoList;
+            var bRes = commitWindow.ShowDialog();
+            if (bRes.HasValue && bRes.Value)
+            {
+                m_ExclusiveTask = m_VersionControl.CommitChanges(commitWindow.CommitData.Description);
+            }
         }
     }
 }
+

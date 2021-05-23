@@ -56,8 +56,14 @@ namespace BRGameSync
             var profileSet = AppConfig.GetValueSet(profileName);
             try
             {
-                textHost.Text = profileSet["Host"] as string;
-                textLocal.Text = profileSet["Local"] as string;
+                if (profileSet != null)
+                {
+                    textHost.Text = profileSet["Host"] as string;
+                    textLocal.Text = profileSet["Local"] as string;
+
+                    // Set azure storage
+                    AppConfig.SetValue("AzureStorage", profileSet["Host"] as string);
+                }
             }
             catch(Exception)
             {
