@@ -111,6 +111,12 @@ namespace BRGameSync
             m_ExclusiveTask = m_VersionControl.ReconcileLocalChanges();
         }
 
+        async Task CommitChangesAsync(string description)
+        {
+            await m_VersionControl.CommitChanges(description);
+            Dispatcher.Invoke(()=> listChangedFiles.UpdateVersionList());
+        }
+
         private void OnCommitClicked(object sender, RoutedEventArgs e)
         {
             if (m_ExclusiveTask != null && !m_ExclusiveTask.IsCompleted)
@@ -130,7 +136,7 @@ namespace BRGameSync
             var bRes = commitWindow.ShowDialog();
             if (bRes.HasValue && bRes.Value)
             {
-                m_ExclusiveTask = m_VersionControl.CommitChanges(commitWindow.CommitData.Description);
+                m_ExclusiveTask = CommitChangesAsync(commitWindow.CommitData.Description);
             }
         }
     }

@@ -17,6 +17,7 @@ using MySqlX.XDevAPI;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using Azure;
+using System.Threading;
 
 namespace BR
 {
@@ -48,16 +49,28 @@ namespace BR
             m_CredentialOptions.InteractiveBrowserTenantId = AppConfig.GetValue<string>("AzureTenantId");
             m_AccountUri = new Uri(AppConfig.GetValue<string>("AzureStorage"));
 
+            var browserOption = new InteractiveBrowserCredentialOptions()
+            {
+                TenantId = AppConfig.GetValue<string>("AzureTenantId"),
+                ClientId = "1af8fa92-2a2a-4f71-88b9-3ddd59303160",
+                TokenCachePersistenceOptions = new TokenCachePersistenceOptions(),
+                RedirectUri = new Uri("https://login.microsoftonline.com/common/oauth2/nativeclient")
+            };
+
+            //m_Credential = new InteractiveBrowserCredential(browserOption);
+            //var cancelToken2 = new CancellationToken();
+            //var record = m_Credential.AuthenticateAsync();
             m_Credential = new Azure.Identity.DefaultAzureCredential(m_CredentialOptions);
             m_PathControl = pathControl;
             m_FileStorage = new BlobContainerClient(m_AccountUri, m_Credential);
 
             m_FileStorage.GetBlobs(prefix: ".git");// kick off connect&login by accessing something
 
-            var credential = new Azure.Identity.DefaultAzureCredential(m_CredentialOptions);
+            // accessing local
+            var nameCredential = new Azure.Identity.DefaultAzureCredential(m_CredentialOptions);
             string[] scopes = new string[] { "https://graph.microsoft.com/.default" };
             var cancelToken = new System.Threading.CancellationToken();
-            var token = credential.GetToken(new Azure.Core.TokenRequestContext(scopes), cancelToken);
+            var token = nameCredential.GetToken(new Azure.Core.TokenRequestContext(scopes), cancelToken);
 
             var handler = new JwtSecurityTokenHandler();
             var jsonToken = handler.ReadToken(token.Token) as JwtSecurityToken;
@@ -217,7 +230,7 @@ namespace BR
 
     public class FileIgnoreList
     {
-
+        HashSet<string> m_IgnorePrefix = new HashSet<string>();
         HashSet<string> m_IgnoreExts = new HashSet<string>();
         HashSet<string> m_IgnoreFolder = new HashSet<string>();
 
@@ -245,10 +258,16 @@ namespace BR
                         if (string.IsNullOrEmpty(line))
                             continue;
 
-                        if (line.StartsWith('*'))
+                        var index = line.IndexOf('*');
+                        if (index == 0 // start with '*'
+                            || line.StartsWith('.')) // 
                         {
                             var ext = Path.GetExtension(line);
                             AddIgnoreExt(ext);
+                        }
+                        else if (index > 0)
+                        {
+                            AddIgnorePrefix(line.Substring(0, index));
                         }
                         else if (line.EndsWith('/'))
                         {
@@ -272,6 +291,14 @@ namespace BR
             m_IgnoreExts.Add(ignoreExt);
         }
 
+        public void AddIgnorePrefix(string ignorePrefix)
+        {
+            ignorePrefix = ignorePrefix.ToLower();
+            if (m_IgnorePrefix.Contains(ignorePrefix)) return;
+
+            m_IgnorePrefix.Add(ignorePrefix);
+        }
+
         public void AddIgnoreFolder(string folder)
         {
             folder = folder.ToLower();
@@ -283,8 +310,14 @@ namespace BR
         public bool IsIgnore(string localFileFullPath)
         {
             var fileExt = Path.GetExtension(localFileFullPath);
+            var fileName = Path.GetFileName(localFileFullPath).ToLower();
 
             if (m_IgnoreExts.Contains(fileExt)) return true;
+            foreach (var ignorePrefix in m_IgnorePrefix)
+            {
+                if (fileName.StartsWith(ignorePrefix))
+                    return true;
+            }
 
             try
             {
@@ -293,10 +326,17 @@ namespace BR
                 var dirNames = directoryPath.Split(Path.DirectorySeparatorChar);
                 foreach (var dirName in dirNames)
                 {
-                    var dirExt = Path.GetExtension(localFileFullPath);
+                    var testName = dirName.ToLower();
+                    var dirExt = Path.GetExtension(directoryPath);
                     if (m_IgnoreExts.Contains(dirExt)) return true;
-                    if (m_IgnoreFolder.Contains(dirName.ToLower())) return true;
+                    foreach(var ignorePrefix in m_IgnorePrefix)
+                    {
+                        if (testName.StartsWith(ignorePrefix))
+                            return true;
+                    }
+                    if (m_IgnoreFolder.Contains(testName)) return true;
                 }
+
             }
             catch (Exception)
             {
