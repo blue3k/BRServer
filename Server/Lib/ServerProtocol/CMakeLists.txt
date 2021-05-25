@@ -89,7 +89,6 @@ set(BRSERVERPROTOCOL_LIB_FILES
     Protocol/PartyMatchingService.h
     Protocol/RankingServerService.h
     Protocol/ServerService.h
-    Protocol/SvrProtocol.h
     GenericMsgClass.cpp
     Protocol/ChatChannelManagerMsgClass.cpp
     Protocol/ChatChannelManagerMsgDebug.cpp
