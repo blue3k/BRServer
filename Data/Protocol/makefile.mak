@@ -1,5 +1,5 @@
 #
-PROTO_BUILD=../../../StormForge/Bin/SFProtocolCompiler.exe
+PROTO_BUILD=../../../StormForge/Bin/netcoreapp3.1/SFProtocolCompiler.exe
 
 
 
