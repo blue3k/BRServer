@@ -16,7 +16,6 @@
 #include "Container/SFArray.h"
 #include "Protocol/SFProtocolHelper.h"
 #include "Protocol/MonitoringMsgClass.h"
-#include "Protocol/SvrProtocol.h"
 
 
 

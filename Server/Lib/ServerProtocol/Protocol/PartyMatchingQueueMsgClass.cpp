@@ -16,7 +16,6 @@
 #include "Container/SFArray.h"
 #include "Protocol/SFProtocolHelper.h"
 #include "Protocol/PartyMatchingQueueMsgClass.h"
-#include "Protocol/SvrProtocol.h"
 
 
 

@@ -16,7 +16,6 @@
 #include "Variable/SFVariableTable.h"
 #include "Container/SFArray.h"
 #include "Actor/Movement/SFActorMovement.h"
-#include "Protocol/SvrProtocol.h"
 
 
 

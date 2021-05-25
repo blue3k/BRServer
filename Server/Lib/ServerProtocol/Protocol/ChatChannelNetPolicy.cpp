@@ -15,7 +15,6 @@
 #include "Net/SFMessage.h"
 #include "Net/SFMessageEndpoint.h"
 #include "Actor/Movement/SFActorMovement.h"
-#include "Protocol/SvrProtocol.h"
 #include "Protocol/ChatChannelNetPolicy.h"
 #include "Protocol/ChatChannelMsgClass.h"
 

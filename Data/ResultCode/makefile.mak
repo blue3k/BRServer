@@ -1,5 +1,5 @@
 #
-RESULT_BUILD=../../../StormForge/Bin/SFResultCodeCompiler.exe
+RESULT_BUILD=../../../StormForge/Bin/netcoreapp3.1/SFResultCodeCompiler.exe
 
 
 

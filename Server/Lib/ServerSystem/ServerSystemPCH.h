@@ -13,7 +13,8 @@
 #include "Util/SFUtility.h"
 #include "Util/SFStrUtil.h"
 #include "Types/SFEngineTypeSerialization.h"
-
+#include "Variable/SFVariableToString.h"
+#include "Variable/SFVariableSerialization.h"
 #include "Util/SFToString.h"
 #include "Net/SFNetToString.h"
 #include "Net/SFMessage.h"
