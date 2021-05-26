@@ -59,6 +59,8 @@ namespace BRGameSync
             catch (Exception exp)
             {
                 SF.Log.Error("{0} => {1}", exp.Message, exp.StackTrace.ToString());
+                Close();
+                return;
             }
 
             textLocal.Text = LocalPath;
@@ -70,6 +72,9 @@ namespace BRGameSync
             listLocalChanges.VersionClient = m_VersionControl;
 
             m_ExclusiveTask = m_VersionControl.ReconcileLocalChanges();
+
+            // show itself
+            Show();
         }
 
         void PrintLog(SF.Log.Level level, string message)

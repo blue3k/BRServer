@@ -52,51 +52,64 @@ namespace BR
             var browserOption = new InteractiveBrowserCredentialOptions()
             {
                 TenantId = AppConfig.GetValue<string>("AzureTenantId"),
-                ClientId = "1af8fa92-2a2a-4f71-88b9-3ddd59303160",
+                ClientId = AppConfig.GetValue<string>("AzureClientId"),
                 TokenCachePersistenceOptions = new TokenCachePersistenceOptions(),
-                RedirectUri = new Uri("https://login.microsoftonline.com/common/oauth2/nativeclient")
+                RedirectUri = new Uri("http://localhost")
             };
 
-            //m_Credential = new InteractiveBrowserCredential(browserOption);
+            m_Credential = new InteractiveBrowserCredential(browserOption);
             //var cancelToken2 = new CancellationToken();
             //var record = m_Credential.AuthenticateAsync();
-            m_Credential = new Azure.Identity.DefaultAzureCredential(m_CredentialOptions);
+            //m_Credential = new Azure.Identity.DefaultAzureCredential(m_CredentialOptions);
             m_PathControl = pathControl;
             m_FileStorage = new BlobContainerClient(m_AccountUri, m_Credential);
 
             m_FileStorage.GetBlobs(prefix: ".git");// kick off connect&login by accessing something
 
+            // default user name
+            UserName = Environment.UserName;
+
             // accessing local
-            var nameCredential = new Azure.Identity.DefaultAzureCredential(m_CredentialOptions);
+            //var nameCredential = new InteractiveBrowserCredential(browserOption);
+            //var nameCredential = new Azure.Identity.DefaultAzureCredential(m_CredentialOptions);
+            var nameCredential = m_Credential;
             string[] scopes = new string[] { "https://graph.microsoft.com/.default" };
             var cancelToken = new System.Threading.CancellationToken();
-            var token = nameCredential.GetToken(new Azure.Core.TokenRequestContext(scopes), cancelToken);
-
-            var handler = new JwtSecurityTokenHandler();
-            var jsonToken = handler.ReadToken(token.Token) as JwtSecurityToken;
-
-            string userIdentity = "";
-            string[] IdentityItemNames = new string[] { "name"/*, "email"*/ };
-            foreach (var identityName in IdentityItemNames)
+            try
             {
-                var identityItem = jsonToken.Claims.First(c => c.Type == identityName);
-                if (identityItem != null)
+                var token = nameCredential.GetToken(new Azure.Core.TokenRequestContext(scopes), cancelToken);
+
+                var handler = new JwtSecurityTokenHandler();
+                var jsonToken = handler.ReadToken(token.Token) as JwtSecurityToken;
+
+                string userIdentity = "";
+                string[] IdentityItemNames = new string[] { "name"/*, "email"*/ };
+                foreach (var identityName in IdentityItemNames)
                 {
-                    if (userIdentity.Length > 0)
-                        userIdentity += ",";
-                    userIdentity += identityItem.Value;
+                    var identityItem = jsonToken.Claims.First(c => c.Type == identityName);
+                    if (identityItem != null)
+                    {
+                        if (userIdentity.Length > 0)
+                            userIdentity += ",";
+                        userIdentity += identityItem.Value;
+                    }
                 }
+
+                UserName = userIdentity;// Environment.UserName;
+            }
+            catch (Exception exp)
+            {
+                SF.Log.Error("Getting username failed, using default. error:{0} => {1}", exp.Message, exp.StackTrace.ToString());
             }
 
-            UserName = userIdentity;// Environment.UserName;
+            SF.Log.Info("User logged in, Username {0}", UserName);
         }
 
-        public List<VersionFileInfo> GetFileList(string remotePrefix = null)
+        public async Task<List<VersionFileInfo>> GetFileList(string remotePrefix = null)
         {
             var result = new List<VersionFileInfo>();
-            Azure.Pageable<BlobItem> blobs;
-            blobs = m_FileStorage.GetBlobs(prefix: remotePrefix);
-            foreach (BlobItem blobItem in blobs)
+            var blobs = m_FileStorage.GetBlobsAsync(prefix: remotePrefix);
+            await foreach (var blobItem in blobs)
             {
                 if (blobItem.Deleted)
                     continue;

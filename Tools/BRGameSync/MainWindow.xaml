@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:BRGameSync"
         xmlns:BR="clr-namespace:BR"
         mc:Ignorable="d"
-        Title="BRGameSync" Height="588" Width="920">
+        Title="BRGameSync" Height="900" Width="1280">
 
     <DockPanel LastChildFill="True">
         <StackPanel  Margin="15,4,15,4" DockPanel.Dock="Top" Height="Auto"  Orientation="Horizontal">

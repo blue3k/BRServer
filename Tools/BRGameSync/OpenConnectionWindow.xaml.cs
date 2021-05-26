@@ -123,7 +123,6 @@ namespace BRGameSync
 
             // Open main
             var newMain = new MainWindow();
-            newMain.Show();
 
             // Close this
             Close();

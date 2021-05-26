@@ -92,9 +92,6 @@ namespace BR
             m_PathControl.RemoteBasePath = remotePath;
 
             m_Ignore.LoadIgnore(Path.Combine(m_PathControl.LocalBasePath, ".gitignore"));
-
-            // pushing it to connect
-            m_FileStorage.GetFileList(".git");
         }
 
         public VersionControlPath PathControl { get { return m_PathControl; } }

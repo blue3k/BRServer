@@ -93,6 +93,42 @@ namespace SF {
 		}
 
 
+		// Start Transaction
+		Result GameInstanceTransClientSyncReliable::StartTransaction()
+		{
+			ScopeContext hr([this](Result hr)
+				{
+					CloseTransaction(hr);
+				});
+
+			svrCheck(super::StartTransaction());
+
+			auto& messageData = GetMessagePtr();
+			auto clonedMessageData = messageData->Clone(GetHeap());
+			svrCheck(GetMyOwner()->Broadcast(GetPlayerID(), clonedMessageData));
+
+			return hr;
+		}
+
+
+		// Start Transaction
+		Result GameInstanceTransClientSync::StartTransaction()
+		{
+			ScopeContext hr([this](Result hr)
+				{
+					CloseTransaction(hr);
+				});
+
+			svrCheck(super::StartTransaction());
+
+			auto& messageData = GetMessagePtr();
+			auto clonedMessageData = messageData->Clone(GetHeap());
+			svrCheck(GetMyOwner()->Broadcast(GetPlayerID(), clonedMessageData));
+
+			return hr;
+		}
+
+
 
 		Result GameInstanceTransOccupyMapObject::StartTransaction()
 		{

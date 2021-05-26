@@ -91,6 +91,44 @@ namespace SF {
 		};
 
 
+		class GameInstanceTransClientSyncReliable : public Svr::MessageTransaction<Svr::GameInstanceEntity, Message::PlayInstance::ClientSyncReliableC2SEvt>
+		{
+		public:
+			using super = MessageTransaction<Svr::GameInstanceEntity, Message::PlayInstance::ClientSyncReliableC2SEvt>;
+
+		private:
+
+		public:
+			GameInstanceTransClientSyncReliable(IHeap& heap, const MessageDataPtr& pIMsg) :super(heap, pIMsg)
+			{
+				SetDirectProcess(true);
+			}
+			virtual ~GameInstanceTransClientSyncReliable() {}
+
+			// Start Transaction
+			virtual Result StartTransaction() override;
+		};
+
+
+		class GameInstanceTransClientSync : public Svr::MessageTransaction<Svr::GameInstanceEntity, Message::PlayInstance::ClientSyncC2SEvt>
+		{
+		public:
+			using super = MessageTransaction<Svr::GameInstanceEntity, Message::PlayInstance::ClientSyncC2SEvt>;
+
+		private:
+
+		public:
+			GameInstanceTransClientSync(IHeap& heap, const MessageDataPtr& pIMsg) :super(heap, pIMsg)
+			{
+				SetDirectProcess(true);
+			}
+			virtual ~GameInstanceTransClientSync() {}
+
+			// Start Transaction
+			virtual Result StartTransaction() override;
+		};
+
+
 
 
 		class GameInstanceTransOccupyMapObject : public Svr::MessageTransaction<Svr::GameInstanceEntity, Message::PlayInstance::OccupyMapObjectCmd>

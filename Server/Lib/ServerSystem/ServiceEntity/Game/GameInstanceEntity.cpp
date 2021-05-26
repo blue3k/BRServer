@@ -122,10 +122,14 @@ namespace SF {
 			RegisterMessageHandler<GameEntityTransLeaveGameInstance>();
 
 			RegisterMessageHandler<GameInstanceTransPlayerMovement>();
+			RegisterMessageHandler<GameInstanceTransClientSyncReliable>();
+			RegisterMessageHandler<GameInstanceTransClientSync>();
 
 			RegisterMessageHandler<GameInstanceTransOccupyMapObject>();
 			RegisterMessageHandler<GameInstanceTransUnoccupyMapObject>();
 			RegisterMessageHandler<GameInstanceTransUseMapObject>();
+
+
 		}
 
 		GameInstanceEntity::~GameInstanceEntity()
@@ -624,6 +628,20 @@ namespace SF {
 			svrCheck(pPlayer->GetMovementManager()->NewMovement(newMovement));
 
 			return hr;
+		}
+
+		Result GameInstanceEntity::Broadcast(PlayerID fromPlayerId, const MessageDataPtr& messageData)
+		{
+			m_GamePlayerByPlayerID.ForeachOrder(0, m_MaxPlayer, [&](const PlayerID& playerID, GameInstancePlayer* pPlayer)-> bool
+				{
+					if (pPlayer->GetPlayerID() == fromPlayerId)
+						return true;
+
+					pPlayer->GetRemoteEndpoint()->Send(messageData);
+
+					return true;
+				});
+
 		}
 
 	} // Svr

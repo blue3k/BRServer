@@ -254,6 +254,9 @@ namespace Svr
 		virtual Result OnPlayerGetOutOfGame(GameInstancePlayer *pPlayer);
 
 		Result NewPlayerMovement(PlayerID playerId, const ActorMovement& newMovement);
+
+		// Broadcast raw message data
+		Result Broadcast(PlayerID fromPlayerId, const MessageDataPtr& messageData);
 	};
 
 
