@@ -632,7 +632,7 @@ namespace SF {
 
 		Result GameInstanceEntity::Broadcast(PlayerID fromPlayerId, const MessageDataPtr& messageData)
 		{
-			m_GamePlayerByPlayerID.ForeachOrder(0, m_MaxPlayer, [&](const PlayerID& playerID, GameInstancePlayer* pPlayer)-> bool
+			return m_GamePlayerByPlayerID.ForeachOrder(0, m_MaxPlayer, [&](const PlayerID& playerID, GameInstancePlayer* pPlayer)-> bool
 				{
 					if (pPlayer->GetPlayerID() == fromPlayerId)
 						return true;
@@ -641,7 +641,6 @@ namespace SF {
 
 					return true;
 				});
-
 		}
 
 	} // Svr

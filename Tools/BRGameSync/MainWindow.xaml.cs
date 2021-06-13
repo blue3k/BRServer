@@ -60,6 +60,7 @@ namespace BRGameSync
             {
                 SF.Log.Error("{0} => {1}", exp.Message, exp.StackTrace.ToString());
                 Close();
+                MessageBox.Show(string.Format("{0} => {1}", exp.Message, exp.StackTrace.ToString()));
                 return;
             }
 

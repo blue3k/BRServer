@@ -129,7 +129,6 @@ namespace SF {
 		}
 
 
-
 		Result GameInstanceTransOccupyMapObject::StartTransaction()
 		{
 			ScopeContext hr([this](Result hr)
@@ -172,7 +171,6 @@ namespace SF {
 
 				svrCheck(hrTem);
 			}
-
 
 			return hr;
 		}
