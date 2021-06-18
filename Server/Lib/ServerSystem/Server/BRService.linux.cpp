@@ -156,6 +156,10 @@ namespace Svr {
 
 			svrTrace( Info, "<{0}> Starting", Util::GetServiceName() );
 
+			auto curDir = get_current_dir_name();
+			svrTrace(Info, "Working directory {0}", curDir);
+			free(curDir);
+
 			// register signal handlers
 			signal(SIGHUP, signal_handler); /* catch hangup signal */
 			signal(SIGTERM, signal_handler); /* catch kill signal */

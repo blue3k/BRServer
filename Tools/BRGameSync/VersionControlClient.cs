@@ -66,7 +66,7 @@ namespace BR
     public class VersionControlClient
     {
         VersionControlPath m_PathControl;
-        VersionFileStorage m_FileStorage;
+        VersionFileStorageAzureBlob m_FileStorage;
         VersionDB m_VersionDB;
         FileIgnoreList m_Ignore = new FileIgnoreList();
 
@@ -82,7 +82,7 @@ namespace BR
         public VersionControlClient()
         {
             m_PathControl = new VersionControlPath();
-            m_FileStorage = new VersionFileStorage(m_PathControl);
+            m_FileStorage = new VersionFileStorageAzureBlob(m_PathControl);
             m_VersionDB = new VersionDB(m_PathControl);
         }
 
@@ -164,6 +164,9 @@ namespace BR
 
         VersionFileInfo LocalFullPathToVersionFileInfo(string localFullPath)
         {
+            if (!File.Exists(localFullPath))
+                return null;
+
             var localFileInfo = new FileInfo(localFullPath);
             if (localFileInfo.Attributes == FileAttributes.Directory)
                 return null;
