@@ -214,6 +214,7 @@ namespace SF {
 			return hr;
 		}
 
+
 		Result GameInstanceTransUseMapObject::StartTransaction()
 		{
 			ScopeContext hr([this](Result hr)
@@ -230,21 +231,6 @@ namespace SF {
 			svrCheck(GetMyOwner()->FindPlayer(GetPlayerID(), pPlayer));
 
 			svrCheck(pMapObject->UseObject(pPlayer));
-
-			return hr;
-		}
-
-		Result GameInstanceTransHarvest::StartTransaction()
-		{
-			ScopeContext hr([this](Result hr)
-				{
-					CloseTransaction(hr);
-				});
-
-			svrCheck(super::StartTransaction());
-
-			// TODO:
-			hr = ResultCode::NOT_IMPLEMENTED;
 
 			return hr;
 		}

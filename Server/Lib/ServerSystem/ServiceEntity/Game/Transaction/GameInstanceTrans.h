@@ -186,26 +186,5 @@ namespace SF {
 			BR_SVR_MSGTRANS_CLOSE_ARGS(NetSvrPolicyPlayInstance, UseMapObjectRes, GetPlayInstanceUID(), GetPlayerID(), GetMapObjectId(), m_ResultAttributes);
 		};
 
-		class GameInstanceTransHarvest : public Svr::MessageTransaction<Svr::GameInstanceEntity, Message::PlayInstance::HarvestAreaCmd>
-		{
-		public:
-			using super = MessageTransaction<Svr::GameInstanceEntity, Message::PlayInstance::HarvestAreaCmd>;
-
-		private:
-			VariableTable m_ResultAttributes;
-
-		public:
-			GameInstanceTransHarvest(IHeap& heap, const MessageDataPtr& pIMsg)
-				: super(heap, pIMsg)
-				, m_ResultAttributes(heap)
-			{}
-			virtual ~GameInstanceTransHarvest() {}
-
-			// Start Transaction
-			virtual Result StartTransaction() override;
-
-			BR_SVR_MSGTRANS_CLOSE_ARGS(NetSvrPolicyPlayInstance, HarvestAreaRes, GetPlayInstanceUID(), GetPlayerID(), GetAreaId(), m_ResultAttributes);
-		};
-
 
 } // namespace SF 
