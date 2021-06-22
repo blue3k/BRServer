@@ -9,7 +9,7 @@ SERVER_SOURCES=ResultCodeDB.xml \
 	ResultCodeLogin.xml \
 	ResultCodeSvr.xml \
 
-ENGINE_SHARP_OUTPUT_PATH=../../StormForge/Engine/Src/SFEngineDLL/Sharp/ResultCode
+ENGINE_SHARP_OUTPUT_PATH=../../../StormForge/Engine/Src/SFCoreSharp/ResultCode
 
 
 

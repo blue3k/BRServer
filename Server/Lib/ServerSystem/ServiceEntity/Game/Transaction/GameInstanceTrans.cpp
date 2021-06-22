@@ -197,7 +197,7 @@ namespace SF {
 				// validate occupant
 				if (!GetMyOwner()->FindPlayer(pMapObject->GetOccupiedPlayerID(), pOccupiedPlayer))
 				{
-					// the player might be left or something. erase occupied info
+					// the player might be left or something. release the object
 					pMapObject->SetOccupiedPlayer(0);
 				}
 
