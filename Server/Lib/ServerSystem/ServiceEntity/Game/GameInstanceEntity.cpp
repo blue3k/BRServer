@@ -146,15 +146,15 @@ namespace SF {
 			return new(GetHeap()) GameInstancePlayer(this, playerEntityUID, player);
 		}
 
-		Svr::GameInstanceMapObject* GameInstanceEntity::CreateMapObject(StringCrc32 mapObjectId)
+		Svr::GameInstanceMapObject* GameInstanceEntity::CreateMapObject(StringCrc32 mapObjectType, uint32_t mapObjectId)
 		{
-			return new(GetHeap()) Svr::GameInstanceMapObject(this, mapObjectId);
+			return new(GetHeap()) Svr::GameInstanceMapObject(this, mapObjectType, mapObjectId);
 		}
 
 		Result GameInstanceEntity::GetMapObject(StringCrc32 mapObjectId, GameInstanceMapObject*& pMapObject)
 		{
 			if (!m_MapObjects.Find(mapObjectId, pMapObject))
-				return ResultCode::MAPOBJECT_NOT_FOUND;
+				return ResultCode::GAME_MAPOBJECT_NOT_FOUND;
 
 			return ResultCode::SUCCESS;
 		}
@@ -425,6 +425,8 @@ namespace SF {
 
 			m_AddressIPV4.FromString(netPublic.IPV4, netPublic.Port);
 			m_AddressIPV6.FromString(netPublic.IPV6, netPublic.Port);
+
+			m_ZoneTableData = Service::DataTableManager->FindRow("ZoneTable", GetZoneTableID());
 
 			m_TotalJoinedPlayer = 0;
 

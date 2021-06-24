@@ -54,7 +54,8 @@ namespace SF {
 			GameInstanceEntity* m_GameOwner{};
 
 			// Map object Id
-			StringCrc32 m_MapObjectId{};
+			StringCrc32 m_MapObjectType;
+			uint32_t m_MapObjectId{};
 
 			// Occupied player Id
 			PlayerID m_OccupiedPlayerId{};
@@ -64,13 +65,14 @@ namespace SF {
 
 		public:
 
-			GameInstanceMapObject(GameInstanceEntity* pGameOwner, StringCrc32 mapObjectId);
+			GameInstanceMapObject(GameInstanceEntity* pGameOwner, StringCrc32 mapObjectType, uint32_t mapObjectId);
 			virtual ~GameInstanceMapObject();
 
 			GameInstanceEntity* GetGameOwner() { return m_GameOwner; }
 			IHeap& GetHeap();
 			
-			StringCrc32 GetMapObjectID() const { return m_MapObjectId; }
+			uint32_t GetMapObjectID() const { return m_MapObjectId; }
+			StringCrc32 GetMapObjectType() const { return m_MapObjectType; }
 			PlayerID GetOccupiedPlayerID() const { return m_OccupiedPlayerId; }
 
 			bool IsOccupied() const { return GetOccupiedPlayerID() != 0; }

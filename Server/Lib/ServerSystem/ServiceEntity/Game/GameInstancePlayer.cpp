@@ -53,12 +53,13 @@ namespace SF {
 			m_ComponentManager.TerminateComponents();
 		}
 
-		Result GameInstancePlayer::OccupyObject(StringCrc32 mapObjectId)
+		Result GameInstancePlayer::OccupyObject(StringCrc32 mapObjectType, uint32_t mapObjectId)
 		{
-			if (m_OccupiedObject != nullptr)
+			if (m_OccupiedObjectId != 0)
 				return ResultCode::BUSY;
 
-			m_OccupiedObject = mapObjectId;
+			m_OccupiedObjectId = mapObjectId;
+			m_OccupiedObjectType = mapObjectType;
 
 			return ResultCode::SUCCESS;
 		}

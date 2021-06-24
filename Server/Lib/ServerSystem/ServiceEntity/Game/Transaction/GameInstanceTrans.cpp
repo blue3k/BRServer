@@ -142,19 +142,19 @@ namespace SF {
 			svrCheck(GetMyOwner()->GetMapObject(GetMapObjectId(), pMapObject));
 			if (pMapObject->IsOccupied())
 			{
-				svrCheck(ResultCode::MAPOBJECT_ALREADY_IN_USE);
+				svrCheck(ResultCode::GAME_MAPOBJECT_ALREADY_IN_USE);
 			}
 
 			Svr::GameInstancePlayer* pGamePlayer{};
 			svrCheck(GetMyOwner()->FindPlayer(GetPlayerID(), pGamePlayer));
 
-			svrCheck(pGamePlayer->OccupyObject(pMapObject->GetMapObjectID()));
+			svrCheck(pGamePlayer->OccupyObject(pMapObject->GetMapObjectType(), pMapObject->GetMapObjectID()));
 			auto hrTem = pMapObject->SetOccupiedPlayer(GetPlayerID());
 			if (!hrTem)
 			{
 				if (pGamePlayer && pGamePlayer->GetOccupiedObjectId() == GetMapObjectId())
 				{
-					pGamePlayer->OccupyObject(nullptr);
+					pGamePlayer->OccupyObject(nullptr, 0);
 				}
 				if (pMapObject)
 				{
@@ -188,7 +188,7 @@ namespace SF {
 			svrCheck(GetMyOwner()->GetMapObject(GetMapObjectId(), pMapObject));
 			if (!pMapObject->IsOccupied())
 			{
-				svrCheck(ResultCode::MAPOBJECT_NOT_IN_USE);
+				svrCheck(ResultCode::GAME_MAPOBJECT_NOT_IN_USE);
 			}
 
 			Svr::GameInstancePlayer* pOccupiedPlayer{};
@@ -201,12 +201,12 @@ namespace SF {
 					pMapObject->SetOccupiedPlayer(0);
 				}
 
-				svrCheck(ResultCode::MAPOBJECT_NOT_OCCUPIED_BY_PLAYER);
+				svrCheck(ResultCode::GAME_MAPOBJECT_NOT_OCCUPIED_BY_PLAYER);
 			}
 
 			if (GetMyOwner()->FindPlayer(GetPlayerID(), pOccupiedPlayer))
 			{
-				pOccupiedPlayer->OccupyObject(nullptr);
+				pOccupiedPlayer->OccupyObject(nullptr, 0);
 			}
 
 			pMapObject->SetOccupiedPlayer(0);

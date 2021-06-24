@@ -27,6 +27,14 @@
 
 	<ResultCodeItem Severity="Error" CodeName="ALREADY_IN_CHAT" Desc="User is already in a chatting channel"/>
 
+	<ResultCodeItem Severity="Error" CodeName="MAPOBJECT_INVALID" Desc="Map object is invalid"/>
+	<ResultCodeItem Severity="Error" CodeName="OCCUPIED_MAPOBJECT_IS_REQUIRED" Desc="Map object is required to be occupied"/>
+	<ResultCodeItem Severity="Error" CodeName="MAPOBJECT_ALREADY_IN_USE" Desc="Map object is already in use"/>
+	<ResultCodeItem Severity="Error" CodeName="MAPOBJECT_NOT_IN_USE" Desc="Map object is not in use"/>
+	<ResultCodeItem Severity="Error" CodeName="MAPOBJECT_NOT_FOUND" Desc="Map object is already in use"/>
+	<ResultCodeItem Severity="Error" CodeName="MAPOBJECT_NOT_OCCUPIED_BY_PLAYER" Desc="Map object is not occupied by the player"/>
+
+	
 	<!--Legacy error codes-->
 	<ResultCodeItem Severity="Error" CodeName="INVALID_ROLE" Desc="Invalid player role"/>
 	<ResultCodeItem Severity="Error" CodeName="NOT_READY_FOR_NEXT_STATE" Desc="Not ready for next game play state"/>
@@ -38,7 +46,6 @@
 	<ResultCodeItem Severity="Error" CodeName="LOW_STAMINA" Desc="Doesn't have enough stamina"/>
 	<ResultCodeItem Severity="Error" CodeName="INVALID_COSTID" Desc="Invalid cost table id"/>
 	<ResultCodeItem Severity="Error" CodeName="INVALID_BOTTALK_TABLE" Desc="Invalid bot talk table"/>
-
 
 </ResultCodes>
 

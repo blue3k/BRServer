@@ -63,35 +63,53 @@ namespace SF {
 			// User is already in a chatting channel 
 			constexpr Result 			GAME_ALREADY_IN_CHAT                                               ((int32_t)0xE714000EL);
 
+			// Map object is invalid 
+			constexpr Result 			GAME_MAPOBJECT_INVALID                                             ((int32_t)0xE714000FL);
+
+			// Map object is required to be occupied 
+			constexpr Result 			GAME_OCCUPIED_MAPOBJECT_IS_REQUIRED                                ((int32_t)0xE7140010L);
+
+			// Map object is already in use 
+			constexpr Result 			GAME_MAPOBJECT_ALREADY_IN_USE                                      ((int32_t)0xE7140011L);
+
+			// Map object is not in use 
+			constexpr Result 			GAME_MAPOBJECT_NOT_IN_USE                                          ((int32_t)0xE7140012L);
+
+			// Map object is already in use 
+			constexpr Result 			GAME_MAPOBJECT_NOT_FOUND                                           ((int32_t)0xE7140013L);
+
+			// Map object is not occupied by the player 
+			constexpr Result 			GAME_MAPOBJECT_NOT_OCCUPIED_BY_PLAYER                              ((int32_t)0xE7140014L);
+
 			// Invalid player role 
-			constexpr Result 			GAME_INVALID_ROLE                                                  ((int32_t)0xE714000FL);
+			constexpr Result 			GAME_INVALID_ROLE                                                  ((int32_t)0xE7140015L);
 
 			// Not ready for next game play state 
-			constexpr Result 			GAME_NOT_READY_FOR_NEXT_STATE                                      ((int32_t)0xE7140010L);
+			constexpr Result 			GAME_NOT_READY_FOR_NEXT_STATE                                      ((int32_t)0xE7140016L);
 
 			// Invalid vote type 
-			constexpr Result 			GAME_INVALID_VOTETYPE                                              ((int32_t)0xE7140011L);
+			constexpr Result 			GAME_INVALID_VOTETYPE                                              ((int32_t)0xE7140017L);
 
 			// Invalid vote state 
-			constexpr Result 			GAME_INVALID_VOTE_STATE                                            ((int32_t)0xE7140012L);
+			constexpr Result 			GAME_INVALID_VOTE_STATE                                            ((int32_t)0xE7140018L);
 
 			// Invalid vote target 
-			constexpr Result 			GAME_INVALID_VOTE_TARGET                                           ((int32_t)0xE7140013L);
+			constexpr Result 			GAME_INVALID_VOTE_TARGET                                           ((int32_t)0xE7140019L);
 
 			// No suffrage 
-			constexpr Result 			GAME_NO_SUFFRAGE                                                   ((int32_t)0xE7140014L);
+			constexpr Result 			GAME_NO_SUFFRAGE                                                   ((int32_t)0xE714001AL);
 
 			// Invalid game state 
-			constexpr Result 			GAME_INVALID_GAMESTATE                                             ((int32_t)0xE7140015L);
+			constexpr Result 			GAME_INVALID_GAMESTATE                                             ((int32_t)0xE714001BL);
 
 			// Doesn't have enough stamina 
-			constexpr Result 			GAME_LOW_STAMINA                                                   ((int32_t)0xE7140016L);
+			constexpr Result 			GAME_LOW_STAMINA                                                   ((int32_t)0xE714001CL);
 
 			// Invalid cost table id 
-			constexpr Result 			GAME_INVALID_COSTID                                                ((int32_t)0xE7140017L);
+			constexpr Result 			GAME_INVALID_COSTID                                                ((int32_t)0xE714001DL);
 
 			// Invalid bot talk table 
-			constexpr Result 			GAME_INVALID_BOTTALK_TABLE                                         ((int32_t)0xE7140018L);
+			constexpr Result 			GAME_INVALID_BOTTALK_TABLE                                         ((int32_t)0xE714001EL);
 
 	}//namespace ResultCode 
 }//namespace SF 

@@ -30,7 +30,22 @@ namespace SF {
 	{
 	private:
 
+		struct MultiRowIndex
+		{
+			MultiRowIndex() {}
+			~MultiRowIndex();
+
+			StringCrc32 ColumnName;
+			std::unordered_map<uint64_t, Array<const VariableTable*>*> Map;
+		};
+
 		std::unordered_map<uint64_t, VariableTable*> m_DataByRow;
+
+		std::unordered_map<uint32_t, MultiRowIndex*> m_MultiRowIndices;
+
+	private:
+
+		uint64_t VaribleToKeyValue(Variable* pValue);
 
 	public:
 
@@ -39,7 +54,10 @@ namespace SF {
 
 		Result LoadTable(StringCrc32 keyColumnName, const Array<VariableTable>& rowList);
 
+		Result MultiRowIndexing(StringCrc32 columnName);
+
 		VariableTable* FindRow(uint64_t key);
+		const Array<const VariableTable*>* FindRows(StringCrc32 columnName, uint64_t key);
 
 		auto begin() { return m_DataByRow.begin(); }
 		auto end() { return m_DataByRow.end(); }
@@ -69,8 +87,12 @@ namespace SF {
 		// Get data table
 		virtual DataTable* GetDataTable(StringCrc32 tableName);
 
-		virtual VariableTable* FindRow(StringCrc32 tableName, uint32_t key);
-		virtual VariableTable* FindRow(StringCrc32 tableName, uint64_t key);
+		virtual Result MultiRowIndexing(StringCrc32 tableName, StringCrc32 columnName);
+
+		virtual const VariableTable* FindRow(StringCrc32 tableName, uint32_t key);
+		virtual const VariableTable* FindRow(StringCrc32 tableName, uint64_t key);
+
+		virtual const Array<const VariableTable*>* FindRows(StringCrc32 tableName, StringCrc32 columnName, uint64_t key);
 	};
 
 

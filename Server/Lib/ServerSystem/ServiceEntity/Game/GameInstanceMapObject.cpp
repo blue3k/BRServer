@@ -34,8 +34,9 @@ namespace SF {
 		//	Entity server class
 		//
 
-		GameInstanceMapObject::GameInstanceMapObject(GameInstanceEntity* pGameOwner, StringCrc32 mapObjectId)
+		GameInstanceMapObject::GameInstanceMapObject(GameInstanceEntity* pGameOwner, StringCrc32 mapObjectType, uint32_t mapObjectId)
 			: m_GameOwner(pGameOwner)
+			, m_MapObjectType(mapObjectType)
 			, m_MapObjectId(mapObjectId)
 			, m_Attributes(GetHeap())
 		{
@@ -57,7 +58,7 @@ namespace SF {
 				if (m_OccupiedPlayerId == playerId)
 					return ResultCode::SUCCESS_FALSE;
 
-				return ResultCode::MAPOBJECT_ALREADY_IN_USE;
+				return ResultCode::GAME_MAPOBJECT_ALREADY_IN_USE;
 			}
 
 			m_OccupiedPlayerId = playerId;
