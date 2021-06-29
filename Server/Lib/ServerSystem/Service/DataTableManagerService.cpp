@@ -124,7 +124,7 @@ namespace SF {
 			auto itFound = pRowIndex->Map.find(keyValue);
 			if (itFound == pRowIndex->Map.end())
 			{
-				pRowSet = new Array<const VariableTable*>;
+				pRowSet = new DynamicArray<const VariableTable*>;
 				pRowIndex->Map.insert(std::make_pair(keyValue, pRowSet));
 			}
 			else
