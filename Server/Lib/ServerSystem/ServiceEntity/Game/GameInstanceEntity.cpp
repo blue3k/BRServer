@@ -531,6 +531,19 @@ namespace SF {
 
 			pPlayer->ReleaseConnection("Player left");
 
+			// Release map object
+			if (pPlayer->GetOccupiedObjectId() != 0)
+			{
+				GameInstanceMapObject* pMapObject{};
+				GetMapObject(pPlayer->GetOccupiedObjectId(), pMapObject);
+				if (pMapObject)
+				{
+					pMapObject->SetOccupiedPlayer(0);
+				}
+
+				pPlayer->OccupyObject(nullptr, 0);
+			}
+
 			GameInstancePlayer* pRemoved{};
 			m_GamePlayerByPlayerID.Remove(pPlayer->GetPlayerID(), pRemoved);
 			assert(pRemoved == pPlayer);
