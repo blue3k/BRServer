@@ -349,7 +349,7 @@ namespace Svr {
 
 		// make sure player information is cleaned up
 		if (GetPlayerID() != 0)
-			Service::PlayerManager->DeletePlayer(GetPlayerID(), GetEntityUID());
+			Service::PlayerManager->DeletePlayer(GetPlayerID());
 
 		svrCheck(Svr::SimpleUserEntity::ClearEntity());
 

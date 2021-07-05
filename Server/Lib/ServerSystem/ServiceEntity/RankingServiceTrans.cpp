@@ -80,7 +80,7 @@ namespace Svr {
 		int64_t rankingBase = 0;
 		int64_t currentRanking = 0, expectedRanking = 0;
 		uint64_t latestScore;
-		bool added = false, removedInTheMiddle = false;
+		//bool added = false;
 
 		auto rankCount = (int)GetCount();
 

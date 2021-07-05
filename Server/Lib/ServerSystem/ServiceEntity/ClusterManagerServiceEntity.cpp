@@ -137,7 +137,7 @@ namespace Svr {
 		auto IP = itemValue.get("IP", Json::Value(""));
 
 		StrUtil::StringCopy(privateNet.Address, IP.asCString());
-		privateNet.Port = itemValue.get("Port", Json::Value(0)).asUInt();
+		privateNet.Port = (uint16_t)itemValue.get("Port", Json::Value(0)).asUInt();
 
 		return ResultCode::SUCCESS;
 	}
@@ -219,7 +219,6 @@ namespace Svr {
 		NetAddress netAddress;
 		EntityUID entityUID;
 		ServerServiceInformation* pNewServiceInfo = nullptr;
-		ServerEntity *pServerEntity = nullptr;
 
 		nodePath.Format("{0}/{1}", m_ClusterPath, nodeName);
 
@@ -273,7 +272,6 @@ namespace Svr {
 		}
 
 		// If anything not in the list should be removed
-		auto serverID = GetServerUID();
 		for (auto itRemove : listAlreadyHave)
 		{
 			ServerServiceInformation* pRemove = nullptr;

@@ -62,8 +62,6 @@ set(BRSERVERSYSTEM_LIB_FILES
     Service/ServiceDirectoryService.h
     Service/DataTableManagerService.h
     Service/DataTableManagerService.cpp
-    Task/ServerTask.inl
-    Task/ServerTaskManager.inl
     Transaction/ExternalTransactionManager.inl
     Transaction/MessageRoute.inl
     Transaction/Transaction.inl

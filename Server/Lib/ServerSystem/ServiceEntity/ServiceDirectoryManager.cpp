@@ -64,7 +64,7 @@ namespace SF {
 
 		String MessageEndpointrString = stringValue.asCString();
 		outMessageEndpoint.MessageServer = MessageEndpointrString.SubString(0, splitIndex);
-		outMessageEndpoint.Channel = MessageEndpointrString.SubString(splitIndex + 1, MessageEndpointrString.length());
+		outMessageEndpoint.Channel = MessageEndpointrString.SubString(splitIndex + 1, (int)MessageEndpointrString.length());
 
 		return ResultCode::SUCCESS;
 	}
@@ -118,7 +118,6 @@ namespace SF {
 		NetAddress netAddress;
 		EntityUID entityUID;
 		ServerServiceInformation* pNewServiceInfo = nullptr;
-		ServerEntity* pServerEntity = nullptr;
 
 
 		EndpointAddress messageEndpointConfig;
@@ -312,7 +311,6 @@ namespace SF {
 
 		for (auto itService : m_Services)
 		{
-			int64_t order{};
 			if (!newSet.Find(itService.GetKey()))
 			{
 				removedSet.Insert(itService.GetKey());
@@ -510,7 +508,7 @@ namespace SF {
 
 		bson_append_document_begin(&request, "match", -1, &requestmatch);
 			bson_append_document_begin(&requestmatch, "Updated", -1, &requestmatchRule);
-				bson_append_int32(&requestmatchRule, "$gte", -1, UTCTimeout);
+				bson_append_int32(&requestmatchRule, "$gte", -1, (int)UTCTimeout);
 			bson_append_document_end(&requestmatch, &requestmatchRule);
 		bson_append_document_end(&request, &requestmatch);
 
@@ -539,8 +537,6 @@ namespace SF {
 
 		bson_t request;
 		bson_t requestmatch;
-		bson_t requestmatchRule;
-		bson_t requestSize;
 		bson_init(&request);
 		BsonUniquePtr requestPtr(&request);
 
@@ -1001,7 +997,6 @@ namespace SF {
 		//if (bsonAttributes != nullptr)
 		//	return ResultCode::SUCCESS;
 
-		bson_t objectValue;
 		bson_t customValue;
 		auto UTCNow = Util::Time.GetRawUTCMs().time_since_epoch().count();
 
@@ -1122,7 +1117,7 @@ namespace SF {
 		Result hr;
 		MutexScopeLock lock(m_ServiceLock);
 		int iService = 0;
-		for (int iService = 0; iService < m_LocalServices.size(); iService++)
+		for (iService = 0; iService < m_LocalServices.size(); iService++)
 		{
 			auto itLocalService = m_LocalServices[iService];
 			if (itLocalService->ClusterId != clusterID
@@ -1156,7 +1151,6 @@ namespace SF {
 	Result ServiceDirectoryManager::RegisterLocalServices()
 	{
 		Result hr;
-		auto zkSession = Service::ZKSession->GetZookeeperSession();
 
 		String outPath;
 		for (auto itLocalService : m_LocalServices)

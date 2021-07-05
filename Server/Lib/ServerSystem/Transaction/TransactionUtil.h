@@ -72,11 +72,8 @@ namespace SF {
 #define BR_IMPLEMENT_MSGTRANS_CLOSE_ARGS( PolicyClass, MessageName, ... ) \
 	virtual Result OnCloseTransaction( Result hrRes ) override\
 	{\
-		Result hr = ResultCode::SUCCESS;\
-		PolicyClass _netPolicy(GetRemoteEndpoint());\
-		svrChk( _netPolicy.MessageName( GetTransactionID(), hrRes, ##__VA_ARGS__ ) );\
-		Proc_End:\
-		super::OnCloseTransaction(hrRes);\
+		ScopeContext hr([this](Result hr){ super::OnCloseTransaction(hr); });\
+		svrCheck( PolicyClass(GetRemoteEndpoint()).MessageName( GetTransactionID(), hrRes, ##__VA_ARGS__ ) );\
 		return hr;\
 	}\
 

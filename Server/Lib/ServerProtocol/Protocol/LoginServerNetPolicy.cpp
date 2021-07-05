@@ -35,8 +35,6 @@ namespace SF
 
 		 return m_Endpoint->Send( pMessage );
 
-		return hr;
-
 	}; // Result NetPolicyLoginServer::PlayerJoinedToGameServerCmd( const RouteContext &InRouteContext, const uint64_t &InTransactionID, const PlayerID &InPlayerID, const AuthTicket &InAuthTicket )
 	// Cmd: Kick logged in player, used to kick player on other login server to prevent duplicated login.
 	Result NetPolicyLoginServer::KickPlayerCmd( const RouteContext &InRouteContext, const uint64_t &InTransactionID, const PlayerID &InKickedPlayerID )
@@ -50,8 +48,6 @@ namespace SF
 		 protocolCheckPtr(*pMessage);
 
 		 return m_Endpoint->Send( pMessage );
-
-		return hr;
 
 	}; // Result NetPolicyLoginServer::KickPlayerCmd( const RouteContext &InRouteContext, const uint64_t &InTransactionID, const PlayerID &InKickedPlayerID )
 
@@ -69,8 +65,6 @@ namespace SF
 
 		 return m_Endpoint->Send( pMessage );
 
-		return hr;
-
 	}; // Result NetSvrPolicyLoginServer::PlayerJoinedToGameServerRes( const RouteContext &InRouteContext, const uint64_t &InTransactionID, const Result &InResult )
 	// Cmd: Kick logged in player, used to kick player on other login server to prevent duplicated login.
 	Result NetSvrPolicyLoginServer::KickPlayerRes( const RouteContext &InRouteContext, const uint64_t &InTransactionID, const Result &InResult )
@@ -84,8 +78,6 @@ namespace SF
 		 protocolCheckPtr(*pMessage);
 
 		 return m_Endpoint->Send( pMessage );
-
-		return hr;
 
 	}; // Result NetSvrPolicyLoginServer::KickPlayerRes( const RouteContext &InRouteContext, const uint64_t &InTransactionID, const Result &InResult )
 

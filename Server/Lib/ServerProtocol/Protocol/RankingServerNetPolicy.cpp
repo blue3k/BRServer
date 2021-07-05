@@ -35,8 +35,6 @@ namespace SF
 
 		 return m_Endpoint->Send( pMessage );
 
-		return hr;
-
 	}; // Result NetPolicyRankingServer::AddPlayerCmd( const RouteContext &InRouteContext, const uint64_t &InTransactionID, const PlayerInformation &InPlayerInfo, const uint64_t &InRankingScore )
 	// Cmd: Remove a player to ranking
 	Result NetPolicyRankingServer::RemovePlayerCmd( const RouteContext &InRouteContext, const uint64_t &InTransactionID, const PlayerID &InPlayerID )
@@ -50,8 +48,6 @@ namespace SF
 		 protocolCheckPtr(*pMessage);
 
 		 return m_Endpoint->Send( pMessage );
-
-		return hr;
 
 	}; // Result NetPolicyRankingServer::RemovePlayerCmd( const RouteContext &InRouteContext, const uint64_t &InTransactionID, const PlayerID &InPlayerID )
 	// Cmd: Get player to ranking
@@ -67,8 +63,6 @@ namespace SF
 
 		 return m_Endpoint->Send( pMessage );
 
-		return hr;
-
 	}; // Result NetPolicyRankingServer::GetPlayerRankingCmd( const RouteContext &InRouteContext, const uint64_t &InTransactionID, const PlayerID &InPlayerID )
 	// Cmd: Update a player to ranking
 	Result NetPolicyRankingServer::UpdatePlayerScoreCmd( const RouteContext &InRouteContext, const uint64_t &InTransactionID, const uint64_t &InRankingScore, const PlayerInformation &InPlayerInfo, const uint16_t &InCount )
@@ -82,8 +76,6 @@ namespace SF
 		 protocolCheckPtr(*pMessage);
 
 		 return m_Endpoint->Send( pMessage );
-
-		return hr;
 
 	}; // Result NetPolicyRankingServer::UpdatePlayerScoreCmd( const RouteContext &InRouteContext, const uint64_t &InTransactionID, const uint64_t &InRankingScore, const PlayerInformation &InPlayerInfo, const uint16_t &InCount )
 	// Cmd: Get ranking list
@@ -99,8 +91,6 @@ namespace SF
 
 		 return m_Endpoint->Send( pMessage );
 
-		return hr;
-
 	}; // Result NetPolicyRankingServer::GetRankingCmd( const RouteContext &InRouteContext, const uint64_t &InTransactionID, const RankingType &InRankingType, const uint16_t &InBaseRanking, const uint16_t &InCount )
 	// Cmd: Debug test
 	Result NetPolicyRankingServer::DebugPrintALLRankingCmd( const RouteContext &InRouteContext, const uint64_t &InTransactionID, const char* InFileName )
@@ -114,8 +104,6 @@ namespace SF
 		 protocolCheckPtr(*pMessage);
 
 		 return m_Endpoint->Send( pMessage );
-
-		return hr;
 
 	}; // Result NetPolicyRankingServer::DebugPrintALLRankingCmd( const RouteContext &InRouteContext, const uint64_t &InTransactionID, const char* InFileName )
 
@@ -133,8 +121,6 @@ namespace SF
 
 		 return m_Endpoint->Send( pMessage );
 
-		return hr;
-
 	}; // Result NetSvrPolicyRankingServer::AddPlayerRes( const RouteContext &InRouteContext, const uint64_t &InTransactionID, const Result &InResult, const uint32_t &InRanking )
 	// Cmd: Remove a player to ranking
 	Result NetSvrPolicyRankingServer::RemovePlayerRes( const RouteContext &InRouteContext, const uint64_t &InTransactionID, const Result &InResult )
@@ -148,8 +134,6 @@ namespace SF
 		 protocolCheckPtr(*pMessage);
 
 		 return m_Endpoint->Send( pMessage );
-
-		return hr;
 
 	}; // Result NetSvrPolicyRankingServer::RemovePlayerRes( const RouteContext &InRouteContext, const uint64_t &InTransactionID, const Result &InResult )
 	// Cmd: Get player to ranking
@@ -165,8 +149,6 @@ namespace SF
 
 		 return m_Endpoint->Send( pMessage );
 
-		return hr;
-
 	}; // Result NetSvrPolicyRankingServer::GetPlayerRankingRes( const RouteContext &InRouteContext, const uint64_t &InTransactionID, const Result &InResult, const uint32_t &InRanking )
 	// Cmd: Update a player to ranking
 	Result NetSvrPolicyRankingServer::UpdatePlayerScoreRes( const RouteContext &InRouteContext, const uint64_t &InTransactionID, const Result &InResult, const Array<TotalRankingPlayerInformation>& InRanking )
@@ -180,8 +162,6 @@ namespace SF
 		 protocolCheckPtr(*pMessage);
 
 		 return m_Endpoint->Send( pMessage );
-
-		return hr;
 
 	}; // Result NetSvrPolicyRankingServer::UpdatePlayerScoreRes( const RouteContext &InRouteContext, const uint64_t &InTransactionID, const Result &InResult, const Array<TotalRankingPlayerInformation>& InRanking )
 	// Cmd: Get ranking list
@@ -197,8 +177,6 @@ namespace SF
 
 		 return m_Endpoint->Send( pMessage );
 
-		return hr;
-
 	}; // Result NetSvrPolicyRankingServer::GetRankingRes( const RouteContext &InRouteContext, const uint64_t &InTransactionID, const Result &InResult, const Array<TotalRankingPlayerInformation>& InRanking )
 	// Cmd: Debug test
 	Result NetSvrPolicyRankingServer::DebugPrintALLRankingRes( const RouteContext &InRouteContext, const uint64_t &InTransactionID, const Result &InResult )
@@ -212,8 +190,6 @@ namespace SF
 		 protocolCheckPtr(*pMessage);
 
 		 return m_Endpoint->Send( pMessage );
-
-		return hr;
 
 	}; // Result NetSvrPolicyRankingServer::DebugPrintALLRankingRes( const RouteContext &InRouteContext, const uint64_t &InTransactionID, const Result &InResult )
 

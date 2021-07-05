@@ -163,10 +163,9 @@ namespace SF {
 	{
 		Result hr;
 		PlayerIDMapIterator itPlayer;
-		char nodePath[256];
 		bool bIsUpdate = false;
-		Json::Value nodeValue(Json::objectValue);
-		auto zkSession = Service::ZKSession->GetZookeeperSession();
+		//Json::Value nodeValue(Json::objectValue);
+		//auto zkSession = Service::ZKSession->GetZookeeperSession();
 
 		if (playerID == 0 || entityUID.UID == 0)
 		{

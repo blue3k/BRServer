@@ -124,8 +124,6 @@ namespace SF {
 		Result ServerEntity::TickUpdate(TimerAction* pAction)
 		{
 			Result hr = ResultCode::SUCCESS;
-			Net::Connection* pConn = nullptr;
-			Net::Connection* pConnRemote = nullptr;
 
 			if (GetEntityState() == EntityState::FREE)
 				return ResultCode::SUCCESS;

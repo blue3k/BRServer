@@ -72,8 +72,6 @@ namespace SF
 					return pNewMsg;
 				});
 
-				uint8_t *pMsgData = nullptr;
-
 				unsigned __uiMessageSize = (unsigned)(sizeof(MessageHeader) 
 					+ SerializedSizeOf(InTransactionID)
 				);
@@ -149,8 +147,6 @@ namespace SF
 					}
 					return pNewMsg;
 				});
-
-				uint8_t *pMsgData = nullptr;
 
 				unsigned __uiMessageSize = (unsigned)(sizeof(MessageHeader) 
 					+ SerializedSizeOf(InTransactionID)
@@ -230,8 +226,6 @@ namespace SF
 					return pNewMsg;
 				});
 
-				uint8_t *pMsgData = nullptr;
-
 				unsigned __uiMessageSize = (unsigned)(sizeof(MessageHeader) 
 					+ SerializedSizeOf(InTransactionID)
 					+ SerializedSizeOf(InInstanceUID)
@@ -309,8 +303,6 @@ namespace SF
 					}
 					return pNewMsg;
 				});
-
-				uint8_t *pMsgData = nullptr;
 
 				unsigned __uiMessageSize = (unsigned)(sizeof(MessageHeader) 
 					+ SerializedSizeOf(InTransactionID)
@@ -395,8 +387,6 @@ namespace SF
 					return pNewMsg;
 				});
 
-				uint8_t *pMsgData = nullptr;
-
 				unsigned __uiMessageSize = (unsigned)(sizeof(MessageHeader) 
 					+ SerializedSizeOf(InInstanceName)
 					+ SerializedSizeOf(InInstanceUID)
@@ -475,8 +465,6 @@ namespace SF
 					return pNewMsg;
 				});
 
-				uint8_t *pMsgData = nullptr;
-
 				unsigned __uiMessageSize = (unsigned)(sizeof(MessageHeader) 
 					+ SerializedSizeOf(InFreeInstances)
 				);
@@ -552,8 +540,6 @@ namespace SF
 					return pNewMsg;
 				});
 
-				uint8_t *pMsgData = nullptr;
-
 				unsigned __uiMessageSize = (unsigned)(sizeof(MessageHeader) 
 					+ SerializedSizeOf(InInstanceUID)
 					+ SerializedSizeOf(InCounterValues)
@@ -626,8 +612,6 @@ namespace SF
 					}
 					return pNewMsg;
 				});
-
-				uint8_t *pMsgData = nullptr;
 
 				unsigned __uiMessageSize = (unsigned)(sizeof(MessageHeader) 
 					+ SerializedSizeOf(InInstanceUID)

@@ -236,7 +236,7 @@ namespace SF {
 						CloseTransaction(hr);
 				});
 			GameInsUID insUID;
-			NetPolicyGameInstance* pPolicy = nullptr;
+			//NetPolicyGameInstance* pPolicy = nullptr;
 			MessageEndpoint* serverEndpoint{};
 
 			svrCheck(super::StartTransaction());

@@ -64,7 +64,6 @@ namespace Svr {
 	Result RelayServiceEntity::InitializeEntity( EntityID newEntityID )
 	{
 		Result hr = ResultCode::SUCCESS;
-		ClusteredServiceEntity *pClusteredEntity = nullptr;
 		auto pServerInst = BrServer::GetInstance();
 
 		svrChkPtr(pServerInst);

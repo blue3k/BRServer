@@ -53,6 +53,7 @@ namespace SF {
 
 	void InitializeEngine(SF::EngineInitParam& initParam)
 	{
+		constexpr uint32_t LogMaskALL = uint32_t(-1);
 		auto configPath = ParameterSetting::GetSetting("config", "../config/SampleLogin.cfg");
 		auto bAsService = StrUtil::StringCompairIgnoreCase(ParameterSetting::GetSetting("servicemode"), -1, "true", -1);
 
@@ -84,8 +85,8 @@ namespace SF {
 
 			initParam.LogFilePrefix = strLogPath;
 		}
-		initParam.LogOutputFile = LogOutputMask(-1);
-		initParam.GlobalLogOutputMask = LogOutputMask(-1);
+		initParam.LogOutputFile = LogOutputMask(LogMaskALL);
+		initParam.GlobalLogOutputMask = LogOutputMask(LogMaskALL);
 		initParam.LogServerAddress = Service::ServerConfig->LogServer;
 
 		initParam.AsyncTaskThreadCount = 6;

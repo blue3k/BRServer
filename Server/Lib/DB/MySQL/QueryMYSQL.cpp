@@ -44,7 +44,7 @@ namespace SF {
 				{
 					auto pVariable = itBinding.VariableRef.GetVariable();
 					auto typeNameCrc = pVariable->GetTypeName();
-					auto typeName = typeNameCrc.ToString();
+					//auto typeName = typeNameCrc.ToString();
 					switch (typeNameCrc)
 					{
 					case "double"_crc: statement.bind(pVariable->GetValueDouble()); break;

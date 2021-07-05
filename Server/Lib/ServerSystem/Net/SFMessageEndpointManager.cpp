@@ -52,7 +52,7 @@ namespace SF {
 
 		MutexScopeLock lock(m_TableLock);
 
-		m_MessageEndpointByUID.ForeachOrder(0, m_MessageEndpointByUID.size(), 
+		m_MessageEndpointByUID.ForeachOrder(0, (uint)m_MessageEndpointByUID.size(), 
 			[](uint64_t key, MessageEndpoint*& value)
 			{
 				SharedReferenceDec dec(value);

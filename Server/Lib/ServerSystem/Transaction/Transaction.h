@@ -629,11 +629,11 @@ namespace SF {
 				{
 					if (MessageClass::GetMessage()->GetMessageHeader()->msgID.IDs.Type == Message::MSGTYPE_COMMAND)
 					{
-						if (MessageClass::HasTransactionID)
+						if constexpr (MessageClass::HasTransactionID)
 						{
 							TransactionT<OwnerType>::SetParentTransID(MessageClass::GetTransactionID());
 						}
-						else if (MessageClass::HasRouteContext)
+						else if  constexpr (MessageClass::HasRouteContext)
 						{
 							TransactionT<OwnerType>::SetMessageRouteContext(MessageClass::GetRouteContext());
 						}

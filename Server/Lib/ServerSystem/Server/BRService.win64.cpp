@@ -195,7 +195,7 @@ namespace Svr {
 					NULL);						// no password 
 				if( schService == NULL )
 				{
-					int iErr = GetLastError();
+					iErr = GetLastError();
 					svrTrace( Error, "CreateService failed err:{0}", iErr );
 					trcErr( HRESULT_FROM_WIN32(iErr) );
 				}
@@ -361,7 +361,6 @@ namespace Svr {
 			bool bAsService = false;
 			bool bIsInstall = false;
 			bool bIsUninstall = false;
-			const char *strServiceName = nullptr;
 
 			g_pSvrInstance = pSvrInstance;
 			Assert( BrServer::GetInstance() == pSvrInstance );

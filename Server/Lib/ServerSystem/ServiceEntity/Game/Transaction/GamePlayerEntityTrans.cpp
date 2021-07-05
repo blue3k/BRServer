@@ -153,7 +153,6 @@ namespace Svr {
 	Result PlayerTransJoinGameServer::SetPlayerGameData(const VariableTable& playerDataDB)
 	{
 		ScopeContext hr;
-		auto& playerData = GetMyOwner()->GetPlayerData();
 
 		// TODO: Need to change initial nick name setup process
 		GetMyOwner()->SetNickName(playerDataDB.GetValue<String>("GameNick"_crc32c));
@@ -203,7 +202,7 @@ namespace Svr {
 		svrCheckCondition( pDBRes->RowsetResults.size() >= 1 );
 		{
 			auto& playerInfoData = *pDBRes->RowsetResults.begin();
-			auto& playerData = GetMyOwner()->GetPlayerData();
+			//auto& playerData = GetMyOwner()->GetPlayerData();
 
 			// New player data. Reset stat to default
 			if (pDBRes->Result == 0)
@@ -451,7 +450,7 @@ namespace Svr {
 
 		svrCheckCondition( pDBRes->RowsetResults.size() >= 1 );
 		{
-			auto& playerInfoData = *pDBRes->RowsetResults.begin();
+			//auto& playerInfoData = *pDBRes->RowsetResults.begin();
 
 			// TODO: FIXME
 			//m_Result.Level = playerInfoData.Level;
@@ -1125,7 +1124,7 @@ namespace Svr {
 				if (m_PlayerStatusQueryCount == 0)
 					CloseTransaction(hr);
 			});
-		NetSvrPolicyGame *pPolicy = nullptr;
+		//NetSvrPolicyGame *pPolicy = nullptr;
 		DB::QueryGetPlayerStatusCmd *pDBRes = (DB::QueryGetPlayerStatusCmd*)pRes;
 
 		m_PlayerStatusQueryCount--;
@@ -1186,7 +1185,7 @@ namespace Svr {
 	Result PlayerTransRequestPlayerStatusUpdateC2S::StartTransaction()
 	{
 		ScopeContext hr;
-		Svr::ServerEntity *pServerEntity = nullptr;
+		//Svr::ServerEntity *pServerEntity = nullptr;
 		EntityUID playerUID;
 		bool bInGame;
 
@@ -1247,7 +1246,7 @@ namespace Svr {
 		{
 			auto RankingID = itRowSet->GetValue<int32_t>("RankingID"_crc);
 			auto Ranking = itRowSet->GetValue<int32_t>("Ranking"_crc);
-			auto WinRate = itRowSet->GetValue<float>("WinRate"_crc);
+			//auto WinRate = itRowSet->GetValue<float>("WinRate"_crc);
 			auto Win = itRowSet->GetValue<int32_t>("Win"_crc);
 			auto Lose = itRowSet->GetValue<int32_t>("Lose"_crc);
 			auto PlayerID = itRowSet->GetValue<int64_t>("PlayerID"_crc);
@@ -1411,7 +1410,7 @@ namespace Svr {
 		if (purchaseID.size() != SHA256_DIGEST_LENGTH)
 			svrErrorClose(ResultCode::SVR_INVALID_PURCHASE_INFO);
 
-		auto& playerData = GetMyOwner()->GetPlayerData();
+		//auto& playerData = GetMyOwner()->GetPlayerData();
 
 		// TODO: FIXME
 		//svrCheck(pPlayerInfoSystem->SaveStatToMemento(m_SavedData));
@@ -1441,7 +1440,7 @@ namespace Svr {
 			svrErrorClose(ResultCode::SVR_INVALID_PURCHASE_INFO);
 
 
-		auto& playerData = GetMyOwner()->GetPlayerData();
+		//auto& playerData = GetMyOwner()->GetPlayerData();
 
 		// TODO:FIXME
 		//svrCheck(pPlayerInfoSystem->SaveStatToMemento(m_SavedData));

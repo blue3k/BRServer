@@ -217,7 +217,7 @@ namespace SF {
 			ScopeContext hr;
 			auto CurTime = Util::Time.GetRawTimeMs();
 			StaticArray<PlayerID, 64> LeaverList(GetHeap());
-			GameInstancePlayer* pGamePlayer = nullptr;
+			//GameInstancePlayer* pGamePlayer = nullptr;
 			int playerCount = 0;
 
 			{
@@ -417,7 +417,6 @@ namespace SF {
 		Result GameInstanceEntity::InitializeGameEntity(const ServerConfig::NetPublic& netPublic, const VariableTable& attributes)
 		{
 			ScopeContext hr;
-			GameInstancePlayer* pPlayer = nullptr;
 
 			m_MaxPlayer = attributes.GetValue<uint>("MaxPlayer"_crc);
 			m_InstanceType = attributes.GetValue<StringCrc32>("Type"_crc);
@@ -437,7 +436,6 @@ namespace SF {
 				SetGameKillTimer(m_EmptyInstanceKillTimeOut);
 				m_TimeToKill.SetTimerFunc([&]() { OnGameKillTimer(); });
 			}
-
 
 			return hr;
 		}

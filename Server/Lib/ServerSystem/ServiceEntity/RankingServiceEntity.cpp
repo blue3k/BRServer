@@ -225,7 +225,6 @@ namespace Svr {
 
 	Result RankingServiceEntity::GetRankingListAll(Array<TotalRankingPlayerInformation> &rankingList)
 	{
-		int32_t expectedRanking = 0;
 		int32_t itemCount = static_cast<int32_t>(m_RankingMap.size());
 
 		return GetRankingList(0, itemCount, rankingList);
@@ -255,8 +254,8 @@ namespace Svr {
 		// parameter from client
 		File fileStream;
 		char szBuff[1024];
-		int64_t currentRanking = 0, expectedRanking = 0;
-		int64_t currentScore = 0;
+		int64_t expectedRanking = 0;
+		uint64_t currentScore = 0;
 
 
 		CommitChanges();

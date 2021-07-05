@@ -96,8 +96,6 @@ namespace SF {
 		{
 			return super::OnGenericError(pRes);
 		}
-
-		return ResultCode::SUCCESS;
 	}
 
 	template<class MessageClass>
@@ -143,7 +141,6 @@ namespace SF {
 			});
 
 		DB::QueryRegisterAuthTicketCmd* pDBRes = (DB::QueryRegisterAuthTicketCmd*)pRes;
-		NetPolicyGameServer *pGameServerPolicy = nullptr;
 		SharedPointerT<SF::Net::Connection> pConn = super::GetMyOwner()->GetConnection();
 
 		svrCheck(pRes->GetResult());
@@ -178,7 +175,7 @@ namespace SF {
 			}
 			m_GameServerAddrIPV4 = IPV4Address;
 			m_GameServerAddr = IPV6Address;
-			auto port = pServiceInfo->GetCustomAttributes().GetValue<uint>("PublicPort");
+			auto port = pServiceInfo->GetCustomAttributes().GetValue<uint16_t>("PublicPort");
 			m_GameServerAddrIPV4.Port = port;
 			m_GameServerAddr.Port = port;
 		}
@@ -765,7 +762,6 @@ namespace SF {
 	{
 		Result hr = ResultCode::SUCCESS;
 		PlayerInformation playerInfo;
-		Svr::ClusteredServiceEntity *pServiceEntity = nullptr;
 		SharedPointerT<ServerServiceInformation> pService;
 
 		svrChk(super::StartTransaction());
@@ -856,8 +852,8 @@ namespace SF {
 	{
 		Result hr = ResultCode::SUCCESS;
 
-		Svr::MessageResult *pMsgRes = (Svr::MessageResult*)pRes;
-		Message::RankingServer::UpdatePlayerScoreRes res;
+		//Svr::MessageResult *pMsgRes = (Svr::MessageResult*)pRes;
+		//Message::RankingServer::UpdatePlayerScoreRes res;
 
 		svrChk(pRes->GetResult());
 

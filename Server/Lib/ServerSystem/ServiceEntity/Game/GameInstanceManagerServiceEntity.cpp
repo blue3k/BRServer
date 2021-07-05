@@ -302,7 +302,6 @@ namespace SF {
 		Result GameInstanceManagerServiceEntity::ProcessNewConnection()
 		{
 			Result hr = ResultCode::SUCCESS;
-			Entity* pEntity = nullptr;
 			SharedPointerT<Net::Connection> pConn;
 
 			auto numQueued = m_NewConnectionQueue.GetEnqueCount();

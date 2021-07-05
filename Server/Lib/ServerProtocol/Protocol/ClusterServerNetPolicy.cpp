@@ -35,8 +35,6 @@ namespace SF
 
 		 return m_Endpoint->Send( pMessage );
 
-		return hr;
-
 	}; // Result NetPolicyClusterServer::GetClusterMemberListCmd( const RouteContext &InRouteContext, const uint64_t &InTransactionID, const uint16_t &InRouteHopCount, const ClusterID &InClusterID )
 	// Cmd: Join to the cluster
 	Result NetPolicyClusterServer::RequestDataSyncCmd( const RouteContext &InRouteContext, const uint64_t &InTransactionID, const uint16_t &InRouteHopCount, const ClusterID &InClusterID )
@@ -50,8 +48,6 @@ namespace SF
 		 protocolCheckPtr(*pMessage);
 
 		 return m_Endpoint->Send( pMessage );
-
-		return hr;
 
 	}; // Result NetPolicyClusterServer::RequestDataSyncCmd( const RouteContext &InRouteContext, const uint64_t &InTransactionID, const uint16_t &InRouteHopCount, const ClusterID &InClusterID )
 
@@ -69,8 +65,6 @@ namespace SF
 
 		 return m_Endpoint->Send( pMessage );
 
-		return hr;
-
 	}; // Result NetSvrPolicyClusterServer::GetClusterMemberListRes( const RouteContext &InRouteContext, const uint64_t &InTransactionID, const Result &InResult, const Array<ServiceInformation>& InMemberList )
 	// Cmd: Join to the cluster
 	Result NetSvrPolicyClusterServer::RequestDataSyncRes( const RouteContext &InRouteContext, const uint64_t &InTransactionID, const Result &InResult )
@@ -84,8 +78,6 @@ namespace SF
 		 protocolCheckPtr(*pMessage);
 
 		 return m_Endpoint->Send( pMessage );
-
-		return hr;
 
 	}; // Result NetSvrPolicyClusterServer::RequestDataSyncRes( const RouteContext &InRouteContext, const uint64_t &InTransactionID, const Result &InResult )
 

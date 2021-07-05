@@ -313,7 +313,7 @@ namespace SF {
 		if( m_TaskGroups.size() >= WorkGroupCount )
 			return ResultCode::INVALID_ARG;
 
-		for (size_t iGroup = m_TaskGroups.size(); iGroup < WorkGroupCount; iGroup++)
+		for (uint32_t iGroup = (uint32_t)m_TaskGroups.size(); iGroup < WorkGroupCount; iGroup++)
 		{
 			TaskWorker *pGroup = nullptr;
 

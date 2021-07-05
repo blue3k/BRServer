@@ -92,8 +92,6 @@ namespace Svr {
 		if( GetInviterID() == 0 )
 		{
 			// This should be rejoin by relogging
-			NetSvrPolicyGameParty *pPolicy = nullptr;
-
 			svrChk( GetMyOwner()->FindPlayer( GetInvitedPlayer().PlayerID, pPlayer ) );
 			svrChk( pPlayer->SetRemoteEndpoint(GetRouteContext().GetFrom(), GetRemoteEndpoint()) );
 
@@ -309,7 +307,6 @@ namespace Svr {
 					CloseTransaction(hr);
 
 			});
-		SharedPointerT<ServerServiceInformation> pService;
 		StaticArray<MatchingPlayerInformation, 16> m_matchingPlayers(GetHeap());
 
 		svrCheck( super::StartTransaction() );
@@ -338,7 +335,7 @@ namespace Svr {
 		}
 
 		{
-			ClusteredServiceEntity *matchingQueueService = nullptr;
+			SharedPointerT<ServerServiceInformation> pService;
 			auto queueClusterID = Svr::MatchingUtil::GetQueueClusterID(GetMaxGamePlayers(), GetMyOwner()->GetNumPlayer(), PlayerRole::None);
 
 			svrCheck(Service::ServiceDirectory->GetRandomService(Service::ServerConfig->GameClusterID, queueClusterID, pService));

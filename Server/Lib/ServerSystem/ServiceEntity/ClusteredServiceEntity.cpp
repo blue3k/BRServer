@@ -149,7 +149,6 @@ namespace Svr {
 	Result ClusteredServiceEntity::InitializeEntity( EntityID newEntityID )
 	{
 		Result hr = ResultCode::SUCCESS;
-		ServerServiceInformation* pMyService = nullptr;
 
 		m_Initialized = false;
 
@@ -229,8 +228,7 @@ namespace Svr {
 	Result ClusteredServiceEntity::SetWorkload( uint workload )
 	{
 		Result hr = ResultCode::SUCCESS;
-		ServerServiceInformation *pServiceInfo = nullptr;
-		ClusterServerService *pService = nullptr;
+		//ServerServiceInformation *pServiceInfo = nullptr;
 
 		if( m_Workload == workload )
 			return ResultCode::SUCCESS;
@@ -249,8 +247,8 @@ namespace Svr {
 	Result ClusteredServiceEntity::SetServiceStatus( ServiceStatus newStatus )
 	{
 		Result hr = ResultCode::SUCCESS;
-		ServerServiceInformation *pServiceInfo = nullptr;
-		ClusterServerService *pService = nullptr;
+		//ServerServiceInformation *pServiceInfo = nullptr;
+		//ClusterServerService *pService = nullptr;
 
 		m_ServiceStatus = newStatus;
 

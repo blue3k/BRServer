@@ -159,8 +159,9 @@ namespace Google {
 
 		if (p12)
 			PKCS12_free(p12);
-#endif
+
 		return hr;
+#endif
 	}
 
 	Result OAuth::BuildAuthRequestString(const char* strAccount, const char* scopes, Array<uint8_t>& requestString)

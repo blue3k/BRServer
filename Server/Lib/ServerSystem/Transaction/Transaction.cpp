@@ -284,14 +284,14 @@ namespace SF {
 		//
 		TransactionResult::TransactionResult()
 			://m_uiContext(-1),
-			m_transID(-1, 0),
+			m_transID(uint32_t(-1), 0),
 			m_msgID(0),
 			m_hrRes(ResultCode::SUCCESS)
 		{
 		}
 
 		TransactionResult::TransactionResult(Message::MessageID msgID, ResultType resultDataType)
-			: m_transID(-1, 0)
+			: m_transID(uint32_t(-1), 0)
 			, m_msgID(msgID)
 			, m_ResultDataType(resultDataType)
 			, m_hrRes(ResultCode::SUCCESS)

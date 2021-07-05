@@ -41,10 +41,10 @@ namespace SF {
 		Heap m_Heap;
 
 		// Work load for
-		SysUInt		m_TaskLoad = 1;
+		uint32_t		m_TaskLoad = 1;
 
 		// TickTask Group index
-		SysUInt		m_TaskGroupIdx = 0;
+		uint32_t		m_TaskGroupIdx = 0;
 
 		// TickTask manager pointer
 		TickTaskManager* m_pTaskManager{};
@@ -72,26 +72,30 @@ namespace SF {
 		IHeap& GetHeap() { return *m_Heap.get(); }
 
 		// Get TickTask ID
-		inline uint32_t GetTaskID() const;
+		SF_FORCEINLINE uint32_t GetTaskID() const { return m_TaskID; }
 		void SetTaskID(uint32_t uiTaskID);
 
 		// Get TickTask group
-		inline SysUInt GetTaskGroupID() const;
-		inline void SetTaskGroupID( SysUInt uiTaskGroupIdx );
+		SF_FORCEINLINE uint32_t GetTaskGroupID() const { return m_TaskGroupIdx; }
+		SF_FORCEINLINE void SetTaskGroupID(uint32_t uiTaskGroupIdx) { m_TaskGroupIdx = uiTaskGroupIdx; }
 
 		bool UseDesignatedThread() const { return m_UseDesignatedThread; }
 		void SetUseDesignatedThread(bool bValue) { m_UseDesignatedThread = bValue; }
 
 		// Get TickTask group
-		TickTaskManager* GetTaskManager();
-		void SetTaskManager( TickTaskManager *pManager );
+		SF_FORCEINLINE TickTaskManager* GetTaskManager() { return m_pTaskManager; }
+		SF_FORCEINLINE void SetTaskManager(TickTaskManager* pManager)
+		{
+			Assert(m_pTaskManager == nullptr);
+			m_pTaskManager = pManager;
+		}
 
-		TaskWorker* GetTaskWorker();
+		TaskWorker* GetTaskWorker() { return m_pTaskWorker; }
 
 		TickTaskTimerAction* GetTimerAction() { return *m_TimerAction; }
 
 		// Get task Load
-		inline SysUInt GetTaskLoad() const;
+		SF_FORCEINLINE uint32_t GetTaskLoad() const { return m_TaskLoad; }
 
 		DurationMS GetTickInterval() const;
 		inline void SetTickInterval(DurationMS tickInterval) { m_TickInterval = tickInterval; }
@@ -103,12 +107,12 @@ namespace SF {
 		void KickTickUpdate();
 
 		// retry count
-		inline uint GetRetryCount() const										{ return m_RetryCount;  }
-		inline void ResetRetryCount()											{ m_RetryCount = 0; }
-		inline void IncRetryCount()												{ m_RetryCount++; }
+		SF_FORCEINLINE uint GetRetryCount() const	{ return m_RetryCount;  }
+		SF_FORCEINLINE void ResetRetryCount()		{ m_RetryCount = 0; }
+		SF_FORCEINLINE void IncRetryCount()			{ m_RetryCount++; }
 
 		// Get task Load
-		inline void SetTaskLoad( SysUInt workLoad );
+		SF_FORCEINLINE void SetTaskLoad(uint32_t workLoad) { m_TaskLoad = workLoad; }
 
 		// Run the task
 		// return ResultCode::SUCCESS_FALSE means it doesn't need to rescheduled
@@ -142,15 +146,9 @@ namespace SF {
 		virtual const char* GetDebugString() override;
 	};
 
-
-#include "ServerTask.inl"
-
-
-
 	extern template class SharedPointerT<TickTask>;
 
-
-}; // namespace SF
+} // namespace SF
 
 
 

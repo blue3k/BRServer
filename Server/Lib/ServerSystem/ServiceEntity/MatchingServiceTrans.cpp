@@ -158,7 +158,6 @@ namespace Svr {
 	Result MatchingTransGrabPlayer::RequestDeleteItem(MatchingQueueTicket ticket)
 	{
 		Result hr = ResultCode::SUCCESS;
-		ServerEntity *pServerEntity = nullptr;
 
 		svrTrace(SVR_MATCHING, "Request Delete item Matching:{0}, MatchingQueueID:{1}, MTicket:{2}", m_MatchingMemberCount, m_TargetQueueClusterID, ticket);
 
@@ -293,7 +292,6 @@ namespace Svr {
 	Result MatchingTransProcessMatchedItems::DequeueItem(const MatchingQueueTicket& ticket)
 	{
 		Result hr = ResultCode::SUCCESS;
-		ServerEntity *pServerEntity = nullptr;
 
 		svrTrace(SVR_MATCHING, "Dequeue item Matching:{0}, MTicket:{1}", GetTargetMatchingMemberCount(), ticket);
 
@@ -414,7 +412,6 @@ namespace Svr {
 		{
 			auto& reservedMember = m_MatchedItems[iItem];
 
-			ServerEntity *pServerEntity = nullptr;
 			bool notifiedToRegister = false;
 			for (uint member = 0; member < reservedMember.MemberCount; member++)
 			{

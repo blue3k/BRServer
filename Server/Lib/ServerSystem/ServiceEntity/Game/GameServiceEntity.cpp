@@ -61,7 +61,6 @@ namespace SF {
 	Result GameServiceEntity::InitializeEntity( EntityID newEntityID )
 	{
 		Result hr = ResultCode::SUCCESS;
-		ServerServiceInformation* pServiceInfo = nullptr;
 		auto pServerInst = Svr::BrServer::GetInstance();
 
 		svrCheckPtr(pServerInst);

@@ -18,7 +18,7 @@ int main(int argc, char **argv)
 
 	InitGoogleTest(&argc, argv);
 
-	UnitTest& unit_test = *UnitTest::GetInstance();
+	//UnitTest& unit_test = *UnitTest::GetInstance();
 
 	int iRes = RUN_ALL_TESTS();
 

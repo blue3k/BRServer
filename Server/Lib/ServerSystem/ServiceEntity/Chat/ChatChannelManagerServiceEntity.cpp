@@ -126,7 +126,6 @@ namespace Svr {
 	{
 		Result hr = ResultCode::SUCCESS;
 		ChatChannelEntity *pChatChannel = nullptr;
-		ChatChannelPlayer *pPlayer = nullptr;
 
 		// TODO: We need to go to chat channel directory to find it
 		ChatChannelUID = pChatChannel->GetEntityUID();

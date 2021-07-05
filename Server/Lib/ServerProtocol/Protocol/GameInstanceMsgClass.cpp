@@ -101,8 +101,6 @@ namespace SF
 					return pNewMsg;
 				});
 
-				uint8_t *pMsgData = nullptr;
-
 				uint16_t serializedSizeOfInCharacterVisual = static_cast<uint16_t>(SerializedSizeOf(InCharacterVisual)); 
 				uint16_t serializedSizeOfInCharacterAttribute = static_cast<uint16_t>(SerializedSizeOf(InCharacterAttribute)); 
 				unsigned __uiMessageSize = (unsigned)(sizeof(MessageHeader) 
@@ -140,8 +138,6 @@ namespace SF
 					}
 					return pNewMsg;
 				});
-
-				uint8_t *pMsgData = nullptr;
 
 				uint16_t serializedSizeOfInCharacterVisual = static_cast<uint16_t>(SerializedSizeOf(InCharacterVisual)); 
 				uint16_t serializedSizeOfInCharacterAttribute = static_cast<uint16_t>(SerializedSizeOf(InCharacterAttribute)); 
@@ -232,8 +228,6 @@ namespace SF
 					return pNewMsg;
 				});
 
-				uint8_t *pMsgData = nullptr;
-
 				unsigned __uiMessageSize = (unsigned)(sizeof(MessageHeader) 
 					+ SerializedSizeOf(InRouteContext)
 					+ SerializedSizeOf(InTransactionID)
@@ -317,8 +311,6 @@ namespace SF
 					return pNewMsg;
 				});
 
-				uint8_t *pMsgData = nullptr;
-
 				unsigned __uiMessageSize = (unsigned)(sizeof(MessageHeader) 
 					+ SerializedSizeOf(InRouteContext)
 					+ SerializedSizeOf(InTransactionID)
@@ -394,8 +386,6 @@ namespace SF
 					}
 					return pNewMsg;
 				});
-
-				uint8_t *pMsgData = nullptr;
 
 				unsigned __uiMessageSize = (unsigned)(sizeof(MessageHeader) 
 					+ SerializedSizeOf(InRouteContext)
@@ -473,8 +463,6 @@ namespace SF
 					return pNewMsg;
 				});
 
-				uint8_t *pMsgData = nullptr;
-
 				unsigned __uiMessageSize = (unsigned)(sizeof(MessageHeader) 
 					+ SerializedSizeOf(InRouteContext)
 					+ SerializedSizeOf(InLeftPlayerID)
@@ -549,8 +537,6 @@ namespace SF
 					}
 					return pNewMsg;
 				});
-
-				uint8_t *pMsgData = nullptr;
 
 				unsigned __uiMessageSize = (unsigned)(sizeof(MessageHeader) 
 					+ SerializedSizeOf(InRouteContext)
@@ -628,8 +614,6 @@ namespace SF
 					return pNewMsg;
 				});
 
-				uint8_t *pMsgData = nullptr;
-
 				unsigned __uiMessageSize = (unsigned)(sizeof(MessageHeader) 
 					+ SerializedSizeOf(InRouteContext)
 					+ SerializedSizeOf(InTransactionID)
@@ -705,8 +689,6 @@ namespace SF
 					}
 					return pNewMsg;
 				});
-
-				uint8_t *pMsgData = nullptr;
 
 				unsigned __uiMessageSize = (unsigned)(sizeof(MessageHeader) 
 					+ SerializedSizeOf(InRouteContext)

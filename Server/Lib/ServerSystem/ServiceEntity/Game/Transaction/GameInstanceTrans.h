@@ -145,7 +145,8 @@ namespace SF {
 			// Start Transaction
 			virtual Result StartTransaction() override;
 
-			BR_SVR_MSGTRANS_CLOSE_ARGS(NetSvrPolicyPlayInstance, OccupyMapObjectRes, GetPlayInstanceUID(), GetPlayerID(), GetMapObjectId());
+			BR_IMPLEMENT_MSGTRANS_CLOSE_ARGS(NetSvrPolicyPlayInstance, OccupyMapObjectRes, GetPlayInstanceUID(), GetPlayerID(), GetMapObjectId());
+
 		};
 
 		class GameInstanceTransUnoccupyMapObject : public Svr::MessageTransaction<Svr::GameInstanceEntity, Message::PlayInstance::UnoccupyMapObjectCmd>
@@ -162,7 +163,7 @@ namespace SF {
 			// Start Transaction
 			virtual Result StartTransaction() override;
 
-			BR_SVR_MSGTRANS_CLOSE_ARGS(NetSvrPolicyPlayInstance, UnoccupyMapObjectRes, GetPlayInstanceUID(), GetPlayerID(), GetMapObjectId());
+			BR_IMPLEMENT_MSGTRANS_CLOSE_ARGS(NetSvrPolicyPlayInstance, UnoccupyMapObjectRes, GetPlayInstanceUID(), GetPlayerID(), GetMapObjectId());
 		};
 
 		class GameInstanceTransUseMapObject : public Svr::MessageTransaction<Svr::GameInstanceEntity, Message::PlayInstance::UseMapObjectCmd>
@@ -183,7 +184,7 @@ namespace SF {
 			// Start Transaction
 			virtual Result StartTransaction() override;
 
-			BR_SVR_MSGTRANS_CLOSE_ARGS(NetSvrPolicyPlayInstance, UseMapObjectRes, GetPlayInstanceUID(), GetPlayerID(), GetMapObjectId(), m_ResultAttributes);
+			BR_IMPLEMENT_MSGTRANS_CLOSE_ARGS(NetSvrPolicyPlayInstance, UseMapObjectRes, GetPlayInstanceUID(), GetPlayerID(), GetMapObjectId(), m_ResultAttributes);
 		};
 
 

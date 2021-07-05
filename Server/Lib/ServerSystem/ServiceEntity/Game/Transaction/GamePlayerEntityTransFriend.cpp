@@ -91,7 +91,7 @@ namespace Svr {
 			{
 				CloseTransaction(hr);
 			});
-		Svr::ServerEntity *pServerEntity = nullptr;
+		//Svr::ServerEntity *pServerEntity = nullptr;
 		EntityUID playerUID;
 		DB::QueryNotification_AddCmd *pMsgRes;
 
@@ -319,7 +319,7 @@ namespace Svr {
 	Result PlayerTransFriendAccept::SendNotifyToInviter()
 	{
 		ScopeContext hr;
-		Svr::ServerEntity *pServerEntity = nullptr;
+		//Svr::ServerEntity *pServerEntity = nullptr;
 		EntityUID playerUID;
 
 		if (!(Service::PlayerManager->FindPlayer(GetInviterID(), playerUID)))
@@ -422,7 +422,7 @@ namespace Svr {
 				if (!hr)
 					CloseTransaction(hr);
 			});
-		Svr::ServerEntity *pServerEntity = nullptr;
+		//Svr::ServerEntity *pServerEntity = nullptr;
 		EntityUID playerUID;
 		ServerFriendInformation* pFriendInfo = nullptr;
 

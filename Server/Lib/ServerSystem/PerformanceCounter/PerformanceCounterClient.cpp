@@ -200,14 +200,14 @@ namespace Svr {
 			auto& counters = pInstance->GetCounters();
 			for (uint iCounter = 0; iCounter < counters.size(); iCounter++)
 			{
-				uint64_t value = 0;
-				if (!(counters[iCounter]->CopyTo((uint)sizeof(value), (uint8_t*)&value)))
+				uint64_t tempValue = 0;
+				if (!(counters[iCounter]->CopyTo((uint)sizeof(tempValue), (uint8_t*)&tempValue)))
 				{
 					Assert(false);
 					break;
 				}
 
-				if (!(counterValues.push_back(value)))
+				if (!(counterValues.push_back(tempValue)))
 					break;
 			}
 

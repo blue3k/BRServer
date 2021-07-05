@@ -58,7 +58,7 @@ namespace SF {
 
 	private:
 
-		uint32_t m_RelayPlayerIndex = -1;
+		uint32_t m_RelayPlayerIndex = uint32_t (-1);
 	};
 
 

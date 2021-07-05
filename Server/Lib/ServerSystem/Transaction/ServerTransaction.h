@@ -70,11 +70,11 @@ namespace Svr {
 			{
 				if (MessageClass::GetMessage()->GetMessageHeader()->msgID.IDs.Type == Message::MSGTYPE_COMMAND)
 				{
-					if(MessageClass::HasTransactionID)
+					if constexpr (MessageClass::HasTransactionID)
 					{
 						superTrans::SetParentTransID(MessageClass::GetTransactionID());
 					}
-					else if(MessageClass::HasRouteContext)
+					else if constexpr (MessageClass::HasRouteContext)
 					{
 						superTrans::SetMessageRouteContext(MessageClass::GetRouteContext());
 					}
@@ -92,7 +92,7 @@ namespace Svr {
 
 			svrCheck(ParseMessage());
 
-			if(MessageClass::HasRouteContext)
+			if constexpr (MessageClass::HasRouteContext)
 			{
 				assert(pOwner->GetEntityUID() == MessageClass::GetRouteContext().GetTo());
 				svrCheckPtr(dynamic_cast<OwnerEntityType*>(pOwner));

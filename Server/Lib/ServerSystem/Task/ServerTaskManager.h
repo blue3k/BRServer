@@ -55,7 +55,7 @@ namespace SF {
 		SysUInt		m_GroupWorkLoadDiff;
 
 		// Group ID
-		SysUInt		m_GroupID;
+		uint32_t		m_GroupID;
 
 		// Base loop delay
 		DurationMS					m_ulLoopInterval;
@@ -89,15 +89,15 @@ namespace SF {
 		virtual ~TaskWorker();
 
 		// Get/Set Group Idx
-		inline SysUInt GetGroupID();
-		inline void SetGroupID( SysUInt ulGroupID );
+		SF_FORCEINLINE uint32_t GetGroupID() { return m_GroupID; }
+		SF_FORCEINLINE void SetGroupID(uint32_t ulGroupID) { m_GroupID = ulGroupID; }
 
 		// Get Group workload
-		inline SysUInt GetGroupWorkLoad();
+		SF_FORCEINLINE SysUInt GetGroupWorkLoad() { return m_GroupWorkLoad + m_GroupWorkLoadDiff; }
 
 		// Set base loop delay
-		inline void SetBaseLoopInterval(DurationMS dwLoopInterval );
-		inline DurationMS GetBaseLoopInterval();
+		inline void SetBaseLoopInterval(DurationMS dwLoopInterval) { m_ulLoopInterval = dwLoopInterval; }
+		inline DurationMS GetBaseLoopInterval() { return m_ulLoopInterval; }
 
 		TimerScheduler& GetTimeScheduler()											{ return m_TimeScheduler; }
 
@@ -159,8 +159,8 @@ namespace SF {
 		virtual ~TickTaskManager();
 
 		// Get/Set Working group count
-		Result SetWorkGroupCount( size_t WorkGroupCount );
-		inline size_t GetWorkGroupCount();
+		SF_FORCEINLINE Result SetWorkGroupCount( size_t WorkGroupCount );
+		SF_FORCEINLINE size_t GetWorkGroupCount() { return m_TaskGroups.size(); }
 
 		// Initialize TickTaskManager
 		virtual Result InitializeManager( uint uiNumGroup = 2 );
@@ -178,12 +178,5 @@ namespace SF {
 	};
 
 
-
-
-
-#include "ServerTaskManager.inl"
-
-
-
-}; // namespace SF
+} // namespace SF
 

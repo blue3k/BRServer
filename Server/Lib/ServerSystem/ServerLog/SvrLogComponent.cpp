@@ -192,8 +192,8 @@ namespace SF
 				return;
 
 			// Load when file time changed
-			struct stat st;
-			int ierr = stat(m_ConfigFilePath, &st);
+			struct stat st {};
+			stat(m_ConfigFilePath, &st);
 			if (m_LastConfigTimeStamp == st.st_mtime)
 				return;
 

@@ -367,7 +367,7 @@ namespace Svr {
 					CloseTransaction(hr);
 			});
 
-		Svr::ServerEntity *pServerEntity = nullptr;
+		//Svr::ServerEntity *pServerEntity = nullptr;
 		//auto config = GetMyServer()->GetPresetGameConfig();
 
 		m_LeaderID = 0;
@@ -484,7 +484,7 @@ namespace Svr {
 				if (!hr)
 					CloseTransaction(hr);
 			});
-		Svr::ServerEntity *pServerEntity = nullptr;
+		//Svr::ServerEntity *pServerEntity = nullptr;
 
 		svrCheck( super::StartTransaction() );
 
@@ -559,7 +559,7 @@ namespace Svr {
 				if (!hr)
 					CloseTransaction(hr);
 			});
-		Svr::ServerEntity *pServerEntity = nullptr;
+		//Svr::ServerEntity *pServerEntity = nullptr;
 
 		svrCheck( super::StartTransaction() );
 
@@ -622,7 +622,7 @@ namespace Svr {
 				if (!hr)
 					CloseTransaction(hr);
 			});
-		Svr::ServerEntity *pServerEntity = nullptr;
+		//Svr::ServerEntity *pServerEntity = nullptr;
 		EntityUID playerUID;
 
 		svrCheck( super::StartTransaction() );
@@ -687,7 +687,7 @@ namespace Svr {
 
 				CloseTransaction(hr);
 			});
-		Svr::ServerEntity *pServerEntity = nullptr;
+		//Svr::ServerEntity *pServerEntity = nullptr;
 
 		svrCheck( super::StartTransaction() );
 
@@ -739,7 +739,7 @@ namespace Svr {
 			{
 				CloseTransaction(hr);
 			});
-		Svr::ServerEntity *pServerEntity = nullptr;
+		//Svr::ServerEntity *pServerEntity = nullptr;
 
 		svrCheck( super::StartTransaction() );
 

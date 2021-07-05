@@ -89,8 +89,6 @@ namespace Svr {
 		if(GetMyOwner()->FindPlayer(GetJoiningPlayer().PlayerID, pFound))
 		{
 			// This should be rejoin by relogging
-			NetSvrPolicyChatChannel *pPolicy = nullptr;
-
 			svrCheck(pFound->SetRemoteEndpoint(GetRouteContext().GetFrom(), GetRemoteEndpoint()));
 
 			NetSvrPolicyChatChannel policy(pFound->GetRemoteEndpoint());

@@ -91,7 +91,7 @@ namespace Svr {
 	Result EntityManager::CreateEntity(ClusterID clusterID, EntityFaculty faculty, Entity* &pEntity)
 	{
 		// registered laster gets higher priority
-		for (int iItem = m_EntityCreators.size() - 1; iItem >= 0; --iItem)
+		for (int iItem = (int)m_EntityCreators.size() - 1; iItem >= 0; --iItem)
 		{
 			pEntity = m_EntityCreators[iItem](clusterID, faculty);
 			if (pEntity != nullptr)

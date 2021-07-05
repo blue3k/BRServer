@@ -38,7 +38,6 @@ namespace SF {
 		//	Entity server class
 		//
 
-
 		GameInstancePlayer::GameInstancePlayer(GameInstanceEntity* pGameOwner, EntityUID playerEntityUID, const PlayerInformation& player)
 			: PlayerEntityInformation(pGameOwner->GetHeap(), playerEntityUID, player)
 			, m_GameOwner(pGameOwner)

@@ -120,9 +120,7 @@ namespace SF {
 			DynamicArray<SharedPointerT<EntityInformation>> services(GetHeap());
 			DynamicArray<int32_t> zoneCountCounters(GetHeap());
 			HashTable2<uint32_t, int32_t*> zoneCount(GetHeap());
-
-			VariableTable attributes;
-			attributes.SetValue<String>("Custom.Type", "Static");
+			VariableTable attributes(GetHeap());
 
 			// Counting active static zones
 			svrCheck(Service::ServiceDirectory->FindObjects(Service::ServerConfig->GameClusterID, ClusterID::GameInstance, attributes, services));
@@ -164,11 +162,11 @@ namespace SF {
 
 				staticZoneCount -= curCount;
 
-				VariableTable attributes(GetHeap());
+				VariableTable instanceAttributes(GetHeap());
 
-				attributes.SetValue("MaxPlayer", itZone.second->GetValue<uint32_t>("MaxPlayer"));
-				attributes.SetValue("ZoneTableID", zoneTableId);
-				attributes.SetValue("Type", StringCrc32("Static"));
+				instanceAttributes.SetValue("MaxPlayer", itZone.second->GetValue<uint32_t>("MaxPlayer"));
+				instanceAttributes.SetValue("ZoneTableID", zoneTableId);
+				instanceAttributes.SetValue("Type", StringCrc32("Static"));
 
 				// create missing zones
 				for (int32_t iZone = 0; iZone < staticZoneCount; iZone++)
@@ -176,7 +174,7 @@ namespace SF {
 					// Query new service instance per loop for better load balance
 					SharedPointerT<ServerServiceInformation> pInstanceMangerService{};
 					svrCheck(Service::ServiceDirectory->GetRandomService(GetGameID(), ClusterID::GameInstanceManager, pInstanceMangerService));
-					svrCheck(pInstanceMangerService->GetService<GameInstanceManagerService>()->CreateGameInstanceCmd(0, 0, zoneTableId, attributes));
+					svrCheck(pInstanceMangerService->GetService<GameInstanceManagerService>()->CreateGameInstanceCmd(0, 0, zoneTableId, instanceAttributes));
 				}
 			}
 

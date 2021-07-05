@@ -107,7 +107,7 @@ namespace DB {
 
 		try
 		{
-			auto queryString = pMyQuery->GetQueryString().c_str();
+			//auto queryString = pMyQuery->GetQueryString().c_str();
 			defTrace(Debug3, "Sending DB query ... {0}", pMyQuery->GetQueryString());
 
 			auto XSession = pClient->getSession();
@@ -121,7 +121,7 @@ namespace DB {
 
 			if (pMyQuery->GetQueryOutputString().size() > 0)
 			{
-				auto queryOutputString = pMyQuery->GetQueryOutputString().c_str();
+				//auto queryOutputString = pMyQuery->GetQueryOutputString().c_str();
 				defTrace(Debug3, "DB query result string ... {0}", pMyQuery->GetQueryOutputString());
 
 				mysqlx::SqlResult outputResult = std::forward<mysqlx::SqlResult>(XSession.sql(pMyQuery->GetQueryOutputString()).execute());

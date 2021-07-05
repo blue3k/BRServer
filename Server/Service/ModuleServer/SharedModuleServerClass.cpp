@@ -62,7 +62,7 @@ namespace SharedModuleServer {
 	Result SharedModuleServer::InitializeEntities()
 	{
 		ScopeContext hr;
-		SockFamily privateNetSockFamily;
+		//SockFamily privateNetSockFamily;
 
 		svrCheck(Svr::BrServer::InitializeEntities() );
 
