@@ -47,7 +47,7 @@ namespace SF {
 		Transaction::Transaction(IHeap& heap, TransactionID parentTransID)
 			: m_Heap(heap)
 			, m_parentTransID(parentTransID)
-			, m_MessageRouteContext(0)
+			//, m_MessageRouteContext(0)
 			, m_pOwner(nullptr)
 			, m_transID(0, 0)
 			, m_tHeartbeatTimeout(DurationMS(5 * 60 * 1000))

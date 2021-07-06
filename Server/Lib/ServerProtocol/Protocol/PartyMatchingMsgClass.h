@@ -40,9 +40,9 @@ namespace SF
 					HasSender = 0,
 				}; // enum ParameterTypeInfo
 			public:
-				uint64_t GetPlayerID() { return 0; }
-				uint64_t GetTransactionID() { return 0; }
-				uint64_t GetSender() { return 0; }
+				uint64_t GetPlayerID() { return uint64_t{}; }
+				uint64_t GetTransactionID() { return uint64_t{}; }
+				uint64_t GetSender() { return uint64_t{}; }
 			private:
 				RouteContext m_RouteContext{};
 				uint16_t m_RouteHopCount{};
@@ -83,9 +83,9 @@ namespace SF
 					HasSender = 0,
 				}; // enum ParameterTypeInfo
 			public:
-				uint64_t GetPlayerID() { return 0; }
-				uint64_t GetTransactionID() { return 0; }
-				uint64_t GetSender() { return 0; }
+				uint64_t GetPlayerID() { return uint64_t{}; }
+				uint64_t GetTransactionID() { return uint64_t{}; }
+				uint64_t GetSender() { return uint64_t{}; }
 			private:
 				RouteContext m_RouteContext{};
 				uint16_t m_RouteHopCount{};

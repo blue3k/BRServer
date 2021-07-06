@@ -40,9 +40,9 @@ namespace SF
 					HasSender = 0,
 				}; // enum ParameterTypeInfo
 			public:
-				uint64_t GetPlayerID() { return 0; }
-				uint32_t GetRouteHopCount() { return 0; }
-				uint64_t GetSender() { return 0; }
+				uint64_t GetPlayerID() { return uint64_t{}; }
+				uint32_t GetRouteHopCount() { return uint32_t{}; }
+				uint64_t GetSender() { return uint64_t{}; }
 			private:
 				RouteContext m_RouteContext{};
 				uint64_t m_TransactionID{};
@@ -86,9 +86,9 @@ namespace SF
 					HasSender = 0,
 				}; // enum ParameterTypeInfo
 			public:
-				uint64_t GetPlayerID() { return 0; }
-				uint32_t GetRouteHopCount() { return 0; }
-				uint64_t GetSender() { return 0; }
+				uint64_t GetPlayerID() { return uint64_t{}; }
+				uint32_t GetRouteHopCount() { return uint32_t{}; }
+				uint64_t GetSender() { return uint64_t{}; }
 			private:
 				RouteContext m_RouteContext{};
 				uint64_t m_TransactionID{};
@@ -133,10 +133,10 @@ namespace SF
 					HasSender = 0,
 				}; // enum ParameterTypeInfo
 			public:
-				uint64_t GetPlayerID() { return 0; }
-				uint64_t GetTransactionID() { return 0; }
-				uint32_t GetRouteHopCount() { return 0; }
-				uint64_t GetSender() { return 0; }
+				uint64_t GetPlayerID() { return uint64_t{}; }
+				uint64_t GetTransactionID() { return uint64_t{}; }
+				uint32_t GetRouteHopCount() { return uint32_t{}; }
+				uint64_t GetSender() { return uint64_t{}; }
 			private:
 				RouteContext m_RouteContext{};
 				PlayerInformation m_JoinedPlayer{};
@@ -177,10 +177,10 @@ namespace SF
 					HasSender = 0,
 				}; // enum ParameterTypeInfo
 			public:
-				uint64_t GetPlayerID() { return 0; }
-				uint64_t GetTransactionID() { return 0; }
-				uint32_t GetRouteHopCount() { return 0; }
-				uint64_t GetSender() { return 0; }
+				uint64_t GetPlayerID() { return uint64_t{}; }
+				uint64_t GetTransactionID() { return uint64_t{}; }
+				uint32_t GetRouteHopCount() { return uint32_t{}; }
+				uint64_t GetSender() { return uint64_t{}; }
 			private:
 				RouteContext m_RouteContext{};
 				PlayerID m_NewLeaderID{};
@@ -221,8 +221,8 @@ namespace SF
 					HasSender = 0,
 				}; // enum ParameterTypeInfo
 			public:
-				uint32_t GetRouteHopCount() { return 0; }
-				uint64_t GetSender() { return 0; }
+				uint32_t GetRouteHopCount() { return uint32_t{}; }
+				uint64_t GetSender() { return uint64_t{}; }
 			private:
 				RouteContext m_RouteContext{};
 				uint64_t m_TransactionID{};
@@ -264,9 +264,9 @@ namespace SF
 					HasSender = 0,
 				}; // enum ParameterTypeInfo
 			public:
-				uint64_t GetPlayerID() { return 0; }
-				uint32_t GetRouteHopCount() { return 0; }
-				uint64_t GetSender() { return 0; }
+				uint64_t GetPlayerID() { return uint64_t{}; }
+				uint32_t GetRouteHopCount() { return uint32_t{}; }
+				uint64_t GetSender() { return uint64_t{}; }
 			private:
 				RouteContext m_RouteContext{};
 				uint64_t m_TransactionID{};
@@ -309,10 +309,10 @@ namespace SF
 					HasSender = 0,
 				}; // enum ParameterTypeInfo
 			public:
-				uint64_t GetPlayerID() { return 0; }
-				uint64_t GetTransactionID() { return 0; }
-				uint32_t GetRouteHopCount() { return 0; }
-				uint64_t GetSender() { return 0; }
+				uint64_t GetPlayerID() { return uint64_t{}; }
+				uint64_t GetTransactionID() { return uint64_t{}; }
+				uint32_t GetRouteHopCount() { return uint32_t{}; }
+				uint64_t GetSender() { return uint64_t{}; }
 			private:
 				RouteContext m_RouteContext{};
 				PlayerID m_LeftPlayerID{};
@@ -353,8 +353,8 @@ namespace SF
 					HasSender = 0,
 				}; // enum ParameterTypeInfo
 			public:
-				uint32_t GetRouteHopCount() { return 0; }
-				uint64_t GetSender() { return 0; }
+				uint32_t GetRouteHopCount() { return uint32_t{}; }
+				uint64_t GetSender() { return uint64_t{}; }
 			private:
 				RouteContext m_RouteContext{};
 				uint64_t m_TransactionID{};
@@ -398,9 +398,9 @@ namespace SF
 					HasSender = 0,
 				}; // enum ParameterTypeInfo
 			public:
-				uint64_t GetPlayerID() { return 0; }
-				uint32_t GetRouteHopCount() { return 0; }
-				uint64_t GetSender() { return 0; }
+				uint64_t GetPlayerID() { return uint64_t{}; }
+				uint32_t GetRouteHopCount() { return uint32_t{}; }
+				uint64_t GetSender() { return uint64_t{}; }
 			private:
 				RouteContext m_RouteContext{};
 				uint64_t m_TransactionID{};
@@ -443,10 +443,10 @@ namespace SF
 					HasSender = 0,
 				}; // enum ParameterTypeInfo
 			public:
-				uint64_t GetPlayerID() { return 0; }
-				uint64_t GetTransactionID() { return 0; }
-				uint32_t GetRouteHopCount() { return 0; }
-				uint64_t GetSender() { return 0; }
+				uint64_t GetPlayerID() { return uint64_t{}; }
+				uint64_t GetTransactionID() { return uint64_t{}; }
+				uint32_t GetRouteHopCount() { return uint32_t{}; }
+				uint64_t GetSender() { return uint64_t{}; }
 			private:
 				RouteContext m_RouteContext{};
 				PlayerID m_KickedPlayerID{};
@@ -487,10 +487,10 @@ namespace SF
 					HasSender = 0,
 				}; // enum ParameterTypeInfo
 			public:
-				uint64_t GetPlayerID() { return 0; }
-				uint64_t GetTransactionID() { return 0; }
-				uint32_t GetRouteHopCount() { return 0; }
-				uint64_t GetSender() { return 0; }
+				uint64_t GetPlayerID() { return uint64_t{}; }
+				uint64_t GetTransactionID() { return uint64_t{}; }
+				uint32_t GetRouteHopCount() { return uint32_t{}; }
+				uint64_t GetSender() { return uint64_t{}; }
 			private:
 				RouteContext m_RouteContext{};
 				PlayerID m_SenderID{};
@@ -533,10 +533,10 @@ namespace SF
 					HasSender = 0,
 				}; // enum ParameterTypeInfo
 			public:
-				uint64_t GetPlayerID() { return 0; }
-				uint64_t GetTransactionID() { return 0; }
-				uint32_t GetRouteHopCount() { return 0; }
-				uint64_t GetSender() { return 0; }
+				uint64_t GetPlayerID() { return uint64_t{}; }
+				uint64_t GetTransactionID() { return uint64_t{}; }
+				uint32_t GetRouteHopCount() { return uint32_t{}; }
+				uint64_t GetSender() { return uint64_t{}; }
 			private:
 				RouteContext m_RouteContext{};
 				PlayerID m_SenderID{};

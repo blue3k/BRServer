@@ -40,10 +40,10 @@ namespace SF
 					HasSender = 0,
 				}; // enum ParameterTypeInfo
 			public:
-				uint64_t GetPlayerID() { return 0; }
-				RouteContext GetRouteContext() { return 0; }
-				uint32_t GetRouteHopCount() { return 0; }
-				uint64_t GetSender() { return 0; }
+				uint64_t GetPlayerID() { return uint64_t{}; }
+				RouteContext GetRouteContext() { return RouteContext{}; }
+				uint32_t GetRouteHopCount() { return uint32_t{}; }
+				uint64_t GetSender() { return uint64_t{}; }
 			private:
 				uint64_t m_TransactionID{};
 			public:
@@ -81,10 +81,10 @@ namespace SF
 					HasSender = 0,
 				}; // enum ParameterTypeInfo
 			public:
-				uint64_t GetPlayerID() { return 0; }
-				RouteContext GetRouteContext() { return 0; }
-				uint32_t GetRouteHopCount() { return 0; }
-				uint64_t GetSender() { return 0; }
+				uint64_t GetPlayerID() { return uint64_t{}; }
+				RouteContext GetRouteContext() { return RouteContext{}; }
+				uint32_t GetRouteHopCount() { return uint32_t{}; }
+				uint64_t GetSender() { return uint64_t{}; }
 			private:
 				uint64_t m_TransactionID{};
 				Result m_Result{};
@@ -129,10 +129,10 @@ namespace SF
 					HasSender = 0,
 				}; // enum ParameterTypeInfo
 			public:
-				uint64_t GetPlayerID() { return 0; }
-				RouteContext GetRouteContext() { return 0; }
-				uint32_t GetRouteHopCount() { return 0; }
-				uint64_t GetSender() { return 0; }
+				uint64_t GetPlayerID() { return uint64_t{}; }
+				RouteContext GetRouteContext() { return RouteContext{}; }
+				uint32_t GetRouteHopCount() { return uint32_t{}; }
+				uint64_t GetSender() { return uint64_t{}; }
 			private:
 				uint64_t m_TransactionID{};
 				uint64_t m_InstanceUID{};
@@ -172,10 +172,10 @@ namespace SF
 					HasSender = 0,
 				}; // enum ParameterTypeInfo
 			public:
-				uint64_t GetPlayerID() { return 0; }
-				RouteContext GetRouteContext() { return 0; }
-				uint32_t GetRouteHopCount() { return 0; }
-				uint64_t GetSender() { return 0; }
+				uint64_t GetPlayerID() { return uint64_t{}; }
+				RouteContext GetRouteContext() { return RouteContext{}; }
+				uint32_t GetRouteHopCount() { return uint32_t{}; }
+				uint64_t GetSender() { return uint64_t{}; }
 			private:
 				uint64_t m_TransactionID{};
 				Result m_Result{};
@@ -220,11 +220,11 @@ namespace SF
 					HasSender = 0,
 				}; // enum ParameterTypeInfo
 			public:
-				uint64_t GetPlayerID() { return 0; }
-				uint64_t GetTransactionID() { return 0; }
-				RouteContext GetRouteContext() { return 0; }
-				uint32_t GetRouteHopCount() { return 0; }
-				uint64_t GetSender() { return 0; }
+				uint64_t GetPlayerID() { return uint64_t{}; }
+				uint64_t GetTransactionID() { return uint64_t{}; }
+				RouteContext GetRouteContext() { return RouteContext{}; }
+				uint32_t GetRouteHopCount() { return uint32_t{}; }
+				uint64_t GetSender() { return uint64_t{}; }
 			private:
 				const char* m_InstanceName{};
 				uint64_t m_InstanceUID{};
@@ -267,11 +267,11 @@ namespace SF
 					HasSender = 0,
 				}; // enum ParameterTypeInfo
 			public:
-				uint64_t GetPlayerID() { return 0; }
-				uint64_t GetTransactionID() { return 0; }
-				RouteContext GetRouteContext() { return 0; }
-				uint32_t GetRouteHopCount() { return 0; }
-				uint64_t GetSender() { return 0; }
+				uint64_t GetPlayerID() { return uint64_t{}; }
+				uint64_t GetTransactionID() { return uint64_t{}; }
+				RouteContext GetRouteContext() { return RouteContext{}; }
+				uint32_t GetRouteHopCount() { return uint32_t{}; }
+				uint64_t GetSender() { return uint64_t{}; }
 			private:
 				ArrayView<uint64_t> m_FreeInstances;
 			public:
@@ -310,11 +310,11 @@ namespace SF
 					HasSender = 0,
 				}; // enum ParameterTypeInfo
 			public:
-				uint64_t GetPlayerID() { return 0; }
-				uint64_t GetTransactionID() { return 0; }
-				RouteContext GetRouteContext() { return 0; }
-				uint32_t GetRouteHopCount() { return 0; }
-				uint64_t GetSender() { return 0; }
+				uint64_t GetPlayerID() { return uint64_t{}; }
+				uint64_t GetTransactionID() { return uint64_t{}; }
+				RouteContext GetRouteContext() { return RouteContext{}; }
+				uint32_t GetRouteHopCount() { return uint32_t{}; }
+				uint64_t GetSender() { return uint64_t{}; }
 			private:
 				uint64_t m_InstanceUID{};
 				ArrayView<uint64_t> m_CounterValues;
@@ -355,11 +355,11 @@ namespace SF
 					HasSender = 0,
 				}; // enum ParameterTypeInfo
 			public:
-				uint64_t GetPlayerID() { return 0; }
-				uint64_t GetTransactionID() { return 0; }
-				RouteContext GetRouteContext() { return 0; }
-				uint32_t GetRouteHopCount() { return 0; }
-				uint64_t GetSender() { return 0; }
+				uint64_t GetPlayerID() { return uint64_t{}; }
+				uint64_t GetTransactionID() { return uint64_t{}; }
+				RouteContext GetRouteContext() { return RouteContext{}; }
+				uint32_t GetRouteHopCount() { return uint32_t{}; }
+				uint64_t GetSender() { return uint64_t{}; }
 			private:
 				uint64_t m_InstanceUID{};
 			public:
