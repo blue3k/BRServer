@@ -104,7 +104,7 @@ namespace Svr
 		// movement frame
 		TimeStampMS m_LatestTickTime;
 		uint32_t m_MovementFrame = 0;
-		uint32_t m_PlayerMovementSimulationDelay = 100 / ActorMovement::DeltaMSPerFrame;
+		uint32_t m_PlayerMovementSimulationDelay = 0;// 100 / ActorMovement::DeltaMSPerFrame;
 
 		// Player start movement
 		mutable ActorMovement m_StartMove{};
