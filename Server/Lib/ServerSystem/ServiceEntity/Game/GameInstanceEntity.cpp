@@ -116,8 +116,6 @@ namespace SF {
 			SetTickInterval(Const::GAMEINSTANCE_TICK_TIME);
 			SetEmptyInstanceKillTimeOut(Const::GAMEINSTANCE_EMPTYINSTANCE_KILL_TIMEOUT);
 
-			m_PlayerMovementSimulationDelay = 100;
-
 
 			////////////////////////////////////////////////////////////////////////////////////////////////////
 			// game instance
@@ -235,7 +233,7 @@ namespace SF {
 			}
 
 			auto deltaFrames = UpdateMovementTick(CurTime);
-			auto playerSimulationFrame = m_MovementFrame - m_PlayerMovementSimulationDelay;
+			auto playerSimulationFrame = m_MovementFrame - m_PlayerMovementSimulationDelay; // simulate speed
 
 			// Update Players
 			m_GamePlayerByPlayerID.ForeachOrder(0, m_MaxPlayer, 
@@ -269,7 +267,7 @@ namespace SF {
 										return true;
 
 									auto movement = pMyPlayer->GetLatestMovement();
-									movement.MoveFrame += m_PlayerMovementSimulationDelay;
+									movement.MoveFrame += m_PlayerMovementSimulationDelay; // add it back so that client play it back to normal speed
 
 									NetSvrPolicyPlayInstance policy(pPlayer->GetRemoteEndpoint());
 									policy.PlayerMovementS2CEvt(GetEntityUID(), pMyPlayer->GetPlayerID(), movement);

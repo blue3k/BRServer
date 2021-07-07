@@ -69,13 +69,14 @@ namespace SF {
 			}
 
 			m_ReceivedActorMovement = newMovement;
+			auto resetFrameRef = GetOwner().GetMovementFrame() - m_ResetFrameDelta;
 
-			int32_t deltaFrames((m_ReceivedActorMovement.MoveFrame - GetOwner().GetMovementFrame()));
+			int32_t deltaFrames((m_ReceivedActorMovement.MoveFrame - resetFrameRef));
 			if (deltaFrames < 0) // old packet arrived late
 			{
 				// Server was sending made up packets, so we can't go back
 				// replace move frame, and pretend it is current frame
-				m_ReceivedActorMovement.MoveFrame = GetOwner().GetMovementFrame();
+				m_ReceivedActorMovement.MoveFrame = resetFrameRef;
 			}
 			
 			return ResultCode::SUCCESS;

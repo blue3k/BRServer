@@ -75,6 +75,7 @@ namespace SF {
 			ActorMovement m_LatestSimulatedMovement{};
 			uint32_t m_LatestReceivedFrame = 0;
 			ActorMovement m_ReceivedActorMovement;
+			uint32_t m_ResetFrameDelta = 100 / ActorMovement::DeltaMSPerFrame;
 
 		public:
 
