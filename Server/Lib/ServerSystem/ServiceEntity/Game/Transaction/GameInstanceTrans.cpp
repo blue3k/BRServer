@@ -148,13 +148,13 @@ namespace SF {
 			Svr::GameInstancePlayer* pGamePlayer{};
 			svrCheck(GetMyOwner()->FindPlayer(GetPlayerID(), pGamePlayer));
 
-			svrCheck(pGamePlayer->OccupyObject(pMapObject->GetMapObjectType(), pMapObject->GetMapObjectID()));
+			svrCheck(pGamePlayer->OccupyObject(pMapObject->GetMapObjectType(), pMapObject->GetMapObjectID(), pMapObject->GetMapObjectTableID()));
 			auto hrTem = pMapObject->SetOccupiedPlayer(GetPlayerID());
 			if (!hrTem)
 			{
 				if (pGamePlayer && pGamePlayer->GetOccupiedObjectId() == GetMapObjectId())
 				{
-					pGamePlayer->OccupyObject(nullptr, 0);
+					pGamePlayer->ClearOccupyObject();
 				}
 				if (pMapObject)
 				{
@@ -206,7 +206,7 @@ namespace SF {
 
 			if (GetMyOwner()->FindPlayer(GetPlayerID(), pOccupiedPlayer))
 			{
-				pOccupiedPlayer->OccupyObject(nullptr, 0);
+				pOccupiedPlayer->ClearOccupyObject();
 			}
 
 			pMapObject->SetOccupiedPlayer(0);

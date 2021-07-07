@@ -16,7 +16,7 @@
 #include "DB/DBTrace.h"
 #include "DB/Query.h"
 
-#include <mysqlx/xdevapi.h>
+#include "MySqlHeaders.h"
 
 
 namespace SF {

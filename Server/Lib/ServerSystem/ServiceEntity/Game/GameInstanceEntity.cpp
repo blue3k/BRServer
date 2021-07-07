@@ -146,12 +146,12 @@ namespace SF {
 			return new(GetHeap()) GameInstancePlayer(this, playerEntityUID, player);
 		}
 
-		Svr::GameInstanceMapObject* GameInstanceEntity::CreateMapObject(StringCrc32 mapObjectType, uint32_t mapObjectId)
+		Svr::GameInstanceMapObject* GameInstanceEntity::CreateMapObject(StringCrc32 mapObjectType, uint32_t mapObjectId, uint32_t mapObjectTableId)
 		{
-			return new(GetHeap()) Svr::GameInstanceMapObject(this, mapObjectType, mapObjectId);
+			return new(GetHeap()) Svr::GameInstanceMapObject(this, mapObjectType, mapObjectId, mapObjectTableId);
 		}
 
-		Result GameInstanceEntity::GetMapObject(StringCrc32 mapObjectId, GameInstanceMapObject*& pMapObject)
+		Result GameInstanceEntity::GetMapObject(uint32_t mapObjectId, GameInstanceMapObject*& pMapObject)
 		{
 			if (!m_MapObjects.Find(mapObjectId, pMapObject))
 				return ResultCode::GAME_MAPOBJECT_NOT_FOUND;
@@ -539,7 +539,7 @@ namespace SF {
 					pMapObject->SetOccupiedPlayer(0);
 				}
 
-				pPlayer->OccupyObject(nullptr, 0);
+				pPlayer->ClearOccupyObject();
 			}
 
 			GameInstancePlayer* pRemoved{};

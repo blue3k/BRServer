@@ -52,15 +52,23 @@ namespace SF {
 			m_ComponentManager.TerminateComponents();
 		}
 
-		Result GameInstancePlayer::OccupyObject(StringCrc32 mapObjectType, uint32_t mapObjectId)
+		Result GameInstancePlayer::OccupyObject(StringCrc32 mapObjectType, uint32_t mapObjectId, uint32_t mapObjectTableId)
 		{
 			if (m_OccupiedObjectId != 0)
 				return ResultCode::BUSY;
 
 			m_OccupiedObjectId = mapObjectId;
+			m_OccupiedObjectTableId = mapObjectTableId;
 			m_OccupiedObjectType = mapObjectType;
 
 			return ResultCode::SUCCESS;
+		}
+
+		void GameInstancePlayer::ClearOccupyObject()
+		{
+			m_OccupiedObjectId = 0;
+			m_OccupiedObjectTableId = 0;
+			m_OccupiedObjectType = nullptr;
 		}
 
 		// Initialize player

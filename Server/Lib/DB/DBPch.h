@@ -19,7 +19,7 @@
 #include "DB/DBConfig.h"
 
 #if !ANDROID
-#include <mysqlx/xdevapi.h>
+#include "MySqlHeaders.h"
 #include "DB/DBTrace.h"
 #endif
 

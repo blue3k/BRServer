@@ -82,8 +82,9 @@ namespace SF {
 
 			GameInstancePlayerComponentManager m_ComponentManager;
 
-			uint32_t m_OccupiedObjectId;
-			StringCrc32 m_OccupiedObjectType;
+			uint32_t m_OccupiedObjectId{};
+			uint32_t m_OccupiedObjectTableId{};
+			StringCrc32 m_OccupiedObjectType{};
 
 			bool m_IsJoined{};
 			StringCrc32 m_PlayerState;
@@ -109,8 +110,10 @@ namespace SF {
 			GameInstancePlayerComponentManager& GetComponentManager() { return m_ComponentManager; }
 
 			uint32_t GetOccupiedObjectId() const { return m_OccupiedObjectId; }
+			uint32_t GetOccupiedObjectTableId() const { return m_OccupiedObjectTableId; }
 			StringCrc32 GetOccupiedObjectType() const { return m_OccupiedObjectType; }
-			Result OccupyObject(StringCrc32 mapObjectType, uint32_t mapObjectId);
+			Result OccupyObject(StringCrc32 mapObjectType, uint32_t mapObjectId, uint32_t mapObjectTableId);
+			void ClearOccupyObject();
 
 			// Player state accessor
 			StringCrc32 GetPlayerState() const { return m_PlayerState; }

@@ -20,7 +20,7 @@
 #include "Container/SFArray.h"
 
 
-#include <mysqlx/xdevapi.h>
+#include "MySqlHeaders.h"
 
 
 

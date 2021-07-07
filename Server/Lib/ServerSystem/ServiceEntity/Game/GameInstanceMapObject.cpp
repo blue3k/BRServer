@@ -34,10 +34,11 @@ namespace SF {
 		//	Entity server class
 		//
 
-		GameInstanceMapObject::GameInstanceMapObject(GameInstanceEntity* pGameOwner, StringCrc32 mapObjectType, uint32_t mapObjectId)
+		GameInstanceMapObject::GameInstanceMapObject(GameInstanceEntity* pGameOwner, StringCrc32 mapObjectType, uint32_t mapObjectId, uint32_t mapObjectTableId)
 			: m_GameOwner(pGameOwner)
 			, m_MapObjectType(mapObjectType)
 			, m_MapObjectId(mapObjectId)
+			, m_MapObjectTableId(mapObjectTableId)
 			, m_Attributes(GetHeap())
 		{
 		}

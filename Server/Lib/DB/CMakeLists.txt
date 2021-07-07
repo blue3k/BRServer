@@ -3,6 +3,7 @@
 
 set(BRDB_LIB_FILES
 	DBPch.h
+	MySqlHeaders.h
 	Game/GameDB.h
 	Game/GameDB.cpp
 	Game/GameQuery.h

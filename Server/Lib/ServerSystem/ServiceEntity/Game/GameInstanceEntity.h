@@ -74,7 +74,7 @@ namespace Svr
 		const VariableTable* m_ZoneTableData{};
 
 		// map objects
-		SortedMap<StringCrc32, GameInstanceMapObject*> m_MapObjects;
+		SortedMap<uint32_t, GameInstanceMapObject*> m_MapObjects;
 
 		//////////////////////////////////////////////////////////////////////////////////////////////////
 		//
@@ -152,7 +152,7 @@ namespace Svr
 		}
 
 		// map object
-		Result GetMapObject(StringCrc32 mapObjectId, GameInstanceMapObject*& pMapObject);
+		Result GetMapObject(uint32_t mapObjectId, GameInstanceMapObject*& pMapObject);
 
 	protected:
 		// Initialize entity to proceed new connection
@@ -160,7 +160,7 @@ namespace Svr
 
 		// create player instance
 		virtual GameInstancePlayer* CreatePlayer(EntityUID playerEntityUID, const PlayerInformation& player);
-		virtual Svr::GameInstanceMapObject* CreateMapObject(StringCrc32 mapObjectType, uint32_t mapObjectId);
+		virtual Svr::GameInstanceMapObject* CreateMapObject(StringCrc32 mapObjectType, uint32_t mapObjectId, uint32_t mapObjectTableId);
 
 	public:
 		// Close entity and clear transaction

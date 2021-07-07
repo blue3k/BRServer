@@ -15,7 +15,7 @@
 
 #include "DB/DataSource.h"
 
-#include <mysqlx/xdevapi.h>
+#include "MySqlHeaders.h"
 
 namespace SF {
 namespace DB {

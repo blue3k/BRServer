@@ -56,24 +56,33 @@ namespace SF {
 			// Map object Id
 			StringCrc32 m_MapObjectType;
 			uint32_t m_MapObjectId{};
+			uint32_t m_MapObjectTableId{};
 
 			// Occupied player Id
 			PlayerID m_OccupiedPlayerId{};
+
+			// object Position
+			Vector4 m_Position{};
 
 			// Attribute
 			VariableTable m_Attributes;
 
 		public:
 
-			GameInstanceMapObject(GameInstanceEntity* pGameOwner, StringCrc32 mapObjectType, uint32_t mapObjectId);
+			GameInstanceMapObject(GameInstanceEntity* pGameOwner, StringCrc32 mapObjectType, uint32_t mapObjectId, uint32_t mapObjectTableId);
 			virtual ~GameInstanceMapObject();
 
 			GameInstanceEntity* GetGameOwner() { return m_GameOwner; }
 			IHeap& GetHeap();
+
+			// map object position
+			SF_FORCEINLINE void SetPosition(const Vector4& pos) { m_Position = pos; }
+			SF_FORCEINLINE const Vector4& GetPosition() const { return m_Position; }
 			
-			uint32_t GetMapObjectID() const { return m_MapObjectId; }
-			StringCrc32 GetMapObjectType() const { return m_MapObjectType; }
-			PlayerID GetOccupiedPlayerID() const { return m_OccupiedPlayerId; }
+			SF_FORCEINLINE uint32_t GetMapObjectID() const { return m_MapObjectId; }
+			SF_FORCEINLINE uint32_t GetMapObjectTableID() const { return m_MapObjectTableId; }
+			SF_FORCEINLINE StringCrc32 GetMapObjectType() const { return m_MapObjectType; }
+			SF_FORCEINLINE PlayerID GetOccupiedPlayerID() const { return m_OccupiedPlayerId; }
 
 			bool IsOccupied() const { return GetOccupiedPlayerID() != 0; }
 			Result SetOccupiedPlayer(PlayerID playerId);

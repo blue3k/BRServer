@@ -15,9 +15,7 @@
 #include "SFTypedefs.h"
 #include "Util/SFToString.h"
 
-#if !ANDROID
-#include <mysqlx/xdevapi.h>
-#endif
+#include "MySqlHeaders.h"
 
 namespace SF {
 
