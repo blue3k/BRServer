@@ -104,6 +104,7 @@ namespace Svr
 		// movement frame
 		TimeStampMS m_LatestTickTime;
 		uint32_t m_MovementFrame = 0;
+		uint32_t m_PlayerMovementSimulationDelay = 0;
 
 		// Player start movement
 		mutable ActorMovement m_StartMove{};

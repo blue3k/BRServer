@@ -116,6 +116,9 @@ namespace SF {
 			SetTickInterval(Const::GAMEINSTANCE_TICK_TIME);
 			SetEmptyInstanceKillTimeOut(Const::GAMEINSTANCE_EMPTYINSTANCE_KILL_TIMEOUT);
 
+			m_PlayerMovementSimulationDelay = 100;
+
+
 			////////////////////////////////////////////////////////////////////////////////////////////////////
 			// game instance
 			RegisterMessageHandler<GameEntityTransJoinGameInstance>();
@@ -232,15 +235,16 @@ namespace SF {
 			}
 
 			auto deltaFrames = UpdateMovementTick(CurTime);
+			auto playerSimulationFrame = m_MovementFrame - m_PlayerMovementSimulationDelay;
 
 			// Update Players
 			m_GamePlayerByPlayerID.ForeachOrder(0, m_MaxPlayer, 
-				[this, deltaFrames, &CurTime, &playerCount](const PlayerID& playerID, GameInstancePlayer* pPlayer)-> bool
+				[this, deltaFrames, playerSimulationFrame, &CurTime, &playerCount](const PlayerID& playerID, GameInstancePlayer* pPlayer)-> bool
 				{
 					if (pPlayer->GetRemoteEndpoint() != nullptr)
 						playerCount++;
 
-					pPlayer->UpdateGamePlayer(CurTime, m_MovementFrame);
+					pPlayer->UpdateGamePlayer(CurTime, playerSimulationFrame);
 
 					if (pPlayer->GetRemoveTimer().CheckTimer())
 					{
@@ -264,8 +268,11 @@ namespace SF {
 									if (pPlayer->GetRemoteEndpoint() == nullptr)
 										return true;
 
+									auto movement = pMyPlayer->GetLatestMovement();
+									movement.MoveFrame += m_PlayerMovementSimulationDelay;
+
 									NetSvrPolicyPlayInstance policy(pPlayer->GetRemoteEndpoint());
-									policy.PlayerMovementS2CEvt(GetEntityUID(), pMyPlayer->GetPlayerID(), pMyPlayer->GetLatestMovement());
+									policy.PlayerMovementS2CEvt(GetEntityUID(), pMyPlayer->GetPlayerID(), movement);
 
 									return true;
 								});
