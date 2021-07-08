@@ -104,7 +104,7 @@ namespace Svr
 		// movement frame
 		TimeStampMS m_LatestTickTime;
 		uint32_t m_MovementFrame = 0;
-		uint32_t m_PlayerMovementSimulationDelay = 0;// 100 / ActorMovement::DeltaMSPerFrame;
+		uint32_t m_PlayerMovementSimulationDelay = 0;
 
 		// Player start movement
 		mutable ActorMovement m_StartMove{};
@@ -256,6 +256,8 @@ namespace Svr
 		virtual Result OnPlayerGetOutOfGame(GameInstancePlayer *pPlayer);
 
 		Result NewPlayerMovement(PlayerID playerId, const ActorMovement& newMovement);
+
+		Result BroadcastPlayerState(Svr::GameInstancePlayer* pPlayer);
 
 		// Broadcast raw message data
 		Result Broadcast(PlayerID fromPlayerId, const MessageDataPtr& messageData);

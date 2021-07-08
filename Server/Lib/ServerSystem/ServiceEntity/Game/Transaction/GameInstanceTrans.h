@@ -83,7 +83,10 @@ namespace SF {
 		private:
 
 		public:
-			GameInstanceTransPlayerMovement(IHeap& heap, const MessageDataPtr& pIMsg) :super(heap, pIMsg) {}
+			GameInstanceTransPlayerMovement(IHeap& heap, const MessageDataPtr& pIMsg) :super(heap, pIMsg)
+			{
+				SetDirectProcess(true);
+			}
 			virtual ~GameInstanceTransPlayerMovement() {}
 
 			// Start Transaction

@@ -82,12 +82,14 @@ namespace SF {
 
 			GameInstancePlayerComponentManager m_ComponentManager;
 
+			// player state
+			StringCrc32 m_PlayerState;
+
 			uint32_t m_OccupiedObjectId{};
 			uint32_t m_OccupiedObjectTableId{};
 			StringCrc32 m_OccupiedObjectType{};
 
 			bool m_IsJoined{};
-			StringCrc32 m_PlayerState;
 
 			Util::TimeStampTimer m_TimeToRemove;
 
@@ -99,7 +101,6 @@ namespace SF {
 			ActorMovement m_LatestMovement;
 			GameInstancePlayerComponentMovement* m_pMovementManager{};
 
-
 		public:
 
 			GameInstancePlayer(GameInstanceEntity* pGameOwner, EntityUID playerEntityUID, const PlayerInformation& player);
@@ -109,15 +110,15 @@ namespace SF {
 
 			GameInstancePlayerComponentManager& GetComponentManager() { return m_ComponentManager; }
 
-			uint32_t GetOccupiedObjectId() const { return m_OccupiedObjectId; }
-			uint32_t GetOccupiedObjectTableId() const { return m_OccupiedObjectTableId; }
-			StringCrc32 GetOccupiedObjectType() const { return m_OccupiedObjectType; }
+			SF_FORCEINLINE uint32_t GetOccupiedObjectId() const { return m_OccupiedObjectId; }
+			SF_FORCEINLINE uint32_t GetOccupiedObjectTableId() const { return m_OccupiedObjectTableId; }
+			SF_FORCEINLINE StringCrc32 GetOccupiedObjectType() const { return m_OccupiedObjectType; }
 			Result OccupyObject(StringCrc32 mapObjectType, uint32_t mapObjectId, uint32_t mapObjectTableId);
 			void ClearOccupyObject();
 
 			// Player state accessor
-			StringCrc32 GetPlayerState() const { return m_PlayerState; }
-			void SetPlayerState(StringCrc32 newState) {
+			SF_FORCEINLINE StringCrc32 GetPlayerState() const { return m_PlayerState; }
+			SF_FORCEINLINE void SetPlayerState(StringCrc32 newState) {
 				m_PlayerState = newState;
 			}
 

@@ -255,25 +255,31 @@ namespace SF {
 						{
 							pPlayer->SetBroadCastedMovementFrame(pPlayer->GetLatestMovement().MoveFrame);
 
-							// Broad cast movement
-							// TODO: Need to add spatial management
-							m_GamePlayerByPlayerID.ForeachOrder(0, m_MaxPlayer, 
-								[this, pMyPlayer = pPlayer](const PlayerID& playerID, GameInstancePlayer* pPlayer)-> bool
-								{
-									//if (pMyPlayer->GetPlayerID() == playerID)
-									//	return true;
+							auto myMovement = pPlayer->GetLatestMovement();
+							myMovement.MoveFrame += m_PlayerMovementSimulationDelay; // add it back so that client play it back to normal speed
 
-									if (pPlayer->GetRemoteEndpoint() == nullptr)
-										return true;
+							MessageDataPtr pMessage = Message::PlayInstance::PlayerMovementS2CEvt::Create(GetHeap(), GetEntityUID(), pPlayer->GetPlayerID(), myMovement);
+							Broadcast(pPlayer->GetPlayerID(), pMessage);
 
-									auto movement = pMyPlayer->GetLatestMovement();
-									movement.MoveFrame += m_PlayerMovementSimulationDelay; // add it back so that client play it back to normal speed
+							//// Broad cast movement
+							//// TODO: Need to add spatial management
+							//m_GamePlayerByPlayerID.ForeachOrder(0, m_MaxPlayer, 
+							//	[this, pMyPlayer = pPlayer](const PlayerID& playerID, GameInstancePlayer* pPlayer)-> bool
+							//	{
+							//		//if (pMyPlayer->GetPlayerID() == playerID)
+							//		//	return true;
 
-									NetSvrPolicyPlayInstance policy(pPlayer->GetRemoteEndpoint());
-									policy.PlayerMovementS2CEvt(GetEntityUID(), pMyPlayer->GetPlayerID(), movement);
+							//		if (pPlayer->GetRemoteEndpoint() == nullptr)
+							//			return true;
 
-									return true;
-								});
+							//		auto movement = pMyPlayer->GetLatestMovement();
+							//		movement.MoveFrame += m_PlayerMovementSimulationDelay; // add it back so that client play it back to normal speed
+
+							//		NetSvrPolicyPlayInstance policy(pPlayer->GetRemoteEndpoint());
+							//		policy.PlayerMovementS2CEvt(GetEntityUID(), pMyPlayer->GetPlayerID(), movement);
+
+							//		return true;
+							//	});
 						}
 					}
 
@@ -342,8 +348,11 @@ namespace SF {
 				if (!m_GamePlayerByPlayerID.Find(playerId, pJoinedPlayer))
 					continue;
 
+				auto JoinedPlayerPacket = Message::PlayInstance::NewPlayerInViewS2CEvt::Create(GetSystemHeap(), GetEntityUID(), pJoinedPlayer->GetPlayerID(), pJoinedPlayer->GetCharacterVisual(), pJoinedPlayer->GetLatestMovement(), pJoinedPlayer->GetPlayerState());
+				Broadcast(pJoinedPlayer->GetPlayerID(), JoinedPlayerPacket);
+
 				m_GamePlayerByPlayerID.ForeachOrder(0, m_MaxPlayer, 
-					[this, pJoinedPlayer](const PlayerID& playerID, GameInstancePlayer* pPlayer)-> bool
+					[this, pJoinedPlayer, JoinedPlayerPacket](const PlayerID& playerID, GameInstancePlayer* pPlayer)-> bool
 					{
 						if (pJoinedPlayer->GetPlayerID() == playerID)
 							return true;
@@ -351,11 +360,11 @@ namespace SF {
 						if (pPlayer->GetRemoteEndpoint() == nullptr)
 							return true;
 
-						NetSvrPolicyPlayInstance policy(pPlayer->GetRemoteEndpoint());
-						policy.NewPlayerInViewS2CEvt(GetEntityUID(), pJoinedPlayer->GetPlayerID(), pJoinedPlayer->GetCharacterVisual(), pJoinedPlayer->GetLatestMovement());
+						//NetSvrPolicyPlayInstance policy(pPlayer->GetRemoteEndpoint());
+						//policy.NewPlayerInViewS2CEvt(GetEntityUID(), pJoinedPlayer->GetPlayerID(), pJoinedPlayer->GetCharacterVisual(), pJoinedPlayer->GetLatestMovement());
 
 						NetSvrPolicyPlayInstance policyJoined(pJoinedPlayer->GetRemoteEndpoint());
-						policyJoined.NewPlayerInViewS2CEvt(GetEntityUID(), pPlayer->GetPlayerID(), pPlayer->GetCharacterVisual(), pPlayer->GetLatestMovement());
+						policyJoined.NewPlayerInViewS2CEvt(GetEntityUID(), pPlayer->GetPlayerID(), pPlayer->GetCharacterVisual(), pPlayer->GetLatestMovement(), pPlayer->GetPlayerState());
 
 						return true;
 					});
@@ -646,6 +655,23 @@ namespace SF {
 			svrCheck(pPlayer->GetMovementManager()->NewMovement(newMovement));
 
 			return hr;
+		}
+
+		Result GameInstanceEntity::BroadcastPlayerState(Svr::GameInstancePlayer* pPlayer)
+		{
+			if (pPlayer == nullptr)
+				return ResultCode::INVALID_POINTER;
+
+			MessageDataPtr pMessage = Message::PlayInstance::PlayerStateChangedS2CEvt::Create(
+				GetHeap(),
+				GetEntityUID(),
+				pPlayer->GetPlayerID(),
+				pPlayer->GetPlayerState(),
+				pPlayer->GetMovementFrame(),
+				pPlayer->GetLatestMovement().Position,
+				VariableTable());
+
+			return Broadcast(pPlayer->GetPlayerID(), pMessage);
 		}
 
 		Result GameInstanceEntity::Broadcast(PlayerID fromPlayerId, const MessageDataPtr& messageData)

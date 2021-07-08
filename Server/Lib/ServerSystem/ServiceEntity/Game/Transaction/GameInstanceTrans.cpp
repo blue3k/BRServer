@@ -172,6 +172,9 @@ namespace SF {
 				svrCheck(hrTem);
 			}
 
+			GetMyOwner()->BroadcastPlayerState(pGamePlayer);
+
+
 			return hr;
 		}
 
@@ -207,6 +210,7 @@ namespace SF {
 			if (GetMyOwner()->FindPlayer(GetPlayerID(), pOccupiedPlayer))
 			{
 				pOccupiedPlayer->ClearOccupyObject();
+				GetMyOwner()->BroadcastPlayerState(pOccupiedPlayer);
 			}
 
 			pMapObject->SetOccupiedPlayer(0);

@@ -61,6 +61,8 @@ namespace SF {
 			m_OccupiedObjectTableId = mapObjectTableId;
 			m_OccupiedObjectType = mapObjectType;
 
+			SetPlayerState(mapObjectType);
+
 			return ResultCode::SUCCESS;
 		}
 
@@ -69,6 +71,8 @@ namespace SF {
 			m_OccupiedObjectId = 0;
 			m_OccupiedObjectTableId = 0;
 			m_OccupiedObjectType = nullptr;
+
+			SetPlayerState(nullptr);
 		}
 
 		// Initialize player
