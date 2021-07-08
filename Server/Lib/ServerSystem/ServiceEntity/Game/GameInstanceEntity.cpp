@@ -259,11 +259,7 @@ namespace SF {
 							myMovement.MoveFrame += m_PlayerMovementSimulationDelay; // add it back so that client play it back to normal speed
 
 							MessageDataPtr pMessage = Message::PlayInstance::PlayerMovementS2CEvt::Create(GetHeap(), GetEntityUID(), pPlayer->GetPlayerID(), myMovement);
-#if DEBUG
-							Broadcast(0, pMessage); // send it to yourself as well
-#else
-							Broadcast(pPlayer->GetPlayerID(), pMessage);
-#endif
+							Broadcast(0, pMessage); // send it to yourself as well for debug and correction
 
 							//// Broad cast movement
 							//// TODO: Need to add spatial management
