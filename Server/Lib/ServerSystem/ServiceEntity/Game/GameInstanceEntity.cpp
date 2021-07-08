@@ -678,7 +678,8 @@ namespace SF {
 		{
 			return m_GamePlayerByPlayerID.ForeachOrder(0, m_MaxPlayer, [&](const PlayerID& playerID, GameInstancePlayer* pPlayer)-> bool
 				{
-					if (pPlayer->GetPlayerID() == fromPlayerId)
+					if (pPlayer->GetPlayerID() == fromPlayerId 
+						|| pPlayer->GetRemoteEndpoint() == nullptr)
 						return true;
 
 					pPlayer->GetRemoteEndpoint()->Send(messageData);
