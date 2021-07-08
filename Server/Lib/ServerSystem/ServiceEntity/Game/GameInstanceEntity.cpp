@@ -260,26 +260,6 @@ namespace SF {
 
 							MessageDataPtr pMessage = Message::PlayInstance::PlayerMovementS2CEvt::Create(GetHeap(), GetEntityUID(), pPlayer->GetPlayerID(), myMovement);
 							Broadcast(0, pMessage); // send it to yourself as well for debug and correction
-
-							//// Broad cast movement
-							//// TODO: Need to add spatial management
-							//m_GamePlayerByPlayerID.ForeachOrder(0, m_MaxPlayer, 
-							//	[this, pMyPlayer = pPlayer](const PlayerID& playerID, GameInstancePlayer* pPlayer)-> bool
-							//	{
-							//		//if (pMyPlayer->GetPlayerID() == playerID)
-							//		//	return true;
-
-							//		if (pPlayer->GetRemoteEndpoint() == nullptr)
-							//			return true;
-
-							//		auto movement = pMyPlayer->GetLatestMovement();
-							//		movement.MoveFrame += m_PlayerMovementSimulationDelay; // add it back so that client play it back to normal speed
-
-							//		NetSvrPolicyPlayInstance policy(pPlayer->GetRemoteEndpoint());
-							//		policy.PlayerMovementS2CEvt(GetEntityUID(), pMyPlayer->GetPlayerID(), movement);
-
-							//		return true;
-							//	});
 						}
 					}
 
@@ -348,7 +328,13 @@ namespace SF {
 				if (!m_GamePlayerByPlayerID.Find(playerId, pJoinedPlayer))
 					continue;
 
-				auto JoinedPlayerPacket = Message::PlayInstance::NewPlayerInViewS2CEvt::Create(GetSystemHeap(), GetEntityUID(), pJoinedPlayer->GetPlayerID(), pJoinedPlayer->GetCharacterVisual(), pJoinedPlayer->GetLatestMovement(), pJoinedPlayer->GetPlayerState());
+				auto JoinedPlayerPacket = Message::PlayInstance::NewPlayerInViewS2CEvt::Create(GetSystemHeap(), 
+					GetEntityUID(), 
+					pJoinedPlayer->GetPlayerID(), 
+					pJoinedPlayer->GetCharacterVisual(), 
+					pJoinedPlayer->GetLatestMovement(), 
+					pJoinedPlayer->GetPlayerState(),
+					pJoinedPlayer->GetPlayerStateValue());
 				Broadcast(pJoinedPlayer->GetPlayerID(), JoinedPlayerPacket);
 
 				m_GamePlayerByPlayerID.ForeachOrder(0, m_MaxPlayer, 
@@ -360,11 +346,13 @@ namespace SF {
 						if (pPlayer->GetRemoteEndpoint() == nullptr)
 							return true;
 
-						//NetSvrPolicyPlayInstance policy(pPlayer->GetRemoteEndpoint());
-						//policy.NewPlayerInViewS2CEvt(GetEntityUID(), pJoinedPlayer->GetPlayerID(), pJoinedPlayer->GetCharacterVisual(), pJoinedPlayer->GetLatestMovement());
-
 						NetSvrPolicyPlayInstance policyJoined(pJoinedPlayer->GetRemoteEndpoint());
-						policyJoined.NewPlayerInViewS2CEvt(GetEntityUID(), pPlayer->GetPlayerID(), pPlayer->GetCharacterVisual(), pPlayer->GetLatestMovement(), pPlayer->GetPlayerState());
+						policyJoined.NewPlayerInViewS2CEvt(GetEntityUID(), 
+							pPlayer->GetPlayerID(), 
+							pPlayer->GetCharacterVisual(), 
+							pPlayer->GetLatestMovement(), 
+							pPlayer->GetPlayerState(),
+							pPlayer->GetPlayerStateValue());
 
 						return true;
 					});

@@ -84,6 +84,7 @@ namespace SF {
 
 			// player state
 			StringCrc32 m_PlayerState;
+			VariableTable m_PlayerStateValue;
 
 			uint32_t m_OccupiedObjectId{};
 			uint32_t m_OccupiedObjectTableId{};
@@ -120,7 +121,14 @@ namespace SF {
 			SF_FORCEINLINE StringCrc32 GetPlayerState() const { return m_PlayerState; }
 			SF_FORCEINLINE void SetPlayerState(StringCrc32 newState) {
 				m_PlayerState = newState;
+				m_PlayerStateValue.Clear();
 			}
+			SF_FORCEINLINE void SetPlayerState(StringCrc32 newState, const VariableTable& stateValue) {
+				m_PlayerState = newState;
+				m_PlayerStateValue = stateValue;
+			}
+
+			SF_FORCEINLINE const VariableTable& GetPlayerStateValue() const { return m_PlayerStateValue; }
 
 			// Movement frame the play is on
 			uint32_t GetMovementFrame() const { return m_CurMovementFrame; }
