@@ -239,7 +239,6 @@ namespace Svr
 
 			if (pNewTrans->IsDirectProcess())
 			{
-				assert(false); // disable direct process for now
 				// This need to be run on correct worker thread
 				hrRes = pNewTrans->StartTransaction();
 				if (!pNewTrans->IsClosed())
