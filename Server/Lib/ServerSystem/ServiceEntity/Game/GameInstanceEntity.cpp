@@ -538,7 +538,7 @@ namespace SF {
 				GetMapObject(pPlayer->GetOccupiedObjectId(), pMapObject);
 				if (pMapObject)
 				{
-					pMapObject->SetOccupiedPlayer(0);
+					pMapObject->ObjectReleased(pPlayer->GetPlayerID());
 				}
 
 				pPlayer->ClearOccupyObject();

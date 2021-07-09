@@ -86,6 +86,8 @@ namespace SF {
 
 			bool IsOccupied() const { return GetOccupiedPlayerID() != 0; }
 			Result SetOccupiedPlayer(PlayerID playerId);
+			Result ObjectReleased(PlayerID playerId);
+			Result ObjectReleased();
 
 			// use map object
 			Result UseObject(GameInstancePlayer* pPlayer);

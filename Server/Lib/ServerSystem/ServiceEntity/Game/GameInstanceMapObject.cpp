@@ -66,6 +66,31 @@ namespace SF {
 			return ResultCode::SUCCESS;
 		}
 
+		Result GameInstanceMapObject::ObjectReleased(PlayerID playerId)
+		{
+			if (m_OccupiedPlayerId == 0)
+				return ResultCode::GAME_MAPOBJECT_NOT_IN_USE;
+			else
+			{
+				if (m_OccupiedPlayerId != playerId)
+					return ResultCode::GAME_MAPOBJECT_NOT_OCCUPIED_BY_PLAYER;
+			}
+
+			m_OccupiedPlayerId = 0;
+
+			return ResultCode::SUCCESS;
+		}
+
+		Result GameInstanceMapObject::ObjectReleased()
+		{
+			if (m_OccupiedPlayerId == 0)
+				return ResultCode::GAME_MAPOBJECT_NOT_IN_USE;
+
+			m_OccupiedPlayerId = 0;
+
+			return ResultCode::SUCCESS;
+		}
+
 		Result GameInstanceMapObject::UseObject(GameInstancePlayer* pPlayer)
 		{
 			// TODO: test use conditions

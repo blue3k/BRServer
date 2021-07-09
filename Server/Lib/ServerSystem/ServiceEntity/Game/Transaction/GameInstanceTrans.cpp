@@ -159,13 +159,13 @@ namespace SF {
 				if (pMapObject)
 				{
 					if (pMapObject->GetOccupiedPlayerID() == GetPlayerID())
-						pMapObject->SetOccupiedPlayer(0);
+						pMapObject->ObjectReleased();
 
 					Svr::GameInstancePlayer* pOccupiedPlayer{};
 					if (!GetMyOwner()->FindPlayer(pMapObject->GetOccupiedPlayerID(), pOccupiedPlayer))
 					{
 						// the player might be left or something. erase occupied info
-						pMapObject->SetOccupiedPlayer(0);
+						pMapObject->ObjectReleased();
 					}
 				}
 
@@ -201,7 +201,7 @@ namespace SF {
 				if (!GetMyOwner()->FindPlayer(pMapObject->GetOccupiedPlayerID(), pOccupiedPlayer))
 				{
 					// the player might be left or something. release the object
-					pMapObject->SetOccupiedPlayer(0);
+					pMapObject->ObjectReleased();
 				}
 
 				svrCheck(ResultCode::GAME_MAPOBJECT_NOT_OCCUPIED_BY_PLAYER);
@@ -213,7 +213,7 @@ namespace SF {
 				GetMyOwner()->BroadcastPlayerState(pOccupiedPlayer);
 			}
 
-			pMapObject->SetOccupiedPlayer(0);
+			pMapObject->ObjectReleased();
 
 			return hr;
 		}
