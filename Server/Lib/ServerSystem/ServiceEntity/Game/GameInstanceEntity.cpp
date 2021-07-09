@@ -549,23 +549,10 @@ namespace SF {
 			assert(pRemoved == pPlayer);
 
 			// We will leave him as an inactive player so the clean-up and any notify aren't needed
+			auto pMessage = SF::Message::PlayInstance::RemovePlayerFromViewS2CEvt::Create(GetSystemHeap(), GetEntityUID(), pRemoved->GetPlayerID());
+			Broadcast(pRemoved->GetPlayerID(), pMessage);
 
-			m_GamePlayerByPlayerID.ForeachOrder(0, m_MaxPlayer,
-				[this, pRemoved](const PlayerID& playerID, GameInstancePlayer* pPlayer)-> bool
-				{
-					if (pRemoved->GetPlayerID() == playerID)
-						return true;
-
-					if (pPlayer->GetRemoteEndpoint() == nullptr)
-						return true;
-
-					NetSvrPolicyPlayInstance policy(pPlayer->GetRemoteEndpoint());
-					policy.RemovePlayerFromViewS2CEvt(GetEntityUID(), pRemoved->GetPlayerID());
-
-					return true;
-				});
-
-			svrTrace(SVR_INFO, "LeavePlayer, remain:{0}", m_GamePlayerByPlayerID.size());
+			svrTrace(SVR_INFO, "LeavePlayer, player:{0}, remainCount:{1}", pRemoved->GetPlayerID(), m_GamePlayerByPlayerID.size());
 
 
 			if (m_GamePlayerByPlayerID.size() == 0) // if no player remain
