@@ -84,7 +84,7 @@ namespace SF {
 			SF_FORCEINLINE StringCrc32 GetMapObjectType() const { return m_MapObjectType; }
 			SF_FORCEINLINE PlayerID GetOccupiedPlayerID() const { return m_OccupiedPlayerId; }
 
-			bool IsOccupied() const { return GetOccupiedPlayerID() != 0; }
+			SF_FORCEINLINE bool IsOccupied() const { return GetOccupiedPlayerID() != 0; }
 			Result SetOccupiedPlayer(PlayerID playerId);
 			Result ObjectReleased(PlayerID playerId);
 			Result ObjectReleased();
