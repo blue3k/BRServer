@@ -151,9 +151,6 @@ namespace Svr {
 			}
 
 
-			Protocol::RegisterConnectionDebugMessage();
-
-
 			svrTrace( Info, "<{0}> Starting", Util::GetServiceName() );
 
 			auto curDir = get_current_dir_name();
@@ -193,8 +190,6 @@ namespace Svr {
 			g_pSvrInstance->StopServer();
 
 			svrTrace( Info, "<{0}> Closed", Util::GetServiceName() );
-
-			//Trace::Uninitialize();
 
 			g_pSvrInstance = nullptr;
 
