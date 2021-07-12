@@ -107,9 +107,9 @@ namespace SF {
 			GameInstancePlayer(GameInstanceEntity* pGameOwner, EntityUID playerEntityUID, const PlayerInformation& player);
 			virtual ~GameInstancePlayer();
 
-			GameInstanceEntity* GetGameOwner() { return m_GameOwner; }
+			SF_FORCEINLINE GameInstanceEntity* GetGameOwner() { return m_GameOwner; }
 
-			GameInstancePlayerComponentManager& GetComponentManager() { return m_ComponentManager; }
+			SF_FORCEINLINE GameInstancePlayerComponentManager& GetComponentManager() { return m_ComponentManager; }
 
 			SF_FORCEINLINE uint32_t GetOccupiedObjectId() const { return m_OccupiedObjectId; }
 			SF_FORCEINLINE uint32_t GetOccupiedObjectTableId() const { return m_OccupiedObjectTableId; }
@@ -131,26 +131,26 @@ namespace SF {
 			SF_FORCEINLINE const VariableTable& GetPlayerStateValue() const { return m_PlayerStateValue; }
 
 			// Movement frame the play is on
-			uint32_t GetMovementFrame() const { return m_CurMovementFrame; }
-			void SetMovementFrame(uint32_t newFrame) { m_CurMovementFrame = newFrame; }
+			SF_FORCEINLINE uint32_t GetMovementFrame() const { return m_CurMovementFrame; }
+			SF_FORCEINLINE void SetMovementFrame(uint32_t newFrame) { m_CurMovementFrame = newFrame; }
 
 			// latest broad casted movement frame
-			uint32_t GetBroadCastedMovementFrame() const { return m_BroadcastedMovementFrame; }
-			void SetBroadCastedMovementFrame(uint32_t newMovementFrame) { m_BroadcastedMovementFrame = newMovementFrame; }
+			SF_FORCEINLINE uint32_t GetBroadCastedMovementFrame() const { return m_BroadcastedMovementFrame; }
+			SF_FORCEINLINE void SetBroadCastedMovementFrame(uint32_t newMovementFrame) { m_BroadcastedMovementFrame = newMovementFrame; }
 
 			// latest movement
-			const ActorMovement& GetLatestMovement() const { return m_LatestMovement; }
-			void SetLatestMovement(const ActorMovement& src) { m_LatestMovement = src; }
+			SF_FORCEINLINE const ActorMovement& GetLatestMovement() const { return m_LatestMovement; }
+			SF_FORCEINLINE void SetLatestMovement(const ActorMovement& src) { m_LatestMovement = src; }
 
 			// Quick access to component
-			GameInstancePlayerComponentMovement* GetMovementManager() { return m_pMovementManager; }
+			SF_FORCEINLINE GameInstancePlayerComponentMovement* GetMovementManager() { return m_pMovementManager; }
 
 			// Character information
-			const VariableTable& GetCharacterVisual() const { return m_CharacterVisual; }
-			const VariableTable& GetCharacterAttribute() const { return m_CharacterAttribute; }
+			SF_FORCEINLINE const VariableTable& GetCharacterVisual() const { return m_CharacterVisual; }
+			SF_FORCEINLINE const VariableTable& GetCharacterAttribute() const { return m_CharacterAttribute; }
 
-			bool IsJoined() const { return m_IsJoined; }
-			void SetJoined(bool value) { m_IsJoined = value; }
+			SF_FORCEINLINE bool IsJoined() const { return m_IsJoined; }
+			SF_FORCEINLINE void SetJoined(bool value) { m_IsJoined = value; }
 
 			// Initialize player
 			virtual Result InitializePlayer(GameInstanceEntity* pGameOwner);
